@@ -2,131 +2,73 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AED517BEC
-	for <lists+keyrings@lfdr.de>; Wed,  8 May 2019 16:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E5517E9F
+	for <lists+keyrings@lfdr.de>; Wed,  8 May 2019 18:58:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728584AbfEHOo6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 May 2019 10:44:58 -0400
-Received: from mga03.intel.com ([134.134.136.65]:59551 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728573AbfEHOo5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 8 May 2019 10:44:57 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2019 07:44:53 -0700
-X-ExtLoop1: 1
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 08 May 2019 07:44:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id CA21811F7; Wed,  8 May 2019 17:44:31 +0300 (EEST)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        id S1728709AbfEHQ6k (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 May 2019 12:58:40 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:48272 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728699AbfEHQ6k (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 May 2019 12:58:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=x2WuU/X5fa5tUVfwJobGS2HfWE2m292r4J/u47Wd82s=; b=WvagHzfkLT5uNstZZ33NzU8f4
+        hVRF06AuCxJhAWvqiZKox4/2Nfevff1DInfGoORtzQW+kOTzEwOz2D0pN1WsVfq3c0szMFWAsntze
+        flir9K6/Xz58geaWHO0lBGR8m/i0p8MjqeGp8pxnONpBNbMwqgXhj60gzgD/nNxjh1sUqYc7evbBi
+        amGm5itevVi3gSAVbNmFKXK7tPwhMvTUfCrbQ99DOdeKj2WMEHulKQNkmG2v0IzJib2n4UwagtS2Q
+        WJK03LVZfAXQ883EK+5tiBm397uUhr8ew+Rmmq5FzR7mmvyCV4pgMPI+POmu/zHUsi0bEK5DNuY7C
+        chf1RE70Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hOPtm-00039J-A2; Wed, 08 May 2019 16:58:30 +0000
+Date:   Wed, 8 May 2019 09:58:30 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Andy Lutomirski <luto@amacapital.net>,
-        David Howells <dhowells@redhat.com>
-Cc:     Kees Cook <keescook@chromium.org>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
         Dave Hansen <dave.hansen@intel.com>,
         Kai Huang <kai.huang@linux.intel.com>,
         Jacob Pan <jacob.jun.pan@linux.intel.com>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH, RFC 62/62] x86/mktme: Demonstration program using the MKTME APIs
-Date:   Wed,  8 May 2019 17:44:22 +0300
-Message-Id: <20190508144422.13171-63-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH, RFC 52/62] x86/mm: introduce common code for mem
+ encryption
+Message-ID: <20190508165830.GA11815@infradead.org>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-53-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190508144422.13171-53-kirill.shutemov@linux.intel.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Alison Schofield <alison.schofield@intel.com>
+On Wed, May 08, 2019 at 05:44:12PM +0300, Kirill A. Shutemov wrote:
+> +EXPORT_SYMBOL_GPL(__mem_encrypt_dma_set);
+> +
+> +phys_addr_t __mem_encrypt_dma_clear(phys_addr_t paddr)
+> +{
+> +	if (sme_active())
+> +		return __sme_clr(paddr);
+> +
+> +	return paddr & ~mktme_keyid_mask;
+> +}
+> +EXPORT_SYMBOL_GPL(__mem_encrypt_dma_clear);
 
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- Documentation/x86/mktme/index.rst      |  1 +
- Documentation/x86/mktme/mktme_demo.rst | 53 ++++++++++++++++++++++++++
- 2 files changed, 54 insertions(+)
- create mode 100644 Documentation/x86/mktme/mktme_demo.rst
-
-diff --git a/Documentation/x86/mktme/index.rst b/Documentation/x86/mktme/index.rst
-index ca3c76adc596..3af322d13225 100644
---- a/Documentation/x86/mktme/index.rst
-+++ b/Documentation/x86/mktme/index.rst
-@@ -10,3 +10,4 @@ Multi-Key Total Memory Encryption (MKTME)
-    mktme_configuration
-    mktme_keys
-    mktme_encrypt
-+   mktme_demo
-diff --git a/Documentation/x86/mktme/mktme_demo.rst b/Documentation/x86/mktme/mktme_demo.rst
-new file mode 100644
-index 000000000000..49377ad648e7
---- /dev/null
-+++ b/Documentation/x86/mktme/mktme_demo.rst
-@@ -0,0 +1,53 @@
-+Demonstration Program using MKTME API's
-+=======================================
-+
-+/* Compile with the keyutils library: cc -o mdemo mdemo.c -lkeyutils */
-+
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <keyutils.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#define PAGE_SIZE sysconf(_SC_PAGE_SIZE)
-+#define sys_encrypt_mprotect 428
-+
-+void main(void)
-+{
-+	char *options_CPU = "algorithm=aes-xts-128 type=cpu";
-+	long size = PAGE_SIZE;
-+        key_serial_t key;
-+	void *ptra;
-+	int ret;
-+
-+        /* Allocate an MKTME Key */
-+	key = add_key("mktme", "testkey", options_CPU, strlen(options_CPU),
-+                      KEY_SPEC_THREAD_KEYRING);
-+
-+	if (key == -1) {
-+		printf("addkey FAILED\n");
-+		return;
-+	}
-+        /* Map a page of ANONYMOUS memory */
-+	ptra = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-+	if (!ptra) {
-+		printf("failed to mmap");
-+		goto inval_key;
-+	}
-+        /* Encrypt that page of memory with the MKTME Key */
-+	ret = syscall(sys_encrypt_mprotect, ptra, size, PROT_NONE, key);
-+	if (ret)
-+		printf("mprotect error [%d]\n", ret);
-+
-+        /* Enjoy that page of encrypted memory */
-+
-+        /* Free the memory */
-+	ret = munmap(ptra, size);
-+
-+inval_key:
-+        /* Free the Key */
-+	if (keyctl(KEYCTL_INVALIDATE, key) == -1)
-+		printf("invalidate failed on key [%d]\n", key);
-+}
--- 
-2.20.1
-
+In general nothing related to low-level dma address should ever
+be exposed to modules.  What is your intended user for these two?
