@@ -2,45 +2,45 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CE8F18D5F
-	for <lists+keyrings@lfdr.de>; Thu,  9 May 2019 17:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4495919581
+	for <lists+keyrings@lfdr.de>; Fri, 10 May 2019 01:01:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbfEIPxu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 May 2019 11:53:50 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:60130 "EHLO
+        id S1726716AbfEIXBV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 May 2019 19:01:21 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:59604 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726448AbfEIPxu (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 May 2019 11:53:50 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x49Fpv4Y029681
-        for <keyrings@vger.kernel.org>; Thu, 9 May 2019 11:53:49 -0400
+        by vger.kernel.org with ESMTP id S1726108AbfEIXBU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 May 2019 19:01:20 -0400
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x49MpjZc129967
+        for <keyrings@vger.kernel.org>; Thu, 9 May 2019 19:01:19 -0400
 Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2scpwq107v-1
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2scvyn110u-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Thu, 09 May 2019 11:53:48 -0400
+        for <keyrings@vger.kernel.org>; Thu, 09 May 2019 19:01:18 -0400
 Received: from localhost
         by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Thu, 9 May 2019 16:53:46 +0100
+        Fri, 10 May 2019 00:01:16 +0100
 Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
         by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 9 May 2019 16:53:40 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x49Frehq58917042
+        Fri, 10 May 2019 00:01:11 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x49N1AMv42991828
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 May 2019 15:53:40 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DE50511C058;
-        Thu,  9 May 2019 15:53:39 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E438B11C054;
-        Thu,  9 May 2019 15:53:37 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.95.107])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  9 May 2019 15:53:37 +0000 (GMT)
-Subject: Re: [PATCH v10 08/12] ima: Factor xattr_verify() out of
- ima_appraise_measurement()
+        Thu, 9 May 2019 23:01:10 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 53B33A405C;
+        Thu,  9 May 2019 23:01:10 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 904E9A406B;
+        Thu,  9 May 2019 23:01:08 +0000 (GMT)
+Received: from dhcp-9-31-103-88.watson.ibm.com (unknown [9.31.103.88])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu,  9 May 2019 23:01:08 +0000 (GMT)
+Subject: Re: [PATCH v10 09/12] ima: Implement support for module-style
+ appended signatures
 From:   Mimi Zohar <zohar@linux.ibm.com>
 To:     Thiago Jung Bauermann <bauerman@linux.ibm.com>,
         linux-integrity@vger.kernel.org
@@ -57,42 +57,68 @@ Cc:     linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Jonathan Corbet <corbet@lwn.net>,
         "AKASHI, Takahiro" <takahiro.akashi@linaro.org>
-Date:   Thu, 09 May 2019 11:53:27 -0400
-In-Reply-To: <20190418035120.2354-9-bauerman@linux.ibm.com>
+Date:   Thu, 09 May 2019 19:01:08 -0400
+In-Reply-To: <20190418035120.2354-10-bauerman@linux.ibm.com>
 References: <20190418035120.2354-1-bauerman@linux.ibm.com>
-         <20190418035120.2354-9-bauerman@linux.ibm.com>
+         <20190418035120.2354-10-bauerman@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19050915-0008-0000-0000-000002E4F7B6
+x-cbid: 19050923-0008-0000-0000-000002E51248
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050915-0009-0000-0000-000022517F01
-Message-Id: <1557417207.10635.67.camel@linux.ibm.com>
+x-cbparentid: 19050923-0009-0000-0000-000022519B3D
+Message-Id: <1557442868.10635.87.camel@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-09_02:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=942 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905090091
+ mlxlogscore=983 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905090130
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2019-04-18 at 00:51 -0300, Thiago Jung Bauermann wrote:
-> Verify xattr signature in a separate function so that the logic in
-> ima_appraise_measurement() remains clear when it gains the ability to also
-> verify an appended module signature.
-> 
-> The code in the switch statement is unchanged except for having to
-> dereference the status and cause variables (since they're now pointers),
-> and fixing the style of a block comment to appease checkpatch.
-> 
-> Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Hi Thiago,
 
-Reviewed-by:  Mimi Zohar <zohar@linux.ibm.com>
+> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+> index fca7a3f23321..a7a20a8c15c1 100644
+> --- a/security/integrity/ima/ima_policy.c
+> +++ b/security/integrity/ima/ima_policy.c
+> @@ -1144,6 +1144,12 @@ void ima_delete_rules(void)
+>  	}
+>  }
+>  
+> +#define __ima_hook_stringify(str)	(#str),
+> +
+> +const char *const func_tokens[] = {
+> +	__ima_hooks(__ima_hook_stringify)
+> +};
+> +
+>  #ifdef	CONFIG_IMA_READ_POLICY
+>  enum {
+>  	mask_exec = 0, mask_write, mask_read, mask_append
+> @@ -1156,12 +1162,6 @@ static const char *const mask_tokens[] = {
+>  	"MAY_APPEND"
+>  };
+>  
+> -#define __ima_hook_stringify(str)	(#str),
+> -
+> -static const char *const func_tokens[] = {
+> -	__ima_hooks(__ima_hook_stringify)
+> -};
+> -
+>  void *ima_policy_start(struct seq_file *m, loff_t *pos)
+>  {
+>  	loff_t l = *pos;
+
+Is moving this something left over from previous versions or there is
+a need for this change?
+
+Other than this, the patch looks good.
+
+Mimi
 
