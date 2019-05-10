@@ -2,178 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A307019583
-	for <lists+keyrings@lfdr.de>; Fri, 10 May 2019 01:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 281F41A2D5
+	for <lists+keyrings@lfdr.de>; Fri, 10 May 2019 20:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726804AbfEIXBl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 May 2019 19:01:41 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:47502 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726711AbfEIXBl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 May 2019 19:01:41 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x49Mpjtb088667
-        for <keyrings@vger.kernel.org>; Thu, 9 May 2019 19:01:40 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2scuydb2m6-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Thu, 09 May 2019 19:01:40 -0400
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Fri, 10 May 2019 00:01:37 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 10 May 2019 00:01:32 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x49N1VD750659486
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 May 2019 23:01:31 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BE2FF4C044;
-        Thu,  9 May 2019 23:01:31 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E739D4C040;
-        Thu,  9 May 2019 23:01:29 +0000 (GMT)
-Received: from dhcp-9-31-103-88.watson.ibm.com (unknown [9.31.103.88])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  9 May 2019 23:01:29 +0000 (GMT)
-Subject: Re: [PATCH v10 11/12] ima: Define ima-modsig template
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        linux-integrity@vger.kernel.org
-Cc:     linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "AKASHI, Takahiro" <takahiro.akashi@linaro.org>
-Date:   Thu, 09 May 2019 19:01:29 -0400
-In-Reply-To: <20190418035120.2354-12-bauerman@linux.ibm.com>
-References: <20190418035120.2354-1-bauerman@linux.ibm.com>
-         <20190418035120.2354-12-bauerman@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+        id S1727762AbfEJSHN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 10 May 2019 14:07:13 -0400
+Received: from mga14.intel.com ([192.55.52.115]:47387 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727722AbfEJSHN (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 10 May 2019 14:07:13 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 May 2019 11:07:12 -0700
+X-ExtLoop1: 1
+Received: from ray.jf.intel.com (HELO [10.7.201.16]) ([10.7.201.16])
+  by orsmga002.jf.intel.com with ESMTP; 10 May 2019 11:07:12 -0700
+Subject: Re: [PATCH, RFC 03/62] mm/ksm: Do not merge pages with different
+ KeyIDs
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-4-kirill.shutemov@linux.intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ mQINBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABtEVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT6JAjgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lcuQINBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABiQIfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+Message-ID: <1697adad-6ae2-ea85-bab5-0144929ed2d9@intel.com>
+Date:   Fri, 10 May 2019 11:07:11 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190508144422.13171-4-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19050923-0020-0000-0000-0000033B164F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050923-0021-0000-0000-0000218DBF5D
-Message-Id: <1557442889.10635.88.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-09_02:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905090130
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2019-04-18 at 00:51 -0300, Thiago Jung Bauermann wrote:
-> Define new "d-modsig" template field which holds the digest that is
-> expected to match the one contained in the modsig, and also new "modsig"
-> template field which holds the appended file signature.
+On 5/8/19 7:43 AM, Kirill A. Shutemov wrote:
+> KeyID indicates what key to use to encrypt and decrypt page's content.
+> Depending on the implementation a cipher text may be tied to physical
+> address of the page. It means that pages with an identical plain text
+> would appear different if KSM would look at a cipher text. It effectively
+> disables KSM for encrypted pages.
 > 
-> Add a new "ima-modsig" defined template descriptor with the new fields as
-> well as the ones from the "ima-sig" descriptor.
+> In addition, some implementations may not allow to read cipher text at all.
 > 
-> Change ima_store_measurement() to accept a struct modsig * argument so that
-> it can be passed along to the templates via struct ima_event_data.
+> KSM compares plain text instead (transparently to KSM code).
 > 
-> Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-
-Thanks, Roberto.  Just some thoughts inline below.
-
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-
-> ---
-
-<snip>
-
-> +/*
-> + * Validating the appended signature included in the measurement list requires
-> + * the file hash calculated without the appended signature (i.e., the 'd-modsig'
-> + * field). Therefore, notify the user if they have the 'modsig' field but not
-> + * the 'd-modsig' field in the template.
-> + */
-> +static void check_current_template_modsig(void)
-> +{
-> +#define MSG "template with 'modsig' field also needs 'd-modsig' field\n"
-> +	struct ima_template_desc *template;
-> +	bool has_modsig, has_dmodsig;
-> +	static bool checked;
-> +	int i;
-> +
-> +	/* We only need to notify the user once. */
-> +	if (checked)
-> +		return;
-> +
-> +	has_modsig = has_dmodsig = false;
-> +	template = ima_template_desc_current();
-> +	for (i = 0; i < template->num_fields; i++) {
-> +		if (!strcmp(template->fields[i]->field_id, "modsig"))
-> +			has_modsig = true;
-> +		else if (!strcmp(template->fields[i]->field_id, "d-modsig"))
-> +			has_dmodsig = true;
-> +	}
-> +
-> +	if (has_modsig && !has_dmodsig)
-> +		pr_notice(MSG);
-> +
-> +	checked = true;
-> +#undef MSG
-> +}
-> +
-
-There was some recent discussion about supporting per IMA policy rule
-template formats.  This feature will allow just the kexec kernel image
-to require ima-modsig.  When per policy rule template formats support
-is upstreamed, this function will need to be updated.
-
-<snip>
+> But we still need to make sure that pages with identical plain text will
+> not be merged together if they are encrypted with different keys.
 > 
-> @@ -389,3 +425,25 @@ int ima_eventsig_init(struct ima_event_data *event_data,
->  	return ima_write_template_field_data(xattr_value, event_data->xattr_len,
->  					     DATA_FMT_HEX, field_data);
->  }
-> +
-> +int ima_eventmodsig_init(struct ima_event_data *event_data,
-> +			 struct ima_field_data *field_data)
-> +{
-> +	const void *data;
-> +	u32 data_len;
-> +	int rc;
-> +
-> +	if (!event_data->modsig)
-> +		return 0;
-> +
-> +	/*
-> +	 * The xattr_value for IMA_MODSIG is a runtime structure containing
-> +	 * pointers. Get its raw data instead.
-> +	 */
+> To make it work kernel only allows merging pages with the same KeyID.
+> The approach guarantees that the merged page can be read by all users.
 
-"xattr_value"?  The comment needs some clarification.
+I can't really parse this description.  Can I suggest replacement text?
 
-Mimi
+Problem: KSM compares plain text.  It might try to merge two pages that
+have the same plain text but different ciphertext and possibly different
+encryption keys.  When the kernel encrypted the page, it promised that
+it would keep it encrypted with _that_ key.  That makes it impossible to
+merge two pages encrypted with different keys.
 
-> +	rc = ima_modsig_serialize(event_data->modsig, &data, &data_len);
-> +	if (rc)
-> +		return rc;
-> +
-> +	return ima_write_template_field_data(data, data_len,
-> +					     DATA_FMT_HEX, field_data);
-> +}
-
+Solution: Never merge encrypted pages with different KeyIDs.
