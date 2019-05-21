@@ -2,88 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B122583D
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2019 21:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A41259D3
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2019 23:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbfEUT1k (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 May 2019 15:27:40 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:16187 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbfEUT1k (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 May 2019 15:27:40 -0400
-X-Greylist: delayed 535 seconds by postgrey-1.27 at vger.kernel.org; Tue, 21 May 2019 15:27:39 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1558466858;
-        s=strato-dkim-0002; d=chronox.de;
-        h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=kCFO7SFB1HIUkXfd5v11/uS2m0Wg3ahQcV3NTGljcV4=;
-        b=OYJjsniPJRzQRSZNZEPCdgFAZPm7TlVxdkx6Qv4s0PA/uuxXcJe+L8NVMMKa0JE28S
-        m45OHqwKbTcBeXzZiIqybL7eS193UWwk6GpsuDhm45oCBtWcaQqyfyCvgnRMphIVqsAS
-        nrr/rWrmq01UOhCXUk397voNZBQHaXcG/ngx6U2a+MKxkjBcnVSARvg3AH2QA1K823uD
-        YpYoSsTSBqmu6/xzVRC/3x6ZQqrMZVVGUOCM+3UmBvUvP2aknj7VmnrtwupR7Z7hzlZ0
-        4yqEWuy1dJvgl41m1hcZZzyBraq+d6PXX55FhyzkYl49PrSb+jyihRk0O1uqjpJlDJcz
-        tixg==
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPbIvSffTKU"
-X-RZG-CLASS-ID: mo00
-Received: from positron.chronox.de
-        by smtp.strato.de (RZmta 44.18 DYNA|AUTH)
-        with ESMTPSA id R0373fv4LJFTCQs
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Tue, 21 May 2019 21:15:29 +0200 (CEST)
-From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     linux-crypto@vger.kernel.org,
+        id S1727437AbfEUVSh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 May 2019 17:18:37 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:53522 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727156AbfEUVSh (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 21 May 2019 17:18:37 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id B02A33079B93;
+        Tue, 21 May 2019 21:18:36 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-170.rdu2.redhat.com [10.10.120.170])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 44D3260FE1;
+        Tue, 21 May 2019 21:18:30 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <A3BC3B07-6446-4631-862A-F661FB9D63B9@holtmann.org>
+References: <A3BC3B07-6446-4631-862A-F661FB9D63B9@holtmann.org> <20190521100034.9651-1-omosnace@redhat.com>
+To:     Marcel Holtmann <marcel@holtmann.org>
+Cc:     dhowells@redhat.com, Ondrej Mosnacek <omosnace@redhat.com>,
+        linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        keyrings@vger.kernel.org, Stephan Mueller <smueller@chronox.de>,
         Milan Broz <gmazyland@gmail.com>,
         Ondrej Kozina <okozina@redhat.com>,
         Daniel Zatovic <dzatovic@redhat.com>
 Subject: Re: [PATCH] crypto: af_alg - implement keyring support
-Date:   Tue, 21 May 2019 21:15:29 +0200
-Message-ID: <8758550.T3OrFO1o5E@positron.chronox.de>
-In-Reply-To: <20190521100034.9651-1-omosnace@redhat.com>
-References: <20190521100034.9651-1-omosnace@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <29982.1558473509.1@warthog.procyon.org.uk>
+Date:   Tue, 21 May 2019 22:18:29 +0100
+Message-ID: <29983.1558473509@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Tue, 21 May 2019 21:18:37 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Am Dienstag, 21. Mai 2019, 12:00:34 CEST schrieb Ondrej Mosnacek:
+Marcel Holtmann <marcel@holtmann.org> wrote:
 
-Hi Ondrej,
+> why use the description instead the actual key id? I wonder if a single
+> socket option and a struct providing the key type and key id might be more
+> useful.
 
-> This patch adds new socket options to AF_ALG that allow setting key from
-> kernel keyring. For simplicity, each keyring key type (logon, user,
-> trusted, encrypted) has its own socket option name and the value is just
-> the key description string that identifies the key to be used. The key
-> description doesn't need to be NULL-terminated, but bytes after the
-> first zero byte are ignored.
->=20
-> Note that this patch also adds three socket option names that are
-> already defined and used in libkcapi [1], but have never been added to
-> the kernel...
->=20
-> Tested via libkcapi with keyring patches [2] applied (user and logon key
-> types only).
->=20
-> [1] https://github.com/smuellerDD/libkcapi
-> [2] https://github.com/WOnder93/libkcapi/compare/f283458...1fb501c
->=20
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+If the key becomes invalid in some way, you can call request_key() again if
+you have the description to get a new key.  This is how afs and af_rxrpc do
+things on the client side.
 
-Thank you!
-
-Reviewed-by: Stephan M=FCller <smueller@chronox.de>
-
-If the patch goes in, I will merge the libkcapi patch set and create a new=
-=20
-release.
-
-Ciao
-Stephan
-
-
+David
