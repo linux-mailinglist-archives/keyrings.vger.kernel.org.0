@@ -2,85 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA30F24DE5
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2019 13:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B122583D
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2019 21:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726995AbfEULar (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 May 2019 07:30:47 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:2593 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726296AbfEULao (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 21 May 2019 07:30:44 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 399FB3082200;
-        Tue, 21 May 2019 11:30:39 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.43.17.30])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EC4F9176D4;
-        Tue, 21 May 2019 11:30:35 +0000 (UTC)
-Subject: Re: [PATCH] crypto: af_alg - implement keyring support
-To:     Ondrej Mosnacek <omosnace@redhat.com>,
-        Marcel Holtmann <marcel@holtmann.org>
+        id S1727032AbfEUT1k (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 May 2019 15:27:40 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:16187 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726771AbfEUT1k (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 May 2019 15:27:40 -0400
+X-Greylist: delayed 535 seconds by postgrey-1.27 at vger.kernel.org; Tue, 21 May 2019 15:27:39 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1558466858;
+        s=strato-dkim-0002; d=chronox.de;
+        h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=kCFO7SFB1HIUkXfd5v11/uS2m0Wg3ahQcV3NTGljcV4=;
+        b=OYJjsniPJRzQRSZNZEPCdgFAZPm7TlVxdkx6Qv4s0PA/uuxXcJe+L8NVMMKa0JE28S
+        m45OHqwKbTcBeXzZiIqybL7eS193UWwk6GpsuDhm45oCBtWcaQqyfyCvgnRMphIVqsAS
+        nrr/rWrmq01UOhCXUk397voNZBQHaXcG/ngx6U2a+MKxkjBcnVSARvg3AH2QA1K823uD
+        YpYoSsTSBqmu6/xzVRC/3x6ZQqrMZVVGUOCM+3UmBvUvP2aknj7VmnrtwupR7Z7hzlZ0
+        4yqEWuy1dJvgl41m1hcZZzyBraq+d6PXX55FhyzkYl49PrSb+jyihRk0O1uqjpJlDJcz
+        tixg==
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPbIvSffTKU"
+X-RZG-CLASS-ID: mo00
+Received: from positron.chronox.de
+        by smtp.strato.de (RZmta 44.18 DYNA|AUTH)
+        with ESMTPSA id R0373fv4LJFTCQs
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Tue, 21 May 2019 21:15:29 +0200 (CEST)
+From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
+To:     Ondrej Mosnacek <omosnace@redhat.com>
 Cc:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Stephan Mueller <smueller@chronox.de>,
         Milan Broz <gmazyland@gmail.com>,
+        Ondrej Kozina <okozina@redhat.com>,
         Daniel Zatovic <dzatovic@redhat.com>
+Subject: Re: [PATCH] crypto: af_alg - implement keyring support
+Date:   Tue, 21 May 2019 21:15:29 +0200
+Message-ID: <8758550.T3OrFO1o5E@positron.chronox.de>
+In-Reply-To: <20190521100034.9651-1-omosnace@redhat.com>
 References: <20190521100034.9651-1-omosnace@redhat.com>
- <A3BC3B07-6446-4631-862A-F661FB9D63B9@holtmann.org>
- <CAFqZXNtCNG2s_Rk_v332HJA5HVXsJYXDsyzfTNgSU_MJ-mMByA@mail.gmail.com>
-From:   Ondrej Kozina <okozina@redhat.com>
-Message-ID: <265b6c1b-3ea9-15f6-29d4-3e5988248db1@redhat.com>
-Date:   Tue, 21 May 2019 13:30:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAFqZXNtCNG2s_Rk_v332HJA5HVXsJYXDsyzfTNgSU_MJ-mMByA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Tue, 21 May 2019 11:30:44 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 5/21/19 1:02 PM, Ondrej Mosnacek wrote:
-> Hi Marcel,
-> 
-> On Tue, May 21, 2019 at 12:48 PM Marcel Holtmann <marcel@holtmann.org> wrote:
->> Hi Ondrej,
->>
->>> This patch adds new socket options to AF_ALG that allow setting key from
->>> kernel keyring. For simplicity, each keyring key type (logon, user,
->>> trusted, encrypted) has its own socket option name and the value is just
->>> the key description string that identifies the key to be used. The key
->>> description doesn't need to be NULL-terminated, but bytes after the
->>> first zero byte are ignored.
->>
->> why use the description instead the actual key id? I wonder if a single socket option and a struct providing the key type and key id might be more useful.
-> 
-> I was basing this on the approach taken by dm-crypt/cryptsetup, which
-> is actually the main target consumer for this feature (cryptsetup
-> needs to be able to encrypt/decrypt data using a keyring key (possibly
-> unreadable by userspace) without having to create a temporary dm-crypt
-> mapping, which requires CAP_SYSADMIN). I'm not sure why they didn't
-> just use key IDs there... @Milan/Ondrej, what was you motivation for
-> using key descriptions rather than key IDs?
-> 
-We decided to use key descriptions so that we could identify more 
-clearly devices managed by cryptsetup (thus 'cryptsetup:' prefix in our 
-descriptions put in dm-crypt table). I understood numeric ids were too 
-generic for this purpose. Also cryptsetup uses by default thread keyring 
-to upload keys in kernel. Such keys are obsolete the moment cryptsetup 
-process finishes.
+Am Dienstag, 21. Mai 2019, 12:00:34 CEST schrieb Ondrej Mosnacek:
 
-I don't think it's any problem to go with IDs for your patch. IIUC, as 
-long as process has permission to access key metadata it can obtain also 
-current key id so it's not a big problem for as to adapt when we use kcapi.
+Hi Ondrej,
 
-Regards
-O.
+> This patch adds new socket options to AF_ALG that allow setting key from
+> kernel keyring. For simplicity, each keyring key type (logon, user,
+> trusted, encrypted) has its own socket option name and the value is just
+> the key description string that identifies the key to be used. The key
+> description doesn't need to be NULL-terminated, but bytes after the
+> first zero byte are ignored.
+>=20
+> Note that this patch also adds three socket option names that are
+> already defined and used in libkcapi [1], but have never been added to
+> the kernel...
+>=20
+> Tested via libkcapi with keyring patches [2] applied (user and logon key
+> types only).
+>=20
+> [1] https://github.com/smuellerDD/libkcapi
+> [2] https://github.com/WOnder93/libkcapi/compare/f283458...1fb501c
+>=20
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+
+Thank you!
+
+Reviewed-by: Stephan M=FCller <smueller@chronox.de>
+
+If the patch goes in, I will merge the libkcapi patch set and create a new=
+=20
+release.
+
+Ciao
+Stephan
+
+
