@@ -2,148 +2,255 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDDB12CFF2
-	for <lists+keyrings@lfdr.de>; Tue, 28 May 2019 22:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70732CFF6
+	for <lists+keyrings@lfdr.de>; Tue, 28 May 2019 22:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726988AbfE1UGd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 May 2019 16:06:33 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:38346 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726668AbfE1UGd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 28 May 2019 16:06:33 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SK28JK126949
-        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 16:06:31 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2ssayqa0cs-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 16:06:31 -0400
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Tue, 28 May 2019 21:06:29 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 28 May 2019 21:06:22 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4SK6L2u48431204
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 May 2019 20:06:22 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C525D42047;
-        Tue, 28 May 2019 20:06:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AF4F942042;
-        Tue, 28 May 2019 20:06:19 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.111.38])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 28 May 2019 20:06:19 +0000 (GMT)
-Subject: Re: [PATCH v10 09/12] ima: Implement support for module-style
- appended signatures
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Cc:     linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "AKASHI, Takahiro" <takahiro.akashi@linaro.org>
-Date:   Tue, 28 May 2019 16:06:09 -0400
-In-Reply-To: <87zhn65qor.fsf@morokweng.localdomain>
-References: <20190418035120.2354-1-bauerman@linux.ibm.com>
-         <20190418035120.2354-10-bauerman@linux.ibm.com>
-         <1557442868.10635.87.camel@linux.ibm.com>
-         <87zhn65qor.fsf@morokweng.localdomain>
+        id S1727345AbfE1UGv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 May 2019 16:06:51 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41293 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727182AbfE1UGv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 May 2019 16:06:51 -0400
+Received: by mail-ot1-f66.google.com with SMTP id l25so1553227otp.8
+        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 13:06:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sAY+X/6OjvH2/kHzEFaQYM5a3NfoJCjKak4WUy8WxOg=;
+        b=mj3P8erc0d0J3qLuw81fmgBFRlYrDPpRlBWngBWwxfTjQLcEOuHasUrkeJiKgfTjg5
+         2ihuUJHu/IhG+P2YZXmBHnC9MnJXCVgKQ9BAu8qMhaUQSP4yCiMELuVtZ5X+gznhfuM4
+         v+iIvpHEHXha38/WuIY4cNU+nuFxW5oe8bpP4SRzjJ0E0+nz+L9s1upgsalq6lolvGK6
+         Lc02/3qWhL+arRMo1/y0figgjb27vsMUr7Z7RIRU6pCpcWGW1dTN31k4aZ1rN3eI0HOx
+         r+6bdabT+52797NZz8WLndOLD0Z4GFB/qVhoS465X1dHMaYCleB6Pby3H+oDG58E9Vvh
+         24Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sAY+X/6OjvH2/kHzEFaQYM5a3NfoJCjKak4WUy8WxOg=;
+        b=Pq5A62YbH7UbtQpZUDyRl0T9WfXDXpvmU0Y7c96DCKA/lqoWMD9ySstZhPS3aPS09f
+         4yL9dD7ZQ/0QDdWUv6HBvZ3/jV1V2y0oA8ZrBQKsx0E98oF3v1sP23tEykBMZp9+Dwbx
+         dtlLGJVe5ZKIg8uPH1OYmQXxAf9b4MtwJ0wNncRlG96ZvZRfjGqNnmTTEOnZ53TmOpWn
+         9y/z0g4t2v1gXg3s5ywUqylcjyk3V0K13cfqB29fiDN+a4xWFHcautF2UXYSu02c9cUm
+         99C7d/9oRpZz/43NBwkxtPJorDLMzRs2lKZBXR2rbYa3SYY6ZyIK11IohbJnJHFcY81O
+         S31g==
+X-Gm-Message-State: APjAAAVwUPaaewjYxPwkw9ItorWNAqL6OYhxVFV9Ic3DYEbFjiigF40M
+        2l6LX5gImXuAKYh6e91kiOUG7GHTQN9z2129VkT9qA==
+X-Google-Smtp-Source: APXvYqw396edgjyJozSsCzajednRbbmIaB7gUQWyUQC+jR8mr25BB7Za7gjwtsrkkqmu/81ioRnRS6do1sBdvZD+Mmo=
+X-Received: by 2002:a9d:7347:: with SMTP id l7mr46665645otk.183.1559074010231;
+ Tue, 28 May 2019 13:06:50 -0700 (PDT)
+MIME-Version: 1.0
+References: <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <155905933492.7587.6968545866041839538.stgit@warthog.procyon.org.uk>
+In-Reply-To: <155905933492.7587.6968545866041839538.stgit@warthog.procyon.org.uk>
+From:   Jann Horn <jannh@google.com>
+Date:   Tue, 28 May 2019 22:06:23 +0200
+Message-ID: <CAG48ez2rRh2_Kq_EGJs5k-ZBNffGs_Q=vkQdinorBgo58tbGpg@mail.gmail.com>
+Subject: Re: [PATCH 3/7] vfs: Add a mount-notification facility
+To:     David Howells <dhowells@redhat.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        kernel list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19052820-0020-0000-0000-00000341594A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052820-0021-0000-0000-00002194571A
-Message-Id: <1559073969.4139.38.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-28_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905280125
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2019-05-28 at 16:23 -0300, Thiago Jung Bauermann wrote:
-> Mimi Zohar <zohar@linux.ibm.com> writes:
-> 
-> > Hi Thiago,
-> >
-> >> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-> >> index fca7a3f23321..a7a20a8c15c1 100644
-> >> --- a/security/integrity/ima/ima_policy.c
-> >> +++ b/security/integrity/ima/ima_policy.c
-> >> @@ -1144,6 +1144,12 @@ void ima_delete_rules(void)
-> >>  	}
-> >>  }
-> >>
-> >> +#define __ima_hook_stringify(str)	(#str),
-> >> +
-> >> +const char *const func_tokens[] = {
-> >> +	__ima_hooks(__ima_hook_stringify)
-> >> +};
-> >> +
-> >>  #ifdef	CONFIG_IMA_READ_POLICY
-> >>  enum {
-> >>  	mask_exec = 0, mask_write, mask_read, mask_append
-> >> @@ -1156,12 +1162,6 @@ static const char *const mask_tokens[] = {
-> >>  	"MAY_APPEND"
-> >>  };
-> >>
-> >> -#define __ima_hook_stringify(str)	(#str),
-> >> -
-> >> -static const char *const func_tokens[] = {
-> >> -	__ima_hooks(__ima_hook_stringify)
-> >> -};
-> >> -
-> >>  void *ima_policy_start(struct seq_file *m, loff_t *pos)
-> >>  {
-> >>  	loff_t l = *pos;
-> >
-> > Is moving this something left over from previous versions or there is
-> > a need for this change?
-> 
-> Well, it's not a strong need, but it's still relevant in the current
-> version. I use func_tokens in ima_read_modsig() in order to be able to
-> mention the hook name in mod_check_sig()'s error message:
-> 
-> In ima_read_modsig():
-> 
-> 	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
-> 
-> And in mod_check_sig():
-> 
-> 		pr_err("%s: Module is not signed with expected PKCS#7 message\n",
-> 		       name);
-> 
-> If you think it's not worth it to expose func_tokens, I can make
-> ima_read_modsig() pass a more generic const string such as "IMA modsig"
-> for example.
+On Tue, May 28, 2019 at 6:05 PM David Howells <dhowells@redhat.com> wrote:
+> Add a mount notification facility whereby notifications about changes in
+> mount topology and configuration can be received.  Note that this only
+> covers vfsmount topology changes and not superblock events.  A separate
+> facility will be added for that.
+[...]
+> @@ -172,4 +167,18 @@ static inline void notify_mount(struct mount *changed,
+>                                 u32 info_flags)
+>  {
+>         atomic_inc(&changed->mnt_notify_counter);
+> +
+> +#ifdef CONFIG_MOUNT_NOTIFICATIONS
+> +       {
+> +               struct mount_notification n = {
+> +                       .watch.type     = WATCH_TYPE_MOUNT_NOTIFY,
+> +                       .watch.subtype  = subtype,
+> +                       .watch.info     = info_flags | sizeof(n),
+> +                       .triggered_on   = changed->mnt_id,
+> +                       .changed_mount  = aux ? aux->mnt_id : 0,
+> +               };
+> +
+> +               post_mount_notification(changed, &n);
+> +       }
+> +#endif
+>  }
+[...]
+> +void post_mount_notification(struct mount *changed,
+> +                            struct mount_notification *notify)
+> +{
+> +       const struct cred *cred = current_cred();
 
-This is fine.  I somehow missed moving func_tokens[] outside of the
-ifdef was in order to make it independent of "CONFIG_IMA_READ_POLICY".
+This current_cred() looks bogus to me. Can't mount topology changes
+come from all sorts of places? For example, umount_mnt() from
+umount_tree() from dissolve_on_fput() from __fput(), which could
+happen pretty much anywhere depending on where the last reference gets
+dropped?
 
-thanks,
+> +       struct path cursor;
+> +       struct mount *mnt;
+> +       unsigned seq;
+> +
+> +       seq = 0;
+> +       rcu_read_lock();
+> +restart:
+> +       cursor.mnt = &changed->mnt;
+> +       cursor.dentry = changed->mnt.mnt_root;
+> +       mnt = real_mount(cursor.mnt);
+> +       notify->watch.info &= ~WATCH_INFO_IN_SUBTREE;
+> +
+> +       read_seqbegin_or_lock(&rename_lock, &seq);
+> +       for (;;) {
+> +               if (mnt->mnt_watchers &&
+> +                   !hlist_empty(&mnt->mnt_watchers->watchers)) {
+> +                       if (cursor.dentry->d_flags & DCACHE_MOUNT_WATCH)
+> +                               post_watch_notification(mnt->mnt_watchers,
+> +                                                       &notify->watch, cred,
+> +                                                       (unsigned long)cursor.dentry);
+> +               } else {
+> +                       cursor.dentry = mnt->mnt.mnt_root;
+> +               }
+> +               notify->watch.info |= WATCH_INFO_IN_SUBTREE;
+> +
+> +               if (cursor.dentry == cursor.mnt->mnt_root ||
+> +                   IS_ROOT(cursor.dentry)) {
+> +                       struct mount *parent = READ_ONCE(mnt->mnt_parent);
+> +
+> +                       /* Escaped? */
+> +                       if (cursor.dentry != cursor.mnt->mnt_root)
+> +                               break;
+> +
+> +                       /* Global root? */
+> +                       if (mnt != parent) {
+> +                               cursor.dentry = READ_ONCE(mnt->mnt_mountpoint);
+> +                               mnt = parent;
+> +                               cursor.mnt = &mnt->mnt;
+> +                               continue;
+> +                       }
+> +                       break;
 
-Mimi
+(nit: this would look clearer if you inverted the condition and wrote
+it as "if (mnt == parent) break;", then you also wouldn't need that
+"continue" or the braces)
 
+> +               }
+> +
+> +               cursor.dentry = cursor.dentry->d_parent;
+> +       }
+> +
+> +       if (need_seqretry(&rename_lock, seq)) {
+> +               seq = 1;
+> +               goto restart;
+> +       }
+> +
+> +       done_seqretry(&rename_lock, seq);
+> +       rcu_read_unlock();
+> +}
+[...]
+> +SYSCALL_DEFINE5(mount_notify,
+> +               int, dfd,
+> +               const char __user *, filename,
+> +               unsigned int, at_flags,
+> +               int, watch_fd,
+> +               int, watch_id)
+> +{
+> +       struct watch_queue *wqueue;
+> +       struct watch_list *wlist = NULL;
+> +       struct watch *watch;
+> +       struct mount *m;
+> +       struct path path;
+> +       int ret;
+> +
+> +       if (watch_id < -1 || watch_id > 0xff)
+> +               return -EINVAL;
+> +
+> +       ret = user_path_at(dfd, filename, at_flags, &path);
+
+The third argument of user_path_at() contains kernel-private lookup
+flags, I'm pretty sure userspace isn't supposed to be able to control
+these directly.
+
+> +       if (ret)
+> +               return ret;
+> +
+> +       wqueue = get_watch_queue(watch_fd);
+> +       if (IS_ERR(wqueue))
+> +               goto err_path;
+> +
+> +       m = real_mount(path.mnt);
+> +
+> +       if (watch_id >= 0) {
+> +               if (!m->mnt_watchers) {
+> +                       wlist = kzalloc(sizeof(*wlist), GFP_KERNEL);
+> +                       if (!wlist)
+> +                               goto err_wqueue;
+> +                       INIT_HLIST_HEAD(&wlist->watchers);
+> +                       spin_lock_init(&wlist->lock);
+> +                       wlist->release_watch = release_mount_watch;
+> +               }
+> +
+> +               watch = kzalloc(sizeof(*watch), GFP_KERNEL);
+> +               if (!watch)
+> +                       goto err_wlist;
+> +
+> +               init_watch(watch, wqueue);
+> +               watch->id               = (unsigned long)path.dentry;
+> +               watch->private          = path.mnt;
+> +               watch->info_id          = (u32)watch_id << 24;
+> +
+> +               down_write(&m->mnt.mnt_sb->s_umount);
+> +               if (!m->mnt_watchers) {
+> +                       m->mnt_watchers = wlist;
+> +                       wlist = NULL;
+> +               }
+> +
+> +               ret = add_watch_to_object(watch, m->mnt_watchers);
+> +               if (ret == 0) {
+> +                       spin_lock(&path.dentry->d_lock);
+> +                       path.dentry->d_flags |= DCACHE_MOUNT_WATCH;
+> +                       spin_unlock(&path.dentry->d_lock);
+> +                       path_get(&path);
+
+So... the watches on a mountpoint create references back to the
+mountpoint? Is your plan that umount_tree() breaks the loop by getting
+rid of the watches?
+
+If so: Is there anything that prevents installing new watches after
+umount_tree()? Because I don't see anything.
+
+It might make sense to redesign this stuff so that watches don't hold
+references on the object being watched.
+
+> +               }
+> +               up_write(&m->mnt.mnt_sb->s_umount);
+> +               if (ret < 0)
+> +                       kfree(watch);
+> +       } else if (m->mnt_watchers) {
+> +               down_write(&m->mnt.mnt_sb->s_umount);
+> +               ret = remove_watch_from_object(m->mnt_watchers, wqueue,
+> +                                              (unsigned long)path.dentry,
+> +                                              false);
+> +               up_write(&m->mnt.mnt_sb->s_umount);
+> +       } else {
+> +               ret = -EBADSLT;
+> +       }
+> +
+> +err_wlist:
+> +       kfree(wlist);
+> +err_wqueue:
+> +       put_watch_queue(wqueue);
+> +err_path:
+> +       path_put(&path);
+> +       return ret;
+> +}
