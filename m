@@ -2,118 +2,528 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE502CF45
-	for <lists+keyrings@lfdr.de>; Tue, 28 May 2019 21:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D82832CF4E
+	for <lists+keyrings@lfdr.de>; Tue, 28 May 2019 21:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727757AbfE1TOt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 May 2019 15:14:49 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:58444 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727753AbfE1TOt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 28 May 2019 15:14:49 -0400
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SJDsdR155069
-        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 15:14:46 -0400
-Received: from e36.co.us.ibm.com (e36.co.us.ibm.com [32.97.110.154])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2ss92emr1b-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 15:14:46 -0400
-Received: from localhost
-        by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <bauerman@linux.ibm.com>;
-        Tue, 28 May 2019 20:14:45 +0100
-Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
-        by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 28 May 2019 20:14:40 +0100
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4SJEdot23396840
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 May 2019 19:14:39 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EDD90BE056;
-        Tue, 28 May 2019 19:14:38 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C0680BE04F;
-        Tue, 28 May 2019 19:14:34 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.218.160])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
-        Tue, 28 May 2019 19:14:34 +0000 (GMT)
-References: <20190418035120.2354-1-bauerman@linux.ibm.com> <20190418035120.2354-13-bauerman@linux.ibm.com> <1559052560.4090.14.camel@linux.ibm.com>
-User-agent: mu4e 1.0; emacs 26.2
-From:   Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "AKASHI\, Takahiro" <takahiro.akashi@linaro.org>
-Subject: Re: [PATCH v10 12/12] ima: Store the measurement again when appraising a modsig
-In-reply-to: <1559052560.4090.14.camel@linux.ibm.com>
-Date:   Tue, 28 May 2019 16:14:30 -0300
+        id S1727769AbfE1TPT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 May 2019 15:15:19 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:33754 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726894AbfE1TPT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 May 2019 15:15:19 -0400
+Received: by mail-oi1-f196.google.com with SMTP id q186so10503oia.0
+        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 12:15:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cdE1JOyTYhysukiuCnGUGYuuaD5ETKfTBYPUcMycJEM=;
+        b=RsZvKg2Bk/aNdZqNrNoMb1SH0F+eGIIjX61s7QIrzq8sujmgLx305XGW1Uc30bnVbV
+         URwNVqDVFfw4O60nWxWylhalQkIQYaCcXlH9Ht6/sNkKG8dwjW7BR5q3aarbKPEBf9T/
+         2Glj8K+Fut8RAWEbVyP5Kh1JveV4PXYgZH5G/F0ZZNEamkQytWoicg+Ez0/tfiKpBBu0
+         w6U5VfIjFIjOEho4K/uEktiYgYqwB8eA+XP40xh5wIgo9/MUBxRp9NQ4CZkIZDNTS+jU
+         yCb56lny234SSQh388nJoyuNAMeO/EpiXLJoz4vV3A4bLW11J2ZoATycSh6gDa2a2oHa
+         Ljlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cdE1JOyTYhysukiuCnGUGYuuaD5ETKfTBYPUcMycJEM=;
+        b=Q4HRZq3vi4DxilJ6Ea2BKd1cc4fyNPyAQMo0QHgOxIQb5NInPnVP4zqt9Ug/t61pfW
+         GgOrKpaRuTjpOAc3OyOPXJ6Lv5gGkSGKgx+wFF4t+mH9kC8uGeHPaI/X+k5ZsfSZjQqE
+         Q3oam8p8VM44FnMlO/W3T22+u5em15Za/pAW/KWk8REMHSH4rB70myjOv6oLraEV1dWL
+         qbxIZIfqUtYOVwMo3g6j6q5aphaOjUfM0BvmUGLFVuACfuCM1tVfyiu1pmj6UejJEx0Q
+         Yn+HnG3Tw3aLTTcDuqjDdf7PJL83hbr1qsKCC2y9y4MmVE1s8yImb6s/fRRgJXAty5c0
+         7Y3g==
+X-Gm-Message-State: APjAAAWnd5rCMQOm8KYXTDa++m3x4J3VwuDsutRotgCBudAfiYNP8yHt
+        lpaqMuTQ5WAo8Er/OQsJ9leS44e1XvGSovQKvHtkQg==
+X-Google-Smtp-Source: APXvYqwnQQq7IwEatqn8HvjLe9SnaXObPKJJAqI6T69lY2rEByHcuA8nGa7Pp75ILwuyWTZvAujAFBpbGEvbnIBS1EA=
+X-Received: by 2002:aca:5943:: with SMTP id n64mr3803813oib.175.1559070918274;
+ Tue, 28 May 2019 12:15:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19052819-0020-0000-0000-00000EF149D0
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011176; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01209917; UDB=6.00635633; IPR=6.00990946;
- MB=3.00027089; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-28 19:14:44
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052819-0021-0000-0000-000066010AC1
-Message-Id: <871s0i75nt.fsf@morokweng.localdomain>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-28_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=895 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905280120
+References: <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
+In-Reply-To: <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
+From:   Jann Horn <jannh@google.com>
+Date:   Tue, 28 May 2019 21:14:51 +0200
+Message-ID: <CAG48ez3L5KzKyKMxUTaaB=r1E1ZXh=m6e9+CwYcXfRnUSjDvWA@mail.gmail.com>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able ring buffer
+To:     David Howells <dhowells@redhat.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        kernel list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, May 28, 2019 at 6:03 PM David Howells <dhowells@redhat.com> wrote:
+> Implement a misc device that implements a general notification queue as a
+> ring buffer that can be mmap()'d from userspace.
+[...]
+> +receive notifications from the kernel.  This is can be used in conjunction
 
-Mimi Zohar <zohar@linux.ibm.com> writes:
+typo: s/is can/can/
 
-> Hi Thiago,
->
-> On Thu, 2019-04-18 at 00:51 -0300, Thiago Jung Bauermann wrote:
->> If the IMA template contains the "modsig" or "d-modsig" field, then the
->> modsig should be added to the measurement list when the file is appraised.
->>
->> And that is what normally happens, but if a measurement rule caused a file
->> containing a modsig to be measured before a different rule causes it to be
->> appraised, the resulting measurement entry will not contain the modsig
->> because it is only fetched during appraisal. When the appraisal rule
->> triggers, it won't store a new measurement containing the modsig because
->> the file was already measured.
->>
->> We need to detect that situation and store an additional measurement with
->> the modsig. This is done by adding an IMA_MEASURE action flag if we read a
->> modsig and the IMA template contains a modsig field.
->
-> With the new per policy rule "template" support being added, this
-> patch needs to be modified so that the per policy "template" format is
-> checked. ima_template_has_modsig() should be called with the
-> template_desc being used.
+[...]
+> +Overview
+> +========
+> +
+> +This facility appears as a misc device file that is opened and then mapped and
+> +polled.  Each time it is opened, it creates a new buffer specific to the
+> +returned file descriptor.  Then, when the opening process sets watches, it
+> +indicates that particular buffer it wants notifications from that watch to be
+> +written into. Note that there are no read() and write() methods (except for
 
-Right. Thanks for point out what needs to be done. After rebasing on top
-of Matthew Garret's "IMA: Allow profiles to define the desired IMA
-template" patch I changed ima_template_has_modsig() to check the
-template_desc obtained from process_measurement().
+s/that particular buffer/the particular buffer/
 
---
-Thiago Jung Bauermann
-IBM Linux Technology Center
+> +debugging).  The user is expected to access the ring directly and to use poll
+> +to wait for new data.
+[...]
+> +/**
+> + * __post_watch_notification - Post an event notification
+> + * @wlist: The watch list to post the event to.
+> + * @n: The notification record to post.
+> + * @cred: The creds of the process that triggered the notification.
+> + * @id: The ID to match on the watch.
+> + *
+> + * Post a notification of an event into a set of watch queues and let the users
+> + * know.
+> + *
+> + * If @n is NULL then WATCH_INFO_LENGTH will be set on the next event posted.
+> + *
+> + * The size of the notification should be set in n->info & WATCH_INFO_LENGTH and
+> + * should be in units of sizeof(*n).
+> + */
+> +void __post_watch_notification(struct watch_list *wlist,
+> +                              struct watch_notification *n,
+> +                              const struct cred *cred,
+> +                              u64 id)
+> +{
+> +       const struct watch_filter *wf;
+> +       struct watch_queue *wqueue;
+> +       struct watch *watch;
+> +
+> +       rcu_read_lock();
+> +
+> +       hlist_for_each_entry_rcu(watch, &wlist->watchers, list_node) {
+> +               if (watch->id != id)
+> +                       continue;
+> +               n->info &= ~(WATCH_INFO_ID | WATCH_INFO_OVERRUN);
+> +               n->info |= watch->info_id;
+> +
+> +               wqueue = rcu_dereference(watch->queue);
+> +               wf = rcu_dereference(wqueue->filter);
+> +               if (wf && !filter_watch_notification(wf, n))
+> +                       continue;
+> +
+> +               post_one_notification(wqueue, n, cred);
+> +       }
+> +
+> +       rcu_read_unlock();
+> +}
+> +EXPORT_SYMBOL(__post_watch_notification);
+[...]
+> +static vm_fault_t watch_queue_fault(struct vm_fault *vmf)
+> +{
+> +       struct watch_queue *wqueue = vmf->vma->vm_file->private_data;
+> +       struct page *page;
+> +
+> +       page = wqueue->pages[vmf->pgoff];
 
+I don't see you setting any special properties on the VMA that would
+prevent userspace from extending its size via mremap() - no
+VM_DONTEXPAND or VM_PFNMAP. So I think you might get an out-of-bounds
+access here?
+
+> +       get_page(page);
+> +       if (!lock_page_or_retry(page, vmf->vma->vm_mm, vmf->flags)) {
+> +               put_page(page);
+> +               return VM_FAULT_RETRY;
+> +       }
+> +       vmf->page = page;
+> +       return VM_FAULT_LOCKED;
+> +}
+> +
+> +static void watch_queue_map_pages(struct vm_fault *vmf,
+> +                                 pgoff_t start_pgoff, pgoff_t end_pgoff)
+> +{
+> +       struct watch_queue *wqueue = vmf->vma->vm_file->private_data;
+> +       struct page *page;
+> +
+> +       rcu_read_lock();
+> +
+> +       do {
+> +               page = wqueue->pages[start_pgoff];
+
+Same as above.
+
+> +               if (trylock_page(page)) {
+> +                       vm_fault_t ret;
+> +                       get_page(page);
+> +                       ret = alloc_set_pte(vmf, NULL, page);
+> +                       if (ret != 0)
+> +                               put_page(page);
+> +
+> +                       unlock_page(page);
+> +               }
+> +       } while (++start_pgoff < end_pgoff);
+> +
+> +       rcu_read_unlock();
+> +}
+[...]
+> +static int watch_queue_mmap(struct file *file, struct vm_area_struct *vma)
+> +{
+> +       struct watch_queue *wqueue = file->private_data;
+> +
+> +       if (vma->vm_pgoff != 0 ||
+> +           vma->vm_end - vma->vm_start > wqueue->nr_pages * PAGE_SIZE ||
+> +           !(pgprot_val(vma->vm_page_prot) & pgprot_val(PAGE_SHARED)))
+> +               return -EINVAL;
+
+This thing should probably have locking against concurrent
+watch_queue_set_size()?
+
+> +       vma->vm_ops = &watch_queue_vm_ops;
+> +
+> +       vma_interval_tree_insert(vma, &wqueue->mapping.i_mmap);
+> +       return 0;
+> +}
+> +
+> +/*
+> + * Allocate the required number of pages.
+> + */
+> +static long watch_queue_set_size(struct watch_queue *wqueue, unsigned long nr_pages)
+> +{
+> +       struct watch_queue_buffer *buf;
+> +       u32 len;
+> +       int i;
+> +
+> +       if (nr_pages == 0 ||
+> +           nr_pages > 16 || /* TODO: choose a better hard limit */
+> +           !is_power_of_2(nr_pages))
+> +               return -EINVAL;
+> +
+> +       wqueue->pages = kcalloc(nr_pages, sizeof(struct page *), GFP_KERNEL);
+> +       if (!wqueue->pages)
+> +               goto err;
+> +
+> +       for (i = 0; i < nr_pages; i++) {
+> +               wqueue->pages[i] = alloc_page(GFP_KERNEL | __GFP_ZERO);
+> +               if (!wqueue->pages[i])
+> +                       goto err_some_pages;
+> +               wqueue->pages[i]->mapping = &wqueue->mapping;
+> +               SetPageUptodate(wqueue->pages[i]);
+> +       }
+> +
+> +       buf = vmap(wqueue->pages, nr_pages, VM_MAP, PAGE_SHARED);
+> +       if (!buf)
+> +               goto err_some_pages;
+> +
+> +       wqueue->buffer = buf;
+> +       wqueue->nr_pages = nr_pages;
+> +       wqueue->size = ((nr_pages * PAGE_SIZE) / sizeof(struct watch_notification));
+> +
+> +       /* The first four slots in the buffer contain metadata about the ring,
+> +        * including the head and tail indices and mask.
+> +        */
+> +       len = sizeof(buf->meta) / sizeof(buf->slots[0]);
+> +       buf->meta.watch.info    = len << WATCH_LENGTH_SHIFT;
+> +       buf->meta.watch.type    = WATCH_TYPE_META;
+> +       buf->meta.watch.subtype = WATCH_META_SKIP_NOTIFICATION;
+> +       buf->meta.tail          = len;
+> +       buf->meta.mask          = wqueue->size - 1;
+> +       smp_store_release(&buf->meta.head, len);
+
+Why is this an smp_store_release()? The entire buffer should not be visible to
+userspace before this setup is complete, right?
+
+> +       return 0;
+> +
+> +err_some_pages:
+> +       for (i--; i >= 0; i--) {
+> +               ClearPageUptodate(wqueue->pages[i]);
+> +               wqueue->pages[i]->mapping = NULL;
+> +               put_page(wqueue->pages[i]);
+> +       }
+> +
+> +       kfree(wqueue->pages);
+> +       wqueue->pages = NULL;
+> +err:
+> +       return -ENOMEM;
+> +}
+[...]
+> +
+> +/*
+> + * Set parameters.
+> + */
+> +static long watch_queue_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+> +{
+> +       struct watch_queue *wqueue = file->private_data;
+> +       struct inode *inode = file_inode(file);
+> +       long ret;
+> +
+> +       switch (cmd) {
+> +       case IOC_WATCH_QUEUE_SET_SIZE:
+> +               if (wqueue->buffer)
+> +                       return -EBUSY;
+
+The preceding check occurs without any locks held and therefore has no
+reliable effect. It should probably be moved below the
+inode_lock(...).
+
+> +               inode_lock(inode);
+> +               ret = watch_queue_set_size(wqueue, arg);
+> +               inode_unlock(inode);
+> +               return ret;
+> +
+> +       case IOC_WATCH_QUEUE_SET_FILTER:
+> +               inode_lock(inode);
+> +               ret = watch_queue_set_filter(
+> +                       inode, wqueue,
+> +                       (struct watch_notification_filter __user *)arg);
+> +               inode_unlock(inode);
+> +               return ret;
+> +
+> +       default:
+> +               return -EOPNOTSUPP;
+> +       }
+> +}
+[...]
+> +static void free_watch(struct rcu_head *rcu)
+> +{
+> +       struct watch *watch = container_of(rcu, struct watch, rcu);
+> +
+> +       put_watch_queue(rcu_access_pointer(watch->queue));
+
+This should be rcu_dereference_protected(..., 1).
+
+> +/**
+> + * remove_watch_from_object - Remove a watch or all watches from an object.
+> + * @wlist: The watch list to remove from
+> + * @wq: The watch queue of interest (ignored if @all is true)
+> + * @id: The ID of the watch to remove (ignored if @all is true)
+> + * @all: True to remove all objects
+> + *
+> + * Remove a specific watch or all watches from an object.  A notification is
+> + * sent to the watcher to tell them that this happened.
+> + */
+> +int remove_watch_from_object(struct watch_list *wlist, struct watch_queue *wq,
+> +                            u64 id, bool all)
+> +{
+> +       struct watch_notification n;
+> +       struct watch_queue *wqueue;
+> +       struct watch *watch;
+> +       int ret = -EBADSLT;
+> +
+> +       rcu_read_lock();
+> +
+> +again:
+> +       spin_lock(&wlist->lock);
+> +       hlist_for_each_entry(watch, &wlist->watchers, list_node) {
+> +               if (all ||
+> +                   (watch->id == id && rcu_access_pointer(watch->queue) == wq))
+> +                       goto found;
+> +       }
+> +       spin_unlock(&wlist->lock);
+> +       goto out;
+> +
+> +found:
+> +       ret = 0;
+> +       hlist_del_init_rcu(&watch->list_node);
+> +       rcu_assign_pointer(watch->watch_list, NULL);
+> +       spin_unlock(&wlist->lock);
+> +
+> +       n.type = WATCH_TYPE_META;
+> +       n.subtype = WATCH_META_REMOVAL_NOTIFICATION;
+> +       n.info = watch->info_id | sizeof(n);
+> +
+> +       wqueue = rcu_dereference(watch->queue);
+> +       post_one_notification(wqueue, &n, wq ? wq->cred : NULL);
+> +
+> +       /* We don't need the watch list lock for the next bit as RCU is
+> +        * protecting everything from being deallocated.
+
+Does "everything" mean "the wqueue" or more than that?
+
+> +        */
+> +       if (wqueue) {
+> +               spin_lock_bh(&wqueue->lock);
+> +
+> +               if (!hlist_unhashed(&watch->queue_node)) {
+> +                       hlist_del_init_rcu(&watch->queue_node);
+> +                       put_watch(watch);
+> +               }
+> +
+> +               spin_unlock_bh(&wqueue->lock);
+> +       }
+> +
+> +       if (wlist->release_watch) {
+> +               rcu_read_unlock();
+> +               wlist->release_watch(wlist, watch);
+> +               rcu_read_lock();
+> +       }
+> +       put_watch(watch);
+> +
+> +       if (all && !hlist_empty(&wlist->watchers))
+> +               goto again;
+> +out:
+> +       rcu_read_unlock();
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL(remove_watch_from_object);
+> +
+> +/*
+> + * Remove all the watches that are contributory to a queue.  This will
+> + * potentially race with removal of the watches by the destruction of the
+> + * objects being watched or the distribution of notifications.
+> + */
+> +static void watch_queue_clear(struct watch_queue *wqueue)
+> +{
+> +       struct watch_list *wlist;
+> +       struct watch *watch;
+> +       bool release;
+> +
+> +       rcu_read_lock();
+> +       spin_lock_bh(&wqueue->lock);
+> +
+> +       /* Prevent new additions and prevent notifications from happening */
+> +       wqueue->defunct = true;
+> +
+> +       while (!hlist_empty(&wqueue->watches)) {
+> +               watch = hlist_entry(wqueue->watches.first, struct watch, queue_node);
+> +               hlist_del_init_rcu(&watch->queue_node);
+> +               spin_unlock_bh(&wqueue->lock);
+> +
+> +               /* We can't do the next bit under the queue lock as we need to
+> +                * get the list lock - which would cause a deadlock if someone
+> +                * was removing from the opposite direction at the same time or
+> +                * posting a notification.
+> +                */
+> +               wlist = rcu_dereference(watch->watch_list);
+> +               if (wlist) {
+> +                       spin_lock(&wlist->lock);
+> +
+> +                       release = !hlist_unhashed(&watch->list_node);
+> +                       if (release) {
+> +                               hlist_del_init_rcu(&watch->list_node);
+> +                               rcu_assign_pointer(watch->watch_list, NULL);
+> +                       }
+> +
+> +                       spin_unlock(&wlist->lock);
+> +
+> +                       if (release) {
+> +                               if (wlist->release_watch) {
+> +                                       rcu_read_unlock();
+> +                                       /* This might need to call dput(), so
+> +                                        * we have to drop all the locks.
+> +                                        */
+> +                                       wlist->release_watch(wlist, watch);
+
+How are you holding a reference to `wlist` here? You got the reference through
+rcu_dereference(), you've dropped the RCU read lock, and I don't see anything
+that stabilizes the reference.
+
+> +                                       rcu_read_lock();
+> +                               }
+> +                               put_watch(watch);
+> +                       }
+> +               }
+> +
+> +               put_watch(watch);
+> +               spin_lock_bh(&wqueue->lock);
+> +       }
+> +
+> +       spin_unlock_bh(&wqueue->lock);
+> +       rcu_read_unlock();
+> +}
+> +
+> +/*
+> + * Release the file.
+> + */
+> +static int watch_queue_release(struct inode *inode, struct file *file)
+> +{
+> +       struct watch_filter *wfilter;
+> +       struct watch_queue *wqueue = file->private_data;
+> +       int i, pgref;
+> +
+> +       watch_queue_clear(wqueue);
+> +
+> +       if (wqueue->pages && wqueue->pages[0])
+> +               WARN_ON(page_ref_count(wqueue->pages[0]) != 1);
+
+Is there a reason why there couldn't still be references to the pages
+from get_user_pages()/get_user_pages_fast()?
+
+> +       if (wqueue->buffer)
+> +               vfree(wqueue->buffer);
+> +       for (i = 0; i < wqueue->nr_pages; i++) {
+> +               ClearPageUptodate(wqueue->pages[i]);
+> +               wqueue->pages[i]->mapping = NULL;
+> +               pgref = page_ref_count(wqueue->pages[i]);
+> +               WARN(pgref != 1,
+> +                    "FREE PAGE[%d] refcount %d\n", i, page_ref_count(wqueue->pages[i]));
+> +               __free_page(wqueue->pages[i]);
+> +       }
+> +
+> +       wfilter = rcu_access_pointer(wqueue->filter);
+
+Again, rcu_dereference_protected(..., 1).
+
+> +       if (wfilter)
+> +               kfree_rcu(wfilter, rcu);
+> +       kfree(wqueue->pages);
+> +       put_cred(wqueue->cred);
+> +       put_watch_queue(wqueue);
+> +       return 0;
+> +}
+> +
+> +#ifdef DEBUG_WITH_WRITE
+> +static ssize_t watch_queue_write(struct file *file,
+> +                                const char __user *_buf, size_t len, loff_t *pos)
+> +{
+> +       struct watch_notification *n;
+> +       struct watch_queue *wqueue = file->private_data;
+> +       ssize_t ret;
+> +
+> +       if (!wqueue->buffer)
+> +               return -ENOBUFS;
+> +
+> +       if (len & ~WATCH_INFO_LENGTH || len == 0 || !_buf)
+> +               return -EINVAL;
+> +
+> +       n = memdup_user(_buf, len);
+> +       if (IS_ERR(n))
+> +               return PTR_ERR(n);
+> +
+> +       ret = -EINVAL;
+> +       if ((n->info & WATCH_INFO_LENGTH) != len)
+> +               goto error;
+> +       n->info &= (WATCH_INFO_LENGTH | WATCH_INFO_TYPE_FLAGS | WATCH_INFO_ID);
+
+Should the non-atomic modification of n->info (and perhaps also the
+following uses of ->debug) be protected by some lock?
+
+> +       if (post_one_notification(wqueue, n, file->f_cred))
+> +               wqueue->debug = 0;
+> +       else
+> +               wqueue->debug++;
+> +       ret = len;
+> +       if (wqueue->debug > 20)
+> +               ret = -EIO;
+> +
+> +error:
+> +       kfree(n);
+> +       return ret;
+> +}
+> +#endif
+[...]
+> +#define IOC_WATCH_QUEUE_SET_SIZE       _IO('s', 0x01)  /* Set the size in pages */
+> +#define IOC_WATCH_QUEUE_SET_FILTER     _IO('s', 0x02)  /* Set the filter */
+
+Should these ioctl numbers be registered in
+Documentation/ioctl/ioctl-number.txt?
