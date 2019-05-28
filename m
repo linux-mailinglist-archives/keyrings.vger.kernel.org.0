@@ -2,47 +2,47 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C9A2CF72
-	for <lists+keyrings@lfdr.de>; Tue, 28 May 2019 21:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDDB12CFF2
+	for <lists+keyrings@lfdr.de>; Tue, 28 May 2019 22:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbfE1T1f (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 May 2019 15:27:35 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:39672 "EHLO
+        id S1726988AbfE1UGd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 May 2019 16:06:33 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:38346 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727255AbfE1T1f (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 28 May 2019 15:27:35 -0400
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SJOFQw029414
-        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 15:27:34 -0400
-Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2ssate0s2q-1
+        by vger.kernel.org with ESMTP id S1726668AbfE1UGd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 May 2019 16:06:33 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4SK28JK126949
+        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 16:06:31 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ssayqa0cs-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 15:27:34 -0400
+        for <keyrings@vger.kernel.org>; Tue, 28 May 2019 16:06:31 -0400
 Received: from localhost
-        by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <bauerman@linux.ibm.com>;
-        Tue, 28 May 2019 20:27:33 +0100
-Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
-        by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Tue, 28 May 2019 21:06:29 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 28 May 2019 20:27:28 +0100
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4SJRRNP22282730
+        Tue, 28 May 2019 21:06:22 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4SK6L2u48431204
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 May 2019 19:27:27 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0C0A6BE053;
-        Tue, 28 May 2019 19:27:27 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D76FDBE058;
-        Tue, 28 May 2019 19:27:22 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.218.160])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
-        Tue, 28 May 2019 19:27:22 +0000 (GMT)
-References: <20190418035120.2354-1-bauerman@linux.ibm.com> <20190418035120.2354-10-bauerman@linux.ibm.com> <1557835765.4139.9.camel@linux.ibm.com>
-User-agent: mu4e 1.0; emacs 26.2
-From:   Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>
+        Tue, 28 May 2019 20:06:22 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C525D42047;
+        Tue, 28 May 2019 20:06:21 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AF4F942042;
+        Tue, 28 May 2019 20:06:19 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.111.38])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 28 May 2019 20:06:19 +0000 (GMT)
+Subject: Re: [PATCH v10 09/12] ima: Implement support for module-style
+ appended signatures
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Cc:     linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -56,81 +56,94 @@ Cc:     linux-integrity@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
         Jonathan Corbet <corbet@lwn.net>,
-        "AKASHI\, Takahiro" <takahiro.akashi@linaro.org>
-Subject: Re: [PATCH v10 09/12] ima: Implement support for module-style appended signatures
-In-reply-to: <1557835765.4139.9.camel@linux.ibm.com>
-Date:   Tue, 28 May 2019 16:27:17 -0300
-MIME-Version: 1.0
-Content-Type: text/plain
+        "AKASHI, Takahiro" <takahiro.akashi@linaro.org>
+Date:   Tue, 28 May 2019 16:06:09 -0400
+In-Reply-To: <87zhn65qor.fsf@morokweng.localdomain>
+References: <20190418035120.2354-1-bauerman@linux.ibm.com>
+         <20190418035120.2354-10-bauerman@linux.ibm.com>
+         <1557442868.10635.87.camel@linux.ibm.com>
+         <87zhn65qor.fsf@morokweng.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19052819-0004-0000-0000-000015154B13
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011176; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01209921; UDB=6.00635635; IPR=6.00990951;
- MB=3.00027089; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-28 19:27:32
+x-cbid: 19052820-0020-0000-0000-00000341594A
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052819-0005-0000-0000-00008BD76A03
-Message-Id: <87y32q5qi2.fsf@morokweng.localdomain>
+x-cbparentid: 19052820-0021-0000-0000-00002194571A
+Message-Id: <1559073969.4139.38.camel@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-28_09:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905280121
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905280125
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, 2019-05-28 at 16:23 -0300, Thiago Jung Bauermann wrote:
+> Mimi Zohar <zohar@linux.ibm.com> writes:
+> 
+> > Hi Thiago,
+> >
+> >> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+> >> index fca7a3f23321..a7a20a8c15c1 100644
+> >> --- a/security/integrity/ima/ima_policy.c
+> >> +++ b/security/integrity/ima/ima_policy.c
+> >> @@ -1144,6 +1144,12 @@ void ima_delete_rules(void)
+> >>  	}
+> >>  }
+> >>
+> >> +#define __ima_hook_stringify(str)	(#str),
+> >> +
+> >> +const char *const func_tokens[] = {
+> >> +	__ima_hooks(__ima_hook_stringify)
+> >> +};
+> >> +
+> >>  #ifdef	CONFIG_IMA_READ_POLICY
+> >>  enum {
+> >>  	mask_exec = 0, mask_write, mask_read, mask_append
+> >> @@ -1156,12 +1162,6 @@ static const char *const mask_tokens[] = {
+> >>  	"MAY_APPEND"
+> >>  };
+> >>
+> >> -#define __ima_hook_stringify(str)	(#str),
+> >> -
+> >> -static const char *const func_tokens[] = {
+> >> -	__ima_hooks(__ima_hook_stringify)
+> >> -};
+> >> -
+> >>  void *ima_policy_start(struct seq_file *m, loff_t *pos)
+> >>  {
+> >>  	loff_t l = *pos;
+> >
+> > Is moving this something left over from previous versions or there is
+> > a need for this change?
+> 
+> Well, it's not a strong need, but it's still relevant in the current
+> version. I use func_tokens in ima_read_modsig() in order to be able to
+> mention the hook name in mod_check_sig()'s error message:
+> 
+> In ima_read_modsig():
+> 
+> 	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
+> 
+> And in mod_check_sig():
+> 
+> 		pr_err("%s: Module is not signed with expected PKCS#7 message\n",
+> 		       name);
+> 
+> If you think it's not worth it to expose func_tokens, I can make
+> ima_read_modsig() pass a more generic const string such as "IMA modsig"
+> for example.
 
-Mimi Zohar <zohar@linux.ibm.com> writes:
+This is fine.  I somehow missed moving func_tokens[] outside of the
+ifdef was in order to make it independent of "CONFIG_IMA_READ_POLICY".
 
-> Hi Thiago,
->
-> On Thu, 2019-04-18 at 00:51 -0300, Thiago Jung Bauermann wrote:
->> 
->> @@ -326,6 +356,10 @@ int ima_appraise_measurement(enum ima_hooks func,
->> case INTEGRITY_UNKNOWN:
->> break;
->> case INTEGRITY_NOXATTRS:/* No EVM protected xattrs. */
->> +/* It's fine not to have xattrs when using a modsig. */
->> +if (try_modsig)
->> +break;
->> +/* fall through */
->> case INTEGRITY_NOLABEL:/* No security.evm xattr. */
->> cause = "missing-HMAC";
->> goto out;
->> @@ -340,6 +374,14 @@ int ima_appraise_measurement(enum ima_hooks func,
->> rc = xattr_verify(func, iint, xattr_value, xattr_len, &status,
->>  &cause);
->> 
->> +/*
->> + * If we have a modsig and either no imasig or the imasig's key isn't
->> + * known, then try verifying the modsig.
->> + */
->> +if (status != INTEGRITY_PASS && try_modsig &&
->> + (!xattr_value || rc == -ENOKEY))
->> +rc = modsig_verify(func, modsig, &status, &cause);
->
-> EVM protects other security xattrs, not just security.ima, if they
-> exist. As a result, evm_verifyxattr() could pass based on the other
-> security xattrs.
+thanks,
 
-Indeed! It doesn't make sense to test for status != INTEGRITY_PASS here.
-Not sure what I was thinking. Thanks for spotting it. With your other
-comments about this if clause, this code now reads:
-
-	/*
-	 * If we have a modsig and either no imasig or the imasig's key isn't
-	 * known, then try verifying the modsig.
-	 */
-	if (try_modsig &&
-	    (!xattr_value || xattr_value->type == IMA_XATTR_DIGEST_NG ||
-	     rc == -ENOKEY))
-		rc = modsig_verify(func, modsig, &status, &cause);
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+Mimi
 
