@@ -2,123 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65A362E6F3
-	for <lists+keyrings@lfdr.de>; Wed, 29 May 2019 23:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE5C2E6FA
+	for <lists+keyrings@lfdr.de>; Wed, 29 May 2019 23:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726454AbfE2VCP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 29 May 2019 17:02:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43562 "EHLO mail.kernel.org"
+        id S1726476AbfE2VDF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 29 May 2019 17:03:05 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:38918 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726186AbfE2VCP (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 29 May 2019 17:02:15 -0400
-Received: from ebiggers-linuxstation.mtv.corp.google.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726411AbfE2VDE (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 29 May 2019 17:03:04 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1038A241C7;
-        Wed, 29 May 2019 21:02:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559163734;
-        bh=SOgJ8LAQoMLXij8IK7TPD6QiRa+8QOMa+w3Lx1AaP9E=;
-        h=From:To:Subject:Date:From;
-        b=S9omFnn8KjVPu1iVgr+z6kxhJErV4eJrD4MLGkPk7GNVAomznaOj60XPxGMpIHwvB
-         me1iDy65xrMBOWnMXMwgMdYMhq269R+8OEzIwVcclE5Fc0NHACWDw72JemXLDXEz48
-         +ODFaqCMcyQ9JfUzLg8PD/Ve/1VLsKbrlkqwnUEQ=
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: [PATCH RESEND] KEYS: remove CONFIG_KEYS_COMPAT
-Date:   Wed, 29 May 2019 14:02:09 -0700
-Message-Id: <20190529210209.120390-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.22.0.rc1.257.g3120a18244-goog
+        by mx1.redhat.com (Postfix) with ESMTPS id 419FD308213F;
+        Wed, 29 May 2019 21:02:49 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7EC755DD95;
+        Wed, 29 May 2019 21:02:44 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CAG48ez0R-R3Xs+3Xg9T9qcV3Xv6r4pnx1Z2y=Ltx7RGOayte_w@mail.gmail.com>
+References: <CAG48ez0R-R3Xs+3Xg9T9qcV3Xv6r4pnx1Z2y=Ltx7RGOayte_w@mail.gmail.com> <20190528162603.GA24097@kroah.com> <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk> <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk> <4031.1559064620@warthog.procyon.org.uk> <20190528231218.GA28384@kroah.com> <31936.1559146000@warthog.procyon.org.uk>
+To:     Jann Horn <jannh@google.com>
+Cc:     dhowells@redhat.com, Greg KH <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kernel Hardening <kernel-hardening@lists.openwall.com>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able ring buffer
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <16192.1559163763.1@warthog.procyon.org.uk>
+Date:   Wed, 29 May 2019 22:02:43 +0100
+Message-ID: <16193.1559163763@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Wed, 29 May 2019 21:03:04 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+Jann Horn <jannh@google.com> wrote:
 
-KEYS_COMPAT now always takes the value of COMPAT && KEYS.  But the
-security/keys/ directory is only compiled if KEYS is enabled, so in
-practice KEYS_COMPAT is the same as COMPAT.  Therefore, remove the
-unnecessary KEYS_COMPAT and just use COMPAT directly.
+> Does this mean that refcount_read() isn't sufficient for what you want
+> to do with tracing (because for some reason you actually need to know
+> the values atomically at the time of increment/decrement)?
 
-(Also remove an outdated comment from compat.c.)
+Correct.  There's a gap and if an interrupt or something occurs, it's
+sufficiently big for the refcount trace to go weird.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- security/keys/Kconfig    | 4 ----
- security/keys/Makefile   | 2 +-
- security/keys/compat.c   | 5 -----
- security/keys/internal.h | 4 ++--
- 4 files changed, 3 insertions(+), 12 deletions(-)
+I've seen it in afs/rxrpc where the incoming network packets that are part of
+the rxrpc call flow disrupt the refcounts noted in trace lines.
 
-diff --git a/security/keys/Kconfig b/security/keys/Kconfig
-index ee502e4d390b8..5ac88f3f3f29c 100644
---- a/security/keys/Kconfig
-+++ b/security/keys/Kconfig
-@@ -21,10 +21,6 @@ config KEYS
- 
- 	  If you are unsure as to whether this is required, answer N.
- 
--config KEYS_COMPAT
--	def_bool y
--	depends on COMPAT && KEYS
--
- config PERSISTENT_KEYRINGS
- 	bool "Enable register of persistent per-UID keyrings"
- 	depends on KEYS
-diff --git a/security/keys/Makefile b/security/keys/Makefile
-index 9cef54064f608..c694458d9a46c 100644
---- a/security/keys/Makefile
-+++ b/security/keys/Makefile
-@@ -17,7 +17,7 @@ obj-y := \
- 	request_key_auth.o \
- 	user_defined.o
- compat-obj-$(CONFIG_KEY_DH_OPERATIONS) += compat_dh.o
--obj-$(CONFIG_KEYS_COMPAT) += compat.o $(compat-obj-y)
-+obj-$(CONFIG_COMPAT) += compat.o $(compat-obj-y)
- obj-$(CONFIG_PROC_FS) += proc.o
- obj-$(CONFIG_SYSCTL) += sysctl.o
- obj-$(CONFIG_PERSISTENT_KEYRINGS) += persistent.o
-diff --git a/security/keys/compat.c b/security/keys/compat.c
-index 9482df601dc33..f22527e88e3d5 100644
---- a/security/keys/compat.c
-+++ b/security/keys/compat.c
-@@ -50,11 +50,6 @@ static long compat_keyctl_instantiate_key_iov(
- 
- /*
-  * The key control system call, 32-bit compatibility version for 64-bit archs
-- *
-- * This should only be called if the 64-bit arch uses weird pointers in 32-bit
-- * mode or doesn't guarantee that the top 32-bits of the argument registers on
-- * taking a 32-bit syscall are zero.  If you can, you should call sys_keyctl()
-- * directly.
-  */
- COMPAT_SYSCALL_DEFINE5(keyctl, u32, option,
- 		       u32, arg2, u32, arg3, u32, arg4, u32, arg5)
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 8f533c81aa8dd..c4df853218493 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -259,7 +259,7 @@ extern long keyctl_dh_compute(struct keyctl_dh_params __user *, char __user *,
- 			      size_t, struct keyctl_kdf_params __user *);
- extern long __keyctl_dh_compute(struct keyctl_dh_params __user *, char __user *,
- 				size_t, struct keyctl_kdf_params *);
--#ifdef CONFIG_KEYS_COMPAT
-+#ifdef CONFIG_COMPAT
- extern long compat_keyctl_dh_compute(struct keyctl_dh_params __user *params,
- 				char __user *buffer, size_t buflen,
- 				struct compat_keyctl_kdf_params __user *kdf);
-@@ -274,7 +274,7 @@ static inline long keyctl_dh_compute(struct keyctl_dh_params __user *params,
- 	return -EOPNOTSUPP;
- }
- 
--#ifdef CONFIG_KEYS_COMPAT
-+#ifdef CONFIG_COMPAT
- static inline long compat_keyctl_dh_compute(
- 				struct keyctl_dh_params __user *params,
- 				char __user *buffer, size_t buflen,
--- 
-2.22.0.rc1.257.g3120a18244-goog
-
+David
