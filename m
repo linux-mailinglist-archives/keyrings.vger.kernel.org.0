@@ -2,61 +2,90 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E04C2DB87
-	for <lists+keyrings@lfdr.de>; Wed, 29 May 2019 13:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 453432DD6B
+	for <lists+keyrings@lfdr.de>; Wed, 29 May 2019 14:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726820AbfE2LQa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 29 May 2019 07:16:30 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:45834 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726787AbfE2LQa (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 29 May 2019 07:16:30 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 0C786300CA98;
-        Wed, 29 May 2019 11:16:30 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4D7B55D756;
-        Wed, 29 May 2019 11:16:28 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAG48ez2SAKbPeChAf06GMazMPPThFM+OR00abRZafAP7v+ptKw@mail.gmail.com>
-References: <CAG48ez2SAKbPeChAf06GMazMPPThFM+OR00abRZafAP7v+ptKw@mail.gmail.com> <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk> <155905933492.7587.6968545866041839538.stgit@warthog.procyon.org.uk> <CAG48ez2rRh2_Kq_EGJs5k-ZBNffGs_Q=vkQdinorBgo58tbGpg@mail.gmail.com> <10418.1559084686@warthog.procyon.org.uk>
-To:     Jann Horn <jannh@google.com>
-Cc:     dhowells@redhat.com, Al Viro <viro@zeniv.linux.org.uk>,
-        raven@themaw.net, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/7] vfs: Add a mount-notification facility
+        id S1726937AbfE2MsC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 29 May 2019 08:48:02 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:45390 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726820AbfE2MsC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 29 May 2019 08:48:02 -0400
+Received: by mail-ed1-f66.google.com with SMTP id f20so3547225edt.12
+        for <keyrings@vger.kernel.org>; Wed, 29 May 2019 05:48:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=MONbMDhNRBTOrhsT93yPHwMAxRk5gJkctOPhsHPlMjo=;
+        b=pvzGmqfndke61sBQlh1oho21KJ6Iybo1zHRk74CTMX5dILmjLpgpFD9xiNkJcIkykj
+         88K6WVvQaUnOZAxTaXUwsfom9gc9tKGhAlt9jDh1AvRVL2fcPUPvVciXyd+4/cfnzi6Y
+         BQc+Kf6NRRPU+LUsTWAkOih+0iPrKPi5AV8QW2IPC15kto3MI2CcTIDgyW1NvpvnbaHn
+         72gRT4fZtCzDKYazAwoauPiUnTinRIP0Jz8q0vmBhjkSQvKq344X6obRR8SDoPT0HYGL
+         IzumjrtY2Gd+o3l7MaUv/iBxsDD93S/NUHjHNBVVcbESUuNn/24MBGAgjnldGThCL3xB
+         SLRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=MONbMDhNRBTOrhsT93yPHwMAxRk5gJkctOPhsHPlMjo=;
+        b=iudqGoJ5KRwr4Yr+C7dgQX/Fx2K33q8IDEoyW5OFZAmuqwL3BlWRfUSEKyHqptELlR
+         3XX1KMuAYuCJKvlcAKokbfZa/UqMG3n5iLcCZzIu/qvZ7558B4hdY9b5uK1+SNbUR1Ww
+         VajMxKquLDQmx4CFCwx4OvKObiGTcBXAmNZoSfaiabM/tncW4f1l4ZpN754iegWnNAub
+         Bb9+VCM+ydUvljP+wWzuQ2aWboKDom8oubF8tROmwvlrX/JTNao4GTvkEOqAkTaujKZ5
+         u2nIqjGzK0h8sSiGZP/IJESbFHUGu/Xu8P5aozeE5SvPjQEfsHGlX18W6oCrc+rzgN9M
+         9g0g==
+X-Gm-Message-State: APjAAAXlq62h6t4lARmyO4+NQvJNb29/b6Uz9Vu2uxUcGSysFLZPn9mz
+        QSyOpp/xD3etb6o0sOJ3Qsu2Vg==
+X-Google-Smtp-Source: APXvYqzoaFmZ7mZVbDTqlrFuJBSNrSbiSO0d9+zexx5kswJ+G5IjO7KLQ5NjC4EQdadEnFovCFgWeA==
+X-Received: by 2002:a50:86e5:: with SMTP id 34mr136814479edu.290.1559134080713;
+        Wed, 29 May 2019 05:48:00 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id qq13sm2797939ejb.1.2019.05.29.05.47.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 May 2019 05:47:59 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 050E01041E8; Wed, 29 May 2019 15:47:59 +0300 (+03)
+Date:   Wed, 29 May 2019 15:47:58 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH, RFC 05/62] mm/page_alloc: Handle allocation for
+ encrypted memory
+Message-ID: <20190529124758.ojyakxdx2zf6nmtt@box>
+References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-6-kirill.shutemov@linux.intel.com>
+ <20190529072124.GC3656@rapoport-lnx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <15838.1559128587.1@warthog.procyon.org.uk>
-Date:   Wed, 29 May 2019 12:16:27 +0100
-Message-ID: <15839.1559128587@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Wed, 29 May 2019 11:16:30 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190529072124.GC3656@rapoport-lnx>
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jann Horn <jannh@google.com> wrote:
+On Wed, May 29, 2019 at 10:21:25AM +0300, Mike Rapoport wrote:
+> Shouldn't it be EXPORT_SYMBOL?
 
-> I don't really know. I guess it depends on how it's being used? If
-> someone decides to e.g. make a file browser that installs watches for
-> a bunch of mountpoints for some fancy sidebar showing the device
-> mounts on the system, or something like that, that probably shouldn't
-> inhibit unmounting... I don't know if that's a realistic use case.
+We don't have callers outside core-mm at the moment.
 
-In such a use case, I would envision the browser putting a watch on "/".  A
-watch sees all events in the subtree rooted at that point and you must apply a
-filter that filters them out if you're not interested (filter on
-WATCH_INFO_IN_SUBTREE using info_filter and info_mask).
+I'll add kerneldoc in the next submission.
 
-David
+-- 
+ Kirill A. Shutemov
