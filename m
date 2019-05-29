@@ -2,14 +2,14 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9082E949
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 01:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401E32E942
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 01:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726761AbfE2XZw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 29 May 2019 19:25:52 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:49072 "EHLO
+        id S1726428AbfE2XZm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 29 May 2019 19:25:42 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:49102 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726399AbfE2XYA (ORCPT
+        with ESMTP id S1726462AbfE2XYA (ORCPT
         <rfc822;keyrings@vger.kernel.org>); Wed, 29 May 2019 19:24:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
@@ -17,30 +17,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=grIpI6sxpoTAJV0Ncwe3KE3Pkp6elLo09FG9+ha8eR4=; b=HLp+W6HDYkZ5BG3pl/MVxdnwMl
-        Qsyp6pfk8TrwCFQMXmy5KjlbYNXb/HkmyrqRM1+XLtrvCwN8l1bRlaO/ROsYGa6WYqPuYLbyvtDLY
-        IYXq6aDUMNjOH1KjrS4A2bjbpkA4HItDYZRalS8ZgwenJhceREiJZQ/YesUSPo9VH8uzQzzjQSlKC
-        rqekLYgF8KyZwu7cayzFE5H8DDA3im/F5JbNyB7gpX1X7uREfbhb3JGterJ2pWbisXboGM9RI/oUL
-        2H0myDUyJXOQEoehlkLawqapDSjTByDXVnTbQaTlK7vhezMmW7g2owyPChj7R3xy4l1nL2VyXpvYg
-        5gBKpV5Q==;
+        bh=uax00MhLlFpYA5SZzOVY82diwalzYA3SNqGmlnWlanE=; b=kTZaNgY8IS2WUGMaubq5OAkUu/
+        X0J9LlW6SLqlGP2ppYMrJxEGCMkUD/nt6WP/QhcunA8ADrNtE0lcMI6SITWRC3ogZqToggXLlBy9z
+        AiTp9S29KGtIWe3NwmcexCP6szLGKWKmXN+GkkxGPB9Ki/JrbNrA10MmmfupUVg/2D77YciHxMQlp
+        9gPMsmaiUNK5MnqU5Ng96bAC+kSKHv9cEJFafbS4XlbWdIGpAKN2oygtRtqFj6079B3COGE5wON7y
+        vYuwxFVip49GBfSN3bkieTRn3vHGg31CFPmMmZXZDn29QavKd3fGsoeoLECGxCcHOOP/U2dfUSKjn
+        wYnsj8XA==;
 Received: from 177.132.232.81.dynamic.adsl.gvt.net.br ([177.132.232.81] helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hW7vL-0005Rs-Dp; Wed, 29 May 2019 23:23:59 +0000
+        id 1hW7vL-0005Rr-BP; Wed, 29 May 2019 23:23:59 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
         (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hW7vI-0007xu-Um; Wed, 29 May 2019 20:23:56 -0300
+        id 1hW7vI-0007xz-Vg; Wed, 29 May 2019 20:23:56 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         Mauro Carvalho Chehab <mchehab@infradead.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
-Subject: [PATCH 18/22] docs: security: trusted-encrypted.rst: fix code-block tag
-Date:   Wed, 29 May 2019 20:23:49 -0300
-Message-Id: <9c8e63bba3c3735573ab107ffd65131db10e1d2e.1559171394.git.mchehab+samsung@kernel.org>
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Subject: [PATCH 19/22] docs: security: core.rst: Fix several warnings
+Date:   Wed, 29 May 2019 20:23:50 -0300
+Message-Id: <6543f70a5b8d53ef59614a42ef09b0b3d85ba4f7.1559171394.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1559171394.git.mchehab+samsung@kernel.org>
 References: <cover.1559171394.git.mchehab+samsung@kernel.org>
@@ -51,39 +48,65 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The code-block tag is at the wrong place, causing those
-warnings:
+Multi-line literal markups only work when they're idented at the
+same level, with is not the case here:
 
-    Documentation/security/keys/trusted-encrypted.rst:112: WARNING: Literal block expected; none found.
-    Documentation/security/keys/trusted-encrypted.rst:121: WARNING: Unexpected indentation.
-    Documentation/security/keys/trusted-encrypted.rst:122: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/security/keys/trusted-encrypted.rst:123: WARNING: Block quote ends without a blank line; unexpected unindent.
+   Documentation/security/keys/core.rst:1597: WARNING: Inline literal start-string without end-string.
+   Documentation/security/keys/core.rst:1597: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1597: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1598: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1598: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1600: WARNING: Inline literal start-string without end-string.
+   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1666: WARNING: Inline literal start-string without end-string.
+   Documentation/security/keys/core.rst:1666: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1666: WARNING: Inline emphasis start-string without end-string.
+   Documentation/security/keys/core.rst:1666: WARNING: Inline emphasis start-string without end-string.
+
+Fix it by using a code-block instead.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 ---
- Documentation/security/keys/trusted-encrypted.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/security/keys/core.rst | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index 7b35fcb58933..50ac8bcd6970 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -107,12 +107,14 @@ Where::
+diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
+index 9521c4207f01..3fd60dcb2dc6 100644
+--- a/Documentation/security/keys/core.rst
++++ b/Documentation/security/keys/core.rst
+@@ -1594,10 +1594,12 @@ The structure has a number of fields, some of which are mandatory:
+      attempted key link operation. If there is no match, -EINVAL is returned.
  
- Examples of trusted and encrypted key usage:
  
--Create and save a trusted key named "kmk" of length 32 bytes::
-+Create and save a trusted key named "kmk" of length 32 bytes.
- 
- Note: When using a TPM 2.0 with a persistent key with handle 0x81000001,
- append 'keyhandle=0x81000001' to statements between quotes, such as
- "new 32 keyhandle=0x81000001".
- 
-+::
+-  *  ``int (*asym_eds_op)(struct kernel_pkey_params *params,
+-			  const void *in, void *out);``
+-     ``int (*asym_verify_signature)(struct kernel_pkey_params *params,
+-				    const void *in, const void *in2);``
++  *  ``asym_eds_op`` and ``asym_verify_signature``::
 +
-     $ keyctl add trusted kmk "new 32" @u
-     440502848
++       int (*asym_eds_op)(struct kernel_pkey_params *params,
++			  const void *in, void *out);
++       int (*asym_verify_signature)(struct kernel_pkey_params *params,
++				    const void *in, const void *in2);
  
+      These methods are optional.  If provided the first allows a key to be
+      used to encrypt, decrypt or sign a blob of data, and the second allows a
+@@ -1662,8 +1664,10 @@ The structure has a number of fields, some of which are mandatory:
+      required crypto isn't available.
+ 
+ 
+-  *  ``int (*asym_query)(const struct kernel_pkey_params *params,
+-			 struct kernel_pkey_query *info);``
++  *  ``asym_query``::
++
++       int (*asym_query)(const struct kernel_pkey_params *params,
++			 struct kernel_pkey_query *info);
+ 
+      This method is optional.  If provided it allows information about the
+      public or asymmetric key held in the key to be determined.
 -- 
 2.21.0
 
