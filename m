@@ -2,62 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A55B12FC31
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 15:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B1C92FC60
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 15:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726469AbfE3NWy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 May 2019 09:22:54 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:37842 "EHLO deadmen.hmeau.com"
+        id S1726829AbfE3Nbx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 May 2019 09:31:53 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:48066 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726320AbfE3NWy (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 30 May 2019 09:22:54 -0400
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
-        by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
-        id 1hWL1A-000584-MK; Thu, 30 May 2019 21:22:52 +0800
-Received: from herbert by gondobar with local (Exim 4.89)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1hWL18-0003W9-AH; Thu, 30 May 2019 21:22:50 +0800
-Date:   Thu, 30 May 2019 21:22:50 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Stephan Mueller <smueller@chronox.de>,
-        Milan Broz <gmazyland@gmail.com>,
-        Ondrej Kozina <okozina@redhat.com>,
-        Daniel Zatovic <dzatovic@redhat.com>
-Subject: Re: [PATCH] crypto: af_alg - implement keyring support
-Message-ID: <20190530132250.gsbpj3ay4ah4ojw2@gondor.apana.org.au>
-References: <20190521100034.9651-1-omosnace@redhat.com>
- <20190530071400.jpadh2fjjaqzyw6m@gondor.apana.org.au>
- <CAFqZXNt0NP090oKtF3Zsq4bvvZ7peH8YNBa-9hiqk_AAXgc0kQ@mail.gmail.com>
+        id S1726253AbfE3Nbx (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 30 May 2019 09:31:53 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 6377530833AF;
+        Thu, 30 May 2019 13:31:53 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4F8E9608CD;
+        Thu, 30 May 2019 13:31:52 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20190529232500.GA131466@gmail.com>
+References: <20190529232500.GA131466@gmail.com> <155856408314.10428.17035328117829912815.stgit@warthog.procyon.org.uk> <155856412507.10428.15987388402707639951.stgit@warthog.procyon.org.uk>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/7] keys: Add a keyctl to move a key between keyrings
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFqZXNt0NP090oKtF3Zsq4bvvZ7peH8YNBa-9hiqk_AAXgc0kQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3771.1559223108.1@warthog.procyon.org.uk>
+Date:   Thu, 30 May 2019 14:31:48 +0100
+Message-ID: <3772.1559223108@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Thu, 30 May 2019 13:31:53 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, May 30, 2019 at 01:35:06PM +0200, Ondrej Mosnacek wrote:
->
-> Because libkcapi already assumes these values [1] and has code that
-> uses them. Reserving will allow existing builds of libkcapi to work
-> correctly once the functionality actually lands in the kernel (if that
-> ever happens). Of course, it is libkcapi's fault to assume values for
-> these symbols (in released code) before they are commited in the
-> kernel, but it seemed easier to just add them along with this patch
-> rather than creating a confusing situation.
-> 
-> [1] https://github.com/smuellerDD/libkcapi/blob/master/lib/internal.h#L54
+Eric Biggers <ebiggers@kernel.org> wrote:
 
-OK but please just leave a gap (or a comment) rather than actually
-adding these reserved symbols to the kernel.
+> This shows up after a few seconds of syzkaller fuzzing with a description of
+> KEYCTL_MOVE added:
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Yeah...  I'm fixing that now.  I've also created a bunch of tests, manpages,
+etc. for keyutils which I'll push when I've fixed my patches.
+
+David
