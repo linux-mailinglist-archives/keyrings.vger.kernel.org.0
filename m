@@ -2,176 +2,144 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B75913010D
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 19:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 816BD3018E
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 20:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726819AbfE3R02 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 May 2019 13:26:28 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:60360 "EHLO mx1.redhat.com"
+        id S1726462AbfE3SMw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 May 2019 14:12:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60058 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726538AbfE3R02 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 30 May 2019 13:26:28 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1725961AbfE3SMw (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 30 May 2019 14:12:52 -0400
+Received: from gmail.com (unknown [104.132.1.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 7FBB7305D799;
-        Thu, 30 May 2019 17:26:27 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 452387E304;
-        Thu, 30 May 2019 17:26:26 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH 10/10] keys: Add capability-checking keyctl function [ver #2]
-From:   David Howells <dhowells@redhat.com>
-To:     keyrings@vger.kernel.org
-Cc:     dhowells@redhat.com, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ebiggers@kernel.org
-Date:   Thu, 30 May 2019 18:26:25 +0100
-Message-ID: <155923718546.949.13039266815245271686.stgit@warthog.procyon.org.uk>
-In-Reply-To: <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
+        by mail.kernel.org (Postfix) with ESMTPSA id 0209E25D83;
+        Thu, 30 May 2019 18:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559239971;
+        bh=9Ww7NltoWCg41xFzNFQ69I91y7QKfpdhx0v/2M6wxXo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=y3ozm1WdSv+jrAziwx4V/Fxqobr8rzP8zUSQNFCn3jHuuGfQqwyxO5M+/XJGry4Yp
+         qHBjLXyRFlv+yp1lgrkxckPI4FjxdQJ56IsaZuiU9IfjGgusm9ff9fkngIUZDTo3Vn
+         MFQ/38BweZX0pKZjP51uivtCJN7sLltr7/ovcjnc=
+Date:   Thu, 30 May 2019 11:12:49 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org,
+        Mat Martineau <mathew.j.martineau@linux.intel.com>,
+        James Morris <jamorris@linux.microsoft.com>,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/10] keys: Miscellany [ver #2]
+Message-ID: <20190530181248.GC70051@gmail.com>
 References: <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/unknown-version
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Thu, 30 May 2019 17:26:27 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add a keyctl function that requests a set of capability bits to find out
-what features are supported.
+On Thu, May 30, 2019 at 06:25:11PM +0100, David Howells wrote:
+> 
+> Here are some miscellaneous keyrings fixes and improvements intended for
+> the next merge window:
+> 
+>  (1) Fix a bunch of warnings from sparse, including missing RCU bits and
+>      kdoc-function argument mismatches
+> 
+>  (2) Implement a keyctl to allow a key to be moved from one keyring to
+>      another, with the option of prohibiting key replacement in the
+>      destination keyring.
+> 
+>  (3) Grant Link permission to possessors of request_key_auth tokens so that
+>      upcall servicing daemons can more easily arrange things such that only
+>      the necessary auth key is passed to the actual service program, and
+>      not all the auth keys a daemon might possesss.
+> 
+>  (4) Improvement in lookup_user_key().
+> 
+>  (5) Implement a keyctl to allow keyrings subsystem capabilities to be
+>      queried.
+> 
+> The patches can be found on the following branch:
+> 
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-misc
+> 
 
-Signed-off-by: David Howells <dhowells@redhat.com>
----
+syzkaller still manages to crash something in the keys subsystem really quickly
+when I run it on that branch (commit 35036b7e765b6):
 
- include/uapi/linux/keyctl.h |   14 ++++++++++++++
- security/keys/compat.c      |    3 +++
- security/keys/internal.h    |    2 ++
- security/keys/keyctl.c      |   37 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 56 insertions(+)
-
-diff --git a/include/uapi/linux/keyctl.h b/include/uapi/linux/keyctl.h
-index fd9fb11b312b..aa4972163442 100644
---- a/include/uapi/linux/keyctl.h
-+++ b/include/uapi/linux/keyctl.h
-@@ -68,6 +68,7 @@
- #define KEYCTL_PKEY_VERIFY		28	/* Verify a public key signature */
- #define KEYCTL_RESTRICT_KEYRING		29	/* Restrict keys allowed to link to a keyring */
- #define KEYCTL_MOVE			30	/* Move keys between keyrings */
-+#define KEYCTL_CAPABILITIES		31	/* Find capabilities of keyrings subsystem */
- 
- /* keyctl structures */
- struct keyctl_dh_params {
-@@ -115,4 +116,17 @@ struct keyctl_pkey_params {
- 
- #define KEYCTL_MOVE_EXCL	0x00000001 /* Do not displace from the to-keyring */
- 
-+/*
-+ * Capabilities flags.  The capabilities list is an array of 32-bit integers;
-+ * each integer can carry up to 32 flags.
-+ */
-+#define KEYCTL_CAPS0_CAPABILITIES	0x00000001 /* KEYCTL_CAPABILITIES supported */
-+#define KEYCTL_CAPS0_PERSISTENT_KEYRINGS 0x00000002 /* Persistent keyrings enabled */
-+#define KEYCTL_CAPS0_DIFFIE_HELLMAN	0x00000004 /* Diffie-Hellman computation enabled */
-+#define KEYCTL_CAPS0_PUBLIC_KEY		0x00000008 /* Public key ops enabled */
-+#define KEYCTL_CAPS0_BIG_KEY		0x00000010 /* big_key-type enabled */
-+#define KEYCTL_CAPS0_INVALIDATE		0x00000020 /* KEYCTL_INVALIDATE supported */
-+#define KEYCTL_CAPS0_RESTRICT_KEYRING	0x00000040 /* KEYCTL_RESTRICT_KEYRING supported */
-+#define KEYCTL_CAPS0_MOVE		0x00000080 /* KEYCTL_MOVE supported */
-+
- #endif /*  _LINUX_KEYCTL_H */
-diff --git a/security/keys/compat.c b/security/keys/compat.c
-index b326bc4f84d7..a53e30da20c5 100644
---- a/security/keys/compat.c
-+++ b/security/keys/compat.c
-@@ -162,6 +162,9 @@ COMPAT_SYSCALL_DEFINE5(keyctl, u32, option,
- 	case KEYCTL_MOVE:
- 		return keyctl_keyring_move(arg2, arg3, arg4, arg5);
- 
-+	case KEYCTL_CAPABILITIES:
-+		return keyctl_capabilities(compat_ptr(arg2), arg3);
-+
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index b54a58c025ae..884fd796f668 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -329,6 +329,8 @@ static inline long keyctl_pkey_e_d_s(int op,
- }
- #endif
- 
-+extern long keyctl_capabilities(unsigned int __user *_buffer, size_t buflen);
-+
- /*
-  * Debugging key validation
-  */
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index bbfe7d92d41c..b3db363e0b25 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -30,6 +30,18 @@
- 
- #define KEY_MAX_DESC_SIZE 4096
- 
-+static const u32 keyrings_capabilities[1] = {
-+	[0] = (KEYCTL_CAPS0_CAPABILITIES |
-+	       (IS_ENABLED(CONFIG_PERSISTENT_KEYRINGS)	? KEYCTL_CAPS0_PERSISTENT_KEYRINGS : 0) |
-+	       (IS_ENABLED(CONFIG_KEY_DH_OPERATIONS)	? KEYCTL_CAPS0_DIFFIE_HELLMAN : 0) |
-+	       (IS_ENABLED(CONFIG_ASYMMETRIC_KEY_TYPE)	? KEYCTL_CAPS0_PUBLIC_KEY : 0) |
-+	       (IS_ENABLED(CONFIG_BIG_KEYS)		? KEYCTL_CAPS0_BIG_KEY : 0) |
-+	       KEYCTL_CAPS0_INVALIDATE |
-+	       KEYCTL_CAPS0_RESTRICT_KEYRING |
-+	       KEYCTL_CAPS0_MOVE
-+	       ),
-+};
-+
- static int key_get_type_from_user(char *type,
- 				  const char __user *_type,
- 				  unsigned len)
-@@ -1678,6 +1690,28 @@ long keyctl_restrict_keyring(key_serial_t id, const char __user *_type,
- 	return ret;
- }
- 
-+/*
-+ * Get keyrings subsystem capabilities.
-+ */
-+long keyctl_capabilities(unsigned int __user *_buffer, size_t buflen)
-+{
-+	size_t size = buflen;
-+
-+	if (size == 0)
-+		return sizeof(keyrings_capabilities);
-+	if (size & 3)
-+		return -EINVAL;
-+	if (size > sizeof(keyrings_capabilities))
-+		size = sizeof(keyrings_capabilities);
-+	if (copy_to_user(_buffer, keyrings_capabilities, size) != 0)
-+		return -EFAULT;
-+	if (size < buflen &&
-+	    clear_user(_buffer + size, buflen - size) != 0)
-+		return -EFAULT;
-+
-+	return sizeof(keyrings_capabilities);
-+}
-+
- /*
-  * The key control system call
-  */
-@@ -1824,6 +1858,9 @@ SYSCALL_DEFINE5(keyctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 					   (key_serial_t)arg4,
- 					   (unsigned int)arg5);
- 
-+	case KEYCTL_CAPABILITIES:
-+		return keyctl_capabilities((unsigned int __user *)arg2, (size_t)arg3);
-+
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-
+RAX: ffffffffffffffda RBX: 000000000071bf00 RCX: 0000000000458a09
+RDX: 0000000020001800 RSI: 00000000200017c0 RDI: 0000000020001780
+RBP: 00007f784d775ca0 R08: fffffffffffffffd R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000246 R12: 00007f784d7766d4
+R13: 00000000004a63d9 R14: 00000000006e33f8 R15: 0000000000000003
+BUG: unable to handle page fault for address: ffffeba31fffffd0
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0 
+Oops: 0000 [#1] SMP KASAN
+CPU: 5 PID: 10320 Comm: syz-executor.3 Not tainted 5.2.0-rc1-00010-g35036b7e765b6 #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1 04/01/2014
+RIP: 0010:__read_once_size include/linux/compiler.h:194 [inline]
+RIP: 0010:compound_head include/linux/page-flags.h:172 [inline]
+RIP: 0010:virt_to_head_page include/linux/mm.h:720 [inline]
+RIP: 0010:virt_to_cache mm/slab.c:376 [inline]
+RIP: 0010:kfree+0x7f/0x1d0 mm/slab.c:3751
+Code: 7f 77 00 00 48 01 d0 48 89 df 48 c1 e8 0c 48 8d 14 c5 00 00 00 00 48 29 c2 48 89 d0 48 ba 00 00 00 00 00 ea ff ff 48 8d 04 c2 <48> 8b 50 08 48 8d 4a ff 83 e2 01 48 0f 45 c1 4c 8b 68 18 49 63 75
+RSP: 0018:ffff88800a7f7bf0 EFLAGS: 00010016
+RAX: ffffeba31fffffc8 RBX: 0000003ffffffffc RCX: 0000000000000000
+RDX: ffffea0000000000 RSI: 0000000000000000 RDI: 0000003ffffffffc
+RBP: ffff88800a7f7c10 R08: ffffffff83bf24c0 R09: ffffed100da2e448
+R10: 0000000000000001 R11: ffffed100da2e447 R12: 0000000000000202
+R13: ffffffff824c2d76 R14: dffffc0000000000 R15: ffff88800f1cf000
+FS:  00007f784d776700(0000) GS:ffff88806d140000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffeba31fffffd0 CR3: 000000006932d004 CR4: 0000000000760ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ assoc_array_cancel_edit+0x56/0xa0 lib/assoc_array.c:1428
+ __key_link_end+0x7e/0x170 security/keys/keyring.c:1360
+ key_create_or_update+0x868/0xbb0 security/keys/key.c:943
+ __do_sys_add_key security/keys/keyctl.c:134 [inline]
+ __se_sys_add_key+0x134/0x380 security/keys/keyctl.c:74
+ __x64_sys_add_key+0xbe/0x150 security/keys/keyctl.c:74
+ do_syscall_64+0x9e/0x4e0 arch/x86/entry/common.c:301
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x458a09
+Code: dd b4 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 ab b4 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f784d775c88 EFLAGS: 00000246 ORIG_RAX: 00000000000000f8
+RAX: ffffffffffffffda RBX: 000000000071bf00 RCX: 0000000000458a09
+RDX: 0000000020001800 RSI: 00000000200017c0 RDI: 0000000020001780
+RBP: 00007f784d775ca0 R08: fffffffffffffffd R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000246 R12: 00007f784d7766d4
+R13: 00000000004a63d9 R14: 00000000006e33f8 R15: 0000000000000003
+Modules linked in:
+Dumping ftrace buffer:
+   (ftrace buffer empty)
+CR2: ffffeba31fffffd0
+---[ end trace 01d64df35f47d1f5 ]---
+RIP: 0010:__read_once_size include/linux/compiler.h:194 [inline]
+RIP: 0010:compound_head include/linux/page-flags.h:172 [inline]
+RIP: 0010:virt_to_head_page include/linux/mm.h:720 [inline]
+RIP: 0010:virt_to_cache mm/slab.c:376 [inline]
+RIP: 0010:kfree+0x7f/0x1d0 mm/slab.c:3751
+Code: 7f 77 00 00 48 01 d0 48 89 df 48 c1 e8 0c 48 8d 14 c5 00 00 00 00 48 29 c2 48 89 d0 48 ba 00 00 00 00 00 ea ff ff 48 8d 04 c2 <48> 8b 50 08 48 8d 4a ff 83 e2 01 48 0f 45 c1 4c 8b 68 18 49 63 75
+RSP: 0018:ffff88800a7f7bf0 EFLAGS: 00010016
+RAX: ffffeba31fffffc8 RBX: 0000003ffffffffc RCX: 0000000000000000
+RDX: ffffea0000000000 RSI: 0000000000000000 RDI: 0000003ffffffffc
+RBP: ffff88800a7f7c10 R08: ffffffff83bf24c0 R09: ffffed100da2e448
+R10: 0000000000000001 R11: ffffed100da2e447 R12: 0000000000000202
+R13: ffffffff824c2d76 R14: dffffc0000000000 R15: ffff88800f1cf000
+FS:  00007f784d776700(0000) GS:ffff88806d140000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffeba31fffffd0 CR3: 000000006932d004 CR4: 0000000000760ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
