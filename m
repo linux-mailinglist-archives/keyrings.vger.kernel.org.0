@@ -2,110 +2,146 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4548F300EA
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 19:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF632300EF
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 19:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbfE3RZT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 May 2019 13:25:19 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33128 "EHLO mx1.redhat.com"
+        id S1726563AbfE3RZW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 May 2019 13:25:22 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:42860 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725961AbfE3RZT (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 30 May 2019 13:25:19 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        id S1725961AbfE3RZV (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 30 May 2019 13:25:21 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 4E814E3E00;
-        Thu, 30 May 2019 17:25:14 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 9AAD030A6986;
+        Thu, 30 May 2019 17:25:21 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C7B3660BE1;
-        Thu, 30 May 2019 17:25:11 +0000 (UTC)
-Subject: [PATCH 00/10] keys: Miscellany [ver #2]
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4AB1938E3A;
+        Thu, 30 May 2019 17:25:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+ Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+ Kingdom.
+ Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH 01/10] keys: sparse: Fix key_fs[ug]id_changed() [ver #2]
 From:   David Howells <dhowells@redhat.com>
 To:     keyrings@vger.kernel.org
-Cc:     Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        Eric Biggers <ebiggers@google.com>,
-        James Morris <jamorris@linux.microsoft.com>,
-        dhowells@redhat.com, linux-security-module@vger.kernel.org,
+Cc:     James Morris <jamorris@linux.microsoft.com>, dhowells@redhat.com,
+        linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org, ebiggers@kernel.org
-Date:   Thu, 30 May 2019 18:25:11 +0100
-Message-ID: <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
+Date:   Thu, 30 May 2019 18:25:19 +0100
+Message-ID: <155923711951.949.17453975846850465292.stgit@warthog.procyon.org.uk>
+In-Reply-To: <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
+References: <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
 User-Agent: StGit/unknown-version
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 30 May 2019 17:25:19 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Thu, 30 May 2019 17:25:21 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Sparse warnings are incurred by key_fs[ug]id_changed() due to unprotected
+accesses of tsk->cred, which is marked __rcu.
 
-Here are some miscellaneous keyrings fixes and improvements intended for
-the next merge window:
+Fix this by passing the new cred struct to these functions from
+commit_creds() rather than the task pointer.
 
- (1) Fix a bunch of warnings from sparse, including missing RCU bits and
-     kdoc-function argument mismatches
-
- (2) Implement a keyctl to allow a key to be moved from one keyring to
-     another, with the option of prohibiting key replacement in the
-     destination keyring.
-
- (3) Grant Link permission to possessors of request_key_auth tokens so that
-     upcall servicing daemons can more easily arrange things such that only
-     the necessary auth key is passed to the actual service program, and
-     not all the auth keys a daemon might possesss.
-
- (4) Improvement in lookup_user_key().
-
- (5) Implement a keyctl to allow keyrings subsystem capabilities to be
-     queried.
-
-The patches can be found on the following branch:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-misc
-
-The keyutils next branch has commits to make available, document and test
-the move-key and capabilities code:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/log/?h=next
-
-Changes:
-
- (*) Fixed lock ordering bug in KEYCTL_MOVE.
-
- (*) Added improvement patch from Eric.
-
- (*) Added capabilities patch.
-
-David
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: James Morris <jamorris@linux.microsoft.com>
 ---
-David Howells (9):
-      keys: sparse: Fix key_fs[ug]id_changed()
-      keys: sparse: Fix incorrect RCU accesses
-      keys: sparse: Fix kdoc mismatches
-      keys: Change keyring_serialise_link_sem to a mutex
-      keys: Break bits out of key_unlink()
-      keys: Hoist locking out of __key_link_begin()
-      keys: Add a keyctl to move a key between keyrings
-      keys: Grant Link permission to possessers of request_key auth keys
-      keys: Add capability-checking keyctl function
 
-Eric Biggers (1):
-      KEYS: reuse keyring_index_key::desc_len in lookup_user_key()
+ include/linux/key.h          |    8 ++++----
+ kernel/cred.c                |    4 ++--
+ security/keys/process_keys.c |   22 ++++++++++------------
+ 3 files changed, 16 insertions(+), 18 deletions(-)
 
-
- Documentation/security/keys/core.rst |   21 +++
- include/linux/key.h                  |   13 +-
- include/uapi/linux/keyctl.h          |   17 ++
- kernel/cred.c                        |    4 
- security/keys/compat.c               |    6 +
- security/keys/internal.h             |    7 +
- security/keys/key.c                  |   23 ++-
- security/keys/keyctl.c               |   92 +++++++++++
- security/keys/keyring.c              |  275 +++++++++++++++++++++++++++-------
- security/keys/process_keys.c         |   26 +--
- security/keys/request_key.c          |    7 +
- security/keys/request_key_auth.c     |    4 
- 12 files changed, 413 insertions(+), 82 deletions(-)
+diff --git a/include/linux/key.h b/include/linux/key.h
+index 7099985e35a9..1f09aad1c98c 100644
+--- a/include/linux/key.h
++++ b/include/linux/key.h
+@@ -402,8 +402,8 @@ extern struct ctl_table key_sysctls[];
+  * the userspace interface
+  */
+ extern int install_thread_keyring_to_cred(struct cred *cred);
+-extern void key_fsuid_changed(struct task_struct *tsk);
+-extern void key_fsgid_changed(struct task_struct *tsk);
++extern void key_fsuid_changed(struct cred *new_cred);
++extern void key_fsgid_changed(struct cred *new_cred);
+ extern void key_init(void);
+ 
+ #else /* CONFIG_KEYS */
+@@ -418,8 +418,8 @@ extern void key_init(void);
+ #define make_key_ref(k, p)		NULL
+ #define key_ref_to_ptr(k)		NULL
+ #define is_key_possessed(k)		0
+-#define key_fsuid_changed(t)		do { } while(0)
+-#define key_fsgid_changed(t)		do { } while(0)
++#define key_fsuid_changed(c)		do { } while(0)
++#define key_fsgid_changed(c)		do { } while(0)
+ #define key_init()			do { } while(0)
+ 
+ #endif /* CONFIG_KEYS */
+diff --git a/kernel/cred.c b/kernel/cred.c
+index 45d77284aed0..3bd40de9e192 100644
+--- a/kernel/cred.c
++++ b/kernel/cred.c
+@@ -455,9 +455,9 @@ int commit_creds(struct cred *new)
+ 
+ 	/* alter the thread keyring */
+ 	if (!uid_eq(new->fsuid, old->fsuid))
+-		key_fsuid_changed(task);
++		key_fsuid_changed(new);
+ 	if (!gid_eq(new->fsgid, old->fsgid))
+-		key_fsgid_changed(task);
++		key_fsgid_changed(new);
+ 
+ 	/* do it
+ 	 * RLIMIT_NPROC limits on user->processes have already been checked
+diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
+index f05f7125a7d5..ba5d3172cafe 100644
+--- a/security/keys/process_keys.c
++++ b/security/keys/process_keys.c
+@@ -293,28 +293,26 @@ static int install_session_keyring(struct key *keyring)
+ /*
+  * Handle the fsuid changing.
+  */
+-void key_fsuid_changed(struct task_struct *tsk)
++void key_fsuid_changed(struct cred *new_cred)
+ {
+ 	/* update the ownership of the thread keyring */
+-	BUG_ON(!tsk->cred);
+-	if (tsk->cred->thread_keyring) {
+-		down_write(&tsk->cred->thread_keyring->sem);
+-		tsk->cred->thread_keyring->uid = tsk->cred->fsuid;
+-		up_write(&tsk->cred->thread_keyring->sem);
++	if (new_cred->thread_keyring) {
++		down_write(&new_cred->thread_keyring->sem);
++		new_cred->thread_keyring->uid = new_cred->fsuid;
++		up_write(&new_cred->thread_keyring->sem);
+ 	}
+ }
+ 
+ /*
+  * Handle the fsgid changing.
+  */
+-void key_fsgid_changed(struct task_struct *tsk)
++void key_fsgid_changed(struct cred *new_cred)
+ {
+ 	/* update the ownership of the thread keyring */
+-	BUG_ON(!tsk->cred);
+-	if (tsk->cred->thread_keyring) {
+-		down_write(&tsk->cred->thread_keyring->sem);
+-		tsk->cred->thread_keyring->gid = tsk->cred->fsgid;
+-		up_write(&tsk->cred->thread_keyring->sem);
++	if (new_cred->thread_keyring) {
++		down_write(&new_cred->thread_keyring->sem);
++		new_cred->thread_keyring->gid = new_cred->fsgid;
++		up_write(&new_cred->thread_keyring->sem);
+ 	}
+ }
+ 
 
