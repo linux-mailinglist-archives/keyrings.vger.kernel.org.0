@@ -2,101 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B677D2F9E2
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 11:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF692FA9A
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 13:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727171AbfE3Juw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 May 2019 05:50:52 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:33028 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727676AbfE3Juw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 30 May 2019 05:50:52 -0400
-Received: by mail-wm1-f65.google.com with SMTP id v19so5668689wmh.0
-        for <keyrings@vger.kernel.org>; Thu, 30 May 2019 02:50:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=iSdK26IrmOEc/B9VC/Q0XsQRMEkKcuvxsa2POFBAfWg=;
-        b=LCpbGaIPpV5r99H6iR6FLlmoZ3ctc0Wo0tAaXSBSHw6z4REiqnyT7PkFbOzd+UPe5l
-         sK0Z4FkJ1KPKDQ/Wssfmzm5JrLnfiFJaVvCUvp7coOL1SGorMfV3kiLVeRVzWKiJzycw
-         lGaUA5D/+pAfiiopfPIWvDalUZjZWblLTfOZg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iSdK26IrmOEc/B9VC/Q0XsQRMEkKcuvxsa2POFBAfWg=;
-        b=gwqo/Ezqj5iv4o++dhsP2fp3tNGwGMM4y+ryISL7UK5LBBonY+agh9y3fbDRA8VL5n
-         ZCmEjR1yjEX5cYiDjyN1iOItxAVbrAJIUn4h4mGra0AiWKJC7Zpj8iI8hdcIecqvFbzo
-         g132QfO1LHWPCcw3k5OQv/UP9dH86p0QFpezR+wkoywusFjVBIDqxH4XWP0Il9s1ZdIe
-         8vWd0kApnDmdUVq5L/38UneR7gCItX8SM9Ea42EpdZxSX9Aqcr11lZvvnfneeP0zPamF
-         mlkOZ5jHcNV1hD7mEwaA0r49vdWPs0Xk1OaNYq37sK2UD5pT13vTkK04H5E7k4J10aW4
-         vmhw==
-X-Gm-Message-State: APjAAAXZlxV9ekHWITxVQ6JuHSxGAH7h3AEeWK+SwwP4oQ34IgEoOx0U
-        TQte4CfEUkKA/P34D7FD4RdMGA==
-X-Google-Smtp-Source: APXvYqw3JemapasX1/My3YJlram8J8fq6dLm3PSfYNtI5KnSufTCDzzS1B4NA4dYJrfzNDS+QjZaeA==
-X-Received: by 2002:a1c:ca01:: with SMTP id a1mr1700893wmg.30.1559209849831;
-        Thu, 30 May 2019 02:50:49 -0700 (PDT)
-Received: from andrea (86.100.broadband17.iol.cz. [109.80.100.86])
-        by smtp.gmail.com with ESMTPSA id x68sm2239214wmf.13.2019.05.30.02.50.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 May 2019 02:50:48 -0700 (PDT)
-Date:   Thu, 30 May 2019 11:50:39 +0200
-From:   Andrea Parri <andrea.parri@amarulasolutions.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     David Howells <dhowells@redhat.com>, viro@zeniv.linux.org.uk,
-        raven@themaw.net, linux-fsdevel@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-block@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will.deacon@arm.com>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able
- ring buffer
-Message-ID: <20190530095039.GA5137@andrea>
-References: <20190528231218.GA28384@kroah.com>
- <20190528162603.GA24097@kroah.com>
- <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
- <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
- <4031.1559064620@warthog.procyon.org.uk>
- <31936.1559146000@warthog.procyon.org.uk>
- <20190529231112.GB3164@kroah.com>
+        id S1726508AbfE3LAa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 May 2019 07:00:30 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50354 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726359AbfE3LA3 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 30 May 2019 07:00:29 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 8A629AEB8;
+        Thu, 30 May 2019 11:00:27 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id 928B31E3C08; Thu, 30 May 2019 13:00:24 +0200 (CEST)
+Date:   Thu, 30 May 2019 13:00:24 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Jan Kara <jack@suse.cz>, David Howells <dhowells@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>, Ian Kent <raven@themaw.net>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-api@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC][PATCH 0/7] Mount, FS, Block and Keyrings notifications
+Message-ID: <20190530110024.GB29237@quack2.suse.cz>
+References: <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <CAOQ4uxjC1M7jwjd9zSaSa6UW2dbEjc+ZbFSo7j9F1YHAQxQ8LQ@mail.gmail.com>
+ <20190529142504.GC32147@quack2.suse.cz>
+ <CAOQ4uxjLzURf8c1UH_xCJKkuD2es8i-=P-ZNM=t3aFcZLMwXEg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190529231112.GB3164@kroah.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <CAOQ4uxjLzURf8c1UH_xCJKkuD2es8i-=P-ZNM=t3aFcZLMwXEg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-> > Looking at the perf ring buffer, there appears to be a missing barrier in
-> > perf_aux_output_end():
-> > 
-> > 	rb->user_page->aux_head = rb->aux_head;
-> > 
-> > should be:
-> > 
-> > 	smp_store_release(&rb->user_page->aux_head, rb->aux_head);
-> > 
-> > It should also be using smp_load_acquire().  See
-> > Documentation/core-api/circular-buffers.rst
-> > 
-> > And a (partial) patch has been proposed: https://lkml.org/lkml/2018/5/10/249
+On Wed 29-05-19 18:53:21, Amir Goldstein wrote:
+> > > David,
+> > >
+> > > I am interested to know how you envision filesystem notifications would
+> > > look with this interface.
+> > >
+> > > fanotify can certainly benefit from providing a ring buffer interface to read
+> > > events.
+> > >
+> > > From what I have seen, a common practice of users is to monitor mounts
+> > > (somehow) and place FAN_MARK_MOUNT fanotify watches dynamically.
+> > > It'd be good if those users can use a single watch mechanism/API for
+> > > watching the mount namespace and filesystem events within mounts.
+> > >
+> > > A similar usability concern is with sb_notify and FAN_MARK_FILESYSTEM.
+> > > It provides users with two complete different mechanisms to watch error
+> > > and filesystem events. That is generally not a good thing to have.
+> > >
+> > > I am not asking that you implement fs_notify() before merging sb_notify()
+> > > and I understand that you have a use case for sb_notify().
+> > > I am asking that you show me the path towards a unified API (how a
+> > > typical program would look like), so that we know before merging your
+> > > new API that it could be extended to accommodate fsnotify events
+> > > where the final result will look wholesome to users.
+> >
+> > Are you sure we want to combine notification about file changes etc. with
+> > administrator-type notifications about the filesystem? To me these two
+> > sound like rather different (although sometimes related) things.
+> >
 > 
-> So, if that's all that needs to be fixed, can you use the same
-> buffer/code if that patch is merged?
+> Well I am sure that ring buffer for fanotify events would be useful, so
+> seeing that David is proposing a generic notification mechanism, I wanted
+> to know how that mechanism could best share infrastructure with fsnotify.
+> 
+> But apart from that I foresee the questions from users about why the
+> mount notification API and filesystem events API do not have better
+> integration.
+> 
+> The way I see it, the notification queue can serve several classes
+> of notifications and fsnotify could be one of those classes
+> (at least FAN_CLASS_NOTIF fits nicely to the model).
 
-That's about one year old...: let me add the usual suspects in Cc:  ;-)
-since I'm not sure what the plan was (or if I'm missing something) ...
+I agree that for some type of fsnotify uses a ring buffer would make sense.
+But for others - such as permission events or unlimited queues - you cannot
+really use the ring buffer and I don't like the idea of having different
+ways of passing fsnotify events to userspace based on notification group
+type...
 
-Speaking of ring buffer implementations (and relatively "old" patches),
-here's another quite interesting:
-
-  https://lkml.kernel.org/r/20181211034032.32338-1-yuleixzhang@tencent.com
-
-Thanks,
-  Andrea
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
