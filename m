@@ -2,101 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52FF22F7FE
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 09:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B677D2F9E2
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2019 11:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726684AbfE3HjT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 May 2019 03:39:19 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:37455 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726027AbfE3HjT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 30 May 2019 03:39:19 -0400
-Received: by mail-wr1-f68.google.com with SMTP id h1so3461164wro.4;
-        Thu, 30 May 2019 00:39:18 -0700 (PDT)
+        id S1727171AbfE3Juw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 May 2019 05:50:52 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:33028 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727676AbfE3Juw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 30 May 2019 05:50:52 -0400
+Received: by mail-wm1-f65.google.com with SMTP id v19so5668689wmh.0
+        for <keyrings@vger.kernel.org>; Thu, 30 May 2019 02:50:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=f6gpiwLUuJ7oLJMeN7jt3+ObOTih2yoMnDqiwdziYpw=;
-        b=XQIA4q9YQFOAj4GTuvXQ9HeR4rgx0QV1DVeptVcA/ipU3+6ZW84MaQ3kTGgy0Z369e
-         sLjrNZ9N1ffMye4GBtbtn4RAa0FMI6P0A3dEN3mo6hClWjjJ6rS3+Xo4+mDaURbqwlx8
-         jxMUvnegCIyDhKHRjIX9zhW24hAfxeR1Yp3yhLcyLrq5JT3/L3RpEiS3KKPbLvn5hNgV
-         BzZwIAg43q1INgo2/sNQpdCWZjdYYc+f0n5FF2Rs/esRXTHrD0CbuyMHdy0vg9hEw0U8
-         aNs+rbl9k/czm5Nj+0wiF6tU4Vkga6Z5EKU4zwrdrS8VJTojp4GAA+4g1Mp+sPwJY6Lj
-         MtCA==
+        d=amarulasolutions.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=iSdK26IrmOEc/B9VC/Q0XsQRMEkKcuvxsa2POFBAfWg=;
+        b=LCpbGaIPpV5r99H6iR6FLlmoZ3ctc0Wo0tAaXSBSHw6z4REiqnyT7PkFbOzd+UPe5l
+         sK0Z4FkJ1KPKDQ/Wssfmzm5JrLnfiFJaVvCUvp7coOL1SGorMfV3kiLVeRVzWKiJzycw
+         lGaUA5D/+pAfiiopfPIWvDalUZjZWblLTfOZg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=f6gpiwLUuJ7oLJMeN7jt3+ObOTih2yoMnDqiwdziYpw=;
-        b=F9XBS4l0fh6LGm+LXPYyg0NASdao6L01MBYaFkzDDtVgS5WBQnGe5IiusPY6W7fWLy
-         kh+4Git9r0uoauA/P3uNCda8tfBvy0ZRTH8J7RIx9ZqvKAkBmv6mN9152++/6gQAv53B
-         MBaHpgpFt18xi2qrRZGx904sM5puPt9v9bUFTPFWrxuCHRJoPqA9aCAGj7/F7pVmJic0
-         el9LpIrczKZdi+x6o6Ub6i6XjGI2JhEIGZQa9PvEHgbEJLgzUgb47YcAjAy8vnPWt7OA
-         2uFvDmpjCg2lbn7ZslMWUoM41bFyIMN93LYLMITA3RiZ0wF6nqIpfp2a/tQoSa9EFPA7
-         ftqQ==
-X-Gm-Message-State: APjAAAVQMOc/toaAeHooiipHgkEplfRnBcLQ1EeVJf63ZACOBUvH1xsE
-        3mBdeVFvbPbPNXo3rZc/adGRBgrmHVmSVw==
-X-Google-Smtp-Source: APXvYqwwfKirnrLfA9EPuN6PGTnkLM6dJG5tBhfYIzKRH7jZcyVu8fuMRmTRuwE9HS8SLu4i/08kxg==
-X-Received: by 2002:adf:e7c5:: with SMTP id e5mr1489911wrn.107.1559201957520;
-        Thu, 30 May 2019 00:39:17 -0700 (PDT)
-Received: from [10.43.17.75] (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id d9sm2316251wro.26.2019.05.30.00.39.16
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 May 2019 00:39:16 -0700 (PDT)
-Subject: Re: [PATCH] crypto: af_alg - implement keyring support
-To:     Ondrej Mosnacek <omosnace@redhat.com>,
-        linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Stephan Mueller <smueller@chronox.de>,
-        Ondrej Kozina <okozina@redhat.com>,
-        Daniel Zatovic <dzatovic@redhat.com>
-References: <20190521100034.9651-1-omosnace@redhat.com>
-From:   Milan Broz <gmazyland@gmail.com>
-Openpgp: preference=signencrypt
-Message-ID: <e492858e-a93b-cee9-b50a-e61e23ce9f90@gmail.com>
-Date:   Thu, 30 May 2019 09:39:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=iSdK26IrmOEc/B9VC/Q0XsQRMEkKcuvxsa2POFBAfWg=;
+        b=gwqo/Ezqj5iv4o++dhsP2fp3tNGwGMM4y+ryISL7UK5LBBonY+agh9y3fbDRA8VL5n
+         ZCmEjR1yjEX5cYiDjyN1iOItxAVbrAJIUn4h4mGra0AiWKJC7Zpj8iI8hdcIecqvFbzo
+         g132QfO1LHWPCcw3k5OQv/UP9dH86p0QFpezR+wkoywusFjVBIDqxH4XWP0Il9s1ZdIe
+         8vWd0kApnDmdUVq5L/38UneR7gCItX8SM9Ea42EpdZxSX9Aqcr11lZvvnfneeP0zPamF
+         mlkOZ5jHcNV1hD7mEwaA0r49vdWPs0Xk1OaNYq37sK2UD5pT13vTkK04H5E7k4J10aW4
+         vmhw==
+X-Gm-Message-State: APjAAAXZlxV9ekHWITxVQ6JuHSxGAH7h3AEeWK+SwwP4oQ34IgEoOx0U
+        TQte4CfEUkKA/P34D7FD4RdMGA==
+X-Google-Smtp-Source: APXvYqw3JemapasX1/My3YJlram8J8fq6dLm3PSfYNtI5KnSufTCDzzS1B4NA4dYJrfzNDS+QjZaeA==
+X-Received: by 2002:a1c:ca01:: with SMTP id a1mr1700893wmg.30.1559209849831;
+        Thu, 30 May 2019 02:50:49 -0700 (PDT)
+Received: from andrea (86.100.broadband17.iol.cz. [109.80.100.86])
+        by smtp.gmail.com with ESMTPSA id x68sm2239214wmf.13.2019.05.30.02.50.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 May 2019 02:50:48 -0700 (PDT)
+Date:   Thu, 30 May 2019 11:50:39 +0200
+From:   Andrea Parri <andrea.parri@amarulasolutions.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     David Howells <dhowells@redhat.com>, viro@zeniv.linux.org.uk,
+        raven@themaw.net, linux-fsdevel@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-block@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will.deacon@arm.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able
+ ring buffer
+Message-ID: <20190530095039.GA5137@andrea>
+References: <20190528231218.GA28384@kroah.com>
+ <20190528162603.GA24097@kroah.com>
+ <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
+ <4031.1559064620@warthog.procyon.org.uk>
+ <31936.1559146000@warthog.procyon.org.uk>
+ <20190529231112.GB3164@kroah.com>
 MIME-Version: 1.0
-In-Reply-To: <20190521100034.9651-1-omosnace@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190529231112.GB3164@kroah.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+> > Looking at the perf ring buffer, there appears to be a missing barrier in
+> > perf_aux_output_end():
+> > 
+> > 	rb->user_page->aux_head = rb->aux_head;
+> > 
+> > should be:
+> > 
+> > 	smp_store_release(&rb->user_page->aux_head, rb->aux_head);
+> > 
+> > It should also be using smp_load_acquire().  See
+> > Documentation/core-api/circular-buffers.rst
+> > 
+> > And a (partial) patch has been proposed: https://lkml.org/lkml/2018/5/10/249
+> 
+> So, if that's all that needs to be fixed, can you use the same
+> buffer/code if that patch is merged?
 
-On 21/05/2019 12:00, Ondrej Mosnacek wrote:
-> This patch adds new socket options to AF_ALG that allow setting key from
-> kernel keyring. For simplicity, each keyring key type (logon, user,
-> trusted, encrypted) has its own socket option name and the value is just
-> the key description string that identifies the key to be used. The key
-> description doesn't need to be NULL-terminated, but bytes after the
-> first zero byte are ignored.
+That's about one year old...: let me add the usual suspects in Cc:  ;-)
+since I'm not sure what the plan was (or if I'm missing something) ...
 
-There is one nasty problem with this approach (we hit the same in dmcrypt now).
+Speaking of ring buffer implementations (and relatively "old" patches),
+here's another quite interesting:
 
-These lines cause hard module dependence on trusted.ko and encrypted.ko
-modules (key_type_* are exported symbols):
+  https://lkml.kernel.org/r/20181211034032.32338-1-yuleixzhang@tencent.com
 
- +static const struct alg_keyring_type alg_keyring_type_trusted = {
- +	.key_type = &key_type_trusted,...
-...
- +	.key_type = &key_type_encrypted,
-
-I do not think this is what we actually want - the dependence should be dynamic,
-the modules should be loaded per-request...
-
-I asked David Howells, and seems kernel keyring does not have such
-interface yet. (There is an internal lookup function already though.)
-
-So until such a lookup interface is present, and the patch is ported to it,
-I think this patch adds module dependency that should not be there.
-
-Milan
+Thanks,
+  Andrea
