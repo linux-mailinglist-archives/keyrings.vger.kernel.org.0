@@ -2,53 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E264C30493
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 00:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D702130A62
+	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 10:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfE3WD4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 May 2019 18:03:56 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:43080 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726386AbfE3WDz (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 30 May 2019 18:03:55 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 5DFC9307D910;
-        Thu, 30 May 2019 22:03:50 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 21C7960C5F;
-        Thu, 30 May 2019 22:03:48 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20190530181248.GC70051@gmail.com>
-References: <20190530181248.GC70051@gmail.com> <155923711088.949.14909672457214372214.stgit@warthog.procyon.org.uk>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
-        Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        James Morris <jamorris@linux.microsoft.com>,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/10] keys: Miscellany [ver #2]
+        id S1726331AbfEaIfs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 31 May 2019 04:35:48 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50224 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbfEaIfs (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 31 May 2019 04:35:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=NYSXgtyp6qFIdURiXa8bdXnjz75azFUheeU4NBYX14M=; b=IcV+NfVF6AYcyTf2poTfMuQeD
+        XryTcYrTrHAMk4reMf3GJ1IXzhpOk5ITbYSlFEcvrlNo8ZFaIg2sZKFIOUqrbCNAmd0LHYC490hVh
+        LAWqsrB2u9lfZTNJQZr3tUWVGIS1gt6ATDEdOBeU+cC330I+4/SLe9Yh/UmxRTvqLHBirg4fDOsLq
+        AlIdc1zlzH9wXoiVlyQgW1Tx2p7tlGu4DUbRf/gy16GxsMAX/KPe2dqge5gIojO4f9IpUlNg8cdM9
+        wwdQk8f4N3qOcxbmcIMMqG5+HZp9Wiw6rL3K9N8zlD/vehFQitIuSxWpXIBS1R9MS3PQ9I5aE/mDJ
+        nhTrQLwWA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hWd0p-0003pt-W9; Fri, 31 May 2019 08:35:44 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 4BECC201B8CFE; Fri, 31 May 2019 10:35:42 +0200 (CEST)
+Date:   Fri, 31 May 2019 10:35:42 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Andrea Parri <andrea.parri@amarulasolutions.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        David Howells <dhowells@redhat.com>, viro@zeniv.linux.org.uk,
+        raven@themaw.net, linux-fsdevel@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-block@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Will Deacon <will.deacon@arm.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able
+ ring buffer
+Message-ID: <20190531083542.GL2623@hirez.programming.kicks-ass.net>
+References: <20190528231218.GA28384@kroah.com>
+ <20190528162603.GA24097@kroah.com>
+ <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
+ <4031.1559064620@warthog.procyon.org.uk>
+ <31936.1559146000@warthog.procyon.org.uk>
+ <20190529231112.GB3164@kroah.com>
+ <20190530095039.GA5137@andrea>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <24107.1559253828.1@warthog.procyon.org.uk>
-Date:   Thu, 30 May 2019 23:03:48 +0100
-Message-ID: <24108.1559253828@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 30 May 2019 22:03:55 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190530095039.GA5137@andrea>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Eric Biggers <ebiggers@kernel.org> wrote:
+On Thu, May 30, 2019 at 11:50:39AM +0200, Andrea Parri wrote:
+> > > Looking at the perf ring buffer, there appears to be a missing barrier in
+> > > perf_aux_output_end():
+> > > 
+> > > 	rb->user_page->aux_head = rb->aux_head;
+> > > 
+> > > should be:
+> > > 
+> > > 	smp_store_release(&rb->user_page->aux_head, rb->aux_head);
+> > > 
+> > > It should also be using smp_load_acquire().  See
+> > > Documentation/core-api/circular-buffers.rst
+> > > 
+> > > And a (partial) patch has been proposed: https://lkml.org/lkml/2018/5/10/249
+> > 
+> > So, if that's all that needs to be fixed, can you use the same
+> > buffer/code if that patch is merged?
+> 
+> That's about one year old...: let me add the usual suspects in Cc:  ;-)
+> since I'm not sure what the plan was (or if I'm missing something) ...
 
-> syzkaller still manages to crash something in the keys subsystem really
-> quickly when I run it on that branch (commit 35036b7e765b6):
+The AUX crud is 'special' and smp_store_release() doesn't really help in
+many cases. Notable, AUX is typically used in combination with a
+hardware writer. The driver is in charge of odering here, the generic
+code doesn't know what the appropriate barrier (if any) is and would
+have to resort to the most expensive/heavy one available.
 
-I've pushed a new version that should fix that, thanks.
+Also see the comment right above this function:
 
-David
+ "It is the
+  pmu driver's responsibility to observe ordering rules of the hardware,
+  so that all the data is externally visible before this is called."
+
+
