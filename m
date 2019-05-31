@@ -2,135 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5837230E36
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 14:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DC730ECD
+	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 15:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726403AbfEaMmc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 31 May 2019 08:42:32 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:24302 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726330AbfEaMmc (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 31 May 2019 08:42:32 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id DCFCF3179B6E;
-        Fri, 31 May 2019 12:42:31 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 211B85C21A;
-        Fri, 31 May 2019 12:42:26 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20190529230954.GA3164@kroah.com>
-References: <20190529230954.GA3164@kroah.com> <20190528231218.GA28384@kroah.com> <20190528162603.GA24097@kroah.com> <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk> <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk> <4031.1559064620@warthog.procyon.org.uk> <31936.1559146000@warthog.procyon.org.uk>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk, raven@themaw.net,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        id S1726531AbfEaN0r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 31 May 2019 09:26:47 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:60612 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726485AbfEaN0q (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 31 May 2019 09:26:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=8n09TENg//rbgbzsGXRPd289l+d2UZWCH+fGg2NaHa4=; b=oMieT2howrG7WS9bOvNKdCmiR
+        jX6TmxtTHoTJ6p19NQ7BG0HE7FY04HsI5/nyRw+Aq42dtfLxVH85f/Oo1wrKHZiXHSYILXb6bYx6K
+        yhA1rgynmCx8lfqGcZssXNV6HHnn7atgrynyvL/+8MltoPvEPtws/8cz6hOIaknzrE3S4stP3RQCA
+        +MPBd2PAi7l2iU3fhSRgYTaCLKkRqUgtXi6eiRPa1g0WJHp8m2WPOXwF9+0/y9HLU+804TTCeG+yR
+        KtRFcgaXX9U1NowGmovnO8AyDivrrgn/IpW9UKTGwPivpjuRU9V2uX1aDiIUIutXoeABwDttquviR
+        2s09w9mqg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hWhY5-0007pO-9M; Fri, 31 May 2019 13:26:21 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 158FF201822CC; Fri, 31 May 2019 15:26:20 +0200 (CEST)
+Date:   Fri, 31 May 2019 15:26:20 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jann Horn <jannh@google.com>, Greg KH <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
         linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able ring buffer
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kernel Hardening <kernel-hardening@lists.openwall.com>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able
+ ring buffer
+Message-ID: <20190531132620.GC2606@hirez.programming.kicks-ass.net>
+References: <20190531111445.GO2677@hirez.programming.kicks-ass.net>
+ <CAG48ez0R-R3Xs+3Xg9T9qcV3Xv6r4pnx1Z2y=Ltx7RGOayte_w@mail.gmail.com>
+ <20190528162603.GA24097@kroah.com>
+ <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
+ <4031.1559064620@warthog.procyon.org.uk>
+ <20190528231218.GA28384@kroah.com>
+ <31936.1559146000@warthog.procyon.org.uk>
+ <16193.1559163763@warthog.procyon.org.uk>
+ <21942.1559304135@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <24719.1559306541.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Fri, 31 May 2019 13:42:21 +0100
-Message-ID: <24720.1559306541@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Fri, 31 May 2019 12:42:32 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21942.1559304135@warthog.procyon.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Greg KH <gregkh@linuxfoundation.org> wrote:
+On Fri, May 31, 2019 at 01:02:15PM +0100, David Howells wrote:
+> Peter Zijlstra <peterz@infradead.org> wrote:
+> 
+> > Can you re-iterate the exact problem? I konw we talked about this in the
+> > past, but I seem to have misplaced those memories :/
+> 
+> Take this for example:
+> 
+> 	void afs_put_call(struct afs_call *call)
+> 	{
+> 		struct afs_net *net = call->net;
+> 		int n = atomic_dec_return(&call->usage);
+> 		int o = atomic_read(&net->nr_outstanding_calls);
+> 
+> 		trace_afs_call(call, afs_call_trace_put, n + 1, o,
+> 			       __builtin_return_address(0));
+> 
+> 		ASSERTCMP(n, >=, 0);
+> 		if (n == 0) {
+> 			...
+> 		}
+> 	}
+> 
+> I am printing the usage count in the afs_call tracepoint so that I can use it
+> to debug refcount bugs.  If I do it like this:
+> 
+> 	void afs_put_call(struct afs_call *call)
+> 	{
+> 		int n = refcount_read(&call->usage);
+> 		int o = atomic_read(&net->nr_outstanding_calls);
+> 
+> 		trace_afs_call(call, afs_call_trace_put, n, o,
+> 			       __builtin_return_address(0));
+> 
+> 		if (refcount_dec_and_test(&call->usage)) {
+> 			...
+> 		}
+> 	}
+> 
+> then there's a temporal gap between the usage count being read and the actual
+> atomic decrement in which another CPU can alter the count.  This can be
+> exacerbated by an interrupt occurring, a softirq occurring or someone enabling
+> the tracepoint.
+> 
+> I can't do the tracepoint after the decrement if refcount_dec_and_test()
+> returns false unless I save all the values from the object that I might need
+> as the object could be destroyed any time from that point on.
 
-> > kref_put() enforces a very specific destructor signature.  I know of places
-> > where that doesn't work because the destructor takes more than one argument
-> > (granted that this is not the case here).  So why does kref_put() exist at
-> > all?  Why not kref_dec_and_test()?
->
-> The destructor only takes one object pointer as you are finally freeing
-> that object.  What more do you need/want to "know" at that point in
-> time?
+Is it not the responsibility of the task that affects the 1->0
+transition to actually free the memory?
 
-Imagine that I have an object that's on a list rooted in a namespace and that
-I have a lot of these objects.  Imagine further that any time I want to put a
-ref on one of these objects, it's in a context that has the namespace pinned.
-I therefore don't need to store a pointer to the namespace in every object
-because I can pass that in to the put function
+That is, I'm expecting the '...' in both cases above the include the
+actual freeing of the object. If this is not the case, then @usage is
+not a reference count.
 
-Indeed, I can still access the namespace even after the decrement didn't
-reduce the usage count to 0 - say for doing statistics.
+(and it has already been established that refcount_t doesn't work for
+usage count scenarios)
 
-> What would kref_dec_and_test() be needed for?
-
-Why do you need kref_put() to take a destructor function pointer?  Why cannot
-that be replaced with, say:
-
-	static inline bool __kref_put(struct kref *k)
-	{
-		return refcount_dec_and_test(&k->refcount);
-	}
-
-and then one could do:
-
-	void put_foo(struct foo_net *ns, struct foo *f)
-	{
-		if (__kref_put(&f->refcount)) {
-			// destroy foo
-		}
-	}
-
-that way the destruction code does not have to be offloaded into its own
-function and you still have your pattern to look for.
-
-For tracing purposes, I could live with something like:
-
-	static inline
-	bool __kref_put_return(struct kref *k, unsigned int *_usage)
-	{
-		return refcount_dec_and_test_return(&k->refcount, _usage);
-	}
-
-and then I could do:
-
-	void put_foo(struct foo_net *ns, struct foo *f)
-	{
-		unsigned int u;
-		bool is_zero = __kref_put_return(&f->refcount, &u);
-
-		trace_foo_refcount(f, u);
-		if (is_zero) {
-			// destroy foo
-		}
-	}
-
-then it could be made such that you can disable the ability of
-refcount_dec_and_test_return() to pass back a useful refcount value if you
-want a bit of extra speed.
-
-Or even if refcount_dec_return() is guaranteed to return 0 if the count hits
-the floor and non-zero otherwise and there's a config switch to impose a
-stronger guarantee that it will return a value that's appropriately
-transformed to look as if I was using atomic_dec_return().
-
-Similarly for refcount_inc_return() - it could just return gibberish unless
-the same config switch is enabled.
-
-Question for AMD/Intel guys: I'm curious if LOCK DECL faster than LOCK XADD -1
-on x86_64?
-
-> > Why doesn't refcount_t get merged into kref, or vice versa?  Having both
-> > would seem redundant.
->
-> kref uses refcount_t and provides a different functionality on top of
-> it.  Not all uses of a refcount in the kernel is for object lifecycle
-> reference counting, as you know :)
-
-I do?  I can't think of one offhand.  Not that I'm saying you're wrong on
-that - there's an awful lot of kernel.
-
-David
+Aside from that, is the problem that refcount_dec_and_test() returns a
+boolean (true - last put, false - not last) instead of the refcount
+value? This does indeed make it hard to print the exact count value for
+the event.
