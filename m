@@ -2,36 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8486030D2B
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 13:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD45630DB3
+	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 14:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726555AbfEaLPD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 31 May 2019 07:15:03 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:42694 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726240AbfEaLPC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 31 May 2019 07:15:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=0bzCcEeHXEwR7c+WQ7EMhHPHTFa6pRbMCfQNYRgGQ50=; b=TZRqiz+eB19FKOviEbwMF50eL
-        tkVinge7hG7nufh2+jXjJimy3MX8tBcxRj3YQ//UpQYvtJgMfKOhWXOXbYLoPoseaA8GM16AkT9se
-        Jngp47DXJ0z8Aw/MuS1HRC8U73Vd1LivUdfY5v/tC0ZNDKoBOdj6+6VODUmz8iT2gJDy2a+4tpMBx
-        VO+5A3Gl8tI5ZU5dfFyOOeE7KYOq4wxlJF67H2SjwQSOphmha3VHx2Fo9JYu9EsuOvlTOySnke9tM
-        z2Nkt7Oukx13QfyTJ/CxJdaCY4q6AKkM/OC82uZli8h02Sua/xANMZ4b54zPgJGxij2HRdkFUR5Ql
-        hCLOaznLw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hWfUl-0002gF-9Z; Fri, 31 May 2019 11:14:47 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BA181201D5AB1; Fri, 31 May 2019 13:14:45 +0200 (CEST)
-Date:   Fri, 31 May 2019 13:14:45 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Jann Horn <jannh@google.com>, Greg KH <gregkh@linuxfoundation.org>,
+        id S1726442AbfEaMCb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 31 May 2019 08:02:31 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:34542 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726330AbfEaMCa (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 31 May 2019 08:02:30 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id AD5363001789;
+        Fri, 31 May 2019 12:02:29 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1F522176B4;
+        Fri, 31 May 2019 12:02:17 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20190531111445.GO2677@hirez.programming.kicks-ass.net>
+References: <20190531111445.GO2677@hirez.programming.kicks-ass.net> <CAG48ez0R-R3Xs+3Xg9T9qcV3Xv6r4pnx1Z2y=Ltx7RGOayte_w@mail.gmail.com> <20190528162603.GA24097@kroah.com> <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk> <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk> <4031.1559064620@warthog.procyon.org.uk> <20190528231218.GA28384@kroah.com> <31936.1559146000@warthog.procyon.org.uk> <16193.1559163763@warthog.procyon.org.uk>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     dhowells@redhat.com, Jann Horn <jannh@google.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
         Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Linux API <linux-api@vger.kernel.org>,
@@ -40,42 +37,70 @@ Cc:     Jann Horn <jannh@google.com>, Greg KH <gregkh@linuxfoundation.org>,
         kernel list <linux-kernel@vger.kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Kernel Hardening <kernel-hardening@lists.openwall.com>
-Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able
- ring buffer
-Message-ID: <20190531111445.GO2677@hirez.programming.kicks-ass.net>
-References: <CAG48ez0R-R3Xs+3Xg9T9qcV3Xv6r4pnx1Z2y=Ltx7RGOayte_w@mail.gmail.com>
- <20190528162603.GA24097@kroah.com>
- <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
- <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
- <4031.1559064620@warthog.procyon.org.uk>
- <20190528231218.GA28384@kroah.com>
- <31936.1559146000@warthog.procyon.org.uk>
- <16193.1559163763@warthog.procyon.org.uk>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able ring buffer
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16193.1559163763@warthog.procyon.org.uk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <21941.1559304135.1@warthog.procyon.org.uk>
+Date:   Fri, 31 May 2019 13:02:15 +0100
+Message-ID: <21942.1559304135@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Fri, 31 May 2019 12:02:30 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 29, 2019 at 10:02:43PM +0100, David Howells wrote:
-> Jann Horn <jannh@google.com> wrote:
-> 
-> > Does this mean that refcount_read() isn't sufficient for what you want
-> > to do with tracing (because for some reason you actually need to know
-> > the values atomically at the time of increment/decrement)?
-> 
-> Correct.  There's a gap and if an interrupt or something occurs, it's
-> sufficiently big for the refcount trace to go weird.
-> 
-> I've seen it in afs/rxrpc where the incoming network packets that are part of
-> the rxrpc call flow disrupt the refcounts noted in trace lines.
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-Can you re-iterate the exact problem? I konw we talked about this in the
-past, but I seem to have misplaced those memories :/
+> Can you re-iterate the exact problem? I konw we talked about this in the
+> past, but I seem to have misplaced those memories :/
 
-FWIW I agree that kref is useless fluff, but I've long ago given up on
-that fight.
+Take this for example:
+
+	void afs_put_call(struct afs_call *call)
+	{
+		struct afs_net *net = call->net;
+		int n = atomic_dec_return(&call->usage);
+		int o = atomic_read(&net->nr_outstanding_calls);
+
+		trace_afs_call(call, afs_call_trace_put, n + 1, o,
+			       __builtin_return_address(0));
+
+		ASSERTCMP(n, >=, 0);
+		if (n == 0) {
+			...
+		}
+	}
+
+I am printing the usage count in the afs_call tracepoint so that I can use it
+to debug refcount bugs.  If I do it like this:
+
+	void afs_put_call(struct afs_call *call)
+	{
+		int n = refcount_read(&call->usage);
+		int o = atomic_read(&net->nr_outstanding_calls);
+
+		trace_afs_call(call, afs_call_trace_put, n, o,
+			       __builtin_return_address(0));
+
+		if (refcount_dec_and_test(&call->usage)) {
+			...
+		}
+	}
+
+then there's a temporal gap between the usage count being read and the actual
+atomic decrement in which another CPU can alter the count.  This can be
+exacerbated by an interrupt occurring, a softirq occurring or someone enabling
+the tracepoint.
+
+I can't do the tracepoint after the decrement if refcount_dec_and_test()
+returns false unless I save all the values from the object that I might need
+as the object could be destroyed any time from that point on.  In this
+particular case, that's just call->debug_id, but it could be other things in
+other cases.
+
+Note that I also can't touch the afs_net object in that situation either, and
+the outstanding calls count that I record will potentially be out of date -
+but there's not a lot I can do about that.
+
+David
