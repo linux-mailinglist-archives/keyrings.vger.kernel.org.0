@@ -2,90 +2,81 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 490B431392
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2019 19:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA4E334F7
+	for <lists+keyrings@lfdr.de>; Mon,  3 Jun 2019 18:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726593AbfEaRMw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 31 May 2019 13:12:52 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:37760 "EHLO mx1.redhat.com"
+        id S1728239AbfFCQam (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 3 Jun 2019 12:30:42 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:38008 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726558AbfEaRMv (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 31 May 2019 13:12:51 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        id S1728228AbfFCQam (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 3 Jun 2019 12:30:42 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 1C2FA85365;
-        Fri, 31 May 2019 17:12:51 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 7579081E05;
+        Mon,  3 Jun 2019 16:30:31 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3B5C958CA2;
-        Fri, 31 May 2019 17:12:48 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E09DC5D9C6;
+        Mon,  3 Jun 2019 16:30:26 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
 From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20190531164444.GD2606@hirez.programming.kicks-ass.net>
-References: <20190531164444.GD2606@hirez.programming.kicks-ass.net> <CAG48ez0R-R3Xs+3Xg9T9qcV3Xv6r4pnx1Z2y=Ltx7RGOayte_w@mail.gmail.com> <20190528162603.GA24097@kroah.com> <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk> <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk> <4031.1559064620@warthog.procyon.org.uk> <20190528231218.GA28384@kroah.com> <31936.1559146000@warthog.procyon.org.uk> <16193.1559163763@warthog.procyon.org.uk> <21942.1559304135@warthog.procyon.org.uk> <606.1559312412@warthog.procyon.org.uk>
-To:     Peter Zijlstra <peterz@infradead.org>
+In-Reply-To: <c95dd6cd-5530-6b70-68f6-4038edd72352@schaufler-ca.com>
+References: <c95dd6cd-5530-6b70-68f6-4038edd72352@schaufler-ca.com> <CAG48ez2rRh2_Kq_EGJs5k-ZBNffGs_Q=vkQdinorBgo58tbGpg@mail.gmail.com> <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk> <155905933492.7587.6968545866041839538.stgit@warthog.procyon.org.uk> <14347.1559127657@warthog.procyon.org.uk> <312a138c-e5b2-4bfb-b50b-40c82c55773f@schaufler-ca.com> <CAG48ez2KMrTBFzO9p8GvduXruz+FNLPyhc2YivHePsgViEoT1g@mail.gmail.com>
+To:     Casey Schaufler <casey@schaufler-ca.com>
 Cc:     dhowells@redhat.com, Jann Horn <jannh@google.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
         Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Linux API <linux-api@vger.kernel.org>,
         linux-block@vger.kernel.org, keyrings@vger.kernel.org,
         linux-security-module <linux-security-module@vger.kernel.org>,
         kernel list <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Kernel Hardening <kernel-hardening@lists.openwall.com>
-Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able ring buffer
+        Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH 3/7] vfs: Add a mount-notification facility
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <15400.1559322762.1@warthog.procyon.org.uk>
-Date:   Fri, 31 May 2019 18:12:42 +0100
-Message-ID: <15401.1559322762@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Fri, 31 May 2019 17:12:51 +0000 (UTC)
+Content-ID: <19413.1559579426.1@warthog.procyon.org.uk>
+Date:   Mon, 03 Jun 2019 17:30:26 +0100
+Message-ID: <19414.1559579426@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Mon, 03 Jun 2019 16:30:41 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Peter Zijlstra <peterz@infradead.org> wrote:
+Casey Schaufler <casey@schaufler-ca.com> wrote:
 
-> > > (and it has already been established that refcount_t doesn't work for
-> > > usage count scenarios)
-> > 
-> > ?
-> > 
-> > Does that mean struct kref doesn't either?
+> >> should be used. Someone or something caused the event. It can
+> >> be important who it was.
+> > The kernel's normal security model means that you should be able to
+> > e.g. accept FDs that random processes send you and perform
+> > read()/write() calls on them without acting as a subject in any
+> > security checks; let alone close().
 > 
-> Indeed, since kref is just a pointless wrapper around refcount_t it does
-> not either.
-> 
-> The main distinction between a reference count and a usage count is that
-> 0 means different things. For a refcount 0 means dead. For a usage count
-> 0 is merely unused but valid.
+> Passed file descriptors are an anomaly in the security model
+> that (in this developer's opinion) should have never been
+> included. More than one of the "B" level UNIX systems disabled
+> them outright. 
 
-Ah - I consider the terms interchangeable.
+Considering further on this, I think the only way to implement what you're
+suggesting is to add a field to struct file to record the last fputter's creds
+as the procedure of fputting is offloaded to a workqueue.
 
-Take Documentation/filesystems/vfs.txt for instance:
+Note that's last fputter, not the last closer, as we don't track the number of
+open fds linked to a file struct.
 
-  dget: open a new handle for an existing dentry (this just increments
-	the usage count)
+In the case of AF_UNIX sockets that contain in-the-process-of-being-passed fds
+at the time of closure, this is further complicated by the socket fput being
+achieved in the work item - thereby adding layers of indirection.
 
-  dput: close a handle for a dentry (decrements the usage count). ...
+It might be possible to replace f_cred rather than adding a new field, but
+that might get used somewhere after that point.
 
-  ...
-
-  d_lookup: look up a dentry given its parent and path name component
-	It looks up the child of that given name from the dcache
-	hash table. If it is found, the reference count is incremented
-	and the dentry is returned. The caller must use dput()
-	to free the dentry when it finishes using it.
-
-Here we interchange the terms.
-
-Or https://www.kernel.org/doc/gorman/html/understand/understand013.html
-which seems to interchange the terms in reference to struct page.
+Note also that fsnotify_close() doesn't appear to use the last fputter's path
+since it's not available if called from deferred fput.
 
 David
