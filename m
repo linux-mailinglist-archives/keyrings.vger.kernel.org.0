@@ -2,51 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58015351AF
-	for <lists+keyrings@lfdr.de>; Tue,  4 Jun 2019 23:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5DF35279
+	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2019 00:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbfFDVLw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 4 Jun 2019 17:11:52 -0400
-Received: from sonic309-27.consmr.mail.gq1.yahoo.com ([98.137.65.153]:42694
-        "EHLO sonic309-27.consmr.mail.gq1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726305AbfFDVLw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jun 2019 17:11:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1559682711; bh=rIePoQB7SfoXEtKT+Ykbw4tlwyh2+weCxD1TWpXWU/c=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=bUNqTZBshgF6lT2ZVGKEVPunsAMpq5+svvqycwgdRizvoFNDcMTjzq8O8BzRgWTy20oKaeKLCbOGDHNjwrLy80H+r7EDQ+kRgCWNkA/iFAAzZu+/nVHvsZctgenjAfal4onefIbkptu2SUUNI8HxYaGSVCWjapatN9dOYmHtwJZ5Bp6AUzbo+R5HMTA+aW7DLnuYnh2G4F9yXtBh0iY0ihXehWMRKq6weOaCymsiRYW+pcUBNM6awBGTvh3p9mLNFDjkDmWWVo8u62+52bXhpd4GaNzQiaMnwQbrQ2L9JcQOOmm+Bc8B0I1xu3iwkQKjcwfg0G80RwiauPpoH4v0GQ==
-X-YMail-OSG: bECyNgYVM1m1qz1rZ5_tSVQtdUXUh55m1CyhbxS.3Xc0MUkAPWDot8hT0_j.5Cc
- joS1KBruJIc_X5e_jEU6hNJ.qSDDbwfSzMW9swkznzXAbo.acChmA14CnCZQEWslaoDGD7xNC_F4
- mCljYqz_OtRck9PZXw7hvFABWR8V_m.4Wvt0UTcIexC5AsCRYB7F5J.8JpbWq8yiCpMfpKGg8AVc
- l2V9inOFhhv74sO8Uh4JryZHGnajGSAO8TnrimPg4n1wKQ1yc_TD7FMjO.N1uB7GOLBmlt2r3GtU
- 3LdTAM3Tx_7vX3fNmcdt8P9pH8dvFwxSDWuOKwM7DK0Z.kmc9tRkpH8v3kqldXFsihy7vmlXoQUU
- yg1TgYqypAnCRjR3gK6Fsr9yE9xk1mNwNcXafU9ZHLQ79Fd1kxUS0lPKT9YLCtZIjtJb2qv_jvdB
- hZUOdzp.efFPJytC0256TjCZeQ5LHW58DiNWCujiV9S3HtfwUWtdbHJs3fbDwq5pxTrLYAlouidw
- ocDrVpJZN4k7FRHq2j0DYLHAEEbxsRczZClzrGX5jxt4AoW5UGBcfvHXQC21WkkuHoeZkE5OvOt8
- vMzdvhfld8iGr8TjDQbjQdEdJbzseRHPUwNlcg6zpPGeHr463OOGmFSzgRHUmIPvrI5I93Hl0znb
- 8_qEflCOEbT2ZlPhlPylK5R1dzxI2fw1am.ngJq3axlgi..p.j32f6UHUy_L.YMdKjOzO9tgHuc3
- esc0pQaFqbzBCiu1kVjM0fOh.N0nk9uwOhjYT3TVCeA_07aDRdQ6O.1EnDW44JjE1tLplzKqW_3E
- yRk3D6HhnHjAcVh_X6buY5Udc91GZn0dL2eU90VGiKSMN5.mDSJVPgiiOXdR_rMyZQivtswiBAWV
- ScBCv_6jmYkbezFq8f2VW80FsSmcaGkUJhHH7iiLDT_rTxCxuAvLbll_Q_zPyG0TEL1r.zi8fyV8
- oAYzKtufldOj3yhVo5buNU.41QaetVG6c8qt40p2Y2Z7Z1oz2sU.d2zzkRwCkU11c9_JqASVLjEL
- tYIgIw7OJYeOXJl5DhXD0OYP4m0oumbkf_aVhQtjZm4UuouzDD7OQIeYRvOEdLuYtu7nY9f90I1t
- 8TI4SYJCtOiQS3W6JrGbxKFgIqCtsZcIyJFqPXFGuhyvljYzqFs.UntcTp519S92VYfqPLgv6rRU
- PdoMhX.eSz_aMuF8d.TsZgLwI72fG1cycruTmx2QMYBHSabcqmDGXRQeMGyihDgNNAR.cuS4CxDM
- ndMgn6AN2SGDbBOIE5pAI3m7_PFE8f7sUEQ--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.gq1.yahoo.com with HTTP; Tue, 4 Jun 2019 21:11:51 +0000
+        id S1726464AbfFDWDV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 4 Jun 2019 18:03:21 -0400
+Received: from sonic316-13.consmr.mail.gq1.yahoo.com ([98.137.69.37]:34045
+        "EHLO sonic316-13.consmr.mail.gq1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726454AbfFDWDU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jun 2019 18:03:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1559685798; bh=it87Li8X1fzF6GnnpwKo6n6EaGmfjJ8Zx/rKpthubcA=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=nTT+jq/IkCSW8jSPuC7/EK2CCafFikNs7Nxw1eVCJ+35tu+RUoNf6sJppH8Cxcu9guKIcRsIi0BtfAMXkrqFVQIGBJex3tF/eMZQMYum1gvFy0BYx8GyRUuyz+BgwTYUaEbDYK58eqU2pDA/BzIh05WojCGemt+NzYK1EIFC57/sFMXq2VNcXkzOntfSkPXzDmaogCyAp3UVWg+RFhKUvPiC6/w/nAQYxNxZdw/V64cR9FjHMexZbbZDEAnC9m/Kq6/g6JqD9Q9Z7t6t2Krzy6bXolNfEX4oMfnpI6gRKiMWsHEWcRmrX0/PHVhfgeWwGvmrk0uQr/GaG1baRZ6/Dw==
+X-YMail-OSG: HV0Z7VcVM1me.wz6aCLBtkVrXZPA34GAH._hP_ysc0btY5aY.ICZx0YRJneQSFz
+ 2_..lJdN.bMR_HPncp8WGB.hDsTj_baStuZAmvgjmnxS990UtjdGvrvYfr4sAWRE1qEmhbNixDGM
+ 9p2YGaXpFdSpo0OU2QKXc39qeb7SUgd2qXPIRI1uFPuzz1qk3rlQbY8BZYwAmt2o5FO2JINwaUZv
+ H3zICJvqi7U.TNDHJxp6jcTRTRp5PQmGKcIEySX6_Vm2ImwnozvwaD7q.BIoTDbaGYgbFipVYEW2
+ cp.BQz4Md3_XtXwDuMybaMPP591sV.bTvN.B9Pw.2wKzAbMC5SRL6fCO_bUbek7kDIAXMHt1FNZx
+ zsc2iRI6UibC8ahPEAhVSeJVWPkR_FOY9kRVXvGCctfAITwrtY_u27t4.OCtxTx0DLaXNQFGGOB0
+ E9P6p8F5Iei6vgqbIruTro.KBL1pJp4Q4c8qztomPgSfuzycXYjyThSMDEpRfbcONGaOuZGRGvhs
+ s.kDM8yFBGwmC3wjaUFqUTIxUU7HuWkyXPK.iNstgEByce_TXzZRitnhP8x2AonyhWKFAbgjd_5g
+ wqZzTEjqWplglZwLJXjGTyqLudmVDKON3cEJCQ6RTxbsuCweXnYdaoY.vOthd8ajNyyIp5tmB9HJ
+ J8kzuClvOPvJbAPuejISlhCTDNppq4qKddF4ZZX3PtvqrIaSNuxRNPhgulGOdHVbbKFoZmLlzdCC
+ cwVZ7vr0p7opz9sMEc4IzmG4JXkNRBE_F6POrEsGgO0hDJvHiL8LBhZmyboUfoRvLdXTDVuf3x95
+ VpOzOElFvyM8jsIY2vvMdt5dXSk_JPiJG5dE.NrEh07ZnqqIdH_x4aLpbdjemn8IL52g5RwXXe49
+ le0eJ.Kb9.XPXRg6WGwvRKcibf3p2Ghzef.jDRHCGtsk0CAiD6usMzguLVHdOwXBBMc4U85J_1qG
+ _ZMzXpznr_1sdQcrJ0MqUlOwSDl7E.2aGTL5MIuDi9BPdtkwgCVyrujndwLwovXJ8aAYeQl_Pcrz
+ 7xUCB8kLgHQPyA0N7g1oGsxLcrJp2fqI4e3mon_pop8RBkZv.x.H2O7l74wv8acwppXTLNMz_jqy
+ 02.6ZisMlRLmOUY8yPAXLOLnvEmbajtyRQcQgD1iLs9gNICjrFcSCyFsvQjWLxj3yQ__jIyIA0eu
+ 1MR0Str0aPbFZrspZqk.PnIKlARtm_dharD6lUxJPvhQMYTqiG9jUjp5YhTdyJEwWXM6IcG21_WW
+ 4oVxGZgzfqg--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.gq1.yahoo.com with HTTP; Tue, 4 Jun 2019 22:03:18 +0000
 Received: from c-73-223-4-185.hsd1.ca.comcast.net (EHLO [192.168.0.103]) ([73.223.4.185])
-          by smtp419.mail.gq1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID e29402de8ce9ac532fdb1db0d6288519;
-          Tue, 04 Jun 2019 21:11:46 +0000 (UTC)
+          by smtp413.mail.gq1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID f9df356a2f48fa04da5bc0865b0d3777;
+          Tue, 04 Jun 2019 22:03:14 +0000 (UTC)
 Subject: Re: [RFC][PATCH 0/8] Mount, FS, Block and Keyrings notifications [ver
  #2]
-To:     David Howells <dhowells@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
         Linux FS Devel <linux-fsdevel@vger.kernel.org>,
         Linux API <linux-api@vger.kernel.org>,
         linux-block@vger.kernel.org, keyrings@vger.kernel.org,
         LSM List <linux-security-module@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>, casey@schaufler-ca.com
-References: <CALCETrWzDR=Ap8NQ5-YrVhXCEBgr+hwpjw9fBn0m2NkZzZ7XLQ@mail.gmail.com>
- <155966609977.17449.5624614375035334363.stgit@warthog.procyon.org.uk>
- <1207.1559680778@warthog.procyon.org.uk>
+References: <155966609977.17449.5624614375035334363.stgit@warthog.procyon.org.uk>
+ <CALCETrWzDR=Ap8NQ5-YrVhXCEBgr+hwpjw9fBn0m2NkZzZ7XLQ@mail.gmail.com>
+ <50c2ea19-6ae8-1f42-97ef-ba5c95e40475@schaufler-ca.com>
+ <CALCETrWFBA8H0RiZPikLtEi8xg-cqJLtQgnU2CGTuwByrHN7Dw@mail.gmail.com>
 From:   Casey Schaufler <casey@schaufler-ca.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=casey@schaufler-ca.com; keydata=
@@ -93,12 +94,12 @@ Autocrypt: addr=casey@schaufler-ca.com; keydata=
  wQ1QL4o4t1hviM7LyoflsCLnQFJh6RSBhBpKQinMJl/z0A6NYDkQi6vEGMDBWX/M2vk9Jvwa
  v0cEBfY3Z5oFgkh7BUORsu1V+Hn0fR/Lqq/Pyq+nTR26WzGDkolLsDr3IH0TiAVH5ZuPxyz6
  abzjfg==
-Message-ID: <3ca991d1-4056-c45b-dbae-9976fb5d81e0@schaufler-ca.com>
-Date:   Tue, 4 Jun 2019 14:11:45 -0700
+Message-ID: <7645e662-8053-aeb4-ec79-57aa0bab4932@schaufler-ca.com>
+Date:   Tue, 4 Jun 2019 15:03:12 -0700
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <1207.1559680778@warthog.procyon.org.uk>
+In-Reply-To: <CALCETrWFBA8H0RiZPikLtEi8xg-cqJLtQgnU2CGTuwByrHN7Dw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Content-Language: en-US
@@ -107,56 +108,120 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 6/4/2019 1:39 PM, David Howells wrote:
-> Andy Lutomirski <luto@kernel.org> wrote:
+On 6/4/2019 2:05 PM, Andy Lutomirski wrote:
+> On Tue, Jun 4, 2019 at 1:31 PM Casey Schaufler <casey@schaufler-ca.com>=
+ wrote:
+>> n 6/4/2019 10:43 AM, Andy Lutomirski wrote:
+>>> On Tue, Jun 4, 2019 at 9:35 AM David Howells <dhowells@redhat.com> wr=
+ote:
+>>>> Hi Al,
+>>>>
+>>>> Here's a set of patches to add a general variable-length notificatio=
+n queue
+>>>> concept and to add sources of events for:
+>>> I asked before and didn't see a response, so I'll ask again.  Why are=
+
+>>> you paying any attention at all to the creds that generate an event?
+>>> It seems like the resulting security model will be vary hard to
+>>> understand and probably buggy.  Can't you define a sensible model in
+>>> which only the listener creds matter?
+>> We've spent the last 18 months reeling from the implications
+>> of what can happen when one process has the ability to snoop
+>> on another. Introducing yet another mechanism that is trivial
+>> to exploit is a very bad idea.
+> If you're talking about Spectre, etc, this is IMO entirely irrelevant.
+
+We're seeing significant interest in using obscure mechanisms
+in system exploits. Mechanisms will be exploited.
+
+> Among other things, setting these watches can and should require some
+> degree of privilege.
+
+Requiring privilege would address the concerns for most
+situations, although I don't see that it would help for
+SELinux. SELinux does not generally put much credence in
+what others consider "privilege".
+
+Extreme care would probably be required for namespaces, too.
+
 >
->>> Here's a set of patches to add a general variable-length notification=
- queue
->>> concept and to add sources of events for:
->> I asked before and didn't see a response, so I'll ask again.  Why are =
-you
->> paying any attention at all to the creds that generate an event?
-> Casey responded to you.  It's one of his requirements.
+>> I will try to explain the problem once again. If process A
+>> sends a signal (writes information) to process B the kernel
+>> checks that either process A has the same UID as process B
+>> or that process A has privilege to override that policy.
+>> Process B is passive in this access control decision, while
+>> process A is active.
+> Are you stating what you see to be a requirement?
 
-Process A takes an action. As a result of that action,
-an event is written to Process B's event buffer. This isn't
-a covert channel, it's a direct access, just like sending
-a signal. Process A is the subject and the event buffer,
-which is part of Process B, is the object.
+Basic subject/object access control is the core of
+the Linux security model. Yes, there are exceptions,
+but mostly they're historical in origin.
 
 
-> I'm not sure of the need, and I particularly don't like trying to make
-> indirect destruction events (mount destruction keyed on fput, for insta=
-nce)
-> carry the creds of the triggerer.  Indeed, the trigger can come from al=
-l sorts
-> of places - including af_unix queue destruction, someone poking around =
-in
-> procfs, a variety of processes fputting simultaneously.  Only one of th=
-em can
-> win, and the LSM needs to handle *all* the possibilities.
+>> Process A must have write access
+>> (defined by some policy) to process B's event buffer.
+> No, stop right here.
 
-Yes, it's a hairy problem. It was a significant factor in the
-demise of kdbus.
+Listening ...
 
-> However, the LSMs (or at least SELinux) ignore f_cred and use current_c=
-red()
-> when checking permissions.  See selinux_revalidate_file_permission() fo=
-r
-> example - it uses current_cred() not file->f_cred to re-evaluate the pe=
-rms,
-> and the fd might be shared between a number of processes with different=
- creds.
->
->> This seems like the wrong approach.  If an LSM wants to prevent covert=
+>   Process B is monitoring some aspect of the
+> system.
 
->> communication from, say, mount actions, then it shouldn't allow the
->> watch to be set up in the first place.
-> Yeah, I can agree to that.  Casey?
+Process B is not "monitoring". At some point in the past it
+has registered a request for information should an event occur.
+It is currently passive.
 
-Back to your earlier point, you don't know where the
-event is coming from when you create the event watch.
-If you enforce a watch time, what are you going to check?
-Isn't this going to be considered too restrictive?
+> Process A is doing something.
+
+Yes. It is active.'
+
+> Process B should need
+> permission to monitor whatever it's monitoring,
+
+OK, I'm good with that. But the only time you
+can tell that is when the event is registered,
+and at that time you can't tell who might be causing
+the event. (Or can you?)
+
+> and process A should
+> have permission to do whatever it's doing.
+
+So there needs to be some connection between what B
+can request events for and what events A can cause.
+Then you can deny B's requests because of A.
+
+>   I don't think it makes
+> sense to try to ascribe an identity to the actor doing some action to
+> decide to omit it from the watch -- this has all kinds of correctness
+> issues.
+
+It works for signals and UDP, but in general I get the concern.
+
+> If you're writing a policy and you don't like letting process B spy on
+> processes doing various things, then disallow that type of spying.
+
+That gets you into a situation where you can't do the legitimate
+monitoring you want to do just because there's the off chance you
+might see something you shouldn't. "I hate security! It's confusing,
+and always gets in the way!"
+
+>> To
+>> implement such a policy requires A's credential,
+> You may not design a new mechanism that looks at the credential in a
+> context where looking at a credential is invalid unless you have some
+> very strong justification for why all of the known reasons that it's a
+> bad idea don't apply to what you're doing.
+
+Point. But you also don't get to ignore basic security policy
+just because someone's spiffy lazy memory free cache hashing
+tree (or similar mechanism) throws away references to important
+information while it's still needed.
+
+> So, without a much stronger justification, NAK.
+
+I try to be reasonable. Really. All I want is something
+with a security model that can be explained coherently=20
+within the context of the basic Linux security model.
+There are enough variations as it is.
 
 
