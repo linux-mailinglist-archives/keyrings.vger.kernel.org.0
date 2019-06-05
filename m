@@ -2,80 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3D135A60
-	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2019 12:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 565CC35D6D
+	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2019 15:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbfFEKTh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 5 Jun 2019 06:19:37 -0400
-Received: from casper.infradead.org ([85.118.1.10]:43968 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727083AbfFEKTh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Jun 2019 06:19:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=NdzflC4Gr8040iG9lX4cUUuc9anxbj+Ahlf/+7okbes=; b=EL3kHoOVTXGy+KW2xPo+W+a2QU
-        uNEpWKc3YYCfEzzNwBmnkjaUEttxGHoMoogxPxFwnynlct5+azuC6t/BW70DZ5sXuF/1OCSn4XWEb
-        H+fNvzbooSlncqfb8H5gUhgfzfobMHIEN7MHMrqBLvkgjz8rlfv9fdxMc2VUkMbX4S7Fr76aviirI
-        gWkSgh5CkSqr4iCOv4MHlh7O1+R9CAzUD79Y6PnTNbBiRXvXV/aPN91NHqeOKmKkFAQaM7imMpPWn
-        NkxRQug79Ozu4qoIH7VJwtLYq2qqE2qsZIW5jZczyj/RgMGr8OFHd5q9tbG/TXpC4CmDKUMNB/64Z
-        AUONcWCg==;
-Received: from [179.182.172.34] (helo=coco.lan)
-        by casper.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hYT13-00021g-8L; Wed, 05 Jun 2019 10:19:33 +0000
-Date:   Wed, 5 Jun 2019 07:19:28 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 15/22] docs: security: core.rst: Fix several warnings
-Message-ID: <20190605071928.704558cf@coco.lan>
-In-Reply-To: <26617.1559728436@warthog.procyon.org.uk>
-References: <21350864823e07cc951e1dc7f0601baa09920ac4.1559656538.git.mchehab+samsung@kernel.org>
-        <cover.1559656538.git.mchehab+samsung@kernel.org>
-        <26617.1559728436@warthog.procyon.org.uk>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1727703AbfFENDP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 5 Jun 2019 09:03:15 -0400
+Received: from mail-qk1-f182.google.com ([209.85.222.182]:34500 "EHLO
+        mail-qk1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727601AbfFENDO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Jun 2019 09:03:14 -0400
+Received: by mail-qk1-f182.google.com with SMTP id t64so5052942qkh.1
+        for <keyrings@vger.kernel.org>; Wed, 05 Jun 2019 06:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:reply-to:mime-version
+         :content-disposition:user-agent;
+        bh=gaSEYTf0HKmg5eout1nok/T595p9zInbog9jLY3x8J0=;
+        b=R59aTj4HaVFxRtC+p/6IzsWiH6ZQGDpt/Dtt44FUqYrzgKyHmPoZLSCEE3vgSaqR+Q
+         UomNpeZz5SPVGF6WipeTY2REefKVj9q2+0vfiE+KCYtALpCzEjDRU/pOeEYCMevUILQs
+         Cm0PEdIw93yBLmzLJiJHfbQOzdcc8ZnHEa0hzi3AX53H92arqexhyNFVx3xFIpYbofwC
+         PQ4V+sXeSwb4ilfCA/7W21VZKWhkRWGJdDI6rqUaaMNx5djjzb+VQZnLNkfCSM1cTpqD
+         m3dMl4F6ro4hovc1I2OYSpbCDH4K9WpGfLhwywYSCsarXpeSoCRilnzAJvUdrcWDrOII
+         PFBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :mime-version:content-disposition:user-agent;
+        bh=gaSEYTf0HKmg5eout1nok/T595p9zInbog9jLY3x8J0=;
+        b=OB6a0wnAEevGF8VUyHKVm/zm8mU2nCyq0vqrYTKGjJ77QW63Y/2tpbnTvA/ja0Dh5E
+         WFlcQ5V5KyNyqYp90EPifilONZwMVBhArhrybN1W+4Psbvu/rvfYaAyOYDYzH7zoKi6t
+         B6zPqHRAgoP3EUnk3hKeNlJC+RS8BvlXaUGQvDVOZ36okAqc2qo2kVSyy4A+b7AkRmzF
+         WuTndyhjh6uUTeJg2eH+qgTk418KLQlQqLL6nTcONKSbqjqUeJ4mGZPyLZ0Qhm04JKPB
+         l3J/jRRKWec6yCvkjw0szgmfdHOvGMJQSdSoi30WT8DRoweQUjoYmevEKHHDkV1I3yPZ
+         hJpg==
+X-Gm-Message-State: APjAAAWRZ6NcZkfZ1SPC5SrY0EcM6Q/YuWIfrDV2RA/ha1LE8lSHS4Si
+        QBLQZ0fDl32VBI2HmVvIqgGiLc6h
+X-Google-Smtp-Source: APXvYqyZYT3YQYeb2pZCLk/XFmb+YIVI2o4a21UowlnTNebuSyb2IykKCkAPrbe7w2FY4kThdvA/MQ==
+X-Received: by 2002:a05:620a:1404:: with SMTP id d4mr9724358qkj.228.1559739793544;
+        Wed, 05 Jun 2019 06:03:13 -0700 (PDT)
+Received: from localhost (tripoint.kitware.com. [66.194.253.20])
+        by smtp.gmail.com with ESMTPSA id k6sm661325qkd.21.2019.06.05.06.03.12
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 05 Jun 2019 06:03:12 -0700 (PDT)
+Date:   Wed, 5 Jun 2019 09:02:47 -0400
+From:   Ben Boeckel <mathstuf@gmail.com>
+To:     keyrings@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>
+Subject: keyctl_capabilities and buflen
+Message-ID: <20190605130247.GA21275@rotor.kitware.com>
+Reply-To: mathstuf@gmail.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Em Wed, 05 Jun 2019 10:53:56 +0100
-David Howells <dhowells@redhat.com> escreveu:
+Hi,
 
-> Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
-> 
-> > +  *  ``asym_eds_op`` and ``asym_verify_signature``::
-> > +
-> > +       int (*asym_eds_op)(struct kernel_pkey_params *params,
-> > +			  const void *in, void *out);
-> > +       int (*asym_verify_signature)(struct kernel_pkey_params *params,
-> > +				    const void *in, const void *in2);  
-> 
-> That's redundant and shouldn't be necessary.
-
-This should equally fix it:
-
-  * ::
-
-       int (*asym_eds_op)(struct kernel_pkey_params *params,
-			  const void *in, void *out);
-       int (*asym_verify_signature)(struct kernel_pkey_params *params,
-				    const void *in, const void *in2);  
-
-The thing is that we need to teach Sphinx somehow that it should not
-try to interpret '*' (with is used there to identify bold/italy blocks)
-
-Using a '::' seems better than escaping all asterisks with a backslash.
-
+I'm looking at the implementation of `keyctl_capabilities` in the `next`
+branch and it's not clear if `buflen` is the size of the memory pointed
+to by `buffer` in array size or in byte size by its documentation. It
+seems to be the size in bytes by the code (the &3) could probably
+warrant a comment to make it clearer that it is related to
+sizeof(unsigned int) here). This seems very odd to me, or is it just a
+common kernel pattern I haven't seen before?
 
 Thanks,
-Mauro
+
+--Ben
