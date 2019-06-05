@@ -2,191 +2,283 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21EFC35E7D
-	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2019 15:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84E9635F99
+	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2019 16:51:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728104AbfFEN7B (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 5 Jun 2019 09:59:01 -0400
-Received: from ucol19pa14.eemsg.mail.mil ([214.24.24.87]:46027 "EHLO
-        ucol19pa14.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727883AbfFEN7B (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Jun 2019 09:59:01 -0400
-X-Greylist: delayed 651 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 09:59:00 EDT
-X-EEMSG-check-017: 712589965|UCOL19PA14_EEMSG_MP12.csd.disa.mil
-X-IronPort-AV: E=Sophos;i="5.60,550,1549929600"; 
-   d="scan'208";a="712589965"
-Received: from emsm-gh1-uea10.ncsc.mil ([214.29.60.2])
-  by ucol19pa14.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 05 Jun 2019 13:48:01 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
-  s=tycho.nsa.gov; t=1559742481; x=1591278481;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=IbC0QjIIeqNUmaNcqRr9rxsTlp++w3u3m5omino7yeo=;
-  b=KhEXLfNvUmH6xoZn+fMWBR51MNdNwOmuDgYWCFbXM9bVavwdR0IrU1x5
-   NT5uOH89s4OGNmHJkNeoK7R0aLblo7SoMx9/KDj9kbMX/K6wzRvsnxET9
-   Hy7fWMBu8n8fGvzB94gZNV1XtMJYUQ4XabEb3qWU99g3aCREKdJhU6sJi
-   OiKo/C6DEk078hwNZlztLuJ0NDTOOJHiUfd6Rmm/9BKuikwwv/NyXcH1s
-   etHY6OxoGMY478mQ983kElTx/B2CKeFJDuKrp4w1bX3QE3L7Q7r2AESPJ
-   8fdODfmphKI0ht/NhBnst2jf+zySiulk9fV88xD6lgnwQAnjN08B3nUbh
-   g==;
-X-IronPort-AV: E=Sophos;i="5.60,550,1549929600"; 
-   d="scan'208";a="24419018"
-IronPort-PHdr: =?us-ascii?q?9a23=3A1yLf9h0XC9sK0c2AsmDT+DRfVm0co7zxezQtwd?=
- =?us-ascii?q?8ZsesQK/nxwZ3uMQTl6Ol3ixeRBMOHsqsC0raM+P6xEUU7or+5+EgYd5JNUx?=
- =?us-ascii?q?JXwe43pCcHRPC/NEvgMfTxZDY7FskRHHVs/nW8LFQHUJ2mPw6arXK99yMdFQ?=
- =?us-ascii?q?viPgRpOOv1BpTSj8Oq3Oyu5pHfeQpFiCegbb9oMRm7ohvdusYXjIZmN6081g?=
- =?us-ascii?q?bHrnxUdupM2GhmP0iTnxHy5sex+J5s7SFdsO8/+sBDTKv3Yb02QaRXAzo6PW?=
- =?us-ascii?q?814tbrtQTYQguU+nQcSGQWnQFWDAXD8Rr3Q43+sir+tup6xSmaIcj7Rq06VD?=
- =?us-ascii?q?i+86tmTgLjhTwZPDAl7m7Yls1wjLpaoB2/oRx/35XUa5yROPZnY6/RYc8WSW?=
- =?us-ascii?q?9HU8lfTSxBBp63YZUJAeQPIO1Uq5Dxq0UKoBe7AwSnGeHhxSJShnLuwKM0ze?=
- =?us-ascii?q?ohHwHF0gIuEd0Bv3bbo8n6OqoJTeC4zrPFwSnfY/5Y2zrw7pXDfBA7ofGLWL?=
- =?us-ascii?q?J9adffyVUxGAPdjlWft4rlNC6I2OQIqWeb6+5gWvyvimU6rAxxuSWgxtw3h4?=
- =?us-ascii?q?nVhoMa1lDE9SJjzIYzPt23UlR3YdGjEJtOriyXMZZ9TMA6Q2xwpSo3xbILtY?=
- =?us-ascii?q?S7cSQX0pgr2RHSZ+Kdf4SV5B/oSfyfLi1ihH1/fbKynxOy8U+9xeLiTsS0y1?=
- =?us-ascii?q?NKrjZdktnLq3ANywTf6siZRft5+UeswSqP2BrJ6uFFPEA0jrDXK4Ihw7Eslp?=
- =?us-ascii?q?oTtl7PHinql0XtkKCabEAk+ums6+j/Y7XmoIGTN5Nshw3jPakjldazDOQlPg?=
- =?us-ascii?q?QUQWSW9vqw2Kf+8UHhRbVFlPw2kq3XsJDAIsQbo7a0AxRI3YY48Bu/Ezen38?=
- =?us-ascii?q?gYnXkANl5FfgmHgJLzN1HBJ/D4E++zg06wnzdz2/DGIrrhD43JLnjejLfheq?=
- =?us-ascii?q?1w601Cxwopy9BQ+ZZUBqsGIPLpVU/7rMbYAQMhMwyo3+bnD81w1pgCWW2RGq?=
- =?us-ascii?q?+ZML3dsVmS6uI0JumDfosVuDLjJPkl/PPugno5lkUcfamtx5cYdHe4HvF+KU?=
- =?us-ascii?q?WDfXXsmssBEXsNvgcmUePqiFqCUDBNaHa2W6I8/So2CJi4AojeRoCimqCB0D?=
- =?us-ascii?q?2nEZ1RY2BMEkqMHmvwd4WYR/cMbzqfItFgkjweUrisUI4g2g+otA/71bprNO?=
- =?us-ascii?q?7U+iwetZL+29l5/erTlQs99TBuEsSd0HmHT3tokWMQWz82wKd/rFRhxViZyq?=
- =?us-ascii?q?h3nfxZGMdI5/xVUgc1L4Pcz+J+C9/sQALNZ8uGR0y8Ttq6BjExS8o7w8USbE?=
- =?us-ascii?q?ZlB9WikhfD0jKwA7APibyEGpo0/7nA33jxOcl9zmzJ1ac7g1kgXMRPKXWshr?=
- =?us-ascii?q?Rj+AjLG47Jj0KZmr6udaQd2i7N6WiCwXOAvEFDTQF/T7vFUm4bZkbNs9T56V?=
- =?us-ascii?q?3NT6W0BbQkLARB08iCJbVOatHzilVGXvjjMszEY22tg2ewGQqIxrSUYYruem?=
- =?us-ascii?q?Ud2jjdCUcdnw8J5XaGNBMzBjmuo23AFjxiD1HvbF328el4tny7SlU4zwaQb0?=
- =?us-ascii?q?1uz7C14AIaheSAS/MP2bIJoCMhqzRyHFag0NPaEsGPpw5mfKpAYtMw+0lH1W?=
- =?us-ascii?q?3HuAxnJJCgLL5thkQYcwtpu0PizRJ3Cp9PkcIytnMl0BJyKb6E0FNGbz6Y3o?=
- =?us-ascii?q?7/O73NKmnz+hCvZLXW10rA0NaZ5KgP8u40q1b9swGzEEot7XFn38NS03uG6Z?=
- =?us-ascii?q?XAFBASXo7pUkYr6xh6oKnXYi0854PSyH1tPrC4siTc1N01Gesl0Begf8tfMa?=
- =?us-ascii?q?+dEQ/yFNAVB9WqKOM0gFWpcB0EM/5I9KIuPMOpaeGG2Ki1M+Zkhj6min5H4I?=
- =?us-ascii?q?9l2EKW6yV8UvLI34oCw/yA2guHVjH8jEqus8zumoBLeysSHmyhxijgH4NReK?=
- =?us-ascii?q?JycpgRCWu0IM242M9+h5jzVH5c7lKjAEkG2MCxcxqIc1P9xRFQ1VgQoXG/gS?=
- =?us-ascii?q?u31SF0kzUyo6qHxiPO3uDieAMCOm5MQ2lil0njLZKogNAdWUj7JzQuwTKj6V?=
- =?us-ascii?q?ey47VHo6F+NXLQQA8cezXqKElhX7G2u77EZNRAvtdgijlaSOSxZxihT7f5px?=
- =?us-ascii?q?YLm3f4A2ZGxD09MSqvs5H9kg1Sh2eULXI1p33cL5Je3xDasefASOZR0zxOfy?=
- =?us-ascii?q?xxjT3aFxDoJNWy1cmFnJfE9OalXiSuUYMFInqj9p+JqCbuvT4iOha4hf3m34?=
- =?us-ascii?q?S9QAU=3D?=
-X-IPAS-Result: =?us-ascii?q?A2CPAADkxvdc/wHyM5BmGgEBAQEBAgEBAQEHAgEBAQGBZ?=
- =?us-ascii?q?YFnKoE3BTIohBSScU4BAQEBBoE1iUIOjyKBZwkBAQEBAQEBAQE0AQIBAYRAA?=
- =?us-ascii?q?oJWIzgTAQMBAQEEAQEBAQMBAWwogjopAYJmAQEBAQIBIwQRPwIFCwsOCgICJ?=
- =?us-ascii?q?gICITYGAQkDBgIBAYJTDD+BawMJBQ+mN34zhUeCNw1dgUaBDCiLWxd4gQeBO?=
- =?us-ascii?q?II9Lj6CGoF3ARIBgymCWASIPYMDgjGGDYEnky0+CYIQghqMaE6DZAYbgiOKe?=
- =?us-ascii?q?YljjQ6Ic49LIWdxKwgCGAghD4MnghsXjjwjAzCBBgEBjEcNFwEGgiUBAQ?=
-Received: from tarius.tycho.ncsc.mil ([144.51.242.1])
-  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 05 Jun 2019 13:48:00 +0000
-Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
-        by tarius.tycho.ncsc.mil (8.14.4/8.14.4) with ESMTP id x55Dlut7004801;
-        Wed, 5 Jun 2019 09:47:58 -0400
+        id S1728412AbfFEOvL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 5 Jun 2019 10:51:11 -0400
+Received: from sonic317-38.consmr.mail.ne1.yahoo.com ([66.163.184.49]:44013
+        "EHLO sonic317-38.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728362AbfFEOvL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Jun 2019 10:51:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1559746268; bh=vQ863yDV2wmdCZygtxSI5wsL7fPddox6Fd+/Zoc7GU0=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=d2f2F7/mifDiveMDb2TFbH3W+TzBqbAkUxvolGn0V1MCLxwp8he1PGODogV/6qMgT1pBF29GeGoJxXGaFd+jxj4U+tAPcjUJjFgS3t3CUnXSMQOPXe8AdBgspQnWWJrs0b3bChv8rLohmkJXoAh1Sy400B0/+3o2wAyjLk6ONHwwSF/UkGYCip5IYRDuB1qPoRQhact5z+4QFd+eA8S2ZOqgW6uqF87KExiMZHoSYQeGqIpd5fWOOKFeULPf7ihvQ1WZ/QQ9WR1ePk1K0DYvWBumOuwCGmKmhM1rf3Tl6z5FJtkzstuwnB4X4ls6hIlDqP7ESg7lP6GrYJyBfXSmUA==
+X-YMail-OSG: tYcK9qwVM1kZxMtAaFGS0PcbaOsZsC2pfIzOuSNNseXF_WKJ1MuFrHD0NLIUGEV
+ pClQ9woS6reiHOVcBafr3Seln50nEQafdLnwWEGJHsc7apt6CrE93sZGtrelWQzsMQizL9p3SWLc
+ ZcYWztgvlRIAmiOveNoaTntpZM3ijxq.uu5SAcAQmctYbVYpCJhMFoDuknpflOq.GUIRwjoVLkTL
+ BZPyO.jb0M7jdnUAPJiNs3hYKZXMG2fzBln425SA6NnHniqN.uoQ78pjW5dWvOBJOw21N.ejIEF8
+ IpudUYsrq8tbXtF6QhBWY_es7p7pye4I0IUlcX3Yy1gLQuUPml_lAL2ElKqtiljgFn2UGV84_cUq
+ La8i3UaYiyKeStXzZd81yZ8VwVP_a8OD3DG4DGf_P6heilaD1mXU84L2YABDHaeZHxrubvAd6094
+ TW6ZYpHUYzQwuuInDQAdy6dUQ08ciwFe5V72fEhxwDPsZRDopsQC7PeEYt0WpfMRhXSRMszerV8X
+ PVjGxnyV7Q99arC_iAvKQio_uIfefgt5bjjybDo8o_4q66KFSioTj0rYp5nWIUMTpooCGMuRQYjr
+ tpwzkIQdb0smkHvfSz48K3sqsULjWXvWjTk9o7oHE7Rej9OLe_9UK9Ldk36hvX6nptC6o21Xh72D
+ 95suyHJepoIzTkhjHCGhYVG3weBbPqi2Inrn16.RbOJOFfn6riqh6E1WzNAxwmFkipg0JVtrCDat
+ w3jEb3CE7vIvlsNCCLrh8a5ZQ.nQAshxp3USKDNunBybUevXGfRyc3c3nCiZLJGECPPhomkej7P1
+ a8OprpGEgsJqff0ea6V20_tURysUiJuyIPVE_59WkBAZdRVdNj5kRHe1yxduK2NeoOq37YDeVTus
+ PTIu57S94wwAkEq1ShUXPRMkmc_MiKdPvkR6LzVP_0BNOcJdd1_hDFYw3s56TQ7JYPuLo1BePapF
+ 4oEKK27.94jIqszojw3iStyWNh0V5qT8vxbcSQshccI3uZYc2yCqJUBmWMk3VCMKrpE8Hct7p2bi
+ aVBvvKPEjQmHfXRKmld9Zv1fXAfXer2SZr12efGlo.RqXG2OpHBepOuXMh24KtmalD6JIpYCBy73
+ Ytyxw.Pie47HXe8gJS4RsymY3Pd48_DJJ2gTSPfZprt60XmmrUs2ON_2bQIq1fbOLC9sWxX3sO9m
+ Bmac24ZB3rZ9v.FUfqAALla0R6jUWWDavdzizQ6ecBFu7CYeVA3ZNv3hCjMm2WmHskg62ZqxU0Cp
+ _xtucNwdkxuTzt9AlYZ.I2zk5bDnbMcVE
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Wed, 5 Jun 2019 14:51:08 +0000
+Received: from c-73-223-4-185.hsd1.ca.comcast.net (EHLO [192.168.0.103]) ([73.223.4.185])
+          by smtp429.mail.ne1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID 610f9da3c63d75c55bf190f4c4eb0731;
+          Wed, 05 Jun 2019 14:51:05 +0000 (UTC)
 Subject: Re: [RFC][PATCH 0/8] Mount, FS, Block and Keyrings notifications [ver
  #2]
-To:     Andy Lutomirski <luto@kernel.org>,
-        Stephen Smalley <stephen.smalley@gmail.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Casey Schaufler <casey@schaufler-ca.com>, raven@themaw.net,
+To:     David Howells <dhowells@redhat.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
         Linux FS Devel <linux-fsdevel@vger.kernel.org>,
         Linux API <linux-api@vger.kernel.org>,
         linux-block@vger.kernel.org, keyrings@vger.kernel.org,
         LSM List <linux-security-module@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-References: <155966609977.17449.5624614375035334363.stgit@warthog.procyon.org.uk>
+        LKML <linux-kernel@vger.kernel.org>, casey@schaufler-ca.com
+References: <50c2ea19-6ae8-1f42-97ef-ba5c95e40475@schaufler-ca.com>
+ <155966609977.17449.5624614375035334363.stgit@warthog.procyon.org.uk>
  <CALCETrWzDR=Ap8NQ5-YrVhXCEBgr+hwpjw9fBn0m2NkZzZ7XLQ@mail.gmail.com>
- <1207.1559680778@warthog.procyon.org.uk>
- <CALCETrXmjpSvVj_GROhgouNtbzLm5U9B4b364wycMaqApqDVNA@mail.gmail.com>
- <CAB9W1A0AgMYOwGx9c-TmAt=1O6Bjsr2P3Nhd=2+QV39dgw0CrA@mail.gmail.com>
- <CALCETrU_5djawkwW-GRyHZXHwOUjaei1Cp7NEJaVFDm_bK6G3w@mail.gmail.com>
-From:   Stephen Smalley <sds@tycho.nsa.gov>
-Message-ID: <5a3353d3-3b88-6c0f-147b-6b9e2ac17773@tycho.nsa.gov>
-Date:   Wed, 5 Jun 2019 09:47:56 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ <20192.1559724094@warthog.procyon.org.uk>
+From:   Casey Schaufler <casey@schaufler-ca.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=casey@schaufler-ca.com; keydata=
+ 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
+ abzjfg==
+Message-ID: <e4c19d1b-9827-5949-ecb8-6c3cb4648f58@schaufler-ca.com>
+Date:   Wed, 5 Jun 2019 07:50:57 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <CALCETrU_5djawkwW-GRyHZXHwOUjaei1Cp7NEJaVFDm_bK6G3w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20192.1559724094@warthog.procyon.org.uk>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="nAYbsaLPWvSYgBq1ZgUViHpZIInmpNbp5"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 6/5/19 12:19 AM, Andy Lutomirski wrote:
-> On Tue, Jun 4, 2019 at 6:18 PM Stephen Smalley
-> <stephen.smalley@gmail.com> wrote:
->>
->> On Tue, Jun 4, 2019 at 4:58 PM Andy Lutomirski <luto@kernel.org> wrote:
->>>
->>> On Tue, Jun 4, 2019 at 1:39 PM David Howells <dhowells@redhat.com> wrote:
->>>>
->>>> Andy Lutomirski <luto@kernel.org> wrote:
->>>>
->>>>>> Here's a set of patches to add a general variable-length notification queue
->>>>>> concept and to add sources of events for:
->>>>>
->>>>> I asked before and didn't see a response, so I'll ask again.  Why are you
->>>>> paying any attention at all to the creds that generate an event?
->>>>
->>>> Casey responded to you.  It's one of his requirements.
->>>>
->>>
->>> It being a "requirement" doesn't make it okay.
->>>
->>>> However, the LSMs (or at least SELinux) ignore f_cred and use current_cred()
->>>> when checking permissions.  See selinux_revalidate_file_permission() for
->>>> example - it uses current_cred() not file->f_cred to re-evaluate the perms,
->>>> and the fd might be shared between a number of processes with different creds.
->>>
->>> That's a bug.  It's arguably a rather severe bug.  If I ever get
->>> around to writing the patch I keep thinking of that will warn if we
->>> use creds from invalid contexts, it will warn.
->>
->>
->> No, not a bug.  Working as designed. Initial validation on open, but revalidation upon read/write if something has changed since open (process SID differs from opener, inode SID has changed, policy has changed). Current subject SID should be used for the revalidation. It's a MAC vs DAC difference.
->>
-> 
-> Can you explain how the design is valid, then?  Consider nasty cases like this:
-> 
-> $ sudo -u lotsofgarbage 2>/dev/whatever
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--nAYbsaLPWvSYgBq1ZgUViHpZIInmpNbp5
+Content-Type: multipart/mixed; boundary="txkkq0wOFA671eV9SlTrRrBSRAcaZSaKJ";
+ protected-headers="v1"
+From: Casey Schaufler <casey@schaufler-ca.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ raven@themaw.net, Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Linux API <linux-api@vger.kernel.org>, linux-block@vger.kernel.org,
+ keyrings@vger.kernel.org, LSM List <linux-security-module@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, casey@schaufler-ca.com
+Message-ID: <e4c19d1b-9827-5949-ecb8-6c3cb4648f58@schaufler-ca.com>
+Subject: Re: [RFC][PATCH 0/8] Mount, FS, Block and Keyrings notifications [ver
+ #2]
+References: <50c2ea19-6ae8-1f42-97ef-ba5c95e40475@schaufler-ca.com>
+ <155966609977.17449.5624614375035334363.stgit@warthog.procyon.org.uk>
+ <CALCETrWzDR=Ap8NQ5-YrVhXCEBgr+hwpjw9fBn0m2NkZzZ7XLQ@mail.gmail.com>
+ <20192.1559724094@warthog.procyon.org.uk>
+In-Reply-To: <20192.1559724094@warthog.procyon.org.uk>
 
-(sorry for the previous html email; gmail or my inability to properly 
-use it strikes again!)
+--txkkq0wOFA671eV9SlTrRrBSRAcaZSaKJ
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
 
-Here we have four (or more) opportunities to say no:
-1) Upon selinux_inode_permission(), when checking write access to 
-/dev/whatever in the context of the shell process,
-2) Upon selinux_file_open(), when checking and caching the open and 
-write access for shell to /dev/whatever in the file security struct,
-3) Upon selinux_bprm_committing_creds() -> flush_unauthorized_files(), 
-when revalidating write access to /dev/whatever in the context of sudo,
-4) Upon selinux_file_permission() -> 
-selinux_revalidate_file_permission(), when revalidating write access to 
-/dev/whatever in the context of sudo.
+On 6/5/2019 1:41 AM, David Howells wrote:
+> Casey Schaufler <casey@schaufler-ca.com> wrote:
+>
+>> I will try to explain the problem once again. If process A
+>> sends a signal (writes information) to process B the kernel
+>> checks that either process A has the same UID as process B
+>> or that process A has privilege to override that policy.
+>> Process B is passive in this access control decision, while
+>> process A is active. In the event delivery case, process A
+>> does something (e.g. modifies a keyring) that generates an
+>> event, which is then sent to process B's event buffer.
+> I think this might be the core sticking point here.  It looks like two
+> different situations:
+>
+>  (1) A explicitly sends event to B (eg. signalling, sendmsg, etc.)
+>
+>  (2) A implicitly and unknowingly sends event to B as a side effect of =
+some
+>      other action (eg. B has a watch for the event A did).
+>
+> The LSM treats them as the same: that is B must have MAC authorisation =
+to send
+> a message to A.
 
-If any of those fail, then access is denied, so unless both the shell 
-and sudo are authorized to write to /dev/whatever, it is a no-go.  NB 
-Only the shell context requires open permission here; the sudo context 
-only needs write.
+YES!
 
-> It is certainly the case that drivers, fs code, and other core code
-> MUST NOT look at current_cred() in the context of syscalls like
-> open().  Jann, I, and others have found quite a few rootable bugs of
-> this sort.  What makes MAC special here?
+Threat is about what you can do, not what you intend to do.
 
-Do you mean syscalls like write(), not open()?  I think your concern is 
-that they apply some check only during write() and not open() and 
-therefore are susceptible to confused deputy scenario above.  In 
-contrast we are validating access at open, transfer/inherit, and use. If 
-we use file->f_cred instead of current_cred() in 
-selinux_revalidate_file_permission() and the current process SID differs 
-from that of the opener, we'll never apply a check for the actual 
-security context performing the write(), so information can flow in 
-violation of the MAC policy.
+And it would be really great if you put some thought into what
+a rational model would be for UID based controls, too.
 
-> I would believe there are cases where auditing write() callers makes
-> some sense, but anyone reading those logs needs to understand that the
-> creds are dubious at best.
+> But there are problems with not sending the event:
+>
+>  (1) B's internal state is then corrupt (or, at least, unknowingly inva=
+lid).
+
+Then B is a badly written program.
+
+>  (2) B can potentially figure out that the event happened by other mean=
+s.
+
+Then why does it need the event mechanism in the first place?
+
+> I've implemented four event sources so far:
+>
+>  (1) Keys/keyrings.  You can only get events on a key you have View per=
+mission
+>      on and the other process has to have write access to it, so I thin=
+k this
+>      is good enough.
+
+Sounds fine.
+
+>  (2) Block layer.  Currently this will only get you hardware error even=
+ts,
+>      which is probably safe.  I'm not sure you can manipulate those wit=
+hout
+>      permission to directly access the device files.
+
+There's an argument to be made that this should require CAP_SYS_ADMIN,
+or that an LSM like SELinux might include hardware error events in
+policy, but generally I agree that system generated events like this
+are both harmless and pointless for the general public to watch.
+
+>  (3) Superblock.  This is trickier since it can see events that can be
+>      manufactured (R/W <-> R/O remounting, EDQUOT) as well as events th=
+at
+>      can't without hardware control (EIO, network link loss, RF kill).
+
+The events generated by processes (the 1st set) need controls
+like keys. The events generated by the system (the 2nd set) may
+need controls like the block layer.
+
+
+>  (4) Mount topology.  This is the trickiest since it allows you to see =
+events
+>      beyond the point at which you placed your watch (in essence, you p=
+lace a
+>      subtree watch).
+
+Like keys.
+
+>      The question is what permission checking should I do?  Ideally, I'=
+d
+>      emulate a pathwalk between the watchpoint and the eventing object =
+to see
+>      if the owner of the watchpoint could reach it.
+
+That will depend, as I've been saying, on what causes
+the event to be generated. If it's from a process, the
+question is "can the active process, the one that generated
+the event, write to the passive, watching process?"
+If it's the system on a hardware event, you may want the watcher
+to have CAP_SYS_ADMIN.
+
+>      I'd need to do a reverse walk, calling inode_permission(MAY_NOT_BL=
+OCK)
+>      for each directory between the eventing object and the watchpoint =
+to see
+>      if one rejects it - but some filesystems have a permission check t=
+hat
+>      can't be called in this state.
+
+This is for setting the watch, right?
+
+>      It would also be necessary to do this separately for each watchpoi=
+nt in
+>      the parental chain.
+>
+>      Further, each permissions check would generate an audit event and =
+could
+>      generate FAN_ACCESS and/or FAN_ACCESS_PERM fanotify events - which=
+ could
+>      be a problem if fanotify is also trying to post those events to th=
+e same
+>      watch queue.
+
+If you required that the watching process open(dir) what
+you want to watch you'd get this for free. Or did I miss
+something obvious?
+
+> David
+
+
+--txkkq0wOFA671eV9SlTrRrBSRAcaZSaKJ--
+
+--nAYbsaLPWvSYgBq1ZgUViHpZIInmpNbp5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEC+9tH1YyUwIQzUIeOKUVfIxDyBEFAlz31tgACgkQOKUVfIxD
+yBEU8hAAj4xd0kV0Ucnk5ru/+nPSqV1JaihLZ77GVirKuvVGICRr78mNeNmZk6n2
+u9YVwbFCdB/O/cLE9RtjQzB3PGbGuCNn9JOvKFPfSIARHmBpg93wj8KPamYmMzdJ
+xltRCnoLwHwHJdZEKgAEIUEQajqIj36opyx7bshsYP8j36Pzn48F1f3Fg8Kg2X2d
+MeDbje3oXdqf9tVQ8lVLv2EOfF4ZVBH8IqHfO1a7o8UpfZ2ZKilDF5ari5i0+L20
+vvom1Xasat1j9BxFsNwwtDXU94LHK0XP5nMAHgHBjNlRQGpZ5Y7ET7RqbRxcuRNA
+JznODlWUqba6wsY7tnQD1cV6WLRoVzzKi66qhRONJoM8l38916mqzwoneK141fv6
+JNdlwq/xkniImrKIVKBszu3LmZsorLWRdlsnxy0XLBZvbbxegLRukiUnSu62m1DV
+hrfGbTDKh6U1UPwaBrteSn0RNNdvl2cF5+GAc/BOMYTae4zSMJacpfX+R4GcPfpj
+cTpLYExK2bfYvkIcmrrbt7H38Zhdk4cxEz1Z4UykohjkLdNmuv3kwAUih78JcUbh
+bZe4OAGR9VYDyBqPxWlDHjrTlTZ3bIcjNAuArVZ4woBTtRaBdsAOhgomRR5S9fYF
+HTbMjASC6nhlc+Rthv1pXPk4nr/PrAXiRvrqLQyNYOjXxWV8ix8=
+=G8mX
+-----END PGP SIGNATURE-----
+
+--nAYbsaLPWvSYgBq1ZgUViHpZIInmpNbp5--
