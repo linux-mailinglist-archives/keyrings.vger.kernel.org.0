@@ -2,50 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D720637DB1
-	for <lists+keyrings@lfdr.de>; Thu,  6 Jun 2019 21:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E74637F5D
+	for <lists+keyrings@lfdr.de>; Thu,  6 Jun 2019 23:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbfFFTyw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 6 Jun 2019 15:54:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34208 "EHLO mail.kernel.org"
+        id S1728124AbfFFVRS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 6 Jun 2019 17:17:18 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:44388 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727940AbfFFTyw (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 6 Jun 2019 15:54:52 -0400
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727915AbfFFVRS (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 6 Jun 2019 17:17:18 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 837482146E
-        for <keyrings@vger.kernel.org>; Thu,  6 Jun 2019 19:54:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559850891;
-        bh=CwGMuE+WEe/QCirkYuKg8095g413T6AAKaG29fZ0SGQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=eQwvwcju3KjnhZ83Kd4AaOrth9m4z53DeQp6LenCs72nKfO38LO/vJA0nqcu6QMbU
-         IyPfe96L/vuzq7/JfV6upFI4P0etLFkwpz5qGPi/yaOXQubr8y2/C6sq3/jpxnxEym
-         ChcrDS8gGZxAFu/JAu4djfMGvCRA3Sr95xzJmlqw=
-Received: by mail-wr1-f49.google.com with SMTP id n4so3633117wrw.13
-        for <keyrings@vger.kernel.org>; Thu, 06 Jun 2019 12:54:51 -0700 (PDT)
-X-Gm-Message-State: APjAAAVrBd6QK+Pg+aHe4JT0PhFAzpqsbntVbBRTsl1vYFbvrV/mdG/y
-        lzI4DLD5ZSEjaI2qbORg1xeDEZ5+WG31Z6aDs+E2ng==
-X-Google-Smtp-Source: APXvYqyekhKavJMx5MB3Z2AxY4A/CobI1nxE7fayLLS4V4kYzZ+R4ThNtJeafKr4gLEMwMxes/0kV7JtVkKhH1VwAnQ=
-X-Received: by 2002:a5d:6207:: with SMTP id y7mr12434458wru.265.1559850890024;
- Thu, 06 Jun 2019 12:54:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <b91710d8-cd2d-6b93-8619-130b9d15983d@tycho.nsa.gov>
- <155981411940.17513.7137844619951358374.stgit@warthog.procyon.org.uk>
- <3813.1559827003@warthog.procyon.org.uk> <8382af23-548c-f162-0e82-11e308049735@tycho.nsa.gov>
- <0eb007c5-b4a0-9384-d915-37b0e5a158bf@schaufler-ca.com> <c82052e5-ca11-67b5-965e-8f828081f31c@tycho.nsa.gov>
- <07e92045-2d80-8573-4d36-643deeaff9ec@schaufler-ca.com>
-In-Reply-To: <07e92045-2d80-8573-4d36-643deeaff9ec@schaufler-ca.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Thu, 6 Jun 2019 12:54:38 -0700
-X-Gmail-Original-Message-ID: <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com>
-Message-ID: <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com>
-Subject: Re: [RFC][PATCH 00/10] Mount, FS, Block and Keyrings notifications
- [ver #3]
-To:     Casey Schaufler <casey@schaufler-ca.com>
-Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
-        David Howells <dhowells@redhat.com>,
+        by mx1.redhat.com (Postfix) with ESMTPS id CC70644BC4;
+        Thu,  6 Jun 2019 21:17:15 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 572707838F;
+        Thu,  6 Jun 2019 21:17:07 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com>
+References: <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com> <b91710d8-cd2d-6b93-8619-130b9d15983d@tycho.nsa.gov> <155981411940.17513.7137844619951358374.stgit@warthog.procyon.org.uk> <3813.1559827003@warthog.procyon.org.uk> <8382af23-548c-f162-0e82-11e308049735@tycho.nsa.gov> <0eb007c5-b4a0-9384-d915-37b0e5a158bf@schaufler-ca.com> <c82052e5-ca11-67b5-965e-8f828081f31c@tycho.nsa.gov> <07e92045-2d80-8573-4d36-643deeaff9ec@schaufler-ca.com>
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     dhowells@redhat.com, Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         USB list <linux-usb@vger.kernel.org>, raven@themaw.net,
@@ -55,77 +38,90 @@ Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
         LSM List <linux-security-module@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Paul Moore <paul@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC][PATCH 00/10] Mount, FS, Block and Keyrings notifications [ver #3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <23610.1559855827.1@warthog.procyon.org.uk>
+Date:   Thu, 06 Jun 2019 22:17:07 +0100
+Message-ID: <23611.1559855827@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Thu, 06 Jun 2019 21:17:17 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jun 6, 2019 at 11:56 AM Casey Schaufler <casey@schaufler-ca.com> wrote:
->
-> On 6/6/2019 10:16 AM, Stephen Smalley wrote:
-> > On 6/6/19 12:43 PM, Casey Schaufler wrote:
-> >> ...
-> >> I don't agree. That is, I don't believe it is sufficient.
-> >> There is no guarantee that being able to set a watch on an
-> >> object implies that every process that can trigger the event
-> >> can send it to you.
-> >>
-> >>     Watcher has Smack label W
-> >>     Triggerer has Smack label T
-> >>     Watched object has Smack label O
-> >>
-> >>     Relevant Smack rules are
-> >>
-> >>     W O rw
-> >>     T O rw
-> >>
-> >> The watcher will be able to set the watch,
-> >> the triggerer will be able to trigger the event,
-> >> but there is nothing that would allow the watcher
-> >> to receive the event. This is not a case of watcher
-> >> reading the watched object, as the event is delivered
-> >> without any action by watcher.
+Andy Lutomirski <luto@kernel.org> wrote:
+
+> > > You are allowing arbitrary information flow between T and W above.  Who
+> > > cares about notifications?
 > >
-> > You are allowing arbitrary information flow between T and W above.  Who cares about notifications?
->
-> I do. If Watched object is /dev/null no data flow is possible.
-> There are many objects on a modern Linux system for which this
-> is true. Even if it's "just a file" the existence of one path
-> for data to flow does not justify ignoring the rules for other
-> data paths.
+> > I do. If Watched object is /dev/null no data flow is possible.
+> > There are many objects on a modern Linux system for which this
+> > is true. Even if it's "just a file" the existence of one path
+> > for data to flow does not justify ignoring the rules for other
+> > data paths.
+> 
+> Aha!
+> 
+> Even ignoring security, writes to things like /dev/null should
+> probably not trigger notifications to people who are watching
+> /dev/null.  (There are probably lots of things like this: /dev/zero,
+> /dev/urandom, etc.)
 
-Aha!
+Even writes to /dev/null might generate access notifications; leastways,
+vfs_read() will call fsnotify_access() afterwards on success.
 
-Even ignoring security, writes to things like /dev/null should
-probably not trigger notifications to people who are watching
-/dev/null.  (There are probably lots of things like this: /dev/zero,
-/dev/urandom, etc.)  David, are there any notification types that have
-this issue in your patchset?  If so, is there a straightforward way to
-fix it?  Generically, it seems like maybe writes to device nodes
-shouldn't trigger notifications since, despite the fact that different
-openers of a device node share an inode, there isn't necessarily any
-connection between them.
+Whether or not you can set marks on open device files is another matter.
 
-Casey, if this is fixed in general, do you have another case where the
-right to write and the right to read do not imply the right to
-communicate?
+> David, are there any notification types that have this issue in your
+> patchset?  If so, is there a straightforward way to fix it?
 
-> An analogy is that two processes with different UIDs can open a file,
-> but still can't signal each other.
+I'm not sure what issue you're referring to specifically.  Do you mean whether
+writes to device files generate notifications?
 
-What do you mean "signal"?  If two processes with different UIDs can
-open the same file for read and write, then they can communicate with
-each other in many ways.  For example, one can write to the file and
-the other can read it.  One can take locks and the other can read the
-lock state.  They can both map it and use any number of memory access
-side channels to communicate.  But, of course, they can't send each
-other signals with kill().
+> Generically, it seems like maybe writes to device nodes shouldn't trigger
+> notifications since, despite the fact that different openers of a device
+> node share an inode, there isn't necessarily any connection between them.
 
-If, however, one of these processes is using some fancy mechanism
-(inotify, dnotify, kqueue, fanotify, whatever) to watch the file, and
-the other one writes it, then it seems inconsistent to lie to the
-watching process and say that the file wasn't written because some
-security policy has decided to allow the write, allow the read, but
-suppress this particular notification.  Hence my request for a real
-example: when would it make sense to do this?
+With the notification types I have currently implemented, I don't even notice
+any accesses to a device file unless:
+
+ (1) Someone mounts over the top of one.
+
+ (2) The access triggers an I/O error or device reset or causes the device to
+     be attached or detached.
+
+ (3) Wangling the device causes some other superblock event.
+
+ (4) The driver calls request_key() and that creates a new key.
+
+> Casey, if this is fixed in general, do you have another case where the
+> right to write and the right to read do not imply the right to
+> communicate?
+> 
+> > An analogy is that two processes with different UIDs can open a file,
+> > but still can't signal each other.
+> 
+> What do you mean "signal"?  If two processes with different UIDs can
+> open the same file for read and write, then they can communicate with
+> each other in many ways.  For example, one can write to the file and
+> the other can read it.  One can take locks and the other can read the
+> lock state.  They can both map it and use any number of memory access
+> side channels to communicate.  But, of course, they can't send each
+> other signals with kill().
+> 
+> If, however, one of these processes is using some fancy mechanism
+> (inotify, dnotify, kqueue, fanotify, whatever) to watch the file, and
+> the other one writes it, then it seems inconsistent to lie to the
+> watching process and say that the file wasn't written because some
+> security policy has decided to allow the write, allow the read, but
+> suppress this particular notification.  Hence my request for a real
+> example: when would it make sense to do this?
+
+Note that fanotify requires CAP_SYS_ADMIN, but inotify and dnotify do not.
+
+dnotify is applied to an open file, so it might be usable on a chardev such as
+/dev/null, say.
+
+David
