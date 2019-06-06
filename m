@@ -2,96 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF66C37F78
-	for <lists+keyrings@lfdr.de>; Thu,  6 Jun 2019 23:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F97A38002
+	for <lists+keyrings@lfdr.de>; Thu,  6 Jun 2019 23:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbfFFVVx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 6 Jun 2019 17:21:53 -0400
-Received: from smtp1.de.adit-jv.com ([93.241.18.167]:34561 "EHLO
-        smtp1.de.adit-jv.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726531AbfFFVVx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 6 Jun 2019 17:21:53 -0400
-Received: from localhost (smtp1.de.adit-jv.com [127.0.0.1])
-        by smtp1.de.adit-jv.com (Postfix) with ESMTP id CDCD23C00DD;
-        Thu,  6 Jun 2019 23:21:49 +0200 (CEST)
-Received: from smtp1.de.adit-jv.com ([127.0.0.1])
-        by localhost (smtp1.de.adit-jv.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id F4M8mMrwGFmg; Thu,  6 Jun 2019 23:21:43 +0200 (CEST)
-Received: from HI2EXCH01.adit-jv.com (hi2exch01.adit-jv.com [10.72.92.24])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp1.de.adit-jv.com (Postfix) with ESMTPS id C54483C00D1;
-        Thu,  6 Jun 2019 23:21:43 +0200 (CEST)
-Received: from vmlxhi-102.adit-jv.com (10.72.93.184) by HI2EXCH01.adit-jv.com
- (10.72.92.24) with Microsoft SMTP Server (TLS) id 14.3.439.0; Thu, 6 Jun 2019
- 23:21:43 +0200
-Date:   Thu, 6 Jun 2019 23:21:40 +0200
-From:   Eugeniu Rosca <erosca@de.adit-jv.com>
+        id S1728776AbfFFVyb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 6 Jun 2019 17:54:31 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:39583 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728735AbfFFVya (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 6 Jun 2019 17:54:30 -0400
+Received: by mail-pg1-f194.google.com with SMTP id 196so2099610pgc.6
+        for <keyrings@vger.kernel.org>; Thu, 06 Jun 2019 14:54:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=nRTOxuA/Gwk436wjdRLZFFI2IWjHeK4nxXXVH9+gvJE=;
+        b=EGncbImdzKfDyyHC/wGTZ/hfrEnzQxuTOp2J1Y0gY1VpXSC9Md3ikeKaFw/Z3B22v7
+         0DNodTI71qmiSKyhcOcGu+kQr8Xu0pMtEttTsx96lJ6bMriq7jNWzBs9Y+FEnRfLOpYZ
+         qz8wRnKzKQ/VpDiQMqXU5ddM+QmOqL0WbO7UAMFLeVZf/ZN5YPfFzeJx1xGjcCAya2fh
+         dZWvMCYQhQ+zwgrcrrAc3oohAIXvEeBEVJRMsTPMM3Mg8+24b3tPfpaFLAnoONbYwo3M
+         bJ862/yfW4n5Z66MhmTBXgNY7GFN7zknPozfRMiFJXfEWmnKk6ZewdvLUz9dDYBeAWlR
+         IGSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=nRTOxuA/Gwk436wjdRLZFFI2IWjHeK4nxXXVH9+gvJE=;
+        b=G1mjvSdDBtq2UxQHLJ3ihij27MGkXCMOIakEBo96YKthaGzx6s1mTCT3ZkM60Gke94
+         Q7gF0cMWDTQK/ua6b7PLMNzaJtApqxWAMbAqKiG/ggHIhlSewr1jypp1sNOwdoFdQSyX
+         UKNShGzlnkY6Iz7WG6Y81SUM+3AclDUTGtVzZDeqv55nTXbHWSp9UL2AQy291SmEHgW+
+         AXFRfJea7uTkLOcn4aaxeCVgIpbX+gBTJj1dTPu9s075IAIpLEpbcGUmY4tpqjj3ymHS
+         tBQypY8m99tOraOcWAsnq3t5macFyE7RiCDmO1hcPKHpetul70TBGLlZz2aSrPBUSPiZ
+         XmCg==
+X-Gm-Message-State: APjAAAXB5duEa3GOEIUNqCOcYLIQNATE8XizVGS/fLRdpZVA1QhOnlAx
+        DJ1ILGFqD7zyDaobP4qOl6ftBQ==
+X-Google-Smtp-Source: APXvYqxFQa7/xE+mo3PRdCgIrbB81YZuPBHMMdpvWLdYui3Pw7zIn8HCIDPOffgGuFZp2pZ6jeQSxw==
+X-Received: by 2002:a62:1483:: with SMTP id 125mr55452892pfu.137.1559858070049;
+        Thu, 06 Jun 2019 14:54:30 -0700 (PDT)
+Received: from ?IPv6:2601:646:c200:1ef2:f1c4:94fc:993:1923? ([2601:646:c200:1ef2:f1c4:94fc:993:1923])
+        by smtp.gmail.com with ESMTPSA id h62sm126764pgc.77.2019.06.06.14.54.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Jun 2019 14:54:28 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (1.0)
+Subject: Re: [RFC][PATCH 00/10] Mount, FS, Block and Keyrings notifications [ver #3]
+From:   Andy Lutomirski <luto@amacapital.net>
+X-Mailer: iPhone Mail (16F203)
+In-Reply-To: <23611.1559855827@warthog.procyon.org.uk>
+Date:   Thu, 6 Jun 2019 14:54:27 -0700
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        USB list <linux-usb@vger.kernel.org>, raven@themaw.net,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Paul Moore <paul@paul-moore.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AD7898AE-B92C-4DE6-B895-7116FEDB3091@amacapital.net>
+References: <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com> <b91710d8-cd2d-6b93-8619-130b9d15983d@tycho.nsa.gov> <155981411940.17513.7137844619951358374.stgit@warthog.procyon.org.uk> <3813.1559827003@warthog.procyon.org.uk> <8382af23-548c-f162-0e82-11e308049735@tycho.nsa.gov> <0eb007c5-b4a0-9384-d915-37b0e5a158bf@schaufler-ca.com> <c82052e5-ca11-67b5-965e-8f828081f31c@tycho.nsa.gov> <07e92045-2d80-8573-4d36-643deeaff9ec@schaufler-ca.com> <23611.1559855827@warthog.procyon.org.uk>
 To:     David Howells <dhowells@redhat.com>
-CC:     <viro@zeniv.linux.org.uk>, <raven@themaw.net>,
-        <linux-fsdevel@vger.kernel.org>, <linux-api@vger.kernel.org>,
-        <linux-block@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Eugeniu Rosca <roscaeugeniu@gmail.com>
-Subject: Re: [PATCH 10/10] Add sample notification program [ver #3]
-Message-ID: <20190606212140.GA25664@vmlxhi-102.adit-jv.com>
-References: <155981411940.17513.7137844619951358374.stgit@warthog.procyon.org.uk>
- <155981421379.17513.13158528501056454772.stgit@warthog.procyon.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <155981421379.17513.13158528501056454772.stgit@warthog.procyon.org.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [10.72.93.184]
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi David,
 
-On Thu, Jun 06, 2019 at 10:43:33AM +0100, David Howells wrote:
-[..]
-> diff --git a/samples/watch_queue/Makefile b/samples/watch_queue/Makefile
-> new file mode 100644
-> index 000000000000..42b694430d0f
-> --- /dev/null
-> +++ b/samples/watch_queue/Makefile
-> @@ -0,0 +1,9 @@
-> +# List of programs to build
-> +hostprogs-y := watch_test
-> +
-> +# Tell kbuild to always build the programs
-> +always := $(hostprogs-y)
-> +
-> +HOSTCFLAGS_watch_test.o += -I$(objtree)/usr/include
 
-How about arm64? Do you intend to enable cross-compilation?
+> On Jun 6, 2019, at 2:17 PM, David Howells <dhowells@redhat.com> wrote:
+>=20
+> Andy Lutomirski <luto@kernel.org> wrote:
+>=20
+>>>> You are allowing arbitrary information flow between T and W above.  Who=
 
-> +
-> +HOSTLOADLIBES_watch_test += -lkeyutils
-> diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
-> new file mode 100644
-> index 000000000000..893a5380f792
-> --- /dev/null
-> +++ b/samples/watch_queue/watch_test.c
-[..]
+>>>> cares about notifications?
+>>>=20
+>>> I do. If Watched object is /dev/null no data flow is possible.
+>>> There are many objects on a modern Linux system for which this
+>>> is true. Even if it's "just a file" the existence of one path
+>>> for data to flow does not justify ignoring the rules for other
+>>> data paths.
+>>=20
+>> Aha!
+>>=20
+>> Even ignoring security, writes to things like /dev/null should
+>> probably not trigger notifications to people who are watching
+>> /dev/null.  (There are probably lots of things like this: /dev/zero,
+>> /dev/urandom, etc.)
+>=20
+> Even writes to /dev/null might generate access notifications; leastways,
+> vfs_read() will call fsnotify_access() afterwards on success.
 
-> +			asm ("lfence" : : : "memory" );
-[..]
-> +			asm("mfence" ::: "memory");
+Hmm. I can see this being an issue, but I guess not with your patch set.
 
-FWIW, trying to cross-compile it returned:
+>=20
+> Whether or not you can set marks on open device files is another matter.
+>=20
+>> David, are there any notification types that have this issue in your
+>> patchset?  If so, is there a straightforward way to fix it?
+>=20
+> I'm not sure what issue you're referring to specifically.  Do you mean whe=
+ther
+> writes to device files generate notifications?
 
-aarch64-linux-gnu-gcc -I../../usr/include -I../../include  watch_test.c   -o watch_test
-/tmp/ccDXYynm.s: Assembler messages:
-/tmp/ccDXYynm.s:471: Error: unknown mnemonic `lfence' -- `lfence'
-/tmp/ccDXYynm.s:568: Error: unknown mnemonic `mfence' -- `mfence'
-<builtin>: recipe for target 'watch_test' failed
-make: *** [watch_test] Error 1
+I mean: are there cases where some action generates a notification but does n=
+ot otherwise have an effect visible to the users who can receive the notific=
+ation. It looks like the answer is probably =E2=80=9Cno=E2=80=9D, which is g=
+ood.
 
--- 
-Best Regards,
-Eugeniu.
+Casey, is this good enough for you, or is there still an issue?=
