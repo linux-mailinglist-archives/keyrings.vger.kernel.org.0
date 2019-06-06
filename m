@@ -2,57 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F97A38002
-	for <lists+keyrings@lfdr.de>; Thu,  6 Jun 2019 23:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9020D380F4
+	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2019 00:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728776AbfFFVyb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 6 Jun 2019 17:54:31 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:39583 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728735AbfFFVya (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 6 Jun 2019 17:54:30 -0400
-Received: by mail-pg1-f194.google.com with SMTP id 196so2099610pgc.6
-        for <keyrings@vger.kernel.org>; Thu, 06 Jun 2019 14:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=nRTOxuA/Gwk436wjdRLZFFI2IWjHeK4nxXXVH9+gvJE=;
-        b=EGncbImdzKfDyyHC/wGTZ/hfrEnzQxuTOp2J1Y0gY1VpXSC9Md3ikeKaFw/Z3B22v7
-         0DNodTI71qmiSKyhcOcGu+kQr8Xu0pMtEttTsx96lJ6bMriq7jNWzBs9Y+FEnRfLOpYZ
-         qz8wRnKzKQ/VpDiQMqXU5ddM+QmOqL0WbO7UAMFLeVZf/ZN5YPfFzeJx1xGjcCAya2fh
-         dZWvMCYQhQ+zwgrcrrAc3oohAIXvEeBEVJRMsTPMM3Mg8+24b3tPfpaFLAnoONbYwo3M
-         bJ862/yfW4n5Z66MhmTBXgNY7GFN7zknPozfRMiFJXfEWmnKk6ZewdvLUz9dDYBeAWlR
-         IGSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=nRTOxuA/Gwk436wjdRLZFFI2IWjHeK4nxXXVH9+gvJE=;
-        b=G1mjvSdDBtq2UxQHLJ3ihij27MGkXCMOIakEBo96YKthaGzx6s1mTCT3ZkM60Gke94
-         Q7gF0cMWDTQK/ua6b7PLMNzaJtApqxWAMbAqKiG/ggHIhlSewr1jypp1sNOwdoFdQSyX
-         UKNShGzlnkY6Iz7WG6Y81SUM+3AclDUTGtVzZDeqv55nTXbHWSp9UL2AQy291SmEHgW+
-         AXFRfJea7uTkLOcn4aaxeCVgIpbX+gBTJj1dTPu9s075IAIpLEpbcGUmY4tpqjj3ymHS
-         tBQypY8m99tOraOcWAsnq3t5macFyE7RiCDmO1hcPKHpetul70TBGLlZz2aSrPBUSPiZ
-         XmCg==
-X-Gm-Message-State: APjAAAXB5duEa3GOEIUNqCOcYLIQNATE8XizVGS/fLRdpZVA1QhOnlAx
-        DJ1ILGFqD7zyDaobP4qOl6ftBQ==
-X-Google-Smtp-Source: APXvYqxFQa7/xE+mo3PRdCgIrbB81YZuPBHMMdpvWLdYui3Pw7zIn8HCIDPOffgGuFZp2pZ6jeQSxw==
-X-Received: by 2002:a62:1483:: with SMTP id 125mr55452892pfu.137.1559858070049;
-        Thu, 06 Jun 2019 14:54:30 -0700 (PDT)
-Received: from ?IPv6:2601:646:c200:1ef2:f1c4:94fc:993:1923? ([2601:646:c200:1ef2:f1c4:94fc:993:1923])
-        by smtp.gmail.com with ESMTPSA id h62sm126764pgc.77.2019.06.06.14.54.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 06 Jun 2019 14:54:28 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (1.0)
-Subject: Re: [RFC][PATCH 00/10] Mount, FS, Block and Keyrings notifications [ver #3]
-From:   Andy Lutomirski <luto@amacapital.net>
-X-Mailer: iPhone Mail (16F203)
-In-Reply-To: <23611.1559855827@warthog.procyon.org.uk>
-Date:   Thu, 6 Jun 2019 14:54:27 -0700
-Cc:     Andy Lutomirski <luto@kernel.org>,
+        id S1727291AbfFFWiY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Thu, 6 Jun 2019 18:38:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:37018 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726538AbfFFWiX (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 6 Jun 2019 18:38:23 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C91BE128B5;
+        Thu,  6 Jun 2019 22:38:15 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B67827840D;
+        Thu,  6 Jun 2019 22:38:02 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <AD7898AE-B92C-4DE6-B895-7116FEDB3091@amacapital.net>
+References: <AD7898AE-B92C-4DE6-B895-7116FEDB3091@amacapital.net> <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com> <b91710d8-cd2d-6b93-8619-130b9d15983d@tycho.nsa.gov> <155981411940.17513.7137844619951358374.stgit@warthog.procyon.org.uk> <3813.1559827003@warthog.procyon.org.uk> <8382af23-548c-f162-0e82-11e308049735@tycho.nsa.gov> <0eb007c5-b4a0-9384-d915-37b0e5a158bf@schaufler-ca.com> <c82052e5-ca11-67b5-965e-8f828081f31c@tycho.nsa.gov> <07e92045-2d80-8573-4d36-643deeaff9ec@schaufler-ca.com> <23611.1559855827@warthog.procyon.org.uk>
+To:     Andy Lutomirski <luto@amacapital.net>
+Cc:     dhowells@redhat.com, Andy Lutomirski <luto@kernel.org>,
         Casey Schaufler <casey@schaufler-ca.com>,
         Stephen Smalley <sds@tycho.nsa.gov>,
         Al Viro <viro@zeniv.linux.org.uk>,
@@ -64,56 +39,29 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         LSM List <linux-security-module@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Paul Moore <paul@paul-moore.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AD7898AE-B92C-4DE6-B895-7116FEDB3091@amacapital.net>
-References: <CALCETrVuNRPgEzv-XY4M9m6sEsCiRHxPenN_MpcMYc1h26vVwQ@mail.gmail.com> <b91710d8-cd2d-6b93-8619-130b9d15983d@tycho.nsa.gov> <155981411940.17513.7137844619951358374.stgit@warthog.procyon.org.uk> <3813.1559827003@warthog.procyon.org.uk> <8382af23-548c-f162-0e82-11e308049735@tycho.nsa.gov> <0eb007c5-b4a0-9384-d915-37b0e5a158bf@schaufler-ca.com> <c82052e5-ca11-67b5-965e-8f828081f31c@tycho.nsa.gov> <07e92045-2d80-8573-4d36-643deeaff9ec@schaufler-ca.com> <23611.1559855827@warthog.procyon.org.uk>
-To:     David Howells <dhowells@redhat.com>
+Subject: Re: [RFC][PATCH 00/10] Mount, FS, Block and Keyrings notifications [ver #3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Date:   Thu, 06 Jun 2019 23:38:01 +0100
+Message-ID: <30567.1559860681@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Thu, 06 Jun 2019 22:38:23 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Andy Lutomirski <luto@amacapital.net> wrote:
 
+> I mean: are there cases where some action generates a notification but does
+> not otherwise have an effect visible to the users who can receive the
+> notification. It looks like the answer is probably “no”, which is good.
 
-> On Jun 6, 2019, at 2:17 PM, David Howells <dhowells@redhat.com> wrote:
->=20
-> Andy Lutomirski <luto@kernel.org> wrote:
->=20
->>>> You are allowing arbitrary information flow between T and W above.  Who=
+mount_notify().  You can get a notification that someone altered the mount
+topology (eg. by mounting something).  A process receiving a notification
+could then use fsinfo(), say, to reread the mount topology tree, find out
+where the new mount is and wander over there to have a look - assuming they
+have the permissions for pathwalk to succeed.
 
->>>> cares about notifications?
->>>=20
->>> I do. If Watched object is /dev/null no data flow is possible.
->>> There are many objects on a modern Linux system for which this
->>> is true. Even if it's "just a file" the existence of one path
->>> for data to flow does not justify ignoring the rules for other
->>> data paths.
->>=20
->> Aha!
->>=20
->> Even ignoring security, writes to things like /dev/null should
->> probably not trigger notifications to people who are watching
->> /dev/null.  (There are probably lots of things like this: /dev/zero,
->> /dev/urandom, etc.)
->=20
-> Even writes to /dev/null might generate access notifications; leastways,
-> vfs_read() will call fsnotify_access() afterwards on success.
-
-Hmm. I can see this being an issue, but I guess not with your patch set.
-
->=20
-> Whether or not you can set marks on open device files is another matter.
->=20
->> David, are there any notification types that have this issue in your
->> patchset?  If so, is there a straightforward way to fix it?
->=20
-> I'm not sure what issue you're referring to specifically.  Do you mean whe=
-ther
-> writes to device files generate notifications?
-
-I mean: are there cases where some action generates a notification but does n=
-ot otherwise have an effect visible to the users who can receive the notific=
-ation. It looks like the answer is probably =E2=80=9Cno=E2=80=9D, which is g=
-ood.
-
-Casey, is this good enough for you, or is there still an issue?=
+David
