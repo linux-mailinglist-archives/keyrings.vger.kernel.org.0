@@ -2,83 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BFF238791
-	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2019 12:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE1538C21
+	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2019 16:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726667AbfFGKCK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 7 Jun 2019 06:02:10 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:38593 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726584AbfFGKCK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Jun 2019 06:02:10 -0400
-Received: by mail-ed1-f65.google.com with SMTP id g13so2201621edu.5
-        for <keyrings@vger.kernel.org>; Fri, 07 Jun 2019 03:02:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vdwaa-nl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DXyEZfaRxhxI3NSPrB/TqD2t0A44u2oE17hiVcSU1U0=;
-        b=soAL5O7ymo02xXOCZ5PKP9Zw2fJ808JQko9VgtDhZjdTeJqmDrAs+Tul0JU9Sc0f+a
-         Do/js4/fPJyWEZjlP5TrnPFP9XHGwQqftv4jRA0Nj2pFKIVaXbAkIQ6Cle9fgksllRQl
-         aOFYCBrZtV2RwVhhtILqJ1LnIqUgPdLcS+xUGGW7C9N/4bvzyl0N3IwiLMg8Ltaq3V5k
-         pMCcRBagzxV8o/TKz2ZEiDAseoNK4xffE6k7k9AbXP2Gm06vwQpVqsIysqOL4VIRhWvm
-         oRclqVNq5uC4joZbnqMag/YFYib+ff3eKF9THNrxbm7YCO1534H5KKWGfxJVlOMHS01C
-         xgew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DXyEZfaRxhxI3NSPrB/TqD2t0A44u2oE17hiVcSU1U0=;
-        b=iIlcCFPzeX5qe6nBtiDaWtLMhh0yUYAC01OfdkdLnXJWnvqochrLROOkkGqquT2XnM
-         dLZvkNaz+eB8JJtamK8ADieBt7bfex1SEJN9uAU89OOrSHetLPOYzpyFXTspBlgMVcxY
-         r6hleOLf5ulCH+RzyHbCxWjCMn0vQD/4Vuh6PVuvLeKTvxhEkF708zknY3w80ifZ5DDZ
-         j4/F4iD1X5EvdJI0EckFDFvWmEGar+TPv4OQi9oEHtFxB5VXn3g6KF13m8ThiEQUXc7U
-         gbXune1x7Lf+ESvxttrWHx6nAhCtD4iluaWRrz45uaY2Jsdolk5VptPB5e9w9Db+Ph2t
-         dTSA==
-X-Gm-Message-State: APjAAAWIHWjMkI4T7rRBklmJV+rzB4LZc4XUW/dfyucFZ/LIGyZhJnCs
-        4R7kCsHLqoEEF0yyZoCJ3DKgkw==
-X-Google-Smtp-Source: APXvYqyrTksYbCUkr+KYuYdizYwXxf4iLx9T2LKBImGzAAE0qjG6f0JVOufvqSMuanJj+Y9mJ2f2gQ==
-X-Received: by 2002:aa7:dd92:: with SMTP id g18mr634651edv.194.1559901728656;
-        Fri, 07 Jun 2019 03:02:08 -0700 (PDT)
-Received: from localhost.localdomain (ipv6-4a2c18cf8e0655e9.west.clients.hamburg.freifunk.net. [2a03:2267:2:0:4a2c:18cf:8e06:55e9])
-        by smtp.gmail.com with ESMTPSA id hk1sm290066ejb.36.2019.06.07.03.02.07
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 07 Jun 2019 03:02:08 -0700 (PDT)
-From:   Jelle van der Waa <jelle@vdwaa.nl>
-To:     David Howells <dhowells@redhat.com>
-Cc:     keyrings@vger.kernel.org, Jelle van der Waa <jelle@vdwaa.nl>
-Subject: [PATCH] Make keyutils reproducible
-Date:   Fri,  7 Jun 2019 12:01:56 +0200
-Message-Id: <20190607100156.19477-1-jelle@vdwaa.nl>
-X-Mailer: git-send-email 2.21.0
+        id S1729279AbfFGOBb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 7 Jun 2019 10:01:31 -0400
+Received: from iolanthe.rowland.org ([192.131.102.54]:34716 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1729127AbfFGOBb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Jun 2019 10:01:31 -0400
+Received: (qmail 1660 invoked by uid 2102); 7 Jun 2019 10:01:30 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 7 Jun 2019 10:01:30 -0400
+Date:   Fri, 7 Jun 2019 10:01:30 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Howells <dhowells@redhat.com>, <viro@zeniv.linux.org.uk>,
+        <linux-usb@vger.kernel.org>, <raven@themaw.net>,
+        <linux-fsdevel@vger.kernel.org>, <linux-api@vger.kernel.org>,
+        <linux-block@vger.kernel.org>, <keyrings@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 09/10] usb: Add USB subsystem notifications [ver #3]
+In-Reply-To: <87imthdhjb.fsf@linux.intel.com>
+Message-ID: <Pine.LNX.4.44L0.1906071000260.1612-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Adhere to the SOURCE_DATE_EPOCH standard and use it's date when set
-otherwise fall back to the default behaviour.
+On Fri, 7 Jun 2019, Felipe Balbi wrote:
 
-Signed-off-by: Jelle van der Waa <jelle@vdwaa.nl>
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi,
+> 
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > On Thu, Jun 06, 2019 at 10:55:24AM -0400, Alan Stern wrote:
+> >> On Thu, 6 Jun 2019, Greg Kroah-Hartman wrote:
+> >> 
+> >> > On Thu, Jun 06, 2019 at 10:24:18AM -0400, Alan Stern wrote:
+> >> > > On Thu, 6 Jun 2019, David Howells wrote:
+> >> > > 
+> >> > > > Add a USB subsystem notification mechanism whereby notifications about
+> >> > > > hardware events such as device connection, disconnection, reset and I/O
+> >> > > > errors, can be reported to a monitoring process asynchronously.
+> >> > > 
+> >> > > USB I/O errors covers an awfully large and vague field.  Do we really
+> >> > > want to include them?  I'm doubtful.
+> >> > 
+> >> > See the other patch on the linux-usb list that wanted to start adding
+> >> > KOBJ_CHANGE notifications about USB "i/o errors".
+> >> 
+> >> That patch wanted to add notifications only for enumeration failures
+> >> (assuming you're talking about the patch from Eugeniu Rosca), not I/O
+> >> errors in general.
+> >
+> > Yes, sorry, I was thinking that as a "I/O failed in enumeration" :)
+> >
+> >> > So for "severe" issues, yes, we should do this, but perhaps not for all
+> >> > of the "normal" things we see when a device is yanked out of the system
+> >> > and the like.
+> >> 
+> >> Then what counts as a "severe" issue?  Anything besides enumeration 
+> >> failure?
+> >
+> > Not that I can think of at the moment, other than the other recently
+> > added KOBJ_CHANGE issue.  I'm sure we have other "hard failure" issues
+> > in the USB stack that people will want exposed over time.
+> 
+> From an XHCI standpoint, Transaction Errors might be one thing. They
+> happen rarely and are a strong indication that the bus itself is
+> bad. Either bad cable, misbehaving PHYs, improper power management, etc.
 
-diff --git a/Makefile b/Makefile
-index 33a451e..9066d5d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -108,7 +108,7 @@ all: keyctl request-key key.dns_resolver
- ###############################################################################
- #RPATH = -Wl,-rpath,$(LIBDIR)
- 
--VCPPFLAGS	:= -DPKGBUILD="\"$(shell date -u +%F)\""
-+VCPPFLAGS	:= -DPKGBUILD="\"$(date --utc --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%F)\""
- VCPPFLAGS	+= -DPKGVERSION="\"keyutils-$(VERSION)\""
- VCPPFLAGS	+= -DAPIVERSION="\"libkeyutils-$(APIVERSION)\""
- 
--- 
-2.21.0
+Don't you also get transaction errors if the user unplugs a device in 
+the middle of a transfer?  That's not the sort of thing we want to sent 
+notifications about.
+
+Alan Stern
 
