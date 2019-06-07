@@ -2,217 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB88939077
-	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2019 17:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA1A0394E3
+	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2019 20:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731388AbfFGPwJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 7 Jun 2019 11:52:09 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:45762 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730266AbfFGPwI (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 7 Jun 2019 11:52:08 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A1E209B3B7;
-        Fri,  7 Jun 2019 15:52:03 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-173.rdu2.redhat.com [10.10.120.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B6A1160D7C;
-        Fri,  7 Jun 2019 15:52:00 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20190607151228.GA1872258@magnolia>
-References: <20190607151228.GA1872258@magnolia> <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk> <155991706083.15579.16359443779582362339.stgit@warthog.procyon.org.uk>
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk, raven@themaw.net,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 02/13] uapi: General notification ring definitions [ver #4]
+        id S1732087AbfFGSyk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 7 Jun 2019 14:54:40 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:42286 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732040AbfFGSyk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Jun 2019 14:54:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=mN9SlMwFezZ1ZPB+c4+XXB+0uQsuZLbIqjOavdIdlqw=; b=HTM+//NTshmY11VPp3W2zCC0AV
+        AnxnJl/5QTXQPkKrFfbo5L9QXQ+NWhQXx55Bzov9saX3KqjAdGWO5e9rYIJj+km9BAG0LXoJj0bap
+        q1I+rt94/+kmxxLnj2fVapCr8TgoRYqK/dxt0UrHQAIQcESZ2UnEA/WxAiDB5UMaYTYAgxAWYgQCB
+        Vm3QYFxZNeS4ooSrsMJqSGEl3lsWf6/E4fGKje0zAmxn2wJaGnYVVFjT3o+oeayKdH1SYHQUxPh6a
+        I+x+Tv3yFEYYuZItw1vXMeLhh3KzKn8fLI0a4cU45VsOQDmju23QkXlJrpu7dSWxgJVfYKUJk1Bw3
+        S69+bYTg==;
+Received: from [179.181.119.115] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hZK0d-0005sj-LB; Fri, 07 Jun 2019 18:54:39 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hZK0b-0007F6-Fo; Fri, 07 Jun 2019 15:54:37 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        James Morris <jamorris@linux.microsoft.com>
+Subject: [PATCH v3 11/20] docs: security: trusted-encrypted.rst: fix code-block tag
+Date:   Fri,  7 Jun 2019 15:54:27 -0300
+Message-Id: <d9063d11a7690c91a61938d0bb1f92e8669be95a.1559933665.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
+References: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <29221.1559922719.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Fri, 07 Jun 2019 16:51:59 +0100
-Message-ID: <29222.1559922719@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Fri, 07 Jun 2019 15:52:08 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Darrick J. Wong <darrick.wong@oracle.com> wrote:
+The code-block tag is at the wrong place, causing those
+warnings:
 
-> > +enum watch_notification_type {
-> > +	WATCH_TYPE_META		= 0,	/* Special record */
-> > +	WATCH_TYPE_MOUNT_NOTIFY	= 1,	/* Mount notification record */
-> > +	WATCH_TYPE_SB_NOTIFY	= 2,	/* Superblock notification */
-> > +	WATCH_TYPE_KEY_NOTIFY	= 3,	/* Key/keyring change notification */
-> > +	WATCH_TYPE_BLOCK_NOTIFY	= 4,	/* Block layer notifications */
-> > +#define WATCH_TYPE___NR 5
-> 
-> Given the way enums work I think you can just make WATCH_TYPE___NR the
-> last element in the enum?
+    Documentation/security/keys/trusted-encrypted.rst:112: WARNING: Literal block expected; none found.
+    Documentation/security/keys/trusted-encrypted.rst:121: WARNING: Unexpected indentation.
+    Documentation/security/keys/trusted-encrypted.rst:122: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/security/keys/trusted-encrypted.rst:123: WARNING: Block quote ends without a blank line; unexpected unindent.
 
-Yeah.  I've a feeling I'd been asked not to do that, but I don't remember who
-by.
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Acked-by: James Morris <jamorris@linux.microsoft.com>
+Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+---
+ Documentation/security/keys/trusted-encrypted.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> > +struct watch_notification {
-> 
-> Kind of a long name...
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+index 7b35fcb58933..50ac8bcd6970 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -107,12 +107,14 @@ Where::
+ 
+ Examples of trusted and encrypted key usage:
+ 
+-Create and save a trusted key named "kmk" of length 32 bytes::
++Create and save a trusted key named "kmk" of length 32 bytes.
+ 
+ Note: When using a TPM 2.0 with a persistent key with handle 0x81000001,
+ append 'keyhandle=0x81000001' to statements between quotes, such as
+ "new 32 keyhandle=0x81000001".
+ 
++::
++
+     $ keyctl add trusted kmk "new 32" @u
+     440502848
+ 
+-- 
+2.21.0
 
-*shrug*.  Try to avoid conflicts with userspace symbols.
-
-> > +	__u32			type:24;	/* enum watch_notification_type */
-> > +	__u32			subtype:8;	/* Type-specific subtype (filterable) */
-> 
-> 16777216 diferent types and 256 different subtypes?  My gut instinct
-> wants a better balance, though I don't know where I'd draw the line.
-> Probably 12 bits for type and 10 for subtype?  OTOH I don't have a good
-> sense of how many distinct notification types an XFS would want to send
-> back to userspace, and maybe 256 subtypes is fine.  We could always
-> reserve another watch_notification_type if we need > 256.
-> 
-> Ok, no objections. :)
-
-If a source wants more than 256 subtypes, it can always allocate an additional
-type.  Note that the greater the number of subtypes, the larger the filter
-structure (added in patch 5).
-
-> > +	__u32			info;
-> > +#define WATCH_INFO_OVERRUN	0x00000001	/* Event(s) lost due to overrun */
-> > +#define WATCH_INFO_ENOMEM	0x00000002	/* Event(s) lost due to ENOMEM */
-> > +#define WATCH_INFO_RECURSIVE	0x00000004	/* Change was recursive */
-> > +#define WATCH_INFO_LENGTH	0x000001f8	/* Length of record / sizeof(watch_notification) */
-> 
-> This is a mask, isn't it?  Could we perhaps have some helpers here?
-> Something along the lines of...
-> 
-> #define WATCH_INFO_LENGTH_MASK	0x000001f8
-> #define WATCH_INFO_LENGTH_SHIFT	3
-> 
-> static inline size_t watch_notification_length(struct watch_notification *wn)
-> {
-> 	return (wn->info & WATCH_INFO_LENGTH_MASK) >> WATCH_INFO_LENGTH_SHIFT *
-> 			sizeof(struct watch_notification);
-> }
-> 
-> static inline struct watch_notification *watch_notification_next(
-> 		struct watch_notification *wn)
-> {
-> 	return wn + ((wn->info & WATCH_INFO_LENGTH_MASK) >>
-> 			WATCH_INFO_LENGTH_SHIFT);
-> }
-
-No inline functions in UAPI headers, please.  I'd love to kill off the ones
-that we have, but that would break things.
-
-> ...so that we don't have to opencode all of the ring buffer walking
-> magic and stuff?
-
-There'll end up being a small userspace library, I think.
-
-> (I might also shorten the namespace from WATCH_INFO_ to WNI_ ...)
-
-I'd rather not do that.  WNI_ could mean all sorts of things - at a first
-glance, it sounds like something to do with Windows or windowing.
-
-> Hmm so the length field is 6 bits and therefore the maximum size of a
-> notification record is ... 63 * (sizeof(u32)  * 2) = 504 bytes?  Which
-> means that kernel users can send back a maximum payload of 496 bytes?
-> That's probably big enough for random fs notifications (bad metadata
-> detected, media errors, etc.)
-
-Yep.  The ring buffer is limited in capacity since it has to be unswappable so
-that notifications can be written into it from softirq context or under lock.
-
-> Judging from the sample program I guess all that userspace does is
-> allocate a memory buffer and toss it into the kernel, which then
-> initializes the ring management variables, and from there we just scan
-> around the ring buffer every time poll(watch_fd) says there's something
-> to do?
-
-Yes.  Further, if head == tail, then it's empty.  Note that since head and
-tail will go up to 4G, but the buffer is limited to less than that, there's no
-need for a requisite unusable slot in the ring as head != tail when the ring
-is full.
-
-> How does userspace tell the kernel the size of the ring buffer?
-
-If you looked in the sample program, you might have noticed this in the main()
-function:
-
-	if (ioctl(fd, IOC_WATCH_QUEUE_SET_SIZE, BUF_SIZE) == -1) {
-
-The chardev allocates the buffer and then userspace mmaps it.
-
-I need to steal the locked-page accounting from the epoll patches to stop
-someone from using this to lock away all memory.
-
-> Does (watch_notification->info & WATCH_INFO_LENGTH) == 0 have any
-> meaning besides apparently "stop looking at me"?
-
-That's an illegal value, indicating a kernel bug.
-
-> > +#define WATCH_INFO_IN_SUBTREE	0x00000200	/* Change was not at watched root */
-> > +#define WATCH_INFO_TYPE_FLAGS	0x00ff0000	/* Type-specific flags */
-> 
-> WATCH_INFO_FLAG_MASK ?
-
-Yeah.
-
-> > +#define WATCH_INFO_FLAG_0	0x00010000
-> > +#define WATCH_INFO_FLAG_1	0x00020000
-> > +#define WATCH_INFO_FLAG_2	0x00040000
-> > +#define WATCH_INFO_FLAG_3	0x00080000
-> > +#define WATCH_INFO_FLAG_4	0x00100000
-> > +#define WATCH_INFO_FLAG_5	0x00200000
-> > +#define WATCH_INFO_FLAG_6	0x00400000
-> > +#define WATCH_INFO_FLAG_7	0x00800000
-> > +#define WATCH_INFO_ID		0xff000000	/* ID of watchpoint */
-> 
-> WATCH_INFO_ID_MASK ?
-
-Sure.
-
-> > +#define WATCH_INFO_ID__SHIFT	24
-> 
-> Why double underscore here?
-
-Because it's related to WATCH_INFO_ID, but isn't a mask on ->info.
-
-> > +};
-> > +
-> > +#define WATCH_LENGTH_SHIFT	3
-> > +
-> > +struct watch_queue_buffer {
-> > +	union {
-> > +		/* The first few entries are special, containing the
-> > +		 * ring management variables.
-> 
-> The first /two/ entries, correct?
-
-Currently two.
-
-> Also, weird multiline comment style.
-
-Not really.
-
-> > +		 */
-> > +		struct {
-> > +			struct watch_notification watch; /* WATCH_TYPE_META */
-> 
-> Do these structures have to be cache-aligned for the atomic reads and
-> writes to work?
-
-I hope not, otherwise we're screwed all over the kernel, particularly with
-structure randomisation.
-
-Further, what alignment is "cache aligned"?  It can vary by CPU for a single
-arch.
-
-David
