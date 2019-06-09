@@ -2,111 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D95F9394B4
-	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2019 20:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5C23A3B0
+	for <lists+keyrings@lfdr.de>; Sun,  9 Jun 2019 06:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732077AbfFGSyk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 7 Jun 2019 14:54:40 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:42262 "EHLO
+        id S1725850AbfFIEfh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 9 Jun 2019 00:35:37 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:41286 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728736AbfFGSyk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Jun 2019 14:54:40 -0400
+        with ESMTP id S1725787AbfFIEfg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 9 Jun 2019 00:35:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=uax00MhLlFpYA5SZzOVY82diwalzYA3SNqGmlnWlanE=; b=OhL+52KyDBrHUieW2mIeoW0YJn
-        3JtcLkEizrq9O1igz+VxMEaMffmJkQpN5Lj5FAZzJ14g/KGgwLPNDPFjO8mjw6ZGLSAPpxAkJL2YP
-        TTWsASrZeOqC83qtbUA1VzvrJKiHnKJ2u+RjHkWodKTAxQZcetk/eAq2Yq9ViOft9IA2c4vrENqNW
-        hBBgzy6F7VMqGwNtTDEmoQeA+I6CzjBjOi0JftPJ5sVrArXthGMIWPCDNcewjz5/vEmS5XXLTMn9N
-        12S1smNQMWvnMFqLrd8i1ZMcGL8/iWAmto/v4NdV/uLEZ8/IILCXL7B0W1tNUPWGNI18MoZT7+ZrW
-        DaB/++lw==;
-Received: from [179.181.119.115] (helo=bombadil.infradead.org)
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=3iCKY5LeaLUChDTDcVwu/h/F/j5YNJNGeSjVT5fdq88=; b=by4vZqhKqOxBJlKDd6hArInlm
+        WKADOCatsOoNcHcijlFuSKSkpxMaFoz+89V6rK04DRk+KaXCbmjSjbMjOQfsAKas/yaCx5yaCrasG
+        PyDXtgEdyTUBWH6O2Kupd/9erdnh9qOXU3372Xvj91W9/ecClafI8rERmnDPqNnlLZLG8HaG0+dgj
+        PG34x6yfIbTqxYxkE5sdI9jS93S8CLdAEfq+8giWfgfKdy/xskycgZGnI+QZfPXyxlcVAEB/kbmeC
+        MklrDoI9xw3g29y2gcGpCpY13lPuccz0x2cX4ZFoHieSnsz9BE7EtXKwrdSxm6hjjELk+Y+gJQ64J
+        +1JtM+uTg==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=dragon.dunlab)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hZK0d-0005sb-JE; Fri, 07 Jun 2019 18:54:39 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hZK0b-0007FA-Ge; Fri, 07 Jun 2019 15:54:37 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: [PATCH v3 12/20] docs: security: core.rst: Fix several warnings
-Date:   Fri,  7 Jun 2019 15:54:28 -0300
-Message-Id: <8fb1ec1bbe34b0f5924b75204c26ba7f96f9e663.1559933665.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
-References: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
+        id 1hZpYN-0008Ro-Px; Sun, 09 Jun 2019 04:35:35 +0000
+Subject: Re: [PATCH 02/13] uapi: General notification ring definitions [ver
+ #4]
+To:     David Howells <dhowells@redhat.com>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     viro@zeniv.linux.org.uk, raven@themaw.net,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190607151228.GA1872258@magnolia>
+ <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk>
+ <155991706083.15579.16359443779582362339.stgit@warthog.procyon.org.uk>
+ <29222.1559922719@warthog.procyon.org.uk>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <6b6f5bb0-1426-239b-ac9f-281e31ddcd04@infradead.org>
+Date:   Sat, 8 Jun 2019 21:35:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <29222.1559922719@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Multi-line literal markups only work when they're idented at the
-same level, with is not the case here:
+On 6/7/19 8:51 AM, David Howells wrote:
+> Darrick J. Wong <darrick.wong@oracle.com> wrote:
+> 
 
-   Documentation/security/keys/core.rst:1597: WARNING: Inline literal start-string without end-string.
-   Documentation/security/keys/core.rst:1597: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1597: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1598: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1598: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1600: WARNING: Inline literal start-string without end-string.
-   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1600: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1666: WARNING: Inline literal start-string without end-string.
-   Documentation/security/keys/core.rst:1666: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1666: WARNING: Inline emphasis start-string without end-string.
-   Documentation/security/keys/core.rst:1666: WARNING: Inline emphasis start-string without end-string.
+>>> +	__u32			info;
+>>> +#define WATCH_INFO_OVERRUN	0x00000001	/* Event(s) lost due to overrun */
+>>> +#define WATCH_INFO_ENOMEM	0x00000002	/* Event(s) lost due to ENOMEM */
+>>> +#define WATCH_INFO_RECURSIVE	0x00000004	/* Change was recursive */
+>>> +#define WATCH_INFO_LENGTH	0x000001f8	/* Length of record / sizeof(watch_notification) */
+>>
+>> This is a mask, isn't it?  Could we perhaps have some helpers here?
+>> Something along the lines of...
+>>
+>> #define WATCH_INFO_LENGTH_MASK	0x000001f8
+>> #define WATCH_INFO_LENGTH_SHIFT	3
+>>
+>> static inline size_t watch_notification_length(struct watch_notification *wn)
+>> {
+>> 	return (wn->info & WATCH_INFO_LENGTH_MASK) >> WATCH_INFO_LENGTH_SHIFT *
+>> 			sizeof(struct watch_notification);
+>> }
+>>
+>> static inline struct watch_notification *watch_notification_next(
+>> 		struct watch_notification *wn)
+>> {
+>> 	return wn + ((wn->info & WATCH_INFO_LENGTH_MASK) >>
+>> 			WATCH_INFO_LENGTH_SHIFT);
+>> }
+> 
+> No inline functions in UAPI headers, please.  I'd love to kill off the ones
+> that we have, but that would break things.
 
-Fix it by using a code-block instead.
+Hi David,
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- Documentation/security/keys/core.rst | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+What is the problem with inline functions in UAPI headers?
 
-diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-index 9521c4207f01..3fd60dcb2dc6 100644
---- a/Documentation/security/keys/core.rst
-+++ b/Documentation/security/keys/core.rst
-@@ -1594,10 +1594,12 @@ The structure has a number of fields, some of which are mandatory:
-      attempted key link operation. If there is no match, -EINVAL is returned.
- 
- 
--  *  ``int (*asym_eds_op)(struct kernel_pkey_params *params,
--			  const void *in, void *out);``
--     ``int (*asym_verify_signature)(struct kernel_pkey_params *params,
--				    const void *in, const void *in2);``
-+  *  ``asym_eds_op`` and ``asym_verify_signature``::
-+
-+       int (*asym_eds_op)(struct kernel_pkey_params *params,
-+			  const void *in, void *out);
-+       int (*asym_verify_signature)(struct kernel_pkey_params *params,
-+				    const void *in, const void *in2);
- 
-      These methods are optional.  If provided the first allows a key to be
-      used to encrypt, decrypt or sign a blob of data, and the second allows a
-@@ -1662,8 +1664,10 @@ The structure has a number of fields, some of which are mandatory:
-      required crypto isn't available.
- 
- 
--  *  ``int (*asym_query)(const struct kernel_pkey_params *params,
--			 struct kernel_pkey_query *info);``
-+  *  ``asym_query``::
-+
-+       int (*asym_query)(const struct kernel_pkey_params *params,
-+			 struct kernel_pkey_query *info);
- 
-      This method is optional.  If provided it allows information about the
-      public or asymmetric key held in the key to be determined.
+>> ...so that we don't have to opencode all of the ring buffer walking
+>> magic and stuff?
+> 
+> There'll end up being a small userspace library, I think.
+
+>>> +};
+>>> +
+>>> +#define WATCH_LENGTH_SHIFT	3
+>>> +
+>>> +struct watch_queue_buffer {
+>>> +	union {
+>>> +		/* The first few entries are special, containing the
+>>> +		 * ring management variables.
+>>
+>> The first /two/ entries, correct?
+> 
+> Currently two.
+> 
+>> Also, weird multiline comment style.
+> 
+> Not really.
+
+Yes really.
+
+>>> +		 */
+
+It does not match the preferred coding style for multi-line comments
+according to coding-style.rst.
+
+
+thanks.
 -- 
-2.21.0
-
+~Randy
