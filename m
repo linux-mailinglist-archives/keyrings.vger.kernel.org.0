@@ -2,123 +2,166 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5C23A3B0
-	for <lists+keyrings@lfdr.de>; Sun,  9 Jun 2019 06:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0EDC3AE96
+	for <lists+keyrings@lfdr.de>; Mon, 10 Jun 2019 07:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725850AbfFIEfh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 9 Jun 2019 00:35:37 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:41286 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbfFIEfg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 9 Jun 2019 00:35:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=3iCKY5LeaLUChDTDcVwu/h/F/j5YNJNGeSjVT5fdq88=; b=by4vZqhKqOxBJlKDd6hArInlm
-        WKADOCatsOoNcHcijlFuSKSkpxMaFoz+89V6rK04DRk+KaXCbmjSjbMjOQfsAKas/yaCx5yaCrasG
-        PyDXtgEdyTUBWH6O2Kupd/9erdnh9qOXU3372Xvj91W9/ecClafI8rERmnDPqNnlLZLG8HaG0+dgj
-        PG34x6yfIbTqxYxkE5sdI9jS93S8CLdAEfq+8giWfgfKdy/xskycgZGnI+QZfPXyxlcVAEB/kbmeC
-        MklrDoI9xw3g29y2gcGpCpY13lPuccz0x2cX4ZFoHieSnsz9BE7EtXKwrdSxm6hjjELk+Y+gJQ64J
-        +1JtM+uTg==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=dragon.dunlab)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hZpYN-0008Ro-Px; Sun, 09 Jun 2019 04:35:35 +0000
-Subject: Re: [PATCH 02/13] uapi: General notification ring definitions [ver
- #4]
-To:     David Howells <dhowells@redhat.com>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     viro@zeniv.linux.org.uk, raven@themaw.net,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190607151228.GA1872258@magnolia>
- <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk>
- <155991706083.15579.16359443779582362339.stgit@warthog.procyon.org.uk>
- <29222.1559922719@warthog.procyon.org.uk>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <6b6f5bb0-1426-239b-ac9f-281e31ddcd04@infradead.org>
-Date:   Sat, 8 Jun 2019 21:35:33 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <29222.1559922719@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=utf-8
+        id S2387484AbfFJFVC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 Jun 2019 01:21:02 -0400
+Received: from mail-eopbgr810051.outbound.protection.outlook.com ([40.107.81.51]:30931
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2387457AbfFJFVC (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 10 Jun 2019 01:21:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector1-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S9jPIrjrGwR9dzSGc3epmEvjkVYqRndp3RJZWukVrUU=;
+ b=IkGwJFsM4dBLFbWfZtFiFOSw3BgFXviTDtg4COoLQh9FeB8MfFlAeRfAuks7LAOMojE3Ncd5Glg8CvQbOhqdGMzc6xhbCEmvffzhmBi5ZDi7rGmdHC/BsQdAP3pwF141nV1X+OLVgCtkSr+IwxWfYyYBboJaSBAlRwO0ZBMjE6Y=
+Received: from BN7PR02MB5124.namprd02.prod.outlook.com (20.176.26.153) by
+ BN7PR02MB4146.namprd02.prod.outlook.com (52.132.223.156) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1965.15; Mon, 10 Jun 2019 05:20:58 +0000
+Received: from BN7PR02MB5124.namprd02.prod.outlook.com
+ ([fe80::a56f:7a30:7488:ff99]) by BN7PR02MB5124.namprd02.prod.outlook.com
+ ([fe80::a56f:7a30:7488:ff99%4]) with mapi id 15.20.1965.017; Mon, 10 Jun 2019
+ 05:20:58 +0000
+From:   Kalyani Akula <kalyania@xilinx.com>
+To:     Stephan Mueller <smueller@chronox.de>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>
+CC:     "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Sarat Chand Savitala <saratcha@xilinx.com>
+Subject: RE: [RFC PATCH 4/5] crypto: Adds user space interface for
+ ALG_SET_KEY_TYPE
+Thread-Topic: [RFC PATCH 4/5] crypto: Adds user space interface for
+ ALG_SET_KEY_TYPE
+Thread-Index: AQHUrjLRC0KQY4vUUEiutylzuXEA7qWzVM+AgJUjQyCAA8MlgIAVaNiQgBkBuACAGpYxMA==
+Date:   Mon, 10 Jun 2019 05:20:58 +0000
+Message-ID: <BN7PR02MB5124A7E685AC0F59AFBEFC8DAF130@BN7PR02MB5124.namprd02.prod.outlook.com>
+References: <1547708541-23730-1-git-send-email-kalyani.akula@xilinx.com>
+ <18759853.IUaQuE38eh@tauon.chronox.de>
+ <SN6PR02MB5135CE53C3E3FB34CA5E6BA8AF320@SN6PR02MB5135.namprd02.prod.outlook.com>
+ <2554415.t45IJDmies@tauon.chronox.de>
+In-Reply-To: <2554415.t45IJDmies@tauon.chronox.de>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=kalyania@xilinx.com; 
+x-originating-ip: [149.199.50.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 5d97bf42-987c-4e46-cecb-08d6ed636be5
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:BN7PR02MB4146;
+x-ms-traffictypediagnostic: BN7PR02MB4146:
+x-microsoft-antispam-prvs: <BN7PR02MB414604F0DE79EA6CBC5CCFACAF130@BN7PR02MB4146.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 0064B3273C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(39860400002)(376002)(366004)(346002)(396003)(13464003)(189003)(199004)(486006)(2906002)(7736002)(54906003)(110136005)(316002)(305945005)(14444005)(256004)(5660300002)(476003)(71200400001)(71190400001)(86362001)(33656002)(2501003)(74316002)(52536014)(11346002)(446003)(14454004)(76116006)(66946007)(66446008)(64756008)(66556008)(66476007)(26005)(53936002)(7696005)(66066001)(73956011)(68736007)(186003)(76176011)(102836004)(6116002)(3846002)(6506007)(9686003)(6436002)(53546011)(55016002)(229853002)(478600001)(25786009)(8676002)(81166006)(99286004)(8936002)(4326008)(107886003)(6246003)(81156014);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR02MB4146;H:BN7PR02MB5124.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: xilinx.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: beHgnN2MCG+T/IWkn39JiLZgGCdx8nxM7zZveUbGy53tjJryiIXOIk0PDeUaJlzL8xNt4G4luAF6Emw8k4KOfZw4DBQK0onIF3Bvor1X1bEKVM2XsIaEN1UN1bkmkxtzLHyXTmCq1ijzkU1WN/5rXi8Mc+jBb0Z0tn1kSncULUGxy29Z3Hftml2APWknfT+pxkm2ZqZlK+KxIo1CozNHLckD0TnnosfFhN1ack/1UC0Vnr/nFM/ynXRBYMr+WhpJYOGqk0KDY8E3JLF1NmAKX1eT2YrkJkAeSqLNssdiVkEQEnmpcJbE6C1xxttEfn2Ih93nD+HzSIvdCK4C9ETvNVST+G5venqFq3Ue6ctzxUgikCFxgV457Wrd9y4fLkVRulT60MGXo+yAqvvwEA10UbwjceQbnl/FEesxrvtZbSM=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d97bf42-987c-4e46-cecb-08d6ed636be5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2019 05:20:58.6922
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kalyania@xilinx.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR02MB4146
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 6/7/19 8:51 AM, David Howells wrote:
-> Darrick J. Wong <darrick.wong@oracle.com> wrote:
-> 
+Ping!!
 
->>> +	__u32			info;
->>> +#define WATCH_INFO_OVERRUN	0x00000001	/* Event(s) lost due to overrun */
->>> +#define WATCH_INFO_ENOMEM	0x00000002	/* Event(s) lost due to ENOMEM */
->>> +#define WATCH_INFO_RECURSIVE	0x00000004	/* Change was recursive */
->>> +#define WATCH_INFO_LENGTH	0x000001f8	/* Length of record / sizeof(watch_notification) */
->>
->> This is a mask, isn't it?  Could we perhaps have some helpers here?
->> Something along the lines of...
->>
->> #define WATCH_INFO_LENGTH_MASK	0x000001f8
->> #define WATCH_INFO_LENGTH_SHIFT	3
->>
->> static inline size_t watch_notification_length(struct watch_notification *wn)
->> {
->> 	return (wn->info & WATCH_INFO_LENGTH_MASK) >> WATCH_INFO_LENGTH_SHIFT *
->> 			sizeof(struct watch_notification);
->> }
->>
->> static inline struct watch_notification *watch_notification_next(
->> 		struct watch_notification *wn)
->> {
->> 	return wn + ((wn->info & WATCH_INFO_LENGTH_MASK) >>
->> 			WATCH_INFO_LENGTH_SHIFT);
->> }
-> 
-> No inline functions in UAPI headers, please.  I'd love to kill off the ones
-> that we have, but that would break things.
+> -----Original Message-----
+> From: Stephan Mueller <smueller@chronox.de>
+> Sent: Friday, May 24, 2019 12:50 PM
+> To: Kalyani Akula <kalyania@xilinx.com>; keyrings@vger.kernel.org
+> Cc: herbert@gondor.apana.org.au; davem@davemloft.net; linux-
+> crypto@vger.kernel.org; linux-kernel@vger.kernel.org; Sarat Chand Savital=
+a
+> <saratcha@xilinx.com>
+> Subject: Re: [RFC PATCH 4/5] crypto: Adds user space interface for
+> ALG_SET_KEY_TYPE
+>=20
+> Am Mittwoch, 8. Mai 2019, 11:31:08 CEST schrieb Kalyani Akula:
+>=20
+> Hi Kalyani,
+>=20
+> > Hi Stephan,
+> >
+> > Keyrings is in-kernel key-management and retention facility. User can
+> > use it to manage keys used for applications.
+> >
+> > Xilinx cryptographic hardware has a mechanism to store keys in its
+> > internal hardware and do not have mechanism to read it back due to secu=
+rity
+> reasons.
+> > It stores key internally in different forms like simple key, key
+> > encrypted with unique hardware DNA, key encrypted with hardware family
+> > key, key stored in eFUSEs/BBRAM etc.
+> > Based on security level expected, user can select one of the key for
+> > AES operation. Since AES hardware internally has access to these keys,
+> > user do not require to provide key to hardware, but need to tell which
+> > internal hardware key user application like to use for AES operation.
+> >
+> > Basic need is to pass information to AES hardware about which internal
+> > hardware key to be used for AES operation.
+> >
+> > I agree that from general use case perspective we are not selecting
+> > key type but selecting internal hardware keys provided by user. How
+> > about providing option to select custom hardware keys provided by
+> > hardware (AES_SEL_HW_KEY)?
+>=20
+> I am not intimately familiary with the keyring facility. Thus, let us ask=
+ the experts
+> at the keyring mailing list :-)
+>=20
+> >
+> > Thanks
+> > kalyani
+> >
+> > > -----Original Message-----
+> > > From: Stephan Mueller <smueller@chronox.de>
+> > > Sent: Thursday, April 25, 2019 12:01 AM
+> > > To: Kalyani Akula <kalyania@xilinx.com>
+> > > Cc: herbert@gondor.apana.org.au; davem@davemloft.net; linux-
+> > > crypto@vger.kernel.org; linux-kernel@vger.kernel.org
+> > > Subject: Re: [RFC PATCH 4/5] crypto: Adds user space interface for
+> > > ALG_SET_KEY_TYPE
+> > >
+> > > Am Montag, 22. April 2019, 11:17:55 CEST schrieb Kalyani Akula:
+> > >
+> > > Hi Kalyani,
+> > >
+> > > > > Besides, seem to be more a key handling issue. Wouldn't it make
+> > > > > sense to rather have such issue solved with key rings than in
+> > > > > the kernel crypto API?
+> > > >
+> > > > [kalyani] Can you please elaborate on this further ?
+> > >
+> > > The kernel has a keyring support in security/keys which has a user
+> > > space interface with keyutils. That interface is commonly used for
+> > > any sort of key manipulation.
+> > >
+> > > Ciao
+> > > Stephan
+>=20
+>=20
+>=20
+> Ciao
+> Stephan
+>=20
 
-Hi David,
-
-What is the problem with inline functions in UAPI headers?
-
->> ...so that we don't have to opencode all of the ring buffer walking
->> magic and stuff?
-> 
-> There'll end up being a small userspace library, I think.
-
->>> +};
->>> +
->>> +#define WATCH_LENGTH_SHIFT	3
->>> +
->>> +struct watch_queue_buffer {
->>> +	union {
->>> +		/* The first few entries are special, containing the
->>> +		 * ring management variables.
->>
->> The first /two/ entries, correct?
-> 
-> Currently two.
-> 
->> Also, weird multiline comment style.
-> 
-> Not really.
-
-Yes really.
-
->>> +		 */
-
-It does not match the preferred coding style for multi-line comments
-according to coding-style.rst.
-
-
-thanks.
--- 
-~Randy
