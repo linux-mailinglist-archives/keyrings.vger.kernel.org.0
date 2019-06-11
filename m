@@ -2,109 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74B5B3C43E
-	for <lists+keyrings@lfdr.de>; Tue, 11 Jun 2019 08:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C643CDA2
+	for <lists+keyrings@lfdr.de>; Tue, 11 Jun 2019 15:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404210AbfFKGab (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 11 Jun 2019 02:30:31 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:47722 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404193AbfFKGa2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jun 2019 02:30:28 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5B6RQ78104279
-        for <keyrings@vger.kernel.org>; Tue, 11 Jun 2019 02:30:27 -0400
-Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2t25efbkr4-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 11 Jun 2019 02:30:26 -0400
-Received: from localhost
-        by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <bauerman@linux.ibm.com>;
-        Tue, 11 Jun 2019 07:30:24 +0100
-Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
-        by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 11 Jun 2019 07:30:20 +0100
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-        by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5B6UIWP26280258
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Jun 2019 06:30:18 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 09AD7C605B;
-        Tue, 11 Jun 2019 06:30:18 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 843A5C606C;
-        Tue, 11 Jun 2019 06:30:13 +0000 (GMT)
-Received: from morokweng.localdomain.com (unknown [9.85.227.34])
-        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Tue, 11 Jun 2019 06:30:13 +0000 (GMT)
-From:   Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "AKASHI, Takahiro" <takahiro.akashi@linaro.org>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: [PATCH v11 13/13] ima: Allow template= option for appraise rules as well
-Date:   Tue, 11 Jun 2019 03:28:17 -0300
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190611062817.18412-1-bauerman@linux.ibm.com>
-References: <20190611062817.18412-1-bauerman@linux.ibm.com>
+        id S2391337AbfFKNxE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 11 Jun 2019 09:53:04 -0400
+Received: from iolanthe.rowland.org ([192.131.102.54]:35682 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1728996AbfFKNxE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jun 2019 09:53:04 -0400
+Received: (qmail 1733 invoked by uid 2102); 11 Jun 2019 09:53:03 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 11 Jun 2019 09:53:03 -0400
+Date:   Tue, 11 Jun 2019 09:53:03 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+cc:     Mathias Nyman <mathias.nyman@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Howells <dhowells@redhat.com>, <viro@zeniv.linux.org.uk>,
+        <linux-usb@vger.kernel.org>, <raven@themaw.net>,
+        <linux-fsdevel@vger.kernel.org>, <linux-api@vger.kernel.org>,
+        <linux-block@vger.kernel.org>, <keyrings@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 09/10] usb: Add USB subsystem notifications [ver #3]
+In-Reply-To: <875zpcfxfk.fsf@linux.intel.com>
+Message-ID: <Pine.LNX.4.44L0.1906110950440.1535-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061106-0012-0000-0000-00001742EB62
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011245; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01216304; UDB=6.00639510; IPR=6.00997404;
- MB=3.00027259; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-11 06:30:24
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061106-0013-0000-0000-000057A5FBBC
-Message-Id: <20190611062817.18412-14-bauerman@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-11_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=872 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110044
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-It's useful being able to specify a different IMA template on appraise
-policy rules, so allow it.
+On Tue, 11 Jun 2019, Felipe Balbi wrote:
 
-Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
----
- security/integrity/ima/ima_policy.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> >> >> > So for "severe" issues, yes, we should do this, but perhaps not for all
+> >> >> > of the "normal" things we see when a device is yanked out of the system
+> >> >> > and the like.
+> >> >> 
+> >> >> Then what counts as a "severe" issue?  Anything besides enumeration 
+> >> >> failure?
+> >> >
+> >> > Not that I can think of at the moment, other than the other recently
+> >> > added KOBJ_CHANGE issue.  I'm sure we have other "hard failure" issues
+> >> > in the USB stack that people will want exposed over time.
+> >> 
+> >> From an XHCI standpoint, Transaction Errors might be one thing. They
+> >> happen rarely and are a strong indication that the bus itself is
+> >> bad. Either bad cable, misbehaving PHYs, improper power management, etc.
+> >
+> > Don't you also get transaction errors if the user unplugs a device in 
+> > the middle of a transfer?  That's not the sort of thing we want to sent 
+> > notifications about.
+> 
+> Mathias, do we get Transaction Error if user removes cable during a
+> transfer? I thought we would just get Port Status Change with CC bit
+> cleared, no?
 
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index 6463ab8921ea..1ac1ef458f2e 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -1110,7 +1110,8 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
- 			break;
- 		case Opt_template:
- 			ima_log_string(ab, "template", args[0].from);
--			if (entry->action != MEASURE) {
-+			if (entry->action != MEASURE &&
-+			    entry->action != APPRAISE) {
- 				result = -EINVAL;
- 				break;
- 			}
+Even if xHCI doesn't give Transaction Errors when a cable is unplugged 
+during a transfer, other host controllers do.  Sometimes quite a lot -- 
+they continue to occur until the kernel polls the parent hub's 
+interrupt ep and learns that the port is disconnected, which can take 
+up to 250 ms.
+
+Alan Stern
 
