@@ -2,33 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 602163BF25
-	for <lists+keyrings@lfdr.de>; Tue, 11 Jun 2019 00:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D16653C07A
+	for <lists+keyrings@lfdr.de>; Tue, 11 Jun 2019 02:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728744AbfFJWIC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 10 Jun 2019 18:08:02 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:50200 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728674AbfFJWIC (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 10 Jun 2019 18:08:02 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C7E933082E20;
-        Mon, 10 Jun 2019 22:07:59 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-126.rdu2.redhat.com [10.10.120.126])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 49AEA19C59;
-        Mon, 10 Jun 2019 22:07:47 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <25d88489-9850-f092-205e-0a4fc292f41b@schaufler-ca.com>
-References: <25d88489-9850-f092-205e-0a4fc292f41b@schaufler-ca.com> <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk> <be966d9c-e38d-7a30-8d80-fad5f25ab230@tycho.nsa.gov> <0cf7a49d-85f6-fba9-62ec-a378e0b76adf@schaufler-ca.com> <CALCETrX5O18q2=dUeC=hEtK2=t5KQpGBy9XveHxFw36OqkbNOg@mail.gmail.com> <dac74580-5b48-86e4-8222-cac29a9f541d@schaufler-ca.com> <E0925E1F-E5F2-4457-8704-47B6E64FE3F3@amacapital.net> <4b7d02b2-2434-8a7c-66cc-7dbebc37efbc@schaufler-ca.com> <CALCETrU+PKVbrKQJoXj9x_5y+vTZENMczHqyM_Xb85ca5YDZuA@mail.gmail.com>
-To:     Casey Schaufler <casey@schaufler-ca.com>
-Cc:     dhowells@redhat.com, Andy Lutomirski <luto@kernel.org>,
+        id S2390670AbfFKA10 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 Jun 2019 20:27:26 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:40339 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390570AbfFKA10 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 10 Jun 2019 20:27:26 -0400
+Received: by mail-pf1-f194.google.com with SMTP id p184so2952618pfp.7
+        for <keyrings@vger.kernel.org>; Mon, 10 Jun 2019 17:27:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=VM2dk3phoXMJWUmg4OkGbUsCUxKTv/qfJ7B/YkcH/jc=;
+        b=zYcM1bjwlBj/VZ68drx0nOd348CC8iakrVB6vDS+gJ7EnC22G0Gh88OpERBZMgOxFb
+         Ivn3P5x0NGHsY6n9ZwVcZ9+DkalHqli6FeDqy0tXEYqIPBV0K/GCO8vLZugKuT2lTtwD
+         hogTBTI88gW2RP7sY2VkC6QBGYVmfPW/Xblyq0TKoqpjTmAdJc19Kg+wXSgsVIgJiK68
+         TF1BEHQDiqVnYzgMC4rWD0NN1JH5T+orsD/EZPhiTRWl185RGHxhqVaMXN3a2sw23/ck
+         Loz04gUYjWWAQPhsjWh7cOJnDF71aXELbLgIeg20wyqufu5gFwncvNVs3a1n1mcZbyDn
+         xHhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=VM2dk3phoXMJWUmg4OkGbUsCUxKTv/qfJ7B/YkcH/jc=;
+        b=JKR98KjPBbgCmsXOyFw8OD2sWJqAnK/rsHDhPYaRw1mIFYEaYI4Bkkadtx/bAzzh7J
+         fBZq7Hg6vxjoVnCpfgKXTjkMLam+eioqmAhLBLVL0Q/g6XxBGUa4JOlepg87o+kIrEdF
+         Jw4zIeRO2Busw9ttRLACOSenYt+g3L9y0sRqjC3pQrJ7uKP2ZVCBrIHyvxAbMCV/+tmF
+         AhSUazQfpxnjzZRpdr9hLTHWZAwGpNQ6w1UuJ2ytBIRLBGin47MMStgjkOtuK0Owhh3f
+         o6d6RGYRbggPzoi5styXKHi/WvRX1HSh7Xhg8rbw5YLV0uFmBaVeCSZGvBLdL7KDOVzi
+         49tQ==
+X-Gm-Message-State: APjAAAXjaEb0/diqXS2d+xvBv6rG4/jz6Q5dPpnPX/9A32cMMpgnwlVk
+        RYxJRxjLA5OU/aOf+ImyyTeXUg==
+X-Google-Smtp-Source: APXvYqzwt2kqHvu9OTRvm5vLnspi9CzNyFEQTcK84714NO8Z1PTwNct/Ne+Bo6TCz7ewEYKeUwxoHQ==
+X-Received: by 2002:a62:1ec3:: with SMTP id e186mr78012544pfe.197.1560212845477;
+        Mon, 10 Jun 2019 17:27:25 -0700 (PDT)
+Received: from ?IPv6:2600:1010:b02c:114f:fc47:b6b2:14a5:bb80? ([2600:1010:b02c:114f:fc47:b6b2:14a5:bb80])
+        by smtp.gmail.com with ESMTPSA id u5sm11410506pgp.19.2019.06.10.17.27.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 10 Jun 2019 17:27:23 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   Andy Lutomirski <luto@amacapital.net>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [RFC][PATCH 00/13] Mount, FS, Block and Keyrings notifications [ver #4]
+Date:   Mon, 10 Jun 2019 17:13:51 -0700
+Message-Id: <97BA9EB5-4E62-4E3A-BD97-CEC34F16FCFF@amacapital.net>
+References: <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk> <be966d9c-e38d-7a30-8d80-fad5f25ab230@tycho.nsa.gov> <0cf7a49d-85f6-fba9-62ec-a378e0b76adf@schaufler-ca.com> <CALCETrX5O18q2=dUeC=hEtK2=t5KQpGBy9XveHxFw36OqkbNOg@mail.gmail.com> <dac74580-5b48-86e4-8222-cac29a9f541d@schaufler-ca.com> <E0925E1F-E5F2-4457-8704-47B6E64FE3F3@amacapital.net> <4b7d02b2-2434-8a7c-66cc-7dbebc37efbc@schaufler-ca.com> <CALCETrU+PKVbrKQJoXj9x_5y+vTZENMczHqyM_Xb85ca5YDZuA@mail.gmail.com> <25d88489-9850-f092-205e-0a4fc292f41b@schaufler-ca.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Stephen Smalley <sds@tycho.nsa.gov>,
+        David Howells <dhowells@redhat.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
         USB list <linux-usb@vger.kernel.org>,
         LSM List <linux-security-module@vger.kernel.org>,
@@ -38,21 +64,43 @@ Cc:     dhowells@redhat.com, Andy Lutomirski <luto@kernel.org>,
         linux-block@vger.kernel.org, keyrings@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>,
         Paul Moore <paul@paul-moore.com>
-Subject: Re: [RFC][PATCH 00/13] Mount, FS, Block and Keyrings notifications [ver #4]
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <29009.1560204466.1@warthog.procyon.org.uk>
-Date:   Mon, 10 Jun 2019 23:07:46 +0100
-Message-ID: <29010.1560204466@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Mon, 10 Jun 2019 22:08:02 +0000 (UTC)
+In-Reply-To: <25d88489-9850-f092-205e-0a4fc292f41b@schaufler-ca.com>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+X-Mailer: iPhone Mail (16F203)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Casey Schaufler <casey@schaufler-ca.com> wrote:
 
+
+> On Jun 10, 2019, at 2:25 PM, Casey Schaufler <casey@schaufler-ca.com> wrot=
+e:
+>=20
+>> On 6/10/2019 12:53 PM, Andy Lutomirski wrote:
+>> On Mon, Jun 10, 2019 at 12:34 PM Casey Schaufler <casey@schaufler-ca.com>=
+ wrote:
+>>>>>> I think you really need to give an example of a coherent policy that
+>>>>>> needs this.
+>>>>> I keep telling you, and you keep ignoring what I say.
+>>>>>=20
+>>>>>> As it stands, your analogy seems confusing.
+>>>>> It's pretty simple. I have given both the abstract
+>>>>> and examples.
+>>>> You gave the /dev/null example, which is inapplicable to this patchset.=
+
+>>> That addressed an explicit objection, and pointed out
+>>> an exception to a generality you had asserted, which was
+>>> not true. It's also a red herring regarding the current
+>>> discussion.
+>> This argument is pointless.
+>>=20
+>> Please humor me and just give me an example.  If you think you have
+>> already done so, feel free to repeat yourself.  If you have no
+>> example, then please just say so.
+>=20
+> To repeat the /dev/null example:
+>=20
 > Process A and process B both open /dev/null.
 > A and B can write and read to their hearts content
 > to/from /dev/null without ever once communicating.
@@ -61,38 +109,135 @@ Casey Schaufler <casey@schaufler-ca.com> wrote:
 > and B triggers an event, there still has to be an access
 > check on the delivery of the event because delivering an event
 > to A is not an action on /dev/null, but on A.
+>=20
 
-If a process has the privilege, it appears that fanotify() allows that process
-to see others accessing /dev/null (FAN_ACCESS, FAN_ACCESS_PERM).  There don't
-seem to be any LSM checks there either.
+At discussed, this is an irrelevant straw man. This patch series does not pr=
+oduce events when this happens. I=E2=80=99m looking for a relevant example, p=
+lease.
+>=20
+>=20
+>>  An unprivileged
+>> user can create a new userns and a new mount ns, but then they're
+>> modifying a whole different mount tree.
+>=20
+> Within those namespaces you can still have multiple users,
+> constrained be system access control policy.
 
-On the other hand, the privilege required is CAP_SYS_ADMIN,
+And the one doing the mounting will be constrained by MAC and DAC policy, as=
+ always.  The namespace creator is, from the perspective of those processes,=
+ admin.
 
-> > The mount tree can't be modified by unprivileged users, unless a
-> > privileged user very carefully configured it as such.
-> 
-> "Unless" means *is* possible. In which case access control is
-> required. I will admit to being less then expert on the extent
-> to which mounts can be done without privilege.
+>=20
+>>=20
+>>>>>> Similarly, if someone
+>>>>>> tries to receive a packet on a socket, we check whether they have the=
 
-Automounts in network filesystems, for example.
+>>>>>> right to receive on that socket (from the endpoint in question) and,
+>>>>>> if the sender is local, whether the sender can send to that socket.
+>>>>>> We do not check whether the sender can send to the receiver.
+>>>>> Bzzzt! Smack sure does.
+>>>> This seems dubious. I=E2=80=99m still trying to get you to explain to a=
+ non-Smack person why this makes sense.
+>>> Process A sends a packet to process B.
+>>> If A has access to TopSecret data and B is not
+>>> allowed to see TopSecret data, the delivery should
+>>> be prevented. Is that nonsensical?
+>> It makes sense.  As I see it, the way that a sensible policy should do
+>> this is by making sure that there are no sockets, pipes, etc that
+>> Process A can write and that Process B can read.
+>=20
+> You can't explain UDP controls without doing the access check
+> on packet delivery. The sendmsg() succeeds when the packet leaves
+> the sender. There doesn't even have to be a socket bound to the
+> port. The only opportunity you have for control is on packet
+> delivery, which is the only point at which you can have the
+> information required.
 
-The initial mount of the network filesystem requires local privilege, but then
-mountpoints are managed with remote privilege as granted by things like
-kerberos tickets.  The local kernel has no control.
+Huh?  You sendmsg() from an address to an address.  My point is that, for mo=
+st purposes, that=E2=80=99s all the information that=E2=80=99s needed.
 
-If you have CONFIG_AFS_FS enabled in your kernel, for example, and you install
-the keyutils package (dnf, rpm, apt, etc.), then you should be able to do:
+>=20
+>> If you really want to prevent a malicious process with TopSecret data
+>> from sending it to a different process, then you can't use Linux on
+>> x86 or ARM.  Maybe that will be fixed some day, but you're going to
+>> need to use an extremely tight sandbox to make this work.
+>=20
+> I won't be commenting on that.
 
-	mount -t afs none /mnt -o dyn
-	ls /afs/grand.central.org/software/
+Then why is preventing this is an absolute requirement? It=E2=80=99s unattai=
+nable.
 
-for example.  That will go through a couple of automount points.  Assuming you
-don't have a kerberos login on those servers, however, you shouldn't be able
-to add new mountpoints.
+>=20
+>>=20
+>>>>>> The signal example is inapplicable.
+>>>>> =46rom a modeling viewpoint the actions are identical.
+>>>> This seems incorrect to me
+>>> What would be correct then? Some convoluted combination
+>>> of system entities that aren't owned or controlled by
+>>> any mechanism?
+>>>=20
+>> POSIX signal restrictions aren't there to prevent two processes from
+>> communicating.  They're there to prevent the sender from manipulating
+>> or crashing the receiver without appropriate privilege.
+>=20
+> POSIX signal restrictions have a long history. In the P10031e/2c
+> debates both communication and manipulation where seriously
+> considered. I would say both are true.
+>=20
+>>>> and, I think, to most everyone else reading this.
+>>> That's quite the assertion. You may even be correct.
+>>>=20
+>>>> Can you explain?
+>>>>=20
+>>>> In SELinux-ese, when you write to a file, the subject is the writer and=
+ the object is the file.  When you send a signal to a process, the object is=
+ the target process.
+>>> YES!!!!!!!!!!!!
+>>>=20
+>>> And when a process triggers a notification it is the subject
+>>> and the watching process is the object!
+>>>=20
+>>> Subject =3D=3D active entity
+>>> Object  =3D=3D passive entity
+>>>=20
+>>> Triggering an event is, like calling kill(), an action!
+>>>=20
+>> And here is where I disagree with your interpretation.  Triggering an
+>> event is a side effect of writing to the file.  There are *two*
+>> security relevant actions, not one, and they are:
+>>=20
+>> First, the write:
+>>=20
+>> Subject =3D=3D the writer
+>> Action =3D=3D write
+>> Object =3D=3D the file
+>>=20
+>> Then the event, which could be modeled in a couple of ways:
+>>=20
+>> Subject =3D=3D the file
+>=20
+> Files   are   not   subjects. They are passive entities.
+>=20
+>> Action =3D=3D notify
+>> Object =3D=3D the recipient
 
-Someone watching the mount topology can see events when an automount is
-enacted and when it expires, the latter being an event with the system as the
-subject since the expiry is done on a timeout set by the kernel.
+Great. Then use the variant below.
 
-David
+>>=20
+>> or
+>>=20
+>> Subject =3D=3D the recipient
+>> Action =3D=3D watch
+>> Object =3D=3D the file
+>>=20
+>> By conflating these two actions into one, you've made the modeling
+>> very hard, and you start running into all these nasty questions like
+>> "who actually closed this open file"
+>=20
+> No, I've made the code more difficult.
+> You can not call
+> the file a subject. That is just wrong. It's not a valid
+> model.
+
+You=E2=80=99ve ignored the =E2=80=9CAction =3D=3D watch=E2=80=9D variant. Do=
+ you care to comment?
