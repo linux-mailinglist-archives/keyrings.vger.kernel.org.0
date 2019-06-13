@@ -2,94 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5988943C1C
-	for <lists+keyrings@lfdr.de>; Thu, 13 Jun 2019 17:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A1B43958
+	for <lists+keyrings@lfdr.de>; Thu, 13 Jun 2019 17:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728312AbfFMPeH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jun 2019 11:34:07 -0400
-Received: from mail-pf1-f174.google.com ([209.85.210.174]:45497 "EHLO
-        mail-pf1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728272AbfFMKcx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jun 2019 06:32:53 -0400
-Received: by mail-pf1-f174.google.com with SMTP id r1so14091pfq.12
-        for <keyrings@vger.kernel.org>; Thu, 13 Jun 2019 03:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=c8B2WpV2ao/GiAyoXZe0rgTXimW81Zj9eba5b1nq+eE=;
-        b=h8V7naw5ZXcy9hmK/khUBCeii6w8istWHF8EhmWYofLp5tS8e7g/0p6wZ6C0USi+Dh
-         mrRUluvbHlgWF/K0yOocTUP2YlkLwNpFUDSsXVVnXSqzMxRZWRa8AlpSQUB4RrPs6IWp
-         Un0SbBuDDP+12ShPcNz/XCABHYeLuj6PS9IayrYHiA8AwtHPQ4tPtuphrFBF90Vs17i1
-         vsXkMoAETxkRSg8jeio5rfDxL0JIBqmfMMx1icRj4Xq3iUPOW52qUByywGCwTiXh8DFu
-         1ObjgH9WASPPsW9zF4CAFudb6rqRmc7X2kjWgK4X/RZCxjra/QjT4/pkl2l4+HA8RP9h
-         ch5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=c8B2WpV2ao/GiAyoXZe0rgTXimW81Zj9eba5b1nq+eE=;
-        b=HrQMNEHXax7l1ARE8uOSkkw1xCR0rqjsKWpzgd0EM7h+n8TsoZOhIF+UyD5hxBbI30
-         GPDFXxAQC2KrmKDP2J5Urm8V5S6fjgLppCblngzIbLTBpRLKDstzoHyClOB8VsZFWtZx
-         OdqG8MLlBZcC/bIUU7OqT5X4KptI557ePJ4MAtXDQlyamVu4xpZArqUOyevAhp1MyVoL
-         CvBamQzRzUJbxIk6G9/Fml83cyHI/AhYRp3Cw3UxLzaKh6Lcf82vhdIcbhX8UYoiKdeh
-         o3bEvc4MjqRicR+CkrlsSyOe8Jc1Q17QhMfQ7ifEEm+6EKGJUfPnOSXnKsm5TnWe/RYv
-         5cbg==
-X-Gm-Message-State: APjAAAUaU8tFvs5ftv+VJG8ypxNr4WvY0dZJhyMd7Fq8aBdcq7gMPkJr
-        PNNHk1+gOgzMq4QaasO60c7OAgzvBJE=
-X-Google-Smtp-Source: APXvYqzzZ7YxoNMF8oKGpZA1V8rzQ5wmso5pRZlZbpTxImoytKeurGrlcgP5yFfHuYycERwMARH53w==
-X-Received: by 2002:a17:90a:8c06:: with SMTP id a6mr963486pjo.45.1560421971996;
-        Thu, 13 Jun 2019 03:32:51 -0700 (PDT)
-Received: from localhost.localdomain ([117.196.234.139])
-        by smtp.gmail.com with ESMTPSA id a12sm2265078pgq.0.2019.06.13.03.32.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 13 Jun 2019 03:32:51 -0700 (PDT)
-From:   Sumit Garg <sumit.garg@linaro.org>
-To:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Cc:     jens.wiklander@linaro.org, corbet@lwn.net, dhowells@redhat.com,
-        jejb@linux.ibm.com, jarkko.sakkinen@linux.intel.com,
-        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
-        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        tee-dev@lists.linaro.org, Sumit Garg <sumit.garg@linaro.org>
-Subject: [RFC 7/7] MAINTAINERS: Add entry for TEE based Trusted Keys
-Date:   Thu, 13 Jun 2019 16:00:33 +0530
-Message-Id: <1560421833-27414-8-git-send-email-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
-References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
+        id S1732274AbfFMPNM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jun 2019 11:13:12 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:39916 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732268AbfFMNfB (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 13 Jun 2019 09:35:01 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C97C330C7E65;
+        Thu, 13 Jun 2019 13:34:52 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-109.rdu2.redhat.com [10.10.120.109])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B8B695C3F8;
+        Thu, 13 Jun 2019 13:34:50 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <6b6f5bb0-1426-239b-ac9f-281e31ddcd04@infradead.org>
+References: <6b6f5bb0-1426-239b-ac9f-281e31ddcd04@infradead.org> <20190607151228.GA1872258@magnolia> <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk> <155991706083.15579.16359443779582362339.stgit@warthog.procyon.org.uk> <29222.1559922719@warthog.procyon.org.uk>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     dhowells@redhat.com, "Darrick J. Wong" <darrick.wong@oracle.com>,
+        viro@zeniv.linux.org.uk, raven@themaw.net,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 02/13] uapi: General notification ring definitions [ver #4]
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <30225.1560432885.1@warthog.procyon.org.uk>
+Date:   Thu, 13 Jun 2019 14:34:45 +0100
+Message-ID: <30226.1560432885@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Thu, 13 Jun 2019 13:35:01 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add MAINTAINERS entry for TEE based Trusted Keys framework.
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> What is the problem with inline functions in UAPI headers?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 57f496c..db84fc4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8728,6 +8728,15 @@ F:	include/keys/trusted-type.h
- F:	security/keys/trusted.c
- F:	security/keys/trusted.h
- 
-+KEYS-TEE-TRUSTED
-+M:	Sumit Garg <sumit.garg@linaro.org>
-+L:	linux-integrity@vger.kernel.org
-+L:	keyrings@vger.kernel.org
-+S:	Supported
-+F:	Documentation/security/keys/tee-trusted.rst
-+F:	include/keys/tee_trusted.h
-+F:	security/keys/tee_trusted.c
-+
- KEYS/KEYRINGS:
- M:	David Howells <dhowells@redhat.com>
- L:	keyrings@vger.kernel.org
--- 
-2.7.4
+It makes compiler problems more likely; it increases the potential for name
+collisions with userspace; it makes for more potential problems if the headers
+are imported into some other language; and it's not easy to fix a bug in one
+if userspace uses it, just in case fixing the bug breaks userspace.
 
+Further, in this case, the first of Darrick's functions (calculating the
+length) is probably reasonable, but the second is not.  It should crank the
+tail pointer and then use that, but that requires 
+
+> >> Also, weird multiline comment style.
+> > 
+> > Not really.
+> 
+> Yes really.
+
+No.  It's not weird.  If anything, the default style is less good for several
+reasons.  I'm going to deal with this separately as I need to generate some
+stats first.
+
+David
