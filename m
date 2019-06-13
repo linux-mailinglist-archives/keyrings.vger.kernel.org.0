@@ -2,80 +2,112 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5114F42004
-	for <lists+keyrings@lfdr.de>; Wed, 12 Jun 2019 10:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 111E943C4C
+	for <lists+keyrings@lfdr.de>; Thu, 13 Jun 2019 17:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437424AbfFLIz0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Wed, 12 Jun 2019 04:55:26 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:60220 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437421AbfFLIzZ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 12 Jun 2019 04:55:25 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A2ADC30832C8;
-        Wed, 12 Jun 2019 08:55:13 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-109.rdu2.redhat.com [10.10.120.109])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 714AE46;
-        Wed, 12 Jun 2019 08:55:03 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <cf3f4865-b6d7-7303-0212-960439e0c119@tycho.nsa.gov>
-References: <cf3f4865-b6d7-7303-0212-960439e0c119@tycho.nsa.gov> <155991702981.15579.6007568669839441045.stgit@warthog.procyon.org.uk> <be966d9c-e38d-7a30-8d80-fad5f25ab230@tycho.nsa.gov> <0cf7a49d-85f6-fba9-62ec-a378e0b76adf@schaufler-ca.com> <CALCETrX5O18q2=dUeC=hEtK2=t5KQpGBy9XveHxFw36OqkbNOg@mail.gmail.com> <dac74580-5b48-86e4-8222-cac29a9f541d@schaufler-ca.com> <E0925E1F-E5F2-4457-8704-47B6E64FE3F3@amacapital.net> <4b7d02b2-2434-8a7c-66cc-7dbebc37efbc@schaufler-ca.com> <CALCETrU+PKVbrKQJoXj9x_5y+vTZENMczHqyM_Xb85ca5YDZuA@mail.gmail.com> <25d88489-9850-f092-205e-0a4fc292f41b@schaufler-ca.com> <97BA9EB5-4E62-4E3A-BD97-CEC34F16FCFF@amacapital.net>
-To:     Stephen Smalley <sds@tycho.nsa.gov>
-Cc:     dhowells@redhat.com, Andy Lutomirski <luto@amacapital.net>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        USB list <linux-usb@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        raven@themaw.net, Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-Subject: Re: [RFC][PATCH 00/13] Mount, FS, Block and Keyrings notifications [ver #4]
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <12979.1560329702.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Wed, 12 Jun 2019 09:55:02 +0100
-Message-ID: <12980.1560329702@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Wed, 12 Jun 2019 08:55:25 +0000 (UTC)
+        id S1728557AbfFMPfE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jun 2019 11:35:04 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:43688 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727951AbfFMKbX (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jun 2019 06:31:23 -0400
+Received: by mail-pl1-f195.google.com with SMTP id cl9so7940937plb.10
+        for <keyrings@vger.kernel.org>; Thu, 13 Jun 2019 03:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=c4lD5Ja/W68zU30yx+ZIDKDyIrqaAIZ94VRiCyeCO0Y=;
+        b=YkW4wOsmtRXKF39IQeQs8ZdcwD+6X2M5iCF/r6jKCp49Ml1bgkwnn9qLqERse4MXnS
+         JvE/JUr1cR6fI4sYp9RHlrto71AB7k+bS6GVAtsKrhT2Wmz0R/Nn7NUSf9qGlSMRGqGX
+         VFRL05138Hd3JVcXhBoLNfRo+SP5MpLwlqKq3bPblTc9ut7nk6RpFrhz/AS0kQLMdp7W
+         NYPunno5BmFlawT6AG9mFdUyJvmrBka68PEWDGES8yBZtUknvd3nXlEXBJq+d80A2PuT
+         pOlbAZYM12CmFbPUcdVThV/+qdhyEwwMTvqzkqBEoGhYmCw5qx4Uu3CqrowG+fxR70zk
+         EXuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=c4lD5Ja/W68zU30yx+ZIDKDyIrqaAIZ94VRiCyeCO0Y=;
+        b=hwnAkgc4IXTDGQuOz+GmwHoN31zaIHV3I6IotTTBQcVRy6ohgXAPyl1eOLP6V3HluA
+         bshO6owvDSxpNs6l1Ijlt/A6h7g7qBCkWopn7sxVHVgmxzBICRdeuuukTVhAAANjqdfU
+         SduWuZOJ9sCviqhqri0nVDRJwMxFDBzfPP1vx4fsRqPbDgSKYrBO0Ou/btR2f54Yv54N
+         tvqQDSZ6g1aH2VNZdjCrl+KW+KvCa68ZkXbt4JyH5wOggSQqoZ3h9nsnjtW+z7yjwgbL
+         UbDiNMDJZYMkAWKuai3qhbj59wXv1vjakx9A7KJeyN4qJGUwYnr+BkihVSDmDBOp9cch
+         ZymQ==
+X-Gm-Message-State: APjAAAU91j2qYlEucG6lxIV7yUgs7sLWSByKkrx5dGHSIJ81XsNdMVi5
+        WYzrC0LNbTo+llsnd91ADUSozbpKUf0=
+X-Google-Smtp-Source: APXvYqwf629GmUVbhLZnIAU/FAePATiykUd+OC7xErJfaA+0pIRy9XJpSrc4JheBzy9dpn/uP2D0ug==
+X-Received: by 2002:a17:902:106:: with SMTP id 6mr23919253plb.64.1560421882686;
+        Thu, 13 Jun 2019 03:31:22 -0700 (PDT)
+Received: from localhost.localdomain ([117.196.234.139])
+        by smtp.gmail.com with ESMTPSA id a12sm2265078pgq.0.2019.06.13.03.31.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 13 Jun 2019 03:31:21 -0700 (PDT)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     jens.wiklander@linaro.org, corbet@lwn.net, dhowells@redhat.com,
+        jejb@linux.ibm.com, jarkko.sakkinen@linux.intel.com,
+        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
+        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        tee-dev@lists.linaro.org, Sumit Garg <sumit.garg@linaro.org>
+Subject: [RFC 0/7] Introduce TEE based Trusted Keys support
+Date:   Thu, 13 Jun 2019 16:00:26 +0530
+Message-Id: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Stephen Smalley <sds@tycho.nsa.gov> wrote:
+Add support for TEE based trusted keys where TEE provides the functionality
+to seal and unseal trusted keys using hardware unique key. Also, this is
+an alternative in case platform doesn't possess a TPM device.
 
-> 2) If notifications can be triggered by read-like operations (as in fanotify,
-> for example), then a "read" can be turned into a "write" flow through a
-> notification.
+This series also adds some TEE features like:
 
-I don't think any of the things can be classed as "read-like" operations.  At
-the moment, there are the following groups:
+Patch #1, #2 enables support for registered kernel shared memory with TEE.
 
- (1) Addition of objects (eg. key_link, mount).
+Patch #3 enables support for private kernel login method required for
+cases like trusted keys where we don't wan't user-space to directly access
+TEE service to retrieve trusted key contents.
 
- (2) Modifications to things (eg. keyctl_write, remount).
+Rest of the patches from #4 to #7 adds support for TEE based trusted keys.
 
- (3) Removal of objects (eg. key_unlink, unmount, fput+FMODE_NEED_UNMOUNT).
+This patch-set has been tested with OP-TEE based pseudo TA which can be
+found here [1].
 
- (4) I/O or hardware errors (eg. USB device add/remove, EDQUOT, ENOSPC).
+Looking forward to your valuable feedback/suggestions.
 
-I have not currently defined any access events.
+[1] https://github.com/OP-TEE/optee_os/pull/3082
 
-I've been looking at the possibility of having epoll generate events this way,
-but that's not as straightforward as I'd hoped and fanotify could potentially
-use it also, but in both those cases, the process is already getting the
-events currently by watching for them using synchronous waiting syscalls.
-Instead this would generate an event to say it had happened.
+Sumit Garg (7):
+  tee: optee: allow kernel pages to register as shm
+  tee: enable support to register kernel memory
+  tee: add private login method for kernel clients
+  KEYS: trusted: Introduce TEE based Trusted Keys
+  KEYS: encrypted: Allow TEE based trusted master keys
+  doc: keys: Document usage of TEE based Trusted Keys
+  MAINTAINERS: Add entry for TEE based Trusted Keys
 
-David
+ Documentation/security/keys/tee-trusted.rst      |  93 +++++
+ MAINTAINERS                                      |   9 +
+ drivers/tee/optee/call.c                         |   7 +
+ drivers/tee/tee_core.c                           |   6 +
+ drivers/tee/tee_shm.c                            |  16 +-
+ include/keys/tee_trusted.h                       |  84 ++++
+ include/keys/trusted-type.h                      |   1 +
+ include/linux/tee_drv.h                          |   1 +
+ include/uapi/linux/tee.h                         |   2 +
+ security/keys/Kconfig                            |   3 +
+ security/keys/Makefile                           |   3 +
+ security/keys/encrypted-keys/masterkey_trusted.c |  10 +-
+ security/keys/tee_trusted.c                      | 506 +++++++++++++++++++++++
+ 13 files changed, 737 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/security/keys/tee-trusted.rst
+ create mode 100644 include/keys/tee_trusted.h
+ create mode 100644 security/keys/tee_trusted.c
+
+-- 
+2.7.4
+
