@@ -2,55 +2,41 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D20A43C2C
-	for <lists+keyrings@lfdr.de>; Thu, 13 Jun 2019 17:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6DF43EC0
+	for <lists+keyrings@lfdr.de>; Thu, 13 Jun 2019 17:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728691AbfFMPee (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jun 2019 11:34:34 -0400
-Received: from mga07.intel.com ([134.134.136.100]:23808 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728256AbfFMPeT (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 13 Jun 2019 11:34:19 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jun 2019 08:34:18 -0700
-X-ExtLoop1: 1
-Received: from bbouchn-mobl.ger.corp.intel.com (HELO localhost) ([10.252.35.22])
-  by orsmga001.jf.intel.com with ESMTP; 13 Jun 2019 08:34:14 -0700
-Date:   Thu, 13 Jun 2019 18:34:14 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, jens.wiklander@linaro.org,
-        corbet@lwn.net, dhowells@redhat.com, jejb@linux.ibm.com,
-        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
-        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        tee-dev@lists.linaro.org
-Subject: Re: [RFC 6/7] doc: keys: Document usage of TEE based Trusted Keys
-Message-ID: <20190613153414.GG18488@linux.intel.com>
-References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
- <1560421833-27414-7-git-send-email-sumit.garg@linaro.org>
+        id S2389684AbfFMPwn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jun 2019 11:52:43 -0400
+Received: from hmm.wantstofly.org ([138.201.34.84]:45226 "EHLO
+        mail.wantstofly.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732816AbfFMPwm (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jun 2019 11:52:42 -0400
+X-Greylist: delayed 444 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Jun 2019 11:52:42 EDT
+Received: by mail.wantstofly.org (Postfix, from userid 1000)
+        id F15C6804FA; Thu, 13 Jun 2019 18:45:16 +0300 (EEST)
+Date:   Thu, 13 Jun 2019 18:45:16 +0300
+From:   Lennert Buytenhek <buytenh@wantstofly.org>
+To:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Subject: [PATCH 0/3] Several keyctl pkey_* fixes
+Message-ID: <20190613154516.GC9017@wantstofly.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1560421833-27414-7-git-send-email-sumit.garg@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 04:00:32PM +0530, Sumit Garg wrote:
-> Provide documentation for usage of TEE based Trusted Keys via existing
-> user-space "keyctl" utility. Also, document various use-cases.
-> 
-> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Hello,
 
-Sorry missed this patch. Anyway, I don't think we want multiple trusted
-keys subsystems. You have to fix the existing one if you care to get
-these changes in. There is no really other way around this.
+Here are some patches to make keyctl's pkey_* operations work for me --
+without at least patches 1 and 2, they don't seem to work at all and I
+don't see how they ever could have worked.  Patch 3 isn't required but
+makes things a little more consistent.
 
-/Jarkko
+Thanks in advance!
+
+
+Cheers,
+Lennert
