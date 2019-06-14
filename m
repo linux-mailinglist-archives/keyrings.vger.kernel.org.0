@@ -2,33 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9FC8458C3
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 11:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673684594B
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 11:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727130AbfFNJeZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 05:34:25 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:38344 "EHLO
+        id S1727059AbfFNJvk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 05:51:40 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:37232 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726881AbfFNJeY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 05:34:24 -0400
+        with ESMTP id S1726900AbfFNJvk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 05:51:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
         :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=v8sKDZr9w6cVAjaj6YSpqDHjOecR4ISemYmtJwZe3FY=; b=kH34VcWNT4Cav+GjG7CqlXy44
-        JXzqwvLIwTvMinkAO+TRylimlvR57aQTl6R7J8h2IT4P0MA63u6VdOzQDzCbMD9iu/1rxFj9RKZmb
-        o9u06p8ViQ8gJ5dyh2N4jaMWyIT0MJZGbPd9FIUyjWfyRvtbC+nqGDLMKjoHQoItVNnVNETBg3XHa
-        /EFK8hfeCAK0wqta5ky6wI9fQlG4ZeH6B63bsMuP6+A1WJ3DVQE48CdQv5tm0qSB/i6C7Ev/Yco27
-        JReMy3HKsSnOQ3TVN9wgekm5FU1rDzfRGnsiJhXNfi53fnyqodzPmaUbJT/6qnRMCKPprYWDjQ4GG
-        pfErC0P/Q==;
+         bh=eyC03vikXiwWfawO7Qlmx4pYoHpj/VV0tTc9G1eO/2M=; b=W4N6jtac4NDjjqmz5HnAxAouh
+        InHuflpblor7GHBWlLRdnNuT+ez7uTV5koHf3E14IuTEfmEj/L809EEQc/yLOHQhar2VHzWpgkzh3
+        Buzls+HHqkjXm+FiA2UAibkmrYNt/auf+rnYm7aG+UhusetsJSmeKWZPpMQsrISdsaQzoYGHdoOpM
+        qOjcb8wb2uhGYCWSjf/EFgVFzgUH3MUxM2i/Z9TcGfc/a1WdFwvDL8Ouem6Ou5YMjsU3X2yaVOmOL
+        /cSIaAAlXxDZz1t8vlgF14JmpQeGTd/ZoREYDN4MZvmXwoqSU/OoAxEiQdENGWRIwoEawlIZ0ZyLK
+        ItPRrqLYA==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hbib5-00058b-5L; Fri, 14 Jun 2019 09:34:11 +0000
+        id 1hbirt-0000GE-T3; Fri, 14 Jun 2019 09:51:34 +0000
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 5673620A26CE6; Fri, 14 Jun 2019 11:34:09 +0200 (CEST)
-Date:   Fri, 14 Jun 2019 11:34:09 +0200
+        id 1254E20A26CE6; Fri, 14 Jun 2019 11:51:32 +0200 (CEST)
+Date:   Fri, 14 Jun 2019 11:51:32 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
@@ -44,93 +44,68 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 13/62] x86/mm: Add hooks to allocate and free
- encrypted pages
-Message-ID: <20190614093409.GX3436@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH, RFC 18/62] x86/mm: Implement syncing per-KeyID direct
+ mappings
+Message-ID: <20190614095131.GY3436@hirez.programming.kicks-ass.net>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-14-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-19-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190508144422.13171-14-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20190508144422.13171-19-kirill.shutemov@linux.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 08, 2019 at 05:43:33PM +0300, Kirill A. Shutemov wrote:
-
-> +/* Prepare page to be used for encryption. Called from page allocator. */
-> +void __prep_encrypted_page(struct page *page, int order, int keyid, bool zero)
-> +{
-> +	int i;
-> +
-> +	/*
-> +	 * The hardware/CPU does not enforce coherency between mappings
-> +	 * of the same physical page with different KeyIDs or
-> +	 * encryption keys. We are responsible for cache management.
-> +	 */
-
-On alloc we should flush the unencrypted (key=0) range, while on free
-(below) we should flush the encrypted (key!=0) range.
-
-But I seem to have missed where page_address() does the right thing
-here.
-
-> +	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
-> +
-> +	for (i = 0; i < (1 << order); i++) {
-> +		/* All pages coming out of the allocator should have KeyID 0 */
-> +		WARN_ON_ONCE(lookup_page_ext(page)->keyid);
-> +		lookup_page_ext(page)->keyid = keyid;
-> +
-
-So presumably page_address() is affected by this keyid, and the below
-clear_highpage() then accesses the 'right' location?
-
-> +		/* Clear the page after the KeyID is set. */
-> +		if (zero)
-> +			clear_highpage(page);
-> +
-> +		page++;
-> +	}
-> +}
-> +
-> +/*
-> + * Handles freeing of encrypted page.
-> + * Called from page allocator on freeing encrypted page.
-> + */
-> +void free_encrypted_page(struct page *page, int order)
-> +{
-> +	int i;
-> +
-> +	/*
-> +	 * The hardware/CPU does not enforce coherency between mappings
-> +	 * of the same physical page with different KeyIDs or
-> +	 * encryption keys. We are responsible for cache management.
-> +	 */
-
-I still don't like that comment much; yes the hardware doesn't do it,
-and yes we have to do it, but it doesn't explain the actual scheme
-employed to do so.
-
-> +	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
-> +
-> +	for (i = 0; i < (1 << order); i++) {
-> +		/* Check if the page has reasonable KeyID */
-> +		WARN_ON_ONCE(lookup_page_ext(page)->keyid > mktme_nr_keyids);
-
-It should also check keyid > 0, so maybe:
-
-	(unsigned)(keyid - 1) > keyids-1
-
-instead?
-
-> +		lookup_page_ext(page)->keyid = 0;
-> +		page++;
-> +	}
-> +}
-> -- 
-> 2.20.1
+On Wed, May 08, 2019 at 05:43:38PM +0300, Kirill A. Shutemov wrote:
+> For MKTME we use per-KeyID direct mappings. This allows kernel to have
+> access to encrypted memory.
 > 
+> sync_direct_mapping() sync per-KeyID direct mappings with a canonical
+> one -- KeyID-0.
+> 
+> The function tracks changes in the canonical mapping:
+>  - creating or removing chunks of the translation tree;
+>  - changes in mapping flags (i.e. protection bits);
+>  - splitting huge page mapping into a page table;
+>  - replacing page table with a huge page mapping;
+> 
+> The function need to be called on every change to the direct mapping:
+> hotplug, hotremove, changes in permissions bits, etc.
+
+And yet I don't see anything in pageattr.c.
+
+Also, this seems like an expensive scheme; if you know where the changes
+where, a more fine-grained update would be faster.
+
+> The function is nop until MKTME is enabled.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>  arch/x86/include/asm/mktme.h |   6 +
+>  arch/x86/mm/init_64.c        |  10 +
+>  arch/x86/mm/mktme.c          | 441 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 457 insertions(+)
+
+
+> @@ -1247,6 +1254,7 @@ void mark_rodata_ro(void)
+>  	unsigned long text_end = PFN_ALIGN(&__stop___ex_table);
+>  	unsigned long rodata_end = PFN_ALIGN(&__end_rodata);
+>  	unsigned long all_end;
+> +	int ret;
+>  
+>  	printk(KERN_INFO "Write protecting the kernel read-only data: %luk\n",
+>  	       (end - start) >> 10);
+> @@ -1280,6 +1288,8 @@ void mark_rodata_ro(void)
+>  	free_kernel_image_pages((void *)text_end, (void *)rodata_start);
+>  	free_kernel_image_pages((void *)rodata_end, (void *)_sdata);
+>  
+> +	ret = sync_direct_mapping();
+> +	WARN_ON(ret);
+>  	debug_checkwx();
+>  }
+>  
+
+If you'd done pageattr, the above would not be needed.
