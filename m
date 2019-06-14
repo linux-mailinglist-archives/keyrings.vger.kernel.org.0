@@ -2,104 +2,89 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 489C745EAC
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 15:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9ECA46302
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 17:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728367AbfFNNns (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 09:43:48 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:39208 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727979AbfFNNnr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 09:43:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=CEpLzxWl0gVhhE2loe/wZNC7HEFBNtusAecwnKLSC9Y=; b=wJWUaH4KBhaf6FksZmx6YleNS
-        SqJt2t24BqEHD50uiboct62KgbUmDCuQAqSNqCr87Vaizsbh9ww1KCcI+top6ZWkFHX3dyskStBzq
-        UIViB3eY+V4668fgqSO5LtEzseW5ElzpJsd3aNvCMF/RVO9Lg/DIm9iLz357FOEQ+WxQ4pw2Q077W
-        kf4mJRIvgRsBYqbPyY7CtR7XUwXqeFv4KrkG8WnWDVb7ouPheOhasUPP57/2hdI+uSHSKuH4XsfuR
-        +Si9/YiEQVF9qWr46i2A8Hr8Uzh3Su4WRqmqOee1TLNOHja45yFHb/hTiCA++kVXKwxYFFWwXNFqx
-        pH+R4j+Fg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hbmUS-00087g-TV; Fri, 14 Jun 2019 13:43:37 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 983BF20292FD5; Fri, 14 Jun 2019 15:43:35 +0200 (CEST)
-Date:   Fri, 14 Jun 2019 15:43:35 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@amacapital.net>,
-        David Howells <dhowells@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Kai Huang <kai.huang@linux.intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 13/62] x86/mm: Add hooks to allocate and free
- encrypted pages
-Message-ID: <20190614134335.GU3436@hirez.programming.kicks-ass.net>
-References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-14-kirill.shutemov@linux.intel.com>
- <20190614093409.GX3436@hirez.programming.kicks-ass.net>
- <20190614110458.GN3463@hirez.programming.kicks-ass.net>
- <20190614132836.spl6bmk2kkx65nfr@box>
+        id S1726252AbfFNPgk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 11:36:40 -0400
+Received: from mga06.intel.com ([134.134.136.31]:45350 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725780AbfFNPgk (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 14 Jun 2019 11:36:40 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 08:36:39 -0700
+X-ExtLoop1: 1
+Received: from mdumitrx-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.32.245])
+  by orsmga005.jf.intel.com with ESMTP; 14 Jun 2019 08:36:30 -0700
+Date:   Fri, 14 Jun 2019 18:36:22 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Jens Wiklander <jens.wiklander@linaro.org>, corbet@lwn.net,
+        dhowells@redhat.com, jejb@linux.ibm.com, zohar@linux.ibm.com,
+        jmorris@namei.org, serge@hallyn.com,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        linux-doc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        tee-dev@lists.linaro.org
+Subject: Re: [RFC 6/7] doc: keys: Document usage of TEE based Trusted Keys
+Message-ID: <20190614153622.GG11241@linux.intel.com>
+References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
+ <1560421833-27414-7-git-send-email-sumit.garg@linaro.org>
+ <20190613153414.GG18488@linux.intel.com>
+ <CAFA6WYP7qi_NBRUDBhcEAEzJY-iFvJdXqtCtgQxqAvPSXDjEng@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190614132836.spl6bmk2kkx65nfr@box>
+In-Reply-To: <CAFA6WYP7qi_NBRUDBhcEAEzJY-iFvJdXqtCtgQxqAvPSXDjEng@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 04:28:36PM +0300, Kirill A. Shutemov wrote:
-> On Fri, Jun 14, 2019 at 01:04:58PM +0200, Peter Zijlstra wrote:
-> > On Fri, Jun 14, 2019 at 11:34:09AM +0200, Peter Zijlstra wrote:
-> > > On Wed, May 08, 2019 at 05:43:33PM +0300, Kirill A. Shutemov wrote:
-> > > 
-> > > > +		lookup_page_ext(page)->keyid = keyid;
-> > 
-> > > > +		lookup_page_ext(page)->keyid = 0;
-> > 
-> > Also, perhaps paranoid; but do we want something like:
-> > 
-> > static inline void page_set_keyid(struct page *page, int keyid)
-> > {
-> > 	/* ensure nothing creeps after changing the keyid */
-> > 	barrier();
-> > 	WRITE_ONCE(lookup_page_ext(page)->keyid, keyid);
-> > 	barrier();
-> > 	/* ensure nothing creeps before changing the keyid */
-> > }
-> > 
-> > And this is very much assuming there is no concurrency through the
-> > allocator locks.
+On Fri, Jun 14, 2019 at 11:07:23AM +0530, Sumit Garg wrote:
+> On Thu, 13 Jun 2019 at 21:04, Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
+> >
+> > On Thu, Jun 13, 2019 at 04:00:32PM +0530, Sumit Garg wrote:
+> > > Provide documentation for usage of TEE based Trusted Keys via existing
+> > > user-space "keyctl" utility. Also, document various use-cases.
+> > >
+> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> >
+> > Sorry missed this patch. Anyway, I don't think we want multiple trusted
+> > keys subsystems. You have to fix the existing one if you care to get
+> > these changes in. There is no really other way around this.
+> >
 > 
-> There's no concurrency for this page: it has been off the free list, but
-> have not yet passed on to user. Nobody else sees the page before
-> allocation is finished.
+> I understand your point.
 > 
-> And barriers/WRITE_ONCE() looks excessive to me. It's just yet another bit
-> of page's metadata and I don't see why it's has to be handled in a special
-> way.
+> When I initially looked at trusted key implementation, it seemed to be
+> tightly coupled to use TPM device. So I implemented a parallel
+> implementation to get initial feedback (functionality-wise) on this
+> new approach.
+
+Yeah, I completely get this. My feedback this is: we can definitely
+consider TEE based trusted keys, and I know that trusted.ko is a mess,
+but still that is the only right long-term path. Think about the
+positive side: if you as a side-effect can make it cleaner and more
+versatile, your patch set will improve the quality of the kernel as a
+whole i.e. you benefit larger audience than just TEE user base :-)
+
+> I will work on abstraction of trusted key apis to use either approach.
+> But is it fine with you if I send if I send a separate RFC patch for
+> abstraction and later once reviewed I will incorporate that patch in
+> this patch-set.
 > 
-> Does it relax your paranoia? :P
+> It will be really helpful if you could help to test that abstraction
+> patch with a real TPM device as I doesn't posses one to test.
 
-Not really, it all 'works' because clflush_cache_range() includes mb()
-and page_address() has an address dependency on the store, and there are
-no other sites that will ever change 'keyid', which is all kind of
-fragile.
+I can, yes.
 
-At the very least that should be explicitly called out in a comment.
-
+/Jarkko
