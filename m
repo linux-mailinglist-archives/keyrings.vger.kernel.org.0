@@ -2,51 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CEAB45DC4
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 15:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0BA45E23
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 15:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728153AbfFNNO4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 09:14:56 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:45604 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728125AbfFNNO4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 09:14:56 -0400
-Received: by mail-ed1-f67.google.com with SMTP id a14so3414302edv.12
-        for <keyrings@vger.kernel.org>; Fri, 14 Jun 2019 06:14:55 -0700 (PDT)
+        id S1727827AbfFNN2j (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 09:28:39 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:35504 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727614AbfFNN2i (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 09:28:38 -0400
+Received: by mail-ed1-f65.google.com with SMTP id p26so3550146edr.2
+        for <keyrings@vger.kernel.org>; Fri, 14 Jun 2019 06:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=lo8jzIeEl3qvMScl2nYeZEzcklK1JpdjNABkHh1fbHg=;
-        b=eFeAcZtgO0/eRC+taEsG3o/626r+gJzLYZLu6JCyggVrs1QqMuSldztZimYV/jdkJJ
-         KpqfmnAYmMswNNumhYoKPsqVbi6oXCsorOhOJsdBSnOChpopGRX1/ui0nf+Nlcf6FXPr
-         gGpw+PJGJIdyx5tMB8ohHf7Qp8YL0Pn4pTIC3KYego9Ujsgpyiq4SkfHbxvn1Rplq1Pp
-         IoST/0AGJDllFkhSDArOhMHcOdLQczefbj/Em08KjBQgqt7nPa6It4nRH8wS9yRppE3g
-         SyL/Y8mhbNTD3QF8XNH0x1JlkrNyAot22I9vIuPdXcIIAhttxk+quH+74xWONAEiEFsY
-         kixQ==
+        bh=/bEFMtHnd0Lq4R6BgJaHDb9jSNJdzL1pBjuE2g5cik8=;
+        b=voy0OQVzAPCvIAmwQgiYtlSleenOKuT/qpb01Z/+4pGuPKe1skxIJEkKDPpwS9HC3H
+         d2duEeopfKNnnkQCjYrCgqImAQqW5bLMgwugLa222v0jda83+go22NOjY5PWaEnTSvyV
+         KLhBwBJPS7SZJtXCtxB7OvQQqgSQ3kPKWmFUA1MJa9Wrfld0MCSAXdHUdWfClFnEwpgf
+         sOPE6zcJmB0iiUGNc4akPixQ19M5SCYisvcVkA0vU6UsVVet+GzmRtabFV//WJ5mNMyj
+         qJmJDuvP10aBanhB/RZD0uRXen4zbe9eWcwwuargF/sjpjd9dhGMdU11acHxnHjo9xUZ
+         o5vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=lo8jzIeEl3qvMScl2nYeZEzcklK1JpdjNABkHh1fbHg=;
-        b=R/2FZ1YkyOu0tB9mW/y3oUiKJq9Hgcm0KlN2bm+v8uo2VMXLDioQ6dKsVg0rVq/UOE
-         fPQaKtjiKJr2F4391G8ghY5ztm3RHcDYToBiAyHaIv//U3JCxBS4SdZTw0E4BdFJ//Sz
-         lMlOt8jogGEGzSQ2fPbdWaJ5elo18lqJ21GUwHkhSABuQaYJy12IsQB8/w6zQJegkUkT
-         OHKYZ11inTY1qZLiXDE7BXQ6/DylvfY52kUEU64RdDSAl4l/Ku9YZxlKJQHiHjppyHpc
-         qN2tOf9wwLNLnC+dLxJMXCQXQG1AcBlLyq7O41uE5wW9A0PNuAK9JsDOKynAtNp2btjZ
-         s6Uw==
-X-Gm-Message-State: APjAAAWXP0tGGEIVfNlyMvPqmrsosf30bfPMoK7FZdYhuqW6Udd+lU2h
-        1/g5N5HZ8HNj6oAygDLZWNuEaA==
-X-Google-Smtp-Source: APXvYqys9UpU3EDiYN8BSuwDi62d18/VihRzxeEm4B3CXY1/sZgOqGoIC2XqSZyXoR/BuWpsRnWF+g==
-X-Received: by 2002:aa7:c619:: with SMTP id h25mr39051647edq.295.1560518094495;
-        Fri, 14 Jun 2019 06:14:54 -0700 (PDT)
+        bh=/bEFMtHnd0Lq4R6BgJaHDb9jSNJdzL1pBjuE2g5cik8=;
+        b=ILgxC8i5InDQQyobj51RMO4mUaOHLeFxK0JTt9E8nGl0vZ3bSphg2UqfkG8A9EpkWm
+         rVTlD2B8k00M1FmjPoPXMnrje6RyMX1m8srlZbH73v5yXtLVNXqR99obz4g+Ep0eTiLa
+         /KJIrz0+Dbry1mD5XrSmDWDPqU2AgF2bU5557ceyU657ip8phm1J/mvhYq0f/+AlJzVV
+         7Jh7ql/vdGC1RQWslkuftIg0isxL97UwO81WpVfA2on2DbO3lSD6amR2JvWypNh+TENX
+         CWanYaWNMr9ptDgnQFWM9fZ8VIihXaMe8XbkczaBYrYjG3knIukRx7ayLuY32AlllZH5
+         n3Cg==
+X-Gm-Message-State: APjAAAWhcPmrWk20sfjzMh6pdgo8bTGuDIoIun9i+xYPI92VfZdKbu38
+        tJ4NAmY8HqtW45cjpXRoaOHrrg==
+X-Google-Smtp-Source: APXvYqwTjBWiaWugHv92n/VOXJckmXdJ0ij79tTSCt3WN5QrjcsRYX/bfqnOjwWa25VDWFa14JeAyw==
+X-Received: by 2002:a50:b178:: with SMTP id l53mr75879420edd.244.1560518916776;
+        Fri, 14 Jun 2019 06:28:36 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id t3sm593997ejk.56.2019.06.14.06.14.53
+        by smtp.gmail.com with ESMTPSA id 34sm901697eds.5.2019.06.14.06.28.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 14 Jun 2019 06:14:53 -0700 (PDT)
+        Fri, 14 Jun 2019 06:28:36 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-        id BB20210086F; Fri, 14 Jun 2019 16:14:53 +0300 (+03)
-Date:   Fri, 14 Jun 2019 16:14:53 +0300
+        id 8857010086F; Fri, 14 Jun 2019 16:28:36 +0300 (+03)
+Date:   Fri, 14 Jun 2019 16:28:36 +0300
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -65,98 +65,52 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH, RFC 13/62] x86/mm: Add hooks to allocate and free
  encrypted pages
-Message-ID: <20190614131453.ludfm4ufzqwa326k@box>
+Message-ID: <20190614132836.spl6bmk2kkx65nfr@box>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
  <20190508144422.13171-14-kirill.shutemov@linux.intel.com>
  <20190614093409.GX3436@hirez.programming.kicks-ass.net>
+ <20190614110458.GN3463@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190614093409.GX3436@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190614110458.GN3463@hirez.programming.kicks-ass.net>
 User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 11:34:09AM +0200, Peter Zijlstra wrote:
-> On Wed, May 08, 2019 at 05:43:33PM +0300, Kirill A. Shutemov wrote:
+On Fri, Jun 14, 2019 at 01:04:58PM +0200, Peter Zijlstra wrote:
+> On Fri, Jun 14, 2019 at 11:34:09AM +0200, Peter Zijlstra wrote:
+> > On Wed, May 08, 2019 at 05:43:33PM +0300, Kirill A. Shutemov wrote:
+> > 
+> > > +		lookup_page_ext(page)->keyid = keyid;
 > 
-> > +/* Prepare page to be used for encryption. Called from page allocator. */
-> > +void __prep_encrypted_page(struct page *page, int order, int keyid, bool zero)
-> > +{
-> > +	int i;
-> > +
-> > +	/*
-> > +	 * The hardware/CPU does not enforce coherency between mappings
-> > +	 * of the same physical page with different KeyIDs or
-> > +	 * encryption keys. We are responsible for cache management.
-> > +	 */
+> > > +		lookup_page_ext(page)->keyid = 0;
 > 
-> On alloc we should flush the unencrypted (key=0) range, while on free
-> (below) we should flush the encrypted (key!=0) range.
+> Also, perhaps paranoid; but do we want something like:
 > 
-> But I seem to have missed where page_address() does the right thing
-> here.
+> static inline void page_set_keyid(struct page *page, int keyid)
+> {
+> 	/* ensure nothing creeps after changing the keyid */
+> 	barrier();
+> 	WRITE_ONCE(lookup_page_ext(page)->keyid, keyid);
+> 	barrier();
+> 	/* ensure nothing creeps before changing the keyid */
+> }
+> 
+> And this is very much assuming there is no concurrency through the
+> allocator locks.
 
-As you've seen by now, it will be addressed later in the patchset. I'll
-update the changelog to indicate that page_address() handles KeyIDs
-correctly.
+There's no concurrency for this page: it has been off the free list, but
+have not yet passed on to user. Nobody else sees the page before
+allocation is finished.
 
-> > +	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
-> > +
-> > +	for (i = 0; i < (1 << order); i++) {
-> > +		/* All pages coming out of the allocator should have KeyID 0 */
-> > +		WARN_ON_ONCE(lookup_page_ext(page)->keyid);
-> > +		lookup_page_ext(page)->keyid = keyid;
-> > +
-> 
-> So presumably page_address() is affected by this keyid, and the below
-> clear_highpage() then accesses the 'right' location?
+And barriers/WRITE_ONCE() looks excessive to me. It's just yet another bit
+of page's metadata and I don't see why it's has to be handled in a special
+way.
 
-Yes. clear_highpage() -> kmap_atomic() -> page_address().
-
-> > +		/* Clear the page after the KeyID is set. */
-> > +		if (zero)
-> > +			clear_highpage(page);
-> > +
-> > +		page++;
-> > +	}
-> > +}
-> > +
-> > +/*
-> > + * Handles freeing of encrypted page.
-> > + * Called from page allocator on freeing encrypted page.
-> > + */
-> > +void free_encrypted_page(struct page *page, int order)
-> > +{
-> > +	int i;
-> > +
-> > +	/*
-> > +	 * The hardware/CPU does not enforce coherency between mappings
-> > +	 * of the same physical page with different KeyIDs or
-> > +	 * encryption keys. We are responsible for cache management.
-> > +	 */
-> 
-> I still don't like that comment much; yes the hardware doesn't do it,
-> and yes we have to do it, but it doesn't explain the actual scheme
-> employed to do so.
-
-Fair enough. I'll do better.
-
-> > +	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
-> > +
-> > +	for (i = 0; i < (1 << order); i++) {
-> > +		/* Check if the page has reasonable KeyID */
-> > +		WARN_ON_ONCE(lookup_page_ext(page)->keyid > mktme_nr_keyids);
-> 
-> It should also check keyid > 0, so maybe:
-> 
-> 	(unsigned)(keyid - 1) > keyids-1
-> 
-> instead?
-
-Makes sense.
+Does it relax your paranoia? :P
 
 -- 
  Kirill A. Shutemov
