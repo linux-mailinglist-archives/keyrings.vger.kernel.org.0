@@ -2,170 +2,76 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEDFD4573B
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 10:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB5F4585E
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 11:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725999AbfFNIRa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 04:17:30 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:35540 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726207AbfFNIRa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 04:17:30 -0400
-Received: by mail-lf1-f68.google.com with SMTP id a25so1114519lfg.2
-        for <keyrings@vger.kernel.org>; Fri, 14 Jun 2019 01:17:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sYZceYw/PBvRSxvmCoPk9kiBr948sZ4CFzmxWCPNjiY=;
-        b=RLrsNPT/uaaAfFbVFaeqZ6JSPheqCUq74WDZJocy/VXfonejDDi21W3KH/jUcNDYit
-         uFjYoUzJhvbyvDe6ImPVkmAIf0sWV0aajwDBxm1DxLInFjAvbcMbi5RidfsPjVZrMffs
-         Zg+N5N/SfwdpXzQeNbaoZttXLU3LyrWuOVWSUD/HN+icQi3UAq7i4EQoY2e7fRWAKS2G
-         DTsOw5eHbsCdluVPpPOXyDWc9Cz/smTVsS+OkRpIHcajmkoMv6Zwg3xxiKhhxMbLvAUE
-         ADOPKegxUfDNG+Bdd3FC2qU8XzWIx16DnlzPqgQA9ybWXYaKidIR61Rwg9y4sX2RXm2T
-         7/AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sYZceYw/PBvRSxvmCoPk9kiBr948sZ4CFzmxWCPNjiY=;
-        b=Z8LMBavqJkZD8U74vi9l0rDwkbWf48J2FqtumNhAPimbDFdbVShGIkBAz5jGih0cNK
-         RArXgZUhxu+Z/JSPnpfXLSUYDlzXpM/BQ4db3yRcWiGiilK1WBhkLFa+bqYLw0ykioL+
-         ITCidgJk8e1lZ8kDkB3S0ePOpzSRUcshsNLZC5ULqsn58zHjVKDm06BG77BSI9yov685
-         3IH0JrSDPQhPVSwgmLZb+72lD3UiuJxOGunIH7mPHzjvqzWURtmMtiH7pkaqlOife+bA
-         +gCBs9/LehqQIG51SApRaXBguOe4A455jBuuIcnZUNN99iHSKbbwm6il7DNgm83QY0/K
-         L8rA==
-X-Gm-Message-State: APjAAAU3EHWj21EmCXFJjspI9UGs4NcfWt0m8Wxf7eaSmrwdRrT/WjAm
-        6r86hVSGA27g/aaO5ABOh2cQ+tD7Zf/IK1R2cWfPNw==
-X-Google-Smtp-Source: APXvYqwlbCDwuNlvWWLAMVDCvRG6Cs9rwpyMyT1zYYedGWIAKIWp5RRw1PxqPMLnhghF9xZ+PIVYSTL3bBt2hmIi3WQ=
-X-Received: by 2002:ac2:50c4:: with SMTP id h4mr34300421lfm.61.1560500248037;
- Fri, 14 Jun 2019 01:17:28 -0700 (PDT)
+        id S1726083AbfFNJPZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 05:15:25 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:52570 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725907AbfFNJPZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 05:15:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=bjuICrJxhqbVE3btlCQ3iZkvBOpZmXqWH1hsHhR0vEs=; b=plUvNd2hsauOJNdMcJW7PtfGU
+        ToeAUBkrbzKvJm2BUG/yf8dWjbaAvX7Q4lidDs0ithX9OI2WVuXyjfjTLnReR0Y0BKcgCuAYiXgBC
+        OYMfDsUCaba/eGhvG5pmOg+CVacs6ilSRsk2Vm9Q+cjRnTCoZahKJFZHX8emllCfCdfoOQyfYYpgd
+        8P3NvVIEryL7h01oXhpMERwBy1+5j/J65bjKgYr8HqalG4n/8K5kG47A0w9CyIaEfbCm+XdyPqqR2
+        +SODATdKf9VGfFZV7w3Vcr9SwOJUqEoqFkjC3/4Q1Bw12ultXg+EeVpqKI0Vp+ZCPmsLTqaO2Mazw
+        5m/hAaOGg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hbiIm-0004MH-MW; Fri, 14 Jun 2019 09:15:16 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 0E80820245BD7; Fri, 14 Jun 2019 11:15:14 +0200 (CEST)
+Date:   Fri, 14 Jun 2019 11:15:14 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH, RFC 09/62] x86/mm: Preserve KeyID on pte_modify() and
+ pgprot_modify()
+Message-ID: <20190614091513.GW3436@hirez.programming.kicks-ass.net>
+References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-10-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
- <d803283e-5e69-5deb-fe94-3f2e45fb95af@schaufler-ca.com> <1560470593.4805.109.camel@linux.ibm.com>
-In-Reply-To: <1560470593.4805.109.camel@linux.ibm.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Fri, 14 Jun 2019 13:47:16 +0530
-Message-ID: <CAFA6WYOZOrv5D6261z-bwCP6+6ORzH3PcZz89Sfn=yts0dkvTg@mail.gmail.com>
-Subject: Re: [RFC 0/7] Introduce TEE based Trusted Keys support
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Casey Schaufler <casey@schaufler-ca.com>, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Jens Wiklander <jens.wiklander@linaro.org>, corbet@lwn.net,
-        dhowells@redhat.com, jejb@linux.ibm.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        jmorris@namei.org, serge@hallyn.com,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        tee-dev@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190508144422.13171-10-kirill.shutemov@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Thanks Mimi for your comments.
+On Wed, May 08, 2019 at 05:43:29PM +0300, Kirill A. Shutemov wrote:
+> + * Cast PAGE_MASK to a signed type so that it is sign-extended if
+> + * virtual addresses are 32-bits but physical addresses are larger
+> + * (ie, 32-bit PAE).
 
-On Fri, 14 Jun 2019 at 05:33, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> On Thu, 2019-06-13 at 09:40 -0700, Casey Schaufler wrote:
-> > On 6/13/2019 3:30 AM, Sumit Garg wrote:
-> > > Add support for TEE based trusted keys where TEE provides the functionality
-> > > to seal and unseal trusted keys using hardware unique key. Also, this is
-> > > an alternative in case platform doesn't possess a TPM device.
-> > >
-> > > This series also adds some TEE features like:
-> >
-> > Please expand the acronym TEE on first use. That will
-> > help people who don't work with it on a daily basis
-> > understand what you're going on about.
->
-> Thanks, Casey.
->
-> "[6/7] doc: keys: Document usage of TEE based Trusted Keys" refers to
-> the kernel tee documentation, but that documentation is limited to
-> userspace interaction with the tee.
->
+On 32bit, 'long' is still 32bit, did you want to cast to 'long long'
+instead? Ideally we'd use pteval_t here, but I see that is unsigned.
 
-Thanks for pointing this out. I will update documentation to include
-TEE bus approach and communication apis for kernel clients.
-
-BTW, the interface is similar as with user-space. Only difference is
-instead of IOCTL's from user-space, there are wrapper apis to
-communicate with TEE.
-
-Also, in case someone is interested to learn about TEE technology,
-this webinar [1] could be one of starting points.
-
-> A trusted key is a random number generated and sealed(encrypted) by
-> the TPM, so that only the TPM may unseal it.  The sealing key never
-> leaves the TPM.  The sealed, trusted key may be exported to userspace.
-
-Understood.
-
->  In the tee case, can the "sealing" key ever leave the tee?
-
-No, the "sealing" key never leaves TEE. Its basically a Hardware
-Unique Key (HUK) tied to a particular SoC.
-
->  Can the
-> sealed, trusted key, exported to userspace, be unsealed by the tee?
-
-You mean using user-space interface to TEE? If yes, then answer is
-"no" as user-space can't communicate with this TEE service as its
-accessible to kernel clients only (see patch [2]).
-
-In case you meant loading exported trusted key blob via "keyctl", then
-"yes" this driver can unseal the trusted key. Have a look at examples
-I have listed in documentation patch [3]. Also, this approach works
-well across power cycles too.
-
->  Are the tee security protections similar to those of the TPM?  How do
-> they compare?
->
-
-Let me try to compare both environments. Regarding TEE, I will refer
-to OP-TEE [4] as one of its implementation.
-
-TPM:
-
-1. External hardware.
-2. Sealing key resides inside TPM.
-3. Communicates via SPI, I2C etc.
-
-OP-TEE:
-
-1. On chip, trusted execution environment enforced via ARM TrustZone.
-2. Sealing key is unique to a particular SoC provided by secure fuses,
-secure crypto engine etc.
-3. Communicates via Secure Monitor Calls (SMCs [5]).
-
-[1] https://globalplatform.org/resource-publication/webinar-an-introduction-to-tee-technology/
-[2] [RFC 3/7] tee: add private login method for kernel clients
-[3] [RFC 6/7] doc: keys: Document usage of TEE based Trusted Keys
-[4] https://optee.readthedocs.io/general/about.html
-[5] http://infocenter.arm.com/help/topic/com.arm.doc.den0028b/ARM_DEN0028B_SMC_Calling_Convention.pdf
-
-
--Sumit
-
-> Mimi
->
-> >
-> > >
-> > > Patch #1, #2 enables support for registered kernel shared memory with TEE.
-> > >
-> > > Patch #3 enables support for private kernel login method required for
-> > > cases like trusted keys where we don't wan't user-space to directly access
-> > > TEE service to retrieve trusted key contents.
-> > >
-> > > Rest of the patches from #4 to #7 adds support for TEE based trusted keys.
-> > >
-> > > This patch-set has been tested with OP-TEE based pseudo TA which can be
-> > > found here [1].
-> > >
-> > > Looking forward to your valuable feedback/suggestions.
->
+>   */
+> -#define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
+> +#define PTE_PFN_MASK_MAX \
+> +	(((signed long)PAGE_MASK) & ((1ULL << __PHYSICAL_MASK_SHIFT) - 1))
+> +#define _PAGE_CHG_MASK	(PTE_PFN_MASK_MAX | _PAGE_PCD | _PAGE_PWT |		\
+>  			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
+>  			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP)
+>  #define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
