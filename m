@@ -2,33 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EB5F4585E
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 11:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9FC8458C3
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 11:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726083AbfFNJPZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 05:15:25 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:52570 "EHLO
+        id S1727130AbfFNJeZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 05:34:25 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:38344 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725907AbfFNJPZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 05:15:25 -0400
+        with ESMTP id S1726881AbfFNJeY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 05:34:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
         :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=bjuICrJxhqbVE3btlCQ3iZkvBOpZmXqWH1hsHhR0vEs=; b=plUvNd2hsauOJNdMcJW7PtfGU
-        ToeAUBkrbzKvJm2BUG/yf8dWjbaAvX7Q4lidDs0ithX9OI2WVuXyjfjTLnReR0Y0BKcgCuAYiXgBC
-        OYMfDsUCaba/eGhvG5pmOg+CVacs6ilSRsk2Vm9Q+cjRnTCoZahKJFZHX8emllCfCdfoOQyfYYpgd
-        8P3NvVIEryL7h01oXhpMERwBy1+5j/J65bjKgYr8HqalG4n/8K5kG47A0w9CyIaEfbCm+XdyPqqR2
-        +SODATdKf9VGfFZV7w3Vcr9SwOJUqEoqFkjC3/4Q1Bw12ultXg+EeVpqKI0Vp+ZCPmsLTqaO2Mazw
-        5m/hAaOGg==;
+         bh=v8sKDZr9w6cVAjaj6YSpqDHjOecR4ISemYmtJwZe3FY=; b=kH34VcWNT4Cav+GjG7CqlXy44
+        JXzqwvLIwTvMinkAO+TRylimlvR57aQTl6R7J8h2IT4P0MA63u6VdOzQDzCbMD9iu/1rxFj9RKZmb
+        o9u06p8ViQ8gJ5dyh2N4jaMWyIT0MJZGbPd9FIUyjWfyRvtbC+nqGDLMKjoHQoItVNnVNETBg3XHa
+        /EFK8hfeCAK0wqta5ky6wI9fQlG4ZeH6B63bsMuP6+A1WJ3DVQE48CdQv5tm0qSB/i6C7Ev/Yco27
+        JReMy3HKsSnOQ3TVN9wgekm5FU1rDzfRGnsiJhXNfi53fnyqodzPmaUbJT/6qnRMCKPprYWDjQ4GG
+        pfErC0P/Q==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hbiIm-0004MH-MW; Fri, 14 Jun 2019 09:15:16 +0000
+        id 1hbib5-00058b-5L; Fri, 14 Jun 2019 09:34:11 +0000
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0E80820245BD7; Fri, 14 Jun 2019 11:15:14 +0200 (CEST)
-Date:   Fri, 14 Jun 2019 11:15:14 +0200
+        id 5673620A26CE6; Fri, 14 Jun 2019 11:34:09 +0200 (CEST)
+Date:   Fri, 14 Jun 2019 11:34:09 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
@@ -44,34 +44,93 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 09/62] x86/mm: Preserve KeyID on pte_modify() and
- pgprot_modify()
-Message-ID: <20190614091513.GW3436@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH, RFC 13/62] x86/mm: Add hooks to allocate and free
+ encrypted pages
+Message-ID: <20190614093409.GX3436@hirez.programming.kicks-ass.net>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-10-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-14-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190508144422.13171-10-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20190508144422.13171-14-kirill.shutemov@linux.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 08, 2019 at 05:43:29PM +0300, Kirill A. Shutemov wrote:
-> + * Cast PAGE_MASK to a signed type so that it is sign-extended if
-> + * virtual addresses are 32-bits but physical addresses are larger
-> + * (ie, 32-bit PAE).
+On Wed, May 08, 2019 at 05:43:33PM +0300, Kirill A. Shutemov wrote:
 
-On 32bit, 'long' is still 32bit, did you want to cast to 'long long'
-instead? Ideally we'd use pteval_t here, but I see that is unsigned.
+> +/* Prepare page to be used for encryption. Called from page allocator. */
+> +void __prep_encrypted_page(struct page *page, int order, int keyid, bool zero)
+> +{
+> +	int i;
+> +
+> +	/*
+> +	 * The hardware/CPU does not enforce coherency between mappings
+> +	 * of the same physical page with different KeyIDs or
+> +	 * encryption keys. We are responsible for cache management.
+> +	 */
 
->   */
-> -#define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
-> +#define PTE_PFN_MASK_MAX \
-> +	(((signed long)PAGE_MASK) & ((1ULL << __PHYSICAL_MASK_SHIFT) - 1))
-> +#define _PAGE_CHG_MASK	(PTE_PFN_MASK_MAX | _PAGE_PCD | _PAGE_PWT |		\
->  			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
->  			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP)
->  #define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
+On alloc we should flush the unencrypted (key=0) range, while on free
+(below) we should flush the encrypted (key!=0) range.
+
+But I seem to have missed where page_address() does the right thing
+here.
+
+> +	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
+> +
+> +	for (i = 0; i < (1 << order); i++) {
+> +		/* All pages coming out of the allocator should have KeyID 0 */
+> +		WARN_ON_ONCE(lookup_page_ext(page)->keyid);
+> +		lookup_page_ext(page)->keyid = keyid;
+> +
+
+So presumably page_address() is affected by this keyid, and the below
+clear_highpage() then accesses the 'right' location?
+
+> +		/* Clear the page after the KeyID is set. */
+> +		if (zero)
+> +			clear_highpage(page);
+> +
+> +		page++;
+> +	}
+> +}
+> +
+> +/*
+> + * Handles freeing of encrypted page.
+> + * Called from page allocator on freeing encrypted page.
+> + */
+> +void free_encrypted_page(struct page *page, int order)
+> +{
+> +	int i;
+> +
+> +	/*
+> +	 * The hardware/CPU does not enforce coherency between mappings
+> +	 * of the same physical page with different KeyIDs or
+> +	 * encryption keys. We are responsible for cache management.
+> +	 */
+
+I still don't like that comment much; yes the hardware doesn't do it,
+and yes we have to do it, but it doesn't explain the actual scheme
+employed to do so.
+
+> +	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
+> +
+> +	for (i = 0; i < (1 << order); i++) {
+> +		/* Check if the page has reasonable KeyID */
+> +		WARN_ON_ONCE(lookup_page_ext(page)->keyid > mktme_nr_keyids);
+
+It should also check keyid > 0, so maybe:
+
+	(unsigned)(keyid - 1) > keyids-1
+
+instead?
+
+> +		lookup_page_ext(page)->keyid = 0;
+> +		page++;
+> +	}
+> +}
+> -- 
+> 2.20.1
+> 
