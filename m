@@ -2,36 +2,55 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A6F45C71
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 14:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 872F545D62
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jun 2019 15:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727593AbfFNMPb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 08:15:31 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:38208 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727544AbfFNMPb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 08:15:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4508jy29+aun7N2LGIzBHEHdPpOHU7DfASwN5eoEnJ0=; b=znSzzWUDWHtxTeSgjW/Fm4G9b
-        I0fEYjCe6xbhDAdqQtncGNa7JPgPEedhGzQZEmkIJUL0jsptzXyvy/BM7k+T2GipSP5waiKTIz4cp
-        FdK4P3MeaT9AODHnmT90Abzm+kAOhgPUSMxh5fFPrRDGUtSAlguTcAc6N/onnUBjsQCcgNm27oU7M
-        oJC+jqsSKBHSg4/lQ5lvGNvKBDQa+ZYvQ2XYniMOnwc9/JiksBCPrd1dx0Z+MLEIcRMVIuGtFOSRI
-        rSu0GIJ8PDZaiYJzZD9mXB6ZSPNeTG+fp/ksjm6PY/z69c2wRCwth07eu0Ff4g0l/rE9yCGsMPSuE
-        GcTXZV0aQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hbl6z-0007bG-Ai; Fri, 14 Jun 2019 12:15:17 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0A24120A29B57; Fri, 14 Jun 2019 14:15:15 +0200 (CEST)
-Date:   Fri, 14 Jun 2019 14:15:14 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        id S1727654AbfFNNDZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 09:03:25 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:40510 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbfFNNDZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 09:03:25 -0400
+Received: by mail-ed1-f66.google.com with SMTP id k8so3396891eds.7
+        for <keyrings@vger.kernel.org>; Fri, 14 Jun 2019 06:03:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1va0Zhc3Ckkn/M19SdwI/BpgUN6PKWmJzS8DDu3XqvU=;
+        b=vR79kuHpQYXyxhZu8YR3M90jIJfwFWRVTm/9V5oFLGKzLRardmvObkXq9H4m0Vi6eI
+         hdVp7daDWmX4NjKKjpNMRAp78CxDsbQD0dTSkz6kE0JwSfjW+s9yUAyzRWPwZQif4fVH
+         nuk2WQZjcSHf09oQmJX2MDlSzVGVSjO4GeyaiD6SyDJEiS8htGGxd7iLNeMT/kxvSm1K
+         zL82qR4pLp7Cx5FFMhZ4N0XEq17N7fCBv9xkqog0PGDidrguk0g8sXWzpGmFNuTSt3L+
+         RETLZdk/pnPMk4IGiN0Z8/lU/1Wsdyh4AEckoXvUwGz6WE5+ieVSd3lN4xWfjy49IirL
+         Tbow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1va0Zhc3Ckkn/M19SdwI/BpgUN6PKWmJzS8DDu3XqvU=;
+        b=e7fY3vjuDjtepgT+WrFTLdYgTqt8owoP4qC1153YXXzFRzkKmLXMdSkcFGzX9R9iIt
+         qWJEWLKmtwzCWX7A1MlY2hZit00ZmYtJODxHVhbuKXoUESRed2xtkH71PCb6pb+92r0m
+         uedKtmKgENpJXXEPQphSugDA7Zu+SqFvLIQPpy5c9mKZdTul2nqDUuanbb9D6fvt/b+L
+         SDwbU8sdT+GkytMtYOw9Lz4iH8szi4Eg3ewoWnqQojg82bn3Q5wxsSRDABpit0VfTu1W
+         0WenPy2kMnQ7GwbA9BDthkVc0RrH1RqMdymsVoYBonruSWNxNU5SZU+vMO0zHvygkyRR
+         7SVQ==
+X-Gm-Message-State: APjAAAU+sCpBbJzhrUZpf6vYMKf6u6JAHM7Dtt1ECEiTq3P5KYeUdxEX
+        z5TxpaGxFfFG0lAlChZPByBd2w==
+X-Google-Smtp-Source: APXvYqyF3tprtqswZ7hH6Vh6WtHyJArFxj3qOaU8YYRPmR2cn7Rbt/kKd3pYO/xaBN40TDf0h7NHSw==
+X-Received: by 2002:a17:906:65d7:: with SMTP id z23mr13450758ejn.18.1560517403352;
+        Fri, 14 Jun 2019 06:03:23 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id m6sm849255ede.2.2019.06.14.06.03.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 14 Jun 2019 06:03:22 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id CF04110086F; Fri, 14 Jun 2019 16:03:22 +0300 (+03)
+Date:   Fri, 14 Jun 2019 16:03:22 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
@@ -44,61 +63,70 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 00/62] Intel MKTME enabling
-Message-ID: <20190614121514.GK3436@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH, RFC 09/62] x86/mm: Preserve KeyID on pte_modify() and
+ pgprot_modify()
+Message-ID: <20190614130322.zbpubyxcncysgyi3@box>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-10-kirill.shutemov@linux.intel.com>
+ <20190614091513.GW3436@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190614091513.GW3436@hirez.programming.kicks-ass.net>
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 08, 2019 at 05:43:20PM +0300, Kirill A. Shutemov wrote:
-> = Intro =
+On Fri, Jun 14, 2019 at 11:15:14AM +0200, Peter Zijlstra wrote:
+> On Wed, May 08, 2019 at 05:43:29PM +0300, Kirill A. Shutemov wrote:
+> > + * Cast PAGE_MASK to a signed type so that it is sign-extended if
+> > + * virtual addresses are 32-bits but physical addresses are larger
+> > + * (ie, 32-bit PAE).
 > 
-> The patchset brings enabling of Intel Multi-Key Total Memory Encryption.
-> It consists of changes into multiple subsystems:
+> On 32bit, 'long' is still 32bit, did you want to cast to 'long long'
+> instead? Ideally we'd use pteval_t here, but I see that is unsigned.
+
+It will be cased implecitly to unsigned long long by '& ((1ULL <<
+__PHYSICAL_MASK_SHIFT) - 1)' and due to sign-extension it will get it
+right for PAE.
+
+Just to be on safe side, I've re-checked that nothing changed for PAE by
+the patch using the test below. PTE_PFN_MASK and PTE_PFN_MASK_MAX are
+identical when compiled with -m32.
+
+> >   */
+> > -#define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
+> > +#define PTE_PFN_MASK_MAX \
+> > +	(((signed long)PAGE_MASK) & ((1ULL << __PHYSICAL_MASK_SHIFT) - 1))
+> > +#define _PAGE_CHG_MASK	(PTE_PFN_MASK_MAX | _PAGE_PCD | _PAGE_PWT |		\
+> >  			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
+> >  			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP)
+> >  #define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
 > 
->  * Core MM: infrastructure for allocation pages, dealing with encrypted VMAs
->    and providing API setup encrypted mappings.
 
-That wasn't eye-bleeding bad. With exception of the refcounting; that
-looks like something that can easily go funny without people noticing.
+#include <stdio.h>
 
->  * arch/x86: feature enumeration, program keys into hardware, setup
->    page table entries for encrypted pages and more.
+typedef unsigned long long u64;
+typedef u64 pteval_t;
+typedef u64 phys_addr_t;
 
-That seemed incomplete (pageattr seems to be a giant hole).
+#define PAGE_SHIFT		12
+#define PAGE_SIZE		(1UL << PAGE_SHIFT)
+#define PAGE_MASK		(~(PAGE_SIZE-1))
+#define __PHYSICAL_MASK_SHIFT	52
+#define __PHYSICAL_MASK		((phys_addr_t)((1ULL << __PHYSICAL_MASK_SHIFT) - 1))
+#define PHYSICAL_PAGE_MASK	(((signed long)PAGE_MASK) & __PHYSICAL_MASK)
+#define PTE_PFN_MASK		((pteval_t)PHYSICAL_PAGE_MASK)
+#define PTE_PFN_MASK_MAX	(((signed long)PAGE_MASK) & ((1ULL << __PHYSICAL_MASK_SHIFT) - 1))
 
->  * Key management service: setup and management of encryption keys.
->  * DMA/IOMMU: dealing with encrypted memory on IO side.
+int main(void)
+{
+	printf("PTE_PFN_MASK: %#llx\n", PTE_PFN_MASK);
+	printf("PTE_PFN_MASK_MAX: %#llx\n", PTE_PFN_MASK_MAX);
 
-Just minor nits, someone else would have to look at this.
-
->  * KVM: interaction with virtualization side.
-
-You really want to limit the damage random modules can do. They have no
-business writing to the mktme variables.
-
->  * Documentation: description of APIs and usage examples.
-
-Didn't bother with those; if the Changelogs are inadequate to make sense
-of the patches documentation isn't the right place to fix things.
-
-> The patchset is huge. This submission aims to give view to the full picture and
-> get feedback on the overall design. The patchset will be split into more
-> digestible pieces later.
-> 
-> Please review. Any feedback is welcome.
-
-I still can't tell if this is worth the complexity :-/
-
-Yes, there's a lot of words, but it doesn't mean anything to me, that
-is, nothing here makes me want to build my kernel with this 'feature'
-enabled.
-
-
+	return 0;
+}
+-- 
+ Kirill A. Shutemov
