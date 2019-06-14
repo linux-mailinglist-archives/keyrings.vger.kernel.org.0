@@ -2,51 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8854646C7A
-	for <lists+keyrings@lfdr.de>; Sat, 15 Jun 2019 00:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9144B46C7D
+	for <lists+keyrings@lfdr.de>; Sat, 15 Jun 2019 00:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726325AbfFNWnL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 18:43:11 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:39908 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbfFNWnL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 18:43:11 -0400
-Received: by mail-ed1-f66.google.com with SMTP id m10so5628984edv.6
-        for <keyrings@vger.kernel.org>; Fri, 14 Jun 2019 15:43:10 -0700 (PDT)
+        id S1725868AbfFNWop (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 18:44:45 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:38164 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725981AbfFNWop (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jun 2019 18:44:45 -0400
+Received: by mail-ed1-f65.google.com with SMTP id r12so3452566edo.5
+        for <keyrings@vger.kernel.org>; Fri, 14 Jun 2019 15:44:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=M+zbZlurnvydl/6SQ6CAVUk3op7xjOMn2bTLkOUdsIE=;
-        b=yX+cOzz8Sxb7/voZ95Esa2tAFIQ4ZDV+JXtp2AqsXPwtzu00IC7YhwUjTqMSZmmDWG
-         jyJrN1VeTCeyuHxyQHWRxyzsfTK23n488pO5wGs9FVsSgFSo//1oSd4n0Kcztkx5qY41
-         UW1blc0iLoR//CqQxKecxSMwZ5tv+cqyr60vaqn9mFiRh3ods3UnncsNCUptxHe2aL/a
-         hiU6Da9QXyXnFfdPu4umhw6Wmt40nfUTwgU2EkPwHa849X1gd/4ve4pGxQhIudmyLuRF
-         6g0gnjJHItqyD2iY7f5DPjM0W4SSILwtM4oAyxobutdvFsFYJwzeKyVqsk9sw9zu8ONX
-         LzhQ==
+        bh=h2YsZJ/hpz/dktPd7lJ9/WdLKqP8cOEcDv4gWF/xH7M=;
+        b=Y2t0/2mr8aihOd4yjitVfbPHHMKDHwZD9B6ADKgMF/1yloLEFDKbVCRHfVvaojZBhW
+         X9iJJUE6HuWUrExWayDRtjj+0OY9xfenQmbiD65VYnZPJOUFGdTbi3xuEA07tqg3ncbv
+         ajDe+y4rUbN/CGxSwjohrEi6tZZ+rb0czHc523vfaeBuj/plC1g5QA1E/xwdWDUbC4Hd
+         RklEBmoxmZUKNVrU/LEZqMvsSeLzhM9NmIDLrG2hAKwrIZM2QBMIxo1U2J3pm1Yk5ZQ5
+         p0ydX7NAPzB8rkCRYyO5wZUKpOOL548iP7pggw258oF7RxeVGfPE4TrDcwadMkWMbA1a
+         BUNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=M+zbZlurnvydl/6SQ6CAVUk3op7xjOMn2bTLkOUdsIE=;
-        b=PtdaHr1OPCiHOdXnTYADBVN3dn3+UdPpFIkhLkU3JBL3J6b+ExdfXx7Gw5u6mKXLlp
-         sxJ9oDz2OlNUvwvvck6ebo8s+hEGTToDTFksNFIxRRvrhtl9jFNj7vheAlahuK2DxICw
-         9tbLPQggpnWcYKfIGxC3hLnhTEBAtkXeuGK9Syunx6u8d3CCnMY5XVX4duW0ogzESkar
-         y3MXClLSXkufkRYmFMc0szgSL4jjezD3Zhzngfn6zou4wugcQ71JOteM/2FBIKImt/uX
-         XsYfGoYeHUHtrFFAsGVz49bVAV8d1Oi8DOH2pUtFZiEHGFMPnW0aVE5Ue20zeEos7EzC
-         QAiA==
-X-Gm-Message-State: APjAAAVPN/+of558j11JZ7Nsvvx8XLAw9i2grBTnIy+yNjomJSAS9i2z
-        AJhlod3tjdkGYgK7kncFd5xPrA==
-X-Google-Smtp-Source: APXvYqw9qKi1+ylGIvjwojh4i4QzrWkN08hFImxH0eZYpGMAfqyAEToAzK6czxnnTAxd1f84jFyajQ==
-X-Received: by 2002:a17:906:4e92:: with SMTP id v18mr28509947eju.57.1560552189912;
-        Fri, 14 Jun 2019 15:43:09 -0700 (PDT)
+        bh=h2YsZJ/hpz/dktPd7lJ9/WdLKqP8cOEcDv4gWF/xH7M=;
+        b=eBPlLtxNutOHuY1neD9moAq5qg0XZXofYIMnrNFWtu2nrhHBHi8Zj8CEG1ib5tJpG7
+         PjOJHIn9amtT52LK60tB/AECmt+sm1c7pPAgLUNiirqIWEB1wi/oTFinRm4Q1/vi4vm5
+         I9OJum7LqkfBfHJG9AKgilJWOOocwjS4cyYq0RXLOuNzrXjUTaHK46AH/Njp5c/gQ6sQ
+         6jl6zZsRgzoLsY/pCtk97DMhJWb++LIUmqw16ezIQVmvHr6V+tCHGAmYZ8qO2zBmTA61
+         wHMb9H3qZQGsLN1wScp9x9x6337GcjzNQBgXKAf41tEIL7LzTQ/Z8ZZJ/HOeVci9obTt
+         wNFQ==
+X-Gm-Message-State: APjAAAXum6KXLKqRuXEkaTDI1PL6KsxPjtIZkfR2Znp6qOM9lMjKjWnd
+        CahU3k5POvG6MCs2mo2mj/1h/g==
+X-Google-Smtp-Source: APXvYqzu11aNlHQ8Ctnz/nojH1rYOSaIZ8gUOC9DmalwLiJMfeuh07K661B4hMO+kTvku1uEQp/sMw==
+X-Received: by 2002:a17:906:b2c6:: with SMTP id cf6mr66162140ejb.274.1560552283205;
+        Fri, 14 Jun 2019 15:44:43 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id g37sm1360017edb.50.2019.06.14.15.43.09
+        by smtp.gmail.com with ESMTPSA id j19sm1212825edr.69.2019.06.14.15.44.42
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 14 Jun 2019 15:43:09 -0700 (PDT)
+        Fri, 14 Jun 2019 15:44:42 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 6DB911032BB; Sat, 15 Jun 2019 01:43:09 +0300 (+03)
-Date:   Sat, 15 Jun 2019 01:43:09 +0300
+        id 42D7D1032BB; Sat, 15 Jun 2019 01:44:43 +0300 (+03)
+Date:   Sat, 15 Jun 2019 01:44:43 +0300
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -63,49 +63,32 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 18/62] x86/mm: Implement syncing per-KeyID direct
- mappings
-Message-ID: <20190614224309.t4ce7lpx577qh2gu@box>
+Subject: Re: [PATCH, RFC 20/62] mm/page_ext: Export lookup_page_ext() symbol
+Message-ID: <20190614224443.qmqolaigu5wnf75p@box>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-19-kirill.shutemov@linux.intel.com>
- <20190614095131.GY3436@hirez.programming.kicks-ass.net>
+ <20190508144422.13171-21-kirill.shutemov@linux.intel.com>
+ <20190614111259.GA3436@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190614095131.GY3436@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190614111259.GA3436@hirez.programming.kicks-ass.net>
 User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 11:51:32AM +0200, Peter Zijlstra wrote:
-> On Wed, May 08, 2019 at 05:43:38PM +0300, Kirill A. Shutemov wrote:
-> > For MKTME we use per-KeyID direct mappings. This allows kernel to have
-> > access to encrypted memory.
-> > 
-> > sync_direct_mapping() sync per-KeyID direct mappings with a canonical
-> > one -- KeyID-0.
-> > 
-> > The function tracks changes in the canonical mapping:
-> >  - creating or removing chunks of the translation tree;
-> >  - changes in mapping flags (i.e. protection bits);
-> >  - splitting huge page mapping into a page table;
-> >  - replacing page table with a huge page mapping;
-> > 
-> > The function need to be called on every change to the direct mapping:
-> > hotplug, hotremove, changes in permissions bits, etc.
+On Fri, Jun 14, 2019 at 01:12:59PM +0200, Peter Zijlstra wrote:
+> On Wed, May 08, 2019 at 05:43:40PM +0300, Kirill A. Shutemov wrote:
+> > page_keyid() is inline funcation that uses lookup_page_ext(). KVM is
+> > going to use page_keyid() and since KVM can be built as a module
+> > lookup_page_ext() has to be exported.
 > 
-> And yet I don't see anything in pageattr.c.
+> I _really_ hate having to export world+dog for KVM. This one might not
+> be a real issue, but I itch every time I see an export for KVM these
+> days.
 
-You're right. I've hooked up the sync in the wrong place.
-> 
-> Also, this seems like an expensive scheme; if you know where the changes
-> where, a more fine-grained update would be faster.
-
-Do we have any hot enough pageattr users that makes it crucial?
-
-I'll look into this anyway.
+Is there any better way? Do we need to invent EXPORT_SYMBOL_KVM()? :P
 
 -- 
  Kirill A. Shutemov
