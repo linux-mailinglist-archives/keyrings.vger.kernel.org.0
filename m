@@ -2,22 +2,22 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FC946D15
-	for <lists+keyrings@lfdr.de>; Sat, 15 Jun 2019 02:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E602E46D2F
+	for <lists+keyrings@lfdr.de>; Sat, 15 Jun 2019 02:29:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726219AbfFOAEA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 20:04:00 -0400
-Received: from mga18.intel.com ([134.134.136.126]:27174 "EHLO mga18.intel.com"
+        id S1725942AbfFOA31 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jun 2019 20:29:27 -0400
+Received: from mga18.intel.com ([134.134.136.126]:26556 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725981AbfFOAEA (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 14 Jun 2019 20:04:00 -0400
+        id S1725825AbfFOA31 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 14 Jun 2019 20:29:27 -0400
 X-Amp-Result: UNSCANNABLE
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 17:03:58 -0700
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 17:29:25 -0700
 Received: from alison-desk.jf.intel.com ([10.54.74.53])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 17:03:58 -0700
-Date:   Fri, 14 Jun 2019 17:07:05 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 17:29:25 -0700
+Date:   Fri, 14 Jun 2019 17:32:31 -0700
 From:   Alison Schofield <alison.schofield@intel.com>
 To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -33,55 +33,51 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Jacob Pan <jacob.jun.pan@linux.intel.com>, linux-mm@kvack.org,
         kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 47/62] mm: Restrict MKTME memory encryption to
- anonymous VMAs
-Message-ID: <20190615000705.GA14860@alison-desk.jf.intel.com>
+Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call
+ for MKTME
+Message-ID: <20190615003231.GA15479@alison-desk.jf.intel.com>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-48-kirill.shutemov@linux.intel.com>
- <20190614115520.GH3436@hirez.programming.kicks-ass.net>
+ <20190508144422.13171-46-kirill.shutemov@linux.intel.com>
+ <20190614115137.GF3436@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190614115520.GH3436@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190614115137.GF3436@hirez.programming.kicks-ass.net>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 01:55:20PM +0200, Peter Zijlstra wrote:
-> On Wed, May 08, 2019 at 05:44:07PM +0300, Kirill A. Shutemov wrote:
-> > From: Alison Schofield <alison.schofield@intel.com>
-> > 
-> > Memory encryption is only supported for mappings that are ANONYMOUS.
-> > Test the VMA's in an encrypt_mprotect() request to make sure they all
-> > meet that requirement before encrypting any.
-> > 
-> > The encrypt_mprotect syscall will return -EINVAL and will not encrypt
-> > any VMA's if this check fails.
-> > 
-> > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+On Fri, Jun 14, 2019 at 01:51:37PM +0200, Peter Zijlstra wrote:
+> On Wed, May 08, 2019 at 05:44:05PM +0300, Kirill A. Shutemov wrote:
+snip
+> >  /*
+> > - * When pkey==NO_KEY we get legacy mprotect behavior here.
+> > + * do_mprotect_ext() supports the legacy mprotect behavior plus extensions
+> > + * for Protection Keys and Memory Encryption Keys. These extensions are
+> > + * mutually exclusive and the behavior is:
+> > + *	(pkey==NO_KEY && keyid==NO_KEY) ==> legacy mprotect
+> > + *	(pkey is valid)  ==> legacy mprotect plus Protection Key extensions
+> > + *	(keyid is valid) ==> legacy mprotect plus Encryption Key extensions
+> >   */
+> >  static int do_mprotect_ext(unsigned long start, size_t len,
+> > -		unsigned long prot, int pkey)
+> > +			   unsigned long prot, int pkey, int keyid)
+> >  {
+
+snip
+
+>
+> I've missed the part where pkey && keyid results in a WARN or error or
+> whatever.
 > 
-> This should be folded back into the initial implemention, methinks.
+I wasn't so sure about that since do_mprotect_ext()
+is the call 'behind' the system calls. 
 
-It is part of the initial implementation. I looked for
-places to split the implementation into smaller,
-reviewable patches, hence this split. None of it gets
-built until the CONFIG_X86_INTEL_MKTME is introduced
-in a later patch.
+legacy mprotect always calls with: NO_KEY, NO_KEY
+pkey_mprotect always calls with:  pkey, NO_KEY
+encrypt_mprotect always calls with  NO_KEY, keyid
 
-The encrypt_mprotect() patchset is ordered like this:
-1) generalize mprotect to support the mktme extension
-2) wire up encrypt_mprotect()
-3) implement encrypt_mprotect()
-4) keep reference counts on encryption keys (was VMAs)
-5) (this patch) restrict to anonymous VMAs.
-  
-I thought Patch 5) was a small, but meaningful split. It 
-accentuates the fact that MKTME is restricted to anonymous
-memory.
-
-Alas, I want to make it logical to review, so I'll move it.
-
-
+Would a check on those arguments be debug only 
+to future proof this?
