@@ -2,55 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA0BD48094
-	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 13:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D17D485D3
+	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 16:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728234AbfFQLZN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Jun 2019 07:25:13 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:41483 "EHLO
+        id S1727710AbfFQOnd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 17 Jun 2019 10:43:33 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:45068 "EHLO
         mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728233AbfFQLZD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jun 2019 07:25:03 -0400
-Received: by mail-ed1-f65.google.com with SMTP id p15so15619400eds.8
-        for <keyrings@vger.kernel.org>; Mon, 17 Jun 2019 04:25:02 -0700 (PDT)
+        with ESMTP id S1727118AbfFQOnd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jun 2019 10:43:33 -0400
+Received: by mail-ed1-f65.google.com with SMTP id a14so16490699edv.12
+        for <keyrings@vger.kernel.org>; Mon, 17 Jun 2019 07:43:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=9AwinP98tyRtHdg0mJkLa6bfVqgtL4TsktjuNz76Who=;
-        b=uV36HBJjLuM8IaSJ5lnIjDPz/NT6Ima0VTqA5XgxtXzYGLtD5Zk1oOFcZIOs5eNXNV
-         pH0NKGr3K5PIEFLdfJ4QY5MASu8ZolMiISb4+T5+hLkqTyBzPrnUDdx/hU3vjrgigEg5
-         XFnoHWLNGGyz/u66QlR4uui8QiQ+svYc42qDT7NRAQYv6KgqnNwvy4xSWlxjmoYgo9KT
-         ekxQsjh1gx+i56hFixjDbLIdHmzETZGZXB2016IB59YaBabg47ntq/77FeVXdTQW9Mw5
-         aQMao99SPvxYN97xvhncTxzUgIhypTKI32Gazqeb0JGoQgELhGOXdv5DquuY1RhnraGV
-         TZKQ==
+        bh=K85gf5017j1tod/NYZbJo+vfUHgdDY1HeypQxTi9sYA=;
+        b=BMa1YbBSgDZIXM5VGNMMjaLcVRuBd8nmxVtuGrW7IqhgsklnG1j7LQIofiTnvktb5X
+         NfacqHNulzNxnHiigGO2r01I9bO9Uw07KjzXrcHmcKHnVLBHWVz12qK03OEKgPETFtM/
+         qZeh3zfnJMXvL8TpzJvYPvrq6+bNQaDFr5GaSNAady+k36GCwP9s9umv3rESfFaRrXSs
+         AZHUKUXsPACxV/PSWo1l0bnvbycO362YFdBmOOajjcyRkvJnnCUNnkMMFLh+LUfUT3X4
+         HS4496cjbAsJQlEe5ptZSg5GVUyzRjqxA8H3c66kzLMQvXVIAyCbknPu5pOyIccVONrA
+         MLXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9AwinP98tyRtHdg0mJkLa6bfVqgtL4TsktjuNz76Who=;
-        b=W3yg1SmZHqybRyJ3wYl7duix0MnohCGyn6nJypBFIxk3e6ZEKiUolnE6SQ+gOGNCO1
-         FatMXmAam94Kna0OdmHEOo3uLBlSUcoU7CB39ujFTTFiOThqmvS794W/sST6bIfytqi3
-         fGnYX8kcU2FI6dM75oPtGHIYuvh+TWLiacVFF/01J947hB5rvph5FA1c7OS5Z8P9dpWe
-         qRQ1nUA0Ni8dZge6IKW4Nhrs1sqU2u2LlOYf64VhGqqVYQkwWaNpOdpjbbA5889wtgFB
-         /fRPVeD1X1FlF5EczwTcUujSKkuPz619Zhz1c+JH4810lwZFVfp7pVH9qXMLrhLhwtOV
-         Hrlw==
-X-Gm-Message-State: APjAAAW/xWAU02d0lQsX8RISzG+PPvLDrVq+YkPsz0yDVVUSGWZeOEMa
-        qHqt7UTpLyrJE8QP5lG/v8l8tw==
-X-Google-Smtp-Source: APXvYqwcK64TzeBKKN7Kf5JNSHie2auwQpGxruSpvU1WBTnyHll+7eGrNwcSGlsUpIC9SxKCjImLYg==
-X-Received: by 2002:a50:a48a:: with SMTP id w10mr11385422edb.1.1560770702235;
-        Mon, 17 Jun 2019 04:25:02 -0700 (PDT)
+        bh=K85gf5017j1tod/NYZbJo+vfUHgdDY1HeypQxTi9sYA=;
+        b=g8ZDI3wPFCZFq73v6zzl4w9v0ZA3nIfUgv/3dBO+/M2rUFETynd+3661f5C4+iEtmS
+         ba9x8AJpEagX8p8KIL/dmjEklwRtuHi1UGiB8HIxuBLYqaUBbEr9HZahocD3pBwKWQsO
+         8N9cLTqPVOOletWq5VF8Fd7V3uLYfGLqLZiSAumSOS1CT+24YndeIiMuHAjXW1Isvssi
+         kOV45qcnGVJ7kdGOWz0BVWH4jLbuFEQOvRSz55f5NWUzniNfuv0zwP+byVfC2u8RiKqj
+         TCx2B9oH/kgWZ1RMJc6yqM5URsoK9NAa7Y0h5nacHzfDDkMn7lJPOr+OG4Hb1h+DdTGM
+         JYVw==
+X-Gm-Message-State: APjAAAXBon4TR2fmeEfDY9/0u+bgAmibVEDbCbOYgr9Bv4OIIlbiq0My
+        vQhTl4kkivinjBpVpn03pXyH8Q==
+X-Google-Smtp-Source: APXvYqxKksVboAoCrUSwzJFmTrTy7WjsO2JcHGzrcG9LgKGyqYG50hlU16X0Z1afSPy61Siww01umA==
+X-Received: by 2002:aa7:c99a:: with SMTP id c26mr25584741edt.118.1560782610573;
+        Mon, 17 Jun 2019 07:43:30 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id w35sm1152436edd.32.2019.06.17.04.25.00
+        by smtp.gmail.com with ESMTPSA id q56sm3786536eda.28.2019.06.17.07.43.29
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2019 04:25:01 -0700 (PDT)
+        Mon, 17 Jun 2019 07:43:29 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 122F1100F6D; Mon, 17 Jun 2019 14:25:00 +0300 (+03)
-Date:   Mon, 17 Jun 2019 14:25:00 +0300
+        id 043CC100F6D; Mon, 17 Jun 2019 17:43:29 +0300 (+03)
+Date:   Mon, 17 Jun 2019 17:43:28 +0300
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Kai Huang <kai.huang@linux.intel.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -59,87 +58,207 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         David Howells <dhowells@redhat.com>,
         Kees Cook <keescook@chromium.org>,
         Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
         Jacob Pan <jacob.jun.pan@linux.intel.com>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 49/62] mm, x86: export several MKTME variables
-Message-ID: <20190617112500.vmuu4kcjoep34hwe@box>
+Subject: Re: [PATCH, RFC 18/62] x86/mm: Implement syncing per-KeyID direct
+ mappings
+Message-ID: <20190617144328.oqwx5rb5yfm2ziws@box>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-50-kirill.shutemov@linux.intel.com>
- <20190614115647.GI3436@hirez.programming.kicks-ass.net>
- <1560741269.5187.7.camel@linux.intel.com>
- <20190617074643.GW3436@hirez.programming.kicks-ass.net>
- <1560760783.5187.10.camel@linux.intel.com>
+ <20190508144422.13171-19-kirill.shutemov@linux.intel.com>
+ <20190614095131.GY3436@hirez.programming.kicks-ass.net>
+ <20190614224309.t4ce7lpx577qh2gu@box>
+ <20190617092755.GA3419@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1560760783.5187.10.camel@linux.intel.com>
+In-Reply-To: <20190617092755.GA3419@hirez.programming.kicks-ass.net>
 User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jun 17, 2019 at 08:39:43PM +1200, Kai Huang wrote:
-> On Mon, 2019-06-17 at 09:46 +0200, Peter Zijlstra wrote:
-> > On Mon, Jun 17, 2019 at 03:14:29PM +1200, Kai Huang wrote:
-> > > On Fri, 2019-06-14 at 13:56 +0200, Peter Zijlstra wrote:
-> > > > On Wed, May 08, 2019 at 05:44:09PM +0300, Kirill A. Shutemov wrote:
-> > > > > From: Kai Huang <kai.huang@linux.intel.com>
-> > > > > 
-> > > > > KVM needs those variables to get/set memory encryption mask.
-> > > > > 
-> > > > > Signed-off-by: Kai Huang <kai.huang@linux.intel.com>
-> > > > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > > > ---
-> > > > >  arch/x86/mm/mktme.c | 3 +++
-> > > > >  1 file changed, 3 insertions(+)
-> > > > > 
-> > > > > diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
-> > > > > index df70651816a1..12f4266cf7ea 100644
-> > > > > --- a/arch/x86/mm/mktme.c
-> > > > > +++ b/arch/x86/mm/mktme.c
-> > > > > @@ -7,13 +7,16 @@
-> > > > >  
-> > > > >  /* Mask to extract KeyID from physical address. */
-> > > > >  phys_addr_t mktme_keyid_mask;
-> > > > > +EXPORT_SYMBOL_GPL(mktme_keyid_mask);
-> > > > >  /*
-> > > > >   * Number of KeyIDs available for MKTME.
-> > > > >   * Excludes KeyID-0 which used by TME. MKTME KeyIDs start from 1.
-> > > > >   */
-> > > > >  int mktme_nr_keyids;
-> > > > > +EXPORT_SYMBOL_GPL(mktme_nr_keyids);
-> > > > >  /* Shift of KeyID within physical address. */
-> > > > >  int mktme_keyid_shift;
-> > > > > +EXPORT_SYMBOL_GPL(mktme_keyid_shift);
-> > > > >  
-> > > > >  DEFINE_STATIC_KEY_FALSE(mktme_enabled_key);
-> > > > >  EXPORT_SYMBOL_GPL(mktme_enabled_key);
+On Mon, Jun 17, 2019 at 11:27:55AM +0200, Peter Zijlstra wrote:
+> On Sat, Jun 15, 2019 at 01:43:09AM +0300, Kirill A. Shutemov wrote:
+> > On Fri, Jun 14, 2019 at 11:51:32AM +0200, Peter Zijlstra wrote:
+> > > On Wed, May 08, 2019 at 05:43:38PM +0300, Kirill A. Shutemov wrote:
+> > > > For MKTME we use per-KeyID direct mappings. This allows kernel to have
+> > > > access to encrypted memory.
 > > > > 
-> > > > NAK, don't export variables. Who owns the values, who enforces this?
+> > > > sync_direct_mapping() sync per-KeyID direct mappings with a canonical
+> > > > one -- KeyID-0.
 > > > > 
+> > > > The function tracks changes in the canonical mapping:
+> > > >  - creating or removing chunks of the translation tree;
+> > > >  - changes in mapping flags (i.e. protection bits);
+> > > >  - splitting huge page mapping into a page table;
+> > > >  - replacing page table with a huge page mapping;
+> > > > 
+> > > > The function need to be called on every change to the direct mapping:
+> > > > hotplug, hotremove, changes in permissions bits, etc.
 > > > 
-> > > Both KVM and IOMMU driver need page_keyid() and mktme_keyid_shift to set page's keyID to the
-> > > right
-> > > place in the PTE (of KVM EPT and VT-d DMA page table).
-> > > 
-> > > MKTME key type code need to know mktme_nr_keyids in order to alloc/free keyID.
-> > > 
-> > > Maybe better to introduce functions instead of exposing variables directly?
-> > > 
-> > > Or instead of introducing page_keyid(), we use page_encrypt_mask(), which essentially holds
-> > > "page_keyid() << mktme_keyid_shift"?
+> > > And yet I don't see anything in pageattr.c.
 > > 
-> > Yes, that's much better, because that strictly limits the access to R/O.
+> > You're right. I've hooked up the sync in the wrong place.
+> > > 
+> > > Also, this seems like an expensive scheme; if you know where the changes
+> > > where, a more fine-grained update would be faster.
 > > 
+> > Do we have any hot enough pageattr users that makes it crucial?
+> > 
+> > I'll look into this anyway.
 > 
-> Thanks. I think Kirill will be the one to handle your suggestion. :)
-> 
-> Kirill?
+> The graphics people would be the most agressive users of this I'd think.
+> They're the ones that yelled when I broke it last ;-)
 
-Will do.
+I think something like this should do (I'll fold it in after testing):
 
+diff --git a/arch/x86/include/asm/mktme.h b/arch/x86/include/asm/mktme.h
+index 6c973cb1e64c..b30386d84281 100644
+--- a/arch/x86/include/asm/mktme.h
++++ b/arch/x86/include/asm/mktme.h
+@@ -68,7 +68,7 @@ static inline void arch_free_page(struct page *page, int order)
+ 		free_encrypted_page(page, order);
+ }
+ 
+-int sync_direct_mapping(void);
++int sync_direct_mapping(unsigned long start, unsigned long end);
+ 
+ int mktme_get_alg(int keyid);
+ 
+@@ -86,7 +86,7 @@ static inline bool mktme_enabled(void)
+ 
+ static inline void mktme_disable(void) {}
+ 
+-static inline int sync_direct_mapping(void)
++static inline int sync_direct_mapping(unsigned long start, unsigned long end)
+ {
+ 	return 0;
+ }
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index f50a38d86cc4..f8123aeb24a6 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -761,7 +761,7 @@ __kernel_physical_mapping_init(unsigned long paddr_start,
+ 		pgd_changed = true;
+ 	}
+ 
+-	ret = sync_direct_mapping();
++	ret = sync_direct_mapping(vaddr_start, vaddr_end);
+ 	WARN_ON(ret);
+ 
+ 	if (pgd_changed)
+@@ -1209,7 +1209,7 @@ kernel_physical_mapping_remove(unsigned long start, unsigned long end)
+ 	end = (unsigned long)__va(end);
+ 
+ 	remove_pagetable(start, end, true, NULL);
+-	ret = sync_direct_mapping();
++	ret = sync_direct_mapping(start, end);
+ 	WARN_ON(ret);
+ }
+ 
+@@ -1315,7 +1315,6 @@ void mark_rodata_ro(void)
+ 	unsigned long text_end = PFN_ALIGN(&__stop___ex_table);
+ 	unsigned long rodata_end = PFN_ALIGN(&__end_rodata);
+ 	unsigned long all_end;
+-	int ret;
+ 
+ 	printk(KERN_INFO "Write protecting the kernel read-only data: %luk\n",
+ 	       (end - start) >> 10);
+@@ -1349,8 +1348,6 @@ void mark_rodata_ro(void)
+ 	free_kernel_image_pages((void *)text_end, (void *)rodata_start);
+ 	free_kernel_image_pages((void *)rodata_end, (void *)_sdata);
+ 
+-	ret = sync_direct_mapping();
+-	WARN_ON(ret);
+ 	debug_checkwx();
+ }
+ 
+diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+index 9d2bb534f2ba..c099e1da055b 100644
+--- a/arch/x86/mm/mktme.c
++++ b/arch/x86/mm/mktme.c
+@@ -76,7 +76,7 @@ static void init_page_mktme(void)
+ {
+ 	static_branch_enable(&mktme_enabled_key);
+ 
+-	sync_direct_mapping();
++	sync_direct_mapping(PAGE_OFFSET, PAGE_OFFSET + direct_mapping_size);
+ }
+ 
+ struct page_ext_operations page_mktme_ops = {
+@@ -596,15 +596,13 @@ static int sync_direct_mapping_p4d(unsigned long keyid,
+ 	return ret;
+ }
+ 
+-static int sync_direct_mapping_keyid(unsigned long keyid)
++static int sync_direct_mapping_keyid(unsigned long keyid,
++		unsigned long addr, unsigned long end)
+ {
+ 	pgd_t *src_pgd, *dst_pgd;
+-	unsigned long addr, end, next;
++	unsigned long next;
+ 	int ret = 0;
+ 
+-	addr = PAGE_OFFSET;
+-	end = PAGE_OFFSET + direct_mapping_size;
+-
+ 	dst_pgd = pgd_offset_k(addr + keyid * direct_mapping_size);
+ 	src_pgd = pgd_offset_k(addr);
+ 
+@@ -643,7 +641,7 @@ static int sync_direct_mapping_keyid(unsigned long keyid)
+  *
+  * The function is nop until MKTME is enabled.
+  */
+-int sync_direct_mapping(void)
++int sync_direct_mapping(unsigned long start, unsigned long end)
+ {
+ 	int i, ret = 0;
+ 
+@@ -651,7 +649,7 @@ int sync_direct_mapping(void)
+ 		return 0;
+ 
+ 	for (i = 1; !ret && i <= mktme_nr_keyids; i++)
+-		ret = sync_direct_mapping_keyid(i);
++		ret = sync_direct_mapping_keyid(i, start, end);
+ 
+ 	flush_tlb_all();
+ 
+diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
+index 6a9a77a403c9..eafbe0d8c44f 100644
+--- a/arch/x86/mm/pageattr.c
++++ b/arch/x86/mm/pageattr.c
+@@ -347,6 +347,28 @@ static void cpa_flush(struct cpa_data *data, int cache)
+ 
+ 	BUG_ON(irqs_disabled() && !early_boot_irqs_disabled);
+ 
++	if (mktme_enabled()) {
++		unsigned long start, end;
++
++		start = *cpa->vaddr;
++		end = *cpa->vaddr + cpa->numpages * PAGE_SIZE;
++
++		/* Sync all direct mapping for an array */
++		if (cpa->flags & CPA_ARRAY) {
++			start = PAGE_OFFSET;
++			end = PAGE_OFFSET + direct_mapping_size;
++		}
++
++		/*
++		 * Sync per-KeyID direct mappings with the canonical one
++		 * (KeyID-0).
++		 *
++		 * sync_direct_mapping() does full TLB flush.
++		 */
++		sync_direct_mapping(start, end);
++		return;
++	}
++
+ 	if (cache && !static_cpu_has(X86_FEATURE_CLFLUSH)) {
+ 		cpa_flush_all(cache);
+ 		return;
 -- 
  Kirill A. Shutemov
