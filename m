@@ -2,99 +2,144 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB994804C
-	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 13:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA0BD48094
+	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 13:26:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727432AbfFQLNT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Jun 2019 07:13:19 -0400
-Received: from mga04.intel.com ([192.55.52.120]:11707 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726622AbfFQLNS (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 17 Jun 2019 07:13:18 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 04:13:18 -0700
-X-ExtLoop1: 1
-Received: from pgsmsx101.gar.corp.intel.com ([10.221.44.78])
-  by orsmga003.jf.intel.com with ESMTP; 17 Jun 2019 04:13:13 -0700
-Received: from pgsmsx109.gar.corp.intel.com (10.221.44.109) by
- PGSMSX101.gar.corp.intel.com (10.221.44.78) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 17 Jun 2019 19:13:12 +0800
-Received: from pgsmsx112.gar.corp.intel.com ([169.254.3.172]) by
- PGSMSX109.gar.corp.intel.com ([169.254.14.14]) with mapi id 14.03.0439.000;
- Mon, 17 Jun 2019 19:13:12 +0800
-From:   "Huang, Kai" <kai.huang@intel.com>
-To:     "kirill@shutemov.name" <kirill@shutemov.name>,
-        "peterz@infradead.org" <peterz@infradead.org>
-CC:     "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "jacob.jun.pan@linux.intel.com" <jacob.jun.pan@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "hpa@zytor.com" <hpa@zytor.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "luto@amacapital.net" <luto@amacapital.net>,
-        "Schofield, Alison" <alison.schofield@intel.com>
-Subject: Re: [PATCH, RFC 20/62] mm/page_ext: Export lookup_page_ext() symbol
-Thread-Topic: [PATCH, RFC 20/62] mm/page_ext: Export lookup_page_ext() symbol
-Thread-Index: AQHVBa0N2X60Ah6/l0yBtZ+vNYh62KaassmAgADBRICAA9k1AIAAGVkAgAADNwA=
-Date:   Mon, 17 Jun 2019 11:13:11 +0000
-Message-ID: <1560769988.5187.20.camel@intel.com>
+        id S1728234AbfFQLZN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 17 Jun 2019 07:25:13 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:41483 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728233AbfFQLZD (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jun 2019 07:25:03 -0400
+Received: by mail-ed1-f65.google.com with SMTP id p15so15619400eds.8
+        for <keyrings@vger.kernel.org>; Mon, 17 Jun 2019 04:25:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=9AwinP98tyRtHdg0mJkLa6bfVqgtL4TsktjuNz76Who=;
+        b=uV36HBJjLuM8IaSJ5lnIjDPz/NT6Ima0VTqA5XgxtXzYGLtD5Zk1oOFcZIOs5eNXNV
+         pH0NKGr3K5PIEFLdfJ4QY5MASu8ZolMiISb4+T5+hLkqTyBzPrnUDdx/hU3vjrgigEg5
+         XFnoHWLNGGyz/u66QlR4uui8QiQ+svYc42qDT7NRAQYv6KgqnNwvy4xSWlxjmoYgo9KT
+         ekxQsjh1gx+i56hFixjDbLIdHmzETZGZXB2016IB59YaBabg47ntq/77FeVXdTQW9Mw5
+         aQMao99SPvxYN97xvhncTxzUgIhypTKI32Gazqeb0JGoQgELhGOXdv5DquuY1RhnraGV
+         TZKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=9AwinP98tyRtHdg0mJkLa6bfVqgtL4TsktjuNz76Who=;
+        b=W3yg1SmZHqybRyJ3wYl7duix0MnohCGyn6nJypBFIxk3e6ZEKiUolnE6SQ+gOGNCO1
+         FatMXmAam94Kna0OdmHEOo3uLBlSUcoU7CB39ujFTTFiOThqmvS794W/sST6bIfytqi3
+         fGnYX8kcU2FI6dM75oPtGHIYuvh+TWLiacVFF/01J947hB5rvph5FA1c7OS5Z8P9dpWe
+         qRQ1nUA0Ni8dZge6IKW4Nhrs1sqU2u2LlOYf64VhGqqVYQkwWaNpOdpjbbA5889wtgFB
+         /fRPVeD1X1FlF5EczwTcUujSKkuPz619Zhz1c+JH4810lwZFVfp7pVH9qXMLrhLhwtOV
+         Hrlw==
+X-Gm-Message-State: APjAAAW/xWAU02d0lQsX8RISzG+PPvLDrVq+YkPsz0yDVVUSGWZeOEMa
+        qHqt7UTpLyrJE8QP5lG/v8l8tw==
+X-Google-Smtp-Source: APXvYqwcK64TzeBKKN7Kf5JNSHie2auwQpGxruSpvU1WBTnyHll+7eGrNwcSGlsUpIC9SxKCjImLYg==
+X-Received: by 2002:a50:a48a:: with SMTP id w10mr11385422edb.1.1560770702235;
+        Mon, 17 Jun 2019 04:25:02 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id w35sm1152436edd.32.2019.06.17.04.25.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 17 Jun 2019 04:25:01 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 122F1100F6D; Mon, 17 Jun 2019 14:25:00 +0300 (+03)
+Date:   Mon, 17 Jun 2019 14:25:00 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Kai Huang <kai.huang@linux.intel.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH, RFC 49/62] mm, x86: export several MKTME variables
+Message-ID: <20190617112500.vmuu4kcjoep34hwe@box>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
-         <20190508144422.13171-21-kirill.shutemov@linux.intel.com>
-         <20190614111259.GA3436@hirez.programming.kicks-ass.net>
-         <20190614224443.qmqolaigu5wnf75p@box>
-         <20190617093054.GB3419@hirez.programming.kicks-ass.net>
-         <1560769298.5187.16.camel@linux.intel.com>
-In-Reply-To: <1560769298.5187.16.camel@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.255.91.82]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D614CA96D4DFB74A978CBD3CA2D29412@intel.com>
-Content-Transfer-Encoding: base64
+ <20190508144422.13171-50-kirill.shutemov@linux.intel.com>
+ <20190614115647.GI3436@hirez.programming.kicks-ass.net>
+ <1560741269.5187.7.camel@linux.intel.com>
+ <20190617074643.GW3436@hirez.programming.kicks-ass.net>
+ <1560760783.5187.10.camel@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1560760783.5187.10.camel@linux.intel.com>
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-T24gTW9uLCAyMDE5LTA2LTE3IGF0IDIzOjAxICsxMjAwLCBLYWkgSHVhbmcgd3JvdGU6DQo+IE9u
-IE1vbiwgMjAxOS0wNi0xNyBhdCAxMTozMCArMDIwMCwgUGV0ZXIgWmlqbHN0cmEgd3JvdGU6DQo+
-ID4gT24gU2F0LCBKdW4gMTUsIDIwMTkgYXQgMDE6NDQ6NDNBTSArMDMwMCwgS2lyaWxsIEEuIFNo
-dXRlbW92IHdyb3RlOg0KPiA+ID4gT24gRnJpLCBKdW4gMTQsIDIwMTkgYXQgMDE6MTI6NTlQTSAr
-MDIwMCwgUGV0ZXIgWmlqbHN0cmEgd3JvdGU6DQo+ID4gPiA+IE9uIFdlZCwgTWF5IDA4LCAyMDE5
-IGF0IDA1OjQzOjQwUE0gKzAzMDAsIEtpcmlsbCBBLiBTaHV0ZW1vdiB3cm90ZToNCj4gPiA+ID4g
-PiBwYWdlX2tleWlkKCkgaXMgaW5saW5lIGZ1bmNhdGlvbiB0aGF0IHVzZXMgbG9va3VwX3BhZ2Vf
-ZXh0KCkuIEtWTSBpcw0KPiA+ID4gPiA+IGdvaW5nIHRvIHVzZSBwYWdlX2tleWlkKCkgYW5kIHNp
-bmNlIEtWTSBjYW4gYmUgYnVpbHQgYXMgYSBtb2R1bGUNCj4gPiA+ID4gPiBsb29rdXBfcGFnZV9l
-eHQoKSBoYXMgdG8gYmUgZXhwb3J0ZWQuDQo+ID4gPiA+IA0KPiA+ID4gPiBJIF9yZWFsbHlfIGhh
-dGUgaGF2aW5nIHRvIGV4cG9ydCB3b3JsZCtkb2cgZm9yIEtWTS4gVGhpcyBvbmUgbWlnaHQgbm90
-DQo+ID4gPiA+IGJlIGEgcmVhbCBpc3N1ZSwgYnV0IEkgaXRjaCBldmVyeSB0aW1lIEkgc2VlIGFu
-IGV4cG9ydCBmb3IgS1ZNIHRoZXNlDQo+ID4gPiA+IGRheXMuDQo+ID4gPiANCj4gPiA+IElzIHRo
-ZXJlIGFueSBiZXR0ZXIgd2F5PyBEbyB3ZSBuZWVkIHRvIGludmVudCBFWFBPUlRfU1lNQk9MX0tW
-TSgpPyA6UA0KPiA+IA0KPiA+IE9yIGRpc2FsbG93IEtWTSAob3IgcGFydHMgdGhlcmVvZikgZnJv
-bSBiZWluZyBhIG1vZHVsZSBhbnltb3JlLg0KPiANCj4gRm9yIHRoaXMgcGFydGljdWxhciBzeW1i
-b2wgZXhwb3NlLCBJIGRvbid0IHRoaW5rIGl0cyBmYWlyIHRvIGJsYW1lIEtWTSBzaW5jZSB0aGUg
-ZnVuZGFtZW50YWwNCj4gcmVhc29uDQo+IGlzIGJlY2F1c2UgcGFnZV9rZXlpZCgpICh3aGljaCBj
-YWxscyBsb29rdXBfcGFnZV9leHQoKSkgYmVpbmcgaW1wbGVtZW50ZWQgYXMgc3RhdGljIGlubGlu
-ZQ0KPiBmdW5jdGlvbg0KPiBpbiBoZWFkZXIgZmlsZSwgc28gZXNzZW50aWFsbHkgaGF2aW5nIGFu
-eSBvdGhlciBtb2R1bGUgd2hvIGNhbGxzIHBhZ2Vfa2V5aWQoKSB3aWxsIHRyaWdnZXIgdGhpcw0K
-PiBwcm9ibGVtIC0tIGluIGZhY3QgSU9NTVUgZHJpdmVyIGNhbGxzIHBhZ2Vfa2V5aWQoKSB0b28g
-c28gZXZlbiB3L28gS1ZNIGxvb2t1cF9wYWdlX2V4dCgpIG5lZWRzIHRvDQo+IGJlDQo+IGV4cG9z
-ZWQuDQoNCk9vcHMgaXQgc2VlbXMgSW50ZWwgSU9NTVUgZHJpdmVyIGlzIG5vdCBhIG1vZHVsZSBi
-dXQgYnVpbGRpbiBzbyB5ZXMgS1ZNIGlzIHRoZSBvbmx5IG1vZHVsZSB3aG8gY2FsbHMNCnBhZ2Vf
-a2V5aWQoKSBub3cuIFNvcnJ5IG15IGJhZC4gQnV0IGlmIHRoZXJlJ3MgYW55IG90aGVyIG1vZHVs
-ZSBjYWxscyBwYWdlX2tleWlkKCksIHRoaXMgcGF0Y2ggaXMNCnJlcXVpcmVkLg0KDQpUaGFua3Ms
-DQotS2FpDQo+IA0KPiBUaGFua3MsDQo+IC1LYWkNCj4g
+On Mon, Jun 17, 2019 at 08:39:43PM +1200, Kai Huang wrote:
+> On Mon, 2019-06-17 at 09:46 +0200, Peter Zijlstra wrote:
+> > On Mon, Jun 17, 2019 at 03:14:29PM +1200, Kai Huang wrote:
+> > > On Fri, 2019-06-14 at 13:56 +0200, Peter Zijlstra wrote:
+> > > > On Wed, May 08, 2019 at 05:44:09PM +0300, Kirill A. Shutemov wrote:
+> > > > > From: Kai Huang <kai.huang@linux.intel.com>
+> > > > > 
+> > > > > KVM needs those variables to get/set memory encryption mask.
+> > > > > 
+> > > > > Signed-off-by: Kai Huang <kai.huang@linux.intel.com>
+> > > > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > > > > ---
+> > > > >  arch/x86/mm/mktme.c | 3 +++
+> > > > >  1 file changed, 3 insertions(+)
+> > > > > 
+> > > > > diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+> > > > > index df70651816a1..12f4266cf7ea 100644
+> > > > > --- a/arch/x86/mm/mktme.c
+> > > > > +++ b/arch/x86/mm/mktme.c
+> > > > > @@ -7,13 +7,16 @@
+> > > > >  
+> > > > >  /* Mask to extract KeyID from physical address. */
+> > > > >  phys_addr_t mktme_keyid_mask;
+> > > > > +EXPORT_SYMBOL_GPL(mktme_keyid_mask);
+> > > > >  /*
+> > > > >   * Number of KeyIDs available for MKTME.
+> > > > >   * Excludes KeyID-0 which used by TME. MKTME KeyIDs start from 1.
+> > > > >   */
+> > > > >  int mktme_nr_keyids;
+> > > > > +EXPORT_SYMBOL_GPL(mktme_nr_keyids);
+> > > > >  /* Shift of KeyID within physical address. */
+> > > > >  int mktme_keyid_shift;
+> > > > > +EXPORT_SYMBOL_GPL(mktme_keyid_shift);
+> > > > >  
+> > > > >  DEFINE_STATIC_KEY_FALSE(mktme_enabled_key);
+> > > > >  EXPORT_SYMBOL_GPL(mktme_enabled_key);
+> > > > 
+> > > > NAK, don't export variables. Who owns the values, who enforces this?
+> > > > 
+> > > 
+> > > Both KVM and IOMMU driver need page_keyid() and mktme_keyid_shift to set page's keyID to the
+> > > right
+> > > place in the PTE (of KVM EPT and VT-d DMA page table).
+> > > 
+> > > MKTME key type code need to know mktme_nr_keyids in order to alloc/free keyID.
+> > > 
+> > > Maybe better to introduce functions instead of exposing variables directly?
+> > > 
+> > > Or instead of introducing page_keyid(), we use page_encrypt_mask(), which essentially holds
+> > > "page_keyid() << mktme_keyid_shift"?
+> > 
+> > Yes, that's much better, because that strictly limits the access to R/O.
+> > 
+> 
+> Thanks. I think Kirill will be the one to handle your suggestion. :)
+> 
+> Kirill?
+
+Will do.
+
+-- 
+ Kirill A. Shutemov
