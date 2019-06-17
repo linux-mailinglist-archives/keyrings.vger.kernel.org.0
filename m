@@ -2,26 +2,28 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E602E46D2F
-	for <lists+keyrings@lfdr.de>; Sat, 15 Jun 2019 02:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FF8847890
+	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 05:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725942AbfFOA31 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jun 2019 20:29:27 -0400
-Received: from mga18.intel.com ([134.134.136.126]:26556 "EHLO mga18.intel.com"
+        id S1727465AbfFQDOe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 16 Jun 2019 23:14:34 -0400
+Received: from mga03.intel.com ([134.134.136.65]:11096 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725825AbfFOA31 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 14 Jun 2019 20:29:27 -0400
-X-Amp-Result: UNSCANNABLE
+        id S1727383AbfFQDOe (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 16 Jun 2019 23:14:34 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 17:29:25 -0700
-Received: from alison-desk.jf.intel.com ([10.54.74.53])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 17:29:25 -0700
-Date:   Fri, 14 Jun 2019 17:32:31 -0700
-From:   Alison Schofield <alison.schofield@intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Jun 2019 20:14:33 -0700
+X-ExtLoop1: 1
+Received: from khuang2-desk.gar.corp.intel.com ([10.255.91.82])
+  by fmsmga004.fm.intel.com with ESMTP; 16 Jun 2019 20:14:30 -0700
+Message-ID: <1560741269.5187.7.camel@linux.intel.com>
+Subject: Re: [PATCH, RFC 49/62] mm, x86: export several MKTME variables
+From:   Kai Huang <kai.huang@linux.intel.com>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
@@ -29,55 +31,70 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         David Howells <dhowells@redhat.com>,
         Kees Cook <keescook@chromium.org>,
         Dave Hansen <dave.hansen@intel.com>,
-        Kai Huang <kai.huang@linux.intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>, linux-mm@kvack.org,
-        kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call
- for MKTME
-Message-ID: <20190615003231.GA15479@alison-desk.jf.intel.com>
+Date:   Mon, 17 Jun 2019 15:14:29 +1200
+In-Reply-To: <20190614115647.GI3436@hirez.programming.kicks-ass.net>
 References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-46-kirill.shutemov@linux.intel.com>
- <20190614115137.GF3436@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614115137.GF3436@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+         <20190508144422.13171-50-kirill.shutemov@linux.intel.com>
+         <20190614115647.GI3436@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.24.6 (3.24.6-1.fc26) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 01:51:37PM +0200, Peter Zijlstra wrote:
-> On Wed, May 08, 2019 at 05:44:05PM +0300, Kirill A. Shutemov wrote:
-snip
+On Fri, 2019-06-14 at 13:56 +0200, Peter Zijlstra wrote:
+> On Wed, May 08, 2019 at 05:44:09PM +0300, Kirill A. Shutemov wrote:
+> > From: Kai Huang <kai.huang@linux.intel.com>
+> > 
+> > KVM needs those variables to get/set memory encryption mask.
+> > 
+> > Signed-off-by: Kai Huang <kai.huang@linux.intel.com>
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/mm/mktme.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+> > index df70651816a1..12f4266cf7ea 100644
+> > --- a/arch/x86/mm/mktme.c
+> > +++ b/arch/x86/mm/mktme.c
+> > @@ -7,13 +7,16 @@
+> >  
+> >  /* Mask to extract KeyID from physical address. */
+> >  phys_addr_t mktme_keyid_mask;
+> > +EXPORT_SYMBOL_GPL(mktme_keyid_mask);
 > >  /*
-> > - * When pkey==NO_KEY we get legacy mprotect behavior here.
-> > + * do_mprotect_ext() supports the legacy mprotect behavior plus extensions
-> > + * for Protection Keys and Memory Encryption Keys. These extensions are
-> > + * mutually exclusive and the behavior is:
-> > + *	(pkey==NO_KEY && keyid==NO_KEY) ==> legacy mprotect
-> > + *	(pkey is valid)  ==> legacy mprotect plus Protection Key extensions
-> > + *	(keyid is valid) ==> legacy mprotect plus Encryption Key extensions
+> >   * Number of KeyIDs available for MKTME.
+> >   * Excludes KeyID-0 which used by TME. MKTME KeyIDs start from 1.
 > >   */
-> >  static int do_mprotect_ext(unsigned long start, size_t len,
-> > -		unsigned long prot, int pkey)
-> > +			   unsigned long prot, int pkey, int keyid)
-> >  {
-
-snip
-
->
-> I've missed the part where pkey && keyid results in a WARN or error or
-> whatever.
+> >  int mktme_nr_keyids;
+> > +EXPORT_SYMBOL_GPL(mktme_nr_keyids);
+> >  /* Shift of KeyID within physical address. */
+> >  int mktme_keyid_shift;
+> > +EXPORT_SYMBOL_GPL(mktme_keyid_shift);
+> >  
+> >  DEFINE_STATIC_KEY_FALSE(mktme_enabled_key);
+> >  EXPORT_SYMBOL_GPL(mktme_enabled_key);
 > 
-I wasn't so sure about that since do_mprotect_ext()
-is the call 'behind' the system calls. 
+> NAK, don't export variables. Who owns the values, who enforces this?
+> 
 
-legacy mprotect always calls with: NO_KEY, NO_KEY
-pkey_mprotect always calls with:  pkey, NO_KEY
-encrypt_mprotect always calls with  NO_KEY, keyid
+Both KVM and IOMMU driver need page_keyid() and mktme_keyid_shift to set page's keyID to the right
+place in the PTE (of KVM EPT and VT-d DMA page table).
 
-Would a check on those arguments be debug only 
-to future proof this?
+MKTME key type code need to know mktme_nr_keyids in order to alloc/free keyID.
+
+Maybe better to introduce functions instead of exposing variables directly?
+
+Or instead of introducing page_keyid(), we use page_encrypt_mask(), which essentially holds
+"page_keyid() << mktme_keyid_shift"?
+
+Thanks,
+-Kai
