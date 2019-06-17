@@ -2,168 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD270487BC
-	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 17:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26476488CE
+	for <lists+keyrings@lfdr.de>; Mon, 17 Jun 2019 18:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727536AbfFQPq1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Jun 2019 11:46:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59954 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726962AbfFQPq0 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 17 Jun 2019 11:46:26 -0400
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C25621881
-        for <keyrings@vger.kernel.org>; Mon, 17 Jun 2019 15:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560786385;
-        bh=F3uEyDN+Xs7L0Di68zDs4MEi1Cbu2UWQXut0pG0xWMs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=wa35xolYW4YasUKQT8EwzT6szfhNdHDv0tXqCBbVczs42MXSBCsyqEPKC57euY3wj
-         xTlfaENabxyxNZ4xaXCX4kGyw7z94wbPMr9w+hYWZLZqYfzBKsWgmhZHcCSZ61Sbjv
-         HM3+iiGzq5mOAoMIYcKW89sL9P2A2CmPt30I6s04=
-Received: by mail-wm1-f42.google.com with SMTP id s15so9657705wmj.3
-        for <keyrings@vger.kernel.org>; Mon, 17 Jun 2019 08:46:25 -0700 (PDT)
-X-Gm-Message-State: APjAAAXlntx+e8QH0xRQq0YZ7nkNyfFXO/eFeLKl+nPWRGVfKLKCngGa
-        9zhBCOLG1nMBQfAnMaEfFLLKI9fQqmniy97GP40o3g==
-X-Google-Smtp-Source: APXvYqyrDpnzTXcyPRzw7xdKgDkoK9TPRpUT8p/03uOhfg+q5WxYbogJ4WqJXyfqu9bcckbw7dHL/p31ug/zjQinPwo=
-X-Received: by 2002:a1c:a942:: with SMTP id s63mr19448598wme.76.1560786383736;
- Mon, 17 Jun 2019 08:46:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-46-kirill.shutemov@linux.intel.com> <CALCETrVCdp4LyCasvGkc0+S6fvS+dna=_ytLdDPuD2xeAr5c-w@mail.gmail.com>
- <3c658cce-7b7e-7d45-59a0-e17dae986713@intel.com>
-In-Reply-To: <3c658cce-7b7e-7d45-59a0-e17dae986713@intel.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Mon, 17 Jun 2019 08:46:12 -0700
-X-Gmail-Original-Message-ID: <CALCETrUPSv4Xae3iO+2i_HecJLfx4mqFfmtfp+cwBdab8JUZrg@mail.gmail.com>
-Message-ID: <CALCETrUPSv4Xae3iO+2i_HecJLfx4mqFfmtfp+cwBdab8JUZrg@mail.gmail.com>
-Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call for MKTME
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        David Howells <dhowells@redhat.com>,
+        id S1726731AbfFQQZQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 17 Jun 2019 12:25:16 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:35502 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725863AbfFQQZQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jun 2019 12:25:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=PXluhcTCTbRu7MWWqjlNoU2J2WlclfBp1+lbYvichwE=; b=NrVMIU4FjkXaOiq8EBdBsisYX
+        RPTIEzflV5zzQh/U2sftmMWhHn06EA8gVxhHQI09wAKbG1YY/aylBwEQE3x3HBwdn0p4zMqAk5Mo8
+        Mvga3SN32GaMtRhAnUBUhndqL+MxsHwNGkAS3M0CB357M+Invewv0tSVMt+X2l3KOM45BTbbhqnDt
+        1+++Y1sYLNcIANFQDfBUusVnW+IoqYMTzumlNSNAxUdtCv1NiresC8d9lLN1vOGTCgavANJXprh0g
+        Ycsi9s+FlfSM4Wn38hFtg0KP3TV8Cxgna/sKWsWO2eGeM2ZxuvI/tX2zz3ee6gP63a/gt8MV8ySJJ
+        snbxbH0mw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hcuRE-0000rQ-MP; Mon, 17 Jun 2019 16:24:56 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 366F52076F712; Mon, 17 Jun 2019 18:24:55 +0200 (CEST)
+Date:   Mon, 17 Jun 2019 18:24:55 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jann Horn <jannh@google.com>, Greg KH <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, raven@themaw.net,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-block@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        Kai Huang <kai.huang@linux.intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Linux-MM <linux-mm@kvack.org>, kvm list <kvm@vger.kernel.org>,
-        keyrings@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Kernel Hardening <kernel-hardening@lists.openwall.com>
+Subject: Re: [PATCH 1/7] General notification queue with user mmap()'able
+ ring buffer
+Message-ID: <20190617162455.GL3436@hirez.programming.kicks-ass.net>
+References: <20190528162603.GA24097@kroah.com>
+ <155905930702.7587.7100265859075976147.stgit@warthog.procyon.org.uk>
+ <155905931502.7587.11705449537368497489.stgit@warthog.procyon.org.uk>
+ <4031.1559064620@warthog.procyon.org.uk>
+ <20190528231218.GA28384@kroah.com>
+ <31936.1559146000@warthog.procyon.org.uk>
+ <16193.1559163763@warthog.procyon.org.uk>
+ <21942.1559304135@warthog.procyon.org.uk>
+ <606.1559312412@warthog.procyon.org.uk>
+ <15401.1559322762@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <15401.1559322762@warthog.procyon.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jun 17, 2019 at 8:28 AM Dave Hansen <dave.hansen@intel.com> wrote:
->
-> On 6/17/19 8:07 AM, Andy Lutomirski wrote:
-> > I still find it bizarre that this is conflated with mprotect().
->
-> This needs to be in the changelog.  But, for better or worse, it's
-> following the mprotect_pkey() pattern.
->
-> Other than the obvious "set the key on this memory", we're looking for
-> two other properties: atomicity (ensuring there is no transient state
-> where the memory is usable without the desired properties) and that it
-> is usable on existing allocations.
->
-> For atomicity, we have a model where we can allocate things with
-> PROT_NONE, then do mprotect_pkey() and mprotect_encrypt() (plus any
-> future features), then the last mprotect_*() call takes us from
-> PROT_NONE to the desired end permisions.  We could just require a plain
-> old mprotect() to do that instead of embedding mprotect()-like behavior
-> in these, of course, but that isn't the path we're on at the moment with
-> mprotect_pkey().
->
-> So, for this series it's just a matter of whether we do this:
->
->         ptr = mmap(..., PROT_NONE);
->         mprotect_pkey(protect_key, ptr, PROT_NONE);
->         mprotect_encrypt(encr_key, ptr, PROT_READ|PROT_WRITE);
->         // good to go
->
-> or this:
->
->         ptr = mmap(..., PROT_NONE);
->         mprotect_pkey(protect_key, ptr, PROT_NONE);
->         sys_encrypt(key, ptr);
->         mprotect(ptr, PROT_READ|PROT_WRITE);
->         // good to go
->
-> I actually don't care all that much which one we end up with.  It's not
-> like the extra syscall in the second options means much.
+On Fri, May 31, 2019 at 06:12:42PM +0100, David Howells wrote:
+> Peter Zijlstra <peterz@infradead.org> wrote:
+> 
+> > > > (and it has already been established that refcount_t doesn't work for
+> > > > usage count scenarios)
+> > > 
+> > > ?
+> > > 
+> > > Does that mean struct kref doesn't either?
+> > 
+> > Indeed, since kref is just a pointless wrapper around refcount_t it does
+> > not either.
+> > 
+> > The main distinction between a reference count and a usage count is that
+> > 0 means different things. For a refcount 0 means dead. For a usage count
+> > 0 is merely unused but valid.
+> 
+> Ah - I consider the terms interchangeable.
+> 
+> Take Documentation/filesystems/vfs.txt for instance:
+> 
+>   dget: open a new handle for an existing dentry (this just increments
+> 	the usage count)
+> 
+>   dput: close a handle for a dentry (decrements the usage count). ...
+> 
+>   ...
+> 
+>   d_lookup: look up a dentry given its parent and path name component
+> 	It looks up the child of that given name from the dcache
+> 	hash table. If it is found, the reference count is incremented
+> 	and the dentry is returned. The caller must use dput()
+> 	to free the dentry when it finishes using it.
+> 
+> Here we interchange the terms.
+> 
+> Or https://www.kernel.org/doc/gorman/html/understand/understand013.html
+> which seems to interchange the terms in reference to struct page.
 
-The benefit of the second one is that, if sys_encrypt is absent, it
-just works.  In the first model, programs need a fallback because
-they'll segfault of mprotect_encrypt() gets ENOSYS.
+Right, but we have two distinct set of semantics, I figured it makes
+sense to have two different names for them. Do you have an alternative
+naming scheme we could use?
 
->
-> > This is part of why I much prefer the idea of making this style of
-> > MKTME a driver or some other non-intrusive interface.  Then, once
-> > everyone gets tired of it, the driver can just get turned off with no
-> > side effects.
->
-> I like the concept, but not where it leads.  I'd call it the 'hugetlbfs
-> approach". :)  Hugetblfs certainly go us huge pages, but it's continued
-> to be a parallel set of code with parallel bugs and parallel
-> implementations of many VM features.  It's not that you can't implement
-> new things on hugetlbfs, it's that you *need* to.  You never get them
-> for free.
-
-Fair enough, but...
-
->
-> For instance, if we do a driver, how do we get large pages?  How do we
-> swap/reclaim the pages?  How do we do NUMA affinity?
-
-Those all make sense.
-
->  How do we
-> eventually stack it on top of persistent memory filesystems or Device
-> DAX?
-
-How do we stack anonymous memory on top of persistent memory or Device
-DAX?  I'm confused.
-
-Just to throw this out there, what if we had a new device /dev/xpfo
-and MKTME were one of its features.  You open /dev/xpfo, optionally do
-an ioctl to set a key, and them map it.  The pages you get are
-unmapped entirely from the direct map, and you get a PFNMAP VMA with
-all its limitations.  This seems much more useful -- it's limited, but
-it's limited *because the kernel can't accidentally read it*.
-
-I think that, in the long run, we're going to have to either expand
-the core mm's concept of what "memory" is or just have a whole
-parallel set of mechanisms for memory that doesn't work like memory.
-We're already accumulating a set of things that are backed by memory
-but aren't usable as memory. SGX EPC pages and SEV pages come to mind.
-They are faster when they're in big contiguous chunks (well, not SGX
-AFAIK, but maybe some day), they have NUMA node affinity, and they
-show up in page tables, but the hardware restricts who can read and
-write them.  If Intel isn't planning to do something like this with
-the MKTME hardware, I'll eat my hat.
-
-I expect that some day normal memory will  be able to be repurposed as
-SGX pages on the fly, and that will also look a lot more like SEV or
-XPFO than like the this model of MKTME.
-
-So, if we upstream MKTME as anonymous memory with a magic config
-syscall, I predict that, in a few years, it will be end up inheriting
-all downsides of both approaches with few of the upsides.  Programs
-like QEMU will need to learn to manipulate pages that can't be
-accessed outside the VM without special VM buy-in, so the fact that
-MKTME pages are fully functional and can be GUP-ed won't be very
-useful.  And the VM will learn about all these things, but MKTME won't
-really fit in.
-
-And, one of these days, someone will come up with a version of XPFO
-that could actually be upstreamed, and it seems entirely plausible
-that it will be totally incompatible with MKTME-as-anonymous-memory
-and that users of MKTME will actually get *worse* security.
+Or should we better document our distinction between reference and usage
+count?
