@@ -2,28 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15BD049775
-	for <lists+keyrings@lfdr.de>; Tue, 18 Jun 2019 04:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B98449802
+	for <lists+keyrings@lfdr.de>; Tue, 18 Jun 2019 06:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbfFRCXj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Jun 2019 22:23:39 -0400
-Received: from mga05.intel.com ([192.55.52.43]:57213 "EHLO mga05.intel.com"
+        id S1725870AbfFRET5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jun 2019 00:19:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57464 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725870AbfFRCXj (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 17 Jun 2019 22:23:39 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 19:23:37 -0700
-X-ExtLoop1: 1
-Received: from khuang2-desk.gar.corp.intel.com ([10.255.91.82])
-  by orsmga007.jf.intel.com with ESMTP; 17 Jun 2019 19:23:33 -0700
-Message-ID: <1560824611.5187.100.camel@linux.intel.com>
-Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call
- for MKTME
-From:   Kai Huang <kai.huang@linux.intel.com>
+        id S1725955AbfFRET5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 18 Jun 2019 00:19:57 -0400
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F63B21873
+        for <keyrings@vger.kernel.org>; Tue, 18 Jun 2019 04:19:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560831596;
+        bh=51rZ9e9LkNVBLGHAIif1eIVHEBL3AZLf/1gX1DPTttU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=DuLk3e8EkWUmqjbMfqOhBVznVeVo0ij+gX+dBj6X0D/RiqGPAyRXac3zAcRajl+NC
+         rG8dKjmVC7cMcg+ACN+3b4bthSfnYsFrxPjfTgqhyZKFcThYwI8P3UENip/XJE3+MM
+         sTMSBKCyqPy5UWo0Vh97re/7Sj11UC+1Gd22CCLk=
+Received: by mail-wr1-f47.google.com with SMTP id v14so12288572wrr.4
+        for <keyrings@vger.kernel.org>; Mon, 17 Jun 2019 21:19:56 -0700 (PDT)
+X-Gm-Message-State: APjAAAW35cG4efxCXXu5SCOM1GcbBeF096VckUxJHL/zCQH52Zye0SnB
+        +Xy7DY+Umf+VTcPUztjO7v39I1Zl8M83dqy5YQjZug==
+X-Google-Smtp-Source: APXvYqwkWC2giN5A08cpptwz3BEntUfKPcruY0ZN2y5TqsdMlC09wK5a0VuZQ+7Nz/i2Q9X96feEw9aA23jTO9Vxlx4=
+X-Received: by 2002:adf:a443:: with SMTP id e3mr26082705wra.221.1560831594613;
+ Mon, 17 Jun 2019 21:19:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-46-kirill.shutemov@linux.intel.com> <CALCETrVCdp4LyCasvGkc0+S6fvS+dna=_ytLdDPuD2xeAr5c-w@mail.gmail.com>
+ <3c658cce-7b7e-7d45-59a0-e17dae986713@intel.com> <CALCETrUPSv4Xae3iO+2i_HecJLfx4mqFfmtfp+cwBdab8JUZrg@mail.gmail.com>
+ <5cbfa2da-ba2e-ed91-d0e8-add67753fc12@intel.com> <1560815959.5187.57.camel@linux.intel.com>
+ <cbbc6af7-36f8-a81f-48b1-2ad4eefc2417@amd.com> <CALCETrWq98--AgXXj=h1R70CiCWNncCThN2fEdxj2ZkedMw6=A@mail.gmail.com>
+In-Reply-To: <CALCETrWq98--AgXXj=h1R70CiCWNncCThN2fEdxj2ZkedMw6=A@mail.gmail.com>
+From:   Andy Lutomirski <luto@kernel.org>
+Date:   Mon, 17 Jun 2019 21:19:42 -0700
+X-Gmail-Original-Message-ID: <CALCETrWX877XD=mivftv96y00tWxT5THFD5MgoF+c_BPqc4aDQ@mail.gmail.com>
+Message-ID: <CALCETrWX877XD=mivftv96y00tWxT5THFD5MgoF+c_BPqc4aDQ@mail.gmail.com>
+Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call for MKTME
 To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
+Cc:     "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
@@ -35,76 +57,38 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         Jacob Pan <jacob.jun.pan@linux.intel.com>,
         Alison Schofield <alison.schofield@intel.com>,
         Linux-MM <linux-mm@kvack.org>, kvm list <kvm@vger.kernel.org>,
-        keyrings@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>
-Date:   Tue, 18 Jun 2019 14:23:31 +1200
-In-Reply-To: <CALCETrUrFTFGhRMuNLxD9G9=GsR6U-THWn4AtminR_HU-nBj+Q@mail.gmail.com>
-References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
-         <20190508144422.13171-46-kirill.shutemov@linux.intel.com>
-         <CALCETrVCdp4LyCasvGkc0+S6fvS+dna=_ytLdDPuD2xeAr5c-w@mail.gmail.com>
-         <3c658cce-7b7e-7d45-59a0-e17dae986713@intel.com>
-         <CALCETrUPSv4Xae3iO+2i_HecJLfx4mqFfmtfp+cwBdab8JUZrg@mail.gmail.com>
-         <5cbfa2da-ba2e-ed91-d0e8-add67753fc12@intel.com>
-         <CALCETrWFXSndmPH0OH4DVVrAyPEeKUUfNwo_9CxO-3xy9awq0g@mail.gmail.com>
-         <1560816342.5187.63.camel@linux.intel.com>
-         <CALCETrVcrPYUUVdgnPZojhJLgEhKv5gNqnT6u2nFVBAZprcs5g@mail.gmail.com>
-         <1560821746.5187.82.camel@linux.intel.com>
-         <CALCETrUrFTFGhRMuNLxD9G9=GsR6U-THWn4AtminR_HU-nBj+Q@mail.gmail.com>
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.24.6 (3.24.6-1.fc26) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2019-06-17 at 18:43 -0700, Andy Lutomirski wrote:
-> On Mon, Jun 17, 2019 at 6:35 PM Kai Huang <kai.huang@linux.intel.com> wrote:
-> > 
-> > 
-> > > > > 
-> > > > > I'm having a hard time imagining that ever working -- wouldn't it blow
-> > > > > up if someone did:
-> > > > > 
-> > > > > fd = open("/dev/anything987");
-> > > > > ptr1 = mmap(fd);
-> > > > > ptr2 = mmap(fd);
-> > > > > sys_encrypt(ptr1);
-> > > > > 
-> > > > > So I think it really has to be:
-> > > > > fd = open("/dev/anything987");
-> > > > > ioctl(fd, ENCRYPT_ME);
-> > > > > mmap(fd);
-> > > > 
-> > > > This requires "/dev/anything987" to support ENCRYPT_ME ioctl, right?
-> > > > 
-> > > > So to support NVDIMM (DAX), we need to add ENCRYPT_ME ioctl to DAX?
-> > > 
-> > > Yes and yes, or we do it with layers -- see below.
-> > > 
-> > > I don't see how we can credibly avoid this.  If we try to do MKTME
-> > > behind the DAX driver's back, aren't we going to end up with cache
-> > > coherence problems?
-> > 
-> > I am not sure whether I understand correctly but how is cache coherence problem related to
-> > putting
-> > MKTME concept to different layers? To make MKTME work with DAX/NVDIMM, I think no matter which
-> > layer
-> > MKTME concept resides, eventually we need to put keyID into PTE which maps to NVDIMM, and kernel
-> > needs to manage cache coherence for NVDIMM just like for normal memory showed in this series?
-> > 
-> 
-> I mean is that, to avoid cache coherence problems, something has to
-> prevent user code from mapping the same page with two different key
-> ids.  If the entire MKTME mechanism purely layers on top of DAX,
-> something needs to prevent the underlying DAX device from being mapped
-> at the same time as the MKTME-decrypted view.  This is obviously
-> doable, but it's not automatic.
+On Mon, Jun 17, 2019 at 6:40 PM Andy Lutomirski <luto@kernel.org> wrote:
+>
+> On Mon, Jun 17, 2019 at 6:34 PM Lendacky, Thomas
+> <Thomas.Lendacky@amd.com> wrote:
+> >
+> > On 6/17/19 6:59 PM, Kai Huang wrote:
+> > > On Mon, 2019-06-17 at 11:27 -0700, Dave Hansen wrote:
+>
+> > >
+> > > And yes from my reading (better to have AMD guys to confirm) SEV guest uses anonymous memory, but it
+> > > also pins all guest memory (by calling GUP from KVM -- SEV specifically introduced 2 KVM ioctls for
+> > > this purpose), since SEV architecturally cannot support swapping, migraiton of SEV-encrypted guest
+> > > memory, because SME/SEV also uses physical address as "tweak", and there's no way that kernel can
+> > > get or use SEV-guest's memory encryption key. In order to swap/migrate SEV-guest memory, we need SGX
+> > > EPC eviction/reload similar thing, which SEV doesn't have today.
+> >
+> > Yes, all the guest memory is currently pinned by calling GUP when creating
+> > an SEV guest.
+>
+> Ick.
+>
+> What happens if QEMU tries to read the memory?  Does it just see
+> ciphertext?  Is cache coherency lost if QEMU writes it?
 
-Assuming I am understanding the context correctly, yes from this perspective it seems having
-sys_encrypt is annoying, and having ENCRYPT_ME should be better. But Dave said "nobody is going to
-do what you suggest in the ptr1/ptr2 example"? 
-
-Thanks,
--Kai
+I should add: is the current interface that SEV uses actually good, or
+should the kernel try to do something differently?  I've spent exactly
+zero time looking at SEV APIs or at how QEMU manages its memory.
