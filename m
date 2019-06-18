@@ -2,104 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D93A4A084
-	for <lists+keyrings@lfdr.de>; Tue, 18 Jun 2019 14:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0F7C4A377
+	for <lists+keyrings@lfdr.de>; Tue, 18 Jun 2019 16:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726543AbfFRMO7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Jun 2019 08:14:59 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:34639 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725913AbfFRMO7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jun 2019 08:14:59 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1MCayD-1hmruM030N-009keq; Tue, 18 Jun 2019 14:14:33 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Denis Kenzior <denkenz@gmail.com>,
-        James Morris <james.morris@microsoft.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: asymmetric_keys - select CRYPTO_HASH where needed
-Date:   Tue, 18 Jun 2019 14:13:47 +0200
-Message-Id: <20190618121400.4016776-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+        id S1729202AbfFROJj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jun 2019 10:09:39 -0400
+Received: from mga04.intel.com ([192.55.52.120]:7043 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726248AbfFROJi (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 18 Jun 2019 10:09:38 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jun 2019 07:09:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,389,1557212400"; 
+   d="scan'208";a="243002896"
+Received: from oamaslek-mobl.amr.corp.intel.com (HELO [10.251.9.224]) ([10.251.9.224])
+  by orsmga001.jf.intel.com with ESMTP; 18 Jun 2019 07:09:37 -0700
+Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call for
+ MKTME
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Kai Huang <kai.huang@linux.intel.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Linux-MM <linux-mm@kvack.org>, kvm list <kvm@vger.kernel.org>,
+        keyrings@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>
+References: <CALCETrVCdp4LyCasvGkc0+S6fvS+dna=_ytLdDPuD2xeAr5c-w@mail.gmail.com>
+ <3c658cce-7b7e-7d45-59a0-e17dae986713@intel.com>
+ <CALCETrUPSv4Xae3iO+2i_HecJLfx4mqFfmtfp+cwBdab8JUZrg@mail.gmail.com>
+ <5cbfa2da-ba2e-ed91-d0e8-add67753fc12@intel.com>
+ <CALCETrWFXSndmPH0OH4DVVrAyPEeKUUfNwo_9CxO-3xy9awq0g@mail.gmail.com>
+ <1560816342.5187.63.camel@linux.intel.com>
+ <CALCETrVcrPYUUVdgnPZojhJLgEhKv5gNqnT6u2nFVBAZprcs5g@mail.gmail.com>
+ <1560821746.5187.82.camel@linux.intel.com>
+ <CALCETrUrFTFGhRMuNLxD9G9=GsR6U-THWn4AtminR_HU-nBj+Q@mail.gmail.com>
+ <1560824611.5187.100.camel@linux.intel.com>
+ <20190618091246.GM3436@hirez.programming.kicks-ass.net>
+From:   Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Message-ID: <2ec26c05-7c57-d0e0-a628-94d581b96b63@intel.com>
+Date:   Tue, 18 Jun 2019 07:09:36 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <20190618091246.GM3436@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:FdNmaZTGrGzDq5iXrgxkPwJziSsaX6wvGAloE87LV9MtQDdOYXc
- A3JSH9MjAAV9AVPVTkgEg3wZiN++IzPZwFidXTmQjnffLTlpVEQktDnr6W00YY1L1/SZg6s
- KuL2d8GXhB1u446diVQJ5V9W+fSQsRwWh6qOR+gy51zvLcbueux+r08i7qUIXrrozbQ3zhF
- nZJuGoVzRXgPZQ8+1gVyA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:plixockunwQ=:XD/SdUpYN61LItUSwWLGyM
- nZ9JlxNTFHA3vpsy6AIRTuM1083mhqgExjNPm6EB1VH2qZxBuaggtLv57LQMcCgEVbmGkJIkL
- PVjZlpipfvmN19QL+uYZI3J8Ebk+nzyhTiSRM7vYtyAhwdK8QyQ4jQDNpUouwG60lJs1yIIk0
- /ghNfhpO8L19bzX1C1EIJtfbLDZlAhx3eWo5PQRjKiHjtAVT9s2fA6HTHcFZ7P742/t6TqHXp
- +T03CgCw5xs+itQoAdV3sHyhM44Cl6p+4cj/frHPa737y2H9WdriW6CwXbquFRgPiBiEFMt8n
- YvDMkskHBjG2r8KKgSOMf3z1EilxxizY8ml3vayEgAncwM49ZFasDXITbRCrla9ch7bSiQixw
- rlgKmh0zNi6GEAHdhAOlBhzH2Rz2xUcuawxn++2+Jaxm4LoCDKeoGaDnJb+bfWZD8vDsg4XiU
- +JFQSKG1CBb+Ys/1o721HpHaSLjALWsFhSrO0mwdpiH0EhDkh3py18tFu0u56JsEHh/lmj8rj
- mRCJ3N8CNzVMBQ+sT5ulAoHF5mDWiYp/DfVNohsGnhNb4gW/gMBHv3eeoh204cUmdj7lANo5G
- WFlxG3ORxHRw7atPsTzk2UFbg5Nwjqlqnm4Q81z6nRjig5IwRm0Z4rtj+Cx0vgar1ye9wknp4
- TZUhchcK2AQDcMyHNx2yK3+NWDmbYKXrJaVmtkNr3hFUlBV27TXO7sIMF4jzSQAJ34JX0LX/i
- uG2AflvgH5hisO4KPt5V3ePfbRR4f2iQk1JXQg==
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Build testing with some core crypto options disabled revealed
-a few modules that are missing CRYPTO_HASH:
+On 6/18/19 2:12 AM, Peter Zijlstra wrote:
+> On Tue, Jun 18, 2019 at 02:23:31PM +1200, Kai Huang wrote:
+>> Assuming I am understanding the context correctly, yes from this perspective it seems having
+>> sys_encrypt is annoying, and having ENCRYPT_ME should be better. But Dave said "nobody is going to
+>> do what you suggest in the ptr1/ptr2 example"? 
+> 
+> You have to phrase that as: 'nobody who knows what he's doing is going
+> to do that', which leaves lots of people and fuzzers.
+> 
+> Murphy states that if it is possible, someone _will_ do it. And this
+> being something that causes severe data corruption on persistent
+> storage,...
 
-crypto/asymmetric_keys/x509_public_key.o: In function `x509_get_sig_params':
-x509_public_key.c:(.text+0x4c7): undefined reference to `crypto_alloc_shash'
-x509_public_key.c:(.text+0x5e5): undefined reference to `crypto_shash_digest'
-crypto/asymmetric_keys/pkcs7_verify.o: In function `pkcs7_digest.isra.0':
-pkcs7_verify.c:(.text+0xab): undefined reference to `crypto_alloc_shash'
-pkcs7_verify.c:(.text+0x1b2): undefined reference to `crypto_shash_digest'
-pkcs7_verify.c:(.text+0x3c1): undefined reference to `crypto_shash_update'
-pkcs7_verify.c:(.text+0x411): undefined reference to `crypto_shash_finup'
+I actually think it's not a big deal at all to avoid the corruption that
+would occur if it were allowed.  But, if you're even asking to map the
+same data with two different keys, you're *asking* for data corruption.
+ What we're doing here is continuing to  preserve cache coherency and
+ensuring an early failure.
 
-This normally doesn't show up in randconfig tests because there is
-a large number of other options that select CRYPTO_HASH.
+We'd need two rules:
+1. A page must not be faulted into a VMA if the page's page_keyid()
+   is not consistent with the VMA's
+2. Upon changing the VMA's KeyID, all underlying PTEs must either be
+   checked or zapped.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- crypto/asymmetric_keys/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+If the rules are broken, we SIGBUS.  Andy's suggestion has the same
+basic requirements.  But, with his scheme, the error can be to the
+ioctl() instead of in the form of a SIGBUS.  I guess that makes the
+fuzzers' lives a bit easier.
 
-diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-index be70ca6c85d3..1f1f004dc757 100644
---- a/crypto/asymmetric_keys/Kconfig
-+++ b/crypto/asymmetric_keys/Kconfig
-@@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
- 	select MPILIB
- 	select CRYPTO_HASH_INFO
- 	select CRYPTO_AKCIPHER
-+	select CRYPTO_HASH
- 	help
- 	  This option provides support for asymmetric public key type handling.
- 	  If signature generation and/or verification are to be used,
-@@ -65,6 +66,7 @@ config TPM_KEY_PARSER
- config PKCS7_MESSAGE_PARSER
- 	tristate "PKCS#7 message parser"
- 	depends on X509_CERTIFICATE_PARSER
-+	select CRYPTO_HASH
- 	select ASN1
- 	select OID_REGISTRY
- 	help
-@@ -87,6 +89,7 @@ config SIGNED_PE_FILE_VERIFICATION
- 	bool "Support for PE file signature verification"
- 	depends on PKCS7_MESSAGE_PARSER=y
- 	depends on SYSTEM_DATA_VERIFICATION
-+	select CRYPTO_HASH
- 	select ASN1
- 	select OID_REGISTRY
- 	help
--- 
-2.20.0
-
+BTW, note that we don't have any problems with the current anonymous
+implementation and fork() because we zap at the encryption syscall.
