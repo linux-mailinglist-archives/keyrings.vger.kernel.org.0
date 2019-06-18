@@ -2,80 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FE049CC6
-	for <lists+keyrings@lfdr.de>; Tue, 18 Jun 2019 11:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D93A4A084
+	for <lists+keyrings@lfdr.de>; Tue, 18 Jun 2019 14:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729002AbfFRJNM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Jun 2019 05:13:12 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:44450 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728385AbfFRJNK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jun 2019 05:13:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=DWxebD/lbygK+SpH9wnfp4x77thiB2bg6Ri9elX25UY=; b=uDQHwhGWJGqiGNlXRpc+k6mqb
-        T/OhF+fKkE9yW/1WzX5e5PKNLbvQaIEV8hjfnN19Gcy2xbw/eGs9cmZhzSw8M/dic5nZDgqvtKokl
-        Z6IMT2orRt1vL693hdvgisFLg0TYANLGdUAijz81Pu4wz3x0lSGQAtPaTZFsOA3d0MjysgSP50m5E
-        +nJQ6NHn87W710nEgSyxyCcyTiUu4cDdwAom6SIAGU5SekK6vxRPBlyjW5sJFJL7Mkjzt7B4keKc9
-        AEvw9JywQnLYrUBl+qghSJmrCZU8ZheGjH9rfN0/npezev7TcMgM94jN8FuanvHBJWWzT4IP6ikYK
-        aDaVJhvRA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hdAAZ-0000dX-Pu; Tue, 18 Jun 2019 09:12:48 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 7778620A3C471; Tue, 18 Jun 2019 11:12:46 +0200 (CEST)
-Date:   Tue, 18 Jun 2019 11:12:46 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Kai Huang <kai.huang@linux.intel.com>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
-        David Howells <dhowells@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Linux-MM <linux-mm@kvack.org>, kvm list <kvm@vger.kernel.org>,
-        keyrings@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH, RFC 45/62] mm: Add the encrypt_mprotect() system call
- for MKTME
-Message-ID: <20190618091246.GM3436@hirez.programming.kicks-ass.net>
-References: <CALCETrVCdp4LyCasvGkc0+S6fvS+dna=_ytLdDPuD2xeAr5c-w@mail.gmail.com>
- <3c658cce-7b7e-7d45-59a0-e17dae986713@intel.com>
- <CALCETrUPSv4Xae3iO+2i_HecJLfx4mqFfmtfp+cwBdab8JUZrg@mail.gmail.com>
- <5cbfa2da-ba2e-ed91-d0e8-add67753fc12@intel.com>
- <CALCETrWFXSndmPH0OH4DVVrAyPEeKUUfNwo_9CxO-3xy9awq0g@mail.gmail.com>
- <1560816342.5187.63.camel@linux.intel.com>
- <CALCETrVcrPYUUVdgnPZojhJLgEhKv5gNqnT6u2nFVBAZprcs5g@mail.gmail.com>
- <1560821746.5187.82.camel@linux.intel.com>
- <CALCETrUrFTFGhRMuNLxD9G9=GsR6U-THWn4AtminR_HU-nBj+Q@mail.gmail.com>
- <1560824611.5187.100.camel@linux.intel.com>
+        id S1726543AbfFRMO7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jun 2019 08:14:59 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:34639 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725913AbfFRMO7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jun 2019 08:14:59 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MCayD-1hmruM030N-009keq; Tue, 18 Jun 2019 14:14:33 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Denis Kenzior <denkenz@gmail.com>,
+        James Morris <james.morris@microsoft.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: asymmetric_keys - select CRYPTO_HASH where needed
+Date:   Tue, 18 Jun 2019 14:13:47 +0200
+Message-Id: <20190618121400.4016776-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1560824611.5187.100.camel@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:FdNmaZTGrGzDq5iXrgxkPwJziSsaX6wvGAloE87LV9MtQDdOYXc
+ A3JSH9MjAAV9AVPVTkgEg3wZiN++IzPZwFidXTmQjnffLTlpVEQktDnr6W00YY1L1/SZg6s
+ KuL2d8GXhB1u446diVQJ5V9W+fSQsRwWh6qOR+gy51zvLcbueux+r08i7qUIXrrozbQ3zhF
+ nZJuGoVzRXgPZQ8+1gVyA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:plixockunwQ=:XD/SdUpYN61LItUSwWLGyM
+ nZ9JlxNTFHA3vpsy6AIRTuM1083mhqgExjNPm6EB1VH2qZxBuaggtLv57LQMcCgEVbmGkJIkL
+ PVjZlpipfvmN19QL+uYZI3J8Ebk+nzyhTiSRM7vYtyAhwdK8QyQ4jQDNpUouwG60lJs1yIIk0
+ /ghNfhpO8L19bzX1C1EIJtfbLDZlAhx3eWo5PQRjKiHjtAVT9s2fA6HTHcFZ7P742/t6TqHXp
+ +T03CgCw5xs+itQoAdV3sHyhM44Cl6p+4cj/frHPa737y2H9WdriW6CwXbquFRgPiBiEFMt8n
+ YvDMkskHBjG2r8KKgSOMf3z1EilxxizY8ml3vayEgAncwM49ZFasDXITbRCrla9ch7bSiQixw
+ rlgKmh0zNi6GEAHdhAOlBhzH2Rz2xUcuawxn++2+Jaxm4LoCDKeoGaDnJb+bfWZD8vDsg4XiU
+ +JFQSKG1CBb+Ys/1o721HpHaSLjALWsFhSrO0mwdpiH0EhDkh3py18tFu0u56JsEHh/lmj8rj
+ mRCJ3N8CNzVMBQ+sT5ulAoHF5mDWiYp/DfVNohsGnhNb4gW/gMBHv3eeoh204cUmdj7lANo5G
+ WFlxG3ORxHRw7atPsTzk2UFbg5Nwjqlqnm4Q81z6nRjig5IwRm0Z4rtj+Cx0vgar1ye9wknp4
+ TZUhchcK2AQDcMyHNx2yK3+NWDmbYKXrJaVmtkNr3hFUlBV27TXO7sIMF4jzSQAJ34JX0LX/i
+ uG2AflvgH5hisO4KPt5V3ePfbRR4f2iQk1JXQg==
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 02:23:31PM +1200, Kai Huang wrote:
-> Assuming I am understanding the context correctly, yes from this perspective it seems having
-> sys_encrypt is annoying, and having ENCRYPT_ME should be better. But Dave said "nobody is going to
-> do what you suggest in the ptr1/ptr2 example"? 
+Build testing with some core crypto options disabled revealed
+a few modules that are missing CRYPTO_HASH:
 
-You have to phrase that as: 'nobody who knows what he's doing is going
-to do that', which leaves lots of people and fuzzers.
+crypto/asymmetric_keys/x509_public_key.o: In function `x509_get_sig_params':
+x509_public_key.c:(.text+0x4c7): undefined reference to `crypto_alloc_shash'
+x509_public_key.c:(.text+0x5e5): undefined reference to `crypto_shash_digest'
+crypto/asymmetric_keys/pkcs7_verify.o: In function `pkcs7_digest.isra.0':
+pkcs7_verify.c:(.text+0xab): undefined reference to `crypto_alloc_shash'
+pkcs7_verify.c:(.text+0x1b2): undefined reference to `crypto_shash_digest'
+pkcs7_verify.c:(.text+0x3c1): undefined reference to `crypto_shash_update'
+pkcs7_verify.c:(.text+0x411): undefined reference to `crypto_shash_finup'
 
-Murphy states that if it is possible, someone _will_ do it. And this
-being something that causes severe data corruption on persistent
-storage,...
+This normally doesn't show up in randconfig tests because there is
+a large number of other options that select CRYPTO_HASH.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ crypto/asymmetric_keys/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index be70ca6c85d3..1f1f004dc757 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+ 	select MPILIB
+ 	select CRYPTO_HASH_INFO
+ 	select CRYPTO_AKCIPHER
++	select CRYPTO_HASH
+ 	help
+ 	  This option provides support for asymmetric public key type handling.
+ 	  If signature generation and/or verification are to be used,
+@@ -65,6 +66,7 @@ config TPM_KEY_PARSER
+ config PKCS7_MESSAGE_PARSER
+ 	tristate "PKCS#7 message parser"
+ 	depends on X509_CERTIFICATE_PARSER
++	select CRYPTO_HASH
+ 	select ASN1
+ 	select OID_REGISTRY
+ 	help
+@@ -87,6 +89,7 @@ config SIGNED_PE_FILE_VERIFICATION
+ 	bool "Support for PE file signature verification"
+ 	depends on PKCS7_MESSAGE_PARSER=y
+ 	depends on SYSTEM_DATA_VERIFICATION
++	select CRYPTO_HASH
+ 	select ASN1
+ 	select OID_REGISTRY
+ 	help
+-- 
+2.20.0
+
