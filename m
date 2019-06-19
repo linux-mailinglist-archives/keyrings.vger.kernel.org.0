@@ -2,36 +2,35 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2044B997
-	for <lists+keyrings@lfdr.de>; Wed, 19 Jun 2019 15:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A8D4B99B
+	for <lists+keyrings@lfdr.de>; Wed, 19 Jun 2019 15:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730195AbfFSNTR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 19 Jun 2019 09:19:17 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:53284 "EHLO mx1.redhat.com"
+        id S1731674AbfFSNTT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 19 Jun 2019 09:19:19 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:53344 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726518AbfFSNTQ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 19 Jun 2019 09:19:16 -0400
+        id S1726518AbfFSNTT (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 19 Jun 2019 09:19:19 -0400
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 9693E306E61C;
-        Wed, 19 Jun 2019 13:19:11 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id BF1F3308FE8D;
+        Wed, 19 Jun 2019 13:19:18 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-120-57.rdu2.redhat.com [10.10.120.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 77D325C220;
-        Wed, 19 Jun 2019 13:19:09 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9D22B5C220;
+        Wed, 19 Jun 2019 13:19:17 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
  Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
  Kingdom.
  Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH 03/10] keys: sparse: Fix kdoc mismatches [ver #3]
+Subject: [PATCH 04/10] keys: Change keyring_serialise_link_sem to a mutex
+ [ver #3]
 From:   David Howells <dhowells@redhat.com>
 To:     keyrings@vger.kernel.org, ebiggers@kernel.org
-Cc:     James Morris <jamorris@linux.microsoft.com>,
-        Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        dhowells@redhat.com, linux-security-module@vger.kernel.org,
+Cc:     dhowells@redhat.com, linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Wed, 19 Jun 2019 14:19:08 +0100
-Message-ID: <156095034869.9363.6079500929660783450.stgit@warthog.procyon.org.uk>
+Date:   Wed, 19 Jun 2019 14:19:16 +0100
+Message-ID: <156095035684.9363.3671722354273186694.stgit@warthog.procyon.org.uk>
 In-Reply-To: <156095032052.9363.8954337545422131435.stgit@warthog.procyon.org.uk>
 References: <156095032052.9363.8954337545422131435.stgit@warthog.procyon.org.uk>
 User-Agent: StGit/unknown-version
@@ -39,64 +38,75 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Wed, 19 Jun 2019 13:19:16 +0000 (UTC)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Wed, 19 Jun 2019 13:19:18 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Fix some kdoc argument description mismatches reported by sparse and give
-keyring_restrict() a description.
+Change keyring_serialise_link_sem to a mutex as it's only ever
+write-locked.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: James Morris <jamorris@linux.microsoft.com>
-cc: Mat Martineau <mathew.j.martineau@linux.intel.com>
 ---
 
- security/keys/keyring.c     |   10 +++++++---
- security/keys/request_key.c |    2 +-
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ security/keys/keyring.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index e14f09e3a4b0..5b218b270598 100644
+index 5b218b270598..ca6694ba1773 100644
 --- a/security/keys/keyring.c
 +++ b/security/keys/keyring.c
-@@ -520,7 +520,7 @@ EXPORT_SYMBOL(keyring_alloc);
-  * @keyring: The keyring being added to.
-  * @type: The type of key being added.
-  * @payload: The payload of the key intended to be added.
-- * @data: Additional data for evaluating restriction.
-+ * @restriction_key: Keys providing additional data for evaluating restriction.
-  *
-  * Reject the addition of any links to a keyring.  It can be overridden by
-  * passing KEY_ALLOC_BYPASS_RESTRICTION to key_instantiate_and_link() when
-@@ -976,9 +976,13 @@ static bool keyring_detect_restriction_cycle(const struct key *dest_keyring,
- 
- /**
-  * keyring_restrict - Look up and apply a restriction to a keyring
-- *
-- * @keyring: The keyring to be restricted
-+ * @keyring_ref: The keyring to be restricted
-+ * @type: The key type that will provide the restriction checker.
-  * @restriction: The restriction options to apply to the keyring
-+ *
-+ * Look up a keyring and apply a restriction to it.  The restriction is managed
-+ * by the specific key type, but can be configured by the options specified in
-+ * the restriction string.
+@@ -100,7 +100,7 @@ EXPORT_SYMBOL(key_type_keyring);
+  * Semaphore to serialise link/link calls to prevent two link calls in parallel
+  * introducing a cycle.
   */
- int keyring_restrict(key_ref_t keyring_ref, const char *type,
- 		     const char *restriction)
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 75d87f9e0f49..1f234b019437 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -24,7 +24,7 @@
+-static DECLARE_RWSEM(keyring_serialise_link_sem);
++static DEFINE_MUTEX(keyring_serialise_link_lock);
  
- /**
-  * complete_request_key - Complete the construction of a key.
-- * @auth_key: The authorisation key.
-+ * @authkey: The authorisation key.
-  * @error: The success or failute of the construction.
-  *
-  * Complete the attempt to construct a key.  The key will be negated
+ /*
+  * Publish the name of a keyring so that it can be found by name (if it has
+@@ -1206,7 +1206,7 @@ int __key_link_begin(struct key *keyring,
+ 		     const struct keyring_index_key *index_key,
+ 		     struct assoc_array_edit **_edit)
+ 	__acquires(&keyring->sem)
+-	__acquires(&keyring_serialise_link_sem)
++	__acquires(&keyring_serialise_link_lock)
+ {
+ 	struct assoc_array_edit *edit;
+ 	int ret;
+@@ -1228,7 +1228,7 @@ int __key_link_begin(struct key *keyring,
+ 	/* serialise link/link calls to prevent parallel calls causing a cycle
+ 	 * when linking two keyring in opposite orders */
+ 	if (index_key->type == &key_type_keyring)
+-		down_write(&keyring_serialise_link_sem);
++		mutex_lock(&keyring_serialise_link_lock);
+ 
+ 	/* Create an edit script that will insert/replace the key in the
+ 	 * keyring tree.
+@@ -1260,7 +1260,7 @@ int __key_link_begin(struct key *keyring,
+ 	assoc_array_cancel_edit(edit);
+ error_sem:
+ 	if (index_key->type == &key_type_keyring)
+-		up_write(&keyring_serialise_link_sem);
++		mutex_unlock(&keyring_serialise_link_lock);
+ error_krsem:
+ 	up_write(&keyring->sem);
+ 	kleave(" = %d", ret);
+@@ -1307,13 +1307,13 @@ void __key_link_end(struct key *keyring,
+ 		    const struct keyring_index_key *index_key,
+ 		    struct assoc_array_edit *edit)
+ 	__releases(&keyring->sem)
+-	__releases(&keyring_serialise_link_sem)
++	__releases(&keyring_serialise_link_lock)
+ {
+ 	BUG_ON(index_key->type == NULL);
+ 	kenter("%d,%s,", keyring->serial, index_key->type->name);
+ 
+ 	if (index_key->type == &key_type_keyring)
+-		up_write(&keyring_serialise_link_sem);
++		mutex_unlock(&keyring_serialise_link_lock);
+ 
+ 	if (edit) {
+ 		if (!edit->dead_leaf) {
 
