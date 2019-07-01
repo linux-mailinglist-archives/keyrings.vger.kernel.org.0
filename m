@@ -2,32 +2,34 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C5D5A149
-	for <lists+keyrings@lfdr.de>; Fri, 28 Jun 2019 18:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 405AA5B2FC
+	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2019 04:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726807AbfF1Qro convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 28 Jun 2019 12:47:44 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:38056 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726605AbfF1Qro (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 28 Jun 2019 12:47:44 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D2AFF8552E;
-        Fri, 28 Jun 2019 16:47:34 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-219.rdu2.redhat.com [10.10.120.219])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C1B876012D;
-        Fri, 28 Jun 2019 16:47:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <156173701358.15650.8735203424342507015.stgit@warthog.procyon.org.uk>
-References: <156173701358.15650.8735203424342507015.stgit@warthog.procyon.org.uk>
-Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk,
-        Casey Schaufler <casey@schaufler-ca.com>,
+        id S1726483AbfGAC7l (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 30 Jun 2019 22:59:41 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:54944 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726472AbfGAC7l (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 30 Jun 2019 22:59:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=IHOctcrnamPZlDOqkWx9gP7HKz6z4cfFnI1BHiO0w78=; b=MKHZDli96OWvWZf7Ml4qTTeTS
+        ADyGVjgEjt6ySSV9VdCosU1hi/21jcTscAC72nDZep1VKznI9fOx5A3N3iQPcPQy90pnC1WC+eC1S
+        Rr7xFMdssx1hm0W+7gNoMx1ZjX+NiaShGwa47IjtziyeHwzGGep8ZAN86u3cCfovTY2F7wuumVf87
+        txn5FMi7ZWCH/Z/lgAMKc90KP7QwzvTaqGRrZNGra+ZSPqK40+DWONlvWDTT8RVbu20a0hZVH3uxk
+        H2OilOPm03NJt7KIxOKf2aPx1YW4NfG8NGsQC+FAYu1tdnITXha3MxrdrMgG9/RcGNspO6MR5oPXD
+        8OeSFCLlA==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=dragon.dunlab)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hhmXZ-0007q7-Pi; Mon, 01 Jul 2019 02:59:37 +0000
+Subject: Re: [PATCH 2/6] Adjust watch_queue documentation to mention mount and
+ superblock watches. [ver #5]
+To:     David Howells <dhowells@redhat.com>, viro@zeniv.linux.org.uk
+Cc:     Casey Schaufler <casey@schaufler-ca.com>,
         Stephen Smalley <sds@tycho.nsa.gov>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         nicolas.dichtel@6wind.com, raven@themaw.net,
@@ -36,29 +38,85 @@ Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk,
         linux-security-module@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
         linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] Mount and superblock notifications [ver #5]
+References: <156173701358.15650.8735203424342507015.stgit@warthog.procyon.org.uk>
+ <156173703546.15650.14319137940607993268.stgit@warthog.procyon.org.uk>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <7a288c2c-11a1-87df-9550-b247d6ce3010@infradead.org>
+Date:   Sun, 30 Jun 2019 19:59:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <20736.1561740450.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Fri, 28 Jun 2019 17:47:30 +0100
-Message-ID: <20737.1561740450@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Fri, 28 Jun 2019 16:47:44 +0000 (UTC)
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <156173703546.15650.14319137940607993268.stgit@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Howells <dhowells@redhat.com> wrote:
+Hi David,
 
-> The patches can be found here also:
+On 6/28/19 8:50 AM, David Howells wrote:
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> ---
 > 
-> 	http://git.kernel.org/cgit/linux/kernel/git/dhowells/linux-fs.git/log/?h=notifications
+>  Documentation/watch_queue.rst |   20 +++++++++++++++++++-
+>  drivers/misc/Kconfig          |    5 +++--
+>  2 files changed, 22 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/watch_queue.rst b/Documentation/watch_queue.rst
+> index 4087a8e670a8..1bec2018d549 100644
+> --- a/Documentation/watch_queue.rst
+> +++ b/Documentation/watch_queue.rst
+> @@ -13,6 +13,10 @@ receive notifications from the kernel.  This can be used in conjunction with::
+>  
+>      * USB subsystem event notifications
+>  
+> +  * Mount topology change notifications
+> +
+> +  * Superblock event notifications
+> +
+>  
+>  The notifications buffers can be enabled by:
+>  
+> @@ -324,6 +328,19 @@ Any particular buffer can be fed from multiple sources.  Sources include:
+>      for buses and devices.  Watchpoints of this type are set on the global
+>      device watch list.
+>  
+> +  * WATCH_TYPE_MOUNT_NOTIFY
+> +
+> +    Notifications of this type indicate mount tree topology changes and mount
+> +    attribute changes.  A watch can be set on a particular file or directory
+> +    and notifications from the path subtree rooted at that point will be
+> +    intercepted.
+> +
+> +  * WATCH_TYPE_SB_NOTIFY
+> +
+> +    Notifications of this type indicate superblock events, such as quota limits
+> +    being hit, I/O errors being produced or network server loss/reconnection.
+> +    Watches of this type are set directly on superblocks.
+> +
+>  
+>  Event Filtering
+>  ===============
+> @@ -365,7 +382,8 @@ Where:
+>  	(watch.info & info_mask) == info_filter
+>  
+>      This could be used, for example, to ignore events that are not exactly on
+> -    the watched point in a mount tree.
+> +    the watched point in a mount tree by specifying NOTIFY_MOUNT_IN_SUBTREE
+> +    must be 0.
 
-Actually, that should be:
+I'm having a little trouble parsing that sentence.
+Could you clarify it or maybe rewrite/modify it?
+Thanks.
 
-	http://git.kernel.org/cgit/linux/kernel/git/dhowells/linux-fs.git/log/?h=notifications-mount
+>  
+>    * ``subtype_filter`` is a bitmask indicating the subtypes that are of
+>      interest.  Bit 0 of subtype_filter[0] corresponds to subtype 0, bit 1 to
 
-David
+
+
+-- 
+~Randy
