@@ -2,130 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DB5A5F85C
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2019 14:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADFAD5FB30
+	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2019 17:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727448AbfGDMmY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Jul 2019 08:42:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:51728 "EHLO
+        id S1727908AbfGDPrE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Jul 2019 11:47:04 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:3506 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727444AbfGDMmX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Jul 2019 08:42:23 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x64CcblM016274
-        for <keyrings@vger.kernel.org>; Thu, 4 Jul 2019 08:42:22 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2thf08xb7g-1
+        by vger.kernel.org with ESMTP id S1727894AbfGDPrD (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Jul 2019 11:47:03 -0400
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x64FkcjS031675
+        for <keyrings@vger.kernel.org>; Thu, 4 Jul 2019 11:47:02 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2thgwa8027-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Thu, 04 Jul 2019 08:42:22 -0400
+        for <keyrings@vger.kernel.org>; Thu, 04 Jul 2019 11:47:02 -0400
 Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Thu, 4 Jul 2019 13:42:20 +0100
+        Thu, 4 Jul 2019 16:47:00 +0100
 Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 4 Jul 2019 13:42:18 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x64CgGqC20316404
+        Thu, 4 Jul 2019 16:46:55 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x64FksMH33947800
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 4 Jul 2019 12:42:16 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 99590A405C;
-        Thu,  4 Jul 2019 12:42:16 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A61F6A405B;
-        Thu,  4 Jul 2019 12:42:15 +0000 (GMT)
+        Thu, 4 Jul 2019 15:46:54 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 615D1AE04D;
+        Thu,  4 Jul 2019 15:46:54 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EB93BAE051;
+        Thu,  4 Jul 2019 15:46:51 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.80.110.72])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  4 Jul 2019 12:42:15 +0000 (GMT)
-Subject: Re: Problem with the kernels trusted module on "inactive" TPM
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu,  4 Jul 2019 15:46:51 +0000 (GMT)
+Subject: Re: [PATCH] Revert "tpm: pass an array of tpm_extend_digest
+ structures to tpm_pcr_extend()"
 From:   Mimi Zohar <zohar@linux.ibm.com>
 To:     Roberto Sassu <roberto.sassu@huawei.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        CrazyT <crazyt2019+lml@gmail.com>, keyrings@vger.kernel.org
-Cc:     "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        jejb@linux.ibm.com, Nayna Jain <nayna@linux.ibm.com>
-Date:   Thu, 04 Jul 2019 08:42:05 -0400
-In-Reply-To: <cb46e05d-f9bd-2d58-0996-390cfbf6f786@huawei.com>
-References: <CACnrVGfhkpsSWbCai4+5WEOhRukEr7JWDUnFdM-5D+FUyov+nQ@mail.gmail.com>
-         <f4b36912-0fb0-1e83-1ad2-fb1d2313c08e@huawei.com>
-         <4e3579a4d84aa7e2c80e5068eb1f7a30e17a655b.camel@linux.intel.com>
-         <cb46e05d-f9bd-2d58-0996-390cfbf6f786@huawei.com>
+        Michal Suchanek <msuchanek@suse.de>,
+        linux-integrity@vger.kernel.org
+Cc:     Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Armijn Hemel <armijn@tjaldur.nl>,
+        Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Date:   Thu, 04 Jul 2019 11:46:41 -0400
+In-Reply-To: <1562240882.6165.78.camel@linux.ibm.com>
+References: <20190701131505.17759-1-msuchanek@suse.de>
+         <8e4cc105b748c5395132b4d3d29d0d9b30a8720c.camel@linux.intel.com>
+         <cf2ea579-41c2-42da-2df3-0b1f12e1c639@huawei.com>
+         <1562240882.6165.78.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19070412-0012-0000-0000-0000032F3D86
+x-cbid: 19070415-0008-0000-0000-000002F9E80F
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070412-0013-0000-0000-00002168943B
-Message-Id: <1562244125.6165.95.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-04_06:,,
+x-cbparentid: 19070415-0009-0000-0000-000022673ADE
+Message-Id: <1562255201.6165.143.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-04_07:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907040159
+ mlxlogscore=873 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907040200
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-[Cc'ing Nayna]
+Hi Jarkko,
 
-On Thu, 2019-07-04 at 14:25 +0200, Roberto Sassu wrote:
-> On 7/4/2019 12:42 PM, Jarkko Sakkinen wrote:
-> > On Mon, 2019-07-01 at 17:22 +0300, Roberto Sassu wrote:
-> >> Adding to the discussion Jarkko (the maintainer of the trusted key) and
-> >> the linux-integrity mailing list.
+On Thu, 2019-07-04 at 07:48 -0400, Mimi Zohar wrote:
+> On Thu, 2019-07-04 at 13:28 +0200, Roberto Sassu wrote:
+> > On 7/4/2019 12:03 PM, Jarkko Sakkinen wrote:
+> > > On Mon, 2019-07-01 at 15:15 +0200, Michal Suchanek wrote:
+> > >> This reverts commit 0b6cf6b97b7ef1fa3c7fefab0cac897a1c4a3400 to avoid
+> > >> following crash:
+> > > 
+> > > Thank you. I think this the right choice for the moment. I fixed
+> > > a trivial checkpatch.pl error and added the mandatory tags. Can
+> > > you check quickly v2 (just posted)?
+> > > 
+> > > I already made it available in my master and next.
 > > 
-> > I'm a co-maintainer (added James and Mimi).
-> > 
-> >>> some people (including me) have problems with the "trusted" kernel module.
-> >>> As a result to this also the ecryptfs-module won't load.
-> >>> (https://bugs.archlinux.org/task/62678)
-> >>> If you use an "inactive" TPM module, the "trusted" module won't load
-> >>> anymore.
-> >>> The command modprobe just responds with "Bad address".
-> >>> The strace-command shows that init_module fails with EFAULT.
-> >>> I believe the reason for this is that the trusted-module handles
-> >>> inactive modules the same as active modules.
-> >>> This results in an error.
-> >>>
-> >>> For example:
-> >>>
-> > https://github.com/torvalds/linux/commit/0b6cf6b97b7ef1fa3c7fefab0cac897a1c4a3400#diff-c01228e6d386afb29df6aac17d9dd7abR1251
-> >>>
-> >>> My guess is that init_digests(); returns EFAULT in that case.
-> >>> The " if (!chip)" check above probably needs to check if the chip is
-> >>> "inactive".
-> >>>
-> >>> "inactive" = still visible to the system, but not functional.
-> >>> It seems to be the default bios-setting for TPM on thinkpad.
-> >>> (btw.: i have no clue why anybody would need something like that)
-> >>>
-> >>> Sadly i have no idea how you would check for an inactive chip,else i
-> >>> would have send a patch instead.
-> >>> But I hope the info i wrote is enough to get it fixed by somebody.
-> >>
-> >> Thanks for the report. If you see -EFAULT, tpm_get_random() is probably
-> >> returning 0.
-> >>
-> >> Jarkko, we could consider it as non-critical error, and handle it as if
-> >> the TPM is not found. What do you think?
-> > 
-> > Not sure I get this. Wasn't the issue fixed in c78719203fc6 or is there
-> > something missing?
+> > Could you please wait few days? I would prefer to fix this issue instead
+> > of reverting the whole patch.
 > 
-> It seems it is not enough. A TPM is found but does not return data to
-> tpm_get_random(), I think.
+> Nayna posted a patch late yesterday titled "tpm: fixes uninitialized
+> allocated banks for IBM vtpm driver", which addresses this bug.
 
-While working with Nayna (and George) on the "tpm: fixes uninitialized
-allocated banks for IBM vtpm driver" patch, I wondered what happens if
-the chip is enabled, but none of the banks were enabled.  Could this
-be the "inactive" state?
+Now with my review, and with Sachin Sant's and Michal Suchánek
+testing, instead of reverting this patch could you pick up Nayna's
+patch instead?
+
+thanks!
 
 Mimi
 
