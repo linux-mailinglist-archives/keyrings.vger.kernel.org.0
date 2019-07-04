@@ -2,118 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADFAD5FB30
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2019 17:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 347DE5FB6D
+	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2019 18:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727908AbfGDPrE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Jul 2019 11:47:04 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:3506 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727894AbfGDPrD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Jul 2019 11:47:03 -0400
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x64FkcjS031675
-        for <keyrings@vger.kernel.org>; Thu, 4 Jul 2019 11:47:02 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2thgwa8027-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Thu, 04 Jul 2019 11:47:02 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Thu, 4 Jul 2019 16:47:00 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 4 Jul 2019 16:46:55 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x64FksMH33947800
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 4 Jul 2019 15:46:54 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 615D1AE04D;
-        Thu,  4 Jul 2019 15:46:54 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EB93BAE051;
-        Thu,  4 Jul 2019 15:46:51 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.110.72])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  4 Jul 2019 15:46:51 +0000 (GMT)
-Subject: Re: [PATCH] Revert "tpm: pass an array of tpm_extend_digest
- structures to tpm_pcr_extend()"
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Roberto Sassu <roberto.sassu@huawei.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        linux-integrity@vger.kernel.org
-Cc:     Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Armijn Hemel <armijn@tjaldur.nl>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Thu, 04 Jul 2019 11:46:41 -0400
-In-Reply-To: <1562240882.6165.78.camel@linux.ibm.com>
-References: <20190701131505.17759-1-msuchanek@suse.de>
-         <8e4cc105b748c5395132b4d3d29d0d9b30a8720c.camel@linux.intel.com>
-         <cf2ea579-41c2-42da-2df3-0b1f12e1c639@huawei.com>
-         <1562240882.6165.78.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070415-0008-0000-0000-000002F9E80F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070415-0009-0000-0000-000022673ADE
-Message-Id: <1562255201.6165.143.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-04_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=873 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907040200
+        id S1726016AbfGDQEv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Jul 2019 12:04:51 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:58875 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725865AbfGDQEv (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 4 Jul 2019 12:04:51 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id D4784C058CA8;
+        Thu,  4 Jul 2019 16:04:39 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-9.rdu2.redhat.com [10.10.120.9])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AE1C37D958;
+        Thu,  4 Jul 2019 16:04:26 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20190703190846.GA15663@kroah.com>
+References: <20190703190846.GA15663@kroah.com> <156173690158.15137.3985163001079120218.stgit@warthog.procyon.org.uk> <156173697086.15137.9549379251509621554.stgit@warthog.procyon.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
+        raven@themaw.net, Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/9] Add a general, global device notification watch list [ver #5]
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <10294.1562256260.1@warthog.procyon.org.uk>
+Date:   Thu, 04 Jul 2019 17:04:20 +0100
+Message-ID: <10295.1562256260@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 04 Jul 2019 16:04:50 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-On Thu, 2019-07-04 at 07:48 -0400, Mimi Zohar wrote:
-> On Thu, 2019-07-04 at 13:28 +0200, Roberto Sassu wrote:
-> > On 7/4/2019 12:03 PM, Jarkko Sakkinen wrote:
-> > > On Mon, 2019-07-01 at 15:15 +0200, Michal Suchanek wrote:
-> > >> This reverts commit 0b6cf6b97b7ef1fa3c7fefab0cac897a1c4a3400 to avoid
-> > >> following crash:
-> > > 
-> > > Thank you. I think this the right choice for the moment. I fixed
-> > > a trivial checkpatch.pl error and added the mandatory tags. Can
-> > > you check quickly v2 (just posted)?
-> > > 
-> > > I already made it available in my master and next.
-> > 
-> > Could you please wait few days? I would prefer to fix this issue instead
-> > of reverting the whole patch.
+> Don't we need a manpage and a kselftest for it?
+
+I've got part of a manpage, but it needs more work.
+
+How do you do a kselftest for this when it does nothing unless hardware events
+happen?
+
+> > +	u64 id = 0; /* Might want to allow dev# here. */
 > 
-> Nayna posted a patch late yesterday titled "tpm: fixes uninitialized
-> allocated banks for IBM vtpm driver", which addresses this bug.
+> I don't understand the comment here, what does "dev#" refer to?
 
-Now with my review, and with Sachin Sant's and Michal Suchánek
-testing, instead of reverting this patch could you pick up Nayna's
-patch instead?
+This is really for mount subtree watches, so I'm removing it for now.
 
-thanks!
+The reason it's there is because a mount object may have multiple watches, but
+each watch is set on a dentry within that mount, and it doesn't have to be the
+same dentry each time.  The queue is shared between all the dentries, and the
+ID is used (a) to label them so that they can be manually removed, (b) to
+match them to each dentry when the notification is being propagated rootwards
+along the tree and (c) to avoid adding another field to struct dentry.
 
-Mimi
-
+David
