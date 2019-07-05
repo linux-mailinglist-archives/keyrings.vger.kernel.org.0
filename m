@@ -2,150 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B08A60932
-	for <lists+keyrings@lfdr.de>; Fri,  5 Jul 2019 17:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E2160A62
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jul 2019 18:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727917AbfGEPVf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Jul 2019 11:21:35 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:56616 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726302AbfGEPVe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Jul 2019 11:21:34 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x65FHEwU139689;
-        Fri, 5 Jul 2019 11:20:58 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2tj80kaywk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Jul 2019 11:20:58 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x65FKvOt003765;
-        Fri, 5 Jul 2019 11:20:57 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2tj80kayw2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Jul 2019 11:20:57 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x65FEcfC024677;
-        Fri, 5 Jul 2019 15:20:56 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-        by ppma03dal.us.ibm.com with ESMTP id 2tdym7mvjr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Jul 2019 15:20:56 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x65FKtnE52625730
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 5 Jul 2019 15:20:55 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9F7AD124053;
-        Fri,  5 Jul 2019 15:20:55 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0BB1F124052;
-        Fri,  5 Jul 2019 15:20:54 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.85.133.199])
-        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-        Fri,  5 Jul 2019 15:20:53 +0000 (GMT)
-Subject: Re: [PATCH] Revert "tpm: pass an array of tpm_extend_digest
- structures to tpm_pcr_extend()"
-To:     Tyler Hicks <tyhicks@canonical.com>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Armijn Hemel <armijn@tjaldur.nl>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
-References: <20190701131505.17759-1-msuchanek@suse.de>
- <8e4cc105b748c5395132b4d3d29d0d9b30a8720c.camel@linux.intel.com>
- <cf2ea579-41c2-42da-2df3-0b1f12e1c639@huawei.com>
- <1562240882.6165.78.camel@linux.ibm.com>
- <1562255201.6165.143.camel@linux.ibm.com> <20190704195857.GB6105@elm>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <abcc3748-8471-8965-046e-9d9431b4f0e9@linux.vnet.ibm.com>
-Date:   Fri, 5 Jul 2019 11:20:53 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1728562AbfGEQlC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Jul 2019 12:41:02 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:33057 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726302AbfGEQlC (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 5 Jul 2019 12:41:02 -0400
+Received: from LHREML711-CAH.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id 01758ED5E91E14B571A7;
+        Fri,  5 Jul 2019 17:41:00 +0100 (IST)
+Received: from roberto-HP-EliteDesk-800-G2-DM-65W.huawei.com (10.204.65.154)
+ by smtpsuk.huawei.com (10.201.108.34) with Microsoft SMTP Server (TLS) id
+ 14.3.408.0; Fri, 5 Jul 2019 17:40:52 +0100
+From:   Roberto Sassu <roberto.sassu@huawei.com>
+To:     <jarkko.sakkinen@linux.intel.com>, <jejb@linux.ibm.com>,
+        <zohar@linux.ibm.com>, <jgg@ziepe.ca>
+CC:     <linux-integrity@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <crazyt2019+lml@gmail.com>, <tyhicks@canonical.com>,
+        <nayna@linux.vnet.ibm.com>, <silviu.vlasceanu@huawei.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH] KEYS: trusted: allow module init if TPM is inactive or deactivated
+Date:   Fri, 5 Jul 2019 18:37:35 +0200
+Message-ID: <20190705163735.11539-1-roberto.sassu@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20190704195857.GB6105@elm>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-05_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907050186
+Content-Type: text/plain
+X-Originating-IP: [10.204.65.154]
+X-CFilter-Loop: Reflected
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Tyler,
+Commit c78719203fc6 ("KEYS: trusted: allow trusted.ko to initialize w/o a
+TPM") allows the trusted module to be loaded even a TPM is not found to
+avoid module dependency problems.
 
+Unfortunately, this does not completely solve the issue, as there could be
+a case where a TPM is found but is not functional (the TPM commands return
+an error). Specifically, after the tpm_chip structure is returned by
+tpm_default_chip() in init_trusted(), the execution terminates after
+init_digests() returns -EFAULT (due to the fact that tpm_get_random()
+returns a positive value, but less than TPM_MAX_DIGEST_SIZE).
 
-On 07/04/2019 03:58 PM, Tyler Hicks wrote:
-> Hey Mimi!
->
-> On 2019-07-04 11:46:41, Mimi Zohar wrote:
->> Hi Jarkko,
->>
->> On Thu, 2019-07-04 at 07:48 -0400, Mimi Zohar wrote:
->>> On Thu, 2019-07-04 at 13:28 +0200, Roberto Sassu wrote:
->>>> On 7/4/2019 12:03 PM, Jarkko Sakkinen wrote:
->>>>> On Mon, 2019-07-01 at 15:15 +0200, Michal Suchanek wrote:
->>>>>> This reverts commit 0b6cf6b97b7ef1fa3c7fefab0cac897a1c4a3400 to avoid
->>>>>> following crash:
->>>>> Thank you. I think this the right choice for the moment. I fixed
->>>>> a trivial checkpatch.pl error and added the mandatory tags. Can
->>>>> you check quickly v2 (just posted)?
->>>>>
->>>>> I already made it available in my master and next.
->>>> Could you please wait few days? I would prefer to fix this issue instead
->>>> of reverting the whole patch.
->>> Nayna posted a patch late yesterday titled "tpm: fixes uninitialized
->>> allocated banks for IBM vtpm driver", which addresses this bug.
->> Now with my review, and with Sachin Sant's and Michal Suchánek
->> testing, instead of reverting this patch could you pick up Nayna's
->> patch instead?
-> It looks to me like the revert would also fix a bug that is keeping the
-> eCryptfs module from loading when the TPM is in an "inactive" state:
->
->    https://bugzilla.kernel.org/show_bug.cgi?id=203953
->
-> I just noticed that it was recently discussed here, too:
->
->    https://lore.kernel.org/linux-integrity/1562244125.6165.95.camel@linux.ibm.com/T/#t
->
-> I believe that the revert would fix it because the call to
-> init_digests()/tpm_get_random() would no longer be in the path of
-> loading ecryptfs.ko (which depends on encrypted-keys.ko, which depends
-> on trusted.ko).
->
-> If the revert isn't used, we'll need a different fix for bug 203953. It
-> should be an easy fix but I don't want it to be forgotten.
+This patch fixes the issue by ignoring the TPM_ERR_DEACTIVATED and
+TPM_ERR_DISABLED errors.
 
+Fixes: 240730437deb ("KEYS: trusted: explicitly use tpm_chip structure...")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+---
+ drivers/char/tpm/tpm.h  | 2 --
+ include/linux/tpm.h     | 3 +++
+ security/keys/trusted.c | 6 +++++-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-I think if TPM is inactive/disabled, it needs to be handled during 
-tpm_chip_register() itself. However, probably that needs more analysis 
-and discussion. For now, in context of the trusted.ko module, it seems 
-init_trusted() should "put_device", but continue even if init_digests() 
-fails, that will fix the issue.
+diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
+index e503ffc3aa39..a216ac396711 100644
+--- a/drivers/char/tpm/tpm.h
++++ b/drivers/char/tpm/tpm.h
+@@ -54,8 +54,6 @@ enum tpm_addr {
+ 
+ #define TPM_WARN_RETRY          0x800
+ #define TPM_WARN_DOING_SELFTEST 0x802
+-#define TPM_ERR_DEACTIVATED     0x6
+-#define TPM_ERR_DISABLED        0x7
+ #define TPM_ERR_INVALID_POSTINIT 38
+ 
+ #define TPM_HEADER_SIZE		10
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 53c0ea9ec9df..efd3ccbb6aee 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -26,6 +26,9 @@
+ #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
+ #define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
+ 
++#define TPM_ERR_DEACTIVATED     0x6
++#define TPM_ERR_DISABLED        0x7
++
+ struct tpm_chip;
+ struct trusted_key_payload;
+ struct trusted_key_options;
+diff --git a/security/keys/trusted.c b/security/keys/trusted.c
+index 9a94672e7adc..430d85090b3b 100644
+--- a/security/keys/trusted.c
++++ b/security/keys/trusted.c
+@@ -389,6 +389,10 @@ static int pcrlock(const int pcrnum)
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
++	/* This can happen if the TPM is inactive. */
++	if (!digests)
++		return -EINVAL;
++
+ 	return tpm_pcr_extend(chip, pcrnum, digests) ? -EINVAL : 0;
+ }
+ 
+@@ -1233,7 +1237,7 @@ static int __init init_digests(void)
+ 	int i;
+ 
+ 	ret = tpm_get_random(chip, digest, TPM_MAX_DIGEST_SIZE);
+-	if (ret < 0)
++	if (ret < 0 || ret == TPM_ERR_DEACTIVATED || ret == TPM_ERR_DISABLED)
+ 		return ret;
+ 	if (ret < TPM_MAX_DIGEST_SIZE)
+ 		return -EFAULT;
+-- 
+2.17.1
 
-
-Thanks & Regards,
-         - Nayna
