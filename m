@@ -2,109 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C94C5FD96
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2019 21:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F080360085
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jul 2019 07:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726199AbfGDT7Q (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Jul 2019 15:59:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50461 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726038AbfGDT7P (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Jul 2019 15:59:15 -0400
-Received: from 162-237-133-238.lightspeed.rcsntx.sbcglobal.net ([162.237.133.238] helo=elm)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <tyhicks@canonical.com>)
-        id 1hj7sn-00065o-5y; Thu, 04 Jul 2019 19:59:05 +0000
-Date:   Thu, 4 Jul 2019 14:58:58 -0500
-From:   Tyler Hicks <tyhicks@canonical.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Roberto Sassu <roberto.sassu@huawei.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Armijn Hemel <armijn@tjaldur.nl>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
-Subject: Re: [PATCH] Revert "tpm: pass an array of tpm_extend_digest
- structures to tpm_pcr_extend()"
-Message-ID: <20190704195857.GB6105@elm>
-References: <20190701131505.17759-1-msuchanek@suse.de>
- <8e4cc105b748c5395132b4d3d29d0d9b30a8720c.camel@linux.intel.com>
- <cf2ea579-41c2-42da-2df3-0b1f12e1c639@huawei.com>
- <1562240882.6165.78.camel@linux.ibm.com>
- <1562255201.6165.143.camel@linux.ibm.com>
+        id S1726004AbfGEFRj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Jul 2019 01:17:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56860 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725681AbfGEFRi (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 5 Jul 2019 01:17:38 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DF97D216FD;
+        Fri,  5 Jul 2019 05:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562303857;
+        bh=7wlnbU7f7NI4tp/aNkJpCkcXuqZ5WwcXUMv6L1ELc9A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ugFyFfFKxNGYgqcsh/MHx4NXJCIKEN54oVlmcVYIMOOV+VWzrlEZvmbebID8zJ5bL
+         eqmwYQmbvOmjFYhkaVSALkugyKBmfb1VfnBe27/tme7AWsfKHTvt939Fp5y9LAsG40
+         T1T2qcyfsYKp8T79H0xukTrXjRdyvTpc+Fm0NASY=
+Date:   Fri, 5 Jul 2019 07:17:33 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     viro@zeniv.linux.org.uk, Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
+        raven@themaw.net, Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/9] Add a general, global device notification watch list
+ [ver #5]
+Message-ID: <20190705051733.GA15821@kroah.com>
+References: <20190703190846.GA15663@kroah.com>
+ <156173690158.15137.3985163001079120218.stgit@warthog.procyon.org.uk>
+ <156173697086.15137.9549379251509621554.stgit@warthog.procyon.org.uk>
+ <10295.1562256260@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1562255201.6165.143.camel@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <10295.1562256260@warthog.procyon.org.uk>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hey Mimi!
-
-On 2019-07-04 11:46:41, Mimi Zohar wrote:
-> Hi Jarkko,
+On Thu, Jul 04, 2019 at 05:04:20PM +0100, David Howells wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 > 
-> On Thu, 2019-07-04 at 07:48 -0400, Mimi Zohar wrote:
-> > On Thu, 2019-07-04 at 13:28 +0200, Roberto Sassu wrote:
-> > > On 7/4/2019 12:03 PM, Jarkko Sakkinen wrote:
-> > > > On Mon, 2019-07-01 at 15:15 +0200, Michal Suchanek wrote:
-> > > >> This reverts commit 0b6cf6b97b7ef1fa3c7fefab0cac897a1c4a3400 to avoid
-> > > >> following crash:
-> > > > 
-> > > > Thank you. I think this the right choice for the moment. I fixed
-> > > > a trivial checkpatch.pl error and added the mandatory tags. Can
-> > > > you check quickly v2 (just posted)?
-> > > > 
-> > > > I already made it available in my master and next.
-> > > 
-> > > Could you please wait few days? I would prefer to fix this issue instead
-> > > of reverting the whole patch.
-> > 
-> > Nayna posted a patch late yesterday titled "tpm: fixes uninitialized
-> > allocated banks for IBM vtpm driver", which addresses this bug.
+> > Don't we need a manpage and a kselftest for it?
 > 
-> Now with my review, and with Sachin Sant's and Michal Suchánek
-> testing, instead of reverting this patch could you pick up Nayna's
-> patch instead?
-
-It looks to me like the revert would also fix a bug that is keeping the
-eCryptfs module from loading when the TPM is in an "inactive" state:
-
-  https://bugzilla.kernel.org/show_bug.cgi?id=203953
-
-I just noticed that it was recently discussed here, too:
-
-  https://lore.kernel.org/linux-integrity/1562244125.6165.95.camel@linux.ibm.com/T/#t
-
-I believe that the revert would fix it because the call to
-init_digests()/tpm_get_random() would no longer be in the path of
-loading ecryptfs.ko (which depends on encrypted-keys.ko, which depends
-on trusted.ko).
-
-If the revert isn't used, we'll need a different fix for bug 203953. It
-should be an easy fix but I don't want it to be forgotten.
-
-Tyler
-
+> I've got part of a manpage, but it needs more work.
 > 
-> thanks!
-> 
-> Mimi
-> 
+> How do you do a kselftest for this when it does nothing unless hardware events
+> happen?
+
+Hm, good point, but there should be some way to test this to verify it
+works.  Maybe for the other types of events?
+
+thanks,
+
+greg k-h
