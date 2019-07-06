@@ -2,140 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DAB60D24
-	for <lists+keyrings@lfdr.de>; Fri,  5 Jul 2019 23:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D5460EA0
+	for <lists+keyrings@lfdr.de>; Sat,  6 Jul 2019 05:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727390AbfGEVan convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 5 Jul 2019 17:30:43 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:56964 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727217AbfGEVan (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 5 Jul 2019 17:30:43 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 10022308FEC0;
-        Fri,  5 Jul 2019 21:30:43 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-9.rdu2.redhat.com [10.10.120.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BAF9618A41;
-        Fri,  5 Jul 2019 21:30:40 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-cc:     dhowells@redhat.com, jmorris@namei.org, keyrings@vger.kernel.org,
-        netdev@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-afs@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Keys: Set 4 - Key ACLs for 5.3
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <28476.1562362239.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Fri, 05 Jul 2019 22:30:39 +0100
-Message-ID: <28477.1562362239@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Fri, 05 Jul 2019 21:30:43 +0000 (UTC)
+        id S1726267AbfGFDo2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Jul 2019 23:44:28 -0400
+Received: from outbound.smtp.vt.edu ([198.82.183.121]:39620 "EHLO
+        omr2.cc.vt.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725917AbfGFDo2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Jul 2019 23:44:28 -0400
+Received: from mr4.cc.vt.edu (mr4.cc.ipv6.vt.edu [IPv6:2607:b400:92:8300:0:7b:e2b1:6a29])
+        by omr2.cc.vt.edu (8.14.4/8.14.4) with ESMTP id x663iQFI010210
+        for <keyrings@vger.kernel.org>; Fri, 5 Jul 2019 23:44:26 -0400
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+        by mr4.cc.vt.edu (8.14.7/8.14.7) with ESMTP id x663iLT3019822
+        for <keyrings@vger.kernel.org>; Fri, 5 Jul 2019 23:44:26 -0400
+Received: by mail-qk1-f198.google.com with SMTP id d9so3794737qko.8
+        for <keyrings@vger.kernel.org>; Fri, 05 Jul 2019 20:44:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:mime-version
+         :content-transfer-encoding:date:message-id;
+        bh=8fXsS/qCFMlK3IfJe0o+L9zW5hwu1Njz/pHhxSynS10=;
+        b=Fjd0hyLKP/PCuprThh145zwf0sba/g+ZZLMKrLVJVQpVKHN7v7Iatc61W8c6i5otXn
+         dIHXjwT+X/FAd3jI6W/uEvFWqFoN72KE7o4QfOI5j3VpcyUaEb1+9usu0GbtCg9hrXEG
+         3T69PsVSOAYphcsG6qrVqFuLADGJFTnCTt8oJXmGTasUv2zN21Z5KSNczjTc1DXdlYYP
+         /UhAF1Qggr80Bng/l0j1jez0aFxaREDdboa0/5MiBfFEI46D/yPRUmKRVvC0MsbZMdaI
+         edF4DuDUdaVQEw2wXE02S+Zm5/ztAs0aVXKdNacK9JswE7aEtrw9Z3IASGx+/S4Q/HQY
+         DxAQ==
+X-Gm-Message-State: APjAAAWj0IrJUH8uYUdm9BBrTpCnVdNutyWx/JZFCtN1EefWfcT8FHcJ
+        xJnHod//n3EbQrfzfqz2SrHXH4LntZw00GCba0EZdHeEIWwfnHIx3emXZ8BZsSbbzY8YohVv6IZ
+        91YxeQ4T6PD8Dqoz5sK5ih+iRQesYBA==
+X-Received: by 2002:a37:47d1:: with SMTP id u200mr5455028qka.21.1562384661386;
+        Fri, 05 Jul 2019 20:44:21 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqx77CAOwb57kHTbH+rwRZca8Ng8B9IqTqMLwAaJTBXpsHS9IRbrpNxlEUt0uLu50+3hRR3OtQ==
+X-Received: by 2002:a37:47d1:: with SMTP id u200mr5455020qka.21.1562384661140;
+        Fri, 05 Jul 2019 20:44:21 -0700 (PDT)
+Received: from turing-police ([2601:5c0:c001:4341::7ca])
+        by smtp.gmail.com with ESMTPSA id w9sm2251091qts.25.2019.07.05.20.44.19
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 05 Jul 2019 20:44:19 -0700 (PDT)
+From:   "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: next-20190705 - problems generating certs/x509_certificate_list
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1562384658_2389P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 05 Jul 2019 23:44:18 -0400
+Message-ID: <27671.1562384658@turing-police>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Linus,
+--==_Exmh_1562384658_2389P
+Content-Type: text/plain; charset=us-ascii
 
-Here's my fourth block of keyrings changes for the next merge window.  They
-change the permissions model used by keys and keyrings to be based on an
-internal ACL by the following means:
+This worked fine in next-20190618, but in next-20190701 I'm seeing dmesg
+entries at boot:
 
- (1) Replace the permissions mask internally with an ACL that contains a
-     list of ACEs, each with a specific subject with a permissions mask.
-     Potted default ACLs are available for new keys and keyrings.
+dmesg | grep -i x.509
+[    8.345699] Loading compiled-in X.509 certificates
+[    8.366137] Problem loading in-kernel X.509 certificate (-13)
+[    8.507348] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    8.526556] cfg80211: Problem loading in-kernel X.509 certificate (-13)
 
-     ACE subjects can be macroised to indicate the UID and GID specified on
-     the key (which remain).  Future commits will be able to add additional
-     subject types, such as specific UIDs or domain tags/namespaces.
+I start debugging, and discover that certs/x509_certificate_list is a zero-length file.
+I rm it, and 'make V=1 certs/system_certificates.o', which tells me:
 
-     Also split a number of permissions to give finer control.  Examples
-     include splitting the revocation permit from the change-attributes
-     permit, thereby allowing someone to be granted permission to revoke a
-     key without allowing them to change the owner; also the ability to
-     join a keyring is split from the ability to link to it, thereby
-     stopping a process accessing a keyring by joining it and thus
-     acquiring use of possessor permits.
+(....)
+make -f ./scripts/Makefile.headersinst obj=include/uapi
+make -f ./scripts/Makefile.headersinst obj=arch/x86/include/uapi
+make -f ./scripts/Makefile.build obj=certs certs/system_certificates.o
+---- smoking gun alert
+  scripts/extract-cert "" certs/x509_certificate_list
+----
+  gcc -Wp,-MD,certs/.system_certificates.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -D__KERNEL__ -D__ASSEMBLY__ -fno-PIE -m64 -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -DCONFIG_AS_AVX512=1 -DCONFIG_AS_SHA1_NI=1 -DCONFIG_AS_SHA256_NI=1 -Wa,-gdwarf-2 -DCC_USING_FENTRY -I.   -c -o certs/system_certificates.o certs/system_certificates.S
 
- (2) Provide a keyctl to allow the granting or denial of one or more
-     permits to a specific subject.  Direct access to the ACL is not
-     granted, and the ACL cannot be viewed.
+I go look at extract-cert.c, and sure enough, if the first parameter is a null string
+it just goes and creates an empty file.
 
-David
----
-The following changes since commit a58946c158a040068e7c94dc1d58bbd273258068:
+The Makefile says:
 
-  keys: Pass the network namespace into request_key mechanism (2019-06-27 23:02:12 +0100)
+quiet_cmd_extract_certs  = EXTRACT_CERTS   $(patsubst "%",%,$(2))
+      cmd_extract_certs  = scripts/extract-cert $(2) $@
 
-are available in the Git repository at:
+and damned if I know why $(2) is "". Diffed the config files from -0618 and -0705,
+not seeing anything relevant difference.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/keys-acl-20190703
+Any ideas?
 
-for you to fetch changes up to 7a1ade847596dadc94b37e49f8c03f167fd71748:
 
-  keys: Provide KEYCTL_GRANT_PERMISSION (2019-07-03 13:05:22 +0100)
+--==_Exmh_1562384658_2389P
+Content-Type: application/pgp-signature
 
-----------------------------------------------------------------
-Keyrings ACL
+-----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
 
-----------------------------------------------------------------
-David Howells (2):
-      keys: Replace uid/gid/perm permissions checking with an ACL
-      keys: Provide KEYCTL_GRANT_PERMISSION
+iQIVAwUBXSAZEgdmEQWDXROgAQJdfBAAh0OK5AXK+UV3PLU7Zf5MEVbiRWdArkQl
+/Mq2xWj7D7T/cNw5C6rkF+15mZr/Jrn7hQS2pdAXf2bBJ1yt+09dDr5+fCMkIzCv
++XKxE876Cd6CnrmyKHprKeitoRxs2Lgre1WPamzWwDKcq3HYgEl1mKrNEnk+bYhp
+h/U7qQgpxxRKx+rZU0ZwejwpJw4wgtiYELHUP5ibaGjLwzqZhzQ6prfIW/ow9zRi
+m08yxe1THhXs/3ZBAZsXx/LeoUZQhhb7H6WfKYMMU+mwnUSw0rw6fUI0VkOVHV6P
+VRcaDpWOV8gAgO6rZffunApCZrRPlTMa+wZwh1vCXApEn1vCtgul6jLKBh9H0XSR
++TS5z90I2BBx9TpmjR2aP04DqATir2CBeXRm1KubQUKPeXJUnjxJF2y/uURUsK52
+Uvb5lYRcdPWoYwDsi9eikPKPda8y7H+TQGuygzV9VQAbYyffHfXR3cQMnAVltxko
+ZZqtxIBG+/7WtfmTUqN8hzKThHieF92yF1bGgJk8mIjppvUAsoReZgSKqGKePvHX
+F3NZoKtMW4A78Yc6PYl9rVADMj0wtapdo8Y7hAjogaf27M/Qu7g94nITro2p8lVx
+rJLj61K7Q644ChMjWodkFxNnI4UiiBR5ut+bwVb5IQE/8TSU/eRC1wuuEJk76gQD
+MCKeD0Nx+bI=
+=etAO
+-----END PGP SIGNATURE-----
 
- Documentation/security/keys/core.rst               | 128 ++++++--
- Documentation/security/keys/request-key.rst        |   9 +-
- certs/blacklist.c                                  |   7 +-
- certs/system_keyring.c                             |  12 +-
- drivers/md/dm-crypt.c                              |   2 +-
- drivers/nvdimm/security.c                          |   2 +-
- fs/afs/security.c                                  |   2 +-
- fs/cifs/cifs_spnego.c                              |  25 +-
- fs/cifs/cifsacl.c                                  |  28 +-
- fs/cifs/connect.c                                  |   4 +-
- fs/crypto/keyinfo.c                                |   2 +-
- fs/ecryptfs/ecryptfs_kernel.h                      |   2 +-
- fs/ecryptfs/keystore.c                             |   2 +-
- fs/fscache/object-list.c                           |   2 +-
- fs/nfs/nfs4idmap.c                                 |  30 +-
- fs/ubifs/auth.c                                    |   2 +-
- include/linux/key.h                                | 121 +++----
- include/uapi/linux/keyctl.h                        |  65 ++++
- lib/digsig.c                                       |   2 +-
- net/ceph/ceph_common.c                             |   2 +-
- net/dns_resolver/dns_key.c                         |  12 +-
- net/dns_resolver/dns_query.c                       |  15 +-
- net/rxrpc/key.c                                    |  19 +-
- net/wireless/reg.c                                 |   6 +-
- security/integrity/digsig.c                        |  31 +-
- security/integrity/digsig_asymmetric.c             |   2 +-
- security/integrity/evm/evm_crypto.c                |   2 +-
- security/integrity/ima/ima_mok.c                   |  13 +-
- security/integrity/integrity.h                     |   6 +-
- .../integrity/platform_certs/platform_keyring.c    |  14 +-
- security/keys/compat.c                             |   2 +
- security/keys/encrypted-keys/encrypted.c           |   2 +-
- security/keys/encrypted-keys/masterkey_trusted.c   |   2 +-
- security/keys/gc.c                                 |   2 +-
- security/keys/internal.h                           |  16 +-
- security/keys/key.c                                |  29 +-
- security/keys/keyctl.c                             | 104 ++++--
- security/keys/keyring.c                            |  27 +-
- security/keys/permission.c                         | 361 +++++++++++++++++++--
- security/keys/persistent.c                         |  27 +-
- security/keys/proc.c                               |  22 +-
- security/keys/process_keys.c                       |  86 +++--
- security/keys/request_key.c                        |  34 +-
- security/keys/request_key_auth.c                   |  15 +-
- security/selinux/hooks.c                           |  16 +-
- security/smack/smack_lsm.c                         |   3 +-
- 46 files changed, 992 insertions(+), 325 deletions(-)
+--==_Exmh_1562384658_2389P--
