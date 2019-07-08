@@ -2,121 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47D5460EA0
-	for <lists+keyrings@lfdr.de>; Sat,  6 Jul 2019 05:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5DA061E99
+	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2019 14:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbfGFDo2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Jul 2019 23:44:28 -0400
-Received: from outbound.smtp.vt.edu ([198.82.183.121]:39620 "EHLO
-        omr2.cc.vt.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725917AbfGFDo2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Jul 2019 23:44:28 -0400
-Received: from mr4.cc.vt.edu (mr4.cc.ipv6.vt.edu [IPv6:2607:b400:92:8300:0:7b:e2b1:6a29])
-        by omr2.cc.vt.edu (8.14.4/8.14.4) with ESMTP id x663iQFI010210
-        for <keyrings@vger.kernel.org>; Fri, 5 Jul 2019 23:44:26 -0400
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-        by mr4.cc.vt.edu (8.14.7/8.14.7) with ESMTP id x663iLT3019822
-        for <keyrings@vger.kernel.org>; Fri, 5 Jul 2019 23:44:26 -0400
-Received: by mail-qk1-f198.google.com with SMTP id d9so3794737qko.8
-        for <keyrings@vger.kernel.org>; Fri, 05 Jul 2019 20:44:26 -0700 (PDT)
+        id S1729705AbfGHMlx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 8 Jul 2019 08:41:53 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:42167 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729123AbfGHMlx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 8 Jul 2019 08:41:53 -0400
+Received: by mail-lf1-f66.google.com with SMTP id s19so10098521lfb.9
+        for <keyrings@vger.kernel.org>; Mon, 08 Jul 2019 05:41:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=01ZaodaDx7mKeMsXvB23tTxrXIayVtwHPEPEGKhS98A=;
+        b=LTaOrKl0vSBgTH3p2sCQOsuKjJdFWmWnutde8wO+ePasoJh4cKjHrhnyXY6PgrHpLK
+         85c5GiNIeepifFeyVzMroc3IGeQPvYJsPE6GANW/1Jz6ipZTGtmxG3AFWpis6U5nxM0u
+         9SspHklbe19WcWvyMY9A/cnz9VTq1NQi6rZHvrJPOODA3+sTroEftiODx8+Z4PSbdSD4
+         JVRSZGHXxPJYU60Nw/oKQHdhX3zqe+HPJGoKm9LfYUsR6VOgOnX1FU9++vR1/7k5B6Sl
+         OqLGlWgWVOugSqujh54KMPW29ELbJauzph1ezjbkSCh758w6oq8hSl80Vsbq8YXvfFGx
+         5fqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:mime-version
-         :content-transfer-encoding:date:message-id;
-        bh=8fXsS/qCFMlK3IfJe0o+L9zW5hwu1Njz/pHhxSynS10=;
-        b=Fjd0hyLKP/PCuprThh145zwf0sba/g+ZZLMKrLVJVQpVKHN7v7Iatc61W8c6i5otXn
-         dIHXjwT+X/FAd3jI6W/uEvFWqFoN72KE7o4QfOI5j3VpcyUaEb1+9usu0GbtCg9hrXEG
-         3T69PsVSOAYphcsG6qrVqFuLADGJFTnCTt8oJXmGTasUv2zN21Z5KSNczjTc1DXdlYYP
-         /UhAF1Qggr80Bng/l0j1jez0aFxaREDdboa0/5MiBfFEI46D/yPRUmKRVvC0MsbZMdaI
-         edF4DuDUdaVQEw2wXE02S+Zm5/ztAs0aVXKdNacK9JswE7aEtrw9Z3IASGx+/S4Q/HQY
-         DxAQ==
-X-Gm-Message-State: APjAAAWj0IrJUH8uYUdm9BBrTpCnVdNutyWx/JZFCtN1EefWfcT8FHcJ
-        xJnHod//n3EbQrfzfqz2SrHXH4LntZw00GCba0EZdHeEIWwfnHIx3emXZ8BZsSbbzY8YohVv6IZ
-        91YxeQ4T6PD8Dqoz5sK5ih+iRQesYBA==
-X-Received: by 2002:a37:47d1:: with SMTP id u200mr5455028qka.21.1562384661386;
-        Fri, 05 Jul 2019 20:44:21 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqx77CAOwb57kHTbH+rwRZca8Ng8B9IqTqMLwAaJTBXpsHS9IRbrpNxlEUt0uLu50+3hRR3OtQ==
-X-Received: by 2002:a37:47d1:: with SMTP id u200mr5455020qka.21.1562384661140;
-        Fri, 05 Jul 2019 20:44:21 -0700 (PDT)
-Received: from turing-police ([2601:5c0:c001:4341::7ca])
-        by smtp.gmail.com with ESMTPSA id w9sm2251091qts.25.2019.07.05.20.44.19
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 05 Jul 2019 20:44:19 -0700 (PDT)
-From:   "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <valdis.kletnieks@vt.edu>
-X-Google-Original-From: "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <Valdis.Kletnieks@vt.edu>
-X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
-To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: next-20190705 - problems generating certs/x509_certificate_list
-Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="==_Exmh_1562384658_2389P";
-         micalg=pgp-sha1; protocol="application/pgp-signature"
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 05 Jul 2019 23:44:18 -0400
-Message-ID: <27671.1562384658@turing-police>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=01ZaodaDx7mKeMsXvB23tTxrXIayVtwHPEPEGKhS98A=;
+        b=tjguLr9n3B9YpU9TdJuiXckkR51U9JDZSSG31I9i7++rk+Sza4mGVenDuCiJZFrI+O
+         ifc9b3EoHEUcTOn5hRqWE5ll640N6lesjbjEO7W5jlOPA+z5QSkYaV8Q4cXKuvOfNpb2
+         66s1fSiDq1rCr2ECD56D5VOYRRCa/FoCMPqRUIx+L/2IWZaasdLzHWuC2a7Aop3yMNeK
+         REVFOGnMATglcrnaZ20FXQeUS/jVebPh/uZ+/axX+C62SfWLMTIicSEodr1tnapiJrsM
+         +QXmxcsJmeh8ByNzMF4j/TwZ59rnCdfZAE3kI3QmJ8NMq4H4MFfcD2KSba7EkAoI4Xkc
+         5UEw==
+X-Gm-Message-State: APjAAAW1ZKZyVMSUFicUDUDJDT+U8ORyjQi/EyDyIlMTma/ed3Nwo/a4
+        tPr+DVpSMjFQ+GOOrv8/0ebeUXjy7h2UfUmEWoFRKg==
+X-Google-Smtp-Source: APXvYqxE30q0tSSJMu3guI09sH2bs/UqlCraWFjUE/V1BMcubjJgN2dhMofOAQnk/QVFVER9j12WU8+boVM3eecRu6U=
+X-Received: by 2002:ac2:5c42:: with SMTP id s2mr8772526lfp.61.1562589711198;
+ Mon, 08 Jul 2019 05:41:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
+In-Reply-To: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Mon, 8 Jul 2019 18:11:39 +0530
+Message-ID: <CAFA6WYPn3HB6BRocKmKTR+ZPE=Fav5w1TUdRgmLp-NkYobp3rw@mail.gmail.com>
+Subject: Re: [RFC 0/7] Introduce TEE based Trusted Keys support
+To:     Jens Wiklander <jens.wiklander@linaro.org>
+Cc:     corbet@lwn.net, dhowells@redhat.com, jejb@linux.ibm.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, jmorris@namei.org,
+        serge@hallyn.com, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        linux-doc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        tee-dev@lists.linaro.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
---==_Exmh_1562384658_2389P
-Content-Type: text/plain; charset=us-ascii
+Hi Jens,
 
-This worked fine in next-20190618, but in next-20190701 I'm seeing dmesg
-entries at boot:
+On Thu, 13 Jun 2019 at 16:01, Sumit Garg <sumit.garg@linaro.org> wrote:
+>
+> Add support for TEE based trusted keys where TEE provides the functionality
+> to seal and unseal trusted keys using hardware unique key. Also, this is
+> an alternative in case platform doesn't possess a TPM device.
+>
+> This series also adds some TEE features like:
+>
+> Patch #1, #2 enables support for registered kernel shared memory with TEE.
+>
 
-dmesg | grep -i x.509
-[    8.345699] Loading compiled-in X.509 certificates
-[    8.366137] Problem loading in-kernel X.509 certificate (-13)
-[    8.507348] cfg80211: Loading compiled-in X.509 certificates for regulatory database
-[    8.526556] cfg80211: Problem loading in-kernel X.509 certificate (-13)
-
-I start debugging, and discover that certs/x509_certificate_list is a zero-length file.
-I rm it, and 'make V=1 certs/system_certificates.o', which tells me:
-
-(....)
-make -f ./scripts/Makefile.headersinst obj=include/uapi
-make -f ./scripts/Makefile.headersinst obj=arch/x86/include/uapi
-make -f ./scripts/Makefile.build obj=certs certs/system_certificates.o
----- smoking gun alert
-  scripts/extract-cert "" certs/x509_certificate_list
-----
-  gcc -Wp,-MD,certs/.system_certificates.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -D__KERNEL__ -D__ASSEMBLY__ -fno-PIE -m64 -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -DCONFIG_AS_AVX512=1 -DCONFIG_AS_SHA1_NI=1 -DCONFIG_AS_SHA256_NI=1 -Wa,-gdwarf-2 -DCC_USING_FENTRY -I.   -c -o certs/system_certificates.o certs/system_certificates.S
-
-I go look at extract-cert.c, and sure enough, if the first parameter is a null string
-it just goes and creates an empty file.
-
-The Makefile says:
-
-quiet_cmd_extract_certs  = EXTRACT_CERTS   $(patsubst "%",%,$(2))
-      cmd_extract_certs  = scripts/extract-cert $(2) $@
-
-and damned if I know why $(2) is "". Diffed the config files from -0618 and -0705,
-not seeing anything relevant difference.
-
-Any ideas?
+Would you like to pick up Patch #1, #2 separately? I think both these
+patches add independent functionality and also got reviewed-by tags
+too.
 
 
---==_Exmh_1562384658_2389P
-Content-Type: application/pgp-signature
+-Sumit
 
------BEGIN PGP SIGNATURE-----
-Comment: Exmh version 2.9.0 11/07/2018
-
-iQIVAwUBXSAZEgdmEQWDXROgAQJdfBAAh0OK5AXK+UV3PLU7Zf5MEVbiRWdArkQl
-/Mq2xWj7D7T/cNw5C6rkF+15mZr/Jrn7hQS2pdAXf2bBJ1yt+09dDr5+fCMkIzCv
-+XKxE876Cd6CnrmyKHprKeitoRxs2Lgre1WPamzWwDKcq3HYgEl1mKrNEnk+bYhp
-h/U7qQgpxxRKx+rZU0ZwejwpJw4wgtiYELHUP5ibaGjLwzqZhzQ6prfIW/ow9zRi
-m08yxe1THhXs/3ZBAZsXx/LeoUZQhhb7H6WfKYMMU+mwnUSw0rw6fUI0VkOVHV6P
-VRcaDpWOV8gAgO6rZffunApCZrRPlTMa+wZwh1vCXApEn1vCtgul6jLKBh9H0XSR
-+TS5z90I2BBx9TpmjR2aP04DqATir2CBeXRm1KubQUKPeXJUnjxJF2y/uURUsK52
-Uvb5lYRcdPWoYwDsi9eikPKPda8y7H+TQGuygzV9VQAbYyffHfXR3cQMnAVltxko
-ZZqtxIBG+/7WtfmTUqN8hzKThHieF92yF1bGgJk8mIjppvUAsoReZgSKqGKePvHX
-F3NZoKtMW4A78Yc6PYl9rVADMj0wtapdo8Y7hAjogaf27M/Qu7g94nITro2p8lVx
-rJLj61K7Q644ChMjWodkFxNnI4UiiBR5ut+bwVb5IQE/8TSU/eRC1wuuEJk76gQD
-MCKeD0Nx+bI=
-=etAO
------END PGP SIGNATURE-----
-
---==_Exmh_1562384658_2389P--
+> Patch #3 enables support for private kernel login method required for
+> cases like trusted keys where we don't wan't user-space to directly access
+> TEE service to retrieve trusted key contents.
+>
+> Rest of the patches from #4 to #7 adds support for TEE based trusted keys.
+>
+> This patch-set has been tested with OP-TEE based pseudo TA which can be
+> found here [1].
+>
+> Looking forward to your valuable feedback/suggestions.
+>
+> [1] https://github.com/OP-TEE/optee_os/pull/3082
+>
+> Sumit Garg (7):
+>   tee: optee: allow kernel pages to register as shm
+>   tee: enable support to register kernel memory
+>   tee: add private login method for kernel clients
+>   KEYS: trusted: Introduce TEE based Trusted Keys
+>   KEYS: encrypted: Allow TEE based trusted master keys
+>   doc: keys: Document usage of TEE based Trusted Keys
+>   MAINTAINERS: Add entry for TEE based Trusted Keys
+>
+>  Documentation/security/keys/tee-trusted.rst      |  93 +++++
+>  MAINTAINERS                                      |   9 +
+>  drivers/tee/optee/call.c                         |   7 +
+>  drivers/tee/tee_core.c                           |   6 +
+>  drivers/tee/tee_shm.c                            |  16 +-
+>  include/keys/tee_trusted.h                       |  84 ++++
+>  include/keys/trusted-type.h                      |   1 +
+>  include/linux/tee_drv.h                          |   1 +
+>  include/uapi/linux/tee.h                         |   2 +
+>  security/keys/Kconfig                            |   3 +
+>  security/keys/Makefile                           |   3 +
+>  security/keys/encrypted-keys/masterkey_trusted.c |  10 +-
+>  security/keys/tee_trusted.c                      | 506 +++++++++++++++++++++++
+>  13 files changed, 737 insertions(+), 4 deletions(-)
+>  create mode 100644 Documentation/security/keys/tee-trusted.rst
+>  create mode 100644 include/keys/tee_trusted.h
+>  create mode 100644 security/keys/tee_trusted.c
+>
+> --
+> 2.7.4
+>
