@@ -2,128 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5DA061E99
-	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2019 14:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1966623F5
+	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2019 17:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729705AbfGHMlx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 8 Jul 2019 08:41:53 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:42167 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729123AbfGHMlx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 8 Jul 2019 08:41:53 -0400
-Received: by mail-lf1-f66.google.com with SMTP id s19so10098521lfb.9
-        for <keyrings@vger.kernel.org>; Mon, 08 Jul 2019 05:41:51 -0700 (PDT)
+        id S2390738AbfGHPjR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 8 Jul 2019 11:39:17 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:41430 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390740AbfGHPjO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 8 Jul 2019 11:39:14 -0400
+Received: by mail-lj1-f194.google.com with SMTP id d24so7290679ljg.8
+        for <keyrings@vger.kernel.org>; Mon, 08 Jul 2019 08:39:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=01ZaodaDx7mKeMsXvB23tTxrXIayVtwHPEPEGKhS98A=;
-        b=LTaOrKl0vSBgTH3p2sCQOsuKjJdFWmWnutde8wO+ePasoJh4cKjHrhnyXY6PgrHpLK
-         85c5GiNIeepifFeyVzMroc3IGeQPvYJsPE6GANW/1Jz6ipZTGtmxG3AFWpis6U5nxM0u
-         9SspHklbe19WcWvyMY9A/cnz9VTq1NQi6rZHvrJPOODA3+sTroEftiODx8+Z4PSbdSD4
-         JVRSZGHXxPJYU60Nw/oKQHdhX3zqe+HPJGoKm9LfYUsR6VOgOnX1FU9++vR1/7k5B6Sl
-         OqLGlWgWVOugSqujh54KMPW29ELbJauzph1ezjbkSCh758w6oq8hSl80Vsbq8YXvfFGx
-         5fqg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=D+MqPDavG72JIJh+i7ydfVr+tFhEdIBsYuNF/SflY4s=;
+        b=io4Hmy4BEIEFOl5wqrOg+jNWCZUftVq/uAlqqHmC8H9bJ2S5rVWY8hK0JE8NS5T0vr
+         aCbjTA4Hj1cj5dlTQiT80zVJEs9qrLxBttCaYZnj4YNKDVu8+juFC5o5z4AJICqsS+zz
+         uTbpSBiakCeD6b6B7FnRW2oRjOGCFy+4yYIRFEBFabVvraaWzJNOcxJsqDiy3qE3WhpN
+         TnnmXtXegQjvH6mgUvTHd3fQLkWf62scQzJECSXPTDM+yiUpwWR+KmSh71rS2rKrW/YU
+         96JRZYk/i8GLgfst1/CPaOJw/eW4bP0VBAsuPxQc0X8mBF2B8COTQH+VD9pXof91SbSq
+         rSwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=01ZaodaDx7mKeMsXvB23tTxrXIayVtwHPEPEGKhS98A=;
-        b=tjguLr9n3B9YpU9TdJuiXckkR51U9JDZSSG31I9i7++rk+Sza4mGVenDuCiJZFrI+O
-         ifc9b3EoHEUcTOn5hRqWE5ll640N6lesjbjEO7W5jlOPA+z5QSkYaV8Q4cXKuvOfNpb2
-         66s1fSiDq1rCr2ECD56D5VOYRRCa/FoCMPqRUIx+L/2IWZaasdLzHWuC2a7Aop3yMNeK
-         REVFOGnMATglcrnaZ20FXQeUS/jVebPh/uZ+/axX+C62SfWLMTIicSEodr1tnapiJrsM
-         +QXmxcsJmeh8ByNzMF4j/TwZ59rnCdfZAE3kI3QmJ8NMq4H4MFfcD2KSba7EkAoI4Xkc
-         5UEw==
-X-Gm-Message-State: APjAAAW1ZKZyVMSUFicUDUDJDT+U8ORyjQi/EyDyIlMTma/ed3Nwo/a4
-        tPr+DVpSMjFQ+GOOrv8/0ebeUXjy7h2UfUmEWoFRKg==
-X-Google-Smtp-Source: APXvYqxE30q0tSSJMu3guI09sH2bs/UqlCraWFjUE/V1BMcubjJgN2dhMofOAQnk/QVFVER9j12WU8+boVM3eecRu6U=
-X-Received: by 2002:ac2:5c42:: with SMTP id s2mr8772526lfp.61.1562589711198;
- Mon, 08 Jul 2019 05:41:51 -0700 (PDT)
-MIME-Version: 1.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=D+MqPDavG72JIJh+i7ydfVr+tFhEdIBsYuNF/SflY4s=;
+        b=WezlecaR9bflUO7LukAikWLA6Lk0MBPGUK/Jo/T/VVFhzajw3w9uqM6wbNQ237Pur6
+         kiQ6doc9LNsw2ABW8U5FLkO7aBx6nXAWK0h68JQxzGcvUejIKXyUwN6waY12MGVUHQEB
+         jph2uS9G/KQjrgxxn93K8ZOh3Rl+qknirTW88RBZ+jvYxWQzLtvfpk5aTxr0EDoYHpWt
+         8PODsoS6yMohaaKFruj4UQeFi9pcBfE4RiZqorKr+/1izvCb0awWzN69pqpm+ao/nUnf
+         71dhtN6FvjwCQ25elgw5t39o65cLn7CH7KGvKu9WVhbg32UusbwycfuDUJsMmsUBko/g
+         qbRw==
+X-Gm-Message-State: APjAAAUyJYAugw2OE90oZU1BM6j++82NlEtx+2d8D4/Kv1pRu/NxOKvZ
+        63+PLQWQSVLO6ieS6PUAzayqJw==
+X-Google-Smtp-Source: APXvYqzEx0jOXIVaLhPfITF9bzeu4HZ/KoZJiu7wenFGxHberguce7iX6HWLmFSF2s96U/hPTphqSg==
+X-Received: by 2002:a2e:9dd7:: with SMTP id x23mr11243163ljj.160.1562600352121;
+        Mon, 08 Jul 2019 08:39:12 -0700 (PDT)
+Received: from jax (h-84-105.A175.priv.bahnhof.se. [79.136.84.105])
+        by smtp.gmail.com with ESMTPSA id g4sm2832994lfb.31.2019.07.08.08.39.10
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 08 Jul 2019 08:39:11 -0700 (PDT)
+Date:   Mon, 8 Jul 2019 17:39:09 +0200
+From:   Jens Wiklander <jens.wiklander@linaro.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, corbet@lwn.net,
+        dhowells@redhat.com, jejb@linux.ibm.com,
+        jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
+        jmorris@namei.org, serge@hallyn.com, ard.biesheuvel@linaro.org,
+        daniel.thompson@linaro.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
+Subject: Re: [RFC 3/7] tee: add private login method for kernel clients
+Message-ID: <20190708153908.GA28253@jax>
 References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
-In-Reply-To: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Mon, 8 Jul 2019 18:11:39 +0530
-Message-ID: <CAFA6WYPn3HB6BRocKmKTR+ZPE=Fav5w1TUdRgmLp-NkYobp3rw@mail.gmail.com>
-Subject: Re: [RFC 0/7] Introduce TEE based Trusted Keys support
-To:     Jens Wiklander <jens.wiklander@linaro.org>
-Cc:     corbet@lwn.net, dhowells@redhat.com, jejb@linux.ibm.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>, jmorris@namei.org,
-        serge@hallyn.com, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        tee-dev@lists.linaro.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ <1560421833-27414-4-git-send-email-sumit.garg@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1560421833-27414-4-git-send-email-sumit.garg@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jens,
+Hi Sumit,
 
-On Thu, 13 Jun 2019 at 16:01, Sumit Garg <sumit.garg@linaro.org> wrote:
->
-> Add support for TEE based trusted keys where TEE provides the functionality
-> to seal and unseal trusted keys using hardware unique key. Also, this is
-> an alternative in case platform doesn't possess a TPM device.
->
-> This series also adds some TEE features like:
->
-> Patch #1, #2 enables support for registered kernel shared memory with TEE.
->
+On Thu, Jun 13, 2019 at 04:00:29PM +0530, Sumit Garg wrote:
+> There are use-cases where user-space shouldn't be allowed to communicate
+> directly with a TEE device which is dedicated to provide a specific
+> service for a kernel client. So add a private login method for kernel
+> clients and disallow user-space to open-session using this login method.
+> 
+> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> ---
+>  drivers/tee/tee_core.c   | 6 ++++++
+>  include/uapi/linux/tee.h | 2 ++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+> index 0f16d9f..4581bd1 100644
+> --- a/drivers/tee/tee_core.c
+> +++ b/drivers/tee/tee_core.c
+> @@ -334,6 +334,12 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+>  			goto out;
+>  	}
+>  
+> +	if (arg.clnt_login == TEE_IOCTL_LOGIN_REE_KERNEL) {
+TEE_IOCTL_LOGIN_REE_KERNEL is defined as 0x80000000 which is in the
+range specified and implementation defined by the GP spec. I wonder if
+we shouldn't filter the entire implementation defined range instead of
+just this value.
 
-Would you like to pick up Patch #1, #2 separately? I think both these
-patches add independent functionality and also got reviewed-by tags
-too.
+> +		pr_err("login method not allowed for user-space client\n");
+pr_debug(), if it's needed at all.
 
+> +		rc = -EPERM;
+> +		goto out;
+> +	}
+> +
+>  	rc = ctx->teedev->desc->ops->open_session(ctx, &arg, params);
+>  	if (rc)
+>  		goto out;
+> diff --git a/include/uapi/linux/tee.h b/include/uapi/linux/tee.h
+> index 4b9eb06..f33c69c 100644
+> --- a/include/uapi/linux/tee.h
+> +++ b/include/uapi/linux/tee.h
+> @@ -172,6 +172,8 @@ struct tee_ioctl_buf_data {
+>  #define TEE_IOCTL_LOGIN_APPLICATION		4
+>  #define TEE_IOCTL_LOGIN_USER_APPLICATION	5
+>  #define TEE_IOCTL_LOGIN_GROUP_APPLICATION	6
+> +/* Private login method for REE kernel clients */
+It's worth noting that this is filtered by the TEE framework, compared
+to everything else which is treated opaquely.
 
--Sumit
-
-> Patch #3 enables support for private kernel login method required for
-> cases like trusted keys where we don't wan't user-space to directly access
-> TEE service to retrieve trusted key contents.
->
-> Rest of the patches from #4 to #7 adds support for TEE based trusted keys.
->
-> This patch-set has been tested with OP-TEE based pseudo TA which can be
-> found here [1].
->
-> Looking forward to your valuable feedback/suggestions.
->
-> [1] https://github.com/OP-TEE/optee_os/pull/3082
->
-> Sumit Garg (7):
->   tee: optee: allow kernel pages to register as shm
->   tee: enable support to register kernel memory
->   tee: add private login method for kernel clients
->   KEYS: trusted: Introduce TEE based Trusted Keys
->   KEYS: encrypted: Allow TEE based trusted master keys
->   doc: keys: Document usage of TEE based Trusted Keys
->   MAINTAINERS: Add entry for TEE based Trusted Keys
->
->  Documentation/security/keys/tee-trusted.rst      |  93 +++++
->  MAINTAINERS                                      |   9 +
->  drivers/tee/optee/call.c                         |   7 +
->  drivers/tee/tee_core.c                           |   6 +
->  drivers/tee/tee_shm.c                            |  16 +-
->  include/keys/tee_trusted.h                       |  84 ++++
->  include/keys/trusted-type.h                      |   1 +
->  include/linux/tee_drv.h                          |   1 +
->  include/uapi/linux/tee.h                         |   2 +
->  security/keys/Kconfig                            |   3 +
->  security/keys/Makefile                           |   3 +
->  security/keys/encrypted-keys/masterkey_trusted.c |  10 +-
->  security/keys/tee_trusted.c                      | 506 +++++++++++++++++++++++
->  13 files changed, 737 insertions(+), 4 deletions(-)
->  create mode 100644 Documentation/security/keys/tee-trusted.rst
->  create mode 100644 include/keys/tee_trusted.h
->  create mode 100644 security/keys/tee_trusted.c
->
-> --
+> +#define TEE_IOCTL_LOGIN_REE_KERNEL		0x80000000
+>  
+>  /**
+>   * struct tee_ioctl_param - parameter
+> -- 
 > 2.7.4
->
+> 
+
+Thanks,
+Jens
