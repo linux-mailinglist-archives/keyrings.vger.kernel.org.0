@@ -2,93 +2,89 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC646396D
-	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2019 18:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44FA863CA2
+	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2019 22:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbfGIQcH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 9 Jul 2019 12:32:07 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:46284 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726232AbfGIQcG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Jul 2019 12:32:06 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x69GRNT3117938
-        for <keyrings@vger.kernel.org>; Tue, 9 Jul 2019 12:32:05 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2tmwhv2xuh-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 09 Jul 2019 12:32:05 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Tue, 9 Jul 2019 17:32:03 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 9 Jul 2019 17:31:59 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x69GVjNp13697396
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 9 Jul 2019 16:31:45 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0E1B44C052;
-        Tue,  9 Jul 2019 16:31:58 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7E7374C040;
-        Tue,  9 Jul 2019 16:31:56 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.82.106])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  9 Jul 2019 16:31:56 +0000 (GMT)
-Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
- deactivated
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Bottomley <jejb@linux.ibm.com>
-Cc:     Roberto Sassu <roberto.sassu@huawei.com>, jgg@ziepe.ca,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
-        tyhicks@canonical.com, nayna@linux.vnet.ibm.com,
-        silviu.vlasceanu@huawei.com
-Date:   Tue, 09 Jul 2019 12:31:45 -0400
-In-Reply-To: <20190709162458.f4fjteokcmidv7w6@linux.intel.com>
-References: <20190705163735.11539-1-roberto.sassu@huawei.com>
-         <1562618099.20748.13.camel@linux.ibm.com>
-         <20190709162458.f4fjteokcmidv7w6@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070916-4275-0000-0000-0000034B1768
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070916-4276-0000-0000-0000385B18AA
-Message-Id: <1562689905.28089.52.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-09_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907090193
+        id S1729557AbfGIURP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 9 Jul 2019 16:17:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46072 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729165AbfGIURP (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 9 Jul 2019 16:17:15 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4359D2073D;
+        Tue,  9 Jul 2019 20:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562703434;
+        bh=/7w2s/MYH1JhMDmaUyVtvh5HJdLLcWL4dUX+RYNl888=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=1zb64ASlEC203NksJleQ987t2K4CdmHfcYyXBkEyww967+p0KR51WgOm+k9HzaOG+
+         x4YY9k1okgvBw7KK5T1OVVaTqsSKpRiLci2oPhPlGabLQi8X+X5zID6h7C+3pEbnjQ
+         g2lxW3/kGHVIEB/1pyXk/h13qFa/XaI734p5yDiU=
+Date:   Tue, 9 Jul 2019 13:17:12 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Cc:     Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: next-20190705 - problems generating certs/x509_certificate_list
+Message-ID: <20190709201712.GI641@sol.localdomain>
+Mail-Followup-To: David Howells <dhowells@redhat.com>,
+        keyrings@vger.kernel.org,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Woodhouse <dwmw2@infradead.org>, linux-kernel@vger.kernel.org
+References: <27671.1562384658@turing-police>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <27671.1562384658@turing-police>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2019-07-09 at 19:24 +0300, Jarkko Sakkinen wrote:
-> On Mon, Jul 08, 2019 at 01:34:59PM -0700, James Bottomley wrote:
-> > Not a criticism of your patch, but can we please stop doing this. 
-> > Single random number sources are horrendously bad practice because it
-> > gives an attacker a single target to subvert.  We should ensure the TPM
-> > is plugged into the kernel RNG as a source and then take randomness
-> > from the mixed pool so it's harder for an attacker because they have to
-> > subvert all our sources to predict what came out.
+On Fri, Jul 05, 2019 at 11:44:18PM -0400, Valdis Klētnieks wrote:
+> This worked fine in next-20190618, but in next-20190701 I'm seeing dmesg
+> entries at boot:
 > 
-> It is and I agree.
+> dmesg | grep -i x.509
+> [    8.345699] Loading compiled-in X.509 certificates
+> [    8.366137] Problem loading in-kernel X.509 certificate (-13)
+> [    8.507348] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+> [    8.526556] cfg80211: Problem loading in-kernel X.509 certificate (-13)
+> 
+> I start debugging, and discover that certs/x509_certificate_list is a zero-length file.
+> I rm it, and 'make V=1 certs/system_certificates.o', which tells me:
+> 
+> (....)
+> make -f ./scripts/Makefile.headersinst obj=include/uapi
+> make -f ./scripts/Makefile.headersinst obj=arch/x86/include/uapi
+> make -f ./scripts/Makefile.build obj=certs certs/system_certificates.o
+> ---- smoking gun alert
+>   scripts/extract-cert "" certs/x509_certificate_list
+> ----
+>   gcc -Wp,-MD,certs/.system_certificates.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-redhat-linux/9/include -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -D__KERNEL__ -D__ASSEMBLY__ -fno-PIE -m64 -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -DCONFIG_AS_AVX512=1 -DCONFIG_AS_SHA1_NI=1 -DCONFIG_AS_SHA256_NI=1 -Wa,-gdwarf-2 -DCC_USING_FENTRY -I.   -c -o certs/system_certificates.o certs/system_certificates.S
+> 
+> I go look at extract-cert.c, and sure enough, if the first parameter is a null string
+> it just goes and creates an empty file.
+> 
+> The Makefile says:
+> 
+> quiet_cmd_extract_certs  = EXTRACT_CERTS   $(patsubst "%",%,$(2))
+>       cmd_extract_certs  = scripts/extract-cert $(2) $@
+> 
+> and damned if I know why $(2) is "". Diffed the config files from -0618 and -0705,
+> not seeing anything relevant difference.
+> 
+> Any ideas?
+> 
 
-I still haven't quite figured out why the digests need to be
-initialized to anything other than 0.
+I'm seeing on mainline now:
 
-Mimi
+[   10.915386] Problem loading in-kernel X.509 certificate (-13)
 
+- Eric
