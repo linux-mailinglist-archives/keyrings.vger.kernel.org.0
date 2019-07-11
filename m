@@ -2,43 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B0865FF0
-	for <lists+keyrings@lfdr.de>; Thu, 11 Jul 2019 21:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42DD566031
+	for <lists+keyrings@lfdr.de>; Thu, 11 Jul 2019 21:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726555AbfGKTW1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Jul 2019 15:22:27 -0400
-Received: from mga14.intel.com ([192.55.52.115]:9170 "EHLO mga14.intel.com"
+        id S1728687AbfGKTsU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Jul 2019 15:48:20 -0400
+Received: from mga02.intel.com ([134.134.136.20]:42927 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726446AbfGKTW0 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 11 Jul 2019 15:22:26 -0400
+        id S1728679AbfGKTsU (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 11 Jul 2019 15:48:20 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jul 2019 12:22:25 -0700
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jul 2019 12:48:19 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.63,479,1557212400"; 
-   d="scan'208";a="156917272"
+   d="scan'208";a="168116079"
 Received: from mmoerth-mobl6.ger.corp.intel.com (HELO localhost) ([10.249.35.82])
-  by orsmga007.jf.intel.com with ESMTP; 11 Jul 2019 12:22:16 -0700
-Date:   Thu, 11 Jul 2019 22:22:15 +0300
+  by fmsmga007.fm.intel.com with ESMTP; 11 Jul 2019 12:48:14 -0700
+Date:   Thu, 11 Jul 2019 22:48:11 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        jejb@linux.ibm.com, zohar@linux.ibm.com, jmorris@namei.org,
-        serge@hallyn.com, casey@schaufler-ca.com,
-        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
-        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
-Subject: Re: [RFC/RFT] KEYS: trusted: Add generic trusted keys framework
-Message-ID: <20190711192215.5w3fzdjwsebgoesh@linux.intel.com>
-References: <1562337154-26376-1-git-send-email-sumit.garg@linaro.org>
+To:     Roberto Sassu <roberto.sassu@huawei.com>
+Cc:     jejb@linux.ibm.com, zohar@linux.ibm.com, jgg@ziepe.ca,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
+        tyhicks@canonical.com, nayna@linux.vnet.ibm.com,
+        silviu.vlasceanu@huawei.com
+Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
+ deactivated
+Message-ID: <20190711194811.rfsohbfc3a7carpa@linux.intel.com>
+References: <20190705163735.11539-1-roberto.sassu@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1562337154-26376-1-git-send-email-sumit.garg@linaro.org>
+In-Reply-To: <20190705163735.11539-1-roberto.sassu@huawei.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
@@ -46,19 +45,33 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jul 05, 2019 at 08:02:34PM +0530, Sumit Garg wrote:
-> Current trusted keys framework is tightly coupled to use TPM device as
-> an underlying implementation which makes it difficult for implementations
-> like Trusted Execution Environment (TEE) etc. to provide trusked keys
-> support in case platform doesn't posses a TPM device.
+On Fri, Jul 05, 2019 at 06:37:35PM +0200, Roberto Sassu wrote:
+> Commit c78719203fc6 ("KEYS: trusted: allow trusted.ko to initialize w/o a
+> TPM") allows the trusted module to be loaded even a TPM is not found to
+> avoid module dependency problems.
 > 
-> So this patch tries to add generic trusted keys framework where underlying
-> implemtations like TPM, TEE etc. could be easily plugged-in.
+> Unfortunately, this does not completely solve the issue, as there could be
+> a case where a TPM is found but is not functional (the TPM commands return
+> an error). Specifically, after the tpm_chip structure is returned by
+> tpm_default_chip() in init_trusted(), the execution terminates after
+> init_digests() returns -EFAULT (due to the fact that tpm_get_random()
+> returns a positive value, but less than TPM_MAX_DIGEST_SIZE).
 > 
-> Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> This patch fixes the issue by ignoring the TPM_ERR_DEACTIVATED and
+> TPM_ERR_DISABLED errors.
 
-1. Needs to be somehow dissected into digestable/reviewable pieces.
-2. As a precursory step probably would make sense to move all
-   existing trusted keys code into one subsystem first.
+Why allow trusted module to initialize if TPM is not functional?
+
+Also:
+
+err = tpm_transmit_cmd(chip, &buf,
+		       offsetof(struct tpm2_get_random_out,
+				buffer),
+		       "attempting get random");
+if (err) {
+	if (err > 0)
+		err = -EIO;
+	goto out;
+}
 
 /Jarkko
