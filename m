@@ -2,58 +2,45 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94FA265009
-	for <lists+keyrings@lfdr.de>; Thu, 11 Jul 2019 03:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 416846505B
+	for <lists+keyrings@lfdr.de>; Thu, 11 Jul 2019 05:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbfGKB70 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Jul 2019 21:59:26 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:37033 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727622AbfGKB70 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Jul 2019 21:59:26 -0400
-Received: by mail-lj1-f195.google.com with SMTP id z28so4068598ljn.4
-        for <keyrings@vger.kernel.org>; Wed, 10 Jul 2019 18:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=NiaFfYJ216nYjgBrBY5JKQAHNiRjdATog8sl2JxZW+g=;
-        b=MQOzZI79mvoiVs1sgBWHfqE+YJM9b7M05jQpHMpAAyRFe0Cs7GZ1SKjYmbrPj6ztHM
-         B7Jmo2E1tOKxmtYLHAeJfiv0Yw5iWNpJ6su3Aywbxq++FWe46hRTt1FaTYFdrs51gDai
-         Fc+1NUhQh/izklmNT0WE5mkHqoWlVg+hybjs0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=NiaFfYJ216nYjgBrBY5JKQAHNiRjdATog8sl2JxZW+g=;
-        b=PKnLpsqMl8ls9aGtHsB9ecp3qUOU97+pA7B5YDoYVZ1kjDx2X2k/pB/YF5m+Lh4pZ2
-         lhsdLWS+FdqI7ocx2nLutLezancU/4sUg7lzvb5m/LXeQRgG4koYyaHV6FhnDChP3Mkd
-         8asIOYmSCyDXo7briaHZ+moyMkNZ5yOMsajFkOxdCI9xpOka4k+9r2DmipKg01ih5MpW
-         f2JoXPtmZlqKacavB/HTi5lc6Pw7KfhcJu8o+yoejW7LB9Xr9KUqUJSVb+MMbJ9NmAQq
-         rG3QocSJLkrQ8cD4R165eqs+MOhs0KKu0Y28w0pPVtcy6W7rLC1jKsshrr1LIkJQWxDx
-         NDjw==
-X-Gm-Message-State: APjAAAVHrIlA/amOagmlOxKDD+eELYiDwP0xccCus8sLd/9byDB1uztb
-        vQJvH5SYm46VDOM6wWDpg8yi3QlikdE=
-X-Google-Smtp-Source: APXvYqxC6OQC3R0CJkKAF+pYZw56oRMiqhGauMCJjEdzOuNbOPjQ5ppsN2QlLlWbK2FvEFTrM8SM6Q==
-X-Received: by 2002:a2e:a0d6:: with SMTP id f22mr723441ljm.182.1562810363483;
-        Wed, 10 Jul 2019 18:59:23 -0700 (PDT)
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
-        by smtp.gmail.com with ESMTPSA id s7sm729243lje.95.2019.07.10.18.59.21
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 10 Jul 2019 18:59:22 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id z15so2888333lfh.13
-        for <keyrings@vger.kernel.org>; Wed, 10 Jul 2019 18:59:21 -0700 (PDT)
-X-Received: by 2002:ac2:4839:: with SMTP id 25mr355474lft.79.1562810361547;
- Wed, 10 Jul 2019 18:59:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <28477.1562362239@warthog.procyon.org.uk> <CAHk-=wjxoeMJfeBahnWH=9zShKp2bsVy527vo3_y8HfOdhwAAw@mail.gmail.com>
- <20190710194620.GA83443@gmail.com> <20190710201552.GB83443@gmail.com>
-In-Reply-To: <20190710201552.GB83443@gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 10 Jul 2019 18:59:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiFti6=K2fyAYhx-PSX9ovQPJUNp0FMdV0pDaO_pSx9MQ@mail.gmail.com>
-Message-ID: <CAHk-=wiFti6=K2fyAYhx-PSX9ovQPJUNp0FMdV0pDaO_pSx9MQ@mail.gmail.com>
+        id S1727595AbfGKDHf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Jul 2019 23:07:35 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:6620 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727461AbfGKDHf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Jul 2019 23:07:35 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6B37T2e098833
+        for <keyrings@vger.kernel.org>; Wed, 10 Jul 2019 23:07:34 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2tnubu2sc5-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Wed, 10 Jul 2019 23:07:34 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Thu, 11 Jul 2019 04:07:31 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 11 Jul 2019 04:07:28 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6B37F0p35652076
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 11 Jul 2019 03:07:15 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E5429A405B;
+        Thu, 11 Jul 2019 03:07:27 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 735A7A4054;
+        Thu, 11 Jul 2019 03:07:26 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.110.74])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 11 Jul 2019 03:07:26 +0000 (GMT)
 Subject: Re: [GIT PULL] Keys: Set 4 - Key ACLs for 5.3
+From:   Mimi Zohar <zohar@linux.ibm.com>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         David Howells <dhowells@redhat.com>,
         James Morris <jmorris@namei.org>, keyrings@vger.kernel.org,
@@ -63,31 +50,59 @@ To:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-integrity@vger.kernel.org,
         LSM List <linux-security-module@vger.kernel.org>,
         Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+Date:   Wed, 10 Jul 2019 23:07:15 -0400
+In-Reply-To: <CAHk-=wiFti6=K2fyAYhx-PSX9ovQPJUNp0FMdV0pDaO_pSx9MQ@mail.gmail.com>
+References: <28477.1562362239@warthog.procyon.org.uk>
+         <CAHk-=wjxoeMJfeBahnWH=9zShKp2bsVy527vo3_y8HfOdhwAAw@mail.gmail.com>
+         <20190710194620.GA83443@gmail.com> <20190710201552.GB83443@gmail.com>
+         <CAHk-=wiFti6=K2fyAYhx-PSX9ovQPJUNp0FMdV0pDaO_pSx9MQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19071103-4275-0000-0000-0000034BBC6E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071103-4276-0000-0000-0000385BC1F1
+Message-Id: <1562814435.4014.11.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-10_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907110035
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jul 10, 2019 at 1:15 PM Eric Biggers <ebiggers@kernel.org> wrote:
->
-> Also worth noting that the key ACL patches were only in linux-next for 9 days
-> before the pull request was sent.
+Hi Linus,
 
-Yes. I was not entirely happy with the whole key subsystem situation.
-See my concerns in
+On Wed, 2019-07-10 at 18:59 -0700, Linus Torvalds wrote:
+> Anyway, since it does seem like David is offline, I've just reverted
+> this from my tree, and will be continuing my normal merge window pull
+> requests (the other issues I have seen have fixes in their respective
+> trees).
 
-  https://lore.kernel.org/lkml/CAHk-=wjEowdfG7v_4ttu3xhf9gqopj1+q1nGG86+mGfGDTEBBg@mail.gmail.com/
+Sorry for the delay.  An exception is needed for loading builtin keys
+"KEY_ALLOC_BUILT_IN" onto a keyring that is not writable by userspace.
+ The following works, but probably is not how David would handle the
+exception.
 
-for more. That was before I realized it was buggy.
+diff --git a/security/keys/key.c b/security/keys/key.c
+index 519211a996e7..a99332c1e014 100644
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -896,7 +896,7 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
+        /* if we're going to allocate a new key, we're going to have
+         * to modify the keyring */
+        ret = key_permission(keyring_ref, KEY_NEED_WRITE);
+-       if (ret < 0) {
++       if (ret < 0 && !(flags & KEY_ALLOC_BUILT_IN)) {
+                key_ref = ERR_PTR(ret);
+                goto error_link_end;
+        }
 
-So it really would be good to have more people involved, and more
-structure to the keys development (and, I suspect, much else under
-security/)
+Mimi
 
-Anyway, since it does seem like David is offline, I've just reverted
-this from my tree, and will be continuing my normal merge window pull
-requests (the other issues I have seen have fixes in their respective
-trees).
-
-                 Linus
