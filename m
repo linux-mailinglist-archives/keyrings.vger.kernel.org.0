@@ -2,66 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75070675B1
-	for <lists+keyrings@lfdr.de>; Fri, 12 Jul 2019 22:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECCF680A5
+	for <lists+keyrings@lfdr.de>; Sun, 14 Jul 2019 20:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727513AbfGLUNA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 12 Jul 2019 16:13:00 -0400
-Received: from namei.org ([65.99.196.166]:34928 "EHLO namei.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727487AbfGLUNA (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 12 Jul 2019 16:13:00 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by namei.org (8.14.4/8.14.4) with ESMTP id x6CKBdwI009529;
-        Fri, 12 Jul 2019 20:11:40 GMT
-Date:   Sat, 13 Jul 2019 06:11:39 +1000 (AEST)
-From:   James Morris <jmorris@namei.org>
-To:     David Howells <dhowells@redhat.com>
-cc:     viro@zeniv.linux.org.uk, Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        id S1728125AbfGNSQw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 14 Jul 2019 14:16:52 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:48096 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726813AbfGNSQw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 14 Jul 2019 14:16:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=zu9VDO3r7C4z6bPiJPIw5Tkj2wZpny80iXDdtymKYFo=; b=EzYn0T6mC7FKpTJ8RU1irxwHC
+        abpmpCrn+ITOcYgj8BJxZSu6aQ8Ii0YPXkA/exU0YQAy7O0m7+zOGJ3xNtG1HVipow4mEY+2R1QFW
+        yUWv1Dom4OKQzrTOt/MbgsA7dNej/caTkqZhPY4jTEfuejInIA0Otu3kOtE0Y3OFmGhYzyRNA53ot
+        8i1Xw/ye+rilRjaF2MiA8RFIjxQIlV1yRtosHFLPp461r/jWR4weAEdfgWYgXPKwsg7h9oaNby5Uw
+        Fhn/WXJUh22ci0+2oOYbAzeIHC8bxLEX5nMuy4O4wttLhW0+1HBbETWT8w+KVWUyajs2GLcky3C/l
+        obC02yThg==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=[192.168.1.17])
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hmj3K-000704-J9; Sun, 14 Jul 2019 18:16:50 +0000
+Subject: Re: [PATCH, RFC 57/62] x86/mktme: Overview of Multi-Key Total Memory
+ Encryption
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] security: Add hooks to rule on setting a superblock
- or mount watch [ver #5]
-In-Reply-To: <156173702349.15650.1484210092464492434.stgit@warthog.procyon.org.uk>
-Message-ID: <alpine.LRH.2.21.1907130611040.4685@namei.org>
-References: <156173701358.15650.8735203424342507015.stgit@warthog.procyon.org.uk> <156173702349.15650.1484210092464492434.stgit@warthog.procyon.org.uk>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
+ <20190508144422.13171-58-kirill.shutemov@linux.intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <a2d2ac19-1dfe-6f85-df83-d72de4d5fcbf@infradead.org>
+Date:   Sun, 14 Jul 2019 11:16:49 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20190508144422.13171-58-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 28 Jun 2019, David Howells wrote:
-
-> Add security hooks that will allow an LSM to rule on whether or not a watch
-> may be set on a mount or on a superblock.  More than one hook is required
-> as the watches watch different types of object.
+On 5/8/19 7:44 AM, Kirill A. Shutemov wrote:
+> From: Alison Schofield <alison.schofield@intel.com>
 > 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Casey Schaufler <casey@schaufler-ca.com>
-> cc: Stephen Smalley <sds@tycho.nsa.gov>
-> cc: linux-security-module@vger.kernel.org
+> Provide an overview of MKTME on Intel Platforms.
+> 
+> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
-> 
->  include/linux/lsm_hooks.h |   16 ++++++++++++++++
->  include/linux/security.h  |   10 ++++++++++
->  security/security.c       |   10 ++++++++++
->  3 files changed, 36 insertions(+)
+>  Documentation/x86/mktme/index.rst          |  8 +++
+>  Documentation/x86/mktme/mktme_overview.rst | 57 ++++++++++++++++++++++
+>  2 files changed, 65 insertions(+)
+>  create mode 100644 Documentation/x86/mktme/index.rst
+>  create mode 100644 Documentation/x86/mktme/mktme_overview.rst
 
 
-Acked-by: James Morris <jamorris@linux.microsoft.com>
+> diff --git a/Documentation/x86/mktme/mktme_overview.rst b/Documentation/x86/mktme/mktme_overview.rst
+> new file mode 100644
+> index 000000000000..59c023965554
+> --- /dev/null
+> +++ b/Documentation/x86/mktme/mktme_overview.rst
+> @@ -0,0 +1,57 @@
+> +Overview
+> +=========
+...
+> +--
+> +1. https://software.intel.com/sites/default/files/managed/a5/16/Multi-Key-Total-Memory-Encryption-Spec.pdf
+> +2. The MKTME architecture supports up to 16 bits of KeyIDs, so a
+> +   maximum of 65535 keys on top of the “TME key” at KeyID-0.  The
+> +   first implementation is expected to support 5 bits, making 63
+
+Hi,
+How do 5 bits make 63 keys available?
+
+> +   keys available to applications.  However, this is not guaranteed.
+> +   The number of available keys could be reduced if, for instance,
+> +   additional physical address space is desired over additional
+> +   KeyIDs.
 
 
+thanks.
 -- 
-James Morris
-<jmorris@namei.org>
-
+~Randy
