@@ -2,39 +2,39 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B526932B
-	for <lists+keyrings@lfdr.de>; Mon, 15 Jul 2019 16:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A0BC69606
+	for <lists+keyrings@lfdr.de>; Mon, 15 Jul 2019 17:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404154AbfGOOmO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Jul 2019 10:42:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42310 "EHLO mail.kernel.org"
+        id S2388773AbfGOONt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Jul 2019 10:13:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54556 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404476AbfGOOkl (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:40:41 -0400
+        id S1731356AbfGOONs (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:13:48 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2CC49204FD;
-        Mon, 15 Jul 2019 14:40:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A034F2083D;
+        Mon, 15 Jul 2019 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563201641;
-        bh=DJbrE1O1zB+v1rzzUPlHxWpLKZaxQ9ZdCmFlxx9QI3o=;
+        s=default; t=1563200027;
+        bh=mpv5qIPsHtYPw+A/BGE2sSjzuUPliIMI57zTeeXOEkA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CixLkruRhwliLXH+tZnEIhQ6n31IYL6ltm11ieREtN4Tta0EcTmT0eObpt1DvTQCC
-         YY6ws267QuIt6BtdY8/TwWnCzS15Q3ppSSZYfD4EexeFYfg8KsaeXCtZ/TolucozI7
-         gPqRgVM0ghF6h1tqEVyzqqk3gZhnD8zQ9AqU9cmo=
+        b=VThiK6WcIg83p7Wdsms0xh80otxUO8HpIppcOLrOJqyP87RPc9dS5Pck1K/JvEAO9
+         E1JgR+4fKzj8tJuC3FAGLj/MQFW6twREJxA1ErpD57fMxmJOSmvt+ApeCjKl3L7m5/
+         xX100PbMzWVk8VMytcvKky0SEqup1jnY1gfUlh2M=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 61/73] crypto: asymmetric_keys - select CRYPTO_HASH where needed
-Date:   Mon, 15 Jul 2019 10:36:17 -0400
-Message-Id: <20190715143629.10893-61-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 162/219] crypto: asymmetric_keys - select CRYPTO_HASH where needed
+Date:   Mon, 15 Jul 2019 10:02:43 -0400
+Message-Id: <20190715140341.6443-162-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190715143629.10893-1-sashal@kernel.org>
-References: <20190715143629.10893-1-sashal@kernel.org>
+In-Reply-To: <20190715140341.6443-1-sashal@kernel.org>
+References: <20190715140341.6443-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -71,10 +71,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-index 331f6baf2df8..13f3de68b479 100644
+index be70ca6c85d3..1f1f004dc757 100644
 --- a/crypto/asymmetric_keys/Kconfig
 +++ b/crypto/asymmetric_keys/Kconfig
-@@ -14,6 +14,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+@@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
  	select MPILIB
  	select CRYPTO_HASH_INFO
  	select CRYPTO_AKCIPHER
@@ -82,7 +82,7 @@ index 331f6baf2df8..13f3de68b479 100644
  	help
  	  This option provides support for asymmetric public key type handling.
  	  If signature generation and/or verification are to be used,
-@@ -33,6 +34,7 @@ config X509_CERTIFICATE_PARSER
+@@ -65,6 +66,7 @@ config TPM_KEY_PARSER
  config PKCS7_MESSAGE_PARSER
  	tristate "PKCS#7 message parser"
  	depends on X509_CERTIFICATE_PARSER
@@ -90,7 +90,7 @@ index 331f6baf2df8..13f3de68b479 100644
  	select ASN1
  	select OID_REGISTRY
  	help
-@@ -55,6 +57,7 @@ config SIGNED_PE_FILE_VERIFICATION
+@@ -87,6 +89,7 @@ config SIGNED_PE_FILE_VERIFICATION
  	bool "Support for PE file signature verification"
  	depends on PKCS7_MESSAGE_PARSER=y
  	depends on SYSTEM_DATA_VERIFICATION
