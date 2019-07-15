@@ -2,97 +2,102 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB12685E7
-	for <lists+keyrings@lfdr.de>; Mon, 15 Jul 2019 11:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEEEC68D5C
+	for <lists+keyrings@lfdr.de>; Mon, 15 Jul 2019 15:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729376AbfGOJCy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Jul 2019 05:02:54 -0400
-Received: from mga07.intel.com ([134.134.136.100]:44199 "EHLO mga07.intel.com"
+        id S1733054AbfGON6C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Jul 2019 09:58:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36982 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729245AbfGOJCx (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 15 Jul 2019 05:02:53 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Jul 2019 02:02:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,493,1557212400"; 
-   d="scan'208";a="365809173"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 15 Jul 2019 02:02:48 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id DF2ED14B; Mon, 15 Jul 2019 12:02:47 +0300 (EEST)
-Date:   Mon, 15 Jul 2019 12:02:47 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        Alison Schofield <alison.schofield@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        David Howells <dhowells@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Kai Huang <kai.huang@linux.intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>, linux-mm@kvack.org,
-        kvm@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH, RFC 57/62] x86/mktme: Overview of Multi-Key Total Memory
- Encryption
-Message-ID: <20190715090247.lclzdru5gqowweis@black.fi.intel.com>
-References: <20190508144422.13171-1-kirill.shutemov@linux.intel.com>
- <20190508144422.13171-58-kirill.shutemov@linux.intel.com>
- <a2d2ac19-1dfe-6f85-df83-d72de4d5fcbf@infradead.org>
+        id S1732131AbfGON6B (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:58:01 -0400
+Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id ACB2A2083D;
+        Mon, 15 Jul 2019 13:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563199081;
+        bh=mpv5qIPsHtYPw+A/BGE2sSjzuUPliIMI57zTeeXOEkA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=XndKUVdmiLtVgioKQQVtQto2N6v8y4VaUGHdhI4aP5NVTqS24Tc65GyJLmtKgRGuE
+         x2pXLh2dc/XMxDImml84v3ed8PsmgON2odJ4UlDg57/7VPzbk6maRTD9J3UFSg2Oi+
+         FAhhOXc/so2ZP5X/y2GRm2x2aIGUVoCCar4V28e0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 184/249] crypto: asymmetric_keys - select CRYPTO_HASH where needed
+Date:   Mon, 15 Jul 2019 09:45:49 -0400
+Message-Id: <20190715134655.4076-184-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
+References: <20190715134655.4076-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a2d2ac19-1dfe-6f85-df83-d72de4d5fcbf@infradead.org>
-User-Agent: NeoMutt/20170714-126-deb55f (1.8.3)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Jul 14, 2019 at 06:16:49PM +0000, Randy Dunlap wrote:
-> On 5/8/19 7:44 AM, Kirill A. Shutemov wrote:
-> > From: Alison Schofield <alison.schofield@intel.com>
-> > 
-> > Provide an overview of MKTME on Intel Platforms.
-> > 
-> > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >  Documentation/x86/mktme/index.rst          |  8 +++
-> >  Documentation/x86/mktme/mktme_overview.rst | 57 ++++++++++++++++++++++
-> >  2 files changed, 65 insertions(+)
-> >  create mode 100644 Documentation/x86/mktme/index.rst
-> >  create mode 100644 Documentation/x86/mktme/mktme_overview.rst
-> 
-> 
-> > diff --git a/Documentation/x86/mktme/mktme_overview.rst b/Documentation/x86/mktme/mktme_overview.rst
-> > new file mode 100644
-> > index 000000000000..59c023965554
-> > --- /dev/null
-> > +++ b/Documentation/x86/mktme/mktme_overview.rst
-> > @@ -0,0 +1,57 @@
-> > +Overview
-> > +=========
-> ...
-> > +--
-> > +1. https://software.intel.com/sites/default/files/managed/a5/16/Multi-Key-Total-Memory-Encryption-Spec.pdf
-> > +2. The MKTME architecture supports up to 16 bits of KeyIDs, so a
-> > +   maximum of 65535 keys on top of the “TME key” at KeyID-0.  The
-> > +   first implementation is expected to support 5 bits, making 63
-> 
-> Hi,
-> How do 5 bits make 63 keys available?
+From: Arnd Bergmann <arnd@arndb.de>
 
-Yep, typo. It has to be 6 bits.
+[ Upstream commit 90acc0653d2bee203174e66d519fbaaa513502de ]
 
-Alison, please correct this.
+Build testing with some core crypto options disabled revealed
+a few modules that are missing CRYPTO_HASH:
 
+crypto/asymmetric_keys/x509_public_key.o: In function `x509_get_sig_params':
+x509_public_key.c:(.text+0x4c7): undefined reference to `crypto_alloc_shash'
+x509_public_key.c:(.text+0x5e5): undefined reference to `crypto_shash_digest'
+crypto/asymmetric_keys/pkcs7_verify.o: In function `pkcs7_digest.isra.0':
+pkcs7_verify.c:(.text+0xab): undefined reference to `crypto_alloc_shash'
+pkcs7_verify.c:(.text+0x1b2): undefined reference to `crypto_shash_digest'
+pkcs7_verify.c:(.text+0x3c1): undefined reference to `crypto_shash_update'
+pkcs7_verify.c:(.text+0x411): undefined reference to `crypto_shash_finup'
+
+This normally doesn't show up in randconfig tests because there is
+a large number of other options that select CRYPTO_HASH.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ crypto/asymmetric_keys/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index be70ca6c85d3..1f1f004dc757 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+ 	select MPILIB
+ 	select CRYPTO_HASH_INFO
+ 	select CRYPTO_AKCIPHER
++	select CRYPTO_HASH
+ 	help
+ 	  This option provides support for asymmetric public key type handling.
+ 	  If signature generation and/or verification are to be used,
+@@ -65,6 +66,7 @@ config TPM_KEY_PARSER
+ config PKCS7_MESSAGE_PARSER
+ 	tristate "PKCS#7 message parser"
+ 	depends on X509_CERTIFICATE_PARSER
++	select CRYPTO_HASH
+ 	select ASN1
+ 	select OID_REGISTRY
+ 	help
+@@ -87,6 +89,7 @@ config SIGNED_PE_FILE_VERIFICATION
+ 	bool "Support for PE file signature verification"
+ 	depends on PKCS7_MESSAGE_PARSER=y
+ 	depends on SYSTEM_DATA_VERIFICATION
++	select CRYPTO_HASH
+ 	select ASN1
+ 	select OID_REGISTRY
+ 	help
 -- 
- Kirill A. Shutemov
+2.20.1
+
