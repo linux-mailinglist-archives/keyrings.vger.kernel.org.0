@@ -2,44 +2,41 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9AE732FD
-	for <lists+keyrings@lfdr.de>; Wed, 24 Jul 2019 17:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DACC77422
+	for <lists+keyrings@lfdr.de>; Sat, 27 Jul 2019 00:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728502AbfGXPqG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 24 Jul 2019 11:46:06 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:55508 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727716AbfGXPqG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 24 Jul 2019 11:46:06 -0400
-Received: by mail-io1-f71.google.com with SMTP id f22so51435883ioh.22
-        for <keyrings@vger.kernel.org>; Wed, 24 Jul 2019 08:46:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=gBxbRh6nlrBNpWP3ExOiafKZxK2mH6DReoxncqT8HEc=;
-        b=cGg3Z66giwcM5QKF/sppWFQ5XXtUwAtJ5DLSRPNEbVZ8taNFhtDokvy6bGx9Dh0ad3
-         AifOd0Qf9IJwE9k6gEznu9nTDupJts3VYoiCQ4b3YK4HWipvDOIGrjrbh+PJ31wU+c36
-         LAc0DYPx7Pb3d1sThovRoCd5A0cZXGs7oV6f9Bf5YgxqsXN/JOtPKMU9CSLeGNnlLy9N
-         MbVvd1VyECmt/rL0CQlv1sQO8N067U7PJDjTgtH5AM1SbXXwkuazSh4AJrjuTsKsHnEA
-         1lN0Mews4mRU89YnxtpE2X4nkVKjF5Wl9vXLGsU4ci/ng1ss65o5OM5qiFRu8l9l0uh8
-         6o9g==
-X-Gm-Message-State: APjAAAVOoVZV8HYVnBSHB/vGaXe61sND9vEhLYVywcHtfqXY5KvLL1z3
-        g+MLIYxseHDmUJFy2d+vq4FkcG3ENktJiQZ7EAD/Rxycnbci
-X-Google-Smtp-Source: APXvYqxp2+T2DzTNfWYH2VMXXMkYl0SM6vAOOaHPL9Jzmf+FjmswkWfYBl2xELojIfx7Nr+4mY5Z4Oe1ogNCLNzthnScyU+0l5Ev
+        id S2387418AbfGZWp6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Jul 2019 18:45:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52372 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726581AbfGZWp6 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 26 Jul 2019 18:45:58 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4CB1218B0;
+        Fri, 26 Jul 2019 22:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564181156;
+        bh=WjS0jvCksh/aySG03DCroHPwJAunfHDm6VDkmeVCnQY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DPIVahC7+GeBRXjiBQy/Ap4fTOqzNHa6uEJLk+ecKPY0ZKwv03jz69JjFYFcBd3uv
+         eLZ4PGMxnXdE76B6sYBtXqPvV1m0M6lLqkpu5rCkWFVlC6FsnLn7ZDxZHBBS+b+HF+
+         PMeCcvQ8depLFKA+uTKe3ol86Ce2vOMLGid7EIWY=
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     linux-fscrypt@vger.kernel.org
+Cc:     linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        Paul Crowley <paulcrowley@google.com>,
+        Satya Tangirala <satyat@google.com>
+Subject: [PATCH v7 00/16] fscrypt: key management improvements
+Date:   Fri, 26 Jul 2019 15:41:25 -0700
+Message-Id: <20190726224141.14044-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2183:: with SMTP id b3mr65164579iob.249.1563983165490;
- Wed, 24 Jul 2019 08:46:05 -0700 (PDT)
-Date:   Wed, 24 Jul 2019 08:46:05 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000038ef6058e6f3592@google.com>
-Subject: KASAN: use-after-free Read in keyring_compare_object
-From:   syzbot <syzbot+9a02c5074e2307825994@syzkaller.appspotmail.com>
-To:     dhowells@redhat.com, jmorris@namei.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, serge@hallyn.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
@@ -47,120 +44,208 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 Hello,
 
-syzbot found the following crash on:
+[Note: I'd like to apply this for v5.4.  Additional review is greatly
+ appreciated, especially of the API before it's set in stone.  Thanks!]
 
-HEAD commit:    abdfd52a Merge tag 'armsoc-defconfig' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11be4894600000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b8e53b1e149c0183
-dashboard link: https://syzkaller.appspot.com/bug?extid=9a02c5074e2307825994
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-userspace arch: i386
+This patchset makes major improvements to how keys are added, removed,
+and derived in fscrypt, aka ext4/f2fs/ubifs encryption.  It does this by
+adding new ioctls that add and remove encryption keys directly to/from
+the filesystem, and by adding a new encryption policy version ("v2")
+where the user-provided keys are only used as input to HKDF-SHA512 and
+are identified by their cryptographic hash.
 
-Unfortunately, I don't have any reproducer for this crash yet.
+All new APIs and all cryptosystem changes are documented in
+Documentation/filesystems/fscrypt.rst.  Userspace can use the new key
+management ioctls with existing encrypted directories, but migrating to
+v2 encryption policies is needed for the full benefits.
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+9a02c5074e2307825994@syzkaller.appspotmail.com
+These changes solve four interrelated problems:
 
-==================================================================
-BUG: KASAN: use-after-free in keyring_compare_object+0x1cb/0x220  
-/security/keys/keyring.c:314
-Read of size 8 at addr ffff88806b52f130 by task syz-executor.1/11908
+(1) Providing fscrypt keys via process-subscribed keyrings is abusing
+    encryption as an OS-level access control mechanism, causing many
+    bugs where processes don't get access to the keys they need -- e.g.,
+    when a 'sudo' command or a system service needs to access encrypted
+    files.  It's also inconsistent with the filesystem/VFS "view" of
+    encrypted files which is global, so sometimes things randomly happen
+    to work anyway due to caching.  Regardless, currently almost all
+    fscrypt users actually do need global keys, so they're having to use
+    workarounds that heavily abuse the session or user keyrings, e.g.
+    Android and Chromium OS both use a systemwide "session keyring" and
+    the 'fscrypt' tool links all user keyrings into root's user keyring.
 
-CPU: 1 PID: 11908 Comm: syz-executor.1 Not tainted 5.2.0+ #64
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack /lib/dump_stack.c:77 [inline]
-  dump_stack+0x172/0x1f0 /lib/dump_stack.c:113
-  print_address_description.cold+0xd4/0x306 /mm/kasan/report.c:351
-  __kasan_report.cold+0x1b/0x36 /mm/kasan/report.c:482
-  kasan_report+0x12/0x17 /mm/kasan/common.c:612
-  __asan_report_load8_noabort+0x14/0x20 /mm/kasan/generic_report.c:132
-  keyring_compare_object+0x1cb/0x220 /security/keys/keyring.c:314
-  assoc_array_find+0x14b/0x1f0 /lib/assoc_array.c:331
-  search_keyring /security/keys/keyring.c:655 [inline]
-  search_nested_keyrings+0xb15/0xea0 /security/keys/keyring.c:722
-  keyring_search_rcu+0x1b4/0x290 /security/keys/keyring.c:926
-  search_cred_keyrings_rcu+0x17d/0x2e0 /security/keys/process_keys.c:480
-  search_process_keyrings_rcu+0x1d/0x320 /security/keys/process_keys.c:544
-  request_key_and_link+0x264/0x12b0 /security/keys/request_key.c:602
-  __do_sys_request_key /security/keys/keyctl.c:223 [inline]
-  __se_sys_request_key /security/keys/keyctl.c:168 [inline]
-  __ia32_sys_request_key+0x288/0x430 /security/keys/keyctl.c:168
-  do_syscall_32_irqs_on /arch/x86/entry/common.c:332 [inline]
-  do_fast_syscall_32+0x27b/0xdb3 /arch/x86/entry/common.c:403
-  entry_SYSENTER_compat+0x70/0x7f /arch/x86/entry/entry_64_compat.S:139
-RIP: 0023:0xf7f309c9
-Code: d3 83 c4 10 5b 5e 5d c3 ba 80 96 98 00 eb a9 8b 04 24 c3 8b 34 24 c3  
-8b 3c 24 c3 90 90 90 90 90 90 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90  
-90 90 90 eb 0d 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 002b:00000000f5d2c0cc EFLAGS: 00000296 ORIG_RAX: 000000000000011f
-RAX: ffffffffffffffda RBX: 0000000020000000 RCX: 00000000200001c0
-RDX: 0000000020000200 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+(2) Currently there's no way to securely and efficiently remove a
+    fscrypt key such that not only is the original key wiped, but also
+    all files and directories protected by that key are "locked" and
+    their per-file keys wiped.  Many users want this and are using
+    'echo 2 > /proc/sys/vm/drop_caches' as a workaround, but this is
+    root-only, and also is overkill so can be a performance disaster.
 
-Allocated by task 20965:
-  save_stack+0x23/0x90 /mm/kasan/common.c:69
-  set_track /mm/kasan/common.c:77 [inline]
-  __kasan_kmalloc /mm/kasan/common.c:487 [inline]
-  __kasan_kmalloc.constprop.0+0xcf/0xe0 /mm/kasan/common.c:460
-  kasan_slab_alloc+0xf/0x20 /mm/kasan/common.c:495
-  slab_post_alloc_hook /mm/slab.h:520 [inline]
-  slab_alloc /mm/slab.c:3319 [inline]
-  kmem_cache_alloc+0x121/0x710 /mm/slab.c:3483
-  kmem_cache_zalloc /./include/linux/slab.h:738 [inline]
-  key_alloc+0x426/0x1110 /security/keys/key.c:276
-  key_create_or_update+0x651/0xbe0 /security/keys/key.c:924
-  __do_sys_add_key /security/keys/keyctl.c:132 [inline]
-  __se_sys_add_key /security/keys/keyctl.c:72 [inline]
-  __ia32_sys_add_key+0x2c2/0x4f0 /security/keys/keyctl.c:72
-  do_syscall_32_irqs_on /arch/x86/entry/common.c:332 [inline]
-  do_fast_syscall_32+0x27b/0xdb3 /arch/x86/entry/common.c:403
-  entry_SYSENTER_compat+0x70/0x7f /arch/x86/entry/entry_64_compat.S:139
+(3) The key derivation function (KDF) that fscrypt uses to derive
+    per-file keys is nonstandard, inflexible, and has some weaknesses
+    such as being reversible and not evenly distributing the entropy
+    from the user-provided keys.
 
-Freed by task 2951:
-  save_stack+0x23/0x90 /mm/kasan/common.c:69
-  set_track /mm/kasan/common.c:77 [inline]
-  __kasan_slab_free+0x102/0x150 /mm/kasan/common.c:449
-  kasan_slab_free+0xe/0x10 /mm/kasan/common.c:457
-  __cache_free /mm/slab.c:3425 [inline]
-  kmem_cache_free+0x86/0x320 /mm/slab.c:3693
-  key_gc_unused_keys.constprop.0+0x192/0x5b0 /security/keys/gc.c:157
-  key_garbage_collector+0x3f3/0x940 /security/keys/gc.c:292
-  process_one_work+0x9af/0x1740 /kernel/workqueue.c:2269
-  worker_thread+0x98/0xe40 /kernel/workqueue.c:2415
-  kthread+0x361/0x430 /kernel/kthread.c:255
-  ret_from_fork+0x24/0x30 /arch/x86/entry/entry_64.S:352
+(4) fscrypt doesn't check that the correct key was supplied.  This can
+    be a security vulnerability, since it allows malicious local users
+    to associate the wrong key with files to which they have read-only
+    access, causing other users' processes to read/write the wrong data.
 
-The buggy address belongs to the object at ffff88806b52f040
-  which belongs to the cache key_jar of size 304
-The buggy address is located 240 bytes inside of
-  304-byte region [ffff88806b52f040, ffff88806b52f170)
-The buggy address belongs to the page:
-page:ffffea0001ad4bc0 refcount:1 mapcount:0 mapping:ffff88821bc461c0  
-index:0xffff88806b52f7c0
-flags: 0x1fffc0000000200(slab)
-raw: 01fffc0000000200 ffffea00019b3648 ffffea0001a834c8 ffff88821bc461c0
-raw: ffff88806b52f7c0 ffff88806b52f040 0000000100000005 0000000000000000
-page dumped because: kasan: bad access detected
+Ultimately, the solutions to these problems all tie into each other.  By
+adding a filesystem-level encryption keyring with ioctls to add/remove
+keys to/from it, the keys are made usable filesystem-wide (solves
+problem #1).  It also becomes easy to track the inodes that were
+"unlocked" with each key, so they can be evicted when the key is removed
+(solves problem #2).  Moreover, the filesystem-level keyring is a
+natural place to store an HMAC transform keyed by each key, thus making
+it easy and efficient to switch the KDF to HKDF (solves problem #3).
 
-Memory state around the buggy address:
-  ffff88806b52f000: fc fc fc fc fc fc fc fc fb fb fb fb fb fb fb fb
-  ffff88806b52f080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff88806b52f100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
-                                      ^
-  ffff88806b52f180: fc fc fc fc fc fc fc fc 00 00 00 00 00 00 00 00
-  ffff88806b52f200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
+Finally, to check that the correct key was supplied, I use HKDF to
+derive a cryptographically secure key_identifier for each key (solves
+problem #4).  This in combination with key quotas and other careful
+precautions also makes it safe to allow non-root users to add and remove
+keys to/from the filesystem-level keyring.  Thus, all problems are
+solved without having to restrict the fscrypt API to root only.
 
+The patchset is organized as follows:
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+- Patches 1-8 add new ioctls FS_IOC_ADD_ENCRYPTION_KEY,
+  FS_IOC_REMOVE_ENCRYPTION_KEY, and FS_IOC_GET_ENCRYPTION_KEY_STATUS.
+  Adding a key logically "unlocks" all files on the filesystem that are
+  protected by that key; removing a key "locks" them again.
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+- Patches 9-12 add support for v2 encryption policies.
+
+- Patches 13-15 wire up the new ioctls to ext4, f2fs, and ubifs.
+
+- Patch 16 updates the fscrypt documentation for all the changes.
+
+This patchset applies to v5.3-rc1 with the pending fscrypt cleanup
+patches applied (https://patchwork.kernel.org/patch/11057589/ and
+https://patchwork.kernel.org/cover/11057583/).
+You can also get it from git at:
+
+	Repository:   https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git
+	Branch:       fscrypt-key-mgmt-improvements-v7
+
+I've written xfstests for the new APIs.  They test the APIs themselves
+as well as verify the correctness of the ciphertext stored on-disk for
+v2 encryption policies.  The tests can be found at:
+
+	Repository:   https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/xfstests-dev.git
+	Branch:       fscrypt-key-mgmt-improvements
+
+The xfstests depend on new xfs_io commands which can be found at:
+
+	Repository:   https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/xfsprogs-dev.git
+	Branch:       fscrypt-key-mgmt-improvements
+
+I've also made proof-of-concept changes to the 'fscrypt' userspace
+program (https://github.com/google/fscrypt) to make it support v2
+encryption policies.  You can find these changes in git at:
+
+	Repository:   https://github.com/ebiggers/fscrypt.git
+	Branch:       fscrypt-key-mgmt-improvements
+
+To make the 'fscrypt' userspace program experimentally use v2 encryption
+policies on new encrypted directories, add the following to
+/etc/fscrypt.conf within the "options" section:
+
+	"policy_version": "2"
+
+Finally, it's also planned for Android and Chromium OS to switch to the
+new ioctls and eventually to v2 encryption policies.  Work-in-progress,
+proof-of-concept changes by Satya Tangirala for AOSP can be found at
+https://android-review.googlesource.com/q/topic:fscrypt-key-mgmt-improvements
+
+Changes v6 => v7:
+    - Rebase onto v5.3-rc1 and the pending fscrypt cleanups.
+    - Work around false positive compile-time buffer overflow check in
+      copy_from_user() in fscrypt_ioctl_set_policy() when building an
+      i386 kernel in a specific config with an old gcc version.
+    - A few very minor cleanups.
+
+Changes v5 => v6:
+    - Change HKDF to use the specification-defined default salt rather
+      than a custom fixed salt, and prepend the string "fscrypt" to
+      'info' instead.  This is arguably needed to match how RFC 5869 and
+      SP 800-56C are worded.  Both ways are secure in this context, so
+      prefer the "boring" way that clearly matches the standards.
+    - Rebase onto v5.2-rc1.
+    - A few small cleanups.
+
+Changes v4 => v5:
+    - Simplify shrink_dcache_inode(), as suggested by Al Viro;
+      also move it into fs/crypto/.
+    - Fix a build error on some architectures by calling
+      copy_from_user() rather than get_user() with a __u64 pointer.
+
+Changes v3 => v4:
+    - Introduce fscrypt_sb_free() to avoid an extra #ifdef.
+    - Fix UBIFS's ->drop_inode().
+    - Add 'version' to union fscrypt_policy and union fscrypt_context.
+
+Changes v2 => v3:
+    - Use ->drop_inode() to trigger the inode eviction during/after
+      FS_IOC_REMOVE_ENCRYPTION_KEY, as suggested by Dave Chinner.
+    - A few small cleanups.
+
+v1 of this patchset was sent in October 2017 with title "fscrypt:
+filesystem-level keyring and v2 policy support".  This revived version
+follows the same basic design but incorporates numerous improvements,
+such as splitting keyinfo.c into multiple files for much better
+understandability, and introducing "per-mode" encryption keys to
+implement the semantics of the DIRECT_KEY encryption policy flag.
+
+Eric Biggers (16):
+  fs, fscrypt: move uapi definitions to new header <linux/fscrypt.h>
+  fscrypt: use FSCRYPT_ prefix for uapi constants
+  fscrypt: use FSCRYPT_* definitions, not FS_*
+  fscrypt: add ->ci_inode to fscrypt_info
+  fscrypt: refactor v1 policy key setup into keysetup_legacy.c
+  fscrypt: add FS_IOC_ADD_ENCRYPTION_KEY ioctl
+  fscrypt: add FS_IOC_REMOVE_ENCRYPTION_KEY ioctl
+  fscrypt: add FS_IOC_GET_ENCRYPTION_KEY_STATUS ioctl
+  fscrypt: add an HKDF-SHA512 implementation
+  fscrypt: v2 encryption policy support
+  fscrypt: allow unprivileged users to add/remove keys for v2 policies
+  fscrypt: require that key be added when setting a v2 encryption policy
+  ext4: wire up new fscrypt ioctls
+  f2fs: wire up new fscrypt ioctls
+  ubifs: wire up new fscrypt ioctls
+  fscrypt: document the new ioctls and policy version
+
+ Documentation/filesystems/fscrypt.rst | 670 ++++++++++++++----
+ MAINTAINERS                           |   1 +
+ fs/crypto/Kconfig                     |   2 +
+ fs/crypto/Makefile                    |  10 +-
+ fs/crypto/crypto.c                    |  12 +-
+ fs/crypto/fname.c                     |   5 +-
+ fs/crypto/fscrypt_private.h           | 366 +++++++++-
+ fs/crypto/hkdf.c                      | 181 +++++
+ fs/crypto/keyinfo.c                   | 627 -----------------
+ fs/crypto/keyring.c                   | 957 ++++++++++++++++++++++++++
+ fs/crypto/keysetup.c                  | 569 +++++++++++++++
+ fs/crypto/keysetup_legacy.c           | 340 +++++++++
+ fs/crypto/policy.c                    | 428 +++++++++---
+ fs/ext4/ioctl.c                       |  24 +
+ fs/ext4/super.c                       |   3 +
+ fs/f2fs/file.c                        |  46 ++
+ fs/f2fs/super.c                       |   2 +
+ fs/super.c                            |   2 +
+ fs/ubifs/ioctl.c                      |  16 +
+ fs/ubifs/super.c                      |  11 +
+ include/linux/fs.h                    |   1 +
+ include/linux/fscrypt.h               |  48 +-
+ include/uapi/linux/fs.h               |  54 +-
+ include/uapi/linux/fscrypt.h          | 164 +++++
+ 24 files changed, 3583 insertions(+), 956 deletions(-)
+ create mode 100644 fs/crypto/hkdf.c
+ delete mode 100644 fs/crypto/keyinfo.c
+ create mode 100644 fs/crypto/keyring.c
+ create mode 100644 fs/crypto/keysetup.c
+ create mode 100644 fs/crypto/keysetup_legacy.c
+ create mode 100644 include/uapi/linux/fscrypt.h
+
+-- 
+2.22.0
+
