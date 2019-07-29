@@ -2,103 +2,199 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3577378332
-	for <lists+keyrings@lfdr.de>; Mon, 29 Jul 2019 04:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F98785E1
+	for <lists+keyrings@lfdr.de>; Mon, 29 Jul 2019 09:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726349AbfG2CAp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 28 Jul 2019 22:00:45 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:58615 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726216AbfG2CAp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 28 Jul 2019 22:00:45 -0400
-Received: from callcc.thunk.org (96-72-102-169-static.hfc.comcastbusiness.net [96.72.102.169] (may be forged))
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x6T20BFl005802
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 28 Jul 2019 22:00:12 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 0C9074202F5; Sun, 28 Jul 2019 22:00:10 -0400 (EDT)
-Date:   Sun, 28 Jul 2019 22:00:09 -0400
-From:   "Theodore Y. Ts'o" <tytso@mit.edu>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>,
-        Satya Tangirala <satyat@google.com>
-Subject: Re: [PATCH v7 16/16] fscrypt: document the new ioctls and policy
- version
-Message-ID: <20190729020009.GA3863@mit.edu>
-References: <20190726224141.14044-1-ebiggers@kernel.org>
- <20190726224141.14044-17-ebiggers@kernel.org>
+        id S1726238AbfG2HJL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 29 Jul 2019 03:09:11 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:37998 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725988AbfG2HJK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 29 Jul 2019 03:09:10 -0400
+Received: by mail-io1-f68.google.com with SMTP id j6so42577981ioa.5
+        for <keyrings@vger.kernel.org>; Mon, 29 Jul 2019 00:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VUdf5YnKpAJwylxl/ycwhJ4KC3kGMhohvJ8eC68Wkak=;
+        b=dW1tFk4jEtVlXfgeb3SHVVbL78P7kmDnXs/6cBlP5NoogRImJw72mLK3rJ50mB13Tz
+         75I84NhCw7Rufe6pGZLxmDGJXZvDT9AImVTyTLIBueDJb1Fsx5/IbxpYrEssvWsPbsLS
+         zNF6DsHTnfgab8E7fzAMT5mi1LbNAvs/N4MbtfUzIdhck8gSe5U+IhTR2uuAwWYhFbx8
+         z3nz7LYMoUlxDoPZa4+M9ksh+KmF4Yat5qslLoRA71UyibFTXRIDVZPHgUZ0gYGnSA0B
+         xUpSWYdlvQKAlZDVsBwuVah0jG6Ot6RsJLbpnUe4TH4RWbMxydx7X4qYTkOf6omvvijg
+         Nj+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VUdf5YnKpAJwylxl/ycwhJ4KC3kGMhohvJ8eC68Wkak=;
+        b=DJZmVJjjC0Uf4vkzLyR43Yn4v/ctbQIVuCH2tCWoIRnEH2FQNT8CW6q2zA6r+uDwsm
+         0/hQm7T1TPKI0KRUmfBmvxU90lPtlquLVpnKH1+95oZ4FyZNMNBfO4g91PQgSrF2wlCp
+         dMO4EaP5To9D8VzS6C/ESY6QM6BoTOKhCftQIY4ACVRVEj9G9/F4wpBh3DM/oRt36gKD
+         2nEgp9BeHD+xFrlh4hf3lMRXYyQVlr9oedNS/ZLCeIsZPA03sfw2Aq3Y+cxZUCkaF5F8
+         jHlj3T5naoyJZIiw6PUY4IiDwKzh3O5vMLf+NJPcKC6z0MXABuVW27ohwsHOxPkyOoOs
+         Y9Lg==
+X-Gm-Message-State: APjAAAUWbtETmuGpMvD27ieMuAj1wgE3WFe40UFTufn0g7jIw37BI3I+
+        GYzB/lFJ5315g5WYy+sLtNeFv4ZGnMmf5A8dtjApSA==
+X-Google-Smtp-Source: APXvYqxfyLRG2NB8NA6t2hptMHKLx1/S6kETRqPNP50e41r75/fCTH+7913CQDbpvLvodTcgaUntXV0H/NiJXLo2GsY=
+X-Received: by 2002:a6b:c9d8:: with SMTP id z207mr96480501iof.184.1564384149745;
+ Mon, 29 Jul 2019 00:09:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190726224141.14044-17-ebiggers@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1560421833-27414-1-git-send-email-sumit.garg@linaro.org>
+ <1560421833-27414-4-git-send-email-sumit.garg@linaro.org> <20190708153908.GA28253@jax>
+ <CAFA6WYNzs=RErreWaa5BmF-P03Vf9nzQjvY_JpMckw87k9z12w@mail.gmail.com>
+ <20190709070354.GA5791@jax> <CAFA6WYPHVXbsOjzGVT1WWziMRKmWns=3YkD6_j+C1OJxTUbDmw@mail.gmail.com>
+In-Reply-To: <CAFA6WYPHVXbsOjzGVT1WWziMRKmWns=3YkD6_j+C1OJxTUbDmw@mail.gmail.com>
+From:   Jens Wiklander <jens.wiklander@linaro.org>
+Date:   Mon, 29 Jul 2019 09:08:58 +0200
+Message-ID: <CAHUa44GBt-8Z8ZniTraJYHgFVEUgMTjTJLEden3m2jhhY9qc-w@mail.gmail.com>
+Subject: Re: [RFC 3/7] tee: add private login method for kernel clients
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>, dhowells@redhat.com,
+        jejb@linux.ibm.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, jmorris@namei.org,
+        serge@hallyn.com, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jul 26, 2019 at 03:41:41PM -0700, Eric Biggers wrote:
-> +- The kernel cannot magically wipe copies of the master key(s) that
-> +  userspace might have as well.  Therefore, userspace must wipe all
-> +  copies of the master key(s) it makes as well.  Naturally, the same
-> +  also applies to all higher levels in the key hierarchy.  Userspace
-> +  should also follow other security precautions such as mlock()ing
-> +  memory containing keys to prevent it from being swapped out.
+Hi Sumit,
 
-Normally, shouldn't userspace have wiped all copies of the master key
-after they have called ADD_KEY?  Why should they be left hanging
-around?  Waiting until REMOVE_KEY to remove other copies of the master
-key seems.... late.
+On Tue, Jul 9, 2019 at 11:36 AM Sumit Garg <sumit.garg@linaro.org> wrote:
+>
+> On Tue, 9 Jul 2019 at 12:33, Jens Wiklander <jens.wiklander@linaro.org> wrote:
+> >
+> > On Tue, Jul 09, 2019 at 11:26:19AM +0530, Sumit Garg wrote:
+> > > Thanks Jens for your comments.
+> > >
+> > > On Mon, 8 Jul 2019 at 21:09, Jens Wiklander <jens.wiklander@linaro.org> wrote:
+> > > >
+> > > > Hi Sumit,
+> > > >
+> > > > On Thu, Jun 13, 2019 at 04:00:29PM +0530, Sumit Garg wrote:
+> > > > > There are use-cases where user-space shouldn't be allowed to communicate
+> > > > > directly with a TEE device which is dedicated to provide a specific
+> > > > > service for a kernel client. So add a private login method for kernel
+> > > > > clients and disallow user-space to open-session using this login method.
+> > > > >
+> > > > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > > > > ---
+> > > > >  drivers/tee/tee_core.c   | 6 ++++++
+> > > > >  include/uapi/linux/tee.h | 2 ++
+> > > > >  2 files changed, 8 insertions(+)
+> > > > >
+> > > > > diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+> > > > > index 0f16d9f..4581bd1 100644
+> > > > > --- a/drivers/tee/tee_core.c
+> > > > > +++ b/drivers/tee/tee_core.c
+> > > > > @@ -334,6 +334,12 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+> > > > >                       goto out;
+> > > > >       }
+> > > > >
+> > > > > +     if (arg.clnt_login == TEE_IOCTL_LOGIN_REE_KERNEL) {
+> > > > TEE_IOCTL_LOGIN_REE_KERNEL is defined as 0x80000000 which is in the
+> > > > range specified and implementation defined by the GP spec. I wonder if
+> > > > we shouldn't filter the entire implementation defined range instead of
+> > > > just this value.
+> > >
+> > > Agree. Will rather check for entire implementation defined range:
+> > > 0x80000000 - 0xFFFFFFFF.
+> > >
+>
+> I had a second thought on this. It would be more restrictive for
+> user-space TEE client library which may need to use implementation
+> defined login method. So either we could define specific ranges for
+> kernel and user-space or we can start with single login method
+> reserved for kernel.
 
-> +- In general, decrypted contents and filenames in the kernel VFS
-> +  caches are freed but not wiped.  Therefore, portions thereof may be
-> +  recoverable from freed memory, even after the corresponding key(s)
-> +  were wiped.  To partially solve this, you can set
-> +  CONFIG_PAGE_POISONING=y in your kernel config and add page_poison=1
-> +  to your kernel command line.  However, this has a performance cost.
+I think we should reserve a range for kernel internal use. Only
+reserving a single single login for kernel could force us to restrict
+the API once more later, better to take a chunk now and be done with
+it. Half of 0x80000000 - 0xFFFFFFFF is probably more than enough too
+to leave a range for user space too.
 
-... and even this won't help if you have swap configured....
+>
+> > > >
+> > > > > +             pr_err("login method not allowed for user-space client\n");
+> > > > pr_debug(), if it's needed at all.
+> > > >
+> > >
+> > > Ok will use pr_debug() instead.
+> > >
+> > > > > +             rc = -EPERM;
+> > > > > +             goto out;
+> > > > > +     }
+> > > > > +
+> > > > >       rc = ctx->teedev->desc->ops->open_session(ctx, &arg, params);
+> > > > >       if (rc)
+> > > > >               goto out;
+> > > > > diff --git a/include/uapi/linux/tee.h b/include/uapi/linux/tee.h
+> > > > > index 4b9eb06..f33c69c 100644
+> > > > > --- a/include/uapi/linux/tee.h
+> > > > > +++ b/include/uapi/linux/tee.h
+> > > > > @@ -172,6 +172,8 @@ struct tee_ioctl_buf_data {
+> > > > >  #define TEE_IOCTL_LOGIN_APPLICATION          4
+> > > > >  #define TEE_IOCTL_LOGIN_USER_APPLICATION     5
+> > > > >  #define TEE_IOCTL_LOGIN_GROUP_APPLICATION    6
+> > > > > +/* Private login method for REE kernel clients */
+> > > > It's worth noting that this is filtered by the TEE framework, compared
+> > > > to everything else which is treated opaquely.
+> > > >
+> > >
+> > > IIUC, you are referring to login filter in optee_os. Change to prevent
+> > > filter for this login method is part of this PR [1].
+> > >
+> > > [1] https://github.com/OP-TEE/optee_os/pull/3082
+> >
+> > No, I was referring to the changes in tee_ioctl_open_session() above.
+> > It's relevant for user space to know since it will be prevented from
+> > using that range of login identifiers.
+>
+> Ok, so you mean to extend the comment here for user-space to know that
+> this login method/range is filtered by the TEE framework. Will do
+> that.
+>
+> > This will restrict the user space
+> > API, but I think the risk of breakage is minimal as OP-TEE is the only
+> > in-tree driver registering in the TEE framework. I'm not aware of any
+> > out-of-tree drivers registering.
+>
+> I am not sure if I follow you here. How do you expect this change to
+> break out-of-tree TEE driver registration?
 
-> +v1 encryption policies have some weaknesses with respect to online
-> +attacks:
-> +
-> +- There is no verification that the provided master key is correct.
-> +  Consequently, malicious users can associate the wrong key with
-> +  encrypted files, even files to which they have only read-only
-> +  access.
+It's a change in common code that put restrictions on the API.
 
-Yes, but they won't be able to trick other users into using that
-incorrect key.  With the old interface, it gets written into the
-user's session keyring, which won't get used by another user.  And
-with the newer interface, only root is allowed to set v1 key.
+Thanks,
+Jens
 
-> +Master keys should be pseudorandom, i.e. indistinguishable from random
-> +bytestrings of the same length.  This implies that users **must not**
-> +directly use a password as a master key, zero-pad a shorter key, or
-> +repeat a shorter key.
 
-These paragraphs starts a bit funny, since we first say "should" in
-the first sentence, and then it's followed up by "**must not**" in the
-second sentence.  Basically, they *could* do this, but it would just
-weaken the security of the system significantly.
-
-At the very least, we should explain the basis of the recommendation.
-
-> +The KDF used for a particular master key differs depending on whether
-> +the key is used for v1 encryption policies or for v2 encryption
-> +policies.  Users **must not** use the same key for both v1 and v2
-> +encryption policies.
-
-"Must not" seems a bit strong.  If they do, and a v1 per-file key and
-nonce leaks out, then the encryption key will be compromised.  So the
-strength of the key will be limited by the weaknesses of the v1
-scheme.  But it's not like using a that was originally meant for v1,
-and then using it for v2, causes any additional weakness.  Right?
-
-    	       	      	  	 - Ted
+>
+> -Sumit
+>
+> >
+> > Thanks,
+> > Jens
+> >
+> > >
+> > > -Sumit
+> > >
+> > > > > +#define TEE_IOCTL_LOGIN_REE_KERNEL           0x80000000
+> > > > >
+> > > > >  /**
+> > > > >   * struct tee_ioctl_param - parameter
+> > > > > --
+> > > > > 2.7.4
+> > > > >
+> > > >
+> > > > Thanks,
+> > > > Jens
