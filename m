@@ -2,62 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C36779D73
-	for <lists+keyrings@lfdr.de>; Tue, 30 Jul 2019 02:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B2879F9C
+	for <lists+keyrings@lfdr.de>; Tue, 30 Jul 2019 05:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729404AbfG3Aje (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 29 Jul 2019 20:39:34 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:38217 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728107AbfG3Ajd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 29 Jul 2019 20:39:33 -0400
-Received: from callcc.thunk.org (96-72-102-169-static.hfc.comcastbusiness.net [96.72.102.169] (may be forged))
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x6U0dDC1018151
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 29 Jul 2019 20:39:14 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 28F7A4202F5; Mon, 29 Jul 2019 20:39:12 -0400 (EDT)
-Date:   Mon, 29 Jul 2019 20:39:12 -0400
-From:   "Theodore Y. Ts'o" <tytso@mit.edu>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>,
-        Satya Tangirala <satyat@google.com>
-Subject: Re: [PATCH v7 15/16] ubifs: wire up new fscrypt ioctls
-Message-ID: <20190730003912.GB16445@mit.edu>
-References: <20190726224141.14044-1-ebiggers@kernel.org>
- <20190726224141.14044-16-ebiggers@kernel.org>
+        id S1728063AbfG3Dt7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 29 Jul 2019 23:49:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57428 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727993AbfG3Dt7 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 29 Jul 2019 23:49:59 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 67F442087F;
+        Tue, 30 Jul 2019 03:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564458598;
+        bh=37PshnNHyTKSRD1vHLM/mJAILgIXCFD7cY7PYklafH4=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=BReYm/C3ktVX5tD52hjP5uATbZkaxNIsgtF8PEyxF2W4G9kZVs0hq5YsqX0Ly4UUH
+         y7FAN4MpQgm1vbNxeNaS2aP2/RrdawE0C8+W3njVDnWC61FvSbJUagMZ+XCmucrWRS
+         fT8HOlKnxh8QhWaFepCPOwYUfaHYOOQx1AA4oKLM=
+Date:   Mon, 29 Jul 2019 20:49:56 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] KEYS: Replace uid/gid/perm permissions checking with
+ an ACL
+Message-ID: <20190730034956.GB1966@sol.localdomain>
+Mail-Followup-To: David Howells <dhowells@redhat.com>,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <155862710003.24863.11807972177275927370.stgit@warthog.procyon.org.uk>
+ <155862710731.24863.14013725058582750710.stgit@warthog.procyon.org.uk>
+ <20190710011559.GA7973@sol.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190726224141.14044-16-ebiggers@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190710011559.GA7973@sol.localdomain>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jul 26, 2019 at 03:41:40PM -0700, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Wire up the new ioctls for adding and removing fscrypt keys to/from the
-> filesystem, and the new ioctl for retrieving v2 encryption policies.
-> 
-> FS_IOC_REMOVE_ENCRYPTION_KEY also required making UBIFS use
-> fscrypt_drop_inode().
-> 
-> For more details see Documentation/filesystems/fscrypt.rst and the
-> fscrypt patches that added the implementation of these ioctls.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+Hi David,
 
-Looks good:
+On Tue, Jul 09, 2019 at 06:16:01PM -0700, Eric Biggers wrote:
+> On Thu, May 23, 2019 at 04:58:27PM +0100, David Howells wrote:
+> > Replace the uid/gid/perm permissions checking on a key with an ACL to allow
+> > the SETATTR and SEARCH permissions to be split.  This will also allow a
+> > greater range of subjects to represented.
+> > 
+> 
+> This patch broke 'keyctl new_session', and hence broke all the fscrypt tests:
+> 
+> $ keyctl new_session
+> keyctl_session_to_parent: Permission denied
+> 
+> Output of 'keyctl show' is
+> 
+> $ keyctl show
+> Session Keyring
+>  605894913 --alswrv      0     0  keyring: _ses
+>  189223103 ----s-rv      0     0   \_ user: invocation_id
+> 
+> - Eric
 
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+This bug is still present in next-20190729.
 
-					- Ted
+- Eric
