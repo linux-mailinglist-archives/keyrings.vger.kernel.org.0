@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAF867C5F0
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FE8B7C669
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:24:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729162AbfGaPTE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:19:04 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:39466 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728854AbfGaPTC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:19:02 -0400
-Received: by mail-ed1-f67.google.com with SMTP id m10so66042753edv.6
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:19:01 -0700 (PDT)
+        id S1729929AbfGaPYT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:24:19 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:46552 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728789AbfGaPXv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:23:51 -0400
+Received: by mail-ed1-f66.google.com with SMTP id d4so66107307edr.13
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:23:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=giiClMAwHghspubxRJeU98UBj4kcy5uaSNNQ5yHBQr8=;
-        b=YaTXMBHevd+rhxg7oKsHgnNx749IFnPZBGV8uL7sZwZst8GkM7+TgJ5hOEwl+8ch77
-         0SnQ660ccq3nonm+oPVfiPClF1RSRdsFcsOmiSCMAee/860JmulRtpJu6ZVUPIXxPpab
-         A4HPUmoMK+oL/ZYU5z/0aKIN4ZyJj82QmP1VUkYEBl9uw4vslQvBcp1bM5ghPUhjzxVC
-         giBVV/0crRxnqKUVAJjYi7W4wag0HivWwFFhHGvLdDIRmm1PDwxpL1ZVySWrGgKoEpQY
-         GhlGRvNmW51GC9GcIML/xNJIoQeLdRe0qiR4tweLB/NiOTOi4OWFj5nMUqbAYuKnK/j8
-         MnLQ==
+        bh=XA7E5KeaJUbYeM2K2rhZVp4Ezd7kZRGT8yUA9YU5Vno=;
+        b=JWeiHziHkn6XUi3iIplmGfT52a/0zxqWGFzXmszrNQRkV2LwyrAs/kin1BCvzl8D2g
+         yPo5Vx4EKfuDM4BYN6yW2Wq+cCpZxizYwv7iwcWbuGnSIxyXHRUGoae6uIuCDrK7mVIH
+         xzTngkApmdVD8IRLep9RK8d9L9t//qm1rGPEilmeOZ4y8P3K0gF5VP3e4kA4nP4Iu/SI
+         H3wU+PfBV2o5YEK4noOFw3jff/xt6DObnFczx9D9SKtfMQvKeaTS3TZeAEnh1z2iouOI
+         znt+q/4tcd/EsPVDW/3K93NZpgDh60EwOqhnnuSAuZpsWbtKZkMkfICwoaZYcdqaS/CB
+         gGRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=giiClMAwHghspubxRJeU98UBj4kcy5uaSNNQ5yHBQr8=;
-        b=loLlDLVhy52mKdjfJ7tA0MAG1skhgvpiJzflK86heCyotGdHMSmn3TegoYlysks9MT
-         GgJugKo9ityyhWoL9Mury6SQraOV58jJCMQO+dpb0sA6fjAQdjHtcY7WFBruKTkhXg3Q
-         vVS+1j0G+f5ROY8Pp4KP2EeK6JJXX+w356NVbNmwY630uRX1fJvbC9ww47x8nnJTEORI
-         xoWKlxunLQ9UCrzQ6ug9tVqR1Nj9SqLRmsB6AsccDcy9mvfTcZ+CkAfkzhrMHgRE9Rww
-         VtPqOWzNQ+CaZCZWBXcw30MjNXKQ+AoQQQJ/bPVODp+KevcJf7zWXBOpVLkXAaSCWfhk
-         uM7A==
-X-Gm-Message-State: APjAAAXdptO+1AZ7CIHjbh3xJusL7z6yvAaQU9f2AIYaSLMN2krgyVRz
-        9+PRbNFKDAfBAK/7hBPN1Y0=
-X-Google-Smtp-Source: APXvYqwa7uk1eoCfkAn/mJHFtQFBKd5911qUgdeykZm3YPTTj3MkDFh75r+Wsq0y3PI0U1ZEMWspDg==
-X-Received: by 2002:aa7:dd09:: with SMTP id i9mr109849959edv.193.1564586036906;
-        Wed, 31 Jul 2019 08:13:56 -0700 (PDT)
+        bh=XA7E5KeaJUbYeM2K2rhZVp4Ezd7kZRGT8yUA9YU5Vno=;
+        b=cguOFgcUhCphJzF0i0Baa/DUnQ+oZfHUnLRJiV5+Tt08oEMp0OuvokbmuEw/tN1D4B
+         h6ItsBub/IR7VPJoBraOZUV1l0MZCo4rIGThQfZl1aIjlt1t7jh+fSs9bYazlDhurAxT
+         QQPkFXKWku7JPzjnFDBK/TNTGH0OejHSkz38XxZWVL/ak2C90QeLvhNFQUHq8EH95q6p
+         GQRSqb/JUk1rnGYTl/NCHikmEBTpG0XCmoNbZtCIbroN1UHboobthuyRdBx9LE7cjdiH
+         1C/1NTrrjklFXDOSxTPmO/WpjrXZDF9J0qrYhhC+QAckGTeXGyP6S6WgxjudR7lNg+wD
+         E7Qw==
+X-Gm-Message-State: APjAAAXRR8zBB8ivUv/LqtItOvEJaubDOHRyOMtFwZeL1cXKxDtuq9Wf
+        KlkQChOoZc65B9HotNi9JLA=
+X-Google-Smtp-Source: APXvYqygZ5MBpQtdpZUq0Kg4NNTneIlpIbVYF7hlIaO8yQtO6FOtK69pmeSCoz1g6SVwfQ5huucSCQ==
+X-Received: by 2002:a50:b1db:: with SMTP id n27mr108755394edd.62.1564586630295;
+        Wed, 31 Jul 2019 08:23:50 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id t13sm17047248edd.13.2019.07.31.08.13.52
+        by smtp.gmail.com with ESMTPSA id j7sm17555887eda.97.2019.07.31.08.23.48
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:53 -0700 (PDT)
+        Wed, 31 Jul 2019 08:23:49 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 8EA5E1048AA; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
+        id 64D3C1028A2; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -62,10 +62,10 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 58/59] x86/mktme: Document the MKTME API for anonymous memory encryption
-Date:   Wed, 31 Jul 2019 18:08:12 +0300
-Message-Id: <20190731150813.26289-59-kirill.shutemov@linux.intel.com>
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 17/59] x86/mm: Allow to disable MKTME after enumeration
+Date:   Wed, 31 Jul 2019 18:07:31 +0300
+Message-Id: <20190731150813.26289-18-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -76,87 +76,82 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Alison Schofield <alison.schofield@intel.com>
+The new helper mktme_disable() allows to disable MKTME even if it's
+enumerated successfully. MKTME initialization may fail and this
+functionality allows system to boot regardless of the failure.
 
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+MKTME needs per-KeyID direct mapping. It requires a lot more virtual
+address space which may be a problem in 4-level paging mode. If the
+system has more physical memory than we can handle with MKTME the
+feature allows to fail MKTME, but boot the system successfully.
+
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- Documentation/x86/mktme/index.rst         |  1 +
- Documentation/x86/mktme/mktme_encrypt.rst | 56 +++++++++++++++++++++++
- 2 files changed, 57 insertions(+)
- create mode 100644 Documentation/x86/mktme/mktme_encrypt.rst
+ arch/x86/include/asm/mktme.h |  5 +++++
+ arch/x86/kernel/cpu/intel.c  |  5 +----
+ arch/x86/mm/mktme.c          | 10 ++++++++++
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/x86/mktme/index.rst b/Documentation/x86/mktme/index.rst
-index 8cf2b7d62091..ca3c76adc596 100644
---- a/Documentation/x86/mktme/index.rst
-+++ b/Documentation/x86/mktme/index.rst
-@@ -9,3 +9,4 @@ Multi-Key Total Memory Encryption (MKTME)
-    mktme_mitigations
-    mktme_configuration
-    mktme_keys
-+   mktme_encrypt
-diff --git a/Documentation/x86/mktme/mktme_encrypt.rst b/Documentation/x86/mktme/mktme_encrypt.rst
-new file mode 100644
-index 000000000000..6dc8ae11f1cb
---- /dev/null
-+++ b/Documentation/x86/mktme/mktme_encrypt.rst
-@@ -0,0 +1,56 @@
-+MKTME API: system call encrypt_mprotect()
-+=========================================
+diff --git a/arch/x86/include/asm/mktme.h b/arch/x86/include/asm/mktme.h
+index a61b45fca4b1..3fc246acc279 100644
+--- a/arch/x86/include/asm/mktme.h
++++ b/arch/x86/include/asm/mktme.h
+@@ -22,6 +22,8 @@ static inline bool mktme_enabled(void)
+ 	return static_branch_unlikely(&mktme_enabled_key);
+ }
+ 
++void mktme_disable(void);
 +
-+Synopsis
-+--------
-+int encrypt_mprotect(void \*addr, size_t len, int prot, key_serial_t serial);
+ extern struct page_ext_operations page_mktme_ops;
+ 
+ #define page_keyid page_keyid
+@@ -71,6 +73,9 @@ static inline bool mktme_enabled(void)
+ {
+ 	return false;
+ }
 +
-+Where *key_serial_t serial* is the serial number of a key allocated
-+using the MKTME Key Service.
++static inline void mktme_disable(void) {}
 +
-+Description
-+-----------
-+    encrypt_mprotect() encrypts the memory pages containing any part
-+    of the address range in the interval specified by addr and len.
+ #endif
+ 
+ #endif
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 4c2d70287eb4..9852580340b9 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -650,10 +650,7 @@ static void detect_tme(struct cpuinfo_x86 *c)
+ 		 * We must not allow onlining secondary CPUs with non-matching
+ 		 * configuration.
+ 		 */
+-		physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
+-		__mktme_keyid_mask = 0;
+-		__mktme_keyid_shift = 0;
+-		__mktme_nr_keyids = 0;
++		mktme_disable();
+ 	}
+ #endif
+ 
+diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+index 8015e7822c9b..1e8d662e5bff 100644
+--- a/arch/x86/mm/mktme.c
++++ b/arch/x86/mm/mktme.c
+@@ -33,6 +33,16 @@ unsigned int mktme_algs;
+ DEFINE_STATIC_KEY_FALSE(mktme_enabled_key);
+ EXPORT_SYMBOL_GPL(mktme_enabled_key);
+ 
++void mktme_disable(void)
++{
++	physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
++	__mktme_keyid_mask = 0;
++	__mktme_keyid_shift = 0;
++	__mktme_nr_keyids = 0;
++	if (mktme_enabled())
++		static_branch_disable(&mktme_enabled_key);
++}
 +
-+    encrypt_mprotect() supports the legacy mprotect() behavior plus
-+    the enabling of memory encryption. That means that in addition
-+    to encrypting the memory, the protection flags will be updated
-+    as requested in the call.
-+
-+    The *addr* and *len* must be aligned to a page boundary.
-+
-+    The caller must have *KEY_NEED_VIEW* permission on the key.
-+
-+    The memory that is to be protected must be mapped *ANONYMOUS*.
-+
-+Errors
-+------
-+    In addition to the Errors returned from legacy mprotect()
-+    encrypt_mprotect will return:
-+
-+    ENOKEY *serial* parameter does not represent a valid key.
-+
-+    EINVAL *len* parameter is not page aligned.
-+
-+    EACCES Caller does not have *KEY_NEED_VIEW* permission on the key.
-+
-+EXAMPLE
-+--------
-+  Allocate an MKTME Key::
-+        serial = add_key("mktme", "name", "type=cpu algorithm=aes-xts-128" @u
-+
-+  Map ANONYMOUS memory::
-+        ptr = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-+
-+  Protect memory::
-+        ret = syscall(SYS_encrypt_mprotect, ptr, size, PROT_READ|PROT_WRITE,
-+                      serial);
-+
-+  Use the encrypted memory
-+
-+  Free memory::
-+        ret = munmap(ptr, size);
-+
-+  Free the key resource::
-+        ret = keyctl(KEYCTL_INVALIDATE, serial);
+ static bool need_page_mktme(void)
+ {
+ 	/* Make sure keyid doesn't collide with extended page flags */
 -- 
 2.21.0
 
