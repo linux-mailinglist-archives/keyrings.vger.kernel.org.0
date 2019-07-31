@@ -2,119 +2,320 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71D537C4D4
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 16:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 477E87C584
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727171AbfGaOXW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 10:23:22 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:37974 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727287AbfGaOXW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 10:23:22 -0400
-Received: by mail-lf1-f67.google.com with SMTP id h28so47561462lfj.5
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 07:23:21 -0700 (PDT)
+        id S2388473AbfGaPIV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:08:21 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:43819 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388268AbfGaPIV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:21 -0400
+Received: by mail-ed1-f65.google.com with SMTP id e3so66030612edr.10
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6Mwmelmzw6bH/7dTu0yxXhnmtM+/gvfBNAeELEGk+uk=;
-        b=b7ckL2eSD9hJ7+SslSVgXgqXaYtTrghJzWVqnzRH5arC0as5UaAex1ADlOstZ0ZAgH
-         w5ZSSbXXNcoX8jtKyrctiyVtd6HsBbsFQtSIzZfS28PPueiU1cGACGc9zWiXCdQJ0wpk
-         DuLQOPY6YkD5kUNXs40RHrruT+f6kC9kF/wo6v+T1ORrj4UiuM6wfpvSj2z9NXqnYLZx
-         HgBwJ+wmjHC5w/e9yaL+cigyFxUP3EOJu/ohNtfLocTQL4WpgiRDQdhC4JvAcqraz54h
-         jeVh4ugy80tt9CPL8cyTLUzJDd1ZgLNDIcSfQc8LqwcMzYNldlPqEfbX2KUc9A9DpGGy
-         yiGw==
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=QvM6TLsHLaIUsQxiIrLtgZTAl4nwA/abKY84Ix9c1AI=;
+        b=PQMMzYAtdHNIXrG1QMzmJkDEaLAkNcffdKITKNKyMHWPazgNFp8a/KgMG6jpyOPy6L
+         z1/tpsyUip94xQ6akPtE8MoQmmIrADbPePw9ZUJIhjeGaokm0qqY+eEe5uAHTxdaDFOl
+         uTxZlQ2SlbbEr+TXSFQKh3v/lXXZgYGil15BJYjAEoy1ygXMXRc7taLkzxUFswX6evY7
+         kDJdbo1gZxmJV0MtpSm9FnWdgOp9x//J+1DDAJcBl4SLlPClFdePa4j2HyjR2ElgASHb
+         gjubDLRAPzaX0drp9tMCjDRDUkP7/F4q4ORRnXyI3hNiWitoyht+3ai6WwR4M8j+AqBZ
+         0UOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6Mwmelmzw6bH/7dTu0yxXhnmtM+/gvfBNAeELEGk+uk=;
-        b=AGrFisLY5msmLLCAn4T2iuUvjlM1W/mQmVpO/7Bi1HCN8iygdd35sscEXQYA9OH/uH
-         W/uAnjOSXXZzjJYn56GSMwHYBxOfWTrttKnjh/Uq+CUOwJlQHoeDuGZw7sWvpZ1yiw9r
-         urFlJV342DvUmvF2hv11wWy4lzU4D1T0BNShFNhcBX8HktKuJ/un2toZRF5cd4mUBRM8
-         joKkc84wj4+pMwpdj5C3k+bUhnecruape3YJfXhtoB7xtbnkNOPwJa8Zgo8z6qRPk0tr
-         rRaNlrcRjr3KOtiE5LqVMTvBYhcu+3H33FBtYaqBDHP372SL7hBFxUCSaBp8BEDDIMla
-         r7ZA==
-X-Gm-Message-State: APjAAAX5aNivK1VkpmcaepDgws3XVcYA/R48r0LCLv6gdaodOLukQ4Vs
-        8iPuU8lx9gOR/7MBtK8H6l1UksKsM421PqgnhBUQSA==
-X-Google-Smtp-Source: APXvYqzO1Rb1XuGHlY4gc7gehMJjpGhQ7bcBJg5KgrHrj/rbdrN0MlhufGWBshlYJcrDu7aQUEzfCCAGZ0ad3gulmm0=
-X-Received: by 2002:a19:c7ca:: with SMTP id x193mr3049727lff.151.1564583000498;
- Wed, 31 Jul 2019 07:23:20 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=QvM6TLsHLaIUsQxiIrLtgZTAl4nwA/abKY84Ix9c1AI=;
+        b=ClHKc0jf+e0jdmokmWO6JoEIJBzTLB/VFccA1hO5jQJvkuvH70E7IGE/VdkuhTBQ5l
+         5dVyoYcXK1b6V7gDt0W405GwAXhcaXo3lT1psuqjBK1ST6nXwWOEmew4vJHsfIgm8JCm
+         2vdO6gS4BspjDV14p6Ap3uaofvIuG3zjLVVQcFbVnGaWQoswN5XLk7bpyxoKIDA3vXD/
+         SUJC1c82dGsw9lgnpC8AuWjXGYD11VAOJRP8K5HtpMkcUE8sJ5FPhMrktAC6OlsSf6bU
+         +xsLwEnuXjjDbh2tubdrF/t6MqzwDMP5sXPWGAo6C9LI3uD3rKRh4K/tALhWblTqz9KJ
+         blzg==
+X-Gm-Message-State: APjAAAXBC+uBN4Yoov4SEUJa3taEvdxiVUO3+07GZH0D3+j/OYmYRRl3
+        iG85xHPY4iNLJNlXMbDWNiw=
+X-Google-Smtp-Source: APXvYqxfIQGkRhrMQl5o3NEbLiMVXnwZsc3hm4rHg9K6Idq9C1pqBjRFAwNsZKfTGo4tqfavOiaY7g==
+X-Received: by 2002:a50:9107:: with SMTP id e7mr108538225eda.280.1564585699281;
+        Wed, 31 Jul 2019 08:08:19 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id f21sm16902175edj.36.2019.07.31.08.08.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 31 Jul 2019 08:08:15 -0700 (PDT)
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Received: by box.localdomain (Postfix, from userid 1000)
+        id EA80E101316; Wed, 31 Jul 2019 18:08:15 +0300 (+03)
+To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 01/59] mm: Do no merge VMAs with different encryption KeyIDs
+Date:   Wed, 31 Jul 2019 18:07:15 +0300
+Message-Id: <20190731150813.26289-2-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
+References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
- <CAE=Ncrb63dQLe-nDQyO9OPv7XjwM_9mzL9SrcLiUi2Dr10cD4A@mail.gmail.com>
- <CAFA6WYPJAzbPdcpBqioxjY=T8RLw-73B_hpzX4cGnwVvm5zpJw@mail.gmail.com> <CAE=Ncrb23q++z8R8UMbjDE2epEq4YVcNGzrRD31eH3JAooYejg@mail.gmail.com>
-In-Reply-To: <CAE=Ncrb23q++z8R8UMbjDE2epEq4YVcNGzrRD31eH3JAooYejg@mail.gmail.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 31 Jul 2019 19:53:08 +0530
-Message-ID: <CAFA6WYOKcOzSwakHhgshZcebD8ZBMSi7xQdjWYFS79=Xc+odOg@mail.gmail.com>
-Subject: Re: [RFC v2 0/6] Introduce TEE based Trusted Keys support
-To:     Janne Karhunen <janne.karhunen@gmail.com>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>, dhowells@redhat.com,
-        jejb@linux.ibm.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 31 Jul 2019 at 16:33, Janne Karhunen <janne.karhunen@gmail.com> wrote:
->
-> On Wed, Jul 31, 2019 at 1:26 PM Sumit Garg <sumit.garg@linaro.org> wrote:
->
-> > > Interesting, I wrote something similar and posted it to the lists a while back:
-> > > https://github.com/jkrh/linux/commit/d77ea03afedcb5fd42234cd834da8f8a0809f6a6
-> > >
-> > > Since there are no generic 'TEEs' available,
-> >
-> > There is already a generic TEE interface driver available in kernel.
-> > Have a look here: "Documentation/tee.txt".
->
-> I guess my wording was wrong, tried to say that physical TEEs in the
-> wild vary massively hardware wise. Generalizing these things is rough.
->
+VMAs with different KeyID do not mix together. Only VMAs with the same
+KeyID are compatible.
 
-There are already well defined GlobalPlatform Standards to generalize
-the TEE interface. One of them is GlobalPlatform TEE Client API [1]
-which provides the basis for this TEE interface.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ fs/userfaultfd.c   |  7 ++++---
+ include/linux/mm.h |  9 ++++++++-
+ mm/madvise.c       |  2 +-
+ mm/mempolicy.c     |  3 ++-
+ mm/mlock.c         |  2 +-
+ mm/mmap.c          | 31 +++++++++++++++++++------------
+ mm/mprotect.c      |  2 +-
+ 7 files changed, 36 insertions(+), 20 deletions(-)
 
->
-> > > I implemented the same
-> > > thing as a generic protocol translator. The shared memory binding for
-> > > instance already assumes fair amount about the TEE and how that is
-> > > physically present in the system. Besides, the help from usage of shm
-> > > is pretty limited due to the size of the keydata.
-> > >
-> >
-> > If you look at patch #1 and #2, they add support to register kernel
-> > memory buffer (keydata buffer in this case) with TEE to operate on. So
-> > there isn't any limitation due to the size of the keydata.
->
-> Ah, didn't mean that. Meant that the keydata is typically pretty small
-> in size, so there is limited benefit from passing that in via shm if
-> that complicates anything.
->
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index ccbdbd62f0d8..3b845a6a44d0 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -911,7 +911,7 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
+ 				 new_flags, vma->anon_vma,
+ 				 vma->vm_file, vma->vm_pgoff,
+ 				 vma_policy(vma),
+-				 NULL_VM_UFFD_CTX);
++				 NULL_VM_UFFD_CTX, vma_keyid(vma));
+ 		if (prev)
+ 			vma = prev;
+ 		else
+@@ -1461,7 +1461,8 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		prev = vma_merge(mm, prev, start, vma_end, new_flags,
+ 				 vma->anon_vma, vma->vm_file, vma->vm_pgoff,
+ 				 vma_policy(vma),
+-				 ((struct vm_userfaultfd_ctx){ ctx }));
++				 ((struct vm_userfaultfd_ctx){ ctx }),
++				 vma_keyid(vma));
+ 		if (prev) {
+ 			vma = prev;
+ 			goto next;
+@@ -1623,7 +1624,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 		prev = vma_merge(mm, prev, start, vma_end, new_flags,
+ 				 vma->anon_vma, vma->vm_file, vma->vm_pgoff,
+ 				 vma_policy(vma),
+-				 NULL_VM_UFFD_CTX);
++				 NULL_VM_UFFD_CTX, vma_keyid(vma));
+ 		if (prev) {
+ 			vma = prev;
+ 			goto next;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0334ca97c584..5bfd3dd121c1 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1637,6 +1637,13 @@ int clear_page_dirty_for_io(struct page *page);
+ 
+ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+ 
++#ifndef vma_keyid
++static inline int vma_keyid(struct vm_area_struct *vma)
++{
++	return 0;
++}
++#endif
++
+ extern unsigned long move_page_tables(struct vm_area_struct *vma,
+ 		unsigned long old_addr, struct vm_area_struct *new_vma,
+ 		unsigned long new_addr, unsigned long len,
+@@ -2301,7 +2308,7 @@ static inline int vma_adjust(struct vm_area_struct *vma, unsigned long start,
+ extern struct vm_area_struct *vma_merge(struct mm_struct *,
+ 	struct vm_area_struct *prev, unsigned long addr, unsigned long end,
+ 	unsigned long vm_flags, struct anon_vma *, struct file *, pgoff_t,
+-	struct mempolicy *, struct vm_userfaultfd_ctx);
++	struct mempolicy *, struct vm_userfaultfd_ctx, int keyid);
+ extern struct anon_vma *find_mergeable_anon_vma(struct vm_area_struct *);
+ extern int __split_vma(struct mm_struct *, struct vm_area_struct *,
+ 	unsigned long addr, int new_below);
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 968df3aa069f..00216780a630 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -138,7 +138,7 @@ static long madvise_behavior(struct vm_area_struct *vma,
+ 	pgoff = vma->vm_pgoff + ((start - vma->vm_start) >> PAGE_SHIFT);
+ 	*prev = vma_merge(mm, *prev, start, end, new_flags, vma->anon_vma,
+ 			  vma->vm_file, pgoff, vma_policy(vma),
+-			  vma->vm_userfaultfd_ctx);
++			  vma->vm_userfaultfd_ctx, vma_keyid(vma));
+ 	if (*prev) {
+ 		vma = *prev;
+ 		goto success;
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index f48693f75b37..14ee933b1ff7 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -731,7 +731,8 @@ static int mbind_range(struct mm_struct *mm, unsigned long start,
+ 			((vmstart - vma->vm_start) >> PAGE_SHIFT);
+ 		prev = vma_merge(mm, prev, vmstart, vmend, vma->vm_flags,
+ 				 vma->anon_vma, vma->vm_file, pgoff,
+-				 new_pol, vma->vm_userfaultfd_ctx);
++				 new_pol, vma->vm_userfaultfd_ctx,
++				 vma_keyid(vma));
+ 		if (prev) {
+ 			vma = prev;
+ 			next = vma->vm_next;
+diff --git a/mm/mlock.c b/mm/mlock.c
+index a90099da4fb4..3d0a31bf214c 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -535,7 +535,7 @@ static int mlock_fixup(struct vm_area_struct *vma, struct vm_area_struct **prev,
+ 	pgoff = vma->vm_pgoff + ((start - vma->vm_start) >> PAGE_SHIFT);
+ 	*prev = vma_merge(mm, *prev, start, end, newflags, vma->anon_vma,
+ 			  vma->vm_file, pgoff, vma_policy(vma),
+-			  vma->vm_userfaultfd_ctx);
++			  vma->vm_userfaultfd_ctx, vma_keyid(vma));
+ 	if (*prev) {
+ 		vma = *prev;
+ 		goto success;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 7e8c3e8ae75f..715438a1fb93 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1008,7 +1008,8 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
+  */
+ static inline int is_mergeable_vma(struct vm_area_struct *vma,
+ 				struct file *file, unsigned long vm_flags,
+-				struct vm_userfaultfd_ctx vm_userfaultfd_ctx)
++				struct vm_userfaultfd_ctx vm_userfaultfd_ctx,
++				int keyid)
+ {
+ 	/*
+ 	 * VM_SOFTDIRTY should not prevent from VMA merging, if we
+@@ -1022,6 +1023,8 @@ static inline int is_mergeable_vma(struct vm_area_struct *vma,
+ 		return 0;
+ 	if (vma->vm_file != file)
+ 		return 0;
++	if (vma_keyid(vma) != keyid)
++		return 0;
+ 	if (vma->vm_ops && vma->vm_ops->close)
+ 		return 0;
+ 	if (!is_mergeable_vm_userfaultfd_ctx(vma, vm_userfaultfd_ctx))
+@@ -1058,9 +1061,10 @@ static int
+ can_vma_merge_before(struct vm_area_struct *vma, unsigned long vm_flags,
+ 		     struct anon_vma *anon_vma, struct file *file,
+ 		     pgoff_t vm_pgoff,
+-		     struct vm_userfaultfd_ctx vm_userfaultfd_ctx)
++		     struct vm_userfaultfd_ctx vm_userfaultfd_ctx,
++		     int keyid)
+ {
+-	if (is_mergeable_vma(vma, file, vm_flags, vm_userfaultfd_ctx) &&
++	if (is_mergeable_vma(vma, file, vm_flags, vm_userfaultfd_ctx, keyid) &&
+ 	    is_mergeable_anon_vma(anon_vma, vma->anon_vma, vma)) {
+ 		if (vma->vm_pgoff == vm_pgoff)
+ 			return 1;
+@@ -1079,9 +1083,10 @@ static int
+ can_vma_merge_after(struct vm_area_struct *vma, unsigned long vm_flags,
+ 		    struct anon_vma *anon_vma, struct file *file,
+ 		    pgoff_t vm_pgoff,
+-		    struct vm_userfaultfd_ctx vm_userfaultfd_ctx)
++		    struct vm_userfaultfd_ctx vm_userfaultfd_ctx,
++		    int keyid)
+ {
+-	if (is_mergeable_vma(vma, file, vm_flags, vm_userfaultfd_ctx) &&
++	if (is_mergeable_vma(vma, file, vm_flags, vm_userfaultfd_ctx, keyid) &&
+ 	    is_mergeable_anon_vma(anon_vma, vma->anon_vma, vma)) {
+ 		pgoff_t vm_pglen;
+ 		vm_pglen = vma_pages(vma);
+@@ -1136,7 +1141,8 @@ struct vm_area_struct *vma_merge(struct mm_struct *mm,
+ 			unsigned long end, unsigned long vm_flags,
+ 			struct anon_vma *anon_vma, struct file *file,
+ 			pgoff_t pgoff, struct mempolicy *policy,
+-			struct vm_userfaultfd_ctx vm_userfaultfd_ctx)
++			struct vm_userfaultfd_ctx vm_userfaultfd_ctx,
++			int keyid)
+ {
+ 	pgoff_t pglen = (end - addr) >> PAGE_SHIFT;
+ 	struct vm_area_struct *area, *next;
+@@ -1169,7 +1175,7 @@ struct vm_area_struct *vma_merge(struct mm_struct *mm,
+ 			mpol_equal(vma_policy(prev), policy) &&
+ 			can_vma_merge_after(prev, vm_flags,
+ 					    anon_vma, file, pgoff,
+-					    vm_userfaultfd_ctx)) {
++					    vm_userfaultfd_ctx, keyid)) {
+ 		/*
+ 		 * OK, it can.  Can we now merge in the successor as well?
+ 		 */
+@@ -1178,7 +1184,8 @@ struct vm_area_struct *vma_merge(struct mm_struct *mm,
+ 				can_vma_merge_before(next, vm_flags,
+ 						     anon_vma, file,
+ 						     pgoff+pglen,
+-						     vm_userfaultfd_ctx) &&
++						     vm_userfaultfd_ctx,
++						     keyid) &&
+ 				is_mergeable_anon_vma(prev->anon_vma,
+ 						      next->anon_vma, NULL)) {
+ 							/* cases 1, 6 */
+@@ -1201,7 +1208,7 @@ struct vm_area_struct *vma_merge(struct mm_struct *mm,
+ 			mpol_equal(policy, vma_policy(next)) &&
+ 			can_vma_merge_before(next, vm_flags,
+ 					     anon_vma, file, pgoff+pglen,
+-					     vm_userfaultfd_ctx)) {
++					     vm_userfaultfd_ctx, keyid)) {
+ 		if (prev && addr < prev->vm_end)	/* case 4 */
+ 			err = __vma_adjust(prev, prev->vm_start,
+ 					 addr, prev->vm_pgoff, NULL, next);
+@@ -1746,7 +1753,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ 	 * Can we just expand an old mapping?
+ 	 */
+ 	vma = vma_merge(mm, prev, addr, addr + len, vm_flags,
+-			NULL, file, pgoff, NULL, NULL_VM_UFFD_CTX);
++			NULL, file, pgoff, NULL, NULL_VM_UFFD_CTX, 0);
+ 	if (vma)
+ 		goto out;
+ 
+@@ -3025,7 +3032,7 @@ static int do_brk_flags(unsigned long addr, unsigned long len, unsigned long fla
+ 
+ 	/* Can we just expand an old private anonymous mapping? */
+ 	vma = vma_merge(mm, prev, addr, addr + len, flags,
+-			NULL, NULL, pgoff, NULL, NULL_VM_UFFD_CTX);
++			NULL, NULL, pgoff, NULL, NULL_VM_UFFD_CTX, 0);
+ 	if (vma)
+ 		goto out;
+ 
+@@ -3223,7 +3230,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 		return NULL;	/* should never get here */
+ 	new_vma = vma_merge(mm, prev, addr, addr + len, vma->vm_flags,
+ 			    vma->anon_vma, vma->vm_file, pgoff, vma_policy(vma),
+-			    vma->vm_userfaultfd_ctx);
++			    vma->vm_userfaultfd_ctx, vma_keyid(vma));
+ 	if (new_vma) {
+ 		/*
+ 		 * Source vma may have been merged into new_vma
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index bf38dfbbb4b4..82d7b194a918 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -400,7 +400,7 @@ mprotect_fixup(struct vm_area_struct *vma, struct vm_area_struct **pprev,
+ 	pgoff = vma->vm_pgoff + ((start - vma->vm_start) >> PAGE_SHIFT);
+ 	*pprev = vma_merge(mm, *pprev, start, end, newflags,
+ 			   vma->anon_vma, vma->vm_file, pgoff, vma_policy(vma),
+-			   vma->vm_userfaultfd_ctx);
++			   vma->vm_userfaultfd_ctx, vma_keyid(vma));
+ 	if (*pprev) {
+ 		vma = *pprev;
+ 		VM_WARN_ON((vma->vm_flags ^ newflags) & ~VM_SOFTDIRTY);
+-- 
+2.21.0
 
-Ah, ok. Do you think of any better approach rather than to use SHM?
-
-[1] https://globalplatform.org/specs-library/tee-client-api-specification/
-
--Sumit
-
->
-> --
-> Janne
