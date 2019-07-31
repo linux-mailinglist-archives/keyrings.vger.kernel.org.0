@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 568E37C611
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4187C657
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728783AbfGaPUT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:20:19 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:36505 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729695AbfGaPUP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:20:15 -0400
-Received: by mail-ed1-f67.google.com with SMTP id k21so66068688edq.3
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:20:14 -0700 (PDT)
+        id S1727738AbfGaPXu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:23:50 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:42347 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727360AbfGaPXt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:23:49 -0400
+Received: by mail-ed1-f65.google.com with SMTP id v15so66090649eds.9
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:23:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=EvEqqoCYvSiaJViGsfZgvE8wYjGeg4BQWYRIZAIdYOQ=;
-        b=bZcGmOHwm0gi6j5t/BbUGsKtOCIZr4doGxyXBg+bAsntyv91YXoAwS8iK8gYH/2Rhd
-         EZoLChmRluivD3XLirlmMT5W1vFicn0Th6yRJbjlvSCthP29u5r3kvQbgKOL0NnWdm5O
-         z6WKnsGxsng9YOVJ6s+hk1x3ysUEVhPOmeDyo07xX324wqjHjFQ9yfcsBJPs6sEkZfG/
-         j1P95OYBR2KAtJYWJH/9fdcbulUD7i7ZdBv1U7AlRZ5qi7KMU65oMM+umaihE2hREq1N
-         HFgl1iVKn4xa5Uwqe5PFQO1apPGzMbp3tx+aOQoTXOpVFI0CqNnOhoaQyl+Z3LmysdM7
-         SIkg==
+        bh=a18UOZt3FCDvDMvgP9zldJLt6lTKwFfHbu73YInWFn4=;
+        b=NRoJL3bi5X5MHI+UHT7B1S62Fze3JOWhyFVaj3bzy32xghKUPsGgZO7GdGj/I+MGwQ
+         IcszjXoHkHLCYl9E9+S0TVZkBMexB6yUan+V+lOdKu1ZTL//k329IuqiUOHsMZt8zobx
+         DpyOBiRYKgBlkPN70qU0UyV4A9sw+9NOai6RD5k+KXVTchojnkBQ/9wvCG9xsOR3lQJH
+         25Orq3JTmZBnhwFdJDSLbIjUUACw24Q/2V5Z/1iDJXDUwr6CPtjVVjX8EN+dRQ/iWt3F
+         ajr2K45loyNYVlzJu2bXoVrUmjOiINR3+Zakf9U0MEFo74tWWpXOujPELeLbtPwG7Bf+
+         4HTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=EvEqqoCYvSiaJViGsfZgvE8wYjGeg4BQWYRIZAIdYOQ=;
-        b=dzpSPmSkdlbKR6UYRccATs0C84etVeUwgdTO1NNNufGJ3yXVJEThxUj538W7WRKIYO
-         7itOMMEt2ZXV+4uOtWY+pkoKdXPt0NYJ1ZkYd24zosFiPaaZjlslRTyjd9R5fYeBoAqX
-         4D+6uZvxp39LC9dQyKZ6svIX+MyENJEYg/IvgzuXJ893mPFjuXuCoa4ADxMvUMD7U+Vs
-         HajAQBLmJFqQZARMbJ4yfrsXKa3KX7NDu1P43G99ICJ/4DncKE71HXRAMIL0x8rqTC75
-         cMZfa0Sw9S7ByxqyW+ZOGMObEh5xgRCwhpNrNPSpiO+Ax6aK7apzYsSPeQ2JdKM5g5Kv
-         5N7g==
-X-Gm-Message-State: APjAAAUYr96bARaTGpqv6yzRRx/1tb7InsVqc2TCaVTgSVXkGnQKokML
-        GfTDnH9mtNVRLwPKRIMHDf4=
-X-Google-Smtp-Source: APXvYqze/zmPMD1Bsfoldl9kgWqcWF2ltGwH8c0r7lo9vR1AXcu6XddkT5YuYdRgsgxlZcifb+OJkw==
-X-Received: by 2002:a17:906:4d19:: with SMTP id r25mr94272907eju.125.1564586035045;
-        Wed, 31 Jul 2019 08:13:55 -0700 (PDT)
+        bh=a18UOZt3FCDvDMvgP9zldJLt6lTKwFfHbu73YInWFn4=;
+        b=j38JoTcU2Hy59mI0cUPJdci04OEjLP7mFRbTdmiM/x7JMMueZLIpr7+ftxR6C+/KKV
+         bUKLD4RNCwG3i8gZ6mr+H+9J0nMsjiRNMJuPVeiOFZj2li/EGjMxaX+5MPCWtiKhj/ue
+         +C4XAbbxLZ/T1pVamGUyyXoouhP7JgnMa4t29wwRI3px3kEPvdA1Lgtnxtjsk1v4ML5C
+         6nmhmwqtlhG6eiDrMhT1cHPMZjjNJJ6MRNU1jnlrn4IppB3dPqLZ9/gbsTXxjhEWIgYb
+         15RBfwIPN81tGOJtQtS12vpfvnYUUT7FsGcewd0ZvUSvuR7Pkd/nN4Bh7npzNNZVwbk4
+         9TJw==
+X-Gm-Message-State: APjAAAVabplTSPfqj86OI96e3aIiznf31WbdkJBo08Ri+i03Ll1TTnZa
+        kdrh1cEvQvw0pepzaz1b5cs=
+X-Google-Smtp-Source: APXvYqz4eqsH2iJwU1tjXfKb0+/bNd+u2NkjVb8FXDZ8ZsSkbsVxoPTi6IlMDOoUIFCjKkMNnj7bMA==
+X-Received: by 2002:a50:b87c:: with SMTP id k57mr105890483ede.226.1564586627977;
+        Wed, 31 Jul 2019 08:23:47 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id g7sm16945101eda.52.2019.07.31.08.13.51
+        by smtp.gmail.com with ESMTPSA id f24sm17482856edf.30.2019.07.31.08.23.46
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:53 -0700 (PDT)
+        Wed, 31 Jul 2019 08:23:47 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 874211030BD; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id 953461030BF; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -62,10 +62,10 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 22/59] mm/rmap: Clear vma->anon_vma on unlink_anon_vmas()
-Date:   Wed, 31 Jul 2019 18:07:36 +0300
-Message-Id: <20190731150813.26289-23-kirill.shutemov@linux.intel.com>
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 24/59] keys/mktme: Introduce a Kernel Key Service for MKTME
+Date:   Wed, 31 Jul 2019 18:07:38 +0300
+Message-Id: <20190731150813.26289-25-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -76,34 +76,102 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-If all pages in the VMA got unmapped there's no reason to link it into
-original anon VMA hierarchy: it cannot possibly share any pages with
-other VMA.
+From: Alison Schofield <alison.schofield@intel.com>
 
-Set vma->anon_vma to NULL on unlink_anon_vmas(). With the change VMA
-can be reused. The new anon VMA will be allocated on the first fault.
+MKTME (Multi-Key Total Memory Encryption) is a technology that allows
+transparent memory encryption in upcoming Intel platforms. MKTME will
+support multiple encryption domains, each having their own key.
 
+The MKTME key service will manage the hardware encryption keys. It
+will map Userspace Keys to Hardware KeyIDs and program the hardware
+with the user requested encryption options.
+
+Here the mapping structure is introduced, as well as the key service
+initialization and registration.
+
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- mm/rmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ security/keys/Makefile     |  1 +
+ security/keys/mktme_keys.c | 60 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
+ create mode 100644 security/keys/mktme_keys.c
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index e5dfe2ae6b0d..911367b5fb40 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -400,8 +400,10 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
- 		list_del(&avc->same_vma);
- 		anon_vma_chain_free(avc);
- 	}
--	if (vma->anon_vma)
-+	if (vma->anon_vma) {
- 		vma->anon_vma->degree--;
-+		vma->anon_vma = NULL;
-+	}
- 	unlock_anon_vma_root(root);
- 
- 	/*
+diff --git a/security/keys/Makefile b/security/keys/Makefile
+index 9cef54064f60..28799be801a9 100644
+--- a/security/keys/Makefile
++++ b/security/keys/Makefile
+@@ -30,3 +30,4 @@ obj-$(CONFIG_ASYMMETRIC_KEY_TYPE) += keyctl_pkey.o
+ obj-$(CONFIG_BIG_KEYS) += big_key.o
+ obj-$(CONFIG_TRUSTED_KEYS) += trusted.o
+ obj-$(CONFIG_ENCRYPTED_KEYS) += encrypted-keys/
++obj-$(CONFIG_X86_INTEL_MKTME) += mktme_keys.o
+diff --git a/security/keys/mktme_keys.c b/security/keys/mktme_keys.c
+new file mode 100644
+index 000000000000..d262e0f348e4
+--- /dev/null
++++ b/security/keys/mktme_keys.c
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: GPL-3.0
++
++/* Documentation/x86/mktme/ */
++
++#include <linux/init.h>
++#include <linux/key.h>
++#include <linux/key-type.h>
++#include <linux/mm.h>
++#include <keys/user-type.h>
++
++#include "internal.h"
++
++static unsigned int mktme_available_keyids;  /* Free Hardware KeyIDs */
++
++enum mktme_keyid_state {
++	KEYID_AVAILABLE,	/* Available to be assigned */
++	KEYID_ASSIGNED,		/* Assigned to a userspace key */
++	KEYID_REF_KILLED,	/* Userspace key has been destroyed */
++	KEYID_REF_RELEASED,	/* Last reference is released */
++};
++
++/* 1:1 Mapping between Userspace Keys (struct key) and Hardware KeyIDs */
++struct mktme_mapping {
++	struct key		*key;
++	enum mktme_keyid_state	state;
++};
++
++static struct mktme_mapping *mktme_map;
++
++struct key_type key_type_mktme = {
++	.name		= "mktme",
++	.describe	= user_describe,
++};
++
++static int __init init_mktme(void)
++{
++	int ret;
++
++	/* Verify keys are present */
++	if (mktme_nr_keyids() < 1)
++		return 0;
++
++	mktme_available_keyids = mktme_nr_keyids();
++
++	/* Mapping of Userspace Keys to Hardware KeyIDs */
++	mktme_map = kvzalloc((sizeof(*mktme_map) * (mktme_nr_keyids() + 1)),
++			     GFP_KERNEL);
++	if (!mktme_map)
++		return -ENOMEM;
++
++	ret = register_key_type(&key_type_mktme);
++	if (!ret)
++		return ret;			/* SUCCESS */
++
++	kvfree(mktme_map);
++
++	return -ENOMEM;
++}
++
++late_initcall(init_mktme);
 -- 
 2.21.0
 
