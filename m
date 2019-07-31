@@ -2,95 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6617A84C
-	for <lists+keyrings@lfdr.de>; Tue, 30 Jul 2019 14:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA997B773
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 03:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729199AbfG3MZT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 Jul 2019 08:25:19 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:40399 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730317AbfG3MZQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Jul 2019 08:25:16 -0400
-Received: by mail-pf1-f195.google.com with SMTP id p184so29758222pfp.7
-        for <keyrings@vger.kernel.org>; Tue, 30 Jul 2019 05:25:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=UdO7TiN1GZWaQttAvLZ44/neyJcGu5j8j3RhNT+Sui8=;
-        b=oeNn2Nb/KW67tK/SQYA3SwA0z1uQndtVJSRu+PDEjP72OlO8KmCMDtWBV5wq5bXjh9
-         hS9nOcAhh0rZcgj0RAfW0XRibChG2g3/3zWkiH4hkx8VgHfmHWA4aM6qvQRMCbMGDSOp
-         Bo53QaBP5OkWQzpZYWoNrCGtD3zIF2iH9bYNCt0o/ZLVt1XE+gTFteVw0X0p801KmcMi
-         mIumz0AGK/+0LiHxAWX/nfQoS8Y1yP7gHMEixVeHFMyQ1tqGa9Tnh5U41MsKDVNf5llv
-         RVYHfmDG2keihY0FTtTRGgzTF4IdgXDe5G/ve9Nji1Pbk27WKRIn6biY+aN2+F66OH/R
-         oz6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=UdO7TiN1GZWaQttAvLZ44/neyJcGu5j8j3RhNT+Sui8=;
-        b=oIFVNMxfPU2DSy/jTRI6hLnh/HHLGcf1dcYE5oWmXhluqFWD5hnPi/9818oBHwy7sd
-         JirbhvPeJjp3XETddmhzFhTrHJPr4PuMqyXGRJ5iDrW8iW6uVfjl9Amlay1wJ9W/KQUY
-         IO6vG5GhIJ2ICfoqlh5GMCkPOhqbsrXBZF4p6GLLslRq+Ibmd67VzwpeG7IbYGyiq4Zk
-         eTaF37QZdZEalhVS9onxRsraYZVCpn7nT75wGlAp4Mq2Dv1nM3IJNx1dprzJWmHnkpci
-         Xz3hi6tw3UAPXNX3nOWckPga4WBzm2Akm8DhSWpHAcVYVzNt8yjfpvUn8krXbbWavA9u
-         JBlA==
-X-Gm-Message-State: APjAAAXq4dGuR99pyT6xd8AfZABohTRTa0L7DMZH2WF+e5FyaZf0zt2B
-        usR9V5j/xZWlNPSaikm3oQgnzB9JWGQ=
-X-Google-Smtp-Source: APXvYqwiIFZ1Lpnf1zrtvEq7BSLgYRy9SXqV38k99nAfJbSJqZuysqZ14yG/NTWJNUvb4F6Bw3cxBw==
-X-Received: by 2002:a63:5c7:: with SMTP id 190mr106671104pgf.67.1564489515198;
-        Tue, 30 Jul 2019 05:25:15 -0700 (PDT)
-Received: from localhost.localdomain ([45.114.72.197])
-        by smtp.gmail.com with ESMTPSA id v8sm54895462pgs.82.2019.07.30.05.25.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 30 Jul 2019 05:25:14 -0700 (PDT)
-From:   Sumit Garg <sumit.garg@linaro.org>
-To:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Cc:     jens.wiklander@linaro.org, corbet@lwn.net, dhowells@redhat.com,
-        jejb@linux.ibm.com, jarkko.sakkinen@linux.intel.com,
-        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
-        casey@schaufler-ca.com, ard.biesheuvel@linaro.org,
-        daniel.thompson@linaro.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        tee-dev@lists.linaro.org, Sumit Garg <sumit.garg@linaro.org>
-Subject: [RFC v2 6/6] MAINTAINERS: Add entry for TEE based Trusted Keys
-Date:   Tue, 30 Jul 2019 17:53:40 +0530
-Message-Id: <1564489420-677-7-git-send-email-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
-References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
+        id S1727409AbfGaBQR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 Jul 2019 21:16:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51450 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727363AbfGaBQR (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 30 Jul 2019 21:16:17 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 071A0206A2;
+        Wed, 31 Jul 2019 01:16:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564535776;
+        bh=5g8aTyNkVuWq+8cOSW2OTdq9unhPd8zoQsZ/2rCqoVM=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=VAefn+3FUkpAMgv4MV5wP+TCvMqIa7so7bS4iBMgZMLUe/XkX5olklzYLvgrz7UCq
+         YSpir1vU5d48os5zfHlGRmEagw6yMAqsD5YrlAAwN/Nam9QmQpm5zA8kWTMMQtxKLd
+         YnQc/JcA2/5dy3eGPaFpmjTh22Yc4yo5uDy4STH0=
+Date:   Tue, 30 Jul 2019 18:16:14 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] KEYS: Replace uid/gid/perm permissions checking with
+ an ACL
+Message-ID: <20190731011614.GA687@sol.localdomain>
+Mail-Followup-To: David Howells <dhowells@redhat.com>,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <155862710003.24863.11807972177275927370.stgit@warthog.procyon.org.uk>
+ <155862710731.24863.14013725058582750710.stgit@warthog.procyon.org.uk>
+ <20190710011559.GA7973@sol.localdomain>
+ <20190730034956.GB1966@sol.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190730034956.GB1966@sol.localdomain>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add MAINTAINERS entry for TEE based Trusted Keys framework.
+On Mon, Jul 29, 2019 at 08:49:56PM -0700, Eric Biggers wrote:
+> Hi David,
+> 
+> On Tue, Jul 09, 2019 at 06:16:01PM -0700, Eric Biggers wrote:
+> > On Thu, May 23, 2019 at 04:58:27PM +0100, David Howells wrote:
+> > > Replace the uid/gid/perm permissions checking on a key with an ACL to allow
+> > > the SETATTR and SEARCH permissions to be split.  This will also allow a
+> > > greater range of subjects to represented.
+> > > 
+> > 
+> > This patch broke 'keyctl new_session', and hence broke all the fscrypt tests:
+> > 
+> > $ keyctl new_session
+> > keyctl_session_to_parent: Permission denied
+> > 
+> > Output of 'keyctl show' is
+> > 
+> > $ keyctl show
+> > Session Keyring
+> >  605894913 --alswrv      0     0  keyring: _ses
+> >  189223103 ----s-rv      0     0   \_ user: invocation_id
+> > 
+> > - Eric
+> 
+> This bug is still present in next-20190729.
+> 
+> - Eric
 
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+This fixes it:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ce06877..0b61ecf 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8930,6 +8930,15 @@ F:	include/keys/trusted-type.h
- F:	security/keys/trusted.c
- F:	security/keys/trusted.h
- 
-+KEYS-TEE-TRUSTED
-+M:	Sumit Garg <sumit.garg@linaro.org>
-+L:	linux-integrity@vger.kernel.org
-+L:	keyrings@vger.kernel.org
-+S:	Supported
-+F:	Documentation/security/keys/tee-trusted.rst
-+F:	include/keys/trusted_tee.h
-+F:	security/keys/trusted-keys/trusted-tee.c
-+
- KEYS/KEYRINGS:
- M:	David Howells <dhowells@redhat.com>
- L:	keyrings@vger.kernel.org
--- 
-2.7.4
+diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
+index aa3bfcadbc660..519c94f1cc3c2 100644
+--- a/security/keys/process_keys.c
++++ b/security/keys/process_keys.c
+@@ -58,7 +58,7 @@ static struct key_acl session_keyring_acl = {
+ 	.possessor_viewable = true,
+ 	.nr_ace	= 2,
+ 	.aces = {
+-		KEY_POSSESSOR_ACE(KEY_ACE__PERMS & ~KEY_ACE_JOIN),
++		KEY_POSSESSOR_ACE(KEY_ACE__PERMS),
+ 		KEY_OWNER_ACE(KEY_ACE_VIEW | KEY_ACE_READ),
+ 	}
+ };
 
+
+The old permissions were KEY_POS_ALL | KEY_USR_VIEW | KEY_USR_READ, so
+I'm not sure why JOIN permission was removed?
+
+- Eric
