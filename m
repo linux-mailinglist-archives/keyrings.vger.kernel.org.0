@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8AA77C603
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C84147C5B7
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729721AbfGaPTt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:19:49 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:43326 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729707AbfGaPTq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:19:46 -0400
-Received: by mail-ed1-f68.google.com with SMTP id e3so66065789edr.10
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:19:44 -0700 (PDT)
+        id S1729237AbfGaPJK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:09:10 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:39088 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388562AbfGaPIb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:31 -0400
+Received: by mail-ed1-f66.google.com with SMTP id m10so66011227edv.6
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=PzedmcWsRc3DhudY/wiWcVyq0AAagaASN0DGAs1EUfk=;
-        b=oLYDLyPe+JzY2m1J7wjX7AgBe2E4rUQv0fXNMOTxiG0nu3Kabo9U15Ufg7K6WUQgmi
-         RNNtxu0DlWJ+voFj2zV59ecQN7UXfIGdJz6l2QQg7hl1DF1htbBcFoFM/zAI2mPjcI1U
-         l3fEHvv0/1gka708wHD2qXwLZrc051+nm/YjhW0tIhCa72L/Tien3Zer+cqAIsJMVqNK
-         L0WPnYRQdIixCyrAGbQRcVHhSuhtXWLR41Rx6IQOFrIz+x0hmONqrQ/gZtqcXxab8960
-         yeuaFiFWFODRPxwK1POFLi1ZUqFHAQQefGlgCb9xVI6pv/BL6bFoNByecBEofA/OdSSY
-         7nrg==
+        bh=zVlcJDBaDTqmSz97nQxl4DvHh1B1aL9m42IztWqYpgk=;
+        b=MLb+AaScf0hGsrpPSDd87+yWF18Ne5YphyrJDosl5qgEGBpjx5dqprcz8D6TDurakx
+         v7dksS8vdyH98KwRfDrtg/ZbAe6E5vhUhxog7UiBo5/z7ZxDluJryzZrq7ii40mFem3i
+         jMx9cmbPY8ZVw9geHuaHGUyOzRRTLmVrMwDlEzypgFsoq1OKR/Xmb+uMJ6IghodwNO1n
+         RZiP1ftmR0Lj/uf8ewWim1E6GUd1B5u7cpUbveVRjMCNi8uIaEVIr/L9O6TQUka6NeYB
+         zDwBJBoONjQlX/jht6jQVRNO6og/Cy7j8akyt5hXZpmDzorFoOnlfMMXa/CagiuWGoH+
+         adxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=PzedmcWsRc3DhudY/wiWcVyq0AAagaASN0DGAs1EUfk=;
-        b=di0T/ZkGEI1I7VPZYDgaybna5n1MwQeCXmyq77OZcvQRE7OVEx2fLP0FaWRXsrPJVv
-         W+7HhssJ4ErKHmlZrj/MG7W6T7nojXRDJShS5kpJW+m3PnvzOGbP9WYGWjVBy4jx27cU
-         awJXRF7R2fO+nGF93KX03Xc2kyvS6pLkVZFT6tsdfTvPwPnSHNYNBgbXrdmpBZOKGaMQ
-         3JNcpPcPZSX3qikILe3vGdx/pt1nRdzZua3q5iAeArScstuBSInMC6FJqGJsKZez7vel
-         ZsnZVtFOoUln8nx0TCEgEeioFxDu8FtiBJwCDr2bnKPYTZyG5+mqiecOpH8iA7VmifW8
-         CvRQ==
-X-Gm-Message-State: APjAAAVFl3zYNmYBv2tKycR+XUZewTfU31LmFyuaG5jjKVoxq7HM6zS0
-        rkZhgSSQjsGba7ZVi0v6GDM=
-X-Google-Smtp-Source: APXvYqzcJGczjYcDRUjZLltV4/L8von3YErmNZFFERlXjz5jyiPEJ/PtKIEf2ACHSo4AM9+ctzEY3w==
-X-Received: by 2002:a17:906:c2c9:: with SMTP id ch9mr2839424ejb.167.1564586028666;
-        Wed, 31 Jul 2019 08:13:48 -0700 (PDT)
+        bh=zVlcJDBaDTqmSz97nQxl4DvHh1B1aL9m42IztWqYpgk=;
+        b=a/HKaQ7xanHxou9SyZAFGuVQQmuPV4iNbw1M+Xzw/WL2KjCM07lsRn4yie3O0WFUSw
+         0g/XhhoxC+12dui2ZcbFacpYBQb/WSW1nT5J4jwHQdsOhiuAhN9dyyd/MD6qeC8Iq8dk
+         XXHboG92JQaxzjQaaH+V3aQl1RgQ4k+IL0ZJixO4ZVYCUW5SDbm6zdzYbs/LMmZEGQeB
+         8GdsKIrjtIwd5gOd6x6Qb/SiPTaJdtHHrfuh4V8qzpd11UCM919sa6h4Eo1HeD2dOWc1
+         kV8RU2MAM3tl5/jsqniZTfZCgWflSl2nKWUy6fh7sPpWsHca9S5nBy69xJFyoP9xtn1i
+         Schg==
+X-Gm-Message-State: APjAAAVkZ1dtXFsdyLBT87+SRiXlS5aNyONKUW3tyNniwEqz9coclM2X
+        92oF1qvsqCu3mzb3STHSaW4=
+X-Google-Smtp-Source: APXvYqyr56BhZiXrSd8f2fq+Z375JbAoHMRws8MKCqxmheMr9Uoh5vHG5eCnsq/pE6efizao1axriw==
+X-Received: by 2002:a05:6402:3d5:: with SMTP id t21mr107048118edw.13.1564585710210;
+        Wed, 31 Jul 2019 08:08:30 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id a18sm9661518ejp.2.2019.07.31.08.13.47
+        by smtp.gmail.com with ESMTPSA id s2sm5403001ejf.11.2019.07.31.08.08.24
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:47 -0700 (PDT)
+        Wed, 31 Jul 2019 08:08:28 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id BF3F9103FDC; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id E8A5B1045FA; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 30/59] keys/mktme: Program MKTME keys into the platform hardware
-Date:   Wed, 31 Jul 2019 18:07:44 +0300
-Message-Id: <20190731150813.26289-31-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 36/59] keys/mktme: Require ACPI HMAT to register the MKTME Key Service
+Date:   Wed, 31 Jul 2019 18:07:50 +0300
+Message-Id: <20190731150813.26289-37-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -78,132 +78,48 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Alison Schofield <alison.schofield@intel.com>
 
-Finally, the keys are programmed into the hardware via each
-lead CPU. Every package has to be programmed successfully.
-There is no partial success allowed here.
+The ACPI HMAT will be used by the MKTME key service to identify
+topologies that support the safe programming of encryption keys.
+Those decisions will happen at key creation time and during
+hotplug events.
 
-Here a retry scheme is included for two errors that may succeed
-on retry: MKTME_DEVICE_BUSY and MKTME_ENTROPY_ERROR.
-However, it's not clear if even those errors should be retried
-at this level. Perhaps they too, should be returned to user space
-for handling.
+To enable this, we at least need to have the ACPI HMAT present
+at init time. If it's not present, do not register the type.
+
+If the HMAT is not present, failure looks like this:
+[ ] MKTME: Registration failed. ACPI HMAT not present.
 
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- security/keys/mktme_keys.c | 92 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
+ security/keys/mktme_keys.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/security/keys/mktme_keys.c b/security/keys/mktme_keys.c
-index 272bff8591b7..3c641f3ee794 100644
+index 2d90cc83e5ce..6265b62801e9 100644
 --- a/security/keys/mktme_keys.c
 +++ b/security/keys/mktme_keys.c
-@@ -83,6 +83,96 @@ static const match_table_t mktme_token = {
- 	{OPT_ERROR, NULL}
- };
+@@ -2,6 +2,7 @@
  
-+struct mktme_hw_program_info {
-+	struct mktme_key_program *key_program;
-+	int *status;
-+};
-+
-+struct mktme_err_table {
-+	const char *msg;
-+	bool retry;
-+};
-+
-+static const struct mktme_err_table mktme_error[] = {
-+/* MKTME_PROG_SUCCESS     */ {"KeyID was successfully programmed",   false},
-+/* MKTME_INVALID_PROG_CMD */ {"Invalid KeyID programming command",   false},
-+/* MKTME_ENTROPY_ERROR    */ {"Insufficient entropy",		      true},
-+/* MKTME_INVALID_KEYID    */ {"KeyID not valid",		     false},
-+/* MKTME_INVALID_ENC_ALG  */ {"Invalid encryption algorithm chosen", false},
-+/* MKTME_DEVICE_BUSY      */ {"Failure to access key table",	      true},
-+};
-+
-+static int mktme_parse_program_status(int status[])
-+{
-+	int cpu, sum = 0;
-+
-+	/* Success: all CPU(s) programmed all key table(s) */
-+	for_each_cpu(cpu, mktme_leadcpus)
-+		sum += status[cpu];
-+	if (!sum)
-+		return MKTME_PROG_SUCCESS;
-+
-+	/* Invalid Parameters: log the error and return the error. */
-+	for_each_cpu(cpu, mktme_leadcpus) {
-+		switch (status[cpu]) {
-+		case MKTME_INVALID_KEYID:
-+		case MKTME_INVALID_PROG_CMD:
-+		case MKTME_INVALID_ENC_ALG:
-+			pr_err("mktme: %s\n", mktme_error[status[cpu]].msg);
-+			return status[cpu];
-+
-+		default:
-+			break;
-+		}
-+	}
-+	/*
-+	 * Device Busy or Insufficient Entropy: do not log the
-+	 * error. These will be retried and if retries (time or
-+	 * count runs out) caller will log the error.
-+	 */
-+	for_each_cpu(cpu, mktme_leadcpus) {
-+		if (status[cpu] == MKTME_DEVICE_BUSY)
-+			return status[cpu];
-+	}
-+	return MKTME_ENTROPY_ERROR;
-+}
-+
-+/* Program a single key using one CPU. */
-+static void mktme_do_program(void *hw_program_info)
-+{
-+	struct mktme_hw_program_info *info = hw_program_info;
-+	int cpu;
-+
-+	cpu = smp_processor_id();
-+	info->status[cpu] = mktme_key_program(info->key_program);
-+}
-+
-+static int mktme_program_all_keytables(struct mktme_key_program *key_program)
-+{
-+	struct mktme_hw_program_info info;
-+	int err, retries = 10; /* Maybe users should handle retries */
-+
-+	info.key_program = key_program;
-+	info.status = kcalloc(num_possible_cpus(), sizeof(info.status[0]),
-+			      GFP_KERNEL);
-+
-+	while (retries--) {
-+		get_online_cpus();
-+		on_each_cpu_mask(mktme_leadcpus, mktme_do_program,
-+				 &info, 1);
-+		put_online_cpus();
-+
-+		err = mktme_parse_program_status(info.status);
-+		if (!err)			   /* Success */
-+			return err;
-+		else if (!mktme_error[err].retry)  /* Error no retry */
-+			return -ENOKEY;
-+	}
-+	/* Ran out of retries */
-+	pr_err("mktme: %s\n", mktme_error[err].msg);
-+	return err;
-+}
-+
- /* Copy the payload to the HW programming structure and program this KeyID */
- static int mktme_program_keyid(int keyid, u32 payload)
- {
-@@ -97,7 +187,7 @@ static int mktme_program_keyid(int keyid, u32 payload)
- 	kprog->keyid = keyid;
- 	kprog->keyid_ctrl = payload;
+ /* Documentation/x86/mktme/ */
  
--	ret = MKTME_PROG_SUCCESS;	/* Future programming call */
-+	ret = mktme_program_all_keytables(kprog);
- 	kmem_cache_free(mktme_prog_cache, kprog);
- 	return ret;
- }
++#include <linux/acpi.h>
+ #include <linux/cred.h>
+ #include <linux/cpu.h>
+ #include <linux/init.h>
+@@ -445,6 +446,12 @@ static int __init init_mktme(void)
+ 
+ 	mktme_available_keyids = mktme_nr_keyids();
+ 
++	/* Require an ACPI HMAT to identify MKTME safe topologies */
++	if (!acpi_hmat_present()) {
++		pr_warn("MKTME: Registration failed. ACPI HMAT not present.\n");
++		return -EINVAL;
++	}
++
+ 	/* Mapping of Userspace Keys to Hardware KeyIDs */
+ 	mktme_map = kvzalloc((sizeof(*mktme_map) * (mktme_nr_keyids() + 1)),
+ 			     GFP_KERNEL);
 -- 
 2.21.0
 
