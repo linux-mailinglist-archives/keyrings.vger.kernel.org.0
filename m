@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6428F7C639
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6708F7C620
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726679AbfGaPVy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:21:54 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:37581 "EHLO
+        id S1729121AbfGaPUw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:20:52 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:37426 "EHLO
         mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726546AbfGaPVy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:21:54 -0400
-Received: by mail-ed1-f67.google.com with SMTP id w13so66101564eds.4
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:21:53 -0700 (PDT)
+        with ESMTP id S1730076AbfGaPUr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:20:47 -0400
+Received: by mail-ed1-f67.google.com with SMTP id w13so66098196eds.4
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Sg6bxLoMlRes885QhQrq9mVE221k6YoeytqqLikFglU=;
-        b=IXEicb9BiLYExfvQdFk4yaWrUYrtPs2P+FQ3xbHGAjJqFjc/Tjuex7il/QhhrAU3gJ
-         1B0zMUjyCzuoPb2CGvJQ7dAtThjRe7D5+pWm017eXRhJ5OYV8RCaNICnYmJ009+sfvzW
-         5NUoC3YokyUZoQB7sHYWULxV/2/f9TOcZ1/gPkf55duPH15/Vc4B/k9Omnv9/9Yv3CZU
-         SeCOWTrZNYeWEwYFisHEi4GPFxy3g1PXFpyNHAYa2qaeY0jn6aM8/D2yPWi1YGyBcl0J
-         4Kakk20YFCj7A+Ev81808+OjXvvP+eFNT1KH0KoZhORiukznX+DHLEGwFZnttRXtl3Xg
-         KF/A==
+        bh=bD/5ZInA5DBfNF/OoolUD2uLCIaOC1DGsUwSCxp+njs=;
+        b=nvqdVZ7hy8prTTJcbUZBwkmbx2dG13l4tJOjU/HGiWPNPCIzhkiP7BT5p8Q5xWDndr
+         7DeAzS8uAbr6+O45Oq+aNxw5yIDCtTUXGB0id3g7Z8mpUiISvVh8+Qdpp6w9Mrz78JiC
+         0VezF9Twz7YfGrVqrIO2CaQOxV5IahFa9jvmh6yBk00rx18AqNPPp2V83WMw5/RHJxZK
+         V7Ij2TTHXT4PuakKHcAQZMB0LBshUp7ZbQOCUWMzIrguS1msbfDi5NilYa6XZJJc6A82
+         xAVNYZPhVRKGVGB4dKsMF59lYW4aPwm4ovfr9mL7D2xAkl0s4z/mmm5UiL+UO1fObzyu
+         5wPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Sg6bxLoMlRes885QhQrq9mVE221k6YoeytqqLikFglU=;
-        b=Xw1qs0GDwAz/80HOY/1h2BRUARdrgIjIaQ0QDY6km/EsRPyLaA9w6ubK8Kw9paUC5b
-         AW/K19hpD7fRdF68G8GQhzG+CAFN2yRCtg7lBwhR5aWCdkjaKGJn8krFLHYx8VnIlE7b
-         A9iux/iOpzeKzoCnil21T4Sur9vVrXtdePap6HaiDGvdgcJS55OaJ6vLmzWsg8ODgRMs
-         22TgcXKdNknVUjrdljrZd7N7vNoGPMDakJiM6odPrSKvIHumGemEnazjsuxVh1ElJnEI
-         ighQwc9EvYE7WeO+i/m0OJjBd9UGUM/QMH/4lDBITps+xka0kVO9MMxhsyRwMtVlhz2H
-         xyFA==
-X-Gm-Message-State: APjAAAUhMnJGlZM/nN3AYp9W7AKa6Q6Lca1eEJ2iylvpZTK/rkIFEj62
-        IgxPlDOfJwNlUf93Pm6yeNk=
-X-Google-Smtp-Source: APXvYqzUHszTMCf0FqL0C12el1+4vYG6LYW8ml5drC1eMYBiTn4AhQh509XXdc2m4fyznpBj9tVZ/g==
-X-Received: by 2002:a17:906:d052:: with SMTP id bo18mr88285067ejb.311.1564586030665;
-        Wed, 31 Jul 2019 08:13:50 -0700 (PDT)
+        bh=bD/5ZInA5DBfNF/OoolUD2uLCIaOC1DGsUwSCxp+njs=;
+        b=RYydTKB9WIJhACDISEyQxArNTqzyeg0gu7FfQ15cdUnY8yuR73mGETPcIjHFq2poFY
+         ctkpuAXM05SWLk43+jY352475Jwwe0VaQIPxk/BRVayXZuVIrXWiq48cXDp3Jymwwv9c
+         /BmWP97wbGbpkvsCyuHiT+ZtY5bF3kIeQyBBmyAKBreCWqtOgACLrh2pcjIQKrC0Fa2P
+         YDczRk0S3RZhe9ttDE9GOd0iDt1JlF1FoNRs3+1byc23XDoHsgJiUqnEss/G1dqBruQd
+         rP/RJ8xkZrvKMwQG0F8O+mJAtPmNc/RC2kIQYRbo67KW1BdZe/3t/MTWsRE1g/Hs7n62
+         SlZQ==
+X-Gm-Message-State: APjAAAUguXQ8nQJgBYprYCkRGD1XPRryl32Z8GGEU+IVi4gEh4YHrN6s
+        i7fP5ovjFcoU/sO5irW/ocw=
+X-Google-Smtp-Source: APXvYqxJIvkHF7kejGb362uxw7wEOxIDocRJ4jXYfh9K6XIBqdmcEBR8hDmMszbdv7iLHfJZFlKGzw==
+X-Received: by 2002:a05:6402:6d0:: with SMTP id n16mr25572624edy.168.1564586037300;
+        Wed, 31 Jul 2019 08:13:57 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id u9sm17451892edm.71.2019.07.31.08.13.47
+        by smtp.gmail.com with ESMTPSA id t2sm17397627eda.95.2019.07.31.08.13.52
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:47 -0700 (PDT)
+        Wed, 31 Jul 2019 08:13:54 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id B852D103C08; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id C65041044A6; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 29/59] keys/mktme: Set up PCONFIG programming targets for MKTME keys
-Date:   Wed, 31 Jul 2019 18:07:43 +0300
-Message-Id: <20190731150813.26289-30-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 31/59] keys/mktme: Set up a percpu_ref_count for MKTME keys
+Date:   Wed, 31 Jul 2019 18:07:45 +0300
+Message-Id: <20190731150813.26289-32-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -78,103 +78,109 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Alison Schofield <alison.schofield@intel.com>
 
-MKTME Key service maintains the hardware key tables. These key tables
-are package scoped per the MKTME hardware definition. This means that
-each physical package on the system needs its key table programmed.
+The MKTME key service needs to keep usage counts on the encryption
+keys in order to know when it is safe to free a key for reuse.
 
-These physical packages are the targets of the new PCONFIG programming
-command. So, introduce a PCONFIG targets bitmap as well as a CPU mask
-that includes the lead CPUs capable of programming the targets.
+percpu_ref_count applies well here because the key service will
+take the initial reference and typically hold that reference while
+the intermediary references are get/put. The intermediaries in this
+case will be encrypted VMA's,
 
-The lead CPU mask will be used every time a new key is programmed into
-the hardware.
-
-Keep the PCONFIG targets bit map around for future use during CPU
-hotplug events.
+Align the percpu_ref_init and percpu_ref_kill with the key service
+instantiate and destroy methods respectively.
 
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- security/keys/mktme_keys.c | 42 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ security/keys/mktme_keys.c | 39 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
 diff --git a/security/keys/mktme_keys.c b/security/keys/mktme_keys.c
-index 8ac75b1e6188..272bff8591b7 100644
+index 3c641f3ee794..18cb57be5193 100644
 --- a/security/keys/mktme_keys.c
 +++ b/security/keys/mktme_keys.c
-@@ -2,6 +2,7 @@
- 
- /* Documentation/x86/mktme/ */
- 
-+#include <linux/cpu.h>
- #include <linux/init.h>
- #include <linux/key.h>
+@@ -8,6 +8,7 @@
  #include <linux/key-type.h>
-@@ -17,6 +18,8 @@
- static DEFINE_SPINLOCK(mktme_lock);
- static unsigned int mktme_available_keyids;  /* Free Hardware KeyIDs */
- static struct kmem_cache *mktme_prog_cache;  /* Hardware programming cache */
-+static unsigned long *mktme_target_map;	     /* PCONFIG programming target */
-+static cpumask_var_t mktme_leadcpus;	     /* One CPU per PCONFIG target */
+ #include <linux/mm.h>
+ #include <linux/parser.h>
++#include <linux/percpu-refcount.h>
+ #include <linux/string.h>
+ #include <asm/intel_pconfig.h>
+ #include <keys/mktme-type.h>
+@@ -71,6 +72,26 @@ int mktme_keyid_from_key(struct key *key)
+ 	return 0;
+ }
  
- enum mktme_keyid_state {
- 	KEYID_AVAILABLE,	/* Available to be assigned */
-@@ -257,6 +260,33 @@ struct key_type key_type_mktme = {
- 	.destroy	= mktme_destroy_key,
- };
- 
-+static void mktme_update_pconfig_targets(void)
++struct percpu_ref *encrypt_count;
++void mktme_percpu_ref_release(struct percpu_ref *ref)
 +{
-+	int cpu, target_id;
++	unsigned long flags;
++	int keyid;
 +
-+	cpumask_clear(mktme_leadcpus);
-+	bitmap_clear(mktme_target_map, 0, sizeof(mktme_target_map));
-+
-+	for_each_online_cpu(cpu) {
-+		target_id = topology_physical_package_id(cpu);
-+		if (!__test_and_set_bit(target_id, mktme_target_map))
-+			__cpumask_set_cpu(cpu, mktme_leadcpus);
++	for (keyid = 1; keyid <= mktme_nr_keyids(); keyid++) {
++		if (&encrypt_count[keyid] == ref)
++			break;
 +	}
++	if (&encrypt_count[keyid] != ref) {
++		pr_debug("%s: invalid ref counter\n", __func__);
++		return;
++	}
++	percpu_ref_exit(ref);
++	spin_lock_irqsave(&mktme_lock, flags);
++	mktme_release_keyid(keyid);
++	spin_unlock_irqrestore(&mktme_lock, flags);
 +}
 +
-+static int mktme_alloc_pconfig_targets(void)
-+{
-+	if (!alloc_cpumask_var(&mktme_leadcpus, GFP_KERNEL))
-+		return -ENOMEM;
-+
-+	mktme_target_map = bitmap_alloc(topology_max_packages(), GFP_KERNEL);
-+	if (!mktme_target_map) {
-+		free_cpumask_var(mktme_leadcpus);
-+		return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
- static int __init init_mktme(void)
- {
- 	int ret;
-@@ -278,9 +308,21 @@ static int __init init_mktme(void)
- 	if (!mktme_prog_cache)
- 		goto free_map;
+ enum mktme_opt_id {
+ 	OPT_ERROR,
+ 	OPT_TYPE,
+@@ -199,8 +220,10 @@ static void mktme_destroy_key(struct key *key)
+ 	unsigned long flags;
  
-+	/* Hardware programming targets */
-+	if (mktme_alloc_pconfig_targets())
-+		goto free_cache;
+ 	spin_lock_irqsave(&mktme_lock, flags);
+-	mktme_release_keyid(keyid);
++	mktme_map[keyid].key = NULL;
++	mktme_map[keyid].state = KEYID_REF_KILLED;
+ 	spin_unlock_irqrestore(&mktme_lock, flags);
++	percpu_ref_kill(&encrypt_count[keyid]);
+ }
+ 
+ /* Key Service Method to create a new key. Payload is preparsed. */
+@@ -216,9 +239,15 @@ int mktme_instantiate_key(struct key *key, struct key_preparsed_payload *prep)
+ 	if (!keyid)
+ 		return -ENOKEY;
+ 
++	if (percpu_ref_init(&encrypt_count[keyid], mktme_percpu_ref_release,
++			    0, GFP_KERNEL))
++		goto err_out;
 +
-+	/* Initialize first programming targets */
-+	mktme_update_pconfig_targets();
+ 	if (!mktme_program_keyid(keyid, *payload))
+ 		return MKTME_PROG_SUCCESS;
+ 
++	percpu_ref_exit(&encrypt_count[keyid]);
++err_out:
+ 	spin_lock_irqsave(&mktme_lock, flags);
+ 	mktme_release_keyid(keyid);
+ 	spin_unlock_irqrestore(&mktme_lock, flags);
+@@ -405,10 +434,18 @@ static int __init init_mktme(void)
+ 	/* Initialize first programming targets */
+ 	mktme_update_pconfig_targets();
+ 
++	/* Reference counters to protect in use KeyIDs */
++	encrypt_count = kvcalloc(mktme_nr_keyids() + 1, sizeof(encrypt_count[0]),
++				 GFP_KERNEL);
++	if (!encrypt_count)
++		goto free_targets;
 +
  	ret = register_key_type(&key_type_mktme);
  	if (!ret)
  		return ret;			/* SUCCESS */
-+
-+	free_cpumask_var(mktme_leadcpus);
-+	bitmap_free(mktme_target_map);
-+free_cache:
-+	kmem_cache_destroy(mktme_prog_cache);
- free_map:
- 	kvfree(mktme_map);
  
++	kvfree(encrypt_count);
++free_targets:
+ 	free_cpumask_var(mktme_leadcpus);
+ 	bitmap_free(mktme_target_map);
+ free_cache:
 -- 
 2.21.0
 
