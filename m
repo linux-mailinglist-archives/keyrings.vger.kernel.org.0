@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 658817C62B
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 069DB7C66F
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728102AbfGaPVI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:21:08 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:44448 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726998AbfGaPVH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:21:07 -0400
-Received: by mail-ed1-f67.google.com with SMTP id k8so66016178edr.11
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:21:05 -0700 (PDT)
+        id S1727565AbfGaPYh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:24:37 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:41192 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727346AbfGaPXu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:23:50 -0400
+Received: by mail-ed1-f66.google.com with SMTP id p15so66024421eds.8
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:23:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=k+U6VIHmZ/fZHykv9hSZy3hTFPe14uQwWZPNGVQf9Wg=;
-        b=bRpitEYFAw0iw9F4lWLWOaj8uAivovFwyv4AWNZf1NY1sGLxSiCLjNDzw6evzISUMa
-         GHJXwwWF7WOifVXGeInd0STe8yx3ZYQIBXHrbJkyF+Rm71XJH0Uqn7KhiVn6RKSVi/NH
-         GnIdsyLQWF+U1/Hz7RYNsNvOWkWTR+mduMkRXQK/n0AYcfSL5nkUiUeRr88V6rdddNZa
-         NnYZWfhk4GFsXaFANiQNQQqJaMiCdDw2sC/yGDEkK8d34cXt5u306IrMfDI46uU39c0H
-         ulh3gI4vz6iIiS8U4HduYh7aIdHho4vvV2rbd58qJxpeTNRRIu4peFugSAhril4FyF28
-         DzHw==
+        bh=UJ4hP1jpsdk64Bv8Sf387CJe/yf6g4uoo14C+HjaYmc=;
+        b=1WGj7wJ1Xlp3fgcH7vRPMztYr6U5tkfbscC1DOrRMnOQVJ19MV2EFmQ3dnX/uhMZZn
+         +9L8x0NHV+iAuJ5WNvg45vfgpudSqJX8d/cH7WzdQ31ED8yVQqTnWs55ok0ywoT/cwgf
+         LRqfk29P9c2a6t2n4GX6Zecm1hTDG8T8yRuJTxwS4MxO8xCaa30nlcP9NO9vMwzhD2/o
+         jqb8W3AN4/5jM2qm735SpdYqlgeo8FHpUWhX0TEFnQDL0Nc2/fTIBdSXwohDdZnHEMKC
+         JwVVXHl6iKII+YD7dMq1HoHGHE4mMuXMCZtypv68y+qEBnZs7tcFjmgIVrRdiTc9lYx6
+         gpdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=k+U6VIHmZ/fZHykv9hSZy3hTFPe14uQwWZPNGVQf9Wg=;
-        b=pyLfcWOhACGa9nUQ5gMWaKSOI9TbntQeWx1RYeT0LD+Us80m6yACSqNFZdyytgvZce
-         hmU6J0ughC82Lx+WrMn4yAihWTsdQSi9k05snv5sndL1fGWd0rKUTh91tttSE1KK5vjL
-         g8txjVACh1cZcDData9wrwt/AkulAuhN439ouh6tN6Te0R/97ejidOYHI7Wgnder66vO
-         +b5waOW/BsBJl5nSmSbBe81+N+p3ZvBf51XxkG5TAbVV5k0MbEWSkf7NqSMYoq9waFoq
-         9/39GhPemGwgP4riItWuobWqejULCNkATE9dOK84K8gjUjnxW4hpH8xrj0F/+OD+qyBn
-         RTmw==
-X-Gm-Message-State: APjAAAXIiDEfrlyATAuhvK1VeylXLN8//28h8Of8C3fOna/ee1o8hups
-        774mDRtbtulNC2YGmXIDp00=
-X-Google-Smtp-Source: APXvYqx+v4/Pbf2jShDF7c6rephC3qv4nn7vrbh6ErmrX7qhFi1sSZ2Ot8M2CUcvWdStTREYbHHJ+Q==
-X-Received: by 2002:a50:9468:: with SMTP id q37mr106511363eda.163.1564586038381;
-        Wed, 31 Jul 2019 08:13:58 -0700 (PDT)
+        bh=UJ4hP1jpsdk64Bv8Sf387CJe/yf6g4uoo14C+HjaYmc=;
+        b=HdoaTW+GAaaDILE8ztmC5MX31NO111bsSmIMrXPo7pn7cbiAZZAdzM21Pt+kR0LLOf
+         G9cqiGZccUZZEGVuDaR5iKnc74KG2RhPs0vQeh4ZZihIM7CIfD6t/vrY1eNRQzYt91mB
+         TMOczQSMTc+mncTD6PHqR+9qXzSb3vO7e/N/+Gny/z0810AfFkO/UcU9jo8AaZiZ1iHA
+         LxyDdArrX+TI6N8hZNUl0KV+g5CwAqrxDIE/efPIlyWHCkCJMhI8BGFQe/dHtM2TUlwT
+         j9G1Wg9AM5M45AyDOHm3CRdzO6A/ebuojcaJ/TCSQfQleb4YZxtCvHO42olsSFhlim1V
+         65HA==
+X-Gm-Message-State: APjAAAVVhY9rFBg12zha7MLlPk3Rn/jQIvK1Lzcz0igqgZ+/pUDYy0f0
+        1wfXuPCHczWE50v9rAewtBk=
+X-Google-Smtp-Source: APXvYqyzPuIoVNHRDVYCIgZPGv2mkwSHT27TYRbjUfR28hqJRIWgt4niZw9djMR/+XyBoAXfW/QEEA==
+X-Received: by 2002:a50:a5ec:: with SMTP id b41mr104531465edc.52.1564586628484;
+        Wed, 31 Jul 2019 08:23:48 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id e43sm17445027ede.62.2019.07.31.08.13.53
+        by smtp.gmail.com with ESMTPSA id k20sm17485239ede.66.2019.07.31.08.23.46
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:57 -0700 (PDT)
+        Wed, 31 Jul 2019 08:23:47 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 41659104605; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
+        id 6575C1048A4; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -62,10 +62,10 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 47/59] kvm, x86, mmu: setup MKTME keyID to spte for given PFN
-Date:   Wed, 31 Jul 2019 18:08:01 +0300
-Message-Id: <20190731150813.26289-48-kirill.shutemov@linux.intel.com>
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 52/59] x86/mm: Disable MKTME if not all system memory supports encryption
+Date:   Wed, 31 Jul 2019 18:08:06 +0300
+Message-Id: <20190731150813.26289-53-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -76,57 +76,134 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Kai Huang <kai.huang@linux.intel.com>
+UEFI memory attribute EFI_MEMORY_CPU_CRYPTO indicates whether the memory
+region supports encryption.
 
-Setup keyID to SPTE, which will be eventually programmed to shadow MMU
-or EPT table, according to page's associated keyID, so that guest is
-able to use correct keyID to access guest memory.
+Kernel doesn't handle situation when only part of the system memory
+supports encryption.
 
-Note current shadow_me_mask doesn't suit MKTME's needs, since for MKTME
-there's no fixed memory encryption mask, but can vary from keyID 1 to
-maximum keyID, therefore shadow_me_mask remains 0 for MKTME.
+Disable MKTME if not all system memory supports encryption.
 
-Signed-off-by: Kai Huang <kai.huang@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kvm/mmu.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/mm/mktme.c        | 35 +++++++++++++++++++++++++++++++++++
+ drivers/firmware/efi/efi.c | 25 +++++++++++++------------
+ include/linux/efi.h        |  1 +
+ 3 files changed, 49 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
-index 8f72526e2f68..b8742e6219f6 100644
---- a/arch/x86/kvm/mmu.c
-+++ b/arch/x86/kvm/mmu.c
-@@ -2936,6 +2936,22 @@ static bool kvm_is_mmio_pfn(kvm_pfn_t pfn)
- #define SET_SPTE_WRITE_PROTECTED_PT	BIT(0)
- #define SET_SPTE_NEED_REMOTE_TLB_FLUSH	BIT(1)
+diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+index 17366d81c21b..4e00c244478b 100644
+--- a/arch/x86/mm/mktme.c
++++ b/arch/x86/mm/mktme.c
+@@ -1,9 +1,11 @@
+ #include <linux/mm.h>
+ #include <linux/highmem.h>
+ #include <linux/rmap.h>
++#include <linux/efi.h>
+ #include <asm/mktme.h>
+ #include <asm/pgalloc.h>
+ #include <asm/tlbflush.h>
++#include <asm/e820/api.h>
  
-+static u64 get_phys_encryption_mask(kvm_pfn_t pfn)
-+{
-+#ifdef CONFIG_X86_INTEL_MKTME
-+	struct page *page;
+ /* Mask to extract KeyID from physical address. */
+ phys_addr_t __mktme_keyid_mask;
+@@ -48,9 +50,42 @@ void mktme_disable(void)
+ 
+ static bool need_page_mktme(void)
+ {
++	int nid;
 +
-+	if (!pfn_valid(pfn))
+ 	/* Make sure keyid doesn't collide with extended page flags */
+ 	BUILD_BUG_ON(__NR_PAGE_EXT_FLAGS > 16);
+ 
++	if (!mktme_nr_keyids())
 +		return 0;
 +
-+	page = pfn_to_page(pfn);
++	for_each_node_state(nid, N_MEMORY) {
++		const efi_memory_desc_t *md;
++		unsigned long node_start, node_end;
 +
-+	return ((u64)page_keyid(page)) << mktme_keyid_shift();
-+#else
-+	return shadow_me_mask;
-+#endif
-+}
++		node_start = node_start_pfn(nid) << PAGE_SHIFT;
++		node_end = node_end_pfn(nid) << PAGE_SHIFT;
 +
- static int set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
- 		    unsigned pte_access, int level,
- 		    gfn_t gfn, kvm_pfn_t pfn, bool speculative,
-@@ -2982,7 +2998,7 @@ static int set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
- 		pte_access &= ~ACC_WRITE_MASK;
++		for_each_efi_memory_desc(md) {
++			u64 efi_start = md->phys_addr;
++			u64 efi_end = md->phys_addr + PAGE_SIZE * md->num_pages;
++
++			if (md->attribute & EFI_MEMORY_CPU_CRYPTO)
++				continue;
++			if (efi_start > node_end)
++				continue;
++			if (efi_end  < node_start)
++				continue;
++			if (!e820__mapped_any(efi_start, efi_end, E820_TYPE_RAM))
++				continue;
++
++			printk("Memory range %#llx-%#llx: doesn't support encryption\n",
++					efi_start, efi_end);
++			printk("Disable MKTME\n");
++			mktme_disable();
++			break;
++		}
++	}
++
+ 	return !!mktme_nr_keyids();
+ }
  
- 	if (!kvm_is_mmio_pfn(pfn))
--		spte |= shadow_me_mask;
-+		spte |= get_phys_encryption_mask(pfn);
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index ad3b1f4866b3..fc19da5da3e8 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -852,25 +852,26 @@ char * __init efi_md_typeattr_format(char *buf, size_t size,
+ 	if (attr & ~(EFI_MEMORY_UC | EFI_MEMORY_WC | EFI_MEMORY_WT |
+ 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
+ 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
+-		     EFI_MEMORY_NV |
++		     EFI_MEMORY_NV | EFI_MEMORY_CPU_CRYPTO |
+ 		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
+ 		snprintf(pos, size, "|attr=0x%016llx]",
+ 			 (unsigned long long)attr);
+ 	else
+ 		snprintf(pos, size,
+-			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
++			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
+ 			 attr & EFI_MEMORY_RUNTIME ? "RUN" : "",
+ 			 attr & EFI_MEMORY_MORE_RELIABLE ? "MR" : "",
+-			 attr & EFI_MEMORY_NV      ? "NV"  : "",
+-			 attr & EFI_MEMORY_XP      ? "XP"  : "",
+-			 attr & EFI_MEMORY_RP      ? "RP"  : "",
+-			 attr & EFI_MEMORY_WP      ? "WP"  : "",
+-			 attr & EFI_MEMORY_RO      ? "RO"  : "",
+-			 attr & EFI_MEMORY_UCE     ? "UCE" : "",
+-			 attr & EFI_MEMORY_WB      ? "WB"  : "",
+-			 attr & EFI_MEMORY_WT      ? "WT"  : "",
+-			 attr & EFI_MEMORY_WC      ? "WC"  : "",
+-			 attr & EFI_MEMORY_UC      ? "UC"  : "");
++			 attr & EFI_MEMORY_NV         ? "NV"  : "",
++			 attr & EFI_MEMORY_CPU_CRYPTO ? "CR"  : "",
++			 attr & EFI_MEMORY_XP         ? "XP"  : "",
++			 attr & EFI_MEMORY_RP         ? "RP"  : "",
++			 attr & EFI_MEMORY_WP         ? "WP"  : "",
++			 attr & EFI_MEMORY_RO         ? "RO"  : "",
++			 attr & EFI_MEMORY_UCE        ? "UCE" : "",
++			 attr & EFI_MEMORY_WB         ? "WB"  : "",
++			 attr & EFI_MEMORY_WT         ? "WT"  : "",
++			 attr & EFI_MEMORY_WC         ? "WC"  : "",
++			 attr & EFI_MEMORY_UC         ? "UC"  : "");
+ 	return buf;
+ }
  
- 	spte |= (u64)pfn << PAGE_SHIFT;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index f87fabea4a85..4ac54a168ffe 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -112,6 +112,7 @@ typedef	struct {
+ #define EFI_MEMORY_MORE_RELIABLE \
+ 				((u64)0x0000000000010000ULL)	/* higher reliability */
+ #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
++#define EFI_MEMORY_CPU_CRYPTO 	((u64)0x0000000000080000ULL)	/* memory encryption supported */
+ #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
+ #define EFI_MEMORY_DESCRIPTOR_VERSION	1
  
 -- 
 2.21.0
