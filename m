@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A854B7C645
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F9F67C622
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726998AbfGaPWN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:22:13 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:39756 "EHLO
+        id S1727911AbfGaPUz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:20:55 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:45349 "EHLO
         mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729831AbfGaPVM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:21:12 -0400
-Received: by mail-ed1-f66.google.com with SMTP id m10so66049203edv.6
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:21:11 -0700 (PDT)
+        with ESMTP id S1729131AbfGaPUz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:20:55 -0400
+Received: by mail-ed1-f66.google.com with SMTP id x19so60133913eda.12
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:20:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=0SvRw1bdF/wj1/uPaALpB1mJItIzSwaE2+8pgarmj/0=;
-        b=K8GSlHVyaCoX6eoUymMD8WNd8fo5NWDf75jpRiOk+1zSA+MpR6EfH2u4sq/cei0nEX
-         o80zJP8en7QDpE5vzs8O5n4LrgF22geCbTMxZs9xW/Bw6G07hLfzIVGyGKyQoxIOnZBD
-         YFtORfTsEPttMMQotUKNiwrIP4HCJfUjTSf2by1YSPzvrtnfC1aL0Dv/WEnFMeyqvoSY
-         1yZ+xCdOLBGgiLW+bKu/YcS0pacqJtrPn8i6k/jyqe3Rz1jF3T9VOENF63nv+EydMMBy
-         h8eN884I5s73CM7fbg8Lu/9/FG0L4WKxt0gSlNtUkWxzIvuA+TNSCpjkFO+PNMv3SZs9
-         BR7A==
+        bh=ukIFHDJenwkznoJ0S+ycGyH8eEeHrvR6n2ACiYDuDdk=;
+        b=AOy2CWLXXb5HmAhiEuMvNlpAfvbzvVTmBhdFbnfbTg/elp4wHPlGZlanZYYDI/FrxG
+         XR1qjn43zM5orBwV4t3lyE99FyrF9PkSX5oImrC331w0Zqkq8aM4qZ7W1MIsKYtR1Iq+
+         R9RJkh8iSQEpA340quOn7TlujXd6hrIkjm5Jm0Xb21fUTBV8fnmRZXlmIojL8rcIgjCU
+         PUTp3qDE06KwYQHnhsuC+tatmmIbYIQBPxFpZQsboYojGA8UMc7qiPLpOzuIoc1jePqI
+         mj+jOHlIVv7dZaf23nr1b3w0Wc5cWJIlxSvk362WiEcqLVDtgLk3XpruSZHTCkoabCWN
+         v2Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=0SvRw1bdF/wj1/uPaALpB1mJItIzSwaE2+8pgarmj/0=;
-        b=iokP9nz7JPujLssAwZChkl9CYutx/tHuVvSinATW2IPfDhzSsGybIC+23rjCXtveeg
-         l40REVFIjo+8iFT8qvF2iMnMDJuA1zutK564bE5j/C0k2KORCQ+wCEB2qUrB70w7msda
-         Gj4e+Umqdn7sS2kjeySEGmnFCkYHITRoxWZmok3+fszMCn3u/Eg8xN13+4n5+JxZXpU7
-         c+a9IDjzCtv06leQxcLnXamY2sXscLeXi4Tx2m2BYFi3g4zS0QBW/2S8mp+vA6jr6GHo
-         j+h1XsFOkDwpt3no7ClvQBmzmSgMsN40F2anOc7kjWz2ydCFSVLX1nMxPz9sM3gNHbKn
-         k0kg==
-X-Gm-Message-State: APjAAAVsD8GT/Agzza511wHSKyNLyYbPnYG362p46LyfJ11IAeZrl3X4
-        Jwvsujty+JlwvbhS5CEQEs4=
-X-Google-Smtp-Source: APXvYqwDDDPlNwfBHKIOlIbyqYdy0UrYvh8zFar3DZnhvZm8R0JCleo52KdoWAHk4ZEHWuudYw10ag==
-X-Received: by 2002:a17:906:e11a:: with SMTP id gj26mr95741299ejb.95.1564586040068;
-        Wed, 31 Jul 2019 08:14:00 -0700 (PDT)
+        bh=ukIFHDJenwkznoJ0S+ycGyH8eEeHrvR6n2ACiYDuDdk=;
+        b=GKpzgd4W4ktPrqULJWKLdjGY5hf4JR+KEfel83EmCsJd1wl2FfTkUE2Nj2+3eDuM7L
+         S48TZth6YTfvCs6XqBotM53B9Pi7/OH8py90Du0O6nrOO9aF5aUmbtyAu7ok+3JW5j+G
+         8kS20a2jXQ0YS1VG2YLpPmbowXklsdFO/V38l535JJFMfOmbi12aUF8C37HFLisv5XCN
+         Zg8jLWT5ccCows3bGUmQjtJDCoziGT0ItQBoMrYEJ9XtTV+kQDkW+K4aGBwQyuzrJy7Z
+         /LvnDxZmQT+RKg4jnoTOKlOHJLlClPL0G/zrXobbqRTW0H8P+S+phozUGOM76imugnv9
+         XuHA==
+X-Gm-Message-State: APjAAAW3VEg8CzcqRP213nx6kgRgB3KAsHBnPEF+yF1pTdR3zTWvUw1L
+        YjaLBkSToO8fr6r5uAasotQ=
+X-Google-Smtp-Source: APXvYqySwhWDf4JA3GLQlNS2pqACUoF55kJ2wCVDTSRm+FoPw2vi1mKPJsOuuhC2eFbEA1+1nD2ApQ==
+X-Received: by 2002:a17:906:1e85:: with SMTP id e5mr94007378ejj.200.1564586029031;
+        Wed, 31 Jul 2019 08:13:49 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id qq13sm12564390ejb.27.2019.07.31.08.13.53
+        by smtp.gmail.com with ESMTPSA id v6sm12580413ejx.28.2019.07.31.08.13.47
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:57 -0700 (PDT)
+        Wed, 31 Jul 2019 08:13:47 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id EF8F91045FB; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id 025681045FC; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 37/59] acpi/hmat: Evaluate topology presented in ACPI HMAT for MKTME
-Date:   Wed, 31 Jul 2019 18:07:51 +0300
-Message-Id: <20190731150813.26289-38-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 38/59] keys/mktme: Do not allow key creation in unsafe topologies
+Date:   Wed, 31 Jul 2019 18:07:52 +0300
+Message-Id: <20190731150813.26289-39-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -78,95 +78,99 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Alison Schofield <alison.schofield@intel.com>
 
-MKTME, Multi-Key Total Memory Encryption, is a feature on Intel
-platforms. The ACPI HMAT table can be used to verify that the
-platform topology is safe for the usage of MKTME.
+MKTME depends upon at least one online CPU capable of programming
+each memory controller in the platform.
 
-The kernel must be capable of programming every memory controller
-on the platform. This means that there must be a CPU online, in
-the same proximity domain of each memory controller.
+An unsafe topology for MKTME is a memory only package or a package
+with no online CPUs. Key creation with unsafe topologies will fail
+with EINVAL and a warning will be logged one time.
+For example:
+	[ ] MKTME: no online CPU in proximity domain
+	[ ] MKTME: topology does not support key creation
+
+These are recoverable errors. CPUs may be brought online that are
+capable of programming a previously unprogrammable memory controller.
 
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- drivers/acpi/hmat/hmat.c | 54 ++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h     |  1 +
- 2 files changed, 55 insertions(+)
+ security/keys/mktme_keys.c | 36 ++++++++++++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/hmat/hmat.c b/drivers/acpi/hmat/hmat.c
-index 38e3341f569f..936a403c0694 100644
---- a/drivers/acpi/hmat/hmat.c
-+++ b/drivers/acpi/hmat/hmat.c
-@@ -677,3 +677,57 @@ bool acpi_hmat_present(void)
- 	acpi_put_table(tbl);
- 	return true;
+diff --git a/security/keys/mktme_keys.c b/security/keys/mktme_keys.c
+index 6265b62801e9..70662e882674 100644
+--- a/security/keys/mktme_keys.c
++++ b/security/keys/mktme_keys.c
+@@ -23,6 +23,7 @@ static unsigned int mktme_available_keyids;  /* Free Hardware KeyIDs */
+ static struct kmem_cache *mktme_prog_cache;  /* Hardware programming cache */
+ static unsigned long *mktme_target_map;	     /* PCONFIG programming target */
+ static cpumask_var_t mktme_leadcpus;	     /* One CPU per PCONFIG target */
++static bool mktme_allow_keys;		     /* HW topology supports keys */
+ 
+ enum mktme_keyid_state {
+ 	KEYID_AVAILABLE,	/* Available to be assigned */
+@@ -253,32 +254,55 @@ static void mktme_destroy_key(struct key *key)
+ 	percpu_ref_kill(&encrypt_count[keyid]);
  }
+ 
++static void mktme_update_pconfig_targets(void);
+ /* Key Service Method to create a new key. Payload is preparsed. */
+ int mktme_instantiate_key(struct key *key, struct key_preparsed_payload *prep)
+ {
+ 	u32 *payload = prep->payload.data[0];
+ 	unsigned long flags;
++	int ret = -ENOKEY;
+ 	int keyid;
+ 
+ 	spin_lock_irqsave(&mktme_lock, flags);
 +
-+static int mktme_parse_proximity_domains(union acpi_subtable_headers *header,
-+					 const unsigned long end)
-+{
-+	struct acpi_hmat_proximity_domain *mar = (void *)header;
-+	struct acpi_hmat_structure *hdr = (void *)header;
++	/* Topology supports key creation */
++	if (mktme_allow_keys)
++		goto get_key;
 +
-+	const struct cpumask *tmp_mask;
-+
-+	if (!hdr || hdr->type != ACPI_HMAT_TYPE_PROXIMITY)
-+		return -EINVAL;
-+
-+	if (mar->header.length != sizeof(*mar)) {
-+		pr_warn("MKTME: invalid header length in HMAT\n");
-+		return -1;
++	/* Topology unknown, check it. */
++	if (!mktme_hmat_evaluate()) {
++		ret = -EINVAL;
++		goto out_unlock;
 +	}
-+	/*
-+	 * Require a valid processor proximity domain.
-+	 * This will catch memory only physical packages with
-+	 * no processor capable of programming the key table.
-+	 */
-+	if (!(mar->flags & ACPI_HMAT_PROCESSOR_PD_VALID)) {
-+		pr_warn("MKTME: no valid processor proximity domain\n");
-+		return -1;
-+	}
-+	/* Require an online CPU in the processor proximity domain. */
-+	tmp_mask = cpumask_of_node(pxm_to_node(mar->processor_PD));
-+	if (!cpumask_intersects(tmp_mask, cpu_online_mask)) {
-+		pr_warn("MKTME: no online CPU in proximity domain\n");
-+		return -1;
-+	}
-+	return 0;
-+}
 +
-+/* Returns true if topology is safe for MKTME key creation */
-+bool mktme_hmat_evaluate(void)
-+{
-+	struct acpi_table_header *tbl;
-+	bool ret = true;
-+	acpi_status status;
++	/* Keys are now allowed. Update the programming targets. */
++	mktme_update_pconfig_targets();
++	mktme_allow_keys = true;
 +
-+	status = acpi_get_table(ACPI_SIG_HMAT, 0, &tbl);
-+	if (ACPI_FAILURE(status))
-+		return -EINVAL;
++get_key:
+ 	keyid = mktme_reserve_keyid(key);
+ 	spin_unlock_irqrestore(&mktme_lock, flags);
+ 	if (!keyid)
+-		return -ENOKEY;
++		goto out;
+ 
+ 	if (percpu_ref_init(&encrypt_count[keyid], mktme_percpu_ref_release,
+ 			    0, GFP_KERNEL))
+-		goto err_out;
++		goto out_free_key;
+ 
+-	if (!mktme_program_keyid(keyid, *payload))
+-		return MKTME_PROG_SUCCESS;
++	ret = mktme_program_keyid(keyid, *payload);
++	if (ret == MKTME_PROG_SUCCESS)
++		goto out;
+ 
++	/* Key programming failed */
+ 	percpu_ref_exit(&encrypt_count[keyid]);
+-err_out:
 +
-+	if (acpi_table_parse_entries(ACPI_SIG_HMAT,
-+				     sizeof(struct acpi_table_hmat),
-+				     ACPI_HMAT_TYPE_PROXIMITY,
-+				     mktme_parse_proximity_domains, 0) < 0) {
-+		ret = false;
-+	}
-+	acpi_put_table(tbl);
++out_free_key:
+ 	spin_lock_irqsave(&mktme_lock, flags);
+ 	mktme_release_keyid(keyid);
++out_unlock:
+ 	spin_unlock_irqrestore(&mktme_lock, flags);
+-	return -ENOKEY;
++out:
 +	return ret;
-+}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index d27f4d17dfb3..8854ae942e37 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1337,6 +1337,7 @@ acpi_platform_notify(struct device *dev, enum kobject_action action)
+ }
  
- #ifdef CONFIG_X86_INTEL_MKTME
- extern bool acpi_hmat_present(void);
-+extern bool mktme_hmat_evaluate(void);
- #endif /* CONFIG_X86_INTEL_MKTME */
- 
- #endif	/*_LINUX_ACPI_H*/
+ /* Make sure arguments are correct for the TYPE of key requested */
 -- 
 2.21.0
 
