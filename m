@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A76C7C5C4
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D65D7C5B8
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727441AbfGaPJp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:09:45 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:43835 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388548AbfGaPI2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:28 -0400
-Received: by mail-ed1-f67.google.com with SMTP id e3so66031001edr.10
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:27 -0700 (PDT)
+        id S2388600AbfGaPJU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:09:20 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:39977 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388601AbfGaPIa (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:30 -0400
+Received: by mail-ed1-f68.google.com with SMTP id k8so65998158eds.7
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=xZeKfM6T8HTy5YM9YTF4CgvrEAh9gYOHMqOdjRE0jKs=;
-        b=CKwTGfqftPDIaRPn/xve4w1+BQofkrfeJaRVwasir0N2gaI86NFwFxg8DcKYfpIb/T
-         zdNo86h2blPndRDZ0oHF3nNNsbgPZ9ud4MhkHLJUh9aosb3WLdon2l9jywmf1XS3jazD
-         g+s2wGJDplnGgg9Qx97RNw21ATe0b/cZO3XgAZrx09sWV5aW3VlaqaOo2g4JU5CT9iwW
-         yz2yB+EFutNa/7GS4L0SAD0v5gg+PKoI8gwxEIyl2R8ZLpFFN6/9CPEQuZXLnwQfKbfG
-         RkPDW9JM4nmysiqjOl3J1FDnQRNyj344DXF7M/ds/1YTDGBt9yWaHdPd+cmulzWlE01x
-         654g==
+        bh=2C449KSjT4bbSwYYn5oh0t+GvJgUUHqBrjpFSTJaVMM=;
+        b=BRLtr4tgYn50QM+JIDHN/iYJHDA/eYrOUmJYvQptXTzwrBNdmFzt8zjJULLektK/VA
+         AL/NZPGusMjazLlBev7xe67PdKIfQ1ifpZNsX3n6tVVOa4ud/9OwxtjEEiXleT0dww34
+         btnUPhOQ9ej+n+IZzfuH/c2u7wLSynBdGbkIYgwm/zx9aTR7AirSR8kauZtQI1eG36ut
+         GrY5WSOyefYNkH38KCUyy7rpU+qfA4Tow+UQHZI/00wFfW7zf53dLyFQhYvsbF2QDkKz
+         HwKhJkV1eHDK+DsnsDoJNeFWLsnZIxfo/PjZHwoQIcsO8/FwvmZXcMuwGCHQNeY7A0V3
+         GE2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=xZeKfM6T8HTy5YM9YTF4CgvrEAh9gYOHMqOdjRE0jKs=;
-        b=tY0QVCF+QZRqfMBqSGim3rbBBHRZNnbK8a9SqcwHo31ECqGb+NnaXItWNFi7bk8ssM
-         WybwrPAZ+YCWVM4PDq2UHgRlN899pSmNxCC+nYfce62yKImJY4mubDzrnr4hcGy1AdDd
-         CHRbEWIXCaTI+imn/BbwCIN/Pxr8k0xLuhqHtZB9yzcfCffF01FWmKRxnDygnl2+HG5o
-         XIPj3H+o/TTR2uiIe8dOYhAM+Pdeu7Nor7SVBZuOxJlXG+uMul6qj76xUYq/66AHDG8p
-         U+1/jzxchkja8apAoEck5MCQyWBi+oNrrOaSSSO0mm0Yh6pkvuBDRdQjXJWvRlXXcKK9
-         jXVg==
-X-Gm-Message-State: APjAAAX1aYbvbW6DAB4B3+Il0Oo1AJK10BQe/zblrm7nb5UbFDWVQfp+
-        29abZMqqSGvVtUTE3IcDnKM=
-X-Google-Smtp-Source: APXvYqwyxRQn953dpG335++68BakS/voatLNiC782RPJuiyRVUELnhQKN8Sxlq6UNG5ozqtqFSTkKg==
-X-Received: by 2002:a17:906:7013:: with SMTP id n19mr94845741ejj.65.1564585706382;
-        Wed, 31 Jul 2019 08:08:26 -0700 (PDT)
+        bh=2C449KSjT4bbSwYYn5oh0t+GvJgUUHqBrjpFSTJaVMM=;
+        b=UgCbA/oL5rXoClChTbOnGSbWo12C70iX+94utmBNUnmCPbtbmx8Q5oiKtTm4fdFy/7
+         lWPpN8kDHaRUCkE2SKTI2F7hP+FVW0PZEpJQIeb/QJFd1BKDWi1aIRZiAZbcXqI9b1kJ
+         tpQVGrCq064HLDGi7002guRPYpD43PVHf5fPBCE/TocfprmsYsBfu6GfMcpaG6f8ULMI
+         EA/Cg7T5D6Pn3/1b3R58lpfo3kaarfzrzTB8B5i/r9+aI98xZtHQkkTxoTEw3L4B4QWj
+         jOYhau5ZHyRDO3T1YhLVUauV9rv1bgIbK+68OChn62qFRfgm8KNxq3z3BglpmmOrL9pl
+         QrsQ==
+X-Gm-Message-State: APjAAAU9fP3yTP0xfWtl9UV4BAErdlqjDxcX5cGRZxBl+9JTkzSkeXIr
+        xkeYWsH6fz1/1TMGyLDeJRo=
+X-Google-Smtp-Source: APXvYqxMBwDpewyfIfpy++jLBpP8UloTaXPGrZ8I/eqCpEpkmrEfDx2SZR3u/YrZv24UsUCPRBrhkw==
+X-Received: by 2002:a05:6402:28e:: with SMTP id l14mr42072938edv.11.1564585709289;
+        Wed, 31 Jul 2019 08:08:29 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id p15sm10516388ejr.1.2019.07.31.08.08.22
+        by smtp.gmail.com with ESMTPSA id jt17sm12600191ejb.90.2019.07.31.08.08.22
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:08:26 -0700 (PDT)
+        Wed, 31 Jul 2019 08:08:28 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 80E941030BC; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id 8E3561030BE; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -62,10 +62,10 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Alison Schofield <alison.schofield@intel.com>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 21/59] mm/page_ext: Export lookup_page_ext() symbol
-Date:   Wed, 31 Jul 2019 18:07:35 +0300
-Message-Id: <20190731150813.26289-22-kirill.shutemov@linux.intel.com>
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 23/59] x86/pconfig: Set an activated algorithm in all MKTME commands
+Date:   Wed, 31 Jul 2019 18:07:37 +0300
+Message-Id: <20190731150813.26289-24-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -76,35 +76,54 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-page_keyid() is inline funcation that uses lookup_page_ext(). KVM is
-going to use page_keyid() and since KVM can be built as a module
-lookup_page_ext() has to be exported.
+From: Alison Schofield <alison.schofield@intel.com>
 
+The Intel MKTME architecture specification requires an activated
+encryption algorithm for all command types.
+
+For commands that actually perform encryption, SET_KEY_DIRECT and
+SET_KEY_RANDOM, the user specifies the algorithm when requesting the
+key through the MKTME Key Service.
+
+For CLEAR_KEY and NO_ENCRYPT commands, do not require the user to
+specify an algorithm. Define a default algorithm, that is 'any
+activated algorithm' to cover those two special cases.
+
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- mm/page_ext.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/intel_pconfig.h | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index c52b77c13cd9..eeca218891e7 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -139,6 +139,7 @@ struct page_ext *lookup_page_ext(const struct page *page)
- 					MAX_ORDER_NR_PAGES);
- 	return get_entry(base, index);
- }
-+EXPORT_SYMBOL_GPL(lookup_page_ext);
+diff --git a/arch/x86/include/asm/intel_pconfig.h b/arch/x86/include/asm/intel_pconfig.h
+index 3cb002b1d0f9..4f27b0c532ee 100644
+--- a/arch/x86/include/asm/intel_pconfig.h
++++ b/arch/x86/include/asm/intel_pconfig.h
+@@ -21,14 +21,20 @@ enum pconfig_leaf {
  
- static int __init alloc_node_page_ext(int nid)
- {
-@@ -209,6 +210,7 @@ struct page_ext *lookup_page_ext(const struct page *page)
- 		return NULL;
- 	return get_entry(section->page_ext, pfn);
- }
-+EXPORT_SYMBOL_GPL(lookup_page_ext);
+ /* Defines and structure for MKTME_KEY_PROGRAM of PCONFIG instruction */
  
- static void *__meminit alloc_page_ext(size_t size, int nid)
- {
++/* mktme_key_program::keyid_ctrl ENC_ALG, bits [23:8] */
++#define MKTME_AES_XTS_128	(1 << 8)
++#define MKTME_ANY_ACTIVATED_ALG	(1 << __ffs(mktme_algs) << 8)
++
+ /* mktme_key_program::keyid_ctrl COMMAND, bits [7:0] */
+ #define MKTME_KEYID_SET_KEY_DIRECT	0
+ #define MKTME_KEYID_SET_KEY_RANDOM	1
+-#define MKTME_KEYID_CLEAR_KEY		2
+-#define MKTME_KEYID_NO_ENCRYPT		3
+ 
+-/* mktme_key_program::keyid_ctrl ENC_ALG, bits [23:8] */
+-#define MKTME_AES_XTS_128	(1 << 8)
++/*
++ * CLEAR_KEY and NO_ENCRYPT require the COMMAND in bits [7:0]
++ * and any activated encryption algorithm, ENC_ALG, in bits [23:8]
++ */
++#define MKTME_KEYID_CLEAR_KEY  (2 | MKTME_ANY_ACTIVATED_ALG)
++#define MKTME_KEYID_NO_ENCRYPT (3 | MKTME_ANY_ACTIVATED_ALG)
+ 
+ /* Return codes from the PCONFIG MKTME_KEY_PROGRAM */
+ #define MKTME_PROG_SUCCESS	0
 -- 
 2.21.0
 
