@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 233537C583
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E11D47C587
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:08:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388465AbfGaPIV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:08:21 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:35908 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388442AbfGaPIU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:20 -0400
-Received: by mail-ed1-f66.google.com with SMTP id k21so66032705edq.3
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:19 -0700 (PDT)
+        id S2388604AbfGaPIa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:08:30 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:37837 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388534AbfGaPI3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:29 -0400
+Received: by mail-ed1-f68.google.com with SMTP id w13so66061004eds.4
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=uRHR4JyNhqg33njeUSvVGNylXkFyo7B3QnIKSQpCDwk=;
-        b=Adcw5GPsJkn83YXVJKj7Wqwm6NwWDC1hAYaUolv28wXp+8oH0VtnaENGQuZ/0K5+Nb
-         4ttVuTcBuWW62tdKiOabj/bghgVhdlTVmNRPbQ83nxcV2pN29l6uGQo0wyZ/lAlhkLv5
-         uu88EBPXw3XRRpwEaUjPB0g7WmxNmdd7QzlE0G/0MbaOwDTTzRhC9WWYSRAeSeO7X5bx
-         QFUzmQ84OBFGl0JYzwuDQQLD8dx+iNms4LZ5CMlKmpkkFg5rsp7bDTsd+CepoXc38t5t
-         U6hOGTcOi/3klKmjqufRITIY89IhP2ybvsPkGFX/lxa/yb3zD0rrCBZO9eKTlKALJ6M+
-         k80A==
+        bh=BL5Bv5lW/jYayEJoRe2+9QezMkCC+60ESskc5jI43rc=;
+        b=Z+QZrz8RxaQVkEmqQR+P3He1RAcsz276GYydPQCrBvVFzTQKhJYu7NE41afsSGcW6+
+         PEkJHs8N+UZO3AYfKlsxwVJLTOvBwiOb7PnAjByNuwdd5U2faK6XX8qM7PxvuCxO/mbu
+         tGAo18iJgYPJ1Ot5DSRbXJIlTHuucTq2ZxCKM1dP5WZHTSE1FnneQRwt/g0J7LAxwo9y
+         1kEtDf3Gtz6f8i1Dcl7z5jwv2Di5k2T62pCpUzzd1Hc8x6HKFWlkGzFRwJd9NLtmsaB8
+         eZcrNUzOtJQwWsRlLRsolI/HegBB7F8KhoBR5T1awdNiOE/MGBOV2CCucAo20gDECZFx
+         G0pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=uRHR4JyNhqg33njeUSvVGNylXkFyo7B3QnIKSQpCDwk=;
-        b=sP2z13A9AgxUWi8Xr7x8bQOHc3tWsVy45cDiTiCELIrzspMB9HWlL4HKrMviqAkD3e
-         tyY/5XMVHQ/YfioWebax30DE02GbJ0Jnc/LfXPToMEkeoLwMUda5mLxoVkiMSBu9Wdqm
-         lO9LZrQm1MtdW5JTLU13JAuRUUmc2X/Bjtpl/4dA2daAfZCknYbVc1TCB+LyMLBdOY9Z
-         UaUdPuy+r/+f/K7n3QAUEIz+YVthMSNr6Nv9DQtE5I0z5owtD4jkNUKc3nxD9Lr0Tg2S
-         gDC+iP4FeZOMdxxsjbV8XUMbVCfjOb3VeD9GbOhVn+PcdvegkiyPw4Ah3fPo56Fvd6+s
-         YR8w==
-X-Gm-Message-State: APjAAAVFbJYrOWKrDqM+wiEZB2TdPTDI1R66Yr5mg/OBW2Gs5fVqwfxj
-        1gPnehSiqRn9feKECQE3sSA=
-X-Google-Smtp-Source: APXvYqwgh75LQw16lfxHmAAueOtxiQIAT7Hemys++oZtGs9IrW8hC3dJ4CKW+gKV4lDeffYtzg8cig==
-X-Received: by 2002:a17:906:6a87:: with SMTP id p7mr23487746ejr.277.1564585698812;
-        Wed, 31 Jul 2019 08:08:18 -0700 (PDT)
+        bh=BL5Bv5lW/jYayEJoRe2+9QezMkCC+60ESskc5jI43rc=;
+        b=WPkot1vSUQSE4hPdY+fdmL8a6u4rLnCUZEaPqn51UV9IaRn12CBuTPCkic+/gIoBp8
+         jPHx7X215AkCyNh9yuACEToxFhUU2yjDWJwr3WnXOpSjEfoQUXpkJsil7M35+PABzPRU
+         aK9QKopChkjdo4Zo/tMQIQ9b+2y0VMdixwgBzE6pg/rxQRjlGdidPviMHMtDz9O4477o
+         WaJdTm4xflVnKlJi6HkU2jW4/NMsCGOQ7AgioZ98Ga/0RIYIj/YOBvlmnNfXj9JcYiBs
+         YYhmLb0G14G/QdMXrJAvS5BrfxawSgMEvMBkAmKsFO9xjnWaTa9LEENUq1h3eQ+FLTAG
+         ViIw==
+X-Gm-Message-State: APjAAAVjvTQRGQduL6IPh9FSedrsykM7cvYGqtrvpOMOIbIVdIHh+SA6
+        ignpSS+ObuCCcqCsYc6Jv4D1gFgn
+X-Google-Smtp-Source: APXvYqznZSrsxmfkB4pexMYFvT9i/MDUnejlA2skN/Nit1TPuevFqcmrEwStP937D+YpXbOTCbclHw==
+X-Received: by 2002:a17:906:604c:: with SMTP id p12mr94494193ejj.26.1564585706687;
+        Wed, 31 Jul 2019 08:08:26 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id o22sm17282769edc.37.2019.07.31.08.08.15
+        by smtp.gmail.com with ESMTPSA id t16sm8546953ejr.83.2019.07.31.08.08.20
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:08:15 -0700 (PDT)
+        Wed, 31 Jul 2019 08:08:22 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 03F8F10131A; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id 5011C101C44; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 03/59] mm/ksm: Do not merge pages with different KeyIDs
-Date:   Wed, 31 Jul 2019 18:07:17 +0300
-Message-Id: <20190731150813.26289-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 14/59] x86/mm: Add hooks to allocate and free encrypted pages
+Date:   Wed, 31 Jul 2019 18:07:28 +0300
+Message-Id: <20190731150813.26289-15-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -76,66 +76,153 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-KSM compares plain text.  It might try to merge two pages that have the
-same plain text but different ciphertext and possibly different
-encryption keys.  When the kernel encrypted the page, it promised that
-it would keep it encrypted with _that_ key.  That makes it impossible to
-merge two pages encrypted with different keys.
+Hook up into page allocator to allocate and free encrypted page
+properly.
 
-Never merge encrypted pages with different KeyIDs.
+The hardware/CPU does not enforce coherency between mappings of the same
+physical page with different KeyIDs or encryption keys.
+We are responsible for cache management.
+
+Flush cache on allocating encrypted page and on returning the page to
+the free pool.
+
+prep_encrypted_page() also takes care about zeroing the page. We have to
+do this after KeyID is set for the page.
+
+The patch relies on page_address() to return virtual address of the page
+mapping with the current KeyID. It will be implemented later in the
+patchset.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- include/linux/mm.h |  7 +++++++
- mm/ksm.c           | 17 +++++++++++++++++
- 2 files changed, 24 insertions(+)
+ arch/x86/include/asm/mktme.h | 17 ++++++++
+ arch/x86/mm/mktme.c          | 83 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 100 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 5bfd3dd121c1..af1a56ff6764 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1644,6 +1644,13 @@ static inline int vma_keyid(struct vm_area_struct *vma)
+diff --git a/arch/x86/include/asm/mktme.h b/arch/x86/include/asm/mktme.h
+index 52b115b30a42..a61b45fca4b1 100644
+--- a/arch/x86/include/asm/mktme.h
++++ b/arch/x86/include/asm/mktme.h
+@@ -43,6 +43,23 @@ static inline int vma_keyid(struct vm_area_struct *vma)
+ 	return __vma_keyid(vma);
  }
- #endif
  
-+#ifndef page_keyid
-+static inline int page_keyid(struct page *page)
++#define prep_encrypted_page prep_encrypted_page
++void __prep_encrypted_page(struct page *page, int order, int keyid, bool zero);
++static inline void prep_encrypted_page(struct page *page, int order,
++		int keyid, bool zero)
 +{
-+	return 0;
++	if (keyid)
++		__prep_encrypted_page(page, order, keyid, zero);
 +}
-+#endif
 +
- extern unsigned long move_page_tables(struct vm_area_struct *vma,
- 		unsigned long old_addr, struct vm_area_struct *new_vma,
- 		unsigned long new_addr, unsigned long len,
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 3dc4346411e4..7d4ef634f38e 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1228,6 +1228,23 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
- 	if (!PageAnon(page))
- 		goto out;
++#define HAVE_ARCH_FREE_PAGE
++void free_encrypted_page(struct page *page, int order);
++static inline void arch_free_page(struct page *page, int order)
++{
++	if (page_keyid(page))
++		free_encrypted_page(page, order);
++}
++
+ #else
+ #define mktme_keyid_mask()	((phys_addr_t)0)
+ #define mktme_nr_keyids()	0
+diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+index d02867212e33..8015e7822c9b 100644
+--- a/arch/x86/mm/mktme.c
++++ b/arch/x86/mm/mktme.c
+@@ -1,4 +1,5 @@
+ #include <linux/mm.h>
++#include <linux/highmem.h>
+ #include <asm/mktme.h>
  
-+	/*
-+	 * KeyID indicates what key to use to encrypt and decrypt page's
-+	 * content.
-+	 *
-+	 * KSM compares plain text instead (transparently to KSM code).
-+	 *
-+	 * But we still need to make sure that pages with identical plain
-+	 * text will not be merged together if they are encrypted with
-+	 * different keys.
-+	 *
-+	 * To make it work kernel only allows merging pages with the same KeyID.
-+	 * The approach guarantees that the merged page can be read by all
-+	 * users.
-+	 */
-+	if (kpage && page_keyid(page) != page_keyid(kpage))
-+		goto out;
+ /* Mask to extract KeyID from physical address. */
+@@ -55,3 +56,85 @@ int __vma_keyid(struct vm_area_struct *vma)
+ 	pgprotval_t prot = pgprot_val(vma->vm_page_prot);
+ 	return (prot & mktme_keyid_mask()) >> mktme_keyid_shift();
+ }
 +
- 	/*
- 	 * We need the page lock to read a stable PageSwapCache in
- 	 * write_protect_page().  We use trylock_page() instead of
++/* Prepare page to be used for encryption. Called from page allocator. */
++void __prep_encrypted_page(struct page *page, int order, int keyid, bool zero)
++{
++	int i;
++
++	/*
++	 * The hardware/CPU does not enforce coherency between mappings
++	 * of the same physical page with different KeyIDs or
++	 * encryption keys. We are responsible for cache management.
++	 *
++	 * Flush cache lines with KeyID-0. page_address() returns virtual
++	 * address of the page mapping with the current (zero) KeyID.
++	 */
++	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
++
++	for (i = 0; i < (1 << order); i++) {
++		/* All pages coming out of the allocator should have KeyID 0 */
++		WARN_ON_ONCE(lookup_page_ext(page)->keyid);
++
++		/*
++		 * Change KeyID. From now on page_address() will return address
++		 * of the page mapping with the new KeyID.
++		 *
++		 * We don't need barrier() before the KeyID change because
++		 * clflush_cache_range() above stops compiler from reordring
++		 * past the point with mb().
++		 *
++		 * And we don't need a barrier() after the assignment because
++		 * any future reference of KeyID (i.e. from page_address())
++		 * will create address dependency and compiler is not allow to
++		 * mess with this.
++		 */
++		lookup_page_ext(page)->keyid = keyid;
++
++		/* Clear the page after the KeyID is set. */
++		if (zero)
++			clear_highpage(page);
++
++		page++;
++	}
++}
++
++/*
++ * Handles freeing of encrypted page.
++ * Called from page allocator on freeing encrypted page.
++ */
++void free_encrypted_page(struct page *page, int order)
++{
++	int i;
++
++	/*
++	 * The hardware/CPU does not enforce coherency between mappings
++	 * of the same physical page with different KeyIDs or
++	 * encryption keys. We are responsible for cache management.
++	 *
++	 * Flush cache lines with non-0 KeyID. page_address() returns virtual
++	 * address of the page mapping with the current (non-zero) KeyID.
++	 */
++	clflush_cache_range(page_address(page), PAGE_SIZE * (1UL << order));
++
++	for (i = 0; i < (1 << order); i++) {
++		/* Check if the page has reasonable KeyID */
++		WARN_ON_ONCE(!lookup_page_ext(page)->keyid);
++		WARN_ON_ONCE(lookup_page_ext(page)->keyid > mktme_nr_keyids());
++
++		/*
++		 * Switch the page back to zero KeyID.
++		 *
++		 * We don't need barrier() before the KeyID change because
++		 * clflush_cache_range() above stops compiler from reordring
++		 * past the point with mb().
++		 *
++		 * And we don't need a barrier() after the assignment because
++		 * any future reference of KeyID (i.e. from page_address())
++		 * will create address dependency and compiler is not allow to
++		 * mess with this.
++		 */
++		lookup_page_ext(page)->keyid = 0;
++		page++;
++	}
++}
 -- 
 2.21.0
 
