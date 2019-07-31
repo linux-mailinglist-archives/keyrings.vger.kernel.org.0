@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C2D37C59E
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3E97C58D
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729007AbfGaPJJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:09:09 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:38808 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388610AbfGaPIc (ORCPT
+        id S2388659AbfGaPId (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:08:33 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:41238 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388623AbfGaPIc (ORCPT
         <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:08:32 -0400
-Received: by mail-ed1-f65.google.com with SMTP id r12so31220800edo.5
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:30 -0700 (PDT)
+Received: by mail-ed1-f66.google.com with SMTP id p15so65977835eds.8
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:08:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=p3ZdWpQd4xgv1kA6jDtn8atrxpLedHc/tVwU2ev+R3g=;
-        b=UeQPYBDUV35JfXNrT+d/+kITJnfTYOBQ1jtvX2JvqFbwVh/IeIZ2iI0ZXO91FPn9Ce
-         GW/w3MO7sHLXXgtgE2TaPrzyGuhNw243bGm6o/iGuQwYW66FhRrCIaqTdHAHoNMlPwIJ
-         eWN5hgS1key/lsY2Gpyw1STp4427doI388pSYFCLVQEjOIiGXT+TkZloJYN6tjzrbOyJ
-         vcQMkjiEs7M6OXH8+Lpe0TAD2Ou/D+uu+KPrBcug6Q74tQXQEJs+TqHWk3omP9QV64d8
-         7zAhZGz4EvgStlF3Md21t/Dhxvi9IqnlZrJdrf/4i/NIcNvgXhFuAzIO3cs7qe9OAhQP
-         jyqw==
+        bh=IPsK2XRosHpKRDn42pkA1hocZnIJH8axKf5oqIqvF+0=;
+        b=RoXYiUX1XnPhAzuEc/754GCS7jv20HjdtnuA0D6/z6EQWRYWWlJYLUmYCp5A9gF6t0
+         xmdTvGf/RDPJGsWdvfduqJSiPxD1iQy03XbdfaIQyAILVGsn2EfooQl1HvX68XEmvKvE
+         YLVQ2+mjfACH42lwtOVvTBDcZBjRVOCatWgbntGFkKnEMI7/phw5FB2FZk9Pt9J7I72/
+         XSOCXiRLBenu+N9P+C9H7h3JIHVw5uD4w9ATyXvDePOwu1HaCpJlCNydaVH+dgiEvjFc
+         icfbQU69vCZT3uQOtoM3gTX73RLNevnI2i7LMnV1I9DzMb0PsfE3TEa5CJMzEo4Nvk/X
+         DA6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=p3ZdWpQd4xgv1kA6jDtn8atrxpLedHc/tVwU2ev+R3g=;
-        b=pEqPqQEIycuwTb1NZixAz8clPNbeUGu3T0yWYJ6GR75jQhpRFe2UVuajNw5N+1Pi79
-         PJzOmxkMD7RiIVqj7KtDmuigbOu7HISqwzzeJ0QAoUdOcdYvZEKKjYygoS/b6XrsrNsk
-         nfc+/Knx9UGDj2OGaff4/8mtWHmOmo9pXA5qyHMk8eOsrJriQZsfDJLlWgpcNKnJ4LDa
-         nqvSZipE1AuRr1oSu8KlWnZt0MYQ70mDZyYzFR8KK6Fbfz25Y1V/YCxDzuZTqSICxE9z
-         6Wcudl48diBHRfgNxpj6lX5SAhZRalmFXuNJ6LwAGQeg9D+2KPmCQ46A74vI+d510Nuo
-         /+8Q==
-X-Gm-Message-State: APjAAAWVin/2Qo0dbGY/0FhQ46GStBw7cG6r3kbzSjBPiC5fynJ51ZNB
-        ayiBE5ROb3C+tDhCWflrzAM=
-X-Google-Smtp-Source: APXvYqwkQSn37lZ2YK2K4kR+zMFHwX+ELvbrlQTI82djGKjlx/y1EvYEwBEFV4qd/VWbyn8Xl7msnw==
-X-Received: by 2002:a50:a943:: with SMTP id m3mr105292611edc.190.1564585709728;
-        Wed, 31 Jul 2019 08:08:29 -0700 (PDT)
+        bh=IPsK2XRosHpKRDn42pkA1hocZnIJH8axKf5oqIqvF+0=;
+        b=Juz+d13eekZWLXXZJAbKnfco5j8bZ/HYG7WSe73BOmjvn1auQhIzBeOXyfYc6QBq3T
+         7swhEtiSAmDlFCPbIiSUkqMx5wPVzXVUZClfdgfT0nPVHdBQW9qIXrWtG+ZPCy+CAELh
+         lM5MRtiLeZ7y4G1lvmNe5qmZYdys/Dp77cyu/Y0v7eqTzinlLw5Od+JCaSaEYXbzCAb+
+         pnOOrOsb2F25rsdg2pXBB5C17AcIDews9lQ+uPMc/8v3tc2oL/iQhX9KLN6pniLFbMtC
+         CqQjYy293wbjn+erc3kuGo+2wRMWZveralAZnOl9sOm8rufMwVzGNkCWqqVvSotXPP7g
+         sNOw==
+X-Gm-Message-State: APjAAAWXbnRm4q/PDNd9XwDL7kbTj7EzntKO7Ff7X1S1noq3zBG4J1E+
+        EgTU8+9YgZ02Yo+6zmmZ73c=
+X-Google-Smtp-Source: APXvYqw++kl/s7OZc/atZ5tqKoJq5up6RoggcbrTF/G7ZR/ZGQU8Rbyr5OdWAhG3JNmHVdhx6GXBWA==
+X-Received: by 2002:a17:906:914:: with SMTP id i20mr28046601ejd.213.1564585710645;
+        Wed, 31 Jul 2019 08:08:30 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id y11sm12444539ejb.54.2019.07.31.08.08.23
+        by smtp.gmail.com with ESMTPSA id uz27sm12533468ejb.24.2019.07.31.08.08.24
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Wed, 31 Jul 2019 08:08:28 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 9EFEC1030C0; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id 1E0E2104600; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 25/59] keys/mktme: Preparse the MKTME key payload
-Date:   Wed, 31 Jul 2019 18:07:39 +0300
-Message-Id: <20190731150813.26289-26-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 42/59] syscall/x86: Wire up a system call for MKTME encryption keys
+Date:   Wed, 31 Jul 2019 18:07:56 +0300
+Message-Id: <20190731150813.26289-43-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -78,215 +78,85 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Alison Schofield <alison.schofield@intel.com>
 
-It is a requirement of the Kernel Keys subsystem to provide a
-preparse method that validates payloads before key instantiate
-methods are called.
+encrypt_mprotect() is a new system call to support memory encryption.
 
-Verify that userspace provides valid MKTME options and prepare
-the payload for use at key instantiate time.
-
-Create a method to free the preparsed payload. The Kernel Key
-subsystem will that to clean up after the key is instantiated.
+It takes the same parameters as legacy mprotect, plus an additional
+key serial number that is mapped to an encryption keyid.
 
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- include/keys/mktme-type.h  |  31 +++++++++
- security/keys/mktme_keys.c | 134 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 165 insertions(+)
- create mode 100644 include/keys/mktme-type.h
+ arch/x86/entry/syscalls/syscall_32.tbl | 1 +
+ arch/x86/entry/syscalls/syscall_64.tbl | 1 +
+ include/linux/syscalls.h               | 2 ++
+ include/uapi/asm-generic/unistd.h      | 4 +++-
+ kernel/sys_ni.c                        | 2 ++
+ 5 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/keys/mktme-type.h b/include/keys/mktme-type.h
-new file mode 100644
-index 000000000000..9dad92f17179
---- /dev/null
-+++ b/include/keys/mktme-type.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/* Key service for Multi-KEY Total Memory Encryption */
-+
-+#ifndef _KEYS_MKTME_TYPE_H
-+#define _KEYS_MKTME_TYPE_H
-+
-+#include <linux/key.h>
-+
-+enum mktme_alg {
-+	MKTME_ALG_AES_XTS_128,
-+};
-+
-+const char *const mktme_alg_names[] = {
-+	[MKTME_ALG_AES_XTS_128]	= "aes-xts-128",
-+};
-+
-+enum mktme_type {
-+	MKTME_TYPE_ERROR = -1,
-+	MKTME_TYPE_CPU,
-+	MKTME_TYPE_NO_ENCRYPT,
-+};
-+
-+const char *const mktme_type_names[] = {
-+	[MKTME_TYPE_CPU]	= "cpu",
-+	[MKTME_TYPE_NO_ENCRYPT]	= "no-encrypt",
-+};
-+
-+extern struct key_type key_type_mktme;
-+
-+#endif /* _KEYS_MKTME_TYPE_H */
-diff --git a/security/keys/mktme_keys.c b/security/keys/mktme_keys.c
-index d262e0f348e4..fe119a155235 100644
---- a/security/keys/mktme_keys.c
-+++ b/security/keys/mktme_keys.c
-@@ -6,6 +6,10 @@
- #include <linux/key.h>
- #include <linux/key-type.h>
- #include <linux/mm.h>
-+#include <linux/parser.h>
-+#include <linux/string.h>
-+#include <asm/intel_pconfig.h>
-+#include <keys/mktme-type.h>
- #include <keys/user-type.h>
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index c00019abd076..1b30cd007a6a 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -440,3 +440,4 @@
+ 433	i386	fspick			sys_fspick			__ia32_sys_fspick
+ 434	i386	pidfd_open		sys_pidfd_open			__ia32_sys_pidfd_open
+ 435	i386	clone3			sys_clone3			__ia32_sys_clone3
++436	i386	encrypt_mprotect	sys_encrypt_mprotect		__ia32_sys_encrypt_mprotect
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index c29976eca4a8..716d8a89159b 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -357,6 +357,7 @@
+ 433	common	fspick			__x64_sys_fspick
+ 434	common	pidfd_open		__x64_sys_pidfd_open
+ 435	common	clone3			__x64_sys_clone3/ptregs
++436	common	encrypt_mprotect	__x64_sys_encrypt_mprotect
  
- #include "internal.h"
-@@ -27,8 +31,138 @@ struct mktme_mapping {
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 88145da7d140..4494b1d9c85a 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1000,6 +1000,8 @@ asmlinkage long sys_fspick(int dfd, const char __user *path, unsigned int flags)
+ asmlinkage long sys_pidfd_send_signal(int pidfd, int sig,
+ 				       siginfo_t __user *info,
+ 				       unsigned int flags);
++asmlinkage long sys_encrypt_mprotect(unsigned long start, size_t len,
++				     unsigned long prot, key_serial_t serial);
  
- static struct mktme_mapping *mktme_map;
+ /*
+  * Architecture-specific system calls
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index 1be0e798e362..7c1cd13f6aaf 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -850,9 +850,11 @@ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
+ #define __NR_clone3 435
+ __SYSCALL(__NR_clone3, sys_clone3)
+ #endif
++#define __NR_encrypt_mprotect 436
++__SYSCALL(__NR_encrypt_mprotect, sys_encrypt_mprotect)
  
-+enum mktme_opt_id {
-+	OPT_ERROR,
-+	OPT_TYPE,
-+	OPT_ALGORITHM,
-+};
-+
-+static const match_table_t mktme_token = {
-+	{OPT_TYPE, "type=%s"},
-+	{OPT_ALGORITHM, "algorithm=%s"},
-+	{OPT_ERROR, NULL}
-+};
-+
-+/* Make sure arguments are correct for the TYPE of key requested */
-+static int mktme_check_options(u32 *payload, unsigned long token_mask,
-+			       enum mktme_type type, enum mktme_alg alg)
-+{
-+	if (!token_mask)
-+		return -EINVAL;
-+
-+	switch (type) {
-+	case MKTME_TYPE_CPU:
-+		if (test_bit(OPT_ALGORITHM, &token_mask))
-+			*payload |= (1 << alg) << 8;
-+		else
-+			return -EINVAL;
-+
-+		*payload |= MKTME_KEYID_SET_KEY_RANDOM;
-+		break;
-+
-+	case MKTME_TYPE_NO_ENCRYPT:
-+		*payload |= MKTME_KEYID_NO_ENCRYPT;
-+		break;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+/* Parse the options and store the key programming data in the payload. */
-+static int mktme_get_options(char *options, u32 *payload)
-+{
-+	enum mktme_alg alg = MKTME_ALG_AES_XTS_128;
-+	enum mktme_type type = MKTME_TYPE_ERROR;
-+	substring_t args[MAX_OPT_ARGS];
-+	unsigned long token_mask = 0;
-+	char *p = options;
-+	int token;
-+
-+	while ((p = strsep(&options, " \t"))) {
-+		if (*p == '\0' || *p == ' ' || *p == '\t')
-+			continue;
-+		token = match_token(p, mktme_token, args);
-+		if (token == OPT_ERROR)
-+			return -EINVAL;
-+		if (test_and_set_bit(token, &token_mask))
-+			return -EINVAL;
-+
-+		switch (token) {
-+		case OPT_TYPE:
-+			type = match_string(mktme_type_names,
-+					    ARRAY_SIZE(mktme_type_names),
-+					    args[0].from);
-+			if (type < 0)
-+				return -EINVAL;
-+			break;
-+
-+		case OPT_ALGORITHM:
-+			/* Algorithm must be generally supported */
-+			alg = match_string(mktme_alg_names,
-+					   ARRAY_SIZE(mktme_alg_names),
-+					   args[0].from);
-+			if (alg < 0)
-+				return -EINVAL;
-+
-+			/* Algorithm must be activated on this platform */
-+			if (!(mktme_algs & (1 << alg)))
-+				return -EINVAL;
-+			break;
-+
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+	return mktme_check_options(payload, token_mask, type, alg);
-+}
-+
-+void mktme_free_preparsed_payload(struct key_preparsed_payload *prep)
-+{
-+	kzfree(prep->payload.data[0]);
-+}
-+
-+/*
-+ * Key Service Method to preparse a payload before a key is created.
-+ * Check permissions and the options. Load the proposed key field
-+ * data into the payload for use by the instantiate method.
-+ */
-+int mktme_preparse_payload(struct key_preparsed_payload *prep)
-+{
-+	size_t datalen = prep->datalen;
-+	u32 *mktme_payload;
-+	char *options;
-+	int ret;
-+
-+	if (datalen <= 0 || datalen > 1024 || !prep->data)
-+		return -EINVAL;
-+
-+	options = kmemdup_nul(prep->data, datalen, GFP_KERNEL);
-+	if (!options)
-+		return -ENOMEM;
-+
-+	mktme_payload = kzalloc(sizeof(*mktme_payload), GFP_KERNEL);
-+	if (!mktme_payload) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+	ret = mktme_get_options(options, mktme_payload);
-+	if (ret < 0) {
-+		kzfree(mktme_payload);
-+		goto out;
-+	}
-+	prep->quotalen = sizeof(mktme_payload);
-+	prep->payload.data[0] = mktme_payload;
-+out:
-+	kzfree(options);
-+	return ret;
-+}
-+
- struct key_type key_type_mktme = {
- 	.name		= "mktme",
-+	.preparse	= mktme_preparse_payload,
-+	.free_preparse	= mktme_free_preparsed_payload,
- 	.describe	= user_describe,
- };
+ #undef __NR_syscalls
+-#define __NR_syscalls 436
++#define __NR_syscalls 437
  
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index 34b76895b81e..84c8c47cf9d6 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -349,6 +349,8 @@ COND_SYSCALL(pkey_mprotect);
+ COND_SYSCALL(pkey_alloc);
+ COND_SYSCALL(pkey_free);
+ 
++/* multi-key total memory encryption keys */
++COND_SYSCALL(encrypt_mprotect);
+ 
+ /*
+  * Architecture specific weak syscall entries.
 -- 
 2.21.0
 
