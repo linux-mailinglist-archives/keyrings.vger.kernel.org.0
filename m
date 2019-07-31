@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE8B7C669
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 568E37C611
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729929AbfGaPYT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:24:19 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:46552 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728789AbfGaPXv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:23:51 -0400
-Received: by mail-ed1-f66.google.com with SMTP id d4so66107307edr.13
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:23:50 -0700 (PDT)
+        id S1728783AbfGaPUT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:20:19 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:36505 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729695AbfGaPUP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:20:15 -0400
+Received: by mail-ed1-f67.google.com with SMTP id k21so66068688edq.3
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=XA7E5KeaJUbYeM2K2rhZVp4Ezd7kZRGT8yUA9YU5Vno=;
-        b=JWeiHziHkn6XUi3iIplmGfT52a/0zxqWGFzXmszrNQRkV2LwyrAs/kin1BCvzl8D2g
-         yPo5Vx4EKfuDM4BYN6yW2Wq+cCpZxizYwv7iwcWbuGnSIxyXHRUGoae6uIuCDrK7mVIH
-         xzTngkApmdVD8IRLep9RK8d9L9t//qm1rGPEilmeOZ4y8P3K0gF5VP3e4kA4nP4Iu/SI
-         H3wU+PfBV2o5YEK4noOFw3jff/xt6DObnFczx9D9SKtfMQvKeaTS3TZeAEnh1z2iouOI
-         znt+q/4tcd/EsPVDW/3K93NZpgDh60EwOqhnnuSAuZpsWbtKZkMkfICwoaZYcdqaS/CB
-         gGRw==
+        bh=EvEqqoCYvSiaJViGsfZgvE8wYjGeg4BQWYRIZAIdYOQ=;
+        b=bZcGmOHwm0gi6j5t/BbUGsKtOCIZr4doGxyXBg+bAsntyv91YXoAwS8iK8gYH/2Rhd
+         EZoLChmRluivD3XLirlmMT5W1vFicn0Th6yRJbjlvSCthP29u5r3kvQbgKOL0NnWdm5O
+         z6WKnsGxsng9YOVJ6s+hk1x3ysUEVhPOmeDyo07xX324wqjHjFQ9yfcsBJPs6sEkZfG/
+         j1P95OYBR2KAtJYWJH/9fdcbulUD7i7ZdBv1U7AlRZ5qi7KMU65oMM+umaihE2hREq1N
+         HFgl1iVKn4xa5Uwqe5PFQO1apPGzMbp3tx+aOQoTXOpVFI0CqNnOhoaQyl+Z3LmysdM7
+         SIkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=XA7E5KeaJUbYeM2K2rhZVp4Ezd7kZRGT8yUA9YU5Vno=;
-        b=cguOFgcUhCphJzF0i0Baa/DUnQ+oZfHUnLRJiV5+Tt08oEMp0OuvokbmuEw/tN1D4B
-         h6ItsBub/IR7VPJoBraOZUV1l0MZCo4rIGThQfZl1aIjlt1t7jh+fSs9bYazlDhurAxT
-         QQPkFXKWku7JPzjnFDBK/TNTGH0OejHSkz38XxZWVL/ak2C90QeLvhNFQUHq8EH95q6p
-         GQRSqb/JUk1rnGYTl/NCHikmEBTpG0XCmoNbZtCIbroN1UHboobthuyRdBx9LE7cjdiH
-         1C/1NTrrjklFXDOSxTPmO/WpjrXZDF9J0qrYhhC+QAckGTeXGyP6S6WgxjudR7lNg+wD
-         E7Qw==
-X-Gm-Message-State: APjAAAXRR8zBB8ivUv/LqtItOvEJaubDOHRyOMtFwZeL1cXKxDtuq9Wf
-        KlkQChOoZc65B9HotNi9JLA=
-X-Google-Smtp-Source: APXvYqygZ5MBpQtdpZUq0Kg4NNTneIlpIbVYF7hlIaO8yQtO6FOtK69pmeSCoz1g6SVwfQ5huucSCQ==
-X-Received: by 2002:a50:b1db:: with SMTP id n27mr108755394edd.62.1564586630295;
-        Wed, 31 Jul 2019 08:23:50 -0700 (PDT)
+        bh=EvEqqoCYvSiaJViGsfZgvE8wYjGeg4BQWYRIZAIdYOQ=;
+        b=dzpSPmSkdlbKR6UYRccATs0C84etVeUwgdTO1NNNufGJ3yXVJEThxUj538W7WRKIYO
+         7itOMMEt2ZXV+4uOtWY+pkoKdXPt0NYJ1ZkYd24zosFiPaaZjlslRTyjd9R5fYeBoAqX
+         4D+6uZvxp39LC9dQyKZ6svIX+MyENJEYg/IvgzuXJ893mPFjuXuCoa4ADxMvUMD7U+Vs
+         HajAQBLmJFqQZARMbJ4yfrsXKa3KX7NDu1P43G99ICJ/4DncKE71HXRAMIL0x8rqTC75
+         cMZfa0Sw9S7ByxqyW+ZOGMObEh5xgRCwhpNrNPSpiO+Ax6aK7apzYsSPeQ2JdKM5g5Kv
+         5N7g==
+X-Gm-Message-State: APjAAAUYr96bARaTGpqv6yzRRx/1tb7InsVqc2TCaVTgSVXkGnQKokML
+        GfTDnH9mtNVRLwPKRIMHDf4=
+X-Google-Smtp-Source: APXvYqze/zmPMD1Bsfoldl9kgWqcWF2ltGwH8c0r7lo9vR1AXcu6XddkT5YuYdRgsgxlZcifb+OJkw==
+X-Received: by 2002:a17:906:4d19:: with SMTP id r25mr94272907eju.125.1564586035045;
+        Wed, 31 Jul 2019 08:13:55 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id j7sm17555887eda.97.2019.07.31.08.23.48
+        by smtp.gmail.com with ESMTPSA id g7sm16945101eda.52.2019.07.31.08.13.51
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:23:49 -0700 (PDT)
+        Wed, 31 Jul 2019 08:13:53 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 64D3C1028A2; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id 874211030BD; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 17/59] x86/mm: Allow to disable MKTME after enumeration
-Date:   Wed, 31 Jul 2019 18:07:31 +0300
-Message-Id: <20190731150813.26289-18-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 22/59] mm/rmap: Clear vma->anon_vma on unlink_anon_vmas()
+Date:   Wed, 31 Jul 2019 18:07:36 +0300
+Message-Id: <20190731150813.26289-23-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -76,82 +76,34 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The new helper mktme_disable() allows to disable MKTME even if it's
-enumerated successfully. MKTME initialization may fail and this
-functionality allows system to boot regardless of the failure.
+If all pages in the VMA got unmapped there's no reason to link it into
+original anon VMA hierarchy: it cannot possibly share any pages with
+other VMA.
 
-MKTME needs per-KeyID direct mapping. It requires a lot more virtual
-address space which may be a problem in 4-level paging mode. If the
-system has more physical memory than we can handle with MKTME the
-feature allows to fail MKTME, but boot the system successfully.
+Set vma->anon_vma to NULL on unlink_anon_vmas(). With the change VMA
+can be reused. The new anon VMA will be allocated on the first fault.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/mktme.h |  5 +++++
- arch/x86/kernel/cpu/intel.c  |  5 +----
- arch/x86/mm/mktme.c          | 10 ++++++++++
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ mm/rmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/mktme.h b/arch/x86/include/asm/mktme.h
-index a61b45fca4b1..3fc246acc279 100644
---- a/arch/x86/include/asm/mktme.h
-+++ b/arch/x86/include/asm/mktme.h
-@@ -22,6 +22,8 @@ static inline bool mktme_enabled(void)
- 	return static_branch_unlikely(&mktme_enabled_key);
- }
- 
-+void mktme_disable(void);
-+
- extern struct page_ext_operations page_mktme_ops;
- 
- #define page_keyid page_keyid
-@@ -71,6 +73,9 @@ static inline bool mktme_enabled(void)
- {
- 	return false;
- }
-+
-+static inline void mktme_disable(void) {}
-+
- #endif
- 
- #endif
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 4c2d70287eb4..9852580340b9 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -650,10 +650,7 @@ static void detect_tme(struct cpuinfo_x86 *c)
- 		 * We must not allow onlining secondary CPUs with non-matching
- 		 * configuration.
- 		 */
--		physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
--		__mktme_keyid_mask = 0;
--		__mktme_keyid_shift = 0;
--		__mktme_nr_keyids = 0;
-+		mktme_disable();
+diff --git a/mm/rmap.c b/mm/rmap.c
+index e5dfe2ae6b0d..911367b5fb40 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -400,8 +400,10 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+ 		list_del(&avc->same_vma);
+ 		anon_vma_chain_free(avc);
  	}
- #endif
+-	if (vma->anon_vma)
++	if (vma->anon_vma) {
+ 		vma->anon_vma->degree--;
++		vma->anon_vma = NULL;
++	}
+ 	unlock_anon_vma_root(root);
  
-diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
-index 8015e7822c9b..1e8d662e5bff 100644
---- a/arch/x86/mm/mktme.c
-+++ b/arch/x86/mm/mktme.c
-@@ -33,6 +33,16 @@ unsigned int mktme_algs;
- DEFINE_STATIC_KEY_FALSE(mktme_enabled_key);
- EXPORT_SYMBOL_GPL(mktme_enabled_key);
- 
-+void mktme_disable(void)
-+{
-+	physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
-+	__mktme_keyid_mask = 0;
-+	__mktme_keyid_shift = 0;
-+	__mktme_nr_keyids = 0;
-+	if (mktme_enabled())
-+		static_branch_disable(&mktme_enabled_key);
-+}
-+
- static bool need_page_mktme(void)
- {
- 	/* Make sure keyid doesn't collide with extended page flags */
+ 	/*
 -- 
 2.21.0
 
