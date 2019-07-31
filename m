@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4187C657
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C33FA7C62E
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727738AbfGaPXu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:23:50 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:42347 "EHLO
+        id S1726901AbfGaPVT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:21:19 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:41896 "EHLO
         mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727360AbfGaPXt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:23:49 -0400
-Received: by mail-ed1-f65.google.com with SMTP id v15so66090649eds.9
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:23:48 -0700 (PDT)
+        with ESMTP id S1726369AbfGaPVT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:21:19 -0400
+Received: by mail-ed1-f65.google.com with SMTP id p15so66016978eds.8
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=a18UOZt3FCDvDMvgP9zldJLt6lTKwFfHbu73YInWFn4=;
-        b=NRoJL3bi5X5MHI+UHT7B1S62Fze3JOWhyFVaj3bzy32xghKUPsGgZO7GdGj/I+MGwQ
-         IcszjXoHkHLCYl9E9+S0TVZkBMexB6yUan+V+lOdKu1ZTL//k329IuqiUOHsMZt8zobx
-         DpyOBiRYKgBlkPN70qU0UyV4A9sw+9NOai6RD5k+KXVTchojnkBQ/9wvCG9xsOR3lQJH
-         25Orq3JTmZBnhwFdJDSLbIjUUACw24Q/2V5Z/1iDJXDUwr6CPtjVVjX8EN+dRQ/iWt3F
-         ajr2K45loyNYVlzJu2bXoVrUmjOiINR3+Zakf9U0MEFo74tWWpXOujPELeLbtPwG7Bf+
-         4HTA==
+        bh=c5WMXVoIZssEiK4OS2ZsI14EAD5bwwEyXB7tLs9S9Os=;
+        b=GgMDYljgt69NuT2KJuOpsbtMf2bZflY04jkdcsb64J58gp3TxiHEEkOrT1ozLhakGl
+         94A0Aqkr8JolguUGlRobFPi57btYrwT3g8MYH4q5fgBYWQAov6IpM5yec8GdWQhRD5tC
+         0Ax6JsB0ooIwmT4n5nblwvmWo7thAMBxnFrHSP9RfZBW9LLERr65CaaolDQ48tv/CAKX
+         l2OBdufhK2nJeUB9MMPZPdYfYOqpvH6oRpIZCUxqhsrsgYyEegj1/UXzCzFcS0ucxo4Z
+         EdcRyeDiAndnOaS1LNOs83hgApICxD3lTMqnXM53LXOsfL7gbP+s6/BUFBXV4t3iCpQw
+         uzGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=a18UOZt3FCDvDMvgP9zldJLt6lTKwFfHbu73YInWFn4=;
-        b=j38JoTcU2Hy59mI0cUPJdci04OEjLP7mFRbTdmiM/x7JMMueZLIpr7+ftxR6C+/KKV
-         bUKLD4RNCwG3i8gZ6mr+H+9J0nMsjiRNMJuPVeiOFZj2li/EGjMxaX+5MPCWtiKhj/ue
-         +C4XAbbxLZ/T1pVamGUyyXoouhP7JgnMa4t29wwRI3px3kEPvdA1Lgtnxtjsk1v4ML5C
-         6nmhmwqtlhG6eiDrMhT1cHPMZjjNJJ6MRNU1jnlrn4IppB3dPqLZ9/gbsTXxjhEWIgYb
-         15RBfwIPN81tGOJtQtS12vpfvnYUUT7FsGcewd0ZvUSvuR7Pkd/nN4Bh7npzNNZVwbk4
-         9TJw==
-X-Gm-Message-State: APjAAAVabplTSPfqj86OI96e3aIiznf31WbdkJBo08Ri+i03Ll1TTnZa
-        kdrh1cEvQvw0pepzaz1b5cs=
-X-Google-Smtp-Source: APXvYqz4eqsH2iJwU1tjXfKb0+/bNd+u2NkjVb8FXDZ8ZsSkbsVxoPTi6IlMDOoUIFCjKkMNnj7bMA==
-X-Received: by 2002:a50:b87c:: with SMTP id k57mr105890483ede.226.1564586627977;
-        Wed, 31 Jul 2019 08:23:47 -0700 (PDT)
+        bh=c5WMXVoIZssEiK4OS2ZsI14EAD5bwwEyXB7tLs9S9Os=;
+        b=DFN8xogMgXepaGJj2TclOGBstaS9l0F7Wd0FB8OzYtJQSZNCiguYz7+IHffvNbkU5i
+         RlJPB9/42egqVLVO2gOeosgifXwS2enseHp0kU9aWnGGsphA4SHSvUigAMY6CQN7nEEm
+         /cVnopRsxoh5Hx/dBVNCAo6GAGFkPFhYPdmThbyGZcOLYJ5V3Ntp+5GQjUsHj4a3KkLV
+         b2Xr/gC+1psS9RMAVllfKROlEfxczts2pNbVRKRcvWe9VzJ8Lt7vdBlGDyF+WTFYfK85
+         qbA6yhxc78ppkCuCz08DyGVQDmw8iRw7bicORLJ+SIIb8PXE7wAdAhaQLwEMIMICNWLG
+         0HTA==
+X-Gm-Message-State: APjAAAWDSAPZQu6VoqJbT1ZLQ5xeZ1e9w4Mpx2ftENBAm2yEeNOac1Ki
+        NBKpwHHxvsrkZKYlw+hBiCc=
+X-Google-Smtp-Source: APXvYqwYMqulY0Xx64lB5aqfOhV4++kQN1Oobfks3JeYhOF1doEtw6JzyLb48pAr8c5dYOSv/qswsA==
+X-Received: by 2002:a17:906:e204:: with SMTP id gf4mr92542915ejb.302.1564586036461;
+        Wed, 31 Jul 2019 08:13:56 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id f24sm17482856edf.30.2019.07.31.08.23.46
+        by smtp.gmail.com with ESMTPSA id d7sm16507912edr.39.2019.07.31.08.13.52
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:23:47 -0700 (PDT)
+        Wed, 31 Jul 2019 08:13:53 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 953461030BF; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
+        id AA55A1030C2; Wed, 31 Jul 2019 18:08:16 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 24/59] keys/mktme: Introduce a Kernel Key Service for MKTME
-Date:   Wed, 31 Jul 2019 18:07:38 +0300
-Message-Id: <20190731150813.26289-25-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 27/59] keys/mktme: Destroy MKTME keys
+Date:   Wed, 31 Jul 2019 18:07:41 +0300
+Message-Id: <20190731150813.26289-28-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -78,100 +78,72 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Alison Schofield <alison.schofield@intel.com>
 
-MKTME (Multi-Key Total Memory Encryption) is a technology that allows
-transparent memory encryption in upcoming Intel platforms. MKTME will
-support multiple encryption domains, each having their own key.
+Destroy is a method invoked by the kernel key service when a
+userspace key is being removed. (invalidate, revoke, timeout).
 
-The MKTME key service will manage the hardware encryption keys. It
-will map Userspace Keys to Hardware KeyIDs and program the hardware
-with the user requested encryption options.
-
-Here the mapping structure is introduced, as well as the key service
-initialization and registration.
+During destroy, MKTME wil returned the hardware KeyID to the pool
+of available keyids.
 
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- security/keys/Makefile     |  1 +
- security/keys/mktme_keys.c | 60 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 61 insertions(+)
- create mode 100644 security/keys/mktme_keys.c
+ security/keys/mktme_keys.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/security/keys/Makefile b/security/keys/Makefile
-index 9cef54064f60..28799be801a9 100644
---- a/security/keys/Makefile
-+++ b/security/keys/Makefile
-@@ -30,3 +30,4 @@ obj-$(CONFIG_ASYMMETRIC_KEY_TYPE) += keyctl_pkey.o
- obj-$(CONFIG_BIG_KEYS) += big_key.o
- obj-$(CONFIG_TRUSTED_KEYS) += trusted.o
- obj-$(CONFIG_ENCRYPTED_KEYS) += encrypted-keys/
-+obj-$(CONFIG_X86_INTEL_MKTME) += mktme_keys.o
 diff --git a/security/keys/mktme_keys.c b/security/keys/mktme_keys.c
-new file mode 100644
-index 000000000000..d262e0f348e4
---- /dev/null
+index beca852db01a..10fcdbf5a08f 100644
+--- a/security/keys/mktme_keys.c
 +++ b/security/keys/mktme_keys.c
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-3.0
-+
-+/* Documentation/x86/mktme/ */
-+
-+#include <linux/init.h>
-+#include <linux/key.h>
-+#include <linux/key-type.h>
-+#include <linux/mm.h>
-+#include <keys/user-type.h>
-+
-+#include "internal.h"
-+
-+static unsigned int mktme_available_keyids;  /* Free Hardware KeyIDs */
-+
-+enum mktme_keyid_state {
-+	KEYID_AVAILABLE,	/* Available to be assigned */
-+	KEYID_ASSIGNED,		/* Assigned to a userspace key */
-+	KEYID_REF_KILLED,	/* Userspace key has been destroyed */
-+	KEYID_REF_RELEASED,	/* Last reference is released */
-+};
-+
-+/* 1:1 Mapping between Userspace Keys (struct key) and Hardware KeyIDs */
-+struct mktme_mapping {
-+	struct key		*key;
-+	enum mktme_keyid_state	state;
-+};
-+
-+static struct mktme_mapping *mktme_map;
-+
-+struct key_type key_type_mktme = {
-+	.name		= "mktme",
-+	.describe	= user_describe,
-+};
-+
-+static int __init init_mktme(void)
+@@ -50,6 +50,23 @@ int mktme_reserve_keyid(struct key *key)
+ 	return 0;
+ }
+ 
++static void mktme_release_keyid(int keyid)
 +{
-+	int ret;
-+
-+	/* Verify keys are present */
-+	if (mktme_nr_keyids() < 1)
-+		return 0;
-+
-+	mktme_available_keyids = mktme_nr_keyids();
-+
-+	/* Mapping of Userspace Keys to Hardware KeyIDs */
-+	mktme_map = kvzalloc((sizeof(*mktme_map) * (mktme_nr_keyids() + 1)),
-+			     GFP_KERNEL);
-+	if (!mktme_map)
-+		return -ENOMEM;
-+
-+	ret = register_key_type(&key_type_mktme);
-+	if (!ret)
-+		return ret;			/* SUCCESS */
-+
-+	kvfree(mktme_map);
-+
-+	return -ENOMEM;
++	 mktme_map[keyid].state = KEYID_AVAILABLE;
++	 mktme_available_keyids++;
 +}
 +
-+late_initcall(init_mktme);
++int mktme_keyid_from_key(struct key *key)
++{
++	int i;
++
++	for (i = 1; i <= mktme_nr_keyids(); i++) {
++		if (mktme_map[i].key == key)
++			return i;
++	}
++	return 0;
++}
++
+ enum mktme_opt_id {
+ 	OPT_ERROR,
+ 	OPT_TYPE,
+@@ -62,6 +79,17 @@ static const match_table_t mktme_token = {
+ 	{OPT_ERROR, NULL}
+ };
+ 
++/* Key Service Method called when a Userspace Key is garbage collected. */
++static void mktme_destroy_key(struct key *key)
++{
++	int keyid = mktme_keyid_from_key(key);
++	unsigned long flags;
++
++	spin_lock_irqsave(&mktme_lock, flags);
++	mktme_release_keyid(keyid);
++	spin_unlock_irqrestore(&mktme_lock, flags);
++}
++
+ /* Key Service Method to create a new key. Payload is preparsed. */
+ int mktme_instantiate_key(struct key *key, struct key_preparsed_payload *prep)
+ {
+@@ -198,6 +226,7 @@ struct key_type key_type_mktme = {
+ 	.free_preparse	= mktme_free_preparsed_payload,
+ 	.instantiate	= mktme_instantiate_key,
+ 	.describe	= user_describe,
++	.destroy	= mktme_destroy_key,
+ };
+ 
+ static int __init init_mktme(void)
 -- 
 2.21.0
 
