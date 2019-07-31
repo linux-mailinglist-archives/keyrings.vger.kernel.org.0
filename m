@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EAA77C644
-	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F3E7C63D
+	for <lists+keyrings@lfdr.de>; Wed, 31 Jul 2019 17:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729567AbfGaPWN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Jul 2019 11:22:13 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:40678 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730148AbfGaPVP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:21:15 -0400
-Received: by mail-ed1-f67.google.com with SMTP id k8so66037307eds.7
-        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:21:14 -0700 (PDT)
+        id S1730130AbfGaPWC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Jul 2019 11:22:02 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:41982 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727628AbfGaPWB (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Jul 2019 11:22:01 -0400
+Received: by mail-ed1-f66.google.com with SMTP id p15so66019030eds.8
+        for <keyrings@vger.kernel.org>; Wed, 31 Jul 2019 08:22:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Qu4eqa88cl7hA3fQdb28KWqV5w4hCLiKuLbYR7iJuDE=;
-        b=EapzB6nV2zuG3XXqORhtOg865rDFWXiiuUO8FpJLb/h1WDao3VpOzWeFDmaFbxm/XL
-         47TBQ8nUUTf9qkmZiYlrYuMBsFG5TIn6RKRtGHhdoEi679Dd/WD/MF4HtnmQP59r+ZVS
-         lWZPfIfuMFEgQo4Y3mbUEU6Vw4ZKVnL+c9FxScjZKMpMrPiR+cuZijKKGYKRXfElKJqa
-         Xlf/ibW3jXNNJBvLlFTHpGgT5lOrKP+W2Zir2emFXNHQgTL1ugZEAXaNqYvDXjvvf1sY
-         eVxqaYVdOcCPAQPOF9hrrzA0BOHPgcYf40DmCzESR4BUuRMyXnjNV9lnjdj/b1tOOPp+
-         BzBA==
+        bh=ZkftAsGdSxojE0fJOOOF/MZdp7LK73Cocd1bOG6H+X8=;
+        b=yNcUiWdQFKls9CJ+s1kmqNYTq4HAt/+z4PQnyTb2R/O/QG4HejvHYbZEnDpZkx4u6m
+         rYryPmrZZw5X0yVl9cqTObJ/vAbi3N2kcWUJTn/nS5m7u0j1NeO76bPx86u5y6/FFXzG
+         GwvkGwtp3dVrAmLGNQwceerYEf8lbhe3A3hpQ9jH6pM/+5oR2hB1poc9BJZ/qpFk3lFg
+         AVoV+a8D/wx7gKubBM5x0ly/CpnY4m7riIc5gECoUZ1ttMWB61O3sn/gxcaUYdZYR3rm
+         riJBLh8bckwgmhvRhWjFVk43K9z3429hxlIIgWZDxIvHcCVj0zmgN7kgBdEg+aubIbZF
+         aYoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Qu4eqa88cl7hA3fQdb28KWqV5w4hCLiKuLbYR7iJuDE=;
-        b=cy4WLpFRC2PJjBavzSsmQ0jQZsG5AJCkfkwDUe6feJJoiDMRuscclxab7X0Gtypisi
-         T1lJwDSQA1I/USduQxbkyOW+wHQ47reqEG5brrOBoAfVZzVGRJMk7WOuR+kkhb2HIKv3
-         GWlZgqWM3gTmmn5FEC67PuyoKkdDtsy7B33uLttn/bVm77gHVNNlE8EAcBqheDcrYlED
-         BMRMEOtlQ42Bb6vkM5WRWFeBlh9Yi0fGFeDUeuHete/VSBRpuod9qbz/anBVSFtiXM61
-         qZrieL/yYcsl2lTkCkDdcW/qmTJTEKCAd7/Y1+iObqio/Bxz9NnCLSMyt8gM2TsNDQbB
-         Hkkg==
-X-Gm-Message-State: APjAAAWsSrHy2b9933XSThVLPjXHRVsdRrEun0cWE6un7v+XdoXxJ4P7
-        xPpGEx9PB9UiLvbn3jZ1Ds8=
-X-Google-Smtp-Source: APXvYqx2zTJL6YB+Gc6tZHir/y3NwypWB6AAdiaRHKrntm3SVSrSWzIlrCWGYk+WyVgbmkUaGcUHkg==
-X-Received: by 2002:a50:acc6:: with SMTP id x64mr110288029edc.100.1564586034088;
-        Wed, 31 Jul 2019 08:13:54 -0700 (PDT)
+        bh=ZkftAsGdSxojE0fJOOOF/MZdp7LK73Cocd1bOG6H+X8=;
+        b=hhtwJLFTAZsESh0YozK9z4RqcEzT9K4cFgmjeJXGmGrjB9NkUht2BPhuUMlTitYR+R
+         dVDjDl0ogfP9IbSU1SQAStSXC4h7EL9zL71KDAcKZMcolnonlJoXNvpKYk9T72J/2+g2
+         nOvXvCz6cFBeOZ3tDvIelUf6qsyrrtc8wGE06Wy175Aao3J90cCWk96cXWqQFULs6ZM1
+         5SwZZGtMY3zBQnlgbAcrEizJgwiCWYidTO17H4oqQrFgtxK8e4EKxv1m1T7v9sPp2BQF
+         ywDOFt1VwQsK8ddsbBHlXDq6mMzUT4Wy44IpGXO49HUFRRkdFgTOlmE10hGIEmOn5NuU
+         9RuQ==
+X-Gm-Message-State: APjAAAWJZ+BuA45N12LYjLx8PBoRLBX83wV7vaVqRvERWpy1ONv5WOXq
+        XudpHdiK4OoB4GEZvHO4X8w=
+X-Google-Smtp-Source: APXvYqxlBWhD79QJcY6LnrhxwdW4BCeLIylkUAMRGP9j6V32DYMCll5/WusJdm6IK3xrXEoHhQo02A==
+X-Received: by 2002:a17:906:94ce:: with SMTP id d14mr97075606ejy.251.1564586031480;
+        Wed, 31 Jul 2019 08:13:51 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id oe21sm11729742ejb.44.2019.07.31.08.13.50
+        by smtp.gmail.com with ESMTPSA id j37sm17791942ede.23.2019.07.31.08.13.49
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 08:13:52 -0700 (PDT)
+        Wed, 31 Jul 2019 08:13:50 -0700 (PDT)
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-        id 172081045FF; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
+        id 251F0104601; Wed, 31 Jul 2019 18:08:17 +0300 (+03)
 To:     Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -63,9 +63,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-mm@kvack.org, kvm@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 41/59] mm: Generalize the mprotect implementation to support extensions
-Date:   Wed, 31 Jul 2019 18:07:55 +0300
-Message-Id: <20190731150813.26289-42-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 43/59] x86/mm: Set KeyIDs in encrypted VMAs for MKTME
+Date:   Wed, 31 Jul 2019 18:07:57 +0300
+Message-Id: <20190731150813.26289-44-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
 References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
@@ -78,63 +78,98 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Alison Schofield <alison.schofield@intel.com>
 
-Today mprotect is implemented to support legacy mprotect behavior
-plus an extension for memory protection keys. Make it more generic
-so that it can support additional extensions in the future.
+MKTME architecture requires the KeyID to be placed in PTE bits 51:46.
+To create an encrypted VMA, place the KeyID in the upper bits of
+vm_page_prot that matches the position of those PTE bits.
 
-This is done is preparation for adding a new system call for memory
-encyption keys. The intent is that the new encrypted mprotect will be
-another extension to legacy mprotect.
+When the VMA is assigned a KeyID it is always considered a KeyID
+change. The VMA is either going from not encrypted to encrypted,
+or from encrypted with any KeyID to encrypted with any other KeyID.
+To make the change safely, remove the user pages held by the VMA
+and unlink the VMA's anonymous chain.
 
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- mm/mprotect.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/mktme.h |  4 ++++
+ arch/x86/mm/mktme.c          | 26 ++++++++++++++++++++++++++
+ include/linux/mm.h           |  6 ++++++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 82d7b194a918..4d55725228e3 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -35,6 +35,8 @@
+diff --git a/arch/x86/include/asm/mktme.h b/arch/x86/include/asm/mktme.h
+index d26ada6b65f7..e8f7f80bb013 100644
+--- a/arch/x86/include/asm/mktme.h
++++ b/arch/x86/include/asm/mktme.h
+@@ -16,6 +16,10 @@ extern int __mktme_nr_keyids;
+ extern int mktme_nr_keyids(void);
+ extern unsigned int mktme_algs;
  
- #include "internal.h"
- 
-+#define NO_KEY	-1
++/* Set the encryption keyid bits in a VMA */
++extern void mprotect_set_encrypt(struct vm_area_struct *vma, int newkeyid,
++				unsigned long start, unsigned long end);
 +
- static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		int dirty_accountable, int prot_numa)
-@@ -453,9 +455,9 @@ mprotect_fixup(struct vm_area_struct *vma, struct vm_area_struct **pprev,
+ DECLARE_STATIC_KEY_FALSE(mktme_enabled_key);
+ static inline bool mktme_enabled(void)
+ {
+diff --git a/arch/x86/mm/mktme.c b/arch/x86/mm/mktme.c
+index ed13967bb543..05bbf5058ade 100644
+--- a/arch/x86/mm/mktme.c
++++ b/arch/x86/mm/mktme.c
+@@ -1,5 +1,6 @@
+ #include <linux/mm.h>
+ #include <linux/highmem.h>
++#include <linux/rmap.h>
+ #include <asm/mktme.h>
+ #include <asm/pgalloc.h>
+ #include <asm/tlbflush.h>
+@@ -71,6 +72,31 @@ int __vma_keyid(struct vm_area_struct *vma)
+ 	return (prot & mktme_keyid_mask()) >> mktme_keyid_shift();
  }
  
- /*
-- * pkey==-1 when doing a legacy mprotect()
-+ * When pkey==NO_KEY we get legacy mprotect behavior here.
-  */
--static int do_mprotect_pkey(unsigned long start, size_t len,
-+static int do_mprotect_ext(unsigned long start, size_t len,
- 		unsigned long prot, int pkey)
++/* Set the encryption keyid bits in a VMA */
++void mprotect_set_encrypt(struct vm_area_struct *vma, int newkeyid,
++			  unsigned long start, unsigned long end)
++{
++	int oldkeyid = vma_keyid(vma);
++	pgprotval_t newprot;
++
++	/* Unmap pages with old KeyID if there's any. */
++	zap_page_range(vma, start, end - start);
++
++	if (oldkeyid == newkeyid)
++		return;
++
++	newprot = pgprot_val(vma->vm_page_prot);
++	newprot &= ~mktme_keyid_mask();
++	newprot |= (unsigned long)newkeyid << mktme_keyid_shift();
++	vma->vm_page_prot = __pgprot(newprot);
++
++	/*
++	 * The VMA doesn't have any inherited pages.
++	 * Start anon VMA tree from scratch.
++	 */
++	unlink_anon_vmas(vma);
++}
++
+ /* Prepare page to be used for encryption. Called from page allocator. */
+ void __prep_encrypted_page(struct page *page, int order, int keyid, bool zero)
  {
- 	unsigned long nstart, end, tmp, reqprot;
-@@ -579,7 +581,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
- 		unsigned long, prot)
- {
--	return do_mprotect_pkey(start, len, prot, -1);
-+	return do_mprotect_ext(start, len, prot, NO_KEY);
- }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 3f9640f388ac..98a6d2bd66a6 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2905,5 +2905,11 @@ void __init setup_nr_node_ids(void);
+ static inline void setup_nr_node_ids(void) {}
+ #endif
  
- #ifdef CONFIG_ARCH_HAS_PKEYS
-@@ -587,7 +589,7 @@ SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
- SYSCALL_DEFINE4(pkey_mprotect, unsigned long, start, size_t, len,
- 		unsigned long, prot, int, pkey)
- {
--	return do_mprotect_pkey(start, len, prot, pkey);
-+	return do_mprotect_ext(start, len, prot, pkey);
- }
- 
- SYSCALL_DEFINE2(pkey_alloc, unsigned long, flags, unsigned long, init_val)
++#ifndef CONFIG_X86_INTEL_MKTME
++static inline void mprotect_set_encrypt(struct vm_area_struct *vma,
++					int newkeyid,
++					unsigned long start,
++					unsigned long end) {}
++#endif /* CONFIG_X86_INTEL_MKTME */
+ #endif /* __KERNEL__ */
+ #endif /* _LINUX_MM_H */
 -- 
 2.21.0
 
