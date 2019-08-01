@@ -2,98 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 665E67D7A6
-	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 10:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCEBC7D8EF
+	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 12:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729583AbfHAIaU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Aug 2019 04:30:20 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:46008 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727506AbfHAIaU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Aug 2019 04:30:20 -0400
-Received: by mail-lf1-f65.google.com with SMTP id u10so10820542lfm.12;
-        Thu, 01 Aug 2019 01:30:18 -0700 (PDT)
+        id S1728595AbfHAKAV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Aug 2019 06:00:21 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:45204 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726368AbfHAKAV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Aug 2019 06:00:21 -0400
+Received: by mail-lj1-f193.google.com with SMTP id m23so68686339lje.12
+        for <keyrings@vger.kernel.org>; Thu, 01 Aug 2019 03:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=2xNohy2xyMAt9HM3Gyk3aetZhs8G9eF7ELJFgFiK0/I=;
-        b=KVeh8Jw9S5Hs+wIxrPmvLbiA/a8qd2ZozSyly4TxKurfCOo1wsw0V1V4FfYAeJ2wAl
-         hX+8KRVyClJNg+3FptaphJmcdmM9LnzOh6gagbOFy1eMrZjqDl8bcVFvxVo1dAiR9p+b
-         FgdFqaoPZgECEcYJFHKHAoCypPwq4VSG353KdX7BgFGul9ORNUmXLocQaAQdLdRYnRab
-         T20nnn0f6BhIpOqtJKrlqaa9f6Yn6/vlQQ1nLKTFluF8kJjAcp5eNSoiPczaPKAQJHFy
-         DDP/HFLbIHCTMQOK6z+FkUHrlVi24L40YmEl1myxFuqnS8aWTlzma/wECZhp/dCoKJv3
-         W0sw==
+        bh=7gKvcJabgKuUbvQyf6qVD7f9YQGD2U9hjlCz5FyenjE=;
+        b=txHMwmKZEVe1dwKVgNRDOeChaNcOfwWW6SO7gSedbMhpOzA9pGEQq9mcO49z6Dy2nq
+         XZyWuFjIrr94RLjep/tAet6DBQKpSwV/mDC6XfoCunkPf9vbhzXgPsigyelRV46JU+xe
+         J7xWzK5+5BkhHdA/6IypMjQbxyqn63eNRO/1UvC7UyIATn/QhVzjMh5B8inochEaqOA3
+         2t6ad/g+kpwhtVoWx9DFfwqr7P8Cwzey8gO7zTEN2pxnViu9dWy8Unqk8ev4XtKYTzJK
+         r5Za5d8YNy3etaA/lLz8F6H7dqnCmoE6cGZ5Q+9f+tAQ0MszPXaB3xbzfBkuRZCdK+ff
+         EQjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2xNohy2xyMAt9HM3Gyk3aetZhs8G9eF7ELJFgFiK0/I=;
-        b=LzNOOLJ8i1HHyeTpxE2+GpVdssv8bCiSKiOTnQAdQlI8miOya3BBc4LIBfvHtJGC7r
-         ALQRVHHiY8H8dDNkFQ7AeYC9QqEAz42yH7zN05PYFoI32Yw5dlf8lhG2ectZ5Cgf1b/K
-         RNP7jdLBOkBBhalOvOneQhubnWbg+XyLUWRFgWGphRltCQLE6+KCq4LLSRlxJo2MoKxK
-         j05d1rSCt3hCq+HVXKbThoOpk3VcpPCDnHMNX9tt7QayBBO2ZsZ45iimK08J8mHzp6us
-         Mf1qyeUWVuGK4lXxyGk+sMipfaysxbV38mWNuTYZX40/fdWec54Nd1Y7CnkjCxMYcmmi
-         nQiA==
-X-Gm-Message-State: APjAAAV6Rp+/Wkaudm7wMdKKATfevRsTpz0ZWkmjSDZ00A7YoDAjpx7q
-        x56J4fXo+pcpyh//iIf3XYAYG7QlIK1fYBBP4v4=
-X-Google-Smtp-Source: APXvYqzzD88SDt0GVEYWnLJkJRlwD14+HIfeihD4WoOdeKaL/6vYosJryMtEFIiIAgKt+K60XVbK4UMpvkES4vMcWVE=
-X-Received: by 2002:a19:f806:: with SMTP id a6mr47249319lff.102.1564648217496;
- Thu, 01 Aug 2019 01:30:17 -0700 (PDT)
+        bh=7gKvcJabgKuUbvQyf6qVD7f9YQGD2U9hjlCz5FyenjE=;
+        b=hyyYq/jizBpIhUMsK10Fyztg42CJDW9Mlvv2rKt5KWBs8t6OjLRgLor90cEG7f3lzR
+         JUPrsArIN2Al2revWkRKIqav1eP9wjFFecU5rBgGO4Gu9B4PxHNSJTbEdZ8q6279du0q
+         ltzRDGCV3bRm2Zfj1ERf7UtoMKNdzqgnLPwd3iu4HHxE+oifCOpw+Y6g/EIfaYCALbfc
+         V6vCJ5GsEJFEg/nogresHg7GlWlTx4R932B6vx2AvdMkX0Uc5iTl6B82neFsVHCbe9Y9
+         qs2pryFx33dOC9eU/BpXujwOfOjdNKLdRHnW0Yi3HF3Tzqf9gwzBHnIw3IIPqEPWo1TQ
+         xBaQ==
+X-Gm-Message-State: APjAAAXDGd28OOkTFZnYd9l/pGKtu+0LW625QbvFdZyyFhE8Wd5pIO3U
+        uJzuoIDMsIIgu5bLTJl1hnptrYie21JehvvGIE3M4A==
+X-Google-Smtp-Source: APXvYqyWSE7IQpvuMFy/pIaK7WPbXKuGXqON/op4MJWwDpM4SPonR2MQsrxZdzAgHnF5eZuqmlowswx974SBISxIilQ=
+X-Received: by 2002:a2e:301a:: with SMTP id w26mr65927001ljw.76.1564653619372;
+ Thu, 01 Aug 2019 03:00:19 -0700 (PDT)
 MIME-Version: 1.0
 References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
  <CAE=Ncrb63dQLe-nDQyO9OPv7XjwM_9mzL9SrcLiUi2Dr10cD4A@mail.gmail.com>
- <CAFA6WYPJAzbPdcpBqioxjY=T8RLw-73B_hpzX4cGnwVvm5zpJw@mail.gmail.com>
- <CAE=Ncrb23q++z8R8UMbjDE2epEq4YVcNGzrRD31eH3JAooYejg@mail.gmail.com>
- <CAFA6WYOKcOzSwakHhgshZcebD8ZBMSi7xQdjWYFS79=Xc+odOg@mail.gmail.com>
- <CAE=NcrYz8bT9zDhS_ZcvY84fpeTDxZ-KhJKeQGGyf=o4pG2J-Q@mail.gmail.com>
- <19d9be198619e951750dedeb4d0a7f372083b42c.camel@pengutronix.de>
- <CAE=NcraqD9FNM0Gk9UGhPGi3heVzZrAKGc1gNZxoe1OnDaQ=pA@mail.gmail.com> <CAFA6WYPt4q+jaJbaoauXKr2qKgBHvtQ663s4t=W3nuPJPe2xpw@mail.gmail.com>
-In-Reply-To: <CAFA6WYPt4q+jaJbaoauXKr2qKgBHvtQ663s4t=W3nuPJPe2xpw@mail.gmail.com>
-From:   Janne Karhunen <janne.karhunen@gmail.com>
-Date:   Thu, 1 Aug 2019 11:30:05 +0300
-Message-ID: <CAE=NcrbujsM8wYJXq+s=o5Vy1xY1b0uKYBGvp6UP5ex70HrB2Q@mail.gmail.com>
-Subject: Re: [Tee-dev] [RFC v2 0/6] Introduce TEE based Trusted Keys support
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>, jejb@linux.ibm.com,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ <CAE=NcrY7b8eTTovOszBhGhVbjfJAXoAYehiUJyPENGfwWoVcPw@mail.gmail.com>
+ <CAFA6WYOEqe1a1DCyVYKA+oZaZ0n5hnjxdubstUnrwdUW1-4xHw@mail.gmail.com>
+ <CAE=NcraDkm5cxE=ceq_9XkQz=NZ6KdVXkNUsdD4G2LrWz-bpDw@mail.gmail.com>
+ <CAFA6WYMOXQbL5OeheFUFpTr8gte8XHHr-71-h8+qX0+R_sekDQ@mail.gmail.com> <CAE=Ncrae6pM+WBDu9eJ7Fw2Fkvf3_YqH5tj9Tt938D4RtWcdSQ@mail.gmail.com>
+In-Reply-To: <CAE=Ncrae6pM+WBDu9eJ7Fw2Fkvf3_YqH5tj9Tt938D4RtWcdSQ@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Thu, 1 Aug 2019 15:30:07 +0530
+Message-ID: <CAFA6WYOwcO5-cyaJf3tMMAdyVHJo=BzmCWtsjA3S8aj5g-GZxQ@mail.gmail.com>
+Subject: Re: [RFC v2 0/6] Introduce TEE based Trusted Keys support
+To:     Janne Karhunen <janne.karhunen@gmail.com>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>, dhowells@redhat.com,
+        jejb@linux.ibm.com,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dhowells@redhat.com, linux-security-module@vger.kernel.org,
-        keyrings@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
         Casey Schaufler <casey@schaufler-ca.com>,
-        linux-integrity@vger.kernel.org,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 1, 2019 at 10:58 AM Sumit Garg <sumit.garg@linaro.org> wrote:
-
-> > Anyway, just my .02c. I guess having any new support in the kernel for
-> > new trust sources is good and improvement from the current state. I
-> > can certainly make my stuff work with your setup as well, what ever
-> > people think is the best.
+On Thu, 1 Aug 2019 at 13:30, Janne Karhunen <janne.karhunen@gmail.com> wrote:
 >
-> Yes your implementation can very well fit under trusted keys
-> abstraction framework without creating a new keytype: "ext-trusted".
+> On Thu, Aug 1, 2019 at 10:40 AM Sumit Garg <sumit.garg@linaro.org> wrote:
+>
+> > > I chose the userspace plugin due to this, you can use userspace aids
+> > > to provide any type of service. Use the crypto library you desire to
+> > > do the magic you want.
+> >
+> > Here TEE isn't similar to a user-space crypto library. In our case TEE
+> > is based on ARM TrustZone which only allows TEE communications to be
+> > initiated from privileged mode. So why would you like to route
+> > communications via user-mode (which is less secure) when we have
+> > standardised TEE interface available in kernel?
+>
+> The physical access guards for reading/writing the involved critical
+> memory are identical as far as I know? Layered security is generally a
+> good thing, and the userspace pass actually adds a layer, so not sure
+> which is really safer?
+>
 
-The fundamental problem with the 'standardized kernel tee' still
-exists - it will never be generic in real life. Getting all this in
-the kernel will solve your problem and sell this particular product,
-but it is quite unlikely to help that many users. If the security is
-truly important to you, would you really trust any of this code to
-someone else? In this day and age, I really doubt many do. Everyone
-does their own thing, so this is why I really see all that as a
-userspace problem.
+AFAIK, layered security is better in case we move from lower privilege
+level to higher privilege level rather than in reverse order.
 
+-Sumit
 
---
-Janne
+> In my case the rerouting was to done generalize it. Any type of trust
+> source, anywhere.
+>
+>
+> > > > Isn't actual purpose to have trusted keys is to protect user-space
+> > > > from access to kernel keys in plain format? Doesn't user mode helper
+> > > > defeat that purpose in one way or another?
+> > >
+> > > Not really. CPU is in the user mode while running the code, but the
+> > > code or the secure keydata being is not available to the 'normal'
+> > > userspace. It's like microkernel service/driver this way. The usermode
+> > > driver is part of the kernel image and it runs on top of a invisible
+> > > rootfs.
+> >
+> > Can you elaborate here with an example regarding how this user-mode
+> > helper will securely communicate with a hardware based trust source
+> > with other user-space processes denied access to that trust source?
+>
+> The other user mode processes will never see the device node to open.
+> There is none in existence for them; it only exists in the ramfs based
+> root for the user mode helper.
+>
+>
+> --
+> Janne
