@@ -2,114 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF847D986
-	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 12:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECF77E037
+	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 18:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731032AbfHAKkl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Aug 2019 06:40:41 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:43669 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725930AbfHAKkl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Aug 2019 06:40:41 -0400
-Received: by mail-lf1-f66.google.com with SMTP id c19so49869251lfm.10;
-        Thu, 01 Aug 2019 03:40:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=isUGmEYOLpjEg3jfVYEfLLyDXZizpluoarkdQOeJEco=;
-        b=e7zESjZM2/wzjwmiWWWbSAsTWhAV77ru/rCVx4JUymN/53sRSzBFQXud45X8Dr61zK
-         sqmwE48x+NwYk2Cj06PSvNDR8EAL73UGkym1ZfUF++xJXuhNMPXz+ZbmblOckb2EDibR
-         hn6TqYNEl4I925P779zb0qgrYlBYkGxknrNhHKo6jUgsDvnooc9DJ8mSJdetEzKQzfIu
-         yGRZza/lQjKJDFIMW4HrtW4SNKRhMMEr9D67Icb79a0oMCaE2HtXRxR5M4RhrEn5SpKM
-         a576UQfrDmvM2vsFwwi7Yxa0NJUzNBsNMxHNw41zLHW1yIPJgW5/e35MPiKmD1Qk/tSb
-         zgFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=isUGmEYOLpjEg3jfVYEfLLyDXZizpluoarkdQOeJEco=;
-        b=ocAW3vNpNejlf8c0y698MOcyJuojw2geujr5OI8EZf8JixVMH5BGYxyF12OwheKIUr
-         FTkdTfoVZjrYAQL6lLfV8xkuHqGIc/iMpZpVLlt3/G8K2a8OuhouDCchfXqv1C8P+dsd
-         Zet/ZJ0cIQSfEO8PU9iF47fqCK9jcvbKzlbzGLkdcrjgFbU5maowA9KThaHBi4VpCbGc
-         2xh8w4QFQSqKfm0c1HP/Lse5r4w5kFs7HdDXpVRCMS31VWfrjBTkcGB8JxnURvRAvKP+
-         QarxpIYxLhb/Bz+SMCtaKJqZ24UyvFuxi+VZcheCsLlaZmPr7uHMGqwUDCV2qchzCwIc
-         chkg==
-X-Gm-Message-State: APjAAAVpPfQFmrrocYYUn3tEzDYHhy5pR6AJwrLW++aj5K8MBLqchcvZ
-        fLMKoKL1ZfUbOrA4QSy8DD5B9YmUQv4xYWyeyXU=
-X-Google-Smtp-Source: APXvYqzBC9Gdh1FFxLOeL/OcODPMG8H50PClL/jL6/hOC+Ro8fVfZSKCPuosp/rXDAuw8uu1AiQV5PVAqbOPMwJCVac=
-X-Received: by 2002:ac2:5181:: with SMTP id u1mr10511367lfi.42.1564656038513;
- Thu, 01 Aug 2019 03:40:38 -0700 (PDT)
+        id S1730790AbfHAQcX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Aug 2019 12:32:23 -0400
+Received: from mga02.intel.com ([134.134.136.20]:28142 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727024AbfHAQcX (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 1 Aug 2019 12:32:23 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Aug 2019 09:32:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,334,1559545200"; 
+   d="scan'208";a="201353113"
+Received: from criesing-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.51.57])
+  by fmsmga002.fm.intel.com with ESMTP; 01 Aug 2019 09:32:16 -0700
+Date:   Thu, 1 Aug 2019 19:32:15 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Roberto Sassu <roberto.sassu@huawei.com>
+Cc:     jejb@linux.ibm.com, zohar@linux.ibm.com, jgg@ziepe.ca,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
+        tyhicks@canonical.com, nayna@linux.vnet.ibm.com,
+        silviu.vlasceanu@huawei.com
+Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
+ deactivated
+Message-ID: <20190801163215.mfkagoafkxscesne@linux.intel.com>
+References: <20190705163735.11539-1-roberto.sassu@huawei.com>
+ <20190711194811.rfsohbfc3a7carpa@linux.intel.com>
+ <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
 MIME-Version: 1.0
-References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
- <CAE=Ncrb63dQLe-nDQyO9OPv7XjwM_9mzL9SrcLiUi2Dr10cD4A@mail.gmail.com>
- <CAE=NcrY7b8eTTovOszBhGhVbjfJAXoAYehiUJyPENGfwWoVcPw@mail.gmail.com>
- <CAFA6WYOEqe1a1DCyVYKA+oZaZ0n5hnjxdubstUnrwdUW1-4xHw@mail.gmail.com>
- <CAE=NcraDkm5cxE=ceq_9XkQz=NZ6KdVXkNUsdD4G2LrWz-bpDw@mail.gmail.com>
- <CAFA6WYMOXQbL5OeheFUFpTr8gte8XHHr-71-h8+qX0+R_sekDQ@mail.gmail.com>
- <CAE=Ncrae6pM+WBDu9eJ7Fw2Fkvf3_YqH5tj9Tt938D4RtWcdSQ@mail.gmail.com> <CAFA6WYOwcO5-cyaJf3tMMAdyVHJo=BzmCWtsjA3S8aj5g-GZxQ@mail.gmail.com>
-In-Reply-To: <CAFA6WYOwcO5-cyaJf3tMMAdyVHJo=BzmCWtsjA3S8aj5g-GZxQ@mail.gmail.com>
-From:   Janne Karhunen <janne.karhunen@gmail.com>
-Date:   Thu, 1 Aug 2019 13:40:26 +0300
-Message-ID: <CAE=NcrY7zA1OkKwpVrPbPd+c0OymZeAgT2hp6xZ3HQOgbXaZjg@mail.gmail.com>
-Subject: Re: [RFC v2 0/6] Introduce TEE based Trusted Keys support
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>, dhowells@redhat.com,
-        jejb@linux.ibm.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 1, 2019 at 1:00 PM Sumit Garg <sumit.garg@linaro.org> wrote:
+On Mon, Jul 15, 2019 at 06:44:28PM +0200, Roberto Sassu wrote:
+> According to the bug report at https://bugs.archlinux.org/task/62678,
+> the trusted module is a dependency of the ecryptfs module. We should
+> load the trusted module even if the TPM is inactive or deactivated.
+> 
+> Given that commit 782779b60faa ("tpm: Actually fail on TPM errors during
+> "get random"") changes the return code of tpm_get_random(), the patch
+> should be modified to ignore the -EIO error. I will send a new version.
 
-> > > Here TEE isn't similar to a user-space crypto library. In our case TEE
-> > > is based on ARM TrustZone which only allows TEE communications to be
-> > > initiated from privileged mode. So why would you like to route
-> > > communications via user-mode (which is less secure) when we have
-> > > standardised TEE interface available in kernel?
-> >
-> > The physical access guards for reading/writing the involved critical
-> > memory are identical as far as I know? Layered security is generally a
-> > good thing, and the userspace pass actually adds a layer, so not sure
-> > which is really safer?
->
-> AFAIK, layered security is better in case we move from lower privilege
-> level to higher privilege level rather than in reverse order.
+Do you have information where this dependency comes from?
 
-You can look at this in many ways. Another way to look at it is that
-the services should be provided with the least amount of permissions
-required for the task. Further you can containerize something, the
-better.
-
-As for your PLATFORMS support: it is all nice, but there is no way to
-convince op-tee or any other tee to be adopted by many real users.
-Every serious user can and will do their own thing, or at very best,
-buy it from someone who did their own thing and is trusted. There is
-zero chance that samsung, huawei, apple, nsa, google, rambus, payment
-system vendors, .. would actually share the tee (or probably even the
-interfaces). It is just too vital and people do not trust each other
-anymore :(
-
-Anyway, enough about the topic from my side. I guess people will tell
-what they want, I'm fine with any, and it is all progress from the
-current state :)
-
-
---
-Janne
+/Jarkko
