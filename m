@@ -2,44 +2,44 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ECF77E037
-	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 18:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4CD7E100
+	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 19:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730790AbfHAQcX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Aug 2019 12:32:23 -0400
-Received: from mga02.intel.com ([134.134.136.20]:28142 "EHLO mga02.intel.com"
+        id S1731090AbfHARY1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Aug 2019 13:24:27 -0400
+Received: from mga02.intel.com ([134.134.136.20]:32341 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727024AbfHAQcX (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 1 Aug 2019 12:32:23 -0400
+        id S1726017AbfHARY0 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 1 Aug 2019 13:24:26 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Aug 2019 09:32:21 -0700
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Aug 2019 10:24:25 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,334,1559545200"; 
-   d="scan'208";a="201353113"
-Received: from criesing-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.51.57])
-  by fmsmga002.fm.intel.com with ESMTP; 01 Aug 2019 09:32:16 -0700
-Date:   Thu, 1 Aug 2019 19:32:15 +0300
+   d="scan'208";a="184315116"
+Received: from nippert-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.36.219])
+  by orsmga002.jf.intel.com with ESMTP; 01 Aug 2019 10:24:17 -0700
+Date:   Thu, 1 Aug 2019 20:24:15 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     jejb@linux.ibm.com, zohar@linux.ibm.com, jgg@ziepe.ca,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
-        tyhicks@canonical.com, nayna@linux.vnet.ibm.com,
-        silviu.vlasceanu@huawei.com
-Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
- deactivated
-Message-ID: <20190801163215.mfkagoafkxscesne@linux.intel.com>
-References: <20190705163735.11539-1-roberto.sassu@huawei.com>
- <20190711194811.rfsohbfc3a7carpa@linux.intel.com>
- <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        jejb@linux.ibm.com, zohar@linux.ibm.com, jmorris@namei.org,
+        serge@hallyn.com, casey@schaufler-ca.com,
+        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
+        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
+Subject: Re: [RFC/RFT v2 1/2] KEYS: trusted: create trusted keys subsystem
+Message-ID: <20190801172310.cldcftfdoh5vyfjg@linux.intel.com>
+References: <1563449086-13183-1-git-send-email-sumit.garg@linaro.org>
+ <1563449086-13183-2-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
+In-Reply-To: <1563449086-13183-2-git-send-email-sumit.garg@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
@@ -47,15 +47,13 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jul 15, 2019 at 06:44:28PM +0200, Roberto Sassu wrote:
-> According to the bug report at https://bugs.archlinux.org/task/62678,
-> the trusted module is a dependency of the ecryptfs module. We should
-> load the trusted module even if the TPM is inactive or deactivated.
+On Thu, Jul 18, 2019 at 04:54:45PM +0530, Sumit Garg wrote:
+> Move existing code to trusted keys subsystem. Also, rename files with
+> "tpm" as suffix which provides the underlying implementation.
 > 
-> Given that commit 782779b60faa ("tpm: Actually fail on TPM errors during
-> "get random"") changes the return code of tpm_get_random(), the patch
-> should be modified to ignore the -EIO error. I will send a new version.
+> Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 
-Do you have information where this dependency comes from?
+What about TPM2 trusted keys code?
 
 /Jarkko
