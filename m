@@ -2,138 +2,115 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F41C77D4E2
-	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 07:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3E1F7D571
+	for <lists+keyrings@lfdr.de>; Thu,  1 Aug 2019 08:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727837AbfHAFba (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Aug 2019 01:31:30 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:39061 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726514AbfHAFba (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Aug 2019 01:31:30 -0400
-Received: from callcc.thunk.org (96-72-102-169-static.hfc.comcastbusiness.net [96.72.102.169] (may be forged))
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x715V9Rn013938
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 1 Aug 2019 01:31:10 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id EEE8D4202F5; Thu,  1 Aug 2019 01:31:08 -0400 (EDT)
-Date:   Thu, 1 Aug 2019 01:31:08 -0400
-From:   "Theodore Y. Ts'o" <tytso@mit.edu>
-To:     linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>,
-        Satya Tangirala <satyat@google.com>
-Subject: Re: [f2fs-dev] [PATCH v7 07/16] fscrypt: add
- FS_IOC_REMOVE_ENCRYPTION_KEY ioctl
-Message-ID: <20190801053108.GD2769@mit.edu>
-References: <20190726224141.14044-1-ebiggers@kernel.org>
- <20190726224141.14044-8-ebiggers@kernel.org>
- <20190728192417.GG6088@mit.edu>
- <20190729195827.GF169027@gmail.com>
- <20190731183802.GA687@sol.localdomain>
- <20190731233843.GA2769@mit.edu>
- <20190801011140.GB687@sol.localdomain>
+        id S1729824AbfHAGVy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Aug 2019 02:21:54 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:39843 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728884AbfHAGVy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Aug 2019 02:21:54 -0400
+Received: by mail-lf1-f68.google.com with SMTP id v85so49273523lfa.6;
+        Wed, 31 Jul 2019 23:21:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1vSZqJMnvEYK79BuKh6WUgr+O0wW6TMjJ9YpHKa1USU=;
+        b=Arm8SbO3zGrCc5avNA7dsMeg85DbeTjU5zzCj7quGtHPNxa8/SQT6F5BxoH/oW9lU+
+         rxTr+oQxxUsihwCoaxsTIyiDxgny9BvFH1L8WxV3tlw2KRSZPI+I16EN+PzHL0wEaHUC
+         +wk5CNLeGxCaTXsaXuQW46Zml1KG+s2Q/hXX165ScX10Rhvf74bOIcX4NlnjS54S8AHI
+         xxbUlheuiKF7RwuNv+h83UPOZrSFZ33E+Xxk7rMCrOZA2taAypqDXjNgZlx09PmqGlUu
+         hhWb44TjnRf0xQuebHwAMIC2EBjamD7JbUM+fNSQmxuS4VBghCU1+21vEVInMcUZd824
+         MIiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1vSZqJMnvEYK79BuKh6WUgr+O0wW6TMjJ9YpHKa1USU=;
+        b=mbrCGxUODrxQXCwo2X2gWQS2vKP4+VyXUKTwc9WJEt7HFuu4Uhd2GYdX+LgUrUoHk0
+         17u1HT54TVSXox3DW3o1dOkgzwpc6IJIXDabA8pXCDG6KFZw7ia6GxCC2PDZom29tGBC
+         dWaTuFSxXH0E6VLrkqwHADahw2rFpXfB2WytsciYKdgJNWMvS7YKVTnweXX6ErccqzzY
+         1ZuX2R8G3piYFqapH4UAbmqTNdhItcAjqfrtK4h+nR9Fws8xfBfqPXndt8m5Sx/Hjdn0
+         i+uhgMynLT633kvHzy/WZbWN5XPWiAKgPcxN9EG+m21zu7GHJ+R2Uy4DbN5HvV948kVX
+         oRcg==
+X-Gm-Message-State: APjAAAWkKO1OChjVwrawXHg7oEB9/4FMlw93cFNPKNo9V0tZ3VWZbtvL
+        K3YYvxC3bqQArpfQ8bfKj4nGtXTt3RTO++UldCI=
+X-Google-Smtp-Source: APXvYqwHSeFpB9tSV0Ei5U+HuQh1iF1dV3lxekEtE3WsWY2xkt0Unm2jUg3lSom7xaUo+nfynVkJjq4uUMXG5qYU6Jk=
+X-Received: by 2002:a19:641a:: with SMTP id y26mr58261160lfb.29.1564640511451;
+ Wed, 31 Jul 2019 23:21:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190801011140.GB687@sol.localdomain>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
+ <CAE=Ncrb63dQLe-nDQyO9OPv7XjwM_9mzL9SrcLiUi2Dr10cD4A@mail.gmail.com>
+ <CAE=NcrY7b8eTTovOszBhGhVbjfJAXoAYehiUJyPENGfwWoVcPw@mail.gmail.com> <CAFA6WYOEqe1a1DCyVYKA+oZaZ0n5hnjxdubstUnrwdUW1-4xHw@mail.gmail.com>
+In-Reply-To: <CAFA6WYOEqe1a1DCyVYKA+oZaZ0n5hnjxdubstUnrwdUW1-4xHw@mail.gmail.com>
+From:   Janne Karhunen <janne.karhunen@gmail.com>
+Date:   Thu, 1 Aug 2019 09:21:39 +0300
+Message-ID: <CAE=NcraDkm5cxE=ceq_9XkQz=NZ6KdVXkNUsdD4G2LrWz-bpDw@mail.gmail.com>
+Subject: Re: [RFC v2 0/6] Introduce TEE based Trusted Keys support
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>, dhowells@redhat.com,
+        jejb@linux.ibm.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jul 31, 2019 at 06:11:40PM -0700, Eric Biggers wrote:
-> 
-> Well, it's either
-> 
-> 1a. Remove the user's handle.
-> 	OR 
-> 1b. Remove all users' handles.  (FSCRYPT_REMOVE_KEY_FLAG_ALL_USERS)
-> 
-> Then
-> 
-> 2. If no handles remain, try to evict all inodes that use the key.
-> 
-> By "purge all keys" do you mean step (2)?  Note that it doesn't require root by
-> itself; root is only required to remove other users' handles (1b).
+On Wed, Jul 31, 2019 at 4:58 PM Sumit Garg <sumit.garg@linaro.org> wrote:
 
-No, I was talking about 1b.  I'd argue that 1a and 1b should be
-different ioctl.  1b requires root, and 1a doesn't.
+> > To clarify a bit further - my thought was to support any type of trust
+> > source.
+>
+> That could be very well accomplished via Trusted Keys abstraction
+> framework [1]. A trust source just need to implement following APIs:
+>
+> struct trusted_key_ops ts_trusted_key_ops = {
+>        .migratable = 0, /* non-migratable */
+>        .init = init_ts_trusted,
+>        .seal = ts_key_seal,
+>        .unseal = ts_key_unseal,
+>        .get_random = ts_get_random,
+>        .cleanup = cleanup_ts_trusted,
+> };
 
-And 1a should just mean, "I don't need to use the encrypted files any
-more".  In the PAM passphrase case, when you are just logging out, 1a
-is what's needed, and success is just fine.  pam_session won't *care*
-whether or not there are other users keeping the key in use.
+Which is basically the same as implementing a new keytype in the
+kernel; abstraction is not raised in any considerable manner this way?
 
-The problem with "fscrypt lock" is that the non-privileged user sort
-of wants to do REMOVE_FLAG_KEY_FLAG_FOR_ALL_USERS, but they doesn't
-have the privileges to do it, and they are hoping that removing their
-own key removes it the key from the system.  That to me seems to be
-the fundamental disconnect.  The "fscrypt unlock" and "fscrypt lock"
-commands comes from the v1 key management, and requires root.  It's
-the translation to unprivileged mode where "fscrypt lock" seems to
-have problems.
+I chose the userspace plugin due to this, you can use userspace aids
+to provide any type of service. Use the crypto library you desire to
+do the magic you want.
 
-> > What about having "fscrypt lock" call FS_IOC_GET_ENCRYPTION_KEY_STATUS
-> > and print a warning message saying, "we can't lock it because N other
-> > users who have registered a key".  I'd argue fscrypt should do this
-> > regardless of whether or not FS_IOC_REMOVE_ENCRYPTION_KEY returns
-> > EUSERS or not.
-> 
-> Shouldn't "fscrypt lock" still remove the user's handle, as opposed to refuse to
-> do anything, though?  So it would still need to callh
-> FS_IOC_REMOVE_ENCRYPTION_KEY, and could get the status from it rather than also
-> needing to call FS_IOC_GET_ENCRYPTION_KEY_STATUS.
-> 
-> Though, FS_IOC_GET_ENCRYPTION_KEY_STATUS would be needed if we wanted to show
-> the specific count of other users.
- 
-So my perspective is that the ioctl's should have very clean
-semantics, and errors should be consistent with how the Unix system
-calls and error reporting.
 
-If we need to make "fscrypt lock" and "fscrypt unlock" have semantics
-that are more consistent with previous user interface choices, then
-fscrypt can use FS_IOC_GET_ENCRYPTION_KEY_STATUS to print the warning
-before it calls FS_IOC_REMOVE_ENCRYPTION_KEY --- with "fscrypt purge_keys"
-calling something like FS_IOC_REMOVE_ALL_USER_ENCRYPTION_KEYS.
+> > With the
+> > user mode helper in between anyone can easily add their own thing in
+> > there.
+>
+> Isn't actual purpose to have trusted keys is to protect user-space
+> from access to kernel keys in plain format? Doesn't user mode helper
+> defeat that purpose in one way or another?
 
-> > It seems to me that the EBUSY and EUSERS errors should be status bits
-> > which gets returned to the user in a bitfield --- and if the key has
-> > been removed, or the user's claim on the key's existence has been
-> > removed, the ioctl returns success.
-> > 
-> > That way we don't have to deal with the semantic disconnect where some
-> > errors don't actually change system state, and other errors that *do*
-> > change system state (as in, the key gets removed, or the user's claim
-> > on the key gets removed), but still returns than error.
-> > 
-> 
-> Do you mean use a positive return value, or do you mean add an output field to
-> the struct passed to the ioctl?
+Not really. CPU is in the user mode while running the code, but the
+code or the secure keydata being is not available to the 'normal'
+userspace. It's like microkernel service/driver this way. The usermode
+driver is part of the kernel image and it runs on top of a invisible
+rootfs.
 
-I meant adding an output field.  I see EBUSY and EUSERS as status bits
-which *some* use cases might find useful.  Other use cases, such as in
-the pam_keys session logout code, we won't care at *all* about those
-status reporting (or error codes).  So if EBUSY and EUSERS are
-returned as errors, then it adds to complexity of those programs
-whichd don't care.  (And even for those that do, it's still a bit more
-complex since they has to distinguish between EBUSY, EUSERS, or other
-errors --- in fact, *all* programs which use
-FS_IOC_REMOVE_ENCRYPTION_KEY will *have* to check for EBUSY and
-ESUSERS whether they care or not.)
 
-> Either way note that it doesn't really need to be a bitfield, since you can't
-> have both statuses at the same time.  I.e. if there are still other users, we
-> couldn't have even gotten to checking for in-use files.
-
-That's actually an implementation detail, though, right?  In theory,
-we could check to see if there are any in-use files, independently of
-whether there are any users or not.
-
-					- Ted
+--
+Janne
