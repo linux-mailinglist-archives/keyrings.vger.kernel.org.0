@@ -2,159 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1687EE74
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 10:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970AF7EF06
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 10:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403835AbfHBIK2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Aug 2019 04:10:28 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3700 "EHLO huawei.com"
+        id S2390742AbfHBIVf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Aug 2019 04:21:35 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:33107 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730124AbfHBIK2 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 2 Aug 2019 04:10:28 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BB2431235F7661B2BA51;
-        Fri,  2 Aug 2019 16:10:21 +0800 (CST)
-Received: from [10.134.22.195] (10.134.22.195) by smtp.huawei.com
- (10.3.19.213) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 2 Aug 2019
- 16:10:17 +0800
-Subject: Re: [PATCH v7 14/16] f2fs: wire up new fscrypt ioctls
-To:     Eric Biggers <ebiggers@kernel.org>, <linux-fscrypt@vger.kernel.org>
-CC:     <linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        <linux-mtd@lists.infradead.org>, <linux-api@vger.kernel.org>,
-        <linux-crypto@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        Paul Crowley <paulcrowley@google.com>,
-        "Satya Tangirala" <satyat@google.com>
-References: <20190726224141.14044-1-ebiggers@kernel.org>
- <20190726224141.14044-15-ebiggers@kernel.org>
-From:   Chao Yu <yuchao0@huawei.com>
-Message-ID: <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
-Date:   Fri, 2 Aug 2019 16:10:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1727008AbfHBIVf (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 2 Aug 2019 04:21:35 -0400
+Received: from LHREML713-CAH.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 367D3321756B743FA386;
+        Fri,  2 Aug 2019 09:21:33 +0100 (IST)
+Received: from [10.220.133.57] (10.220.133.57) by smtpsuk.huawei.com
+ (10.201.108.36) with Microsoft SMTP Server (TLS) id 14.3.408.0; Fri, 2 Aug
+ 2019 09:21:25 +0100
+Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
+ deactivated
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+CC:     <jejb@linux.ibm.com>, <zohar@linux.ibm.com>, <jgg@ziepe.ca>,
+        <linux-integrity@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <crazyt2019+lml@gmail.com>, <tyhicks@canonical.com>,
+        <nayna@linux.vnet.ibm.com>, <silviu.vlasceanu@huawei.com>
+References: <20190705163735.11539-1-roberto.sassu@huawei.com>
+ <20190711194811.rfsohbfc3a7carpa@linux.intel.com>
+ <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
+ <20190801163215.mfkagoafkxscesne@linux.intel.com>
+From:   Roberto Sassu <roberto.sassu@huawei.com>
+Message-ID: <e50c4cfa-1f0c-6f4d-1910-010a8d874393@huawei.com>
+Date:   Fri, 2 Aug 2019 10:21:16 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.3.0
 MIME-Version: 1.0
-In-Reply-To: <20190726224141.14044-15-ebiggers@kernel.org>
-Content-Type: text/plain; charset="windows-1252"
+In-Reply-To: <20190801163215.mfkagoafkxscesne@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.134.22.195]
+X-Originating-IP: [10.220.133.57]
 X-CFilter-Loop: Reflected
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Eric,
+On 8/1/2019 6:32 PM, Jarkko Sakkinen wrote:
+> On Mon, Jul 15, 2019 at 06:44:28PM +0200, Roberto Sassu wrote:
+>> According to the bug report at https://bugs.archlinux.org/task/62678,
+>> the trusted module is a dependency of the ecryptfs module. We should
+>> load the trusted module even if the TPM is inactive or deactivated.
+>>
+>> Given that commit 782779b60faa ("tpm: Actually fail on TPM errors during
+>> "get random"") changes the return code of tpm_get_random(), the patch
+>> should be modified to ignore the -EIO error. I will send a new version.
+> 
+> Do you have information where this dependency comes from?
 
-On 2019/7/27 6:41, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Wire up the new ioctls for adding and removing fscrypt keys to/from the
-> filesystem, and the new ioctl for retrieving v2 encryption policies.
-> 
-> FS_IOC_REMOVE_ENCRYPTION_KEY also required making f2fs_drop_inode() call
-> fscrypt_drop_inode().
-> 
-> For more details see Documentation/filesystems/fscrypt.rst and the
-> fscrypt patches that added the implementation of these ioctls.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+ecryptfs retrieves the encryption key from encrypted keys (see
+ecryptfs_get_encrypted_key()).
 
-Reviewed-by: Chao Yu <yuchao0@huawei.com>
+Roberto
 
-BTW, do you think it needs to make xxfs_has_support_encrypt() function be a
-common interface defined in struct fscrypt_operations, as I see all
-fscrypt_ioctl_*() needs to check with it, tho such cleanup is minor...
-
-Thanks,
-
-> ---
->  fs/f2fs/file.c  | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  fs/f2fs/super.c |  2 ++
->  2 files changed, 48 insertions(+)
-> 
-> diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-> index f8d46df8fa9ee..d81dda290b829 100644
-> --- a/fs/f2fs/file.c
-> +++ b/fs/f2fs/file.c
-> @@ -2184,6 +2184,40 @@ static int f2fs_ioc_get_encryption_pwsalt(struct file *filp, unsigned long arg)
->  	return err;
->  }
->  
-> +static int f2fs_ioc_get_encryption_policy_ex(struct file *filp,
-> +					     unsigned long arg)
-> +{
-> +	if (!f2fs_sb_has_encrypt(F2FS_I_SB(file_inode(filp))))
-> +		return -EOPNOTSUPP;
-> +
-> +	return fscrypt_ioctl_get_policy_ex(filp, (void __user *)arg);
-> +}
-> +
-> +static int f2fs_ioc_add_encryption_key(struct file *filp, unsigned long arg)
-> +{
-> +	if (!f2fs_sb_has_encrypt(F2FS_I_SB(file_inode(filp))))
-> +		return -EOPNOTSUPP;
-> +
-> +	return fscrypt_ioctl_add_key(filp, (void __user *)arg);
-> +}
-> +
-> +static int f2fs_ioc_remove_encryption_key(struct file *filp, unsigned long arg)
-> +{
-> +	if (!f2fs_sb_has_encrypt(F2FS_I_SB(file_inode(filp))))
-> +		return -EOPNOTSUPP;
-> +
-> +	return fscrypt_ioctl_remove_key(filp, (const void __user *)arg);
-> +}
-> +
-> +static int f2fs_ioc_get_encryption_key_status(struct file *filp,
-> +					      unsigned long arg)
-> +{
-> +	if (!f2fs_sb_has_encrypt(F2FS_I_SB(file_inode(filp))))
-> +		return -EOPNOTSUPP;
-> +
-> +	return fscrypt_ioctl_get_key_status(filp, (void __user *)arg);
-> +}
-> +
->  static int f2fs_ioc_gc(struct file *filp, unsigned long arg)
->  {
->  	struct inode *inode = file_inode(filp);
-> @@ -3109,6 +3143,14 @@ long f2fs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
->  		return f2fs_ioc_get_encryption_policy(filp, arg);
->  	case F2FS_IOC_GET_ENCRYPTION_PWSALT:
->  		return f2fs_ioc_get_encryption_pwsalt(filp, arg);
-> +	case FS_IOC_GET_ENCRYPTION_POLICY_EX:
-> +		return f2fs_ioc_get_encryption_policy_ex(filp, arg);
-> +	case FS_IOC_ADD_ENCRYPTION_KEY:
-> +		return f2fs_ioc_add_encryption_key(filp, arg);
-> +	case FS_IOC_REMOVE_ENCRYPTION_KEY:
-> +		return f2fs_ioc_remove_encryption_key(filp, arg);
-> +	case FS_IOC_GET_ENCRYPTION_KEY_STATUS:
-> +		return f2fs_ioc_get_encryption_key_status(filp, arg);
->  	case F2FS_IOC_GARBAGE_COLLECT:
->  		return f2fs_ioc_gc(filp, arg);
->  	case F2FS_IOC_GARBAGE_COLLECT_RANGE:
-> @@ -3236,6 +3278,10 @@ long f2fs_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
->  	case F2FS_IOC_SET_ENCRYPTION_POLICY:
->  	case F2FS_IOC_GET_ENCRYPTION_PWSALT:
->  	case F2FS_IOC_GET_ENCRYPTION_POLICY:
-> +	case FS_IOC_GET_ENCRYPTION_POLICY_EX:
-> +	case FS_IOC_ADD_ENCRYPTION_KEY:
-> +	case FS_IOC_REMOVE_ENCRYPTION_KEY:
-> +	case FS_IOC_GET_ENCRYPTION_KEY_STATUS:
->  	case F2FS_IOC_GARBAGE_COLLECT:
->  	case F2FS_IOC_GARBAGE_COLLECT_RANGE:
->  	case F2FS_IOC_WRITE_CHECKPOINT:
-> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-> index 6de6cda440315..f5fae8d511a20 100644
-> --- a/fs/f2fs/super.c
-> +++ b/fs/f2fs/super.c
-> @@ -913,6 +913,8 @@ static int f2fs_drop_inode(struct inode *inode)
->  		return 0;
->  	}
->  	ret = generic_drop_inode(inode);
-> +	if (!ret)
-> +		ret = fscrypt_drop_inode(inode);
->  	trace_f2fs_drop_inode(inode, ret);
->  	return ret;
->  }
-> 
+-- 
+HUAWEI TECHNOLOGIES Duesseldorf GmbH, HRB 56063
+Managing Director: Li Peng, Li Jian, Shi Yanli
