@@ -2,129 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C92801CD
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 22:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CE98022D
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 23:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390580AbfHBUfq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Aug 2019 16:35:46 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35967 "EHLO
+        id S1733139AbfHBVS4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Aug 2019 17:18:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36541 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732848AbfHBUfq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Aug 2019 16:35:46 -0400
+        with ESMTP id S1732537AbfHBVSz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Aug 2019 17:18:55 -0400
 Received: from 162-237-133-238.lightspeed.rcsntx.sbcglobal.net ([162.237.133.238] helo=elm)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <tyhicks@canonical.com>)
-        id 1hteH3-0006zl-Sv; Fri, 02 Aug 2019 20:35:38 +0000
-Date:   Fri, 2 Aug 2019 15:35:33 -0500
+        id 1htewq-0000uT-Kv; Fri, 02 Aug 2019 21:18:49 +0000
+Date:   Fri, 2 Aug 2019 16:18:43 -0500
 From:   Tyler Hicks <tyhicks@canonical.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Roberto Sassu <roberto.sassu@huawei.com>, jejb@linux.ibm.com,
-        zohar@linux.ibm.com, jgg@ziepe.ca, linux-integrity@vger.kernel.org,
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Bottomley <jejb@linux.ibm.com>, jgg@ziepe.ca,
+        linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
         nayna@linux.vnet.ibm.com, silviu.vlasceanu@huawei.com
 Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
  deactivated
-Message-ID: <20190802203532.GF26616@elm>
+Message-ID: <20190802211843.GH26616@elm>
 References: <20190705163735.11539-1-roberto.sassu@huawei.com>
- <20190711194811.rfsohbfc3a7carpa@linux.intel.com>
- <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
- <20190801163215.mfkagoafkxscesne@linux.intel.com>
- <e50c4cfa-1f0c-6f4d-1910-010a8d874393@huawei.com>
- <20190802142721.GA26616@elm>
- <20190802194226.oiztvme5klkmw6fh@linux.intel.com>
- <20190802202343.GE26616@elm>
+ <1562618099.20748.13.camel@linux.ibm.com>
+ <20190709162458.f4fjteokcmidv7w6@linux.intel.com>
+ <1562689905.28089.52.camel@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190802202343.GE26616@elm>
+In-Reply-To: <1562689905.28089.52.camel@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2019-08-02 15:23:43, Tyler Hicks wrote:
-> On 2019-08-02 22:42:26, Jarkko Sakkinen wrote:
-> > On Fri, Aug 02, 2019 at 09:27:22AM -0500, Tyler Hicks wrote:
-> > > On 2019-08-02 10:21:16, Roberto Sassu wrote:
-> > > > On 8/1/2019 6:32 PM, Jarkko Sakkinen wrote:
-> > > > > On Mon, Jul 15, 2019 at 06:44:28PM +0200, Roberto Sassu wrote:
-> > > > > > According to the bug report at https://bugs.archlinux.org/task/62678,
-> > > > > > the trusted module is a dependency of the ecryptfs module. We should
-> > > > > > load the trusted module even if the TPM is inactive or deactivated.
-> > > > > > 
-> > > > > > Given that commit 782779b60faa ("tpm: Actually fail on TPM errors during
-> > > > > > "get random"") changes the return code of tpm_get_random(), the patch
-> > > > > > should be modified to ignore the -EIO error. I will send a new version.
-> > > > > 
-> > > > > Do you have information where this dependency comes from?
-> > > > 
-> > > > ecryptfs retrieves the encryption key from encrypted keys (see
-> > > > ecryptfs_get_encrypted_key()).
-> > > 
-> > > That has been there for many years with any problems. It was added
-> > > in 2011:
-> > > 
-> > >  commit 1252cc3b232e582e887623dc5f70979418caaaa2
-> > >  Author: Roberto Sassu <roberto.sassu@polito.it>
-> > >  Date:   Mon Jun 27 13:45:45 2011 +0200
-> > > 
-> > >      eCryptfs: added support for the encrypted key type
-> > > 
-> > > What's recently changed the situation is this patch:
-> > > 
-> > >  commit 240730437deb213a58915830884e1a99045624dc
-> > >  Author: Roberto Sassu <roberto.sassu@huawei.com>
-> > >  Date:   Wed Feb 6 17:24:51 2019 +0100
-> > > 
-> > >      KEYS: trusted: explicitly use tpm_chip structure from tpm_default_chip()
-> > > 
-> > > Now eCryptfs has a hard dependency on a TPM chip that's working
-> > > as expected even if eCryptfs (or the rest of the system) isn't utilizing
-> > > the TPM. If the TPM behaves unexpectedly, you can't access your files.
-> > > We need to get this straightened out soon.
+On 2019-07-09 12:31:45, Mimi Zohar wrote:
+> On Tue, 2019-07-09 at 19:24 +0300, Jarkko Sakkinen wrote:
+> > On Mon, Jul 08, 2019 at 01:34:59PM -0700, James Bottomley wrote:
+> > > Not a criticism of your patch, but can we please stop doing this. 
+> > > Single random number sources are horrendously bad practice because it
+> > > gives an attacker a single target to subvert.  We should ensure the TPM
+> > > is plugged into the kernel RNG as a source and then take randomness
+> > > from the mixed pool so it's harder for an attacker because they have to
+> > > subvert all our sources to predict what came out.
 > > 
-> > I agree with this conclusion that eCryptfs needs to be fixed, not
-> > another workaround to trusted.ko.
+> > It is and I agree.
 > 
-> That wasn't the conclusion that I came to. I prefer Robert's proposed
-> change to trusted.ko.
-> 
-> How do you propose that this be fixed in eCryptfs?
-> 
-> Removing encrypted_key support from eCryptfs is the only way that I can
-> see to fix the bug in eCryptfs. That support has been there since 2011.
-> I'm not sure of the number of users that would be broken by removing
-> encrypted_key support. I don't think the number is high but I can't say
-> that confidently.
+> I still haven't quite figured out why the digests need to be
+> initialized to anything other than 0.
 
-AFAICT, this bug doesn't only affect eCryptfs. It also affects Intel
-nvdimm support starting with:
+After looking into 0b6cf6b97b7ef1fa3c7fefab0cac897a1c4a3400, I have to
+agree. I don't see the purpose of using tpm_get_random() in
+init_digests().
 
- commit 4c6926a23b76ea23403976290cd45a7a143f6500
- Author: Dave Jiang <dave.jiang@intel.com>
- Date:   Thu Dec 6 12:40:01 2018 -0800
-
-     acpi/nfit, libnvdimm: Add unlock of nvdimm support for Intel DIMMs
-
-So without a workaround in trusted.ko, encrypted_key support will need
-to be removed from eCryptfs and nvdimm to address this issue.
+Roberto, why can't we just initialize the digests with zeroes? It would
+fix the bug for eCryptfs and NVDIMM and address the concern that James
+had regarding the single random number source.
 
 Tyler
-
-> 
-> Roberto, what was your use case when you added encrypted_key support to
-> eCryptfs back then? Are you aware of any users of eCryptfs +
-> encrypted_keys?
-> 
-> Jarkko, removing a long-standing feature is potentially more disruptive
-> to users than adding a workaround to trusted.ko which already requires a
-> similar workaround. I don't think that I agree with you on the proper
-> fix here.
-> 
-> Tyler
-> 
-> > 
-> > /Jarkko
