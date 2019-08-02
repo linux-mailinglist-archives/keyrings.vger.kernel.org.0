@@ -2,86 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83BBE7FFA8
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 19:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 238A480112
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 21:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405306AbfHBRbw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Aug 2019 13:31:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46482 "EHLO mail.kernel.org"
+        id S2406071AbfHBTiL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Aug 2019 15:38:11 -0400
+Received: from mga05.intel.com ([192.55.52.43]:16635 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405145AbfHBRbw (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 2 Aug 2019 13:31:52 -0400
-Received: from gmail.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 31C1B2173E;
-        Fri,  2 Aug 2019 17:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564767111;
-        bh=p28pesjeaFELdMWXTRb2eE2TRQRtp76oeifvbyCl/RI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZcqdJ1sHgA4eHoVKYSn8SpVn+pAUEpj9uFNNG8Yop5svyGIeSKgDaCG0hU7/1xGe+
-         YH6wiSFmAifvQSIcT5ECPJSv2MxBpI4U1tOb0SI7k4tFkU4lU056T/wtL7OaDANFff
-         AXFhYpVcepiXq7WKPEIqg6WGV1t6hc/k/rdkPvQU=
-Date:   Fri, 2 Aug 2019 10:31:49 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Chao Yu <yuchao0@huawei.com>
-Cc:     linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>,
-        Satya Tangirala <satyat@google.com>
-Subject: Re: [PATCH v7 14/16] f2fs: wire up new fscrypt ioctls
-Message-ID: <20190802173148.GA51937@gmail.com>
-Mail-Followup-To: Chao Yu <yuchao0@huawei.com>,
-        linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>,
-        Satya Tangirala <satyat@google.com>
-References: <20190726224141.14044-1-ebiggers@kernel.org>
- <20190726224141.14044-15-ebiggers@kernel.org>
- <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
+        id S2403792AbfHBTiL (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 2 Aug 2019 15:38:11 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Aug 2019 12:38:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,339,1559545200"; 
+   d="scan'208";a="201764551"
+Received: from psathya-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.36.242])
+  by fmsmga002.fm.intel.com with ESMTP; 02 Aug 2019 12:38:03 -0700
+Date:   Fri, 2 Aug 2019 22:38:02 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-security-module@vger.kernel.org, dhowells@redhat.com,
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        jejb@linux.ibm.com, Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Subject: Re: [RFC/RFT v2 1/2] KEYS: trusted: create trusted keys subsystem
+Message-ID: <20190802193802.jn56jhoz5crebggt@linux.intel.com>
+References: <1563449086-13183-1-git-send-email-sumit.garg@linaro.org>
+ <1563449086-13183-2-git-send-email-sumit.garg@linaro.org>
+ <20190801172310.cldcftfdoh5vyfjg@linux.intel.com>
+ <CAFA6WYM+FQuXA9Saj5+ffOGsc-shhiF5Uos4g14Qndvu6w97Sg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAFA6WYM+FQuXA9Saj5+ffOGsc-shhiF5Uos4g14Qndvu6w97Sg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Aug 02, 2019 at 04:10:15PM +0800, Chao Yu wrote:
-> Hi Eric,
+On Fri, Aug 02, 2019 at 11:20:09AM +0530, Sumit Garg wrote:
+> On Thu, 1 Aug 2019 at 22:54, Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
+> >
+> > On Thu, Jul 18, 2019 at 04:54:45PM +0530, Sumit Garg wrote:
+> > > Move existing code to trusted keys subsystem. Also, rename files with
+> > > "tpm" as suffix which provides the underlying implementation.
+> > >
+> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> >
+> > What about TPM2 trusted keys code?
 > 
-> On 2019/7/27 6:41, Eric Biggers wrote:
-> > From: Eric Biggers <ebiggers@google.com>
-> > 
-> > Wire up the new ioctls for adding and removing fscrypt keys to/from the
-> > filesystem, and the new ioctl for retrieving v2 encryption policies.
-> > 
-> > FS_IOC_REMOVE_ENCRYPTION_KEY also required making f2fs_drop_inode() call
-> > fscrypt_drop_inode().
-> > 
-> > For more details see Documentation/filesystems/fscrypt.rst and the
-> > fscrypt patches that added the implementation of these ioctls.
-> > 
-> > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> 
-> Reviewed-by: Chao Yu <yuchao0@huawei.com>
-> 
-> BTW, do you think it needs to make xxfs_has_support_encrypt() function be a
-> common interface defined in struct fscrypt_operations, as I see all
-> fscrypt_ioctl_*() needs to check with it, tho such cleanup is minor...
-> 
+> Isn't TPM2 code located here: "drivers/char/tpm/"? Would you like to
+> move that code under trusted keys subsystem only?
 
-Maybe.  It would work nicely for ext4 and f2fs, but ubifs does things
-differently since it automatically enables the encryption feature if needed.
-So we'd have to make the callback optional.
+Yeah, we need a design decision here. What I care is that they should
+be in the same subsystem. I did trusted keys directly to TPM 2.0 subsys
+because the subsystem was not too robust back then.
 
-In any case, I think this should be separate from this patchset.
+Right now I think it would be feasible to implement TPM2 trusted keys
+outside TPM driver since the whole transmit functionality is way more
+robust.
 
-- Eric
+/Jarkko
