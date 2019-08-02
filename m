@@ -2,98 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45AF37FE63
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 18:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83BBE7FFA8
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2019 19:31:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388740AbfHBQPk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Aug 2019 12:15:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58930 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732543AbfHBQPk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Aug 2019 12:15:40 -0400
-Received: from 162-237-133-238.lightspeed.rcsntx.sbcglobal.net ([162.237.133.238] helo=elm)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <tyhicks@canonical.com>)
-        id 1htaDM-0004rZ-SG; Fri, 02 Aug 2019 16:15:33 +0000
-Date:   Fri, 2 Aug 2019 11:15:28 -0500
-From:   Tyler Hicks <tyhicks@canonical.com>
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     jarkko.sakkinen@linux.intel.com, jejb@linux.ibm.com,
-        zohar@linux.ibm.com, jgg@ziepe.ca, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
-        nayna@linux.vnet.ibm.com, silviu.vlasceanu@huawei.com
-Subject: Re: [PATCH v2] KEYS: trusted: allow module init if TPM is inactive
- or deactivated
-Message-ID: <20190802161527.GC26616@elm>
-References: <20190802150733.1972-1-roberto.sassu@huawei.com>
- <20190802153030.GB26616@elm>
- <3222714a-a280-0708-f4c0-5db6d342d8dc@huawei.com>
- <8baf1c39-ad04-5cd6-bc67-341e7411db16@huawei.com>
+        id S2405306AbfHBRbw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Aug 2019 13:31:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46482 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405145AbfHBRbw (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 2 Aug 2019 13:31:52 -0400
+Received: from gmail.com (unknown [104.132.1.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 31C1B2173E;
+        Fri,  2 Aug 2019 17:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564767111;
+        bh=p28pesjeaFELdMWXTRb2eE2TRQRtp76oeifvbyCl/RI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZcqdJ1sHgA4eHoVKYSn8SpVn+pAUEpj9uFNNG8Yop5svyGIeSKgDaCG0hU7/1xGe+
+         YH6wiSFmAifvQSIcT5ECPJSv2MxBpI4U1tOb0SI7k4tFkU4lU056T/wtL7OaDANFff
+         AXFhYpVcepiXq7WKPEIqg6WGV1t6hc/k/rdkPvQU=
+Date:   Fri, 2 Aug 2019 10:31:49 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Chao Yu <yuchao0@huawei.com>
+Cc:     linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        Paul Crowley <paulcrowley@google.com>,
+        Satya Tangirala <satyat@google.com>
+Subject: Re: [PATCH v7 14/16] f2fs: wire up new fscrypt ioctls
+Message-ID: <20190802173148.GA51937@gmail.com>
+Mail-Followup-To: Chao Yu <yuchao0@huawei.com>,
+        linux-fscrypt@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        Paul Crowley <paulcrowley@google.com>,
+        Satya Tangirala <satyat@google.com>
+References: <20190726224141.14044-1-ebiggers@kernel.org>
+ <20190726224141.14044-15-ebiggers@kernel.org>
+ <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8baf1c39-ad04-5cd6-bc67-341e7411db16@huawei.com>
+In-Reply-To: <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2019-08-02 18:11:09, Roberto Sassu wrote:
-> On 8/2/2019 5:34 PM, Roberto Sassu wrote:
-> > On 8/2/2019 5:30 PM, Tyler Hicks wrote:
-> > > On 2019-08-02 17:07:33, Roberto Sassu wrote:
-> > > > Commit c78719203fc6 ("KEYS: trusted: allow trusted.ko to
-> > > > initialize w/o a
-> > > > TPM") allows the trusted module to be loaded even a TPM is not found to
-> > >                                                     ^ if
-> > > 
-> > > > avoid module dependency problems.
-> > > > 
-> > > > However, trusted module initialization can still fail if the TPM is
-> > > > inactive or deactivated. This patch ignores tpm_get_random() errors in
-> > > > init_digests() and returns -EFAULT in pcrlock() if the TPM didn't return
-> > > > random data.
-> > > > 
-> > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > 
-> > > The code changes look correct to me.
-> > > 
-> > >    Reviewed-by: Tyler Hicks <tyhicks@canonical.com>
-> > > 
-> > > For whoever takes this patch through their tree, I think that adding the
-> > > following Fixes tag would be useful (as well as cc'ing stable):
-> > > 
-> > >    Fixes: 240730437deb ("KEYS: trusted: explicitly use tpm_chip
-> > > structure...")
-> > > 
-> > > I think it is also worth leaving a short note, in the commit message,
-> > > for backporters that commit 782779b60faa ("tpm: Actually fail on TPM
-> > > errors during "get random"") should be included with any backports of
-> > > this patch.
+On Fri, Aug 02, 2019 at 04:10:15PM +0800, Chao Yu wrote:
+> Hi Eric,
+> 
+> On 2019/7/27 6:41, Eric Biggers wrote:
+> > From: Eric Biggers <ebiggers@google.com>
 > > 
-> > Right, thanks. I wait for Jarkko's comments and I add both the Fixes tag
-> > and the short note in the next version of the patch.
+> > Wire up the new ioctls for adding and removing fscrypt keys to/from the
+> > filesystem, and the new ioctl for retrieving v2 encryption policies.
+> > 
+> > FS_IOC_REMOVE_ENCRYPTION_KEY also required making f2fs_drop_inode() call
+> > fscrypt_drop_inode().
+> > 
+> > For more details see Documentation/filesystems/fscrypt.rst and the
+> > fscrypt patches that added the implementation of these ioctls.
+> > 
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
 > 
-> Uhm, I was thinking that maybe it is not necessary to mention commit
-> 782779b60faa. This patch would still return 0 even if that commit is not
-> backported (TPM_ERR_DISABLED < TPM_MAX_DIGEST_SIZE).
-
-The commit message for 782779b60faa shows 379 being returned when
-attempting to get random:
-
-  [   18.092103] tpm tpm0: A TPM error (379) occurred attempting get random
-
-I don't know enough about TPM chips to know how common that is...
-
-Tyler
-
+> Reviewed-by: Chao Yu <yuchao0@huawei.com>
 > 
-> Roberto
+> BTW, do you think it needs to make xxfs_has_support_encrypt() function be a
+> common interface defined in struct fscrypt_operations, as I see all
+> fscrypt_ioctl_*() needs to check with it, tho such cleanup is minor...
 > 
-> -- 
-> HUAWEI TECHNOLOGIES Duesseldorf GmbH, HRB 56063
-> Managing Director: Li Peng, Li Jian, Shi Yanli
+
+Maybe.  It would work nicely for ext4 and f2fs, but ubifs does things
+differently since it automatically enables the encryption feature if needed.
+So we'd have to make the callback optional.
+
+In any case, I think this should be separate from this patchset.
+
+- Eric
