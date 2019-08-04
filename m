@@ -2,98 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61ABC80A24
-	for <lists+keyrings@lfdr.de>; Sun,  4 Aug 2019 11:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE4D80CA5
+	for <lists+keyrings@lfdr.de>; Sun,  4 Aug 2019 22:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726111AbfHDJmS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 4 Aug 2019 05:42:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49874 "EHLO mail.kernel.org"
+        id S1726536AbfHDUsR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 4 Aug 2019 16:48:17 -0400
+Received: from mga09.intel.com ([134.134.136.24]:45944 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726037AbfHDJmR (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 4 Aug 2019 05:42:17 -0400
-Received: from [192.168.0.101] (unknown [180.111.32.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4A5C02070D;
-        Sun,  4 Aug 2019 09:42:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564911736;
-        bh=eHZ3LbVmL56YmqVlqrvOvSSJqzheWzSMhiY9l05NP2o=;
-        h=From:Subject:To:References:Date:In-Reply-To:From;
-        b=cLRH8T6ZTkrZK5qS1nnzFT8DjeL2x+uywKyjzjXJH2irPLsvRPe4dqQc6Tk1XuxHC
-         6Y7KEfgh9+Y+tAVpgnfmZoe7NCQJeOKo/g4Y1DJ1F/afQry2WGDSwmae1pj6bLGNCO
-         QJsggE08iTcD2KYJ7TcVNyDvJjt5HHfWLe/X0wDI=
-From:   Chao Yu <chao@kernel.org>
-Subject: [f2fs-dev] [PATCH v7 14/16] f2fs: wire up new fscrypt ioctls
-To:     Chao Yu <yuchao0@huawei.com>, linux-fscrypt@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>,
-        Satya Tangirala <satyat@google.com>
-References: <20190726224141.14044-1-ebiggers@kernel.org>
- <20190726224141.14044-15-ebiggers@kernel.org>
- <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
- <20190802173148.GA51937@gmail.com>
-Message-ID: <88479efb-6625-8778-f802-e159ec60a374@kernel.org>
-Date:   Sun, 4 Aug 2019 17:42:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1726346AbfHDUsR (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 4 Aug 2019 16:48:17 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Aug 2019 13:48:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,347,1559545200"; 
+   d="scan'208";a="348926486"
+Received: from rmohamed-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.37.16])
+  by orsmga005.jf.intel.com with ESMTP; 04 Aug 2019 13:48:08 -0700
+Date:   Sun, 4 Aug 2019 23:48:07 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, jens.wiklander@linaro.org,
+        corbet@lwn.net, dhowells@redhat.com, jejb@linux.ibm.com,
+        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
+        casey@schaufler-ca.com, ard.biesheuvel@linaro.org,
+        daniel.thompson@linaro.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        tee-dev@lists.linaro.org
+Subject: Re: [RFC v2 0/6] Introduce TEE based Trusted Keys support
+Message-ID: <20190804204807.ajhy3jhwie3oq6d5@linux.intel.com>
+References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20190802173148.GA51937@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2019-8-3 1:31, Eric Biggers wrote:
-> On Fri, Aug 02, 2019 at 04:10:15PM +0800, Chao Yu wrote:
->> Hi Eric,
->>
->> On 2019/7/27 6:41, Eric Biggers wrote:
->>> From: Eric Biggers <ebiggers@google.com>
->>>
->>> Wire up the new ioctls for adding and removing fscrypt keys to/from the
->>> filesystem, and the new ioctl for retrieving v2 encryption policies.
->>>
->>> FS_IOC_REMOVE_ENCRYPTION_KEY also required making f2fs_drop_inode() call
->>> fscrypt_drop_inode().
->>>
->>> For more details see Documentation/filesystems/fscrypt.rst and the
->>> fscrypt patches that added the implementation of these ioctls.
->>>
->>> Signed-off-by: Eric Biggers <ebiggers@google.com>
->>
->> Reviewed-by: Chao Yu <yuchao0@huawei.com>
->>
->> BTW, do you think it needs to make xxfs_has_support_encrypt() function be a
->> common interface defined in struct fscrypt_operations, as I see all
->> fscrypt_ioctl_*() needs to check with it, tho such cleanup is minor...
->>
-> 
-> Maybe.  It would work nicely for ext4 and f2fs, but ubifs does things
-> differently since it automatically enables the encryption feature if needed.
-> So we'd have to make the callback optional.
+On Tue, Jul 30, 2019 at 05:53:34PM +0530, Sumit Garg wrote:
+>   tee: optee: allow kernel pages to register as shm
+>   tee: enable support to register kernel memory
+>   tee: add private login method for kernel clients
+>   KEYS: trusted: Introduce TEE based Trusted Keys
+>   doc: keys: Document usage of TEE based Trusted Keys
+>   MAINTAINERS: Add entry for TEE based Trusted Keys
 
-Correct, ubifs can leave the callback as NULL function pointer.
+Skimmed through the patches. I think it is better to sort out the
+current LKM dependency issue with trusted.ko and get TPM 1.2 and TPM 2.0
+trusted keys code consolidated before it makes sense to really go detail
+on this.
 
-> 
-> In any case, I think this should be separate from this patchset.
-
-Yup, it can be done in a separated patch if need.
-
-Thanks,
-
-> 
-> - Eric
-> 
-> 
-> _______________________________________________
-> Linux-f2fs-devel mailing list
-> Linux-f2fs-devel@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
-> 
+/Jarkko
