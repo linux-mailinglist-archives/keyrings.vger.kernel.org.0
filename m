@@ -2,82 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FAC6808CE
-	for <lists+keyrings@lfdr.de>; Sun,  4 Aug 2019 03:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61ABC80A24
+	for <lists+keyrings@lfdr.de>; Sun,  4 Aug 2019 11:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728034AbfHDBqE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 3 Aug 2019 21:46:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45392 "EHLO mail.kernel.org"
+        id S1726111AbfHDJmS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 4 Aug 2019 05:42:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49874 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726150AbfHDBqE (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 3 Aug 2019 21:46:04 -0400
-Received: from localhost.localdomain (ool-18bba523.dyn.optonline.net [24.187.165.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726037AbfHDJmR (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 4 Aug 2019 05:42:17 -0400
+Received: from [192.168.0.101] (unknown [180.111.32.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F253321726;
-        Sun,  4 Aug 2019 01:46:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4A5C02070D;
+        Sun,  4 Aug 2019 09:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564883163;
-        bh=LObcNmCTMYOwT0YqrzSQoS9DFz9YmJB/jsZ8jz9VWiw=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=E2bL4sYF6FreUCYUd9IpAVztcpoyip+1mUP3FEP3RYjJ24xUpPslMV+cTd2qyJ4MA
-         0huAb7ZkdApN7WG1I353p1c7oZ/SscxOtvscfIx0Cy6Tq/ZhNMOZAkXjLtx+rt/mdd
-         btu9sLWTJWfbk7cGLxkNJbr4dTwd0Ew0vA63dfM8=
-Message-ID: <1564883160.11223.103.camel@kernel.org>
-Subject: Re: [PATCH] KEYS: trusted: allow module init if TPM is inactive or
- deactivated
-From:   Mimi Zohar <zohar@kernel.org>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Tyler Hicks <tyhicks@canonical.com>
-Cc:     Roberto Sassu <roberto.sassu@huawei.com>, jejb@linux.ibm.com,
-        jgg@ziepe.ca, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, crazyt2019+lml@gmail.com,
-        nayna@linux.vnet.ibm.com, silviu.vlasceanu@huawei.com
-Date:   Sat, 03 Aug 2019 21:46:00 -0400
-In-Reply-To: <aff3502c598fb76a1517795edaacd8c8ea330051.camel@linux.intel.com>
-References: <20190705163735.11539-1-roberto.sassu@huawei.com>
-         <20190711194811.rfsohbfc3a7carpa@linux.intel.com>
-         <b4454a78-1f1b-cc75-114a-99926e097b05@huawei.com>
-         <20190801163215.mfkagoafkxscesne@linux.intel.com>
-         <e50c4cfa-1f0c-6f4d-1910-010a8d874393@huawei.com>
-         <20190802142721.GA26616@elm>
-         <20190802194226.oiztvme5klkmw6fh@linux.intel.com>
-         <20190802202343.GE26616@elm>
-         <aff3502c598fb76a1517795edaacd8c8ea330051.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+        s=default; t=1564911736;
+        bh=eHZ3LbVmL56YmqVlqrvOvSSJqzheWzSMhiY9l05NP2o=;
+        h=From:Subject:To:References:Date:In-Reply-To:From;
+        b=cLRH8T6ZTkrZK5qS1nnzFT8DjeL2x+uywKyjzjXJH2irPLsvRPe4dqQc6Tk1XuxHC
+         6Y7KEfgh9+Y+tAVpgnfmZoe7NCQJeOKo/g4Y1DJ1F/afQry2WGDSwmae1pj6bLGNCO
+         QJsggE08iTcD2KYJ7TcVNyDvJjt5HHfWLe/X0wDI=
+From:   Chao Yu <chao@kernel.org>
+Subject: [f2fs-dev] [PATCH v7 14/16] f2fs: wire up new fscrypt ioctls
+To:     Chao Yu <yuchao0@huawei.com>, linux-fscrypt@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, linux-api@vger.kernel.org,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        Paul Crowley <paulcrowley@google.com>,
+        Satya Tangirala <satyat@google.com>
+References: <20190726224141.14044-1-ebiggers@kernel.org>
+ <20190726224141.14044-15-ebiggers@kernel.org>
+ <e3cf53a7-faf2-0321-22de-07d2e2783752@huawei.com>
+ <20190802173148.GA51937@gmail.com>
+Message-ID: <88479efb-6625-8778-f802-e159ec60a374@kernel.org>
+Date:   Sun, 4 Aug 2019 17:42:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190802173148.GA51937@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, 2019-08-03 at 17:44 +0300, Jarkko Sakkinen wrote:
-> On Fri, 2019-08-02 at 15:23 -0500, Tyler Hicks wrote:
-> > That wasn't the conclusion that I came to. I prefer Robert's proposed
-> > change to trusted.ko.
-> > 
-> > How do you propose that this be fixed in eCryptfs?
-> > 
-> > Removing encrypted_key support from eCryptfs is the only way that I can
-> > see to fix the bug in eCryptfs. That support has been there since 2011.
-> > I'm not sure of the number of users that would be broken by removing
-> > encrypted_key support. I don't think the number is high but I can't say
-> > that confidently.
+On 2019-8-3 1:31, Eric Biggers wrote:
+> On Fri, Aug 02, 2019 at 04:10:15PM +0800, Chao Yu wrote:
+>> Hi Eric,
+>>
+>> On 2019/7/27 6:41, Eric Biggers wrote:
+>>> From: Eric Biggers <ebiggers@google.com>
+>>>
+>>> Wire up the new ioctls for adding and removing fscrypt keys to/from the
+>>> filesystem, and the new ioctl for retrieving v2 encryption policies.
+>>>
+>>> FS_IOC_REMOVE_ENCRYPTION_KEY also required making f2fs_drop_inode() call
+>>> fscrypt_drop_inode().
+>>>
+>>> For more details see Documentation/filesystems/fscrypt.rst and the
+>>> fscrypt patches that added the implementation of these ioctls.
+>>>
+>>> Signed-off-by: Eric Biggers <ebiggers@google.com>
+>>
+>> Reviewed-by: Chao Yu <yuchao0@huawei.com>
+>>
+>> BTW, do you think it needs to make xxfs_has_support_encrypt() function be a
+>> common interface defined in struct fscrypt_operations, as I see all
+>> fscrypt_ioctl_*() needs to check with it, tho such cleanup is minor...
+>>
 > 
-> Looking at the documentation [1] it is stated that
-> 
-> "Encrypted keys do not depend on a TPM, and are faster, as they use AES
-> for encryption/decryption."
-> 
-> Why would you need to remove support for encrypted keys? Isn't it a
-> regression in encrypted keys to hard depend on trusted keys given
-> what the documentation says?
+> Maybe.  It would work nicely for ext4 and f2fs, but ubifs does things
+> differently since it automatically enables the encryption feature if needed.
+> So we'd have to make the callback optional.
 
-"Encrypted" key are symmetric keys, which are encrypted/decrypted
-either by a "trusted" key or, for development purposes only, a "user"
-key.
+Correct, ubifs can leave the callback as NULL function pointer.
 
-Mimi
+> 
+> In any case, I think this should be separate from this patchset.
+
+Yup, it can be done in a separated patch if need.
+
+Thanks,
+
+> 
+> - Eric
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+> 
