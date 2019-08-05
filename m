@@ -2,77 +2,76 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A628263E
-	for <lists+keyrings@lfdr.de>; Mon,  5 Aug 2019 22:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE8EB82680
+	for <lists+keyrings@lfdr.de>; Mon,  5 Aug 2019 23:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730696AbfHEUoJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 5 Aug 2019 16:44:09 -0400
-Received: from mga01.intel.com ([192.55.52.88]:61059 "EHLO mga01.intel.com"
+        id S1730055AbfHEVAJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 5 Aug 2019 17:00:09 -0400
+Received: from mga02.intel.com ([134.134.136.20]:45420 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730690AbfHEUoI (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 5 Aug 2019 16:44:08 -0400
+        id S1730036AbfHEVAJ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 5 Aug 2019 17:00:09 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Aug 2019 13:44:07 -0700
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Aug 2019 13:59:20 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,350,1559545200"; 
-   d="scan'208";a="373200445"
-Received: from alison-desk.jf.intel.com ([10.54.74.53])
-  by fmsmga005.fm.intel.com with ESMTP; 05 Aug 2019 13:44:06 -0700
-Date:   Mon, 5 Aug 2019 13:44:53 -0700
-From:   Alison Schofield <alison.schofield@intel.com>
-To:     Ben Boeckel <mathstuf@gmail.com>
-Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        David Howells <dhowells@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Kai Huang <kai.huang@linux.intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>, linux-mm@kvack.org,
-        kvm@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCHv2 57/59] x86/mktme: Document the MKTME Key Service API
-Message-ID: <20190805204453.GB7592@alison-desk.jf.intel.com>
-References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
- <20190731150813.26289-58-kirill.shutemov@linux.intel.com>
- <20190805115837.GB31656@rotor>
+   d="scan'208";a="181782659"
+Received: from unknown (HELO localhost) ([10.252.52.83])
+  by FMSMGA003.fm.intel.com with ESMTP; 05 Aug 2019 13:59:15 -0700
+Date:   Mon, 5 Aug 2019 23:59:15 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-security-module@vger.kernel.org, dhowells@redhat.com,
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        jejb@linux.ibm.com, Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Subject: Re: [RFC/RFT v2 1/2] KEYS: trusted: create trusted keys subsystem
+Message-ID: <20190805205915.k5enrfob2cocqyff@linux.intel.com>
+References: <1563449086-13183-1-git-send-email-sumit.garg@linaro.org>
+ <1563449086-13183-2-git-send-email-sumit.garg@linaro.org>
+ <20190801172310.cldcftfdoh5vyfjg@linux.intel.com>
+ <CAFA6WYM+FQuXA9Saj5+ffOGsc-shhiF5Uos4g14Qndvu6w97Sg@mail.gmail.com>
+ <20190802193802.jn56jhoz5crebggt@linux.intel.com>
+ <CAFA6WYOMXc2y=vXOwRv+PYyF8oBV70G7CrJ81jvD5yJT41zLZw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190805115837.GB31656@rotor>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAFA6WYOMXc2y=vXOwRv+PYyF8oBV70G7CrJ81jvD5yJT41zLZw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Aug 05, 2019 at 07:58:37AM -0400, Ben Boeckel wrote:
-> On Wed, Jul 31, 2019 at 18:08:11 +0300, Kirill A. Shutemov wrote:
-> > +	key = add_key("mktme", "name", "no-encrypt", strlen(options_CPU),
-> > +		      KEY_SPEC_THREAD_KEYRING);
-> 
-> Should this be `type=no-encrypt` here? Also, seems like copy/paste from
-> the `type=cpu` case for the `strlen` call.
-> 
-> --Ben
+On Mon, Aug 05, 2019 at 10:32:59AM +0530, Sumit Garg wrote:
+> Okay, I will try to move TPM2 trusted keys code also.
 
-Yes. Fixed up as follows:
+I'm definitely for extending trusted keys beyond TPMs. Before that can be
+done, however, the current mess needs to be cleaned up.
 
-	Add a "no-encrypt' type key::
+I did a lot of work recently [1] to clean up TPM transmit code to better
+suited to be used outside of the TPM drivers (remove recursive calls,
+put the whole stack use tpm_buf for everything).
 
-        char \*options_NOENCRYPT = "type=no-encrypt";
+What still needs to be done is to move tpm_buf stuff to include/linux in
+order to be usable in the keyring code. Also for TPM 2.0 trusted keys,
+TPM2 constants need to be moved to include/linux. For the latter, I'd
+suggest to move all protocol constants there and not just what is
+required for trusted keys. Better to have them in one place.
 
-        key = add_key("mktme", "name", options_NOENCRYPT,
-                      strlen(options_NOENCRYPT), KEY_SPEC_THREAD_KEYRING);
+[1] https://lkml.org/lkml/2019/2/13/176
 
-Thanks for the review,
-Alison
-
+/Jarkko
