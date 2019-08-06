@@ -2,111 +2,144 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7C383364
-	for <lists+keyrings@lfdr.de>; Tue,  6 Aug 2019 15:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BDFF83A39
+	for <lists+keyrings@lfdr.de>; Tue,  6 Aug 2019 22:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728259AbfHFNz3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Aug 2019 09:55:29 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:37827 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728189AbfHFNzZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Aug 2019 09:55:25 -0400
-Received: by mail-lf1-f67.google.com with SMTP id c9so61154113lfh.4
-        for <keyrings@vger.kernel.org>; Tue, 06 Aug 2019 06:55:24 -0700 (PDT)
+        id S1725948AbfHFU04 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Aug 2019 16:26:56 -0400
+Received: from mail-eopbgr770073.outbound.protection.outlook.com ([40.107.77.73]:41350
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725881AbfHFU04 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 6 Aug 2019 16:26:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kcMRE2cMBOic/dOHcC8cak6LjjwFN1A1qDBjXy8Owp9uG8b5dkc16mgvMr41z7fqzXl5NsDpbByUP7aPNf25VKU3H85gXKbYHGlioO3ALlpQU/OD/YNHl0u85SScDViFC3nhR2Zwpd6INuqsRsCzZZbNQIjwvc+I/PkmIKBSThBoaNeaO6L3RH6+xSC4r3/UkAovnsvz6/8Yc9LQt+9BKpP8YcM59Yn7vynVE4/89F0USS9aDpyhTpHrOKkIMs4D4uo8QQrYQB6UB5CoHl+x1bx8SzSIa0Zr7bI4UzkbIDM0mnFZLTc+P4LZCMpRNdBLYgKaBEMQQaMneo6FVKHwyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7IGkLjPpS/zSYDGWQ2cgLZHa/giqNj0So6XUn+tZCoA=;
+ b=UfTdwi4c0s2d6DTZAXRN9FfjwDTqLcA9s+IJ2L4TSj2h8ymroRTKRLFKUWA6i+HA/lwZ7XFpwzd/T4up9BviJOsCMg/zi8d7D7ZJyHWQVgmbFHkAcuahDl1JMqvXY0X7pYbyPVwV60SnevDfZ1Q7dZbrLPnUGN53p9hj2nt8Og8mIeywkpSwGCNX1ELwd1soSlInqaiO2QPg/6/TF3Xi9aaXozGpAq1a/SlcVSiv45VI4j+U1Vzw/jp7Glmcf6v2FzhpOtSftnWy5dpINW1Ms5MJJ9qdaFXKUU7X3iWeK4Nlo5ce9ZHe+U0E2gjmF2oN3FL2kHPmj8xz2Pei2s3lHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=amd.com;dmarc=pass action=none header.from=amd.com;dkim=pass
+ header.d=amd.com;arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=416ovtRseB2pZqvtmfp0MPISej3Ly1ggyhuXKFA1TSc=;
-        b=gDftQyU1sPLNDej0wqOudB1zkk8RWR8GaBumdUmuN1ITOuIMv6D184qQCjXC2BONd5
-         5vqAH8nQ1i61o5WZKQqN3Ed4at81eZcE6pSsx1nf/ywXDy1Q/9CGHvZKHuIodIOfBuWx
-         VwQ19fUMCt8gIbT1VdEX7+mvkWYJuO9qJ4cz9kRNbfF7ufzFj9CsH6Wv2vvnpqWCl/24
-         e7FaiAo+HHBnWEvkt2QsYiXs/P25XMi38nnDymc7XFlY2NiOXo6uTcCd9Aud+bq08rgH
-         31Z/k5NNVcW4wN+P3YtazLFd82nhrnIqxbwG+nhaDOO2bY0OaoEi77I/o7bKQFyhCg2L
-         IAJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=416ovtRseB2pZqvtmfp0MPISej3Ly1ggyhuXKFA1TSc=;
-        b=C5JOR+ZHoxhqdSB2XENE/IK/hK8RW5sBA/NeOVdQl4bQ4t5skTfY6yr40nhPeaLDA4
-         0PZW+g2uktiY2C3lWoqwL2yQYsy+5ux8MTc2HsiNQnXXlhuXuvKGHOYKAGCGFdSdecp0
-         FsiXzDabBeEycMLwlOrL6YyPT+XdDhjMxNxWX8sMtwLTMPCYVSCv5a7Q7S5+y1vdTx7N
-         VXHrYu2qWdaFskdXffTiQLT2+rKL79CM7DYs7Q6HvpAU7jWQp7UTC8067UaS1iKz9ZMV
-         lsm5Q4XQZaXHUTgSzxM2kw49UpTVoQuowJb1AuLHuWxQIBy30l4EhnGJ7JlW0jAPFo+x
-         65Ew==
-X-Gm-Message-State: APjAAAWolbFqrvvLMgdia+iGgE37KXnW5fipyNrXQO2RFWMBhCFtcNh/
-        e+4b8uoJjuwr9Vc7XUvlumtOrASLslyJqxtQl4Ht4Q==
-X-Google-Smtp-Source: APXvYqyDhk3mM2mXFVY+5NaLG5MnfeslEX98rS822FuxZkz+Chdgp4KVCeTC7L8SPh116s2rDNgHQ7ixop5FDBZ38Q4=
-X-Received: by 2002:ac2:5637:: with SMTP id b23mr2634100lff.186.1565099723639;
- Tue, 06 Aug 2019 06:55:23 -0700 (PDT)
+ d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7IGkLjPpS/zSYDGWQ2cgLZHa/giqNj0So6XUn+tZCoA=;
+ b=HRs67MTZx9u4y4IQLCxmnUKPVamisFEDKxM9vNhOPNY4JdqbbCnk1fCeTJ+Q9Hv8hCzuuB8Oy8lzstB1lbGfJLjk9ZfFlfrmRj23vLaf47fP/fpPlOU8rjJljq02T1NBQDTJb9CuxH/8loLKQ5+/n6jwiROyFeHhKQuNYAwb5IE=
+Received: from DM6PR12MB3163.namprd12.prod.outlook.com (20.179.104.150) by
+ DM6PR12MB3529.namprd12.prod.outlook.com (20.179.106.160) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2136.13; Tue, 6 Aug 2019 20:26:52 +0000
+Received: from DM6PR12MB3163.namprd12.prod.outlook.com
+ ([fe80::9c3d:8593:906c:e4f7]) by DM6PR12MB3163.namprd12.prod.outlook.com
+ ([fe80::9c3d:8593:906c:e4f7%6]) with mapi id 15.20.2136.018; Tue, 6 Aug 2019
+ 20:26:52 +0000
+From:   "Lendacky, Thomas" <Thomas.Lendacky@amd.com>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>
+CC:     Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCHv2 47/59] kvm, x86, mmu: setup MKTME keyID to spte for
+ given PFN
+Thread-Topic: [PATCHv2 47/59] kvm, x86, mmu: setup MKTME keyID to spte for
+ given PFN
+Thread-Index: AQHVR7N50JZUMg30+0GwscyLbLRscqbumx6A
+Date:   Tue, 6 Aug 2019 20:26:52 +0000
+Message-ID: <a3aee9ea-a3ce-1219-b7ff-5a1b291bffdd@amd.com>
+References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
+ <20190731150813.26289-48-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20190731150813.26289-48-kirill.shutemov@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SN4PR0501CA0013.namprd05.prod.outlook.com
+ (2603:10b6:803:40::26) To DM6PR12MB3163.namprd12.prod.outlook.com
+ (2603:10b6:5:182::22)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Thomas.Lendacky@amd.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [165.204.77.1]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7960527e-446d-46f2-db0a-08d71aac6ac5
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DM6PR12MB3529;
+x-ms-traffictypediagnostic: DM6PR12MB3529:
+x-microsoft-antispam-prvs: <DM6PR12MB3529625FBB8E66B94F41FAA9ECD50@DM6PR12MB3529.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1247;
+x-forefront-prvs: 0121F24F22
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(376002)(396003)(39860400002)(136003)(346002)(189003)(199004)(36756003)(68736007)(7416002)(476003)(486006)(2616005)(71190400001)(71200400001)(11346002)(446003)(14454004)(4326008)(86362001)(316002)(478600001)(54906003)(31696002)(25786009)(6246003)(6436002)(305945005)(7736002)(26005)(66476007)(3846002)(64756008)(53546011)(66446008)(186003)(6116002)(110136005)(2906002)(6486002)(66556008)(229853002)(76176011)(102836004)(2501003)(66066001)(31686004)(66946007)(5660300002)(6512007)(53936002)(256004)(99286004)(81156014)(81166006)(386003)(52116002)(8676002)(6506007)(14444005)(8936002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB3529;H:DM6PR12MB3163.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: jPjow3QyH9EJwADFTNpzZbgFVaQpvj9QzYT8YMR8WojofdDX/GZWJCw5IFVGigJNfQaTmAtxdvyOQ00nkK/HiKBMIxIe/UO5jAAI12M2RH0HS0DsMcEBcU8F4cyW+RLkT7Ds+rr3lsoDYz3ktu1sY4/Zr7aXzKwq0e0qrT2uhWKxJ2zb+lfhYb2DXBNR7g7eqd1P4Iu5u84GN759SSe0Un4qgAEiiryqTxmUjwGLbt6yC7bwKmcCwvPlmzPFocof4/ejUB6CykkXchOmrkDlsIV0MBpVCiirLpAcmUS6eINz8UGqOxj0vO8KuEhhM8V2AJb15woKl5MPs2AZQzx1KEfusMqbnai73RUt2+l5SiCkp9OFT457XuvkFs3TTeSbuGxVwYsu8u0ZlMSz8AVogUHehKXCtfBpR8xUA5EbWKk=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <52FCCCB87C0C0148AD8C552201384C4E@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <1565098640-12536-1-git-send-email-sumit.garg@linaro.org>
- <1565098640-12536-3-git-send-email-sumit.garg@linaro.org> <20190806134322.GA10783@kroah.com>
-In-Reply-To: <20190806134322.GA10783@kroah.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue, 6 Aug 2019 19:25:12 +0530
-Message-ID: <CAFA6WYPVc_0dm2=w0Ec-Y0Sr9SipukGSJcjond-FrHREHQXTrQ@mail.gmail.com>
-Subject: Re: [RFC/RFT v3 2/3] KEYS: trusted: move tpm2 trusted keys code
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, dhowells@redhat.com,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7960527e-446d-46f2-db0a-08d71aac6ac5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2019 20:26:52.6811
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tlendack@amd.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3529
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 6 Aug 2019 at 19:13, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Aug 06, 2019 at 07:07:19PM +0530, Sumit Garg wrote:
-> > Move TPM2 trusted keys code to trusted keys subsystem.
-> >
-> > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > ---
-> >  drivers/char/tpm/tpm-interface.c          |  56 -----
-> >  drivers/char/tpm/tpm.h                    | 224 ------------------
-> >  drivers/char/tpm/tpm2-cmd.c               | 307 ------------------------
-> >  include/keys/trusted_tpm.h                |  23 +-
-> >  include/linux/tpm.h                       | 264 +++++++++++++++++++--
-> >  security/keys/trusted-keys/Makefile       |   3 +-
-> >  security/keys/trusted-keys/trusted-tpm.c  |  16 +-
-> >  security/keys/trusted-keys/trusted-tpm2.c | 378 ++++++++++++++++++++++++++++++
-> >  8 files changed, 652 insertions(+), 619 deletions(-)
-> >  create mode 100644 security/keys/trusted-keys/trusted-tpm2.c
->
-> 'git format-patch -M' will create a patch that shows the rename, and
-> then any tiny differences that happened after that.  A patch like this
-> is hard to see what changed in the move.
->
-
-I used this option only to generate the patch-set. Following is the
-command I used:
-
-git format-patch -M -3 --cover-letter --subject-prefix="RFC/RFT v3"
-
-It seems like for this patch I need to collect pieces from
-"drivers/char/tpm/" and aggregate them under
-"security/keys/trusted-keys/trusted-tpm2.c" and "include/linux/tpm.h"
-files. So that could be the reason for such patch view.
-
--Sumit
-
-> thanks,
->
-> greg k-h
+T24gNy8zMS8xOSAxMDowOCBBTSwgS2lyaWxsIEEuIFNodXRlbW92IHdyb3RlOg0KPiBGcm9tOiBL
+YWkgSHVhbmcgPGthaS5odWFuZ0BsaW51eC5pbnRlbC5jb20+DQo+IA0KPiBTZXR1cCBrZXlJRCB0
+byBTUFRFLCB3aGljaCB3aWxsIGJlIGV2ZW50dWFsbHkgcHJvZ3JhbW1lZCB0byBzaGFkb3cgTU1V
+DQo+IG9yIEVQVCB0YWJsZSwgYWNjb3JkaW5nIHRvIHBhZ2UncyBhc3NvY2lhdGVkIGtleUlELCBz
+byB0aGF0IGd1ZXN0IGlzDQo+IGFibGUgdG8gdXNlIGNvcnJlY3Qga2V5SUQgdG8gYWNjZXNzIGd1
+ZXN0IG1lbW9yeS4NCj4gDQo+IE5vdGUgY3VycmVudCBzaGFkb3dfbWVfbWFzayBkb2Vzbid0IHN1
+aXQgTUtUTUUncyBuZWVkcywgc2luY2UgZm9yIE1LVE1FDQo+IHRoZXJlJ3Mgbm8gZml4ZWQgbWVt
+b3J5IGVuY3J5cHRpb24gbWFzaywgYnV0IGNhbiB2YXJ5IGZyb20ga2V5SUQgMSB0bw0KPiBtYXhp
+bXVtIGtleUlELCB0aGVyZWZvcmUgc2hhZG93X21lX21hc2sgcmVtYWlucyAwIGZvciBNS1RNRS4N
+Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IEthaSBIdWFuZyA8a2FpLmh1YW5nQGxpbnV4LmludGVsLmNv
+bT4NCj4gU2lnbmVkLW9mZi1ieTogS2lyaWxsIEEuIFNodXRlbW92IDxraXJpbGwuc2h1dGVtb3ZA
+bGludXguaW50ZWwuY29tPg0KPiAtLS0NCj4gIGFyY2gveDg2L2t2bS9tbXUuYyB8IDE4ICsrKysr
+KysrKysrKysrKysrLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDE3IGluc2VydGlvbnMoKyksIDEgZGVs
+ZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0vbW11LmMgYi9hcmNoL3g4
+Ni9rdm0vbW11LmMNCj4gaW5kZXggOGY3MjUyNmUyZjY4Li5iODc0MmU2MjE5ZjYgMTAwNjQ0DQo+
+IC0tLSBhL2FyY2gveDg2L2t2bS9tbXUuYw0KPiArKysgYi9hcmNoL3g4Ni9rdm0vbW11LmMNCj4g
+QEAgLTI5MzYsNiArMjkzNiwyMiBAQCBzdGF0aWMgYm9vbCBrdm1faXNfbW1pb19wZm4oa3ZtX3Bm
+bl90IHBmbikNCj4gICNkZWZpbmUgU0VUX1NQVEVfV1JJVEVfUFJPVEVDVEVEX1BUCUJJVCgwKQ0K
+PiAgI2RlZmluZSBTRVRfU1BURV9ORUVEX1JFTU9URV9UTEJfRkxVU0gJQklUKDEpDQo+ICANCj4g
+K3N0YXRpYyB1NjQgZ2V0X3BoeXNfZW5jcnlwdGlvbl9tYXNrKGt2bV9wZm5fdCBwZm4pDQo+ICt7
+DQo+ICsjaWZkZWYgQ09ORklHX1g4Nl9JTlRFTF9NS1RNRQ0KPiArCXN0cnVjdCBwYWdlICpwYWdl
+Ow0KPiArDQo+ICsJaWYgKCFwZm5fdmFsaWQocGZuKSkNCj4gKwkJcmV0dXJuIDA7DQo+ICsNCj4g
+KwlwYWdlID0gcGZuX3RvX3BhZ2UocGZuKTsNCj4gKw0KPiArCXJldHVybiAoKHU2NClwYWdlX2tl
+eWlkKHBhZ2UpKSA8PCBta3RtZV9rZXlpZF9zaGlmdCgpOw0KPiArI2Vsc2UNCj4gKwlyZXR1cm4g
+c2hhZG93X21lX21hc2s7DQo+ICsjZW5kaWYNCj4gK30NCg0KVGhpcyBwYXRjaCBicmVha3MgQU1E
+IHZpcnR1YWxpemF0aW9uIChTVk0pIGluIGdlbmVyYWwgKG5vbi1TRVYgYW5kIFNFVg0KZ3Vlc3Rz
+KSB3aGVuIFNNRSBpcyBhY3RpdmUuIFNob3VsZG4ndCB0aGlzIGJlIGEgcnVuIHRpbWUsIHZzIGJ1
+aWxkIHRpbWUsDQpjaGVjayBmb3IgTUtUTUUgYmVpbmcgYWN0aXZlPw0KDQpUaGFua3MsDQpUb20N
+Cg0KPiArDQo+ICBzdGF0aWMgaW50IHNldF9zcHRlKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgdTY0
+ICpzcHRlcCwNCj4gIAkJICAgIHVuc2lnbmVkIHB0ZV9hY2Nlc3MsIGludCBsZXZlbCwNCj4gIAkJ
+ICAgIGdmbl90IGdmbiwga3ZtX3Bmbl90IHBmbiwgYm9vbCBzcGVjdWxhdGl2ZSwNCj4gQEAgLTI5
+ODIsNyArMjk5OCw3IEBAIHN0YXRpYyBpbnQgc2V0X3NwdGUoc3RydWN0IGt2bV92Y3B1ICp2Y3B1
+LCB1NjQgKnNwdGVwLA0KPiAgCQlwdGVfYWNjZXNzICY9IH5BQ0NfV1JJVEVfTUFTSzsNCj4gIA0K
+PiAgCWlmICgha3ZtX2lzX21taW9fcGZuKHBmbikpDQo+IC0JCXNwdGUgfD0gc2hhZG93X21lX21h
+c2s7DQo+ICsJCXNwdGUgfD0gZ2V0X3BoeXNfZW5jcnlwdGlvbl9tYXNrKHBmbik7DQo+ICANCj4g
+IAlzcHRlIHw9ICh1NjQpcGZuIDw8IFBBR0VfU0hJRlQ7DQo+ICANCj4gDQo=
