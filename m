@@ -2,72 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D87BA86569
-	for <lists+keyrings@lfdr.de>; Thu,  8 Aug 2019 17:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACB086D36
+	for <lists+keyrings@lfdr.de>; Fri,  9 Aug 2019 00:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732601AbfHHPQB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 8 Aug 2019 11:16:01 -0400
-Received: from mga14.intel.com ([192.55.52.115]:63160 "EHLO mga14.intel.com"
+        id S2404670AbfHHW1A (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 8 Aug 2019 18:27:00 -0400
+Received: from foss.arm.com ([217.140.110.172]:39522 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727096AbfHHPQB (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 8 Aug 2019 11:16:01 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Aug 2019 08:16:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,361,1559545200"; 
-   d="scan'208";a="350203764"
-Received: from sandersb-mobl.ger.corp.intel.com (HELO localhost) ([10.249.33.239])
-  by orsmga005.jf.intel.com with ESMTP; 08 Aug 2019 08:15:51 -0700
-Date:   Thu, 8 Aug 2019 18:15:50 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, dhowells@redhat.com,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Subject: Re: [RFC/RFT v3 2/3] KEYS: trusted: move tpm2 trusted keys code
-Message-ID: <20190808151500.ypfcqowklalu76uq@linux.intel.com>
-References: <1565098640-12536-1-git-send-email-sumit.garg@linaro.org>
- <1565098640-12536-3-git-send-email-sumit.garg@linaro.org>
- <20190807190320.th4sbnsnmwb7myzx@linux.intel.com>
- <CAFA6WYN-6MpP2TZQEz49BmjSQiMSqghVFWRZCCY0o1UVad1AFw@mail.gmail.com>
+        id S2404636AbfHHW07 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 8 Aug 2019 18:26:59 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB72F15A2;
+        Thu,  8 Aug 2019 15:26:58 -0700 (PDT)
+Received: from c02sv19cfvh4.usa.arm.com (c02sv19cfvh4.usa.arm.com [10.118.108.51])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D02DF3F575;
+        Thu,  8 Aug 2019 15:26:58 -0700 (PDT)
+Subject: Re: [Tee-dev] [RFC v2 2/6] tee: enable support to register kernel
+ memory
+To:     Sumit Garg <sumit.garg@linaro.org>, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     tee-dev@lists.linaro.org, daniel.thompson@linaro.org,
+        corbet@lwn.net, jejb@linux.ibm.com, ard.biesheuvel@linaro.org,
+        linux-doc@vger.kernel.org, zohar@linux.ibm.com,
+        linux-kernel@vger.kernel.org, dhowells@redhat.com,
+        jarkko.sakkinen@linux.intel.com, casey@schaufler-ca.com,
+        linux-arm-kernel@lists.infradead.org, serge@hallyn.com
+References: <1564489420-677-1-git-send-email-sumit.garg@linaro.org>
+ <1564489420-677-3-git-send-email-sumit.garg@linaro.org>
+From:   Stuart Yoder <stuart.yoder@arm.com>
+Message-ID: <99777010-db74-096a-ce1a-da30539d6fb5@arm.com>
+Date:   Thu, 8 Aug 2019 17:26:58 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYN-6MpP2TZQEz49BmjSQiMSqghVFWRZCCY0o1UVad1AFw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: NeoMutt/20180716
+In-Reply-To: <1564489420-677-3-git-send-email-sumit.garg@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 08, 2019 at 06:51:38PM +0530, Sumit Garg wrote:
-> It seems to be a functional change which I think requires proper unit
-> testing. I am afraid that I don't posses a TPM device to test this and
-> also very less conversant with tpm_buf code.
-> 
-> So what I have done here is to rename existing TPM 1.x trusted keys
-> code to use tpm1_buf.
-> 
-> And I would be happy to integrate a tested patch if anyone familiar
-> could work on this.
 
-I can test it on TPM 1.2.
 
-/Jarkko
+On 7/30/19 7:23 AM, Sumit Garg wrote:
+
+> @@ -264,7 +266,17 @@ struct tee_shm *tee_shm_register(struct tee_context *ctx, unsigned long addr,
+>   		goto err;
+>   	}
+>   
+> -	rc = get_user_pages_fast(start, num_pages, FOLL_WRITE, shm->pages);
+> +	if (flags & TEE_SHM_USER_MAPPED) {
+> +		rc = get_user_pages_fast(start, num_pages, FOLL_WRITE,
+> +					 shm->pages);
+> +	} else {
+> +		const struct kvec kiov = {
+> +			.iov_base = (void *)start,
+> +			.iov_len = PAGE_SIZE
+> +		};
+> +
+> +		rc = get_kernel_pages(&kiov, num_pages, 0, shm->pages);
+
+Passing a single kvec struct is temporary I assume?  Because as currently
+written this will only work with num_pages==1.
+
+Stuart
