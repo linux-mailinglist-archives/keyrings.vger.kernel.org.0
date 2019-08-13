@@ -2,96 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CDFC8B1E4
-	for <lists+keyrings@lfdr.de>; Tue, 13 Aug 2019 09:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E58A28B977
+	for <lists+keyrings@lfdr.de>; Tue, 13 Aug 2019 15:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727568AbfHMH7d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Aug 2019 03:59:33 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:45891 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727942AbfHMH7c (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Aug 2019 03:59:32 -0400
-Received: by mail-lj1-f194.google.com with SMTP id t3so12145565ljj.12
-        for <keyrings@vger.kernel.org>; Tue, 13 Aug 2019 00:59:31 -0700 (PDT)
+        id S1727425AbfHMNGf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Aug 2019 09:06:35 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:44540 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727311AbfHMNGf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Aug 2019 09:06:35 -0400
+Received: by mail-qk1-f194.google.com with SMTP id d79so79456110qke.11;
+        Tue, 13 Aug 2019 06:06:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ppVR4stowlIJ6/4pZZBiqz7XFOa7GBtQMtynjohKpDM=;
-        b=gMNzHJkjPlTKg8J3P1ItvpHxlkyUzWeShHE+QJSJ32VauPTGnzGKsD+QuZrHHI76pj
-         RQaLjgiFHttMYl1YL5egx0p1M2IIOgyXxDeB1ftBhbKgE91RpNxJqdP+/QCc15BfoOhL
-         Z1+PP778xl2OwXclKn24vrxEMqdB2zsz1S9Mo+1+LLBC3XvBF1qfh81VIeKQdgw15Wfs
-         3UPAiB+GQfna3uzgBhqY2DIQZ1U1Dd6wdEjtIkq7MQrftD+JJ76fJF/zUJB30qtgXZ8g
-         gkbmkqgpWNNJ+9OWrPYhYkczySrcOktUtmOi5kVY6tzWBM01UKaeDCvccNuWK35inzMd
-         u0UQ==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=dPePM4b7Ly9h58EwlKTM619AD4xFQbyhPDiSia2EM2U=;
+        b=rWi6khMGtrbzvWBFMuKOaneDwVBFkNzEA+bV4ShPlu9hL6T+L7nBa8gQDqbg7wmj9l
+         A3KIk979T6sWVsHhW4Fm/VaENm/Pi3YN9D3TaMbA39C3bNT0UdMZbtzfgFwX8I773l/c
+         3RsG9coxViRKwz3yQGebHYpzOEt6b6aR6vvSzsRAH3RbtDY1HDGaMX6ehk0FlP7sff7C
+         ekZDrrVWdki+9s23mAN9i+bmtgZqgXojixJSkXBwq8Efoir2sZDaba3uPvCZhlRSyqIY
+         CrG+1B1yVaV4pE4euqUVZufBvyCGY3HP9VT9vlaNLTbPJwVsmhEc0FPeovlP8bvtYcsV
+         nWyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ppVR4stowlIJ6/4pZZBiqz7XFOa7GBtQMtynjohKpDM=;
-        b=ahM5CkUOkfEyJyaXs0nJEbApTVtazbq4P6QDAa2N9nNbQKwvdx49HbDDBuakFi4qL5
-         b8OWJmfH5IPkLrC9S8OafoSpvwcUaov1GwQpsEEQDBThEVuhRgvVqgw8ZRQQljlpltc5
-         9405GGBG3r4gqYjEZwVDt7T3+nMPRORDY4oME/PQJuknNZB/4/gFyvVBE5b3nJn59vH0
-         pi5l9sPNIzMKR6CyZ7QFMSnP8rOhBBLO2AFA+8IQE+O/7ej2uwki1kVCP8j58pzSK1iB
-         YS2ALCO/D894t/H+2z2may5JhhxNspck6j/W8hvUo3dnqegaFFgx/5A4Z+ue0zWyxRq+
-         hhdg==
-X-Gm-Message-State: APjAAAWpp9lWjpq8vK61jHNYLBWLT7R1ftFCs3t8hxiCB3eHPKnWmc5c
-        +uJumjGdBfWIY1U8OIEspkpXziKgcswOSm0m8lKN+g==
-X-Google-Smtp-Source: APXvYqy9Xa1Q8vdR2OCkDVG7ShxG5L9IQXmi6qKK2LlN8HtiapeB1JlrnTXdtXIphrZmMJ+SZciCiafKR0IU/QMDd44=
-X-Received: by 2002:a2e:970a:: with SMTP id r10mr19876829lji.115.1565683170315;
- Tue, 13 Aug 2019 00:59:30 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=dPePM4b7Ly9h58EwlKTM619AD4xFQbyhPDiSia2EM2U=;
+        b=sjVgoJtOQC6LV+GCYC11N4l2aclNgYcrqCvAdkhufO6a3AYQ1uExjDwGrn6jT4f6AG
+         FhjL+r3DalA2bOG7t70aVNbk0COJhCAZTMBo1ysA1w0AFxsOQfl87IY7JKcfR8LNyE6X
+         VvEDQMWmnDKFyI0i2jZewY1+l1Q0kzub5Rs7ivKjSVehI2O1eiAMZIceA2ipfh9vB0C1
+         yd9yI+eb9Pu/g7Lq3Yz2m46LvToLNLK+xbjvif36FqlFnwJBB4TzZhYTVpdAiaYjMU33
+         It0UdwWmUPCICUASMh4pbuFo12z3dlCZHbPD/xnJCuV6FzBrEfe4c7xgElPufyiOM5bH
+         k4LA==
+X-Gm-Message-State: APjAAAUnKz4nQU3KhT1fFj92bBKR7HHzUHnUKz+4qHyEieXd2SI+zxVp
+        zmwxbg0GQSKw7fhFOJ0NBmU=
+X-Google-Smtp-Source: APXvYqxoPh7Vwka4FMUE4K0pxkSvpnkQ2+EVcB3voDPInyDih0g+8JHM7XendeivsUYRonHZ4s/q+w==
+X-Received: by 2002:ae9:c00c:: with SMTP id u12mr23656206qkk.75.1565701594164;
+        Tue, 13 Aug 2019 06:06:34 -0700 (PDT)
+Received: from localhost (tripoint.kitware.com. [66.194.253.20])
+        by smtp.gmail.com with ESMTPSA id z5sm45834363qti.80.2019.08.13.06.06.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Aug 2019 06:06:33 -0700 (PDT)
+Date:   Tue, 13 Aug 2019 09:06:33 -0400
+From:   Ben Boeckel <mathstuf@gmail.com>
+To:     Alison Schofield <alison.schofield@intel.com>
+Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Howells <dhowells@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Kai Huang <kai.huang@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>, linux-mm@kvack.org,
+        kvm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCHv2 25/59] keys/mktme: Preparse the MKTME key payload
+Message-ID: <20190813130633.GB9079@rotor.kitware.com>
+Reply-To: mathstuf@gmail.com
+References: <20190731150813.26289-1-kirill.shutemov@linux.intel.com>
+ <20190731150813.26289-26-kirill.shutemov@linux.intel.com>
+ <20190805115819.GA31656@rotor>
+ <20190805203102.GA7592@alison-desk.jf.intel.com>
 MIME-Version: 1.0
-References: <1565098640-12536-1-git-send-email-sumit.garg@linaro.org>
- <1565098640-12536-3-git-send-email-sumit.garg@linaro.org> <20190807190320.th4sbnsnmwb7myzx@linux.intel.com>
- <CAFA6WYN-6MpP2TZQEz49BmjSQiMSqghVFWRZCCY0o1UVad1AFw@mail.gmail.com> <20190808151500.ypfcqowklalu76uq@linux.intel.com>
-In-Reply-To: <20190808151500.ypfcqowklalu76uq@linux.intel.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue, 13 Aug 2019 13:29:19 +0530
-Message-ID: <CAFA6WYNqBH9aAM-uke6jFTCeLB2GG7UYyrYEPHgyVy8p_q+Pww@mail.gmail.com>
-Subject: Re: [RFC/RFT v3 2/3] KEYS: trusted: move tpm2 trusted keys code
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, dhowells@redhat.com,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190805203102.GA7592@alison-desk.jf.intel.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 8 Aug 2019 at 20:46, Jarkko Sakkinen
-<jarkko.sakkinen@linux.intel.com> wrote:
->
-> On Thu, Aug 08, 2019 at 06:51:38PM +0530, Sumit Garg wrote:
-> > It seems to be a functional change which I think requires proper unit
-> > testing. I am afraid that I don't posses a TPM device to test this and
-> > also very less conversant with tpm_buf code.
-> >
-> > So what I have done here is to rename existing TPM 1.x trusted keys
-> > code to use tpm1_buf.
-> >
-> > And I would be happy to integrate a tested patch if anyone familiar
-> > could work on this.
->
-> I can test it on TPM 1.2.
->
+On Mon, Aug 05, 2019 at 13:31:02 -0700, Alison Schofield wrote:
+> It's not currently checked, but should be. 
+> I'll add it as shown above.
+> Thanks for the review,
 
-I have posted v4 with changes as you requested. I hope they work well
-with a real TPM 1.x or TPM 2.0 device.
+Thanks. Seeing how this works elsewhere now, feel free to add my review
+with the proposed check to the new patch.
 
--Sumit
+Reviewed-by: Ben Boeckel <mathstuf@gmail.com>
 
-> /Jarkko
+--Ben
