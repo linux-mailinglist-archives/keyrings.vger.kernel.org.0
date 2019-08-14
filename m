@@ -2,147 +2,125 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 736B98E0AA
-	for <lists+keyrings@lfdr.de>; Thu, 15 Aug 2019 00:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC7108E0D5
+	for <lists+keyrings@lfdr.de>; Thu, 15 Aug 2019 00:35:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728680AbfHNW20 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 14 Aug 2019 18:28:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32840 "EHLO mail.kernel.org"
+        id S1728378AbfHNWfr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 14 Aug 2019 18:35:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728425AbfHNW20 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 14 Aug 2019 18:28:26 -0400
+        id S1727217AbfHNWfq (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 14 Aug 2019 18:35:46 -0400
 Received: from gmail.com (unknown [104.132.1.77])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 667EF2064A;
-        Wed, 14 Aug 2019 22:28:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 081B12064A;
+        Wed, 14 Aug 2019 22:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565821705;
-        bh=Fp8KCIMcKiB0kj7H4Ozz1VWH7BDbgk3wHcO/XUFfrcY=;
-        h=Date:From:To:Cc:Subject:From;
-        b=MmdznKI1SQKspJ/KQjNbSCbZkqOzcT/EJYmuXbZjN0RCXQvLaQ9dgQhQs0QfVZcN4
-         ogkfPSnvclQPmpuv75lKzZ46xpoW8RZY3NTnEDJhEVCnm58WVko59v55CeI58u5wOt
-         gaFj3f9FIBptAHYcnvU8SDBGNe18KnR+l1c6ARqU=
-Date:   Wed, 14 Aug 2019 15:28:23 -0700
+        s=default; t=1565822145;
+        bh=l8Slk/c9NCmIURt4vJ515GO1o+OGPytEBQ6mmXfsoCc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HZrWel2TOGlxa/OLzSgK6FZYkC9k5fmPXmA7SczQPr/nZXF5fhlrN12mEtzuphrKx
+         naClhxqMHYFXy1R/MsRWN561L+U0nJMj+RQmokWi+/oM+CwhuEESn4oiXIYXhBuZnf
+         2ZHVbx8JH1SSewjdXfJj0RGtoca3cSvPVjunHj9Y=
+Date:   Wed, 14 Aug 2019 15:35:43 -0700
 From:   Eric Biggers <ebiggers@kernel.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     linux-fscrypt@vger.kernel.org, linux-next@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: Merge resolution for fscrypt and keyrings trees
-Message-ID: <20190814222822.GA101319@gmail.com>
-Mail-Followup-To: Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-fscrypt@vger.kernel.org, linux-next@vger.kernel.org,
-        keyrings@vger.kernel.org
+To:     "Theodore Y. Ts'o" <tytso@mit.edu>
+Cc:     linux-fscrypt@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-api@vger.kernel.org, Satya Tangirala <satyat@google.com>,
+        Paul Crowley <paulcrowley@google.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: Re: [PATCH v8 10/20] fscrypt: add FS_IOC_REMOVE_ENCRYPTION_KEY ioctl
+Message-ID: <20190814223542.GE101319@gmail.com>
+Mail-Followup-To: "Theodore Y. Ts'o" <tytso@mit.edu>,
+        linux-fscrypt@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-api@vger.kernel.org, Satya Tangirala <satyat@google.com>,
+        Paul Crowley <paulcrowley@google.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>
+References: <20190805162521.90882-1-ebiggers@kernel.org>
+ <20190805162521.90882-11-ebiggers@kernel.org>
+ <20190813000644.GH28705@mit.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20190813000644.GH28705@mit.edu>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Stephen, the fscrypt patches I've just pushed out conflict with the keys ACLs
-patch in keys-next.  To resolve the conflict for tomorrow's linux-next:
+On Mon, Aug 12, 2019 at 08:06:44PM -0400, Theodore Y. Ts'o wrote:
+> > +		/* Some inodes still reference this key; try to evict them. */
+> > +		if (try_to_lock_encrypted_files(sb, mk) != 0)
+> > +			status_flags |=
+> > +				FSCRYPT_KEY_REMOVAL_STATUS_FLAG_FILES_BUSY;
+> > +	}
+> 
+> try_to_lock_encrypted_files() can return other errors besides -EBUSY;
+> in particular sync_filesystem() can return other errors, such as -EIO
+> or -EFSCORUPTED.  In that case, I think we're better off returning the
+> relevant status code back to the user.  We will have already wiped the
+> master key, but this situation will only happen in exceptional
+> conditions (e.g., user has ejected the sdcard, etc.), so it's not
+> worth it to try to undo the master key wipe to try to restore things
+> to the pre-ioctl execution state.
+> 
+> So I think we should capture the return code from
+> try_to_lock_encrypted_files, and if it is EBUSY, we can set FILES_BUSY
+> flag and return success.  Otherwise, we should return the error.
+> 
+> If you agree, please fix that up and then feel free to add:
+> 
+> Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+> 
+> 						- Ted
 
-1. Discard change to deleted file keyinfo.c
-2. In keyinfo_v1.c, add NULL argument to request_key() [this was change (1)]
-3. In keyring.c, translate key permissions to ACLs
-
-'git diff fscrypt/master -- fs/crypto/' on the merge commit should show:
+Yes, that makes sense.  I've made the following change to this patch:
 
 diff --git a/fs/crypto/keyring.c b/fs/crypto/keyring.c
-index c34fa7c61b43b0..8a7519b120153b 100644
+index 9901593051424b..c3423f0edc7014 100644
 --- a/fs/crypto/keyring.c
 +++ b/fs/crypto/keyring.c
-@@ -127,6 +127,38 @@ static struct key_type key_type_fscrypt_user = {
- 	.describe		= fscrypt_user_key_describe,
- };
+@@ -479,6 +479,7 @@ int fscrypt_ioctl_remove_key(struct file *filp, void __user *_uarg)
+ 	struct key *key;
+ 	struct fscrypt_master_key *mk;
+ 	u32 status_flags = 0;
++	int err;
+ 	bool dead;
  
-+static struct key_acl fscrypt_keyring_acl = {
-+	.usage = REFCOUNT_INIT(1),
-+	.nr_ace	= 2,
-+	.aces = {
-+		KEY_POSSESSOR_ACE(KEY_ACE_SEARCH | KEY_ACE_INVAL |
-+				  KEY_ACE_JOIN),
-+		KEY_OWNER_ACE(KEY_ACE_SEARCH | KEY_ACE_INVAL | KEY_ACE_JOIN |
-+			      KEY_ACE_READ | KEY_ACE_VIEW),
-+	}
-+};
-+
-+static struct key_acl fscrypt_key_acl = {
-+	.usage = REFCOUNT_INIT(1),
-+	.nr_ace	= 2,
-+	.aces = {
-+		KEY_POSSESSOR_ACE(KEY_ACE_SEARCH | KEY_ACE_INVAL |
-+				  KEY_ACE_JOIN),
-+		KEY_OWNER_ACE(KEY_ACE_SEARCH | KEY_ACE_INVAL | KEY_ACE_JOIN |
-+			      KEY_ACE_VIEW),
-+	}
-+};
-+
-+static struct key_acl fscrypt_user_key_acl = {
-+	.usage = REFCOUNT_INIT(1),
-+	.nr_ace	= 2,
-+	.aces = {
-+		KEY_POSSESSOR_ACE(KEY_ACE_SEARCH | KEY_ACE_INVAL |
-+				  KEY_ACE_JOIN),
-+		KEY_OWNER_ACE(KEY_ACE_VIEW),
-+	}
-+};
-+
- /* Search ->s_master_keys or ->mk_users */
- static struct key *search_fscrypt_keyring(struct key *keyring,
- 					  struct key_type *type,
-@@ -203,8 +235,7 @@ static int allocate_filesystem_keyring(struct super_block *sb)
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+@@ -514,11 +515,15 @@ int fscrypt_ioctl_remove_key(struct file *filp, void __user *_uarg)
+ 		 * key object is free to be removed from the keyring.
+ 		 */
+ 		key_invalidate(key);
++		err = 0;
+ 	} else {
+ 		/* Some inodes still reference this key; try to evict them. */
+-		if (try_to_lock_encrypted_files(sb, mk) != 0)
++		err = try_to_lock_encrypted_files(sb, mk);
++		if (err == -EBUSY) {
+ 			status_flags |=
+ 				FSCRYPT_KEY_REMOVAL_STATUS_FLAG_FILES_BUSY;
++			err = 0;
++		}
+ 	}
+ 	/*
+ 	 * We return 0 if we successfully did something: wiped the secret, or
+@@ -527,7 +532,9 @@ int fscrypt_ioctl_remove_key(struct file *filp, void __user *_uarg)
+ 	 * including all files locked.
+ 	 */
+ 	key_put(key);
+-	return put_user(status_flags, &uarg->removal_status_flags);
++	if (err == 0)
++		err = put_user(status_flags, &uarg->removal_status_flags);
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(fscrypt_ioctl_remove_key);
  
- 	format_fs_keyring_description(description, sb);
- 	keyring = keyring_alloc(description, GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
--				current_cred(), KEY_POS_SEARCH |
--				  KEY_USR_SEARCH | KEY_USR_READ | KEY_USR_VIEW,
-+				current_cred(), &fscrypt_keyring_acl,
- 				KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
- 	if (IS_ERR(keyring))
- 		return PTR_ERR(keyring);
-@@ -247,8 +278,7 @@ static int allocate_master_key_users_keyring(struct fscrypt_master_key *mk)
- 	format_mk_users_keyring_description(description,
- 					    mk->mk_spec.u.identifier);
- 	keyring = keyring_alloc(description, GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
--				current_cred(), KEY_POS_SEARCH |
--				  KEY_USR_SEARCH | KEY_USR_READ | KEY_USR_VIEW,
-+				current_cred(), &fscrypt_keyring_acl,
- 				KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
- 	if (IS_ERR(keyring))
- 		return PTR_ERR(keyring);
-@@ -285,7 +315,7 @@ static int add_master_key_user(struct fscrypt_master_key *mk)
- 	format_mk_user_description(description, mk->mk_spec.u.identifier);
- 	mk_user = key_alloc(&key_type_fscrypt_user, description,
- 			    current_fsuid(), current_gid(), current_cred(),
--			    KEY_POS_SEARCH | KEY_USR_VIEW, 0, NULL);
-+			    &fscrypt_user_key_acl, 0, NULL);
- 	if (IS_ERR(mk_user))
- 		return PTR_ERR(mk_user);
- 
-@@ -357,8 +387,7 @@ static int add_new_master_key(struct fscrypt_master_key_secret *secret,
- 	format_mk_description(description, mk_spec);
- 	key = key_alloc(&key_type_fscrypt, description,
- 			GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, current_cred(),
--			KEY_POS_SEARCH | KEY_USR_SEARCH | KEY_USR_VIEW,
--			KEY_ALLOC_NOT_IN_QUOTA, NULL);
-+			&fscrypt_key_acl, KEY_ALLOC_NOT_IN_QUOTA, NULL);
- 	if (IS_ERR(key)) {
- 		err = PTR_ERR(key);
- 		goto out_free_mk;
-diff --git a/fs/crypto/keysetup_v1.c b/fs/crypto/keysetup_v1.c
-index ad1a36c370c3fb..0727251be865b7 100644
---- a/fs/crypto/keysetup_v1.c
-+++ b/fs/crypto/keysetup_v1.c
-@@ -104,7 +104,7 @@ find_and_lock_process_key(const char *prefix,
- 	if (!description)
- 		return ERR_PTR(-ENOMEM);
- 
--	key = request_key(&key_type_logon, description, NULL);
-+	key = request_key(&key_type_logon, description, NULL, NULL);
- 	kfree(description);
- 	if (IS_ERR(key))
- 		return key;
