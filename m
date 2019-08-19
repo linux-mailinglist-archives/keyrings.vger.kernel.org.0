@@ -2,26 +2,25 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEB994B0F
-	for <lists+keyrings@lfdr.de>; Mon, 19 Aug 2019 18:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C867094B34
+	for <lists+keyrings@lfdr.de>; Mon, 19 Aug 2019 19:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727424AbfHSQ54 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 19 Aug 2019 12:57:56 -0400
-Received: from mga05.intel.com ([192.55.52.43]:17569 "EHLO mga05.intel.com"
+        id S1727944AbfHSRFG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 19 Aug 2019 13:05:06 -0400
+Received: from mga09.intel.com ([134.134.136.24]:60393 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726987AbfHSQ54 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 19 Aug 2019 12:57:56 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1726879AbfHSRFG (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 19 Aug 2019 13:05:06 -0400
+X-Amp-Result: UNSCANNABLE
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Aug 2019 09:57:55 -0700
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Aug 2019 10:05:05 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,405,1559545200"; 
-   d="scan'208";a="179474734"
+   d="scan'208";a="180416866"
 Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.125])
-  by fmsmga007.fm.intel.com with ESMTP; 19 Aug 2019 09:57:50 -0700
-Date:   Mon, 19 Aug 2019 19:57:50 +0300
+  by orsmga003.jf.intel.com with ESMTP; 19 Aug 2019 10:04:58 -0700
+Date:   Mon, 19 Aug 2019 20:04:58 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     Sumit Garg <sumit.garg@linaro.org>
 Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
@@ -33,15 +32,14 @@ Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
         serge@hallyn.com, casey@schaufler-ca.com,
         ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
         linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
-Subject: Re: [RFC/RFT v4 2/5] KEYS: trusted: use common tpm_buf for TPM1.x
- code
-Message-ID: <20190819165750.h4zlqtjubwm7tohg@linux.intel.com>
+Subject: Re: [RFC/RFT v4 3/5] KEYS: trusted: create trusted keys subsystem
+Message-ID: <20190819170458.m7adhkji64kta32d@linux.intel.com>
 References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
- <1565682784-10234-3-git-send-email-sumit.garg@linaro.org>
+ <1565682784-10234-4-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1565682784-10234-3-git-send-email-sumit.garg@linaro.org>
+In-Reply-To: <1565682784-10234-4-git-send-email-sumit.garg@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
@@ -49,13 +47,23 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 01:23:01PM +0530, Sumit Garg wrote:
-> Utilize common heap based tpm_buf code for TPM1.x trusted keys rather
-> than using stack based tpm1_buf code. Also, remove tpm1_buf code.
+On Tue, Aug 13, 2019 at 01:23:02PM +0530, Sumit Garg wrote:
+> Move existing code to trusted keys subsystem. Also, rename files with
+> "tpm" as suffix which provides the underlying implementation.
 > 
 > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> ---
+>  crypto/asymmetric_keys/asym_tpm.c                       | 2 +-
+>  include/keys/{trusted.h => trusted_tpm.h}               | 4 ++--
+>  security/keys/Makefile                                  | 2 +-
+>  security/keys/trusted-keys/Makefile                     | 7 +++++++
+>  security/keys/{trusted.c => trusted-keys/trusted-tpm.c} | 2 +-
+>  5 files changed, 12 insertions(+), 5 deletions(-)
+>  rename include/keys/{trusted.h => trusted_tpm.h} (98%)
+>  create mode 100644 security/keys/trusted-keys/Makefile
+>  rename security/keys/{trusted.c => trusted-keys/trusted-tpm.c} (99%)
 
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Would prefer trusted_tpm.c.
 
 /Jarkko
