@@ -2,74 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 749B594AB4
-	for <lists+keyrings@lfdr.de>; Mon, 19 Aug 2019 18:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513BD94AFC
+	for <lists+keyrings@lfdr.de>; Mon, 19 Aug 2019 18:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727564AbfHSQov (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 19 Aug 2019 12:44:51 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:34885 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbfHSQou (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 19 Aug 2019 12:44:50 -0400
-Received: by mail-lf1-f65.google.com with SMTP id p197so1890751lfa.2
-        for <keyrings@vger.kernel.org>; Mon, 19 Aug 2019 09:44:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YTgEEhnQW7rA7Swk7XmZoE/TVWKiM/rYLloBH44I1Y4=;
-        b=HXYiO3uvFIJxP8AzLPiB1vCojk2HYF1PHjHSec/oU/g4xnNPfhabSnJiKWyvKhdvPL
-         PSTBApqcqrNATd12uSC/OSvm8TCRNPUsxfylRETL95enFuQ/shakvQqEAneNqGoKLzuq
-         zpeeR8Q32NiN+R8GM+dAc/To+08EVo1OrugEU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YTgEEhnQW7rA7Swk7XmZoE/TVWKiM/rYLloBH44I1Y4=;
-        b=DOJkd/yAjaSd9pqKUVDk4z1dPuqH9VhLqJ5Seh1e+DTakNWzFvmqO2PtUll61p5V8t
-         whY8XPSVTCCI9yEEyMEwYsV9ZtaE2vnFJ+psHK2KGEwxSS9ARttXVpCTi8OrJjKUNMdL
-         oGiSp+hkqqnrNLFINTgLhKJeFBazjTyIx5s7CEoTCm/BBenw30dyubu8LPVgoOLw8qVQ
-         aqMoytqElluK40GGZQBoPiZ/AVL/0SwgAaiLRrBMjeC88qRxwb2+5fYYBo+wBkwCp1YF
-         zLwPgxNE+il27b+Dafx4cv6WtYi2JZBqmKeJExNv+DnTLimnz0padJxtXHUfouushKvb
-         smdQ==
-X-Gm-Message-State: APjAAAWC2lqbw6k2eQYkFm7qvsBnXvUvUyifq/xmgyhIonojzvWhy/A5
-        5uVgRBmoLawYe8nvFXqwug2ZUkubw6s=
-X-Google-Smtp-Source: APXvYqxDhyWxrsA8QkNKOEPqUyQA4EaO46iz1V4YLyQk3mHpb+xibo8PeWu9IRuTvJRbz0TpnmCFAw==
-X-Received: by 2002:a19:4c88:: with SMTP id z130mr12913294lfa.149.1566233088147;
-        Mon, 19 Aug 2019 09:44:48 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id a20sm2386656ljk.34.2019.08.19.09.44.47
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2019 09:44:47 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id z17so2406018ljz.0
-        for <keyrings@vger.kernel.org>; Mon, 19 Aug 2019 09:44:47 -0700 (PDT)
-X-Received: by 2002:a2e:88c7:: with SMTP id a7mr11508843ljk.72.1566233086820;
- Mon, 19 Aug 2019 09:44:46 -0700 (PDT)
+        id S1727032AbfHSQyN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 19 Aug 2019 12:54:13 -0400
+Received: from mga03.intel.com ([134.134.136.65]:40558 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726525AbfHSQyN (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 19 Aug 2019 12:54:13 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Aug 2019 09:54:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,405,1559545200"; 
+   d="scan'208";a="261894927"
+Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.125])
+  by orsmga001.jf.intel.com with ESMTP; 19 Aug 2019 09:54:00 -0700
+Date:   Mon, 19 Aug 2019 19:54:00 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com, arnd@arndb.de,
+        gregkh@linuxfoundation.org, zohar@linux.ibm.com, jmorris@namei.org,
+        serge@hallyn.com, casey@schaufler-ca.com,
+        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
+        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
+Subject: Re: [RFC/RFT v4 0/5] Add generic trusted keys framework/subsystem
+Message-ID: <20190819165400.xsgpbtbj26y7d2wb@linux.intel.com>
+References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
-References: <156622692131.21558.12335114959426121841.stgit@warthog.procyon.org.uk>
-In-Reply-To: <156622692131.21558.12335114959426121841.stgit@warthog.procyon.org.uk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 19 Aug 2019 09:44:31 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiP7j+vzthU+wokF-PfR-CtA1YnwT6tYeNO9HK1KWUpiQ@mail.gmail.com>
-Message-ID: <CAHk-=wiP7j+vzthU+wokF-PfR-CtA1YnwT6tYeNO9HK1KWUpiQ@mail.gmail.com>
-Subject: Re: [PATCH] keys: Fix description size
-To:     David Howells <dhowells@redhat.com>
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        keyrings@vger.kernel.org,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 8:02 AM David Howells <dhowells@redhat.com> wrote:
->
-> This can be fixed by simply increasing the size of desc_len in struct
-> keyring_index_key to a u16.
+On Tue, Aug 13, 2019 at 01:22:59PM +0530, Sumit Garg wrote:
+> This patch-set is an outcome of discussion here [1]. It has evolved very
+> much since v1 to create, consolidate and generalize trusted keys
+> subsystem.
+> 
+> This framework has been tested with trusted keys support provided via TEE
+> but I wasn't able to test it with a TPM device as I don't possess one. It
+> would be really helpful if others could test this patch-set using a TPM
+> device.
 
-Thanks, applied.
+I think 1/5-4/5 make up a non-RFC patch set that needs to reviewed,
+tested and merged as a separate entity.
 
-              Linus
+On the other hand 5/5 cannot be merged even if I fully agreed on
+the code change as without TEE patch it does not add any value for
+Linux.
+
+To straighten up thing I would suggest that the next patch set
+version would only consists of the first four patches and we meld
+them to the shape so that we can land them to the mainline. Then
+it should be way more easier to concentrate the actual problem you
+are trying to resolve.
+
+/Jarkko
