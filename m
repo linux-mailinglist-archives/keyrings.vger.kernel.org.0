@@ -2,53 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48638956F1
-	for <lists+keyrings@lfdr.de>; Tue, 20 Aug 2019 07:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 172FD956F8
+	for <lists+keyrings@lfdr.de>; Tue, 20 Aug 2019 07:55:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729187AbfHTFyF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 20 Aug 2019 01:54:05 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:41391 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729107AbfHTFyF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Aug 2019 01:54:05 -0400
-Received: by mail-lj1-f194.google.com with SMTP id m24so3922948ljg.8
-        for <keyrings@vger.kernel.org>; Mon, 19 Aug 2019 22:54:04 -0700 (PDT)
+        id S1729168AbfHTFyu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Aug 2019 01:54:50 -0400
+Received: from mail-lf1-f48.google.com ([209.85.167.48]:34601 "EHLO
+        mail-lf1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728960AbfHTFyu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Aug 2019 01:54:50 -0400
+Received: by mail-lf1-f48.google.com with SMTP id b29so3155068lfq.1
+        for <keyrings@vger.kernel.org>; Mon, 19 Aug 2019 22:54:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=IaeMGDmGKxX8wxK8cdDbGY1eDp+Ld1z3eVWTJJyayFE=;
-        b=TS7SGgjEzTreybigsAv3qVsuN075oTJVKpFp88ofnjJbbEJZAgthB8vDgLgvRLnLUS
-         ++vjrM9g7gE2SN4igmXwiI7zyfyNMmtdmu3w8qOi/PtuwRPhsGTVmjVqf80oUjz0Gota
-         KLbMPEV3aXizb/qctuOZlv9r2CXJfJWF7uuuHs78yPoxVzArINw/TpZXQhP90Z1WSRqe
-         zB4Oi3RyIcR/OK3OCmRD6nczrw6lo6HvpTS129UjNx1gW4G5bbkeuDsV2cOsphJgjiUm
-         9KFiqRv2wgsOonNC64H6p5NykM5elpfOcC8VJddEJHVgky5Tbc+GOLM3TWgFH7iWMy3U
-         aYPA==
+        bh=jowVXpXZgLEBuubaLIPC/QF8SFYMD8+3/TNrlzPJxE8=;
+        b=mBAWDpjTTfJVh3RC0922MA5+HowZtwi7RtzXrtoBI1p2A0G0YGWQXsIiSmuUuqYyCU
+         MAyIWLCURsQlmS5RB3pHRhsabjxs0tQ/4YtoNmDgSGxpPYggJKJyeVZs7oThaxWQP8Ur
+         YaZ2GhoxcFJjPekwgESCVZnPcqH5ldcWCjWaagKDoMMDrDsj+LD4Z8EvfU4PWOv2Ubwm
+         lWFXcNFcNmAkglcGF5BU5vjQUtUTkTI2VE7CdEmu0B5ao5QZCjEiZWJDDqG5dXHVfLh+
+         ocmeghdQqT00z2j9smJzZApj6YMlQN+lUKqAF8lJAfaJlPX+3VyK0GBaUdH+szAJX/Vh
+         PPUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IaeMGDmGKxX8wxK8cdDbGY1eDp+Ld1z3eVWTJJyayFE=;
-        b=B42b5ENJUcKMDZm/Mh8GW+a36oXbh+KfsfyCtWMN4mSJRQwl3HnvuBbeC+57iOgGhQ
-         fN9jW2GOyaefX/+cuB5nqntH4I68XPjvzEdeLfX4HDkNL8ObeJHeK/hUY68Z2Ueu4fOj
-         2D30at/REM/dXSJwgjHtMXPYS2M58cE2um+8cN67sUakSB18dVK1WUj/DpA9luN5ikHO
-         dHghf/TWGPbN3awmlVUcUohqR/AsyZ+Pxb42jW6poL3/xVnKD4GuEibfAkSL2xS4LMv6
-         7Y3jw8NoxszKNeFkbMa+kGp0d6USCTXFC76vYH8wzhQ5vzywUT+Uw57L3okVnSYej7IN
-         lB6Q==
-X-Gm-Message-State: APjAAAUoHX/jHPyOahKYSVyvdVxsIFTVwQOPzZVCtWSdFtSzTJ0Wizea
-        DAJ0ye8GpZZozFnyt1/vcfclrmzO0UMFUHuvkWqV1Q==
-X-Google-Smtp-Source: APXvYqxDON+ceMUmjzSzpMq37WQzohKgTpxzAYYEzr9bWHlarBKWsHRjGcZO8/n74pOlmwou6eEdk+97uPN2CZG7nig=
-X-Received: by 2002:a2e:87c5:: with SMTP id v5mr13283366ljj.115.1566280443691;
- Mon, 19 Aug 2019 22:54:03 -0700 (PDT)
+        bh=jowVXpXZgLEBuubaLIPC/QF8SFYMD8+3/TNrlzPJxE8=;
+        b=eESyaiH1wvD8TUoBFOtLqTkNLFz03QEZYnzuN8KsW/x6MvV57u7/NKF2Lz+IFLBMas
+         Gpiv3i61kukV+84vqgAB6WYBQjiqGdpjj/sx4rHmGLFUIjG21NTgDwkG8/UQGJeYjqLR
+         21vFJbsdIfSmNShozYQUzH7oIGQ/wF3hEB2GRH8iijBKHCAA3C0ej2WNerKzMLmxjRA4
+         2ranWvlSiCWRRwHdNN1Dke9qWY57G1VPH4AGio2oJicG/v770+viTIBQxZcgNK2IXczz
+         PKYNdukQoq0adTIuhp0+58y70o9nZru7MukWeJ6J2N481ITnnh0TOJsqMfQJldXDbTqS
+         Lx3A==
+X-Gm-Message-State: APjAAAVnEo2yswcETFgM2E4cyF8MC3YcWw6OLNfRA+Tm8VQzhdC94ZVP
+        6yX0Es3swM1lkuPVYnJtovg3VIDuZMavXhN8ViFbog==
+X-Google-Smtp-Source: APXvYqxK6lXyXCiPc+VFsi+NqG4Bwv+McsYBNdyejsbuMvGdswPfMXEh6xMWaxxRYosmxjdTcrCIZv43cDqFKzqOkeM=
+X-Received: by 2002:ac2:5c42:: with SMTP id s2mr14740567lfp.61.1566280488399;
+ Mon, 19 Aug 2019 22:54:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
- <1565682784-10234-4-git-send-email-sumit.garg@linaro.org> <20190819170458.m7adhkji64kta32d@linux.intel.com>
- <20190819170635.jlxxi6ogbm4s6gcx@linux.intel.com>
-In-Reply-To: <20190819170635.jlxxi6ogbm4s6gcx@linux.intel.com>
+ <1565682784-10234-5-git-send-email-sumit.garg@linaro.org> <20190819170750.7cl7bdmtam3jras4@linux.intel.com>
+In-Reply-To: <20190819170750.7cl7bdmtam3jras4@linux.intel.com>
 From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue, 20 Aug 2019 11:23:51 +0530
-Message-ID: <CAFA6WYOTYhJ3kGYFGU9rxnxqFqMFMhVXfVYq+3bepOax92fLSg@mail.gmail.com>
-Subject: Re: [RFC/RFT v4 3/5] KEYS: trusted: create trusted keys subsystem
+Date:   Tue, 20 Aug 2019 11:24:37 +0530
+Message-ID: <CAFA6WYP8aF8=crPXQiBg0eb8cRk7o6_=iMQp1KMMmxQrkMS8uw@mail.gmail.com>
+Subject: Re: [RFC/RFT v4 4/5] KEYS: trusted: move tpm2 trusted keys code
 To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
         "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
@@ -72,30 +71,27 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 19 Aug 2019 at 22:36, Jarkko Sakkinen
+On Mon, 19 Aug 2019 at 22:37, Jarkko Sakkinen
 <jarkko.sakkinen@linux.intel.com> wrote:
 >
-> On Mon, Aug 19, 2019 at 08:04:58PM +0300, Jarkko Sakkinen wrote:
-> > On Tue, Aug 13, 2019 at 01:23:02PM +0530, Sumit Garg wrote:
-> > > Move existing code to trusted keys subsystem. Also, rename files with
-> > > "tpm" as suffix which provides the underlying implementation.
-> > >
-> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > > ---
-> > >  crypto/asymmetric_keys/asym_tpm.c                       | 2 +-
-> > >  include/keys/{trusted.h => trusted_tpm.h}               | 4 ++--
-> > >  security/keys/Makefile                                  | 2 +-
-> > >  security/keys/trusted-keys/Makefile                     | 7 +++++++
-> > >  security/keys/{trusted.c => trusted-keys/trusted-tpm.c} | 2 +-
-> > >  5 files changed, 12 insertions(+), 5 deletions(-)
-> > >  rename include/keys/{trusted.h => trusted_tpm.h} (98%)
-> > >  create mode 100644 security/keys/trusted-keys/Makefile
-> > >  rename security/keys/{trusted.c => trusted-keys/trusted-tpm.c} (99%)
+> On Tue, Aug 13, 2019 at 01:23:03PM +0530, Sumit Garg wrote:
+> > Move TPM2 trusted keys code to trusted keys subsystem. The reason
+> > being it's better to consolidate all the trusted keys code to a single
+> > location so that it can be maintained sanely.
 > >
-> > Would prefer trusted_tpm.c.
+> > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > ---
+> >  drivers/char/tpm/tpm-chip.c               |   1 +
+> >  drivers/char/tpm/tpm-interface.c          |  56 -----
+> >  drivers/char/tpm/tpm.h                    |  16 --
+> >  drivers/char/tpm/tpm2-cmd.c               | 308 +-----------------------
+> >  include/keys/trusted_tpm.h                |   7 +
+> >  include/linux/tpm.h                       |  56 +++--
+> >  security/keys/trusted-keys/Makefile       |   1 +
+> >  security/keys/trusted-keys/trusted-tpm2.c | 378 ++++++++++++++++++++++++++++++
 >
-> Actually, trusted_tpm1.c.
+> Would prefer trusted_tpm2.c.
 >
 
 Okay.
