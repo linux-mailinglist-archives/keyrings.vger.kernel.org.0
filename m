@@ -2,68 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EADC94B6B
-	for <lists+keyrings@lfdr.de>; Mon, 19 Aug 2019 19:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F48E956D6
+	for <lists+keyrings@lfdr.de>; Tue, 20 Aug 2019 07:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727691AbfHSROc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 19 Aug 2019 13:14:32 -0400
-Received: from mga02.intel.com ([134.134.136.20]:13280 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726918AbfHSROc (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 19 Aug 2019 13:14:32 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Aug 2019 09:56:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,405,1559545200"; 
-   d="scan'208";a="179474448"
-Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.125])
-  by fmsmga007.fm.intel.com with ESMTP; 19 Aug 2019 09:56:29 -0700
-Date:   Mon, 19 Aug 2019 19:56:29 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org, zohar@linux.ibm.com, jmorris@namei.org,
-        serge@hallyn.com, casey@schaufler-ca.com,
-        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
-        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
-Subject: Re: [RFC/RFT v4 1/5] tpm: move tpm_buf code to include/linux/
-Message-ID: <20190819165629.qv7cmg6kiwb6oxig@linux.intel.com>
-References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
- <1565682784-10234-2-git-send-email-sumit.garg@linaro.org>
+        id S1729230AbfHTFrA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Aug 2019 01:47:00 -0400
+Received: from mail-lf1-f44.google.com ([209.85.167.44]:39091 "EHLO
+        mail-lf1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728657AbfHTFq7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Aug 2019 01:46:59 -0400
+Received: by mail-lf1-f44.google.com with SMTP id x3so3145716lfn.6
+        for <keyrings@vger.kernel.org>; Mon, 19 Aug 2019 22:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=w/16MSoB080+HPdEFGeDYjIeK82W9jRb08AH0y5e7ug=;
+        b=ONrMQaez/cE4lLvCHTz83wtZhsB6/S4LzrA9EZrBW2K3t2ECG+uxRDWV23qT9rLzpN
+         1z3IWOd8jc1HkoLiDGbFYVOMNA6odIeqAnNGVhbYia9Hts4arGeJW6Y6NJOvCLd/3ST+
+         Zx5c8d1x7LnZisVXAmLmVMQRX9O1ye60gMU638z3Yrup9N0o4Yeq8zJ14bzMFirSydY9
+         HK8q5i/NI6Wdw90AuotXYccM85of5EJzPuPozi5EsiNpb6/QY52qzmvWjo2zFjRk7gg7
+         xJ2sGUa8uxrHMISm2XaEQ5+EyKQWPzc7vMAjHtlVpEpEhIPS+55ytCUNUjSiQ+EuOFz2
+         JaLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w/16MSoB080+HPdEFGeDYjIeK82W9jRb08AH0y5e7ug=;
+        b=jVqxfNSA8ChdLqyQcPdcGdZt+c7YGSBupMz6G4mXHRHQn6YJVTqzwwfY0qCKyc2T+D
+         SM3J1adJdRxsZlijpCzcRpsrcLBTaBzWmV09REpDmsgU14/6gNBVYrplXv1aUXCH4AaG
+         DX2+WFHYdZpaZuLM9BYLSWTl7PHJYEw7cRunhplexkMAyeaKnSd42w+jx5iwnbgYpqQk
+         ks7td2HkO+iPm5tAItfhnz5bAuS+rma0wOm+uTVJjHvzkqZsAJr6iL5OFUZ5AotO9NGX
+         5J3ifL7s0zqIkmOzMNK901Vtct4WZOxvSM6d5+TtitRTFDNY3+NIymIhdQEoKpXsOYzX
+         jkLw==
+X-Gm-Message-State: APjAAAW8iaH9+66Pyrm9dmBBM+3WsF54Y0TeSBLQDk2uE841ei7UNWky
+        m5h9jxciTKjhVXTdT0WsiSbbfFwoUwbemuGv6VXlaA==
+X-Google-Smtp-Source: APXvYqzXgsI4jHSs1KfPdhgjOlMxnhbURzhgo1Vij0mJo5HH0MGoR46f8bFCz8tBN4/AFA4sE2vR/FBxk0cIvZrvyJk=
+X-Received: by 2002:ac2:5637:: with SMTP id b23mr14863080lff.186.1566280017646;
+ Mon, 19 Aug 2019 22:46:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1565682784-10234-2-git-send-email-sumit.garg@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: NeoMutt/20180716
+References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org> <20190819165400.xsgpbtbj26y7d2wb@linux.intel.com>
+In-Reply-To: <20190819165400.xsgpbtbj26y7d2wb@linux.intel.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Tue, 20 Aug 2019 11:16:46 +0530
+Message-ID: <CAFA6WYMCjKCf=aCVEXrQtZJ57V+2MCLNZKov6t37unzgpLmc0A@mail.gmail.com>
+Subject: Re: [RFC/RFT v4 0/5] Add generic trusted keys framework/subsystem
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-security-module@vger.kernel.org, dhowells@redhat.com,
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 01:23:00PM +0530, Sumit Garg wrote:
-> Move tpm_buf code to common include/linux/tpm.h header so that it can
-> be reused via other subsystems like trusted keys etc.
-> 
-> Also rename trusted keys TPM 1.x buffer implementation to tpm1_buf to
-> avoid any compilation errors.
-> 
-> Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+On Mon, 19 Aug 2019 at 22:24, Jarkko Sakkinen
+<jarkko.sakkinen@linux.intel.com> wrote:
+>
+> On Tue, Aug 13, 2019 at 01:22:59PM +0530, Sumit Garg wrote:
+> > This patch-set is an outcome of discussion here [1]. It has evolved very
+> > much since v1 to create, consolidate and generalize trusted keys
+> > subsystem.
+> >
+> > This framework has been tested with trusted keys support provided via TEE
+> > but I wasn't able to test it with a TPM device as I don't possess one. It
+> > would be really helpful if others could test this patch-set using a TPM
+> > device.
+>
+> I think 1/5-4/5 make up a non-RFC patch set that needs to reviewed,
+> tested and merged as a separate entity.
+>
 
-A question: did you try to do this as mechanically as you ever could
-or did you do any other code changes? I did go through it but it is
-possible that I missed something.
+Okay.
 
-In this type of changes it is mandatory be extra strict on not doing
-anything extra (the rename you would was not of course extra because
-it was necessary to do).
+> On the other hand 5/5 cannot be merged even if I fully agreed on
+> the code change as without TEE patch it does not add any value for
+> Linux.
+>
 
-/Jarkko
+I agree here that 5/5 should go along with TEE patch-set. But if you
+look at initial v1 patch-set, the idea was to get feedback on trusted
+keys abstraction as a standalone patch along with testing using a TPM
+(1.x or 2.0).
+
+Since Mimi has tested this patch-set with TPM (1.x & 2.0), I am happy
+to merge 5/5 with TEE patch-set. But it would be nice if I could get
+feedback on 5/5 before I send next version of TEE patch-set.
+
+> To straighten up thing I would suggest that the next patch set
+> version would only consists of the first four patches and we meld
+> them to the shape so that we can land them to the mainline. Then
+> it should be way more easier to concentrate the actual problem you
+> are trying to resolve.
+>
+
+Okay will send next patch-set version with first four patches only.
+
+-Sumit
+
+> /Jarkko
