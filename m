@@ -2,32 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1329982C
-	for <lists+keyrings@lfdr.de>; Thu, 22 Aug 2019 17:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6899E99850
+	for <lists+keyrings@lfdr.de>; Thu, 22 Aug 2019 17:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731863AbfHVP3y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Aug 2019 11:29:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49338 "EHLO mail.kernel.org"
+        id S1732900AbfHVPf5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Aug 2019 11:35:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52078 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731844AbfHVP3y (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 22 Aug 2019 11:29:54 -0400
+        id S1732536AbfHVPf5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 22 Aug 2019 11:35:57 -0400
 Received: from zzz.localdomain (ip-173-136-158-138.anahca.spcsdns.net [173.136.158.138])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF25F233FD;
-        Thu, 22 Aug 2019 15:29:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6763421743;
+        Thu, 22 Aug 2019 15:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566487793;
-        bh=rBY7SySAeGa1jwSHKnvEe+dOrZFrIVjTnoyBGZhewQU=;
-        h=From:To:Subject:Date:From;
-        b=F9YGvjLu5DXuX/QeOV9vhwFn6pg6meYFLDWaMECX8krcoGYqqrObI2LTXvR6xggmP
-         xXrZT0FrduUbhi1f8116WbNo5O5KLsrnyWGn6c/sDUBMrjzogzL23vBS6H9Y7Oacuw
-         /oHRg+Ezr1xM6/6hn6vvp/pid6Yx4vu8J4Qrpops=
+        s=default; t=1566488156;
+        bh=giWe0cvmTvOWzl08FfAQyDcj0bp4043LS9VHURdeGKQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=T4GRZzkm4pQ/yuhV8MZ2FMSii6QPEMSojVLGko002cEYKMfp5fc9pQZEXoLeagNj/
+         7VbVb3TjIaw/u6Rb3lAip1BVS17m8UsMkIxbRGFSrNxr715beP7Z3kxK+0lC+uyEdK
+         0bafdyCsRTP9+O2/AwT3CtH6TYFvOuTXsvM5/Bhg=
 From:   Eric Biggers <ebiggers@kernel.org>
-To:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: [PATCH] keys: ensure that ->match_free() is called in request_key_and_link()
-Date:   Thu, 22 Aug 2019 08:29:01 -0700
-Message-Id: <20190822152901.8229-1-ebiggers@kernel.org>
+To:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Cc:     James Morris <jamorris@linux.microsoft.com>
+Subject: [PATCH RESEND] KEYS: asymmetric: return ENOMEM if akcipher_request_alloc() fails
+Date:   Thu, 22 Aug 2019 08:35:50 -0700
+Message-Id: <20190822153550.9777-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -38,28 +39,41 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-If check_cached_key() returns a non-NULL value, we still need to call
-key_type::match_free() to undo key_type::match_preparse().
+No error code was being set on this error path.
 
-Fixes: 7743c48e54ee ("keys: Cache result of request_key*() temporarily in task_struct")
+Fixes: ad4b1eb5fb33 ("KEYS: asym_tpm: Implement encryption operation [ver #2]")
+Fixes: c08fed737126 ("KEYS: Implement encrypt, decrypt and sign for software asymmetric key [ver #2]")
+Reviewed-by: James Morris <jamorris@linux.microsoft.com>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- security/keys/request_key.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/asymmetric_keys/asym_tpm.c   | 1 +
+ crypto/asymmetric_keys/public_key.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 46c5187ce03f..6d628a5a8d10 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -589,7 +589,7 @@ struct key *request_key_and_link(struct key_type *type,
+diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
+index 76d2ce3a1b5b..5154e280ada2 100644
+--- a/crypto/asymmetric_keys/asym_tpm.c
++++ b/crypto/asymmetric_keys/asym_tpm.c
+@@ -486,6 +486,7 @@ static int tpm_key_encrypt(struct tpm_key *tk,
+ 	if (ret < 0)
+ 		goto error_free_tfm;
  
- 	key = check_cached_key(&ctx);
- 	if (key)
--		return key;
-+		goto error_free;
++	ret = -ENOMEM;
+ 	req = akcipher_request_alloc(tfm, GFP_KERNEL);
+ 	if (!req)
+ 		goto error_free_tfm;
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 364b9df9d631..d7f43d4ea925 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -184,6 +184,7 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
+ 	if (IS_ERR(tfm))
+ 		return PTR_ERR(tfm);
  
- 	/* search all the process keyrings for a key */
- 	rcu_read_lock();
++	ret = -ENOMEM;
+ 	req = akcipher_request_alloc(tfm, GFP_KERNEL);
+ 	if (!req)
+ 		goto error_free_tfm;
 -- 
 2.22.1
 
