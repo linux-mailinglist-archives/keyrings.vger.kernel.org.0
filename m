@@ -2,115 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C6B9DAE6
-	for <lists+keyrings@lfdr.de>; Tue, 27 Aug 2019 03:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB6D9E9E9
+	for <lists+keyrings@lfdr.de>; Tue, 27 Aug 2019 15:49:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727797AbfH0BFF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 26 Aug 2019 21:05:05 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:7198 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726487AbfH0BFF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 26 Aug 2019 21:05:05 -0400
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7R11gCh144808;
-        Mon, 26 Aug 2019 21:04:54 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2umt9qrf5t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 26 Aug 2019 21:04:54 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7R11p2Z145462;
-        Mon, 26 Aug 2019 21:04:54 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2umt9qrf58-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 26 Aug 2019 21:04:54 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7R11Nsm012160;
-        Tue, 27 Aug 2019 01:04:53 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by ppma01dal.us.ibm.com with ESMTP id 2ujvv7388v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 27 Aug 2019 01:04:53 +0000
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x7R14qdo51642862
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 27 Aug 2019 01:04:52 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E7707BE053;
-        Tue, 27 Aug 2019 01:04:51 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 34129BE059;
-        Tue, 27 Aug 2019 01:04:46 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.159.67])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
-        Tue, 27 Aug 2019 01:04:45 +0000 (GMT)
-References: <20190628021934.4260-1-bauerman@linux.ibm.com> <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
-User-agent: mu4e 1.2.0; emacs 26.2
-From:   Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To:     Jordan Hand <jorhand@linux.microsoft.com>
-Cc:     linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "AKASHI\, Takahiro" <takahiro.akashi@linaro.org>
-Subject: Re: [PATCH v12 00/11] Appended signatures support for IMA appraisal
-In-reply-to: <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
-Date:   Mon, 26 Aug 2019 22:04:43 -0300
-Message-ID: <87k1azpges.fsf@morokweng.localdomain>
+        id S1729128AbfH0NsP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 27 Aug 2019 09:48:15 -0400
+Received: from mga07.intel.com ([134.134.136.100]:16441 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725825AbfH0NsP (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 27 Aug 2019 09:48:15 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2019 06:48:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,437,1559545200"; 
+   d="scan'208";a="380922218"
+Received: from jsakkine-mobl1.fi.intel.com (HELO localhost) ([10.237.66.169])
+  by fmsmga006.fm.intel.com with ESMTP; 27 Aug 2019 06:48:09 -0700
+Date:   Tue, 27 Aug 2019 16:48:08 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com, arnd@arndb.de,
+        gregkh@linuxfoundation.org, zohar@linux.ibm.com, jmorris@namei.org,
+        serge@hallyn.com, casey@schaufler-ca.com,
+        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
+        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
+Subject: Re: [PATCH v5 1/4] tpm: move tpm_buf code to include/linux/
+Message-ID: <20190827134808.4mtnzugshylnqwss@linux.intel.com>
+References: <1566392345-15419-1-git-send-email-sumit.garg@linaro.org>
+ <1566392345-15419-2-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-26_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908270008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1566392345-15419-2-git-send-email-sumit.garg@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Wed, Aug 21, 2019 at 06:29:02PM +0530, Sumit Garg wrote:
+> Move tpm_buf code to common include/linux/tpm.h header so that it can
+> be reused via other subsystems like trusted keys etc.
+> 
+> Also rename trusted keys TPM 1.x buffer implementation to tpm1_buf to
+> avoid any compilation errors.
+> 
+> Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 
-Hello Jordan,
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-Jordan Hand <jorhand@linux.microsoft.com> writes:
-
-> On 6/27/19 7:19 PM, Thiago Jung Bauermann wrote:
->> On the OpenPOWER platform, secure boot and trusted boot are being
->> implemented using IMA for taking measurements and verifying signatures.
->> Since the kernel image on Power servers is an ELF binary, kernels are
->> signed using the scripts/sign-file tool and thus use the same signature
->> format as signed kernel modules.
->> 
->> This patch series adds support in IMA for verifying those signatures.
->> It adds flexibility to OpenPOWER secure boot, because it allows it to boot
->> kernels with the signature appended to them as well as kernels where the
->> signature is stored in the IMA extended attribute.
->
-> I know this is pretty late, but I just wanted to let you know that I
-> tested this patch set on x86_64 with QEMU.
->
-> That is, I enrolled a key to _ima keyring, signed my kernel and modules
-> with appended signatures (with scripts/sign-file), set the IMA policy to
-> appraise and measure my kernel and modules. Also tested kexec appraisal.
->
-> You can add my tested-by if you'd like.
-
-Thanks for testing!
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+/Jarkko
