@@ -2,54 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 701F9A2850
-	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B11CA2851
+	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727787AbfH2Unr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Aug 2019 16:43:47 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:33982 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727792AbfH2Unq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:43:46 -0400
-Received: by mail-qk1-f194.google.com with SMTP id m10so4282179qkk.1
-        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:43:46 -0700 (PDT)
+        id S1727912AbfH2Uns (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Aug 2019 16:43:48 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:40160 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727792AbfH2Unr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:43:47 -0400
+Received: by mail-qt1-f193.google.com with SMTP id g4so5258415qtq.7
+        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:43:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
         bh=Utx2Qs6MT/hfI9wk7gvJPrysZkKWMPYKawrcOIG698s=;
-        b=ruJ1nzRhuDL71+r2gDHfS+rTkgfcicvePywYwnEGwXPebGEMSFnvwBE4n1t2DFyZlj
-         QMuzw56M4k0PxKCiie1u9hfVBAZ7fbz60iT07/dwkAYujqW/CV5m5lOqSdMUaV8HbYlt
-         iFUunn/eBq0GrgLqFjMxQEbVKWdInxLut627xJvUKOG8ip5XXUKCcqd5k7kWjG6zasQc
-         +8wuNlojz8PNs7KPRBi0v+N21U0Tfty0it4W4GTAiDXjVmP/WqBn2xyWOBjRsepzTbx5
-         8dnD6rkZ0jEVYXmcj3V0YIxtB/BAV1I1TC93ObAMZqUa9O6lqX7wUDEGpq6YdDQm7Y5P
-         QhBw==
+        b=leAPX3PxirVKaonLdRHHgkSghgNIHW25bFR97P+BnMPqW3amHCx5n9lHpdwaS+urTi
+         0pJvcckNlqzyaprqnVgjeqy6VHIS4OvWJmP4koR0MbohYTiEUG5bN+1GLD0/Fz5jTWQa
+         4eQDBBymD+Gaygx034PWbTWAfsnvCESn0ZCHuEQdUj/F+/b0qKGNwVcTZ1iPTDBbgrVk
+         uLX3eqgL1CbxdhQexOTDB6YUjO78ksTUZsvQ46BqBevGK76LpjiwzFDc77Hy9aT4FTEN
+         zm+a3ws6/D5qgnHxoLwT83OX3jpQg05+4Fxt+neJI+GjHzZZJE2I5OMft4ccOuuXbOQW
+         nGbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
         bh=Utx2Qs6MT/hfI9wk7gvJPrysZkKWMPYKawrcOIG698s=;
-        b=eVhLjIp4RwM2k7p1u0GmHu5bpAAZxEekmv8Z4/57+RB+r16Qkwu8JZmdw4zZE3Aiqu
-         /89AJYqxZqPjTeejJXKPX8HB+kibHr6tPmm1J/92FUcvu3eyBssd8wCWaHwGGJ8gbiCN
-         tSv22AIzeNxKNy4wbmQCjE8ncjQ1hrARAAYL8KOWl4U2ikrwukIOcY/CXAGKH9TLVtkB
-         /Dxb6Ligi2AgSMuCOAuUNJnQAf5hpw6uREB6YKHUh37SoQkRGOPQMTpU+e7vb1Bz9O8r
-         t1/MN1xyReQlqulg8YUCgHpJlwHxiW0mLKeRI4ICBfkSrIixGsNliKKnzC82fV3lKXbX
-         MDkg==
-X-Gm-Message-State: APjAAAUUoxCv2Wl+OuIc64JrgAOjJMXOaxq8qsXIgSpauTLszQ+Lnmk5
-        ODMVhvDLQ5SbUofxke49bSH9qzoa
-X-Google-Smtp-Source: APXvYqz2Wj1TisNaoUrJ+m7ZGB6mjM2eixSTcAz2fe7YqVQj/+aTYhuHCBgLPMbgjMX7nHlWW0jAqA==
-X-Received: by 2002:a37:4c4e:: with SMTP id z75mr11376208qka.195.1567111425803;
-        Thu, 29 Aug 2019 13:43:45 -0700 (PDT)
+        b=qICecMpC5oDP/BjCIPR3C+r1mBjmnGymA3gDmJfWA5xz2ZLkUJuhgR+UXZKj95tEx/
+         gq4iqWGnNbnN+Xrez5cyjIUbwHnoz5XSFsXh9XuDeIlZ59RMhwfpNfcxsMQetvPX/4X7
+         1NcVsoWqxWx4Ra22Ep9n1+UpGmUNo68zpw2kJNTn6JbjL5AaAuZ/wl7ZDPwQXts4IhQh
+         Poat5A2JvtzHzgW3jbgDBg5y0S4tM4W0RCrzkD1kr6bSf1Mqxf0/71FzQgrBGAQlA3sZ
+         mHyQ+Rhsdumn8xSn+RjT+xsMeHJ0PPGdjd+xFM1IoKYveVBgcEK6AvYcgeQdEIbxrgBi
+         bIjw==
+X-Gm-Message-State: APjAAAXqS9xKLUTtYF+Ree2wpMkQD/RMhhKuAjgTUZaYUbmQsjlgSQ0J
+        qYA+GcDddzbalRlVbB8PQXHHUbdm
+X-Google-Smtp-Source: APXvYqzJRHSaSrf0oABj3OH4BjN5CxD8Dl+oWaSjRO63GXjn1c6u4BnMZ3RoWUQd0Wokuw0awEUW1g==
+X-Received: by 2002:ac8:51c4:: with SMTP id d4mr12085604qtn.176.1567111426610;
+        Thu, 29 Aug 2019 13:43:46 -0700 (PDT)
 Received: from localhost (tripoint.kitware.com. [66.194.253.20])
-        by smtp.gmail.com with ESMTPSA id y188sm1986344qkc.29.2019.08.29.13.43.45
+        by smtp.gmail.com with ESMTPSA id s3sm2146847qkc.57.2019.08.29.13.43.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 13:43:45 -0700 (PDT)
+        Thu, 29 Aug 2019 13:43:46 -0700 (PDT)
 From:   Ben Boeckel <mathstuf@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com
-Subject: [PATCH v2 11/13] tests/reading: remove revokation test
-Date:   Thu, 29 Aug 2019 16:43:19 -0400
-Message-Id: <20190829204322.8015-12-mathstuf@gmail.com>
+Subject: [PATCH v2 11/13] tests/readming: remove revokation test
+Date:   Thu, 29 Aug 2019 16:43:20 -0400
+Message-Id: <20190829204322.8015-13-mathstuf@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190829204322.8015-1-mathstuf@gmail.com>
 References: <20190829203542.4410-1-mathstuf@gmail.com>
