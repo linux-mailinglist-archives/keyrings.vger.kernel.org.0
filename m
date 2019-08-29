@@ -2,54 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EAAA281F
+	by mail.lfdr.de (Postfix) with ESMTP id E625CA2820
 	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbfH2Uf5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        id S1726661AbfH2Uf5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
         Thu, 29 Aug 2019 16:35:57 -0400
-Received: from mail-qt1-f181.google.com ([209.85.160.181]:34507 "EHLO
-        mail-qt1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726661AbfH2Uf4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:56 -0400
-Received: by mail-qt1-f181.google.com with SMTP id a13so5277699qtj.1
-        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:56 -0700 (PDT)
+Received: from mail-qt1-f173.google.com ([209.85.160.173]:35399 "EHLO
+        mail-qt1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727787AbfH2Uf5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:57 -0400
+Received: by mail-qt1-f173.google.com with SMTP id u34so5268230qte.2
+        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=EHKx7DRb00r5t0WEmDLKkhfNcTVonEXGTyrLPteqrfA=;
-        b=fMp4iIci/S5qIIXaCRCStByMI1tqDNSFckOEiASAEk0eW9e0KpJJGEjXO872tHUkCo
-         IINHnn5adF4Ni2NfRDTgy5UTU/ioSfZ5M/hRS7j3JAzmgUz0mTwnYWOpb+/kjzt/Hu7W
-         YYNmYJTpeP0E9X2gxldIn29jId6Z0N+Kp8dM/3xlyS/fyg10mchdWBePNquuQxf+JFZM
-         3POsul8xkPPkDJ5+wpm7LciTl7qB0Mf4e98b7CfIwvqqq3REg7cE6H10RQAiAlCvYsyn
-         zBAMeyS6zHqsv1NdvUptCPA4nRfxDJ3jDjGHW273b6xui2Lm52O3Rhq+VikqTe01tqaq
-         uxVA==
+        bh=QEdqwHTDVsLafb/VJ1T/8JgLVRLexWKSmUrEuEFPGZU=;
+        b=qCXg+BoUeyBI0HA70Zj21VSV7yVDFmaOMfV5bu6e4d4+CmQsX+lFKtFF3bFRrNsBBA
+         PJ1tHgEHbNwcLHxR8F7gJqcWb1WIHEGJrJMNUQ08Gi47dn/DuX/etM/sGd+lG+eWVZij
+         bZ3yb5RmkBIvM2NqsdHzhYCCjC2ZZAQm0Xc56M39j/qFq+nX7R7Tqu2Er+z0zzoq6jrj
+         6w69bZEtnGOYqAZvQZPB7q+vXO5/OgicWRLVg5duCmPWo1AOpkRnWU0gSAj94k9vG2Sb
+         IhT2JyrVUxM/SK6bBVzWaKDjiGEtyeRQsM2aeYnfi6oeL9Tdy5jWpNt3UKr01oJSQk+Z
+         kZbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=EHKx7DRb00r5t0WEmDLKkhfNcTVonEXGTyrLPteqrfA=;
-        b=dLIZgnk1d00J1kq+rSmfLfY4iU89vTIqwPRx9j9TuDvgiKK3LluQfmEvn8Vim4r2Eh
-         Xtn8JXAFJ8UebePTTOBTcoY/S8wmGhddZmmK25arPn98z1pK7aAqjZFk3w2cQHVnZoh9
-         tlZREJG1Rnn1beku1f6M5CqsN5rqUqmLtNj0FkZfj3h449AGwvbz0/kAofRw6MqjXgne
-         ohRUsVXXdPjqyBoF89D6Cg3s0wC8Bg9PkWdmNsyRZNjM04dlrH540wNDXgEEW44GFdUW
-         JzlQGwV2R0gHa2ANvsTHtJFfAqcA3E5iqjoXWHy2l1yf/eqwRHtyGORlBQX43MvazyAl
-         hxrA==
-X-Gm-Message-State: APjAAAUlMdlIe/DTW5kwAqUTFogSR0C2G9eHTqvj0AO+ohJiuN4oVrAD
-        xUmBX7HezMbyn4CiPZny02+gckIt
-X-Google-Smtp-Source: APXvYqzuDe+VWlphqDVQzP17z+cQEDxf6Y4SMTnB0mHbQj4G7U0QWm469fNn5gXJyXYa1zCu3QkAsg==
-X-Received: by 2002:a05:6214:1086:: with SMTP id o6mr8012148qvr.107.1567110955682;
-        Thu, 29 Aug 2019 13:35:55 -0700 (PDT)
+        bh=QEdqwHTDVsLafb/VJ1T/8JgLVRLexWKSmUrEuEFPGZU=;
+        b=n9mvZU9D0vnFISLjSt2H2WommiaDnJaqhClIRHRs0MibZnAPzu9+pTEIjsiqEMv+jt
+         C6GKCwaz3ijteYhauDjdi/4JM1n6OcecZJ5jK7DovfAt6B1CdlENa7aoWMw8UmUKZeLn
+         mFAhXTiSNJ6QFpTuJAUMZ+sdipFiWHeJZnhdv5Qn/rM012b3Sd9dEbBFul3iz1Jaqtga
+         ytjCFnoAAlHGaseC6Jelfy/LSYu98Lot3nJKfe0KUF2u1H+Tk5J1/qgey4jGfmtzAjhG
+         HN+5G8uJY99OxJemvQeOZiVKI+5IxwoCB0C60M0k0idrpVTIvrqc9V3qImyEcj1oZidF
+         gBYw==
+X-Gm-Message-State: APjAAAUYocKjSxm74Nsvrz7shWGIuX3wjRmDL/o9pwNRra7Oh6PilByW
+        iRPATzpI67TNPMzOOLfhm3tnMTjA
+X-Google-Smtp-Source: APXvYqyjkQDLzJJkfjmFhg/tEeXnF1fGemDu0dVHl6azAkYLVDzdAs6l9hHQW5qkvP1MXqYat3r8NQ==
+X-Received: by 2002:a0c:8809:: with SMTP id 9mr8100124qvl.141.1567110956516;
+        Thu, 29 Aug 2019 13:35:56 -0700 (PDT)
 Received: from localhost (tripoint.kitware.com. [66.194.253.20])
-        by smtp.gmail.com with ESMTPSA id f133sm1966420qke.62.2019.08.29.13.35.55
+        by smtp.gmail.com with ESMTPSA id 131sm1777602qkg.1.2019.08.29.13.35.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 13:35:55 -0700 (PDT)
+        Thu, 29 Aug 2019 13:35:56 -0700 (PDT)
 From:   Ben Boeckel <mathstuf@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com
-Subject: [PATCH 8/9] tests/reading: fix test comment
-Date:   Thu, 29 Aug 2019 16:35:36 -0400
-Message-Id: <20190829203542.4410-14-mathstuf@gmail.com>
+Subject: [PATCH 09/13] test/instantiating: test bad arguments for `keyctl reject`
+Date:   Thu, 29 Aug 2019 16:35:37 -0400
+Message-Id: <20190829203542.4410-15-mathstuf@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190829203542.4410-1-mathstuf@gmail.com>
 References: <20190829203542.4410-1-mathstuf@gmail.com>
@@ -60,27 +60,87 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This comment was copied from another test. This one actually fails
-because search permissions were also removed.
-
 Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
 ---
- tests/keyctl/reading/valid/runtest.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../keyctl/instantiating/bad-args/runtest.sh  | 14 ++++++++++++
+ tests/toolbox.inc.sh                          | 22 +++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/tests/keyctl/reading/valid/runtest.sh b/tests/keyctl/reading/valid/runtest.sh
-index 8e4d864..c5a4e3f 100644
---- a/tests/keyctl/reading/valid/runtest.sh
-+++ b/tests/keyctl/reading/valid/runtest.sh
-@@ -59,7 +59,7 @@ print_key $keyid
- expect_payload payload "gizzard"
+diff --git a/tests/keyctl/instantiating/bad-args/runtest.sh b/tests/keyctl/instantiating/bad-args/runtest.sh
+index d611fb9..21bbf10 100644
+--- a/tests/keyctl/instantiating/bad-args/runtest.sh
++++ b/tests/keyctl/instantiating/bad-args/runtest.sh
+@@ -17,6 +17,8 @@ pinstantiate_key --fail a 0 @p
+ expect_error EPERM
+ negate_key --fail 0 10 @p
+ expect_error EPERM
++reject_key --fail 0 10 rejected @p
++expect_error EPERM
  
- # remove search permission from the key as well
--# - we should still have read permission because it's searchable in our
-+# - we do not have read permission because it's no longer searchable in our
- #   keyrings
- marker "REMOVE SEARCH PERM"
- set_key_perm $keyid 0x350000
+ # create a non-keyring
+ marker "CREATE KEY"
+@@ -28,9 +30,19 @@ instantiate_key --fail $keyid a @p
+ expect_error EPERM
+ pinstantiate_key --fail a $keyid @p
+ expect_error EPERM
++reject_key --fail $keyid 10 rejected @p
++expect_error EPERM
+ negate_key --fail $keyid 10 @p
+ expect_error EPERM
+ 
++# check reject key timeout must be a number
++marker "CHECK REJECT TIMEOUT"
++expect_args_error keyctl reject $keyid aa rejected @p
++
++# check reject key timeout must be a number
++marker "CHECK REJECT ERRORS"
++expect_args_error keyctl reject $keyid 10 notanerror @p
++
+ # check negative key timeout must be a number
+ marker "CHECK NEGATE TIMEOUT"
+ expect_args_error keyctl negate $keyid aa @p
+@@ -45,6 +57,8 @@ instantiate_key --fail $keyid a @p
+ expect_error EPERM
+ pinstantiate_key --fail a $keyid @p
+ expect_error EPERM
++reject_key --fail $keyid 10 rejected @p
++expect_error EPERM
+ negate_key --fail $keyid 10 @p
+ expect_error EPERM
+ 
+diff --git a/tests/toolbox.inc.sh b/tests/toolbox.inc.sh
+index 9c819e5..b8c27c2 100644
+--- a/tests/toolbox.inc.sh
++++ b/tests/toolbox.inc.sh
+@@ -1626,6 +1626,28 @@ function pinstantiate_key ()
+     fi
+ }
+ 
++###############################################################################
++#
++# reject a key
++#
++###############################################################################
++function reject_key ()
++{
++    my_exitval=0
++    if [ "x$1" = "x--fail" ]
++    then
++	my_exitval=1
++	shift
++    fi
++
++    echo keyctl reject "$@" >>$OUTPUTFILE
++    keyctl reject "$@" >>$OUTPUTFILE 2>&1
++    if [ $? != $my_exitval ]
++    then
++	failed
++    fi
++}
++
+ ###############################################################################
+ #
+ # negate a key
 -- 
 2.21.0
 
