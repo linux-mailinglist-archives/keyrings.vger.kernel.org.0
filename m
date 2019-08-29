@@ -2,54 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8E04A281A
-	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0054EA281B
+	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbfH2Ufw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Aug 2019 16:35:52 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:43268 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbfH2Ufw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:52 -0400
-Received: by mail-qk1-f195.google.com with SMTP id m2so4191384qkd.10
-        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:52 -0700 (PDT)
+        id S1726894AbfH2Ufx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Aug 2019 16:35:53 -0400
+Received: from mail-qk1-f174.google.com ([209.85.222.174]:37843 "EHLO
+        mail-qk1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726661AbfH2Ufx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:53 -0400
+Received: by mail-qk1-f174.google.com with SMTP id s14so4246170qkm.4
+        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=RwAJd+yd0IHYBNHAV7fCCrM9vL3MpZyP9N1UYgI+Vvg=;
-        b=JW2cpYvyaL4mmGE2R7DOzMa4AJ/DM+h3IfoAZdswm7p6Mkj9/r9zpXcwK+A13DF1ir
-         RwVoKwpcnWttcolBsaeyBwSi2kkO5yEVlbLWMDvFs0jefnJQrwetlhm1AiUWCEobQsiI
-         hwGSGP3kmdrwRIVi3drRpxVBs568eKOL0g2RBxd4XOuQRMSjV/H2LhSwJnr/mAmC6xNf
-         84p5LaZswdxHTKW9RK5PZycoa2GRBhAJ1/pta1mltzPsIdJeNSLFIRo8sBQqpxU0V8OD
-         TE5LZyzTB2vEAe07VO9TeNgGYAGO/rUOwxoaSf7paDU5e4HkABd4xrHoAh1JHk0v+BH0
-         903A==
+        bh=FnRArtw8XnMRQK8tYC3iudG6wTbQ4eIhzzE/JDxzF0Q=;
+        b=YLVwwG6P6SkujFUuHj7HYcCfLG27vn0HrrNgZIOA/uh5sKP6ZhiF+dZt2WF5ztMhVi
+         CGiWaG9g/YQ/A4fOcfV29n3WicCKa3ch1uWO3SaaoAI7thy2FEKn85EDFuriNJvfWXnW
+         VNwE70MHEOYvhwflADyrF7TmlEanHNpx/6D6HSbhXPUwJmR1GuwuJPY+/xPMnuknVrWG
+         6rb4xu6jfnD28Bzp+DbrliZ0mARHlpApgPEutTJ9Rn32XCMe3L0vnp4n+f0RJAliz3Vi
+         HsRc+ZSp1Y8sM0jMjq+DBPNKPwOA4CsRs3AFGtn1yL5z8PIIvqIpoPumf+yimow3WFSJ
+         JOWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=RwAJd+yd0IHYBNHAV7fCCrM9vL3MpZyP9N1UYgI+Vvg=;
-        b=GdJFCBMAA4TsznfZIltRNbtQSvNxoZ3rI9bHO8Avv7M+/O389tdx3d8Vm8ECIAXq9Q
-         L8XRSuRUUIjtcFr+H/mLe9jiYSOcRibKOAGg1qGFjYc28duz/4KMEvnS+k6ix8kPlEwo
-         evCOu8HQUdrzE61APvzvxg9YMi+37OMLa32GuERMo5DUZEMb8cL4+N0/TW+0wOerw0HG
-         BqEjlxRNUcMl+CTvrlLcoKcR1OFQKtwBkZzUBaGsWnuR5ymjM9BgXV5WdjRiYj4VPP4d
-         /RLTlD1mw2pSiPDdO8IVEGhzonI0FALtSwaFuX74ns0WfcsuzjpGibZjxobAKWZe2R8T
-         A3dg==
-X-Gm-Message-State: APjAAAUcOlkKKdT+WotIS7P60Wn7V0dVYPK6qWn1Z3xK9kl/2kePRe9B
-        JwmuE4iY8foJ/lXyoWfkJQ5G1LHk
-X-Google-Smtp-Source: APXvYqzAYqbcas5tFWoSSz3RWMEYkCWCl20Zm/BCdzm2x/7UVjGZHg/nv+5E16qjrEdkjjh6DDCU2g==
-X-Received: by 2002:a37:9a13:: with SMTP id c19mr11747677qke.378.1567110951734;
-        Thu, 29 Aug 2019 13:35:51 -0700 (PDT)
+        bh=FnRArtw8XnMRQK8tYC3iudG6wTbQ4eIhzzE/JDxzF0Q=;
+        b=NrjxITCwRll+MK5Zn/DkNks3t0kJbjrhv8pUdVBFvuJls0aHaudc9YBLgxzWPqeKZD
+         xIjnsZLU33eTEoBFisrgTX0NbeQC+gXq/o/NVLT4Xls4Y0O4k0r+fElvmt2vYJRX/GtU
+         gZ5OlgFKEvi1Nntik94egcIJVCAMOKjlZ4LkUtU7oD7DQCSOWFEJR/pL68J9fnt4FjNj
+         XMAANAEJfUJnu2ZuWLetJXbmV+X+DesNaZxiwKjrBJ3d82HiPOeWUaHYU9Ie06piz2eX
+         ajIUo7PALhHA3yvgRmv0yhcyUNSUClXKFBbpOVe40FpufRkffe8vrNTt6/Mm7J3/lX8H
+         JNpQ==
+X-Gm-Message-State: APjAAAUYIe41Zbegtzu+wdplBK39UuNNAX2z3cE46s2nx/ctzmTNVKlM
+        lZobzkywFCybwq4e48/fUUXB6mdh
+X-Google-Smtp-Source: APXvYqz4On9iZ7BQSPFZLp2jewAwkCZ5RXOKkstX3upT5xWDiIibLZBTbunoBahMrbKxSrgNksWeZA==
+X-Received: by 2002:a05:620a:14a1:: with SMTP id x1mr6239623qkj.373.1567110952455;
+        Thu, 29 Aug 2019 13:35:52 -0700 (PDT)
 Received: from localhost (tripoint.kitware.com. [66.194.253.20])
-        by smtp.gmail.com with ESMTPSA id h8sm2392836qth.84.2019.08.29.13.35.51
+        by smtp.gmail.com with ESMTPSA id a11sm1234594qkc.123.2019.08.29.13.35.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 13:35:51 -0700 (PDT)
+        Thu, 29 Aug 2019 13:35:52 -0700 (PDT)
 From:   Ben Boeckel <mathstuf@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com
-Subject: [PATCH 6/9] tests/instantiating: test the unlinked keyid
-Date:   Thu, 29 Aug 2019 16:35:31 -0400
-Message-Id: <20190829203542.4410-9-mathstuf@gmail.com>
+Subject: [PATCH 06/13] tests/revoke: test key revokation in the revoke tests
+Date:   Thu, 29 Aug 2019 16:35:32 -0400
+Message-Id: <20190829203542.4410-10-mathstuf@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190829203542.4410-1-mathstuf@gmail.com>
 References: <20190829203542.4410-1-mathstuf@gmail.com>
@@ -60,33 +60,78 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Testing the `0` ID just repeats the "BAD KEY" tests at the beginning of
-the file.
-
 Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
 ---
- tests/keyctl/instantiating/bad-args/runtest.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/keyctl/revoke/valid/runtest.sh  | 20 ++++++++++++++++++++
+ tests/keyctl/timeout/valid/runtest.sh | 17 -----------------
+ 2 files changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/tests/keyctl/instantiating/bad-args/runtest.sh b/tests/keyctl/instantiating/bad-args/runtest.sh
-index 1922282..a585e20 100644
---- a/tests/keyctl/instantiating/bad-args/runtest.sh
-+++ b/tests/keyctl/instantiating/bad-args/runtest.sh
-@@ -42,11 +42,11 @@ unlink_key --wait $keyid @s
+diff --git a/tests/keyctl/revoke/valid/runtest.sh b/tests/keyctl/revoke/valid/runtest.sh
+index b015acc..a499c0b 100644
+--- a/tests/keyctl/revoke/valid/runtest.sh
++++ b/tests/keyctl/revoke/valid/runtest.sh
+@@ -45,6 +45,16 @@ marker "CHECK NO READ PAYLOAD"
+ print_key --fail $keyid
+ expect_error EKEYREVOKED
  
- # check that a non-existent key ID fails correctly
- marker "CHECK NON-EXISTENT KEY ID"
--instantiate_key --fail 0 a @p
-+instantiate_key --fail $keyid a @p
- expect_error EPERM
--pinstantiate_key --fail a 0 @p
-+pinstantiate_key --fail a $keyid @p
- expect_error EPERM
--negate_key --fail 0 10 @p
-+negate_key --fail $keyid 10 @p
- expect_error EPERM
++# invalidating the new keyring should also fail
++marker "CHECK NO SET KEY TIMEOUT"
++timeout_key --fail $keyid 20
++expect_error EKEYREVOKED
++
++# invalidating the new keyring should also fail
++marker "CHECK NO INVALIDATE KEY"
++invalidate_key --fail $keyid
++expect_error EKEYREVOKED
++
+ # remove the key we added
+ marker "UNLINK KEY"
+ unlink_key $keyid $keyringid
+@@ -63,6 +73,16 @@ marker "CHECK NO VALIDATE KEYRING"
+ describe_key --fail $keyringid
+ expect_error EKEYREVOKED
  
- echo "++++ FINISHED TEST: $result" >>$OUTPUTFILE
++# invalidating the new keyring should also fail
++marker "CHECK NO SET KEYRING TIMEOUT"
++timeout_key --fail $keyringid 20
++expect_error EKEYREVOKED
++
++# invalidating the new keyring should also fail
++marker "CHECK NO INVALIDATE KEYRING"
++invalidate_key --fail $keyringid
++expect_error EKEYREVOKED
++
+ # remove the keyring we added
+ marker "UNLINK KEYRING"
+ unlink_key $keyringid @s
+diff --git a/tests/keyctl/timeout/valid/runtest.sh b/tests/keyctl/timeout/valid/runtest.sh
+index 5f7f2f3..ce27b68 100644
+--- a/tests/keyctl/timeout/valid/runtest.sh
++++ b/tests/keyctl/timeout/valid/runtest.sh
+@@ -77,23 +77,6 @@ unlink_key $keyid $keyringid
+ marker "ADD KEY"
+ create_key --new=keyid user lizard gizzard $keyringid
+ 
+-# set a silly timeout on the key
+-marker "SET BIG TIMEOUT"
+-timeout_key $keyid 10000000
+-
+-# revoke the key
+-marker "REVOKE KEY"
+-revoke_key $keyid
+-
+-# check we can no longer set the key's timeout
+-marker "CHECK NO SET KEY TIMEOUT"
+-timeout_key --fail $keyid 20
+-expect_error EKEYREVOKED
+-
+-# remove the key we added
+-marker "UNLINK KEY"
+-unlink_key $keyid $keyringid
+-
+ # revoke the keyring
+ marker "TIMEOUT KEYRING"
+ timeout_key $keyringid 1
 -- 
 2.21.0
 
