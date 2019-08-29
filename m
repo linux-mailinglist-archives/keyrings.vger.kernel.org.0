@@ -2,54 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E33AAA2817
-	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7199A2818
+	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726894AbfH2Ufu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Aug 2019 16:35:50 -0400
-Received: from mail-qk1-f169.google.com ([209.85.222.169]:45314 "EHLO
-        mail-qk1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbfH2Ufu (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:50 -0400
-Received: by mail-qk1-f169.google.com with SMTP id m2so4182029qki.12
-        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:49 -0700 (PDT)
+        id S1727673AbfH2Ufv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Aug 2019 16:35:51 -0400
+Received: from mail-qk1-f179.google.com ([209.85.222.179]:47075 "EHLO
+        mail-qk1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726935AbfH2Ufv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:51 -0400
+Received: by mail-qk1-f179.google.com with SMTP id p13so4177572qkg.13
+        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=oLVvlqarfNnEaWHjSCK5XXPlW0GYZ5GzQ0LWoExBWMk=;
-        b=ksoCEujm0cyXUMNg5KQarX2tIbHEz+vN4/iJ/BvhvoC/ZKEDxVshABcS0uvurssGKv
-         asGwFI2cu1o2n//6DYjdKwAkBt8OSNWpHOaIaf4fY1YyHvT9UtUFe1PJn3PPd3fPqGs8
-         MU3/4sA8l1qASni+N1TJ89wmU8z1UxwjYrdOOxWtZ2AGfbzNVO+QjzNn0Z5bm5PZ0Yks
-         VWUdtKZY+80D8MWiw6s9g71SUCCT+U6YseznxEYtOytMeIcF6DkYVt8jPX5l4ic9px9i
-         75/wwj0p2RUCFENf20elS6J8KDdx6SZ2glzOp6YJFgbPETwyarof48lso08juEwXh7dY
-         pq2w==
+        bh=ford1KP9TjvIzVTuKBfH9wuCZDxkarWcRT3lzExBoNs=;
+        b=d4Y5lPdEd9EmxGvMZpvxDoGJMo9YlfL6zEnPBOdJAj6abvbN3FJwmnCf3wtn5hDPGn
+         DDWQVaig1Lemxr+8F3LqNJox3bRNx8jSmiQfpKk8NE7mAYGwl1+WE1tHzwhMRZ1CoA87
+         uz5JVamFDzJc8rj9cV5i22B1iqd6ff+YaWYOi9UuOb/bkMhME5XI0TgvfOESRQQx21qR
+         oPi5JMEa4oaPIadogwYGpeDK30yYQ1bRxTizdeuMtaaExd6Qb9ir839Y82HCdl4Ok7Yr
+         bsuvXKpnILEhJiEp07/Hm7XGkhBsqqNS7QuLkcu/3KTEbSDY+kL44F2/FiFK89NK9+EE
+         V61Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=oLVvlqarfNnEaWHjSCK5XXPlW0GYZ5GzQ0LWoExBWMk=;
-        b=h7/32KE6OiJZuWTysmy2OkRKzSUAcTkKdTkPQKYqfBQTEFTATcYCpYBIOW+m7Um3OE
-         Xmi62joDuf4lq0jVjvP519wn5Fbhko2JJZAYqUrY8fV+FkpXwmDRLxcWkf0omLwYL7nI
-         zpr/uwP71/TdbKZhlIt2OV2DoCyvHbyIO4lxiRLJIU0/lbew2ZQFQ2NOXlcZdDL+wmx9
-         hMTTjhfrV/cA7F3er26XIYbnbPtGub4K4tD+sFkNAVpvCcV9lZJx41460P5SJca8LRiy
-         ufdBXgjCmpT2NsthvUAFejL1jepwwmPQPlYsUdxqv50aAUht4wEVnWuSe5tUBgb/lMIP
-         OtfA==
-X-Gm-Message-State: APjAAAXbNeu5XznzoI4pApF3J+CifUEnayRfczCkAa6ZVJ1+Co3YBZ3H
-        h8XMQm+DB//gCKO7xjswoQ8j8hn8
-X-Google-Smtp-Source: APXvYqyEvEQM1CgrwRhINPO3aKJPbcHGrCDv7qlTGipalLI4ImNLYOi368nZxDORjXnz70fQfua8/A==
-X-Received: by 2002:a37:4ed3:: with SMTP id c202mr11656379qkb.457.1567110949330;
-        Thu, 29 Aug 2019 13:35:49 -0700 (PDT)
+        bh=ford1KP9TjvIzVTuKBfH9wuCZDxkarWcRT3lzExBoNs=;
+        b=uflGPrTk3BUVUrKOnlMcujC7Ep5WkzSdlJ92a2jiWt9Vj6PxpBgLVhchd8mmLIWSEW
+         Pmps/mOPBtTNX8OSepn/IdQB9i3ZqKSGAfZXfzqXtfE/gNnwTvFhbLQ+MrIkkNIccT0E
+         VbjRyX4QIYGNiQo4VMQxGGueNq0dDTHHMRrTMml+w/MlSm1eqyzHXMBoYEe2mXg7cr3W
+         a0tq2FILHSYRV4+PRzFoL3lUZXDN5PVTLiJV/h9LHMFltQnqwWi9BazOIDegJuJuwtuu
+         JznLeBSk29rsWyRqwoandz2U+uyMmYDTwKM0KcKcE4cAW4STpud5RD2fKe/RrahShywj
+         VE+w==
+X-Gm-Message-State: APjAAAXQEcGyBoRvTXmstzKkddEWH+80MnqQDWM9XG/49IfT3yluKjzU
+        MYB3fM4O4yWAKaGnoZheUHMgRuJj
+X-Google-Smtp-Source: APXvYqzIPOt655YLUl5xJvl4byZRk0MiaeUHYFm5vvxBDNxIQqcyeFb/zBwuXsAkZ2cdIK6kOZgrXA==
+X-Received: by 2002:a37:9e05:: with SMTP id h5mr11603174qke.331.1567110950153;
+        Thu, 29 Aug 2019 13:35:50 -0700 (PDT)
 Received: from localhost (tripoint.kitware.com. [66.194.253.20])
-        by smtp.gmail.com with ESMTPSA id n15sm1696269qkn.2.2019.08.29.13.35.48
+        by smtp.gmail.com with ESMTPSA id q123sm1656620qkf.52.2019.08.29.13.35.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 13:35:48 -0700 (PDT)
+        Thu, 29 Aug 2019 13:35:49 -0700 (PDT)
 From:   Ben Boeckel <mathstuf@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com
-Subject: [PATCH 4/9] tests/revoke: test key revokation in the revoke tests
-Date:   Thu, 29 Aug 2019 16:35:28 -0400
-Message-Id: <20190829203542.4410-6-mathstuf@gmail.com>
+Subject: [PATCH 05/13] tests: fix typos in test comments
+Date:   Thu, 29 Aug 2019 16:35:29 -0400
+Message-Id: <20190829203542.4410-7-mathstuf@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190829203542.4410-1-mathstuf@gmail.com>
 References: <20190829203542.4410-1-mathstuf@gmail.com>
@@ -62,76 +62,152 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
 ---
- tests/keyctl/revoke/valid/runtest.sh  | 20 ++++++++++++++++++++
- tests/keyctl/timeout/valid/runtest.sh | 17 -----------------
- 2 files changed, 20 insertions(+), 17 deletions(-)
+ tests/keyctl/add/bad-args/runtest.sh        | 2 +-
+ tests/keyctl/link/recursion/runtest.sh      | 2 +-
+ tests/keyctl/newring/bad-args/runtest.sh    | 2 +-
+ tests/keyctl/padd/bad-args/runtest.sh       | 2 +-
+ tests/keyctl/requesting/bad-args/runtest.sh | 2 +-
+ tests/keyctl/requesting/piped/runtest.sh    | 4 ++--
+ tests/keyctl/requesting/valid/runtest.sh    | 4 ++--
+ tests/keyctl/search/bad-args/runtest.sh     | 2 +-
+ tests/keyctl/session/bad-args/runtest.sh    | 2 +-
+ 9 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tests/keyctl/revoke/valid/runtest.sh b/tests/keyctl/revoke/valid/runtest.sh
-index 55bbbdf..fc2b928 100644
---- a/tests/keyctl/revoke/valid/runtest.sh
-+++ b/tests/keyctl/revoke/valid/runtest.sh
-@@ -47,6 +47,16 @@ marker "CHECK NO READ PAYLOAD"
- print_key --fail $keyid
- expect_error EKEYREVOKED
+diff --git a/tests/keyctl/add/bad-args/runtest.sh b/tests/keyctl/add/bad-args/runtest.sh
+index 270ee0a..69121b2 100644
+--- a/tests/keyctl/add/bad-args/runtest.sh
++++ b/tests/keyctl/add/bad-args/runtest.sh
+@@ -51,7 +51,7 @@ else
+     expect_error EDQUOT
+ fi
  
-+# invalidating the new keyring should also fail
-+marker "CHECK NO SET KEY TIMEOUT"
-+timeout_key --fail $keyid 20
-+expect_error EKEYREVOKED
-+
-+# invalidating the new keyring should also fail
-+marker "CHECK NO INVALIDATE KEY"
-+invalidate_key --fail $keyid
-+expect_error EKEYREVOKED
-+
- # remove the key we added
- marker "UNLINK KEY"
- unlink_key $keyid $keyringid
-@@ -65,6 +75,16 @@ marker "CHECK NO VALIDATE KEYRING"
- describe_key --fail $keyringid
- expect_error EKEYREVOKED
+-# This doesn't work on MIPS earler than 3.19 because of a kernel bug
++# This doesn't work on MIPS earlier than 3.19 because of a kernel bug
+ kver=`uname -r`
+ kmch=`uname -m`
+ if kernel_at_or_later_than 3.19 ||
+diff --git a/tests/keyctl/link/recursion/runtest.sh b/tests/keyctl/link/recursion/runtest.sh
+index 65abd9c..d258c83 100644
+--- a/tests/keyctl/link/recursion/runtest.sh
++++ b/tests/keyctl/link/recursion/runtest.sh
+@@ -79,7 +79,7 @@ marker "RECURSE 7"
+ link_key --fail $keyringid $keyring7id
+ expect_error EDEADLK
  
-+# invalidating the new keyring should also fail
-+marker "CHECK NO SET KEYRING TIMEOUT"
-+timeout_key --fail $keyringid 20
-+expect_error EKEYREVOKED
-+
-+# invalidating the new keyring should also fail
-+marker "CHECK NO INVALIDATE KEYRING"
-+invalidate_key --fail $keyringid
-+expect_error EKEYREVOKED
-+
- # remove the keyring we added
- marker "UNLINK KEYRING"
- unlink_key $keyringid @s
-diff --git a/tests/keyctl/timeout/valid/runtest.sh b/tests/keyctl/timeout/valid/runtest.sh
-index 4d772bb..01dc48f 100644
---- a/tests/keyctl/timeout/valid/runtest.sh
-+++ b/tests/keyctl/timeout/valid/runtest.sh
-@@ -80,23 +80,6 @@ marker "ADD KEY"
- create_key user lizard gizzard $keyringid
- expect_keyid keyid
+-# create an eigth keyring in the seventh
++# create an eighth keyring in the seventh
+ marker "CREATE KEYRING 8"
+ create_keyring --new=keyring8id "eighth" @s
+ set_key_perm $keyring8id 0x3f3f0000
+diff --git a/tests/keyctl/newring/bad-args/runtest.sh b/tests/keyctl/newring/bad-args/runtest.sh
+index 734b44e..f35c4c6 100644
+--- a/tests/keyctl/newring/bad-args/runtest.sh
++++ b/tests/keyctl/newring/bad-args/runtest.sh
+@@ -21,7 +21,7 @@ else
+     expect_error EDQUOT
+ fi
  
--# set a silly timeout on the key
--marker "SET BIG TIMEOUT"
--timeout_key $keyid 10000000
--
--# revoke the key
--marker "REVOKE KEY"
--revoke_key $keyid
--
--# check we can no longer set the key's timeout
--marker "CHECK NO SET KEY TIMEOUT"
--timeout_key --fail $keyid 20
--expect_error EKEYREVOKED
--
--# remove the key we added
--marker "UNLINK KEY"
--unlink_key $keyid $keyringid
--
- # revoke the keyring
- marker "TIMEOUT KEYRING"
- timeout_key $keyringid 1
+-# This doesn't work on MIPS earler than 3.19 because of a kernel bug
++# This doesn't work on MIPS earlier than 3.19 because of a kernel bug
+ kver=`uname -r`
+ kmch=`uname -m`
+ if kernel_at_or_later_than 3.19 ||
+diff --git a/tests/keyctl/padd/bad-args/runtest.sh b/tests/keyctl/padd/bad-args/runtest.sh
+index 291584e..c59393c 100644
+--- a/tests/keyctl/padd/bad-args/runtest.sh
++++ b/tests/keyctl/padd/bad-args/runtest.sh
+@@ -51,7 +51,7 @@ else
+     expect_error EDQUOT
+ fi
+ 
+-# This doesn't work on MIPS earler than 3.19 because of a kernel bug
++# This doesn't work on MIPS earlier than 3.19 because of a kernel bug
+ kver=`uname -r`
+ kmch=`uname -m`
+ if kernel_at_or_later_than 3.19 ||
+diff --git a/tests/keyctl/requesting/bad-args/runtest.sh b/tests/keyctl/requesting/bad-args/runtest.sh
+index 83c114f..cf822e2 100644
+--- a/tests/keyctl/requesting/bad-args/runtest.sh
++++ b/tests/keyctl/requesting/bad-args/runtest.sh
+@@ -90,7 +90,7 @@ marker "CHECK MAXLEN DESC"
+ request_key --fail user $maxdesc
+ expect_error ENOKEY
+ 
+-# This doesn't work on MIPS earler than 3.19 because of a kernel bug
++# This doesn't work on MIPS earlier than 3.19 because of a kernel bug
+ kver=`uname -r`
+ kmch=`uname -m`
+ if kernel_at_or_later_than 3.19 ||
+diff --git a/tests/keyctl/requesting/piped/runtest.sh b/tests/keyctl/requesting/piped/runtest.sh
+index 010af33..1496d06 100644
+--- a/tests/keyctl/requesting/piped/runtest.sh
++++ b/tests/keyctl/requesting/piped/runtest.sh
+@@ -49,7 +49,7 @@ marker "CHECK ATTACHMENT TO SESSION KEYRING"
+ list_keyring @s
+ expect_keyring_rlist rlist $keyid
+ 
+-# rerequesting should pick up that key again
++# re-requesting should pick up that key again
+ marker "REDO PIPED CALL OUT REQUEST KEY TO SESSION"
+ prequest_key_callout --old=$keyid gizzard user debug:lizard
+ 
+@@ -76,7 +76,7 @@ marker "CHECK ATTACHMENT TO SESSION"
+ list_keyring @s
+ expect_keyring_rlist rlist $keyid
+ 
+-# rerequesting should pick up that key again
++# re-requesting should pick up that key again
+ marker "REDO PIPED CALL OUT REQUEST KEY TO KEYRING"
+ prequest_key_callout --old=$keyid gizzard user debug:lizard $keyringid
+ 
+diff --git a/tests/keyctl/requesting/valid/runtest.sh b/tests/keyctl/requesting/valid/runtest.sh
+index 824b700..06834c2 100644
+--- a/tests/keyctl/requesting/valid/runtest.sh
++++ b/tests/keyctl/requesting/valid/runtest.sh
+@@ -49,7 +49,7 @@ marker "CHECK ATTACHMENT TO SESSION KEYRING"
+ list_keyring @s
+ expect_keyring_rlist rlist $keyid
+ 
+-# rerequesting should pick up that key again
++# re-requesting should pick up that key again
+ marker "REDO CALL OUT REQUEST KEY TO SESSION"
+ request_key_callout --old=$keyid user debug:lizard gizzard
+ 
+@@ -77,7 +77,7 @@ marker "CHECK ATTACHMENT TO SESSION"
+ list_keyring @s
+ expect_keyring_rlist rlist $keyid
+ 
+-# rerequesting should pick up that key again
++# re-requesting should pick up that key again
+ marker "REDO CALL OUT REQUEST KEY TO KEYRING"
+ request_key_callout --old=$keyid user debug:lizard gizzard $keyringid
+ 
+diff --git a/tests/keyctl/search/bad-args/runtest.sh b/tests/keyctl/search/bad-args/runtest.sh
+index 2128790..8650ae5 100644
+--- a/tests/keyctl/search/bad-args/runtest.sh
++++ b/tests/keyctl/search/bad-args/runtest.sh
+@@ -45,7 +45,7 @@ expect_error ENOKEY
+ search_for_key --fail @s user $maxdesc @p
+ expect_error ENOKEY
+ 
+-# This doesn't work on MIPS earler than 3.19 because of a kernel bug
++# This doesn't work on MIPS earlier than 3.19 because of a kernel bug
+ kver=`uname -r`
+ kmch=`uname -m`
+ if kernel_at_or_later_than 3.19 ||
+diff --git a/tests/keyctl/session/bad-args/runtest.sh b/tests/keyctl/session/bad-args/runtest.sh
+index 8bae0d4..45a9984 100644
+--- a/tests/keyctl/session/bad-args/runtest.sh
++++ b/tests/keyctl/session/bad-args/runtest.sh
+@@ -14,7 +14,7 @@ marker "SESSION WITH EMPTY KEYRING NAME"
+ new_session --fail ""
+ expect_error EINVAL
+ 
+-# This doesn't work on MIPS earler than 3.19 because of a kernel bug
++# This doesn't work on MIPS earlier than 3.19 because of a kernel bug
+ kver=`uname -r`
+ kmch=`uname -m`
+ if kernel_at_or_later_than 3.19 ||
 -- 
 2.21.0
 
