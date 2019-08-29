@@ -2,54 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB68BA2822
-	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B06E9A2823
+	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727899AbfH2Uf7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Aug 2019 16:35:59 -0400
-Received: from mail-qt1-f176.google.com ([209.85.160.176]:37648 "EHLO
-        mail-qt1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727787AbfH2Uf7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:35:59 -0400
-Received: by mail-qt1-f176.google.com with SMTP id y26so5260918qto.4
-        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:58 -0700 (PDT)
+        id S1727787AbfH2UgA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Aug 2019 16:36:00 -0400
+Received: from mail-qk1-f178.google.com ([209.85.222.178]:43421 "EHLO
+        mail-qk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727859AbfH2UgA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:36:00 -0400
+Received: by mail-qk1-f178.google.com with SMTP id m2so4191682qkd.10
+        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zYRguL71iEpdW6HrFMhIlMzoAwQWtDzgzu5oWuhHEJg=;
-        b=bgNF8n0BJ2ZXPGjLc1btHrICzOpakkL/wwAxz8hcSIVRk6FKuYDQ/hIw8dDkumKpa6
-         rNtIY0tH3vhFTTYm+X85yJZ7cPRgqPnvLK/MXubYg6yMP8AfLicanrgJzOqoVKGCXKLY
-         E1FR7qx6Glkd1oJxIHsdnJ8f4eXGSiEiXvv/MIztBlQ13Au6AG3B31H0i2Ey7lJS5gBu
-         cJE8z1TWYYb3WHD6sBE5KgAtMUBaHBCxVlGXu5ZtmvCMRgnX6fWNtwycVXsslg9SEKSy
-         fiW3KSX37HSYlgm8TASIl5A0tSDVPD+wz9IrUoicC4rcKFsaEXicprgYpwGkqiBq3rnR
-         lzAQ==
+        bh=Utx2Qs6MT/hfI9wk7gvJPrysZkKWMPYKawrcOIG698s=;
+        b=Lq+8FX3l3aUg5pGIBW856VdBW0x8Lql/XYwfFIYuVDyAWLkMbIPIbh/0CMGRnnMkA5
+         TAn9W9gu9nbM27sgi6jhn7K5JICm+s4qTMcWf6gDo8+fVuu8vLwHFOVbE0bBLWlAk9w7
+         xfblc5SaaunXcIEzeh0toacqq9iTKrvRJvgXxkSJwOdrec18cV8Kql/IMEbLTApLxytn
+         oy6qO3ihxua2kjxngfENEKv2ZvPEVS2S64znQAqLc7xrFzRS90ibz8+6W83OBNdUitca
+         KJ2DXAdEtT0GnhUvlACdFJFVeexBSdl9U3nzKpktfiU20/2D9cmvOu2ga+HY4knhcZ7h
+         mA/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=zYRguL71iEpdW6HrFMhIlMzoAwQWtDzgzu5oWuhHEJg=;
-        b=ZRAJXzv7lJW2Z25PhJkqpaGmnD+sKHrKvZ4GHExYWJjI77mPXyEMkyE8tc89aoxBiW
-         lFEExWuojUyKH59AvxTT5Rex4Bwdtlq2FJUxoF5T20IZBpT2azzbOt+o9r9cx8VmVvHc
-         kNIw67NkaWLh25CdbR432vf7aGN4l/f0eMrjF2gKHPFTVZpJ3PyWt/nuuYOWFGqxWqmJ
-         4cvFgXklULoMOUTt0S3Vc7eHnVhie2no7nw/ZRPtoyjU5P0obQ0xpuN2eYwe93QqxhJX
-         QTc2DbTb/vQcR32pIAr3aOOVs+Yp5Okp9qyImzOuE80f31iR0ZILmhRUv9yXoXGNZgb2
-         c0pw==
-X-Gm-Message-State: APjAAAXkAUM5iKJ313jBWHSiU6W1VFgubgMt80Iq1aAGsIznaySaBOob
-        xhzrngIyERpEY+e5gfidsIc5IEqZ
-X-Google-Smtp-Source: APXvYqzGO9mHuyuBErY18ppEo6X+JwoFwwNQ9aoQURIHtlKESJa78uzRzM9hTL6giawz4vrG/77M5A==
-X-Received: by 2002:ac8:2955:: with SMTP id z21mr11996346qtz.204.1567110958113;
+        bh=Utx2Qs6MT/hfI9wk7gvJPrysZkKWMPYKawrcOIG698s=;
+        b=c8PVClSNjkkO1tb3ZBbEtFiifz/ON+TQkuAo/o1o3SFHoLRDCjd4j2WIUqUNMmYWWP
+         pV6WMMnqTw6dumUQ3ueARIEJGOxb7/xEQD7rs6E/qD6GyVQ8zyeuA57jCHtUfPTLApde
+         orRUg6QMh6QgYAYTHaU6L1NPkWRWj1IM3E+su151NVGZYN5C3ZkTEiscQDe/hBqaidjL
+         qdJgXfbgQWtwcltHvDyklQV7DtSoB9umTwQHIQbYlOmUcOBkZAmRpdmJhgaXypMc1ExA
+         7+mHmgShe1RVeaRUzuOwRTWo1suuIRqJ5gHlLgV3ifgQUrii7Rq1yAvm7Hap+bjTxzfu
+         e0Gg==
+X-Gm-Message-State: APjAAAUoNbb7XDA3LyPHLF1GaBTjUr7AJ78RArtCTDhD5vqP2eIQQzyL
+        24WdY4r+AqL8dRuoHM5Av0HvzBS2
+X-Google-Smtp-Source: APXvYqzmgrx1Vs3XhLE8ca6ar2uNieqIKedRbB/15L6+ISAXD42ihqLHzNqDNgh24oyVrWd6AQUUpQ==
+X-Received: by 2002:a05:620a:1445:: with SMTP id i5mr5862012qkl.261.1567110958962;
         Thu, 29 Aug 2019 13:35:58 -0700 (PDT)
 Received: from localhost (tripoint.kitware.com. [66.194.253.20])
-        by smtp.gmail.com with ESMTPSA id o124sm1363678qke.66.2019.08.29.13.35.57
+        by smtp.gmail.com with ESMTPSA id h52sm2221543qte.73.2019.08.29.13.35.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 13:35:57 -0700 (PDT)
+        Thu, 29 Aug 2019 13:35:58 -0700 (PDT)
 From:   Ben Boeckel <mathstuf@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com
-Subject: [PATCH 10/13] tests/reading: fix test comment
-Date:   Thu, 29 Aug 2019 16:35:39 -0400
-Message-Id: <20190829203542.4410-17-mathstuf@gmail.com>
+Subject: [PATCH 11/13] tests/readming: remove revokation test
+Date:   Thu, 29 Aug 2019 16:35:40 -0400
+Message-Id: <20190829203542.4410-18-mathstuf@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190829203542.4410-1-mathstuf@gmail.com>
 References: <20190829203542.4410-1-mathstuf@gmail.com>
@@ -60,27 +60,30 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This comment was copied from another test. This one actually fails
-because search permissions were also removed.
+This is already tested in the revokation test script.
 
 Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
 ---
- tests/keyctl/reading/valid/runtest.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/keyctl/reading/valid/runtest.sh | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/tests/keyctl/reading/valid/runtest.sh b/tests/keyctl/reading/valid/runtest.sh
-index a40ccaf..2fb88b9 100644
+index 2fb88b9..9a533ef 100644
 --- a/tests/keyctl/reading/valid/runtest.sh
 +++ b/tests/keyctl/reading/valid/runtest.sh
-@@ -57,7 +57,7 @@ print_key $keyid
+@@ -78,12 +78,6 @@ set_key_perm $keyid 0x370000
+ print_key $keyid
  expect_payload payload "gizzard"
  
- # remove search permission from the key as well
--# - we should still have read permission because it's searchable in our
-+# - we do not have read permission because it's no longer searchable in our
- #   keyrings
- marker "REMOVE SEARCH PERM"
- set_key_perm $keyid 0x350000
+-# revoke the key
+-marker "REVOKE KEY"
+-revoke_key $keyid
+-print_key --fail $keyid
+-expect_error EKEYREVOKED
+-
+ # remove the keyring we added
+ marker "UNLINK KEYRING"
+ unlink_key $keyringid @s
 -- 
 2.21.0
 
