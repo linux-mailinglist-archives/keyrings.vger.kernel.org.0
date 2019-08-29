@@ -2,96 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A3AFA2825
-	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8396EA2835
+	for <lists+keyrings@lfdr.de>; Thu, 29 Aug 2019 22:41:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726935AbfH2UgC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Aug 2019 16:36:02 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:36316 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726894AbfH2UgC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:36:02 -0400
-Received: by mail-qk1-f194.google.com with SMTP id d23so4242937qko.3
-        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:36:01 -0700 (PDT)
+        id S1726661AbfH2Ul3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Aug 2019 16:41:29 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:35663 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726526AbfH2Ul3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Aug 2019 16:41:29 -0400
+Received: by mail-qk1-f195.google.com with SMTP id c189so2674556qkg.2
+        for <keyrings@vger.kernel.org>; Thu, 29 Aug 2019 13:41:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=R6TM9c1l6tgwtavINbA1/5w4JlwDAt2gG6hfJPscEQc=;
-        b=m13OOCHtnD6LTe8jurFTeSEDKS99tY3xhYl5c0uxGjk2UkZRSY6iRW8kD1XwDQrqj3
-         OuB6/J4VSWni5Gm+xV6EI4zVkjkQedz9ACFBUbp4An6P7LDeTCo9vh1hHx28C2hW+DvP
-         KNTDaCqR2vphaBD8PwBVJO/8TZrnVMPJg5BdFnKFggQ7CiPNE9vJ5FxyZOz/Ehs08mrK
-         0CHK7r6Mt5ItWBJHxhWAZRhnAmJViC5LWx0R5K1YaiSWk3oGae18bok/TyrdGKGd8gf/
-         EGeQtwmzUlCbfNWVovOknXLSNzSyD8AFNolT26o95rhUL+LW+Z/H66bKXlyUK0xAZ4r5
-         MaEQ==
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=QD/vjkbPkLhT/x7Isy/PLFSJHeh8T/M00d4LkGYBNnE=;
+        b=ksd/U1zMHERVY2gBkw4DEaSIRVGloJzqkHAQjN80xy01mWp7m2YUNoaC+HYMKg2DBj
+         POYumHol3tme8SMicIofoR5Ty/l15HrlUPb+nf+LnCO0spYSQXoSzYcdaEiE3bBswNiE
+         y/d1Q+DGKx3EQSX9DibjRKlBzEQO+44BEGQalTiOioXEFnkTL1bheY7F7EVptjVhtc74
+         JcG7rsGPU2jD5zsyYM98EQD7sHHYIPDxEp+ZC+u9QSn41je66qi+A6BBYi+ptk3p9yoV
+         Lh+Q9r2izyHWQoDDHIZm7l3yS22W4jr/DNEJWzgZxUD4jHQPkQxjWdiKW40lOjeUIY5K
+         znVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=R6TM9c1l6tgwtavINbA1/5w4JlwDAt2gG6hfJPscEQc=;
-        b=CY+OUyHHpxzAKML81+yCmWOxQvRnG5E9NYK4IBbNegXqtiRxDHBnJro3T189AguV/F
-         inOIRc5uGBETI9t7jc4nYJu3a9e40F9lz2h1x73PFDRWJRfq/nNut/N5wEAZBWMUeMtP
-         qpzBzValNi6FXX3NydP8VjCWENYsFY6woIFULJQDpZZEy2WdcXd2vVJxNWTO2A3BFlLL
-         IGTFcj9qo3r+cVMntjZYmmM3tUwttJWVQnEIs7VegyiFsjE7PRQY3SmktODjgM10fxsB
-         +1r7B9EKvb0pGwiyyooVMR/14JP+dEuvB1Adoe2k6hLYHY3wdQnCsLP8sTNZ3u3NtfT7
-         zKVA==
-X-Gm-Message-State: APjAAAV9eTZgf2e4+glYMjZb+ujTkS8D9rQNWhqUPm204V6K8dnOQU5C
-        yC6nOYBiNVPV/ePzy7aK7J6kBkUG
-X-Google-Smtp-Source: APXvYqzvFndmZBMGszuXWLXOFx5/hMcVzLftwIvijCy7FVSOBBNM8ClTPJ/zCpkU4HvpofyJkLUsOw==
-X-Received: by 2002:a05:620a:10ae:: with SMTP id h14mr12051587qkk.40.1567110960650;
-        Thu, 29 Aug 2019 13:36:00 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=QD/vjkbPkLhT/x7Isy/PLFSJHeh8T/M00d4LkGYBNnE=;
+        b=bIV/rxyeczMNBx79adnT0MYg7yPhIw01HflF7PUgdG3qPCECx201CeNZ4GLr1KzkBE
+         jIXVvdyGlHBp1lvRqXzZA5ot7UmzvaSwQPHLw2VqwfA+tiMZoNyuvVaCYvYVp4wB88g5
+         +qKU7TqO3+gmUB7NTR8N1Rqbb2mdhDSlP75r1ax2GMEUtrUCzoBxNW/YWBJyqv1FnfI2
+         CtTb85Zfgd3SMEnU+yupfXpY24KVR2iIEo85kCrCc/FFdkKvt69W+wQtXVzZdRCkq65f
+         lin6Ce1kUCtk3FXFKHBV7rmzDnQ99K8sH3ZxJcMOogdr/GJC5dg14YQ7rbIeZ5FCZ77c
+         fyTQ==
+X-Gm-Message-State: APjAAAWxeRQPZKKMOUUoWMnWTRIvcUIZ0feM4s0OScZxc6RPUtaidCoU
+        zG1dH+9moiY+kf5VTMLH6zmdZE8Q
+X-Google-Smtp-Source: APXvYqyGhhm2k3EffIyePWu7wuq7oZosuJF7A0bMKOtelt64dhdp9pMJJ9mYyBalHNFuNzVTpuGXnw==
+X-Received: by 2002:a05:620a:15e5:: with SMTP id p5mr11832066qkm.409.1567111288542;
+        Thu, 29 Aug 2019 13:41:28 -0700 (PDT)
 Received: from localhost (tripoint.kitware.com. [66.194.253.20])
-        by smtp.gmail.com with ESMTPSA id f2sm1624360qkj.58.2019.08.29.13.36.00
+        by smtp.gmail.com with ESMTPSA id d3sm1654981qtq.32.2019.08.29.13.41.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 13:36:00 -0700 (PDT)
+        Thu, 29 Aug 2019 13:41:28 -0700 (PDT)
+Date:   Thu, 29 Aug 2019 16:41:27 -0400
 From:   Ben Boeckel <mathstuf@gmail.com>
 To:     keyrings@vger.kernel.org
-Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com
-Subject: [PATCH 13/13] tests/search: test a found key without search permissions
-Date:   Thu, 29 Aug 2019 16:35:42 -0400
-Message-Id: <20190829203542.4410-20-mathstuf@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190829203542.4410-1-mathstuf@gmail.com>
+Cc:     dhowells@redhat.com
+Subject: Re: [PATCH 00/13] Test suite tidiness
+Message-ID: <20190829204127.GA6592@rotor.kitware.com>
+Reply-To: mathstuf@gmail.com
 References: <20190829203542.4410-1-mathstuf@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190829203542.4410-1-mathstuf@gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-These stanzas were essentially duplicates of the previous blocks.
-Instead, test removing the search permission from the target key and
-that EACCES is returned when this happens.
+On Thu, Aug 29, 2019 at 16:35:23 -0400, Ben Boeckel wrote:
+> A collection of minor patches to the test suite I discovered while
+> porting to the Rust bindings I've been working on:
+> 
+>     https://github.com/mathstuf/rust-keyutils
+>     https://github.com/mathstuf/rust-keyutils/pull/34 (for the porting of the test suite)
+> 
+> Mostly typos, relocating some tests to what seems to be more sensible
+> location, fixing some copy/pasta, and adding some missed test cases.
+> The patches were developed against master, but have been rebased here
+> against `next` to make it easier to add to it. If that is incorrect, I
+> can rebase onto `master` and respin.
+> 
+> Note that I'm sending these for review now, but I'll be on vacation for
+> a few weeks. Feel free to leave review comments; I'll act on them once I
+> return.
 
-Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
----
- tests/keyctl/search/valid/runtest.sh | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Ah crap, used a dirty directory where I had staged a set of patches
+previously. Sorry, will resend.
 
-diff --git a/tests/keyctl/search/valid/runtest.sh b/tests/keyctl/search/valid/runtest.sh
-index a9912ee..e597170 100644
---- a/tests/keyctl/search/valid/runtest.sh
-+++ b/tests/keyctl/search/valid/runtest.sh
-@@ -135,14 +135,14 @@ set_key_perm $keyring2id 0x3f0000
- search_for_key --expect=$keyid2 $keyringid user lizard
- 
- # removing search permission on the second key should hide the key
--marker "SEARCH WITH NO-SEARCH KEYRING2"
--set_key_perm $keyring2id 0x370000
-+marker "SEARCH WITH NO-SEARCH KEY2"
-+set_key_perm $keyid2 0x370000
- search_for_key --fail $keyringid user lizard
--expect_error ENOKEY
-+expect_error EACCES
- 
- # putting search permission on the second key back again should make it
- # available again
--set_key_perm $keyring2id 0x3f0000
-+set_key_perm $keyid2 0x3f0000
- search_for_key --expect=$keyid2 $keyringid user lizard
- 
- # revoking the key should make the key unavailable
--- 
-2.21.0
-
+--Ben
