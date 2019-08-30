@@ -2,50 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F17BA3B0F
-	for <lists+keyrings@lfdr.de>; Fri, 30 Aug 2019 17:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9111A3CE6
+	for <lists+keyrings@lfdr.de>; Fri, 30 Aug 2019 19:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727991AbfH3PyV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 30 Aug 2019 11:54:21 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44110 "EHLO mx1.redhat.com"
+        id S1727984AbfH3RUn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 30 Aug 2019 13:20:43 -0400
+Received: from mga02.intel.com ([134.134.136.20]:13903 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727963AbfH3PyV (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 30 Aug 2019 11:54:21 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id B2A7230832EA;
-        Fri, 30 Aug 2019 15:54:21 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com [10.10.120.255])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1051D6012C;
-        Fri, 30 Aug 2019 15:54:19 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <5292a3bb-f974-e32b-0f1f-0f78a2801f7d@linux.alibaba.com>
-References: <5292a3bb-f974-e32b-0f1f-0f78a2801f7d@linux.alibaba.com>
-To:     Yihao Wu <wuyihao@linux.alibaba.com>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
-        Jia Zhang <zhang.jia@linux.alibaba.com>
-Subject: Re: [PATCH RESEND] KEYS: pass expiry from X.509 cert to key structure
+        id S1727791AbfH3RUn (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 30 Aug 2019 13:20:43 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Aug 2019 10:20:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,447,1559545200"; 
+   d="scan'208";a="182708052"
+Received: from floriank-mobl.ger.corp.intel.com (HELO localhost) ([10.252.38.77])
+  by fmsmga007.fm.intel.com with ESMTP; 30 Aug 2019 10:20:32 -0700
+Date:   Fri, 30 Aug 2019 20:20:31 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-security-module@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Subject: Re: [RFC/RFT v4 5/5] KEYS: trusted: Add generic trusted keys
+ framework
+Message-ID: <20190830172031.dm5icfyakko6eqak@linux.intel.com>
+References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
+ <1565682784-10234-6-git-send-email-sumit.garg@linaro.org>
+ <CAFA6WYO7Z-Enmnqt8zA_+VV_p=mAc+AotTetv9hhf2xHm0mR9g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <12205.1567180459.1@warthog.procyon.org.uk>
-Date:   Fri, 30 Aug 2019 16:54:19 +0100
-Message-ID: <12206.1567180459@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Fri, 30 Aug 2019 15:54:21 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFA6WYO7Z-Enmnqt8zA_+VV_p=mAc+AotTetv9hhf2xHm0mR9g@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Yihao Wu <wuyihao@linux.alibaba.com> wrote:
+On Fri, Aug 30, 2019 at 02:49:31PM +0530, Sumit Garg wrote:
+> Any comments/feedback on this patch before I send next version of TEE
+> patch-set with this patch included?
 
-> +    prep->expiry = cert->valid_to;
+Unfortunately don't have time before LPC to go deep with the follow up.
 
-Note that this patch has whitespace breakage, but I can fix that up by hand.
+I will look into this in detail after LPC.
 
-David
+/JArkko
