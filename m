@@ -2,102 +2,77 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 104EFA396B
-	for <lists+keyrings@lfdr.de>; Fri, 30 Aug 2019 16:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D047A3A13
+	for <lists+keyrings@lfdr.de>; Fri, 30 Aug 2019 17:12:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727820AbfH3Ole convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 30 Aug 2019 10:41:34 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:50472 "EHLO mx1.redhat.com"
+        id S1727135AbfH3PMg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 30 Aug 2019 11:12:36 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:48628 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727791AbfH3Ole (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 30 Aug 2019 10:41:34 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        id S1727948AbfH3PMg (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 30 Aug 2019 11:12:36 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A45901053717;
-        Fri, 30 Aug 2019 14:41:33 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 143BB881346;
+        Fri, 30 Aug 2019 15:12:36 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com [10.10.120.255])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F31AF414B;
-        Fri, 30 Aug 2019 14:41:30 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C4492100197A;
+        Fri, 30 Aug 2019 15:12:34 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
 From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <21eb33e8-5624-0124-8690-bbea41a1b589@tycho.nsa.gov>
-References: <21eb33e8-5624-0124-8690-bbea41a1b589@tycho.nsa.gov> <156717343223.2204.15875738850129174524.stgit@warthog.procyon.org.uk> <156717352079.2204.16378075382991665807.stgit@warthog.procyon.org.uk>
-To:     Stephen Smalley <sds@tycho.nsa.gov>
-Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/11] selinux: Implement the watch_key security hook [ver #7]
+In-Reply-To: <20190830145454.B91DF125411@zmta02.collab.prod.int.phx2.redhat.com>
+References: <20190830145454.B91DF125411@zmta02.collab.prod.int.phx2.redhat.com> <20190830085646.14740-1-hdanton@sina.com> <4384.1567174383@warthog.procyon.org.uk>
+To:     Hillf Danton <hdanton@sina.com>
+Cc:     dhowells@redhat.com, Sachin Sant <sachinp@linux.vnet.ibm.com>,
+        "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: Oops (request_key_auth_describe) while running cve-2016-7042 from LTP
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <13307.1567176090.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Fri, 30 Aug 2019 15:41:30 +0100
-Message-ID: <13308.1567176090@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.66]); Fri, 30 Aug 2019 14:41:33 +0000 (UTC)
+Content-ID: <11907.1567177954.1@warthog.procyon.org.uk>
+Date:   Fri, 30 Aug 2019 16:12:34 +0100
+Message-ID: <11908.1567177954@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.69]); Fri, 30 Aug 2019 15:12:36 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-How about the attached instead, then?
+Hillf Danton <hdanton@sina.com> wrote:
+
+> 1, callee has no pre defined duty to help caller in general; they should not
+> try to do anything, however, to help their callers in principle due to
+> limited info on their hands IMO.
+
+Ah, no.  It's entirely reasonable for an API to specify that one of its
+methods will be called with one or more locks held - and that the method must
+be aware of this and may make use of this.
+
+> 3, no comment can be found in security/keys/request_key_auth.c about
+> the rcu already documented.
+
+There is API documentation in Documentation/security/keys/core.rst.  If you
+look at about line 1538 onwards:
+
+  *  ``void (*describe)(const struct key *key, struct seq_file *p);``
+
+     This method is optional. It is called during /proc/keys reading to
+     summarise a key's description and payload in text form.
+
+     This method will be called with the RCU read lock held. rcu_dereference()
+     should be used to read the payload pointer if the payload is to be
+     accessed. key->datalen cannot be trusted to stay consistent with the
+     contents of the payload.
+
+     The description will not change, though the key's state may.
+
+     It is not safe to sleep in this method; the RCU read lock is held by the
+     caller.
 
 David
----
-commit 00444a695b35c602230ac2cabb4f1d7e94e3966d
-Author: David Howells <dhowells@redhat.com>
-Date:   Thu Aug 29 17:01:34 2019 +0100
-
-    selinux: Implement the watch_key security hook
-    
-    Implement the watch_key security hook to make sure that a key grants the
-    caller View permission in order to set a watch on a key.
-    
-    For the moment, the watch_devices security hook is left unimplemented as
-    it's not obvious what the object should be since the queue is global and
-    didn't previously exist.
-    
-    Signed-off-by: David Howells <dhowells@redhat.com>
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 74dd46de01b6..88df06969bed 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -6533,6 +6533,17 @@ static int selinux_key_getsecurity(struct key *key, char **_buffer)
- 	*_buffer = context;
- 	return rc;
- }
-+
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+static int selinux_watch_key(struct key *key)
-+{
-+	struct key_security_struct *ksec = key->security;
-+	u32 sid = current_sid();
-+
-+	return avc_has_perm(&selinux_state,
-+			    sid, ksec->sid, SECCLASS_KEY, KEY_NEED_VIEW, NULL);
-+}
-+#endif
- #endif
- 
- #ifdef CONFIG_SECURITY_INFINIBAND
-@@ -6965,6 +6976,9 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
- 	LSM_HOOK_INIT(key_free, selinux_key_free),
- 	LSM_HOOK_INIT(key_permission, selinux_key_permission),
- 	LSM_HOOK_INIT(key_getsecurity, selinux_key_getsecurity),
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+	LSM_HOOK_INIT(watch_key, selinux_watch_key),
-+#endif
- #endif
- 
- #ifdef CONFIG_AUDIT
