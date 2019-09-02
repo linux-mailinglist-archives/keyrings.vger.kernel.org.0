@@ -2,64 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A8B4A57A1
-	for <lists+keyrings@lfdr.de>; Mon,  2 Sep 2019 15:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D68E0A58D0
+	for <lists+keyrings@lfdr.de>; Mon,  2 Sep 2019 16:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729690AbfIBN0M convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Mon, 2 Sep 2019 09:26:12 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:43450 "EHLO mx1.redhat.com"
+        id S1730854AbfIBOIG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Sep 2019 10:08:06 -0400
+Received: from mga03.intel.com ([134.134.136.65]:35393 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726441AbfIBN0M (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 2 Sep 2019 09:26:12 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 51D7B10A8136;
-        Mon,  2 Sep 2019 13:26:12 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com [10.10.120.255])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5556360933;
-        Mon,  2 Sep 2019 13:26:06 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <563ae8b4-753a-179d-4f6d-94d2dd058f3b@schaufler-ca.com>
-References: <563ae8b4-753a-179d-4f6d-94d2dd058f3b@schaufler-ca.com> <156717343223.2204.15875738850129174524.stgit@warthog.procyon.org.uk>
-To:     Casey Schaufler <casey@schaufler-ca.com>
-Cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/11] Keyrings, Block and USB notifications [ver #7]
+        id S1726766AbfIBOIG (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 2 Sep 2019 10:08:06 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2019 07:08:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,459,1559545200"; 
+   d="scan'208";a="183317979"
+Received: from doblerbe-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.53.100])
+  by fmsmga007.fm.intel.com with ESMTP; 02 Sep 2019 07:08:02 -0700
+Date:   Mon, 2 Sep 2019 17:08:00 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RESEND][PATCH v2-resend] MAINTAINERS: fix style in KEYS-TRUSTED
+ entry
+Message-ID: <20190902140800.oonp4yr5673fpyd5@linux.intel.com>
+References: <20190825170015.3199-1-lukas.bulwahn@gmail.com>
+ <20190826054024.fjx3robu464ndvi7@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <30969.1567430765.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Mon, 02 Sep 2019 14:26:05 +0100
-Message-ID: <30970.1567430765@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.64]); Mon, 02 Sep 2019 13:26:12 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190826054024.fjx3robu464ndvi7@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Casey Schaufler <casey@schaufler-ca.com> wrote:
-
-> > Tests for the key/keyring events can be found on the keyutils next branch:
-> >
-> > 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/log/?h=next
+On Mon, Aug 26, 2019 at 08:40:24AM +0300, Jarkko Sakkinen wrote:
+> On Sun, Aug 25, 2019 at 07:00:15PM +0200, Lukas Bulwahn wrote:
+> > Mimi Zohar used spaces instead of a tab when adding Jarkko Sakkinen as
+> > further maintainer to the KEYS-TRUSTED section entry.
+> > 
+> > In fact, ./scripts/checkpatch.pl -f MAINTAINERS complains:
+> > 
+> >   WARNING: MAINTAINERS entries use one tab after TYPE:
+> >   #8581: FILE: MAINTAINERS:8581:
+> >   +M:      Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > 
+> > The issue was detected when writing a script that parses MAINTAINERS.
+> > 
+> > Fixes: 34bccd61b139 ("MAINTAINERS: add Jarkko as maintainer for trusted keys")
+> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 > 
-> I'm having trouble with the "make install" on Fedora. Is there an
-> unusual dependency?
+> Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-I've pushed a couple of patches to my next branch.  Do "make install" and
-"make rpm" now work for you?
+Including to my v5.4 PR.
 
-David
+/Jarkko
