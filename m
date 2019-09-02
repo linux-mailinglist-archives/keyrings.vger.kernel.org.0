@@ -2,97 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E663A4EC1
-	for <lists+keyrings@lfdr.de>; Mon,  2 Sep 2019 07:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2594AA4F93
+	for <lists+keyrings@lfdr.de>; Mon,  2 Sep 2019 09:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729373AbfIBFIC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Sep 2019 01:08:02 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:44402 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729475AbfIBFIA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Sep 2019 01:08:00 -0400
-Received: by mail-lf1-f66.google.com with SMTP id y4so2533073lfe.11
-        for <keyrings@vger.kernel.org>; Sun, 01 Sep 2019 22:07:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9ilSbiagMb8MDrFFrHKZRONzqQD46TOKazPpK+Hghz8=;
-        b=nqjzBoghOOWRnsGKo0hc5tLqpCIYHBSaF4pOmHVyGWUTqjo9cXI14oeqCp8TaoTCEs
-         qbia7LVNwlOUQAfSwodrZczzxLMWOOlmgdhZieuLhivvmVe2eBGRTn03ZD/zPmO+C7zD
-         RPWwC1khbX879P3loaqVR7m9AQr8gU8VoG+luBB5oF+Tce+qY0kr16AYA2g1W5dnKu0N
-         CeVCRFrYDMoN3yNVTfrNZrC1tuHbcyCapPfpiX51+Pek3NW4vZ9klTQhHcQJ2cXRKDnM
-         59qxUPCUIjIpioFGsdTwBzkSMpvtezvqgmtERhn7iNhF2ji9gcvtLeNuALDjQFggrOoI
-         yidw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9ilSbiagMb8MDrFFrHKZRONzqQD46TOKazPpK+Hghz8=;
-        b=NUqchHHtEYrSxS8dSDtKMSbGFTsyZUpsRD1HwUYEXP3dkgMoQTeZOt14e2QbeQwG87
-         ndK4MuF6RxfMetm0dTaNEDuGxUGcS8QCRNf8EdRhO1WxALxanB+CAyh/W79/ZJm3fvMp
-         YYFygYpHw5JdKmW+/hP82u/aM6QrNcDqZdyDWdkxT9SbAwgi2hh71tc/1CWrsdlxPI7p
-         lYpOsiLCew1T0osSiP19Nzvz51vkRRnvKG/L+rAC2w9lgi96TnAp5qQanOF2RcmofOC2
-         JvMPuniE5Y8p8LW2wR+8DejDo6CzoLUe6plADTkNoioseYKBfVTvcEm33Nc3cLEaE0le
-         DJHQ==
-X-Gm-Message-State: APjAAAXRA3hwLxkp7cVdzgICNIvwxVGtJCiO8u5j4u7VaoWcVx8nz60O
-        meN6HQ4xaL1F6CpESxq1k4h/S/fQf8uFwa7jr6p0Dg==
-X-Google-Smtp-Source: APXvYqwufd4iFBKjqhDBaeG3AQjxlixJOFLSd8jgmtbAK2KinPCD4CvLAfFVljPOmsHNKEreqPtLmRRn52Zt1FIE25g=
-X-Received: by 2002:ac2:4847:: with SMTP id 7mr4310147lfy.186.1567400878062;
- Sun, 01 Sep 2019 22:07:58 -0700 (PDT)
+        id S1729638AbfIBHOS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Mon, 2 Sep 2019 03:14:18 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:39218 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729330AbfIBHOS (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 2 Sep 2019 03:14:18 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 506FA81F1B;
+        Mon,  2 Sep 2019 07:14:17 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com [10.10.120.255])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0256360920;
+        Mon,  2 Sep 2019 07:14:15 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <11986.1567178014@warthog.procyon.org.uk>
+References: <11986.1567178014@warthog.procyon.org.uk> <85B7196E-D717-4F19-A7E8-82A18287A3DE@linux.vnet.ibm.com>
+To:     Hillf Danton <hdanton@sina.com>
+Cc:     dhowells@redhat.com, Sachin Sant <sachinp@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
+        keyrings@vger.kernel.org
+Subject: Re: Oops (request_key_auth_describe) while running cve-2016-7042 from LTP
 MIME-Version: 1.0
-References: <1565682784-10234-1-git-send-email-sumit.garg@linaro.org>
- <1565682784-10234-6-git-send-email-sumit.garg@linaro.org> <CAFA6WYO7Z-Enmnqt8zA_+VV_p=mAc+AotTetv9hhf2xHm0mR9g@mail.gmail.com>
- <20190830172031.dm5icfyakko6eqak@linux.intel.com> <20190830172405.rafhm362tsuufbqb@linux.intel.com>
-In-Reply-To: <20190830172405.rafhm362tsuufbqb@linux.intel.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Mon, 2 Sep 2019 10:37:47 +0530
-Message-ID: <CAFA6WYNL+ibz94sthC2mzJ+ufV3fJU7g-4ZeRbc+LOfjpsYO2A@mail.gmail.com>
-Subject: Re: [RFC/RFT v4 5/5] KEYS: trusted: Add generic trusted keys framework
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        peterhuewe@gmx.de, jgg@ziepe.ca, jejb@linux.ibm.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <760.1567408455.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8BIT
+Date:   Mon, 02 Sep 2019 08:14:15 +0100
+Message-ID: <761.1567408455@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Mon, 02 Sep 2019 07:14:17 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 30 Aug 2019 at 22:54, Jarkko Sakkinen
-<jarkko.sakkinen@linux.intel.com> wrote:
->
-> On Fri, Aug 30, 2019 at 08:20:31PM +0300, Jarkko Sakkinen wrote:
-> > On Fri, Aug 30, 2019 at 02:49:31PM +0530, Sumit Garg wrote:
-> > > Any comments/feedback on this patch before I send next version of TEE
-> > > patch-set with this patch included?
-> >
-> > Unfortunately don't have time before LPC to go deep with the follow up.
-> >
-> > I will look into this in detail after LPC.
+Hi Hillf,
 
-No worries, I will wait for your feedback.
+Would you like to me to put you down as the author of this patch?  If so, I'll
+need a Signed-off-by from you.
 
->
-> I'll ping you once your first row of patches are in my tree so you
-> can rebase these on top of that.
->
+David
+---
+commit df882ad6d4e24a3763719c1798ea58e87d56c2d7
+Author: Hillf Danton <hdanton@sina.com>
+Date:   Fri Aug 30 15:54:33 2019 +0100
 
-Thanks.
+    keys: Fix missing null pointer check in request_key_auth_describe()
+    
+    If a request_key authentication token key gets revoked, there's a window in
+    which request_key_auth_describe() can see it with a NULL payload - but it
+    makes no check for this and something like the following oops may occur:
+    
+            BUG: Kernel NULL pointer dereference at 0x00000038
+            Faulting instruction address: 0xc0000000004ddf30
+            Oops: Kernel access of bad area, sig: 11 [#1]
+            ...
+            NIP [...] request_key_auth_describe+0x90/0xd0
+            LR [...] request_key_auth_describe+0x54/0xd0
+            Call Trace:
+            [...] request_key_auth_describe+0x54/0xd0 (unreliable)
+            [...] proc_keys_show+0x308/0x4c0
+            [...] seq_read+0x3d0/0x540
+            [...] proc_reg_read+0x90/0x110
+            [...] __vfs_read+0x3c/0x70
+            [...] vfs_read+0xb4/0x1b0
+            [...] ksys_read+0x7c/0x130
+            [...] system_call+0x5c/0x70
+    
+    Fix this by checking for a NULL pointer when describing such a key.
+    
+    Also make the read routine check for a NULL pointer to be on the safe side.
+    
+    Fixes: 04c567d9313e ("[PATCH] Keys: Fix race between two instantiators of a key")
+    Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+    Signed-off-by: David Howells <dhowells@redhat.com>
+    Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 
--Sumit
-
-> /JArkko
+diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
+index e73ec040e250..ecba39c93fd9 100644
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -66,6 +66,9 @@ static void request_key_auth_describe(const struct key *key,
+ {
+ 	struct request_key_auth *rka = dereference_key_rcu(key);
+ 
++	if (!rka)
++		return;
++
+ 	seq_puts(m, "key:");
+ 	seq_puts(m, key->description);
+ 	if (key_is_positive(key))
+@@ -83,6 +86,9 @@ static long request_key_auth_read(const struct key *key,
+ 	size_t datalen;
+ 	long ret;
+ 
++	if (!rka)
++		return -EKEYREVOKED;
++
+ 	datalen = rka->callout_len;
+ 	ret = datalen;
+ 
