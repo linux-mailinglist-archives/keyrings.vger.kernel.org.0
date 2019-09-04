@@ -2,89 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49ACFA8971
-	for <lists+keyrings@lfdr.de>; Wed,  4 Sep 2019 21:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B8BA8DA3
+	for <lists+keyrings@lfdr.de>; Wed,  4 Sep 2019 21:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730303AbfIDPRw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Wed, 4 Sep 2019 11:17:52 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33346 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729635AbfIDPRw (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 4 Sep 2019 11:17:52 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 67C7710F23EC;
-        Wed,  4 Sep 2019 15:17:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com [10.10.120.255])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2EC6560C44;
-        Wed,  4 Sep 2019 15:17:46 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <Pine.LNX.4.44L0.1909031316130.1859-100000@iolanthe.rowland.org>
-References: <Pine.LNX.4.44L0.1909031316130.1859-100000@iolanthe.rowland.org>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     dhowells@redhat.com, Guenter Roeck <linux@roeck-us.net>,
-        viro@zeniv.linux.org.uk, Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/11] usb: Add USB subsystem notifications [ver #7]
+        id S1731650AbfIDRXy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Sep 2019 13:23:54 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:33256 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731447AbfIDRXy (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 4 Sep 2019 13:23:54 -0400
+Received: from lhreml704-cah.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 187B65B3F6DB77A72A5B;
+        Wed,  4 Sep 2019 18:23:52 +0100 (IST)
+Received: from roberto-HP-EliteDesk-800-G2-DM-65W.huawei.com (10.204.65.154)
+ by smtpsuk.huawei.com (10.201.108.45) with Microsoft SMTP Server (TLS) id
+ 14.3.408.0; Wed, 4 Sep 2019 18:23:41 +0100
+From:   Roberto Sassu <roberto.sassu@huawei.com>
+To:     <jarkko.sakkinen@linux.intel.com>, <zohar@linux.ibm.com>
+CC:     <linux-integrity@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <silviu.vlasceanu@huawei.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH] KEYS: trusted: correctly initialize digests and fix locking issue
+Date:   Wed, 4 Sep 2019 19:23:18 +0200
+Message-ID: <20190904172318.610-1-roberto.sassu@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1500.1567610266.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Wed, 04 Sep 2019 16:17:46 +0100
-Message-ID: <1501.1567610266@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.66]); Wed, 04 Sep 2019 15:17:52 +0000 (UTC)
+Content-Type: text/plain
+X-Originating-IP: [10.204.65.154]
+X-CFilter-Loop: Reflected
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Alan Stern <stern@rowland.harvard.edu> wrote:
+This patch fixes two issues introduced with commit 240730437deb ("KEYS:
+trusted: explicitly use tpm_chip structure from tpm_default_chip()").
 
-> > > Unfortunately, I don't know how to fix it and don't have much time to
-> > > investigate it right now - and it's something that can be added back later.
-> > 
-> > The cause of your problem is quite simple:
-> > 
-> >  static int usbdev_notify(struct notifier_block *self,
-> >  			       unsigned long action, void *dev)
-> >  {
-> >  	switch (action) {
-> >  	case USB_DEVICE_ADD:
-> > +		post_usb_device_notification(dev, NOTIFY_USB_DEVICE_ADD, 0);
-> >  		break;
-> >  	case USB_DEVICE_REMOVE:
-> > +		post_usb_device_notification(dev, NOTIFY_USB_DEVICE_REMOVE, 0);
-> > +		usbdev_remove(dev);
-> > +		break;
-> > +	case USB_BUS_ADD:
-> > +		post_usb_bus_notification(dev, NOTIFY_USB_BUS_ADD, 0);
-> > +		break;
-> > +	case USB_BUS_REMOVE:
-> > +		post_usb_bus_notification(dev, NOTIFY_USB_BUS_REMOVE, 0);
-> >  		usbdev_remove(dev);
-> >  		break;
-> >  	}
-> > 
-> > The original code had usbdev_remove(dev) under the USB_DEVICE_REMOVE
-> > case.  The patch mistakenly moves it, putting it under the
-> ------------------------------^^^^^
-> 
-> Sorry, I should have said "duplicates" it.
+It initializes the algorithm in init_digests() for trusted keys, and moves
+the algorithm check in tpm_pcr_extend() before locks are taken in
+tpm_find_get_ops().
 
-Ah, thanks.  I'd already removed the USB bus notifications, so I'll leave them
-out for now.
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Fixes: 240730437deb ("KEYS: trusted: explicitly use tpm_chip structure from tpm_default_chip()")
+---
+ drivers/char/tpm/tpm-interface.c | 8 ++++----
+ security/keys/trusted.c          | 5 +++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-David
+diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
+index 1b4f95c13e00..1fffa91fc148 100644
+--- a/drivers/char/tpm/tpm-interface.c
++++ b/drivers/char/tpm/tpm-interface.c
+@@ -316,14 +316,14 @@ int tpm_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
+ 	int rc;
+ 	int i;
+ 
+-	chip = tpm_find_get_ops(chip);
+-	if (!chip)
+-		return -ENODEV;
+-
+ 	for (i = 0; i < chip->nr_allocated_banks; i++)
+ 		if (digests[i].alg_id != chip->allocated_banks[i].alg_id)
+ 			return -EINVAL;
+ 
++	chip = tpm_find_get_ops(chip);
++	if (!chip)
++		return -ENODEV;
++
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+ 		rc = tpm2_pcr_extend(chip, pcr_idx, digests);
+ 		tpm_put_ops(chip);
+diff --git a/security/keys/trusted.c b/security/keys/trusted.c
+index ade699131065..1fbd77816610 100644
+--- a/security/keys/trusted.c
++++ b/security/keys/trusted.c
+@@ -1228,11 +1228,16 @@ static int __init trusted_shash_alloc(void)
+ 
+ static int __init init_digests(void)
+ {
++	int i;
++
+ 	digests = kcalloc(chip->nr_allocated_banks, sizeof(*digests),
+ 			  GFP_KERNEL);
+ 	if (!digests)
+ 		return -ENOMEM;
+ 
++	for (i = 0; i < chip->nr_allocated_banks; i++)
++		digests[i].alg_id = chip->allocated_banks[i].alg_id;
++
+ 	return 0;
+ }
+ 
+-- 
+2.17.1
+
