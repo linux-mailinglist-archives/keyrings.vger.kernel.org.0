@@ -2,31 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2290DAACCF
-	for <lists+keyrings@lfdr.de>; Thu,  5 Sep 2019 22:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E85C2AAD2E
+	for <lists+keyrings@lfdr.de>; Thu,  5 Sep 2019 22:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388509AbfIEUKC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Sep 2019 16:10:02 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39844 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732468AbfIEUKC (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 5 Sep 2019 16:10:02 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 5C742300BEAE;
-        Thu,  5 Sep 2019 20:10:01 +0000 (UTC)
-Received: from ovpn-124-235.rdu2.redhat.com (ovpn-124-235.rdu2.redhat.com [10.10.124.235])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 26E605C1D4;
-        Thu,  5 Sep 2019 20:09:59 +0000 (UTC)
-Message-ID: <d19e8783e7fe47e51fbc12bf33c95fea16c93070.camel@redhat.com>
+        id S1731823AbfIEUjV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 5 Sep 2019 16:39:21 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:44535 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390045AbfIEUjV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Sep 2019 16:39:21 -0400
+Received: by mail-lj1-f193.google.com with SMTP id u14so3861771ljj.11
+        for <keyrings@vger.kernel.org>; Thu, 05 Sep 2019 13:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JszmXlgx1+xgmZVB9Ngs6u7Ky/QX8naYvJJhJ3ScXns=;
+        b=dUEsT8ouSuhTdLO9XeIJ7j2pUQ/Jzy9iWK7dNbuhxCeiK9q0D7pXpiEMTKij3qFmLF
+         /0ePwe6D4PLTWPKkntRM1vtWtPyFUYzwKF5X1Vep8dqqrs4xqpQeioJiw+0evrb+dVxs
+         mvw4lOCfYV3TKiH7AH5TB6rlYwT5QQmegELDY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JszmXlgx1+xgmZVB9Ngs6u7Ky/QX8naYvJJhJ3ScXns=;
+        b=qUKI32qVxjuV8+ta3HoceqJzoPObtxMVOuuKKIWqG0FR2RsXC9FlkzvTHYuRnfzvqK
+         9L7V8LrNb4py7FUdLBn3nNI6WdZL6n300Nv7BvWUMTeKPf1A91V0IHgPkJ6ATIh9Aukk
+         rfuM3owFdKQ8vkSredj/Cyq8BGpOge1UoHH65u9JILBV5pX55jht5A7++Nr4dVKixIHV
+         ELq8gQMuY1RJMKZDGMotjFRMb0SDjVILy7zj6DObSHasLl83/KUhjem+KHNoWWFhu5dO
+         GOZT69qGWyUlZDfeV0PskgY/8sjEqTn3BcSuwMzLv9Ba/Ggshr9QkWadA310MKiCGwmx
+         R6SA==
+X-Gm-Message-State: APjAAAXB/b5065mp4640vWqRUEbJIjEpUn2s0bMtPqzEyYDK6QcD381E
+        D9yyW4gh6FJX+KbHyRCSwoFUqydYeRo=
+X-Google-Smtp-Source: APXvYqxYVdGnVqAyki498vhDimkExdknnxMLHXiNikq/L7rItXX2A650pVRRW2EVeZF1BpTPIMEW1Q==
+X-Received: by 2002:a2e:990d:: with SMTP id v13mr3447732lji.146.1567715958921;
+        Thu, 05 Sep 2019 13:39:18 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id g10sm642275lfb.76.2019.09.05.13.39.17
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Sep 2019 13:39:17 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id w67so3150862lff.4
+        for <keyrings@vger.kernel.org>; Thu, 05 Sep 2019 13:39:17 -0700 (PDT)
+X-Received: by 2002:ac2:47f8:: with SMTP id b24mr3791028lfp.134.1567715957179;
+ Thu, 05 Sep 2019 13:39:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <156763534546.18676.3530557439501101639.stgit@warthog.procyon.org.uk>
+ <CAHk-=wh5ZNE9pBwrnr5MX3iqkUP4nspz17rtozrSxs5-OGygNw@mail.gmail.com>
+ <17703.1567702907@warthog.procyon.org.uk> <CAHk-=wjQ5Fpv0D7rxX0W=obx9xoOAxJ_Cr+pGCYOAi2S9FiCNg@mail.gmail.com>
+ <CAKCoTu7ms_Mr-q08d9XB3uascpzwBa5LF9JTT2aq8uUsoFE8aQ@mail.gmail.com>
+In-Reply-To: <CAKCoTu7ms_Mr-q08d9XB3uascpzwBa5LF9JTT2aq8uUsoFE8aQ@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 5 Sep 2019 13:39:00 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjcsxQ8QB_v=cwBQw4pkJg7pp-bBsdWyPivFO_OeF-y+g@mail.gmail.com>
+Message-ID: <CAHk-=wjcsxQ8QB_v=cwBQw4pkJg7pp-bBsdWyPivFO_OeF-y+g@mail.gmail.com>
 Subject: Re: Why add the general notification queue and its sources
-From:   David Lehman <dlehman@redhat.com>
-To:     Ray Strode <rstrode@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
+To:     Ray Strode <rstrode@redhat.com>
+Cc:     David Howells <dhowells@redhat.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Steven Whitehouse <swhiteho@redhat.com>,
         Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
         keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-block <linux-block@vger.kernel.org>,
@@ -35,70 +69,77 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Linux API <linux-api@vger.kernel.org>,
         Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        Ian Kent <ikent@redhat.com>
-Date:   Thu, 05 Sep 2019 16:09:58 -0400
-In-Reply-To: <CAKCoTu7ms4ckwDA_-onuJg+famnMzGZE9gGUcqqMz0kCAAECRg@mail.gmail.com>
-References: <156763534546.18676.3530557439501101639.stgit@warthog.procyon.org.uk>
-         <CAHk-=wh5ZNE9pBwrnr5MX3iqkUP4nspz17rtozrSxs5-OGygNw@mail.gmail.com>
-         <17703.1567702907@warthog.procyon.org.uk>
-         <CAHk-=wjQ5Fpv0D7rxX0W=obx9xoOAxJ_Cr+pGCYOAi2S9FiCNg@mail.gmail.com>
-         <11667f69-fbb5-28d2-3c31-7f865f2b93e5@redhat.com>
-         <CAKCoTu7ms4ckwDA_-onuJg+famnMzGZE9gGUcqqMz0kCAAECRg@mail.gmail.com>
-Organization: Red Hat, Inc.
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "Ray, Debarshi" <debarshi.ray@gmail.com>,
+        Robbie Harwood <rharwood@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Thu, 05 Sep 2019 20:10:01 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2019-09-05 at 14:51 -0400, Ray Strode wrote:
+On Thu, Sep 5, 2019 at 11:33 AM Ray Strode <rstrode@redhat.com> wrote:
+>
 > Hi,
-> 
-> On Thu, Sep 5, 2019 at 2:37 PM Steven Whitehouse <swhiteho@redhat.com
-> > wrote:
-> > The original reason for the mount notification mechanism was so
-> > that we
-> > are able to provide information to GUIs and similar filesystem and
-> > storage management tools, matching the state of the filesystem with
-> > the
-> > state of the underlying devices. This is part of a larger project
-> > entitled "Project Springfield" to try and provide better management
-> > tools for storage and filesystems. I've copied David Lehman in,
-> > since he
-> > can provide a wider view on this topic.
-> So one problem that I've heard discussed before is what happens in a
-> thinp
-> setup when the disk space is overallocated and gets used up. IIRC,
-> the
-> volumes just sort of eat themselves?
-> 
-> Getting proper notification of looming catastrophic failure to the
-> workstation user
-> before it's too late would be useful, indeed.
-> 
-> I don't know if this new mechanism dhowells has development can help
-> with that,
+>
+> On Thu, Sep 5, 2019 at 1:20 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> > You've at least now answered part of the "Why", but you didn't
+> > actually answer the whole "another developer" part.
+> It's certainly something we've wanted in the GNOME world for a long time:
+>
+> See for instance
+>
+> https://bugzilla.redhat.com/show_bug.cgi?id=991110
 
-My understanding is that there is already a dm devent that gets sent
-when the low water mark is crossed for a thin pool, but there is
-nothing in userspace that knows how to effectively get the user's
-attention at that time.
+That is *way* too specific to make for any kind of generic
+notification mechanism.
 
-> and/or if solving that problem is part of the Project Springfield
-> initiative or not. Do you
-> know off hand?
+Also, what is the security model here? Open a special character
+device, and you get access to random notifications from random
+sources?
 
-We have been looking into building a userspace event notification
-service (for storage, initially) to aggregate and add context to low-
-level events such as these, providing a single source for all kinds of
-storage events with an excellent signal:noise ratio. Thin pool
-exhaustion is high on the list of problems we would want to address.
+That makes no sense. Do they have the same security permissions?
 
+USB error reporting is one thing - and has completely different
+security rules than some per-user key thing (or system? or namespace?
+Or what?)
 
-David
+And why would you do a broken big-key thing in the kernel in the first
+place? Why don't you just have a kernel key to indirectly encrypt
+using a key and "additional user space data". The kernel should simply
+not take care of insane 1MB keys.
 
+Big keys just don't make sense for a kernel. Just use the backing
+store THAT YOU HAVE TO HAVE ANYWAY. Introduce some "indirect key"
+instead that is used to encrypt and authenticate the backing store.
+
+And mix in /proc/mounts tracking, which has a namespace component and
+completely different events and security model (likely "none" - since
+you can always read your own /proc/mounts).
+
+So honestly, this all just makes me go "user interfaces are hard, all
+the users seem to have *completely* different requirements, and nobody
+has apparently really tested this in practice".
+
+Maybe a generic notification mechanism is sensible. But I don't see
+how security issues could *possibly* be unified, and some of the
+examples given (particularly "track changes to /proc/mounts") seem to
+have obviously better alternatives (as in "just support poll() on
+it").
+
+All this discussion has convinced me of is that this whole thing is
+half-baked and not ready even on a conceptual level.
+
+So as far as I'm concerned, I think I want things like actual
+"Tested-by:" lines from actual users, because it's not clear that this
+makes sense. Gnome certainly should work as a regular user, if you
+need a system daemon for it with root privileges you might as well
+just do any notification entirely inside that daemon in user space.
+Same goes for /proc/mounts - which as mentioned has a much more
+obvious interface for waiting anyway.
+
+User interfaces need a lot of thought and testing. They shouldn't be
+ad-hoc "maybe this could work for X, Y and Z" theories.
+
+                    Linus
