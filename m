@@ -2,71 +2,55 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 411F5ABE75
-	for <lists+keyrings@lfdr.de>; Fri,  6 Sep 2019 19:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D20CBAC09B
+	for <lists+keyrings@lfdr.de>; Fri,  6 Sep 2019 21:33:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390180AbfIFRPH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 6 Sep 2019 13:15:07 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:38603 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390079AbfIFRPG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Sep 2019 13:15:06 -0400
-Received: by mail-lf1-f65.google.com with SMTP id c12so5666061lfh.5
-        for <keyrings@vger.kernel.org>; Fri, 06 Sep 2019 10:15:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HgnD7xuPPV7kJPJv1y/oxrmL+dxJJMuTrQ4Q4FChOdU=;
-        b=S6FXIRgesHQioG8oGxLk5Tjwzb4SPiDI6TQkN/1PfVNUkJMeUM47+DjxmFZZnsgnqF
-         aVUh5gjMjdVeG3Ez1LdJPa9NKOGaCIHQumkrSOBf3OS+YC+yfMLrM6/zSsHJRG8ghrAg
-         d5Mr3bY5beGZhlJwy9YNIxLVtQzi4ydOFbhE4=
+        id S2393340AbfIFTdS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 6 Sep 2019 15:33:18 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:54986 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728603AbfIFTdS (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 6 Sep 2019 15:33:18 -0400
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 6891F2D6A23
+        for <keyrings@vger.kernel.org>; Fri,  6 Sep 2019 19:33:17 +0000 (UTC)
+Received: by mail-wr1-f71.google.com with SMTP id b9so2974938wrt.5
+        for <keyrings@vger.kernel.org>; Fri, 06 Sep 2019 12:33:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HgnD7xuPPV7kJPJv1y/oxrmL+dxJJMuTrQ4Q4FChOdU=;
-        b=JFMixwDZxiBUApCTMzmVp7ePcAKKv2v3iKZ3obwNE/VB4pxiMQ1LYAc4XkW3QabFZL
-         3I1n7YYmkyJu2pqk8PTUsZHTX2NV9tZRC0MMKN4W5902XFgZZeui7ELbT8BBaWNBZKjL
-         JTiQ56w+jedXTAoZNPGeJTXg7rogeDlOkB+Q1NjvYTVfgNTlkzYSgl3LZZVbzZFtvt6u
-         WJjljHm+wt9qxxuZf8qNxz4Qa+bl7cNyR878ikRAkTNSOuc5V+H4drQ9KOxa3HlASS/M
-         G0kKnu8x6EDY5kWSvOQDWCbZiklny0HKqmXFWo7TccuAJTgiDgzC/C9M/Wq2AYTTQ21B
-         DYHg==
-X-Gm-Message-State: APjAAAVLkMZg46YyhqS7JY0NovET18vB4FNgFxo+nZ7PDWYASFg/Icl2
-        WBdg+DDnHSrJwcXiR2TYtCvKVesw41c=
-X-Google-Smtp-Source: APXvYqwagKW4sbGqzq9N1rVMlYYK2aJIIDU9Ta4rJviQHv0Y6U9EYZiSgFWedYj7u/YEB39pBuakag==
-X-Received: by 2002:a19:8017:: with SMTP id b23mr6937665lfd.132.1567790104944;
-        Fri, 06 Sep 2019 10:15:04 -0700 (PDT)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
-        by smtp.gmail.com with ESMTPSA id s26sm487118lfc.60.2019.09.06.10.15.04
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2019 10:15:04 -0700 (PDT)
-Received: by mail-lj1-f170.google.com with SMTP id 7so6667102ljw.7
-        for <keyrings@vger.kernel.org>; Fri, 06 Sep 2019 10:15:04 -0700 (PDT)
-X-Received: by 2002:a2e:8507:: with SMTP id j7mr6626752lji.156.1567790104003;
- Fri, 06 Sep 2019 10:15:04 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=R/U7mUhygsddH+fGB+zy3E9CKa5h+Z8Nm54osdGuOgs=;
+        b=A9L2l2E3AcZvyMl68nS1CK0Qjcwo5FBPl4hRUzKFr6Et0ZMF58H5V4bcYkIZx5Y8Um
+         uS6ZqDvFr/2fxI8XDKpdrI9Y4L46Qr6W2yWIkcWfVoeU2cHZ3zOME2ioRj1Zs/dtPmTr
+         yy2vnjQw6XhjaUCePa1d/juzmae4WLx7H9kwh7+zxjmJo4WXnzXL/Lg2JbOqbNU3f9Ec
+         RJ9DywvdUyOFpjWYtPpVpygIZyTaTWArGlbu8Zny+x7cBpzQoR8XE4O3nNE9q+HCDANS
+         jn/HyNDP40sLCe4H0sfKQ4WKLeqE05qSmIssDJcjEM+KI3UUVibpOEPo7cHnc9h2EKlY
+         dHRA==
+X-Gm-Message-State: APjAAAVMmqwyYHbPKpgOXtxx6CTuUbqtIxH3reNfGrkVhUd4hyx5uVWU
+        k1YkT6Mz2Uhiknvl6JLRKJuIRfmkZYGIB/f7cAtsbgeTkXfbaQ+GbLQlgm8EnqhXwgk4GqA+CPB
+        Jko1U6iXZ7mi3Gok0nKWNaAwchxKyjArw4vg=
+X-Received: by 2002:a1c:ca02:: with SMTP id a2mr9252535wmg.127.1567798396044;
+        Fri, 06 Sep 2019 12:33:16 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyTIyfiPV/yAsPvflKtcRM07P7nCUNe0sQoeZ2AMSNSLR0dzqdoxrOYrd5Bg/c1ZdH+IG1R0aOFq6s5vYlI0XA=
+X-Received: by 2002:a1c:ca02:: with SMTP id a2mr9252505wmg.127.1567798395711;
+ Fri, 06 Sep 2019 12:33:15 -0700 (PDT)
 MIME-Version: 1.0
 References: <156763534546.18676.3530557439501101639.stgit@warthog.procyon.org.uk>
  <CAHk-=wh5ZNE9pBwrnr5MX3iqkUP4nspz17rtozrSxs5-OGygNw@mail.gmail.com>
  <17703.1567702907@warthog.procyon.org.uk> <CAHk-=wjQ5Fpv0D7rxX0W=obx9xoOAxJ_Cr+pGCYOAi2S9FiCNg@mail.gmail.com>
- <CAKCoTu7ms_Mr-q08d9XB3uascpzwBa5LF9JTT2aq8uUsoFE8aQ@mail.gmail.com>
- <CAHk-=wjcsxQ8QB_v=cwBQw4pkJg7pp-bBsdWyPivFO_OeF-y+g@mail.gmail.com>
- <5396.1567719164@warthog.procyon.org.uk> <CAHk-=wgbCXea1a9OTWgMMvcsCGGiNiPp+ty-edZrBWn63NCYdw@mail.gmail.com>
- <14883.1567725508@warthog.procyon.org.uk> <CAHk-=wjt2Eb+yEDOcQwCa0SrZ4cWu967OtQG8Vz21c=n5ZP1Nw@mail.gmail.com>
- <27732.1567764557@warthog.procyon.org.uk> <CAHk-=wiR1fpahgKuxSOQY6OfgjWD+MKz8UF6qUQ6V_y2TC_V6w@mail.gmail.com>
- <CAHk-=wioHmz69394xKRqFkhK8si86P_704KgcwjKxawLAYAiug@mail.gmail.com>
- <8e60555e-9247-e03f-e8b4-1d31f70f1221@redhat.com> <CAHk-=wg6=qhw0-F=2_8y=VdT+fj8k7G1+t2XNSkRYimXhampVg@mail.gmail.com>
-In-Reply-To: <CAHk-=wg6=qhw0-F=2_8y=VdT+fj8k7G1+t2XNSkRYimXhampVg@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 6 Sep 2019 10:14:47 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjaSzdzYNuQXUSZNkT75Wmfw2v96tekgnV8nOwBQ3h0ig@mail.gmail.com>
-Message-ID: <CAHk-=wjaSzdzYNuQXUSZNkT75Wmfw2v96tekgnV8nOwBQ3h0ig@mail.gmail.com>
+ <CAKCoTu7ms_Mr-q08d9XB3uascpzwBa5LF9JTT2aq8uUsoFE8aQ@mail.gmail.com> <CAHk-=wjcsxQ8QB_v=cwBQw4pkJg7pp-bBsdWyPivFO_OeF-y+g@mail.gmail.com>
+In-Reply-To: <CAHk-=wjcsxQ8QB_v=cwBQw4pkJg7pp-bBsdWyPivFO_OeF-y+g@mail.gmail.com>
+From:   Ray Strode <rstrode@redhat.com>
+Date:   Fri, 6 Sep 2019 15:32:37 -0400
+Message-ID: <CAKCoTu70E9cbVu=jVG4EiXnTNiG-znvri6Omh2t++1zRw+639Q@mail.gmail.com>
 Subject: Re: Why add the general notification queue and its sources
-To:     Steven Whitehouse <swhiteho@redhat.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     David Howells <dhowells@redhat.com>,
-        Ray Strode <rstrode@redhat.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Steven Whitehouse <swhiteho@redhat.com>,
         Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
         keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-block <linux-block@vger.kernel.org>,
@@ -79,33 +63,71 @@ Cc:     David Howells <dhowells@redhat.com>,
         "Ray, Debarshi" <debarshi.ray@gmail.com>,
         Robbie Harwood <rharwood@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Sep 6, 2019 at 10:07 AM Linus Torvalds
+Hi,
+
+On Thu, Sep 5, 2019 at 4:39 PM Linus Torvalds
 <torvalds@linux-foundation.org> wrote:
->
-> Hmm. Maybe somebody can come up with a good legacy signaling solution
-> (and "just use another pipe for error notification and OOB data" for
-> the first one may _work_, but that sounds pretty hacky and just not
-> very convenient).
+> That is *way* too specific to make for any kind of generic
+> notification mechanism.
+Well from my standpoint, I just don't want to have to poll... I don't
+have a strong opinion
+about how it looks architecturally to reach that goal.
 
-... actually, maybe the trivial solution for at least some prototyping
-cases is to make any user mode writers never drop messages. Don't use
-a non-blocking fd for the write direction.
+Ideally, at a higher level, I want the userspace api that gnome uses
+to be something
+like:
 
-That's obviously *not* acceptable for a kernel writer, and it's not
-acceptable for an actual system daemon writer (that you could block by
-just not reading the notifications), but it's certainly acceptable for
-the "let's prototype having kernel support for /proc/mounts
-notifications using a local thread that just polls for it every few
-seconds".
+err = krb5_cc_watch (ctx, ccache, (krb5_cc_change_fct) on_cc_change ,
+&watch_fd);
 
-So at least for _some_ prototypes you can probably just ignore the
-overflow issue. It won't get you full test coverage, but it will get
-you a working legacy solution and a "look, if we have kernel support
-for this, we can do better".
+then a watch_fd would get handed back and caller could poll on it. if
+it woke up poll(),
+caller would do
 
-                 Linus
+krb5_cc_watch_update (ctx, ccache, watch_fd)
+
+or so and it would trigger on_cc_change to get called (or something like that).
+
+If under the hood,  fd comes from opening /dev/watch_queue, and
+krb5_cc_watch_update reads from some mmap'ed buffer to decide whether
+or not to call on_cc_change, that's fine with me.
+
+If under the hood, fd comes from a pipe fd returned from some ioctl or syscall,
+and krb5_cc_watch_update reads messages directly from that fd to decide
+whether or not to call on_cc_change, that's fine with me. too.
+
+it could be an eventfd too, or whatever, too, just as long as its
+something I can add
+to poll() and don't have to intermittently poll ... :-)
+
+> Also, what is the security model here? Open a special character
+> device, and you get access to random notifications from random
+> sources?
+I guess dhowells answered this...
+
+> And why would you do a broken big-key thing in the kernel in the first
+> place? Why don't you just have a kernel key to indirectly encrypt
+> using a key and "additional user space data". The kernel should simply
+> not take care of insane 1MB keys.
+🤷 dunno.  I assume you're referencing the discussions from comment 0
+on that 2013 bug.  I wasn't involved in those discussions, I just chimed in
+after they happened trying to avoid having to add polling :-)
+
+I have no idea why a ticket would get that large. I assume it only is in weird
+edge cases.
+
+Anyway, gnome treats the tickets as opaque blobs.  it doesn't do anything
+with them other than tell the user when they need to get refreshed...
+
+all the actual key manipulation happens from krb5 libraries.
+
+of course, one advantage of having the tickets kernel side is nfs could
+in theory access them directly, rather than up calling back to userspace...
+
+--Ray
