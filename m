@@ -2,105 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7760EAC3ED
-	for <lists+keyrings@lfdr.de>; Sat,  7 Sep 2019 03:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929CFAC8E8
+	for <lists+keyrings@lfdr.de>; Sat,  7 Sep 2019 21:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406426AbfIGBfy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 6 Sep 2019 21:35:54 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:45895 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406428AbfIGBfx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Sep 2019 21:35:53 -0400
-Received: by mail-vs1-f66.google.com with SMTP id s3so5267086vsi.12
-        for <keyrings@vger.kernel.org>; Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
-        b=aAqX8GF3NxJfYWTz+7NIDPLIjo0XP9/JZPono8ypSM0neNSMZHUmzdkq2Se7OJFOh9
-         PoY/oOktOwroaWpUhvkh/0lVCpOy0KJOLjA7Oi/nzaXZuFlZGZbL/4747zKBrwwhtzas
-         gG/MLSk0D7meYg6rv72yzT1Ye0iKhsbuA3x7qNKl17C/ShWvLceuPesYJRB24JI3yF/d
-         RlQ1pN3llWGMGktA9M5mcCV2mXYnONq4mktjFBILLKDKqhDlfm3tts6F97UbE+dOxwKG
-         stLn6T4VogMt45OE5RvOA2uSkgh1bK36Tx1Z5lO8sum/OTUS4kxFqGu49PNKiFyRTNrp
-         8fGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
-        b=PIH1ht1wfzehM69vg+MBjiCCbAX0Rw/15a7wq6qCEJ2DnRBIT3Cb1loL23nMqOGpLM
-         dle9sZhHlRjnnIsCvuoeW0OQ2rxS1R+pOHjNHvnm8eG/YbKnFsuwrkLe/DhbYCAwzVOl
-         y8e6bHk61w101QT5woDpMV0AkNTFmbwXx2FCz9kFHTYvdpHJpBNYt+UHiMbB5M6WfqXu
-         YVv6T9mVW7N4abIutFfpSneAnmGc5nEa70YaV5XxGBAo26rYrpoIRLst5r7yrT5UL3Zj
-         9DDemvZEoXJ+VYY4aNUP2guf13UCAIlMk225k/QWyNJ0tjRKCDDV6XVYhDkD0VDCPF7t
-         VoUA==
-X-Gm-Message-State: APjAAAXQrPfl996YanlTGEf/5261oHROhNYs9RkuvYBEv/fHFozW9bgY
-        sitVJnL+LONMTF/zeqaEhoabdQ4MY5k1KKt9Qn0=
-X-Google-Smtp-Source: APXvYqyTtP/aHSfYAfmSrs7MWIe/GTCmIy0j5/fOPaIGMbEKnvKQPW7B/2OIkBGdOM/ShGwFA2jh7u3jozMFI6xv0E8=
-X-Received: by 2002:a05:6102:15a:: with SMTP id a26mr6991278vsr.143.1567820152517;
- Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:35:52 -0700 (PDT)
-Reply-To: waltonalice41@gmail.com
-From:   Alice Walton <saraharmony501@gmail.com>
-Date:   Sat, 7 Sep 2019 02:35:52 +0100
-Message-ID: <CAHoQAbVi2eUJHHAx8-i6uv=tXXkdZbDQj+bGXrd4foXr+8goAQ@mail.gmail.com>
-Subject: Please forgive me
-To:     undisclosed-recipients:;
+        id S2395217AbfIGTCN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 7 Sep 2019 15:02:13 -0400
+Received: from mga05.intel.com ([192.55.52.43]:1726 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2394388AbfIGTCN (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sat, 7 Sep 2019 15:02:13 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Sep 2019 12:02:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,478,1559545200"; 
+   d="scan'208";a="186098308"
+Received: from bemmett-mobl.amr.corp.intel.com ([10.249.37.206])
+  by orsmga003.jf.intel.com with ESMTP; 07 Sep 2019 12:02:09 -0700
+Message-ID: <10abf6bea8b2612a40eae338e94704d152f53825.camel@linux.intel.com>
+Subject: Re: [PATCH v2] KEYS: trusted: correctly initialize digests and fix
+ locking issue
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Roberto Sassu <roberto.sassu@huawei.com>, zohar@linux.ibm.com
+Cc:     linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, silviu.vlasceanu@huawei.com
+Date:   Sat, 07 Sep 2019 22:02:08 +0300
+In-Reply-To: <20190904185057.8400-1-roberto.sassu@huawei.com>
+References: <20190904185057.8400-1-roberto.sassu@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.32.2-1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-My Dearest,
+On Wed, 2019-09-04 at 20:50 +0200, Roberto Sassu wrote:
+> This patch fixes two issues introduced with commit 0b6cf6b97b7e ("tpm: pass
+> an array of tpm_extend_digest structures to tpm_pcr_extend()").
+> 
+> It initializes the algorithm in init_digests() for trusted keys, and moves
+> the algorithm check in tpm_pcr_extend() before locks are taken in
+> tpm_find_get_ops().
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Fixes: 0b6cf6b97b7e ("tpm: pass an array of tpm_extend_digest structures to tpm_pcr_extend()")
+> ---
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as a big surprise.
+The changelog is missing. You should place it right after these three
+dashes before diffstat. So, why did you do v2?
 
-Actually, I came across your E-mail from my personal search afterward
-I decided to email you directly believing that you will be honest to
-fulfil my final wish before anything happens to me. Meanwhile, I am
-Madam Alice Walton, 71 years old childless widow from France but i
-reside and doing Gold mining business in Africa before i fall sick.
+I don't see any description of the two issues. The commit messages
+goes on explaining right away what this patch does. Would be nice
+to have one paragraph describing both of the issues at first before
+striving into solutions.
 
-I am suffering from Adenocarcinoma Cancer of the lungs for the past 8
-years and from all indication my condition is really deteriorating as
-my doctors have confirmed and courageously advised me that I may not
-live beyond 3 weeks from now for the reason that my tumor has reached
-a critical stage which has defiled all forms of medical treatment.
+Also, the granularity should be one patch per one issue so this will
+require two patches in total.
 
-Since my days are numbered, I=E2=80=99ve decided willingly to fulfil my
-long-time vow to donate to the less privileges the sum of($18.5
-million dollars) I deposited in my offshore account over 7 years now
-because I have tried to handle this project by myself but I have seen
-that my health could not allow me to do so anymore.
+/Jarkko
 
-My promise to God includes building of well-equipped charity
-foundation/hospital and a technical school for the orphans and less
-privileges.
-
-Since i am not capable to handle this again myself due to my critical
-health condition,please i need your consent to help me receive my
-money from the bank and use it to do this divine works of God in your
-country in my name so that my soul can be at rest if anything happens
-to me.
-
-If you will be honest, kind and willing to assist me handle this
-charity project as I=E2=80=99ve mentioned here, I will like you to provide =
-me
-your personal data like,
-
-(1) Your full name:
-(2) country:
-(3) Occupation:
-(4) phone number:
-(5) Age:
-
-Let me have this data so that i can link you up with my bank as my
-representative and receiver of the funds now that i am still alive.
-
-Warmest Regards!
-Mrs. Alice Walton
