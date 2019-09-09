@@ -2,57 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A16ABADCB2
-	for <lists+keyrings@lfdr.de>; Mon,  9 Sep 2019 18:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 548C9AE0D8
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2019 00:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732353AbfIIQGj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Sep 2019 12:06:39 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:37109 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729326AbfIIQGj (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Sep 2019 12:06:39 -0400
-Received: by mail-lj1-f196.google.com with SMTP id y5so2509943lji.4
-        for <keyrings@vger.kernel.org>; Mon, 09 Sep 2019 09:06:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=SaJd+vcpAcPmnUaG1bR1QRlYttx7KwnofZpSRa1KC1JYiXkmfqmtQeaTBTJOwqQRCx
-         W2vME51nxAPxcITksj4cGfkmeeReP1wps3cf/L8OVl7w24twu+VEJMQdaZ1WE88NZ8HK
-         Ua2waXm0gsZWCdfllU+kci3uir9+LOj0dkcPp+VmJAYQdqv8RFKOlZV0wOKlOIBVPFz1
-         w2pr3keS1iighGyeTdTQWNJbPWSaK+G7+3l6D0xjtUiLTyusdPLWsACwSoW8czG7yHFq
-         Lkr+LQ1+54Zlf4ZEMGWTvN3Ch4PvYMukKI1Kh+XlpUc6U5gzSaIGYLD5cQGe9zqcSzPy
-         Aa/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=sX7dJoQfFSENQYB8KXLCMVkugpFJNftSl2TyKMxQeLTow55DLjr+YYPOvW/5S/tQnc
-         OkWLOD1CeeIlIv4BAct14JJgYAonaG0T8nLS9TTPrGADiihKC3rKivNOos5exGwA5iRU
-         Kb/radEavzkdjbn5vtXY47Qkq3q2bN2nj7FZBtacI5ol066of2wbK3gzW4mrgxV+ZFko
-         Hnabhw1fIYYFLK0aedoKMZTvJNZdZZ8peI0v48hhhf3aVSKlVRwqdVk46NJg5t1kn2RW
-         9NciCVMvaHHvluCho2112S7DVUdovF5h5hC4YB4U3E3YVisDyUixvUOXXuA/8Zfegm9S
-         /F+w==
-X-Gm-Message-State: APjAAAXe876lAnrAJH69c69DCBK2mX31Pzsa0z8e9lk02Kkx4DdyvsxS
-        gA1fXc36QJAscuCljirXcqApbFpYicSkeplsAZ1Xww==
-X-Google-Smtp-Source: APXvYqw5yS2oVHTBwTvgZIy6XnaJBn3bkmrBRvNxEUsAQwcy5eySz3d6Qggfx2Jvmf4cR7exqAxfZ5WFzc1CBWzH4kE=
-X-Received: by 2002:a2e:551:: with SMTP id 78mr16782068ljf.48.1568045197335;
- Mon, 09 Sep 2019 09:06:37 -0700 (PDT)
+        id S2406186AbfIIWQj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Sep 2019 18:16:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45344 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2406141AbfIIWQ1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 9 Sep 2019 18:16:27 -0400
+Received: from sasha-vm.mshome.net (unknown [62.28.240.114])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7DE292171F;
+        Mon,  9 Sep 2019 22:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568067387;
+        bh=e1h3js1akksNSdN7MbHfoSgbNrAbeyQ3zCDjASU0y00=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=A0hMFG1jEQMDske5iVUdteeo8Pbl3A/5BzfHDREPMRlC8VqD6Ux2WTRdRnYUsxgm7
+         3CCRzzmhA0/WPmwNbh1HfoRD/hUbAfn3nFb4UCra757OrPAjvRP/Rv9rNIAV2fY3DC
+         mBk59k8XDTdUXdps6I6ulZcIcjiyR3/ZTXR/QmQ8=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hillf Danton <hdanton@sina.com>,
+        Sachin Sant <sachinp@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 10/12] keys: Fix missing null pointer check in request_key_auth_describe()
+Date:   Mon,  9 Sep 2019 11:40:50 -0400
+Message-Id: <20190909154052.30941-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190909154052.30941-1-sashal@kernel.org>
+References: <20190909154052.30941-1-sashal@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:ab3:741a:0:0:0:0:0 with HTTP; Mon, 9 Sep 2019 09:06:36 -0700 (PDT)
-Reply-To: kenmorganlawhouse@hotmail.com
-From:   ken morgan <kenmorganlawhouse5050@gmail.com>
-Date:   Tue, 10 Sep 2019 05:06:36 +1300
-Message-ID: <CAO+8Tfw8SsFrWFwydv7jHjCc2eDkQp2OtVL+2H_3Oj1u43ANFA@mail.gmail.com>
-Subject: Hello my dear i am Ken Morgan i have a fund transaction worth 15.5
- million US dollars that i want to discuss with you kindly get back to me for
- more details?
-To:     keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+From: Hillf Danton <hdanton@sina.com>
+
+[ Upstream commit d41a3effbb53b1bcea41e328d16a4d046a508381 ]
+
+If a request_key authentication token key gets revoked, there's a window in
+which request_key_auth_describe() can see it with a NULL payload - but it
+makes no check for this and something like the following oops may occur:
+
+	BUG: Kernel NULL pointer dereference at 0x00000038
+	Faulting instruction address: 0xc0000000004ddf30
+	Oops: Kernel access of bad area, sig: 11 [#1]
+	...
+	NIP [...] request_key_auth_describe+0x90/0xd0
+	LR [...] request_key_auth_describe+0x54/0xd0
+	Call Trace:
+	[...] request_key_auth_describe+0x54/0xd0 (unreliable)
+	[...] proc_keys_show+0x308/0x4c0
+	[...] seq_read+0x3d0/0x540
+	[...] proc_reg_read+0x90/0x110
+	[...] __vfs_read+0x3c/0x70
+	[...] vfs_read+0xb4/0x1b0
+	[...] ksys_read+0x7c/0x130
+	[...] system_call+0x5c/0x70
+
+Fix this by checking for a NULL pointer when describing such a key.
+
+Also make the read routine check for a NULL pointer to be on the safe side.
+
+[DH: Modified to not take already-held rcu lock and modified to also check
+ in the read routine]
+
+Fixes: 04c567d9313e ("[PATCH] Keys: Fix race between two instantiators of a key")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ security/keys/request_key_auth.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
+index e45b5cf3b97fd..8491becb57270 100644
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -66,6 +66,9 @@ static void request_key_auth_describe(const struct key *key,
+ {
+ 	struct request_key_auth *rka = get_request_key_auth(key);
+ 
++	if (!rka)
++		return;
++
+ 	seq_puts(m, "key:");
+ 	seq_puts(m, key->description);
+ 	if (key_is_positive(key))
+@@ -83,6 +86,9 @@ static long request_key_auth_read(const struct key *key,
+ 	size_t datalen;
+ 	long ret;
+ 
++	if (!rka)
++		return -EKEYREVOKED;
++
+ 	datalen = rka->callout_len;
+ 	ret = datalen;
+ 
+-- 
+2.20.1
 
