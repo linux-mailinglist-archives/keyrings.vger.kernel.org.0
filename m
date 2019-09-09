@@ -2,27 +2,27 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67049AE0EE
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2019 00:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4724CAE0C4
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2019 00:17:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392140AbfIIWSK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Sep 2019 18:18:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46164 "EHLO mail.kernel.org"
+        id S2406331AbfIIWR2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Sep 2019 18:17:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46652 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392116AbfIIWRK (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 9 Sep 2019 18:17:10 -0400
+        id S2392262AbfIIWR1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 9 Sep 2019 18:17:27 -0400
 Received: from sasha-vm.mshome.net (unknown [62.28.240.114])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5628B21A4A;
-        Mon,  9 Sep 2019 22:17:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4E57421D6C;
+        Mon,  9 Sep 2019 22:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568067430;
-        bh=dHaNzdX8RhfYNR3G9kvpasvBZPNiOdCFP+q6x9pJ5Pw=;
+        s=default; t=1568067447;
+        bh=eArGvEepIIpMO6s2toapya3rfKhfxPzPCS9EURu4A60=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ax39/VFZxdJmES5KGL6q78BkOveA1gHv+bLy8/9QE3pI5CNhAI2JLvE3+CYhkjPLk
-         svNfVIPwYhyn27OhzEmVE2/f8MRiEHEYnyN2j/HNi7KuUTUCAtZWfBNB0xUh4CJEP7
-         ETRp6SFlbd6OymVgBNITK+rrzbp0DQ5Ouqk2HhY4=
+        b=kbEYXeYpz6RYmRrNf/96Vze1F5FFDOZgnmEH4sQMfEmpI5Gkmi+2lFeh6hXwFh17W
+         X0B4xIfGbmwWSSzn4w5swsEq++2gkJcPRuTtNvZyhJ4kCdcXqBFqW+Ii2gCo3Q5dVE
+         M+V9650+qc/R7p+s4SJw21qPjKdKD6tPOY7+xsmU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hillf Danton <hdanton@sina.com>,
@@ -31,12 +31,12 @@ Cc:     Hillf Danton <hdanton@sina.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 6/8] keys: Fix missing null pointer check in request_key_auth_describe()
-Date:   Mon,  9 Sep 2019 11:41:43 -0400
-Message-Id: <20190909154145.31263-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 5/6] keys: Fix missing null pointer check in request_key_auth_describe()
+Date:   Mon,  9 Sep 2019 11:42:04 -0400
+Message-Id: <20190909154205.31376-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190909154145.31263-1-sashal@kernel.org>
-References: <20190909154145.31263-1-sashal@kernel.org>
+In-Reply-To: <20190909154205.31376-1-sashal@kernel.org>
+References: <20190909154205.31376-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -89,12 +89,12 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+)
 
 diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
-index 5e515791ccd11..1d34b2a5f485e 100644
+index f60baeb338e5f..b47445022d5ce 100644
 --- a/security/keys/request_key_auth.c
 +++ b/security/keys/request_key_auth.c
 @@ -71,6 +71,9 @@ static void request_key_auth_describe(const struct key *key,
  {
- 	struct request_key_auth *rka = get_request_key_auth(key);
+ 	struct request_key_auth *rka = key->payload.data[0];
  
 +	if (!rka)
 +		return;
