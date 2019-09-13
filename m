@@ -2,62 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2E5BB22E7
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2019 17:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8ABB24B9
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2019 19:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390505AbfIMPD5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 13 Sep 2019 11:03:57 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:48370 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390365AbfIMPD5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 13 Sep 2019 11:03:57 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id F040F191C2F6;
-        Fri, 13 Sep 2019 15:03:56 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-125-72.rdu2.redhat.com [10.10.125.72])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D7F5E46E66;
-        Fri, 13 Sep 2019 15:03:54 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20190910143228.30305-1-jarkko.sakkinen@linux.intel.com>
-References: <20190910143228.30305-1-jarkko.sakkinen@linux.intel.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     dhowells@redhat.com, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        id S2388530AbfIMRlZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 13 Sep 2019 13:41:25 -0400
+Received: from smtprelay0063.hostedemail.com ([216.40.44.63]:44769 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726822AbfIMRlZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Sep 2019 13:41:25 -0400
+X-Greylist: delayed 305 seconds by postgrey-1.27 at vger.kernel.org; Fri, 13 Sep 2019 13:41:24 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id ECA6C180013F1;
+        Fri, 13 Sep 2019 17:36:19 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 73C7218225E0A;
+        Fri, 13 Sep 2019 17:36:18 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::,RULES_HIT:41:355:379:599:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3865:3866:3867:3868:3870:3871:4321:5007:6119:9545:10004:10400:10848:11232:11658:11914:12043:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21450:21627:30054:30091,0,RBL:47.151.152.152:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:31,LUA_SUMMARY:none
+X-HE-Tag: part18_19b2e2b09e449
+X-Filterd-Recvd-Size: 1675
+Received: from XPS-9350.home (unknown [47.151.152.152])
+        (Authenticated sender: joe@perches.com)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 13 Sep 2019 17:36:16 +0000 (UTC)
+Message-ID: <33da71451cbc5836efd61ccf125be89c6e946253.camel@perches.com>
+Subject: Re: [PATCH] MAINTAINERS: Add a git and a maintainer entry to
+ keyring subsystems
+From:   Joe Perches <joe@perches.com>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
         James Bottomley <jejb@linux.ibm.com>,
         Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH] MAINTAINERS: Add a git and a maintainer entry to keyring subsystems
+        open list <linux-kernel@vger.kernel.org>
+Date:   Fri, 13 Sep 2019 10:36:15 -0700
+In-Reply-To: <11580.1568387033@warthog.procyon.org.uk>
+References: <20190910143228.30305-1-jarkko.sakkinen@linux.intel.com>
+         <11580.1568387033@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.32.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <11579.1568387033.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Fri, 13 Sep 2019 16:03:53 +0100
-Message-ID: <11580.1568387033@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.70]); Fri, 13 Sep 2019 15:03:57 +0000 (UTC)
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+On Fri, 2019-09-13 at 16:03 +0100, David Howells wrote:
+> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+> 
+> > Subject: [PATCH] MAINTAINERS: Add a git and a maintainer entry to keyring subsystems
+> 
+> I would recommend splitting the patch in two and putting something like:
+> 
+> 	keys: Add Jarkko Sakkinen as co-maintainer
+> 
+> as the subject of the keyrings maintainership one.
 
-> Subject: [PATCH] MAINTAINERS: Add a git and a maintainer entry to keyring subsystems
+Why is there utility in micro splitting such a trivial patch?
 
-I would recommend splitting the patch in two and putting something like:
 
-	keys: Add Jarkko Sakkinen as co-maintainer
-
-as the subject of the keyrings maintainership one.
-
-Thanks,
-David
