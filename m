@@ -2,112 +2,159 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 354C1B5D10
-	for <lists+keyrings@lfdr.de>; Wed, 18 Sep 2019 08:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28AF5B5E8B
+	for <lists+keyrings@lfdr.de>; Wed, 18 Sep 2019 10:05:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728062AbfIRGbd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Sep 2019 02:31:33 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:43235 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729575AbfIRGXV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Sep 2019 02:23:21 -0400
-Received: by mail-ot1-f68.google.com with SMTP id b2so5288912otq.10
-        for <keyrings@vger.kernel.org>; Tue, 17 Sep 2019 23:23:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wK9VKPT5PALGow0s1AD18j7lV+EvX5g7BMBWsTpeIng=;
-        b=xv6lI474DYSgaSu5RV4eJEBRp8AAJwvehRoTTpWaCo2J8ub7oPk4fmWmvkg1ZEyHq+
-         TtxFAJNA+CkO15cIf36iqqP9X57G/JNY3Jb2I187WuFFnZsD/6zxHIOCkgH6EgYA1jfH
-         YFSSbCekS/IoziCPiLuxaZHnZq5wzOhwRethzETOZxKFgUsGwW/D4ZLudka0rLN2bOSj
-         SAypaAGTp5bpQL5XY1Q813yX/HmVuGih8Q5wEvBX1r4lbpI+8QupHhP+fcbRFrASg2mL
-         7pMs60vrA8DXbpmTG++BM1jE99VkeCVDR9xwYrqoLW/I0P3yuAd+Xz5+qsRpoB02XtZC
-         WfkA==
+        id S1729320AbfIRIFJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Sep 2019 04:05:09 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:47818 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728336AbfIRIFJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Sep 2019 04:05:09 -0400
+Received: by mail-io1-f69.google.com with SMTP id q1so10055624ios.14
+        for <keyrings@vger.kernel.org>; Wed, 18 Sep 2019 01:05:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wK9VKPT5PALGow0s1AD18j7lV+EvX5g7BMBWsTpeIng=;
-        b=nbNGez2D2EtR4Ygfhi0npFQjqxfnrl+VIionI2pRrn7hbvpVPeDlYbLvXIr5r5/zeS
-         rPAPcHSWSfBbCzRDnKbqCqHG+dpgNdgaYTIeXPWb2l9jydOFOXII2irDAOWq30g3nXPK
-         YrR97QRlNthb6in6I12r9kbpeJdwjPIBcvYeTI/pCmEzE5+h0OIICz2rB7SDMVtj/B7g
-         8NI9uldGUWtuSwl4R8mn/CkgCxe8gsJdS8gOE1cv+2CGn7oDI0jNC/as5ibdodvb/Nu6
-         BMwd/MIEmsBtWT91Pe1RZdEzBOmiNI22UZ8B6O1f9ppdAM3cj56HUg4VTElhuYB8jijE
-         HiLQ==
-X-Gm-Message-State: APjAAAWXZ/4dUFNu6lbRaclwYmcWLTNovmEl7b7UXt4vKWJTPWykzY0f
-        lu8cTS9fnE3PbP5yuclbGzGqLkKY6f1vJEy+BTmtuA==
-X-Google-Smtp-Source: APXvYqyy689jL78FRCBaToum4k1f1kK7Ku7U2vf7SNBEYUwL9xj0w29sOcLAmo488CIy0XySfEE42rIulH1rHL8wJvo=
-X-Received: by 2002:a9d:24e4:: with SMTP id z91mr1722754ota.41.1568787800000;
- Tue, 17 Sep 2019 23:23:20 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=ubJJB30ecHhfDnwFouG6Yr0iuss4T3eoAZ0lI9nGqK0=;
+        b=YAsFT6j69Fz26iXpnmL9d3EDr4QyfbnKPMEjj6oRZkORb80u6bSw5NOPdFaA8jOrbr
+         ktD/esm+bC5EhpAIcqhhgYX2BGrfWsAFN5HxH7QTWSlT4MIi1o8+T7KzXOeBsNavGIka
+         gMX9ETsswxorP7Yq6hbgkd8yHxsrLoB8WL25KjU8nNoBdiYFhZMqYGroWNr+zOb7Nf9l
+         BrRp0FXvogMDRrPj7m/uef92W+BZuF6YeghHs/5mvzCeYKTWuoDdFvOelbgHQu5kqyLO
+         EedLpV9axjl5WPt1phDTxsHfZbBi6GKkfASWKzOoQ15cyIhMXRqNv6MK/wAgzygAEZBB
+         QlPA==
+X-Gm-Message-State: APjAAAUmz1JOmyYxp0e+Bjiq/xrwI3b0x3yc+b2vvcseHM9bvgefvzV9
+        GoKdx4/PHYCgvHD4kwMtlyS4L5dA5J0FPsKFstQO3sewt+WD
+X-Google-Smtp-Source: APXvYqzpxHtMg+BUgJCSyFiebeV4rxOlfbcNLIE/bfKzlleXz/ZHoVr1hhiQ7d0r8V22inRFPnBNOnIL4yNrGD5IuSYUaSqRjI3S
 MIME-Version: 1.0
-References: <1568630064-14887-1-git-send-email-sumit.garg@linaro.org>
- <1568630064-14887-5-git-send-email-sumit.garg@linaro.org> <20190917181415.GA8472@linux.intel.com>
- <20190917181507.GB8472@linux.intel.com>
-In-Reply-To: <20190917181507.GB8472@linux.intel.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 18 Sep 2019 11:53:08 +0530
-Message-ID: <CAFA6WYMbUGQ6+-XvR9_qSc=oVe1QSTg4kB-+y6rBmQLq+B6skg@mail.gmail.com>
-Subject: Re: [Patch v6 4/4] KEYS: trusted: Move TPM2 trusted keys code
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     dhowells@redhat.com, peterhuewe@gmx.de, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        jgg@ziepe.ca, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        jejb@linux.ibm.com, Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Received: by 2002:a05:6602:2596:: with SMTP id p22mr3691745ioo.251.1568793906918;
+ Wed, 18 Sep 2019 01:05:06 -0700 (PDT)
+Date:   Wed, 18 Sep 2019 01:05:06 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000008c3e590592cf4b7f@google.com>
+Subject: KASAN: use-after-free Read in key_put
+From:   syzbot <syzbot+f3745a1dc2a5eb5040ef@syzkaller.appspotmail.com>
+To:     dhowells@redhat.com, jmorris@namei.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, serge@hallyn.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 17 Sep 2019 at 23:45, Jarkko Sakkinen
-<jarkko.sakkinen@linux.intel.com> wrote:
->
-> On Tue, Sep 17, 2019 at 09:14:15PM +0300, Jarkko Sakkinen wrote:
-> > On Mon, Sep 16, 2019 at 04:04:24PM +0530, Sumit Garg wrote:
-> > > Move TPM2 trusted keys code to trusted keys subsystem. The reason
-> > > being it's better to consolidate all the trusted keys code to a single
-> > > location so that it can be maintained sanely.
-> > >
-> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > > Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> >
-> > This commit has couple of issues that I only noticed when looking into
-> > bug reported by Mimi.
-> >
-> > Right now tpm_send() is the exported function that is used by other
-> > subsystems. tpm_transmit_cmd() is an internal function. This commit adds
-> > two unrelated code paths to send TPM commands, which is unacceptable.
+Hello,
 
-Makes sense, will update.
+syzbot found the following crash on:
 
-> >
-> > You should make tpm2 functionality to use tpm_send() instead and remove
-> > tpm_seal_trusted() and tpm_unseal_trusted() completely in this commit.
+HEAD commit:    a7f89616 Merge branch 'for-5.3-fixes' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=175eae11600000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=861a6f31647968de
+dashboard link: https://syzkaller.appspot.com/bug?extid=f3745a1dc2a5eb5040ef
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
 
-Okay.
+Unfortunately, I don't have any reproducer for this crash yet.
 
->
-> The consequence is that the result needs unfortunately re-review. Sorry
-> about that, just took this time to notice this glitch.
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+f3745a1dc2a5eb5040ef@syzkaller.appspotmail.com
 
-No worries :). I will send next version of patch-set.
+==================================================================
+BUG: KASAN: use-after-free in atomic_read  
+include/asm-generic/atomic-instrumented.h:26 [inline]
+BUG: KASAN: use-after-free in refcount_sub_and_test_checked+0x87/0x200  
+lib/refcount.c:182
+Read of size 4 at addr ffff88805b89fc80 by task kworker/1:1/23
 
-FYI, I will be travelling for Linaro Connect next week so you could
-expect some delays in my responses.
+CPU: 1 PID: 23 Comm: kworker/1:1 Not tainted 5.3.0-rc8+ #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Workqueue: events key_garbage_collector
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x172/0x1f0 lib/dump_stack.c:113
+  print_address_description.cold+0xd4/0x306 mm/kasan/report.c:351
+  __kasan_report.cold+0x1b/0x36 mm/kasan/report.c:482
+  kasan_report+0x12/0x17 mm/kasan/common.c:618
+  check_memory_region_inline mm/kasan/generic.c:185 [inline]
+  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
+  __kasan_check_read+0x11/0x20 mm/kasan/common.c:92
+  atomic_read include/asm-generic/atomic-instrumented.h:26 [inline]
+  refcount_sub_and_test_checked+0x87/0x200 lib/refcount.c:182
+  refcount_dec_and_test_checked+0x1b/0x20 lib/refcount.c:220
+  key_put+0x20/0x90 security/keys/key.c:646
+  keyring_free_object+0x19/0x20 security/keys/keyring.c:389
+  assoc_array_destroy_subtree.part.0+0x1c5/0x4b0 lib/assoc_array.c:393
+  assoc_array_destroy_subtree lib/assoc_array.c:354 [inline]
+  assoc_array_destroy+0x43/0x90 lib/assoc_array.c:444
+  keyring_destroy+0x259/0x2f0 security/keys/keyring.c:431
+  key_gc_unused_keys.constprop.0+0x313/0x5b0 security/keys/gc.c:136
+  key_garbage_collector+0x3f3/0x940 security/keys/gc.c:292
+  process_one_work+0x9af/0x1740 kernel/workqueue.c:2269
+  worker_thread+0x98/0xe40 kernel/workqueue.c:2415
+  kthread+0x361/0x430 kernel/kthread.c:255
+  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
 
--Sumit
+Allocated by task 28788:
+  save_stack+0x23/0x90 mm/kasan/common.c:69
+  set_track mm/kasan/common.c:77 [inline]
+  __kasan_kmalloc mm/kasan/common.c:493 [inline]
+  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:466
+  kasan_slab_alloc+0xf/0x20 mm/kasan/common.c:501
+  slab_post_alloc_hook mm/slab.h:520 [inline]
+  slab_alloc mm/slab.c:3319 [inline]
+  kmem_cache_alloc+0x121/0x710 mm/slab.c:3483
+  kmem_cache_zalloc include/linux/slab.h:738 [inline]
+  key_alloc+0x426/0x1110 security/keys/key.c:276
+  key_create_or_update+0x652/0xbe0 security/keys/key.c:924
+  __do_sys_add_key security/keys/keyctl.c:132 [inline]
+  __se_sys_add_key security/keys/keyctl.c:72 [inline]
+  __x64_sys_add_key+0x2bd/0x4f0 security/keys/keyctl.c:72
+  do_syscall_64+0xfd/0x6a0 arch/x86/entry/common.c:296
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
 
->
-> /Jarkko
+Freed by task 10344:
+  save_stack+0x23/0x90 mm/kasan/common.c:69
+  set_track mm/kasan/common.c:77 [inline]
+  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:455
+  kasan_slab_free+0xe/0x10 mm/kasan/common.c:463
+  __cache_free mm/slab.c:3425 [inline]
+  kmem_cache_free+0x86/0x320 mm/slab.c:3693
+  key_gc_unused_keys.constprop.0+0x192/0x5b0 security/keys/gc.c:157
+  key_garbage_collector+0x3f3/0x940 security/keys/gc.c:292
+  process_one_work+0x9af/0x1740 kernel/workqueue.c:2269
+  worker_thread+0x98/0xe40 kernel/workqueue.c:2415
+  kthread+0x361/0x430 kernel/kthread.c:255
+  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
+
+The buggy address belongs to the object at ffff88805b89fc80
+  which belongs to the cache key_jar of size 304
+The buggy address is located 0 bytes inside of
+  304-byte region [ffff88805b89fc80, ffff88805b89fdb0)
+The buggy address belongs to the page:
+page:ffffea00016e27c0 refcount:1 mapcount:0 mapping:ffff88821bc461c0  
+index:0x0
+flags: 0x1fffc0000000200(slab)
+raw: 01fffc0000000200 ffffea00025c63c8 ffffea00023378c8 ffff88821bc461c0
+raw: 0000000000000000 ffff88805b89f080 000000010000000a 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+  ffff88805b89fb80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff88805b89fc00: fb fb fb fb fb fb fc fc fc fc fc fc fc fc fc fc
+> ffff88805b89fc80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                    ^
+  ffff88805b89fd00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff88805b89fd80: fb fb fb fb fb fb fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
