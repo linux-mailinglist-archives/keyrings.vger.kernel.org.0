@@ -2,106 +2,169 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC61B8148
-	for <lists+keyrings@lfdr.de>; Thu, 19 Sep 2019 21:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5824B97A4
+	for <lists+keyrings@lfdr.de>; Fri, 20 Sep 2019 21:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391258AbfISTRz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Sep 2019 15:17:55 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:35333 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726007AbfISTRz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Sep 2019 15:17:55 -0400
-Received: by mail-oi1-f195.google.com with SMTP id x3so3754114oig.2;
-        Thu, 19 Sep 2019 12:17:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=H6BJOmv9mwU0jDfpBuEldueQX7Oih/N8OAfb6huNx3M=;
-        b=aO7nrh51770IxKBYE2kKd/oRTFlWCBvWaxKq0X4FEWR9r4s4femeZFbCAYvxW9H9MN
-         ECu4LezVJTXa/Mt3t+TB9atTMM5xRdBInlm1xecy/VNN+HVg4A1manmZVYCF9YbDtXh/
-         Y5+OUsEVm2tOR5lzemoW/yZwFeTk+lGoMwrkRLIqFwdvGWxCElbeYbr4qDuHOeVET0DI
-         WyBTu9FULlrTwy8qxazZcVlRgd8CGg4pOhSqIMb/vxcanal7pCewQdrhoHybgRfA/kji
-         P1xVeLJe/KUhb482MQvva18SBxuvsKtlaxQFdfCbD4zghepN+u8n7UjqVHnxx+qOwyVo
-         yJwA==
-X-Gm-Message-State: APjAAAXPUaPXxSNTtr/fcgQ+IeAf5uYndUAftbI1T1oW+4UyvIaJoYmD
-        mtZLmCCSdVVO+FPDQkJ8bo8Kh6fS97PqnVZWyxmwoCn8
-X-Google-Smtp-Source: APXvYqyJwbI7TK/lwGfs0PyO6kra4dA0eibuTqMtyGibUndyW1qzEZhl7cZabjKsqLzEL8SjfHavxchcnEWctH003+U=
-X-Received: by 2002:aca:3908:: with SMTP id g8mr3696448oia.54.1568920674487;
- Thu, 19 Sep 2019 12:17:54 -0700 (PDT)
+        id S2406922AbfITTMn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Sep 2019 15:12:43 -0400
+Received: from mail-eopbgr700101.outbound.protection.outlook.com ([40.107.70.101]:7488
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2406045AbfITTMm (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 20 Sep 2019 15:12:42 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kG1a0fa34Jua1QFEWQhWgX/UAJKTmvyVEHqanzh3ewimqHsBU8miCg+f3ivdFIp5P5ZNUG12/m+O7KOPpr1bHxmSldNqwu2Nm7VUSFejwONPRBmFEoGGDBD9EkRS11M5QN4oZ4E8xgQ+7x11zGPMCEAteJOWgapjYdNx9HWqdKE0kWrKldqeqGkGHPOWw1itvBpRchSr0VbhO84n0H3JvCSs40fKp8CO23n943JjO0MjG+AOMeBL47J49+/MYy9+YQ31STJ1c1MYAYhOKsNUJXlPkn1WrGwImp0DaKRsItoshCMjclP3Sb6QgyTGuBbapRy4mYWUdLwEGxycaxeIJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5rFYIOrFGlBAmYNwrLDPQ31hqXM1C4vnfj7A7GOUYxA=;
+ b=CO3gs2TY8OVsG/EtlqDMvuTNsjzuOVPPwqEbK3PUWfJy95kvDNRfCAH9ToWbatPshcxzOckT3Qv1ZT21ig9qyV26mBpobZmqLbYYW9YvkjXDup0/JHLMMfxEEL3ZJ5eTNYN4m8YXkV8GMx3smaqF0TvfHYCyELNrn0KQuoHXjT2fAe1CslskBbWDER70yZVxmr27wwBQ8HBsw7In4YTw55VE276zIOSLY+kePJFGceTbN67msM5ugDYVegzQbozYCNVMRN0W6uTfgMvwW+JR8gcrSafjUg3PqUAW3ddnI+jfPgcUzuQc50H5JgL2Jk3hQhF5qU20oAeEd2b1HGY+Sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hammerspace.com; dmarc=pass action=none
+ header.from=hammerspace.com; dkim=pass header.d=hammerspace.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hammerspace.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5rFYIOrFGlBAmYNwrLDPQ31hqXM1C4vnfj7A7GOUYxA=;
+ b=aj9u+CUCn71fmKVwG0y+ROktoYx6mtckKY1Qth4acIjmALk3f2CwABE0F2XaB/ZSVabrV8HMaJlMczgA+IopIigwBOrNZpFF90GnXrN3WwWMinIwT4w+eTPC1H7JqaTSxQhdrdM0lwQE1lzTHAa1nXTv5G+vsfIg/H31uAT0brQ=
+Received: from DM5PR13MB1851.namprd13.prod.outlook.com (10.171.159.143) by
+ DM5PR13MB1305.namprd13.prod.outlook.com (10.168.113.149) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2305.10; Fri, 20 Sep 2019 19:12:38 +0000
+Received: from DM5PR13MB1851.namprd13.prod.outlook.com
+ ([fe80::70fd:85c2:8ea9:a0b6]) by DM5PR13MB1851.namprd13.prod.outlook.com
+ ([fe80::70fd:85c2:8ea9:a0b6%9]) with mapi id 15.20.2284.009; Fri, 20 Sep 2019
+ 19:12:38 +0000
+From:   Trond Myklebust <trondmy@hammerspace.com>
+To:     "nbowler@draconx.ca" <nbowler@draconx.ca>,
+        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: PROBLEM: nfs? crash in Linux 5.3 (possible regression)
+Thread-Topic: PROBLEM: nfs? crash in Linux 5.3 (possible regression)
+Thread-Index: AQHVb+B/N7SFZrrrJ0Oyihf+0LwQ3ac07vmA
+Date:   Fri, 20 Sep 2019 19:12:38 +0000
+Message-ID: <c573ebd9d835e2bf2d2b2a4dcb682b6d913b0c5e.camel@hammerspace.com>
+References: <CADyTPExOnxS+FS6Uqoxu3jNWRy93SQri4Xo1+00aiiVru8XDkg@mail.gmail.com>
+In-Reply-To: <CADyTPExOnxS+FS6Uqoxu3jNWRy93SQri4Xo1+00aiiVru8XDkg@mail.gmail.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=trondmy@hammerspace.com; 
+x-originating-ip: [68.40.189.247]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 2bfe427d-46c7-4cef-2d4a-08d73dfe80cd
+x-ms-traffictypediagnostic: DM5PR13MB1305:
+x-microsoft-antispam-prvs: <DM5PR13MB1305CB93E4D462A45F5CEB3CB8880@DM5PR13MB1305.namprd13.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0166B75B74
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(39830400003)(396003)(136003)(366004)(346002)(51234002)(53754006)(189003)(199004)(476003)(3846002)(2501003)(66556008)(66476007)(229853002)(36756003)(91956017)(76116006)(6246003)(305945005)(7736002)(66446008)(64756008)(66946007)(118296001)(86362001)(6436002)(2201001)(6512007)(25786009)(6486002)(2906002)(486006)(446003)(11346002)(6116002)(45080400002)(66066001)(478600001)(2616005)(256004)(5660300002)(14444005)(5024004)(71200400001)(71190400001)(76176011)(6506007)(81156014)(99286004)(81166006)(316002)(102836004)(186003)(26005)(8676002)(110136005)(14454004)(8936002);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR13MB1305;H:DM5PR13MB1851.namprd13.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: hammerspace.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: BXPCDZ0C29KLD/v8eYkJFi8YZFzDtXB0xOhed5Sk16RzRHuxcttRDqR5wrutZobQIlbIsubp0vby0NbAoaiZpLygw8l2K2YURNkCZlxM55nnFDXt4oyecDZ0meUXrNg8D4NE4ymMctMu85mEjiT3U0ECEPv7tYBgUQtmFy6ahiO+lGpx6pcqHaNuil1n21CXt5OUduhVzqc/0vlHWF6EgmTEWQKJk0AKNQ92rMlOb1fwithVLBOJbjdNIgo1ZXOFS1+OiH13WER4/2m44cLo6gtZ+YELAULDJWf54sHVmpdqgoDWTmQ/sTWCMi/0OuNXnkEqB63AylOhbifr/U8lNaS3vfC00p6lpfWypK2cMeR743wSs3M0eXGRL2e1icS5AMOCweadkVw2PcwAf9XnsArnC5SdKmJXX6898n8nsgA=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A07ADF93A77B48438AE0BCD262AFEDC6@namprd13.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <278d9706-162d-28a4-4640-31b697924473@physik.fu-berlin.de>
- <c5acb1c0-7a5b-ce42-8b2f-5fd30cbdab6e@physik.fu-berlin.de>
- <6304acd1-7b71-b1fb-f8d8-298cb3025e69@physik.fu-berlin.de>
- <6725b972-05d4-fed4-7094-16401e86b452@gmail.com> <578d8a91-aaee-087f-1742-65e64001b8fa@physik.fu-berlin.de>
- <CAMuHMdUU6ejc168-ksqXrkE+PjCXFJumaRaWjRtj12NjG_TFSg@mail.gmail.com>
- <CAMuHMdWfTrx8VuJoifEEBc1n+3MiiuwKNWcRnUw+TgWJCtOWag@mail.gmail.com>
- <fea74ca3-4b24-780f-af74-a786646b1668@physik.fu-berlin.de>
- <CAMuHMdVeedJZE6mrGdYqRgawUtfu_ww5p-Qg1rLXNmGWiY7Nxg@mail.gmail.com>
- <CAMuHMdVHZ9srJcK+PY=YoP55z1NSjBAtkSr2ROA8i84C75v0zQ@mail.gmail.com>
- <16476.1568822057@warthog.procyon.org.uk> <CAMuHMdU_2RWFc=xs3tM38Nt_44k3dp5MMuKAT2MacyuCbO+1Hw@mail.gmail.com>
- <13304.1568825025@warthog.procyon.org.uk>
-In-Reply-To: <13304.1568825025@warthog.procyon.org.uk>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 19 Sep 2019 21:17:43 +0200
-Message-ID: <CAMuHMdX=CdsMVBh4sGt+KcZTgqGRCU9Tua37L2zLvpfATorXHw@mail.gmail.com>
-Subject: Re: Can KEY_DH_OPERATIONS become tristate? (was: Re: Kernel 5.3.0
- stuck during boot on Amiga)
-To:     David Howells <dhowells@redhat.com>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: hammerspace.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bfe427d-46c7-4cef-2d4a-08d73dfe80cd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2019 19:12:38.3474
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0d4fed5c-3a70-46fe-9430-ece41741f59e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ANA8jpzzxDHi9AZKusb/zywy7GgtPRka4D1jx2YAUDZ6tDM0czE0OdoSg4h2uebgNm0DS93BFTNmHF97ZQxkwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR13MB1305
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi David,
-
-On Wed, Sep 18, 2019 at 6:43 PM David Howells <dhowells@redhat.com> wrote:
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > > TL;DR: CONFIG_CRYPTO_DH=y is reported to cause boot delays of several
-> > > > minutes on old and slow machines.
-> > >
-> > > Why is it doing that?  It doesn't do anything unless it is called, so
-> > > something must be calling it.
-> >
-> > I don't know.  Enabling initcall_debug shows that dh_init() takes a very long
-> > time.
->
-> Ah...  The bit that handles keyctl_dh_compute() doesn't do anything unless
-> asked, but the bit in the crypto layer that does dh does (ie. dh_init()).  I
-> guess it's doing some sort of self-test, but I can't see how it effects that.
-> I think you need to consult the author/maintainer of crypto/dh.c.
-
-Apparently the Debian kernel config had not enabled
-CONFIG_CRYPTO_MANAGER_DISABLE_TESTS, so all crypto tests
-were run at boot time :-(
-
-> It might be possible to make CONFIG_KEY_DH_OPERATIONS not depend on
-> CONFIG_CRYPTO_DH and have crypto_alloc_kpp() load the *crypto* part on
-> demand.  Failing that, I can look into demand-loading keyctl operations.
-
-Regardless, it may be a good idea to make KEY_DH_OPERATIONS tristate
-one day, so enabling wireless as a module doesn't force CONFIG_CRYPTO_DH
-builtin.
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+T24gRnJpLCAyMDE5LTA5LTIwIGF0IDE0OjIzIC0wNDAwLCBOaWNrIEJvd2xlciB3cm90ZToNCj4g
+SGkgYWxsLA0KPiANCj4gSSBoaXQgdGhpcyBvb3BzIG9uIExpbnV4IDUuMyB5ZXN0ZXJkYXkuICBU
+aGUgY3Jhc2ggaXRzZWxmIG9jY3VycmVkDQo+IHdoaWxlDQo+IGNvbXBpbGluZyBMaW51eCAoc291
+cmNlIGFuZCBidWlsZCBkaXJzIG9uIE5GUykuICBBZnRlcndhcmRzLCB0aGUNCj4gc3lzdGVtDQo+
+IHJlbWFpbmVkIG1vc3RseSBhbGl2ZSBidXQgbXkgTkZTIG1vdW50cyBiZWNhbWUgdmVyeSBidXN0
+ZWQgd2l0aCBsb3RzDQo+IChidXQgbm90IGFsbCkgSS9PIG9wZXJhdGlvbnMgYXBwZWFyaW5nIHRv
+IGhhbmcgZm9yZXZlci4NCj4gDQo+IE5vdCBzdXJlIGhvdyByZXByb2R1Y2libGUgdGhpcyBpcy4g
+IFNpbmNlIEkndmUgbmV2ZXIgc2VlbiBhIGNyYXNoDQo+IGxpa2UgdGhpcyBiZWZvcmUgaXQgbWF5
+IGJlIGEgcmVncmVzc2lvbiBjb21wYXJlZCB0bywgc2F5LCBMaW51eCA0LjE5DQo+IGJ1dCBJIGFt
+IG5vdCBjZXJ0YWluIGJlY2F1c2UgdGhpcyBwYXJ0aWN1bGFyIG1hY2hpbmUgaXMgYnJhbmQgbmV3
+IHNvDQo+IEkgZG9uJ3QgaGF2ZSBleHBlcmllbmNlIHdpdGggb2xkZXIga2VybmVscyBvbiBpdC4u
+Lg0KPiANCj4gRnVsbCBkbWVzZyBpcyBhdHRhY2hlZCAoZ3ppcHBlZCkuDQo+IA0KPiBMZXQgbWUg
+a25vdyBpZiB5b3UgbmVlZCBhbnkgbW9yZSBpbmZvLg0KPiANCj4gWyAgNzk2LjA1MDAyNV0gQlVH
+OiBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlLCBhZGRyZXNzOg0KPiAwMDAwMDAwMDAw
+MDAwMDE0DQo+IFsgIDc5Ni4wNTEyODBdICNQRjogc3VwZXJ2aXNvciByZWFkIGFjY2VzcyBpbiBr
+ZXJuZWwgbW9kZQ0KPiBbICA3OTYuMDUzMDYzXSAjUEY6IGVycm9yX2NvZGUoMHgwMDAwKSAtIG5v
+dC1wcmVzZW50IHBhZ2UNCj4gWyAgNzk2LjA1NDYzNl0gUEdEIDAgUDREIDANCj4gWyAgNzk2LjA1
+NTY4OF0gT29wczogMDAwMCBbIzFdIFBSRUVNUFQgU01QDQo+IFsgIDc5Ni4wNTY3NjhdIENQVTog
+MiBQSUQ6IDE5MCBDb21tOiBrd29ya2VyLzI6MiBUYWludGVkOiBHICAgICAgICBXDQo+ICAgICAg
+IDUuMy4wICM2DQo+IFsgIDc5Ni4wNTc5NTNdIEhhcmR3YXJlIG5hbWU6IFRvIEJlIEZpbGxlZCBC
+eSBPLkUuTS4gVG8gQmUgRmlsbGVkIEJ5DQo+IE8uRS5NLi9CNDUwIEdhbWluZy1JVFgvYWMsIEJJ
+T1MgUDMuMzAgMDUvMTcvMjAxOQ0KPiBbICA3OTYuMDU5MzI5XSBXb3JrcXVldWU6IGV2ZW50cyBr
+ZXlfZ2FyYmFnZV9jb2xsZWN0b3INCj4gWyAgNzk2LjA2MDYyM10gUklQOiAwMDEwOmtleXJpbmdf
+Z2NfY2hlY2tfaXRlcmF0b3IrMHgyNy8weDMwDQoNClRoYXQgd291bGQgYmUgdGhlIGtleXJpbmcg
+Z2FyYmFnZSBjb2xsZWN0b3IsIG5vdCBORlMuDQoNCkNjZWQga2V5cmluZ3NAdmdlci5rZXJuZWwu
+b3JnDQoNCg0KPiBbICA3OTYuMDYxODQ1XSBDb2RlOiA0NCAwMCAwMCA0OCA4MyBlNyBmYyBiOCAw
+MSAwMCAwMCAwMCBmNiA4NyA4MCAwMA0KPiAwMCAwMCAyMSA3NSAxOSA0OCA4YiA1NyA1OCA0OCAz
+OSAxNiA3YyAwNSA0OCA4NSBkMiA3ZiAwYiA0OCA4YiA4NyBhMA0KPiAwMCAwMCAwMCA8MGY+IGI2
+IDQwIDE0IGMzIDBmIDFmIDQwIDAwIDQ4IDgzIGU3IGZjIGU5IDI3IGViIGZmIGZmIDBmDQo+IDFm
+DQo+IDgwIDAwDQo+IFsgIDc5Ni4wNjQ2MzhdIFJTUDogMDAxODpmZmZmYjQwZmMwNzU3ZGY4IEVG
+TEFHUzogMDAwMTAyODINCj4gWyAgNzk2LjA2NjA1OF0gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJC
+WDogZmZmZmExNDMzOGNhZWQ4MCBSQ1g6DQo+IGZmZmZiNDBmYzA3NTdlNDANCj4gWyAgNzk2LjA2
+NzUzMV0gUkRYOiBmZmZmYTE0MzNhZTg1NTU4IFJTSTogZmZmZmI0MGZjMDc1N2U0MCBSREk6DQo+
+IGZmZmZhMTQzM2FlODU1MDANCj4gWyAgNzk2LjA2OTAxNF0gUkJQOiBmZmZmYjQwZmMwNzU3ZTQw
+IFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6DQo+IDAwMDAwMDAwMDAwMDAwMGYNCj4gWyAgNzk2
+LjA3MDUxM10gUjEwOiA4MDgwODA4MDgwODA4MDgwIFIxMTogMDAwMDAwMDAwMDAwMDAwMSBSMTI6
+DQo+IGZmZmZmZmZmYTRjZDYxODANCj4gWyAgNzk2LjA3MjAyNV0gUjEzOiBmZmZmYTE0MzM4Y2Fl
+ZTEwIFIxNDogZmZmZmExNDMzOGNhZWRmMCBSMTU6DQo+IGZmZmZhMTQzM2ZmZWZmMDANCj4gWyAg
+Nzk2LjA3MzU2N10gRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmZhMTQzNDA0ODAw
+MDAoMDAwMCkNCj4ga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiBbICA3OTYuMDc1MTcxXSBDUzog
+IDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+IFsgIDc5Ni4w
+NzY3ODVdIENSMjogMDAwMDAwMDAwMDAwMDAxNCBDUjM6IDAwMDAwMDA3NDdjZTYwMDAgQ1I0Og0K
+PiAwMDAwMDAwMDAwMzQwNmUwDQo+IFsgIDc5Ni4wNzg0NDVdIENhbGwgVHJhY2U6DQo+IFsgIDc5
+Ni4wODAwOTFdICBhc3NvY19hcnJheV9zdWJ0cmVlX2l0ZXJhdGUrMHg1NS8weDEwMA0KPiBbICA3
+OTYuMDgxNzcwXSAga2V5cmluZ19nYysweDNmLzB4ODANCj4gWyAgNzk2LjA4MzQ0N10gIGtleV9n
+YXJiYWdlX2NvbGxlY3RvcisweDMzMC8weDNkMA0KPiBbICA3OTYuMDg1MTU1XSAgcHJvY2Vzc19v
+bmVfd29yaysweDFjYi8weDMyMA0KPiBbICA3OTYuMDg2ODY5XSAgd29ya2VyX3RocmVhZCsweDI4
+LzB4M2MwDQo+IFsgIDc5Ni4wODg2MDNdICA/IHByb2Nlc3Nfb25lX3dvcmsrMHgzMjAvMHgzMjAN
+Cj4gWyAgNzk2LjA5MDMzNV0gIGt0aHJlYWQrMHgxMDYvMHgxMjANCj4gWyAgNzk2LjA5MjA1M10g
+ID8ga3RocmVhZF9jcmVhdGVfb25fbm9kZSsweDQwLzB4NDANCj4gWyAgNzk2LjA5MzgxMF0gIHJl
+dF9mcm9tX2ZvcmsrMHgxZi8weDMwDQo+IFsgIDc5Ni4wOTU1NjldIE1vZHVsZXMgbGlua2VkIGlu
+OiBzaGExX3Nzc2UzIHNoYTFfZ2VuZXJpYyBjYmMgY3RzDQo+IHJwY3NlY19nc3Nfa3JiNSBhdXRo
+X3JwY2dzcyBuZnN2NCBuZnMgbG9ja2QgZ3JhY2UgZXh0NCBjcmMxNiBtYmNhY2hlDQo+IGpiZDIg
+aXdsbXZtIG1hYzgwMjExIGxpYmFyYzQgYW1kZ3B1IGl3bHdpZmkgc25kX2hkYV9jb2RlY19yZWFs
+dGVrDQo+IHNuZF9oZGFfY29kZWNfZ2VuZXJpYyBrdm1fYW1kIGdwdV9zY2hlZCBrdm0gc25kX2hk
+YV9jb2RlY19oZG1pDQo+IGRybV9rbXNfaGVscGVyIGlycWJ5cGFzcyBrMTB0ZW1wIHN5c2NvcHlh
+cmVhIHN5c2ZpbGxyZWN0IHN5c2ltZ2JsdA0KPiBmYl9zeXNfZm9wcyB2aWRlbyB0dG0gY2ZnODAy
+MTEgc25kX2hkYV9pbnRlbCBzbmRfaGRhX2NvZGVjIGRybQ0KPiBzbmRfaHdkZXAgcmZraWxsIHNu
+ZF9oZGFfY29yZSBiYWNrbGlnaHQgc25kX3BjbSBldmRldiBzbmRfdGltZXIgc25kDQo+IHNvdW5k
+Y29yZSBlZml2YXJmcyBkbV9jcnlwdCBoaWRfZ2VuZXJpYyBpZ2IgaHdtb24gaTJjX2FsZ29fYml0
+IHNyX21vZA0KPiBjZHJvbSBzdW5ycGMgZG1fbW9kDQo+IFsgIDc5Ni4xMDQwMzNdIENSMjogMDAw
+MDAwMDAwMDAwMDAxNA0KPiBbICA3OTYuMTA2MzA0XSAtLS1bIGVuZCB0cmFjZSA2OTVhZWUxMGY5
+MjAyMzQ3IF0tLS0NCj4gWyAgNzk2LjEwODU4NV0gUklQOiAwMDEwOmtleXJpbmdfZ2NfY2hlY2tf
+aXRlcmF0b3IrMHgyNy8weDMwDQo+IFsgIDc5Ni4xMTA4OTRdIENvZGU6IDQ0IDAwIDAwIDQ4IDgz
+IGU3IGZjIGI4IDAxIDAwIDAwIDAwIGY2IDg3IDgwIDAwDQo+IDAwIDAwIDIxIDc1IDE5IDQ4IDhi
+IDU3IDU4IDQ4IDM5IDE2IDdjIDA1IDQ4IDg1IGQyIDdmIDBiIDQ4IDhiIDg3IGEwDQo+IDAwIDAw
+IDAwIDwwZj4gYjYgNDAgMTQgYzMgMGYgMWYgNDAgMDAgNDggODMgZTcgZmMgZTkgMjcgZWIgZmYg
+ZmYgMGYNCj4gMWYNCj4gODAgMDANCj4gWyAgNzk2LjExNTc3M10gUlNQOiAwMDE4OmZmZmZiNDBm
+YzA3NTdkZjggRUZMQUdTOiAwMDAxMDI4Mg0KPiBbICA3OTYuMTE4MjA5XSBSQVg6IDAwMDAwMDAw
+MDAwMDAwMDAgUkJYOiBmZmZmYTE0MzM4Y2FlZDgwIFJDWDoNCj4gZmZmZmI0MGZjMDc1N2U0MA0K
+PiBbICA3OTYuMTIwNjgzXSBSRFg6IGZmZmZhMTQzM2FlODU1NTggUlNJOiBmZmZmYjQwZmMwNzU3
+ZTQwIFJESToNCj4gZmZmZmExNDMzYWU4NTUwMA0KPiBbICA3OTYuMTIzMTc2XSBSQlA6IGZmZmZi
+NDBmYzA3NTdlNDAgUjA4OiAwMDAwMDAwMDAwMDAwMDAwIFIwOToNCj4gMDAwMDAwMDAwMDAwMDAw
+Zg0KPiBbICA3OTYuMTI1NjY4XSBSMTA6IDgwODA4MDgwODA4MDgwODAgUjExOiAwMDAwMDAwMDAw
+MDAwMDAxIFIxMjoNCj4gZmZmZmZmZmZhNGNkNjE4MA0KPiBbICA3OTYuMTI4MTA0XSBSMTM6IGZm
+ZmZhMTQzMzhjYWVlMTAgUjE0OiBmZmZmYTE0MzM4Y2FlZGYwIFIxNToNCj4gZmZmZmExNDMzZmZl
+ZmYwMA0KPiBbICA3OTYuMTMwNDkzXSBGUzogIDAwMDAwMDAwMDAwMDAwMDAoMDAwMCkgR1M6ZmZm
+ZmExNDM0MDQ4MDAwMCgwMDAwKQ0KPiBrbmxHUzowMDAwMDAwMDAwMDAwMDAwDQo+IFsgIDc5Ni4x
+MzI5MjNdIENTOiAgMDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMN
+Cj4gWyAgNzk2LjEzNTI2Nl0gQ1IyOiAwMDAwMDAwMDAwMDAwMDE0IENSMzogMDAwMDAwMDc0N2Nl
+NjAwMCBDUjQ6DQo+IDAwMDAwMDAwMDAzNDA2ZTANCj4gDQo+IFRoYW5rcywNCj4gICBOaWNrDQot
+LSANClRyb25kIE15a2xlYnVzdA0KTGludXggTkZTIGNsaWVudCBtYWludGFpbmVyLCBIYW1tZXJz
+cGFjZQ0KdHJvbmQubXlrbGVidXN0QGhhbW1lcnNwYWNlLmNvbQ0KDQoNCg==
