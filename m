@@ -2,169 +2,159 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5824B97A4
-	for <lists+keyrings@lfdr.de>; Fri, 20 Sep 2019 21:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EFFDB9BE6
+	for <lists+keyrings@lfdr.de>; Sat, 21 Sep 2019 03:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406922AbfITTMn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Sep 2019 15:12:43 -0400
-Received: from mail-eopbgr700101.outbound.protection.outlook.com ([40.107.70.101]:7488
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2406045AbfITTMm (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 20 Sep 2019 15:12:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kG1a0fa34Jua1QFEWQhWgX/UAJKTmvyVEHqanzh3ewimqHsBU8miCg+f3ivdFIp5P5ZNUG12/m+O7KOPpr1bHxmSldNqwu2Nm7VUSFejwONPRBmFEoGGDBD9EkRS11M5QN4oZ4E8xgQ+7x11zGPMCEAteJOWgapjYdNx9HWqdKE0kWrKldqeqGkGHPOWw1itvBpRchSr0VbhO84n0H3JvCSs40fKp8CO23n943JjO0MjG+AOMeBL47J49+/MYy9+YQ31STJ1c1MYAYhOKsNUJXlPkn1WrGwImp0DaKRsItoshCMjclP3Sb6QgyTGuBbapRy4mYWUdLwEGxycaxeIJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5rFYIOrFGlBAmYNwrLDPQ31hqXM1C4vnfj7A7GOUYxA=;
- b=CO3gs2TY8OVsG/EtlqDMvuTNsjzuOVPPwqEbK3PUWfJy95kvDNRfCAH9ToWbatPshcxzOckT3Qv1ZT21ig9qyV26mBpobZmqLbYYW9YvkjXDup0/JHLMMfxEEL3ZJ5eTNYN4m8YXkV8GMx3smaqF0TvfHYCyELNrn0KQuoHXjT2fAe1CslskBbWDER70yZVxmr27wwBQ8HBsw7In4YTw55VE276zIOSLY+kePJFGceTbN67msM5ugDYVegzQbozYCNVMRN0W6uTfgMvwW+JR8gcrSafjUg3PqUAW3ddnI+jfPgcUzuQc50H5JgL2Jk3hQhF5qU20oAeEd2b1HGY+Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hammerspace.com; dmarc=pass action=none
- header.from=hammerspace.com; dkim=pass header.d=hammerspace.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hammerspace.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5rFYIOrFGlBAmYNwrLDPQ31hqXM1C4vnfj7A7GOUYxA=;
- b=aj9u+CUCn71fmKVwG0y+ROktoYx6mtckKY1Qth4acIjmALk3f2CwABE0F2XaB/ZSVabrV8HMaJlMczgA+IopIigwBOrNZpFF90GnXrN3WwWMinIwT4w+eTPC1H7JqaTSxQhdrdM0lwQE1lzTHAa1nXTv5G+vsfIg/H31uAT0brQ=
-Received: from DM5PR13MB1851.namprd13.prod.outlook.com (10.171.159.143) by
- DM5PR13MB1305.namprd13.prod.outlook.com (10.168.113.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2305.10; Fri, 20 Sep 2019 19:12:38 +0000
-Received: from DM5PR13MB1851.namprd13.prod.outlook.com
- ([fe80::70fd:85c2:8ea9:a0b6]) by DM5PR13MB1851.namprd13.prod.outlook.com
- ([fe80::70fd:85c2:8ea9:a0b6%9]) with mapi id 15.20.2284.009; Fri, 20 Sep 2019
- 19:12:38 +0000
-From:   Trond Myklebust <trondmy@hammerspace.com>
-To:     "nbowler@draconx.ca" <nbowler@draconx.ca>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+        id S2437054AbfIUBy3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Sep 2019 21:54:29 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:46122 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436997AbfIUBy3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Sep 2019 21:54:29 -0400
+Received: by mail-lj1-f195.google.com with SMTP id e17so8706459ljf.13
+        for <keyrings@vger.kernel.org>; Fri, 20 Sep 2019 18:54:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=draconx-ca.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=6FUJB9iC+bvrTtNriAO1ARI5RLS9whH28zugV601iio=;
+        b=SU6Xnngd2bMY4WuCnPThYobViQS/n90H3Y4wRz1VD7MnEZSh4dIoiArZHgVk0bwsop
+         g0D/18YIqKKYtfltsk1zhFeG94ov+vTZAXQD2xU0iZvEdsCu1G3isURpq/QGCbXwzk7r
+         6NJh01KDU96fiFppPgcf8ycm9e4wcTDq1eIuHEyAsjxrNldG4tWROh8jaNEiPje92Vd/
+         DPJTvH7HCnZRxLLoHQ6/nLPoqjBY/39blm0ERcZxcHOgoe/oPP9Pm8NFla13KJlEWSMc
+         A5TG6vwe1Ebh3BTf69/kIh4ZaaXSGot4qfqE3d0lTFjaEF4V0Nu6tr6jeoZea/f3awN9
+         Qqkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=6FUJB9iC+bvrTtNriAO1ARI5RLS9whH28zugV601iio=;
+        b=kDGwrq1xjbidMfGNenY3xMxWtjWQtgyLVxGS/Lekatofehf2tG78jn8UW7kkI/XvOk
+         aYi1qKCMsZ/tu4d4GNtMFuY3Eod3sau2e+epc11Arjytv9I37dWXcOI9eVr9Qf4rt6H9
+         lajaJ/ZvZLE+qas3a1eJzvGc4yA7jezlvCcBW9dYys3cSAa2uuFejG/Lql7NoQADEV2P
+         TSE73tTbDUGguLIOHmqKC5GSueME5OW2XPEGhFJ+CATarHszR9iYY96811lBk0q/fsxd
+         vk4EN0RiqI9/G0SUW/UX8zwgWSzqEl0l0kWLNeE7liKuoUqo+3i3kJT5s8JjVboqQwgt
+         1mag==
+X-Gm-Message-State: APjAAAVCO8GND64MYRN/GKU8ZFEo0pBlD0B8eOq84FG7z2derUf5a8dr
+        YjX1UNgnV3y25SnU0KU0jXuQ2CyOfdu+RS6sn86oZw==
+X-Google-Smtp-Source: APXvYqz25ZajIAVDPYXMWHUWQHF0/Gr4jIqpIJTLb/owuzbh79A+y8hCPRgGr6UowJIGXA9mkPnDYMXmqoY7b32xwl8=
+X-Received: by 2002:a2e:5b9a:: with SMTP id m26mr10711008lje.90.1569030866534;
+ Fri, 20 Sep 2019 18:54:26 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a2e:534c:0:0:0:0:0 with HTTP; Fri, 20 Sep 2019 18:54:25
+ -0700 (PDT)
+X-Originating-IP: [24.53.243.131]
+In-Reply-To: <c573ebd9d835e2bf2d2b2a4dcb682b6d913b0c5e.camel@hammerspace.com>
+References: <CADyTPExOnxS+FS6Uqoxu3jNWRy93SQri4Xo1+00aiiVru8XDkg@mail.gmail.com>
+ <c573ebd9d835e2bf2d2b2a4dcb682b6d913b0c5e.camel@hammerspace.com>
+From:   Nick Bowler <nbowler@draconx.ca>
+Date:   Fri, 20 Sep 2019 21:54:25 -0400
+Message-ID: <CADyTPEwUjbV3icj7YD1a5fgzE_t0fpF0Mj9v-fLKywPwKki+Mg@mail.gmail.com>
+Subject: Re: PROBLEM: nfs? crash in Linux 5.3 (possible regression)
+To:     Trond Myklebust <trondmy@hammerspace.com>
+Cc:     "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
         "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: PROBLEM: nfs? crash in Linux 5.3 (possible regression)
-Thread-Topic: PROBLEM: nfs? crash in Linux 5.3 (possible regression)
-Thread-Index: AQHVb+B/N7SFZrrrJ0Oyihf+0LwQ3ac07vmA
-Date:   Fri, 20 Sep 2019 19:12:38 +0000
-Message-ID: <c573ebd9d835e2bf2d2b2a4dcb682b6d913b0c5e.camel@hammerspace.com>
-References: <CADyTPExOnxS+FS6Uqoxu3jNWRy93SQri4Xo1+00aiiVru8XDkg@mail.gmail.com>
-In-Reply-To: <CADyTPExOnxS+FS6Uqoxu3jNWRy93SQri4Xo1+00aiiVru8XDkg@mail.gmail.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=trondmy@hammerspace.com; 
-x-originating-ip: [68.40.189.247]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2bfe427d-46c7-4cef-2d4a-08d73dfe80cd
-x-ms-traffictypediagnostic: DM5PR13MB1305:
-x-microsoft-antispam-prvs: <DM5PR13MB1305CB93E4D462A45F5CEB3CB8880@DM5PR13MB1305.namprd13.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0166B75B74
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(39830400003)(396003)(136003)(366004)(346002)(51234002)(53754006)(189003)(199004)(476003)(3846002)(2501003)(66556008)(66476007)(229853002)(36756003)(91956017)(76116006)(6246003)(305945005)(7736002)(66446008)(64756008)(66946007)(118296001)(86362001)(6436002)(2201001)(6512007)(25786009)(6486002)(2906002)(486006)(446003)(11346002)(6116002)(45080400002)(66066001)(478600001)(2616005)(256004)(5660300002)(14444005)(5024004)(71200400001)(71190400001)(76176011)(6506007)(81156014)(99286004)(81166006)(316002)(102836004)(186003)(26005)(8676002)(110136005)(14454004)(8936002);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR13MB1305;H:DM5PR13MB1851.namprd13.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: hammerspace.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: BXPCDZ0C29KLD/v8eYkJFi8YZFzDtXB0xOhed5Sk16RzRHuxcttRDqR5wrutZobQIlbIsubp0vby0NbAoaiZpLygw8l2K2YURNkCZlxM55nnFDXt4oyecDZ0meUXrNg8D4NE4ymMctMu85mEjiT3U0ECEPv7tYBgUQtmFy6ahiO+lGpx6pcqHaNuil1n21CXt5OUduhVzqc/0vlHWF6EgmTEWQKJk0AKNQ92rMlOb1fwithVLBOJbjdNIgo1ZXOFS1+OiH13WER4/2m44cLo6gtZ+YELAULDJWf54sHVmpdqgoDWTmQ/sTWCMi/0OuNXnkEqB63AylOhbifr/U8lNaS3vfC00p6lpfWypK2cMeR743wSs3M0eXGRL2e1icS5AMOCweadkVw2PcwAf9XnsArnC5SdKmJXX6898n8nsgA=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A07ADF93A77B48438AE0BCD262AFEDC6@namprd13.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: hammerspace.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bfe427d-46c7-4cef-2d4a-08d73dfe80cd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2019 19:12:38.3474
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0d4fed5c-3a70-46fe-9430-ece41741f59e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ANA8jpzzxDHi9AZKusb/zywy7GgtPRka4D1jx2YAUDZ6tDM0czE0OdoSg4h2uebgNm0DS93BFTNmHF97ZQxkwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR13MB1305
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-T24gRnJpLCAyMDE5LTA5LTIwIGF0IDE0OjIzIC0wNDAwLCBOaWNrIEJvd2xlciB3cm90ZToNCj4g
-SGkgYWxsLA0KPiANCj4gSSBoaXQgdGhpcyBvb3BzIG9uIExpbnV4IDUuMyB5ZXN0ZXJkYXkuICBU
-aGUgY3Jhc2ggaXRzZWxmIG9jY3VycmVkDQo+IHdoaWxlDQo+IGNvbXBpbGluZyBMaW51eCAoc291
-cmNlIGFuZCBidWlsZCBkaXJzIG9uIE5GUykuICBBZnRlcndhcmRzLCB0aGUNCj4gc3lzdGVtDQo+
-IHJlbWFpbmVkIG1vc3RseSBhbGl2ZSBidXQgbXkgTkZTIG1vdW50cyBiZWNhbWUgdmVyeSBidXN0
-ZWQgd2l0aCBsb3RzDQo+IChidXQgbm90IGFsbCkgSS9PIG9wZXJhdGlvbnMgYXBwZWFyaW5nIHRv
-IGhhbmcgZm9yZXZlci4NCj4gDQo+IE5vdCBzdXJlIGhvdyByZXByb2R1Y2libGUgdGhpcyBpcy4g
-IFNpbmNlIEkndmUgbmV2ZXIgc2VlbiBhIGNyYXNoDQo+IGxpa2UgdGhpcyBiZWZvcmUgaXQgbWF5
-IGJlIGEgcmVncmVzc2lvbiBjb21wYXJlZCB0bywgc2F5LCBMaW51eCA0LjE5DQo+IGJ1dCBJIGFt
-IG5vdCBjZXJ0YWluIGJlY2F1c2UgdGhpcyBwYXJ0aWN1bGFyIG1hY2hpbmUgaXMgYnJhbmQgbmV3
-IHNvDQo+IEkgZG9uJ3QgaGF2ZSBleHBlcmllbmNlIHdpdGggb2xkZXIga2VybmVscyBvbiBpdC4u
-Lg0KPiANCj4gRnVsbCBkbWVzZyBpcyBhdHRhY2hlZCAoZ3ppcHBlZCkuDQo+IA0KPiBMZXQgbWUg
-a25vdyBpZiB5b3UgbmVlZCBhbnkgbW9yZSBpbmZvLg0KPiANCj4gWyAgNzk2LjA1MDAyNV0gQlVH
-OiBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlLCBhZGRyZXNzOg0KPiAwMDAwMDAwMDAw
-MDAwMDE0DQo+IFsgIDc5Ni4wNTEyODBdICNQRjogc3VwZXJ2aXNvciByZWFkIGFjY2VzcyBpbiBr
-ZXJuZWwgbW9kZQ0KPiBbICA3OTYuMDUzMDYzXSAjUEY6IGVycm9yX2NvZGUoMHgwMDAwKSAtIG5v
-dC1wcmVzZW50IHBhZ2UNCj4gWyAgNzk2LjA1NDYzNl0gUEdEIDAgUDREIDANCj4gWyAgNzk2LjA1
-NTY4OF0gT29wczogMDAwMCBbIzFdIFBSRUVNUFQgU01QDQo+IFsgIDc5Ni4wNTY3NjhdIENQVTog
-MiBQSUQ6IDE5MCBDb21tOiBrd29ya2VyLzI6MiBUYWludGVkOiBHICAgICAgICBXDQo+ICAgICAg
-IDUuMy4wICM2DQo+IFsgIDc5Ni4wNTc5NTNdIEhhcmR3YXJlIG5hbWU6IFRvIEJlIEZpbGxlZCBC
-eSBPLkUuTS4gVG8gQmUgRmlsbGVkIEJ5DQo+IE8uRS5NLi9CNDUwIEdhbWluZy1JVFgvYWMsIEJJ
-T1MgUDMuMzAgMDUvMTcvMjAxOQ0KPiBbICA3OTYuMDU5MzI5XSBXb3JrcXVldWU6IGV2ZW50cyBr
-ZXlfZ2FyYmFnZV9jb2xsZWN0b3INCj4gWyAgNzk2LjA2MDYyM10gUklQOiAwMDEwOmtleXJpbmdf
-Z2NfY2hlY2tfaXRlcmF0b3IrMHgyNy8weDMwDQoNClRoYXQgd291bGQgYmUgdGhlIGtleXJpbmcg
-Z2FyYmFnZSBjb2xsZWN0b3IsIG5vdCBORlMuDQoNCkNjZWQga2V5cmluZ3NAdmdlci5rZXJuZWwu
-b3JnDQoNCg0KPiBbICA3OTYuMDYxODQ1XSBDb2RlOiA0NCAwMCAwMCA0OCA4MyBlNyBmYyBiOCAw
-MSAwMCAwMCAwMCBmNiA4NyA4MCAwMA0KPiAwMCAwMCAyMSA3NSAxOSA0OCA4YiA1NyA1OCA0OCAz
-OSAxNiA3YyAwNSA0OCA4NSBkMiA3ZiAwYiA0OCA4YiA4NyBhMA0KPiAwMCAwMCAwMCA8MGY+IGI2
-IDQwIDE0IGMzIDBmIDFmIDQwIDAwIDQ4IDgzIGU3IGZjIGU5IDI3IGViIGZmIGZmIDBmDQo+IDFm
-DQo+IDgwIDAwDQo+IFsgIDc5Ni4wNjQ2MzhdIFJTUDogMDAxODpmZmZmYjQwZmMwNzU3ZGY4IEVG
-TEFHUzogMDAwMTAyODINCj4gWyAgNzk2LjA2NjA1OF0gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJC
-WDogZmZmZmExNDMzOGNhZWQ4MCBSQ1g6DQo+IGZmZmZiNDBmYzA3NTdlNDANCj4gWyAgNzk2LjA2
-NzUzMV0gUkRYOiBmZmZmYTE0MzNhZTg1NTU4IFJTSTogZmZmZmI0MGZjMDc1N2U0MCBSREk6DQo+
-IGZmZmZhMTQzM2FlODU1MDANCj4gWyAgNzk2LjA2OTAxNF0gUkJQOiBmZmZmYjQwZmMwNzU3ZTQw
-IFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6DQo+IDAwMDAwMDAwMDAwMDAwMGYNCj4gWyAgNzk2
-LjA3MDUxM10gUjEwOiA4MDgwODA4MDgwODA4MDgwIFIxMTogMDAwMDAwMDAwMDAwMDAwMSBSMTI6
-DQo+IGZmZmZmZmZmYTRjZDYxODANCj4gWyAgNzk2LjA3MjAyNV0gUjEzOiBmZmZmYTE0MzM4Y2Fl
-ZTEwIFIxNDogZmZmZmExNDMzOGNhZWRmMCBSMTU6DQo+IGZmZmZhMTQzM2ZmZWZmMDANCj4gWyAg
-Nzk2LjA3MzU2N10gRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmZhMTQzNDA0ODAw
-MDAoMDAwMCkNCj4ga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiBbICA3OTYuMDc1MTcxXSBDUzog
-IDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+IFsgIDc5Ni4w
-NzY3ODVdIENSMjogMDAwMDAwMDAwMDAwMDAxNCBDUjM6IDAwMDAwMDA3NDdjZTYwMDAgQ1I0Og0K
-PiAwMDAwMDAwMDAwMzQwNmUwDQo+IFsgIDc5Ni4wNzg0NDVdIENhbGwgVHJhY2U6DQo+IFsgIDc5
-Ni4wODAwOTFdICBhc3NvY19hcnJheV9zdWJ0cmVlX2l0ZXJhdGUrMHg1NS8weDEwMA0KPiBbICA3
-OTYuMDgxNzcwXSAga2V5cmluZ19nYysweDNmLzB4ODANCj4gWyAgNzk2LjA4MzQ0N10gIGtleV9n
-YXJiYWdlX2NvbGxlY3RvcisweDMzMC8weDNkMA0KPiBbICA3OTYuMDg1MTU1XSAgcHJvY2Vzc19v
-bmVfd29yaysweDFjYi8weDMyMA0KPiBbICA3OTYuMDg2ODY5XSAgd29ya2VyX3RocmVhZCsweDI4
-LzB4M2MwDQo+IFsgIDc5Ni4wODg2MDNdICA/IHByb2Nlc3Nfb25lX3dvcmsrMHgzMjAvMHgzMjAN
-Cj4gWyAgNzk2LjA5MDMzNV0gIGt0aHJlYWQrMHgxMDYvMHgxMjANCj4gWyAgNzk2LjA5MjA1M10g
-ID8ga3RocmVhZF9jcmVhdGVfb25fbm9kZSsweDQwLzB4NDANCj4gWyAgNzk2LjA5MzgxMF0gIHJl
-dF9mcm9tX2ZvcmsrMHgxZi8weDMwDQo+IFsgIDc5Ni4wOTU1NjldIE1vZHVsZXMgbGlua2VkIGlu
-OiBzaGExX3Nzc2UzIHNoYTFfZ2VuZXJpYyBjYmMgY3RzDQo+IHJwY3NlY19nc3Nfa3JiNSBhdXRo
-X3JwY2dzcyBuZnN2NCBuZnMgbG9ja2QgZ3JhY2UgZXh0NCBjcmMxNiBtYmNhY2hlDQo+IGpiZDIg
-aXdsbXZtIG1hYzgwMjExIGxpYmFyYzQgYW1kZ3B1IGl3bHdpZmkgc25kX2hkYV9jb2RlY19yZWFs
-dGVrDQo+IHNuZF9oZGFfY29kZWNfZ2VuZXJpYyBrdm1fYW1kIGdwdV9zY2hlZCBrdm0gc25kX2hk
-YV9jb2RlY19oZG1pDQo+IGRybV9rbXNfaGVscGVyIGlycWJ5cGFzcyBrMTB0ZW1wIHN5c2NvcHlh
-cmVhIHN5c2ZpbGxyZWN0IHN5c2ltZ2JsdA0KPiBmYl9zeXNfZm9wcyB2aWRlbyB0dG0gY2ZnODAy
-MTEgc25kX2hkYV9pbnRlbCBzbmRfaGRhX2NvZGVjIGRybQ0KPiBzbmRfaHdkZXAgcmZraWxsIHNu
-ZF9oZGFfY29yZSBiYWNrbGlnaHQgc25kX3BjbSBldmRldiBzbmRfdGltZXIgc25kDQo+IHNvdW5k
-Y29yZSBlZml2YXJmcyBkbV9jcnlwdCBoaWRfZ2VuZXJpYyBpZ2IgaHdtb24gaTJjX2FsZ29fYml0
-IHNyX21vZA0KPiBjZHJvbSBzdW5ycGMgZG1fbW9kDQo+IFsgIDc5Ni4xMDQwMzNdIENSMjogMDAw
-MDAwMDAwMDAwMDAxNA0KPiBbICA3OTYuMTA2MzA0XSAtLS1bIGVuZCB0cmFjZSA2OTVhZWUxMGY5
-MjAyMzQ3IF0tLS0NCj4gWyAgNzk2LjEwODU4NV0gUklQOiAwMDEwOmtleXJpbmdfZ2NfY2hlY2tf
-aXRlcmF0b3IrMHgyNy8weDMwDQo+IFsgIDc5Ni4xMTA4OTRdIENvZGU6IDQ0IDAwIDAwIDQ4IDgz
-IGU3IGZjIGI4IDAxIDAwIDAwIDAwIGY2IDg3IDgwIDAwDQo+IDAwIDAwIDIxIDc1IDE5IDQ4IDhi
-IDU3IDU4IDQ4IDM5IDE2IDdjIDA1IDQ4IDg1IGQyIDdmIDBiIDQ4IDhiIDg3IGEwDQo+IDAwIDAw
-IDAwIDwwZj4gYjYgNDAgMTQgYzMgMGYgMWYgNDAgMDAgNDggODMgZTcgZmMgZTkgMjcgZWIgZmYg
-ZmYgMGYNCj4gMWYNCj4gODAgMDANCj4gWyAgNzk2LjExNTc3M10gUlNQOiAwMDE4OmZmZmZiNDBm
-YzA3NTdkZjggRUZMQUdTOiAwMDAxMDI4Mg0KPiBbICA3OTYuMTE4MjA5XSBSQVg6IDAwMDAwMDAw
-MDAwMDAwMDAgUkJYOiBmZmZmYTE0MzM4Y2FlZDgwIFJDWDoNCj4gZmZmZmI0MGZjMDc1N2U0MA0K
-PiBbICA3OTYuMTIwNjgzXSBSRFg6IGZmZmZhMTQzM2FlODU1NTggUlNJOiBmZmZmYjQwZmMwNzU3
-ZTQwIFJESToNCj4gZmZmZmExNDMzYWU4NTUwMA0KPiBbICA3OTYuMTIzMTc2XSBSQlA6IGZmZmZi
-NDBmYzA3NTdlNDAgUjA4OiAwMDAwMDAwMDAwMDAwMDAwIFIwOToNCj4gMDAwMDAwMDAwMDAwMDAw
-Zg0KPiBbICA3OTYuMTI1NjY4XSBSMTA6IDgwODA4MDgwODA4MDgwODAgUjExOiAwMDAwMDAwMDAw
-MDAwMDAxIFIxMjoNCj4gZmZmZmZmZmZhNGNkNjE4MA0KPiBbICA3OTYuMTI4MTA0XSBSMTM6IGZm
-ZmZhMTQzMzhjYWVlMTAgUjE0OiBmZmZmYTE0MzM4Y2FlZGYwIFIxNToNCj4gZmZmZmExNDMzZmZl
-ZmYwMA0KPiBbICA3OTYuMTMwNDkzXSBGUzogIDAwMDAwMDAwMDAwMDAwMDAoMDAwMCkgR1M6ZmZm
-ZmExNDM0MDQ4MDAwMCgwMDAwKQ0KPiBrbmxHUzowMDAwMDAwMDAwMDAwMDAwDQo+IFsgIDc5Ni4x
-MzI5MjNdIENTOiAgMDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMN
-Cj4gWyAgNzk2LjEzNTI2Nl0gQ1IyOiAwMDAwMDAwMDAwMDAwMDE0IENSMzogMDAwMDAwMDc0N2Nl
-NjAwMCBDUjQ6DQo+IDAwMDAwMDAwMDAzNDA2ZTANCj4gDQo+IFRoYW5rcywNCj4gICBOaWNrDQot
-LSANClRyb25kIE15a2xlYnVzdA0KTGludXggTkZTIGNsaWVudCBtYWludGFpbmVyLCBIYW1tZXJz
-cGFjZQ0KdHJvbmQubXlrbGVidXN0QGhhbW1lcnNwYWNlLmNvbQ0KDQoNCg==
+On 9/20/19, Trond Myklebust <trondmy@hammerspace.com> wrote:
+> On Fri, 2019-09-20 at 14:23 -0400, Nick Bowler wrote:
+>> Not sure how reproducible this is.  Since I've never seen a crash
+>> like this before it may be a regression compared to, say, Linux 4.19
+>> but I am not certain because this particular machine is brand new so
+>> I don't have experience with older kernels on it...
+
+So it actually seems pretty reliably reproducible, 4 attempts to compile
+Linux on Linux 5.3 and all four crash the same way, although there's
+definitely some randomness here...
+
+On the other hand, I cannot reproduce if I install Linux 5.2 so it does
+seem like a regression in 5.3.  I will see how well bisecting goes...
+
+>> [  796.050025] BUG: kernel NULL pointer dereference, address:
+>> 0000000000000014
+>> [  796.051280] #PF: supervisor read access in kernel mode
+>> [  796.053063] #PF: error_code(0x0000) - not-present page
+>> [  796.054636] PGD 0 P4D 0
+>> [  796.055688] Oops: 0000 [#1] PREEMPT SMP
+>> [  796.056768] CPU: 2 PID: 190 Comm: kworker/2:2 Tainted: G        W
+>>       5.3.0 #6
+>> [  796.057953] Hardware name: To Be Filled By O.E.M. To Be Filled By
+>> O.E.M./B450 Gaming-ITX/ac, BIOS P3.30 05/17/2019
+>> [  796.059329] Workqueue: events key_garbage_collector
+>> [  796.060623] RIP: 0010:keyring_gc_check_iterator+0x27/0x30
+>
+> That would be the keyring garbage collector, not NFS.
+>
+> Cced keyrings@vger.kernel.org
+>
+>
+>> [  796.061845] Code: 44 00 00 48 83 e7 fc b8 01 00 00 00 f6 87 80 00
+>> 00 00 21 75 19 48 8b 57 58 48 39 16 7c 05 48 85 d2 7f 0b 48 8b 87 a0
+>> 00 00 00 <0f> b6 40 14 c3 0f 1f 40 00 48 83 e7 fc e9 27 eb ff ff 0f
+>> 1f
+>> 80 00
+>> [  796.064638] RSP: 0018:ffffb40fc0757df8 EFLAGS: 00010282
+>> [  796.066058] RAX: 0000000000000000 RBX: ffffa14338caed80 RCX:
+>> ffffb40fc0757e40
+>> [  796.067531] RDX: ffffa1433ae85558 RSI: ffffb40fc0757e40 RDI:
+>> ffffa1433ae85500
+>> [  796.069014] RBP: ffffb40fc0757e40 R08: 0000000000000000 R09:
+>> 000000000000000f
+>> [  796.070513] R10: 8080808080808080 R11: 0000000000000001 R12:
+>> ffffffffa4cd6180
+>> [  796.072025] R13: ffffa14338caee10 R14: ffffa14338caedf0 R15:
+>> ffffa1433ffeff00
+>> [  796.073567] FS:  0000000000000000(0000) GS:ffffa14340480000(0000)
+>> knlGS:0000000000000000
+>> [  796.075171] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [  796.076785] CR2: 0000000000000014 CR3: 0000000747ce6000 CR4:
+>> 00000000003406e0
+>> [  796.078445] Call Trace:
+>> [  796.080091]  assoc_array_subtree_iterate+0x55/0x100
+>> [  796.081770]  keyring_gc+0x3f/0x80
+>> [  796.083447]  key_garbage_collector+0x330/0x3d0
+>> [  796.085155]  process_one_work+0x1cb/0x320
+>> [  796.086869]  worker_thread+0x28/0x3c0
+>> [  796.088603]  ? process_one_work+0x320/0x320
+>> [  796.090335]  kthread+0x106/0x120
+>> [  796.092053]  ? kthread_create_on_node+0x40/0x40
+>> [  796.093810]  ret_from_fork+0x1f/0x30
+>> [  796.095569] Modules linked in: sha1_ssse3 sha1_generic cbc cts
+>> rpcsec_gss_krb5 auth_rpcgss nfsv4 nfs lockd grace ext4 crc16 mbcache
+>> jbd2 iwlmvm mac80211 libarc4 amdgpu iwlwifi snd_hda_codec_realtek
+>> snd_hda_codec_generic kvm_amd gpu_sched kvm snd_hda_codec_hdmi
+>> drm_kms_helper irqbypass k10temp syscopyarea sysfillrect sysimgblt
+>> fb_sys_fops video ttm cfg80211 snd_hda_intel snd_hda_codec drm
+>> snd_hwdep rfkill snd_hda_core backlight snd_pcm evdev snd_timer snd
+>> soundcore efivarfs dm_crypt hid_generic igb hwmon i2c_algo_bit sr_mod
+>> cdrom sunrpc dm_mod
+>> [  796.104033] CR2: 0000000000000014
+>> [  796.106304] ---[ end trace 695aee10f9202347 ]---
+>> [  796.108585] RIP: 0010:keyring_gc_check_iterator+0x27/0x30
+>> [  796.110894] Code: 44 00 00 48 83 e7 fc b8 01 00 00 00 f6 87 80 00
+>> 00 00 21 75 19 48 8b 57 58 48 39 16 7c 05 48 85 d2 7f 0b 48 8b 87 a0
+>> 00 00 00 <0f> b6 40 14 c3 0f 1f 40 00 48 83 e7 fc e9 27 eb ff ff 0f
+>> 1f
+>> 80 00
+>> [  796.115773] RSP: 0018:ffffb40fc0757df8 EFLAGS: 00010282
+>> [  796.118209] RAX: 0000000000000000 RBX: ffffa14338caed80 RCX:
+>> ffffb40fc0757e40
+>> [  796.120683] RDX: ffffa1433ae85558 RSI: ffffb40fc0757e40 RDI:
+>> ffffa1433ae85500
+>> [  796.123176] RBP: ffffb40fc0757e40 R08: 0000000000000000 R09:
+>> 000000000000000f
+>> [  796.125668] R10: 8080808080808080 R11: 0000000000000001 R12:
+>> ffffffffa4cd6180
+>> [  796.128104] R13: ffffa14338caee10 R14: ffffa14338caedf0 R15:
+>> ffffa1433ffeff00
+>> [  796.130493] FS:  0000000000000000(0000) GS:ffffa14340480000(0000)
+>> knlGS:0000000000000000
+>> [  796.132923] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [  796.135266] CR2: 0000000000000014 CR3: 0000000747ce6000 CR4:
+>> 00000000003406e0
+>
