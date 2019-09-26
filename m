@@ -2,66 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC7AABD5FD
-	for <lists+keyrings@lfdr.de>; Wed, 25 Sep 2019 03:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A288BF768
+	for <lists+keyrings@lfdr.de>; Thu, 26 Sep 2019 19:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388376AbfIYBLY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 24 Sep 2019 21:11:24 -0400
-Received: from mga07.intel.com ([134.134.136.100]:47679 "EHLO mga07.intel.com"
+        id S1727539AbfIZRQR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 26 Sep 2019 13:16:17 -0400
+Received: from mga18.intel.com ([134.134.136.126]:63648 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387402AbfIYBLY (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 24 Sep 2019 21:11:24 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1727512AbfIZRQR (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 26 Sep 2019 13:16:17 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2019 18:11:22 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Sep 2019 10:16:15 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,546,1559545200"; 
-   d="scan'208";a="188634031"
-Received: from wujunyox-mobl3.ger.corp.intel.com (HELO localhost) ([10.249.38.101])
-  by fmsmga008.fm.intel.com with ESMTP; 24 Sep 2019 18:11:15 -0700
-Date:   Wed, 25 Sep 2019 04:11:15 +0300
+X-IronPort-AV: E=Sophos;i="5.64,552,1559545200"; 
+   d="scan'208";a="219475012"
+Received: from schneian-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.39.17])
+  by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2019 10:16:12 -0700
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     dhowells@redhat.com, peterhuewe@gmx.de, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        jgg@ziepe.ca, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        jejb@linux.ibm.com, Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>
-Subject: Re: [Patch v6 4/4] KEYS: trusted: Move TPM2 trusted keys code
-Message-ID: <20190925011115.GA3503@linux.intel.com>
-References: <1568630064-14887-1-git-send-email-sumit.garg@linaro.org>
- <1568630064-14887-5-git-send-email-sumit.garg@linaro.org>
- <20190917181415.GA8472@linux.intel.com>
- <20190917181507.GB8472@linux.intel.com>
- <CAFA6WYMbUGQ6+-XvR9_qSc=oVe1QSTg4kB-+y6rBmQLq+B6skg@mail.gmail.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        keyrings@vger.kernel.org (open list:ASYMMETRIC KEYS),
+        linux-crypto@vger.kernel.org (open list:CRYPTO API),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Date:   Thu, 26 Sep 2019 20:16:01 +0300
+Message-Id: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYMbUGQ6+-XvR9_qSc=oVe1QSTg4kB-+y6rBmQLq+B6skg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Sep 18, 2019 at 11:53:08AM +0530, Sumit Garg wrote:
-> No worries :). I will send next version of patch-set.
-> 
-> FYI, I will be travelling for Linaro Connect next week so you could
-> expect some delays in my responses.
+Only the kernel random pool should be used for generating random numbers.
+TPM contributes to that pool among the other sources of entropy. In here it
+is not, agreed, absolutely critical because TPM is what is trusted anyway
+but in order to remove tpm_get_random() we need to first remove all the
+call sites.
 
-These patches will go to v5.5. There is nothing to rush.
+Cc: stable@vger.kernel.org
+Fixes: 0c36264aa1d5 ("KEYS: asym_tpm: Add loadkey2 and flushspecific [ver #2]")
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+---
+ crypto/asymmetric_keys/asym_tpm.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-/Jarkko
+diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
+index 76d2ce3a1b5b..c14b8d186e93 100644
+--- a/crypto/asymmetric_keys/asym_tpm.c
++++ b/crypto/asymmetric_keys/asym_tpm.c
+@@ -6,6 +6,7 @@
+ #include <linux/kernel.h>
+ #include <linux/seq_file.h>
+ #include <linux/scatterlist.h>
++#include <linux/random.h>
+ #include <linux/tpm.h>
+ #include <linux/tpm_command.h>
+ #include <crypto/akcipher.h>
+@@ -54,11 +55,7 @@ static int tpm_loadkey2(struct tpm_buf *tb,
+ 	}
+ 
+ 	/* generate odd nonce */
+-	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
+-	if (ret < 0) {
+-		pr_info("tpm_get_random failed (%d)\n", ret);
+-		return ret;
+-	}
++	get_random_bytes(nonceodd, TPM_NONCE_SIZE);
+ 
+ 	/* calculate authorization HMAC value */
+ 	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
+-- 
+2.20.1
+
