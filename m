@@ -2,82 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A288BF768
-	for <lists+keyrings@lfdr.de>; Thu, 26 Sep 2019 19:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99257C0962
+	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2019 18:18:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727539AbfIZRQR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 26 Sep 2019 13:16:17 -0400
-Received: from mga18.intel.com ([134.134.136.126]:63648 "EHLO mga18.intel.com"
+        id S1727366AbfI0QSI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 27 Sep 2019 12:18:08 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:46416 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727512AbfIZRQR (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 26 Sep 2019 13:16:17 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Sep 2019 10:16:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,552,1559545200"; 
-   d="scan'208";a="219475012"
-Received: from schneian-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.39.17])
-  by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2019 10:16:12 -0700
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     linux-integrity@vger.kernel.org
+        id S1727289AbfI0QSH (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 27 Sep 2019 12:18:07 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C2B7119D369;
+        Fri, 27 Sep 2019 16:18:07 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-125-72.rdu2.redhat.com [10.10.125.72])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BD94660BF3;
+        Fri, 27 Sep 2019 16:18:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+ Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+ Kingdom.
+ Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH] keys: Add Jarkko Sakkinen as co-maintainer
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
 Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        keyrings@vger.kernel.org (open list:ASYMMETRIC KEYS),
-        linux-crypto@vger.kernel.org (open list:CRYPTO API),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
-Date:   Thu, 26 Sep 2019 20:16:01 +0300
-Message-Id: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
-X-Mailer: git-send-email 2.20.1
+        dhowells@redhat.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 27 Sep 2019 17:18:05 +0100
+Message-ID: <156960108588.29253.1084048628417655842.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/unknown-version
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Fri, 27 Sep 2019 16:18:07 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Only the kernel random pool should be used for generating random numbers.
-TPM contributes to that pool among the other sources of entropy. In here it
-is not, agreed, absolutely critical because TPM is what is trusted anyway
-but in order to remove tpm_get_random() we need to first remove all the
-call sites.
+From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 0c36264aa1d5 ("KEYS: asym_tpm: Add loadkey2 and flushspecific [ver #2]")
+To address a major procedural concern on Linus's part the keyrings needs
+a co-maintainer.
+
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Suggested-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
 ---
- crypto/asymmetric_keys/asym_tpm.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
-index 76d2ce3a1b5b..c14b8d186e93 100644
---- a/crypto/asymmetric_keys/asym_tpm.c
-+++ b/crypto/asymmetric_keys/asym_tpm.c
-@@ -6,6 +6,7 @@
- #include <linux/kernel.h>
- #include <linux/seq_file.h>
- #include <linux/scatterlist.h>
-+#include <linux/random.h>
- #include <linux/tpm.h>
- #include <linux/tpm_command.h>
- #include <crypto/akcipher.h>
-@@ -54,11 +55,7 @@ static int tpm_loadkey2(struct tpm_buf *tb,
- 	}
+ MAINTAINERS |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a97f1be63b9d..d9ebe514708b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9060,6 +9060,7 @@ F:	include/keys/trusted.h
  
- 	/* generate odd nonce */
--	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
--	if (ret < 0) {
--		pr_info("tpm_get_random failed (%d)\n", ret);
--		return ret;
--	}
-+	get_random_bytes(nonceodd, TPM_NONCE_SIZE);
- 
- 	/* calculate authorization HMAC value */
- 	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
--- 
-2.20.1
+ KEYS/KEYRINGS:
+ M:	David Howells <dhowells@redhat.com>
++M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+ L:	keyrings@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/security/keys/core.rst
 
