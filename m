@@ -2,70 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99257C0962
-	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2019 18:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D8EC11AF
+	for <lists+keyrings@lfdr.de>; Sat, 28 Sep 2019 20:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727366AbfI0QSI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 27 Sep 2019 12:18:08 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:46416 "EHLO mx1.redhat.com"
+        id S1726581AbfI1SGI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 28 Sep 2019 14:06:08 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35358 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727289AbfI0QSH (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 27 Sep 2019 12:18:07 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1728479AbfI1SGI (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sat, 28 Sep 2019 14:06:08 -0400
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C2B7119D369;
-        Fri, 27 Sep 2019 16:18:07 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-125-72.rdu2.redhat.com [10.10.125.72])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BD94660BF3;
-        Fri, 27 Sep 2019 16:18:06 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH] keys: Add Jarkko Sakkinen as co-maintainer
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 27 Sep 2019 17:18:05 +0100
-Message-ID: <156960108588.29253.1084048628417655842.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/unknown-version
+        by mx1.redhat.com (Postfix) with ESMTPS id 2DC5281F10
+        for <keyrings@vger.kernel.org>; Sat, 28 Sep 2019 18:06:08 +0000 (UTC)
+Received: by mail-qt1-f198.google.com with SMTP id p56so9195573qtj.14
+        for <keyrings@vger.kernel.org>; Sat, 28 Sep 2019 11:06:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=d0byJOIsz1lqJ5hnq+jj0W7I6Ibu7N/QFdfVSTVCzMo=;
+        b=M7G2pTL9uoPTGr4siaNVxN2hg/ZvbpJcH0KBbYgV3C2sYsqYFx9WZTSWqnsj5TZr5G
+         lrnA3PWmXVEn4wym0Fmsgw+2UkLxpgE08bcvW27KVWNsbAX70hnkf+K3D8SVJ5p7aC6f
+         SmQVVSY9Y7VPxqqbzQ1wQfV3fBbWOQs+00FY+pxxEnKJbJtDgXxMlK+Ute0R2EGTHqZi
+         L5WiBvyZ50wTld7i9c9thcObq/K0H+RTAwWkjHsBj6G8CJeyr7dlZQc7DES1/zJbS9Mw
+         /0XHheS2+bN4beiu0k+Hp71P6ta6V2cHY9+CzzGkMA3OJm33M+fjdOVc1VJ5V38Bvk0t
+         1Sng==
+X-Gm-Message-State: APjAAAUtGpFtbJ12QFOb9mVoDh4YmrgoPynQpXFbGTLbnWE3KHrsif/f
+        p41xG4rRmd5E4VvRmYTjRSXB6szYUm9QF5lJ0q8t06zFKvG7VVLypsoDgsFUDHKKJX3geykk1W5
+        wpWTVbfMxVEwekBI8ECY=
+X-Received: by 2002:a37:aa58:: with SMTP id t85mr11009828qke.381.1569693967477;
+        Sat, 28 Sep 2019 11:06:07 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqztxQPbojuWzD2tjs1KlNLYklUTuFbRfAwL7mz2CmOFv1UcY4AcvsgovDjiYI9wdsF0ybTlZg==
+X-Received: by 2002:a37:aa58:: with SMTP id t85mr11009800qke.381.1569693967176;
+        Sat, 28 Sep 2019 11:06:07 -0700 (PDT)
+Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
+        by smtp.gmail.com with ESMTPSA id d40sm5647462qtk.6.2019.09.28.11.06.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Sep 2019 11:06:06 -0700 (PDT)
+Date:   Sat, 28 Sep 2019 11:05:59 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     linux-integrity@vger.kernel.org, stable@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20190928180559.jivt5zlisr43fnva@cantor>
+Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
+Mail-Followup-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        linux-integrity@vger.kernel.org, stable@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Fri, 27 Sep 2019 16:18:07 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
+User-Agent: NeoMutt/20180716
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+On Thu Sep 26 19, Jarkko Sakkinen wrote:
+>Only the kernel random pool should be used for generating random numbers.
+>TPM contributes to that pool among the other sources of entropy. In here it
+>is not, agreed, absolutely critical because TPM is what is trusted anyway
+>but in order to remove tpm_get_random() we need to first remove all the
+>call sites.
+>
+>Cc: stable@vger.kernel.org
+>Fixes: 0c36264aa1d5 ("KEYS: asym_tpm: Add loadkey2 and flushspecific [ver #2]")
+>Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+>---
+> crypto/asymmetric_keys/asym_tpm.c | 7 ++-----
+> 1 file changed, 2 insertions(+), 5 deletions(-)
+>
+>diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
+>index 76d2ce3a1b5b..c14b8d186e93 100644
+>--- a/crypto/asymmetric_keys/asym_tpm.c
+>+++ b/crypto/asymmetric_keys/asym_tpm.c
+>@@ -6,6 +6,7 @@
+> #include <linux/kernel.h>
+> #include <linux/seq_file.h>
+> #include <linux/scatterlist.h>
+>+#include <linux/random.h>
+> #include <linux/tpm.h>
+> #include <linux/tpm_command.h>
+> #include <crypto/akcipher.h>
+>@@ -54,11 +55,7 @@ static int tpm_loadkey2(struct tpm_buf *tb,
+> 	}
+>
+> 	/* generate odd nonce */
+>-	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
+>-	if (ret < 0) {
+>-		pr_info("tpm_get_random failed (%d)\n", ret);
+>-		return ret;
+>-	}
+>+	get_random_bytes(nonceodd, TPM_NONCE_SIZE);
+>
+> 	/* calculate authorization HMAC value */
+> 	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
+>-- 
+>2.20.1
+>
 
-To address a major procedural concern on Linus's part the keyrings needs
-a co-maintainer.
-
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Suggested-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
----
-
- MAINTAINERS |    1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a97f1be63b9d..d9ebe514708b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9060,6 +9060,7 @@ F:	include/keys/trusted.h
- 
- KEYS/KEYRINGS:
- M:	David Howells <dhowells@redhat.com>
-+M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
- L:	keyrings@vger.kernel.org
- S:	Maintained
- F:	Documentation/security/keys/core.rst
-
+Should tpm_unbind and tpm_sign in asym_tpm.c be switched as well then?
