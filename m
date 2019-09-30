@@ -2,119 +2,115 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D8EC11AF
-	for <lists+keyrings@lfdr.de>; Sat, 28 Sep 2019 20:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D94AC2997
+	for <lists+keyrings@lfdr.de>; Tue,  1 Oct 2019 00:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726581AbfI1SGI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 28 Sep 2019 14:06:08 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35358 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728479AbfI1SGI (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 28 Sep 2019 14:06:08 -0400
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 2DC5281F10
-        for <keyrings@vger.kernel.org>; Sat, 28 Sep 2019 18:06:08 +0000 (UTC)
-Received: by mail-qt1-f198.google.com with SMTP id p56so9195573qtj.14
-        for <keyrings@vger.kernel.org>; Sat, 28 Sep 2019 11:06:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=d0byJOIsz1lqJ5hnq+jj0W7I6Ibu7N/QFdfVSTVCzMo=;
-        b=M7G2pTL9uoPTGr4siaNVxN2hg/ZvbpJcH0KBbYgV3C2sYsqYFx9WZTSWqnsj5TZr5G
-         lrnA3PWmXVEn4wym0Fmsgw+2UkLxpgE08bcvW27KVWNsbAX70hnkf+K3D8SVJ5p7aC6f
-         SmQVVSY9Y7VPxqqbzQ1wQfV3fBbWOQs+00FY+pxxEnKJbJtDgXxMlK+Ute0R2EGTHqZi
-         L5WiBvyZ50wTld7i9c9thcObq/K0H+RTAwWkjHsBj6G8CJeyr7dlZQc7DES1/zJbS9Mw
-         /0XHheS2+bN4beiu0k+Hp71P6ta6V2cHY9+CzzGkMA3OJm33M+fjdOVc1VJ5V38Bvk0t
-         1Sng==
-X-Gm-Message-State: APjAAAUtGpFtbJ12QFOb9mVoDh4YmrgoPynQpXFbGTLbnWE3KHrsif/f
-        p41xG4rRmd5E4VvRmYTjRSXB6szYUm9QF5lJ0q8t06zFKvG7VVLypsoDgsFUDHKKJX3geykk1W5
-        wpWTVbfMxVEwekBI8ECY=
-X-Received: by 2002:a37:aa58:: with SMTP id t85mr11009828qke.381.1569693967477;
-        Sat, 28 Sep 2019 11:06:07 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqztxQPbojuWzD2tjs1KlNLYklUTuFbRfAwL7mz2CmOFv1UcY4AcvsgovDjiYI9wdsF0ybTlZg==
-X-Received: by 2002:a37:aa58:: with SMTP id t85mr11009800qke.381.1569693967176;
-        Sat, 28 Sep 2019 11:06:07 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id d40sm5647462qtk.6.2019.09.28.11.06.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Sep 2019 11:06:06 -0700 (PDT)
-Date:   Sat, 28 Sep 2019 11:05:59 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
-Message-ID: <20190928180559.jivt5zlisr43fnva@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-Mail-Followup-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
+        id S1726425AbfI3Way (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Sep 2019 18:30:54 -0400
+Received: from mailomta4-sa.btinternet.com ([213.120.69.10]:12119 "EHLO
+        sa-prd-fep-049.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726103AbfI3Wax (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Sep 2019 18:30:53 -0400
+X-Greylist: delayed 21059 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Sep 2019 18:30:51 EDT
+Received: from sa-prd-rgout-002.btmx-prd.synchronoss.net ([10.2.38.5])
+          by sa-prd-fep-043.btinternet.com with ESMTP
+          id <20190930163950.NHCT22185.sa-prd-fep-043.btinternet.com@sa-prd-rgout-002.btmx-prd.synchronoss.net>;
+          Mon, 30 Sep 2019 17:39:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1569861590; 
+        bh=+SeJ1WREYlhqJPXs3tmm7vjk81Tcd0lvCurJa6NU0SU=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:MIME-Version;
+        b=QNh0aotNuBAO6KLVFZxlKNGtMxv+/UT0madPJGkKNb5PEONNytalcVWvZEnwsb5KF9xRq/usggwKHNnXbVtBEqYbs9mK0nI0SdChqt3fI4d9BbUrSQifuP05e/6jJCjx1eQV2TDV09x+lyxp6wsbTPYS4yxzO7gZcPj+PGyTdpMdYgpeYGH8mg5T/jHq7zbFL3dFFdQ1CtnEo1e9KN6jDo+p/veiHjrpWnK8gRDPq+nHzSUCRIE+/cxgkGEceAA/BJkoTPeUUXSlf5/SVE0FXx0iDHqMcVjgO0y9ViWf9YtvZv8TvZtd3QqVST0/1+EMcqCd/XuBaSqzoY6oiNPQXw==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
+X-Originating-IP: [86.134.4.158]
+X-OWM-Source-IP: 86.134.4.158 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedufedrgedvgdellecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrhhlucfvnfffucdlqddutddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudefgedrgedrudehkeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudefgedrgedrudehkedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoeguhhhofigvlhhlshesrhgvughhrghtrdgtohhmqedprhgtphhtthhopeeokhgvhihrihhnghhssehvghgvrhdrkhgvrhhnvghlrdhorhhgqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssehhohhtmhgrihhlrdgtohhmqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from localhost.localdomain (86.134.4.158) by sa-prd-rgout-002.btmx-prd.synchronoss.net (5.8.337) (authenticated as richard_c_haines@btinternet.com)
+        id 5D8A3C8F00EF9490; Mon, 30 Sep 2019 17:39:50 +0100
+Message-ID: <dc24a7ad0e3c191310128cba4e64123e5aa66692.camel@btinternet.com>
+Subject: Re: [RFC PATCH 22/27] KEYS: Replace uid/gid/perm permissions
+ checking with an ACL
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org, SELinux <selinux@vger.kernel.org>
+Date:   Mon, 30 Sep 2019 17:39:49 +0100
+In-Reply-To: <32623.1550252354@warthog.procyon.org.uk>
+References: <758871dc-15b7-ed5c-a119-a40037309507@tycho.nsa.gov>
+         <155024683432.21651.14153938339749694146.stgit@warthog.procyon.org.uk>
+         <155024709026.21651.7275876165845045967.stgit@warthog.procyon.org.uk>
+         <32623.1550252354@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu Sep 26 19, Jarkko Sakkinen wrote:
->Only the kernel random pool should be used for generating random numbers.
->TPM contributes to that pool among the other sources of entropy. In here it
->is not, agreed, absolutely critical because TPM is what is trusted anyway
->but in order to remove tpm_get_random() we need to first remove all the
->call sites.
->
->Cc: stable@vger.kernel.org
->Fixes: 0c36264aa1d5 ("KEYS: asym_tpm: Add loadkey2 and flushspecific [ver #2]")
->Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->---
-> crypto/asymmetric_keys/asym_tpm.c | 7 ++-----
-> 1 file changed, 2 insertions(+), 5 deletions(-)
->
->diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
->index 76d2ce3a1b5b..c14b8d186e93 100644
->--- a/crypto/asymmetric_keys/asym_tpm.c
->+++ b/crypto/asymmetric_keys/asym_tpm.c
->@@ -6,6 +6,7 @@
-> #include <linux/kernel.h>
-> #include <linux/seq_file.h>
-> #include <linux/scatterlist.h>
->+#include <linux/random.h>
-> #include <linux/tpm.h>
-> #include <linux/tpm_command.h>
-> #include <crypto/akcipher.h>
->@@ -54,11 +55,7 @@ static int tpm_loadkey2(struct tpm_buf *tb,
-> 	}
->
-> 	/* generate odd nonce */
->-	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
->-	if (ret < 0) {
->-		pr_info("tpm_get_random failed (%d)\n", ret);
->-		return ret;
->-	}
->+	get_random_bytes(nonceodd, TPM_NONCE_SIZE);
->
-> 	/* calculate authorization HMAC value */
-> 	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
->-- 
->2.20.1
->
+On Fri, 2019-02-15 at 17:39 +0000, David Howells wrote:
+> Stephen Smalley <sds@tycho.nsa.gov> wrote:
+> 
+> > > --- a/security/selinux/hooks.c
+> > > +++ b/security/selinux/hooks.c
+> > > @@ -6560,6 +6560,7 @@ static int selinux_key_permission(key_ref_t
+> > > key_ref,
+> > >   {
+> > >   	struct key *key;
+> > >   	struct key_security_struct *ksec;
+> > > +	unsigned oldstyle_perm;
+> > >   	u32 sid;
+> > >     	/* if no specific permissions are requested, we skip
+> > > the
+> > > @@ -6568,13 +6569,26 @@ static int
+> > > selinux_key_permission(key_ref_t key_ref,
+> > >   	if (perm == 0)
+> > >   		return 0;
+> > >   +	oldstyle_perm = perm & (KEY_NEED_VIEW | KEY_NEED_READ |
+> > > KEY_NEED_WRITE
+> > > +				KEY_NEED_SEARCH | KEY_NEED_LINK);
+> > > +	if (perm & KEY_NEED_SETSEC)
+> > > +		oldstyle_perm |= OLD_KEY_NEED_SETATTR;
+> > > +	if (perm & KEY_NEED_INVAL)
+> > > +		oldstyle_perm |= KEY_NEED_SEARCH;
+> > > +	if (perm & KEY_NEED_REVOKE && !(perm & OLD_KEY_NEED_SETATTR))
+> > > +		oldstyle_perm |= KEY_NEED_WRITE;
+> > > +	if (perm & KEY_NEED_JOIN)
+> > > +		oldstyle_perm |= KEY_NEED_SEARCH;
+For JOIN tranlation this should be:
+oldstyle_perm |= KEY_NEED_LINK;
 
-Should tpm_unbind and tpm_sign in asym_tpm.c be switched as well then?
+I know a bit late but just got around to writing some 'keys' tests for
+the selinux-testsuite and found the above.
+
+> > > +	if (perm & KEY_NEED_CLEAR)
+> > > +		oldstyle_perm |= KEY_NEED_WRITE;
+> > > +
+> > >   	sid = cred_sid(cred);
+> > >     	key = key_ref_to_ptr(key_ref);
+> > >   	ksec = key->security;
+> > >     	return avc_has_perm(&selinux_state,
+> > > -			    sid, ksec->sid, SECCLASS_KEY, perm, NULL);
+> > > +			    sid, ksec->sid, SECCLASS_KEY,
+> > > oldstyle_perm, NULL);
+> > 
+> > This might be ok temporarily for compatibility but we'll want to
+> > ultimately
+> > define the new permissions in SELinux and switch over to using them
+> > if a new
+> > policy capability bit is set to indicate that the policy supports
+> > them.  We
+> > should probably decouple the SELinux permission bits from the
+> > KEY_NEED_*
+> > values and explicitly map them all at the same time.
+> 
+> Sounds reasonable.  I should probably detach the first two ACL
+> patches from
+> the set and push them separately.
+> 
+> David
+
