@@ -2,115 +2,93 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D94AC2997
-	for <lists+keyrings@lfdr.de>; Tue,  1 Oct 2019 00:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D201C4215
+	for <lists+keyrings@lfdr.de>; Tue,  1 Oct 2019 22:54:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbfI3Way (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Sep 2019 18:30:54 -0400
-Received: from mailomta4-sa.btinternet.com ([213.120.69.10]:12119 "EHLO
-        sa-prd-fep-049.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726103AbfI3Wax (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Sep 2019 18:30:53 -0400
-X-Greylist: delayed 21059 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Sep 2019 18:30:51 EDT
-Received: from sa-prd-rgout-002.btmx-prd.synchronoss.net ([10.2.38.5])
-          by sa-prd-fep-043.btinternet.com with ESMTP
-          id <20190930163950.NHCT22185.sa-prd-fep-043.btinternet.com@sa-prd-rgout-002.btmx-prd.synchronoss.net>;
-          Mon, 30 Sep 2019 17:39:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1569861590; 
-        bh=+SeJ1WREYlhqJPXs3tmm7vjk81Tcd0lvCurJa6NU0SU=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:MIME-Version;
-        b=QNh0aotNuBAO6KLVFZxlKNGtMxv+/UT0madPJGkKNb5PEONNytalcVWvZEnwsb5KF9xRq/usggwKHNnXbVtBEqYbs9mK0nI0SdChqt3fI4d9BbUrSQifuP05e/6jJCjx1eQV2TDV09x+lyxp6wsbTPYS4yxzO7gZcPj+PGyTdpMdYgpeYGH8mg5T/jHq7zbFL3dFFdQ1CtnEo1e9KN6jDo+p/veiHjrpWnK8gRDPq+nHzSUCRIE+/cxgkGEceAA/BJkoTPeUUXSlf5/SVE0FXx0iDHqMcVjgO0y9ViWf9YtvZv8TvZtd3QqVST0/1+EMcqCd/XuBaSqzoY6oiNPQXw==
-Authentication-Results: btinternet.com;
-    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
-X-Originating-IP: [86.134.4.158]
-X-OWM-Source-IP: 86.134.4.158 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedufedrgedvgdellecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrhhlucfvnfffucdlqddutddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudefgedrgedrudehkeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudefgedrgedrudehkedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoeguhhhofigvlhhlshesrhgvughhrghtrdgtohhmqedprhgtphhtthhopeeokhgvhihrihhnghhssehvghgvrhdrkhgvrhhnvghlrdhorhhgqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssehhohhtmhgrihhlrdgtohhmqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from localhost.localdomain (86.134.4.158) by sa-prd-rgout-002.btmx-prd.synchronoss.net (5.8.337) (authenticated as richard_c_haines@btinternet.com)
-        id 5D8A3C8F00EF9490; Mon, 30 Sep 2019 17:39:50 +0100
-Message-ID: <dc24a7ad0e3c191310128cba4e64123e5aa66692.camel@btinternet.com>
-Subject: Re: [RFC PATCH 22/27] KEYS: Replace uid/gid/perm permissions
- checking with an ACL
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     keyrings@vger.kernel.org, SELinux <selinux@vger.kernel.org>
-Date:   Mon, 30 Sep 2019 17:39:49 +0100
-In-Reply-To: <32623.1550252354@warthog.procyon.org.uk>
-References: <758871dc-15b7-ed5c-a119-a40037309507@tycho.nsa.gov>
-         <155024683432.21651.14153938339749694146.stgit@warthog.procyon.org.uk>
-         <155024709026.21651.7275876165845045967.stgit@warthog.procyon.org.uk>
-         <32623.1550252354@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+        id S1726287AbfJAUyv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 1 Oct 2019 16:54:51 -0400
+Received: from mga17.intel.com ([192.55.52.151]:14871 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726195AbfJAUyv (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 1 Oct 2019 16:54:51 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 13:54:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,571,1559545200"; 
+   d="scan'208";a="275119848"
+Received: from nbaca1-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.37.57])
+  by orsmga001.jf.intel.com with ESMTP; 01 Oct 2019 13:54:46 -0700
+Date:   Tue, 1 Oct 2019 23:54:45 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     linux-integrity@vger.kernel.org, stable@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191001205445.GC26709@linux.intel.com>
+References: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
+ <20190928180559.jivt5zlisr43fnva@cantor>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190928180559.jivt5zlisr43fnva@cantor>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2019-02-15 at 17:39 +0000, David Howells wrote:
-> Stephen Smalley <sds@tycho.nsa.gov> wrote:
-> 
-> > > --- a/security/selinux/hooks.c
-> > > +++ b/security/selinux/hooks.c
-> > > @@ -6560,6 +6560,7 @@ static int selinux_key_permission(key_ref_t
-> > > key_ref,
-> > >   {
-> > >   	struct key *key;
-> > >   	struct key_security_struct *ksec;
-> > > +	unsigned oldstyle_perm;
-> > >   	u32 sid;
-> > >     	/* if no specific permissions are requested, we skip
-> > > the
-> > > @@ -6568,13 +6569,26 @@ static int
-> > > selinux_key_permission(key_ref_t key_ref,
-> > >   	if (perm == 0)
-> > >   		return 0;
-> > >   +	oldstyle_perm = perm & (KEY_NEED_VIEW | KEY_NEED_READ |
-> > > KEY_NEED_WRITE
-> > > +				KEY_NEED_SEARCH | KEY_NEED_LINK);
-> > > +	if (perm & KEY_NEED_SETSEC)
-> > > +		oldstyle_perm |= OLD_KEY_NEED_SETATTR;
-> > > +	if (perm & KEY_NEED_INVAL)
-> > > +		oldstyle_perm |= KEY_NEED_SEARCH;
-> > > +	if (perm & KEY_NEED_REVOKE && !(perm & OLD_KEY_NEED_SETATTR))
-> > > +		oldstyle_perm |= KEY_NEED_WRITE;
-> > > +	if (perm & KEY_NEED_JOIN)
-> > > +		oldstyle_perm |= KEY_NEED_SEARCH;
-For JOIN tranlation this should be:
-oldstyle_perm |= KEY_NEED_LINK;
-
-I know a bit late but just got around to writing some 'keys' tests for
-the selinux-testsuite and found the above.
-
-> > > +	if (perm & KEY_NEED_CLEAR)
-> > > +		oldstyle_perm |= KEY_NEED_WRITE;
-> > > +
-> > >   	sid = cred_sid(cred);
-> > >     	key = key_ref_to_ptr(key_ref);
-> > >   	ksec = key->security;
-> > >     	return avc_has_perm(&selinux_state,
-> > > -			    sid, ksec->sid, SECCLASS_KEY, perm, NULL);
-> > > +			    sid, ksec->sid, SECCLASS_KEY,
-> > > oldstyle_perm, NULL);
+On Sat, Sep 28, 2019 at 11:05:59AM -0700, Jerry Snitselaar wrote:
+> On Thu Sep 26 19, Jarkko Sakkinen wrote:
+> > Only the kernel random pool should be used for generating random numbers.
+> > TPM contributes to that pool among the other sources of entropy. In here it
+> > is not, agreed, absolutely critical because TPM is what is trusted anyway
+> > but in order to remove tpm_get_random() we need to first remove all the > > call sites.  > > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 0c36264aa1d5 ("KEYS: asym_tpm: Add loadkey2 and flushspecific [ver #2]")
+> > Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > ---
+> > crypto/asymmetric_keys/asym_tpm.c | 7 ++-----
+> > 1 file changed, 2 insertions(+), 5 deletions(-)
 > > 
-> > This might be ok temporarily for compatibility but we'll want to
-> > ultimately
-> > define the new permissions in SELinux and switch over to using them
-> > if a new
-> > policy capability bit is set to indicate that the policy supports
-> > them.  We
-> > should probably decouple the SELinux permission bits from the
-> > KEY_NEED_*
-> > values and explicitly map them all at the same time.
+> > diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
+> > index 76d2ce3a1b5b..c14b8d186e93 100644
+> > --- a/crypto/asymmetric_keys/asym_tpm.c
+> > +++ b/crypto/asymmetric_keys/asym_tpm.c
+> > @@ -6,6 +6,7 @@
+> > #include <linux/kernel.h>
+> > #include <linux/seq_file.h>
+> > #include <linux/scatterlist.h>
+> > +#include <linux/random.h>
+> > #include <linux/tpm.h>
+> > #include <linux/tpm_command.h>
+> > #include <crypto/akcipher.h>
+> > @@ -54,11 +55,7 @@ static int tpm_loadkey2(struct tpm_buf *tb,
+> > 	}
+> > 
+> > 	/* generate odd nonce */
+> > -	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
+> > -	if (ret < 0) {
+> > -		pr_info("tpm_get_random failed (%d)\n", ret);
+> > -		return ret;
+> > -	}
+> > +	get_random_bytes(nonceodd, TPM_NONCE_SIZE);
+> > 
+> > 	/* calculate authorization HMAC value */
+> > 	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
+> > -- 
+> > 2.20.1
+> > 
 > 
-> Sounds reasonable.  I should probably detach the first two ACL
-> patches from
-> the set and push them separately.
-> 
-> David
+> Should tpm_unbind and tpm_sign in asym_tpm.c be switched as well then?
 
+Without doubt. Thanks. I'll send an update soon.
+
+/Jarkko
