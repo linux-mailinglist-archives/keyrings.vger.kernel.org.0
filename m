@@ -2,86 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C324CC2E6
-	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2019 20:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD50CC3D2
+	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2019 21:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725932AbfJDStL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Oct 2019 14:49:11 -0400
-Received: from mga17.intel.com ([192.55.52.151]:38274 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725775AbfJDStK (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 4 Oct 2019 14:49:10 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Oct 2019 11:49:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,257,1566889200"; 
-   d="scan'208";a="191670432"
-Received: from nzaki1-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.4.57])
-  by fmsmga008.fm.intel.com with ESMTP; 04 Oct 2019 11:49:03 -0700
-Date:   Fri, 4 Oct 2019 21:49:02 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     dhowells@redhat.com, peterhuewe@gmx.de, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        jgg@ziepe.ca, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        jejb@linux.ibm.com, Mimi Zohar <zohar@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>
-Subject: Re: [Patch v6 4/4] KEYS: trusted: Move TPM2 trusted keys code
-Message-ID: <20191004184902.GG6945@linux.intel.com>
-References: <1568630064-14887-1-git-send-email-sumit.garg@linaro.org>
- <1568630064-14887-5-git-send-email-sumit.garg@linaro.org>
- <20190917181415.GA8472@linux.intel.com>
- <20190917181507.GB8472@linux.intel.com>
- <CAFA6WYMbUGQ6+-XvR9_qSc=oVe1QSTg4kB-+y6rBmQLq+B6skg@mail.gmail.com>
- <20190925011115.GA3503@linux.intel.com>
- <CAFA6WYObsZnTptYg1Qorxt0FMaxHKoZ6D53Wjsj05OEGNhpckg@mail.gmail.com>
+        id S1731001AbfJDT4I convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 4 Oct 2019 15:56:08 -0400
+Received: from mx0a-00176a03.pphosted.com ([67.231.149.52]:53736 "EHLO
+        mx0a-00176a03.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730836AbfJDT4I (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Oct 2019 15:56:08 -0400
+Received: from pps.filterd (m0047962.ppops.net [127.0.0.1])
+        by m0047962.ppops.net-00176a03. (8.16.0.42/8.16.0.42) with SMTP id x94JsTeF011265;
+        Fri, 4 Oct 2019 15:56:07 -0400
+From:   "Safford, David (GE Global Research, US)" <david.safford@ge.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+CC:     Mimi Zohar <zohar@linux.ibm.com>,
+        "Wiseman, Monty (GE Global Research, US)" <monty.wiseman@ge.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Thread-Topic: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Thread-Index: AQHVdI4g9L3xPAeMJki3mq4fpV79C6dHrWSAgAFrf4CAABaxAIAAUs4AgAAPVoCAAOxxAIAAnnWA///LRNA=
+Date:   Fri, 4 Oct 2019 19:56:01 +0000
+Message-ID: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
+References: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
+ <1570024819.4999.119.camel@linux.ibm.com>
+ <20191003114119.GF8933@linux.intel.com>
+ <1570107752.4421.183.camel@linux.ibm.com>
+ <20191003175854.GB19679@linux.intel.com>
+ <1570128827.5046.19.camel@linux.ibm.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A22E@ALPMBAPA12.e2k.ad.ge.com>
+ <20191004182711.GC6945@linux.intel.com>
+In-Reply-To: <20191004182711.GC6945@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcMjEyNDczOTUw?=
+ =?us-ascii?Q?XGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0?=
+ =?us-ascii?Q?YmEyOWUzNWJcbXNnc1xtc2ctZmM1ZWJkODctZTZlMC0xMWU5LThlNWMtYTRj?=
+ =?us-ascii?Q?M2YwYjU5OGE2XGFtZS10ZXN0XGZjNWViZDg5LWU2ZTAtMTFlOS04ZTVjLWE0?=
+ =?us-ascii?Q?YzNmMGI1OThhNmJvZHkudHh0IiBzej0iMTkzMSIgdD0iMTMyMTQ2OTI1NjAy?=
+ =?us-ascii?Q?OTY5NzY4IiBoPSJJb1M3U21NaU54OWR1V0xqclpiM1c5a2d5YUU9IiBpZD0i?=
+ =?us-ascii?Q?IiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQUFFb0NB?=
+ =?us-ascii?Q?QUNvbUxtKzdYclZBYnV1SzdTSmoxQmZ1NjRydEltUFVGOERBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBRUFBUUFCQUFBQUZ0R2VRd0FBQUFBQUFBQUFBQUFBQUo0QUFBQm5BR1VB?=
+ =?us-ascii?Q?WHdCakFHOEFiZ0JtQUdrQVpBQmxBRzRBZEFCcEFHRUFiQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdjQVpRQmZBR2dBYVFCbkFHZ0Fi?=
+ =?us-ascii?Q?QUI1QUdNQWJ3QnVBR1lBYVFCa0FHVUFiZ0IwQUdrQVlRQnNBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNB?=
+ =?us-ascii?Q?QUFBQUFDZUFBQUFad0JsQUY4QWJnQnZBRzRBY0FCMUFHSUFiQUJwQUdNQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9t?=
+ =?us-ascii?Q?ZXRhPg=3D=3D?=
+x-dg-rorf: 
+x-originating-ip: [3.159.19.191]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYObsZnTptYg1Qorxt0FMaxHKoZ6D53Wjsj05OEGNhpckg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Subject: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-04_12:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910040163
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Oct 04, 2019 at 11:35:29AM +0530, Sumit Garg wrote:
-> Hi Jarkko,
-> 
-> On Wed, 25 Sep 2019 at 06:41, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Wed, Sep 18, 2019 at 11:53:08AM +0530, Sumit Garg wrote:
-> > > No worries :). I will send next version of patch-set.
-> > >
-> > > FYI, I will be travelling for Linaro Connect next week so you could
-> > > expect some delays in my responses.
-> >
-> > These patches will go to v5.5. There is nothing to rush.
-> 
-> I am back now on my regular schedule after Linaro Connect. And I see
-> your patch-set [1] to detach page allocation from tpm_buf. It seems
-> like either this patch-set needs rebase over yours or vice-versa.
-> 
-> So should I wait to send next version of this patch-set until your
-> patch-set arrives in tpmdd master/next branch or would you like to
-> rebase your patch-set over this?
 
-For me either way works. If you patch set is earlier ready for
-merge I'll rework mine. Doing it otherwise would be unnecessary
-micromanagement.
+> From: linux-integrity-owner@vger.kernel.org <linux-integrity-
+> owner@vger.kernel.org> On Behalf Of Jarkko Sakkinen
+> Sent: Friday, October 4, 2019 2:27 PM
+> Subject: EXT: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+> 
+> If you are able to call tpm_get_random(), the driver has already registered
+> TPN as hwrng. With this solution you fail to follow the principle of defense in
+> depth. If the TPM random number generator is compromissed (has a bug)
+> using the entropy pool will decrease the collateral damage.
 
-/Jarkko
+And if the entropy pool has a bug or is misconfigured, you lose everything.
+That does not sound like defense in depth to me. In the real world
+I am not aware of a single instance of RNG vulnerability on a TPM.
+I am directly aware of several published vulnerabilities in embedded systems 
+due to a badly ported version of the kernel random pool. In addition, 
+the random generator in a TPM is hardware isolated, and less likely to be
+vulnerable to side channel or memory manipulation errors. The TPM
+RNG is typically FIPS certified.  The use of the TPM RNG was a deliberate
+design choice in trusted keys.
+
+> > Third, as Mimi states, using a TPM is not a "regression". It would be
+> > a regression to change trusted keys _not_ to use the TPM, because that
+> > is what trusted keys are documented to provide to user space.
+> 
+> For asym-tpm.c it is without a question a regression because of the evolution
+> that has happened after trusted keys. For trusted keys using kernel rng
+> would be improvement.
+
+Perhaps this is a language issue, but you are not using "regression" correctly.
+Changing to the kernel pool would not only be a debatable  "improvement", 
+but also would certainly be a change to the documented trusted key  
+behavior, which I thought was frowned upon.
+
+dave
