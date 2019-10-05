@@ -2,236 +2,147 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0028CC5A6
-	for <lists+keyrings@lfdr.de>; Sat,  5 Oct 2019 00:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DCACCA22
+	for <lists+keyrings@lfdr.de>; Sat,  5 Oct 2019 15:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731567AbfJDWLM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Oct 2019 18:11:12 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:35852 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730814AbfJDWLL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Oct 2019 18:11:11 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id BF8928EE27D;
-        Fri,  4 Oct 2019 15:11:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1570227070;
-        bh=TFG7caQVqFJ3Q80Ho7+LboXA24+IoJDY4nVR3w9xVPA=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=Uwvx5G6diQgxoXrkYxzNofLkC7dZbBYJ7FY7Bl7X8TbM7S9Fw0AQyTuLann8WLD+f
-         4dwv/2uh7nVPESoJ6sFEX6rVIwdQTvRuJrgjubzytGhpktWOy0ywkuSGPpU0Qt0PEU
-         hJTTm/jA7pFdR4PqqjUrDU2WJo2Mc6hCsfKgOmnU=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Zsxd6MXkHfIz; Fri,  4 Oct 2019 15:11:10 -0700 (PDT)
-Received: from jarvis.lan (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id E4B318EE0EE;
-        Fri,  4 Oct 2019 15:11:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1570227070;
-        bh=TFG7caQVqFJ3Q80Ho7+LboXA24+IoJDY4nVR3w9xVPA=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=Uwvx5G6diQgxoXrkYxzNofLkC7dZbBYJ7FY7Bl7X8TbM7S9Fw0AQyTuLann8WLD+f
-         4dwv/2uh7nVPESoJ6sFEX6rVIwdQTvRuJrgjubzytGhpktWOy0ywkuSGPpU0Qt0PEU
-         hJTTm/jA7pFdR4PqqjUrDU2WJo2Mc6hCsfKgOmnU=
-Message-ID: <1570227068.17537.4.camel@HansenPartnership.com>
-Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Safford <david.safford@ge.com>,
-        linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
+        id S1725825AbfJENhP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 5 Oct 2019 09:37:15 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:38478 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725270AbfJENhP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 5 Oct 2019 09:37:15 -0400
+Received: by mail-lj1-f194.google.com with SMTP id b20so9252282ljj.5
+        for <keyrings@vger.kernel.org>; Sat, 05 Oct 2019 06:37:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:subject:to:cc:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:content-transfer-encoding:content-language;
+        bh=AsEDKLVVOmlYxvB4kuMB53PSpfKWldfHFFeHPmgBQvY=;
+        b=s0Ts4bcS91grlKf6HqFkjGp9Kkm340vS8dApezkMtP6PlpO77nj2GIYAALtX4hUmUS
+         PTc97yyHuT2prVOF5tOc5qdIfVFWponyOougqXVOojL8i/nc+NC0VuD1uNIgzohJFv7D
+         pHonw8KNlexuAQ0hQuEjxjMy0dJBmCnytv5YfyvUg6XRGveP+flkhXFzIFWTudo+n6jJ
+         6WJWICFrGKOehMmRGOvlvWBoWSiDND2LMYAbEfuBm5mKmqicSG1yIZMlTWCVI/wMleeb
+         GHGoSIWvR7Ig/2L+eS8wB8SRfMpkZ6SDb7lRddwURtNCRHvcEEU9jOlu2hln6VX2I89p
+         lCrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:subject:to:cc:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:content-transfer-encoding
+         :content-language;
+        bh=AsEDKLVVOmlYxvB4kuMB53PSpfKWldfHFFeHPmgBQvY=;
+        b=RX5MhN5hOLU4Uno4RFRjz5wgMsjYtvolTyu8H9lIrqOuDxDBwCLYCxJCxaD1PREKV5
+         i96UF1jGGVidmBDPRx5+4I1gVFlWE+okHA79cJvulVBveWgoLrLaEUrxAubS0VP9KuPV
+         SVdapoJMuPp0Tv6RvxAYBBL/p4dnauORmDZpWquMtIIZR/LNBnu3Ym/BDIqznvaKfSJP
+         27mx+N7V0ID9W0GEgChdAIWbw+RnuVpf82o6ALOqwsFsNu5Eg3kdGnMLHZ1mAulFizdl
+         sGNQFvNNbz7TZ7C84stChO6Vv0HlzskURDRsyoowMVYgXui+Bb198jy+5LDmjLmWhkLg
+         5PcQ==
+X-Gm-Message-State: APjAAAWluU4AYZrc5ln/gKT/iOJXZw7URj3Ovlqwyn1gIm/gZui1jwl4
+        c/rEjFv7zhamQ+bJQxZHY2rBn8XI
+X-Google-Smtp-Source: APXvYqyDJTfQggJ+sMBjxIcdi+BOzbFzpQdcCpiwuWPszbmTwjLcGN5iJSMiTHQ+jCsYawzCx+zphw==
+X-Received: by 2002:a2e:9f52:: with SMTP id v18mr12452882ljk.166.1570282632391;
+        Sat, 05 Oct 2019 06:37:12 -0700 (PDT)
+Received: from [10.14.234.161] (c83-253-121-161.bredband.comhem.se. [83.253.121.161])
+        by smtp.gmail.com with ESMTPSA id y206sm1709271lfc.6.2019.10.05.06.37.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Oct 2019 06:37:11 -0700 (PDT)
+From:   klondike <klondike@klondike.es>
+Subject: [PATCH] crypto: asymmetric_keys: select SYSTEM_DATA_VERIFICATION
+To:     David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Date:   Fri, 04 Oct 2019 15:11:08 -0700
-In-Reply-To: <20191004201134.nuesk6hxtxajnxh2@cantor>
-References: <1570128827.5046.19.camel@linux.ibm.com>
-         <20191003215125.GA30511@linux.intel.com>
-         <20191003215743.GB30511@linux.intel.com>
-         <1570140491.5046.33.camel@linux.ibm.com>
-         <1570147177.10818.11.camel@HansenPartnership.com>
-         <20191004182216.GB6945@linux.intel.com>
-         <1570213491.3563.27.camel@HansenPartnership.com>
-         <20191004183342.y63qdvspojyf3m55@cantor>
-         <1570214574.3563.32.camel@HansenPartnership.com>
-         <20191004200728.xoj6jlgbhv57gepc@cantor>
-         <20191004201134.nuesk6hxtxajnxh2@cantor>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org
+Openpgp: preference=signencrypt
+Autocrypt: addr=klondike@klondike.es; prefer-encrypt=mutual; keydata=
+ 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
+ 06YGsklPt1crzrnXeclT3uA=
+Message-ID: <34dc7ee8-74f5-744e-a411-e36b462c4889@klondike.es>
+Date:   Sat, 5 Oct 2019 15:37:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: sv-FI
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2019-10-04 at 13:11 -0700, Jerry Snitselaar wrote:
-> On Fri Oct 04 19, Jerry Snitselaar wrote:
-> > On Fri Oct 04 19, James Bottomley wrote:
-> > > On Fri, 2019-10-04 at 11:33 -0700, Jerry Snitselaar wrote:
-> > > > On Fri Oct 04 19, James Bottomley wrote:
-> > > > > On Fri, 2019-10-04 at 21:22 +0300, Jarkko Sakkinen wrote:
-> > > > > > On Thu, Oct 03, 2019 at 04:59:37PM -0700, James Bottomley
-> > > > > > wrote:
-> > > > > > > I think the principle of using multiple RNG sources for
-> > > > > > > strong keys is a sound one, so could I propose a
-> > > > > > > compromise:  We have a tpm subsystem random number
-> > > > > > > generator that, when asked for <n> random bytes first
-> > > > > > > extracts <n> bytes from the TPM RNG and places it into
-> > > > > > > the kernel entropy pool and then asks for <n> random
-> > > > > > > bytes from the kernel RNG? That way, it will always have
-> > > > > > > the entropy to satisfy the request and in the worst case,
-> > > > > > > where the kernel has picked up no other entropy sources
-> > > > > > > at all it will be equivalent to what we have now (single
-> > > > > > > entropy source) but usually it will be a much better
-> > > > > > > mixed entropy source.
-> > > > > > 
-> > > > > > I think we should rely the existing architecture where TPM
-> > > > > > is contributing to the entropy pool as hwrng.
-> > > > > 
-> > > > > That doesn't seem to work: when I trace what happens I see us
-> > > > > inject 32 bytes of entropy at boot time, but never again.  I
-> > > > > think the problem is the kernel entropy pool is push not pull
-> > > > > and we have no triggering event in the TPM to get us to
-> > > > > push.  I suppose we could set a timer to do this or perhaps
-> > > > > there is a pull hook and we haven't wired it up correctly?
-> > > > > 
-> > > > > James
-> > > > > 
-> > > > 
-> > > > Shouldn't hwrng_fillfn be pulling from it?
-> > > 
-> > > It should, but the problem seems to be it only polls the
-> > > "current" hw rng ... it doesn't seem to have a concept that there
-> > > may be more than one.  What happens, according to a brief reading
-> > > of the code, is when multiple are registered, it determines what
-> > > the "best" one is and then only pulls from that.  What I think it
-> > > should be doing is filling from all of them using the entropy
-> > > quality to adjust how many bits we get.
-> > > 
-> > > James
-> > > 
-> > 
-> > Most of them don't even set quality, including the tpm, so they end
-> > up at the end of the list. For the ones that do I'm not sure how
-> > they determined the value. For example virtio-rng sets quality to
-> > 1000.
-> 
-> I should have added that I like that idea though.
+SYSTEM_DATA_VERIFICATION is a non-visible symbol which is selected by its
+other users. PKCS7_TEST_KEY and SIGNED_PE_FILE_VERIFICATION both depend on
+the symbol instead of selecting it which makes it impossible to choose
+these symbols unless another symbol selecting SYSTEM_DATA_VERIFICATION is
+already chosen.
 
-OK, so I looked at how others implement this.  It turns out there's
-only one other: the atheros rng and this is what it does:
+Replace their depends on SYSTEM_DATA_VERIFICATION menu attribute by a
+selects SYSTEM_DATA_VERIFICATION attribute so that the options can be
+efectively chosen by users.
 
-drivers/net/wireless/ath/ath9k/rng.c
+Signed-off-by: Francisco Blas Izquierdo Riera (klondike) <klondike@klondike.es>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
 
-so rather than redoing the entirety of the TPM rng like this, I thought
-it's easier to keep what we have (direct hwrng device) and plug our
-tpm_get_random() function into the kernel rng like the below.  
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 1f1f004dc757..5940f343ab53 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -75,7 +75,7 @@ config PKCS7_MESSAGE_PARSER
+config PKCS7_TEST_KEY
+tristate "PKCS#7 testing key type"
+- depends on SYSTEM_DATA_VERIFICATION
++ select SYSTEM_DATA_VERIFICATION
+help
+This option provides a type of key that can be loaded up from a
+PKCS#7 message - provided the message is signed by a trusted key. If
+@@ -88,7 +88,7 @@ config PKCS7_TEST_KEY
+config SIGNED_PE_FILE_VERIFICATION
+bool "Support for PE file signature verification"
+depends on PKCS7_MESSAGE_PARSER=y
+- depends on SYSTEM_DATA_VERIFICATION
++ select SYSTEM_DATA_VERIFICATION
+select CRYPTO_HASH
+select ASN1
+select OID_REGISTRY
 
-James
-
----
-
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index 3d6d394a8661..0794521c0784 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -536,7 +536,7 @@ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- {
- 	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
- 
--	return tpm_get_random(chip, data, max);
-+	return __tpm_get_random(chip, data, max);
- }
- 
- static int tpm_add_hwrng(struct tpm_chip *chip)
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index d7a3888ad80f..14631cba000c 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -24,6 +24,7 @@
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/freezer.h>
-+#include <linux/random.h>
- #include <linux/tpm_eventlog.h>
- 
- #include "tpm.h"
-@@ -424,15 +425,11 @@ int tpm_pm_resume(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(tpm_pm_resume);
- 
--/**
-- * tpm_get_random() - get random bytes from the TPM's RNG
-- * @chip:	a &struct tpm_chip instance, %NULL for the default chip
-- * @out:	destination buffer for the random bytes
-- * @max:	the max number of bytes to write to @out
-- *
-- * Return: number of random bytes read or a negative error value.
-+/*
-+ * Internal interface for tpm_get_random(): gets the random string
-+ * directly from the TPM without mixing into the linux rng.
-  */
--int tpm_get_random(struct tpm_chip *chip, u8 *out, size_t max)
-+int __tpm_get_random(struct tpm_chip *chip, u8 *out, size_t max)
- {
- 	int rc;
- 
-@@ -451,6 +448,38 @@ int tpm_get_random(struct tpm_chip *chip, u8 *out, size_t max)
- 	tpm_put_ops(chip);
- 	return rc;
- }
-+
-+/**
-+ * tpm_get_random() - get random bytes influenced by the TPM's RNG
-+ * @chip:	a &struct tpm_chip instance, %NULL for the default chip
-+ * @out:	destination buffer for the random bytes
-+ * @max:	the max number of bytes to write to @out
-+ *
-+ * Uses the TPM as a source of input to the kernel random number
-+ * generator and then takes @max bytes directly from the kernel.  In
-+ * the worst (no other entropy) case, this will return the pure TPM
-+ * random number, but if the kernel RNG has any entropy at all it will
-+ * return a mixed entropy output which doesn't rely on a single
-+ * source.
-+ *
-+ * Return: number of random bytes read or a negative error value.
-+ */
-+int tpm_get_random(struct tpm_chip *chip, u8 *out, size_t max)
-+{
-+	int rc;
-+
-+	rc = __tpm_get_random(chip, out, max);
-+	if (rc <= 0)
-+		return rc;
-+	/*
-+	 * assume the TPM produces pure randomness, so the amount of
-+	 * entropy is the number of bits returned
-+	 */
-+	add_hwgenerator_randomness(out, rc, rc * 8);
-+	get_random_bytes(out, rc);
-+
-+	return rc;
-+}
- EXPORT_SYMBOL_GPL(tpm_get_random);
- 
- /**
-diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
-index a7fea3e0ca86..25f6b347b194 100644
---- a/drivers/char/tpm/tpm.h
-+++ b/drivers/char/tpm/tpm.h
-@@ -398,6 +398,7 @@ int tpm1_get_pcr_allocation(struct tpm_chip *chip);
- unsigned long tpm_calc_ordinal_duration(struct tpm_chip *chip, u32 ordinal);
- int tpm_pm_suspend(struct device *dev);
- int tpm_pm_resume(struct device *dev);
-+int __tpm_get_random(struct tpm_chip *chip, u8 *data, size_t max);
- 
- static inline void tpm_msleep(unsigned int delay_msec)
- {
