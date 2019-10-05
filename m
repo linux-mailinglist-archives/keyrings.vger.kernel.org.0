@@ -2,55 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E13CCA2C
-	for <lists+keyrings@lfdr.de>; Sat,  5 Oct 2019 15:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89948CCA99
+	for <lists+keyrings@lfdr.de>; Sat,  5 Oct 2019 16:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725825AbfJENrm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 5 Oct 2019 09:47:42 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:33308 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725270AbfJENrm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 5 Oct 2019 09:47:42 -0400
-Received: by mail-lj1-f195.google.com with SMTP id a22so9290991ljd.0
-        for <keyrings@vger.kernel.org>; Sat, 05 Oct 2019 06:47:40 -0700 (PDT)
+        id S1725963AbfJEOpb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 5 Oct 2019 10:45:31 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:38927 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726167AbfJEOpb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 5 Oct 2019 10:45:31 -0400
+Received: by mail-lj1-f194.google.com with SMTP id y3so9359197ljj.6;
+        Sat, 05 Oct 2019 07:45:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:from:to:cc:references:openpgp:autocrypt:message-id
-         :date:user-agent:mime-version:in-reply-to;
-        bh=WGMQWE86TieFzP2Uzo8oP2WrGJoHgQVCU9fi9ws+t4g=;
-        b=laWflpdS/VpWbIz0/NNWbcUeC7IiDwbZt0nfkHF3S8xl9uuL+D7YAjiD3I4ZKHklrG
-         fCy3SBfNmj+wpQ6EF69NY3OZn2sPt7m/g1QlPDo6WNxmPQ6Ia6OHLMhfTxi45dMuRBtX
-         KCc2bp90ve8FUqpsRVN0+YZ2+eoPbjJ2dvFgR2zv5BkusgbX6e5TNftJ66iKgiELpqAy
-         hdlXgf3KFY2FQivWNITW+P3zAOFMFTbGNKDpuS/Y7S3q0Yd0NWrxPYskQr3CfhjZDOJv
-         43mTqGQtcO1eljzZc9YUZM6SZAs9wQKc87+/6GkFcMlm2f8eb1RVkA3SMTT7XhL4tfQO
-         Zm3w==
+        h=sender:from:subject:to:cc:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:content-transfer-encoding:content-language;
+        bh=gbURxtDrrjP0AwdJI4nwyz0CJiDVeD038YdBdaoNhDI=;
+        b=QwQO2IoLMbcDpkuevrdUuF1l8yjvyhoHNDJEwvhFmUmDIXltjaG6UtOh0CzkXTgLIq
+         /4ga9S/TwVXDmdpBKlQJnzwkO3e1zxHSzqyYXsy/kOfI7cAX7uFfpCxopxDdjpcVSLzV
+         G1+/p8uEO3nbCkC+0kiroPaInaG7Bgnur6M/7ULhbn9W7wo8+QqAF0icQ+sEBwuufhiC
+         d2lRtAGA+GCCo6pUy6HQ6Ac55AyE7GMG5RMlSn89qrNX/nZB2DDKOMMaw4NTqb5sE2pZ
+         rrjpjmQyQn0ru9D5lUsNJIhcKkDklhRR/jQGhXJtdFTyvZmysGoYuKpIaH300zCREaRC
+         8gFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:from:to:cc:references:openpgp
-         :autocrypt:message-id:date:user-agent:mime-version:in-reply-to;
-        bh=WGMQWE86TieFzP2Uzo8oP2WrGJoHgQVCU9fi9ws+t4g=;
-        b=EVyNoSkuNDmLLmH18rKsoCz2qNH+zLgvrH0Bucbh2I0XXSoYREE0fbb4hqNY5g+FXq
-         HeXAe+ZFw8JzxlS90svqkc8nU66KwIS480gNR5WtMnkwXwPzMcvWTU4hk+Cmf5OH13jQ
-         td7nkEjLDUvEmOyqnC6tbumeasw8ZfJQ0A5l2vKKlbcRUaQoDau/4gruPf3Xq3phIz1C
-         LapXk4GHPTud3OmY/CWQa5fUgiCnTu+7MYaFCER2q7jm3KcPL4bCzuCCGpDsuhSeAODt
-         XHjlFtVenlmJvW7MXmCiaVSoDzR3/PTZn6O+drSMPhQ/6j9oLVYfIp24NB30fyo2AA33
-         z5Xg==
-X-Gm-Message-State: APjAAAXbX3eYIWQ1bpvnpP9yhxHBDuo4gaOD0cOrvgp6hw1YdPwicAeP
-        e3uTw2OxDwoXc4ByOArU94xug9cy
-X-Google-Smtp-Source: APXvYqwOfNy1jKZeGb4JcxO0YmMenTZoKEQYgjJQOtGVrnqlKojfJFcBBcCL3obofK7jmVNlCSSL0Q==
-X-Received: by 2002:a2e:7c09:: with SMTP id x9mr13288170ljc.87.1570283258984;
-        Sat, 05 Oct 2019 06:47:38 -0700 (PDT)
+        h=x-gm-message-state:sender:from:subject:to:cc:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:content-transfer-encoding
+         :content-language;
+        bh=gbURxtDrrjP0AwdJI4nwyz0CJiDVeD038YdBdaoNhDI=;
+        b=llbG765EZzHUZErHiJ1/eb3jtFZFRiYZldiBp67TClA5KTlaaLlqx8vjH83Knp9eRC
+         FERz2ZAlXPJAwyGbOHdZfXPjxsVJrvH799bTFLonWUTvRFdrt3HEJzh5EFCtIwxa84kF
+         YiSyLYKOBr/nuUxmR9ELjggHPLWNwQhxsXlkgk+uskMBOUSSvmjDq2tlpMQfjZx0bHlK
+         fXOi64WA21ufU+29KViIqpGP9s4uoE8e2fMdnZNBKPvXlfy9VboHneqV6QT5pdDoUpRG
+         PNVcL6lWqofOKT/9Xl38i/upcH95K3hTpKvGGFgQMeN7JIidsinpYfvwifk+EW4gpazv
+         BDwg==
+X-Gm-Message-State: APjAAAXXL6tgFU/aDDVmx0iyVfT+EvSY1fI1epm3VGi1v8pllNpVL5Np
+        HJKLQ+gaT4ocKcaYsd6ZNohCBofN/bw=
+X-Google-Smtp-Source: APXvYqzfu/yBugB+mdcLyGT4Abi6LDj3G0X/prKHsz17ruqf7WpHGXoTFyHOo1uxqURo1/Ui/aEF9Q==
+X-Received: by 2002:a2e:2c02:: with SMTP id s2mr13208815ljs.156.1570286728287;
+        Sat, 05 Oct 2019 07:45:28 -0700 (PDT)
 Received: from [10.14.234.161] (c83-253-121-161.bredband.comhem.se. [83.253.121.161])
-        by smtp.gmail.com with ESMTPSA id c3sm1657717lfi.32.2019.10.05.06.47.37
+        by smtp.gmail.com with ESMTPSA id x30sm1919945ljd.39.2019.10.05.07.45.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Oct 2019 06:47:37 -0700 (PDT)
-Subject: Re: [PATCH] crypto: asymmetric_keys: select SYSTEM_DATA_VERIFICATION
+        Sat, 05 Oct 2019 07:45:27 -0700 (PDT)
 From:   klondike <klondike@klondike.es>
+Subject: [PATCH] init: Make SYSTEM_DATA_VERIFICATION a visible symbol
 To:     David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org
-References: <34dc7ee8-74f5-744e-a411-e36b462c4889@klondike.es>
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Openpgp: preference=signencrypt
 Autocrypt: addr=klondike@klondike.es; prefer-encrypt=mutual; keydata=
  xsFNBFRETY4BEADMOrDSnwioNP+AVmdGj4wETcrb+cLonZcb0KGSyI5Rk01tse4yNJaWGLuX
@@ -97,108 +99,54 @@ Autocrypt: addr=klondike@klondike.es; prefer-encrypt=mutual; keydata=
  rzdQEQDl/oSiPpomhUggE25lSwP8MBsKko7NcIU3LP5HFvongoEZtRkp9FeNC2VmLw84uB2w
  udRKPxtqJvLn2/xtjQVX4JkQnVnIh1v3wTJYfUsNfpQL4qfSiD48035AtMzUnb76T/R7yPzg
  06YGsklPt1crzrnXeclT3uA=
-Message-ID: <34b0f01f-13e6-86e1-5e44-a9987b304b69@klondike.es>
-Date:   Sat, 5 Oct 2019 15:47:32 +0200
+Message-ID: <7f9abb2b-0825-b4e3-db4a-6f2e7ca129f2@klondike.es>
+Date:   Sat, 5 Oct 2019 16:45:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <34dc7ee8-74f5-744e-a411-e36b462c4889@klondike.es>
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="gIES5pIvLBRf5p1bpuDtJbw7OjyQcj5BK"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: sv-FI
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---gIES5pIvLBRf5p1bpuDtJbw7OjyQcj5BK
-Content-Type: multipart/mixed; boundary="ENq7tGuYopFBHD5QtTwk2k9P62gUTm29A";
- protected-headers="v1"
-From: klondike <klondike@klondike.es>
-To: David Howells <dhowells@redhat.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-Cc: Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org
-Message-ID: <34b0f01f-13e6-86e1-5e44-a9987b304b69@klondike.es>
-Subject: Re: [PATCH] crypto: asymmetric_keys: select SYSTEM_DATA_VERIFICATION
-References: <34dc7ee8-74f5-744e-a411-e36b462c4889@klondike.es>
-In-Reply-To: <34dc7ee8-74f5-744e-a411-e36b462c4889@klondike.es>
+PKCS7_TEST_KEY and SIGNED_PE_FILE_VERIFICATION both depend on
+SYSTEM_DATA_VERIFICATION which is non-visibile. As result these symbols
+can not be chosen unless another symbol selecting
+SYSTEM_DATA_VERIFICATION is already chosen.
 
---ENq7tGuYopFBHD5QtTwk2k9P62gUTm29A
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Language: sv-FI
+Make SYSTEM_DATA_VERIFICATION visible so that PKCS7_TEST_KEY and
+SIGNED_PE_FILE_VERIFICATION can be chosen by users when other symbols
+selecting SYSTEM_DATA_VERIFICATION are not selected.
 
-El 5/10/19 a las 15:37, klondike escribi=C3=B3:
-> SYSTEM_DATA_VERIFICATION is a non-visible symbol which is selected by i=
-ts
-> other users. PKCS7_TEST_KEY and SIGNED_PE_FILE_VERIFICATION both depend=
- on
-> the symbol instead of selecting it which makes it impossible to choose
-> these symbols unless another symbol selecting SYSTEM_DATA_VERIFICATION =
-is
-> already chosen.
->
-> Replace their depends on SYSTEM_DATA_VERIFICATION menu attribute by a
-> selects SYSTEM_DATA_VERIFICATION attribute so that the options can be
-> efectively chosen by users.
->
-> Signed-off-by: Francisco Blas Izquierdo Riera (klondike) <klondike@klon=
-dike.es>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
->
-> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kc=
-onfig
-> index 1f1f004dc757..5940f343ab53 100644
-> --- a/crypto/asymmetric_keys/Kconfig
-> +++ b/crypto/asymmetric_keys/Kconfig
-> @@ -75,7 +75,7 @@ config PKCS7_MESSAGE_PARSER
-> config PKCS7_TEST_KEY
-> tristate "PKCS#7 testing key type"
-> - depends on SYSTEM_DATA_VERIFICATION
-> + select SYSTEM_DATA_VERIFICATION
-> help
-> This option provides a type of key that can be loaded up from a
-> PKCS#7 message - provided the message is signed by a trusted key. If
-> @@ -88,7 +88,7 @@ config PKCS7_TEST_KEY
-> config SIGNED_PE_FILE_VERIFICATION
-> bool "Support for PE file signature verification"
-> depends on PKCS7_MESSAGE_PARSER=3Dy
-> - depends on SYSTEM_DATA_VERIFICATION
-> + select SYSTEM_DATA_VERIFICATION
-> select CRYPTO_HASH
-> select ASN1
-> select OID_REGISTRY
->
-Disregard the patch for now, I didn't notice the dependency loop. I'll tr=
-y to get that fixed too.
+Also complete the help section so that this becomes clear to users.
 
+Signed-off-by: Francisco Blas Izquierdo Riera (klondike) <klondike@klondike.es>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
 
+diff --git a/init/Kconfig b/init/Kconfig
+index b4daad2bac23..6e2efdff8cf7 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1921,7 +1921,8 @@ config MMAP_ALLOW_UNINITIALIZED
+See Documentation/nommu-mmap.txt for more information.
+config SYSTEM_DATA_VERIFICATION
+- def_bool n
++ bool "Support signed data verification"
++ default n
+select SYSTEM_TRUSTED_KEYRING
+select KEYS
+select CRYPTO
+@@ -1938,6 +1939,9 @@ config SYSTEM_DATA_VERIFICATION
+module verification, kexec image verification and firmware blob
+verification.
++ If you want to be able to verify the signatures of images sent to
++ kexec, you must enable this option.
++
+config PROFILING
+bool "Profiling support"
+help
 
---ENq7tGuYopFBHD5QtTwk2k9P62gUTm29A--
-
---gIES5pIvLBRf5p1bpuDtJbw7OjyQcj5BK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEDaSLWSPwfVgqfnPQ9L3S7+j/ePkFAl2YnvQACgkQ9L3S7+j/
-ePlAERAAhVxirv4+KhqsZLpWRzMzC2EsbpoTR8Maf+N2bAnp6nJl908s90DOMrun
-NnNVhhtztFPnwo2zd3GqHb6y82vbm94cf8lPy7hREa2kOxQ6ET9//EUEpw6oSB2C
-IOR/qqcF3neioyBQZj0N1aJI3bQ6pWdUBA4+/35poXjg4D+M0rWsvc9RGpf09nEc
-cuwRmYjuDaAL75TJV3FBXobk1Cg06GxRLtP8MyVujPbsgTJHJxSOZDg8xWdUC6ww
-Asmo+RQ1dRU3JBzLzZaP9QMqPtQV0MyUpXgY/Uk8HgOH/SvR1ec3KMFlz+ZKRXtP
-FnKhOKS5BtvAQYoYMypVdxNSQ6T9RvSSgt7OpfRQRw9ASAGqUWrsexc/yF6Edbkd
-rL5Ado59H3YIqRqsHY7vaRzMUvk1TAFupGpi3iRnzJkQ4egCmKsOjTORTunEAP+Z
-KM4cRfeTNMwkX5g43MCHbEQXX9Qp9mOF8125ibpxDTlfIRP7q2m7qD+8l4ojHTEW
-vZ7yEHgMTzhEFPfP5ALXc0iI3/975XM3CGI/iQNVpU2dxOsMjd7hmbP6hgFoQT44
-+tpB5Oxtf/hiHEOngC19NLsNao4vyw4g2YpM0AFscMkZYBjg9mg1gRKWdzb9eCcf
-4MuJfOtsMTBalrfWUPd3arV9QOYbwnqSui8VSdq1FJjNaxVXC+Y=
-=4XSb
------END PGP SIGNATURE-----
-
---gIES5pIvLBRf5p1bpuDtJbw7OjyQcj5BK--
