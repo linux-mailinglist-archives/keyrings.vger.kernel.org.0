@@ -2,101 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F576CEB73
-	for <lists+keyrings@lfdr.de>; Mon,  7 Oct 2019 20:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD353CEEEE
+	for <lists+keyrings@lfdr.de>; Tue,  8 Oct 2019 00:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728650AbfJGSI1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 7 Oct 2019 14:08:27 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:33656 "EHLO
+        id S1729123AbfJGWOI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Oct 2019 18:14:08 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:37062 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728081AbfJGSI1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Oct 2019 14:08:27 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x97I2m5P085320
-        for <keyrings@vger.kernel.org>; Mon, 7 Oct 2019 14:08:26 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vg8a04kpc-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Mon, 07 Oct 2019 14:08:25 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Mon, 7 Oct 2019 19:08:23 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 7 Oct 2019 19:08:19 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x97I8Idm54394928
+        by vger.kernel.org with ESMTP id S1728654AbfJGWOI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Oct 2019 18:14:08 -0400
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x97LwWjW140478;
+        Mon, 7 Oct 2019 18:13:05 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2vg9h81far-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Oct 2019 18:13:04 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x97MAt9w016380;
+        Mon, 7 Oct 2019 22:13:03 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by ppma03wdc.us.ibm.com with ESMTP id 2vejt6meww-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Oct 2019 22:13:03 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x97MD2VT58065340
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 7 Oct 2019 18:08:18 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 14DF711C05C;
-        Mon,  7 Oct 2019 18:08:18 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C533A11C04C;
-        Mon,  7 Oct 2019 18:08:16 +0000 (GMT)
-Received: from dhcp-9-31-103-196.watson.ibm.com (unknown [9.31.103.196])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Mon,  7 Oct 2019 18:08:16 +0000 (GMT)
+        Mon, 7 Oct 2019 22:13:02 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5A58AC60B2;
+        Mon,  7 Oct 2019 22:13:02 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DF4BFC60B7;
+        Mon,  7 Oct 2019 22:13:01 +0000 (GMT)
+Received: from [9.2.202.93] (unknown [9.2.202.93])
+        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Mon,  7 Oct 2019 22:13:01 +0000 (GMT)
 Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        David Safford <david.safford@ge.com>,
-        linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        "Safford, David (GE Global Research, US)" <david.safford@ge.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
         "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
         "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Date:   Mon, 07 Oct 2019 14:08:15 -0400
-In-Reply-To: <20191006235238.GA16641@linux.intel.com>
-References: <1570140491.5046.33.camel@linux.ibm.com>
-         <1570147177.10818.11.camel@HansenPartnership.com>
-         <20191004182216.GB6945@linux.intel.com>
-         <1570213491.3563.27.camel@HansenPartnership.com>
-         <20191004183342.y63qdvspojyf3m55@cantor>
-         <1570214574.3563.32.camel@HansenPartnership.com>
-         <20191004200728.xoj6jlgbhv57gepc@cantor>
-         <20191004201134.nuesk6hxtxajnxh2@cantor>
-         <1570227068.17537.4.camel@HansenPartnership.com>
-         <1570322333.5046.145.camel@linux.ibm.com>
-         <20191006235238.GA16641@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190926171601.30404-1-jarkko.sakkinen@linux.intel.com>
+ <1570024819.4999.119.camel@linux.ibm.com>
+ <20191003114119.GF8933@linux.intel.com>
+ <1570107752.4421.183.camel@linux.ibm.com>
+ <20191003175854.GB19679@linux.intel.com>
+ <1570128827.5046.19.camel@linux.ibm.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A22E@ALPMBAPA12.e2k.ad.ge.com>
+ <20191004182711.GC6945@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
+ <20191007000520.GA17116@linux.intel.com>
+From:   Ken Goldman <kgold@linux.ibm.com>
+Message-ID: <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
+Date:   Mon, 7 Oct 2019 18:13:01 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20191007000520.GA17116@linux.intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19100718-4275-0000-0000-0000036EEB6D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19100718-4276-0000-0000-00003881FA7D
-Message-Id: <1570471695.5046.186.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-07_03:,,
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-07_04:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=662 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910070161
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=882 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910070196
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2019-10-07 at 02:52 +0300, Jarkko Sakkinen wrote:
+The TPM library specification states that the TPM must comply with NIST 
+SP800-90 A.
+
+https://trustedcomputinggroup.org/membership/certification/tpm-certified-products/
+
+shows that the TPMs get third party certification, Common Criteria EAL 4+.
+
+While it's theoretically possible that an attacker could compromise
+both the TPM vendors and the evaluation agencies, we do have EAL 4+ 
+assurance against both 1 and 2.
+
+On 10/6/2019 8:05 PM, Jarkko Sakkinen wrote:
 > 
-> With TEE coming in, TPM is not the only hardware measure anymore sealing
-> the keys and we don't want a mess where every hardware asset does their
-> own proprietary key generation. The proprietary technology should only
-> take care of the sealing part.
-
-I'm fine with the concept of "trusted" keys being extended beyond just
-TPM.  But just as the VFS layer defines a set of callbacks and generic
-functions, which can be used in lieu of file system specific callback
-functions, a similar approach could be used here.
-
-Mimi
+> Kernel has the random number generator for two reasons:
+> 
+> 1. To protect against bugs in hwrng's.
+> 2. To protect against deliberate backdoors in hwrng's.
+> 
+> How TPM RNG is guaranteed to protect against both 1 and 2?
 
