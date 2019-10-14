@@ -2,109 +2,125 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3E8D635C
-	for <lists+keyrings@lfdr.de>; Mon, 14 Oct 2019 15:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76584D69CE
+	for <lists+keyrings@lfdr.de>; Mon, 14 Oct 2019 21:00:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730386AbfJNNGK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 14 Oct 2019 09:06:10 -0400
-Received: from mout.gmx.net ([212.227.15.15]:37933 "EHLO mout.gmx.net"
+        id S1728806AbfJNTAn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 14 Oct 2019 15:00:43 -0400
+Received: from mga05.intel.com ([192.55.52.43]:45668 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730064AbfJNNGK (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 14 Oct 2019 09:06:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1571058365;
-        bh=Xl/qPBC+Pfud9Ygr6K1pr5rV2FyfKpYFOUPFsLFFUKA=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=aSXArlodqEbH0ybChyBiDqxmFLqdiXJL6HdT3QAzAFE9qEq4vuNbludpEW816+nIb
-         pwsUW0Bg4nTShNHyiZpefEiRbcnOs8gHSScUFhSJ7Gj192+XjMz60KTYlvAHlZ7rdf
-         ow8+buLi1CRxiMdRVKvigNsz3GbeYMpi+nDg7b5w=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost ([91.61.58.244]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M4JqV-1iKHAC2ZZB-000N5M; Mon, 14
- Oct 2019 15:06:05 +0200
-Date:   Mon, 14 Oct 2019 15:06:05 +0200
-From:   Marcus =?utf-8?B?SMO8d2U=?= <suse-tux@gmx.de>
-To:     David Howells <dhowells@redhat.com>
-Cc:     keyrings@vger.kernel.org, suse-tux@gmx.de
-Subject: Re: [PATCH] keys: Do not check the retval of commit_creds in
- join_session_keyring
-Message-ID: <20191014130604.u65ohezf6usjkico@linux>
-References: <044b34c4388405e995e38fb57fc120361bf962db.1568124150.git.suse-tux@gmx.de>
+        id S1728106AbfJNTAn (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 14 Oct 2019 15:00:43 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Oct 2019 12:00:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,296,1566889200"; 
+   d="scan'208";a="208023923"
+Received: from kridax-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.7.178])
+  by fmsmga001.fm.intel.com with ESMTP; 14 Oct 2019 12:00:34 -0700
+Date:   Mon, 14 Oct 2019 22:00:33 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>
+Cc:     Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191014190033.GA15552@linux.intel.com>
+References: <20191003175854.GB19679@linux.intel.com>
+ <1570128827.5046.19.camel@linux.ibm.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A22E@ALPMBAPA12.e2k.ad.ge.com>
+ <20191004182711.GC6945@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
+ <20191007000520.GA17116@linux.intel.com>
+ <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
+ <20191008234935.GA13926@linux.intel.com>
+ <20191008235339.GB13926@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <044b34c4388405e995e38fb57fc120361bf962db.1568124150.git.suse-tux@gmx.de>
-User-Agent: NeoMutt/20180716
-X-Provags-ID: V03:K1:WPE9WEvPmqv9FNoYHvwJmOqL5+krgDbiI01lazynpTOOSd8ugDr
- zz/t0Pgz1bxPCJRtNGZxIRIXeZERkdmjja2aYMQ8JJq/BEDLXlMXDPb/08PN+2RYIqn0ozq
- DwbgEAnhexxPnpwnDqdYtd+OZdsYyWYLYbX/6WWi3dhleow/RrX5VstDW5RDVamWkBHu7d9
- 5jNmsLirHQ+35jRARNyFQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:r6j9VWgmlGE=:l4MgM1OX7tMXcoZf8n2vrc
- W3qPDfRO0R94z+iCsvBxF/q6Oy/X1dG3rFoNRHo7nh3QxVBT81AmYQE2jU3BKZf35MB36hk3l
- Y4Mg0V9A0Upf7kIjQJAc1ZvLO1kWiz53AqSKuPnC3XOkxL7yrXjOmO3kMQ3yKsViZJ3+7BNbn
- bq71LpJPIVaOqGyNIjNNLD+rQG1rXuawX0sn+bEQV334kl/2KVLOqNv3CsgeMMcSwzckXC2uh
- 2VdaczuzC+jYKEIcjDrIsp7ltACSD+6rOoQtKm5WFHZ2si0DrZWy9YWtW1q/FHvUKjLSePTMn
- MxLxdQ2t0C3j9NwJsXmS+qfU2DqC4ZX7sbta8egevzIaSTcum7V+7VNU1/DoVjmRwgB9Yro/J
- UhDeAItzPixhBC/WrJ+d80rnTfJQSUqIOskFBaVDSEy1Xtq04xrgnNYH3xus0vsADu3vdpIpr
- QhZDMv5cofqcoS2ir/fUuVs0hVrId7vAAlKIxijDs9eAIaYZTdMgMSUAbQ6EZittmHAuqpiG+
- 4tyEQC7m865yktxzbNy5sSD2KAhvYjr6CTxE58yttAcSMtndfy9wAshU+jUlLB5uuLMZblDGG
- YKA1YtKGtoKR2+eoD4dKDp2t7AGC1S9zMaRIXFMTw6GYsp3MH6223yzIw9h8eKILiM1OU0g05
- OLs4aDyet1gGPeQZbPVGEqkSIgUbLa3wn7UaFEuUb/HxrcMGeV3TdP13NHVArEaAhXp30+nio
- ABdR3EwnMYq04CMJECeccBq115REuQxdP26TmME/IgW1l1i8De21HjH59F/k8gl+6bX4e9OQ6
- 9DCXvl3KLaF4WWWLhAKaH//7jmZqPDouSokp7+ichhknSpOqOXZT1E7SN5STb7WOauTyuaOI+
- 8W6apWvqK04Kg/Bo9GfAe+mVn6iZOvqOr/oib8wEePU1x52oShyCWXZFzLb03QI+/GylXYN0C
- gRyu9Kjl6Lz77W1/2tRaJYsmY/fFSTdSvklCXwTCj9zxAipnPgJVmBJj/mUmejwlyaXBRKBCO
- +IGxr2jRyaEk3W2aUwtFD2E+gbx1XD3fYKo88mCWOGeV6b63inyk7aCs9j+TmEa+CX5D5rc8g
- EgS0S/e5wgh7/MKAtzkodwKRAFrAcgQFXrmgDaSSqMveIu0p1nBesbwxS07YjEiw1/WMPcUwe
- D2YTyKMo956KLixcRW5tqdDjQBhfv4Vfaad9kNHWdGOdh8/37efWeU5igkyHCIpbw4AengeGt
- jKY4iOmEXZ8MugP7xI7+uK9sy+hrfITEpIlVFnA==
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Just a gentle ping - any news on this?:)
+On Wed, Oct 09, 2019 at 12:11:06PM +0000, Safford, David (GE Global Research, US) wrote:
+> 
+> > From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > Sent: Tuesday, October 8, 2019 7:54 PM
+> > To: Ken Goldman <kgold@linux.ibm.com>
+> > Cc: Safford, David (GE Global Research, US) <david.safford@ge.com>; Mimi
+> > Zohar <zohar@linux.ibm.com>; linux-integrity@vger.kernel.org;
+> > stable@vger.kernel.org; open list:ASYMMETRIC KEYS
+> > <keyrings@vger.kernel.org>; open list:CRYPTO API <linux-
+> > crypto@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>
+> > Subject: EXT: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+> > 
+> > On Wed, Oct 09, 2019 at 02:49:35AM +0300, Jarkko Sakkinen wrote:
+> > > On Mon, Oct 07, 2019 at 06:13:01PM -0400, Ken Goldman wrote:
+> > > > The TPM library specification states that the TPM must comply with
+> > > > NIST
+> > > > SP800-90 A.
+> > > >
+> > > > https://trustedcomputinggroup.org/membership/certification/tpm-certi
+> > > > fied-products/
+> > > >
+> > > > shows that the TPMs get third party certification, Common Criteria EAL 4+.
+> > > >
+> > > > While it's theoretically possible that an attacker could compromise
+> > > > both the TPM vendors and the evaluation agencies, we do have EAL 4+
+> > > > assurance against both 1 and 2.
+> > >
+> > > Certifications do not equal to trust.
+> > 
+> > And for trusted keys the least trust solution is to do generation with the kernel
+> > assets and sealing with TPM. With TEE the least trust solution is equivalent.
+> > 
+> > Are you proposing that the kernel random number generation should be
+> > removed? That would be my conclusion of this discussion if I would agree any
+> > of this (I don't).
+> > 
+> > /Jarkko
+> 
+> No one is suggesting that.
+> 
+> You are suggesting changing the documented behavior of trusted keys, and
+> that would cause problems for some of our use cases. While certification
+> may not in your mind be equal to trust, it is equal to compliance with 
+> mandatory regulations.
+> 
+> Perhaps rather than arguing past each other, we should look into 
+> providing users the ability to choose, as an argument to keyctl?
+> 
+> dave
 
-On 2019-09-10 16:07:59 +0200, Marcus Huewe wrote:
-> Do not check the return value of the commit_creds call in
-> join_session_keyring in order to make the code more concise.
-> Since commit_creds always returns 0, the if-statement is not needed
-> and the session keyring's serial can be directly assigned to the
-> "ret" variable.
->
-> Signed-off-by: Marcus Huewe <suse-tux@gmx.de>
-> ---
->  security/keys/process_keys.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
->
-> diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
-> index 09541de31f2f..e7cd1ff84709 100644
-> --- a/security/keys/process_keys.c
-> +++ b/security/keys/process_keys.c
-> @@ -840,7 +840,7 @@ long join_session_keyring(const char *name)
->  	const struct cred *old;
->  	struct cred *new;
->  	struct key *keyring;
-> -	long ret, serial;
-> +	long ret;
->
->  	new =3D prepare_creds();
->  	if (!new)
-> @@ -853,10 +853,8 @@ long join_session_keyring(const char *name)
->  		if (ret < 0)
->  			goto error;
->
-> -		serial =3D new->session_keyring->serial;
-> -		ret =3D commit_creds(new);
-> -		if (ret =3D=3D 0)
-> -			ret =3D serial;
-> +		ret =3D new->session_keyring->serial;
-> +		commit_creds(new);
->  		goto okay;
->  	}
->
-> --
-> 2.22.0
->
+I'm taking my words back in the regression part as regression would need
+really a failing system. Definitely the fixes tag should be removed from
+my patch.
+
+What is anyway the role of the kernel rng? Why does it exist and when
+exactly it should be used? This exactly where the whole review process
+throughout the "chain of command" failed misserably with tpm_asym.c.
+
+The commit message for tpm_asym.c does not document the design choice in
+any possible way and still was merged to the mainline.
+
+Before knowning the answer to the "existential" question we are
+somewhat paralyzed on moving forward with trusted keys (e.g. paralyzed
+to merge TEE backend).
+
+Your proposal might make sense but I don't really want to say anything
+since I'm completely cluesless of the role of the kernel rng. Looks like
+everyone who participated to the review process of tpm_asym.c, is too.
+
+/Jarkko
