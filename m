@@ -2,60 +2,58 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E40D8381
-	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 00:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDCABD83D6
+	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 00:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731816AbfJOWVJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 15 Oct 2019 18:21:09 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:41049 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730625AbfJOWVI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Oct 2019 18:21:08 -0400
-Received: by mail-lf1-f68.google.com with SMTP id r2so15701669lfn.8
-        for <keyrings@vger.kernel.org>; Tue, 15 Oct 2019 15:21:06 -0700 (PDT)
+        id S1732857AbfJOWhk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Oct 2019 18:37:40 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:38851 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732851AbfJOWhk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Oct 2019 18:37:40 -0400
+Received: by mail-lf1-f67.google.com with SMTP id u28so15752637lfc.5
+        for <keyrings@vger.kernel.org>; Tue, 15 Oct 2019 15:37:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=igJfeABa6M5mmcDSZ9XAWyfxDlpeT34TBKS5Vu4WYQ8=;
-        b=LIYdbK/WEFGMNdD+uIGw2BasCdPDikOSk/1C31c/6KJAoWeweWvBbkEnJF4PHN8TkH
-         BgZdUCf/ZYXj115hlOqd/koyMkdZG6Il9yGalmukOiV4kTIOYCVZSlLQpLqR2NWtyVYg
-         nGZ/n1OZmV0DBw+aQ4pzCSwYlzFEdDM+SUZEQ=
+        bh=fon9Xqueqx/Fq0wGHnHqEDUCXyflZLUwsevU6fmx6jE=;
+        b=SIEI+eyzsLvgKQSWy68fNU4waAO3JnvS6nzHr5/fZu5+F3lS+ninFSB5dUKCVryHZ+
+         kl8H8QJRcmYfRoBpcYQdlcvyFYmbnE5AhMRuYRji7sgqsBgEDlqfBvGU7GUQWJu2UMf7
+         6W/csLC8ZHTI+HN72RKiuRYhkxOOMexsvDhzA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=igJfeABa6M5mmcDSZ9XAWyfxDlpeT34TBKS5Vu4WYQ8=;
-        b=OOqOQcLcMEZcIQjn76vADGFGiPaGDx2BZZf/8K7AXavMB5a2ZZwSB/r6ZAD5sfJNmq
-         qebXt/9OxVdQ7lPniVbfUynKCNhE7u4NyZtEMVx9zGJc4BJj8d8UjpKOxYx1zce/k9Uj
-         HunbxaNuSLuxQstek2GTIa9GwNRK/Veag4DmnSdcvpBAVS4Ha4z6V/cHl6wq2GMYgo3C
-         Vj2ecOA8ShyjhGBfxEo+IwNmvr/oLZl26BorX6ej8X7EqOHLxP10by8bvp/+uEKsNhQW
-         Fs8sOXp+Jo0yYJZ3lKtvttRh2EFzgbTUkjNGmNxzDtx1t+LEkTpJlmhRdjJt4AoXrpwi
-         uxJw==
-X-Gm-Message-State: APjAAAV3RFVUZklGSrhtv2/OpZSTMmbsf4kYq7yYPureuIJIVbCc1hXF
-        e7lmLGEX9EbYd+FhncgIcdn6v7qVzRk=
-X-Google-Smtp-Source: APXvYqx3NPl7MJ7K5dJxOiB8kbjdXNhxhuu0rtOf+WmuE9RJf1rIjPcryl1aERf+ADZGqkDBDppTiA==
-X-Received: by 2002:ac2:4283:: with SMTP id m3mr2586598lfh.41.1571178064944;
-        Tue, 15 Oct 2019 15:21:04 -0700 (PDT)
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com. [209.85.167.50])
-        by smtp.gmail.com with ESMTPSA id l7sm5288030lji.46.2019.10.15.15.21.03
+        bh=fon9Xqueqx/Fq0wGHnHqEDUCXyflZLUwsevU6fmx6jE=;
+        b=ufZKAUlSyMoJVaUWiUrlNU1f3aB/K1TN1q7M5PCYz4wd8IsiYYMBol6rAdJSKmrAtw
+         VW+CQl+aNDedO780L28AmwrpaURD8YyCQcTEeTua2nEmLZjmrB53ZpXSASFTnr6ICWtB
+         7olflwnrobS74xLgaHN/5fJCmdDzPE4DwCOpCs9Gqvs/3Hb1+6s+lJ09fAxnV+ucG7iC
+         WYa9JHp+dO5flxbxOIEqj5MfNbwE0JHWGj84+2BYcTWjmCOMpvVo/KnlOd6NdICe5BPu
+         JJdPT+tFwgUQET7yu29QvybXmF07PeXuW1kH7yDg9u5YDK6h3e85VYCfVAdnSSirQASG
+         iPRw==
+X-Gm-Message-State: APjAAAUxsbgVNVcURnwLdutJpvV1zcvMsFt2tkldHs9nyo9QC39I4nEd
+        sXXWknoFwSgMi90IIoYyXrsiVt6Iim0=
+X-Google-Smtp-Source: APXvYqzfdxQmHqsMMe/A/In8UnO6ht17F5sM4K2q3icQVk0y538SpBz+VXPI7XCMpS3ONXljwZFxFQ==
+X-Received: by 2002:a19:ee0f:: with SMTP id g15mr22510333lfb.23.1571179056839;
+        Tue, 15 Oct 2019 15:37:36 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id c26sm6037419ljj.45.2019.10.15.15.37.36
         for <keyrings@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Oct 2019 15:21:03 -0700 (PDT)
-Received: by mail-lf1-f50.google.com with SMTP id u16so3151662lfq.3
-        for <keyrings@vger.kernel.org>; Tue, 15 Oct 2019 15:21:03 -0700 (PDT)
-X-Received: by 2002:ac2:43a8:: with SMTP id t8mr22573654lfl.134.1571178063150;
- Tue, 15 Oct 2019 15:21:03 -0700 (PDT)
+        Tue, 15 Oct 2019 15:37:36 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id t8so15707667lfc.13
+        for <keyrings@vger.kernel.org>; Tue, 15 Oct 2019 15:37:36 -0700 (PDT)
+X-Received: by 2002:a19:5504:: with SMTP id n4mr4230778lfe.106.1571178744104;
+ Tue, 15 Oct 2019 15:32:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk>
- <157117614109.15019.15677943675625422728.stgit@warthog.procyon.org.uk>
-In-Reply-To: <157117614109.15019.15677943675625422728.stgit@warthog.procyon.org.uk>
+In-Reply-To: <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 15 Oct 2019 15:20:47 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wivjB8Va7K_eK_fx+Z1vpbJ82DW=eVfyP33ZDusaK44EA@mail.gmail.com>
-Message-ID: <CAHk-=wivjB8Va7K_eK_fx+Z1vpbJ82DW=eVfyP33ZDusaK44EA@mail.gmail.com>
-Subject: Re: [RFC PATCH 08/21] pipe: Check for ring full inside of the
- spinlock in pipe_write()
+Date:   Tue, 15 Oct 2019 15:32:08 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whfCy+WCZ5SXZGi4QEhxXm=EjZjj4R9+o4q-QR3saMyfg@mail.gmail.com>
+Message-ID: <CAHk-=whfCy+WCZ5SXZGi4QEhxXm=EjZjj4R9+o4q-QR3saMyfg@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/21] pipe: Keyrings, Block and USB notifications
 To:     David Howells <dhowells@redhat.com>
 Cc:     Casey Schaufler <casey@schaufler-ca.com>,
         Stephen Smalley <sds@tycho.nsa.gov>,
@@ -74,13 +72,15 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 15, 2019 at 2:49 PM David Howells <dhowells@redhat.com> wrote:
->
-> +                       if (head - pipe->tail == buffers) {
+Aside from the two small comments, the pipe side looked reasonable,
+but I stopped looking when the patches moved on to the notificaiton
+part, and maybe I missed something in the earlier ones too.
 
-Can we just have helper inline functions for these things?
+Which does bring me to the meat of this email: can we please keep the
+pipe cleanups and prepwork (and benchmarking) as a separate patch
+series? I'd like that to be done separately from the notification
+code, since it's re-organization and cleanup - while the eventual goal
+is to be able to add messages to the pipe atomically, I think the
+series makes sense (and should make sense) on its own.
 
-You describe them in the commit message of 03/21 (good), but it would
-be even better if the code was just self-describing..
-
-           Linus
+          Linus
