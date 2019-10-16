@@ -2,257 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3628BD8A1D
-	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 09:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB19D8EC7
+	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 13:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391265AbfJPHqQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 16 Oct 2019 03:46:16 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:37561 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726796AbfJPHqP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 16 Oct 2019 03:46:15 -0400
-Received: by mail-lf1-f68.google.com with SMTP id w67so16612926lff.4
-        for <keyrings@vger.kernel.org>; Wed, 16 Oct 2019 00:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=QvRi7PNoggQszDfre8D+FBzcsSh0CBoNlDWz8tev6yQ=;
-        b=RU4N7tUwuMfI1VibR44SQ9yks8vKVb5eF1y46S/6t3LFTW4cFYnE80Pk+GUbw9adiY
-         7pkUda9TFfJCZh0Qnm9cHSUhUFa+fL1/80R0Qg8cq0fEMSiE/3ZYOfVy582xWOfe7GAx
-         BtuoalHwtq4x9rd3dhU0C8u0WLYIKTsURlQ7Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QvRi7PNoggQszDfre8D+FBzcsSh0CBoNlDWz8tev6yQ=;
-        b=DvGRqBfB53UkB2Z+8WU4AX+E7X3NlqljHoI+rJXFY2bNMK/XlPET/4WAmc73VK3RDo
-         mbVnQVtMT86tbIYcZsdb+zBwE0oQdJy0hl5nj5IbLfzZopjhqRjpInVuTxZ0vg4fKpcA
-         xgyM7g4XLpU/Q0OTXrw8OEFo0bnNfSJ5YMGf7618tifsWZOYIzV9rIgM1p/3DE1p5fEW
-         vtXVCezqQnDXQo2sVMr2+PEA0sJ56X/SNFU5Kth0/qG82ipmMD1+80M2EAHz1lgKg/8f
-         OwbExKeBIxPYa6rxmP72pf9mVcy1LSx8MUaetdrtkqBR4K1ML2wo/k8GPONOnn+aKGLj
-         8EuQ==
-X-Gm-Message-State: APjAAAU2LTonUnkKeZp9OkV0QUS974n/ynIqx6sS07grKyFNhY1cL8ts
-        Y8aN+o8P1cZyb5HZ6HbMhUudcw==
-X-Google-Smtp-Source: APXvYqyBmqGfoeKFBJH4OrBLDBFGebGhLmDfJwIYHLGKut9DDipI1Qyw/3UVrk5mWZI3oDJFyaWWGQ==
-X-Received: by 2002:a19:6759:: with SMTP id e25mr3829669lfj.80.1571211973028;
-        Wed, 16 Oct 2019 00:46:13 -0700 (PDT)
-Received: from [172.16.11.28] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id q26sm5650578lfd.53.2019.10.16.00.46.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Oct 2019 00:46:12 -0700 (PDT)
-Subject: Re: [RFC PATCH 03/21] pipe: Use head and tail pointers for the ring,
- not cursor and length
-To:     David Howells <dhowells@redhat.com>, torvalds@linux-foundation.org
-Cc:     Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk>
- <157117609543.15019.17103851546424902507.stgit@warthog.procyon.org.uk>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <b8799179-d389-8005-4f6d-845febc3bb23@rasmusvillemoes.dk>
-Date:   Wed, 16 Oct 2019 09:46:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S2392380AbfJPLAg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 16 Oct 2019 07:00:36 -0400
+Received: from mga09.intel.com ([134.134.136.24]:3400 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726083AbfJPLAg (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 16 Oct 2019 07:00:36 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Oct 2019 04:00:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,303,1566889200"; 
+   d="scan'208";a="225749572"
+Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.130])
+  by fmsmga002.fm.intel.com with ESMTP; 16 Oct 2019 04:00:32 -0700
+Date:   Wed, 16 Oct 2019 14:00:31 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191016110031.GE10184@linux.intel.com>
+References: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A22E@ALPMBAPA12.e2k.ad.ge.com>
+ <20191004182711.GC6945@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
+ <20191007000520.GA17116@linux.intel.com>
+ <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
+ <20191008234935.GA13926@linux.intel.com>
+ <20191008235339.GB13926@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+ <20191014190033.GA15552@linux.intel.com>
+ <1571081397.3728.9.camel@HansenPartnership.com>
 MIME-Version: 1.0
-In-Reply-To: <157117609543.15019.17103851546424902507.stgit@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1571081397.3728.9.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 15/10/2019 23.48, David Howells wrote:
-> Convert pipes to use head and tail pointers for the buffer ring rather than
-> pointer and length as the latter requires two atomic ops to update (or a
-> combined op) whereas the former only requires one.
-> 
->  (1) The head pointer is the point at which production occurs and points to
->      the slot in which the next buffer will be placed.  This is equivalent
->      to pipe->curbuf + pipe->nrbufs.
-> 
->      The head pointer belongs to the write-side.
-> 
->  (2) The tail pointer is the point at which consumption occurs.  It points
->      to the next slot to be consumed.  This is equivalent to pipe->curbuf.
-> 
->      The tail pointer belongs to the read-side.
-> 
->  (3) head and tail are allowed to run to UINT_MAX and wrap naturally.  They
->      are only masked off when the array is being accessed, e.g.:
-> 
-> 	pipe->bufs[head & mask]
-> 
->      This means that it is not necessary to have a dead slot in the ring as
->      head == tail isn't ambiguous.
-> 
->  (4) The ring is empty if "head == tail".
-> 
->  (5) The occupancy of the ring is "head - tail".
-> 
->  (6) The number of free slots in the ring is "(tail + pipe->ring_size) -
->      head".
+On Mon, Oct 14, 2019 at 12:29:57PM -0700, James Bottomley wrote:
+> The job of the in-kernel rng is simply to produce a mixed entropy pool
+> from which we can draw random numbers.  The idea is that quite a few
+> attackers have identified the rng as being a weak point in the security
+> architecture of the kernel, so if we mix entropy from all the sources
+> we have, you have to compromise most of them to gain some predictive
+> power over the rng sequence.
 
-Seems an odd way of writing pipe->ring_size - (head - tail) ; i.e.
-obviously #free slots is #size minus #occupancy.
+The documentation says that krng is suitable for key generation.
+Should the documentation changed to state that it is unsuitable?
 
->  (7) The ring is full if "head >= (tail + pipe->ring_size)", which can also
->      be written as "head - tail >= pipe->ring_size".
->
+> The point is not how certified the TPM RNG is, the point is that it's a
+> single source and if we rely on it solely for some applications, like
+> trusted keys, then it gives the attackers a single known point to go
+> after.  This may be impossible for script kiddies, but it won't be for
+> nation states ... are you going to exclusively trust the random number
+> you got from your chinese certified TPM?
 
-No it cannot, it _must_ be written in the latter form. Assuming
-sizeof(int)==1 for simplicity, consider ring_size = 16, tail = 240.
-Regardless whether head is 240, 241, ..., 255, 0, tail + ring_size wraps
-to 0, so the former expression states the ring is full in all cases.
+I'd suggest approach where TPM RNG result is xored with krng result.
 
-Better spell out somewhere that while head and tail are free-running, at
-any point in time they satisfy the invariant head - tail <= pipe_size
-(and also 0 <= head - tail, but that's a tautology for unsigned
-ints...). Then it's a matter of taste if one wants to write "full" as
-head-tail == pipe_size or head-tail >= pipe_size.
+> Remember also that the attack doesn't have to be to the TPM only, it
+> could be the pathway by which we get the random number, which involves
+> components outside of the TPM certification.
 
-> Also split pipe->buffers into pipe->ring_size (which indicates the size of the
-> ring) and pipe->max_usage (which restricts the amount of ring that write() is
-> allowed to fill).  This allows for a pipe that is both writable by the kernel
-> notification facility and by userspace, allowing plenty of ring space for
-> notifications to be added whilst preventing userspace from being able to use
-> up too much buffer space.
+Yeah, I do get this.
 
-That seems like something that should be added in a separate patch -
-adding ->max_usage and switching appropriate users of ->ring_size over,
-so it's more clear where you're using one or the other.
-
-> @@ -1949,8 +1950,12 @@ static ssize_t fuse_dev_splice_write(struct pipe_inode_info *pipe,
->  
->  	pipe_lock(pipe);
->  
-> -	bufs = kvmalloc_array(pipe->nrbufs, sizeof(struct pipe_buffer),
-> -			      GFP_KERNEL);
-> +	head = pipe->head;
-> +	tail = pipe->tail;
-> +	mask = pipe->ring_size - 1;
-> +	count = head - tail;
-> +
-> +	bufs = kvmalloc_array(count, sizeof(struct pipe_buffer), GFP_KERNEL);
->  	if (!bufs) {
->  		pipe_unlock(pipe);
->  		return -ENOMEM;
-> @@ -1958,8 +1963,8 @@ static ssize_t fuse_dev_splice_write(struct pipe_inode_info *pipe,
->  
->  	nbuf = 0;
->  	rem = 0;
-> -	for (idx = 0; idx < pipe->nrbufs && rem < len; idx++)
-> -		rem += pipe->bufs[(pipe->curbuf + idx) & (pipe->buffers - 1)].len;
-> +	for (idx = tail; idx < head && rem < len; idx++)
-> +		rem += pipe->bufs[idx & mask].len;
->  
->  	ret = -EINVAL;
->  	if (rem < len)
-> @@ -1970,16 +1975,16 @@ static ssize_t fuse_dev_splice_write(struct pipe_inode_info *pipe,
->  		struct pipe_buffer *ibuf;
->  		struct pipe_buffer *obuf;
->  
-> -		BUG_ON(nbuf >= pipe->buffers);
-> -		BUG_ON(!pipe->nrbufs);
-> -		ibuf = &pipe->bufs[pipe->curbuf];
-> +		BUG_ON(nbuf >= pipe->ring_size);
-> +		BUG_ON(tail == head);
-> +		ibuf = &pipe->bufs[tail];
-
-I don't see where tail gets masked between tail = pipe->tail; above and
-here, but I may be missing it. In any case, how about seeding head and
-tail with something like 1<<20 when creating the pipe so bugs like that
-are hit more quickly.
-
-> @@ -515,17 +525,19 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
->  static long pipe_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
->  {
->  	struct pipe_inode_info *pipe = filp->private_data;
-> -	int count, buf, nrbufs;
-> +	int count, head, tail, mask;
->  
->  	switch (cmd) {
->  		case FIONREAD:
->  			__pipe_lock(pipe);
->  			count = 0;
-> -			buf = pipe->curbuf;
-> -			nrbufs = pipe->nrbufs;
-> -			while (--nrbufs >= 0) {
-> -				count += pipe->bufs[buf].len;
-> -				buf = (buf+1) & (pipe->buffers - 1);
-> +			head = pipe->head;
-> +			tail = pipe->tail;
-> +			mask = pipe->ring_size - 1;
-> +
-> +			while (tail < head) {
-> +				count += pipe->bufs[tail & mask].len;
-> +				tail++;
->  			}
-
-This is broken if head has wrapped but tail has not. It has to be "while
-(head - tail)" or perhaps just "while (tail != head)" or something along
-those lines.
-
-> @@ -1086,17 +1104,21 @@ static long pipe_set_size(struct pipe_inode_info *pipe, unsigned long arg)
->  	}
->  
->  	/*
-> -	 * We can shrink the pipe, if arg >= pipe->nrbufs. Since we don't
-> -	 * expect a lot of shrink+grow operations, just free and allocate
-> -	 * again like we would do for growing. If the pipe currently
-> +	 * We can shrink the pipe, if arg is greater than the ring occupancy.
-> +	 * Since we don't expect a lot of shrink+grow operations, just free and
-> +	 * allocate again like we would do for growing.  If the pipe currently
->  	 * contains more buffers than arg, then return busy.
->  	 */
-> -	if (nr_pages < pipe->nrbufs) {
-> +	mask = pipe->ring_size - 1;
-> +	head = pipe->head & mask;
-> +	tail = pipe->tail & mask;
-> +	n = pipe->head - pipe->tail;
-
-I think it's confusing to "premask" head and tail here. Can you either
-drop that (pipe_set_size should hardly be a hot path?), or perhaps call
-them something else to avoid a future reader seeing an unmasked
-bufs[head] and thinking that's a bug?
-
-> @@ -1254,9 +1290,10 @@ static ssize_t pipe_get_pages(struct iov_iter *i,
->  		   struct page **pages, size_t maxsize, unsigned maxpages,
->  		   size_t *start)
->  {
-> +	unsigned int p_tail;
-> +	unsigned int i_head;
->  	unsigned npages;
->  	size_t capacity;
-> -	int idx;
->  
->  	if (!maxsize)
->  		return 0;
-> @@ -1264,12 +1301,15 @@ static ssize_t pipe_get_pages(struct iov_iter *i,
->  	if (!sanity(i))
->  		return -EFAULT;
->  
-> -	data_start(i, &idx, start);
-> -	/* some of this one + all after this one */
-> -	npages = ((i->pipe->curbuf - idx - 1) & (i->pipe->buffers - 1)) + 1;
-> -	capacity = min(npages,maxpages) * PAGE_SIZE - *start;
-> +	data_start(i, &i_head, start);
-> +	p_tail = i->pipe->tail;
-> +	/* Amount of free space: some of this one + all after this one */
-> +	npages = (p_tail + i->pipe->ring_size) - i_head;
-
-Hm, it's not clear that this is equivalent to the old computation. Since
-it seems repeated in a few places, could it be factored to a little
-helper (before this patch) and the "some of this one + all after this
-one" comment perhaps expanded to explain what is going on?
-
-Rasmus
+/Jarkko
