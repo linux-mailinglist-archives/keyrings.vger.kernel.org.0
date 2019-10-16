@@ -2,95 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5588D95A2
-	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 17:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 067F5D973F
+	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 18:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404949AbfJPPcM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 16 Oct 2019 11:32:12 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:41296 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404946AbfJPPcM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 16 Oct 2019 11:32:12 -0400
-Received: by mail-lj1-f196.google.com with SMTP id f5so24495826ljg.8
-        for <keyrings@vger.kernel.org>; Wed, 16 Oct 2019 08:32:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=x4sUXBF9N+gOqGoXUSe/0E2VksmAjHdkiv7KSR2ftGI=;
-        b=KN++Zn81C01LK7bngv2WQhecCB2pvDWa6MiPOCNK9giCb55GzPd38NprLWCi9y4Rmp
-         G5JVpEFhN07gxtvQKkcodZ0c/iin5yb7op+6svXAeHTJxJPM5HZz2LuFX2hGczINIWnp
-         zjAlhPJ3IIlR8ZNhwPZ4TPeH42AI6XYGcDMmI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=x4sUXBF9N+gOqGoXUSe/0E2VksmAjHdkiv7KSR2ftGI=;
-        b=ZrBEe4BXDYupjPArE85MGWm68aBhXpY2Dt9zTi8IEPvzbiO5Qnx3vi0ZF5XGZmpKA7
-         528sAp0tV6/v3O/5qWR2Kce5JPR6k7/9UfrQ/F4LrXfQUWOeZ8iJijYcGB9RaEWlZRmM
-         nfZMaAf3b3qfeLMVSSCjDEyYeIAV3xZN53PunAXHQ8LzpYZleQ82VddSSK9pZYo25p8/
-         8Tgw3PNbL5myINkGqKHtoRBNfmgaIRZYTPeUfHK9bRKUJIjEtYGyuIBABD9aTHVoGNa9
-         spIRC0PjgIbfQR4k3ONMldHVuDqqlG7a//T7OTmUWwPX5g1vXv17xtSPPohINyCi86ro
-         MEjQ==
-X-Gm-Message-State: APjAAAUMqKiYpqwCFwB1dYNXhnstFyJNUVjmlY65M0NcNumFJu9QOBR0
-        ZRN5CZuM4VlqfDprFBZRgjE0+NkQpCU=
-X-Google-Smtp-Source: APXvYqx6vN1qlbnsoUh2WVStEsAFvbLjBEKoPyPqh20zWZeQL6gDGrl4/X5/dbk4quEUTsijPJEnEw==
-X-Received: by 2002:a2e:8716:: with SMTP id m22mr14018032lji.102.1571239929394;
-        Wed, 16 Oct 2019 08:32:09 -0700 (PDT)
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
-        by smtp.gmail.com with ESMTPSA id e29sm6325498ljb.105.2019.10.16.08.32.05
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Oct 2019 08:32:06 -0700 (PDT)
-Received: by mail-lj1-f181.google.com with SMTP id d1so24422464ljl.13
-        for <keyrings@vger.kernel.org>; Wed, 16 Oct 2019 08:32:05 -0700 (PDT)
-X-Received: by 2002:a2e:545:: with SMTP id 66mr4189350ljf.133.1571239925218;
- Wed, 16 Oct 2019 08:32:05 -0700 (PDT)
+        id S2389548AbfJPQZt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 16 Oct 2019 12:25:49 -0400
+Received: from mga07.intel.com ([134.134.136.100]:12345 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733056AbfJPQZt (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 16 Oct 2019 12:25:49 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Oct 2019 09:25:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,304,1566889200"; 
+   d="scan'208";a="202116161"
+Received: from hagarwal-mobl1.gar.corp.intel.com (HELO localhost) ([10.252.5.165])
+  by FMSMGA003.fm.intel.com with ESMTP; 16 Oct 2019 09:25:44 -0700
+Date:   Wed, 16 Oct 2019 19:25:43 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191016162543.GB6279@linux.intel.com>
+References: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
+ <20191007000520.GA17116@linux.intel.com>
+ <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
+ <20191008234935.GA13926@linux.intel.com>
+ <20191008235339.GB13926@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+ <20191014190033.GA15552@linux.intel.com>
+ <1571081397.3728.9.camel@HansenPartnership.com>
+ <20191016110031.GE10184@linux.intel.com>
+ <1571229252.3477.7.camel@HansenPartnership.com>
 MIME-Version: 1.0
-References: <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk>
- <157117608708.15019.1998141309054662114.stgit@warthog.procyon.org.uk>
- <CAHk-=whiz1sHXu8SVZKEC2dup=r5JMrftPtEt6ff9Ea8dyH8yQ@mail.gmail.com> <6900.1571235985@warthog.procyon.org.uk>
-In-Reply-To: <6900.1571235985@warthog.procyon.org.uk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 16 Oct 2019 08:31:48 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgMZR8TWpmRBPytGmWJX=C=-bCb5D2PsCx0LUNemAPexA@mail.gmail.com>
-Message-ID: <CAHk-=wgMZR8TWpmRBPytGmWJX=C=-bCb5D2PsCx0LUNemAPexA@mail.gmail.com>
-Subject: Re: [RFC PATCH 02/21] Add a prelocked wake-up
-To:     David Howells <dhowells@redhat.com>
-Cc:     Tim Chen <tim.c.chen@linux.intel.com>,
-        Kan Liang <kan.liang@intel.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block <linux-block@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1571229252.3477.7.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 7:26 AM David Howells <dhowells@redhat.com> wrote:
->
-> Btw, is there any point in __wake_up_sync_key() taking a nr_exclusive
-> argument since it clears WF_SYNC if nr_exclusive != 1 and doesn't make sense
-> to be >1 anyway.
+On Wed, Oct 16, 2019 at 08:34:12AM -0400, James Bottomley wrote:
+> reversible ciphers are generally frowned upon in random number
+> generation, that's why the krng uses chacha20.  In general I think we
+> shouldn't try to code our own mixing and instead should get the krng to
+> do it for us using whatever the algorithm du jour that the crypto guys
+> have blessed is.  That's why I proposed adding the TPM output to the
+> krng as entropy input and then taking the output of the krng.
 
-Ack, looks sane to me.
+It is already registered as hwrng. What else? Was the issue that
+it is only used as seed when the rng is init'd first? I haven't
+at this point gone to the internals of krng.
 
-We have _very_ few users of nr_exclusive. I wonder if it's even worth
-having at all, but it's definitely not worth it here.
-
-I'd love for nr_exclusive to go away and be replaced by WF_ALL
-instead. Right now it looks like there is one SGI driver that uses it,
-and the sbitmap code. That was all I could find.
-
-Oh well. You removing one case is at last a small amount of progress.
-
-         Linus
+/Jarkko
