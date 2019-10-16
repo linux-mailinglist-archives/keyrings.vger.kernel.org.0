@@ -2,119 +2,151 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55DC6D9105
-	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 14:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D9FD93C5
+	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2019 16:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393106AbfJPMeQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 16 Oct 2019 08:34:16 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:55966 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1733070AbfJPMeQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 16 Oct 2019 08:34:16 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 95DF98EE0CC;
-        Wed, 16 Oct 2019 05:34:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1571229255;
-        bh=DLovgWcYpoVQPuDx5Rz7kbFf0gXtdi0u6vI43N1Bp0g=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=o14jG9dc+ikKCo66qGBQlCFm7kBAJKESbhF9cGoKLps4Qdla9QfbpwQZTQdxwy4pr
-         Ie8/keP0YBtAJc2dqVABjG8Bk+7XZ8GO0TIJNzabgoJEmWxtYSrJ6FVvTTQf0x74lS
-         fmlDUGpZZHSpfBzrcxRH1i4cN9PklcmjSLJN2XEM=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MeFCJHFdFf8g; Wed, 16 Oct 2019 05:34:15 -0700 (PDT)
-Received: from [192.168.100.84] (unknown [24.246.103.29])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2394024AbfJPO0a convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Wed, 16 Oct 2019 10:26:30 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:40738 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387995AbfJPO0a (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 16 Oct 2019 10:26:30 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 61D5F8EE02B;
-        Wed, 16 Oct 2019 05:34:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1571229255;
-        bh=DLovgWcYpoVQPuDx5Rz7kbFf0gXtdi0u6vI43N1Bp0g=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=o14jG9dc+ikKCo66qGBQlCFm7kBAJKESbhF9cGoKLps4Qdla9QfbpwQZTQdxwy4pr
-         Ie8/keP0YBtAJc2dqVABjG8Bk+7XZ8GO0TIJNzabgoJEmWxtYSrJ6FVvTTQf0x74lS
-         fmlDUGpZZHSpfBzrcxRH1i4cN9PklcmjSLJN2XEM=
-Message-ID: <1571229252.3477.7.camel@HansenPartnership.com>
-Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
-        Ken Goldman <kgold@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Date:   Wed, 16 Oct 2019 08:34:12 -0400
-In-Reply-To: <20191016110031.GE10184@linux.intel.com>
-References: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A22E@ALPMBAPA12.e2k.ad.ge.com>
-         <20191004182711.GC6945@linux.intel.com>
-         <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
-         <20191007000520.GA17116@linux.intel.com>
-         <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
-         <20191008234935.GA13926@linux.intel.com>
-         <20191008235339.GB13926@linux.intel.com>
-         <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
-         <20191014190033.GA15552@linux.intel.com>
-         <1571081397.3728.9.camel@HansenPartnership.com>
-         <20191016110031.GE10184@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        by mx1.redhat.com (Postfix) with ESMTPS id 830493086E27;
+        Wed, 16 Oct 2019 14:26:29 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-121-84.rdu2.redhat.com [10.10.121.84])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 35D195D9DC;
+        Wed, 16 Oct 2019 14:26:26 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CAHk-=whiz1sHXu8SVZKEC2dup=r5JMrftPtEt6ff9Ea8dyH8yQ@mail.gmail.com>
+References: <CAHk-=whiz1sHXu8SVZKEC2dup=r5JMrftPtEt6ff9Ea8dyH8yQ@mail.gmail.com> <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk> <157117608708.15019.1998141309054662114.stgit@warthog.procyon.org.uk>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     dhowells@redhat.com, Tim Chen <tim.c.chen@linux.intel.com>,
+        Kan Liang <kan.liang@intel.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 02/21] Add a prelocked wake-up
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6899.1571235985.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8BIT
+Date:   Wed, 16 Oct 2019 15:26:25 +0100
+Message-ID: <6900.1571235985@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Wed, 16 Oct 2019 14:26:30 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2019-10-16 at 14:00 +0300, Jarkko Sakkinen wrote:
-> On Mon, Oct 14, 2019 at 12:29:57PM -0700, James Bottomley wrote:
-> > The job of the in-kernel rng is simply to produce a mixed entropy
-> > pool from which we can draw random numbers.  The idea is that quite
-> > a few attackers have identified the rng as being a weak point in
-> > the security architecture of the kernel, so if we mix entropy from
-> > all the sources we have, you have to compromise most of them to
-> > gain some predictive power over the rng sequence.
-> 
-> The documentation says that krng is suitable for key generation.
-> Should the documentation changed to state that it is unsuitable?
+Btw, is there any point in __wake_up_sync_key() taking a nr_exclusive
+argument since it clears WF_SYNC if nr_exclusive != 1 and doesn't make sense
+to be >1 anyway.
 
-How do you get that from the argument above?  The krng is about the
-best we have in terms of unpredictable key generation, so of course it
-is suitable ... provided you give the entropy enough time to have
-sufficient entropy.  It's also not foolproof ... Bernstein did a
-speculation about how you could compromise all our input sources for
-entropy.  However the more sources we have the more difficult the
-compromise becomes.
-
-> > The point is not how certified the TPM RNG is, the point is that
-> > it's a single source and if we rely on it solely for some
-> > applications, like trusted keys, then it gives the attackers a
-> > single known point to go after.  This may be impossible for script
-> > kiddies, but it won't be for nation states ... are you going to
-> > exclusively trust the random number you got from your chinese
-> > certified TPM?
-> 
-> I'd suggest approach where TPM RNG result is xored with krng result.
-
-reversible ciphers are generally frowned upon in random number
-generation, that's why the krng uses chacha20.  In general I think we
-shouldn't try to code our own mixing and instead should get the krng to
-do it for us using whatever the algorithm du jour that the crypto guys
-have blessed is.  That's why I proposed adding the TPM output to the
-krng as entropy input and then taking the output of the krng.
-
-James
-
-> > Remember also that the attack doesn't have to be to the TPM only,
-> > it could be the pathway by which we get the random number, which
-> > involves components outside of the TPM certification.
-> 
-> Yeah, I do get this.
-> 
-> /Jarkko
-> 
-
+David
+---
+diff --git a/include/linux/wait.h b/include/linux/wait.h
+index 3eb7cae8206c..bb7676d396cd 100644
+--- a/include/linux/wait.h
++++ b/include/linux/wait.h
+@@ -201,9 +201,9 @@ void __wake_up(struct wait_queue_head *wq_head, unsigned int mode, int nr, void
+ void __wake_up_locked_key(struct wait_queue_head *wq_head, unsigned int mode, void *key);
+ void __wake_up_locked_key_bookmark(struct wait_queue_head *wq_head,
+ 		unsigned int mode, void *key, wait_queue_entry_t *bookmark);
+-void __wake_up_sync_key(struct wait_queue_head *wq_head, unsigned int mode, int nr, void *key);
++void __wake_up_sync_key(struct wait_queue_head *wq_head, unsigned int mode, void *key);
+ void __wake_up_locked(struct wait_queue_head *wq_head, unsigned int mode, int nr);
+-void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr);
++void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode);
+ 
+ #define wake_up(x)			__wake_up(x, TASK_NORMAL, 1, NULL)
+ #define wake_up_nr(x, nr)		__wake_up(x, TASK_NORMAL, nr, NULL)
+@@ -214,7 +214,7 @@ void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr);
+ #define wake_up_interruptible(x)	__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
+ #define wake_up_interruptible_nr(x, nr)	__wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
+ #define wake_up_interruptible_all(x)	__wake_up(x, TASK_INTERRUPTIBLE, 0, NULL)
+-#define wake_up_interruptible_sync(x)	__wake_up_sync((x), TASK_INTERRUPTIBLE, 1)
++#define wake_up_interruptible_sync(x)	__wake_up_sync((x), TASK_INTERRUPTIBLE)
+ 
+ /*
+  * Wakeup macros to be used to report events to the targets.
+@@ -228,7 +228,7 @@ void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr);
+ #define wake_up_interruptible_poll(x, m)					\
+ 	__wake_up(x, TASK_INTERRUPTIBLE, 1, poll_to_key(m))
+ #define wake_up_interruptible_sync_poll(x, m)					\
+-	__wake_up_sync_key((x), TASK_INTERRUPTIBLE, 1, poll_to_key(m))
++	__wake_up_sync_key((x), TASK_INTERRUPTIBLE, poll_to_key(m))
+ 
+ #define ___wait_cond_timeout(condition)						\
+ ({										\
+diff --git a/kernel/exit.c b/kernel/exit.c
+index a46a50d67002..a1ff25ef050e 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -1435,7 +1435,7 @@ static int child_wait_callback(wait_queue_entry_t *wait, unsigned mode,
+ void __wake_up_parent(struct task_struct *p, struct task_struct *parent)
+ {
+ 	__wake_up_sync_key(&parent->signal->wait_chldexit,
+-				TASK_INTERRUPTIBLE, 1, p);
++			   TASK_INTERRUPTIBLE, p);
+ }
+ 
+ static long do_wait(struct wait_opts *wo)
+diff --git a/kernel/sched/wait.c b/kernel/sched/wait.c
+index c1e566a114ca..b4b52361dab7 100644
+--- a/kernel/sched/wait.c
++++ b/kernel/sched/wait.c
+@@ -169,7 +169,6 @@ EXPORT_SYMBOL_GPL(__wake_up_locked_key_bookmark);
+  * __wake_up_sync_key - wake up threads blocked on a waitqueue.
+  * @wq_head: the waitqueue
+  * @mode: which threads
+- * @nr_exclusive: how many wake-one or wake-many threads to wake up
+  * @key: opaque value to be passed to wakeup targets
+  *
+  * The sync wakeup differs that the waker knows that it will schedule
+@@ -183,26 +182,21 @@ EXPORT_SYMBOL_GPL(__wake_up_locked_key_bookmark);
+  * accessing the task state.
+  */
+ void __wake_up_sync_key(struct wait_queue_head *wq_head, unsigned int mode,
+-			int nr_exclusive, void *key)
++			void *key)
+ {
+-	int wake_flags = 1; /* XXX WF_SYNC */
+-
+ 	if (unlikely(!wq_head))
+ 		return;
+ 
+-	if (unlikely(nr_exclusive != 1))
+-		wake_flags = 0;
+-
+-	__wake_up_common_lock(wq_head, mode, nr_exclusive, wake_flags, key);
++	__wake_up_common_lock(wq_head, mode, 1, WF_SYNC, key);
+ }
+ EXPORT_SYMBOL_GPL(__wake_up_sync_key);
+ 
+ /*
+  * __wake_up_sync - see __wake_up_sync_key()
+  */
+-void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr_exclusive)
++void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode)
+ {
+-	__wake_up_sync_key(wq_head, mode, nr_exclusive, NULL);
++	__wake_up_sync_key(wq_head, mode, NULL);
+ }
+ EXPORT_SYMBOL_GPL(__wake_up_sync);	/* For internal use only */
+ 
