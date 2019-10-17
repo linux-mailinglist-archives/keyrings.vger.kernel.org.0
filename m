@@ -2,74 +2,178 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87FABDA3F3
-	for <lists+keyrings@lfdr.de>; Thu, 17 Oct 2019 04:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B505DAA94
+	for <lists+keyrings@lfdr.de>; Thu, 17 Oct 2019 12:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392149AbfJQCmB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 16 Oct 2019 22:42:01 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:37443 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388295AbfJQCmB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 16 Oct 2019 22:42:01 -0400
-Received: by mail-io1-f69.google.com with SMTP id u18so1232726ioc.4
-        for <keyrings@vger.kernel.org>; Wed, 16 Oct 2019 19:42:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=7h0gQqNrYRzsWj9R4CAYCu9XOxzaPAZTOTXlm38+fvI=;
-        b=P3Nxu+OnPoXFsOYwskId+esKh185iyu8WzTLumEBtXND3Anc5+8zkvuMsYXDkfEv+N
-         Gr5lnPTyDUE0fyut557iN8/v2iv7Y2SZnkA7XzZtcYmyjqJayAU3lygMKArgFwpe4YfY
-         ML9Ui/92CMelbCnUIUQvp2S2E9K9aJmlSflOhY7rGU0YupCRBQ865iebJy0IN9urut+s
-         8ZvABodmV8kMUD8ACwD5pKPNdGjgUbSsHzxKomxC5UPFLcC/1dbVF9559E9Ra7RR+Kek
-         UDhH+a7pwUIT/JmeGeq3Cmk1/Pt2ke8JCLwJcF2lLa87qkiTsMn8iw2ZqXjd1OT8t0Z8
-         vwkw==
-X-Gm-Message-State: APjAAAU0dZgnzsIzmWmUc8ntj0KJSDkRxR+fdLtZ4u29x8FebxIecAR3
-        6xsn75qHw64kzLkxqKQq9iOsYrTohCZ0I0okAp+8CRYI/O+B
-X-Google-Smtp-Source: APXvYqxm/PZKRcr2VOn2bSEPROOTxJZd4s/gFYz6yxRyhamcXwHcbHmC0uB12SwLAgbX/bUP1WUzw8YXMpgkcwGIQdZ6LiO9FDXe
+        id S2393129AbfJQKxY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Thu, 17 Oct 2019 06:53:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:44520 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391322AbfJQKxY (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 17 Oct 2019 06:53:24 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id DFFC78553F;
+        Thu, 17 Oct 2019 10:53:23 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-121-84.rdu2.redhat.com [10.10.121.84])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 70158600C4;
+        Thu, 17 Oct 2019 10:53:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <b8799179-d389-8005-4f6d-845febc3bb23@rasmusvillemoes.dk>
+References: <b8799179-d389-8005-4f6d-845febc3bb23@rasmusvillemoes.dk> <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk> <157117609543.15019.17103851546424902507.stgit@warthog.procyon.org.uk>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        nicolas.dichtel@6wind.com, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 03/21] pipe: Use head and tail pointers for the ring, not cursor and length
 MIME-Version: 1.0
-X-Received: by 2002:a92:3b8b:: with SMTP id n11mr1162464ilh.135.1571280120830;
- Wed, 16 Oct 2019 19:42:00 -0700 (PDT)
-Date:   Wed, 16 Oct 2019 19:42:00 -0700
-In-Reply-To: <000000000000830fe50595115344@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000071e2fc05951229ad@google.com>
-Subject: Re: WARNING: refcount bug in find_key_to_update
-From:   syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com>
-To:     aou@eecs.berkeley.edu, dhowells@redhat.com,
-        jarkko.sakkinen@linux.intel.com, jmorris@namei.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org,
-        linux-security-module@vger.kernel.org, palmer@sifive.com,
-        serge@hallyn.com, syzkaller-bugs@googlegroups.com,
-        torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <8693.1571309599.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8BIT
+Date:   Thu, 17 Oct 2019 11:53:19 +0100
+Message-ID: <8694.1571309599@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Thu, 17 Oct 2019 10:53:24 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-syzbot has bisected this bug to:
+Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 
-commit 0570bc8b7c9b41deba6f61ac218922e7168ad648
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu Jul 18 19:26:59 2019 +0000
+> >  (6) The number of free slots in the ring is "(tail + pipe->ring_size) -
+> >      head".
+> 
+> Seems an odd way of writing pipe->ring_size - (head - tail) ; i.e.
+> obviously #free slots is #size minus #occupancy.
 
-     Merge tag 'riscv/for-v5.3-rc1' of  
-git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
+Perhaps so.  The way I was looking at it is the window into which things can
+be written is tail...tail+ring_size; the number of free slots is the distance
+from head to the end of the window.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11b6e2bb600000
-start commit:   bc88f85c kthread: make __kthread_queue_delayed_work static
-git tree:       upstream
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=13b6e2bb600000
-console output: https://syzkaller.appspot.com/x/log.txt?x=15b6e2bb600000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e0ac4d9b35046343
-dashboard link: https://syzkaller.appspot.com/bug?extid=6455648abc28dbdd1e7f
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11c8adab600000
+Anyway, I now have a helper that does it your way.
 
-Reported-by: syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com
-Fixes: 0570bc8b7c9b ("Merge tag 'riscv/for-v5.3-rc1' of  
-git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux")
+> >  (7) The ring is full if "head >= (tail + pipe->ring_size)", which can also
+> >      be written as "head - tail >= pipe->ring_size".
+> >
+> 
+> No it cannot, it _must_ be written in the latter form.
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Ah, you're right.  I have a helper now for that too.
+
+> head-tail == pipe_size or head-tail >= pipe_size
+
+In general, I'd prefer ">=" just in case tail gets in front of head.
+
+Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+
+> > Also split pipe->buffers into pipe->ring_size (which indicates the size of
+> > the ring) and pipe->max_usage (which restricts the amount of ring that
+> > write() is allowed to fill).  This allows for a pipe that is both writable
+> > by the kernel notification facility and by userspace, allowing plenty of
+> > ring space for notifications to be added whilst preventing userspace from
+> > being able to use up too much buffer space.
+> 
+> That seems like something that should be added in a separate patch -
+> adding ->max_usage and switching appropriate users of ->ring_size over,
+> so it's more clear where you're using one or the other.
+
+Okay.
+
+> > +		ibuf = &pipe->bufs[tail];
+> 
+> I don't see where tail gets masked between tail = pipe->tail;
+
+Yeah - I missed that one.
+
+> In any case, how about seeding head and tail with something like 1<<20 when
+> creating the pipe so bugs like that are hit more quickly.
+
+That's sounds like a good idea.
+
+> > +			while (tail < head) {
+> > +				count += pipe->bufs[tail & mask].len;
+> > +				tail++;
+> >  			}
+> 
+> This is broken if head has wrapped but tail has not. It has to be "while
+> (head - tail)" or perhaps just "while (tail != head)" or something along
+> those lines.
+
+Yeah...  It's just too easy to overlook this and use ordinary comparisons.
+I've switched to "while (tail != head)".
+
+> > +	mask = pipe->ring_size - 1;
+> > +	head = pipe->head & mask;
+> > +	tail = pipe->tail & mask;
+> > +	n = pipe->head - pipe->tail;
+> 
+> I think it's confusing to "premask" head and tail here. Can you either
+> drop that (pipe_set_size should hardly be a hot path?), or perhaps call
+> them something else to avoid a future reader seeing an unmasked
+> bufs[head] and thinking that's a bug?
+
+I've made it now do the masking right before doing the memcpy calls and used
+different variable names for it:
+
+	if (n > 0) {
+		unsigned int h = head & mask;
+		unsigned int t = tail & mask;
+		if (h > t) {
+			memcpy(bufs, &pipe->bufs + t,
+			       n * sizeof(struct pipe_buffer));
+		} else {
+			unsigned int tsize = pipe->ring_size - t;
+			if (h > 0)
+				memcpy(bufs + tsize, pipe->bufs,
+				       h * sizeof(struct pipe_buffer));
+			memcpy(bufs, pipe->bufs + t,
+			       tsize * sizeof(struct pipe_buffer));
+		}
+
+> > -	data_start(i, &idx, start);
+> > -	/* some of this one + all after this one */
+> > -	npages = ((i->pipe->curbuf - idx - 1) & (i->pipe->buffers - 1)) + 1;
+> > -	capacity = min(npages,maxpages) * PAGE_SIZE - *start;
+> > +	data_start(i, &i_head, start);
+> > +	p_tail = i->pipe->tail;
+> > +	/* Amount of free space: some of this one + all after this one */
+> > +	npages = (p_tail + i->pipe->ring_size) - i_head;
+> 
+> Hm, it's not clear that this is equivalent to the old computation. Since
+> it seems repeated in a few places, could it be factored to a little
+> helper (before this patch) and the "some of this one + all after this
+> one" comment perhaps expanded to explain what is going on?
+
+Yeah...  It's a bit weird, even before my changes.
+
+However, looking at it again, it seems data_start() does the appropriate
+calculations.  If there's space in the current head buffer, it returns the
+offset to that and the head of that buffer, otherwise it advances the head
+pointer and sets the offset to 0.
+
+So I think the comment may actually be retrospective - referring to the state
+that data_start() has given us, rather than talking about the next bit of
+code.
+
+I also wonder if pipe_get_pages_alloc() is broken.  It doesn't check to see
+whether the buffer is full at the point it calls data_start().  However,
+data_start() doesn't check either and, without this patch, will simply advance
+and mask off the ring index - which may wrap.
+
+The maths in the unpatched version is pretty icky and I'm not convinced it's
+correct.
+
+David
