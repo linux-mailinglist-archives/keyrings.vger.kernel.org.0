@@ -2,178 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B505DAA94
-	for <lists+keyrings@lfdr.de>; Thu, 17 Oct 2019 12:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A4E4DAD71
+	for <lists+keyrings@lfdr.de>; Thu, 17 Oct 2019 14:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393129AbfJQKxY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 17 Oct 2019 06:53:24 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44520 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391322AbfJQKxY (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 17 Oct 2019 06:53:24 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id DFFC78553F;
-        Thu, 17 Oct 2019 10:53:23 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-84.rdu2.redhat.com [10.10.121.84])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 70158600C4;
-        Thu, 17 Oct 2019 10:53:20 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <b8799179-d389-8005-4f6d-845febc3bb23@rasmusvillemoes.dk>
-References: <b8799179-d389-8005-4f6d-845febc3bb23@rasmusvillemoes.dk> <157117606853.15019.15459271147790470307.stgit@warthog.procyon.org.uk> <157117609543.15019.17103851546424902507.stgit@warthog.procyon.org.uk>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 03/21] pipe: Use head and tail pointers for the ring, not cursor and length
+        id S1726506AbfJQMwb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 17 Oct 2019 08:52:31 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:37775 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728768AbfJQMwb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 17 Oct 2019 08:52:31 -0400
+Received: by mail-lj1-f195.google.com with SMTP id l21so2439452lje.4
+        for <keyrings@vger.kernel.org>; Thu, 17 Oct 2019 05:52:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QrLNGivHk+MX8xmqPNs4VJfLnymqhdD216JwoEaih2o=;
+        b=pxijlpnJvH+0Meiyj9IJb82BApkYa5Amf8UD++PDk2Vmv6edkmCzoFFXCRLntxyrC1
+         mLkWZCG6OSWH+5i+vHjTerMGjh9sWPTJes3VNAUhsCvYuQnTCdR4Tg7ba2ic4lRik6KE
+         JG2/FQ276AuTq9GpU+msGysKBTdy0rzz/xr4IuUdwM/l5r5qC8kKsIfyn2meaOzRInGT
+         o5ksIUdYOzr8rmUJLsCOb/VBis8RXjC35uW1/4glW/GT3AVSC4oswPriEz6NnvJNAVm/
+         zsW1cnRSp0R4crrk2JCd+r+mabjMCA2aBmK670MduETPO6SboZEEuq/rHegWThVf6NzS
+         nS6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QrLNGivHk+MX8xmqPNs4VJfLnymqhdD216JwoEaih2o=;
+        b=CLpX2dwNIei3lvCRud9ZGqgYAWZ4KAziLIgpbPkHxkhoHsZ6uvhuYUgyr8I2mNtExK
+         nAafRTPRWe3Hno7Vr8lUseP9ODxm45yw8p9cSlHtuu5AsIe7Qns4BywUcOsYt5GNBUhB
+         lVWaFi325/qk5slQnaMK1vBZlugcsJAXS23iYy3G2LDEtAktVQ2NbAHCxM4lDHpPkhaX
+         2Ft+mwYY0HK3nT1fVUbA4iMhYFPQUhVen39UluCTrelOdeYqbh6e0fBiEqxGWlddZZR/
+         HaDwA8KlKG9GeRHTvdgJjIxWRRAhjsi+2vFwI8jtbTy3woL8dQ7yTjjqOVfRH1qWK9xj
+         qkpg==
+X-Gm-Message-State: APjAAAUEvX4MqG3QLgzR9c9t3XoG+aHe5Ms9DV446Cc5H3+azgggJquF
+        3sL+CHtbgIAEqYdkoTxfZq/uLxXGUIeZZ0KEMrR+jg==
+X-Google-Smtp-Source: APXvYqzkqvovU/sudHAtBIJQ9t1ZDyznyMb/4m7doUJ9DprBLfCEEqxIwDTEJvxsF+Qg9xk6jO7VE2ktilr7QFgkKZo=
+X-Received: by 2002:a2e:1214:: with SMTP id t20mr2401231lje.191.1571316748450;
+ Thu, 17 Oct 2019 05:52:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <8693.1571309599.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: 8BIT
-Date:   Thu, 17 Oct 2019 11:53:19 +0100
-Message-ID: <8694.1571309599@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Thu, 17 Oct 2019 10:53:24 +0000 (UTC)
+References: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
+ <20191007000520.GA17116@linux.intel.com> <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
+ <20191008234935.GA13926@linux.intel.com> <20191008235339.GB13926@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+ <20191014190033.GA15552@linux.intel.com> <1571081397.3728.9.camel@HansenPartnership.com>
+ <20191016110031.GE10184@linux.intel.com> <1571229252.3477.7.camel@HansenPartnership.com>
+ <20191016162543.GB6279@linux.intel.com> <1571253029.17520.5.camel@HansenPartnership.com>
+In-Reply-To: <1571253029.17520.5.camel@HansenPartnership.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Thu, 17 Oct 2019 18:22:17 +0530
+Message-ID: <CAFA6WYNNNTWXDrp_R3M60srGJYjJdRoaNpSnP54V_BinYYXTMA@mail.gmail.com>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-
-> >  (6) The number of free slots in the ring is "(tail + pipe->ring_size) -
-> >      head".
-> 
-> Seems an odd way of writing pipe->ring_size - (head - tail) ; i.e.
-> obviously #free slots is #size minus #occupancy.
-
-Perhaps so.  The way I was looking at it is the window into which things can
-be written is tail...tail+ring_size; the number of free slots is the distance
-from head to the end of the window.
-
-Anyway, I now have a helper that does it your way.
-
-> >  (7) The ring is full if "head >= (tail + pipe->ring_size)", which can also
-> >      be written as "head - tail >= pipe->ring_size".
+On Thu, 17 Oct 2019 at 00:40, James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> On Wed, 2019-10-16 at 19:25 +0300, Jarkko Sakkinen wrote:
+> > On Wed, Oct 16, 2019 at 08:34:12AM -0400, James Bottomley wrote:
+> > > reversible ciphers are generally frowned upon in random number
+> > > generation, that's why the krng uses chacha20.  In general I think
+> > > we shouldn't try to code our own mixing and instead should get the
+> > > krng to do it for us using whatever the algorithm du jour that the
+> > > crypto guys have blessed is.  That's why I proposed adding the TPM
+> > > output to the krng as entropy input and then taking the output of
+> > > the krng.
 > >
-> 
-> No it cannot, it _must_ be written in the latter form.
+> > It is already registered as hwrng. What else?
+>
+> It only contributes entropy once at start of OS.
+>
 
-Ah, you're right.  I have a helper now for that too.
+Why not just configure quality parameter of TPM hwrng as follows? It
+would automatically initiate a kthread during hwrng_init() to feed
+entropy from TPM to kernel random numbers pool (see:
+drivers/char/hw_random/core.c +142).
 
-> head-tail == pipe_size or head-tail >= pipe_size
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index 3d6d394..fcc3817 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -548,6 +548,7 @@ static int tpm_add_hwrng(struct tpm_chip *chip)
+                 "tpm-rng-%d", chip->dev_num);
+        chip->hwrng.name = chip->hwrng_name;
+        chip->hwrng.read = tpm_hwrng_read;
++       chip->hwrng.quality = 1024; /* Here we assume TPM provides
+full entropy */
+        return hwrng_register(&chip->hwrng);
 
-In general, I'd prefer ">=" just in case tail gets in front of head.
+ }
 
-Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+> >  Was the issue that it is only used as seed when the rng is init'd
+> > first? I haven't at this point gone to the internals of krng.
+>
+> Basically it was similar to your xor patch except I got the kernel rng
+> to do the mixing, so it would use the chacha20 cipher at the moment
+> until they decide that's unsafe and change it to something else:
+>
+> https://lore.kernel.org/linux-crypto/1570227068.17537.4.camel@HansenPartnership.com/
+>
+> It uses add_hwgenerator_randomness() to do the mixing.  It also has an
+> unmixed source so that read of the TPM hwrng device works as expected.
 
-> > Also split pipe->buffers into pipe->ring_size (which indicates the size of
-> > the ring) and pipe->max_usage (which restricts the amount of ring that
-> > write() is allowed to fill).  This allows for a pipe that is both writable
-> > by the kernel notification facility and by userspace, allowing plenty of
-> > ring space for notifications to be added whilst preventing userspace from
-> > being able to use up too much buffer space.
-> 
-> That seems like something that should be added in a separate patch -
-> adding ->max_usage and switching appropriate users of ->ring_size over,
-> so it's more clear where you're using one or the other.
+Above suggestion is something similar to yours but utilizing the
+framework already provided via hwrng core.
 
-Okay.
+-Sumit
 
-> > +		ibuf = &pipe->bufs[tail];
-> 
-> I don't see where tail gets masked between tail = pipe->tail;
-
-Yeah - I missed that one.
-
-> In any case, how about seeding head and tail with something like 1<<20 when
-> creating the pipe so bugs like that are hit more quickly.
-
-That's sounds like a good idea.
-
-> > +			while (tail < head) {
-> > +				count += pipe->bufs[tail & mask].len;
-> > +				tail++;
-> >  			}
-> 
-> This is broken if head has wrapped but tail has not. It has to be "while
-> (head - tail)" or perhaps just "while (tail != head)" or something along
-> those lines.
-
-Yeah...  It's just too easy to overlook this and use ordinary comparisons.
-I've switched to "while (tail != head)".
-
-> > +	mask = pipe->ring_size - 1;
-> > +	head = pipe->head & mask;
-> > +	tail = pipe->tail & mask;
-> > +	n = pipe->head - pipe->tail;
-> 
-> I think it's confusing to "premask" head and tail here. Can you either
-> drop that (pipe_set_size should hardly be a hot path?), or perhaps call
-> them something else to avoid a future reader seeing an unmasked
-> bufs[head] and thinking that's a bug?
-
-I've made it now do the masking right before doing the memcpy calls and used
-different variable names for it:
-
-	if (n > 0) {
-		unsigned int h = head & mask;
-		unsigned int t = tail & mask;
-		if (h > t) {
-			memcpy(bufs, &pipe->bufs + t,
-			       n * sizeof(struct pipe_buffer));
-		} else {
-			unsigned int tsize = pipe->ring_size - t;
-			if (h > 0)
-				memcpy(bufs + tsize, pipe->bufs,
-				       h * sizeof(struct pipe_buffer));
-			memcpy(bufs, pipe->bufs + t,
-			       tsize * sizeof(struct pipe_buffer));
-		}
-
-> > -	data_start(i, &idx, start);
-> > -	/* some of this one + all after this one */
-> > -	npages = ((i->pipe->curbuf - idx - 1) & (i->pipe->buffers - 1)) + 1;
-> > -	capacity = min(npages,maxpages) * PAGE_SIZE - *start;
-> > +	data_start(i, &i_head, start);
-> > +	p_tail = i->pipe->tail;
-> > +	/* Amount of free space: some of this one + all after this one */
-> > +	npages = (p_tail + i->pipe->ring_size) - i_head;
-> 
-> Hm, it's not clear that this is equivalent to the old computation. Since
-> it seems repeated in a few places, could it be factored to a little
-> helper (before this patch) and the "some of this one + all after this
-> one" comment perhaps expanded to explain what is going on?
-
-Yeah...  It's a bit weird, even before my changes.
-
-However, looking at it again, it seems data_start() does the appropriate
-calculations.  If there's space in the current head buffer, it returns the
-offset to that and the head of that buffer, otherwise it advances the head
-pointer and sets the offset to 0.
-
-So I think the comment may actually be retrospective - referring to the state
-that data_start() has given us, rather than talking about the next bit of
-code.
-
-I also wonder if pipe_get_pages_alloc() is broken.  It doesn't check to see
-whether the buffer is full at the point it calls data_start().  However,
-data_start() doesn't check either and, without this patch, will simply advance
-and mask off the ring index - which may wrap.
-
-The maths in the unpatched version is pretty icky and I'm not convinced it's
-correct.
-
-David
+>
+> James
+>
+>
+>
+>
+>
