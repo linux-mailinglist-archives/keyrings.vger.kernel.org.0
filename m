@@ -2,81 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E418CDC315
-	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 12:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC313DCBAA
+	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 18:38:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393097AbfJRKyY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 18 Oct 2019 06:54:24 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:62409 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392070AbfJRKyY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Oct 2019 06:54:24 -0400
-Received: from fsav106.sakura.ne.jp (fsav106.sakura.ne.jp [27.133.134.233])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id x9IAsC3W078907;
-        Fri, 18 Oct 2019 19:54:12 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav106.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav106.sakura.ne.jp);
- Fri, 18 Oct 2019 19:54:12 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav106.sakura.ne.jp)
-Received: from [192.168.1.8] (softbank126227201116.bbtec.net [126.227.201.116])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id x9IAs7gO078895
-        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NO);
-        Fri, 18 Oct 2019 19:54:12 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Subject: Re: WARNING: refcount bug in find_key_to_update
-To:     Eric Biggers <ebiggers@kernel.org>
-References: <000000000000830fe50595115344@google.com>
- <00000000000071e2fc05951229ad@google.com>
- <CAHk-=wjFozfjV34_qy3_Z155uz_Z7qFVfE8h=_9ceGU-SVk9hA@mail.gmail.com>
- <20191017160028.GA726@sol.localdomain>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1732414AbfJRQiN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 18 Oct 2019 12:38:13 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:45428 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729010AbfJRQiN (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 18 Oct 2019 12:38:13 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 80F98307D98A;
+        Fri, 18 Oct 2019 16:38:09 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-121-84.rdu2.redhat.com [10.10.121.84])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4F90660600;
+        Fri, 18 Oct 2019 16:38:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CAHk-=wjFozfjV34_qy3_Z155uz_Z7qFVfE8h=_9ceGU-SVk9hA@mail.gmail.com>
+References: <CAHk-=wjFozfjV34_qy3_Z155uz_Z7qFVfE8h=_9ceGU-SVk9hA@mail.gmail.com> <000000000000830fe50595115344@google.com> <00000000000071e2fc05951229ad@google.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     dhowells@redhat.com,
         syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com>,
+        aou@eecs.berkeley.edu,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris James Morris <jmorris@namei.org>,
         keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv@lists.infradead.org,
         LSM List <linux-security-module@vger.kernel.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
         syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Message-ID: <b211005b-75de-7936-c97a-817f7100415a@I-love.SAKURA.ne.jp>
-Date:   Fri, 18 Oct 2019 19:54:07 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+Subject: Re: WARNING: refcount bug in find_key_to_update
 MIME-Version: 1.0
-In-Reply-To: <20191017160028.GA726@sol.localdomain>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <31179.1571416685.1@warthog.procyon.org.uk>
+Date:   Fri, 18 Oct 2019 17:38:05 +0100
+Message-ID: <31180.1571416685@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Fri, 18 Oct 2019 16:38:13 +0000 (UTC)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2019/10/18 1:00, Eric Biggers wrote:
-> The key is supposed to have refcount >= 1 since it's in a keyring.
-> So some bug is causing it to have refcount 0.  Perhaps some place calling
-> key_put() too many times.
-> 
-> Unfortunately I can't get the reproducer to work locally.
-> 
-> Note that there are 2 other syzbot reports that look related.
-> No reproducers for them, though:
-> 
-> Title:              KASAN: use-after-free Read in key_put
-> Last occurred:      1 day ago
-> Reported:           28 days ago
-> Branches:           Mainline
-> Dashboard link:     https://syzkaller.appspot.com/bug?id=f13750b1124e01191250cf930086dcc40740fa30
-> Original thread:    https://lore.kernel.org/lkml/0000000000008c3e590592cf4b7f@google.com/T/#u
-> 
-> Title:              KASAN: use-after-free Read in keyring_compare_object
-> Last occurred:      49 days ago
-> Reported:           84 days ago
-> Branches:           Mainline
-> Dashboard link:     https://syzkaller.appspot.com/bug?id=529ab6a98286c2a97c445988a62760a58d4a1d4b
-> Original thread:    https://lore.kernel.org/lkml/000000000000038ef6058e6f3592@google.com/T/#u
-> 
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-I don't know about keys, but I rather suspect lack of serialization locks between
-"looking up for checking existing keys" versus "looking up for garbage collection".
-Can we dump locks held by current thread when panic() is called?
+> The backtrace looks simple enough, though:
+> 
+>   RIP: 0010:refcount_inc_checked+0x2b/0x30 lib/refcount.c:156
+>    __key_get include/linux/key.h:281 [inline]
+>    find_key_to_update+0x67/0x80 security/keys/keyring.c:1127
+>    key_create_or_update+0x4e5/0xb20 security/keys/key.c:905
+>    __do_sys_add_key security/keys/keyctl.c:132 [inline]
+>    __se_sys_add_key security/keys/keyctl.c:72 [inline]
+>    __x64_sys_add_key+0x219/0x3f0 security/keys/keyctl.c:72
+>    do_syscall_64+0xd0/0x540 arch/x86/entry/common.c:296
+>    entry_SYSCALL_64_after_hwframe+0x49/0xbe
+> 
+> which to me implies that there's some locking bug, and somebody
+> released the key without holding a lock.
+>
+> That code looks a bit confused to me. Releasing a key without holding
+> a lock looks permitted, but if that's the case then __key_get() is
+> complete garbage. It would need to use 'refcount_inc_not_zero()' and
+> failure would require failing the caller.
 
+find_key_to_update() must be called with the keyring-to-be-searched locked, as
+stated in the comment on that function.
+
+If a key-to-be-updated can be found in that keyring, then the keyring must be
+holding a ref on that key already, so it's refcount must be > 0, so it
+shouldn't be necessary to use refcount_inc_not_zero().
+
+There shouldn't be a race with key_link(), key_unlink(), key_move(),
+keyring_clear() or keyring_gc() (garbage collection) as all of those take a
+write-lock on the keyring.
+
+> But I haven't followed the key locking rules, so who knows. That "put
+> without lock" scenario would explain the crash, though.
+
+That shouldn't explain it.  When key_put() reduces the refcount to 0, it just
+schedules the garbage collector.  It doesn't touch the key again directly.
+
+I would guess that something incorrectly put a ref when it shouldn't have.  Do
+we know which type of key is involved?  Looking at the syzkaller reproducer,
+it's adding an encrypted key and a user key to the process keyring -
+presumably repeating the procedure within the same process, hence how it finds
+something to update.
+
+David
