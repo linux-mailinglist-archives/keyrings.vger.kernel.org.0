@@ -2,196 +2,300 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D32DCE70
-	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 20:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463E4DCFA0
+	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 21:53:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505931AbfJRSkj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 18 Oct 2019 14:40:39 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44542 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2505915AbfJRSki (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 18 Oct 2019 14:40:38 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D0E0CC053B26;
-        Fri, 18 Oct 2019 18:40:37 +0000 (UTC)
-Received: from crecklin.bos.com (ovpn-125-176.rdu2.redhat.com [10.10.125.176])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2FD3A1001B28;
-        Fri, 18 Oct 2019 18:40:31 +0000 (UTC)
-From:   Chris von Recklinghausen <crecklin@redhat.com>
-To:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Waiman Long <longman@redhat.com>,
-        Chris von Recklinghausen <crecklin@redhat.com>
-Subject: [PATCH] security/keyring: avoid pagefaults in keyring_read_iterator
-Date:   Fri, 18 Oct 2019 14:40:30 -0400
-Message-Id: <20191018184030.8407-1-crecklin@redhat.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Fri, 18 Oct 2019 18:40:38 +0000 (UTC)
+        id S2440316AbfJRTxf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 18 Oct 2019 15:53:35 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:56838 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440122AbfJRTxf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Oct 2019 15:53:35 -0400
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 2299720BBF8C;
+        Fri, 18 Oct 2019 12:53:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2299720BBF8C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1571428413;
+        bh=oAy5SSZ1zkgcHxbdKT0WxiKQ1TErswG6+Y1V0zmQQ+w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=abSOZU37ldva4EQdfyRExSPeK+MqcludBf2OzbvkNAGRbJU77huIKgA8kgZIH+Y6b
+         7UVinTbXAr3of9MGBjsisjSOx/FQ3J1jWqxFf4EEVHBE6U1EDNYw+BU7Qbj9Pdg6Xb
+         8LuR8QPfxd3BZ8odlFvCMuZ2lKFEg0ufiabOAoC0=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, dhowells@redhat.com,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        sashal@kernel.org, jamorris@linux.microsoft.com
+Cc:     msft-linux-kernel@linux.microsoft.com, nramas@linux.microsoft.com,
+        prsriva@linux.microsoft.com
+Subject: [PATCH v0] KEYS: Security LSM Hook for key_create_or_update
+Date:   Fri, 18 Oct 2019 12:53:28 -0700
+Message-Id: <20191018195328.6704-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-under a debug kernel, the following circular locking dependency was observed:
+Problem Statement:
+key_create_or_update function currently does not have
+a security LSM hook. The hook is needed to allow security
+subsystems to use key create or update information.
 
-[ 5896.294840] ======================================================
-[ 5896.294846] [ INFO: possible circular locking dependency detected ]
-[ 5896.294852] 3.10.0-957.31.1.el7.ppc64le.debug #1 Tainted: G           OE  ------------ T
-[ 5896.294857] -------------------------------------------------------
-[ 5896.294863] keyctl/21719 is trying to acquire lock:
-[ 5896.294867]  (&mm->mmap_sem){++++++}, at: [<c000000000331db8>] might_fault+0x88/0xf0
-[ 5896.294881]
-[ 5896.294881] but task is already holding lock:
-[ 5896.294886]  (&type->lock_class){+++++.}, at: [<c0000000004ff504>] keyctl_read_key+0xb4/0x170
-[ 5896.294899]
-[ 5896.294899] which lock already depends on the new lock.
-[ 5896.294899]
-[ 5896.294905]
-[ 5896.294905] the existing dependency chain (in reverse order) is:
-[ 5896.294911]
--> #1 (&type->lock_class){+++++.}:
-[ 5896.294920]        [<c0000000001caaf4>] check_prevs_add+0x144/0x1d0
-[ 5896.294929]        [<c0000000001ce338>] lock_acquire+0xe38/0x16c0
-[ 5896.294936]        [<c000000000b8e5e4>] down_write+0x84/0x130
-[ 5896.294943]        [<c0000000004fd330>] key_link+0x90/0x2e0
-[ 5896.294949]        [<c000000000503f44>] call_sbin_request_key+0x154/0x640
-[ 5896.294956]        [<c000000000bb1424>] construct_key_and_link+0x38c/0x464
-[ 5896.294964]        [<c000000000504bb4>] request_key+0x214/0x230
-[ 5896.294970]        [<d0000000047e2490>] nfs_idmap_get_key+0x110/0x460 [nfsv4]
-[ 5896.294986]        [<d0000000047e3464>] nfs_map_name_to_uid+0x84/0x2f0 [nfsv4]
-[ 5896.294999]        [<d0000000047c3180>] decode_attr_owner+0x1d0/0x2c0 [nfsv4]
-[ 5896.295010]        [<d0000000047c6f18>] decode_getfattr_attrs+0x5a8/0xb80 [nfsv4]
-[ 5896.295022]        [<d0000000047c75cc>] decode_getfattr_generic.constprop.100+0xdc/0x200 [nfsv4]
-[ 5896.295033]        [<d0000000047c8048>] nfs4_xdr_dec_getattr+0xa8/0xb0 [nfsv4]
-[ 5896.295044]        [<d0000000035eff58>] rpcauth_unwrap_resp+0xf8/0x150 [sunrpc]
-[ 5896.295060]        [<d0000000035d357c>] call_decode+0x29c/0x910 [sunrpc]
-[ 5896.295071]        [<d0000000035eb940>] __rpc_execute+0xf0/0x870 [sunrpc]
-[ 5896.295083]        [<d0000000035d233c>] rpc_run_task+0x14c/0x1c0 [sunrpc]
-[ 5896.295094]        [<d0000000047a12f0>] nfs4_call_sync_sequence+0x70/0xb0 [nfsv4]
-[ 5896.295105]        [<d0000000047a2254>] _nfs4_proc_getattr+0xc4/0xf0 [nfsv4]
-[ 5896.295115]        [<d0000000047b9ee4>] nfs4_proc_getattr+0x84/0x220 [nfsv4]
-[ 5896.295126]        [<d00000000454519c>] __nfs_revalidate_inode+0x1cc/0x7a0 [nfs]
-[ 5896.295138]        [<d000000004546284>] nfs_revalidate_mapping+0x1f4/0x520 [nfs]
-[ 5896.295150]        [<d00000000453df98>] nfs_file_mmap+0x78/0xb0 [nfs]
-[ 5896.295160]        [<c000000000343df8>] mmap_region+0x518/0x780
-[ 5896.295167]        [<c000000000344488>] do_mmap+0x428/0x510
-[ 5896.295173]        [<c000000000317508>] vm_mmap_pgoff+0x108/0x150
-[ 5896.295179]        [<c000000000340f1c>] SyS_mmap_pgoff+0xec/0x2c0
-[ 5896.295186]        [<c0000000000173b8>] sys_mmap+0x78/0x90
-[ 5896.295192]        [<c00000000000a294>] system_call+0x3c/0x100
-[ 5896.295199]
--> #0 (&mm->mmap_sem){++++++}:
-[ 5896.295207]        [<c0000000001ca990>] check_prev_add+0xa50/0xa70
-[ 5896.295214]        [<c0000000001caaf4>] check_prevs_add+0x144/0x1d0
-[ 5896.295221]        [<c0000000001ce338>] lock_acquire+0xe38/0x16c0
-[ 5896.295228]        [<c000000000331de4>] might_fault+0xb4/0xf0
-[ 5896.295235]        [<c0000000004fc644>] keyring_read_iterator+0x54/0xd0
-[ 5896.295242]        [<c00000000060fe98>] assoc_array_subtree_iterate+0x4d8/0x790
-[ 5896.295249]        [<c0000000004fbc00>] keyring_read+0x80/0xa0
-[ 5896.295255]        [<c0000000004ff5a4>] keyctl_read_key+0x154/0x170
-[ 5896.295262]        [<c00000000000a294>] system_call+0x3c/0x100
-[ 5896.295269]
-[ 5896.295269] other info that might help us debug this:
-[ 5896.295275]  Possible unsafe locking scenario:
-[ 5896.295275]
-[ 5896.295281]        CPU0                    CPU1
-[ 5896.295285]        ----                    ----
-[ 5896.295289]   lock(&type->lock_class);
-[ 5896.295294]                                lock(&mm->mmap_sem);
-[ 5896.295301]                                lock(&type->lock_class);
-[ 5896.295308]   lock(&mm->mmap_sem);
-[ 5896.295313]
-[ 5896.295313]  *** DEADLOCK ***
-[ 5896.295313]
-[ 5896.295320] 1 lock held by keyctl/21719:
-[ 5896.295323]  #0:  (&type->lock_class){+++++.}, at: [<c0000000004ff504>] keyctl_read_key+0xb4/0x170
-[ 5896.295337]
-[ 5896.295337] stack backtrace:
-[ 5896.295343] CPU: 1 PID: 21719 Comm: keyctl Kdump: loaded Tainted: G           OE  ------------ T 3.10.0-957.31.1.el7.ppc64le.debug #1
-[ 5896.295351] Call Trace:
-[ 5896.295355] [c00000016100f8e0] [c0000000000205d0] show_stack+0x90/0x390 (unreliable)
-[ 5896.295363] [c00000016100f9a0] [c000000000bb37d0] dump_stack+0x30/0x44
-[ 5896.295371] [c00000016100f9c0] [c000000000ba7f3c] print_circular_bug+0x36c/0x3a0
-[ 5896.295379] [c00000016100fa60] [c0000000001ca990] check_prev_add+0xa50/0xa70
-[ 5896.295386] [c00000016100fb60] [c0000000001caaf4] check_prevs_add+0x144/0x1d0
-[ 5896.295393] [c00000016100fbb0] [c0000000001ce338] lock_acquire+0xe38/0x16c0
-[ 5896.295400] [c00000016100fce0] [c000000000331de4] might_fault+0xb4/0xf0
-[ 5896.295407] [c00000016100fd00] [c0000000004fc644] keyring_read_iterator+0x54/0xd0
-[ 5896.295415] [c00000016100fd40] [c00000000060fe98] assoc_array_subtree_iterate+0x4d8/0x790
-[ 5896.295423] [c00000016100fd90] [c0000000004fbc00] keyring_read+0x80/0xa0
-[ 5896.295430] [c00000016100fde0] [c0000000004ff5a4] keyctl_read_key+0x154/0x170
-[ 5896.295437] [c00000016100fe30] [c00000000000a294] system_call+0x3c/0x100
+security_key_alloc LSM hook that is currently available is not
+providing enough information about the key (the key payload,
+the target keyring, etc.). Also, this LSM hook is only available
+for key create.
 
-The put_user call from keyring_read_iterator caused a page fault which attempts
-to lock mm->mmap_sem and type->lock_class (key->sem) in the reverse order that
-keyring_read_iterator did, thus causing the circular locking dependency.
+Changes made:
+Adding a new LSM hook for key key_create_or_update,
+security_key_create_or_update, which is called after
+   => A newly created key is instantiated and linked to the target
+      keyring (__key_instantiate_and_link).
+   => An existing key is updated with a new payload (__key_update)
 
-Remedy this by using access_ok and __put_user instead of put_user so we'll
-return an error instead of faulting in the page.
+security_key_create_or_update is passed the target keyring, key,
+cred, key creation flags, and a boolean flag indicating whether
+the key was newly created or updated.
 
-Also to prevent potential changes in behavior to applications, pre-fault the
-page(s) with the key in keyctl_read_key before taking the read semaphore to
-ensure that the page is present by the time keyring_read_iterator is called.
+Security subsystems can use this hook for handling key create or update.
+For example, IMA subsystem can measure the key when it is created or
+updated.
 
-Suggested-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Chris von Recklinghausen <crecklin@redhat.com>
+Testing performed:
+  * Booted the kernel with this change.
+  * Executed keyctl tests from the Linux Test Project (LTP)
+  * Added a new key to a keyring and verified "key create" code path.
+    => In this case added a key to builtin_trusted_keys keyring.
+  * Added the same key again and verified "key update" code path.
+    => Add the same key to builtin_trusted_keys keyring.
+    => find_key_to_update found the key and LSM hook was
+       called for key update (create flag set to false).
+  * Forced the LSM hook (security_key_create_or_update) to
+    return an error and verified that the key was not added to
+    the keyring ("keyctl list <keyring>" does not list the key).
+
+Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 ---
- security/keys/keyctl.c  | 10 ++++++++--
- security/keys/keyring.c |  7 +++----
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ include/linux/lsm_hooks.h | 13 +++++++
+ include/linux/security.h  | 10 +++++
+ security/keys/key.c       | 78 ++++++++++++++++++++++++++++++++++-----
+ security/security.c       |  8 ++++
+ 4 files changed, 100 insertions(+), 9 deletions(-)
 
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 9b898c9..f8a2553 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -846,9 +846,15 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
- can_read_key:
- 	ret = -EOPNOTSUPP;
- 	if (key->type->read) {
--		/* Read the data with the semaphore held (since we might sleep)
--		 * to protect against the key being updated or revoked.
-+		/*
-+		 * Read the data with the semaphore held (since we might sleep)
-+		 * to protect against the key being updated or revoked. The
-+		 * user buffer, if not mapped yet, will be faulted in to
-+		 * prevent read failure.
- 		 */
-+		key_serial_t tmp;
+diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+index df1318d85f7d..2f2e95df62f3 100644
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -1066,6 +1066,15 @@
+  *
+  * Security hooks affecting all Key Management operations
+  *
++ * @key_create_or_update:
++ *      Notification of key create or update.
++ *      @keyring points to the keyring to which the key belongs
++ *      @key points to the key being created or updated
++ *      @cred current cred
++ *      @flags is the allocation flags
++ *      @create flag set to true if the key was created.
++ *              flag set to false if the key was updated.
++ *      Return 0 if permission is granted, -ve error otherwise.
+  * @key_alloc:
+  *	Permit allocation of a key and assign security data. Note that key does
+  *	not have a serial number assigned at this point.
+@@ -1781,6 +1790,9 @@ union security_list_options {
+ 
+ 	/* key management security hooks */
+ #ifdef CONFIG_KEYS
++	int (*key_create_or_update)(struct key *keyring, struct key *key,
++				    const struct cred *cred,
++				    unsigned long flags, bool create);
+ 	int (*key_alloc)(struct key *key, const struct cred *cred,
+ 				unsigned long flags);
+ 	void (*key_free)(struct key *key);
+@@ -2026,6 +2038,7 @@ struct security_hook_heads {
+ 	struct hlist_head xfrm_decode_session;
+ #endif	/* CONFIG_SECURITY_NETWORK_XFRM */
+ #ifdef CONFIG_KEYS
++	struct hlist_head key_create_or_update;
+ 	struct hlist_head key_alloc;
+ 	struct hlist_head key_free;
+ 	struct hlist_head key_permission;
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 5f7441abbf42..27e1c0a3057b 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -1672,6 +1672,9 @@ static inline int security_path_chroot(const struct path *path)
+ #ifdef CONFIG_KEYS
+ #ifdef CONFIG_SECURITY
+ 
++int security_key_create_or_update(struct key *keyring, struct key *key,
++				  const struct cred *cred,
++				  unsigned long flags, bool create);
+ int security_key_alloc(struct key *key, const struct cred *cred, unsigned long flags);
+ void security_key_free(struct key *key);
+ int security_key_permission(key_ref_t key_ref,
+@@ -1680,6 +1683,13 @@ int security_key_getsecurity(struct key *key, char **_buffer);
+ 
+ #else
+ 
++int security_key_create_or_update(struct key *keyring, struct key *key,
++				  const struct cred *cred,
++				  unsigned long flags, bool create)
++{
++	return 0;
++}
 +
-+		get_user(tmp, buffer);  /* Prefault */
- 		down_read(&key->sem);
- 		ret = key_validate(key);
- 		if (ret == 0)
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index febf36c..7cac3c7 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -459,7 +459,6 @@ static int keyring_read_iterator(const void *object, void *data)
+ static inline int security_key_alloc(struct key *key,
+ 				     const struct cred *cred,
+ 				     unsigned long flags)
+diff --git a/security/keys/key.c b/security/keys/key.c
+index 764f4c57913e..b913feaf196e 100644
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -781,7 +781,7 @@ static inline key_ref_t __key_update(key_ref_t key_ref,
+ }
+ 
+ /**
+- * key_create_or_update - Update or create and instantiate a key.
++ * __key_create_or_update - Update or create and instantiate a key.
+  * @keyring_ref: A pointer to the destination keyring with possession flag.
+  * @type: The type of key.
+  * @description: The searchable description for the key.
+@@ -789,6 +789,8 @@ static inline key_ref_t __key_update(key_ref_t key_ref,
+  * @plen: The length of @payload.
+  * @perm: The permissions mask for a new key.
+  * @flags: The quota flags for a new key.
++ * @create: Set to true if the key was newly created.
++ *          Set to false if the key was updated.
+  *
+  * Search the destination keyring for a key of the same description and if one
+  * is found, update it, otherwise create and instantiate a new one and create a
+@@ -805,13 +807,14 @@ static inline key_ref_t __key_update(key_ref_t key_ref,
+  * On success, the possession flag from the keyring ref will be tacked on to
+  * the key ref before it is returned.
+  */
+-key_ref_t key_create_or_update(key_ref_t keyring_ref,
+-			       const char *type,
+-			       const char *description,
+-			       const void *payload,
+-			       size_t plen,
+-			       key_perm_t perm,
+-			       unsigned long flags)
++static key_ref_t __key_create_or_update(key_ref_t keyring_ref,
++					const char *type,
++					const char *description,
++					const void *payload,
++					size_t plen,
++					key_perm_t perm,
++					unsigned long flags,
++					bool *create)
  {
- 	struct keyring_read_iterator_context *ctx = data;
- 	const struct key *key = keyring_ptr_to_key(object);
--	int ret;
+ 	struct keyring_index_key index_key = {
+ 		.description	= description,
+@@ -936,6 +939,7 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
+ 		goto error_link_end;
+ 	}
  
- 	kenter("{%s,%d},,{%zu/%zu}",
- 	       key->type->name, key->serial, ctx->count, ctx->buflen);
-@@ -467,9 +466,9 @@ static int keyring_read_iterator(const void *object, void *data)
- 	if (ctx->count >= ctx->buflen)
- 		return 1;
++	*create = true;
+ 	key_ref = make_key_ref(key, is_key_possessed(keyring_ref));
  
--	ret = put_user(key->serial, ctx->buffer);
--	if (ret < 0)
--		return ret;
-+	if (!access_ok(ctx->buffer, sizeof(key->serial)) ||
-+		__put_user(key->serial, ctx->buffer) < 0)
-+		return -EFAULT;
- 	ctx->buffer++;
- 	ctx->count += sizeof(key->serial);
- 	return 0;
+ error_link_end:
+@@ -948,7 +952,7 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
+ error:
+ 	return key_ref;
+ 
+- found_matching_key:
++found_matching_key:
+ 	/* we found a matching key, so we're going to try to update it
+ 	 * - we can drop the locks first as we have the key pinned
+ 	 */
+@@ -964,9 +968,65 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
+ 		}
+ 	}
+ 
++	*create = false;
+ 	key_ref = __key_update(key_ref, &prep);
+ 	goto error_free_prep;
+ }
++
++/**
++ * key_create_or_update - Update or create and instantiate a key.
++ * @keyring_ref: A pointer to the destination keyring with possession flag.
++ * @type: The type of key.
++ * @description: The searchable description for the key.
++ * @payload: The data to use to instantiate or update the key.
++ * @plen: The length of @payload.
++ * @perm: The permissions mask for a new key.
++ * @flags: The quota flags for a new key.
++ *
++ * Calls the internal function __key_create_or_update.
++ * If successful calls the security LSM hook.
++ */
++key_ref_t key_create_or_update(key_ref_t keyring_ref,
++			       const char *type,
++			       const char *description,
++			       const void *payload,
++			       size_t plen,
++			       key_perm_t perm,
++			       unsigned long flags)
++{
++	key_ref_t key_ref;
++	struct key *keyring, *key = NULL;
++	int ret = 0;
++	bool create = false;
++
++	key_ref = __key_create_or_update(keyring_ref, type, description,
++					 payload, plen, perm, flags,
++					 &create);
++	if (IS_ERR(key_ref))
++		goto out;
++
++	keyring = key_ref_to_ptr(keyring_ref);
++	key = key_ref_to_ptr(key_ref);
++
++	/* let the security module know about
++	 * the created or updated key.
++	 */
++	ret = security_key_create_or_update(keyring, key,
++					    current_cred(),
++					    flags, create);
++	if (ret < 0)
++		goto security_error;
++	else
++		goto out;
++
++security_error:
++	key_unlink(keyring, key);
++	key_put(key);
++	key_ref = ERR_PTR(ret);
++
++out:
++	return key_ref;
++}
+ EXPORT_SYMBOL(key_create_or_update);
+ 
+ /**
+diff --git a/security/security.c b/security/security.c
+index 250ee2d76406..fc1e4984fb53 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2280,6 +2280,14 @@ EXPORT_SYMBOL(security_skb_classify_flow);
+ 
+ #ifdef CONFIG_KEYS
+ 
++int security_key_create_or_update(struct key *keyring, struct key *key,
++				  const struct cred *cred,
++				  unsigned long flags, bool create)
++{
++	return call_int_hook(key_create_or_update, 0,
++			     keyring, key, cred, flags, create);
++}
++
+ int security_key_alloc(struct key *key, const struct cred *cred,
+ 		       unsigned long flags)
+ {
 -- 
-1.8.3.1
+2.17.1
 
