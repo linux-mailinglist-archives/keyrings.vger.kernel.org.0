@@ -2,89 +2,81 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B24DBE66
-	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 09:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E418CDC315
+	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 12:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504659AbfJRHci (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 18 Oct 2019 03:32:38 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:38598 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504654AbfJRHci (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Oct 2019 03:32:38 -0400
-Received: by mail-lj1-f194.google.com with SMTP id b20so5155000ljj.5;
-        Fri, 18 Oct 2019 00:32:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=M59q7a9C0OgA4oCmsCvNmrsotdikD3/oQO5y00c53pE=;
-        b=QDjSdwVhwSC0JWfWLJhp/h9DdZY9n0KxIP8OCUJAgh30ovPE8RBv1vHr+hVbVE0tME
-         iJD/yM8B0njK1VSHughXZlw5SQkhpbffxcCOWITVKsRI0dqS8/ILGqUXSDE6L6GQObAB
-         8Spdl/ikovaOjEkQ7UyA0Glo6fnrOJKKEAP/gqHenduF5Lu0WFI9N0bTzyfpDg3zfBV2
-         IRnoDoHGZNoLlHtk2Azb1de+77SEAhw9DcNfUSfk+GVqyQLuuShl+xT1Ca29rp3J6LGC
-         y80VJ4sumAssPPDxX3/qBR8wbdfQ+PliuJhcYWI5xzyfTw1IL0YY22z+NQybKAWp1Wdy
-         emHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=M59q7a9C0OgA4oCmsCvNmrsotdikD3/oQO5y00c53pE=;
-        b=OqejqXKR2Btm1eTSswEz+ntVUVN002t/R6PIbFviDA8rDmBsMfnOqN1irwdOo3hjLk
-         YCQJmYJPPmSSliIOEzh3BExrQKzDWEeiUZ8AayTQPl8freFcAAWECvbqNSjxLkdTQxQH
-         4kBGov1jEAb74kfS/wwJFKQ6ZC0kK+QCpj9Tek0yKgWE5jmyg2HTCo2Z5ljF7rAOuRYV
-         CGtjMwbu5cewKg1OpkImqfETsVT4bRSnps0DURCtaijdt2vXKKxSPkUdDmLC/DiX+kCY
-         LzDHJlA+CWX3ZvLndruQAhUAB/FTET9F+bvfxQ79i8N6bJpAMb6VP2lEpy23OeWbbf4U
-         8qSQ==
-X-Gm-Message-State: APjAAAUKB0TO2VE+TYCtmu/wgTBKNDFG/DLwK/HVpgBXIRZMFh15wFHX
-        891On3Yw/5kr2uKORTWgdzQPvF5k2OXAXMhuJaY=
-X-Google-Smtp-Source: APXvYqxGOxFAMF/DGekSaTRLTT9JUI7FrVcOqmXscMrke5xrFR1FwSh6E7g1AZnXqZ7em90pHobqgkjM7M2X9uVhFI0=
-X-Received: by 2002:a2e:b4a8:: with SMTP id q8mr5095902ljm.106.1571383954846;
- Fri, 18 Oct 2019 00:32:34 -0700 (PDT)
+        id S2393097AbfJRKyY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 18 Oct 2019 06:54:24 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:62409 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392070AbfJRKyY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Oct 2019 06:54:24 -0400
+Received: from fsav106.sakura.ne.jp (fsav106.sakura.ne.jp [27.133.134.233])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id x9IAsC3W078907;
+        Fri, 18 Oct 2019 19:54:12 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav106.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav106.sakura.ne.jp);
+ Fri, 18 Oct 2019 19:54:12 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav106.sakura.ne.jp)
+Received: from [192.168.1.8] (softbank126227201116.bbtec.net [126.227.201.116])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id x9IAs7gO078895
+        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NO);
+        Fri, 18 Oct 2019 19:54:12 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Subject: Re: WARNING: refcount bug in find_key_to_update
+To:     Eric Biggers <ebiggers@kernel.org>
+References: <000000000000830fe50595115344@google.com>
+ <00000000000071e2fc05951229ad@google.com>
+ <CAHk-=wjFozfjV34_qy3_Z155uz_Z7qFVfE8h=_9ceGU-SVk9hA@mail.gmail.com>
+ <20191017160028.GA726@sol.localdomain>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Message-ID: <b211005b-75de-7936-c97a-817f7100415a@I-love.SAKURA.ne.jp>
+Date:   Fri, 18 Oct 2019 19:54:07 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A22E@ALPMBAPA12.e2k.ad.ge.com>
- <20191004182711.GC6945@linux.intel.com> <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2A38B@ALPMBAPA12.e2k.ad.ge.com>
- <20191007000520.GA17116@linux.intel.com> <59b88042-9c56-c891-f75e-7c0719eb5ff9@linux.ibm.com>
- <20191008234935.GA13926@linux.intel.com> <20191008235339.GB13926@linux.intel.com>
- <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
- <20191014190033.GA15552@linux.intel.com> <1571081397.3728.9.camel@HansenPartnership.com>
- <20191016110031.GE10184@linux.intel.com> <1571229252.3477.7.camel@HansenPartnership.com>
-In-Reply-To: <1571229252.3477.7.camel@HansenPartnership.com>
-From:   Janne Karhunen <janne.karhunen@gmail.com>
-Date:   Fri, 18 Oct 2019 10:32:23 +0300
-Message-ID: <CAE=NcrbSrqNUF_Jhe4cL=BSmY=p45nS8axkSJC6HWeGo2NnXDA@mail.gmail.com>
-Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
-        Ken Goldman <kgold@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191017160028.GA726@sol.localdomain>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 6:35 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
+On 2019/10/18 1:00, Eric Biggers wrote:
+> The key is supposed to have refcount >= 1 since it's in a keyring.
+> So some bug is causing it to have refcount 0.  Perhaps some place calling
+> key_put() too many times.
+> 
+> Unfortunately I can't get the reproducer to work locally.
+> 
+> Note that there are 2 other syzbot reports that look related.
+> No reproducers for them, though:
+> 
+> Title:              KASAN: use-after-free Read in key_put
+> Last occurred:      1 day ago
+> Reported:           28 days ago
+> Branches:           Mainline
+> Dashboard link:     https://syzkaller.appspot.com/bug?id=f13750b1124e01191250cf930086dcc40740fa30
+> Original thread:    https://lore.kernel.org/lkml/0000000000008c3e590592cf4b7f@google.com/T/#u
+> 
+> Title:              KASAN: use-after-free Read in keyring_compare_object
+> Last occurred:      49 days ago
+> Reported:           84 days ago
+> Branches:           Mainline
+> Dashboard link:     https://syzkaller.appspot.com/bug?id=529ab6a98286c2a97c445988a62760a58d4a1d4b
+> Original thread:    https://lore.kernel.org/lkml/000000000000038ef6058e6f3592@google.com/T/#u
+> 
 
-> > The documentation says that krng is suitable for key generation.
-> > Should the documentation changed to state that it is unsuitable?
->
-> How do you get that from the argument above?  The krng is about the
-> best we have in terms of unpredictable key generation, so of course it
-> is suitable ... provided you give the entropy enough time to have
-> sufficient entropy.
+I don't know about keys, but I rather suspect lack of serialization locks between
+"looking up for checking existing keys" versus "looking up for garbage collection".
+Can we dump locks held by current thread when panic() is called?
 
-Yes, so it can be both the safest and the least safe option available.
-By default it's the worst one, but use it wisely and it can be the
-best source. Hence I was proposing that kconfig option + boot time
-printout to make this clear for everyone..
-
-
---
-Janne
