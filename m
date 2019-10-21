@@ -2,87 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A35EBDD07D
-	for <lists+keyrings@lfdr.de>; Fri, 18 Oct 2019 22:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68EE3DEB1C
+	for <lists+keyrings@lfdr.de>; Mon, 21 Oct 2019 13:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502987AbfJRUiO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 18 Oct 2019 16:38:14 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:44000 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731326AbfJRUiN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Oct 2019 16:38:13 -0400
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 47DF4200871E;
-        Fri, 18 Oct 2019 13:38:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 47DF4200871E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1571431092;
-        bh=t/0Ocm7mOruVR9iO0ZzF4XqusnlGjzTV5TbKjXjaLYY=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=TwPL4DdglDaPi/JqvU/7StYcfvAHj2ZUF58ekIbpWtMGN7E9y+y/e82XDFn23KdOn
-         6JgxKpTmR5WcXsQ+VYcTV2JwFhawD0RMSbsTJ3r/AcHzG187xz+M0ZYEJcLPlaqH3H
-         8M/cdHyQcoYVSgoEhZlzKNWYPBUZ0+AlvEHSyvrM=
-Subject: Re: [PATCH v0] KEYS: Security LSM Hook for key_create_or_update
-To:     Casey Schaufler <casey@schaufler-ca.com>, zohar@linux.ibm.com,
-        dhowells@redhat.com, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        sashal@kernel.org, jamorris@linux.microsoft.com
-Cc:     msft-linux-kernel@linux.microsoft.com, prsriva@linux.microsoft.com
-References: <20191018195328.6704-1-nramas@linux.microsoft.com>
- <e5ffe76e-ff9f-7542-2ff7-3ede4f911c2a@schaufler-ca.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <48a4db30-853b-ef6b-9d35-77ae0450b65d@linux.microsoft.com>
-Date:   Fri, 18 Oct 2019 13:38:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1728184AbfJULjp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Oct 2019 07:39:45 -0400
+Received: from mga05.intel.com ([192.55.52.43]:17908 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727685AbfJULjp (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 21 Oct 2019 07:39:45 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2019 04:39:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,323,1566889200"; 
+   d="scan'208";a="201346357"
+Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.130])
+  by orsmga006.jf.intel.com with ESMTP; 21 Oct 2019 04:39:40 -0700
+Date:   Mon, 21 Oct 2019 14:39:39 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191021113939.GA11649@linux.intel.com>
+References: <20191008234935.GA13926@linux.intel.com>
+ <20191008235339.GB13926@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+ <20191014190033.GA15552@linux.intel.com>
+ <1571081397.3728.9.camel@HansenPartnership.com>
+ <20191016110031.GE10184@linux.intel.com>
+ <1571229252.3477.7.camel@HansenPartnership.com>
+ <20191016162543.GB6279@linux.intel.com>
+ <1571253029.17520.5.camel@HansenPartnership.com>
+ <20191017180440.GG6667@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <e5ffe76e-ff9f-7542-2ff7-3ede4f911c2a@schaufler-ca.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191017180440.GG6667@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 10/18/19 1:25 PM, Casey Schaufler wrote:
-
->> Problem Statement:
->> key_create_or_update function currently does not have
->> a security LSM hook. The hook is needed to allow security
->> subsystems to use key create or update information.
+On Thu, Oct 17, 2019 at 09:04:40PM +0300, Jarkko Sakkinen wrote:
+> On Wed, Oct 16, 2019 at 03:10:29PM -0400, James Bottomley wrote:
+> > On Wed, 2019-10-16 at 19:25 +0300, Jarkko Sakkinen wrote:
+> > > On Wed, Oct 16, 2019 at 08:34:12AM -0400, James Bottomley wrote:
+> > > > reversible ciphers are generally frowned upon in random number
+> > > > generation, that's why the krng uses chacha20.  In general I think
+> > > > we shouldn't try to code our own mixing and instead should get the
+> > > > krng to do it for us using whatever the algorithm du jour that the
+> > > > crypto guys have blessed is.  That's why I proposed adding the TPM
+> > > > output to the krng as entropy input and then taking the output of
+> > > > the krng.
+> > > 
+> > > It is already registered as hwrng. What else?
+> > 
+> > It only contributes entropy once at start of OS.
 > 
-> What security module(s) do you expect to use this?
+> Ok.
+> 
+> > >  Was the issue that it is only used as seed when the rng is init'd
+> > > first? I haven't at this point gone to the internals of krng.
+> > 
+> > Basically it was similar to your xor patch except I got the kernel rng
+> > to do the mixing, so it would use the chacha20 cipher at the moment
+> > until they decide that's unsafe and change it to something else:
+> > 
+> > https://lore.kernel.org/linux-crypto/1570227068.17537.4.camel@HansenPartnership.com/
+> > 
+> > It uses add_hwgenerator_randomness() to do the mixing.  It also has an
+> > unmixed source so that read of the TPM hwrng device works as expected.
+> 
+> Thinking that could this potentially racy? I.e. between the calls
+> something else could eat the entropy added?
 
-SELinux is one that I can think of - it has hooks for key_alloc, 
-key_free, etc. But does not have one for key_create_or_update.
-> IMA is not a Linux Security Module.
+Also, what is wrong just taking one value from krng and mixing
+it with a value from TPM RNG where needed? That would be non-racy
+too.
 
-Agree. But ima utilizes LSM to hook into system operations (such as 
-read_file given below).
-int security_kernel_post_read_file(struct file *file, char *buf,
-                                    loff_t size,
-				   enum kernel_read_file_id id)
-{
-	int ret;
-
-	ret = call_int_hook(kernel_post_read_file, 0, file,
-                             buf, size, id);
-	if (ret)
-		return ret;
-	return ima_post_read_file(file, buf, size, id);
-}
-
-I am currently working on an ima function to measure keys. The change 
-set I have submitted today is in preparation for that.
-> You don't have a security module that provides this hook.
-> We don't accept interfaces without users.
-
-Like I have mentioned above, that change in ima will be submitted for 
-review shortly.
-
-If you have suggestions for a better way to hook into key create\update 
-that ima can use to measure keys, I'll be happy to investigate that.
-
-thanks,
-  -lakshmi
+/Jarkko
