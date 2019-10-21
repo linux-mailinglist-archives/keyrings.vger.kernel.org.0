@@ -2,70 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7AE2DF23D
-	for <lists+keyrings@lfdr.de>; Mon, 21 Oct 2019 17:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39328DF263
+	for <lists+keyrings@lfdr.de>; Mon, 21 Oct 2019 18:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729834AbfJUP70 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Oct 2019 11:59:26 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:46191 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729838AbfJUP7V (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Oct 2019 11:59:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571673560;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gB3h1+rX6SwZqtoY3Kw85+CkKWUkDR1tjhYDoTIgQqI=;
-        b=hgclhPRTLu8iogpwdpISRXnnz+2xYH7IbErEnFwkSGzSSEYo7HG8NWRNBxwR7HTSngWs/z
-        yIg71MnN3MDBixReQQ/d2UOUPr62p72rzFXsAlFyv86FAqjbuQVejOAdx0WyXDzMENhVD6
-        z6AWzA3RCMiPmcq3o4OB7i/Q2aQ7AKY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-304-ZRM1CcYIMe2Hn_ko3VmGjA-1; Mon, 21 Oct 2019 11:59:16 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7CBA01005500;
-        Mon, 21 Oct 2019 15:59:15 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BD4756012E;
-        Mon, 21 Oct 2019 15:59:13 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <000000000000830fe50595115344@google.com>
-References: <000000000000830fe50595115344@google.com>
-To:     syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com>
-Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
-        jmorris@namei.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, serge@hallyn.com,
-        syzkaller-bugs@googlegroups.com
-Subject: Re: WARNING: refcount bug in find_key_to_update
+        id S1729646AbfJUQF4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Oct 2019 12:05:56 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:37234 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729634AbfJUQF4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Oct 2019 12:05:56 -0400
+Received: by mail-qt1-f195.google.com with SMTP id g50so7641072qtb.4
+        for <keyrings@vger.kernel.org>; Mon, 21 Oct 2019 09:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=531cCBl4i9yQxVHY6Fc4jmInfUcTFsMFBRwLLqkbbsA=;
+        b=J7m8XyLbnCcCFa+RkEUdG5aQ77qhKM2xKK6QuM8oOcwpzcbiNdS/9JQ7KHm5eohZ+g
+         0KPgSRseqMPuYQ07ppyBTTjVZ+dlpfWvPN5i8MFVoOVMdK6LVvzEBtlJxbZBiE3ShkEi
+         I0stg3FSjNkckzSGuEwjilGaEm1Uv+080YwkGYmY2q9688JWtfo6YO6wTTOyKRGLoHCA
+         4wF0ppmavgG3PZYTMg3dNwAqDzBzpBoLpEXUkC/8VdD+K0KvVqulh4h/2Oi6M6hpiTQ5
+         UPzd7k0Iy84JOsG/yGm8aHLFC4AS/owz2/KzFs2D6M7pSTnx7w988q0bGHsDrpv/M7pu
+         ViTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=531cCBl4i9yQxVHY6Fc4jmInfUcTFsMFBRwLLqkbbsA=;
+        b=F7dCQDr786oMOsh34mj75Jv/MpkbNZR77OLzyZ1yv+hY73E3kqg30aZXzPu8DOldnx
+         kacW/GZgJQGuKdpZcIt5RSxQcRAr8hmVQrOJvXJTTTUbvOp762CZwQpo2yda/gXBBChw
+         BFG13pzHbt+OdMHXXrhxueic6Z4VP23qn1llLjEZmQCqIkDl7/5wzPlStBSGfVt9Lpk8
+         3CmCDB53P3gFIWe5Uz0WssTfdPqLe019iTzDFFFnQhrPmLKI5Hvis+hX3AU099Oc/N5W
+         0uKfJJiMKARd6H6sYcusOfAKi99w8MKL50IbQmW2dMgHMHiF+eoerGL0ymwOod5MO0K8
+         hILw==
+X-Gm-Message-State: APjAAAVNqslKvuQ5HmnmOerr/NpYDqH6FPmRXZYu1QrYqTcQhq+5KM8S
+        oELDKhTnpFMH8G69NMWxvBmya+qMZa7UHHWVjH8CCw==
+X-Google-Smtp-Source: APXvYqx+V80R0g8ka4mvuphFpmFxHIfFs0r+6m1My9wPI75glpXldHuxqSk3nZBPJ2DOnrYuuGI+ifd5vi7AHNKn2uE=
+X-Received: by 2002:ac8:3408:: with SMTP id u8mr25315451qtb.380.1571673953322;
+ Mon, 21 Oct 2019 09:05:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-ID: <8508.1571673553.1@warthog.procyon.org.uk>
-Date:   Mon, 21 Oct 2019 16:59:13 +0100
-Message-ID: <8509.1571673553@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: ZRM1CcYIMe2Hn_ko3VmGjA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+References: <000000000000830fe50595115344@google.com> <8509.1571673553@warthog.procyon.org.uk>
+In-Reply-To: <8509.1571673553@warthog.procyon.org.uk>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Mon, 21 Oct 2019 18:05:41 +0200
+Message-ID: <CACT4Y+ZZ2tmUg9PAKouK5zhNw=BDWD7+jfo_JjB92Eb+g_gAQQ@mail.gmail.com>
+Subject: Re: WARNING: refcount bug in find_key_to_update
+To:     David Howells <dhowells@redhat.com>
+Cc:     syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>, keyrings@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com> wrote:
+On Mon, Oct 21, 2019 at 5:59 PM David Howells <dhowells@redhat.com> wrote:
+>
+> syzbot <syzbot+6455648abc28dbdd1e7f@syzkaller.appspotmail.com> wrote:
+>
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11c8adab600000
+>
+> How do I tell what's been passed into the add_key for the encrypted key?
 
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D11c8adab600=
-000
+Hi David,
 
-How do I tell what's been passed into the add_key for the encrypted key?
-
-David
-
+The easiest and most reliable would be to run it and dump the data in
+the kernel function.
