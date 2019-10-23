@@ -2,124 +2,155 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA4C6E1951
-	for <lists+keyrings@lfdr.de>; Wed, 23 Oct 2019 13:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0107EE1C4A
+	for <lists+keyrings@lfdr.de>; Wed, 23 Oct 2019 15:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387795AbfJWLtn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 23 Oct 2019 07:49:43 -0400
-Received: from mga11.intel.com ([192.55.52.93]:56121 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733180AbfJWLtn (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 23 Oct 2019 07:49:43 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 04:49:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,220,1569308400"; 
-   d="scan'208";a="228097176"
-Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.121])
-  by fmsmga002.fm.intel.com with ESMTP; 23 Oct 2019 04:49:35 -0700
-Date:   Wed, 23 Oct 2019 14:49:35 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     dhowells@redhat.com, peterhuewe@gmx.de, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, jgg@ziepe.ca, arnd@arndb.de,
-        gregkh@linuxfoundation.org, jejb@linux.ibm.com,
-        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
-        jsnitsel@redhat.com, linux-kernel@vger.kernel.org,
-        daniel.thompson@linaro.org
-Subject: Re: [Patch v8 0/4] Create and consolidate trusted keys subsystem
-Message-ID: <20191023114935.GE21973@linux.intel.com>
-References: <1571202895-32651-1-git-send-email-sumit.garg@linaro.org>
- <20191023114133.GD21973@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191023114133.GD21973@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S2405636AbfJWNVf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 23 Oct 2019 09:21:35 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:19930 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2405611AbfJWNVf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 23 Oct 2019 09:21:35 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9NDL3Iw054522
+        for <keyrings@vger.kernel.org>; Wed, 23 Oct 2019 09:21:34 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2vtqhygbv6-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Wed, 23 Oct 2019 09:21:33 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Wed, 23 Oct 2019 14:21:30 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 23 Oct 2019 14:21:27 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9NDKrEH20054288
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 23 Oct 2019 13:20:53 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 29B6911C05B;
+        Wed, 23 Oct 2019 13:21:26 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EE5F111C050;
+        Wed, 23 Oct 2019 13:21:24 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.184.174])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 23 Oct 2019 13:21:24 +0000 (GMT)
+Subject: Re: [PATCH v1 2/6] KEYS: ima: Refactored process_buffer_measurement
+ function so that it can measure any buffer (and not just KEXEC_CMDLINE one)
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        dhowells@redhat.com, casey@schaufler-ca.com, sashal@kernel.org,
+        jamorris@linux.microsoft.com,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org
+Date:   Wed, 23 Oct 2019 09:21:24 -0400
+In-Reply-To: <20191023001818.3684-3-nramas@linux.microsoft.com>
+References: <20191023001818.3684-1-nramas@linux.microsoft.com>
+         <20191023001818.3684-3-nramas@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19102313-4275-0000-0000-000003762A74
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19102313-4276-0000-0000-0000388951C0
+Message-Id: <1571836884.5104.94.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-23_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910230136
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 02:41:33PM +0300, Jarkko Sakkinen wrote:
-> On Wed, Oct 16, 2019 at 10:44:51AM +0530, Sumit Garg wrote:
-> > This patch-set does restructuring of trusted keys code to create and
-> > consolidate trusted keys subsystem.
-> > 
-> > Also, patch #2 replaces tpm1_buf code used in security/keys/trusted.c and
-> > crypto/asymmertic_keys/asym_tpm.c files to use the common tpm_buf code.
-> > 
-> > Changes in v8:
-> > 1. Rebased to latest tpmdd/master.
-> > 2. Added Reviewed-by tags.
-> > 
-> > Changes in v7:
-> > 1. Rebased to top of tpmdd/master
-> > 2. Patch #4: update tpm2 trusted keys code to use tpm_send() instead of
-> >    tpm_transmit_cmd() which is an internal function.
-> > 
-> > Changes in v6:
-> > 1. Switch TPM asymmetric code also to use common tpm_buf code. These
-> >    changes required patches #1 and #2 update, so I have dropped review
-> >    tags from those patches.
-> > 2. Incorporated miscellaneous comments from Jarkko.
-> > 
-> > Changes in v5:
-> > 1. Drop 5/5 patch as its more relavant along with TEE patch-set.
-> > 2. Add Reviewed-by tag for patch #2.
-> > 3. Fix build failure when "CONFIG_HEADER_TEST" and
-> >    "CONFIG_KERNEL_HEADER_TEST" config options are enabled.
-> > 4. Misc changes to rename files.
-> > 
-> > Changes in v4:
-> > 1. Separate patch for export of tpm_buf code to include/linux/tpm.h
-> > 2. Change TPM1.x trusted keys code to use common tpm_buf
-> > 3. Keep module name as trusted.ko only
-> > 
-> > Changes in v3:
-> > 
-> > Move TPM2 trusted keys code to trusted keys subsystem.
-> > 
-> > Changes in v2:
-> > 
-> > Split trusted keys abstraction patch for ease of review.
-> > 
-> > Sumit Garg (4):
-> >   tpm: Move tpm_buf code to include/linux/
-> >   KEYS: Use common tpm_buf for trusted and asymmetric keys
-> >   KEYS: trusted: Create trusted keys subsystem
-> >   KEYS: trusted: Move TPM2 trusted keys code
-> > 
-> >  crypto/asymmetric_keys/asym_tpm.c                  | 101 +++----
-> >  drivers/char/tpm/tpm-interface.c                   |  56 ----
-> >  drivers/char/tpm/tpm.h                             | 223 ---------------
-> >  drivers/char/tpm/tpm2-cmd.c                        | 307 --------------------
-> >  include/Kbuild                                     |   1 -
-> >  include/keys/{trusted.h => trusted_tpm.h}          |  49 +---
-> >  include/linux/tpm.h                                | 248 ++++++++++++++--
-> >  security/keys/Makefile                             |   2 +-
-> >  security/keys/trusted-keys/Makefile                |   8 +
-> >  .../{trusted.c => trusted-keys/trusted_tpm1.c}     |  96 +++----
-> >  security/keys/trusted-keys/trusted_tpm2.c          | 314 +++++++++++++++++++++
-> >  11 files changed, 649 insertions(+), 756 deletions(-)
-> >  rename include/keys/{trusted.h => trusted_tpm.h} (77%)
-> >  create mode 100644 security/keys/trusted-keys/Makefile
-> >  rename security/keys/{trusted.c => trusted-keys/trusted_tpm1.c} (94%)
-> >  create mode 100644 security/keys/trusted-keys/trusted_tpm2.c
-> > 
-> > -- 
-> > 2.7.4
-> > 
-> 
-> Tested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+On Tue, 2019-10-22 at 17:18 -0700, Lakshmi Ramasubramanian wrote:
 
-Pushed. I'll include them to my v5.5 PR :-) Thank you for doing
-this.
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+> index 584019728660..8e965d18fb21 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -610,14 +610,14 @@ int ima_load_data(enum kernel_load_data_id id)
+>   * @buf: pointer to the buffer that needs to be added to the log.
+>   * @size: size of buffer(in bytes).
+>   * @eventname: event name to be used for the buffer entry.
+> - * @cred: a pointer to a credentials structure for user validation.
+> - * @secid: the secid of the task to be validated.
+> + * @pcr: pcr to extend the measurement
+> + * @template_desc: template description
+>   *
+>   * Based on policy, the buffer is measured into the ima log.
+>   */
+> -static void process_buffer_measurement(const void *buf, int size,
+> -				       const char *eventname,
+> -				       const struct cred *cred, u32 secid)
+> +void process_buffer_measurement(const void *buf, int size,
+> +				const char *eventname, int pcr,
+> +				struct ima_template_desc *template_desc)
+>  {
+>  	int ret = 0;
+>  	struct ima_template_entry *entry = NULL;
+> @@ -626,19 +626,11 @@ static void process_buffer_measurement(const void *buf, int size,
+>  					    .filename = eventname,
+>  					    .buf = buf,
+>  					    .buf_len = size};
+> -	struct ima_template_desc *template_desc = NULL;
+>  	struct {
+>  		struct ima_digest_data hdr;
+>  		char digest[IMA_MAX_DIGEST_SIZE];
+>  	} hash = {};
+>  	int violation = 0;
+> -	int pcr = CONFIG_IMA_MEASURE_PCR_IDX;
+> -	int action = 0;
+> -
+> -	action = ima_get_action(NULL, cred, secid, 0, KEXEC_CMDLINE, &pcr,
+> -				&template_desc);
+> -	if (!(action & IMA_MEASURE))
+> -		return;
+>  
+>  	iint.ima_hash = &hash.hdr;
+>  	iint.ima_hash->algo = ima_hash_algo;
 
-/Jarkko
+
+This patch is based on Nayna's version of this change, without any
+acknowledgment.  Moving this code out of process_buffer_measurement is
+going to result in code duplication.  Nayna has posted a newer version
+of this patch without the code duplication.  As soon as she posts the
+patch with an updated patch description, I plan on picking up that
+version.
+
+Mimi
+
+
+> @@ -670,12 +662,19 @@ static void process_buffer_measurement(const void *buf, int size,
+>   */
+>  void ima_kexec_cmdline(const void *buf, int size)
+>  {
+> +	int pcr = CONFIG_IMA_MEASURE_PCR_IDX;
+> +	struct ima_template_desc *template_desc = ima_template_desc_current();
+> +	int action;
+>  	u32 secid;
+>  
+>  	if (buf && size != 0) {
+>  		security_task_getsecid(current, &secid);
+> -		process_buffer_measurement(buf, size, "kexec-cmdline",
+> -					   current_cred(), secid);
+> +		action = ima_get_action(NULL, current_cred(), secid, 0,
+> +					KEXEC_CMDLINE, &pcr, &template_desc);
+> +		if (!(action & IMA_MEASURE))
+> +			return;
+> +		process_buffer_measurement(buf, size, "kexec-cmdline", pcr,
+> +					   template_desc);
+>  	}
+>  }
+>  
+
