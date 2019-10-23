@@ -2,276 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD05E0F12
-	for <lists+keyrings@lfdr.de>; Wed, 23 Oct 2019 02:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24242E1931
+	for <lists+keyrings@lfdr.de>; Wed, 23 Oct 2019 13:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732624AbfJWASh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Oct 2019 20:18:37 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:45298 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732315AbfJWAS0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Oct 2019 20:18:26 -0400
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 1B7132010AC8;
-        Tue, 22 Oct 2019 17:18:25 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1B7132010AC8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1571789905;
-        bh=l3/xpxDJDNPHhTjWJ68OgeQThxUX96N97fTeydZwHaM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WFw4V83FIRb9/kKNS80AHaLOAxb18GAxUAoHQDsmgtjgeYqh4zjQTx/5eHQBz4A7W
-         sg6wHJlSkrhtKDNqK5vSXxOCCWZiJYGcF3MRPLdr7YJmMvV9VOlZyVAtHySJPZsNT8
-         59WqKDVFBJd8zSoyI1OXfNViIfpKYIPGQcm2ymUY=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, dhowells@redhat.com, casey@schaufler-ca.com,
-        sashal@kernel.org, jamorris@linux.microsoft.com,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Cc:     nramas@linux.microsoft.com
-Subject: [PATCH v1 6/6] KEYS: measure keys when they are created or updated
-Date:   Tue, 22 Oct 2019 17:18:18 -0700
-Message-Id: <20191023001818.3684-7-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191023001818.3684-1-nramas@linux.microsoft.com>
-References: <20191023001818.3684-1-nramas@linux.microsoft.com>
+        id S2390783AbfJWLlj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 23 Oct 2019 07:41:39 -0400
+Received: from mga02.intel.com ([134.134.136.20]:17445 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390623AbfJWLlj (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 23 Oct 2019 07:41:39 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 04:41:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,220,1569308400"; 
+   d="scan'208";a="399363728"
+Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.121])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Oct 2019 04:41:33 -0700
+Date:   Wed, 23 Oct 2019 14:41:33 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     dhowells@redhat.com, peterhuewe@gmx.de, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net, jgg@ziepe.ca, arnd@arndb.de,
+        gregkh@linuxfoundation.org, jejb@linux.ibm.com,
+        zohar@linux.ibm.com, jmorris@namei.org, serge@hallyn.com,
+        jsnitsel@redhat.com, linux-kernel@vger.kernel.org,
+        daniel.thompson@linaro.org
+Subject: Re: [Patch v8 0/4] Create and consolidate trusted keys subsystem
+Message-ID: <20191023114133.GD21973@linux.intel.com>
+References: <1571202895-32651-1-git-send-email-sumit.garg@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1571202895-32651-1-git-send-email-sumit.garg@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-A new LSM function namely, security_key_create_or_update, has
-been added. This function is called by key_create_or_update
-function when a new key is created or an existing key is updated.
-This call is made when the key has been instantiated and linked
-to the target keyring.
+On Wed, Oct 16, 2019 at 10:44:51AM +0530, Sumit Garg wrote:
+> This patch-set does restructuring of trusted keys code to create and
+> consolidate trusted keys subsystem.
+> 
+> Also, patch #2 replaces tpm1_buf code used in security/keys/trusted.c and
+> crypto/asymmertic_keys/asym_tpm.c files to use the common tpm_buf code.
+> 
+> Changes in v8:
+> 1. Rebased to latest tpmdd/master.
+> 2. Added Reviewed-by tags.
+> 
+> Changes in v7:
+> 1. Rebased to top of tpmdd/master
+> 2. Patch #4: update tpm2 trusted keys code to use tpm_send() instead of
+>    tpm_transmit_cmd() which is an internal function.
+> 
+> Changes in v6:
+> 1. Switch TPM asymmetric code also to use common tpm_buf code. These
+>    changes required patches #1 and #2 update, so I have dropped review
+>    tags from those patches.
+> 2. Incorporated miscellaneous comments from Jarkko.
+> 
+> Changes in v5:
+> 1. Drop 5/5 patch as its more relavant along with TEE patch-set.
+> 2. Add Reviewed-by tag for patch #2.
+> 3. Fix build failure when "CONFIG_HEADER_TEST" and
+>    "CONFIG_KERNEL_HEADER_TEST" config options are enabled.
+> 4. Misc changes to rename files.
+> 
+> Changes in v4:
+> 1. Separate patch for export of tpm_buf code to include/linux/tpm.h
+> 2. Change TPM1.x trusted keys code to use common tpm_buf
+> 3. Keep module name as trusted.ko only
+> 
+> Changes in v3:
+> 
+> Move TPM2 trusted keys code to trusted keys subsystem.
+> 
+> Changes in v2:
+> 
+> Split trusted keys abstraction patch for ease of review.
+> 
+> Sumit Garg (4):
+>   tpm: Move tpm_buf code to include/linux/
+>   KEYS: Use common tpm_buf for trusted and asymmetric keys
+>   KEYS: trusted: Create trusted keys subsystem
+>   KEYS: trusted: Move TPM2 trusted keys code
+> 
+>  crypto/asymmetric_keys/asym_tpm.c                  | 101 +++----
+>  drivers/char/tpm/tpm-interface.c                   |  56 ----
+>  drivers/char/tpm/tpm.h                             | 223 ---------------
+>  drivers/char/tpm/tpm2-cmd.c                        | 307 --------------------
+>  include/Kbuild                                     |   1 -
+>  include/keys/{trusted.h => trusted_tpm.h}          |  49 +---
+>  include/linux/tpm.h                                | 248 ++++++++++++++--
+>  security/keys/Makefile                             |   2 +-
+>  security/keys/trusted-keys/Makefile                |   8 +
+>  .../{trusted.c => trusted-keys/trusted_tpm1.c}     |  96 +++----
+>  security/keys/trusted-keys/trusted_tpm2.c          | 314 +++++++++++++++++++++
+>  11 files changed, 649 insertions(+), 756 deletions(-)
+>  rename include/keys/{trusted.h => trusted_tpm.h} (77%)
+>  create mode 100644 security/keys/trusted-keys/Makefile
+>  rename security/keys/{trusted.c => trusted-keys/trusted_tpm1.c} (94%)
+>  create mode 100644 security/keys/trusted-keys/trusted_tpm2.c
+> 
+> -- 
+> 2.7.4
+> 
 
-security_key_create_or_update is passed the target keyring, key,
-key creation flags, and a boolean flag indicating whether
-the key was newly created or an existing key was updated.
-This function calls the ima function ima_post_key_create_or_update
-to measure the key.
+Tested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- include/linux/ima.h      | 15 +++++++-
- include/linux/security.h | 13 ++++++-
- security/keys/key.c      | 78 +++++++++++++++++++++++++++++++++++-----
- security/security.c      | 10 ++++++
- 4 files changed, 105 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index a20ad398d260..ce763901380d 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -24,7 +24,11 @@ extern int ima_post_read_file(struct file *file, void *buf, loff_t size,
- 			      enum kernel_read_file_id id);
- extern void ima_post_path_mknod(struct dentry *dentry);
- extern void ima_kexec_cmdline(const void *buf, int size);
--
-+extern int ima_post_key_create_or_update(struct key *keyring,
-+					 struct key *key,
-+					 const struct cred *cred,
-+					 unsigned long flags,
-+					 bool create);
- #ifdef CONFIG_IMA_KEXEC
- extern void ima_add_kexec_buffer(struct kimage *image);
- #endif
-@@ -91,6 +95,15 @@ static inline void ima_post_path_mknod(struct dentry *dentry)
- }
- 
- static inline void ima_kexec_cmdline(const void *buf, int size) {}
-+
-+static inline int ima_post_key_create_or_update(struct key *keyring,
-+						struct key *key,
-+						const struct cred *cred,
-+						unsigned long flags,
-+						bool create)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_IMA */
- 
- #ifndef CONFIG_IMA_KEXEC
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 5f7441abbf42..c8348da3db2e 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -1677,7 +1677,9 @@ void security_key_free(struct key *key);
- int security_key_permission(key_ref_t key_ref,
- 			    const struct cred *cred, unsigned perm);
- int security_key_getsecurity(struct key *key, char **_buffer);
--
-+int security_key_create_or_update(struct key *keyring, struct key *key,
-+				  const struct cred *cred,
-+				  unsigned long flags, bool create);
- #else
- 
- static inline int security_key_alloc(struct key *key,
-@@ -1704,6 +1706,15 @@ static inline int security_key_getsecurity(struct key *key, char **_buffer)
- 	return 0;
- }
- 
-+static inline int security_key_create_or_update(struct key *keyring,
-+						struct key *key,
-+						const struct cred *cred,
-+						unsigned long flags,
-+						bool create)
-+{
-+	return 0;
-+}
-+
- #endif
- #endif /* CONFIG_KEYS */
- 
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 764f4c57913e..b913feaf196e 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -781,7 +781,7 @@ static inline key_ref_t __key_update(key_ref_t key_ref,
- }
- 
- /**
-- * key_create_or_update - Update or create and instantiate a key.
-+ * __key_create_or_update - Update or create and instantiate a key.
-  * @keyring_ref: A pointer to the destination keyring with possession flag.
-  * @type: The type of key.
-  * @description: The searchable description for the key.
-@@ -789,6 +789,8 @@ static inline key_ref_t __key_update(key_ref_t key_ref,
-  * @plen: The length of @payload.
-  * @perm: The permissions mask for a new key.
-  * @flags: The quota flags for a new key.
-+ * @create: Set to true if the key was newly created.
-+ *          Set to false if the key was updated.
-  *
-  * Search the destination keyring for a key of the same description and if one
-  * is found, update it, otherwise create and instantiate a new one and create a
-@@ -805,13 +807,14 @@ static inline key_ref_t __key_update(key_ref_t key_ref,
-  * On success, the possession flag from the keyring ref will be tacked on to
-  * the key ref before it is returned.
-  */
--key_ref_t key_create_or_update(key_ref_t keyring_ref,
--			       const char *type,
--			       const char *description,
--			       const void *payload,
--			       size_t plen,
--			       key_perm_t perm,
--			       unsigned long flags)
-+static key_ref_t __key_create_or_update(key_ref_t keyring_ref,
-+					const char *type,
-+					const char *description,
-+					const void *payload,
-+					size_t plen,
-+					key_perm_t perm,
-+					unsigned long flags,
-+					bool *create)
- {
- 	struct keyring_index_key index_key = {
- 		.description	= description,
-@@ -936,6 +939,7 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
- 		goto error_link_end;
- 	}
- 
-+	*create = true;
- 	key_ref = make_key_ref(key, is_key_possessed(keyring_ref));
- 
- error_link_end:
-@@ -948,7 +952,7 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
- error:
- 	return key_ref;
- 
-- found_matching_key:
-+found_matching_key:
- 	/* we found a matching key, so we're going to try to update it
- 	 * - we can drop the locks first as we have the key pinned
- 	 */
-@@ -964,9 +968,65 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
- 		}
- 	}
- 
-+	*create = false;
- 	key_ref = __key_update(key_ref, &prep);
- 	goto error_free_prep;
- }
-+
-+/**
-+ * key_create_or_update - Update or create and instantiate a key.
-+ * @keyring_ref: A pointer to the destination keyring with possession flag.
-+ * @type: The type of key.
-+ * @description: The searchable description for the key.
-+ * @payload: The data to use to instantiate or update the key.
-+ * @plen: The length of @payload.
-+ * @perm: The permissions mask for a new key.
-+ * @flags: The quota flags for a new key.
-+ *
-+ * Calls the internal function __key_create_or_update.
-+ * If successful calls the security LSM hook.
-+ */
-+key_ref_t key_create_or_update(key_ref_t keyring_ref,
-+			       const char *type,
-+			       const char *description,
-+			       const void *payload,
-+			       size_t plen,
-+			       key_perm_t perm,
-+			       unsigned long flags)
-+{
-+	key_ref_t key_ref;
-+	struct key *keyring, *key = NULL;
-+	int ret = 0;
-+	bool create = false;
-+
-+	key_ref = __key_create_or_update(keyring_ref, type, description,
-+					 payload, plen, perm, flags,
-+					 &create);
-+	if (IS_ERR(key_ref))
-+		goto out;
-+
-+	keyring = key_ref_to_ptr(keyring_ref);
-+	key = key_ref_to_ptr(key_ref);
-+
-+	/* let the security module know about
-+	 * the created or updated key.
-+	 */
-+	ret = security_key_create_or_update(keyring, key,
-+					    current_cred(),
-+					    flags, create);
-+	if (ret < 0)
-+		goto security_error;
-+	else
-+		goto out;
-+
-+security_error:
-+	key_unlink(keyring, key);
-+	key_put(key);
-+	key_ref = ERR_PTR(ret);
-+
-+out:
-+	return key_ref;
-+}
- EXPORT_SYMBOL(key_create_or_update);
- 
- /**
-diff --git a/security/security.c b/security/security.c
-index 250ee2d76406..707a9e7fa94d 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -2303,6 +2303,16 @@ int security_key_getsecurity(struct key *key, char **_buffer)
- 	return call_int_hook(key_getsecurity, 0, key, _buffer);
- }
- 
-+int security_key_create_or_update(struct key *keyring,
-+				  struct key *key,
-+				  const struct cred *cred,
-+				  unsigned long flags,
-+				  bool create)
-+{
-+	return ima_post_key_create_or_update(keyring, key, cred,
-+					     flags, create);
-+}
-+
- #endif	/* CONFIG_KEYS */
- 
- #ifdef CONFIG_AUDIT
--- 
-2.17.1
-
+/Jarkko
