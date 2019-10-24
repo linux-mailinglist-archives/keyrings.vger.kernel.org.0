@@ -2,71 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4908E2F17
-	for <lists+keyrings@lfdr.de>; Thu, 24 Oct 2019 12:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 631F9E33BB
+	for <lists+keyrings@lfdr.de>; Thu, 24 Oct 2019 15:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438820AbfJXKcc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 24 Oct 2019 06:32:32 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:30349 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2438819AbfJXKcb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Oct 2019 06:32:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571913150;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LIKdOL11Ozx/PWJsb0Bia7eThEnrLMvgCNlbfPe+qhE=;
-        b=A6haLsmVQpo3jaotn9t6Ons4ZkJCmT8W9/6y0h7sUEF2S4sectGklcYlaZirfZw1lEt00Z
-        TVk5Mm9iStR5aEF692QjLseNb4oel55Nj3NGs+QU0y6TLXcUUxy8bvH5KWTFzCFtEsc0H0
-        2+0a001R51C/itA4tz1DRHg9dkuoAwM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-52-kf6BhbzrPzCAs2tEP3KZ1A-1; Thu, 24 Oct 2019 06:32:29 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C9DA8107AD33;
-        Thu, 24 Oct 2019 10:32:26 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 14CB41001B30;
-        Thu, 24 Oct 2019 10:32:23 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <157186186167.3995.7568100174393739543.stgit@warthog.procyon.org.uk>
-References: <157186186167.3995.7568100174393739543.stgit@warthog.procyon.org.uk> <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
-To:     torvalds@linux-foundation.org
-Cc:     dhowells@redhat.com, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        id S2502458AbfJXNPA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 24 Oct 2019 09:15:00 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:45050 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2502438AbfJXNPA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Oct 2019 09:15:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Jr+KH6TpggeektbjDpZIF11RXPqlwCVR55VLMJFPOz8=; b=j7YKjbvjp/ypi4i4koJ318A42
+        d4C0/CCa01kd9EjOIu9zw0/atJE16DTEyTp45ZSWBNSWlc0g+z2PyF+/6pzkSAY3WRUdm70WN7mSz
+        6me42ElrJoWnV27r1xOSBoHPRQg+jeTOQnmVigwvcGJFgO6JkCrEqEFayteNfRbb5OLE4e8yx1BIg
+        bzrmoJ/4AaVJi0vB5CE5jYkuBHOj+j1m41vxDZc0BS7HPtIdD6fVgsSUy5igabNFG7bt7Pt1bEJ4A
+        gbX86oq8hvlyHJy0RibiCU0XNgLI3amTKX1KHXyIj1x9ony+LGASM8qFYMOp7tGg+6mAV8XNOaTik
+        deajIeL1g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iNcx6-0005MS-Mb; Thu, 24 Oct 2019 13:14:56 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A53C3300489;
+        Thu, 24 Oct 2019 15:13:55 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 0CF8B2B1C8A31; Thu, 24 Oct 2019 15:14:54 +0200 (CEST)
+Date:   Thu, 24 Oct 2019 15:14:54 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
         nicolas.dichtel@6wind.com, raven@themaw.net,
         Christian Brauner <christian@brauner.io>,
         keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 04/10] pipe: Use head and tail pointers for the ring, not cursor and length [ver #2]
+Subject: Re: [RFC PATCH 00/10] pipe: Notification queue preparation [ver #2]
+Message-ID: <20191024131454.GB4114@hirez.programming.kicks-ass.net>
+References: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-ID: <13193.1571913143.1@warthog.procyon.org.uk>
-Date:   Thu, 24 Oct 2019 11:32:23 +0100
-Message-ID: <13194.1571913143@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: kf6BhbzrPzCAs2tEP3KZ1A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I've pushed to git a new version that fixes an incomplete conversion in
-pipe_zero(), ports the powerpc virtio_console driver and fixes a comment in
-splice.
+On Wed, Oct 23, 2019 at 09:17:04PM +0100, David Howells wrote:
 
-David
+>  (1) It removes the nr_exclusive argument from __wake_up_sync_key() as this
+>      is always 1.  This prepares for step 2.
+> 
+>  (2) Adds wake_up_interruptible_sync_poll_locked() so that poll can be
+>      woken up from a function that's holding the poll waitqueue spinlock.
 
+>  include/linux/wait.h       |   11 +-
+>  kernel/sched/wait.c        |   37 ++++--
+> 
+
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
