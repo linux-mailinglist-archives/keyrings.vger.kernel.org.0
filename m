@@ -2,72 +2,305 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 631F9E33BB
-	for <lists+keyrings@lfdr.de>; Thu, 24 Oct 2019 15:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FCB9E3903
+	for <lists+keyrings@lfdr.de>; Thu, 24 Oct 2019 18:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502458AbfJXNPA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 24 Oct 2019 09:15:00 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:45050 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502438AbfJXNPA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Oct 2019 09:15:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Jr+KH6TpggeektbjDpZIF11RXPqlwCVR55VLMJFPOz8=; b=j7YKjbvjp/ypi4i4koJ318A42
-        d4C0/CCa01kd9EjOIu9zw0/atJE16DTEyTp45ZSWBNSWlc0g+z2PyF+/6pzkSAY3WRUdm70WN7mSz
-        6me42ElrJoWnV27r1xOSBoHPRQg+jeTOQnmVigwvcGJFgO6JkCrEqEFayteNfRbb5OLE4e8yx1BIg
-        bzrmoJ/4AaVJi0vB5CE5jYkuBHOj+j1m41vxDZc0BS7HPtIdD6fVgsSUy5igabNFG7bt7Pt1bEJ4A
-        gbX86oq8hvlyHJy0RibiCU0XNgLI3amTKX1KHXyIj1x9ony+LGASM8qFYMOp7tGg+6mAV8XNOaTik
-        deajIeL1g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iNcx6-0005MS-Mb; Thu, 24 Oct 2019 13:14:56 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A53C3300489;
-        Thu, 24 Oct 2019 15:13:55 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0CF8B2B1C8A31; Thu, 24 Oct 2019 15:14:54 +0200 (CEST)
-Date:   Thu, 24 Oct 2019 15:14:54 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     David Howells <dhowells@redhat.com>
-Cc:     torvalds@linux-foundation.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        id S2410004AbfJXQ5p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 24 Oct 2019 12:57:45 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25341 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2409957AbfJXQ5o (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Oct 2019 12:57:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571936262;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NYl4FrLbBWaBG1625TSNrJR25CyJ2Un0Gw1Isq0q23I=;
+        b=P7PRNJNjb2ay810LctlQ43LEuPadNAIqYz9aSwZ8Dkifkyn65fngJaDeUIdDiYpUIoOO0B
+        3OMShtzsCL2j2qKVHwQZnIsrUs/Wk2liJw8q1lwA/N9hsp36ciaG2nVTkPWAIaTcCgof2s
+        yPH6bddBuyH75SP2ZD9ItbJwql/eKCU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-377-1QOKCWTXMqehQKb2ajkHSg-1; Thu, 24 Oct 2019 12:57:38 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 14C19801E66;
+        Thu, 24 Oct 2019 16:57:36 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2966B5888;
+        Thu, 24 Oct 2019 16:57:33 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+References: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+To:     torvalds@linux-foundation.org
+Cc:     dhowells@redhat.com, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         nicolas.dichtel@6wind.com, raven@themaw.net,
         Christian Brauner <christian@brauner.io>,
         keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/10] pipe: Notification queue preparation [ver #2]
-Message-ID: <20191024131454.GB4114@hirez.programming.kicks-ass.net>
-References: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+Subject: [RFC PATCH 11/10] pipe: Add fsync() support [ver #2]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-ID: <30392.1571936252.1@warthog.procyon.org.uk>
+Date:   Thu, 24 Oct 2019 17:57:32 +0100
+Message-ID: <30394.1571936252@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: 1QOKCWTXMqehQKb2ajkHSg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 09:17:04PM +0100, David Howells wrote:
+pipe: Add fsync() support
 
->  (1) It removes the nr_exclusive argument from __wake_up_sync_key() as this
->      is always 1.  This prepares for step 2.
-> 
->  (2) Adds wake_up_interruptible_sync_poll_locked() so that poll can be
->      woken up from a function that's holding the poll waitqueue spinlock.
+The keyrings testsuite needs the ability to wait for all the outstanding
+notifications in the queue to have been processed so that it can then go
+through them to find out whether the notifications it expected have been
+emitted.
 
->  include/linux/wait.h       |   11 +-
->  kernel/sched/wait.c        |   37 ++++--
-> 
+Implement fsync() support for pipes to provide this.  The tailmost buffer
+at the point of calling is marked and fsync adds itself to the list of
+waiters, noting the tail position to be waited for and marking the buffer
+as no longer mergeable.  Then when the buffer is consumed, if the flag is
+set, any matching waiters are woken up.
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+---
+ fs/fuse/dev.c             |    1=20
+ fs/pipe.c                 |   61 +++++++++++++++++++++++++++++++++++++++++=
++++++
+ fs/splice.c               |    3 ++
+ include/linux/pipe_fs_i.h |   22 ++++++++++++++++
+ lib/iov_iter.c            |    2 -
+ 5 files changed, 88 insertions(+), 1 deletion(-)
+
+
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 5ef57a322cb8..9617a35579cb 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1983,6 +1983,7 @@ static ssize_t fuse_dev_splice_write(struct pipe_inod=
+e_info *pipe,
+ =09=09if (rem >=3D ibuf->len) {
+ =09=09=09*obuf =3D *ibuf;
+ =09=09=09ibuf->ops =3D NULL;
++=09=09=09pipe_wake_fsync(pipe, ibuf, tail);
+ =09=09=09tail++;
+ =09=09=09pipe_commit_read(pipe, tail);
+ =09=09} else {
+diff --git a/fs/pipe.c b/fs/pipe.c
+index 6a982a88f658..8e5fd7314be1 100644
+--- a/fs/pipe.c
++++ b/fs/pipe.c
+@@ -30,6 +30,12 @@
+=20
+ #include "internal.h"
+=20
++struct pipe_fsync {
++=09struct list_head=09link;=09=09/* Link in pipe->fsync */
++=09struct completion=09done;
++=09unsigned int=09=09tail;=09=09/* The buffer being waited for */
++};
++
+ /*
+  * The max size that a non-root user is allowed to grow the pipe. Can
+  * be set by root in /proc/sys/fs/pipe-max-size
+@@ -269,6 +275,58 @@ static bool pipe_buf_can_merge(struct pipe_buffer *buf=
+)
+ =09return buf->ops =3D=3D &anon_pipe_buf_ops;
+ }
+=20
++/*
++ * Wait for all the data currently in the pipe to be consumed.
++ */
++static int pipe_fsync(struct file *file, loff_t a, loff_t b, int datasync)
++{
++=09struct pipe_inode_info *pipe =3D file->private_data;
++=09struct pipe_buffer *buf;
++=09struct pipe_fsync fsync;
++=09unsigned int head, tail, mask;
++
++=09pipe_lock(pipe);
++
++=09head =3D pipe->head;
++=09tail =3D pipe->tail;
++=09mask =3D pipe->ring_size - 1;
++
++=09if (pipe_empty(head, tail)) {
++=09=09pipe_unlock(pipe);
++=09=09return 0;
++=09}
++
++=09init_completion(&fsync.done);
++=09fsync.tail =3D tail;
++=09buf =3D &pipe->bufs[tail & mask];
++=09buf->flags |=3D PIPE_BUF_FLAG_FSYNC;
++=09pipe_buf_mark_unmergeable(buf);
++=09list_add_tail(&fsync.link, &pipe->fsync);
++=09pipe_unlock(pipe);
++
++=09if (wait_for_completion_interruptible(&fsync.done) < 0) {
++=09=09pipe_lock(pipe);
++=09=09list_del(&fsync.link);
++=09=09pipe_unlock(pipe);
++=09=09return -EINTR;
++=09}
++
++=09return 0;
++}
++
++void __pipe_wake_fsync(struct pipe_inode_info *pipe, unsigned int tail)
++{
++=09struct pipe_fsync *fsync, *p;
++
++=09list_for_each_entry_safe(fsync, p, &pipe->fsync, link) {
++=09=09if (fsync->tail =3D=3D tail) {
++=09=09=09list_del_init(&fsync->link);
++=09=09=09complete(&fsync->done);
++=09=09}
++=09}
++}
++EXPORT_SYMBOL(__pipe_wake_fsync);
++
+ static ssize_t
+ pipe_read(struct kiocb *iocb, struct iov_iter *to)
+ {
+@@ -325,6 +383,7 @@ pipe_read(struct kiocb *iocb, struct iov_iter *to)
+ =09=09=09if (!buf->len) {
+ =09=09=09=09pipe_buf_release(pipe, buf);
+ =09=09=09=09spin_lock_irq(&pipe->wait.lock);
++=09=09=09=09pipe_wake_fsync(pipe, buf, tail);
+ =09=09=09=09tail++;
+ =09=09=09=09pipe_commit_read(pipe, tail);
+ =09=09=09=09do_wakeup =3D 1;
+@@ -717,6 +776,7 @@ struct pipe_inode_info *alloc_pipe_info(void)
+ =09=09pipe->ring_size =3D pipe_bufs;
+ =09=09pipe->user =3D user;
+ =09=09mutex_init(&pipe->mutex);
++=09=09INIT_LIST_HEAD(&pipe->fsync);
+ =09=09return pipe;
+ =09}
+=20
+@@ -1060,6 +1120,7 @@ const struct file_operations pipefifo_fops =3D {
+ =09.llseek=09=09=3D no_llseek,
+ =09.read_iter=09=3D pipe_read,
+ =09.write_iter=09=3D pipe_write,
++=09.fsync=09=09=3D pipe_fsync,
+ =09.poll=09=09=3D pipe_poll,
+ =09.unlocked_ioctl=09=3D pipe_ioctl,
+ =09.release=09=3D pipe_release,
+diff --git a/fs/splice.c b/fs/splice.c
+index 3f72bc31b6ec..e106367e1be6 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -523,6 +523,7 @@ static int splice_from_pipe_feed(struct pipe_inode_info=
+ *pipe, struct splice_des
+=20
+ =09=09if (!buf->len) {
+ =09=09=09pipe_buf_release(pipe, buf);
++=09=09=09pipe_wake_fsync(pipe, buf, tail);
+ =09=09=09tail++;
+ =09=09=09pipe_commit_read(pipe, tail);
+ =09=09=09if (pipe->files)
+@@ -771,6 +772,7 @@ iter_file_splice_write(struct pipe_inode_info *pipe, st=
+ruct file *out,
+ =09=09=09=09ret -=3D buf->len;
+ =09=09=09=09buf->len =3D 0;
+ =09=09=09=09pipe_buf_release(pipe, buf);
++=09=09=09=09pipe_wake_fsync(pipe, buf, tail);
+ =09=09=09=09tail++;
+ =09=09=09=09pipe_commit_read(pipe, tail);
+ =09=09=09=09if (pipe->files)
+@@ -1613,6 +1615,7 @@ static int splice_pipe_to_pipe(struct pipe_inode_info=
+ *ipipe,
+ =09=09=09 */
+ =09=09=09*obuf =3D *ibuf;
+ =09=09=09ibuf->ops =3D NULL;
++=09=09=09pipe_wake_fsync(ipipe, ibuf, i_tail);
+ =09=09=09i_tail++;
+ =09=09=09pipe_commit_read(ipipe, i_tail);
+ =09=09=09input_wakeup =3D true;
+diff --git a/include/linux/pipe_fs_i.h b/include/linux/pipe_fs_i.h
+index 90055ff16550..1a3027089558 100644
+--- a/include/linux/pipe_fs_i.h
++++ b/include/linux/pipe_fs_i.h
+@@ -8,6 +8,7 @@
+ #define PIPE_BUF_FLAG_ATOMIC=090x02=09/* was atomically mapped */
+ #define PIPE_BUF_FLAG_GIFT=090x04=09/* page is a gift */
+ #define PIPE_BUF_FLAG_PACKET=090x08=09/* read() as a packet */
++#define PIPE_BUF_FLAG_FSYNC=090x10=09/* fsync() is waiting for this buffer=
+ to die */
+=20
+ /**
+  *=09struct pipe_buffer - a linux kernel pipe buffer
+@@ -43,6 +44,7 @@ struct pipe_buffer {
+  *=09@w_counter: writer counter
+  *=09@fasync_readers: reader side fasync
+  *=09@fasync_writers: writer side fasync
++ *=09@fsync: Waiting fsyncs
+  *=09@bufs: the circular array of pipe buffers
+  *=09@user: the user who created this pipe
+  **/
+@@ -62,6 +64,7 @@ struct pipe_inode_info {
+ =09struct page *tmp_page;
+ =09struct fasync_struct *fasync_readers;
+ =09struct fasync_struct *fasync_writers;
++=09struct list_head fsync;
+ =09struct pipe_buffer *bufs;
+ =09struct user_struct *user;
+ };
+@@ -268,6 +271,25 @@ extern const struct pipe_buf_operations nosteal_pipe_b=
+uf_ops;
+ long pipe_fcntl(struct file *, unsigned int, unsigned long arg);
+ struct pipe_inode_info *get_pipe_info(struct file *file);
+=20
++void __pipe_wake_fsync(struct pipe_inode_info *pipe, unsigned int tail);
++
++/**
++ * pipe_wake_fsync - Wake up anyone waiting with fsync for this point
++ * @pipe: The pipe that owns the buffer
++ * @buf: The pipe buffer in question
++ * @tail: The index in the ring of the buffer
++ *
++ * Check to see if anyone is waiting for the pipe ring to clear up to and
++ * including this buffer, and, if they are, wake them up.
++ */
++static inline void pipe_wake_fsync(struct pipe_inode_info *pipe,
++=09=09=09=09   struct pipe_buffer *buf,
++=09=09=09=09   unsigned int tail)
++{
++=09if (unlikely(buf->flags & PIPE_BUF_FLAG_FSYNC))
++=09=09__pipe_wake_fsync(pipe, tail);
++}
++
+ int create_pipe_files(struct file **, int);
+ unsigned int round_pipe_size(unsigned long size);
+=20
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index e22f4e283f6d..38d52524cd21 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -404,7 +404,7 @@ static size_t copy_page_to_iter_pipe(struct page *page,=
+ size_t offset, size_t by
+ =09buf->offset =3D offset;
+ =09buf->len =3D bytes;
+=20
+-=09pipe_commit_read(pipe, i_head);
++=09pipe_commit_write(pipe, i_head);
+ =09i->iov_offset =3D offset + bytes;
+ =09i->head =3D i_head;
+ out:
+
