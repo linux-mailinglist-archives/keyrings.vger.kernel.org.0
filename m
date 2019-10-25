@@ -2,62 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98C3DE45CB
-	for <lists+keyrings@lfdr.de>; Fri, 25 Oct 2019 10:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C58FE4972
+	for <lists+keyrings@lfdr.de>; Fri, 25 Oct 2019 13:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407472AbfJYIfL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Oct 2019 04:35:11 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:59290 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730668AbfJYIfL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Oct 2019 04:35:11 -0400
+        id S2439516AbfJYLKo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 25 Oct 2019 07:10:44 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:24777 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2437035AbfJYLKo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Oct 2019 07:10:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571992510;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=mimecast20190719; t=1572001843;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gsc+0cnWp+SeXo5Ab/Z5m/x0oLsQUzNBoPuLzeohPH8=;
-        b=NOPUEBQcEdYBmqATxtXkRECvwvwTFH+9JO5ZYGM6BHmE/mluTOZi+2GQUBQyru2lR6UaZ4
-        1iYY5FOhu12pgVbavx/TQkfDfBV9WRRAe37Mf0+MJSFznfgbKUMPSOo0gbGPEnZC7mPyq3
-        dUL/Jzb7wLq4cjMVOw5lX8zi5Dp5tlg=
+        bh=TdJfsRTRsop6kJ0wm+muChXm7G7utcbXCoWG3VUu7rE=;
+        b=MBGdJF/tD3D9VfPkkQDbNX2KoRprIJoV8nqD8eYR8oYGT6heoJMKpr3TN7KdNMAt5nzE6H
+        7OYDcVEKZErGZgg1TPq+oc9AZ8fkIblBDtTTRoSNlzOsHXc5MZDiq+6xrc4sNV3q92lrkg
+        IYpcZb7s3At0mvnGZx0EfhWLmELKXWw=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-331-Yt-flKkyMo6CKNT7t3AOmw-1; Fri, 25 Oct 2019 04:35:05 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+ us-mta-216-861dr80_ONCLLYjyGzsS9w-1; Fri, 25 Oct 2019 07:10:39 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C5E9E800D41;
-        Fri, 25 Oct 2019 08:35:03 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AFDF84100;
-        Fri, 25 Oct 2019 08:35:00 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAHk-=wiMho2AhcTWC3-3zGK7639XL9UT=AheMXY0pxGHDACn6g@mail.gmail.com>
-References: <CAHk-=wiMho2AhcTWC3-3zGK7639XL9UT=AheMXY0pxGHDACn6g@mail.gmail.com> <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk> <30394.1571936252@warthog.procyon.org.uk>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     dhowells@redhat.com, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block <linux-block@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 11/10] pipe: Add fsync() support [ver #2]
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F765801E6F;
+        Fri, 25 Oct 2019 11:10:35 +0000 (UTC)
+Received: from crecklin.bos.csb (ovpn-125-176.rdu2.redhat.com [10.10.125.176])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7D5711001B2D;
+        Fri, 25 Oct 2019 11:10:29 +0000 (UTC)
+Reply-To: crecklin@redhat.com
+Subject: Re: [PATCH] security/keyring: avoid pagefaults in
+ keyring_read_iterator
+From:   Chris von Recklinghausen <crecklin@redhat.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Waiman Long <longman@redhat.com>
+References: <20191018184030.8407-1-crecklin@redhat.com>
+ <30309.1571667719@warthog.procyon.org.uk>
+ <b8aa0f7c-0a90-efae-9fb7-aa85b19a0d9a@redhat.com>
+Organization: Red Hat
+Message-ID: <3c87bfba-9dc9-665f-17e8-0656e87c658b@redhat.com>
+Date:   Fri, 25 Oct 2019 07:10:29 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-ID: <9190.1571992499.1@warthog.procyon.org.uk>
-Date:   Fri, 25 Oct 2019 09:34:59 +0100
-Message-ID: <9191.1571992499@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: Yt-flKkyMo6CKNT7t3AOmw-1
+In-Reply-To: <b8aa0f7c-0a90-efae-9fb7-aa85b19a0d9a@redhat.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-MC-Unique: 861dr80_ONCLLYjyGzsS9w-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -66,39 +64,53 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On 10/21/2019 11:46 AM, Chris von Recklinghausen wrote:
+> On 10/21/2019 10:21 AM, David Howells wrote:
+>> Chris von Recklinghausen <crecklin@redhat.com> wrote:
+>>
+>>> The put_user call from keyring_read_iterator caused a page fault which
+>>> attempts to lock mm->mmap_sem and type->lock_class (key->sem) in the re=
+verse
+>>> order that keyring_read_iterator did, thus causing the circular locking
+>>> dependency.
+>>>
+>>> Remedy this by using access_ok and __put_user instead of put_user so we=
+'ll
+>>> return an error instead of faulting in the page.
+>> I wonder if it's better to create a kernel buffer outside of the lock in
+>> keyctl_read_key().  Hmmm...  The reason I didn't want to do that is that
+>> keyrings have don't have limits on the size.  Maybe that's not actually =
+a
+>> problem, since 1MiB would be able to hold a list of a quarter of a milli=
+on
+>> keys.
+>>
+>> David
+>>
+> Hi David,
+>
+> Thanks for the feedback.
+>
+> I can try to prototype that, but regardless of where the kernel buffer
+> is allocated, the important part is causing the initial pagefault in the
+> read path outside the lock so __put_user won't fail due to a valid user
+> address but page backing the user address isn't in-core.
+>
+> I'll start work on v2.
 
-> > The keyrings testsuite needs the ability to wait for all the outstandin=
-g
-> > notifications in the queue to have been processed so that it can then g=
-o
-> > through them to find out whether the notifications it expected have bee=
-n
-> > emitted.
->=20
-> Can't you just do
->=20
->     ioctl(fd, FIONREAD, &count);
->=20
-> in a loop instead? "No paperwork. Just sprinkle some msleep() crack on
-> him, and let's get out of here"
+Actually I'm going to back off on a v2 effort at this point and request
+that folks comment on the code as-is. Changing keyctl_read_key to use
+its own kernel buffer might be a worthwhile effort, but it doesn't
+appear to me to have any effects on preventing pagefaults on user pages
+at inopportune points of the code.
 
-Using FIONREAD like this means that I would have to quiesce the tests in or=
-der
-to sync up.  For the moment that's fine, but at some point I would like to =
-be
-able to stress test the system by running tests in parallel against the sam=
-e
-keyring.  Each test needs to check with the monitor whether its keys have
-generated the appropriate notifications against a backdrop of events being
-continuously generated by other tests.
+Thanks,
 
-I can hold this patch for now.  Let me see if I can come up with a better w=
-ay
-to do it.  Maybe it can be done by dead reckoning, holding up until either
-we've counted out a complete ring-full of notifications or read() has come =
-up
-empty.
+Chris
 
-David
+>
+> Thanks,
+>
+> Chris
+>
 
