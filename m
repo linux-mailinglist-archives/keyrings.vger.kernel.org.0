@@ -2,210 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEA29E8B32
-	for <lists+keyrings@lfdr.de>; Tue, 29 Oct 2019 15:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F22B1E8B51
+	for <lists+keyrings@lfdr.de>; Tue, 29 Oct 2019 15:58:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389398AbfJ2OvP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 29 Oct 2019 10:51:15 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113]:32768 "EHLO vps-vb.mhejs.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727255AbfJ2OvP (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 29 Oct 2019 10:51:15 -0400
-X-Greylist: delayed 976 seconds by postgrey-1.27 at vger.kernel.org; Tue, 29 Oct 2019 10:51:14 EDT
-Received: from MUA
-        by vps-vb.mhejs.net with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <mail@maciej.szmigiero.name>)
-        id 1iPSaG-0005VB-Oo; Tue, 29 Oct 2019 15:34:56 +0100
-From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To:     David Howells <dhowells@redhat.com>
-Cc:     keyrings@vger.kernel.org
-Subject: [PATCH] keyctl: try to wipe keys from memory after use
-Date:   Tue, 29 Oct 2019 15:34:51 +0100
-Message-Id: <20191029143451.327761-1-mail@maciej.szmigiero.name>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S2389452AbfJ2O6S (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 29 Oct 2019 10:58:18 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:38210 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389245AbfJ2O6S (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 29 Oct 2019 10:58:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id A5CCE8EE180;
+        Tue, 29 Oct 2019 07:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1572361097;
+        bh=Km7xzhqJCON168lObmDAWI1ZFbTna56Ifa4zThcvXmI=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=T7NX3+73FsAuWkqUitVx2dlusGJI7PHBMrkLdJhs5zUKhsqIYRZxc/145jTq9hAq8
+         NIavX8VqU11G6odn3IbVJ563OSbkYJ6oDDeE4xjwau2ZlQzfgKwYTUEAPO7mY5YIy9
+         Ts4PAGWefolf/XFoWCxWmlkQGZONV8Z4eNIxQjuQ=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id b3FM-ft7E3RJ; Tue, 29 Oct 2019 07:58:17 -0700 (PDT)
+Received: from jarvis.lan (unknown [50.35.76.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 173048EE15F;
+        Tue, 29 Oct 2019 07:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1572361097;
+        bh=Km7xzhqJCON168lObmDAWI1ZFbTna56Ifa4zThcvXmI=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=T7NX3+73FsAuWkqUitVx2dlusGJI7PHBMrkLdJhs5zUKhsqIYRZxc/145jTq9hAq8
+         NIavX8VqU11G6odn3IbVJ563OSbkYJ6oDDeE4xjwau2ZlQzfgKwYTUEAPO7mY5YIy9
+         Ts4PAGWefolf/XFoWCxWmlkQGZONV8Z4eNIxQjuQ=
+Message-ID: <1572361096.4812.3.camel@HansenPartnership.com>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Date:   Tue, 29 Oct 2019 07:58:16 -0700
+In-Reply-To: <20191029084258.GA5649@linux.intel.com>
+References: <20191008235339.GB13926@linux.intel.com>
+         <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+         <20191014190033.GA15552@linux.intel.com>
+         <1571081397.3728.9.camel@HansenPartnership.com>
+         <20191016110031.GE10184@linux.intel.com>
+         <1571229252.3477.7.camel@HansenPartnership.com>
+         <20191016162543.GB6279@linux.intel.com>
+         <1571253029.17520.5.camel@HansenPartnership.com>
+         <20191017180440.GG6667@linux.intel.com>
+         <20191021113939.GA11649@linux.intel.com>
+         <20191029084258.GA5649@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The key being added or updated likely contains secrets so it would be best
-not to leave it in memory or in a core dump when no longer needed.
+On Tue, 2019-10-29 at 10:42 +0200, Jarkko Sakkinen wrote:
+> On Mon, Oct 21, 2019 at 02:39:39PM +0300, Jarkko Sakkinen wrote:
+> > On Thu, Oct 17, 2019 at 09:04:40PM +0300, Jarkko Sakkinen wrote:
+> > > On Wed, Oct 16, 2019 at 03:10:29PM -0400, James Bottomley wrote:
+> > > > On Wed, 2019-10-16 at 19:25 +0300, Jarkko Sakkinen wrote:
+> > > > > On Wed, Oct 16, 2019 at 08:34:12AM -0400, James Bottomley
+> > > > > wrote:
+> > > > > > reversible ciphers are generally frowned upon in random
+> > > > > > number
+> > > > > > generation, that's why the krng uses chacha20.  In general
+> > > > > > I think
+> > > > > > we shouldn't try to code our own mixing and instead should
+> > > > > > get the
+> > > > > > krng to do it for us using whatever the algorithm du jour
+> > > > > > that the
+> > > > > > crypto guys have blessed is.  That's why I proposed adding
+> > > > > > the TPM
+> > > > > > output to the krng as entropy input and then taking the
+> > > > > > output of
+> > > > > > the krng.
+> > > > > 
+> > > > > It is already registered as hwrng. What else?
+> > > > 
+> > > > It only contributes entropy once at start of OS.
+> > > 
+> > > Ok.
+> > > 
+> > > > >  Was the issue that it is only used as seed when the rng is
+> > > > > init'd
+> > > > > first? I haven't at this point gone to the internals of krng.
+> > > > 
+> > > > Basically it was similar to your xor patch except I got the
+> > > > kernel rng
+> > > > to do the mixing, so it would use the chacha20 cipher at the
+> > > > moment
+> > > > until they decide that's unsafe and change it to something
+> > > > else:
+> > > > 
+> > > > https://lore.kernel.org/linux-crypto/1570227068.17537.4.camel@H
+> > > > ansenPartnership.com/
+> > > > 
+> > > > It uses add_hwgenerator_randomness() to do the mixing.  It also
+> > > > has an
+> > > > unmixed source so that read of the TPM hwrng device works as
+> > > > expected.
+> > > 
+> > > Thinking that could this potentially racy? I.e. between the calls
+> > > something else could eat the entropy added?
+> > 
+> > Also, what is wrong just taking one value from krng and mixing
+> > it with a value from TPM RNG where needed? That would be non-racy
+> > too.
+> 
+> I guess we can move forward with this?
 
-Glibc 2.25+ provides the explicit_bzero() function that can be used for
-this purpose, let's utilize it if it is present.
+Sure I suppose; can we can figure out how to get the mixing function du
+jour exposed?
 
-Tested by redefining exit(n) to abort() and inspecting the resulting core
-file for key data.
+James
 
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
----
- keyctl.c | 48 +++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 41 insertions(+), 7 deletions(-)
-
-diff --git a/keyctl.c b/keyctl.c
-index 769e5eebd9b8..b17ceb4a1099 100644
---- a/keyctl.c
-+++ b/keyctl.c
-@@ -26,6 +26,15 @@
- #include <limits.h>
- #include "keyctl.h"
- 
-+static void try_wipe_memory(void *s, size_t n)
-+{
-+#if defined(__GLIBC__) && defined(__GLIBC_PREREQ)
-+#if __GLIBC_PREREQ(2,25)
-+	explicit_bzero(s, n);
-+#endif
-+#endif
-+}
-+
- static nr void act_keyctl___version(int argc, char *argv[]);
- static nr void act_keyctl_id(int argc, char *argv[]);
- static nr void act_keyctl_show(int argc, char *argv[]);
-@@ -302,8 +311,10 @@ void hex2bin(void **_data, size_t *_datalen, bool as_hex)
- 		return;
- 
- 	q = buf = malloc(*_datalen / 2 + 2);
--	if (!buf)
-+	if (!buf) {
-+		try_wipe_memory(*_data, *_datalen);
- 		error("malloc");
-+	}
- 
- 	p = *_data;
- 	end = p + *_datalen;
-@@ -315,11 +326,11 @@ void hex2bin(void **_data, size_t *_datalen, bool as_hex)
- 		}
- 		if (end - p < 2) {
- 			fprintf(stderr, "Short hex doublet\n");
--			exit(1);
-+			goto ret_exit;
- 		}
- 		if (!isxdigit(p[0]) || !isxdigit(p[1])) {
- 			fprintf(stderr, "Bad hex doublet\n");
--			exit(1);
-+			goto ret_exit;
- 		}
- 
- 		h = isdigit(p[0]) ? p[0] - '0' : tolower(p[0]) - 'a' + 0xa;
-@@ -328,9 +339,17 @@ void hex2bin(void **_data, size_t *_datalen, bool as_hex)
- 		*q++ = (h << 4) | l;
- 	}
- 
-+	try_wipe_memory(*_data, *_datalen);
-+
- 	*q = 0;
- 	*_data = buf;
- 	*_datalen = q - buf;
-+	return;
-+
-+ret_exit:
-+	try_wipe_memory(*_data, *_datalen);
-+	try_wipe_memory(buf, q - buf);
-+	exit(1);
- }
- 
- /*
-@@ -484,6 +503,7 @@ static void act_keyctl_add(int argc, char *argv[])
- 	dest = get_key_id(argv[4]);
- 
- 	ret = add_key(argv[1], argv[2], data, datalen, dest);
-+	try_wipe_memory(data, datalen);
- 	if (ret < 0)
- 		error("add_key");
- 
-@@ -520,6 +540,7 @@ static void act_keyctl_padd(int argc, char *argv[])
- 	dest = get_key_id(argv[3]);
- 
- 	ret = add_key(argv[1], argv[2], data, datalen, dest);
-+	try_wipe_memory(data, datalen);
- 	if (ret < 0)
- 		error("add_key");
- 
-@@ -615,6 +636,7 @@ static void act_keyctl_update(int argc, char *argv[])
- 	size_t datalen;
- 	void *data;
- 	bool as_hex = false;
-+	int ret;
- 
- 	if (argc > 1 && strcmp(argv[1], "-x") == 0) {
- 		as_hex = true;
-@@ -631,7 +653,9 @@ static void act_keyctl_update(int argc, char *argv[])
- 
- 	key = get_key_id(argv[1]);
- 
--	if (keyctl_update(key, data, datalen) < 0)
-+	ret = keyctl_update(key, data, datalen);
-+	try_wipe_memory(data, datalen);
-+	if (ret < 0)
- 		error("keyctl_update");
- 
- 	exit(0);
-@@ -648,6 +672,7 @@ static void act_keyctl_pupdate(int argc, char *argv[])
- 	size_t datalen;
- 	void *data;
- 	bool as_hex = false;
-+	int ret;
- 
- 	if (argc > 1 && strcmp(argv[1], "-x") == 0) {
- 		as_hex = true;
-@@ -662,7 +687,9 @@ static void act_keyctl_pupdate(int argc, char *argv[])
- 	data = grab_stdin(&datalen);
- 	hex2bin(&data, &datalen, as_hex);
- 
--	if (keyctl_update(key, data, datalen) < 0)
-+	ret = keyctl_update(key, data, datalen);
-+	try_wipe_memory(data, datalen);
-+	if (ret < 0)
- 		error("keyctl_update");
- 
- 	exit(0);
-@@ -1311,6 +1338,7 @@ static void act_keyctl_instantiate(int argc, char *argv[])
- 	size_t datalen;
- 	void *data;
- 	bool as_hex = false;
-+	int ret;
- 
- 	if (argc > 1 && strcmp(argv[1], "-x") == 0) {
- 		as_hex = true;
-@@ -1327,7 +1355,9 @@ static void act_keyctl_instantiate(int argc, char *argv[])
- 	datalen = strlen(argv[2]);
- 	hex2bin(&data, &datalen, as_hex);
- 
--	if (keyctl_instantiate(key, data, datalen, dest) < 0)
-+	ret = keyctl_instantiate(key, data, datalen, dest);
-+	try_wipe_memory(data, datalen);
-+	if (ret < 0)
- 		error("keyctl_instantiate");
- 
- 	exit(0);
-@@ -1344,6 +1374,7 @@ static void act_keyctl_pinstantiate(int argc, char *argv[])
- 	size_t datalen;
- 	void *data;
- 	bool as_hex = false;
-+	int ret;
- 
- 	if (argc > 1 && strcmp(argv[1], "-x") == 0) {
- 		as_hex = true;
-@@ -1359,7 +1390,9 @@ static void act_keyctl_pinstantiate(int argc, char *argv[])
- 	data = grab_stdin(&datalen);
- 	hex2bin(&data, &datalen, as_hex);
- 
--	if (keyctl_instantiate(key, data, datalen, dest) < 0)
-+	ret = keyctl_instantiate(key, data, datalen, dest);
-+	try_wipe_memory(data, datalen);
-+	if (ret < 0)
- 		error("keyctl_instantiate");
- 
- 	exit(0);
-@@ -1931,6 +1964,7 @@ static void act_keyctl_dh_compute_kdf_oi(int argc, char *argv[])
- 
- 	ret = keyctl_dh_compute_kdf(private, prime, base, argv[5], oi,  oilen,
- 				    buffer, buflen);
-+	try_wipe_memory(oi, oilen);
- 	if (ret < 0)
- 		error("keyctl_dh_compute_kdf");
- 
