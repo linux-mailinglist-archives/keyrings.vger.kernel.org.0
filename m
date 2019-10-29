@@ -2,110 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC020E7750
-	for <lists+keyrings@lfdr.de>; Mon, 28 Oct 2019 18:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A114E8365
+	for <lists+keyrings@lfdr.de>; Tue, 29 Oct 2019 09:43:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404049AbfJ1RIt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 28 Oct 2019 13:08:49 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:25234 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404042AbfJ1RIt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 28 Oct 2019 13:08:49 -0400
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9SH7oXq075808
-        for <keyrings@vger.kernel.org>; Mon, 28 Oct 2019 13:08:48 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2vx2p54j3e-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Mon, 28 Oct 2019 13:08:47 -0400
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Mon, 28 Oct 2019 17:08:45 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 28 Oct 2019 17:08:41 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9SH8eA143516212
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 28 Oct 2019 17:08:40 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 50D4B4203F;
-        Mon, 28 Oct 2019 17:08:40 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1BD2842041;
-        Mon, 28 Oct 2019 17:08:39 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.151.87])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Mon, 28 Oct 2019 17:08:38 +0000 (GMT)
-Subject: Re: [PATCH v2 3/4] KEYS: Added BUILTIN_TRUSTED_KEYS enum to measure
- keys added to builtin_trusted_keys keyring
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        dhowells@redhat.com, casey@schaufler-ca.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Date:   Mon, 28 Oct 2019 13:08:38 -0400
-In-Reply-To: <8494baa1-c4db-f08b-26c9-2e56279075d0@linux.microsoft.com>
-References: <20191023233950.22072-1-nramas@linux.microsoft.com>
-         <20191023233950.22072-4-nramas@linux.microsoft.com>
-         <1572186810.4532.206.camel@linux.ibm.com>
-         <8494baa1-c4db-f08b-26c9-2e56279075d0@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19102817-0020-0000-0000-000003804EA6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102817-0021-0000-0000-000021D653C1
-Message-Id: <1572282518.4532.260.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-28_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=967 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910280166
+        id S1726566AbfJ2InD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 29 Oct 2019 04:43:03 -0400
+Received: from mga06.intel.com ([134.134.136.31]:55781 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725854AbfJ2InD (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 29 Oct 2019 04:43:03 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Oct 2019 01:43:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,243,1569308400"; 
+   d="scan'208";a="224901941"
+Received: from jsakkine-mobl1.tm.intel.com (HELO localhost) ([10.237.50.122])
+  by fmsmga004.fm.intel.com with ESMTP; 29 Oct 2019 01:42:59 -0700
+Date:   Tue, 29 Oct 2019 10:42:58 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191029084258.GA5649@linux.intel.com>
+References: <20191008235339.GB13926@linux.intel.com>
+ <BCA04D5D9A3B764C9B7405BBA4D4A3C035F2B995@ALPMBAPA12.e2k.ad.ge.com>
+ <20191014190033.GA15552@linux.intel.com>
+ <1571081397.3728.9.camel@HansenPartnership.com>
+ <20191016110031.GE10184@linux.intel.com>
+ <1571229252.3477.7.camel@HansenPartnership.com>
+ <20191016162543.GB6279@linux.intel.com>
+ <1571253029.17520.5.camel@HansenPartnership.com>
+ <20191017180440.GG6667@linux.intel.com>
+ <20191021113939.GA11649@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191021113939.GA11649@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2019-10-28 at 08:12 -0700, Lakshmi Ramasubramanian wrote:
-> On 10/27/19 7:33 AM, Mimi Zohar wrote:
+On Mon, Oct 21, 2019 at 02:39:39PM +0300, Jarkko Sakkinen wrote:
+> On Thu, Oct 17, 2019 at 09:04:40PM +0300, Jarkko Sakkinen wrote:
+> > On Wed, Oct 16, 2019 at 03:10:29PM -0400, James Bottomley wrote:
+> > > On Wed, 2019-10-16 at 19:25 +0300, Jarkko Sakkinen wrote:
+> > > > On Wed, Oct 16, 2019 at 08:34:12AM -0400, James Bottomley wrote:
+> > > > > reversible ciphers are generally frowned upon in random number
+> > > > > generation, that's why the krng uses chacha20.  In general I think
+> > > > > we shouldn't try to code our own mixing and instead should get the
+> > > > > krng to do it for us using whatever the algorithm du jour that the
+> > > > > crypto guys have blessed is.  That's why I proposed adding the TPM
+> > > > > output to the krng as entropy input and then taking the output of
+> > > > > the krng.
+> > > > 
+> > > > It is already registered as hwrng. What else?
+> > > 
+> > > It only contributes entropy once at start of OS.
+> > 
+> > Ok.
+> > 
+> > > >  Was the issue that it is only used as seed when the rng is init'd
+> > > > first? I haven't at this point gone to the internals of krng.
+> > > 
+> > > Basically it was similar to your xor patch except I got the kernel rng
+> > > to do the mixing, so it would use the chacha20 cipher at the moment
+> > > until they decide that's unsafe and change it to something else:
+> > > 
+> > > https://lore.kernel.org/linux-crypto/1570227068.17537.4.camel@HansenPartnership.com/
+> > > 
+> > > It uses add_hwgenerator_randomness() to do the mixing.  It also has an
+> > > unmixed source so that read of the TPM hwrng device works as expected.
+> > 
+> > Thinking that could this potentially racy? I.e. between the calls
+> > something else could eat the entropy added?
 > 
-> > .builtin_trusted_keys is a trusted keyring, which is created by the
-> > kernel.  It cannot be deleted or replaced by userspace, so it should
-> > be possible to correlate a keyring name with a keyring number on
-> > policy load.
-> 
-> Yes - at policy load we can map a keyring name to a keyring number.
-> 
-> But at runtime we still need to know if the keyring parameter passed to 
-> the IMA hook function is configured to be measured.
-> 
-> void ima_post_key_create_or_update(struct key *keyring, struct key *key,
-> 				   unsigned long flags, bool create);
-> {
->     => Get the keyring number for the given "keyring".
+> Also, what is wrong just taking one value from krng and mixing
+> it with a value from TPM RNG where needed? That would be non-racy
+> too.
 
-There is no "getting" involved here.  Pass "keyring" to
-process_buffer_measurement and on to ima_get_action().
+I guess we can move forward with this?
 
->     => Check if the keyring number is in the configured IMA policy.
-
-ima_get_action() should do a simple compare of the valued stored in
-the IMA policy with the value returned by key_serial().
-
-Mimi
-
->     => If yes, measure the key.
->     => Else, do nothing.
-> }
-
-> Did I misunderstand what you had stated?
-
+/Jarkko
