@@ -2,73 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D74DE8465
-	for <lists+keyrings@lfdr.de>; Tue, 29 Oct 2019 10:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A15E8A8E
+	for <lists+keyrings@lfdr.de>; Tue, 29 Oct 2019 15:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732625AbfJ2J0V (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 29 Oct 2019 05:26:21 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5207 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732481AbfJ2J0V (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:26:21 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id DF5AD3D3843357D1C3CE;
-        Tue, 29 Oct 2019 17:26:17 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Tue, 29 Oct 2019
- 17:26:07 +0800
-From:   zhengbin <zhengbin13@huawei.com>
-To:     <dhowells@redhat.com>, <jmorris@namei.org>, <serge@hallyn.com>,
-        <sumit.garg@linaro.org>, <jarkko.sakkinen@linux.intel.com>,
-        <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>
-CC:     <yi.zhang@huawei.com>, <zhengbin13@huawei.com>
-Subject: [PATCH] KEYS: trusted: Remove set but not used variable 'keyhndl'
-Date:   Tue, 29 Oct 2019 17:33:32 +0800
-Message-ID: <1572341612-31893-1-git-send-email-zhengbin13@huawei.com>
-X-Mailer: git-send-email 2.7.4
+        id S2388595AbfJ2OQn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 29 Oct 2019 10:16:43 -0400
+Received: from mga18.intel.com ([134.134.136.126]:40433 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727255AbfJ2OQn (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 29 Oct 2019 10:16:43 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Oct 2019 07:16:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,244,1569308400"; 
+   d="scan'208";a="189956252"
+Received: from jkenneal-mobl.ger.corp.intel.com (HELO localhost) ([10.252.31.252])
+  by orsmga007.jf.intel.com with ESMTP; 29 Oct 2019 07:16:38 -0700
+Date:   Tue, 29 Oct 2019 16:16:37 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     zhengbin <zhengbin13@huawei.com>
+Cc:     dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com,
+        sumit.garg@linaro.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, yi.zhang@huawei.com
+Subject: Re: [PATCH] KEYS: trusted: Remove set but not used variable 'keyhndl'
+Message-ID: <20191029141637.GA7415@linux.intel.com>
+References: <1572341612-31893-1-git-send-email-zhengbin13@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1572341612-31893-1-git-send-email-zhengbin13@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+On Tue, Oct 29, 2019 at 05:33:32PM +0800, zhengbin wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> security/keys/trusted-keys/trusted_tpm1.c: In function tpm_unseal:
+> security/keys/trusted-keys/trusted_tpm1.c:588:11: warning: variable keyhndl set but not used [-Wunused-but-set-variable]
+> 
+> It is introduced by commit 00aa975bd031 ("KEYS: trusted:
+> Create trusted keys subsystem"), but never used, so remove it.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: zhengbin <zhengbin13@huawei.com>
 
-security/keys/trusted-keys/trusted_tpm1.c: In function tpm_unseal:
-security/keys/trusted-keys/trusted_tpm1.c:588:11: warning: variable keyhndl set but not used [-Wunused-but-set-variable]
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-It is introduced by commit 00aa975bd031 ("KEYS: trusted:
-Create trusted keys subsystem"), but never used, so remove it.
+I'll pick this to my tree.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: zhengbin <zhengbin13@huawei.com>
----
- security/keys/trusted-keys/trusted_tpm1.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-index eb5074e..d2c5ec1 100644
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -585,7 +585,6 @@ static int tpm_unseal(struct tpm_buf *tb,
- 	uint32_t authhandle2 = 0;
- 	unsigned char cont = 0;
- 	uint32_t ordinal;
--	uint32_t keyhndl;
- 	int ret;
-
- 	/* sessions for unsealing key and data */
-@@ -601,7 +600,6 @@ static int tpm_unseal(struct tpm_buf *tb,
- 	}
-
- 	ordinal = htonl(TPM_ORD_UNSEAL);
--	keyhndl = htonl(SRKHANDLE);
- 	ret = tpm_get_random(chip, nonceodd, TPM_NONCE_SIZE);
- 	if (ret != TPM_NONCE_SIZE) {
- 		pr_info("trusted_key: tpm_get_random failed (%d)\n", ret);
---
-2.7.4
-
+/Jarkko
