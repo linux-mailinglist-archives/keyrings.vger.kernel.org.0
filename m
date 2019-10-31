@@ -2,73 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9181AEB117
-	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 14:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A25CEB1C1
+	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 14:59:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbfJaNXb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 31 Oct 2019 09:23:31 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:44057 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726540AbfJaNXb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Oct 2019 09:23:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572528210;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KJ7gYMHvWXYw7fYwssB5R3OTomWplPdTWh4BX/jCpLk=;
-        b=Vpb/XHZXmJfrZUnn2uD2afuDJ2Tl0YiiUMnn1X3i9PkZgcqL0MpYw8QC6M1JFZm3/QPTEq
-        Sd6bhNjtceC9iZmc9P6encabyrq1uukZpE3BFNhCKjUvQcCLPxbWT7as7qBNU9r3BhkQaE
-        iS3ZjI5K+TzBTqMQ70cfxDNjCbBHrPg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-89-8FW2e_wDPwq12lJOShwDiA-1; Thu, 31 Oct 2019 09:23:26 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CC9521005500;
-        Thu, 31 Oct 2019 13:23:25 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 018A0600CD;
-        Thu, 31 Oct 2019 13:23:24 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20191029143451.327761-1-mail@maciej.szmigiero.name>
-References: <20191029143451.327761-1-mail@maciej.szmigiero.name>
-To:     "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org
-Subject: Re: [PATCH] keyctl: try to wipe keys from memory after use
-MIME-Version: 1.0
-Content-ID: <23323.1572528204.1@warthog.procyon.org.uk>
-Date:   Thu, 31 Oct 2019 13:23:24 +0000
-Message-ID: <23324.1572528204@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: 8FW2e_wDPwq12lJOShwDiA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+        id S1727778AbfJaN7c (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 31 Oct 2019 09:59:32 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:44627 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727770AbfJaN7c (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Oct 2019 09:59:32 -0400
+Received: by mail-pf1-f195.google.com with SMTP id q26so4420243pfn.11
+        for <keyrings@vger.kernel.org>; Thu, 31 Oct 2019 06:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=FInjRudIZ1nBXyYRthwNUoyrlLqGhK39QJ4i7rNkC2w=;
+        b=q5NzzfdyvqU9FJ8L/8YVWhVw3zm/TD9+GmoDJBcQbO9fthEhMN0aA0zr1Jrn1Pe7Xv
+         3yxVpV1aCIy2BlbrmcRSI52doE+NBDvyhqGBcl545OAR+xdAP/8XKGa9aYsXyxpC6c4r
+         u/dLASdI5rFuj8KWg0Vg1ucxIfzi2SA6p0SEDwT5MaAY46LtvSjOArYaKC/ICMwgAn7L
+         5yuRCDkCXiEplKpIc1i196ovUMs+7c/jfyoF8FuXwJS2nhJb0Wx7IK586+yvbVU7V+hM
+         Z6T46N/XjF+k5fnSVRUiPTy/WMYlR9bd07WIAjbDF892AolQA4/q3VfGdCWxQIZ0w7m6
+         3cgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=FInjRudIZ1nBXyYRthwNUoyrlLqGhK39QJ4i7rNkC2w=;
+        b=jlX2YpJ4pxFe/HixaHUG7gkOUgBjW5azAkeO1EnsC5uJMdKVeRLGNGC4l77vu//8WF
+         zpCsUlRn3grn9Zsfqq1rzBO6gyzbynu/OEGBbv139NlPI/hHWXPlqRYoYvY7IX0JlqJE
+         Yn1qOjyYfm73ID5KSMJIiMWOh991E9TtlIXjbShqxryguaC9iLLmrpkEdzrtr9VhwCs6
+         /u82qsuNDFo5VMhAUYCasFl2M7MepgVGLAykOfPzpAbQhgFWNkrIXfnlMxYIq4E+F/Z1
+         HoSVdQX90t5NKQgjHpdlg8s1aswVgkiKfuvQQAFz2EcyJvVwrNDWlCttAyQppEU1uKZ0
+         Qwrw==
+X-Gm-Message-State: APjAAAXbgN710pfxTo2ywgZ0MV3srOBIx1AJSLTwqMwcUO7VqHZZWilq
+        4HnLNjqNv6WtYNrqcCDDSBLlBg==
+X-Google-Smtp-Source: APXvYqzSpyD3GqbjVXKqKIxqLX3kf+eG/s3lqHhViq0jkE0RgoF86gbfk8pNgZ03UDv+V7aDn7oogg==
+X-Received: by 2002:aa7:8817:: with SMTP id c23mr7024726pfo.162.1572530371532;
+        Thu, 31 Oct 2019 06:59:31 -0700 (PDT)
+Received: from localhost.localdomain ([117.252.69.143])
+        by smtp.gmail.com with ESMTPSA id i16sm3522441pfa.184.2019.10.31.06.59.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 31 Oct 2019 06:59:30 -0700 (PDT)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     jens.wiklander@linaro.org, jarkko.sakkinen@linux.intel.com,
+        dhowells@redhat.com
+Cc:     corbet@lwn.net, jejb@linux.ibm.com, zohar@linux.ibm.com,
+        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
+        ard.biesheuvel@linaro.org, daniel.thompson@linaro.org,
+        stuart.yoder@arm.com, janne.karhunen@gmail.com,
+        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        tee-dev@lists.linaro.org, Sumit Garg <sumit.garg@linaro.org>
+Subject: [Patch v3 0/7] Introduce TEE based Trusted Keys support
+Date:   Thu, 31 Oct 2019 19:28:36 +0530
+Message-Id: <1572530323-14802-1-git-send-email-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Maciej S. Szmigiero <mail@maciej.szmigiero.name> wrote:
+Add support for TEE based trusted keys where TEE provides the functionality
+to seal and unseal trusted keys using hardware unique key. Also, this is
+an alternative in case platform doesn't possess a TPM device.
 
-> The key being added or updated likely contains secrets so it would be bes=
-t
-> not to leave it in memory or in a core dump when no longer needed.
->=20
-> Glibc 2.25+ provides the explicit_bzero() function that can be used for
-> this purpose, let's utilize it if it is present.
->=20
-> Tested by redefining exit(n) to abort() and inspecting the resulting core
-> file for key data.
->=20
-> Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+This series also adds some TEE features like:
 
-Applied.
+Patch #1, #2 enables support for registered kernel shared memory with TEE.
+
+Patch #3 enables support for private kernel login method required for
+cases like trusted keys where we don't wan't user-space to directly access
+TEE service to retrieve trusted key contents.
+
+Rest of the patches from #4 to #7 adds support for TEE based trusted keys.
+
+This patch-set has been tested with OP-TEE based pseudo TA which can be
+found here [1].
+
+[1] https://github.com/OP-TEE/optee_os/pull/3082
+
+Changes in v3:
+1. Update patch #2 to support registration of multiple kernel pages.
+2. Incoporate dependency patch #4 in this patch-set:
+   https://patchwork.kernel.org/patch/11091435/
+3. Rebased to latest tpmdd-master.
+
+Changes in v2:
+1. Add reviewed-by tags for patch #1 and #2.
+2. Incorporate comments from Jens for patch #3.
+3. Switch to use generic trusted keys framework.
+
+Sumit Garg (7):
+  tee: optee: allow kernel pages to register as shm
+  tee: enable support to register kernel memory
+  tee: add private login method for kernel clients
+  KEYS: trusted: Add generic trusted keys framework
+  KEYS: trusted: Introduce TEE based Trusted Keys
+  doc: keys: Document usage of TEE based Trusted Keys
+  MAINTAINERS: Add entry for TEE based Trusted Keys
+
+ Documentation/security/keys/index.rst       |   1 +
+ Documentation/security/keys/tee-trusted.rst |  93 ++++++++
+ MAINTAINERS                                 |   9 +
+ drivers/tee/optee/call.c                    |   7 +
+ drivers/tee/tee_core.c                      |   6 +
+ drivers/tee/tee_shm.c                       |  26 ++-
+ include/keys/trusted-type.h                 |  48 ++++
+ include/keys/trusted_tee.h                  |  66 ++++++
+ include/keys/trusted_tpm.h                  |  15 --
+ include/linux/tee_drv.h                     |   1 +
+ include/uapi/linux/tee.h                    |   8 +
+ security/keys/Kconfig                       |   3 +
+ security/keys/trusted-keys/Makefile         |   2 +
+ security/keys/trusted-keys/trusted_common.c | 346 ++++++++++++++++++++++++++++
+ security/keys/trusted-keys/trusted_tee.c    | 282 +++++++++++++++++++++++
+ security/keys/trusted-keys/trusted_tpm1.c   | 345 +++++----------------------
+ 16 files changed, 954 insertions(+), 304 deletions(-)
+ create mode 100644 Documentation/security/keys/tee-trusted.rst
+ create mode 100644 include/keys/trusted_tee.h
+ create mode 100644 security/keys/trusted-keys/trusted_common.c
+ create mode 100644 security/keys/trusted-keys/trusted_tee.c
+
+-- 
+2.7.4
 
