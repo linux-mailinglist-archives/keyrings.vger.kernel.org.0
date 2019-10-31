@@ -2,70 +2,89 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA55CEB423
-	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 16:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E98F4EB456
+	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 16:57:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728425AbfJaPmw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 31 Oct 2019 11:42:52 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:55280 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726735AbfJaPmw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Oct 2019 11:42:52 -0400
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id B3DC020B7192;
-        Thu, 31 Oct 2019 08:42:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B3DC020B7192
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1572536571;
-        bh=VEMRMLTSgqwtGYH1CLoFnXVfEwXi5+fo0FYWAu1w7Go=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=G2hhH/AW1SH0XWVF66twEG0I+7/S1MLgrbzWgHOt8e1t1b3nCBUej8k9gqk9zS3Vg
-         E1yjfNTAspzVJF3iDIaQPJGM0OeZPp7jqrO8/3Z5p/x6/1z2cJtGOetUuYXADAYhCV
-         b3KLUodKNyJfdMrxz7NHebkEWUhWZHyE0BCtRQeo=
-Subject: Re: [PATCH v3 1/9] KEYS: Defined an IMA hook to measure keys on key
- create or update
-To:     Mimi Zohar <zohar@linux.ibm.com>, Sasha Levin <sashal@kernel.org>
-Cc:     dhowells@redhat.com, matthewgarrett@google.com,
-        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        prsriva@linux.microsoft.com
-References: <20191031011910.2574-1-nramas@linux.microsoft.com>
- <20191031011910.2574-2-nramas@linux.microsoft.com>
- <1572523831.5028.43.camel@linux.ibm.com>
- <b83bd7ef-ce7f-e750-e30b-30d5a6469a28@linux.microsoft.com>
- <20191031152730.GQ1554@sasha-vm> <1572536253.5028.50.camel@linux.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <a629707a-40d2-e3dd-fdf4-af2f84f47796@linux.microsoft.com>
-Date:   Thu, 31 Oct 2019 08:42:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727580AbfJaP5j (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 31 Oct 2019 11:57:39 -0400
+Received: from mail-il1-f193.google.com ([209.85.166.193]:39213 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727593AbfJaP5j (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Oct 2019 11:57:39 -0400
+Received: by mail-il1-f193.google.com with SMTP id f201so181615ilh.6;
+        Thu, 31 Oct 2019 08:57:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5fMqgxCz9YeELky5sdMvqRGe8oe8TryFm0ddjx2jFJ8=;
+        b=r2LAcakqEaUTEWVB42o7netz4E9VSlpCiF1h3M4FyqmZMW8hARpE28IicCl+YOx7cK
+         wIYdFj49qzwuextspvTS4pX+SXfjLIQH5ePcrW24wrFI2FLPYPUJWlXcZK5vfQUYH0vM
+         LDVsW0NrfZXiJiuQa2lgvWH+vqp5PLuOBFuN8dfnoxXb2ChS8BlOoPnJ44oH3vCkeE9r
+         e7EaZZse7IDcGaylRdktf7O2XJMiLmms8LvvHOLxS4oGNFpEZb+kY2i5x5SAxqU2Otni
+         sHQPudwD1eG2lPICtrGXqx1E0CmeCqZbtDV3Yd397iWEVLyCsSkk9zsjZIBQpoEfEhlU
+         fUHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5fMqgxCz9YeELky5sdMvqRGe8oe8TryFm0ddjx2jFJ8=;
+        b=tYJhUQYiPRhWk8CfaGeWA3C5WNuKjTxAuxGp2qT3xpch3eF6+rCKblZviMmMWG1iBk
+         MuvxK3faCpJ+QfaXjW2FAXDz0gM8ueRVGujVMMsDwK8P0YlYKKfJM9gMWQSvbQo35JSn
+         iQh1u8a6juw9opcB5NN642tlHdM4NQpp21QkLETaDaSVIWIQgzTjabJI965EmV/D/v6H
+         CLHZEs5WFxB4VWd5LuysjnqTibuHL6NGLoxRgM8TQL4W1eAQlHjg4NsjQOfUG/GSnzJA
+         64PBJLCNUUWW/wJqprnV5m65hZtmb6f/EwzZPiR0rqHvEIHtSDyfSgJOjgzY+V75jWzJ
+         Vbwg==
+X-Gm-Message-State: APjAAAUpnn9DIRCzU8vhxC8K2Fk8DXI1JWSCdQ9TAPn8hxEm07AYse8d
+        nHy42b5LFHhwGJ7JNi+yMjRocNiCMQS6AVz6iHA=
+X-Google-Smtp-Source: APXvYqxDzIvxdrtfoc1J6pHr6V7TIkjAtYww+JMfs2+Z9EUun1ZsfTWDhGu6aMUtGhRbc9znef8AcsrZINaCIzSjCbQ=
+X-Received: by 2002:a92:b656:: with SMTP id s83mr6910636ili.282.1572537457279;
+ Thu, 31 Oct 2019 08:57:37 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1572536253.5028.50.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+ <157186186167.3995.7568100174393739543.stgit@warthog.procyon.org.uk>
+ <CAOi1vP97DMX8zweOLfBDOFstrjC78=6RgxK3PPj_mehCOSeoaw@mail.gmail.com>
+ <4892d186-8eb0-a282-e7e6-e79958431a54@rasmusvillemoes.dk> <16620.1572534687@warthog.procyon.org.uk>
+In-Reply-To: <16620.1572534687@warthog.procyon.org.uk>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Thu, 31 Oct 2019 16:57:53 +0100
+Message-ID: <CAOi1vP9GAmy5NXJisrDssspoRcc+UHum+cyBsJTMNTjz_jieoQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 04/10] pipe: Use head and tail pointers for the ring,
+ not cursor and length [ver #2]
+To:     David Howells <dhowells@redhat.com>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        nicolas.dichtel@6wind.com, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 10/31/19 8:37 AM, Mimi Zohar wrote:
+On Thu, Oct 31, 2019 at 4:11 PM David Howells <dhowells@redhat.com> wrote:
+>
+> How about:
+>
+>  * We use head and tail indices that aren't masked off, except at the
+>  * point of dereference, but rather they're allowed to wrap naturally.
+>  * This means there isn't a dead spot in the buffer, provided the ring
+>  * size is a power of two and <= 2^31.
 
->> I couldn't even apply this patch: Nayna's series (v10) doesn't apply  >> top of 5.3 to begin with, and while it does apply on mainline, 
-this>> first patch wouldn't apply on top.
-> Lakshmi, development is always on top of mainline.  In this case,
->   please use 5.4.0-rc3 and apply Nayna's v10 patch set.
-> 
-> Mimi
+To me "provided" reads like this thing works without a dead spot or
+with a dead spot, depending on whether the condition is met.  I would
+say:
 
+>  * This means there isn't a dead spot in the buffer, but the ring
+>  * size has to be a power of two and <= 2^31.
 
-Thanks for the info Mimi.
+Thanks,
 
-I initially started with v5.4, but the kernel I built wouldn't boot on 
-my machine :(
-
-I'll update to the latest v5.4 changes and try again.
-
-thanks,
-  -lakshmi
+                Ilya
