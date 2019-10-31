@@ -2,84 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD201EB3CA
-	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 16:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43529EB3DF
+	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 16:27:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728309AbfJaPVd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 31 Oct 2019 11:21:33 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:22165 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728286AbfJaPVc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Oct 2019 11:21:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572535292;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KB0w+J47Vm67r8tjhUMxa0RlzCeaXYS337IcG/e9RSQ=;
-        b=LQi9iZHkEOU+3+yN5mVUrBp9KbLSzqkUr6k6izHp0VXVLSQt4Kh0vq004FTzMDgU329RWW
-        0n4l1JXloysRQbFpdNuEjLyvIFPks/IZcLfWF9GTpJJXYi7CsW51pn0vahgHePsq7iEf8R
-        kZazmhGVlUbGwO0daf7lEAxIpptAcMM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-397-MUMIyamRN_mM4zAREXjqFg-1; Thu, 31 Oct 2019 11:21:28 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727758AbfJaP1e (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 31 Oct 2019 11:27:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47914 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726664AbfJaP1e (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 31 Oct 2019 11:27:34 -0400
+Received: from localhost (unknown [91.217.168.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 976B3107ACC0;
-        Thu, 31 Oct 2019 15:21:26 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9F00F60BEC;
-        Thu, 31 Oct 2019 15:21:23 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <fe167a90-1503-7ca2-4150-eeffd5cb1378@yandex-team.ru>
-References: <fe167a90-1503-7ca2-4150-eeffd5cb1378@yandex-team.ru> <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk> <157186189069.3995.10292601951655075484.stgit@warthog.procyon.org.uk>
-To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 07/10] pipe: Conditionalise wakeup in pipe_read() [ver #2]
+        by mail.kernel.org (Postfix) with ESMTPSA id 9DC7620873;
+        Thu, 31 Oct 2019 15:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572535653;
+        bh=+yVZ1MjIGAdWwgwwfL8MAh8Z053rKZd9qegV46RGdoM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fAHP+83SfGYxiTmv7PduCRvKVUCHWGYmqh5FQAzyAv4HTcZASqjRHoGCFIU23INqG
+         uZi0J4/VSFeOL63l83GmPejEx2UVwEfaEmISV3bKXx6FKwLp9CbBtlX1OAa2CFTIs2
+         llGGloPfo1CWC2oBqX/PRTrBbJtN/zXSVI+T7Ivo=
+Date:   Thu, 31 Oct 2019 11:27:30 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
+        matthewgarrett@google.com, jamorris@linux.microsoft.com,
+        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        prsriva@linux.microsoft.com
+Subject: Re: [PATCH v3 1/9] KEYS: Defined an IMA hook to measure keys on key
+ create or update
+Message-ID: <20191031152730.GQ1554@sasha-vm>
+References: <20191031011910.2574-1-nramas@linux.microsoft.com>
+ <20191031011910.2574-2-nramas@linux.microsoft.com>
+ <1572523831.5028.43.camel@linux.ibm.com>
+ <b83bd7ef-ce7f-e750-e30b-30d5a6469a28@linux.microsoft.com>
 MIME-Version: 1.0
-Content-ID: <18021.1572535282.1@warthog.procyon.org.uk>
-Date:   Thu, 31 Oct 2019 15:21:22 +0000
-Message-ID: <18022.1572535282@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-MC-Unique: MUMIyamRN_mM4zAREXjqFg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b83bd7ef-ce7f-e750-e30b-30d5a6469a28@linux.microsoft.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Konstantin Khlebnikov <khlebnikov@yandex-team.ru> wrote:
+On Thu, Oct 31, 2019 at 08:08:48AM -0700, Lakshmi Ramasubramanian wrote:
+>On 10/31/19 5:10 AM, Mimi Zohar wrote:
+>
+>>On Wed, 2019-10-30 at 18:19 -0700, Lakshmi Ramasubramanian wrote:
+>>>Asymmetric keys used for verifying file signatures or certificates
+>>>are currently not included in the IMA measurement list.
+>>>
+>>>This patch defines a new IMA hook namely ima_post_key_create_or_update()
+>>>to measure asymmetric keys.
+>>
+>>It's not enough for the kernel to be able to compile the kernel after
+>>applying all the patches in a patch set.  After applying each patch,
+>>the kernel should build properly, otherwise it is not bi-sect safe.
+>>  Refer to "3) Separate your changes" of
+>>"Documentation/process/submitting-patches.rst.
+>
+>I started with kernel version 5.3 for this patch set.
+>I applied Nayna's process_buffer_measurement() patch and then built my 
+>changes on top of that.
+>This patch has no other dependency as far as I know.
+>
+>Are you seeing a build break after applying this patch alone?
+>
+>(PATCH v3 1/9) KEYS: Defined an IMA hook to measure keys on key create 
+>or update
 
-> > Only do a wakeup in pipe_read() if we made space in a completely full
-> > buffer.  The producer shouldn't be waiting on pipe->wait otherwise.
->=20
-> We could go further and wakeup writer only when at least half of buffer i=
-s
-> empty.  This gives better batching and reduces rate of context switches.
->=20
-> https://lore.kernel.org/lkml/157219118016.7078.16223055699799396042.stgit=
-@buzz/T/#u
+I couldn't even apply this patch: Nayna's series (v10) doesn't apply on
+top of 5.3 to begin with, and while it does apply on mainline, this
+first patch wouldn't apply on top.
 
-Yeah, I saw that.  I suspect that where you put the slider may depend on th=
-e
-context.
-
-David
-
+-- 
+Thanks,
+Sasha
