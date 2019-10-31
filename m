@@ -2,131 +2,120 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9478EB4D4
-	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 17:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB0AEB8A8
+	for <lists+keyrings@lfdr.de>; Thu, 31 Oct 2019 22:03:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728625AbfJaQiV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 31 Oct 2019 12:38:21 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:43836 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728603AbfJaQiR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Oct 2019 12:38:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572539896;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mxgLr4gqIZKHqSVNNAtea7HdJZYdiBMzARcL7j6XY2g=;
-        b=h5BTChE289sI+KXEVqXtpz0KrFvty9/B+inTU5HmlAS/7MRHkHTM1/S7uTtWqo41iy43oN
-        BSfSDd9BB4n1yyDnundvocBfhrHZKFbsRH7GWx+m4XvvgL71C/OCPPJkP4j04KZMZZRc03
-        BZKTV+ZGDkniPkx5q5bigKXvTDpPUq0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-120-OBNcKO5IPbCsAav66unpNg-1; Thu, 31 Oct 2019 12:38:11 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D80461800D55;
-        Thu, 31 Oct 2019 16:38:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A573219C5B;
-        Thu, 31 Oct 2019 16:38:05 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <fe167a90-1503-7ca2-4150-eeffd5cb1378@yandex-team.ru>
-References: <fe167a90-1503-7ca2-4150-eeffd5cb1378@yandex-team.ru> <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk> <157186189069.3995.10292601951655075484.stgit@warthog.procyon.org.uk>
-To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 07/10] pipe: Conditionalise wakeup in pipe_read() [ver #2]
+        id S1728395AbfJaVDg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 31 Oct 2019 17:03:36 -0400
+Received: from mga02.intel.com ([134.134.136.20]:34915 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727742AbfJaVDg (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 31 Oct 2019 17:03:36 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Oct 2019 14:03:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,253,1569308400"; 
+   d="scan'208";a="194457177"
+Received: from epobrien-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.10.103])
+  by orsmga008.jf.intel.com with ESMTP; 31 Oct 2019 14:03:31 -0700
+Date:   Thu, 31 Oct 2019 23:03:30 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
+        Ken Goldman <kgold@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: asym_tpm: Switch to get_random_bytes()
+Message-ID: <20191031210330.GA10507@linux.intel.com>
+References: <20191014190033.GA15552@linux.intel.com>
+ <1571081397.3728.9.camel@HansenPartnership.com>
+ <20191016110031.GE10184@linux.intel.com>
+ <1571229252.3477.7.camel@HansenPartnership.com>
+ <20191016162543.GB6279@linux.intel.com>
+ <1571253029.17520.5.camel@HansenPartnership.com>
+ <20191017180440.GG6667@linux.intel.com>
+ <20191021113939.GA11649@linux.intel.com>
+ <20191029084258.GA5649@linux.intel.com>
+ <1572361096.4812.3.camel@HansenPartnership.com>
 MIME-Version: 1.0
-Content-ID: <3164.1572539884.1@warthog.procyon.org.uk>
-Date:   Thu, 31 Oct 2019 16:38:04 +0000
-Message-ID: <3165.1572539884@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: OBNcKO5IPbCsAav66unpNg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1572361096.4812.3.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Okay, attached is a change that might give you what you want.  I tried my
-pipe-bench program (see cover note) with perf.  The output of the program w=
-ith
-the patch applied was:
+On Tue, Oct 29, 2019 at 07:58:16AM -0700, James Bottomley wrote:
+> On Tue, 2019-10-29 at 10:42 +0200, Jarkko Sakkinen wrote:
+> > On Mon, Oct 21, 2019 at 02:39:39PM +0300, Jarkko Sakkinen wrote:
+> > > On Thu, Oct 17, 2019 at 09:04:40PM +0300, Jarkko Sakkinen wrote:
+> > > > On Wed, Oct 16, 2019 at 03:10:29PM -0400, James Bottomley wrote:
+> > > > > On Wed, 2019-10-16 at 19:25 +0300, Jarkko Sakkinen wrote:
+> > > > > > On Wed, Oct 16, 2019 at 08:34:12AM -0400, James Bottomley
+> > > > > > wrote:
+> > > > > > > reversible ciphers are generally frowned upon in random
+> > > > > > > number
+> > > > > > > generation, that's why the krng uses chacha20.  In general
+> > > > > > > I think
+> > > > > > > we shouldn't try to code our own mixing and instead should
+> > > > > > > get the
+> > > > > > > krng to do it for us using whatever the algorithm du jour
+> > > > > > > that the
+> > > > > > > crypto guys have blessed is.  That's why I proposed adding
+> > > > > > > the TPM
+> > > > > > > output to the krng as entropy input and then taking the
+> > > > > > > output of
+> > > > > > > the krng.
+> > > > > > 
+> > > > > > It is already registered as hwrng. What else?
+> > > > > 
+> > > > > It only contributes entropy once at start of OS.
+> > > > 
+> > > > Ok.
+> > > > 
+> > > > > >  Was the issue that it is only used as seed when the rng is
+> > > > > > init'd
+> > > > > > first? I haven't at this point gone to the internals of krng.
+> > > > > 
+> > > > > Basically it was similar to your xor patch except I got the
+> > > > > kernel rng
+> > > > > to do the mixing, so it would use the chacha20 cipher at the
+> > > > > moment
+> > > > > until they decide that's unsafe and change it to something
+> > > > > else:
+> > > > > 
+> > > > > https://lore.kernel.org/linux-crypto/1570227068.17537.4.camel@H
+> > > > > ansenPartnership.com/
+> > > > > 
+> > > > > It uses add_hwgenerator_randomness() to do the mixing.  It also
+> > > > > has an
+> > > > > unmixed source so that read of the TPM hwrng device works as
+> > > > > expected.
+> > > > 
+> > > > Thinking that could this potentially racy? I.e. between the calls
+> > > > something else could eat the entropy added?
+> > > 
+> > > Also, what is wrong just taking one value from krng and mixing
+> > > it with a value from TPM RNG where needed? That would be non-racy
+> > > too.
+> > 
+> > I guess we can move forward with this?
+> 
+> Sure I suppose; can we can figure out how to get the mixing function du
+> jour exposed?
 
--       pipe                  305127298     36262221772       302185181    =
-     7887690
+Maybe it is best to reflect the whole issue in the context of the
+Sumit's 2nd patch set, which adds ARM TEE support in order to move
+forward.
 
-The output of perf with the patch applied:
-
-        239,943.92 msec task-clock                #    1.997 CPUs utilized
-            17,728      context-switches          #   73.884 M/sec
-               124      cpu-migrations            #    0.517 M/sec
-             9,330      page-faults               #   38.884 M/sec
-   885,107,207,365      cycles                    # 3688822.793 GHz
- 1,386,873,499,490      instructions              #    1.57  insn per cycle
-   311,037,372,339      branches                  # 1296296921.931 M/sec
-        33,467,827      branch-misses             #    0.01% of all branche=
-s
-
-And without:
-
-        239,891.87 msec task-clock                #    1.997 CPUs utilized
-            22,187      context-switches          #   92.488 M/sec
-               133      cpu-migrations            #    0.554 M/sec
-             9,334      page-faults               #   38.909 M/sec
-   884,906,976,128      cycles                    # 3688787.725 GHz
- 1,391,986,932,265      instructions              #    1.57  insn per cycle
-   311,394,686,857      branches                  # 1298067400.849 M/sec
-        30,242,823      branch-misses             #    0.01% of all branche=
-s
-
-So it did make something like a 20% reduction in context switches.
-
-David
----
-diff --git a/fs/pipe.c b/fs/pipe.c
-index e3d5f7a39123..5167921edd73 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -276,7 +276,7 @@ pipe_read(struct kiocb *iocb, struct iov_iter *to)
- =09size_t total_len =3D iov_iter_count(to);
- =09struct file *filp =3D iocb->ki_filp;
- =09struct pipe_inode_info *pipe =3D filp->private_data;
--=09int do_wakeup;
-+=09int do_wakeup, wake;
- =09ssize_t ret;
-
- =09/* Null read succeeds. */
-@@ -329,11 +329,12 @@ pipe_read(struct kiocb *iocb, struct iov_iter *to)
- =09=09=09=09tail++;
- =09=09=09=09pipe->tail =3D tail;
- =09=09=09=09do_wakeup =3D 1;
--=09=09=09=09if (head - (tail - 1) =3D=3D pipe->max_usage)
-+=09=09=09=09wake =3D head - (tail - 1) =3D=3D pipe->max_usage / 2;
-+=09=09=09=09if (wake)
- =09=09=09=09=09wake_up_interruptible_sync_poll_locked(
- =09=09=09=09=09=09&pipe->wait, EPOLLOUT | EPOLLWRNORM);
- =09=09=09=09spin_unlock_irq(&pipe->wait.lock);
--=09=09=09=09if (head - (tail - 1) =3D=3D pipe->max_usage)
-+=09=09=09=09if (wake)
- =09=09=09=09=09kill_fasync(&pipe->fasync_writers, SIGIO, POLL_OUT);
- =09=09=09}
- =09=09=09total_len -=3D chars;
-
+/Jarkko
