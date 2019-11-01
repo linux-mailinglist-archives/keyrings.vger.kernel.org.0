@@ -2,108 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C887FEC7F1
-	for <lists+keyrings@lfdr.de>; Fri,  1 Nov 2019 18:36:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DABD3EC907
+	for <lists+keyrings@lfdr.de>; Fri,  1 Nov 2019 20:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729927AbfKARfw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Nov 2019 13:35:52 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:31975 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729937AbfKARfw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Nov 2019 13:35:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572629750;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Vi11bsC86DIjvR3JukBeRWivqFrcNqVuRmOTzZJ3x6E=;
-        b=ATN+ZACaQxhHrOMEJVgoBf/W41sr40yN4v97GH3Rg+f+WQpJQ3GBSyVpmV7SPsN2oGJUu1
-        rMQKwXsB2O5IZuD/AS71e84Pj5W4ULhJvHt0QRudHeJG55oDwnzAo9nU5LZs5MfnKE0YYY
-        V3/A2wvJnA3RpXYpr7yOyVXwgan8iGQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-280-jObNGFxmMiqYnw6I3pTN-A-1; Fri, 01 Nov 2019 13:35:46 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 03A9A800D49;
-        Fri,  1 Nov 2019 17:35:45 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3C6B45D6B7;
-        Fri,  1 Nov 2019 17:35:42 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-Subject: [RFC PATCH 11/11] pipe: Increase the writer-wakeup threshold to
- reduce context-switch count [ver #3]
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     dhowells@redhat.com, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        id S1727862AbfKATZQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Nov 2019 15:25:16 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:42030 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727835AbfKATZQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Nov 2019 15:25:16 -0400
+Received: by mail-lj1-f193.google.com with SMTP id n5so299077ljc.9
+        for <keyrings@vger.kernel.org>; Fri, 01 Nov 2019 12:25:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YYxjqcv/PYLPJKobOoHtNXOrj3psbjFOHnMYal58y3I=;
+        b=c+Gs+TI8cuAjd4kd2hWlKLPAsPgXseDnrsUcVlBiA4ySvAjVj2n7unbZVDl4mRhd8k
+         QGeff69FovwuouMkPqWploEvqGg2xz0OwyPfdogz9QpK6BaN9Ka9RJgzEVo5nEiWZyg/
+         /eJ1qfcbNdodLUDZDnlwBOGgeV6KiV/t48RJo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YYxjqcv/PYLPJKobOoHtNXOrj3psbjFOHnMYal58y3I=;
+        b=WL3wQMbQZBGlsadN6S2fU0B3ElmSjseHc0vnjE0Gt77tabHWH7lp3pryDToJ86R3QS
+         e7yreHeOsKsiKkTT+9E8VauCA1hE3B1kBvYBhCdm5xwun02bWRwF/FehW8k68rLTh/C2
+         fId25/s3bpc2kZOLhGOc1iAYyR8n13eDeepmMEyi4R5nnHrT6eZAe63WrwRfJTO5BVkA
+         AcyXWdLcmoNfMjM3Y0i3hnnfTrDHWxWq5/cuMfDnqJCMmcH97zfr0Vm/oCv0ip3w1nbZ
+         XxSKcx4HmwaTHhrs+EbJQfPmusWGuyTOIyjECU3k+Qb1qun7j4AKDS3iXvJEGf4C9LXZ
+         RZxA==
+X-Gm-Message-State: APjAAAWN0usoPO66DfBqTcEu8WFR4yh+hYWRJtSEs/zeEp9JJtfDgOna
+        lCqf6J3rEeyd27S8xNAwucg6MKKZjB4=
+X-Google-Smtp-Source: APXvYqxFmNIFUwfL5lc23/kAy6x15zCzJ5yVRTyToHrEY3WBxIQf9MxTqdiYuacOrS+Ymp/qjbJ7UA==
+X-Received: by 2002:a2e:58d:: with SMTP id 135mr8938599ljf.57.1572636312911;
+        Fri, 01 Nov 2019 12:25:12 -0700 (PDT)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id o196sm3400226lff.59.2019.11.01.12.25.11
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Nov 2019 12:25:11 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id v2so11325319lji.4
+        for <keyrings@vger.kernel.org>; Fri, 01 Nov 2019 12:25:11 -0700 (PDT)
+X-Received: by 2002:a05:651c:154:: with SMTP id c20mr9282919ljd.1.1572636310860;
+ Fri, 01 Nov 2019 12:25:10 -0700 (PDT)
+MIME-Version: 1.0
+References: <157262963995.13142.5568934007158044624.stgit@warthog.procyon.org.uk>
+In-Reply-To: <157262963995.13142.5568934007158044624.stgit@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 1 Nov 2019 12:24:54 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjqx4j2vqg-tAwthNP1gcAcj1x4B7sq6Npbi8QJTUMd-A@mail.gmail.com>
+Message-ID: <CAHk-=wjqx4j2vqg-tAwthNP1gcAcj1x4B7sq6Npbi8QJTUMd-A@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/11] pipe: Notification queue preparation [ver #3]
+To:     David Howells <dhowells@redhat.com>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>, dhowells@redhat.com,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
         keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 01 Nov 2019 17:35:41 +0000
-Message-ID: <157262974145.13142.5910403713310791673.stgit@warthog.procyon.org.uk>
-In-Reply-To: <157262963995.13142.5568934007158044624.stgit@warthog.procyon.org.uk>
-References: <157262963995.13142.5568934007158044624.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/unknown-version
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-MC-Unique: jObNGFxmMiqYnw6I3pTN-A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Increase the threshold at which the reader sends a wake event to the
-writers in the queue such that the queue must be half empty before the wake
-is issued rather than the wake being issued when just a single slot
-available.
+On Fri, Nov 1, 2019 at 10:34 AM David Howells <dhowells@redhat.com> wrote:
+>  (1) It removes the nr_exclusive argument from __wake_up_sync_key() as this
+>      is always 1.  This prepares for step 2.
+>
+>  (2) Adds wake_up_interruptible_sync_poll_locked() so that poll can be
+>      woken up from a function that's holding the poll waitqueue spinlock.
 
-This reduces the number of context switches in the tests significantly,
-without altering the amount of work achieved.  With my pipe-bench program,
-there's a 20% reduction versus an unpatched kernel.
+Side note: we have a couple of cases where I don't think we should use
+the "sync" version at all.
 
-Suggested-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Signed-off-by: David Howells <dhowells@redhat.com>
----
+Both pipe_read() and pipe_write() have that
 
- fs/pipe.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+        if (do_wakeup) {
+                wake_up_interruptible_sync_poll(&pipe->wait, ...
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index aba2455caabe..9cd5cbef9552 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -324,16 +324,18 @@ pipe_read(struct kiocb *iocb, struct iov_iter *to)
- =09=09=09}
-=20
- =09=09=09if (!buf->len) {
-+=09=09=09=09bool wake;
- =09=09=09=09pipe_buf_release(pipe, buf);
- =09=09=09=09spin_lock_irq(&pipe->wait.lock);
- =09=09=09=09tail++;
- =09=09=09=09pipe->tail =3D tail;
- =09=09=09=09do_wakeup =3D 1;
--=09=09=09=09if (head - (tail - 1) =3D=3D pipe->max_usage)
-+=09=09=09=09wake =3D head - (tail - 1) =3D=3D pipe->max_usage / 2;
-+=09=09=09=09if (wake)
- =09=09=09=09=09wake_up_interruptible_sync_poll_locked(
- =09=09=09=09=09=09&pipe->wait, EPOLLOUT | EPOLLWRNORM);
- =09=09=09=09spin_unlock_irq(&pipe->wait.lock);
--=09=09=09=09if (head - (tail - 1) =3D=3D pipe->max_usage)
-+=09=09=09=09if (wake)
- =09=09=09=09=09kill_fasync(&pipe->fasync_writers, SIGIO, POLL_OUT);
- =09=09=09}
- =09=09=09total_len -=3D chars;
+code at the end, outside the loop. But those two wake-ups aren't
+actually synchronous.
 
+A sync wake is supposedly something where the waker is just about to
+go to sleep, telling the scheduler that "don't bother trying to pick
+another cpu, this process is going to sleep and you can stay here".
+
+I'm not sure how much this matters, but it does strike me that it's
+wrong. We're not going to sleep at all in that case - this is not the
+"I filled the whole buffer, so I'm going to sleep" case (or the "I've
+read all the data, I'm waiting for more".
+
+It's entirely possible that we always wake pipe wakeups to be sync
+just because it's a common pattern (and a common benchmark), but this
+series made me look at it again. Particularly since David has
+benchmarks that don't seem to show a lot of fluctuation with his
+changes - I wonder how much the sync logic buys us (or hurts us)?
+
+               Linus
