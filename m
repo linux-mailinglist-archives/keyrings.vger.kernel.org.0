@@ -2,76 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB3E0EC51B
-	for <lists+keyrings@lfdr.de>; Fri,  1 Nov 2019 15:53:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDEDAEC5CF
+	for <lists+keyrings@lfdr.de>; Fri,  1 Nov 2019 16:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727749AbfKAOxe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Nov 2019 10:53:34 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:38853 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727493AbfKAOxd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Nov 2019 10:53:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572620012;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4MrbBDQoC+y5mHa+x24tjKMzrIZqDb3nq3UowOz4YuY=;
-        b=f1rigfPGvTB/H5OhVEpDcYnjXRTVvHpmdODmqZmpitWDVFrlTfMmbN/5TjtGlIR6AjZ2hA
-        skc5QuBqRyut7uUj0laj1LxPrGsM7Se4L/dOcL7zroerH5slpEVz434+jA5/wyEKtF0HuY
-        ns0fYH9VIbeKtnAMX0lwLDUcByGLYF0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-343-hHyjRC-_MMioG67u4CEa_w-1; Fri, 01 Nov 2019 10:53:28 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9BED01800D67;
-        Fri,  1 Nov 2019 14:53:26 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-121-40.rdu2.redhat.com [10.10.121.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6466F26DEA;
-        Fri,  1 Nov 2019 14:53:21 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAOi1vP9GAmy5NXJisrDssspoRcc+UHum+cyBsJTMNTjz_jieoQ@mail.gmail.com>
-References: <CAOi1vP9GAmy5NXJisrDssspoRcc+UHum+cyBsJTMNTjz_jieoQ@mail.gmail.com> <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk> <157186186167.3995.7568100174393739543.stgit@warthog.procyon.org.uk> <CAOi1vP97DMX8zweOLfBDOFstrjC78=6RgxK3PPj_mehCOSeoaw@mail.gmail.com> <4892d186-8eb0-a282-e7e6-e79958431a54@rasmusvillemoes.dk> <16620.1572534687@warthog.procyon.org.uk>
-To:     Ilya Dryomov <idryomov@gmail.com>
-Cc:     dhowells@redhat.com, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block <linux-block@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 04/10] pipe: Use head and tail pointers for the ring, not cursor and length [ver #2]
+        id S1728980AbfKAPqA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Nov 2019 11:46:00 -0400
+Received: from mail-il1-f193.google.com ([209.85.166.193]:40441 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726951AbfKAPqA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Nov 2019 11:46:00 -0400
+Received: by mail-il1-f193.google.com with SMTP id d83so9053320ilk.7
+        for <keyrings@vger.kernel.org>; Fri, 01 Nov 2019 08:45:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=jS5spAHkLQ6jXruZmR6Hfc0otf2ZvlnYa6I4swfa2tE=;
+        b=ip8hUDGYFNToPf0JY7UoMhaMkZjQrWLeOX+MzfaAYR/5UdYgdkzNuj+elT7IhUiwrW
+         vg68llvyNFWW0V7+FDdTXtT8gGRH6wwgSAQx/wW9sxbbqJM6ZKPDbuyEwbPuNai7n23S
+         p4wBoTDDX51lIW0wyi0CJHTHyYRjRcDoCdLFkjQAWtRcgFPvESJULvYCsIGQL8e4Z5Ch
+         XMeZVemnh9vk9kgSIZRectY0mgehpIkBY5QtqkxmYt1KrSVSsqURyFSSAMJkrPvU4pMk
+         uXK5SCOLbLnY+h1+KHpIELANHD8AtSOp0hvYLAcR0EvxWKk739Fm/wfE8PMzsZ1+5IRS
+         m7sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=jS5spAHkLQ6jXruZmR6Hfc0otf2ZvlnYa6I4swfa2tE=;
+        b=eBD21DKWjIkuVebBsCsay80TdX1oUNx7AS0MbDmHBUjWplBq2NU+tNW+TgVhK1uZqK
+         +JQljC2pOTdxGnIKuvYPPwH1VgGfGGKJ84HiOVy1eZB7BAnQOs9JQ/+hpVjwPrWTMUre
+         75tHlTn4vt7744l1fzgp96113TqvwTNTWvcZhU02BsL+u9hYieiJrDsgWpnvO6sCe8ON
+         LpDxDeiCqZhpubfID4E/riTsFwinyqgSHebwR5oa5ygqASsXxjWNWftkht+6zuSTq/WJ
+         XN4jYmq7P+DMHOtI9mjb9lHmgwsQt8ClSsb3sAuNxLT/aJU0hDlW8C9hxuWc1jaKkZJd
+         TeKQ==
+X-Gm-Message-State: APjAAAXbrRZtru1u0wtpyBflAX9ZRmx8oBzGKW1Cy/H53sj+/XtkFOIC
+        E1qslG+ojzQlwSKQPQ0XqKaVyAFQz0j3ezj36w==
+X-Google-Smtp-Source: APXvYqzmb+kqsWIQsk6AJPjd1Xdw4IxGP9KVFYjDzvesSiQwJul+QvWkXshctcxTVqvl0OT/J+Z+hjyBFxLIOOtPKKs=
+X-Received: by 2002:a92:5d49:: with SMTP id r70mr13391942ilb.257.1572623159576;
+ Fri, 01 Nov 2019 08:45:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-ID: <23657.1572620001.1@warthog.procyon.org.uk>
-Date:   Fri, 01 Nov 2019 14:53:21 +0000
-Message-ID: <23658.1572620001@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: hHyjRC-_MMioG67u4CEa_w-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:45:59 -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Mary Coster, I.M.F director-Benin" 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 1 Nov 2019 16:45:59 +0100
+Message-ID: <CABHzvrmwJ002eiEaiK=88=5hPqQ1TNUwHHMm-tiw4Q6JPGw_bg@mail.gmail.com>
+Subject: Contact Money Gram international service-Benin to receive your
+ payment funds US$2.500,000 Million
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Ilya Dryomov <idryomov@gmail.com> wrote:
-
-> >  * This means there isn't a dead spot in the buffer, but the ring
-> >  * size has to be a power of two and <=3D 2^31.
-
-I'll go with that, thanks.
-
-David
-
+Attn Dear.
+Contact Money Gram international service-Benin to receive your payment
+funds US$2.500,000 Million approved this morning through the UN
+payment settlement organization.
+Contact Person, Mr. John Dave.
+Official Director.Money Gram-Benin
+Email: moneygram.1820@outlook.fr
+Telephone +229 62619517
+Once you get intouch with Mr. John Dave, Money Gram Director, send to
+him your address including your phone numbers. He will be sending the
+transfer to you  $5000.00 USD daily until you received your complete
+payment $2.5m from the office.
+Note,I have paid the whole service fees for you but only small money
+you been required to send to this office is $23.00 only via Money Gram
+transfer.
+God bless
+Mary Coster, I.M.F director-Benin
+m.coster@aol.com
