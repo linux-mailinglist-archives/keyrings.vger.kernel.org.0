@@ -2,61 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9621ECB22
-	for <lists+keyrings@lfdr.de>; Fri,  1 Nov 2019 23:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B59AED049
+	for <lists+keyrings@lfdr.de>; Sat,  2 Nov 2019 19:54:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728091AbfKAWMt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Nov 2019 18:12:49 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:43856 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728090AbfKAWMo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Nov 2019 18:12:44 -0400
-Received: by mail-lj1-f193.google.com with SMTP id y23so768977ljh.10
-        for <keyrings@vger.kernel.org>; Fri, 01 Nov 2019 15:12:43 -0700 (PDT)
+        id S1726396AbfKBSx5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 2 Nov 2019 14:53:57 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:36911 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726523AbfKBSx5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 2 Nov 2019 14:53:57 -0400
+Received: by mail-lj1-f196.google.com with SMTP id v2so13475191lji.4
+        for <keyrings@vger.kernel.org>; Sat, 02 Nov 2019 11:53:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sgYt+P3xDWHpqkCDVDLjgLKgMrsRwGebg6HQkCjAc5w=;
-        b=O3mYYvlU9vmiWCuVM7D5zeynWjET9sBTNe2UP3ZA3GeXbBriHFMqoPk2kJgyTgcAeI
-         BstBtBLU16kkJaWSMcP9+57VaYHHgUIqojJCqULremk/l27m2Dlyko2Sd9hhC3Y74UKd
-         ZPG4og+yRVtEHOd/O+5D/qMCxYtxUKUSxHi24=
+        bh=UFZsrTxHj8UNSOV0MW3iX+ZNPh241BxYI9RJCfbRj4I=;
+        b=fwWi36Cjm33TVpJsMKyyeNJuPa+EzO/w2jcz8N5ivZnB2LBgFElTwve7u7JUY1CQlk
+         LBP3NYhj8mwMGDKFLZC3aAKJjtxEeb837zFLkONBVlInZ3n9BYz2CiSK5BYhQEqMplN+
+         cxbruKuD+a9IFTjckV4CYWfQYTCffHao0G3wg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sgYt+P3xDWHpqkCDVDLjgLKgMrsRwGebg6HQkCjAc5w=;
-        b=AyoytKUdO1pdA7otkVa2dQgPUIi7kSElW64adRCh1/Wqyfpx2iECgZ3wxCRYDG0PQ9
-         o8bc/8BgJn6hm3ioOKVgSxQdyyUclCLD7HWUkRBOihWaKmy548zczP0bOD4mdteh9h3P
-         kdx8gGoQ7nlTV1ZMYlt6PW3zTRVYQbyCP+cY9NE1AjV5Tyd0xBds8ZD7eP0EaBa+geDX
-         pYim5OBxqofKaqWzxjSQkSIXeU8T3jqepJR1DV/v6O7p/H+TwxNZx7i/1ljHNgo6wk36
-         HZq6K4uEZb/vLOQ91lyRL3w6I8mkMcxlpWNKALtdkQWBbyw6NWvI1553NEsoTWPmkf5L
-         cZnw==
-X-Gm-Message-State: APjAAAXUrR76KQd+ZUTwE4ZD2Jas2vyK64Js0mtrncPNXVx0aqh0V/Gn
-        qlrbAGCyLHjEkp394sSRIzF5HwgTp/k=
-X-Google-Smtp-Source: APXvYqzkbB3gcsV8iveHS4EipCloB0cGBZTb85NjNSiBmado4s/LvRNYrUSrk9+tUy66zH0E+sBMaQ==
-X-Received: by 2002:a2e:b4aa:: with SMTP id q10mr5431274ljm.250.1572646362653;
-        Fri, 01 Nov 2019 15:12:42 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id o18sm3667196ljj.27.2019.11.01.15.12.40
+        bh=UFZsrTxHj8UNSOV0MW3iX+ZNPh241BxYI9RJCfbRj4I=;
+        b=hHl1/8qNTj75YzujYAex2YSURgc4A6asmaBgsSL3+8uPefyENVGdFVcAvI1cNJr8/o
+         cywfDqmVNgG6WxJx3UBlfG9DuXovm26cJTxPhVJNHolHabmub3qhmYHXBKDerf2p6kFy
+         4OmrtVde/Szu7h8D24aOhJpSZYRl/kz7OA2Fit7wOftO8r1ImWRFRuiCjbuZxHc3WBCU
+         nzvlfUxJXrw5KZDHJ7F1kyhT2RpUlo8cBMOZlL9j1rCm1W45D4FWFk8H+S2oeigySzmz
+         fPipLS7R7yGlyzor+aNFT5bP7YYh+8PPak2LlcC57TpNpRpzqYJSpL42G0IYY9jFe9pk
+         hcPQ==
+X-Gm-Message-State: APjAAAX7pQU6vFs/H1UekvBpo54qs/ho+RDXMPUm1r47dMIepGeBsGEE
+        HihS4Mc1Z5ofC0EN+XZlYlHkyD61e3Y=
+X-Google-Smtp-Source: APXvYqyjf77jKOtpKSV/Tnc2GtKc2mmPF9fHRGYda7qrqdfvIAKT6UofVu8Swef1Lb6GkKJ6D0A3Aw==
+X-Received: by 2002:a2e:3505:: with SMTP id z5mr11958638ljz.126.1572720835071;
+        Sat, 02 Nov 2019 11:53:55 -0700 (PDT)
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com. [209.85.167.44])
+        by smtp.gmail.com with ESMTPSA id t25sm3798261ljj.93.2019.11.02.11.53.54
         for <keyrings@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Nov 2019 15:12:40 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id a6so4851791lfo.3
-        for <keyrings@vger.kernel.org>; Fri, 01 Nov 2019 15:12:40 -0700 (PDT)
-X-Received: by 2002:a19:6f0e:: with SMTP id k14mr8678681lfc.79.1572646359613;
- Fri, 01 Nov 2019 15:12:39 -0700 (PDT)
+        Sat, 02 Nov 2019 11:53:54 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id a6so6044838lfo.3
+        for <keyrings@vger.kernel.org>; Sat, 02 Nov 2019 11:53:54 -0700 (PDT)
+X-Received: by 2002:ac2:4c86:: with SMTP id d6mr11465241lfl.106.1572720834124;
+ Sat, 02 Nov 2019 11:53:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <157262963995.13142.5568934007158044624.stgit@warthog.procyon.org.uk>
- <CAHk-=wjqx4j2vqg-tAwthNP1gcAcj1x4B7sq6Npbi8QJTUMd-A@mail.gmail.com> <13964.1572645926@warthog.procyon.org.uk>
-In-Reply-To: <13964.1572645926@warthog.procyon.org.uk>
+References: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+ <30394.1571936252@warthog.procyon.org.uk> <c6e044cc-5596-90b7-4418-6ad7009d6d79@yandex-team.ru>
+ <17311.1572534953@warthog.procyon.org.uk>
+In-Reply-To: <17311.1572534953@warthog.procyon.org.uk>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 1 Nov 2019 15:12:23 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg_Fb-WdcD-cbJjwZaPCNK4WZ+Ak4KTSDhopD-_=+t=9Q@mail.gmail.com>
-Message-ID: <CAHk-=wg_Fb-WdcD-cbJjwZaPCNK4WZ+Ak4KTSDhopD-_=+t=9Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/11] pipe: Notification queue preparation [ver #3]
+Date:   Sat, 2 Nov 2019 11:53:38 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg_X_7JSYT-a3qHrzvuWGMyffDWtQ4n7adBp_fe5w0BsA@mail.gmail.com>
+Message-ID: <CAHk-=wg_X_7JSYT-a3qHrzvuWGMyffDWtQ4n7adBp_fe5w0BsA@mail.gmail.com>
+Subject: Re: [RFC PATCH 11/10] pipe: Add fsync() support [ver #2]
 To:     David Howells <dhowells@redhat.com>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+Cc:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
@@ -73,16 +75,28 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Nov 1, 2019 at 3:05 PM David Howells <dhowells@redhat.com> wrote:
+On Thu, Oct 31, 2019 at 8:16 AM David Howells <dhowells@redhat.com> wrote:
 >
-> Changing those to non-sync:
+> Konstantin Khlebnikov <khlebnikov@yandex-team.ru> wrote:
+>
+> > Similar synchronization is required for reusing memory after vmsplice()?
+> > I don't see other way how sender could safely change these pages.
+>
+> Sounds like a point - if you have multiple parallel contributors to the pipe
+> via vmsplice(), then FIONREAD is of no use.  To use use FIONREAD, you have to
+> let the pipe become empty before you can be sure.
 
-Your benchmark seems very insensitive to just about any changes.
+Well, the rules for vmsplice is simply to not change the source pages.
+It's zero-copy, after all.
 
-I suspect it is because you only test throughput. Latency is what the
-pipe wakeup has been optimized for, and which tends to be much more
-sensitive to other changes too (eg locking).
+If you want to change the source pages, you need to just use write() instead.
 
-That said, I'm not convinced a latency test would show much either.
+That said, even then the right model isn't fsync(). If you really want
+to have something like "notify me when this buffer has been used", it
+should be some kind of sequence count thing, not a "wait for empty".
 
-               Linus
+Which might be useful in theory, but would be something quite
+different (and honestly, I wouldn't expect it to find all that
+widespread use)
+
+             Linus
