@@ -2,119 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2981CED102
-	for <lists+keyrings@lfdr.de>; Sun,  3 Nov 2019 00:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 129E9ED2FB
+	for <lists+keyrings@lfdr.de>; Sun,  3 Nov 2019 12:04:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727343AbfKBXPA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 2 Nov 2019 19:15:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42888 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727335AbfKBXPA (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 2 Nov 2019 19:15:00 -0400
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+        id S1727377AbfKCLEa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 3 Nov 2019 06:04:30 -0500
+Received: from forwardcorp1j.mail.yandex.net ([5.45.199.163]:43248 "EHLO
+        forwardcorp1j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726676AbfKCLEa (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Nov 2019 06:04:30 -0500
+Received: from mxbackcorp2j.mail.yandex.net (mxbackcorp2j.mail.yandex.net [IPv6:2a02:6b8:0:1619::119])
+        by forwardcorp1j.mail.yandex.net (Yandex) with ESMTP id 509B82E0DF6;
+        Sun,  3 Nov 2019 14:04:25 +0300 (MSK)
+Received: from myt5-6212ef07a9ec.qloud-c.yandex.net (myt5-6212ef07a9ec.qloud-c.yandex.net [2a02:6b8:c12:3b2d:0:640:6212:ef07])
+        by mxbackcorp2j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id f9gFDOcFPJ-4N0eZTBT;
+        Sun, 03 Nov 2019 14:04:25 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
+        t=1572779065; bh=2i2bVk2+UygXToc0zDVE6qE+jkcPQQ3hzQ1MvPverB8=;
+        h=In-Reply-To:Message-ID:From:Date:References:To:Subject:Cc;
+        b=i4LML2QZoCkt8DIBPABI/dlrD58SLUjwEJijFK24r3LACkqTtKfBH7LZY2SaVNkkg
+         6PdYzDsGPJpni/KP5cBLP4/vRMV1zjuX51ouEUYdb4eKtKYgqLB70kwuTBT9nI20xV
+         aeGDNl/dMuYAoTdqw4RHwH0fYznFD2xRyXdU/91Q=
+Authentication-Results: mxbackcorp2j.mail.yandex.net; dkim=pass header.i=@yandex-team.ru
+Received: from unknown (unknown [2a02:6b8:b080:7101::1:7])
+        by myt5-6212ef07a9ec.qloud-c.yandex.net (nwsmtp/Yandex) with ESMTPSA id fO5Ga8HQmK-4NVKRUIb;
+        Sun, 03 Nov 2019 14:04:23 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F6F321D7D
-        for <keyrings@vger.kernel.org>; Sat,  2 Nov 2019 23:14:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572736498;
-        bh=REB5//Mg+2UUv5NMyr1MVdv8ocwrgYZM1pxYX5vl4iA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=M+eT3FUF2jmJ2jN5PXXRGK/Qoi8ZaXjyPmPt7vGC/lPRcyHAo5BCeJPPl7GT3D2vH
-         NREFz1CxaWKh03aYRPcbilVCC8pb01tix6xuZj4C6avNOQWC+IPC73Ws8tLGiGWf+O
-         me6ANt3XpP/7rESPToHqJsbo7vFYVaL+XK229Yrk=
-Received: by mail-wr1-f48.google.com with SMTP id a15so13097413wrf.9
-        for <keyrings@vger.kernel.org>; Sat, 02 Nov 2019 16:14:58 -0700 (PDT)
-X-Gm-Message-State: APjAAAWhroAlVQlz+JqlNnoV9XSqIft89PQgY0nqpT2lXIEQmXmyRYyv
-        bSKttzQ33heFP2S/aWzGEH6KvffOhoAZ5VSeAXltbw==
-X-Google-Smtp-Source: APXvYqwiaT/TYsPpvX/nSDbageOpVx9vUfoOUY5rzyPCC92h+QcJ3qEjOCN+6nwzv7Sif3nKLVFkueWLU7OXFbCI5Iw=
-X-Received: by 2002:adf:f7d1:: with SMTP id a17mr16289603wrq.111.1572736496889;
- Sat, 02 Nov 2019 16:14:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAHk-=wj1BLz6s9cG9Ptk4ULxrTy=MkF7ZH=HF67d7M5HL1fd_A@mail.gmail.com>
- <E590C3AF-1D09-4927-B83F-DD0A6A148B6D@amacapital.net> <CAHk-=wgzRU9RjkZG0L9_yrnFN69REkrSokTQOGZMUkvdispvuQ@mail.gmail.com>
- <CAHk-=wgPQutQ8d8kUCvAFi+hfNWgaNLiZPkbg-GXY2DCtD-Z5Q@mail.gmail.com>
-In-Reply-To: <CAHk-=wgPQutQ8d8kUCvAFi+hfNWgaNLiZPkbg-GXY2DCtD-Z5Q@mail.gmail.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Sat, 2 Nov 2019 16:14:45 -0700
-X-Gmail-Original-Message-ID: <CALCETrWZjW88OY2mh7v8cUU_6XTSJTkQhAfNbSC17AdhEWwVAA@mail.gmail.com>
-Message-ID: <CALCETrWZjW88OY2mh7v8cUU_6XTSJTkQhAfNbSC17AdhEWwVAA@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/10] pipe: Add fsync() support [ver #2]
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+        (Client certificate not present)
+Subject: Re: [RFC PATCH 07/10] pipe: Conditionalise wakeup in pipe_read() [ver
+ #2]
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
+        nicolas.dichtel@6wind.com, raven@themaw.net,
         Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <fe167a90-1503-7ca2-4150-eeffd5cb1378@yandex-team.ru>
+ <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+ <157186189069.3995.10292601951655075484.stgit@warthog.procyon.org.uk>
+ <3165.1572539884@warthog.procyon.org.uk>
+From:   Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+Message-ID: <f8810057-d92a-bcd2-c703-0a947336ce8d@yandex-team.ru>
+Date:   Sun, 3 Nov 2019 14:04:23 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <3165.1572539884@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-CA
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, Nov 2, 2019 at 4:10 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Sat, Nov 2, 2019 at 4:02 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > But I don't think anybody actually _did_ any of that. But that's
-> > basically the argument for the three splice operations:
-> > write/vmsplice/splice(). Which one you use depends on the lifetime and
-> > the source of your data. write() is obviously for the copy case (the
-> > source data might not be stable), while splice() is for the "data from
-> > another source", and vmsplace() is "data is from stable data in my
-> > vm".
->
-> Btw, it's really worth noting that "splice()" and friends are from a
-> more happy-go-lucky time when we were experimenting with new
-> interfaces, and in a day and age when people thought that interfaces
-> like "sendpage()" and zero-copy and playing games with the VM was a
-> great thing to do.
+On 31/10/2019 19.38, David Howells wrote:
+> Okay, attached is a change that might give you what you want.  I tried my
+> pipe-bench program (see cover note) with perf.  The output of the program with
+> the patch applied was:
+> 
+> -       pipe                  305127298     36262221772       302185181         7887690
+> 
+> The output of perf with the patch applied:
+> 
+>          239,943.92 msec task-clock                #    1.997 CPUs utilized
+>              17,728      context-switches          #   73.884 M/sec
+>                 124      cpu-migrations            #    0.517 M/sec
+>               9,330      page-faults               #   38.884 M/sec
+>     885,107,207,365      cycles                    # 3688822.793 GHz
+>   1,386,873,499,490      instructions              #    1.57  insn per cycle
+>     311,037,372,339      branches                  # 1296296921.931 M/sec
+>          33,467,827      branch-misses             #    0.01% of all branches
+> 
+> And without:
+> 
+>          239,891.87 msec task-clock                #    1.997 CPUs utilized
+>              22,187      context-switches          #   92.488 M/sec
+>                 133      cpu-migrations            #    0.554 M/sec
+>               9,334      page-faults               #   38.909 M/sec
+>     884,906,976,128      cycles                    # 3688787.725 GHz
+>   1,391,986,932,265      instructions              #    1.57  insn per cycle
+>     311,394,686,857      branches                  # 1298067400.849 M/sec
+>          30,242,823      branch-misses             #    0.01% of all branches
+> 
+> So it did make something like a 20% reduction in context switches.
 
-I suppose a nicer interface might be:
+Ok. Looks promising. Depending on workload reduction might be much bigger.
 
+I suppose buffer resize (grow) makes wakeup unconditionally. Should be ok.
 
-madvise(buf, len, MADV_STABILIZE);
-
-(MADV_STABILIZE is an imaginary operation that write protects the
-memory a la fork() but without the copying part.)
-
-vmsplice_safer(fd, ...);
-
-Where vmsplice_safer() is like vmsplice, except that it only works on
-write-protected pages.  If you vmsplice_safer() some memory and then
-write to the memory, the pipe keeps the old copy.
-
-But this can all be done with memfd and splice, too, I think.
-
-
->
-> It turns out that VM games are almost always more expensive than just
-> copying the data in the first place, but hey, people didn't know that,
-> and zero-copy was seen a big deal.
->
-> The reality is that almost nobody uses splice and vmsplice at all, and
-> they have been a much bigger headache than they are worth. If I could
-> go back in time and not do them, I would. But there have been a few
-> very special uses that seem to actually like the interfaces.
->
-> But it's entirely possible that we should kill vmsplice() (likely by
-> just implementing the semantics as "write()") because it's not common
-> enough to have the complexity.
-
-I think this is the right choice.
-
-FWIW, the openssl vmsplice() call looks dubious, but I suspect it's
-okay because it's vmsplicing to a netlink socket, and the kernel code
-on the other end won't read the data after it returns a response.
-
---Andy
+> 
+> David
+> ---
+> diff --git a/fs/pipe.c b/fs/pipe.c
+> index e3d5f7a39123..5167921edd73 100644
+> --- a/fs/pipe.c
+> +++ b/fs/pipe.c
+> @@ -276,7 +276,7 @@ pipe_read(struct kiocb *iocb, struct iov_iter *to)
+>   	size_t total_len = iov_iter_count(to);
+>   	struct file *filp = iocb->ki_filp;
+>   	struct pipe_inode_info *pipe = filp->private_data;
+> -	int do_wakeup;
+> +	int do_wakeup, wake;
+>   	ssize_t ret;
+> 
+>   	/* Null read succeeds. */
+> @@ -329,11 +329,12 @@ pipe_read(struct kiocb *iocb, struct iov_iter *to)
+>   				tail++;
+>   				pipe->tail = tail;
+>   				do_wakeup = 1;
+> -				if (head - (tail - 1) == pipe->max_usage)
+> +				wake = head - (tail - 1) == pipe->max_usage / 2;
+> +				if (wake)
+>   					wake_up_interruptible_sync_poll_locked(
+>   						&pipe->wait, EPOLLOUT | EPOLLWRNORM);
+>   				spin_unlock_irq(&pipe->wait.lock);
+> -				if (head - (tail - 1) == pipe->max_usage)
+> +				if (wake)
+>   					kill_fasync(&pipe->fasync_writers, SIGIO, POLL_OUT);
+>   			}
+>   			total_len -= chars;
+> 
