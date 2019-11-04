@@ -2,139 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF4C7ED33F
-	for <lists+keyrings@lfdr.de>; Sun,  3 Nov 2019 13:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2297ED994
+	for <lists+keyrings@lfdr.de>; Mon,  4 Nov 2019 07:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727156AbfKCMCM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 Nov 2019 07:02:12 -0500
-Received: from forwardcorp1p.mail.yandex.net ([77.88.29.217]:57400 "EHLO
-        forwardcorp1p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726998AbfKCMCM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Nov 2019 07:02:12 -0500
-Received: from mxbackcorp1j.mail.yandex.net (mxbackcorp1j.mail.yandex.net [IPv6:2a02:6b8:0:1619::162])
-        by forwardcorp1p.mail.yandex.net (Yandex) with ESMTP id 54FA82E12F1;
-        Sun,  3 Nov 2019 15:02:07 +0300 (MSK)
-Received: from myt5-6212ef07a9ec.qloud-c.yandex.net (myt5-6212ef07a9ec.qloud-c.yandex.net [2a02:6b8:c12:3b2d:0:640:6212:ef07])
-        by mxbackcorp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id E9iTHkqXmn-25RCivqh;
-        Sun, 03 Nov 2019 15:02:07 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
-        t=1572782527; bh=22EDXIE7sdCqMg9/8WHEbWESicgc5h63XsjO5uxv1rM=;
-        h=In-Reply-To:Message-ID:From:Date:References:To:Subject:Cc;
-        b=dSxNOPO6KBTPwQVUMQsuoRYP2Rm4g+elu12lWUeOlbU6shBt2vVjk+8a9T+Ws1Crl
-         7M9I/RtuybtEgw/2CYq/3gOZp2rM6HlcFjEq+tAopJfR6tmmd46WeI5DCF7/o5oKNY
-         gSw+yqWfMiXCpvTo7HcNlk9jNn8xHug4DNIN8o/8=
-Authentication-Results: mxbackcorp1j.mail.yandex.net; dkim=pass header.i=@yandex-team.ru
-Received: from unknown (unknown [2a02:6b8:b080:7101::1:7])
-        by myt5-6212ef07a9ec.qloud-c.yandex.net (nwsmtp/Yandex) with ESMTPSA id 1UOEXN5iqJ-25VW2Fdc;
-        Sun, 03 Nov 2019 15:02:05 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-Subject: Re: [RFC PATCH 11/10] pipe: Add fsync() support [ver #2]
-To:     Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>
-References: <CAHk-=wj1BLz6s9cG9Ptk4ULxrTy=MkF7ZH=HF67d7M5HL1fd_A@mail.gmail.com>
- <E590C3AF-1D09-4927-B83F-DD0A6A148B6D@amacapital.net>
- <CAHk-=wgzRU9RjkZG0L9_yrnFN69REkrSokTQOGZMUkvdispvuQ@mail.gmail.com>
- <CAHk-=wgPQutQ8d8kUCvAFi+hfNWgaNLiZPkbg-GXY2DCtD-Z5Q@mail.gmail.com>
- <CALCETrWZjW88OY2mh7v8cUU_6XTSJTkQhAfNbSC17AdhEWwVAA@mail.gmail.com>
-From:   Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Message-ID: <c8001e7c-8039-3efb-948b-482b88005660@yandex-team.ru>
-Date:   Sun, 3 Nov 2019 15:02:05 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727322AbfKDG7D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 4 Nov 2019 01:59:03 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:44442 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726891AbfKDG7B (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 4 Nov 2019 01:59:01 -0500
+Received: by mail-lj1-f194.google.com with SMTP id g3so10178315ljl.11
+        for <keyrings@vger.kernel.org>; Sun, 03 Nov 2019 22:58:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ef40HtgLagkWmNMc93ySVU+8+raGbvhremm/3vIkPJs=;
+        b=vvdCJc1RINMcL5JoJz312DaAniIDfMzCcnwAI/nzlhioj8GGGYgW5khIKfb5WKPoih
+         qMp+vCbDbemdWq8i0Mf58v3uh/mu8EhKBMgRhulZLShXtK+MNVeAUm7PQ2aQiAtYd/+j
+         Jg6nmlI9XTaqFYG/d/qIJDVf1ikfm6/i0iK1k912esWDVF1151DSFoBkdr1dAOlWvfmC
+         jsn+40LPewRJA3SIUnwPlyony4u564JLgwa29HfMy3fBdaUY2d1amOC0D3N4Y4FXSyEs
+         uXfrP9qkdne00KhZwEYKvXolsJ2gV5a0/Mi5PvdRJEwJ90Nr/tnHijeE3ql/YqVMQM1K
+         AvmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ef40HtgLagkWmNMc93ySVU+8+raGbvhremm/3vIkPJs=;
+        b=cLD+7G+hLhpPCAhkNsdNBKOAOE+rB5rCjsOIwtGf5gDEltPzM2mWsYXlzXXng0zrb7
+         A/sTVfGKuMf49yslL8kkYEtmOXkCJKEePVCDekqsEmfK1vqnP7ZFUlT2HO3g3kXZMUPJ
+         K27ngE0cDJS8itGwlwiMCPnVSJPDw90FnHt43AiJ6LQnqls/XiY/7vYyhNujQJEUwbda
+         1y/pY6QluBbjlHYe8mnT7agSWE4SrwzyLai2eHF+Z5CBi6PZq0zERyxQfsuXklC+HLHs
+         Kzef0zf6wQGW6DD/F8LT+iTNazaYcPBhFCU3px7SzVeqzCXW0CxTQrdIWJOAtFU/1D9P
+         8Tow==
+X-Gm-Message-State: APjAAAVxae2mq2IwE3aU3rGn5lpwtsqAmEG26xJLpmBOplTQsFbUA0sv
+        WdqobLQmRIU652tME/htdY6pKFlLuk/pwqDYT9CvOg==
+X-Google-Smtp-Source: APXvYqwDEcaV1wOC5X14ad1vPw2VW4B5zXbZYrai12akzfGxkCIeR+UrJYYWYChUz2q1aw4cIzuU9bUsn4PO7ZkCq3g=
+X-Received: by 2002:a2e:9a12:: with SMTP id o18mr9966567lji.191.1572850738786;
+ Sun, 03 Nov 2019 22:58:58 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CALCETrWZjW88OY2mh7v8cUU_6XTSJTkQhAfNbSC17AdhEWwVAA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-CA
-Content-Transfer-Encoding: 7bit
+References: <1572530323-14802-1-git-send-email-sumit.garg@linaro.org>
+ <1572530323-14802-7-git-send-email-sumit.garg@linaro.org> <20191031214745.GG10507@linux.intel.com>
+ <CAFA6WYMkE928v-v76gGtWmsS0PwRp-OHUtkS0+Ts4V6x0AKBqQ@mail.gmail.com> <20191101201957.GA8369@linux.intel.com>
+In-Reply-To: <20191101201957.GA8369@linux.intel.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Mon, 4 Nov 2019 12:28:47 +0530
+Message-ID: <CAFA6WYNwSSaZv5OM=q+LCyn0mEdpg7K+W_v2_NBHhtktg1BFXw@mail.gmail.com>
+Subject: Re: [Patch v3 6/7] doc: keys: Document usage of TEE based Trusted Keys
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     Jens Wiklander <jens.wiklander@linaro.org>, dhowells@redhat.com,
+        Jonathan Corbet <corbet@lwn.net>, jejb@linux.ibm.com,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Stuart Yoder <stuart.yoder@arm.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 03/11/2019 02.14, Andy Lutomirski wrote:
-> On Sat, Nov 2, 2019 at 4:10 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
->>
->> On Sat, Nov 2, 2019 at 4:02 PM Linus Torvalds
->> <torvalds@linux-foundation.org> wrote:
->>>
->>> But I don't think anybody actually _did_ any of that. But that's
->>> basically the argument for the three splice operations:
->>> write/vmsplice/splice(). Which one you use depends on the lifetime and
->>> the source of your data. write() is obviously for the copy case (the
->>> source data might not be stable), while splice() is for the "data from
->>> another source", and vmsplace() is "data is from stable data in my
->>> vm".
->>
->> Btw, it's really worth noting that "splice()" and friends are from a
->> more happy-go-lucky time when we were experimenting with new
->> interfaces, and in a day and age when people thought that interfaces
->> like "sendpage()" and zero-copy and playing games with the VM was a
->> great thing to do.
-> 
-> I suppose a nicer interface might be:
-> 
-> 
-> madvise(buf, len, MADV_STABILIZE);
-> 
-> (MADV_STABILIZE is an imaginary operation that write protects the
-> memory a la fork() but without the copying part.)
-> 
-> vmsplice_safer(fd, ...);
-> 
-> Where vmsplice_safer() is like vmsplice, except that it only works on
-> write-protected pages.  If you vmsplice_safer() some memory and then
-> write to the memory, the pipe keeps the old copy.
-> 
-> But this can all be done with memfd and splice, too, I think.
+On Sat, 2 Nov 2019 at 01:50, Jarkko Sakkinen
+<jarkko.sakkinen@linux.intel.com> wrote:
+>
+> On Fri, Nov 01, 2019 at 03:04:18PM +0530, Sumit Garg wrote:
+>
+> > Isn't this statement contradicting with your earlier statement
+> > regarding the right order would be to complete TEE patches review
+> > first and then come up with documentation here [2]?
+> >
+> > [1] https://lore.kernel.org/linux-integrity/1568025601.4614.253.camel@linux.ibm.com/
+> > [2] https://lore.kernel.org/linux-integrity/20190909163643.qxmzpcggi567hmhv@linux.intel.com/
+>
+> With the intersecting issues, namely key generation and conflicting
+> keyctl parameters, that was not a well considered statement.
 
-Looks monstrous. This will kill all fun and profit. =)
+Okay, let me work on documentation first, but I think resending whole
+patch-set just for documentation review and rework would be an
+overkill. Would minor revisions of this patch only like v3.1, v3.2
+etc. work for you? And later I could send next version of this
+patch-set once we agree on documentation.
 
-I think vmsplice should at least deprecate and ignore SPLICE_F_GIFT.
+-Sumit
 
-It almost never works - if page still mapped then page_count in
-generic_pipe_buf_steal() will be at least 2 (pte and pipe gup).
-But if user munmap vma between splicing and consuming (and page not
-stuck in lazy tlb and per-cpu vectors) then page from anon lru
-could be spliced into file. Ouch.
-
-And looks like fuse device still accepts SPLICE_F_MOVE.
-
-> 
-> 
->>
->> It turns out that VM games are almost always more expensive than just
->> copying the data in the first place, but hey, people didn't know that,
->> and zero-copy was seen a big deal.
->>
->> The reality is that almost nobody uses splice and vmsplice at all, and
->> they have been a much bigger headache than they are worth. If I could
->> go back in time and not do them, I would. But there have been a few
->> very special uses that seem to actually like the interfaces.
->>
->> But it's entirely possible that we should kill vmsplice() (likely by
->> just implementing the semantics as "write()") because it's not common
->> enough to have the complexity.
-> 
-> I think this is the right choice.
-> 
-> FWIW, the openssl vmsplice() call looks dubious, but I suspect it's
-> okay because it's vmsplicing to a netlink socket, and the kernel code
-> on the other end won't read the data after it returns a response.
-> 
-> --Andy
-> 
+>
+> /Jarkko
