@@ -2,115 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76285F1E04
-	for <lists+keyrings@lfdr.de>; Wed,  6 Nov 2019 20:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCED1F220B
+	for <lists+keyrings@lfdr.de>; Wed,  6 Nov 2019 23:45:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727432AbfKFTBs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 6 Nov 2019 14:01:48 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:36206 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732281AbfKFTB2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Nov 2019 14:01:28 -0500
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id EF83C20B490A;
-        Wed,  6 Nov 2019 11:01:27 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EF83C20B490A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1573066888;
-        bh=TEn9F8AzefeWVhas63NXBgzu5ZQXoipIdRO6lRvgWaE=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=ngfXtDQzvzD2intSwFGrLDT02P4QQ+LvZB0dlEug9jP3xiWTNjFae/0kKX2ZWe8rz
-         RKRCRs9GabpNgw2XBDn+zeVzBpwrJEL9o3X2sQHtU49Hh/QH+hhss9D2hYCVZfpR/B
-         +AS6fycv4gG411dpiEcxJKsfBf9R0qCGqSrelvdA=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, dhowells@redhat.com,
-        matthewgarrett@google.com, sashal@kernel.org,
+        id S1726912AbfKFWpH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 6 Nov 2019 17:45:07 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:47898 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727196AbfKFWpG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Nov 2019 17:45:06 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA6MgjNS127535
+        for <keyrings@vger.kernel.org>; Wed, 6 Nov 2019 17:45:05 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2w41wfuuu6-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Wed, 06 Nov 2019 17:45:05 -0500
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Wed, 6 Nov 2019 22:45:02 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 6 Nov 2019 22:45:00 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA6MixhP55640138
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 6 Nov 2019 22:44:59 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4F376A4076;
+        Wed,  6 Nov 2019 22:44:59 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 55B85A406F;
+        Wed,  6 Nov 2019 22:44:58 +0000 (GMT)
+Received: from dhcp-9-31-102-173.watson.ibm.com (unknown [9.31.102.173])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  6 Nov 2019 22:44:58 +0000 (GMT)
+Subject: Re: [PATCH v4 01/10] IMA: Defined an IMA hook to measure keys on
+ key create or update
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        dhowells@redhat.com, matthewgarrett@google.com, sashal@kernel.org,
         jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v4 10/10] KEYS: Call the IMA hook to measure key when a new key is created or an existing key is updated
-Date:   Wed,  6 Nov 2019 11:01:16 -0800
-Message-Id: <20191106190116.2578-11-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191106190116.2578-1-nramas@linux.microsoft.com>
+In-Reply-To: <20191106190116.2578-2-nramas@linux.microsoft.com>
 References: <20191106190116.2578-1-nramas@linux.microsoft.com>
+         <20191106190116.2578-2-nramas@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Wed, 06 Nov 2019 17:43:09 -0500
+Mime-Version: 1.0
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19110622-0012-0000-0000-000003615CB7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19110622-0013-0000-0000-0000219CBB65
+Message-Id: <1573080189.5028.313.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-06_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911060218
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-key_create_or_update function needs to call the IMA hook to measure
-the key when a new key is created or an existing key is updated.
+On Wed, 2019-11-06 at 11:01 -0800, Lakshmi Ramasubramanian wrote:
+> Asymmetric keys used for verifying file signatures or certificates
+> are currently not included in the IMA measurement list.
+> 
+> This patch defines a new IMA hook namely ima_post_key_create_or_update()
+> to measure asymmetric keys.
+> 
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> ---
+>  security/integrity/ima/ima_main.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+> index d7e987baf127..a0e233afe876 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -721,6 +721,22 @@ void ima_kexec_cmdline(const void *buf, int size)
+>  					   KEXEC_CMDLINE, 0);
+>  }
+>  
+> +/**
+> + * ima_post_key_create_or_update - measure asymmetric keys
+> + * @keyring: keyring to which the key is linked to
+> + * @key: created or updated key
+> + * @flags: key flags
+> + * @create: flag indicating whether the key was created or updated
+> + *
+> + * Keys can only be measured, not appraised.
+> + */
+> +void ima_post_key_create_or_update(struct key *keyring, struct key *key,
+> +				   unsigned long flags, bool create)
+> +{
+> +	if ((keyring != NULL) && (key != NULL))
+> +		return;
 
-This patch adds the call to the IMA hook from key_create_or_update
-function.
+I would move the patch that defines the "keyring=" policy option prior
+to this one.  Include the call to process_buffer_measurement() in this
+patch.  A subsequent patch would add support to defer measuring the
+key, by calling a function named something like
+ima_queue_key_measurement().
 
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- include/linux/ima.h | 8 ++++++++
- security/keys/key.c | 9 +++++++++
- 2 files changed, 17 insertions(+)
+Mimi
 
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 6d904754d858..069879242a15 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -24,6 +24,9 @@ extern int ima_post_read_file(struct file *file, void *buf, loff_t size,
- 			      enum kernel_read_file_id id);
- extern void ima_post_path_mknod(struct dentry *dentry);
- extern void ima_kexec_cmdline(const void *buf, int size);
-+extern void ima_post_key_create_or_update(struct key *keyring,
-+					  struct key *key,
-+					  unsigned long flags, bool create);
- 
- #ifdef CONFIG_IMA_KEXEC
- extern void ima_add_kexec_buffer(struct kimage *image);
-@@ -92,6 +95,11 @@ static inline void ima_post_path_mknod(struct dentry *dentry)
- }
- 
- static inline void ima_kexec_cmdline(const void *buf, int size) {}
-+
-+static inline void ima_post_key_create_or_update(struct key *keyring,
-+						 struct key *key,
-+						 unsigned long flags,
-+						 bool create) {}
- #endif /* CONFIG_IMA */
- 
- #ifndef CONFIG_IMA_KEXEC
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 764f4c57913e..9782d4d046fd 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -13,6 +13,7 @@
- #include <linux/security.h>
- #include <linux/workqueue.h>
- #include <linux/random.h>
-+#include <linux/ima.h>
- #include <linux/err.h>
- #include "internal.h"
- 
-@@ -936,6 +937,9 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
- 		goto error_link_end;
- 	}
- 
-+	/* let the ima module know about the created key. */
-+	ima_post_key_create_or_update(keyring, key, flags, true);
-+
- 	key_ref = make_key_ref(key, is_key_possessed(keyring_ref));
- 
- error_link_end:
-@@ -965,6 +969,11 @@ key_ref_t key_create_or_update(key_ref_t keyring_ref,
- 	}
- 
- 	key_ref = __key_update(key_ref, &prep);
-+
-+	/* let the ima module know about the updated key. */
-+	if (!IS_ERR(key_ref))
-+		ima_post_key_create_or_update(keyring, key, flags, false);
-+
- 	goto error_free_prep;
- }
- EXPORT_SYMBOL(key_create_or_update);
--- 
-2.17.1
+> +}
+> +
+>  static int __init init_ima(void)
+>  {
+>  	int error;
 
