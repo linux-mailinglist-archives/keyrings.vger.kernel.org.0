@@ -2,214 +2,87 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA85F2FEA
-	for <lists+keyrings@lfdr.de>; Thu,  7 Nov 2019 14:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC35F3506
+	for <lists+keyrings@lfdr.de>; Thu,  7 Nov 2019 17:52:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389276AbfKGNhm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 7 Nov 2019 08:37:42 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:31171 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731082AbfKGNhk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 7 Nov 2019 08:37:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573133859;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vModMaExKzPyatIlo+9SWLkezhO2DwCfI4t3f2wYBPY=;
-        b=SVQVZ3S5zplDonhGHexKvkHD5FIhPr6RB8dZeIYQp66I/UJ2XuQkpirNQwA7A/ncFA9ZWO
-        hXBMamjk+vw1HDNAPI/fzY3o1f9dr5TM1nvumykxftK3l3n3nFjZWybWBZ2F/SGCpwTqep
-        8LE5CaUTnttS5l8vmhvv18sRXdbuhcI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-364-_HSEua-AM3KNXwOf-qBRAA-1; Thu, 07 Nov 2019 08:37:36 -0500
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 28349107ACC3;
-        Thu,  7 Nov 2019 13:37:34 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-254.rdu2.redhat.com [10.10.120.254])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3746A194B2;
-        Thu,  7 Nov 2019 13:37:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-Subject: [RFC PATCH 14/14] smack: Implement the watch_key and
- post_notification hooks [ver #2]
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     dhowells@redhat.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
-        raven@themaw.net, Christian Brauner <christian@brauner.io>,
-        dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 07 Nov 2019 13:37:30 +0000
-Message-ID: <157313385046.29677.1508444632181965475.stgit@warthog.procyon.org.uk>
-In-Reply-To: <157313371694.29677.15388731274912671071.stgit@warthog.procyon.org.uk>
-References: <157313371694.29677.15388731274912671071.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/unknown-version
+        id S1726810AbfKGQwN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 7 Nov 2019 11:52:13 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:38251 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729895AbfKGQwN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 7 Nov 2019 11:52:13 -0500
+Received: by mail-lj1-f193.google.com with SMTP id v8so3063758ljh.5
+        for <keyrings@vger.kernel.org>; Thu, 07 Nov 2019 08:52:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QmbLva0bcejWfZ5vroXCCCNjtDh9+KzeuzRfAkUcNVw=;
+        b=RC+2jxnet1c9HEhXNBxtTTpEfLinckdbFJn5Bmrik3m/W7Num2OjpLxTQS23AoRNRr
+         Aj4dYDnclnksK9me7oG5iyDsfchGPA4TwVOyMbOGN2PJFpJroPg+VNW7luk63nWV0aoz
+         X/nFl5ue/aQhw5K+6Ogz8TNi8yWG86H2/HKz4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QmbLva0bcejWfZ5vroXCCCNjtDh9+KzeuzRfAkUcNVw=;
+        b=ApOqAxuKwVGXeKuato8jZIsVnHFl1jqFBa7U3HYEx5JBAmGp76RMPobnjnDR0UjcVR
+         /FIYLt1AqI36wf6yDNLhhG4YjV6PnMmffgWRsdCoCpTRcnYq/rsXN4kE/o7TGgY7646O
+         ehvuCpF5PtU8zLSBqs2slwiITqRwkyI2axFIQ/4Q71rX1A7V2avFeHcZpXno7TiEk786
+         Mz+CBCuA1ctsTfSfU3VlD1suAgeyltB+DlKz/UZh1CKPvB2OoHwRGfIuroB4qOPLcQ89
+         hAesAUPCQa51hnZw2ay6qwy9XcU/yFTvYpl0bLCEr64VdlxhqiJZJ5tEQsHB6nNNeenj
+         zUGw==
+X-Gm-Message-State: APjAAAWWegYy1v7zFwvWAs8EubRs/BbeIc/J39QFvB19wqfHb3WyEgkK
+        9UzjXMe1D2ntO8+rw3PXDoxCTDRkx3U=
+X-Google-Smtp-Source: APXvYqwkV0/2TSpfMvw6wiJDtpe3is9kt0ph5KP1pQYRiOQAZtwz4qwF/LuxKXe0XhJ11lPZNwbdnQ==
+X-Received: by 2002:a2e:970e:: with SMTP id r14mr3077908lji.57.1573145529404;
+        Thu, 07 Nov 2019 08:52:09 -0800 (PST)
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com. [209.85.167.52])
+        by smtp.gmail.com with ESMTPSA id o196sm1449634lff.59.2019.11.07.08.52.06
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Nov 2019 08:52:07 -0800 (PST)
+Received: by mail-lf1-f52.google.com with SMTP id z12so2119464lfj.9
+        for <keyrings@vger.kernel.org>; Thu, 07 Nov 2019 08:52:06 -0800 (PST)
+X-Received: by 2002:ac2:5bca:: with SMTP id u10mr3159115lfn.134.1573145526683;
+ Thu, 07 Nov 2019 08:52:06 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: _HSEua-AM3KNXwOf-qBRAA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <157262967752.13142.696874122947836210.stgit@warthog.procyon.org.uk>
+ <20191107090306.GV29418@shao2-debian>
+In-Reply-To: <20191107090306.GV29418@shao2-debian>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 7 Nov 2019 08:51:50 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wiJ+jaT5Ev-wCg7iGNNO_JFUyMDcat0KDdA2b_+n_cZCQ@mail.gmail.com>
+Message-ID: <CAHk-=wiJ+jaT5Ev-wCg7iGNNO_JFUyMDcat0KDdA2b_+n_cZCQ@mail.gmail.com>
+Subject: Re: [pipe] d60337eff1: phoronix-test-suite.noise-level.0.activity_level
+ 144.0% improvement
+To:     lkp report check <rong.a.chen@intel.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        lkp@lists.01.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Implement the watch_key security hook in Smack to make sure that a key
-grants the caller Read permission in order to set a watch on a key.
+On Thu, Nov 7, 2019 at 1:03 AM lkp report check <rong.a.chen@intel.com> wrote:
+>
+> FYI, we noticed a 144.0% improvement of phoronix-test-suite.noise-level.0.activity_level due to commit:
+>
+> commit: d60337eff18a3c587832ab8053a567f1da9710d2 ("[RFC PATCH 04/11] pipe: Use head and tail pointers for the ring, not cursor and length [ver #3]")
 
-Also implement the post_notification security hook to make sure that the
-notification source is granted Write permission by the watch queue.
+That sounds nice, but is odd. That commit really shouldn't change
+anything noticeable. David, any idea?
 
-For the moment, the watch_devices security hook is left unimplemented as
-it's not obvious what the object should be since the queue is global and
-didn't previously exist.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
----
-
- include/linux/lsm_audit.h  |    1 +
- security/smack/smack_lsm.c |   82 ++++++++++++++++++++++++++++++++++++++++=
-+++-
- 2 files changed, 82 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/lsm_audit.h b/include/linux/lsm_audit.h
-index 915330abf6e5..734d67889826 100644
---- a/include/linux/lsm_audit.h
-+++ b/include/linux/lsm_audit.h
-@@ -74,6 +74,7 @@ struct common_audit_data {
- #define LSM_AUDIT_DATA_FILE=0912
- #define LSM_AUDIT_DATA_IBPKEY=0913
- #define LSM_AUDIT_DATA_IBENDPORT 14
-+#define LSM_AUDIT_DATA_NOTIFICATION 15
- =09union =09{
- =09=09struct path path;
- =09=09struct dentry *dentry;
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index ecea41ce919b..71b6f37d49c1 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4273,7 +4273,7 @@ static int smack_key_permission(key_ref_t key_ref,
- =09if (tkp =3D=3D NULL)
- =09=09return -EACCES;
-=20
--=09if (smack_privileged_cred(CAP_MAC_OVERRIDE, cred))
-+=09if (smack_privileged(CAP_MAC_OVERRIDE))
- =09=09return 0;
-=20
- #ifdef CONFIG_AUDIT
-@@ -4319,8 +4319,81 @@ static int smack_key_getsecurity(struct key *key, ch=
-ar **_buffer)
- =09return length;
- }
-=20
-+
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+/**
-+ * smack_watch_key - Smack access to watch a key for notifications.
-+ * @key: The key to be watched
-+ *
-+ * Return 0 if the @watch->cred has permission to read from the key object=
- and
-+ * an error otherwise.
-+ */
-+static int smack_watch_key(struct key *key)
-+{
-+=09struct smk_audit_info ad;
-+=09struct smack_known *tkp =3D smk_of_current();
-+=09int rc;
-+
-+=09if (key =3D=3D NULL)
-+=09=09return -EINVAL;
-+=09/*
-+=09 * If the key hasn't been initialized give it access so that
-+=09 * it may do so.
-+=09 */
-+=09if (key->security =3D=3D NULL)
-+=09=09return 0;
-+=09/*
-+=09 * This should not occur
-+=09 */
-+=09if (tkp =3D=3D NULL)
-+=09=09return -EACCES;
-+
-+=09if (smack_privileged_cred(CAP_MAC_OVERRIDE, current_cred()))
-+=09=09return 0;
-+
-+#ifdef CONFIG_AUDIT
-+=09smk_ad_init(&ad, __func__, LSM_AUDIT_DATA_KEY);
-+=09ad.a.u.key_struct.key =3D key->serial;
-+=09ad.a.u.key_struct.key_desc =3D key->description;
-+#endif
-+=09rc =3D smk_access(tkp, key->security, MAY_READ, &ad);
-+=09rc =3D smk_bu_note("key watch", tkp, key->security, MAY_READ, rc);
-+=09return rc;
-+}
-+#endif /* CONFIG_KEY_NOTIFICATIONS */
- #endif /* CONFIG_KEYS */
-=20
-+#ifdef CONFIG_WATCH_QUEUE
-+/**
-+ * smack_post_notification - Smack access to post a notification to a queu=
-e
-+ * @w_cred: The credentials of the watcher.
-+ * @cred: The credentials of the event source (may be NULL).
-+ * @n: The notification message to be posted.
-+ */
-+static int smack_post_notification(const struct cred *w_cred,
-+=09=09=09=09   const struct cred *cred,
-+=09=09=09=09   struct watch_notification *n)
-+{
-+=09struct smk_audit_info ad;
-+=09struct smack_known *subj, *obj;
-+=09int rc;
-+
-+=09/* Always let maintenance notifications through. */
-+=09if (n->type =3D=3D WATCH_TYPE_META)
-+=09=09return 0;
-+
-+=09if (!cred)
-+=09=09return 0;
-+=09subj =3D smk_of_task(smack_cred(cred));
-+=09obj =3D smk_of_task(smack_cred(w_cred));
-+
-+=09smk_ad_init(&ad, __func__, LSM_AUDIT_DATA_NOTIFICATION);
-+=09rc =3D smk_access(subj, obj, MAY_WRITE, &ad);
-+=09rc =3D smk_bu_note("notification", subj, obj, MAY_WRITE, rc);
-+=09return rc;
-+}
-+#endif /* CONFIG_WATCH_QUEUE */
-+
- /*
-  * Smack Audit hooks
-  *
-@@ -4709,8 +4782,15 @@ static struct security_hook_list smack_hooks[] __lsm=
-_ro_after_init =3D {
- =09LSM_HOOK_INIT(key_free, smack_key_free),
- =09LSM_HOOK_INIT(key_permission, smack_key_permission),
- =09LSM_HOOK_INIT(key_getsecurity, smack_key_getsecurity),
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+=09LSM_HOOK_INIT(watch_key, smack_watch_key),
-+#endif
- #endif /* CONFIG_KEYS */
-=20
-+#ifdef CONFIG_WATCH_QUEUE
-+=09LSM_HOOK_INIT(post_notification, smack_post_notification),
-+#endif
-+
-  /* Audit hooks */
- #ifdef CONFIG_AUDIT
- =09LSM_HOOK_INIT(audit_rule_init, smack_audit_rule_init),
-
+               Linus
