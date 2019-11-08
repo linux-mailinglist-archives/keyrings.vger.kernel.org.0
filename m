@@ -2,104 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F902F3A38
-	for <lists+keyrings@lfdr.de>; Thu,  7 Nov 2019 22:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97ED7F3F6F
+	for <lists+keyrings@lfdr.de>; Fri,  8 Nov 2019 06:07:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbfKGVMd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 7 Nov 2019 16:12:33 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:51254 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfKGVMc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 7 Nov 2019 16:12:32 -0500
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id D7C8820B7192;
-        Thu,  7 Nov 2019 13:12:31 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D7C8820B7192
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1573161151;
-        bh=Dq/RMVhen0d8e7vLNzh46Ixy8AtVy3mHTdjNkp6DDic=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=RsCmziqVUticNS68QSUKws2DrO/UoBxa18Xihwt7iTe2TWPIwRFs2LZFzAuuc81rf
-         TgtkRW1ijozgN/gAv2RBqRE4lX95WRbLSiduik0gDhQnofP8Qw2TL36s8p3AloT1bt
-         cHuoPTE1ia1FG49S/gVjrWY+89+JmgV+BNKG4WRs=
-Subject: Re: [PATCH v4 01/10] IMA: Defined an IMA hook to measure keys on key
- create or update
-To:     Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
-        matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191106190116.2578-1-nramas@linux.microsoft.com>
- <20191106190116.2578-2-nramas@linux.microsoft.com>
- <1573080189.5028.313.camel@linux.ibm.com>
- <c838a233-28fb-cad2-4694-18366c2643a4@linux.microsoft.com>
- <1573098037.5028.325.camel@linux.ibm.com>
- <7ce84aa0-729e-c58e-f16a-25490b4e336d@linux.microsoft.com>
- <1573159988.5028.400.camel@linux.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <f45593ae-823e-6d61-d14c-20726bd8cacc@linux.microsoft.com>
-Date:   Thu, 7 Nov 2019 13:12:31 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726576AbfKHFHH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 8 Nov 2019 00:07:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35842 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726072AbfKHFHH (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 8 Nov 2019 00:07:07 -0500
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7645921882
+        for <keyrings@vger.kernel.org>; Fri,  8 Nov 2019 05:07:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573189626;
+        bh=Nml6ZqPGIxeHePwEoMl3uFywnf+kk1nTeP99Kndi+gU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=bAdWTsYRTkqedcC/+Z5sINwapybfyle+SAfQCYzh0EWS5bFnoTWCp8gEp5sb9cWnI
+         O5bF/n5f1DTs5DQ85rVVTZbzCY3ybfp9Rs/y1P5HNCiBgUd2Nw3kHKIgcB9HugJvZn
+         vVLMDAwji8m5eynkuo8EBnTeCAjeGmxaYmxlk+Hs=
+Received: by mail-wm1-f44.google.com with SMTP id q130so4866365wme.2
+        for <keyrings@vger.kernel.org>; Thu, 07 Nov 2019 21:07:06 -0800 (PST)
+X-Gm-Message-State: APjAAAUJ2BKEu9+8LmKXyaKawyDfr5M5pj1iOV16nCit+ns7eS7O7J+T
+        CrSdnEv+6L3dfm6VRrmsdDXfcZGvjoqDwlhoLZuQWg==
+X-Google-Smtp-Source: APXvYqx08Mv0U8UmADt1yPzJqTiWQTH/61DB5ak1MBLcnJribE7k+KhLlnxirQA97U78di+ySNLiALLNE6nRtXo4CT0=
+X-Received: by 2002:a7b:c1ca:: with SMTP id a10mr6805119wmj.161.1573189624926;
+ Thu, 07 Nov 2019 21:07:04 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1573159988.5028.400.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <157313371694.29677.15388731274912671071.stgit@warthog.procyon.org.uk>
+ <157313375678.29677.15875689548927466028.stgit@warthog.procyon.org.uk>
+ <CALCETrUka9KaOKFbNKUXcA6XvoFxiXPftctSHtN4DL35Cay61w@mail.gmail.com> <6964.1573152517@warthog.procyon.org.uk>
+In-Reply-To: <6964.1573152517@warthog.procyon.org.uk>
+From:   Andy Lutomirski <luto@kernel.org>
+Date:   Thu, 7 Nov 2019 21:06:53 -0800
+X-Gmail-Original-Message-ID: <CALCETrWeN9CGJHz0dzG1uH5Qjbr+xG3OKZuEd33eBY_rAzVkqQ@mail.gmail.com>
+Message-ID: <CALCETrWeN9CGJHz0dzG1uH5Qjbr+xG3OKZuEd33eBY_rAzVkqQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 04/14] pipe: Add O_NOTIFICATION_PIPE [ver #2]
+To:     David Howells <dhowells@redhat.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 11/7/19 12:53 PM, Mimi Zohar wrote:
+On Thu, Nov 7, 2019 at 10:48 AM David Howells <dhowells@redhat.com> wrote:
+>
+> Andy Lutomirski <luto@kernel.org> wrote:
+>
+> > > Add an O_NOTIFICATION_PIPE flag that can be passed to pipe2() to indicate
+> > > that the pipe being created is going to be used for notifications.  This
+> > > suppresses the use of splice(), vmsplice(), tee() and sendfile() on the
+> > > pipe as calling iov_iter_revert() on a pipe when a kernel notification
+> > > message has been inserted into the middle of a multi-buffer splice will be
+> > > messy.
+> >
+> > How messy?
+>
+> Well, iov_iter_revert() on a pipe iterator simply walks backwards along the
+> ring discarding the last N contiguous slots (where N is normally the number of
+> slots that were filled by whatever operation is being reverted).
+>
+> However, unless the code that transfers stuff into the pipe takes the spinlock
+> spinlock and disables softirqs for the duration of its ring filling, what were
+> N contiguous slots may now have kernel notifications interspersed - even if it
+> has been holding the pipe mutex.
+>
+> So, now what do you do?  You have to free up just the buffers relevant to the
+> iterator and then you can either compact down the ring to free up the space or
+> you can leave null slots and let the read side clean them up, thereby
+> reducing the capacity of the pipe temporarily.
+>
+> Either way, iov_iter_revert() gets more complex and has to hold the spinlock.
 
->>
->> The measurement decision is not based on whether the keyring is a
->> trusted one or an untrusted one. As long as the IMA policy allows
->> (through the "keyrings=" option) the key will be measured.
-> 
-> We should be able to measure all keys being loaded onto any keyring or
-> onto a specific "keyring=".   This shouldn't be any different than any
-> other policy rule.  Once you have this basic feature working, you
-> would address loading keys during early boot.
-Perfect - that's exactly how I have implemented it right now. Will 
-continue to test it.
+I feel like I'm missing something fundamental here.
 
->> Do you want only trusted keyrings to be allowed in the measurement?
->> In my opinion, that decision should be deferred to whoever is setting up
->> the IMA policy.
-> 
-> Right, but it shouldn't be limited to just "trusted" keyrings.  This
-> way you can first test loading keys onto any keyring.
-Thank you.
-
-> Queuing the keys should be independent of measuring the keys.
->   Initially you would start with just measuring the key.  From a high
-> level it would look like:
-> 
->      ima_post_key_create_or_update(...)
->      {
->         "measure key based on
->      policy(key, keyring, ...)"
->      }
-> 
-> This requires the IMA "keyring=" policy option support be defined
-> first.
-> 
-> Subsequently you would add key queuing support, and then update
-> ima_post_key_create_or_update().  It would look like:
-> 
->          ima_post_key_create_or_update(...)
->          {
->              if (custom policy is loaded)
->                 "measure key based on policy(key, keyring, ...)"
->              else
->                  "queue key(key, keyring)"
->          }
-> 
-> Mimi
-
-Yes - I have the above change working. Will continue testing.
-
-thanks,
-  -lakshmi
+I can open a normal pipe from userspace (with pipe() or pipe2()), and
+I can have two threads.  One thread writes to the pipe with write().
+The other thread writes with splice().  Everything works fine.  What's
+special about notifications?
