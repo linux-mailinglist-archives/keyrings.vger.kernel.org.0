@@ -2,84 +2,150 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ACBBF95A0
-	for <lists+keyrings@lfdr.de>; Tue, 12 Nov 2019 17:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB101F9688
+	for <lists+keyrings@lfdr.de>; Tue, 12 Nov 2019 18:05:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727216AbfKLQ1Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 12 Nov 2019 11:27:24 -0500
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:42227 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbfKLQ1X (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Nov 2019 11:27:23 -0500
-Received: by mail-ed1-f68.google.com with SMTP id m13so15386814edv.9
-        for <keyrings@vger.kernel.org>; Tue, 12 Nov 2019 08:27:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=qNdulMghwGPBvmgJ8scwCvXDFRwh4jWCkPxL6qrSIjQ=;
-        b=WsNhISOt+hJkwbT7YN0D/1CAbxYs1x64PK9hVpM/9Lp0tdTDzA1sdtCfQ9ORQHddmu
-         SWw8MeBIFdqKCnfB+CTPjClScqjYAUa7xGNsH0xea1alpD0KKDb/71jlBRziY7Qd9qdx
-         KV0CvxkV5t6cSBUmoO5okM/7FYAgHCCesvlZyrCbTxeCe4tdDMsW85Doqmswx63GE7wZ
-         uYnLA+nQOsZqzuDT/yn8FPnBx5G04jDhrvGNcWr/+fINHW+iqGAPut6Np2TO1MBBWLIQ
-         mP8HdO9X3/9rvAsSXiTtY7np2QYRsalD3mhKoXcvIAmObokb1mwSJwDNBpAtw/Rzq2tr
-         tPFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=qNdulMghwGPBvmgJ8scwCvXDFRwh4jWCkPxL6qrSIjQ=;
-        b=oWCcsLM11nLajna+U9mK3DyD7jXd8cxa4jHTnT3AQ/HUjlBPlue5ze7sUGVOFNa07F
-         ymUSWOna2Udnk9GJsG3NMc8i6xUcZUT9dP/pnGF7TUR6syg019WeXLdwpPLLxLEX1f9B
-         jTefGlEke89USTTRMG4bgNgNz5SjrDeI35uFDv28mFLp8OY3U4TcfU2e9HaOPKmuPxNu
-         M9cxfMb3ffsB0TaGh2U0W4i1Wh7QiXJOiuOVLJMw7WAEaILPK/8nZc1XSQPCOzaFM/p+
-         z1BCL/tdYTpw1s94vwswWNYVLgbTAcPjFBDiJkiiyA0vKh5pvX6lljMT2TNcGiUfMrG8
-         ofwA==
-X-Gm-Message-State: APjAAAVSeLRCDIZEW+l+mu9G4UVk98eq99wMaDIS4ILSZqxSl184wPzt
-        NdjMhMVxnILHVEH2W1K6pgDRts//j8if2AlStz2nriD8iAY=
-X-Google-Smtp-Source: APXvYqyx6ZSP9pia1ghp0mGM0db9pMWKu3Ilw5isnMyYCLiKlWaoj5hSNiGZLYdu7/xruRv858z6c1CJ/zVYY273ryQ=
-X-Received: by 2002:a05:6402:142c:: with SMTP id c12mr33378742edx.96.1573576041909;
- Tue, 12 Nov 2019 08:27:21 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6402:1118:0:0:0:0 with HTTP; Tue, 12 Nov 2019 08:27:21
- -0800 (PST)
-Reply-To: walmart.b100263@gmail.com
-From:   "MS. MARYANNA B. THOMASON" <eco.bank1204@gmail.com>
-Date:   Tue, 12 Nov 2019 17:27:21 +0100
-Message-ID: <CAOE+jAB_cP8q9vvBDV62=BwoQhn_GcPJhAZsCyhMAnjxyg9-YA@mail.gmail.com>
-Subject: CONTACT WALMART TRANSFER To pick up $5000 sent to you this morning
-To:     undisclosed-recipients:;
+        id S1726960AbfKLRFJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Nov 2019 12:05:09 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:58962 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726978AbfKLRFH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Nov 2019 12:05:07 -0500
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xACGvjxb125122
+        for <keyrings@vger.kernel.org>; Tue, 12 Nov 2019 12:05:06 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2w80fw0xrx-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Tue, 12 Nov 2019 12:05:06 -0500
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Tue, 12 Nov 2019 17:05:01 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 12 Nov 2019 17:04:58 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xACH4wwf40960480
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 12 Nov 2019 17:04:58 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E9F5111C050;
+        Tue, 12 Nov 2019 17:04:57 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9898311C04A;
+        Tue, 12 Nov 2019 17:04:56 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.194.252])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 12 Nov 2019 17:04:56 +0000 (GMT)
+Subject: Re: [PATCH v5 01/10] IMA: Added KEYRING_CHECK func in IMA policy to
+ measure keys
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        dhowells@redhat.com, matthewgarrett@google.com, sashal@kernel.org,
+        jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 12 Nov 2019 12:04:56 -0500
+In-Reply-To: <20191111193303.12781-2-nramas@linux.microsoft.com>
+References: <20191111193303.12781-1-nramas@linux.microsoft.com>
+         <20191111193303.12781-2-nramas@linux.microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19111217-0012-0000-0000-000003630ADF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19111217-0013-0000-0000-0000219E7C21
+Message-Id: <1573578296.17949.41.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-12_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911120145
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
- CONTACT WALMART TRANSFER To pick up $5000 sent to you this morning
+On Mon, 2019-11-11 at 11:32 -0800, Lakshmi Ramasubramanian wrote:
+> IMA policy needs to support a func to enable measurement of
+> asymmetric keys.
+> 
+> This patch defines a new IMA policy func namely KEYRING_CHECK to
+> measure asymmetric keys.
 
-Attn Dear Beneficiary.
-Happy to inform you,I have deposited your payment funds
-$10.500,000MillionUS DollarsWith Walmart international money
-transfers.
-Receive the Money with Walmart | MoneyGram service.
-Walmart partners with MoneyGram to allow customers
-easily receive money transfers abroad,
-Contact Walmart international money transfers office -Benin
-Receive your approval payment funds $10.500,000MillionUS Dollars
-HERE IS WALMART CONTACT INFORMATIONS.
-Contact person. Mrs. Mary Anderson,Dir. Walmart transfers-Benin
-Email: walmart.b100263@gmail.com
-Telephone. +229 68823234
-Text Her on this international phone line. (256) 284-4886
-Ask Mrs. Mary Anderson,Dir. Walmart transfers-Benin to send the transfer
-as i instructed.
-we agreed to keep sending the transfer to you $5000.00 daily.
-Until you received your total payment $10.500,000 from the office
-Once again,
-make sure you contact Mrs. Mary Anderson,Dir. Walmart transfers-Benin
-today including your infos.
-(1) Your  Full Name==============
-(2) house address=============
-(3) Your Phone Numbers=============
-Urgent to receive your transfer now without any further delay.
-Thanks
-MS. MARYANNA B. THOMASON
+This new feature measures "keys" based on policy, not "keyrings".
+ Please change the name to KEY_CHECK.
+
+> 
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> ---
+>  Documentation/ABI/testing/ima_policy | 6 ++++++
+>  security/integrity/ima/ima.h         | 1 +
+>  security/integrity/ima/ima_policy.c  | 4 +++-
+>  3 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ABI/testing/ima_policy b/Documentation/ABI/testing/ima_policy
+> index 29aaedf33246..341df49b5ad1 100644
+> --- a/Documentation/ABI/testing/ima_policy
+> +++ b/Documentation/ABI/testing/ima_policy
+> @@ -30,6 +30,7 @@ Description:
+>  				[FIRMWARE_CHECK]
+>  				[KEXEC_KERNEL_CHECK] [KEXEC_INITRAMFS_CHECK]
+>  				[KEXEC_CMDLINE]
+> +				[KEYRING_CHECK]
+>  			mask:= [[^]MAY_READ] [[^]MAY_WRITE] [[^]MAY_APPEND]
+>  			       [[^]MAY_EXEC]
+>  			fsmagic:= hex value
+> @@ -113,3 +114,8 @@ Description:
+>  		Example of appraise rule allowing modsig appended signatures:
+>  
+>  			appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig
+> +
+> +		Example of measure rule using KEYRING_CHECK to measure
+> +		all keys:
+> +
+> +			measure func=KEYRING_CHECK
+> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+> index df4ca482fb53..7f23405b2718 100644
+> --- a/security/integrity/ima/ima.h
+> +++ b/security/integrity/ima/ima.h
+> @@ -193,6 +193,7 @@ static inline unsigned long ima_hash_key(u8 *digest)
+>  	hook(KEXEC_INITRAMFS_CHECK)	\
+>  	hook(POLICY_CHECK)		\
+>  	hook(KEXEC_CMDLINE)		\
+> +	hook(KEYRING_CHECK)		\
+>  	hook(MAX_CHECK)
+>  #define __ima_hook_enumify(ENUM)	ENUM,
+>  
+> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+> index f19a895ad7cd..9ca32ffaaa9d 100644
+> --- a/security/integrity/ima/ima_policy.c
+> +++ b/security/integrity/ima/ima_policy.c
+> @@ -373,7 +373,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule, struct inode *inode,
+>  {
+>  	int i;
+>  
+> -	if (func == KEXEC_CMDLINE) {
+> +	if ((func == KEXEC_CMDLINE) || (func == KEYRING_CHECK)) {
+>  		if ((rule->flags & IMA_FUNC) && (rule->func == func))
+>  			return true;
+>  		return false;
+> @@ -997,6 +997,8 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
+>  				entry->func = POLICY_CHECK;
+>  			else if (strcmp(args[0].from, "KEXEC_CMDLINE") == 0)
+>  				entry->func = KEXEC_CMDLINE;
+> +			else if (strcmp(args[0].from, "KEYRING_CHECK") == 0)
+> +				entry->func = KEYRING_CHECK;
+>  			else
+>  				result = -EINVAL;
+>  			if (!result)
+
+
+
+
