@@ -2,105 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6212AFB9FE
-	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2019 21:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CD0FBA3F
+	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2019 21:52:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbfKMUfz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Nov 2019 15:35:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53674 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726162AbfKMUfy (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 13 Nov 2019 15:35:54 -0500
-Received: from gmail.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D1D53206F0;
-        Wed, 13 Nov 2019 20:35:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573677354;
-        bh=F7ZEXH3Tifjy9sGUrwh8Fhs+H6mYs1GYZonZpiJuwEo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cN+5BXj91Btq6Ry/bO1VhiaNdo4x1+Lt3QDXuQLQyXlsCVgrWNJGKLW3Zy0M3qYgf
-         kZYrGKdT5NAbCuJckqXAScixPVqWmbN98LNs2qdXXxKYYq+xhab0ygSaprMlJrUDjc
-         2Rl8cQmt+I9y4p/mks0qpzDMku7DMTI2kzVonDxM=
-Date:   Wed, 13 Nov 2019 12:35:51 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        keyrings@vger.kernel.org
-Cc:     linux-fscrypt@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        linux-f2fs-devel@lists.sourceforge.net,
-        Paul Lawrence <paullawrence@google.com>,
-        linux-mtd@lists.infradead.org, Ondrej Kozina <okozina@redhat.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>
-Subject: Re: [PATCH] fscrypt: support passing a keyring key to
- FS_IOC_ADD_ENCRYPTION_KEY
-Message-ID: <20191113203550.GI221701@gmail.com>
-Mail-Followup-To: David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        keyrings@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-        "Theodore Y . Ts'o" <tytso@mit.edu>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        linux-f2fs-devel@lists.sourceforge.net,
-        Paul Lawrence <paullawrence@google.com>,
-        linux-mtd@lists.infradead.org, Ondrej Kozina <okozina@redhat.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
-        Paul Crowley <paulcrowley@google.com>
-References: <20191107001259.115018-1-ebiggers@kernel.org>
+        id S1726189AbfKMUww (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Nov 2019 15:52:52 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:59488 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726162AbfKMUwv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Nov 2019 15:52:51 -0500
+Received: from [10.137.112.108] (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id CC9B520B4901;
+        Wed, 13 Nov 2019 12:52:50 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CC9B520B4901
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1573678370;
+        bh=fgQhQUz164u1Ek8QLM0DOcyCkmeH/6O7UhOsdVDDB+I=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=kDVOZLq3aB9m+A9OGzmuvC75nfcZhD/sjDjmXVT/MCU6x0biY6SEaTrpEujP6xAwB
+         aYUHatP8kZVdB3hXXZeUhsqNKD5UunWJIDrPEQJJgQfuQW+xr4eG1ir0dlWIsMuWM9
+         4oVdLgWug+n41qHO++J6sNXAptLa43mYGILzmBIw=
+Subject: Re: [PATCH v6 2/3] IMA: Define an IMA hook to measure keys
+To:     Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
+        matthewgarrett@google.com, sashal@kernel.org,
+        jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20191113184658.2862-1-nramas@linux.microsoft.com>
+ <20191113184658.2862-3-nramas@linux.microsoft.com>
+ <1573675761.4843.13.camel@linux.ibm.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <8eba665e-637c-d341-c77d-4f2645d3b246@linux.microsoft.com>
+Date:   Wed, 13 Nov 2019 12:52:46 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191107001259.115018-1-ebiggers@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1573675761.4843.13.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Nov 06, 2019 at 04:12:59PM -0800, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
+On 11/13/19 12:09 PM, Mimi Zohar wrote:
+>
+> All that is is needed is the key and public_key structures, which are
+> defined in include/linux/keys.h and include/crypto/public_key.h.  If
+> the keys subsystem is disabled, then the new IMA hook won't be called.
+>   There's no need for a new Kconfig option or a new file.
 > 
-> Extend the FS_IOC_ADD_ENCRYPTION_KEY ioctl to allow the raw key to be
-> specified by a Linux keyring key, rather than specified directly.
+> Please move the hook to just after ima_kexec_cmdline().
 > 
-> This is useful because fscrypt keys belong to a particular filesystem
-> instance, so they are destroyed when that filesystem is unmounted.
-> Usually this is desired.  But in some cases, userspace may need to
-> unmount and re-mount the filesystem while keeping the keys, e.g. during
-> a system update.  This requires keeping the keys somewhere else too.
-> 
-> The keys could be kept in memory in a userspace daemon.  But depending
-> on the security architecture and assumptions, it can be preferable to
-> keep them only in kernel memory, where they are unreadable by userspace.
-> 
-> We also can't solve this by going back to the original fscrypt API
-> (where for each file, the master key was looked up in the process's
-> keyring hierarchy) because that caused lots of problems of its own.
-> 
-> Therefore, add the ability for FS_IOC_ADD_ENCRYPTION_KEY to accept a
-> Linux keyring key.  This solves the problem by allowing userspace to (if
-> needed) save the keys securely in a Linux keyring for re-provisioning,
-> while still using the new fscrypt key management ioctls.
-> 
-> This is analogous to how dm-crypt accepts a Linux keyring key, but the
-> key is then stored internally in the dm-crypt data structures rather
-> than being looked up again each time the dm-crypt device is accessed.
-> 
-> Use a custom key type "fscrypt-provisioning" rather than one of the
-> existing key types such as "logon".  This is strongly desired because it
-> enforces that these keys are only usable for a particular purpose: for
-> fscrypt as input to a particular KDF.  Otherwise, the keys could also be
-> passed to any kernel API that accepts a "logon" key with any service
-> prefix, e.g. dm-crypt, UBIFS, or (recently proposed) AF_ALG.  This would
-> risk leaking information about the raw key despite it ostensibly being
-> unreadable.  Of course, this mistake has already been made for multiple
-> kernel APIs; but since this is a new API, let's do it right.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> Mimi
 
-David and Jarkko, are you okay with this patch from a keyrings subsystem
-perspective?
+Yes - IMA hook won't be called when KEYS subsystem is disabled.
 
-- Eric
+But, build dependency is breaking since "struct key" is not defined 
+without CONFIG_KEYS.
+
+Sasha was able to craft a .config that enabled IMA without enabling KEYS 
+and found the build break.
+
+Please see the build output he'd shared.
+
+***********************************************************************
+
+In file included from security/integrity/ima/ima.h:25,
+                 from security/integrity/ima/ima_fs.c:26:
+./include/keys/asymmetric-type.h: In function ‘asymmetric_key_ids’:
+./include/keys/asymmetric-type.h:72:12: error: dereferencing pointer to 
+incomplete type ‘const struct key’
+  return key->payload.data[asym_key_ids];
+            ^~
+make[3]: *** [scripts/Makefile.build:266: 
+security/integrity/ima/ima_fs.o] Error 1
+make[3]: *** Waiting for unfinished jobs....
+In file included from security/integrity/ima/ima.h:25,
+                 from security/integrity/ima/ima_queue.c:22:
+./include/keys/asymmetric-type.h: In function ‘asymmetric_key_ids’:
+./include/keys/asymmetric-type.h:72:12: error: dereferencing pointer to 
+incomplete type ‘const struct key’
+  return key->payload.data[asym_key_ids];
+
+***********************************************************************
+
+thanks,
+  -lakshmi
