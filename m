@@ -2,108 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0114FB9B9
-	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2019 21:25:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6212AFB9FE
+	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2019 21:35:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726270AbfKMUZC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Nov 2019 15:25:02 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:11360 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726210AbfKMUZC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Nov 2019 15:25:02 -0500
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xADKLsIC130608
-        for <keyrings@vger.kernel.org>; Wed, 13 Nov 2019 15:25:00 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2w8ncu08a0-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Wed, 13 Nov 2019 15:25:00 -0500
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Wed, 13 Nov 2019 20:24:58 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 13 Nov 2019 20:24:54 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xADKOres47185922
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 Nov 2019 20:24:53 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A392C42049;
-        Wed, 13 Nov 2019 20:24:53 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9C02D4203F;
-        Wed, 13 Nov 2019 20:24:52 +0000 (GMT)
-Received: from dhcp-9-31-103-201.watson.ibm.com (unknown [9.31.103.201])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed, 13 Nov 2019 20:24:52 +0000 (GMT)
-Subject: Re: [PATCH v6 1/3] IMA: Add KEY_CHECK func to measure keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        dhowells@redhat.com, matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 13 Nov 2019 15:24:52 -0500
-In-Reply-To: <320826aa-f744-f2ae-8693-a6ce9461d886@linux.microsoft.com>
-References: <20191113184658.2862-1-nramas@linux.microsoft.com>
-         <20191113184658.2862-2-nramas@linux.microsoft.com>
-         <1573676066.4843.18.camel@linux.ibm.com>
-         <320826aa-f744-f2ae-8693-a6ce9461d886@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111320-0012-0000-0000-000003636213
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111320-0013-0000-0000-0000219ED864
-Message-Id: <1573676692.4843.20.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-13_04:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911130167
+        id S1726276AbfKMUfz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Nov 2019 15:35:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53674 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726162AbfKMUfy (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 13 Nov 2019 15:35:54 -0500
+Received: from gmail.com (unknown [104.132.1.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D1D53206F0;
+        Wed, 13 Nov 2019 20:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573677354;
+        bh=F7ZEXH3Tifjy9sGUrwh8Fhs+H6mYs1GYZonZpiJuwEo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cN+5BXj91Btq6Ry/bO1VhiaNdo4x1+Lt3QDXuQLQyXlsCVgrWNJGKLW3Zy0M3qYgf
+         kZYrGKdT5NAbCuJckqXAScixPVqWmbN98LNs2qdXXxKYYq+xhab0ygSaprMlJrUDjc
+         2Rl8cQmt+I9y4p/mks0qpzDMku7DMTI2kzVonDxM=
+Date:   Wed, 13 Nov 2019 12:35:51 -0800
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        keyrings@vger.kernel.org
+Cc:     linux-fscrypt@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        Paul Lawrence <paullawrence@google.com>,
+        linux-mtd@lists.infradead.org, Ondrej Kozina <okozina@redhat.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        Paul Crowley <paulcrowley@google.com>
+Subject: Re: [PATCH] fscrypt: support passing a keyring key to
+ FS_IOC_ADD_ENCRYPTION_KEY
+Message-ID: <20191113203550.GI221701@gmail.com>
+Mail-Followup-To: David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        keyrings@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+        "Theodore Y . Ts'o" <tytso@mit.edu>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        Paul Lawrence <paullawrence@google.com>,
+        linux-mtd@lists.infradead.org, Ondrej Kozina <okozina@redhat.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        Paul Crowley <paulcrowley@google.com>
+References: <20191107001259.115018-1-ebiggers@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191107001259.115018-1-ebiggers@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2019-11-13 at 12:21 -0800, Lakshmi Ramasubramanian wrote:
-> On 11/13/2019 12:14 PM, Mimi Zohar wrote:
+On Wed, Nov 06, 2019 at 04:12:59PM -0800, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> >> @@ -655,6 +655,13 @@ void process_buffer_measurement(const void *buf, int size,
-> >>   	int action = 0;
-> >>   	u32 secid;
-> >>   
-> >> +	/*
-> >> +	 * If IMA is not yet initialized or IMA policy is empty
-> >> +	 * then there is no need to measure.
-> >> +	 */
-> >> +	if (!ima_policy_flag)
-> >> +		return;
-> >> +
-> > 
-> > This addition has nothing to do with defining a new IMA hook and
-> > should be a separate patch.  This can be posted independently of this
-> > patch set.
-> > 
-> > Mimi
+> Extend the FS_IOC_ADD_ENCRYPTION_KEY ioctl to allow the raw key to be
+> specified by a Linux keyring key, rather than specified directly.
 > 
-> I'll move this change to a different patch,
-> but it has to be either part of this patch set or the above change alone 
-> needs to be taken before this patch set for the following reason:
+> This is useful because fscrypt keys belong to a particular filesystem
+> instance, so they are destroyed when that filesystem is unmounted.
+> Usually this is desired.  But in some cases, userspace may need to
+> unmount and re-mount the filesystem while keeping the keys, e.g. during
+> a system update.  This requires keeping the keys somewhere else too.
 > 
-> The IMA hook gets called early in the boot process (for example, when 
-> builtin_trusted_keys are added). If the above check is not there, 
-> ima_get_action() is called and causes kernel panic (since IMA is not yet 
-> initialized).
+> The keys could be kept in memory in a userspace daemon.  But depending
+> on the security architecture and assumptions, it can be preferable to
+> keep them only in kernel memory, where they are unreadable by userspace.
+> 
+> We also can't solve this by going back to the original fscrypt API
+> (where for each file, the master key was looked up in the process's
+> keyring hierarchy) because that caused lots of problems of its own.
+> 
+> Therefore, add the ability for FS_IOC_ADD_ENCRYPTION_KEY to accept a
+> Linux keyring key.  This solves the problem by allowing userspace to (if
+> needed) save the keys securely in a Linux keyring for re-provisioning,
+> while still using the new fscrypt key management ioctls.
+> 
+> This is analogous to how dm-crypt accepts a Linux keyring key, but the
+> key is then stored internally in the dm-crypt data structures rather
+> than being looked up again each time the dm-crypt device is accessed.
+> 
+> Use a custom key type "fscrypt-provisioning" rather than one of the
+> existing key types such as "logon".  This is strongly desired because it
+> enforces that these keys are only usable for a particular purpose: for
+> fscrypt as input to a particular KDF.  Otherwise, the keys could also be
+> passed to any kernel API that accepts a "logon" key with any service
+> prefix, e.g. dm-crypt, UBIFS, or (recently proposed) AF_ALG.  This would
+> risk leaking information about the raw key despite it ostensibly being
+> unreadable.  Of course, this mistake has already been made for multiple
+> kernel APIs; but since this is a new API, let's do it right.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-It will be upstreamed prior to this patch set.
- 
-Mimi
+David and Jarkko, are you okay with this patch from a keyrings subsystem
+perspective?
 
+- Eric
