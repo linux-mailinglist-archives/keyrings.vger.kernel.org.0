@@ -2,109 +2,194 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB863FDEAA
-	for <lists+keyrings@lfdr.de>; Fri, 15 Nov 2019 14:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DD50FDEEE
+	for <lists+keyrings@lfdr.de>; Fri, 15 Nov 2019 14:29:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727520AbfKONOt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 Nov 2019 08:14:49 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:44484 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727355AbfKONOt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Nov 2019 08:14:49 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAFD2Bix070312
-        for <keyrings@vger.kernel.org>; Fri, 15 Nov 2019 08:14:48 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2w9nuh6rh4-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Fri, 15 Nov 2019 08:14:48 -0500
-Received: from localhost
-        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Fri, 15 Nov 2019 13:14:46 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 15 Nov 2019 13:14:42 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xAFDEfI943713012
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 Nov 2019 13:14:41 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 90D2811C052;
-        Fri, 15 Nov 2019 13:14:41 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6655311C04A;
-        Fri, 15 Nov 2019 13:14:40 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.206.176])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 15 Nov 2019 13:14:40 +0000 (GMT)
-Subject: Re: [PATCH v7 3/5] KEYS: Call the IMA hook to measure keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        dhowells@redhat.com, matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 15 Nov 2019 08:14:39 -0500
-In-Reply-To: <24262d82-c90b-b64d-f237-9ef038f38d0e@linux.microsoft.com>
-References: <20191114031202.18012-1-nramas@linux.microsoft.com>
-         <20191114031202.18012-4-nramas@linux.microsoft.com>
-         <1573743267.4793.43.camel@linux.ibm.com>
-         <24262d82-c90b-b64d-f237-9ef038f38d0e@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111513-0028-0000-0000-000003B72858
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111513-0029-0000-0000-0000247A39C3
-Message-Id: <1573823679.4793.121.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-15_03:2019-11-15,2019-11-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- spamscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-1911150120
+        id S1727515AbfKON3E (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Nov 2019 08:29:04 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:29212 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727329AbfKON3D (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Nov 2019 08:29:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573824542;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mks2DjWdpnukmwwEXVk82toAm3agWoayoydTXhkFsfg=;
+        b=flnZk33ocQ28HZ4XDL3qAGJ72dDwRt496HveaZUWJ6MUYUP9sUPhz179yxFxQbmbQNeVYp
+        xXi7UNXLrDxpeRYujxgpvPsrmM5ZWGXkajdGa4kqUD8Adg1tZnG9ADspoSMW6Zx5Hsxl0P
+        MQHD5J9aVF5k7wWhBqGeDTNswLMR79Q=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-278-HPOfJgVkOrK1lyjxuhbP-w-1; Fri, 15 Nov 2019 08:28:58 -0500
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5E6BA18B5F8A;
+        Fri, 15 Nov 2019 13:28:56 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-161.rdu2.redhat.com [10.10.120.161])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E61D95F900;
+        Fri, 15 Nov 2019 13:28:52 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20191110031348.GE29418@shao2-debian>
+References: <20191110031348.GE29418@shao2-debian>
+To:     kernel test robot <lkp@intel.com>
+Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        nicolas.dichtel@6wind.com, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lkp@lists.01.org
+Subject: Re: [pipe] d60337eff1: BUG:kernel_NULL_pointer_dereference,address
+MIME-Version: 1.0
+Content-ID: <9278.1573824532.1@warthog.procyon.org.uk>
+Date:   Fri, 15 Nov 2019 13:28:52 +0000
+Message-ID: <9279.1573824532@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-MC-Unique: HPOfJgVkOrK1lyjxuhbP-w-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2019-11-14 at 10:24 -0800, Lakshmi Ramasubramanian wrote:
-> On 11/14/2019 6:54 AM, Mimi Zohar wrote:
-> > With this patch, keys are now being measured.  With the boot command
-> > line, we can verify the measurement entry against /proc/cmdline.  How
-> > can the key measurement entry be verified?  Please include that
-> > information, here, in this patch description.
-> 
-> Glad you could verify measurement of keys. Thanks a lot for trying it.
-> 
-> Will add information on testing\validating the feature.
+kernel test robot <lkp@intel.com> wrote:
 
-Thank you.
+> [    9.423019] BUG: kernel NULL pointer dereference, address: 00000000000=
+00008
+> [    9.425646] #PF: supervisor read access in kernel mode
+> [    9.427714] #PF: error_code(0x0000) - not-present page
+> [    9.429851] PGD 80000001fb937067 P4D 80000001fb937067 PUD 1739e1067 PM=
+D 0=20
+> [    9.432468] Oops: 0000 [#1] SMP PTI
+> [    9.434064] CPU: 0 PID: 178 Comm: cat Not tainted 5.4.0-rc5-00353-gd60=
+337eff18a3 #1
+> [    9.437139] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
+S 1.10.2-1 04/01/2014
+> [    9.440439] RIP: 0010:iov_iter_get_pages_alloc+0x2a8/0x400
 
-> 
-> > Also, can the key data, now included in the measurement list, be used
-> > to verify signatures in the ima-sig or ima-modsig templates?  Is there
-> > a way of correlating a signature with a key?  Perhaps include a
-> > kselftest as an example.
-> 
-> I am not familiar with kselftest. Will take a look and see if it'd be 
-> possible to correlate a signature with a key.
+Can you tell me if the following change fixes it for you?
 
-I'd like the measurement list to be self contained, allowing a
-regression test, for example, to walk the measurement list, verifying
-the file signatures stored in the measurement list based on the key
-measurement(s).
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -404,7 +404,7 @@ static size_t copy_page_to_iter_pipe(struct page *page,=
+ size_t offset, size_t by
+ =09buf->offset =3D offset;
+ =09buf->len =3D bytes;
+=20
+-=09pipe->head =3D i_head;
++=09pipe->head =3D i_head + 1;
+ =09i->iov_offset =3D offset + bytes;
+ =09i->head =3D i_head;
+ out:
 
-It isn't so much about Kselftest, but implementing a regression test
-(eg. Kselftest, LTP, ima-evm-utils, ...) as a PoC, in order to know
-that the key measurement contains everything needed to identify the
-key (eg. keyid, certificate serial number, ...) and verify file
-signatures.
+Attached is a test program that can induce some a bug in
+copy_page_to_iter_pipe() where I forgot to increment the new head when
+assigning it to pipe->head.
 
-Mimi
+David
+---
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <err.h>
+#include <sys/wait.h>
+
+static char buf[256 * 1024] __attribute__((aligned(512)));
+static char *filename;
+static int pipe_wfd =3D -1;
+
+static void cleanup(void)
+{
+=09close(pipe_wfd);
+}
+
+static void cleanup_child(void)
+{
+=09int w;
+=09wait(&w);
+}
+
+int child(int fd)
+{
+=09ssize_t r;
+
+=09do {
+=09=09r =3D read(fd, buf, 256 * 1024);
+=09=09if (r =3D=3D -1)
+=09=09=09err(1, "read");
+=09} while (r !=3D 0);
+
+=09if (close(fd) =3D=3D -1)
+=09=09err(1, "close");
+
+=09return 0;
+}
+
+int main(int argc, char **argv)
+{
+=09ssize_t n;
+=09loff_t offset;
+=09size_t len;
+=09pid_t pid;
+=09int fd, pfd[2];
+
+=09if (argc !=3D 2) {
+=09=09fprintf(stderr, "Format: %s <file>\n", argv[1]);
+=09=09exit(2);
+=09}
+
+=09filename =3D argv[1];
+
+=09if (pipe(pfd) =3D=3D -1)
+=09=09err(1, "pipe");
+=09pipe_wfd =3D pfd[1];
+
+=09pid =3D fork();
+=09switch (pid) {
+=09case -1:
+=09=09err(1, "fork");
+=09case 0:
+=09=09close(pfd[1]);
+=09=09return child(pfd[0]);
+=09default:
+=09=09close(pfd[0]);
+=09=09atexit(cleanup_child);
+=09=09break;
+=09}
+
+=09fd =3D open(filename, O_RDONLY);
+=09if (fd =3D=3D -1)
+=09=09err(1, "%s", filename);
+
+=09atexit(cleanup);
+
+=09len =3D 256 * 1024;
+=09offset =3D 0;
+=09do {
+=09=09n =3D splice(fd, &offset, pfd[1], NULL, 256 * 1024, 0);
+=09=09if (n =3D=3D -1)
+=09=09=09err(1, "splice");
+=09} while (len -=3D n, len > 0);
+
+=09if (close(pfd[1]) =3D=3D -1)
+=09=09err(1, "close/p");
+=09if (close(fd) =3D=3D -1)
+=09=09err(1, "close/f");
+=09return 0;
+}
 
