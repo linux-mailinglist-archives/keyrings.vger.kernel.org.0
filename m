@@ -2,79 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FF36FCD92
-	for <lists+keyrings@lfdr.de>; Thu, 14 Nov 2019 19:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB863FDEAA
+	for <lists+keyrings@lfdr.de>; Fri, 15 Nov 2019 14:14:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbfKNSam (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 Nov 2019 13:30:42 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:34982 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726289AbfKNSam (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Nov 2019 13:30:42 -0500
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 6DD0F20110C5;
-        Thu, 14 Nov 2019 10:30:41 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6DD0F20110C5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1573756241;
-        bh=e34wBcGrkzium9S0nLXTM8zcP/I7IMpdThpV/SvpLXo=;
-        h=Subject:From:To:References:Date:In-Reply-To:From;
-        b=M42MiLqFiMb/kxpyHFHubuIHG1d4k97HJDOUGJ2iRF7z7rl1MmPhT11Jye515ar9u
-         6m6yhmTvqsCDlLdkP1gpISLKpiPUnRdBA9YYvQduQ4sRJpTEkZGh7I40dzeEJOeWj+
-         hPj3TIitM/qY0QN16gxwz9U6JnCW89ukk/hjIyA8=
-Subject: Re: [PATCH v7 2/5] IMA: Define an IMA hook to measure keys
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, dhowells@redhat.com,
-        matthewgarrett@google.com, sashal@kernel.org,
+        id S1727520AbfKONOt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Nov 2019 08:14:49 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:44484 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727355AbfKONOt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Nov 2019 08:14:49 -0500
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAFD2Bix070312
+        for <keyrings@vger.kernel.org>; Fri, 15 Nov 2019 08:14:48 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2w9nuh6rh4-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Fri, 15 Nov 2019 08:14:48 -0500
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Fri, 15 Nov 2019 13:14:46 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 15 Nov 2019 13:14:42 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xAFDEfI943713012
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 Nov 2019 13:14:41 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 90D2811C052;
+        Fri, 15 Nov 2019 13:14:41 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6655311C04A;
+        Fri, 15 Nov 2019 13:14:40 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.206.176])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 15 Nov 2019 13:14:40 +0000 (GMT)
+Subject: Re: [PATCH v7 3/5] KEYS: Call the IMA hook to measure keys
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        dhowells@redhat.com, matthewgarrett@google.com, sashal@kernel.org,
         jamorris@linux.microsoft.com, linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Date:   Fri, 15 Nov 2019 08:14:39 -0500
+In-Reply-To: <24262d82-c90b-b64d-f237-9ef038f38d0e@linux.microsoft.com>
 References: <20191114031202.18012-1-nramas@linux.microsoft.com>
- <20191114031202.18012-3-nramas@linux.microsoft.com>
-Message-ID: <56718c81-86db-c72b-19b7-c563838838d6@linux.microsoft.com>
-Date:   Thu, 14 Nov 2019 10:30:37 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191114031202.18012-3-nramas@linux.microsoft.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+         <20191114031202.18012-4-nramas@linux.microsoft.com>
+         <1573743267.4793.43.camel@linux.ibm.com>
+         <24262d82-c90b-b64d-f237-9ef038f38d0e@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19111513-0028-0000-0000-000003B72858
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19111513-0029-0000-0000-0000247A39C3
+Message-Id: <1573823679.4793.121.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-15_03:2019-11-15,2019-11-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-1911150120
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 11/13/19 7:11 PM, Lakshmi Ramasubramanian wrote:
+On Thu, 2019-11-14 at 10:24 -0800, Lakshmi Ramasubramanian wrote:
+> On 11/14/2019 6:54 AM, Mimi Zohar wrote:
+> > With this patch, keys are now being measured.  With the boot command
+> > line, we can verify the measurement entry against /proc/cmdline.  How
+> > can the key measurement entry be verified?  Please include that
+> > information, here, in this patch description.
+> 
+> Glad you could verify measurement of keys. Thanks a lot for trying it.
+> 
+> Will add information on testing\validating the feature.
 
-> The IMA hook is defined in a new file namely ima_asymmetric_keys.c
-> which is built only if CONFIG_KEYS is enabled.
+Thank you.
 
-I think instead of CONFIG_KEYS I should use 
-CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE for ima_asymmetric_keys.c since 
-this config is enabled only when both CONFIG_ASYMMETRIC_KEY_TYPE and 
-CONFIG_KEYS are enabled.
+> 
+> > Also, can the key data, now included in the measurement list, be used
+> > to verify signatures in the ima-sig or ima-modsig templates?  Is there
+> > a way of correlating a signature with a key?  Perhaps include a
+> > kselftest as an example.
+> 
+> I am not familiar with kselftest. Will take a look and see if it'd be 
+> possible to correlate a signature with a key.
 
-Please see below taken from "crypto/asymmetric_keys/Kconfig"
+I'd like the measurement list to be self contained, allowing a
+regression test, for example, to walk the measurement list, verifying
+the file signatures stored in the measurement list based on the key
+measurement(s).
 
-# SPDX-License-Identifier: GPL-2.0
-menuconfig ASYMMETRIC_KEY_TYPE
-         bool "Asymmetric (public-key cryptographic) key type"
-         depends on KEYS
-         help
-           This option provides support for a key type that holds the 
-data for
-           the asymmetric keys used for public key cryptographic 
-operations such
-           as encryption, decryption, signature generation and signature
-           verification.
+It isn't so much about Kselftest, but implementing a regression test
+(eg. Kselftest, LTP, ima-evm-utils, ...) as a PoC, in order to know
+that the key measurement contains everything needed to identify the
+key (eg. keyid, certificate serial number, ...) and verify file
+signatures.
 
-if ASYMMETRIC_KEY_TYPE
+Mimi
 
-config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-         tristate "Asymmetric public-key crypto algorithm subtype"
-
-endif # ASYMMETRIC_KEY_TYPE
-
-thanks,
-  -lakshmi
