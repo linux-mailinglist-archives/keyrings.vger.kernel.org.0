@@ -2,82 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 407F6FFFD7
-	for <lists+keyrings@lfdr.de>; Mon, 18 Nov 2019 08:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5090F100AFB
+	for <lists+keyrings@lfdr.de>; Mon, 18 Nov 2019 19:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726332AbfKRHxa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 Nov 2019 02:53:30 -0500
-Received: from mga07.intel.com ([134.134.136.100]:29559 "EHLO mga07.intel.com"
+        id S1726322AbfKRSBJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 Nov 2019 13:01:09 -0500
+Received: from mga02.intel.com ([134.134.136.20]:53283 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726315AbfKRHxa (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 18 Nov 2019 02:53:30 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
+        id S1726317AbfKRSBJ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 18 Nov 2019 13:01:09 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Nov 2019 23:53:28 -0800
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Nov 2019 10:01:07 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,319,1569308400"; 
-   d="scan'208";a="196047576"
-Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.255.29.39]) ([10.255.29.39])
-  by orsmga007.jf.intel.com with ESMTP; 17 Nov 2019 23:53:24 -0800
-Subject: Re: [LKP] Re: [pipe] d60337eff1:
- BUG:kernel_NULL_pointer_dereference,address
-To:     David Howells <dhowells@redhat.com>,
-        kernel test robot <lkp@intel.com>
-Cc:     torvalds@linux-foundation.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        nicolas.dichtel@6wind.com, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lkp@lists.01.org
-References: <9279.1573824532@warthog.procyon.org.uk>
- <20191110031348.GE29418@shao2-debian>
- <6853.1573834946@warthog.procyon.org.uk>
-From:   kernel test robot <rong.a.chen@intel.com>
-Message-ID: <35daca93-ff2b-2c7d-b837-72396ca0677a@intel.com>
-Date:   Mon, 18 Nov 2019 15:53:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+X-IronPort-AV: E=Sophos;i="5.68,321,1569308400"; 
+   d="scan'208";a="380732548"
+Received: from cooperwu-mobl.gar.corp.intel.com (HELO localhost) ([10.252.3.195])
+  by orsmga005.jf.intel.com with ESMTP; 18 Nov 2019 10:01:03 -0800
+Date:   Mon, 18 Nov 2019 20:01:02 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     linux-fscrypt@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Paul Crowley <paulcrowley@google.com>,
+        Paul Lawrence <paullawrence@google.com>,
+        keyrings@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, David Howells <dhowells@redhat.com>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        Ondrej Kozina <okozina@redhat.com>
+Subject: Re: [PATCH] fscrypt: support passing a keyring key to
+ FS_IOC_ADD_ENCRYPTION_KEY
+Message-ID: <20191118180102.GB5984@linux.intel.com>
+References: <20191107001259.115018-1-ebiggers@kernel.org>
+ <20191115172832.GA21300@linux.intel.com>
+ <20191115192227.GA150987@sol.localdomain>
+ <20191115225319.GB29389@linux.intel.com>
+ <20191115230430.GA217050@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <6853.1573834946@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191115230430.GA217050@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi David,
+On Fri, Nov 15, 2019 at 03:04:31PM -0800, Eric Biggers wrote:
+> On Sat, Nov 16, 2019 at 12:53:19AM +0200, Jarkko Sakkinen wrote:
+> > 
+> > > I'm working on an xfstest for this:
+> > > 
+> > > 	https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/xfstests-dev.git/commit/?h=fscrypt-provisioning&id=24ab6abb7cf6a80be44b7c72b73f0519ccaa5a97
+> > > 
+> > > It's not quite ready, though.  I'll post it for review when it is.
+> > > 
+> > > Someone is also planning to update Android userspace to use this.  So if there
+> > > are any issues from that, I'll hear about it.
+> > 
+> > Cool. Can you combine this patch and matching test (once it is done) to
+> > a patch set?
+> > 
+> 
+> xfstests is developed separately from the kernel (different git repo and
+> maintainer), so combining kernel and xfstests patches into the same patchset
+> doesn't make sense.  I can certainly send them out at the same time, though.
 
-Yes, it can fix the problem.
+Is there instructions somewhere how to build and run these tests?
 
-Best Regards,
-Rong Chen
+For me it is sufficient if you point a branch and have some kind
+of instructions somewhere.
 
-On 11/16/2019 12:22 AM, David Howells wrote:
-> Actually, no, this is the fix:
->
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index 7006b5b2106d..be2fc5793ddd 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -537,7 +537,7 @@ static size_t push_pipe(struct iov_iter *i, size_t size,
->   		buf->ops = &default_pipe_buf_ops;
->   		buf->page = page;
->   		buf->offset = 0;
-> -		buf->len = max_t(ssize_t, left, PAGE_SIZE);
-> +		buf->len = min_t(ssize_t, left, PAGE_SIZE);
->   		left -= buf->len;
->   		iter_head++;
->   		pipe->head = iter_head;
->
-> David
-> _______________________________________________
-> LKP mailing list -- lkp@lists.01.org
-> To unsubscribe send an email to lkp-leave@lists.01.org
-
+/Jarkko
