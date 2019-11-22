@@ -2,66 +2,89 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E711810585D
-	for <lists+keyrings@lfdr.de>; Thu, 21 Nov 2019 18:16:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AB04105F35
+	for <lists+keyrings@lfdr.de>; Fri, 22 Nov 2019 05:26:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfKURQ2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 21 Nov 2019 12:16:28 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:34234 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726541AbfKURQ2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 21 Nov 2019 12:16:28 -0500
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id B562520B7185;
-        Thu, 21 Nov 2019 09:16:27 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B562520B7185
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1574356587;
-        bh=qat8oBu3lTpPZCIADeKrXEqOEeEglX6sCbk/08Ye0xY=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=VGaFauFcEmscLAjXlvBoPG6FNb9b6UeymvFXF+EQpSkm8a204R9K5/dRwB8i7ByXO
-         IPsj4qI/xFmN+MsLo+Z3rItTS07qprkf6SicjtbaE0kiOckYtSZ20ADfNFi8GRuDnG
-         Y/loVCfZiNEAxN1oRlrt1AB467Af9y5pmeeAPo1Y=
-Subject: Re: [PATCH v8 2/5] IMA: Define an IMA hook to measure keys
-To:     Mimi Zohar <zohar@linux.ibm.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-References: <20191118223818.3353-1-nramas@linux.microsoft.com>
- <20191118223818.3353-3-nramas@linux.microsoft.com>
- <ED63593E-BE9B-40B7-B7FD-9DE772DC2EB1@oracle.com>
- <98eeec95-cc19-2900-b96e-eadaac1b4a68@linux.microsoft.com>
- <1574299330.4793.158.camel@linux.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <2dfe3a9b-8a24-5da4-f889-9ac3db44c50b@linux.microsoft.com>
-Date:   Thu, 21 Nov 2019 09:16:22 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726752AbfKVE0L (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 21 Nov 2019 23:26:11 -0500
+Received: from mail-qk1-f180.google.com ([209.85.222.180]:46344 "EHLO
+        mail-qk1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726747AbfKVE0L (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 21 Nov 2019 23:26:11 -0500
+Received: by mail-qk1-f180.google.com with SMTP id h15so5125528qka.13;
+        Thu, 21 Nov 2019 20:26:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mHG8+AxgBFSWa8fV+NFUGm+PfxGngjUbTez74iu0nRg=;
+        b=tI9ZcU4Xe1MKGicL93WBj6TscKcqAOuxBlMzSP/FS2W2Pv4T2F1rHrN+Aepi6pF2NL
+         Ym2EkT5lcpeqUFQfNfIitYYxY69axKaYRavmuTDa0YsvoFpuzMVmMl+uKNsD4Z9OptCS
+         +RW20STVgsxUffNkF56iNWvWeuMaaZUXbChfa9gVcu4vhDVNvQNkc/45ou7xLo/XbMO7
+         NeTCb8AlptxmP8eMKnkfEFRW0owhazbJZlYdEj0ZpkJlG0VpTwhqcSk8NW27Gzlliqz4
+         xDQDroUim2xPx7F8BNkXJBGEjrMX+m4EOKXWTZul9cV1ONthw+PqfHg4nQF02M7XtRGt
+         QWkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mHG8+AxgBFSWa8fV+NFUGm+PfxGngjUbTez74iu0nRg=;
+        b=GxzMmdfojenwTOvaE9xiAFAGX68gDgB/Lzl561B4vvAwhlrdAjFwLrGGIP5WDKa1K/
+         RzzOpE1B4szno97Px1qQObho0r8c4wVwTLee6pIykeQn1AS5FM869O6/lEvln/zcwjcO
+         hK9ZP5/mOUON/G8L9pBLGG3AaEa0PA9ePrnUkVwSr2qxSesDtUH/0ralxFo2CiEEreDi
+         3uwQnia0UXkqUcOhQl6UTTSmZ1+Ose7le+KKs9Fp1YyYBQjHgZHIDNE032zZ2HxFUWyG
+         sjUccy2EG3JsUkZWyePvrayVGgSNthskWMeH+pNrmU1ICSmI7Qhx3/rSKueuzlIKdYwv
+         qkwQ==
+X-Gm-Message-State: APjAAAWW0v3oHwOwtc2Fuzp0D+qT4KRJkDPS+Zs5n4GqEjk0sZE3rqve
+        5q3P4CnFd1YG2/yFOQxoggKB/Hx7z3hcVQ==
+X-Google-Smtp-Source: APXvYqyW5aL2g8rbYlgvhpyY3kUxtcidGpbW8mDaqNBNfOBUXyy8NsIxoXl2GcFRM2QkICe6U0DT8Q==
+X-Received: by 2002:a37:508b:: with SMTP id e133mr11084096qkb.21.1574396770124;
+        Thu, 21 Nov 2019 20:26:10 -0800 (PST)
+Received: from localhost.localdomain ([2804:14d:72b1:8920:a2ce:f815:f14d:bfac])
+        by smtp.gmail.com with ESMTPSA id b6sm2748821qtp.5.2019.11.21.20.26.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Nov 2019 20:26:09 -0800 (PST)
+From:   "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
+X-Google-Original-From: Daniel W. S. Almeida
+To:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        corbet@lwn.net
+Cc:     "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>,
+        keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Subject: [PATCH] Documentation: security: core.rst: fix warnings
+Date:   Fri, 22 Nov 2019 01:18:06 -0300
+Message-Id: <20191122041806.68650-1-dwlsalmeida@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <1574299330.4793.158.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 11/20/19 5:22 PM, Mimi Zohar wrote:
+From: "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
 
->> I had the following check in process_buffer_measurement() as part of my
->> patch, but removed it since it is being upstreamed separately (by Mimi)
->>
->>    if (!ima_policy_flag)
->>    	return;
-> 
-> Did you post it as a separate patch?  I can't seem to find it.
-> 
-> Mimi
-> 
+Fix warnings due to missing markup, no change in content otherwise.
 
-I have sent a separate patch with just this change (to check 
-ima_policy_flag in process_buffer_measurement()).
+Signed-off-by: Daniel W. S. Almeida <dwlsalmeida@gmail.com>
+---
+ Documentation/security/keys/core.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks,
-  -lakshmi
+diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
+index d6d8b0b756b6..d9b0b859018b 100644
+--- a/Documentation/security/keys/core.rst
++++ b/Documentation/security/keys/core.rst
+@@ -1102,7 +1102,7 @@ payload contents" for more information.
+     See also Documentation/security/keys/request-key.rst.
+ 
+ 
+- *  To search for a key in a specific domain, call:
++ *  To search for a key in a specific domain, call::
+ 
+ 	struct key *request_key_tag(const struct key_type *type,
+ 				    const char *description,
+-- 
+2.24.0
+
