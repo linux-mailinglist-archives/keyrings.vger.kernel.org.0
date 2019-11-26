@@ -2,282 +2,152 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 068A2109592
-	for <lists+keyrings@lfdr.de>; Mon, 25 Nov 2019 23:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81A97109999
+	for <lists+keyrings@lfdr.de>; Tue, 26 Nov 2019 08:32:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbfKYWkC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 25 Nov 2019 17:40:02 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:44780 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725946AbfKYWkB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Nov 2019 17:40:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574721599;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=5sKIYkJNyPnvls7YymGjYgeRReOTkIWJFCCY/KNJN4E=;
-        b=EjuYjEx5/34jJmXXXgzxWlzOf6AGaCWqQ+45PcraM3dV28GUr6y94qzfB8NZ/j2sTREux2
-        cp+X6plr+xEi7gBrEGwxw9OAfX2Bzoyij/3JMvSk2iHkshzVl/Id06JY7iDKfgugRIFGVN
-        9ikpa0GIRgAjgt7p9FEzr+3qffVcrRY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-52-YNICEyQ8MOCH5iLhyx9JEQ-1; Mon, 25 Nov 2019 17:39:56 -0500
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A9750DB20;
-        Mon, 25 Nov 2019 22:39:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-161.rdu2.redhat.com [10.10.120.161])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C15825D9CA;
-        Mon, 25 Nov 2019 22:39:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-cc:     dhowells@redhat.com, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>, raven@themaw.net,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [GIT PULL] pipe: Notification queue preparation
+        id S1725970AbfKZHcQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 26 Nov 2019 02:32:16 -0500
+Received: from mga04.intel.com ([192.55.52.120]:47051 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725802AbfKZHcQ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 26 Nov 2019 02:32:16 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Nov 2019 23:32:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,244,1571727600"; 
+   d="scan'208";a="198736753"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by orsmga007.jf.intel.com with ESMTP; 25 Nov 2019 23:32:15 -0800
+Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 25 Nov 2019 23:32:15 -0800
+Received: from shsmsx151.ccr.corp.intel.com (10.239.6.50) by
+ fmsmsx115.amr.corp.intel.com (10.18.116.19) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 25 Nov 2019 23:32:14 -0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.108]) by
+ SHSMSX151.ccr.corp.intel.com ([169.254.3.149]) with mapi id 14.03.0439.000;
+ Tue, 26 Nov 2019 15:32:12 +0800
+From:   "Zhao, Shirley" <shirley.zhao@intel.com>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>
+CC:     "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "'Mauro Carvalho Chehab'" <mchehab+samsung@kernel.org>,
+        "Zhu, Bing" <bing.zhu@intel.com>,
+        "Chen, Luhai" <luhai.chen@intel.com>
+Subject: RE: One question about trusted key of keyring in Linux kernel.
+Thread-Topic: One question about trusted key of keyring in Linux kernel.
+Thread-Index: AdWZwFKzDBwFOydYTGGk+Aqs+6BIxAANhxEAAoxRZMA=
+Date:   Tue, 26 Nov 2019 07:32:12 +0000
+Message-ID: <A888B25CD99C1141B7C254171A953E8E49095F9B@shsmsx102.ccr.corp.intel.com>
+References: <A888B25CD99C1141B7C254171A953E8E49094313@shsmsx102.ccr.corp.intel.com>
+ <1573659978.17949.83.camel@linux.ibm.com>
+In-Reply-To: <1573659978.17949.83.camel@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNDllZDA5NzgtOWI5Yy00Zjk1LWE4ODAtOWMwYmU4ZGM3OWZmIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiT3JOXC93Y0dwNXQwVW44WXp0b3plWnFRZldzdFFQZExvS2VyQmczRVUreFdESUpSYU1Hd3pzVFh6UGFjOCtvdUgifQ==
+x-ctpclassification: CTP_NT
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-ID: <31451.1574721589.1@warthog.procyon.org.uk>
-Date:   Mon, 25 Nov 2019 22:39:49 +0000
-Message-ID: <31452.1574721589@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: YNICEyQ8MOCH5iLhyx9JEQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Linus,
-
-Can you pull this please?  This is my set of preparatory patches for
-building a general notification queue on top of pipes.  It makes a number
-of significant changes:
-
- (1) It removes the nr_exclusive argument from __wake_up_sync_key() as this
-     is always 1.  This prepares for step 2.
-
- (2) Adds wake_up_interruptible_sync_poll_locked() so that poll can be
-     woken up from a function that's holding the poll waitqueue spinlock.
-
-     [btw, I realise that I haven't un-sync'd the
-      wake_up_interruptible_sync_poll() calls as you tentatively suggested.
-      I can send a follow up patch to fix that if you still want it]
-
- (3) Change the pipe buffer ring to be managed in terms of unbounded head
-     and tail indices rather than bounded index and length.  This means
-     that reading the pipe only needs to modify one index, not two.
-
- (4) A selection of helper functions are provided to query the state of the
-     pipe buffer, plus a couple to apply updates to the pipe indices.
-
- (5) The pipe ring is allowed to have kernel-reserved slots.  This allows
-     many notification messages to be spliced in by the kernel without
-     allowing userspace to pin too many pages if it writes to the same
-     pipe.
-
- (6) Advance the head and tail indices inside the pipe waitqueue lock and
-     use step 2 to poke poll without having to take the lock twice.
-
- (7) Rearrange pipe_write() to preallocate the buffer it is going to write
-     into and then drop the spinlock.  This allows kernel notifications to
-     then be added the ring whilst it is filling the buffer it allocated.
-     The read side is stalled because the pipe mutex is still held.
-
- (8) Don't wake up readers on a pipe if there was already data in it when
-     we added more.
-
- (9) Don't wake up writers on a pipe if the ring wasn't full before we
-     removed a buffer.
-
-PATCHES=09BENCHMARK=09BEST=09=09TOTAL BYTES=09AVG BYTES=09STDDEV
-=3D=3D=3D=3D=3D=3D=3D=09=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=09=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=09=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=09=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=09=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
--=09pipe=09=09      307457969=09    36348556755=09      302904639=09       =
-10622403
--=09splice=09=09      287117614=09    26933658717=09      224447155=09     =
- 160777958
--=09vmsplice=09      435180375=09    51302964090=09      427524700=09      =
- 19083037
-
-rm-nrx=09pipe=09=09      311091179=09    37093181356=09      309109844=09  =
-      7221622
-rm-nrx=09splice=09=09      285628049=09    27916298942=09      232635824=09=
-      158296431
-rm-nrx=09vmsplice=09      417703153=09    47570362546=09      396419687=09 =
-      33960822
-
-wakesl=09pipe=09=09      310698731=09    36772541631=09      306437846=09  =
-      8249347
-wakesl=09splice=09=09      286193726=09    28600435451=09      238336962=09=
-      141169318
-wakesl=09vmsplice=09      436175803=09    50723895824=09      422699131=09 =
-      40724240
-
-ht=09pipe=09=09      305534565=09    36426079543=09      303550662=09      =
-  5673885
-ht=09splice=09=09      243632025=09    23319439010=09      194328658=09    =
-  150479853
-ht=09vmsplice=09      432825176=09    49101781001=09      409181508=09     =
-  44102509
-
-k-rsv=09pipe=09=09      308691523=09    36652267561=09      305435563=09   =
-    12972559
-k-rsv=09splice=09=09      244793528=09    23625172865=09      196876440=09 =
-     125319143
-k-rsv=09vmsplice=09      436119082=09    49460808579=09      412173404=09  =
-     55547525
-
-r-adv-t=09pipe=09=09      310094218=09    36860182219=09      307168185=09 =
-       8081101
-r-adv-t=09splice=09=09      285527382=09    27085052687=09      225708772=
-=09      206918887
-r-adv-t=09vmsplice=09      336885948=09    40128756927=09      334406307=09=
-        5895935
-
-r-cond=09pipe=09=09      308727804=09    36635828180=09      305298568=09  =
-      9976806
-r-cond=09splice=09=09      284467568=09    28445793054=09      237048275=09=
-      200284329
-r-cond=09vmsplice=09      449679489=09    51134833848=09      426123615=09 =
-      66790875
-
-w-preal=09pipe=09=09      307416578=09    36662086426=09      305517386=09 =
-       6216663
-w-preal=09splice=09=09      282655051=09    28455249109=09      237127075=
-=09      194154549
-w-preal=09vmsplice=09      437002601=09    47832160621=09      398601338=09=
-       96513019
-
-w-redun=09pipe=09=09      307279630=09    36329750422=09      302747920=09 =
-       8913567
-w-redun=09splice=09=09      284324488=09    27327152734=09      227726272=
-=09      219735663
-w-redun=09vmsplice=09      451141971=09    51485257719=09      429043814=09=
-       51388217
-
-w-ckful=09pipe=09=09      305055247=09    36374947350=09      303124561=09 =
-       5400728
-w-ckful=09splice=09=09      281575308=09    26841554544=09      223679621=
-=09      215942886
-w-ckful=09vmsplice=09      436653588=09    47564907110=09      396374225=09=
-       82255342
-
-The patches column indicates the point in the patchset at which the benchma=
-rks
-were taken:
-
-=090=09No patches
-=09rm-nrx=09"Remove the nr_exclusive argument from __wake_up_sync_key()"
-=09wakesl=09"Add wake_up_interruptible_sync_poll_locked()"
-=09ht=09"pipe: Use head and tail pointers for the ring, not cursor and leng=
-th"
-=09k-rsv=09"pipe: Allow pipes to have kernel-reserved slots"
-=09r-adv-t=09"pipe: Advance tail pointer inside of wait spinlock in pipe_re=
-ad()"
-=09r-cond=09"pipe: Conditionalise wakeup in pipe_read()"
-=09w-preal=09"pipe: Rearrange sequence in pipe_write() to preallocate slot"
-=09w-redun=09"pipe: Remove redundant wakeup from pipe_write()"
-=09w-ckful=09"pipe: Check for ring full inside of the spinlock in pipe_writ=
-e()"
-
-Changes:
-
- (*) Fix some bugs spotted by kbuild.
-
- ver #3:
-
- (*) Get rid of pipe_commit_{read,write}.
-
- (*) Port the virtio_console driver.
-
- (*) Fix pipe_zero().
-
- (*) Amend some comments.
-
- (*) Added an additional patch that changes the threshold at which readers
-     wake writers for Konstantin Khlebnikov.
-
- ver #2:
-
- (*) Split the notification patches out into a separate branch.
-
- (*) Removed the nr_exclusive parameter from __wake_up_sync_key().
-
- (*) Renamed the locked wakeup function.
-
- (*) Add helpers for empty, full, occupancy.
-
- (*) Split the addition of ->max_usage out into its own patch.
-
- (*) Fixed some bits pointed out by Rasmus Villemoes.
-
- ver #1:
-
- (*) Build on top of standard pipes instead of having a driver.
-
-David
----
-The following changes since commit da0c9ea146cbe92b832f1b0f694840ea8eb33cce=
-:
-
-  Linux 5.4-rc2 (2019-10-06 14:27:30 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/=
-notifications-pipe-prep-20191115
-
-for you to fetch changes up to 3c0edea9b29f9be6c093f236f762202b30ac9431:
-
-  pipe: Remove sync on wake_ups (2019-11-15 16:22:54 +0000)
-
-----------------------------------------------------------------
-Pipework for general notification queue
-
-----------------------------------------------------------------
-David Howells (12):
-      pipe: Reduce #inclusion of pipe_fs_i.h
-      Remove the nr_exclusive argument from __wake_up_sync_key()
-      Add wake_up_interruptible_sync_poll_locked()
-      pipe: Use head and tail pointers for the ring, not cursor and length
-      pipe: Allow pipes to have kernel-reserved slots
-      pipe: Advance tail pointer inside of wait spinlock in pipe_read()
-      pipe: Conditionalise wakeup in pipe_read()
-      pipe: Rearrange sequence in pipe_write() to preallocate slot
-      pipe: Remove redundant wakeup from pipe_write()
-      pipe: Check for ring full inside of the spinlock in pipe_write()
-      pipe: Increase the writer-wakeup threshold to reduce context-switch c=
-ount
-      pipe: Remove sync on wake_ups
-
- drivers/char/virtio_console.c |  16 ++-
- fs/exec.c                     |   1 -
- fs/fuse/dev.c                 |  31 +++--
- fs/ocfs2/aops.c               |   1 -
- fs/pipe.c                     | 232 +++++++++++++++++++++---------------
- fs/splice.c                   | 190 +++++++++++++++++------------
- include/linux/pipe_fs_i.h     |  64 +++++++++-
- include/linux/uio.h           |   4 +-
- include/linux/wait.h          |  11 +-
- kernel/exit.c                 |   2 +-
- kernel/sched/wait.c           |  37 ++++--
- lib/iov_iter.c                | 269 ++++++++++++++++++++++++--------------=
-----
- security/smack/smack_lsm.c    |   1 -
- 13 files changed, 529 insertions(+), 330 deletions(-)
-
+VGhhbmtzIGZvciB5b3VyIGZlZWRiYWNrLCBNaW1pLiANCkJ1dCB0aGUgZG9jdW1lbnQgb2YgZHJh
+Y3V0IGNhbid0IHNvbHZlIG15IHByb2JsZW0uIA0KDQpJIGRpZCBtb3JlIHRlc3QgdGhlc2UgZGF5
+cyBhbmQgdHJ5IHRvIGRlc2NyaXB0IG15IHF1ZXN0aW9uIGluIG1vcmUgZGV0YWlsLiANCg0KSW4g
+bXkgc2NlbmFyaW8sIHRoZSB0cnVzdGVkIGtleSB3aWxsIGJlIHNlYWxlZCBpbnRvIFRQTSB3aXRo
+IFBDUiBwb2xpY3kuIA0KQW5kIHRoZXJlIGFyZSBzb21lIHJlbGF0ZWQgb3B0aW9ucyBpbiBtYW51
+YWwgbGlrZSANCiAgICAgICBoYXNoPSAgICAgICAgIGhhc2ggYWxnb3JpdGhtIG5hbWUgYXMgYSBz
+dHJpbmcuIEZvciBUUE0gMS54IHRoZSBvbmx5DQogICAgICAgICAgICAgICAgICAgICBhbGxvd2Vk
+IHZhbHVlIGlzIHNoYTEuIEZvciBUUE0gMi54IHRoZSBhbGxvd2VkIHZhbHVlcw0KICAgICAgICAg
+ICAgICAgICAgICAgYXJlIHNoYTEsIHNoYTI1Niwgc2hhMzg0LCBzaGE1MTIgYW5kIHNtMy0yNTYu
+DQogICAgICAgcG9saWN5ZGlnZXN0PSBkaWdlc3QgZm9yIHRoZSBhdXRob3JpemF0aW9uIHBvbGlj
+eS4gbXVzdCBiZSBjYWxjdWxhdGVkDQogICAgICAgICAgICAgICAgICAgICB3aXRoIHRoZSBzYW1l
+IGhhc2ggYWxnb3JpdGhtIGFzIHNwZWNpZmllZCBieSB0aGUgJ2hhc2g9Jw0KICAgICAgICAgICAg
+ICAgICAgICAgb3B0aW9uLg0KICAgICAgIHBvbGljeWhhbmRsZT0gaGFuZGxlIHRvIGFuIGF1dGhv
+cml6YXRpb24gcG9saWN5IHNlc3Npb24gdGhhdCBkZWZpbmVzIHRoZQ0KICAgICAgICAgICAgICAg
+ICAgICAgc2FtZSBwb2xpY3kgYW5kIHdpdGggdGhlIHNhbWUgaGFzaCBhbGdvcml0aG0gYXMgd2Fz
+IHVzZWQgdG8NCiAgICAgICAgICAgICAgICAgICAgIHNlYWwgdGhlIGtleS4gDQoNCkhlcmUgaXMg
+bXkgdGVzdCBzdGVwLiANCkZpcnN0bHksIHRoZSBwY3IgcG9saWN5IGlzIGdlbmVyYXRlZCBhcyBi
+ZWxvdzogDQokIHRwbTJfY3JlYXRlcG9saWN5IC0tcG9saWN5LXBjciAtLXBjci1saXN0IHNoYTI1
+Njo3IC0tcG9saWN5IHBjcjdfYmluLnBvbGljeSA+IHBjcjcucG9saWN5DQoNClBjcjcucG9saWN5
+IGlzIHRoZSBhc2NpaSBoZXggb2YgcG9saWN5Og0KJCBjYXQgcGNyNy5wb2xpY3kNCjMyMWZiZDI4
+YjYwZmNjMjMwMTdkNTAxYjEzM2JkNWRiZjI4ODk4MTQ1ODhlOGEyMzUxMGZlMTAxMDVjYjJjYzkN
+Cg0KVGhlbiBnZW5lcmF0ZSB0aGUgdHJ1c3RlZCBrZXkgYW5kIGNvbmZpZ3VyZSBwb2xpY3lkaWdl
+c3QgYW5kIGdldCB0aGUga2V5IElEOiANCiQga2V5Y3RsIGFkZCB0cnVzdGVkIGttayAibmV3IDMy
+IGtleWhhbmRsZT0weDgxMDAwMDAxIGhhc2g9c2hhMjU2IHBvbGljeWRpZ2VzdD1gY2F0IHBjcjcu
+cG9saWN5YCIgQHUNCjg3NDExNzA0NQ0KDQpTYXZlIHRoZSB0cnVzdGVkIGtleS4gDQokIGtleWN0
+bCBwaXBlIDg3NDExNzA0NSA+IGttay5ibG9iDQoNClJlYm9vdCBhbmQgbG9hZCB0aGUga2V5LiAN
+ClN0YXJ0IGEgYXV0aCBzZXNzaW9uIHRvIGdlbmVyYXRlIHRoZSBwb2xpY3k6DQokIHRwbTJfc3Rh
+cnRhdXRoc2Vzc2lvbiAtUyBzZXNzaW9uLmN0eA0Kc2Vzc2lvbi1oYW5kbGU6IDB4MzAwMDAwMA0K
+JCB0cG0yX3Bjcmxpc3QgLUwgc2hhMjU2OjcgLW8gcGNyNy5zaGEyNTYNCiQgdHBtMl9wb2xpY3lw
+Y3IgLVMgc2Vzc2lvbi5jdHggLUwgc2hhMjU2OjcgLUYgcGNyNy5zaGEyNTYgLWYgcGNyNy5wb2xp
+Y3kNCnBvbGljeS1kaWdlc3Q6IDB4MzIxRkJEMjhCNjBGQ0MyMzAxN0Q1MDFCMTMzQkQ1REJGMjg4
+OTgxNDU4OEU4QTIzNTEwRkUxMDEwNUNCMkNDOQ0KDQpJbnB1dCB0aGUgcG9saWN5IGhhbmRsZSB0
+byBsb2FkIHRydXN0ZWQga2V5Og0KJCBrZXljdGwgYWRkIHRydXN0ZWQga21rICJsb2FkIGBjYXQg
+a21rLmJsb2JgIGtleWhhbmRsZT0weDgxMDAwMDAxIHBvbGljeWhhbmRsZT0weDMwMDAwMDAiIEB1
+DQphZGRfa2V5OiBPcGVyYXRpb24gbm90IHBlcm1pdHRlZA0KDQpUaGUgZXJyb3Igc2hvdWxkIGJl
+IHBvbGljeSBjaGVjayBmYWlsZWQsIGJlY2F1c2UgSSB1c2UgVFBNIGNvbW1hbmQgdG8gdW5zZWFs
+IGRpcmVjdGx5IHdpdGggZXJyb3Igb2YgcG9saWN5IGNoZWNrIGZhaWxlZC4gDQokIHRwbTJfdW5z
+ZWFsIC1jIDB4ODEwMDAwMDEgLUwgc2hhMjU2OjcNCkVSUk9SIG9uIGxpbmU6ICI4MSIgaW4gZmls
+ZTogIi4vbGliL2xvZy5oIjogVHNzMl9TeXNfVW5zZWFsKDB4OTlEKSAtIHRwbTpzZXNzaW9uKDEp
+OmEgcG9saWN5IGNoZWNrIGZhaWxlZA0KRVJST1Igb24gbGluZTogIjIxMyIgaW4gZmlsZTogInRv
+b2xzL3RwbTJfdW5zZWFsLmMiOiBVbnNlYWwgZmFpbGVkIQ0KRVJST1Igb24gbGluZTogIjE2NiIg
+aW4gZmlsZTogInRvb2xzL3RwbTJfdG9vbC5jIjogVW5hYmxlIHRvIHJ1biB0cG0yX3Vuc2VhbA0K
+DQpTbyBteSBxdWVzdGlvbiBpczoNCjEuIEhvdyB0byB1c2UgdGhlIG9wdGlvbiwgcG9saWN5ZGln
+ZXN0LCBwb2xpY3loYW5kbGU/PyBJcyB0aGVyZSBhbnkgZXhhbXBsZT8gDQoyLiBXaGF0J3Mgd3Jv
+bmcgd2l0aCBteSB0ZXN0IHN0ZXA/IA0KDQpUaGFua3MuIA0KDQotIFNoaXJsZXkgDQoNCg0KDQot
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTWltaSBab2hhciA8em9oYXJAbGludXgu
+aWJtLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIE5vdmVtYmVyIDEzLCAyMDE5IDExOjQ2IFBNDQpU
+bzogWmhhbywgU2hpcmxleSA8c2hpcmxleS56aGFvQGludGVsLmNvbT47IEphbWVzIEJvdHRvbWxl
+eSA8amVqYkBsaW51eC5pYm0uY29tPjsgSmFya2tvIFNha2tpbmVuIDxqYXJra28uc2Fra2luZW5A
+bGludXguaW50ZWwuY29tPjsgSm9uYXRoYW4gQ29yYmV0IDxjb3JiZXRAbHduLm5ldD4NCkNjOiBs
+aW51eC1pbnRlZ3JpdHlAdmdlci5rZXJuZWwub3JnOyBrZXlyaW5nc0B2Z2VyLmtlcm5lbC5vcmc7
+IGxpbnV4LWRvY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7
+ICdNYXVybyBDYXJ2YWxobyBDaGVoYWInIDxtY2hlaGFiK3NhbXN1bmdAa2VybmVsLm9yZz4NClN1
+YmplY3Q6IFJlOiBPbmUgcXVlc3Rpb24gYWJvdXQgdHJ1c3RlZCBrZXkgb2Yga2V5cmluZyBpbiBM
+aW51eCBrZXJuZWwuDQoNCk9uIFdlZCwgMjAxOS0xMS0xMyBhdCAwMToyMiArMDAwMCwgWmhhbywg
+U2hpcmxleSB3cm90ZToNCj4gSGksIGFsbCwNCj4gDQo+IFRoaXMgaXMgU2hpcmxleSBmcm9tIElu
+dGVsLiBJIGhhdmUgb25lIHF1ZXN0aW9uIGFib3V0IHRydXN0ZWQga2V5IG9mIA0KPiBrZXlyaW5n
+IGluIGtlcm5lbC4gUGxlYXNlIGhlbHAuDQo+IA0KPiBBY2NvcmRpbmcgdGhlIHRvIGRlc2NyaXB0
+aW9uIGluIGh0dHBzOi8vZ2l0aHViLmNvbS90b3J2YWxkcy9saW51eC9ibA0KPiBvYi9tYXN0ZXIv
+RG9jdW1lbnRhdGlvbi9zZWN1cml0eS9rZXlzL3RydXN0ZWQtZW5jcnlwdGVkLnJzdC4NCj4gVHJ1
+c3RlZCBrZXkgd2lsbCBiZSBzYXZlZCBpbiBUUE0gd2l0aCBQQ1IgcG9saWN5IHByb3RlY3RlZC4N
+Cg0KIlRydXN0ZWQgS2V5cyB1c2UgYSBUUE0gYm90aCB0byBnZW5lcmF0ZSBhbmQgdG8gc2VhbCB0
+aGUga2V5cy4gS2V5cyBhcmUgc2VhbGVkIHVuZGVyIGEgMjA0OCBiaXQgUlNBIGtleSBpbiB0aGUg
+VFBNLCAuLi4iDQoNClRydXN0ZWQga2V5cyBhcmUgbm90IFRQTSBrZXlzLiDCoFRoZXkgYXJlIG5v
+dCBzdG9yZWQgaW4gdGhlIFRQTS4NCg0KPiANCj4gVGhlbiwgSSBydW5uaW5nIHRoZSBmb2xsb3dp
+bmcgY29tbWFuZCB0byBjcmVhdGUgYSB0cnVzdGVkIGtleS4NCj4ga2V5Y3RsIGFkZCB0cnVzdGVk
+IHRlc3RfdHJ1c3RlZCAibmV3IDMyIGtleWhhbmRsZT0weDgxMDAwMDAxIiBAdQ0KPiANCj4gSSBh
+bHNvIHRyaWVkIHRoZSBmb2xsb3dpbmcgY29tbWFuZCwgaXQgY2FuIGFkZCBvbmUgdHJ1c3RlZCBr
+ZXksIHRvby4NCj4ga2V5Y3RsIGFkZCB0cnVzdGVkIHRlc3RfdHJ1c3RlZCAibmV3IDMyIGtleWhh
+bmRsZT0weDgxMDAwMDAxIA0KPiBwY3JpbmZvPWBjYXQgcGNyNy5ibG9iYCIgQHUNCj4gDQo+IEJ1
+dCBhZnRlciByZWJvb3QsIHRoaXMga2V5IHdpbGwgYmUgcmVtb3ZlZC4NCj4gSSBuZWVkIHRvIHJl
+LWFkZGVkIGR1cmluZyBib290Lg0KDQpSaWdodCwgdGhleSBuZWVkIHRvIGJlIHJlLWxvYWRlZCBv
+biBib290LiDCoFJlZmVyIHRvIHRoZSBkcmFjdXQgbW9kdWxlIC9tb2R1bGVzLmQvOTdtYXN0ZXJr
+ZXkgZm9yIGxvYWRpbmcgYSB0cnVzdGVkIGtleSBkdXJpbmcgYm9vdC4NCg0KPiANCj4gVGhlbiB0
+aGUgcXVlc3Rpb24gaXMgc2luY2UgdGhpcyBrZXkgaXMgc2F2ZWQgaW4gVFBNLCBob3cgdG8gZ2V0
+IGl0IA0KPiBiYWNrIGZyb20gVFBNPw0KDQpUcnVzdGVkIGtleXMgYXJlIG5vdCBzdG9yZWQgaW4g
+dGhlIFRQTS4gwqBSZWZlciB0byB0aGUgaW1hLWV2bS11dGlscyBSRUFETUUgZm9yIGV4YW1wbGVz
+IG9mIGNyZWF0aW5nIGEgdHJ1c3RlZCBrZXkgKGttaykgYW5kIGFuIGVuY3J5cHRlZCBrZXkgKGV2
+bS1rZXkpLg0KDQo+IA0KPiBGcm9tIHRoZSBkb2N1bWVudCwgSSBuZWVkIHRvIHVzZSAia2V5Y3Rs
+IHBpcGUiIHRvIHNhdmUgdGhlIGtleSBpbnRvIGEgDQo+IGJsb2IsIHRoZW4gbG9hZCBpdC4NCj4g
+QnV0IHRoZSBibG9iIGNvbnRlbmQga2V5IHRleHQsIGFuZCB0aGlzIGlzIGEgZmlsZSBvbiBoYXJk
+IGRpc2ssIGl0IGlzIA0KPiBub3Qgc2FmZSB0byBwcm90ZWN0IHRoZSBrZXkuDQo+IA0KPiBTbyB3
+aGF0IGNhbiBUUE0gZG8gaGVyZT8NCg0KVGhlIGhleCBhc2NpaSBlbmNvZGVkIHRydXN0ZWQga2V5
+IGlzIHNlYWxlZCB1bmRlciB0aGUgVFBNIFNSSy4NCg0KTWltaQ0KDQo=
