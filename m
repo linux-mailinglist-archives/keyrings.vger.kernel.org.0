@@ -2,189 +2,185 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A31010A834
-	for <lists+keyrings@lfdr.de>; Wed, 27 Nov 2019 02:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7162110A8D4
+	for <lists+keyrings@lfdr.de>; Wed, 27 Nov 2019 03:46:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbfK0B5I (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 26 Nov 2019 20:57:08 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:54514 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726876AbfK0B5F (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Nov 2019 20:57:05 -0500
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id B0BC720BBF94;
-        Tue, 26 Nov 2019 17:57:04 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B0BC720BBF94
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1574819824;
-        bh=6VkDuQtMfZ0JxsdKb2br0Z+5f0VVuOr0R9vAUsy6phY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lJIr1VWrpzeGxEYUAjoPwcjdHhhhKbfYADGJ+Q9l9QrroY3jjrsILcsAouv1qO040
-         ZZ4osXAsCw/sxUr9gpgfvig0AED4uCIW2gQmBa2xR0t8Pn5qM3QmOtKtMwgKs649J9
-         hTJ22NpZw5lGHIlwnx5NbgaxDLTqpgba0wK2ejKw=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: [PATCH v9 6/6] IMA: Read keyrings= option from the IMA policy
-Date:   Tue, 26 Nov 2019 17:56:54 -0800
-Message-Id: <20191127015654.3744-7-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191127015654.3744-1-nramas@linux.microsoft.com>
-References: <20191127015654.3744-1-nramas@linux.microsoft.com>
+        id S1726346AbfK0Cqs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 26 Nov 2019 21:46:48 -0500
+Received: from mga06.intel.com ([134.134.136.31]:34617 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726304AbfK0Cqs (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 26 Nov 2019 21:46:48 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 18:46:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,247,1571727600"; 
+   d="scan'208";a="240165411"
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+  by fmsmga002.fm.intel.com with ESMTP; 26 Nov 2019 18:46:47 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Tue, 26 Nov 2019 18:46:47 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Tue, 26 Nov 2019 18:46:46 -0800
+Received: from shsmsx101.ccr.corp.intel.com (10.239.4.153) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Tue, 26 Nov 2019 18:46:46 -0800
+Received: from shsmsx102.ccr.corp.intel.com ([169.254.2.108]) by
+ SHSMSX101.ccr.corp.intel.com ([169.254.1.213]) with mapi id 14.03.0439.000;
+ Wed, 27 Nov 2019 10:46:44 +0800
+From:   "Zhao, Shirley" <shirley.zhao@intel.com>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>
+CC:     "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "'Mauro Carvalho Chehab'" <mchehab+samsung@kernel.org>,
+        "Zhu, Bing" <bing.zhu@intel.com>,
+        "Chen, Luhai" <luhai.chen@intel.com>
+Subject: RE: One question about trusted key of keyring in Linux kernel.
+Thread-Topic: One question about trusted key of keyring in Linux kernel.
+Thread-Index: AdWZwFKzDBwFOydYTGGk+Aqs+6BIxAANhxEAAoxRZMAACTMHAAAdE3MA
+Date:   Wed, 27 Nov 2019 02:46:44 +0000
+Message-ID: <A888B25CD99C1141B7C254171A953E8E490961E5@shsmsx102.ccr.corp.intel.com>
+References: <A888B25CD99C1141B7C254171A953E8E49094313@shsmsx102.ccr.corp.intel.com>
+         <1573659978.17949.83.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E49095F9B@shsmsx102.ccr.corp.intel.com>
+ <1574796456.4793.248.camel@linux.ibm.com>
+In-Reply-To: <1574796456.4793.248.camel@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNzUwNDI3NTYtYTE3NC00ZTRhLWJlYTAtOWI4Nzc3ODNjMDI0IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiY0VwbFpvM3NZdXJTNFc1REswOWMxWjRkMFhVN3Y2XC9rSmtVRUx2N0Y5YmZBXC9ETkVIWHRnZmEwbzdLVW9ocyswIn0=
+x-ctpclassification: CTP_NT
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Read "keyrings=" option, if specified in the IMA policy, and store in
-the list of IMA rules when the configured IMA policy is read.
-
-This patch defines a new policy token enum namely Opt_keyrings
-and an option flag IMA_KEYRINGS for reading "keyrings=" option
-from the IMA policy.
-
-Updated ima_parse_rule() to parse "keyrings=" option in the policy.
-Updated ima_policy_show() to display "keyrings=" option.
-
-The following example illustrates how key measurement can be verified.
-
-Sample IMA Policy entry to measure keys
-(Added in the file /etc/ima/ima-policy):
-measure func=KEY_CHECK keyrings=.ima|.evm template=ima-buf
-
-Build the kernel with this patch set applied and reboot to that kernel.
-
-Ensure the IMA policy is applied:
-
-root@nramas:/home/nramas# cat /sys/kernel/security/ima/policy
-measure func=KEY_CHECK keyrings=.ima|.evm template=ima-buf
-
-View the initial IMA measurement log:
-
-root@nramas:/home/nramas# cat /sys/kernel/security/ima/ascii_runtime_measurements
-10 67ec... ima-ng sha1:b5466c508583f0e633df83aa58fc7c5b67ccf667 boot_aggregate
-
-Now, add a certificate (for example, x509_ima.der) to the .ima keyring
-using evmctl (IMA-EVM Utility)
-
-root@nramas:/home/nramas# keyctl show %:.ima
-Keyring
- 547515640 ---lswrv      0     0  keyring: .ima
-
-root@nramas:/home/nramas# evmctl import x509_ima.der 547515640
-
-root@nramas:/home/nramas# keyctl show %:.ima
-Keyring
- 547515640 ---lswrv      0     0  keyring: .ima
- 809678766 --als--v      0     0   \_ asymmetric: hostname: whoami signing key: 052dd247dc3c36...
-
-View the updated IMA measurement log:
-
-root@nramas:/home/nramas# cat /sys/kernel/security/ima/ascii_runtime_measurements
-10 67ec... ima-ng sha1:b5466c508583f0e633df83aa58fc7c5b67ccf667 boot_aggregate
-10 3adf... ima-buf sha256:27c915b8ddb9fae7214cf0a8a7043cc3eeeaa7539bcb136f8427067b5f6c3b7b .ima 308202863082...4aee
-root@nramas:/home/nramas#
-
-For this sample, SHA256 should be selected as the hash algorithm
-used by IMA.
-
-The following command verifies if the SHA256 hash generated from
-the payload in the IMA log entry (listed above) for the .ima key
-matches the SHA256 hash in the IMA log entry. The output of this
-command should match the SHA256 hash given in the IMA log entry
-(In this case, it should be 27c915b8ddb9fae7214cf0a8a7043cc3eeeaa7539bcb136f8427067b5f6c3b7b)
-
-root@nramas:/home/nramas# cat /sys/kernel/security/integrity/ima/ascii_runtime_measurements | grep 27c915b8ddb9fae7214cf0a8a7043cc3eeeaa7539bcb136f8427067b5f6c3b7b | cut -d' ' -f 6 | xxd -r -p |tee ima-cert.der | sha256sum | cut -d' ' -f 1
-
-The above command also creates a binary file namely ima-cert.der
-using the payload in the IMA log entry. This file should be a valid
-x509 certificate which can be verified using openssl as given below:
-
-root@nramas:/home/nramas# openssl x509 -in ima-cert.der -inform DER -text
-
-The above command should display the contents of the file ima-cert.der
-as an x509 certificate.
-
-The IMA policy used here allows measurement of keys added to
-".ima" and ".evm" keyrings only. Add a key to any other keyring and
-verify that the key is not measured.
-
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- security/integrity/ima/ima_policy.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index d9400585fcda..78b25f083fe1 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -34,6 +34,7 @@
- #define IMA_EUID	0x0080
- #define IMA_PCR		0x0100
- #define IMA_FSNAME	0x0200
-+#define IMA_KEYRINGS	0x0400
- 
- #define UNKNOWN		0
- #define MEASURE		0x0001	/* same as IMA_MEASURE */
-@@ -825,7 +826,8 @@ enum {
- 	Opt_uid_gt, Opt_euid_gt, Opt_fowner_gt,
- 	Opt_uid_lt, Opt_euid_lt, Opt_fowner_lt,
- 	Opt_appraise_type, Opt_appraise_flag,
--	Opt_permit_directio, Opt_pcr, Opt_template, Opt_err
-+	Opt_permit_directio, Opt_pcr, Opt_template, Opt_keyrings,
-+	Opt_err
- };
- 
- static const match_table_t policy_tokens = {
-@@ -861,6 +863,7 @@ static const match_table_t policy_tokens = {
- 	{Opt_permit_directio, "permit_directio"},
- 	{Opt_pcr, "pcr=%s"},
- 	{Opt_template, "template=%s"},
-+	{Opt_keyrings, "keyrings=%s"},
- 	{Opt_err, NULL}
- };
- 
-@@ -1110,6 +1113,23 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
- 			result = 0;
- 			entry->flags |= IMA_FSNAME;
- 			break;
-+		case Opt_keyrings:
-+			ima_log_string(ab, "keyrings", args[0].from);
-+
-+			if ((entry->keyrings) ||
-+			    (entry->action != MEASURE) ||
-+			    (entry->func != KEY_CHECK)) {
-+				result = -EINVAL;
-+				break;
-+			}
-+			entry->keyrings = kstrdup(args[0].from, GFP_KERNEL);
-+			if (!entry->keyrings) {
-+				result = -ENOMEM;
-+				break;
-+			}
-+			result = 0;
-+			entry->flags |= IMA_KEYRINGS;
-+			break;
- 		case Opt_fsuuid:
- 			ima_log_string(ab, "fsuuid", args[0].from);
- 
-@@ -1485,6 +1505,13 @@ int ima_policy_show(struct seq_file *m, void *v)
- 		seq_puts(m, " ");
- 	}
- 
-+	if (entry->flags & IMA_KEYRINGS) {
-+		if (entry->keyrings != NULL)
-+			snprintf(tbuf, sizeof(tbuf), "%s", entry->keyrings);
-+		seq_printf(m, pt(Opt_keyrings), tbuf);
-+		seq_puts(m, " ");
-+	}
-+
- 	if (entry->flags & IMA_PCR) {
- 		snprintf(tbuf, sizeof(tbuf), "%d", entry->pcr);
- 		seq_printf(m, pt(Opt_pcr), tbuf);
--- 
-2.17.1
-
+SGksIE1pbWksIA0KDQpBbnN3ZXIgeW91ciB0d28gcXVlc3Rpb25zOg0KDQoxLiBZZXMsIEkgaGF2
+ZSB2ZXJpZmllZCB0cnVzdGVkIGtleSB3b3JrcyB3ZWxsIHdpdGhvdXQgUENSIHBvbGljeSBwcm90
+ZWN0aW9uIGFzIGJlbG93OiANCiQga2V5Y3RsIGFkZCB0cnVzdGVkIGttayAibmV3IDMyIGtleWhh
+bmRsZT0weDgxMDAwMDAxIiBAdQ0KMTA1NTI0MDkyOA0KJCBrZXljdGwgbGlzdCBAdQ0KMSBrZXlz
+IGluIGtleXJpbmc6DQoxMDU1MjQwOTI4OiAtLWFsc3dydiAgICAgMCAgICAgMCB0cnVzdGVkOiBr
+bWsNCiQga2V5Y3RsIHBpcGUgMTA1NTI0MDkyOCA+IGttay5ibG9iDQokIGNhdCBrbWsuYmxvYg0K
+MDA3ZjAwMjBmZjgwOGJkOGI3MjM5MTk0ZTg5YWFjNmE5NWI0ZDIxMDExNDc0MmMyMGFmYTMzNDkz
+ZjAwMmRmZmQwNjg1ZDUxMDAxMGMxMmQ3YWQ1MWViODNkNmQ5Mzg5NWRlMDY2YmYzZDM5NzE4Y2M1
+MDNhZGI0ODAyY2IwODdiODhiMmZmZjRiMDQwZmUzYTJiZTZhM2Y4N2M2NzQ5ZDA4N2M5ZmI2ZTg3
+MzRjYjIzZjQzOGQ2NDA4NzU4MWExM2JjODNkNWRjM2IwMjZlNzdhODk0ZWNlNjYyMGQwZWI4NWRm
+NjQ0OWZmM2M2MDlmZDc3ZDVmMGNhZjc5YjQ1MzViMDAyZTAwMDgwMDBiMDAwMDAwNDAwMDAwMDAx
+MDAwMjA5YTViMDBiMGQ1NThmY2Y5ZThjMDI5NTIyNzE1ZTZiNTkwNjM2NmVhZWM1ZjM0MzY3Yjhh
+YjE2YzBmYjkwMDlhMDA3MzAwMDAwMDAwMDAyMGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZi
+OTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUwMTAwMGIwMDIyMDAwYmRjZGI2OTRl
+MTAyZTEzYTBmYmE1MTExMDgxY2I2Y2Y2MTZjMTE4ZDQwNDkzNmNhYzNlODRkYjI0YzcxZTQ3ZDUw
+MDIyMDAwYjA0YjVkYjFhYTUyNjM1ZGZiMjQyZTc2ZjZiZGU4ZTIxNzZhZTQ4ZmM2ODI5NDZjNmM3
+NmQ5NmY2MDgwNzlkMWYwMDAwMDAyMDM2YjZmY2NhODIwNmM3ZjcyMmRlODU4MjFkN2VjYjQ3ODU5
+NzZmZGQ2NDJiYzc1Mzg1MDVhMmE4MThjOGEyMzg4MDIxNDAwMDAwMDEwMDIwMmFlZGRlNDUwOGY1
+NDhkMTA4MTkzZWM4ZmUxNjZhN2JlZmRlMTkxMTNmZTcyN2FlMmIyOTkwMWJkZWNlOTZlNQ0KJCBr
+ZXljdGwgY2xlYXIgQHUNCiQga2V5Y3RsIGxpc3QgQHUNCmtleXJpbmcgaXMgZW1wdHkNCiQga2V5
+Y3RsIGFkZCB0cnVzdGVkIGttayAibG9hZCBgY2F0IGttay5ibG9iYCBrZXloYW5kbGU9MHg4MTAw
+MDAwMSIgQHUNCjEwMjI5NjM3MzENCiQga2V5Y3RsIHByaW50IDEwMjI5NjM3MzENCjAwN2YwMDIw
+ZmY4MDhiZDhiNzIzOTE5NGU4OWFhYzZhOTViNGQyMTAxMTQ3NDJjMjBhZmEzMzQ5M2YwMDJkZmZk
+MDY4NWQ1MTAwMTBjMTJkN2FkNTFlYjgzZDZkOTM4OTVkZTA2NmJmM2QzOTcxOGNjNTAzYWRiNDgw
+MmNiMDg3Yjg4YjJmZmY0YjA0MGZlM2EyYmU2YTNmODdjNjc0OWQwODdjOWZiNmU4NzM0Y2IyM2Y0
+MzhkNjQwODc1ODFhMTNiYzgzZDVkYzNiMDI2ZTc3YTg5NGVjZTY2MjBkMGViODVkZjY0NDlmZjNj
+NjA5ZmQ3N2Q1ZjBjYWY3OWI0NTM1YjAwMmUwMDA4MDAwYjAwMDAwMDQwMDAwMDAwMTAwMDIwOWE1
+YjAwYjBkNTU4ZmNmOWU4YzAyOTUyMjcxNWU2YjU5MDYzNjZlYWVjNWYzNDM2N2I4YWIxNmMwZmI5
+MDA5YTAwNzMwMDAwMDAwMDAwMjBlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0
+MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1MDEwMDBiMDAyMjAwMGJkY2RiNjk0ZTEwMmUxM2Ew
+ZmJhNTExMTA4MWNiNmNmNjE2YzExOGQ0MDQ5MzZjYWMzZTg0ZGIyNGM3MWU0N2Q1MDAyMjAwMGIw
+NGI1ZGIxYWE1MjYzNWRmYjI0MmU3NmY2YmRlOGUyMTc2YWU0OGZjNjgyOTQ2YzZjNzZkOTZmNjA4
+MDc5ZDFmMDAwMDAwMjAzNmI2ZmNjYTgyMDZjN2Y3MjJkZTg1ODIxZDdlY2I0Nzg1OTc2ZmRkNjQy
+YmM3NTM4NTA1YTJhODE4YzhhMjM4ODAyMTQwMDAwMDAxMDAyMDJhZWRkZTQ1MDhmNTQ4ZDEwODE5
+M2VjOGZlMTY2YTdiZWZkZTE5MTEzZmU3MjdhZTJiMjk5MDFiZGVjZTk2ZTUNCg0KMi4gVGhlIGZv
+bGxvd2luZyBrZXJuZWwgZmlsZSBpcyByZWxhdGVkIHdpdGggdGhpcyBwcm9ibGVtLiANCi9zZWN1
+cml0eS9rZXlzL2tleWN0bC5jDQovc2VjdXJpdHkva2V5cy9rZXkuYw0KL3NlY3VyaXR5L2tleXMv
+dHJ1c3RlZC1rZXlzL3RydXN0ZWRfdHBtMS5jDQovc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMv
+dHJ1c3RlZF90cG0yLmMNCg0KVG8gbG9hZCB0aGUgUENSIHBvbGljeSBwcm90ZWN0aW9uIHRydXN0
+ZWQga2V5LCB0aGUgY2FsbCBzdGFjayBpczogDQpTWVNDQUxMX0RFRklORTUoYWRkX2tleSwuLi4p
+IC0tPiBrZXlfY3JlYXRlX29yX3VwZGF0ZSgpIC0tPiBfX2tleV9pbnN0YW50aWF0ZV9hbmRfbGlu
+aygpIC0tPiAgdHJ1c3RlZF9pbnN0YW50aWF0ZSgpIC0tPiB0cG0yX3Vuc2VhbF90cnVzdGVkKCkg
+LS0+IHRwbTJfdW5zZWFsX2NtZCgpLiANCg0KQ2hlY2sgZG1lc2csIHRoZXJlIHdpbGwgYmUgZXJy
+b3I6IA0KWzczMzM2LjM1MTU5Nl0gdHJ1c3RlZF9rZXk6IGtleV91bnNlYWwgZmFpbGVkICgtMSkN
+Cg0KLSBTaGlybGV5IA0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTWltaSBa
+b2hhciA8em9oYXJAbGludXguaWJtLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIE5vdmVtYmVyIDI3
+LCAyMDE5IDM6MjggQU0NClRvOiBaaGFvLCBTaGlybGV5IDxzaGlybGV5LnpoYW9AaW50ZWwuY29t
+PjsgSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LmlibS5jb20+OyBKYXJra28gU2Fra2luZW4g
+PGphcmtrby5zYWtraW5lbkBsaW51eC5pbnRlbC5jb20+OyBKb25hdGhhbiBDb3JiZXQgPGNvcmJl
+dEBsd24ubmV0Pg0KQ2M6IGxpbnV4LWludGVncml0eUB2Z2VyLmtlcm5lbC5vcmc7IGtleXJpbmdz
+QHZnZXIua2VybmVsLm9yZzsgbGludXgtZG9jQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVs
+QHZnZXIua2VybmVsLm9yZzsgJ01hdXJvIENhcnZhbGhvIENoZWhhYicgPG1jaGVoYWIrc2Ftc3Vu
+Z0BrZXJuZWwub3JnPjsgWmh1LCBCaW5nIDxiaW5nLnpodUBpbnRlbC5jb20+OyBDaGVuLCBMdWhh
+aSA8bHVoYWkuY2hlbkBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogT25lIHF1ZXN0aW9uIGFib3V0
+IHRydXN0ZWQga2V5IG9mIGtleXJpbmcgaW4gTGludXgga2VybmVsLg0KDQpPbiBUdWUsIDIwMTkt
+MTEtMjYgYXQgMDc6MzIgKzAwMDAsIFpoYW8sIFNoaXJsZXkgd3JvdGU6DQo+IFRoYW5rcyBmb3Ig
+eW91ciBmZWVkYmFjaywgTWltaS4gDQo+IEJ1dCB0aGUgZG9jdW1lbnQgb2YgZHJhY3V0IGNhbid0
+IHNvbHZlIG15IHByb2JsZW0uIA0KPiANCj4gSSBkaWQgbW9yZSB0ZXN0IHRoZXNlIGRheXMgYW5k
+IHRyeSB0byBkZXNjcmlwdCBteSBxdWVzdGlvbiBpbiBtb3JlIGRldGFpbC4gDQo+IA0KPiBJbiBt
+eSBzY2VuYXJpbywgdGhlIHRydXN0ZWQga2V5IHdpbGwgYmUgc2VhbGVkIGludG8gVFBNIHdpdGgg
+UENSIHBvbGljeS4gDQo+IEFuZCB0aGVyZSBhcmUgc29tZSByZWxhdGVkIG9wdGlvbnMgaW4gbWFu
+dWFsIGxpa2UgDQo+ICAgICAgICBoYXNoPSAgICAgICAgIGhhc2ggYWxnb3JpdGhtIG5hbWUgYXMg
+YSBzdHJpbmcuIEZvciBUUE0gMS54IHRoZSBvbmx5DQo+ICAgICAgICAgICAgICAgICAgICAgIGFs
+bG93ZWQgdmFsdWUgaXMgc2hhMS4gRm9yIFRQTSAyLnggdGhlIGFsbG93ZWQgdmFsdWVzDQo+ICAg
+ICAgICAgICAgICAgICAgICAgIGFyZSBzaGExLCBzaGEyNTYsIHNoYTM4NCwgc2hhNTEyIGFuZCBz
+bTMtMjU2Lg0KPiAgICAgICAgcG9saWN5ZGlnZXN0PSBkaWdlc3QgZm9yIHRoZSBhdXRob3JpemF0
+aW9uIHBvbGljeS4gbXVzdCBiZSBjYWxjdWxhdGVkDQo+ICAgICAgICAgICAgICAgICAgICAgIHdp
+dGggdGhlIHNhbWUgaGFzaCBhbGdvcml0aG0gYXMgc3BlY2lmaWVkIGJ5IHRoZSAnaGFzaD0nDQo+
+ICAgICAgICAgICAgICAgICAgICAgIG9wdGlvbi4NCj4gICAgICAgIHBvbGljeWhhbmRsZT0gaGFu
+ZGxlIHRvIGFuIGF1dGhvcml6YXRpb24gcG9saWN5IHNlc3Npb24gdGhhdCBkZWZpbmVzIHRoZQ0K
+PiAgICAgICAgICAgICAgICAgICAgICBzYW1lIHBvbGljeSBhbmQgd2l0aCB0aGUgc2FtZSBoYXNo
+IGFsZ29yaXRobSBhcyB3YXMgdXNlZCB0bw0KPiAgICAgICAgICAgICAgICAgICAgICBzZWFsIHRo
+ZSBrZXkuIA0KPiANCj4gSGVyZSBpcyBteSB0ZXN0IHN0ZXAuIA0KPiBGaXJzdGx5LCB0aGUgcGNy
+IHBvbGljeSBpcyBnZW5lcmF0ZWQgYXMgYmVsb3c6IA0KPiAkIHRwbTJfY3JlYXRlcG9saWN5IC0t
+cG9saWN5LXBjciAtLXBjci1saXN0IHNoYTI1Njo3IC0tcG9saWN5IA0KPiBwY3I3X2Jpbi5wb2xp
+Y3kgPiBwY3I3LnBvbGljeQ0KPiANCj4gUGNyNy5wb2xpY3kgaXMgdGhlIGFzY2lpIGhleCBvZiBw
+b2xpY3k6DQo+ICQgY2F0IHBjcjcucG9saWN5DQo+IDMyMWZiZDI4YjYwZmNjMjMwMTdkNTAxYjEz
+M2JkNWRiZjI4ODk4MTQ1ODhlOGEyMzUxMGZlMTAxMDVjYjJjYzkNCj4gDQo+IFRoZW4gZ2VuZXJh
+dGUgdGhlIHRydXN0ZWQga2V5IGFuZCBjb25maWd1cmUgcG9saWN5ZGlnZXN0IGFuZCBnZXQgdGhl
+IGtleSBJRDogDQo+ICQga2V5Y3RsIGFkZCB0cnVzdGVkIGttayAibmV3IDMyIGtleWhhbmRsZT0w
+eDgxMDAwMDAxIGhhc2g9c2hhMjU2IA0KPiBwb2xpY3lkaWdlc3Q9YGNhdCBwY3I3LnBvbGljeWAi
+IEB1DQo+IDg3NDExNzA0NQ0KPiANCj4gU2F2ZSB0aGUgdHJ1c3RlZCBrZXkuIA0KPiAkIGtleWN0
+bCBwaXBlIDg3NDExNzA0NSA+IGttay5ibG9iDQo+IA0KPiBSZWJvb3QgYW5kIGxvYWQgdGhlIGtl
+eS4gDQo+IFN0YXJ0IGEgYXV0aCBzZXNzaW9uIHRvIGdlbmVyYXRlIHRoZSBwb2xpY3k6DQo+ICQg
+dHBtMl9zdGFydGF1dGhzZXNzaW9uIC1TIHNlc3Npb24uY3R4DQo+IHNlc3Npb24taGFuZGxlOiAw
+eDMwMDAwMDANCj4gJCB0cG0yX3Bjcmxpc3QgLUwgc2hhMjU2OjcgLW8gcGNyNy5zaGEyNTYgJCB0
+cG0yX3BvbGljeXBjciAtUyANCj4gc2Vzc2lvbi5jdHggLUwgc2hhMjU2OjcgLUYgcGNyNy5zaGEy
+NTYgLWYgcGNyNy5wb2xpY3kNCj4gcG9saWN5LWRpZ2VzdDogDQo+IDB4MzIxRkJEMjhCNjBGQ0My
+MzAxN0Q1MDFCMTMzQkQ1REJGMjg4OTgxNDU4OEU4QTIzNTEwRkUxMDEwNUNCMkNDOQ0KPiANCj4g
+SW5wdXQgdGhlIHBvbGljeSBoYW5kbGUgdG8gbG9hZCB0cnVzdGVkIGtleToNCj4gJCBrZXljdGwg
+YWRkIHRydXN0ZWQga21rICJsb2FkIGBjYXQga21rLmJsb2JgIGtleWhhbmRsZT0weDgxMDAwMDAx
+IA0KPiBwb2xpY3loYW5kbGU9MHgzMDAwMDAwIiBAdQ0KPiBhZGRfa2V5OiBPcGVyYXRpb24gbm90
+IHBlcm1pdHRlZA0KPiANCj4gVGhlIGVycm9yIHNob3VsZCBiZSBwb2xpY3kgY2hlY2sgZmFpbGVk
+LCBiZWNhdXNlIEkgdXNlIFRQTSBjb21tYW5kIHRvIHVuc2VhbCBkaXJlY3RseSB3aXRoIGVycm9y
+IG9mIHBvbGljeSBjaGVjayBmYWlsZWQuIA0KPiAkIHRwbTJfdW5zZWFsIC1jIDB4ODEwMDAwMDEg
+LUwgc2hhMjU2OjcgRVJST1Igb24gbGluZTogIjgxIiBpbiBmaWxlOiANCj4gIi4vbGliL2xvZy5o
+IjogVHNzMl9TeXNfVW5zZWFsKDB4OTlEKSAtIHRwbTpzZXNzaW9uKDEpOmEgcG9saWN5IGNoZWNr
+IA0KPiBmYWlsZWQgRVJST1Igb24gbGluZTogIjIxMyIgaW4gZmlsZTogInRvb2xzL3RwbTJfdW5z
+ZWFsLmMiOiBVbnNlYWwgZmFpbGVkIQ0KPiBFUlJPUiBvbiBsaW5lOiAiMTY2IiBpbiBmaWxlOiAi
+dG9vbHMvdHBtMl90b29sLmMiOiBVbmFibGUgdG8gcnVuIA0KPiB0cG0yX3Vuc2VhbA0KPiANCj4g
+U28gbXkgcXVlc3Rpb24gaXM6DQo+IDEuIEhvdyB0byB1c2UgdGhlIG9wdGlvbiwgcG9saWN5ZGln
+ZXN0LCBwb2xpY3loYW5kbGU/PyBJcyB0aGVyZSBhbnkgZXhhbXBsZT8gDQo+IDIuIFdoYXQncyB3
+cm9uZyB3aXRoIG15IHRlc3Qgc3RlcD8gDQoNCldoZW4gcmVwb3J0aW5nIGEgcHJvYmxlbSBwbGVh
+c2Ugc3RhdGUgd2hpY2gga2VybmVsIGlzIGV4cGVyaWVuY2luZyB0aGlzIHByb2JsZW0uIMKgUmVj
+ZW50bHkgdGhlcmUgd2FzIGEgdHJ1c3RlZCBrZXkgcmVncmVzc2lvbi4gwqBSZWZlciB0byBjb21t
+aXQgZTEzY2QyMWZmZDUwICJ0cG06IFdyYXAgdGhlIGJ1ZmZlciBmcm9tIHRoZSBjYWxsZXIgdG8g
+dHBtX2J1ZiBpbiB0cG1fc2VuZCgpIiBmb3IgdGhlIGRldGFpbHMuDQoNCkJlZm9yZSBkZWx2aW5n
+IGludG8gdGhpcyBwYXJ0aWN1bGFyIHByb2JsZW0sIGZpcnN0IHBsZWFzZSBtYWtlIHN1cmUgeW91
+IGFyZSBhYmxlIHRvIGNyZWF0ZSwgc2F2ZSwgcmVtb3ZlLCBhbmQgdGhlbiByZWxvYWQgYSB0cnVz
+dGVkIGtleSBub3Qgc2VhbGVkIHRvIGEgUENSLg0KDQpNaW1pwqANCg0K
