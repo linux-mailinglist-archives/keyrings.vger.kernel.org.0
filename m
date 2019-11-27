@@ -2,42 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6EE10BB64
-	for <lists+keyrings@lfdr.de>; Wed, 27 Nov 2019 22:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0868910BFFE
+	for <lists+keyrings@lfdr.de>; Wed, 27 Nov 2019 23:05:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731131AbfK0VMG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 27 Nov 2019 16:12:06 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:40538 "EHLO
+        id S1727299AbfK0WF6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 27 Nov 2019 17:05:58 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:59974 "EHLO
         linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733256AbfK0VMF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Nov 2019 16:12:05 -0500
+        with ESMTP id S1727105AbfK0WF6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Nov 2019 17:05:58 -0500
 Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id B36C120B7185;
-        Wed, 27 Nov 2019 13:12:04 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B36C120B7185
+        by linux.microsoft.com (Postfix) with ESMTPSA id 1307D20B7185;
+        Wed, 27 Nov 2019 14:05:57 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1307D20B7185
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1574889124;
-        bh=BjH41wc2s7M+i6lyEXWUb1jJqyOffx38FZ7r2CreKBw=;
+        s=default; t=1574892357;
+        bh=hG7ELv5aoHY2Qr84UCJGjmO7ITc/C6N/N/uFC2cKEps=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=C2mnrUf75pU4jHQAMpcwi46dM3w7EZN3ld8GFzsICwqToZRFK07dIXgGA9jdsec85
-         cZ+lloUsdrTGs5LnPjNcdidd4r6Af0xuAjlfK3pul1n1M8I/3vc4uHHsE3jqxuLy1b
-         Ni+O0M/RgFCc1ts87IAj59+tfrp0YzA2nb6KUPAg=
-Subject: Re: [PATCH v0 1/2] IMA: Defined queue functions
+        b=OCxCKTdWd7awntGqJ/+sm2/Tr90MgIXgXkgkcWf9/pIdQ2LZXJIb7XBPOOliBxbXT
+         uwFMGMnQeBNHefQQnjMlfY1hRPdpxqtrdr0hauXViFvagJThLxYmrfkT/Ls91T+0n6
+         r4pd1QDtFuIg2TVjIy1NO+kr81uJmxHBcf4BTe34=
+Subject: Re: [PATCH v9 6/6] IMA: Read keyrings= option from the IMA policy
 To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         matthewgarrett@google.com, sashal@kernel.org,
         jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Janne Karhunen <janne.karhunen@gmail.com>
-References: <20191127025212.3077-1-nramas@linux.microsoft.com>
- <20191127025212.3077-2-nramas@linux.microsoft.com>
- <1574887137.4793.346.camel@linux.ibm.com>
+        keyrings@vger.kernel.org
+References: <20191127015654.3744-1-nramas@linux.microsoft.com>
+ <20191127015654.3744-7-nramas@linux.microsoft.com>
+ <1574883174.4793.318.camel@linux.ibm.com>
 From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <ea2fafb8-a97f-5365-debd-d90143e549bf@linux.microsoft.com>
-Date:   Wed, 27 Nov 2019 13:11:59 -0800
+Message-ID: <3fb64c8a-59d3-3390-07c6-283099f55f86@linux.microsoft.com>
+Date:   Wed, 27 Nov 2019 14:05:56 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <1574887137.4793.346.camel@linux.ibm.com>
+In-Reply-To: <1574883174.4793.318.camel@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -46,70 +46,69 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 11/27/19 12:38 PM, Mimi Zohar wrote:
-
-> Hi Lakshmi,
-> 
-> Janne Karhunen is defining an IMA workqueue in order to more
-> frequently update the on disk security xattrs.  
-
-Has the above patch set been posted for review? I'll take a look and see 
-if that one can be used for queuing keys.
-
-The Subject line on
-> this patch needs to be more explicit (eg. define workqueue for early
-> boot "key" measurements).
-
-Will update the subject line.
-I was trying to keep the subject line short and have more details in the 
-patch description.
-
-> I'm not sure why you want to differentiate between IMA being
-> initialized vs. an empty policy.  I would think you would want to know
-> when a custom policy has been loaded.
-
-You are right - When custom ima policy rules are loaded (in 
-ima_update_policy() function), ima_process_queued_keys_for_measurement() 
-function is called to process queued keys.
-
-The flag ima_process_keys_for_measurement is set to true in 
-ima_process_queued_keys_for_measurement(). And, subsequent keys are 
-processed immediately.
-
-Please take a look at ima_process_queued_keys_for_measurement() in this 
-patch (v0 1/2) and the ima_update_policy() change in "PATCH v0 2/2".
+On 11/27/19 11:32 AM, Mimi Zohar wrote:
 
 > 
-> I would define a function that determines whether or not a custom
-> policy has been loaded.
+> The example is really too colloquial/verbose.  Please truncate it,
+> leaving just a sample "key" policy rule, with directions for verifying
+> the template data against the digest included in the measurement list.
 
-The queued keys need to be processed once when the custom policy is 
-loaded. Subsequently, keys are processed immediately (not queued).
+I'll truncate the example and keep it to the point.
 
-Do you still think there is a need to have a function to determine if 
-custom policy has been loaded? Wouldn't the flag 
-ima_process_keys_for_measurement be sufficient?
+>> The following command verifies if the SHA256 hash generated from
+>> the payload in the IMA log entry (listed above) for the .ima key
+>> matches the SHA256 hash in the IMA log entry. The output of this
+>> command should match the SHA256 hash given in the IMA log entry
+>> (In this case, it should be
+>> 27c915b8ddb9fae7214cf0a8a7043cc3eeeaa7539bcb136f8427067b5f6c3b7b)
+> 
+> Previously you didn't use the hash value, but ".ima" to locate the
+> "key" measurement in the measurement list.  In each of the commands
+> above, it might be clearer.
 
-Please take a look at "PATCH v0 2/2" and let me know if you disagree.
+If the IMA measurement list has only one IMA key then locating it with 
+".ima" would work - hash won't be needed for locating the entry.
 
-> (I still need to review adding/removing from the queue.)
+But for describing key verification we can have just one IMA key. I'll 
+change the description to locate the entry using ".ima".
+
+>> # cat /sys/kernel/security/integrity/ima/ascii_runtime_measurements
+>> | grep
+>> 27c915b8ddb9fae7214cf0a8a7043cc3eeeaa7539bcb136f8427067b5f6c3b7b |
+> 
+>> cut -d' ' -f 6 | xxd -r -p |tee ima-cert.der | sha256sum | cut -d' '
+>> -f 1
+>>
+>> The above command also creates a binary file namely ima-cert.der
+>> using the payload in the IMA log entry. This file should be a valid
+>> x509 certificate which can be verified using openssl as given below:
+>>
+>> root@nramas:/home/nramas
+> 
+> ditto
+> 
+> 
+>> # openssl x509 -in ima-cert.der -inform DER -text
+>>
+>> The above command should display the contents of the file ima-cert.der
+>> as an x509 certificate.
+> 
+> Either the comments should be above or below the commands, not both.
+
+I'll update the comment.
+
 > 
 >>
->> @@ -27,14 +154,14 @@
->>    * The payload data used to instantiate or update the key is measured.
->>    */
->>   void ima_post_key_create_or_update(struct key *keyring, struct key *key,
->> -				   const void *payload, size_t plen,
->> +				   const void *payload, size_t payload_len,
->>   				   unsigned long flags, bool create)
+>> The IMA policy used here allows measurement of keys added to
+>> ".ima" and ".evm" keyrings only. Add a key to any other keyring and
+>> verify that the key is not measured.
 > 
-> This "hunk" and subsequent one seem to be just a variable name change.
->   It has nothing to do with queueing "key" measurements and shouldn't
-> be included in this patch.
-> 
-> Mimi
+> This comment would be included, if desired, when defining the policy
+> rule, not here.
 
-I'll remove this change.
+Will remove the above from this patch description.
 
 thanks,
   -lakshmi
+
+
