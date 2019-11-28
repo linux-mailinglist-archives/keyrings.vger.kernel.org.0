@@ -2,148 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFC8310C077
-	for <lists+keyrings@lfdr.de>; Wed, 27 Nov 2019 23:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47C4C10C115
+	for <lists+keyrings@lfdr.de>; Thu, 28 Nov 2019 01:44:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727615AbfK0W6C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 27 Nov 2019 17:58:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52892 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727614AbfK0W6C (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 27 Nov 2019 17:58:02 -0500
-Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4CFF02158A;
-        Wed, 27 Nov 2019 22:58:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574895481;
-        bh=t3udkCyJ2+MbQy+Z9Qp0o57cXv0Q9HyyU13vVE5dUQc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Deo/NFja3Ec/iEpHsMVqKdwZVOB5gZqTJi2hjqlmoJsTFDWmlOLbvzV3X7LPyDphP
-         Ms8zbsvj56T1mZ6OnHtT+QRnj9cJ4EFpVyogpcxAZIhdHecHMkTEFlIa4JBQRSHK3i
-         SzMH3cM0I2ptzWcMNEyqaxez08YhmzctQ8rnC2Eg=
-Date:   Wed, 27 Nov 2019 14:57:59 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     fstests@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+        id S1727109AbfK1Ao3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 27 Nov 2019 19:44:29 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:59684 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727031AbfK1Ao3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Nov 2019 19:44:29 -0500
+Received: from [10.137.112.108] (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 6AB9720B7185;
+        Wed, 27 Nov 2019 16:44:28 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6AB9720B7185
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1574901868;
+        bh=i45B9K6gVEFEes7FGLuQ9jYlPqhzKWyb3Cu2Dwz50MQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=Xg9GNm45D60C+1lHv95rf09FhgFgasrx8uaOEEbCT6ewMV3l5IisnA0yQyyAlr2Cm
+         jKqcnwQSUCdd3rxD4IollqF7uIV9leFHlvoGIMnx1CB+1xudRcLTwqjq1Foyoqdl4r
+         ViIuxUNiaQZqSrL8PnBgxvEmLbnvMILJj3zG4yPs=
+Subject: Re: [PATCH v9 5/6] IMA: Add support to limit measuring keys
+To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
+Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
+        matthewgarrett@google.com, sashal@kernel.org,
+        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
         keyrings@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] xfstests: test adding filesystem-level fscrypt
- key via key_id
-Message-ID: <20191127225759.GA303989@sol.localdomain>
-References: <20191119223130.228341-1-ebiggers@kernel.org>
- <20191127204536.GA12520@linux.intel.com>
+References: <20191127015654.3744-1-nramas@linux.microsoft.com>
+ <20191127015654.3744-6-nramas@linux.microsoft.com>
+ <1574880741.4793.292.camel@linux.ibm.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <18b30666-7c44-f81e-8515-189052007e47@linux.microsoft.com>
+Date:   Wed, 27 Nov 2019 16:44:22 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191127204536.GA12520@linux.intel.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <1574880741.4793.292.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Nov 27, 2019 at 10:45:36PM +0200, Jarkko Sakkinen wrote:
-> On Tue, Nov 19, 2019 at 02:31:27PM -0800, Eric Biggers wrote:
-> > This series adds a test which tests adding a key to a filesystem's
-> > fscrypt keyring via an "fscrypt-provisioning" keyring key.  This is an
-> > alternative to the normal method where the raw key is given directly.
-> > 
-> > I'm sending this out for comment, but it shouldn't be merged until the
-> > corresponding kernel patch has reached mainline.  For more details, see
-> > the kernel patch:
-> > https://lkml.kernel.org/linux-fscrypt/20191119222447.226853-1-ebiggers@kernel.org/T/#u
-> > 
-> > This test depends on an xfs_io patch which adds the '-k' option to the
-> > 'add_enckey' command, e.g.:
-> > 
-> > 	xfs_io -c "add_enckey -k KEY_ID" MOUNTPOINT
-> > 
-> > This test is skipped if the needed kernel or xfs_io support is absent.
-> > 
-> > This has been tested on ext4, f2fs, and ubifs.
-> > 
-> > To apply cleanly, my other xfstests patch series
-> > "[RFC PATCH 0/5] xfstests: verify ciphertext of IV_INO_LBLK_64 encryption policies"
-> > must be applied first.
-> > 
-> > This series can also be retrieved from
-> > https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/xfstests-dev.git
-> > tag "fscrypt-provisioning_2019-11-19".
-> > 
-> > Eric Biggers (3):
-> >   common/rc: handle option with argument in _require_xfs_io_command()
-> >   common/encrypt: move constant test key to common code
-> >   generic: test adding filesystem-level fscrypt key via key_id
-> > 
-> >  common/encrypt        |  95 +++++++++++++++++++++----
-> >  common/rc             |   2 +-
-> >  tests/generic/580     |  17 ++---
-> >  tests/generic/806     | 156 ++++++++++++++++++++++++++++++++++++++++++
-> >  tests/generic/806.out |  73 ++++++++++++++++++++
-> >  tests/generic/group   |   1 +
-> >  6 files changed, 316 insertions(+), 28 deletions(-)
-> >  create mode 100644 tests/generic/806
-> >  create mode 100644 tests/generic/806.out
-> > 
-> > -- 
-> > 2.24.0.432.g9d3f5f5b63-goog
-> > 
-> 
-> I'm newbie with fscrypt so I started by encrypting a directory without
-> the new feature
-> 
-> sudo tune2fs -O encrypt /dev/sda2
-> sudo fscrypt setup /
-> fscrypt encrypt foo
-> 
-> Worked.
-> 
-> Generally speaking I'd appreciate a usage example like here to the
-> commit message:
-> 
-> https://lwn.net/Articles/692514/
-> 
-> Is this doable?
-> 
-> I might consider trying out the XFS test suite some day but right now it
-> would be first nice to smoke test the feature quickly.
-> 
-> I think for this patch that would actually be mostly sufficient testing.
-> 
+On 11/27/19 10:52 AM, Mimi Zohar wrote:
 
-You could manually do what the xfstest does, which is more or less the following
-(requires xfs_io patched with https://patchwork.kernel.org/patch/11252795/):
+Hi Mimi,
 
-	mkfs.ext4 -O encrypt /dev/vdc
-	mount /dev/vdc /vdc
-	keyctl new_session
-	payload='\x02\x00\x00\x00\x00\x00\x00\x00'
-	for i in {1..64}; do
-		payload+="\\x$(printf "%02x" $i)"
-	done
-	keyid=$(echo -ne "$payload" | keyctl padd fscrypt-provisioning desc @s)
-	keyspec=$(xfs_io -c "add_enckey -k $keyid" /vdc | awk '{print $NF}')
-	mkdir /vdc/edir
-	xfs_io -c "set_encpolicy $keyspec" /vdc/edir
-	echo contents > /vdc/edir/file
+>> +static bool ima_match_keyring(struct ima_rule_entry *rule,
+>> +			      const char *keyring)
+>> +{
+>> +	/*
+>> +	 * "keyrings=" is specified in the policy in the format below:
+>> +	 *   keyrings=.builtin_trusted_keys|.ima|.evm
+>> +	 *
+>> +	 * Each keyring name in the option is separated by a '|' and
+>> +	 * the last keyring name is null terminated.
+>> +	 *
+>> +	 * The given keyring is considered matched only if
+>> +	 * the whole keyring name matched a keyring name specified
+>> +	 * in the "keyrings=" option.
+>> +	 */
+>> +	p = strstr(rule->keyrings, keyring);
+>> +	if (p) {
+>> +		/*
+>> +		 * Found a substring match. Check if the character
+>> +		 * at the end of the keyring name is | (keyring name
+>> +		 * separator) or is the terminating null character.
+>> +		 * If yes, we have a whole string match.
+>> +		 */
+>> +		p += strlen(keyring);
+>> +		if (*p == '|' || *p == '\0')
+>> +			return true;
+>> +	}
+>> +
+> 
+> Using "while strsep()" would simplify this code, removing the need for
+> such a long comment.
+> 
+> Mimi
 
-I'm not yet planning to use this feature in the 'fscrypt' userspace tool
-https://github.com/google/fscrypt.  The user who actually wants this feature
-(Android) isn't using the 'fscrypt' tool, but rather is using custom code.
+strsep() modifies the source string (replaces the delimiter with '\0' 
+and also updates the source string pointer). I am not sure it can be 
+used for our scenario. Please correct me if I am wrong.
 
-Also, the 'fscrypt' tool isn't meant for testing or exposing every corner of the
-fscrypt kernel API.  Rather, it's meant to be a user-friendly tool for creating
-encrypted directories on "regular" Linux distros, supporting lots of higher
-level userspace features like passphrase hashing with Argon2, multiple
-protectors, and auto-unlocking directories with PAM.
+Initial IMA policy:
+-------------------
+measure func=KEY_CHECK 
+keyrings=.ima|.evm|.builtin_trusted_keys|.blacklist template=ima-buf
 
-So for now, the important thing is to have an xfstest that fully tests this new
-API.  For that, like the other fscrypt tests, I'm using keyctl and xfs_io to
-access the kernel API directly.
+Policy after adding a key to .ima keyring:
+------------------------------------------
+measure func=KEY_CHECK keyrings=.evm|.builtin_trusted_keys|.blacklist 
+template=ima-buf
 
-Later, if people really need the 'fscrypt' tool to do something that requires
-this feature, we can add it.  This would likely take the form of a user-friendly
-option to 'fscrypt unlock' rather than a direct translation of the kernel API.
+Policy after adding a key to a keyring that is not listed in the policy:
+------------------------------------------------------------------------
+measure func=KEY_CHECK keyrings= template=ima-buf
 
-- Eric
+********************************************************************************
+
+Please see the description from the man page for strsep():
+
+http://man7.org/linux/man-pages/man3/strsep.3.html
+
+char *strsep(char **stringp, const char *delim);
+
+This function finds the first token in the string *stringp, that is 
+delimited by one of the bytes in the string delim.  This token is 
+terminated by overwriting the delimiter with a null byte ('\0'), and 
+*stringp is updated to point past the token.
+
+thanks,
+  -lakshmi
