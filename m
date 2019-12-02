@@ -2,101 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6ED10EF62
-	for <lists+keyrings@lfdr.de>; Mon,  2 Dec 2019 19:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5704510EF9C
+	for <lists+keyrings@lfdr.de>; Mon,  2 Dec 2019 19:55:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727648AbfLBSj1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Dec 2019 13:39:27 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:51038 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727464AbfLBSj1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Dec 2019 13:39:27 -0500
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 09B1D20B7185;
-        Mon,  2 Dec 2019 10:39:26 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 09B1D20B7185
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1575311966;
-        bh=wg913gH9ZJLPwcHiC0YhT9cCRRz7LfaWFv/LBba+5cY=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=sdKmUrTf4ECy39T2kUyLJATwkpHu2Ozq5rgsJul1R1hrnx7vb1qdrPep41kqc6wHD
-         xPpOCnRpm9hmQJtwQoccDZ60XREF7nUYx7Eb4fgeZwnAFOUugqJTWILFaalrDN9Yb6
-         MVIOyvZCzhwd8KYYbr9KDS/z7uckQyfy0Tpe6BGg=
-Subject: Re: [PATCH v0 1/2] IMA: Defined queue functions
-To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Janne Karhunen <janne.karhunen@gmail.com>
-References: <20191127025212.3077-1-nramas@linux.microsoft.com>
- <20191127025212.3077-2-nramas@linux.microsoft.com>
- <1574887137.4793.346.camel@linux.ibm.com>
- <ea2fafb8-a97f-5365-debd-d90143e549bf@linux.microsoft.com>
- <1575309622.4793.413.camel@linux.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <6ec16f9d-b4f4-bb85-3496-be110fa68f6b@linux.microsoft.com>
-Date:   Mon, 2 Dec 2019 10:39:25 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <1575309622.4793.413.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1727972AbfLBSzo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Dec 2019 13:55:44 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:35936 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727556AbfLBSzo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Dec 2019 13:55:44 -0500
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB2ImcZf038665;
+        Mon, 2 Dec 2019 13:55:37 -0500
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2wm6c0r1br-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Dec 2019 13:55:36 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB2IsmlW022082;
+        Mon, 2 Dec 2019 18:55:36 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+        by ppma03wdc.us.ibm.com with ESMTP id 2wkg26d5e2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Dec 2019 18:55:36 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB2ItZm233030514
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 2 Dec 2019 18:55:35 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 424DE78067;
+        Mon,  2 Dec 2019 18:55:35 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 525F878060;
+        Mon,  2 Dec 2019 18:55:33 +0000 (GMT)
+Received: from jarvis.ext.hansenpartnership.com (unknown [9.80.221.34])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Mon,  2 Dec 2019 18:55:33 +0000 (GMT)
+Message-ID: <1575312932.24227.13.camel@linux.ibm.com>
+Subject: Re: One question about trusted key of keyring in Linux kernel.
+From:   James Bottomley <jejb@linux.ibm.com>
+To:     "Zhao, Shirley" <shirley.zhao@intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "'Mauro Carvalho Chehab'" <mchehab+samsung@kernel.org>,
+        "Zhu, Bing" <bing.zhu@intel.com>,
+        "Chen, Luhai" <luhai.chen@intel.com>
+Date:   Mon, 02 Dec 2019 10:55:32 -0800
+In-Reply-To: <A888B25CD99C1141B7C254171A953E8E4909E399@shsmsx102.ccr.corp.intel.com>
+References: <A888B25CD99C1141B7C254171A953E8E49094313@shsmsx102.ccr.corp.intel.com>
+         <1573659978.17949.83.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E49095F9B@shsmsx102.ccr.corp.intel.com>
+         <1574877977.3551.5.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E49096521@shsmsx102.ccr.corp.intel.com>
+         <1575057916.6220.7.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909BA3B@shsmsx102.ccr.corp.intel.com>
+         <1575260220.4080.17.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909D360@shsmsx102.ccr.corp.intel.com>
+         <1575267453.4080.26.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909E381@shsmsx102.ccr.corp.intel.com>
+         <1575269075.4080.31.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909E399@shsmsx102.ccr.corp.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-02_04:2019-11-29,2019-12-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 mlxlogscore=922
+ suspectscore=0 lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1912020160
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 12/2/19 10:00 AM, Mimi Zohar wrote:
-
+On Mon, 2019-12-02 at 06:50 +0000, Zhao, Shirley wrote:
+> So I guess mostly like, it is the format of policydigest,
+> policyhandle is not correctly in my keyctl command. 
+> But what is the correct using?
 > 
-> ima_update_policy() is called from multiple places.  Initially, it is
-> called before a custom policy has been loaded.  The call to
-> ima_process_queued_keys_for_measurement() needs to be moved to within
-> the test, otherwise it runs the risk of dropping "key" measurements.
-
-static const struct file_operations ima_measure_policy_ops = {
-	.release = ima_release_policy,
-};
-
-ima_update_policy() is called from ima_release_policy() function.
-
-On my test machine I have the IMA policy in /etc/ima/ima-policy file. 
-When IMA policy is setup from this file, I see ima_release_policy() 
-called (which in turn calls ima_update_policy()).
-
-How can I have ima_update_policy() called before a custom policy is loaded?
-
-If CONFIG_IMA_WRITE_POLICY is enabled, IMA policy can be updated at 
-runtime - which would invoke ima_update_policy().
-
-Is there any other way ima_update_policy() can get called?
-
-> All the queued keys need to be processed at the same time.  Afterwards
-> the queue should be deleted.  Unfortunately, the current queue locking
-> assumes ima_process_queued_keys_for_measurement() is called multiple
-> times.
-
-When ima_process_queued_keys_for_measurement() is called the first time, 
-the flag ima_process_keys_for_measurement is set to true and all queued 
-keys are processed at that time.
-
-The queue is not used after this point - In the IMA hook the key is 
-processed immediately when ima_process_keys_for_measurement is set to true.
-
-ima_process_queued_keys_for_measurement() can be called multiple times, 
-but on 2nd and subsequent calls it will be a NOP.
-
+> My keyctl commands are attached as below: 
+> $ keyctl add trusted kmk "new 32 keyhandle=0x81000001 hash=sha256
+> policydigest=`cat pcr7.policy`" @u
+> 874117045
 > 
-> Perhaps using the RCU method of walking lists would help.  I need to
-> think about it some more.
-> 
-> Mimi
+> Save the trusted key. 
+> $ keyctl pipe 874117045 > kmk.blob
 
-Please let me know how using RCU method would help.
+OK, looking at the actual code, it seems that whoever wrote it didn't
+account for the differences between TPM1.2 and TPM2.0.  With TPM2.0
+TPM2_Create returns the public and private parts plus three other tpm2b
+entites used to certify and check the key.  When you load the blob back
+using TPM2_Load, it only accepts the public and private parts. 
+However, your blob contains the other extraneous elements, that's why
+it can't be loaded.  You could make it loadable by stripping off the
+extraneous pieces ... just take the first two tpm2b elements of the
+blob but it looks like we need to fix the API.  I suppose the good news
+is given this failure that we have the opportunity to rewrite the API
+since no-one else can have used it for anything because of this.  The
+fundamental problem with the current API is that most TPM2's only have
+three available session registers.  It's simply not scalable to set
+them up in userspace and have the kernel use them, so what we should be
+doing is passing down the actual policy and having the kernel construct
+the session at the point of use and then flush it, thus solving the
+potential session exhaustion issue.
 
-thanks,
-  -lakshmi
+I'd actually propose we make a TSSLOADABLE the fundamental element of
+operation for trusted keys.  The IBM and Intel TSS people have agreed
+to do this as the format for TPM loadable keys, but it should also
+apply to sealed data.  The beauty of TSSLOADABLE is that the ASN.1
+format includes a policy specification:
 
+/*
+ * TSSLOADABLE ::= SEQUENCE {
+ *	type		OBJECT IDENTIFIER
+ *	emptyAuth	[0] EXPLICIT BOOLEAN OPTIONAL
+ *	policy		[1] EXPLICIT SEQUENCE OF TPMPolicy OPTIONAL
+ *	secret		[2] EXPLICIT OCTET STRING OPTIONAL
+ *	parent		INTEGER
+ *	pubkey		OCTET STRING
+ *	privkey		OCTET STRING
+ * }
+ * TPMPolicy ::= SEQUENCE {
+ *	CommandCode		[0] EXPLICIT INTEGER
+ *	CommandPolicy		[1] EXPLICIT OCTET STRING
+ * }
+ */
+
+James
 
