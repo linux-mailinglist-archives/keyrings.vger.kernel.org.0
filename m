@@ -2,103 +2,73 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5756C10EFD2
-	for <lists+keyrings@lfdr.de>; Mon,  2 Dec 2019 20:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 381F210F178
+	for <lists+keyrings@lfdr.de>; Mon,  2 Dec 2019 21:24:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbfLBTLl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Dec 2019 14:11:41 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:8326 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727730AbfLBTLl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Dec 2019 14:11:41 -0500
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB2J8fd2162221
-        for <keyrings@vger.kernel.org>; Mon, 2 Dec 2019 14:11:39 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2wm6g8srnj-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Mon, 02 Dec 2019 14:11:39 -0500
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Mon, 2 Dec 2019 19:11:37 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 2 Dec 2019 19:11:33 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB2JBWRW40567084
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 2 Dec 2019 19:11:32 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C29B8A4053;
-        Mon,  2 Dec 2019 19:11:32 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A1A92A405D;
-        Mon,  2 Dec 2019 19:11:31 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.147.107])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Mon,  2 Dec 2019 19:11:31 +0000 (GMT)
+        id S1727459AbfLBUY6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Dec 2019 15:24:58 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:60272 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727420AbfLBUY6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Dec 2019 15:24:58 -0500
+Received: from [10.137.112.108] (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 9574020B7185;
+        Mon,  2 Dec 2019 12:24:57 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9574020B7185
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1575318297;
+        bh=bOCSq0wgnyPh/YMpBDbZgZBHSNjtFB5ruPODpAQ5zfM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=cndXVvKyzotxrBEJ3AcVcHU8063YDBfogOEV+3cuAPiSNdNDSG5VDppRfQx72p74U
+         OepRpddT3jXJHPzFAGR9Y5NZdlNvlmn2hmhBlVtvdfTjT58mYoN0eQOZe1tY46beon
+         K8+3GrH8E5606oJc9omTbSRl69GICRLMCbXSWigU=
 Subject: Re: [PATCH v0 1/2] IMA: Defined queue functions
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org
+To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         matthewgarrett@google.com, sashal@kernel.org,
         jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
         keyrings@vger.kernel.org, Janne Karhunen <janne.karhunen@gmail.com>
-Date:   Mon, 02 Dec 2019 14:11:31 -0500
-In-Reply-To: <6ec16f9d-b4f4-bb85-3496-be110fa68f6b@linux.microsoft.com>
 References: <20191127025212.3077-1-nramas@linux.microsoft.com>
-         <20191127025212.3077-2-nramas@linux.microsoft.com>
-         <1574887137.4793.346.camel@linux.ibm.com>
-         <ea2fafb8-a97f-5365-debd-d90143e549bf@linux.microsoft.com>
-         <1575309622.4793.413.camel@linux.ibm.com>
-         <6ec16f9d-b4f4-bb85-3496-be110fa68f6b@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+ <20191127025212.3077-2-nramas@linux.microsoft.com>
+ <1574887137.4793.346.camel@linux.ibm.com>
+ <ea2fafb8-a97f-5365-debd-d90143e549bf@linux.microsoft.com>
+ <1575309622.4793.413.camel@linux.ibm.com>
+ <6ec16f9d-b4f4-bb85-3496-be110fa68f6b@linux.microsoft.com>
+ <1575313891.4793.423.camel@linux.ibm.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <d7632326-05be-d116-8b60-3b131495acf5@linux.microsoft.com>
+Date:   Mon, 2 Dec 2019 12:24:53 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
+MIME-Version: 1.0
+In-Reply-To: <1575313891.4793.423.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19120219-0012-0000-0000-0000036FDE17
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120219-0013-0000-0000-000021AB9755
-Message-Id: <1575313891.4793.423.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-02_04:2019-11-29,2019-12-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- suspectscore=0 clxscore=1015 mlxlogscore=999 impostorscore=0
- lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912020163
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2019-12-02 at 10:39 -0800, Lakshmi Ramasubramanian wrote:
-> On 12/2/19 10:00 AM, Mimi Zohar wrote:
-> 
-> > 
-> > ima_update_policy() is called from multiple places.  Initially, it is
-> > called before a custom policy has been loaded.  The call to
-> > ima_process_queued_keys_for_measurement() needs to be moved to within
-> > the test, otherwise it runs the risk of dropping "key" measurements.
-> 
-> static const struct file_operations ima_measure_policy_ops = {
-> 	.release = ima_release_policy,
-> };
-> 
-> ima_update_policy() is called from ima_release_policy() function.
-> 
-> On my test machine I have the IMA policy in /etc/ima/ima-policy file. 
-> When IMA policy is setup from this file, I see ima_release_policy() 
-> called (which in turn calls ima_update_policy()).
-> 
-> How can I have ima_update_policy() called before a custom policy is loaded?
+On 12/2/19 11:11 AM, Mimi Zohar wrote:
 
-Oops, you're right.  My concern was ima_init_policy(), but it calls
-ima_update_policy_flag() directly.
+>> How can I have ima_update_policy() called before a custom policy is loaded?
+> 
+> Oops, you're right.  My concern was ima_init_policy(), but it calls
+> ima_update_policy_flag() directly.
+> 
+> Mimi
 
-Mimi
+Thanks Mimi.
+
+Please let me know if you have any concerns with respect to the deferred 
+key processing implementation in this patch set.
+
+Also, if you think Janne Karhunen work queue implementation can be used 
+for deferred key measurement also, please post the patch set. I'll take 
+a look.
+
+thanks,
+  -lakshmi
+
 
