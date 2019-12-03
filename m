@@ -2,118 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13A601105B2
-	for <lists+keyrings@lfdr.de>; Tue,  3 Dec 2019 21:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B29711204D
+	for <lists+keyrings@lfdr.de>; Wed,  4 Dec 2019 00:37:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbfLCUHF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 3 Dec 2019 15:07:05 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:24936 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726079AbfLCUHF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Dec 2019 15:07:05 -0500
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB3JbGBQ060122
-        for <keyrings@vger.kernel.org>; Tue, 3 Dec 2019 15:07:04 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2wnsuv4gw6-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 03 Dec 2019 15:07:03 -0500
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Tue, 3 Dec 2019 20:07:02 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 3 Dec 2019 20:06:59 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB3K6HcB40567262
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 3 Dec 2019 20:06:17 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 24DF1A4053;
-        Tue,  3 Dec 2019 20:06:58 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 161CFA4055;
-        Tue,  3 Dec 2019 20:06:57 +0000 (GMT)
-Received: from dhcp-9-31-103-87.watson.ibm.com (unknown [9.31.103.87])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  3 Dec 2019 20:06:56 +0000 (GMT)
+        id S1726195AbfLCXg7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 Dec 2019 18:36:59 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:43348 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726144AbfLCXg7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Dec 2019 18:36:59 -0500
+Received: from [10.137.112.111] (unknown [131.107.147.111])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 8BAC120B7185;
+        Tue,  3 Dec 2019 15:36:58 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8BAC120B7185
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1575416218;
+        bh=lumjR+WsAH17zIElti4at56HiP3oZKr0jeW3mqpgrHY=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=de947gFnmNyOixr7N1TMZYsinoGV2xsUKN/WwfHNuRjXgU61OunOF3SifgKSmF89G
+         bRi33LhmfBFfM/IFU2Yu66gQvpR3cgchy6aY4zm9ohJ6QAoEEtnJ4fz2nu5HSPCeTw
+         tz7djkOq501rwSmZC9Tc6rKg2AJjuDbXf14n6PTs=
 Subject: Re: [PATCH v9 5/6] IMA: Add support to limit measuring keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org
+To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         matthewgarrett@google.com, sashal@kernel.org,
         jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
         keyrings@vger.kernel.org
-Date:   Tue, 03 Dec 2019 15:06:56 -0500
-In-Reply-To: <2d20ce36-e24e-e238-4a82-286db9eeab97@linux.microsoft.com>
 References: <20191127015654.3744-1-nramas@linux.microsoft.com>
-         <20191127015654.3744-6-nramas@linux.microsoft.com>
-         <1575375945.5241.16.camel@linux.ibm.com>
-         <2d20ce36-e24e-e238-4a82-286db9eeab97@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+ <20191127015654.3744-6-nramas@linux.microsoft.com>
+ <1575375945.5241.16.camel@linux.ibm.com>
+ <2d20ce36-e24e-e238-4a82-286db9eeab97@linux.microsoft.com>
+ <1575403616.5241.76.camel@linux.ibm.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <89bb3226-3a2e-c7fa-fff9-3a422739481c@linux.microsoft.com>
+Date:   Tue, 3 Dec 2019 15:37:17 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <1575403616.5241.76.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19120320-4275-0000-0000-0000038AAE63
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120320-4276-0000-0000-0000389E4DE6
-Message-Id: <1575403616.5241.76.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-03_06:2019-12-02,2019-12-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 mlxlogscore=842 phishscore=0 clxscore=1015 adultscore=0
- suspectscore=3 bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912030144
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2019-12-03 at 11:45 -0800, Lakshmi Ramasubramanian wrote:
-> Hi Mimi,
-> 
-> On 12/3/2019 4:25 AM, Mimi Zohar wrote:
-> 
-> > 
-> > A keyring can be created by any user with any keyring name, other than
-> >   ones dot prefixed, which are limited to the trusted builtin keyrings.
-> >   With a policy of "func=KEY_CHECK template=ima-buf keyrings=foo", for
-> > example, keys loaded onto any keyring named "foo" will be measured.
-> >   For files, the IMA policy may be constrained to a particular uid/gid.
-> >   An additional method of identifying or constraining keyring names
-> > needs to be defined.
-> > 
-> > Mimi
-> > 
-> 
-> Are you expecting a functionality like the following?
-> 
->   => Measure keys added to keyring "foo", but exclude certain keys 
-> (based on some key identifier)
-> 
-> Sample policy might look like below:
-> 
-> action=MEASURE func=KEY_CHECK keyrings=foo|bar
-> action=DONT_MEASURE key_magic=blah
-> 
-> So a key with key_magic "blah" will not be measured even though it is 
-> added to the keyring "foo". But any other key added to "foo" will be 
-> measured.
-> 
-> What would the constraining field in the key may be - Can it be SHA256 
-> hash of the public key? Or, some other unique identifier?
-> 
-> Could you please clarify?
+On 12/3/2019 12:06 PM, Mimi Zohar wrote:
 
-Suppose both root and uid 1000 define a keyring named "foo".  The
-current "keyrings=foo" will measure all keys added to either keyring
-named "foo".  There needs to be a way to limit measuring keys to a
-particular keyring named "foo".
+> Suppose both root and uid 1000 define a keyring named "foo".  The
+> current "keyrings=foo" will measure all keys added to either keyring
+> named "foo".  There needs to be a way to limit measuring keys to a
+> particular keyring named "foo".
+> 
+> Mimi
 
-Mimi
+Thanks for clarifying.
+
+Suppose two different non-root users create keyring with the same name 
+"foo" and, say, both are measured, how would we know which keyring 
+measurement belongs to which user?
+
+Wouldn't it be sufficient to include only keyrings created by "root" 
+(UID value 0) in the key measurement? This will include all the builtin 
+trusted keyrings (such as .builtin_trusted_keys, 
+.secondary_trusted_keys, .ima, .evm, etc.).
+
+What would be the use case for including keyrings created by non-root 
+users in key measurement?
+
+Also, since the UID for non-root users can be any integer value (greater 
+than 0), can an an administrator craft a generic IMA policy that would 
+be applicable to all clients in an enterprise?
+
+thanks,
+  -lakshmi
+
 
