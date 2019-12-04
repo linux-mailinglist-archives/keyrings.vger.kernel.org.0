@@ -2,120 +2,211 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1615D1129F2
-	for <lists+keyrings@lfdr.de>; Wed,  4 Dec 2019 12:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AC41137BC
+	for <lists+keyrings@lfdr.de>; Wed,  4 Dec 2019 23:41:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727446AbfLDLQm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 Dec 2019 06:16:42 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:12830 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727268AbfLDLQm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Dec 2019 06:16:42 -0500
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB4BCTFp052287
-        for <keyrings@vger.kernel.org>; Wed, 4 Dec 2019 06:16:40 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2wnsvhxbcm-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Wed, 04 Dec 2019 06:16:40 -0500
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Wed, 4 Dec 2019 11:16:38 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 4 Dec 2019 11:16:35 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB4BGY3f37290084
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 4 Dec 2019 11:16:34 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BFBC74C046;
-        Wed,  4 Dec 2019 11:16:34 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 66F7B4C040;
-        Wed,  4 Dec 2019 11:16:33 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.222.210])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  4 Dec 2019 11:16:33 +0000 (GMT)
-Subject: Re: [PATCH v9 5/6] IMA: Add support to limit measuring keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org
-Cc:     Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        eric.snowberg@oracle.com, dhowells@redhat.com,
-        matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org,
-        Mat Martineau <mathew.j.martineau@linux.intel.com>
-Date:   Wed, 04 Dec 2019 06:16:32 -0500
-In-Reply-To: <89bb3226-3a2e-c7fa-fff9-3a422739481c@linux.microsoft.com>
-References: <20191127015654.3744-1-nramas@linux.microsoft.com>
-         <20191127015654.3744-6-nramas@linux.microsoft.com>
-         <1575375945.5241.16.camel@linux.ibm.com>
-         <2d20ce36-e24e-e238-4a82-286db9eeab97@linux.microsoft.com>
-         <1575403616.5241.76.camel@linux.ibm.com>
-         <89bb3226-3a2e-c7fa-fff9-3a422739481c@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19120411-0012-0000-0000-00000370ED4A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120411-0013-0000-0000-000021ACAD65
-Message-Id: <1575458192.5241.99.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-04_03:2019-12-04,2019-12-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=903
- malwarescore=0 mlxscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912040089
+        id S1728462AbfLDWlk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Dec 2019 17:41:40 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:50118 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728053AbfLDWlj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Dec 2019 17:41:39 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id EBAA720B4760;
+        Wed,  4 Dec 2019 14:41:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EBAA720B4760
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1575499297;
+        bh=Z+y91JgRIwnVc0sS4RRMc6nimO0sgKyY/41suDsck/8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DO212QUuZfeFv3smDOawM0rDF0RXJLk1iyPWKqNDXV1R5nuV69FhLHwyyndrT4j5O
+         M6NEZmZKJAJ7PV4GzZ8NpomJLrjuEWQmG+rr5a4LnnufhzfNyPsM3gt+cFBmuDf8dJ
+         G5JTXcfCITdccr+c5mzoYM/LvuA2wngD4LcXbDR0=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, linux-integrity@vger.kernel.org
+Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
+        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
+        sashal@kernel.org, jamorris@linux.microsoft.com,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: [PATCH v10 0/6] KEYS: Measure keys when they are created or updated
+Date:   Wed,  4 Dec 2019 14:41:25 -0800
+Message-Id: <20191204224131.3384-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-[Cc'ing Mat Martineau]
+Keys created or updated in the system are currently not measured.
+Therefore an attestation service, for instance, would not be able to
+attest whether or not the trusted keys keyring(s), for instance, contain
+only known good (trusted) keys.
 
-On Tue, 2019-12-03 at 15:37 -0800, Lakshmi Ramasubramanian wrote:
-> On 12/3/2019 12:06 PM, Mimi Zohar wrote:
-> 
-> > Suppose both root and uid 1000 define a keyring named "foo".  The
-> > current "keyrings=foo" will measure all keys added to either keyring
-> > named "foo".  There needs to be a way to limit measuring keys to a
-> > particular keyring named "foo".
-> > 
-> > Mimi
-> 
-> Thanks for clarifying.
-> 
-> Suppose two different non-root users create keyring with the same name 
-> "foo" and, say, both are measured, how would we know which keyring 
-> measurement belongs to which user?
-> 
-> Wouldn't it be sufficient to include only keyrings created by "root" 
-> (UID value 0) in the key measurement? This will include all the builtin 
-> trusted keyrings (such as .builtin_trusted_keys, 
-> .secondary_trusted_keys, .ima, .evm, etc.).
-> 
-> What would be the use case for including keyrings created by non-root 
-> users in key measurement?
-> 
-> Also, since the UID for non-root users can be any integer value (greater 
-> than 0), can an an administrator craft a generic IMA policy that would 
-> be applicable to all clients in an enterprise?
+IMA measures system files, command line arguments passed to kexec,
+boot aggregate, etc. It can be used to measure keys as well.
+But there is no mechanism available in the kernel for IMA to
+know when a key is created or updated.
 
-The integrity subsystem, and other concepts upstreamed to support it,
-are being used by different people/companies in different ways.  I
-know some of the ways, but not all, as how it is being used.  For
-example, Mat Martineau gave an LSS2019-NA talk titled "Using and
-Implementing Keyring Restrictions for Userspace".  I don't know if he
-would be interested in measuring keys on these restricted userspace
-keyrings, but before we limit how a new feature works, we should at
-least look to see if that limitation is really necessary.
+This change aims to address measuring keys created or updated
+in the system.
 
-Mimi
+To achieve the above the following changes have been made:
+
+ - Added a new IMA hook namely, ima_post_key_create_or_update, which
+   measures the key. This IMA hook is called from key_create_or_update
+   function. The key measurement can be controlled through IMA policy.
+
+   A new IMA policy function KEY_CHECK has been added to measure keys.
+   "keyrings=" option can be specified for KEY_CHECK to limit
+   measuring the keys loaded onto the specified keyrings only.
+
+   uid can be specified to further restrict key measurement for keys
+   created by specific user.
+
+   # measure keys loaded onto any keyring
+   measure func=KEY_CHECK
+
+   # measure keys loaded onto the IMA keyring only for root user
+   measure func=KEY_CHECK uid=0 keyring=".ima"
+
+   # measure keys on the BUILTIN and IMA keyrings into a different PCR
+   measure func=KEY_CHECK keyring=".builtin_trusted_keys|.ima" pcr=11
+
+Testing performed:
+
+  * Booted the kernel with this change.
+  * When KEY_CHECK policy is set IMA measures keys loaded
+    onto any keyring (keyrings= option not specified).
+  * Keys are not measured when KEY_CHECK is not set.
+  * When keyrings= option is specified for KEY_CHECK then only the keys
+    loaded onto a keyring specified in the option is measured.
+  * When uid is specified in the policy the key is measured
+    only when the current user id matches the one given in the policy.
+  * Added a new key to a keyring.
+    => Added keys to .ima and .evm keyrings.
+  * Added the same key again.
+    => Add the same key to .ima and .evm keyrings.
+
+Change Log:
+
+  v10:
+
+  => Added check for user id (uid) in ima_match_keyring()
+  => Updated ima_match_keyring() function to use strsep() to
+     check for keyring match.
+  => Edited key measurement validation description.
+
+  v9:
+
+  => Changed the measured key data from just the public key to
+     the entire payload passed to key_create_or_update() function.
+     This payload is the certificate from which the key is created
+     or updated by key_create_or_update() function.
+  => Added check in process_buffer_measurement() to return
+     immediately if ima_policy_flag is set to zero.
+
+  v8:
+
+  => Updated ima_match_keyring() function to check for
+     whole keyring name match.
+  => Used CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE instead of
+     CONFIG_KEYS to build ima_asymmetric_keys.c and enable
+     the IMA hook to measure keys since this config handles
+     the required build time dependencies better.
+  => Updated patch description to illustrate verification
+     of key measurement.
+
+  v7:
+
+  => Removed CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS option and used
+     CONFIG_KEYS instead for ima_asymmetric_keys.c
+  => Added the patches related to "keyrings=" option support to
+     this patch set.
+
+  v6:
+
+  => Rebased the changes to v5.4-rc7
+  => Renamed KEYRING_CHECK to KEY_CHECK per Mimi's suggestion.
+  => Excluded the patches that add support for limiting key
+     measurement to specific keyrings ("keyrings=" option
+     for "measure func=KEY_CHECK" in the IMA policy).
+     Also, excluded the patches that add support for deferred
+     processing of keys (queue support).
+     These patches will be added in separate patch sets later.
+
+  v5:
+
+  => Reorganized the patches to add measurement of keys through
+     the IMA hook without any queuing and then added queuing support.
+  => Updated the queuing functions to minimize code executed inside mutex.
+  => Process queued keys after custom IMA policies have been applied.
+
+  v4:
+
+  => Rebased the changes to v5.4-rc3
+  => Applied the following dependent patch set first
+     and then added new changes.
+  https://lore.kernel.org/linux-integrity/1572492694-6520-1-git-send-email-zohar@linux.ibm.com
+  => Refactored the patch set to separate out changes related to
+     func KEYRING_CHECK and options keyrings into different patches.
+  => Moved the functions to queue and dequeue keys for measurement
+     from ima_queue.c to a new file ima_asymmetric_keys.c.
+  => Added a new config namely CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
+     to compile ima_asymmetric_keys.c
+
+  v3:
+
+  => Added KEYRING_CHECK for measuring keys. This can optionally specify
+     keyrings to measure.
+  => Updated ima_get_action() and related functions to return
+     the keyrings if specified in the policy.
+  => process_buffer_measurement() function is updated to take keyring
+     as a parameter. The key will be measured if the policy includes
+     the keyring in the list of measured keyrings. If the policy does not
+     specify any keyrings then all keys are measured.
+
+  v2:
+
+  => Per suggestion from Mimi reordered the patch set to first
+     enable measuring keys added or updated in the system.
+     And, then scope the measurement to keys added to 
+     builtin_trusted_keys keyring through ima policy.
+  => Removed security_key_create_or_update function and instead
+     call ima hook, to measure the key, directly from 
+     key_create_or_update function.
+
+  v1:
+
+  => LSM function for key_create_or_update. It calls ima.
+  => Added ima hook for measuring keys
+  => ima measures keys based on ima policy.
+
+  v0:
+
+  => Added LSM hook for key_create_or_update.
+  => Measure keys added to builtin or secondary trusted keys keyring.
+
+Lakshmi Ramasubramanian (6):
+  IMA: Check IMA policy flag
+  IMA: Add KEY_CHECK func to measure keys
+  IMA: Define an IMA hook to measure keys
+  KEYS: Call the IMA hook to measure keys
+  IMA: Add support to limit measuring keys
+  IMA: Read keyrings= option from the IMA policy
+
+ Documentation/ABI/testing/ima_policy         | 16 +++-
+ include/linux/ima.h                          | 14 +++
+ security/integrity/ima/Makefile              |  1 +
+ security/integrity/ima/ima.h                 |  9 +-
+ security/integrity/ima/ima_api.c             |  8 +-
+ security/integrity/ima/ima_appraise.c        |  4 +-
+ security/integrity/ima/ima_asymmetric_keys.c | 58 ++++++++++++
+ security/integrity/ima/ima_main.c            | 12 ++-
+ security/integrity/ima/ima_policy.c          | 96 ++++++++++++++++++--
+ security/keys/key.c                          | 10 ++
+ 10 files changed, 208 insertions(+), 20 deletions(-)
+ create mode 100644 security/integrity/ima/ima_asymmetric_keys.c
+
+-- 
+2.17.1
 
