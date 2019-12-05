@@ -2,74 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28038114201
-	for <lists+keyrings@lfdr.de>; Thu,  5 Dec 2019 14:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF68A114573
+	for <lists+keyrings@lfdr.de>; Thu,  5 Dec 2019 18:13:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729530AbfLEN5I (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Dec 2019 08:57:08 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:56650 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729489AbfLEN5I (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Dec 2019 08:57:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575554227;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iwDpswnvJYEc51uYZ3w4B0L234MkONszPPNZVFbIUh8=;
-        b=dfF7Li9Om74K8UZAtOzofyxAJQf1Jo0nxWNa4ilYj9TpoVfo7gvlYGvkIH+PtbPYgPFqaV
-        SWFypS1kLqmD173MdCkaG3uM6f5LOC0whLF9oWeXMm8xyOyXbhoSxLgFIfOYOaj9PPqF/q
-        rOJR1xg/uzu0RTk0vTtrn4hf8boOibE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-314-i7QgFGW9O46JVqA37OrdIg-1; Thu, 05 Dec 2019 08:57:03 -0500
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CD828107ACE6;
-        Thu,  5 Dec 2019 13:57:00 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-250.rdu2.redhat.com [10.10.120.250])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D52D4600D1;
-        Thu,  5 Dec 2019 13:56:57 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20191205125826.GK2734@twin.jikos.cz>
-References: <20191205125826.GK2734@twin.jikos.cz> <31452.1574721589@warthog.procyon.org.uk>
-To:     dsterba@suse.cz
-Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
+        id S1730031AbfLERNG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 5 Dec 2019 12:13:06 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:33954 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730016AbfLERNF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Dec 2019 12:13:05 -0500
+Received: by mail-lj1-f196.google.com with SMTP id m6so4501609ljc.1
+        for <keyrings@vger.kernel.org>; Thu, 05 Dec 2019 09:13:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zYNLY1IlQbFxutIFweWCQvjwN9b0IsGYV2okK9HrfFg=;
+        b=Q0FUaDCgejnj2j913m9DkZ5BcPyxfvWCsvBxLXqstFY2bocRU9mYGGdVT6TyixAaF9
+         S2hdwaxlIrLjm/VudylZUBLif/OSS4AVyaDGMpzqZdSB/9DnkfX4SEUoI9oj/pbE/ewR
+         2kNMP8DNxG23lhz/9/1l0TfZQjJpzTexlyrHc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zYNLY1IlQbFxutIFweWCQvjwN9b0IsGYV2okK9HrfFg=;
+        b=E0FOpd+o/AtzGplpDpY8YHwS3pczfG7bIoIaTuuj81Yj6XFsURj6lp+WrSzeE2XG+k
+         A/MTUw8U18rqcG6HnUtUXI+ZuY6KCAmQtMILpoK7XR/w7YznJgq6NoWSFS9X/DTyHRmO
+         CxTm+O1BQz0sz1h3j6qI5IoFTc7vhT1eiUl5wMtzMXxFRBVNZK2Xx2P6xICxx8fLdgHO
+         nENbMOnS3Nug35UvroxuUyHBQdp6u0dwwQ2XFWiDM9EDtnTXYwQ/ppWQ8VKAd4x1i6qM
+         2N7xiXArPiv9trFBYniTUAuKURMee17XDkAfZ1afn7NF3j2f6fPQU/Dq8O2oyKAdI438
+         wnMA==
+X-Gm-Message-State: APjAAAUf+vHcLF/9CN4bOLVm0A4Ymg7v0NQGtljJDir/Dxo32ua8llsP
+        N3v1gzY+CJkVT8zhjDsNMV1F5Ck/cJs=
+X-Google-Smtp-Source: APXvYqzbGahf4yFvq8SAMWV0OyY/0MkN5Ke+EF7ToHraV7ugh6dBLAHBaIP79gE7dVrih8p1TdOnjw==
+X-Received: by 2002:a2e:81d0:: with SMTP id s16mr5989354ljg.166.1575565982609;
+        Thu, 05 Dec 2019 09:13:02 -0800 (PST)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id c189sm1040623lfg.75.2019.12.05.09.12.59
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2019 09:12:59 -0800 (PST)
+Received: by mail-lf1-f54.google.com with SMTP id v201so3039728lfa.11
+        for <keyrings@vger.kernel.org>; Thu, 05 Dec 2019 09:12:59 -0800 (PST)
+X-Received: by 2002:a19:4351:: with SMTP id m17mr6095833lfj.61.1575565978909;
+ Thu, 05 Dec 2019 09:12:58 -0800 (PST)
+MIME-Version: 1.0
+References: <31452.1574721589@warthog.procyon.org.uk> <20191205125826.GK2734@twin.jikos.cz>
+ <1593.1575554217@warthog.procyon.org.uk>
+In-Reply-To: <1593.1575554217@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 5 Dec 2019 09:12:42 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgwwJ+ZEtycujFdNmpS8TjwCYyT+oHfV7d-GekyaX91xg@mail.gmail.com>
+Message-ID: <CAHk-=wgwwJ+ZEtycujFdNmpS8TjwCYyT+oHfV7d-GekyaX91xg@mail.gmail.com>
+Subject: Re: [GIT PULL] pipe: Notification queue preparation
+To:     David Howells <dhowells@redhat.com>
+Cc:     David Sterba <dsterba@suse.cz>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Zijlstra <peterz@infradead.org>, raven@themaw.net,
         Christian Brauner <christian@brauner.io>,
         keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [GIT PULL] pipe: Notification queue preparation
-MIME-Version: 1.0
-Content-ID: <1592.1575554217.1@warthog.procyon.org.uk>
-Date:   Thu, 05 Dec 2019 13:56:57 +0000
-Message-ID: <1593.1575554217@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: i7QgFGW9O46JVqA37OrdIg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Sterba <dsterba@suse.cz> wrote:
+On Thu, Dec 5, 2019 at 5:57 AM David Howells <dhowells@redhat.com> wrote:
+>
+> David Sterba <dsterba@suse.cz> wrote:
+>
+> > [<0>] pipe_write+0x1be/0x4b0
+>
+> Can you get me a line number of that?  Assuming you've built with -g, load
+> vmlinux into gdb and do "i li pipe_write+0x1be".
 
-> [<0>] pipe_write+0x1be/0x4b0
+If the kernel is built with debug info (which you need for the gdb
+command anyway), it's much better to just use
 
-Can you get me a line number of that?  Assuming you've built with -g, load
-vmlinux into gdb and do "i li pipe_write+0x1be".
+   ./scripts/decode_stacktrace.sh
 
-David
+which gives all the information for the whole backtrace.
 
+It would be interesting to hear if somebody else is waiting on the
+read side too.
+
+             Linus
