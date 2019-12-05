@@ -2,110 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7F3B113826
-	for <lists+keyrings@lfdr.de>; Thu,  5 Dec 2019 00:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C4B114110
+	for <lists+keyrings@lfdr.de>; Thu,  5 Dec 2019 13:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728378AbfLDXZv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 Dec 2019 18:25:51 -0500
-Received: from mga06.intel.com ([134.134.136.31]:65086 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727116AbfLDXZu (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 4 Dec 2019 18:25:50 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 15:25:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,278,1571727600"; 
-   d="scan'208";a="208994240"
-Received: from pminglan-mobl.amr.corp.intel.com ([10.251.2.222])
-  by fmsmga007.fm.intel.com with ESMTP; 04 Dec 2019 15:25:49 -0800
-Date:   Wed, 4 Dec 2019 15:25:48 -0800 (PST)
-From:   Mat Martineau <mathew.j.martineau@linux.intel.com>
-X-X-Sender: mjmartin@pminglan-mobl.amr.corp.intel.com
-To:     Mimi Zohar <zohar@linux.ibm.com>
-cc:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org, eric.snowberg@oracle.com,
-        dhowells@redhat.com, matthewgarrett@google.com, sashal@kernel.org,
-        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH v9 5/6] IMA: Add support to limit measuring keys
-In-Reply-To: <1575458192.5241.99.camel@linux.ibm.com>
-Message-ID: <alpine.OSX.2.21.1912041411100.45746@pminglan-mobl.amr.corp.intel.com>
-References: <20191127015654.3744-1-nramas@linux.microsoft.com>  <20191127015654.3744-6-nramas@linux.microsoft.com>  <1575375945.5241.16.camel@linux.ibm.com>  <2d20ce36-e24e-e238-4a82-286db9eeab97@linux.microsoft.com>  <1575403616.5241.76.camel@linux.ibm.com>
-  <89bb3226-3a2e-c7fa-fff9-3a422739481c@linux.microsoft.com> <1575458192.5241.99.camel@linux.ibm.com>
-User-Agent: Alpine 2.21 (OSX 202 2017-01-01)
+        id S1729099AbfLEM6g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 5 Dec 2019 07:58:36 -0500
+Received: from mx2.suse.de ([195.135.220.15]:39370 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729048AbfLEM6f (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 5 Dec 2019 07:58:35 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 66F10AB87;
+        Thu,  5 Dec 2019 12:58:32 +0000 (UTC)
+Received: by ds.suse.cz (Postfix, from userid 10065)
+        id B24BCDA733; Thu,  5 Dec 2019 13:58:26 +0100 (CET)
+Date:   Thu, 5 Dec 2019 13:58:26 +0100
+From:   David Sterba <dsterba@suse.cz>
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL] pipe: Notification queue preparation
+Message-ID: <20191205125826.GK2734@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+Mail-Followup-To: dsterba@suse.cz, David Howells <dhowells@redhat.com>,
+        torvalds@linux-foundation.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>, keyrings@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <31452.1574721589@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="0-1154282419-1575501949=:45746"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31452.1574721589@warthog.procyon.org.uk>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Nov 25, 2019 at 10:39:49PM +0000, David Howells wrote:
+> David Howells (12):
+>       pipe: Reduce #inclusion of pipe_fs_i.h
+>       Remove the nr_exclusive argument from __wake_up_sync_key()
+>       Add wake_up_interruptible_sync_poll_locked()
+>       pipe: Use head and tail pointers for the ring, not cursor and length
 
---0-1154282419-1575501949=:45746
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+This commit (8cefc107ca54c8b06438b7dc9) causes hangs of 'btrfs send'
+commands, that's eg. inside fstests or in btrfs-progs testsuite. The
+'send' uses pipe/splice to get data from kernel to userspace.
 
+The test that reliably worked for me leaves the process hanging with
+this stacktrace (no CPU or IO activity):
 
-On Wed, 4 Dec 2019, Mimi Zohar wrote:
+[<0>] pipe_write+0x1be/0x4b0
+[<0>] new_sync_write+0x11e/0x1c0
+[<0>] vfs_write+0xc1/0x1d0
+[<0>] kernel_write+0x2c/0x40
+[<0>] send_cmd+0x78/0xf0 [btrfs]
+[<0>] send_extent_data+0x4b1/0x52c [btrfs]
+[<0>] process_extent+0xe46/0xe9d [btrfs]
+[<0>] changed_cb+0xcf5/0xd2f [btrfs]
+[<0>] send_subvol+0x8ad/0xc0b [btrfs]
+[<0>] btrfs_ioctl_send+0xe50/0xf30 [btrfs]
+[<0>] _btrfs_ioctl_send+0x80/0x110 [btrfs]
+[<0>] btrfs_ioctl+0x18e1/0x3450 [btrfs]
+[<0>] do_vfs_ioctl+0xa5/0x710
+[<0>] ksys_ioctl+0x70/0x80
+[<0>] __x64_sys_ioctl+0x16/0x20
+[<0>] do_syscall_64+0x56/0x220
+[<0>] entry_SYSCALL_64_after_hwframe+0x49/0xbe
 
-> [Cc'ing Mat Martineau]
->
-> On Tue, 2019-12-03 at 15:37 -0800, Lakshmi Ramasubramanian wrote:
->> On 12/3/2019 12:06 PM, Mimi Zohar wrote:
->>
->>> Suppose both root and uid 1000 define a keyring named "foo".  The
->>> current "keyrings=foo" will measure all keys added to either keyring
->>> named "foo".  There needs to be a way to limit measuring keys to a
->>> particular keyring named "foo".
->>>
->>> Mimi
->>
->> Thanks for clarifying.
->>
->> Suppose two different non-root users create keyring with the same name
->> "foo" and, say, both are measured, how would we know which keyring
->> measurement belongs to which user?
->>
->> Wouldn't it be sufficient to include only keyrings created by "root"
->> (UID value 0) in the key measurement? This will include all the builtin
->> trusted keyrings (such as .builtin_trusted_keys,
->> .secondary_trusted_keys, .ima, .evm, etc.).
->>
->> What would be the use case for including keyrings created by non-root
->> users in key measurement?
->>
->> Also, since the UID for non-root users can be any integer value (greater
->> than 0), can an an administrator craft a generic IMA policy that would
->> be applicable to all clients in an enterprise?
->
-> The integrity subsystem, and other concepts upstreamed to support it,
-> are being used by different people/companies in different ways.  I
-> know some of the ways, but not all, as how it is being used.  For
-> example, Mat Martineau gave an LSS2019-NA talk titled "Using and
-> Implementing Keyring Restrictions for Userspace".  I don't know if he
-> would be interested in measuring keys on these restricted userspace
-> keyrings, but before we limit how a new feature works, we should at
-> least look to see if that limitation is really necessary.
+I've bisected that to the mentioned commit, using test in btrfs-progs
+testsuite with command "make TEST=016\* test-misc". Normally the test
+can run up to 10 seconds, in the buggy case it stays there.
 
-The use cases I'm most familiar with could have a use for key measurement 
-for something like enterprise Wi-Fi root certificates. I'm not sure of the 
-best way to uniquely identify a key to measure in that scenario, it could 
-be anchored in various ways (process, session, thread, or user keyrings, 
-for example) and may be owned by a non-root user. As Lakshmi noted above, 
-key names are not unique, and I'll add that namespace considerations may 
-come in to play too.
+I can help testing fixes or gathering more information, please let me
+know.
 
-Keys (including keyrings like .builtin_trusted_keys, .ima, etc) can be 
-linked to multiple keyrings, maybe you could create a system-level 
-.ima_measured keyring. You could measure keys that are accessible from 
-that keyring, and opt in more keys for measurement by linking them to 
-.ima_measured or a keyring nested within .ima_measured.
+Full bisect log:
 
---
-Mat Martineau
-Intel
---0-1154282419-1575501949=:45746--
+# bad: [3c0edea9b29f9be6c093f236f762202b30ac9431] pipe: Remove sync on wake_ups
+# good: [da0c9ea146cbe92b832f1b0f694840ea8eb33cce] Linux 5.4-rc2
+git bisect start '3c0edea9b29f9be6c093f236f762202b30ac9431' 'd055b4fb4d165b06d912e7f846610d120c3bb9fb^'
+# bad: [b667b867344301e24f21d4a4c844675ff61d89e1] pipe: Advance tail pointer inside of wait spinlock in pipe_read()
+git bisect bad b667b867344301e24f21d4a4c844675ff61d89e1
+# good: [f94df9890e98f2090c6a8d70c795134863b70201] Add wake_up_interruptible_sync_poll_locked()
+git bisect good f94df9890e98f2090c6a8d70c795134863b70201
+# bad: [6718b6f855a0b4962d54bd625be2718cb820cec6] pipe: Allow pipes to have kernel-reserved slots
+git bisect bad 6718b6f855a0b4962d54bd625be2718cb820cec6
+# bad: [8cefc107ca54c8b06438b7dc9cc08bc0a11d5b98] pipe: Use head and tail pointers for the ring, not cursor and length
+git bisect bad 8cefc107ca54c8b06438b7dc9cc08bc0a11d5b98
+# first bad commit: [8cefc107ca54c8b06438b7dc9cc08bc0a11d5b98] pipe: Use head and tail pointers for the ring, not cursor and length
+
+>       pipe: Allow pipes to have kernel-reserved slots
+>       pipe: Advance tail pointer inside of wait spinlock in pipe_read()
+>       pipe: Conditionalise wakeup in pipe_read()
+>       pipe: Rearrange sequence in pipe_write() to preallocate slot
+>       pipe: Remove redundant wakeup from pipe_write()
+>       pipe: Check for ring full inside of the spinlock in pipe_write()
+>       pipe: Increase the writer-wakeup threshold to reduce context-switch count
+>       pipe: Remove sync on wake_ups
