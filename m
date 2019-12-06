@@ -2,75 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2C6B115885
-	for <lists+keyrings@lfdr.de>; Fri,  6 Dec 2019 22:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0471158D6
+	for <lists+keyrings@lfdr.de>; Fri,  6 Dec 2019 22:53:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfLFVUh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 6 Dec 2019 16:20:37 -0500
-Received: from mail.kapsi.fi ([91.232.154.25]:36059 "EHLO mail.kapsi.fi"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726371AbfLFVUh (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 6 Dec 2019 16:20:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
-         s=20161220; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=Txo2WUEcc/xwK47u8ogNCI+IkeDC/BmS0irmdN8p5x8=; b=giJuCIV4If/vjNRHI7C6XPPftj
-        iZQFrpB6Qwkys+zsH2Yy28nBbfaGwRqDQe9a6yqlz9QcJV0Ri8G25XzPQkRYFZSWv5DIhnv77CTrl
-        x1yY9iUzXaJU92sWqRzLWu+mzKfe38BhEfe3I853Eobbou/uVCHOgyCm4l5EjijyhzGSwOJuVwD1U
-        cPK/N+Z1mrWoYiy7NKvGlh9kS5v/pQ/wvp1Z/M9Vnixvad+Nw7S8gCOVcQhZ5Tg7GI6+M3EtxK04c
-        xqpPJ2CzqC7hs72LN00t1biiwiYr7lmysEmXcRJDGR8uZzOgfnI/sOmbfU2d/jKI/Ze6/JDh0KgkA
-        EXqgYUwQ==;
-Received: from 91-154-92-5.elisa-laajakaista.fi ([91.154.92.5] helo=localhost)
-        by mail.kapsi.fi with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <jarkko.sakkinen@linux.intel.com>)
-        id 1idL1b-0002lX-IP; Fri, 06 Dec 2019 23:20:31 +0200
-Date:   Fri, 6 Dec 2019 23:20:31 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     "Zhao, Shirley" <shirley.zhao@intel.com>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        'Mauro Carvalho Chehab' <mchehab+samsung@kernel.org>,
-        "Zhu, Bing" <bing.zhu@intel.com>,
-        "Chen, Luhai" <luhai.chen@intel.com>
-Subject: Re: One question about trusted key of keyring in Linux kernel.
-Message-ID: <20191206212031.GE9971@linux.intel.com>
-References: <A888B25CD99C1141B7C254171A953E8E49094313@shsmsx102.ccr.corp.intel.com>
- <1573659978.17949.83.camel@linux.ibm.com>
- <A888B25CD99C1141B7C254171A953E8E49095F9B@shsmsx102.ccr.corp.intel.com>
- <1574796456.4793.248.camel@linux.ibm.com>
- <20191129230146.GB15726@linux.intel.com>
- <A888B25CD99C1141B7C254171A953E8E4909CA4B@shsmsx102.ccr.corp.intel.com>
+        id S1726388AbfLFVx3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 6 Dec 2019 16:53:29 -0500
+Received: from freki.datenkhaos.de ([81.7.17.101]:59500 "EHLO
+        freki.datenkhaos.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726353AbfLFVx3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Dec 2019 16:53:29 -0500
+X-Greylist: delayed 350 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Dec 2019 16:53:27 EST
+Received: from localhost (localhost [127.0.0.1])
+        by freki.datenkhaos.de (Postfix) with ESMTP id 0EEA01E3A722;
+        Fri,  6 Dec 2019 22:47:36 +0100 (CET)
+Received: from freki.datenkhaos.de ([127.0.0.1])
+        by localhost (freki.datenkhaos.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 3vv8b2g8ZfmA; Fri,  6 Dec 2019 22:47:30 +0100 (CET)
+Received: from latitude (x4db74696.dyn.telefonica.de [77.183.70.150])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by freki.datenkhaos.de (Postfix) with ESMTPSA;
+        Fri,  6 Dec 2019 22:47:30 +0100 (CET)
+Date:   Fri, 6 Dec 2019 22:47:25 +0100
+From:   Johannes Hirte <johannes.hirte@datenkhaos.de>
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        nicolas.dichtel@6wind.com, raven@themaw.net,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 04/10] pipe: Use head and tail pointers for the ring,
+ not cursor and length [ver #2]
+Message-ID: <20191206214725.GA2108@latitude>
+References: <157186182463.3995.13922458878706311997.stgit@warthog.procyon.org.uk>
+ <157186186167.3995.7568100174393739543.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <A888B25CD99C1141B7C254171A953E8E4909CA4B@shsmsx102.ccr.corp.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 91.154.92.5
-X-SA-Exim-Mail-From: jarkko.sakkinen@linux.intel.com
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
+In-Reply-To: <157186186167.3995.7568100174393739543.stgit@warthog.procyon.org.uk>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Dec 02, 2019 at 01:45:30AM +0000, Zhao, Shirley wrote:
-> Hi, Jarkko, 
-> 
-> The rc1 you mentioned is the version for what? 
-> How to download it and update it? 
-> 
-> Thanks. 
+On 2019 Okt 23, David Howells wrote:
+> Convert pipes to use head and tail pointers for the buffer ring rather than
+> pointer and length as the latter requires two atomic ops to update (or a
+> combined op) whereas the former only requires one.
 
-It will be available from kernel.org eventually.
+This change breaks firefox on my system. I've noticed that some pages
+doesn't load correctly anymore (e.g. facebook, spiegel.de). The pages
+start loading and than stop. Looks like firefox is waiting for some
+dynamic loading content. I've bisected to this commit, but can't revert
+because of conflicts.
 
-/Jarkko
+-- 
+Regards,
+  Johannes Hirte
+
