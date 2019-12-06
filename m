@@ -2,103 +2,75 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65918114A7E
-	for <lists+keyrings@lfdr.de>; Fri,  6 Dec 2019 02:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C6B115885
+	for <lists+keyrings@lfdr.de>; Fri,  6 Dec 2019 22:20:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725959AbfLFB3n (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Dec 2019 20:29:43 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:47368 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726065AbfLFB3n (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Dec 2019 20:29:43 -0500
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 4CB1020B4761;
-        Thu,  5 Dec 2019 17:29:42 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4CB1020B4761
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1575595782;
-        bh=zWXj9qCPzCfIoJCY6V9p1gvmkxc1gowLmThL5IhTDfw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QaVQza4vo2omjgKhh6V+EkOqj+k8IlHzIxS5X9dg2341H6QNIG7DNrIvmhx5+CrQJ
-         Oh4X0sO3DhmsxA38z9NQAHYtT9SEMcgxHyh/d6I0RkNCMzc1BGB1Yaxl1ALOFdcpIS
-         C8+Ze3D5AdO5gCGYLbRoLvSTzn7jwMWtYAuuz9u8=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
-        sashal@kernel.org, jamorris@linux.microsoft.com,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Subject: [PATCH v1 2/2] IMA: Call workqueue functions to measure queued keys
-Date:   Thu,  5 Dec 2019 17:29:36 -0800
-Message-Id: <20191206012936.2814-3-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191206012936.2814-1-nramas@linux.microsoft.com>
-References: <20191206012936.2814-1-nramas@linux.microsoft.com>
+        id S1726330AbfLFVUh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 6 Dec 2019 16:20:37 -0500
+Received: from mail.kapsi.fi ([91.232.154.25]:36059 "EHLO mail.kapsi.fi"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726371AbfLFVUh (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 6 Dec 2019 16:20:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
+         s=20161220; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=Txo2WUEcc/xwK47u8ogNCI+IkeDC/BmS0irmdN8p5x8=; b=giJuCIV4If/vjNRHI7C6XPPftj
+        iZQFrpB6Qwkys+zsH2Yy28nBbfaGwRqDQe9a6yqlz9QcJV0Ri8G25XzPQkRYFZSWv5DIhnv77CTrl
+        x1yY9iUzXaJU92sWqRzLWu+mzKfe38BhEfe3I853Eobbou/uVCHOgyCm4l5EjijyhzGSwOJuVwD1U
+        cPK/N+Z1mrWoYiy7NKvGlh9kS5v/pQ/wvp1Z/M9Vnixvad+Nw7S8gCOVcQhZ5Tg7GI6+M3EtxK04c
+        xqpPJ2CzqC7hs72LN00t1biiwiYr7lmysEmXcRJDGR8uZzOgfnI/sOmbfU2d/jKI/Ze6/JDh0KgkA
+        EXqgYUwQ==;
+Received: from 91-154-92-5.elisa-laajakaista.fi ([91.154.92.5] helo=localhost)
+        by mail.kapsi.fi with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <jarkko.sakkinen@linux.intel.com>)
+        id 1idL1b-0002lX-IP; Fri, 06 Dec 2019 23:20:31 +0200
+Date:   Fri, 6 Dec 2019 23:20:31 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     "Zhao, Shirley" <shirley.zhao@intel.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        'Mauro Carvalho Chehab' <mchehab+samsung@kernel.org>,
+        "Zhu, Bing" <bing.zhu@intel.com>,
+        "Chen, Luhai" <luhai.chen@intel.com>
+Subject: Re: One question about trusted key of keyring in Linux kernel.
+Message-ID: <20191206212031.GE9971@linux.intel.com>
+References: <A888B25CD99C1141B7C254171A953E8E49094313@shsmsx102.ccr.corp.intel.com>
+ <1573659978.17949.83.camel@linux.ibm.com>
+ <A888B25CD99C1141B7C254171A953E8E49095F9B@shsmsx102.ccr.corp.intel.com>
+ <1574796456.4793.248.camel@linux.ibm.com>
+ <20191129230146.GB15726@linux.intel.com>
+ <A888B25CD99C1141B7C254171A953E8E4909CA4B@shsmsx102.ccr.corp.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A888B25CD99C1141B7C254171A953E8E4909CA4B@shsmsx102.ccr.corp.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 91.154.92.5
+X-SA-Exim-Mail-From: jarkko.sakkinen@linux.intel.com
+X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Measuring keys requires a custom IMA policy to be loaded.
-Keys should be queued for measurement if a custom IMA policy
-is not yet loaded. Keys queued for measurement, if any, should be
-processed when a custom IMA policy is loaded.
+On Mon, Dec 02, 2019 at 01:45:30AM +0000, Zhao, Shirley wrote:
+> Hi, Jarkko, 
+> 
+> The rc1 you mentioned is the version for what? 
+> How to download it and update it? 
+> 
+> Thanks. 
 
-This patch updates the IMA hook function ima_post_key_create_or_update()
-to queue the key if a custom IMA policy has not yet been loaded.
-And, ima_update_policy() function, which is called when
-a custom IMA policy is loaded, is updated to process queued keys.
+It will be available from kernel.org eventually.
 
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- security/integrity/ima/ima_asymmetric_keys.c | 9 +++++++++
- security/integrity/ima/ima_policy.c          | 6 ++++++
- 2 files changed, 15 insertions(+)
-
-diff --git a/security/integrity/ima/ima_asymmetric_keys.c b/security/integrity/ima/ima_asymmetric_keys.c
-index fbdbe9c261cb..510b29d17a7b 100644
---- a/security/integrity/ima/ima_asymmetric_keys.c
-+++ b/security/integrity/ima/ima_asymmetric_keys.c
-@@ -155,6 +155,8 @@ void ima_post_key_create_or_update(struct key *keyring, struct key *key,
- 				   const void *payload, size_t payload_len,
- 				   unsigned long flags, bool create)
- {
-+	bool key_queued = false;
-+
- 	/* Only asymmetric keys are handled by this hook. */
- 	if (key->type != &key_type_asymmetric)
- 		return;
-@@ -162,6 +164,13 @@ void ima_post_key_create_or_update(struct key *keyring, struct key *key,
- 	if (!payload || (payload_len == 0))
- 		return;
- 
-+	if (!ima_process_keys_for_measurement)
-+		key_queued = ima_queue_key_for_measurement(keyring, payload,
-+							   payload_len);
-+
-+	if (key_queued)
-+		return;
-+
- 	/*
- 	 * keyring->description points to the name of the keyring
- 	 * (such as ".builtin_trusted_keys", ".ima", etc.) to
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index 73030a69d546..4dc8fb9957ac 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -808,6 +808,12 @@ void ima_update_policy(void)
- 		kfree(arch_policy_entry);
- 	}
- 	ima_update_policy_flag();
-+
-+	/*
-+	 * Custom IMA policies have been setup.
-+	 * Process key(s) queued up for measurement now.
-+	 */
-+	ima_process_queued_keys_for_measurement();
- }
- 
- /* Keep the enumeration in sync with the policy_tokens! */
--- 
-2.17.1
-
+/Jarkko
