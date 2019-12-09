@@ -2,72 +2,110 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F3D0117746
-	for <lists+keyrings@lfdr.de>; Mon,  9 Dec 2019 21:19:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97EA3117771
+	for <lists+keyrings@lfdr.de>; Mon,  9 Dec 2019 21:32:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbfLIUTW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Dec 2019 15:19:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34352 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726354AbfLIUTW (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 9 Dec 2019 15:19:22 -0500
-Received: from gmail.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5CF5205C9;
-        Mon,  9 Dec 2019 20:19:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575922761;
-        bh=qmJshrv10StOK76MaxU366l0xx2N9WtKMDD5BAVAy5A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WxHZX5o12/xBG6CLw+vqtpZzddSGKMV0Ugb7xo6Sq3bTZ0R0Iu6shODMji8EMxZwy
-         6l/gUUXmmqpFnyv9+d0tFSp4SZ2YwDld4MLffeKlyRBcurF56vMol1ZOJCZCdJi4TI
-         Awe7S/Pzkp4SVzyiTQFvTVslYkLV818sBB9ujmfs=
-Date:   Mon, 9 Dec 2019 12:19:20 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
+        id S1726810AbfLIUcK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Dec 2019 15:32:10 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:63454 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726787AbfLIUcK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Dec 2019 15:32:10 -0500
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB9KMkoV092333;
+        Mon, 9 Dec 2019 15:31:56 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2wrt59sytm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Dec 2019 15:31:56 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB9KVcoR031171;
+        Mon, 9 Dec 2019 20:31:55 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+        by ppma05wdc.us.ibm.com with ESMTP id 2wr3q65nwh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Dec 2019 20:31:55 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB9KVtJ642861030
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 9 Dec 2019 20:31:55 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 29667B206B;
+        Mon,  9 Dec 2019 20:31:55 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C37FCB205F;
+        Mon,  9 Dec 2019 20:31:53 +0000 (GMT)
+Received: from jarvis.ext.hansenpartnership.com (unknown [9.85.200.101])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon,  9 Dec 2019 20:31:53 +0000 (GMT)
+Message-ID: <1575923513.31378.22.camel@linux.ibm.com>
+Subject: Re: One question about trusted key of keyring in Linux kernel.
+From:   James Bottomley <jejb@linux.ibm.com>
 To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH RESEND] KEYS: asymmetric: return ENOMEM if
- akcipher_request_alloc() fails
-Message-ID: <20191209201920.GE149190@gmail.com>
-References: <20191009230349.127215-1-ebiggers@kernel.org>
- <20191014194846.GI15552@linux.intel.com>
- <20191111182054.GD56300@gmail.com>
- <20191112200908.GD11213@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191112200908.GD11213@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Cc:     "Zhao, Shirley" <shirley.zhao@intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "'Mauro Carvalho Chehab'" <mchehab+samsung@kernel.org>,
+        "Zhu, Bing" <bing.zhu@intel.com>,
+        "Chen, Luhai" <luhai.chen@intel.com>
+Date:   Mon, 09 Dec 2019 12:31:53 -0800
+In-Reply-To: <20191209194715.GD19243@linux.intel.com>
+References: <A888B25CD99C1141B7C254171A953E8E49096521@shsmsx102.ccr.corp.intel.com>
+         <1575057916.6220.7.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909BA3B@shsmsx102.ccr.corp.intel.com>
+         <1575260220.4080.17.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909D360@shsmsx102.ccr.corp.intel.com>
+         <1575267453.4080.26.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909E381@shsmsx102.ccr.corp.intel.com>
+         <1575269075.4080.31.camel@linux.ibm.com>
+         <A888B25CD99C1141B7C254171A953E8E4909E399@shsmsx102.ccr.corp.intel.com>
+         <1575312932.24227.13.camel@linux.ibm.com>
+         <20191209194715.GD19243@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-09_04:2019-12-09,2019-12-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 mlxlogscore=987 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912090160
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 10:09:08PM +0200, Jarkko Sakkinen wrote:
-> On Mon, Nov 11, 2019 at 10:20:55AM -0800, Eric Biggers wrote:
-> > On Mon, Oct 14, 2019 at 10:48:46PM +0300, Jarkko Sakkinen wrote:
-> > > On Wed, Oct 09, 2019 at 04:03:49PM -0700, Eric Biggers wrote:
-> > > > From: Eric Biggers <ebiggers@google.com>
-> > > > 
-> > > > No error code was being set on this error path.
-> > > > 
-> > > > Fixes: ad4b1eb5fb33 ("KEYS: asym_tpm: Implement encryption operation [ver #2]")
-> > > > Fixes: c08fed737126 ("KEYS: Implement encrypt, decrypt and sign for software asymmetric key [ver #2]")
-> > > > Reviewed-by: James Morris <jamorris@linux.microsoft.com>
-> > > > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > 
-> > > I can pick this up to my tree given the TPM association. David?
-> > > 
-> > > /Jarkko
-> > 
-> > Ping.
+On Mon, 2019-12-09 at 21:47 +0200, Jarkko Sakkinen wrote:
+> On Mon, Dec 02, 2019 at 10:55:32AM -0800, James Bottomley wrote:
+> > blob but it looks like we need to fix the API.  I suppose the good
+> > news is given this failure that we have the opportunity to rewrite
+> > the API since no-one else can have used it for anything because of
+> > this.  The
 > 
-> I can pick this up to my v5.5-rc2 PR (already sent one for rc1).
+> I did successfully run this test when I wrote it 5 years ago:
 > 
-> /Jarkko
+> https://github.com/jsakkine-intel/tpm2-scripts/blob/master/keyctl-smo
+> ke.sh
+> 
+> Given that there is API a way must be found that backwards
+> compatibility
+> is not broken. New format is fine but it must co-exist.
 
-Ping.
+The old API is unsupportable in the combination of policy + auth as I
+already explained.  The kernel doesn't have access to the nonces to
+generate the HMAC because the session was created by the user and the
+API has no way to pass them in (plus passing them in would be a huge
+security failure if we tried).  Given that Shirley appears to be the
+first person ever to try this, I don't think the old API has grown any
+policy users so its safe to remove it.  If we get a complaint, we can
+discuss adding it back.
+
+James
+
