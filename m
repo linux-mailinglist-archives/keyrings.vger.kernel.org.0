@@ -2,127 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25F50119008
-	for <lists+keyrings@lfdr.de>; Tue, 10 Dec 2019 19:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC808119D53
+	for <lists+keyrings@lfdr.de>; Tue, 10 Dec 2019 23:37:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727374AbfLJSxn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 10 Dec 2019 13:53:43 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:57170 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727349AbfLJSxn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Dec 2019 13:53:43 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D616E8EE0F8;
-        Tue, 10 Dec 2019 10:53:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1576004022;
-        bh=QZr7wT9b1l0MiLo0TLgMPv7Kq1IzQO4h6rkCpS3STiA=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=BE7wvGYo/T4dCnFiFGuWsqa87CLzPUCcDdnJHxP8oY2RpSulYAxsuUrTSkMfDOqqW
-         TAUKIJtHfB4VvdItwzmVTngPv3bZaw5a97vGJ2kN8y29uxN4E+pH0E9KPNjwTYx/I7
-         VC1YBKV9NpP1SJXTEna2BjCYKNLmeUBgOKhcZPOQ=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id GI76whowrTYV; Tue, 10 Dec 2019 10:53:42 -0800 (PST)
-Received: from [10.252.0.210] (unknown [198.134.98.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2119A8EE02B;
-        Tue, 10 Dec 2019 10:53:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1576004022;
-        bh=QZr7wT9b1l0MiLo0TLgMPv7Kq1IzQO4h6rkCpS3STiA=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=BE7wvGYo/T4dCnFiFGuWsqa87CLzPUCcDdnJHxP8oY2RpSulYAxsuUrTSkMfDOqqW
-         TAUKIJtHfB4VvdItwzmVTngPv3bZaw5a97vGJ2kN8y29uxN4E+pH0E9KPNjwTYx/I7
-         VC1YBKV9NpP1SJXTEna2BjCYKNLmeUBgOKhcZPOQ=
-Message-ID: <1576004020.3647.13.camel@HansenPartnership.com>
+        id S1728503AbfLJWhk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 Dec 2019 17:37:40 -0500
+Received: from merlin.infradead.org ([205.233.59.134]:49422 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728232AbfLJWhh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Dec 2019 17:37:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Message-ID:From:CC:To:Subject:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
+        Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Q+RS+5a8o9wq+07+CMSVR9TYy1NNrDciltQqltE4G6k=; b=xWhtti5199BR6ifYz75OENW0V9
+        7ISVYz+mSvq8KvWJ9lxmuGHchd7aRqvyG9/jw9Twns+dfr6InaE/53IPQNGXnETzIiRygEHGglJCM
+        3MWObYtqHg1Tjx1K3bYHklgiimuhwoiPtqJfI15SQJ13R9Av4VsbpfYe4aRi66ToApx1pCcMM2DPR
+        ZUzdVSjTc0peeQsHlyG0L1q2qBfK6SitFZp9JDz2vsPLR7SeWtRwt77lXrsrsNq1SAJxgTSvIZNqL
+        wHpSd+/GgH7b4nggBmxRy+j8S3bE99zUrDAIR5vC9WI2jOWCLpQ/P2lnX20c0v8P2MP+UqbyUtUD9
+        LA0LU6zQ==;
+Received: from [2001:8b0:10b:1:18f8:340d:82f7:145f]
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1ieo8M-000739-3O; Tue, 10 Dec 2019 22:37:34 +0000
+Date:   Tue, 10 Dec 2019 22:37:31 +0000
+User-Agent: K-9 Mail for Android
+In-Reply-To: <1576004020.3647.13.camel@HansenPartnership.com>
+References: <1575984010.3459.4.camel@HansenPartnership.com> <1575936272.31378.50.camel@HansenPartnership.com> <1575936367.31378.52.camel@HansenPartnership.com> <932257121039494734d97e290abb9159b1f5ca28.camel@infradead.org> <10037.1575986929@warthog.procyon.org.uk> <1576004020.3647.13.camel@HansenPartnership.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH v2 2/8] lib: add asn.1 encoder
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        David Howells <dhowells@redhat.com>
+CC:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         keyrings@vger.kernel.org
-Date:   Tue, 10 Dec 2019 10:53:40 -0800
-In-Reply-To: <10037.1575986929@warthog.procyon.org.uk>
-References: <1575984010.3459.4.camel@HansenPartnership.com>
-         <1575936272.31378.50.camel@HansenPartnership.com>
-         <1575936367.31378.52.camel@HansenPartnership.com>
-         <932257121039494734d97e290abb9159b1f5ca28.camel@infradead.org>
-         <10037.1575986929@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From:   David Woodhouse <dwmw2@infradead.org>
+Message-ID: <35B37965-359E-40E0-8F44-836A56EC4756@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by merlin.infradead.org. See http://www.infradead.org/rpr.html
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2019-12-10 at 14:08 +0000, David Howells wrote:
-> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
-> 
-> > > Didn't you say you were going to make it return an error when it
-> > > ran out of space or was asked to encode a negative number?
-> > 
-> > it follows the pattern of all the other functions in that it dumps
-> > a kernel warning on problems and bails.
-> 
-> I don't see any bounds checking there, let alone anything that dumps
-> a kernel warning and bails 
 
-It's in the if (WARN part of asn1_encode_integer.
 
-> - except if the length is so large that the ASN.1 cannot be
-> constructed.  That said, there is a check in patch 4.
+On 10 December 2019 18:53:40 GMT, James Bottomley <James=2EBottomley@Hanse=
+nPartnership=2Ecom> wrote:
+>On Tue, 2019-12-10 at 14:08 +0000, David Howells wrote:
+>>   Please therefore put bounds checking and error handling in it=2E  And
+>> please *don't* just produce broken ASN=2E1 when something goes wrong=2E
+>
+>OK, I'll make it return an error and add a wrapper for my use case that
+>warns on error and causes the function to bail=2E
 
-However, I think you'd like both a length and a buffer length to each
-function to cope with definite length encoding overflows?  I can do
-that.
+Traditionally we call that "error handling" :p
 
-> > ... as long as the buffer doesn't overflow.
-> 
-> Yes, but that's Dave's point.
-> 
-> [from patch 4]
-> 
-> > +	 * Assume both ovtet strings will encode to a 2 byte
-> > definite length
-> 
-> octet, btw.
-
-Heh, yes, noticed that mere seconds after I pressed send ...
-
-> At least I've found a preliminary bounds check there
-> 
-> > +	 */
-> > +	if (WARN(work - scratch + pub_len + priv_len + 8 >
-> > SCRATCH_SIZE,
-> > +		 "BUG: scratch buffer is too small"))
-> > +		return -EINVAL;
-> 
-> which I presume makes the correct calculation.
-> 
-> I thought TPM comms were slow - slow enough that putting bounds
-> checking in your asn1_encode_* routines will be insignificant.
-
-Yes, I'm not bothered about timings.  I can add bounds checking on the
-buffer length like the integer case.  For the other routines, I'll make
-it decrement the data length in place as it increments the data pointer
-
-> Further, you're promoting this ASN.1 encoder as a general library
-> within the kernel, presumably so that other people can make use of
-> it.
-
-Well, I did notice the TPM 1.2 asymmetric key code rolled its own ASN.1
-encoding, yes.
-
->   Please therefore put bounds checking and error handling in it.  And
-> please *don't* just produce broken ASN.1 when something goes wrong.
-
-OK, I'll make it return an error and add a wrapper for my use case that
-warns on error and causes the function to bail.
-
-James
-
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
