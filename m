@@ -2,69 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A7511BADA
-	for <lists+keyrings@lfdr.de>; Wed, 11 Dec 2019 18:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5526B11BAE8
+	for <lists+keyrings@lfdr.de>; Wed, 11 Dec 2019 19:01:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730684AbfLKR7S (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 11 Dec 2019 12:59:18 -0500
-Received: from mga02.intel.com ([134.134.136.20]:29267 "EHLO mga02.intel.com"
+        id S1730958AbfLKSA5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 11 Dec 2019 13:00:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40524 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730456AbfLKR7S (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 11 Dec 2019 12:59:18 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Dec 2019 09:59:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,302,1571727600"; 
-   d="scan'208";a="220507178"
-Received: from cmclough-mobl.ger.corp.intel.com (HELO localhost) ([10.251.85.152])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Dec 2019 09:59:15 -0800
-Date:   Wed, 11 Dec 2019 19:59:14 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] Fix TPM 2.0 trusted keys
-Message-ID: <20191211175914.GM4516@linux.intel.com>
-References: <1575936272.31378.50.camel@HansenPartnership.com>
+        id S1730578AbfLKSA5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 11 Dec 2019 13:00:57 -0500
+Received: from gmail.com (unknown [104.132.1.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 728762077B;
+        Wed, 11 Dec 2019 18:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576087256;
+        bh=OYqCTsfffjEeTA1VhFj34IS3OchqHY+SnmJUY7K0xxQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=02GWWfo+p3gVtrYfL3NiWWEgFvl6DTK1nOcw+Q8WFc85GK2xXybQSrt5nY5/axsGA
+         EKWeBrP+7lsNbqm40w2NNNLBQgPoL3jWwK0DhmzPdmCMlz1vr3Zq8219FnTfmFEO2f
+         J4623+gW2xVwbHmOXmKWrh48pbJ1nZgXRCq3lA28=
+Date:   Wed, 11 Dec 2019 10:00:55 -0800
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     dhowells@redhat.com, fstests@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, keyrings@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] xfstests: test adding filesystem-level fscrypt
+ key via key_id
+Message-ID: <20191211180054.GB82952@gmail.com>
+References: <20191119223130.228341-1-ebiggers@kernel.org>
+ <20191127204536.GA12520@linux.intel.com>
+ <20191127225759.GA303989@sol.localdomain>
+ <20191211095019.GA7077@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1575936272.31378.50.camel@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20191211095019.GA7077@linux.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Dec 09, 2019 at 04:04:32PM -0800, James Bottomley wrote:
-> This fixes a wide array of problems with the current TPM 2.0
-> implementation of trusted keys.  Since policy based trusted keys never
-> worked in the current implementation, I've rewritten the policy
-> implementation to make it easier to use and so the trusted key handler
-> can understand what elements of a policy are failing and why.
-> 
-> Apart from fixing bugs like volatile object leakage, I've changed the
-> output format to use the standardised ASN.1 coding for TPM2 keys,
-> meaning they should interoperate with userspace TPM2 key
-> implementations.  Apart from interoperability, another advantage of the
-> existing key format is that it carries all parameters like parent and
-> hash with it and it is capable of carrying policy directives in a way
-> that mean they're tied permanently to the key (no having to try to
-> remember what the policy was and reconstruct it from userspace).  This
-> actually allows us to support the TPM 1.2 commands like pcrinfo easily
-> in 2.0.
-> 
-> The big problem with this patch is still that we can't yet combine
-> policy with authorization because that requires proper session
-> handling, but at least with this rewrite it becomes possible (whereas
-> it was never possible with the old external policy session code). 
-> Thus, when we have the TPM 2.0 security patch upstream, we'll be able
-> to use the session logic from that patch to imlement authorizations.
+Hi Jarkko,
 
-Testing as soon as we have more urgent issues out of the table.
+On Wed, Dec 11, 2019 at 11:50:19AM +0200, Jarkko Sakkinen wrote:
+> On Wed, Nov 27, 2019 at 02:57:59PM -0800, Eric Biggers wrote:
+> > You could manually do what the xfstest does, which is more or less the following
+> > (requires xfs_io patched with https://patchwork.kernel.org/patch/11252795/):
+> 
+> I postpone testing/reviewing this patch up until its depedencies are in
+> the mainline.
+> 
+> I'll add these to my tree as soon as we have addressed a critical bug
+> in tpm_tis:
+> 
+> 1. KEYS: remove CONFIG_KEYS_COMPAT
+> 2. KEYS: asymmetric: return ENOMEM if akcipher_request_alloc() fails
+> 
+> Just mentioning that I haven't forgotten them.
+> 
 
-/Jarkko
+xfstests and xfsprogs are developed separately from the kernel, and their
+maintainers don't apply patches that depend on non-mainlined features.  So
+unless there are objections to the kernel patch [1], in a couple weeks I'll
+apply it to the fscrypt tree for 5.6, and then once it's in mainline I'll resend
+the patches for the test.  I've simply sent the test out early as an RFC, in
+case it helps reviewing the kernel patch or in case there are early comments.
+
+Again, while you're certainly welcome to manually test the kernel patch, it's
+more important that we have test coverage of it in xfstests.
+
+[1] https://lkml.kernel.org/linux-fscrypt/20191119222447.226853-1-ebiggers@kernel.org/
+
+- Eric
