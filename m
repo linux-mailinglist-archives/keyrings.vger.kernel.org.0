@@ -2,75 +2,120 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48E5411D2EA
-	for <lists+keyrings@lfdr.de>; Thu, 12 Dec 2019 17:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D0611D859
+	for <lists+keyrings@lfdr.de>; Thu, 12 Dec 2019 22:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730005AbfLLQ6G (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 12 Dec 2019 11:58:06 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:53712 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729771AbfLLQ6G (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Dec 2019 11:58:06 -0500
-Received: from [10.137.112.108] (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 88B0C20B7187;
-        Thu, 12 Dec 2019 08:58:05 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 88B0C20B7187
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1576169885;
-        bh=ySLNS1REyfh370oZ6WsELyIxjhx8R3R3aifd3RFR2iA=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Ze9D4wHVjxSbbIKVNQ7i1ptu12wo4YtsTs/a2pItCcfOpI1vN00BlrdiJQlsDmMeX
-         BaEvYRG7w5IfwWj4jTijgMve5BKKur6XeNWn0FfbqFeu37gPGafT7BhdeVBDzRaFft
-         87r8dCPjuiaNA0IvEuVsdgXg+BP4hJWjbG8uqEGA=
-Subject: Re: [PATCH v11 0/6] KEYS: Measure keys when they are created or
- updated
-To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
+        id S1731034AbfLLVNU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 12 Dec 2019 16:13:20 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:36384 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730806AbfLLVNU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Dec 2019 16:13:20 -0500
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBCL7Iux095907
+        for <keyrings@vger.kernel.org>; Thu, 12 Dec 2019 16:13:18 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2wusmjy2ss-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Thu, 12 Dec 2019 16:13:18 -0500
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Thu, 12 Dec 2019 21:13:16 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 12 Dec 2019 21:13:12 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBCLCTdw40042846
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Dec 2019 21:12:29 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 880DFA405C;
+        Thu, 12 Dec 2019 21:13:11 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 62341A405B;
+        Thu, 12 Dec 2019 21:13:10 +0000 (GMT)
+Received: from dhcp-9-31-102-17.watson.ibm.com (unknown [9.31.102.17])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 12 Dec 2019 21:13:10 +0000 (GMT)
+Subject: Re: [PATCH v2 1/2] IMA: Define workqueue for early boot "key"
+ measurements
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
         sashal@kernel.org, jamorris@linux.microsoft.com,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-References: <20191211164707.4698-1-nramas@linux.microsoft.com>
- <1576160916.4579.151.camel@linux.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <1f34f41a-f43d-0397-aed0-e43aab87ac42@linux.microsoft.com>
-Date:   Thu, 12 Dec 2019 08:58:05 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <1576160916.4579.151.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Date:   Thu, 12 Dec 2019 16:13:09 -0500
+In-Reply-To: <0cc15a43-8e1b-9819-33fe-8325068f8df2@linux.microsoft.com>
+References: <20191211185116.2740-1-nramas@linux.microsoft.com>
+         <20191211185116.2740-2-nramas@linux.microsoft.com>
+         <1576138743.4579.147.camel@linux.ibm.com>
+         <0cc15a43-8e1b-9819-33fe-8325068f8df2@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19121221-0020-0000-0000-0000039792F6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121221-0021-0000-0000-000021EE9E41
+Message-Id: <1576185189.4579.165.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-12_07:2019-12-12,2019-12-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=3
+ spamscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912120164
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 12/12/19 6:28 AM, Mimi Zohar wrote:
+On Thu, 2019-12-12 at 08:57 -0800, Lakshmi Ramasubramanian wrote:
+> On 12/12/19 12:19 AM, Mimi Zohar wrote:
+> 
+> >>> +	ima_process_keys = true;
+> >> +
+> >> +	INIT_LIST_HEAD(&temp_ima_keys);
+> >> +
+> >> +	mutex_lock(&ima_keys_mutex);
+> >> +
+> >> +	list_for_each_entry_safe(entry, tmp, &ima_keys, list)
+> >> +		list_move_tail(&entry->list, &temp_ima_keys);
+> >> +
+> >> +	mutex_unlock(&ima_keys_mutex);
+> > 
+> > 
+> > The v1 comment, which explained the need for using a temporary
+> > keyring, is an example of an informative comment.  If you don't
+> > object, instead of re-posting this patch, I can insert it.
+> 
+> Sure Mimi. Thanks for including the comment in the patch.
 
-> Hi Lakshmi,
-> 
-> On Wed, 2019-12-11 at 08:47 -0800, Lakshmi Ramasubramanian wrote:
->> Keys created or updated in the system are currently not measured.
->> Therefore an attestation service, for instance, would not be able to
->> attest whether or not the trusted keys keyring(s), for instance, contain
->> only known good (trusted) keys.
->>
->> IMA measures system files, command line arguments passed to kexec,
->> boot aggregate, etc. It can be used to measure keys as well.
->> But there is no mechanism available in the kernel for IMA to
->> know when a key is created or updated.
->>
->> This change aims to address measuring keys created or updated
->> in the system.
-> 
-> Thank you!  This patch set is now queued in the next-integrity-testing
-> branch of https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-
-> integrity.git/.
-> 
-> Mimi
-> 
+Looking at this again, something seems off or at least the comment 
+doesn't match the code.
 
-Thanks Mimi.
+       /*
+         * To avoid holding the mutex while processing queued keys,
+         * transfer the queued keys with the mutex held to a temp list,
+         * release the mutex, and then process the queued keys from
+         * the temp list.
+         *
+         * Since ima_process_keys is set to true above, any new key will
+         * be processed immediately and not queued.
+         */
 
-  -lakshmi
+Setting ima_process_key before taking the lock won't prevent the race.
+ I think you want to test ima_process_keys before taking the lock and
+again immediately afterward taking the lock, before setting it.  Then
+the comment would match the code.
+
+Shouldn't ima_process_keys be defined as static to limit the scope to
+this file?
+
+Mimi
+
