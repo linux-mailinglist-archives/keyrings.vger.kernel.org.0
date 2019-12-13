@@ -2,122 +2,77 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7C2F11E456
-	for <lists+keyrings@lfdr.de>; Fri, 13 Dec 2019 14:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA2F11E714
+	for <lists+keyrings@lfdr.de>; Fri, 13 Dec 2019 16:52:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727220AbfLMNG6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 13 Dec 2019 08:06:58 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:26044 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727238AbfLMNG5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Dec 2019 08:06:57 -0500
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBDD5LwN105913
-        for <keyrings@vger.kernel.org>; Fri, 13 Dec 2019 08:06:55 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2wu4t88w51-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Fri, 13 Dec 2019 08:06:55 -0500
-Received: from localhost
-        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Fri, 13 Dec 2019 13:06:53 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 13 Dec 2019 13:06:49 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBDD66Yh22282504
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 13:06:06 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9E840A4066;
-        Fri, 13 Dec 2019 13:06:48 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 596ABA4054;
-        Fri, 13 Dec 2019 13:06:47 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.131.45])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 13 Dec 2019 13:06:47 +0000 (GMT)
+        id S1727990AbfLMPvo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 13 Dec 2019 10:51:44 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:60950 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727927AbfLMPvo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Dec 2019 10:51:44 -0500
+Received: from [10.137.112.108] (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 7026620B7187;
+        Fri, 13 Dec 2019 07:51:43 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7026620B7187
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1576252303;
+        bh=VamZRT3RyyPdbHwxLZRTfXiZ1Bh2bvZ/QaCwK/05xRk=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=KEpg5cLK7KxN/GLfgvJ3dXvwLMsTMZ8LWoJ0CgTbgYIG90mrWYICoh7JhX6j3GOij
+         8hs6aqk2cAAdURDB2TGhD/oxO/WoKdd5QgKMLG9LH4ep/gwFYInphHzJetz6oTHpG1
+         nZ+Md1wyHdDrIl0bfuk2vBwwuz0pcYY9nmBsqf8I=
 Subject: Re: [PATCH v3 1/2] IMA: Define workqueue for early boot "key"
  measurements
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org
+To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
         sashal@kernel.org, jamorris@linux.microsoft.com,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Fri, 13 Dec 2019 08:06:46 -0500
-In-Reply-To: <c60341a3-2329-cd92-c76c-6f8249a57b43@linux.microsoft.com>
 References: <20191213004250.21132-1-nramas@linux.microsoft.com>
-         <20191213004250.21132-2-nramas@linux.microsoft.com>
-         <1576202134.4579.189.camel@linux.ibm.com>
-         <6e0dad33-66f9-4807-d08d-ff30396cec5e@linux.microsoft.com>
-         <1576204377.4579.206.camel@linux.ibm.com>
-         <c60341a3-2329-cd92-c76c-6f8249a57b43@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+ <20191213004250.21132-2-nramas@linux.microsoft.com>
+ <1576202134.4579.189.camel@linux.ibm.com>
+ <6e0dad33-66f9-4807-d08d-ff30396cec5e@linux.microsoft.com>
+ <1576204377.4579.206.camel@linux.ibm.com>
+ <c60341a3-2329-cd92-c76c-6f8249a57b43@linux.microsoft.com>
+ <1576242406.4579.239.camel@linux.ibm.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <9938ff03-5cf2-5396-1172-5734cc10819e@linux.microsoft.com>
+Date:   Fri, 13 Dec 2019 07:51:37 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <1576242406.4579.239.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19121313-0028-0000-0000-000003C82E99
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19121313-0029-0000-0000-0000248B6C03
-Message-Id: <1576242406.4579.239.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-13_03:2019-12-13,2019-12-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 impostorscore=0 spamscore=0 clxscore=1015 suspectscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 adultscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912130105
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2019-12-12 at 18:59 -0800, Lakshmi Ramasubramanian wrote:
-> On 12/12/2019 6:32 PM, Mimi Zohar wrote:
+On 12/13/19 5:06 AM, Mimi Zohar wrote:
+
+> I just need to convince myself that this is correct.  Normally before
+> reading and writing a flag, there is some sort of locking.  With
+> taking the mutex before setting the flag, there is now only a lock
+> around the single writer.
 > 
-> >>>
-> >>> Don't you need a test here, before setting ima_process_keys?
-> >>>
-> >>> 	if (ima_process_keys)
-> >>> 		return;
-
-> >> That check is done before the comment - at the start of
-> >> ima_process_queued_keys().
-> > 
-> > The first test prevents taking the mutex unnecessarily.
-> > 
+> Without taking a lock before reading the flag, will the queue always
+> be empty is the question.  If it is, then the comment is correct, but
+> the code assumes not and processes the list again.  Testing the flag
+> after taking the mutex just re-enforces the comment.
 > 
-> I am trying to understand your concern here. Could you please clarify?
+> Bottom line, does reading the flag need to be lock protected?
 > 
->   => If ima_process_keys is false
->        -> With the mutex held, should check ima_process_keys again 
-> before setting?
+> Mimi
 > 
-> Let's say 2 or more threads are racing in calling ima_process_queued_keys():
-> 
-> The 1st one will set ima_process_keys and process queued keys.
-> 
-> The 2nd and subsequent ones - even if they have gone past the initial 
-> check, will find an empty list of keys (the list "ima_keys") when they 
-> take the mutex. So they'll not process any keys.
 
-I just need to convince myself that this is correct.  Normally before
-reading and writing a flag, there is some sort of locking.  With
-taking the mutex before setting the flag, there is now only a lock
-around the single writer.
+I'll change this function to check the flag again after taking the lock 
+and process only if the queue has entries. Will send an update today.
 
-Without taking a lock before reading the flag, will the queue always
-be empty is the question.  If it is, then the comment is correct, but
-the code assumes not and processes the list again.  Testing the flag
-after taking the mutex just re-enforces the comment.
+Please let me know if you have any concern in other functions in this 
+file. I'll address them, if any, in today's update.
 
-Bottom line, does reading the flag need to be lock protected?
-
-Mimi
-
-
+thanks,
+  -lakshmi
