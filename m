@@ -2,102 +2,148 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADA87120698
-	for <lists+keyrings@lfdr.de>; Mon, 16 Dec 2019 14:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0A41219DA
+	for <lists+keyrings@lfdr.de>; Mon, 16 Dec 2019 20:20:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727762AbfLPNF0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 16 Dec 2019 08:05:26 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:64174 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727728AbfLPNF0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Dec 2019 08:05:26 -0500
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBGD2lnq103169
-        for <keyrings@vger.kernel.org>; Mon, 16 Dec 2019 08:05:24 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2wwdt9t2y6-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Mon, 16 Dec 2019 08:05:24 -0500
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Mon, 16 Dec 2019 13:05:22 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 16 Dec 2019 13:05:18 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBGD5Hg754984824
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 16 Dec 2019 13:05:17 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 34F6A11C052;
-        Mon, 16 Dec 2019 13:05:17 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EFCB511C054;
-        Mon, 16 Dec 2019 13:05:15 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.187.190])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Mon, 16 Dec 2019 13:05:15 +0000 (GMT)
+        id S1726646AbfLPTUA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 16 Dec 2019 14:20:00 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:58508 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726191AbfLPTUA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Dec 2019 14:20:00 -0500
+Received: from [10.137.112.111] (unknown [131.107.147.111])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 2F9A62010C1C;
+        Mon, 16 Dec 2019 11:19:59 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2F9A62010C1C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1576523999;
+        bh=Ez8+9qHJjTzpNI++1nr7MYvBifA2xRwHbnv0WHsRdmA=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=DL4rsunrNxkbz/507oOb+nYxBAwRFit6DeGxF0u7jw1DRxtUocwhZxrpInQOGbUya
+         3N47TnUyaZbeOZ4JujE/9sq4H9CrFO9+0HKtUcbEUoKbvFOqEiNLLW5xBLlkPsQ3c4
+         ukrtRRjJeVmYMLtD0MDeEa/X+M8OA2hwzWdFLimI=
 Subject: Re: [PATCH v4 2/2] IMA: Call workqueue functions to measure queued
  keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
 To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org
+        zohar@linux.ibm.com, linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
         sashal@kernel.org, jamorris@linux.microsoft.com,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Mon, 16 Dec 2019 08:05:15 -0500
-In-Reply-To: <1576479187.3784.1.camel@HansenPartnership.com>
 References: <20191213171827.28657-1-nramas@linux.microsoft.com>
-         <20191213171827.28657-3-nramas@linux.microsoft.com>
-         <1576257955.8504.20.camel@HansenPartnership.com>
-         <39624b97-245c-ed05-27c5-588787aacc00@linux.microsoft.com>
-         <1576423353.3343.3.camel@HansenPartnership.com>
-         <1568ff14-316f-f2c4-84d4-7ca4c0a1936a@linux.microsoft.com>
-         <1576479187.3784.1.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19121613-0012-0000-0000-0000037564B5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19121613-0013-0000-0000-000021B14ACA
-Message-Id: <1576501515.4579.332.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-16_04:2019-12-16,2019-12-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
- phishscore=0 spamscore=0 clxscore=1011 suspectscore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912160117
+ <20191213171827.28657-3-nramas@linux.microsoft.com>
+ <1576257955.8504.20.camel@HansenPartnership.com>
+ <39624b97-245c-ed05-27c5-588787aacc00@linux.microsoft.com>
+ <1576423353.3343.3.camel@HansenPartnership.com>
+ <1568ff14-316f-f2c4-84d4-7ca4c0a1936a@linux.microsoft.com>
+ <1576479187.3784.1.camel@HansenPartnership.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <8844a360-6d1e-1435-db7c-fd7739487168@linux.microsoft.com>
+Date:   Mon, 16 Dec 2019 11:20:26 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
+MIME-Version: 1.0
+In-Reply-To: <1576479187.3784.1.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2019-12-16 at 15:53 +0900, James Bottomley wrote:
+On 12/15/2019 10:53 PM, James Bottomley wrote:
+
+Hi James,
+
+> On Sun, 2019-12-15 at 17:12 -0800, Lakshmi Ramasubramanian wrote:
+>> On 12/15/2019 7:22 AM, James Bottomley wrote:
+>>
+>> Hi James,
+>>
+>>>
+>>> This is the problem:
+>>>
+>>> if (!flag)
+>>>       pre()
+>>> .
+>>> .
+>>> .
+>>> if (!flag)
+>>>       post()
+>>>
+>>> And your pre and post function either have to both run or neither
+>>> must.
+>>>    However, the flag is set asynchronously, so if it gets set while
+>>> another thread is running through the above code, it can change
+>>> after
+>>> pre is run but before post is.
+>>>
+
+> 
 > That doesn't matter ... the question is, is the input assumption that
 > both pre/post have to be called or neither must correct?  If so, the
 > code is wrong, if not, explain why.
+> 
+> James
+> 
 
-Thanks, James, for looking at the locking.
+I assume you are asking
+"What happens if the flag changes between the check done without the 
+mutex held (pre()) and the check done after the mutex is taken (post())".
 
-"ima_process_keys" is set once.  Once it is set, the keys are measured
-immediately.  For performance to avoid taking the mutex, both the
-reader and writer check "ima_process_keys" twice, once without taking
-the lock and, again, after taking the lock.  Based on the second test,
-the reader queues the "key" or not.  Refer to ima_queue_key().
+If I misunderstood your question, please clarify.
 
-The latest patch version sets "ima_process_keys" after taking the
-lock.  With this change, the comment in ima_process_queued_keys() is
-now correct.  We're now guaranteed to process the queued "keys" just
-once and not drop any "key" measurements.
+"READER" functions: ima_post_key_create_or_update() and ima_queue_key()
+***********************************************************************
+In ima_post_key_create_or_update() the flag is checked first without the 
+mutex taken:
 
-I hope this answers your question.
+  => If the flag is true, then there is no need to queue the key and it 
+can be processed immediately.
 
-Mimi
+     This condition means that either queued keys have already been 
+processed OR there is another thread in the middle of processing queued 
+keys. In both these conditions, the new key should NOT be queued, but 
+processed immediately.
+
+  => If the flag is false, ima_queue_key() is called. In this function, 
+the mutex is taken and flag checked again.
+
+Say, the flag changed from false to true at this point, the key will NOT 
+be queued. ima_queue_key() will return false and in response 
+ima_post_key_create_or_update() will process the key immediately.
+
+But if the flag is still false, the key will be queued by 
+ima_queue_key() and will be processed later.
+
+"WRITER" function: ima_process_queued_keys()
+********************************************
+In ima_process_queued_keys() the flag is checked first without the mutex 
+taken:
+
+  => If the flag is true, either the queued keys have already been 
+processed OR is in the middle of being processed. So no further action 
+is required.
+
+  => If the flag is false, mutex is taken and the flag is checked again. 
+If the flag changed from false to true between the above two tests, that 
+means another thread had raced to call ima_process_queued_keys() and has 
+processed the queued keys. So again, no further action is required.
+
+  But if the flag is still false (after the mutex is taken), then the 
+queued keys are processed and the flag is set to true.
+
+The above sequence ensures that queued keys are processed one and only 
+once. Subsequent keys are always processed immediately.
+
+To the best of my knowledge, there is no condition under which a key 
+would ever be dropped or be queued up without ever getting processed.
+I hope that answers your question.
+
+If you are still not convinced, please describe a sequence of steps that 
+can cause incorrect functionality.
+
+thanks,
+  -lakshmi
 
