@@ -2,76 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B091121F1B
-	for <lists+keyrings@lfdr.de>; Tue, 17 Dec 2019 00:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3939122944
+	for <lists+keyrings@lfdr.de>; Tue, 17 Dec 2019 11:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbfLPXoZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 16 Dec 2019 18:44:25 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:45634 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726454AbfLPXoZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Dec 2019 18:44:25 -0500
-Received: from [10.137.112.111] (unknown [131.107.147.111])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 6E5CD2010C1C;
-        Mon, 16 Dec 2019 15:44:24 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6E5CD2010C1C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1576539864;
-        bh=v5ySPrq9nS0TP3DG/YFkg11gHzXyB5+qOATmjONPkzY=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=DEWC96GWlm1rmf8iZGKVARcV1CMiTMzpqJmtFN6rYjBPdPjX9Sd4kBdSGhXqd+nQx
-         1KHVEhjEbHK4HhLIEggNaGO+Q+LQB/Ofr2S5GTmM+iiKbvyetFqdpisBdEuQR5W0X2
-         IG/r/XGUV9drWoHuSNG1dXzQME1MUvtyAaIi6PaU=
+        id S1725940AbfLQKyg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 Dec 2019 05:54:36 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:13288 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727412AbfLQKyg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Dec 2019 05:54:36 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBHAqfVQ008183
+        for <keyrings@vger.kernel.org>; Tue, 17 Dec 2019 05:54:35 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2wvv8xkup3-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Tue, 17 Dec 2019 05:54:34 -0500
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Tue, 17 Dec 2019 10:54:29 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 17 Dec 2019 10:54:26 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBHAsPtf45810072
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Dec 2019 10:54:26 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DCE554C046;
+        Tue, 17 Dec 2019 10:54:25 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BA88F4C050;
+        Tue, 17 Dec 2019 10:54:24 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.199.191])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 17 Dec 2019 10:54:24 +0000 (GMT)
 Subject: Re: [PATCH v4 1/2] IMA: Define workqueue for early boot "key"
  measurements
-To:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
         sashal@kernel.org, jamorris@linux.microsoft.com,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Date:   Tue, 17 Dec 2019 05:54:24 -0500
+In-Reply-To: <0223b52e-50d6-ebce-840c-0364b24b1b30@linux.microsoft.com>
 References: <20191213171827.28657-1-nramas@linux.microsoft.com>
- <20191213171827.28657-2-nramas@linux.microsoft.com>
- <1576499400.4579.305.camel@linux.ibm.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <0223b52e-50d6-ebce-840c-0364b24b1b30@linux.microsoft.com>
-Date:   Mon, 16 Dec 2019 15:44:51 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
-MIME-Version: 1.0
-In-Reply-To: <1576499400.4579.305.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+         <20191213171827.28657-2-nramas@linux.microsoft.com>
+         <1576499400.4579.305.camel@linux.ibm.com>
+         <0223b52e-50d6-ebce-840c-0364b24b1b30@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19121710-0016-0000-0000-000002D5BC41
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121710-0017-0000-0000-00003337F4C9
+Message-Id: <1576580064.4579.374.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-17_02:2019-12-16,2019-12-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxlogscore=928 impostorscore=0
+ clxscore=1015 mlxscore=0 phishscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912170094
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 12/16/2019 4:30 AM, Mimi Zohar wrote:
-
->> +
->> +		if (!list_empty(&ima_keys)) {
->> +			list_for_each_entry_safe(entry, tmp, &ima_keys, list)
->> +				list_move_tail(&entry->list, &temp_ima_keys);
->> +			process = true;
->> +		}
->> +	}
->> +
->> +	mutex_unlock(&ima_keys_mutex);
->> +
->> +	if (!process)
->> +		return;
+On Mon, 2019-12-16 at 15:44 -0800, Lakshmi Ramasubramanian wrote:
+> On 12/16/2019 4:30 AM, Mimi Zohar wrote:
 > 
-> The new changes - checking if the list is empty and this test - are
-> unnecessary, as you implied earlier.
+> >> +
+> >> +		if (!list_empty(&ima_keys)) {
+> >> +			list_for_each_entry_safe(entry, tmp, &ima_keys, list)
+> >> +				list_move_tail(&entry->list, &temp_ima_keys);
+> >> +			process = true;
+> >> +		}
+> >> +	}
+> >> +
+> >> +	mutex_unlock(&ima_keys_mutex);
+> >> +
+> >> +	if (!process)
+> >> +		return;
+> > 
+> > The new changes - checking if the list is empty and this test - are
+> > unnecessary, as you implied earlier.
+> > 
+> > Mimi
 > 
-> Mimi
+> Do you want me to remove this check? I feel it is safer to have this 
+> check - use a local flag "process" to return if no keys were moved to 
+> the temp list. Would like to leave it as is - if you don't mind.
 
-Do you want me to remove this check? I feel it is safer to have this 
-check - use a local flag "process" to return if no keys were moved to 
-the temp list. Would like to leave it as is - if you don't mind.
-
-thanks,
-  -lakshmi
-
+Sure
+  
 
