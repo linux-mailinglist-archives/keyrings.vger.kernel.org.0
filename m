@@ -2,126 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 911EC124E27
-	for <lists+keyrings@lfdr.de>; Wed, 18 Dec 2019 17:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3DA8125283
+	for <lists+keyrings@lfdr.de>; Wed, 18 Dec 2019 21:00:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727512AbfLRQol (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Dec 2019 11:44:41 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:45142 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727215AbfLRQol (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Dec 2019 11:44:41 -0500
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 3149C20B479A;
-        Wed, 18 Dec 2019 08:44:40 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3149C20B479A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1576687480;
-        bh=7oX3VjVjQ+qxdF/mzYJ1sOnrnFWgeNPXNB/HYkY5A+o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fPjvMO4IVlR7+CgLSY1M2HhFQ1ROTpZvGRHi1qfqL8CzE0hqNupbB0pZ43rnxJnFk
-         B+WFd2WNyWdimKHuAxoySIwa0nuEevouCXPicgntJA5AO7C4sdwCw68OMk6r0/CfkT
-         PFUjkatRILjXDgqzqL4uGX/1f4inXsDHEE59c9yU=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
-        linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
-        sashal@kernel.org, jamorris@linux.microsoft.com,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Subject: [PATCH v5 2/2] IMA: Call workqueue functions to measure queued keys
-Date:   Wed, 18 Dec 2019 08:44:34 -0800
-Message-Id: <20191218164434.2877-3-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191218164434.2877-1-nramas@linux.microsoft.com>
-References: <20191218164434.2877-1-nramas@linux.microsoft.com>
+        id S1726824AbfLRUAi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Dec 2019 15:00:38 -0500
+Received: from mga02.intel.com ([134.134.136.20]:47580 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726699AbfLRUAi (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 18 Dec 2019 15:00:38 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Dec 2019 12:00:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,330,1571727600"; 
+   d="scan'208";a="248005702"
+Received: from jtreacy-mobl1.ger.corp.intel.com ([10.251.82.127])
+  by fmsmga002.fm.intel.com with ESMTP; 18 Dec 2019 12:00:30 -0800
+Message-ID: <10be346c204016547fee0323cbf2ab4688dd2859.camel@linux.intel.com>
+Subject: Re: [PATCH] KEYS: trusted: fix type warnings in ntohl/nthos
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>
+Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20191217110939.2067979-1-ben.dooks@codethink.co.uk>
+References: <20191217110939.2067979-1-ben.dooks@codethink.co.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160
+ Espoo
+Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Date:   Tue, 17 Dec 2019 16:35:58 +0200
+User-Agent: Evolution 3.34.1-2 
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Measuring keys requires a custom IMA policy to be loaded.
-Keys should be queued for measurement if a custom IMA policy
-is not yet loaded. Keys queued for measurement, if any, should be
-processed when a custom IMA policy is loaded.
+On Tue, 2019-12-17 at 11:09 +0000, Ben Dooks (Codethink) wrote:
+> The ntohl takes a __be32 and ntohs takes __be16, so cast to
+> those types before passing it to the byte swapping functions.
 
-This patch updates the IMA hook function ima_post_key_create_or_update()
-to queue the key if a custom IMA policy has not yet been loaded.
-And, ima_update_policy() function, which is called when
-a custom IMA policy is loaded, is updated to process queued keys.
+Thanks!
 
-Sample "key" measurement rule in the IMA policy:
+> Note, would be32_to_cpu and be16_to_cpu be better here?
 
-measure func=KEY_CHECK uid=0 keyrings=.ima|.builtin_trusted_keys template=ima-buf
+Yes, I think that should work too.
 
-If the kernel is built with one or more built-in trusted certificates,
-IMA measurement should list all the keys imported from those certificates.
-
-Display "key" measurement in the IMA measurement list:
-
-cat /sys/kernel/security/ima/ascii_runtime_measurements
-
-10 faf3...e702 ima-buf sha256:27c915b8ddb9fae7214cf0a8a7043cc3eeeaa7539bcb136f8427067b5f6c3b7b .builtin_trusted_keys 308202863082...4aee
-
-Verify "key" measurement data for a key added to ".builtin_trusted_keys" keyring:
-
-cat /sys/kernel/security/integrity/ima/ascii_runtime_measurements | grep -m 1 "\.builtin_trusted_keys" | cut -d' ' -f 6 | xxd -r -p |tee btk-cert.der | sha256sum | cut -d' ' -f 1
-
-The output of the above command should match the template hash
-of the first "key" measurement entry in the IMA measurement list for
-the key added to ".builtin_trusted_keys" keyring.
-
-The file namely "btk-cert.der" generated by the above command
-should be a valid x509 certificate (in DER format) and should match
-the one that was used to import the key to the ".builtin_trusted_keys" keyring.
-The certificate file can be verified using openssl tool.
-
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- security/integrity/ima/ima_asymmetric_keys.c | 8 ++++++++
- security/integrity/ima/ima_policy.c          | 3 +++
- 2 files changed, 11 insertions(+)
-
-diff --git a/security/integrity/ima/ima_asymmetric_keys.c b/security/integrity/ima/ima_asymmetric_keys.c
-index d520a67180d8..4124f10ff0c2 100644
---- a/security/integrity/ima/ima_asymmetric_keys.c
-+++ b/security/integrity/ima/ima_asymmetric_keys.c
-@@ -145,6 +145,8 @@ void ima_post_key_create_or_update(struct key *keyring, struct key *key,
- 				   const void *payload, size_t payload_len,
- 				   unsigned long flags, bool create)
- {
-+	bool queued = false;
-+
- 	/* Only asymmetric keys are handled by this hook. */
- 	if (key->type != &key_type_asymmetric)
- 		return;
-@@ -152,6 +154,12 @@ void ima_post_key_create_or_update(struct key *keyring, struct key *key,
- 	if (!payload || (payload_len == 0))
- 		return;
- 
-+	if (!ima_process_keys)
-+		queued = ima_queue_key(keyring, payload, payload_len);
-+
-+	if (queued)
-+		return;
-+
- 	/*
- 	 * keyring->description points to the name of the keyring
- 	 * (such as ".builtin_trusted_keys", ".ima", etc.) to
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index a4dde9d575b2..04b9c6c555de 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -807,6 +807,9 @@ void ima_update_policy(void)
- 		kfree(arch_policy_entry);
- 	}
- 	ima_update_policy_flag();
-+
-+	/* Custom IMA policy has been loaded */
-+	ima_process_queued_keys();
- }
- 
- /* Keep the enumeration in sync with the policy_tokens! */
--- 
-2.17.1
+/Jarkko
 
