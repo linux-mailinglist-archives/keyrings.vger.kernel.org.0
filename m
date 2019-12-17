@@ -2,104 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3939122944
-	for <lists+keyrings@lfdr.de>; Tue, 17 Dec 2019 11:54:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8931122A39
+	for <lists+keyrings@lfdr.de>; Tue, 17 Dec 2019 12:36:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725940AbfLQKyg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 17 Dec 2019 05:54:36 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:13288 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727412AbfLQKyg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Dec 2019 05:54:36 -0500
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBHAqfVQ008183
-        for <keyrings@vger.kernel.org>; Tue, 17 Dec 2019 05:54:35 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2wvv8xkup3-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 17 Dec 2019 05:54:34 -0500
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Tue, 17 Dec 2019 10:54:29 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 17 Dec 2019 10:54:26 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBHAsPtf45810072
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 17 Dec 2019 10:54:26 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DCE554C046;
-        Tue, 17 Dec 2019 10:54:25 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BA88F4C050;
-        Tue, 17 Dec 2019 10:54:24 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.199.191])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 17 Dec 2019 10:54:24 +0000 (GMT)
-Subject: Re: [PATCH v4 1/2] IMA: Define workqueue for early boot "key"
- measurements
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
-        sashal@kernel.org, jamorris@linux.microsoft.com,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Tue, 17 Dec 2019 05:54:24 -0500
-In-Reply-To: <0223b52e-50d6-ebce-840c-0364b24b1b30@linux.microsoft.com>
-References: <20191213171827.28657-1-nramas@linux.microsoft.com>
-         <20191213171827.28657-2-nramas@linux.microsoft.com>
-         <1576499400.4579.305.camel@linux.ibm.com>
-         <0223b52e-50d6-ebce-840c-0364b24b1b30@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+        id S1725940AbfLQLgx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 Dec 2019 06:36:53 -0500
+Received: from imap2.colo.codethink.co.uk ([78.40.148.184]:35358 "EHLO
+        imap2.colo.codethink.co.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726560AbfLQLgx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Dec 2019 06:36:53 -0500
+X-Greylist: delayed 1623 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Dec 2019 06:36:52 EST
+Received: from [167.98.27.226] (helo=rainbowdash.codethink.co.uk)
+        by imap2.colo.codethink.co.uk with esmtpsa  (Exim 4.92 #3 (Debian))
+        id 1ihAjU-0004Hm-TF; Tue, 17 Dec 2019 11:09:41 +0000
+Received: from ben by rainbowdash.codethink.co.uk with local (Exim 4.92.3)
+        (envelope-from <ben@rainbowdash.codethink.co.uk>)
+        id 1ihAjU-008fzG-HC; Tue, 17 Dec 2019 11:09:40 +0000
+From:   "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>
+To:     ben.dooks@codethink.co.uk
+Cc:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KEYS: trusted: fix type warnings in ntohl/nthos
+Date:   Tue, 17 Dec 2019 11:09:39 +0000
+Message-Id: <20191217110939.2067979-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19121710-0016-0000-0000-000002D5BC41
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19121710-0017-0000-0000-00003337F4C9
-Message-Id: <1576580064.4579.374.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-17_02:2019-12-16,2019-12-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=928 impostorscore=0
- clxscore=1015 mlxscore=0 phishscore=0 spamscore=0 malwarescore=0
- bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912170094
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2019-12-16 at 15:44 -0800, Lakshmi Ramasubramanian wrote:
-> On 12/16/2019 4:30 AM, Mimi Zohar wrote:
-> 
-> >> +
-> >> +		if (!list_empty(&ima_keys)) {
-> >> +			list_for_each_entry_safe(entry, tmp, &ima_keys, list)
-> >> +				list_move_tail(&entry->list, &temp_ima_keys);
-> >> +			process = true;
-> >> +		}
-> >> +	}
-> >> +
-> >> +	mutex_unlock(&ima_keys_mutex);
-> >> +
-> >> +	if (!process)
-> >> +		return;
-> > 
-> > The new changes - checking if the list is empty and this test - are
-> > unnecessary, as you implied earlier.
-> > 
-> > Mimi
-> 
-> Do you want me to remove this check? I feel it is safer to have this 
-> check - use a local flag "process" to return if no keys were moved to 
-> the temp list. Would like to leave it as is - if you don't mind.
+The ntohl takes a __be32 and ntohs takes __be16, so cast to
+those types before passing it to the byte swapping functions.
 
-Sure
-  
+Note, would be32_to_cpu and be16_to_cpu be better here?
+
+security/keys/trusted-keys/trusted_tpm1.c:201:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:201:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:201:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:201:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:201:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:201:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:202:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:202:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:202:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:202:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:289:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:289:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:289:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:289:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:289:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:289:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:290:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:290:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:290:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:290:15: warning: cast to restricted __be16
+security/keys/trusted-keys/trusted_tpm1.c:418:21: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:418:21: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:418:21: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:418:21: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:418:21: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:418:21: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:442:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:442:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:442:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:442:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:442:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:442:19: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:549:24: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:549:24: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:549:24: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:549:24: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:549:24: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:549:24: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:550:23: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:550:23: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:550:23: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:550:23: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:550:23: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:550:23: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:602:17: warning: incorrect type in assignment (different base types)
+security/keys/trusted-keys/trusted_tpm1.c:602:17:    expected unsigned int [usertype] ordinal
+security/keys/trusted-keys/trusted_tpm1.c:602:17:    got restricted __be32 [usertype]
+security/keys/trusted-keys/trusted_tpm1.c:638:20: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:638:20: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:638:20: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:638:20: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:638:20: warning: cast to restricted __be32
+security/keys/trusted-keys/trusted_tpm1.c:638:20: warning: cast to restricted __be32
+
+Signed-off-by: Ben Dooks (Codethink) <ben.dooks@codethink.co.uk>
+---
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc: keyrings@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ include/keys/trusted_tpm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/keys/trusted_tpm.h b/include/keys/trusted_tpm.h
+index a56d8e1298f2..e080967931d2 100644
+--- a/include/keys/trusted_tpm.h
++++ b/include/keys/trusted_tpm.h
+@@ -12,9 +12,9 @@
+ #define TPM_RETURN_OFFSET		6
+ #define TPM_DATA_OFFSET			10
+ 
+-#define LOAD32(buffer, offset)	(ntohl(*(uint32_t *)&buffer[offset]))
++#define LOAD32(buffer, offset)	(ntohl(*(__be32 *)&buffer[offset]))
+ #define LOAD32N(buffer, offset)	(*(uint32_t *)&buffer[offset])
+-#define LOAD16(buffer, offset)	(ntohs(*(uint16_t *)&buffer[offset]))
++#define LOAD16(buffer, offset)	(ntohs(*(__be16 *)&buffer[offset]))
+ 
+ struct osapsess {
+ 	uint32_t handle;
+-- 
+2.24.0
 
