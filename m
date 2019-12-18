@@ -2,87 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBAE12450D
-	for <lists+keyrings@lfdr.de>; Wed, 18 Dec 2019 11:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0B6124B01
+	for <lists+keyrings@lfdr.de>; Wed, 18 Dec 2019 16:13:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726591AbfLRKuY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Dec 2019 05:50:24 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:56426 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725828AbfLRKuX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Dec 2019 05:50:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576666222;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0az4KKJfuYN7DyGnSzwf/5QIFxpWRQz3eoiHmfUOP1s=;
-        b=S7NZc8HM2o8H+ymatAxCmMiJksWFwaWEighO8dgAqX7iVMNOWGHuHOTXNEzjpXwqtkUKgv
-        K0ksU/xtMCydaKxXeSb2T85S+TtRm/+7iOWGNU62Ynz6Zqhd5QgPuoBZBU7Zbd/7TJ1FTt
-        vF1wi0VyICayDH2h4CWJoCbVOcPKRrs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-22-3VFPngL1Me2UbZnC6X4zXQ-1; Wed, 18 Dec 2019 05:50:19 -0500
-X-MC-Unique: 3VFPngL1Me2UbZnC6X4zXQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 329A6107ACFB;
-        Wed, 18 Dec 2019 10:50:18 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-52.rdu2.redhat.com [10.10.120.52])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D84EC26DC6;
-        Wed, 18 Dec 2019 10:50:16 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <1576069352.2812.1.camel@HansenPartnership.com>
-References: <1576069352.2812.1.camel@HansenPartnership.com> <1575984010.3459.4.camel@HansenPartnership.com> <1575936272.31378.50.camel@HansenPartnership.com> <1575936367.31378.52.camel@HansenPartnership.com> <932257121039494734d97e290abb9159b1f5ca28.camel@infradead.org> <10037.1575986929@warthog.procyon.org.uk> <1576004020.3647.13.camel@HansenPartnership.com> <35B37965-359E-40E0-8F44-836A56EC4756@infradead.org>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     dhowells@redhat.com, David Woodhouse <dwmw2@infradead.org>,
-        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] lib: add asn.1 encoder
+        id S1727086AbfLRPNm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Dec 2019 10:13:42 -0500
+Received: from mail-il1-f193.google.com ([209.85.166.193]:42240 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727024AbfLRPNm (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Dec 2019 10:13:42 -0500
+Received: by mail-il1-f193.google.com with SMTP id a6so1962424ili.9
+        for <keyrings@vger.kernel.org>; Wed, 18 Dec 2019 07:13:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=U2ZGqcu98hFuCq5RpeTCWhmsrif7dqgrfPnkymEQCkzU4ETL8Y5C1ci9OhaNnT7/Lv
+         ZXPAwTmB1DX+fWtPumPtYEda0EJ7n5f9okoHJKrklSSbo1cHJcKALHRbbnbx7grIRZkj
+         WVDnXztzRx+rJiyJ/hhCwzpRe2nF4Ky5mFloZLMsYYAE4H9CLGHEJUUbDdhUzLKVDAWT
+         +ejs9EWkUD9wvbu5rSLeFEH1yiVO9YrAGvzjAyKibdck9mox4WHwAVleQV1ZuULaZ8tJ
+         2aRPEnOESIoe3NJuOEAu6bmjXxUmjAVD8zABLxRNn6bfzC+Y/vvInS2IrG2pznDudxYJ
+         BuiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=jwGt3I99LU7IaGAadidIOzAmF+E8l9WOw2v/iHmsE4Hk/hJTG8bWMR7M5KE1AY52Hs
+         g7SN992KeaYFr9vFltUD7lmZGWMVb527sUa/RIUomTB1Dco/8TUpFC0DjUpQPw36Bik0
+         bC7pWyLcnGSf80VjDTgZ36LLwAZn6AbOdobXthYFNyknB40EnBN38AzkAqvGWQUO7HNE
+         x+RJB2yg5OWmyOqocURx+wIuoeh3yuVQlox+SPxvisc3jZz1x0UadVL4eCBoFIhUAjnF
+         BRWhgu891ZVEA0FGfHtF1Y/2y+gy0cGLRQJyjEKTadcSg923TDmJwZsIgEcWQfccmCL2
+         VoJQ==
+X-Gm-Message-State: APjAAAWDKGaEtY893S1bKJ0vaKWI4fP/qYdGls9m9rHbImOZr0EGCe9y
+        oFLmr9HnO5x+gsXV4gkQrohOj8Lsjhdb8oRoLA==
+X-Google-Smtp-Source: APXvYqx6/RmLANXX/vPlWW5dxMFTHVq88mzyzyK5ZNY221b6izSlFe7hmn3F6M39YmRG3JLpfhEG4NgH/+fGMkC8KOM=
+X-Received: by 2002:a92:5ec8:: with SMTP id f69mr2379997ilg.8.1576682021040;
+ Wed, 18 Dec 2019 07:13:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <26945.1576666216.1@warthog.procyon.org.uk>
-Date:   Wed, 18 Dec 2019 10:50:16 +0000
-Message-ID: <26946.1576666216@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:39
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:13:39 +0100
+Message-ID: <CABHzvrnRhvP4H85iG3J35teTysHMuqtgB+SQ0gKSGRfJe2UHDw@mail.gmail.com>
+Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
+        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+Attn Dear.
 
-> +/**
-> + * asn1_encode_octet_string - encode an ASN.1 OCTET STRING
-> + * @data: pointer to encode at
-> + * @data_len: bytes remaining in @data buffer
-> + * @string: string to be encoded
-> + * @len: length of string
-> + *
-> + * Note ASN.1 octet strings may contain zeros, so the length is obligatory.
-> + */
-> +int asn1_encode_octet_string(unsigned char **data, int *data_len,
-> +			     const unsigned char *string, u32 len)
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
-I wonder if it makes more sense to pass in an end pointer and return the new
-data pointer (or an error), ie.:
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-unsigned char *asn1_encode_octet_string(unsigned char *data,
-				        unsigned char *data_end,
-					const unsigned char *string, u32 len)
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
-Further, I wonder - does it actually make more sense to encode backwards,
-ie. start at the end of the buffer and do the last element first, working
-towards the front.
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
 
-The disadvantage being that the data start would likely not be coincident with
-the buffer start.
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
 
-David
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
 
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin
