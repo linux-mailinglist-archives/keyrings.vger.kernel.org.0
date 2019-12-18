@@ -2,94 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0B6124B01
-	for <lists+keyrings@lfdr.de>; Wed, 18 Dec 2019 16:13:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07875124E2C
+	for <lists+keyrings@lfdr.de>; Wed, 18 Dec 2019 17:45:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbfLRPNm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Dec 2019 10:13:42 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:42240 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727024AbfLRPNm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Dec 2019 10:13:42 -0500
-Received: by mail-il1-f193.google.com with SMTP id a6so1962424ili.9
-        for <keyrings@vger.kernel.org>; Wed, 18 Dec 2019 07:13:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=U2ZGqcu98hFuCq5RpeTCWhmsrif7dqgrfPnkymEQCkzU4ETL8Y5C1ci9OhaNnT7/Lv
-         ZXPAwTmB1DX+fWtPumPtYEda0EJ7n5f9okoHJKrklSSbo1cHJcKALHRbbnbx7grIRZkj
-         WVDnXztzRx+rJiyJ/hhCwzpRe2nF4Ky5mFloZLMsYYAE4H9CLGHEJUUbDdhUzLKVDAWT
-         +ejs9EWkUD9wvbu5rSLeFEH1yiVO9YrAGvzjAyKibdck9mox4WHwAVleQV1ZuULaZ8tJ
-         2aRPEnOESIoe3NJuOEAu6bmjXxUmjAVD8zABLxRNn6bfzC+Y/vvInS2IrG2pznDudxYJ
-         BuiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=jwGt3I99LU7IaGAadidIOzAmF+E8l9WOw2v/iHmsE4Hk/hJTG8bWMR7M5KE1AY52Hs
-         g7SN992KeaYFr9vFltUD7lmZGWMVb527sUa/RIUomTB1Dco/8TUpFC0DjUpQPw36Bik0
-         bC7pWyLcnGSf80VjDTgZ36LLwAZn6AbOdobXthYFNyknB40EnBN38AzkAqvGWQUO7HNE
-         x+RJB2yg5OWmyOqocURx+wIuoeh3yuVQlox+SPxvisc3jZz1x0UadVL4eCBoFIhUAjnF
-         BRWhgu891ZVEA0FGfHtF1Y/2y+gy0cGLRQJyjEKTadcSg923TDmJwZsIgEcWQfccmCL2
-         VoJQ==
-X-Gm-Message-State: APjAAAWDKGaEtY893S1bKJ0vaKWI4fP/qYdGls9m9rHbImOZr0EGCe9y
-        oFLmr9HnO5x+gsXV4gkQrohOj8Lsjhdb8oRoLA==
-X-Google-Smtp-Source: APXvYqx6/RmLANXX/vPlWW5dxMFTHVq88mzyzyK5ZNY221b6izSlFe7hmn3F6M39YmRG3JLpfhEG4NgH/+fGMkC8KOM=
-X-Received: by 2002:a92:5ec8:: with SMTP id f69mr2379997ilg.8.1576682021040;
- Wed, 18 Dec 2019 07:13:41 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:39
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:13:39 +0100
-Message-ID: <CABHzvrnRhvP4H85iG3J35teTysHMuqtgB+SQ0gKSGRfJe2UHDw@mail.gmail.com>
-Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
-        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1727440AbfLRQol (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Dec 2019 11:44:41 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:45124 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726955AbfLRQol (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Dec 2019 11:44:41 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id CAE152008713;
+        Wed, 18 Dec 2019 08:44:39 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CAE152008713
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1576687479;
+        bh=a7xuBf5Ive82IP27XtSElh0HyfR+06ON7XFvftGE0Wc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GbISrtFcZTdmutO/nY95S0wpsX1WmzMUNz9/YnYqFPAbjtRYExPALZudQsVOhLJoC
+         MI/Zb169RO5tKVTqAgUJzr2e/in2T55u4v/3JKIR8nMQKb5ZRFFNAHgHcPpFggb2c7
+         Uhwj2XWlBvhPBGzkILYNQla1dTqnY6Y0UrZct2Ro=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
+        linux-integrity@vger.kernel.org
+Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
+        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
+        sashal@kernel.org, jamorris@linux.microsoft.com,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: [PATCH v5 0/2] IMA: Deferred measurement of keys
+Date:   Wed, 18 Dec 2019 08:44:32 -0800
+Message-Id: <20191218164434.2877-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Attn Dear.
+This patchset extends the previous version[1] by adding support for
+deferred processing of keys.
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+With the patchset referenced above, the IMA subsystem supports
+measuring asymmetric keys when the key is created or updated.
+But keys created or updated before a custom IMA policy is loaded
+are currently not measured. This includes keys added to, for instance,
+.builtin_trusted_keys which happens early in the boot process.
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+This change adds support for queuing keys created or updated before
+a custom IMA policy is loaded. The queued keys are processed when
+a custom policy is loaded. Keys created or updated after a custom policy
+is loaded are measured immediately (not queued).
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+If the kernel is built with both CONFIG_IMA and
+CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE enabled then the IMA policy
+must be applied as a custom policy. Not providing a custom policy
+in the above configuration would result in asymmeteric keys being queued
+until a custom policy is loaded. This is by design.
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
+[1] https://lore.kernel.org/linux-integrity/20191211164707.4698-1-nramas@linux.microsoft.com/
 
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
+Testing performed:
 
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
+  * Booted the kernel with this change.
+  * Added .builtin_trusted_keys in "keyrings=" option in
+    the IMA policy and verified the keys added to this
+    keyring are measured.
+  * Specified only func=KEY_CHECK and not "keyrings=" option,
+    and verified the keys added to builtin_trusted_keys keyring
+    are processed.
+  * Added keys at runtime and verified they are measured
+    if the IMA policy permitted.
+      => For example, added keys to .ima keyring and verified.
 
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
+Changelog:
+
+  v5
+
+  => Removed temp keys list in ima_process_queued_keys()
+
+  v4
+
+  => Check and set ima_process_keys flag with mutex held.
+
+  v3
+
+  => Defined ima_process_keys flag to be static.
+  => Set ima_process_keys with ima_keys_mutex held.
+  => Added a comment in ima_process_queued_keys() function
+     to state the use of temporary list for keys.
+
+  v2
+
+  => Rebased the changes to v5.5-rc1
+  => Updated function names, variable names, and code comments
+     to be less verbose.
+
+  v1
+
+  => Code cleanup
+
+  v0
+
+  => Based changes on v5.4-rc8
+  => The following patchsets should be applied in that order
+     https://lore.kernel.org/linux-integrity/1572492694-6520-1-git-send-email-zohar@linux.ibm.com
+     https://lore.kernel.org/linux-integrity/20191204224131.3384-1-nramas@linux.microsoft.com/
+  => Added functions to queue and dequeue keys, and process
+     the queued keys when custom IMA policies are applied.
+
+Lakshmi Ramasubramanian (2):
+  IMA: Define workqueue for early boot key measurements
+  IMA: Call workqueue functions to measure queued keys
+
+ security/integrity/ima/ima.h                 |  15 +++
+ security/integrity/ima/ima_asymmetric_keys.c | 123 +++++++++++++++++++
+ security/integrity/ima/ima_policy.c          |   3 +
+ 3 files changed, 141 insertions(+)
+
+-- 
+2.17.1
+
