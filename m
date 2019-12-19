@@ -2,54 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6BB12593B
-	for <lists+keyrings@lfdr.de>; Thu, 19 Dec 2019 02:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D6511262FE
+	for <lists+keyrings@lfdr.de>; Thu, 19 Dec 2019 14:11:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726716AbfLSBaD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Dec 2019 20:30:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48522 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726463AbfLSBaD (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 18 Dec 2019 20:30:03 -0500
-Subject: Re: [GIT PULL] tpmdd updates for Linux v5.5-rc3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576719002;
-        bh=s8shV4w2igNDmjITc4x6DKnVvwncODzNRqpehLZ7QT8=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=MjvEWmmGMzoNaOBvfT8+M5nnweh8c1zJ8KRQEfiDEVt48p94veuhHN13ylUb45a8f
-         zl9PnFAqWKZqmabzVv/sXlN0LrrY8x9JMNDAX2VduiIIrYsZtUqevLdASlkgSue3mk
-         pmvkj7NDxuqxlE582cg5dEw0vU3fX0BhQ/RF9gWc=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20191219010317.GA3086@linux.intel.com>
-References: <20191219010317.GA3086@linux.intel.com>
-X-PR-Tracked-List-Id: <linux-integrity.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20191219010317.GA3086@linux.intel.com>
-X-PR-Tracked-Remote: git://git.infradead.org/users/jjs/linux-tpmdd.git
- tpmdd-next-20191219
-X-PR-Tracked-Commit-Id: 1760eb689ed68c6746744aff2092bff57c78d907
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4a94c43323342f1522034d6566c5129a7386a0ab
-Message-Id: <157671900258.19837.15533650713180573474.pr-tracker-bot@kernel.org>
-Date:   Thu, 19 Dec 2019 01:30:02 +0000
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        jmorris@namei.org, dhowells@redhat.com
+        id S1726757AbfLSNLy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Dec 2019 08:11:54 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:20388 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726695AbfLSNLy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Dec 2019 08:11:54 -0500
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBJD9tlS108724
+        for <keyrings@vger.kernel.org>; Thu, 19 Dec 2019 08:11:53 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2x06f70xp9-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Thu, 19 Dec 2019 08:11:52 -0500
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Thu, 19 Dec 2019 13:11:50 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 19 Dec 2019 13:11:47 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBJDB3tR50331954
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Dec 2019 13:11:03 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 76833A4040;
+        Thu, 19 Dec 2019 13:11:46 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 19F02A404D;
+        Thu, 19 Dec 2019 13:11:45 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.200.39])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 19 Dec 2019 13:11:44 +0000 (GMT)
+Subject: Re: [PATCH v5 1/2] IMA: Define workqueue for early boot "key"
+ measurements
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        James.Bottomley@HansenPartnership.com,
+        linux-integrity@vger.kernel.org
+Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
+        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
+        sashal@kernel.org, jamorris@linux.microsoft.com,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Date:   Thu, 19 Dec 2019 08:11:44 -0500
+In-Reply-To: <20191218164434.2877-2-nramas@linux.microsoft.com>
+References: <20191218164434.2877-1-nramas@linux.microsoft.com>
+         <20191218164434.2877-2-nramas@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19121913-0008-0000-0000-000003429419
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121913-0009-0000-0000-00004A62AD76
+Message-Id: <1576761104.4579.426.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-19_01:2019-12-17,2019-12-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 mlxscore=0 suspectscore=2
+ mlxlogscore=960 spamscore=0 bulkscore=0 adultscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912190115
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The pull request you sent on Thu, 19 Dec 2019 03:03:17 +0200:
+On Wed, 2019-12-18 at 08:44 -0800, Lakshmi Ramasubramanian wrote:
+> +/*
+> + * ima_process_queued_keys() - process keys queued for measurement
+> + *
+> + * This function sets ima_process_keys to true and processes queued keys.
+> + * From here on keys will be processed right away (not queued).
+> + */
+> +void ima_process_queued_keys(void)
+> +{
+> +	struct ima_key_entry *entry, *tmp;
+> +	bool process = false;
+> +
+> +	if (ima_process_keys)
+> +		return;
+> +
+> +	/*
+> +	 * Since ima_process_keys is set to true, any new key will be
+> +	 * processed immediately and not be queued to ima_keys list.
+> +	 * First one setting the ima_process_keys flag to true will
+> +	 * process the queued keys.
+> +	 */
+> +	mutex_lock(&ima_keys_mutex);
+> +	if (!ima_process_keys) {
+> +		ima_process_keys = true;
+> +		process = true;
+> +	}
+> +	mutex_unlock(&ima_keys_mutex);
+> +
+> +	if (!process)
+> +		return;
+> +
+> +	list_for_each_entry_safe(entry, tmp, &ima_keys, list) {
+> +		process_buffer_measurement(entry->payload, entry->payload_len,
+> +					   entry->keyring_name, KEY_CHECK, 0,
+> +					   entry->keyring_name);
+> +		list_del(&entry->list);
+> +		ima_free_key_entry(entry);
+> +	}
+> +}
+> +
 
-> git://git.infradead.org/users/jjs/linux-tpmdd.git tpmdd-next-20191219
+Getting rid of the temporary list is definitely a big improvement.  As
+James suggested, using test_and_set_bit() and test_bit() would improve
+this code even more.  I think, James correct me if I'm wrong, you
+would be able to get rid of both the mutex and "process".
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4a94c43323342f1522034d6566c5129a7386a0ab
+Mimi
 
-Thank you!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+>  /**
+>   * ima_post_key_create_or_update - measure asymmetric keys
+>   * @keyring: keyring to which the key is linked to
+
