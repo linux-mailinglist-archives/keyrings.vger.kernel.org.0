@@ -2,100 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E60D9127B56
-	for <lists+keyrings@lfdr.de>; Fri, 20 Dec 2019 13:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A5D12805D
+	for <lists+keyrings@lfdr.de>; Fri, 20 Dec 2019 17:07:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727428AbfLTMxQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Dec 2019 07:53:16 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:23770 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727269AbfLTMxQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Dec 2019 07:53:16 -0500
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBKCogm9060359
-        for <keyrings@vger.kernel.org>; Fri, 20 Dec 2019 07:53:15 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2x0qnr7hsf-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Fri, 20 Dec 2019 07:53:14 -0500
-Received: from localhost
-        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Fri, 20 Dec 2019 12:53:13 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 20 Dec 2019 12:53:09 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBKCr8eo31457450
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 20 Dec 2019 12:53:08 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5DD0AA4054;
-        Fri, 20 Dec 2019 12:53:08 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 201F0A4060;
-        Fri, 20 Dec 2019 12:53:07 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.154.31])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 20 Dec 2019 12:53:07 +0000 (GMT)
-Subject: Re: [PATCH v5 1/2] IMA: Define workqueue for early boot "key"
- measurements
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        James.Bottomley@HansenPartnership.com,
-        linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
-        sashal@kernel.org, jamorris@linux.microsoft.com,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Fri, 20 Dec 2019 07:53:06 -0500
-In-Reply-To: <503845c9-beeb-b520-ec3f-af5fa7d2b91f@linux.microsoft.com>
-References: <20191218164434.2877-1-nramas@linux.microsoft.com>
-         <20191218164434.2877-2-nramas@linux.microsoft.com>
-         <1576761104.4579.426.camel@linux.ibm.com>
-         <503845c9-beeb-b520-ec3f-af5fa7d2b91f@linux.microsoft.com>
+        id S1727510AbfLTQHB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Dec 2019 11:07:01 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:38736 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727362AbfLTQHB (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Dec 2019 11:07:01 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D6EF88EE1AD;
+        Fri, 20 Dec 2019 08:07:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1576858020;
+        bh=4kZDAO/nClscJaZaDfwnp3spDSVyC2tR8UNUAp8RRZ8=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=G03iD1KnjZzkLeueelGrVCWqkteAaswud8KEOoormQYjtjpnytODRE3MW2SM8PyG/
+         j4Z25LGvX4R4m8z0ycQLhBG3GUlnn0W/e3aKv4YLXzBFRkMJZdK4oK3cd6sgxdyHMG
+         n+a70Mwmn1Rt2AJf69IHG5n0jKU2Zc5xklgLiMk4=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id emzUZ-VNk7IU; Fri, 20 Dec 2019 08:06:42 -0800 (PST)
+Received: from jarvis.lan (unknown [50.35.76.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 7AACE8EE0E2;
+        Fri, 20 Dec 2019 08:06:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1576857996;
+        bh=4kZDAO/nClscJaZaDfwnp3spDSVyC2tR8UNUAp8RRZ8=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=Z4XcD6+KpQpWR5raArf7ulux325MWgHwREg/xHoRS/hvTFzvtV0nsEBz/1vVcTMg8
+         0GAIqjlFX45OXSyqiPd3CTSBjJcCzMvKfJ6bNeWrRNgulRLWLmVZX/osSa/mHV2Jxa
+         NCwKLn5fZGcKaptDF/jBhTCPOtrd9f4FWr6wgcoY=
+Message-ID: <1576857993.3411.3.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 2/8] lib: add asn.1 encoder
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        keyrings@vger.kernel.org
+Date:   Fri, 20 Dec 2019 08:06:33 -0800
+In-Reply-To: <1576710652.3396.18.camel@HansenPartnership.com>
+References: <1576069352.2812.1.camel@HansenPartnership.com>
+         <1575984010.3459.4.camel@HansenPartnership.com>
+         <1575936272.31378.50.camel@HansenPartnership.com>
+         <1575936367.31378.52.camel@HansenPartnership.com>
+         <932257121039494734d97e290abb9159b1f5ca28.camel@infradead.org>
+         <10037.1575986929@warthog.procyon.org.uk>
+         <1576004020.3647.13.camel@HansenPartnership.com>
+         <35B37965-359E-40E0-8F44-836A56EC4756@infradead.org>
+         <26946.1576666216@warthog.procyon.org.uk>
+         <1576710652.3396.18.camel@HansenPartnership.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+X-Mailer: Evolution 3.26.6 
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19122012-0028-0000-0000-000003CA9DAE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19122012-0029-0000-0000-0000248DF269
-Message-Id: <1576846386.5241.13.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-20_02:2019-12-17,2019-12-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 lowpriorityscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912200102
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2019-12-19 at 08:55 -0800, Lakshmi Ramasubramanian wrote:
-> I am not sure if the mutex can be removed.
+On Thu, 2019-12-19 at 08:10 +0900, James Bottomley wrote:
+> On Wed, 2019-12-18 at 10:50 +0000, David Howells wrote:
+> > James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+> > 
+> > > +/**
+> > > + * asn1_encode_octet_string - encode an ASN.1 OCTET STRING
+> > > + * @data: pointer to encode at
+> > > + * @data_len: bytes remaining in @data buffer
+> > > + * @string: string to be encoded
+> > > + * @len: length of string
+> > > + *
+> > > + * Note ASN.1 octet strings may contain zeros, so the length is
+> > > obligatory.
+> > > + */
+> > > +int asn1_encode_octet_string(unsigned char **data, int
+> > > *data_len,
+> > > +			     const unsigned char *string, u32
+> > > len)
+> > 
+> > I wonder if it makes more sense to pass in an end pointer and
+> > return
+> > the new data pointer (or an error), ie.:
+> > 
+> > unsigned char *asn1_encode_octet_string(unsigned char *data,
+> > 				        unsigned char *data_end,
+> > 					const unsigned char *string,
+> > u32 len)
 > 
-> In ima_queue_key() we need to test the flag and add the key to the list 
-> as an atomic operation:
+> On the first point: people are prone to get off by one confusion on
+> data_end pointers (should they point to the last byte in the buffer
+> or
+> one beyond).  If I look at how I use the API, I've no real use for
+> either length remaining or the end pointer, so I think it makes no
+> difference to the consumer, it's just stuff you have to do for the
+> API.
+>  If I look at the internal API use, we definitely need the length
+> remaining, so I've a marginal preference for that format, but since
+> it's easy to work out it is very marginal.
 > 
->   if (!test_bit())
->      insert_key_to_list
+> > Further, I wonder - does it actually make more sense to encode
+> > backwards, ie. start at the end of the buffer and do the last
+> > element
+> > first, working towards the front.
 > 
-> Suppose the if condition is true, but before we could insert the key to 
-> the list, ima_process_queued_keys() runs and processes queued keys we'll 
-> add the key to the list and never process it.
-> 
-> Is there an API in the kernel to test and add an entry to a list 
-> atomically?
+> Heh, let me ask you this: do you use a reverse polish notation
+> calculator ... The problem is that it makes the ASN.1 hard to
+> construct  for the API user and hard to read for the reviewer because
+> of the order reversal.  Debugging is going to be a pain because
+> you're going to get the output of asn1parse and have to read it
+> backwards to see where the problems are.
 
-Ok, using test_and_set_bit() and test_bit() only helps, if we can get
-rid of the mutex.  I'll queue these patches.
+I coded this up to see what it would look like, and I think it can all
+be made to work with error pass through.  The latter is because you
+want to build up sequences of
 
-thanks,
+data = asn1_encode...(data, ...);
+data = asn1_encode...(data, ...);
+data = asn1_encode...(data, ...);
 
-Mimi
+And only check for errors when you're finished.  I think the interface
+looks nicer than a modifying pointer, so if you wait for the v4 patches
+they'll show this new interface with the consumers.
+
+James
 
