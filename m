@@ -2,155 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2F8F12867A
-	for <lists+keyrings@lfdr.de>; Sat, 21 Dec 2019 02:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C5F128BE5
+	for <lists+keyrings@lfdr.de>; Sun, 22 Dec 2019 00:40:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbfLUBxC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Dec 2019 20:53:02 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:40984 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726670AbfLUBxC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Dec 2019 20:53:02 -0500
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id D22042010BB8;
-        Fri, 20 Dec 2019 17:53:00 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D22042010BB8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1576893180;
-        bh=cuOPS1a1SFW5TXYIhfieprlMSuE6xnpflHJl+P5ctaQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ynno/VYSsvUIVj7ESD83j+56qW9ak6JHZ2rNaIdEbggIh/v3r8xS9zarEF6PojO81
-         YNIGLi/P2xYYiVrRFJBGDzp+rbwwCS4w6YUnUD0zPVhYEaJ8f9D8a980o+y2g0z2k4
-         nrh+svRjjI6ZtUXjA2+vhpJew8W/tiKZUQcyhQVw=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
+        id S1726066AbfLUXkr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 21 Dec 2019 18:40:47 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:47546 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726847AbfLUXkq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 21 Dec 2019 18:40:46 -0500
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBLNbHVx125280
+        for <keyrings@vger.kernel.org>; Sat, 21 Dec 2019 18:40:45 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2x1gt8e1wu-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Sat, 21 Dec 2019 18:40:45 -0500
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Sat, 21 Dec 2019 23:40:43 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sat, 21 Dec 2019 23:40:39 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBLNeclA30212178
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 21 Dec 2019 23:40:38 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 74882A404D;
+        Sat, 21 Dec 2019 23:40:38 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3EB19A4040;
+        Sat, 21 Dec 2019 23:40:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.234.212])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sat, 21 Dec 2019 23:40:37 +0000 (GMT)
+Subject: Re: [PATCH] IMA: Defined timer to process queued keys
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        James.Bottomley@HansenPartnership.com,
         linux-integrity@vger.kernel.org
 Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
         mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
         sashal@kernel.org, jamorris@linux.microsoft.com,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Subject: [PATCH] IMA: Defined timer to process queued keys
-Date:   Fri, 20 Dec 2019 17:52:56 -0800
-Message-Id: <20191221015256.2775-1-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
+Date:   Sat, 21 Dec 2019 18:40:36 -0500
+In-Reply-To: <20191221015256.2775-1-nramas@linux.microsoft.com>
+References: <20191221015256.2775-1-nramas@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19122123-0028-0000-0000-000003CAF3A4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19122123-0029-0000-0000-0000248E4B03
+Message-Id: <1576971636.5241.95.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-21_07:2019-12-17,2019-12-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ malwarescore=0 impostorscore=0 mlxlogscore=876 adultscore=0 spamscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912210212
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-keys queued for measurement should still be processed even if
-a custom IMA policy was not loaded. Otherwise, the keys will
-remain queued forever consuming kernel memory.
+On Fri, 2019-12-20 at 17:52 -0800, Lakshmi Ramasubramanian wrote:
+> keys queued for measurement should still be processed even if
+> a custom IMA policy was not loaded. Otherwise, the keys will
+> remain queued forever consuming kernel memory.
+> 
+> This patch defines a timer to handle the above scenario. The timer
+> is setup to expire 5 minutes after IMA initialization is completed.
+> 
+> If a custom IMA policy is loaded before the timer expires, the timer
+> is removed and any queued keys are processed. But if a custom policy
+> was not loaded, on timer expiration any queued keys are processed.
+> 
+> On timer expiration the keys are still processed. This will enable
+> keys to be measured in case the built-in IMA policy defines a key
+> measurement rule.
 
-This patch defines a timer to handle the above scenario. The timer
-is setup to expire 5 minutes after IMA initialization is completed.
+If there was a built-in policy rule for measuring the early boot keys,
+then there wouldn't be a need for queueing the "key" measurements.
+ Just free the queued keys.
 
-If a custom IMA policy is loaded before the timer expires, the timer
-is removed and any queued keys are processed. But if a custom policy
-was not loaded, on timer expiration any queued keys are processed.
-
-On timer expiration the keys are still processed. This will enable
-keys to be measured in case the built-in IMA policy defines a key
-measurement rule.
-
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- security/integrity/ima/ima.h                 |  2 ++
- security/integrity/ima/ima_asymmetric_keys.c | 34 ++++++++++++++++++++
- security/integrity/ima/ima_init.c            |  8 ++++-
- 3 files changed, 43 insertions(+), 1 deletion(-)
-
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index 97f8a4078483..c483215a9ee5 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -216,8 +216,10 @@ struct ima_key_entry {
- 	char *keyring_name;
- };
- void ima_process_queued_keys(void);
-+void ima_init_key_queue(void);
- #else
- static inline void ima_process_queued_keys(void) {}
-+static inline void ima_init_key_queue(void) {}
- #endif /* CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE */
- 
- /* LIM API function definitions */
-diff --git a/security/integrity/ima/ima_asymmetric_keys.c b/security/integrity/ima/ima_asymmetric_keys.c
-index 4124f10ff0c2..92a7dcdf39a0 100644
---- a/security/integrity/ima/ima_asymmetric_keys.c
-+++ b/security/integrity/ima/ima_asymmetric_keys.c
-@@ -11,6 +11,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/timer.h>
- #include <keys/asymmetric-type.h>
- #include "ima.h"
- 
-@@ -26,6 +27,34 @@ static bool ima_process_keys;
- static DEFINE_MUTEX(ima_keys_mutex);
- static LIST_HEAD(ima_keys);
- 
-+/*
-+ * If custom IMA policy is not loaded then keys queued up
-+ * for measurement should be freed. This timer is used
-+ * for handling this scenario.
-+ */
-+static long ima_key_queue_timeout = 300000; /* 5 Minutes */
-+static struct timer_list ima_key_queue_timer;
-+
-+/*
-+ * This timer callback function processes keys that may still be
-+ * queued up in case custom IMA policy was not loaded.
-+ */
-+static void ima_timer_handler(struct timer_list *timer)
-+{
-+	ima_process_queued_keys();
-+}
-+
-+/*
-+ * This function sets up a timer to process queued keys in case
-+ * custom IMA policy was never loaded.
-+ */
-+void ima_init_key_queue(void)
-+{
-+	timer_setup(&ima_key_queue_timer, ima_timer_handler, 0);
-+	mod_timer(&ima_key_queue_timer,
-+		  jiffies + msecs_to_jiffies(ima_key_queue_timeout));
-+}
-+
- static void ima_free_key_entry(struct ima_key_entry *entry)
- {
- 	if (entry) {
-@@ -120,6 +149,11 @@ void ima_process_queued_keys(void)
- 	if (!process)
- 		return;
- 
-+	/*
-+	 * Timer is no longer needed since queued keys will be processed now.
-+	 */
-+	del_timer(&ima_key_queue_timer);
-+
- 	list_for_each_entry_safe(entry, tmp, &ima_keys, list) {
- 		process_buffer_measurement(entry->payload, entry->payload_len,
- 					   entry->keyring_name, KEY_CHECK, 0,
-diff --git a/security/integrity/ima/ima_init.c b/security/integrity/ima/ima_init.c
-index 5d55ade5f3b9..195cb4079b2b 100644
---- a/security/integrity/ima/ima_init.c
-+++ b/security/integrity/ima/ima_init.c
-@@ -131,5 +131,11 @@ int __init ima_init(void)
- 
- 	ima_init_policy();
- 
--	return ima_fs_init();
-+	rc = ima_fs_init();
-+	if (rc != 0)
-+		return rc;
-+
-+	ima_init_key_queue();
-+
-+	return rc;
- }
--- 
-2.17.1
+Mimi
 
