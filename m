@@ -2,68 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BD012CBF0
-	for <lists+keyrings@lfdr.de>; Mon, 30 Dec 2019 03:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BE312D2CD
+	for <lists+keyrings@lfdr.de>; Mon, 30 Dec 2019 18:38:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbfL3Ca0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 29 Dec 2019 21:30:26 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8644 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726726AbfL3Ca0 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 29 Dec 2019 21:30:26 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id A1B6D2CA8BB94C1402C9;
-        Mon, 30 Dec 2019 10:30:23 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Mon, 30 Dec 2019
- 10:30:14 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
-        <davem@davemloft.net>
-CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] PKCS#7: Use match_string() helper to simplify the code
-Date:   Mon, 30 Dec 2019 10:28:42 +0800
-Message-ID: <20191230022842.22940-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+        id S1727318AbfL3RiU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Dec 2019 12:38:20 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:39178 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727236AbfL3RiU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Dec 2019 12:38:20 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 210CD8EE15F;
+        Mon, 30 Dec 2019 09:38:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1577727499;
+        bh=tgmsNP/mt1L5gXrWlnWYxsUhURaOTtBAwX4ahuy9rRE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lra8nvXmaabdi/COCw6tIdDxJAjgky60OkYm7tY9hDnU6gqZLhzQoS6oLVEuDMoFo
+         YI1+tZvuLzKAl85B2fiyQeI7It9hQ1E1NZEUc1UaPS31g75cbnbroe2KeyYjEoSOm/
+         ZGfX8o6sMJZUsWACrSc5a42p2a612dTkufeMYFAA=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id PcpzEdoHbhAE; Mon, 30 Dec 2019 09:38:18 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 076BD8EE07B;
+        Mon, 30 Dec 2019 09:38:17 -0800 (PST)
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: [PATCH v4 0/9] TPM 2.0 trusted keys with attached policy
+Date:   Mon, 30 Dec 2019 09:37:53 -0800
+Message-Id: <20191230173802.8731-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.16.4
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-match_string() returns the array index of a matching string.
-Use it instead of the open-coded implementation.
+This is basically a respin to update the ASN.1 interface to pass
+pointers in and out instead of updating in place.  The remainder of
+the patches haven't changed in substance, but have changed to support
+the new ASN.1 encoder API.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+General Cover letter description:
+
+I've changed the output format to use the standardised ASN.1 coding
+for TPM2 keys, meaning they should interoperate with userspace TPM2
+key implementations.  Apart from interoperability, another advantage
+of the existing key format is that it carries all parameters like
+parent and hash with it and it is capable of carrying policy
+directives in a way that mean they're tied permanently to the key (no
+having to try to remember what the policy was and reconstruct it from
+userspace).  This actually allows us to support the TPM 1.2 commands
+like pcrinfo easily in 2.0.
+
+Using the TPM2_PolicyPassword trick, this series now combines
+authorization with policy in a flexible way that would allow us to
+move to HMAC based authorizations later for TPM security.  In getting
+passwords to work, I fixed the tpm2 password format in a separate
+patch.  TPM 1.2 only allows fixed length authorizations, but TPM 2.0
+allows for variable length passphrases, so we should support that in
+the keys.
+
+James
+
 ---
- crypto/asymmetric_keys/pkcs7_verify.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-index ce49820..0b4d07a 100644
---- a/crypto/asymmetric_keys/pkcs7_verify.c
-+++ b/crypto/asymmetric_keys/pkcs7_verify.c
-@@ -141,11 +141,10 @@ int pkcs7_get_digest(struct pkcs7_message *pkcs7, const u8 **buf, u32 *len,
- 	*buf = sinfo->sig->digest;
- 	*len = sinfo->sig->digest_size;
- 
--	for (i = 0; i < HASH_ALGO__LAST; i++)
--		if (!strcmp(hash_algo_name[i], sinfo->sig->hash_algo)) {
--			*hash_algo = i;
--			break;
--		}
-+	i = match_string(hash_algo_name, HASH_ALGO__LAST,
-+			 sinfo->sig->hash_algo);
-+	if (i >= 0)
-+		*hash_algo = i;
- 
- 	return 0;
- }
+James Bottomley (9):
+  lib: add asn.1 encoder
+  oid_registry: Add TCG defined OIDS for TPM keys
+  security: keys: trusted fix tpm2 authorizations
+  security: keys: trusted: use ASN.1 tpm2 key format for the blobs
+  security: keys: trusted: Make sealed key properly interoperable
+  security: keys: trusted: add PCR policy to TPM2 keys
+  security: keys: trusted: add ability to specify arbitrary policy
+  security: keys: trusted: implement counter/timer policy
+  security: keys: trusted: add password based authorizations to policy
+    keys
+
+ Documentation/security/keys/trusted-encrypted.rst |  64 +++-
+ include/keys/trusted-type.h                       |   7 +-
+ include/linux/asn1_encoder.h                      |  32 ++
+ include/linux/oid_registry.h                      |   5 +
+ include/linux/tpm.h                               |   8 +
+ lib/Makefile                                      |   2 +-
+ lib/asn1_encoder.c                                | 391 +++++++++++++++++++
+ security/keys/Kconfig                             |   2 +
+ security/keys/trusted-keys/Makefile               |   2 +-
+ security/keys/trusted-keys/tpm2-policy.c          | 433 ++++++++++++++++++++++
+ security/keys/trusted-keys/tpm2-policy.h          |  31 ++
+ security/keys/trusted-keys/tpm2key.asn1           |  23 ++
+ security/keys/trusted-keys/trusted_tpm1.c         |  46 ++-
+ security/keys/trusted-keys/trusted_tpm2.c         | 360 ++++++++++++++++--
+ 14 files changed, 1370 insertions(+), 36 deletions(-)
+ create mode 100644 include/linux/asn1_encoder.h
+ create mode 100644 lib/asn1_encoder.c
+ create mode 100644 security/keys/trusted-keys/tpm2-policy.c
+ create mode 100644 security/keys/trusted-keys/tpm2-policy.h
+ create mode 100644 security/keys/trusted-keys/tpm2key.asn1
+
 -- 
-2.7.4
-
+2.16.4
 
