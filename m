@@ -2,89 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9365112D9C2
-	for <lists+keyrings@lfdr.de>; Tue, 31 Dec 2019 16:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6835612DA0A
+	for <lists+keyrings@lfdr.de>; Tue, 31 Dec 2019 17:05:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727130AbfLaPZJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 31 Dec 2019 10:25:09 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43638 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726659AbfLaPZJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Dec 2019 10:25:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1577805908;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MmNBZkwBy1szGWacQmXBphuROcFRHJi+XYFCIYFXOoM=;
-        b=cahQE1e/tGGQYumzrcg9OyFbylHXZFouMTi1pAYi6TSEanGJBZSR1kRnCI4gIcT+TtsHrj
-        bDU0z3JjDtw4JqutW9BLdRULLwkMFoUzQiPPtJ03oB2U0GxSQAYIi4zRRZXwV93/0LcKQr
-        pVK3Tsll7Kj4iZaclcGlLDmQ8LS0K1Q=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-253-2Js2s053NvmFzobCKbM2CA-1; Tue, 31 Dec 2019 10:25:05 -0500
-X-MC-Unique: 2Js2s053NvmFzobCKbM2CA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 62D2D1800D4E;
-        Tue, 31 Dec 2019 15:25:04 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-52.rdu2.redhat.com [10.10.120.52])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 57F7B5D9E1;
-        Tue, 31 Dec 2019 15:25:03 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH 3/3] afs: Fix afs_lookup() to not clobber the version on a
- new dentry
-From:   David Howells <dhowells@redhat.com>
-To:     linux-afs@lists.infradead.org
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, dhowells@redhat.com
-Date:   Tue, 31 Dec 2019 15:25:02 +0000
-Message-ID: <157780590246.25571.8995170375088979996.stgit@warthog.procyon.org.uk>
-In-Reply-To: <157780588822.25571.7926816048227538205.stgit@warthog.procyon.org.uk>
-References: <157780588822.25571.7926816048227538205.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/unknown-version
+        id S1727074AbfLaQF5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 Dec 2019 11:05:57 -0500
+Received: from mga18.intel.com ([134.134.136.126]:55511 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726060AbfLaQF4 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 31 Dec 2019 11:05:56 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Dec 2019 08:05:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,379,1571727600"; 
+   d="scan'208";a="221446838"
+Received: from vmauer-mobl.ger.corp.intel.com (HELO localhost) ([10.252.22.151])
+  by orsmga003.jf.intel.com with ESMTP; 31 Dec 2019 08:05:52 -0800
+Date:   Tue, 31 Dec 2019 18:05:51 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v4 0/9] TPM 2.0 trusted keys with attached policy
+Message-ID: <20191231160539.GB4790@linux.intel.com>
+References: <20191230173802.8731-1-James.Bottomley@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191230173802.8731-1-James.Bottomley@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Fix afs_lookup() to not clobber the version set on a new dentry by
-afs_do_lookup() - especially as it's using the wrong version of the version
-(we need to use the one given to us by whatever op the dir contents
-correspond to rather than what's in the afs_vnode).
+On Mon, Dec 30, 2019 at 09:37:53AM -0800, James Bottomley wrote:
+> This is basically a respin to update the ASN.1 interface to pass
+> pointers in and out instead of updating in place.  The remainder of
+> the patches haven't changed in substance, but have changed to support
+> the new ASN.1 encoder API.
+> 
+> General Cover letter description:
+> 
+> I've changed the output format to use the standardised ASN.1 coding
+> for TPM2 keys, meaning they should interoperate with userspace TPM2
+> key implementations.  Apart from interoperability, another advantage
+> of the existing key format is that it carries all parameters like
+> parent and hash with it and it is capable of carrying policy
+> directives in a way that mean they're tied permanently to the key (no
+> having to try to remember what the policy was and reconstruct it from
+> userspace).  This actually allows us to support the TPM 1.2 commands
+> like pcrinfo easily in 2.0.
+> 
+> Using the TPM2_PolicyPassword trick, this series now combines
+> authorization with policy in a flexible way that would allow us to
+> move to HMAC based authorizations later for TPM security.  In getting
+> passwords to work, I fixed the tpm2 password format in a separate
+> patch.  TPM 1.2 only allows fixed length authorizations, but TPM 2.0
+> allows for variable length passphrases, so we should support that in
+> the keys.
+> 
+> James
 
-Fixes: 9dd0b82ef530 ("afs: Fix missing dentry data version updating")
-Signed-off-by: David Howells <dhowells@redhat.com>
----
+I'll finally go deep with this as soon as we land the fixes for
 
- fs/afs/dir.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+https://bugzilla.kernel.org/show_bug.cgi?id=205935.
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 813db1708494..5c794f4b051a 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -952,12 +952,8 @@ static struct dentry *afs_lookup(struct inode *dir, struct dentry *dentry,
- 	afs_stat_v(dvnode, n_lookup);
- 	inode = afs_do_lookup(dir, dentry, key);
- 	key_put(key);
--	if (inode == ERR_PTR(-ENOENT)) {
-+	if (inode == ERR_PTR(-ENOENT))
- 		inode = afs_try_auto_mntpt(dentry, dir);
--	} else {
--		dentry->d_fsdata =
--			(void *)(unsigned long)dvnode->status.data_version;
--	}
- 
- 	if (!IS_ERR_OR_NULL(inode))
- 		fid = AFS_FS_I(inode)->fid;
+I'm sorry for ignorance but there's been multiple factors that have
+delayed the review (the bug mentioned, kind of sudden steep ramp up to
+keyring maintenance as David had to focus on other things, SGX
+upstreaming and generally time seems to dissappear somewhere towards the
+end of the year).
 
+This week is a bit catching up but I'm sure that next week I have space
+to give the focus the patch set requires (and deserves).
+
+/Jarkko
