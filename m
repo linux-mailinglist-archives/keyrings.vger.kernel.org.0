@@ -2,97 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 375DC12FAF5
-	for <lists+keyrings@lfdr.de>; Fri,  3 Jan 2020 17:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF9312FD45
+	for <lists+keyrings@lfdr.de>; Fri,  3 Jan 2020 20:54:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727994AbgACQ53 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 3 Jan 2020 11:57:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49830 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727969AbgACQ53 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 3 Jan 2020 11:57:29 -0500
-Received: from gmail.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C5DA7206DB;
-        Fri,  3 Jan 2020 16:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578070649;
-        bh=RL+yaap+s7Gb++esPrb+ddyBAFUgLJGNTPp2fhE5Iv0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kxXw7SXw9knA6E1AFwsb7GlSx8TbEgrh+y/7fgxxpaTXB0F5IZCHr/2+nyXyPozfw
-         ILl+8PJ4ckpEtM8xPBGI2xuFFCndo7KoiDhyzVqKfQU8Jg6s2/6sW1x7+8GxdVCmlv
-         Etw2e1txnGpwPLJlYb/D0D+m8j+Y3f1VWe9VXDjA=
-Date:   Fri, 3 Jan 2020 08:57:27 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-fscrypt@vger.kernel.org
-Cc:     keyrings@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Paul Crowley <paulcrowley@google.com>,
-        Paul Lawrence <paullawrence@google.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Ondrej Kozina <okozina@redhat.com>
-Subject: Re: [PATCH v2] fscrypt: support passing a keyring key to
- FS_IOC_ADD_ENCRYPTION_KEY
-Message-ID: <20200103165727.GB19521@gmail.com>
-References: <20191119222447.226853-1-ebiggers@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191119222447.226853-1-ebiggers@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1728640AbgACTyn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 3 Jan 2020 14:54:43 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:35944 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728546AbgACTym (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 3 Jan 2020 14:54:42 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id EF3C92010C33;
+        Fri,  3 Jan 2020 11:54:41 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EF3C92010C33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1578081282;
+        bh=Z1n2LzQpaCgWEDxC/fs/cZCzWQOEqpq+cd0+IedtQM4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=s+ylC9Vxkkcm0+bCBAIvfX7bVTOkBHZphgHD35s2dEevT7yj2qS4UB9VimYqHtK9y
+         2mleI2CwcRvPqD8pnKxWFTfZC3LtYxs1AWxCK1reTSTgS7BJf3I8CPnNdXkxxCbka9
+         ofnrU2FthUNgSIMj1rssnJfGfP9YSEx88rljjjWo=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, linux-integrity@vger.kernel.org
+Cc:     James.Bottomley@HansenPartnership.com, eric.snowberg@oracle.com,
+        dhowells@redhat.com, mathew.j.martineau@linux.intel.com,
+        matthewgarrett@google.com, sashal@kernel.org,
+        jamorris@linux.microsoft.com, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org
+Subject: [PATCH v7 0/3] IMA: Deferred measurement of keys
+Date:   Fri,  3 Jan 2020 11:54:32 -0800
+Message-Id: <20200103195435.2647-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Nov 19, 2019 at 02:24:47PM -0800, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Extend the FS_IOC_ADD_ENCRYPTION_KEY ioctl to allow the raw key to be
-> specified by a Linux keyring key, rather than specified directly.
-> 
-> This is useful because fscrypt keys belong to a particular filesystem
-> instance, so they are destroyed when that filesystem is unmounted.
-> Usually this is desired.  But in some cases, userspace may need to
-> unmount and re-mount the filesystem while keeping the keys, e.g. during
-> a system update.  This requires keeping the keys somewhere else too.
-> 
-> The keys could be kept in memory in a userspace daemon.  But depending
-> on the security architecture and assumptions, it can be preferable to
-> keep them only in kernel memory, where they are unreadable by userspace.
-> 
-> We also can't solve this by going back to the original fscrypt API
-> (where for each file, the master key was looked up in the process's
-> keyring hierarchy) because that caused lots of problems of its own.
-> 
-> Therefore, add the ability for FS_IOC_ADD_ENCRYPTION_KEY to accept a
-> Linux keyring key.  This solves the problem by allowing userspace to (if
-> needed) save the keys securely in a Linux keyring for re-provisioning,
-> while still using the new fscrypt key management ioctls.
-> 
-> This is analogous to how dm-crypt accepts a Linux keyring key, but the
-> key is then stored internally in the dm-crypt data structures rather
-> than being looked up again each time the dm-crypt device is accessed.
-> 
-> Use a custom key type "fscrypt-provisioning" rather than one of the
-> existing key types such as "logon".  This is strongly desired because it
-> enforces that these keys are only usable for a particular purpose: for
-> fscrypt as input to a particular KDF.  Otherwise, the keys could also be
-> passed to any kernel API that accepts a "logon" key with any service
-> prefix, e.g. dm-crypt, UBIFS, or (recently proposed) AF_ALG.  This would
-> risk leaking information about the raw key despite it ostensibly being
-> unreadable.  Of course, this mistake has already been made for multiple
-> kernel APIs; but since this is a new API, let's do it right.
-> 
-> This patch has been tested using an xfstest which I wrote to test it.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+The IMA subsystem supports measuring asymmetric keys when the key is
+created or updated[1]. But keys created or updated before a custom
+IMA policy is loaded are currently not measured. This includes keys
+added, for instance, to either the .ima or .builtin_trusted_keys keyrings,
+which happens early in the boot process.
 
-Applied to fscrypt.git#master for 5.6.
+Measuring the early boot keys, by design, requires loading
+a custom IMA policy. This change adds support for queuing keys
+created or updated before a custom IMA policy is loaded.
+The queued keys are processed when a custom policy is loaded.
+Keys created or updated after a custom policy is loaded are measured
+immediately (not queued). In the case when a custom policy is not loaded
+within 5 minutes of IMA initialization, the queued keys are freed.
 
-- Eric
+[1] https://lore.kernel.org/linux-integrity/20191211164707.4698-1-nramas@linux.microsoft.com/
+
+Testing performed:
+
+  * Ran kernel self-test following the instructions given in
+    https://www.kernel.org/doc/Documentation/kselftest.txt
+  * Ran the lkp-tests using the job script provided by
+    kernel test robot <rong.a.chen@intel.com>
+  * Booted the kernel with this change.
+  * Added .builtin_trusted_keys in "keyrings=" option in
+    the IMA policy and verified the keys added to this
+    keyring are measured.
+  * Specified only func=KEY_CHECK and not "keyrings=" option,
+    and verified the keys added to builtin_trusted_keys keyring
+    are processed.
+  * Added keys at runtime and verified they are measured
+    if the IMA policy permitted.
+      => For example, added keys to .ima keyring and verified.
+
+Changelog:
+
+  v7
+
+  => Updated cover letter per Mimi's suggestions.
+  => Updated "Reported-by" tag to be specific about
+     the issues fixed in the patch.
+
+  v6
+
+  => Replaced mutex with a spinlock to sychronize access to
+     queued keys. This fixes the problem reported by
+     "kernel test robot <rong.a.chen@intel.com>"
+     https://lore.kernel.org/linux-integrity/2a831fe9-30e5-63b4-af10-a69f327f7fb7@linux.microsoft.com/T/#t
+  => Changed ima_queue_key() to a static function. This fixes
+     the issue reported by "kbuild test robot <lkp@intel.com>"
+     https://lore.kernel.org/linux-integrity/1577370464.4487.10.camel@linux.ibm.com/
+  => Added the patch to free the queued keys if a custom IMA policy
+     was not loaded to this patch set.
+
+  v5
+
+  => Removed temp keys list in ima_process_queued_keys()
+
+  v4
+
+  => Check and set ima_process_keys flag with mutex held.
+
+  v3
+
+  => Defined ima_process_keys flag to be static.
+  => Set ima_process_keys with ima_keys_mutex held.
+  => Added a comment in ima_process_queued_keys() function
+     to state the use of temporary list for keys.
+
+  v2
+
+  => Rebased the changes to v5.5-rc1
+  => Updated function names, variable names, and code comments
+     to be less verbose.
+
+  v1
+
+  => Code cleanup
+
+  v0
+
+  => Based changes on v5.4-rc8
+  => The following patchsets should be applied in that order
+     https://lore.kernel.org/linux-integrity/1572492694-6520-1-git-send-email-zohar@linux.ibm.com
+     https://lore.kernel.org/linux-integrity/20191204224131.3384-1-nramas@linux.microsoft.com/
+  => Added functions to queue and dequeue keys, and process
+     the queued keys when custom IMA policies are applied.
+
+Lakshmi Ramasubramanian (3):
+  IMA: Define workqueue for early boot key measurements
+  IMA: Call workqueue functions to measure queued keys
+  IMA: Defined timer to free queued keys
+
+ security/integrity/ima/ima.h                 |  17 ++
+ security/integrity/ima/ima_asymmetric_keys.c | 159 +++++++++++++++++++
+ security/integrity/ima/ima_init.c            |   8 +-
+ security/integrity/ima/ima_policy.c          |   3 +
+ 4 files changed, 186 insertions(+), 1 deletion(-)
+
+-- 
+2.17.1
+
