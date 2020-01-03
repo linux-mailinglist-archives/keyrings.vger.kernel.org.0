@@ -2,103 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7166212F9FA
-	for <lists+keyrings@lfdr.de>; Fri,  3 Jan 2020 16:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 375DC12FAF5
+	for <lists+keyrings@lfdr.de>; Fri,  3 Jan 2020 17:57:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727912AbgACPsF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 3 Jan 2020 10:48:05 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:2950 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727793AbgACPsF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 3 Jan 2020 10:48:05 -0500
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 003FjCMf135032
-        for <keyrings@vger.kernel.org>; Fri, 3 Jan 2020 10:48:04 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2xa1fgm2ub-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Fri, 03 Jan 2020 10:48:04 -0500
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Fri, 3 Jan 2020 15:48:02 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 3 Jan 2020 15:47:57 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 003FlAcs48955870
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 3 Jan 2020 15:47:10 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D9739AE045;
-        Fri,  3 Jan 2020 15:47:56 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5FA89AE053;
-        Fri,  3 Jan 2020 15:47:55 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.213.69])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri,  3 Jan 2020 15:47:55 +0000 (GMT)
-Subject: Re: [PATCH v6 0/3] IMA: Deferred measurement of keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        James.Bottomley@HansenPartnership.com,
-        linux-integrity@vger.kernel.org
-Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
-        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
-        sashal@kernel.org, jamorris@linux.microsoft.com,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Fri, 03 Jan 2020 10:47:54 -0500
-In-Reply-To: <1578064099.5874.170.camel@linux.ibm.com>
-References: <20200103055608.22491-1-nramas@linux.microsoft.com>
-         <1578064099.5874.170.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010315-0016-0000-0000-000002DA3A69
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010315-0017-0000-0000-0000333CA818
-Message-Id: <1578066474.5874.174.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2020-01-03_05:2020-01-02,2020-01-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001030144
+        id S1727994AbgACQ53 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 3 Jan 2020 11:57:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49830 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727969AbgACQ53 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 3 Jan 2020 11:57:29 -0500
+Received: from gmail.com (unknown [104.132.1.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C5DA7206DB;
+        Fri,  3 Jan 2020 16:57:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578070649;
+        bh=RL+yaap+s7Gb++esPrb+ddyBAFUgLJGNTPp2fhE5Iv0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kxXw7SXw9knA6E1AFwsb7GlSx8TbEgrh+y/7fgxxpaTXB0F5IZCHr/2+nyXyPozfw
+         ILl+8PJ4ckpEtM8xPBGI2xuFFCndo7KoiDhyzVqKfQU8Jg6s2/6sW1x7+8GxdVCmlv
+         Etw2e1txnGpwPLJlYb/D0D+m8j+Y3f1VWe9VXDjA=
+Date:   Fri, 3 Jan 2020 08:57:27 -0800
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     linux-fscrypt@vger.kernel.org
+Cc:     keyrings@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Paul Crowley <paulcrowley@google.com>,
+        Paul Lawrence <paullawrence@google.com>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        Ondrej Kozina <okozina@redhat.com>
+Subject: Re: [PATCH v2] fscrypt: support passing a keyring key to
+ FS_IOC_ADD_ENCRYPTION_KEY
+Message-ID: <20200103165727.GB19521@gmail.com>
+References: <20191119222447.226853-1-ebiggers@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191119222447.226853-1-ebiggers@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2020-01-03 at 10:08 -0500, Mimi Zohar wrote:
-> > This change adds support for queuing keys created or updated before
-> > a custom IMA policy is loaded. The queued keys are processed when
-> > a custom policy is loaded. Keys created or updated after a custom policy
-> > is loaded are measured immediately (not queued).
-> > 
-> > If the kernel is built with both CONFIG_IMA and
-> > CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE enabled then the IMA policy
-> > must be applied as a custom policy for the keys to be measured.
-> > If a custom IMA policy is not provided within 5 minutes after
-> > IMA is initialized, any queued keys will be freed.
+On Tue, Nov 19, 2019 at 02:24:47PM -0800, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> As the merge message, this is too much information.  I would extend
-> the previous paragraph and drop this one, like:
-> "... (not queued).  In the case when a custom policy is not loaded
-> within 5 minutes of IMA initialization, the queued keys are freed."
+> Extend the FS_IOC_ADD_ENCRYPTION_KEY ioctl to allow the raw key to be
+> specified by a Linux keyring key, rather than specified directly.
 > 
-> > This is by design.
+> This is useful because fscrypt keys belong to a particular filesystem
+> instance, so they are destroyed when that filesystem is unmounted.
+> Usually this is desired.  But in some cases, userspace may need to
+> unmount and re-mount the filesystem while keeping the keys, e.g. during
+> a system update.  This requires keeping the keys somewhere else too.
 > 
-> It's unclear what "is by design" refers to.  Perhaps expand this
-> sentence like: "Measuring the early boot keys, by design, requires
-> loading a custom policy.
+> The keys could be kept in memory in a userspace daemon.  But depending
+> on the security architecture and assumptions, it can be preferable to
+> keep them only in kernel memory, where they are unreadable by userspace.
+> 
+> We also can't solve this by going back to the original fscrypt API
+> (where for each file, the master key was looked up in the process's
+> keyring hierarchy) because that caused lots of problems of its own.
+> 
+> Therefore, add the ability for FS_IOC_ADD_ENCRYPTION_KEY to accept a
+> Linux keyring key.  This solves the problem by allowing userspace to (if
+> needed) save the keys securely in a Linux keyring for re-provisioning,
+> while still using the new fscrypt key management ioctls.
+> 
+> This is analogous to how dm-crypt accepts a Linux keyring key, but the
+> key is then stored internally in the dm-crypt data structures rather
+> than being looked up again each time the dm-crypt device is accessed.
+> 
+> Use a custom key type "fscrypt-provisioning" rather than one of the
+> existing key types such as "logon".  This is strongly desired because it
+> enforces that these keys are only usable for a particular purpose: for
+> fscrypt as input to a particular KDF.  Otherwise, the keys could also be
+> passed to any kernel API that accepts a "logon" key with any service
+> prefix, e.g. dm-crypt, UBIFS, or (recently proposed) AF_ALG.  This would
+> risk leaking information about the raw key despite it ostensibly being
+> unreadable.  Of course, this mistake has already been made for multiple
+> kernel APIs; but since this is a new API, let's do it right.
+> 
+> This patch has been tested using an xfstest which I wrote to test it.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-Instead of including this comment as the last sentence of the cover
-letter, it would make a good opening sentence for the second
-paragraph.
+Applied to fscrypt.git#master for 5.6.
 
-Mimi
-
+- Eric
