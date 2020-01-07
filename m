@@ -2,84 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1086E133575
-	for <lists+keyrings@lfdr.de>; Tue,  7 Jan 2020 23:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 476AA1335B0
+	for <lists+keyrings@lfdr.de>; Tue,  7 Jan 2020 23:26:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727080AbgAGWGd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Jan 2020 17:06:33 -0500
-Received: from mout.kundenserver.de ([212.227.126.134]:38017 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726793AbgAGWGd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jan 2020 17:06:33 -0500
-Received: from mail-qk1-f175.google.com ([209.85.222.175]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1N6JtR-1jmL2U1O2b-016eOK; Tue, 07 Jan 2020 23:06:31 +0100
-Received: by mail-qk1-f175.google.com with SMTP id a203so909099qkc.3;
-        Tue, 07 Jan 2020 14:06:30 -0800 (PST)
-X-Gm-Message-State: APjAAAVb410bR7aDf9atZ3/Y8cBO3H+sfO9Bh0A4fyBS5QhJSXFXDzlZ
-        FPEEQm+iejWCv/j45urnGEYwjVXrR+vlMsGCN0k=
-X-Google-Smtp-Source: APXvYqzLX1vDB9bbHKm0RIfLRmhhg3Pbbkya5hKGBWX/IIiUDGpl/J0vvUx4sgrkexjEB1wHob2sa45CjmKbtRESa5M=
-X-Received: by 2002:a05:620a:a5b:: with SMTP id j27mr1531468qka.286.1578434790062;
- Tue, 07 Jan 2020 14:06:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20200107203041.843060-1-arnd@arndb.de> <1578430874.4288.2.camel@HansenPartnership.com>
-In-Reply-To: <1578430874.4288.2.camel@HansenPartnership.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 7 Jan 2020 23:06:05 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2GbfvgWep1JGNUX7c8jrtQs40PgUfq5C3d_zYuBK5nmw@mail.gmail.com>
-Message-ID: <CAK8P3a2GbfvgWep1JGNUX7c8jrtQs40PgUfq5C3d_zYuBK5nmw@mail.gmail.com>
-Subject: Re: [PATCH] ima: make ASYMMETRIC_PUBLIC_KEY_SUBTYPE 'bool'
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        id S1727036AbgAGW0i (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Jan 2020 17:26:38 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:52976 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726558AbgAGW0i (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jan 2020 17:26:38 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 55B598EE105;
+        Tue,  7 Jan 2020 14:26:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1578435996;
+        bh=IMwRDmGBJbMcQP14oVqjfwTGrqu/1b1ETWng9igb/ss=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=kMnTf5TwrXPjxbtdCFNyapoa6YitHx5vhUmyTv+X5IdsXs1qYkeNq+veco4thzI0l
+         dXCb0wPTHK5OrH3b7/h7QNcHIJ8GBebC/MC/fpSchkiM2XuHCuMvzsYfYqPHuD9Zta
+         EN8xX7+XOTxw32WEdg6OW+wLd3DFfjCJLpyBvyZ0=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id NWGgHzDrZmGf; Tue,  7 Jan 2020 14:26:36 -0800 (PST)
+Received: from jarvis.lan (unknown [50.35.76.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 75A708EE0F8;
+        Tue,  7 Jan 2020 14:26:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1578435995;
+        bh=IMwRDmGBJbMcQP14oVqjfwTGrqu/1b1ETWng9igb/ss=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=wiUc3vsS64nLiJ0cRdS79Lsx8HWNfZa9Xl3qOpo9AgeDwziuX4gIBIXi1ZZK9RhPz
+         fob/JESBLUVg2gquFJgoqMHmZejSNqhHtKvHXfvNdxMTFv3XJ1Vh+JZRn4+qmS3+mh
+         0STbBfMPaZjP0f4lOMsC0zE0QJ7kBYi3st9PXLa4=
+Message-ID: <1578435994.4288.9.camel@HansenPartnership.com>
+Subject: Re: [PATCH 1/4] IMA: Define an IMA hook to measure keys
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        zohar@linux.ibm.com, linux-integrity@vger.kernel.org
+Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
+        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
+        sashal@kernel.org, jamorris@linux.microsoft.com,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Date:   Tue, 07 Jan 2020 14:26:34 -0800
+In-Reply-To: <20200107194350.3782-2-nramas@linux.microsoft.com>
+References: <20200107194350.3782-1-nramas@linux.microsoft.com>
+         <20200107194350.3782-2-nramas@linux.microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:UNCZ4qhZHs2qnSxwdJ7LsP8e+/8oh0SxkGihIdlHUQ6cnEU0nWQ
- SyKEWjbvZgrzpN/ioEEhPBuxLgOJYfm9CUzbt+KRkgFUMEUMUrad6Tw1ZYApxcWIFKoVcVT
- hGrpnLs9xXVsvbf542th7RIzwOBE/3Q7oGaSaAOgUCLS0m/J6V2uiuqMKGaEFThLnq16vLX
- uYcE4Po9nPm2Ow5JoK0pw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kVSAH9wvaGI=:l20eCZV1dCjDqukeUw4Gzf
- HbALFQ+QUIxaAJT+c0fcRA7BLMFyZ1aWywgnu3XkV56rUxEml7oiWA4D1ogEbfVNLmV90YSUl
- W5iyI+h4E1TWyI4QlHxXl4vh10xEbXTFJaOw8Rxog6QGZHsBfewji1/px19BNqGh+yuUkX6CC
- WA7DQfWn7NVZh7undBoYTURzu5PBcK4Be5wmq4e1DvJf9bEpZ+cEGxPrFOIRWxMblKfQDbran
- Rzjybl9QmOokfiin3/Vi1gRPOulOU+BTt+H+GFizvB2df7WfmTyEP7/Gmt7BlFDED1Jh+O2XF
- ESD+ZUKqb22euLMYHoBIc2tcGRNwPdVjqMdp8jlYrzyjQNOdFI/h9o/jPd0XIbTNbYjK/Wmbc
- SxCleVE0xNwUU0uI5zlb475gv+4W3L4x8MS1VwnQkl9SZxw1If+p8+JrS/cpsMDpUBdN5DYP7
- SOwaFIBuQWxEtKKfOyeV1WvCKwMTruAgh4LNA86QcpcGZDOnK8jLOGBXj3YKEttnBZpE/Fnqd
- HtIpxse/e7hn96fWRtZm9bm8A+Q6C7baP9dNReMuXYHSJpMgspOXMoBvN6yDHSjcJgJHDm/B3
- YMXGHprDt+IqvQbOrpVttEkFpjVa3aVtsO+B6zyrfhIXtZo/rl4v2J2TakXMtOmdtVLPEmgPt
- OAEKOBL5YQKtBn8xn2zpxajrvo9o8LKU9hYqg9sv2IGbMD1iWW9t/Umu9v6N8DKx6xqsUWxyZ
- bmQ6c8jdIP0mZrrzXpA94t3J394bo1idNG5E3bPhrQ3QNZ7R8M+0WQWxZfsDeLEpNF5+pn1Hd
- IRv43Ru+8jhRIfyt4E4jECocSjcVNs4ULLQn0UnHnMzPf2qiVLNAriWU2TQcynDF1RQUQ1P1P
- u9/T50iWs5OuNU0pnQyg==
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jan 7, 2020 at 10:01 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> On Tue, 2020-01-07 at 21:30 +0100, Arnd Bergmann wrote:
+On Tue, 2020-01-07 at 11:43 -0800, Lakshmi Ramasubramanian wrote:
+[...]
+> diff --git a/security/integrity/ima/Kconfig
+> b/security/integrity/ima/Kconfig
+> index 838476d780e5..73a3974712d8 100644
+> --- a/security/integrity/ima/Kconfig
+> +++ b/security/integrity/ima/Kconfig
+> @@ -310,3 +310,12 @@ config IMA_APPRAISE_SIGNED_INIT
+>  	default n
+>  	help
+>  	   This option requires user-space init to be signed.
+> +
+> +config IMA_MEASURE_ASYMMETRIC_KEYS
+> +	bool "Enable measuring asymmetric keys on key create or
+> update"
 
-> >  config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-> > -     tristate "Asymmetric public-key crypto algorithm subtype"
-> > +     bool "Asymmetric public-key crypto algorithm subtype"
->
-> I believe the crypto guys do like stuff to be modular.
->
-> However, we've already implemented this solution:
->
-> https://lore.kernel.org/linux-integrity/20200107194350.3782-2-nramas@linux.microsoft.com/
->
-> To solve the problem via an intermediate boolean config variable.
+I don't believe there's a need to expose this to the person configuring
+the kernel, is there?  It's just one more option no-one really wants to
+have to understand.  Without the text following bool and the help, this
+becomes a hidden config option, which is what I think it should be.
 
-Ok, that looks good to me.
+> +	depends on IMA=y
 
-    Arnd
+Not that it matters, but IMA is a bool, so this can be simply depends
+on IMA
+
+> +	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
+
+We only need the =y here becase the variable is a tristate, so this
+becomes n for both the n and m cases.
+
+> +	default y
+> +	help
+> +	   This option enables measuring asymmetric keys when
+> +	   the key is created or updated.
+
+And drop the help entry.  For future information, help text must be tab
+followed by two spaces, not three ... checkpatch doesn't actually catch
+this, unfortunately.
+
+James
+
