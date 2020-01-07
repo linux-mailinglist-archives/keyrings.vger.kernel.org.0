@@ -2,104 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE490131D00
-	for <lists+keyrings@lfdr.de>; Tue,  7 Jan 2020 02:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7D1B132FB5
+	for <lists+keyrings@lfdr.de>; Tue,  7 Jan 2020 20:44:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727295AbgAGBIt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Jan 2020 20:08:49 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:60252 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727250AbgAGBIs (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Jan 2020 20:08:48 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 072E08EE105;
-        Mon,  6 Jan 2020 17:08:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1578359328;
-        bh=MiKKb9bAy7cd3KYj/M73vCh/7WUSkhqCE3VFtr3iQeI=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=HShLqpD8+hq1MqRfTlErNn86OwtrX2osAfWzNxTksrOO+hJFk4MonR7tT0PvelYTq
-         fG+fokyZDUiN5vpuHLBFtSl/ldIJuI0Xyu96qsW/kMQGky+KLKuLty/+W4RtrI0G8c
-         zrboOhLbFoWd++ZJYnsmO0d2d2PZn07bswK4P3sQ=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id NF9yxz_fIrbg; Mon,  6 Jan 2020 17:08:39 -0800 (PST)
-Received: from jarvis.lan (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 05CD88EE0FC;
-        Mon,  6 Jan 2020 17:08:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1578359316;
-        bh=MiKKb9bAy7cd3KYj/M73vCh/7WUSkhqCE3VFtr3iQeI=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=FaVb3PKeE/uI3qy2CFwnkaQSs8SwgVqpIopkKCl4gl/R7RbDQjlOR5AeB8MAeSHtJ
-         3l6U3sMdz4wzaOcMG6Gq/fpY9JUb4k4dO/kCYtcWbfE2Uu7NRHDhb7WT8+AUDsu3+z
-         lyu2puf46uiWqsp8U7n5T0E5jcRhwE+ql01Lkxgs=
-Message-ID: <1578359313.3251.28.camel@HansenPartnership.com>
-Subject: Re: [PATCH v4 3/9] security: keys: trusted fix tpm2 authorizations
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        id S1728672AbgAGTnz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Jan 2020 14:43:55 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:34188 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728384AbgAGTnz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jan 2020 14:43:55 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 523E72007683;
+        Tue,  7 Jan 2020 11:43:54 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 523E72007683
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1578426234;
+        bh=WXotn1iSKnCuEmTsYF5Dp7o6kjEJuPdeZMzgjAtruXM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tQksiQGLBVmnl3G2L1YmWnC0O1yK837EQZwDmMfDuhiQKynyq7CgUiemLfgpblsms
+         mLq/l6byFh6QZ4YG4QTvgPciMO6ejyx9hQBT/9Hi4phAPvzxWIFJ3X8a3uQ9jwZsBx
+         YHVuaC/2AyR524O0oVlCslwFS9ULsKqUToXYsmZQ=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
         linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Date:   Mon, 06 Jan 2020 17:08:33 -0800
-In-Reply-To: <c03eb4a8aa3627f58bc45bbc23a4dcd660dc6e2f.camel@linux.intel.com>
-References: <20191230173802.8731-1-James.Bottomley@HansenPartnership.com>
-         <20191230173802.8731-4-James.Bottomley@HansenPartnership.com>
-         <c03eb4a8aa3627f58bc45bbc23a4dcd660dc6e2f.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Cc:     eric.snowberg@oracle.com, dhowells@redhat.com,
+        mathew.j.martineau@linux.intel.com, matthewgarrett@google.com,
+        sashal@kernel.org, jamorris@linux.microsoft.com,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: [PATCH 0/4] KEYS: Measure keys when they are created or updated
+Date:   Tue,  7 Jan 2020 11:43:46 -0800
+Message-Id: <20200107194350.3782-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2020-01-06 at 23:45 +0200, Jarkko Sakkinen wrote:
-> On Mon, 2019-12-30 at 09:37 -0800, James Bottomley wrote:
-> > In TPM 1.2 an authorization was a 20 byte number.  The spec
-> > actually
-> > recommended you to hash variable length passwords and use the sha1
-> > hash as the authorization.  Because the spec doesn't require this
-> > hashing, the current authorization for trusted keys is a 40 digit
-> > hex number.  For TPM 2.0 the spec allows the passing in of variable
-> > length passwords and passphrases directly, so we should allow that
-> > in trusted keys for ease of use.  Update the 'blobauth' parameter
-> > to take this into account, so we can now use plain text passwords
-> > for the keys.
-> > 
-> > so before
-> > 
-> > keyctl add trusted kmk "new 32
-> > blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
-> > 
-> > after:
-> > 
-> > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
-> > 
-> > Note this is both and enhancement and a potential bug fix.  The TPM
-> > 2.0 spec requires us to strip leading zeros, meaning empyty
-> > authorization is a zero length HMAC whereas we're currently passing
-> > in 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but
-> > the Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this
-> > patch makes the Microsoft TPM emulator work with trusted keys.
-> 
-> Even if for good reasons, you should be explicit when you make an API
-> change that is not backwards compatible.
+commit 88e70da170e8 ("IMA: Define an IMA hook to measure keys")
+in next-integrity added an IMA hook to measure keys when they
+are created or updated in the system. This hook is defined in
+ima_asymmetric_keys.c which was built if
+CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE was defined.
+But this config is a tristate (and not a bool type).
+If CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE was set to "m" in
+the .config, ima_asymmetric_keys.c was built as a kernel module
+when it is not a kernel module. This issue was reported by
+"kbuild test robot <lkp@intel.com>".
 
-This change should be backwards compatible.  I've got a set of TPMs,
-one of which works both before and after and another which doesn't work
-before but does after, so all it does is increase the set of TPMs that
-work with the authorizations i.e. if the TPM worked before, it
-continues to work after.
+This change defines a new config namely
+CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS to enable building
+ima_asymmetric_keys.c. This new config is enabled when both
+CONFIG_IMA and CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE are defined.
 
-I think what happens in the TPMs that work before is that they
-explicily remove trailing zeros and ones that don't work before don't. 
+Lakshmi Ramasubramanian (4):
+  IMA: Define an IMA hook to measure keys
+  KEYS: Call the IMA hook to measure keys
+  IMA: Add support to limit measuring keys
+  IMA: Read keyrings= option from the IMA policy
 
-Actually, the before form (20 hex bytes) still works in the after case
-... I'll make that clear in the commit message.
+ Documentation/ABI/testing/ima_policy         | 10 ++-
+ include/linux/ima.h                          | 14 +++
+ security/integrity/ima/Kconfig               |  9 ++
+ security/integrity/ima/Makefile              |  1 +
+ security/integrity/ima/ima.h                 |  8 +-
+ security/integrity/ima/ima_api.c             |  8 +-
+ security/integrity/ima/ima_appraise.c        |  4 +-
+ security/integrity/ima/ima_asymmetric_keys.c | 58 +++++++++++++
+ security/integrity/ima/ima_main.c            |  9 +-
+ security/integrity/ima/ima_policy.c          | 91 ++++++++++++++++++--
+ security/keys/key.c                          | 10 +++
+ 11 files changed, 204 insertions(+), 18 deletions(-)
+ create mode 100644 security/integrity/ima/ima_asymmetric_keys.c
 
-James
+-- 
+2.17.1
 
