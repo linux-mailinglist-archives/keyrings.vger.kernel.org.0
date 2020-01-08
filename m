@@ -2,115 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A865C13471E
-	for <lists+keyrings@lfdr.de>; Wed,  8 Jan 2020 17:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6459F134792
+	for <lists+keyrings@lfdr.de>; Wed,  8 Jan 2020 17:19:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728856AbgAHQFO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Jan 2020 11:05:14 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:51752 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726922AbgAHQFN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Jan 2020 11:05:13 -0500
-Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 8352C20B4798;
-        Wed,  8 Jan 2020 08:05:12 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8352C20B4798
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1578499512;
-        bh=KrknY3LiZv+UW2WvDhkkxFbk6VfTO+2SgVUx/zg5yx8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ODwxIqg6c19Ihnn1BDvr4kZ84df6p8m8V4Ob7p7QA9/JBsyhwRTt1UM1Q64cN1s6F
-         c5oFKrsms0zcyEk7JH1IUdL492lV4RmN2YmsV16CPkXoLvdw3DdtG42FkrwuxTzKOY
-         ZfaebksJbDKG9nSqtQ9YDaEAzP341D1dhGMsaKjo=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
-        arnd@arndb.de, linux-integrity@vger.kernel.org
-Cc:     dhowells@redhat.com, sashal@kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org
-Subject: [PATCH v1] IMA: fix measuring asymmetric keys Kconfig
-Date:   Wed,  8 Jan 2020 08:05:08 -0800
-Message-Id: <20200108160508.5938-1-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727500AbgAHQT4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Jan 2020 11:19:56 -0500
+Received: from mga01.intel.com ([192.55.52.88]:34662 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727275AbgAHQT4 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 8 Jan 2020 11:19:56 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Jan 2020 08:19:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,410,1571727600"; 
+   d="scan'208";a="254272547"
+Received: from dkurtaev-mobl.ccr.corp.intel.com ([10.252.22.167])
+  by fmsmga002.fm.intel.com with ESMTP; 08 Jan 2020 08:19:53 -0800
+Message-ID: <cf4a3681f3559ae73a97d10625c0535858a3c01e.camel@linux.intel.com>
+Subject: Re: [PATCH v4 3/9] security: keys: trusted fix tpm2 authorizations
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        linux-integrity@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Date:   Wed, 08 Jan 2020 18:19:52 +0200
+In-Reply-To: <1578359313.3251.28.camel@HansenPartnership.com>
+References: <20191230173802.8731-1-James.Bottomley@HansenPartnership.com>
+         <20191230173802.8731-4-James.Bottomley@HansenPartnership.com>
+         <c03eb4a8aa3627f58bc45bbc23a4dcd660dc6e2f.camel@linux.intel.com>
+         <1578359313.3251.28.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is a tristate. If this config
-is set to "=m", ima_asymmetric_keys.c is built as a kernel module.
+On Mon, 2020-01-06 at 17:08 -0800, James Bottomley wrote:
+> > Even if for good reasons, you should be explicit when you make an API
+> > change that is not backwards compatible.
+> 
+> This change should be backwards compatible.  I've got a set of TPMs,
+> one of which works both before and after and another which doesn't work
+> before but does after, so all it does is increase the set of TPMs that
+> work with the authorizations i.e. if the TPM worked before, it
+> continues to work after.
+> 
+> I think what happens in the TPMs that work before is that they
+> explicily remove trailing zeros and ones that don't work before don't. 
+> 
+> Actually, the before form (20 hex bytes) still works in the after case
+> ... I'll make that clear in the commit message.
 
-Defined an intermediate boolean config namely
-CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS that is
-defined when CONFIG_IMA and CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-are defined.
+OK, got it, thanks! Yeah, obviously would not hurt to be bit more
+explicit.
 
-Asymmetric key structure is defined only when
-CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is defined. Since the IMA hook
-measures asymmetric keys, the IMA hook is defined in
-ima_asymmetric_keys.c which is built only if
-CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS is defined.
-
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Suggested-by: James.Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Reported-by: kbuild test robot <lkp@intel.com> # ima_asymmetric_keys.c
-is built as a kernel module.
-Fixes: 88e70da170e8 ("IMA: Define an IMA hook to measure keys")
-Fixes: cb1aa3823c92 ("KEYS: Call the IMA hook to measure keys")
----
- include/linux/ima.h             | 4 ++--
- security/integrity/ima/Kconfig  | 6 ++++++
- security/integrity/ima/Makefile | 2 +-
- 3 files changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 3b89136bc218..f4644c54f648 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -101,7 +101,7 @@ static inline void ima_add_kexec_buffer(struct kimage *image)
- {}
- #endif
- 
--#if defined(CONFIG_IMA) && defined(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE)
-+#ifdef CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
- extern void ima_post_key_create_or_update(struct key *keyring,
- 					  struct key *key,
- 					  const void *payload, size_t plen,
-@@ -113,7 +113,7 @@ static inline void ima_post_key_create_or_update(struct key *keyring,
- 						 size_t plen,
- 						 unsigned long flags,
- 						 bool create) {}
--#endif  /* CONFIG_IMA && CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE */
-+#endif  /* CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS */
- 
- #ifdef CONFIG_IMA_APPRAISE
- extern bool is_ima_appraise_enabled(void);
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 838476d780e5..355754a6b6ca 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -310,3 +310,9 @@ config IMA_APPRAISE_SIGNED_INIT
- 	default n
- 	help
- 	   This option requires user-space init to be signed.
-+
-+config IMA_MEASURE_ASYMMETRIC_KEYS
-+	bool
-+	depends on IMA
-+	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
-+	default y
-diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
-index 207a0a9eb72c..3e9d0ad68c7b 100644
---- a/security/integrity/ima/Makefile
-+++ b/security/integrity/ima/Makefile
-@@ -12,4 +12,4 @@ ima-$(CONFIG_IMA_APPRAISE) += ima_appraise.o
- ima-$(CONFIG_IMA_APPRAISE_MODSIG) += ima_modsig.o
- ima-$(CONFIG_HAVE_IMA_KEXEC) += ima_kexec.o
- obj-$(CONFIG_IMA_BLACKLIST_KEYRING) += ima_mok.o
--obj-$(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE) += ima_asymmetric_keys.o
-+obj-$(CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS) += ima_asymmetric_keys.o
--- 
-2.17.1
+/Jarkko
 
