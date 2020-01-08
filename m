@@ -2,106 +2,115 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84909133A3D
-	for <lists+keyrings@lfdr.de>; Wed,  8 Jan 2020 05:25:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A865C13471E
+	for <lists+keyrings@lfdr.de>; Wed,  8 Jan 2020 17:05:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727174AbgAHEZm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Jan 2020 23:25:42 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:27142 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727159AbgAHEZm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jan 2020 23:25:42 -0500
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0084MGZt018469
-        for <keyrings@vger.kernel.org>; Tue, 7 Jan 2020 23:25:40 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2xb92678r5-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Tue, 07 Jan 2020 23:25:40 -0500
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Wed, 8 Jan 2020 04:25:38 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 8 Jan 2020 04:25:34 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0084PX7830671218
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 8 Jan 2020 04:25:33 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 999AA11C04C;
-        Wed,  8 Jan 2020 04:25:33 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 81AB011C054;
-        Wed,  8 Jan 2020 04:25:32 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.234.104])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  8 Jan 2020 04:25:32 +0000 (GMT)
-Subject: Re: [PATCH] IMA: Defined CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS to
- enable IMA hook to measure keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
-        linux-integrity@vger.kernel.org
+        id S1728856AbgAHQFO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Jan 2020 11:05:14 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:51752 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726922AbgAHQFN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Jan 2020 11:05:13 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 8352C20B4798;
+        Wed,  8 Jan 2020 08:05:12 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8352C20B4798
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1578499512;
+        bh=KrknY3LiZv+UW2WvDhkkxFbk6VfTO+2SgVUx/zg5yx8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ODwxIqg6c19Ihnn1BDvr4kZ84df6p8m8V4Ob7p7QA9/JBsyhwRTt1UM1Q64cN1s6F
+         c5oFKrsms0zcyEk7JH1IUdL492lV4RmN2YmsV16CPkXoLvdw3DdtG42FkrwuxTzKOY
+         ZfaebksJbDKG9nSqtQ9YDaEAzP341D1dhGMsaKjo=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
+        arnd@arndb.de, linux-integrity@vger.kernel.org
 Cc:     dhowells@redhat.com, sashal@kernel.org,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org
-Date:   Tue, 07 Jan 2020 23:25:32 -0500
-In-Reply-To: <20200108003647.2472-1-nramas@linux.microsoft.com>
-References: <20200108003647.2472-1-nramas@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010804-0020-0000-0000-0000039EB268
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010804-0021-0000-0000-000021F61077
-Message-Id: <1578457532.5222.127.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-07_08:2020-01-07,2020-01-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- malwarescore=0 bulkscore=0 adultscore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001080037
+Subject: [PATCH v1] IMA: fix measuring asymmetric keys Kconfig
+Date:   Wed,  8 Jan 2020 08:05:08 -0800
+Message-Id: <20200108160508.5938-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The subject line is too long.  How about "IMA: fix measuring
-asymmetric keys Kconfig"?
+CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is a tristate. If this config
+is set to "=m", ima_asymmetric_keys.c is built as a kernel module.
 
-On Tue, 2020-01-07 at 16:36 -0800, Lakshmi Ramasubramanian wrote:
-> CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is a tristate and not a bool.
-> If this config is set to "=m", ima_asymmetric_keys.c is built
-> as a kernel module when it is actually not.
+Defined an intermediate boolean config namely
+CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS that is
+defined when CONFIG_IMA and CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+are defined.
 
-Simplify the wording by removing the unnecessary "not a bool" and
-"when it is actually not".
+Asymmetric key structure is defined only when
+CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is defined. Since the IMA hook
+measures asymmetric keys, the IMA hook is defined in
+ima_asymmetric_keys.c which is built only if
+CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS is defined.
 
-> 
-> Defined a new config CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS that is
-> defined when CONFIG_IMA and CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-> are defined.
+Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Suggested-by: James.Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Reported-by: kbuild test robot <lkp@intel.com> # ima_asymmetric_keys.c
+is built as a kernel module.
+Fixes: 88e70da170e8 ("IMA: Define an IMA hook to measure keys")
+Fixes: cb1aa3823c92 ("KEYS: Call the IMA hook to measure keys")
+---
+ include/linux/ima.h             | 4 ++--
+ security/integrity/ima/Kconfig  | 6 ++++++
+ security/integrity/ima/Makefile | 2 +-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-How about using James wording - "intermediate boolean config
-variable"?
-
-> Asymmetric key structure is defined only when
-> CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is defined. Since the IMA hook
-> measures asymmetric keys, the IMA hook is defined in
-> ima_asymmetric_keys.c which is built only if
-> CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS is defined.
-> 
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-
-Please include a "Suggested-by:" tag for James.
-
-thanks,
-
-Mimi
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 3b89136bc218..f4644c54f648 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -101,7 +101,7 @@ static inline void ima_add_kexec_buffer(struct kimage *image)
+ {}
+ #endif
+ 
+-#if defined(CONFIG_IMA) && defined(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE)
++#ifdef CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
+ extern void ima_post_key_create_or_update(struct key *keyring,
+ 					  struct key *key,
+ 					  const void *payload, size_t plen,
+@@ -113,7 +113,7 @@ static inline void ima_post_key_create_or_update(struct key *keyring,
+ 						 size_t plen,
+ 						 unsigned long flags,
+ 						 bool create) {}
+-#endif  /* CONFIG_IMA && CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE */
++#endif  /* CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS */
+ 
+ #ifdef CONFIG_IMA_APPRAISE
+ extern bool is_ima_appraise_enabled(void);
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 838476d780e5..355754a6b6ca 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -310,3 +310,9 @@ config IMA_APPRAISE_SIGNED_INIT
+ 	default n
+ 	help
+ 	   This option requires user-space init to be signed.
++
++config IMA_MEASURE_ASYMMETRIC_KEYS
++	bool
++	depends on IMA
++	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
++	default y
+diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
+index 207a0a9eb72c..3e9d0ad68c7b 100644
+--- a/security/integrity/ima/Makefile
++++ b/security/integrity/ima/Makefile
+@@ -12,4 +12,4 @@ ima-$(CONFIG_IMA_APPRAISE) += ima_appraise.o
+ ima-$(CONFIG_IMA_APPRAISE_MODSIG) += ima_modsig.o
+ ima-$(CONFIG_HAVE_IMA_KEXEC) += ima_kexec.o
+ obj-$(CONFIG_IMA_BLACKLIST_KEYRING) += ima_mok.o
+-obj-$(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE) += ima_asymmetric_keys.o
++obj-$(CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS) += ima_asymmetric_keys.o
+-- 
+2.17.1
 
