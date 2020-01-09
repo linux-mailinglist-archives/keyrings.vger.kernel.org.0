@@ -2,88 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14740135269
-	for <lists+keyrings@lfdr.de>; Thu,  9 Jan 2020 06:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9B2135E71
+	for <lists+keyrings@lfdr.de>; Thu,  9 Jan 2020 17:38:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725308AbgAIFHc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Jan 2020 00:07:32 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:30290 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726114AbgAIFHc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Jan 2020 00:07:32 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0094qZgg009225
-        for <keyrings@vger.kernel.org>; Thu, 9 Jan 2020 00:07:31 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2xdvguhxhh-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Thu, 09 Jan 2020 00:07:31 -0500
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Thu, 9 Jan 2020 05:07:28 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 9 Jan 2020 05:07:25 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00957OP652887766
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 Jan 2020 05:07:24 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1387FAE053;
-        Thu,  9 Jan 2020 05:07:24 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EA146AE056;
-        Thu,  9 Jan 2020 05:07:22 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.236.182])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  9 Jan 2020 05:07:22 +0000 (GMT)
-Subject: Re: [PATCH v8 0/3] IMA: Deferred measurement of keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        James.Bottomley@HansenPartnership.com,
+        id S2387729AbgAIQiQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Jan 2020 11:38:16 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:39062 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728159AbgAIQiP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Jan 2020 11:38:15 -0500
+Received: from [10.137.112.108] (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id F2CAF2007684;
+        Thu,  9 Jan 2020 08:38:14 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F2CAF2007684
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1578587895;
+        bh=tLUd4VK7GfUjhPceZ2DEioxJk5pIIIxabfHz0xCY7KA=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=DFTve4DqG+WRFl5jxDn11pDsh+qB2yu/lMwI7WyqHieA5FllIu/xbZkU0MaAkifBc
+         NyYW0i2hCHFPcRkMmbopmX8hrd/1BGS0PH44ZSZoF/hTwFh7ybOr3SNGZPDZiJq9u/
+         IIwnrGFXQ0vyBXacypwUIPAb26ZY2iUdu+ccNldc=
+Subject: Re: [PATCH v1] IMA: fix measuring asymmetric keys Kconfig
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
         linux-integrity@vger.kernel.org
-Cc:     dhowells@redhat.com, arnd@arndb.de, matthewgarrett@google.com,
-        sashal@kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Date:   Thu, 09 Jan 2020 00:07:22 -0500
-In-Reply-To: <20200109024359.3410-1-nramas@linux.microsoft.com>
-References: <20200109024359.3410-1-nramas@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
+Cc:     dhowells@redhat.com, sashal@kernel.org,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+References: <20200108160508.5938-1-nramas@linux.microsoft.com>
+ <1578545543.5147.32.camel@linux.ibm.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <5411bc3d-74eb-6868-5768-bba3726a661a@linux.microsoft.com>
+Date:   Thu, 9 Jan 2020 08:38:11 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <1578545543.5147.32.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010905-0016-0000-0000-000002DBC5B5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010905-0017-0000-0000-0000333E435A
-Message-Id: <1578546442.5147.37.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-08_07:2020-01-08,2020-01-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001090044
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2020-01-08 at 18:43 -0800, Lakshmi Ramasubramanian wrote:
+On 1/8/20 8:52 PM, Mimi Zohar wrote:
 
-> Changelog:
 > 
->   v8
+> For the time being, I've pushed out this patch with the existing patch
+> description to next-integrity-testing, but the patch description
+> should be rewritten clearer.  For example,
 > 
->   => Rebased the changes to linux-next
->   => Need to apply the following patch first
->   https://lore.kernel.org/linux-integrity/20200108160508.5938-1-nramas@linux.microsoft.com/
+> As a result of the asymmetric public keys subtype being defined as a
+> tristate, with the existing IMA Makefile, ima_asymmetric_keys.c could
+> be built as a kernel module.  To prevent this from happening, this
+> patch defines and uses an intermediate Kconfig boolean option named
+> IMA_MEASURE_ASYMMETRIC_KEYS.
+> 
+> Please let me know if you're ok with this wording.
+> 
+> thanks,
+> 
+> Mimi
+> 
 
-Unless you made some other changes, the previous version of this patch
-set is already in next-integrity-testing.  There's no reason to re-
-post these patches again, and definitely not against linux-next.
+That sounds perfect. Thanks for your help Mimi.
 
-Mimi
-
+  -lakshmi
