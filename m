@@ -2,86 +2,87 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4A613859C
-	for <lists+keyrings@lfdr.de>; Sun, 12 Jan 2020 09:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45EAE13AE5C
+	for <lists+keyrings@lfdr.de>; Tue, 14 Jan 2020 17:06:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732495AbgALInL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 12 Jan 2020 03:43:11 -0500
-Received: from mail3-bck.iservicesmail.com ([217.130.24.85]:45301 "EHLO
-        mail3-bck.iservicesmail.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732485AbgALInK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 12 Jan 2020 03:43:10 -0500
-IronPort-SDR: l7+gObfj6HBMYqAgTvRCCXQwgu+evNpzdK1YYir6Dp1j+5XC2/VsMdzn9XWCDLqlVkkRcbHMHy
- mohT22vmmCag==
-IronPort-PHdr: =?us-ascii?q?9a23=3AmrxGmBamNPSV5AaEvs8bwaL/LSx+4OfEezUN45?=
- =?us-ascii?q?9isYplN5qZr8S+bnLW6fgltlLVR4KTs6sC17ON9fq+Bidav96oizMrSNR0TR?=
- =?us-ascii?q?gLiMEbzUQLIfWuLgnFFsPsdDEwB89YVVVorDmROElRH9viNRWJ+iXhpTEdFQ?=
- =?us-ascii?q?/iOgVrO+/7BpDdj9it1+C15pbffxhEiCCybL9vIhi6txvdu8gUjIdtNKo8yw?=
- =?us-ascii?q?bCr2dVdehR2W5mP0+YkQzm5se38p5j8iBQtOwk+sVdT6j0fLk2QKJBAjg+PG?=
- =?us-ascii?q?87+MPktR/YTQuS/XQcSXkZkgBJAwfe8h73WIr6vzbguep83CmaOtD2TawxVD?=
- =?us-ascii?q?+/4apnVAPkhSEaPDI/923Zl9B/g7heoBOhvhBy3YnUYJuNNPp5ZKPSZ88aSn?=
- =?us-ascii?q?RYUslPUSxNG5+xb5cTD+UbIelYr5fyp14Qohu4GQmgHf3gyjlRinHx2q061f?=
- =?us-ascii?q?ouEAHf0AM+GdIFrXDYodvpOKsOVOy4yrTDwzfeYPNMwTrz5ojGcgo/r/+PQL?=
- =?us-ascii?q?x/ftbex0Y0GgPZjFiftZDpMy+J2ugTtWWQ8upuVfioi24iswx/uCagxtsyhY?=
- =?us-ascii?q?nTm4kaylfE9SN2wI0oItC4UFB0YcK6H5tKuSCaMI12Qsw5TmFooyY10aEJtY?=
- =?us-ascii?q?SncygNzZQr3R7fa/+efoWO/xntV/6RLC9miH54er+znQu+/Ea8xuHmSMW530?=
- =?us-ascii?q?xGoyRFn9TKq3sDzQbc6tKdRft45kqh3DGP2B3N5excOkA0kLbbK4Ymwr4tip?=
- =?us-ascii?q?ofqUTDETHymEXxlKKWc18r+ums6+T9fLrmooOQOoBuhgHgNaQhh9awAeo/Mg?=
- =?us-ascii?q?gIQWeX4/qz1Kb78U34RrVFkOE2n7HHvJzHJ8kXvLO1DgFJ3oo59RqyAC2q3d?=
- =?us-ascii?q?oYkHUfKVJKYhOHj4znO1HUJ/D4CO+yg0yynzd32f/GJLPgApLLLnjMi7rhfa?=
- =?us-ascii?q?195FVAxwYp0d9f4JdUBqsBIPLwQkPxrsDXDgclMwyoxObqENZ92Z0eWGKVA6?=
- =?us-ascii?q?+ZNqzSsUST6+IxLOmDepUVtCz+K/c7/f7ui2E2mVsHcamux5sXZyPwIvMzIE?=
- =?us-ascii?q?iIe3vqjcwpD2gHpEw9QfbshVnEViRcNEy/R6Yt2jZuMI+6AJ2LeYerj/TVxC?=
- =?us-ascii?q?qnE4dJYWZJClOMCn3jX4qBUvYILimVJ5kyvCYDUO2ZRpMsz1mRswn1g+5/I/?=
- =?us-ascii?q?bZ4DIfs53L1MN/7KvYkhR09T8iXJfV6H2EU2whxzBAfDQxxq0q+hQlxw=3D?=
- =?us-ascii?q?=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2HtAgDR2xpemCMYgtkUBjMYGgEBAQE?=
- =?us-ascii?q?BAQEBAQMBAQEBEQEBAQICAQEBAYFoBAEBAQELAQEBGggBgSWBTVIgEpNQgU0?=
- =?us-ascii?q?fg0OLY4EAgx4VhgcUDIFbDQEBAQEBNQIBAYRATgEXgQ8kNQgOAgMNAQEFAQE?=
- =?us-ascii?q?BAQEFBAEBAhABAQEBAQYNCwYphUqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUo?=
- =?us-ascii?q?MQAEOAVODBIJLAQEzhUmYKgGNBA0NAoUdgjsECoEJgRojgTYBjBgagUE/gSM?=
- =?us-ascii?q?hgisIAYIBgn8BEgFsgkiCWQSNQhIhgQeIKZgXgkEEdolMjAKCNwEPiAGEMQM?=
- =?us-ascii?q?QgkUPgQmIA4ROgX2jN1d0AYEecTMagiYagSBPGA2IG44tQIEWEAJPjFuCMgE?=
- =?us-ascii?q?B?=
-X-IPAS-Result: =?us-ascii?q?A2HtAgDR2xpemCMYgtkUBjMYGgEBAQEBAQEBAQMBAQEBE?=
- =?us-ascii?q?QEBAQICAQEBAYFoBAEBAQELAQEBGggBgSWBTVIgEpNQgU0fg0OLY4EAgx4Vh?=
- =?us-ascii?q?gcUDIFbDQEBAQEBNQIBAYRATgEXgQ8kNQgOAgMNAQEFAQEBAQEFBAEBAhABA?=
- =?us-ascii?q?QEBAQYNCwYphUqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUoMQAEOAVODBIJLA?=
- =?us-ascii?q?QEzhUmYKgGNBA0NAoUdgjsECoEJgRojgTYBjBgagUE/gSMhgisIAYIBgn8BE?=
- =?us-ascii?q?gFsgkiCWQSNQhIhgQeIKZgXgkEEdolMjAKCNwEPiAGEMQMQgkUPgQmIA4ROg?=
- =?us-ascii?q?X2jN1d0AYEecTMagiYagSBPGA2IG44tQIEWEAJPjFuCMgEB?=
-X-IronPort-AV: E=Sophos;i="5.69,424,1571695200"; 
-   d="scan'208";a="323280962"
-Received: from mailrel04.vodafone.es ([217.130.24.35])
-  by mail02.vodafone.es with ESMTP; 12 Jan 2020 09:42:52 +0100
-Received: (qmail 3712 invoked from network); 12 Jan 2020 04:35:46 -0000
-Received: from unknown (HELO 192.168.1.3) (quesosbelda@[217.217.179.17])
-          (envelope-sender <peterwong@hsbc.com.hk>)
-          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
-          for <keyrings@vger.kernel.org>; 12 Jan 2020 04:35:46 -0000
-Date:   Sun, 12 Jan 2020 05:35:45 +0100 (CET)
-From:   Peter Wong <peterwong@hsbc.com.hk>
-Reply-To: Peter Wong <peterwonghkhsbc@gmail.com>
-To:     keyrings@vger.kernel.org
-Message-ID: <26741608.382569.1578803746327.JavaMail.cash@217.130.24.55>
-Subject: Investment opportunity
+        id S1726365AbgANQGY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 14 Jan 2020 11:06:24 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:36646 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728899AbgANQGW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 14 Jan 2020 11:06:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1579017981;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=zFvHM3AeFQ6gPIf7yqo2C1O21SKvnYRszvRgL2Vd76U=;
+        b=TzvW822l8VpsVHzFCieIoIwFnjZa6/QOTrKun6SV3C4XkrMdlLze3ne3+BgM1CIuL+r+g1
+        X7pELBgvVGUD1FVaBwr+d0ymw3ryG3Vc/f5FSshj4Tc1la6lr4qWajiVY7J5eWMTSGP0vF
+        fpeFYHc/sP+HgDtGoCj5Kvr10e1qYw8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-19-IilqvlY_MQGKWipUHzyBQA-1; Tue, 14 Jan 2020 11:06:17 -0500
+X-MC-Unique: IilqvlY_MQGKWipUHzyBQA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 94755593A1;
+        Tue, 14 Jan 2020 16:06:16 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-52.rdu2.redhat.com [10.10.120.52])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9D51460BE0;
+        Tue, 14 Jan 2020 16:06:15 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+ Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+ Kingdom.
+ Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH] keys: Fix request_key() cache
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+Cc:     keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 14 Jan 2020 16:06:14 +0000
+Message-ID: <157901797479.32540.1716642299317411940.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/unknown-version
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Greetings,
-Please read the attached investment proposal and reply for more details.
-Are you interested in loan?
-Sincerely: Peter Wong
+When the key cached by request_key() and co. is cleaned up on exit(), the
+code looks in the wrong task_struct, and so clears the wrong cache.  This
+leads to anomalies in key refcounting when doing, say, a kernel build on an
+afs volume, that then trigger kasan to report a use-after-free when the key
+is viewed in /proc/keys.
 
+Fix this by making exit_creds() look in the passed-in task_struct rather
+than in current (the task_struct cleanup code is deferred by RCU and
+potentially run in another task).
 
+Fixes: 7743c48e54ee ("keys: Cache result of request_key*() temporarily in task_struct")
+Signed-off-by: David Howells <dhowells@redhat.com>
+---
 
+ kernel/cred.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-----------------------------------------------------
-This email was sent by the shareware version of Postman Professional.
+diff --git a/kernel/cred.c b/kernel/cred.c
+index c0a4c12d38b2..56395be1c2a8 100644
+--- a/kernel/cred.c
++++ b/kernel/cred.c
+@@ -175,8 +175,8 @@ void exit_creds(struct task_struct *tsk)
+ 	put_cred(cred);
+ 
+ #ifdef CONFIG_KEYS_REQUEST_CACHE
+-	key_put(current->cached_requested_key);
+-	current->cached_requested_key = NULL;
++	key_put(tsk->cached_requested_key);
++	tsk->cached_requested_key = NULL;
+ #endif
+ }
+ 
 
