@@ -2,208 +2,89 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6404513C335
-	for <lists+keyrings@lfdr.de>; Wed, 15 Jan 2020 14:32:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A12F13CDCC
+	for <lists+keyrings@lfdr.de>; Wed, 15 Jan 2020 21:10:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729107AbgAONcv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Jan 2020 08:32:51 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:32520 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729134AbgAONcu (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jan 2020 08:32:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579095169;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=utVDqKWa9w0MxbNr+//nh4VRwHhuaYt/H7MzHznHw2c=;
-        b=HuSYNWEwFntXJUigqVy5RbjDP/E9XoQ8fIBTTcgAtjB3+PRvM1cD46EgMDIFUzHby7vXcB
-        qtkn7lEgoVBHeaJX5dKQeBzv1m1WpUt6CSGtsWpmSIuf2wAULjkzyO3G5pgTtubBTvEQzL
-        Q0DUAi4lYIWpvJz7t4GJYepRd12fYYw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-205-Z5OoyMoLMUy-Z43N4Lej6A-1; Wed, 15 Jan 2020 08:32:45 -0500
-X-MC-Unique: Z5OoyMoLMUy-Z43N4Lej6A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7F4DE801E72;
-        Wed, 15 Jan 2020 13:32:43 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-52.rdu2.redhat.com [10.10.120.52])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C3C2660BF4;
-        Wed, 15 Jan 2020 13:32:40 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-Subject: [RFC PATCH 14/14] smack: Implement the watch_key and
- post_notification hooks [ver #3]
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     dhowells@redhat.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
-        raven@themaw.net, Christian Brauner <christian@brauner.io>,
-        dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 15 Jan 2020 13:32:40 +0000
-Message-ID: <157909516006.20155.16914270465856385214.stgit@warthog.procyon.org.uk>
-In-Reply-To: <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
-References: <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/unknown-version
+        id S1729829AbgAOUKz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Jan 2020 15:10:55 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:41461 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729832AbgAOUKy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jan 2020 15:10:54 -0500
+Received: by mail-lf1-f67.google.com with SMTP id m30so13702481lfp.8
+        for <keyrings@vger.kernel.org>; Wed, 15 Jan 2020 12:10:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=V37Vo/FBhU5kltccCSOcOaOV/u6sTU75u7lgAerRHWk=;
+        b=OrYEwmU6lkXsGZWCHNNhtVtpsE6fs3wEj0m6dC3WrtWTeidQt6E9H+zSvKowaPh1ec
+         ugRczy3F4djq+5tAM9KSePUrrGy8RTZj+3Nsfw0drc5nlDq0wGY+b9DTqALVC2112QUl
+         PU4s1hiA953qkOxsAyvqyWsjNb5gpuGJJ8PeA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=V37Vo/FBhU5kltccCSOcOaOV/u6sTU75u7lgAerRHWk=;
+        b=VwB/UwY91KRpiQhvvvYTY4Hyw/8+D3t7EzBmLkOj8uC2wGpOIZjdSAijeRUkVEoD9w
+         BAPVUZRpNkRE2ydMCFA/luhl5Fh1kqZOQKkxMIVHq/k1kK+E0W1V0+ZiD02K/J+YYarc
+         iirT2alLY+Z3+LzxJSsXpn+lgoeM+42M6I01piuWtbAykOiChwgFoTH2M32S4sTxrtgi
+         dBdKcwcu8o+7qioF6QyjL3SXJFgx21Y7GhIWYkFMRJMtJ58oNTkEIkhigy2iYseL0eZG
+         DEwWQ8kRNHSq27CmzQAdSqbKulemtGgwd9GmWBeCSk2NKjYeiAHMehipS+oXd3onY+Nt
+         iiQQ==
+X-Gm-Message-State: APjAAAWTK8DEs6mBFNz+M5AQJVjE5GLzLZK5XEOcR/Yqg85cBG2jSB+b
+        Ni+LA+kJy4QpiKgDxkqoP8H3heg0fBQ=
+X-Google-Smtp-Source: APXvYqxd0g2EtCHv+dcxltEQa4zbpL3aT2LJh11u6RF9IHkVQMPjzwEi9ScpCpph1/UCQxWneFtIgw==
+X-Received: by 2002:a05:6512:15d:: with SMTP id m29mr354731lfo.51.1579119051026;
+        Wed, 15 Jan 2020 12:10:51 -0800 (PST)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
+        by smtp.gmail.com with ESMTPSA id g27sm9369017lfh.57.2020.01.15.12.10.48
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jan 2020 12:10:49 -0800 (PST)
+Received: by mail-lj1-f169.google.com with SMTP id l2so19929821lja.6
+        for <keyrings@vger.kernel.org>; Wed, 15 Jan 2020 12:10:48 -0800 (PST)
+X-Received: by 2002:a2e:990e:: with SMTP id v14mr74215lji.23.1579119048131;
+ Wed, 15 Jan 2020 12:10:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+References: <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
+In-Reply-To: <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 15 Jan 2020 12:10:32 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjrrOgznCy3yUmcmQY1z_7vXVr6GbvKiy8cLvWbxpmzcw@mail.gmail.com>
+Message-ID: <CAHk-=wjrrOgznCy3yUmcmQY1z_7vXVr6GbvKiy8cLvWbxpmzcw@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/14] pipe: Keyrings, Block and USB notifications
+ [ver #3]
+To:     David Howells <dhowells@redhat.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Ian Kent <raven@themaw.net>,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Implement the watch_key security hook in Smack to make sure that a key
-grants the caller Read permission in order to set a watch on a key.
+So I no longer hate the implementation, but I do want to see the
+actual user space users come out of the woodwork and try this out for
+their use cases.
 
-Also implement the post_notification security hook to make sure that the
-notification source is granted Write permission by the watch queue.
+I'd hate to see a new event queue interface that people then can't
+really use due to it not fulfilling their needs, or can't use for some
+other reason.
 
-For the moment, the watch_devices security hook is left unimplemented as
-it's not obvious what the object should be since the queue is global and
-didn't previously exist.
+We've had a fair number of kernel interfaces that ended up not being
+used all that much, but had one or two minor users and ended up being
+nasty long-term maintenance issues.. I don't want this to become yet
+another such one.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
----
-
- include/linux/lsm_audit.h  |    1 +
- security/smack/smack_lsm.c |   82 +++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 82 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/lsm_audit.h b/include/linux/lsm_audit.h
-index 915330abf6e5..734d67889826 100644
---- a/include/linux/lsm_audit.h
-+++ b/include/linux/lsm_audit.h
-@@ -74,6 +74,7 @@ struct common_audit_data {
- #define LSM_AUDIT_DATA_FILE	12
- #define LSM_AUDIT_DATA_IBPKEY	13
- #define LSM_AUDIT_DATA_IBENDPORT 14
-+#define LSM_AUDIT_DATA_NOTIFICATION 15
- 	union 	{
- 		struct path path;
- 		struct dentry *dentry;
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index ecea41ce919b..71b6f37d49c1 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4273,7 +4273,7 @@ static int smack_key_permission(key_ref_t key_ref,
- 	if (tkp == NULL)
- 		return -EACCES;
- 
--	if (smack_privileged_cred(CAP_MAC_OVERRIDE, cred))
-+	if (smack_privileged(CAP_MAC_OVERRIDE))
- 		return 0;
- 
- #ifdef CONFIG_AUDIT
-@@ -4319,8 +4319,81 @@ static int smack_key_getsecurity(struct key *key, char **_buffer)
- 	return length;
- }
- 
-+
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+/**
-+ * smack_watch_key - Smack access to watch a key for notifications.
-+ * @key: The key to be watched
-+ *
-+ * Return 0 if the @watch->cred has permission to read from the key object and
-+ * an error otherwise.
-+ */
-+static int smack_watch_key(struct key *key)
-+{
-+	struct smk_audit_info ad;
-+	struct smack_known *tkp = smk_of_current();
-+	int rc;
-+
-+	if (key == NULL)
-+		return -EINVAL;
-+	/*
-+	 * If the key hasn't been initialized give it access so that
-+	 * it may do so.
-+	 */
-+	if (key->security == NULL)
-+		return 0;
-+	/*
-+	 * This should not occur
-+	 */
-+	if (tkp == NULL)
-+		return -EACCES;
-+
-+	if (smack_privileged_cred(CAP_MAC_OVERRIDE, current_cred()))
-+		return 0;
-+
-+#ifdef CONFIG_AUDIT
-+	smk_ad_init(&ad, __func__, LSM_AUDIT_DATA_KEY);
-+	ad.a.u.key_struct.key = key->serial;
-+	ad.a.u.key_struct.key_desc = key->description;
-+#endif
-+	rc = smk_access(tkp, key->security, MAY_READ, &ad);
-+	rc = smk_bu_note("key watch", tkp, key->security, MAY_READ, rc);
-+	return rc;
-+}
-+#endif /* CONFIG_KEY_NOTIFICATIONS */
- #endif /* CONFIG_KEYS */
- 
-+#ifdef CONFIG_WATCH_QUEUE
-+/**
-+ * smack_post_notification - Smack access to post a notification to a queue
-+ * @w_cred: The credentials of the watcher.
-+ * @cred: The credentials of the event source (may be NULL).
-+ * @n: The notification message to be posted.
-+ */
-+static int smack_post_notification(const struct cred *w_cred,
-+				   const struct cred *cred,
-+				   struct watch_notification *n)
-+{
-+	struct smk_audit_info ad;
-+	struct smack_known *subj, *obj;
-+	int rc;
-+
-+	/* Always let maintenance notifications through. */
-+	if (n->type == WATCH_TYPE_META)
-+		return 0;
-+
-+	if (!cred)
-+		return 0;
-+	subj = smk_of_task(smack_cred(cred));
-+	obj = smk_of_task(smack_cred(w_cred));
-+
-+	smk_ad_init(&ad, __func__, LSM_AUDIT_DATA_NOTIFICATION);
-+	rc = smk_access(subj, obj, MAY_WRITE, &ad);
-+	rc = smk_bu_note("notification", subj, obj, MAY_WRITE, rc);
-+	return rc;
-+}
-+#endif /* CONFIG_WATCH_QUEUE */
-+
- /*
-  * Smack Audit hooks
-  *
-@@ -4709,8 +4782,15 @@ static struct security_hook_list smack_hooks[] __lsm_ro_after_init = {
- 	LSM_HOOK_INIT(key_free, smack_key_free),
- 	LSM_HOOK_INIT(key_permission, smack_key_permission),
- 	LSM_HOOK_INIT(key_getsecurity, smack_key_getsecurity),
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+	LSM_HOOK_INIT(watch_key, smack_watch_key),
-+#endif
- #endif /* CONFIG_KEYS */
- 
-+#ifdef CONFIG_WATCH_QUEUE
-+	LSM_HOOK_INIT(post_notification, smack_post_notification),
-+#endif
-+
-  /* Audit hooks */
- #ifdef CONFIG_AUDIT
- 	LSM_HOOK_INIT(audit_rule_init, smack_audit_rule_init),
-
+                 Linus
