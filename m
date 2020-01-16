@@ -2,83 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94E4D13CE9C
-	for <lists+keyrings@lfdr.de>; Wed, 15 Jan 2020 22:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E502213D28A
+	for <lists+keyrings@lfdr.de>; Thu, 16 Jan 2020 04:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729760AbgAOVHt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Jan 2020 16:07:49 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:39383 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729436AbgAOVHp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jan 2020 16:07:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579122464;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=LdDxJ4TaImd6q6K/Midoj6ftwyCpFTFDZIo2bBl0h+Y=;
-        b=geGugIIvxmNu6yxzJmIxe7A2O4ZbQlU8CmZWo6NZXo6n6sDgAWva3N2yHz8Al8x9lTTToS
-        hFjOoe4SEhAEA7PJO5VAKDr36WfXX7VN5VMD/pBfSyLhYU35tB3ip5sVsTmLrxTLeeb4o/
-        DHhT7cR9XIJXaLUs8XJSw2l/6Oq47dg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-248-Nm7f_jTgN36eBJiQzWf3_A-1; Wed, 15 Jan 2020 16:07:41 -0500
-X-MC-Unique: Nm7f_jTgN36eBJiQzWf3_A-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C4A13801E6C;
-        Wed, 15 Jan 2020 21:07:38 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-52.rdu2.redhat.com [10.10.120.52])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 97A721000329;
-        Wed, 15 Jan 2020 21:07:35 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAHk-=wjrrOgznCy3yUmcmQY1z_7vXVr6GbvKiy8cLvWbxpmzcw@mail.gmail.com>
-References: <CAHk-=wjrrOgznCy3yUmcmQY1z_7vXVr6GbvKiy8cLvWbxpmzcw@mail.gmail.com> <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     dhowells@redhat.com, Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Ian Kent <raven@themaw.net>,
-        Christian Brauner <christian@brauner.io>,
-        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-block <linux-block@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 00/14] pipe: Keyrings, Block and USB notifications [ver #3]
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <24898.1579122454.1@warthog.procyon.org.uk>
-Date:   Wed, 15 Jan 2020 21:07:34 +0000
-Message-ID: <24899.1579122454@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+        id S1728903AbgAPDNr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Jan 2020 22:13:47 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:39480 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbgAPDNr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jan 2020 22:13:47 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 9AB842008710;
+        Wed, 15 Jan 2020 19:13:46 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9AB842008710
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1579144426;
+        bh=V3Ds4RpgBxSwsUsJpJvIRuEhKzlSSaeueHPFqpvVuyQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qD2RbvB8PrVXz8ZIup03tpVcqZ62lIeoP3YA0CMdl0d9DH2DnPWS0bBCUb2UJf/og
+         Rjg68tIQ5D7iriC25H5esuK0XaJqqpnexBjF9STs/C23xVPy2NrWGui6KxvftZNT5O
+         HnWCdb6vRAfxxivGnlGemmfBxQ/sD3YCyzq3habU=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, dvyukov@google.com,
+        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
+        linux-integrity@vger.kernel.org
+Cc:     dhowells@redhat.com, sashal@kernel.org,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+Subject: [PATCH] IMA: inconsistent lock state in ima_process_queued_keys
+Date:   Wed, 15 Jan 2020 19:13:42 -0800
+Message-Id: <20200116031342.3418-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+ima_queued_keys() is called from a non-interrupt context, but
+ima_process_queued_keys() may be called from both an interrupt
+context (ima_timer_handler) and non-interrupt context
+(ima_update_policy). Since the spinlock named ima_keys_lock is used
+in both ima_queued_keys() and ima_process_queued_keys(),
+irq version of the spinlock macros, spin_lock_irqsave() and
+spin_unlock_irqrestore(), should be used[1].
 
-> So I no longer hate the implementation, but I do want to see the
-> actual user space users come out of the woodwork and try this out for
-> their use cases.
+This patch fixes the "inconsistent lock state" issue caused by
+using the non-irq version of the spinlock macros in ima_queue_key()
+and ima_process_queued_keys().
 
-I'll see if I can get someone to help fix this:
+[1] Documentation/locking/spinlocks.rst
 
-	https://bugzilla.redhat.com/show_bug.cgi?id=1551648
+Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Reported-by: syzbot <syzbot+a4a503d7f37292ae1664@syzkaller.appspotmail.com>
+Suggested-by: Dmitry Vyukov <dvyukov@google.com>
+Fixes: 8f5d2d06f217 ("IMA: Defined timer to free queued keys")
+Fixes: 9fb38e76b5f1 ("IMA: Define workqueue for early boot key measurements")
+---
+ security/integrity/ima/ima_asymmetric_keys.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-for the KEYRING kerberos cache using notifications.  Note that the primary
-thrust of this BZ is with KCM cache, but it affects KEYRING as well.
-
-Also, I'll poke Greg, since he was interested in using it for USB
-notifications.
-
-David
+diff --git a/security/integrity/ima/ima_asymmetric_keys.c b/security/integrity/ima/ima_asymmetric_keys.c
+index 61e478f9e819..381f51708e7b 100644
+--- a/security/integrity/ima/ima_asymmetric_keys.c
++++ b/security/integrity/ima/ima_asymmetric_keys.c
+@@ -103,17 +103,18 @@ static bool ima_queue_key(struct key *keyring, const void *payload,
+ {
+ 	bool queued = false;
+ 	struct ima_key_entry *entry;
++	unsigned long flags;
+ 
+ 	entry = ima_alloc_key_entry(keyring, payload, payload_len);
+ 	if (!entry)
+ 		return false;
+ 
+-	spin_lock(&ima_keys_lock);
++	spin_lock_irqsave(&ima_keys_lock, flags);
+ 	if (!ima_process_keys) {
+ 		list_add_tail(&entry->list, &ima_keys);
+ 		queued = true;
+ 	}
+-	spin_unlock(&ima_keys_lock);
++	spin_unlock_irqrestore(&ima_keys_lock, flags);
+ 
+ 	if (!queued)
+ 		ima_free_key_entry(entry);
+@@ -131,6 +132,7 @@ void ima_process_queued_keys(void)
+ {
+ 	struct ima_key_entry *entry, *tmp;
+ 	bool process = false;
++	unsigned long flags;
+ 
+ 	if (ima_process_keys)
+ 		return;
+@@ -141,12 +143,12 @@ void ima_process_queued_keys(void)
+ 	 * First one setting the ima_process_keys flag to true will
+ 	 * process the queued keys.
+ 	 */
+-	spin_lock(&ima_keys_lock);
++	spin_lock_irqsave(&ima_keys_lock, flags);
+ 	if (!ima_process_keys) {
+ 		ima_process_keys = true;
+ 		process = true;
+ 	}
+-	spin_unlock(&ima_keys_lock);
++	spin_unlock_irqrestore(&ima_keys_lock, flags);
+ 
+ 	if (!process)
+ 		return;
+-- 
+2.17.1
 
