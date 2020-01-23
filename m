@@ -2,311 +2,171 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2290146B0E
-	for <lists+keyrings@lfdr.de>; Thu, 23 Jan 2020 15:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1995146C5D
+	for <lists+keyrings@lfdr.de>; Thu, 23 Jan 2020 16:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728939AbgAWOUI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 23 Jan 2020 09:20:08 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:52788 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728931AbgAWOUI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 23 Jan 2020 09:20:08 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00NEE6G7022890
-        for <keyrings@vger.kernel.org>; Thu, 23 Jan 2020 09:20:07 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2xqa4h880t-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <keyrings@vger.kernel.org>; Thu, 23 Jan 2020 09:20:07 -0500
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <keyrings@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Thu, 23 Jan 2020 14:20:04 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 23 Jan 2020 14:20:00 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00NEJx1826738816
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 23 Jan 2020 14:19:59 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DC0A24C040;
-        Thu, 23 Jan 2020 14:19:59 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E9B744C059;
-        Thu, 23 Jan 2020 14:19:58 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.224.141])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu, 23 Jan 2020 14:19:58 +0000 (GMT)
-Subject: Re: [PATCH v9 1/3] IMA: Define workqueue for early boot key
- measurements
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        James.Bottomley@HansenPartnership.com,
-        linux-integrity@vger.kernel.org
-Cc:     sashal@kernel.org, dhowells@redhat.com,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Thu, 23 Jan 2020 09:19:58 -0500
-In-Reply-To: <20200123013206.8499-2-nramas@linux.microsoft.com>
-References: <20200123013206.8499-1-nramas@linux.microsoft.com>
-         <20200123013206.8499-2-nramas@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20012314-0008-0000-0000-0000034C0AE6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012314-0009-0000-0000-00004A6C776C
-Message-Id: <1579789198.31710.12.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-23_08:2020-01-23,2020-01-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 bulkscore=0 clxscore=1015 suspectscore=2
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001230122
+        id S1728911AbgAWPMJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 23 Jan 2020 10:12:09 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:30893 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728900AbgAWPMJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 23 Jan 2020 10:12:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1579792329;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TOTDTwuaI0Kk0LUy5rbPDT0f6tV/bdzpgd5A51iAmQw=;
+        b=Liw91XNpW2Keht2Q1ClXCZRASkSQSrbbFXovrJg/eoSftPuVRrPTVROh56KtVBukmsKYQ8
+        ukzjF39WdaasFdnPCRrFDGbUV8enhva+T6FdJ/tB7ocu+QX6jDutvGNybly36j43iyq3vv
+        /8gPWvnKtrXZBCmCyraUHglegnx6sjE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-207-dY3-Hz3EOVSB5G3kVMwjQA-1; Thu, 23 Jan 2020 10:12:04 -0500
+X-MC-Unique: dY3-Hz3EOVSB5G3kVMwjQA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EED9D18B5F95;
+        Thu, 23 Jan 2020 15:12:02 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-49.rdu2.redhat.com [10.10.120.49])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A3DED8CCCB;
+        Thu, 23 Jan 2020 15:12:01 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <8ee40192da117d9cdf4eab1e63ab5f77b359801c.camel@btinternet.com>
+References: <8ee40192da117d9cdf4eab1e63ab5f77b359801c.camel@btinternet.com>
+To:     Stephen Smalley <sds@tycho.nsa.gov>
+Cc:     dhowells@redhat.com,
+        Richard Haines <richard_c_haines@btinternet.com>,
+        keyrings@vger.kernel.org, selinux@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: SELinux: How to split permissions for keys?
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4057699.1579792320.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Thu, 23 Jan 2020 15:12:00 +0000
+Message-ID: <4057700.1579792320@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Lakshmi,
+Hi Stephen,
 
-On Wed, 2020-01-22 at 17:32 -0800, Lakshmi Ramasubramanian wrote:
-> Measuring keys requires a custom IMA policy to be loaded.
-> Keys created or updated before a custom IMA policy is loaded should
-> be queued and the keys should be processed after a custom policy
-> is loaded.
+I have patches to split the permissions that are used for keys to make the=
+m a
+bit finer grained and easier to use - and also to move to ACLs rather than
+fixed masks.  See patch "keys: Replace uid/gid/perm permissions checking w=
+ith
+an ACL" here:
 
-The addition of "and the keys" makes the sentence a run-on.  I've
-reverted this change.
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log=
+/?h=3Dkeys-acl
 
-> 
-> This patch defines workqueue for queuing keys when a custom IMA policy
-> has not yet been loaded. An intermediate Kconfig boolean option namely
-> IMA_QUEUE_EARLY_BOOT_KEYS is used to declare the workqueue functions.
-> 
-> A flag namely ima_process_keys is used to check if the key should be
-> queued or should be processed immediately.
-> 
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+However, I may not have managed the permission mask transformation inside
+SELinux correctly.  Could you lend an eyeball?  The change to the permissi=
+ons
+model is as follows:
 
-Thanks!  With this patch, if queueing keys ever becomes an issue,
-resolving it will be straight forward.
+    The SETATTR permission is split to create two new permissions:
+    =
 
-This patch set is now in the next-integrity-testing branch.  Assuming
-there are no problems, it will be merged into the next-integrity
-branch, requiring a rebase.  I'm sorry for any inconvenience this may
-cause.
+     (1) SET_SECURITY - which allows the key's owner, group and ACL to be
+         changed and a restriction to be placed on a keyring.
+    =
 
-Mimi
+     (2) REVOKE - which allows a key to be revoked.
+    =
 
-> ---
->  security/integrity/ima/Kconfig          |   5 +
->  security/integrity/ima/Makefile         |   1 +
->  security/integrity/ima/ima.h            |  22 ++++
->  security/integrity/ima/ima_queue_keys.c | 137 ++++++++++++++++++++++++
->  4 files changed, 165 insertions(+)
->  create mode 100644 security/integrity/ima/ima_queue_keys.c
-> 
-> diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-> index 6bec78eeeae8..711ff10fa36e 100644
-> --- a/security/integrity/ima/Kconfig
-> +++ b/security/integrity/ima/Kconfig
-> @@ -317,3 +317,8 @@ config IMA_MEASURE_ASYMMETRIC_KEYS
->  	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
->  	default y
->  
-> +config IMA_QUEUE_EARLY_BOOT_KEYS
-> +	bool
-> +	depends on IMA_MEASURE_ASYMMETRIC_KEYS
-> +	depends on SYSTEM_TRUSTED_KEYRING
-> +	default y
-> diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
-> index 3e9d0ad68c7b..064a256f8725 100644
-> --- a/security/integrity/ima/Makefile
-> +++ b/security/integrity/ima/Makefile
-> @@ -13,3 +13,4 @@ ima-$(CONFIG_IMA_APPRAISE_MODSIG) += ima_modsig.o
->  ima-$(CONFIG_HAVE_IMA_KEXEC) += ima_kexec.o
->  obj-$(CONFIG_IMA_BLACKLIST_KEYRING) += ima_mok.o
->  obj-$(CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS) += ima_asymmetric_keys.o
-> +obj-$(CONFIG_IMA_QUEUE_EARLY_BOOT_KEYS) += ima_queue_keys.o
-> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-> index f06238e41a7c..905ed2f7f778 100644
-> --- a/security/integrity/ima/ima.h
-> +++ b/security/integrity/ima/ima.h
-> @@ -205,6 +205,28 @@ extern const char *const func_tokens[];
->  
->  struct modsig;
->  
-> +#ifdef CONFIG_IMA_QUEUE_EARLY_BOOT_KEYS
-> +/*
-> + * To track keys that need to be measured.
-> + */
-> +struct ima_key_entry {
-> +	struct list_head list;
-> +	void *payload;
-> +	size_t payload_len;
-> +	char *keyring_name;
-> +};
-> +bool ima_should_queue_key(void);
-> +bool ima_queue_key(struct key *keyring, const void *payload,
-> +		   size_t payload_len);
-> +void ima_process_queued_keys(void);
-> +#else
-> +static inline bool ima_should_queue_key(void) { return false; }
-> +static inline bool ima_queue_key(struct key *keyring,
-> +				 const void *payload,
-> +				 size_t payload_len) { return false; }
-> +static inline void ima_process_queued_keys(void) {}
-> +#endif /* CONFIG_IMA_QUEUE_EARLY_BOOT_KEYS */
-> +
->  /* LIM API function definitions */
->  int ima_get_action(struct inode *inode, const struct cred *cred, u32 secid,
->  		   int mask, enum ima_hooks func, int *pcr,
-> diff --git a/security/integrity/ima/ima_queue_keys.c b/security/integrity/ima/ima_queue_keys.c
-> new file mode 100644
-> index 000000000000..9b561f2b86db
-> --- /dev/null
-> +++ b/security/integrity/ima/ima_queue_keys.c
-> @@ -0,0 +1,137 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2019 Microsoft Corporation
-> + *
-> + * Author: Lakshmi Ramasubramanian (nramas@linux.microsoft.com)
-> + *
-> + * File: ima_queue_keys.c
-> + *       Enables deferred processing of keys
-> + */
-> +
-> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> +
-> +#include <keys/asymmetric-type.h>
-> +#include "ima.h"
-> +
-> +/*
-> + * Flag to indicate whether a key can be processed
-> + * right away or should be queued for processing later.
-> + */
-> +static bool ima_process_keys;
-> +
-> +/*
-> + * To synchronize access to the list of keys that need to be measured
-> + */
-> +static DEFINE_MUTEX(ima_keys_lock);
-> +static LIST_HEAD(ima_keys);
-> +
-> +static void ima_free_key_entry(struct ima_key_entry *entry)
-> +{
-> +	if (entry) {
-> +		kfree(entry->payload);
-> +		kfree(entry->keyring_name);
-> +		kfree(entry);
-> +	}
-> +}
-> +
-> +static struct ima_key_entry *ima_alloc_key_entry(struct key *keyring,
-> +						 const void *payload,
-> +						 size_t payload_len)
-> +{
-> +	int rc = 0;
-> +	struct ima_key_entry *entry;
-> +
-> +	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
-> +	if (entry) {
-> +		entry->payload = kmemdup(payload, payload_len, GFP_KERNEL);
-> +		entry->keyring_name = kstrdup(keyring->description,
-> +					      GFP_KERNEL);
-> +		entry->payload_len = payload_len;
-> +	}
-> +
-> +	if ((entry == NULL) || (entry->payload == NULL) ||
-> +	    (entry->keyring_name == NULL)) {
-> +		rc = -ENOMEM;
-> +		goto out;
-> +	}
-> +
-> +	INIT_LIST_HEAD(&entry->list);
-> +
-> +out:
-> +	if (rc) {
-> +		ima_free_key_entry(entry);
-> +		entry = NULL;
-> +	}
-> +
-> +	return entry;
-> +}
-> +
-> +bool ima_queue_key(struct key *keyring, const void *payload,
-> +		   size_t payload_len)
-> +{
-> +	bool queued = false;
-> +	struct ima_key_entry *entry;
-> +
-> +	entry = ima_alloc_key_entry(keyring, payload, payload_len);
-> +	if (!entry)
-> +		return false;
-> +
-> +	mutex_lock(&ima_keys_lock);
-> +	if (!ima_process_keys) {
-> +		list_add_tail(&entry->list, &ima_keys);
-> +		queued = true;
-> +	}
-> +	mutex_unlock(&ima_keys_lock);
-> +
-> +	if (!queued)
-> +		ima_free_key_entry(entry);
-> +
-> +	return queued;
-> +}
-> +
-> +/*
-> + * ima_process_queued_keys() - process keys queued for measurement
-> + *
-> + * This function sets ima_process_keys to true and processes queued keys.
-> + * From here on keys will be processed right away (not queued).
-> + */
-> +void ima_process_queued_keys(void)
-> +{
-> +	struct ima_key_entry *entry, *tmp;
-> +	bool process = false;
-> +
-> +	if (ima_process_keys)
-> +		return;
-> +
-> +	/*
-> +	 * Since ima_process_keys is set to true, any new key will be
-> +	 * processed immediately and not be queued to ima_keys list.
-> +	 * First one setting the ima_process_keys flag to true will
-> +	 * process the queued keys.
-> +	 */
-> +	mutex_lock(&ima_keys_lock);
-> +	if (!ima_process_keys) {
-> +		ima_process_keys = true;
-> +		process = true;
-> +	}
-> +	mutex_unlock(&ima_keys_lock);
-> +
-> +	if (!process)
-> +		return;
-> +
-> +
-> +	list_for_each_entry_safe(entry, tmp, &ima_keys, list) {
-> +		process_buffer_measurement(entry->payload,
-> +					   entry->payload_len,
-> +					   entry->keyring_name,
-> +					   KEY_CHECK, 0,
-> +					   entry->keyring_name);
-> +		list_del(&entry->list);
-> +		ima_free_key_entry(entry);
-> +	}
-> +}
-> +
-> +inline bool ima_should_queue_key(void)
-> +{
-> +	return !ima_process_keys;
-> +}
+    The SEARCH permission is split to create:
+    =
+
+     (1) SEARCH - which allows a keyring to be search and a key to be foun=
+d.
+    =
+
+     (2) JOIN - which allows a keyring to be joined as a session keyring.
+    =
+
+     (3) INVAL - which allows a key to be invalidated.
+    =
+
+    The WRITE permission is also split to create:
+    =
+
+     (1) WRITE - which allows a key's content to be altered and links to b=
+e
+         added, removed and replaced in a keyring.
+    =
+
+     (2) CLEAR - which allows a keyring to be cleared completely.  This is
+         split out to make it possible to give just this to an administrat=
+or.
+    =
+
+     (3) REVOKE - see above.
+
+The change to SELinux is attached below.
+
+Should the split be pushed down into the SELinux policy rather than trying=
+ to
+calculate it?
+
+Thanks,
+David
+---
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 116b4d644f68..c8db5235b01f 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -6556,6 +6556,7 @@ static int selinux_key_permission(key_ref_t key_ref,
+ {
+ 	struct key *key;
+ 	struct key_security_struct *ksec;
++	unsigned oldstyle_perm;
+ 	u32 sid;
+ =
+
+ 	/* if no specific permissions are requested, we skip the
+@@ -6564,13 +6565,26 @@ static int selinux_key_permission(key_ref_t key_re=
+f,
+ 	if (perm =3D=3D 0)
+ 		return 0;
+ =
+
++	oldstyle_perm =3D perm & (KEY_NEED_VIEW | KEY_NEED_READ | KEY_NEED_WRITE=
+ |
++				KEY_NEED_SEARCH | KEY_NEED_LINK);
++	if (perm & KEY_NEED_SETSEC)
++		oldstyle_perm |=3D OLD_KEY_NEED_SETATTR;
++	if (perm & KEY_NEED_INVAL)
++		oldstyle_perm |=3D KEY_NEED_SEARCH;
++	if (perm & KEY_NEED_REVOKE && !(perm & OLD_KEY_NEED_SETATTR))
++		oldstyle_perm |=3D KEY_NEED_WRITE;
++	if (perm & KEY_NEED_JOIN)
++		oldstyle_perm |=3D KEY_NEED_SEARCH;
++	if (perm & KEY_NEED_CLEAR)
++		oldstyle_perm |=3D KEY_NEED_WRITE;
++
+ 	sid =3D cred_sid(cred);
+ =
+
+ 	key =3D key_ref_to_ptr(key_ref);
+ 	ksec =3D key->security;
+ =
+
+ 	return avc_has_perm(&selinux_state,
+-			    sid, ksec->sid, SECCLASS_KEY, perm, NULL);
++			    sid, ksec->sid, SECCLASS_KEY, oldstyle_perm, NULL);
+ }
+ =
+
+ static int selinux_key_getsecurity(struct key *key, char **_buffer)
 
