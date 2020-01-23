@@ -2,94 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A7E143235
-	for <lists+keyrings@lfdr.de>; Mon, 20 Jan 2020 20:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B56CA146053
+	for <lists+keyrings@lfdr.de>; Thu, 23 Jan 2020 02:32:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgATTbp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 20 Jan 2020 14:31:45 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:43934 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726607AbgATTbp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 20 Jan 2020 14:31:45 -0500
-Received: by mail-ed1-f67.google.com with SMTP id dc19so566654edb.10
-        for <keyrings@vger.kernel.org>; Mon, 20 Jan 2020 11:31:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=M0q4ZXIxKffpSgoI0gly/ffUdHpy9jsaHxHEKMEvcGPLYUC7PlB0rODmKa8tWDxd40
-         tCZc1dHXwWRAXxf2VjdAh+yPFvTJs6wUuHbn39O8IURJlp4dGA2Mu4KQlXdKl3UYUSj1
-         yLYN+wTtVQh3+iFVQ7yHttQGbYFR1DotwR4UGqcxPCZOoln92umXc40dWk2xZrPtRZ2r
-         iEU5bwmExb2gBAzTO1lBoFOg3VBBIJr9YHpYI1mZUcCqyCHh76cY/fHHba4p9gpfLln2
-         AJZ98os8N2he3XsG9MAVoQ66PP0OxbeM+lxxyvlryGQ6wdbZwTpkHwm/arlvDF3ez702
-         BfLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=HfasuuWMtwA+nTT22SUSFpJOkNaHN94TGBxeGhCL0xdt4J641Yxx24TuAwZ2NvGjLP
-         Y5fu/fzuz9VYDNNLWuQzxZQDm+jc7hOiVAZOrXoHaEzEFRzbzCF0Z3NDIYiuXHrt9HMr
-         jq4vaXmW/IGxPWOu4SHUfCPRYgF0uurdZ0rFKRofslHZsq/0qbNOJ/SRbA0gMPoQIHEG
-         ninFWmEwCTYWzzUxiy8Z1AoGtANys2KKO7snAGVrnuplb6jIMonDUhCVNjldDTisWNsC
-         UB7KYD2O1qYEUuHz+yklBVrKtLIl1ivuq+TzIsxFLdV2GKDurlK4413xb2w0JpajfDao
-         5qiQ==
-X-Gm-Message-State: APjAAAWuSsAwP0SlaJFn6tkRW/U9+Xlnc800aYFLi7vawrP9I0OtWbYn
-        84j3mSddTCd/fkkjQXCn2Bf9rXzCL0ocC/5SkhE=
-X-Google-Smtp-Source: APXvYqyyHCt77EM14GOE0KDBunDOHxN6fvLcd+bHFjIrRiWNig2VfZD4wYLew0G+jUHBVjpQBMTrVK9EHxMOQH0VwTg=
-X-Received: by 2002:a05:6402:c9c:: with SMTP id cm28mr670324edb.88.1579548703499;
- Mon, 20 Jan 2020 11:31:43 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6402:22dc:0:0:0:0 with HTTP; Mon, 20 Jan 2020 11:31:43
- -0800 (PST)
-Reply-To: mcclainejohn.13@gmail.com
-From:   "Prof, William Roberts" <eco.bank1204@gmail.com>
-Date:   Mon, 20 Jan 2020 20:31:43 +0100
-Message-ID: <CAOE+jABNCjHKFENN-Ek5YiJ5dzzDMN5vwD4KOGExG-PeQ=t=0Q@mail.gmail.com>
-Subject: Contact Diplomatic Agent, Mr. Mcclaine John to receive your ATM CARD
- valued the sum of $12.8Million United States Dollars
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1726099AbgAWBcM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 22 Jan 2020 20:32:12 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:55864 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725911AbgAWBcM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jan 2020 20:32:12 -0500
+Received: from nramas-ThinkStation-P520.corp.microsoft.com (unknown [131.107.174.108])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 6D9312007679;
+        Wed, 22 Jan 2020 17:32:11 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6D9312007679
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1579743131;
+        bh=ybWxbWJoAxOFI4m8oIsd6jXbfNUgRqtqlDATjCgMlmU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Wx32loep/PQbGBJCJMpl4SSFtw0ajmJK1+12g90t4qz/dOwq8Hf5AyX2HK35jh17b
+         bzAuCdFHg69SSBjS2EGc2pS9tLhS8nwATJ7n+7z20u4aahzahugYe8tE8dfrlyfSBn
+         nmZbAIj7Qgl4gfFpcJJrxxk3fgXkN46mI39exC8U=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, James.Bottomley@HansenPartnership.com,
+        linux-integrity@vger.kernel.org
+Cc:     sashal@kernel.org, dhowells@redhat.com,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: [PATCH v9 0/3] IMA: Deferred measurement of keys
+Date:   Wed, 22 Jan 2020 17:32:03 -0800
+Message-Id: <20200123013206.8499-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Attn: Dear Beneficiary,
+The IMA subsystem supports measuring asymmetric keys when the key is
+created or updated[1]. But keys created or updated before a custom IMA
+policy is loaded are currently not measured.  This includes keys added,
+for instance, to either the .ima or .builtin_trusted_keys keyrings, which
+happens early in the boot process.
 
-I wish to inform you that the diplomatic agent conveying your ATM CARD
-valued the sum of $12.8Million United States Dollars has misplaced
-your address and he is currently stranded at (George Bush
-International Airport) Houston Texas USA now
-We required you to reconfirm the following information's below to him
-so that he can deliver your Payment CARD to you today or tomorrow
-morning as information provided with open communications via email and
-telephone for security reasons.
-HERE IS THE DETAILS  HE NEED FROM YOU URGENT
-YOUR FULL NAME:========
-ADDRESS:========
-MOBILE NO:========
-NAME OF YOUR NEAREST AIRPORT:========
-A COPY OF YOUR IDENTIFICATION :========
+Measuring the early boot keys, by design, requires loading a custom IMA
+policy.  This change adds support for queuing keys created or updated
+before a custom IMA policy is loaded.  The queued keys are processed when
+a custom policy is loaded.  Keys created or updated after a custom policy
+is loaded are measured immediately (not queued).  In the case when a
+custom policy is not loaded within 5 minutes of IMA initialization, the
+queued keys are freed.
 
-Note; do contact the diplomatic agent immediately through the
-information's listed below
-Contact Person: Diplomatic Agent, Mr. Mcclaine John
-EMAIL: mcclainejohn.13@gmail.com
-Tel:(223) 777-7518
+[1] https://lore.kernel.org/linux-integrity/20191211164707.4698-1-nramas@linux.microsoft.com/
 
-Contact the diplomatic agent immediately
-because he is waiting to hear from you today with the needed information's.
+Changelog:
 
-NOTE: The Diplomatic agent does not know that the content of the
-consignment box is $12.800,000,00 Million United States Dollars and on
-no circumstances should you let him know the content. The consignment
-was moved from here as family treasures, so never allow him to open
-the box. Please I have paid delivery fees for you but the only money
-you must send to Mcclaine John is your ATM CARD delivery fee $25.00
-only. text Him as you contact Him Immediately
+  v9
 
-Thanks,
-with Regards.
-Prof, William Roberts
-Director DHL COURIER SERVICES-Benin
+  => Rebased the changes to v5.5-rc7
+  => Defined an intermediate Kconfig boolean option namely
+     IMA_QUEUE_EARLY_BOOT_KEYS to declare the deferred key
+     measurement functions.
+  => Use delayed workqueue to free the queued keys when a custom IMA
+     policy is not loaded.
+
+  v8
+
+  => Rebased the changes to linux-next
+  => Need to apply the following patch first
+  https://lore.kernel.org/linux-integrity/20200108160508.5938-1-nramas@linux.microsoft.com/
+
+  v7
+
+  => Updated cover letter per Mimi's suggestions.
+  => Updated "Reported-by" tag to be specific about
+     the issues fixed in the patch.
+
+  v6
+
+  => Replaced mutex with a spinlock to sychronize access to
+     queued keys. This fixes the problem reported by
+     "kernel test robot <rong.a.chen@intel.com>"
+     https://lore.kernel.org/linux-integrity/2a831fe9-30e5-63b4-af10-a69f327f7fb7@linux.microsoft.com/T/#t
+  => Changed ima_queue_key() to a static function. This fixes
+     the issue reported by "kbuild test robot <lkp@intel.com>"
+     https://lore.kernel.org/linux-integrity/1577370464.4487.10.camel@linux.ibm.com/
+  => Added the patch to free the queued keys if a custom IMA policy
+     was not loaded to this patch set.
+
+  v5
+
+  => Removed temp keys list in ima_process_queued_keys()
+
+  v4
+
+  => Check and set ima_process_keys flag with mutex held.
+
+  v3
+
+  => Defined ima_process_keys flag to be static.
+  => Set ima_process_keys with ima_keys_mutex held.
+  => Added a comment in ima_process_queued_keys() function
+     to state the use of temporary list for keys.
+
+  v2
+
+  => Rebased the changes to v5.5-rc1
+  => Updated function names, variable names, and code comments
+     to be less verbose.
+
+  v1
+
+  => Code cleanup
+
+  v0
+
+  => Based changes on v5.4-rc8
+  => The following patchsets should be applied in that order
+     https://lore.kernel.org/linux-integrity/1572492694-6520-1-git-send-email-zohar@linux.ibm.com
+     https://lore.kernel.org/linux-integrity/20191204224131.3384-1-nramas@linux.microsoft.com/
+  => Added functions to queue and dequeue keys, and process
+     the queued keys when custom IMA policies are applied.
+
+Lakshmi Ramasubramanian (3):
+  IMA: Define workqueue for early boot key measurements
+  IMA: Call workqueue functions to measure queued keys
+  IMA: Defined delayed workqueue to free the queued keys
+
+ security/integrity/ima/Kconfig               |   5 +
+ security/integrity/ima/Makefile              |   1 +
+ security/integrity/ima/ima.h                 |  24 +++
+ security/integrity/ima/ima_asymmetric_keys.c |   8 +
+ security/integrity/ima/ima_init.c            |   8 +-
+ security/integrity/ima/ima_policy.c          |   3 +
+ security/integrity/ima/ima_queue_keys.c      | 171 +++++++++++++++++++
+ 7 files changed, 219 insertions(+), 1 deletion(-)
+ create mode 100644 security/integrity/ima/ima_queue_keys.c
+
+-- 
+2.17.1
+
