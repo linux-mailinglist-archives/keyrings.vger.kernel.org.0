@@ -2,83 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8371149AE1
-	for <lists+keyrings@lfdr.de>; Sun, 26 Jan 2020 14:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D032A149B9C
+	for <lists+keyrings@lfdr.de>; Sun, 26 Jan 2020 16:47:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726761AbgAZNvy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 26 Jan 2020 08:51:54 -0500
-Received: from mailomta17-sa.btinternet.com ([213.120.69.23]:61507 "EHLO
-        sa-prd-fep-043.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726323AbgAZNvy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 26 Jan 2020 08:51:54 -0500
-X-Greylist: delayed 89683 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Jan 2020 08:51:52 EST
-Received: from sa-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.38.6])
-          by sa-prd-fep-044.btinternet.com with ESMTP
-          id <20200123102826.ZNAL8432.sa-prd-fep-044.btinternet.com@sa-prd-rgout-003.btmx-prd.synchronoss.net>;
-          Thu, 23 Jan 2020 10:28:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1579775306; 
-        bh=lJfh+1+Fvn9kL52yfj602/u+Y5jk1/2ZSojLZezeeSM=;
-        h=Message-ID:Subject:From:To:Cc:Date:MIME-Version;
-        b=ZzlOMzp+W8IvswDT6vI/uvOAdODgd6F0UNLSY+zQXGFj4ecYzdG17D8jJNtTGIwE4iBLTQcgK7lZhkvK/5gVQ0O7Pgt0TRcvI64RRnqLAAjT1SGRpZfc/YkaQ17kFOlW5MbwA5xqG7WGUc1ViIR47i4WvTVU7rZfM03gIUGg+rG1OQkSfNesbSveodbHNlQOhCsYfv+zMIROgBAqiqBKnM6Nb0kGmpls2lw0ancxXYIK2w92MGRKoLBrvEs6UvPsYN/H1GwryBoLXtmTV2qIjrP/WbtEvY7yhEu+zfclghyV7LhbqIMFwU96rVgsVZyEbGpBdGr8+qiClw9A7hlGiQ==
-Authentication-Results: btinternet.com;
-    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
-X-Originating-IP: [86.134.6.184]
-X-OWM-Source-IP: 86.134.6.184 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedugedrvddvgdduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefkuffhvffftggfggfgsehtjeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeekiedrudefgedriedrudekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddufeegrdeirddukeegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoughhohifvghllhhssehrvgguhhgrthdrtghomheqpdhrtghpthhtohepoehkvgihrhhinhhgshesvhhgvghrrdhkvghrnhgvlhdrohhrgheqpdhrtghpthhtohepoehrihgthhgrrhgupggtpghhrghinhgvsheshhhothhmrghilhdrtghomheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqe
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from localhost.localdomain (86.134.6.184) by sa-prd-rgout-003.btmx-prd.synchronoss.net (5.8.337) (authenticated as richard_c_haines@btinternet.com)
-        id 5E1A306601D693D8; Thu, 23 Jan 2020 10:28:26 +0000
-Message-ID: <8ee40192da117d9cdf4eab1e63ab5f77b359801c.camel@btinternet.com>
-Subject: SELinux issue with 'keys-acl' patch in kernel.org's 'linux-next'
- tree
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     dhowells@redhat.com
-Cc:     keyrings@vger.kernel.org, selinux@vger.kernel.org
-Date:   Thu, 23 Jan 2020 10:28:25 +0000
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        id S1728449AbgAZPre (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 26 Jan 2020 10:47:34 -0500
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:45690 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726911AbgAZPrd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 26 Jan 2020 10:47:33 -0500
+Received: by mail-yb1-f196.google.com with SMTP id x191so3689882ybg.12;
+        Sun, 26 Jan 2020 07:47:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=2xbk8AdWIZmse3B+nB63l0NWf7gcst2GZzaX7cH6+Rk=;
+        b=Sny0GkweHawfCGschvMy3kTofssyVxPCS0Xe31agFEXH2DnfkqrnpH9Qyfc0gNUm2S
+         7/AxdrHFGQwY2H2dwiP6rvG6tCa7XACRTKzmPzFznJhJj08lAQpMtHczqCjOGVCU3x+i
+         zKP8nUcKQMAGb+UYmJb/7ryPB9Mw/U2oiz1UKb0fPoF4mF5BudiQ2dEx90xLxw5otSAp
+         9fmRu8WNfNuljNOayIvT5boniU6zQErTGsj2ZcYbdPf9aYoDfo7PhcvB8UrjlDlca8ve
+         jVuxbKvrGw1ydhKIIlA+chqZ+AFVeyamBxcdcAyYqTIT47/2VyegmFJdmAFCjlMdBUt1
+         zm2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=2xbk8AdWIZmse3B+nB63l0NWf7gcst2GZzaX7cH6+Rk=;
+        b=sE1iBQhXJKqk3dnxjrV84NaUng/MThGt9t4HXisR7umWdEscNHW3Sg/wEZ0zaf7OvN
+         oJ8oyJhABgxVxqkMNOsr1Ccfr5NMiCPVfiwQZa/tOm1nH2z0OJvqoIUQz4h6l5S6HWO4
+         P8y5GyZ6Eni1VpMdG2xJtoL5L7DkgTMXLQL95dTz7N1Ly6mAwbu85aT2M5ENkvzrFU5u
+         SBFlnZlX4U1aKEhqW8Zx+IT+sutIXZQxlM8Qb0BNH+hXha4ygBYjxcSOfnAPOVtOQnvi
+         M91hy0QxtPf9zbiyYlzjEDtljPThXRgQ8vpmoaRIf1QSrK+0afZtOfXmb90dVaDyrFye
+         ZU1Q==
+X-Gm-Message-State: APjAAAW5L59UXXt3D77Rzc/IUjwT4Y7uevQMB8UGCTGWmIJxIdcE/y4j
+        WiNsddUUqxQM4MK/QIM/ldw=
+X-Google-Smtp-Source: APXvYqxvf/6JwAOXZhkX95ONMDryWNE+o/mE5fN9F9087lRqh1nXGJlr9CV8HaTXjy7HRjgfZPOGKQ==
+X-Received: by 2002:a25:ef51:: with SMTP id w17mr10381069ybm.477.1580053652415;
+        Sun, 26 Jan 2020 07:47:32 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d188sm1747466ywe.50.2020.01.26.07.47.31
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 26 Jan 2020 07:47:31 -0800 (PST)
+Date:   Sun, 26 Jan 2020 07:47:30 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
+        raven@themaw.net, Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 07/14] Add sample notification program [ver #3]
+Message-ID: <20200126154730.GA18893@roeck-us.net>
+References: <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
+ <157909509882.20155.1159021562184142124.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <157909509882.20155.1159021562184142124.stgit@warthog.procyon.org.uk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I see the 'keys-acl' [1] patch is now back in kernel.org's 'linux-next' 
-tree.
-After some investigation, I have a query on this that I've attempted to
-explain below.
+On Wed, Jan 15, 2020 at 01:31:38PM +0000, David Howells wrote:
+> The sample program is run like:
+> 
+> 	./samples/watch_queue/watch_test
+> 
+> and watches "/" for mount changes and the current session keyring for key
+> changes:
+> 
+> 	# keyctl add user a a @s
+> 	1035096409
+> 	# keyctl unlink 1035096409 @s
+> 
+> producing:
+> 
+> 	# ./watch_test
+> 	read() = 16
+> 	NOTIFY[000]: ty=000001 sy=02 i=00000110
+> 	KEY 2ffc2e5d change=2[linked] aux=1035096409
+> 	read() = 16
+> 	NOTIFY[000]: ty=000001 sy=02 i=00000110
+> 	KEY 2ffc2e5d change=3[unlinked] aux=1035096409
+> 
+> Other events may be produced, such as with a failing disk:
+> 
+> 	read() = 22
+> 	NOTIFY[000]: ty=000003 sy=02 i=00000416
+> 	USB 3-7.7 dev-reset e=0 r=0
+> 	read() = 24
+> 	NOTIFY[000]: ty=000002 sy=06 i=00000418
+> 	BLOCK 00800050 e=6[critical medium] s=64000ef8
+> 
+> This corresponds to:
+> 
+> 	blk_update_request: critical medium error, dev sdf, sector 1677725432 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
+> 
+> in dmesg.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-The keyutils tests work with this patch on standard Fedora policy
-because the policy gives most domains access to all key permissions.
-Also the polcy is built using 'hide_broken_symptoms' that adds 'allow
-domain domain:key { link search };', therefore calls made by these
-always pass:
+mips:allmodconfig:
 
-keys/keyring.c - find_keyring_by_name():
-Originally required: KEY_NEED_SEARCH
-Now requires:        KEY_NEED_JOIN
+samples/watch_queue/watch_test.c: In function ‘keyctl_watch_key’:
+samples/watch_queue/watch_test.c:34:17: error: ‘__NR_keyctl’ undeclared
 
-keys/keyctl.c - keyctl_session_to_parent():
-Originally required: KEY_NEED_LINK
-Now requires:        KEY_NEED_JOIN
-
-However if (as in the selinux-testsuite - test/keys), 'domain' is
-replaced by a macro that excludes the { link search }, and allows each
-permission to be tested, two tests fail. This is because:
-
-1) keyctl_session_to_parent() requires KEY_NEED_JOIN translated to
-KEY_NEED_LINK permission.
-2) find_keyring_by_name() requires KEY_NEED_JOIN translated to
-KEY_NEED_SEARCH permission.
-
-The patch always translates KEY_NEED_JOIN to KEY_NEED_SEARCH
-Any views on this as it seems a regression.
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/security/selinux?h=next-20200122&id=a862a799537490b74a81e14a62623af502bdb25d
-
-
+Guenter
