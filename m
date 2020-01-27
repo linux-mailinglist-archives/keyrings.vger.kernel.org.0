@@ -2,71 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD73E14A326
-	for <lists+keyrings@lfdr.de>; Mon, 27 Jan 2020 12:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C04114AA76
+	for <lists+keyrings@lfdr.de>; Mon, 27 Jan 2020 20:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727520AbgA0Ljn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 27 Jan 2020 06:39:43 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:32845 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730294AbgA0Ljm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Jan 2020 06:39:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1580125181;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+7W2zyC7XytaLgF9eenYTPBkYQQ7A4oiE0WMio8GFgc=;
-        b=aleUufWQ3l8GX2Fyc9Nmzpuq9Cz4t2LbQ4SaZTAU98/Nzk9QRXqiAx6/Lb4d+KnqSBLIxH
-        21Z+GhkyqwvpG/a9EWeWA8qHLtzJcJHw69HFD+a4AO0UL8gkPaJdfXadMVZzqxsZwYy5ch
-        NKRxCTYJanF3Xt9kWOgz0ISQNZ8Gnt0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-115-UkgspV3UPPaycqOGmDdcFA-1; Mon, 27 Jan 2020 06:39:38 -0500
-X-MC-Unique: UkgspV3UPPaycqOGmDdcFA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8D139DB82;
-        Mon, 27 Jan 2020 11:39:36 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-99.rdu2.redhat.com [10.10.120.99])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F3DD287026;
-        Mon, 27 Jan 2020 11:39:34 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <af9dcaa7-6e4f-281a-2bae-fb605cc55d2d@virtuozzo.com>
-References: <af9dcaa7-6e4f-281a-2bae-fb605cc55d2d@virtuozzo.com>
-To:     Vasily Averin <vvs@virtuozzo.com>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
+        id S1725938AbgA0T3L (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 27 Jan 2020 14:29:11 -0500
+Received: from relay.sw.ru ([185.231.240.75]:47718 "EHLO relay.sw.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725845AbgA0T3L (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 27 Jan 2020 14:29:11 -0500
+Received: from vvs-ws.sw.ru ([172.16.24.21])
+        by relay.sw.ru with esmtp (Exim 4.92.3)
+        (envelope-from <vvs@virtuozzo.com>)
+        id 1iwA31-00072K-M9; Mon, 27 Jan 2020 22:27:47 +0300
+Subject: Re: [PATCH 1/1] proc_keys_next should increase position index
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>
-Subject: Re: [PATCH 1/1] proc_keys_next should increase position index
+References: <af9dcaa7-6e4f-281a-2bae-fb605cc55d2d@virtuozzo.com>
+ <1451508.1580125174@warthog.procyon.org.uk>
+From:   Vasily Averin <vvs@virtuozzo.com>
+Message-ID: <eaacb0b2-fd0d-480e-1868-0a1284c20185@virtuozzo.com>
+Date:   Mon, 27 Jan 2020 22:27:47 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1451507.1580125174.1@warthog.procyon.org.uk>
-Date:   Mon, 27 Jan 2020 11:39:34 +0000
-Message-ID: <1451508.1580125174@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+In-Reply-To: <1451508.1580125174@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I don't see the effect you're talking about with /proc/keys.  I see the
-following:
+On 1/27/20 2:39 PM, David Howells wrote:
+> I don't see the effect you're talking about with /proc/keys.  I see the
+> following:
+> 
+> 	[root@andromeda ~]# dd if=/proc/keys bs=40 skip=1
+> 	dd: /proc/keys: cannot skip to specified offset
+> 
+> and then it follows up with the normal content with no obvious duplicates (the
+> lines are numbered ascendingly in the first column).
+> 
+> I think I may be being confused by what you mean by "the last line".
 
-	[root@andromeda ~]# dd if=/proc/keys bs=40 skip=1
-	dd: /proc/keys: cannot skip to specified offset
+on unpatched kernel
 
-and then it follows up with the normal content with no obvious duplicates (the
-lines are numbered ascendingly in the first column).
+$ uname -a
+Linux vvsx1 5.3.0-26-generic #28~18.04.1-Ubuntu SMP Wed Dec 18 16:40:14 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
 
-I think I may be being confused by what you mean by "the last line".
+$ dd if=/proc/keys bs=1  # VvS: full usual output
+0f6bfdf5 I--Q---     2 perm 3f010000  1000  1000 user      4af2f79ab8848d0a: 740
+1fb91b32 I--Q---     3 perm 1f3f0000  1000 65534 keyring   _uid.1000: 2
+27589480 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
+2f33ab67 I--Q---   152 perm 3f030000     0     0 keyring   _ses: 2
+33f1d8fa I--Q---     4 perm 3f030000  1000  1000 keyring   _ses: 1
+3d427fda I--Q---     2 perm 3f010000  1000  1000 user      69ec44aec7678e5a: 740
+3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
+521+0 records in
+521+0 records out
+521 bytes copied, 0,00123769 s, 421 kB/s
 
-David
+$ dd if=/proc/keys bs=500 skip=1  # read after lseek in middle of last line
+dd: /proc/keys: cannot skip to specified offset
+g   _uid_ses.1000: 1        <<<< end of last line
+3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1   <<<< and whole last lien again
+0+1 records in
+0+1 records out
+97 bytes copied, 0,000135035 s, 718 kB/s
+
+$ dd if=/proc/keys bs=1000 skip=1   # read after lseek beyond end of file
+dd: /proc/keys: cannot skip to specified offset
+3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1   <<<< generates last line
+0+1 records in
+0+1 records out
+76 bytes copied, 0,000119981 s, 633 kB/s
+
+On patched kernel:
+[test@localhost ~]$ uname -a
+Linux localhost.localdomain 5.5.0-rc6-00151-gd8d014f #8 SMP Fri Jan 24 13:25:06 MSK 2020 x86_64 x86_64 x86_64 GNU/Linux
+
+[test@localhost ~]$ dd if=/proc/keys bs=1
+06e8bec5 I--Q---     4 perm 1f3f0000  1000 65534 keyring   _uid.1000: empty
+1b7ee8ed I--Q---    11 perm 3f030000  1000  1000 keyring   _ses: 1
+2c1a365d I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
+3f5823b4 I--Q---     6 perm 3f030000  1000  1000 keyring   _ses: 1
+286+0 records in
+286+0 records out
+286 bytes copied, 0,000414581 s, 690 kB/s
+
+[test@localhost ~]$ dd if=/proc/keys bs=270 skip=1  # VvS: read after lseek in middle of last line
+dd: /proc/keys: cannot skip to specified offset
+yring   _ses: 1   <<<< only end of last line was generated, as expected
+0+1 records in
+0+1 records out
+16 bytes copied, 7,7199e-05 s, 207 kB/s
+
+[test@localhost ~]$ dd if=/proc/keys bs=1000 skip=1   # VvS: read after lseek beond end of file
+dd: /proc/keys: cannot skip to specified offset
+0+0 records in   <<<< nothing was generated, as expected
+0+0 records out
+0 bytes copied, 8,8036e-05 s, 0,0 kB/s
+
+
 
