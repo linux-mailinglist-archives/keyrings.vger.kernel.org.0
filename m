@@ -2,130 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0141714C41B
-	for <lists+keyrings@lfdr.de>; Wed, 29 Jan 2020 01:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E89714C829
+	for <lists+keyrings@lfdr.de>; Wed, 29 Jan 2020 10:36:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726945AbgA2Any (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 Jan 2020 19:43:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45820 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726427AbgA2Any (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 28 Jan 2020 19:43:54 -0500
-Received: from ebiggers-linuxstation.mtv.corp.google.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6B6B720663;
-        Wed, 29 Jan 2020 00:43:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580258633;
-        bh=Sz/j53Dlf4MmHfKEkkCGhQTLBEmti0a764YSF89K/1Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=y23wHW0qmOq8PGEu1lrBgUSk6oKEaoLyUulGN26+Q6zAdCat0F2mM3V5dXWP3Q+KE
-         t0AY5BXS+uB+rznVrnEU7ltxPbUHSfDqUCOYQ+LDw8Sr12HBX17mprB2kXysw4xCCS
-         tPbC7UhAAXsMQXkYa5cI2Q+2nIYSXcBVMe+6xrR4=
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     fstests@vger.kernel.org
-Cc:     linux-fscrypt@vger.kernel.org, keyrings@vger.kernel.org,
-        Murphy Zhou <xzhou@redhat.com>
-Subject: [PATCH] generic/581: try to avoid flakiness in keys quota test
-Date:   Tue, 28 Jan 2020 16:42:51 -0800
-Message-Id: <20200129004251.133747-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726010AbgA2Jgm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 29 Jan 2020 04:36:42 -0500
+Received: from mx0a-002e3701.pphosted.com ([148.163.147.86]:62076 "EHLO
+        mx0a-002e3701.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726401AbgA2Jgl (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 29 Jan 2020 04:36:41 -0500
+Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
+        by mx0a-002e3701.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00T9YTAa022886;
+        Wed, 29 Jan 2020 09:36:29 GMT
+Received: from g9t5008.houston.hpe.com (g9t5008.houston.hpe.com [15.241.48.72])
+        by mx0a-002e3701.pphosted.com with ESMTP id 2xttcnn9gh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 29 Jan 2020 09:36:29 +0000
+Received: from g9t2301.houston.hpecorp.net (g9t2301.houston.hpecorp.net [16.220.97.129])
+        by g9t5008.houston.hpe.com (Postfix) with ESMTP id 01FDD57;
+        Wed, 29 Jan 2020 09:36:28 +0000 (UTC)
+Received: from blofly.tw.rdlabs.hpecorp.net (blofly.tw.rdlabs.hpecorp.net [15.119.208.30])
+        by g9t2301.houston.hpecorp.net (Postfix) with ESMTP id 814134F;
+        Wed, 29 Jan 2020 09:36:27 +0000 (UTC)
+From:   Clay Chang <clayc@hpe.com>
+To:     dhowells@redhat.com, dwmw2@infradead.org
+Cc:     keyrings@vger.kernel.org, Clay Chang <clayc@hpe.com>
+Subject: [PATCH] KEYS: check the certfile for ASN1 encoding before inserting
+Date:   Wed, 29 Jan 2020 17:36:12 +0800
+Message-Id: <20200129093612.16889-1-clayc@hpe.com>
+X-Mailer: git-send-email 2.16.6
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-29_01:2020-01-28,2020-01-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 suspectscore=0 priorityscore=1501 mlxlogscore=412
+ phishscore=0 mlxscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001290077
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+The certfile to be inserted into the kernel must be in ASN1 encoding.
+This patch implements a guard against invalid certfile.
 
-generic/581 passes for me, but Murphy Zhou reported that it started
-failing for him.  The part that failed is the part that sets the key
-quota to the fsgqa user's current number of keys plus 5, then tries to
-add 6 filesystem encryption keys as the fsgqa user.  Adding the 6th key
-unexpectedly succeeded.
-
-What I think is happening is that because the kernel's keys subsystem
-garbage-collects keys asynchronously, the quota may be freed up later
-than expected after removing fscrypt keys.  Thus the test is flaky.
-
-It would be nice to fix this in the kernel, but unfortunately there
-doesn't seem to be an easy fix, and the keys subsystem has always worked
-this way.  And it seems unlikely to cause real-world problems, as the
-keys quota really just exists to prevent denial-of-service attacks.
-
-So, for now just try to make the test more reliable by:
-
-(1) Reduce the scope of the modified keys quota to just the part of the
-    test that needs it.
-(2) Before getting the current number of keys for the purpose of setting
-    the quota, wait for any invalidated keys to be garbage-collected.
-
-Tested with a kernel that has a 1 second sleep hacked into the beginning
-of key_garbage_collector().  With that, this test fails before this
-patch and passes afterwards.
-
-Reported-by: Murphy Zhou <xzhou@redhat.com>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Clay Chang <clayc@hpe.com>
 ---
- tests/generic/581 | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ scripts/insert-sys-cert.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/generic/581 b/tests/generic/581
-index 89aa03c2..bc49eadc 100755
---- a/tests/generic/581
-+++ b/tests/generic/581
-@@ -45,14 +45,6 @@ _require_scratch_encryption -v 2
- _scratch_mkfs_encrypted &>> $seqres.full
- _scratch_mount
+diff --git a/scripts/insert-sys-cert.c b/scripts/insert-sys-cert.c
+index 8902836c2342..2d9139887ba0 100644
+--- a/scripts/insert-sys-cert.c
++++ b/scripts/insert-sys-cert.c
+@@ -311,6 +311,11 @@ int main(int argc, char **argv)
+ 	if (!cert)
+ 		exit(EXIT_FAILURE);
  
--# Set the fsgqa user's key quota to their current number of keys plus 5.
--orig_keys=$(_user_do "awk '/^[[:space:]]*$(id -u fsgqa):/{print \$4}' /proc/key-users | cut -d/ -f1")
--: ${orig_keys:=0}
--echo "orig_keys=$orig_keys" >> $seqres.full
--orig_maxkeys=$(</proc/sys/kernel/keys/maxkeys)
--keys_to_add=5
--echo $((orig_keys + keys_to_add)) > /proc/sys/kernel/keys/maxkeys
--
- dir=$SCRATCH_MNT/dir
- 
- raw_key=""
-@@ -98,6 +90,24 @@ _user_do_rm_enckey $SCRATCH_MNT $keyid
- 
- _scratch_cycle_mount	# Clear all keys
- 
-+# Wait for any invalidated keys to be garbage-collected.
-+i=0
-+while grep -E -q '^[0-9a-f]+ [^ ]*i[^ ]*' /proc/keys; do
-+	if ((++i >= 20)); then
-+		echo "Timed out waiting for invalidated keys to be GC'ed" >> $seqres.full
-+		break
-+	fi
-+	sleep 0.5
-+done
++	if (cert[0] != 0x30 && cert[1] != 0x82) {
++		err("Invalid certfile.\n");
++		exit(EXIT_FAILURE);
++	}
 +
-+# Set the user key quota to the fsgqa user's current number of keys plus 5.
-+orig_keys=$(_user_do "awk '/^[[:space:]]*$(id -u fsgqa):/{print \$4}' /proc/key-users | cut -d/ -f1")
-+: ${orig_keys:=0}
-+echo "orig_keys=$orig_keys" >> $seqres.full
-+orig_maxkeys=$(</proc/sys/kernel/keys/maxkeys)
-+keys_to_add=5
-+echo $((orig_keys + keys_to_add)) > /proc/sys/kernel/keys/maxkeys
-+
- echo
- echo "# Testing user key quota"
- for i in `seq $((keys_to_add + 1))`; do
-@@ -106,6 +116,9 @@ for i in `seq $((keys_to_add + 1))`; do
- 	    | sed 's/ with identifier .*$//'
- done
- 
-+# Restore the original key quota.
-+echo "$orig_maxkeys" > /proc/sys/kernel/keys/maxkeys
-+
- rm -rf $dir
- echo
- _user_do "mkdir $dir"
+ 	hdr = map_file(vmlinux_file, &vmlinux_size);
+ 	if (!hdr)
+ 		exit(EXIT_FAILURE);
 -- 
-2.25.0.341.g760bfbb309-goog
+2.16.6
 
