@@ -2,319 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 334E5150F41
-	for <lists+keyrings@lfdr.de>; Mon,  3 Feb 2020 19:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDBAB151514
+	for <lists+keyrings@lfdr.de>; Tue,  4 Feb 2020 05:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728481AbgBCSUd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 3 Feb 2020 13:20:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33786 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727309AbgBCSUd (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 3 Feb 2020 13:20:33 -0500
-Received: from ebiggers-linuxstation.mtv.corp.google.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D4EEF20838;
-        Mon,  3 Feb 2020 18:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580754032;
-        bh=8NerwRjN3S6Sxxz+XUxY9Y5QuccEf9rDfoNHoKxPLrY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=fNVKUJZQynSYfMzkB6ViMhy5hKpJixtuZMymZRmmWGsGVXa4Grw9lZUvhp/MUrgCd
-         Z4yL4UdDczrotn9ZAzeZ8FBCI2u8wXv2ZUe57e9y40gz3Tv28z3ohmOcHfr4NvCCeh
-         Fs3md7X1HlPKTiS/YpOlFBW9kC7yXSvZGwz8V4Zo=
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-xfs@vger.kernel.org
-Cc:     fstests@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: [PATCH v2] xfs_io/encrypt: support passing a keyring key to add_enckey
-Date:   Mon,  3 Feb 2020 10:20:13 -0800
-Message-Id: <20200203182013.43474-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
+        id S1727249AbgBDEoM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 3 Feb 2020 23:44:12 -0500
+Received: from mail-io1-f71.google.com ([209.85.166.71]:45299 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727230AbgBDEoM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Feb 2020 23:44:12 -0500
+Received: by mail-io1-f71.google.com with SMTP id t12so10906338iog.12
+        for <keyrings@vger.kernel.org>; Mon, 03 Feb 2020 20:44:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=Pa5dyIE3ktHUEAvd5sZRYZXtaD/GT5ma8/gG6BVrVsM=;
+        b=pwEv689KNc3AvDGRSXebTJPWSaEkKvQAVA/kfBUAjhlQ3OQdHT5IEHdomCxGG1Wrd7
+         RyzwctAF4ahraUkygwMqwbB0RfWSM9PeE6pjWcHa8f0b07SKRr9tDdS99R/ZBPNDLiPM
+         CJKG4UrCfLpCrc8yFtcQc3iYL3TBL7+b4gd4SVCNbtXiKYw4vMW6Bm3vPL97+qP5s2Hm
+         dlwqhib0xdDqnId+4s3BF+4m126tKvdmB8yQ/nRUF3Z2r486KBGJbgtAVtegGFxNw/o+
+         8vWwmKH5G8bhWeQe8b2mrjGyUHS2JJ4ySu+FFMWVRTcjeMu0nCKaUDY0IcgtMIT3NaRi
+         jnmQ==
+X-Gm-Message-State: APjAAAW9MAJkvsxGsNSkuQp0LYA4u1Ls8MFexBEc+ArCgwNEcVCcsuUn
+        hL+o0u2rXldV5GRXhKSemDwHj0onFjqZfZ6Zxb1ssoRsxqLn
+X-Google-Smtp-Source: APXvYqzVBYOb1u7EqsHoUgEp/Hzneu0rQgfulppZtS6oSL/9HGODQUkMZ16YPUtRNtWI7mnLO0LghAMfWEQpRFVcaSM+iwWhmZYg
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a02:6055:: with SMTP id d21mr23378049jaf.21.1580791451922;
+ Mon, 03 Feb 2020 20:44:11 -0800 (PST)
+Date:   Mon, 03 Feb 2020 20:44:11 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000f4bf93059db8b081@google.com>
+Subject: kernel BUG at lib/assoc_array.c:LINE!
+From:   syzbot <syzbot+23e14950fa7550d86091@syzkaller.appspotmail.com>
+To:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        jmorris@namei.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, serge@hallyn.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+Hello,
 
-Add a '-k' option to the 'add_enckey' xfs_io command to allow exercising
-the key_id field that is being added to struct fscrypt_add_key_arg.
+syzbot found the following crash on:
 
-This is needed for the corresponding test in xfstests.
+HEAD commit:    46d6b7be Merge git://git.kernel.org/pub/scm/linux/kernel/g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11383a79e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6dda7ccc1e75a63f
+dashboard link: https://syzkaller.appspot.com/bug?extid=23e14950fa7550d86091
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
 
-For more details, see the corresponding xfstests patches as well as
-kernel commit 93edd392cad7 ("fscrypt: support passing a keyring key to
-FS_IOC_ADD_ENCRYPTION_KEY").
+Unfortunately, I don't have any reproducer for this crash yet.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+23e14950fa7550d86091@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+kernel BUG at lib/assoc_array.c:652!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 2778 Comm: kworker/0:37 Not tainted 5.5.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: afs afs_manage_cell
+RIP: 0010:assoc_array_insert_into_terminal_node lib/assoc_array.c:652 [inline]
+RIP: 0010:assoc_array_insert+0x2baa/0x2bd0 lib/assoc_array.c:1001
+Code: 0f 0b e8 a9 64 d4 fd 0f 0b e8 a2 64 d4 fd 0f 0b e8 9b 64 d4 fd 0f 0b e8 94 64 d4 fd 0f 0b e8 8d 64 d4 fd 0f 0b e8 86 64 d4 fd <0f> 0b e8 7f 64 d4 fd 0f 0b e8 78 64 d4 fd 0f 0b e8 71 64 d4 fd 0f
+RSP: 0018:ffffc900087ff810 EFLAGS: 00010293
+RAX: ffffffff83a25a7a RBX: 1ffff11012d568af RCX: ffff88809f34a580
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc900087ff920 R08: ffffffff83a249fd R09: ffffffff83538f4f
+R10: ffff88809f34a580 R11: 0000000000000004 R12: ffff888096ab4588
+R13: ffff888096ab4500 R14: ffff888096ab4578 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880aea00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000738000 CR3: 0000000054a3b000 CR4: 00000000001406f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ __key_link_begin+0xfe/0x230 security/keys/keyring.c:1316
+ construct_alloc_key security/keys/request_key.c:404 [inline]
+ construct_key_and_link security/keys/request_key.c:499 [inline]
+ request_key_and_link+0x9b6/0x1680 security/keys/request_key.c:637
+ request_key_tag+0x53/0x190 security/keys/request_key.c:701
+ dns_query+0x266/0x6c0 net/dns_resolver/dns_query.c:128
+ afs_dns_query+0xdd/0x320 fs/afs/addr_list.c:249
+ afs_update_cell fs/afs/cell.c:391 [inline]
+ afs_manage_cell+0xda2/0x1500 fs/afs/cell.c:693
+ process_one_work+0x7f5/0x10f0 kernel/workqueue.c:2264
+ worker_thread+0xbbc/0x1630 kernel/workqueue.c:2410
+ kthread+0x332/0x350 kernel/kthread.c:255
+ ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
+Modules linked in:
+---[ end trace 9dabb2deade74362 ]---
+RIP: 0010:assoc_array_insert_into_terminal_node lib/assoc_array.c:652 [inline]
+RIP: 0010:assoc_array_insert+0x2baa/0x2bd0 lib/assoc_array.c:1001
+Code: 0f 0b e8 a9 64 d4 fd 0f 0b e8 a2 64 d4 fd 0f 0b e8 9b 64 d4 fd 0f 0b e8 94 64 d4 fd 0f 0b e8 8d 64 d4 fd 0f 0b e8 86 64 d4 fd <0f> 0b e8 7f 64 d4 fd 0f 0b e8 78 64 d4 fd 0f 0b e8 71 64 d4 fd 0f
+RSP: 0018:ffffc900087ff810 EFLAGS: 00010293
+RAX: ffffffff83a25a7a RBX: 1ffff11012d568af RCX: ffff88809f34a580
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc900087ff920 R08: ffffffff83a249fd R09: ffffffff83538f4f
+R10: ffff88809f34a580 R11: 0000000000000004 R12: ffff888096ab4588
+R13: ffff888096ab4500 R14: ffff888096ab4578 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880aea00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000013e4978 CR3: 000000008adb2000 CR4: 00000000001406f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
 ---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-No changes since v1.
-
-This applies to the for-next branch of xfsprogs.
-
- configure.ac          |  1 +
- include/builddefs.in  |  4 ++
- io/encrypt.c          | 90 +++++++++++++++++++++++++++++++------------
- m4/package_libcdev.m4 | 21 ++++++++++
- man/man8/xfs_io.8     | 10 +++--
- 5 files changed, 98 insertions(+), 28 deletions(-)
-
-diff --git a/configure.ac b/configure.ac
-index 5eb7c14b..f9348a0c 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -176,6 +176,7 @@ AC_HAVE_READDIR
- AC_HAVE_FSETXATTR
- AC_HAVE_MREMAP
- AC_NEED_INTERNAL_FSXATTR
-+AC_NEED_INTERNAL_FSCRYPT_ADD_KEY_ARG
- AC_HAVE_GETFSMAP
- AC_HAVE_STATFS_FLAGS
- AC_HAVE_MAP_SYNC
-diff --git a/include/builddefs.in b/include/builddefs.in
-index 4700b527..3b6b1c1b 100644
---- a/include/builddefs.in
-+++ b/include/builddefs.in
-@@ -102,6 +102,7 @@ HAVE_FLS = @have_fls@
- HAVE_FSETXATTR = @have_fsetxattr@
- HAVE_MREMAP = @have_mremap@
- NEED_INTERNAL_FSXATTR = @need_internal_fsxattr@
-+NEED_INTERNAL_FSCRYPT_ADD_KEY_ARG = @need_internal_fscrypt_add_key_arg@
- HAVE_GETFSMAP = @have_getfsmap@
- HAVE_STATFS_FLAGS = @have_statfs_flags@
- HAVE_MAP_SYNC = @have_map_sync@
-@@ -141,6 +142,9 @@ endif
- ifeq ($(NEED_INTERNAL_FSXATTR),yes)
- PCFLAGS+= -DOVERRIDE_SYSTEM_FSXATTR
- endif
-+ifeq ($(NEED_INTERNAL_FSCRYPT_ADD_KEY_ARG),yes)
-+PCFLAGS+= -DOVERRIDE_SYSTEM_FSCRYPT_ADD_KEY_ARG
-+endif
- ifeq ($(HAVE_GETFSMAP),yes)
- PCFLAGS+= -DHAVE_GETFSMAP
- endif
-diff --git a/io/encrypt.c b/io/encrypt.c
-index de48c50c..01b7e0df 100644
---- a/io/encrypt.c
-+++ b/io/encrypt.c
-@@ -4,6 +4,9 @@
-  * Author: Eric Biggers <ebiggers@google.com>
-  */
- 
-+#ifdef OVERRIDE_SYSTEM_FSCRYPT_ADD_KEY_ARG
-+#  define fscrypt_add_key_arg sys_fscrypt_add_key_arg
-+#endif
- #include "platform_defs.h"
- #include "command.h"
- #include "init.h"
-@@ -99,13 +102,7 @@ struct fscrypt_key_specifier {
- 	} u;
- };
- 
--#define FS_IOC_ADD_ENCRYPTION_KEY		_IOWR('f', 23, struct fscrypt_add_key_arg)
--struct fscrypt_add_key_arg {
--	struct fscrypt_key_specifier key_spec;
--	__u32 raw_size;
--	__u32 __reserved[9];
--	__u8 raw[];
--};
-+/* FS_IOC_ADD_ENCRYPTION_KEY is defined later */
- 
- #define FS_IOC_REMOVE_ENCRYPTION_KEY		_IOWR('f', 24, struct fscrypt_remove_key_arg)
- #define FS_IOC_REMOVE_ENCRYPTION_KEY_ALL_USERS	_IOWR('f', 25, struct fscrypt_remove_key_arg)
-@@ -136,6 +133,26 @@ struct fscrypt_get_key_status_arg {
- 
- #endif /* !FS_IOC_GET_ENCRYPTION_POLICY_EX */
- 
-+/*
-+ * Since the key_id field was added later than struct fscrypt_add_key_arg
-+ * itself, we may need to override the system definition to get that field.
-+ */
-+#if !defined(FS_IOC_ADD_ENCRYPTION_KEY) || \
-+	defined(OVERRIDE_SYSTEM_FSCRYPT_ADD_KEY_ARG)
-+#undef fscrypt_add_key_arg
-+struct fscrypt_add_key_arg {
-+	struct fscrypt_key_specifier key_spec;
-+	__u32 raw_size;
-+	__u32 key_id;
-+	__u32 __reserved[8];
-+	__u8 raw[];
-+};
-+#endif
-+
-+#ifndef FS_IOC_ADD_ENCRYPTION_KEY
-+#  define FS_IOC_ADD_ENCRYPTION_KEY		_IOWR('f', 23, struct fscrypt_add_key_arg)
-+#endif
-+
- static const struct {
- 	__u8 mode;
- 	const char *name;
-@@ -217,8 +234,9 @@ add_enckey_help(void)
- " 'add_enckey' - add key for v2 policies\n"
- " 'add_enckey -d 0000111122223333' - add key for v1 policies w/ given descriptor\n"
- "\n"
--"The key in binary is read from standard input.\n"
-+"Unless -k is given, the key in binary is read from standard input.\n"
- " -d DESCRIPTOR -- master_key_descriptor\n"
-+" -k KEY_ID -- ID of fscrypt-provisioning key containing the raw key\n"
- "\n"));
- }
- 
-@@ -431,6 +449,21 @@ str2keyspec(const char *str, int policy_version,
- 	return policy_version;
- }
- 
-+static int
-+parse_key_id(const char *arg)
-+{
-+	long value;
-+	char *tmp;
-+
-+	value = strtol(arg, &tmp, 0);
-+	if (value <= 0 || value > INT_MAX || tmp == arg || *tmp != '\0') {
-+		fprintf(stderr, _("invalid key ID: %s\n"), arg);
-+		/* 0 is never a valid Linux key ID. */
-+		return 0;
-+	}
-+	return value;
-+}
-+
- static void
- test_for_v2_policy_support(void)
- {
-@@ -689,13 +722,18 @@ add_enckey_f(int argc, char **argv)
- 
- 	arg->key_spec.type = FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER;
- 
--	while ((c = getopt(argc, argv, "d:")) != EOF) {
-+	while ((c = getopt(argc, argv, "d:k:")) != EOF) {
- 		switch (c) {
- 		case 'd':
- 			arg->key_spec.type = FSCRYPT_KEY_SPEC_TYPE_DESCRIPTOR;
- 			if (!str2keydesc(optarg, arg->key_spec.u.descriptor))
- 				goto out;
- 			break;
-+		case 'k':
-+			arg->key_id = parse_key_id(optarg);
-+			if (arg->key_id == 0)
-+				goto out;
-+			break;
- 		default:
- 			retval = command_usage(&add_enckey_cmd);
- 			goto out;
-@@ -709,21 +747,23 @@ add_enckey_f(int argc, char **argv)
- 		goto out;
- 	}
- 
--	raw_size = read_until_limit_or_eof(STDIN_FILENO, arg->raw,
--					   FSCRYPT_MAX_KEY_SIZE + 1);
--	if (raw_size < 0) {
--		fprintf(stderr, _("Error reading key from stdin: %s\n"),
--			strerror(errno));
--		exitcode = 1;
--		goto out;
--	}
--	if (raw_size > FSCRYPT_MAX_KEY_SIZE) {
--		fprintf(stderr,
--			_("Invalid key; got > FSCRYPT_MAX_KEY_SIZE (%d) bytes on stdin!\n"),
--			FSCRYPT_MAX_KEY_SIZE);
--		goto out;
--	}
--	arg->raw_size = raw_size;
-+	if (arg->key_id == 0) {
-+		raw_size = read_until_limit_or_eof(STDIN_FILENO, arg->raw,
-+						   FSCRYPT_MAX_KEY_SIZE + 1);
-+		if (raw_size < 0) {
-+			fprintf(stderr, _("Error reading key from stdin: %s\n"),
-+				strerror(errno));
-+			exitcode = 1;
-+			goto out;
-+		}
-+		if (raw_size > FSCRYPT_MAX_KEY_SIZE) {
-+			fprintf(stderr,
-+				_("Invalid key; got > FSCRYPT_MAX_KEY_SIZE (%d) bytes on stdin!\n"),
-+				FSCRYPT_MAX_KEY_SIZE);
-+			goto out;
-+		}
-+		arg->raw_size = raw_size;
-+	} /* else, raw key is given via key with ID 'key_id' */
- 
- 	if (ioctl(file->fd, FS_IOC_ADD_ENCRYPTION_KEY, arg) != 0) {
- 		fprintf(stderr, _("Error adding encryption key: %s\n"),
-@@ -859,7 +899,7 @@ encrypt_init(void)
- 
- 	add_enckey_cmd.name = "add_enckey";
- 	add_enckey_cmd.cfunc = add_enckey_f;
--	add_enckey_cmd.args = _("[-d descriptor]");
-+	add_enckey_cmd.args = _("[-d descriptor] [-k key_id]");
- 	add_enckey_cmd.argmin = 0;
- 	add_enckey_cmd.argmax = -1;
- 	add_enckey_cmd.flags = CMD_NOMAP_OK | CMD_FOREIGN_OK;
-diff --git a/m4/package_libcdev.m4 b/m4/package_libcdev.m4
-index 2c0c72ce..adab9bb9 100644
---- a/m4/package_libcdev.m4
-+++ b/m4/package_libcdev.m4
-@@ -278,6 +278,27 @@ AC_DEFUN([AC_NEED_INTERNAL_FSXATTR],
-     AC_SUBST(need_internal_fsxattr)
-   ])
- 
-+#
-+# Check if we need to override the system struct fscrypt_add_key_arg
-+# with the internal definition.  This /only/ happens if the system
-+# actually defines struct fscrypt_add_key_arg /and/ the system
-+# definition is missing certain fields.
-+#
-+AC_DEFUN([AC_NEED_INTERNAL_FSCRYPT_ADD_KEY_ARG],
-+  [
-+    AC_CHECK_TYPE(struct fscrypt_add_key_arg,
-+      [
-+        AC_CHECK_MEMBER(struct fscrypt_add_key_arg.key_id,
-+          ,
-+          need_internal_fscrypt_add_key_arg=yes,
-+          [#include <linux/fs.h>]
-+        )
-+      ],,
-+      [#include <linux/fs.h>]
-+    )
-+    AC_SUBST(need_internal_fscrypt_add_key_arg)
-+  ])
-+
- #
- # Check if we have a FS_IOC_GETFSMAP ioctl (Linux)
- #
-diff --git a/man/man8/xfs_io.8 b/man/man8/xfs_io.8
-index f5431a8c..b9dcc312 100644
---- a/man/man8/xfs_io.8
-+++ b/man/man8/xfs_io.8
-@@ -749,10 +749,10 @@ Test whether v2 encryption policies are supported.  Prints "supported",
- .RE
- .PD
- .TP
--.BI "add_enckey [ \-d " descriptor " ]"
-+.BI "add_enckey [ \-d " descriptor " ] [ \-k " key_id " ]"
- On filesystems that support encryption, add an encryption key to the filesystem
--containing the currently open file.  The key in binary (typically 64 bytes long)
--is read from standard input.
-+containing the currently open file.  By default, the raw key in binary
-+(typically 64 bytes long) is read from standard input.
- .RS 1.0i
- .PD 0
- .TP 0.4i
-@@ -761,6 +761,10 @@ key descriptor, as a 16-character hex string (8 bytes).  If given, the key will
- be available for use by v1 encryption policies that use this descriptor.
- Otherwise, the key is added as a v2 policy key, and on success the resulting
- "key identifier" will be printed.
-+.TP
-+.BI \-k " key_id"
-+ID of kernel keyring key of type "fscrypt-provisioning".  If given, the raw key
-+will be taken from here rather than from standard input.
- .RE
- .PD
- .TP
--- 
-2.25.0.341.g760bfbb309-goog
-
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
