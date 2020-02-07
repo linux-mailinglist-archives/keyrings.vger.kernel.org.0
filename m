@@ -2,52 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEBEA155EAF
-	for <lists+keyrings@lfdr.de>; Fri,  7 Feb 2020 20:41:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FD0155FA7
+	for <lists+keyrings@lfdr.de>; Fri,  7 Feb 2020 21:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726988AbgBGTl0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 7 Feb 2020 14:41:26 -0500
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:36581 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726974AbgBGTl0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Feb 2020 14:41:26 -0500
-Received: by mail-ed1-f68.google.com with SMTP id j17so785119edp.3
-        for <keyrings@vger.kernel.org>; Fri, 07 Feb 2020 11:41:24 -0800 (PST)
+        id S1727012AbgBGUhn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 7 Feb 2020 15:37:43 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:46796 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727005AbgBGUhn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Feb 2020 15:37:43 -0500
+Received: by mail-oi1-f193.google.com with SMTP id a22so3242195oid.13
+        for <keyrings@vger.kernel.org>; Fri, 07 Feb 2020 12:37:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=CU0hcm599VeKz+MaDz3Ty58MbaVOgPyaYdCLMGU3tME=;
-        b=Mi5VElDWVljdyI5CHDP7dsJdtJAn6jay0uMbLh0VRClHyyJu8HRGJ/8VndYsqbISCn
-         BjVewoDJDFDzZADIio5nl1QgEFxK+RAdT7gZHaa21WfkIJ9aXGh1ur1GaEJZ9sXi58y4
-         zaQeYE3Sh5sf9wjyl1dQc3m1NrvJaYi4foay2nENyrILkIrSj4k02Gq+hg2E6tAr1gDb
-         nsmlDgTHcQiHM33D+k5ebMOWWl1ddRmFOGrS3lIox3WmNObGBna3ryKrIxjz88wYDbYI
-         OmfV/qLUaZ9tnaNXkeE5qPm2RXOw0CSGyWZ6H6kEChRD84P+bQ5UrnYieD3dheIN9qVx
-         ZRRQ==
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=FErTZTAVQXi/ldBSL1zAtuEdomaT123QMnQlpqBO2pn+XtZcoh9qxQhq3S4KCqXUVb
+         phxG0Yr5RHP0O/fLD6Wl1yK/ZdLyeHQpPOqpffSF62LdfRidMWt8g2uY51f2/TJEcEgd
+         8EQfT1mR1OMBIiJAaJjIr0JzYow/dOC3tNFpipHnd4MnP0L0mzR1e8HophWae0IGAqDx
+         DdHDNzhVmJwRWwiPNutOcCQHrvrsQIwhcQyMjV3u5p40rGRsWy8qtCjyVSl45fafC8aZ
+         c0VlAcYNRpp6hgeCfWVHNnuOSUFQbICxdlpv6GCL+dVx6/yLt8wpQHyWBQyGqF1Zk77L
+         8Msg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=CU0hcm599VeKz+MaDz3Ty58MbaVOgPyaYdCLMGU3tME=;
-        b=PmzG7S4tReflmZ7ZOnq0jFdBGTvHrsXAG3dYaL++a2S8zq6d5gb9S2Vx1AyAWvmDT3
-         bHRHmVyBKYFY9aJ5E9BJKEAxqW+s3h7SQBiFQndj/iSGK6xdBgGKGZmIu28Wwh/sc2eJ
-         2hRgUQ9DXaWgCpFK3r3g+6qRw524A0tZTPNnu4ESioVh/N7vcei8CTJ/QpYBrIhC0U0W
-         X6ox5MwJaj2ZgRc1t737Igz3Iu3D6fCxdxhP/dNBmyS2nrLIAZt54xLIvB8moJtM4nDz
-         oJs4YfcbTnhe00ztcdwd0c5KMc625BhYbQPwsOYI75XKLcS/E4w6sRhK7N2ZKjqRa/GN
-         1xtw==
-X-Gm-Message-State: APjAAAUWqGIK3nBjAcEGeGtkGjAS1I73RPYyV1h4M5DFOC9TXdHcqaPG
-        MmnVZYYOo1Z0D7YjTDKgXATqLNegr5b9CQi/dwe4BidM
-X-Google-Smtp-Source: APXvYqx+Il/zxPDcbCdvdeuCh+6SFpX5/wH4ZKYGoyr9dUjya0QD0HxBl3YXoh1KxTSQy3yKY8Gi4bV3pUlFf0fM0Uo=
-X-Received: by 2002:a17:906:eb91:: with SMTP id mh17mr860921ejb.54.1581104484194;
- Fri, 07 Feb 2020 11:41:24 -0800 (PST)
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=hnAzIQx5Xal156Eds5UiJzCIldRIuYc91gI4ITA44cbYZgXO9Bc1uZLAn1PcNmdabR
+         0gJhmUcRhKB6dh1zV5d0q9Nv2JRdTxTLx5VAhZiWfBZI7RjeFLytRdUwI1Y7Xbw9ja+6
+         6l7OByWJy7Yr1NhR6Rc1iXIcOeiuoNgDYtGqFG+GLmkPipULmStNydl2+Nq/XvIer3nD
+         y010WKMCHMiR9+3Gc+xBdx43n/tME8d9AVauW6YDxZSdcvTA9K+OTEPdTMS/SmeBOB53
+         U/DuffoUWBrVvc7FlYJ/xlCyiRA58lwxaUkgjpCz23trU2a0dQ7S9x99pVxVOSEbOoAu
+         5leQ==
+X-Gm-Message-State: APjAAAUkws9/tbtEeWqazDSI7xw2bgyv93/rOhrHyO/3TzqGFzVb3RA+
+        bXuGta8kmQlW9YgiC7SugmBLdXOBwO2aNmDXkMA=
+X-Google-Smtp-Source: APXvYqzMFQVUcz6RwIAdtQLxPzqwXGFqAunDRRJbjNNiM4opKycCdWXhvtKPsT78P6wT7l5ILe1ic9Rbze05h5pJwZ0=
+X-Received: by 2002:aca:4d06:: with SMTP id a6mr3368360oib.27.1581107861179;
+ Fri, 07 Feb 2020 12:37:41 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a17:906:8053:0:0:0:0 with HTTP; Fri, 7 Feb 2020 11:41:23
- -0800 (PST)
-Reply-To: westernunion.benin982@gmail.com
-From:   western union benin <currency1000000@gmail.com>
-Date:   Fri, 7 Feb 2020 20:41:23 +0100
-Message-ID: <CAPqfnSFTD_GpkeRMwtMevQa5JRbNeVnLRySvCYbN27jw3BAWqg@mail.gmail.com>
-Subject: Did you authorized this woman called,Mrs Sheryl May to receive your
- payment funds $12.8Million US Dollars from this office?
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:37:40 -0800 (PST)
+Reply-To: auch197722@gmail.com
+From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date:   Fri, 7 Feb 2020 15:37:40 -0500
+Message-ID: <CAPNvSTiQCz4Q0OvHzfTF7qRZgWPqpXcmi8OMyQAxxd=QWTK_ug@mail.gmail.com>
+Subject: LETTER OF INQUIRY
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
@@ -55,14 +53,20 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Attn Dear.
+Good Day,
 
-Did you authorized this woman called,Mrs Sheryl May to receive your
-payment funds $12.8Million US Dollars from this office?
-Let me know urgent, this woman stated you are very ill and she want to
-receive the funds on your behalf,
-please i want to confirm from you before i can release your funds to
-her. Where is the transfer fee of $25.00 which i asked you to send?
-God bless you
-Dr. Mrs Mary J. Mathew
-Dir-Western Union Benin Republic
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
+
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
+
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
+
+Regards
+Theophilus Odadudu
