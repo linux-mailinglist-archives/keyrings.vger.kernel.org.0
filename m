@@ -2,71 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51FD0155FA7
-	for <lists+keyrings@lfdr.de>; Fri,  7 Feb 2020 21:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5852156F61
+	for <lists+keyrings@lfdr.de>; Mon, 10 Feb 2020 07:11:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbgBGUhn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 7 Feb 2020 15:37:43 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46796 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727005AbgBGUhn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Feb 2020 15:37:43 -0500
-Received: by mail-oi1-f193.google.com with SMTP id a22so3242195oid.13
-        for <keyrings@vger.kernel.org>; Fri, 07 Feb 2020 12:37:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=FErTZTAVQXi/ldBSL1zAtuEdomaT123QMnQlpqBO2pn+XtZcoh9qxQhq3S4KCqXUVb
-         phxG0Yr5RHP0O/fLD6Wl1yK/ZdLyeHQpPOqpffSF62LdfRidMWt8g2uY51f2/TJEcEgd
-         8EQfT1mR1OMBIiJAaJjIr0JzYow/dOC3tNFpipHnd4MnP0L0mzR1e8HophWae0IGAqDx
-         DdHDNzhVmJwRWwiPNutOcCQHrvrsQIwhcQyMjV3u5p40rGRsWy8qtCjyVSl45fafC8aZ
-         c0VlAcYNRpp6hgeCfWVHNnuOSUFQbICxdlpv6GCL+dVx6/yLt8wpQHyWBQyGqF1Zk77L
-         8Msg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=hnAzIQx5Xal156Eds5UiJzCIldRIuYc91gI4ITA44cbYZgXO9Bc1uZLAn1PcNmdabR
-         0gJhmUcRhKB6dh1zV5d0q9Nv2JRdTxTLx5VAhZiWfBZI7RjeFLytRdUwI1Y7Xbw9ja+6
-         6l7OByWJy7Yr1NhR6Rc1iXIcOeiuoNgDYtGqFG+GLmkPipULmStNydl2+Nq/XvIer3nD
-         y010WKMCHMiR9+3Gc+xBdx43n/tME8d9AVauW6YDxZSdcvTA9K+OTEPdTMS/SmeBOB53
-         U/DuffoUWBrVvc7FlYJ/xlCyiRA58lwxaUkgjpCz23trU2a0dQ7S9x99pVxVOSEbOoAu
-         5leQ==
-X-Gm-Message-State: APjAAAUkws9/tbtEeWqazDSI7xw2bgyv93/rOhrHyO/3TzqGFzVb3RA+
-        bXuGta8kmQlW9YgiC7SugmBLdXOBwO2aNmDXkMA=
-X-Google-Smtp-Source: APXvYqzMFQVUcz6RwIAdtQLxPzqwXGFqAunDRRJbjNNiM4opKycCdWXhvtKPsT78P6wT7l5ILe1ic9Rbze05h5pJwZ0=
-X-Received: by 2002:aca:4d06:: with SMTP id a6mr3368360oib.27.1581107861179;
- Fri, 07 Feb 2020 12:37:41 -0800 (PST)
+        id S1726227AbgBJGKz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 Feb 2020 01:10:55 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:37068 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726188AbgBJGKz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 10 Feb 2020 01:10:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+        From:Date:Sender:Reply-To:Content-ID:Content-Description;
+        bh=goUY2avRCYVAek7mCPEP6D9VvLCgLAVwzsr5XSoA9jI=; b=fCcxVNrKPFdXDSKhgC67R9+Gay
+        OPRuRD3lNe+D7m3D1M+6TCJG3HdpOC960ObyRUJghTHBcs5tnFLz3O3/jHYR58G9IoCl4NUTrYzkL
+        f9Bzz+TWoY6hibjVzfc0OrEeUBOQDYobAQ80+PaPp4ySQ4ZJi/pHVF41MjEumEU3UJhTSvbqkxG5H
+        Qsg89Z+AqdUEBI5FLIfdYeG3X4IXYyjk1HBc78/GYWhQuV/tS0R+PGWaXofxlkWEBkCmOpC81/JPR
+        CEGJjzOxoijWHqxapJT/aEva0/UljFlkYIhiPL/QsDJ0p0W3I2vCUdwYQLF0EJ5LA6v/qFPPpnSF1
+        kdMGLLbw==;
+Received: from [80.156.29.194] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1j12HT-0000wc-Dz; Mon, 10 Feb 2020 06:10:52 +0000
+Date:   Mon, 10 Feb 2020 07:10:47 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Ben Boeckel <mathstuf@gmail.com>
+Cc:     list.lkml.keyrings@me.benboeckel.net,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        David Howells <dhowells@redhat.com>,
+        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+        keyrings@vger.kernel.org
+Subject: Re: [PATCH 02/11] docs: crypto: convert asymmetric-keys.txt to ReST
+Message-ID: <20200210071047.0db3f3a6@kernel.org>
+In-Reply-To: <20200206200911.GA2830394@erythro.kitware.com>
+References: <cover.1581001737.git.mchehab+huawei@kernel.org>
+        <1b6cd1da02dda27a725a6c4214019a1e306a7927.1581001737.git.mchehab+huawei@kernel.org>
+        <20200206200911.GA2830394@erythro.kitware.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:37:40 -0800 (PST)
-Reply-To: auch197722@gmail.com
-From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
-Date:   Fri, 7 Feb 2020 15:37:40 -0500
-Message-ID: <CAPNvSTiQCz4Q0OvHzfTF7qRZgWPqpXcmi8OMyQAxxd=QWTK_ug@mail.gmail.com>
-Subject: LETTER OF INQUIRY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Good Day,
+Em Thu, 6 Feb 2020 15:09:11 -0500
+Ben Boeckel <mathstuf@gmail.com> escreveu:
 
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
+> On Thu, Feb 06, 2020 at 16:11:21 +0100, Mauro Carvalho Chehab wrote:
+> > - (1) If the criterion string is of the form "id:<hexdigits>" then the =
+match
+> > +  1) If the criterion string is of the form "id:<hexdigits>" then the =
+match =20
+>=20
+> This update was followed in all the enumeration changes except=E2=80=A6
+>=20
+> > - (2) If the criterion string is of the form "<subtype>:<hexdigits>" th=
+en the
+> > + 2) If the criterion string is of the form "<subtype>:<hexdigits>" the=
+n the =20
+>=20
+> The whitespace here doesn't match up. Which is preferred?
 
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
+That was a mistake.
 
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
+>=20
+> > - (1) Signature verification.
+> > +1) Signature verification. =20
+>=20
+> Here, the indentation was lost too. Is this intentional?
 
-Regards
-Theophilus Odadudu
+Both ways would work. I'll keep the original indentation for the next
+version. Thanks for pointing it.
+
+Cheers,
+Mauro
