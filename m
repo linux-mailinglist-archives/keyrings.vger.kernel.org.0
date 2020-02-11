@@ -2,83 +2,167 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5852156F61
-	for <lists+keyrings@lfdr.de>; Mon, 10 Feb 2020 07:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4791587AC
+	for <lists+keyrings@lfdr.de>; Tue, 11 Feb 2020 02:06:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbgBJGKz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 10 Feb 2020 01:10:55 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:37068 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726188AbgBJGKz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 10 Feb 2020 01:10:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
-        From:Date:Sender:Reply-To:Content-ID:Content-Description;
-        bh=goUY2avRCYVAek7mCPEP6D9VvLCgLAVwzsr5XSoA9jI=; b=fCcxVNrKPFdXDSKhgC67R9+Gay
-        OPRuRD3lNe+D7m3D1M+6TCJG3HdpOC960ObyRUJghTHBcs5tnFLz3O3/jHYR58G9IoCl4NUTrYzkL
-        f9Bzz+TWoY6hibjVzfc0OrEeUBOQDYobAQ80+PaPp4ySQ4ZJi/pHVF41MjEumEU3UJhTSvbqkxG5H
-        Qsg89Z+AqdUEBI5FLIfdYeG3X4IXYyjk1HBc78/GYWhQuV/tS0R+PGWaXofxlkWEBkCmOpC81/JPR
-        CEGJjzOxoijWHqxapJT/aEva0/UljFlkYIhiPL/QsDJ0p0W3I2vCUdwYQLF0EJ5LA6v/qFPPpnSF1
-        kdMGLLbw==;
-Received: from [80.156.29.194] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1j12HT-0000wc-Dz; Mon, 10 Feb 2020 06:10:52 +0000
-Date:   Mon, 10 Feb 2020 07:10:47 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Ben Boeckel <mathstuf@gmail.com>
-Cc:     list.lkml.keyrings@me.benboeckel.net,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        David Howells <dhowells@redhat.com>,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH 02/11] docs: crypto: convert asymmetric-keys.txt to ReST
-Message-ID: <20200210071047.0db3f3a6@kernel.org>
-In-Reply-To: <20200206200911.GA2830394@erythro.kitware.com>
-References: <cover.1581001737.git.mchehab+huawei@kernel.org>
-        <1b6cd1da02dda27a725a6c4214019a1e306a7927.1581001737.git.mchehab+huawei@kernel.org>
-        <20200206200911.GA2830394@erythro.kitware.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1727518AbgBKBF5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 Feb 2020 20:05:57 -0500
+Received: from wnew1-smtp.messagingengine.com ([64.147.123.26]:55373 "EHLO
+        wnew1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727505AbgBKBF4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 10 Feb 2020 20:05:56 -0500
+X-Greylist: delayed 566 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 Feb 2020 20:05:56 EST
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailnew.west.internal (Postfix) with ESMTP id 7842D616;
+        Mon, 10 Feb 2020 19:56:29 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Mon, 10 Feb 2020 19:56:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=BRKC1Q2crlqSmyJltbGVPx60D4o
+        E6HR1IKWysJB/xmk=; b=V3Z2D62h2p2geUkz1ivzOU/STOqjNIPDn0Nt4X8KrWs
+        4cRhPbM20kAxyZv9un1daHYw7TZcAFobebmYpWwbsPrlSx65MTLayVDjc2ftUdUG
+        QlggkEtUJfgvdz/dqgwl5KtAaTe3u+Fq3h2f6V6H2uGpvkNDs22Ws3QFNy2lNheY
+        FPImjQhi1NTxyzo2eLpHf92QARyUyj3UislevoqCP6YE6O6wjT9KeTWuiV7DYBiX
+        qRLDp7xScsr6zc/BsX9YVZsQFx33Jqb/yqGXKTFePJDE31NHzbGhw3DfdeES7djf
+        LokYUWl9dq/Wh7LCYGbpKc84fyZtueqRlZN28wL7LFA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=BRKC1Q
+        2crlqSmyJltbGVPx60D4oE6HR1IKWysJB/xmk=; b=Htshbs9ypNG6jEppMXTnn8
+        cFsnUxgiqPDZLIKLOH9WeXUfT/cTKOkm+AuDs9XiCgCCQs6Nl7U9Ee2C1YXlxPDi
+        Tla4D8TMbNoq1qMQOtVkL2ld45vD//jVug62+vNcuPkri0rr8voQrImeXh3OkOAa
+        q+bKUXbREfMMcx+voJkooztPI8hVFOyRshBkvEaBxgSnh/D3i8i8KQavbrstjdFz
+        XVpmeh5y+R5AxP+ECB7oX7Tfq3WmP/W+h1WP3m6KRUOUo9WvLdG4Z+7WxL/ON6Lr
+        GrXPKA43zlm+x56y0LWVCf/n03I89pg6FJmqca+oFg5yZIsC6t0KkzT9COS59taw
+        ==
+X-ME-Sender: <xms:vPtBXtyM2ztfKtemdxr7di2FeyiO9JOs3htTwSwNHghvmtIhZwcc8Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedriedvgddvjecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughrvghs
+    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuffhomhgrih
+    hnpehkvghrnhgvlhdrohhrghenucfkphepieejrdduiedtrddvudejrddvhedtnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvghsse
+    grnhgrrhgriigvlhdruggv
+X-ME-Proxy: <xmx:vPtBXkDqDa_oJdxnD02XP-QYN1Ilt1u5O2NAOpBQ5LLs3ReOgDO7KQ>
+    <xmx:vPtBXgJKwvzzk7kOkz32scZWplNg74F2fWtyqKFCro9Lx1Gl7E8DUA>
+    <xmx:vPtBXkN8kIb0XEZTbwinLnIgrFzIOEf9tuxSbfDNeY_qTHXCN_aI-g>
+    <xmx:vftBXmRMXBgZM7LgwQFLrSWk-w66oJWQUE8irDhrWy7-U2xTHvoIvPHm41A>
+Received: from intern.anarazel.de (c-67-160-217-250.hsd1.ca.comcast.net [67.160.217.250])
+        by mail.messagingengine.com (Postfix) with ESMTPA id DB4F03060840;
+        Mon, 10 Feb 2020 19:56:27 -0500 (EST)
+Date:   Mon, 10 Feb 2020 16:56:26 -0800
+From:   Andres Freund <andres@anarazel.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Ian Kent <raven@themaw.net>,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 00/14] pipe: Keyrings, Block and USB notifications
+ [ver #3]
+Message-ID: <20200211005626.7yqjf5rbs3vbwagd@alap3.anarazel.de>
+References: <157909503552.20155.3030058841911628518.stgit@warthog.procyon.org.uk>
+ <CAHk-=wjrrOgznCy3yUmcmQY1z_7vXVr6GbvKiy8cLvWbxpmzcw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjrrOgznCy3yUmcmQY1z_7vXVr6GbvKiy8cLvWbxpmzcw@mail.gmail.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Em Thu, 6 Feb 2020 15:09:11 -0500
-Ben Boeckel <mathstuf@gmail.com> escreveu:
+Hi,
 
-> On Thu, Feb 06, 2020 at 16:11:21 +0100, Mauro Carvalho Chehab wrote:
-> > - (1) If the criterion string is of the form "id:<hexdigits>" then the =
-match
-> > +  1) If the criterion string is of the form "id:<hexdigits>" then the =
-match =20
->=20
-> This update was followed in all the enumeration changes except=E2=80=A6
->=20
-> > - (2) If the criterion string is of the form "<subtype>:<hexdigits>" th=
-en the
-> > + 2) If the criterion string is of the form "<subtype>:<hexdigits>" the=
-n the =20
->=20
-> The whitespace here doesn't match up. Which is preferred?
+I only just now noticed this work after Dave Chinner pointed towards the
+feature in the email leading to
+https://lore.kernel.org/linux-fsdevel/20200211000405.5fohxgpt554gmnhu@alap3.anarazel.de/
 
-That was a mistake.
+On 2020-01-15 12:10:32 -0800, Linus Torvalds wrote:
+> So I no longer hate the implementation, but I do want to see the
+> actual user space users come out of the woodwork and try this out for
+> their use cases.
 
->=20
-> > - (1) Signature verification.
-> > +1) Signature verification. =20
->=20
-> Here, the indentation was lost too. Is this intentional?
+Postgres has been looking for something roughly like this, fwiw (or
+well, been forced to).
 
-Both ways would work. I'll keep the original indentation for the next
-version. Thanks for pointing it.
+While it's better than it used to be (due to b4678df184b3), we still
+have problems to reliably detect buffered IO errors, especially when
+done across multiple processes.  We can't easily keep an fd open that
+predates all writes to a file until, and ensure that fsyncs will happen
+only on that fd. The primary reasons for that are
+1) every connection (& some internal jobs) is a process, and neither do
+want to to fsyncing each touched file in short-lived connections, nor is
+it desirable to have to add the complication of having to transfer fds
+between processes just to reliably get an error in fsync().
+2) we have to cope with having more files open than allowed, so we have
+a layer that limits the number of OS level FDs open at the same time. We
+don't want to fsync whenever we have to juggle open fds though, as
+that'd be too costly.
 
-Cheers,
-Mauro
+So it'd good to have a way to *reliably* know when writeback io failed,
+so we can abort a checkpoint if necessary, and instead perform journal
+replay.
+
+
+For our purposes we'd probably want errors on the fs/superblock level,
+rather than block devices. It's not always easy to map between blockdevs
+and relevant filesystems, there are errors above the block layer, and we
+definitely don'tt want to crash & restart a database just because
+somebody pulled an USB storage device that didn't have any of the
+database's data on it.
+
+An earlier version of this patchset had some support for that, albeit
+perhaps not fully implemented (no errors raised, afaict?):
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=notifications&id=338eec77a0cb29a7d2ae9350066c1990408ae58e
+
+Is the plan to pick this up again once the basic feature is in?
+
+
+A few notes from the email referenced above (that actually seem to belong
+into this thread more than the other:
+
+1) From the angle of reliably needing to detect writeback errors, I find it
+somewhat concerning that an LSM may end up entirely filtering away error
+notifications, without a consumer being able to detect that:
+
++void __post_watch_notification(struct watch_list *wlist,
++			       struct watch_notification *n,
++			       const struct cred *cred,
++			       u64 id)
++{
+...
++		if (security_post_notification(watch->cred, cred, n) < 0)
++			continue;
+
+It's an unpleasant thought that an overly restrictive [-ly configured]
+LSM could lead to silently swallowing data integrity errors.
+
+2) It'd be good if there were documentation, aimed at userland consumers
+of this, explaining what the delivery guarantees are. To be useful for
+us, it needs to be guaranteed that consuming all notifications ensures
+that there are no pending notifications queued up somewhere (so we can
+do fsync(data); fsync(journal); check_for_errors();
+durable_rename(checkpoint_state.tmp, checkpoint_state);).
+
+3) What will the permission model for accessing the notifications be?
+It seems currently anyone, even within a container/namespace or
+something, will see blockdev errors from everywhere?  The earlier
+superblock support (I'm not sure I like that name btw, hard to
+understand for us userspace folks), seems to have required exec
+permission, but nothing else.
+
+Greetings,
+
+Andres Freund
