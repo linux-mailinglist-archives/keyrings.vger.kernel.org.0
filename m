@@ -2,170 +2,134 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E3916230E
-	for <lists+keyrings@lfdr.de>; Tue, 18 Feb 2020 10:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56458163483
+	for <lists+keyrings@lfdr.de>; Tue, 18 Feb 2020 22:13:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgBRJKg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Feb 2020 04:10:36 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:35180 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbgBRJKg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Feb 2020 04:10:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=gtxCElNvSCXWFICx33F89B+eF/cQ+L9FjqnWYk2rKuI=; b=h/D+gqw5OmQpGOwUjnu/fi4+kH
-        bT0h8EUVx9iIS8HNfPlJzJPk40KKUsFKNf009z67RPKZuDo+88sdToDM6wpb5+YlEa7V9G6OJvFol
-        R8RQl98kwCpA4ooFYQSURvPloAPXb0/KOMWODRXhBfm93RtLstFP639AaaseMhA7rBw6OI8LTEr+J
-        PXc4gR41BMqKLfnINKvS8pLmCqR3uXPMYK/daZvPEV9ynEWBeYzh1jVee6AgvUIOeV700uQ2EOPBg
-        z3vWEhpNHMY0ljZor0m1CokA7zJdOq2gDEs8oPaHQ9a9htLoD+FYLhrx/s8ITQGSuGwynWgVTIITp
-        vszoRJOw==;
-Received: from tmo-109-126.customers.d1-online.com ([80.187.109.126] helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1j3ytn-00046s-Vd; Tue, 18 Feb 2020 09:10:36 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92.3)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1j3j8V-000foa-PM; Mon, 17 Feb 2020 17:20:43 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-arm-kernel@lists.infradead.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-sh@vger.kernel.org,
-        Will Deacon <will@kernel.org>,
-        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
-        linux-crypto@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        keyrings@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        David Howells <dhowells@redhat.com>, linux-pci@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-pm@vger.kernel.org,
-        Javi Merino <javi.merino@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH v2 00/24] Manually convert  thermal, crypto and misc devices to ReST
-Date:   Mon, 17 Feb 2020 17:20:18 +0100
-Message-Id: <cover.1581956285.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.24.1
+        id S1726616AbgBRVND (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Feb 2020 16:13:03 -0500
+Received: from mga01.intel.com ([192.55.52.88]:12302 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726339AbgBRVND (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 18 Feb 2020 16:13:03 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Feb 2020 13:13:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,457,1574150400"; 
+   d="scan'208";a="348765756"
+Received: from unknown (HELO localhost) ([10.252.27.59])
+  by fmsmga001.fm.intel.com with ESMTP; 18 Feb 2020 13:13:00 -0800
+Date:   Tue, 18 Feb 2020 23:12:59 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     dhowells@redhat.com
+Cc:     jmorris@namei.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, serge@hallyn.com
+Subject: Re: kernel BUG at lib/assoc_array.c:LINE!
+Message-ID: <20200218211259.GA19673@linux.intel.com>
+References: <000000000000f4bf93059db8b081@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <000000000000f4bf93059db8b081@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Mon, Feb 03, 2020 at 08:44:11PM -0800, syzbot wrote:
+> Hello, > 
+> syzbot found the following crash on:
+> 
+> HEAD commit:    46d6b7be Merge git://git.kernel.org/pub/scm/linux/kernel/g..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11383a79e00000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=6dda7ccc1e75a63f
+> dashboard link: https://syzkaller.appspot.com/bug?extid=23e14950fa7550d86091
+> compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+> 
+> Unfortunately, I don't have any reproducer for this crash yet.
+> 
+> IMPORTANT: if you fix the bug, please add the following tag to the commit:
+> Reported-by: syzbot+23e14950fa7550d86091@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> kernel BUG at lib/assoc_array.c:652!
+> invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+> CPU: 0 PID: 2778 Comm: kworker/0:37 Not tainted 5.5.0-syzkaller #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+> Workqueue: afs afs_manage_cell
+> RIP: 0010:assoc_array_insert_into_terminal_node lib/assoc_array.c:652 [inline]
+> RIP: 0010:assoc_array_insert+0x2baa/0x2bd0 lib/assoc_array.c:1001
+> Code: 0f 0b e8 a9 64 d4 fd 0f 0b e8 a2 64 d4 fd 0f 0b e8 9b 64 d4 fd 0f 0b e8 94 64 d4 fd 0f 0b e8 8d 64 d4 fd 0f 0b e8 86 64 d4 fd <0f> 0b e8 7f 64 d4 fd 0f 0b e8 78 64 d4 fd 0f 0b e8 71 64 d4 fd 0f
+> RSP: 0018:ffffc900087ff810 EFLAGS: 00010293
+> RAX: ffffffff83a25a7a RBX: 1ffff11012d568af RCX: ffff88809f34a580
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> RBP: ffffc900087ff920 R08: ffffffff83a249fd R09: ffffffff83538f4f
+> R10: ffff88809f34a580 R11: 0000000000000004 R12: ffff888096ab4588
+> R13: ffff888096ab4500 R14: ffff888096ab4578 R15: dffffc0000000000
+> FS:  0000000000000000(0000) GS:ffff8880aea00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000738000 CR3: 0000000054a3b000 CR4: 00000000001406f0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Call Trace:
+>  __key_link_begin+0xfe/0x230 security/keys/keyring.c:1316
+>  construct_alloc_key security/keys/request_key.c:404 [inline]
+>  construct_key_and_link security/keys/request_key.c:499 [inline]
+>  request_key_and_link+0x9b6/0x1680 security/keys/request_key.c:637
+>  request_key_tag+0x53/0x190 security/keys/request_key.c:701
+>  dns_query+0x266/0x6c0 net/dns_resolver/dns_query.c:128
+>  afs_dns_query+0xdd/0x320 fs/afs/addr_list.c:249
+>  afs_update_cell fs/afs/cell.c:391 [inline]
+>  afs_manage_cell+0xda2/0x1500 fs/afs/cell.c:693
+>  process_one_work+0x7f5/0x10f0 kernel/workqueue.c:2264
+>  worker_thread+0xbbc/0x1630 kernel/workqueue.c:2410
+>  kthread+0x332/0x350 kernel/kthread.c:255
+>  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
+> Modules linked in:
+> ---[ end trace 9dabb2deade74362 ]---
+> RIP: 0010:assoc_array_insert_into_terminal_node lib/assoc_array.c:652 [inline]
+> RIP: 0010:assoc_array_insert+0x2baa/0x2bd0 lib/assoc_array.c:1001
+> Code: 0f 0b e8 a9 64 d4 fd 0f 0b e8 a2 64 d4 fd 0f 0b e8 9b 64 d4 fd 0f 0b e8 94 64 d4 fd 0f 0b e8 8d 64 d4 fd 0f 0b e8 86 64 d4 fd <0f> 0b e8 7f 64 d4 fd 0f 0b e8 78 64 d4 fd 0f 0b e8 71 64 d4 fd 0f
+> RSP: 0018:ffffc900087ff810 EFLAGS: 00010293
+> RAX: ffffffff83a25a7a RBX: 1ffff11012d568af RCX: ffff88809f34a580
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> RBP: ffffc900087ff920 R08: ffffffff83a249fd R09: ffffffff83538f4f
+> R10: ffff88809f34a580 R11: 0000000000000004 R12: ffff888096ab4588
+> R13: ffff888096ab4500 R14: ffff888096ab4578 R15: dffffc0000000000
+> FS:  0000000000000000(0000) GS:ffff8880aea00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000013e4978 CR3: 000000008adb2000 CR4: 00000000001406f0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> 
+> 
+> ---
+> This bug is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this bug report. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Manually convert some files from thermal, crypto and misc-devices
-to ReST format.
+The arguments for request_key_and_link() are fairly constrained:
 
-This patch is against linux-next 20200217 tag.
+type == &key_type_dns_resolver
+description == "afsdb:<cell name>"
+domain_tag == net->key_domain
+callout_info == "srv=1"
+callout_len == 5
+aux == NULL
+dest_keyring == NULL
+flags == KEY_ALLOC_IN_QUOTA
 
-v2: 
+(manually resolved)
 
-- a small change at patch 2 to avoid uneeded whitespace changes;
-- added 13 new patches at the end
+The only obvious moving part I see is the key type implementatio i.e.
+net/dns_resolver/dns_key.c.
 
-Mauro Carvalho Chehab (24):
-  docs: thermal: convert cpu-idle-cooling.rst to ReST
-  docs: crypto: convert asymmetric-keys.txt to ReST
-  docs: crypto: convert api-intro.txt to ReST format
-  docs: crypto: convert async-tx-api.txt to ReST format
-  docs: crypto: descore-readme.txt: convert to ReST format
-  docs: misc-devices/spear-pcie-gadget.txt: convert to ReST
-  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
-  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
-  docs: misc-devices/c2port.txt: convert to ReST format
-  docs: misc-devices/bh1770glc.txt: convert to ReST
-  docs: misc-devices/apds990x.txt: convert to ReST format
-  docs: pci: endpoint/function/binding/pci-test.txt convert to ReST
-  docs: arm64: convert perf.txt to ReST format
-  docs: cpu-freq: convert index.txt to ReST
-  docs: cpu-freq: convert amd-powernow.txt to ReST
-  docs: cpu-freq: convert core.txt to ReST
-  docs: cpu-freq: convert cpu-drivers.txt to ReST
-  docs: cpu-freq: convert cpufreq-nforce2.txt to ReST
-  docs: cpu-freq: convert cpufreq-stats.txt to ReST
-  docs: cpu-freq: convert pcc-cpufreq.txt to ReST
-  docs: powerpc: convert vcpudispatch_stats.txt to ReST
-  docs: sh: convert new-machine.txt to ReST
-  docs: sh: convert register-banks.txt to ReST
-  docs: trace: ring-buffer-design.txt: convert to ReST format
-
- .../endpoint/function/binding/pci-test.rst    |  26 +
- .../endpoint/function/binding/pci-test.txt    |  19 -
- Documentation/PCI/endpoint/index.rst          |   2 +
- Documentation/arm64/index.rst                 |   1 +
- Documentation/arm64/{perf.txt => perf.rst}    |   7 +-
- .../{amd-powernow.txt => amd-powernow.rst}    |  12 +-
- Documentation/cpu-freq/{core.txt => core.rst} |  65 +-
- .../{cpu-drivers.txt => cpu-drivers.rst}      | 129 ++-
- ...pufreq-nforce2.txt => cpufreq-nforce2.rst} |  18 +-
- .../{cpufreq-stats.txt => cpufreq-stats.rst}  | 121 +--
- Documentation/cpu-freq/index.rst              |  42 +
- Documentation/cpu-freq/index.txt              |  56 --
- .../{pcc-cpufreq.txt => pcc-cpufreq.rst}      |  86 +-
- .../crypto/{api-intro.txt => api-intro.rst}   | 186 ++--
- ...symmetric-keys.txt => asymmetric-keys.rst} |  91 +-
- .../{async-tx-api.txt => async-tx-api.rst}    | 253 +++---
- ...{descore-readme.txt => descore-readme.rst} | 152 +++-
- Documentation/crypto/index.rst                |   5 +
- .../driver-api/thermal/cpu-idle-cooling.rst   |  18 +-
- Documentation/driver-api/thermal/index.rst    |   1 +
- Documentation/index.rst                       |   1 +
- .../{ad525x_dpot.txt => ad525x_dpot.rst}      |  24 +-
- .../{apds990x.txt => apds990x.rst}            |  31 +-
- .../{bh1770glc.txt => bh1770glc.rst}          |  45 +-
- .../misc-devices/{c2port.txt => c2port.rst}   |  58 +-
- Documentation/misc-devices/index.rst          |   6 +
- .../misc-devices/pci-endpoint-test.rst        |  56 ++
- .../misc-devices/pci-endpoint-test.txt        |  41 -
- .../misc-devices/spear-pcie-gadget.rst        | 170 ++++
- .../misc-devices/spear-pcie-gadget.txt        | 130 ---
- Documentation/powerpc/index.rst               |   1 +
- ...patch_stats.txt => vcpudispatch_stats.rst} |  17 +-
- Documentation/sh/index.rst                    |   6 +
- .../sh/{new-machine.txt => new-machine.rst}   | 193 +++--
- ...{register-banks.txt => register-banks.rst} |  12 +-
- Documentation/trace/index.rst                 |   1 +
- ...ffer-design.txt => ring-buffer-design.rst} | 802 ++++++++++--------
- 37 files changed, 1603 insertions(+), 1281 deletions(-)
- create mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.rst
- delete mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.txt
- rename Documentation/arm64/{perf.txt => perf.rst} (95%)
- rename Documentation/cpu-freq/{amd-powernow.txt => amd-powernow.rst} (89%)
- rename Documentation/cpu-freq/{core.txt => core.rst} (69%)
- rename Documentation/cpu-freq/{cpu-drivers.txt => cpu-drivers.rst} (72%)
- rename Documentation/cpu-freq/{cpufreq-nforce2.txt => cpufreq-nforce2.rst} (55%)
- rename Documentation/cpu-freq/{cpufreq-stats.txt => cpufreq-stats.rst} (53%)
- create mode 100644 Documentation/cpu-freq/index.rst
- delete mode 100644 Documentation/cpu-freq/index.txt
- rename Documentation/cpu-freq/{pcc-cpufreq.txt => pcc-cpufreq.rst} (80%)
- rename Documentation/crypto/{api-intro.txt => api-intro.rst} (70%)
- rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
- rename Documentation/crypto/{async-tx-api.txt => async-tx-api.rst} (55%)
- rename Documentation/crypto/{descore-readme.txt => descore-readme.rst} (81%)
- rename Documentation/misc-devices/{ad525x_dpot.txt => ad525x_dpot.rst} (85%)
- rename Documentation/misc-devices/{apds990x.txt => apds990x.rst} (86%)
- rename Documentation/misc-devices/{bh1770glc.txt => bh1770glc.rst} (83%)
- rename Documentation/misc-devices/{c2port.txt => c2port.rst} (59%)
- create mode 100644 Documentation/misc-devices/pci-endpoint-test.rst
- delete mode 100644 Documentation/misc-devices/pci-endpoint-test.txt
- create mode 100644 Documentation/misc-devices/spear-pcie-gadget.rst
- delete mode 100644 Documentation/misc-devices/spear-pcie-gadget.txt
- rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
- rename Documentation/sh/{new-machine.txt => new-machine.rst} (73%)
- rename Documentation/sh/{register-banks.txt => register-banks.rst} (88%)
- rename Documentation/trace/{ring-buffer-design.txt => ring-buffer-design.rst} (55%)
-
--- 
-2.24.1
-
-
+/Jarkko
