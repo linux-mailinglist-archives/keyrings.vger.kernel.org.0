@@ -2,73 +2,62 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8095163556
-	for <lists+keyrings@lfdr.de>; Tue, 18 Feb 2020 22:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F681644F5
+	for <lists+keyrings@lfdr.de>; Wed, 19 Feb 2020 14:04:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbgBRVs7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Feb 2020 16:48:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48840 "EHLO mail.kernel.org"
+        id S1726530AbgBSNEs convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Wed, 19 Feb 2020 08:04:48 -0500
+Received: from scm.imp.edu.mx ([132.247.16.103]:15451 "EHLO scm.imp.edu.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726481AbgBRVs7 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 18 Feb 2020 16:48:59 -0500
-Received: from gmail.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6AF4C206E2;
-        Tue, 18 Feb 2020 21:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582062538;
-        bh=6Thj2Y1ouWsYzVdYK5ylYXtbW9w75KWMPCI3X9zmQ9o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XpKQQHh022aPNMkN2vu5p331h+imBvxChUft5Y8h0ICd1D6RPuRHdqEQb2XEpK3bF
-         sbz+q/8XTGFo+TjCxHLinQB5DbUTXZcBdDflR47eT6uH3YIqokQPzeWj+o0KLggAfY
-         AUpUBE8DZm4SEYtMTT2lRrQ8Ka6FY1l5yl2x53z8=
-Date:   Tue, 18 Feb 2020 13:48:57 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-xfs@vger.kernel.org
-Cc:     fstests@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH v2] xfs_io/encrypt: support passing a keyring key to
- add_enckey
-Message-ID: <20200218214856.GA147283@gmail.com>
-References: <20200203182013.43474-1-ebiggers@kernel.org>
+        id S1726548AbgBSNEo (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 19 Feb 2020 08:04:44 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id D299418D2D0;
+        Wed, 19 Feb 2020 05:51:09 -0600 (CST)
+X-Virus-Scanned: by SpamTitan at imp.edu.mx
+Received: from scm.imp.edu.mx (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 52CC118B8B5;
+        Wed, 19 Feb 2020 04:42:13 -0600 (CST)
+Authentication-Results: scm.imp.edu.mx; none
+Received: from imp.edu.mx (unknown [10.249.93.105])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 553DC18B88B;
+        Wed, 19 Feb 2020 04:42:09 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 437EC180635F46;
+        Wed, 19 Feb 2020 04:42:10 -0600 (CST)
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 9Qq8PaJHCZkP; Wed, 19 Feb 2020 04:42:10 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 1F469180635F42;
+        Wed, 19 Feb 2020 04:42:10 -0600 (CST)
+X-Virus-Scanned: amavisd-new at imp.edu.mx
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id ckFWH5nAB-55; Wed, 19 Feb 2020 04:42:10 -0600 (CST)
+Received: from [45.147.4.119] (unknown [45.147.4.119])
+        by imp.edu.mx (Postfix) with ESMTPSA id 923C718062F21A;
+        Wed, 19 Feb 2020 04:42:08 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200203182013.43474-1-ebiggers@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: 19-02-2020
+To:     Recipients <mucios@imp.edu.mx>
+From:   "urs portmann" <mucios@imp.edu.mx>
+Date:   Wed, 19 Feb 2020 21:42:06 +1100
+Reply-To: onube@qq.com
+Message-Id: <20200219104208.923C718062F21A@imp.edu.mx>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Feb 03, 2020 at 10:20:13AM -0800, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Add a '-k' option to the 'add_enckey' xfs_io command to allow exercising
-> the key_id field that is being added to struct fscrypt_add_key_arg.
-> 
-> This is needed for the corresponding test in xfstests.
-> 
-> For more details, see the corresponding xfstests patches as well as
-> kernel commit 93edd392cad7 ("fscrypt: support passing a keyring key to
-> FS_IOC_ADD_ENCRYPTION_KEY").
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
-> 
-> No changes since v1.
-> 
-> This applies to the for-next branch of xfsprogs.
-> 
->  configure.ac          |  1 +
->  include/builddefs.in  |  4 ++
->  io/encrypt.c          | 90 +++++++++++++++++++++++++++++++------------
->  m4/package_libcdev.m4 | 21 ++++++++++
->  man/man8/xfs_io.8     | 10 +++--
->  5 files changed, 98 insertions(+), 28 deletions(-)
-> 
+Guten Morgen,
+                                          19-02-2020
+Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
 
-Any comments on this patch?  The corresponding xfstests patches were merged.
+Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
 
-- Eric
+Mfg
+urs portmann
