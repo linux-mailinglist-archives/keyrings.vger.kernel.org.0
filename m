@@ -2,112 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77456166677
-	for <lists+keyrings@lfdr.de>; Thu, 20 Feb 2020 19:42:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB86166830
+	for <lists+keyrings@lfdr.de>; Thu, 20 Feb 2020 21:17:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728888AbgBTSmO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 20 Feb 2020 13:42:14 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:48828 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728237AbgBTSmO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Feb 2020 13:42:14 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01KIVT1Y039035;
-        Thu, 20 Feb 2020 18:42:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=a1asEzhbilF9Kwo+cqEtCdusoeP8zcYAj6pxvuwmcUI=;
- b=kUYMZYzxi3/nMDS06nkmblwmx591ZLNWe/yUrgxvcZfhgC2i+H2FV4CZ5+w3cF6qiurn
- DsZVpGnNj8D+qUj7WJnt0xwbFcCyBjmBpLXxXcNppVr+7jerevR4Sq2Zk5XwNlAUJk0R
- i4/ES1QXe1OF9lzHAD1ChIv4OzouL9Cs79BTq2mNhWhjfzvJ1j8hzSDcM0wcNrX1sgSE
- o+EH8r465/Mi32SpXh4dhK9OALdcc0BjIU6U6eno1LJZhUSMzF2gqWucuqO1mop/pGdE
- yGS9SByzwY92mSTWiopJYffAWpCqIxAW9ekn5YPjdgn/H4H4ytTBxKaZjLCS5SuWxN9m 0A== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2y8udkkqpd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 Feb 2020 18:42:11 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01KISPSj061497;
-        Thu, 20 Feb 2020 18:42:11 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2y8uddc5x9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 Feb 2020 18:42:11 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01KIg8BC007772;
-        Thu, 20 Feb 2020 18:42:10 GMT
-Received: from localhost (/67.169.218.210)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 20 Feb 2020 10:42:07 -0800
-Date:   Thu, 20 Feb 2020 10:42:06 -0800
-From:   "Darrick J. Wong" <darrick.wong@oracle.com>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     linux-xfs@vger.kernel.org, fstests@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2] xfs_io/encrypt: support passing a keyring key to
- add_enckey
-Message-ID: <20200220184206.GB9506@magnolia>
-References: <20200203182013.43474-1-ebiggers@kernel.org>
- <20200218214856.GA147283@gmail.com>
+        id S1728926AbgBTURK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 20 Feb 2020 15:17:10 -0500
+Received: from mga09.intel.com ([134.134.136.24]:5376 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728556AbgBTURJ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 20 Feb 2020 15:17:09 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Feb 2020 12:17:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,465,1574150400"; 
+   d="scan'208";a="408901241"
+Received: from moriol-mobl.ger.corp.intel.com (HELO localhost) ([10.252.25.78])
+  by orsmga005.jf.intel.com with ESMTP; 20 Feb 2020 12:17:05 -0800
+Date:   Thu, 20 Feb 2020 22:17:03 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v5 0/6] TPM 2.0 trusted keys with attached policy
+Message-ID: <20200220201703.GA24990@linux.intel.com>
+References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200218214856.GA147283@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9537 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 suspectscore=9 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002200136
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9537 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 suspectscore=9
- spamscore=0 priorityscore=1501 adultscore=0 mlxscore=0 clxscore=1011
- malwarescore=0 mlxlogscore=999 phishscore=0 impostorscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002200136
+In-Reply-To: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Feb 18, 2020 at 01:48:57PM -0800, Eric Biggers wrote:
-> On Mon, Feb 03, 2020 at 10:20:13AM -0800, Eric Biggers wrote:
-> > From: Eric Biggers <ebiggers@google.com>
-> > 
-> > Add a '-k' option to the 'add_enckey' xfs_io command to allow exercising
-> > the key_id field that is being added to struct fscrypt_add_key_arg.
-> > 
-> > This is needed for the corresponding test in xfstests.
-> > 
-> > For more details, see the corresponding xfstests patches as well as
-> > kernel commit 93edd392cad7 ("fscrypt: support passing a keyring key to
-> > FS_IOC_ADD_ENCRYPTION_KEY").
-> > 
-> > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > ---
-> > 
-> > No changes since v1.
-> > 
-> > This applies to the for-next branch of xfsprogs.
-> > 
-> >  configure.ac          |  1 +
-> >  include/builddefs.in  |  4 ++
-> >  io/encrypt.c          | 90 +++++++++++++++++++++++++++++++------------
-> >  m4/package_libcdev.m4 | 21 ++++++++++
-> >  man/man8/xfs_io.8     | 10 +++--
-> >  5 files changed, 98 insertions(+), 28 deletions(-)
-> > 
+On Thu, Jan 30, 2020 at 11:18:06AM +0100, James Bottomley wrote:
+> This is mainly a respin to add more spacing as Jarkko requested.
+> However, I also added the seal/unseal operations to the
+> openssl_tpm2_engine (next branch):
 > 
-> Any comments on this patch?  The corresponding xfstests patches were merged.
+> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
+> 
+> With the result that the kernel code completely failed the
+> interoperability checks because the ASN.1 format requires the TPM2B
+> length prepended to the public and private blobs.  I corrected this in
+> patch 4 and now all the interoperability tests are passing.
+> 
+> General cover letter:
+> 
+> This patch updates the trusted key code to export keys in the ASN.1
+> format used by current TPM key tools (openssl_tpm2_engine and
+> openconnect).  It also simplifies the use of policy with keys because
+> the ASN.1 format is designed to carry a description of how to
+> construct the policy, with the result that simple policies (like
+> authorization and PCR locking) can now be constructed and used in the
+> kernel, bringing the TPM 2.0 policy use into line with how TPM 1.2
+> works.
+> 
+> James
+> 
+> ---
+> 
+> James Bottomley (6):
+>   lib: add ASN.1 encoder
+>   oid_registry: Add TCG defined OIDS for TPM keys
+>   security: keys: trusted fix tpm2 authorizations
+>   security: keys: trusted: use ASN.1 TPM2 key format for the blobs
+>   security: keys: trusted: add ability to specify arbitrary policy
+>   security: keys: trusted: implement counter/timer policy
+> 
+>  Documentation/security/keys/trusted-encrypted.rst |  64 ++-
+>  include/keys/trusted-type.h                       |   7 +-
+>  include/linux/asn1_encoder.h                      |  32 ++
+>  include/linux/oid_registry.h                      |   5 +
+>  include/linux/tpm.h                               |   8 +
+>  lib/Makefile                                      |   2 +-
+>  lib/asn1_encoder.c                                | 431 ++++++++++++++++++++
+>  security/keys/Kconfig                             |   2 +
+>  security/keys/trusted-keys/Makefile               |   2 +-
+>  security/keys/trusted-keys/tpm2-policy.c          | 463 ++++++++++++++++++++++
+>  security/keys/trusted-keys/tpm2-policy.h          |  31 ++
+>  security/keys/trusted-keys/tpm2key.asn1           |  23 ++
+>  security/keys/trusted-keys/trusted_tpm1.c         |  50 ++-
+>  security/keys/trusted-keys/trusted_tpm2.c         | 370 +++++++++++++++--
+>  14 files changed, 1454 insertions(+), 36 deletions(-)
+>  create mode 100644 include/linux/asn1_encoder.h
+>  create mode 100644 lib/asn1_encoder.c
+>  create mode 100644 security/keys/trusted-keys/tpm2-policy.c
+>  create mode 100644 security/keys/trusted-keys/tpm2-policy.h
+>  create mode 100644 security/keys/trusted-keys/tpm2key.asn1
+> 
+> -- 
+> 2.16.4
 
-I didn't see any obvious bugs, though fwiw I'm not that familiar with
-fscrypt.  This looks like a pretty straightforward addition of a new
-field to a kernel call structure and some other plumbing to fill out the
-new field with CLI arguments / stdin.
+Somehow managed to drown this to my emails. Looking into next week.
 
-Reviewed-by: Darrick J. Wong <darrick.wong@oracle.com>
-
---D
-
-> - Eric
+/Jarkko
+> 
