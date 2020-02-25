@@ -2,37 +2,38 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB86166830
-	for <lists+keyrings@lfdr.de>; Thu, 20 Feb 2020 21:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B5F16EBB5
+	for <lists+keyrings@lfdr.de>; Tue, 25 Feb 2020 17:48:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728926AbgBTURK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 20 Feb 2020 15:17:10 -0500
-Received: from mga09.intel.com ([134.134.136.24]:5376 "EHLO mga09.intel.com"
+        id S1730466AbgBYQsy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 25 Feb 2020 11:48:54 -0500
+Received: from mga12.intel.com ([192.55.52.136]:47869 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728556AbgBTURJ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 20 Feb 2020 15:17:09 -0500
+        id S1728200AbgBYQsx (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 25 Feb 2020 11:48:53 -0500
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Feb 2020 12:17:09 -0800
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Feb 2020 08:48:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,465,1574150400"; 
-   d="scan'208";a="408901241"
-Received: from moriol-mobl.ger.corp.intel.com (HELO localhost) ([10.252.25.78])
-  by orsmga005.jf.intel.com with ESMTP; 20 Feb 2020 12:17:05 -0800
-Date:   Thu, 20 Feb 2020 22:17:03 +0200
+X-IronPort-AV: E=Sophos;i="5.70,484,1574150400"; 
+   d="scan'208";a="271377075"
+Received: from gbwalsh-mobl6.ger.corp.intel.com (HELO localhost) ([10.252.26.72])
+  by fmsmga002.fm.intel.com with ESMTP; 25 Feb 2020 08:48:51 -0800
+Date:   Tue, 25 Feb 2020 18:48:50 +0200
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     James Bottomley <James.Bottomley@HansenPartnership.com>
 Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
         David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] TPM 2.0 trusted keys with attached policy
-Message-ID: <20200220201703.GA24990@linux.intel.com>
+Subject: Re: [PATCH v5 3/6] security: keys: trusted fix tpm2 authorizations
+Message-ID: <20200225164850.GB15662@linux.intel.com>
 References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
+ <20200130101812.6271-4-James.Bottomley@HansenPartnership.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20200130101812.6271-4-James.Bottomley@HansenPartnership.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
@@ -40,66 +41,119 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jan 30, 2020 at 11:18:06AM +0100, James Bottomley wrote:
-> This is mainly a respin to add more spacing as Jarkko requested.
-> However, I also added the seal/unseal operations to the
-> openssl_tpm2_engine (next branch):
+On Thu, Jan 30, 2020 at 11:18:09AM +0100, James Bottomley wrote:
+> In TPM 1.2 an authorization was a 20 byte number.  The spec actually
+> recommended you to hash variable length passwords and use the sha1
+> hash as the authorization.  Because the spec doesn't require this
+> hashing, the current authorization for trusted keys is a 40 digit hex
+> number.  For TPM 2.0 the spec allows the passing in of variable length
+> passwords and passphrases directly, so we should allow that in trusted
+> keys for ease of use.  Update the 'blobauth' parameter to take this
+> into account, so we can now use plain text passwords for the keys.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
+> so before
 > 
-> With the result that the kernel code completely failed the
-> interoperability checks because the ASN.1 format requires the TPM2B
-> length prepended to the public and private blobs.  I corrected this in
-> patch 4 and now all the interoperability tests are passing.
+> keyctl add trusted kmk "new 32 blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
 > 
-> General cover letter:
+> after we will accept both the old hex sha1 form as well as a new
+> directly supplied password:
 > 
-> This patch updates the trusted key code to export keys in the ASN.1
-> format used by current TPM key tools (openssl_tpm2_engine and
-> openconnect).  It also simplifies the use of policy with keys because
-> the ASN.1 format is designed to carry a description of how to
-> construct the policy, with the result that simple policies (like
-> authorization and PCR locking) can now be constructed and used in the
-> kernel, bringing the TPM 2.0 policy use into line with how TPM 1.2
-> works.
+> keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
 > 
-> James
+> Since a sha1 hex code must be exactly 40 bytes long and a direct
+> password must be 20 or less, we use the length as the discriminator
+> for which form is input.
 > 
-> ---
+> Note this is both and enhancement and a potential bug fix.  The TPM
+> 2.0 spec requires us to strip leading zeros, meaning empyty
+> authorization is a zero length HMAC whereas we're currently passing in
+> 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but the
+> Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this patch
+> makes the Microsoft TPM emulator work with trusted keys.
 > 
-> James Bottomley (6):
->   lib: add ASN.1 encoder
->   oid_registry: Add TCG defined OIDS for TPM keys
->   security: keys: trusted fix tpm2 authorizations
->   security: keys: trusted: use ASN.1 TPM2 key format for the blobs
->   security: keys: trusted: add ability to specify arbitrary policy
->   security: keys: trusted: implement counter/timer policy
-> 
->  Documentation/security/keys/trusted-encrypted.rst |  64 ++-
->  include/keys/trusted-type.h                       |   7 +-
->  include/linux/asn1_encoder.h                      |  32 ++
->  include/linux/oid_registry.h                      |   5 +
->  include/linux/tpm.h                               |   8 +
->  lib/Makefile                                      |   2 +-
->  lib/asn1_encoder.c                                | 431 ++++++++++++++++++++
->  security/keys/Kconfig                             |   2 +
->  security/keys/trusted-keys/Makefile               |   2 +-
->  security/keys/trusted-keys/tpm2-policy.c          | 463 ++++++++++++++++++++++
->  security/keys/trusted-keys/tpm2-policy.h          |  31 ++
->  security/keys/trusted-keys/tpm2key.asn1           |  23 ++
->  security/keys/trusted-keys/trusted_tpm1.c         |  50 ++-
->  security/keys/trusted-keys/trusted_tpm2.c         | 370 +++++++++++++++--
->  14 files changed, 1454 insertions(+), 36 deletions(-)
->  create mode 100644 include/linux/asn1_encoder.h
->  create mode 100644 lib/asn1_encoder.c
->  create mode 100644 security/keys/trusted-keys/tpm2-policy.c
->  create mode 100644 security/keys/trusted-keys/tpm2-policy.h
->  create mode 100644 security/keys/trusted-keys/tpm2key.asn1
-> 
-> -- 
-> 2.16.4
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-Somehow managed to drown this to my emails. Looking into next week.
+Should have a fixes tag.
+
+> ---
+>  include/keys/trusted-type.h               |  1 +
+>  security/keys/trusted-keys/trusted_tpm1.c | 26 +++++++++++++++++++++-----
+>  security/keys/trusted-keys/trusted_tpm2.c | 10 ++++++----
+>  3 files changed, 28 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
+> index a94c03a61d8f..b2ed3481c6a0 100644
+> --- a/include/keys/trusted-type.h
+> +++ b/include/keys/trusted-type.h
+> @@ -30,6 +30,7 @@ struct trusted_key_options {
+>  	uint16_t keytype;
+>  	uint32_t keyhandle;
+>  	unsigned char keyauth[TPM_DIGEST_SIZE];
+> +	uint32_t blobauth_len;
+>  	unsigned char blobauth[TPM_DIGEST_SIZE];
+>  	uint32_t pcrinfo_len;
+>  	unsigned char pcrinfo[MAX_PCRINFO_SIZE];
+> diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+> index d2c5ec1e040b..3f33d3f74d3c 100644
+> --- a/security/keys/trusted-keys/trusted_tpm1.c
+> +++ b/security/keys/trusted-keys/trusted_tpm1.c
+> @@ -781,12 +781,28 @@ static int getoptions(char *c, struct trusted_key_payload *pay,
+>  				return -EINVAL;
+>  			break;
+>  		case Opt_blobauth:
+> -			if (strlen(args[0].from) != 2 * SHA1_DIGEST_SIZE)
+> -				return -EINVAL;
+> -			res = hex2bin(opt->blobauth, args[0].from,
+> -				      SHA1_DIGEST_SIZE);
+> -			if (res < 0)
+> +			/*
+> +			 * TPM 1.2 authorizations are sha1 hashes
+> +			 * passed in as hex strings.  TPM 2.0
+> +			 * authorizations are simple passwords
+> +			 * (although it can take a hash as well)
+
+Justify to the 80 character line length.
+
+> +			 */
+> +			opt->blobauth_len = strlen(args[0].from);
+> +			if (opt->blobauth_len == 2 * TPM_DIGEST_SIZE) {
+> +				res = hex2bin(opt->blobauth, args[0].from,
+> +					      TPM_DIGEST_SIZE);
+> +				if (res < 0)
+> +					return -EINVAL;
+> +
+> +				opt->blobauth_len = TPM_DIGEST_SIZE;
+> +			} else if (tpm2 &&
+> +				   opt->blobauth_len <= sizeof(opt->blobauth)) {
+> +				memcpy(opt->blobauth, args[0].from,
+> +				       opt->blobauth_len);
+> +			} else {
+>  				return -EINVAL;
+> +			}
+
+This starts to be unnecessarily complicated.
+
+This is what I would suggest:
+
+opt->blobauth_len = strlen(args[0].from);
+if (opt->blobauth_len == 2 * TPM_DIGEST_SIZE) {
+	res = hex2bin(opt->blobauth, args[0].from,
+		      TPM_DIGEST_SIZE);
+	if (res < 0)
+		return -EINVAL;
+
+	opt->blobauth_len = TPM_DIGEST_SIZE;
+	return 0;
+}
+
+if (tpm2 && opt->blobauth_len <= sizeof(opt->blobauth)) {
+	memcpy(opt->blobauth, args[0].from,
+	       opt->blobauth_len);
+	return 0;
+}
+
+return -EINVAL;
+
+Easier to see quickly "when happens what".
 
 /Jarkko
-> 
