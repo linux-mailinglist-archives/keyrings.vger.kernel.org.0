@@ -2,51 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9859117296D
-	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2020 21:26:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D747D1729B0
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2020 21:49:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729390AbgB0U0q (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 27 Feb 2020 15:26:46 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:52328 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726758AbgB0U0q (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 27 Feb 2020 15:26:46 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 35E768EE181;
-        Thu, 27 Feb 2020 12:26:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1582835206;
-        bh=KJhb2aBt46LQRY+Zk9XgRVZeXd292dtIMZvrc7nL19o=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=xadA/kGfQKrzw54ZxEBIAd2CQSK6tlHRgRRo65kKOj5RzqvPyvalpoh0T4alX3K2Q
-         cwT5tnV+DIczDqGQrjjSRU8a/lshWjS10bynpCR+IA4WVt1cs7aiN9p2pXUfDgxdww
-         qHR5zAKVdBPcwdRPknCNgWOxpcFyg5hwSoE7r6xw=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id iJH3XlpfdfYm; Thu, 27 Feb 2020 12:26:45 -0800 (PST)
-Received: from jarvis.ext.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 529138EE079;
-        Thu, 27 Feb 2020 12:26:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1582835205;
-        bh=KJhb2aBt46LQRY+Zk9XgRVZeXd292dtIMZvrc7nL19o=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=IVilGe3okhO7Mq1UWo5dh4FTYKv5DzLdN4TPPxp/cdPKjm5Q57Rr4Ssld+3qRvg/6
-         BvoIeMTnueU4Cnt+YJ2HXuyNKaazE81UPozMuohWciWk54ant2zcGKozHXixVumNrO
-         ioNRB8SW4svtbzdUl4htfO+wTgaRp6TxVD28HPBA=
-Message-ID: <1582835204.18538.21.camel@HansenPartnership.com>
+        id S1729570AbgB0UtZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 27 Feb 2020 15:49:25 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:32923 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726758AbgB0UtZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 27 Feb 2020 15:49:25 -0500
+Received: by mail-pg1-f195.google.com with SMTP id 6so309734pgk.0;
+        Thu, 27 Feb 2020 12:49:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=iE+0HSEqw566ptrftTKET2CN2Q2Su4g3nio6NsXBTe0=;
+        b=TEEIUEQcpRHLkKtqdB6Vi2wq0dyly4Ry5ExVyFrProz/78szjB2mQPWSvkclmIzHGf
+         CfVbdUyuvL25wvMpqq8JDT+kjAhuWMhr1O8zMXTLXlE3xzYQkPlMvo7N8jp6Y1RVvoql
+         Ndvwu2MTO5U7NjucyMn0uB2k6/7A0XoLP+rD4oPyKA9nsm3MCnhKdrRmrE2UHGWQ76hJ
+         lbTllQvDE2hhv2m3es/qlWX1FTKst3FKarmnm27DIlAzgR0s/LutcQwCIVlk9Ep5f4Fd
+         aedaazf1bDjk/77nlLnNcFSsClo2oJhOEzyMlwh/YxmFmtAz8rvVfMBE0pzDjv4KuKzV
+         bCDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=iE+0HSEqw566ptrftTKET2CN2Q2Su4g3nio6NsXBTe0=;
+        b=et1ER87o7AxKOVAXoF5XVAfXPOt/1vXA2yd0tdkwKqKyLq8ofwidhYx2vl5oDvBi1q
+         /ugfz2wHRZgqbAwVWNbtnvHQrZtPqWUzFXRrd10Reh6BpSZk6eSa9ds4RKDFBV3QVTBb
+         xTGFIFOganideAgEY/52BccUhgj8P/GOPIAju3/OVCj8B9q1YVxoE6t6jRJ5uhBeeFa/
+         Zg6Bpz7A72LToJTuERJGhlODk1BIttQwfv87fYToLLpJyZ78ZT0UCRNoINvMzG4bdNZ4
+         dmpg483aWnSjxEzhlCzWOClINBTPNPmaNePlrTr57X/x1Pu5VNvsD5yAVhGVBVmccqts
+         atQA==
+X-Gm-Message-State: APjAAAWj/NIosl00OmRCLukisy4rsrMfbjkJHBv6+TxBII1ZFeJiwkvP
+        xL2Znt20oTXa/gjnzhYzpwzKPELEAqJQPA==
+X-Google-Smtp-Source: APXvYqzo1vW4ASGrpvYXNg3TiDL1ANJXugiEemGowi1L1Bn6nLrG39aygbWWAi822mJPiU8s4ALHAA==
+X-Received: by 2002:a63:e044:: with SMTP id n4mr1108211pgj.338.1582836564261;
+        Thu, 27 Feb 2020 12:49:24 -0800 (PST)
+Received: from jprestwo-test.jf.intel.com (jfdmzpr04-ext.jf.intel.com. [134.134.137.73])
+        by smtp.googlemail.com with ESMTPSA id n9sm4159107pfq.160.2020.02.27.12.49.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 27 Feb 2020 12:49:23 -0800 (PST)
+Message-ID: <57227f6880c2f33352d8f2228b16413dcf395128.camel@gmail.com>
 Subject: Re: [PATCH v5 4/6] security: keys: trusted: use ASN.1 TPM2 key
  format for the blobs
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     James Prestwood <prestwoj@gmail.com>,
+From:   James Prestwood <prestwoj@gmail.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         linux-integrity@vger.kernel.org
 Cc:     Mimi Zohar <zohar@linux.ibm.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Date:   Thu, 27 Feb 2020 12:26:44 -0800
-In-Reply-To: <1582834760.18538.15.camel@HansenPartnership.com>
+Date:   Thu, 27 Feb 2020 12:44:53 -0800
+In-Reply-To: <1582835204.18538.21.camel@HansenPartnership.com>
 References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
          <20200130101812.6271-5-James.Bottomley@HansenPartnership.com>
          <5c593b6f23ae41e90e6b3799141ea68944bb4034.camel@gmail.com>
@@ -55,8 +63,9 @@ References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
          <1582764844.4245.29.camel@HansenPartnership.com>
          <17e025e222cb6aefb5680d6cdad64a9ecf76fa97.camel@gmail.com>
          <1582834760.18538.15.camel@HansenPartnership.com>
+         <1582835204.18538.21.camel@HansenPartnership.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
@@ -64,28 +73,34 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2020-02-27 at 12:19 -0800, James Bottomley wrote:
-> On Thu, 2020-02-27 at 09:19 -0800, James Prestwood wrote:
-[...]
-> > I think this was all a result of bad packaging on Fedora's part,
-> > but still, the experience didn't sit well with me and I felt it
-> > would be worth while to add support for this in keyctl.
+On Thu, 2020-02-27 at 12:26 -0800, James Bottomley wrote:
+> On Thu, 2020-02-27 at 12:19 -0800, James Bottomley wrote:
+> > On Thu, 2020-02-27 at 09:19 -0800, James Prestwood wrote:
 > 
-> Well there's a list you can report problems to and get help:
+> [...]
+> > > I think this was all a result of bad packaging on Fedora's part,
+> > > but still, the experience didn't sit well with me and I felt it
+> > > would be worth while to add support for this in keyctl.
+> > 
+> > Well there's a list you can report problems to and get help:
+> > 
+> > openssl-tpm2-engine@groups.io
+> > 
+> > I've got to confess I develop on openSUSE and debian, so Fedora
+> > doesn't get much testing.
 > 
-> openssl-tpm2-engine@groups.io
+> I should add that even though I don't test on fedora, the opensuse
+> build service does in my TPM build environment:
 > 
-> I've got to confess I develop on openSUSE and debian, so Fedora
-> doesn't get much testing.
-
-I should add that even though I don't test on fedora, the opensuse
-build service does in my TPM build environment:
-
+> 
 https://build.opensuse.org/package/show/home:jejb1:TPM/openssl_tpm2_engine
+> 
+> It says the builds for Fedora 26, 29 and Rawhide all succeeded.  The
+> build service does both building and testing with the swtpm, so the
+> engine on fedora gets a pretty extensive workout.
 
-It says the builds for Fedora 26, 29 and Rawhide all succeeded.  The
-build service does both building and testing with the swtpm, so the
-engine on fedora gets a pretty extensive workout.
-
-James
+Hmm, ok I will be trying this again then. Thanks.
+> 
+> James
+> 
 
