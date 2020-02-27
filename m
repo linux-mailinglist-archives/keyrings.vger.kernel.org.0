@@ -2,75 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BB51714E8
-	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2020 11:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D267B172313
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2020 17:20:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728699AbgB0KY7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 27 Feb 2020 05:24:59 -0500
-Received: from mail.cn.fujitsu.com ([183.91.158.132]:14033 "EHLO
-        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728680AbgB0KY7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 27 Feb 2020 05:24:59 -0500
-X-IronPort-AV: E=Sophos;i="5.70,491,1574092800"; 
-   d="scan'208";a="84501822"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 27 Feb 2020 18:24:55 +0800
-Received: from G08CNEXMBPEKD06.g08.fujitsu.local (unknown [10.167.33.206])
-        by cn.fujitsu.com (Postfix) with ESMTP id 0814B50A9978;
-        Thu, 27 Feb 2020 18:15:10 +0800 (CST)
-Received: from G08CNEXCHPEKD02.g08.fujitsu.local (10.167.33.83) by
- G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206) with Microsoft SMTP Server
- (TLS) id 15.0.1395.4; Thu, 27 Feb 2020 18:24:54 +0800
-Received: from localhost.localdomain (10.167.220.84) by
- G08CNEXCHPEKD02.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.439.0; Thu, 27 Feb 2020 18:24:55 +0800
-From:   Yang Xu <xuyang2018.jy@cn.fujitsu.com>
-To:     <dhowells@redhat.com>
-CC:     <keyrings@vger.kernel.org>, <xuyang_jy_0410@163.com>,
-        Yang Xu <xuyang2018.jy@cn.fujitsu.com>
-Subject: [PATCH] KEYS: reaching the keys quotas correctly when instanttiating
-Date:   Thu, 27 Feb 2020 18:25:45 +0800
-Message-ID: <1582799145-16073-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S1729670AbgB0QTx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 27 Feb 2020 11:19:53 -0500
+Received: from mga05.intel.com ([192.55.52.43]:18983 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728993AbgB0QTx (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 27 Feb 2020 11:19:53 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Feb 2020 08:19:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,492,1574150400"; 
+   d="scan'208";a="385205579"
+Received: from asliwa-mobl.ger.corp.intel.com (HELO localhost) ([10.252.26.84])
+  by orsmga004.jf.intel.com with ESMTP; 27 Feb 2020 08:19:50 -0800
+Date:   Thu, 27 Feb 2020 18:19:49 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v5 3/6] security: keys: trusted fix tpm2 authorizations
+Message-ID: <20200227161949.GD5140@linux.intel.com>
+References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
+ <20200130101812.6271-4-James.Bottomley@HansenPartnership.com>
+ <20200225164850.GB15662@linux.intel.com>
+ <1582765091.4245.33.camel@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.167.220.84]
-X-yoursite-MailScanner-ID: 0814B50A9978.ACD0B
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: xuyang2018.jy@cn.fujitsu.com
-X-Spam-Status: No
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1582765091.4245.33.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I wrote a regression test[1]to test commit a08bf91ce28ed
-("KEYS: allow reaching the keys quotas exactly"), but it
-failed even I used lastest kernel. It looks like the previous
-patch doesn't remove "=" when we instantiate the key.
+On Wed, Feb 26, 2020 at 04:58:11PM -0800, James Bottomley wrote:
+> On Tue, 2020-02-25 at 18:48 +0200, Jarkko Sakkinen wrote:
+> > On Thu, Jan 30, 2020 at 11:18:09AM +0100, James Bottomley wrote:
+> > > In TPM 1.2 an authorization was a 20 byte number.  The spec
+> > > actually recommended you to hash variable length passwords and use
+> > > the sha1 hash as the authorization.  Because the spec doesn't
+> > > require this hashing, the current authorization for trusted keys is
+> > > a 40 digit hex number.  For TPM 2.0 the spec allows the passing in
+> > > of variable length passwords and passphrases directly, so we should
+> > > allow that in trusted keys for ease of use.  Update the 'blobauth'
+> > > parameter to take this into account, so we can now use plain text
+> > > passwords for the keys.
+> > > 
+> > > so before
+> > > 
+> > > keyctl add trusted kmk "new 32
+> > > blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
+> > > 
+> > > after we will accept both the old hex sha1 form as well as a new
+> > > directly supplied password:
+> > > 
+> > > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
+> > > 
+> > > Since a sha1 hex code must be exactly 40 bytes long and a direct
+> > > password must be 20 or less, we use the length as the discriminator
+> > > for which form is input.
+> > > 
+> > > Note this is both and enhancement and a potential bug fix.  The TPM
+> > > 2.0 spec requires us to strip leading zeros, meaning empyty
+> > > authorization is a zero length HMAC whereas we're currently passing
+> > > in
+> > > 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but the
+> > > Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this
+> > > patch
+> > > makes the Microsoft TPM emulator work with trusted keys.
+> > > 
+> > > Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.c
+> > > om>
+> > 
+> > Should have a fixes tag.
+> 
+> I made all the other changes, but I'm not sure what to identify in the
+> fixes tag.  The problem is the code I updated was simply carried over
+> unaltered from TPM 1.2
+> 
+> You could certainly argue that commit
+> 
+> commit 0fe5480303a1657b328a0a389f8d99249d9961f5
+> Author: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> Date:   Fri Jun 26 22:28:26 2015 +0300
+> 
+>     keys, trusted: seal/unseal with TPM 2.0 chips
+> 
+> Should have updated the blobauth handling ... is that the one you'd
+> like fixes: to identify?
 
-[1]http://lists.linux.it/pipermail/ltp/2020-February/015331.html
+What I'm thinking is to have fixes tag w/o cc to stable. I'm not
+sure at this point whether we want to backport this but it still
+makes sense to tag it.
 
-Signed-off-by: Yang Xu <xuyang2018.jy@cn.fujitsu.com>
----
- security/keys/key.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 718bf7217420..e959b3c96b48 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -382,7 +382,7 @@ int key_payload_reserve(struct key *key, size_t datalen)
- 		spin_lock(&key->user->lock);
- 
- 		if (delta > 0 &&
--		    (key->user->qnbytes + delta >= maxbytes ||
-+		    (key->user->qnbytes + delta > maxbytes ||
- 		     key->user->qnbytes + delta < key->user->qnbytes)) {
- 			ret = -EDQUOT;
- 		}
--- 
-2.18.0
-
-
-
+/Jarkko
