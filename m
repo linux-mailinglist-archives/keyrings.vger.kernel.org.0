@@ -2,164 +2,125 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05526170213
-	for <lists+keyrings@lfdr.de>; Wed, 26 Feb 2020 16:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 570FA170CE6
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2020 01:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbgBZPPR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 26 Feb 2020 10:15:17 -0500
-Received: from mga01.intel.com ([192.55.52.88]:20755 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726148AbgBZPPR (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 26 Feb 2020 10:15:17 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Feb 2020 07:15:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,488,1574150400"; 
-   d="scan'208";a="384831657"
-Received: from avgorshk-mobl.ccr.corp.intel.com (HELO localhost) ([10.252.15.208])
-  by orsmga004.jf.intel.com with ESMTP; 26 Feb 2020 07:15:13 -0800
-Date:   Wed, 26 Feb 2020 17:15:12 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        id S1727995AbgB0ACS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 26 Feb 2020 19:02:18 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:59630 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727974AbgB0ACS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 26 Feb 2020 19:02:18 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id CB4BE8EE182;
+        Wed, 26 Feb 2020 16:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1582761737;
+        bh=TQ1e9SIyfMmS0UrMKDlw7s2ayCtwksvDJfQJeyINwfM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=nK+zuuE/jg97CJJCuGzXWwS6vZ2QtsRQoir81JfnrF50tU1u1a1wI9lKKQN4Cu0yg
+         VnPpgeBHWGT8KgLfHa4Qva/kbZvU+5OLRHigcVhcrrME3vNzfg7YGs+3pd2fzLPJ1E
+         leayAwUJo3OYGwL3gp/QwimDDtd6mRoCcmzAL4jo=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Z-_FMgbZsd_U; Wed, 26 Feb 2020 16:02:17 -0800 (PST)
+Received: from jarvis.ext.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1D36F8EE0D2;
+        Wed, 26 Feb 2020 16:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1582761737;
+        bh=TQ1e9SIyfMmS0UrMKDlw7s2ayCtwksvDJfQJeyINwfM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=nK+zuuE/jg97CJJCuGzXWwS6vZ2QtsRQoir81JfnrF50tU1u1a1wI9lKKQN4Cu0yg
+         VnPpgeBHWGT8KgLfHa4Qva/kbZvU+5OLRHigcVhcrrME3vNzfg7YGs+3pd2fzLPJ1E
+         leayAwUJo3OYGwL3gp/QwimDDtd6mRoCcmzAL4jo=
+Message-ID: <1582761736.4245.12.camel@HansenPartnership.com>
+Subject: Re: [PATCH v5 4/6] security: keys: trusted: use ASN.1 TPM2 key
+ format for the blobs
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     James Prestwood <prestwoj@gmail.com>,
+        linux-integrity@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v5 3/6] security: keys: trusted fix tpm2 authorizations
-Message-ID: <20200226151512.GF3407@linux.intel.com>
+Date:   Wed, 26 Feb 2020 16:02:16 -0800
+In-Reply-To: <5c593b6f23ae41e90e6b3799141ea68944bb4034.camel@gmail.com>
 References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
- <20200130101812.6271-4-James.Bottomley@HansenPartnership.com>
- <20200225164850.GB15662@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200225164850.GB15662@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+         <20200130101812.6271-5-James.Bottomley@HansenPartnership.com>
+         <5c593b6f23ae41e90e6b3799141ea68944bb4034.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Feb 25, 2020 at 06:48:50PM +0200, Jarkko Sakkinen wrote:
-> On Thu, Jan 30, 2020 at 11:18:09AM +0100, James Bottomley wrote:
-> > In TPM 1.2 an authorization was a 20 byte number.  The spec actually
-> > recommended you to hash variable length passwords and use the sha1
-> > hash as the authorization.  Because the spec doesn't require this
-> > hashing, the current authorization for trusted keys is a 40 digit hex
-> > number.  For TPM 2.0 the spec allows the passing in of variable length
-> > passwords and passphrases directly, so we should allow that in trusted
-> > keys for ease of use.  Update the 'blobauth' parameter to take this
-> > into account, so we can now use plain text passwords for the keys.
-> > 
-> > so before
-> > 
-> > keyctl add trusted kmk "new 32 blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
-> > 
-> > after we will accept both the old hex sha1 form as well as a new
-> > directly supplied password:
-> > 
-> > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
-> > 
-> > Since a sha1 hex code must be exactly 40 bytes long and a direct
-> > password must be 20 or less, we use the length as the discriminator
-> > for which form is input.
-> > 
-> > Note this is both and enhancement and a potential bug fix.  The TPM
-> > 2.0 spec requires us to strip leading zeros, meaning empyty
-> > authorization is a zero length HMAC whereas we're currently passing in
-> > 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but the
-> > Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this patch
-> > makes the Microsoft TPM emulator work with trusted keys.
-> > 
-> > Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+On Mon, 2020-02-03 at 08:54 -0800, James Prestwood wrote:
+> Hi James,
 > 
-> Should have a fixes tag.
+> <snip>
 > 
-> > ---
-> >  include/keys/trusted-type.h               |  1 +
-> >  security/keys/trusted-keys/trusted_tpm1.c | 26 +++++++++++++++++++++-----
-> >  security/keys/trusted-keys/trusted_tpm2.c | 10 ++++++----
-> >  3 files changed, 28 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
-> > index a94c03a61d8f..b2ed3481c6a0 100644
-> > --- a/include/keys/trusted-type.h
-> > +++ b/include/keys/trusted-type.h
-> > @@ -30,6 +30,7 @@ struct trusted_key_options {
-> >  	uint16_t keytype;
-> >  	uint32_t keyhandle;
-> >  	unsigned char keyauth[TPM_DIGEST_SIZE];
-> > +	uint32_t blobauth_len;
-> >  	unsigned char blobauth[TPM_DIGEST_SIZE];
-> >  	uint32_t pcrinfo_len;
-> >  	unsigned char pcrinfo[MAX_PCRINFO_SIZE];
-> > diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-> > index d2c5ec1e040b..3f33d3f74d3c 100644
-> > --- a/security/keys/trusted-keys/trusted_tpm1.c
-> > +++ b/security/keys/trusted-keys/trusted_tpm1.c
-> > @@ -781,12 +781,28 @@ static int getoptions(char *c, struct trusted_key_payload *pay,
-> >  				return -EINVAL;
-> >  			break;
-> >  		case Opt_blobauth:
-> > -			if (strlen(args[0].from) != 2 * SHA1_DIGEST_SIZE)
-> > -				return -EINVAL;
-> > -			res = hex2bin(opt->blobauth, args[0].from,
-> > -				      SHA1_DIGEST_SIZE);
-> > -			if (res < 0)
-> > +			/*
-> > +			 * TPM 1.2 authorizations are sha1 hashes
-> > +			 * passed in as hex strings.  TPM 2.0
-> > +			 * authorizations are simple passwords
-> > +			 * (although it can take a hash as well)
-> 
-> Justify to the 80 character line length.
-> 
-> > +			 */
-> > +			opt->blobauth_len = strlen(args[0].from);
-> > +			if (opt->blobauth_len == 2 * TPM_DIGEST_SIZE) {
-> > +				res = hex2bin(opt->blobauth, args[0].from,
-> > +					      TPM_DIGEST_SIZE);
-> > +				if (res < 0)
-> > +					return -EINVAL;
+> > diff --git a/security/keys/trusted-keys/tpm2key.asn1
+> > b/security/keys/trusted-keys/tpm2key.asn1
+> > new file mode 100644
+> > index 000000000000..f930fd812db3
+> > --- /dev/null
+> > +++ b/security/keys/trusted-keys/tpm2key.asn1
+> > @@ -0,0 +1,23 @@
+> > +---
+> > +--- Note: This isn't quite the definition in the standard
+> > +---       However, the Linux asn.1 parser doesn't understand
+> > +---       [2] EXPLICIT SEQUENCE OF OPTIONAL
+> > +---       So there's an extra intermediate TPMPolicySequence
+> > +---       definition to work around this
 > > +
-> > +				opt->blobauth_len = TPM_DIGEST_SIZE;
-> > +			} else if (tpm2 &&
-> > +				   opt->blobauth_len <= sizeof(opt->blobauth)) {
-> > +				memcpy(opt->blobauth, args[0].from,
-> > +				       opt->blobauth_len);
-> > +			} else {
-> >  				return -EINVAL;
-> > +			}
+> > +TPMKey ::= SEQUENCE {
+> > +	type		OBJECT IDENTIFIER ({tpmkey_type}),
+> > +	emptyAuth	[0] EXPLICIT BOOLEAN OPTIONAL,
+> > +	policy		[1] EXPLICIT TPMPolicySequence
+> > OPTIONAL,
+> > +	secret		[2] EXPLICIT OCTET STRING OPTIONAL,
+> > +	parent		INTEGER ({tpmkey_parent}),
+> > +	pubkey		OCTET STRING ({tpmkey_pub}),
+> > +	privkey		OCTET STRING ({tpmkey_priv})
+> > +	}
+> > +
+> > +TPMPolicySequence ::= SEQUENCE OF TPMPolicy
+> > +
+> > +TPMPolicy ::= SEQUENCE {
+> > +	commandCode		[0] EXPLICIT INTEGER
+> > ({tpmkey_code}),
+> > +	commandPolicy		[1] EXPLICIT OCTET STRING
+> > ({tpmkey_policy})
+> > +	}
 > 
-> This starts to be unnecessarily complicated.
+> I have been using your set of patches in order to get this ASN.1
+> parser/definition. I am implementing an asymmetric key parser/type
+> TPM2
+> keys for enc/dec/sign/verify using keyctl. Note that this
+> implementation goes in crypto/asymmetric_keys/, and your patches sit
+> in
+> security/keys/trusted-keys/.
 > 
-> This is what I would suggest:
+> Currently I am just including "../../security/keys/trusted-
+> keys/{tpm2key.asn1.h,tpm2-policy.h}" in order to use the ASN.1 parser
+> to verify my keys, but this obviously isn't going to fly.
 > 
-> opt->blobauth_len = strlen(args[0].from);
-> if (opt->blobauth_len == 2 * TPM_DIGEST_SIZE) {
-> 	res = hex2bin(opt->blobauth, args[0].from,
-> 		      TPM_DIGEST_SIZE);
-> 	if (res < 0)
-> 		return -EINVAL;
-> 
-> 	opt->blobauth_len = TPM_DIGEST_SIZE;
-> 	return 0;
-> }
-> 
-> if (tpm2 && opt->blobauth_len <= sizeof(opt->blobauth)) {
-> 	memcpy(opt->blobauth, args[0].from,
-> 	       opt->blobauth_len);
-> 	return 0;
-> }
-> 
-> return -EINVAL;
-> 
-> Easier to see quickly "when happens what".
-> 
-> /Jarkko
+> Do you (or anyone) have any ideas as to how both trusted keys and
+> asymmetric keys could share this ASN.1 parser/definition? Some common
+> area that both security and crypto could include? Or maybe there is
+> some common way the kernel does things like this?
 
-And in short summary "TPM2" instead of tpm2.
+Actually TPM2 asymmetric keys was also on my list.  I was going to use
+the existing template and simply move it somewhere everyone could use. 
+I also think you need the policy parser pieces because at least one
+implementation we'd need to be compatible with supports key policy.
 
-/Jarkko
+Regards,
+
+James
+
