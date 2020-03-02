@@ -2,249 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FDE4175A98
-	for <lists+keyrings@lfdr.de>; Mon,  2 Mar 2020 13:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B06175AD1
+	for <lists+keyrings@lfdr.de>; Mon,  2 Mar 2020 13:51:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727519AbgCBMfA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Mar 2020 07:35:00 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42702 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727361AbgCBMfA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Mar 2020 07:35:00 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 727AF8EE17D;
-        Mon,  2 Mar 2020 04:35:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1583152500;
-        bh=E7A9rxqJCYWhGKJHrVCUf5EIaNdcgc0ex+Yo5fpTRWs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qi9tOUEgbriZki3fbTO+dCHROy23yrHSmi8/QmaJsdx8crfLDWWL7ZQuUsTbRbgBK
-         vqOW6FsIywX+nFtQnUmNvMG6DrkDzhjRBggwZIa2UzgdiWZjB84qHlbe0uRFJZ45i5
-         YuEnDRgpzNPSz8OD72CZUrXf4R5pzayar45lb15E=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UEkO_SEyZV4f; Mon,  2 Mar 2020 04:35:00 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 291EC8EE11D;
-        Mon,  2 Mar 2020 04:34:59 -0800 (PST)
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: [PATCH v6 6/6] security: keys: trusted: implement counter/timer policy
-Date:   Mon,  2 Mar 2020 07:27:59 -0500
-Message-Id: <20200302122759.5204-7-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20200302122759.5204-1-James.Bottomley@HansenPartnership.com>
-References: <20200302122759.5204-1-James.Bottomley@HansenPartnership.com>
+        id S1727519AbgCBMvD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Mar 2020 07:51:03 -0500
+Received: from mga03.intel.com ([134.134.136.65]:36046 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727361AbgCBMvD (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 2 Mar 2020 07:51:03 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 04:51:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,507,1574150400"; 
+   d="scan'208";a="273706386"
+Received: from esoroki-mobl.ccr.corp.intel.com ([10.252.15.146])
+  by fmsmga002.fm.intel.com with ESMTP; 02 Mar 2020 04:51:01 -0800
+Message-ID: <70a3e3e938975bdacbafb43122a78f3acd4b003c.camel@linux.intel.com>
+Subject: Re: [PATCH v2] KEYS: reaching the keys quotas(max_bytes) correctly
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Yang Xu <xuyang2018.jy@cn.fujitsu.com>
+Cc:     keyrings@vger.kernel.org, Eric Biggers <ebiggers@google.com>
+Date:   Mon, 02 Mar 2020 14:51:01 +0200
+In-Reply-To: <1582857177-29093-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
+References: <20200227162623.GG5140@linux.intel.com>
+         <1582857177-29093-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This is actually a generic policy allowing a range of comparisons
-against any value set in the TPM Clock, which includes things like the
-reset count, a monotonic millisecond count and the restart count.  The
-most useful comparison is against the millisecond count for expiring
-keys.  However, you have to remember that currently Linux doesn't try
-to sync the epoch timer with the TPM, so the expiration is actually
-measured in how long the TPM itself has been powered on ... the TPM
-timer doesn't count while the system is powered down.  The millisecond
-counter is a u64 quantity found at offset 8 in the timer structure,
-and the <= comparision operand is 9, so a policy set to expire after the
-TPM has been up for 100 seconds would look like
+On Fri, 2020-02-28 at 10:32 +0800, Yang Xu wrote:
+> Currently, when we add a new user key, the calltrace as below:
+> 
+> add_key()
+>   key_create_or_update()
+>     key_alloc()
+>     __key_instantiate_and_link
+>       generic_key_instantiate
+>         key_payload_reserve
+>           ......
+> 
+> Since commit a08bf91ce28e ("KEYS: allow reaching the keys quotas exactly"),
+> we can reach max bytes/keys in key_alloc, but we forget to remove this
+> limit when we reserver space for payload in key_payload_reserve. So we
+> can only reach max keys but not max bytes when having delta between plen
+> and type->def_datalen. Remove this limit when instantiating the key, so we
+> can keep consistent with key_alloc.
+> 
+> Fixes: a08bf91ce28e ("KEYS: allow reaching the keys quotas exactly")
+> Cc: Eric Biggers <ebiggers@google.com>
+> Signed-off-by: Yang Xu <xuyang2018.jy@cn.fujitsu.com>
 
-0000016d00000000000f424000080009
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-Where 0x16d is the counter timer policy code and 0xf4240 is 100 000 in
-hex.
-
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- Documentation/security/keys/trusted-encrypted.rst | 29 ++++++++++++++++
- include/linux/tpm.h                               |  1 +
- security/keys/trusted-keys/tpm2-policy.c          | 40 ++++++++++++++++++++++-
- security/keys/trusted-keys/trusted_tpm2.c         | 36 +++++++++++++++++++-
- 4 files changed, 104 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index b68d3eb73f00..53a6196c7df9 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -241,3 +241,32 @@ about the usage can be found in the file
- Another new format 'enc32' has been defined in order to support encrypted keys
- with payload size of 32 bytes. This will initially be used for nvdimm security
- but may expand to other usages that require 32 bytes payload.
-+
-+Appendix
-+--------
-+
-+TPM 2.0 Policies
-+----------------
-+
-+The current TPM supports PCR lock policies as documented above and
-+CounterTimer policies which can be used to create expiring keys.  One
-+caveat with expiring keys is that the TPM millisecond counter does not
-+update while a system is powered off and Linux does not sync the TPM
-+millisecond count with its internal clock, so the best you can expire
-+in is in terms of how long any given TPM has been powered on.  (FIXME:
-+Linux should simply update the millisecond clock to the current number
-+of seconds past the epoch on boot).
-+
-+A CounterTimer policy is expressed in terms of length and offset
-+against the TPM clock structure (TPMS_TIME_INFO), which looks like the
-+packed structure::
-+
-+    struct tpms_time_info {
-+            u64 uptime;       /* time in ms since last start or reset */
-+	    u64 clock;        /* cumulative uptime in ms */
-+	    u32 resetcount;   /* numer of times the TPM has been reset */
-+	    u32 restartcount; /* number of times the TPM has been restarted */
-+	    u8  safe          /* time was safely loaded from NVRam */
-+    };
-+
-+The usual comparison for expiring keys is against clock, at offset 8.
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index e32e9728adce..5026a06977e1 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -233,6 +233,7 @@ enum tpm2_command_codes {
- 	TPM2_CC_PCR_EXTEND	        = 0x0182,
- 	TPM2_CC_EVENT_SEQUENCE_COMPLETE = 0x0185,
- 	TPM2_CC_HASH_SEQUENCE_START     = 0x0186,
-+	TPM2_CC_POLICY_PASSWORD		= 0x018c,
- 	TPM2_CC_CREATE_LOADED           = 0x0191,
- 	TPM2_CC_LAST		        = 0x0193, /* Spec 1.36 */
- };
-diff --git a/security/keys/trusted-keys/tpm2-policy.c b/security/keys/trusted-keys/tpm2-policy.c
-index 4cc478feaeb1..90da9fa4ca02 100644
---- a/security/keys/trusted-keys/tpm2-policy.c
-+++ b/security/keys/trusted-keys/tpm2-policy.c
-@@ -197,7 +197,8 @@ int tpm2_generate_policy_digest(struct tpm2_policies *pols,
- 			len = *plen;
- 		}
- 
--		crypto_shash_update(sdesc, policy, len);
-+		if (len)
-+			crypto_shash_update(sdesc, policy, len);
- 
- 		/* now output the intermediate to the policydigest */
- 		crypto_shash_final(sdesc, policydigest);
-@@ -332,6 +333,16 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 		u32 cmd = pols->code[i];
- 		struct tpm_buf buf;
- 
-+		if (cmd == TPM2_CC_POLICY_AUTHVALUE)
-+			/*
-+			 * both PolicyAuthValue and PolicyPassword
-+			 * hash to the same thing, but one triggers
-+			 * HMAC authentication and the other simple
-+			 * authentication.  Since we have no HMAC
-+			 * code, we're choosing the simple
-+			 */
-+			cmd = TPM2_CC_POLICY_PASSWORD;
-+
- 		rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, cmd);
- 		if (rc)
- 			return rc;
-@@ -352,8 +363,35 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 			tpm_buf_append(&buf, pols->policies[i],
- 				       pols->len[i] - pols->hash_size);
- 			break;
-+
-+		case TPM2_CC_POLICY_COUNTER_TIMER: {
-+			/*
-+			 * the format of this is the last two u16
-+			 * quantities are the offset and operation
-+			 * respectively.  The rest is operandB which
-+			 * must be zero padded in a hash digest
-+			 */
-+			u16 opb_len = pols->len[i] - 4;
-+
-+			if (opb_len > pols->hash_size)
-+				return -EINVAL;
-+
-+			tpm_buf_append_u16(&buf, opb_len);
-+			tpm_buf_append(&buf, pols->policies[i], opb_len);
-+
-+			/* offset and operand*/
-+			tpm_buf_append(&buf, pols->policies[i] + opb_len, 4);
-+			failure = "Counter Timer";
-+
-+			break;
-+		}
-+
- 		default:
- 			failure = "unknown policy";
-+			if (pols->len[i])
-+				tpm_buf_append(&buf, pols->policies[i],
-+					       pols->len[i]);
-+
- 			break;
- 		}
- 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 293db0aaada6..63b0ff1d3385 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -248,6 +248,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 	u32 flags;
- 	int i;
- 	int rc;
-+	static const int POLICY_SIZE = 2 * PAGE_SIZE;
- 
- 	for (i = 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
- 		if (options->hash == tpm2_hash_map[i].crypto_id) {
-@@ -268,7 +269,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		/* 4 array len, 2 hash alg */
- 		const int len = 4 + 2 + options->pcrinfo_len;
- 
--		pols = kmalloc(sizeof(*pols) + len, GFP_KERNEL);
-+		pols = kmalloc(POLICY_SIZE, GFP_KERNEL);
- 		if (!pols)
- 			return -ENOMEM;
- 
-@@ -289,6 +290,39 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * if we already have a policy, we have to add authorization
-+	 * to it.  If we don't, we can simply follow the usual
-+	 * non-policy route.
-+	 */
-+	if (options->blobauth_len != 0 && payload->policies) {
-+		struct tpm2_policies *pols;
-+		static u8 *scratch;
-+		int i;
-+		bool found = false;
-+
-+		pols = payload->policies;
-+
-+		/* make sure it's not already in policy */
-+		for (i = 0; i < pols->count; i++) {
-+			if (pols->code[i] == TPM2_CC_POLICY_AUTHVALUE) {
-+				found = true;
-+
-+				break;
-+			}
-+		}
-+
-+		if (!found) {
-+			i = pols->count++;
-+			scratch = pols->policies[i - 1] + pols->len[i - 1];
-+
-+			/* the TPM2_PolicyPassword command has no payload */
-+			pols->policies[i] = scratch;
-+			pols->len[i] = 0;
-+			pols->code[i] = TPM2_CC_POLICY_AUTHVALUE;
-+		}
-+	}
-+
- 	if (payload->policies) {
- 		rc = tpm2_generate_policy_digest(payload->policies,
- 						 options->hash,
--- 
-2.16.4
+/Jarkko
 
