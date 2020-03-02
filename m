@@ -2,60 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A10F175934
-	for <lists+keyrings@lfdr.de>; Mon,  2 Mar 2020 12:08:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 379FE175A76
+	for <lists+keyrings@lfdr.de>; Mon,  2 Mar 2020 13:28:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726654AbgCBLIw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Mar 2020 06:08:52 -0500
-Received: from mga07.intel.com ([134.134.136.100]:41429 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725996AbgCBLIw (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 2 Mar 2020 06:08:52 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 03:08:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,506,1574150400"; 
-   d="scan'208";a="412243500"
-Received: from aorourk1-mobl.ger.corp.intel.com (HELO localhost) ([10.251.86.123])
-  by orsmga005.jf.intel.com with ESMTP; 02 Mar 2020 03:08:50 -0800
-Date:   Mon, 2 Mar 2020 13:08:49 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        id S1727691AbgCBM2Q (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Mar 2020 07:28:16 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42400 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727519AbgCBM2Q (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Mar 2020 07:28:16 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D55CD8EE17D;
+        Mon,  2 Mar 2020 04:28:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1583152095;
+        bh=aUrA8TpMQ8qYcAWkjQOPTgkVcNDl17+zqhBrmCjh+mE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=G1Hbcz7Cy7fgrKQ3T5d+DntHK7oOwX5YWNrH0LLANX0sg98owhGpx5qfF/z4oeYhU
+         9YZo4WYjh7VzhhVXHaUUR1LCM0cFnOFEOnu2M0szGGfSyPxadxHZv80Oqqnk+Vx0Yk
+         m/sCKT2xEIuOcMhEPc+ywGGMwqoMFn5B4x6Qic/U=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Y-XjYo-cQv8e; Mon,  2 Mar 2020 04:28:15 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id E89068EE11D;
+        Mon,  2 Mar 2020 04:28:13 -0800 (PST)
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v5 3/6] security: keys: trusted fix tpm2 authorizations
-Message-ID: <20200302110849.GA3979@linux.intel.com>
-References: <20200130101812.6271-1-James.Bottomley@HansenPartnership.com>
- <20200130101812.6271-4-James.Bottomley@HansenPartnership.com>
- <20200225164850.GB15662@linux.intel.com>
- <1582765091.4245.33.camel@HansenPartnership.com>
- <20200227161949.GD5140@linux.intel.com>
- <1582820506.18445.3.camel@HansenPartnership.com>
- <1582825769.18445.18.camel@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1582825769.18445.18.camel@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Subject: [PATCH v6 0/6] TPM 2.0 trusted keys with attached policy
+Date:   Mon,  2 Mar 2020 07:27:53 -0500
+Message-Id: <20200302122759.5204-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.16.4
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 09:49:29AM -0800, James Bottomley wrote:
-> On Thu, 2020-02-27 at 08:21 -0800, James Bottomley wrote:
-> > On Thu, 2020-02-27 at 18:19 +0200, Jarkko Sakkinen wrote:
-> [...]
-> > Ok, I'll add that commit as the fixes; it certainly makes no sense to
-> > backport this change before the above commit.
-> 
-> This is what I currently have.  Do you want me to resend the whole
-> series?
+This is a respin to update patch 3/6 with comment tidying and if/else
+untangling.
 
-I prefer to review full snapshots of the series.
+General cover letter:
 
-/Jarkko
+This patch updates the trusted key code to export keys in the ASN.1
+format used by current TPM key tools (openssl_tpm2_engine and
+openconnect).  It also simplifies the use of policy with keys because
+the ASN.1 format is designed to carry a description of how to
+construct the policy, with the result that simple policies (like
+authorization and PCR locking) can now be constructed and used in the
+kernel, bringing the TPM 2.0 policy use into line with how TPM 1.2
+works.
+
+The key format is designed to be compatible with our two openssl
+engine implementations as well as with the format used by openconnect.
+I've added seal/unseal to my engine so I can use it for
+interoperability testing and I'll later use this for sealed symmetric
+keys via engine:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
+
+James
+
+---
+
+James Bottomley (6):
+  lib: add ASN.1 encoder
+  oid_registry: Add TCG defined OIDS for TPM keys
+  security: keys: trusted: fix TPM2 authorizations
+  security: keys: trusted: use ASN.1 TPM2 key format for the blobs
+  security: keys: trusted: add ability to specify arbitrary policy
+  security: keys: trusted: implement counter/timer policy
+
+ Documentation/security/keys/trusted-encrypted.rst |  64 ++-
+ include/keys/trusted-type.h                       |   7 +-
+ include/linux/asn1_encoder.h                      |  32 ++
+ include/linux/oid_registry.h                      |   5 +
+ include/linux/tpm.h                               |   8 +
+ lib/Makefile                                      |   2 +-
+ lib/asn1_encoder.c                                | 431 ++++++++++++++++++++
+ security/keys/Kconfig                             |   2 +
+ security/keys/trusted-keys/Makefile               |   2 +-
+ security/keys/trusted-keys/tpm2-policy.c          | 463 ++++++++++++++++++++++
+ security/keys/trusted-keys/tpm2-policy.h          |  31 ++
+ security/keys/trusted-keys/tpm2key.asn1           |  23 ++
+ security/keys/trusted-keys/trusted_tpm1.c         |  56 ++-
+ security/keys/trusted-keys/trusted_tpm2.c         | 370 +++++++++++++++--
+ 14 files changed, 1459 insertions(+), 37 deletions(-)
+ create mode 100644 include/linux/asn1_encoder.h
+ create mode 100644 lib/asn1_encoder.c
+ create mode 100644 security/keys/trusted-keys/tpm2-policy.c
+ create mode 100644 security/keys/trusted-keys/tpm2-policy.h
+ create mode 100644 security/keys/trusted-keys/tpm2key.asn1
+
+-- 
+2.16.4
+
