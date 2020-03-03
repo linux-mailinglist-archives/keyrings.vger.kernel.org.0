@@ -2,83 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CDF1783D1
-	for <lists+keyrings@lfdr.de>; Tue,  3 Mar 2020 21:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF476178428
+	for <lists+keyrings@lfdr.de>; Tue,  3 Mar 2020 21:39:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730862AbgCCUTF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 3 Mar 2020 15:19:05 -0500
-Received: from mga05.intel.com ([192.55.52.43]:2866 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728022AbgCCUTF (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 3 Mar 2020 15:19:05 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Mar 2020 12:19:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,511,1574150400"; 
-   d="scan'208";a="229061102"
-Received: from fkuchars-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.4.236])
-  by orsmga007.jf.intel.com with ESMTP; 03 Mar 2020 12:19:01 -0800
-Date:   Tue, 3 Mar 2020 22:18:59 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Eric Biggers <ebiggers@kernel.org>, dhowells@redhat.com
-Cc:     Yang Xu <xuyang2018.jy@cn.fujitsu.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
-Message-ID: <20200303201847.GI5775@linux.intel.com>
-References: <20200228033009.GA932@sol.localdomain>
- <1582864911-30823-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
- <20200303041732.GA14653@sol.localdomain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200303041732.GA14653@sol.localdomain>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1731821AbgCCUjM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 Mar 2020 15:39:12 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:46950 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731560AbgCCUjM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Mar 2020 15:39:12 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 06EDA8EE26A;
+        Tue,  3 Mar 2020 12:39:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1583267951;
+        bh=0DZEqBkjEA0Y7SVg7sjdrOreeQRcTOP6c0OLaHICZPk=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=W/1Fepwju7/rfKPF6zksCHlCCqUdfzIqeMdHGSL/7XK+vL7zNdXNSzG2eMMFBk8oy
+         6PXmf8YBWXIAMfeh19EgK7Fg+4ZmZqLMpeUlJ86ofVaaUPhTqrrWWBRZ/6sBD8vAuc
+         S8aQQF3vpyDl529tlmW35w754PIbWOnV2BpPllCw=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ia3LsEvlLovb; Tue,  3 Mar 2020 12:39:10 -0800 (PST)
+Received: from jarvis.ext.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EEE5B8EE17D;
+        Tue,  3 Mar 2020 12:39:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1583267950;
+        bh=0DZEqBkjEA0Y7SVg7sjdrOreeQRcTOP6c0OLaHICZPk=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=G3q8zMMv3wo+K0xO5sVpNKKdjY9qNipFErnaw2YRAJTLiEuHWh528D0ewNwSI/6hE
+         bmDi2mTW1ODfmCdgvD5SQ1IWTVNLnsjJ7t5K0XEOlNRYcNadt2MWx7quVdHE9bqXTi
+         RCjKP5/3EIPFZyKRPHCjJFrl+nPLmqJEDKTS/xU8=
+Message-ID: <1583267948.3638.7.camel@HansenPartnership.com>
+Subject: Re: [PATCH v6 3/6] security: keys: trusted: fix TPM2 authorizations
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Date:   Tue, 03 Mar 2020 15:39:08 -0500
+In-Reply-To: <20200303193302.GC5775@linux.intel.com>
+References: <20200302122759.5204-1-James.Bottomley@HansenPartnership.com>
+         <20200302122759.5204-4-James.Bottomley@HansenPartnership.com>
+         <20200303193302.GC5775@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Mar 02, 2020 at 08:17:32PM -0800, Eric Biggers wrote:
-> On Fri, Feb 28, 2020 at 12:41:51PM +0800, Yang Xu wrote:
-> >
-> > Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
-> 
-> The subject should be in imperative tense, like
-> "KEYS: reach the keys quotas correctly"
-
-Preferably with a capital letter .
-
-> 
-> > Currently, when we add a new user key, the calltrace as below:
+On Tue, 2020-03-03 at 21:33 +0200, Jarkko Sakkinen wrote:
+> On Mon, Mar 02, 2020 at 07:27:56AM -0500, James Bottomley wrote:
+> > In TPM 1.2 an authorization was a 20 byte number.  The spec
+> > actually recommended you to hash variable length passwords and use
+> > the sha1 hash as the authorization.  Because the spec doesn't
+> > require this hashing, the current authorization for trusted keys is
+> > a 40 digit hex number.  For TPM 2.0 the spec allows the passing in
+> > of variable length passwords and passphrases directly, so we should
+> > allow that in trusted keys for ease of use.  Update the 'blobauth'
+> > parameter to take this into account, so we can now use plain text
+> > passwords for the keys.
 > > 
-> > add_key()
-> >   key_create_or_update()
-> >     key_alloc()
-> >     __key_instantiate_and_link
-> >       generic_key_instantiate
-> >         key_payload_reserve
-> >           ......
+> > so before
 > > 
-> > Since commit a08bf91ce28e ("KEYS: allow reaching the keys quotas exactly"),
-> > we can reach max bytes/keys in key_alloc, but we forget to remove this
-> > limit when we reserver space for payload in key_payload_reserve. So we
-> > can only reach max keys but not max bytes when having delta between plen
-> > and type->def_datalen. Remove this limit when instantiating the key, so we
-> > can keep consistent with key_alloc.
+> > keyctl add trusted kmk "new 32
+> > blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
 > > 
-> > Also, fix the similar problem in keyctl_chown_key().
+> > after we will accept both the old hex sha1 form as well as a new
+> > directly supplied password:
 > > 
-> > Fixes: 0b77f5bfb45c ("keys: make the keyring quotas controllable through /proc/sys")
-> > Fixes: a08bf91ce28e ("KEYS: allow reaching the keys quotas exactly")
-> > Cc: Eric Biggers <ebiggers@google.com>
-> > Signed-off-by: Yang Xu <xuyang2018.jy@cn.fujitsu.com>
+> > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
+> > 
+> > Since a sha1 hex code must be exactly 40 bytes long and a direct
+> > password must be 20 or less, we use the length as the discriminator
+> > for which form is input.
+> > 
+> > Note this is both and enhancement and a potential bug fix.  The TPM
+> > 2.0 spec requires us to strip leading zeros, meaning empyty
+> > authorization is a zero length HMAC whereas we're currently passing
+> > in
+> > 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but the
+> > Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this
+> > patch
+> > makes the Microsoft TPM emulator work with trusted keys.
 > 
-> Otherwise this looks fine.  Thanks!
+> The commit message does not mention it but there limitation that you
+> cannot have this as a *password*:
 > 
-> Reviewed-by: Eric Biggers <ebiggers@google.com>
+>   f572d396fae9206628714fb2ce00f72e94f2258f
+> 
+> The commit message should explicitly state this.
 
-David, should I pick this is up to my tree?
+Well, that's impossible anyway: the password can be at most
+TPM_DIGEST_SIZE characters and the above is twice that, so the
+discriminator is fairly simple: if the string size is less than or
+equal to TPM_DIGEST_SIZE, then it's a plain password, if it's exactly
+2xTPM_DIGEST_SIZE it must be a hex value and if it's anything else,
+it's illegal.  I thought the sentence
 
-/Jarkko
+   Since a sha1 hex code must be exactly 40 bytes long and a direct
+   password must be 20 or less, we use the length as the discriminator
+   for which form is input.
+
+Was the explanation for this, but I can update it.
+
+> > Signed-off-by: James Bottomley
+> > <James.Bottomley@HansenPartnership.com>
+> > Fixes: 0fe5480303a1 ("keys, trusted: seal/unseal with TPM 2.0
+> > chips")
+> 
+> Fixes should be before SOB.
+
+OK, I'll reverse them.
+
+James
+
