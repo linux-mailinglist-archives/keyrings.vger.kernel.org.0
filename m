@@ -2,102 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 137B01784EF
-	for <lists+keyrings@lfdr.de>; Tue,  3 Mar 2020 22:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E006C17945A
+	for <lists+keyrings@lfdr.de>; Wed,  4 Mar 2020 17:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732599AbgCCVcw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 3 Mar 2020 16:32:52 -0500
-Received: from mga09.intel.com ([134.134.136.24]:3053 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731770AbgCCVcw (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 3 Mar 2020 16:32:52 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Mar 2020 13:32:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,511,1574150400"; 
-   d="scan'208";a="243731878"
-Received: from fkuchars-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.4.236])
-  by orsmga006.jf.intel.com with ESMTP; 03 Mar 2020 13:32:40 -0800
-Date:   Tue, 3 Mar 2020 23:32:38 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v6 3/6] security: keys: trusted: fix TPM2 authorizations
-Message-ID: <20200303213238.GD110353@linux.intel.com>
-References: <20200302122759.5204-1-James.Bottomley@HansenPartnership.com>
- <20200302122759.5204-4-James.Bottomley@HansenPartnership.com>
- <20200303193302.GC5775@linux.intel.com>
- <1583267948.3638.7.camel@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1583267948.3638.7.camel@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1726661AbgCDQEP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Mar 2020 11:04:15 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38096 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726275AbgCDQEO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Mar 2020 11:04:14 -0500
+Received: by mail-wr1-f67.google.com with SMTP id t11so3062827wrw.5;
+        Wed, 04 Mar 2020 08:04:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=U/EkvVl7FAi6+YEFd5JxFzG6+4DfZZOGAx7Rl8CToMk=;
+        b=E1JN1GbGM8dgvnEHDscwegwpfaMaQ7uNI35EyIvMcMf2sw+8icQudqTE5OJkyH//m4
+         sxWXzYGXuxf17vSkNtS6vwLBXIQN1WthG6PDuKUeppzQI0CbXr+99sBifnfdr0DVC4Q3
+         8bE9hDL/ExIVkl9SoyKHBUo6CqfBn1IS0o5oFHlidXR2mK4ZKIEIz++HhIJhkna/UIl5
+         DllgjA+teBq5a1OTvkme+RyeCZYdxgzYOG1sQhCRvEyEsa7KcgBiJCTz1VksSuA5zDxf
+         cUOwDWP2NiFZOJdu+ynWXIQaT2sOkz1YxEo3zJlhg9h+2kDeAC6hwj0992FeW9pGF4hf
+         sp7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=U/EkvVl7FAi6+YEFd5JxFzG6+4DfZZOGAx7Rl8CToMk=;
+        b=QXAWdMWEjunXo0OTwno+wW0dkJLOuonfEvdyC3R6YTyBbZrlyS3Mk1rpKMP+UUJGcR
+         cb9URABGVluJ7ntxmbseWfXrZHZiM+UEKvKKgpy46e1rXTTu6ifVUuXX0GYb8FBSJevd
+         wYHhLgIOEX6Xf5pNSr2t/gZspCjZlasaRRGYfMG3Lh6daTK4t7j2a83bG9q5nWv0Khc0
+         WWyfMnibqMi/xIlqwW/hDKk1r8Ry0pF91bCNBglsriXvoq/y9OGlSO29FEXkTpDS8fhr
+         znnqEhsb9jNNirhR+nnZw5Kk12nXd+0uSA4GUEYjQWC/goUDnhF0ObLdDtZkmZCTFZxL
+         rxyA==
+X-Gm-Message-State: ANhLgQ3malTn5gsTac5/EsWKGOSC/ttE5KiXstuD6oqLQp33e5ii3/K3
+        KMb+iHRJvJZ0RvnZYYuHD7k=
+X-Google-Smtp-Source: ADFU+vu6NnUvsLhagcO8Q4poilEAI652nzvJveCmlcKlhnSPTvayuVO6DjHuiAqzqYSqFm2261DWgw==
+X-Received: by 2002:a5d:4b51:: with SMTP id w17mr4544176wrs.231.1583337852868;
+        Wed, 04 Mar 2020 08:04:12 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2d16:4100:3093:39f0:d3ca:23c6])
+        by smtp.gmail.com with ESMTPSA id y1sm3699219wrh.65.2020.03.04.08.04.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2020 08:04:12 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Sumit Garg <sumit.garg@linaro.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Sebastian Duda <sebastian.duda@fau.de>,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust to trusted keys subsystem creation
+Date:   Wed,  4 Mar 2020 17:03:59 +0100
+Message-Id: <20200304160359.16809-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 03, 2020 at 03:39:08PM -0500, James Bottomley wrote:
-> On Tue, 2020-03-03 at 21:33 +0200, Jarkko Sakkinen wrote:
-> > On Mon, Mar 02, 2020 at 07:27:56AM -0500, James Bottomley wrote:
-> > > In TPM 1.2 an authorization was a 20 byte number.  The spec
-> > > actually recommended you to hash variable length passwords and use
-> > > the sha1 hash as the authorization.  Because the spec doesn't
-> > > require this hashing, the current authorization for trusted keys is
-> > > a 40 digit hex number.  For TPM 2.0 the spec allows the passing in
-> > > of variable length passwords and passphrases directly, so we should
-> > > allow that in trusted keys for ease of use.  Update the 'blobauth'
-> > > parameter to take this into account, so we can now use plain text
-> > > passwords for the keys.
-> > > 
-> > > so before
-> > > 
-> > > keyctl add trusted kmk "new 32
-> > > blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
-> > > 
-> > > after we will accept both the old hex sha1 form as well as a new
-> > > directly supplied password:
-> > > 
-> > > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
-> > > 
-> > > Since a sha1 hex code must be exactly 40 bytes long and a direct
-> > > password must be 20 or less, we use the length as the discriminator
-> > > for which form is input.
-> > > 
-> > > Note this is both and enhancement and a potential bug fix.  The TPM
-> > > 2.0 spec requires us to strip leading zeros, meaning empyty
-> > > authorization is a zero length HMAC whereas we're currently passing
-> > > in
-> > > 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but the
-> > > Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this
-> > > patch
-> > > makes the Microsoft TPM emulator work with trusted keys.
-> > 
-> > The commit message does not mention it but there limitation that you
-> > cannot have this as a *password*:
-> > 
-> >   f572d396fae9206628714fb2ce00f72e94f2258f
-> > 
-> > The commit message should explicitly state this.
-> 
-> Well, that's impossible anyway: the password can be at most
-> TPM_DIGEST_SIZE characters and the above is twice that, so the
-> discriminator is fairly simple: if the string size is less than or
-> equal to TPM_DIGEST_SIZE, then it's a plain password, if it's exactly
-> 2xTPM_DIGEST_SIZE it must be a hex value and if it's anything else,
-> it's illegal.  I thought the sentence
-> 
->    Since a sha1 hex code must be exactly 40 bytes long and a direct
->    password must be 20 or less, we use the length as the discriminator
->    for which form is input.
-> 
-> Was the explanation for this, but I can update it.
+Commit 47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
+renamed trusted.h to trusted_tpm.h in include/keys/, and moved trusted.c
+to trusted-keys/trusted_tpm1.c in security/keys/.
 
-Thanks! No need to update. I missed that part somehow.
+Since then, ./scripts/get_maintainer.pl --self-test complains:
 
-/Jarkko
+  warning: no file matches F: security/keys/trusted.c
+  warning: no file matches F: include/keys/trusted.h
+
+Rectify the KEYS-TRUSTED entry in MAINTAINERS now.
+
+Co-developed-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Sebastian Duda <sebastian.duda@fau.de>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Sumit, please ack.
+Jarkko, please pick this patch.
+
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5c755e03ddee..cf389058ca76 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9276,8 +9276,8 @@ L:	keyrings@vger.kernel.org
+ S:	Supported
+ F:	Documentation/security/keys/trusted-encrypted.rst
+ F:	include/keys/trusted-type.h
+-F:	security/keys/trusted.c
+-F:	include/keys/trusted.h
++F:	include/keys/trusted_tpm.h
++F:	security/keys/trusted-keys/trusted_tpm1.c
+ 
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
+-- 
+2.17.1
+
