@@ -2,90 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3116179ABC
-	for <lists+keyrings@lfdr.de>; Wed,  4 Mar 2020 22:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52746179DCA
+	for <lists+keyrings@lfdr.de>; Thu,  5 Mar 2020 03:27:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387996AbgCDVP5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 Mar 2020 16:15:57 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:40522 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727528AbgCDVP4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Mar 2020 16:15:56 -0500
-Received: by mail-ed1-f67.google.com with SMTP id a13so4024447edu.7;
-        Wed, 04 Mar 2020 13:15:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=Em+PlQiOtj4b65IT/F3S+R3l1hsqSkR2d5+J1YRJyRk=;
-        b=rpIeztq7F3sX6zjxbhir4885stPfdoyMPD7XM/MG+0p0rleBmGcxRh6hHqQHHWaGtK
-         +vy/wGjzwyzIopeZohV5yY6ak/lABt6v/tPrtnSUsJEKn4gqlRMQC1EJgoGv9p6dzIK3
-         rSe3QedbCh51qJ58HdVOjpWaDEtW20IDvW0Nok67XnkHTlbjJy+Bu89GRlWVGBcGolWS
-         l8oC/kj/6rBdc6f/KjxgtJCxojakt7mNhQIdiEsY9mVf0xA+BSYc4HP/3rkZut4QbjpX
-         jhCPCMkKNUiTHFZl7jn8GJuEbt04o02iJ3t9o7hofKRomGvtN/uL6aK/3MRPCHiAYlD9
-         z5YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=Em+PlQiOtj4b65IT/F3S+R3l1hsqSkR2d5+J1YRJyRk=;
-        b=oI7S5BAd5QV+OboxbAwZEgK7eZgWYQi3goHqzaQmmEEaMpY2FlAluxcu2x7MTwDDMs
-         aZHs1ultT5T1BagkFvA5HRA5Q2/qBm6STAuSM8FACpxVwe922QBZHzEOfzZdQunKQrRW
-         JmP5TsrT4mUfk9dyb0Cgfxw5sn2/0CpD+oFfJUoCMhXHnT28/OYV9iDxsMUuJnRQZ0t6
-         BuEQVvA/kLAAV0h7rEcE4qWxou0eASvVEPe1JThS437ik/2UJE+iu7SsKNVYJHZdGH8s
-         jb3NKZdIzqQoLazZFmpq9wZvgv9kg3im280Oj12uwnHSZAsPR8cv0uIdri30ygWPfFko
-         h0/A==
-X-Gm-Message-State: ANhLgQ3mYNIfFz1D9QrruEIS88slvx7PU5GTphZ3fnzlkoHD7RdFPwJu
-        StgmHRVdFTILSudYqgfJwdU=
-X-Google-Smtp-Source: ADFU+vsskwQ2kRTF4Kq4c201RyQOGF1Y34XBafQH0inJlyarAtMkOuxBj2qs8K+F/666Z9EL7+gVUw==
-X-Received: by 2002:a05:6402:22e9:: with SMTP id dn9mr4702173edb.165.1583356554894;
-        Wed, 04 Mar 2020 13:15:54 -0800 (PST)
-Received: from felia ([2001:16b8:2d16:4100:5c62:5f:595c:f76d])
-        by smtp.gmail.com with ESMTPSA id r25sm610123edo.19.2020.03.04.13.15.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2020 13:15:54 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Wed, 4 Mar 2020 22:15:53 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     James Bottomley <jejb@linux.ibm.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
+        id S1725810AbgCEC15 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Mar 2020 21:27:57 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:47244 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725776AbgCEC15 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Mar 2020 21:27:57 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 26D568EE11D;
+        Wed,  4 Mar 2020 18:27:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1583375277;
+        bh=g4TW3XLI9rheJIt1WcLNVxUfYk0fOQhQmLe5GlsdJ3s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZvwxYWcm/iv23zOU3LCMss3eRlAprdyUi5kD5qVUKZ3ZsIVv4YofIXmSgTQfA2JEt
+         fzvUPg6FweqlVLjKFLi6FG2A2hA64dxI1mq5ViPtSlK/qxv9XsOhocJCjhPVc3OL9a
+         IVGXzIqH6yYamHAkXgLqP3YvCx3naUpVtDUp5NEc=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id F_ueiYpaZMBn; Wed,  4 Mar 2020 18:27:57 -0800 (PST)
+Received: from jarvis.lan (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 9E13A8EE0FC;
+        Wed,  4 Mar 2020 18:27:56 -0800 (PST)
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        Sebastian Duda <sebastian.duda@fau.de>,
-        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: adjust to trusted keys subsystem creation
-In-Reply-To: <1583338378.3284.7.camel@linux.ibm.com>
-Message-ID: <alpine.DEB.2.21.2003042214170.2698@felia>
-References: <20200304160359.16809-1-lukas.bulwahn@gmail.com> <1583338378.3284.7.camel@linux.ibm.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: [PATCH v7 0/6] TPM 2.0 trusted keys with attached policy
+Date:   Wed,  4 Mar 2020 18:27:38 -0800
+Message-Id: <20200305022744.12492-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.16.4
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+This is a respin to update several patches based on review feedback
 
-On Wed, 4 Mar 2020, James Bottomley wrote:
+General cover letter:
 
-> On Wed, 2020-03-04 at 17:03 +0100, Lukas Bulwahn wrote:
-> > +F:	include/keys/trusted_tpm.h
-> > +F:	security/keys/trusted-keys/trusted_tpm1.c
-> 
-> Everything under trusted-keys is part of the subsystem, so this should
-> be a glob not a single file.
-> 
+This patch updates the trusted key code to export keys in the ASN.1
+format used by current TPM key tools (openssl_tpm2_engine and
+openconnect).  It also simplifies the use of policy with keys because
+the ASN.1 format is designed to carry a description of how to
+construct the policy, with the result that simple policies (like
+authorization and PCR locking) can now be constructed and used in the
+kernel, bringing the TPM 2.0 policy use into line with how TPM 1.2
+works.
 
-Agree. I sent out a PATCH v2 for that:
+The key format is designed to be compatible with our two openssl
+engine implementations as well as with the format used by openconnect.
+I've added seal/unseal to my engine so I can use it for
+interoperability testing and I'll later use this for sealed symmetric
+keys via engine:
 
-https://lore.kernel.org/linux-integrity/20200304211254.5127-1-lukas.bulwahn@gmail.com/T/#u
+https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
 
-Please ignore this v1 here and pick v2.
+James
 
-Thanks,
+---
 
-Lukas
+James Bottomley (6):
+  lib: add ASN.1 encoder
+  oid_registry: Add TCG defined OIDS for TPM keys
+  security: keys: trusted: fix TPM2 authorizations
+  security: keys: trusted: use ASN.1 TPM2 key format for the blobs
+  security: keys: trusted: add ability to specify arbitrary policy
+  security: keys: trusted: implement counter/timer policy
+
+ Documentation/security/keys/trusted-encrypted.rst |  64 ++-
+ include/keys/trusted-type.h                       |   7 +-
+ include/linux/asn1_encoder.h                      |  32 ++
+ include/linux/oid_registry.h                      |   5 +
+ include/linux/tpm.h                               |   8 +
+ lib/Makefile                                      |   2 +-
+ lib/asn1_encoder.c                                | 431 ++++++++++++++++++++
+ security/keys/Kconfig                             |   2 +
+ security/keys/trusted-keys/Makefile               |   2 +-
+ security/keys/trusted-keys/tpm2-policy.c          | 463 ++++++++++++++++++++++
+ security/keys/trusted-keys/tpm2-policy.h          |  31 ++
+ security/keys/trusted-keys/tpm2key.asn1           |  23 ++
+ security/keys/trusted-keys/trusted_tpm1.c         |  56 ++-
+ security/keys/trusted-keys/trusted_tpm2.c         | 370 +++++++++++++++--
+ 14 files changed, 1459 insertions(+), 37 deletions(-)
+ create mode 100644 include/linux/asn1_encoder.h
+ create mode 100644 lib/asn1_encoder.c
+ create mode 100644 security/keys/trusted-keys/tpm2-policy.c
+ create mode 100644 security/keys/trusted-keys/tpm2-policy.h
+ create mode 100644 security/keys/trusted-keys/tpm2key.asn1
+
+-- 
+2.16.4
+
