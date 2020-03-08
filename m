@@ -2,143 +2,40 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A9EC17D511
-	for <lists+keyrings@lfdr.de>; Sun,  8 Mar 2020 18:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B94B517D546
+	for <lists+keyrings@lfdr.de>; Sun,  8 Mar 2020 18:46:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726453AbgCHREg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 8 Mar 2020 13:04:36 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:56373 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726414AbgCHREe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 8 Mar 2020 13:04:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1583687073;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:in-reply-to:in-reply-to:references:references;
-        bh=/kCt/AmtzbGfbmI9H2k3aFKT17BIacOKpSUSO5iFTyU=;
-        b=hxM9RbgpPBZFRJGjqW1RswjJ8DH8FNoIegj5knWGuF4CSnSzNZ7k6U1DG37gvS8upGCJHP
-        AqshmHD2uWlPk4GtgR83V+ptKCP+GVjes4F5ytkGv1M2Jzp/STRQB/umhKmEZcjxRtxmqS
-        1cpYLCv3c5PVaCRdBFPq53jMpO4sjbs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-460-mU65sZXEOp2RH0nVCNxe6Q-1; Sun, 08 Mar 2020 13:04:31 -0400
-X-MC-Unique: mU65sZXEOp2RH0nVCNxe6Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9D17B800D50;
-        Sun,  8 Mar 2020 17:04:29 +0000 (UTC)
-Received: from llong.com (ovpn-120-251.rdu2.redhat.com [10.10.120.251])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E94F85D9C5;
-        Sun,  8 Mar 2020 17:04:27 +0000 (UTC)
-From:   Waiman Long <longman@redhat.com>
-To:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Chris von Recklinghausen <crecklin@redhat.com>,
-        Waiman Long <longman@redhat.com>
-Subject: [PATCH v2 2/2] KEYS: Avoid false positive ENOMEM error on key read
-Date:   Sun,  8 Mar 2020 13:04:10 -0400
-Message-Id: <20200308170410.14166-3-longman@redhat.com>
-In-Reply-To: <20200308170410.14166-1-longman@redhat.com>
-References: <20200308170410.14166-1-longman@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+        id S1726291AbgCHRqB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 8 Mar 2020 13:46:01 -0400
+Received: from msvr.eekspcb.com ([58.210.169.85]:58529 "EHLO msvr.eekspcb.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726279AbgCHRqB (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 8 Mar 2020 13:46:01 -0400
+X-Greylist: delayed 605 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Mar 2020 13:46:00 EDT
+Received: from User ([156.96.45.188]) by msvr.eekspcb.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 9 Mar 2020 01:20:15 +0800
+Reply-To: <francoispiniault@gmail.com>
+From:   "Francois Pinault" <francioispinaul@gmail.com>
+Subject: Re:
+Date:   Sun, 8 Mar 2020 13:19:12 -0400
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <MSVRDI8NFr9oD6XMLDt000008f0@msvr.eekspcb.com>
+X-OriginalArrivalTime: 08 Mar 2020 17:20:15.0751 (UTC) FILETIME=[D5620970:01D5F56D]
+X-TM-AS-Product-Ver: SMEX-10.0.0.4152-7.000.1014-25274.001
+X-TM-AS-Result: Yes-101.003900-8.000000-31
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+To:     unlisted-recipients:; (no To-header on input)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-By allocating a kernel buffer with an user-supplied buffer length, it
-is possible that a false positive ENOMEM error may be returned because
-the user-supplied length is just too large even if the system do have
-enough memory to hold the actual key data.
-
-To reduce this possibility, we set a threshold (1024) over which we
-do check the actual key length first before allocating a buffer of the
-right size to hold it.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- security/keys/keyctl.c | 46 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
-
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 89a14e71eb0a..662a638a680d 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -855,28 +855,52 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
- 		 * deadlock involving page fault and mmap_sem.
- 		 */
- 		char *tmpbuf = NULL;
-+		size_t tbuflen = buflen;
- 
--		if (buffer && buflen) {
--			tmpbuf = kmalloc(buflen, GFP_KERNEL);
-+		/*
-+		 * We don't want an erronous -ENOMEM error due to an
-+		 * arbitrary large user-supplied buflen. So if buflen
-+		 * exceeds a threshold (1024 bytes in this case), we call
-+		 * the read method twice. The first time to get the buffer
-+		 * length and the second time to read out the key data.
-+		 *
-+		 * N.B. All the read methods will return the required
-+		 *      buffer length with a NULL input buffer or when
-+		 *      the input buffer length isn't large enough.
-+		 */
-+		if (buflen && buffer && (buflen <= 0x400)) {
-+allocbuf:
-+			tmpbuf = kmalloc(tbuflen, GFP_KERNEL);
- 			if (!tmpbuf) {
- 				ret = -ENOMEM;
- 				goto error2;
- 			}
- 		}
-+
- 		down_read(&key->sem);
- 		ret = key_validate(key);
- 		if (ret == 0)
--			ret = key->type->read(key, tmpbuf, buflen);
-+			ret = key->type->read(key, tmpbuf, tbuflen);
- 		up_read(&key->sem);
- 
--		/*
--		 * Read methods will just return the required length
--		 * without any copying if the provided length isn't big
--		 * enough.
--		 */
--		if ((ret > 0) && (ret <= buflen) && buffer &&
--		    copy_to_user(buffer, tmpbuf, ret))
--			ret = -EFAULT;
-+		if ((ret > 0) && (ret <= buflen) && buffer) {
-+			/*
-+			 * It is possible, though unlikely, that the key
-+			 * changes in between the up_read->down_read period.
-+			 * If the key becomes longer, we will have to
-+			 * allocate a larger buffer and redo the key read
-+			 * again.
-+			 */
-+			if (!tmpbuf || unlikely(ret > tbuflen)) {
-+				tbuflen = ret;
-+				if (unlikely(tmpbuf))
-+					kzfree(tmpbuf);
-+				goto allocbuf;
-+			}
-+
-+			if (copy_to_user(buffer, tmpbuf, ret))
-+				ret = -EFAULT;
-+		}
- 
- 		if (tmpbuf)
- 			kzfree(tmpbuf);
--- 
-2.18.1
-
+A donation was made in your favour by Francois Pinault, reply for more details.
