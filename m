@@ -2,103 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9370C17E1D6
-	for <lists+keyrings@lfdr.de>; Mon,  9 Mar 2020 15:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C6717E4D5
+	for <lists+keyrings@lfdr.de>; Mon,  9 Mar 2020 17:32:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbgCIN7s (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Mar 2020 09:59:48 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:48754 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726383AbgCIN7s (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Mar 2020 09:59:48 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id B954A8EE130;
-        Mon,  9 Mar 2020 06:59:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1583762387;
-        bh=Qtz6cbmzCipAwmDMT8lTR4BIxtTJWStyW/r+A4vHAvM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=FvMsHvn66QHZcXvlAEAkY4L3hhTXpALvk0rPiW234CRGs5pWyxjRqvYYljjdF6b9u
-         0EmJ+QAqki02VRrzSL0qvWJu4u4j4QuoD8ZkA6mPxjOpZsPehGP9G+AeQ4Oj9jI/7h
-         3QyyyTz9s+fHZ4Ax6PTEOusrLJu2m3Bbt7PAsWao=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id n218m5WzUryQ; Mon,  9 Mar 2020 06:59:47 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727194AbgCIQcf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Mar 2020 12:32:35 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:52763 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727061AbgCIQce (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Mar 2020 12:32:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1583771553;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DicN/KVmQyAyPa1SQbJC+P87YoIa/d9bIovLTJ1t7DI=;
+        b=OyZJDsGEH4YtsoDt8Y2a01SsI8oP+w26+j8gJGo04fsMdG5u89jblplsWUHcOK53Zw1tZt
+        LmI96th8kJFI0GvgZ8wHk/DylJvBAGitzXVs38reH/UPpQRAuAce9CkItSPDXxcpmuP5Ca
+        jT+M7WBEN7UaPNBGUnbAf3f5txoiSdM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-362-BiyeUVPKNm-Kw84GfhRoxQ-1; Mon, 09 Mar 2020 12:32:29 -0400
+X-MC-Unique: BiyeUVPKNm-Kw84GfhRoxQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 5B8418EE121;
-        Mon,  9 Mar 2020 06:59:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1583762387;
-        bh=Qtz6cbmzCipAwmDMT8lTR4BIxtTJWStyW/r+A4vHAvM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=FvMsHvn66QHZcXvlAEAkY4L3hhTXpALvk0rPiW234CRGs5pWyxjRqvYYljjdF6b9u
-         0EmJ+QAqki02VRrzSL0qvWJu4u4j4QuoD8ZkA6mPxjOpZsPehGP9G+AeQ4Oj9jI/7h
-         3QyyyTz9s+fHZ4Ax6PTEOusrLJu2m3Bbt7PAsWao=
-Message-ID: <1583762386.3429.6.camel@HansenPartnership.com>
-Subject: Re: [PATCH v7 4/6] security: keys: trusted: use ASN.1 TPM2 key
- format for the blobs
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Date:   Mon, 09 Mar 2020 06:59:46 -0700
-In-Reply-To: <20200307220026.GA122868@linux.intel.com>
-References: <20200305022744.12492-1-James.Bottomley@HansenPartnership.com>
-         <20200305022744.12492-5-James.Bottomley@HansenPartnership.com>
-         <20200307220026.GA122868@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 97A051088384;
+        Mon,  9 Mar 2020 16:32:26 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-182.rdu2.redhat.com [10.10.120.182])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E5A539051C;
+        Mon,  9 Mar 2020 16:32:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200308170410.14166-3-longman@redhat.com>
+References: <20200308170410.14166-3-longman@redhat.com> <20200308170410.14166-1-longman@redhat.com>
+To:     Waiman Long <longman@redhat.com>
+Cc:     dhowells@redhat.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Chris von Recklinghausen <crecklin@redhat.com>
+Subject: Re: [PATCH v2 2/2] KEYS: Avoid false positive ENOMEM error on key read
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <416689.1583771540.1@warthog.procyon.org.uk>
+Date:   Mon, 09 Mar 2020 16:32:20 +0000
+Message-ID: <416690.1583771540@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, 2020-03-08 at 00:00 +0200, Jarkko Sakkinen wrote:
-> On Wed, Mar 04, 2020 at 06:27:42PM -0800, James Bottomley wrote:
-> > Modify the TPM2 key format blob output to export and import in the
-> > ASN.1 form for TPM2 sealed object keys.  For compatibility with
-> > prior
-> > trusted keys, the importer will also accept two TPM2B quantities
-> > representing the public and private parts of the key.  However, the
-> > export via keyctl pipe will only output the ASN.1 format.
-> > 
-> > The benefit of the ASN.1 format is that it's a standard and thus
-> > the
-> > exported key can be used by userspace tools (openssl_tpm2_engine,
-> > openconnect and tpm2-tss-engine).  The format includes policy
-> > specifications, thus it gets us out of having to construct policy
-> > handles in userspace and the format includes the parent meaning you
-> > don't have to keep passing it in each time.
-> > 
-> > This patch only implements basic handling for the ASN.1 format, so
-> > keys with passwords but no policy.
-> > 
-> > Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.c
-> > om>
-> 
-> Not yet sure but I get
-> 
-> keyctl add trusted kmk "new 32 keyhandle=0x81000001 hash=sha1
-> pcrinfo=03000001 6768033e216468247bd031a0a2d9876d79818f8f" @u
-> add_key: No such device
+Waiman Long <longman@redhat.com> wrote:
 
-What's the last hex string?  Is there supposed to be a command
-preceding it (like blobauth since there's 40 hex chars?).
+> +			tmpbuf = kmalloc(tbuflen, GFP_KERNEL);
 
-> After applying 1/6-4/6.
+This would probably be better off using kvmalloc() - otherwise big objects
+have to be constructed from runs of contiguous pages.  But since all we're
+doing is buffering for userspace, we don't care about that.
 
-As you guessed for most of the rebases I've been testing the whole set
-of patches.  Let me wind back to 4/6 and have a look.
+If you agree, we can address it with an additional patch.
 
-> At this point I'm assuming that I've made mistake somewhere, which is
-> entirely possible.
-
-Heh, don't bet on it, I should be able to reconstruct the environment
-today and try it out.
-
-James
+David
 
