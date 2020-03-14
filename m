@@ -2,153 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6528184DF5
-	for <lists+keyrings@lfdr.de>; Fri, 13 Mar 2020 18:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B354718589D
+	for <lists+keyrings@lfdr.de>; Sun, 15 Mar 2020 03:14:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727280AbgCMRuH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 13 Mar 2020 13:50:07 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:50913 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727269AbgCMRuH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Mar 2020 13:50:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584121806;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2y9bOOdnV7SoV4MD1WpKfVVbv/C4nrVUnfO1nhE2Kbg=;
-        b=Ga1wwI67AMVNPq3O7bf+nhB1W1/fj07YjCZRg7zL13qV6GQP8zImM5F8MT75/lx0lMRsv/
-        hFZdbeo/lpCRAtsJuZeDednHp9wv0l5izdu3Ss2/SPeCEJweqpj8yF2r9+xfqcR9u8NQgC
-        oHjx9i2Y2rjvedRqiQKdsDxT7EGol0s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-245-UH7TaFUzPLSR-Dn6vFuh8w-1; Fri, 13 Mar 2020 13:50:02 -0400
-X-MC-Unique: UH7TaFUzPLSR-Dn6vFuh8w-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7490E801E6D;
-        Fri, 13 Mar 2020 17:50:00 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-125-21.rdu2.redhat.com [10.10.125.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 82A4960BF7;
-        Fri, 13 Mar 2020 17:49:58 +0000 (UTC)
-Subject: Re: [PATCH v3 3/3] KEYS: Use kvmalloc() to better handle large buffer
- allocation
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Chris von Recklinghausen <crecklin@redhat.com>
-References: <20200313152102.1707-1-longman@redhat.com>
- <20200313152102.1707-4-longman@redhat.com>
- <20200313164306.GA907@sol.localdomain>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <8f2f1787-88b0-f86d-991c-34cfd2f9b4aa@redhat.com>
-Date:   Fri, 13 Mar 2020 13:49:57 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1726597AbgCOCOp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 14 Mar 2020 22:14:45 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:35433 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727180AbgCOCOn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 14 Mar 2020 22:14:43 -0400
+Received: by mail-io1-f67.google.com with SMTP id h8so13669310iob.2
+        for <keyrings@vger.kernel.org>; Sat, 14 Mar 2020 19:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
+        b=h9YhYCfhuvcoOK9JuTSnuiXg2cILoy3ExIWXtsaJYq8huKBTSezqcgybwNUJnF31OD
+         8M4XkdAA+wF3Kc0hz30O/kK9eMooTs7yoqdIBJNfvWQnNRWRGMPcYzXrJl2zdeF1j7va
+         J8XdxMT0KmL8llAYJuvJtfAv+moo5flCUCJCh/tlglJ+fFmIUPVbZ1fac7bCjKhbkCn+
+         rZJerUAJLBThHl7kvNkOSCFj/J2Gim7L2OHs8nEEBbbGF0yG+oMEoxI1m7Q6XmwEaoXK
+         TKHu+SSgJteucaBn++J1ylejcFocesa/O0LZlk7VxDKA6TPZDYhdjLA4ADjt7vhRjRdb
+         KZMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
+        b=AFIaJEXOxO8PBguRVA1BlhbEKH/2sUC8MMv3Awvq5T98ULNwOudONgcjpX58V4z+8U
+         42BE/RKb+LdYm+gRwQAQ1+p625C1QU8cHNsXKS0gDFvdSdUvJ/pVlF4gzxU6QkKMmXgP
+         3+H6Kkpu3EWJOGJMoR/u0AHdP7Ik/t2cZ0d6hCVkeUgBRG32UvqZkAqynf9P4lL6ysxM
+         wN7YCLy7w1qJwsZ6PubZobxCSkIpAMFULgy/2LAPFJ936wM4iGYbUzW989apS3PvL0gA
+         NtX3uKTqR7ZHD9C1h7jWzGd4yGlI64/q3ld6dX2T+dDAdAlCAjnoijRytDO303kxqFWF
+         OAYg==
+X-Gm-Message-State: ANhLgQ1G1lRk7PiCLn+m3+54jA3NJVHXdASdzvsUIzAmDfWjqN/Tu386
+        UCdoUfH8HMYjPVGFKu7lYA5wl0yHsUHzd17h+zaj6twX
+X-Google-Smtp-Source: ADFU+vsJ8OZ/Dhr0DwwgkL8CDPySYZHLYuNtMBF50V178xoCgQ3+Wbsy6eqrOFGI1hDMkk7GA6AGM8FMlDHfqPtuVxs=
+X-Received: by 2002:a02:3f4c:: with SMTP id c12mr12249418jaf.115.1584206617074;
+ Sat, 14 Mar 2020 10:23:37 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200313164306.GA907@sol.localdomain>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Received: by 2002:a02:63c1:0:0:0:0:0 with HTTP; Sat, 14 Mar 2020 10:23:36
+ -0700 (PDT)
+From:   Omar Ousman <omarousman25@gmail.com>
+Date:   Sat, 14 Mar 2020 18:23:36 +0100
+X-Google-Sender-Auth: e3Esaw6NMf2t59gU8aF8hbfxq5E
+Message-ID: <CAOdk3H=BWVFSbBHnPp89pkv5eyhE_YLWx_uztwjom2+untGdDQ@mail.gmail.com>
+Subject: You received my last mail,,,,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/13/20 12:43 PM, Eric Biggers wrote:
-> On Fri, Mar 13, 2020 at 11:21:02AM -0400, Waiman Long wrote:
->> For large multi-page temporary buffer allocation, the security/keys
->> subsystem don't need contiguous physical pages. It will work perfectly
->> fine with virtually mapped pages.
->>
->> Replace the kmalloc() call by kvmalloc() and provide a __kvzfree()
->> helper function to clear and free the kvmalloc'ed buffer. This will
->> reduce the chance of memory allocation failure just because of highly
->> fragmented pages.
->>
->> Suggested-by: David Howells <dhowells@redhat.com>
->> Signed-off-by: Waiman Long <longman@redhat.com>
->> ---
->>  security/keys/internal.h | 14 ++++++++++++++
->>  security/keys/keyctl.c   | 10 +++++-----
->>  2 files changed, 19 insertions(+), 5 deletions(-)
->>
->> diff --git a/security/keys/internal.h b/security/keys/internal.h
->> index ba3e2da14cef..855b11eb73ee 100644
->> --- a/security/keys/internal.h
->> +++ b/security/keys/internal.h
->> @@ -16,6 +16,8 @@
->>  #include <linux/keyctl.h>
->>  #include <linux/refcount.h>
->>  #include <linux/compat.h>
->> +#include <linux/mm.h>
->> +#include <linux/vmalloc.h>
->>  
->>  struct iovec;
->>  
->> @@ -349,4 +351,16 @@ static inline void key_check(const struct key *key)
->>  
->>  #endif
->>  
->> +/*
->> + * Helper function to clear and free a kvmalloc'ed memory object.
->> + */
->> +static inline void __kvzfree(const void *addr, size_t len)
->> +{
->> +	if (is_vmalloc_addr(addr)) {
->> +		memset((void *)addr, 0, len);
->> +		vfree(addr);
->> +	} else {
->> +		kzfree(addr);
->> +	}
->> +}
-> Since this takes the length as a parameter, it can be simplified to:
->
-> static inline void __kvzfree(const void *addr, size_t len)
-> {
-> 	if (addr) {
-> 		memset((void *)addr, 0, len);
-> 		kvfree(addr);
-> 	}
-> }
-Yes, that will work too.
->>  			if (!tmpbuf || unlikely(ret > tmpbuflen)) {
->>  				if (unlikely(tmpbuf))
->> -					kzfree(tmpbuf);
->> +					__kvzfree(tmpbuf, tmpbuflen);
-> Both kzfree() and __kvzfree() handle a NULL pointer, so there's no need for the
-> NULL check first.
->
-I would like to keep this one because of the unlikely annotation.
+I am Mr.Omar Ousman, a regional managing director (CORIS BANK
+INTERNATIONAL) Ouagadougou Burkina Faso, in my department we have
+US$9,500.0000 million united state dollars, to transfer into your
+account as a dormant fund.If you are interested to use this fund to
+help the orphans around the world contact and send me your personal
+information for more details to my email omarousman25@gmail.com
 
+Your full names..........
+Your country of origin..........
+Your occupation..........
+Your Age..........
+Your Mobile Number..........
 
->> @@ -920,7 +920,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
->>  				ret = -EFAULT;
->>  		}
->>  		if (tmpbuf)
->> -			kzfree(tmpbuf);
->> +			__kvzfree(tmpbuf, tmpbuflen);
-> Likewise here.  No need for the NULL check.
-
-Yes, that tmpbuf check is not really necessary, but it doesn't harm either.
-
-My plan is to send out a mm patch to officially add the kvzfree()
-function to mm/util.c. I will remove the tmpbuf check at that time if
-you don't mind.
-
-Cheers,
-Longman
-
+Best Regards,
