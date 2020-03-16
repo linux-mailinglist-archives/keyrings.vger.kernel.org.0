@@ -2,46 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CABC0186CFA
-	for <lists+keyrings@lfdr.de>; Mon, 16 Mar 2020 15:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC0E9186E90
+	for <lists+keyrings@lfdr.de>; Mon, 16 Mar 2020 16:27:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731455AbgCPOYp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 16 Mar 2020 10:24:45 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:52143 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731491AbgCPOYo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Mar 2020 10:24:44 -0400
+        id S1731851AbgCPP1p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 16 Mar 2020 11:27:45 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:21995 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731505AbgCPP1p (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Mar 2020 11:27:45 -0400
+X-Greylist: delayed 303 seconds by postgrey-1.27 at vger.kernel.org; Mon, 16 Mar 2020 11:27:44 EDT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584368683;
+        s=mimecast20190719; t=1584372463;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8RPanWQj7akCZRE0rKGpc838ieDndaq2JCNq0zCn4Pw=;
-        b=A7kONsz21u++jD1i3JiB9saUhUB2Sol/83ats6Q3Bo0wimV5rkoTH7vevI4irPoqh/wcB1
-        l4FDgcEKukK1kyrhc6X8iq0BxrB8VHNKqjuGMpb4iRNE4Oi+ze9iP7wqZWZbMT2oGZrLip
-        vkR0XjbSqfxwDax8MfEUxO86B357ISs=
+        bh=7tIckOGwAi8kcv9l4a2aU1rTC/7Ce6IHxh06VU/Fv30=;
+        b=dey23594fW5DQStXfVbvMW8LFHOLv3YYsGfuARSu8yelA1Yttf4dyWHEMgWs8vrVL7KIbp
+        ZUqc0329rePpxt5Ba3zg3YXVMMQw8VXnareBnGhcfFXIUFhX0mWZS0nf2kMT9StuuLyuJr
+        Eg6Dk8FbMY/l5pr9skFXtOzEOKBVGjQ=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-318-seELQGmgNhqXzPmviVCfpg-1; Mon, 16 Mar 2020 10:24:42 -0400
-X-MC-Unique: seELQGmgNhqXzPmviVCfpg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+ us-mta-392-HalrFa8EOcWuYz9zbJlVlQ-1; Mon, 16 Mar 2020 11:21:34 -0400
+X-MC-Unique: HalrFa8EOcWuYz9zbJlVlQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0B759800D53;
-        Mon, 16 Mar 2020 14:24:40 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-182.rdu2.redhat.com [10.10.120.182])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2D1A910246E3;
-        Mon, 16 Mar 2020 14:24:33 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200313152102.1707-4-longman@redhat.com>
-References: <20200313152102.1707-4-longman@redhat.com> <20200313152102.1707-1-longman@redhat.com>
-To:     Waiman Long <longman@redhat.com>
-Cc:     dhowells@redhat.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1F5C4193283B;
+        Mon, 16 Mar 2020 15:21:32 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-118-249.phx2.redhat.com [10.3.118.249])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6542E19757;
+        Mon, 16 Mar 2020 15:21:29 +0000 (UTC)
+Subject: Re: [PATCH v3 3/3] KEYS: Use kvmalloc() to better handle large buffer
+ allocation
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
@@ -53,21 +49,35 @@ Cc:     dhowells@redhat.com,
         Roberto Sassu <roberto.sassu@huawei.com>,
         Eric Biggers <ebiggers@google.com>,
         Chris von Recklinghausen <crecklin@redhat.com>
-Subject: Re: [PATCH v3 3/3] KEYS: Use kvmalloc() to better handle large buffer allocation
+References: <20200313152102.1707-4-longman@redhat.com>
+ <20200313152102.1707-1-longman@redhat.com>
+ <1809107.1584368672@warthog.procyon.org.uk>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <b7188708-67fa-b41d-2d03-f9a3862f32d7@redhat.com>
+Date:   Mon, 16 Mar 2020 11:21:29 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1809106.1584368672.1@warthog.procyon.org.uk>
-Date:   Mon, 16 Mar 2020 14:24:32 +0000
-Message-ID: <1809107.1584368672@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+In-Reply-To: <1809107.1584368672@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I wonder if it's worth merging this into patch 2.  I'm not sure it's really
-worth its own patch.  If you want to generalise kvzfree(), then that could go
-as its own patch first.
+On 3/16/20 10:24 AM, David Howells wrote:
+> I wonder if it's worth merging this into patch 2.  I'm not sure it's really
+> worth its own patch.  If you want to generalise kvzfree(), then that could go
+> as its own patch first.
+>
+> David
 
-David
+Sure, I can merge it into patch 2.
+
+Thanks,
+Longman
 
