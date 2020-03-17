@@ -2,42 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75063188CDB
-	for <lists+keyrings@lfdr.de>; Tue, 17 Mar 2020 19:10:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6795188D49
+	for <lists+keyrings@lfdr.de>; Tue, 17 Mar 2020 19:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726740AbgCQSK3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 17 Mar 2020 14:10:29 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:33499 "EHLO
+        id S1726664AbgCQShA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 Mar 2020 14:37:00 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:38865 "EHLO
         us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726388AbgCQSK3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Mar 2020 14:10:29 -0400
+        by vger.kernel.org with ESMTP id S1726388AbgCQShA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Mar 2020 14:37:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584468628;
+        s=mimecast20190719; t=1584470218;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jC00Z6qh/Tdo08cJHrlqWaLr117ZyFvx6URUV4dogZI=;
-        b=CKs3MyoNKOAcbNLUB3mFISrtZNeL8ZVhA8uNue0e2bQgdUkcMEwDN0yyHdmLBbL4l4nhgv
-        5EDwxfX2jRPtmfPFZ280kjY6X3q9yGw7sXoXEe6YL5QIvqIG0ECBOWyDgxq77nkiq7NWeg
-        3dq0OT/xJYpcQS9w+Q4q3zWAEKd+H34=
+        bh=gwrf4J2FnOgQssJONp9zFLVSRMiMPIXEXh9xD+q8AIo=;
+        b=aHBvGRHhjOEbvW9aT8TfehTGDh95XcJ0oQ5OgdktIfZkyNJ0EhqcwitTGAhAGcHOB10OWZ
+        qb8CJ4Qw3YG7MktFgbyc8x8BgewsluPOVnO9AXsrhbPOE/DUj2h4H1BuZcq6lA+UJtZ6oW
+        sl1O6hd5pD254Fg+UZwb0KEPiLfSDk8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-21-KdywSIv7MtWkzjLf9Kj5ng-1; Tue, 17 Mar 2020 14:10:26 -0400
-X-MC-Unique: KdywSIv7MtWkzjLf9Kj5ng-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+ us-mta-99-DopgLM-EMf20XOl6Py1l5w-1; Tue, 17 Mar 2020 14:36:55 -0400
+X-MC-Unique: DopgLM-EMf20XOl6Py1l5w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 988C9189F762;
-        Tue, 17 Mar 2020 18:10:24 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2A0B31405;
+        Tue, 17 Mar 2020 18:36:53 +0000 (UTC)
 Received: from llong.remote.csb (ovpn-115-15.rdu2.redhat.com [10.10.115.15])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5649390808;
-        Tue, 17 Mar 2020 18:10:23 +0000 (UTC)
-Subject: Re: [PATCH v3 1/3] KEYS: Don't write out to userspace while holding
- key semaphore
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>
-Cc:     James Morris <jmorris@namei.org>,
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 76BFE6E3EE;
+        Tue, 17 Mar 2020 18:36:51 +0000 (UTC)
+Subject: Re: [PATCH v3 2/3] KEYS: Avoid false positive ENOMEM error on key
+ read
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
@@ -48,44 +48,50 @@ Cc:     James Morris <jmorris@namei.org>,
         Roberto Sassu <roberto.sassu@huawei.com>,
         Eric Biggers <ebiggers@google.com>,
         Chris von Recklinghausen <crecklin@redhat.com>
-References: <20200315212706.GE224162@linux.intel.com>
- <20200313152102.1707-1-longman@redhat.com>
- <20200313152102.1707-2-longman@redhat.com>
- <20200315192104.GD224162@linux.intel.com>
- <1793253.1584357764@warthog.procyon.org.uk>
- <c1138c83619553d018970a4b2d95f38fccebc99c.camel@linux.intel.com>
+References: <20200313152102.1707-1-longman@redhat.com>
+ <20200313152102.1707-3-longman@redhat.com>
+ <20200315213245.GF224162@linux.intel.com>
 From:   Waiman Long <longman@redhat.com>
 Organization: Red Hat
-Message-ID: <f07dee42-58e2-1e7a-8644-b55fae6ce8b0@redhat.com>
-Date:   Tue, 17 Mar 2020 14:10:22 -0400
+Message-ID: <98feb3ff-835a-e4cf-40a9-284d21e16993@redhat.com>
+Date:   Tue, 17 Mar 2020 14:36:50 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <c1138c83619553d018970a4b2d95f38fccebc99c.camel@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200315213245.GF224162@linux.intel.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/16/20 9:53 AM, Jarkko Sakkinen wrote:
-> On Mon, 2020-03-16 at 11:22 +0000, David Howells wrote:
->> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
->>
->>> I guess we cannot sanely define fixes tag for this one, can we?
->> Use:
->>
->> 	Fixes: ^1da177e4c3f4 ("Linux-2.6.12-rc2")
->>
->> David
-> Longmao, please include this to the next version.
+On 3/15/20 5:32 PM, Jarkko Sakkinen wrote:
+> On Fri, Mar 13, 2020 at 11:21:01AM -0400, Waiman Long wrote:
+>> -		 * Read methods will just return the required length
+>> -		 * without any copying if the provided length isn't big
+>> -		 * enough.
+>> +		 * We don't want an erronous -ENOMEM error due to an
+>> +		 * arbitrary large user-supplied buflen. So if buflen
+>> +		 * exceeds a threshold (1024 bytes in this case), we call
+>> +		 * the read method twice. The first time to get the buffer
+>> +		 * length and the second time to read out the key data.
+>> +		 *
+>> +		 * N.B. All the read methods will return the required
+>> +		 *      buffer length with a NULL input buffer or when
+>> +		 *      the input buffer length isn't large enough.
+>>  		 */
+>> +		if (buflen <= 0x400) {
+> 1. The overwhelmingly long comment. Will be destined to rotten.
+> 2. Magic number.
+> 3. The cap must be updated both in comment and code, and not only
+>    that, but the numbers use a different base (dec and hex).
 >
 > /Jarkko
 >
-Sure, will do.
+Thank for the comment. I will make the necessary change.
 
 Cheers,
 Longman
