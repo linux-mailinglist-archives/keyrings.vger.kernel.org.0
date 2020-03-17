@@ -2,61 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D12188307
-	for <lists+keyrings@lfdr.de>; Tue, 17 Mar 2020 13:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D4C188CD6
+	for <lists+keyrings@lfdr.de>; Tue, 17 Mar 2020 19:10:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgCQMJQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 17 Mar 2020 08:09:16 -0400
-Received: from sonic307-2.consmr.mail.ne1.yahoo.com ([66.163.190.121]:46824
-        "EHLO sonic307-2.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726498AbgCQMJP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Mar 2020 08:09:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584446954; bh=kcevCRoll2+Bsa3FDERpIV72LVcB1A4YV1b5N2AWYBk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Rrbbl+lM61hZyf9c3JU3tad348/wC0rOJwEr5gQRL0rlhaLClQXTSp3OnqVJK6fQ7fur4yl3NBdmqehvK3pll+nCQWr1uf+fjEZr6KPSHYouVBbaolzgBW0/yNDr/VEUuOn5l4acACf1cwr1Y3fZwl/62Qo/yv1tE08FmnGmK5iwR6+8WSdROSFmXJVjm81FK+ML/ErXZZUPsmKW1GGu4qmuOrMyVAyQYBgIunmqBWL29cEbS+tHyhCiLnypUT8VMcwFVaYM9h1P7FDMc8SOt2ee5KPeFBvFaMiBZKmvxeEuIJIxSbP8SHTeztsqaEVoylC/DOfbHr+VDKxBAISd9g==
-X-YMail-OSG: t2pjGGUVM1kIKYq1Zp3_kkeUyzT4O0Q332.E8w7MbiE2rkt4VUZCbhvg4MYYgao
- _8Suik9VHsy8mwx5i3ITvP2GRvswFmqne0BQigVcHJN_JlQ.jR0q2I2F9p2ftXLPVj0R_Bb83Vyv
- 73llJpPkiO6WzRVkYmVZXVYYb5mC.aDG_Aji2wPUHBbVhl3.NhYpYEyH3Nuzu4afCu9ASmXBcyjS
- xtsdoqMJV1fRI..vZNNrDFewsKV5oThTArSeLQTBdN.gsWahkgJH8nGdRRk3Jj05hEvPagkn_oWz
- 9OiefMrwluoFF3crQHWAPqDSJtKAGz2rb9HL7lA.YcnLBuFE3TGsHg3oOuCnKF1hwtSy4VuXebPP
- Kppw6O7p.n_6Bg5U5_iMS4TJMC549w0iPEwRJbqyr_ed7rTSyf3fCqrXiVLEBUbqa_qadstqzyC6
- zLlMiXoM9FovWOjItNnqqtdIFy2Vg_uAKcy4ofibShpUqAwmyOl5F50sO3zlE6rU8QgDS2RQJmrr
- gzchTgYv.Ly_fQWJUPHtaeYm4xZiskCGzefT1EIR2VLsBsTkkxIsWtIrs6vDYXqjgns9C.ojGLw4
- 5hddiHwobj88qvMEimRcvQqi0SLsxPZ6uqrSmZ6ZdJVESZtavT08eAsHE5MR_IOxwcwqyOafIW.B
- ulW8HISl8hF63yipztV7pxJkzoHFEYzw6d.f1baU9...IaKDasCoGw34z22Zb.f.rlo.LO1EjfH_
- mN4bYLGSiuHZuU2zhaBnv.LaruVFnFa5AfUcrwmR8P4WmR0ba1t_XHKQbtv0g9SguPRMLA22OSzM
- eCM4SvsO1jxr.vzgUB5lPvE9_sXFInrxgmHvYBFqGqcn68hv60JovQd7osQCaGzayt3sDfZmkFvV
- pNqv0XhO4BDYnc0ltwpYmxm_30VsZWsg14O9FD0WH4YfgVhNeijpN7UKsvY0mgz8gE_BiCL6atPe
- 64u0ZcM44fbyqiRv1ocqHJDv6BcoME0gdKlbHmyRR0Hl.Atg1gYM_zuwHDFDhC.ksrAPrrqX1_Rk
- TrNU0z2svaPxfGqbh83SRzgohQx461n6PzMmrNSwE21wxV3oetyWeYQprFb7FMnx4f5t5kFd0rjO
- wMONTbuY2o_idkdtux6P486bQvC.a9OPBB2AXr8oC.3BQuUelBFYC8UhozGlkSumqlzpsyb7tOA3
- WX3AGjcYbXu7k7VuaMRC4L0kFTRpAtMkNTaG5cibM5xkzuQ32XNO8kzPEADp3qODQpFrrCx9SZpJ
- RX55CIpE6Vzbz7iwiAajrZaMIuIbxE1F0BvAF1pxC0YjNP.JExyfUPxsxEjf2jTKNVDO4GAJMjvN
- RqPBGdQZmxbDksuG1um22QpXn0bb_Ew--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Mar 2020 12:09:14 +0000
-Date:   Tue, 17 Mar 2020 12:07:13 +0000 (UTC)
-From:   Stephen Li <stenn7@gabg.net>
-Reply-To: stephli947701@gmail.com
-Message-ID: <2078071840.1852905.1584446833663@mail.yahoo.com>
-Subject: REF
+        id S1726388AbgCQSKC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 Mar 2020 14:10:02 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:42760 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726189AbgCQSKC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Mar 2020 14:10:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1584468600;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=g8ghW4p3mVYyvRQJA9R6SCfOZIEGrtXnAJnyhri2nak=;
+        b=CPmbsPFEqFP/q5FL8bbgst2VbClKZkMrF5NsUmq7fqBp+p1bZTIDII4wHHoqsaYobhEXWY
+        4fnZoVp9lMa/u2wVMTjwe1eit0Tkic24IDpzR+tSFGXTOPPpyzE7WYBsS/rRLb0cC3OCCC
+        zrntVqm1CeJjlU7usf5SoRWUyuhioBY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-167-6dx5OgrdMoywh3MbvXA60g-1; Tue, 17 Mar 2020 14:09:59 -0400
+X-MC-Unique: 6dx5OgrdMoywh3MbvXA60g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 758B2107ACC4;
+        Tue, 17 Mar 2020 18:09:56 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-115-15.rdu2.redhat.com [10.10.115.15])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A8D7760BE0;
+        Tue, 17 Mar 2020 18:09:53 +0000 (UTC)
+Subject: Re: [PATCH v3 1/3] KEYS: Don't write out to userspace while holding
+ key semaphore
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Chris von Recklinghausen <crecklin@redhat.com>
+References: <20200313152102.1707-2-longman@redhat.com>
+ <20200313152102.1707-1-longman@redhat.com>
+ <1797278.1584359451@warthog.procyon.org.uk>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <bfc84e1c-1a40-618a-fd7e-833c5a20063c@redhat.com>
+Date:   Tue, 17 Mar 2020 14:09:53 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <1797278.1584359451@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-References: <2078071840.1852905.1584446833663.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On 3/16/20 7:50 AM, David Howells wrote:
+> Waiman Long <longman@redhat.com> wrote:
+>
+>>  include/linux/key-type.h                  |  2 +-
+>>  security/keys/big_key.c                   | 11 ++---
+>>  security/keys/encrypted-keys/encrypted.c  |  7 ++-
+>>  security/keys/keyctl.c                    | 57 +++++++++++++++++++----
+>>  security/keys/keyring.c                   |  6 +--
+>>  security/keys/request_key_auth.c          |  7 ++-
+>>  security/keys/trusted-keys/trusted_tpm1.c | 14 +-----
+>>  security/keys/user_defined.c              |  5 +-
+>> ...
+>> -	long (*read)(const struct key *key, char __user *buffer, size_t buflen);
+>> +	long (*read)(const struct key *key, char *buffer, size_t buflen);
+> Note that there are read functions outside of security/keys/ that also need
+> fixing - dns_resolver_read() and rxrpc_read().
+>
+> David
 
+Yes, I am going to fix that. Sorry for the delay as I am juggling a few
+different tasks.
 
-Greetings,
-I was searching through a local business directory when I found your
-profile. I am Soliciting On-Behalf of my private client who is
-interested in having a serious business investment in your country. If
-you have a valid business, investment or project he can invest
-back to me for more details. Your swift response is highly needed.
-Sincerely
-Stephen Li
-Please response back to me with is my private email below for more details
-stephli947701@gmail.com
+Cheers,
+Longman
+
