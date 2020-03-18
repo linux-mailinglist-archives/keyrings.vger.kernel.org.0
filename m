@@ -2,61 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E18C118A2E2
-	for <lists+keyrings@lfdr.de>; Wed, 18 Mar 2020 20:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C056518A72B
+	for <lists+keyrings@lfdr.de>; Wed, 18 Mar 2020 22:41:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726704AbgCRTHm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Mar 2020 15:07:42 -0400
-Received: from namei.org ([65.99.196.166]:42098 "EHLO namei.org"
+        id S1727190AbgCRVlv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Mar 2020 17:41:51 -0400
+Received: from mail.rosalinux.ru ([195.19.76.54]:34312 "EHLO mail.rosalinux.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726506AbgCRTHm (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 18 Mar 2020 15:07:42 -0400
+        id S1726777AbgCRVlu (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 18 Mar 2020 17:41:50 -0400
+X-Greylist: delayed 588 seconds by postgrey-1.27 at vger.kernel.org; Wed, 18 Mar 2020 17:41:50 EDT
 Received: from localhost (localhost [127.0.0.1])
-        by namei.org (8.14.4/8.14.4) with ESMTP id 02IJ7BZT030304;
-        Wed, 18 Mar 2020 19:07:11 GMT
-Date:   Thu, 19 Mar 2020 06:07:11 +1100 (AEDT)
-From:   James Morris <jmorris@namei.org>
-To:     David Howells <dhowells@redhat.com>
-cc:     torvalds@linux-foundation.org, viro@zeniv.linux.org.uk,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        linux-security-module@vger.kernel.org,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
-        raven@themaw.net, christian@brauner.io, andres@anarazel.de,
-        jlayton@redhat.com, dray@redhat.com, kzak@redhat.com,
-        keyrings@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 12/17] watch_queue: Add security hooks to rule on setting
- mount and sb watches [ver #5]
-In-Reply-To: <158454390389.2863966.16459187265972715098.stgit@warthog.procyon.org.uk>
-Message-ID: <alpine.LRH.2.21.2003190606591.29708@namei.org>
-References: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk> <158454390389.2863966.16459187265972715098.stgit@warthog.procyon.org.uk>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+        by mail.rosalinux.ru (Postfix) with ESMTP id 59136D6F76F95;
+        Thu, 19 Mar 2020 00:32:01 +0300 (MSK)
+Received: from mail.rosalinux.ru ([127.0.0.1])
+        by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id vEBJrQ_agJiR; Thu, 19 Mar 2020 00:31:46 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rosalinux.ru (Postfix) with ESMTP id ED54BD68A0074;
+        Thu, 19 Mar 2020 00:31:45 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru ED54BD68A0074
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
+        s=A1AAD92A-9767-11E6-A27F-AC75C9F78EF4; t=1584567106;
+        bh=OLZmYDkiQvs3u1GvR5c0MQQi01rmIE2Bh3XgwpIg5yA=;
+        h=To:From:Message-ID:Date:MIME-Version;
+        b=EFozWfUN30D/226h7IZAyPnKysjfb5/TW6iRx1ekEq1nmPTVDV7/ZMt40AFGgNSVr
+         q1BSkzqnB2coScnRPnWDajGI3Bu+YLKHuAg0EBFQ40SZV7bWXmCuzAEbXMYfH9yrmM
+         BPHCmhi+EqX6Ibk6cQtABx4Wr2vorrtAppFyItvaK939ogUJjXg5ZB4QwWGldAcvdH
+         1MLUV54Y9AhWlgA0xYPJtJvRU9wLdEJsEe0BDF8+mLUMFNcxqKIve8iumQF7cP5wyg
+         iU1ZmmTfd6sQ8H8juqOM/C3tIDjEaycAejTL5PP1f+gh6iUBzhEoUS9EClEe80B3C3
+         5rJnFV+k2MCtA==
+X-Virus-Scanned: amavisd-new at rosalinux.ru
+Received: from mail.rosalinux.ru ([127.0.0.1])
+        by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Um9Klry3hGBe; Thu, 19 Mar 2020 00:31:45 +0300 (MSK)
+Received: from [192.168.1.173] (broadband-90-154-70-24.ip.moscow.rt.ru [90.154.70.24])
+        by mail.rosalinux.ru (Postfix) with ESMTPSA id BC344D688A072;
+        Thu, 19 Mar 2020 00:31:45 +0300 (MSK)
+To:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
+From:   Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
+Subject: sign-file: full functionality with modern LibreSSL
+Message-ID: <f13b4174-bcfa-6569-0601-65a9bfc9bb92@rosalinux.ru>
+Date:   Thu, 19 Mar 2020 00:31:45 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru-RU
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 18 Mar 2020, David Howells wrote:
 
-> Add security hooks that will allow an LSM to rule on whether or not a watch
-> may be set on a mount or on a superblock.  More than one hook is required
-> as the watches watch different types of object.
-> 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Casey Schaufler <casey@schaufler-ca.com>
-> cc: Stephen Smalley <sds@tycho.nsa.gov>
-> cc: linux-security-module@vger.kernel.org
+Current pre-release version of LibreSSL has enabled CMS support,
+and now sign-file is fully functional with it.
 
+See https://github.com/libressl-portable/openbsd/commits/master
 
-Acked-by: James Morris <jamorris@linux.microsoft.com>
+To test buildability with current LibreSSL:
+~$ git clone https://github.com/libressl-portable/portable.git
+~$ cd portable && ./autogen.sh
+~$ ./configure --prefix=3D/opt/libressl
+~$ make
+~# make install
+Go to the kernel source tree and:
+~$ gcc -I/opt/libressl/include -L /opt/libressl/lib -lcrypto -Wl,-rpath,/=
+opt/libressl/lib scripts/sign-file.c -o scripts/sign-file
 
+Fixes: f8688017 ("sign-file: fix build error in sign-file.c with libressl=
+")
 
--- 
-James Morris
-<jmorris@namei.org>
+Signed-off-by: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
+---
+=C2=A0scripts/sign-file.c | 7 ++++---
+=C2=A01 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index fbd34b8e8f57..fd4d7c31d1bf 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -41,9 +41,10 @@
+=C2=A0 * signing with anything other than SHA1 - so we're stuck with that=
+ if such is
+=C2=A0 * the case.
+=C2=A0 */
+-#if defined(LIBRESSL_VERSION_NUMBER) || \
+-=C2=A0=C2=A0=C2=A0 OPENSSL_VERSION_NUMBER < 0x10000000L || \
+-=C2=A0=C2=A0=C2=A0 defined(OPENSSL_NO_CMS)
++#if defined(OPENSSL_NO_CMS) || \
++=C2=A0=C2=A0=C2=A0 ( defined(LIBRESSL_VERSION_NUMBER) \
++=C2=A0=C2=A0=C2=A0 && (LIBRESSL_VERSION_NUMBER < 0x3010000fL) ) || \
++=C2=A0=C2=A0=C2=A0 OPENSSL_VERSION_NUMBER < 0x10000000L
+=C2=A0#define USE_PKCS7
+=C2=A0#endif
+=C2=A0#ifndef USE_PKCS7
+--=20
+2.20.1
+
 
