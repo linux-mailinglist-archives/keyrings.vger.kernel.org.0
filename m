@@ -2,178 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50FC6189EFA
-	for <lists+keyrings@lfdr.de>; Wed, 18 Mar 2020 16:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1D2189F6A
+	for <lists+keyrings@lfdr.de>; Wed, 18 Mar 2020 16:14:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbgCRPGC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Mar 2020 11:06:02 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:53912 "EHLO
+        id S1727188AbgCRPOj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Mar 2020 11:14:39 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:41778 "EHLO
         us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727426AbgCRPGB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Mar 2020 11:06:01 -0400
+        by vger.kernel.org with ESMTP id S1727183AbgCRPOi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Mar 2020 11:14:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584543961;
+        s=mimecast20190719; t=1584544477;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ndnsnC2ALt8moPU459ftJiBpMteET3lgiwpt67I4aFU=;
-        b=ci1ZjIRoxb4jgcFRAj13VPNVDvnI4Lzpvqd6NspjKhQjLIrA9oeUjvhR4RT8qsR363W/wN
-        Y8u5Q51L3499baHqbJxmE7DICXP2wQJYgH5f/GhGRQBseXy0EIeRWKCGedW4svhkmO52eq
-        Q20xkkHqw6V/8iRm5U3Zo0JxGkGcx+4=
+        bh=rDahFV9TPWnSHYGEo4pu2LmiluREcgL9pHQHEehqYmE=;
+        b=Dz15MQ4W0WxLh2CYuST0npl7v2oVIt0q2/wRZ+MMyN4B6ZkFYvBSBuH5dWqhqpFw9ExlmL
+        S7rRXktEgyZ3hUaNj4JLJhI/MYOIvOyJk3UpEsmton3cjKsBVpQ75LAvLKldf1rxsOtKmO
+        YFZ3UCNfG+vLr3geXcSbRnHyIIQMbUM=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-323-iXFP1rCzMAWwodsOV3Mkug-1; Wed, 18 Mar 2020 11:05:56 -0400
-X-MC-Unique: iXFP1rCzMAWwodsOV3Mkug-1
+ us-mta-115-zLovBwwuOPCXLkjvjN2tvw-1; Wed, 18 Mar 2020 11:14:34 -0400
+X-MC-Unique: zLovBwwuOPCXLkjvjN2tvw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B4F4C18FF661;
-        Wed, 18 Mar 2020 15:05:54 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 97683107ACC7;
+        Wed, 18 Mar 2020 15:14:31 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-113-126.rdu2.redhat.com [10.10.113.126])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C2DD95C1D8;
-        Wed, 18 Mar 2020 15:05:49 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0851A5C1D8;
+        Wed, 18 Mar 2020 15:14:25 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH 17/17] watch_queue: sample: Display superblock notifications
- [ver #5]
 From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org, viro@zeniv.linux.org.uk
-Cc:     dhowells@redhat.com, casey@schaufler-ca.com, sds@tycho.nsa.gov,
-        nicolas.dichtel@6wind.com, raven@themaw.net, christian@brauner.io,
-        andres@anarazel.de, jlayton@redhat.com, dray@redhat.com,
-        kzak@redhat.com, keyrings@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 18 Mar 2020 15:05:49 +0000
-Message-ID: <158454394905.2863966.8800154491320171728.stgit@warthog.procyon.org.uk>
-In-Reply-To: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk>
-References: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/0.21
+In-Reply-To: <e47bef56-9271-93e0-0e59-c77c253babea@redhat.com>
+References: <e47bef56-9271-93e0-0e59-c77c253babea@redhat.com> <20200317194140.6031-5-longman@redhat.com> <20200317194140.6031-1-longman@redhat.com> <2832139.1584520054@warthog.procyon.org.uk>
+To:     Waiman Long <longman@redhat.com>
+Cc:     dhowells@redhat.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
+        linux-afs@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Chris von Recklinghausen <crecklin@redhat.com>
+Subject: Re: [PATCH v4 4/4] KEYS: Avoid false positive ENOMEM error on key read
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2866041.1584544464.1@warthog.procyon.org.uk>
+Date:   Wed, 18 Mar 2020 15:14:24 +0000
+Message-ID: <2866042.1584544464@warthog.procyon.org.uk>
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The notification is run as:
+Waiman Long <longman@redhat.com> wrote:
 
-	./watch_test
+> Doing this is micro-optimization. As the keys subsystem is that
+> performance critical, do we need to do that to save a cycle or two while
+> making the code a bit harder to read?
 
-and it then watches "/mnt" for superblock notifications:
+It was more sort of a musing comment.  Feel free to ignore it.  kvfree()
+doesn't do this.
 
-	# mount -t tmpfs none /mnt
-	# ./watch_test &
-	# mount -o remount,ro /mnt
-	# mount -o remount,rw /mnt
-
-producing:
-
-	# ./watch_test
-	NOTIFY[000]: ty=000003 sy=00 i=03010010
-	SUPER 157eb57ca7 change=0[readonly]
-	read() = 16
-	NOTIFY[000]: ty=000002 sy=04 i=02010010
-	MOUNT 000001a0 change=4[setattr] aux=0
-	read() = 16
-	NOTIFY[000]: ty=000002 sy=04 i=02010010
-	MOUNT 000001a0 change=4[setattr] aux=0
-
-Signed-off-by: David Howells <dhowells@redhat.com>
----
-
- samples/watch_queue/watch_test.c |   39 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
-
-diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
-index 36caaea5261f..734786bd9764 100644
---- a/samples/watch_queue/watch_test.c
-+++ b/samples/watch_queue/watch_test.c
-@@ -29,6 +29,9 @@
- #ifndef __NR_watch_mount
- #define __NR_watch_mount -1
- #endif
-+#ifndef __NR_watch_sb
-+#define __NR_watch_sb -1
-+#endif
- 
- #define BUF_SIZE 256
- 
-@@ -87,6 +90,24 @@ static void saw_mount_change(struct watch_notification *n, size_t len)
- 
- }
- 
-+static const char *super_subtypes[256] = {
-+	[NOTIFY_SUPERBLOCK_READONLY]	= "readonly",
-+	[NOTIFY_SUPERBLOCK_ERROR]	= "error",
-+	[NOTIFY_SUPERBLOCK_EDQUOT]	= "edquot",
-+	[NOTIFY_SUPERBLOCK_NETWORK]	= "network",
-+};
-+
-+static void saw_super_change(struct watch_notification *n, size_t len)
-+{
-+	struct superblock_notification *s = (struct superblock_notification *)n;
-+
-+	if (len < sizeof(struct superblock_notification))
-+		return;
-+
-+	printf("SUPER %08llx change=%u[%s]\n",
-+	       s->sb_id, n->subtype, super_subtypes[n->subtype]);
-+}
-+
- /*
-  * Consume and display events.
-  */
-@@ -166,6 +187,9 @@ static void consumer(int fd)
- 			case WATCH_TYPE_MOUNT_NOTIFY:
- 				saw_mount_change(&n.n, len);
- 				break;
-+			case WATCH_TYPE_SB_NOTIFY:
-+				saw_super_change(&n.n, len);
-+				break;
- 			}
- 
- 			p += len;
-@@ -174,7 +198,7 @@ static void consumer(int fd)
- }
- 
- static struct watch_notification_filter filter = {
--	.nr_filters	= 2,
-+	.nr_filters	= 3,
- 	.filters = {
- 		[0]	= {
- 			.type			= WATCH_TYPE_KEY_NOTIFY,
-@@ -185,6 +209,14 @@ static struct watch_notification_filter filter = {
- 			// Reject move-from notifications
- 			.subtype_filter[0]	= UINT_MAX & ~(1 << NOTIFY_MOUNT_MOVE_FROM),
- 		},
-+		[2]	= {
-+			.type			= WATCH_TYPE_SB_NOTIFY,
-+			// Only accept notification of changes to R/O state
-+			.subtype_filter[0]	= (1 << NOTIFY_SUPERBLOCK_READONLY),
-+			// Only accept notifications of change-to-R/O
-+			.info_mask		= WATCH_INFO_FLAG_0,
-+			.info_filter		= WATCH_INFO_FLAG_0,
-+		},
- 	},
- };
- 
-@@ -223,6 +255,11 @@ int main(int argc, char **argv)
- 		exit(1);
- 	}
- 
-+	if (syscall(__NR_watch_sb, AT_FDCWD, "/mnt", 0, fd, 0x03) == -1) {
-+		perror("watch_sb");
-+		exit(1);
-+	}
-+
- 	consumer(fd);
- 	exit(0);
- }
-
+David
 
