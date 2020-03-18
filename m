@@ -2,104 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C056518A72B
-	for <lists+keyrings@lfdr.de>; Wed, 18 Mar 2020 22:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB1A118A7E3
+	for <lists+keyrings@lfdr.de>; Wed, 18 Mar 2020 23:16:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727190AbgCRVlv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Mar 2020 17:41:51 -0400
-Received: from mail.rosalinux.ru ([195.19.76.54]:34312 "EHLO mail.rosalinux.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726777AbgCRVlu (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 18 Mar 2020 17:41:50 -0400
-X-Greylist: delayed 588 seconds by postgrey-1.27 at vger.kernel.org; Wed, 18 Mar 2020 17:41:50 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rosalinux.ru (Postfix) with ESMTP id 59136D6F76F95;
-        Thu, 19 Mar 2020 00:32:01 +0300 (MSK)
-Received: from mail.rosalinux.ru ([127.0.0.1])
-        by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id vEBJrQ_agJiR; Thu, 19 Mar 2020 00:31:46 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rosalinux.ru (Postfix) with ESMTP id ED54BD68A0074;
-        Thu, 19 Mar 2020 00:31:45 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru ED54BD68A0074
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
-        s=A1AAD92A-9767-11E6-A27F-AC75C9F78EF4; t=1584567106;
-        bh=OLZmYDkiQvs3u1GvR5c0MQQi01rmIE2Bh3XgwpIg5yA=;
-        h=To:From:Message-ID:Date:MIME-Version;
-        b=EFozWfUN30D/226h7IZAyPnKysjfb5/TW6iRx1ekEq1nmPTVDV7/ZMt40AFGgNSVr
-         q1BSkzqnB2coScnRPnWDajGI3Bu+YLKHuAg0EBFQ40SZV7bWXmCuzAEbXMYfH9yrmM
-         BPHCmhi+EqX6Ibk6cQtABx4Wr2vorrtAppFyItvaK939ogUJjXg5ZB4QwWGldAcvdH
-         1MLUV54Y9AhWlgA0xYPJtJvRU9wLdEJsEe0BDF8+mLUMFNcxqKIve8iumQF7cP5wyg
-         iU1ZmmTfd6sQ8H8juqOM/C3tIDjEaycAejTL5PP1f+gh6iUBzhEoUS9EClEe80B3C3
-         5rJnFV+k2MCtA==
-X-Virus-Scanned: amavisd-new at rosalinux.ru
-Received: from mail.rosalinux.ru ([127.0.0.1])
-        by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Um9Klry3hGBe; Thu, 19 Mar 2020 00:31:45 +0300 (MSK)
-Received: from [192.168.1.173] (broadband-90-154-70-24.ip.moscow.rt.ru [90.154.70.24])
-        by mail.rosalinux.ru (Postfix) with ESMTPSA id BC344D688A072;
-        Thu, 19 Mar 2020 00:31:45 +0300 (MSK)
-To:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
-From:   Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
-Subject: sign-file: full functionality with modern LibreSSL
-Message-ID: <f13b4174-bcfa-6569-0601-65a9bfc9bb92@rosalinux.ru>
-Date:   Thu, 19 Mar 2020 00:31:45 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru-RU
-Content-Transfer-Encoding: quoted-printable
+        id S1727328AbgCRWPS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Mar 2020 18:15:18 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:33581 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727320AbgCRWPS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Mar 2020 18:15:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1584569717;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=hYdi6uEYaESn05W64BXYLKDVbVzJzJ2IM2CBIwZRtco=;
+        b=eZkguC9Xu1hZqbnxjhsnVjVDlT57zvel3xmQjQYGId/p5i64q+fpgscyaJneRq7xb3TOua
+        fCnrjNTGDvBXN700VDUsYaF7pwebt8+yNifJq7zmtco+oJ2Y70XnxO+CXUF9b+rt+Ikebi
+        wsaJOyoCMaOWB10maP41dY0R9tz3VyQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-444-s6cnxxpyMqWS4UM_YEYicw-1; Wed, 18 Mar 2020 18:15:15 -0400
+X-MC-Unique: s6cnxxpyMqWS4UM_YEYicw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9502E13F8;
+        Wed, 18 Mar 2020 22:15:10 +0000 (UTC)
+Received: from llong.com (ovpn-120-114.rdu2.redhat.com [10.10.120.114])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 35C153AE;
+        Wed, 18 Mar 2020 22:15:04 +0000 (UTC)
+From:   Waiman Long <longman@redhat.com>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
+        linux-afs@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Chris von Recklinghausen <crecklin@redhat.com>,
+        Waiman Long <longman@redhat.com>
+Subject: [PATCH v5 0/2] KEYS: Read keys to internal buffer & then copy to userspace
+Date:   Wed, 18 Mar 2020 18:14:55 -0400
+Message-Id: <20200318221457.1330-1-longman@redhat.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+v5:
+ - Merge v4 patches 2 and 3 into 1 to avoid sparse warning. Merge some of 
+   commit logs into patch 1 as well. There is no further change.
 
-Current pre-release version of LibreSSL has enabled CMS support,
-and now sign-file is fully functional with it.
+v4:
+ - Remove the __user annotation from big_key_read() and user_read() in
+   patch 1.
+ - Add a new patch 2 to remove __user annotation from rxrpc_read().
+ - Add a new patch 3 to remove __user annotation from dns_resolver_read().
+ - Merge the original patches 2 and 3 into a single patch 4 and refactor
+   it as suggested by Jarkko and Eric.
 
-See https://github.com/libressl-portable/openbsd/commits/master
+v3:
+ - Reorganize the keyctl_read_key() code to make it more readable as
+   suggested by Jarkko Sakkinen.
+ - Add patch 3 to use kvmalloc() for safer large buffer allocation as
+   suggested by David Howells.
 
-To test buildability with current LibreSSL:
-~$ git clone https://github.com/libressl-portable/portable.git
-~$ cd portable && ./autogen.sh
-~$ ./configure --prefix=3D/opt/libressl
-~$ make
-~# make install
-Go to the kernel source tree and:
-~$ gcc -I/opt/libressl/include -L /opt/libressl/lib -lcrypto -Wl,-rpath,/=
-opt/libressl/lib scripts/sign-file.c -o scripts/sign-file
+v2:
+ - Handle NULL buffer and buflen properly in patch 1.
+ - Fix a bug in big_key.c.
+ - Add patch 2 to handle arbitrary large user-supplied buflen.
 
-Fixes: f8688017 ("sign-file: fix build error in sign-file.c with libressl=
-")
+The current security key read methods are called with the key semaphore
+held.  The methods then copy out the key data to userspace which is
+subjected to page fault and may acquire the mmap semaphore. That can
+result in circular lock dependency and hence a chance to get into
+deadlock.
 
-Signed-off-by: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
----
-=C2=A0scripts/sign-file.c | 7 ++++---
-=C2=A01 file changed, 4 insertions(+), 3 deletions(-)
+To avoid such a deadlock, an internal buffer is now allocated for getting
+out the necessary data first. After releasing the key semaphore, the
+key data are then copied out to userspace sidestepping the circular
+lock dependency.
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index fbd34b8e8f57..fd4d7c31d1bf 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -41,9 +41,10 @@
-=C2=A0 * signing with anything other than SHA1 - so we're stuck with that=
- if such is
-=C2=A0 * the case.
-=C2=A0 */
--#if defined(LIBRESSL_VERSION_NUMBER) || \
--=C2=A0=C2=A0=C2=A0 OPENSSL_VERSION_NUMBER < 0x10000000L || \
--=C2=A0=C2=A0=C2=A0 defined(OPENSSL_NO_CMS)
-+#if defined(OPENSSL_NO_CMS) || \
-+=C2=A0=C2=A0=C2=A0 ( defined(LIBRESSL_VERSION_NUMBER) \
-+=C2=A0=C2=A0=C2=A0 && (LIBRESSL_VERSION_NUMBER < 0x3010000fL) ) || \
-+=C2=A0=C2=A0=C2=A0 OPENSSL_VERSION_NUMBER < 0x10000000L
-=C2=A0#define USE_PKCS7
-=C2=A0#endif
-=C2=A0#ifndef USE_PKCS7
---=20
-2.20.1
+The keyutils test suite was run and the test passed with these patchset
+applied without any falure.
 
+Waiman Long (2):
+  KEYS: Don't write out to userspace while holding key semaphore
+  KEYS: Avoid false positive ENOMEM error on key read
+
+ include/keys/big_key-type.h               |  2 +-
+ include/keys/user-type.h                  |  3 +-
+ include/linux/key-type.h                  |  2 +-
+ net/dns_resolver/dns_key.c                |  2 +-
+ net/rxrpc/key.c                           | 27 +++----
+ security/keys/big_key.c                   | 11 ++-
+ security/keys/encrypted-keys/encrypted.c  |  7 +-
+ security/keys/internal.h                  | 12 ++++
+ security/keys/keyctl.c                    | 86 ++++++++++++++++++++---
+ security/keys/keyring.c                   |  6 +-
+ security/keys/request_key_auth.c          |  7 +-
+ security/keys/trusted-keys/trusted_tpm1.c | 14 +---
+ security/keys/user_defined.c              |  5 +-
+ 13 files changed, 116 insertions(+), 68 deletions(-)
+
+-- 
+2.18.1
 
