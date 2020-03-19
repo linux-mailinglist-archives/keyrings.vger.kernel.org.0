@@ -2,93 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2700118C104
-	for <lists+keyrings@lfdr.de>; Thu, 19 Mar 2020 21:07:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A2318C21E
+	for <lists+keyrings@lfdr.de>; Thu, 19 Mar 2020 22:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726892AbgCSUHn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Mar 2020 16:07:43 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42102 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725747AbgCSUHn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Mar 2020 16:07:43 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 725858EE369;
-        Thu, 19 Mar 2020 13:07:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1584648462;
-        bh=p8jmiYdXD9AjIqj0FesuNfqQD6CPLnioJoAUguBuuyo=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=KHeVq8Crf6Ix0DcErMXR2XFh6JPth3kkXKEXJF/pQ38lwOKfpjlb3oN0207r7ZzO/
-         fwf97s9pjngNpmqVN3WBQFby5ZsobDkPSj843kkIzRNEB5Wo6laAaygEpDeaREUrZT
-         2kw5JemkslsxGNUJ8QEXn806ojM3uwzgPU+pl+xc=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id lRHufYlt6LSF; Thu, 19 Mar 2020 13:07:41 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1A3698EE182;
-        Thu, 19 Mar 2020 13:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1584648460;
-        bh=p8jmiYdXD9AjIqj0FesuNfqQD6CPLnioJoAUguBuuyo=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=p5jXTjblR8fI5jMSRe41JCSofSZrbmzOCl/yq5HmU8gXzD8I6vm4c4MsF3nr8x1RQ
-         145V6XHhwTRIH48yriqUdxdu0S9JwIZRBVHmotYnoau8aU+SWTqQ4tBjBhWMyviZHl
-         LYENMxjhrFgU6FfsCefMGBfnk8q0mqruJB8zd5H0=
-Message-ID: <1584648457.3610.42.camel@HansenPartnership.com>
-Subject: Re: [PATCH v8 1/8] lib: add ASN.1 encoder
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+        id S1726619AbgCSVPc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Mar 2020 17:15:32 -0400
+Received: from mga04.intel.com ([192.55.52.120]:12203 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725787AbgCSVPc (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 19 Mar 2020 17:15:32 -0400
+IronPort-SDR: uBINRE+DLy9twE63QQo3TQgRCOiH5dYtLveDyb9M3QKRo19+q3ZcxXg1X+eJqW1Lb7GyBbpNtA
+ PTncCskHsZng==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 14:15:31 -0700
+IronPort-SDR: +tI52kjsqj3LnIpBEu8DGi/ITHu9bI/LzvTGpxHRxWNTdODx+WeEqD19frMeAxIc+DAB9Bfk9b
+ jXIL1evwDUog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,573,1574150400"; 
+   d="scan'208";a="280213766"
+Received: from oamor-mobl1.ger.corp.intel.com (HELO localhost) ([10.251.182.181])
+  by fmsmga002.fm.intel.com with ESMTP; 19 Mar 2020 14:15:29 -0700
+Date:   Thu, 19 Mar 2020 23:15:28 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     David Howells <dhowells@redhat.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Date:   Thu, 19 Mar 2020 13:07:37 -0700
-In-Reply-To: <3192644.1584645125@warthog.procyon.org.uk>
-References: <1584639086.3610.28.camel@HansenPartnership.com>
-         <20200310051607.30334-2-James.Bottomley@HansenPartnership.com>
-         <20200310051607.30334-1-James.Bottomley@HansenPartnership.com>
-         <3180269.1584636439@warthog.procyon.org.uk>
-         <3192644.1584645125@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Cc:     Yang Xu <xuyang2018.jy@cn.fujitsu.com>,
+        Eric Biggers <ebiggers@kernel.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
+Message-ID: <20200319211528.GA167847@linux.intel.com>
+References: <8cc77e68-244e-3ac8-dea6-edc51cf372df@cn.fujitsu.com>
+ <20200228033009.GA932@sol.localdomain>
+ <1582864911-30823-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
+ <20200303041732.GA14653@sol.localdomain>
+ <3166161.1584630501@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3166161.1584630501@warthog.procyon.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2020-03-19 at 19:12 +0000, David Howells wrote:
-> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+On Thu, Mar 19, 2020 at 03:08:21PM +0000, David Howells wrote:
+> How about:
 > 
-> > > I wonder if it's worth appending a note to the comment that if
-> > > indefinite length encoding is selected, then the result is not
-> > > DER-compliant and may not be CER-compliant since you're
-> > > advertising BER/DER/CER.
-> > 
-> > We only encode definite length currently, so the comment is
-> > superfluous (and probably confusing if you don't know the
-> > difference between DER/BER and CER).  Let's add something like this
-> > iff we ever start to use indefinite lengths in the encoder.
+> 	keys: Fix the keys quotas limit check
 > 
-> Your code appears to actually do indefinite length encoding if -1 is
-> passed as len to asn1_encode_tag().  The kdoc says:
+> It's a bit unfortunate that "key" is also usable as an adjective.
 > 
-> 	To encode in place pass a NULL @string and -1 for @len; all
-> this will do is add an indefinite length tag and update the data
-> pointer to the place where the tag contents should be placed.
-> 
-> Granted, your patches might not use it, but you're making a generic
-> ASN.1 encoder library.
+> David
 
-That was a thing the other David asked for.  But actually, I think the
-comment is a lie:  the first time around we encode a definite length
-for the max buffer size and on the recode we do the length for the
-actual buffer size, so we never actually place an indefinite length tag
-there ... I think David wanted us to, to keep the ASN.1 always legal,
-but the max len thing does that too so I must have changed it without
-updating the comment, I'll fix that.
+Unfortunately it is already hanging here:
 
-James
+https://www.lkml.org/lkml/2020/3/15/314
 
+/Jarkko
