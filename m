@@ -2,77 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1796718C8DE
-	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 09:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95DD818C95E
+	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 09:59:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726831AbgCTIUd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Mar 2020 04:20:33 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:42255 "EHLO
+        id S1726602AbgCTI7c (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Mar 2020 04:59:32 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:46636 "EHLO
         us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726838AbgCTIUc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 04:20:32 -0400
+        by vger.kernel.org with ESMTP id S1726232AbgCTI7c (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 04:59:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584692431;
+        s=mimecast20190719; t=1584694770;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=VVZY6TeI0YOm1FYG0w30u2dqA8tug6BHP6KzUJXch3w=;
-        b=a4kjuSEhnlV+sxVU67goBK717V+x8qLwYKvKdTd+2hWPjGHaN8vFRalFb5P/1SYdqAmzKC
-        FV+CDPFk/57hZ5yg/UMIJMjcJT9zo25O6QDsRWagCObcWw/HdUn/6qMSS3ZNjWwxitAh4O
-        uimRD7pr1zmHc0jhRy5jQMvU8gTS50A=
+        bh=MHbNt8+nZTfk377bXnCR8K6G8LUG3EI1MJ/vvpQK+eU=;
+        b=B9WPJTsfB1L5BjP78fsK+fzxmicaAHs2uKaafHCSX2ypa9wtKQsNlThADONtq9WTya0jdc
+        TxlShH3GqeYxP5mOjhv1b/PtEkaE3AjCM92dpP1igmsy2npGNFZjtPLC8vzWB/v4JWB1DI
+        XgYc8LaPkIeZA20Y0ZLouin2FxwXai8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-111-Nm9VmDiBOxqeGfERJwsHVA-1; Fri, 20 Mar 2020 04:20:27 -0400
-X-MC-Unique: Nm9VmDiBOxqeGfERJwsHVA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+ us-mta-385-Nq5C8QRNNDi52pOmcKV1fA-1; Fri, 20 Mar 2020 04:59:27 -0400
+X-MC-Unique: Nq5C8QRNNDi52pOmcKV1fA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B69A7800D5A;
-        Fri, 20 Mar 2020 08:20:24 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E99FC8017CC;
+        Fri, 20 Mar 2020 08:59:25 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-113-126.rdu2.redhat.com [10.10.113.126])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5E2B85D9CA;
-        Fri, 20 Mar 2020 08:20:20 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C4E2A73879;
+        Fri, 20 Mar 2020 08:59:24 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
 From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200318221457.1330-2-longman@redhat.com>
-References: <20200318221457.1330-2-longman@redhat.com> <20200318221457.1330-1-longman@redhat.com>
-To:     Waiman Long <longman@redhat.com>
-Cc:     dhowells@redhat.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
-        linux-afs@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Chris von Recklinghausen <crecklin@redhat.com>
-Subject: Re: [PATCH v5 1/2] KEYS: Don't write out to userspace while holding key semaphore
+In-Reply-To: <20200320014513.GA183331@linux.intel.com>
+References: <20200320014513.GA183331@linux.intel.com> <20200319211528.GA167847@linux.intel.com> <8cc77e68-244e-3ac8-dea6-edc51cf372df@cn.fujitsu.com> <20200228033009.GA932@sol.localdomain> <1582864911-30823-1-git-send-email-xuyang2018.jy@cn.fujitsu.com> <20200303041732.GA14653@sol.localdomain> <3166161.1584630501@warthog.procyon.org.uk> <3203731.1584653413@warthog.procyon.org.uk>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     dhowells@redhat.com, Yang Xu <xuyang2018.jy@cn.fujitsu.com>,
+        Eric Biggers <ebiggers@kernel.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3251034.1584692419.1@warthog.procyon.org.uk>
-Date:   Fri, 20 Mar 2020 08:20:19 +0000
-Message-ID: <3251035.1584692419@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-ID: <3285405.1584694764.1@warthog.procyon.org.uk>
+Date:   Fri, 20 Mar 2020 08:59:24 +0000
+Message-ID: <3285407.1584694764@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Waiman Long <longman@redhat.com> wrote:
+Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
 
-> +		if ((ret > 0) && (ret <= buflen)) {
+> > > Unfortunately it is already hanging here:
+> > > 
+> > > https://www.lkml.org/lkml/2020/3/15/314
+> > 
+> > Hanging? Or queued?
+> 
+> Not yet queued.
+> 
+> Should I request to withdraw it? There is still time to do that.
 
-That's a bit excessive on the bracketage, btw, but don't worry about it unless
-you respin the patches.
+I was making up a series of fix patches to send to Linus.  If you want to send
+your queue instead, you can stick my Acked-by on this patch.
 
 David
 
