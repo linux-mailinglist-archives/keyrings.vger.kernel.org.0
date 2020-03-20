@@ -2,70 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC03918CC4D
-	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 12:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC1E18CECE
+	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 14:27:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbgCTLIY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Mar 2020 07:08:24 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:42615 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726951AbgCTLIY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 07:08:24 -0400
-Received: by mail-oi1-f194.google.com with SMTP id 13so6030879oiy.9
-        for <keyrings@vger.kernel.org>; Fri, 20 Mar 2020 04:08:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
-        b=A60SjmFBNa4d1kwHvRw4bc9lj2jiNyAhDuqhjWo3cgAebNQqUJEnh/RoZdx7hfzsrp
-         4SWQhn688QXBqYnglKKuLTjif0JDt0fbCcv1RHUlno7cqw3eMo57hxRetkNV0RbvyU25
-         M3Jm200pLL3/1wwAtQ85SI+8PfMjYJLVzBJYLK/vQaegR5eqdknK9K4xDkTLKTPKubnA
-         jGBcsvwmCzHJiZPplG796lErwiPd5PyUKcHhVXfFsJFFRLfDf/MjQ1z0m6oXKEAnHYyc
-         EWcmpEoSaUnQlmPVU7PKje3QuaxL3J4usaauhIJ+Oh0CZo7E+79qWEUCq+sR+oQvF80l
-         qZkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
-        b=cPa5TMqWYcX73vpydCUXu6Coc1RFRcwoF2C/euq88vGaJP9KZKsq3EFlSHFPSq/gy3
-         RAVM2eciTHsYepL/UGMRMNyE8FadJqehuIjVl97UYQdVrzGuMzNAyRstwRLYNs846DHG
-         f666aTWPcJ/9g3EH41CSatUObB7wVQOhp03IzHymPYbiqeJaYaA6SpgfZQUUHj+RGyXh
-         HYqCezmrQKtIT6wic3upkapiQuG8EHSLnF+WjfpEhvZIAWcErRB6SEQMR2DByIETW7uu
-         O5nqu8KOjovWJjl1uH4GXWxBdnpAI1BCrTZAWXTxF1pNYfh/UWk4wkaowkuNlVlumL/l
-         5Sqg==
-X-Gm-Message-State: ANhLgQ2TIJ0q2upgSlanAyyR37sBsCCCP7BQWJOcy+Mzu7eSyDIj/CA6
-        tmtr893/6DBTLPibxk2ME0aXyv7ob+2/Mmdrtec=
-X-Google-Smtp-Source: ADFU+vt8k2nsikl8+F6zZy6KhM6oVL5vQUIBRP29fSYh+mzbePjgR8pd4xdQF9Q4z698VmxSff9iU79jql6v8FVByH8=
-X-Received: by 2002:aca:4bc5:: with SMTP id y188mr6033676oia.9.1584702503363;
- Fri, 20 Mar 2020 04:08:23 -0700 (PDT)
+        id S1727135AbgCTN1O (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Mar 2020 09:27:14 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:44425 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727151AbgCTN1N (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 09:27:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1584710832;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=POqaw/FzEI0CTYjogTPDNEyESdDoII+GoAasJ6PFXJc=;
+        b=AOugaLk+fvsm+Sh9/dYT7edGGoj/cEp/jrnYM09hLAKYKclgj2+lesXiWuFd38bIWmyN+N
+        n3wrQ+HaKuddTlxbA7cEw1AzWWZiEwrWvyGID07ldVMF/bSdKeIuLLs76zDF5JPjRRzora
+        RxA2EjtfJFTah2IA+lmds30J3AOz/kQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-370-wfUqiJITPG6-L5EefAJGvA-1; Fri, 20 Mar 2020 09:27:10 -0400
+X-MC-Unique: wfUqiJITPG6-L5EefAJGvA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E2697477;
+        Fri, 20 Mar 2020 13:27:07 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-118-190.rdu2.redhat.com [10.10.118.190])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E3F4660BFB;
+        Fri, 20 Mar 2020 13:27:03 +0000 (UTC)
+Subject: Re: [PATCH v5 2/2] KEYS: Avoid false positive ENOMEM error on key
+ read
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
+        linux-afs@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Chris von Recklinghausen <crecklin@redhat.com>
+References: <20200318221457.1330-1-longman@redhat.com>
+ <20200318221457.1330-3-longman@redhat.com>
+ <20200319194650.GA24804@linux.intel.com>
+ <f22757ad-4d6f-ffd2-eed5-6b9bd1621b10@redhat.com>
+ <20200320020717.GC183331@linux.intel.com>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <7dbc524f-6c16-026a-a372-2e80b40eab30@redhat.com>
+Date:   Fri, 20 Mar 2020 09:27:03 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Received: by 2002:a4a:c897:0:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:08:22
- -0700 (PDT)
-From:   federa bureau of inteligence <federabureauofinteligence@gmail.com>
-Date:   Fri, 20 Mar 2020 11:08:22 +0000
-Message-ID: <CAE9o6LCqCOnKQYMchcW8zWHww1Rv4p89mYY9EaPpi4XVZ-00Mg@mail.gmail.com>
-Subject: HAPPY SURVIVAL OF CORONAVIRUS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200320020717.GC183331@linux.intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear Sir,
+On 3/19/20 10:07 PM, Jarkko Sakkinen wrote:
+> On Thu, Mar 19, 2020 at 08:07:55PM -0400, Waiman Long wrote:
+>> On 3/19/20 3:46 PM, Jarkko Sakkinen wrote:
+>>> On Wed, Mar 18, 2020 at 06:14:57PM -0400, Waiman Long wrote:
+>>>> +			 * It is possible, though unlikely, that the key
+>>>> +			 * changes in between the up_read->down_read period.
+>>>> +			 * If the key becomes longer, we will have to
+>>>> +			 * allocate a larger buffer and redo the key read
+>>>> +			 * again.
+>>>> +			 */
+>>>> +			if (!tmpbuf || unlikely(ret > tmpbuflen)) {
+>>> Shouldn't you check that tmpbuflen stays below buflen (why else
+>>> you had made copy of buflen otherwise)?
+>> The check above this thunk:
+>>
+>> if ((ret > 0) && (ret <= buflen)) {
+>>
+>> will make sure that ret will not be larger than buflen. So tmpbuflen
+>> will never be bigger than buflen.
+> Ah right, of course, thanks.
+>
+> What would go wrong if the condition was instead
+> ((ret > 0) && (ret <= tmpbuflen))?
 
-HAPPY SURVIVAL OF CORONAVIRUS
+That if statement is a check to see if the actual key length is longer
+than the user-supplied buffer (buflen). If that is the case, it will
+just return the expected length without storing anything into the user
+buffer. For the case that buflen >= ret > tmpbuflen, the revised check
+above will incorrectly skip the storing step causing the caller to
+incorrectly think the key is there in the buffer.
 
-We are reaching for a very interesting business transaction which we
-feel will of great benefit.We the FBI unit in the western subregion of
-Africa have a fund which we confiscated and lodge it in a bank
+Maybe I should clarify that a bit more in the comment.
 
-This fund is worth of $12.5 million dollars.We will need your
-assistance to recieve this fund into your account for investment in
-your country.
+Cheers,
+Longman
 
-We will need your urgent response for details
-
-Inspector Greg Adams,
-For and on behalf of Cote D'Ivoire FBI
-Tel 00225 6716 6756
