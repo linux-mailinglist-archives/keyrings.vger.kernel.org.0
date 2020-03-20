@@ -2,32 +2,46 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B79918C529
-	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 03:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1796718C8DE
+	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 09:20:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgCTCH2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Mar 2020 22:07:28 -0400
-Received: from mga01.intel.com ([192.55.52.88]:21301 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726867AbgCTCH1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 19 Mar 2020 22:07:27 -0400
-IronPort-SDR: cERMwsobxSgaDQ6DVukFbFlA9Fbaqs3xVhQ2UmtyLWIUq8Z4XF6Hx6HNyMdqy6qEHVoDMfI77F
- 6q/O4k1l1jQg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 19:07:27 -0700
-IronPort-SDR: WiEzzFWd7aTAoICAsN40XtyFpCM6ZL+d1ZkXNh3BJ3Vi1nV2R8/rxwplPDE8ycxCDCxG4UTI9x
- XiL+wxuMpEeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,282,1580803200"; 
-   d="scan'208";a="245348348"
-Received: from anakash-mobl2.ger.corp.intel.com (HELO localhost) ([10.251.183.74])
-  by orsmga003.jf.intel.com with ESMTP; 19 Mar 2020 19:07:18 -0700
-Date:   Fri, 20 Mar 2020 04:07:17 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+        id S1726831AbgCTIUd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Mar 2020 04:20:33 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:42255 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726838AbgCTIUc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 04:20:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1584692431;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=VVZY6TeI0YOm1FYG0w30u2dqA8tug6BHP6KzUJXch3w=;
+        b=a4kjuSEhnlV+sxVU67goBK717V+x8qLwYKvKdTd+2hWPjGHaN8vFRalFb5P/1SYdqAmzKC
+        FV+CDPFk/57hZ5yg/UMIJMjcJT9zo25O6QDsRWagCObcWw/HdUn/6qMSS3ZNjWwxitAh4O
+        uimRD7pr1zmHc0jhRy5jQMvU8gTS50A=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-111-Nm9VmDiBOxqeGfERJwsHVA-1; Fri, 20 Mar 2020 04:20:27 -0400
+X-MC-Unique: Nm9VmDiBOxqeGfERJwsHVA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B69A7800D5A;
+        Fri, 20 Mar 2020 08:20:24 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-113-126.rdu2.redhat.com [10.10.113.126])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5E2B85D9CA;
+        Fri, 20 Mar 2020 08:20:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200318221457.1330-2-longman@redhat.com>
+References: <20200318221457.1330-2-longman@redhat.com> <20200318221457.1330-1-longman@redhat.com>
 To:     Waiman Long <longman@redhat.com>
-Cc:     David Howells <dhowells@redhat.com>,
+Cc:     dhowells@redhat.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
@@ -41,46 +55,24 @@ Cc:     David Howells <dhowells@redhat.com>,
         Roberto Sassu <roberto.sassu@huawei.com>,
         Eric Biggers <ebiggers@google.com>,
         Chris von Recklinghausen <crecklin@redhat.com>
-Subject: Re: [PATCH v5 2/2] KEYS: Avoid false positive ENOMEM error on key
- read
-Message-ID: <20200320020717.GC183331@linux.intel.com>
-References: <20200318221457.1330-1-longman@redhat.com>
- <20200318221457.1330-3-longman@redhat.com>
- <20200319194650.GA24804@linux.intel.com>
- <f22757ad-4d6f-ffd2-eed5-6b9bd1621b10@redhat.com>
+Subject: Re: [PATCH v5 1/2] KEYS: Don't write out to userspace while holding key semaphore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f22757ad-4d6f-ffd2-eed5-6b9bd1621b10@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3251034.1584692419.1@warthog.procyon.org.uk>
+Date:   Fri, 20 Mar 2020 08:20:19 +0000
+Message-ID: <3251035.1584692419@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 08:07:55PM -0400, Waiman Long wrote:
-> On 3/19/20 3:46 PM, Jarkko Sakkinen wrote:
-> > On Wed, Mar 18, 2020 at 06:14:57PM -0400, Waiman Long wrote:
-> >> +			 * It is possible, though unlikely, that the key
-> >> +			 * changes in between the up_read->down_read period.
-> >> +			 * If the key becomes longer, we will have to
-> >> +			 * allocate a larger buffer and redo the key read
-> >> +			 * again.
-> >> +			 */
-> >> +			if (!tmpbuf || unlikely(ret > tmpbuflen)) {
-> > Shouldn't you check that tmpbuflen stays below buflen (why else
-> > you had made copy of buflen otherwise)?
-> 
-> The check above this thunk:
-> 
-> if ((ret > 0) && (ret <= buflen)) {
-> 
-> will make sure that ret will not be larger than buflen. So tmpbuflen
-> will never be bigger than buflen.
+Waiman Long <longman@redhat.com> wrote:
 
-Ah right, of course, thanks.
+> +		if ((ret > 0) && (ret <= buflen)) {
 
-What would go wrong if the condition was instead
-((ret > 0) && (ret <= tmpbuflen))?
+That's a bit excessive on the bracketage, btw, but don't worry about it unless
+you respin the patches.
 
-/Jarkko
+David
+
