@@ -2,63 +2,85 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C047D18C4E5
-	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 02:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B79918C529
+	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 03:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727192AbgCTBpR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Mar 2020 21:45:17 -0400
-Received: from mga18.intel.com ([134.134.136.126]:13500 "EHLO mga18.intel.com"
+        id S1727049AbgCTCH2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Mar 2020 22:07:28 -0400
+Received: from mga01.intel.com ([192.55.52.88]:21301 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726726AbgCTBpQ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 19 Mar 2020 21:45:16 -0400
-IronPort-SDR: kRJ5SD2vNA0y9wPZWLIh7Zz+epDCJ7A+5tYAHHqaf2pVyW1JQH3Q6dui9TkZuXajzX+1cO87V2
- 5ICYLN3Yv/IQ==
+        id S1726867AbgCTCH1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 19 Mar 2020 22:07:27 -0400
+IronPort-SDR: cERMwsobxSgaDQ6DVukFbFlA9Fbaqs3xVhQ2UmtyLWIUq8Z4XF6Hx6HNyMdqy6qEHVoDMfI77F
+ 6q/O4k1l1jQg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 18:45:16 -0700
-IronPort-SDR: uasizdxZYx0Pd+B2DPCoVs2MEaer05b5pqGkLaOc7HMnmWl1Yvhk7RkjYis2WwdC5hbASLqGCQ
- rfzFGIwtb47A==
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 19:07:27 -0700
+IronPort-SDR: WiEzzFWd7aTAoICAsN40XtyFpCM6ZL+d1ZkXNh3BJ3Vi1nV2R8/rxwplPDE8ycxCDCxG4UTI9x
+ XiL+wxuMpEeg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,282,1580803200"; 
-   d="scan'208";a="234361937"
+   d="scan'208";a="245348348"
 Received: from anakash-mobl2.ger.corp.intel.com (HELO localhost) ([10.251.183.74])
-  by orsmga007.jf.intel.com with ESMTP; 19 Mar 2020 18:45:14 -0700
-Date:   Fri, 20 Mar 2020 03:45:13 +0200
+  by orsmga003.jf.intel.com with ESMTP; 19 Mar 2020 19:07:18 -0700
+Date:   Fri, 20 Mar 2020 04:07:17 +0200
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Yang Xu <xuyang2018.jy@cn.fujitsu.com>,
-        Eric Biggers <ebiggers@kernel.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
-Message-ID: <20200320014513.GA183331@linux.intel.com>
-References: <20200319211528.GA167847@linux.intel.com>
- <8cc77e68-244e-3ac8-dea6-edc51cf372df@cn.fujitsu.com>
- <20200228033009.GA932@sol.localdomain>
- <1582864911-30823-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
- <20200303041732.GA14653@sol.localdomain>
- <3166161.1584630501@warthog.procyon.org.uk>
- <3203731.1584653413@warthog.procyon.org.uk>
+To:     Waiman Long <longman@redhat.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
+        linux-afs@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Chris von Recklinghausen <crecklin@redhat.com>
+Subject: Re: [PATCH v5 2/2] KEYS: Avoid false positive ENOMEM error on key
+ read
+Message-ID: <20200320020717.GC183331@linux.intel.com>
+References: <20200318221457.1330-1-longman@redhat.com>
+ <20200318221457.1330-3-longman@redhat.com>
+ <20200319194650.GA24804@linux.intel.com>
+ <f22757ad-4d6f-ffd2-eed5-6b9bd1621b10@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3203731.1584653413@warthog.procyon.org.uk>
+In-Reply-To: <f22757ad-4d6f-ffd2-eed5-6b9bd1621b10@redhat.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 09:30:13PM +0000, David Howells wrote:
-> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+On Thu, Mar 19, 2020 at 08:07:55PM -0400, Waiman Long wrote:
+> On 3/19/20 3:46 PM, Jarkko Sakkinen wrote:
+> > On Wed, Mar 18, 2020 at 06:14:57PM -0400, Waiman Long wrote:
+> >> +			 * It is possible, though unlikely, that the key
+> >> +			 * changes in between the up_read->down_read period.
+> >> +			 * If the key becomes longer, we will have to
+> >> +			 * allocate a larger buffer and redo the key read
+> >> +			 * again.
+> >> +			 */
+> >> +			if (!tmpbuf || unlikely(ret > tmpbuflen)) {
+> > Shouldn't you check that tmpbuflen stays below buflen (why else
+> > you had made copy of buflen otherwise)?
 > 
-> > Unfortunately it is already hanging here:
-> > 
-> > https://www.lkml.org/lkml/2020/3/15/314
+> The check above this thunk:
 > 
-> Hanging? Or queued?
+> if ((ret > 0) && (ret <= buflen)) {
+> 
+> will make sure that ret will not be larger than buflen. So tmpbuflen
+> will never be bigger than buflen.
 
-Not yet queued.
+Ah right, of course, thanks.
 
-Should I request to withdraw it? There is still time to do that.
+What would go wrong if the condition was instead
+((ret > 0) && (ret <= tmpbuflen))?
 
 /Jarkko
