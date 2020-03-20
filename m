@@ -2,93 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05ABC18C421
-	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 01:08:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C047D18C4E5
+	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 02:45:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727435AbgCTAIG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Mar 2020 20:08:06 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:59434 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727159AbgCTAIF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Mar 2020 20:08:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584662885;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Anb5LRo8xpBF1QOjWwn5JazocJjB3iK3v4+s87FrK8A=;
-        b=OGtOk8TV015hp3EyRhftMuM9+SSr+gjmir806qxuwAUqh/SDxARZYUzGRWkNBnkgmlZyZp
-        r4ZWqTUiJ9WPkXl+E8h2kwX8TGlTlx1n/12f8S644R8c2J1GTmT3fnALORV1Nr5f668gfx
-        Cmb5oAClPxk4J5nehSJI60cjju5Baks=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-100-f_JiBXiuMQ2zkpAPZ_nSSw-1; Thu, 19 Mar 2020 20:08:01 -0400
-X-MC-Unique: f_JiBXiuMQ2zkpAPZ_nSSw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DC5D4107ACC7;
-        Fri, 20 Mar 2020 00:07:58 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-113-139.rdu2.redhat.com [10.10.113.139])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8BC6719C58;
-        Fri, 20 Mar 2020 00:07:55 +0000 (UTC)
-Subject: Re: [PATCH v5 2/2] KEYS: Avoid false positive ENOMEM error on key
- read
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
-        linux-afs@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Chris von Recklinghausen <crecklin@redhat.com>
-References: <20200318221457.1330-1-longman@redhat.com>
- <20200318221457.1330-3-longman@redhat.com>
- <20200319194650.GA24804@linux.intel.com>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <f22757ad-4d6f-ffd2-eed5-6b9bd1621b10@redhat.com>
-Date:   Thu, 19 Mar 2020 20:07:55 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1727192AbgCTBpR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Mar 2020 21:45:17 -0400
+Received: from mga18.intel.com ([134.134.136.126]:13500 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726726AbgCTBpQ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 19 Mar 2020 21:45:16 -0400
+IronPort-SDR: kRJ5SD2vNA0y9wPZWLIh7Zz+epDCJ7A+5tYAHHqaf2pVyW1JQH3Q6dui9TkZuXajzX+1cO87V2
+ 5ICYLN3Yv/IQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2020 18:45:16 -0700
+IronPort-SDR: uasizdxZYx0Pd+B2DPCoVs2MEaer05b5pqGkLaOc7HMnmWl1Yvhk7RkjYis2WwdC5hbASLqGCQ
+ rfzFGIwtb47A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,282,1580803200"; 
+   d="scan'208";a="234361937"
+Received: from anakash-mobl2.ger.corp.intel.com (HELO localhost) ([10.251.183.74])
+  by orsmga007.jf.intel.com with ESMTP; 19 Mar 2020 18:45:14 -0700
+Date:   Fri, 20 Mar 2020 03:45:13 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Yang Xu <xuyang2018.jy@cn.fujitsu.com>,
+        Eric Biggers <ebiggers@kernel.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
+Message-ID: <20200320014513.GA183331@linux.intel.com>
+References: <20200319211528.GA167847@linux.intel.com>
+ <8cc77e68-244e-3ac8-dea6-edc51cf372df@cn.fujitsu.com>
+ <20200228033009.GA932@sol.localdomain>
+ <1582864911-30823-1-git-send-email-xuyang2018.jy@cn.fujitsu.com>
+ <20200303041732.GA14653@sol.localdomain>
+ <3166161.1584630501@warthog.procyon.org.uk>
+ <3203731.1584653413@warthog.procyon.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <20200319194650.GA24804@linux.intel.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3203731.1584653413@warthog.procyon.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/19/20 3:46 PM, Jarkko Sakkinen wrote:
-> On Wed, Mar 18, 2020 at 06:14:57PM -0400, Waiman Long wrote:
->> +			 * It is possible, though unlikely, that the key
->> +			 * changes in between the up_read->down_read period.
->> +			 * If the key becomes longer, we will have to
->> +			 * allocate a larger buffer and redo the key read
->> +			 * again.
->> +			 */
->> +			if (!tmpbuf || unlikely(ret > tmpbuflen)) {
-> Shouldn't you check that tmpbuflen stays below buflen (why else
-> you had made copy of buflen otherwise)?
+On Thu, Mar 19, 2020 at 09:30:13PM +0000, David Howells wrote:
+> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+> 
+> > Unfortunately it is already hanging here:
+> > 
+> > https://www.lkml.org/lkml/2020/3/15/314
+> 
+> Hanging? Or queued?
 
-The check above this thunk:
+Not yet queued.
 
-if ((ret > 0) && (ret <= buflen)) {
+Should I request to withdraw it? There is still time to do that.
 
-will make sure that ret will not be larger than buflen. So tmpbuflen
-will never be bigger than buflen.
-
-Cheers,
-Longman
-
+/Jarkko
