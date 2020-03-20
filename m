@@ -2,72 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95DD818C95E
-	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 09:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC03918CC4D
+	for <lists+keyrings@lfdr.de>; Fri, 20 Mar 2020 12:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726602AbgCTI7c (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Mar 2020 04:59:32 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:46636 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726232AbgCTI7c (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 04:59:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584694770;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=MHbNt8+nZTfk377bXnCR8K6G8LUG3EI1MJ/vvpQK+eU=;
-        b=B9WPJTsfB1L5BjP78fsK+fzxmicaAHs2uKaafHCSX2ypa9wtKQsNlThADONtq9WTya0jdc
-        TxlShH3GqeYxP5mOjhv1b/PtEkaE3AjCM92dpP1igmsy2npGNFZjtPLC8vzWB/v4JWB1DI
-        XgYc8LaPkIeZA20Y0ZLouin2FxwXai8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-385-Nq5C8QRNNDi52pOmcKV1fA-1; Fri, 20 Mar 2020 04:59:27 -0400
-X-MC-Unique: Nq5C8QRNNDi52pOmcKV1fA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E99FC8017CC;
-        Fri, 20 Mar 2020 08:59:25 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-113-126.rdu2.redhat.com [10.10.113.126])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C4E2A73879;
-        Fri, 20 Mar 2020 08:59:24 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200320014513.GA183331@linux.intel.com>
-References: <20200320014513.GA183331@linux.intel.com> <20200319211528.GA167847@linux.intel.com> <8cc77e68-244e-3ac8-dea6-edc51cf372df@cn.fujitsu.com> <20200228033009.GA932@sol.localdomain> <1582864911-30823-1-git-send-email-xuyang2018.jy@cn.fujitsu.com> <20200303041732.GA14653@sol.localdomain> <3166161.1584630501@warthog.procyon.org.uk> <3203731.1584653413@warthog.procyon.org.uk>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     dhowells@redhat.com, Yang Xu <xuyang2018.jy@cn.fujitsu.com>,
-        Eric Biggers <ebiggers@kernel.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v3] KEYS: reaching the keys quotas correctly
+        id S1727043AbgCTLIY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Mar 2020 07:08:24 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:42615 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726951AbgCTLIY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Mar 2020 07:08:24 -0400
+Received: by mail-oi1-f194.google.com with SMTP id 13so6030879oiy.9
+        for <keyrings@vger.kernel.org>; Fri, 20 Mar 2020 04:08:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
+        b=A60SjmFBNa4d1kwHvRw4bc9lj2jiNyAhDuqhjWo3cgAebNQqUJEnh/RoZdx7hfzsrp
+         4SWQhn688QXBqYnglKKuLTjif0JDt0fbCcv1RHUlno7cqw3eMo57hxRetkNV0RbvyU25
+         M3Jm200pLL3/1wwAtQ85SI+8PfMjYJLVzBJYLK/vQaegR5eqdknK9K4xDkTLKTPKubnA
+         jGBcsvwmCzHJiZPplG796lErwiPd5PyUKcHhVXfFsJFFRLfDf/MjQ1z0m6oXKEAnHYyc
+         EWcmpEoSaUnQlmPVU7PKje3QuaxL3J4usaauhIJ+Oh0CZo7E+79qWEUCq+sR+oQvF80l
+         qZkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
+        b=cPa5TMqWYcX73vpydCUXu6Coc1RFRcwoF2C/euq88vGaJP9KZKsq3EFlSHFPSq/gy3
+         RAVM2eciTHsYepL/UGMRMNyE8FadJqehuIjVl97UYQdVrzGuMzNAyRstwRLYNs846DHG
+         f666aTWPcJ/9g3EH41CSatUObB7wVQOhp03IzHymPYbiqeJaYaA6SpgfZQUUHj+RGyXh
+         HYqCezmrQKtIT6wic3upkapiQuG8EHSLnF+WjfpEhvZIAWcErRB6SEQMR2DByIETW7uu
+         O5nqu8KOjovWJjl1uH4GXWxBdnpAI1BCrTZAWXTxF1pNYfh/UWk4wkaowkuNlVlumL/l
+         5Sqg==
+X-Gm-Message-State: ANhLgQ2TIJ0q2upgSlanAyyR37sBsCCCP7BQWJOcy+Mzu7eSyDIj/CA6
+        tmtr893/6DBTLPibxk2ME0aXyv7ob+2/Mmdrtec=
+X-Google-Smtp-Source: ADFU+vt8k2nsikl8+F6zZy6KhM6oVL5vQUIBRP29fSYh+mzbePjgR8pd4xdQF9Q4z698VmxSff9iU79jql6v8FVByH8=
+X-Received: by 2002:aca:4bc5:: with SMTP id y188mr6033676oia.9.1584702503363;
+ Fri, 20 Mar 2020 04:08:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3285405.1584694764.1@warthog.procyon.org.uk>
-Date:   Fri, 20 Mar 2020 08:59:24 +0000
-Message-ID: <3285407.1584694764@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Received: by 2002:a4a:c897:0:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:08:22
+ -0700 (PDT)
+From:   federa bureau of inteligence <federabureauofinteligence@gmail.com>
+Date:   Fri, 20 Mar 2020 11:08:22 +0000
+Message-ID: <CAE9o6LCqCOnKQYMchcW8zWHww1Rv4p89mYY9EaPpi4XVZ-00Mg@mail.gmail.com>
+Subject: HAPPY SURVIVAL OF CORONAVIRUS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+Dear Sir,
 
-> > > Unfortunately it is already hanging here:
-> > > 
-> > > https://www.lkml.org/lkml/2020/3/15/314
-> > 
-> > Hanging? Or queued?
-> 
-> Not yet queued.
-> 
-> Should I request to withdraw it? There is still time to do that.
+HAPPY SURVIVAL OF CORONAVIRUS
 
-I was making up a series of fix patches to send to Linus.  If you want to send
-your queue instead, you can stick my Acked-by on this patch.
+We are reaching for a very interesting business transaction which we
+feel will of great benefit.We the FBI unit in the western subregion of
+Africa have a fund which we confiscated and lodge it in a bank
 
-David
+This fund is worth of $12.5 million dollars.We will need your
+assistance to recieve this fund into your account for investment in
+your country.
 
+We will need your urgent response for details
+
+Inspector Greg Adams,
+For and on behalf of Cote D'Ivoire FBI
+Tel 00225 6716 6756
