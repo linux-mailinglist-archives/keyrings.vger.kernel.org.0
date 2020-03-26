@@ -2,63 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62EEB1935F1
-	for <lists+keyrings@lfdr.de>; Thu, 26 Mar 2020 03:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D96ED194633
+	for <lists+keyrings@lfdr.de>; Thu, 26 Mar 2020 19:12:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727720AbgCZCa6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Mar 2020 22:30:58 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:50592 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727690AbgCZCa6 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Mar 2020 22:30:58 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 327E415B2D569;
-        Wed, 25 Mar 2020 19:30:57 -0700 (PDT)
-Date:   Wed, 25 Mar 2020 19:30:56 -0700 (PDT)
-Message-Id: <20200325.193056.1153970692429454819.davem@davemloft.net>
-To:     longman@redhat.com
-Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
-        jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com,
-        kuba@kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+        id S1727835AbgCZSMs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 26 Mar 2020 14:12:48 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:44907 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726163AbgCZSMs (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 26 Mar 2020 14:12:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585246367;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=xSpHtNBxLLhtF34YSYaO2d4Hbj2Yy2CbluzS9RwRxJk=;
+        b=FzLA8EpXSrdW3UC1SAtLYlsuYFRdvQJ3UPlANlfuuqAxbO1ZV7e0fgD98EfGUeYc6kOsHz
+        iVqK68Oyp/rcVp9RXE8yuLVQYDuuIlMUlniLl4yoQvfkm7Xs4UXahNXSbqb+Lsm2TxQLjQ
+        zeBMvD/I/h+8pSDWBzJMKV/XTC9uhpE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-349-LYKPwtB9OVaVDStq5YqjMQ-1; Thu, 26 Mar 2020 14:12:43 -0400
+X-MC-Unique: LYKPwtB9OVaVDStq5YqjMQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BCD2B100550D;
+        Thu, 26 Mar 2020 18:12:40 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-113-126.rdu2.redhat.com [10.10.113.126])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C4E5960BF3;
+        Thu, 26 Mar 2020 18:12:32 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200325.193056.1153970692429454819.davem@davemloft.net>
+References: <20200325.193056.1153970692429454819.davem@davemloft.net> <20200322011125.24327-1-longman@redhat.com>
+To:     David Miller <davem@davemloft.net>
+Cc:     dhowells@redhat.com, longman@redhat.com,
+        jarkko.sakkinen@linux.intel.com, jmorris@namei.org,
+        serge@hallyn.com, zohar@linux.ibm.com, kuba@kernel.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-security-module@vger.kernel.org,
         linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
         linux-afs@lists.infradead.org, sumit.garg@linaro.org,
         jsnitsel@redhat.com, roberto.sassu@huawei.com, ebiggers@google.com,
         crecklin@redhat.com
-Subject: Re: [PATCH v8 0/2] KEYS: Read keys to internal buffer & then copy
- to userspace
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200322011125.24327-1-longman@redhat.com>
-References: <20200322011125.24327-1-longman@redhat.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 25 Mar 2020 19:30:58 -0700 (PDT)
+Subject: Re: [PATCH v8 0/2] KEYS: Read keys to internal buffer & then copy to userspace
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <996367.1585246352.1@warthog.procyon.org.uk>
+Date:   Thu, 26 Mar 2020 18:12:32 +0000
+Message-ID: <996368.1585246352@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Waiman Long <longman@redhat.com>
-Date: Sat, 21 Mar 2020 21:11:23 -0400
+David Miller <davem@davemloft.net> wrote:
 
-> The current security key read methods are called with the key semaphore
-> held.  The methods then copy out the key data to userspace which is
-> subjected to page fault and may acquire the mmap semaphore. That can
-> result in circular lock dependency and hence a chance to get into
-> deadlock.
-> 
-> To avoid such a deadlock, an internal buffer is now allocated for getting
-> out the necessary data first. After releasing the key semaphore, the
-> key data are then copied out to userspace sidestepping the circular
-> lock dependency.
-> 
-> The keyutils test suite was run and the test passed with these patchset
-> applied without any falure.
+> Who will integrate these changes?
 
-Who will integrate these changes?
+I'll do it unless Jarkko wants to push it through his tree.
+
+David
+
