@@ -2,120 +2,149 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38947197BA8
-	for <lists+keyrings@lfdr.de>; Mon, 30 Mar 2020 14:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE3D197DB4
+	for <lists+keyrings@lfdr.de>; Mon, 30 Mar 2020 15:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729848AbgC3MQt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Mar 2020 08:16:49 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:58164 "EHLO
+        id S1725268AbgC3N6h (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Mar 2020 09:58:37 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:29834 "EHLO
         us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729705AbgC3MQt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Mar 2020 08:16:49 -0400
+        by vger.kernel.org with ESMTP id S1728599AbgC3N6g (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Mar 2020 09:58:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585570608;
+        s=mimecast20190719; t=1585576715;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding;
-        bh=MYQJfg4bEedYd4dU8QQfrS68QqFoT2gft/lQom/VKLY=;
-        b=U3hulI/s95L2K2IEtt8V3PaAv8X3/en3gEBW6wvO4SAY7rM2o7noLcPpInE7lUCiz0SETd
-        nRyJ9VIdc2xaIrvnIx1fe9LMPoT68MUGg0ohFpOcyZCBpbtBn8OuFE3bje7qoghC0h3SCC
-        kk5KXsV9gzBjmY6CsdMAK2lyTQcj46I=
+        bh=J/xbcR+U5sZqN3KnB8Gi4wExsJ+uq2zk4m3be9exSUA=;
+        b=P6cOjmOw+lbHSjNb6o0mRTsV5HMDtjVV77HbJcaWpvfBXjHc9C8aPErygMeJAL78lJV3NH
+        XPuLOGWbzBG9hOcrALk7dn6qE0PczZDFbEaMzbkfN83AUBBqvukoi8ySNaB+FDdDoWu6vJ
+        LTjMnmbQMzaB/GI83oT3YMG6jg8YS+k=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-134-TLrIXIIFMxS2aU19Htzoog-1; Mon, 30 Mar 2020 08:16:44 -0400
-X-MC-Unique: TLrIXIIFMxS2aU19Htzoog-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+ us-mta-331-twlqjcaNOvCWPrwhwVyXtQ-1; Mon, 30 Mar 2020 09:58:27 -0400
+X-MC-Unique: twlqjcaNOvCWPrwhwVyXtQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 97F21801E74;
-        Mon, 30 Mar 2020 12:16:43 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DE8E2149CA;
+        Mon, 30 Mar 2020 13:58:25 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-112-66.rdu2.redhat.com [10.10.112.66])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B092596F88;
-        Mon, 30 Mar 2020 12:16:39 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E104E5DA66;
+        Mon, 30 Mar 2020 13:58:22 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
 From:   David Howells <dhowells@redhat.com>
 To:     torvalds@linux-foundation.org
-cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
-        longman@redhat.com, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] keys: Fix key->sem vs mmap_sem issue when reading key
+cc:     dhowells@redhat.com, viro@zeniv.linux.org.uk, dray@redhat.com,
+        kzak@redhat.com, mszeredi@redhat.com, swhiteho@redhat.com,
+        jlayton@redhat.com, raven@themaw.net, andres@anarazel.de,
+        christian.brauner@ubuntu.com, keyrings@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Upcoming: Notifications, FS notifications and fsinfo()
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1437196.1585570598.1@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date:   Mon, 30 Mar 2020 13:16:38 +0100
-Message-ID: <1437197.1585570598@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Date:   Mon, 30 Mar 2020 14:58:22 +0100
+Message-ID: <1445647.1585576702@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+
 Hi Linus,
 
-Here's a couple of patches that fix a circular dependency between holding
-key->sem and mm->mmap_sem when reading data from a key.  One potential
-issue is that a filesystem looking to use a key inside, say, ->readpages()
-could deadlock if the key being read is the key that's required and the
-buffer the key is being read into is on a page that needs to be fetched.
+I have three sets of patches I'd like to push your way, if you (and Al) are
+willing to consider them.
 
-The case actually detected is a bit more involved - with a filesystem
-calling request_key() and locking the target keyring for write - which
-could be being read.
+ (1) General notification queue plus key/keyring notifications.
 
-[Note: kbuild spotted a compiler(?) warning that I've not seen before,
- complaining "The scope of the variable 'oldxdr' can be reduced.
- [variableScope]".  It's unhappy that a variable that's declared at the to=
-p
- of the function hasn't been moved into an interior for-loop.  Is this
- something we're now requiring?  Anyway, I'd prefer to fix that with a
- follow up patch through the net tree rather than go for a 9th iteration o=
-n
- these patches.]
+     This adds the core of the notification queue built on pipes, and adds
+     the ability to watch for changes to keys.
+
+ (2) Mount and superblock notifications.
+
+     This builds on (1) to provide notifications of mount topology changes
+     and implements a framework for superblock events (configuration
+     changes, I/O errors, quota/space overruns and network status changes).
+
+ (3) Filesystem information retrieval.
+
+     This provides an extensible way to retrieve informational attributes
+     about mount objects and filesystems.  This includes providing
+     information intended to make recovering from a notification queue
+     overrun much easier.
+
+We need (1) for Gnome to efficiently watch for changes in kerberos
+keyrings.  Debarshi Ray has patches ready to go for gnome-online-accounts
+so that it can make use of the facility.
+
+Sets (2) and (3) can make libmount more efficient.  Karel Zak is working on
+making use of this to avoid reading /proc/mountinfo.
+
+We need something to make systemd's watching of the mount topology more
+efficient, and (2) and (3) can help with this by making it faster to narrow
+down what changed.  I think Karel has this in his sights, but hasn't yet
+managed to work on it.
+
+Set (2) should be able to make it easier to watch for mount options inside
+a container, and set (3) should make it easier to examine the mounts inside
+another mount namespace inside a container in a way that can't be done with
+/proc/mounts.  This is requested by Christian Brauner.
+
+Jeff Layton has a tentative addition to (3) to expose error state to
+userspace, and Andres Freund would like this for Postgres.
+
+Set (3) further allows the information returned by such as statx() and
+ioctl(FS_IOC_GETFLAGS) to be qualified by indicating which bits are/aren't
+supported.
+
+Further, for (3), I also allow filesystem-specific overrides/extensions to
+fsinfo() and have a use for it to AFS to expose information about server
+preference for a particular volume (something that is necessary for
+implementing the toolset).  I've provided example code that does similar
+for NFS and some that exposes superblock info from Ext4.  At Vault, Steve
+expressed an interest in this for CIFS and Ted Ts'o expressed a possible
+interest for Ext4.
+
+Notes:
+
+ (*) These patches will conflict with apparently upcoming refactoring of
+     the security core, but the fixup doesn't look too bad:
+
+	https://lore.kernel.org/linux-next/20200330130636.0846e394@canb.auug.org.a=
+u/T/#u
+
+ (*) Mikl=C3=B3s Szeredi would much prefer to implement fsinfo() as a magic
+     filesystem mounted on /proc/self/fsinfo/ whereby your open fds appear
+     as directories under there, each with a set of attribute files
+     corresponding to the attributes that fsinfo() would otherwise provide.
+     To examine something by filename, you'd have to open it O_PATH and
+     then read the individual attribute files in the corresponding per-fd
+     directory.  A readfile() system call has been mooted to elide the
+     {open,read,close} sequence to make it more efficient.
+
+ (*) James Bottomley would like to deprecate fsopen(), fspick(), fsconfig()
+     and fsmount() in favour of a more generic configfs with dedicated
+     open, set-config and action syscalls, with an additional get-config
+     syscall that would be used instead of fsinfo() - though, as I
+     understand it, you'd have to create a config (fspick-equivalent)
+     before you could use get-config.
+
+ (*) I don't think Al has particularly looked at fsinfo() or the fs
+     notifications patches yet.
+
+ (*) I'm not sure what *your* opinion of fsinfo() is yet.  If you don't
+     dislike it too, um, fragrantly, would you be willing to entertain part
+     of it for now and prefer the rest to stew a bit longer?  I can drop
+     some of the pieces.
+
+Anyway, I'm going to formulate a pull request for each of them.
 
 Thanks,
 David
----
-The following changes since commit 1b649e0bcae71c118c1333e02249a7510ba7f70=
-a:
-
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2020-03-=
-25 13:58:05 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags=
-/keys-fixes-20200329
-
-for you to fetch changes up to 4f0882491a148059a52480e753b7f07fc550e188:
-
-  KEYS: Avoid false positive ENOMEM error on key read (2020-03-29 12:40:41=
- +0100)
-
-----------------------------------------------------------------
-Keyrings fixes
-
-----------------------------------------------------------------
-Waiman Long (2):
-      KEYS: Don't write out to userspace while holding key semaphore
-      KEYS: Avoid false positive ENOMEM error on key read
-
- include/keys/big_key-type.h               |   2 +-
- include/keys/user-type.h                  |   3 +-
- include/linux/key-type.h                  |   2 +-
- net/dns_resolver/dns_key.c                |   2 +-
- net/rxrpc/key.c                           |  27 +++-----
- security/keys/big_key.c                   |  11 ++--
- security/keys/encrypted-keys/encrypted.c  |   7 +-
- security/keys/internal.h                  |  12 ++++
- security/keys/keyctl.c                    | 103 +++++++++++++++++++++++++=
------
- security/keys/keyring.c                   |   6 +-
- security/keys/request_key_auth.c          |   7 +-
- security/keys/trusted-keys/trusted_tpm1.c |  14 +---
- security/keys/user_defined.c              |   5 +-
- 13 files changed, 126 insertions(+), 75 deletions(-)
 
