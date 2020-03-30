@@ -2,66 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D136E194BA1
-	for <lists+keyrings@lfdr.de>; Thu, 26 Mar 2020 23:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 772F31979A0
+	for <lists+keyrings@lfdr.de>; Mon, 30 Mar 2020 12:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgCZWjW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 26 Mar 2020 18:39:22 -0400
-Received: from mga12.intel.com ([192.55.52.136]:38016 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726067AbgCZWjV (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 26 Mar 2020 18:39:21 -0400
-IronPort-SDR: pCY1fiuoo2euyUVHn5pIXqYw8Ia/0puaW00Ta5r8CMQioDkeBfJ2UaacnershhzjvQHUz5kPQQ
- e9LXdMkPn2KQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2020 15:39:21 -0700
-IronPort-SDR: CbGRbHx5FxUsTvFPh0ITjcnE0hZMIHPUuZ0/wEjbeMEYIezkBNz8AYlbvdktrD0OVjTSwJqngG
- 8EF6qQZLjYnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,309,1580803200"; 
-   d="scan'208";a="240804376"
-Received: from alewando-mobl.ger.corp.intel.com ([10.252.40.24])
-  by fmsmga008.fm.intel.com with ESMTP; 26 Mar 2020 15:39:15 -0700
-Message-ID: <c3a91d6d572d4975a8a5d3dbf004e46d7f59be78.camel@linux.intel.com>
-Subject: Re: [PATCH v8 0/2] KEYS: Read keys to internal buffer & then copy
- to userspace
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     David Howells <dhowells@redhat.com>,
-        David Miller <davem@davemloft.net>
-Cc:     longman@redhat.com, jmorris@namei.org, serge@hallyn.com,
-        zohar@linux.ibm.com, kuba@kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, netdev@vger.kernel.org,
-        linux-afs@lists.infradead.org, sumit.garg@linaro.org,
-        jsnitsel@redhat.com, roberto.sassu@huawei.com, ebiggers@google.com,
-        crecklin@redhat.com
-In-Reply-To: <996368.1585246352@warthog.procyon.org.uk>
-References: <20200325.193056.1153970692429454819.davem@davemloft.net>
-         <20200322011125.24327-1-longman@redhat.com>
-         <996368.1585246352@warthog.procyon.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160
- Espoo
-Content-Type: text/plain; charset="UTF-8"
+        id S1729232AbgC3Kvh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Mar 2020 06:51:37 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:38574 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729214AbgC3Kvh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Mar 2020 06:51:37 -0400
+Received: by mail-vs1-f65.google.com with SMTP id x206so10697579vsx.5
+        for <keyrings@vger.kernel.org>; Mon, 30 Mar 2020 03:51:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=pmfufcukdjtwJGNtxCWB6abIy5GQkydOhglTt3lU2SNSHQkXjHvYVAYU30qpH0ROcn
+         6AR81pKR9LU8L5YeZnaBH9MvN/REWH5yRTWPgLFGTHBrQIMlYTgg1KzSS2HURZNZm8OD
+         SUHydw70bw0Q0cdHd4uf2iXTPiDhTTTwYAdjzmZQ2jSivGRsQ2XoJx9BB/FYlSUeb5oy
+         5awE4LGroq+bJGyUftKKYOLINHvkpei9FuchjXvbX7X9WnD9VXRR0fk+ICDWYXcZidms
+         B2Tcxn0d5gO0STEGqpugUjsy6/FY3i0rb+Q9Aubo2nnGcM5Z3hnCHy9hm0pGt54tKkMk
+         0diQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=O5m0mJhopKrkyKNN24GV7N5cOO7AC1PQjOhrc4JOiyKf1umAEnlIgGGXo6uRDVfNnk
+         5b/w2ZyHZ4VnbxNqWpCs+CUNwJsYP+PPwCQ+PKmn+sEjMc4OdfZwfZcEMnJT1MLJombC
+         vMXRI6GrlJfj8KxcCEk94K/QKUBNNO8+XFOsQp5WiFtrxAnflJLFY8DpulWvUJKxsBjn
+         uwI7bZMW++O/n14AmniosnynnijC3LgqnMvv6BuBBGrPSkIz/zTwHwKSfLmZnHAuCgeM
+         XyFBA7mE4NSVmdh3je2jbouIBq4/z1HJkjZacjVodKrfLA0GJJmmvf1IfY+zV+/6ygt7
+         wH1g==
+X-Gm-Message-State: AGi0PubLL7cC0cQ5PCchCZlmqDJFc4seulLFS0skja9CklGy/sjbLinY
+        k2DcFJIU7Vo7Fi6dSvxkRxNgpOdZrsq5d2W15NA=
+X-Google-Smtp-Source: APiQypJa1PceJQJ4Uifc/OqOMsrqmrQouzmU8Q8RDUvIDEAu0nQ7VLXoyo7OeaG8ZGcz9++WgUurorK4eBNnHWQDQ14=
+X-Received: by 2002:a67:e24c:: with SMTP id w12mr8440041vse.153.1585565496489;
+ Mon, 30 Mar 2020 03:51:36 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 27 Mar 2020 00:37:30 +0200
-User-Agent: Evolution 3.35.92-1 
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a67:c005:0:0:0:0:0 with HTTP; Mon, 30 Mar 2020 03:51:35
+ -0700 (PDT)
+Reply-To: maryalice00.12@postribe.com
+From:   Maryalice Williams <maryalicewilliams730@gmail.com>
+Date:   Mon, 30 Mar 2020 08:51:35 -0200
+Message-ID: <CAKwdjspC3teZc3g9Bg3_Wsc-61AL3_=GrmVKBnDw_HTZuBNk5w@mail.gmail.com>
+Subject: Reply For More Details.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2020-03-26 at 18:12 +0000, David Howells wrote:
-> David Miller <davem@davemloft.net> wrote:
-> 
-> > Who will integrate these changes?
-> 
-> I'll do it unless Jarkko wants to push it through his tree.
+-- 
+My dear,
 
-Please do.
+I am Mrs Maryalice Williams, I want to send you donation of two
+million seven hundred thousand Dollars ($2.7M) for volunteer projects
+in your country due to my ill health that could not permit me. Kindly
+reply for more details, and also send me the following details, as per
+below, your full Name ..........,  Address...........,
+Age...............,  Occupation ...............
 
-/Jarkko
-
+Remain blessed,
+Mrs. Maryalice Williams.
