@@ -2,67 +2,120 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 772F31979A0
-	for <lists+keyrings@lfdr.de>; Mon, 30 Mar 2020 12:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38947197BA8
+	for <lists+keyrings@lfdr.de>; Mon, 30 Mar 2020 14:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729232AbgC3Kvh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Mar 2020 06:51:37 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:38574 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729214AbgC3Kvh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Mar 2020 06:51:37 -0400
-Received: by mail-vs1-f65.google.com with SMTP id x206so10697579vsx.5
-        for <keyrings@vger.kernel.org>; Mon, 30 Mar 2020 03:51:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
-        b=pmfufcukdjtwJGNtxCWB6abIy5GQkydOhglTt3lU2SNSHQkXjHvYVAYU30qpH0ROcn
-         6AR81pKR9LU8L5YeZnaBH9MvN/REWH5yRTWPgLFGTHBrQIMlYTgg1KzSS2HURZNZm8OD
-         SUHydw70bw0Q0cdHd4uf2iXTPiDhTTTwYAdjzmZQ2jSivGRsQ2XoJx9BB/FYlSUeb5oy
-         5awE4LGroq+bJGyUftKKYOLINHvkpei9FuchjXvbX7X9WnD9VXRR0fk+ICDWYXcZidms
-         B2Tcxn0d5gO0STEGqpugUjsy6/FY3i0rb+Q9Aubo2nnGcM5Z3hnCHy9hm0pGt54tKkMk
-         0diQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
-        b=O5m0mJhopKrkyKNN24GV7N5cOO7AC1PQjOhrc4JOiyKf1umAEnlIgGGXo6uRDVfNnk
-         5b/w2ZyHZ4VnbxNqWpCs+CUNwJsYP+PPwCQ+PKmn+sEjMc4OdfZwfZcEMnJT1MLJombC
-         vMXRI6GrlJfj8KxcCEk94K/QKUBNNO8+XFOsQp5WiFtrxAnflJLFY8DpulWvUJKxsBjn
-         uwI7bZMW++O/n14AmniosnynnijC3LgqnMvv6BuBBGrPSkIz/zTwHwKSfLmZnHAuCgeM
-         XyFBA7mE4NSVmdh3je2jbouIBq4/z1HJkjZacjVodKrfLA0GJJmmvf1IfY+zV+/6ygt7
-         wH1g==
-X-Gm-Message-State: AGi0PubLL7cC0cQ5PCchCZlmqDJFc4seulLFS0skja9CklGy/sjbLinY
-        k2DcFJIU7Vo7Fi6dSvxkRxNgpOdZrsq5d2W15NA=
-X-Google-Smtp-Source: APiQypJa1PceJQJ4Uifc/OqOMsrqmrQouzmU8Q8RDUvIDEAu0nQ7VLXoyo7OeaG8ZGcz9++WgUurorK4eBNnHWQDQ14=
-X-Received: by 2002:a67:e24c:: with SMTP id w12mr8440041vse.153.1585565496489;
- Mon, 30 Mar 2020 03:51:36 -0700 (PDT)
+        id S1729848AbgC3MQt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Mar 2020 08:16:49 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:58164 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729705AbgC3MQt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Mar 2020 08:16:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585570608;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=MYQJfg4bEedYd4dU8QQfrS68QqFoT2gft/lQom/VKLY=;
+        b=U3hulI/s95L2K2IEtt8V3PaAv8X3/en3gEBW6wvO4SAY7rM2o7noLcPpInE7lUCiz0SETd
+        nRyJ9VIdc2xaIrvnIx1fe9LMPoT68MUGg0ohFpOcyZCBpbtBn8OuFE3bje7qoghC0h3SCC
+        kk5KXsV9gzBjmY6CsdMAK2lyTQcj46I=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-134-TLrIXIIFMxS2aU19Htzoog-1; Mon, 30 Mar 2020 08:16:44 -0400
+X-MC-Unique: TLrIXIIFMxS2aU19Htzoog-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 97F21801E74;
+        Mon, 30 Mar 2020 12:16:43 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-66.rdu2.redhat.com [10.10.112.66])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B092596F88;
+        Mon, 30 Mar 2020 12:16:39 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        longman@redhat.com, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] keys: Fix key->sem vs mmap_sem issue when reading key
 MIME-Version: 1.0
-Received: by 2002:a67:c005:0:0:0:0:0 with HTTP; Mon, 30 Mar 2020 03:51:35
- -0700 (PDT)
-Reply-To: maryalice00.12@postribe.com
-From:   Maryalice Williams <maryalicewilliams730@gmail.com>
-Date:   Mon, 30 Mar 2020 08:51:35 -0200
-Message-ID: <CAKwdjspC3teZc3g9Bg3_Wsc-61AL3_=GrmVKBnDw_HTZuBNk5w@mail.gmail.com>
-Subject: Reply For More Details.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1437196.1585570598.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Mon, 30 Mar 2020 13:16:38 +0100
+Message-ID: <1437197.1585570598@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
--- 
-My dear,
+Hi Linus,
 
-I am Mrs Maryalice Williams, I want to send you donation of two
-million seven hundred thousand Dollars ($2.7M) for volunteer projects
-in your country due to my ill health that could not permit me. Kindly
-reply for more details, and also send me the following details, as per
-below, your full Name ..........,  Address...........,
-Age...............,  Occupation ...............
+Here's a couple of patches that fix a circular dependency between holding
+key->sem and mm->mmap_sem when reading data from a key.  One potential
+issue is that a filesystem looking to use a key inside, say, ->readpages()
+could deadlock if the key being read is the key that's required and the
+buffer the key is being read into is on a page that needs to be fetched.
 
-Remain blessed,
-Mrs. Maryalice Williams.
+The case actually detected is a bit more involved - with a filesystem
+calling request_key() and locking the target keyring for write - which
+could be being read.
+
+[Note: kbuild spotted a compiler(?) warning that I've not seen before,
+ complaining "The scope of the variable 'oldxdr' can be reduced.
+ [variableScope]".  It's unhappy that a variable that's declared at the to=
+p
+ of the function hasn't been moved into an interior for-loop.  Is this
+ something we're now requiring?  Anyway, I'd prefer to fix that with a
+ follow up patch through the net tree rather than go for a 9th iteration o=
+n
+ these patches.]
+
+Thanks,
+David
+---
+The following changes since commit 1b649e0bcae71c118c1333e02249a7510ba7f70=
+a:
+
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2020-03-=
+25 13:58:05 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags=
+/keys-fixes-20200329
+
+for you to fetch changes up to 4f0882491a148059a52480e753b7f07fc550e188:
+
+  KEYS: Avoid false positive ENOMEM error on key read (2020-03-29 12:40:41=
+ +0100)
+
+----------------------------------------------------------------
+Keyrings fixes
+
+----------------------------------------------------------------
+Waiman Long (2):
+      KEYS: Don't write out to userspace while holding key semaphore
+      KEYS: Avoid false positive ENOMEM error on key read
+
+ include/keys/big_key-type.h               |   2 +-
+ include/keys/user-type.h                  |   3 +-
+ include/linux/key-type.h                  |   2 +-
+ net/dns_resolver/dns_key.c                |   2 +-
+ net/rxrpc/key.c                           |  27 +++-----
+ security/keys/big_key.c                   |  11 ++--
+ security/keys/encrypted-keys/encrypted.c  |   7 +-
+ security/keys/internal.h                  |  12 ++++
+ security/keys/keyctl.c                    | 103 +++++++++++++++++++++++++=
+-----
+ security/keys/keyring.c                   |   6 +-
+ security/keys/request_key_auth.c          |   7 +-
+ security/keys/trusted-keys/trusted_tpm1.c |  14 +---
+ security/keys/user_defined.c              |   5 +-
+ 13 files changed, 126 insertions(+), 75 deletions(-)
+
