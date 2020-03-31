@@ -2,90 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB22198CEB
-	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 09:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A720A198E17
+	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 10:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726174AbgCaH2z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 31 Mar 2020 03:28:55 -0400
-Received: from gardel.0pointer.net ([85.214.157.71]:48338 "EHLO
-        gardel.0pointer.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726001AbgCaH2z (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 03:28:55 -0400
-X-Greylist: delayed 387 seconds by postgrey-1.27 at vger.kernel.org; Tue, 31 Mar 2020 03:28:55 EDT
-Received: from gardel-login.0pointer.net (gardel.0pointer.net [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
-        by gardel.0pointer.net (Postfix) with ESMTP id B5053E814E3;
-        Tue, 31 Mar 2020 09:22:25 +0200 (CEST)
-Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-        id D3507160704; Tue, 31 Mar 2020 09:22:24 +0200 (CEST)
-Date:   Tue, 31 Mar 2020 09:22:24 +0200
-From:   Lennart Poettering <mzxreary@0pointer.de>
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     David Howells <dhowells@redhat.com>, torvalds@linux-foundation.org,
-        viro@zeniv.linux.org.uk, dray@redhat.com, kzak@redhat.com,
-        mszeredi@redhat.com, swhiteho@redhat.com, jlayton@redhat.com,
-        raven@themaw.net, andres@anarazel.de, keyrings@vger.kernel.org,
+        id S1726397AbgCaIPT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 Mar 2020 04:15:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36301 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729997AbgCaIPS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 04:15:18 -0400
+Received: from ip5f5bf7ec.dynamic.kabel-deutschland.de ([95.91.247.236] helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1jJC3B-0000Od-Ku; Tue, 31 Mar 2020 08:15:09 +0000
+Date:   Tue, 31 Mar 2020 10:15:07 +0200
+From:   Christian Brauner <christian.brauner@ubuntu.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     David Howells <dhowells@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Steven Whitehouse <swhiteho@redhat.com>,
+        Jeff Layton <jlayton@redhat.com>, Ian Kent <raven@themaw.net>,
+        andres@anarazel.de, keyrings@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        cyphar@cyphar.com
+        Lennart Poettering <lennart@poettering.net>,
+        Aleksa Sarai <cyphar@cyphar.com>
 Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-Message-ID: <20200331072224.GA27062@gardel-login>
+Message-ID: <20200331081507.f6an4x32cxwpxdpd@wittgenstein>
 References: <1445647.1585576702@warthog.procyon.org.uk>
  <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
+ <CAJfpegtjmkJUSqORFv6jw-sYbqEMh9vJz64+dmzWhATYiBmzVQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
+In-Reply-To: <CAJfpegtjmkJUSqORFv6jw-sYbqEMh9vJz64+dmzWhATYiBmzVQ@mail.gmail.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mo, 30.03.20 23:17, Christian Brauner (christian.brauner@ubuntu.com) wrote:
+On Tue, Mar 31, 2020 at 07:11:11AM +0200, Miklos Szeredi wrote:
+> On Mon, Mar 30, 2020 at 11:17 PM Christian Brauner
+> <christian.brauner@ubuntu.com> wrote:
+> 
+> > Fwiw, putting down my kernel hat and speaking as someone who maintains
+> > two container runtimes and various other low-level bits and pieces in
+> > userspace who'd make heavy use of this stuff I would prefer the fd-based
+> > fsinfo() approach especially in the light of across namespace
+> > operations, querying all properties of a mount atomically all-at-once,
+> 
+> fsinfo(2) doesn't meet the atomically all-at-once requirement.  Sure,
+> it's possible to check the various change counters before and after a
+> batch of calls to check that the result is consistent.  Still, that's
+> not an atomic all-at-once query, if you'd really require that, than
+> fsinfo(2) as it currently stands would be inadequate.
 
-> Fwiw, putting down my kernel hat and speaking as someone who maintains
-> two container runtimes and various other low-level bits and pieces in
-> userspace who'd make heavy use of this stuff I would prefer the fd-based
-> fsinfo() approach especially in the light of across namespace
-> operations, querying all properties of a mount atomically all-at-once,
-> and safe delegation through fds. Another heavy user of this would be
-> systemd (Cced Lennart who I've discussed this with) which would prefer
-> the fd-based approach as well. I think pulling this into a filesystem
-> and making userspace parse around in a filesystem tree to query mount
-> information is the wrong approach and will get messy pretty quickly
-> especially in the face of mount and user namespace interactions and
-> various other pitfalls. fsinfo() fits quite nicely with the all-fd-based
-> approach of the whole mount api. So yes, definitely preferred from my
-> end.
+It at all that's only true for batch requests.
 
-Christian is right. I think it's very important to have an API that
-allows to query the state of fs attributes in a consistent state,
-i.e. so that the attributes userspace is interested in can be queried
-in a single call, so they all describe the very same point in
-time. Distributing attributes onto multiple individual files just
-sucks, because it's then guaranteed that you never can read them in a
-way they actually fit together, some attributes you read will be
-older, others newer. It's a big design flaw of sysfs (which is
-structured like this) if you ask me.
+> 
+> > and safe delegation through fds. Another heavy user of this would be
+> > systemd (Cced Lennart who I've discussed this with) which would prefer
+> > the fd-based approach as well. I think pulling this into a filesystem
+> > and making userspace parse around in a filesystem tree to query mount
+> > information is the wrong approach and will get messy pretty quickly
+> > especially in the face of mount and user namespace interactions and
+> > various other pitfalls.
+> 
+> Have you actually looked at my proposed patch?   Do you have concrete
 
-I don't really care if the kernel API for this is binary or
-textual. Slight preference for binary, but I don't care too much.
+Yes. So have others, Al actively disliked and nacked it and no-one got
+excited about it.
 
-I think it would be wise to bind such APIs to fds, simply because it
-always works. Doing path based stuff sucks, because you always need to
-mount stuff and have a path tree set up, which is less ideal in a
-world where namespacing is common, and namespaces are a shared concept
-(at least with your other threads, if not with other processes). As a
-maintainer of an init system I really dislike APIs that I can only use
-after a mount structure has been set up, too often we want to do stuff
-before that. Moreover, philosophically I find it questionnable to use
-path based APIs to interface with the path object hierarchy itself. it
-feels "too recursive". Just keep this separate: build stuff on top of
-the fs that fits on top of the fs, but don't build fs APIs on top of
-fs APIs that stem from the same layer.
+> issues or just vague bad feelings?
 
-Summary: atomic APIs rock, fd-based APIs rock. APIs built on
-individual files one can only read individually suck. APIs of the path
-layer exposed in the path layer suck.
+We have had that discussion on-list where I made my "vague bad feelings"
+clear where you responded with the same dismissive style so I don't see
+the point in repeating this experience.
 
-Hope this makes some sense?
+Again, I want to make it clear that here I'm stating my preference as a
+user of this api and as such I don't want to have to parse through a
+filesystem to get complex information about filesystems. We've had
+fruitful discussions [1] around how fsinfo() ties in with supervised
+mounts and the rest of the mount api and its clear and simple especially
+in the face of namespaces and implements a nice delegation model. So +1
+from me.
 
-Lennart
+Christian
+
+[1]: https://youtu.be/LN2CUgp8deo?t=6840
