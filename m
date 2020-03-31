@@ -2,231 +2,385 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D91219A0B1
-	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 23:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD8E519A151
+	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 23:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731307AbgCaVYB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 31 Mar 2020 17:24:01 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:36725 "EHLO
+        id S1731367AbgCaVxE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 Mar 2020 17:53:04 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:24976 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728245AbgCaVYA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 17:24:00 -0400
+        by vger.kernel.org with ESMTP id S1731362AbgCaVxE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 17:53:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585689839;
+        s=mimecast20190719; t=1585691582;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YdKjTVX18IqyNBqRWdSsTRvI99+3muYbESJ573ASbEo=;
-        b=D45CRfaVkfP7FqwhYUCJU39sJLus9h8EUgQlxPHdmUdR/NPtDqIDQGgx1nD9Z6lQ0sxczW
-        DebQBV2FD3ZsuM2oF00i3eyhhEJIykHvYQB8Elxr7cJ0mcalFZXNb5sv/Vp+JHjWdgNGnH
-        HO9upotrBrZJkb4YP1p/sLr4sp1RVro=
+        bh=7DWwbQKlPN0MbpVazTHqEZ9NSt8J5UXYVsBh1VrbJ7M=;
+        b=CNpRPyHgijbI3X1++jbauyCMrEyIbeidZbml3Fv7PjDLmHmU1Wr+dQRlorMtgI3ZH53F9p
+        NRppnXvOV5XAWqxkbjxORlaHhlta+nyWssaguFILSQ/l86IlGtKJaLvMkTfLt2jGCE75fT
+        3cW6XPhOe/pzLKdFbLUWX5PD50ZWtCg=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-180-kR0F5A6YO_qT3-8n2pJcLQ-1; Tue, 31 Mar 2020 17:23:55 -0400
-X-MC-Unique: kR0F5A6YO_qT3-8n2pJcLQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+ us-mta-377-NtLnUT3pNoq8lBWy2Qte8A-1; Tue, 31 Mar 2020 17:53:01 -0400
+X-MC-Unique: NtLnUT3pNoq8lBWy2Qte8A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D5191107ACCA;
-        Tue, 31 Mar 2020 21:23:53 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BFDA68024DF;
+        Tue, 31 Mar 2020 21:52:56 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-114-243.ams2.redhat.com [10.36.114.243])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C53FF5C1BB;
-        Tue, 31 Mar 2020 21:23:50 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 907CB101D480;
+        Tue, 31 Mar 2020 21:52:53 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
 From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <2415050.1585689255@warthog.procyon.org.uk>
-References: <2415050.1585689255@warthog.procyon.org.uk> <CAJfpegtn1A=dL9VZJQ2GRWsOiP+YSs-4ezE9YgEYNmb-AF0OLA@mail.gmail.com> <1445647.1585576702@warthog.procyon.org.uk> <CAJfpegvZ_qtdGcP4bNQyYt1BbgF9HdaDRsmD43a-Muxgki+wTw@mail.gmail.com> <2294742.1585675875@warthog.procyon.org.uk>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     dhowells@redhat.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Jeff Layton <jlayton@redhat.com>, Ian Kent <raven@themaw.net>,
-        andres@anarazel.de,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Lennart Poettering <mzxreary@0pointer.de>,
-        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
+References: <20200330211700.g7evnuvvjenq3fzm@wittgenstein> <1445647.1585576702@warthog.procyon.org.uk>
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
+        viro@zeniv.linux.org.uk, dray@redhat.com, kzak@redhat.com,
+        mszeredi@redhat.com, swhiteho@redhat.com, jlayton@redhat.com,
+        raven@themaw.net, andres@anarazel.de, keyrings@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lennart@poettering.net, cyphar@cyphar.com
 Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2415895.1585689830.1@warthog.procyon.org.uk>
+Content-ID: <2418285.1585691572.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 31 Mar 2020 22:23:50 +0100
-Message-ID: <2415896.1585689830@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Date:   Tue, 31 Mar 2020 22:52:52 +0100
+Message-ID: <2418286.1585691572@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Howells <dhowells@redhat.com> wrote:
+Christian Brauner <christian.brauner@ubuntu.com> wrote:
 
-> > So even the p2 method will give at least 80k queries/s, which is quite
-> > good, considering that the need to rescan the complete mount tree
-> > should be exceedingly rare (and in case it mattered, could be
-> > optimized by priming from /proc/self/mountinfo).
-> =
+> querying all properties of a mount atomically all-at-once,
 
-> One thing to note is that the test is actually a little biased in favour=
- of
-> the "p" test, where the mnt_id is looked up by path from /proc/fdinfo.  =
-That's
-> not all that useful, except as an index into mountfs.  I'm not sure how =
-much
-> use it as a check on whether the mount is the same mount or not since mo=
-unt
-> IDs can get reused.
+I don't actually offer that, per se.
 
-However, to deal with an overrun, you're going to have to read multiple
-attributes.  So I've added an attribute file to expose the topology change
-counter and it now reads that as well.
+Having an atomic all-at-once query for a single mount is actually quite a
+burden on the system.  There's potentially a lot of state involved, much o=
+f
+which you don't necessarily need.
 
-For 10000 mounts, f=3D22899us f2=3D18240us p=3D101054us p2=3D117273us <-- =
-prev email
-For 10000 mounts, f=3D24853us f2=3D20453us p=3D235581us p2=3D 59798us <-- =
-parent_id
-For 10000 mounts, f=3D24621us f2=3D20528us p=3D320164us p2=3D111416us <-- =
-counter
+I've tried to avoid the need to do that by adding change counters that can=
+ be
+queried cheaply.  You read the counters, then you check mounts and superbl=
+ocks
+for which the counters have changed, and then you re-read the counters.  I=
+'ve
+added multiple counters, assigned to different purposes, to make it easier=
+ to
+pin down what has changed - and so reduce the amount of checking required.
 
-Probably unsurprisingly, this doesn't affect fsinfo() significantly since =
-I've
-tried to expose the change counters in relevant places.  It does, however,
-significantly affect mountfs because you seem to want every value to be
-exposed through its own file.
+What I have added to fsinfo() is a way to atomically retrieve a list of al=
+l
+the children of a mount, including, for each mount, the mount ID (which ma=
+y
+have been reused), a uniquifier (which shouldn't wrap over the kernel
+lifetime) and the sum of the mount object and superblock change counters.
 
-Now this can be worked around by having files that bundle up several value=
-s
-that are of interest to a particular operation (e.g. rescanning after a
-notification queue overrun).
+This should allow you to quickly rescan the mount tree as fsinfo() can loo=
+k up
+mounts by mount ID instead of by path or fd.
 
-See the attached additional patch.  Note that the
-
-	sum_check_2 +=3D r.mnt_topology_changes;
-
-bits in the fsinfo() tests accidentally got left in the preceding patch an=
-d so
-aren't in this one.
+Below is a sample file from the kernel that scans by this method, displayi=
+ng
+an ascii art tree of all the mounts under a path or mount.
 
 David
 ---
-commit 6c62787aec41f67c1d5a55a0d59578854bcef6f8
-Author: David Howells <dhowells@redhat.com>
-Date:   Tue Mar 31 21:53:11 2020 +0100
+// SPDX-License-Identifier: GPL-2.0-or-later
+/* Test the fsinfo() system call
+ *
+ * Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
+ * Written by David Howells (dhowells@redhat.com)
+ */
 
-    Add a mountfs file to export the topology counter
+#define _GNU_SOURCE
+#define _ATFILE_SOURCE
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <errno.h>
+#include <time.h>
+#include <math.h>
+#include <sys/syscall.h>
+#include <linux/fsinfo.h>
+#include <linux/socket.h>
+#include <linux/fcntl.h>
+#include <sys/stat.h>
+#include <arpa/inet.h>
 
-diff --git a/fs/mountfs/super.c b/fs/mountfs/super.c
-index 82c01eb6154d..58c05feb4fdd 100644
---- a/fs/mountfs/super.c
-+++ b/fs/mountfs/super.c
-@@ -22,7 +22,7 @@ struct mountfs_entry {
- =
+#ifndef __NR_fsinfo
+#define __NR_fsinfo -1
+#endif
 
- static const char *mountfs_attrs[] =3D {
- 	"root", "mountpoint", "id", "parent", "options", "children",
--	"group", "master", "propagate_from"
-+	"group", "master", "propagate_from", "counter"
- };
- =
+static __attribute__((unused))
+ssize_t fsinfo(int dfd, const char *filename,
+	       struct fsinfo_params *params, size_t params_size,
+	       void *result_buffer, size_t result_buf_size)
+{
+	return syscall(__NR_fsinfo, dfd, filename,
+		       params, params_size,
+		       result_buffer, result_buf_size);
+}
 
- #define MOUNTFS_INO(id) (((unsigned long) id + 1) * \
-@@ -128,6 +128,8 @@ static int mountfs_attr_show(struct seq_file *sf, void=
- *v)
- 			if (tmp)
- 				seq_printf(sf, "%i\n", tmp);
- 		}
-+	} else if (strcmp(name, "counter") =3D=3D 0) {
-+		seq_printf(sf, "%u\n", atomic_read(&mnt->mnt_topology_changes));
- 	} else {
- 		WARN_ON(1);
- 		err =3D -EIO;
-diff --git a/samples/vfs/test-fsinfo-perf.c b/samples/vfs/test-fsinfo-perf=
-.c
-index 2bcde06ee78b..2b7606a53c2d 100644
---- a/samples/vfs/test-fsinfo-perf.c
-+++ b/samples/vfs/test-fsinfo-perf.c
-@@ -149,6 +149,26 @@ static void get_id_by_proc(int ix, const char *path)
- 	}
- =
+static char tree_buf[4096];
+static char bar_buf[4096];
+static unsigned int children_list_interval;
 
- 	sum_check +=3D x;
-+
-+	/* And now the topology change counter */
-+	sprintf(procfile, "/mnt/%u/counter", mnt_id);
-+	fd =3D open(procfile, O_RDONLY);
-+	ERR(fd, procfile);
-+	len =3D read(fd, buffer, sizeof(buffer) - 1);
-+	ERR(len, "read/counter");
-+	close(fd);
-+	if (len > 0 && buffer[len - 1] =3D=3D '\n')
-+		len--;
-+	buffer[len] =3D 0;
-+
-+	x =3D strtoul(buffer, &q, 10);
-+
-+	if (*q) {
-+		fprintf(stderr, "Bad format in %s '%s'\n", procfile, buffer);
-+		exit(3);
-+	}
-+
-+	sum_check_2 +=3D x;
- 	//printf("[%u] %u\n", ix, x);
- }
- =
+/*
+ * Get an fsinfo attribute in a statically allocated buffer.
+ */
+static void get_attr(unsigned int mnt_id, unsigned int attr, unsigned int =
+Nth,
+		     void *buf, size_t buf_size)
+{
+	struct fsinfo_params params =3D {
+		.flags		=3D FSINFO_FLAGS_QUERY_MOUNT,
+		.request	=3D attr,
+		.Nth		=3D Nth,
+	};
+	char file[32];
+	long ret;
 
-@@ -204,7 +224,7 @@ static void get_id_by_mountfs(void)
- 	unsigned int base_mnt_id, mnt_id, x;
- 	ssize_t len, s_children;
- 	char procfile[100], buffer[100], *children, *p, *q, *nl, *comma;
--	int fd, fd2, mntfd, i;
-+	int fd, fd2, mntfd;
- =
+	sprintf(file, "%u", mnt_id);
 
- 	/* Start off by reading the mount ID from the base path */
- 	fd =3D open(base_path, O_PATH);
-@@ -269,7 +289,6 @@ static void get_id_by_mountfs(void)
- 	p =3D children;
- 	if (!*p)
- 		return;
--	i =3D 0;
- 	do {
- 		mnt_id =3D strtoul(p, &comma, 10);
- 		if (*comma) {
-@@ -297,8 +316,26 @@ static void get_id_by_mountfs(void)
- 			exit(3);
- 		}
- =
+	memset(buf, 0xbd, buf_size);
 
--		if (0) printf("[%u] %u\n", i++, x);
- 		sum_check +=3D x;
-+
-+		sprintf(procfile, "%u/counter", mnt_id);
-+		fd =3D openat(mntfd, procfile, O_RDONLY);
-+		ERR(fd, procfile);
-+		len =3D read(fd, buffer, sizeof(buffer) - 1);
-+		ERR(len, "read/counter");
-+		close(fd);
-+		if (len > 0 && buffer[len - 1] =3D=3D '\n')
-+			len--;
-+		buffer[len] =3D 0;
-+
-+		x =3D strtoul(buffer, &q, 10);
-+
-+		if (*q) {
-+			fprintf(stderr, "Bad format in %s '%s'\n", procfile, buffer);
-+			exit(3);
-+		}
-+
-+		sum_check_2 +=3D x;
- 	} while (p =3D comma, *comma);
- }
- =
+	ret =3D fsinfo(AT_FDCWD, file, &params, sizeof(params), buf, buf_size);
+	if (ret =3D=3D -1) {
+		fprintf(stderr, "mount-%s: %m\n", file);
+		exit(1);
+	}
+}
 
+/*
+ * Get an fsinfo attribute in a dynamically allocated buffer.
+ */
+static void *get_attr_alloc(unsigned int mnt_id, unsigned int attr,
+			    unsigned int Nth, size_t *_size)
+{
+	struct fsinfo_params params =3D {
+		.flags		=3D FSINFO_FLAGS_QUERY_MOUNT,
+		.request	=3D attr,
+		.Nth		=3D Nth,
+	};
+	size_t buf_size =3D 4096;
+	char file[32];
+	void *r;
+	long ret;
+
+	sprintf(file, "%u", mnt_id);
+
+	for (;;) {
+		r =3D malloc(buf_size);
+		if (!r) {
+			perror("malloc");
+			exit(1);
+		}
+		memset(r, 0xbd, buf_size);
+
+		ret =3D fsinfo(AT_FDCWD, file, &params, sizeof(params), r, buf_size);
+		if (ret =3D=3D -1) {
+			fprintf(stderr, "mount-%s: %x,%x,%x %m\n",
+				file, params.request, params.Nth, params.Mth);
+			exit(1);
+		}
+
+		if (ret <=3D buf_size) {
+			*_size =3D ret;
+			break;
+		}
+		buf_size =3D (ret + 4096 - 1) & ~(4096 - 1);
+	}
+
+	return r;
+}
+
+/*
+ * Display a mount and then recurse through its children.
+ */
+static void display_mount(unsigned int mnt_id, unsigned int depth, char *p=
+ath)
+{
+	struct fsinfo_mount_topology top;
+	struct fsinfo_mount_child child;
+	struct fsinfo_mount_info info;
+	struct fsinfo_ids ids;
+	void *children;
+	unsigned int d;
+	size_t ch_size, p_size;
+	char dev[64];
+	int i, n, s;
+
+	get_attr(mnt_id, FSINFO_ATTR_MOUNT_TOPOLOGY, 0, &top, sizeof(top));
+	get_attr(mnt_id, FSINFO_ATTR_MOUNT_INFO, 0, &info, sizeof(info));
+	get_attr(mnt_id, FSINFO_ATTR_IDS, 0, &ids, sizeof(ids));
+	if (depth > 0)
+		printf("%s", tree_buf);
+
+	s =3D strlen(path);
+	printf("%s", !s ? "\"\"" : path);
+	if (!s)
+		s +=3D 2;
+	s +=3D depth;
+	if (s < 38)
+		s =3D 38 - s;
+	else
+		s =3D 1;
+	printf("%*.*s", s, s, "");
+
+	sprintf(dev, "%x:%x", ids.f_dev_major, ids.f_dev_minor);
+	printf("%10u %8x %2x %x %5s %s",
+	       info.mnt_id,
+	       (info.sb_changes +
+		info.sb_notifications +
+		info.mnt_attr_changes +
+		info.mnt_topology_changes +
+		info.mnt_subtree_notifications),
+	       info.attr, top.propagation,
+	       dev, ids.f_fs_name);
+	putchar('\n');
+
+	children =3D get_attr_alloc(mnt_id, FSINFO_ATTR_MOUNT_CHILDREN, 0, &ch_si=
+ze);
+	n =3D ch_size / children_list_interval - 1;
+
+	bar_buf[depth + 1] =3D '|';
+	if (depth > 0) {
+		tree_buf[depth - 4 + 1] =3D bar_buf[depth - 4 + 1];
+		tree_buf[depth - 4 + 2] =3D ' ';
+	}
+
+	tree_buf[depth + 0] =3D ' ';
+	tree_buf[depth + 1] =3D '\\';
+	tree_buf[depth + 2] =3D '_';
+	tree_buf[depth + 3] =3D ' ';
+	tree_buf[depth + 4] =3D 0;
+	d =3D depth + 4;
+
+	memset(&child, 0, sizeof(child));
+	for (i =3D 0; i < n; i++) {
+		void *p =3D children + i * children_list_interval;
+
+		if (sizeof(child) >=3D children_list_interval)
+			memcpy(&child, p, children_list_interval);
+		else
+			memcpy(&child, p, sizeof(child));
+
+		if (i =3D=3D n - 1)
+			bar_buf[depth + 1] =3D ' ';
+		path =3D get_attr_alloc(child.mnt_id, FSINFO_ATTR_MOUNT_POINT,
+				      0, &p_size);
+		display_mount(child.mnt_id, d, path + 1);
+		free(path);
+	}
+
+	free(children);
+	if (depth > 0) {
+		tree_buf[depth - 4 + 1] =3D '\\';
+		tree_buf[depth - 4 + 2] =3D '_';
+	}
+	tree_buf[depth] =3D 0;
+}
+
+/*
+ * Find the ID of whatever is at the nominated path.
+ */
+static unsigned int lookup_mnt_by_path(const char *path)
+{
+	struct fsinfo_mount_info mnt;
+	struct fsinfo_params params =3D {
+		.flags		=3D FSINFO_FLAGS_QUERY_PATH,
+		.request	=3D FSINFO_ATTR_MOUNT_INFO,
+	};
+
+	if (fsinfo(AT_FDCWD, path, &params, sizeof(params), &mnt, sizeof(mnt)) =3D=
+=3D -1) {
+		perror(path);
+		exit(1);
+	}
+
+	return mnt.mnt_id;
+}
+
+/*
+ * Determine the element size for the mount child list.
+ */
+static unsigned int query_list_element_size(int mnt_id, unsigned int attr)
+{
+	struct fsinfo_attribute_info attr_info;
+
+	get_attr(mnt_id, FSINFO_ATTR_FSINFO_ATTRIBUTE_INFO, attr,
+		 &attr_info, sizeof(attr_info));
+	return attr_info.size;
+}
+
+/*
+ *
+ */
+int main(int argc, char **argv)
+{
+	unsigned int mnt_id;
+	char *path;
+	bool use_mnt_id =3D false;
+	int opt;
+
+	while ((opt =3D getopt(argc, argv, "m"))) {
+		switch (opt) {
+		case 'm':
+			use_mnt_id =3D true;
+			continue;
+		}
+		break;
+	}
+
+	argc -=3D optind;
+	argv +=3D optind;
+
+	switch (argc) {
+	case 0:
+		mnt_id =3D lookup_mnt_by_path("/");
+		path =3D "ROOT";
+		break;
+	case 1:
+		path =3D argv[0];
+		if (use_mnt_id) {
+			mnt_id =3D strtoul(argv[0], NULL, 0);
+			break;
+		}
+
+		mnt_id =3D lookup_mnt_by_path(argv[0]);
+		break;
+	default:
+		printf("Format: test-mntinfo\n");
+		printf("Format: test-mntinfo <path>\n");
+		printf("Format: test-mntinfo -m <mnt_id>\n");
+		exit(2);
+	}
+
+	children_list_interval =3D
+		query_list_element_size(mnt_id, FSINFO_ATTR_MOUNT_CHILDREN);
+
+	printf("MOUNT                                 MOUNT ID   CHANGE#  AT P DE=
+V   TYPE\n");
+	printf("------------------------------------- ---------- -------- -- - --=
+--- --------\n");
+	display_mount(mnt_id, 0, path);
+	return 0;
+}
 
