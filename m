@@ -2,90 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6744A1992AD
-	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 11:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62A111995E5
+	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 14:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730217AbgCaJto (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 31 Mar 2020 05:49:44 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:22286 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729425AbgCaJtn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 05:49:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585648182;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Z4v/YtSm7khSMtma48XmYXMI66/O3qRGCFmAxLMn+2U=;
-        b=NqjYVLaCD7agG9fI4rD9iLT4+kBSb2mKLUv53oxUlHQn5vWcLsuAUfe/WUX6itl6X6DJLw
-        r0oKHhNMH+V8idDnUbLhKl4kN/2bsacxbv0zG+LwZcpPuKFojeZwKebsdTRw62OM1tfhE3
-        SmIP7JpBr6Bw4JQLybDIH00zaOU3ck4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-479-wsmh7QxlMIexmPjb_Lr0Pw-1; Tue, 31 Mar 2020 05:49:38 -0400
-X-MC-Unique: wsmh7QxlMIexmPjb_Lr0Pw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7F5621005509;
-        Tue, 31 Mar 2020 09:49:36 +0000 (UTC)
-Received: from ws.net.home (unknown [10.40.194.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id BB62598A21;
-        Tue, 31 Mar 2020 09:49:32 +0000 (UTC)
-Date:   Tue, 31 Mar 2020 11:49:30 +0200
-From:   Karel Zak <kzak@redhat.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
-        David Howells <dhowells@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Jeff Layton <jlayton@redhat.com>, Ian Kent <raven@themaw.net>,
-        andres@anarazel.de, keyrings@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lennart Poettering <lennart@poettering.net>,
-        Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-Message-ID: <20200331094930.3aipm3zrydpqqhms@ws.net.home>
-References: <1445647.1585576702@warthog.procyon.org.uk>
- <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
- <CAJfpegtjmkJUSqORFv6jw-sYbqEMh9vJz64+dmzWhATYiBmzVQ@mail.gmail.com>
- <20200331083430.kserp35qabnxvths@ws.net.home>
- <CAJfpegsNpabFwoLL8HffNbi_4DuGMn4eYpFc6n7223UFnEPAbA@mail.gmail.com>
+        id S1730380AbgCaMBe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 Mar 2020 08:01:34 -0400
+Received: from mga05.intel.com ([192.55.52.43]:57920 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730343AbgCaMBe (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 31 Mar 2020 08:01:34 -0400
+IronPort-SDR: d9ROuewT2xCZ6nlyY5/smLR+nSlJlrsYE4RZZYTr1Hq9KJTR0mdO2XXE47fcEH3N2FwbqEV9Oz
+ 5nbtzAEHxM4w==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2020 05:01:33 -0700
+IronPort-SDR: VMipwQDvzzjmcVAxC89TFAjfb3kqh6Mptuej9tNXBogG/WOEWnpjZTEBnlGHxWHUqGECANmN+x
+ VllCkeGeHMsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,327,1580803200"; 
+   d="scan'208";a="237679081"
+Received: from tking1-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.59.94])
+  by orsmga007.jf.intel.com with ESMTP; 31 Mar 2020 05:01:27 -0700
+Date:   Tue, 31 Mar 2020 15:01:25 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     zohar@linux.ibm.com, jejb@linux.ibm.com, corbet@lwn.net,
+        casey@schaufler-ca.com, janne.karhunen@gmail.com,
+        kgoldman@us.ibm.com, david.safford@ge.com, monty.wiseman@ge.com,
+        daniel.thompson@linaro.org, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
+Subject: Re: [PATCH] doc: trusted-encrypted: updates with TEE as a new trust
+ source
+Message-ID: <20200331120125.GE8295@linux.intel.com>
+References: <1585636165-22481-1-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJfpegsNpabFwoLL8HffNbi_4DuGMn4eYpFc6n7223UFnEPAbA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+In-Reply-To: <1585636165-22481-1-git-send-email-sumit.garg@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 31, 2020 at 10:56:35AM +0200, Miklos Szeredi wrote:
-> I think we are approaching this from the wrong end.   Let's just
-> ignore all of the proposed interfaces for now and only concentrate on
-> what this will be used for.
+On Tue, Mar 31, 2020 at 11:59:25AM +0530, Sumit Garg wrote:
+> Update documentation for Trusted and Encrypted Keys with TEE as a new
+> trust source. Following is brief description of updates:
 > 
-> Start with a set of use cases by all interested parties.  E.g.
+> - Add a section to demostrate a list of supported devices along with
+>   their security properties/guarantees.
+> - Add a key generation section.
+> - Updates for usage section including differences specific to a trust
+>   source.
 > 
->  - systemd wants to keep track attached mounts in a namespace, as well
-> as new detached mounts created by fsmount()
-> 
->  - systemd need to keep information (such as parent, children, mount
-> flags, fs options, etc) up to date on any change of topology or
-> attributes.
-> 
->  - util linux needs to display the topology and state of mounts in the
-> system that corresponds to a consistent state that set of mounts
+> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 
-  - like systemd we also need in mount/umount to query one mountpoint
-  rather than parse all /proc/self/mountinfo
+Thanks for doing this. Looks like a lot of effort has gone to this.
 
- Karel
+Giving better feedback later.
 
--- 
- Karel Zak  <kzak@redhat.com>
- http://karelzak.blogspot.com
-
+/Jarkko
