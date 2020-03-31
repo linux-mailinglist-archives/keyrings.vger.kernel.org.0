@@ -2,131 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9D1198637
-	for <lists+keyrings@lfdr.de>; Mon, 30 Mar 2020 23:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B59E198B90
+	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 07:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728445AbgC3VRO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Mar 2020 17:17:14 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46119 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728376AbgC3VRO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Mar 2020 17:17:14 -0400
-Received: from ip5f5bf7ec.dynamic.kabel-deutschland.de ([95.91.247.236] helo=wittgenstein)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1jJ1mI-0008Ex-KZ; Mon, 30 Mar 2020 21:17:02 +0000
-Date:   Mon, 30 Mar 2020 23:17:00 +0200
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     torvalds@linux-foundation.org, viro@zeniv.linux.org.uk,
-        dray@redhat.com, kzak@redhat.com, mszeredi@redhat.com,
-        swhiteho@redhat.com, jlayton@redhat.com, raven@themaw.net,
+        id S1726520AbgCaFLZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 Mar 2020 01:11:25 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:33416 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725809AbgCaFLY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 01:11:24 -0400
+Received: by mail-ed1-f68.google.com with SMTP id z65so23645084ede.0
+        for <keyrings@vger.kernel.org>; Mon, 30 Mar 2020 22:11:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=181xT05kF3H0VD4f8J7xShi9xZwvoRHrcpvFBQLeEIA=;
+        b=m3IgsGGZrBgakxVw5if3yzczNN+msQw/g4O9F81ImNkKRl6IR0dPN9pgwGDudyXoFD
+         wIWE3Xb4wifN6VLA2/4V2jQdkh5DWnfWy9gEgEbaIM2wokowxXNZoF3v4dB085lzm0sT
+         cxBvjCc7bpBAb5dgoCxTIjslzsJDa+Q/lTfFI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=181xT05kF3H0VD4f8J7xShi9xZwvoRHrcpvFBQLeEIA=;
+        b=Vdri1h91Vf8RJ3cS2cXZ3nIdqbHMNLT+ieJkauMZ2QLsRCy/iAYy1t5VuBm3fkWChw
+         RHsG9315ANUaSu13TBYPyvrUFu+SroUowY2RoZlEIDcw8rjYuvx7HMHfk1FcR/lPJX2L
+         /mHWL+8z1Z4W7URaLhEEED8/uEE4Yrg539vY5skL7g+fZ+wNmqxLMws2jev6+OZZk1C0
+         eVH+6JZA63kOPaFHcb//OGtsA5ORHnJlrDCR44prZaND6ZB3PzOYZOUQU9GdsodPboiG
+         /gcPqXMDj8fL6ZU+YIb92ga8wQ4D4wbH/rghcQs1dhT+D9dg6f52Gh78Lj+oOctI/RQA
+         WBNA==
+X-Gm-Message-State: ANhLgQ3N+FWL5Qhws15MeWQXpNiFjyPGI9+5Au4UFOUV87jetslz5Frs
+        0vTlv7NJqbdN3MuNim+fQPRYR0Nzvg37uPpqn7ErvA==
+X-Google-Smtp-Source: ADFU+vujD3XRyzE2A6P8XAJLarFPpIUeWPjGW5jTzW/mvrFUEb88BGcaM3HywgE+474EUtqBVDyCkVg3I0Aj9RVfp1g=
+X-Received: by 2002:a17:906:9ca:: with SMTP id r10mr13543753eje.151.1585631482578;
+ Mon, 30 Mar 2020 22:11:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <1445647.1585576702@warthog.procyon.org.uk> <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
+In-Reply-To: <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Tue, 31 Mar 2020 07:11:11 +0200
+Message-ID: <CAJfpegtjmkJUSqORFv6jw-sYbqEMh9vJz64+dmzWhATYiBmzVQ@mail.gmail.com>
+Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Steven Whitehouse <swhiteho@redhat.com>,
+        Jeff Layton <jlayton@redhat.com>, Ian Kent <raven@themaw.net>,
         andres@anarazel.de, keyrings@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lennart@poettering.net, cyphar@cyphar.com
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-Message-ID: <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
-References: <1445647.1585576702@warthog.procyon.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1445647.1585576702@warthog.procyon.org.uk>
+        Lennart Poettering <lennart@poettering.net>,
+        Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-[Cc Lennart and Aleksa, both of which maintain projects too that would
-make use of this]
+On Mon, Mar 30, 2020 at 11:17 PM Christian Brauner
+<christian.brauner@ubuntu.com> wrote:
 
-On Mon, Mar 30, 2020 at 02:58:22PM +0100, David Howells wrote:
-> 
-> Hi Linus,
-> 
-> I have three sets of patches I'd like to push your way, if you (and Al) are
-> willing to consider them.
-> 
->  (1) General notification queue plus key/keyring notifications.
-> 
->      This adds the core of the notification queue built on pipes, and adds
->      the ability to watch for changes to keys.
-> 
->  (2) Mount and superblock notifications.
-> 
->      This builds on (1) to provide notifications of mount topology changes
->      and implements a framework for superblock events (configuration
->      changes, I/O errors, quota/space overruns and network status changes).
-> 
->  (3) Filesystem information retrieval.
-> 
->      This provides an extensible way to retrieve informational attributes
->      about mount objects and filesystems.  This includes providing
->      information intended to make recovering from a notification queue
->      overrun much easier.
-> 
-> We need (1) for Gnome to efficiently watch for changes in kerberos
-> keyrings.  Debarshi Ray has patches ready to go for gnome-online-accounts
-> so that it can make use of the facility.
-> 
-> Sets (2) and (3) can make libmount more efficient.  Karel Zak is working on
-> making use of this to avoid reading /proc/mountinfo.
-> 
-> We need something to make systemd's watching of the mount topology more
-> efficient, and (2) and (3) can help with this by making it faster to narrow
-> down what changed.  I think Karel has this in his sights, but hasn't yet
-> managed to work on it.
-> 
-> Set (2) should be able to make it easier to watch for mount options inside
-> a container, and set (3) should make it easier to examine the mounts inside
-> another mount namespace inside a container in a way that can't be done with
-> /proc/mounts.  This is requested by Christian Brauner.
-> 
-> Jeff Layton has a tentative addition to (3) to expose error state to
-> userspace, and Andres Freund would like this for Postgres.
-> 
-> Set (3) further allows the information returned by such as statx() and
-> ioctl(FS_IOC_GETFLAGS) to be qualified by indicating which bits are/aren't
-> supported.
-> 
-> Further, for (3), I also allow filesystem-specific overrides/extensions to
-> fsinfo() and have a use for it to AFS to expose information about server
-> preference for a particular volume (something that is necessary for
-> implementing the toolset).  I've provided example code that does similar
-> for NFS and some that exposes superblock info from Ext4.  At Vault, Steve
-> expressed an interest in this for CIFS and Ted Ts'o expressed a possible
-> interest for Ext4.
-> 
-> Notes:
-> 
->  (*) These patches will conflict with apparently upcoming refactoring of
->      the security core, but the fixup doesn't look too bad:
-> 
-> 	https://lore.kernel.org/linux-next/20200330130636.0846e394@canb.auug.org.au/T/#u
-> 
->  (*) Miklós Szeredi would much prefer to implement fsinfo() as a magic
->      filesystem mounted on /proc/self/fsinfo/ whereby your open fds appear
->      as directories under there, each with a set of attribute files
->      corresponding to the attributes that fsinfo() would otherwise provide.
->      To examine something by filename, you'd have to open it O_PATH and
->      then read the individual attribute files in the corresponding per-fd
->      directory.  A readfile() system call has been mooted to elide the
->      {open,read,close} sequence to make it more efficient.
+> Fwiw, putting down my kernel hat and speaking as someone who maintains
+> two container runtimes and various other low-level bits and pieces in
+> userspace who'd make heavy use of this stuff I would prefer the fd-based
+> fsinfo() approach especially in the light of across namespace
+> operations, querying all properties of a mount atomically all-at-once,
 
-Fwiw, putting down my kernel hat and speaking as someone who maintains
-two container runtimes and various other low-level bits and pieces in
-userspace who'd make heavy use of this stuff I would prefer the fd-based
-fsinfo() approach especially in the light of across namespace
-operations, querying all properties of a mount atomically all-at-once,
-and safe delegation through fds. Another heavy user of this would be
-systemd (Cced Lennart who I've discussed this with) which would prefer
-the fd-based approach as well. I think pulling this into a filesystem
-and making userspace parse around in a filesystem tree to query mount
-information is the wrong approach and will get messy pretty quickly
-especially in the face of mount and user namespace interactions and
-various other pitfalls. fsinfo() fits quite nicely with the all-fd-based
-approach of the whole mount api. So yes, definitely preferred from my
-end.
+fsinfo(2) doesn't meet the atomically all-at-once requirement.  Sure,
+it's possible to check the various change counters before and after a
+batch of calls to check that the result is consistent.  Still, that's
+not an atomic all-at-once query, if you'd really require that, than
+fsinfo(2) as it currently stands would be inadequate.
 
-Christian
+> and safe delegation through fds. Another heavy user of this would be
+> systemd (Cced Lennart who I've discussed this with) which would prefer
+> the fd-based approach as well. I think pulling this into a filesystem
+> and making userspace parse around in a filesystem tree to query mount
+> information is the wrong approach and will get messy pretty quickly
+> especially in the face of mount and user namespace interactions and
+> various other pitfalls.
+
+Have you actually looked at my proposed patch?   Do you have concrete
+issues or just vague bad feelings?
+
+Thanks,
+Miklos
