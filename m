@@ -2,92 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C23C19AEC7
-	for <lists+keyrings@lfdr.de>; Wed,  1 Apr 2020 17:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E191419AF40
+	for <lists+keyrings@lfdr.de>; Wed,  1 Apr 2020 18:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732908AbgDAPeK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Apr 2020 11:34:10 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:37553 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732798AbgDAPeK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Apr 2020 11:34:10 -0400
-Received: by mail-ed1-f68.google.com with SMTP id de14so423497edb.4
-        for <keyrings@vger.kernel.org>; Wed, 01 Apr 2020 08:34:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PknMOjO0aVK6+Mbr46jA4uNoXU0DCDMitbN9TCuKpYU=;
-        b=p5QzZMqB/vMQwg0fm6pTCPUxV1A84gb+EbDz8bFwLIYFbNP9FnvyYhjSFYadmD92gb
-         mRFyGUNcatWLbDeKB3pVtLlqOSoBYBt/rdV98tORxMQw0g+6QIHkhXIzbYrVkopEy81C
-         VW95LobYq1gT/TNOY+qN/8qCYjeVcjpE8eBU8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PknMOjO0aVK6+Mbr46jA4uNoXU0DCDMitbN9TCuKpYU=;
-        b=M3AHh6M9v1K4q2y5IltZo8Es8xhW79j5p1PlZx9Gtf6NLQlm9zq9djLF4FJxngcqQL
-         xGDGZIDLu+2P4khcnL6Kg/4yLK6p0dksaB35gij3SJRFrNBmCjXbU6PcUPPIrx4FxUxG
-         /M9FWI0SEPW6caMrwagZ5Hq9u2F/JSHGdurGQ+1yOEQAdchccBWdbGV87eWU0nhtabaF
-         g7EgcQu+XudTzGTcfLDAdhmuI8XQU3zHsS0pWCyCkhTtyLPsQ1bFKhjDbd/zM9FxjAGi
-         YmYW2/gVTNfqERvr08CQ652fjWwrDHhOU66WDtJqRESuQaWPy0WPU9jPOfsE9h2CyGnt
-         ++eQ==
-X-Gm-Message-State: ANhLgQ39MfW63jsx3lkQ5ytvHG+FdxL67kwmOLvkILf3CwOGtCIohcLa
-        j12iDHNfVvGdq+NNtTTeDZe9K6GmPb/qWpBYPRwzwQ==
-X-Google-Smtp-Source: ADFU+vs4NvhCMrvCrJhNiFJktWHH/mqCFDfkFAflywuZUDLeQconO4+bbarWMrnDJQm+JW/SHBg/UTtmPThSySe23DY=
-X-Received: by 2002:a05:6402:44e:: with SMTP id p14mr21764199edw.356.1585755249047;
- Wed, 01 Apr 2020 08:34:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200330211700.g7evnuvvjenq3fzm@wittgenstein> <1445647.1585576702@warthog.procyon.org.uk>
- <2418286.1585691572@warthog.procyon.org.uk> <20200401144109.GA29945@gardel-login>
-In-Reply-To: <20200401144109.GA29945@gardel-login>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Wed, 1 Apr 2020 17:33:57 +0200
-Message-ID: <CAJfpegs3uDzFTE4PCjZ7aZsEh8b=iy_LqO1DBJoQzkP+i4aBmw@mail.gmail.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-To:     Lennart Poettering <mzxreary@0pointer.de>
-Cc:     David Howells <dhowells@redhat.com>,
+        id S1733008AbgDAQCE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Apr 2020 12:02:04 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:47478 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732861AbgDAQCE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Apr 2020 12:02:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585756923;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3IEKCG99baNCbafEulLN6+2Rt6IoYWudMh1yldt5er4=;
+        b=KZlZh+R/FsRvVyTZHDdTMVFkNdqFVLcS3BhQF0etkASKB0T1UKkTKOeJYeBqGHL3bAPlNS
+        +U4JYC3CfZmLdzyeexb3YZCm+gefCqUjt6KzJLnmDTtpWILYOFTjehHmr4ys3QSdb4pUpH
+        I/beFHLxv+zbmyULCxnu0l6bJaMfHAI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-75-VLCnjMyyPRqhR4Fz7w4wig-1; Wed, 01 Apr 2020 12:02:01 -0400
+X-MC-Unique: VLCnjMyyPRqhR4Fz7w4wig-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C005D100551A;
+        Wed,  1 Apr 2020 16:01:58 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-114-243.ams2.redhat.com [10.36.114.243])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5D0CC5C3F8;
+        Wed,  1 Apr 2020 16:01:55 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CAJfpeguLJcAEgx2JWRNcKMkyFTWB0r4wS6F4fJHK3VHtY=EjXQ@mail.gmail.com>
+References: <CAJfpeguLJcAEgx2JWRNcKMkyFTWB0r4wS6F4fJHK3VHtY=EjXQ@mail.gmail.com> <CAJfpeguu52VuLAzjFH4rJJ7WYLB5ag8y+r3VMb-0bqH8c-uJUg@mail.gmail.com> <20200330211700.g7evnuvvjenq3fzm@wittgenstein> <1445647.1585576702@warthog.procyon.org.uk> <2418286.1585691572@warthog.procyon.org.uk> <20200401090445.6t73dt7gz36bv4rh@ws.net.home> <2488530.1585749351@warthog.procyon.org.uk> <2488734.1585749502@warthog.procyon.org.uk>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     dhowells@redhat.com, Karel Zak <kzak@redhat.com>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>,
         Miklos Szeredi <mszeredi@redhat.com>,
         Steven Whitehouse <swhiteho@redhat.com>,
         Jeff Layton <jlayton@redhat.com>, Ian Kent <raven@themaw.net>,
         andres@anarazel.de, keyrings@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lennart Poettering <lennart@poettering.net>,
         Aleksa Sarai <cyphar@cyphar.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2590275.1585756914.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Wed, 01 Apr 2020 17:01:54 +0100
+Message-ID: <2590276.1585756914@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Apr 1, 2020 at 4:41 PM Lennart Poettering <mzxreary@0pointer.de> wrote:
->
-> On Di, 31.03.20 22:52, David Howells (dhowells@redhat.com) wrote:
->
-> > Christian Brauner <christian.brauner@ubuntu.com> wrote:
-> >
-> > > querying all properties of a mount atomically all-at-once,
-> >
-> > I don't actually offer that, per se.
-> >
-> > Having an atomic all-at-once query for a single mount is actually quite a
-> > burden on the system.  There's potentially a lot of state involved, much of
-> > which you don't necessarily need.
->
-> Hmm, do it like with statx() and specify a mask for the fields userspace
-> wants? Then it would be as lightweight as it possibly could be?
+Miklos Szeredi <miklos@szeredi.hu> wrote:
 
-Yes, however binary structures mixed with variable length fields are
-not going to be pretty.
+> > > But doesn't actually do what Karel asked for.  show_mountinfo() itse=
+lf does
+> > > not give you what Karel asked for.
+> =
 
-Again, if we want something even halfway sane for a syscall interface,
-go with a string key/value vector.
+> Not sure what you mean.  I think it shows precisely the information
+> Karel asked for.
 
-If that's really needed.  I've still not heard a convincing argument
-in favor of a syscall.
+It's not atomic.
 
-Thanks,
-Miklos
+David
+
