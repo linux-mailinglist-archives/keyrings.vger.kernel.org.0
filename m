@@ -2,46 +2,40 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E151E19A169
-	for <lists+keyrings@lfdr.de>; Tue, 31 Mar 2020 23:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79C0819A79E
+	for <lists+keyrings@lfdr.de>; Wed,  1 Apr 2020 10:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731436AbgCaV4g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 31 Mar 2020 17:56:36 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:34291 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731250AbgCaV4g (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Mar 2020 17:56:36 -0400
+        id S1731544AbgDAIn6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Apr 2020 04:43:58 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21657 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1731537AbgDAIn6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Apr 2020 04:43:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585691795;
+        s=mimecast20190719; t=1585730637;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=JBMA6jXiru2mPeg8fq1WPRUiBwr+Arv7dJnUuWmimoc=;
-        b=ASixq9DcpgDyi27m7UF9PS/TIbW+o/KwvtO/6S0Ub6UnPXw5CRMDO4iPoSokPDKrvk+AVV
-        qlJ8JSNWriDr7uDpLi0XqD8R810600VLQzqjjEbEX5JT4fKuB0Ffc8XQdNq34zWLGDTjs2
-        bb45hJn2JhQXChgsWN6DjC+Zg3Wny8I=
+        bh=ghf5BEjuQ0VVHQ+GDvKrov7j0WF8psl/+NBJNRKsHsA=;
+        b=V1Qe5HQtjm2dq4zWCUTLur75dkJKgPKJj7hSi/Dza5pcA56TEcss2vDrM/hp4pA9ajtV31
+        94/xtex4jqPFHEwooiR5o8BObk/5jKljfEmxqrCo8eu1mRfdgnTRXQ9zZjDY81OcVEgBkr
+        EOMk8odtPs3HiSaxD1Z0FPk+LeEb9f8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-162-MUdl86boN4K15gh8KATflA-1; Tue, 31 Mar 2020 17:56:32 -0400
-X-MC-Unique: MUdl86boN4K15gh8KATflA-1
+ us-mta-313-1z9lJwfaMpqepY7Q8IadMQ-1; Wed, 01 Apr 2020 04:43:55 -0400
+X-MC-Unique: 1z9lJwfaMpqepY7Q8IadMQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4F7A78017CE;
-        Tue, 31 Mar 2020 21:56:30 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-114-243.ams2.redhat.com [10.36.114.243])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 21B941A269;
-        Tue, 31 Mar 2020 21:56:26 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200331122554.GA27469@gardel-login>
-References: <20200331122554.GA27469@gardel-login> <1445647.1585576702@warthog.procyon.org.uk> <20200330211700.g7evnuvvjenq3fzm@wittgenstein> <CAJfpegtjmkJUSqORFv6jw-sYbqEMh9vJz64+dmzWhATYiBmzVQ@mail.gmail.com> <20200331083430.kserp35qabnxvths@ws.net.home> <CAJfpegsNpabFwoLL8HffNbi_4DuGMn4eYpFc6n7223UFnEPAbA@mail.gmail.com>
-To:     Lennart Poettering <mzxreary@0pointer.de>
-Cc:     dhowells@redhat.com, Miklos Szeredi <miklos@szeredi.hu>,
-        Karel Zak <kzak@redhat.com>,
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 86CCF800D53;
+        Wed,  1 Apr 2020 08:43:53 +0000 (UTC)
+Received: from ws.net.home (unknown [10.40.194.51])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 989B819C6A;
+        Wed,  1 Apr 2020 08:43:49 +0000 (UTC)
+Date:   Wed, 1 Apr 2020 10:43:46 +0200
+From:   Karel Zak <kzak@redhat.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
@@ -50,29 +44,43 @@ Cc:     dhowells@redhat.com, Miklos Szeredi <miklos@szeredi.hu>,
         Jeff Layton <jlayton@redhat.com>, Ian Kent <raven@themaw.net>,
         andres@anarazel.de, keyrings@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lennart Poettering <lennart@poettering.net>,
         Aleksa Sarai <cyphar@cyphar.com>
 Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
+Message-ID: <20200401084346.kety7m2dwo7okeuk@ws.net.home>
+References: <20200331083430.kserp35qabnxvths@ws.net.home>
+ <1445647.1585576702@warthog.procyon.org.uk>
+ <20200330211700.g7evnuvvjenq3fzm@wittgenstein>
+ <CAJfpegtjmkJUSqORFv6jw-sYbqEMh9vJz64+dmzWhATYiBmzVQ@mail.gmail.com>
+ <2418416.1585691663@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2418580.1585691786.1@warthog.procyon.org.uk>
-Date:   Tue, 31 Mar 2020 22:56:26 +0100
-Message-ID: <2418581.1585691786@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2418416.1585691663@warthog.procyon.org.uk>
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Lennart Poettering <mzxreary@0pointer.de> wrote:
+On Tue, Mar 31, 2020 at 10:54:23PM +0100, David Howells wrote:
+> Karel Zak <kzak@redhat.com> wrote:
+> 
+> > - improve fsinfo() to provide set (list) of the attributes by one call
+> 
+> That would be my preferred way.  I wouldn't want to let the user pin copies of
+> state, and I wouldn't want to make open(O_PATH) do it automatically.
 
-> - We also have code that needs to check if /dev/ is plain tmpfs or
->   devtmpfs. We cannot use statfs for that, since in both cases
->   TMPFS_MAGIC is reported, hence we currently parse
->   /proc/self/mountinfo for that to find the fstype string there, which
->   is different for both cases.
+You can create cow object on first fsinfo() call, ideally add some
+flags to control this behavior -- but you're right, this way is
+complicated to implement and possibly dangerous.
 
-btw, fsinfo(FSINFO_ATTR_IDS) gets you the name of the filesystem type in
-addition to the magic number.
+I guess return some vector of attributes in one fsinfo() will be good
+enough.
 
-David
+    Karel
+
+-- 
+ Karel Zak  <kzak@redhat.com>
+ http://karelzak.blogspot.com
 
