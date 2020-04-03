@@ -2,24 +2,21 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFDB719DA57
-	for <lists+keyrings@lfdr.de>; Fri,  3 Apr 2020 17:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7217019DF60
+	for <lists+keyrings@lfdr.de>; Fri,  3 Apr 2020 22:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403971AbgDCPlm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 3 Apr 2020 11:41:42 -0400
-Received: from gardel.0pointer.net ([85.214.157.71]:52094 "EHLO
-        gardel.0pointer.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727927AbgDCPlm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 3 Apr 2020 11:41:42 -0400
-Received: from gardel-login.0pointer.net (gardel.0pointer.net [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
-        by gardel.0pointer.net (Postfix) with ESMTP id E771BE807B5;
-        Fri,  3 Apr 2020 17:41:39 +0200 (CEST)
-Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-        id 7B7C41614E3; Fri,  3 Apr 2020 17:41:39 +0200 (CEST)
-Date:   Fri, 3 Apr 2020 17:41:39 +0200
-From:   Lennart Poettering <mzxreary@0pointer.de>
-To:     David Howells <dhowells@redhat.com>
+        id S1727809AbgDCUaY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 3 Apr 2020 16:30:24 -0400
+Received: from fieldses.org ([173.255.197.46]:46832 "EHLO fieldses.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726368AbgDCUaY (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 3 Apr 2020 16:30:24 -0400
+Received: by fieldses.org (Postfix, from userid 2815)
+        id 25E693B9; Fri,  3 Apr 2020 16:30:24 -0400 (EDT)
+Date:   Fri, 3 Apr 2020 16:30:24 -0400
+To:     Lennart Poettering <mzxreary@0pointer.de>
 Cc:     Miklos Szeredi <miklos@szeredi.hu>, Ian Kent <raven@themaw.net>,
+        David Howells <dhowells@redhat.com>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
@@ -30,7 +27,7 @@ Cc:     Miklos Szeredi <miklos@szeredi.hu>, Ian Kent <raven@themaw.net>,
         keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
 Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-Message-ID: <20200403154139.GA34867@gardel-login>
+Message-ID: <20200403203024.GB27105@fieldses.org>
 References: <20200401144109.GA29945@gardel-login>
  <CAJfpegs3uDzFTE4PCjZ7aZsEh8b=iy_LqO1DBJoQzkP+i4aBmw@mail.gmail.com>
  <2590640.1585757211@warthog.procyon.org.uk>
@@ -40,31 +37,37 @@ References: <20200401144109.GA29945@gardel-login>
  <27994c53034c8f769ea063a54169317c3ee62c04.camel@themaw.net>
  <20200403111144.GB34663@gardel-login>
  <CAJfpeguQAw+Mgc8QBNd+h3KV8=Y-SOGT7TB_N_54wa8MCoOSzg@mail.gmail.com>
- <3248809.1585928191@warthog.procyon.org.uk>
+ <20200403151223.GB34800@gardel-login>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3248809.1585928191@warthog.procyon.org.uk>
+In-Reply-To: <20200403151223.GB34800@gardel-login>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+From:   bfields@fieldses.org (J. Bruce Fields)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fr, 03.04.20 16:36, David Howells (dhowells@redhat.com) wrote:
+On Fri, Apr 03, 2020 at 05:12:23PM +0200, Lennart Poettering wrote:
+> BTW, while we are at it: one more thing I'd love to see exposed by
+> statx() is a simple flag whether the inode is a mount point. There's
+> plenty code that implements a test like this all over the place, and
+> it usually isn't very safe. There's one implementation in util-linux
+> for example (in the /usr/bin/mountpoint binary), and another one in
+> systemd. Would be awesome to just have a statx() return flag for that,
+> that would make things *so* much easier and more robust. because in
+> fact most code isn't very good that implements this, as much of it
+> just compares st_dev of the specified file and its parent. Better code
+> compares the mount ID, but as mentioned that's not as pretty as it
+> could be so far...
 
-> Lennart Poettering <mzxreary@0pointer.de> wrote:
->
-> > BTW, while we are at it: one more thing I'd love to see exposed by
-> > statx() is a simple flag whether the inode is a mount point.
->
-> Note that an inode or a dentry might be a mount point in one namespace, but
-> not in another.  Do you actually mean an inode - or do you actually mean the
-> (mount,dentry) pair that you're looking at?  (Ie. should it be namespace
-> specific?)
+nfs-utils/support/misc/mountpoint.c:check_is_mountpoint() stats the file
+and ".." and returns true if they have different st_dev or the same
+st_ino.  Comparing mount ids sounds better.
 
-yes, it should be specific to the mount hierarchy in the current namespace.
+So anyway, yes, everybody reinvents the wheel here, and this would be
+useful.  (And, yes, we want to know for the vfsmount, we don't care
+whether the same inode is used as a mountpoint someplace else.)
 
-Lennart
-
---
-Lennart Poettering, Berlin
+--b.
