@@ -2,55 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7958119E778
-	for <lists+keyrings@lfdr.de>; Sat,  4 Apr 2020 22:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F9E19E7B0
+	for <lists+keyrings@lfdr.de>; Sat,  4 Apr 2020 23:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726294AbgDDUFV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 4 Apr 2020 16:05:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51366 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726302AbgDDUFU (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 4 Apr 2020 16:05:20 -0400
-Subject: Re: [GIT PULL] keys: Fix key->sem vs mmap_sem issue when reading key
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586030720;
-        bh=0D6rNwDCyX/8UGV2BnkG3oNh97ge3r3+D/9F0mEmuaI=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=XSZcrygNc7toYpUESW2Ti/40QiqL7LFjijZt0RKbkYQxQwNri7tk+81sdgAJYK0JC
-         6kN7cyzWNfD159AjT8M8gDWCYdDRvMiQnelBCI6XqFS8mM/+Bql6yV1gSnMDY0Tyqm
-         k2zNUMLplJ0I+dvMiqldwylxq4uoGf60W2BRJa5s=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <1437197.1585570598@warthog.procyon.org.uk>
-References: <1437197.1585570598@warthog.procyon.org.uk>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <1437197.1585570598@warthog.procyon.org.uk>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git
- tags/keys-fixes-20200329
-X-PR-Tracked-Commit-Id: 4f0882491a148059a52480e753b7f07fc550e188
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4c205c84e249e0a91dcfabe461d77667ec9b2d05
-Message-Id: <158603072028.17464.2702740836511365562.pr-tracker-bot@kernel.org>
-Date:   Sat, 04 Apr 2020 20:05:20 +0000
+        id S1726396AbgDDVN0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 4 Apr 2020 17:13:26 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:41190 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726328AbgDDVN0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 4 Apr 2020 17:13:26 -0400
+Received: by mail-lf1-f66.google.com with SMTP id z23so8679783lfh.8
+        for <keyrings@vger.kernel.org>; Sat, 04 Apr 2020 14:13:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=whlD+FJJxUSsYgQJmOoyKhMr6jBMYuvqobVL83EC0Y8=;
+        b=WRre38NwVB2LmEnC98i41YGU/UMX2qymyekgtMqnchU1KqX89ceYbyw3xRKr1XhGy4
+         6HgJuVbiSVOqVXwon/QrA0T4sEgUgGPNmPqffIx0/mv+mHKaU0PjbaaEewmpvuro9DfU
+         JDnC7tAkfLyumK5mtIm39aTZYSgWEHmXopyGE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=whlD+FJJxUSsYgQJmOoyKhMr6jBMYuvqobVL83EC0Y8=;
+        b=mbqzszU1Dx+AuswoemfwZ5I7eYP3y9/RSUa4b3A+6mO+m6LHNsENOffD60OOqRGBoL
+         hlKK1qXgjFQxHp2bRyIuZVSZ6WH6iwJx/56TQ7Hf0w+HS+CmZGAGTQ3L1nVd+35E0rG2
+         0VCYK+i7OHArD1fvaO+nMPrua9ynSitJOa7LjrFLxngoDgE5o0U9BHWs4GEWtSaj462t
+         dh63qfNn2kaSnIkkZbcuNtUYK/JXZPZs+8yHSjTlPGFn3r/fdHwkFDab96Sa7tQvFr3X
+         A9a+QlQebpcBrTf04XhVbcoPWwSe1wBsZJyLADEQ7gs5bAMC9fucyI4+k4FZZJk705Oy
+         /B/w==
+X-Gm-Message-State: AGi0Pua4mJ14zshL9zhLm6Cxv9OqeXnpHOnIGgmrEXpcjgAuNtyNNeG6
+        nJniTAI5bUkuIcZHhYoHzkqdFPP/A3c=
+X-Google-Smtp-Source: APiQypLivZknj2a3FP4gA6W6ql9FYbGB6b3WAnsErB3JQHmL5OlQq+l02A6bJ5wbROas7/C3Ao8MCw==
+X-Received: by 2002:a05:6512:21b:: with SMTP id a27mr9129297lfo.55.1586034801688;
+        Sat, 04 Apr 2020 14:13:21 -0700 (PDT)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
+        by smtp.gmail.com with ESMTPSA id n22sm8075796lfe.8.2020.04.04.14.13.20
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 Apr 2020 14:13:20 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id q19so10538505ljp.9
+        for <keyrings@vger.kernel.org>; Sat, 04 Apr 2020 14:13:20 -0700 (PDT)
+X-Received: by 2002:a2e:9b8e:: with SMTP id z14mr8233548lji.150.1586034799883;
+ Sat, 04 Apr 2020 14:13:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <1445647.1585576702@warthog.procyon.org.uk> <1449543.1585579014@warthog.procyon.org.uk>
+In-Reply-To: <1449543.1585579014@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 4 Apr 2020 14:13:03 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wghjTM+z_oAATqWOvPa8Lh6BKRtTVMi7hLxo6pbqc+kVg@mail.gmail.com>
+Message-ID: <CAHk-=wghjTM+z_oAATqWOvPa8Lh6BKRtTVMi7hLxo6pbqc+kVg@mail.gmail.com>
+Subject: Re: [GIT PULL] Mount and superblock notifications
 To:     David Howells <dhowells@redhat.com>
-Cc:     torvalds@linux-foundation.org, dhowells@redhat.com,
-        jarkko.sakkinen@linux.intel.com, longman@redhat.com,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Steven Whitehouse <swhiteho@redhat.com>, jlayton@redhat.com,
+        Ian Kent <raven@themaw.net>, andres@anarazel.de,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        keyrings@vger.kernel.org,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The pull request you sent on Mon, 30 Mar 2020 13:16:38 +0100:
+On Mon, Mar 30, 2020 at 7:37 AM David Howells <dhowells@redhat.com> wrote:
+>
+> If you could consider pulling this - or would you prefer it to go through
+> Al?  It adds a couple of VFS-related event sources for the general
+> notification mechanism:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/keys-fixes-20200329
+<y issue with these remains the same it was last time, so I'll just
+quote what I said back then:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4c205c84e249e0a91dcfabe461d77667ec9b2d05
+ "So I no longer hate the implementation, but I do want to see the
+  actual user space users come out of the woodwork and try this out for
+  their use cases.
 
-Thank you!
+  I'd hate to see a new event queue interface that people then can't
+  really use due to it not fulfilling their needs, or can't use for some
+  other reason."
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+I want to see somebody step up enough to say "yes, I actually use
+this, and have the patches for the user space side, and it helps my
+load by 3000%, and here are the numbers, and the event overflow case
+isn't an issue because Y"
+
+Or whatever. It doesn't have to be performance, but the separate
+discussion I've seen has been about that being the reason for it.
+
+I just don't want it to be a _hypothetical_ reason. I want it to be a
+tested reason where people said "yeah, this is easy to use and
+actually fixes the problems".
+
+Because if what happens is that when the events overflow, and maybe
+people fall back on the old model (or whatever) then that probably
+just means that you do better up until a point where you start doing
+_worse_ than we used to.
+
+Or people find out that they needed more information anyway, and the
+event model doesn't work when you restart your special server because
+you've lost the original state. Or any other number of "cool feature,
+but I can't really use it".
+
+IOW, I really want to know that yes, the design is what people will
+then use and it actually fixes real-world issues.
+
+And it needs to be interesting and pressing enough that those people
+actually at least do a working prototype on top of a patch-set that
+hasn't made it into the kernel yet.
+
+Now, I realize that other projects won't _upstream_ their support
+before the kernel has the infrastructure, so I'm not looking for
+_that_ kind of "yeah, look, project XYZ already does this and Red Hat
+ships it". No, I'm looking for those outside developers who say more
+than "this is a pet peeve of mine with the existing interface". I want
+to see some actual use - even if it's just in a development
+environment - that shows that it's (a) sufficient and (b) actually
+fixes problems.
+
+             Linus
