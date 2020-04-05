@@ -2,80 +2,87 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B7619EA1A
-	for <lists+keyrings@lfdr.de>; Sun,  5 Apr 2020 11:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 484A519ECEA
+	for <lists+keyrings@lfdr.de>; Sun,  5 Apr 2020 19:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbgDEJEB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 5 Apr 2020 05:04:01 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:49204 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726308AbgDEJEB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Apr 2020 05:04:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586077441;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=GRL0Uyd6AdEG1TYouQC+LIcNPbvfldHHxdImooUbNU8=;
-        b=Idozx0XkmHmsiS8R6NzhpcwYl5Ig9to51O7pYo3nw4GWydWDDSwvYSTfE6zpbAsOTXTmAM
-        p+G7KVMNmmhy7wX811YTACKLv5YM8xjiJzmqJPKclHfiZGq/dz+WhjXaQQbPtE4lvGOkWl
-        aKIU8qAfK6t/IufP88ur/a9KRakCG1E=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-455-mpbKV-gPP1i9TVJFj_N8oA-1; Sun, 05 Apr 2020 05:03:57 -0400
-X-MC-Unique: mpbKV-gPP1i9TVJFj_N8oA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9BEE2477;
-        Sun,  5 Apr 2020 09:03:55 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-114-243.ams2.redhat.com [10.36.114.243])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AD19B118F39;
-        Sun,  5 Apr 2020 09:03:51 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <78ff6e5d-9643-8798-09cb-65b1415140be@redhat.com>
-References: <78ff6e5d-9643-8798-09cb-65b1415140be@redhat.com> <1437197.1585570598@warthog.procyon.org.uk> <CAHk-=wgWnZCvTFDfiYAy=uMUf2F1Yy1r9ur5ARcmtqLjX8Tz4Q@mail.gmail.com>
-To:     Waiman Long <longman@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     dhowells@redhat.com, Johannes Weiner <hannes@cmpxchg.org>,
+        id S1727549AbgDERcD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 5 Apr 2020 13:32:03 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:33024 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727075AbgDERcD (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Apr 2020 13:32:03 -0400
+Received: by mail-lf1-f65.google.com with SMTP id h6so5370688lfc.0
+        for <keyrings@vger.kernel.org>; Sun, 05 Apr 2020 10:32:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zcbh6sH9SJBGE+Cjk3XFguwEqI2IKXqqQBtRFq6gvFQ=;
+        b=R07dbyu7Y0eMKVM4FedC3n/xof3lreuns2KIRBmYuFzNApajuKhjO7x1wg1aWKkMhh
+         dwTz+7LXu6F7lM4s5hAWcEoHMHg14h+cQpmTR9fdFNXDCp6e2xdLcSoC3KXYyqK/QeGu
+         RsK9JhsA+jl8afkEI+uxGrG60T2A4hCuJEIG8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zcbh6sH9SJBGE+Cjk3XFguwEqI2IKXqqQBtRFq6gvFQ=;
+        b=nBT5dH47QhQf6sUQKlTVaTOfY2PuLVjeWDVjC5wDO0E9ywRse3SCEQRXDpgmgSF3sS
+         N7xhTOPnr9KSC57YPK0BTWRkpFCC+FnRNEGQukJh01mmGwpM+3l8h5z07vPVC2b12ij9
+         +aIE2jitMsO1RwJnKfrYeyR/v+PH1RYLWYoq6rOtyzw2HQK0E13UxoZRAfsiQcY6lW2m
+         dwPndOIQOiR6YFaDXowVVoijtkgdNwpuYZCwAVHqFxyBZ7Go5zUPDQZiJYEeDZ5iDP1V
+         Q1ZskAwElYO46hg8cqJ6fwhKpWU8dKCJnJSq6eJm0z9YpderaMW3//Ik7HERRkHmOand
+         vHBQ==
+X-Gm-Message-State: AGi0PuZfo+eaU7t8FlhDpIY1U5tj93UuPnqTcgVP8qI3VbheNBnrL0KS
+        KAq8ylfQQH13Y7cN1d5vRkQrGyEMNt0=
+X-Google-Smtp-Source: APiQypIGpnARwABJyfE93t6zQ19sQeStMHi47vlMwmEDouxaV8EsQMi25P+Y2eiGRNTzrhFHZCdhSA==
+X-Received: by 2002:ac2:4199:: with SMTP id z25mr10954912lfh.90.1586107919625;
+        Sun, 05 Apr 2020 10:31:59 -0700 (PDT)
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
+        by smtp.gmail.com with ESMTPSA id b16sm8645691ljh.20.2020.04.05.10.31.57
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Apr 2020 10:31:58 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id l11so2445653lfc.5
+        for <keyrings@vger.kernel.org>; Sun, 05 Apr 2020 10:31:57 -0700 (PDT)
+X-Received: by 2002:a05:6512:14a:: with SMTP id m10mr6564163lfo.152.1586107917356;
+ Sun, 05 Apr 2020 10:31:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <1437197.1585570598@warthog.procyon.org.uk> <CAHk-=wgWnZCvTFDfiYAy=uMUf2F1Yy1r9ur5ARcmtqLjX8Tz4Q@mail.gmail.com>
+ <78ff6e5d-9643-8798-09cb-65b1415140be@redhat.com> <3567369.1586077430@warthog.procyon.org.uk>
+In-Reply-To: <3567369.1586077430@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 5 Apr 2020 10:31:41 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg-6906+D68VHWv_SCvWUSG8R9w=js7kExmTum90Evu4g@mail.gmail.com>
+Message-ID: <CAHk-=wg-6906+D68VHWv_SCvWUSG8R9w=js7kExmTum90Evu4g@mail.gmail.com>
+Subject: Re: [GIT PULL] keys: Fix key->sem vs mmap_sem issue when reading key
+To:     David Howells <dhowells@redhat.com>
+Cc:     Waiman Long <longman@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         keyrings@vger.kernel.org,
         LSM List <linux-security-module@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [GIT PULL] keys: Fix key->sem vs mmap_sem issue when reading key
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3567368.1586077430.1@warthog.procyon.org.uk>
-Date:   Sun, 05 Apr 2020 10:03:50 +0100
-Message-ID: <3567369.1586077430@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Waiman Long <longman@redhat.com> wrote:
+On Sun, Apr 5, 2020 at 2:04 AM David Howells <dhowells@redhat.com> wrote:
+>
+> Should this be moved into core code, rather than being squirrelled away in
+> security/keys/?
 
-> > And yes, kzfree() isn't a good name either, and had that same
-> > memset(), but at least it doesn't do the dual-underscore mistake.
-> >
-> > Including some kzfree()/crypto people explicitly - I hope we can get
-> > away from this incorrect and actively wrong pattern of thinking that
-> > "sensitive data should be memset(), and then we should add a random
-> > 'z' in the name somewhere to 'document' that".
-> >
-> >                Linus
-> >
-> Thanks for the suggestion, I will post a patch to rename the function to
-> kvzfree_explicit() and use memzero_explicit() for clearing memory.
+Yes. I do think that that __kvzfree() function makes sense in general
+(the same way that kzfree does).
 
-Should this be moved into core code, rather than being squirrelled away in
-security/keys/?
+I just happen to despise the name, and think that the implementation
+isn't great.
 
-David
+It also probably makes no sense to make it an inline function. It's
+not like that function is done for performance reasons, and it might
+only get worse if we then end up making it cause barriers or something
+for CPU data leakage issues or whatever.
 
+           Linus
