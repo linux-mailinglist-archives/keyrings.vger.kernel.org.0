@@ -2,87 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 484A519ECEA
-	for <lists+keyrings@lfdr.de>; Sun,  5 Apr 2020 19:32:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1352119EE71
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 00:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727549AbgDERcD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 5 Apr 2020 13:32:03 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:33024 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727075AbgDERcD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Apr 2020 13:32:03 -0400
-Received: by mail-lf1-f65.google.com with SMTP id h6so5370688lfc.0
-        for <keyrings@vger.kernel.org>; Sun, 05 Apr 2020 10:32:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zcbh6sH9SJBGE+Cjk3XFguwEqI2IKXqqQBtRFq6gvFQ=;
-        b=R07dbyu7Y0eMKVM4FedC3n/xof3lreuns2KIRBmYuFzNApajuKhjO7x1wg1aWKkMhh
-         dwTz+7LXu6F7lM4s5hAWcEoHMHg14h+cQpmTR9fdFNXDCp6e2xdLcSoC3KXYyqK/QeGu
-         RsK9JhsA+jl8afkEI+uxGrG60T2A4hCuJEIG8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zcbh6sH9SJBGE+Cjk3XFguwEqI2IKXqqQBtRFq6gvFQ=;
-        b=nBT5dH47QhQf6sUQKlTVaTOfY2PuLVjeWDVjC5wDO0E9ywRse3SCEQRXDpgmgSF3sS
-         N7xhTOPnr9KSC57YPK0BTWRkpFCC+FnRNEGQukJh01mmGwpM+3l8h5z07vPVC2b12ij9
-         +aIE2jitMsO1RwJnKfrYeyR/v+PH1RYLWYoq6rOtyzw2HQK0E13UxoZRAfsiQcY6lW2m
-         dwPndOIQOiR6YFaDXowVVoijtkgdNwpuYZCwAVHqFxyBZ7Go5zUPDQZiJYEeDZ5iDP1V
-         Q1ZskAwElYO46hg8cqJ6fwhKpWU8dKCJnJSq6eJm0z9YpderaMW3//Ik7HERRkHmOand
-         vHBQ==
-X-Gm-Message-State: AGi0PuZfo+eaU7t8FlhDpIY1U5tj93UuPnqTcgVP8qI3VbheNBnrL0KS
-        KAq8ylfQQH13Y7cN1d5vRkQrGyEMNt0=
-X-Google-Smtp-Source: APiQypIGpnARwABJyfE93t6zQ19sQeStMHi47vlMwmEDouxaV8EsQMi25P+Y2eiGRNTzrhFHZCdhSA==
-X-Received: by 2002:ac2:4199:: with SMTP id z25mr10954912lfh.90.1586107919625;
-        Sun, 05 Apr 2020 10:31:59 -0700 (PDT)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
-        by smtp.gmail.com with ESMTPSA id b16sm8645691ljh.20.2020.04.05.10.31.57
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 Apr 2020 10:31:58 -0700 (PDT)
-Received: by mail-lf1-f47.google.com with SMTP id l11so2445653lfc.5
-        for <keyrings@vger.kernel.org>; Sun, 05 Apr 2020 10:31:57 -0700 (PDT)
-X-Received: by 2002:a05:6512:14a:: with SMTP id m10mr6564163lfo.152.1586107917356;
- Sun, 05 Apr 2020 10:31:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <1437197.1585570598@warthog.procyon.org.uk> <CAHk-=wgWnZCvTFDfiYAy=uMUf2F1Yy1r9ur5ARcmtqLjX8Tz4Q@mail.gmail.com>
- <78ff6e5d-9643-8798-09cb-65b1415140be@redhat.com> <3567369.1586077430@warthog.procyon.org.uk>
-In-Reply-To: <3567369.1586077430@warthog.procyon.org.uk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 5 Apr 2020 10:31:41 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg-6906+D68VHWv_SCvWUSG8R9w=js7kExmTum90Evu4g@mail.gmail.com>
-Message-ID: <CAHk-=wg-6906+D68VHWv_SCvWUSG8R9w=js7kExmTum90Evu4g@mail.gmail.com>
-Subject: Re: [GIT PULL] keys: Fix key->sem vs mmap_sem issue when reading key
-To:     David Howells <dhowells@redhat.com>
-Cc:     Waiman Long <longman@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        id S1727856AbgDEWwn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 5 Apr 2020 18:52:43 -0400
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:51617 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727254AbgDEWwn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Apr 2020 18:52:43 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 66A9858013A;
+        Sun,  5 Apr 2020 18:52:42 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Sun, 05 Apr 2020 18:52:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=euu86y6yACvCvstNFbv3DwBO9Kn
+        QxP4jRh+eEX/Uz4E=; b=aWfcGa/g12RY6GgtiE4vbPeqndfFU5TauoaxI2sn/mk
+        nSPdTiGGwqKZY5eH6mP0/5QnVVwdwJT91KjE8Yo0IiXVZKPvzwSvvxuRSLq8YaZs
+        XcE9L7BSvZor3cZY1JEYNmy1I71P4ghowrUcuvJxMq4Dckhj6uHkRdSg0ZzkOJaf
+        uM3YLFa4ZTDNyulM+BbWAOfTTUdN1oEbMeIwNHWmh0/7y4NPGesKQ7jutWt6POiX
+        KU2Vwd6J6CVwXy1/IfGGRE6GcyWCGat9lp3810xCGBpRsj/I+DZjq3LBUR/P9gEl
+        ufil6hnKfzU7gGfgjAHSzVqpFF6ylNsQusqXGRYBZFA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=euu86y
+        6yACvCvstNFbv3DwBO9KnQxP4jRh+eEX/Uz4E=; b=DLHnqaRdNucpqbnHm1V02h
+        VvZajeUd3i21cHyA+Db+q5To2ahUXvySaDB14pwmjC6n6SN4J/h7uM4qhTVWnnt+
+        TtkUaFOVP+/9qPPXFNMdcqZPuFodmM5mcyR0VB+e8kDVPUndmWBDUMzF5b19gMCF
+        YH4g3VBkFQphkpZvAKDDU650xCEbTJvpfEo7bDmmWAlMrGmy0BWY7YIbwXkZEZQ7
+        4y6kOk5oOpIs0LIEl2fX5apAjMQ2zEyykKmzB6D1nzTlE8kcrOQP2t5TvITsITW5
+        pGypOMF+cd9fetOY1v1UJmVJsvIBraTSlnh+QkJOjeWOrp7y1AhV6AaSaHSpQMNg
+        ==
+X-ME-Sender: <xms:OWGKXscNy94fqLNfWljzjQBDrzE3de91hpXWMBfKHE9IKLKgSmTjMg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddvgdduhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughrvghs
+    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuffhomhgrih
+    hnpehkvghrnhgvlhdrohhrghenucfkphepieejrdduiedtrddvudejrddvhedtnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvghsse
+    grnhgrrhgriigvlhdruggv
+X-ME-Proxy: <xmx:OWGKXl0DJATAJ95cUjLQbU_AVVMoaVKmZiXQ3lU2eZO6CQ95Bbkf0A>
+    <xmx:OWGKXrL3f2zc6VTEg0VEj-eDytojIlGjhEE7Ed4R3PEewixZbD-gcQ>
+    <xmx:OWGKXsEgq3L8WFv-h4XFjLOIspUCCLrYabvQios6LeAO3G9JuyS6MQ>
+    <xmx:OmGKXtXN5JMmzMArvzsaUG8YESD0g0rqcAiIMBw1bNixBFfbhSSLXg>
+Received: from intern.anarazel.de (c-67-160-217-250.hsd1.ca.comcast.net [67.160.217.250])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 5A2FC328005A;
+        Sun,  5 Apr 2020 18:52:41 -0400 (EDT)
+Date:   Sun, 5 Apr 2020 15:52:40 -0700
+From:   Andres Freund <andres@anarazel.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Steven Whitehouse <swhiteho@redhat.com>, jlayton@redhat.com,
+        Ian Kent <raven@themaw.net>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
         keyrings@vger.kernel.org,
-        LSM List <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [GIT PULL] Mount and superblock notifications
+Message-ID: <20200405225240.kofadjkmpigfzcfy@alap3.anarazel.de>
+References: <1445647.1585576702@warthog.procyon.org.uk>
+ <1449543.1585579014@warthog.procyon.org.uk>
+ <CAHk-=wghjTM+z_oAATqWOvPa8Lh6BKRtTVMi7hLxo6pbqc+kVg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wghjTM+z_oAATqWOvPa8Lh6BKRtTVMi7hLxo6pbqc+kVg@mail.gmail.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Apr 5, 2020 at 2:04 AM David Howells <dhowells@redhat.com> wrote:
->
-> Should this be moved into core code, rather than being squirrelled away in
-> security/keys/?
+Hi,
 
-Yes. I do think that that __kvzfree() function makes sense in general
-(the same way that kzfree does).
+On 2020-04-04 14:13:03 -0700, Linus Torvalds wrote:
+> And it needs to be interesting and pressing enough that those people
+> actually at least do a working prototype on top of a patch-set that
+> hasn't made it into the kernel yet.
+> 
+> Now, I realize that other projects won't _upstream_ their support
+> before the kernel has the infrastructure, so I'm not looking for
+> _that_ kind of "yeah, look, project XYZ already does this and Red Hat
+> ships it". No, I'm looking for those outside developers who say more
+> than "this is a pet peeve of mine with the existing interface". I want
+> to see some actual use - even if it's just in a development
+> environment - that shows that it's (a) sufficient and (b) actually
+> fixes problems.
 
-I just happen to despise the name, and think that the implementation
-isn't great.
+FWIW, postgres remains interested in using the per-superblock events.
 
-It also probably makes no sense to make it an inline function. It's
-not like that function is done for performance reasons, and it might
-only get worse if we then end up making it cause barriers or something
-for CPU data leakage issues or whatever.
+On 2020-03-30 15:36:54 +0100, David Howells wrote:
+>  (2) Superblock notifications.
+> 
+>      This one is provided to allow systemd or the desktop to more easily
+>      detect events such as I/O errors and EDQUOT/ENOSPC.  This would be of
+>      interest to Postgres:
+> 
+> 	https://lore.kernel.org/linux-fsdevel/20200211005626.7yqjf5rbs3vbwagd@alap3.anarazel.de/
+> 
+>      But could also be used to indicate to systemd when a superblock has
+>      had its configuration changed.
 
-           Linus
+What prevents me from coming up with a prototype is that the error
+handling pieces aren't complete, as far as I can tell:
+
+On 2020-03-30 15:36:54 +0100, David Howells wrote:
+>  (2) Superblock events, such as R/W<->R/O changes, quota overrun and I/O
+>      errors (not complete yet).
+
+There's afaict no notify_sb_error() callers, making it hard for me to
+actually test anything.
+
+The important issue for us is I/O errors, but EDQUOT/ENOSPC could also
+be useful (but is not urgent).
+
+Greetings,
+
+Andres Freund
