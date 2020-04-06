@@ -2,70 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70B4B19FE95
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 22:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBAD91A0188
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 01:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725928AbgDFUAX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 16:00:23 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:44326 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725895AbgDFUAX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 16:00:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=kqzeiCoDoOQ3qJWZZp8tCPOkIcKx/AKK5dlo5OJFP3g=; b=nPqNqzLGmw3vq6hNA7s5ptUQr3
-        uWDbaBu34UYbHaVwjlyp6TjveDEcBGTJ6jCF8Vc4JBtQJhdLPqa70GxSQFYeRgktCVTUcitQp1zmd
-        BaXdpg300jsfEkWPpQyA62uY2fVEttWsDdZWLMFH40+PEPNsrZTqiqx4PxJ+Dzdy3VXX81MoTmC7f
-        S9SUYQJsDdZx5mOAUU97DMKDEOZIuO0COqNxU9sv3j6iosr3mbizsk2MJ/q6Ovta8fb1LiomLnzro
-        S6DP+2ApMWRMuwmVZJiZLpMGFrWzVcndIMXNqtiKijryle8Daut1hUUw7yIVCtAX5oFQWeS2+QMcO
-        MeG8g8vA==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jLXuq-0006Gj-Nk; Mon, 06 Apr 2020 20:00:16 +0000
-Date:   Mon, 6 Apr 2020 13:00:16 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Waiman Long <longman@redhat.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
+        id S1726386AbgDFXUP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 19:20:15 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:40950 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726277AbgDFXUO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 19:20:14 -0400
+Received: by mail-pf1-f193.google.com with SMTP id c20so8368559pfi.7
+        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 16:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=Zy9jOR3FEHibqt+rwh6SfI22BV7Ing5bU84+BN00rNw=;
+        b=Vy3ZrVa/Ni/8KnrxqiUwWfKPPhdXuDRGfUImo5iYAADPRayaJ+EUfF37ttrOwVRcWP
+         bWT3PuAEHyYlL7rT0ylAoFAmthfWjqZjby+RPm88xojLHEy2Ih2ong0+3AOVmz1/s4Kn
+         NGe6JAqA9FnKdPJnDMNWXHSVzW+UFJGofnJqMqiXNIkuKTnaNK/Zf0FjB+Db5P82JVNd
+         qOP6n6cb5yVnUlnNjBg+ZklcqkDUWXxwXZwBPsLQp2zETZPewlXOjDTnDzGwbjsIaomN
+         pgOh96a/mMXIX5tcHKxyenKzvWKRXYg4gHRXJRm8Flz9q7colzH3b+7kImcTXlJE+Dl2
+         KXGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=Zy9jOR3FEHibqt+rwh6SfI22BV7Ing5bU84+BN00rNw=;
+        b=qG/Y2/s0A3bV1ZXGQc1sJZPFdNqnZ+9KkmBWlcX17UlGB//SrcfiwVCKgAfy7a+hu/
+         n9TbckHNfkHLoNYVWmJibS3mfhmln8UEckDumkAhnycN2vIgNgZ/uKRHIRKjZkzZM096
+         XaSRcZxKmanDMhXrBEMudtGauKUbTFeT6k657PEtoZaHHPhb26KuT1VliEpwcHJOL3MS
+         WfUIbrT10IjizBSvEklxDmiXtveLT0D6SEBA4BkXzdeENd7WqlmxRHQJdOKpvUDXoeUU
+         Rit1DHXQDGd/pYCiGlVyTMi9XH12zE2SFIAlZzpvAeKU6TNZVNjg+iDse+FYAsWOUOHL
+         srBA==
+X-Gm-Message-State: AGi0PuZ7Z3aSDmbOgFp+pEufSJDGhUb+Lyb+Kq7JVV8FBxYy1yvDpWqN
+        hkHIt7uxc99jz/8BOYEm3KtReg==
+X-Google-Smtp-Source: APiQypLsaTUFaOPT9CXZo9RFi5Ei4O5u7vftOcbwlI7jEvEVk+ydbIpJPPLduNdR9tBuA3ImrEDjDA==
+X-Received: by 2002:a62:520a:: with SMTP id g10mr1757591pfb.271.1586215213567;
+        Mon, 06 Apr 2020 16:20:13 -0700 (PDT)
+Received: from [2620:15c:17:3:3a5:23a7:5e32:4598] ([2620:15c:17:3:3a5:23a7:5e32:4598])
+        by smtp.gmail.com with ESMTPSA id c190sm12367290pfa.66.2020.04.06.16.20.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2020 16:20:12 -0700 (PDT)
+Date:   Mon, 6 Apr 2020 16:20:12 -0700 (PDT)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     David Howells <dhowells@redhat.com>
+cc:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
  objects
-Message-ID: <20200406200016.GJ21484@bombadil.infradead.org>
-References: <20200406185827.22249-1-longman@redhat.com>
+In-Reply-To: <6504.1586159053@warthog.procyon.org.uk>
+Message-ID: <alpine.DEB.2.21.2004061618580.45667@chino.kir.corp.google.com>
+References: <alpine.DEB.2.21.2004052119530.243304@chino.kir.corp.google.com> <20200406023700.1367-1-longman@redhat.com> <6504.1586159053@warthog.procyon.org.uk>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200406185827.22249-1-longman@redhat.com>
+Content-Type: text/plain; charset=US-ASCII
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Apr 06, 2020 at 02:58:27PM -0400, Waiman Long wrote:
-> +/**
-> + * kvfree_sensitive - free a data object containing sensitive information
-> + * @addr - address of the data object to be freed
-> + * @len  - length of the data object
+On Mon, 6 Apr 2020, David Howells wrote:
 
-Did you try building this with W=1?  I believe this is incorrect kerneldoc.
-It should be @addr: and @len:
+> David Rientjes <rientjes@google.com> wrote:
+> 
+> > > +static inline void kvfree_sensitive(const void *addr, size_t len)
+> > > +{
+> > > +	if (addr) {
+> > 
+> > Shouldn't this be if (unlikely(ZERO_OR_NULL_PTR(addr))?
+> 
+> You've reversed the logic - it needs a '!' there.
+> 
 
-Also, it reads better in the htmldocs if you capitalise the first letter
-of each sentence and finish with a full stop.
+Ah lol, yeah.  Probably just better to do
 
-> @@ -914,7 +911,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
->  		 */
->  		if (ret > key_data_len) {
->  			if (unlikely(key_data))
-> -				__kvzfree(key_data, key_data_len);
-> +				kvfree_sensitive(key_data, key_data_len);
+	if (unlikely(ZERO_OR_NULL_PTR(addr)))
+		return;
 
-I'd drop the test of key_data here.
-
+but I agree that mm.h is likely not the right spot.
