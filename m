@@ -2,131 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3C0F19FB87
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A628219FBA6
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728543AbgDFR3U (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 13:29:20 -0400
-Received: from gardel.0pointer.net ([85.214.157.71]:60764 "EHLO
-        gardel.0pointer.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726491AbgDFR3U (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:29:20 -0400
-Received: from gardel-login.0pointer.net (gardel.0pointer.net [85.214.157.71])
-        by gardel.0pointer.net (Postfix) with ESMTP id 28E37E8017E;
-        Mon,  6 Apr 2020 19:29:18 +0200 (CEST)
-Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-        id 9177C161537; Mon,  6 Apr 2020 19:29:17 +0200 (CEST)
-Date:   Mon, 6 Apr 2020 19:29:17 +0200
-From:   Lennart Poettering <mzxreary@0pointer.de>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Ian Kent <raven@themaw.net>, David Howells <dhowells@redhat.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
-        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-Message-ID: <20200406172917.GA37692@gardel-login>
-References: <20200402143623.GB31529@gardel-login>
- <CAJfpegtRi9epdxAeoVbm+7UxkZfzC6XmD4K_5dg=RKADxy_TVA@mail.gmail.com>
- <20200402152831.GA31612@gardel-login>
- <CAJfpegum_PsCfnar8+V2f_VO3k8CJN1LOFJV5OkHRDbQKR=EHg@mail.gmail.com>
- <20200402155020.GA31715@gardel-login>
- <CAJfpeguM__+S6DiD4MWFv5GCf_EUWvGFT0mzuUCCrfQwggqtDQ@mail.gmail.com>
- <20200403110842.GA34663@gardel-login>
- <CAJfpegtYKhXB-HNddUeEMKupR5L=RRuydULrvm39eTung0=yRg@mail.gmail.com>
- <20200403150143.GA34800@gardel-login>
- <CAJfpegudLD8F-25k-k=9G96JKB+5Y=xFT=ZMwiBkNTwkjMDumA@mail.gmail.com>
+        id S1729418AbgDFRd7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 13:33:59 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:37615 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726675AbgDFRd6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:33:58 -0400
+Received: by mail-lf1-f68.google.com with SMTP id t11so164783lfe.4
+        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 10:33:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=crJk+8BSj7iZamojeVRuNeQnx02e+aby3GgDMVtCX+M=;
+        b=HaLctUUehIorhjsFq2+glIghQf2BJmPdCNRSdW6INhtT+CNtKPXSUUdlbD3pPrqHdo
+         wDYu2EbJxV6gfWowAwmLB4BPQOe4BovD3e0D+cJzgLkc9/NAEZMZJ7fAcUfbzHhYkKJa
+         iUPkBc9zIba7IkGAJ4Fs2BcVc+k+RQ3ovwnxk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=crJk+8BSj7iZamojeVRuNeQnx02e+aby3GgDMVtCX+M=;
+        b=fe7uFO9nRvSHMMBVf+W343WK8z0CtbC+0Yye53HWzvYN3Vzoc4znXnnpxp5+IZNFsg
+         bjWz5jA/+I3iaPMtmKLzuJGSpm4zmErSCdPiYi3i28buoQgvyeamz3my7l5b+qSj7QZ+
+         3YeW9eVwmHxH/FgR/oVqFQr/ZPWONvMjOZfSRNZMpul0GCbZXIJ2jClP+Yg8hHrfvhW7
+         sH9pAfgMiJytgwKJFP/LY7io2vdeLo5h2UrD2KYItuZvktGF+qaUNItF88PZx789k4Ik
+         8MODA7yh/HEqhUE4K/fTna6LdZkLzI5vryqEtUTOq8cacDrL8volExvWvQ80hDYYyLGf
+         1XYQ==
+X-Gm-Message-State: AGi0Pub3rGi/+bw6u67BRERMsM+PYQL4t5OufMclScAyl1fptBHoC2lz
+        jPOqa6Mj/ggtroWhTQY9P9kivJWtCrE=
+X-Google-Smtp-Source: APiQypI5VRUUo8hJufikeL66nHEglsimnFjdzCLdYZUq3H61/8IK5t70thZ1JNNw5qiUgEqD+sDDOg==
+X-Received: by 2002:ac2:5208:: with SMTP id a8mr13509126lfl.88.1586194433833;
+        Mon, 06 Apr 2020 10:33:53 -0700 (PDT)
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
+        by smtp.gmail.com with ESMTPSA id o18sm1505301lfb.13.2020.04.06.10.33.52
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Apr 2020 10:33:52 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id r24so602985ljd.4
+        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 10:33:52 -0700 (PDT)
+X-Received: by 2002:a2e:7c1a:: with SMTP id x26mr190977ljc.209.1586194431768;
+ Mon, 06 Apr 2020 10:33:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJfpegudLD8F-25k-k=9G96JKB+5Y=xFT=ZMwiBkNTwkjMDumA@mail.gmail.com>
+References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
+ <20200406023700.1367-1-longman@redhat.com> <319765.1586188840@warthog.procyon.org.uk>
+ <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+ <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+ <adc76d7c441e8f10697b61ceaff66207fb219886.camel@perches.com>
+ <CAHk-=wgyt8j5rEnyKE8YdrRjQof1kvyom1CensTE0-Bp-meGnA@mail.gmail.com> <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
+In-Reply-To: <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 6 Apr 2020 10:33:35 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
+Message-ID: <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
+To:     Joe Perches <joe@perches.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mo, 06.04.20 11:22, Miklos Szeredi (miklos@szeredi.hu) wrote:
-
-> > Nah. What I wrote above is drastically simplified. It's IRL more
-> > complex. Specific services need to be killed between certain mounts
-> > are unmounted, since they are a backend for another mount. NFS, or
-> > FUSE or stuff like that usually has some processes backing them
-> > around, and we need to stop the mounts they provide before these
-> > services, and then the mounts these services reside on after that, and
-> > so on. It's a complex dependency tree of stuff that needs to be done
-> > in order, so that we can deal with arbitrarily nested mounts, storage
-> > subsystems, and backing services.
+On Mon, Apr 6, 2020 at 10:22 AM Joe Perches <joe@perches.com> wrote:
 >
-> That still doesn't explain why you need to keep track of all mounts in
-> the system.
->
-> If you are aware of the dependency, then you need to keep track of
-> that particular mount. If not, then why?
+> API function naming symmetry is good.
 
-it works the other way round in systemd: something happens, i.e. a
-device pops up or a mount is established and systemd figures our if
-there's something to do. i.e. whether services shall be pulled in or
-so.
+BS.
 
-It's that way for a reason: there are plenty services that want to
-instantiated once for each object of a certain kind to pop up (this
-happens very often for devices, but could also happen for any other
-kind of "unit" systemd manages, and one of those kinds are mount
-units). For those we don't know the unit to pull in yet (because it's
-not going to be a well-named singleton, but an instance incorporating
-some identifier from the source unit) when the unit that pops up does
-so, thus we can only wait for the the latter to determine what to pull
-in.
+Naming should be symmetric if _use_ is symmetric.
 
-> What I'm starting to see is that there's a fundamental conflict
-> between how systemd people want to deal with new mounts and how some
-> other people want to use mounts (i.e. tens of thousands of mounts in
-> an automount map).
+But if the use is completely different, then the naming should be
+completely different too.
 
-Well, I am not sure what automount has to do with anything. You can
-have 10K mounts with or without automount, it's orthogonal to that. In
-fact, I assumed the point of automount was to pretend there are 10K
-mounts but not actually have them most of the time, no?
+A symmetric naming is only helpful if it implies symmetries in use.
+Otherwise it's actively misleading.
 
-I mean, whether there's room to optimize D-Bus IPC or not is entirely
-orthogonal to anything discussed here regarding fsinfo(). Don't make
-this about systemd sending messages over D-Bus, that's a very
-different story, and a non-issue if you ask me:
+In "kzalloc()", the z is meaningful and an important part of what the
+caller wants.
 
-Right now, when you have n mounts, and any mount changes, or one is
-added or removed then we have to parse the whole mount table again,
-asynchronously, processing all n entries again, every frickin
-time. This means the work to process n mounts popping up at boot is
-O(n²). That sucks, it should be obvious to anyone. Now if we get that
-fixed, by some mount API that can send us minimal notifications about
-what happened and where, then this becomes O(n), which is totally OK.
+In "kzfree()", the z is actively detrimental, because maybe in the
+future we really _might_ want to use that "memfill(0xdeadbeef)" or
+something. The "zero" part of the interface isn't even _relevant_.
 
-You keep talking about filtering, which will just lower the "n" a bit
-in particular cases to some value "m" maybe (with m < n), it does not
-address the fact that O(m²) is still a big problem.
+See? There is no API symmetry. There is only a small and immaterial
+implementation detail.
 
-hence, filtering is great, no problem, add it if you want it. I
-personally don't care about filtering though, and I doubt we'd use it
-in systemd, I just care about the O(n²) issue.
+We don't put an "l" into the kfree/kmalloc names because they
+internally use a percpu list to manage the allocations, do we? That's
+a "symmetry" too. But it's an irrelevant implementation detail that
+makes no sense to the caller.
 
-If you ask me if D-Bus can handle 10K messages sent over the bus
-during boot, then yes, it totally can handle that. Can systemd nicely
-process O(n²) mounts internally though equally well? No, obviously not,
-if n grows too large. Anyone computer scientist should understand that..
-
-Anyway, I have the suspicion this discussion has stopped being
-useful. I think you are trying to fix problems that userspce actually
-doesn't have. I can just tell you what we understand the problems are,
-but if you are out trying to fix other percieved ones, then great, but
-I mostly lost interest.
-
-Lennart
-
---
-Lennart Poettering, Berlin
+           Linus
