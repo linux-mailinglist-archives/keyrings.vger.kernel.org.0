@@ -2,103 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6EB19FA4E
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 18:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09BC619FA53
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 18:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729541AbgDFQjr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 12:39:47 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:42934 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729519AbgDFQjr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 12:39:47 -0400
-Received: by mail-ed1-f67.google.com with SMTP id cw6so261907edb.9
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 09:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fMHiT/Wub3WobBASn8jTrpUwrDr3u4OoR64hK8bb9Ks=;
-        b=AfWDLI+z1soflaJhqnVIBl+g08ryFIMdzJqIJa45tvPYBFyKn+PmZgyAKpbs5cJwZl
-         9gtU1jadiJkYAbncJSZUPSb1X2kcckqoo15hGsCWmJf/qxcwWTHrb5wLDAA7sDdZ3t6B
-         sFkeB7u4W8ywdCcWyLji2espSviyDN/+Gi3rc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fMHiT/Wub3WobBASn8jTrpUwrDr3u4OoR64hK8bb9Ks=;
-        b=n3uRYW9NjiHxT018QGTreHQ3yCJzS+zY22/KXd8dcwdB48jVVtpjkgerPQ83VjNyTr
-         n54FmaWp0p6FM6RPG290yHBCQgFxJWOkJUkFketmZEo1pYJGuf5b8clU5ySQgXtb7wFI
-         7TZPcW6B3TjiFFFWtjuaEGG3ttpxEVQhdxOf9nkwn7fnF402fa/9A39j/ohy7X7BeOP0
-         MpenfKxSViSqoVNxB6MLTWfkVtbq3kMpmWwtliFSiqmEWRsOKbEtj9+aRPg7ooVag1b7
-         c/jxI21oNg+L3XG2t02TacyFX4+mrutwwNwi9tmXqmIUoqjoFsvkYvi0oY9AqylLHxgH
-         1rZw==
-X-Gm-Message-State: AGi0PuaoJcODntFS22XOyB4e7rI7C4aegavMzxgsJtp/We4TsW9fQ7gM
-        Yui3IICj9o/JiL9KjYEDe4O1VgaNzzc=
-X-Google-Smtp-Source: APiQypLubSYexjncTxjW9JVTHe+y6vyPwFQ3cNNoDGIYhy9Hlm+80XvjDlu85iWmBZovIp50ZPR2OA==
-X-Received: by 2002:a17:906:52c2:: with SMTP id w2mr340338ejn.117.1586191185340;
-        Mon, 06 Apr 2020 09:39:45 -0700 (PDT)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
-        by smtp.gmail.com with ESMTPSA id q1sm2990224ejf.42.2020.04.06.09.39.44
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Apr 2020 09:39:45 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id i7so312284edq.3
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 09:39:44 -0700 (PDT)
-X-Received: by 2002:a19:7706:: with SMTP id s6mr10019987lfc.31.1586190864915;
- Mon, 06 Apr 2020 09:34:24 -0700 (PDT)
+        id S1729552AbgDFQkP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 12:40:15 -0400
+Received: from smtprelay0146.hostedemail.com ([216.40.44.146]:48080 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729485AbgDFQkN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 12:40:13 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 1D09D180A814B;
+        Mon,  6 Apr 2020 16:40:12 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:965:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2559:2562:2691:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3871:3872:4321:4385:4390:4395:5007:7904:10004:10400:10848:11026:11232:11658:11914:12050:12296:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21627,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: knee59_1e264919b4416
+X-Filterd-Recvd-Size: 1926
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf10.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  6 Apr 2020 16:40:07 +0000 (UTC)
+Message-ID: <a1cc0e9e0d57bb277a4e7c7f7ba3492927adcc45.camel@perches.com>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+From:   Joe Perches <joe@perches.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 06 Apr 2020 09:38:08 -0700
+In-Reply-To: <334933.1586190389@warthog.procyon.org.uk>
+References: <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+         <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
+         <20200406023700.1367-1-longman@redhat.com>
+         <319765.1586188840@warthog.procyon.org.uk>
+         <334933.1586190389@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-References: <CAJfpegs3uDzFTE4PCjZ7aZsEh8b=iy_LqO1DBJoQzkP+i4aBmw@mail.gmail.com>
- <2590640.1585757211@warthog.procyon.org.uk> <CAJfpegsXqxizOGwa045jfT6YdUpMxpXET-yJ4T8qudyQbCGkHQ@mail.gmail.com>
- <36e45eae8ad78f7b8889d9d03b8846e78d735d28.camel@themaw.net>
- <CAJfpegsCDWehsTRQ9UJYuQnghnE=M8L0_bJBTTPA+Upu87t90w@mail.gmail.com>
- <27994c53034c8f769ea063a54169317c3ee62c04.camel@themaw.net>
- <20200403111144.GB34663@gardel-login> <CAJfpeguQAw+Mgc8QBNd+h3KV8=Y-SOGT7TB_N_54wa8MCoOSzg@mail.gmail.com>
- <20200403151223.GB34800@gardel-login> <20200403203024.GB27105@fieldses.org> <20200406091701.q7ctdek2grzryiu3@ws.net.home>
-In-Reply-To: <20200406091701.q7ctdek2grzryiu3@ws.net.home>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 6 Apr 2020 09:34:08 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjW735UE+byK1xsM9UvpF2ubh7bCMaAOwz575U7hRCKyA@mail.gmail.com>
-Message-ID: <CAHk-=wjW735UE+byK1xsM9UvpF2ubh7bCMaAOwz575U7hRCKyA@mail.gmail.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-To:     Karel Zak <kzak@redhat.com>
-Cc:     "J. Bruce Fields" <bfields@fieldses.org>,
-        Lennart Poettering <mzxreary@0pointer.de>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Ian Kent <raven@themaw.net>,
-        David Howells <dhowells@redhat.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
-        keyrings@vger.kernel.org,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Aleksa Sarai <cyphar@cyphar.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 2:17 AM Karel Zak <kzak@redhat.com> wrote:
->
-> On Fri, Apr 03, 2020 at 04:30:24PM -0400, J. Bruce Fields wrote:
-> >
-> > nfs-utils/support/misc/mountpoint.c:check_is_mountpoint() stats the file
-> > and ".." and returns true if they have different st_dev or the same
-> > st_ino.  Comparing mount ids sounds better.
->
-> BTW, this traditional st_dev+st_ino way is not reliable for bind mounts.
-> For mountpoint(1) we search the directory in /proc/self/mountinfo.
+On Mon, 2020-04-06 at 17:26 +0100, David Howells wrote:
+> Joe Perches <joe@perches.com> wrote:
+> 
+> > While I agree with Linus about the __ prefix,
+> > the z is pretty common and symmetric to all
+> > the <foo>zalloc uses.
+> > 
+> > And if _sensitive is actually used, it'd be
+> > good to do a s/kzfree/kfree_sensitive/ one day
+> > sooner than later.
+> 
+> How much overhead would it be to always use kvfree_sensitive() and never have
+> a kfree_sensitive()?
 
-These days you should probably use openat2() with RESOLVE_NO_XDEV.
+I believe the is_vmalloc_addr not particularly expensive as it's
+just 2 tests.
 
-No need for any mountinfo or anything like that. Just look up the
-pathname and say "don't cross mount-points", and you'll get an error
-if it's a mount crossing lookup.
+It might make sense to go back to static inline is_vmalloc_addr
+instead of using EXPORT_SYMBOL
 
-So this kind of thing is _not_ an argument for another kernel querying
-interface.  We got a new (and better) model for a lot of this.
-
-              Linus
