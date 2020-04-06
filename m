@@ -2,102 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE6619F24C
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 11:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2421E19F268
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 11:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726819AbgDFJRS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 05:17:18 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:22371 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726689AbgDFJRP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 05:17:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586164633;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=NEV7TR1aEEGU9BOd+7WjT2xwDzuljghXSkqCe1NlNsM=;
-        b=Eqi2YJpNDhiYyJay6FqjX6ZdxeyiTg/Fo13Jd5D+Rm/vLnJL+fDId0gG+IUiSSi36oqMdv
-        W3547tRt61ZAIw5z3DE26e8Q60d07zA4xLXk7Rop+M6ur29Xt3fvVnk7DuUOLC9SvdLhGM
-        SnsokAvWBN10ryzjxGV0nM83pcThajM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-330-mxPGqf0zPReDwLyoyVPcDA-1; Mon, 06 Apr 2020 05:17:10 -0400
-X-MC-Unique: mxPGqf0zPReDwLyoyVPcDA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 04F15100551A;
-        Mon,  6 Apr 2020 09:17:08 +0000 (UTC)
-Received: from ws.net.home (unknown [10.40.194.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 1334A60BFB;
-        Mon,  6 Apr 2020 09:17:03 +0000 (UTC)
-Date:   Mon, 6 Apr 2020 11:17:01 +0200
-From:   Karel Zak <kzak@redhat.com>
-To:     "J. Bruce Fields" <bfields@fieldses.org>
-Cc:     Lennart Poettering <mzxreary@0pointer.de>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Ian Kent <raven@themaw.net>,
-        David Howells <dhowells@redhat.com>,
+        id S1726769AbgDFJWq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 05:22:46 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:38596 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726675AbgDFJWq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 05:22:46 -0400
+Received: by mail-ed1-f66.google.com with SMTP id e5so18359696edq.5
+        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 02:22:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ICZidZS836uKk3f5MYlrKnxf/d24delcy3nSKE9ogi4=;
+        b=W3pq5Mo7uZpLVGOq5GAIDI/ai7fUH4IIThQ1nwRczafHnhltyPbRBYi4qNanWLvp69
+         +904YhfbA4VWq0KvmJHQkjtbf5BXIa7CMoQ1Fr67ulXZcagefy/tt06DHI28sQAl1Z4o
+         hoDv8pLs5dD5DoPrxG3VeoDU6ANvHB8Mx51a0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ICZidZS836uKk3f5MYlrKnxf/d24delcy3nSKE9ogi4=;
+        b=C68L6EjkMiyuFu4Nih0O+XAGLTOQW2STthiTJUPnsDpT0708HarsPCyrGIgsQZx7tG
+         z6bhvgMDgwIYc8UCsn7Rp4EGIrr7REa2nMryGpHFXB5UKHK4ha8qoNWcKMBx2FDt3lUT
+         YuNiQJ/0a72Nww1U8rFwtuOmYlAXSeDTbnk2h3roLq95ciZqyXrJR9Jd0s021W4nNEXF
+         gXHKpJyi2mZjJW3ZhiKKGVyDpMuRWrXutgRQSwQLlyxaxgmudHccWmcmYh4bYWOMXEdz
+         +2hyP2s3BVzQURJPsHy+vo097gmg2Q3rbu3KmYr+p/HbPyDMLn6xh8cJ6XFD1X7m3N3z
+         Z1ww==
+X-Gm-Message-State: AGi0PuaZxm8bjpMD75pv3zP2NT//AG8nlac+66+CJKnkQzaltBoMATd0
+        fWD5hd5ePWU4vd1SwZt4P2LX7a/2FYBe3wwpbGOwbg==
+X-Google-Smtp-Source: APiQypKhY01mdGI1/JQgHY2uIzhyGBPdhVdoEMLb6wrymVsJFgMONWTk9QGbDBPrwg//+L4NEZ3xqyN3Wn1J9Hi6NTs=
+X-Received: by 2002:a17:906:b351:: with SMTP id cd17mr20431593ejb.351.1586164962711;
+ Mon, 06 Apr 2020 02:22:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <36e45eae8ad78f7b8889d9d03b8846e78d735d28.camel@themaw.net>
+ <CAJfpegsCDWehsTRQ9UJYuQnghnE=M8L0_bJBTTPA+Upu87t90w@mail.gmail.com>
+ <20200402143623.GB31529@gardel-login> <CAJfpegtRi9epdxAeoVbm+7UxkZfzC6XmD4K_5dg=RKADxy_TVA@mail.gmail.com>
+ <20200402152831.GA31612@gardel-login> <CAJfpegum_PsCfnar8+V2f_VO3k8CJN1LOFJV5OkHRDbQKR=EHg@mail.gmail.com>
+ <20200402155020.GA31715@gardel-login> <CAJfpeguM__+S6DiD4MWFv5GCf_EUWvGFT0mzuUCCrfQwggqtDQ@mail.gmail.com>
+ <20200403110842.GA34663@gardel-login> <CAJfpegtYKhXB-HNddUeEMKupR5L=RRuydULrvm39eTung0=yRg@mail.gmail.com>
+ <20200403150143.GA34800@gardel-login>
+In-Reply-To: <20200403150143.GA34800@gardel-login>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Mon, 6 Apr 2020 11:22:31 +0200
+Message-ID: <CAJfpegudLD8F-25k-k=9G96JKB+5Y=xFT=ZMwiBkNTwkjMDumA@mail.gmail.com>
+Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
+To:     Lennart Poettering <mzxreary@0pointer.de>
+Cc:     Ian Kent <raven@themaw.net>, David Howells <dhowells@redhat.com>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>,
         Miklos Szeredi <mszeredi@redhat.com>,
         Steven Whitehouse <swhiteho@redhat.com>,
         Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
         keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-Message-ID: <20200406091701.q7ctdek2grzryiu3@ws.net.home>
-References: <CAJfpegs3uDzFTE4PCjZ7aZsEh8b=iy_LqO1DBJoQzkP+i4aBmw@mail.gmail.com>
- <2590640.1585757211@warthog.procyon.org.uk>
- <CAJfpegsXqxizOGwa045jfT6YdUpMxpXET-yJ4T8qudyQbCGkHQ@mail.gmail.com>
- <36e45eae8ad78f7b8889d9d03b8846e78d735d28.camel@themaw.net>
- <CAJfpegsCDWehsTRQ9UJYuQnghnE=M8L0_bJBTTPA+Upu87t90w@mail.gmail.com>
- <27994c53034c8f769ea063a54169317c3ee62c04.camel@themaw.net>
- <20200403111144.GB34663@gardel-login>
- <CAJfpeguQAw+Mgc8QBNd+h3KV8=Y-SOGT7TB_N_54wa8MCoOSzg@mail.gmail.com>
- <20200403151223.GB34800@gardel-login>
- <20200403203024.GB27105@fieldses.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200403203024.GB27105@fieldses.org>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 03, 2020 at 04:30:24PM -0400, J. Bruce Fields wrote:
-> On Fri, Apr 03, 2020 at 05:12:23PM +0200, Lennart Poettering wrote:
-> > BTW, while we are at it: one more thing I'd love to see exposed by
-> > statx() is a simple flag whether the inode is a mount point. There's
-> > plenty code that implements a test like this all over the place, and
-> > it usually isn't very safe. There's one implementation in util-linux
-> > for example (in the /usr/bin/mountpoint binary), and another one in
-> > systemd. Would be awesome to just have a statx() return flag for that,
-> > that would make things *so* much easier and more robust. because in
-> > fact most code isn't very good that implements this, as much of it
-> > just compares st_dev of the specified file and its parent. Better code
-> > compares the mount ID, but as mentioned that's not as pretty as it
-> > could be so far...
-> 
-> nfs-utils/support/misc/mountpoint.c:check_is_mountpoint() stats the file
-> and ".." and returns true if they have different st_dev or the same
-> st_ino.  Comparing mount ids sounds better.
+On Fri, Apr 3, 2020 at 5:01 PM Lennart Poettering <mzxreary@0pointer.de> wr=
+ote:
+>
+> On Fr, 03.04.20 13:48, Miklos Szeredi (miklos@szeredi.hu) wrote:
+>
+> > > > Does that make any sense?
+> > >
+> > > When all mounts in the init mount namespace are unmounted and all
+> > > remaining processes killed we switch root back to the initrd, so that
+> > > even the root fs can be unmounted, and then we disassemble any backin=
+g
+> > > complex storage if there is, i.e. lvm, luks, raid, =E2=80=A6
+> >
+> > I think it could be done the other way round, much simpler:
+> >
+> >  - switch back to initrd
+> >  - umount root, keeping the tree intact (UMOUNT_DETACHED)
+> >  - kill all remaining processes, wait for all to exit
+>
+> Nah. What I wrote above is drastically simplified. It's IRL more
+> complex. Specific services need to be killed between certain mounts
+> are unmounted, since they are a backend for another mount. NFS, or
+> FUSE or stuff like that usually has some processes backing them
+> around, and we need to stop the mounts they provide before these
+> services, and then the mounts these services reside on after that, and
+> so on. It's a complex dependency tree of stuff that needs to be done
+> in order, so that we can deal with arbitrarily nested mounts, storage
+> subsystems, and backing services.
 
-BTW, this traditional st_dev+st_ino way is not reliable for bind mounts.
-For mountpoint(1) we search the directory in /proc/self/mountinfo.
+That still doesn't explain why you need to keep track of all mounts in
+the system.
 
-> So anyway, yes, everybody reinvents the wheel here, and this would be
-> useful.
+If you are aware of the dependency, then you need to keep track of
+that particular mount. If not, then why?
 
- +1
+What I'm starting to see is that there's a fundamental conflict
+between how systemd people want to deal with new mounts and how some
+other people want to use mounts (i.e. tens of thousands of mounts in
+an automount map).
 
-    Karel
+I'm really curious how much the mount notification ring + per mount
+query (any implementation) can help that use case.
 
--- 
- Karel Zak  <kzak@redhat.com>
- http://karelzak.blogspot.com
+> Anyway, this all works fine in systemd, the dependency logic is
+> there. We want a more efficient way to watch mounts, that's
+> all. Subscribing and constantly reparsing /proc/self/mountinfo is
+> awful, that's all.
 
+I'm not sure that is all.   To handle storms of tens of thousands of
+mounts, my guess is that the fundamental way of dealing with these
+changes will need to be updated in systemd.
+
+Thanks,
+Miklos
