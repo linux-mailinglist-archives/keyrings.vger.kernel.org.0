@@ -2,73 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CBC819F81F
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 16:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7BE19F924
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 17:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728730AbgDFOkn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 10:40:43 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:49567 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728566AbgDFOkn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 10:40:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586184042;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3K6eQ8d690wdZUosmRaUm071ZY/MVjAka/1m9mc596s=;
-        b=ADgrdzIdrMAtBdj9SetH/FDHJvigaeA8uUEkmLWvW/RWBO2UmQnnpUvlEBRmtWDuG5Fp0i
-        FqeP7HyK3XBk1fhp19loReVZL8rKQR54c9H8qvfmliHDq4g7ZjIcmlYAmvW73m8Xt1t+td
-        c1PEikg18tsroTrYyYZsUMNPvMtQSWk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-142-AJQidAWJNPCLNVntPw2esg-1; Mon, 06 Apr 2020 10:40:39 -0400
-X-MC-Unique: AJQidAWJNPCLNVntPw2esg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6B4CB8018A5;
-        Mon,  6 Apr 2020 14:40:37 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-115-20.rdu2.redhat.com [10.10.115.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B6B0360BE0;
-        Mon,  6 Apr 2020 14:40:35 +0000 (UTC)
+        id S1729010AbgDFPrU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 11:47:20 -0400
+Received: from smtprelay0065.hostedemail.com ([216.40.44.65]:35088 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729004AbgDFPrU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 11:47:20 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id E5AA38378BBE;
+        Mon,  6 Apr 2020 15:47:18 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:965:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:2892:3138:3139:3140:3141:3142:3352:3622:3865:3867:3871:3872:3874:4321:4385:4390:4395:5007:6119:7903:10004:10400:10848:11232:11658:11914:12048:12297:12740:12760:12895:13019:13069:13076:13311:13357:13439:14659:14721:21080:21627:30054:30075:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: paper59_5695de72003b
+X-Filterd-Recvd-Size: 1721
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  6 Apr 2020 15:47:17 +0000 (UTC)
+Message-ID: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
 Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
  objects
-To:     David Howells <dhowells@redhat.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
+From:   Joe Perches <joe@perches.com>
+To:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 06 Apr 2020 08:45:18 -0700
+In-Reply-To: <20200406023700.1367-1-longman@redhat.com>
 References: <20200406023700.1367-1-longman@redhat.com>
- <102082.1586183529@warthog.procyon.org.uk>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <04045dde-aa1a-5e7c-5a71-6b4a52c2fbb7@redhat.com>
-Date:   Mon, 6 Apr 2020 10:40:35 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-In-Reply-To: <102082.1586183529@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 4/6/20 10:32 AM, David Howells wrote:
-> Waiman Long <longman@redhat.com> wrote:
->
->> +static inline void kvfree_sensitive(const void *addr, size_t len)
-> Linus suggested making it non-inline.
+On Sun, 2020-04-05 at 22:37 -0400, Waiman Long wrote:
+> For kvmalloc'ed data object that contains sensitive information like
+> cryptographic key, we need to make sure that the buffer is always
+> cleared before freeing it. Using memset() alone for buffer clearing may
+> not provide certainty as the compiler may compile it away. To be sure,
+> the special memzero_explicit() has to be used.
+> 
+> This patch introduces a new kvfree_sensitive() for freeing those
+> sensitive data objects allocated by kvmalloc(). The relevnat places
+> where kvfree_sensitive() can be used are modified to use it.
 
-Sorry, I misread his comment. Will send a v2 to fix that.
+Why isn't this called kvzfree like the existing kzfree?
 
-Cheers,
-Longman
+
 
