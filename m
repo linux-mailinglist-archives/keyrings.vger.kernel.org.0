@@ -2,64 +2,31 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A628219FBA6
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F0419FC00
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729418AbgDFRd7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 13:33:59 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:37615 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726675AbgDFRd6 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:33:58 -0400
-Received: by mail-lf1-f68.google.com with SMTP id t11so164783lfe.4
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 10:33:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=crJk+8BSj7iZamojeVRuNeQnx02e+aby3GgDMVtCX+M=;
-        b=HaLctUUehIorhjsFq2+glIghQf2BJmPdCNRSdW6INhtT+CNtKPXSUUdlbD3pPrqHdo
-         wDYu2EbJxV6gfWowAwmLB4BPQOe4BovD3e0D+cJzgLkc9/NAEZMZJ7fAcUfbzHhYkKJa
-         iUPkBc9zIba7IkGAJ4Fs2BcVc+k+RQ3ovwnxk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=crJk+8BSj7iZamojeVRuNeQnx02e+aby3GgDMVtCX+M=;
-        b=fe7uFO9nRvSHMMBVf+W343WK8z0CtbC+0Yye53HWzvYN3Vzoc4znXnnpxp5+IZNFsg
-         bjWz5jA/+I3iaPMtmKLzuJGSpm4zmErSCdPiYi3i28buoQgvyeamz3my7l5b+qSj7QZ+
-         3YeW9eVwmHxH/FgR/oVqFQr/ZPWONvMjOZfSRNZMpul0GCbZXIJ2jClP+Yg8hHrfvhW7
-         sH9pAfgMiJytgwKJFP/LY7io2vdeLo5h2UrD2KYItuZvktGF+qaUNItF88PZx789k4Ik
-         8MODA7yh/HEqhUE4K/fTna6LdZkLzI5vryqEtUTOq8cacDrL8volExvWvQ80hDYYyLGf
-         1XYQ==
-X-Gm-Message-State: AGi0Pub3rGi/+bw6u67BRERMsM+PYQL4t5OufMclScAyl1fptBHoC2lz
-        jPOqa6Mj/ggtroWhTQY9P9kivJWtCrE=
-X-Google-Smtp-Source: APiQypI5VRUUo8hJufikeL66nHEglsimnFjdzCLdYZUq3H61/8IK5t70thZ1JNNw5qiUgEqD+sDDOg==
-X-Received: by 2002:ac2:5208:: with SMTP id a8mr13509126lfl.88.1586194433833;
-        Mon, 06 Apr 2020 10:33:53 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id o18sm1505301lfb.13.2020.04.06.10.33.52
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Apr 2020 10:33:52 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id r24so602985ljd.4
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 10:33:52 -0700 (PDT)
-X-Received: by 2002:a2e:7c1a:: with SMTP id x26mr190977ljc.209.1586194431768;
- Mon, 06 Apr 2020 10:33:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
- <20200406023700.1367-1-longman@redhat.com> <319765.1586188840@warthog.procyon.org.uk>
- <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
- <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
- <adc76d7c441e8f10697b61ceaff66207fb219886.camel@perches.com>
- <CAHk-=wgyt8j5rEnyKE8YdrRjQof1kvyom1CensTE0-Bp-meGnA@mail.gmail.com> <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
-In-Reply-To: <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 6 Apr 2020 10:33:35 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
-Message-ID: <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
-Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
-To:     Joe Perches <joe@perches.com>
+        id S1726509AbgDFRsS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 13:48:18 -0400
+Received: from smtprelay0012.hostedemail.com ([216.40.44.12]:36172 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726506AbgDFRsS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:48:18 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 7A75618223262;
+        Mon,  6 Apr 2020 17:48:17 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:965:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1593:1594:1711:1714:1730:1747:1777:1792:2110:2196:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3350:3622:3865:3866:3867:3868:3871:4250:4321:4385:4390:4395:5007:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13161:13229:13311:13357:13439:14181:14659:14721:21080:21627:30054:30060:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: ocean62_2b0d8d0ead04a
+X-Filterd-Recvd-Size: 2122
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  6 Apr 2020 17:48:15 +0000 (UTC)
+Message-ID: <fc62bbbe692f695e9231e0007715d80d164f7540.camel@perches.com>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+From:   Joe Perches <joe@perches.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     David Howells <dhowells@redhat.com>,
         Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -68,39 +35,40 @@ Cc:     David Howells <dhowells@redhat.com>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Mon, 06 Apr 2020 10:46:17 -0700
+In-Reply-To: <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
+References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
+         <20200406023700.1367-1-longman@redhat.com>
+         <319765.1586188840@warthog.procyon.org.uk>
+         <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+         <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+         <adc76d7c441e8f10697b61ceaff66207fb219886.camel@perches.com>
+         <CAHk-=wgyt8j5rEnyKE8YdrRjQof1kvyom1CensTE0-Bp-meGnA@mail.gmail.com>
+         <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
+         <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 10:22 AM Joe Perches <joe@perches.com> wrote:
->
-> API function naming symmetry is good.
+On Mon, 2020-04-06 at 10:33 -0700, Linus Torvalds wrote:
+> On Mon, Apr 6, 2020 at 10:22 AM Joe Perches <joe@perches.com> wrote:
+> > API function naming symmetry is good.
+[]
+> See? There is no API symmetry. There is only a small and immaterial
+> implementation detail.
 
-BS.
+The symmetry to an API is the existing 300+
+kzfree calls.
 
-Naming should be symmetric if _use_ is symmetric.
+Renaming all the kzfree calls would be fine.
 
-But if the use is completely different, then the naming should be
-completely different too.
+Consolidating all the various types of kfree
+to just kfree might be even better.
 
-A symmetric naming is only helpful if it implies symmetries in use.
-Otherwise it's actively misleading.
+cheers, Joe
 
-In "kzalloc()", the z is meaningful and an important part of what the
-caller wants.
-
-In "kzfree()", the z is actively detrimental, because maybe in the
-future we really _might_ want to use that "memfill(0xdeadbeef)" or
-something. The "zero" part of the interface isn't even _relevant_.
-
-See? There is no API symmetry. There is only a small and immaterial
-implementation detail.
-
-We don't put an "l" into the kfree/kmalloc names because they
-internally use a percpu list to manage the allocations, do we? That's
-a "symmetry" too. But it's an irrelevant implementation detail that
-makes no sense to the caller.
-
-           Linus
