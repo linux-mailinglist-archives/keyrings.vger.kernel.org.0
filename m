@@ -2,126 +2,175 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1352119EE71
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 00:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A9E19EF51
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 04:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727856AbgDEWwn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 5 Apr 2020 18:52:43 -0400
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:51617 "EHLO
-        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727254AbgDEWwn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Apr 2020 18:52:43 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 66A9858013A;
-        Sun,  5 Apr 2020 18:52:42 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Sun, 05 Apr 2020 18:52:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=euu86y6yACvCvstNFbv3DwBO9Kn
-        QxP4jRh+eEX/Uz4E=; b=aWfcGa/g12RY6GgtiE4vbPeqndfFU5TauoaxI2sn/mk
-        nSPdTiGGwqKZY5eH6mP0/5QnVVwdwJT91KjE8Yo0IiXVZKPvzwSvvxuRSLq8YaZs
-        XcE9L7BSvZor3cZY1JEYNmy1I71P4ghowrUcuvJxMq4Dckhj6uHkRdSg0ZzkOJaf
-        uM3YLFa4ZTDNyulM+BbWAOfTTUdN1oEbMeIwNHWmh0/7y4NPGesKQ7jutWt6POiX
-        KU2Vwd6J6CVwXy1/IfGGRE6GcyWCGat9lp3810xCGBpRsj/I+DZjq3LBUR/P9gEl
-        ufil6hnKfzU7gGfgjAHSzVqpFF6ylNsQusqXGRYBZFA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=euu86y
-        6yACvCvstNFbv3DwBO9KnQxP4jRh+eEX/Uz4E=; b=DLHnqaRdNucpqbnHm1V02h
-        VvZajeUd3i21cHyA+Db+q5To2ahUXvySaDB14pwmjC6n6SN4J/h7uM4qhTVWnnt+
-        TtkUaFOVP+/9qPPXFNMdcqZPuFodmM5mcyR0VB+e8kDVPUndmWBDUMzF5b19gMCF
-        YH4g3VBkFQphkpZvAKDDU650xCEbTJvpfEo7bDmmWAlMrGmy0BWY7YIbwXkZEZQ7
-        4y6kOk5oOpIs0LIEl2fX5apAjMQ2zEyykKmzB6D1nzTlE8kcrOQP2t5TvITsITW5
-        pGypOMF+cd9fetOY1v1UJmVJsvIBraTSlnh+QkJOjeWOrp7y1AhV6AaSaHSpQMNg
-        ==
-X-ME-Sender: <xms:OWGKXscNy94fqLNfWljzjQBDrzE3de91hpXWMBfKHE9IKLKgSmTjMg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddvgdduhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughrvghs
-    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuffhomhgrih
-    hnpehkvghrnhgvlhdrohhrghenucfkphepieejrdduiedtrddvudejrddvhedtnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvghsse
-    grnhgrrhgriigvlhdruggv
-X-ME-Proxy: <xmx:OWGKXl0DJATAJ95cUjLQbU_AVVMoaVKmZiXQ3lU2eZO6CQ95Bbkf0A>
-    <xmx:OWGKXrL3f2zc6VTEg0VEj-eDytojIlGjhEE7Ed4R3PEewixZbD-gcQ>
-    <xmx:OWGKXsEgq3L8WFv-h4XFjLOIspUCCLrYabvQios6LeAO3G9JuyS6MQ>
-    <xmx:OmGKXtXN5JMmzMArvzsaUG8YESD0g0rqcAiIMBw1bNixBFfbhSSLXg>
-Received: from intern.anarazel.de (c-67-160-217-250.hsd1.ca.comcast.net [67.160.217.250])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 5A2FC328005A;
-        Sun,  5 Apr 2020 18:52:41 -0400 (EDT)
-Date:   Sun, 5 Apr 2020 15:52:40 -0700
-From:   Andres Freund <andres@anarazel.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>, jlayton@redhat.com,
-        Ian Kent <raven@themaw.net>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        keyrings@vger.kernel.org,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [GIT PULL] Mount and superblock notifications
-Message-ID: <20200405225240.kofadjkmpigfzcfy@alap3.anarazel.de>
-References: <1445647.1585576702@warthog.procyon.org.uk>
- <1449543.1585579014@warthog.procyon.org.uk>
- <CAHk-=wghjTM+z_oAATqWOvPa8Lh6BKRtTVMi7hLxo6pbqc+kVg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wghjTM+z_oAATqWOvPa8Lh6BKRtTVMi7hLxo6pbqc+kVg@mail.gmail.com>
+        id S1726469AbgDFChm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 5 Apr 2020 22:37:42 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:58334 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726436AbgDFChm (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Apr 2020 22:37:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586140660;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=3j6/xWR+/y23CIGLVS1aOs+gMcx6PTwUHS8ah6Kg6mM=;
+        b=esXRl24DGLDJHP+Kd7+Eckcha9gTYGjNk2yK2uARIY+juh4DxZfzjqTHeDBwg/SMZZELon
+        Jf342b75USmY+gDdzrm+GGsgQMpmzj6mv+y+rSJaTlKZdffxM9xKWAGZjArFI7MednxPXa
+        4BkKmx7fRj0vnAI1HaklE26JwZb/v78=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-433-8G4g1HmhMgKfrjtv31jIVQ-1; Sun, 05 Apr 2020 22:37:38 -0400
+X-MC-Unique: 8G4g1HmhMgKfrjtv31jIVQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2A8B519067E3;
+        Mon,  6 Apr 2020 02:37:37 +0000 (UTC)
+Received: from llong.com (ovpn-112-57.rdu2.redhat.com [10.10.112.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D7A91277A4;
+        Mon,  6 Apr 2020 02:37:28 +0000 (UTC)
+From:   Waiman Long <longman@redhat.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Waiman Long <longman@redhat.com>
+Subject: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
+Date:   Sun,  5 Apr 2020 22:37:00 -0400
+Message-Id: <20200406023700.1367-1-longman@redhat.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+For kvmalloc'ed data object that contains sensitive information like
+cryptographic key, we need to make sure that the buffer is always
+cleared before freeing it. Using memset() alone for buffer clearing may
+not provide certainty as the compiler may compile it away. To be sure,
+the special memzero_explicit() has to be used.
 
-On 2020-04-04 14:13:03 -0700, Linus Torvalds wrote:
-> And it needs to be interesting and pressing enough that those people
-> actually at least do a working prototype on top of a patch-set that
-> hasn't made it into the kernel yet.
-> 
-> Now, I realize that other projects won't _upstream_ their support
-> before the kernel has the infrastructure, so I'm not looking for
-> _that_ kind of "yeah, look, project XYZ already does this and Red Hat
-> ships it". No, I'm looking for those outside developers who say more
-> than "this is a pet peeve of mine with the existing interface". I want
-> to see some actual use - even if it's just in a development
-> environment - that shows that it's (a) sufficient and (b) actually
-> fixes problems.
+This patch introduces a new kvfree_sensitive() for freeing those
+sensitive data objects allocated by kvmalloc(). The relevnat places
+where kvfree_sensitive() can be used are modified to use it.
 
-FWIW, postgres remains interested in using the per-superblock events.
+Fixes: 4f0882491a14 ("KEYS: Avoid false positive ENOMEM error on key read")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
+---
+ include/linux/mm.h       | 17 +++++++++++++++++
+ security/keys/internal.h | 11 -----------
+ security/keys/keyctl.c   | 16 +++++-----------
+ 3 files changed, 22 insertions(+), 22 deletions(-)
 
-On 2020-03-30 15:36:54 +0100, David Howells wrote:
->  (2) Superblock notifications.
-> 
->      This one is provided to allow systemd or the desktop to more easily
->      detect events such as I/O errors and EDQUOT/ENOSPC.  This would be of
->      interest to Postgres:
-> 
-> 	https://lore.kernel.org/linux-fsdevel/20200211005626.7yqjf5rbs3vbwagd@alap3.anarazel.de/
-> 
->      But could also be used to indicate to systemd when a superblock has
->      had its configuration changed.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7dd5c4ccbf85..c26f279f1956 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -758,6 +758,23 @@ static inline void *kvcalloc(size_t n, size_t size, gfp_t flags)
+ 
+ extern void kvfree(const void *addr);
+ 
++/**
++ * kvfree_sensitive - free a data object containing sensitive information
++ * @addr - address of the data object to be freed
++ * @len  - length of the data object
++ *
++ * Use the special memzero_explicit() function to clear the content of a
++ * kvmalloc'ed object containing sensitive data to make sure that the
++ * compiler won't optimize out the data clearing.
++ */
++static inline void kvfree_sensitive(const void *addr, size_t len)
++{
++	if (addr) {
++		memzero_explicit((void *)addr, len);
++		kvfree(addr);
++	}
++}
++
+ static inline int compound_mapcount(struct page *page)
+ {
+ 	VM_BUG_ON_PAGE(!PageCompound(page), page);
+diff --git a/security/keys/internal.h b/security/keys/internal.h
+index 6d0ca48ae9a5..153d35c20d3d 100644
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -350,15 +350,4 @@ static inline void key_check(const struct key *key)
+ #define key_check(key) do {} while(0)
+ 
+ #endif
+-
+-/*
+- * Helper function to clear and free a kvmalloc'ed memory object.
+- */
+-static inline void __kvzfree(const void *addr, size_t len)
+-{
+-	if (addr) {
+-		memset((void *)addr, 0, len);
+-		kvfree(addr);
+-	}
+-}
+ #endif /* _INTERNAL_H */
+diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+index 5e01192e222a..edde63a63007 100644
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -142,10 +142,7 @@ SYSCALL_DEFINE5(add_key, const char __user *, _type,
+ 
+ 	key_ref_put(keyring_ref);
+  error3:
+-	if (payload) {
+-		memzero_explicit(payload, plen);
+-		kvfree(payload);
+-	}
++	kvfree_sensitive(payload, plen);
+  error2:
+ 	kfree(description);
+  error:
+@@ -360,7 +357,7 @@ long keyctl_update_key(key_serial_t id,
+ 
+ 	key_ref_put(key_ref);
+ error2:
+-	__kvzfree(payload, plen);
++	kvfree_sensitive(payload, plen);
+ error:
+ 	return ret;
+ }
+@@ -914,7 +911,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
+ 		 */
+ 		if (ret > key_data_len) {
+ 			if (unlikely(key_data))
+-				__kvzfree(key_data, key_data_len);
++				kvfree_sensitive(key_data, key_data_len);
+ 			key_data_len = ret;
+ 			continue;	/* Allocate buffer */
+ 		}
+@@ -923,7 +920,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
+ 			ret = -EFAULT;
+ 		break;
+ 	}
+-	__kvzfree(key_data, key_data_len);
++	kvfree_sensitive(key_data, key_data_len);
+ 
+ key_put_out:
+ 	key_put(key);
+@@ -1225,10 +1222,7 @@ long keyctl_instantiate_key_common(key_serial_t id,
+ 		keyctl_change_reqkey_auth(NULL);
+ 
+ error2:
+-	if (payload) {
+-		memzero_explicit(payload, plen);
+-		kvfree(payload);
+-	}
++	kvfree_sensitive(payload, plen);
+ error:
+ 	return ret;
+ }
+-- 
+2.18.1
 
-What prevents me from coming up with a prototype is that the error
-handling pieces aren't complete, as far as I can tell:
-
-On 2020-03-30 15:36:54 +0100, David Howells wrote:
->  (2) Superblock events, such as R/W<->R/O changes, quota overrun and I/O
->      errors (not complete yet).
-
-There's afaict no notify_sb_error() callers, making it hard for me to
-actually test anything.
-
-The important issue for us is I/O errors, but EDQUOT/ENOSPC could also
-be useful (but is not urgent).
-
-Greetings,
-
-Andres Freund
