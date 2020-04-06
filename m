@@ -2,32 +2,45 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F0419FC00
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00EF119FC0B
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:51:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726509AbgDFRsS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 13:48:18 -0400
-Received: from smtprelay0012.hostedemail.com ([216.40.44.12]:36172 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726506AbgDFRsS (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:48:18 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 7A75618223262;
-        Mon,  6 Apr 2020 17:48:17 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:965:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1593:1594:1711:1714:1730:1747:1777:1792:2110:2196:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3350:3622:3865:3866:3867:3868:3871:4250:4321:4385:4390:4395:5007:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13161:13229:13311:13357:13439:14181:14659:14721:21080:21627:30054:30060:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: ocean62_2b0d8d0ead04a
-X-Filterd-Recvd-Size: 2122
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf16.hostedemail.com (Postfix) with ESMTPA;
-        Mon,  6 Apr 2020 17:48:15 +0000 (UTC)
-Message-ID: <fc62bbbe692f695e9231e0007715d80d164f7540.camel@perches.com>
-Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-From:   Joe Perches <joe@perches.com>
+        id S1726591AbgDFRvv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 13:51:51 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:54098 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726520AbgDFRvv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:51:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586195510;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=AjnKQhZRrlXMg/3NDwu03y4zJEpSBlgOKpKNn5skTkQ=;
+        b=FgzF7E28mvSHveH165I66+ZIXQv9hUE2HNnLXFf4plR2FM53rgRWQ4QraHRcLDEduZsugM
+        X6s99LbSTw1gtRfi8ZVZKluXHAuQ25dROoeCobMknL6Bf+0U9SrKrCwA/iGDYY571ZFQw6
+        kdNgX3MR2l/oq4E9nI8qrSkLLnctYtw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-268-zg1BvAKROxCedjT3i4NrUQ-1; Mon, 06 Apr 2020 13:51:46 -0400
+X-MC-Unique: zg1BvAKROxCedjT3i4NrUQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 470A08017CE;
+        Mon,  6 Apr 2020 17:51:44 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-224.rdu2.redhat.com [10.10.112.224])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3D334118F3F;
+        Mon,  6 Apr 2020 17:51:38 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CAHk-=wiPHA4XbL-CVTDBwjYzUJwaGYriGD44uvOaqQai+zOw6A@mail.gmail.com>
+References: <CAHk-=wiPHA4XbL-CVTDBwjYzUJwaGYriGD44uvOaqQai+zOw6A@mail.gmail.com> <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com> <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com> <20200406023700.1367-1-longman@redhat.com> <319765.1586188840@warthog.procyon.org.uk> <334933.1586190389@warthog.procyon.org.uk> <dbfcbbd55c63fc87bfb31af3cae1b15e04d8a821.camel@perches.com>
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
+Cc:     dhowells@redhat.com, Joe Perches <joe@perches.com>,
         Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
@@ -35,40 +48,29 @@ Cc:     David Howells <dhowells@redhat.com>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Mon, 06 Apr 2020 10:46:17 -0700
-In-Reply-To: <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
-References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
-         <20200406023700.1367-1-longman@redhat.com>
-         <319765.1586188840@warthog.procyon.org.uk>
-         <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
-         <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
-         <adc76d7c441e8f10697b61ceaff66207fb219886.camel@perches.com>
-         <CAHk-=wgyt8j5rEnyKE8YdrRjQof1kvyom1CensTE0-Bp-meGnA@mail.gmail.com>
-         <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
-         <CAHk-=wj=zTfrjXbFp+yhMpjH5jyx=t5fcDVmYN6KpE9Tjxb9YA@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <354823.1586195497.1@warthog.procyon.org.uk>
+Date:   Mon, 06 Apr 2020 18:51:37 +0100
+Message-ID: <354824.1586195497@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2020-04-06 at 10:33 -0700, Linus Torvalds wrote:
-> On Mon, Apr 6, 2020 at 10:22 AM Joe Perches <joe@perches.com> wrote:
-> > API function naming symmetry is good.
-[]
-> See? There is no API symmetry. There is only a small and immaterial
-> implementation detail.
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-The symmetry to an API is the existing 300+
-kzfree calls.
+> > Add yet another alloc flag like __GFP_SENSITIVE
+> > and have kfree operate on that and not have a
+> > kfree_sensitive at all.
+> 
+> That sounds potentially sensible. Maybe even a SLAB_SENSITIVE to mark
+> a whole slab cache sensitive for kmem_cache_create().
 
-Renaming all the kzfree calls would be fine.
+The allocation might be by vmalloc rather than kmalloc.  I'm not sure if that
+makes things more difficult.
 
-Consolidating all the various types of kfree
-to just kfree might be even better.
-
-cheers, Joe
+David
 
