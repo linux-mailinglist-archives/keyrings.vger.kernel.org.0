@@ -2,123 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2421E19F268
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 11:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43BD819F801
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 16:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726769AbgDFJWq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 05:22:46 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:38596 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726675AbgDFJWq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 05:22:46 -0400
-Received: by mail-ed1-f66.google.com with SMTP id e5so18359696edq.5
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 02:22:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ICZidZS836uKk3f5MYlrKnxf/d24delcy3nSKE9ogi4=;
-        b=W3pq5Mo7uZpLVGOq5GAIDI/ai7fUH4IIThQ1nwRczafHnhltyPbRBYi4qNanWLvp69
-         +904YhfbA4VWq0KvmJHQkjtbf5BXIa7CMoQ1Fr67ulXZcagefy/tt06DHI28sQAl1Z4o
-         hoDv8pLs5dD5DoPrxG3VeoDU6ANvHB8Mx51a0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ICZidZS836uKk3f5MYlrKnxf/d24delcy3nSKE9ogi4=;
-        b=C68L6EjkMiyuFu4Nih0O+XAGLTOQW2STthiTJUPnsDpT0708HarsPCyrGIgsQZx7tG
-         z6bhvgMDgwIYc8UCsn7Rp4EGIrr7REa2nMryGpHFXB5UKHK4ha8qoNWcKMBx2FDt3lUT
-         YuNiQJ/0a72Nww1U8rFwtuOmYlAXSeDTbnk2h3roLq95ciZqyXrJR9Jd0s021W4nNEXF
-         gXHKpJyi2mZjJW3ZhiKKGVyDpMuRWrXutgRQSwQLlyxaxgmudHccWmcmYh4bYWOMXEdz
-         +2hyP2s3BVzQURJPsHy+vo097gmg2Q3rbu3KmYr+p/HbPyDMLn6xh8cJ6XFD1X7m3N3z
-         Z1ww==
-X-Gm-Message-State: AGi0PuaZxm8bjpMD75pv3zP2NT//AG8nlac+66+CJKnkQzaltBoMATd0
-        fWD5hd5ePWU4vd1SwZt4P2LX7a/2FYBe3wwpbGOwbg==
-X-Google-Smtp-Source: APiQypKhY01mdGI1/JQgHY2uIzhyGBPdhVdoEMLb6wrymVsJFgMONWTk9QGbDBPrwg//+L4NEZ3xqyN3Wn1J9Hi6NTs=
-X-Received: by 2002:a17:906:b351:: with SMTP id cd17mr20431593ejb.351.1586164962711;
- Mon, 06 Apr 2020 02:22:42 -0700 (PDT)
+        id S1728639AbgDFOcU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 10:32:20 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:47775 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728406AbgDFOcT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 10:32:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586183539;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Bs9O8CfSCjvxWFFcdHv5mM9YqkNdF8ds5U/VAdCzyFw=;
+        b=ENfh5O56j0Kg+sJmQBT8vea8PI1DdKLrrp+6tgU1PUCAFMm18XbNFI276fHO8oCHnk65t3
+        O73fWa8I64yQXqdmrnV8UYfH5moC3F+T99mxv5bem7LViYDiZbyKBzFn2w233b3LrynpSo
+        ZlQo7J4NnWQnQdIMAXkGg/ItZE/os/o=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-490-7Z6zlaeENrSBANbE3-7d-Q-1; Mon, 06 Apr 2020 10:32:17 -0400
+X-MC-Unique: 7Z6zlaeENrSBANbE3-7d-Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AB74413F7;
+        Mon,  6 Apr 2020 14:32:15 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-224.rdu2.redhat.com [10.10.112.224])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8DFD39D368;
+        Mon,  6 Apr 2020 14:32:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200406023700.1367-1-longman@redhat.com>
+References: <20200406023700.1367-1-longman@redhat.com>
+To:     Waiman Long <longman@redhat.com>
+Cc:     dhowells@redhat.com, Andrew Morton <akpm@linux-foundation.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
 MIME-Version: 1.0
-References: <36e45eae8ad78f7b8889d9d03b8846e78d735d28.camel@themaw.net>
- <CAJfpegsCDWehsTRQ9UJYuQnghnE=M8L0_bJBTTPA+Upu87t90w@mail.gmail.com>
- <20200402143623.GB31529@gardel-login> <CAJfpegtRi9epdxAeoVbm+7UxkZfzC6XmD4K_5dg=RKADxy_TVA@mail.gmail.com>
- <20200402152831.GA31612@gardel-login> <CAJfpegum_PsCfnar8+V2f_VO3k8CJN1LOFJV5OkHRDbQKR=EHg@mail.gmail.com>
- <20200402155020.GA31715@gardel-login> <CAJfpeguM__+S6DiD4MWFv5GCf_EUWvGFT0mzuUCCrfQwggqtDQ@mail.gmail.com>
- <20200403110842.GA34663@gardel-login> <CAJfpegtYKhXB-HNddUeEMKupR5L=RRuydULrvm39eTung0=yRg@mail.gmail.com>
- <20200403150143.GA34800@gardel-login>
-In-Reply-To: <20200403150143.GA34800@gardel-login>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Mon, 6 Apr 2020 11:22:31 +0200
-Message-ID: <CAJfpegudLD8F-25k-k=9G96JKB+5Y=xFT=ZMwiBkNTwkjMDumA@mail.gmail.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-To:     Lennart Poettering <mzxreary@0pointer.de>
-Cc:     Ian Kent <raven@themaw.net>, David Howells <dhowells@redhat.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
-        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <102081.1586183529.1@warthog.procyon.org.uk>
+Date:   Mon, 06 Apr 2020 15:32:09 +0100
+Message-ID: <102082.1586183529@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 3, 2020 at 5:01 PM Lennart Poettering <mzxreary@0pointer.de> wr=
-ote:
->
-> On Fr, 03.04.20 13:48, Miklos Szeredi (miklos@szeredi.hu) wrote:
->
-> > > > Does that make any sense?
-> > >
-> > > When all mounts in the init mount namespace are unmounted and all
-> > > remaining processes killed we switch root back to the initrd, so that
-> > > even the root fs can be unmounted, and then we disassemble any backin=
-g
-> > > complex storage if there is, i.e. lvm, luks, raid, =E2=80=A6
-> >
-> > I think it could be done the other way round, much simpler:
-> >
-> >  - switch back to initrd
-> >  - umount root, keeping the tree intact (UMOUNT_DETACHED)
-> >  - kill all remaining processes, wait for all to exit
->
-> Nah. What I wrote above is drastically simplified. It's IRL more
-> complex. Specific services need to be killed between certain mounts
-> are unmounted, since they are a backend for another mount. NFS, or
-> FUSE or stuff like that usually has some processes backing them
-> around, and we need to stop the mounts they provide before these
-> services, and then the mounts these services reside on after that, and
-> so on. It's a complex dependency tree of stuff that needs to be done
-> in order, so that we can deal with arbitrarily nested mounts, storage
-> subsystems, and backing services.
+Waiman Long <longman@redhat.com> wrote:
 
-That still doesn't explain why you need to keep track of all mounts in
-the system.
+> +static inline void kvfree_sensitive(const void *addr, size_t len)
 
-If you are aware of the dependency, then you need to keep track of
-that particular mount. If not, then why?
+Linus suggested making it non-inline.
 
-What I'm starting to see is that there's a fundamental conflict
-between how systemd people want to deal with new mounts and how some
-other people want to use mounts (i.e. tens of thousands of mounts in
-an automount map).
+David
 
-I'm really curious how much the mount notification ring + per mount
-query (any implementation) can help that use case.
-
-> Anyway, this all works fine in systemd, the dependency logic is
-> there. We want a more efficient way to watch mounts, that's
-> all. Subscribing and constantly reparsing /proc/self/mountinfo is
-> awful, that's all.
-
-I'm not sure that is all.   To handle storms of tens of thousands of
-mounts, my guess is that the fundamental way of dealing with these
-changes will need to be updated in systemd.
-
-Thanks,
-Miklos
