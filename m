@@ -2,61 +2,31 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAD8719FA6E
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 18:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9252D19FAAB
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 18:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729616AbgDFQlx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 12:41:53 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:42753 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729617AbgDFQlw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 12:41:52 -0400
-Received: by mail-lj1-f196.google.com with SMTP id q19so356095ljp.9
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 09:41:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Imdp89Sb0+OtYzgCpw3IcqTUqEKq3zexZbxvNKGejvc=;
-        b=TUDiV7orONaSuZs35BQ1mawth0kHmPPUSDaWUc61FjLb/6pFGQBIyQceMCqczVlLuF
-         mQUZ4NQktXHOHP07O9tK8dQGGfgRoZsmJ5GzKHbZpqurg7mKkrY7MYTCAAZGVXJrRCHG
-         ddaqR5NSXTSjop3RFyga75kOxzIQpqbjG4OKY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Imdp89Sb0+OtYzgCpw3IcqTUqEKq3zexZbxvNKGejvc=;
-        b=uNou5pCTagGcqW1ps2Q5Qs1K912sMa3iT+HZ3Y8f/RnUqN32Rdf86d8+RiTU0MG8w5
-         jG4jQiuAGZTMVoY59Dia4PqGwVR97XyfPCGdB+BrtLZnh36WaeXegtwlCvk31CooU2V2
-         bY5AwizjE9S0EBwQX+TUud+rYRE/aiPWwbSZxn+dM8qFM+q4Jw0J4Yy2BzyDftu+mc0z
-         XJzChxPxlz6tl1y6k0gL4XU6IfZU+6Nbm0vjcGDU1/hQvJXY23EjaR68hThWN7OyHgc+
-         ditDKxj/rDQOD3nb0PzNZvKVYcZW+gpiYOXkmsIffhcQ7N52a6mnx1dLCRygM991rIiG
-         6kIg==
-X-Gm-Message-State: AGi0PuZ3SLpO4ACAf3NglshHbNVbsIo88gcGduqnQRkzdvdiJMweeHNd
-        nutecJEVp2cigjWdI/NiHjxR4uLXA4E=
-X-Google-Smtp-Source: APiQypJPm57gsbXrwti/3mnymrsF/GNKt+S2FniEpwYCMSC8ulE7SpXAdkDrY6WUWRvtrNIAYOQDFg==
-X-Received: by 2002:a2e:9585:: with SMTP id w5mr87380ljh.178.1586191308941;
-        Mon, 06 Apr 2020 09:41:48 -0700 (PDT)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
-        by smtp.gmail.com with ESMTPSA id r21sm10839180ljp.29.2020.04.06.09.41.47
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Apr 2020 09:41:48 -0700 (PDT)
-Received: by mail-lj1-f182.google.com with SMTP id r7so327231ljg.13
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 09:41:47 -0700 (PDT)
-X-Received: by 2002:a2e:8911:: with SMTP id d17mr101988lji.16.1586191307660;
- Mon, 06 Apr 2020 09:41:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
- <20200406023700.1367-1-longman@redhat.com> <319765.1586188840@warthog.procyon.org.uk>
- <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
-In-Reply-To: <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 6 Apr 2020 09:41:31 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
-Message-ID: <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
-To:     Joe Perches <joe@perches.com>
+        id S1729490AbgDFQox (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 12:44:53 -0400
+Received: from smtprelay0228.hostedemail.com ([216.40.44.228]:52410 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729042AbgDFQox (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 12:44:53 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id AC18E8378BA1;
+        Mon,  6 Apr 2020 16:44:52 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:965:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:4321:4385:4390:4395:5007:6691:7904:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21627:30054:30060:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: bomb61_4778f7b443b57
+X-Filterd-Recvd-Size: 1970
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf07.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  6 Apr 2020 16:44:51 +0000 (UTC)
+Message-ID: <adc76d7c441e8f10697b61ceaff66207fb219886.camel@perches.com>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+From:   Joe Perches <joe@perches.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     David Howells <dhowells@redhat.com>,
         Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -65,37 +35,36 @@ Cc:     David Howells <dhowells@redhat.com>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Mon, 06 Apr 2020 09:42:52 -0700
+In-Reply-To: <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
+         <20200406023700.1367-1-longman@redhat.com>
+         <319765.1586188840@warthog.procyon.org.uk>
+         <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+         <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 9:12 AM Joe Perches <joe@perches.com> wrote:
->
-> While I agree with Linus about the __ prefix,
-> the z is pretty common and symmetric to all
-> the <foo>zalloc uses.
+On Mon, 2020-04-06 at 09:41 -0700, Linus Torvalds wrote:
+> On Mon, Apr 6, 2020 at 9:12 AM Joe Perches <joe@perches.com> wrote:
+> > While I agree with Linus about the __ prefix,
+> > the z is pretty common and symmetric to all
+> > the <foo>zalloc uses.
+> 
+> Yes, we have a pattern of 'z' for zero.
+> 
+> But the _operation_ isn't symmetric.
+> 
+> "kzalloc()" has absolutely _nothing_ to do with "kzfree()". They are
+> not some kind of "opposite symmetric operation".  They are totally
+> different. They have absolutely nothing in common.
 
-Yes, we have a pattern of 'z' for zero.
+Dubious assertion.  Both end up with zeroed memory.
 
-But the _operation_ isn't symmetric.
 
-"kzalloc()" has absolutely _nothing_ to do with "kzfree()". They are
-not some kind of "opposite symmetric operation".  They are totally
-different. They have absolutely nothing in common.
-
-So using the same naming is wrong. They have one implementation detail
-that looks superficially similar ("zero the area"), but even that
-superficial similarity is actually completely false. They may both use
-"memset()", but in one case it is correct and makes sense, and in the
-other case it's actually a bug waiting to happen, and you really
-should use that "memzero_explicit()", which is a very very different
-operation from a normal memzero().
-
-So even the implementation isn't really validly similar, but even if
-it had been, the _reason_ for doing so is completely different.
-
-They simply don't really pair up in any way.
-
-             Linus
