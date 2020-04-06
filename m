@@ -2,71 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09BC619FA53
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 18:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD8719FA6E
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 18:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729552AbgDFQkP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 12:40:15 -0400
-Received: from smtprelay0146.hostedemail.com ([216.40.44.146]:48080 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729485AbgDFQkN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 12:40:13 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 1D09D180A814B;
-        Mon,  6 Apr 2020 16:40:12 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:965:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2559:2562:2691:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3871:3872:4321:4385:4390:4395:5007:7904:10004:10400:10848:11026:11232:11658:11914:12050:12296:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21627,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: knee59_1e264919b4416
-X-Filterd-Recvd-Size: 1926
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf10.hostedemail.com (Postfix) with ESMTPA;
-        Mon,  6 Apr 2020 16:40:07 +0000 (UTC)
-Message-ID: <a1cc0e9e0d57bb277a4e7c7f7ba3492927adcc45.camel@perches.com>
-Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-From:   Joe Perches <joe@perches.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Waiman Long <longman@redhat.com>,
+        id S1729616AbgDFQlx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 12:41:53 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:42753 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729617AbgDFQlw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 12:41:52 -0400
+Received: by mail-lj1-f196.google.com with SMTP id q19so356095ljp.9
+        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 09:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Imdp89Sb0+OtYzgCpw3IcqTUqEKq3zexZbxvNKGejvc=;
+        b=TUDiV7orONaSuZs35BQ1mawth0kHmPPUSDaWUc61FjLb/6pFGQBIyQceMCqczVlLuF
+         mQUZ4NQktXHOHP07O9tK8dQGGfgRoZsmJ5GzKHbZpqurg7mKkrY7MYTCAAZGVXJrRCHG
+         ddaqR5NSXTSjop3RFyga75kOxzIQpqbjG4OKY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Imdp89Sb0+OtYzgCpw3IcqTUqEKq3zexZbxvNKGejvc=;
+        b=uNou5pCTagGcqW1ps2Q5Qs1K912sMa3iT+HZ3Y8f/RnUqN32Rdf86d8+RiTU0MG8w5
+         jG4jQiuAGZTMVoY59Dia4PqGwVR97XyfPCGdB+BrtLZnh36WaeXegtwlCvk31CooU2V2
+         bY5AwizjE9S0EBwQX+TUud+rYRE/aiPWwbSZxn+dM8qFM+q4Jw0J4Yy2BzyDftu+mc0z
+         XJzChxPxlz6tl1y6k0gL4XU6IfZU+6Nbm0vjcGDU1/hQvJXY23EjaR68hThWN7OyHgc+
+         ditDKxj/rDQOD3nb0PzNZvKVYcZW+gpiYOXkmsIffhcQ7N52a6mnx1dLCRygM991rIiG
+         6kIg==
+X-Gm-Message-State: AGi0PuZ3SLpO4ACAf3NglshHbNVbsIo88gcGduqnQRkzdvdiJMweeHNd
+        nutecJEVp2cigjWdI/NiHjxR4uLXA4E=
+X-Google-Smtp-Source: APiQypJPm57gsbXrwti/3mnymrsF/GNKt+S2FniEpwYCMSC8ulE7SpXAdkDrY6WUWRvtrNIAYOQDFg==
+X-Received: by 2002:a2e:9585:: with SMTP id w5mr87380ljh.178.1586191308941;
+        Mon, 06 Apr 2020 09:41:48 -0700 (PDT)
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
+        by smtp.gmail.com with ESMTPSA id r21sm10839180ljp.29.2020.04.06.09.41.47
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Apr 2020 09:41:48 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id r7so327231ljg.13
+        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 09:41:47 -0700 (PDT)
+X-Received: by 2002:a2e:8911:: with SMTP id d17mr101988lji.16.1586191307660;
+ Mon, 06 Apr 2020 09:41:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
+ <20200406023700.1367-1-longman@redhat.com> <319765.1586188840@warthog.procyon.org.uk>
+ <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+In-Reply-To: <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 6 Apr 2020 09:41:31 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+Message-ID: <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data objects
+To:     Joe Perches <joe@perches.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 06 Apr 2020 09:38:08 -0700
-In-Reply-To: <334933.1586190389@warthog.procyon.org.uk>
-References: <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
-         <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
-         <20200406023700.1367-1-longman@redhat.com>
-         <319765.1586188840@warthog.procyon.org.uk>
-         <334933.1586190389@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2020-04-06 at 17:26 +0100, David Howells wrote:
-> Joe Perches <joe@perches.com> wrote:
-> 
-> > While I agree with Linus about the __ prefix,
-> > the z is pretty common and symmetric to all
-> > the <foo>zalloc uses.
-> > 
-> > And if _sensitive is actually used, it'd be
-> > good to do a s/kzfree/kfree_sensitive/ one day
-> > sooner than later.
-> 
-> How much overhead would it be to always use kvfree_sensitive() and never have
-> a kfree_sensitive()?
+On Mon, Apr 6, 2020 at 9:12 AM Joe Perches <joe@perches.com> wrote:
+>
+> While I agree with Linus about the __ prefix,
+> the z is pretty common and symmetric to all
+> the <foo>zalloc uses.
 
-I believe the is_vmalloc_addr not particularly expensive as it's
-just 2 tests.
+Yes, we have a pattern of 'z' for zero.
 
-It might make sense to go back to static inline is_vmalloc_addr
-instead of using EXPORT_SYMBOL
+But the _operation_ isn't symmetric.
 
+"kzalloc()" has absolutely _nothing_ to do with "kzfree()". They are
+not some kind of "opposite symmetric operation".  They are totally
+different. They have absolutely nothing in common.
+
+So using the same naming is wrong. They have one implementation detail
+that looks superficially similar ("zero the area"), but even that
+superficial similarity is actually completely false. They may both use
+"memset()", but in one case it is correct and makes sense, and in the
+other case it's actually a bug waiting to happen, and you really
+should use that "memzero_explicit()", which is a very very different
+operation from a normal memzero().
+
+So even the implementation isn't really validly similar, but even if
+it had been, the _reason_ for doing so is completely different.
+
+They simply don't really pair up in any way.
+
+             Linus
