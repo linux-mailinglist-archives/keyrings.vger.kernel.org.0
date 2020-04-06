@@ -2,75 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 005A319FB63
-	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02BA019FB69
+	for <lists+keyrings@lfdr.de>; Mon,  6 Apr 2020 19:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726642AbgDFRYx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 13:24:53 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:35562 "EHLO
+        id S1726546AbgDFR0Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 13:26:24 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:37388 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726637AbgDFRYx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:24:53 -0400
+        with ESMTP id S1726506AbgDFR0Y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 13:26:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
         :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=CbTeDSEPwtaCzw6yjO0kB3OJ1K9g71GqZ7e8uE+/IlU=; b=O+aZuVVcCdlpNcA+sNO1Ued0KP
-        ZR9UWZ6reaACpuBx+ucTaAQB5/U2W7yy+goHjJgwttK8J/DLJSqnYFVsOjAW4RRrdvNon8mbwzrQc
-        EJ+T175Hofiqqon9aClUvjZUm3DVtg42OMmNCNqD5z1a4HlulRC/n8CM//KdMw3nQgIGepO8nzsbq
-        KNNX1HIiagz2ZmxeiIZlHFnkJUaAQoQUy3SU6IGdSRP2nN/hXgQZU/F6YlGV96vNPdXbCMcG1t+zk
-        MYbM9yFD2OF5z1QZ4GKZoH+dop45A6A9E/bGA202PNAxfWvQNfxfQfzKpEy9oXtuJ52DcfcjOPgeI
-        5lKHaKXg==;
+        bh=q9CGTy2dc0MrY9cMsMeMUAWfqIRDO4jAB1O3OBknZB8=; b=XD9ULJvK1A0c/SvJDtNXABwnkO
+        q6V6WTCsRVQMGZAOQJtEG1yW9Cj1QbMiEvHrNlGL50EXlc8TJxSiSyhSNpg3vAzNDiPdfp50jwilf
+        OwG/Tm7zSYHrJybEWgPCyim+srezIdWLQ7uydH+6stOg5kDI6GS3PTn6hR2M8hMA1y97s42CIdCfR
+        4Zbj1JJIRt7d0f9QEtdxrnHvwcl3kckU7w8uKXJlSsgcd2Pk5j+I9/gwtlSBDO9FHgZAcO4S2my/j
+        oVp+HPogBzxcjgvW12kNo8Uowg9CYVkvIVPGG181fSAXpUXZYZxeAuB0QWTEqqZt0UGnayxTDaXdH
+        E4w+vY+w==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jLVUK-0003Az-2X; Mon, 06 Apr 2020 17:24:44 +0000
-Date:   Mon, 6 Apr 2020 10:24:44 -0700
+        id 1jLVVq-000608-H7; Mon, 06 Apr 2020 17:26:18 +0000
+Date:   Mon, 6 Apr 2020 10:26:18 -0700
 From:   Matthew Wilcox <willy@infradead.org>
 To:     Joe Perches <joe@perches.com>
-Cc:     David Howells <dhowells@redhat.com>,
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
         Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] mm: Add kvfree_sensitive() for freeing sensitive data
  objects
-Message-ID: <20200406172444.GG21484@bombadil.infradead.org>
-References: <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
- <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
+Message-ID: <20200406172618.GH21484@bombadil.infradead.org>
+References: <a291cce3ff1ba978e7ad231a8e1b7d82f6164e86.camel@perches.com>
  <20200406023700.1367-1-longman@redhat.com>
  <319765.1586188840@warthog.procyon.org.uk>
- <334933.1586190389@warthog.procyon.org.uk>
- <dbfcbbd55c63fc87bfb31af3cae1b15e04d8a821.camel@perches.com>
+ <d509771b7e08fff0d18654b746e413e93ed62fe8.camel@perches.com>
+ <CAHk-=whgvhyi_=2AsfFLUznqmrO9TOjuzTvcYHvCC=f0+Y7PkQ@mail.gmail.com>
+ <adc76d7c441e8f10697b61ceaff66207fb219886.camel@perches.com>
+ <CAHk-=wgyt8j5rEnyKE8YdrRjQof1kvyom1CensTE0-Bp-meGnA@mail.gmail.com>
+ <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dbfcbbd55c63fc87bfb31af3cae1b15e04d8a821.camel@perches.com>
+In-Reply-To: <7eb36a794df38c885689085618a8a4ff9df3dd2c.camel@perches.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Apr 06, 2020 at 10:10:20AM -0700, Joe Perches wrote:
-> On Mon, 2020-04-06 at 17:26 +0100, David Howells wrote:
-> > Joe Perches <joe@perches.com> wrote:
-> > 
-> > > While I agree with Linus about the __ prefix,
-> > > the z is pretty common and symmetric to all
-> > > the <foo>zalloc uses.
-> > > 
-> > > And if _sensitive is actually used, it'd be
-> > > good to do a s/kzfree/kfree_sensitive/ one day
-> > > sooner than later.
-> > 
-> > How much overhead would it be to always use kvfree_sensitive() and never have
-> > a kfree_sensitive()?
+On Mon, Apr 06, 2020 at 10:20:24AM -0700, Joe Perches wrote:
+> > You really don't seem to get the whole "kzfree() has absolutely
+> > _nothing_ to do with kzalloc() apart from a dubious implementation
+> > details".
 > 
-> Another possibility:
-> 
-> Add yet another alloc flag like __GFP_SENSITIVE
-> and have kfree operate on that and not have a
-> kfree_sensitive at all.
+> API function naming symmetry is good.
 
-kfree() doesn't take GFP flags.
+It's good when there's actual symmetry between the two functions.
+
+kvalloc() memory should be freed with kvfree().  That makes
+sense.  kzalloc() memory should not normally be freed with kzfree().
+The symmetry hurts you, not helps you.
+
