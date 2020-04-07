@@ -2,86 +2,87 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6471A03B4
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 02:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D651A04C4
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 04:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726329AbgDGAZg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Apr 2020 20:25:36 -0400
-Received: from mail-wm1-f44.google.com ([209.85.128.44]:51781 "EHLO
-        mail-wm1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726310AbgDGAZg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 20:25:36 -0400
-Received: by mail-wm1-f44.google.com with SMTP id z7so7224wmk.1
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 17:25:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sHSjWl+mYvKt/DjrFzrzO6OuDGs9wYLz8mqcjPvQGKM=;
-        b=IoYu1RPY06UNE6+5nNWoiyoJ9zzNVHQlRX69tAWG4D8zpMPeFHtjcNyFVZMvF7YkbC
-         F2AMiC4riGsHTuL0cP2f4zMfsDF22Usl2FzGX+nJEE+q/BRQXyWVIY7KQM84EPHXBJxR
-         lFTPFCb6umzBcEQfGtnUcWkQbGJoU7X7s4TkNZ8KTMSEfT1e86/gpLKBUleF/o5rxgo5
-         1RF5eFWzxey1KvS5S/fkGyhMomj+hPdnyzjfhm64Ktt9C7KhnYVrzXiaqH127Eb7CkWg
-         qVgwB9Q6+Twb6/WXPqtQR5BWphLMdpBA3yqk5UAARsYIWOtkWGlWGvEBhcNJ6kd5CCsp
-         7ZFg==
-X-Gm-Message-State: AGi0PuZ9nf8YYxitqJc3B4/8tGVG50hdbr/WT6rUMJo5JYZ5628C+Wpb
-        T0u6bdOjjG+48ZVwLwaVjl0bsBPS
-X-Google-Smtp-Source: APiQypIVpRLAuYbPyY2tb0xIU6ZoSnxXrjDwBJchM1Ini9iCyj2AHj63nabCkTRNMRqCkXR/AXOuuQ==
-X-Received: by 2002:a05:600c:2c12:: with SMTP id q18mr1681573wmg.174.1586219132812;
-        Mon, 06 Apr 2020 17:25:32 -0700 (PDT)
-Received: from localhost.localdomain ([185.79.22.180])
-        by smtp.gmail.com with ESMTPSA id 132sm1435377wmc.47.2020.04.06.17.25.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2020 17:25:32 -0700 (PDT)
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-To:     keyrings@vger.kernel.org
-Cc:     David Howells <dhowells@redhat.com>
-Subject: [RFC] keys: Verify public keys without X509 AKID
-Date:   Tue,  7 Apr 2020 02:26:07 +0200
-Message-Id: <20200407002607.25234-1-andrew.zaborowski@intel.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726310AbgDGCQO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Apr 2020 22:16:14 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:26944 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726287AbgDGCQO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Apr 2020 22:16:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586225773;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LE82/FZcwe9r070oAqWiHB0/uFWMlEacVo8VBYOQZEM=;
+        b=MH+0oefTJpm5h3XKl4ntgXDNa64gvRuXU7nrHShxik7U3XPaOoDPVmpYtnvGMDYOomLXaN
+        YO6R74JIduxs7zDFHnjETtXiy+PHrUj+jH4eTJ82chv0EaYzAWfxHATxKSajqH9v7hBRAD
+        lfg1a821iv+UEFUL6PsHZWfqpp+KmC8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-336-isqSLhojMVqpZAgjGf2_FA-1; Mon, 06 Apr 2020 22:16:11 -0400
+X-MC-Unique: isqSLhojMVqpZAgjGf2_FA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8249F1005514;
+        Tue,  7 Apr 2020 02:16:09 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-115-20.rdu2.redhat.com [10.10.115.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 90BE6118F52;
+        Tue,  7 Apr 2020 02:16:04 +0000 (UTC)
+Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+To:     Joe Perches <joe@perches.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>
+References: <20200406185827.22249-1-longman@redhat.com>
+ <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <1e4a6174-04be-6c05-fd6e-b43fefd317fc@redhat.com>
+Date:   Mon, 6 Apr 2020 22:16:04 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-There are apparently non-root X.509 v3 certificates in use out there
-that contain no Authority Key Identifier extension (RFC5280 section
-4.2.1.1) which the kernel asymmetric key code relies on for any lookup
-and verification.  I'm not sure if these certificates are generated by
-openssl with a special setting or by some other software.
+On 4/6/20 3:38 PM, Joe Perches wrote:
+> On Mon, 2020-04-06 at 14:58 -0400, Waiman Long wrote:
+>> For kvmalloc'ed data object that contains sensitive information like
+>> cryptographic key, we need to make sure that the buffer is always
+>> cleared before freeing it. Using memset() alone for buffer clearing may
+>> not provide certainty as the compiler may compile it away. To be sure,
+>> the special memzero_explicit() has to be used.
+> [] 
+>>  extern void kvfree(const void *addr);
+>> +extern void kvfree_sensitive(const void *addr, size_t len);
+> Question: why should this be const?
+>
+> 2.1.44 changed kfree(void *) to kfree(const void *) but
+> I didn't find a particular reason why.
 
-Looking at RFC5280 4.2.1.1 it says:
+I am just following the function prototype used by kvfree(). Even
+kzfree(const void *) use const. I can remove "const" if others agree.
 
-"This extension is used where an issuer has multiple signing keys [...]"
+Cheers,
+Longman
 
-making it sound like the extension is optional if the issuer uses only
-one signing key.  It also says:
-
-"The keyIdentifier field of the authorityKeyIdentifier extension MUST
-be included in all certificates [...]"
-
-making it sound like it's mandatory for everyone.  Openssl does treat
-the AKID extensions as completely optional but there's no comment in
-the code explaining the reasoning.
-
-I propose to add lookups by just the Distinguished Names in the
-certificate to solve this.  The change is a little more invasive than
-I'd like but I think it makes sense to support these certificates.
-A third id would have to be added to the struct asymmetric_key_ids
-declaration in asymmetric-type.h, and to the
-struct public_key_signature::auth_ids declaration in public_key.h, a
-third ID parameter in find_asymmetric_key() and a third query syntax
-like "name:<hex string>" would have to be supported in addition to
-"id:.." and "ex:..", which would be used then the other two IDs are
-not present.
-
-The combinatino of the three IDs in struct asymmetric_key_ids would
-still be unique to each key.  Lookups would be unambiguous provided
-that the CAs respect the condition that the AKID may only be omitted
-if they use a single signing key.  What's your opinion about adding
-this before I spend time on it?
-
-Best regards
