@@ -2,63 +2,55 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3331A1758
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 23:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 048DB1A175A
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 23:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726393AbgDGVW5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 17:22:57 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:38568 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726380AbgDGVW4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 17:22:56 -0400
-Received: by mail-lj1-f194.google.com with SMTP id v16so5397802ljg.5
-        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 14:22:53 -0700 (PDT)
+        id S1726386AbgDGVZA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 17:25:00 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:43224 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726380AbgDGVZA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 17:25:00 -0400
+Received: by mail-lj1-f195.google.com with SMTP id g27so5331303ljn.10;
+        Tue, 07 Apr 2020 14:24:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VqAA90EFEqaZqtfJsahs6rAmiP9w+6pABhPEUrk2J0s=;
-        b=cWtyAfRJ6HZ9whZ7T1OwTqUkHj67UHyQLHNktG1URy3jMW58GkW80jxJjlj8gB7GhE
-         3F0b04BHhGAUviItNAlVtNpm1kMC4wyjt5JtQfw/V+AcyE9EB5lvlfGHC0oM8Tdjg/zB
-         YwojkZl7/nVdBy5im39XCep/6nxy8E2TkGYTI=
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=GAtwCOX+dVfyCKVRB96BgVe7k8fkkTDmPi/mndtHbHE=;
+        b=BgIKnNfS4RTbHgxPmKD4ikz7Ij+7CTthmYLhRnxOqyPogmv3ieCGlkMYQE40L6md9X
+         aOFfMQFwTmjYEqERE6Kpu3d8krazLneOskIQJOfRlOr0ayxQua9/P/VrHys+HB+nT4M+
+         ISmeXjLYowPohbdNIC1ovev8PQbzA0x9A58xsMXu5VNCVJX43B8u2G8OvW83ZOgTRYzg
+         Ea67m1DIbEEd1nxLwkO6g7VvH130Da6uEUFTeMcH2kLN0L0S3VLhcKWbESLI4eC07ud5
+         r/KEOI0xTJMLKxhZ8jwPWfYBCi68Vz6uUO2Z8hLCFQ8FVaK9x0neztbqdNyKUaJUHX0I
+         Fz9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VqAA90EFEqaZqtfJsahs6rAmiP9w+6pABhPEUrk2J0s=;
-        b=B20pZoUu8XdWVpdchQl/FqW+EzpEzYnyYE5OLaGEsxTnKYjTTJKRrwvP4GpDv/VGPI
-         C1bfJcY4StO1fib5auaxXNx74JYy2xSi9+i6FhtT2tKI5KPK7wxoHwJcBQlADHJ4XdqQ
-         RsL5kvIELNYG/ASeskPtmjxc3vzqyujgC3V6EtOB7swNcO7bygtuvEhnhXmHHLwWZCOc
-         zj3ElwK6NRVgportAcCSDsY/4mqnq2FZXW+T8u8iMs5cYRXcdIARYv5ITolxBPX/o4uW
-         XoBCNc4sXCPb9JbZ0Oji10AAZDrS2Jj0R8jsPny60kFmik9iv91neXioNfhcdveypk6M
-         xZ0A==
-X-Gm-Message-State: AGi0PuaQgb+PVvAtWLLodbMWijtZuRtBd7y7lraUP3PVLEhihUAWxRgn
-        LVwbq5F/bSPL+7ek76740Ll3Qgz+tXs=
-X-Google-Smtp-Source: APiQypJa+ndRtORGlAT8W03+QY2rTFaXQXTQmMqOqwRa5o2gYI6/ZHiEUuQju9kI+iAgqttuLPeXjg==
-X-Received: by 2002:a2e:3203:: with SMTP id y3mr2737042ljy.54.1586294572008;
-        Tue, 07 Apr 2020 14:22:52 -0700 (PDT)
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
-        by smtp.gmail.com with ESMTPSA id e4sm14001610lfn.80.2020.04.07.14.22.50
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2020 14:22:50 -0700 (PDT)
-Received: by mail-lj1-f173.google.com with SMTP id z26so1257909ljz.11
-        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 14:22:50 -0700 (PDT)
-X-Received: by 2002:a2e:a58e:: with SMTP id m14mr2888317ljp.204.1586294570185;
- Tue, 07 Apr 2020 14:22:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200406185827.22249-1-longman@redhat.com> <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
- <CAHk-=wg_mkSc-pH8ntGHR=no9DOLRQyxdtU20p55DrM1su6QzA@mail.gmail.com>
- <CAHk-=wg2Vsb0JETo24=Tc-T2drwMopMRfKnc__r5SZ6tEnbwcA@mail.gmail.com> <699292.1586294051@warthog.procyon.org.uk>
-In-Reply-To: <699292.1586294051@warthog.procyon.org.uk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 7 Apr 2020 14:22:33 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whwaNvyd1q=h0nUQio9byojpxufGkOiVfAh10woRs8KSA@mail.gmail.com>
-Message-ID: <CAHk-=whwaNvyd1q=h0nUQio9byojpxufGkOiVfAh10woRs8KSA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data objects
-To:     David Howells <dhowells@redhat.com>
-Cc:     Joe Perches <joe@perches.com>, Waiman Long <longman@redhat.com>,
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=GAtwCOX+dVfyCKVRB96BgVe7k8fkkTDmPi/mndtHbHE=;
+        b=gRwFdavB6ZnEQ8xaNMuYyEv57kLS5qiovZtfKJjX78/WMnhusRSJ5dvXE4HwNQIC0o
+         hAH99pEanrvdYN+aJwapRSfyAcaDNjdy7yIsskm/QCXSlle9cnGMoDJjNDhDjZXUTVYH
+         g5xKY8CQqPYlV0B9lGraX+CHBEygCbaNDZaZ5/THK6G/43+oIzMC7nJ6NIySEkmjk2Nv
+         OecobLMG22bAPbHR4y3pWygil//i7dgd6sZOHTxls+vMEEQdclFijM7hvdaheWbW/CNz
+         T5tYloxyJfHjy0FWImWcDLaJRmJoIwYp0vU9+kurKeli0INgHIvW4J/P394+cB0L+1tj
+         GBAg==
+X-Gm-Message-State: AGi0PuYAw5SUUYJceyhnC72oyZ7LZlAcsi94eMWIfqEkivtGBiw+GKaK
+        pZD62thfEU8cPEmw95Q4fPM=
+X-Google-Smtp-Source: APiQypJ1CV9U1pJJ9r/hk6aiuySfuJxmSE5p3vbXxVLJwS8xCnpb+bQiM0C4oG89/Xtu400DJFfjsw==
+X-Received: by 2002:a05:651c:23b:: with SMTP id z27mr2810591ljn.125.1586294696371;
+        Tue, 07 Apr 2020 14:24:56 -0700 (PDT)
+Received: from pc636 (h5ef52e31.seluork.dyn.perspektivbredband.net. [94.245.46.49])
+        by smtp.gmail.com with ESMTPSA id y20sm12582621ljd.35.2020.04.07.14.24.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2020 14:24:55 -0700 (PDT)
+From:   Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date:   Tue, 7 Apr 2020 23:24:47 +0200
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Waiman Long <longman@redhat.com>, Joe Perches <joe@perches.com>,
         Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
@@ -66,45 +58,50 @@ Cc:     Joe Perches <joe@perches.com>, Waiman Long <longman@redhat.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
         David Rientjes <rientjes@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+Message-ID: <20200407212447.GA29554@pc636>
+References: <20200407200318.11711-1-longman@redhat.com>
+ <0fe5dcaf078be61ef21c7f18b750c5dc14c69dd7.camel@perches.com>
+ <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
+ <CAHk-=whV5Z4XioUOW0UM-PBrW7iqb0HwWKQU5Vn8b5pmsDm=Ww@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whV5Z4XioUOW0UM-PBrW7iqb0HwWKQU5Vn8b5pmsDm=Ww@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 7, 2020 at 2:14 PM David Howells <dhowells@redhat.com> wrote:
->
-> It might be worth asking the compiler folks to give us an __attribute__ for
-> that - even if they don't do anything with it immediately.  So we might have
-> something like:
->
->         void free(const volatile void *ptr) __attribute__((free(1)));
+On Tue, Apr 07, 2020 at 02:01:01PM -0700, Linus Torvalds wrote:
+> On Tue, Apr 7, 2020 at 1:45 PM Waiman Long <longman@redhat.com> wrote:
+> >
+> > If the memory is really virtually mapped, the only way to find out the
+> > size of the object is to use find_vm_area() which can be relatively high
+> > cost and no simple helper function is available.
+> 
+> We _could_ just push it down to a "vfree_sensitive()", and do it
+> inside the vfree logic. That ends up obviously figuring out the size
+> of the area eventually.
+> 
+> But since the vmalloc data structures fundamentally aren't irq-safe,
+> vfree() actually has magical things like "if called in an interrupt,
+> we'll delay it to work context".
+> 
+Just some thoughts. Sorry for jumping in.
 
-Yeah, that sounds sane.
+Seems like there is only one place where we can "sleep". I mean when we
+call vfree(). That is free_vmap_area_noflush() -> try_purge_vmap_area_lazy().
+Basically try_purge_vmap_area_lazy() can call the schedule() what is not 
+allowed for IRQs. Instead of inlining the try_purge_vmap_area_lazy()
+into current context we can schedule_work(). And i think it makes sense
+from many point of views.
 
-> There are some for allocation functions, some of which we use, though I'm not
-> sure we do so as consistently as we should (should inline functions like
-> kcalloc() have them, for example?).
+Also, we can end up in zeroed non-existance vmap area if we do not find_vmap_area().
 
-I think that gcc supports a "malloc" attribute, but it's only used for
-alias analysis optimizations, afaik (ie it says that the pointer the
-function returns cannot alias anything else).
+Thanks!
 
-So we do have that "__malloc" thing, but I'm not sure how much it
-actually matters.
-
-And adding it to inline functions shouldn't be _wrong_, but it
-shouldn't matter either, since I think the alias analysis would work
-regardless.
-
-I wonder how much of a code generation difference it makes. I suspect
-not a lot, but maybe I'd be surprsied.
-
-But yes, having the free attribute would be consistent (even if the
-syntax for it might be as you suggest, kind of like the __printf()
-attribute works). Even if it wasn't initially used for anything it
-wouldn't hurt, and maybe some day it would improve warnings (and allow
-the compiler to do the dead store elimination that started this whole
-long set of threads in the first place..)
-
-            Linus
+--
+Vlad Rezki
