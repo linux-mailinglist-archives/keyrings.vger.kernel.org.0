@@ -2,99 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A74D1A16F2
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 22:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAFCD1A1716
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 23:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbgDGUpz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 16:45:55 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:51219 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726437AbgDGUpz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 16:45:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586292354;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8tsRuRFXODf5QqTn1oeK1OTxqbe8Dg3SrZmZfgBM20M=;
-        b=isGRRXSo8lS+lWaOJVjukZU9pp2HtaiGMfxycp8v/QdJiw1c/vq53sOMj7ioSnTOqImFrt
-        MtlRHEy9BI+o6dmcvQefFgNv2qBEauMs2aToKY8TC1Bvk8d2ApNf9rM9ZTbz2ADr+pYpVQ
-        4IqLXTlkOi1IZ8sNAJqPXyOWiZBDzYU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-256--KYHo8WyOAC325KBq-9lFA-1; Tue, 07 Apr 2020 16:45:52 -0400
-X-MC-Unique: -KYHo8WyOAC325KBq-9lFA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F61C190D34B;
-        Tue,  7 Apr 2020 20:45:50 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-117-180.rdu2.redhat.com [10.10.117.180])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D0DA55DDA5;
-        Tue,  7 Apr 2020 20:45:45 +0000 (UTC)
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-To:     Joe Perches <joe@perches.com>,
+        id S1726406AbgDGVBX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 17:01:23 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:44661 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726393AbgDGVBX (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 17:01:23 -0400
+Received: by mail-lj1-f194.google.com with SMTP id z26so1203386ljz.11
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 14:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=epjd3hRndDDxUzNxhGw+kNUEWswsyoCP1k+ltMRz2F0=;
+        b=Rea+dN4Po4ublGuumqEu1Z9YdmnTeD34HLjcUPAn4kHYHWLUNPIQ/VZCsT6xyf8JiS
+         bmcrncrGMpFp3ozkp1oN3IxqZ435NGWt/x7uln8afuzN0jgjeD5EbAAwriXLYujNsWDj
+         hGtKlgxlKKZWInJKxtH5YVmPqsKEobcBPvotE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=epjd3hRndDDxUzNxhGw+kNUEWswsyoCP1k+ltMRz2F0=;
+        b=qFLBwNBr4RRj2gfzcFPgyxWadUqBz/22L3+HPLHAdhi7ncvq2ENhi31mosAAZP8kvL
+         Ki0w/42H7Qr6nrlZ5MCl0wuyOamr2nY+TEuhdu7ZVbTVAPYKUiV25Ehw4hc/XCs+uuDw
+         IHhoYWa0YxsV2X28GT3MsCtz8iltzxXq0BXcy+b4rh2evMn47PsMsd3stlaxOfVshkqh
+         CvjVY3pzwjcucokC06b2BKyPfDpuBFdmc03ID/+AMoocow9qOFcuMjutY94qj5YgwuPc
+         sIulIODm4HwYMc7Hmej9VxGbdNJbILgvhbwz2fU8nz0fD8t4jV/pYxEHHWXffRbVjT9S
+         izCw==
+X-Gm-Message-State: AGi0PuYts6MReKPu3nnOlCE3bNtzIFL0LsEPxf2mU+ZwddWMWNfjyOOv
+        7GJ/0L5rromqJ1Q9RukX8/tE46BXGLM=
+X-Google-Smtp-Source: APiQypKUn90174tlYxy4vTaQUEBg+wAYkpgclRCscMEkxmPxo/q49yoHDqhzooAOLOHEPKvoF8vl/A==
+X-Received: by 2002:a2e:90c6:: with SMTP id o6mr2937571ljg.18.1586293278852;
+        Tue, 07 Apr 2020 14:01:18 -0700 (PDT)
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
+        by smtp.gmail.com with ESMTPSA id c21sm411905lfh.16.2020.04.07.14.01.17
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2020 14:01:17 -0700 (PDT)
+Received: by mail-lj1-f177.google.com with SMTP id q22so1570482ljg.0
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 14:01:17 -0700 (PDT)
+X-Received: by 2002:a05:651c:50e:: with SMTP id o14mr2769380ljp.241.1586293277007;
+ Tue, 07 Apr 2020 14:01:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200407200318.11711-1-longman@redhat.com> <0fe5dcaf078be61ef21c7f18b750c5dc14c69dd7.camel@perches.com>
+ <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
+In-Reply-To: <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 7 Apr 2020 14:01:01 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whV5Z4XioUOW0UM-PBrW7iqb0HwWKQU5Vn8b5pmsDm=Ww@mail.gmail.com>
+Message-ID: <CAHk-=whV5Z4XioUOW0UM-PBrW7iqb0HwWKQU5Vn8b5pmsDm=Ww@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data objects
+To:     Waiman Long <longman@redhat.com>
+Cc:     Joe Perches <joe@perches.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
         David Rientjes <rientjes@google.com>
-References: <20200407200318.11711-1-longman@redhat.com>
- <0fe5dcaf078be61ef21c7f18b750c5dc14c69dd7.camel@perches.com>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
-Date:   Tue, 7 Apr 2020 16:45:45 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <0fe5dcaf078be61ef21c7f18b750c5dc14c69dd7.camel@perches.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 4/7/20 4:31 PM, Joe Perches wrote:
-> On Tue, 2020-04-07 at 16:03 -0400, Waiman Long wrote:
->> For kvmalloc'ed data object that contains sensitive information like
->> cryptographic key, we need to make sure that the buffer is always
->> cleared before freeing it. Using memset() alone for buffer clearing may
->> not provide certainty as the compiler may compile it away. To be sure,
->> the special memzero_explicit() has to be used.
->>
->> This patch introduces a new kvfree_sensitive() for freeing those
->> sensitive data objects allocated by kvmalloc(). The relevnat places
->> where kvfree_sensitive() can be used are modified to use it.
-> []
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> []
->> @@ -757,6 +757,7 @@ static inline void *kvcalloc(size_t n, size_t size, gfp_t flags)
->>  }
->>  
->>  extern void kvfree(const void *addr);
->> +extern void kvfree_sensitive(const void *addr, size_t len);
-> Why should size_t len be required?
+On Tue, Apr 7, 2020 at 1:45 PM Waiman Long <longman@redhat.com> wrote:
 >
-> Why not do what kzfree does and memset
-> the entire allocation? (area->size)
+> If the memory is really virtually mapped, the only way to find out the
+> size of the object is to use find_vm_area() which can be relatively high
+> cost and no simple helper function is available.
 
-If the memory is really virtually mapped, the only way to find out the
-size of the object is to use find_vm_area() which can be relatively high
-cost and no simple helper function is available. On the other hand, the
-length is readily available in the callers. So passing the length
-directly to the kvfree_sensitive is simpler.
+We _could_ just push it down to a "vfree_sensitive()", and do it
+inside the vfree logic. That ends up obviously figuring out the size
+of the area eventually.
 
-Cheers,
-Longman
+But since the vmalloc data structures fundamentally aren't irq-safe,
+vfree() actually has magical things like "if called in an interrupt,
+we'll delay it to work context".
 
+So that "eventually" can be quite a bit later, and it would delay the
+overwriting of the sensitive data if we did that.
+
+So this patch does end up simpler, but for vfree data it is actually
+technically the better approach too (since overwriting the sensitive
+data asap is what you want).
+
+            Linus
