@@ -2,47 +2,62 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BE01A174F
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 23:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3331A1758
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 23:22:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgDGVOX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 17:14:23 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:30952 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726393AbgDGVOX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 17:14:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586294062;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JDR/Ja/MXRViYxacEiXghWWXRn30qULV8zNLAxslGog=;
-        b=Hbak8jfxFrUX3zgjjidCy4zjiBzh+4SoCK5PO+TawDqFD8qE9qaJCKOHknvZs5ys5i2YqM
-        V5Gz72IIZRSX5f3vbnF01XDvFxTlYwFjYq7IrzvpEJluP9j1SzQLp1chnC9MZ3DQ6YRvqE
-        TOjuZn0zLKEUW5d3jGoCYlbxteK7JBs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-154-8Woi6jfnOlGwnE-45vTsXw-1; Tue, 07 Apr 2020 17:14:20 -0400
-X-MC-Unique: 8Woi6jfnOlGwnE-45vTsXw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B74658017CE;
-        Tue,  7 Apr 2020 21:14:17 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-224.rdu2.redhat.com [10.10.112.224])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A2CD09B912;
-        Tue,  7 Apr 2020 21:14:12 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAHk-=wg2Vsb0JETo24=Tc-T2drwMopMRfKnc__r5SZ6tEnbwcA@mail.gmail.com>
-References: <CAHk-=wg2Vsb0JETo24=Tc-T2drwMopMRfKnc__r5SZ6tEnbwcA@mail.gmail.com> <20200406185827.22249-1-longman@redhat.com> <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com> <CAHk-=wg_mkSc-pH8ntGHR=no9DOLRQyxdtU20p55DrM1su6QzA@mail.gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     dhowells@redhat.com, Joe Perches <joe@perches.com>,
-        Waiman Long <longman@redhat.com>,
+        id S1726393AbgDGVW5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 17:22:57 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:38568 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726380AbgDGVW4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 17:22:56 -0400
+Received: by mail-lj1-f194.google.com with SMTP id v16so5397802ljg.5
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 14:22:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VqAA90EFEqaZqtfJsahs6rAmiP9w+6pABhPEUrk2J0s=;
+        b=cWtyAfRJ6HZ9whZ7T1OwTqUkHj67UHyQLHNktG1URy3jMW58GkW80jxJjlj8gB7GhE
+         3F0b04BHhGAUviItNAlVtNpm1kMC4wyjt5JtQfw/V+AcyE9EB5lvlfGHC0oM8Tdjg/zB
+         YwojkZl7/nVdBy5im39XCep/6nxy8E2TkGYTI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VqAA90EFEqaZqtfJsahs6rAmiP9w+6pABhPEUrk2J0s=;
+        b=B20pZoUu8XdWVpdchQl/FqW+EzpEzYnyYE5OLaGEsxTnKYjTTJKRrwvP4GpDv/VGPI
+         C1bfJcY4StO1fib5auaxXNx74JYy2xSi9+i6FhtT2tKI5KPK7wxoHwJcBQlADHJ4XdqQ
+         RsL5kvIELNYG/ASeskPtmjxc3vzqyujgC3V6EtOB7swNcO7bygtuvEhnhXmHHLwWZCOc
+         zj3ElwK6NRVgportAcCSDsY/4mqnq2FZXW+T8u8iMs5cYRXcdIARYv5ITolxBPX/o4uW
+         XoBCNc4sXCPb9JbZ0Oji10AAZDrS2Jj0R8jsPny60kFmik9iv91neXioNfhcdveypk6M
+         xZ0A==
+X-Gm-Message-State: AGi0PuaQgb+PVvAtWLLodbMWijtZuRtBd7y7lraUP3PVLEhihUAWxRgn
+        LVwbq5F/bSPL+7ek76740Ll3Qgz+tXs=
+X-Google-Smtp-Source: APiQypJa+ndRtORGlAT8W03+QY2rTFaXQXTQmMqOqwRa5o2gYI6/ZHiEUuQju9kI+iAgqttuLPeXjg==
+X-Received: by 2002:a2e:3203:: with SMTP id y3mr2737042ljy.54.1586294572008;
+        Tue, 07 Apr 2020 14:22:52 -0700 (PDT)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
+        by smtp.gmail.com with ESMTPSA id e4sm14001610lfn.80.2020.04.07.14.22.50
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2020 14:22:50 -0700 (PDT)
+Received: by mail-lj1-f173.google.com with SMTP id z26so1257909ljz.11
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 14:22:50 -0700 (PDT)
+X-Received: by 2002:a2e:a58e:: with SMTP id m14mr2888317ljp.204.1586294570185;
+ Tue, 07 Apr 2020 14:22:50 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200406185827.22249-1-longman@redhat.com> <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
+ <CAHk-=wg_mkSc-pH8ntGHR=no9DOLRQyxdtU20p55DrM1su6QzA@mail.gmail.com>
+ <CAHk-=wg2Vsb0JETo24=Tc-T2drwMopMRfKnc__r5SZ6tEnbwcA@mail.gmail.com> <699292.1586294051@warthog.procyon.org.uk>
+In-Reply-To: <699292.1586294051@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 7 Apr 2020 14:22:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whwaNvyd1q=h0nUQio9byojpxufGkOiVfAh10woRs8KSA@mail.gmail.com>
+Message-ID: <CAHk-=whwaNvyd1q=h0nUQio9byojpxufGkOiVfAh10woRs8KSA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data objects
+To:     David Howells <dhowells@redhat.com>
+Cc:     Joe Perches <joe@perches.com>, Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
@@ -51,44 +66,45 @@ Cc:     dhowells@redhat.com, Joe Perches <joe@perches.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Matthew Wilcox <willy@infradead.org>,
         David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data objects
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <699291.1586294051.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 07 Apr 2020 22:14:11 +0100
-Message-ID: <699292.1586294051@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On Tue, Apr 7, 2020 at 2:14 PM David Howells <dhowells@redhat.com> wrote:
+>
+> It might be worth asking the compiler folks to give us an __attribute__ for
+> that - even if they don't do anything with it immediately.  So we might have
+> something like:
+>
+>         void free(const volatile void *ptr) __attribute__((free(1)));
 
-> So the _real_ prototype for 'free()'-like operations should be something=
- like
-> =
+Yeah, that sounds sane.
 
->     void free(const volatile killed void *ptr);
-> =
+> There are some for allocation functions, some of which we use, though I'm not
+> sure we do so as consistently as we should (should inline functions like
+> kcalloc() have them, for example?).
 
-> where that "killed" also tells the compiler that the pointer lifetime
-> is dead, so that using it afterwards is invalid. So that the compiler
-> could warn us about some of the most trivial use-after-free cases.
+I think that gcc supports a "malloc" attribute, but it's only used for
+alias analysis optimizations, afaik (ie it says that the pointer the
+function returns cannot alias anything else).
 
-It might be worth asking the compiler folks to give us an __attribute__ fo=
-r
-that - even if they don't do anything with it immediately.  So we might ha=
-ve
-something like:
+So we do have that "__malloc" thing, but I'm not sure how much it
+actually matters.
 
-	void free(const volatile void *ptr) __attribute__((free(1)));
+And adding it to inline functions shouldn't be _wrong_, but it
+shouldn't matter either, since I think the alias analysis would work
+regardless.
 
-There are some for allocation functions, some of which we use, though I'm =
-not
-sure we do so as consistently as we should (should inline functions like
-kcalloc() have them, for example?).
+I wonder how much of a code generation difference it makes. I suspect
+not a lot, but maybe I'd be surprsied.
 
-David
+But yes, having the free attribute would be consistent (even if the
+syntax for it might be as you suggest, kind of like the __printf()
+attribute works). Even if it wasn't initially used for anything it
+wouldn't hurt, and maybe some day it would improve warnings (and allow
+the compiler to do the dead store elimination that started this whole
+long set of threads in the first place..)
 
+            Linus
