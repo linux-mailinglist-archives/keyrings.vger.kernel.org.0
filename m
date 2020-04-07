@@ -2,80 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E25E21A0614
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 07:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9188D1A0782
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 08:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbgDGFKZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 01:10:25 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:33225 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726399AbgDGFKZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 01:10:25 -0400
-Received: by mail-vk1-f193.google.com with SMTP id f63so525243vkh.0
-        for <keyrings@vger.kernel.org>; Mon, 06 Apr 2020 22:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=C/++cDFQHiXv3kxSp0WVqjPEs//cPmsezKxY9cLy0oVz0MPZBEkqZ1YPL787XWVjtB
-         P28Wu4BytGYtnXLfhq5W0QzKzSwefQsUseiW1245gdgQnihjw3EiAMrec6tn8puoCkcW
-         h/xfFhN8HuBQmv9338/whna33JsX7Wc7Vyl0WjpBnisAJakNRPcMH8wLMy30fNnLuV/b
-         XHznkKQtVwUpQ+nR2fv0E6zJnB0duhp628+CUPfMSvxbHgIOAKvUPzelg6u91fXd9bVx
-         WqLApkDhHLEMLu6NNqgPsFmX2AF5c31MBNCMapdKWljqH1NjgNpTwOrK2DKr5bHBHTVg
-         nt4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=rsegMv3SX0nnhAzk0AskMYBXCYsfoDE/y/W5CLXpHu24OVEQq6FKY0XZMHiRCh6dIg
-         aclfgWFGfia8YITtvXdfySURSYpMUepqprjE7Fm52cPfq6zeD7/4avcHl8FuEduwwcFd
-         dYEY2pHZn8gPVq+OATeifg8cnsv6e4dRnSrqq99UiNKo23C65e0gJxUGZAomMgkpFTYM
-         gwjRs6ueQQGs8PZu0t4cxlvBQAmYsoHwGFaAUFrmcOFhBCnQb+dgSE8ndF5+mhHgHefI
-         uA5BcyF4GiQZCN7njHkfNmfpTnOddy96YFP3bECuJdORKbkjUjjuOc1d57QWGJSrn1Zs
-         CEpw==
-X-Gm-Message-State: AGi0PuY9lqFGYeS/Di27VUYXB1ClNu6gKGC+ZNP+xvVPpO+14bKx/nKZ
-        x2FqIs63b7YoOfndfd910yaFgmyIDkS1idMq3Yo=
-X-Google-Smtp-Source: APiQypJu5h6MB4G6wv65BzU0id0QjbnMrXMTUGbYkU7pC7QZW4QdRDBEdna3MNAz6E8p7xOeuAY21J/wZH5lD6RmT2w=
-X-Received: by 2002:a1f:9148:: with SMTP id t69mr195079vkd.83.1586236223455;
- Mon, 06 Apr 2020 22:10:23 -0700 (PDT)
+        id S1727089AbgDGGnY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 02:43:24 -0400
+Received: from smtprelay0124.hostedemail.com ([216.40.44.124]:39070 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726865AbgDGGnY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 02:43:24 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 6F365838437C;
+        Tue,  7 Apr 2020 06:43:23 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:965:966:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:2892:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:4385:4390:4395:5007:6119:7903:10004:10400:10848:11232:11658:11914:12048:12297:12663:12740:12760:12895:13069:13076:13311:13357:13439:14096:14097:14181:14659:14721:21080:21324:21627:30041:30054:30075:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: bell44_74a655a6ef330
+X-Filterd-Recvd-Size: 2602
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf17.hostedemail.com (Postfix) with ESMTPA;
+        Tue,  7 Apr 2020 06:43:21 +0000 (UTC)
+Message-ID: <07e49a285eff9a22476c6b1c396485f6d5d39002.camel@perches.com>
+Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive
+ data objects
+From:   Joe Perches <joe@perches.com>
+To:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>
+Date:   Mon, 06 Apr 2020 23:41:23 -0700
+In-Reply-To: <1e4a6174-04be-6c05-fd6e-b43fefd317fc@redhat.com>
+References: <20200406185827.22249-1-longman@redhat.com>
+         <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
+         <1e4a6174-04be-6c05-fd6e-b43fefd317fc@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:10:22 -0700 (PDT)
-From:   SANDRA DEWI <dewisandra154@gmail.com>
-Date:   Tue, 7 Apr 2020 05:10:22 +0000
-Message-ID: <CABRVPWyGvNCN0LYptG2iubN9H=5-q0tBFHwXF3pKPiOaC1GVRA@mail.gmail.com>
-Subject: whether this is your correct email address or not
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear ,Pastor
+On Mon, 2020-04-06 at 22:16 -0400, Waiman Long wrote:
+> On 4/6/20 3:38 PM, Joe Perches wrote:
+> > On Mon, 2020-04-06 at 14:58 -0400, Waiman Long wrote:
+> > > For kvmalloc'ed data object that contains sensitive information like
+> > > cryptographic key, we need to make sure that the buffer is always
+> > > cleared before freeing it. Using memset() alone for buffer clearing may
+> > > not provide certainty as the compiler may compile it away. To be sure,
+> > > the special memzero_explicit() has to be used.
+> > [] 
+> > >  extern void kvfree(const void *addr);
+> > > +extern void kvfree_sensitive(const void *addr, size_t len);
+> > Question: why should this be const?
+> > 
+> > 2.1.44 changed kfree(void *) to kfree(const void *) but
+> > I didn't find a particular reason why.
+> 
+> I am just following the function prototype used by kvfree(). Even
+> kzfree(const void *) use const. I can remove "const" if others agree.
+
+No worries.  Nevermind me...
+
+Lots of warnings if allocated pointers are const, so const is necessary
+in the definition and declaration.
+
+struct foo {
+	...
+};
+
+struct bar {
+	const struct foo *baz;
+	...
+};
+
+some_func(void)
+{
+	bar.baz = kvalloc(...);
+}
+
+kvfree can't free bar.baz if it's defined with void * without warning,
+so it must be const void *.
+
+Apologies for the noise.
 
 
-
-I have a client who is an oil business man and he made a fixed deposit
-of $26 million USD in my bank, where I am the director of the branch,
-My client died with his entire family in Jordanian
-
-50% of the fund will be for the church  for the work of God,the
-balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
-50% for me
-
-intervention in the Syrian Civil War 2014 leaving behind no next of
-kin. I Propose to present you as next of kin to claim the funds, if
-interested reply me for full details and how we are to
-
-
-
-proceed to close this deal.
-
-
-
-
-Mrs. Sandra Dewi
-
-
-
-Email  mrsdewi@gmx.com
