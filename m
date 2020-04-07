@@ -2,135 +2,192 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF7B1A10F4
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 18:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3AA1A1660
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 22:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbgDGQG2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 12:06:28 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:38885 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726794AbgDGQG2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 12:06:28 -0400
-Received: by mail-ed1-f66.google.com with SMTP id e5so4728563edq.5
-        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 09:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZSC8MNyMYJ4CcbIl5da3tSwMWoq31/28XKL6OZqNaaY=;
-        b=lYJjsqchyogIG2xHJXiYDwsutn6iKu82kteMMh/iUcPx8osqcaPhaQMR0VRfmVhNWK
-         NCagF590A9IHqge+RLez3WuO7uxY62A3hcYNfVsfdv+RVIwhEq7wV1V2/QfjuAh/HHNJ
-         Ndiq/cU1KP/QZ40BrUjm6Tbot2afFBCYP9DNU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZSC8MNyMYJ4CcbIl5da3tSwMWoq31/28XKL6OZqNaaY=;
-        b=UlmCbBrlaGazAWXfHF+BMVN22ISHEZfgdc0MXZfgdFperdmb+kTz4duRSossFvtHs0
-         T+NWSX/UR67dMAsD2mVY/Ni4R1o4BZASAPpiU9mdzobB0Hg47vouZ50Gha8u8ifDk+CT
-         fTVCteMmLEMgYV7LB3SiyDfpthBUFHcNO2ERuF6MMsaOy1oV74EuzO8VQy+IjthkBoaw
-         rXomvMa5a+pjsw56INRGBBlejkiINpntcP16tXefOJ8MnMZ7/aS7rMAibBAhjXl2i7EM
-         8mHsf31332HaaA7p5UBWZatEDMMPMNISOiuwI9JzFScrssMT5tULGGSE8dUyyYz3tzV5
-         eQFw==
-X-Gm-Message-State: AGi0Pub6lroVONlYkxNsemfybJek6ELGOqEDDyIfPVAGgjyPt6F95Jy4
-        p52ywsE7Ar5e42N53d+T09o0bn+FF9jqfTJ43z4gEA==
-X-Google-Smtp-Source: APiQypIXfOQtepXXTh7ycOqzqzJa8O502xxo9QjDYoNHsfjRyMveiS82f7idPBRjOLqUA9QCRFw1nO3c8tM2xgW4Ai4=
-X-Received: by 2002:a17:906:405b:: with SMTP id y27mr2784058ejj.213.1586275585452;
- Tue, 07 Apr 2020 09:06:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAJfpegum_PsCfnar8+V2f_VO3k8CJN1LOFJV5OkHRDbQKR=EHg@mail.gmail.com>
- <20200402155020.GA31715@gardel-login> <CAJfpeguM__+S6DiD4MWFv5GCf_EUWvGFT0mzuUCCrfQwggqtDQ@mail.gmail.com>
- <20200403110842.GA34663@gardel-login> <CAJfpegtYKhXB-HNddUeEMKupR5L=RRuydULrvm39eTung0=yRg@mail.gmail.com>
- <20200403150143.GA34800@gardel-login> <CAJfpegudLD8F-25k-k=9G96JKB+5Y=xFT=ZMwiBkNTwkjMDumA@mail.gmail.com>
- <20200406172917.GA37692@gardel-login> <a4b5828d73ff097794f63f5f9d0fd1532067941c.camel@themaw.net>
- <CAJfpegvYGB01i9eqCH-95Ynqy0P=CuxPCSAbSpBPa-TV8iXN0Q@mail.gmail.com> <20200407155329.GA39803@gardel-login>
-In-Reply-To: <20200407155329.GA39803@gardel-login>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Tue, 7 Apr 2020 18:06:13 +0200
-Message-ID: <CAJfpegufdi7u3Wyo0YWeoPs9MQa1TePD=AHNW9S9Ey9jTuofHw@mail.gmail.com>
-Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
-To:     Lennart Poettering <mzxreary@0pointer.de>
-Cc:     Ian Kent <raven@themaw.net>, David Howells <dhowells@redhat.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
+        id S1727447AbgDGUBZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 16:01:25 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:40913 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726436AbgDGUBY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 16:01:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586289683;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=QLx4/sdG9v1nmxm7Nxx7v62MFnknzk0r6dRJ8swzlNk=;
+        b=PI2HXVX4mANy6hdmttz9VuEaxpXVwViq0u8ZhOSU8e45QT4gLhj0WgptNC11b96Es0DA73
+        8qXe1J1BSS3DQ72iLDCXVeyCGnh3up6k7gfZ4LQL/CWBoDWktn3W946/+dDitNIL8hAX1w
+        sU99PNpqkTshwFCaB2pJrUAvo2MRz94=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-77-2GKLxJrtOlasm_FTZn-O1g-1; Tue, 07 Apr 2020 16:01:19 -0400
+X-MC-Unique: 2GKLxJrtOlasm_FTZn-O1g-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 81A521005509;
+        Tue,  7 Apr 2020 20:01:17 +0000 (UTC)
+Received: from llong.com (ovpn-117-180.rdu2.redhat.com [10.10.117.180])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7190992FA2;
+        Tue,  7 Apr 2020 20:01:12 +0000 (UTC)
+From:   Waiman Long <longman@redhat.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
-        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>,
+        Waiman Long <longman@redhat.com>
+Subject: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data objects
+Date:   Tue,  7 Apr 2020 16:01:06 -0400
+Message-Id: <20200407200106.10917-1-longman@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 7, 2020 at 5:53 PM Lennart Poettering <mzxreary@0pointer.de> wr=
-ote:
->
-> On Di, 07.04.20 15:59, Miklos Szeredi (miklos@szeredi.hu) wrote:
->
-> > On Tue, Apr 7, 2020 at 4:22 AM Ian Kent <raven@themaw.net> wrote:
-> > > > Right now, when you have n mounts, and any mount changes, or one is
-> > > > added or removed then we have to parse the whole mount table again,
-> > > > asynchronously, processing all n entries again, every frickin
-> > > > time. This means the work to process n mounts popping up at boot is
-> > > > O(n=C2=B2). That sucks, it should be obvious to anyone. Now if we g=
-et that
-> > > > fixed, by some mount API that can send us minimal notifications abo=
-ut
-> > > > what happened and where, then this becomes O(n), which is totally O=
-K.
-> >
-> > Something's not right with the above statement.  Hint: if there are
-> > lots of events in quick succession, you can batch them quite easily to
-> > prevent overloading the system.
-> >
-> > Wrote a pair of utilities to check out the capabilities of the current
-> > API.   The first one just creates N mounts, optionally sleeping
-> > between each.  The second one watches /proc/self/mountinfo and
-> > generates individual (add/del/change) events based on POLLPRI and
-> > comparing contents with previous instance.
-> >
-> > First use case: create 10,000 mounts, then start the watcher and
-> > create 1000 mounts with a 50ms sleep between them.  Total time (user +
-> > system) consumed by the watcher: 25s.  This is indeed pretty dismal,
-> > and a per-mount query will help tremendously.  But it's still "just"
-> > 25ms per mount, so if the mounts are far apart (which is what this
-> > test is about), this won't thrash the system.  Note, how this is self
-> > regulating: if the load is high, it will automatically batch more
-> > requests, preventing overload.  It is also prone to lose pairs of add
-> > + remove in these case (and so is the ring buffer based one from
-> > David).
->
-> We will batch requests too in systemd, of course, necessarily, given
-> that the /p/s/mi inotify stuff is async. Thing though is that this
-> means we buy lower CPU usage =E2=80=94 working around the O(n=C2=B2) issu=
-e =E2=80=94 by
-> introducing artifical higher latencies. We usually want to boot
-> quickly, and not artificially slow.
->
-> Sure one can come up with some super smart scheme how to tweak the
-> artifical latencies, how to grow them, how to shrink them, depending
-> on a perceived flood of events, some backing off scheme. But that's
-> just polishing a turd, if all we want is proper queued change
-> notification without the O(n=C2=B2) behaviour.
->
-> I mean, the fix for an O(n=C2=B2) algorithm is to make it O(n) or so. By
-> coalescing wake-up events you just lower the n again, probably
-> linearly, but that still means we pay O(n=C2=B2), which sucks.
+For kvmalloc'ed data object that contains sensitive information like
+cryptographic key, we need to make sure that the buffer is always
+cleared before freeing it. Using memset() alone for buffer clearing may
+not provide certainty as the compiler may compile it away. To be sure,
+the special memzero_explicit() has to be used.
 
-Obviously.  But you keep ignoring event queue overflows; it's
-basically guaranteed to happen with a sizable mount storm and then you
-are back to O(n^2).
+This patch introduces a new kvfree_sensitive() for freeing those
+sensitive data objects allocated by kvmalloc(). The relevnat places
+where kvfree_sensitive() can be used are modified to use it.
 
-Give it some testing please, as Linus is not going to take any
-solution without an actual use case and testing.  When you come back
-and say that fsinfo(2) works fine with systemd and a 100k mount/umount
-storm, then we can have a look at the performance budget and revisit
-the fine points of API design.
+Fixes: 4f0882491a14 ("KEYS: Avoid false positive ENOMEM error on key read")
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
+---
+ include/linux/mm.h       |  1 +
+ mm/util.c                | 18 ++++++++++++++++++
+ security/keys/internal.h | 11 -----------
+ security/keys/keyctl.c   | 16 +++++-----------
+ 4 files changed, 24 insertions(+), 22 deletions(-)
 
-Thanks,
-Miklos
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7dd5c4ccbf85..9b3130b20f42 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -757,6 +757,7 @@ static inline void *kvcalloc(size_t n, size_t size, gfp_t flags)
+ }
+ 
+ extern void kvfree(const void *addr);
++extern void kvfree_sensitive(const void *addr, size_t len);
+ 
+ static inline int compound_mapcount(struct page *page)
+ {
+diff --git a/mm/util.c b/mm/util.c
+index 988d11e6c17c..01e210766f3d 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -604,6 +604,24 @@ void kvfree(const void *addr)
+ }
+ EXPORT_SYMBOL(kvfree);
+ 
++/**
++ * kvfree_sensitive - free a data object containing sensitive information
++ * @addr - address of the data object to be freed
++ * @len  - length of the data object
++ *
++ * Use the special memzero_explicit() function to clear the content of a
++ * kvmalloc'ed object containing sensitive data to make sure that the
++ * compiler won't optimize out the data clearing.
++ */
++void kvfree_sensitive(const void *addr, size_t len)
++{
++	if (likely(!ZERO_OR_NULL_PTR(addr))) {
++		memzero_explicit((void *)addr, len);
++		kvfree(addr);
++	}
++}
++EXPORT_SYMBOL(kvfree_sensitive);
++
+ static inline void *__page_rmapping(struct page *page)
+ {
+ 	unsigned long mapping;
+diff --git a/security/keys/internal.h b/security/keys/internal.h
+index 6d0ca48ae9a5..153d35c20d3d 100644
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -350,15 +350,4 @@ static inline void key_check(const struct key *key)
+ #define key_check(key) do {} while(0)
+ 
+ #endif
+-
+-/*
+- * Helper function to clear and free a kvmalloc'ed memory object.
+- */
+-static inline void __kvzfree(const void *addr, size_t len)
+-{
+-	if (addr) {
+-		memset((void *)addr, 0, len);
+-		kvfree(addr);
+-	}
+-}
+ #endif /* _INTERNAL_H */
+diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+index 5e01192e222a..edde63a63007 100644
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -142,10 +142,7 @@ SYSCALL_DEFINE5(add_key, const char __user *, _type,
+ 
+ 	key_ref_put(keyring_ref);
+  error3:
+-	if (payload) {
+-		memzero_explicit(payload, plen);
+-		kvfree(payload);
+-	}
++	kvfree_sensitive(payload, plen);
+  error2:
+ 	kfree(description);
+  error:
+@@ -360,7 +357,7 @@ long keyctl_update_key(key_serial_t id,
+ 
+ 	key_ref_put(key_ref);
+ error2:
+-	__kvzfree(payload, plen);
++	kvfree_sensitive(payload, plen);
+ error:
+ 	return ret;
+ }
+@@ -914,7 +911,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
+ 		 */
+ 		if (ret > key_data_len) {
+ 			if (unlikely(key_data))
+-				__kvzfree(key_data, key_data_len);
++				kvfree_sensitive(key_data, key_data_len);
+ 			key_data_len = ret;
+ 			continue;	/* Allocate buffer */
+ 		}
+@@ -923,7 +920,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
+ 			ret = -EFAULT;
+ 		break;
+ 	}
+-	__kvzfree(key_data, key_data_len);
++	kvfree_sensitive(key_data, key_data_len);
+ 
+ key_put_out:
+ 	key_put(key);
+@@ -1225,10 +1222,7 @@ long keyctl_instantiate_key_common(key_serial_t id,
+ 		keyctl_change_reqkey_auth(NULL);
+ 
+ error2:
+-	if (payload) {
+-		memzero_explicit(payload, plen);
+-		kvfree(payload);
+-	}
++	kvfree_sensitive(payload, plen);
+ error:
+ 	return ret;
+ }
+-- 
+2.18.1
+
