@@ -2,96 +2,226 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9188D1A0782
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 08:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA631A0EC2
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 15:59:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbgDGGnY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 02:43:24 -0400
-Received: from smtprelay0124.hostedemail.com ([216.40.44.124]:39070 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726865AbgDGGnY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 02:43:24 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 6F365838437C;
-        Tue,  7 Apr 2020 06:43:23 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:965:966:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2828:2892:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:4385:4390:4395:5007:6119:7903:10004:10400:10848:11232:11658:11914:12048:12297:12663:12740:12760:12895:13069:13076:13311:13357:13439:14096:14097:14181:14659:14721:21080:21324:21627:30041:30054:30075:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: bell44_74a655a6ef330
-X-Filterd-Recvd-Size: 2602
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf17.hostedemail.com (Postfix) with ESMTPA;
-        Tue,  7 Apr 2020 06:43:21 +0000 (UTC)
-Message-ID: <07e49a285eff9a22476c6b1c396485f6d5d39002.camel@perches.com>
-Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive
- data objects
-From:   Joe Perches <joe@perches.com>
-To:     Waiman Long <longman@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>
-Date:   Mon, 06 Apr 2020 23:41:23 -0700
-In-Reply-To: <1e4a6174-04be-6c05-fd6e-b43fefd317fc@redhat.com>
-References: <20200406185827.22249-1-longman@redhat.com>
-         <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
-         <1e4a6174-04be-6c05-fd6e-b43fefd317fc@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S1728737AbgDGN71 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 09:59:27 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:45065 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728573AbgDGN70 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 09:59:26 -0400
+Received: by mail-ed1-f65.google.com with SMTP id m12so4114880edl.12
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 06:59:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dqe/lMioF3rr7wkki1S9O6T9iLt/kpYKFjZ4BIclciI=;
+        b=oQwNAlq9uQG76hiuQGtYOS4ARo5k2jRQs+ucBz94VaHpekKqE/9uqAFc2SF65Kdcw6
+         oGrB7s34Y2/T2DjNsS4ihYg1zhOQLEno2Agos53yevyTP1T6kV0ZNyJhq5GDYE8+gRSC
+         K8qe3ZfLPMfc498lE5Jbya6N3qj98NAhuMqfE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dqe/lMioF3rr7wkki1S9O6T9iLt/kpYKFjZ4BIclciI=;
+        b=ZQp8ZNBbgtnxmLRELjZZvGn5zXDyfjWj8cFD697hyP9x9Q4mj9sJBoDEaOPyoVNciy
+         kySawBlpCk/tuB6qKvzVU1wSnyjhHhqyBc4RdGapU4/4z2GxGa52HTqpUrNSFq5pb0+m
+         +wZi9LNZE7Xp3zQkZDAPVONP+gEfAHzrZk7+FWwe5sVB7LswDffPfbNqJi5L4o2I6+iK
+         x/S5kEvxGqrQeRCZVBwEy2Nn7+UMG2oAGL0ij1L8Nt0ZnFa5BiUspKB+t1mifZIRJetn
+         rHQ6ocEFLTWfVdpEEZgPSyCtzJiLv62mOKM1T5o32CRCxLBDwtI/xA5q+YwtpRqf4Wbe
+         22Jg==
+X-Gm-Message-State: AGi0PublB9WGVVU7hMoyVMP2RGrrOvJyC6YVLoX/jvDWB0iw/lU1TMTC
+        C4gzB4nQMesBwT/f/ZC/hkxOzhNAGntBCfZnMxbnxw==
+X-Google-Smtp-Source: APiQypJ/lpfvkrxltKAShH8KskIPyKjaVvMHi0AGOqarLBgt/23p7UMVEZJffNchoZveGw1Hgmf0fjf+YrhtEaOWXq0=
+X-Received: by 2002:a17:906:fd7:: with SMTP id c23mr2234448ejk.312.1586267962932;
+ Tue, 07 Apr 2020 06:59:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20200402143623.GB31529@gardel-login> <CAJfpegtRi9epdxAeoVbm+7UxkZfzC6XmD4K_5dg=RKADxy_TVA@mail.gmail.com>
+ <20200402152831.GA31612@gardel-login> <CAJfpegum_PsCfnar8+V2f_VO3k8CJN1LOFJV5OkHRDbQKR=EHg@mail.gmail.com>
+ <20200402155020.GA31715@gardel-login> <CAJfpeguM__+S6DiD4MWFv5GCf_EUWvGFT0mzuUCCrfQwggqtDQ@mail.gmail.com>
+ <20200403110842.GA34663@gardel-login> <CAJfpegtYKhXB-HNddUeEMKupR5L=RRuydULrvm39eTung0=yRg@mail.gmail.com>
+ <20200403150143.GA34800@gardel-login> <CAJfpegudLD8F-25k-k=9G96JKB+5Y=xFT=ZMwiBkNTwkjMDumA@mail.gmail.com>
+ <20200406172917.GA37692@gardel-login> <a4b5828d73ff097794f63f5f9d0fd1532067941c.camel@themaw.net>
+In-Reply-To: <a4b5828d73ff097794f63f5f9d0fd1532067941c.camel@themaw.net>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Tue, 7 Apr 2020 15:59:10 +0200
+Message-ID: <CAJfpegvYGB01i9eqCH-95Ynqy0P=CuxPCSAbSpBPa-TV8iXN0Q@mail.gmail.com>
+Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
+To:     Ian Kent <raven@themaw.net>
+Cc:     Lennart Poettering <mzxreary@0pointer.de>,
+        David Howells <dhowells@redhat.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Steven Whitehouse <swhiteho@redhat.com>,
+        Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
+        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: multipart/mixed; boundary="000000000000733b8805a2b3ca6b"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2020-04-06 at 22:16 -0400, Waiman Long wrote:
-> On 4/6/20 3:38 PM, Joe Perches wrote:
-> > On Mon, 2020-04-06 at 14:58 -0400, Waiman Long wrote:
-> > > For kvmalloc'ed data object that contains sensitive information like
-> > > cryptographic key, we need to make sure that the buffer is always
-> > > cleared before freeing it. Using memset() alone for buffer clearing may
-> > > not provide certainty as the compiler may compile it away. To be sure,
-> > > the special memzero_explicit() has to be used.
-> > [] 
-> > >  extern void kvfree(const void *addr);
-> > > +extern void kvfree_sensitive(const void *addr, size_t len);
-> > Question: why should this be const?
-> > 
-> > 2.1.44 changed kfree(void *) to kfree(const void *) but
-> > I didn't find a particular reason why.
-> 
-> I am just following the function prototype used by kvfree(). Even
-> kzfree(const void *) use const. I can remove "const" if others agree.
+--000000000000733b8805a2b3ca6b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-No worries.  Nevermind me...
+On Tue, Apr 7, 2020 at 4:22 AM Ian Kent <raven@themaw.net> wrote:
+> > Right now, when you have n mounts, and any mount changes, or one is
+> > added or removed then we have to parse the whole mount table again,
+> > asynchronously, processing all n entries again, every frickin
+> > time. This means the work to process n mounts popping up at boot is
+> > O(n=C2=B2). That sucks, it should be obvious to anyone. Now if we get t=
+hat
+> > fixed, by some mount API that can send us minimal notifications about
+> > what happened and where, then this becomes O(n), which is totally OK.
 
-Lots of warnings if allocated pointers are const, so const is necessary
-in the definition and declaration.
+Something's not right with the above statement.  Hint: if there are
+lots of events in quick succession, you can batch them quite easily to
+prevent overloading the system.
 
-struct foo {
-	...
-};
+Wrote a pair of utilities to check out the capabilities of the current
+API.   The first one just creates N mounts, optionally sleeping
+between each.  The second one watches /proc/self/mountinfo and
+generates individual (add/del/change) events based on POLLPRI and
+comparing contents with previous instance.
 
-struct bar {
-	const struct foo *baz;
-	...
-};
+First use case: create 10,000 mounts, then start the watcher and
+create 1000 mounts with a 50ms sleep between them.  Total time (user +
+system) consumed by the watcher: 25s.  This is indeed pretty dismal,
+and a per-mount query will help tremendously.  But it's still "just"
+25ms per mount, so if the mounts are far apart (which is what this
+test is about), this won't thrash the system.  Note, how this is self
+regulating: if the load is high, it will automatically batch more
+requests, preventing overload.  It is also prone to lose pairs of add
++ remove in these case (and so is the ring buffer based one from
+David).
 
-some_func(void)
-{
-	bar.baz = kvalloc(...);
-}
+Second use case: start the watcher and create 50,000 mounts with no
+sleep between them.   Total time consumed by the watcher: 0.154s or
+3.08us/event.    Note, the same test case adds about 5ms for the
+50,000 umount events, which is 0.1us/event.
 
-kvfree can't free bar.baz if it's defined with void * without warning,
-so it must be const void *.
+Real life will probably be between these extremes, but it's clear that
+there's room for improvement in userspace as well as kernel
+interfaces.  The current kernel interface is very efficient in
+retrieving a lot of state in one go.  It is not efficient in handling
+small differences.
 
-Apologies for the noise.
+> > Anyway, I have the suspicion this discussion has stopped being
+> > useful. I think you are trying to fix problems that userspce actually
+> > doesn't have. I can just tell you what we understand the problems
+> > are,
+> > but if you are out trying to fix other percieved ones, then great,
+> > but
+> > I mostly lost interest.
 
+I was, and still am, trying to see the big picture.
 
+Whatever.   I think it's your turn to show some numbers about how the
+new API improves performance of systemd with a large number of mounts.
+
+Thanks,
+Miklos
+
+--000000000000733b8805a2b3ca6b
+Content-Type: text/x-csrc; charset="US-ASCII"; name="many-mounts.c"
+Content-Disposition: attachment; filename="many-mounts.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k8pyrb060>
+X-Attachment-Id: f_k8pyrb060
+
+I2luY2x1ZGUgPGZjbnRsLmg+CiNpbmNsdWRlIDxzdGRpby5oPgojaW5jbHVkZSA8c3RkbGliLmg+
+CiNpbmNsdWRlIDx1bmlzdGQuaD4KI2luY2x1ZGUgPGVyci5oPgojaW5jbHVkZSA8c3lzL3N0YXQu
+aD4KI2luY2x1ZGUgPHN5cy9tb3VudC5oPgoKaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3Zb
+XSkKewoJY2hhciAqYmFzZV9wYXRoID0gYXJndlsxXTsKCWNoYXIgbmFtZVs0MDk2XTsKCWludCBu
+cl9tb3VudHMsIGksIHNsZWVwX21zID0gMDsKCglpZiAoYXJnYyA8IDMgfHwgYXJnYyA+IDQpCgkJ
+ZXJyeCgxLCAidXNhZ2U6ICVzIGJhc2VfcGF0aCBucl9tb3VudHMgW3NsZWVwX21zXSIsIGFyZ3Zb
+MF0pOwoKCW5yX21vdW50cyA9IGF0b2koYXJndlsyXSk7CglpZiAoYXJnYyA+IDMpCgkJc2xlZXBf
+bXMgPSBhdG9pKGFyZ3ZbM10pOwoKCWZwcmludGYoc3RkZXJyLCAiTW91bnRpbmcuLi5cbiIpOwoJ
+aWYgKG1vdW50KCJub25lIiwgYmFzZV9wYXRoLCAidG1wZnMiLCAwLCBOVUxMKSA9PSAtMSkKCQll
+cnIoMSwgIm1vdW50L3RtcGZzIik7CglpZiAobW91bnQoIm5vbmUiLCBiYXNlX3BhdGgsIE5VTEws
+IE1TX1BSSVZBVEUsIE5VTEwpID09IC0xKQoJCWVycigxLCAibW91bnQvTVNfUFJJVkFURSIpOwoJ
+Zm9yIChpID0gMDsgaSA8IG5yX21vdW50czsgaSsrKSB7CgkJc3ByaW50ZihuYW1lLCAiJXMvJWQi
+LCBiYXNlX3BhdGgsIGkpOwoJCWlmIChta2RpcihuYW1lLCAwNzU1KSA9PSAtMSkKCQkJZXJyKDEs
+ICJta2RpciIpOwoJCWlmIChtb3VudCgibm9uZSIsIG5hbWUsICJ0bXBmcyIsIDAsIE5VTEwpID09
+IC0xKQoJCQllcnIoMSwgIm1vdW50L3RtcGZzIik7CgkJaWYgKG1vdW50KCJub25lIiwgbmFtZSwg
+TlVMTCwgTVNfUFJJVkFURSwgTlVMTCkgPT0gLTEpCgkJCWVycigxLCAibW91bnQvTVNfUFJJVkFU
+RSIpOwoJCWlmIChzbGVlcF9tcykKCQkJdXNsZWVwKHNsZWVwX21zICogMTAwMCk7Cgl9CglmcHJp
+bnRmKHN0ZGVyciwgIlByZXNzIEVOVEVSXG4iKTsKCWdldGNoYXIoKTsKCglmcHJpbnRmKHN0ZGVy
+ciwgIlVubW91bnRpbmcuLi5cbiIpOwoJaWYgKHVtb3VudDIoYmFzZV9wYXRoLCBNTlRfREVUQUNI
+KSA9PSAtMSkKCQllcnIoMSwgInVtb3VudCIpOwoKCWZwcmludGYoc3RkZXJyLCAiRG9uZVxuIik7
+CgoJcmV0dXJuIDA7Cn0K
+--000000000000733b8805a2b3ca6b
+Content-Type: text/x-csrc; charset="US-ASCII"; name="watch_mounts.c"
+Content-Disposition: attachment; filename="watch_mounts.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k8pyrjxu1>
+X-Attachment-Id: f_k8pyrjxu1
+
+I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxmY250bC5oPgojaW5jbHVkZSA8c3RyaW5nLmg+
+CiNpbmNsdWRlIDxzdGRsaWIuaD4KI2luY2x1ZGUgPHVuaXN0ZC5oPgojaW5jbHVkZSA8cG9sbC5o
+PgojaW5jbHVkZSA8ZXJyLmg+CgpzdHJ1Y3QgaW5kZXggewoJc3RydWN0IGluZGV4ICpuZXh0OwoJ
+c3RydWN0IGluZGV4ICpwcmV2OwoJY29uc3QgY2hhciAqbGluZTsKfTsKCnN0cnVjdCBzdGF0ZSB7
+CglzaXplX3QgYnVmc2l6ZTsKCWNoYXIgKmJ1ZjsKCXNpemVfdCBpbmRleF9zaXplOwoJc3RydWN0
+IGluZGV4ICppbmRleDsKCXN0cnVjdCBpbmRleCBoZWFkOwp9OwoKc3RhdGljIHZvaWQgcmVhZF9t
+b3VudGluZm8oc3RydWN0IHBvbGxmZCAqcGZkLCBjaGFyICpidWYsIHNpemVfdCBidWZzaXplKQp7
+CglpbnQgcmVhZGNudCwgYmFja29mZiA9IDAsIHJldHJ5ID0gMDsKCXNpemVfdCBsZW47Cglzc2l6
+ZV90IHJlczsKCnJldHJ5OgoJaWYgKGxzZWVrKHBmZC0+ZmQsIDAsIFNFRUtfU0VUKSA9PSAob2Zm
+X3QpIC0xKQoJCWVycigxLCAibHNlZWsiKTsKCWxlbiA9IDA7CglyZWFkY250ID0gMDsKCWRvIHsK
+CQlpZiAobGVuID49IGJ1ZnNpemUgLSA0MDk2KQoJCQllcnJ4KDEsICJidWZmZXIgb3ZlcnJ1biIp
+OwoJCXJlcyA9IHJlYWQocGZkLT5mZCwgYnVmICsgbGVuLCBidWZzaXplIC0gbGVuKTsKCQlpZiAo
+cmVzID09IC0xKQoJCQllcnIoMSwgInJlYWQiKTsKCQlsZW4gKz0gcmVzOwoKCQlpZiAoIXJlcyB8
+fCAhKCsrcmVhZGNudCAlIDE2KSkgewoJCQlpZiAocG9sbChwZmQsIDEsIDApID09IC0xKQoJCQkJ
+ZXJyKDEsICJwb2xsLzAiKTsKCQkJaWYgKHBmZC0+cmV2ZW50cyAmIFBPTExQUkkpIHsKCQkJCWlm
+ICghYmFja29mZikgewoJCQkJCWJhY2tvZmYrKzsKCQkJCQlnb3RvIHJldHJ5OwoJCQkJfQoJCQkJ
+aWYgKCFyZXRyeSkgewoJCQkJCWZwcmludGYoc3RkZXJyLCAicmV0cnkuIik7CgkJCQkJcmV0cnkg
+PSAxOwoJCQkJfQoJCQkJZG8gewoJCQkJCXVzbGVlcChiYWNrb2ZmICogMTAwMCk7CgkJCQkJaWYg
+KGJhY2tvZmYgPCAxMjgpCgkJCQkJCWJhY2tvZmYgKj0gMjsKCQkJCQlpZiAocG9sbChwZmQsIDEs
+IDApID09IC0xKQoJCQkJCQllcnIoMSwgInBvbGwvMCIpOwoJCQkJfSB3aGlsZSAocGZkLT5yZXZl
+bnRzICYgUE9MTFBSSSk7CgkJCQlnb3RvIHJldHJ5OwoJCQl9CgkJfQoJfSB3aGlsZSAocmVzKTsK
+CWJ1ZltsZW5dID0gJ1wwJzsKCglpZiAocmV0cnkpIHsKCQlmcHJpbnRmKHN0ZGVyciwgIi4uXG4i
+KTsKCQlyZXRyeSA9IDA7Cgl9Cn0KCnN0YXRpYyB2b2lkIGFkZF9pbmRleChzdHJ1Y3Qgc3RhdGUg
+KnMsIHN0cnVjdCBpbmRleCAqdGhpcywgY29uc3QgY2hhciAqbGluZSkKewoJc3RydWN0IGluZGV4
+ICpwcmV2ID0gcy0+aGVhZC5wcmV2LCAqbmV4dCA9ICZzLT5oZWFkOwoKCWlmICh0aGlzLT5saW5l
+KQoJCWVycngoMSwgImluZGV4IGNvcnJ1cHRpb24iKTsKCgl0aGlzLT5saW5lID0gbGluZTsKCXRo
+aXMtPm5leHQgPSBuZXh0OwoJdGhpcy0+cHJldiA9IHByZXY7CglwcmV2LT5uZXh0ID0gbmV4dC0+
+cHJldiA9IHRoaXM7Cn0KCnN0YXRpYyB2b2lkIGRlbF9pbmRleChzdHJ1Y3QgaW5kZXggKnRoaXMp
+CnsKCXN0cnVjdCBpbmRleCAqcHJldiA9IHRoaXMtPnByZXYsICpuZXh0ID0gdGhpcy0+bmV4dDsK
+Cgl0aGlzLT5saW5lID0gTlVMTDsKCXByZXYtPm5leHQgPSBuZXh0OwoJbmV4dC0+cHJldiA9IHBy
+ZXY7Cn0KCnN0YXRpYyB2b2lkIGRpZmZfbW91bnRpbmZvKHN0cnVjdCBzdGF0ZSAqb2xkLCBzdHJ1
+Y3Qgc3RhdGUgKmN1cikKewoJY2hhciAqbGluZSwgKmVuZDsKCXN0cnVjdCBpbmRleCAqdGhpczsK
+CWludCBtbnRpZDsKCgljdXItPmhlYWQubmV4dCA9IGN1ci0+aGVhZC5wcmV2ID0gJmN1ci0+aGVh
+ZDsKCWZvciAobGluZSA9IGN1ci0+YnVmOyBsaW5lWzBdOyBsaW5lID0gZW5kICsgMSkgewoJCWVu
+ZCA9IHN0cmNocihsaW5lLCAnXG4nKTsKCQlpZiAoIWVuZCkKCQkJZXJyeCgxLCAicGFyc2luZyAo
+MSkiKTsKCQkqZW5kID0gJ1wwJzsKCQlpZiAoc3NjYW5mKGxpbmUsICIlaSIsICZtbnRpZCkgIT0g
+MSkKCQkJZXJyeCgxLCAicGFyc2luZyAoMikiKTsKCQlpZiAobW50aWQgPCAwIHx8IChzaXplX3Qp
+IG1udGlkID49IGN1ci0+aW5kZXhfc2l6ZSkKCQkJZXJyeCgxLCAiaW5kZXggb3ZlcmZsb3ciKTsK
+CQlhZGRfaW5kZXgoY3VyLCAmY3VyLT5pbmRleFttbnRpZF0sIGxpbmUpOwoKCQl0aGlzID0gJm9s
+ZC0+aW5kZXhbbW50aWRdOwoJCWlmICh0aGlzLT5saW5lKSB7CgkJCWlmIChzdHJjbXAodGhpcy0+
+bGluZSwgbGluZSkpCgkJCQlwcmludGYoIiogJXNcbiIsIGxpbmUpOwoJCQlkZWxfaW5kZXgodGhp
+cyk7CgkJfSBlbHNlIHsKCQkJcHJpbnRmKCIrICVzXG4iLCBsaW5lKTsKCQl9Cgl9Cgl3aGlsZSAo
+b2xkLT5oZWFkLm5leHQgIT0gJm9sZC0+aGVhZCkgewoJCXRoaXMgPSBvbGQtPmhlYWQubmV4dDsK
+CQlwcmludGYoIi0gJXNcbiIsIHRoaXMtPmxpbmUpOwoJCWRlbF9pbmRleCh0aGlzKTsKCX0KCWZm
+bHVzaChzdGRvdXQpOwp9CgppbnQgbWFpbih2b2lkKQp7CglzdHJ1Y3Qgc3RhdGUgc3RhdGVbMl0s
+ICpvbGQgPSAmc3RhdGVbMF0sICpjdXIgPSAmc3RhdGVbMV0sICp0bXA7CglzdHJ1Y3QgcG9sbGZk
+IHBmZCA9IHsgLmV2ZW50cyA9IFBPTExQUkkgfTsKCglvbGQtPmluZGV4X3NpemUgPSBjdXItPmlu
+ZGV4X3NpemUgPSAxMzEwNzI7CglvbGQtPmJ1ZnNpemUgPSBjdXItPmJ1ZnNpemUgPSBjdXItPmlu
+ZGV4X3NpemUgKiAxMjg7CglvbGQtPmluZGV4ID0gY2FsbG9jKG9sZC0+aW5kZXhfc2l6ZSwgc2l6
+ZW9mKHN0cnVjdCBpbmRleCkpOwoJY3VyLT5pbmRleCA9IGNhbGxvYyhjdXItPmluZGV4X3NpemUs
+IHNpemVvZihzdHJ1Y3QgaW5kZXgpKTsKCW9sZC0+YnVmID0gbWFsbG9jKG9sZC0+YnVmc2l6ZSk7
+CgljdXItPmJ1ZiA9IG1hbGxvYyhjdXItPmJ1ZnNpemUpOwoJaWYgKCFvbGQtPmluZGV4IHx8ICFj
+dXItPmluZGV4IHx8ICFvbGQtPmJ1ZiB8fCAhY3VyLT5idWYpCgkJZXJyKDEsICJhbGxvY2F0aW5n
+IGJ1ZmZlcnMiKTsKCglvbGQtPmJ1ZlswXSA9ICdcMCc7CglvbGQtPmhlYWQucHJldiA9IG9sZC0+
+aGVhZC5uZXh0ID0gJm9sZC0+aGVhZDsKCglwZmQuZmQgPSBvcGVuKCIvcHJvYy9zZWxmL21vdW50
+aW5mbyIsIE9fUkRPTkxZKTsKCWlmIChwZmQuZmQgPT0gLTEpCgkJZXJyKDEsICJvcGVuIik7CgoJ
+d2hpbGUgKDEpIHsKCQlyZWFkX21vdW50aW5mbygmcGZkLCBjdXItPmJ1ZiwgY3VyLT5idWZzaXpl
+KTsKCQlkaWZmX21vdW50aW5mbyhvbGQsIGN1cik7CgoJCXRtcCA9IG9sZDsKCQlvbGQgPSBjdXI7
+CgkJY3VyID0gdG1wOwoKCQlpZiAocG9sbCgmcGZkLCAxLCAtMSkgPT0gLTEpCgkJCWVycigxLCAi
+cG9sbC9pbmYiKTsKCX0KfQo=
+--000000000000733b8805a2b3ca6b--
