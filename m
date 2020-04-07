@@ -2,70 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42E731A17D1
-	for <lists+keyrings@lfdr.de>; Wed,  8 Apr 2020 00:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB8731A1805
+	for <lists+keyrings@lfdr.de>; Wed,  8 Apr 2020 00:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbgDGWNJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 18:13:09 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:52022 "EHLO
+        id S1726609AbgDGWYT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 18:24:19 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:52206 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726380AbgDGWNJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 18:13:09 -0400
+        with ESMTP id S1726421AbgDGWYR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 18:24:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
         :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=FXLhUp57gFBupyAqKDM1j0MtUkdYHWcwHronu354gjo=; b=NX6E/shBFjhTZtqoWnsQggljWV
-        EyLgZ5kRMQApEWr518G4omxxKtjX1mcRuhtfdBXlhdfAoVdCjqsjGRdVXjbBHd58EvScCldFtbo2F
-        hOA4FH2cuE/ghnQHveMeKwsRvzJSceJ3IbKxeE4Cs17bXDmbtKfsQTj9OljtwybWtCghbqN2ZCTG6
-        6yO26v9Tf70S8HIBje/GJxVf8BXrhRRNtA0zto7fW6Xg29BSrXtEtdaSDXdp9wQtnL448t1XfMOGb
-        27kv5jOh/xg54mKdmaIaR1N1tBzPa0ksGgQeqbilqU4O//Mhy9LRuhkF27lqjReRnOvBXme8yGguq
-        Fl0fC2Xg==;
+        bh=ilWPxxADWa3Mhatef/EKw7rS7FCyC/3gxiDqFnp+HLE=; b=BBZlsBLPC3Z7Ym7P4pCyL1Km26
+        xO+SsFOTryXTlbDB71tkCxYVEjbXDJJ0n534EO5JJxADwCKc65ekQsrica4ogN2t5qYlsPP3clZcP
+        ER5Putst3MeTijN9yhRletEkRPQqm96I6AM/PWFsLHSfZSn5+kYYymH9CfizhshKlxxYzUHXHWvFl
+        trx7Z2YsT/VBmtmD5GzSukdKaD8S68A9c7n24Fx51B9Co3SkpTAYotIf5jA/P3iQ5bynWCqgCNk0V
+        lUHsqJjoCXVEz/mXHh6NZ83c/OHmH1xQLSRNiHpE5250zTCFBo7GoCLiDmAmKitnkVi1GWIufMqSu
+        8q8KZ6vg==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jLwSl-0004xw-AZ; Tue, 07 Apr 2020 22:12:55 +0000
-Date:   Tue, 7 Apr 2020 15:12:55 -0700
+        id 1jLwdf-0002jz-SO; Tue, 07 Apr 2020 22:24:11 +0000
+Date:   Tue, 7 Apr 2020 15:24:11 -0700
 From:   Matthew Wilcox <willy@infradead.org>
-To:     Waiman Long <longman@redhat.com>
-Cc:     Joe Perches <joe@perches.com>,
+To:     David Howells <dhowells@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
+Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data
  objects
-Message-ID: <20200407221255.GM21484@bombadil.infradead.org>
-References: <20200407200318.11711-1-longman@redhat.com>
- <0fe5dcaf078be61ef21c7f18b750c5dc14c69dd7.camel@perches.com>
- <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
+Message-ID: <20200407222411.GN21484@bombadil.infradead.org>
+References: <CAHk-=wg2Vsb0JETo24=Tc-T2drwMopMRfKnc__r5SZ6tEnbwcA@mail.gmail.com>
+ <20200406185827.22249-1-longman@redhat.com>
+ <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
+ <CAHk-=wg_mkSc-pH8ntGHR=no9DOLRQyxdtU20p55DrM1su6QzA@mail.gmail.com>
+ <699292.1586294051@warthog.procyon.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
+In-Reply-To: <699292.1586294051@warthog.procyon.org.uk>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 07, 2020 at 04:45:45PM -0400, Waiman Long wrote:
-> On 4/7/20 4:31 PM, Joe Perches wrote:
-> > On Tue, 2020-04-07 at 16:03 -0400, Waiman Long wrote:
-> >> +extern void kvfree_sensitive(const void *addr, size_t len);
-> > Why should size_t len be required?
-> >
-> > Why not do what kzfree does and memset
-> > the entire allocation? (area->size)
+On Tue, Apr 07, 2020 at 10:14:11PM +0100, David Howells wrote:
+> Linus Torvalds <torvalds@linux-foundation.org> wrote:
 > 
-> If the memory is really virtually mapped, the only way to find out the
-> size of the object is to use find_vm_area() which can be relatively high
-> cost and no simple helper function is available. On the other hand, the
-> length is readily available in the callers. So passing the length
-> directly to the kvfree_sensitive is simpler.
+> > So the _real_ prototype for 'free()'-like operations should be something like
+> > 
+> >     void free(const volatile killed void *ptr);
+> > 
+> > where that "killed" also tells the compiler that the pointer lifetime
+> > is dead, so that using it afterwards is invalid. So that the compiler
+> > could warn us about some of the most trivial use-after-free cases.
+> 
+> It might be worth asking the compiler folks to give us an __attribute__ for
+> that - even if they don't do anything with it immediately.  So we might have
+> something like:
+> 
+> 	void free(const volatile void *ptr) __attribute__((free(1)));
+> 
+> There are some for allocation functions, some of which we use, though I'm not
+> sure we do so as consistently as we should (should inline functions like
+> kcalloc() have them, for example?).
 
-Also it lets us zero only the first N bytes of the allocation.  That might
-be good for performance, if only the first N bytes of an M byte allocation
-are actually sensitive.  I don't know if we have any such cases, but
-they could exist.
+GCC recognises free() as being a __builtin.  I don't know if there's
+an __attribute__ for it.
+
+gcc/builtins.def:DEF_LIB_BUILTIN        (BUILT_IN_FREE, "free", BT_FN_VOID_PTR, ATTR_NOTHROW_LEAF_LIST)
+
+It looks like the only two things this really does is warn you if you
+try to free a pointer that gcc can prove isn't in the heap, and elide
+the call if gcc can prove it's definitely NULL.  Which are both things
+that a compiler should do, but aren't all that valuable.
