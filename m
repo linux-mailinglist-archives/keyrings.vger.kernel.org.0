@@ -2,96 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9DC1A167E
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 22:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81EB1A168C
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 22:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726740AbgDGUIJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 16:08:09 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:54075 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726436AbgDGUII (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 16:08:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586290087;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pN+gkxMesJKsy+L8oStv/TkSI0ntYQt3xD3UKdBvVD0=;
-        b=AzmsIQiTR2h8Z0cEaMB3AGuPdtXiUiwky0A5F7bWKOugWR1cod1b3y1WOnZaVCXd7A+7Vk
-        6yrI3gpnG/WRFhPs8+Iu1bRR6X5OAHVAoL6b1rTsHgdrPWdPI8+GD9yOeb+ENLxqhGaQXe
-        a+/CNMOXGTiVksn12C/mCuv8PoNQM4s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-384-6pjcTtFVMvC_rgW4P24pzQ-1; Tue, 07 Apr 2020 16:08:05 -0400
-X-MC-Unique: 6pjcTtFVMvC_rgW4P24pzQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E0535107ACC9;
-        Tue,  7 Apr 2020 20:08:03 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-117-180.rdu2.redhat.com [10.10.117.180])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 06F3C385;
-        Tue,  7 Apr 2020 20:07:58 +0000 (UTC)
-Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-To:     Matthew Wilcox <willy@infradead.org>
+        id S1726840AbgDGUJf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 16:09:35 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:37984 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726894AbgDGUJd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 16:09:33 -0400
+Received: by mail-lj1-f194.google.com with SMTP id v16so5200775ljg.5
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 13:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3sghJldqMMjWeerVBLUfhc/cQuHU1aQm4qS6KijAW8Q=;
+        b=LIs7mHA3OXPjMsaXtYIk07UvtJnPGY4OLuhw5yUdciWXo/7JrrEmPqgnrwGk7LYTDy
+         rq/7n66O3MT27zCaMgmAZUsQHre2pHLQbaKY/YARTqgYJVheydI5BKhcTlTAQdZtVZZq
+         45bOqqTdfPd9zcZUW/Ki0gAVMMNSm+WBI9Bqk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3sghJldqMMjWeerVBLUfhc/cQuHU1aQm4qS6KijAW8Q=;
+        b=EYwoJ92/lBznhGaZb92XY6PKc6gQ8tQubNERS6OA6UrnBJFSp9aoy93b9C3kM3/zy6
+         z52kSCzY2kAvTFwC9ZK5Aapl+O2Zroj4GFpbx8Ygkpdg2HXEasRzgum0S7LUd7vdBgqO
+         CnVpiWVxhZ7zOu+QhxVgKpq8UdqAEPoPfMD5jAIdtb41xarix93AcnfHX1ySRpj+JE+d
+         o3Df/fPJJgBIJr/ZbRtwQvcZKHRMqOd8AsB9ewBvguIQ68ZsDuOAGXVj4AX24f+j2nz2
+         4GJvASjiz5IdAAjKnVV31u2Mc5WKAEjlf0SV5sqIUiNy5lPNlUdnHrfSCJNYXVViPfNF
+         PyiA==
+X-Gm-Message-State: AGi0PuYX6DUD2zZsPqTc2jKX4TxvIdXxylasQ0zsTmsCAzRFQTorGUDj
+        cbFFtYV8XvinX25cR3L1o7rNOWu69pc=
+X-Google-Smtp-Source: APiQypJ1w0R1ULJkRbpv3QY0nYUL5/Z9GFN0bCqM2siPCgeNpBubSHi7G1R6KAVeqqlcGnWb/nJwtA==
+X-Received: by 2002:a2e:9616:: with SMTP id v22mr2625222ljh.107.1586290169360;
+        Tue, 07 Apr 2020 13:09:29 -0700 (PDT)
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com. [209.85.208.180])
+        by smtp.gmail.com with ESMTPSA id b16sm12228327ljh.20.2020.04.07.13.09.27
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2020 13:09:27 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id g27so5129699ljn.10
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 13:09:27 -0700 (PDT)
+X-Received: by 2002:a2e:8911:: with SMTP id d17mr2856344lji.16.1586290167180;
+ Tue, 07 Apr 2020 13:09:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200407200318.11711-1-longman@redhat.com>
+In-Reply-To: <20200407200318.11711-1-longman@redhat.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 7 Apr 2020 13:09:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh4YYef26dFX2o9iAKts6vuPceUNg7Bdq32REnvfOWiog@mail.gmail.com>
+Message-ID: <CAHk-=wh4YYef26dFX2o9iAKts6vuPceUNg7Bdq32REnvfOWiog@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data objects
+To:     Waiman Long <longman@redhat.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
         David Rientjes <rientjes@google.com>
-References: <20200406185827.22249-1-longman@redhat.com>
- <20200406200016.GJ21484@bombadil.infradead.org>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <ba77ea54-69db-2d5c-4811-78b0ac1c45d7@redhat.com>
-Date:   Tue, 7 Apr 2020 16:07:58 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <20200406200016.GJ21484@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 4/6/20 4:00 PM, Matthew Wilcox wrote:
-> On Mon, Apr 06, 2020 at 02:58:27PM -0400, Waiman Long wrote:
->> +/**
->> + * kvfree_sensitive - free a data object containing sensitive information
->> + * @addr - address of the data object to be freed
->> + * @len  - length of the data object
-> Did you try building this with W=1?  I believe this is incorrect kerneldoc.
-> It should be @addr: and @len:
+On Tue, Apr 7, 2020 at 1:03 PM Waiman Long <longman@redhat.com> wrote:
 >
-> Also, it reads better in the htmldocs if you capitalise the first letter
-> of each sentence and finish with a full stop.
->
-You are right. I use the wrong delimiter here. I just send out a v3
-patch to fix that. Thanks for noticing it.
+> For kvmalloc'ed data object that contains sensitive information like
+> cryptographic key, we need to make sure that the buffer is always
+> cleared before freeing it. Using memset() alone for buffer clearing may
+> not provide certainty as the compiler may compile it away. To be sure,
+> the special memzero_explicit() has to be used.
 
+Ack. Since this isn't exactly high-priority, I'm assuming it will go
+through the usual channels (ie Andrew).
 
->> @@ -914,7 +911,7 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
->>  		 */
->>  		if (ret > key_data_len) {
->>  			if (unlikely(key_data))
->> -				__kvzfree(key_data, key_data_len);
->> +				kvfree_sensitive(key_data, key_data_len);
-> I'd drop the test of key_data here.
->
-I would like to keep the unlikely tag here to emphaize the fact that
-this path should not be taken. I have comments up a few lines to talk
-about it, though it didn't show up in the diff.
-
-Cheers,
-Longman
-
+             Linus
