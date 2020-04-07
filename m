@@ -2,67 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B81EB1A168C
-	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 22:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A518C1A16A2
+	for <lists+keyrings@lfdr.de>; Tue,  7 Apr 2020 22:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbgDGUJf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 16:09:35 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:37984 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726894AbgDGUJd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 16:09:33 -0400
-Received: by mail-lj1-f194.google.com with SMTP id v16so5200775ljg.5
-        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 13:09:31 -0700 (PDT)
+        id S1727376AbgDGURJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 16:17:09 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:36858 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727009AbgDGURJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 16:17:09 -0400
+Received: by mail-lf1-f68.google.com with SMTP id w145so3417052lff.3
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 13:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3sghJldqMMjWeerVBLUfhc/cQuHU1aQm4qS6KijAW8Q=;
-        b=LIs7mHA3OXPjMsaXtYIk07UvtJnPGY4OLuhw5yUdciWXo/7JrrEmPqgnrwGk7LYTDy
-         rq/7n66O3MT27zCaMgmAZUsQHre2pHLQbaKY/YARTqgYJVheydI5BKhcTlTAQdZtVZZq
-         45bOqqTdfPd9zcZUW/Ki0gAVMMNSm+WBI9Bqk=
+        bh=tqNU/lPOQShoDviss5cOicvqhvwtlk4dqmmrGpr1nC4=;
+        b=AestyY1vTqwruS2SjIrVNUtcv5M8Rgu+CcoXa2Ec6+EMfNUym7BLVuLaqMEg4Qo83h
+         Qnr6k3woR88ywv52t7EjGWsxUFiyzpMnJQ7/9g74RK12uuMuQBryg8i26qgkAh6zrbEf
+         bvModrsMiA1tyaJ0cX/reQrpKDKOb9pKz3p18=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3sghJldqMMjWeerVBLUfhc/cQuHU1aQm4qS6KijAW8Q=;
-        b=EYwoJ92/lBznhGaZb92XY6PKc6gQ8tQubNERS6OA6UrnBJFSp9aoy93b9C3kM3/zy6
-         z52kSCzY2kAvTFwC9ZK5Aapl+O2Zroj4GFpbx8Ygkpdg2HXEasRzgum0S7LUd7vdBgqO
-         CnVpiWVxhZ7zOu+QhxVgKpq8UdqAEPoPfMD5jAIdtb41xarix93AcnfHX1ySRpj+JE+d
-         o3Df/fPJJgBIJr/ZbRtwQvcZKHRMqOd8AsB9ewBvguIQ68ZsDuOAGXVj4AX24f+j2nz2
-         4GJvASjiz5IdAAjKnVV31u2Mc5WKAEjlf0SV5sqIUiNy5lPNlUdnHrfSCJNYXVViPfNF
-         PyiA==
-X-Gm-Message-State: AGi0PuYX6DUD2zZsPqTc2jKX4TxvIdXxylasQ0zsTmsCAzRFQTorGUDj
-        cbFFtYV8XvinX25cR3L1o7rNOWu69pc=
-X-Google-Smtp-Source: APiQypJ1w0R1ULJkRbpv3QY0nYUL5/Z9GFN0bCqM2siPCgeNpBubSHi7G1R6KAVeqqlcGnWb/nJwtA==
-X-Received: by 2002:a2e:9616:: with SMTP id v22mr2625222ljh.107.1586290169360;
-        Tue, 07 Apr 2020 13:09:29 -0700 (PDT)
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com. [209.85.208.180])
-        by smtp.gmail.com with ESMTPSA id b16sm12228327ljh.20.2020.04.07.13.09.27
+        bh=tqNU/lPOQShoDviss5cOicvqhvwtlk4dqmmrGpr1nC4=;
+        b=MEaTsfg4s0QLrV+GlNQliFeChHtLpmfeVLlHNy8rxv6SWLZK4d2DFdDPzb6C9AhI/J
+         2jn5UQynpIUZXVX9tLqzHDyBnZz2Ttwm6QB9J6kGv/JnDmAkWti0/wxAPICXaMku434Z
+         phz/LdqClWo4nifyNu5jyaH0AVqC6j/fTmWnQOqmmbsqanBIPf3v8z639bA/C5DZGFEI
+         w0eaGeWSwcQkVfZjQ1nifVSrAr6FYrIal60P8iCGH2lclqJQZ87EUnOvBMz7SfnEFTtH
+         x4ca+kcy7lq+hm7loAhvfsTHPfWlL/OoLvrZ/GOPT4mbP4ap2JdApRUnmWe/hBxK8i8Y
+         8tcA==
+X-Gm-Message-State: AGi0PubdMRqrrA9yhQ9f6F0kbaAczKzuEn/Q9xD5lPi8ecLc345oIZFH
+        NzPdYNtRdigPZsD9uEpkPAnrQ/hUhyI=
+X-Google-Smtp-Source: APiQypKgK+agfQfNs6w/Sd79LlsbolqioXfRgn5EntnP4IE7pAKN6tPpYtmcxAG7UkiTb2PXjpcwlw==
+X-Received: by 2002:a19:f611:: with SMTP id x17mr2546058lfe.51.1586290625599;
+        Tue, 07 Apr 2020 13:17:05 -0700 (PDT)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com. [209.85.167.50])
+        by smtp.gmail.com with ESMTPSA id t8sm14612918lfe.31.2020.04.07.13.17.04
         for <keyrings@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2020 13:09:27 -0700 (PDT)
-Received: by mail-lj1-f180.google.com with SMTP id g27so5129699ljn.10
-        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 13:09:27 -0700 (PDT)
-X-Received: by 2002:a2e:8911:: with SMTP id d17mr2856344lji.16.1586290167180;
- Tue, 07 Apr 2020 13:09:27 -0700 (PDT)
+        Tue, 07 Apr 2020 13:17:04 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id r17so3418158lff.2
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 13:17:04 -0700 (PDT)
+X-Received: by 2002:a19:9109:: with SMTP id t9mr2511760lfd.10.1586290623763;
+ Tue, 07 Apr 2020 13:17:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200407200318.11711-1-longman@redhat.com>
-In-Reply-To: <20200407200318.11711-1-longman@redhat.com>
+References: <20200406185827.22249-1-longman@redhat.com> <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
+In-Reply-To: <c2c8adf48be7cb18bbdf0aef7d21e2defe3d2183.camel@perches.com>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 7 Apr 2020 13:09:11 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh4YYef26dFX2o9iAKts6vuPceUNg7Bdq32REnvfOWiog@mail.gmail.com>
-Message-ID: <CAHk-=wh4YYef26dFX2o9iAKts6vuPceUNg7Bdq32REnvfOWiog@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data objects
-To:     Waiman Long <longman@redhat.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
+Date:   Tue, 7 Apr 2020 13:16:47 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg_mkSc-pH8ntGHR=no9DOLRQyxdtU20p55DrM1su6QzA@mail.gmail.com>
+Message-ID: <CAHk-=wg_mkSc-pH8ntGHR=no9DOLRQyxdtU20p55DrM1su6QzA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: Add kvfree_sensitive() for freeing sensitive data objects
+To:     Joe Perches <joe@perches.com>
+Cc:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Linux-MM <linux-mm@kvack.org>, keyrings@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joe Perches <joe@perches.com>,
         Matthew Wilcox <willy@infradead.org>,
         David Rientjes <rientjes@google.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -71,15 +71,48 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 7, 2020 at 1:03 PM Waiman Long <longman@redhat.com> wrote:
+On Mon, Apr 6, 2020 at 12:40 PM Joe Perches <joe@perches.com> wrote:
 >
-> For kvmalloc'ed data object that contains sensitive information like
-> cryptographic key, we need to make sure that the buffer is always
-> cleared before freeing it. Using memset() alone for buffer clearing may
-> not provide certainty as the compiler may compile it away. To be sure,
-> the special memzero_explicit() has to be used.
+> 2.1.44 changed kfree(void *) to kfree(const void *) but
+> I didn't find a particular reason why.
 
-Ack. Since this isn't exactly high-priority, I'm assuming it will go
-through the usual channels (ie Andrew).
+Because "free()" should always have been const (and volatile, for that
+matter, but the kernel doesn't care since we eschew volatile data
+structures).
+
+It's a bug in the C library standard.
+
+Think of it this way: free() doesn't really change the data, it kills
+the lifetime of it. You can't access it afterwards - you can neither
+read it nor write it validly. That is a completely different - and
+independent - operation from writing to it.
+
+And  more importantly, it's perfectly fine to have a const data
+structure (or a volatile one) that you free. The allocation may have
+done something like this:
+
+   struct mystruct {
+       const struct dictionary *dictionary;
+       ...
+   };
+
+and it was allocated and initialized before it was assigned to that
+"dictionary" pointer. That's _good_ code.
+
+So it wasn't const before the allocation, but it turned const
+afterwards, and freeing it doesn't change that, it just kills the
+lifetime entirely.
+
+So "free()" should take a const pointer without complaining, and saying
+
+   free(mystruct->dictionary);
+   free(mystruct);
+
+is a sensible an correct thing to do. Warning about - or requiring
+that dictionary pointer to be cast to be freed - is fundamentally
+wrong.
+
+We're not bound by the fact that the C standard library got their
+rules wrong, so we can fix it in the kernel.
 
              Linus
