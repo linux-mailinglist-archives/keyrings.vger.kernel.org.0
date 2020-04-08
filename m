@@ -2,80 +2,124 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC28A1A1948
-	for <lists+keyrings@lfdr.de>; Wed,  8 Apr 2020 02:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2611B1A1A59
+	for <lists+keyrings@lfdr.de>; Wed,  8 Apr 2020 05:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgDHAh0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Apr 2020 20:37:26 -0400
-Received: from smtprelay0086.hostedemail.com ([216.40.44.86]:35160 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726406AbgDHAh0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 20:37:26 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id EC792180240BA;
-        Wed,  8 Apr 2020 00:37:24 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 30,2,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:965:966:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2553:2559:2562:2740:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:4385:4390:4395:5007:6119:7904:8603:10010:10400:10848:11026:11232:11658:11914:12296:12297:12740:12760:12895:13069:13141:13230:13311:13357:13439:14096:14097:14659:14721:14819:21080:21324:21627:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:1:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: cough31_235fb3002fe5a
-X-Filterd-Recvd-Size: 2519
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Wed,  8 Apr 2020 00:37:22 +0000 (UTC)
-Message-ID: <bc4500becb77f4e6396f69cc354ceb46c2aebb04.camel@perches.com>
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive
- data objects
-From:   Joe Perches <joe@perches.com>
-To:     Matthew Wilcox <willy@infradead.org>,
-        Waiman Long <longman@redhat.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>
-Date:   Tue, 07 Apr 2020 17:35:24 -0700
-In-Reply-To: <20200407221255.GM21484@bombadil.infradead.org>
-References: <20200407200318.11711-1-longman@redhat.com>
-         <0fe5dcaf078be61ef21c7f18b750c5dc14c69dd7.camel@perches.com>
-         <67c51b03-192c-3006-5071-452f351aee67@redhat.com>
-         <20200407221255.GM21484@bombadil.infradead.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S1726467AbgDHDmz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Apr 2020 23:42:55 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:45543 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726464AbgDHDmz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Apr 2020 23:42:55 -0400
+Received: by mail-ed1-f68.google.com with SMTP id m12so6723558edl.12
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 20:42:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NJf9EXNj3y/TKHffW9ag62Sko1WtINX0aC0YEmTe104=;
+        b=S5OUs8S2WPRcFflOiuuZsTxZ8A1VyAyMWTd+UIkBzHeqvN6tEv6DNT/Bpoq4rp7OB+
+         ggO9z6fRYGobw4WBVT1GwWBGUhc1933I2vOXImxppct2Mq6upT6lf6wE5i9FG0JmTvnn
+         rr5kl3i0aGePIwNow27mp+LGMU0yoljl7cDiI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NJf9EXNj3y/TKHffW9ag62Sko1WtINX0aC0YEmTe104=;
+        b=ZihhEfzQ+yZ6OqKxrKKWNbmXJXhVDPzBC/htbekFQ2qkA3D9jXsK5Y1vHi4lmrFQ3k
+         6BvfW7dcxLtsa+1qf+Es8HW/y2v83JDQtMW9gU48rQ7c0dGS2A3mb8Jnu+h4ZyEWhUkA
+         stOwoSj+d4IgNO9r4URuFkaH6S4aOxesRrgF0eX8MD4TX4xosdkXP+4olBfhTu695atG
+         dKu2aaFYuX6OdEFZMiGEWmHcYEq4A5jb5YmdhJ3TsNyefRTwds+9D5ixFt+IYz7S1s/5
+         jCBIV0DtkUJMr60Ckb+2Zgk8PKCdd5B7VI8TJbmwcgmUY/HHtw9sG++S2vZPFY4AodiX
+         3IIg==
+X-Gm-Message-State: AGi0PuYoxMc8e58xv/AgXntMS2ELmUkujIvfTPOq+YeqGCMin63m1IJ4
+        Kn69QhUuQ5EuzZ9O9nNRVMhR0ZMKuLo=
+X-Google-Smtp-Source: APiQypIGXX6RdgZ+xuszHQ64SV/SPb3V6aVdWpOQJhJVq7QxhcnUCdfJehZlejXdx9O4qyMQBIMvyQ==
+X-Received: by 2002:a17:906:1e48:: with SMTP id i8mr5010539ejj.232.1586317372366;
+        Tue, 07 Apr 2020 20:42:52 -0700 (PDT)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com. [209.85.221.47])
+        by smtp.gmail.com with ESMTPSA id ce18sm222806ejb.61.2020.04.07.20.42.51
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2020 20:42:52 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id y44so2584867wrd.13
+        for <keyrings@vger.kernel.org>; Tue, 07 Apr 2020 20:42:51 -0700 (PDT)
+X-Received: by 2002:ac2:4466:: with SMTP id y6mr3241858lfl.125.1586317003620;
+ Tue, 07 Apr 2020 20:36:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <CAJfpegsXqxizOGwa045jfT6YdUpMxpXET-yJ4T8qudyQbCGkHQ@mail.gmail.com>
+ <36e45eae8ad78f7b8889d9d03b8846e78d735d28.camel@themaw.net>
+ <CAJfpegsCDWehsTRQ9UJYuQnghnE=M8L0_bJBTTPA+Upu87t90w@mail.gmail.com>
+ <27994c53034c8f769ea063a54169317c3ee62c04.camel@themaw.net>
+ <20200403111144.GB34663@gardel-login> <CAJfpeguQAw+Mgc8QBNd+h3KV8=Y-SOGT7TB_N_54wa8MCoOSzg@mail.gmail.com>
+ <20200403151223.GB34800@gardel-login> <20200403203024.GB27105@fieldses.org>
+ <20200406091701.q7ctdek2grzryiu3@ws.net.home> <CAHk-=wjW735UE+byK1xsM9UvpF2ubh7bCMaAOwz575U7hRCKyA@mail.gmail.com>
+ <20200406184812.GA37843@gardel-login>
+In-Reply-To: <20200406184812.GA37843@gardel-login>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 7 Apr 2020 20:36:27 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgNuJaJS9Vfe83Tfgq92PonhpfLy1-vvG63SC=3VYf3+g@mail.gmail.com>
+Message-ID: <CAHk-=wgNuJaJS9Vfe83Tfgq92PonhpfLy1-vvG63SC=3VYf3+g@mail.gmail.com>
+Subject: Re: Upcoming: Notifications, FS notifications and fsinfo()
+To:     Lennart Poettering <mzxreary@0pointer.de>
+Cc:     Karel Zak <kzak@redhat.com>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Ian Kent <raven@themaw.net>,
+        David Howells <dhowells@redhat.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Al Viro <viro@zeniv.linux.org.uk>, dray@redhat.com,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Steven Whitehouse <swhiteho@redhat.com>,
+        Jeff Layton <jlayton@redhat.com>, andres@anarazel.de,
+        keyrings@vger.kernel.org,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-04-07 at 15:12 -0700, Matthew Wilcox wrote:
-> On Tue, Apr 07, 2020 at 04:45:45PM -0400, Waiman Long wrote:
-> > On 4/7/20 4:31 PM, Joe Perches wrote:
-> > > On Tue, 2020-04-07 at 16:03 -0400, Waiman Long wrote:
-> > > > +extern void kvfree_sensitive(const void *addr, size_t len);
-> > > Why should size_t len be required?
-> > > 
-> > > Why not do what kzfree does and memset
-> > > the entire allocation? (area->size)
-> > 
-> > If the memory is really virtually mapped, the only way to find out the
-> > size of the object is to use find_vm_area() which can be relatively high
-> > cost and no simple helper function is available. On the other hand, the
-> > length is readily available in the callers. So passing the length
-> > directly to the kvfree_sensitive is simpler.
-> 
-> Also it lets us zero only the first N bytes of the allocation.  That might
-> be good for performance, if only the first N bytes of an M byte allocation
-> are actually sensitive.  I don't know if we have any such cases, but
-> they could exist.
+On Mon, Apr 6, 2020 at 11:48 AM Lennart Poettering <mzxreary@0pointer.de> wrote:
+>
+> On Mo, 06.04.20 09:34, Linus Torvalds (torvalds@linux-foundation.org) wrote:
+>
+> > On Mon, Apr 6, 2020 at 2:17 AM Karel Zak <kzak@redhat.com> wrote:
+> > >
+> > > On Fri, Apr 03, 2020 at 04:30:24PM -0400, J. Bruce Fields wrote:
+> > > >
+> > > > nfs-utils/support/misc/mountpoint.c:check_is_mountpoint() stats the file
+> > > > and ".." and returns true if they have different st_dev or the same
+> > > > st_ino.  Comparing mount ids sounds better.
+> > >
+> > > BTW, this traditional st_dev+st_ino way is not reliable for bind mounts.
+> > > For mountpoint(1) we search the directory in /proc/self/mountinfo.
+> >
+> > These days you should probably use openat2() with RESOLVE_NO_XDEV.
+>
+> Note that opening a file is relatively "heavy" i.e. typically triggers
+> autofs and stuff, and results in security checks (which can fail and
+> such, and show up in audit).
 
-I would really doubt it as the allocation of
-sensitive data should generally be separate.
+For the use that Bruce outlined, openat2() with RESOLVE_NO_XDEV is
+absolutely the right thing.
 
-Also, a similar argument could apply to
-kzfree/kfree_sensitive.
+He already did the stat() of the file (and ".."), RESOLVE_NO_XDEV is
+only an improvement. It's also a lot better than trying to parse
+mountinfo.
 
+Now, I don't disagree that a statx() flag to also indicate "that's a
+top-level mount" might be a good idea, and may be the right answer for
+other cases.
 
+I'm just saying that considering what Bruce does now, RESOLVE_NO_XDEV
+sounds like the nobrainer approach, and needs no new support outside
+of what we already had for other reasons.
+
+(And O_PATH _may_ or may not be part of what you want to do, it's an
+independent separate issue, but automount behavior wrt a O_PATH lookup
+is somewhat unclear - see Al's other emails on that subject)
+
+             Linus
