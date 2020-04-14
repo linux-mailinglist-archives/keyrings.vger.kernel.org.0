@@ -2,87 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 996C41A8AC4
-	for <lists+keyrings@lfdr.de>; Tue, 14 Apr 2020 21:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 311551A8B01
+	for <lists+keyrings@lfdr.de>; Tue, 14 Apr 2020 21:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731219AbgDNTaO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 14 Apr 2020 15:30:14 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:40862 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731221AbgDNTaA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 14 Apr 2020 15:30:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586892599;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:in-reply-to:in-reply-to:references:references;
-        bh=4nt9rcH2RnKfJzDA58agnsCRn6rTIqNaptR/6NgozyU=;
-        b=TmBQD0Cnhi97wuS+XJSLFilq6/WfEO7bI3aZn9qaIu4O/EeUhBxspf5vauRN49iFGFwCmD
-        4h7uGVv1okTokBqdAtN6K5AXDEO1smBYNV/bRT9zYReBlHbMVTiIXbaUxJ0U4UcrT+lw1f
-        FhEBN8qvwhPNMgRij4sLmbch7IE9D5E=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-194-Xc2oPvfjP7mbYjWGtjiEGA-1; Tue, 14 Apr 2020 15:29:55 -0400
-X-MC-Unique: Xc2oPvfjP7mbYjWGtjiEGA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6723C107ACC9;
-        Tue, 14 Apr 2020 19:29:52 +0000 (UTC)
-Received: from llong.com (ovpn-118-173.rdu2.redhat.com [10.10.118.173])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F1F4419C70;
-        Tue, 14 Apr 2020 19:29:46 +0000 (UTC)
-From:   Waiman Long <longman@redhat.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        Waiman Long <longman@redhat.com>
-Subject: [PATCH v2 3/3] btrfs: Use kfree() in btrfs_ioctl_get_subvol_info()
-Date:   Tue, 14 Apr 2020 15:29:33 -0400
-Message-Id: <20200414192933.26846-1-longman@redhat.com>
-In-Reply-To: <20200413211550.8307-1-longman@redhat.com>
-References: <20200413211550.8307-1-longman@redhat.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+        id S2504931AbgDNThF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 14 Apr 2020 15:37:05 -0400
+Received: from mga05.intel.com ([192.55.52.43]:16021 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2504927AbgDNTgd (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 14 Apr 2020 15:36:33 -0400
+IronPort-SDR: Xf7AasBR+Cwuoo1RHt2J73WfnccFppoxdF0pbHReZB/PMQ4aHBMyHWChGEysFNYJDoge2TmjtW
+ q3z6nTiLWa1g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2020 12:36:32 -0700
+IronPort-SDR: RbgOpGKFVsGo3SiHoop5kYgJ/h73AEjE9vehfiM+6jBMBkeExRIuMoSfFVrKsxwCmxkOSJ5Jde
+ 3lJIdp/ifEyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,384,1580803200"; 
+   d="scan'208";a="253292064"
+Received: from jclobus-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.42.176])
+  by orsmga003.jf.intel.com with ESMTP; 14 Apr 2020 12:36:31 -0700
+Date:   Tue, 14 Apr 2020 22:36:30 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     vvs@virtuozzo.com, keyrings@vger.kernel.org
+Subject: Re: [PATCH] keys: Fix proc_keys_next to increase position index
+Message-ID: <20200414193630.GC13000@linux.intel.com>
+References: <3881684.1586876468@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3881684.1586876468@warthog.procyon.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-In btrfs_ioctl_get_subvol_info(), there is a classic case where kzalloc()
-was incorrectly paired with kzfree(). According to David Sterba, there
-isn't any sensitive information in the subvol_info that needs to be
-cleared before freeing. So kfree_sensitive() isn't really needed,
-use kfree() instead.
+On Tue, Apr 14, 2020 at 04:01:08PM +0100, David Howells wrote:
+> Hi Jarkko,
+> 
+> I'm planning on passing this on to Linus if you're okay with it.  Note that
+> I've altered the subject and the body slightly.
 
-Reported-by: David Sterba <dsterba@suse.cz>
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- fs/btrfs/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Absolutely fine.
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index eab3f8510426..5070bd2436b7 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2691,7 +2691,7 @@ static int btrfs_ioctl_get_subvol_info(struct file *file, void __user *argp)
- 	btrfs_put_root(root);
- out_free:
- 	btrfs_free_path(path);
--	kfree_sensitive(subvol_info);
-+	kfree(subvol_info);
- 	return ret;
- }
- 
--- 
-2.18.1
-
+/Jarkko
