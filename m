@@ -2,137 +2,158 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B540D1A809B
-	for <lists+keyrings@lfdr.de>; Tue, 14 Apr 2020 17:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4070C1A84B3
+	for <lists+keyrings@lfdr.de>; Tue, 14 Apr 2020 18:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405517AbgDNPBZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 14 Apr 2020 11:01:25 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:55678 "EHLO
+        id S2391470AbgDNQZn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 14 Apr 2020 12:25:43 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:59096 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2405178AbgDNPBU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 14 Apr 2020 11:01:20 -0400
+        with ESMTP id S2391478AbgDNQZF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 14 Apr 2020 12:25:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586876479;
+        s=mimecast20190719; t=1586881501;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=BNJ2ShHeuV6cRZ6cvuASvIdGYqCK2PoGgkFRTICHqX4=;
-        b=Thn6i5NlU3C5yhNgG2Df5SZCT611+IK5Q+pepsfEBcmyMgU6SITyP3qCwppTQpXA1G7cqq
-        GTXSNLh8OyMiclmQ3blVs0YFn4k+VRJD0l+oLVYsmYHBK5H8sHIJNuyf6amEnCUjsis41l
-        DCgb2IznFQ1/q5EvEPuhrTijorbHV1U=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yW8t58m2bp1NhazlqC7/k8J+nPWsrZBYDWUsjTyk2qQ=;
+        b=NsgcQPq0gDRRzr+WCv6O+IejAhACeGf91UcZUch7xVIEkk4F0++6WsAKwkQ+6nkMoq/jD7
+        lzSV3f1EuKP3Hxnp2JivHQcF6Vr/Z22M++foNVb8RdxR7eWsyL6QJbeO4NazIgQ9svAhXl
+        7AFa78Hn9YCF68TMh9hKXOVlm2kXUcc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-441-kQ2e62LZMdOYkQ8zuUBLYg-1; Tue, 14 Apr 2020 11:01:11 -0400
-X-MC-Unique: kQ2e62LZMdOYkQ8zuUBLYg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+ us-mta-87-m_CJjLwlPvyXxruKyZ4cKA-1; Tue, 14 Apr 2020 12:24:56 -0400
+X-MC-Unique: m_CJjLwlPvyXxruKyZ4cKA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4997E149C0;
-        Tue, 14 Apr 2020 15:01:10 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-113-129.rdu2.redhat.com [10.10.113.129])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 71B7B126510;
-        Tue, 14 Apr 2020 15:01:09 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-cc:     dhowells@redhat.com, vvs@virtuozzo.com, keyrings@vger.kernel.org
-Subject: [PATCH] keys: Fix proc_keys_next to increase position index
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 12123107ACC4;
+        Tue, 14 Apr 2020 16:24:50 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-118-173.rdu2.redhat.com [10.10.118.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0E02D118DEE;
+        Tue, 14 Apr 2020 16:24:36 +0000 (UTC)
+Subject: Re: [PATCH v2 2/2] crypto: Remove unnecessary memzero_explicit()
+To:     Christophe Leroy <christophe.leroy@c-s.fr>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>
+Cc:     linux-mm@kvack.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-crypto@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        intel-wired-lan@lists.osuosl.org, linux-ppp@vger.kernel.org,
+        wireguard@lists.zx2c4.com, linux-wireless@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        cocci@systeme.lip6.fr, linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+References: <20200413211550.8307-1-longman@redhat.com>
+ <20200413222846.24240-1-longman@redhat.com>
+ <eca85e0b-0af3-c43a-31e4-bd5c3f519798@c-s.fr>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <e194a51f-a5e5-a557-c008-b08cac558572@redhat.com>
+Date:   Tue, 14 Apr 2020 12:24:36 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3881683.1586876468.1@warthog.procyon.org.uk>
+In-Reply-To: <eca85e0b-0af3-c43a-31e4-bd5c3f519798@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 14 Apr 2020 16:01:08 +0100
-Message-ID: <3881684.1586876468@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+On 4/14/20 2:08 AM, Christophe Leroy wrote:
+>
+>
+> Le 14/04/2020 =C3=A0 00:28, Waiman Long a =C3=A9crit=C2=A0:
+>> Since kfree_sensitive() will do an implicit memzero_explicit(), there
+>> is no need to call memzero_explicit() before it. Eliminate those
+>> memzero_explicit() and simplify the call sites. For better correctness=
+,
+>> the setting of keylen is also moved down after the key pointer check.
+>>
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>> =C2=A0 .../allwinner/sun8i-ce/sun8i-ce-cipher.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 19 +++++-------------
+>> =C2=A0 .../allwinner/sun8i-ss/sun8i-ss-cipher.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 20 +++++--------------
+>> =C2=A0 drivers/crypto/amlogic/amlogic-gxl-cipher.c=C2=A0=C2=A0 | 12 ++=
++--------
+>> =C2=A0 drivers/crypto/inside-secure/safexcel_hash.c=C2=A0 |=C2=A0 3 +-=
+-
+>> =C2=A0 4 files changed, 14 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+>> b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+>> index aa4e8fdc2b32..8358fac98719 100644
+>> --- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+>> +++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+>> @@ -366,10 +366,7 @@ void sun8i_ce_cipher_exit(struct crypto_tfm *tfm)
+>> =C2=A0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct sun8i_cipher_tfm_ctx *op =3D cry=
+pto_tfm_ctx(tfm);
+>> =C2=A0 -=C2=A0=C2=A0=C2=A0 if (op->key) {
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memzero_explicit(op->key, =
+op->keylen);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(op->key);
+>> -=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 kfree_sensitive(op->key);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 crypto_free_sync_skcipher(op->fallback_=
+tfm);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pm_runtime_put_sync_suspend(op->ce->dev=
+);
+>> =C2=A0 }
+>> @@ -391,14 +388,11 @@ int sun8i_ce_aes_setkey(struct crypto_skcipher
+>> *tfm, const u8 *key,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_dbg(ce->dev=
+, "ERROR: Invalid keylen %u\n", keylen);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> -=C2=A0=C2=A0=C2=A0 if (op->key) {
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memzero_explicit(op->key, =
+op->keylen);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(op->key);
+>> -=C2=A0=C2=A0=C2=A0 }
+>> -=C2=A0=C2=A0=C2=A0 op->keylen =3D keylen;
+>> +=C2=A0=C2=A0=C2=A0 kfree_sensitive(op->key);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 op->key =3D kmemdup(key, keylen, GFP_KE=
+RNEL | GFP_DMA);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!op->key)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
+>> +=C2=A0=C2=A0=C2=A0 op->keylen =3D keylen;
+>
+> Does it matter at all to ensure op->keylen is not set when of->key is
+> NULL ? I'm not sure.
+>
+> But if it does, then op->keylen should be set to 0 when freeing op->key=
+.=20
 
-I'm planning on passing this on to Linus if you're okay with it.  Note tha=
-t
-I've altered the subject and the body slightly.
+My thinking is that if memory allocation fails, we just don't touch
+anything and return an error code. I will not explicitly set keylen to 0
+in this case unless it is specified in the API documentation.
 
-David
----
-commit 3e87bc31455f887a0372276990249a150e31fc5a
-Author: Vasily Averin <vvs@virtuozzo.com>
-Date:   Thu Jan 30 13:16:27 2020 +0300
-
-    keys: Fix proc_keys_next to increase position index
-    =
-
-    If seq_file .next function does not change position index,
-    read after some lseek can generate unexpected output:
-    =
-
-    $ dd if=3D/proc/keys bs=3D1  # full usual output
-    0f6bfdf5 I--Q---     2 perm 3f010000  1000  1000 user      4af2f79ab88=
-48d0a: 740
-    1fb91b32 I--Q---     3 perm 1f3f0000  1000 65534 keyring   _uid.1000: =
-2
-    27589480 I--Q---     1 perm 0b0b0000     0     0 user      invocation_=
-id: 16
-    2f33ab67 I--Q---   152 perm 3f030000     0     0 keyring   _ses: 2
-    33f1d8fa I--Q---     4 perm 3f030000  1000  1000 keyring   _ses: 1
-    3d427fda I--Q---     2 perm 3f010000  1000  1000 user      69ec44aec76=
-78e5a: 740
-    3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.10=
-00: 1
-    521+0 records in
-    521+0 records out
-    521 bytes copied, 0,00123769 s, 421 kB/s
-    =
-
-    $ dd if=3D/proc/keys bs=3D500 skip=3D1  # read after lseek in middle o=
-f last line
-    dd: /proc/keys: cannot skip to specified offset
-    g   _uid_ses.1000: 1        <<<< end of last line
-    3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.10=
-00: 1
-       <<<< and whole last line again
-    0+1 records in
-    0+1 records out
-    97 bytes copied, 0,000135035 s, 718 kB/s
-    =
-
-    $ dd if=3D/proc/keys bs=3D1000 skip=3D1   # read after lseek beyond en=
-d of file
-    dd: /proc/keys: cannot skip to specified offset
-    3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.10=
-00: 1
-       <<<< generates last line
-    0+1 records in
-    0+1 records out
-    76 bytes copied, 0,000119981 s, 633 kB/s
-    =
-
-    See https://bugzilla.kernel.org/show_bug.cgi?id=3D206283
-    =
-
-    Cc: stable@vger.kernel.org
-    Fixes: 1f4aace60b0e ("fs/seq_file.c: simplify seq_file iteration code =
-...")
-    Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-    Signed-off-by: David Howells <dhowells@redhat.com>
-
-diff --git a/security/keys/proc.c b/security/keys/proc.c
-index 415f3f1c2da0..d0cde6685627 100644
---- a/security/keys/proc.c
-+++ b/security/keys/proc.c
-@@ -139,6 +139,8 @@ static void *proc_keys_next(struct seq_file *p, void *=
-v, loff_t *_pos)
- 	n =3D key_serial_next(p, v);
- 	if (n)
- 		*_pos =3D key_node_serial(n);
-+	else
-+		(*_pos)++;
- 	return n;
- }
- =
+Cheers,
+Longman
 
