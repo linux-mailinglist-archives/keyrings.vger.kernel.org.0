@@ -2,75 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 031441A8C3F
-	for <lists+keyrings@lfdr.de>; Tue, 14 Apr 2020 22:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B6A1A8C8A
+	for <lists+keyrings@lfdr.de>; Tue, 14 Apr 2020 22:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2632813AbgDNUQ1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 14 Apr 2020 16:16:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48588 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2632793AbgDNUQK (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 14 Apr 2020 16:16:10 -0400
-Received: from tleilax.poochiereds.net (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2633206AbgDNUdd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 14 Apr 2020 16:33:33 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:21102 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2633201AbgDNUd3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 14 Apr 2020 16:33:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586896408;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=KwTOC5onNXJuxN2tXzBuJ3tclXWEJTwV06ZLB9D3qTQ=;
+        b=WrpJr1lRffTGp2DRgr0Ps5acoR+kzYYBwrZJMYMEeC3LbXsUIERAVDh518rG0xOJCsCkgH
+        4JG+vv/HhMazsIuyhRSjmnuDx//mFTEeFQ/2hd/s2nIa8yJRcoYto3GrTGL27RzDFZFH/F
+        tw5R0cKqGTEkcvR/k8SC1vANt2N/TNc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-500-PUQ0StVLN8yTR-bYNrMKXQ-1; Tue, 14 Apr 2020 16:33:20 -0400
+X-MC-Unique: PUQ0StVLN8yTR-bYNrMKXQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9CF082074D;
-        Tue, 14 Apr 2020 20:16:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586895367;
-        bh=4W3gIsYx8mNRm7hQccmDcfI7rVeS0PCbsqaEor2jO1A=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=C4uL/J0pV22/gMFfSQyw7mxFz8RSAoHxrbABKat2YAnbqmLdyT1HH96qxNFf6MwZe
-         lIYaRIqET3RZlaHuohQThMMnmG3sDfVZdwqkNMQvxZC4N7NbE8Z0K7NUQ1pCA/ZW6r
-         0z3amCpYG+5IOToFbZUiDdjckJlO8mLeqbvDwegw=
-Message-ID: <e751977dac616d93806d98f4ad3ce144bb1eb244.camel@kernel.org>
-Subject: Re: What's a good default TTL for DNS keys in the kernel
-From:   Jeff Layton <jlayton@kernel.org>
-To:     David Howells <dhowells@redhat.com>, linux-nfs@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-afs@lists.infradead.org,
-        ceph-devel@vger.kernel.org
-Cc:     keyrings@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, fweimer@redhat.com
-Date:   Tue, 14 Apr 2020 16:16:05 -0400
-In-Reply-To: <3865908.1586874010@warthog.procyon.org.uk>
-References: <3865908.1586874010@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F0E25149C0;
+        Tue, 14 Apr 2020 20:33:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-113-129.rdu2.redhat.com [10.10.113.129])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6BA60126510;
+        Tue, 14 Apr 2020 20:33:17 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH] keys: Fix proc_keys_next to increase position index
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+Cc:     stable@vger.kernel.org, Vasily Averin <vvs@virtuozzo.com>,
+        dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 14 Apr 2020 21:33:16 +0100
+Message-ID: <158689639664.3925765.4549426529245164675.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/0.21
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-04-14 at 15:20 +0100, David Howells wrote:
-> Since key.dns_resolver isn't given a TTL for the address information obtained
-> for getaddrinfo(), no expiry is set on dns_resolver keys in the kernel for
-> NFS, CIFS or Ceph.  AFS gets one if it looks up a cell SRV or AFSDB record
-> because that is looked up in the DNS directly, but it doesn't look up A or
-> AAAA records, so doesn't get an expiry for the addresses themselves.
-> 
-> I've previously asked the libc folks if there's a way to get this information
-> exposed in struct addrinfo, but I don't think that ended up going anywhere -
-> and, in any case, would take a few years to work through the system.
-> 
-> For the moment, I think I should put a default on any dns_resolver keys and
-> have it applied either by the kernel (configurable with a /proc/sys/ setting)
-> or by the key.dnf_resolver program (configurable with an /etc file).
-> 
-> Any suggestion as to the preferred default TTL?  10 minutes?
-> 
+From: Vasily Averin <vvs@virtuozzo.com>
 
-Typical DNS TTL values are on the order of a day but it can vary widely.
-There's really no correct answer for this, since you have no way to tell
-how long the entry has been sitting in the DNS server's cache before you
-queried for it.
+If seq_file .next function does not change position index,
+read after some lseek can generate unexpected output:
 
-So, you're probably down to just finding some value that doesn't hammer
-the DNS server too much, but that allows you to get new entries in a
-reasonable amount of time.
+$ dd if=/proc/keys bs=1  # full usual output
+0f6bfdf5 I--Q---     2 perm 3f010000  1000  1000 user      4af2f79ab8848d0a: 740
+1fb91b32 I--Q---     3 perm 1f3f0000  1000 65534 keyring   _uid.1000: 2
+27589480 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
+2f33ab67 I--Q---   152 perm 3f030000     0     0 keyring   _ses: 2
+33f1d8fa I--Q---     4 perm 3f030000  1000  1000 keyring   _ses: 1
+3d427fda I--Q---     2 perm 3f010000  1000  1000 user      69ec44aec7678e5a: 740
+3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
+521+0 records in
+521+0 records out
+521 bytes copied, 0,00123769 s, 421 kB/s
 
-10 mins sounds like a reasonable default to me.
--- 
-Jeff Layton <jlayton@kernel.org>
+$ dd if=/proc/keys bs=500 skip=1  # read after lseek in middle of last line
+dd: /proc/keys: cannot skip to specified offset
+g   _uid_ses.1000: 1        <<<< end of last line
+3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
+   <<<< and whole last line again
+0+1 records in
+0+1 records out
+97 bytes copied, 0,000135035 s, 718 kB/s
+
+$ dd if=/proc/keys bs=1000 skip=1   # read after lseek beyond end of file
+dd: /proc/keys: cannot skip to specified offset
+3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
+   <<<< generates last line
+0+1 records in
+0+1 records out
+76 bytes copied, 0,000119981 s, 633 kB/s
+
+See https://bugzilla.kernel.org/show_bug.cgi?id=206283
+
+Cc: stable@vger.kernel.org
+Fixes: 1f4aace60b0e ("fs/seq_file.c: simplify seq_file iteration code ...")
+Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+---
+
+ security/keys/proc.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/security/keys/proc.c b/security/keys/proc.c
+index 415f3f1c2da0..d0cde6685627 100644
+--- a/security/keys/proc.c
++++ b/security/keys/proc.c
+@@ -139,6 +139,8 @@ static void *proc_keys_next(struct seq_file *p, void *v, loff_t *_pos)
+ 	n = key_serial_next(p, v);
+ 	if (n)
+ 		*_pos = key_node_serial(n);
++	else
++		(*_pos)++;
+ 	return n;
+ }
+ 
+
 
