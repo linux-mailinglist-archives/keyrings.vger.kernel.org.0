@@ -2,101 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9901A9929
-	for <lists+keyrings@lfdr.de>; Wed, 15 Apr 2020 11:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0403D1AAF1E
+	for <lists+keyrings@lfdr.de>; Wed, 15 Apr 2020 19:08:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2895752AbgDOJom (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Apr 2020 05:44:42 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:43198 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2895748AbgDOJok (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Apr 2020 05:44:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586943878;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bKa8snlnDryG0vgt7Fg/rdv6w9fg6r4FpdXiLIxnEdE=;
-        b=AdhJXXlV/+qPI1sD24Ht8F67XLwlJBO5HQHLMOEXl2ug8Qj+ge/0Fw+OxjeIrnmVu1EnW6
-        6K9bcJGYaLfSkrByAVS/QRHEnDxo+i+W6q/PZKxvKQx4YuCiIEoG46uMs5PdsSuiYbcg+p
-        N/0+J5XZqnKr7z8D01qVHjzsu0OueB0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-508-olUJzS60OsClk0RUhQWf4A-1; Wed, 15 Apr 2020 05:44:34 -0400
-X-MC-Unique: olUJzS60OsClk0RUhQWf4A-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 216EB800D5C;
-        Wed, 15 Apr 2020 09:44:33 +0000 (UTC)
-Received: from oldenburg2.str.redhat.com (ovpn-114-61.ams2.redhat.com [10.36.114.61])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0E8D72B479;
-        Wed, 15 Apr 2020 09:44:30 +0000 (UTC)
-From:   Florian Weimer <fweimer@redhat.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
-        keyrings@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: What's a good default TTL for DNS keys in the kernel
-References: <3865908.1586874010@warthog.procyon.org.uk>
-Date:   Wed, 15 Apr 2020 11:44:29 +0200
-In-Reply-To: <3865908.1586874010@warthog.procyon.org.uk> (David Howells's
-        message of "Tue, 14 Apr 2020 15:20:10 +0100")
-Message-ID: <874ktl2ide.fsf@oldenburg2.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1416354AbgDORHk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Apr 2020 13:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1416349AbgDORHi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Apr 2020 13:07:38 -0400
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CAC2C061A0C;
+        Wed, 15 Apr 2020 10:07:38 -0700 (PDT)
+Received: by mail-yb1-xb42.google.com with SMTP id a9so375288ybc.8;
+        Wed, 15 Apr 2020 10:07:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mEawja+POkeWDhdeSb2n3JPPbIrc1MBf0BcSpr4jXiw=;
+        b=DW/aynPdwuOV0UulG8/7DG2OSJ6ky7m4cHJ+Gz21nR6FRRF2vhyh16CWluwim3SoYH
+         Sa3l3B3FzcLzAWMfA6xNlEZa48cJ9CxVyXx9wg8ieAy8Y5M9yIqLVmci0t7KahDzEp3+
+         0TqZwO9P5Molcs7XpM8HUylYXdhNKpm1l4A7g2qFfA3vk8FbXmQZ1hXFuN1x1RAhqt7v
+         FwAoYkOyjNfRiOoUzhrbnRB1KWQFZ4mT1YcaV5pjQKptgjzp1AtP5iy5Tg2xG69PKdwT
+         tTojddkg9JdojP/Tpl3xBs1VsghOKLCz4A+73Z27B3CA1QGRd0/CftSCiv79EQSHLi++
+         fpfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mEawja+POkeWDhdeSb2n3JPPbIrc1MBf0BcSpr4jXiw=;
+        b=N8j0bZXCFcUIH/gk1jPyGQ+F6ktrC3LQ8dZ21CB70LUexUDNj1mivlSbtn8lwq+9XB
+         fI7kOPyP2mRbz1WIzZf4Rn8R63EDf4JvV2FCy37yogdTGzq+vgSx67q23XH+d3OIuAaO
+         1+r4kH2AwS8HWH8vF0SBjxfii0QGoTxkn9RK6TiX+OSc7ikg0jJma8i3+bHhplib7TkF
+         68VT4dmeAK1r4xWYOPEPfc7p5RicvX713rn9d2G6YgIy/Dl+HKsBu/EIuQN59QizLnpH
+         FGXm0yse3u78rVRQwTB+vEEDW3HACpwReRhmaeOf1cgsFQuQRJlpwP93oowJO5S2QP7l
+         gycA==
+X-Gm-Message-State: AGi0PuYlV1gzJ3HoO2JpjNrjeCx9B441KlnIXhwuhEP1PeGgwgG1XNtr
+        hEaY0ayS/qdRS+OOAfdJRoreQFdBx6l+uEIbryY=
+X-Google-Smtp-Source: APiQypIUYnCqlboeLXX498mvDUEkiFizMnzOWoFRqJIN9jX23XsZO6pmKNshpPPzZLdtasP8OYlYcSo7oKRRSZZK1Gc=
+X-Received: by 2002:a25:cf12:: with SMTP id f18mr9443585ybg.167.1586970457348;
+ Wed, 15 Apr 2020 10:07:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+References: <3865908.1586874010@warthog.procyon.org.uk> <e751977dac616d93806d98f4ad3ce144bb1eb244.camel@kernel.org>
+In-Reply-To: <e751977dac616d93806d98f4ad3ce144bb1eb244.camel@kernel.org>
+From:   Steve French <smfrench@gmail.com>
+Date:   Wed, 15 Apr 2020 12:07:26 -0500
+Message-ID: <CAH2r5mvj7GF3i8AE6E=+5f_Vigtb3uw=665F2uuBOgGzUhHObQ@mail.gmail.com>
+Subject: Re: What's a good default TTL for DNS keys in the kernel
+To:     Jeff Layton <jlayton@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        linux-nfs <linux-nfs@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>, linux-afs@lists.infradead.org,
+        ceph-devel@vger.kernel.org, keyrings@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, fweimer@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-* David Howells:
-
-> Since key.dns_resolver isn't given a TTL for the address information obta=
-ined
-> for getaddrinfo(), no expiry is set on dns_resolver keys in the kernel for
-> NFS, CIFS or Ceph.  AFS gets one if it looks up a cell SRV or AFSDB record
-> because that is looked up in the DNS directly, but it doesn't look up A or
-> AAAA records, so doesn't get an expiry for the addresses themselves.
+On Wed, Apr 15, 2020 at 8:22 AM Jeff Layton <jlayton@kernel.org> wrote:
 >
-> I've previously asked the libc folks if there's a way to get this informa=
-tion
-> exposed in struct addrinfo, but I don't think that ended up going anywher=
-e -
-> and, in any case, would take a few years to work through the system.
+> On Tue, 2020-04-14 at 15:20 +0100, David Howells wrote:
+> > Since key.dns_resolver isn't given a TTL for the address information obtained
+> > for getaddrinfo(), no expiry is set on dns_resolver keys in the kernel for
+> > NFS, CIFS or Ceph.  AFS gets one if it looks up a cell SRV or AFSDB record
+> > because that is looked up in the DNS directly, but it doesn't look up A or
+> > AAAA records, so doesn't get an expiry for the addresses themselves.
+> >
+> > I've previously asked the libc folks if there's a way to get this information
+> > exposed in struct addrinfo, but I don't think that ended up going anywhere -
+> > and, in any case, would take a few years to work through the system.
+> >
+> > For the moment, I think I should put a default on any dns_resolver keys and
+> > have it applied either by the kernel (configurable with a /proc/sys/ setting)
+> > or by the key.dnf_resolver program (configurable with an /etc file).
+> >
+> > Any suggestion as to the preferred default TTL?  10 minutes?
+> >
 >
-> For the moment, I think I should put a default on any dns_resolver keys a=
-nd
-> have it applied either by the kernel (configurable with a /proc/sys/ sett=
-ing)
-> or by the key.dnf_resolver program (configurable with an /etc file).
+> Typical DNS TTL values are on the order of a day but it can vary widely.
+> There's really no correct answer for this, since you have no way to tell
+> how long the entry has been sitting in the DNS server's cache before you
+> queried for it.
 >
-> Any suggestion as to the preferred default TTL?  10 minutes?
+> So, you're probably down to just finding some value that doesn't hammer
+> the DNS server too much, but that allows you to get new entries in a
+> reasonable amount of time.
+>
+> 10 mins sounds like a reasonable default to me.
 
-You can get the real TTL if you do a DNS resolution on the name and
-match the addresses against what you get out of the NSS functions.  If
-they match, you can use the TTL from DNS.  Hackish, but it does give you
-*some* TTL value.
+I would lean toward slightly longer (20 minutes?) but aren't there
+usually different timeouts for 'static' vs. 'dynamic' DNS records (so
+static records would have longer timeouts)?
 
-The question remains what the expected impact of TTL expiry is.  Will
-the kernel just perform a new DNS query if it needs one?  Or would you
-expect that (say) the NFS client rechecks the addresses after TTL expiry
-and if they change, reconnect to a new NFS server?
 
-If a TTL expiration does not trigger anything, than it seems purely an
-optimization to avoid kernel =E2=86=92 userspace callbacks.  I think you ca=
-n do
-with a very short TTL in this case, on the order of seconds (or no
-caching at all).
-
-Negative caching is also worthy of consideration and can be considerably
-more tricky.
-
+-- 
 Thanks,
-Florian
 
+Steve
