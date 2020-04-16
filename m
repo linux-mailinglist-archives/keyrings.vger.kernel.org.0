@@ -2,92 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D7D21ACE12
-	for <lists+keyrings@lfdr.de>; Thu, 16 Apr 2020 18:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6C41ACF11
+	for <lists+keyrings@lfdr.de>; Thu, 16 Apr 2020 19:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730404AbgDPQyj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 16 Apr 2020 12:54:39 -0400
-Received: from mga07.intel.com ([134.134.136.100]:5652 "EHLO mga07.intel.com"
+        id S2390644AbgDPRqW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Apr 2020 13:46:22 -0400
+Received: from mga12.intel.com ([192.55.52.136]:10730 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729249AbgDPQyh (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 16 Apr 2020 12:54:37 -0400
-IronPort-SDR: +nM7DDdPijNq33yBRHc9Ar+6wB4EO+DgwN2VuQxEpqABKy8UtjMtu3pmIcl0D9YljzXTj43nYs
- BbcWm/2ejqPA==
+        id S1726330AbgDPRqV (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 16 Apr 2020 13:46:21 -0400
+IronPort-SDR: iuNe52aiEs5NuXZJDXBVyQDW4ZjNLa+iYhtAjDcDxHaGVYLdTqAKVxVUrlSVYglgDG/qMJhejB
+ IDts2bfniNUA==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 09:54:36 -0700
-IronPort-SDR: LIqcIv3CFFA2Is1/UUXsyl7xUaROGbP/LPzZZCmEIUmexkP5i6kC2b6GorkhFzoL8ZkYj3mbWZ
- LNciuRFa5+5g==
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 10:46:21 -0700
+IronPort-SDR: YgiUGzOeMW41WCgj58lcvyywAJ8VFffHfyg+MotUV93rXD8YWnSAN7qxNX7jWJ/qRTgJ2ZpPwp
+ T9v6ExxYRFDg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,391,1580803200"; 
-   d="scan'208";a="454399034"
+   d="scan'208";a="244462208"
 Received: from otazetdi-mobl.ccr.corp.intel.com (HELO localhost) ([10.249.42.128])
-  by fmsmga005.fm.intel.com with ESMTP; 16 Apr 2020 09:54:33 -0700
-Date:   Thu, 16 Apr 2020 19:54:32 +0300
+  by fmsmga007.fm.intel.com with ESMTP; 16 Apr 2020 10:46:17 -0700
+Date:   Thu, 16 Apr 2020 20:46:17 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     torvalds@linux-foundation.org, stable@vger.kernel.org,
-        Vasily Averin <vvs@virtuozzo.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] keys: Fix proc_keys_next to increase position index
-Message-ID: <20200416165432.GA199110@linux.intel.com>
-References: <158689639664.3925765.4549426529245164675.stgit@warthog.procyon.org.uk>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     zohar@linux.ibm.com, jejb@linux.ibm.com, corbet@lwn.net,
+        casey@schaufler-ca.com, janne.karhunen@gmail.com,
+        kgoldman@us.ibm.com, david.safford@ge.com, monty.wiseman@ge.com,
+        daniel.thompson@linaro.org, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, tee-dev@lists.linaro.org
+Subject: Re: [PATCH] doc: trusted-encrypted: updates with TEE as a new trust
+ source
+Message-ID: <20200416174617.GI199110@linux.intel.com>
+References: <1585636165-22481-1-git-send-email-sumit.garg@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <158689639664.3925765.4549426529245164675.stgit@warthog.procyon.org.uk>
+In-Reply-To: <1585636165-22481-1-git-send-email-sumit.garg@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 09:33:16PM +0100, David Howells wrote:
-> From: Vasily Averin <vvs@virtuozzo.com>
+On Tue, Mar 31, 2020 at 11:59:25AM +0530, Sumit Garg wrote:
+> Update documentation for Trusted and Encrypted Keys with TEE as a new
+> trust source. Following is brief description of updates:
 > 
-> If seq_file .next function does not change position index,
-> read after some lseek can generate unexpected output:
+> - Add a section to demostrate a list of supported devices along with
+>   their security properties/guarantees.
+> - Add a key generation section.
+> - Updates for usage section including differences specific to a trust
+>   source.
 > 
-> $ dd if=/proc/keys bs=1  # full usual output
-> 0f6bfdf5 I--Q---     2 perm 3f010000  1000  1000 user      4af2f79ab8848d0a: 740
-> 1fb91b32 I--Q---     3 perm 1f3f0000  1000 65534 keyring   _uid.1000: 2
-> 27589480 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-> 2f33ab67 I--Q---   152 perm 3f030000     0     0 keyring   _ses: 2
-> 33f1d8fa I--Q---     4 perm 3f030000  1000  1000 keyring   _ses: 1
-> 3d427fda I--Q---     2 perm 3f010000  1000  1000 user      69ec44aec7678e5a: 740
-> 3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
-> 521+0 records in
-> 521+0 records out
-> 521 bytes copied, 0,00123769 s, 421 kB/s
-> 
-> $ dd if=/proc/keys bs=500 skip=1  # read after lseek in middle of last line
-> dd: /proc/keys: cannot skip to specified offset
-> g   _uid_ses.1000: 1        <<<< end of last line
-> 3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
->    <<<< and whole last line again
-> 0+1 records in
-> 0+1 records out
-> 97 bytes copied, 0,000135035 s, 718 kB/s
-> 
-> $ dd if=/proc/keys bs=1000 skip=1   # read after lseek beyond end of file
-> dd: /proc/keys: cannot skip to specified offset
-> 3ead4096 I--Q---     1 perm 1f3f0000  1000 65534 keyring   _uid_ses.1000: 1
->    <<<< generates last line
-> 0+1 records in
-> 0+1 records out
-> 76 bytes copied, 0,000119981 s, 633 kB/s
-> 
-> See https://bugzilla.kernel.org/show_bug.cgi?id=206283
-> 
-> Cc: stable@vger.kernel.org
+> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 
-# 4.19.x
-
-> Fixes: 1f4aace60b0e ("fs/seq_file.c: simplify seq_file iteration code ...")
-> Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Overally this works for me. Can you bundle this with the code
+changes. Maybe some details needs to be fine tuned but easier
+to look into them in the context of rest of the patches.
 
 /Jarkko
