@@ -2,125 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F9E1AE2F3
-	for <lists+keyrings@lfdr.de>; Fri, 17 Apr 2020 18:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D7D1AE895
+	for <lists+keyrings@lfdr.de>; Sat, 18 Apr 2020 01:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727798AbgDQQ7X (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 17 Apr 2020 12:59:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58662 "EHLO
+        id S1727887AbgDQXYG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 17 Apr 2020 19:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726724AbgDQQ7X (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Apr 2020 12:59:23 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7B4C061A10
-        for <keyrings@vger.kernel.org>; Fri, 17 Apr 2020 09:59:23 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id e5so1992653edq.5
-        for <keyrings@vger.kernel.org>; Fri, 17 Apr 2020 09:59:22 -0700 (PDT)
+        with ESMTP id S1726036AbgDQXYF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Apr 2020 19:24:05 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C8AC061A0C;
+        Fri, 17 Apr 2020 16:24:05 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id l5so1921595ybf.5;
+        Fri, 17 Apr 2020 16:24:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=04NkHXi+PwY9BSJltFl8mSuXJp2mIc+S/1/r3t62y+w=;
-        b=YE8SLodByGOd+rm5xUZh0C0gSqL0bxPRbfdU0WS9RxReb3iIqQCYxJ/4w/js897/6u
-         f1widm+GipXqhNOkCvt0l5JteWm1PkpilV7jI+Qos/4qQdHZGxt1kZyVlz4+rxpmD0oW
-         +1cJ6oto0syR2PVYZBIB/Nk9LWyzHzR4bXVUmG9gOx4D5cNinoE0ogrPjywQI7PTvWdE
-         G1o1M/j064YBQmNiUK9X+IXnX4aqEvYMvVumsBBLcG2EWjROf1WTCwUP+i/G4SsJ5jyf
-         8C368PktpEZsWU5vsaIPMxanFpjVIxs4C9mlgBhRm8sQGHtgmvRd3pRHbuvck7wEnHsL
-         5rFg==
+        bh=HoiSxHhSigFRcJk85mjSruoDJHuLkPKUFTIYImgm6Ug=;
+        b=kJdb1cMFcngGa0qp/KwVwgNtuNxTmrDtjaIwLAJFoNFpQhRy6q5sHg5MTKyXeGjwWu
+         vBHicJ4/2qO+c9u26+845klREFX9I5XdF+lkZsUOX2W59oXD0X0snxgaFfClthr3xbn7
+         CSudiFAf2zSIPObwc6IUG29u/5JVnUYcHJCsdF3lhu2ldziUi5lRt1Q4zpTHq3PeSNwp
+         Ng7+cMA/1D8kIComwJKKXIEVQliODb/0w0bKTuk3Wjf9vtPXDhcpIxgRPo+bitkuLBz8
+         T/MyKESZ3xGPBcP7fJ3cdb8wdGhksJnnBUgXmE7OdCW6qXouR6PLxcE4Ehr2Pan6h5je
+         ocIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=04NkHXi+PwY9BSJltFl8mSuXJp2mIc+S/1/r3t62y+w=;
-        b=QgpEDSi7rAKm5vqoH6RVwdaHqq0KQ0h3E0aaoAjVbQRBArSXr/ns/PWO/GP4CFGTXV
-         THcW1gBnXPZokiweE7bb7rGEYCeSzTo/ZK7YQM8IDcWJUxJORlsC3UMPCVFewucrsuPi
-         BIfBVNMKF5321w7EdC+EYJqJCIepcRdaTDVgLnG2wiiz3UWpLeGi9ViaVkW5PvhflZ7v
-         TnCKVydY2mSAPsIqbBPGdp5sPkCtEpVjijpHgO5b3DreTCmWZYbTmLdeJb+ub7tDldFr
-         9bV0eb6KIWJW2KtJATp6VqW5mKi7KB6XN2cGu5oxByTH6cCwJx2HvuJNu6PM2q5t6Hkc
-         bMnA==
-X-Gm-Message-State: AGi0PuYP/se08IfVQ6QWX2cHPsRpKcn28FWCAPfSF2HWbjOhLuNRjNqr
-        Qx/xB+xaUGQFILyMXqyMeYHBTsHmfkIA1qmOghBB
-X-Google-Smtp-Source: APiQypIXLCfwICgpSyK/g0V1Gk4QDbVPh3cx9SkB08ZjMy0TQcd6CsugDzeQCPWhvb9tbm52Esiq2ol7z+/fB88qqVA=
-X-Received: by 2002:aa7:c352:: with SMTP id j18mr3759570edr.196.1587142761495;
- Fri, 17 Apr 2020 09:59:21 -0700 (PDT)
+        bh=HoiSxHhSigFRcJk85mjSruoDJHuLkPKUFTIYImgm6Ug=;
+        b=PpJ9P/8wjU3j4oc3yZw7kO8WwsGNPB8NCIPH30Tz6MYU7JIC3fRhBH8b2rEB7Jequj
+         m5qV+TMT/hjNrBibT7NSb+T1c73BcBaiBFi94ypGHFs6DQPLNaTZQybeWBDkdu7kk3ln
+         1BDDra7oOkvl9UwWvIHGZc5HcFqZmo4m+F+qDkZ7oC2hgqydndMhqJ1bp4lhLQG1g8/j
+         29fRPRgbdy7IY2SaDpFbEUPvsg39H8+QO0Bp5UGe19qV8ZE5xU6+rPlUFk0TcYDN1pLe
+         k7DwHR4YU7s4T9X3Xx2wg9JAZ2OHpn3WvWdV9HHxCeMOv48MtzoUxrsP8F/SQcR09qRT
+         582g==
+X-Gm-Message-State: AGi0PubH9hQX9syL+0r1MIJ3zNS+wTxwF1ydGLWBUuowGujn0jKFLV3r
+        mmJknmdUUZqsQSqMr7c/ZJXrFm4gz/5CSLU9ohzZvcEVB2g=
+X-Google-Smtp-Source: APiQypIaoZNcLb0nbIIWdy9AexGlinfJyksDNrXL01uuwQ39JevXQ5RG2DIGZoNajN0gFWDBeQoLtKsPk7LcZ6YXDU0=
+X-Received: by 2002:a25:aa0c:: with SMTP id s12mr2066981ybi.183.1587165844440;
+ Fri, 17 Apr 2020 16:24:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAHC9VhT95GJKNTMvTtmZL35UOoVwbGH-eDWZyELb5oZ5rQU+Tw@mail.gmail.com>
- <56808ee47c8b6e184fd013b90072c6fb07ef84f2.camel@btinternet.com>
-In-Reply-To: <56808ee47c8b6e184fd013b90072c6fb07ef84f2.camel@btinternet.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 17 Apr 2020 12:59:10 -0400
-Message-ID: <CAHC9VhQLYNzs=uBqxwZCh=h8n-C3z-EAojQEmt6DCoJxCKL5-A@mail.gmail.com>
-Subject: Re: Problem with 9ba09998baa9 ("selinux: Implement the watch_key
- security hook") in linux-next
-To:     Richard Haines <richard_c_haines@btinternet.com>
-Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, linux-security-module@vger.kernel.org
+References: <3865908.1586874010@warthog.procyon.org.uk>
+In-Reply-To: <3865908.1586874010@warthog.procyon.org.uk>
+From:   Steve French <smfrench@gmail.com>
+Date:   Fri, 17 Apr 2020 18:23:53 -0500
+Message-ID: <CAH2r5mv5p=WJQu2SbTn53FeTsXyN6ke_CgEjVARQ3fX8QAtK_w@mail.gmail.com>
+Subject: Re: What's a good default TTL for DNS keys in the kernel
+To:     David Howells <dhowells@redhat.com>
+Cc:     linux-nfs <linux-nfs@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>, linux-afs@lists.infradead.org,
+        ceph-devel@vger.kernel.org, keyrings@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, fweimer@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 17, 2020 at 12:32 PM Richard Haines
-<richard_c_haines@btinternet.com> wrote:
-> On Fri, 2020-04-17 at 11:48 -0400, Paul Moore wrote:
-> > I just notice that the "selinux: Implement the watch_key security
-> > hook" patch made it's way into linux-next via 9ba09998baa9:
-> >
-> >   commit 9ba09998baa995518d94c9a32e6329b28ccb9045
-> >   Author: David Howells <dhowells@redhat.com>
-> >   Date:   Tue Jan 14 17:07:13 2020 +0000
-> >
-> >    selinux: Implement the watch_key security hook
-> >
-> >    Implement the watch_key security hook to make sure that a key
-> > grants the
-> >    caller View permission in order to set a watch on a key.
-> >
-> >    For the moment, the watch_devices security hook is left
-> > unimplemented as
-> >    it's not obvious what the object should be since the queue is
-> > global and
-> >    didn't previously exist.
-> >
-> >    Signed-off-by: David Howells <dhowells@redhat.com>
-> >    Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-> >
-> > I'm reasonably confident that this code hasn't been tested as I
-> > expect
-> > it would fail, or at the very least behave in unintended ways.  The
-> > problem is the selinux_watch_key(...) function, shown below:
->
-> I built an selinx-testsuite test for this last year and it worked fine
-> then. I'll send the test as an RFC patch as its been some time since I
-> ran it. David also has a test in kernel
-> samples/watch_queue/watch_test.c
+>> The question remains what the expected impact of TTL expiry is.  Will
+>> the kernel just perform a new DNS query if it needs one?
 
-See below.
+For SMB3/CIFS mounts, Paulo added support last year for automatic
+reconnect if the IP address of the server changes.  It also is helpful
+when DFS (global name space) addresses change.
 
-> > +static int selinux_watch_key(struct key *key)
-> > +{
-> > +       struct key_security_struct *ksec = key->security;
-> > +       u32 sid = current_sid();
-> > +
-> > +       return avc_has_perm(&selinux_state,
-> > +                           sid, ksec->sid, SECCLASS_KEY,
-> > KEY_NEED_VIEW, NULL);
-> > +}
-> >
-> > ... in particular it is the fifth argument to avc_has_perm(),
-> > "KEY_NEED_VIEW" which is a problem.  KEY_NEED_VIEW is not a SELinux
->
-> True, however by magic the KEY_NEED_* perms match with the bits defined
-> in classmap.h. I did some work on this during the 'keys' saga, see
-> various emails in list like [1]
->
-> [1]
-> https://lore.kernel.org/selinux/20200220181031.156674-2-richard_c_haines@btinternet.com/
+It does not require a remount for SMB3/CIFS
 
-Esh, relying on the constants to line up is a recipe for disaster.  We
-really need that permission translation layer.
+On Tue, Apr 14, 2020 at 11:09 AM David Howells <dhowells@redhat.com> wrote:
+>
+> Since key.dns_resolver isn't given a TTL for the address information obtained
+> for getaddrinfo(), no expiry is set on dns_resolver keys in the kernel for
+> NFS, CIFS or Ceph.  AFS gets one if it looks up a cell SRV or AFSDB record
+> because that is looked up in the DNS directly, but it doesn't look up A or
+> AAAA records, so doesn't get an expiry for the addresses themselves.
+>
+> I've previously asked the libc folks if there's a way to get this information
+> exposed in struct addrinfo, but I don't think that ended up going anywhere -
+> and, in any case, would take a few years to work through the system.
+>
+> For the moment, I think I should put a default on any dns_resolver keys and
+> have it applied either by the kernel (configurable with a /proc/sys/ setting)
+> or by the key.dnf_resolver program (configurable with an /etc file).
+>
+> Any suggestion as to the preferred default TTL?  10 minutes?
+>
+> David
+>
+
 
 -- 
-paul moore
-www.paul-moore.com
+Thanks,
+
+Steve
