@@ -2,85 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 192F81AE8D1
-	for <lists+keyrings@lfdr.de>; Sat, 18 Apr 2020 01:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BDF1AF312
+	for <lists+keyrings@lfdr.de>; Sat, 18 Apr 2020 20:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726372AbgDQX4u (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 17 Apr 2020 19:56:50 -0400
-Received: from mga12.intel.com ([192.55.52.136]:60765 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725985AbgDQX4V (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 17 Apr 2020 19:56:21 -0400
-IronPort-SDR: 9TWtQHfiLQMfgVFssZp9QxAyhD7yImG+Ob11/EqJ1bVITu7wWh/pKXJY0Pb9tIqILBpVklKKMb
- bLr0T/rwRbFA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2020 16:56:20 -0700
-IronPort-SDR: vNzogAsnRVwFrSPcqZfg1Yme60KK5X01STa3ojGfmp/1x3RLoqqUM+FS6KlGNhkgUg0tvz5Oxb
- F+RjmSNIL5tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,395,1580803200"; 
-   d="scan'208";a="272581075"
-Received: from zhiwang1-mobl5.ger.corp.intel.com (HELO localhost) ([10.252.42.90])
-  by orsmga002.jf.intel.com with ESMTP; 17 Apr 2020 16:56:16 -0700
-Date:   Sat, 18 Apr 2020 02:56:16 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>, kgoldman@us.ibm.com,
-        "Safford, David (GE Global Research, US)" <david.safford@ge.com>,
-        monty.wiseman@ge.com, Daniel Thompson <daniel.thompson@linaro.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Subject: Re: [PATCH] doc: trusted-encrypted: updates with TEE as a new trust
- source
-Message-ID: <20200417235616.GC85230@linux.intel.com>
-References: <1585636165-22481-1-git-send-email-sumit.garg@linaro.org>
- <20200416174617.GI199110@linux.intel.com>
- <CAFA6WYNJuxGToM1R02RsrZ_xK6Rfi1SndY1oVYaAbizMpeGPbg@mail.gmail.com>
+        id S1725824AbgDRSLC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 18 Apr 2020 14:11:02 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:44995 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725903AbgDRSLC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 18 Apr 2020 14:11:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1587233460;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4MjBHhLWma7Wyo6Y0oaah6/D7fXV7EHmjvl18i27sII=;
+        b=ioJsq6jDqqUymi/qLQOonq70uqML+lxutR1y/JbA3h/mADpYNYIB7yvsamEMYK7MhObPek
+        yHXj4lubS0oBFTvYJPcArylZugqLbDiNKzw2LkD/i7kkHzolXvUwxmR0is31euCFhvWHV0
+        0LJfC5B3F2OrzBKEsC0LyokAlV2pkmg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-284-VnSCfK7uOTK_mHQ6IZsLpQ-1; Sat, 18 Apr 2020 14:10:58 -0400
+X-MC-Unique: VnSCfK7uOTK_mHQ6IZsLpQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1BD3D1005510;
+        Sat, 18 Apr 2020 18:10:57 +0000 (UTC)
+Received: from oldenburg2.str.redhat.com (ovpn-112-5.ams2.redhat.com [10.36.112.5])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 1BEF660C05;
+        Sat, 18 Apr 2020 18:10:54 +0000 (UTC)
+From:   Florian Weimer <fweimer@redhat.com>
+To:     Steve French <smfrench@gmail.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        linux-nfs <linux-nfs@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>, linux-afs@lists.infradead.org,
+        ceph-devel@vger.kernel.org, keyrings@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: What's a good default TTL for DNS keys in the kernel
+References: <3865908.1586874010@warthog.procyon.org.uk>
+        <CAH2r5mv5p=WJQu2SbTn53FeTsXyN6ke_CgEjVARQ3fX8QAtK_w@mail.gmail.com>
+Date:   Sat, 18 Apr 2020 20:10:53 +0200
+In-Reply-To: <CAH2r5mv5p=WJQu2SbTn53FeTsXyN6ke_CgEjVARQ3fX8QAtK_w@mail.gmail.com>
+        (Steve French's message of "Fri, 17 Apr 2020 18:23:53 -0500")
+Message-ID: <87a738aclu.fsf@oldenburg2.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYNJuxGToM1R02RsrZ_xK6Rfi1SndY1oVYaAbizMpeGPbg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 17, 2020 at 10:27:01AM +0530, Sumit Garg wrote:
-> On Thu, 16 Apr 2020 at 23:16, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Tue, Mar 31, 2020 at 11:59:25AM +0530, Sumit Garg wrote:
-> > > Update documentation for Trusted and Encrypted Keys with TEE as a new
-> > > trust source. Following is brief description of updates:
-> > >
-> > > - Add a section to demostrate a list of supported devices along with
-> > >   their security properties/guarantees.
-> > > - Add a key generation section.
-> > > - Updates for usage section including differences specific to a trust
-> > >   source.
-> > >
-> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> >
-> > Overally this works for me. Can you bundle this with the code
-> > changes. Maybe some details needs to be fine tuned but easier
-> > to look into them in the context of rest of the patches.
-> >
-> 
-> Sure, I will send next version of complete patch-set.
+* Steve French:
 
-Thanks.
+>>> The question remains what the expected impact of TTL expiry is.  Will
+>>> the kernel just perform a new DNS query if it needs one?
+>
+> For SMB3/CIFS mounts, Paulo added support last year for automatic
+> reconnect if the IP address of the server changes.  It also is helpful
+> when DFS (global name space) addresses change.
 
-I think I just have forgot to process this before. I'm sorry about
-that.
+Do you have reference to the source code implementation?  Thanks.
 
-/Jarkko
+Florian
+
