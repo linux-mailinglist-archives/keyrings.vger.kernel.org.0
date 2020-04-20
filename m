@@ -2,70 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 708BF1AFF64
-	for <lists+keyrings@lfdr.de>; Mon, 20 Apr 2020 03:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FBF11B0C54
+	for <lists+keyrings@lfdr.de>; Mon, 20 Apr 2020 15:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725953AbgDTBGK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 19 Apr 2020 21:06:10 -0400
-Received: from mx.cjr.nz ([51.158.111.142]:30162 "EHLO mx.cjr.nz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725949AbgDTBGJ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 19 Apr 2020 21:06:09 -0400
-X-Greylist: delayed 455 seconds by postgrey-1.27 at vger.kernel.org; Sun, 19 Apr 2020 21:06:08 EDT
-Received: from authenticated-user (mx.cjr.nz [51.158.111.142])
-        (Authenticated sender: pc)
-        by mx.cjr.nz (Postfix) with ESMTPSA id 4D1BC7FCFC;
-        Mon, 20 Apr 2020 00:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjr.nz; s=dkim;
-        t=1587344312;
+        id S1726870AbgDTNNw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 20 Apr 2020 09:13:52 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:48355 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726825AbgDTNNv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 20 Apr 2020 09:13:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1587388430;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UAr7dQ1lkh5Q0MOSA+C5E6a/FibwZsB/6txDi0hUANQ=;
-        b=NDBi3jMq9coPi8YRdzSeQB0Y1zLZ5hA6rcD82Eutcxbaudjs5HacYYdLbi6/XFiHiW6JRa
-        xjQLgknfdLihkIdqkp0WpVPftqBnWUtiIIxrPn+F+Wf/3dMwavyxXObm3+jjxI+Va6Hhvh
-        U2FQE/cL0C4A+YZJnwXe0GMtk/HbCTg5XJ9hqhj1QketlwCv9ANViPQF66gOvZD3Nli1Kj
-        EcyM3gGEZ6JHL0qzfei5TjQ73DVLh5pQJ0Z6OLuCUogsIsjcILpPR2vJzOlNqnIkpewArk
-        TuiohUvQfc08jNbN9FPzp2dA5vcdK/vskwY+ueQhovb/36hVqlUgPs1IKPmm1Q==
-From:   Paulo Alcantara <pc@cjr.nz>
-To:     David Howells <dhowells@redhat.com>,
-        Steve French <smfrench@gmail.com>
-Cc:     dhowells@redhat.com, linux-nfs <linux-nfs@vger.kernel.org>,
+        bh=IYew2ybNbEYlxnWhOLAX8rprgalSjY8htLDKj7llLh0=;
+        b=hYlw2D1tV44WpLt5dXs6nFhk03CyswctRpY8v7IMRCIJydF0IJihJiFE3j8Gl1M1Z5hKkf
+        RYfmrjxWC1E21Q6hqCCoPSVVNIiyqQF3ysUVW6BFkXmDWI7lCfrO74eQo+EoQDm9xgYRwm
+        PDZdszXjI9u2GH7EAT2+B1Tq4XobJMQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-109-8q1U0xdCNU2fff9u2tmIGQ-1; Mon, 20 Apr 2020 09:13:45 -0400
+X-MC-Unique: 8q1U0xdCNU2fff9u2tmIGQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 80352149C1;
+        Mon, 20 Apr 2020 13:13:43 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-113-129.rdu2.redhat.com [10.10.113.129])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0BDD510013A1;
+        Mon, 20 Apr 2020 13:13:40 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <87imhvj7m6.fsf@cjr.nz>
+References: <87imhvj7m6.fsf@cjr.nz> <CAH2r5mv5p=WJQu2SbTn53FeTsXyN6ke_CgEjVARQ3fX8QAtK_w@mail.gmail.com> <3865908.1586874010@warthog.procyon.org.uk> <927453.1587285472@warthog.procyon.org.uk>
+To:     Paulo Alcantara <pc@cjr.nz>
+Cc:     dhowells@redhat.com, Steve French <smfrench@gmail.com>,
+        linux-nfs <linux-nfs@vger.kernel.org>,
         CIFS <linux-cifs@vger.kernel.org>, linux-afs@lists.infradead.org,
         ceph-devel@vger.kernel.org, keyrings@vger.kernel.org,
         Network Development <netdev@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>, fweimer@redhat.com
 Subject: Re: What's a good default TTL for DNS keys in the kernel
-In-Reply-To: <927453.1587285472@warthog.procyon.org.uk>
-References: <CAH2r5mv5p=WJQu2SbTn53FeTsXyN6ke_CgEjVARQ3fX8QAtK_w@mail.gmail.com>
- <3865908.1586874010@warthog.procyon.org.uk>
- <927453.1587285472@warthog.procyon.org.uk>
-Date:   Sun, 19 Apr 2020 21:58:25 -0300
-Message-ID: <87imhvj7m6.fsf@cjr.nz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1136023.1587388420.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Mon, 20 Apr 2020 14:13:40 +0100
+Message-ID: <1136024.1587388420@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Howells <dhowells@redhat.com> writes:
+Paulo Alcantara <pc@cjr.nz> wrote:
 
-> Steve French <smfrench@gmail.com> wrote:
->
->> For SMB3/CIFS mounts, Paulo added support last year for automatic
->> reconnect if the IP address of the server changes.  It also is helpful
->> when DFS (global name space) addresses change.
->
-> What happens if the IP address the superblock is going to changes, then
-> another mount is made back to the original IP address?  Does the second mount
-> just pick the original superblock?
+> >> For SMB3/CIFS mounts, Paulo added support last year for automatic
+> >> reconnect if the IP address of the server changes.  It also is helpfu=
+l
+> >> when DFS (global name space) addresses change.
+> >
+> > What happens if the IP address the superblock is going to changes, the=
+n
+> > another mount is made back to the original IP address?  Does the secon=
+d mount
+> > just pick the original superblock?
+> =
 
-It is going to transparently reconnect to the new ip address, SMB share,
-and cifs superblock is kept unchanged.  We, however, update internal
-TCP_Server_Info structure to reflect new destination ip address.
+> It is going to transparently reconnect to the new ip address, SMB share,
+> and cifs superblock is kept unchanged.  We, however, update internal
+> TCP_Server_Info structure to reflect new destination ip address.
+> =
 
-For the second mount, since the hostname (extracted out of the UNC path
-at mount time) resolves to a new ip address and that address was saved earlier
-in TCP_Server_Info structure during reconnect, we will end up
-reusing same cifs superblock as per fs/cifs/connect.c:cifs_match_super().
+> For the second mount, since the hostname (extracted out of the UNC path
+> at mount time) resolves to a new ip address and that address was saved e=
+arlier
+> in TCP_Server_Info structure during reconnect, we will end up
+> reusing same cifs superblock as per fs/cifs/connect.c:cifs_match_super()=
+.
+
+Would that be a bug?
+
+David
+
