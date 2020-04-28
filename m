@@ -2,81 +2,102 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D4261BC43B
-	for <lists+keyrings@lfdr.de>; Tue, 28 Apr 2020 17:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 921A11BC4F5
+	for <lists+keyrings@lfdr.de>; Tue, 28 Apr 2020 18:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728172AbgD1P6I (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 Apr 2020 11:58:08 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:27726 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728028AbgD1P6I (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Apr 2020 11:58:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588089487;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=pnFl0PqSRzegWv9vKpfb6I2iA6EksKg+yUNljMPLZ9o=;
-        b=DFoCzR42jDIFZ2Qxi2iwgPYx9i75cPlM6LaTJ0AF5nor5PnYUNgyRU7gK3pVMx+j23v0SD
-        KN6JZWHI6KiUcBn2LmtlVUAJ33qI6I6YHIBNewPBsqY75M73eSMAUnKga09+bDwaRYypbk
-        1Xwyo51fZwlp52UPpQbtKAHKinW2MH8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-2-dkCEzet3Oii9ohNOiPQaFg-1; Tue, 28 Apr 2020 11:58:05 -0400
-X-MC-Unique: dkCEzet3Oii9ohNOiPQaFg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E18DE108BD09;
-        Tue, 28 Apr 2020 15:58:03 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-113-129.rdu2.redhat.com [10.10.113.129])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A71EB60F8D;
-        Tue, 28 Apr 2020 15:58:00 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAEjxPJ5+DtZfX36OLYiLbU=1tGZcPUWFUi1=mFfx=ntehtvd3Q@mail.gmail.com>
-References: <CAEjxPJ5+DtZfX36OLYiLbU=1tGZcPUWFUi1=mFfx=ntehtvd3Q@mail.gmail.com> <CAHC9VhT95GJKNTMvTtmZL35UOoVwbGH-eDWZyELb5oZ5rQU+Tw@mail.gmail.com> <924658.1588078484@warthog.procyon.org.uk>
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     dhowells@redhat.com, Paul Moore <paul@paul-moore.com>,
-        keyrings@vger.kernel.org, SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH] selinux: Fix use of KEY_NEED_* instead of KEY__* perms [v2]
+        id S1728448AbgD1QTR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 Apr 2020 12:19:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51450 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728388AbgD1QTQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Apr 2020 12:19:16 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09941C03C1AC;
+        Tue, 28 Apr 2020 09:19:16 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id z25so33541971otq.13;
+        Tue, 28 Apr 2020 09:19:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=c1EsjSooPyqCnBO664DNonHfMUSKi8/7rikFXFsVYdo=;
+        b=Zv3u9Zv8TiofchaTvuqN5JwJqvonwFHSTFFbjYh3QeCWjLqyuXW6BryCjmAx0Uxxk0
+         0gP98On9XwU0NztiNgBQS/dz2UoGE3rYWrhcfH1wUhyKT6/nxhDB2BgJlJDLE3Rdtm6n
+         AJC5dct6VBPTWAc1df/VNdn3j1TdT33vcIIRp/7ldhyqnkApW4iyV74xa+IUxSX2bUPM
+         nyXDNVIp4atlEOcpcPS1vFhzUdHOYkCLBW4VyaoEdh5kD33ukSqxj81qr1JZGwsmeKMm
+         whnoqvpzGCO/KpAHxCkkDsNVU64o7Gy1OXtNsYkZ+0Nzsyj8dXEhNZN+0M66ddIgBn2x
+         OkLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=c1EsjSooPyqCnBO664DNonHfMUSKi8/7rikFXFsVYdo=;
+        b=fUCfKZtWCQBDIoAYs3MEKFxWGfD/4IUUuYgexqIVO/i1m1Nc1Vl2YpVogwJD08msru
+         ZKLUunLEnT1Hz4rOmnuR8anXA+J//IxDZgfwPiMtau5C573EKRmR8K/ygSHbkyrvPiUG
+         U0uDIMDo1MkS/sjbqz8VvlUPLKoD8pNAj+XuG8n6U2rfttxrvPToNnTQU/RjU3M3ATNs
+         tnnrp1Rn02xiuad9XZzRGs7G27APxj3djbuTkz+kjS7MA47YC4+95bt1KtBZ/FRZW5S2
+         3We1ZNWC3F2muIvWkW5lQ7S7jzvkblbFqYxNVgCKHfXiP784JUUoeA/uB7CiFo0XgAAP
+         JWoA==
+X-Gm-Message-State: AGi0PuZkzvo8C375MSHQsye0f9khilY9I/xgtIHhab6f+XqMt9j4h/LP
+        aHtBf1KdfG0Po0oSzWEgy+DglhONOhOMSOppDz0v1A==
+X-Google-Smtp-Source: APiQypKEsLKypKBFMaeTK5Vu/aRzLy34dr52xJcb9/VoDVzJrtdC3yjEMYpVolT91E1KkbeGKxf3ZCu8aozNcyXMnrw=
+X-Received: by 2002:a9d:6952:: with SMTP id p18mr21913401oto.89.1588090755407;
+ Tue, 28 Apr 2020 09:19:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1072934.1588089479.1@warthog.procyon.org.uk>
-Date:   Tue, 28 Apr 2020 16:57:59 +0100
-Message-ID: <1072935.1588089479@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+References: <CAHC9VhT95GJKNTMvTtmZL35UOoVwbGH-eDWZyELb5oZ5rQU+Tw@mail.gmail.com>
+ <924658.1588078484@warthog.procyon.org.uk> <CAEjxPJ5+DtZfX36OLYiLbU=1tGZcPUWFUi1=mFfx=ntehtvd3Q@mail.gmail.com>
+ <1072935.1588089479@warthog.procyon.org.uk>
+In-Reply-To: <1072935.1588089479@warthog.procyon.org.uk>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Tue, 28 Apr 2020 12:19:02 -0400
+Message-ID: <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
+Subject: Re: [PATCH] selinux: Fix use of KEY_NEED_* instead of KEY__* perms [v2]
+To:     David Howells <dhowells@redhat.com>
+Cc:     Paul Moore <paul@paul-moore.com>, keyrings@vger.kernel.org,
+        SElinux list <selinux@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Stephen Smalley <stephen.smalley.work@gmail.com> wrote:
+On Tue, Apr 28, 2020 at 11:58 AM David Howells <dhowells@redhat.com> wrote:
+>
+> Stephen Smalley <stephen.smalley.work@gmail.com> wrote:
+>
+> > 1) Are we guaranteed that the caller only ever passes a single
+> > KEY_NEED_* perm at a time (i.e. hook is never called with a bitmask
+> > of multiple permissions)?  Where is that guarantee enforced?
+>
+> Currently it's the case that only one perm is ever used at once.  I'm tempted
+> to enforce this by switching the KEY_NEED_* to an enum rather than a bitmask.
+>
+> I'm not sure how I would actually define the meaning of two perms being OR'd
+> together.  Either okay?  Both required?
 
-> 1) Are we guaranteed that the caller only ever passes a single
-> KEY_NEED_* perm at a time (i.e. hook is never called with a bitmask
-> of multiple permissions)?  Where is that guarantee enforced?
+Both required is the usual convention in functions like
+inode_permission() or avc_has_perm().
+But if you know that you'll never use combinations, we should just
+prohibit it up front, e.g.
+key_task_permission() or whatever can reject them before they reach
+the hook call.  Then the
+hook code doesn't have to revisit the issue.
 
-Currently it's the case that only one perm is ever used at once.  I'm tempted
-to enforce this by switching the KEY_NEED_* to an enum rather than a bitmask.
+>
+> > 2) We had talked about adding a BUILD_BUG_ON() or other build-time
+> > guard
+>
+> That doesn't help you trap unallowed perm combinations, though.
 
-I'm not sure how I would actually define the meaning of two perms being OR'd
-together.  Either okay?  Both required?
+I think we want both.
 
-> 2) We had talked about adding a BUILD_BUG_ON() or other build-time
-> guard
-
-That doesn't help you trap unallowed perm combinations, though.
-
-> to ensure that new KEY_NEED_* permissions
-> are not added without updating SELinux.  We already have similar
-> constructs for catching new capabilities (#if CAP_LAST_CAP > 63 #error
-> ...), socket address families (#if PF_MAX > 45 #error ...),  RTM_* and
-> XFRM_MSG* values.
-
-David
-
+>
+> > to ensure that new KEY_NEED_* permissions
+> > are not added without updating SELinux.  We already have similar
+> > constructs for catching new capabilities (#if CAP_LAST_CAP > 63 #error
+> > ...), socket address families (#if PF_MAX > 45 #error ...),  RTM_* and
+> > XFRM_MSG* values.
+>
+> David
+>
