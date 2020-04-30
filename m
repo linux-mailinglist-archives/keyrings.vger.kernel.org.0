@@ -2,102 +2,170 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 921A11BC4F5
-	for <lists+keyrings@lfdr.de>; Tue, 28 Apr 2020 18:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27AC31C0232
+	for <lists+keyrings@lfdr.de>; Thu, 30 Apr 2020 18:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728448AbgD1QTR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 Apr 2020 12:19:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51450 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728388AbgD1QTQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Apr 2020 12:19:16 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09941C03C1AC;
-        Tue, 28 Apr 2020 09:19:16 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id z25so33541971otq.13;
-        Tue, 28 Apr 2020 09:19:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c1EsjSooPyqCnBO664DNonHfMUSKi8/7rikFXFsVYdo=;
-        b=Zv3u9Zv8TiofchaTvuqN5JwJqvonwFHSTFFbjYh3QeCWjLqyuXW6BryCjmAx0Uxxk0
-         0gP98On9XwU0NztiNgBQS/dz2UoGE3rYWrhcfH1wUhyKT6/nxhDB2BgJlJDLE3Rdtm6n
-         AJC5dct6VBPTWAc1df/VNdn3j1TdT33vcIIRp/7ldhyqnkApW4iyV74xa+IUxSX2bUPM
-         nyXDNVIp4atlEOcpcPS1vFhzUdHOYkCLBW4VyaoEdh5kD33ukSqxj81qr1JZGwsmeKMm
-         whnoqvpzGCO/KpAHxCkkDsNVU64o7Gy1OXtNsYkZ+0Nzsyj8dXEhNZN+0M66ddIgBn2x
-         OkLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c1EsjSooPyqCnBO664DNonHfMUSKi8/7rikFXFsVYdo=;
-        b=fUCfKZtWCQBDIoAYs3MEKFxWGfD/4IUUuYgexqIVO/i1m1Nc1Vl2YpVogwJD08msru
-         ZKLUunLEnT1Hz4rOmnuR8anXA+J//IxDZgfwPiMtau5C573EKRmR8K/ygSHbkyrvPiUG
-         U0uDIMDo1MkS/sjbqz8VvlUPLKoD8pNAj+XuG8n6U2rfttxrvPToNnTQU/RjU3M3ATNs
-         tnnrp1Rn02xiuad9XZzRGs7G27APxj3djbuTkz+kjS7MA47YC4+95bt1KtBZ/FRZW5S2
-         3We1ZNWC3F2muIvWkW5lQ7S7jzvkblbFqYxNVgCKHfXiP784JUUoeA/uB7CiFo0XgAAP
-         JWoA==
-X-Gm-Message-State: AGi0PuZkzvo8C375MSHQsye0f9khilY9I/xgtIHhab6f+XqMt9j4h/LP
-        aHtBf1KdfG0Po0oSzWEgy+DglhONOhOMSOppDz0v1A==
-X-Google-Smtp-Source: APiQypKEsLKypKBFMaeTK5Vu/aRzLy34dr52xJcb9/VoDVzJrtdC3yjEMYpVolT91E1KkbeGKxf3ZCu8aozNcyXMnrw=
-X-Received: by 2002:a9d:6952:: with SMTP id p18mr21913401oto.89.1588090755407;
- Tue, 28 Apr 2020 09:19:15 -0700 (PDT)
+        id S1728158AbgD3QSk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 Apr 2020 12:18:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58600 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726431AbgD3QSi (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 30 Apr 2020 12:18:38 -0400
+Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A7673208D5;
+        Thu, 30 Apr 2020 16:18:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588263517;
+        bh=ugCY3y9aPneko9xp0OW8Y5PqnnRdwIA6ZnhjiQw0pbg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jkbiKuotKQWoJifXoYaYKWd4u1OUCkFJTCeaJ2hFfc8Mmzm6hL99xXi+5i8oLaR6e
+         GJ1b6u5OLXCuKZdQPYYbqcEoGl4qcjUVxJHvEaPOc1nGKIjtw42GlkxhXUFJCRfzBO
+         IWB28xT442895dIcuie8By96F883CyyppOigyJ4o=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+        (envelope-from <mchehab@kernel.org>)
+        id 1jUBtT-00Axgb-Pl; Thu, 30 Apr 2020 18:18:35 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-pm@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        kvm@vger.kernel.org
+Subject: [PATCH v4 00/19] Manually convert  thermal, crypto and misc devices to ReST
+Date:   Thu, 30 Apr 2020 18:18:14 +0200
+Message-Id: <cover.1588263270.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-References: <CAHC9VhT95GJKNTMvTtmZL35UOoVwbGH-eDWZyELb5oZ5rQU+Tw@mail.gmail.com>
- <924658.1588078484@warthog.procyon.org.uk> <CAEjxPJ5+DtZfX36OLYiLbU=1tGZcPUWFUi1=mFfx=ntehtvd3Q@mail.gmail.com>
- <1072935.1588089479@warthog.procyon.org.uk>
-In-Reply-To: <1072935.1588089479@warthog.procyon.org.uk>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Tue, 28 Apr 2020 12:19:02 -0400
-Message-ID: <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
-Subject: Re: [PATCH] selinux: Fix use of KEY_NEED_* instead of KEY__* perms [v2]
-To:     David Howells <dhowells@redhat.com>
-Cc:     Paul Moore <paul@paul-moore.com>, keyrings@vger.kernel.org,
-        SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 11:58 AM David Howells <dhowells@redhat.com> wrote:
->
-> Stephen Smalley <stephen.smalley.work@gmail.com> wrote:
->
-> > 1) Are we guaranteed that the caller only ever passes a single
-> > KEY_NEED_* perm at a time (i.e. hook is never called with a bitmask
-> > of multiple permissions)?  Where is that guarantee enforced?
->
-> Currently it's the case that only one perm is ever used at once.  I'm tempted
-> to enforce this by switching the KEY_NEED_* to an enum rather than a bitmask.
->
-> I'm not sure how I would actually define the meaning of two perms being OR'd
-> together.  Either okay?  Both required?
+Manually convert some files from thermal, crypto and misc-devices
+to ReST format.
 
-Both required is the usual convention in functions like
-inode_permission() or avc_has_perm().
-But if you know that you'll never use combinations, we should just
-prohibit it up front, e.g.
-key_task_permission() or whatever can reject them before they reach
-the hook call.  Then the
-hook code doesn't have to revisit the issue.
+This series is against linux-next 20200430 tag (as I rebased it, in order
+to check if some patch were already merged via some other tree),
+but it should very likely merge fine against docs-next.
 
->
-> > 2) We had talked about adding a BUILD_BUG_ON() or other build-time
-> > guard
->
-> That doesn't help you trap unallowed perm combinations, though.
+The full series (including those ones) are at:
 
-I think we want both.
+	https://git.linuxtv.org/mchehab/experimental.git/log/?h=misc-docs
 
->
-> > to ensure that new KEY_NEED_* permissions
-> > are not added without updating SELinux.  We already have similar
-> > constructs for catching new capabilities (#if CAP_LAST_CAP > 63 #error
-> > ...), socket address families (#if PF_MAX > 45 #error ...),  RTM_* and
-> > XFRM_MSG* values.
->
-> David
->
+The documents touched on this patch, converted to HTML via the 
+building system are at (together with patches from other series):
+
+	https://www.infradead.org/~mchehab/kernel_docs/
+
+
+v4:
+
+- added some acks.
+
+v3:
+
+- removed the cpu-freq patches from this series, as Rafael should
+  be applying it on his tree.
+
+v2: 
+
+- a small change at patch 2 to avoid uneeded whitespace changes;
+- added 13 new patches at the end
+
+
+Mauro Carvalho Chehab (19):
+  docs: thermal: convert cpu-idle-cooling.rst to ReST
+  docs: crypto: convert asymmetric-keys.txt to ReST
+  docs: crypto: convert api-intro.txt to ReST format
+  docs: crypto: convert async-tx-api.txt to ReST format
+  docs: crypto: descore-readme.txt: convert to ReST format
+  docs: misc-devices/spear-pcie-gadget.txt: convert to ReST
+  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
+  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
+  docs: misc-devices/c2port.txt: convert to ReST format
+  docs: misc-devices/bh1770glc.txt: convert to ReST
+  docs: misc-devices/apds990x.txt: convert to ReST format
+  docs: pci: endpoint/function/binding/pci-test.txt convert to ReST
+  docs: arm64: convert perf.txt to ReST format
+  docs: powerpc: convert vcpudispatch_stats.txt to ReST
+  docs: sh: convert new-machine.txt to ReST
+  docs: sh: convert register-banks.txt to ReST
+  docs: trace: ring-buffer-design.txt: convert to ReST format
+  docs: kvm: get read of devices/README
+  docs: misc-devices: add uacce to the index.rst
+
+ .../endpoint/function/binding/pci-test.rst    |  26 +
+ .../endpoint/function/binding/pci-test.txt    |  19 -
+ Documentation/PCI/endpoint/index.rst          |   2 +
+ Documentation/arm64/index.rst                 |   1 +
+ Documentation/arm64/{perf.txt => perf.rst}    |   7 +-
+ .../crypto/{api-intro.txt => api-intro.rst}   | 186 ++--
+ ...symmetric-keys.txt => asymmetric-keys.rst} |  91 +-
+ .../{async-tx-api.txt => async-tx-api.rst}    | 253 +++---
+ ...{descore-readme.txt => descore-readme.rst} | 152 +++-
+ Documentation/crypto/index.rst                |   5 +
+ Documentation/driver-api/dmaengine/client.rst |   2 +-
+ .../driver-api/dmaengine/provider.rst         |   2 +-
+ .../driver-api/thermal/cpu-idle-cooling.rst   |  18 +-
+ Documentation/driver-api/thermal/index.rst    |   1 +
+ .../{ad525x_dpot.txt => ad525x_dpot.rst}      |  24 +-
+ .../{apds990x.txt => apds990x.rst}            |  31 +-
+ .../{bh1770glc.txt => bh1770glc.rst}          |  45 +-
+ .../misc-devices/{c2port.txt => c2port.rst}   |  58 +-
+ Documentation/misc-devices/index.rst          |   7 +
+ .../misc-devices/pci-endpoint-test.rst        |  56 ++
+ .../misc-devices/pci-endpoint-test.txt        |  41 -
+ .../misc-devices/spear-pcie-gadget.rst        | 170 ++++
+ .../misc-devices/spear-pcie-gadget.txt        | 130 ---
+ Documentation/powerpc/index.rst               |   1 +
+ ...patch_stats.txt => vcpudispatch_stats.rst} |  17 +-
+ Documentation/security/keys/core.rst          |   2 +-
+ Documentation/sh/index.rst                    |   6 +
+ .../sh/{new-machine.txt => new-machine.rst}   | 195 +++--
+ ...{register-banks.txt => register-banks.rst} |  13 +-
+ Documentation/trace/index.rst                 |   1 +
+ ...ffer-design.txt => ring-buffer-design.rst} | 802 ++++++++++--------
+ Documentation/virt/kvm/devices/README         |   1 -
+ Documentation/virt/kvm/devices/index.rst      |   3 +
+ MAINTAINERS                                   |   4 +-
+ arch/sh/Kconfig.cpu                           |   2 +-
+ crypto/asymmetric_keys/asymmetric_type.c      |   2 +-
+ crypto/asymmetric_keys/public_key.c           |   2 +-
+ crypto/asymmetric_keys/signature.c            |   2 +-
+ drivers/misc/Kconfig                          |   2 +-
+ drivers/misc/ad525x_dpot.c                    |   2 +-
+ include/crypto/public_key.h                   |   2 +-
+ include/keys/asymmetric-parser.h              |   2 +-
+ include/keys/asymmetric-subtype.h             |   2 +-
+ include/keys/asymmetric-type.h                |   2 +-
+ 44 files changed, 1358 insertions(+), 1034 deletions(-)
+ create mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.rst
+ delete mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.txt
+ rename Documentation/arm64/{perf.txt => perf.rst} (95%)
+ rename Documentation/crypto/{api-intro.txt => api-intro.rst} (70%)
+ rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
+ rename Documentation/crypto/{async-tx-api.txt => async-tx-api.rst} (55%)
+ rename Documentation/crypto/{descore-readme.txt => descore-readme.rst} (81%)
+ rename Documentation/misc-devices/{ad525x_dpot.txt => ad525x_dpot.rst} (85%)
+ rename Documentation/misc-devices/{apds990x.txt => apds990x.rst} (86%)
+ rename Documentation/misc-devices/{bh1770glc.txt => bh1770glc.rst} (83%)
+ rename Documentation/misc-devices/{c2port.txt => c2port.rst} (59%)
+ create mode 100644 Documentation/misc-devices/pci-endpoint-test.rst
+ delete mode 100644 Documentation/misc-devices/pci-endpoint-test.txt
+ create mode 100644 Documentation/misc-devices/spear-pcie-gadget.rst
+ delete mode 100644 Documentation/misc-devices/spear-pcie-gadget.txt
+ rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
+ rename Documentation/sh/{new-machine.txt => new-machine.rst} (73%)
+ rename Documentation/sh/{register-banks.txt => register-banks.rst} (88%)
+ rename Documentation/trace/{ring-buffer-design.txt => ring-buffer-design.rst} (55%)
+ delete mode 100644 Documentation/virt/kvm/devices/README
+
+-- 
+2.25.4
+
+
