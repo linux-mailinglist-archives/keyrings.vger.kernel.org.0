@@ -2,88 +2,450 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0117F1C1B74
-	for <lists+keyrings@lfdr.de>; Fri,  1 May 2020 19:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 450F01C2085
+	for <lists+keyrings@lfdr.de>; Sat,  2 May 2020 00:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729332AbgEARRV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 May 2020 13:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729246AbgEARRU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 May 2020 13:17:20 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B30C061A0C
-        for <keyrings@vger.kernel.org>; Fri,  1 May 2020 10:17:19 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id r7so7739298edo.11
-        for <keyrings@vger.kernel.org>; Fri, 01 May 2020 10:17:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=SM+YCcLVdlX93c+JR4IqLWmV704zrU8VnQZOOdnMjDM=;
-        b=Ty9jHg0AnZ/L6u9OqyoL5YV0OY6nNlNVbBcvwAak7yjUILx7pQ39YAvJ2Lh5oulAd1
-         7lPXWMZf/nCCHyTLwSf11jAnEXcmzkDeJQHs9SHtbcCKNFjHjCuF2VqhV1jvhaC+JG5U
-         GcPvXCF45CT9DW6ejNqW3zRNk9FLujcPZL13ZLb3s8LGJ5WLBYyzSF+V/Gkr4Mc3nKXW
-         e+1gEQGpFmyYCtCsp/nSpCgjETYqCiyhw5qem2Oa+q6Mju7TnBzNxV98X9sGyyCayhu6
-         7l2Okhzsg6bAqlmwRSuNEMZMMCMAOnuX3U0eWhPz6SB2G9AtnVFQSaCNf7/UH8zXd1NC
-         FfOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=SM+YCcLVdlX93c+JR4IqLWmV704zrU8VnQZOOdnMjDM=;
-        b=Vey5eWULVkwiIlY8p1jzCKyWG3crUh3iMBQjOTh4gm+6eJrt2QkbSuCnNPsA/dbK0l
-         ZHdkixBz6fMWyeFdZpbQRGk/W0tCxf/fz+PCT6stX4M7IB7wJnRN+2yZrDHf3MZrnAQB
-         gpNt2alt3P3SkyPPWcU1gFdab7zF80wZX2C63x4TRUBZlJzdgcRzreKDHGm14uWHFO0N
-         B3uF4hARKUucZGqrlBIVHThPCCKAdemOdA8EG9Rt85XiIzA0ZwHdTZOaKEQHAsu6/zvH
-         +YfwDvmAvmRompZ6CyuDkifN4vlOLbWR0W1SHkxeo+2r0s4Olv+XeH3d8VMqTaF2IQQp
-         aOfw==
-X-Gm-Message-State: AGi0PubBkqZHrLhBI1kqmnbzzhEp+7zBSioH178b9d6feK/1t7Ssc0xn
-        9OMZ3dWrVWWtlEbKmi8lYQK5C0I6wM5js7MupzmGGktMjL4=
-X-Google-Smtp-Source: APiQypKlp2zYzmtH3V/i5tIcaLH6LLkETS3XRo+IfB2jdy5JvDHLXdWF3cDu0o0dqMAj1Q1PpaErPP8QSrLOElCnYx4=
-X-Received: by 2002:a50:f61c:: with SMTP id c28mr4208450edn.365.1588353437528;
- Fri, 01 May 2020 10:17:17 -0700 (PDT)
+        id S1726377AbgEAWYG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 May 2020 18:24:06 -0400
+Received: from mail.zx2c4.com ([192.95.5.64]:35719 "EHLO mail.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726045AbgEAWYF (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 1 May 2020 18:24:05 -0400
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 5e0e5b6b;
+        Fri, 1 May 2020 22:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
+        :subject:date:message-id:mime-version:content-transfer-encoding;
+         s=mail; bh=aiRIlftL7NynwBqmb81/RCRmk7E=; b=ZTK+9QPGTFxCqFepjXEL
+        AhHjNbFE+QOoAowdDAmj3RYZG1W8dmUF2zDv96VQfnYcAT4b2PGdI9vOvAd/vX4W
+        9XdXcz6/ANoUU2zrgfIjsWbgcxuUgTB58h7K0HiNAsb4EYClVrz0HKt/MWOk34gn
+        CP7iqf9Cz2YjU+xic7rimDJxon4WEYKVKbdoyMGNHjB8Lh8yUbbqFhDGi6/O/U/D
+        WQM7xWZLhaVDnUuAQCZF7H5lPC8VW0e2bapUfqK4j7WHfWCVV4MXOH0xjiBUcIso
+        SgZymTc5pE/hXLqgP/nZTaXn6kgUZo78Eq6d8BnVb6xCrFYEbl143mqxeO4W7mY5
+        zg==
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6028dce4 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Fri, 1 May 2020 22:11:58 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     dhowells@redhat.com, keyrings@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        kernel-hardening@lists.openwall.com
+Subject: [PATCH] security/keys: rewrite big_key crypto to use Zinc
+Date:   Fri,  1 May 2020 16:23:57 -0600
+Message-Id: <20200501222357.543312-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-From:   James Prestwood <prestwoj@gmail.com>
-Date:   Fri, 1 May 2020 10:17:06 -0700
-Message-ID: <CAPv5Ue72DaLDNu5QhHPgxSk3r3mSXN5PZMKXA1LUo88nmKymCQ@mail.gmail.com>
-Subject: Re: old "add integrity and security to TPM2 transactions" patches
-To:     keyrings@vger.kernel.org
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+A while back, I noticed that the crypto and crypto API usage in big_keys
+were entirely broken in multiple ways, so I rewrote it. Now, I'm
+rewriting it again, but this time using Zinc's ChaCha20Poly1305
+function. This makes the file considerably more simple; the diffstat
+alone should justify this commit. It also should be faster, since it no
+longer requires a mutex around the "aead api object" (nor allocations),
+allowing us to encrypt multiple items in parallel. We also benefit from
+being able to pass any type of pointer, so we can get rid of the
+ridiculously complex custom page allocator that big_key really doesn't
+need.
 
-I don't have the original email to reply to, but can be found in the archives:
+Cc: David Howells <dhowells@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kernel-hardening@lists.openwall.com
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+I finally got around to updating this patch from the mailing list posts
+back in 2017-2018, using the library interface that we eventually merged
+in 2019. I haven't retested this for functionality, but nothing much has
+changed, so I suspect things should still be good to go.
 
-https://lore.kernel.org/linux-crypto/20190910162132.GA11338@linux.intel.com/
+ security/keys/Kconfig   |   4 +-
+ security/keys/big_key.c | 230 +++++-----------------------------------
+ 2 files changed, 28 insertions(+), 206 deletions(-)
 
-I am trying to get these patches working on my hardware TPM. They work
-fine with an emulated TPM but not on the TPM I have. I have a Dell XPS
-9550, which came stock with a 1.2 TPM. I did a firmware upgrade
-provided by Dell to get TPM 2.0.
+diff --git a/security/keys/Kconfig b/security/keys/Kconfig
+index 47c041563d41..5aa442490d52 100644
+--- a/security/keys/Kconfig
++++ b/security/keys/Kconfig
+@@ -60,9 +60,7 @@ config BIG_KEYS
+ 	bool "Large payload keys"
+ 	depends on KEYS
+ 	depends on TMPFS
+-	select CRYPTO
+-	select CRYPTO_AES
+-	select CRYPTO_GCM
++	select CRYPTO_LIB_CHACHA20POLY1305
+ 	help
+ 	  This option provides support for holding large keys within the kernel
+ 	  (for example Kerberos ticket caches).  The data may be stored out to
+diff --git a/security/keys/big_key.c b/security/keys/big_key.c
+index 82008f900930..0b5f61ea09f1 100644
+--- a/security/keys/big_key.c
++++ b/security/keys/big_key.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /* Large capacity key type
+  *
+- * Copyright (C) 2017 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ * Copyright (C) 2017-2020 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+  * Copyright (C) 2013 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+  */
+@@ -12,20 +12,10 @@
+ #include <linux/file.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/err.h>
+-#include <linux/scatterlist.h>
+ #include <linux/random.h>
+-#include <linux/vmalloc.h>
+ #include <keys/user-type.h>
+ #include <keys/big_key-type.h>
+-#include <crypto/aead.h>
+-#include <crypto/gcm.h>
+-
+-struct big_key_buf {
+-	unsigned int		nr_pages;
+-	void			*virt;
+-	struct scatterlist	*sg;
+-	struct page		*pages[];
+-};
++#include <crypto/chacha20poly1305.h>
+ 
+ /*
+  * Layout of key payload words.
+@@ -37,14 +27,6 @@ enum {
+ 	big_key_len,
+ };
+ 
+-/*
+- * Crypto operation with big_key data
+- */
+-enum big_key_op {
+-	BIG_KEY_ENC,
+-	BIG_KEY_DEC,
+-};
+-
+ /*
+  * If the data is under this limit, there's no point creating a shm file to
+  * hold it as the permanently resident metadata for the shmem fs will be at
+@@ -52,16 +34,6 @@ enum big_key_op {
+  */
+ #define BIG_KEY_FILE_THRESHOLD (sizeof(struct inode) + sizeof(struct dentry))
+ 
+-/*
+- * Key size for big_key data encryption
+- */
+-#define ENC_KEY_SIZE 32
+-
+-/*
+- * Authentication tag length
+- */
+-#define ENC_AUTHTAG_SIZE 16
+-
+ /*
+  * big_key defined keys take an arbitrary string as the description and an
+  * arbitrary blob of data as the payload
+@@ -75,136 +47,20 @@ struct key_type key_type_big_key = {
+ 	.destroy		= big_key_destroy,
+ 	.describe		= big_key_describe,
+ 	.read			= big_key_read,
+-	/* no ->update(); don't add it without changing big_key_crypt() nonce */
++	/* no ->update(); don't add it without changing chacha20poly1305's nonce */
+ };
+ 
+-/*
+- * Crypto names for big_key data authenticated encryption
+- */
+-static const char big_key_alg_name[] = "gcm(aes)";
+-#define BIG_KEY_IV_SIZE		GCM_AES_IV_SIZE
+-
+-/*
+- * Crypto algorithms for big_key data authenticated encryption
+- */
+-static struct crypto_aead *big_key_aead;
+-
+-/*
+- * Since changing the key affects the entire object, we need a mutex.
+- */
+-static DEFINE_MUTEX(big_key_aead_lock);
+-
+-/*
+- * Encrypt/decrypt big_key data
+- */
+-static int big_key_crypt(enum big_key_op op, struct big_key_buf *buf, size_t datalen, u8 *key)
+-{
+-	int ret;
+-	struct aead_request *aead_req;
+-	/* We always use a zero nonce. The reason we can get away with this is
+-	 * because we're using a different randomly generated key for every
+-	 * different encryption. Notably, too, key_type_big_key doesn't define
+-	 * an .update function, so there's no chance we'll wind up reusing the
+-	 * key to encrypt updated data. Simply put: one key, one encryption.
+-	 */
+-	u8 zero_nonce[BIG_KEY_IV_SIZE];
+-
+-	aead_req = aead_request_alloc(big_key_aead, GFP_KERNEL);
+-	if (!aead_req)
+-		return -ENOMEM;
+-
+-	memset(zero_nonce, 0, sizeof(zero_nonce));
+-	aead_request_set_crypt(aead_req, buf->sg, buf->sg, datalen, zero_nonce);
+-	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
+-	aead_request_set_ad(aead_req, 0);
+-
+-	mutex_lock(&big_key_aead_lock);
+-	if (crypto_aead_setkey(big_key_aead, key, ENC_KEY_SIZE)) {
+-		ret = -EAGAIN;
+-		goto error;
+-	}
+-	if (op == BIG_KEY_ENC)
+-		ret = crypto_aead_encrypt(aead_req);
+-	else
+-		ret = crypto_aead_decrypt(aead_req);
+-error:
+-	mutex_unlock(&big_key_aead_lock);
+-	aead_request_free(aead_req);
+-	return ret;
+-}
+-
+-/*
+- * Free up the buffer.
+- */
+-static void big_key_free_buffer(struct big_key_buf *buf)
+-{
+-	unsigned int i;
+-
+-	if (buf->virt) {
+-		memset(buf->virt, 0, buf->nr_pages * PAGE_SIZE);
+-		vunmap(buf->virt);
+-	}
+-
+-	for (i = 0; i < buf->nr_pages; i++)
+-		if (buf->pages[i])
+-			__free_page(buf->pages[i]);
+-
+-	kfree(buf);
+-}
+-
+-/*
+- * Allocate a buffer consisting of a set of pages with a virtual mapping
+- * applied over them.
+- */
+-static void *big_key_alloc_buffer(size_t len)
+-{
+-	struct big_key_buf *buf;
+-	unsigned int npg = (len + PAGE_SIZE - 1) >> PAGE_SHIFT;
+-	unsigned int i, l;
+-
+-	buf = kzalloc(sizeof(struct big_key_buf) +
+-		      sizeof(struct page) * npg +
+-		      sizeof(struct scatterlist) * npg,
+-		      GFP_KERNEL);
+-	if (!buf)
+-		return NULL;
+-
+-	buf->nr_pages = npg;
+-	buf->sg = (void *)(buf->pages + npg);
+-	sg_init_table(buf->sg, npg);
+-
+-	for (i = 0; i < buf->nr_pages; i++) {
+-		buf->pages[i] = alloc_page(GFP_KERNEL);
+-		if (!buf->pages[i])
+-			goto nomem;
+-
+-		l = min_t(size_t, len, PAGE_SIZE);
+-		sg_set_page(&buf->sg[i], buf->pages[i], l, 0);
+-		len -= l;
+-	}
+-
+-	buf->virt = vmap(buf->pages, buf->nr_pages, VM_MAP, PAGE_KERNEL);
+-	if (!buf->virt)
+-		goto nomem;
+-
+-	return buf;
+-
+-nomem:
+-	big_key_free_buffer(buf);
+-	return NULL;
+-}
+-
+ /*
+  * Preparse a big key
+  */
+ int big_key_preparse(struct key_preparsed_payload *prep)
+ {
+-	struct big_key_buf *buf;
+ 	struct path *path = (struct path *)&prep->payload.data[big_key_path];
+ 	struct file *file;
+-	u8 *enckey;
++	u8 *buf, *enckey;
+ 	ssize_t written;
+-	size_t datalen = prep->datalen, enclen = datalen + ENC_AUTHTAG_SIZE;
++	size_t datalen = prep->datalen;
++	size_t enclen = datalen + CHACHA20POLY1305_AUTHTAG_SIZE;
+ 	int ret;
+ 
+ 	if (datalen <= 0 || datalen > 1024 * 1024 || !prep->data)
+@@ -220,28 +76,28 @@ int big_key_preparse(struct key_preparsed_payload *prep)
+ 		 * to be swapped out if needed.
+ 		 *
+ 		 * File content is stored encrypted with randomly generated key.
++		 * Since the key is random for each file, we can set the nonce
++		 * to zero, provided we never define a ->update() call.
+ 		 */
+ 		loff_t pos = 0;
+ 
+-		buf = big_key_alloc_buffer(enclen);
++		buf = kvmalloc(enclen, GFP_KERNEL);
+ 		if (!buf)
+ 			return -ENOMEM;
+-		memcpy(buf->virt, prep->data, datalen);
+ 
+ 		/* generate random key */
+-		enckey = kmalloc(ENC_KEY_SIZE, GFP_KERNEL);
++		enckey = kmalloc(CHACHA20POLY1305_KEY_SIZE, GFP_KERNEL);
+ 		if (!enckey) {
+ 			ret = -ENOMEM;
+ 			goto error;
+ 		}
+-		ret = get_random_bytes_wait(enckey, ENC_KEY_SIZE);
++		ret = get_random_bytes_wait(enckey, CHACHA20POLY1305_KEY_SIZE);
+ 		if (unlikely(ret))
+ 			goto err_enckey;
+ 
+-		/* encrypt aligned data */
+-		ret = big_key_crypt(BIG_KEY_ENC, buf, datalen, enckey);
+-		if (ret)
+-			goto err_enckey;
++		/* encrypt data */
++		chacha20poly1305_encrypt(buf, prep->data, datalen, NULL, 0,
++					 0, enckey);
+ 
+ 		/* save aligned data to file */
+ 		file = shmem_kernel_file_setup("", enclen, 0);
+@@ -250,7 +106,7 @@ int big_key_preparse(struct key_preparsed_payload *prep)
+ 			goto err_enckey;
+ 		}
+ 
+-		written = kernel_write(file, buf->virt, enclen, &pos);
++		written = kernel_write(file, buf, enclen, &pos);
+ 		if (written != enclen) {
+ 			ret = written;
+ 			if (written >= 0)
+@@ -265,7 +121,7 @@ int big_key_preparse(struct key_preparsed_payload *prep)
+ 		*path = file->f_path;
+ 		path_get(path);
+ 		fput(file);
+-		big_key_free_buffer(buf);
++		kvfree(buf);
+ 	} else {
+ 		/* Just store the data in a buffer */
+ 		void *data = kmalloc(datalen, GFP_KERNEL);
+@@ -283,7 +139,7 @@ int big_key_preparse(struct key_preparsed_payload *prep)
+ err_enckey:
+ 	kzfree(enckey);
+ error:
+-	big_key_free_buffer(buf);
++	kvfree(buf);
+ 	return ret;
+ }
+ 
+@@ -361,14 +217,13 @@ long big_key_read(const struct key *key, char *buffer, size_t buflen)
+ 		return datalen;
+ 
+ 	if (datalen > BIG_KEY_FILE_THRESHOLD) {
+-		struct big_key_buf *buf;
+ 		struct path *path = (struct path *)&key->payload.data[big_key_path];
+ 		struct file *file;
+-		u8 *enckey = (u8 *)key->payload.data[big_key_data];
+-		size_t enclen = datalen + ENC_AUTHTAG_SIZE;
++		u8 *buf, *enckey = (u8 *)key->payload.data[big_key_data];
++		size_t enclen = datalen + CHACHA20POLY1305_AUTHTAG_SIZE;
+ 		loff_t pos = 0;
+ 
+-		buf = big_key_alloc_buffer(enclen);
++		buf = kvmalloc(enclen, GFP_KERNEL);
+ 		if (!buf)
+ 			return -ENOMEM;
+ 
+@@ -379,25 +234,26 @@ long big_key_read(const struct key *key, char *buffer, size_t buflen)
+ 		}
+ 
+ 		/* read file to kernel and decrypt */
+-		ret = kernel_read(file, buf->virt, enclen, &pos);
++		ret = kernel_read(file, buf, enclen, &pos);
+ 		if (ret >= 0 && ret != enclen) {
+ 			ret = -EIO;
+ 			goto err_fput;
+ 		}
+ 
+-		ret = big_key_crypt(BIG_KEY_DEC, buf, enclen, enckey);
+-		if (ret)
++		ret = chacha20poly1305_decrypt(buf, buf, enclen, NULL, 0, 0,
++					       enckey) ? 0 : -EINVAL;
++		if (unlikely(ret))
+ 			goto err_fput;
+ 
+ 		ret = datalen;
+ 
+ 		/* copy out decrypted data */
+-		memcpy(buffer, buf->virt, datalen);
++		memcpy(buffer, buf, datalen);
+ 
+ err_fput:
+ 		fput(file);
+ error:
+-		big_key_free_buffer(buf);
++		kvfree(buf);
+ 	} else {
+ 		ret = datalen;
+ 		memcpy(buffer, key->payload.data[big_key_data], datalen);
+@@ -411,39 +267,7 @@ long big_key_read(const struct key *key, char *buffer, size_t buflen)
+  */
+ static int __init big_key_init(void)
+ {
+-	int ret;
+-
+-	/* init block cipher */
+-	big_key_aead = crypto_alloc_aead(big_key_alg_name, 0, CRYPTO_ALG_ASYNC);
+-	if (IS_ERR(big_key_aead)) {
+-		ret = PTR_ERR(big_key_aead);
+-		pr_err("Can't alloc crypto: %d\n", ret);
+-		return ret;
+-	}
+-
+-	if (unlikely(crypto_aead_ivsize(big_key_aead) != BIG_KEY_IV_SIZE)) {
+-		WARN(1, "big key algorithm changed?");
+-		ret = -EINVAL;
+-		goto free_aead;
+-	}
+-
+-	ret = crypto_aead_setauthsize(big_key_aead, ENC_AUTHTAG_SIZE);
+-	if (ret < 0) {
+-		pr_err("Can't set crypto auth tag len: %d\n", ret);
+-		goto free_aead;
+-	}
+-
+-	ret = register_key_type(&key_type_big_key);
+-	if (ret < 0) {
+-		pr_err("Can't register type: %d\n", ret);
+-		goto free_aead;
+-	}
+-
+-	return 0;
+-
+-free_aead:
+-	crypto_free_aead(big_key_aead);
+-	return ret;
++	return register_key_type(&key_type_big_key);
+ }
+ 
+ late_initcall(big_key_init);
+-- 
+2.26.2
 
-The kernel TPM initialization/start up works fine, and seems to create
-the null primary key successfully. The problem starts when trying to
-load the null key context (tpm2_load_context) in
-tpm2_start_auth_session(). This command fails to transmit with -EIO. I
-can't really get any more info other than this since there is no debug
-info to get from a TPM.
-
-I am trying to determine if its the above patches, or my TPM behaving
-badly. Is there some preparation I need to do on the TPM to get this
-working? I have cleared it a few times to start fresh but nothing
-seems to change.
-
-I am not very familiar with the various tss tools to interact with the
-TPM, but I was able to create a primary key (tsscreateprimarykey) as
-well as get capabilities, so the TPM is at least accepting those, just
-not a load context apparently.
-
-Thanks,
-James
-
-Thanks,
-James
