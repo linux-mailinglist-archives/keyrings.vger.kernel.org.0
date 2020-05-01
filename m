@@ -2,99 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EED871C1AAC
-	for <lists+keyrings@lfdr.de>; Fri,  1 May 2020 18:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0117F1C1B74
+	for <lists+keyrings@lfdr.de>; Fri,  1 May 2020 19:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729577AbgEAQhq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 May 2020 12:37:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51974 "EHLO
+        id S1729332AbgEARRV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 May 2020 13:17:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728443AbgEAQhp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 May 2020 12:37:45 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F04C061A0C
-        for <keyrings@vger.kernel.org>; Fri,  1 May 2020 09:37:45 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id l3so7641454edq.13
-        for <keyrings@vger.kernel.org>; Fri, 01 May 2020 09:37:45 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1729246AbgEARRU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 May 2020 13:17:20 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B30C061A0C
+        for <keyrings@vger.kernel.org>; Fri,  1 May 2020 10:17:19 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id r7so7739298edo.11
+        for <keyrings@vger.kernel.org>; Fri, 01 May 2020 10:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RIPdW26vFB4MJ8eFWZufOUSxSPuDiQ/oBKR6n6zAuCQ=;
-        b=gJ5ZE03+3vD6JV5mikbt/a67qcOnBb9++h/15VTm2/laibqIpyKbjxqROTd+jkTTgV
-         C6hE04paAIcX5JOOkNiAFT7kDMURyHoh6utJpnL+BVlIj0wS+ZReXw97sSBEALxJ4qZ/
-         TXaieTtvGhyXpI5bBk18/G8++sIVFWgmnN3KAE1Aq+r+1QYUqka4Dqd2wBzZSfdKdXwi
-         efCKixcnsHnIVvecKF1hoqEjWMefw78S4CS/bLJgzdJx3U7NN1jJ+hkQRhYQa4On/thg
-         VGthP+oJz5MqpLC9+ilZ3a5ONU7C/0aPmBB6cZ6GrspDseYFBppSVEi3e72p4iZZzay/
-         rqKg==
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=SM+YCcLVdlX93c+JR4IqLWmV704zrU8VnQZOOdnMjDM=;
+        b=Ty9jHg0AnZ/L6u9OqyoL5YV0OY6nNlNVbBcvwAak7yjUILx7pQ39YAvJ2Lh5oulAd1
+         7lPXWMZf/nCCHyTLwSf11jAnEXcmzkDeJQHs9SHtbcCKNFjHjCuF2VqhV1jvhaC+JG5U
+         GcPvXCF45CT9DW6ejNqW3zRNk9FLujcPZL13ZLb3s8LGJ5WLBYyzSF+V/Gkr4Mc3nKXW
+         e+1gEQGpFmyYCtCsp/nSpCgjETYqCiyhw5qem2Oa+q6Mju7TnBzNxV98X9sGyyCayhu6
+         7l2Okhzsg6bAqlmwRSuNEMZMMCMAOnuX3U0eWhPz6SB2G9AtnVFQSaCNf7/UH8zXd1NC
+         FfOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RIPdW26vFB4MJ8eFWZufOUSxSPuDiQ/oBKR6n6zAuCQ=;
-        b=NtzPa9TLvw1C6QICqcJhMEqzdUgME6Yk6vMH645G7mHfRGW6IQR/0BeD+aUIQJCJmQ
-         Q1cLxLIxPg6yUieJMLZJ/hpYxhxjonzxQLhelQC5oKpzTTOiHs7xvDFvw6OtCc8h8ra6
-         P6oQxznx/TUFtU+VInUg15o6jsRCjdOWS/DTQc/jOvXUdBjYhd6dsOZawJCyeNsYHcFX
-         sHPK1DdiACGZmqiV6fZOAkynbxD6Z8BE5kiQ84WbVfubWQRsuOIxz3IUJUP0OT1KoYhQ
-         2ntxnOCYA0WPh0RRd+X3KCqc+IaR4Y7KoBy/kbm4zsYjaRRa/xUQQ5u4vxrmquvhnHB4
-         WTqQ==
-X-Gm-Message-State: AGi0PubRryInfIQ7Haax7wMypxlg+MFmp2Hsu8aGR1N2cfABAPTOK2eG
-        HZbJg3GPEQkhOYo9284aW8iHIXOnQj69eu0GjnbCJ34=
-X-Google-Smtp-Source: APiQypKoUjiJL7Sch0Qif2RZJb485+cC+mL0/HRjGDH3Aw+VwBM0aH3UfAIqlwQlmljK5A4QePcCctWZWyDW9GnCNmw=
-X-Received: by 2002:aa7:c401:: with SMTP id j1mr4214419edq.31.1588351063874;
- Fri, 01 May 2020 09:37:43 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=SM+YCcLVdlX93c+JR4IqLWmV704zrU8VnQZOOdnMjDM=;
+        b=Vey5eWULVkwiIlY8p1jzCKyWG3crUh3iMBQjOTh4gm+6eJrt2QkbSuCnNPsA/dbK0l
+         ZHdkixBz6fMWyeFdZpbQRGk/W0tCxf/fz+PCT6stX4M7IB7wJnRN+2yZrDHf3MZrnAQB
+         gpNt2alt3P3SkyPPWcU1gFdab7zF80wZX2C63x4TRUBZlJzdgcRzreKDHGm14uWHFO0N
+         B3uF4hARKUucZGqrlBIVHThPCCKAdemOdA8EG9Rt85XiIzA0ZwHdTZOaKEQHAsu6/zvH
+         +YfwDvmAvmRompZ6CyuDkifN4vlOLbWR0W1SHkxeo+2r0s4Olv+XeH3d8VMqTaF2IQQp
+         aOfw==
+X-Gm-Message-State: AGi0PubBkqZHrLhBI1kqmnbzzhEp+7zBSioH178b9d6feK/1t7Ssc0xn
+        9OMZ3dWrVWWtlEbKmi8lYQK5C0I6wM5js7MupzmGGktMjL4=
+X-Google-Smtp-Source: APiQypKlp2zYzmtH3V/i5tIcaLH6LLkETS3XRo+IfB2jdy5JvDHLXdWF3cDu0o0dqMAj1Q1PpaErPP8QSrLOElCnYx4=
+X-Received: by 2002:a50:f61c:: with SMTP id c28mr4208450edn.365.1588353437528;
+ Fri, 01 May 2020 10:17:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAHC9VhT95GJKNTMvTtmZL35UOoVwbGH-eDWZyELb5oZ5rQU+Tw@mail.gmail.com>
- <924658.1588078484@warthog.procyon.org.uk> <CAEjxPJ5+DtZfX36OLYiLbU=1tGZcPUWFUi1=mFfx=ntehtvd3Q@mail.gmail.com>
- <1072935.1588089479@warthog.procyon.org.uk> <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
-In-Reply-To: <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 1 May 2020 12:37:32 -0400
-Message-ID: <CAHC9VhTO0Ag-CODexD8hjZdTzUBEd4nJdR191o__=+iOLUHmFw@mail.gmail.com>
-Subject: Re: [PATCH] selinux: Fix use of KEY_NEED_* instead of KEY__* perms [v2]
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>
+From:   James Prestwood <prestwoj@gmail.com>
+Date:   Fri, 1 May 2020 10:17:06 -0700
+Message-ID: <CAPv5Ue72DaLDNu5QhHPgxSk3r3mSXN5PZMKXA1LUo88nmKymCQ@mail.gmail.com>
+Subject: Re: old "add integrity and security to TPM2 transactions" patches
+To:     keyrings@vger.kernel.org
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 12:19 PM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> On Tue, Apr 28, 2020 at 11:58 AM David Howells <dhowells@redhat.com> wrote:
-> > Stephen Smalley <stephen.smalley.work@gmail.com> wrote:
-> >
-> > > 1) Are we guaranteed that the caller only ever passes a single
-> > > KEY_NEED_* perm at a time (i.e. hook is never called with a bitmask
-> > > of multiple permissions)?  Where is that guarantee enforced?
-> >
-> > Currently it's the case that only one perm is ever used at once.  I'm tempted
-> > to enforce this by switching the KEY_NEED_* to an enum rather than a bitmask.
-> >
-> > I'm not sure how I would actually define the meaning of two perms being OR'd
-> > together.  Either okay?  Both required?
->
-> Both required is the usual convention in functions like
-> inode_permission() or avc_has_perm().
-> But if you know that you'll never use combinations, we should just
-> prohibit it up front, e.g.
-> key_task_permission() or whatever can reject them before they reach
-> the hook call.  Then the
-> hook code doesn't have to revisit the issue.
->
-> >
-> > > 2) We had talked about adding a BUILD_BUG_ON() or other build-time
-> > > guard
-> >
-> > That doesn't help you trap unallowed perm combinations, though.
->
-> I think we want both.
+Hi,
 
-Yep, we want both. #moarsafety
+I don't have the original email to reply to, but can be found in the archives:
 
--- 
-paul moore
-www.paul-moore.com
+https://lore.kernel.org/linux-crypto/20190910162132.GA11338@linux.intel.com/
+
+I am trying to get these patches working on my hardware TPM. They work
+fine with an emulated TPM but not on the TPM I have. I have a Dell XPS
+9550, which came stock with a 1.2 TPM. I did a firmware upgrade
+provided by Dell to get TPM 2.0.
+
+The kernel TPM initialization/start up works fine, and seems to create
+the null primary key successfully. The problem starts when trying to
+load the null key context (tpm2_load_context) in
+tpm2_start_auth_session(). This command fails to transmit with -EIO. I
+can't really get any more info other than this since there is no debug
+info to get from a TPM.
+
+I am trying to determine if its the above patches, or my TPM behaving
+badly. Is there some preparation I need to do on the TPM to get this
+working? I have cleared it a few times to start fresh but nothing
+seems to change.
+
+I am not very familiar with the various tss tools to interact with the
+TPM, but I was able to create a primary key (tsscreateprimarykey) as
+well as get capabilities, so the TPM is at least accepting those, just
+not a load context apparently.
+
+Thanks,
+James
+
+Thanks,
+James
