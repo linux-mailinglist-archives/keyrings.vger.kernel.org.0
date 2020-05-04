@@ -2,99 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF6061C3159
-	for <lists+keyrings@lfdr.de>; Mon,  4 May 2020 04:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46CB1C34F3
+	for <lists+keyrings@lfdr.de>; Mon,  4 May 2020 10:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbgEDC5d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 May 2020 22:57:33 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:36029 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726377AbgEDC5d (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 May 2020 22:57:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588561052;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gF7rcvELgQd39eUzjQBEmRMoEPlsByjPKGkWb8q9nQI=;
-        b=R4djuxqbl4X70PFFn7aCBoT4Mv2HXBAhF/csEQl+eaXkoKcSyeGfJo0fhGqQ/k7C8PMXZF
-        70Ptay5Zko7xuGsQj5QSHIjRmjPM+dpuAACABwU4xvLWLc8lv3HyC8oukbvWs0XDNOmMoh
-        xg4RQa3M7rL4TxcSp2+AmVm3R2JCrnQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-124-aDfPBMSwPrKk4IKjU-8VMQ-1; Sun, 03 May 2020 22:57:28 -0400
-X-MC-Unique: aDfPBMSwPrKk4IKjU-8VMQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5EC57107ACCA;
-        Mon,  4 May 2020 02:57:26 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-112-227.rdu2.redhat.com [10.10.112.227])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EA5B860BF3;
-        Mon,  4 May 2020 02:57:23 +0000 (UTC)
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Eric Biggers <ebiggers@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>
-References: <20200407200318.11711-1-longman@redhat.com>
- <20200501232224.GC915@sol.localdomain>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <82fbc32f-3f9e-b876-b998-7714e8597988@redhat.com>
-Date:   Sun, 3 May 2020 22:57:23 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1726751AbgEDIwd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 4 May 2020 04:52:33 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:43739 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726515AbgEDIwd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 4 May 2020 04:52:33 -0400
+Received: by mail-wr1-f65.google.com with SMTP id i10so19894050wrv.10
+        for <keyrings@vger.kernel.org>; Mon, 04 May 2020 01:52:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ggDDYKqZEVjP47BfqE04dYFHPS0oX31wLempv+/K9N8=;
+        b=RGOgg7VobfR9ti01Nk6xK48FTRGd6Gby1Hb3UcM2CiWZ0tAREZUoFAiHQ2sq8NUh/M
+         sGajDTR+OqHN+9Yq/eOz/17Q4biaGKGodevtmpb8RHVjYd7jKTckZBrjDXyVuIVCy8D8
+         vTN2emgI435g90ZIgknJGeAqUrpToB3eNQWo0QM7IH6xrLSU9vWR06p7GoA1UnbvNZhb
+         oco4q5jODmx930IMzBmYOhOlcjCavwJ9UQ/JwWQ4pNv29/0XFh2kvKDUjyf1ubjbAMOZ
+         J8d6fqPM3TBOLEL/UVK3tZRxSKz4nZ3hKvBDH868Q3kxl0DLcdB659TDWqc6MS88iacg
+         CTMA==
+X-Gm-Message-State: AGi0PubW+w1IWarwU77drWnKrqOMvgBghTa5g3fRyH+/bDrwqBmDBInP
+        MyH6dgUOlDvzRwWboSJ76SR9Jrds26M=
+X-Google-Smtp-Source: APiQypLjdNKQMF7VWIIXCyo66+zWdvjLQoKWDjWvabA8YMHyeUdj0YlgRgKhoYG/U24XgUJ7aE82Og==
+X-Received: by 2002:adf:f48a:: with SMTP id l10mr17213207wro.231.1588582320894;
+        Mon, 04 May 2020 01:52:00 -0700 (PDT)
+Received: from localhost.localdomain ([46.6.4.150])
+        by smtp.gmail.com with ESMTPSA id i1sm17058550wrx.22.2020.05.04.01.51.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2020 01:52:00 -0700 (PDT)
+From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
+To:     keyrings@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>
+Subject: [RESEND][PATCH] keys: Handle missing Authority Key Identifier X509 extension
+Date:   Mon,  4 May 2020 10:51:53 +0200
+Message-Id: <20200504085153.127903-1-andrew.zaborowski@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200501232224.GC915@sol.localdomain>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 5/1/20 7:22 PM, Eric Biggers wrote:
-> On Tue, Apr 07, 2020 at 04:03:18PM -0400, Waiman Long wrote:
->> For kvmalloc'ed data object that contains sensitive information like
->> cryptographic key, we need to make sure that the buffer is always
->> cleared before freeing it. Using memset() alone for buffer clearing may
->> not provide certainty as the compiler may compile it away. To be sure,
->> the special memzero_explicit() has to be used.
->>
->> This patch introduces a new kvfree_sensitive() for freeing those
->> sensitive data objects allocated by kvmalloc(). The relevnat places
->> where kvfree_sensitive() can be used are modified to use it.
->>
->> Fixes: 4f0882491a14 ("KEYS: Avoid false positive ENOMEM error on key read")
->> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
->> Signed-off-by: Waiman Long <longman@redhat.com>
-> Looks good, feel free to add:
->
-> Reviewed-by: Eric Biggers <ebiggers@google.com>
->
-> (I don't really buy the argument that the compiler could compile away memset()
-> before kvfree().  But I agree with using memzero_explicit() anyway to make the
-> intent explicit.)
->
-> I don't see this patch in linux-next yet.  Who is planning to take this patch?
-> Presumably David through the keyrings tree, or Andrew through mm?
->
-> - Eric
->
-Andrew, would you mind taking this patch into the mm-tree?
+In a self-signed certificate the subject and issuer are the same and so
+the Authority Key Identifier X.509 v3 extension is explicitly made
+optional in RFC5280 section 4.2.1.1.
+crypto/asymmetric_keys/x509_cert_parser.c can't handle this and makes
+(at least) the restrict.c functions refuse to work with certificates
+that don't include the AKID.  Fix this by filling in the missing
+cert->sig->auth_ids with the certificate's own IDs after parsing and
+determinig the certificate is self-signed.
 
-Thanks,
-Longman
+The asymmetric_key_generate_id return value is not checked because it's
+already succeeded once at this point.
+
+There are root X.509 v3 certificates in use where this is the case,
+mostly oldish ones.
+
+Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+---
+ crypto/asymmetric_keys/x509_cert_parser.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+index 26ec20ef489..a5a2f93e242 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -136,6 +136,25 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
+ 	if (ret < 0)
+ 		goto error_decode;
+ 
++	if (cert->self_signed) {
++		if (!cert->sig->auth_ids[0]) {
++			/* Duplicate cert->id */
++			kid = asymmetric_key_generate_id(cert->raw_serial,
++							 cert->raw_serial_size,
++							 cert->raw_issuer,
++							 cert->raw_issuer_size);
++			cert->sig->auth_ids[0] = kid;
++		}
++
++		if (!cert->sig->auth_ids[1] && cert->skid) {
++			/* Duplicate cert->skid */
++			kid = asymmetric_key_generate_id(cert->raw_skid,
++							 cert->raw_skid_size,
++							 "", 0);
++			cert->sig->auth_ids[1] = kid;
++		}
++	}
++
+ 	kfree(ctx);
+ 	return cert;
+ 
+-- 
+2.20.1
 
