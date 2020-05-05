@@ -2,105 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 558411C51C2
-	for <lists+keyrings@lfdr.de>; Tue,  5 May 2020 11:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 577241C564E
+	for <lists+keyrings@lfdr.de>; Tue,  5 May 2020 15:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728649AbgEEJUE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 5 May 2020 05:20:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49972 "EHLO mail.kernel.org"
+        id S1729012AbgEENHF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 5 May 2020 09:07:05 -0400
+Received: from mga06.intel.com ([134.134.136.31]:32238 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727931AbgEEJUD (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 5 May 2020 05:20:03 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 68767206B9;
-        Tue,  5 May 2020 09:20:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588670403;
-        bh=umFqN2nr6WGUGKndcmJqJf8juUXXSxdtp4kqwvdHXmU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=zU4xeTB/UoB7m/NpUvybsxh+WB+BbvYB8fOBSxafVQ3kBMUEcS1aTFiYVcrSBKOTZ
-         CzNzZULFZHFhWMw+iftE+R1dtCV1ZNP+6SeDH16c+faG/RpZR3DNLHSWlTdShecPRR
-         YjXfssB8vpfuTGtUcYvOlGCDtSDialC5NdbYYnfI=
-Date:   Tue, 5 May 2020 10:19:59 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Alexey Krasikov <alex-krasikov@yandex-team.ru>
-Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
-        keyrings@vger.kernel.org, security@kernel.org,
+        id S1728268AbgEENHF (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 5 May 2020 09:07:05 -0400
+IronPort-SDR: KoUn4nb2aAhiNKCjv1sfPktuhmE0vVAWPkF1LR7k9cw1kt3BTKqdAfWxz3kY9K7EeCZUMWIezA
+ 9UKepL9KmyGw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 06:07:04 -0700
+IronPort-SDR: Cc3+FVB1kxEfoyHvdxM7/OBQ271YB5Cdp3TpMPrOn/mcC3MCzs8p7gmG5e/TAtzxe4eHk2HcJQ
+ zsiBvUrhw23w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,355,1583222400"; 
+   d="scan'208";a="461374284"
+Received: from florinix-mobl.ger.corp.intel.com (HELO localhost) ([10.252.38.116])
+  by fmsmga006.fm.intel.com with ESMTP; 05 May 2020 06:07:01 -0700
+Date:   Tue, 5 May 2020 16:07:00 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Will Deacon <will@kernel.org>
+Cc:     Alexey Krasikov <alex-krasikov@yandex-team.ru>,
+        dhowells@redhat.com, keyrings@vger.kernel.org, security@kernel.org,
         yc-core@yandex-team.ru
 Subject: Re: [RESEND] security/keys: remove possessor verify after key
  permission check
-Message-ID: <20200505091958.GD16980@willie-the-truck>
+Message-ID: <20200505130440.GA134046@linux.intel.com>
 References: <20200430073403.26484-1-alex-krasikov@yandex-team.ru>
+ <20200505091958.GD16980@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430073403.26484-1-alex-krasikov@yandex-team.ru>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200505091958.GD16980@willie-the-truck>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Apr 30, 2020 at 10:34:03AM +0300, Alexey Krasikov wrote:
-> In security/keys/keyctl.c: keyctl_read_key() after key_permission() check
-> is called is_key_possessed(). According to the current logic, if the caller is
-> a possessor, then it can read the key regardless of whether it has rights
-> to do so.
+On Tue, May 05, 2020 at 10:19:59AM +0100, Will Deacon wrote:
+> On Thu, Apr 30, 2020 at 10:34:03AM +0300, Alexey Krasikov wrote:
+> > In security/keys/keyctl.c: keyctl_read_key() after key_permission() check
+> > is called is_key_possessed(). According to the current logic, if the caller is
+> > a possessor, then it can read the key regardless of whether it has rights
+> > to do so.
+> > 
+> > if I remove the possessor read rights:
+> >     keyctl_setperm(key, KEY_POS_ALL & (~KEY_POS_SETATTR));
+> > the calling process will still be able to read the key if it is possessor.
+> > 
+> > In other words, if the possessor doesn't have read rights, it doesn't matter.
+> > 
+> > ---
+> > I may be misunderstanding the logic behind it, but here's the patch to
+> > stir the discussion.
+> > 
+> > Signed-off-by: Alexey Krasikov <alex-krasikov@yandex-team.ru>
+> > ---
+> >  security/keys/keyctl.c | 15 +--------------
+> >  1 file changed, 1 insertion(+), 14 deletions(-)
 > 
-> if I remove the possessor read rights:
->     keyctl_setperm(key, KEY_POS_ALL & (~KEY_POS_SETATTR));
-> the calling process will still be able to read the key if it is possessor.
+> Hmm, looks like this still didn't make it to the keyrings@ list :(
 > 
-> In other words, if the possessor doesn't have read rights, it doesn't matter.
+> On the off-chance that my reply /does/ make it, I've left the whole of the
+> patch intact below. Please can somebody have a look?
 > 
-> ---
-> I may be misunderstanding the logic behind it, but here's the patch to
-> stir the discussion.
-> 
-> Signed-off-by: Alexey Krasikov <alex-krasikov@yandex-team.ru>
-> ---
->  security/keys/keyctl.c | 15 +--------------
->  1 file changed, 1 insertion(+), 14 deletions(-)
+> Will
 
-Hmm, looks like this still didn't make it to the keyrings@ list :(
+Hi, I'm on this. Just didn't have time last week. Looking it through
+on *some* day this week properly.
 
-On the off-chance that my reply /does/ make it, I've left the whole of the
-patch intact below. Please can somebody have a look?
-
-Will
-
---->8
-
-> diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-> index 5e01192e222a..61e53c6b5adb 100644
-> --- a/security/keys/keyctl.c
-> +++ b/security/keys/keyctl.c
-> @@ -845,22 +845,9 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
->  
->  	/* see if we can read it directly */
->  	ret = key_permission(key_ref, KEY_NEED_READ);
-> -	if (ret == 0)
-> -		goto can_read_key;
-> -	if (ret != -EACCES)
-> +	if (ret != 0)
->  		goto key_put_out;
->  
-> -	/* we can't; see if it's searchable from this process's keyrings
-> -	 * - we automatically take account of the fact that it may be
-> -	 *   dangling off an instantiation key
-> -	 */
-> -	if (!is_key_possessed(key_ref)) {
-> -		ret = -EACCES;
-> -		goto key_put_out;
-> -	}
-> -
-> -	/* the key is probably readable - now try to read it */
-> -can_read_key:
->  	if (!key->type->read) {
->  		ret = -EOPNOTSUPP;
->  		goto key_put_out;
-> -- 
-> 2.17.1
-> 
+/Jarkko
