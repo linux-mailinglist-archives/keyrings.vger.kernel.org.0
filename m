@@ -2,78 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B90C01C3541
-	for <lists+keyrings@lfdr.de>; Mon,  4 May 2020 11:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 558411C51C2
+	for <lists+keyrings@lfdr.de>; Tue,  5 May 2020 11:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbgEDJIL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 4 May 2020 05:08:11 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:53625 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726625AbgEDJIL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 4 May 2020 05:08:11 -0400
-Received: by mail-wm1-f66.google.com with SMTP id k12so7534224wmj.3
-        for <keyrings@vger.kernel.org>; Mon, 04 May 2020 02:08:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=YsZNBDHt502uQNfqBAPLlhPWF3Q26FjHG7KwkPDxKY4=;
-        b=EeCW2lpN2j36EPMk78CcIwixiXy35g3gpSW5aYGpm/BMuht18G08Zr8UFlKhySbECI
-         VRmPY0tpZl5GwsgczdZxS/0BD2DN9lrUzUUmGE72b/b9NEiKkWaAt0RPRbiV3vsRASeE
-         VvnMI389atlNjrdy4HzBEY8dq2OWuOo89GxizcgFZd41axUyhqDyszIz7e9Di+4L7kgS
-         6B5k7ZcXhIToiw9M8Q8PVVF4Z7vjDgtWE7aDAG/dqLBYXxKVOlQknQZ5KRh5T9LWrBhY
-         4wHWdMmig/x9noK+ukzN/IF5LR4PqpSDhojdjrl4o3Tk8CdlYgNQZvXorgzea6zDvg3a
-         JF6g==
-X-Gm-Message-State: AGi0Pua3A8JVx0otruDVsX7VOwzX5lPBe6nFYmg+zBfnUnUW7/zK9G8m
-        W1hJyoiEJce7pqKixvjbiDBwyePQhmg=
-X-Google-Smtp-Source: APiQypK1n0kwvZsEy/x3nB6aArtBoJtIRVv91xsYrSPHRmI/7IVhVQQhf1jPlUTUCjhcopfyFo2/ow==
-X-Received: by 2002:a1c:668a:: with SMTP id a132mr14251605wmc.46.1588583289504;
-        Mon, 04 May 2020 02:08:09 -0700 (PDT)
-Received: from localhost.localdomain ([46.6.4.150])
-        by smtp.gmail.com with ESMTPSA id t20sm10733071wmi.2.2020.05.04.02.08.08
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2020 02:08:08 -0700 (PDT)
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-To:     keyrings@vger.kernel.org
-Subject: [RESEND][PATCH] keys: Update comment for restrict_link_by_key_or_keyring_chain
-Date:   Mon,  4 May 2020 11:08:00 +0200
-Message-Id: <20200504090800.129593-1-andrew.zaborowski@intel.com>
-X-Mailer: git-send-email 2.25.1
+        id S1728649AbgEEJUE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 5 May 2020 05:20:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49972 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727931AbgEEJUD (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 5 May 2020 05:20:03 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 68767206B9;
+        Tue,  5 May 2020 09:20:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588670403;
+        bh=umFqN2nr6WGUGKndcmJqJf8juUXXSxdtp4kqwvdHXmU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=zU4xeTB/UoB7m/NpUvybsxh+WB+BbvYB8fOBSxafVQ3kBMUEcS1aTFiYVcrSBKOTZ
+         CzNzZULFZHFhWMw+iftE+R1dtCV1ZNP+6SeDH16c+faG/RpZR3DNLHSWlTdShecPRR
+         YjXfssB8vpfuTGtUcYvOlGCDtSDialC5NdbYYnfI=
+Date:   Tue, 5 May 2020 10:19:59 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Alexey Krasikov <alex-krasikov@yandex-team.ru>
+Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        keyrings@vger.kernel.org, security@kernel.org,
+        yc-core@yandex-team.ru
+Subject: Re: [RESEND] security/keys: remove possessor verify after key
+ permission check
+Message-ID: <20200505091958.GD16980@willie-the-truck>
+References: <20200430073403.26484-1-alex-krasikov@yandex-team.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200430073403.26484-1-alex-krasikov@yandex-team.ru>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add the bit of information that makes
-restrict_link_by_key_or_keyring_chain different from
-restrict_link_by_key_or_keyring to the inline docs comment.
+On Thu, Apr 30, 2020 at 10:34:03AM +0300, Alexey Krasikov wrote:
+> In security/keys/keyctl.c: keyctl_read_key() after key_permission() check
+> is called is_key_possessed(). According to the current logic, if the caller is
+> a possessor, then it can read the key regardless of whether it has rights
+> to do so.
+> 
+> if I remove the possessor read rights:
+>     keyctl_setperm(key, KEY_POS_ALL & (~KEY_POS_SETATTR));
+> the calling process will still be able to read the key if it is possessor.
+> 
+> In other words, if the possessor doesn't have read rights, it doesn't matter.
+> 
+> ---
+> I may be misunderstanding the logic behind it, but here's the patch to
+> stir the discussion.
+> 
+> Signed-off-by: Alexey Krasikov <alex-krasikov@yandex-team.ru>
+> ---
+>  security/keys/keyctl.c | 15 +--------------
+>  1 file changed, 1 insertion(+), 14 deletions(-)
 
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
----
- crypto/asymmetric_keys/restrict.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Hmm, looks like this still didn't make it to the keyrings@ list :(
 
-diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-index 77ebebada29..84cefe3b358 100644
---- a/crypto/asymmetric_keys/restrict.c
-+++ b/crypto/asymmetric_keys/restrict.c
-@@ -244,9 +244,10 @@ int restrict_link_by_key_or_keyring(struct key *dest_keyring,
-  * @payload: The payload of the new key.
-  * @trusted: A key or ring of keys that can be used to vouch for the new cert.
-  *
-- * Check the new certificate only against the key or keys passed in the data
-- * parameter. If one of those is the signing key and validates the new
-- * certificate, then mark the new certificate as being ok to link.
-+ * Check the new certificate against the key or keys passed in the data
-+ * parameter and against the keys already linked to the destination keyring. If
-+ * one of those is the signing key and validates the new certificate, then mark
-+ * the new certificate as being ok to link.
-  *
-  * Returns 0 if the new certificate was accepted, -ENOKEY if we
-  * couldn't find a matching parent certificate in the trusted list,
--- 
-2.20.1
+On the off-chance that my reply /does/ make it, I've left the whole of the
+patch intact below. Please can somebody have a look?
 
+Will
+
+--->8
+
+> diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+> index 5e01192e222a..61e53c6b5adb 100644
+> --- a/security/keys/keyctl.c
+> +++ b/security/keys/keyctl.c
+> @@ -845,22 +845,9 @@ long keyctl_read_key(key_serial_t keyid, char __user *buffer, size_t buflen)
+>  
+>  	/* see if we can read it directly */
+>  	ret = key_permission(key_ref, KEY_NEED_READ);
+> -	if (ret == 0)
+> -		goto can_read_key;
+> -	if (ret != -EACCES)
+> +	if (ret != 0)
+>  		goto key_put_out;
+>  
+> -	/* we can't; see if it's searchable from this process's keyrings
+> -	 * - we automatically take account of the fact that it may be
+> -	 *   dangling off an instantiation key
+> -	 */
+> -	if (!is_key_possessed(key_ref)) {
+> -		ret = -EACCES;
+> -		goto key_put_out;
+> -	}
+> -
+> -	/* the key is probably readable - now try to read it */
+> -can_read_key:
+>  	if (!key->type->read) {
+>  		ret = -EOPNOTSUPP;
+>  		goto key_put_out;
+> -- 
+> 2.17.1
+> 
