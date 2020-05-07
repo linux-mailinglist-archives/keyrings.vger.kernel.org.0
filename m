@@ -2,34 +2,34 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8831C99E6
-	for <lists+keyrings@lfdr.de>; Thu,  7 May 2020 20:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC0BB1C99EA
+	for <lists+keyrings@lfdr.de>; Thu,  7 May 2020 20:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727799AbgEGSwj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 7 May 2020 14:52:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53434 "EHLO mail.kernel.org"
+        id S1728486AbgEGSwp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 7 May 2020 14:52:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53572 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726598AbgEGSwi (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 7 May 2020 14:52:38 -0400
+        id S1728400AbgEGSwo (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 7 May 2020 14:52:44 -0400
 Received: from embeddedor (unknown [189.207.59.248])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDEB62495D;
-        Thu,  7 May 2020 18:52:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A4CAD2495D;
+        Thu,  7 May 2020 18:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588877558;
-        bh=3p7eu1MK3/DsGvUUePG2CQuwCI8FRfOqNY3jSgtHysA=;
+        s=default; t=1588877564;
+        bh=P1BZoVC5niH/b6wY6lBALWnDN27yPCuxedD3vhCY58U=;
         h=Date:From:To:Cc:Subject:From;
-        b=zB00JXfY5N8MCu9LU/I8NuwjUD5M9q/ClnQmv+hVQlVvpsXrkVTu3m56rngM3C+n9
-         Go00HNUmFc1Vkx/dki3yRfaduBm2NW11l74aOfqScy+rrRBylrS/cWl15Ebsj1aPR6
-         OrghsOeoKArBE2ljeAIM/cWfp/6EDDLxNGtUNN/I=
-Date:   Thu, 7 May 2020 13:57:04 -0500
+        b=zuE9YU9EaKifydGTMEqu4frQJYuioxYCSBuELZsfsf2e6pW6qHF9/oyv2U+rROTqD
+         ZoM2JbXzngfjL3Mo2gOfa6Vsis4py0EZupTciFBJbfZQXSDlqdZJoQUG5914AUKeB5
+         lhwanVv7l7H5J4JI0atzEAi9nA3AeDAnI2Fy3CXg=
+Date:   Thu, 7 May 2020 13:57:10 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] encrypted-keys: Replace zero-length array with flexible-array
-Message-ID: <20200507185704.GA14874@embeddedor>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KEYS: Replace zero-length array with flexible-array
+Message-ID: <20200507185710.GA14910@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -76,20 +76,20 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- include/keys/encrypted-type.h |    2 +-
+ include/keys/user-type.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/keys/encrypted-type.h b/include/keys/encrypted-type.h
-index 9e9ccb20d586..38afb341c3f2 100644
---- a/include/keys/encrypted-type.h
-+++ b/include/keys/encrypted-type.h
-@@ -27,7 +27,7 @@ struct encrypted_key_payload {
- 	unsigned short payload_datalen;		/* payload data length */
- 	unsigned short encrypted_key_format;	/* encrypted key format */
- 	u8 *decrypted_data;	/* decrypted data */
--	u8 payload_data[0];	/* payload data + datablob + hmac */
-+	u8 payload_data[];	/* payload data + datablob + hmac */
+diff --git a/include/keys/user-type.h b/include/keys/user-type.h
+index be61fcddc02a..386c31432789 100644
+--- a/include/keys/user-type.h
++++ b/include/keys/user-type.h
+@@ -27,7 +27,7 @@
+ struct user_key_payload {
+ 	struct rcu_head	rcu;		/* RCU destructor */
+ 	unsigned short	datalen;	/* length of this data */
+-	char		data[0] __aligned(__alignof__(u64)); /* actual data */
++	char		data[] __aligned(__alignof__(u64)); /* actual data */
  };
  
- extern struct key_type key_type_encrypted;
+ extern struct key_type key_type_user;
 
