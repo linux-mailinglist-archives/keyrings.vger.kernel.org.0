@@ -2,146 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E98831CF572
-	for <lists+keyrings@lfdr.de>; Tue, 12 May 2020 15:17:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70EC1D00FB
+	for <lists+keyrings@lfdr.de>; Tue, 12 May 2020 23:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729586AbgELNRQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 12 May 2020 09:17:16 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:41856 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728283AbgELNRQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 12 May 2020 09:17:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589289434;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AfyFJp14Em5eun2MnpR0ECXxjVn+ZY1Q40CAO8H54Xk=;
-        b=VGkzy6jY8pEgBY0Y+LKs5hrMGVOh6EhRloJphCTNZ8QSamOmgbNwCCLL/AwK3H79QGRafP
-        4hMXQM0DrchQYDjoQ55kYuSxdMEvX6cEZmApgmGX0HpiRLRsPKIg3ACDnOdIgHLynBETvW
-        iQgQvmriokh2+7elAfvoePmPewUv+Xs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-102-JyLrBjopMn2UUB8-ic6Ftw-1; Tue, 12 May 2020 09:17:10 -0400
-X-MC-Unique: JyLrBjopMn2UUB8-ic6Ftw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A6A119200C2;
-        Tue, 12 May 2020 13:17:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-59.rdu2.redhat.com [10.10.112.59])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 868FB60BF1;
-        Tue, 12 May 2020 13:17:06 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200511215101.302530-1-Jason@zx2c4.com>
-References: <20200511215101.302530-1-Jason@zx2c4.com> <CAHmME9oXiTmVuOYmG=K3ijWK+zP2yB9a2CFjbLx_5fkDiH30Tg@mail.gmail.com>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        id S1729619AbgELViv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 May 2020 17:38:51 -0400
+Received: from mail.zx2c4.com ([192.95.5.64]:56637 "EHLO mail.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726268AbgELViv (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 12 May 2020 17:38:51 -0400
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTP id c74cb3a6;
+        Tue, 12 May 2020 21:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :references:in-reply-to:from:date:message-id:subject:to:cc
+        :content-type; s=mail; bh=QHZdxdAznvbCsAtmKjiWvIM9Rkw=; b=MvD3Lb
+        oVsAoirYLJSrJWid+5RlALnx2IRewi5D0XBFtensY47q3F11/1CtwFB5Eegu/rI1
+        Pid6Wx2EvUYjZPfmZGjw9K8P6wYoy6QkCFrPmSyueGYQT0ehJ+ObAbPUH/MO80YR
+        lgG2lkNpdMeTNMDZJrtZbEKLjK/ohUsVlltq0XSXirzYqVDik4HdhkLxhPByleUi
+        nIVklcGJio1YXP5DG4ogblcqJZJ0R7MUkdxyQhzMhK8vZhyd40aaYk8jf5X45I5k
+        3BNLQAauYx/2QdATKBVB+tr2WW5c6Ps2riW9WvCxzbdw/kouf6sYczcIznGhlmMf
+        v+IXNN0GTccJmRDQ==
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f53c83df (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Tue, 12 May 2020 21:25:19 +0000 (UTC)
+Received: by mail-il1-f181.google.com with SMTP id i16so13931834ils.12;
+        Tue, 12 May 2020 14:38:49 -0700 (PDT)
+X-Gm-Message-State: AGi0PuY6o6lu3NBCAfLDr9gJXtIkUWEA4C1W+rxpmoLqJ0VIYWS/jhbf
+        3fwi8NXmonZdVSTK685BGcsurJDyP9L5vLDtA/0=
+X-Google-Smtp-Source: APiQypJzMvF0pm2HCVQ5PwdpsSCqC6FjWIGTFESdbJ/delouG0Mi5pZJuKDQJHB5ZYDpPpJ7fdbGT//MYh2mBmx/jhU=
+X-Received: by 2002:a92:8752:: with SMTP id d18mr6109118ilm.224.1589319528551;
+ Tue, 12 May 2020 14:38:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAHmME9oXiTmVuOYmG=K3ijWK+zP2yB9a2CFjbLx_5fkDiH30Tg@mail.gmail.com>
+ <20200511215101.302530-1-Jason@zx2c4.com> <2620780.1589289425@warthog.procyon.org.uk>
+In-Reply-To: <2620780.1589289425@warthog.procyon.org.uk>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Tue, 12 May 2020 15:38:37 -0600
+X-Gmail-Original-Message-ID: <CAHmME9q-TxHo5o63rxHzKwV_kWV9u+MoxBQM5Yz3hODGCj7RhQ@mail.gmail.com>
+Message-ID: <CAHmME9q-TxHo5o63rxHzKwV_kWV9u+MoxBQM5Yz3hODGCj7RhQ@mail.gmail.com>
+Subject: Re: [PATCH v3] security/keys: rewrite big_key crypto to use library interface
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Greg KH <gregkh@linuxfoundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         kernel-hardening@lists.openwall.com,
         Eric Biggers <ebiggers@google.com>
-Subject: Re: [PATCH v3] security/keys: rewrite big_key crypto to use library interface
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2620779.1589289425.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 12 May 2020 14:17:05 +0100
-Message-ID: <2620780.1589289425@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+Hi David,
 
-> -	/* no ->update(); don't add it without changing big_key_crypt() nonce =
-*/
-> +	/* no ->update(); don't add it without changing chacha20poly1305's non=
-ce
+So long as that ->update function:
+1. Deletes the old on-disk data.
+2. Deletes the old key from the inode.
+3. Generates a new key using get_random_bytes.
+4. Stores that new key in the inode.
+5. Encrypts the updated data afresh with the new key.
+6. Puts the updated data onto disk,
 
-Note that ->update() doesn't have to modify the contents of the key, but c=
-an
-just rather replace them entirely.  See attached.  The actual work is done=
- in
-big_key_preparse(); all big_key_update() has to do is apply it and dispose=
- of
-the old payload.
+then this is fine with me, and feel free to have my Acked-by if you
+want. But if it doesn't do that -- i.e. if it tries to reuse the old
+key or similar -- then this isn't fine. But it sounds like from what
+you've described that things are actually fine, in which case, I guess
+it makes sense to apply your patch ontop of mine and commit these.
 
-David
----
-commit 724e76c185d517f35ead4f72f9958850c9218f4d
-Author: David Howells <dhowells@redhat.com>
-Date:   Tue May 12 14:03:53 2020 +0100
-
-    keys: Implement update for the big_key type
-    =
-
-    Implement the ->update op for the big_key type.
-    =
-
-    Signed-off-by: David Howells <dhowells@redhat.com>
-
-diff --git a/include/keys/big_key-type.h b/include/keys/big_key-type.h
-index 3fee04f81439..988d90d77f53 100644
---- a/include/keys/big_key-type.h
-+++ b/include/keys/big_key-type.h
-@@ -18,5 +18,6 @@ extern void big_key_revoke(struct key *key);
- extern void big_key_destroy(struct key *key);
- extern void big_key_describe(const struct key *big_key, struct seq_file *=
-m);
- extern long big_key_read(const struct key *key, char *buffer, size_t bufl=
-en);
-+extern int big_key_update(struct key *key, struct key_preparsed_payload *=
-prep);
- =
-
- #endif /* _KEYS_BIG_KEY_TYPE_H */
-diff --git a/security/keys/big_key.c b/security/keys/big_key.c
-index d43f3daab2b8..dd708e8f13c0 100644
---- a/security/keys/big_key.c
-+++ b/security/keys/big_key.c
-@@ -47,7 +47,7 @@ struct key_type key_type_big_key =3D {
- 	.destroy		=3D big_key_destroy,
- 	.describe		=3D big_key_describe,
- 	.read			=3D big_key_read,
--	/* no ->update(); don't add it without changing chacha20poly1305's nonce=
- */
-+	.update			=3D big_key_update,
- };
- =
-
- /*
-@@ -191,6 +191,23 @@ void big_key_destroy(struct key *key)
- 	key->payload.data[big_key_data] =3D NULL;
- }
- =
-
-+/*
-+ * Update a big key
-+ */
-+int big_key_update(struct key *key, struct key_preparsed_payload *prep)
-+{
-+	int ret;
-+
-+	ret =3D key_payload_reserve(key, prep->datalen);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (key_is_positive(key))
-+		big_key_destroy(key);
-+
-+	return generic_key_instantiate(key, prep);
-+}
-+
- /*
-  * describe the big_key key
-  */
-
+Jason
