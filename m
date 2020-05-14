@@ -2,281 +2,137 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15AB31D378D
-	for <lists+keyrings@lfdr.de>; Thu, 14 May 2020 19:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A852B1D41C5
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 01:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726060AbgENRGf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 May 2020 13:06:35 -0400
-Received: from sonic309-27.consmr.mail.ne1.yahoo.com ([66.163.184.153]:33571
-        "EHLO sonic309-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726614AbgENRGe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 May 2020 13:06:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1589475993; bh=ywS9qtv92ULtIUX+IJVNzAMPyJHQMKJsF/Xjtg52W9o=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=DQcrFaKSIhsb21kjfO3auFpJWAvJmspFHvcXa6G+6brIJs0NKyfRa6J1NXix+z7LnVxhIVyzAMe4my677gX68anBQffl5aVuaPJCNKnN/oICaPnr9mLKesZmfITxn7OZIT8pwI15ox/K0CmLAS3T4fWE3fg/N12SPBtE5KLVi8R2Hstmb/7HCLyspM3qU2mAinlwY6OYqfVs5ljlXkKV/dljutbEITxFZu3iKs9ERYon3Cg5by8HLhJi7VUVtgBcGERMl7+qnkKxMhEDQlQSPFheLa35UB3Mp8/4nprx1M1O0FI5U3jzyFVn8l9fmuVVEPpki51TTG6NVvJSNiUVHQ==
-X-YMail-OSG: EMvjKngVM1n5QKhJt54phHMWN.X6AEm2VYm8fOY3XFbOwZmO7BDs_p0LIMwkUKB
- d9HQA4pLMkH0AkzHpUn9FGM1z4qtnKnhUURaQ4unK3040foGl_VxNs6i.EUsudAWcgY0X1OAyeik
- SLiZaFhsVsbeX2ixhMa7rMNreBszGssn21PdGyjv4JmOhgkLDkiV0Le0jy.0YYgyrM8gITtluqic
- yiL19aFQ9UNL2T_vAbNo4knYtvGIEXtI9I4yyWXrLvEgOtMLU_mdk5OgvynuElAS8OPnGauUTUzm
- E6bKy.Gcy08SboifFGs6s4zA6DMNz_I9wuJX1K2W1NSkGI3GIepdGkk0AwhHsoclhssIb1RziOyp
- SGcJFG.IMiwV58f.WvgzHVFavd47xBf7PI07V5S.5d6M08d96d21o_cra8NLrpNiZI7u5wIc3rbF
- 30XdAhQ9.SM.XdhAQA7NlPnf4bqg4PLinEXcVW29N8KM1qOkhsFbMi.xtQyhW5Ou3Ba0du.QNGBf
- 0a4PRU41GKiE40EAYLYfPihS4AaEZ7NaOU_gEOlC3m_h3msjDKY0jphwdThFMU0.qPCZgsLswpPJ
- GCh3Yey8i6WQp3blE3eRuPnTR4ehUQxr8itjMPwessI0rRXv8_JAI.Mow2zNqTCUGTrChb73ycCj
- LLDdZyM1x0vkrKyLwVR6_jfCXR9s4pa9M6bbzLKkrZ7naYU4ABpWbNbahQnOX7LYMqRsGLvLWyW1
- g9fw1Br8X51iHOevAmKCmkRhmFy1qYtfc8CwBxNW_Uqu5Rs6ZlgzPO1cX_6668nEAQ7j3ahZpaZ4
- FzT.C7AU.GcHatEnP3VLxze5xfaEixMK_tzleASEJukEdL1QqpByFVEnqj5S7OjvO5rfhCU56jSI
- bg2HcTbf9Hf8NUyM827Vn8whgu5__6IO9QFX2nzrH0ozWHDcnxv_MOwyCLYu88tzWwyPgYEPZmZo
- 4iFwaPQjn2GL2YrYSLW.AbhkDCf4SD.2MZsjgjjGvIlrsn_ilJY_8NrO9m7bTfmrUc.3cIsJICbM
- hrwgtKY8KuX0Wd2bcAkGaRCZPWmx8N5_EP9HODzZ_UZ9HTqsszhSCnf0f5SiZKmJFL5umBxwZ5i5
- s4g3_pee7a2zJt6xt2Df0Mtd5JD8k6jIJ02T2qTJ6tvV8WbIdOZMxAtVnDYRCmKRslDstzoxNneh
- 3.p64Ihom2wvZ24lO11WcHsCm85QBGIXDF4q50qeKkxh3xK6bo7nvSv_DWKbRpfqkfTZjXHsnnUn
- _hFiJRt3JS.aM3JOBfRMVBN_f75oxuoBKAhuG.AO4OYHEa5i4H65v5k8R3aCMa4dK7KBjJXPefDZ
- f9JaWPJxci2s8iPIBn_VOv11rEHG6unyzaQMsxkS6q2RDU5CQA60I_LiF4fNVaNOQGNVP86QtCbb
- c9nVVOqoQYhwbFBcoq2BFtOpZy8E-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Thu, 14 May 2020 17:06:33 +0000
-Received: by smtp412.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID fc92533db0efb0f134e119ba56e9dc08;
-          Thu, 14 May 2020 17:06:29 +0000 (UTC)
-Subject: Re: [PATCH] keys: Move permissions checking decisions into the
- checking code
-To:     David Howells <dhowells@redhat.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Paul Moore <paul@paul-moore.com>, keyrings@vger.kernel.org,
-        SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>
-References: <CAEjxPJ4=ZN_jKP2nX5mrMA3OxC8XLsYEmCPCD-78H4XQw=_hCA@mail.gmail.com>
- <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
- <158932282880.2885325.2688622278854566047.stgit@warthog.procyon.org.uk>
- <3999877.1589475539@warthog.procyon.org.uk>
-From:   Casey Schaufler <casey@schaufler-ca.com>
-Autocrypt: addr=casey@schaufler-ca.com; keydata=
- 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
- abzjfg==
-Message-ID: <bf760071-0b34-41e7-1bc0-7c4d85d9bc8a@schaufler-ca.com>
-Date:   Thu, 14 May 2020 10:06:28 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1728441AbgENXnZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 May 2020 19:43:25 -0400
+Received: from mga01.intel.com ([192.55.52.88]:36669 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728415AbgENXnZ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 14 May 2020 19:43:25 -0400
+IronPort-SDR: dE/OXNRPB65SD0Pv1u1815GybNs5OFpSgSeW4coafxYAUNLpAO/BXsUBUkoc/bVJYED4clYbb2
+ onOqAxQhm6wQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 16:43:24 -0700
+IronPort-SDR: 0PcKf5kROprlU7FvR2CjmctlO7VJLKQn4o6TWazGRw3DBXAE4dQdy6dZGq6zvM7ICAe8BiPuVr
+ 5UquiIXhVxpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
+   d="scan'208";a="410262240"
+Received: from ashadrin-mobl1.ccr.corp.intel.com ([10.249.38.112])
+  by orsmga004.jf.intel.com with ESMTP; 14 May 2020 16:43:17 -0700
+Message-ID: <b59e8ef4070f1aba31b4351910d6e819802eb551.camel@linux.intel.com>
+Subject: Re: [PATCH v4 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>, dhowells@redhat.com,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Date:   Fri, 15 May 2020 02:43:04 +0300
+In-Reply-To: <CAFA6WYPr1iL-uJgSRu_61uv=2DhuEdDVdQLDuyPEOOK2jEgvyg@mail.gmail.com>
+References: <1588758017-30426-1-git-send-email-sumit.garg@linaro.org>
+         <1588758017-30426-3-git-send-email-sumit.garg@linaro.org>
+         <ef2093f96eae7e9e6785f2c0ad00604d8adfd3be.camel@linux.intel.com>
+         <CAFA6WYPr1iL-uJgSRu_61uv=2DhuEdDVdQLDuyPEOOK2jEgvyg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-In-Reply-To: <3999877.1589475539@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Mailer: WebService/1.1.15941 hermes_yahoo Apache-HttpAsyncClient/4.1.4 (Java/11.0.6)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 5/14/2020 9:58 AM, David Howells wrote:
-> How about this then?
->
-> David
-> ---
-> commit fa37b6c7e2f86d16ede1e0e3cb73857152d51825
-> Author: David Howells <dhowells@redhat.com>
-> Date:   Thu May 14 17:48:55 2020 +0100
->
->     keys: Move permissions checking decisions into the checking code
->     
->     Overhaul the permissions checking, moving the decisions of which permits to
->     request for what operation and what overrides to allow into the permissions
->     checking functions in keyrings, SELinux and Smack.
->     
->     To this end, the KEY_NEED_* constants are turned into an enum and expanded
->     in number to cover operation types individually.
->     
->     Note that some more tweaking is probably needed to separate kernel uses,
->     e.g. AFS using rxrpc keys, from direct userspace users.
->     
->     Some overrides are available and this needs to be handled specially:
->     
->      (1) KEY_FLAG_KEEP in key->flags - The key may not be deleted and/or things
->          may not be removed from the keyring.
->     
->      (2) KEY_FLAG_ROOT_CAN_CLEAR in key->flags - The keyring can be cleared by
->          CAP_SYS_ADMIN.
->     
->      (3) KEY_FLAG_ROOT_CAN_INVAL in key->flags - The key can be invalidated by
->          CAP_SYS_ADMIN.
->     
->      (4) An appropriate auth token being set in cred->request_key_auth that
->          gives a process transient permission to view and instantiate a key.
->          This is used by the kernel to delegate instantiation to userspace.
->     
->     Note that this requires some tweaks to the testsuite as some of the error
->     codes change.
->     
->     Signed-off-by: David Howells <dhowells@redhat.com>
->     Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
->     cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->     cc: Paul Moore <paul@paul-moore.com>
->     cc: Stephen Smalley <stephen.smalley.work@gmail.com>
->     cc: Casey Schaufler <casey@schaufler-ca.com>
->     cc: keyrings@vger.kernel.org
->     cc: selinux@vger.kernel.org
->
-<snip> ...
+On Thu, 2020-05-14 at 12:57 +0530, Sumit Garg wrote:
+> On Thu, 14 May 2020 at 05:58, Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
+> > On Wed, 2020-05-06 at 15:10 +0530, Sumit Garg wrote:
+> > > Add support for TEE based trusted keys where TEE provides the functionality
+> > > to seal and unseal trusted keys using hardware unique key.
+> > > 
+> > > Refer to Documentation/tee.txt for detailed information about TEE.
+> > > 
+> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > 
+> > The implementation looks solid but how or who could possibly test this?
+> > 
+> > I do posses (personally, not from employer) bunch of ARM boards but my
+> > TZ knowledge is somewhat limited (e.g. how can I get something running
+> > in TZ).
+> > 
+> 
+> Although, it should be fairly easy to test this implementation on an
+> ARM board which supports OP-TEE. But since you are new to ARM
+> TrustZone world, I would suggest you get used to OP-TEE on Qemu based
+> setup. You could find pretty good documentation for this here [1] but
+> for simplicity let me document steps here to test this trusted keys
+> feature from scratch:
+> 
+> # Install prerequisites as mentioned here [2]
+> 
+> # Get the source code
+> $ mkdir -p <optee-project>
+> $ cd <optee-project>
+> $ repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml
+> $ repo sync -j4 --no-clone-bundle
+> 
+> # Get the toolchain
+> $ cd <optee-project>/build
+> $ make -j2 toolchains
+> 
+> # As trusted keys work is based on latest tpmdd/master, so we can
+> change Linux base as follows:
+> $ cd <optee-project>/linux
+> $ git remote add tpmdd git://git.infradead.org/users/jjs/linux-tpmdd.git
+> $ git pull tpmdd
+> $ git checkout -b tpmdd-master remotes/tpmdd/master
+> # Cherry-pick and apply TEE features patch-set from this PR[3]
+> # Apply this Linux trusted keys patch-set.
+> 
+> # Now move on to build the source code
+> $ cd <optee-project>/build
+> # Apply attached "keyctl_change" patch
+> $ patch -p1 < keyctl_change
+> $ make -j`nproc`
+> CFG_IN_TREE_EARLY_TAS=trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c
+> 
+> # Run QEMU setup
+> $ make run-only
+> # Type "c" on QEMU console to continue boot
+> 
+> # Now there should be two virtual consoles up, one for OP-TEE and
+> other for Linux
+> # On Linux console, you can play with "keyctl" utility to have trusted
+> and encrypted keys based on TEE.
+> 
+> Do let me know in case you are stuck while following the above steps.
+> 
+> [1] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
+> [2] https://optee.readthedocs.io/en/latest/building/prerequisites.html#prerequisites
+> [3] https://lkml.org/lkml/2020/5/4/1062
+> 
+> -Sumit
 
-> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-> index 8c61d175e195..ac9c93c48097 100644
-> --- a/security/smack/smack_lsm.c
-> +++ b/security/smack/smack_lsm.c
-> @@ -4230,13 +4230,15 @@ static void smack_key_free(struct key *key)
->   * smack_key_permission - Smack access on a key
->   * @key_ref: gets to the object
->   * @cred: the credentials to use
-> - * @perm: requested key permissions
-> + * @need_perm: requested key permission
->   *
->   * Return 0 if the task has read and write to the object,
->   * an error code otherwise
->   */
->  static int smack_key_permission(key_ref_t key_ref,
-> -				const struct cred *cred, unsigned perm)
-> +				const struct cred *cred,
-> +				enum key_need_perm need_perm,
-> +				unsigned int flags)
->  {
->  	struct key *keyp;
->  	struct smk_audit_info ad;
-> @@ -4244,12 +4246,6 @@ static int smack_key_permission(key_ref_t key_ref,
->  	int request = 0;
->  	int rc;
->  
-> -	/*
-> -	 * Validate requested permissions
-> -	 */
-> -	if (perm & ~KEY_NEED_ALL)
-> -		return -EINVAL;
-> -
->  	keyp = key_ref_to_ptr(key_ref);
->  	if (keyp == NULL)
->  		return -EINVAL;
-> @@ -4265,6 +4261,71 @@ static int smack_key_permission(key_ref_t key_ref,
->  	if (tkp == NULL)
->  		return -EACCES;
->  
-> +	/*
-> +	 * Validate requested permissions
-> +	 */
-> +	switch (need_perm) {
-> +	case KEY_NEED_ASSUME_AUTHORITY:
-> +		return 0;
-> +
-> +	case KEY_NEED_DESCRIBE:
-> +	case KEY_NEED_GET_SECURITY:
-> +		request |= MAY_READ;
-> +		auth_can_override = true;
-> +		break;
-> +
-> +	case KEY_NEED_CHOWN:
-> +	case KEY_NEED_INVALIDATE:
-> +	case KEY_NEED_JOIN:
-> +	case KEY_NEED_LINK:
-> +	case KEY_NEED_KEYRING_ADD:
-> +	case KEY_NEED_KEYRING_CLEAR:
-> +	case KEY_NEED_KEYRING_DELETE:
-> +	case KEY_NEED_REVOKE:
-> +	case KEY_NEED_SETPERM:
-> +	case KEY_NEED_SET_RESTRICTION:
-> +	case KEY_NEED_UPDATE:
-> +		request |= MAY_WRITE;
-> +		break;
-> +
-> +	case KEY_NEED_INSTANTIATE:
-> +		auth_can_override = true;
-> +		break;
-> +
-> +	case KEY_NEED_READ:
-> +	case KEY_NEED_SEARCH:
-> +	case KEY_NEED_USE:
-> +	case KEY_NEED_WATCH:
-> +		request |= MAY_READ;
-> +		break;
-> +
-> +	case KEY_NEED_SET_TIMEOUT:
-> +		request |= MAY_WRITE;
-> +		auth_can_override = true;
-> +		break;
-> +
-> +	case KEY_NEED_UNLINK:
-> +		return 0; /* Mustn't prevent this; KEY_FLAG_KEEP is already
-> +			   * dealt with. */
-> +
-> +	default:
-> +		WARN_ON(1);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Just allow the operation if the process has an authorisation token.
-> +	 * The presence of the token means that the kernel delegated
-> +	 * instantiation of a key to the process - which is problematic if we
-> +	 * then say that the process isn't allowed to get the description of
-> +	 * the key or actually instantiate it.
-> +	 */
-> +	if (auth_can_override && cred->request_key_auth) {
-> +		struct request_key_auth *rka =
-> +			cred->request_key_auth->payload.data[0];
-> +		if (rka->target_key == key)
-> +			*_perm = 0;
-> +	}
-> +
->  	if (smack_privileged_cred(CAP_MAC_OVERRIDE, cred))
->  		return 0;
->  
-> @@ -4273,10 +4334,6 @@ static int smack_key_permission(key_ref_t key_ref,
->  	ad.a.u.key_struct.key = keyp->serial;
->  	ad.a.u.key_struct.key_desc = keyp->description;
->  #endif
-> -	if (perm & (KEY_NEED_READ | KEY_NEED_SEARCH | KEY_NEED_VIEW))
-> -		request |= MAY_READ;
-> -	if (perm & (KEY_NEED_WRITE | KEY_NEED_LINK | KEY_NEED_SETATTR))
-> -		request |= MAY_WRITE;
->  	rc = smk_access(tkp, keyp->security, request, &ad);
->  	rc = smk_bu_note("key access", tkp, keyp->security, request, rc);
->  	return rc;
+Thanks I'll try this out as soon as the v5.8 release hassle is over!
 
-Better. Thank you.
+/Jarkko
 
