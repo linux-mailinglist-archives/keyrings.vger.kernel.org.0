@@ -2,121 +2,148 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3D9E1D59B3
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 21:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF6C1D59D3
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 21:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbgEOTKa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 May 2020 15:10:30 -0400
-Received: from sonic309-27.consmr.mail.ne1.yahoo.com ([66.163.184.153]:38267
-        "EHLO sonic309-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726191AbgEOTK3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 15:10:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1589569828; bh=WPsHLe9g5yHs563Uuj+CpTBWcNmODYTyuyUfmE44vqo=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=VqdlBCKXlvcb6xUcWJSFqf3FFWpN4NUWuwnJl4pWDsaSAKlnMdpzPM+C/2DtZuqByMpjqBzkuUg1zwdaKmLffOiretaPppeB8lxsaCjY44tkIkDrmKLVbGzFLfZl8e+b3euLFz464L6jsiAN9fUhk/Vn/xOWE5GIyS9ppHnFIpjNnmIhXyEpUY3Yq4+8aiY2YqjyRX6LnWEZrjWIXvBm53kXyRfNSGfOiZj+WIL9mmw8wUTmSQe8fbuY7tAtZ8ZjVTe3WMG3Tc/BqqwSuOTjnYPAfAnEVsWnGt1B1G7bJWe/KMV0NsxIPcxHgB8TXyM2DVxGPbeUM0jSVKjz6NMjvw==
-X-YMail-OSG: Ywx85RgVM1lIzTeEuoPABPfKk3YhXfCGhBMkSBuN3H_t9anvp2uuaaDjMyJ2Vxn
- aYJSYaqOJyJv6j2icPGVcH8z.6.d6NhOztTFl4f5.2WSZgUufHXhlVDpyBRfr2hPFqLlpBNSgCaw
- ZJNARGa_jtcI3BGxI.nyPV5yMUuUFijwbh0RT_tDi7c4sQk3qAs4weSkNDCbNCcF9vemjHdm1i_g
- L68uKp1mzurjVw1jviH22m_JYgT0HHGQeV0dhRoT6EZMRvSErERGm.5XBMYylSUzBC1f_hPL7sOy
- 8MQVsdazxZkfiAYDk2ju7EPK2XMZ7N3NWUn0t4vLwdQ7V0r7pG8g.tzU6kwbfPKHLwULA2MH_5p9
- OAer8aC91HU5OSwCK1yZ0eoggu.fo6s6U9ZFjOjuTJEpIDztn..qjVFUVSG4J8hPtHU64L_0uS8m
- piQ0Ady6caKsDPZV2xgf64alIeUuBVV8cnUJXpeeZqXRlSJfzHlW.yGLKLbtrMRtGcqpBTlWOEqG
- 8eXM9dktUMWfJdhUHrBGIsJexukxiQT4NaK9XNVIPWTBs1jzQ0G2Ko2xGO.2inKwn6JR7L4ITaNy
- GN8R5yGinr339vwZwq2yJe6rTifm9sJqqa1VVIFauuBtSibq0a4.1j6dDS44Tr8LrDNWN2uJZltF
- SMQf7B7MLqPQDnxOt_4q9cZI8OJ1Mzxb7qM2XDHVy5v74kCE.qkE2rzYCFoQVCWGqlYESySeaxSq
- 15xHZpnd2VrwG88VwMclS5n7HWSW9IySrZJLr01zqbr1e2AXv9OLzIcHZtERsJIMs_ydISba.iMl
- MqVY.YN9_fcqSX5aJOTVuL3FKiol2wrMYdVYM6ogk_8DIFmZjw.X7Dc6t9nMAnO_y2AX0SBx1UKl
- .W6X23MSFhjPdJedmqU3NDWZotsV6GcepeCj10ZVhMx5yaekigv5Zwv4VMkQFooS5CEZdTjnlv6j
- dLpjBidhPSaHj8oT6ii8fKc_jFj0n2lx.yb0KqnXbsUWUb4njII8fb1eC1mlJpBv1ciTQgJDAvDR
- mncYuGaZqZQsfvvUt6ZghM.LU9KfTBhXPmg5VeHXELW44dwvJcMRg76IHtRWd3WTgrth1nWJJHxK
- ZdU8GWwUfSPuqnZTjfBtksnCWpeuMdyxHmloCPDGtTUKm9Y0fFJXgg.2dpQq4EEpCp_4Rs.252eB
- KusnFB0tqgFFjiXupmkaLPR0McDswWIK_6JG2MmZQ_Mm4yD0K3TSRh1cxKZLZCAWc4xFjorhuW6k
- EMHtZ7wNvYJ1LiHBo1VGWp.R1KEN0BZRhrCFdSIMZS.b9is3Bd52WMOHx2k54qf9P8P.QhmXcLGj
- hutvrNMsA9AEPrAQOuWAmk2MamZWCQPdSNPQ4HdiINQaQ80pBLYAOTkNzV7XVnoK0VwpuEciWHXy
- IBN3IZZT74vs6hFbkk3XMr_psxr2h
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Fri, 15 May 2020 19:10:28 +0000
-Received: by smtp421.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 066eda7e6dd4a51cab867d14eaeb9270;
-          Fri, 15 May 2020 19:10:24 +0000 (UTC)
-Subject: Re: [PATCH] keys: Move permissions checking decisions into the
- checking code
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        David Howells <dhowells@redhat.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Paul Moore <paul@paul-moore.com>, keyrings@vger.kernel.org,
-        SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>
-References: <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
- <158932282880.2885325.2688622278854566047.stgit@warthog.procyon.org.uk>
- <CAEjxPJ4=ZN_jKP2nX5mrMA3OxC8XLsYEmCPCD-78H4XQw=_hCA@mail.gmail.com>
- <3999877.1589475539@warthog.procyon.org.uk>
- <CAEjxPJ5wW2qHYDsqKr5rjnRJ++4f2LXobCQkKZvWCSb_j0WN6w@mail.gmail.com>
- <196730.1589561109@warthog.procyon.org.uk>
- <CAEjxPJ6JGZxF_G63Y7M-CQpmt5Sqp2uFF4oEKS6NpNLZxXhXcA@mail.gmail.com>
-From:   Casey Schaufler <casey@schaufler-ca.com>
-Autocrypt: addr=casey@schaufler-ca.com; keydata=
- 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
- abzjfg==
-Message-ID: <1ca402a1-5665-44b8-ef94-9473ebd6a32a@schaufler-ca.com>
-Date:   Fri, 15 May 2020 12:10:24 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726144AbgEOTSJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 May 2020 15:18:09 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:33800 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726223AbgEOTSJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 15:18:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589570288;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:in-reply-to:in-reply-to:  references:references;
+        bh=O8sUao5NVjed89ybkYXZ8qWu9HTz3CZc9ckQ6lQ812A=;
+        b=Y5p1+ieHPCtgOpaV0Bp5uK4tzmfgzZTEhGOgznZV8Kahj5Ku0cFnZGUimfOkufeq22l3q+
+        X+YDlGDpZsASgGEYjTRRF5bLLX+fMigEXy5jqfsDKBxWZU9nymNG9vUQnd3FmEXUMgmS8/
+        6nXW8SI9nZZ+X+4TJjZnfWWmnHVXGNs=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-201-ApenQcroNEiRjjWPPr3O0g-1; Fri, 15 May 2020 15:18:01 -0400
+X-MC-Unique: ApenQcroNEiRjjWPPr3O0g-1
+Received: by mail-qv1-f71.google.com with SMTP id t11so2397092qvv.11
+        for <keyrings@vger.kernel.org>; Fri, 15 May 2020 12:18:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=O8sUao5NVjed89ybkYXZ8qWu9HTz3CZc9ckQ6lQ812A=;
+        b=MYBLk1aID44ELD/3Cz0ya5typs4It4nxhZuqW/N5NBIXViYEC8C3oJAqpTjOmNvwtM
+         CXo5LZOTJcy39Oj00H8pFq1RKQw2nmrqym1y/sNmYHP6cODhYqkeM+F103BaOgJgcldF
+         faVif5LRBc+lTWQrtOHrtX7hEGBHg6YthC2UzBdhHOTkgL424QUnl2tjunDjPbwhqLGC
+         /gJgzOdUoLH0Yr6DfK4vaVcpFKSYDdstc3584U353a1GeaJXezHyBJLzHIgy5GCyj/t0
+         xWtAcQCKiG/GjG4nmBqfNi3y7Ty17aF2NK/DNYvp2MYi4ZAZVwK9bfXSDJOSHAeWTN+o
+         wMSQ==
+X-Gm-Message-State: AOAM531BkLzg/Hln8RU+Msr7GBCpXVCOyOdMgzqCBCqkniexzG53BPvw
+        4lSU4U5dGHYd/bhrbd/UN1QknrwBJRfvfzKmfkEDd1Q6CYisX4X/yQckIk+0XcNuBgStl2lrb2L
+        kdKqVyn+/CKRDlgLALTQ=
+X-Received: by 2002:ac8:d0d:: with SMTP id q13mr1058212qti.254.1589570280988;
+        Fri, 15 May 2020 12:18:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyh3U3YQg9CZAgKvwV/GIM87b3dJF1BFxDYfWRb2T+Bpd5FUdv63NUp2MdNnsCBaTUeqol79Q==
+X-Received: by 2002:ac8:d0d:: with SMTP id q13mr1058176qti.254.1589570280660;
+        Fri, 15 May 2020 12:18:00 -0700 (PDT)
+Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
+        by smtp.gmail.com with ESMTPSA id l186sm2228024qkf.89.2020.05.15.12.17.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2020 12:17:59 -0700 (PDT)
+Date:   Fri, 15 May 2020 12:17:58 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
+Message-ID: <20200515191758.ieojyk5xhsx2hzzd@cantor>
+Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
+References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
+ <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
+ <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
+ <1589514263.5759.25.camel@HansenPartnership.com>
+ <20200515084702.GA3404@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <CAEjxPJ6JGZxF_G63Y7M-CQpmt5Sqp2uFF4oEKS6NpNLZxXhXcA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Mailer: WebService/1.1.15941 hermes_yahoo Apache-HttpAsyncClient/4.1.4 (Java/11.0.6)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20200515084702.GA3404@linux.intel.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 5/15/2020 11:55 AM, Stephen Smalley wrote:
-> On Fri, May 15, 2020 at 12:45 PM David Howells <dhowells@redhat.com> wrote:
->> I can go back to the enum patch for the moment if you and Casey can put up
->> with that for the moment?
-> Yes, let's do that.
+On Fri May 15 20, Jarkko Sakkinen wrote:
+>On Thu, May 14, 2020 at 08:44:23PM -0700, James Bottomley wrote:
+>> On Fri, 2020-05-15 at 05:22 +0300, Jarkko Sakkinen wrote:
+>> > On Thu, 2020-05-14 at 17:31 +0300, Jarkko Sakkinen wrote:
+>> > > I'm compiling now kernel with all series included.
+>> > >
+>> > > Kind of checking if I could just take the whole series. Let see.
+>> > >
+>> > > In all cases I want the style errors in 3/8 to be fixes with a
+>> > > helper
+>> > > but maybe better to hold before sending anything. Possibly that is
+>> > > all
+>> > > needed I'll just carve that patch myself.
+>> > >
+>> > > Please don't do anything for the moment.
+>> >
+>> > This is what I tried first (with the full series applied):
+>> >
+>> > #!/bin/sh
+>> >
+>> > die()
+>> > {
+>> > 	keyctl clear @u
+>> > 	./tpm2-flush --all-transient
+>> > 	exit $1
+>> > }
+>> >
+>> > KEYHANDLE=$(./tpm2-root-key || die 1)
+>> > KEYID=$(keyctl add trusted kmk "new 32 keyhandle=$KEYHANDLE
+>> > hash=sha256" @u || die 1)
+>> >
+>> > echo "$KEYID ($KEYHANDLE)"
+>> >
+>> > keyctl pipe $KEYID > blob.hex || die 1
+>> > keyctl clear @u || die 1
+>> >
+>> > echo "Import key from blob"
+>> >
+>> > keyctl add trusted kmk "load `cat blob.hex` keyhandle=$KEYHANDLE" @u
+>> > || die 1
+>> >
+>> > die 0
+>> >
+>> > Result:
+>> >
+>> > sudo ./keyctl-smoke.sh
+>> > 566201053 (0x80000000)
+>> > keyctl_read_alloc: Permission denied
 
-OK by me.
+I get keyctl_read_alloc -EPERM when I 'sudo su' and try to play with keyctl print.
+If I 'sudo su -' and then try it works as expected. Also works for normal user.
+
+
+>>
+>> Well, it's clearly failing in keyctl pipe
+>>
+>> I do confess to never having tested a volatile primary, but I just did
+>> so and it works for me.  I will also add the keyhandle in the load
+>> isn't necessary, because it should be in the blob, but there should
+>> also be no harm (just tested).
+>>
+>> However, I don't have keyctl_read_alloc in my tree, so it may be an
+>> incompatibility with another patch set.  What's your base and what
+>> other patches do you have applied?
+>
+>http://git.infradead.org/users/jjs/linux-tpmdd.git
+>
+>Or exactly:
+>
+>git://git.infradead.org/users/jjs/linux-tpmdd.git (master)
+>
+>/Jarkko
+>
 
