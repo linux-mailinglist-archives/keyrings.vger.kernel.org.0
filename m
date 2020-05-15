@@ -2,132 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C35181D4421
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 05:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 355C71D48C2
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 10:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727819AbgEODo0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 May 2020 23:44:26 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:41926 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726176AbgEODo0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 May 2020 23:44:26 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 8213A8EE2B2;
-        Thu, 14 May 2020 20:44:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1589514265;
-        bh=Pap4SSzXaAz3qlkjmLgUnEFiE3PZuWsdUzZD0OJ7fiA=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=TGUEdkRThl20DBgXdJaUabwDybzxIbl5+ur31mOYD4jaFMaU2uMgbnrrQ8Evu1koK
-         HhpuOcHE6eEOaVk7aTXxQKwehOEMgqdwcwE1riUKG7R0zEJJe+GZcC5UkNkDuSD5p4
-         zn1czUf6ZfUBQUZS1c/iSE5y+iXMXh/+R1Yu/MH8=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id uyMGBPmMGRkA; Thu, 14 May 2020 20:44:25 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id DF2FC8EE165;
-        Thu, 14 May 2020 20:44:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1589514265;
-        bh=Pap4SSzXaAz3qlkjmLgUnEFiE3PZuWsdUzZD0OJ7fiA=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=TGUEdkRThl20DBgXdJaUabwDybzxIbl5+ur31mOYD4jaFMaU2uMgbnrrQ8Evu1koK
-         HhpuOcHE6eEOaVk7aTXxQKwehOEMgqdwcwE1riUKG7R0zEJJe+GZcC5UkNkDuSD5p4
-         zn1czUf6ZfUBQUZS1c/iSE5y+iXMXh/+R1Yu/MH8=
-Message-ID: <1589514263.5759.25.camel@HansenPartnership.com>
-Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        id S1726980AbgEOIrG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 May 2020 04:47:06 -0400
+Received: from mga11.intel.com ([192.55.52.93]:55112 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726730AbgEOIrG (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 15 May 2020 04:47:06 -0400
+IronPort-SDR: 6A+6cKa2NSAOFoYW8M00yiVMFYpahkqV3gaa8pGL08KmaOjw4YVwRHicRHrj64x1rnmJyRCVYG
+ Vcx4lg3XF5bQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2020 01:47:05 -0700
+IronPort-SDR: b9BU4wNgz0exQPqDgRg3HcZQZGfsbVBh9fE73+IWHiFdgslzCq4GbFjI1+A3y7KobppWeraRFZ
+ /pHOsX9DTAZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,394,1583222400"; 
+   d="scan'208";a="438241836"
+Received: from mgpinon-mobl.ger.corp.intel.com (HELO localhost) ([10.252.55.74])
+  by orsmga005.jf.intel.com with ESMTP; 15 May 2020 01:47:03 -0700
+Date:   Fri, 15 May 2020 11:47:02 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
         David Woodhouse <dwmw2@infradead.org>,
         keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Date:   Thu, 14 May 2020 20:44:23 -0700
-In-Reply-To: <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
+Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
+Message-ID: <20200515084702.GA3404@linux.intel.com>
 References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
-         <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
-         <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
+ <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
+ <1589514263.5759.25.camel@HansenPartnership.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1589514263.5759.25.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2020-05-15 at 05:22 +0300, Jarkko Sakkinen wrote:
-> On Thu, 2020-05-14 at 17:31 +0300, Jarkko Sakkinen wrote:
-> > I'm compiling now kernel with all series included.
+On Thu, May 14, 2020 at 08:44:23PM -0700, James Bottomley wrote:
+> On Fri, 2020-05-15 at 05:22 +0300, Jarkko Sakkinen wrote:
+> > On Thu, 2020-05-14 at 17:31 +0300, Jarkko Sakkinen wrote:
+> > > I'm compiling now kernel with all series included.
+> > > 
+> > > Kind of checking if I could just take the whole series. Let see.
+> > > 
+> > > In all cases I want the style errors in 3/8 to be fixes with a
+> > > helper
+> > > but maybe better to hold before sending anything. Possibly that is
+> > > all
+> > > needed I'll just carve that patch myself.
+> > > 
+> > > Please don't do anything for the moment.
 > > 
-> > Kind of checking if I could just take the whole series. Let see.
+> > This is what I tried first (with the full series applied):
 > > 
-> > In all cases I want the style errors in 3/8 to be fixes with a
-> > helper
-> > but maybe better to hold before sending anything. Possibly that is
-> > all
-> > needed I'll just carve that patch myself.
+> > #!/bin/sh
 > > 
-> > Please don't do anything for the moment.
+> > die()
+> > {
+> > 	keyctl clear @u
+> > 	./tpm2-flush --all-transient
+> > 	exit $1
+> > }
+> > 
+> > KEYHANDLE=$(./tpm2-root-key || die 1)
+> > KEYID=$(keyctl add trusted kmk "new 32 keyhandle=$KEYHANDLE
+> > hash=sha256" @u || die 1)
+> > 
+> > echo "$KEYID ($KEYHANDLE)"
+> > 
+> > keyctl pipe $KEYID > blob.hex || die 1
+> > keyctl clear @u || die 1
+> > 
+> > echo "Import key from blob"
+> > 
+> > keyctl add trusted kmk "load `cat blob.hex` keyhandle=$KEYHANDLE" @u
+> > || die 1
+> > 
+> > die 0
+> > 
+> > Result:
+> > 
+> > sudo ./keyctl-smoke.sh
+> > 566201053 (0x80000000)
+> > keyctl_read_alloc: Permission denied
 > 
-> This is what I tried first (with the full series applied):
+> Well, it's clearly failing in keyctl pipe
 > 
-> #!/bin/sh
+> I do confess to never having tested a volatile primary, but I just did
+> so and it works for me.  I will also add the keyhandle in the load
+> isn't necessary, because it should be in the blob, but there should
+> also be no harm (just tested).
 > 
-> die()
-> {
-> 	keyctl clear @u
-> 	./tpm2-flush --all-transient
-> 	exit $1
-> }
-> 
-> KEYHANDLE=$(./tpm2-root-key || die 1)
-> KEYID=$(keyctl add trusted kmk "new 32 keyhandle=$KEYHANDLE
-> hash=sha256" @u || die 1)
-> 
-> echo "$KEYID ($KEYHANDLE)"
-> 
-> keyctl pipe $KEYID > blob.hex || die 1
-> keyctl clear @u || die 1
-> 
-> echo "Import key from blob"
-> 
-> keyctl add trusted kmk "load `cat blob.hex` keyhandle=$KEYHANDLE" @u
-> || die 1
-> 
-> die 0
-> 
-> Result:
-> 
-> sudo ./keyctl-smoke.sh
-> 566201053 (0x80000000)
-> keyctl_read_alloc: Permission denied
+> However, I don't have keyctl_read_alloc in my tree, so it may be an
+> incompatibility with another patch set.  What's your base and what
+> other patches do you have applied?
 
-Well, it's clearly failing in keyctl pipe
+http://git.infradead.org/users/jjs/linux-tpmdd.git
 
-I do confess to never having tested a volatile primary, but I just did
-so and it works for me.  I will also add the keyhandle in the load
-isn't necessary, because it should be in the blob, but there should
-also be no harm (just tested).
+Or exactly:
 
-However, I don't have keyctl_read_alloc in my tree, so it may be an
-incompatibility with another patch set.  What's your base and what
-other patches do you have applied?
+git://git.infradead.org/users/jjs/linux-tpmdd.git (master)
 
-James
-
-> Any ideas what I might have done wrong? Have not tried auth value yet
-> but afaik the above should fully test import and export.
-> 
-> Uses tpm2-scripts:
-> 
-> https://github.com/jsakkine-intel/tpm2-scripts
-> 
-> I'll probably move these to git.infradead.org because I don't like
-> really like at all Github and my kernel tree is there anyway.
-> 
-> /Jarkko
-> 
-
+/Jarkko
