@@ -2,91 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82AB51D5970
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 20:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 802601D5986
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 20:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbgEOSsb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 May 2020 14:48:31 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:53106 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726238AbgEOSsa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 14:48:30 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 78AF58EE2CA;
-        Fri, 15 May 2020 11:48:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1589568510;
-        bh=tZrweX0tkgYDBJDM7CQZADN/+baWsc5alB3079xmtLg=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=S2g4dqsPsHHHXV8D+8ebwedOebA/CZpPFHdQpNoY4FKKJ6KHlmSkWT1z/TaaKuQrd
-         oM4s/vTxpQdhWxHc7TwfHVm8PvTIXRjQ2ARXDpC6u9avjGBdHKpGluMv7HZcpoguQa
-         BGo6enpAWs9hKdpliusk1ssmD2jhXaiHyuKx/yp0=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ksUs2LWULTpS; Fri, 15 May 2020 11:48:29 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D4A298EE25D;
-        Fri, 15 May 2020 11:48:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1589568509;
-        bh=tZrweX0tkgYDBJDM7CQZADN/+baWsc5alB3079xmtLg=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=J4/C7Cles1RooYzIVRHRDpYwvtzBsxQ61HQqPnIIY19dZlutuCfms+XKArsH8rjrS
-         9sKwCrORhQrxpXjLNJfo75Moo61L3FMO/IeoKo3LOJQliguuzDpvkJh8exhJGV2/B+
-         u+e2/SQOG38h7M/3RjF8eF4G5lg5qKuzvtX/YM7U=
-Message-ID: <1589568507.3653.18.camel@HansenPartnership.com>
-Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Date:   Fri, 15 May 2020 11:48:27 -0700
-In-Reply-To: <20200515093000.naogi4a7j22bzggz@cantor>
-References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
-         <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
-         <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
-         <1589514263.5759.25.camel@HansenPartnership.com>
-         <20200515084702.GA3404@linux.intel.com>
-         <20200515093000.naogi4a7j22bzggz@cantor>
+        id S1726226AbgEOSzy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 May 2020 14:55:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48426 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726144AbgEOSzx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 14:55:53 -0400
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819FDC061A0C;
+        Fri, 15 May 2020 11:55:53 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id j145so3146940oib.5;
+        Fri, 15 May 2020 11:55:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VvMtgHIRLykxmhWLdZJQYZ0krOC9vXjMfTK6g/AZbUA=;
+        b=ErHcxT+mAoqp7ksTgGa9KWZE69wefN59b50K++XYxGuilOr/0/UNUbODmS9b7vehP2
+         GcDlCVyo34Jqu4ZS6FVuMpFADa7ICKUupguIPKLT1kNPfOIxBQ3ZlqH7GQCWd/DjISyi
+         IlZKBpHC2yesBPkDwvGGUPwUQI9eKzkL/oYB8Bskz9ohCXh+LHQe+/4dlNCdrShSoJHn
+         D1qmYBvDpYrzOtki0/3ygKjl7y7uTwPhNAwdF7LKc7uqTd6IjPT3SHMEXKzoqpTqWKPb
+         D+uh1ZiCWOpJsDmfIJ9UfYSr9P+3tR/UdrEZ3KqJiK/o4t7THq8fLqsFSWWotqaFzeMS
+         wK4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VvMtgHIRLykxmhWLdZJQYZ0krOC9vXjMfTK6g/AZbUA=;
+        b=rRRkVWflh3GbOTIWaTHmAw45gVWJaTfxsxeQGLNt+I7WHyH86T+jx1OOpEor3P05Uz
+         04aoFxVn1HPN+DCYhYOl85EnmQF1s/uULwjXvT5bHlKu0e2+95ZBc/yHQPr9j04mxw+Q
+         QI18nI0Zoby2pu1rMGfTTwYkbC6oMHrXEq/OouL/VaMP6Oxv1Q8EUR0dl0Atyvu2k5UA
+         W33A6oLv8wxLlqXr7wKxcpd/WiHMtmXM1t3Iczdg/BGOPpFU3PNiWW3J8zHSHwefsvIj
+         ++j8YyK9KeRICN0nAOSJqzGn9jycn9nhSzkuVQiEPR4SFVwp/itzeek7MbQLmVUGobdf
+         H5yQ==
+X-Gm-Message-State: AOAM533dXdc+HE69K6YLUPc0NpDSw7IAOr5eryZP7IMU73u0UYT8Nwkd
+        eYoijmLQCdKaOQwiXtqjC3VFtcwKhiG5SQzu5QRwEO37
+X-Google-Smtp-Source: ABdhPJzY4volsN0uHSJFmoFggMhaZdolh0W7pFgZ1qIQk13JeIs49jjw8dYtyQry1Dj4ljshCyilGrGGvb+jkPIBADo=
+X-Received: by 2002:aca:210a:: with SMTP id 10mr3055246oiz.92.1589568952881;
+ Fri, 15 May 2020 11:55:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
+ <158932282880.2885325.2688622278854566047.stgit@warthog.procyon.org.uk>
+ <CAEjxPJ4=ZN_jKP2nX5mrMA3OxC8XLsYEmCPCD-78H4XQw=_hCA@mail.gmail.com>
+ <3999877.1589475539@warthog.procyon.org.uk> <CAEjxPJ5wW2qHYDsqKr5rjnRJ++4f2LXobCQkKZvWCSb_j0WN6w@mail.gmail.com>
+ <196730.1589561109@warthog.procyon.org.uk>
+In-Reply-To: <196730.1589561109@warthog.procyon.org.uk>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Fri, 15 May 2020 14:55:42 -0400
+Message-ID: <CAEjxPJ6JGZxF_G63Y7M-CQpmt5Sqp2uFF4oEKS6NpNLZxXhXcA@mail.gmail.com>
+Subject: Re: [PATCH] keys: Move permissions checking decisions into the
+ checking code
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        keyrings@vger.kernel.org, SElinux list <selinux@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2020-05-15 at 02:30 -0700, Jerry Snitselaar wrote:
-> On Fri May 15 20, Jarkko Sakkinen wrote:
-> > On Thu, May 14, 2020 at 08:44:23PM -0700, James Bottomley wrote:
-[...]
-> > > However, I don't have keyctl_read_alloc in my tree, so it may be
-> > > an incompatibility with another patch set.  What's your base and
-> > > what other patches do you have applied?
-> > 
-> > http://git.infradead.org/users/jjs/linux-tpmdd.git
-> > 
-> > Or exactly:
-> > 
-> > git://git.infradead.org/users/jjs/linux-tpmdd.git (master)
-> > 
-> > /Jarkko
-> > 
-> 
-> keyctl_read_alloc is in the userspace keyctl program, right?
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git
+On Fri, May 15, 2020 at 12:45 PM David Howells <dhowells@redhat.com> wrote:
+> I can go back to the enum patch for the moment if you and Casey can put up
+> with that for the moment?
 
-Hm, right thanks!  I just confirmed that linux-tpmdd.git with these
-patches applied still works for me.  I'm using the keyctl in debian
-testing, which identifies itself as version 1.6-6
-
-I'll try building from git.
-
-James
-
+Yes, let's do that.
