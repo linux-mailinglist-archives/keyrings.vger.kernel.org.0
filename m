@@ -2,30 +2,30 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A852B1D41C5
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 01:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C298B1D41E9
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 02:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728441AbgENXnZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 May 2020 19:43:25 -0400
-Received: from mga01.intel.com ([192.55.52.88]:36669 "EHLO mga01.intel.com"
+        id S1727850AbgEOAAr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 May 2020 20:00:47 -0400
+Received: from mga07.intel.com ([134.134.136.100]:17357 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728415AbgENXnZ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 14 May 2020 19:43:25 -0400
-IronPort-SDR: dE/OXNRPB65SD0Pv1u1815GybNs5OFpSgSeW4coafxYAUNLpAO/BXsUBUkoc/bVJYED4clYbb2
- onOqAxQhm6wQ==
+        id S1726088AbgEOAAr (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 14 May 2020 20:00:47 -0400
+IronPort-SDR: qid2dEkSCvK+pyM55tMfjpyqTHN9m5Sqx+mMxHdlRszjyYJxVsFjxkCoU9OJrs4T/UrAm0WAw1
+ ZgQr/rp0a4Ew==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 16:43:24 -0700
-IronPort-SDR: 0PcKf5kROprlU7FvR2CjmctlO7VJLKQn4o6TWazGRw3DBXAE4dQdy6dZGq6zvM7ICAe8BiPuVr
- 5UquiIXhVxpQ==
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 17:00:46 -0700
+IronPort-SDR: ca6NGik9rwL5TfUuopCMa37yfmw6w+5tfFEmLEcDsO+j+WiMzKp0s+BHsnCUEhu0AryC6eHS/K
+ TorQLC+Wgq5g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
-   d="scan'208";a="410262240"
+   d="scan'208";a="266421400"
 Received: from ashadrin-mobl1.ccr.corp.intel.com ([10.249.38.112])
-  by orsmga004.jf.intel.com with ESMTP; 14 May 2020 16:43:17 -0700
-Message-ID: <b59e8ef4070f1aba31b4351910d6e819802eb551.camel@linux.intel.com>
-Subject: Re: [PATCH v4 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
+  by orsmga006.jf.intel.com with ESMTP; 14 May 2020 17:00:37 -0700
+Message-ID: <956b284c2b144313fd158de75cba510eb98f71bf.camel@linux.intel.com>
+Subject: Re: [PATCH v4 1/4] KEYS: trusted: Add generic trusted keys framework
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     Sumit Garg <sumit.garg@linaro.org>
 Cc:     Mimi Zohar <zohar@linux.ibm.com>,
@@ -46,12 +46,12 @@ Cc:     Mimi Zohar <zohar@linux.ibm.com>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         op-tee@lists.trustedfirmware.org,
         "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Date:   Fri, 15 May 2020 02:43:04 +0300
-In-Reply-To: <CAFA6WYPr1iL-uJgSRu_61uv=2DhuEdDVdQLDuyPEOOK2jEgvyg@mail.gmail.com>
+Date:   Fri, 15 May 2020 03:00:25 +0300
+In-Reply-To: <CAFA6WYMciZ=qkG3N_9YWzt_DJr2dGwdAy9diMXCJSNjr2o5ONA@mail.gmail.com>
 References: <1588758017-30426-1-git-send-email-sumit.garg@linaro.org>
-         <1588758017-30426-3-git-send-email-sumit.garg@linaro.org>
-         <ef2093f96eae7e9e6785f2c0ad00604d8adfd3be.camel@linux.intel.com>
-         <CAFA6WYPr1iL-uJgSRu_61uv=2DhuEdDVdQLDuyPEOOK2jEgvyg@mail.gmail.com>
+         <1588758017-30426-2-git-send-email-sumit.garg@linaro.org>
+         <07bb6080f8be9f6613f460e2d6e19f3d456e219c.camel@linux.intel.com>
+         <CAFA6WYMciZ=qkG3N_9YWzt_DJr2dGwdAy9diMXCJSNjr2o5ONA@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.1-2 
@@ -62,77 +62,39 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2020-05-14 at 12:57 +0530, Sumit Garg wrote:
-> On Thu, 14 May 2020 at 05:58, Jarkko Sakkinen
+On Thu, 2020-05-14 at 16:53 +0530, Sumit Garg wrote:
+> On Thu, 14 May 2020 at 05:55, Jarkko Sakkinen
 > <jarkko.sakkinen@linux.intel.com> wrote:
 > > On Wed, 2020-05-06 at 15:10 +0530, Sumit Garg wrote:
-> > > Add support for TEE based trusted keys where TEE provides the functionality
-> > > to seal and unseal trusted keys using hardware unique key.
+> > > Current trusted keys framework is tightly coupled to use TPM device as
+> > > an underlying implementation which makes it difficult for implementations
+> > > like Trusted Execution Environment (TEE) etc. to provide trusked keys
+> > > support in case platform doesn't posses a TPM device.
 > > > 
-> > > Refer to Documentation/tee.txt for detailed information about TEE.
+> > > So this patch tries to add generic trusted keys framework where underlying
+> > > implemtations like TPM, TEE etc. could be easily plugged-in.
 > > > 
+> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 > > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 > > 
-> > The implementation looks solid but how or who could possibly test this?
+> > I tend to agree how this is implemented and could merge it as such.
 > > 
-> > I do posses (personally, not from employer) bunch of ARM boards but my
-> > TZ knowledge is somewhat limited (e.g. how can I get something running
-> > in TZ).
-> > 
+> > I'm just thinking if we could refine this patch in a way that instead of
+> > copying TRUSTED_DEBUG macro we could just replace pr_info() statements
+> > with pr_debug()?
 > 
-> Although, it should be fairly easy to test this implementation on an
-> ARM board which supports OP-TEE. But since you are new to ARM
-> TrustZone world, I would suggest you get used to OP-TEE on Qemu based
-> setup. You could find pretty good documentation for this here [1] but
-> for simplicity let me document steps here to test this trusted keys
-> feature from scratch:
+> AFAIU, TRUSTED_DEBUG being a security sensitive operation is only
+> meant to be used in development environments and should be strictly
+> disabled in production environments. But it may not always be true
+> with pr_debug() with CONFIG_DYNAMIC_DEBUG=y which allows the debug
+> paths to be compiled into the kernel which can be enabled/disabled at
+> runtime.
 > 
-> # Install prerequisites as mentioned here [2]
-> 
-> # Get the source code
-> $ mkdir -p <optee-project>
-> $ cd <optee-project>
-> $ repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml
-> $ repo sync -j4 --no-clone-bundle
-> 
-> # Get the toolchain
-> $ cd <optee-project>/build
-> $ make -j2 toolchains
-> 
-> # As trusted keys work is based on latest tpmdd/master, so we can
-> change Linux base as follows:
-> $ cd <optee-project>/linux
-> $ git remote add tpmdd git://git.infradead.org/users/jjs/linux-tpmdd.git
-> $ git pull tpmdd
-> $ git checkout -b tpmdd-master remotes/tpmdd/master
-> # Cherry-pick and apply TEE features patch-set from this PR[3]
-> # Apply this Linux trusted keys patch-set.
-> 
-> # Now move on to build the source code
-> $ cd <optee-project>/build
-> # Apply attached "keyctl_change" patch
-> $ patch -p1 < keyctl_change
-> $ make -j`nproc`
-> CFG_IN_TREE_EARLY_TAS=trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c
-> 
-> # Run QEMU setup
-> $ make run-only
-> # Type "c" on QEMU console to continue boot
-> 
-> # Now there should be two virtual consoles up, one for OP-TEE and
-> other for Linux
-> # On Linux console, you can play with "keyctl" utility to have trusted
-> and encrypted keys based on TEE.
-> 
-> Do let me know in case you are stuck while following the above steps.
-> 
-> [1] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
-> [2] https://optee.readthedocs.io/en/latest/building/prerequisites.html#prerequisites
-> [3] https://lkml.org/lkml/2020/5/4/1062
-> 
-> -Sumit
+> IMO we should keep this TRUSTED_DEBUG macro, so that users are aware
+> of its security sensitive nature and need to explicitly enable it to
+> debug.
 
-Thanks I'll try this out as soon as the v5.8 release hassle is over!
+You are absolutely correct.
 
 /Jarkko
 
