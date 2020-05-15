@@ -2,147 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8AD71D4999
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 11:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC421D5320
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 17:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728165AbgEOJaO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 May 2020 05:30:14 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:38118 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728152AbgEOJaN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 05:30:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589535011;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:in-reply-to:in-reply-to:  references:references;
-        bh=7306oN4RwKYF0PhwXfWO57GL96EDQl+QO/STW6boOqc=;
-        b=ZhsOZgkbH21tKolmzJqMlnEmyLTzKJv5Qtr+F5ofa98woTzpFT7ZhlrtldHYf8gMj1f4cD
-        W726SytPgeuZ/BqGS5atdzjw/T22Bfk0tZbQmk+9Ud+5bjwXRqSokranMS0W900TZHTX2x
-        ilEVyv/gKp7LgeAK0HLb1Gwi+fXmVdg=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-408-rZHEgJfvOlqTcvt2tGDEjA-1; Fri, 15 May 2020 05:30:04 -0400
-X-MC-Unique: rZHEgJfvOlqTcvt2tGDEjA-1
-Received: by mail-qt1-f200.google.com with SMTP id z5so1746161qtz.16
-        for <keyrings@vger.kernel.org>; Fri, 15 May 2020 02:30:04 -0700 (PDT)
+        id S1726188AbgEOPGc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 May 2020 11:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726140AbgEOPGb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 11:06:31 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2698C061A0C;
+        Fri, 15 May 2020 08:06:30 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id 63so2125515oto.8;
+        Fri, 15 May 2020 08:06:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=37rPaVirt9XFwClnSBrwkFy9t98lCKr8fqc0wxeBqbQ=;
+        b=MPEJnav0wmHisAiDR2w3zemBM3f2eft4Lu2hyl6UgNLm64xKttZ8VCns7GP4XN8R1b
+         Sp4HbB/z7Jdp9fA/566ZRfZ65n3RknpeHN36kWGOVh1Y5HQQsSpvqFD3gKIPv85z3rSb
+         t/Z8vAyqQxYTh71PTSjC2gLcNC9zxPuLMUzkOVFZY5sDoRcrnT8N8FDbAZ9OSbDtkndR
+         62xZLpAJTdQ/hMqlFxbAXf+Pw7n0PCp05eyxyeacagdMrfGM+izusdh9eGubyMwu9J0t
+         OURKLPntMmiVHAhsrBgJkD6enwkXRpFlKasScbF9TycKoDyL9oMXo+hzcpmBz+DhyR51
+         FTXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=7306oN4RwKYF0PhwXfWO57GL96EDQl+QO/STW6boOqc=;
-        b=kIvodjVZ2PCpyamKAQrJCHa0z46iEE4ThXY5VCe8VXspodTBQKHioi55C45efqQc32
-         8UQmtz9OhIiGK/JRqpI8Qfw71+R3xjeHOtVtU/yGQITX/atuS7ALuXMjfPjERDSuiSE0
-         JBkLTmQt5WnnGF64XV+66txEpm4NgG/XdbXqatY5or7t+bKx/+EgwushP4RW6uiWYfUf
-         CjlX/xyNro5/OhlBfxCUGRhK23hpE8rXRpNijxqB3V9z9GGiAbs+g500iYrSkC3jpeaa
-         xenPXX/XRE1cfN12llRxM7PRZ+q1hzSuM0eRZOi/MXN26v8eHPdAi2oV2K5oKWs3UP0O
-         9YVQ==
-X-Gm-Message-State: AOAM533tQ2yWkUL/5vsRnI1cY3v9Dq21xOukJ+q3jKP+UQFYWLFJFPOD
-        3+7N6J9V+hcJHhf3X2nArxWzOh4PZ4M3ZEC7ubvLBsGZWu0Tl3iI6u1d1Crq+sN5p0tZcn69Gsv
-        xBBMxW/ip/qW219ck19c=
-X-Received: by 2002:ac8:534b:: with SMTP id d11mr2386791qto.287.1589535003664;
-        Fri, 15 May 2020 02:30:03 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwGkxVVdFCxQKI+koaF2YHjmJKBc1Il/J586ZA5MpaZ74xyJ2+vvxBqR5TBYyD9Ths/OS+yBw==
-X-Received: by 2002:ac8:534b:: with SMTP id d11mr2386755qto.287.1589535003284;
-        Fri, 15 May 2020 02:30:03 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id g57sm1590345qtb.48.2020.05.15.02.30.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2020 02:30:02 -0700 (PDT)
-Date:   Fri, 15 May 2020 02:30:00 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
-Message-ID: <20200515093000.naogi4a7j22bzggz@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
- <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
- <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
- <1589514263.5759.25.camel@HansenPartnership.com>
- <20200515084702.GA3404@linux.intel.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=37rPaVirt9XFwClnSBrwkFy9t98lCKr8fqc0wxeBqbQ=;
+        b=uL4Q8Cn0nRbwxve4plikM/AFrqOlJuI4tjOQE+MMZq1ad6tZtcaloeBPSPTSLKzGCX
+         /DOO7Wk2U8sYr4KwVzzAU1lAts3UelTRRZNb6/cl1gKz7PpxBYfHZ0jNBVgUx+SgzQVP
+         PjiStxnC1bNpoD2DDBveZezw4HVq4rkQ6tWpr771HDFB1rGOaIt6kH1tx46FIOYIxhBf
+         FrpMML4jBOBWo0iENAa7Rn7Pt9seHySdTNJ+5Qc6uQc+l7iaFruH4EDNrfah34+Xs/Yc
+         OsyECatjFrqTLQLPcAvCzL791QTY/84tAz1NTpAhzaR0Ay90Ox4MEf3rewf6uKHEVQTW
+         j3wQ==
+X-Gm-Message-State: AOAM530OgGj+JsDcTAWFFgI0SWZinHB4e8cZhJVP2Ia0xlSxKDj+inUq
+        ZNxneaaszuQqxqI8vLlez3SdwfbF0oZXlKK+qIp8cv8V
+X-Google-Smtp-Source: ABdhPJzk/TdecIuYME/TbHJhuVxtzCM9/2TfvlIcp1YRHPbhNTokdedEGTsjL7EV3EvLZvWppABE9grOvae5hhi/HOg=
+X-Received: by 2002:a9d:398b:: with SMTP id y11mr1775480otb.135.1589555189997;
+ Fri, 15 May 2020 08:06:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200515084702.GA3404@linux.intel.com>
+References: <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com>
+ <158932282880.2885325.2688622278854566047.stgit@warthog.procyon.org.uk>
+ <CAEjxPJ4=ZN_jKP2nX5mrMA3OxC8XLsYEmCPCD-78H4XQw=_hCA@mail.gmail.com> <3999877.1589475539@warthog.procyon.org.uk>
+In-Reply-To: <3999877.1589475539@warthog.procyon.org.uk>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Fri, 15 May 2020 11:06:19 -0400
+Message-ID: <CAEjxPJ5wW2qHYDsqKr5rjnRJ++4f2LXobCQkKZvWCSb_j0WN6w@mail.gmail.com>
+Subject: Re: [PATCH] keys: Move permissions checking decisions into the
+ checking code
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        keyrings@vger.kernel.org, SElinux list <selinux@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri May 15 20, Jarkko Sakkinen wrote:
->On Thu, May 14, 2020 at 08:44:23PM -0700, James Bottomley wrote:
->> On Fri, 2020-05-15 at 05:22 +0300, Jarkko Sakkinen wrote:
->> > On Thu, 2020-05-14 at 17:31 +0300, Jarkko Sakkinen wrote:
->> > > I'm compiling now kernel with all series included.
->> > >
->> > > Kind of checking if I could just take the whole series. Let see.
->> > >
->> > > In all cases I want the style errors in 3/8 to be fixes with a
->> > > helper
->> > > but maybe better to hold before sending anything. Possibly that is
->> > > all
->> > > needed I'll just carve that patch myself.
->> > >
->> > > Please don't do anything for the moment.
->> >
->> > This is what I tried first (with the full series applied):
->> >
->> > #!/bin/sh
->> >
->> > die()
->> > {
->> > 	keyctl clear @u
->> > 	./tpm2-flush --all-transient
->> > 	exit $1
->> > }
->> >
->> > KEYHANDLE=$(./tpm2-root-key || die 1)
->> > KEYID=$(keyctl add trusted kmk "new 32 keyhandle=$KEYHANDLE
->> > hash=sha256" @u || die 1)
->> >
->> > echo "$KEYID ($KEYHANDLE)"
->> >
->> > keyctl pipe $KEYID > blob.hex || die 1
->> > keyctl clear @u || die 1
->> >
->> > echo "Import key from blob"
->> >
->> > keyctl add trusted kmk "load `cat blob.hex` keyhandle=$KEYHANDLE" @u
->> > || die 1
->> >
->> > die 0
->> >
->> > Result:
->> >
->> > sudo ./keyctl-smoke.sh
->> > 566201053 (0x80000000)
->> > keyctl_read_alloc: Permission denied
->>
->> Well, it's clearly failing in keyctl pipe
->>
->> I do confess to never having tested a volatile primary, but I just did
->> so and it works for me.  I will also add the keyhandle in the load
->> isn't necessary, because it should be in the blob, but there should
->> also be no harm (just tested).
->>
->> However, I don't have keyctl_read_alloc in my tree, so it may be an
->> incompatibility with another patch set.  What's your base and what
->> other patches do you have applied?
+On Thu, May 14, 2020 at 12:59 PM David Howells <dhowells@redhat.com> wrote:
 >
->http://git.infradead.org/users/jjs/linux-tpmdd.git
+> How about this then?
 >
->Or exactly:
+> David
+> ---
+> commit fa37b6c7e2f86d16ede1e0e3cb73857152d51825
+> Author: David Howells <dhowells@redhat.com>
+> Date:   Thu May 14 17:48:55 2020 +0100
 >
->git://git.infradead.org/users/jjs/linux-tpmdd.git (master)
+>     keys: Move permissions checking decisions into the checking code
 >
->/Jarkko
+>     Overhaul the permissions checking, moving the decisions of which permits to
+>     request for what operation and what overrides to allow into the permissions
+>     checking functions in keyrings, SELinux and Smack.
 >
+>     To this end, the KEY_NEED_* constants are turned into an enum and expanded
+>     in number to cover operation types individually.
+>
+>     Note that some more tweaking is probably needed to separate kernel uses,
+>     e.g. AFS using rxrpc keys, from direct userspace users.
+>
+>     Some overrides are available and this needs to be handled specially:
+>
+>      (1) KEY_FLAG_KEEP in key->flags - The key may not be deleted and/or things
+>          may not be removed from the keyring.
 
-keyctl_read_alloc is in the userspace keyctl program, right?
+Why can't they be deleted / removed?  They can't ever be deleted or
+removed or for some period of time?
 
-git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git
+>      (2) KEY_FLAG_ROOT_CAN_CLEAR in key->flags - The keyring can be cleared by
+>          CAP_SYS_ADMIN.
 
+Why do some keyrings get this flag and others do not?  Under what
+conditions?  Why is CAP_SYS_ADMIN the right capability for this?
+
+>      (3) KEY_FLAG_ROOT_CAN_INVAL in key->flags - The key can be invalidated by
+>          CAP_SYS_ADMIN.
+
+Ditto.
+
+>      (4) An appropriate auth token being set in cred->request_key_auth that
+>          gives a process transient permission to view and instantiate a key.
+>          This is used by the kernel to delegate instantiation to userspace.
+
+Is this ever allowed across different credentials?  When?  Why?  Is
+there a check between the different credentials before the auth token
+is created?
+
+>     Note that this requires some tweaks to the testsuite as some of the error
+>     codes change.
+
+Which testsuite?  keyring or selinux or both?  What error codes change
+(from what to what)?  Does this constitute an ABI change?
+
+I like moving more of the permission checking logic into the security
+modules and giving them greater visibility and control.  That said, I
+am somewhat concerned by the scale of this change, by the extent to
+which you are exposing keyring internals inside the security modules,
+and by the extent to which logic is getting duplicated in each
+security module.  I'd suggest a more incremental approach, e.g. start
+with just the enum patch, then migrate the easy cases, then consider
+the more complicated cases.  And possibly we need multiple different
+security hooks for the keyring subsystem that are more specialized for
+the complicated cases.  If we authorize the delegation up front, we
+don't need to check it later.
