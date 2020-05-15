@@ -2,56 +2,40 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C298B1D41E9
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 02:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B711D437E
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 04:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbgEOAAr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 May 2020 20:00:47 -0400
-Received: from mga07.intel.com ([134.134.136.100]:17357 "EHLO mga07.intel.com"
+        id S1727082AbgEOCWt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 May 2020 22:22:49 -0400
+Received: from mga05.intel.com ([192.55.52.43]:36183 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726088AbgEOAAr (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 14 May 2020 20:00:47 -0400
-IronPort-SDR: qid2dEkSCvK+pyM55tMfjpyqTHN9m5Sqx+mMxHdlRszjyYJxVsFjxkCoU9OJrs4T/UrAm0WAw1
- ZgQr/rp0a4Ew==
+        id S1726140AbgEOCWt (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 14 May 2020 22:22:49 -0400
+IronPort-SDR: kZkT15ogDObAj1NHh25jkvOMwC+C52VRUdohvyo6kB76s4WL7I5t4Xb/UsEoZJbvLLshiawzeU
+ CVHRdkbMoeIw==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 17:00:46 -0700
-IronPort-SDR: ca6NGik9rwL5TfUuopCMa37yfmw6w+5tfFEmLEcDsO+j+WiMzKp0s+BHsnCUEhu0AryC6eHS/K
- TorQLC+Wgq5g==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 19:22:48 -0700
+IronPort-SDR: mGDAQwmgSbW6o10lke2zLirzMqjyP/gWtjh+d1Mfdny2xD8fTt/P51zrIyIb8VEtka0C1AUPFk
+ T3iXhaM5nejQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
-   d="scan'208";a="266421400"
+X-IronPort-AV: E=Sophos;i="5.73,393,1583222400"; 
+   d="scan'208";a="298905452"
 Received: from ashadrin-mobl1.ccr.corp.intel.com ([10.249.38.112])
-  by orsmga006.jf.intel.com with ESMTP; 14 May 2020 17:00:37 -0700
-Message-ID: <956b284c2b144313fd158de75cba510eb98f71bf.camel@linux.intel.com>
-Subject: Re: [PATCH v4 1/4] KEYS: trusted: Add generic trusted keys framework
+  by orsmga008.jf.intel.com with ESMTP; 14 May 2020 19:22:46 -0700
+Message-ID: <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
+Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        linux-integrity@vger.kernel.org
 Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>, dhowells@redhat.com,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
-Date:   Fri, 15 May 2020 03:00:25 +0300
-In-Reply-To: <CAFA6WYMciZ=qkG3N_9YWzt_DJr2dGwdAy9diMXCJSNjr2o5ONA@mail.gmail.com>
-References: <1588758017-30426-1-git-send-email-sumit.garg@linaro.org>
-         <1588758017-30426-2-git-send-email-sumit.garg@linaro.org>
-         <07bb6080f8be9f6613f460e2d6e19f3d456e219c.camel@linux.intel.com>
-         <CAFA6WYMciZ=qkG3N_9YWzt_DJr2dGwdAy9diMXCJSNjr2o5ONA@mail.gmail.com>
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Date:   Fri, 15 May 2020 05:22:31 +0300
+In-Reply-To: <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
+References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
+         <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.1-2 
@@ -62,39 +46,57 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2020-05-14 at 16:53 +0530, Sumit Garg wrote:
-> On Thu, 14 May 2020 at 05:55, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> > On Wed, 2020-05-06 at 15:10 +0530, Sumit Garg wrote:
-> > > Current trusted keys framework is tightly coupled to use TPM device as
-> > > an underlying implementation which makes it difficult for implementations
-> > > like Trusted Execution Environment (TEE) etc. to provide trusked keys
-> > > support in case platform doesn't posses a TPM device.
-> > > 
-> > > So this patch tries to add generic trusted keys framework where underlying
-> > > implemtations like TPM, TEE etc. could be easily plugged-in.
-> > > 
-> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > 
-> > I tend to agree how this is implemented and could merge it as such.
-> > 
-> > I'm just thinking if we could refine this patch in a way that instead of
-> > copying TRUSTED_DEBUG macro we could just replace pr_info() statements
-> > with pr_debug()?
+On Thu, 2020-05-14 at 17:31 +0300, Jarkko Sakkinen wrote:
+> I'm compiling now kernel with all series included.
 > 
-> AFAIU, TRUSTED_DEBUG being a security sensitive operation is only
-> meant to be used in development environments and should be strictly
-> disabled in production environments. But it may not always be true
-> with pr_debug() with CONFIG_DYNAMIC_DEBUG=y which allows the debug
-> paths to be compiled into the kernel which can be enabled/disabled at
-> runtime.
+> Kind of checking if I could just take the whole series. Let see.
 > 
-> IMO we should keep this TRUSTED_DEBUG macro, so that users are aware
-> of its security sensitive nature and need to explicitly enable it to
-> debug.
+> In all cases I want the style errors in 3/8 to be fixes with a helper
+> but maybe better to hold before sending anything. Possibly that is all
+> needed I'll just carve that patch myself.
+> 
+> Please don't do anything for the moment.
 
-You are absolutely correct.
+This is what I tried first (with the full series applied):
+
+#!/bin/sh
+
+die()
+{
+	keyctl clear @u
+	./tpm2-flush --all-transient
+	exit $1
+}
+
+KEYHANDLE=$(./tpm2-root-key || die 1)
+KEYID=$(keyctl add trusted kmk "new 32 keyhandle=$KEYHANDLE hash=sha256" @u || die 1)
+
+echo "$KEYID ($KEYHANDLE)"
+
+keyctl pipe $KEYID > blob.hex || die 1
+keyctl clear @u || die 1
+
+echo "Import key from blob"
+
+keyctl add trusted kmk "load `cat blob.hex` keyhandle=$KEYHANDLE" @u || die 1
+
+die 0
+
+Result:
+
+sudo ./keyctl-smoke.sh
+566201053 (0x80000000)
+keyctl_read_alloc: Permission denied
+
+Any ideas what I might have done wrong? Have not tried auth value yet
+but afaik the above should fully test import and export.
+
+Uses tpm2-scripts:
+
+https://github.com/jsakkine-intel/tpm2-scripts
+
+I'll probably move these to git.infradead.org because I don't like
+really like at all Github and my kernel tree is there anyway.
 
 /Jarkko
 
