@@ -2,218 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 094BF1D566D
-	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 18:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82AB51D5970
+	for <lists+keyrings@lfdr.de>; Fri, 15 May 2020 20:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726188AbgEOQpe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 May 2020 12:45:34 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:44814 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726023AbgEOQpe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 12:45:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589561133;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+IBvKYnMRct6wIVYk1OHcT0bp5/WnDeiDsV8CVPaV/4=;
-        b=QECgooPWYpPmKqiqQ9PAiKUs/Go7y+kcTQ5C5+KV/hSt/WlVczLsGAislwSOYX1NxquHav
-        uvQGPMLs3XTBJI0pgLSDDMqCrzHnRRLdVgEli6IlBR5YkNAFxWApBHYV15i5LX8+H0rqCa
-        UJMWE6KTun7QeC+B8E1l7bZkUgnXn+g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-311-00j2DJWnOzuUdvc1IhJFqw-1; Fri, 15 May 2020 12:45:29 -0400
-X-MC-Unique: 00j2DJWnOzuUdvc1IhJFqw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726304AbgEOSsb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 May 2020 14:48:31 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:53106 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726238AbgEOSsa (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 14:48:30 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 78AF58EE2CA;
+        Fri, 15 May 2020 11:48:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1589568510;
+        bh=tZrweX0tkgYDBJDM7CQZADN/+baWsc5alB3079xmtLg=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=S2g4dqsPsHHHXV8D+8ebwedOebA/CZpPFHdQpNoY4FKKJ6KHlmSkWT1z/TaaKuQrd
+         oM4s/vTxpQdhWxHc7TwfHVm8PvTIXRjQ2ARXDpC6u9avjGBdHKpGluMv7HZcpoguQa
+         BGo6enpAWs9hKdpliusk1ssmD2jhXaiHyuKx/yp0=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ksUs2LWULTpS; Fri, 15 May 2020 11:48:29 -0700 (PDT)
+Received: from [153.66.254.194] (unknown [50.35.76.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9AF0218B6450;
-        Fri, 15 May 2020 16:45:12 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-95.rdu2.redhat.com [10.10.112.95])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 94C9C579A0;
-        Fri, 15 May 2020 16:45:10 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAEjxPJ5wW2qHYDsqKr5rjnRJ++4f2LXobCQkKZvWCSb_j0WN6w@mail.gmail.com>
-References: <CAEjxPJ5wW2qHYDsqKr5rjnRJ++4f2LXobCQkKZvWCSb_j0WN6w@mail.gmail.com> <CAEjxPJ6pFdDfm55pv9bT3CV5DTFF9VqzRmG_Xi5bKNxPaGuOLg@mail.gmail.com> <158932282880.2885325.2688622278854566047.stgit@warthog.procyon.org.uk> <CAEjxPJ4=ZN_jKP2nX5mrMA3OxC8XLsYEmCPCD-78H4XQw=_hCA@mail.gmail.com> <3999877.1589475539@warthog.procyon.org.uk>
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     dhowells@redhat.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        keyrings@vger.kernel.org, SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] keys: Move permissions checking decisions into the checking code
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <196729.1589561109.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Fri, 15 May 2020 17:45:09 +0100
-Message-ID: <196730.1589561109@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D4A298EE25D;
+        Fri, 15 May 2020 11:48:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1589568509;
+        bh=tZrweX0tkgYDBJDM7CQZADN/+baWsc5alB3079xmtLg=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=J4/C7Cles1RooYzIVRHRDpYwvtzBsxQ61HQqPnIIY19dZlutuCfms+XKArsH8rjrS
+         9sKwCrORhQrxpXjLNJfo75Moo61L3FMO/IeoKo3LOJQliguuzDpvkJh8exhJGV2/B+
+         u+e2/SQOG38h7M/3RjF8eF4G5lg5qKuzvtX/YM7U=
+Message-ID: <1589568507.3653.18.camel@HansenPartnership.com>
+Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Date:   Fri, 15 May 2020 11:48:27 -0700
+In-Reply-To: <20200515093000.naogi4a7j22bzggz@cantor>
+References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
+         <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
+         <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
+         <1589514263.5759.25.camel@HansenPartnership.com>
+         <20200515084702.GA3404@linux.intel.com>
+         <20200515093000.naogi4a7j22bzggz@cantor>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Stephen Smalley <stephen.smalley.work@gmail.com> wrote:
+On Fri, 2020-05-15 at 02:30 -0700, Jerry Snitselaar wrote:
+> On Fri May 15 20, Jarkko Sakkinen wrote:
+> > On Thu, May 14, 2020 at 08:44:23PM -0700, James Bottomley wrote:
+[...]
+> > > However, I don't have keyctl_read_alloc in my tree, so it may be
+> > > an incompatibility with another patch set.  What's your base and
+> > > what other patches do you have applied?
+> > 
+> > http://git.infradead.org/users/jjs/linux-tpmdd.git
+> > 
+> > Or exactly:
+> > 
+> > git://git.infradead.org/users/jjs/linux-tpmdd.git (master)
+> > 
+> > /Jarkko
+> > 
+> 
+> keyctl_read_alloc is in the userspace keyctl program, right?
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git
 
-> >      (1) KEY_FLAG_KEEP in key->flags - The key may not be deleted and/=
-or things
-> >          may not be removed from the keyring.
-> =
+Hm, right thanks!  I just confirmed that linux-tpmdd.git with these
+patches applied still works for me.  I'm using the keyctl in debian
+testing, which identifies itself as version 1.6-6
 
-> Why can't they be deleted / removed?  They can't ever be deleted or
-> removed or for some period of time?
+I'll try building from git.
 
-This is only settable internally to keep special keys, such as the blackli=
-st
-loaded from the EFI BIOS, from being removed.
-
-> >      (2) KEY_FLAG_ROOT_CAN_CLEAR in key->flags - The keyring can be cl=
-eared by
-> >          CAP_SYS_ADMIN.
-> =
-
-> Why do some keyrings get this flag and others do not?  Under what
-> conditions?  Why is CAP_SYS_ADMIN the right capability for this?
-> =
-
-> >      (3) KEY_FLAG_ROOT_CAN_INVAL in key->flags - The key can be invali=
-dated by
-> >          CAP_SYS_ADMIN.
-> =
-
-> Ditto.
-
-So that the sysadmin can clear, say, the NFS idmapper keyring or invalidat=
-e
-DNS lookup keys.
-
-> >      (4) An appropriate auth token being set in cred->request_key_auth=
- that
-> >          gives a process transient permission to view and instantiate =
-a key.
-> >          This is used by the kernel to delegate instantiation to users=
-pace.
-> =
-
-> Is this ever allowed across different credentials?
-
-The kernel upcalls by spawning a daemon.  I want to change this as it's no=
-t
-compatible with containers since namespaces make this problematic.
-
-> When?
-
-The request_key() system call will do this.  The normal use case is someth=
-ing
-like the AFS filesystem asking for a key so that it can do an operation.  =
-The
-possibility exists for the kernel to upcall, say, to something that does a=
-klog
-on behalf of the user - but aklog in turn needs to get the TGT out of the
-keyrings.
-
-> Why?  Is there a check between the different credentials before the
-> auth token is created?
-
-No.  I don't even know what the target creds will necessarily be at this
-point.
-
-> >     Note that this requires some tweaks to the testsuite as some of th=
-e
-> >     error codes change.
-> =
-
-> Which testsuite?  keyring or selinux or both?
-
-The keyring testsuite.  No idea about the SELinux one.
-
-> What error codes change (from what to what)?  Does this constitute an AB=
-I
-> change?
-
-The following:
-
- (1) Passing the wrong type of key to KEYCTL_DH_COMPUTE now gets you
-     EOPNOTSUPP rather than ENOKEY.  This is now as documented in the manu=
-al
-     page.
-
- (2) Passing key ID 0 or an invalid negative key ID to KEYCTL_DH_COMPUTE n=
-ow
-     gets you EINVAL rather than ENOKEY.
-
- (3) Passing key ID 0 or an invalid negative key ID to KEYCTL_READ now get=
-s
-     you EINVAL rather than ENOKEY.
-
-Technically, it consistutes an ABI change, I suppose, but I think it is
-probably sufficiently minor.
-
-Or maybe on (2) and (3) I should go the other way.  You get ENOKEY for inv=
-alid
-key IDs (such as 0 or unsupported negative ones) across all callers of
-lookup_user_key().  This would at least by consistent with the manual page=
-s.
-
-> I like moving more of the permission checking logic into the security
-> modules and giving them greater visibility and control.  That said, I
-> am somewhat concerned by the scale of this change, by the extent to
-> which you are exposing keyring internals inside the security modules,
-> and by the extent to which logic is getting duplicated in each
-> security module.
-
-It's what you asked for.
-
-Now, I don't know if the LSM needs to know that the main keyutils permissi=
-ons
-checker invoked an override.  At least one of the overrides will have gone
-through the LSM anyway when capable() was called.
-
-> I'd suggest a more incremental approach, e.g. start with just the enum
-> patch, then migrate the easy cases, then consider the more complicated
-> cases.  And possibly we need multiple different security hooks for the
-> keyring subsystem that are more specialized for the complicated cases.  =
-If
-> we authorize the delegation up front, we don't need to check it later.
-
-I'll consider it.  But I really need to get what I'm going to include in t=
-he
-middle of the notifications patchset sorted now - or risk the notification=
-s
-and fsinfo patchsets getting bumped again.
-
-Maybe what's needed is a pair of hooks whereby the call to capable() is
-replaced with LSM hook specifically to ask about the overrides:
-
-	security_key_use_sysadmin_override(key, cred);
-	security_key_use_construction_override(key, cred);
-
-And/or a hook to ask whether the process is allowed to do the request_key(=
-)
-call that they want:
-
-	security_request_key(struct key_type *type,
-			     const char *description,
-			     struct key_tag *domain_tag,
-			     const void *callout_info,
-			     size_t callout_len,
-			     void *aux);
-
-I don't really want to do a "can the kernel delegate to process X?" hook j=
-ust
-at the moment, since I want to change/extend that code and I don't want to
-commit to any particular security information being present yet.
-
-I can go back to the enum patch for the moment if you and Casey can put up
-with that for the moment?
-
-David
+James
 
