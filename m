@@ -2,104 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C62831D5D3F
-	for <lists+keyrings@lfdr.de>; Sat, 16 May 2020 02:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9C4E1D6030
+	for <lists+keyrings@lfdr.de>; Sat, 16 May 2020 11:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726223AbgEPAj1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 May 2020 20:39:27 -0400
-Received: from wout5-smtp.messagingengine.com ([64.147.123.21]:60631 "EHLO
-        wout5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726550AbgEPAj0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 May 2020 20:39:26 -0400
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id C8291850;
-        Fri, 15 May 2020 20:39:25 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Fri, 15 May 2020 20:39:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=fm1; bh=ke8aQ0QSzOho9
-        AR5F2u+q+Ff9wFD7APCaAFa5HdpwcU=; b=iA+GrvBH1rYWW0KQItwFimEeC5XMX
-        B8XUs3gBbdF1o2blCJzI3lGx3M6ziM5uEBnNEZd3VXNff5ghsdqpymGZeY3to2D7
-        OOV9H2VQWrs7p4C20qzei/ajT5h90KHs3QgnWPi0mQGRn6Qvus5+pz4bVW2pdJtz
-        Z2CCG+RjeYk4rAway6rIfFjVw79nChjS54Jg1wyFmipaJZP1ANW4InPCGQ6iAFhI
-        36kBpOdm+wtGxy5DqXvJi+H3X/DisPdAuuLCqi0uSZhr9+ex1pexa3oytmNBskEd
-        CEJVTg3XgWl1Xmc7FdLUTIFkZw7OadjI0D7/yoJCVY4Lbe/Jf+jBkTdPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :in-reply-to:message-id:mime-version:references:subject:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; bh=ke8aQ0QSzOho9AR5F2u+q+Ff9wFD7APCaAFa5HdpwcU=; b=m+P3RCZ2
-        M13zdsGb6BraJTeACCcD9DmrJZAGqXbibh5kwAQi86i8LLU0PTWmPOTsZCPrJD3o
-        6M3Od6M5fJwOjebP8hCAT0e4WGe9T9k1p5B3394BwuqVp9mlpqgVKv5i1fgLitGW
-        rpc20Cn9diFjlGbD7x4Jl0HBhS/ZlUKsbxx4KmoALpHmOfrad9/2KeQgclp6nCd6
-        Aarb//p+4qvJ00bCFlkCvieRRdlBJWhE2kpjDo9rwgBpv3jK6pNo2cUCG0NMKMDh
-        zEb0zKG1S/OPzUVJWuKNJrRnJkq5NB1037SlzdxoAgo7y0EM+eMe1+5FTPyHkUqB
-        lqgX2OKJbxBotw==
-X-ME-Sender: <xms:PTa_XlFZ12-NbwdBe9zoBkkflesQhNp28Hb2uv1JJF5dN37K7EO7ag>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrleelgdefvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecunecujfgurhephffvufffkffojghfggfgsedtkeertd
-    ertddtnecuhfhrohhmpeeuvghnuceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgv
-    lhdrnhgvtheqnecuggftrfgrthhtvghrnhepffekheelgfetleeghfehkeefieegffeltd
-    ekhfevieefheeltdffheekueehkeehnecukfhppeeiledrvddtgedrudeikedrvdeffeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessg
-    gvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:PTa_XqXpkfWYVaAoUv5HwVMZNT6sBYTxyL8pADLm7YElrF_GPCS7-w>
-    <xmx:PTa_XnIRhxjtbRaCOYmOfaam-LmBAPpA9PppzIDHfaiCjnd-IaHaHQ>
-    <xmx:PTa_XrFFKgF_iR0o_r_9en74lhdQLZJYYhfGLrmoW5_jqenAvYnI4Q>
-    <xmx:PTa_XmRUQLlm32ktxPjzRE6MhoCGKY1oK70b6mF3LJBq4wuivBgjyQ>
-Received: from localhost (cpe-69-204-168-233.nycap.res.rr.com [69.204.168.233])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 0E3523280059;
-        Fri, 15 May 2020 20:39:25 -0400 (EDT)
-From:   Ben Boeckel <me@benboeckel.net>
-To:     keyrings@vger.kernel.org
-Cc:     Ben Boeckel <mathstuf@gmail.com>, dhowells@redhat.com,
-        jarkko.sakkinen@linux.intel.com, corbet@lwn.net,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] Documentation: security: core.rst: add missing argument
-Date:   Fri, 15 May 2020 20:39:17 -0400
-Message-Id: <20200516003917.2035545-2-list.lkml.keyrings@me.benboeckel.net>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200516003917.2035545-1-list.lkml.keyrings@me.benboeckel.net>
-References: <20200516003917.2035545-1-list.lkml.keyrings@me.benboeckel.net>
+        id S1726238AbgEPJ7k (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 16 May 2020 05:59:40 -0400
+Received: from mga06.intel.com ([134.134.136.31]:15794 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725917AbgEPJ7k (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sat, 16 May 2020 05:59:40 -0400
+IronPort-SDR: AKop5e2fIh0vKS1BVtA6VkCFqF6Mr+96E/AP45RyU7nSO0GKYE71KwK/bsvSv9KkiykfUj26Qe
+ 8C9p2me3fc+A==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2020 02:59:39 -0700
+IronPort-SDR: +hPc1VAvToZKqa+d2SYbYDTSV68pLKQhQ9KZGHaiQkLWlDilVCnl0h8+V2pVKOBA5th4rlP/1c
+ UxAhz2NZVwjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,398,1583222400"; 
+   d="scan'208";a="281482321"
+Received: from dbobocel-mobl1.ger.corp.intel.com ([10.252.55.115])
+  by orsmga002.jf.intel.com with ESMTP; 16 May 2020 02:59:35 -0700
+Message-ID: <1668d149a6604c598f87368a3ef7a9140cf7eb51.camel@linux.intel.com>
+Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Jerry Snitselaar <jsnitsel@redhat.com>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Date:   Sat, 16 May 2020 12:59:34 +0300
+In-Reply-To: <20200515093000.naogi4a7j22bzggz@cantor>
+References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
+         <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
+         <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
+         <1589514263.5759.25.camel@HansenPartnership.com>
+         <20200515084702.GA3404@linux.intel.com>
+         <20200515093000.naogi4a7j22bzggz@cantor>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Ben Boeckel <mathstuf@gmail.com>
+On Fri, 2020-05-15 at 02:30 -0700, Jerry Snitselaar wrote:
+> On Fri May 15 20, Jarkko Sakkinen wrote:
+> > On Thu, May 14, 2020 at 08:44:23PM -0700, James Bottomley wrote:
+> > > On Fri, 2020-05-15 at 05:22 +0300, Jarkko Sakkinen wrote:
+> > > > On Thu, 2020-05-14 at 17:31 +0300, Jarkko Sakkinen wrote:
+> > > > > I'm compiling now kernel with all series included.
+> > > > > 
+> > > > > Kind of checking if I could just take the whole series. Let see.
+> > > > > 
+> > > > > In all cases I want the style errors in 3/8 to be fixes with a
+> > > > > helper
+> > > > > but maybe better to hold before sending anything. Possibly that is
+> > > > > all
+> > > > > needed I'll just carve that patch myself.
+> > > > > 
+> > > > > Please don't do anything for the moment.
+> > > > 
+> > > > This is what I tried first (with the full series applied):
+> > > > 
+> > > > #!/bin/sh
+> > > > 
+> > > > die()
+> > > > {
+> > > > 	keyctl clear @u
+> > > > 	./tpm2-flush --all-transient
+> > > > 	exit $1
+> > > > }
+> > > > 
+> > > > KEYHANDLE=$(./tpm2-root-key || die 1)
+> > > > KEYID=$(keyctl add trusted kmk "new 32 keyhandle=$KEYHANDLE
+> > > > hash=sha256" @u || die 1)
+> > > > 
+> > > > echo "$KEYID ($KEYHANDLE)"
+> > > > 
+> > > > keyctl pipe $KEYID > blob.hex || die 1
+> > > > keyctl clear @u || die 1
+> > > > 
+> > > > echo "Import key from blob"
+> > > > 
+> > > > keyctl add trusted kmk "load `cat blob.hex` keyhandle=$KEYHANDLE" @u
+> > > > > > die 1
+> > > > 
+> > > > die 0
+> > > > 
+> > > > Result:
+> > > > 
+> > > > sudo ./keyctl-smoke.sh
+> > > > 566201053 (0x80000000)
+> > > > keyctl_read_alloc: Permission denied
+> > > 
+> > > Well, it's clearly failing in keyctl pipe
+> > > 
+> > > I do confess to never having tested a volatile primary, but I just did
+> > > so and it works for me.  I will also add the keyhandle in the load
+> > > isn't necessary, because it should be in the blob, but there should
+> > > also be no harm (just tested).
+> > > 
+> > > However, I don't have keyctl_read_alloc in my tree, so it may be an
+> > > incompatibility with another patch set.  What's your base and what
+> > > other patches do you have applied?
+> > 
+> > http://git.infradead.org/users/jjs/linux-tpmdd.git
+> > 
+> > Or exactly:
+> > 
+> > git://git.infradead.org/users/jjs/linux-tpmdd.git (master)
+> > 
+> > /Jarkko
+> > 
+> 
+> keyctl_read_alloc is in the userspace keyctl program, right?
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git
 
-This argument was just never documented in the first place.
+Yes.
 
-Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
----
- Documentation/security/keys/core.rst | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-index d9b0b859018b..c26b9e7d47c2 100644
---- a/Documentation/security/keys/core.rst
-+++ b/Documentation/security/keys/core.rst
-@@ -920,10 +920,14 @@ The keyctl syscall functions are:
- 
- 	long keyctl(KEYCTL_PKEY_QUERY,
- 		    key_serial_t key_id, unsigned long reserved,
-+		    const char* params,
- 		    struct keyctl_pkey_query *info);
- 
--     Get information about an asymmetric key.  The information is returned in
--     the keyctl_pkey_query struct::
-+     Get information about an asymmetric key.  Specific algorithms and
-+     encodings may be queried by using the ``params`` argument.  This is a
-+     string containing a space- or tab-separated string of key-value pairs.
-+     Currently supported keys include ``enc`` and ``hash``.  The information
-+     is returned in the keyctl_pkey_query struct::
- 
- 	__u32	supported_ops;
- 	__u32	key_size;
--- 
-2.25.4
+/Jarkko
 
