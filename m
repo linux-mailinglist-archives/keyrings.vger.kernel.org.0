@@ -2,94 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B03831D64FF
-	for <lists+keyrings@lfdr.de>; Sun, 17 May 2020 02:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F13DF1D668A
+	for <lists+keyrings@lfdr.de>; Sun, 17 May 2020 10:17:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726763AbgEQAoy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 16 May 2020 20:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726295AbgEQAoy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 16 May 2020 20:44:54 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C368C061A0C;
-        Sat, 16 May 2020 17:44:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=oXEwYMh56jP/jhXSylitEbrYxOmXJzOOvEwzfWzqxsY=; b=qAKXBD7IRVa5nZGnQMYp7EAHiS
-        QHFpaF2P1IVwaqinpvrE797uhAPmiooSzWNW6DLG0iVscFGcXXrfhWHtWiLxWf9WKnYYZX09j8GKd
-        N9/um3djtTvFtOW9I4vj7jCkKZMKmLkNLhFHE4q5FuAOBA5m5IvCHZqN9SN4PwIvmtMfb0I1BX+yg
-        Zrqc6/XeNs+SHPvs0JIMfcUS7zvVxwdp8J/jeeh0TP0kI1QDOvgvS15/TKc04HnMXO/0kxj+h9lhu
-        ZU8I6fv8ZSjXvNJAiYKZ9oESe5BiihA7RGH76iy5krBASPeFxB02doNP1BdoOpBtu01hQmczm8iJw
-        5tlBWcfA==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ja7Px-0005su-Jb; Sun, 17 May 2020 00:44:37 +0000
-Date:   Sat, 16 May 2020 17:44:37 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Balbir Singh <bsingharora@gmail.com>
-Cc:     Waiman Long <longman@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-Message-ID: <20200517004437.GN16070@bombadil.infradead.org>
-References: <20200407200318.11711-1-longman@redhat.com>
- <1158ff38-c65d-379f-8ae7-6f507d9fc8dd@gmail.com>
- <20200514120018.GA16070@bombadil.infradead.org>
- <f779dea1-3b50-e354-3914-7394b4473f5b@gmail.com>
+        id S1727015AbgEQIRx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 17 May 2020 04:17:53 -0400
+Received: from mga01.intel.com ([192.55.52.88]:58790 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726982AbgEQIRw (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 17 May 2020 04:17:52 -0400
+IronPort-SDR: X4tb/vKMrnDb/up8r0l1vNwe8kHWxiO/O6146SMZzw8eCqBnMR2RDN0j7f0rFW+rfIVmA2vUC7
+ q0PDcqOjVBgQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2020 01:17:52 -0700
+IronPort-SDR: XvpyftoUBL4VNNQlP2Ptk49BgneHdFBB3a5XoVP/r0o96vH7cD8yfayQSYigVRolM5leuviZ1Z
+ l8Vt9ndqVMxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,402,1583222400"; 
+   d="scan'208";a="281680173"
+Received: from irsmsx107.ger.corp.intel.com ([163.33.3.99])
+  by orsmga002.jf.intel.com with ESMTP; 17 May 2020 01:17:50 -0700
+Received: from irsmsx603.ger.corp.intel.com (163.33.146.9) by
+ IRSMSX107.ger.corp.intel.com (163.33.3.99) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Sun, 17 May 2020 09:17:49 +0100
+Received: from irsmsx605.ger.corp.intel.com (163.33.146.138) by
+ irsmsx603.ger.corp.intel.com (163.33.146.9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Sun, 17 May 2020 09:17:49 +0100
+Received: from irsmsx605.ger.corp.intel.com ([163.33.146.138]) by
+ IRSMSX605.ger.corp.intel.com ([163.33.146.138]) with mapi id 15.01.1713.004;
+ Sun, 17 May 2020 09:17:49 +0100
+From:   "Sakkinen, Jarkko" <jarkko.sakkinen@intel.com>
+To:     "James.Bottomley@HansenPartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
+CC:     "jarkko.sakkinen@linux.intel.com" <jarkko.sakkinen@linux.intel.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>
+Subject: Re: [PATCH v9 1/8] lib: add ASN.1 encoder
+Thread-Topic: [PATCH v9 1/8] lib: add ASN.1 encoder
+Thread-Index: AQHWLCMzaVc35X/kI0Sfm7Wx23x2nqir3kIA
+Date:   Sun, 17 May 2020 08:17:49 +0000
+Message-ID: <49e454ea4fbcf53962d62f806a77497d9f0c6c0d.camel@intel.com>
+References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
+         <20200507231147.27025-2-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20200507231147.27025-2-James.Bottomley@HansenPartnership.com>
+Accept-Language: fi-FI, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.252.40.19]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A3910F01A7A8654C928C1281CE83F4FF@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f779dea1-3b50-e354-3914-7394b4473f5b@gmail.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, May 17, 2020 at 10:27:39AM +1000, Balbir Singh wrote:
-> On 14/5/20 10:00 pm, Matthew Wilcox wrote:
-> > On Thu, May 14, 2020 at 09:00:40PM +1000, Balbir Singh wrote:
-> >> I wonder if the right thing to do is also to disable pre-emption, just so that the thread does not linger on with sensitive data.
-> >>
-> >> void kvfree_sensitive(const void *addr, size_t len)
-> >> {
-> >> 	preempt_disable();
-> >> 	if (likely(!ZERO_OR_NULL_PTR(addr))) {
-> >> 		memzero_explicit((void *)addr, len);
-> >> 		kvfree(addr);
-> >> 	}
-> >> 	preempt_enable();
-> >> }
-> >> EXPORT_SYMBOL(kvfree_sensitive);
-> > 
-> > If it's _that_ sensitive then the caller should have disabled preemption.
-> > Because preemption could otherwise have occurred immediately before
-> > kvfree_sensitive() was called.
-> > 
-> 
-> May be, but the callers of the API have to be explictly aware of the contract.
-> I don't disagree with you on what you've said, but I was referring to the
-> intent of freeing sensitive data vs the turn around time for doing so.
-
-It's the caller's information.  They should be aware of their own
-requirements.  If they do something like:
-
-p = kmalloc();
-preempt_disable();
-construct(p);
-use(p);
-preempt_enable();
-kvfree_sensitive(p);
-
-there's really nothing we can do to help them inside kvfree_sensitive().
-Actually, can you come up with a scenario where disabling preemption
-inside kvfree_sensitive() will help with anything?
+T24gVGh1LCAyMDIwLTA1LTA3IGF0IDE2OjExIC0wNzAwLCBKYW1lcyBCb3R0b21sZXkgd3JvdGU6
+DQo+IFdlIGhhdmUgYSBuZWVkIGluIHRoZSBUUE0yIHRydXN0ZWQga2V5cyB0byByZXR1cm4gdGhl
+IEFTTi4xIGZvcm0gb2YNCj4gdGhlIFRQTSBrZXkgYmxvYiBzbyBpdCBjYW4gYmUgb3BlcmF0ZWQg
+b24gYnkgdG9vbHMgb3V0c2lkZSBvZiB0aGUNCj4ga2VybmVsLiAgVGhlIHNwZWNpZmljIHRvb2xz
+IGFyZSB0aGUgb3BlbnNzbF90cG0yX2VuZ2luZSwgb3BlbmNvbm5lY3QNCj4gYW5kIHRoZSBJbnRl
+bCB0cG0yLXRzcy1lbmdpbmUuICBUbyBkbyB0aGF0LCB3ZSBoYXZlIHRvIGJlIGFibGUgdG8gcmVh
+ZA0KPiBhbmQgd3JpdGUgdGhlIHNhbWUgYmluYXJ5IGtleSBmb3JtYXQgdGhlIHRvb2xzIHVzZS4g
+IFRoZSBjdXJyZW50IEFTTi4xDQo+IGRlY29kZXIgZG9lcyBmaW5lIGZvciByZWFkaW5nLCBidXQg
+d2UgbmVlZCBwaWVjZXMgb2YgYW4gQVNOLjEgZW5jb2Rlcg0KPiB0byB3cml0ZSB0aGUga2V5IGJs
+b2IgaW4gYmluYXJ5IGNvbXBhdGlibGUgZm9ybS4NCj4gDQo+IEZvciBiYWNrd2FyZHMgY29tcGF0
+aWJpbGl0eSwgdGhlIHRydXN0ZWQga2V5IHJlYWRlciBjb2RlIHdpbGwgc3RpbGwNCj4gYWNjZXB0
+IHRoZSB0d28gVFBNMkIgcXVhbnRpdGllcyB0aGF0IGl0IHVzZXMgdG9kYXksIGJ1dCB0aGUgd3Jp
+dGVyDQo+IHdpbGwgb25seSBvdXRwdXQgdGhlIEFTTi4xIGZvcm0uDQo+IA0KPiBUaGUgY3VycmVu
+dCBpbXBsZW1lbnRhdGlvbiBvbmx5IGVuY29kZXMgdGhlIEFTTi4xIGJpdHMgd2UgYWN0dWFsbHkg
+bmVlZC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEphbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9t
+bGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT4NCj4gUmV2aWV3ZWQtYnk6IEphcmtrbyBTYWtraW5l
+biA8amFya2tvLnNha2tpbmVuQGxpbnV4LmludGVsLmNvbT4NCg0KVGVzdGVkLWJ5OiBKYXJra28g
+U2Fra2luZW4gPGphcmtrby5zYWtraW5lbkBsaW51eC5pbnRlbC5jb20+DQoNCi9KYXJra28NCg==
