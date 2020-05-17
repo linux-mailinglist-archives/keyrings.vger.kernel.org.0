@@ -2,115 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C321D6449
-	for <lists+keyrings@lfdr.de>; Sat, 16 May 2020 23:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5261D64E4
+	for <lists+keyrings@lfdr.de>; Sun, 17 May 2020 02:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbgEPVop (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 16 May 2020 17:44:45 -0400
-Received: from mga18.intel.com ([134.134.136.126]:16282 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726668AbgEPVoo (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 16 May 2020 17:44:44 -0400
-IronPort-SDR: AbZNab+Xbe8qUQR+MQYcmzOaj7T8IEudz8PQH0YzBjO+yX/QLnxtSPVlS5J8VEswSOr3Pegwdy
- jX+NutySuoLg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2020 14:44:43 -0700
-IronPort-SDR: WsuUba/F7xU29s3a4Jb/+ws9HhbM2g+5RZurz0dWWp3O+UyitjaH+K6+XelXFawYCrvNooPtZY
- 5vJBPtBVL6lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,400,1583222400"; 
-   d="scan'208";a="465346553"
-Received: from mroth-mobl.ger.corp.intel.com ([10.249.39.103])
-  by fmsmga006.fm.intel.com with ESMTP; 16 May 2020 14:44:40 -0700
-Message-ID: <9a7fe3f44bb5772eb6c8cdac04d042190d4a53e1.camel@linux.intel.com>
-Subject: Re: [PATCH v9 0/8] TPM 2.0 trusted keys with attached policy
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        "Kayaalp, Mehmet" <Mehmet.Kayaalp@unh.edu>
-Cc:     Jerry Snitselaar <jsnitsel@redhat.com>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>
-Date:   Sun, 17 May 2020 00:44:38 +0300
-In-Reply-To: <1589584989.30847.20.camel@HansenPartnership.com>
-References: <20200507231147.27025-1-James.Bottomley@HansenPartnership.com>
-         <23639de13874c00e6bb2b816b4db0b586c9a074c.camel@linux.intel.com>
-         <483c4f1af7be41c8d091b11d4484b606ebd319b7.camel@linux.intel.com>
-         <1589514263.5759.25.camel@HansenPartnership.com>
-         <20200515084702.GA3404@linux.intel.com>
-         <20200515191758.ieojyk5xhsx2hzzd@cantor>
-         <1589571278.3653.22.camel@HansenPartnership.com>
-         <1589573417.3653.28.camel@HansenPartnership.com>
-         <56688CD4-A4A5-4D98-8724-6CBA10C7E1CE@unh.edu>
-         <1589581169.30847.5.camel@HansenPartnership.com>
-         <1589584989.30847.20.camel@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.1-2 
+        id S1726863AbgEQA1t (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 16 May 2020 20:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42744 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726719AbgEQA1t (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 16 May 2020 20:27:49 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BC8C061A0C;
+        Sat, 16 May 2020 17:27:49 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id x2so2972542pfx.7;
+        Sat, 16 May 2020 17:27:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=NIIv/XyY0O9Xz6PLyvj9mxt+StwQRUOgmE4anFhaN7Q=;
+        b=eZM12Y5QF2vu3U/oPfGiRQrKgdsqdS6VH89cAt7GiBSFWhvvqQbtcN4RTBqGeB13j8
+         0soEliS0TIb3kqeo5cds5xiKNiO0YlkZttGPKlLMPWAiXyWKW9cY0Ez3X8ebqic1HMaS
+         xAgoMZHyPlAn6uKNRYQDa83wX5OTS/h6WB273VFiCF8i14GyJLrCzVo0HIgu6er/wlSd
+         yocH0myVYzg92DmtrjX+JSkHxpbR2ItDTt+gpDnB/LiPKDMNFOrwFk9LHeepTu1JUYJb
+         pXW/JS6j08YhggraE/twY3wWWytRuG7AIkuG6X9IcUluanKwXJH7xygez+Xt8o/t8OIJ
+         ACVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NIIv/XyY0O9Xz6PLyvj9mxt+StwQRUOgmE4anFhaN7Q=;
+        b=JKASqW1SjSu6vn45wsnMIURfulotG0h/nDTDHcyn9AygRIutjHXFY3As3a8sJRsd69
+         +1iAWNH5iJqGln+W0TU3TZLiIW+YjQy7oO3zxR3B1ETO4E0ZRtQTabHkJFXD65fuv9op
+         jSU959NySOIDZqjDrsCxNXiLYDwB+mQyM7DwRna8LpSrd3AZeyPaJzXPyVR5hIGoN++E
+         JgpXwYW/TNWjX3wgIPXsqlIk7l4fdpfo/Gt7LvaCBtdlIcjzhjHF0JVferQQL8JwqVZj
+         tTZp1bp7t6p2SBGaBilLZYY75NaXrf6H9JMUAl2lg4HvYYYgwjBHdEn5mOsdMKYJpC3P
+         Gmuw==
+X-Gm-Message-State: AOAM531wEx3M/M0wTkRsjZ/JEjvi5ZJ8gM8G6vqONV6f2H/Cg6GSJ5rq
+        zf6ChwmWzQM/iTmeYLnkl6E=
+X-Google-Smtp-Source: ABdhPJwsa9AocdDlyKPIRck6y0pp4qnnz6xKVHUzR46H8TOxyF/1wqQjkq0i5/K2t5AS2fIaleSBcg==
+X-Received: by 2002:a62:3c5:: with SMTP id 188mr10053202pfd.41.1589675267856;
+        Sat, 16 May 2020 17:27:47 -0700 (PDT)
+Received: from [192.168.68.125] ([210.185.116.244])
+        by smtp.gmail.com with ESMTPSA id p24sm5080988pff.92.2020.05.16.17.27.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 May 2020 17:27:46 -0700 (PDT)
+Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        David Rientjes <rientjes@google.com>
+References: <20200407200318.11711-1-longman@redhat.com>
+ <1158ff38-c65d-379f-8ae7-6f507d9fc8dd@gmail.com>
+ <20200514120018.GA16070@bombadil.infradead.org>
+From:   Balbir Singh <bsingharora@gmail.com>
+Message-ID: <f779dea1-3b50-e354-3914-7394b4473f5b@gmail.com>
+Date:   Sun, 17 May 2020 10:27:39 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20200514120018.GA16070@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2020-05-15 at 16:23 -0700, James Bottomley wrote:
-> On Fri, 2020-05-15 at 15:19 -0700, James Bottomley wrote:
-> > On Fri, 2020-05-15 at 21:03 +0000, Kayaalp, Mehmet wrote:
-> > > > On May 15, 2020, at 4:10 PM, James Bottomley <James.Bottomley@han
-> > > > se
-> > > > npartnership.com> wrote:
-> > > > 
-> > > > I think that means the solution is not to run the smoke test
-> > > > under sudo but to do sudo -s and then run it.
-> > > > 
-> > > > James
-> > > 
-> > > How about "sudo -i":
-> > > 
-> > > https://askubuntu.com/questions/376199/sudo-su-vs-sudo-i-vs-sudo-
-> > > bin-bash-when-does-it-matter-which-is-used
-> > 
-> > Actually, no that doesn't work either:
-> > 
-> > jejb@testdeb> sudo -i keyctl list @s
-> > 1 key in keyring:
-> > 1041514063: ---lswrv  1000 65534 keyring: _uid.1000
-> > 
-> > I suspect this might be a very subtle bug to do with when you get a
-> > new session keyring.
-> 
-> It turns out to be incredibly subtle, but I'm not sure if it's a bug or
-> not.  the util-linux sudo like commands have special pam profiles
-> 
-> /etc/pam.d/su-l 
-> /etc/pam.d/runuser-l
-> 
-> These special profiles call pam_keyinit.so with flags to install a new
-> session keyring.  sudo doesn't have this, so it never, on its own, even
-> when called with -i or -s, installs a new session keyring. This does
-> strike me as a bizarre oversight which leads directly to this weird
-> keyctl pipe behaviour.
-> 
-> I'm also not sure the keyctl pipe behaviour is correct: why should
-> keyctl pipe deny access to root to read a key just because it's in a
-> different session keyring?  It defintely seems intentional, because if
-> I create a key as a non root user and try to print it by id as root I
-> get EPERM.
-> 
-> The weirdest behaviour, though seems to be keyctl:  keyctl add ... @u
-> will add to the session keyrings of the actual uid regardless of what
-> session keyring the creator actually has, which is why keyctl add ...
-> @u works under sudo but you get EPERM back trying to pipe it by id.
->  
-> James
 
-I think I construct a low priority bug to kernel bugzilla and link these
-from l.k.o. Thanks for digging this all up.
 
-/Jarkko
+On 14/5/20 10:00 pm, Matthew Wilcox wrote:
+> On Thu, May 14, 2020 at 09:00:40PM +1000, Balbir Singh wrote:
+>> I wonder if the right thing to do is also to disable pre-emption, just so that the thread does not linger on with sensitive data.
+>>
+>> void kvfree_sensitive(const void *addr, size_t len)
+>> {
+>> 	preempt_disable();
+>> 	if (likely(!ZERO_OR_NULL_PTR(addr))) {
+>> 		memzero_explicit((void *)addr, len);
+>> 		kvfree(addr);
+>> 	}
+>> 	preempt_enable();
+>> }
+>> EXPORT_SYMBOL(kvfree_sensitive);
+> 
+> If it's _that_ sensitive then the caller should have disabled preemption.
+> Because preemption could otherwise have occurred immediately before
+> kvfree_sensitive() was called.
+> 
 
+May be, but the callers of the API have to be explictly aware of the contract.
+I don't disagree with you on what you've said, but I was referring to the
+intent of freeing sensitive data vs the turn around time for doing so.
+
+Balbir Singh.
