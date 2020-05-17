@@ -2,55 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD5261D64E4
-	for <lists+keyrings@lfdr.de>; Sun, 17 May 2020 02:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B03831D64FF
+	for <lists+keyrings@lfdr.de>; Sun, 17 May 2020 02:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbgEQA1t (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 16 May 2020 20:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42744 "EHLO
+        id S1726763AbgEQAoy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 16 May 2020 20:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726719AbgEQA1t (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 16 May 2020 20:27:49 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BC8C061A0C;
-        Sat, 16 May 2020 17:27:49 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id x2so2972542pfx.7;
-        Sat, 16 May 2020 17:27:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=NIIv/XyY0O9Xz6PLyvj9mxt+StwQRUOgmE4anFhaN7Q=;
-        b=eZM12Y5QF2vu3U/oPfGiRQrKgdsqdS6VH89cAt7GiBSFWhvvqQbtcN4RTBqGeB13j8
-         0soEliS0TIb3kqeo5cds5xiKNiO0YlkZttGPKlLMPWAiXyWKW9cY0Ez3X8ebqic1HMaS
-         xAgoMZHyPlAn6uKNRYQDa83wX5OTS/h6WB273VFiCF8i14GyJLrCzVo0HIgu6er/wlSd
-         yocH0myVYzg92DmtrjX+JSkHxpbR2ItDTt+gpDnB/LiPKDMNFOrwFk9LHeepTu1JUYJb
-         pXW/JS6j08YhggraE/twY3wWWytRuG7AIkuG6X9IcUluanKwXJH7xygez+Xt8o/t8OIJ
-         ACVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NIIv/XyY0O9Xz6PLyvj9mxt+StwQRUOgmE4anFhaN7Q=;
-        b=JKASqW1SjSu6vn45wsnMIURfulotG0h/nDTDHcyn9AygRIutjHXFY3As3a8sJRsd69
-         +1iAWNH5iJqGln+W0TU3TZLiIW+YjQy7oO3zxR3B1ETO4E0ZRtQTabHkJFXD65fuv9op
-         jSU959NySOIDZqjDrsCxNXiLYDwB+mQyM7DwRna8LpSrd3AZeyPaJzXPyVR5hIGoN++E
-         JgpXwYW/TNWjX3wgIPXsqlIk7l4fdpfo/Gt7LvaCBtdlIcjzhjHF0JVferQQL8JwqVZj
-         tTZp1bp7t6p2SBGaBilLZYY75NaXrf6H9JMUAl2lg4HvYYYgwjBHdEn5mOsdMKYJpC3P
-         Gmuw==
-X-Gm-Message-State: AOAM531wEx3M/M0wTkRsjZ/JEjvi5ZJ8gM8G6vqONV6f2H/Cg6GSJ5rq
-        zf6ChwmWzQM/iTmeYLnkl6E=
-X-Google-Smtp-Source: ABdhPJwsa9AocdDlyKPIRck6y0pp4qnnz6xKVHUzR46H8TOxyF/1wqQjkq0i5/K2t5AS2fIaleSBcg==
-X-Received: by 2002:a62:3c5:: with SMTP id 188mr10053202pfd.41.1589675267856;
-        Sat, 16 May 2020 17:27:47 -0700 (PDT)
-Received: from [192.168.68.125] ([210.185.116.244])
-        by smtp.gmail.com with ESMTPSA id p24sm5080988pff.92.2020.05.16.17.27.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 May 2020 17:27:46 -0700 (PDT)
-Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
- objects
-To:     Matthew Wilcox <willy@infradead.org>
+        with ESMTP id S1726295AbgEQAoy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 16 May 2020 20:44:54 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C368C061A0C;
+        Sat, 16 May 2020 17:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=oXEwYMh56jP/jhXSylitEbrYxOmXJzOOvEwzfWzqxsY=; b=qAKXBD7IRVa5nZGnQMYp7EAHiS
+        QHFpaF2P1IVwaqinpvrE797uhAPmiooSzWNW6DLG0iVscFGcXXrfhWHtWiLxWf9WKnYYZX09j8GKd
+        N9/um3djtTvFtOW9I4vj7jCkKZMKmLkNLhFHE4q5FuAOBA5m5IvCHZqN9SN4PwIvmtMfb0I1BX+yg
+        Zrqc6/XeNs+SHPvs0JIMfcUS7zvVxwdp8J/jeeh0TP0kI1QDOvgvS15/TKc04HnMXO/0kxj+h9lhu
+        ZU8I6fv8ZSjXvNJAiYKZ9oESe5BiihA7RGH76iy5krBASPeFxB02doNP1BdoOpBtu01hQmczm8iJw
+        5tlBWcfA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1ja7Px-0005su-Jb; Sun, 17 May 2020 00:44:37 +0000
+Date:   Sat, 16 May 2020 17:44:37 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Balbir Singh <bsingharora@gmail.com>
 Cc:     Waiman Long <longman@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         David Howells <dhowells@redhat.com>,
@@ -61,48 +39,57 @@ Cc:     Waiman Long <longman@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joe Perches <joe@perches.com>,
         David Rientjes <rientjes@google.com>
+Subject: Re: [PATCH v3] mm: Add kvfree_sensitive() for freeing sensitive data
+ objects
+Message-ID: <20200517004437.GN16070@bombadil.infradead.org>
 References: <20200407200318.11711-1-longman@redhat.com>
  <1158ff38-c65d-379f-8ae7-6f507d9fc8dd@gmail.com>
  <20200514120018.GA16070@bombadil.infradead.org>
-From:   Balbir Singh <bsingharora@gmail.com>
-Message-ID: <f779dea1-3b50-e354-3914-7394b4473f5b@gmail.com>
-Date:   Sun, 17 May 2020 10:27:39 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ <f779dea1-3b50-e354-3914-7394b4473f5b@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200514120018.GA16070@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f779dea1-3b50-e354-3914-7394b4473f5b@gmail.com>
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-
-
-On 14/5/20 10:00 pm, Matthew Wilcox wrote:
-> On Thu, May 14, 2020 at 09:00:40PM +1000, Balbir Singh wrote:
->> I wonder if the right thing to do is also to disable pre-emption, just so that the thread does not linger on with sensitive data.
->>
->> void kvfree_sensitive(const void *addr, size_t len)
->> {
->> 	preempt_disable();
->> 	if (likely(!ZERO_OR_NULL_PTR(addr))) {
->> 		memzero_explicit((void *)addr, len);
->> 		kvfree(addr);
->> 	}
->> 	preempt_enable();
->> }
->> EXPORT_SYMBOL(kvfree_sensitive);
+On Sun, May 17, 2020 at 10:27:39AM +1000, Balbir Singh wrote:
+> On 14/5/20 10:00 pm, Matthew Wilcox wrote:
+> > On Thu, May 14, 2020 at 09:00:40PM +1000, Balbir Singh wrote:
+> >> I wonder if the right thing to do is also to disable pre-emption, just so that the thread does not linger on with sensitive data.
+> >>
+> >> void kvfree_sensitive(const void *addr, size_t len)
+> >> {
+> >> 	preempt_disable();
+> >> 	if (likely(!ZERO_OR_NULL_PTR(addr))) {
+> >> 		memzero_explicit((void *)addr, len);
+> >> 		kvfree(addr);
+> >> 	}
+> >> 	preempt_enable();
+> >> }
+> >> EXPORT_SYMBOL(kvfree_sensitive);
+> > 
+> > If it's _that_ sensitive then the caller should have disabled preemption.
+> > Because preemption could otherwise have occurred immediately before
+> > kvfree_sensitive() was called.
+> > 
 > 
-> If it's _that_ sensitive then the caller should have disabled preemption.
-> Because preemption could otherwise have occurred immediately before
-> kvfree_sensitive() was called.
-> 
+> May be, but the callers of the API have to be explictly aware of the contract.
+> I don't disagree with you on what you've said, but I was referring to the
+> intent of freeing sensitive data vs the turn around time for doing so.
 
-May be, but the callers of the API have to be explictly aware of the contract.
-I don't disagree with you on what you've said, but I was referring to the
-intent of freeing sensitive data vs the turn around time for doing so.
+It's the caller's information.  They should be aware of their own
+requirements.  If they do something like:
 
-Balbir Singh.
+p = kmalloc();
+preempt_disable();
+construct(p);
+use(p);
+preempt_enable();
+kvfree_sensitive(p);
+
+there's really nothing we can do to help them inside kvfree_sensitive().
+Actually, can you come up with a scenario where disabling preemption
+inside kvfree_sensitive() will help with anything?
