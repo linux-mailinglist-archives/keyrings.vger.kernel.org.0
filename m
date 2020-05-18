@@ -2,58 +2,58 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0AEC1D801E
-	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 19:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0D21D801F
+	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 19:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728445AbgERR12 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 May 2020 13:27:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57558 "EHLO
+        id S1728419AbgERR1a (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 May 2020 13:27:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728304AbgERR12 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 13:27:28 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCE0C061A0C
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:28 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id q9so137130pjm.2
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:28 -0700 (PDT)
+        with ESMTP id S1728304AbgERR1a (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 13:27:30 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F24CC061A0C
+        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:29 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id u22so4486470plq.12
+        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Wkkc1Rm+rMed2ZqbMkUHJzTFUh3hfaL1duU5QQp9Nww=;
-        b=Xp9NomrpUKfmkwAKZZsTMOzYc1oy7uJWH2wxodWXW4OUALZclQ+RK8PC/q1hcv79lW
-         K7rjhsu+FjR5o9oefUjp+owVIFm8NOwXVgcqynbUVhX4vLznk7r7yD+YgOjMI3ZqL+cX
-         V6LshKpz+YeIsK6Ny4ml3sdGDdjGS4mqvp6C4rS8YZjm5oZUNZjWa//ZUa/bd1JIkMNf
-         8gsXQQWYL+DZqS6o03skzncLB3CeX5huZ95JtMRrIvar+uyydjI/PTIpW/N38QpkE5d/
-         oUpFulJJD3wagltaML+8663rWxHxU/6zDGUvsJsGrXadu45+wlF5d6cdNy36T027/0cD
-         9BdA==
+        bh=0DOoC6RMfZHUYe1siAwmYdu5ypSLhE4eC+mZXq5SbvM=;
+        b=Ll9F8NFlU1tpDY768EM2RpsA1a/A0D2rE4NUCyxhvGvSRIc80M9oJldUMGcpy140/J
+         6gDaSHULILCFMzaTNkj/9WC0Nz2NtNJUTU1haisZ/uSnszcSpcn8QWAjEZYYEg6Zp63e
+         tu6D6NbmZ5pIG3kNhPKqAneAMFsT6eywzgq/WfJ4MqTX/V0LQy/oOAU/kotagGzzMf2n
+         XVw4dF4f9Aumc4pJdz5SXwn7sb+gpuQ9amJNz579qj+1tNmhx7pdvOTbn8FE2h1lP8CC
+         eZa82H5TcYil3ot5gJb6MNWx016+UdIHof+fCgB/yjqHnuxczxdY1+QRi4pL7AVKxvlQ
+         iljQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Wkkc1Rm+rMed2ZqbMkUHJzTFUh3hfaL1duU5QQp9Nww=;
-        b=iDpAImGYH9VqYk2vAr2T4RpvaVLJ5Qn/cL8Sga3+emJA3neoVjM8g06HzPQcJVAsSO
-         TsjTeGFK5v251qLvTlZ4CfAJS3PRAteE+V+7higHaCCLfqInDZ3F15clzO5VwlSM/2cp
-         ehuuVDaKy74XjQhQjR5yRS0SeO1+C+YnM0GCoH+qXUoKj3V1kznHY8FU4FNWyO7Lf6Fz
-         mxIZxa5TWnCdpeS00Q9ihz3nEX4CEAcBq3Buand0Dt3sHKKYHZJiNKYBlQiAGIeNttpX
-         jIfMHzwxAWSe2ftFDTC8AsktLEQPVMgQQCYUmPojTleN3qwsZwTs65frmG58VgrkjY97
-         7zIQ==
-X-Gm-Message-State: AOAM530Ta8/JuR8GDi+NhXVRXDhF7N0bdWPDncZWPQsqcs9hntenR8MS
-        IAgRTyBxysTHf3VNnZ+0gN3L89+USqM=
-X-Google-Smtp-Source: ABdhPJxkG1n/bG47Eu5bO71pGtFGBPeTrE6kdJy5Bk4e8t1a/KBNaC9D2MMTLir9BjTmj+4ngklLQg==
-X-Received: by 2002:a17:902:bd07:: with SMTP id p7mr16584940pls.293.1589822847404;
-        Mon, 18 May 2020 10:27:27 -0700 (PDT)
+        bh=0DOoC6RMfZHUYe1siAwmYdu5ypSLhE4eC+mZXq5SbvM=;
+        b=YQGZb4Ou+HS8L0qVpsreHEo65opYvIjvFmi2bDb0Dx6m7LAla4ewGPY5TEKD+IIL0K
+         4ppTQ6XrmEFPBoweDQxAZ97MEJRtuNVj5Z19C5TSlMw+YCdb1jaqowvQVzTXq2/CvHRH
+         /nhxry2I442Qs3WsxLj0VBoC+CJERL27H4IKmhvCTBKcVQwPnS30/wJ8LKcxCJlrU2JJ
+         XkYt1Q/xQGFNYbMAAlBPZYsOcHVD9yVjO9j+LPumlXptNjl2Q/5XlttYc5Q3nekgZNv9
+         sooNCQhMH7dlAwMeF9eEgJAM16e6OlKt10wSa4kYsOrb1L9nP3mVUY6leAFFNnaXNivk
+         V5Bw==
+X-Gm-Message-State: AOAM530cb8rN9LnIsRNrLI0vL5k1mPrOps13TvHddIKpXfuQZAT5PRR9
+        krPDkE5YdAoGyezbtpsxTkKCgTcHRLc=
+X-Google-Smtp-Source: ABdhPJxXO+Iijo8QoiBM2gZjrWlDZdKXpOt4S34pUpXvBFKYLT8nCqTZF3zz0jaEfik7vq7WiiHNZA==
+X-Received: by 2002:a17:902:c254:: with SMTP id 20mr3994883plg.287.1589822848667;
+        Mon, 18 May 2020 10:27:28 -0700 (PDT)
 Received: from host-29.home (50-39-160-111.bvtn.or.frontiernet.net. [50.39.160.111])
-        by smtp.gmail.com with ESMTPSA id o14sm4092448pfp.89.2020.05.18.10.27.26
+        by smtp.gmail.com with ESMTPSA id o14sm4092448pfp.89.2020.05.18.10.27.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 10:27:26 -0700 (PDT)
+        Mon, 18 May 2020 10:27:28 -0700 (PDT)
 From:   James Prestwood <prestwoj@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     James.Bottomley@HansenPartnership.com,
         James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH 15/17] include: crypto: add asym_tpm2_subtype definition
-Date:   Mon, 18 May 2020 10:27:02 -0700
-Message-Id: <20200518172704.29608-16-prestwoj@gmail.com>
+Subject: [PATCH 16/17] asymmetric_keys: add TPM2 ASN1 definition
+Date:   Mon, 18 May 2020 10:27:03 -0700
+Message-Id: <20200518172704.29608-17-prestwoj@gmail.com>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200518172704.29608-1-prestwoj@gmail.com>
 References: <20200518172704.29608-1-prestwoj@gmail.com>
@@ -64,52 +64,43 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This defines the structure of a TPM2 key in the kernel.
+Copied the TPM2 ASN1 definition from trusted-keys
 
 Signed-off-by: James Prestwood <prestwoj@gmail.com>
 ---
- include/crypto/asym_tpm2_subtype.h | 32 ++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 include/crypto/asym_tpm2_subtype.h
+ crypto/asymmetric_keys/tpm2key.asn1 | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+ create mode 100644 crypto/asymmetric_keys/tpm2key.asn1
 
-diff --git a/include/crypto/asym_tpm2_subtype.h b/include/crypto/asym_tpm2_subtype.h
+diff --git a/crypto/asymmetric_keys/tpm2key.asn1 b/crypto/asymmetric_keys/tpm2key.asn1
 new file mode 100644
-index 000000000000..dea80b2e6e66
+index 000000000000..f930fd812db3
 --- /dev/null
-+++ b/include/crypto/asym_tpm2_subtype.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_ASYM_TPM2_SUBTYPE_H
-+#define _LINUX_ASYM_TPM2_SUBTYPE_H
++++ b/crypto/asymmetric_keys/tpm2key.asn1
+@@ -0,0 +1,23 @@
++---
++--- Note: This isn't quite the definition in the standard
++---       However, the Linux asn.1 parser doesn't understand
++---       [2] EXPLICIT SEQUENCE OF OPTIONAL
++---       So there's an extra intermediate TPMPolicySequence
++---       definition to work around this
 +
-+#include <linux/keyctl.h>
++TPMKey ::= SEQUENCE {
++	type		OBJECT IDENTIFIER ({tpmkey_type}),
++	emptyAuth	[0] EXPLICIT BOOLEAN OPTIONAL,
++	policy		[1] EXPLICIT TPMPolicySequence OPTIONAL,
++	secret		[2] EXPLICIT OCTET STRING OPTIONAL,
++	parent		INTEGER ({tpmkey_parent}),
++	pubkey		OCTET STRING ({tpmkey_pub}),
++	privkey		OCTET STRING ({tpmkey_priv})
++	}
 +
-+struct tpm2_parse_context {
-+	u32 parent;
-+	const u8 *pub;
-+	u32 pub_len;
-+	const u8 *priv;
-+	u32 priv_len;
-+};
++TPMPolicySequence ::= SEQUENCE OF TPMPolicy
 +
-+struct tpm2_key {
-+	struct tpm_chip *chip;
-+	u32 parent;
-+
-+	u8 *blob;
-+	u32 bloblen;
-+
-+	/* pointer into 'blob' where public key begins */
-+	const u8 *pub;
-+	u32 pub_len;
-+
-+};
-+
-+struct tpm2_key *tpm2_key_create(struct tpm2_parse_context *ctx);
-+
-+extern struct asymmetric_key_subtype asym_tpm2_subtype;
-+
-+#endif /* _LINUX_ASYM_TPM2_SUBTYPE_H */
++TPMPolicy ::= SEQUENCE {
++	commandCode		[0] EXPLICIT INTEGER ({tpmkey_code}),
++	commandPolicy		[1] EXPLICIT OCTET STRING ({tpmkey_policy})
++	}
 -- 
 2.21.1
 
