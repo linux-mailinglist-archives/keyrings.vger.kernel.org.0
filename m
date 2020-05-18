@@ -2,59 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B76101D800D
-	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 19:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E74B01D800F
+	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 19:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727782AbgERR1N (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 May 2020 13:27:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
+        id S1726958AbgERR1P (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 May 2020 13:27:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726958AbgERR1M (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 13:27:12 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730D0C061A0C
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:12 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id q8so3446627pfu.5
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:12 -0700 (PDT)
+        with ESMTP id S1727942AbgERR1O (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 13:27:14 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC70EC061A0C
+        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:13 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id y18so5253201pfl.9
+        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7lIUEIbXCv4WY2urpGA/afufHRdXvAHmErENp7idJzc=;
-        b=a1vrIAHbIFp8MK4eqdXfhjQxyUU9NgwR1L5IS+JCZz0NEzyl9RV3ip4Q0soGru/NN1
-         XOMwCi6G/XBzJDf0jxUYoFD+PQdrTnt//bBFYjl4mA0VolHiYLAAnVms35GeLx3u/3kz
-         qpGuegrhllhiBBxxfCfGWAUOvrC+TWwp9/nYtCZHvCd13lDo5HwzYeK4KU3baWpZZgkq
-         RvPkVafaMsJ24HFlKUflKBJS5k+Rv+mbvlO4Cln8tvQ6oKn/Bc+ZBTk1N4y/+9wScUQ7
-         LSCmcxWeuhhdJBK4SBsw0WMcq9NRMCZ6sLdptq9rT2BlLiRizWWjCBsyQE1BXx6+QmE+
-         dBGA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=VU2Z9jH2tHrmIYCSZ+Qm/Bdg8LSTyT9WNzv/6AK0Y/I=;
+        b=NkW7ruD6LOylPL/N24x8fpSfp9iM08MmlXlkq1BAue8ZV8nfEMTiQkaigqcGO47SNV
+         GkBputvng6Blh0/hdwvlpxuRHCxqRaSyxIxqC5zgwDZewNAFeEBT6WKi8kgQdAKIQzsi
+         NVNZBs7t6xXBztm3AlQlsfKJzfPS+1kWKY4UX1MLD3LWGvE6FkAeq+Ws3KzlKkkdT1gh
+         pT9aFU7NFzN+AhJxBH1LqleosvclCaRJcpVifnXMQd7bjy3ZVOTE4KifgSPAU4QrI/lf
+         IGrzK5dO9HCHpWBHK0htPFDs47Qxa4OBUUpM0+NQ17+N72CQzGA/ylP0hMjXsxilmIhg
+         VhVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7lIUEIbXCv4WY2urpGA/afufHRdXvAHmErENp7idJzc=;
-        b=d0rBcXZ3ExZZXpkLgxf9+uHq2BN0jNuuBtAsZapPE2Zjnv0yYzr3BwqrPuaLUnpJ0n
-         0o1plsrggbs7MoOSo/R5iQepnWqzxHuWsCE0WXZ5GzrpxhvSMrg6EWKUtOkImjRrenl1
-         PqJ6g5zsdaG3Txb5TGAG5CUdFCkDigWh4MWv6ahDUsu697q/9yb9vM8RrgiKDJBlQZDb
-         Ji6AChF9+DypCrmbWvU5saxHLqxk3S2NirlHHSWNc1/jF7kM+bfMTSZa1hR29J7Bx/qi
-         iYz6ED69tU8sLStX1LZXg7akEgRJ6N95M1WwCKEnPojj/PujLlpV8zEWjBd7AamV+RsB
-         R40Q==
-X-Gm-Message-State: AOAM531OpWHMPsrGU/stMLQ9nWE0o2bw/yyvvLYURno85g8rDxo19LQ4
-        aF5mRk2wPhU0NiJOP5QW372Yx9iHVSE=
-X-Google-Smtp-Source: ABdhPJy8v/gc1wdhMNQffphOkISo55DO8/QMjCiqF+Qym1SxJ993ynQYYPRTuORfX7YnLGvp5+Iv2w==
-X-Received: by 2002:a63:1845:: with SMTP id 5mr15820479pgy.69.1589822831500;
-        Mon, 18 May 2020 10:27:11 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=VU2Z9jH2tHrmIYCSZ+Qm/Bdg8LSTyT9WNzv/6AK0Y/I=;
+        b=HTOyTHYtblkKopmu+WD1Kso6U97RWoadd/NldFwT32pkN6lTtO4J1P8AIdtZ3HbsV9
+         OvF+Lw6raMK4pu/RJ8Qk2Q/855e5KP7jK0a91S6W4ylAF/Iv59dsNBol4c29z3y6vEG9
+         /vhrQFYK15QKfc8u7r4eVVOKXCPTKoDGbDcb2tzEbZY7EcZyijiQS0U4QkjEDenFJpVM
+         4OvNOBjyj9W1JgPFtNFqSJz/aUvfnO/7yVTttUNUnLIhgSrKzDhi3zFBl3DVY1IzihPC
+         evxBDC2c+wiI42HHYi4RwGqcN+nZBjf2hFny9SRjO+9UiXq2EOwrlDyw40DOGjCojEpf
+         /AnA==
+X-Gm-Message-State: AOAM532ewxH9LuLXcd2Sbt7alLU8rjTRdkFhmGMKY0DfNXhKAeWWsVF5
+        jxfpTLfJ0R5+wGyjzBUgKLGzd4Zz5WY=
+X-Google-Smtp-Source: ABdhPJxTSSbiwkXqmBMzwpJ8hChY2v6VT3wUQQN1HsQi9wBwxf30odHq9JIs0r0Q7lydSFTYPUsIUw==
+X-Received: by 2002:a65:4489:: with SMTP id l9mr7811736pgq.223.1589822832809;
+        Mon, 18 May 2020 10:27:12 -0700 (PDT)
 Received: from host-29.home (50-39-160-111.bvtn.or.frontiernet.net. [50.39.160.111])
-        by smtp.gmail.com with ESMTPSA id o14sm4092448pfp.89.2020.05.18.10.27.10
+        by smtp.gmail.com with ESMTPSA id o14sm4092448pfp.89.2020.05.18.10.27.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 10:27:10 -0700 (PDT)
+        Mon, 18 May 2020 10:27:12 -0700 (PDT)
 From:   James Prestwood <prestwoj@gmail.com>
 To:     keyrings@vger.kernel.org
-Cc:     James.Bottomley@HansenPartnership.com,
-        James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH 00/17] Asymmetric key operations on TPM2
-Date:   Mon, 18 May 2020 10:26:47 -0700
-Message-Id: <20200518172704.29608-1-prestwoj@gmail.com>
+Cc:     James.Bottomley@HansenPartnership.com
+Subject: [PATCH 01/17] tpm-buf: move from static inlines to real functions
+Date:   Mon, 18 May 2020 10:26:48 -0700
+Message-Id: <20200518172704.29608-2-prestwoj@gmail.com>
 X-Mailer: git-send-email 2.21.1
+In-Reply-To: <20200518172704.29608-1-prestwoj@gmail.com>
+References: <20200518172704.29608-1-prestwoj@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
@@ -62,146 +63,307 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This adds a TPM 2.0 key parser and asymmetric key type for access to
-the TPM for encryption, decryption, sign, and verify using RSA private
-keys. The majority of the work went into the tpm driver subsystem
-piggy backing off some old, not-yet-upstreamed, patches from James
-Bottomley. These can be found here, and they are attached in this
-patch set:
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-https://lore.kernel.org/linux-crypto/1568031408.6613.29.camel@HansenPartnership.com/
+This separates out the old tpm_buf_... handling functions from static
+inlines in tpm.h and makes them their own tpm-buf.c file.  This is a
+precursor so we can add new functions for other TPM type handling
 
-There is also a patch from James which may already be upstreamed which
-adds some OID registry values for TPM keys. I have also copied over
-the ASN.1 definition from the trusted key type in order to parse a
-TPM key from asymmetric keys.
-
-These patches have been rebased on top of 5.6, and I would urge
-James to take a look at these and make sure I rebased them correctly.
-(The folder structure of the TPM/trusted subsystem had since changed
-in the kernel since these patches, so I did my best).
-
-As far as the patches are concerned the majority of the functionality
-happens in drivers/char/tpm/tpm2-cmd.c: tpm2_rsa_decrypt(). This takes
-a parent handle, key blob, and data to be decrypted. Assuming the parent
-exists and the key blob is valid the data will be decrypted using the
-TPM. This API can also be used for signing by pre-padding the input data
-with pkcs1, effectively turning a decrypt call into an encryption using
-the private key.
-
-The parser and asymmetric key type are relatively simple modules. The
-key parser uses the ASN.1 definition described earlier to parse out
-the public and private portions of the key. From here the TPM2
-asymmetric key type extracts the pieces of the private and public
-keys which the TPM needs to perform these operations. These are whats
-referred to as the 'key blobs'.
-
-This new asymmetric key type can be accessed using keyctl, and behaves
-exactly the same as any other pkey operations. Below is how I have
-been testing this functionality. It will require that you have the
-proper tools installed to access the TPM (tss2/openssl_tpm2_engine).
-
-# Starting from scratch, enable and clear TPM in BIOS
-
-export TPM_INTERFACE_TYPE=dev
-export TPM_DEVICE=/dev/tpm0
-
-# Create a primary key for wrapping the user private key
-# and make it persistent.
-tsscreateprimary -hi o -st -ecc
-# This should return a handle, in my case 80000000
-tssevictcontrol -hi o -ho 80000000 -hp 81000001
-tssflushcontext -ha 80000000
-
-# Create a private key if not already
-openssl genrsa > privkey.pem
-
-# Wrap private key using the TPM
-create_tpm2_key -w privkey.pem -p 81000001 privkey.tpm
-# The above commands only need to be done once. A Null primary
-# key could be used instead which would not require the above steps
-# but that kind of key does not persist across boots meaning you
-# would need to create a new wrapped TPM key every boot.
-# privkey.pem could now be deleted as the key has been wrapped
-# by the TPM.
-
-# If built as modules, load parser and asymmetric key type
-modprobe tpm2_key_parser
-modprobe asym_tpm2
-
-# Now asymmetric keyctl operations can be performed using
-# privkey.tpm. First it needs to be converted into DER for
-# keyctl
-openssl asn1parse -inform pem -in privkey.tpm -noout -out privkey.tpm.der
-
-# Add key to the kernel
-serial=`cat privkey.tpm.der | keyctl padd asymmetric tpm @u`
-
-# Create some data do be encrypted/signed
-echo "abcdefg" > plaintext.txt
-
-# Encrypt plaintext.txt
-keyctl pkey_encrypt $serial 0 plaintext.txt enc=pkcs1 > encrypted.dat
-
-# Decrypt encrypted data
-keyctl pkey_decrypt $serial 0 encrypted.dat enc=pkcs1 > decrypted.dat
-
-# Sign
-keyctl pkey_sign $serial 0 plaintext.txt enc=pkcs1 hash=sha256 > signed.dat
-
-# Verify
-keyctl pkey_verify $serial 0 plaintext.txt signed.dat enc=pkcs1 hash=sha256
-
-James Bottomley (12):
-  tpm-buf: move from static inlines to real functions
-  tpm-buf: add handling for TPM2B types
-  tpm-buf: add cursor based functions for response parsing
-  tpm2-space: export the context save and load commands
-  tpm2-sessions: Add full HMAC and encrypt/decrypt session handling
-  tpm-buf: add tpm_buf_parameters()
-  tpm2: add hmac checks to tpm2_pcr_extend()
-  tpm2: add session encryption protection to tpm2_get_random()
-  trusted keys: Add session encryption protection to the seal/unseal
-    path
-  tpm: add the null key name as a tpm2 sysfs variable
-  Documentation: add tpm-security.rst
-  oid_registry: Add TCG defined OIDS for TPM keys
-
-James Prestwood (5):
-  tpm: tpm2-cmd: add driver API for RSA decryption
-  include: linux: tpm: expose tpm2_rsa_decrypt
-  include: crypto: add asym_tpm2_subtype definition
-  asymmetric_keys: add TPM2 ASN1 definition
-  asymmetric_keys: add tpm2 key parser/type
-
- Documentation/security/tpm/tpm-security.rst |  204 ++++
- crypto/asymmetric_keys/Kconfig              |   20 +
- crypto/asymmetric_keys/Makefile             |   12 +
- crypto/asymmetric_keys/asym_tpm2.c          |  653 ++++++++++
- crypto/asymmetric_keys/tpm2_parser.c        |  155 +++
- crypto/asymmetric_keys/tpm2key.asn1         |   23 +
- drivers/char/tpm/Kconfig                    |   11 +
- drivers/char/tpm/Makefile                   |    2 +
- drivers/char/tpm/tpm-buf.c                  |  202 ++++
- drivers/char/tpm/tpm-sysfs.c                |   29 +-
- drivers/char/tpm/tpm.h                      |   38 +
- drivers/char/tpm/tpm2-cmd.c                 |  523 +++++++-
- drivers/char/tpm/tpm2-sessions.c            | 1203 +++++++++++++++++++
- drivers/char/tpm/tpm2-sessions.h            |  114 ++
- drivers/char/tpm/tpm2-space.c               |    8 +-
- include/crypto/asym_tpm2_subtype.h          |   32 +
- include/linux/oid_registry.h                |    5 +
- include/linux/tpm.h                         |  160 ++-
- 18 files changed, 3284 insertions(+), 110 deletions(-)
- create mode 100644 Documentation/security/tpm/tpm-security.rst
- create mode 100644 crypto/asymmetric_keys/asym_tpm2.c
- create mode 100644 crypto/asymmetric_keys/tpm2_parser.c
- create mode 100644 crypto/asymmetric_keys/tpm2key.asn1
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+---
+ drivers/char/tpm/Makefile  |   1 +
+ drivers/char/tpm/tpm-buf.c | 118 +++++++++++++++++++++++++++++++++++++
+ drivers/char/tpm/tpm.h     |  10 ++++
+ include/linux/tpm.h        | 101 ++++++-------------------------
+ 4 files changed, 146 insertions(+), 84 deletions(-)
  create mode 100644 drivers/char/tpm/tpm-buf.c
- create mode 100644 drivers/char/tpm/tpm2-sessions.c
- create mode 100644 drivers/char/tpm/tpm2-sessions.h
- create mode 100644 include/crypto/asym_tpm2_subtype.h
 
+diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+index 9567e5197f74..4d5765c41972 100644
+--- a/drivers/char/tpm/Makefile
++++ b/drivers/char/tpm/Makefile
+@@ -15,6 +15,7 @@ tpm-y += tpm-sysfs.o
+ tpm-y += eventlog/common.o
+ tpm-y += eventlog/tpm1.o
+ tpm-y += eventlog/tpm2.o
++tpm-y += tpm-buf.o
+ 
+ tpm-$(CONFIG_ACPI) += tpm_ppi.o eventlog/acpi.o
+ tpm-$(CONFIG_EFI) += eventlog/efi.o
+diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
+new file mode 100644
+index 000000000000..9fa8a9cb0fdf
+--- /dev/null
++++ b/drivers/char/tpm/tpm-buf.c
+@@ -0,0 +1,118 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Handing for tpm_buf structures to facilitate the building of commands
++ */
++
++#include "tpm.h"
++
++#include <linux/module.h>
++
++static int __tpm_buf_init(struct tpm_buf *buf)
++{
++	buf->data_page = alloc_page(GFP_HIGHUSER);
++	if (!buf->data_page)
++		return -ENOMEM;
++
++	buf->flags = 0;
++	buf->data = kmap(buf->data_page);
++
++	return 0;
++}
++
++void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal)
++{
++	struct tpm_header *head;
++
++	head = (struct tpm_header *) buf->data;
++
++	head->tag = cpu_to_be16(tag);
++	head->length = cpu_to_be32(sizeof(*head));
++	head->ordinal = cpu_to_be32(ordinal);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_reset);
++
++int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
++{
++	int rc;
++
++	rc = __tpm_buf_init(buf);
++	if (rc)
++		return rc;
++
++	tpm_buf_reset(buf, tag, ordinal);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(tpm_buf_init);
++
++void tpm_buf_destroy(struct tpm_buf *buf)
++{
++	kunmap(buf->data_page);
++	__free_page(buf->data_page);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_destroy);
++
++u32 tpm_buf_length(struct tpm_buf *buf)
++{
++	struct tpm_header *head = (struct tpm_header *)buf->data;
++	u32 len;
++
++	len = be32_to_cpu(head->length);
++	if (buf->flags & TPM_BUF_2B)
++		len -= sizeof(*head);
++	return len;
++}
++EXPORT_SYMBOL_GPL(tpm_buf_length);
++
++u16 tpm_buf_tag(struct tpm_buf *buf)
++{
++	struct tpm_header *head = (struct tpm_header *)buf->data;
++
++	return be16_to_cpu(head->tag);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_tag);
++
++void tpm_buf_append(struct tpm_buf *buf,
++		    const unsigned char *new_data,
++		    unsigned int new_len)
++{
++	struct tpm_header *head = (struct tpm_header *) buf->data;
++	u32 len = be32_to_cpu(head->length);
++
++	/* Return silently if overflow has already happened. */
++	if (buf->flags & TPM_BUF_OVERFLOW)
++		return;
++
++	if ((len + new_len) > PAGE_SIZE) {
++		WARN(1, "tpm_buf: overflow\n");
++		buf->flags |= TPM_BUF_OVERFLOW;
++		return;
++	}
++
++	memcpy(&buf->data[len], new_data, new_len);
++	head->length = cpu_to_be32(len + new_len);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_append);
++
++void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value)
++{
++	tpm_buf_append(buf, &value, 1);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_append_u8);
++
++void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value)
++{
++	__be16 value2 = cpu_to_be16(value);
++
++	tpm_buf_append(buf, (u8 *) &value2, 2);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_append_u16);
++
++void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value)
++{
++	__be32 value2 = cpu_to_be32(value);
++
++	tpm_buf_append(buf, (u8 *) &value2, 4);
++}
++EXPORT_SYMBOL_GPL(tpm_buf_append_u32);
+diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
+index 5620747da0cf..379629704522 100644
+--- a/drivers/char/tpm/tpm.h
++++ b/drivers/char/tpm/tpm.h
+@@ -153,6 +153,16 @@ enum tpm_sub_capabilities {
+  * compiler warnings about stack frame size. */
+ #define TPM_MAX_RNG_DATA	128
+ 
++int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal);
++void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal);
++void tpm_buf_destroy(struct tpm_buf *buf);
++u32 tpm_buf_length(struct tpm_buf *buf);
++void tpm_buf_append(struct tpm_buf *buf, const unsigned char *new_data,
++		    unsigned int new_len);
++void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value);
++void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value);
++void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value);
++
+ extern struct class *tpm_class;
+ extern struct class *tpmrm_class;
+ extern dev_t tpm_devt;
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 03e9b184411b..893aa87ea211 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -289,9 +289,11 @@ struct tpm_header {
+ 
+ enum tpm_buf_flags {
+ 	TPM_BUF_OVERFLOW	= BIT(0),
++	TPM_BUF_2B		= BIT(1),
+ };
+ 
+ struct tpm_buf {
++	struct page *data_page;
+ 	unsigned int flags;
+ 	u8 *data;
+ };
+@@ -309,90 +311,6 @@ struct tpm2_hash {
+ 	unsigned int tpm_id;
+ };
+ 
+-static inline void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal)
+-{
+-	struct tpm_header *head = (struct tpm_header *)buf->data;
+-
+-	head->tag = cpu_to_be16(tag);
+-	head->length = cpu_to_be32(sizeof(*head));
+-	head->ordinal = cpu_to_be32(ordinal);
+-}
+-
+-static inline int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
+-{
+-	buf->data = (u8 *)__get_free_page(GFP_KERNEL);
+-	if (!buf->data)
+-		return -ENOMEM;
+-
+-	buf->flags = 0;
+-	tpm_buf_reset(buf, tag, ordinal);
+-	return 0;
+-}
+-
+-static inline void tpm_buf_destroy(struct tpm_buf *buf)
+-{
+-	free_page((unsigned long)buf->data);
+-}
+-
+-static inline u32 tpm_buf_length(struct tpm_buf *buf)
+-{
+-	struct tpm_header *head = (struct tpm_header *)buf->data;
+-
+-	return be32_to_cpu(head->length);
+-}
+-
+-static inline u16 tpm_buf_tag(struct tpm_buf *buf)
+-{
+-	struct tpm_header *head = (struct tpm_header *)buf->data;
+-
+-	return be16_to_cpu(head->tag);
+-}
+-
+-static inline void tpm_buf_append(struct tpm_buf *buf,
+-				  const unsigned char *new_data,
+-				  unsigned int new_len)
+-{
+-	struct tpm_header *head = (struct tpm_header *)buf->data;
+-	u32 len = tpm_buf_length(buf);
+-
+-	/* Return silently if overflow has already happened. */
+-	if (buf->flags & TPM_BUF_OVERFLOW)
+-		return;
+-
+-	if ((len + new_len) > PAGE_SIZE) {
+-		WARN(1, "tpm_buf: overflow\n");
+-		buf->flags |= TPM_BUF_OVERFLOW;
+-		return;
+-	}
+-
+-	memcpy(&buf->data[len], new_data, new_len);
+-	head->length = cpu_to_be32(len + new_len);
+-}
+-
+-static inline void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value)
+-{
+-	tpm_buf_append(buf, &value, 1);
+-}
+-
+-static inline void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value)
+-{
+-	__be16 value2 = cpu_to_be16(value);
+-
+-	tpm_buf_append(buf, (u8 *) &value2, 2);
+-}
+-
+-static inline void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value)
+-{
+-	__be32 value2 = cpu_to_be32(value);
+-
+-	tpm_buf_append(buf, (u8 *) &value2, 4);
+-}
+-
+-static inline u32 tpm2_rc_value(u32 rc)
+-{
+-	return (rc & BIT(7)) ? rc & 0xff : rc;
+-}
+-
+ #if defined(CONFIG_TCG_TPM) || defined(CONFIG_TCG_TPM_MODULE)
+ 
+ extern int tpm_is_tpm2(struct tpm_chip *chip);
+@@ -404,6 +322,21 @@ extern int tpm_send(struct tpm_chip *chip, void *cmd, size_t buflen);
+ extern int tpm_get_random(struct tpm_chip *chip, u8 *data, size_t max);
+ extern struct tpm_chip *tpm_default_chip(void);
+ void tpm2_flush_context(struct tpm_chip *chip, u32 handle);
++extern int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal);
++extern void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal);
++extern void tpm_buf_destroy(struct tpm_buf *buf);
++extern u32 tpm_buf_length(struct tpm_buf *buf);
++extern void tpm_buf_append(struct tpm_buf *buf, const unsigned char *new_data,
++			   unsigned int new_len);
++extern void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value);
++extern void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value);
++extern void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value);
++
++static inline u32 tpm2_rc_value(u32 rc)
++{
++       return (rc & BIT(7)) ? rc & 0xff : rc;
++}
++
+ #else
+ static inline int tpm_is_tpm2(struct tpm_chip *chip)
+ {
 -- 
 2.21.1
 
