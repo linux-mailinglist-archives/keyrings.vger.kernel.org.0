@@ -2,55 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A50381D76BB
-	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 13:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D231D7AA9
+	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 16:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbgERLVK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 May 2020 07:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726499AbgERLVK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 07:21:10 -0400
-X-Greylist: delayed 945 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 May 2020 04:21:09 PDT
-Received: from vps.dvp24.com (unknown [IPv6:2a02:348:36:5b8c::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93C3C061A0C
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 04:21:09 -0700 (PDT)
-Received: from localhost ([127.0.0.1] helo=dvp24.com)
-        by vps.dvp24.com with esmtpa (Exim 4.77)
-        (envelope-from <abhay@dvp24.com>)
-        id 1jada3-0006x0-9b; Mon, 18 May 2020 13:05:11 +0200
+        id S1727796AbgEROGs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 May 2020 10:06:48 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:47960 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726855AbgEROGr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 10:06:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589810806;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=41TliIhfhinzxrxdsRW3/sg358I0ryfCq9whwOxbZ/E=;
+        b=ejlvqy+21Mzp96Gajs3gjo3kh3XvIqPnRSfs6BAq6TJGCZLjTFxB6sNIWgurhiG0eV+6+3
+        WtAQ3I0AoDKBYyc2jf8oH7Gd28dE2kMiRrV/g9aF8+j+ezLdHpBY496qUOefJX2x50fAF/
+        VVXOBRAv74+7jNQ0RNp7yFrsJu/t5Bg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-251-zKo2C-U_MSe6t5j8EiFLJA-1; Mon, 18 May 2020 10:06:42 -0400
+X-MC-Unique: zKo2C-U_MSe6t5j8EiFLJA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0F9C564AF0;
+        Mon, 18 May 2020 14:06:26 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-95.rdu2.redhat.com [10.10.112.95])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3BA256298C;
+        Mon, 18 May 2020 14:06:25 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200516002334.2025760-2-list.lkml.keyrings@me.benboeckel.net>
+References: <20200516002334.2025760-2-list.lkml.keyrings@me.benboeckel.net> <20200516002334.2025760-1-list.lkml.keyrings@me.benboeckel.net>
+To:     Ben Boeckel <me@benboeckel.net>
+Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
+        Ben Boeckel <mathstuf@gmail.com>
+Subject: Re: [PATCH 1/1] man: the info strings are actually space or tab separated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 18 May 2020 12:05:11 +0100
-From:   pedro hills <abhay@dvp24.com>
-To:     undisclosed-recipients:;
-Subject: (DONATION) $2 Million Has Been Donated
-Reply-To: <pedrohills@outlook.es>
-Mail-Reply-To: <pedrohills@outlook.es>
-Message-ID: <2c87e8f45a086dc8c55888d04aefe691@dvp24.com>
-X-Sender: abhay@dvp24.com
-User-Agent: Roundcube Webmail/0.7.1
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <869605.1589810784.1@warthog.procyon.org.uk>
+Date:   Mon, 18 May 2020 15:06:24 +0100
+Message-ID: <869606.1589810784@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Ben Boeckel <me@benboeckel.net> wrote:
 
+> From: Ben Boeckel <mathstuf@gmail.com>
+> 
+> Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
 
--- 
-$2 Million Has Been Donated To You,By PEDRO this is Real For More Info
-  Contact PEDRO immediately for your clame This Email:
-  pedrohills@outlook.es
+Applied.
 
-  Contact phone number +34632232897
-  Send Your Response To: pedrohills@outlook.es
-
-  2 Millionen US-Dollar wurden an Sie gespendet. Von PEDRO ist dies für
-weitere Informationen real
-  Wenden Sie sich umgehend an PEDRO. Diese E-Mail:
-  pedrohills@outlook.es
-
-  Kontakttelefonnummer +34632232897
-  Senden Sie Ihre Antwort an: pedrohills@outlook.es
