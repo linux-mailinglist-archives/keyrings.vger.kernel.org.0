@@ -2,57 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E74B01D800F
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6781D800E
 	for <lists+keyrings@lfdr.de>; Mon, 18 May 2020 19:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726958AbgERR1P (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        id S1728152AbgERR1P (ORCPT <rfc822;lists+keyrings@lfdr.de>);
         Mon, 18 May 2020 13:27:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727942AbgERR1O (ORCPT
+        with ESMTP id S1726958AbgERR1O (ORCPT
         <rfc822;keyrings@vger.kernel.org>); Mon, 18 May 2020 13:27:14 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC70EC061A0C
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:13 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id y18so5253201pfl.9
-        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:13 -0700 (PDT)
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9213BC05BD09
+        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:14 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id t11so5146590pgg.2
+        for <keyrings@vger.kernel.org>; Mon, 18 May 2020 10:27:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=VU2Z9jH2tHrmIYCSZ+Qm/Bdg8LSTyT9WNzv/6AK0Y/I=;
-        b=NkW7ruD6LOylPL/N24x8fpSfp9iM08MmlXlkq1BAue8ZV8nfEMTiQkaigqcGO47SNV
-         GkBputvng6Blh0/hdwvlpxuRHCxqRaSyxIxqC5zgwDZewNAFeEBT6WKi8kgQdAKIQzsi
-         NVNZBs7t6xXBztm3AlQlsfKJzfPS+1kWKY4UX1MLD3LWGvE6FkAeq+Ws3KzlKkkdT1gh
-         pT9aFU7NFzN+AhJxBH1LqleosvclCaRJcpVifnXMQd7bjy3ZVOTE4KifgSPAU4QrI/lf
-         IGrzK5dO9HCHpWBHK0htPFDs47Qxa4OBUUpM0+NQ17+N72CQzGA/ylP0hMjXsxilmIhg
-         VhVw==
+        bh=oHITpSRaDOxHt+OJGpz86kUPCUVylMr0qalk3pgiieM=;
+        b=P7kmqkQAoT4XBsco7M4uM7mb2eqPZSRd+E/j87i4sM2T1s7ryg/N3/q6zUZAKvOBdg
+         o4Cj9ZMSz0ODpBTehbYy5kpT1o6f4OdgyN7Fe77uIcGm/Dpp0pI+8sU6e284q+8MZuEf
+         2T3mBUXml7VQdENuZHBBO6zQ6zzRb4LB2MdfiSN8WXvXu8LHNDMNobVLgEf4lsA8CCDg
+         kORF6W3hdatqLud3e81EwamkrqZ1Dy9raJ5ns0a8hUvc5rwroed846B2vvHMPl8B95Xz
+         ysvHpjSaQQqtIkNj77Fn/IiQ4QgRCKp4lU/40fDrwrmGN4pxS1TXCZlBO368jv7NIJ5p
+         M/ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=VU2Z9jH2tHrmIYCSZ+Qm/Bdg8LSTyT9WNzv/6AK0Y/I=;
-        b=HTOyTHYtblkKopmu+WD1Kso6U97RWoadd/NldFwT32pkN6lTtO4J1P8AIdtZ3HbsV9
-         OvF+Lw6raMK4pu/RJ8Qk2Q/855e5KP7jK0a91S6W4ylAF/Iv59dsNBol4c29z3y6vEG9
-         /vhrQFYK15QKfc8u7r4eVVOKXCPTKoDGbDcb2tzEbZY7EcZyijiQS0U4QkjEDenFJpVM
-         4OvNOBjyj9W1JgPFtNFqSJz/aUvfnO/7yVTttUNUnLIhgSrKzDhi3zFBl3DVY1IzihPC
-         evxBDC2c+wiI42HHYi4RwGqcN+nZBjf2hFny9SRjO+9UiXq2EOwrlDyw40DOGjCojEpf
-         /AnA==
-X-Gm-Message-State: AOAM532ewxH9LuLXcd2Sbt7alLU8rjTRdkFhmGMKY0DfNXhKAeWWsVF5
-        jxfpTLfJ0R5+wGyjzBUgKLGzd4Zz5WY=
-X-Google-Smtp-Source: ABdhPJxTSSbiwkXqmBMzwpJ8hChY2v6VT3wUQQN1HsQi9wBwxf30odHq9JIs0r0Q7lydSFTYPUsIUw==
-X-Received: by 2002:a65:4489:: with SMTP id l9mr7811736pgq.223.1589822832809;
-        Mon, 18 May 2020 10:27:12 -0700 (PDT)
+        bh=oHITpSRaDOxHt+OJGpz86kUPCUVylMr0qalk3pgiieM=;
+        b=oGkHUtvrg5fJzW4guKy+5Iq62QDFzdmLjTzdK1g+mn3xgA95C2CuEhiLqI2rPUohcb
+         CN9XGbCwOMePHqPznKzLlEUJubXessFN/hQVKtcp8AYHfoGIO8JhmcyNcSksT2howN3F
+         z1fNpAfMeiix0rsFiXpEwPqp5xglcPLJAk4OJvFY56Ld7ohcfS3uBnOjcr9kI9FmA1Gj
+         F/X/pW81qeZAWTe4sb8WrsWKyGINE0kcTq3LE9qCr1BmPl5Ikwc9k94sXB/qzEeivngw
+         oex17slcuTu0zEKYYiyCfDPyocXlE2rpqT7AR9uB1I3BRn/wuf2uXiLm/xFQHqnQFzJU
+         Y1TA==
+X-Gm-Message-State: AOAM530veUX+/UmTc87skDTJ1dV7hpo11bZYtmdbRoMq/9MXVbOzADGG
+        BLhHaRTaoygzmMGNzDb1/ScWtcDBiog=
+X-Google-Smtp-Source: ABdhPJxbm55ZVzhAHx+XD0u5f/gmZYgsdTepmY5VGyq/JnB32ezSNpbR7mZ2xCZlzrbcy7dylfiUdA==
+X-Received: by 2002:a63:3c11:: with SMTP id j17mr16368542pga.70.1589822833840;
+        Mon, 18 May 2020 10:27:13 -0700 (PDT)
 Received: from host-29.home (50-39-160-111.bvtn.or.frontiernet.net. [50.39.160.111])
-        by smtp.gmail.com with ESMTPSA id o14sm4092448pfp.89.2020.05.18.10.27.11
+        by smtp.gmail.com with ESMTPSA id o14sm4092448pfp.89.2020.05.18.10.27.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 10:27:12 -0700 (PDT)
+        Mon, 18 May 2020 10:27:13 -0700 (PDT)
 From:   James Prestwood <prestwoj@gmail.com>
 To:     keyrings@vger.kernel.org
 Cc:     James.Bottomley@HansenPartnership.com
-Subject: [PATCH 01/17] tpm-buf: move from static inlines to real functions
-Date:   Mon, 18 May 2020 10:26:48 -0700
-Message-Id: <20200518172704.29608-2-prestwoj@gmail.com>
+Subject: [PATCH 02/17] tpm-buf: add handling for TPM2B types
+Date:   Mon, 18 May 2020 10:26:49 -0700
+Message-Id: <20200518172704.29608-3-prestwoj@gmail.com>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200518172704.29608-1-prestwoj@gmail.com>
 References: <20200518172704.29608-1-prestwoj@gmail.com>
@@ -65,305 +65,114 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-This separates out the old tpm_buf_... handling functions from static
-inlines in tpm.h and makes them their own tpm-buf.c file.  This is a
-precursor so we can add new functions for other TPM type handling
+Most complex TPM commands require appending TPM2B buffers to the
+command body.  Since TPM2B types are essentially variable size arrays,
+it makes it impossible to represent these complex command arguments as
+structures and we simply have to build them up using append primitives
+like these.
 
 Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 ---
- drivers/char/tpm/Makefile  |   1 +
- drivers/char/tpm/tpm-buf.c | 118 +++++++++++++++++++++++++++++++++++++
- drivers/char/tpm/tpm.h     |  10 ++++
- include/linux/tpm.h        | 101 ++++++-------------------------
- 4 files changed, 146 insertions(+), 84 deletions(-)
- create mode 100644 drivers/char/tpm/tpm-buf.c
+ drivers/char/tpm/tpm-buf.c | 47 ++++++++++++++++++++++++++++++++++++++
+ drivers/char/tpm/tpm.h     |  2 ++
+ 2 files changed, 49 insertions(+)
 
-diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
-index 9567e5197f74..4d5765c41972 100644
---- a/drivers/char/tpm/Makefile
-+++ b/drivers/char/tpm/Makefile
-@@ -15,6 +15,7 @@ tpm-y += tpm-sysfs.o
- tpm-y += eventlog/common.o
- tpm-y += eventlog/tpm1.o
- tpm-y += eventlog/tpm2.o
-+tpm-y += tpm-buf.o
- 
- tpm-$(CONFIG_ACPI) += tpm_ppi.o eventlog/acpi.o
- tpm-$(CONFIG_EFI) += eventlog/efi.o
 diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
-new file mode 100644
-index 000000000000..9fa8a9cb0fdf
---- /dev/null
+index 9fa8a9cb0fdf..8c1ed8a14e01 100644
+--- a/drivers/char/tpm/tpm-buf.c
 +++ b/drivers/char/tpm/tpm-buf.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0
+@@ -8,6 +8,8 @@
+ 
+ #include <linux/module.h>
+ 
++#include <asm/unaligned.h>
 +
-+/*
-+ * Handing for tpm_buf structures to facilitate the building of commands
-+ */
-+
-+#include "tpm.h"
-+
-+#include <linux/module.h>
-+
-+static int __tpm_buf_init(struct tpm_buf *buf)
-+{
-+	buf->data_page = alloc_page(GFP_HIGHUSER);
-+	if (!buf->data_page)
-+		return -ENOMEM;
-+
-+	buf->flags = 0;
-+	buf->data = kmap(buf->data_page);
-+
-+	return 0;
-+}
-+
-+void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal)
+ static int __tpm_buf_init(struct tpm_buf *buf)
+ {
+ 	buf->data_page = alloc_page(GFP_HIGHUSER);
+@@ -46,6 +48,24 @@ int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
+ }
+ EXPORT_SYMBOL_GPL(tpm_buf_init);
+ 
++int tpm_buf_init_2b(struct tpm_buf *buf)
 +{
 +	struct tpm_header *head;
-+
-+	head = (struct tpm_header *) buf->data;
-+
-+	head->tag = cpu_to_be16(tag);
-+	head->length = cpu_to_be32(sizeof(*head));
-+	head->ordinal = cpu_to_be32(ordinal);
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_reset);
-+
-+int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
-+{
 +	int rc;
 +
 +	rc = __tpm_buf_init(buf);
 +	if (rc)
 +		return rc;
 +
-+	tpm_buf_reset(buf, tag, ordinal);
++	head = (struct tpm_header *) buf->data;
 +
++	head->length = cpu_to_be32(sizeof(*head));
++
++	buf->flags = TPM_BUF_2B;
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(tpm_buf_init);
++EXPORT_SYMBOL_GPL(tpm_buf_init_2b);
 +
-+void tpm_buf_destroy(struct tpm_buf *buf)
+ void tpm_buf_destroy(struct tpm_buf *buf)
+ {
+ 	kunmap(buf->data_page);
+@@ -53,6 +73,13 @@ void tpm_buf_destroy(struct tpm_buf *buf)
+ }
+ EXPORT_SYMBOL_GPL(tpm_buf_destroy);
+ 
++static void *tpm_buf_data(struct tpm_buf *buf)
 +{
-+	kunmap(buf->data_page);
-+	__free_page(buf->data_page);
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_destroy);
-+
-+u32 tpm_buf_length(struct tpm_buf *buf)
-+{
-+	struct tpm_header *head = (struct tpm_header *)buf->data;
-+	u32 len;
-+
-+	len = be32_to_cpu(head->length);
 +	if (buf->flags & TPM_BUF_2B)
-+		len -= sizeof(*head);
-+	return len;
++		return buf->data + TPM_HEADER_SIZE;
++	return buf->data;
 +}
-+EXPORT_SYMBOL_GPL(tpm_buf_length);
 +
-+u16 tpm_buf_tag(struct tpm_buf *buf)
+ u32 tpm_buf_length(struct tpm_buf *buf)
+ {
+ 	struct tpm_header *head = (struct tpm_header *)buf->data;
+@@ -116,3 +143,23 @@ void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value)
+ 	tpm_buf_append(buf, (u8 *) &value2, 4);
+ }
+ EXPORT_SYMBOL_GPL(tpm_buf_append_u32);
++
++static void tpm_buf_reset_int(struct tpm_buf *buf)
 +{
-+	struct tpm_header *head = (struct tpm_header *)buf->data;
++	struct tpm_header *head;
 +
-+	return be16_to_cpu(head->tag);
++	head = (struct tpm_header *)buf->data;
++	head->length = cpu_to_be32(sizeof(*head));
 +}
-+EXPORT_SYMBOL_GPL(tpm_buf_tag);
 +
-+void tpm_buf_append(struct tpm_buf *buf,
-+		    const unsigned char *new_data,
-+		    unsigned int new_len)
++void tpm_buf_append_2b(struct tpm_buf *buf, struct tpm_buf *tpm2b)
 +{
-+	struct tpm_header *head = (struct tpm_header *) buf->data;
-+	u32 len = be32_to_cpu(head->length);
++	u16 len = tpm_buf_length(tpm2b);
 +
-+	/* Return silently if overflow has already happened. */
-+	if (buf->flags & TPM_BUF_OVERFLOW)
-+		return;
-+
-+	if ((len + new_len) > PAGE_SIZE) {
-+		WARN(1, "tpm_buf: overflow\n");
-+		buf->flags |= TPM_BUF_OVERFLOW;
-+		return;
-+	}
-+
-+	memcpy(&buf->data[len], new_data, new_len);
-+	head->length = cpu_to_be32(len + new_len);
++	tpm_buf_append_u16(buf, len);
++	tpm_buf_append(buf, tpm_buf_data(tpm2b), len);
++	/* clear the buf for reuse */
++	tpm_buf_reset_int(tpm2b);
 +}
-+EXPORT_SYMBOL_GPL(tpm_buf_append);
++EXPORT_SYMBOL_GPL(tpm_buf_append_2b);
 +
-+void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value)
-+{
-+	tpm_buf_append(buf, &value, 1);
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_append_u8);
-+
-+void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value)
-+{
-+	__be16 value2 = cpu_to_be16(value);
-+
-+	tpm_buf_append(buf, (u8 *) &value2, 2);
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_append_u16);
-+
-+void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value)
-+{
-+	__be32 value2 = cpu_to_be32(value);
-+
-+	tpm_buf_append(buf, (u8 *) &value2, 4);
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_append_u32);
 diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
-index 5620747da0cf..379629704522 100644
+index 379629704522..dfa03b63d8ee 100644
 --- a/drivers/char/tpm/tpm.h
 +++ b/drivers/char/tpm/tpm.h
-@@ -153,6 +153,16 @@ enum tpm_sub_capabilities {
-  * compiler warnings about stack frame size. */
- #define TPM_MAX_RNG_DATA	128
+@@ -155,6 +155,7 @@ enum tpm_sub_capabilities {
  
-+int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal);
-+void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal);
-+void tpm_buf_destroy(struct tpm_buf *buf);
-+u32 tpm_buf_length(struct tpm_buf *buf);
-+void tpm_buf_append(struct tpm_buf *buf, const unsigned char *new_data,
-+		    unsigned int new_len);
-+void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value);
-+void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value);
-+void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value);
-+
+ int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal);
+ void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal);
++int tpm_buf_init_2b(struct tpm_buf *buf);
+ void tpm_buf_destroy(struct tpm_buf *buf);
+ u32 tpm_buf_length(struct tpm_buf *buf);
+ void tpm_buf_append(struct tpm_buf *buf, const unsigned char *new_data,
+@@ -162,6 +163,7 @@ void tpm_buf_append(struct tpm_buf *buf, const unsigned char *new_data,
+ void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value);
+ void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value);
+ void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value);
++void tpm_buf_append_2b(struct tpm_buf *buf, struct tpm_buf *tpm2b);
+ 
  extern struct class *tpm_class;
  extern struct class *tpmrm_class;
- extern dev_t tpm_devt;
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 03e9b184411b..893aa87ea211 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -289,9 +289,11 @@ struct tpm_header {
- 
- enum tpm_buf_flags {
- 	TPM_BUF_OVERFLOW	= BIT(0),
-+	TPM_BUF_2B		= BIT(1),
- };
- 
- struct tpm_buf {
-+	struct page *data_page;
- 	unsigned int flags;
- 	u8 *data;
- };
-@@ -309,90 +311,6 @@ struct tpm2_hash {
- 	unsigned int tpm_id;
- };
- 
--static inline void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal)
--{
--	struct tpm_header *head = (struct tpm_header *)buf->data;
--
--	head->tag = cpu_to_be16(tag);
--	head->length = cpu_to_be32(sizeof(*head));
--	head->ordinal = cpu_to_be32(ordinal);
--}
--
--static inline int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
--{
--	buf->data = (u8 *)__get_free_page(GFP_KERNEL);
--	if (!buf->data)
--		return -ENOMEM;
--
--	buf->flags = 0;
--	tpm_buf_reset(buf, tag, ordinal);
--	return 0;
--}
--
--static inline void tpm_buf_destroy(struct tpm_buf *buf)
--{
--	free_page((unsigned long)buf->data);
--}
--
--static inline u32 tpm_buf_length(struct tpm_buf *buf)
--{
--	struct tpm_header *head = (struct tpm_header *)buf->data;
--
--	return be32_to_cpu(head->length);
--}
--
--static inline u16 tpm_buf_tag(struct tpm_buf *buf)
--{
--	struct tpm_header *head = (struct tpm_header *)buf->data;
--
--	return be16_to_cpu(head->tag);
--}
--
--static inline void tpm_buf_append(struct tpm_buf *buf,
--				  const unsigned char *new_data,
--				  unsigned int new_len)
--{
--	struct tpm_header *head = (struct tpm_header *)buf->data;
--	u32 len = tpm_buf_length(buf);
--
--	/* Return silently if overflow has already happened. */
--	if (buf->flags & TPM_BUF_OVERFLOW)
--		return;
--
--	if ((len + new_len) > PAGE_SIZE) {
--		WARN(1, "tpm_buf: overflow\n");
--		buf->flags |= TPM_BUF_OVERFLOW;
--		return;
--	}
--
--	memcpy(&buf->data[len], new_data, new_len);
--	head->length = cpu_to_be32(len + new_len);
--}
--
--static inline void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value)
--{
--	tpm_buf_append(buf, &value, 1);
--}
--
--static inline void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value)
--{
--	__be16 value2 = cpu_to_be16(value);
--
--	tpm_buf_append(buf, (u8 *) &value2, 2);
--}
--
--static inline void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value)
--{
--	__be32 value2 = cpu_to_be32(value);
--
--	tpm_buf_append(buf, (u8 *) &value2, 4);
--}
--
--static inline u32 tpm2_rc_value(u32 rc)
--{
--	return (rc & BIT(7)) ? rc & 0xff : rc;
--}
--
- #if defined(CONFIG_TCG_TPM) || defined(CONFIG_TCG_TPM_MODULE)
- 
- extern int tpm_is_tpm2(struct tpm_chip *chip);
-@@ -404,6 +322,21 @@ extern int tpm_send(struct tpm_chip *chip, void *cmd, size_t buflen);
- extern int tpm_get_random(struct tpm_chip *chip, u8 *data, size_t max);
- extern struct tpm_chip *tpm_default_chip(void);
- void tpm2_flush_context(struct tpm_chip *chip, u32 handle);
-+extern int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal);
-+extern void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal);
-+extern void tpm_buf_destroy(struct tpm_buf *buf);
-+extern u32 tpm_buf_length(struct tpm_buf *buf);
-+extern void tpm_buf_append(struct tpm_buf *buf, const unsigned char *new_data,
-+			   unsigned int new_len);
-+extern void tpm_buf_append_u8(struct tpm_buf *buf, const u8 value);
-+extern void tpm_buf_append_u16(struct tpm_buf *buf, const u16 value);
-+extern void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value);
-+
-+static inline u32 tpm2_rc_value(u32 rc)
-+{
-+       return (rc & BIT(7)) ? rc & 0xff : rc;
-+}
-+
- #else
- static inline int tpm_is_tpm2(struct tpm_chip *chip)
- {
 -- 
 2.21.1
 
