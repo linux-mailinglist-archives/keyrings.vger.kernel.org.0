@@ -2,50 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDD81DC02C
-	for <lists+keyrings@lfdr.de>; Wed, 20 May 2020 22:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1862B1DC71B
+	for <lists+keyrings@lfdr.de>; Thu, 21 May 2020 08:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbgETUcH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 20 May 2020 16:32:07 -0400
-Received: from sonic305-22.consmr.mail.ne1.yahoo.com ([66.163.185.148]:45297
-        "EHLO sonic305-22.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726860AbgETUcH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 20 May 2020 16:32:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1590006726; bh=6mffK3RH01pMSJbI3gzRyn/TJ4jPuu2pqeTpPbg3ras=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Jh1GZ/zp1JqyVWAoqfhtOBi201up2S1j+vj+cvRRjI/wF6dKLZpH7WHDjG3tu+29xjAbHc+PmIg5aAiqs0SWTOq0WfWJx0HFJqbDSEXKkqC0WhfGv8vEoLZnS08JfDwGwvixc2CaUY0MdeKOHQV3Rq/ddhdHj3ktfv/5c/CSPZfWXYdY6laJmfxaXinLvHN+QVyg61MjgZLz2tAtAzSRYdxPQtY7McKv0kiJ9Bk8igJHVdYW8cqDLZbfV0YNzOTt/RTXR9qWbEx02BiM/Yg4TdLnufWxJzAElxqJk53boVzEjql8YAZ4m0NbLgdyhl12MweFAptajCToNhbgeJNHgQ==
-X-YMail-OSG: Xfh9dnoVM1kthxtruSoQ9S6dUoFvkRZQDKi2_LTWKnB3pXut6EmMqhGxa2Mzc0J
- ZPJ9M1aRrFZxqUsmYbdSElgBTh50YFt1ypHDzPGyQ.brAnrFofjSoUvI4DXMTg0_VTpkSV5yzI_X
- Ls8kd_E1KHUHE9ffBS6Do70Kh9TwhIdCBKquvb6loabOPxrZMSMqd0.XLAKAgwYwMdQoKpqV_j7F
- yiEsCBnGdIDQPIE_cT4GBZ3EAVm95SQSJITV4HhuAEQm9D8u62fuTIWOUU1jdsIKY_SB_P4CFjpx
- Wg4.qqbyHSdvhSWxiOup0nQLOhGWYAcLx7N5VjDzq6634zFp.LW8j3Jhhz1khmpFkZPOtmgEXgmV
- JwO0ZnnkFs5BGxA5pdNEkyxDhPLy2mczZ8xY_agU1g6FOLi7EDVGUDOYFrECc6Om3rzsnTgQWG0B
- GuEhyJgIe.yGrKp0O5zUzOEeBHzbaQA7s1mx.sDZhJGggmvvSHtttP.G8SFeuE0sDoD5yyF43dkV
- fOdZrwXZB0oG50uIz4.qxHEOJfMCv9MGXbE6TdkYJ6_mhomfNcx4_naB6rCk64G7yCY1serRctqx
- RXJX_phLkzt7bfwzw5fD_SL2kabWb0FnKKSCthUKqUpT5Zc2ZSnCfrOJ1hruUqNaQrFzzR_SupoU
- iWOvF9WZdcP86QKYJDRQM_sVybSZul1oTypvB6L.7blzXZHgDHdXkV7P8fWEFw6tKqVOI1oAknB9
- QaL_YSvukP6UpRQDgti58jlgx6WDST6SSVWJBu0aIn.uMTORzu4ca.FIMHwVRB5Gh3g1PQPz6f62
- 4Lk0ljO8ot95sgi3.GzL.E8lhq5b4gp7BJI6XVrYWjFYtX_ZyWVFgBd_YfzuT13meRwx8UruIcbZ
- thFcW_y0LEfjvBRXvO9KtKxKUO21xHwKI2qH_NhnDdXRfkJrse4yPCkLDUtknY.F43bwtSrcuBKP
- jim4LnyKk8jTcwroN4i9M4u_QiIYUiX.CqHSyHoxaUYRevrO52K.1k7G.c1rw4dLpXBOkr6RYdgs
- q2M7tbfL_FAYN2prXPtGsvKx2wqtnwXXVP3BYddY.QzmfxMRNp1N9X.wTmHsTjb312AdKTLPWTkJ
- 3B8tgCwnCFzjeAE_6mp45fBxDnDxs0N2OKvyr1FBAGpHKjr7izdiRqeJQrph1ZjdT66bD1kOvoUM
- DHKBqR4difYryN014p91SlYktU1yw4DxxLc5F8HNiH4ylM9CQVKXDzmKOTWVgUZZrBDyTsnlA2Rm
- SmedC1QT27tfr_qdGjIqeCSNilggjiLJkKhUJQJNXQN8mJzRrTIIxyEKdVPZJ4qCwidaMLSuAAyr
- xoQ--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Wed, 20 May 2020 20:32:06 +0000
-Date:   Wed, 20 May 2020 20:32:04 +0000 (UTC)
-From:   Rose Gordon <rosegordonor@gmail.com>
-Reply-To: rosegordonor@gmail.com
-Message-ID: <1020918044.69477.1590006724038@mail.yahoo.com>
-Subject: Hi there
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1020918044.69477.1590006724038.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15959 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726892AbgEUGnf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 21 May 2020 02:43:35 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25]:36040 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726506AbgEUGnf (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 21 May 2020 02:43:35 -0400
+X-Greylist: delayed 528 seconds by postgrey-1.27 at vger.kernel.org; Thu, 21 May 2020 02:41:29 EDT
+Received: from localhost.localdomain (unknown [159.226.5.100])
+        by APP-05 (Coremail) with SMTP id zQCowAAniLF8IMZeH_FaAw--.34692S2;
+        Thu, 21 May 2020 14:32:29 +0800 (CST)
+From:   Xu Wang <vulab@iscas.ac.cn>
+To:     dhowells@redhat.com, dwmw2@infradead.org, keyrings@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: [PATCH] scrpits: Remove unneeded assignment parentheses
+Date:   Thu, 21 May 2020 06:32:26 +0000
+Message-Id: <20200521063226.7434-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: zQCowAAniLF8IMZeH_FaAw--.34692S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF1fAFy5tr4xArW8urW3Wrg_yoWDArcEkr
+        Z7KF1kXa4DX3yYyr1xXrs5Arn3Zw45JrWfCw1IgFWUZ3yUCan5X3Z2krn8Zr43ArW8CFWv
+        v3s2qrW8KayxWjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb2kYjsxI4VWkCwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0
+        cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+        C2z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+        F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+        4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_GF1l42xK
+        82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+        C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
+        MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
+        IF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+        x4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU0oE_tUUUUU==
+X-Originating-IP: [159.226.5.100]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCwEDA1z4jTqeNQAAsy
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Best of the day to you I'm Rose by name 32years old single lady, Can we be friends? i was born and raised in london in United Kingdom Take care Rose.
+Remove unneeded assignment parentheses.
+
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ scripts/extract-cert.c | 2 +-
+ scripts/sign-file.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/extract-cert.c b/scripts/extract-cert.c
+index b071bf476fea..8005911926b8 100644
+--- a/scripts/extract-cert.c
++++ b/scripts/extract-cert.c
+@@ -61,7 +61,7 @@ static void drain_openssl_errors(void)
+ 
+ #define ERR(cond, fmt, ...)				\
+ 	do {						\
+-		bool __cond = (cond);			\
++		bool __cond = cond;			\
+ 		display_openssl_errors(__LINE__);	\
+ 		if (__cond) {				\
+ 			err(1, fmt, ## __VA_ARGS__);	\
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index fbd34b8e8f57..9ea08b07a0aa 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -104,7 +104,7 @@ static void drain_openssl_errors(void)
+ 
+ #define ERR(cond, fmt, ...)				\
+ 	do {						\
+-		bool __cond = (cond);			\
++		bool __cond = cond;			\
+ 		display_openssl_errors(__LINE__);	\
+ 		if (__cond) {				\
+ 			err(1, fmt, ## __VA_ARGS__);	\
+-- 
+2.17.1
+
