@@ -2,126 +2,141 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB331EC735
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jun 2020 04:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F8B11ECB0F
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jun 2020 10:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725816AbgFCCPp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 2 Jun 2020 22:15:45 -0400
-Received: from new4-smtp.messagingengine.com ([66.111.4.230]:46947 "EHLO
-        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725780AbgFCCPp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Jun 2020 22:15:45 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 031EC5802D6;
-        Tue,  2 Jun 2020 22:15:44 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 02 Jun 2020 22:15:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
-        message-id:subject:from:to:cc:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
-        6pUUgnZdVRfgssHG6PiGy/ksy5g4aXP+llHJT50Buho=; b=CL9HkFj4APm/nhtS
-        xi/AVwtjfIwDza3rkh82FsGQ1VLBMVewwTrGnJPusgNFjf0sVpPobl8VNmmiHQXT
-        7o9fboO1Z7qsMqJdaxSChgJdc/Trqt8kM/1zgRWDCiWzBE1tDUZ3KMErVVPMfexl
-        EJov2FGhME06VLfEtZBecgGnE3QTgUn35RFvs9w+wOR5Jro37nmwthjugeiMzJnb
-        Y9fqHN1BkObepELPB2rdlyX9lS+4gqpPyBFfwFD3kvbKtEqb6v+jZN3KjhqeUgLW
-        6GHn46/MSWigx12U8cNsMMLuoCdhBXpd/ArE9jVueyyCZLTWm/FrzyjTYhcuhUgS
-        a7h3hQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; bh=6pUUgnZdVRfgssHG6PiGy/ksy5g4aXP+llHJT50Bu
-        ho=; b=gj+4db0wdCSTFiluY15U1lPN7KQoRKcTNe9Lx4BBRoZbSaVR7UsSneZ7N
-        I2vgKIwpKWqe8n39Jd86xhp8PttxF9+y5j4Lps8YmUSp+E4S6LtAHvc3U95p63Ug
-        YM6DTdpDTgFL4cBnKJXcQ7PHaoJFdJdpsJcFbHsHoewaf8GV9pvvB3u8fANfFI+s
-        BkdzWGECZqv/mKV/F0UUykdQN71DI+hazhyOykFsZ71ScLM6yA0s0853Lv9VS5uO
-        EEDLFnf2+No7AouUzhgReYfxJufMZ8u6d4/GipyNUshXCPybOMITnSsY9gpqGy68
-        vjy6Vivf3wCrZ/R7Z+MjlmNS2Iy+Q==
-X-ME-Sender: <xms:zwfXXsjTR8MMxv6E4ZilxF-v9os9_9fZMk-mcLXo-csWfoiHsxnSUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudefkedghedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomhepkfgrnhcu
-    mfgvnhhtuceorhgrvhgvnhesthhhvghmrgifrdhnvghtqeenucggtffrrghtthgvrhhnpe
-    ekkeejieeiieegvedvvdejjeegfeffleekudekgedvudeggeevgfekvdfhvdelfeenucff
-    ohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppeehkedrjedrvdehgedrleehnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhgrvhgvnhes
-    thhhvghmrgifrdhnvght
-X-ME-Proxy: <xmx:zwfXXlD4MKIQOUEnl8hEoCToW96ihLrAT8n9zR3sc9wcR9GK2mUwSQ>
-    <xmx:zwfXXkHyEU8LJ52_-ijOOtBEEUxqGhdvzvd1Jz1xoawMWjRS-iv7Bg>
-    <xmx:zwfXXtT3GcFiCF1xd13SLQP_qq0FVKKXQXiK0FNVtpJuU0BfmG7LNg>
-    <xmx:zwfXXpe1rCTlOYNdnGwK1fvTLF6SwbEP-vxQwEmPuVLwUeo9CH856w>
-Received: from mickey.themaw.net (58-7-254-95.dyn.iinet.net.au [58.7.254.95])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 6D1D830618C1;
-        Tue,  2 Jun 2020 22:15:38 -0400 (EDT)
-Message-ID: <639a79d90f51da0b53a0ba45ec28d5b0dd9fee7b.camel@themaw.net>
-Subject: Re: [GIT PULL] General notification queue and key notifications
-From:   Ian Kent <raven@themaw.net>
-To:     David Howells <dhowells@redhat.com>, torvalds@linux-foundation.org
-Cc:     viro@zeniv.linux.org.uk, dray@redhat.com, kzak@redhat.com,
-        mszeredi@redhat.com, swhiteho@redhat.com, jlayton@redhat.com,
-        andres@anarazel.de, christian.brauner@ubuntu.com,
-        jarkko.sakkinen@linux.intel.com, keyrings@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 03 Jun 2020 10:15:34 +0800
-In-Reply-To: <1503686.1591113304@warthog.procyon.org.uk>
-References: <1503686.1591113304@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        id S1726262AbgFCIIF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 3 Jun 2020 04:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726268AbgFCIH7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 3 Jun 2020 04:07:59 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6ACEC05BD43
+        for <keyrings@vger.kernel.org>; Wed,  3 Jun 2020 01:07:57 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id s1so1583644ljo.0
+        for <keyrings@vger.kernel.org>; Wed, 03 Jun 2020 01:07:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qm1Fufz0OVB6tfCS+0Zsp1jGFDeHl0Qe2Wk3cNVFIjE=;
+        b=em6VoVH3kTta5GgGnR4yxb0C9pC1Go/C30Wl2dHtASemgL3MKbw20qcTF6Xp/bqged
+         RqOiCSv36QuACxRruwObvBTcwUk07Vmv1pRD7jpaD80GjeML6wGVdnohnXhDpk4O6+vj
+         CYcJiJHrTqBZ0vrJitGDSVZcpdMJoTTeyYXQ6IKOQcGDkoR5aMwVFg1dMeW+q79MUbvm
+         UM03uTMHvxOc+IDw/fvKIk3IgDSfh7K96pi/PSu+HgDag/sDDXiL0MFQeFJsr7+wOAHd
+         jiR0M0thaeIfsT1hu5gedkVkCI75yMeGExpSo9+ia+XoHXJRolqp+4yzG5CkerIzUioR
+         nkaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qm1Fufz0OVB6tfCS+0Zsp1jGFDeHl0Qe2Wk3cNVFIjE=;
+        b=AtXlKzF6QbdqcrtWyy+NhTrVTFYa6UJ40Jr5p6lqMBM6T8bU6TP1ivttWEB3WILHnb
+         2CYpGFE9pO96ulM1aNWucWx16ralpLNcteFb4b+ZDPybYYkoehfMQF3ZQxfppeRAhlkX
+         yMphnvbDXrKKNLJxdzM5rhB85pnvf2QQorAXPQ7ij5cj5QPiIfuctuDv2hO+xWYENRUr
+         Jvb1Ef7or719Zj9Ds1xp6HZegbb3xPMM9xL+X4Z68i89RY2gVGytH/SMcpq9REz1ypdq
+         BmFF7PSpO8nuPO3LsByyQ0XmmlOOIPn3Nn/5vzlOH4Ugnewh3b99z/6MJHRFg9TB3/dW
+         HTEg==
+X-Gm-Message-State: AOAM53326LuigzTgstW8bTAZBB6KSIeojeNUajxC31uDAWzSC7r5zSfN
+        +gbwR7tlmQRz/0g0tHru6S6mQ/3Dk9Yv537CXZ17Xg==
+X-Google-Smtp-Source: ABdhPJxcPvpE6Kivg7poyIQDKjTdaR1zLLkk4Fmt5UIvp5/hGBWWhPNMg87+/+CuxmPgVa3FetzyOOjx5sQTccuyCM0=
+X-Received: by 2002:a05:651c:1103:: with SMTP id d3mr1553238ljo.110.1591171676264;
+ Wed, 03 Jun 2020 01:07:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <1591107505-6030-1-git-send-email-sumit.garg@linaro.org> <1591108981.4253.17.camel@linux.ibm.com>
+In-Reply-To: <1591108981.4253.17.camel@linux.ibm.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 3 Jun 2020 13:37:44 +0530
+Message-ID: <CAFA6WYOoMdLJ2g3gocZBZWdu-7Nfw7LKHnzX8S8FKeC7cuNwYg@mail.gmail.com>
+Subject: Re: [PATCH v5 0/4] Introduce TEE based Trusted Keys support
+To:     James Bottomley <jejb@linux.ibm.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org,
+        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-06-02 at 16:55 +0100, David Howells wrote:
-> 
-> [[ With regard to the mount/sb notifications and fsinfo(), Karel Zak
-> and
->    Ian Kent have been working on making libmount use them,
-> preparatory to
->    working on systemd:
-> 
-> 	https://github.com/karelzak/util-linux/commits/topic/fsinfo
-> 	
-> https://github.com/raven-au/util-linux/commits/topic/fsinfo.public
-> 
->    Development has stalled briefly due to other commitments, so I'm
-> not
->    sure I can ask you to pull those parts of the series for
-> now.  Christian
->    Brauner would like to use them in lxc, but hasn't started.
->    ]]
+On Tue, 2 Jun 2020 at 20:14, James Bottomley <jejb@linux.ibm.com> wrote:
+>
+> On Tue, 2020-06-02 at 19:48 +0530, Sumit Garg wrote:
+> > Add support for TEE based trusted keys where TEE provides the
+> > functionality to seal and unseal trusted keys using hardware unique
+> > key. Also, this is an alternative in case platform doesn't possess a
+> > TPM device.
+>
+> So here's a meta problem: in the case when the platform possesses both
+> TEE and TPM  what should it do?
 
-Linus,
+IMO, trust source (either a TPM or a TEE) should be unique and
+carefully chosen as per platform security policy corresponding to a
+particular threat model.
 
-Just so your aware of what has been done and where we are at here's
-a summary.
+And moreover TEEs have been mostly used in the embedded world where
+having a hardware TPM is cumbersome given constraints regarding BoM
+cost and hardware resources.
 
-Karel has done quite a bit of work on libmount (at this stage it's
-getting hold of the mount information, aka. fsinfo()) and most of
-what I have done is included in that too which you can see in Karel's
-repo above). You can see a couple of bug fixes and a little bit of
-new code present in my repo which hasn't been sent over to Karel
-yet.
+>  Things like this:
+>
+> > --- a/security/keys/trusted-keys/trusted_core.c
+> > +++ b/security/keys/trusted-keys/trusted_core.c
+> > @@ -25,6 +25,8 @@
+> >
+> >  #if defined(CONFIG_TRUSTED_TPM)
+> >  static struct trusted_key_ops *trusted_key_ops =
+> > &tpm_trusted_key_ops;
+> > +#elif defined(CONFIG_TRUSTED_TEE)
+> > +static struct trusted_key_ops *trusted_key_ops =
+> > &tee_trusted_key_ops;
+> >  #else
+>
+> Say it's either/or at a Kconfig level: so if you select both TEE and
+> TPM based trusted keys at compile time, we intall the TPM ops and
+> ignore the TEE ops, is that right?  Surely this should be runtime
+> selectable based on what the platform has ...
 
-This infrastructure is essential before notifications work is started
-which is where we will see the most improvement.
+This dynamic selection was already part of v4 patch-set but after
+objection from Jarrko here [1], I switched to compile time mode
+instead.
 
-It turns out that while systemd uses libmount it has it's own
-notifications handling sub-system as it deals with several event
-types, not just mount information, in the same area. So, unfortunately,
-changes will need to be made there as well as in libmount, more so
-than the trivial changes to use fsinfo() via libmount.
+[1] https://lkml.org/lkml/2020/6/2/139
 
-That's where we are at the moment and I will get back to it once
-I've dealt with a few things I postponed to work on libmount.
+> perhaps it should even be
+> selectable per key?
+>
+> Once it is runtime selectable, what should be selected in the both
+> case?  Or should we allow the user to decide, if so, how?
+>
+> when you pipe a trusted key, I think the subtype (TEE or TPM) should be
+> part of the piped information, so it loads again seamlessly.  This
+> would actually be fixed by something like the ASN.1 scheme I'm trying
+> to upstream, at least for TPM keys, but do TEE keys have a recognized
+> ASN.1 format?
+>
 
-If you would like a more detailed account of what we have found I
-can provide that too.
+I guess this is something which we can refine later if there are real
+platforms that have a particular security requirement to support both
+TPM and a TEE.
 
-Is there anything else you would like from me or Karel?
+-Sumit
 
-Ian
-
+> James
+>
