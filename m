@@ -2,110 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A753A1EBFF7
-	for <lists+keyrings@lfdr.de>; Tue,  2 Jun 2020 18:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB331EC735
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jun 2020 04:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727769AbgFBQ2O (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 2 Jun 2020 12:28:14 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:40612 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727113AbgFBQ2N (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Jun 2020 12:28:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591115291;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=tyM2BxulV0HOmx/+JvhObFxHlx66m4jLAl+vy1rTPos=;
-        b=AvW55yhUADscI8R2bGnGrPB7LJI+B+SGFHQ+UVFPpEJ8+Lzo26IaHTOu50JDqKM9vNXO8G
-        VKrWG92ICsCl8btb9PX/K6CI8HW2TiurDWlr+HhP+rjHfosmmGbTXIlpq9kd6lmsYGmfun
-        e9k40hCpqkyQJGcfzUxWw3Z7rr5EgWg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-178-kG2CUa-4OCCPoUv3zDEIHA-1; Tue, 02 Jun 2020 12:28:06 -0400
-X-MC-Unique: kG2CUa-4OCCPoUv3zDEIHA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1C599800053;
-        Tue,  2 Jun 2020 16:28:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-138.rdu2.redhat.com [10.10.112.138])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5C71D6116F;
-        Tue,  2 Jun 2020 16:28:01 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
-        mathstuf@gmail.com, gustavoars@kernel.org, Jason@zx2c4.com,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [GIT PULL] keys: Changes for 5.8
+        id S1725816AbgFCCPp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 2 Jun 2020 22:15:45 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:46947 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725780AbgFCCPp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Jun 2020 22:15:45 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 031EC5802D6;
+        Tue,  2 Jun 2020 22:15:44 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Tue, 02 Jun 2020 22:15:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
+        message-id:subject:from:to:cc:date:in-reply-to:references
+        :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
+        6pUUgnZdVRfgssHG6PiGy/ksy5g4aXP+llHJT50Buho=; b=CL9HkFj4APm/nhtS
+        xi/AVwtjfIwDza3rkh82FsGQ1VLBMVewwTrGnJPusgNFjf0sVpPobl8VNmmiHQXT
+        7o9fboO1Z7qsMqJdaxSChgJdc/Trqt8kM/1zgRWDCiWzBE1tDUZ3KMErVVPMfexl
+        EJov2FGhME06VLfEtZBecgGnE3QTgUn35RFvs9w+wOR5Jro37nmwthjugeiMzJnb
+        Y9fqHN1BkObepELPB2rdlyX9lS+4gqpPyBFfwFD3kvbKtEqb6v+jZN3KjhqeUgLW
+        6GHn46/MSWigx12U8cNsMMLuoCdhBXpd/ArE9jVueyyCZLTWm/FrzyjTYhcuhUgS
+        a7h3hQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; bh=6pUUgnZdVRfgssHG6PiGy/ksy5g4aXP+llHJT50Bu
+        ho=; b=gj+4db0wdCSTFiluY15U1lPN7KQoRKcTNe9Lx4BBRoZbSaVR7UsSneZ7N
+        I2vgKIwpKWqe8n39Jd86xhp8PttxF9+y5j4Lps8YmUSp+E4S6LtAHvc3U95p63Ug
+        YM6DTdpDTgFL4cBnKJXcQ7PHaoJFdJdpsJcFbHsHoewaf8GV9pvvB3u8fANfFI+s
+        BkdzWGECZqv/mKV/F0UUykdQN71DI+hazhyOykFsZ71ScLM6yA0s0853Lv9VS5uO
+        EEDLFnf2+No7AouUzhgReYfxJufMZ8u6d4/GipyNUshXCPybOMITnSsY9gpqGy68
+        vjy6Vivf3wCrZ/R7Z+MjlmNS2Iy+Q==
+X-ME-Sender: <xms:zwfXXsjTR8MMxv6E4ZilxF-v9os9_9fZMk-mcLXo-csWfoiHsxnSUQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudefkedghedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomhepkfgrnhcu
+    mfgvnhhtuceorhgrvhgvnhesthhhvghmrgifrdhnvghtqeenucggtffrrghtthgvrhhnpe
+    ekkeejieeiieegvedvvdejjeegfeffleekudekgedvudeggeevgfekvdfhvdelfeenucff
+    ohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppeehkedrjedrvdehgedrleehnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhgrvhgvnhes
+    thhhvghmrgifrdhnvght
+X-ME-Proxy: <xmx:zwfXXlD4MKIQOUEnl8hEoCToW96ihLrAT8n9zR3sc9wcR9GK2mUwSQ>
+    <xmx:zwfXXkHyEU8LJ52_-ijOOtBEEUxqGhdvzvd1Jz1xoawMWjRS-iv7Bg>
+    <xmx:zwfXXtT3GcFiCF1xd13SLQP_qq0FVKKXQXiK0FNVtpJuU0BfmG7LNg>
+    <xmx:zwfXXpe1rCTlOYNdnGwK1fvTLF6SwbEP-vxQwEmPuVLwUeo9CH856w>
+Received: from mickey.themaw.net (58-7-254-95.dyn.iinet.net.au [58.7.254.95])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 6D1D830618C1;
+        Tue,  2 Jun 2020 22:15:38 -0400 (EDT)
+Message-ID: <639a79d90f51da0b53a0ba45ec28d5b0dd9fee7b.camel@themaw.net>
+Subject: Re: [GIT PULL] General notification queue and key notifications
+From:   Ian Kent <raven@themaw.net>
+To:     David Howells <dhowells@redhat.com>, torvalds@linux-foundation.org
+Cc:     viro@zeniv.linux.org.uk, dray@redhat.com, kzak@redhat.com,
+        mszeredi@redhat.com, swhiteho@redhat.com, jlayton@redhat.com,
+        andres@anarazel.de, christian.brauner@ubuntu.com,
+        jarkko.sakkinen@linux.intel.com, keyrings@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 03 Jun 2020 10:15:34 +0800
+In-Reply-To: <1503686.1591113304@warthog.procyon.org.uk>
+References: <1503686.1591113304@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1509350.1591115280.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 02 Jun 2020 17:28:00 +0100
-Message-ID: <1509351.1591115280@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Linus,
+On Tue, 2020-06-02 at 16:55 +0100, David Howells wrote:
+> 
+> [[ With regard to the mount/sb notifications and fsinfo(), Karel Zak
+> and
+>    Ian Kent have been working on making libmount use them,
+> preparatory to
+>    working on systemd:
+> 
+> 	https://github.com/karelzak/util-linux/commits/topic/fsinfo
+> 	
+> https://github.com/raven-au/util-linux/commits/topic/fsinfo.public
+> 
+>    Development has stalled briefly due to other commitments, so I'm
+> not
+>    sure I can ask you to pull those parts of the series for
+> now.  Christian
+>    Brauner would like to use them in lxc, but hasn't started.
+>    ]]
 
-Could you pull these keyrings fixes please?
+Linus,
 
- (1) Fix a documentation warning.
+Just so your aware of what has been done and where we are at here's
+a summary.
 
- (2) Replace a [0] array with [].
+Karel has done quite a bit of work on libmount (at this stage it's
+getting hold of the mount information, aka. fsinfo()) and most of
+what I have done is included in that too which you can see in Karel's
+repo above). You can see a couple of bug fixes and a little bit of
+new code present in my repo which hasn't been sent over to Karel
+yet.
 
- (3) Make the big_key key type use ChaCha20Poly1305 and use the crypto
-     algorithm directly rather than going through the crypto layer.
+This infrastructure is essential before notifications work is started
+which is where we will see the most improvement.
 
- (4) Implement the update op for the big_key type.
+It turns out that while systemd uses libmount it has it's own
+notifications handling sub-system as it deals with several event
+types, not just mount information, in the same area. So, unfortunately,
+changes will need to be made there as well as in libmount, more so
+than the trivial changes to use fsinfo() via libmount.
 
-Thanks,
-David
----
-The following changes since commit 6a8b55ed4056ea5559ebe4f6a4b247f627870d4=
-c:
+That's where we are at the moment and I will get back to it once
+I've dealt with a few things I postponed to work on libmount.
 
-  Linux 5.7-rc3 (2020-04-26 13:51:02 -0700)
+If you would like a more detailed account of what we have found I
+can provide that too.
 
-are available in the Git repository at:
+Is there anything else you would like from me or Karel?
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags=
-/keys-next-20200602
-
-for you to fetch changes up to b6f61c31464940513ef4eccb3a030a405b4256d6:
-
-  keys: Implement update for the big_key type (2020-06-02 17:22:31 +0100)
-
-----------------------------------------------------------------
-Keyrings changes
-
-----------------------------------------------------------------
-Ben Boeckel (1):
-      Documentation: security: core.rst: add missing argument
-
-David Howells (1):
-      keys: Implement update for the big_key type
-
-Gustavo A. R. Silva (1):
-      KEYS: Replace zero-length array with flexible-array
-
-Jason A. Donenfeld (1):
-      security/keys: rewrite big_key crypto to use library interface
-
- Documentation/security/keys/core.rst |   8 +-
- include/keys/big_key-type.h          |   1 +
- include/keys/user-type.h             |   2 +-
- security/keys/Kconfig                |   4 +-
- security/keys/big_key.c              | 257 +++++++-----------------------=
------
- 5 files changed, 60 insertions(+), 212 deletions(-)
+Ian
 
