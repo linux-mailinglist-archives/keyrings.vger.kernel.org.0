@@ -2,168 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA001ECEC9
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jun 2020 13:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A0731ED11F
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jun 2020 15:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725981AbgFCLpe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 3 Jun 2020 07:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59116 "EHLO
+        id S1725916AbgFCNqA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 3 Jun 2020 09:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725833AbgFCLpe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 3 Jun 2020 07:45:34 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0968C08C5C0
-        for <keyrings@vger.kernel.org>; Wed,  3 Jun 2020 04:45:33 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id x27so1097635lfg.9
-        for <keyrings@vger.kernel.org>; Wed, 03 Jun 2020 04:45:33 -0700 (PDT)
+        with ESMTP id S1725881AbgFCNqA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 3 Jun 2020 09:46:00 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E56C08C5C1
+        for <keyrings@vger.kernel.org>; Wed,  3 Jun 2020 06:46:00 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id s1so2832421ljo.0
+        for <keyrings@vger.kernel.org>; Wed, 03 Jun 2020 06:45:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R6lEVGZYGJxxHN7lE3eo9NqLzCsnQCicun988jWmqf0=;
-        b=CcT9D9lZNg/SMdu0oTdh0D/2xb8iHgHFyH7fmH90WYrNn/U+znPsNUWsM5AsKxoBUC
-         vVFKe4LUjup9xTgkizKTwyQ0mp3tl+y8Welh9N/GllG4VLXKlxXHjSr9F6k+N7aS+Mdu
-         brRhX1nAh2aZFrsppZeJGN+BzJyK3Lq86tRW/+cuA0RgpK9vhrG7icHwQdZTE/6WgEzE
-         i9QfGI97QzeIy4v9j5Ft+ogMFQd85zLlT19K8GDYCEQMP+XrX3bHBWhIxegbA2Ze1qk9
-         Tp4ZMNmBt1B0C5WbcpAKgxOqrlvbotQ7CtwkSesdW9/OtKZup/VpnJtb/cWiuTEdTFjl
-         3sow==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=bSV6uZWIkbUomoDOcnfRQtk75Q2ElZTcdcpx/lKYAmPzW84mHjbii38xCVdCQgDmvH
+         LrrgrlL/wxQopzSZOdOsm++lSDN12ed9OTSL8u6U2hO156qPQdtrE5Wzr2eGLSGNg2yt
+         VAxgAOQHuxhwbunmxFiNwD0oV0bTJEPT6+0LAIWhhfesmLJa74pCVIyFJFMrpoPlsjKb
+         4UEep9Xo9fwQ00Y+R8avC4zArfGrFSY5JMunldwhDz38xR7Wtlnu5pEiiH700m8bSSCV
+         kfBcH0ZSH904piewB+yLGBolP5jbnmSdG8H+Kf4UbdRBKs87DFFNFDp3yYsFdfzuYzDY
+         Hn0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R6lEVGZYGJxxHN7lE3eo9NqLzCsnQCicun988jWmqf0=;
-        b=WSWa7u+yOG2gARptxo+JJUgDD3S8wTOJmKl53ifYkfE4jsbkOFAUd9CTFQHEhnaaaD
-         mzE2F9ltPA9PjW0Hx20uSywlyKHedwE0ccTRw4lxAMmTJf8yfDd4HKURJ3H2jkJxip2m
-         7TYdmL9Hnn16QCBafO4kJgNG2zBz/3nPIS2uk48gefu1gZLYxYdMyheVLyhptQsdweNh
-         mohEQFWdIF6ffdB8+VHNa0zHZ2q3mms2Lt0gmFneEKbMTpO86rZjE6flVS4J/U5eeg47
-         BT9YqoNBmb8sbGXk+HjC+3dm/ZLQ42GCAjeAgaQmtIE/ayQrOoEzpnHx9ysDu3IavbkK
-         2rEw==
-X-Gm-Message-State: AOAM5306tiut2a4g78crj2UA3fjDh2e6C9sAoIC9EmXqhFYHG6i4esrt
-        rdKFmVubYldU7ZzyA5sEe/19fHeJ4+nL7A0N5q9PQA==
-X-Google-Smtp-Source: ABdhPJxrRq5dz8jR0pX7TOEXl5+O6MeJ4s3D9zLb2o4VMf6+9QwUKNjv2xRDI0+UrWAaW8w3feNHDUNL6jPLIkqDsJg=
-X-Received: by 2002:ac2:44bb:: with SMTP id c27mr2301161lfm.59.1591184732251;
- Wed, 03 Jun 2020 04:45:32 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=sOcjU1FbAtqPkM/131FM3v460o2QerVJj1w/0qGzCVOPWGKgS/5aE0nvYXSVqjufhq
+         aLYPdg0xZmnp90QH5qJ0x/lw99pOLR2VX1N4+bp2xM5o0d9tQdYTo0Ph6lXkMaYfYJuz
+         txjpBMD2EFX4m29xf4n1pCQ8zd/a0nP5fXoRUtuF+0aT4+3cwOfuhaBucdmUNsseHz9n
+         k9EV9/MGRHhp1JcHn2w9035pREM+FMyMBNG3AH9SgrPP+TQQYYwvh51+qUrfMtfNfjuP
+         ND5NinLESIMTlP2DwEB6dFdLwi5N7iWFkibSlaH569d6fFQGJZltSW7ns1CVFiCG/db3
+         iFVQ==
+X-Gm-Message-State: AOAM533Se/uvv7ePbUH68tAToC9P7nwUrK4e4vBVcaZMIhP1JFdDirOZ
+        UAfRGputF5OKA+8exZIA1B572CZgOiwaLCAtP4c=
+X-Google-Smtp-Source: ABdhPJwXFAhx01Z36IcpZGE90NnSaaUlkyvEwJ1LskX6rILuw5Mz4rJyf65t1+ez5fKozE9KrzXEAV8P3s4fGn/nBus=
+X-Received: by 2002:a2e:96cd:: with SMTP id d13mr1992355ljj.251.1591191958412;
+ Wed, 03 Jun 2020 06:45:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <1591107505-6030-1-git-send-email-sumit.garg@linaro.org>
- <1591108981.4253.17.camel@linux.ibm.com> <CAFA6WYOoMdLJ2g3gocZBZWdu-7Nfw7LKHnzX8S8FKeC7cuNwYg@mail.gmail.com>
- <CAKrSGQSLKpb8T=H9zUoPP1B6EFrgMTMP3ZX1pEv99JtdPq7H0w@mail.gmail.com>
-In-Reply-To: <CAKrSGQSLKpb8T=H9zUoPP1B6EFrgMTMP3ZX1pEv99JtdPq7H0w@mail.gmail.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 3 Jun 2020 17:15:20 +0530
-Message-ID: <CAFA6WYOFO8YptYp2JrY7nQL0MeM02VLCHvtnxUCEDd5-fb-z+Q@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] Introduce TEE based Trusted Keys support
-To:     Luke Hinds <lhinds@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>
+Reply-To: susanjones.wife@gmail.com
+Received: by 2002:ab3:7d83:0:0:0:0:0 with HTTP; Wed, 3 Jun 2020 06:45:57 -0700 (PDT)
+From:   "Mrs.Susan Jones" <joneswife.susan@gmail.com>
+Date:   Wed, 3 Jun 2020 14:45:57 +0100
+X-Google-Sender-Auth: iin7lEuBHlJZuEG2AGqwaP-EH3c
+Message-ID: <CAPK60Vi=wBuNxSwi-36mnszQBhFmtyKOZVAEb9-HaRw9cdsydg@mail.gmail.com>
+Subject: HELLO: I AM MRS SUSAN JONES
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 3 Jun 2020 at 14:20, Luke Hinds <lhinds@redhat.com> wrote:
->
->
->
-> On Wed, Jun 3, 2020 at 9:08 AM Sumit Garg <sumit.garg@linaro.org> wrote:
->>
->> On Tue, 2 Jun 2020 at 20:14, James Bottomley <jejb@linux.ibm.com> wrote:
->> >
->> > On Tue, 2020-06-02 at 19:48 +0530, Sumit Garg wrote:
->> > > Add support for TEE based trusted keys where TEE provides the
->> > > functionality to seal and unseal trusted keys using hardware unique
->> > > key. Also, this is an alternative in case platform doesn't possess a
->> > > TPM device.
->> >
->> > So here's a meta problem: in the case when the platform possesses both
->> > TEE and TPM  what should it do?
->>
->> IMO, trust source (either a TPM or a TEE) should be unique and
->> carefully chosen as per platform security policy corresponding to a
->> particular threat model.
->>
->> And moreover TEEs have been mostly used in the embedded world where
->> having a hardware TPM is cumbersome given constraints regarding BoM
->> cost and hardware resources.
->>
->> >  Things like this:
->> >
->> > > --- a/security/keys/trusted-keys/trusted_core.c
->> > > +++ b/security/keys/trusted-keys/trusted_core.c
->> > > @@ -25,6 +25,8 @@
->> > >
->> > >  #if defined(CONFIG_TRUSTED_TPM)
->> > >  static struct trusted_key_ops *trusted_key_ops =
->> > > &tpm_trusted_key_ops;
->> > > +#elif defined(CONFIG_TRUSTED_TEE)
->> > > +static struct trusted_key_ops *trusted_key_ops =
->> > > &tee_trusted_key_ops;
->> > >  #else
->> >
->> > Say it's either/or at a Kconfig level: so if you select both TEE and
->> > TPM based trusted keys at compile time, we intall the TPM ops and
->> > ignore the TEE ops, is that right?  Surely this should be runtime
->> > selectable based on what the platform has ...
->>
->> This dynamic selection was already part of v4 patch-set but after
->> objection from Jarrko here [1], I switched to compile time mode
->> instead.
->>
->> [1] https://lkml.org/lkml/2020/6/2/139
->
->
-> Unless I have misunderstood, my concerns about compile time are that distributors will be cornered into releasing kernels with an opinionated selection of either TEE or TPM and any users needing the non default will need to compile their own kernel.
->
+-- 
+OUR GOLDEN OPPORTUNITY
 
-I echo with your concerns.
+Hello Dear Friend,
 
-Jarrko,
+Complement of the day, i hope you are doing great today. However, I am
+Mrs.Susan Jones, an auditor with one of the new generation banks here
+in Burkina Faso.
 
-If it's fine with you then I can switch back to dynamic approach again
-in the next version.
+I am writing you this letter based on the latest development at my
+Department. i discovered some abandoned huge amount of money, Ten
+Million, Five hundred thousand  United States Dollars.($10.500.000).
+Now I am only contacting you as a foreigner because this money cannot
+be approved to a local bank account here, but can only be approved to
+any foreign account and foreign beneficiary because the money is in US
+dollars
 
--Sumit
+This will be  a legitimate transaction once you accept to build trust
+with me and follow simple instruction doing the transfer process,
+until the total sum transfer out of the bank here to your own bank
+account any where in the world, and I agreed to share the total money
+50/50 with you once you successful confirmed it in your bank account.
+But any expenses doing the transfer process will be deduct from the
+amount before sharing, If you are interested to work with me and
+provide a good receiving bank account, get back to me as soon as
+possible with the following details below.
 
->>
->>
->> > perhaps it should even be
->> > selectable per key?
->> >
->> > Once it is runtime selectable, what should be selected in the both
->> > case?  Or should we allow the user to decide, if so, how?
->> >
->> > when you pipe a trusted key, I think the subtype (TEE or TPM) should be
->> > part of the piped information, so it loads again seamlessly.  This
->> > would actually be fixed by something like the ASN.1 scheme I'm trying
->> > to upstream, at least for TPM keys, but do TEE keys have a recognized
->> > ASN.1 format?
->> >
->>
->> I guess this is something which we can refine later if there are real
->> platforms that have a particular security requirement to support both
->> TPM and a TEE.
->>
->> -Sumit
->>
->> > James
->> >
->>
->
+Your full name
+Your Profession
+Your direct mobile phone number
+Your Scanned International passport or any of your identity
+
+NOTE: PLEASE IT YOU ARE NOT INTERESTED DON'T BORDER TO RESPOND BACK TO
+AVOID TIME WASTED.
+
+As soon as I receive these data's, I will forward to you the
+application form which you will send to the bank for the claim and
+transfer of the fund into your bank account as the  new beneficial.
+
+I am waiting to hear from you soon
+
+Yours
+Mrs.Susan Jones
