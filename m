@@ -2,225 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E825C1F10BF
-	for <lists+keyrings@lfdr.de>; Mon,  8 Jun 2020 02:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D1E71F3D11
+	for <lists+keyrings@lfdr.de>; Tue,  9 Jun 2020 15:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728046AbgFHAtz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 7 Jun 2020 20:49:55 -0400
-Received: from wnew2-smtp.messagingengine.com ([64.147.123.27]:46803 "EHLO
-        wnew2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728001AbgFHAty (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 7 Jun 2020 20:49:54 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailnew.west.internal (Postfix) with ESMTP id B763F54A;
-        Sun,  7 Jun 2020 20:49:52 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Sun, 07 Jun 2020 20:49:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
-        message-id:subject:from:to:cc:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
-        ypy9wHdt9x60QtCjqTWqlpCz6bFcBx77MRo3WMv+OYo=; b=R1e4YW7jAr1iLQH3
-        7j3yOhEh8Qw5GDDVKsF+mwfl7lZ5C7iXNFO676mPkJ6+xYmusnFJkRGJ6bM0LKMq
-        yXg4+U7CYOy2Eem+mMuA3n75h+NJWVsb87F6kV8an2y0NcNc+ZlgjJsc9pvlsVZq
-        zySVPEvzvkk/rTuxM+/0VVaxX9dhT8Kzd9Q4Go06iPxS8YlFpTAdk0ShxMZ9tJJt
-        VmuXuflejR4dV5U2wOiMuRQbQuAud4UeZ84u6Y2C831xzqbziEcf+n2J54TrUCh4
-        Px1pn0IsC0OF8UDKUiLmtCyZjddSeUd8IxVLtEUlPJTEkidqxY5kJwG4/7Jk/9W1
-        753MGA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; bh=ypy9wHdt9x60QtCjqTWqlpCz6bFcBx77MRo3WMv+O
-        Yo=; b=AsPcByuHOh2lcHRZkGhqUAl2xQavgf8MaWNs6JvlZstYXj4SGF6fEa5IO
-        IXrNBNEQoJTZ63mWWSZAN4/opi9UVWsyevyQKpT3Mbu8McemhGGR9eRQfyDJ/Q5B
-        j98FzF2Rrv7LD0dmXwlo/9IEDDAl/H0qouuzZxRx5TgWy+Iwr/OLymWIu3jCMhNX
-        6XUUq7u17JLNKHReIkBGBfpZMzHAh942z87heJe5J/wEI5ia63EYi9JG1wCI3ngp
-        Jw6nfgzbX6Rsc5cfzU9+XGwqKGfMIp9n/YgTzlSP8+PGWK6osb0rqkJYRsECVy/d
-        mADU9PxrTmJ/UeDGJfN/Xf0kJCzBw==
-X-ME-Sender: <xms:L4vdXl0FGKqcyzyA0OTu1RuAHNddQN_dNHQTk7kLJPxUSwLtnWVl5Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudehtddggedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomhepkfgrnhcu
-    mfgvnhhtuceorhgrvhgvnhesthhhvghmrgifrdhnvghtqeenucggtffrrghtthgvrhhnpe
-    ekkeejieeiieegvedvvdejjeegfeffleekudekgedvudeggeevgfekvdfhvdelfeenucff
-    ohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppeehkedrjedrvddvtddrgeejnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhgrvhgvnhes
-    thhhvghmrgifrdhnvght
-X-ME-Proxy: <xmx:L4vdXsHyveDhLmE2Eetk_vf6buSMTCWyUZdIj7_AVDRNwZsalSGKmQ>
-    <xmx:L4vdXl4aRnjipMc7x4jy5Bcc-eiNzD7b3SeyCi8_u_QzrYrdrX9GKA>
-    <xmx:L4vdXi0aFUn6K-x440t7FFmqqUrVfN_cxvo8TqM2gOFS0LJxhg6hrQ>
-    <xmx:MIvdXjAgCZJSjnV-zQF1iNSvJuM6UsNWHBFbMbnNlKjOI6tfSMyTrKqZ37w>
-Received: from mickey.themaw.net (58-7-220-47.dyn.iinet.net.au [58.7.220.47])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 15BAE3060FE7;
-        Sun,  7 Jun 2020 20:49:46 -0400 (EDT)
-Message-ID: <4e388597a0fc05fc553c7afd5076d77e232f875e.camel@themaw.net>
-Subject: Re: [GIT PULL] General notification queue and key notifications
-From:   Ian Kent <raven@themaw.net>
-To:     David Howells <dhowells@redhat.com>, torvalds@linux-foundation.org
-Cc:     viro@zeniv.linux.org.uk, dray@redhat.com, kzak@redhat.com,
-        mszeredi@redhat.com, swhiteho@redhat.com, jlayton@redhat.com,
-        andres@anarazel.de, christian.brauner@ubuntu.com,
-        jarkko.sakkinen@linux.intel.com, keyrings@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 08 Jun 2020 08:49:43 +0800
-In-Reply-To: <639a79d90f51da0b53a0ba45ec28d5b0dd9fee7b.camel@themaw.net>
-References: <1503686.1591113304@warthog.procyon.org.uk>
-         <639a79d90f51da0b53a0ba45ec28d5b0dd9fee7b.camel@themaw.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1730238AbgFINtH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 9 Jun 2020 09:49:07 -0400
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:41404 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729779AbgFINtF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Jun 2020 09:49:05 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R771e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01419;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0U.6GXtb_1591710536;
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0U.6GXtb_1591710536)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 09 Jun 2020 21:48:56 +0800
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        dhowells@redhat.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, jmorris@namei.org, serge@hallyn.com,
+        nramas@linux.microsoft.com, tusharsu@linux.microsoft.com,
+        zohar@linux.ibm.com, gilad@benyossef.com, pvanleeuwen@rambus.com
+Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-security-module@vger.kernel.org, zhang.jia@linux.alibaba.com,
+        tianjia.zhang@linux.alibaba.com
+Subject: [PATCH v3 0/8] crpyto: introduce OSCCA certificate and SM2 asymmetric algorithm 
+Date:   Tue,  9 Jun 2020 21:48:47 +0800
+Message-Id: <20200609134855.21431-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2020-06-03 at 10:15 +0800, Ian Kent wrote:
-> On Tue, 2020-06-02 at 16:55 +0100, David Howells wrote:
-> > [[ With regard to the mount/sb notifications and fsinfo(), Karel
-> > Zak
-> > and
-> >    Ian Kent have been working on making libmount use them,
-> > preparatory to
-> >    working on systemd:
-> > 
-> > 	https://github.com/karelzak/util-linux/commits/topic/fsinfo
-> > 	
-> > https://github.com/raven-au/util-linux/commits/topic/fsinfo.public
-> > 
-> >    Development has stalled briefly due to other commitments, so I'm
-> > not
-> >    sure I can ask you to pull those parts of the series for
-> > now.  Christian
-> >    Brauner would like to use them in lxc, but hasn't started.
-> >    ]]
-> 
-> Linus,
-> 
-> Just so your aware of what has been done and where we are at here's
-> a summary.
-> 
-> Karel has done quite a bit of work on libmount (at this stage it's
-> getting hold of the mount information, aka. fsinfo()) and most of
-> what I have done is included in that too which you can see in Karel's
-> repo above). You can see a couple of bug fixes and a little bit of
-> new code present in my repo which hasn't been sent over to Karel
-> yet.
-> 
-> This infrastructure is essential before notifications work is started
-> which is where we will see the most improvement.
-> 
-> It turns out that while systemd uses libmount it has it's own
-> notifications handling sub-system as it deals with several event
-> types, not just mount information, in the same area. So,
-> unfortunately,
-> changes will need to be made there as well as in libmount, more so
-> than the trivial changes to use fsinfo() via libmount.
-> 
-> That's where we are at the moment and I will get back to it once
-> I've dealt with a few things I postponed to work on libmount.
-> 
-> If you would like a more detailed account of what we have found I
-> can provide that too.
-> 
-> Is there anything else you would like from me or Karel?
+Hello all,
 
-I think there's a bit more I should say about this.
+This new module implement the OSCCA certificate and SM2 public key
+algorithm. It was published by State Encryption Management Bureau, China.
+List of specifications for OSCCA certificate and SM2 elliptic curve
+public key cryptography:
 
-One reason work hasn't progressed further on this is I spent
-quite a bit of time looking at the affects of using fsinfo().
+* GM/T 0003.1-2012
+* GM/T 0003.2-2012
+* GM/T 0003.3-2012
+* GM/T 0003.4-2012
+* GM/T 0003.5-2012
+* GM/T 0015-2012
+* GM/T 0009-2012 
 
-My testing was done by using a large autofs direct mount map of
-20000 entries which means that at autofs startup 20000 autofs
-mounts must be done and at autofs shutdown those 20000 mounts
-must be umounted. Not very scientific but something to use to
-get a feel for the affect of our changes.
+IETF: https://tools.ietf.org/html/draft-shen-sm2-ecdsa-02
+oscca: http://www.oscca.gov.cn/sca/xxgk/2010-12/17/content_1002386.shtml
+scctc: http://www.gmbz.org.cn/main/bzlb.html
 
-Initially just using fsinfo() to load all the mount entries was
-done to see how that would perform. This was done in a way that
-required no modifications to library user code but didn't get
-much improvement.
+These patchs add the OID object identifier defined by OSCCA. The
+x509 certificate supports sm2-with-sm3 type certificate parsing
+and verification.
 
-Next loading all the mount ids (alone) for mount entry traversal
-was done and the various fields retrieved on-demand (implemented
-by Karel).
+The sm2 algorithm is based on libgcrypt's mpi implementation, and has
+made some additions to the kernel's original mpi library, and added the
+implementation of ec to better support elliptic curve-like algorithms.
 
-Loading the entire mount table and then traversing the entries
-means the mount table is always possibly out of date. And loading
-the ids and getting the fields on-demand might have made that
-problem worse. But loading only the mount ids and using an
-on-demand method to get needed fields worked surprisingly well.
+sm2 has good support in both openssl and gnupg projects, and sm3 and sm4
+of the OSCCA algorithm family have also been implemented in the kernel.
 
-The main issue is a mount going away while getting the fields.
-Testing showed that simply checking the field is valid and
-ignoring the entry if it isn't is enough to handle that case.
+Among them, sm3 and sm4 have been well implemented in the kernel.
+This group of patches has newly introduced sm2. In order to implement
+sm2 more perfectly, I expanded the mpi library and introduced the
+ec implementation of the mpi library as the basic algorithm. Compared
+to the kernel's crypto/ecc.c, the implementation of mpi/ec.c is more
+complete and elegant, sm2 is implemented based on these algorithms.
 
-Also the mount going away after the needed fields have been
-retrieved must be handled by callers of libmount as mounts
-can just as easily go away after reading the proc based tables.
+---
+v3 changes:
+  1. integrity asymmetric digsig support sm2-with-sm3 algorithm.
+  2. remove unused sm2_set_priv_key().
+  3. rebase on mainline.
 
-The case of the underlying mount information changing needs to
-be considered too. We will need to do better on that in the
-future but it too is a problem with the proc table handing and
-hasn't seen problems logged against libmount for it AFAIK.
+v2 changes:
+  1. simplify the sm2 algorithm and only retain the verify function.
+  2. extract the sm2 certificate code into a separate file.
 
-So, all in all, this approach worked pretty well as libmount
-users do use the getter access methods to retrieve the mount
-entry fields (which is required for the on-demand method to
-work). Certainly systemd always uses them (and it looks like
-udisks2 does too).
+Tianjia Zhang (8):
+  crypto: sm3 - export crypto_sm3_final function
+  lib/mpi: Extend the MPI library
+  lib/mpi: Introduce ec implementation to MPI library
+  crypto: sm2 - introduce OSCCA SM2 asymmetric cipher algorithm
+  crypto: testmgr - support test with different ciphertext per
+    encryption
+  X.509: support OSCCA certificate parse
+  X.509: support OSCCA sm2-with-sm3 certificate verification
+  integrity: Asymmetric digsig supports SM2-with-SM3 algorithm
 
-Unfortunately using the libmount on-demand implementation
-requires library user code be modified (only a little in
-the systemd case) to use the implementation.
+ crypto/Kconfig                            |   17 +
+ crypto/Makefile                           |    8 +
+ crypto/asymmetric_keys/Makefile           |    1 +
+ crypto/asymmetric_keys/public_key.c       |    6 +
+ crypto/asymmetric_keys/public_key_sm2.c   |   59 +
+ crypto/asymmetric_keys/x509_cert_parser.c |   14 +-
+ crypto/asymmetric_keys/x509_public_key.c  |    2 +
+ crypto/sm2.c                              |  473 +++++++
+ crypto/sm2signature.asn1                  |    4 +
+ crypto/sm3_generic.c                      |    7 +-
+ crypto/testmgr.c                          |    7 +-
+ include/crypto/public_key.h               |   14 +
+ include/crypto/sm2.h                      |   25 +
+ include/crypto/sm3.h                      |    2 +
+ include/linux/mpi.h                       |  193 +++
+ include/linux/oid_registry.h              |    6 +
+ lib/mpi/Makefile                          |    6 +
+ lib/mpi/ec.c                              | 1538 +++++++++++++++++++++
+ lib/mpi/mpi-add.c                         |  207 +++
+ lib/mpi/mpi-bit.c                         |  251 ++++
+ lib/mpi/mpi-cmp.c                         |   46 +-
+ lib/mpi/mpi-div.c                         |  259 ++++
+ lib/mpi/mpi-internal.h                    |   53 +
+ lib/mpi/mpi-inv.c                         |  143 ++
+ lib/mpi/mpi-mod.c                         |  155 +++
+ lib/mpi/mpi-mul.c                         |  166 +++
+ lib/mpi/mpicoder.c                        |  336 +++++
+ lib/mpi/mpih-div.c                        |  294 ++++
+ lib/mpi/mpih-mul.c                        |   25 +
+ lib/mpi/mpiutil.c                         |  204 +++
+ security/integrity/digsig_asymmetric.c    |   14 +-
+ 31 files changed, 4517 insertions(+), 18 deletions(-)
+ create mode 100644 crypto/asymmetric_keys/public_key_sm2.c
+ create mode 100644 crypto/sm2.c
+ create mode 100644 crypto/sm2signature.asn1
+ create mode 100644 include/crypto/sm2.h
+ create mode 100644 lib/mpi/ec.c
+ create mode 100644 lib/mpi/mpi-add.c
+ create mode 100644 lib/mpi/mpi-div.c
+ create mode 100644 lib/mpi/mpi-inv.c
+ create mode 100644 lib/mpi/mpi-mod.c
+ create mode 100644 lib/mpi/mpi-mul.c
 
-Testing showed that we get between 10-15% reduction in
-overhead and CPU usage remained high.
-
-I think processing large numbers of mounts is simply a lot
-of work and there are particular cases that will remain that
-require the use of the load and traverse method. For example
-matching all mounts with a given prefix string (one of the
-systemd use cases).
-
-It's hard to get information about this but I can say that
-running pref during the autofs start and stop shows the bulk
-of the counter hits on the fsinfo() table construction code
-so that ahs to be where the overhead is.
-
-The unavoidable conclusion is that the load and traverse method
-that's been imposed on us for so long (even before libmount)
-for mount handling is what we need to get away from. After all,
-this is essentially where the problem comes from in the first
-place. And fsinfo() is designed to not need to use this method
-for getting mount information for that reason.
-
-There's also the notifications side of things which is the next
-area to work on. Looking at systemd I see that monitoring the
-proc mount table leads to a load, traverse, and process of the
-entire table for every single notification. It's clear that's
-because of the (what I'll call) anonymous notifications that we
-have now.
-
-The notifications in David's series carry event specific
-information, for example the mount id for mount notifications
-and the libmount fsinfo() implementation is written to use the
-mount id (lowest overhead lookup option), so there has to be
-significant improvement for this case.
-
-But systemd has it's own notifications handling code so there
-will need to be non-trivial changes there as well as changes
-in libmount.
-
-Bottom line is we have a bit of a challenge with this because we
-are trying to change coding practices developed over many years
-that, necessarily, use a load/traverse method and it's going to
-take quite a while to change these coding practices.
-
-My question is, is there something specific, besides what we are
-doing, that you'd like to see done now in order to get the series
-merged?
-
-Ian
+-- 
+2.17.1
 
