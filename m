@@ -2,90 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B801F52EA
-	for <lists+keyrings@lfdr.de>; Wed, 10 Jun 2020 13:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD7A51F5831
+	for <lists+keyrings@lfdr.de>; Wed, 10 Jun 2020 17:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728392AbgFJLNK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Jun 2020 07:13:10 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:48823 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728399AbgFJLNK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Jun 2020 07:13:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591787588;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=c1vvhL5/pBKghY8N9JMTo024Z+Z84+uHOU1WR4qioPc=;
-        b=WEVh9/YgGk8Xj6vdThGqkAAlZyrjmnwRuG64XtFtBtOLypibKXBZbdpjq0M2rfVUTxMce8
-        OcaNAb8nDJJdGszri4zKafyyeoTmY14mBj9BNWM33GH8TShOoSchqSjSl5K9Q7rN0gd1e2
-        52emB81iihMQkSl2OQiLlUXhgdErUcU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-414-cphq5XgkPyqtK4p8qDCL6g-1; Wed, 10 Jun 2020 07:13:04 -0400
-X-MC-Unique: cphq5XgkPyqtK4p8qDCL6g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B479318A8234;
-        Wed, 10 Jun 2020 11:13:02 +0000 (UTC)
-Received: from ws.net.home (unknown [10.40.194.133])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 77933600F7;
-        Wed, 10 Jun 2020 11:12:59 +0000 (UTC)
-Date:   Wed, 10 Jun 2020 13:12:56 +0200
-From:   Karel Zak <kzak@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     David Howells <dhowells@redhat.com>, viro@zeniv.linux.org.uk,
-        dray@redhat.com, mszeredi@redhat.com, swhiteho@redhat.com,
-        jlayton@redhat.com, raven@themaw.net, andres@anarazel.de,
-        christian.brauner@ubuntu.com, jarkko.sakkinen@linux.intel.com,
-        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [GIT PULL] General notification queue and key notifications
-Message-ID: <20200610111256.s47agmgy5gvj3zwz@ws.net.home>
-References: <1503686.1591113304@warthog.procyon.org.uk>
+        id S1730354AbgFJPte (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Jun 2020 11:49:34 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:35550 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730345AbgFJPtb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Jun 2020 11:49:31 -0400
+Received: by mail-pf1-f194.google.com with SMTP id h185so1278318pfg.2;
+        Wed, 10 Jun 2020 08:49:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J9spO8sCjIOMs0wQgccVfIprXE/wzCnPTAA23dgMAdc=;
+        b=h98127/o82LX2PUy40wev+U3cj7HdHMYnU8Jv3cGah9MgwOFtgQigPyLhjMQxgfwjQ
+         HILdmy+dMuwrtcvtNidCN/lgmknQnGDL/NUdUALy8r++cKG6mJzKMkSdT7cM0l6Z1id0
+         QPdRlj9Yg2dS31GiVMPRfaHXY2FWVWVlCIUvoMy5FNBaKrWIh/8LYQuoKXpGDShNN00T
+         lEhLAYrIOUbTplmkKywLarwm/qP0cQt8qlii3VFS6G+b/nOCBrIJW6M++qm7twFAdMS2
+         lwIQOn6ijjVUt6TElXVE9AIu2OlUWSEPrChLGkZdlPkXweZ4ils+eqGHVkWy23Ip9mBi
+         4HtA==
+X-Gm-Message-State: AOAM5301rp10LPb2cpiCWEvjK2wL9S0WhXoqKSDp5jfLsTsfRaZ22AWD
+        tX8EVJVdgthfNsGLjpD3zmo=
+X-Google-Smtp-Source: ABdhPJyu1eX5pyEODFKXM1tUOb06KZbLUOW+sULR/svGLkAhoxImKT7+pXfTo+K5VKZEdMa5hV0cwg==
+X-Received: by 2002:a62:aa0a:: with SMTP id e10mr3428008pff.91.1591804170947;
+        Wed, 10 Jun 2020 08:49:30 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id c12sm242070pgm.73.2020.06.10.08.49.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2020 08:49:26 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 2C139403AB; Wed, 10 Jun 2020 15:49:25 +0000 (UTC)
+From:   "Luis R. Rodriguez" <mcgrof@kernel.org>
+To:     gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk,
+        philipp.reisner@linbit.com, lars.ellenberg@linbit.com,
+        axboe@kernel.dk, bfields@fieldses.org, chuck.lever@oracle.com,
+        roopa@cumulusnetworks.com, nikolay@cumulusnetworks.com,
+        davem@davemloft.net, kuba@kernel.org, dhowells@redhat.com,
+        jarkko.sakkinen@linux.intel.com, jmorris@namei.org,
+        serge@hallyn.com, christian.brauner@ubuntu.com
+Cc:     slyfox@gentoo.org, ast@kernel.org, keescook@chromium.org,
+        josh@joshtriplett.org, ravenexp@gmail.com, chainsaw@gentoo.org,
+        linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        bridge@lists.linux-foundation.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 0/5] kmod/umh: a few fixes
+Date:   Wed, 10 Jun 2020 15:49:18 +0000
+Message-Id: <20200610154923.27510-1-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1503686.1591113304@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+From: Luis Chamberlain <mcgrof@kernel.org>
 
- Hi Linus,
+Tiezhu Yang had sent out a patch set with a slew of kmod selftest
+fixes, and one patch which modified kmod to return 254 when a module
+was not found. This opened up pandora's box about why that was being
+used for and low and behold its because when UMH_WAIT_PROC is used
+we call a kernel_wait4() call but have never unwrapped the error code.
+The commit log for that fix details the rationale for the approach
+taken. I'd appreciate some review on that, in particular nfs folks
+as it seems a case was never really hit before.
 
-On Tue, Jun 02, 2020 at 04:55:04PM +0100, David Howells wrote:
-> Can you pull this, please?  It adds a general notification queue concept
+This goes boot tested, selftested with kmod, and 0-day gives its
+build blessings.
 
-I'm trying to use David's notification stuff in userspace, and I guess
-feedback is welcome :-)
+Luis Chamberlain (2):
+  umh: fix processed error when UMH_WAIT_PROC is used
+  selftests: simplify kmod failure value
 
-The notification stuff looks pretty promising, but I do not understand
-why we need to use pipe for this purpose, see typical userspace use-case:
+Tiezhu Yang (3):
+  selftests: kmod: Use variable NAME in kmod_test_0001()
+  kmod: Remove redundant "be an" in the comment
+  test_kmod: Avoid potential double free in trigger_config_run_type()
 
-        int pipefd[2], fd;
-
-        if (pipe2(pipefd, O_NOTIFICATION_PIPE) == -1)
-                err(EXIT_FAILURE, "pipe2 failed");
-
-        fd = pipefd[0];
-
-All the next operations are done with "fd". It's nowhere used as a
-pipe, and nothing uses pipefd[1]. The first impression from this code
-is "oh, this is strange; why?".
-
-Is it because we need to create a new file descriptor from nothing?
-Why O_NOTIFICATION_PIPE is better than introduce a new syscall
-notifyfd()?
-
-(We have signalfd(), no O_SIGNAL_PIPE, etc.) 
-
-    Karel
+ drivers/block/drbd/drbd_nl.c         | 20 +++++------
+ fs/nfsd/nfs4recover.c                |  2 +-
+ include/linux/sched/task.h           | 13 ++++++++
+ kernel/kmod.c                        |  5 ++-
+ kernel/umh.c                         |  4 +--
+ lib/test_kmod.c                      |  2 +-
+ net/bridge/br_stp_if.c               | 10 ++----
+ security/keys/request_key.c          |  2 +-
+ tools/testing/selftests/kmod/kmod.sh | 50 +++++++++++++++++++++++-----
+ 9 files changed, 71 insertions(+), 37 deletions(-)
 
 -- 
- Karel Zak  <kzak@redhat.com>
- http://karelzak.blogspot.com
+2.26.2
 
