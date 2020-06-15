@@ -2,43 +2,45 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3FD1F8E50
-	for <lists+keyrings@lfdr.de>; Mon, 15 Jun 2020 08:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD5EF1F8EB9
+	for <lists+keyrings@lfdr.de>; Mon, 15 Jun 2020 08:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728645AbgFOGsX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Jun 2020 02:48:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60088 "EHLO mail.kernel.org"
+        id S1728754AbgFOGwM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Jun 2020 02:52:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36376 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728471AbgFOGrO (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 15 Jun 2020 02:47:14 -0400
+        id S1728491AbgFOGud (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 15 Jun 2020 02:50:33 -0400
 Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2A7E120B1F;
-        Mon, 15 Jun 2020 06:47:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D856120738;
+        Mon, 15 Jun 2020 06:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592203632;
-        bh=iNcy6BPwUKvaqlgeXJMoimsmOGSQUtlTFOL62ky4fWE=;
+        s=default; t=1592203832;
+        bh=mFsV3ccwGLte6rqeu+2kL66gSjCYWrZUvDB3ORHgTcw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kFLEDZsGQfcO70wO79P2hs7MnqrK4GxsptlpYGBz/WXH5tZB0HgKyNcPe20ITcjM6
-         Nl9pW1DFTbTXB55k0vJVtwiQ87Jr2yK8aawN/sfNsSJ57DY9S9WRIoyjfp2zi+8WRu
-         Xh/P3rGIbBr2b8pR+MJ8h3BCPB32/1qzs8yqR87Q=
+        b=kC63JRkAuF0l6A7sMV8LX1meQ3WvIWxBbF7EfnvXjhQydfmWoYtubopgaVgFrjWzm
+         NXmT7aDUXsRoANsdV0NhQ63fS9fo5L46PcukQxa6WNksx8hCA799mt9DQLlnyuXjcw
+         NjbPNRVISSgSORp4pUOXPMcLwnFDyRecXMgKDjs4=
 Received: from mchehab by mail.kernel.org with local (Exim 4.93)
         (envelope-from <mchehab@kernel.org>)
-        id 1jkiti-009nnT-1h; Mon, 15 Jun 2020 08:47:10 +0200
+        id 1jkiwv-009o5a-SR; Mon, 15 Jun 2020 08:50:29 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
         David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        keyrings@vger.kernel.org
-Subject: [PATCH 20/29] docs: watch_queue.rst: supress some Sphinx warnings and move to core-api
-Date:   Mon, 15 Jun 2020 08:46:59 +0200
-Message-Id: <6aa020863c158e55387d6282a048f952c31998f6.1592203542.git.mchehab+huawei@kernel.org>
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org
+Subject: [PATCH 03/22] docs: crypto: convert asymmetric-keys.txt to ReST
+Date:   Mon, 15 Jun 2020 08:50:08 +0200
+Message-Id: <c2275ea94e0507a01b020ab66dfa824d8b1c2545.1592203650.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1592203542.git.mchehab+huawei@kernel.org>
-References: <cover.1592203542.git.mchehab+huawei@kernel.org>
+In-Reply-To: <cover.1592203650.git.mchehab+huawei@kernel.org>
+References: <cover.1592203650.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
@@ -46,187 +48,459 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Sphinx doesn't like multi-line literal blocks with ``foobar``:
+This file is almost compatible with ReST. Just minor changes
+were needed:
 
-    Documentation/watch_queue.rst:109: WARNING: Inline literal start-string without end-string.
-    Documentation/watch_queue.rst:109: WARNING: Inline emphasis start-string without end-string.
-    Documentation/watch_queue.rst:109: WARNING: Inline emphasis start-string without end-string.
-    Documentation/watch_queue.rst:109: WARNING: Inline emphasis start-string without end-string.
-    Documentation/watch_queue.rst:186: WARNING: Inline literal start-string without end-string.
-    Documentation/watch_queue.rst:186: WARNING: Inline emphasis start-string without end-string.
-    Documentation/watch_queue.rst:185: WARNING: Inline emphasis start-string without end-string.
+- Adjust document and titles markups;
+- Adjust numbered list markups;
+- Add a comments markup for the Contents section;
+- Add markups for literal blocks.
 
-So, let's use the "::" markup instead.
-
-While we could do the fix only at the affected lines, let's
-do the same change along the entire file, in order to preserve
-the same look and feel at the entire doc.
-
+Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/core-api/index.rst             |  1 +
- Documentation/{ => core-api}/watch_queue.rst | 34 ++++++++++++++------
- Documentation/security/keys/core.rst         |  2 +-
- include/linux/watch_queue.h                  |  2 +-
- init/Kconfig                                 |  2 +-
- kernel/watch_queue.c                         |  2 +-
- 6 files changed, 30 insertions(+), 13 deletions(-)
- rename Documentation/{ => core-api}/watch_queue.rst (94%)
+ ...symmetric-keys.txt => asymmetric-keys.rst} | 91 +++++++++----------
+ Documentation/crypto/index.rst                |  1 +
+ Documentation/security/keys/core.rst          |  2 +-
+ MAINTAINERS                                   |  2 +-
+ crypto/asymmetric_keys/asymmetric_type.c      |  2 +-
+ crypto/asymmetric_keys/public_key.c           |  2 +-
+ crypto/asymmetric_keys/signature.c            |  2 +-
+ include/crypto/public_key.h                   |  2 +-
+ include/keys/asymmetric-parser.h              |  2 +-
+ include/keys/asymmetric-subtype.h             |  2 +-
+ include/keys/asymmetric-type.h                |  2 +-
+ 11 files changed, 53 insertions(+), 57 deletions(-)
+ rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
 
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index 15ab86112627..ee6957100dec 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -40,6 +40,7 @@ Library functionality that is used throughout the kernel.
-    generic-radix-tree
-    packing
-    timekeeping
-+   watch_queue
-    errseq
+diff --git a/Documentation/crypto/asymmetric-keys.txt b/Documentation/crypto/asymmetric-keys.rst
+similarity index 91%
+rename from Documentation/crypto/asymmetric-keys.txt
+rename to Documentation/crypto/asymmetric-keys.rst
+index 8763866b11cf..349f44a29392 100644
+--- a/Documentation/crypto/asymmetric-keys.txt
++++ b/Documentation/crypto/asymmetric-keys.rst
+@@ -1,8 +1,10 @@
+-		=============================================
+-		ASYMMETRIC / PUBLIC-KEY CRYPTOGRAPHY KEY TYPE
+-		=============================================
++.. SPDX-License-Identifier: GPL-2.0
  
- Concurrency primitives
-diff --git a/Documentation/watch_queue.rst b/Documentation/core-api/watch_queue.rst
-similarity index 94%
-rename from Documentation/watch_queue.rst
-rename to Documentation/core-api/watch_queue.rst
-index 849fad6893ef..ba47adc01239 100644
---- a/Documentation/watch_queue.rst
-+++ b/Documentation/core-api/watch_queue.rst
-@@ -103,15 +103,19 @@ watch that specific key).
- 
- To manage a watch list, the following functions are provided:
- 
--  * ``void init_watch_list(struct watch_list *wlist,
--			   void (*release_watch)(struct watch *wlist));``
-+  * ::
+-Contents:
++=============================================
++Asymmetric / Public-key Cryptography Key Type
++=============================================
 +
-+      void init_watch_list(struct watch_list *wlist,
-+			   void (*release_watch)(struct watch *wlist));
++.. Contents:
  
-     Initialise a watch list.  If ``release_watch`` is not NULL, then this
-     indicates a function that should be called when the watch_list object is
-     destroyed to discard any references the watch list holds on the watched
-     object.
+   - Overview.
+   - Key identification.
+@@ -13,8 +15,7 @@ Contents:
+   - Keyring link restrictions.
  
--  * ``void remove_watch_list(struct watch_list *wlist);``
-+  * ::
-+
-+      void remove_watch_list(struct watch_list *wlist);
  
-     This removes all of the watches subscribed to a watch_list and frees them
-     and then destroys the watch_list object itself.
-@@ -125,14 +129,18 @@ records will be written into.  The workings of this are hidden entirely inside
- of the pipe device driver, but it is necessary to gain a reference to it to set
- a watch.  These can be managed with:
+-========
+-OVERVIEW
++Overview
+ ========
  
--  * ``struct watch_queue *get_watch_queue(int fd);``
-+  * ::
-+
-+      struct watch_queue *get_watch_queue(int fd);``
+ The "asymmetric" key type is designed to be a container for the keys used in
+@@ -42,8 +43,7 @@ key, or it may interpret it as a reference to a key held somewhere else in the
+ system (for example, a TPM).
  
-     Since watch queues are indicated to the kernel by the fd of the pipe that
-     implements the buffer, userspace must hand that fd through a system call.
-     This can be used to look up an opaque pointer to the watch queue from the
-     system call.
  
--  * ``void put_watch_queue(struct watch_queue *wqueue);``
-+  * ::
-+
-+      void put_watch_queue(struct watch_queue *wqueue);
+-==================
+-KEY IDENTIFICATION
++Key Identification
+ ==================
  
-     This discards the reference obtained from ``get_watch_queue()``.
+ If a key is added with an empty name, the instantiation data parsers are given
+@@ -57,49 +57,48 @@ The asymmetric key type's match function can then perform a wider range of
+ comparisons than just the straightforward comparison of the description with
+ the criterion string:
  
-@@ -168,18 +176,24 @@ different ID are ignored.
+- (1) If the criterion string is of the form "id:<hexdigits>" then the match
++  1) If the criterion string is of the form "id:<hexdigits>" then the match
+      function will examine a key's fingerprint to see if the hex digits given
+-     after the "id:" match the tail.  For instance:
++     after the "id:" match the tail.  For instance::
  
- The following functions are provided to manage watches:
+ 	keyctl search @s asymmetric id:5acc2142
  
--  * ``void init_watch(struct watch *watch, struct watch_queue *wqueue);``
-+  * ::
-+
-+      void init_watch(struct watch *watch, struct watch_queue *wqueue);
+-     will match a key with fingerprint:
++     will match a key with fingerprint::
  
-     Initialise a watch object, setting its pointer to the watch queue, using
-     appropriate barriering to avoid lockdep complaints.
+ 	1A00 2040 7601 7889 DE11  882C 3823 04AD 5ACC 2142
  
--  * ``int add_watch_to_object(struct watch *watch, struct watch_list *wlist);``
-+  * ::
-+
-+      int add_watch_to_object(struct watch *watch, struct watch_list *wlist);
+- (2) If the criterion string is of the form "<subtype>:<hexdigits>" then the
++  2) If the criterion string is of the form "<subtype>:<hexdigits>" then the
+      match will match the ID as in (1), but with the added restriction that
+      only keys of the specified subtype (e.g. tpm) will be matched.  For
+-     instance:
++     instance::
  
-     Subscribe a watch to a watch list (notification source).  The
-     driver-settable fields in the watch struct must have been set before this
-     is called.
+ 	keyctl search @s asymmetric tpm:5acc2142
  
--  * ``int remove_watch_from_object(struct watch_list *wlist,
-+  * ::
-+
-+      int remove_watch_from_object(struct watch_list *wlist,
- 				   struct watch_queue *wqueue,
- 				   u64 id, false);``
+ Looking in /proc/keys, the last 8 hex digits of the key fingerprint are
+-displayed, along with the subtype:
++displayed, along with the subtype::
  
-@@ -188,7 +202,9 @@ The following functions are provided to manage watches:
-     (``WATCH_META_REMOVAL_NOTIFICATION``) is sent to the watch queue to
-     indicate that the watch got removed.
+ 	1a39e171 I-----     1 perm 3f010000     0     0 asymmetric modsign.0: DSA 5acc2142 []
  
--  * ``int remove_watch_from_object(struct watch_list *wlist, NULL, 0, true);``
-+  * ::
-+
-+      int remove_watch_from_object(struct watch_list *wlist, NULL, 0, true);
  
-     Remove all the watches from a watch list.  It is expected that this will be
-     called preparatory to destruction and that the watch list will be
+-=========================
+-ACCESSING ASYMMETRIC KEYS
++Accessing Asymmetric Keys
+ =========================
+ 
+ For general access to asymmetric keys from within the kernel, the following
+-inclusion is required:
++inclusion is required::
+ 
+ 	#include <crypto/public_key.h>
+ 
+ This gives access to functions for dealing with asymmetric / public keys.
+ Three enums are defined there for representing public-key cryptography
+-algorithms:
++algorithms::
+ 
+ 	enum pkey_algo
+ 
+-digest algorithms used by those:
++digest algorithms used by those::
+ 
+ 	enum pkey_hash_algo
+ 
+-and key identifier representations:
++and key identifier representations::
+ 
+ 	enum pkey_id_type
+ 
+@@ -110,25 +109,25 @@ PGP-specific metadata, whereas X.509 has arbitrary certificate identifiers.
+ 
+ The operations defined upon a key are:
+ 
+- (1) Signature verification.
++  1) Signature verification.
+ 
+ Other operations are possible (such as encryption) with the same key data
+ required for verification, but not currently supported, and others
+ (eg. decryption and signature generation) require extra key data.
+ 
+ 
+-SIGNATURE VERIFICATION
++Signature Verification
+ ----------------------
+ 
+ An operation is provided to perform cryptographic signature verification, using
+-an asymmetric key to provide or to provide access to the public key.
++an asymmetric key to provide or to provide access to the public key::
+ 
+ 	int verify_signature(const struct key *key,
+ 			     const struct public_key_signature *sig);
+ 
+ The caller must have already obtained the key from some source and can then use
+ it to check the signature.  The caller must have parsed the signature and
+-transferred the relevant bits to the structure pointed to by sig.
++transferred the relevant bits to the structure pointed to by sig::
+ 
+ 	struct public_key_signature {
+ 		u8 *digest;
+@@ -159,8 +158,7 @@ data; or -ENOMEM if an allocation can't be performed.  -EINVAL can be returned
+ if the key argument is the wrong type or is incompletely set up.
+ 
+ 
+-=======================
+-ASYMMETRIC KEY SUBTYPES
++Asymmetric Key Subtypes
+ =======================
+ 
+ Asymmetric keys have a subtype that defines the set of operations that can be
+@@ -171,11 +169,11 @@ The subtype is selected by the key data parser and the parser must initialise
+ the data required for it.  The asymmetric key retains a reference on the
+ subtype module.
+ 
+-The subtype definition structure can be found in:
++The subtype definition structure can be found in::
+ 
+ 	#include <keys/asymmetric-subtype.h>
+ 
+-and looks like the following:
++and looks like the following::
+ 
+ 	struct asymmetric_key_subtype {
+ 		struct module		*owner;
+@@ -198,39 +196,37 @@ the subtype.  Currently, the name is only used for print statements.
+ 
+ There are a number of operations defined by the subtype:
+ 
+- (1) describe().
++  1) describe().
+ 
+      Mandatory.  This allows the subtype to display something in /proc/keys
+      against the key.  For instance the name of the public key algorithm type
+      could be displayed.  The key type will display the tail of the key
+      identity string after this.
+ 
+- (2) destroy().
++  2) destroy().
+ 
+      Mandatory.  This should free the memory associated with the key.  The
+      asymmetric key will look after freeing the fingerprint and releasing the
+      reference on the subtype module.
+ 
+- (3) query().
++  3) query().
+ 
+      Mandatory.  This is a function for querying the capabilities of a key.
+ 
+- (4) eds_op().
++  4) eds_op().
+ 
+      Optional.  This is the entry point for the encryption, decryption and
+      signature creation operations (which are distinguished by the operation ID
+      in the parameter struct).  The subtype may do anything it likes to
+      implement an operation, including offloading to hardware.
+ 
+- (5) verify_signature().
++  5) verify_signature().
+ 
+      Optional.  This is the entry point for signature verification.  The
+      subtype may do anything it likes to implement an operation, including
+      offloading to hardware.
+ 
+-
+-==========================
+-INSTANTIATION DATA PARSERS
++Instantiation Data Parsers
+ ==========================
+ 
+ The asymmetric key type doesn't generally want to store or to deal with a raw
+@@ -254,11 +250,11 @@ Examples of blob formats for which parsers could be implemented include:
+ During key instantiation each parser in the list is tried until one doesn't
+ return -EBADMSG.
+ 
+-The parser definition structure can be found in:
++The parser definition structure can be found in::
+ 
+ 	#include <keys/asymmetric-parser.h>
+ 
+-and looks like the following:
++and looks like the following::
+ 
+ 	struct asymmetric_key_parser {
+ 		struct module	*owner;
+@@ -273,7 +269,7 @@ the parser.
+ There is currently only a single operation defined by the parser, and it is
+ mandatory:
+ 
+- (1) parse().
++  1) parse().
+ 
+      This is called to preparse the key from the key creation and update paths.
+      In particular, it is called during the key creation _before_ a key is
+@@ -282,7 +278,7 @@ mandatory:
+ 
+      The caller passes a pointer to the following struct with all of the fields
+      cleared, except for data, datalen and quotalen [see
+-     Documentation/security/keys/core.rst].
++     Documentation/security/keys/core.rst]::
+ 
+ 	struct key_preparsed_payload {
+ 		char		*description;
+@@ -321,7 +317,7 @@ mandatory:
+      public-key algorithm such as RSA and DSA this will likely be a printable
+      hex version of the key's fingerprint.
+ 
+-Functions are provided to register and unregister parsers:
++Functions are provided to register and unregister parsers::
+ 
+ 	int register_asymmetric_key_parser(struct asymmetric_key_parser *parser);
+ 	void unregister_asymmetric_key_parser(struct asymmetric_key_parser *subtype);
+@@ -330,8 +326,7 @@ Parsers may not have the same name.  The names are otherwise only used for
+ displaying in debugging messages.
+ 
+ 
+-=========================
+-KEYRING LINK RESTRICTIONS
++Keyring Link Restrictions
+ =========================
+ 
+ Keyrings created from userspace using add_key can be configured to check the
+@@ -340,7 +335,7 @@ allowed to link.
+ 
+ Several restriction methods are available:
+ 
+- (1) Restrict using the kernel builtin trusted keyring
++  1) Restrict using the kernel builtin trusted keyring
+ 
+      - Option string used with KEYCTL_RESTRICT_KEYRING:
+        - "builtin_trusted"
+@@ -350,7 +345,7 @@ Several restriction methods are available:
+      rejected.  The ca_keys kernel parameter also affects which keys are used
+      for signature verification.
+ 
+- (2) Restrict using the kernel builtin and secondary trusted keyrings
++  2) Restrict using the kernel builtin and secondary trusted keyrings
+ 
+      - Option string used with KEYCTL_RESTRICT_KEYRING:
+        - "builtin_and_secondary_trusted"
+@@ -361,7 +356,7 @@ Several restriction methods are available:
+      kernel parameter also affects which keys are used for signature
+      verification.
+ 
+- (3) Restrict using a separate key or keyring
++  3) Restrict using a separate key or keyring
+ 
+      - Option string used with KEYCTL_RESTRICT_KEYRING:
+        - "key_or_keyring:<key or keyring serial number>[:chain]"
+@@ -378,7 +373,7 @@ Several restriction methods are available:
+      certificate in order (starting closest to the root) to a keyring.  For
+      instance, one keyring can be populated with links to a set of root
+      certificates, with a separate, restricted keyring set up for each
+-     certificate chain to be validated:
++     certificate chain to be validated::
+ 
+ 	# Create and populate a keyring for root certificates
+ 	root_id=`keyctl add keyring root-certs "" @s`
+@@ -400,7 +395,7 @@ Several restriction methods are available:
+      one of the root certificates.
+ 
+      A single keyring can be used to verify a chain of signatures by
+-     restricting the keyring after linking the root certificate:
++     restricting the keyring after linking the root certificate::
+ 
+ 	# Create a keyring for the certificate chain and add the root
+ 	chain2_id=`keyctl add keyring chain2 "" @s`
+diff --git a/Documentation/crypto/index.rst b/Documentation/crypto/index.rst
+index c4ff5d791233..2bcaf422731e 100644
+--- a/Documentation/crypto/index.rst
++++ b/Documentation/crypto/index.rst
+@@ -18,6 +18,7 @@ for cryptographic use cases, as well as programming examples.
+ 
+    intro
+    architecture
++   asymmetric-keys
+    devel-algos
+    userspace-if
+    crypto_engine
 diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-index cdc42ccc12e4..e0f1211ca843 100644
+index e0f1211ca843..e6522dd05037 100644
 --- a/Documentation/security/keys/core.rst
 +++ b/Documentation/security/keys/core.rst
-@@ -1046,7 +1046,7 @@ The keyctl syscall functions are:
-      "filter" is either NULL to remove a watch or a filter specification to
-      indicate what events are required from the key.
+@@ -912,7 +912,7 @@ The keyctl syscall functions are:
  
--     See Documentation/watch_queue.rst for more information.
-+     See Documentation/core-api/watch_queue.rst for more information.
+      One application of restricted keyrings is to verify X.509 certificate
+      chains or individual certificate signatures using the asymmetric key type.
+-     See Documentation/crypto/asymmetric-keys.txt for specific restrictions
++     See Documentation/crypto/asymmetric-keys.rst for specific restrictions
+      applicable to the asymmetric key type.
  
-      Note that only one watch may be emplaced for any particular { key,
-      queue_fd } combination.
-diff --git a/include/linux/watch_queue.h b/include/linux/watch_queue.h
-index 5e08db2adc31..0d8ba47446fa 100644
---- a/include/linux/watch_queue.h
-+++ b/include/linux/watch_queue.h
-@@ -4,7 +4,7 @@
-  * Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
-  * Written by David Howells (dhowells@redhat.com)
+ 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 452904d75228..84eabb5f0a5d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2827,7 +2827,7 @@ ASYMMETRIC KEYS
+ M:	David Howells <dhowells@redhat.com>
+ L:	keyrings@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/crypto/asymmetric-keys.txt
++F:	Documentation/crypto/asymmetric-keys.rst
+ F:	crypto/asymmetric_keys/
+ F:	include/crypto/pkcs7.h
+ F:	include/crypto/public_key.h
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index 6e5fc8e31f01..33e77d846caa 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /* Asymmetric public-key cryptography key type
   *
-- * See Documentation/watch_queue.rst
-+ * See Documentation/core-api/watch_queue.rst
-  */
- 
- #ifndef _LINUX_WATCH_QUEUE_H
-diff --git a/init/Kconfig b/init/Kconfig
-index a46aa8f3174d..3327f0eca1a3 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -377,7 +377,7 @@ config WATCH_QUEUE
- 	  with watches for key/keyring change notifications and device
- 	  notifications.
- 
--	  See Documentation/watch_queue.rst
-+	  See Documentation/core-api/watch_queue.rst
- 
- config CROSS_MEMORY_ATTACH
- 	bool "Enable process_vm_readv/writev syscalls"
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index f74020f6bd9d..58a4e18390bf 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -4,7 +4,7 @@
-  * Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
-  * Written by David Howells (dhowells@redhat.com)
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
   *
-- * See Documentation/watch_queue.rst
-+ * See Documentation/core-api/watch_queue.rst
-  */
- 
- #define pr_fmt(fmt) "watchq: " fmt
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index d7f43d4ea925..da4d0b82d018 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /* In-software asymmetric public-key crypto subtype
+  *
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
+  *
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/crypto/asymmetric_keys/signature.c b/crypto/asymmetric_keys/signature.c
+index e24a031db1e4..4aff3eebec17 100644
+--- a/crypto/asymmetric_keys/signature.c
++++ b/crypto/asymmetric_keys/signature.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /* Signature verification with an asymmetric key
+  *
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
+  *
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 0588ef3bc6ff..11f535cfb810 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /* Asymmetric public-key algorithm definitions
+  *
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
+  *
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/include/keys/asymmetric-parser.h b/include/keys/asymmetric-parser.h
+index 8a21d6a613ab..c47dc5405f79 100644
+--- a/include/keys/asymmetric-parser.h
++++ b/include/keys/asymmetric-parser.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /* Asymmetric public-key cryptography data parser
+  *
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
+  *
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/include/keys/asymmetric-subtype.h b/include/keys/asymmetric-subtype.h
+index 21407815d9c3..d55171f640a0 100644
+--- a/include/keys/asymmetric-subtype.h
++++ b/include/keys/asymmetric-subtype.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /* Asymmetric public-key cryptography key subtype
+  *
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
+  *
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/include/keys/asymmetric-type.h b/include/keys/asymmetric-type.h
+index 91cfd9bd9385..a29d3ff2e7e8 100644
+--- a/include/keys/asymmetric-type.h
++++ b/include/keys/asymmetric-type.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /* Asymmetric Public-key cryptography key type interface
+  *
+- * See Documentation/crypto/asymmetric-keys.txt
++ * See Documentation/crypto/asymmetric-keys.rst
+  *
+  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
 -- 
 2.26.2
 
