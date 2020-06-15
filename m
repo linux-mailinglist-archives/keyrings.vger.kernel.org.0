@@ -2,149 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 216CA1F9208
-	for <lists+keyrings@lfdr.de>; Mon, 15 Jun 2020 10:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B676E1F9E01
+	for <lists+keyrings@lfdr.de>; Mon, 15 Jun 2020 19:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729063AbgFOIpL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Jun 2020 04:45:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41106 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729031AbgFOIpK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Jun 2020 04:45:10 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DEAFC05BD1E
-        for <keyrings@vger.kernel.org>; Mon, 15 Jun 2020 01:45:09 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id d15so10866992edm.10
-        for <keyrings@vger.kernel.org>; Mon, 15 Jun 2020 01:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OXy80G/QuWlMsF/9ZGjBxujaTTvUrmfWIzv9XF+RHas=;
-        b=mb5wlVjn0ratQKJ42h3GHcIVlDnVaMT+Y0sd3By4do/QOYmPV7Aq+Y2zatzsI7SOrn
-         uhkPX6n2/5cxQmCMLpHxsYCjwN+0ROujisKn33HA1NeF+zxYT/qIyuzyaqX7GXK3x8+e
-         OxQ+ScFLCE+B8bFFPL0VH/0VJEF8kb46qelzU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OXy80G/QuWlMsF/9ZGjBxujaTTvUrmfWIzv9XF+RHas=;
-        b=aS9fWFOITrEe9svrT6Mh/VkScDTdBglbrUw0tX0dMlGSy97Jt/pWGm1qfj5FJQon0/
-         khRy0ims/dMwUYFff24eGe77eqQc8hJV9O0WZy7lh5tR4yFnMaiJrx42VnoyD1RC78lk
-         35nmmISULnm/JKTQw5d84P/YZWF1jkIzNCkirWmPPoEwzGRZXHGbm/9JyOO+BKOBIWdd
-         0c3sK0M+zE7IC51PBf96mcWHyy2JRXVxo8kgP7XYHQOOcZ9vPg+ydmmf9gCIXkAtlpXt
-         OXngA+pk4T6Q4aRxrlYRFRUtG+5O9vxf3l2CIqpuT4z3QBhRHQlXTDBOFkyZc/P4wzs4
-         8Hkw==
-X-Gm-Message-State: AOAM532bzT8vua4Ps/AJSrtDCmT3tQNfz6XjxqEIIRjCkM0/gOOqsJv5
-        E2F0UR3Qm9tGwCB4sIVgPeai/3BJLbaJbppl1inJbg==
-X-Google-Smtp-Source: ABdhPJyO4Zt3HWq71S+Z2BgNwO3mxs8JAJdgIAdXB02awF1aP6ubx5B2i1EercDpoimnNHKzSTYdhNfWuV8yG31tLAk=
-X-Received: by 2002:a50:d785:: with SMTP id w5mr22207839edi.212.1592210708330;
- Mon, 15 Jun 2020 01:45:08 -0700 (PDT)
+        id S1729402AbgFORA7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Jun 2020 13:00:59 -0400
+Received: from mga09.intel.com ([134.134.136.24]:9692 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729956AbgFORA6 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 15 Jun 2020 13:00:58 -0400
+IronPort-SDR: O0V+bxX9N0CdT/MHbnYQvQqOiwPVJDKCQ8y3TI5w9D6xlIoqZCDSvzCCjsBSi5Uon2yPjzwHan
+ cET7Ly15/NvQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2020 10:00:48 -0700
+IronPort-SDR: 4rTOZmA/++XEHu2YN+mLEonmCdGnt9u5eD6piAwPJse/hpFf9uDJAZjx7cJY5ZuRcEimb+5Yoz
+ BCJsW4e/hocQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,515,1583222400"; 
+   d="scan'208";a="420435226"
+Received: from ifaivilx-mobl.ger.corp.intel.com (HELO localhost) ([10.249.35.251])
+  by orsmga004.jf.intel.com with ESMTP; 15 Jun 2020 10:00:44 -0700
+Date:   Mon, 15 Jun 2020 20:00:43 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Alexey Krasikov <alex-krasikov@yandex-team.ru>
+Cc:     dhowells@redhat.com, keyrings@vger.kernel.org, security@kernel.org,
+        yc-core@yandex-team.ru
+Subject: Re: [RFC PATCH 0/1] security/keys: remove possessor verify after key
+Message-ID: <20200615170043.GA5416@linux.intel.com>
+References: <20200529060040.29604-1-alex-krasikov@yandex-team.ru>
+ <20200601173427.GA26455@linux.intel.com>
+ <bd56baa2-9c8d-a0dd-419d-a3123a1f0fba@yandex-team.ru>
 MIME-Version: 1.0
-References: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk>
- <158454391302.2863966.1884682840541676280.stgit@warthog.procyon.org.uk>
- <CAJfpegspWA6oUtdcYvYF=3fij=Bnq03b8VMbU9RNMKc+zzjbag@mail.gmail.com> <0991792b6e2af0a5cc1a2c2257b535b5e6b032e4.camel@themaw.net>
-In-Reply-To: <0991792b6e2af0a5cc1a2c2257b535b5e6b032e4.camel@themaw.net>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Mon, 15 Jun 2020 10:44:57 +0200
-Message-ID: <CAJfpeguZuCTmCWf-mF3=iZQeaaUYRoCRU9wcyz_gCMD94-bFFQ@mail.gmail.com>
-Subject: Re: [PATCH 13/17] watch_queue: Implement mount topology and attribute
- change notifications [ver #5]
-To:     Ian Kent <raven@themaw.net>
-Cc:     David Howells <dhowells@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Christian Brauner <christian@brauner.io>, andres@anarazel.de,
-        Jeff Layton <jlayton@redhat.com>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>, keyrings@vger.kernel.org,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org,
-        LSM <linux-security-module@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd56baa2-9c8d-a0dd-419d-a3123a1f0fba@yandex-team.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Jun 14, 2020 at 5:07 AM Ian Kent <raven@themaw.net> wrote:
->
-> On Thu, 2020-04-02 at 17:19 +0200, Miklos Szeredi wrote:
-> >
-> > > Firstly, a watch queue needs to be created:
-> > >
-> > >         pipe2(fds, O_NOTIFICATION_PIPE);
-> > >         ioctl(fds[1], IOC_WATCH_QUEUE_SET_SIZE, 256);
-> > >
-> > > then a notification can be set up to report notifications via that
-> > > queue:
-> > >
-> > >         struct watch_notification_filter filter = {
-> > >                 .nr_filters = 1,
-> > >                 .filters = {
-> > >                         [0] = {
-> > >                                 .type = WATCH_TYPE_MOUNT_NOTIFY,
-> > >                                 .subtype_filter[0] = UINT_MAX,
-> > >                         },
-> > >                 },
-> > >         };
-> > >         ioctl(fds[1], IOC_WATCH_QUEUE_SET_FILTER, &filter);
-> > >         watch_mount(AT_FDCWD, "/", 0, fds[1], 0x02);
-> > >
-> > > In this case, it would let me monitor the mount topology subtree
-> > > rooted at
-> > > "/" for events.  Mount notifications propagate up the tree towards
-> > > the
-> > > root, so a watch will catch all of the events happening in the
-> > > subtree
-> > > rooted at the watch.
-> >
-> > Does it make sense to watch a single mount?  A set of mounts?   A
-> > subtree with an exclusion list (subtrees, types, ???)?
->
-> Yes, filtering, perhaps, I'm not sure a single mount is useful
-> as changes generally need to be monitored for a set of mounts.
->
-> Monitoring a subtree is obviously possible because the monitor
-> path doesn't need to be "/".
->
-> Or am I misunderstanding what your trying to get at.
->
-> The notion of filtering types and other things is interesting
-> but what I've seen that doesn't fit in the current implementation
-> so far probably isn't appropriate for kernel implementation.
->
-> There's a special case of acquiring a list of mounts where the
-> path is not a mount point itself but you need all mount below
-> that path prefix.
->
-> In this case you get all mounts, including the mounts of the mount
-> containing the path, so you still need to traverse the list to match
-> the prefix and that can easily mean the whole list of mounts in the
-> system.
->
-> Point is it leads to multiple traversals of a larger than needed list
-> of mounts, one to get the list of mounts to check, and one to filter
-> on the prefix.
->
-> I've seen this use case with fsinfo() and that's where it's needed
-> although it may be useful to carry it through to notifications as
-> well.
->
-> While this sounds like it isn't such a big deal it can sometimes
-> make a considerable difference to the number of mounts you need
-> to traverse when there are a large number of mounts in the system.
->
-> I didn't consider it appropriate for kernel implementation but
-> since you asked here it is. OTOH were checking for connectedness
-> in fsinfo() anyway so maybe this is something that could be done
-> without undue overhead.
+On Tue, Jun 02, 2020 at 01:30:52PM +0300, Alexey Krasikov wrote:
+> On Mon, June 1, 2020 at 08:34PM +300, Jarkko Sakkinen wrote:
+> > On Fri, May 29, 2020 at 09:00:39AM +0300, Alexey Krasikov wrote:
+> > > $ KEYID=$(keyctl add user john smith @u)
+> > > $ keyctl describe $KEYID
+> > > 5927639: alswrv-----v------------  1000  1000 user: john
+> > > $ keyctl setperm $KEYID 0x3d000000
+> > > $ keyctl describe $KEYID
+> > > 5927639: alsw-v-----v------------  1000  1000 user: john
+> > > $ keyctl print $KEYID
+> > > smith
+> > A keyring default permissions are 0x3f3f0000.
+> > A key default permissions are 0x3f010000.
+> > 
+> > Because of this:
+> > 
+> > $ KEYID=$(keyctl add user john smith @u)
+> > $ keyctl setperm $KEYID 0x3d000000
+> > keyctl_setperm: Permission denied
+> > 
+> > Are you sure that your example is correct?
+> > 
+> > /Jarkko
+> 
+> Yes, this example works correctly.
+> 
+> Why do you think, that the current keyring and key rights
+> 
+> shoukd not allow this to be done?
 
-Good point.  Filtering notifications for mounts outside of the
-specified path makes sense.
+I'm just saying that I cannot figure out your point in the cover letter.
+It contains random dumps of keyctl output.
 
-Thanks,
-Miklos
+Maybe a better idea would be to write a test script that demonstrates
+the issue?
+
+/Jarkko
