@@ -2,252 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 062FE1FBA35
-	for <lists+keyrings@lfdr.de>; Tue, 16 Jun 2020 18:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BBB51FBDA4
+	for <lists+keyrings@lfdr.de>; Tue, 16 Jun 2020 20:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732075AbgFPQJg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 16 Jun 2020 12:09:36 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42916 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732662AbgFPQJ1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 16 Jun 2020 12:09:27 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 117DE8EE2A2;
-        Tue, 16 Jun 2020 09:09:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1592323767;
-        bh=3llJlnxLs5DVHn0G5ki4HHdzA1ryCBQlECPHy1QLDlY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2ihQV6SVunDj1zEg8vPa4CD1lndbH8YQC1Ptn/ueuPp6j8/5a71jwy69L0ajBi32
-         eSNw+O81M9EsUsTTKG8iku1enykiv8gotkZvelK4X8y48wTReuLKCr3nQBT9nIF5/S
-         KumC5utLzqXZNd5P6uU3BYtYcGf2VdUwhH8Eox0A=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id J4TDYPuUlho3; Tue, 16 Jun 2020 09:09:27 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 5E45A8EE188;
-        Tue, 16 Jun 2020 09:09:26 -0700 (PDT)
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        id S1731612AbgFPSJr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 16 Jun 2020 14:09:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44416 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727083AbgFPSJq (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 16 Jun 2020 14:09:46 -0400
+Received: from X1 (nat-ab2241.sltdut.senawave.net [162.218.216.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B1C752082F;
+        Tue, 16 Jun 2020 18:09:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592330985;
+        bh=EsakDvGUztRiSNfngaRB05ekQqGnOvB3NF6mY788udI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=IhpS1taEKqV/HMmc2XrgBi59GfE8vYAI/pSBHLIEb5BHt2RggHWNsr0WFiFcGuzEE
+         26ygFhe/LhgEOm51069QA1LMXoAUoV3VgfH3hA2EmK0pi7/AYapihuVVI1Xsu8eHU8
+         MrJlU2uhSFUs9V1K5UBwvjYjOiJtcqNT5s8lHh0I=
+Date:   Tue, 16 Jun 2020 11:09:44 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Waiman Long <longman@redhat.com>
+Cc:     David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: [PATCH v10 8/8] security: keys: trusted: implement counter/timer policy
-Date:   Tue, 16 Jun 2020 09:02:29 -0700
-Message-Id: <20200616160229.8018-9-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200616160229.8018-1-James.Bottomley@HansenPartnership.com>
-References: <20200616160229.8018-1-James.Bottomley@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+        ecryptfs@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-bluetooth@vger.kernel.org, linux-wpan@vger.kernel.org,
+        linux-sctp@vger.kernel.org, linux-nfs@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] mm, treewide: Rename kzfree() to
+ kfree_sensitive()
+Message-Id: <20200616110944.c13f221e5c3f54e775190afe@linux-foundation.org>
+In-Reply-To: <20200616154311.12314-3-longman@redhat.com>
+References: <20200616154311.12314-1-longman@redhat.com>
+        <20200616154311.12314-3-longman@redhat.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This is actually a generic policy allowing a range of comparisons
-against any value set in the TPM Clock, which includes things like the
-reset count, a monotonic millisecond count and the restart count.  The
-most useful comparison is against the millisecond count for expiring
-keys.  However, you have to remember that currently Linux doesn't try
-to sync the epoch timer with the TPM, so the expiration is actually
-measured in how long the TPM itself has been powered on ... the TPM
-timer doesn't count while the system is powered down.  The millisecond
-counter is a u64 quantity found at offset 8 in the timer structure,
-and the <= comparision operand is 9, so a policy set to expire after the
-TPM has been up for 100 seconds would look like
+On Tue, 16 Jun 2020 11:43:11 -0400 Waiman Long <longman@redhat.com> wrote:
 
-0000016d00000000000f424000080009
+> As said by Linus:
+> 
+>   A symmetric naming is only helpful if it implies symmetries in use.
+>   Otherwise it's actively misleading.
+> 
+>   In "kzalloc()", the z is meaningful and an important part of what the
+>   caller wants.
+> 
+>   In "kzfree()", the z is actively detrimental, because maybe in the
+>   future we really _might_ want to use that "memfill(0xdeadbeef)" or
+>   something. The "zero" part of the interface isn't even _relevant_.
+> 
+> The main reason that kzfree() exists is to clear sensitive information
+> that should not be leaked to other future users of the same memory
+> objects.
+> 
+> Rename kzfree() to kfree_sensitive() to follow the example of the
+> recently added kvfree_sensitive() and make the intention of the API
+> more explicit. In addition, memzero_explicit() is used to clear the
+> memory to make sure that it won't get optimized away by the compiler.
+> 
+> The renaming is done by using the command sequence:
+> 
+>   git grep -w --name-only kzfree |\
+>   xargs sed -i 's/\bkzfree\b/kfree_sensitive/'
+> 
+> followed by some editing of the kfree_sensitive() kerneldoc and adding
+> a kzfree backward compatibility macro in slab.h.
+> 
+> ...
+>
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -186,10 +186,12 @@ void memcg_deactivate_kmem_caches(struct mem_cgroup *, struct mem_cgroup *);
+>   */
+>  void * __must_check krealloc(const void *, size_t, gfp_t);
+>  void kfree(const void *);
+> -void kzfree(const void *);
+> +void kfree_sensitive(const void *);
+>  size_t __ksize(const void *);
+>  size_t ksize(const void *);
+>  
+> +#define kzfree(x)	kfree_sensitive(x)	/* For backward compatibility */
+> +
 
-Where 0x16d is the counter timer policy code and 0xf4240 is 100 000 in
-hex.
+What was the thinking here?  Is this really necessary?
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- .../security/keys/trusted-encrypted.rst       | 29 ++++++++++++++
- include/linux/tpm.h                           |  1 +
- security/keys/trusted-keys/tpm2-policy.c      | 40 ++++++++++++++++++-
- security/keys/trusted-keys/trusted_tpm2.c     | 36 ++++++++++++++++-
- 4 files changed, 104 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index b68d3eb73f00..53a6196c7df9 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -241,3 +241,32 @@ about the usage can be found in the file
- Another new format 'enc32' has been defined in order to support encrypted keys
- with payload size of 32 bytes. This will initially be used for nvdimm security
- but may expand to other usages that require 32 bytes payload.
-+
-+Appendix
-+--------
-+
-+TPM 2.0 Policies
-+----------------
-+
-+The current TPM supports PCR lock policies as documented above and
-+CounterTimer policies which can be used to create expiring keys.  One
-+caveat with expiring keys is that the TPM millisecond counter does not
-+update while a system is powered off and Linux does not sync the TPM
-+millisecond count with its internal clock, so the best you can expire
-+in is in terms of how long any given TPM has been powered on.  (FIXME:
-+Linux should simply update the millisecond clock to the current number
-+of seconds past the epoch on boot).
-+
-+A CounterTimer policy is expressed in terms of length and offset
-+against the TPM clock structure (TPMS_TIME_INFO), which looks like the
-+packed structure::
-+
-+    struct tpms_time_info {
-+            u64 uptime;       /* time in ms since last start or reset */
-+	    u64 clock;        /* cumulative uptime in ms */
-+	    u32 resetcount;   /* numer of times the TPM has been reset */
-+	    u32 restartcount; /* number of times the TPM has been restarted */
-+	    u8  safe          /* time was safely loaded from NVRam */
-+    };
-+
-+The usual comparison for expiring keys is against clock, at offset 8.
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index e32e9728adce..5026a06977e1 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -233,6 +233,7 @@ enum tpm2_command_codes {
- 	TPM2_CC_PCR_EXTEND	        = 0x0182,
- 	TPM2_CC_EVENT_SEQUENCE_COMPLETE = 0x0185,
- 	TPM2_CC_HASH_SEQUENCE_START     = 0x0186,
-+	TPM2_CC_POLICY_PASSWORD		= 0x018c,
- 	TPM2_CC_CREATE_LOADED           = 0x0191,
- 	TPM2_CC_LAST		        = 0x0193, /* Spec 1.36 */
- };
-diff --git a/security/keys/trusted-keys/tpm2-policy.c b/security/keys/trusted-keys/tpm2-policy.c
-index 87a13e607eca..bd8eb02e1094 100644
---- a/security/keys/trusted-keys/tpm2-policy.c
-+++ b/security/keys/trusted-keys/tpm2-policy.c
-@@ -197,7 +197,8 @@ int tpm2_generate_policy_digest(struct tpm2_policies *pols,
- 			len = *plen;
- 		}
- 
--		crypto_shash_update(sdesc, policy, len);
-+		if (len)
-+			crypto_shash_update(sdesc, policy, len);
- 
- 		/* now output the intermediate to the policydigest */
- 		crypto_shash_final(sdesc, policydigest);
-@@ -332,6 +333,16 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 		u32 cmd = pols->code[i];
- 		struct tpm_buf buf;
- 
-+		if (cmd == TPM2_CC_POLICY_AUTHVALUE)
-+			/*
-+			 * both PolicyAuthValue and PolicyPassword
-+			 * hash to the same thing, but one triggers
-+			 * HMAC authentication and the other simple
-+			 * authentication.  Since we have no HMAC
-+			 * code, we're choosing the simple
-+			 */
-+			cmd = TPM2_CC_POLICY_PASSWORD;
-+
- 		rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, cmd);
- 		if (rc)
- 			return rc;
-@@ -352,8 +363,35 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 			tpm_buf_append(&buf, pols->policies[i],
- 				       pols->len[i] - pols->hash_size);
- 			break;
-+
-+		case TPM2_CC_POLICY_COUNTER_TIMER: {
-+			/*
-+			 * the format of this is the last two u16
-+			 * quantities are the offset and operation
-+			 * respectively.  The rest is operandB which
-+			 * must be zero padded in a hash digest
-+			 */
-+			u16 opb_len = pols->len[i] - 4;
-+
-+			if (opb_len > pols->hash_size)
-+				return -EINVAL;
-+
-+			tpm_buf_append_u16(&buf, opb_len);
-+			tpm_buf_append(&buf, pols->policies[i], opb_len);
-+
-+			/* offset and operand*/
-+			tpm_buf_append(&buf, pols->policies[i] + opb_len, 4);
-+			failure = "Counter Timer";
-+
-+			break;
-+		}
-+
- 		default:
- 			failure = "unknown policy";
-+			if (pols->len[i])
-+				tpm_buf_append(&buf, pols->policies[i],
-+					       pols->len[i]);
-+
- 			break;
- 		}
- 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 98c65431ca75..3ec01ed874d9 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -248,6 +248,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 	u32 flags;
- 	int i;
- 	int rc;
-+	static const int POLICY_SIZE = 2 * PAGE_SIZE;
- 
- 	for (i = 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
- 		if (options->hash == tpm2_hash_map[i].crypto_id) {
-@@ -268,7 +269,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		/* 4 array len, 2 hash alg */
- 		const int len = 4 + 2 + options->pcrinfo_len;
- 
--		pols = kmalloc(sizeof(*pols) + len, GFP_KERNEL);
-+		pols = kmalloc(POLICY_SIZE, GFP_KERNEL);
- 		if (!pols)
- 			return -ENOMEM;
- 
-@@ -289,6 +290,39 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * if we already have a policy, we have to add authorization
-+	 * to it.  If we don't, we can simply follow the usual
-+	 * non-policy route.
-+	 */
-+	if (options->blobauth_len != 0 && payload->policies) {
-+		struct tpm2_policies *pols;
-+		static u8 *scratch;
-+		int i;
-+		bool found = false;
-+
-+		pols = payload->policies;
-+
-+		/* make sure it's not already in policy */
-+		for (i = 0; i < pols->count; i++) {
-+			if (pols->code[i] == TPM2_CC_POLICY_AUTHVALUE) {
-+				found = true;
-+
-+				break;
-+			}
-+		}
-+
-+		if (!found) {
-+			i = pols->count++;
-+			scratch = pols->policies[i - 1] + pols->len[i - 1];
-+
-+			/* the TPM2_PolicyPassword command has no payload */
-+			pols->policies[i] = scratch;
-+			pols->len[i] = 0;
-+			pols->code[i] = TPM2_CC_POLICY_AUTHVALUE;
-+		}
-+	}
-+
- 	if (payload->policies) {
- 		rc = tpm2_generate_policy_digest(payload->policies,
- 						 options->hash,
--- 
-2.26.2
-
+I suppose we could keep this around for a while to ease migration.  But
+not for too long, please.
