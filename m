@@ -2,99 +2,142 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EBAC1FAC9A
-	for <lists+keyrings@lfdr.de>; Tue, 16 Jun 2020 11:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2D581FB19E
+	for <lists+keyrings@lfdr.de>; Tue, 16 Jun 2020 15:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbgFPJgG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 16 Jun 2020 05:36:06 -0400
-Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:44472 "EHLO
-        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726261AbgFPJgF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 16 Jun 2020 05:36:05 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0U.m0p4p_1592300158;
-Received: from 30.27.116.240(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0U.m0p4p_1592300158)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 16 Jun 2020 17:35:59 +0800
-Subject: Re: [PATCH v3 0/8] crpyto: introduce OSCCA certificate and SM2
- asymmetric algorithm
-To:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        dhowells@redhat.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, jmorris@namei.org, serge@hallyn.com,
-        nramas@linux.microsoft.com, tusharsu@linux.microsoft.com,
-        zohar@linux.ibm.com, gilad@benyossef.com, pvanleeuwen@rambus.com,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-security-module@vger.kernel.org, zhang.jia@linux.alibaba.com
-References: <20200609134855.21431-1-tianjia.zhang@linux.alibaba.com>
- <20200609205837.osganry2tyzwvanz@altlinux.org>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <254bf52e-eeb8-b615-be2a-d5cba976b63a@linux.alibaba.com>
-Date:   Tue, 16 Jun 2020 17:35:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1728928AbgFPNFa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 16 Jun 2020 09:05:30 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:43623 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728809AbgFPNFV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 16 Jun 2020 09:05:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592312719;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7nZX/JZoMn+I5qsocsgLqRgQUtpNpbf+EHIybmwJtOc=;
+        b=DrTWSdc51IgcrjaAMEbVTNIUuwKk9tbvc65esaiRUfyf6HC89eIAFP1HkgIwMQcloe71Zx
+        ZrZ3XJ+4bVa1pDQj6zbc3JfNAKPe4H+gjkeZq/QkWFjQYfqmOgahNwU+1FLrUPHDaDY0YO
+        F6zs7fjkWicjD+JvfM+fl05yhD3NjX8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-395-9xOyBG-QPzmPq6osX1JXvA-1; Tue, 16 Jun 2020 09:05:14 -0400
+X-MC-Unique: 9xOyBG-QPzmPq6osX1JXvA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 108C8107B7CB;
+        Tue, 16 Jun 2020 13:05:07 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-114-156.rdu2.redhat.com [10.10.114.156])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3337D5D9E4;
+        Tue, 16 Jun 2020 13:05:01 +0000 (UTC)
+Subject: Re: [PATCH v4 1/3] mm/slab: Use memzero_explicit() in kzfree()
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Sterba <dsterba@suse.cz>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, stable@vger.kernel.org
+References: <20200616015718.7812-1-longman@redhat.com>
+ <20200616015718.7812-2-longman@redhat.com>
+ <20200616033035.GB902@sol.localdomain>
+From:   Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <56c2304c-73cc-8f48-d8d0-5dd6c39f33f3@redhat.com>
+Date:   Tue, 16 Jun 2020 09:05:00 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200609205837.osganry2tyzwvanz@altlinux.org>
-Content-Type: text/plain; charset=koi8-r; format=flowed
+In-Reply-To: <20200616033035.GB902@sol.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On 6/15/20 11:30 PM, Eric Biggers wrote:
+> On Mon, Jun 15, 2020 at 09:57:16PM -0400, Waiman Long wrote:
+>> The kzfree() function is normally used to clear some sensitive
+>> information, like encryption keys, in the buffer before freeing it back
+>> to the pool. Memset() is currently used for the buffer clearing. However,
+>> it is entirely possible that the compiler may choose to optimize away the
+>> memory clearing especially if LTO is being used. To make sure that this
+>> optimization will not happen, memzero_explicit(), which is introduced
+>> in v3.18, is now used in kzfree() to do the clearing.
+>>
+>> Fixes: 3ef0e5ba4673 ("slab: introduce kzfree()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>   mm/slab_common.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>> index 9e72ba224175..37d48a56431d 100644
+>> --- a/mm/slab_common.c
+>> +++ b/mm/slab_common.c
+>> @@ -1726,7 +1726,7 @@ void kzfree(const void *p)
+>>   	if (unlikely(ZERO_OR_NULL_PTR(mem)))
+>>   		return;
+>>   	ks = ksize(mem);
+>> -	memset(mem, 0, ks);
+>> +	memzero_explicit(mem, ks);
+>>   	kfree(mem);
+>>   }
+>>   EXPORT_SYMBOL(kzfree);
+> This is a good change, but the commit message isn't really accurate.  AFAIK, no
+> one has found any case where this memset() gets optimized out.  And even with
+> LTO, it would be virtually impossible due to all the synchronization and global
+> data structures that kfree() uses.  (Remember that this isn't the C standard
+> function "free()", so the compiler can't assign it any special meaning.)
+> Not to mention that LTO support isn't actually upstream yet.
+>
+> I still agree with the change, but it might be helpful if the commit message
+> were honest that this is really a hardening measure and about properly conveying
+> the intent.  As-is this sounds like a critical fix, which might confuse people.
 
+Yes, I agree that the commit log may look a bit scary. How about the 
+following:
 
-On 2020/6/10 4:58, Vitaly Chikunov wrote:
-> Tianjia,
-> 
-> On Tue, Jun 09, 2020 at 09:48:47PM +0800, Tianjia Zhang wrote:
->> Hello all,
->>
->> This new module implement the OSCCA certificate and SM2 public key
->> algorithm. It was published by State Encryption Management Bureau, China.
->> List of specifications for OSCCA certificate and SM2 elliptic curve
->> public key cryptography:
->>
->> * GM/T 0003.1-2012
->> * GM/T 0003.2-2012
->> * GM/T 0003.3-2012
->> * GM/T 0003.4-2012
->> * GM/T 0003.5-2012
->> * GM/T 0015-2012
->> * GM/T 0009-2012
->>
->> IETF: https://tools.ietf.org/html/draft-shen-sm2-ecdsa-02
->> oscca: http://www.oscca.gov.cn/sca/xxgk/2010-12/17/content_1002386.shtml
->> scctc: http://www.gmbz.org.cn/main/bzlb.html
->>
->> These patchs add the OID object identifier defined by OSCCA. The
->> x509 certificate supports sm2-with-sm3 type certificate parsing
->> and verification.
->>
->> The sm2 algorithm is based on libgcrypt's mpi implementation, and has
->> made some additions to the kernel's original mpi library, and added the
->> implementation of ec to better support elliptic curve-like algorithms.
->>
->> sm2 has good support in both openssl and gnupg projects, and sm3 and sm4
->> of the OSCCA algorithm family have also been implemented in the kernel.
->>
->> Among them, sm3 and sm4 have been well implemented in the kernel.
->> This group of patches has newly introduced sm2. In order to implement
->> sm2 more perfectly, I expanded the mpi library and introduced the
->> ec implementation of the mpi library as the basic algorithm. Compared
->> to the kernel's crypto/ecc.c, the implementation of mpi/ec.c is more
->> complete and elegant, sm2 is implemented based on these algorithms.
-> 
-> Does it use constant-time algorithms?
-> 
-> Thanks,
-> 
+The kzfree() function is normally used to clear some sensitive
+information, like encryption keys, in the buffer before freeing it back
+to the pool. Memset() is currently used for buffer clearing. However
+unlikely, there is still a non-zero probability that the compiler may
+choose to optimize away the memory clearing especially if LTO is being
+used in the future. To make sure that this optimization will never
+happen, memzero_explicit(), which is introduced in v3.18, is now used
+in kzfree() to future-proof it.
 
-Sorry for not responding in time.
-This algorithm is constant-time algorithms, and this logic is 
-implemented in ec_mul_point().
-Will you consider implementing ecrdsa based on the mpi ec algorithm in 
-the future?
+Cheers,
+Longman
 
-Thanks and best,
-Tianjia
