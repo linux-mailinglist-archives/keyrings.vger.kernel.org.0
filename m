@@ -2,135 +2,110 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D701FD7BE
-	for <lists+keyrings@lfdr.de>; Wed, 17 Jun 2020 23:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01A981FD961
+	for <lists+keyrings@lfdr.de>; Thu, 18 Jun 2020 01:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726987AbgFQVmr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 17 Jun 2020 17:42:47 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44238 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726995AbgFQVmp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 17 Jun 2020 17:42:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592430164;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:in-reply-to:in-reply-to:  references:references;
-        bh=ziGeZkLSk9E0BTm8y7vUR/zQZg7qRoz5nH/H2o7ywpo=;
-        b=IIqFa7bYo+1Yof7aUTsJxdLd/ifqUAQT6UYPq8jHWbRZGS8r1q0buEHxqS9FNmtv4F/jf2
-        XD0D7Aat5WbDb96xE+6EX6en/DKHkJlROWIGVrqcImo5FyEe+Dw0mHp2SJ+Z3zCFqy7LST
-        bGYGvxue3IpwMlfPvoNWI75Fe6k29BI=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-437-3r2e_5r1P8qm3ql2tKgkmg-1; Wed, 17 Jun 2020 17:42:40 -0400
-X-MC-Unique: 3r2e_5r1P8qm3ql2tKgkmg-1
-Received: by mail-qk1-f199.google.com with SMTP id x68so2928520qkd.1
-        for <keyrings@vger.kernel.org>; Wed, 17 Jun 2020 14:42:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=ziGeZkLSk9E0BTm8y7vUR/zQZg7qRoz5nH/H2o7ywpo=;
-        b=hdU5fLJeHn3ZHTSK9o940U76Td0BSsx3jGBGN4+ha6AzErMszufPXuSAWvM4crjpJr
-         hUcNJU3zISaH02+dfNqrJ2r86uW1As7hjYTrQUWjDKLzrQkmbbXxZeLO8q7GGVRti93O
-         bF8Ge80cfkkN9Hc6eK60XzAwDbpQ0ArEOf6/wI7VoGaqM6wocc3BfOqtogJY0M+hjF9n
-         RyTpyO+dNw6sbkU8xv1KYm1tF/AW3Wz9QXz4gLkwZprgDNVNBD1psDktkOLzv5ICFKQw
-         bZizasOuysB7+UyCbhqCtlgDoqg+xJrH0Clri8CAMF3ycYtaD0ELSAiWuNE4aFvq1Vsx
-         al7w==
-X-Gm-Message-State: AOAM531VNLszQrUZBcL0ukRIc/AAkPHPpfE8ujsf5ULWmP0iCHw4riN5
-        s2SNShmvzGDbrw0ydDu0DXd1YqLMwt+dDawZkxqOi+HX1jd62dqGjMg6scc8f2NqkjyBkW+cgC9
-        QgYNZoPGcxrvwWmM/x2I=
-X-Received: by 2002:aed:2a67:: with SMTP id k36mr1274726qtf.359.1592430160521;
-        Wed, 17 Jun 2020 14:42:40 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJy2bbP1YY8oRqBLRJKk1O2Q+kPjLjdrsw0NkCYdnMEgqf+vfB9Irncji1qGx0MVsMoR6psqtw==
-X-Received: by 2002:aed:2a67:: with SMTP id k36mr1274697qtf.359.1592430160226;
-        Wed, 17 Jun 2020 14:42:40 -0700 (PDT)
-Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
-        by smtp.gmail.com with ESMTPSA id k17sm1225973qtb.5.2020.06.17.14.42.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2020 14:42:39 -0700 (PDT)
-Date:   Wed, 17 Jun 2020 14:42:37 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        id S1726848AbgFQXMS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 17 Jun 2020 19:12:18 -0400
+Received: from smtprelay0191.hostedemail.com ([216.40.44.191]:41454 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726761AbgFQXMS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 17 Jun 2020 19:12:18 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id C6BF8181D330D;
+        Wed, 17 Jun 2020 23:12:13 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:965:966:967:968:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2194:2196:2198:2199:2200:2201:2393:2525:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4385:4390:4395:5007:6248:6691:6742:6743:7875:7903:9025:9108:10004:10400:10848:11232:11658:11914:12043:12048:12050:12297:12438:12555:12740:12760:12895:13069:13095:13311:13357:13439:14096:14097:14180:14181:14659:14721:14777:14915:21080:21433:21451:21627:21788:21811:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:3,LUA_SUMMARY:none
+X-HE-Tag: anger66_3706ec726e0b
+X-Filterd-Recvd-Size: 3931
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 17 Jun 2020 23:12:07 +0000 (UTC)
+Message-ID: <38c5745d14cff75fe264a3bc61d19fd837baf7ad.camel@perches.com>
+Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to
+ kfree_sensitive()
+From:   Joe Perches <joe@perches.com>
+To:     Denis Efremov <efremov@ispras.ru>,
+        Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v10 2/8] oid_registry: Add TCG defined OIDS for TPM keys
-Message-ID: <20200617214237.dlvfnx2s7aw4sfng@cantor>
-Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
-References: <20200616160229.8018-1-James.Bottomley@HansenPartnership.com>
- <20200616160229.8018-3-James.Bottomley@HansenPartnership.com>
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>
+Cc:     Michal Hocko <mhocko@suse.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Sterba <dsterba@suse.cz>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Date:   Wed, 17 Jun 2020 16:12:06 -0700
+In-Reply-To: <17e4fede-bab0-d93c-6964-69decc889d7d@ispras.ru>
+References: <20200616015718.7812-1-longman@redhat.com>
+         <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
+         <17e4fede-bab0-d93c-6964-69decc889d7d@ispras.ru>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200616160229.8018-3-James.Bottomley@HansenPartnership.com>
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Jun 16 20, James Bottomley wrote:
->The TCG has defined an OID prefix "2.23.133.10.1" for the various TPM
->key uses.  We've defined three of the available numbers:
->
->2.23.133.10.1.3 TPM Loadable key.  This is an asymmetric key (Usually
->		RSA2048 or Elliptic Curve) which can be imported by a
->		TPM2_Load() operation.
->
->2.23.133.10.1.4 TPM Importable Key.  This is an asymmetric key (Usually
->		RSA2048 or Elliptic Curve) which can be imported by a
->		TPM2_Import() operation.
->
->Both loadable and importable keys are specific to a given TPM, the
->difference is that a loadable key is wrapped with the symmetric
->secret, so must have been created by the TPM itself.  An importable
->key is wrapped with a DH shared secret, and may be created without
->access to the TPM provided you know the public part of the parent key.
->
->2.23.133.10.1.5 TPM Sealed Data.  This is a set of data (up to 128
->		bytes) which is sealed by the TPM.  It usually
->		represents a symmetric key and must be unsealed before
->		use.
->
+On Thu, 2020-06-18 at 00:31 +0300, Denis Efremov wrote:
+> 
+> On 6/16/20 9:53 PM, Joe Perches wrote:
+> > On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
+> > >  v4:
+> > >   - Break out the memzero_explicit() change as suggested by Dan Carpenter
+> > >     so that it can be backported to stable.
+> > >   - Drop the "crypto: Remove unnecessary memzero_explicit()" patch for
+> > >     now as there can be a bit more discussion on what is best. It will be
+> > >     introduced as a separate patch later on after this one is merged.
+> > 
+> > To this larger audience and last week without reply:
+> > https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
+> > 
+> > Are there _any_ fastpath uses of kfree or vfree?
+> > 
+> > Many patches have been posted recently to fix mispairings
+> > of specific types of alloc and free functions.
+> 
+> I've prepared a coccinelle script to highlight these mispairings in a function
+> a couple of days ago: https://lkml.org/lkml/2020/6/5/953
+> I've listed all the fixes in the commit message. 
+> 
+> Not so many mispairings actually, and most of them are harmless like:
+> kmalloc(E) -> kvfree(E)
+> 
+> However, coccinelle script can't detect cross-functions mispairings, i.e.
+> allocation in one function, free in another funtion.
 
-James, which document are these defined in? I was searching last night,
-and couldn't find it.
+Hey Denis, thanks for those patches.
 
->The ASN.1 binary key form starts of with this OID as the first element
->of a sequence, giving the binary form a unique recognizable identity
->marker regardless of encoding.
->
->Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
->Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->Reviewed-by: David Howells <dhowells@redhat.com>
->
->---
->
->v3: correct OID_TPMImportableKey name
->v7: add ack
->v9: add review
->---
-> include/linux/oid_registry.h | 5 +++++
-> 1 file changed, 5 insertions(+)
->
->diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
->index 657d6bf2c064..f6e2276e5f30 100644
->--- a/include/linux/oid_registry.h
->+++ b/include/linux/oid_registry.h
->@@ -107,6 +107,11 @@ enum OID {
-> 	OID_gostTC26Sign512B,		/* 1.2.643.7.1.2.1.2.2 */
-> 	OID_gostTC26Sign512C,		/* 1.2.643.7.1.2.1.2.3 */
->
->+	/* TCG defined OIDS for TPM based keys */
->+	OID_TPMLoadableKey,		/* 2.23.133.10.1.3 */
->+	OID_TPMImportableKey,		/* 2.23.133.10.1.4 */
->+	OID_TPMSealedData,		/* 2.23.133.10.1.5 */
->+
-> 	OID__NR
-> };
->
->-- 
->2.26.2
->
+If possible, it's probably better to not require these pairings
+and use a single standard kfree/free function.
+
+Given the existing ifs in kfree in slab/slob/slub, it seems
+likely that adding a few more wouldn't have much impact.
+
 
