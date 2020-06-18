@@ -2,99 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C939F1FEC54
-	for <lists+keyrings@lfdr.de>; Thu, 18 Jun 2020 09:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5F11FFBB1
+	for <lists+keyrings@lfdr.de>; Thu, 18 Jun 2020 21:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728125AbgFRHUK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 18 Jun 2020 03:20:10 -0400
-Received: from mga06.intel.com ([134.134.136.31]:36224 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725829AbgFRHUG (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 18 Jun 2020 03:20:06 -0400
-IronPort-SDR: ZjK2exdIS5jvympC7Du2/vo3K1pXAoZNO/zvVM0rNIGvh8rv+cUC17tpkeS6e6IYOnv6EneSZo
- sBry6k98meiQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9655"; a="203963885"
-X-IronPort-AV: E=Sophos;i="5.73,525,1583222400"; 
-   d="scan'208";a="203963885"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2020 00:20:06 -0700
-IronPort-SDR: GOOndaOg0rTI1y/zoM9ik2FFZWaBYobsTN/aX7QIWNaExAcCBhA4jz5ODZs1oAtPHDTimnz/pR
- ct72S+OAfvFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,525,1583222400"; 
-   d="scan'208";a="263517625"
-Received: from jkalinox-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.49.234])
-  by fmsmga008.fm.intel.com with ESMTP; 18 Jun 2020 00:19:56 -0700
-Date:   Thu, 18 Jun 2020 10:19:55 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>,
-        Luke Hinds <lhinds@redhat.com>
-Subject: Re: [PATCH v5 1/4] KEYS: trusted: Add generic trusted keys framework
-Message-ID: <20200618071955.GE6560@linux.intel.com>
-References: <1591107505-6030-1-git-send-email-sumit.garg@linaro.org>
- <1591107505-6030-2-git-send-email-sumit.garg@linaro.org>
- <20200615182457.GB5416@linux.intel.com>
- <CAFA6WYNEnXm5FOGHGAg4XB-+GXD=C+YMh+6t976=pStU0WshAA@mail.gmail.com>
- <20200617231429.GD62794@linux.intel.com>
- <CAFA6WYOdtwnewqY0ASnMf7fyw3s_hQx0+oWJRhT3CpkkkxYpDA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYOdtwnewqY0ASnMf7fyw3s_hQx0+oWJRhT3CpkkkxYpDA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1727978AbgFRTWF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 Jun 2020 15:22:05 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:44558 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726925AbgFRTWF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Jun 2020 15:22:05 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 9A0C48EE181;
+        Thu, 18 Jun 2020 12:22:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1592508124;
+        bh=AeJEQ3gyXbW8kDVuPGPOzZJWinGu6lLAijASbDnhmv0=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=s8f7Kwq83NZ4RdQpTqfQn4XAcRkniIeHQE/uXqUaQdAAHc4ld/1SQrHJIT1mR5Lxp
+         mN+e7drR+8CfK0JE4haHjycv5ExXjS8GQAl+hyMcan1ObTQWlx2ckUWMuLpQmjffyT
+         QcGvdo64gYEsIFOehfQyyf6RLVdfRbuzZP9Eqvx8=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id T5I8Huw3GqmW; Thu, 18 Jun 2020 12:22:04 -0700 (PDT)
+Received: from jarvis (unknown [216.116.10.17])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id DDAD58EE0EA;
+        Thu, 18 Jun 2020 12:22:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1592508124;
+        bh=AeJEQ3gyXbW8kDVuPGPOzZJWinGu6lLAijASbDnhmv0=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=s8f7Kwq83NZ4RdQpTqfQn4XAcRkniIeHQE/uXqUaQdAAHc4ld/1SQrHJIT1mR5Lxp
+         mN+e7drR+8CfK0JE4haHjycv5ExXjS8GQAl+hyMcan1ObTQWlx2ckUWMuLpQmjffyT
+         QcGvdo64gYEsIFOehfQyyf6RLVdfRbuzZP9Eqvx8=
+Message-ID: <1592508122.15159.7.camel@HansenPartnership.com>
+Subject: Re: [PATCH v10 2/8] oid_registry: Add TCG defined OIDS for TPM keys
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     Jerry Snitselaar <jsnitsel@redhat.com>,
+        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Date:   Thu, 18 Jun 2020 12:22:02 -0700
+In-Reply-To: <20200618071451.GC6560@linux.intel.com>
+References: <20200616160229.8018-1-James.Bottomley@HansenPartnership.com>
+         <20200616160229.8018-3-James.Bottomley@HansenPartnership.com>
+         <20200617214237.dlvfnx2s7aw4sfng@cantor>
+         <1592439940.3515.40.camel@HansenPartnership.com>
+         <20200618071451.GC6560@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jun 18, 2020 at 12:12:41PM +0530, Sumit Garg wrote:
-> On Thu, 18 Jun 2020 at 04:44, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Tue, Jun 16, 2020 at 07:02:37PM +0530, Sumit Garg wrote:
-> > > + Luke
-> > >
-> > > Hi Jarkko,
-> > >
-> > > Prior to addressing your comments below which seems to show your
-> > > preference for compile time selection of trust source (TPM or TEE), I
-> > > would just like to hear the reasons for this preference especially if
-> > > it makes distro vendor's life difficult [1] to make opinionated
-> > > selection which could rather be achieved dynamically based on platform
-> > > capability.
-> > >
-> > > [1] https://lkml.org/lkml/2020/6/3/405
-> > >
-> > > -Sumit
-> >
-> > Hmm... I do get the distribution kernel point. OK, lets revert to
-> > dynamic then. Thanks for the remark.
-> >
-> > /Jarkko
+On Thu, 2020-06-18 at 10:14 +0300, Jarkko Sakkinen wrote:
+> On Wed, Jun 17, 2020 at 05:25:40PM -0700, James Bottomley wrote:
+> > On Wed, 2020-06-17 at 14:42 -0700, Jerry Snitselaar wrote:
+> > > On Tue Jun 16 20, James Bottomley wrote:
+> > > > The TCG has defined an OID prefix "2.23.133.10.1" for the
+> > > > various
+> > > > TPM
+> > > > key uses.  We've defined three of the available numbers:
+> > > > 
+> > > > 2.23.133.10.1.3 TPM Loadable key.  This is an asymmetric key
+> > > > (Usually
+> > > > 		RSA2048 or Elliptic Curve) which can be
+> > > > imported by a
+> > > > 		TPM2_Load() operation.
+> > > > 
+> > > > 2.23.133.10.1.4 TPM Importable Key.  This is an asymmetric key
+> > > > (Usually
+> > > > 		RSA2048 or Elliptic Curve) which can be
+> > > > imported by a
+> > > > 		TPM2_Import() operation.
+> > > > 
+> > > > Both loadable and importable keys are specific to a given TPM,
+> > > > the
+> > > > difference is that a loadable key is wrapped with the symmetric
+> > > > secret, so must have been created by the TPM itself.  An
+> > > > importable
+> > > > key is wrapped with a DH shared secret, and may be created
+> > > > without
+> > > > access to the TPM provided you know the public part of the
+> > > > parent
+> > > > key.
+> > > > 
+> > > > 2.23.133.10.1.5 TPM Sealed Data.  This is a set of data (up to
+> > > > 128
+> > > > 		bytes) which is sealed by the TPM.  It usually
+> > > > 		represents a symmetric key and must be unsealed
+> > > > before
+> > > > 		use.
+> > > > 
+> > > 
+> > > James, which document are these defined in? I was searching last
+> > > night, and couldn't find it.
+> > 
+> > It isn't.  It's defined in a TCG spreadsheet that Monty Wiseman
+> > keeps, but that seems to be as "official" as it gets with the TCG
+> > OID registry.
+> > 
+> > James
 > 
-> Thanks, will revert to dynamic mode in v6.
+> "The TCG has defined an OID prefix "2.23.133.10.1" for the various
+> TPM key uses."
+> 
+> Should this sentence start just as "TCG ...", not sure if "the" is
+> required?
 
-Sorry about the extra trouble caused by me.
+I've always referred to it as The Trusted Computing Group (so the TCG)
+partly to show they're not just any old trusted computing group.  But I
+think they mostly do refer to themselves in literature as TCG.
 
-/Jarkko
+James
+
