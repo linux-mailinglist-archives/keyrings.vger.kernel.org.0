@@ -2,58 +2,136 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9127A203BBE
-	for <lists+keyrings@lfdr.de>; Mon, 22 Jun 2020 18:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5524C203F35
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jun 2020 20:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729486AbgFVQCC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 22 Jun 2020 12:02:02 -0400
-Received: from sonic309-21.consmr.mail.ne1.yahoo.com ([66.163.184.147]:41356
-        "EHLO sonic309-21.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729309AbgFVQCC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 22 Jun 2020 12:02:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1592841721; bh=cK2qy9Lv5SAgMg9nAvfVmkJPj46H3ss3vOVyjpHm6Nk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=JTETxE5c4VmxIqxusG/RM2eZV8PITO2YLaM87qMBAwWlmjwgCfFCjcnhVxOi654t4AAaGy+DswWjZACYQOeTMxfVHdV/Dl5P3d+9N21+8wBw5o8gzzwm/hv0QwTvk/cj//k3ihNMycBm/3AdLWlwNV728ftYu/aaDrjc8/gwSfv5UB6lflw6wuybykHRKVc/s8Xpu2xuuQoaWtxU16aDxOis4gRStfiu1rJ77Vr7VO4c0E7mEpPNpc6FxDPoHo6cisKrXpgH3VNEhWHkcz1QMeX/B2Lp1IJKmMkKwVSNQiYIv3xuaZwFe+WWtXAMnE9xrXPybfPIaC4JdJGeckV+XQ==
-X-YMail-OSG: 1zAFrsAVM1kieiOh8ORK0wfUdGRM.NBHduuqOElv10XrE8lvj_a4MviekME1O5a
- T4Wcgruti.Z9Eqe43ymrsOq1qsGz_yfNoRAP1jAwXMMF1pf0zwOd7d3jIzQf9YtQOWRH2yffK2sH
- 6qjaiqXAM6qC2B9TUMJybztP1wQbDMbE_p8MFzqBOqbUr7a9m9XmUaJeVLMaQPEzFJ1P9SIRMWBj
- WfeLRu4dDUKFq1..8jbIithwB2TQLa5J5Zvdsbu03JEAlCSAIRn4NlDsfljw3U39b3THsNBXa3lV
- gxqbcTpSfPMonyZBgAIPrECaz1qg3fKXdhgsgiEKgt9vD__X7ZX1ItajZ3_0iDlRMNmv8SYQLKFY
- rKF2GBcpFzwc6.pQClDNL.rcV7NHqv3VGTG9.0tH7daCi2XbOTJdYGYHqAF3B2MhiKtmGChn4zV4
- Sxvhd1DT2bRnqEV1TiJ8_5TMRg_kEiepWzYIqlAafKE81uUdsP4M_iZXiXAsE9bZaUuZm8KNAo19
- OrIHZMdF5cB1.3cpYIEeX.CVhTkSxtTFxaWQGU7aD_4SVBpSCkYqyP8WZIyG5wXoixcYGpi_nLFa
- NOmGAxhHjg3G5GSQww5sbMu_biatBCf.Fot2kcGJNhB2jnNgPfMgNaPnhosGbZr8iDnSqA6ZWt0i
- TIMjmAxmXK.2w1lJ.LuG13g6S0QBK1fihyDTguab4K.npiWk4qWwJU.NRKQWnlI8MgU8QBnQel5u
- FtE.WmTZiVGoUmgMwoY38kIhzoGdirC9J9D3vJW7cwu8qITj.G4GuDnjkFo8I9kLoPHMuIkNNeOk
- YV66rSFib224yxyqiWlWNRug95eYdQPDUcTL5PQtJ_IQz6xtj7ktGB.e.2tWnB8_xUWkN2nUheUt
- dipCO0HpD.jNm5iyhkimDUjc_DCDbDrcX8cksnOqyROx_Qf.jJLgh58GrrnI3JG0wGq1QHMizaqQ
- FLWdYe_jBOqKCxP6fSGF_uWvPKpEZb2.S9yK2kOUNb6vj_uB7Nvrd1lmA6o73g.FlMWozckFimbW
- 8l03wdEN9JG2cbJVVQWyFlpMHB5GZYZIv6iUNRRPetvVKZqVtMyCQ71NXH_IUso68wYLvnTebgSf
- TW5RTJ_tFQ03CDgzHtq2Onsn4oCqTboo7ExJoXketR_fKX4H4ryMUViCbO1h8CZRBWfA.JCd_Oq4
- .hDwFLQ0cpwmKVOolr949Jb0x.7kaAGUrWrS2zmgiz117O0nwzzxlTUJmrq4qyTK6wKIRN13QJiY
- QDpZPKyT8yjCiCxHIYpGJqQbZW1BOYDSz3oPVejZmENYbUHTb.vVYUfxSyAB7pMmNPA--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Jun 2020 16:02:01 +0000
-Date:   Mon, 22 Jun 2020 16:02:00 +0000 (UTC)
-From:   Karim Zakari <kariim1960z@gmail.com>
-Reply-To: kzakari04@gmail.com
-Message-ID: <1345703772.1867771.1592841720012@mail.yahoo.com>
-Subject: URGENT REPLY.
+        id S1730383AbgFVSeV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 22 Jun 2020 14:34:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38728 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730356AbgFVSeU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 22 Jun 2020 14:34:20 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307A3C061796
+        for <keyrings@vger.kernel.org>; Mon, 22 Jun 2020 11:34:20 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id u25so10253720lfm.1
+        for <keyrings@vger.kernel.org>; Mon, 22 Jun 2020 11:34:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=sBexF5ssPbh5LGo0nOeoAmYTVHXNPIpTHLnki7UR7GA=;
+        b=dLVhwzoIaHVDtXlEa1yvKtmI/A8BJFihnPmuFHEt+CIA+Blq4FXWfgRDj5VbpYeAvs
+         LExEGz+hg9FoBlNsk/KDwNo6DL+1H0Oln1cW6CTVsYdLj81cGymdJ+LHP340gPCojzAn
+         WzoZSRf0551K9N59cmTYzZBiMUrU1INtRsyrH5hUFAx4zevjJoB8bUY98vkN5e0Y1w3v
+         oweWmToFE3c0cUPu4Nc2eOF9DffAZo7jcaDQWC3Mhg7iqjVdCc3wUq8fp/bN4yC6PVjs
+         aVCjsY+vU5prFJAmP1JwVT+P5UBgdgG+Y6dIk4QkSei7A2y/3Jkdq8CMMhhEhD7DXrQL
+         Mh1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=sBexF5ssPbh5LGo0nOeoAmYTVHXNPIpTHLnki7UR7GA=;
+        b=eAesOauIdLAElKTcjg5BXUy/agfjoIyuxKSi5AsMuwa/32Bb9V0TCpAxrqa5jkFdvO
+         NM2srj5oyVlBV/WrpP8g1ubQHf4sXkd2s6AJkg5sJuDkLdaPovEm+UXa+jBaBM/PjZhz
+         BERwBQzuBWKmLvEskjzyOqY/tnldFq2mT4hmCUfwnLNGYSynokamHMLjBUMjpFQhOYLg
+         rsKdtIln6aK3+Op5VOIuomkckfTv50NjLGvfLDvKR2wbW5oErbXjtAD8l9TbkaCnmWaR
+         Yf3oDEC9QZUzEFbchdIjXoY8O5GUd5zAKOeyvQACcsw91Gat246GwRy4iX4DPRg6F08P
+         aZnA==
+X-Gm-Message-State: AOAM531uTK9+3p/rMeN0B4MlHCLaU0Ea0UrJ0n7WCifp4H0N49CvLr3A
+        DNUUsWEruxDfSzhCnDtDjup8qZ6P5kQo4IkPr7F8/Q==
+X-Google-Smtp-Source: ABdhPJyPOJcIhXBV0KqXpX75z6mrdlBxWTdsbbkx8Ha1UrGxW5K2yYQvin6nrIjvzB6DkFmVg0qpX8oS1eea80qkSR0=
+X-Received: by 2002:ac2:4db2:: with SMTP id h18mr10513503lfe.167.1592850858186;
+ Mon, 22 Jun 2020 11:34:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1345703772.1867771.1592841720012.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16138 YMailNodin Mozilla/5.0 (Windows NT 6.1; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 23 Jun 2020 00:04:06 +0530
+Message-ID: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
+Subject: LTP: crypto: af_alg02 regression on linux-next 20200621 tag
+To:     LTP List <ltp@lists.linux.it>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        lkft-triage@lists.linaro.org, linux-crypto@vger.kernel.org
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Jan Stancek <jstancek@redhat.com>, chrubis <chrubis@suse.cz>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        James Morris <jmorris@namei.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+LTP crypto regressions noticed on linux next 20200621.
+
+The common case for all tests is timeout after 15 minutes which
+means tests got hung and LTP timers killed those test runs after
+timeout.
+The root cause of the failure is under investigation.
+
+  ltp-crypto-tests:
+    * af_alg02 - failed
+    * af_alg05 - failed
+  ltp-syscalls-tests:
+    * keyctl07 - failed
+    * request_key03 - failed
+
+Output log:
+--------------
+af_alg02:
+af_alg02.c:52: BROK: Timed out while reading from request socket.
+
+Test code at line number 52 is
+
+pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+SAFE_PTHREAD_CREATE(&thr, NULL, verify_encrypt, NULL);
+
+TST_CHECKPOINT_WAIT(0);
+
+while (pthread_kill(thr, 0) != ESRCH) {
+    if (tst_timeout_remaining() <= 10) {
+        pthread_cancel(thr);
+        tst_brk(TBROK,
+                   "Timed out while reading from request socket.");
 
 
-Good-Day Friend,
+af_alg05:
+tst_test.c:1246: INFO: Timeout per run is 0h 15m 00s
+[  362.599868] kworker/dying (137) used greatest stack depth: 11600 bytes left
+Test timeouted, sending SIGKILL!
+tst_test.c:1286: INFO: If you are running on slow machine, try
+exporting LTP_TIMEOUT_MUL > 1
+tst_test.c:1287: BROK: Test killed! (timeout?)
 
- Hope you are doing great Today. I have a proposed business deal worthy (US$16.5 Million Dollars) that will benefit both parties. This is legitimate' legal and your personality will not be compromised.
+request_key03:
+tst_test.c:1246: INFO: Timeout per run is 0h 15m 00s
+request_key03.c:65: CONF: kernel doesn't support key type 'encrypted'
+request_key03.c:65: CONF: kernel doesn't support key type 'trusted'
+Test timeouted, sending SIGKILL!
+tst_test.c:1286: INFO: If you are running on slow machine, try
+exporting LTP_TIMEOUT_MUL > 1
+tst_test.c:1287: BROK: Test killed! (timeout?)
 
-Waiting for your response for more details, As you are willing to execute this business opportunity with me.
+keyctl07
+tst_test.c:1246: INFO: Timeout per run is 0h 15m 00s
+Test timeouted, sending SIGKILL!
+tst_test.c:1286: INFO: If you are running on slow machine, try
+exporting LTP_TIMEOUT_MUL > 1
+tst_test.c:1287: BROK: Test killed! (timeout?)
 
-Sincerely Yours,
-Mr. Karim Zakari.
+metadata:
+  git branch: master
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+  git commit: 5a94f5bc041ea9e4d17c93b11ea6f6a2e5ad361b
+  git describe: next-20200621
+  kernel-config:
+https://builds.tuxbuild.com/PB-45Luvlx0yYJ8MZgpijA/kernel.config
+
+ref:
+https://lkft.validation.linaro.org/scheduler/job/1511938#L2211
+https://lkft.validation.linaro.org/scheduler/job/1511935#L9225
+
+- Naresh
