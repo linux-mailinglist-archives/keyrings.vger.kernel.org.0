@@ -2,67 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5016204A10
-	for <lists+keyrings@lfdr.de>; Tue, 23 Jun 2020 08:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B9C205032
+	for <lists+keyrings@lfdr.de>; Tue, 23 Jun 2020 13:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731116AbgFWGlc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 23 Jun 2020 02:41:32 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:45028 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730540AbgFWGlb (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 23 Jun 2020 02:41:31 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1jncc4-0003im-6c; Tue, 23 Jun 2020 16:40:57 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Tue, 23 Jun 2020 16:40:56 +1000
-Date:   Tue, 23 Jun 2020 16:40:56 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        LTP List <ltp@lists.linux.it>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        lkft-triage@lists.linaro.org, linux-crypto@vger.kernel.org,
-        Jan Stancek <jstancek@redhat.com>, chrubis <chrubis@suse.cz>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Biggers <ebiggers@google.com>
-Subject: Re: LTP: crypto: af_alg02 regression on linux-next 20200621 tag
-Message-ID: <20200623064056.GA8121@gondor.apana.org.au>
-References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
- <20200622224920.GA4332@42.do-not-panic.com>
- <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
+        id S1732458AbgFWLNf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 23 Jun 2020 07:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732440AbgFWLNc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Jun 2020 07:13:32 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD245C06179A
+        for <keyrings@vger.kernel.org>; Tue, 23 Jun 2020 04:13:31 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id c75so18879952ila.8
+        for <keyrings@vger.kernel.org>; Tue, 23 Jun 2020 04:13:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=JmFWxL8jcgFtJ4lXeAh1tsN1JKedqnhe1aARR5DLLNfnmxbRVdigZWObFQCKHma7V/
+         nXcD5YIWEVXNXCqrytPGgDqMF7LG3AjbXiqLTgzqk1NJVD0/SRZf4OoSI6wnKQxYV3Ks
+         amS6a4QzU5emTI071jmI7+yuVO8cf4VT9H8sEhnpri7+7G+PTXCBUyZqsrxfqxuiwOG4
+         xEIjMamwRMoIta8KsYy3dHkpvW0oyFzbTuaV2CPgDnFo04GeMPe10QjUEXx8wj4RHH8B
+         DHZEqlRnedz4pCoeB0pVzmh4bko7PaIqIxbPCx2izv0Xwb2Gc8VLztOXP6mjnrkcvxdC
+         tn1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=lpyyMO8UE4F7oYMJ9ByRh0frg9lPA/5k5KL9Wa79eh2WZujeWwHO7RLUkwllthY4u9
+         uYMSFcPYjXesGfdyj9Z5rD1/2HAbU64bi/xkMFOLfAbk7x8wlM8L1tXfeB60lVMG6c+h
+         0FmZtBZaUkrZSRzlwFBnLPaIGgJ3umIk4LWFAaO8qWj4Az81AERpz3Q0msYEXc763ez5
+         xPgfcHb7z4Fsw0CTIFetrV3XKVv3ys9HzMkGftwjF+xTELoGxLV7vME+pItF1VcEMq7v
+         CPJjSR5lJcZqxDa7ibpbJhEc3N6H/4oFZR0QK+I9JLjBFRE+SajOcjT2vxUi7lEa2k7u
+         FZiA==
+X-Gm-Message-State: AOAM532ovZcO3ZMcWFa5IcERq1tB1aVU/MAUxyjuZbttPEpLT1UaWgT2
+        NVxf1Rnjgt9FiYhFA3166qjgMzJjebvG8Oorze0=
+X-Google-Smtp-Source: ABdhPJwK923lg5M3WnkXSapWWzottNhCJnxFSYd3ngrqt2SS9qPX4AJ/vikM4fv3WoLbmggVNNCfvDQtP1sd5XzwhK0=
+X-Received: by 2002:a92:c643:: with SMTP id 3mr23427492ill.229.1592910811076;
+ Tue, 23 Jun 2020 04:13:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a05:6638:14d3:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:13:30
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <elnana194@gmail.com>
+Date:   Tue, 23 Jun 2020 12:13:30 +0100
+Message-ID: <CA+NUCuTpRBCNhzPsUx6VPrOLF5ST46h_JaJQFi9zwqK2yEciSw@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jun 23, 2020 at 11:53:43AM +0530, Naresh Kamboju wrote:
->
-> Thanks for the investigation.
-> After reverting, two test cases got PASS out of four reported failure cases.
->  ltp-crypto-tests:
->      * af_alg02 - still failing - Hung and time out
->      * af_alg05 - still failing - Hung and time out
->   ltp-syscalls-tests:
->      * keyctl07 - PASS
->      * request_key03 - PASS
-> 
-> Please suggest the way to debug / fix the af_alg02 and af_alg05 failures.
+Greetings From Mrs. Sarah Koffi
 
-Did you clear the MSG_MORE flag in the final send(2) call before
-you call recv(2)?
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
+
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
+
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
