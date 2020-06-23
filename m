@@ -2,65 +2,110 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 421B32051A7
-	for <lists+keyrings@lfdr.de>; Tue, 23 Jun 2020 14:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4032205436
+	for <lists+keyrings@lfdr.de>; Tue, 23 Jun 2020 16:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732421AbgFWMCD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 23 Jun 2020 08:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732396AbgFWMCD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Jun 2020 08:02:03 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D6CC061573
-        for <keyrings@vger.kernel.org>; Tue, 23 Jun 2020 05:02:02 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id c139so613265qkg.12
-        for <keyrings@vger.kernel.org>; Tue, 23 Jun 2020 05:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=YkNvEB0RghyQ/LID7DI3H/TzVIqKKH3OfHutMrPzS1Ft5wZacDaDGbWBr1wDsPw40D
-         g2cep8e8WNxhhZoP0tv0keTabp0KH2XePa6jhdCZ6KjsrinF0okn6f0x4cZlvkUFghcO
-         YzXQhfkQ1Ejzf8HGzbdKzl09JV3KRbHEyM9ff5NaRd8A/Vg+TH5yWiF/JSTMofKD3/ZP
-         Dz4JrZ4B5dHsaZ++4eNotnosIf+Bj3V16T8B8G117ooviuSB6fqUSDC1pCDlKgNqt9kU
-         IrNENMeXbT+pE8VPvUgphWpcOhyuQOwBcOQSfj43C1kdlvgaxsZ03BjgB4klYZ4KUWTQ
-         ItDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=Pt/ijc9Ys7q0hplI9TZmgV4IJIfvk+Do5NgaSBOk82OXFOpLIE8cNdId2BMBPum3hl
-         uo9E+oVDYYJUJ/NqlJ15yFzP69Eo2TQvQJPfhswXao+mfMgwZKES6UeNzBtTsgNQ3O3e
-         0046MBkT99PS+BiNhum0D9viIKaTlHipMtTEimPTySwLDHZtJOGVp8fxvqQBM4Ulny2h
-         wYB80w2Y/PgDVE3PP0P4sjPI3KJ6EzCcltMOfZvgYWetton8PR4u8xE4BEKzNm27sXD/
-         pNMlPNEoiAgeKHDIVEIwiqdVwxDovFxr45CpBd3E9pivzfVlnH1NzVu7Co07wXgCkl2w
-         3qeQ==
-X-Gm-Message-State: AOAM530n62mLL1wUqwyWVepgyUYTFX09wml5FKc1JWsO5VhMQsha6INU
-        53UlSjnyC6of7INRy97XJAY0MVXDBBLgu++jPbQ=
-X-Google-Smtp-Source: ABdhPJxlnsE4ng2mdTNnGMppXdCVg+yzTUzgH31AY7OdaGoZZoynWOvkMQkGviwErZPlbs4p0YZQOLy+Xj8tdoHaV8E=
-X-Received: by 2002:a37:62c6:: with SMTP id w189mr8246250qkb.67.1592913721979;
- Tue, 23 Jun 2020 05:02:01 -0700 (PDT)
+        id S1732816AbgFWOMw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 23 Jun 2020 10:12:52 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:62288 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732657AbgFWOMv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Jun 2020 10:12:51 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05NE54Z8119634;
+        Tue, 23 Jun 2020 10:12:05 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31uhcqvar3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Jun 2020 10:12:04 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05NE5a9c122692;
+        Tue, 23 Jun 2020 10:12:04 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31uhcqvaps-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Jun 2020 10:12:04 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NEBNq1019088;
+        Tue, 23 Jun 2020 14:12:02 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma03fra.de.ibm.com with ESMTP id 31uk4wr05b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Jun 2020 14:12:01 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05NEAew058851746
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 23 Jun 2020 14:10:41 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9FF0E4C072;
+        Tue, 23 Jun 2020 14:11:58 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 818524C071;
+        Tue, 23 Jun 2020 14:11:58 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue, 23 Jun 2020 14:11:58 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 25651)
+        id 04F32E13EA; Tue, 23 Jun 2020 16:11:58 +0200 (CEST)
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+To:     mcgrof@kernel.org
+Cc:     ast@kernel.org, axboe@kernel.dk, bfields@fieldses.org,
+        bridge@lists.linux-foundation.org, chainsaw@gentoo.org,
+        christian.brauner@ubuntu.com, chuck.lever@oracle.com,
+        davem@davemloft.net, dhowells@redhat.com,
+        gregkh@linuxfoundation.org, jarkko.sakkinen@linux.intel.com,
+        jmorris@namei.org, josh@joshtriplett.org, keescook@chromium.org,
+        keyrings@vger.kernel.org, kuba@kernel.org,
+        lars.ellenberg@linbit.com, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, nikolay@cumulusnetworks.com,
+        philipp.reisner@linbit.com, ravenexp@gmail.com,
+        roopa@cumulusnetworks.com, serge@hallyn.com, slyfox@gentoo.org,
+        viro@zeniv.linux.org.uk, yangtiezhu@loongson.cn,
+        netdev@vger.kernel.org, markward@linux.ibm.com,
+        linux-s390@vger.kernel.or
+Subject: linux-next: umh: fix processed error when UMH_WAIT_PROC is used seems to break linux bridge on s390x (bisected)
+Date:   Tue, 23 Jun 2020 16:11:57 +0200
+Message-Id: <20200623141157.5409-1-borntraeger@de.ibm.com>
+X-Mailer: git-send-email 2.25.4
+In-Reply-To: <20200610154923.27510-5-mcgrof@kernel.org>
+References: <20200610154923.27510-5-mcgrof@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:01:45
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bakert.jg@gmail.com>
-Date:   Tue, 23 Jun 2020 05:01:45 -0700
-Message-ID: <CAAUSuTUzqhQ7W7uxAxvEnnx7a-YvEGZTJvP7e3YeSZjJ67T7_Q@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-23_06:2020-06-23,2020-06-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ suspectscore=1 mlxlogscore=865 spamscore=0 bulkscore=0 lowpriorityscore=0
+ cotscore=-2147483648 mlxscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1011 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006230108
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+Jens Markwardt reported a regression in the linux-next runs.  with "umh: fix
+processed error when UMH_WAIT_PROC is used" (from linux-next) a linux bridge
+with an KVM guests no longer activates :
+
+without patch
+# ip addr show dev virbr1
+6: virbr1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 52:54:00:1e:3f:c0 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.254.254/24 brd 192.168.254.255 scope global virbr1
+       valid_lft forever preferred_lft forever
+
+with this patch the bridge stays DOWN with NO-CARRIER
+
+# ip addr show dev virbr1
+6: virbr1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+    link/ether 52:54:00:1e:3f:c0 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.254.254/24 brd 192.168.254.255 scope global virbr1
+       valid_lft forever preferred_lft forever
+
+This was bisected in linux-next. Reverting from linux-next also fixes the issue.
+
+Any idea?
+
+Christian
