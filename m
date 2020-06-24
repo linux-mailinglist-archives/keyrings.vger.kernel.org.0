@@ -2,71 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DCBD2068FB
-	for <lists+keyrings@lfdr.de>; Wed, 24 Jun 2020 02:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B80206934
+	for <lists+keyrings@lfdr.de>; Wed, 24 Jun 2020 02:55:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387769AbgFXAXw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 23 Jun 2020 20:23:52 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:47142 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387764AbgFXAXv (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 23 Jun 2020 20:23:51 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1jntCR-0007XQ-Sx; Wed, 24 Jun 2020 10:23:36 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Wed, 24 Jun 2020 10:23:35 +1000
-Date:   Wed, 24 Jun 2020 10:23:35 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        LTP List <ltp@lists.linux.it>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        lkft-triage@lists.linaro.org, linux-crypto@vger.kernel.org,
-        Jan Stancek <jstancek@redhat.com>, chrubis <chrubis@suse.cz>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: LTP: crypto: af_alg02 regression on linux-next 20200621 tag
-Message-ID: <20200624002335.GC12716@gondor.apana.org.au>
-References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
- <20200622224920.GA4332@42.do-not-panic.com>
- <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
- <20200623064056.GA8121@gondor.apana.org.au>
- <20200623170217.GB150582@gmail.com>
+        id S2387853AbgFXAzZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 23 Jun 2020 20:55:25 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43457 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387764AbgFXAzZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Jun 2020 20:55:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592960124;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=l8YDKYWSS8vDlTiiBW94TviByEXAP7JxXxS7ijuo3BU=;
+        b=QPjkTr4K9YSX7Gf7CWkHbWgBFw8YObBekLBPD9GZ3St/QUidds7ahHdBHBfACL3wWgv4FB
+        DIdjpjNgDAYE2Ktje86s1GDwga7j+/qoPgnb69VfrX5pQzWWO1JxsjPxYt2Oo5hkEj2lAM
+        ebmJ1vhh7bNnQRijrjFKlSIJJ7WqwPU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-147-SUNRbfhUNlOrRx30UX_RVQ-1; Tue, 23 Jun 2020 20:55:22 -0400
+X-MC-Unique: SUNRbfhUNlOrRx30UX_RVQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5C601804001;
+        Wed, 24 Jun 2020 00:55:20 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-114-66.rdu2.redhat.com [10.10.114.66])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 032357CCF9;
+        Wed, 24 Jun 2020 00:55:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <CAPcyv4g+T+GK4yVJs8bTT1q90SFDpFYUSL9Pk_u8WZROhREPkw@mail.gmail.com>
+References: <CAPcyv4g+T+GK4yVJs8bTT1q90SFDpFYUSL9Pk_u8WZROhREPkw@mail.gmail.com> <1503686.1591113304@warthog.procyon.org.uk> <23219b787ed1c20a63017ab53839a0d1c794ec53.camel@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     dhowells@redhat.com,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "raven@themaw.net" <raven@themaw.net>,
+        "kzak@redhat.com" <kzak@redhat.com>,
+        "jarkko.sakkinen@linux.intel.com" <jarkko.sakkinen@linux.intel.com>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+        "dray@redhat.com" <dray@redhat.com>,
+        "swhiteho@redhat.com" <swhiteho@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "mszeredi@redhat.com" <mszeredi@redhat.com>,
+        "jlayton@redhat.com" <jlayton@redhat.com>,
+        "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
+        "andres@anarazel.de" <andres@anarazel.de>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "christian.brauner@ubuntu.com" <christian.brauner@ubuntu.com>
+Subject: Re: [GIT PULL] General notification queue and key notifications
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200623170217.GB150582@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3015560.1592960116.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Wed, 24 Jun 2020 01:55:16 +0100
+Message-ID: <3015561.1592960116@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jun 23, 2020 at 10:02:17AM -0700, Eric Biggers wrote:
->
-> The source code for the two failing AF_ALG tests is here:
-> 
-> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg02.c
-> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg05.c
-> 
-> They use read() and write(), not send() and recv().
-> 
-> af_alg02 uses read() to read from a "salsa20" request socket without writing
-> anything to it.  It is expected that this returns 0, i.e. that behaves like
-> encrypting an empty message.
-> 
-> af_alg05 uses write() to write 15 bytes to a "cbc(aes-generic)" request socket,
-> then read() to read 15 bytes.  It is expected that this fails with EINVAL, since
-> the length is not aligned to the AES block size (16 bytes).
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Thanks.  Sounds like it's my introduction of the init variable that
-broke this.  Let me investigate.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+> > This commit:
+> >
+> > >       keys: Make the KEY_NEED_* perms an enum rather than a mask
+> >
+> > ...upstream as:
+> >
+> >     8c0637e950d6 keys: Make the KEY_NEED_* perms an enum rather than a=
+ mask
+> >
+> > ...triggers a regression in the libnvdimm unit test that exercises the
+> > encrypted keys used to store nvdimm passphrases. It results in the
+> > below warning.
+> =
+
+> This regression is still present in tip of tree. David, have you had a
+> chance to take a look?
+
+nvdimm_lookup_user_key() needs to indicate to lookup_user_key() what it wa=
+nts
+the key for so that the appropriate security checks can take place in SELi=
+nux
+and Smack.  Note that I have a patch in the works that changes this still
+further.
+
+Does setting the third argument of lookup_user_key() to KEY_NEED_SEARCH wo=
+rk
+for you?
+
+David
+
