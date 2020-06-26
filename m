@@ -2,177 +2,176 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD5C20ABCA
-	for <lists+keyrings@lfdr.de>; Fri, 26 Jun 2020 07:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 265F620AC5F
+	for <lists+keyrings@lfdr.de>; Fri, 26 Jun 2020 08:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726968AbgFZFYY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Jun 2020 01:24:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:61164 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725306AbgFZFYX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Jun 2020 01:24:23 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05Q53PRN037053;
-        Fri, 26 Jun 2020 01:22:43 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 31vbn7wxre-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 26 Jun 2020 01:22:42 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05Q5MOU4093327;
-        Fri, 26 Jun 2020 01:22:42 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 31vbn7wxqf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 26 Jun 2020 01:22:42 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-        by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05Q5BSJg006292;
-        Fri, 26 Jun 2020 05:22:39 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by ppma06ams.nl.ibm.com with ESMTP id 31uusjjgyh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 26 Jun 2020 05:22:39 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05Q5Ma3Z48824420
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 26 Jun 2020 05:22:36 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4385911C064;
-        Fri, 26 Jun 2020 05:22:36 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CFED011C04C;
-        Fri, 26 Jun 2020 05:22:34 +0000 (GMT)
-Received: from oc7455500831.ibm.com (unknown [9.145.13.118])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 26 Jun 2020 05:22:34 +0000 (GMT)
-Subject: Re: linux-next: umh: fix processed error when UMH_WAIT_PROC is used
- seems to break linux bridge on s390x (bisected)
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Christoph Hellwig <hch@infradead.org>, ast@kernel.org,
-        axboe@kernel.dk, bfields@fieldses.org,
-        bridge@lists.linux-foundation.org, chainsaw@gentoo.org,
-        christian.brauner@ubuntu.com, chuck.lever@oracle.com,
-        davem@davemloft.net, dhowells@redhat.com,
-        gregkh@linuxfoundation.org, jarkko.sakkinen@linux.intel.com,
-        jmorris@namei.org, josh@joshtriplett.org, keescook@chromium.org,
-        keyrings@vger.kernel.org, kuba@kernel.org,
-        lars.ellenberg@linbit.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, nikolay@cumulusnetworks.com,
-        philipp.reisner@linbit.com, ravenexp@gmail.com,
-        roopa@cumulusnetworks.com, serge@hallyn.com, slyfox@gentoo.org,
-        viro@zeniv.linux.org.uk, yangtiezhu@loongson.cn,
-        netdev@vger.kernel.org, markward@linux.ibm.com,
-        linux-s390 <linux-s390@vger.kernel.org>
-References: <20200623141157.5409-1-borntraeger@de.ibm.com>
- <b7d658b9-606a-feb1-61f9-b58e3420d711@de.ibm.com>
- <3118dc0d-a3af-9337-c897-2380062a8644@de.ibm.com>
- <20200624144311.GA5839@infradead.org>
- <9e767819-9bbe-2181-521e-4d8ca28ca4f7@de.ibm.com>
- <20200624160953.GH4332@42.do-not-panic.com>
- <ea41e2a9-61f7-aec1-79e5-7b08b6dd5119@de.ibm.com>
- <4e27098e-ac8d-98f0-3a9a-ea25242e24ec@de.ibm.com>
- <4d8fbcea-a892-3453-091f-d57c03f9aa90@de.ibm.com>
- <1263e370-7cee-24d8-b98c-117bf7c90a83@de.ibm.com>
- <20200626025410.GJ4332@42.do-not-panic.com>
-From:   Christian Borntraeger <borntraeger@de.ibm.com>
-Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
- 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
- nS4h0HDFPrrp1C2EMVYIQrMokWvlFZbCpsdYbBI=
-Message-ID: <feb6a8c4-2b94-3f95-6637-679e089a71ca@de.ibm.com>
-Date:   Fri, 26 Jun 2020 07:22:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1728361AbgFZGad (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Jun 2020 02:30:33 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:51990 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727876AbgFZGac (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 26 Jun 2020 02:30:32 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1johrw-0004mR-T7; Fri, 26 Jun 2020 16:29:50 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 26 Jun 2020 16:29:48 +1000
+Date:   Fri, 26 Jun 2020 16:29:48 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        LTP List <ltp@lists.linux.it>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        lkft-triage@lists.linaro.org, linux-crypto@vger.kernel.org,
+        Jan Stancek <jstancek@redhat.com>, chrubis <chrubis@suse.cz>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        James Morris <jmorris@namei.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sachin Sant <sachinp@linux.vnet.ibm.com>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] crypto: af_alg - Fix regression on empty requests
+Message-ID: <20200626062948.GA25285@gondor.apana.org.au>
+References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
+ <20200622224920.GA4332@42.do-not-panic.com>
+ <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
+ <20200623064056.GA8121@gondor.apana.org.au>
+ <20200623170217.GB150582@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200626025410.GJ4332@42.do-not-panic.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-26_01:2020-06-26,2020-06-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- adultscore=0 impostorscore=0 mlxscore=0 phishscore=0 priorityscore=1501
- cotscore=-2147483648 suspectscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006260035
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200623170217.GB150582@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-
-
-On 26.06.20 04:54, Luis Chamberlain wrote:
-> On Wed, Jun 24, 2020 at 08:37:55PM +0200, Christian Borntraeger wrote:
->>
->>
->> On 24.06.20 20:32, Christian Borntraeger wrote:
->> [...]> 
->>> So the translations look correct. But your change is actually a sematic change
->>> if(ret) will only trigger if there is an error
->>> if (KWIFEXITED(ret)) will always trigger when the process ends. So we will always overwrite -ECHILD
->>> and we did not do it before. 
->>>
->>
->> So the right fix is
->>
->> diff --git a/kernel/umh.c b/kernel/umh.c
->> index f81e8698e36e..a3a3196e84d1 100644
->> --- a/kernel/umh.c
->> +++ b/kernel/umh.c
->> @@ -154,7 +154,7 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
->>                  * the real error code is already in sub_info->retval or
->>                  * sub_info->retval is 0 anyway, so don't mess with it then.
->>                  */
->> -               if (KWIFEXITED(ret))
->> +               if (KWEXITSTATUS(ret))
->>                         sub_info->retval = KWEXITSTATUS(ret);
->>         }
->>  
->> I think.
+On Tue, Jun 23, 2020 at 10:02:17AM -0700, Eric Biggers wrote:
+>
+> The source code for the two failing AF_ALG tests is here:
 > 
-> Nope, the right form is to check for WIFEXITED() before using WEXITSTATUS().
+> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg02.c
+> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg05.c
+> 
+> They use read() and write(), not send() and recv().
+> 
+> af_alg02 uses read() to read from a "salsa20" request socket without writing
+> anything to it.  It is expected that this returns 0, i.e. that behaves like
+> encrypting an empty message.
+> 
+> af_alg05 uses write() to write 15 bytes to a "cbc(aes-generic)" request socket,
+> then read() to read 15 bytes.  It is expected that this fails with EINVAL, since
+> the length is not aligned to the AES block size (16 bytes).
 
-But this IS a change over the previous code, no?
-I will test next week as I am travelling right now. 
+This patch should fix the regression:
+
+---8<---
+Some user-space programs rely on crypto requests that have no
+control metadata.  This broke when a check was added to require
+the presence of control metadata with the ctx->init flag.
+
+This patch fixes the regression by removing the ctx->init flag.
+
+This means that we do not distinguish the case of no metadata
+as opposed to an empty request.  IOW it is always assumed that
+if you call recv(2) before sending metadata that you are working
+with an empty request.
+
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: f3c802a1f300 ("crypto: algif_aead - Only wake up when...")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 9fcb91ea10c4..2d391117c020 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -635,7 +635,6 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
+ 
+ 	if (!ctx->used)
+ 		ctx->merge = 0;
+-	ctx->init = ctx->more;
+ }
+ EXPORT_SYMBOL_GPL(af_alg_pull_tsgl);
+ 
+@@ -757,8 +756,7 @@ int af_alg_wait_for_data(struct sock *sk, unsigned flags, unsigned min)
+ 			break;
+ 		timeout = MAX_SCHEDULE_TIMEOUT;
+ 		if (sk_wait_event(sk, &timeout,
+-				  ctx->init && (!ctx->more ||
+-						(min && ctx->used >= min)),
++				  !ctx->more || (min && ctx->used >= min),
+ 				  &wait)) {
+ 			err = 0;
+ 			break;
+@@ -847,7 +845,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	}
+ 
+ 	lock_sock(sk);
+-	if (ctx->init && (init || !ctx->more)) {
++	if (!ctx->more && ctx->used) {
+ 		err = -EINVAL;
+ 		goto unlock;
+ 	}
+@@ -858,7 +856,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			memcpy(ctx->iv, con.iv->iv, ivsize);
+ 
+ 		ctx->aead_assoclen = con.aead_assoclen;
+-		ctx->init = true;
+ 	}
+ 
+ 	while (size) {
+diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
+index d48d2156e621..749fe42315be 100644
+--- a/crypto/algif_aead.c
++++ b/crypto/algif_aead.c
+@@ -106,7 +106,7 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	size_t usedpages = 0;		/* [in]  RX bufs to be used from user */
+ 	size_t processed = 0;		/* [in]  TX bufs to be consumed */
+ 
+-	if (!ctx->init || ctx->more) {
++	if (ctx->more) {
+ 		err = af_alg_wait_for_data(sk, flags, 0);
+ 		if (err)
+ 			return err;
+diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
+index a51ba22fef58..5b6fa5e8c00d 100644
+--- a/crypto/algif_skcipher.c
++++ b/crypto/algif_skcipher.c
+@@ -61,7 +61,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	int err = 0;
+ 	size_t len = 0;
+ 
+-	if (!ctx->init || (ctx->more && ctx->used < bs)) {
++	if (ctx->more && ctx->used < bs) {
+ 		err = af_alg_wait_for_data(sk, flags, bs);
+ 		if (err)
+ 			return err;
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index ee6412314f8f..08c087cc89d6 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -135,7 +135,6 @@ struct af_alg_async_req {
+  *			SG?
+  * @enc:		Cryptographic operation to be performed when
+  *			recvmsg is invoked.
+- * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
+  */
+ struct af_alg_ctx {
+@@ -152,7 +151,6 @@ struct af_alg_ctx {
+ 	bool more;
+ 	bool merge;
+ 	bool enc;
+-	bool init;
+ 
+ 	unsigned int len;
+ };
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
