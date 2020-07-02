@@ -2,107 +2,108 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F71211B11
-	for <lists+keyrings@lfdr.de>; Thu,  2 Jul 2020 06:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97082211F4F
+	for <lists+keyrings@lfdr.de>; Thu,  2 Jul 2020 10:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726014AbgGBE2Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 2 Jul 2020 00:28:24 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:58243 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725857AbgGBE2Y (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 2 Jul 2020 00:28:24 -0400
-Received: from fsav105.sakura.ne.jp (fsav105.sakura.ne.jp [27.133.134.232])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 0624QsOL032532;
-        Thu, 2 Jul 2020 13:26:54 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav105.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav105.sakura.ne.jp);
- Thu, 02 Jul 2020 13:26:54 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav105.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 0624Qsh8032529
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 2 Jul 2020 13:26:54 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: Re: linux-next: umh: fix processed error when UMH_WAIT_PROC is used
- seems to break linux bridge on s390x (bisected)
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>, ast@kernel.org,
-        axboe@kernel.dk, bfields@fieldses.org,
-        bridge@lists.linux-foundation.org, chainsaw@gentoo.org,
-        christian.brauner@ubuntu.com, chuck.lever@oracle.com,
-        davem@davemloft.net, dhowells@redhat.com,
-        gregkh@linuxfoundation.org, jarkko.sakkinen@linux.intel.com,
-        jmorris@namei.org, josh@joshtriplett.org, keescook@chromium.org,
-        keyrings@vger.kernel.org, kuba@kernel.org,
-        lars.ellenberg@linbit.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, nikolay@cumulusnetworks.com,
-        philipp.reisner@linbit.com, ravenexp@gmail.com,
-        roopa@cumulusnetworks.com, serge@hallyn.com, slyfox@gentoo.org,
-        viro@zeniv.linux.org.uk, yangtiezhu@loongson.cn,
-        netdev@vger.kernel.org, markward@linux.ibm.com,
-        linux-s390 <linux-s390@vger.kernel.org>
-References: <ea41e2a9-61f7-aec1-79e5-7b08b6dd5119@de.ibm.com>
- <4e27098e-ac8d-98f0-3a9a-ea25242e24ec@de.ibm.com>
- <4d8fbcea-a892-3453-091f-d57c03f9aa90@de.ibm.com>
- <1263e370-7cee-24d8-b98c-117bf7c90a83@de.ibm.com>
- <20200626025410.GJ4332@42.do-not-panic.com>
- <20200630175704.GO13911@42.do-not-panic.com>
- <b24d8dae-1872-ba2c-acd4-ed46c0781317@de.ibm.com>
- <a6792135-3285-0861-014e-3db85ea251dc@i-love.sakura.ne.jp>
- <20200701135324.GS4332@42.do-not-panic.com>
- <8d714a23-bac4-7631-e5fc-f97c20a46083@i-love.sakura.ne.jp>
- <20200701153859.GT4332@42.do-not-panic.com>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Message-ID: <e3f3e501-2cb7-b683-4b85-2002b7603244@i-love.sakura.ne.jp>
-Date:   Thu, 2 Jul 2020 13:26:53 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726975AbgGBI5d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 2 Jul 2020 04:57:33 -0400
+Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:58139 "EHLO
+        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726362AbgGBI5d (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 2 Jul 2020 04:57:33 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id 9983BAF4;
+        Thu,  2 Jul 2020 04:57:32 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Thu, 02 Jul 2020 04:57:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=IS0yYgsN7rWTAcDYRV/zUGwJtn
+        VGzNF2FERcbBeP+YQ=; b=WX3Nroe3mGsepVrAeMt3tns9Oeup6HV1PTDMkfp+uM
+        u49L3qozti0HCa0LGDNfH80RekpgbY5s+3xqbO2VpTkEcYc+RshEpn31AZDyeGGe
+        3G+x50gvTbA4KXCR8Q56+kibV2ODKYQ1CIkpxuanocVMun3tTWbF4jyznudUlqnQ
+        XSTqRgy2vUzrP0qANlHr0FCsrBg1Ttxuw9Tjwo/xzWmcZ7lYy2GlPAv1sFq06Z3Q
+        oZFRkA/Tc3DjhF7RrMsdnaiboTksAzwGMo9wYssD5w6WtchORuEQoT38Mkl2SkDL
+        YnRQer2TlfCsc4tnGEYIj46abOE5R19j4E7iNf6EuwLA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=IS0yYgsN7rWTAcDYR
+        V/zUGwJtnVGzNF2FERcbBeP+YQ=; b=u+o58ODyOzPH3M1ZLGpqc4cXf51cZfPCy
+        eLl2y9yC+gY/BJzShtQCodXTAo+8+5DmYQMj5M5rEAGRFxQO3CBmwda1ziIh/3XZ
+        JXgDVdEoP3zLFfRwkGL//yAU1dszit7bJ03SxetSuzlU5Mx15rYHV2uPu1O+mIOd
+        fVHnNESMtaJgNPLjq39bE96ke3WkwHz39GwuHvH4jFiSg8WEZY6rhfvAspxLZ9gV
+        bBCTHJQMJke9DhsVxonvhRUvEkQHMG3ysdv/Iqaxh3vPeq5zFRunBmUjsuFnK2FO
+        SVeknGYLGPCDwZ7Nb2xXh3jfZgBoKZ1PVgxHVHX16q+BbUP0q63DA==
+X-ME-Sender: <xms:e6H9XninqPWFziDs2Ej_zByzmz4ZBG9zbhLX5u4-NUS8DOU7zHZcSw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrtdeggddthecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepvehhrhhishhtohhp
+    hhgvucgguhdquehruhhgihgvrhcuoegtvhhusghruhhgihgvrhesfhgrshhtmhgrihhlrd
+    hfmheqnecuggftrfgrthhtvghrnhepkeeftdffjeetvdfgleegtdfgvdekfffgffeiieel
+    ueelkedugfetgeetieegkedunecukfhppeekiedrvdegjedrudeiuddrvddvieenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegtvhhusghruhhg
+    ihgvrhesfhgrshhtmhgrihhlrdhfmh
+X-ME-Proxy: <xmx:e6H9XkA629mOxSdSbet4m5L_sOF--JxSkgH2pEGKXC0DWO_4TW3HvA>
+    <xmx:e6H9XnGlDeMkdIiWT8pGbwplWx_aWOtaYv_Za_fZHRKb00MRDDespg>
+    <xmx:e6H9XkRjgrY0qc-gIPhPyMxldXss7KNxT2T8DHfRGd-M8fGILUFFnQ>
+    <xmx:fKH9XqafJf91DjbY09lPPpmW8wHxBOKT4Nolu3FHv-xOpSiLNUSl2w>
+Received: from rakis.home (lfbn-idf2-1-711-226.w86-247.abo.wanadoo.fr [86.247.161.226])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 39C30306006E;
+        Thu,  2 Jul 2020 04:57:31 -0400 (EDT)
+From:   Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+To:     keyrings@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>,
+        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
+        Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+Subject: [PATCH 0/4] keyutils: fix compilation error with C++
+Date:   Thu,  2 Jul 2020 10:57:19 +0200
+Message-Id: <20200702085723.7026-1-cvubrugier@fastmail.fm>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20200701153859.GT4332@42.do-not-panic.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2020/07/02 0:38, Luis Chamberlain wrote:
-> @@ -156,6 +156,18 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
->  		 */
->  		if (KWIFEXITED(ret))
->  			sub_info->retval = KWEXITSTATUS(ret);
-> +		/*
-> +		 * Do we really want to be passing the signal, or do we pass
-> +		 * a single error code for all cases?
-> +		 */
-> +		else if (KWIFSIGNALED(ret))
-> +			sub_info->retval = KWTERMSIG(ret);
+These patches are for the userspace keyutils program and library.
 
-No, this is bad. Caller of usermode helper is unable to distinguish exit(9)
-and e.g. SIGKILL'ed by the OOM-killer. Please pass raw exit status value.
+While working on a C++ program that could take advantage of the
+keyutils library, I observed that the compilation fails because the
+"keyutils.h" header file contains a parameter named "private" which is
+a C++ reserved keyword.
 
-I feel that caller of usermode helper should not use exit status value.
-For example, call_sbin_request_key() is checking
+* Patch #1 fixes a few typos in the man pages.
+* Patch #2 fixes the aforementioned issue.
+* Patch #3 helps prevent a similar issue from happening in the future.
+* Patch #4 fixes an issue reported by C++ compilers at link time.
 
-  test_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags) || key_validate(key) < 0
+With best regards,
 
-condition (if usermode helper was invoked) in order to "ignore any errors from
-userspace if the key was instantiated".
+Christophe Vu-Brugier (4):
+  man: fix typos
+  Fix compilation error when keyutils.h is used in C++
+  Check that keyutils.h has valid C++ syntax at build time
+  Fix error when a C++ program is linked with libkeyutils
 
-> +		/* Same here */
-> +		else if (KWIFSTOPPED((ret)))
-> +			sub_info->retval = KWSTOPSIG(ret);
-> +		/* And are we really sure we want this? */
-> +		else if (KWIFCONTINUED((ret)))
-> +			sub_info->retval = 0;
->  	}
->  
->  	/* Restore default kernel sig handler */
-> 
+ Makefile                  | 16 +++++++++++++++-
+ keyutils.c                |  4 ++--
+ keyutils.h                | 10 +++++++++-
+ man/keyctl.3              |  4 ++--
+ man/keyctl_capabilities.3 |  2 +-
+ man/keyctl_chown.3        |  2 +-
+ man/keyctl_clear.3        |  3 +--
+ man/keyctl_link.3         |  3 +--
+ man/keyctl_move.3         |  3 +--
+ man/keyctl_read.3         |  3 +--
+ man/keyctl_revoke.3       |  2 +-
+ man/keyctl_set_timeout.3  |  2 +-
+ man/keyctl_setperm.3      |  2 +-
+ man/keyctl_update.3       |  2 +-
+ 14 files changed, 38 insertions(+), 20 deletions(-)
+
+-- 
+2.27.0
 
