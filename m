@@ -2,122 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40264211AA5
-	for <lists+keyrings@lfdr.de>; Thu,  2 Jul 2020 05:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F71211B11
+	for <lists+keyrings@lfdr.de>; Thu,  2 Jul 2020 06:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725988AbgGBDdj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Jul 2020 23:33:39 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:37150 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725857AbgGBDdi (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 1 Jul 2020 23:33:38 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1jqpxV-0008AS-FA; Thu, 02 Jul 2020 13:32:22 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 02 Jul 2020 13:32:21 +1000
-Date:   Thu, 2 Jul 2020 13:32:21 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     Eric Biggers <ebiggers@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        LTP List <ltp@lists.linux.it>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        lkft-triage@lists.linaro.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Jan Stancek <jstancek@redhat.com>, chrubis <chrubis@suse.cz>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sachin Sant <sachinp@linux.vnet.ibm.com>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux- stable <stable@vger.kernel.org>
-Subject: [v2 PATCH] crypto: af_alg - Fix regression on empty requests
-Message-ID: <20200702033221.GA19367@gondor.apana.org.au>
-References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
- <20200622224920.GA4332@42.do-not-panic.com>
- <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
- <20200623064056.GA8121@gondor.apana.org.au>
- <20200623170217.GB150582@gmail.com>
- <20200626062948.GA25285@gondor.apana.org.au>
- <CA+G9fYutuU55iL_6Qrk3oG3iq-37PaxvtA4KnEQHuLH9YpH-QA@mail.gmail.com>
+        id S1726014AbgGBE2Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 2 Jul 2020 00:28:24 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:58243 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725857AbgGBE2Y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 2 Jul 2020 00:28:24 -0400
+Received: from fsav105.sakura.ne.jp (fsav105.sakura.ne.jp [27.133.134.232])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 0624QsOL032532;
+        Thu, 2 Jul 2020 13:26:54 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav105.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav105.sakura.ne.jp);
+ Thu, 02 Jul 2020 13:26:54 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav105.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 0624Qsh8032529
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 2 Jul 2020 13:26:54 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Subject: Re: linux-next: umh: fix processed error when UMH_WAIT_PROC is used
+ seems to break linux bridge on s390x (bisected)
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>, ast@kernel.org,
+        axboe@kernel.dk, bfields@fieldses.org,
+        bridge@lists.linux-foundation.org, chainsaw@gentoo.org,
+        christian.brauner@ubuntu.com, chuck.lever@oracle.com,
+        davem@davemloft.net, dhowells@redhat.com,
+        gregkh@linuxfoundation.org, jarkko.sakkinen@linux.intel.com,
+        jmorris@namei.org, josh@joshtriplett.org, keescook@chromium.org,
+        keyrings@vger.kernel.org, kuba@kernel.org,
+        lars.ellenberg@linbit.com, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, nikolay@cumulusnetworks.com,
+        philipp.reisner@linbit.com, ravenexp@gmail.com,
+        roopa@cumulusnetworks.com, serge@hallyn.com, slyfox@gentoo.org,
+        viro@zeniv.linux.org.uk, yangtiezhu@loongson.cn,
+        netdev@vger.kernel.org, markward@linux.ibm.com,
+        linux-s390 <linux-s390@vger.kernel.org>
+References: <ea41e2a9-61f7-aec1-79e5-7b08b6dd5119@de.ibm.com>
+ <4e27098e-ac8d-98f0-3a9a-ea25242e24ec@de.ibm.com>
+ <4d8fbcea-a892-3453-091f-d57c03f9aa90@de.ibm.com>
+ <1263e370-7cee-24d8-b98c-117bf7c90a83@de.ibm.com>
+ <20200626025410.GJ4332@42.do-not-panic.com>
+ <20200630175704.GO13911@42.do-not-panic.com>
+ <b24d8dae-1872-ba2c-acd4-ed46c0781317@de.ibm.com>
+ <a6792135-3285-0861-014e-3db85ea251dc@i-love.sakura.ne.jp>
+ <20200701135324.GS4332@42.do-not-panic.com>
+ <8d714a23-bac4-7631-e5fc-f97c20a46083@i-love.sakura.ne.jp>
+ <20200701153859.GT4332@42.do-not-panic.com>
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Message-ID: <e3f3e501-2cb7-b683-4b85-2002b7603244@i-love.sakura.ne.jp>
+Date:   Thu, 2 Jul 2020 13:26:53 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYutuU55iL_6Qrk3oG3iq-37PaxvtA4KnEQHuLH9YpH-QA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200701153859.GT4332@42.do-not-panic.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jun 30, 2020 at 02:18:11PM +0530, Naresh Kamboju wrote:
+On 2020/07/02 0:38, Luis Chamberlain wrote:
+> @@ -156,6 +156,18 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
+>  		 */
+>  		if (KWIFEXITED(ret))
+>  			sub_info->retval = KWEXITSTATUS(ret);
+> +		/*
+> +		 * Do we really want to be passing the signal, or do we pass
+> +		 * a single error code for all cases?
+> +		 */
+> +		else if (KWIFSIGNALED(ret))
+> +			sub_info->retval = KWTERMSIG(ret);
+
+No, this is bad. Caller of usermode helper is unable to distinguish exit(9)
+and e.g. SIGKILL'ed by the OOM-killer. Please pass raw exit status value.
+
+I feel that caller of usermode helper should not use exit status value.
+For example, call_sbin_request_key() is checking
+
+  test_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags) || key_validate(key) < 0
+
+condition (if usermode helper was invoked) in order to "ignore any errors from
+userspace if the key was instantiated".
+
+> +		/* Same here */
+> +		else if (KWIFSTOPPED((ret)))
+> +			sub_info->retval = KWSTOPSIG(ret);
+> +		/* And are we really sure we want this? */
+> +		else if (KWIFCONTINUED((ret)))
+> +			sub_info->retval = 0;
+>  	}
+>  
+>  	/* Restore default kernel sig handler */
 > 
-> Since we are on this subject,
-> LTP af_alg02  test case fails on stable 4.9 and stable 4.4
-> This is not a regression because the test case has been failing from
-> the beginning.
-> 
-> Is this test case expected to fail on stable 4.9 and 4.4 ?
-> or any chance to fix this on these older branches ?
-> 
-> Test output:
-> af_alg02.c:52: BROK: Timed out while reading from request socket.
-> 
-> ref:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-4.9-oe/build/v4.9.228-191-g082e807235d7/testrun/2884917/suite/ltp-crypto-tests/test/af_alg02/history/
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-4.9-oe/build/v4.9.228-191-g082e807235d7/testrun/2884606/suite/ltp-crypto-tests/test/af_alg02/log
 
-Actually this test really is broken.  Even though empty requests
-are legal, they should never be done with no write(2) at all.
-Because this fundamentally breaks the use of a blocking read(2)
-to wait for more data.
-
-Granted this has been broken since 2017 but I'm not going to
-reintroduce this just because of a broken test case.
-
-So please either remove af_alg02 or fix it by adding a control
-message through sendmsg(2).
-
-Thanks,
-
----8<---
-Some user-space programs rely on crypto requests that have no
-control metadata.  This broke when a check was added to require
-the presence of control metadata with the ctx->init flag.
-
-This patch fixes the regression by setting ctx->init as long as
-one sendmsg(2) has been made, with or without a control message.
-
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: f3c802a1f300 ("crypto: algif_aead - Only wake up when...")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 9fcb91ea10c41..5882ed46f1adb 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -851,6 +851,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		err = -EINVAL;
- 		goto unlock;
- 	}
-+	ctx->init = true;
- 
- 	if (init) {
- 		ctx->enc = enc;
-@@ -858,7 +859,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 			memcpy(ctx->iv, con.iv->iv, ivsize);
- 
- 		ctx->aead_assoclen = con.aead_assoclen;
--		ctx->init = true;
- 	}
- 
- 	while (size) {
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
