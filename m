@@ -2,148 +2,167 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1849D2130AC
-	for <lists+keyrings@lfdr.de>; Fri,  3 Jul 2020 02:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F772130DC
+	for <lists+keyrings@lfdr.de>; Fri,  3 Jul 2020 03:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbgGCAyG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 2 Jul 2020 20:54:06 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:58398 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726028AbgGCAyG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 2 Jul 2020 20:54:06 -0400
-Received: from fsav303.sakura.ne.jp (fsav303.sakura.ne.jp [153.120.85.134])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 0630q3Dc066718;
-        Fri, 3 Jul 2020 09:52:03 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav303.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav303.sakura.ne.jp);
- Fri, 03 Jul 2020 09:52:03 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav303.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 0630q2Yw066713
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Fri, 3 Jul 2020 09:52:02 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: Re: linux-next: umh: fix processed error when UMH_WAIT_PROC is used
- seems to break linux bridge on s390x (bisected)
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>, ast@kernel.org,
-        axboe@kernel.dk, bfields@fieldses.org,
-        bridge@lists.linux-foundation.org, chainsaw@gentoo.org,
-        christian.brauner@ubuntu.com, chuck.lever@oracle.com,
-        davem@davemloft.net, gregkh@linuxfoundation.org,
-        jarkko.sakkinen@linux.intel.com, jmorris@namei.org,
-        josh@joshtriplett.org, keescook@chromium.org,
-        keyrings@vger.kernel.org, kuba@kernel.org,
-        lars.ellenberg@linbit.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, nikolay@cumulusnetworks.com,
-        philipp.reisner@linbit.com, ravenexp@gmail.com,
-        roopa@cumulusnetworks.com, serge@hallyn.com, slyfox@gentoo.org,
-        viro@zeniv.linux.org.uk, yangtiezhu@loongson.cn,
-        netdev@vger.kernel.org, markward@linux.ibm.com,
-        linux-s390 <linux-s390@vger.kernel.org>
-References: <4d8fbcea-a892-3453-091f-d57c03f9aa90@de.ibm.com>
- <1263e370-7cee-24d8-b98c-117bf7c90a83@de.ibm.com>
- <20200626025410.GJ4332@42.do-not-panic.com>
- <20200630175704.GO13911@42.do-not-panic.com>
- <b24d8dae-1872-ba2c-acd4-ed46c0781317@de.ibm.com>
- <a6792135-3285-0861-014e-3db85ea251dc@i-love.sakura.ne.jp>
- <20200701135324.GS4332@42.do-not-panic.com>
- <8d714a23-bac4-7631-e5fc-f97c20a46083@i-love.sakura.ne.jp>
- <20200701153859.GT4332@42.do-not-panic.com>
- <e3f3e501-2cb7-b683-4b85-2002b7603244@i-love.sakura.ne.jp>
- <20200702194656.GV4332@42.do-not-panic.com>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Message-ID: <d8a74a06-de97-54ae-de03-0d955e82f62b@i-love.sakura.ne.jp>
-Date:   Fri, 3 Jul 2020 09:52:01 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726015AbgGCBOy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 2 Jul 2020 21:14:54 -0400
+Received: from mga14.intel.com ([192.55.52.115]:39463 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725937AbgGCBOy (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 2 Jul 2020 21:14:54 -0400
+IronPort-SDR: lfgKy1LmHGErwclArEgm8FPrwxYxmd3UsDo5L23CpFAmF5kPHYi//SKxJ/2o1GC+xRyHQc6TpL
+ ny770EoiKjqA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9670"; a="146154994"
+X-IronPort-AV: E=Sophos;i="5.75,306,1589266800"; 
+   d="scan'208";a="146154994"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2020 18:14:52 -0700
+IronPort-SDR: fhdmFW9reP/IxWp4c0xH9krfmykR1YsC2fJBEHY9PtTu52xVjm3tRY8N3WlL5Tb7Ji09PaNeFY
+ 9hRe8x+0k3Tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,306,1589266800"; 
+   d="scan'208";a="482195815"
+Received: from chadjitt-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.41.125])
+  by fmsmga005.fm.intel.com with ESMTP; 02 Jul 2020 18:14:48 -0700
+Date:   Fri, 3 Jul 2020 04:14:47 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Alexey Krasikov <alexey_krasikov@mail.ru>, dhowells@redhat.com
+Cc:     Greg KH <greg@kroah.com>,
+        Alexey Krasikov <alex-krasikov@yandex-team.ru>,
+        dhowells@redhat.com, keyrings@vger.kernel.org, security@kernel.org,
+        yc-core@yandex-team.ru
+Subject: Re: [RFC PATCH 0/1] security/keys: remove possessor verify after key
+Message-ID: <20200703011447.GA294568@linux.intel.com>
+References: <20200529060040.29604-1-alex-krasikov@yandex-team.ru>
+ <20200601173427.GA26455@linux.intel.com>
+ <bd56baa2-9c8d-a0dd-419d-a3123a1f0fba@yandex-team.ru>
+ <20200615170043.GA5416@linux.intel.com>
+ <c3f47d1c-90a6-aa37-6692-d26202fa92d2@yandex-team.ru>
+ <20200622123028.GA3502713@kroah.com>
+ <20200623012859.GI28795@linux.intel.com>
+ <5b6f4d9c-ef6f-d456-096f-4673c85d4dbd@mail.ru>
 MIME-Version: 1.0
-In-Reply-To: <20200702194656.GV4332@42.do-not-panic.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b6f4d9c-ef6f-d456-096f-4673c85d4dbd@mail.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2020/07/03 4:46, Luis Chamberlain wrote:
-> On Thu, Jul 02, 2020 at 01:26:53PM +0900, Tetsuo Handa wrote:
->> On 2020/07/02 0:38, Luis Chamberlain wrote:
->>> @@ -156,6 +156,18 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
->>>  		 */
->>>  		if (KWIFEXITED(ret))
->>>  			sub_info->retval = KWEXITSTATUS(ret);
->>> +		/*
->>> +		 * Do we really want to be passing the signal, or do we pass
->>> +		 * a single error code for all cases?
->>> +		 */
->>> +		else if (KWIFSIGNALED(ret))
->>> +			sub_info->retval = KWTERMSIG(ret);
->>
->> No, this is bad. Caller of usermode helper is unable to distinguish exit(9)
->> and e.g. SIGKILL'ed by the OOM-killer.
+On Sun, Jun 28, 2020 at 03:27:37AM +0300, Alexey Krasikov wrote:
+> On 6/23/20 4:28 AM, Jarkko Sakkinen wrote:
+> > On Mon, Jun 22, 2020 at 02:30:28PM +0200, Greg KH wrote:
+> > > On Mon, Jun 22, 2020 at 12:04:29PM +0300, Alexey Krasikov wrote:
+> > > > On 6/15/20 8:00 PM, Jarkko Sakkinen wrote:
+> > > > > On Tue, Jun 02, 2020 at 01:30:52PM +0300, Alexey Krasikov wrote:
+> > > > > > On Mon, June 1, 2020 at 08:34PM +300, Jarkko Sakkinen wrote:
+> > > > > > > On Fri, May 29, 2020 at 09:00:39AM +0300, Alexey Krasikov wrote:
+> > > > > > > > $ KEYID=$(keyctl add user john smith @u)
+> > > > > > > > $ keyctl describe $KEYID
+> > > > > > > > 5927639: alswrv-----v------------  1000  1000 user: john
+> > > > > > > > $ keyctl setperm $KEYID 0x3d000000
+> > > > > > > > $ keyctl describe $KEYID
+> > > > > > > > 5927639: alsw-v-----v------------  1000  1000 user: john
+> > > > > > > > $ keyctl print $KEYID
+> > > > > > > > smith
+> > > > > > > A keyring default permissions are 0x3f3f0000.
+> > > > > > > A key default permissions are 0x3f010000.
+> > > > > > > 
+> > > > > > > Because of this:
+> > > > > > > 
+> > > > > > > $ KEYID=$(keyctl add user john smith @u)
+> > > > > > > $ keyctl setperm $KEYID 0x3d000000
+> > > > > > > keyctl_setperm: Permission denied
+> > > > > > > 
+> > > > > > > Are you sure that your example is correct?
+> > > > > > > 
+> > > > > > > /Jarkko
+> > > > > > Yes, this example works correctly.
+> > > > > > 
+> > > > > > Why do you think, that the current keyring and key rights
+> > > > > > 
+> > > > > > shoukd not allow this to be done?
+> > > > > I'm just saying that I cannot figure out your point in the cover letter.
+> > > > > It contains random dumps of keyctl output.
+> > > > > 
+> > > > > Maybe a better idea would be to write a test script that demonstrates
+> > > > > the issue?
+> > > > > 
+> > > > > /Jarkko
+> > > > + alexey_krasikov@mail.ru
+> > > > 
+> > > > Possible you may not be able to reproduce the problem because you have a
+> > > > different version of Linux.
+> > > > 
+> > > > I get to reproduce the problem on two systems:
+> > > > 
+> > > > Linux 4.14.74-28+yc11.91
+> > > > 
+> > > > and
+> > > > 
+> > > > Linux ubuntu 4.15.0-106-generic
+> > > Both of those are distro-specific kernels, can you reproduce this on
+> > > 5.8-rc2 or 5.7 as released from kernel.org?
+> > Alexey,
+> > 
+> > A shell script containing the keyctl command chain with some output, and
+> > then your version of the output when running the script would be also
+> > very useful for better comparison.
+> > 
+> > /Jarkko
 > 
-> Right, the question is: do we care?
-
-Yes, we have to care.
-
-> And the umh patch "umh: fix processed error when UMH_WAIT_PROC is used"
-> changed this to:
+> Ok. I have the following script:
 > 
-> -       if (ret >= 0) {
-> +       if (ret != 0) {
+> ----------------------------------------------------------------------------
+> #!/usr/bin/sh
 > 
-> Prior to the patch negative return values from userspace were still
-> being captured, and likewise signals, but the error value was not
-> raw, not the actual value. After the patch, since we check for ret != 0
-> we still upkeep the sanity check for any error, correct the error value,
-> but as you noted signals were ignored as I made the wrong assumption
-> we would ignore them. The umh sub_info->retval is set after my original
-> patch only if KWIFSIGNALED(ret)), and ignored signals, and so that
-> would be now capitured with the additional KWIFSIGNALED(ret)) check.
-
-"call_usermodehelper_keys() == 0" (i.e. usermode helper was successfully
-started and successfully terminated via exit(0)) is different from "there is
-nothing to do". call_sbin_request_key() == 0 case still has to check for
-possibility of -ENOKEY case.
-
+> uname -r
 > 
-> The question still stands:
-> 
-> Do we want to open code all these checks or simply wrap them up in
-> the umh. If we do the later, as you note exit(9) and a SIGKILL will
-> be the same to the inspector in the kernel. But do we care?
+> KEYID=$(keyctl add user john smith @u)
+> keyctl describe $KEYID
+> keyctl setperm $KEYID 0x3d000000
+> keyctl describe $KEYID
+> keyctl print $KEYID
 
-Yes, we do care.
+pam_keyinit.so should create user keyring when the login session is
+created. If the user space stack is working correclty, you should not
+end up to be the possessor for the user keyring.
 
-> 
-> Do we really want umh callers differntiatin between signals and exit values?
+However, I can simulate your environment with the session keyring:
 
-Yes, we do.
+KEYID=`keyctl add user john smith @s`
 
-> 
-> The alternative to making a compromise is using generic wrappers for
-> things which make sense and letting the callers use those.
+keyctl describe $KEYID
+keyctl setperm $KEYID 0x3d000000
+keyctl describe $KEYID
+keyctl print $KEYID
 
-I suggest just introducing KWIFEXITED()/KWEXITSTATUS()/KWIFSIGNALED()/KWTERMSIG()
-macros and fixing the callers, for some callers are not aware of possibility of
-KWIFSIGNALED() case.
+And yes I do get:
 
-For example, conn_try_outdate_peer() in drivers/block/drbd/drbd_nl.c misbehaves if
-drbd_usermode_helper process was terminated by a signal, for the switch() statement
-after returning from conn_helper() is assuming that the return value of conn_helper()
-is a KWEXITSTATUS() value if drbd_usermode_helper process was successfully started.
-If drbd_usermode_helper process was terminated by SIGQUIT (which is 3),
-conn_try_outdate_peer() will by error hit "case P_INCONSISTENT:" (which is 3);
-conn_try_outdate_peer() should hit "default: /* The script is broken ... */"
-unless KWIFEXITED() == true.
+564302411: alswrv-----v------------  1000  1000 user: john
+564302411: alsw-v------------------  1000  1000 user: john
+smith
 
-Your patch is trying to obnubilate the return code.
+Here's another sequence that also removes setattr:
 
+KEYID=`keyctl add user john smith @s`
+
+keyctl describe $KEYID
+keyctl setperm $KEYID 0x08000000
+keyctl describe $KEYID
+keyctl print $KEYID
+
+700153280: alswrv-----v------------  1000  1000 user: john
+keyctl_describe_alloc: Permission denied
+smith
+
+David, this look at least with a quick sight somewhat weird: my
+possessor permissions are only "search", so why does reading the
+payload succeed?
+
+/Jarkko
