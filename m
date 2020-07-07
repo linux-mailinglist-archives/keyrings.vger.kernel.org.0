@@ -2,66 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E7621604A
-	for <lists+keyrings@lfdr.de>; Mon,  6 Jul 2020 22:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8517C21731A
+	for <lists+keyrings@lfdr.de>; Tue,  7 Jul 2020 17:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbgGFU2C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Jul 2020 16:28:02 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:20703 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726280AbgGFU2C (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Jul 2020 16:28:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594067281;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=m5GJhBHfQvwYhhcm6QQRUzrq1EmA2pRjHHaTYuLf16I=;
-        b=GGX/ef7aynCbbrqLin5n55bie45sIqs1LwXlkB1yi+uhI8GnDMHrNXOEawJXHt3w33jfyG
-        PK6M0fRNgmQFWqq9++7rhs1kJF7uR/IblU4RWlSGUpRiDKgDpnsMjBi8JUsXrRNgVjC/Mt
-        sqg0FD0chNfMMRTIv2fzPQaKZ5X/Yzc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-469-L-ZunkeBPXCe7WjWM2qPNQ-1; Mon, 06 Jul 2020 16:27:59 -0400
-X-MC-Unique: L-ZunkeBPXCe7WjWM2qPNQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BF6EA80040C;
-        Mon,  6 Jul 2020 20:27:57 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-113.rdu2.redhat.com [10.10.112.113])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A2E8E275E34;
-        Mon,  6 Jul 2020 20:27:56 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200702085723.7026-1-cvubrugier@fastmail.fm>
-References: <20200702085723.7026-1-cvubrugier@fastmail.fm>
-To:     Christophe Vu-Brugier <cvubrugier@fastmail.fm>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
-        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>
-Subject: Re: [PATCH 0/4] keyutils: fix compilation error with C++
+        id S1727079AbgGGPzk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Jul 2020 11:55:40 -0400
+Received: from smtp.gentoo.org ([140.211.166.183]:46986 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727793AbgGGPzk (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 7 Jul 2020 11:55:40 -0400
+To:     keyrings@vger.kernel.org
+From:   Thomas Deutschmann <whissi@gentoo.org>
+Subject: keyutils-1.6.2 is failing tests/keyctl/watch/bad-args
+Organization: Gentoo Foundation, Inc
+Message-ID: <b8a08c75-f71a-3617-c14a-4eba4ac910bb@gentoo.org>
+Date:   Tue, 7 Jul 2020 17:55:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2973695.1594067275.1@warthog.procyon.org.uk>
-Date:   Mon, 06 Jul 2020 21:27:55 +0100
-Message-ID: <2973696.1594067275@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="LxlakjZLcuq3HjyyVxwzm2J5WN1I0BiHD"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Christophe Vu-Brugier <cvubrugier@fastmail.fm> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--LxlakjZLcuq3HjyyVxwzm2J5WN1I0BiHD
+Content-Type: multipart/mixed; boundary="a7OLi36eIbCJozkdyi71wQuTWZgs9IuKi"
 
-> * Patch #1 fixes a few typos in the man pages.
-> * Patch #2 fixes the aforementioned issue.
-> * Patch #3 helps prevent a similar issue from happening in the future.
-> * Patch #4 fixes an issue reported by C++ compilers at link time.
+--a7OLi36eIbCJozkdyi71wQuTWZgs9IuKi
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-Applied.
+Hi,
 
-David
+we are seeing tests/keyctl/watch/bad-args failing in v1.6.2 while v1.6.1
+is passing on same system:
 
+> ### RUNNING TEST keyctl/watch/bad-args
+> Running with session keyring RHTS/keyctl/869
+> Joined session keyring: 187752783
+> keyutils version: keyctl from keyutils-1.6.2 (Built 2020-07-07)
+> =3D=3D=3D /var/tmp/portage/sys-apps/keyutils-1.6.2/work/keyutils-1.6.2-=
+abi_x86_32.x86/tests/keyctl/watch/bad-args/test.out =3D=3D=3D
+> +++ CHECK WATCH INVALID KEY                                            =
+                                                 FAILED
+> +++ ADD USER KEY
+> +++ UNLINK KEY
+> +++ UPDATE UNLINKED KEY
+> FAILED
+> +++ CHECK DODGY FILTERS
+> make[1]: *** [Makefile:41: run] Error 1
+> make[1]: Leaving directory '/var/tmp/portage/sys-apps/keyutils-1.6.2/wo=
+rk/keyutils-1.6.2-abi_x86_32.x86/tests'
+> make: *** [Makefile:250: test] Error 2
+
+
+> cat keyutils-1.6.2-abi_x86_32.x86/tests/keyctl/watch/bad-args/test.out
+> ++++ BEGINNING TEST
+> +++ CHECK WATCH INVALID KEY
+> keyctl watch 0
+> nice: cannot set niceness: Permission denied
+> /dev/watch_queue: No such file or directory
+> =3D=3D=3D FAILED =3D=3D=3D
+> Session Keyring
+>  187752783 --alswrv    250   250  keyring: RHTS/keyctl/869
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +++ ADD USER KEY
+> keyctl add user wibble stuff @s
+> 499501700
+> +++ UNLINK KEY
+> keyctl unlink 499501700 @s
+> +++ WAITING FOR KEY TO BE UNLINKED
+> keyctl unlink 499501700 @s
+> keyctl_unlink: No such file or directory
+> keyctl unlink 499501700 @s
+> keyctl_unlink: Required key not available
+> +++ UPDATE UNLINKED KEY
+> keyctl watch 499501700
+> nice: cannot set niceness: Permission denied
+> /dev/watch_queue: No such file or directory
+> =3D=3D=3D FAILED =3D=3D=3D
+> Session Keyring
+>  187752783 --alswrv    250   250  keyring: RHTS/keyctl/869
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +++ CHECK DODGY FILTERS
+> keyctl watch -fZ @s
+> nice: cannot set niceness: Permission denied
+> Unknown filter character 'Z'
+> keyctl watch -fZ -fQ @s
+> nice: cannot set niceness: Permission denied
+> Unknown filter character 'Z'
+> keyctl watch -f: @s
+> nice: cannot set niceness: Permission denied
+> Unknown filter character ':'
+> ++++ FINISHED TEST: FAIL
+
+
+--=20
+Regards,
+Thomas Deutschmann / Gentoo Linux Developer
+fpr: C4DD 695F A713 8F24 2AA1 5638 5849 7EE5 1D5D 74A5
+
+
+--a7OLi36eIbCJozkdyi71wQuTWZgs9IuKi--
+
+--LxlakjZLcuq3HjyyVxwzm2J5WN1I0BiHD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGTBAEBCgB9FiEEExKRzo+LDXJgXHuURObr3Jv2BVkFAl8EmvVfFIAAAAAALgAo
+aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldDEz
+MTI5MUNFOEY4QjBENzI2MDVDN0I5NDQ0RTZFQkRDOUJGNjA1NTkACgkQRObr3Jv2
+BVnNkwf+JO/AfODyrEoFcJqXCkBGSGf1QIMSvbKJfbxZA5PVKaypATh96lowEV+C
+bDO+YRdKgvrhWsv3v999u3RY/WfkE7NUSxyFAKiHgHPsSQJdddClR6Ry1xiTgKhP
+Ljvpj/Sc2/VXGYjDj1C9D63qzpbWQlpT/KJKqf6O6RDkfiXlgu0w6GhwCloF12ZV
+7DCpOMvrGW5nnKGSPEdANRA/Pt++3xkkX/2SJJoY/CNnmK8x49TxBFqyHn/wSUuK
+6dZG3bApPCZWJ2+8U8wC8jsBvIJfDJTaGlmF99l1s6Nywk5cDUDWlsyTYwhJOPWt
+xAN6dRCO3UnH1H6s4Tz8iqV2Ua6WkQ==
+=eov+
+-----END PGP SIGNATURE-----
+
+--LxlakjZLcuq3HjyyVxwzm2J5WN1I0BiHD--
