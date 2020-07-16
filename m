@@ -2,108 +2,90 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0CAC222671
-	for <lists+keyrings@lfdr.de>; Thu, 16 Jul 2020 17:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8844222C58
+	for <lists+keyrings@lfdr.de>; Thu, 16 Jul 2020 21:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728725AbgGPPFr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 16 Jul 2020 11:05:47 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:24810 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725867AbgGPPFq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Jul 2020 11:05:46 -0400
-X-Greylist: delayed 355 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Jul 2020 11:05:45 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1594911944;
-        s=strato-dkim-0002; d=chronox.de;
-        h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=I4bz/d39nrkge0/YctC5G7TOJ13psUte3WekMTxW9Dg=;
-        b=nVZTQpqHHc/ngeCjmT7GdvI00Kop+eqw74WMM5qZOWvHXYmFadOa36w9AD9zHsqp3Y
-        UoihF63eKM/BgUJWbbrNLE7Vn2DUEc34Qhd8sHN+rVyjcDNDD1ExIjwRfN8dmJcEbpiQ
-        Mpdof3QKRoczKpJql6EqoKScehop1Il0y2kRThIKjBkez+UpgldTsusGInv+PP6BL1o3
-        KQUGbdkpSf3dAHg+HbJroTYB+AXcCvmdbU/khI0GRSdNhm5hN4fcvgXmRxMnhz/qxg9d
-        Ns3VpsGb0QXBMDb/l4lALUEQZ4lu8J4iK6fe0MSBoDfoNtrzufXK2cdf2aX+oUaBmkGO
-        0kyw==
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9x2wdNs6neUFoh7cs0E0="
-X-RZG-CLASS-ID: mo00
-Received: from tauon.chronox.de
-        by smtp.strato.de (RZmta 46.10.5 AUTH)
-        with ESMTPSA id y0546bw6GExc97z
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Thu, 16 Jul 2020 16:59:38 +0200 (CEST)
-From:   Stephan Mueller <smueller@chronox.de>
-To:     Elena Petrova <lenaptr@google.com>, herbert@gondor.apana.org.au
-Cc:     "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>, Eric Biggers <ebiggers@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>
-Subject: Re: [PATCH 0/1] crypto: af_alg - add extra parameters for DRBG interface
-Date:   Thu, 16 Jul 2020 16:59:37 +0200
-Message-ID: <4708215.a9HWlOh95j@tauon.chronox.de>
-In-Reply-To: <5740551.2l3rmUXbR5@tauon.chronox.de>
-References: <20200713164857.1031117-1-lenaptr@google.com> <CABvBcwaB3RLuRWEzSoeADc4Jg28fK6mqwevaywLsZhvFgBi+BA@mail.gmail.com> <5740551.2l3rmUXbR5@tauon.chronox.de>
+        id S1729611AbgGPTwh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Jul 2020 15:52:37 -0400
+Received: from smtp.al2klimov.de ([78.46.175.9]:52232 "EHLO smtp.al2klimov.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729554AbgGPTwh (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 16 Jul 2020 15:52:37 -0400
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+        by smtp.al2klimov.de (Postfix) with ESMTPA id AA634BC078;
+        Thu, 16 Jul 2020 19:52:33 +0000 (UTC)
+From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To:     zohar@linux.ibm.com, dhowells@redhat.com,
+        jarkko.sakkinen@linux.intel.com, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH] encrypted-keys: Replace HTTP links with HTTPS ones
+Date:   Thu, 16 Jul 2020 21:52:27 +0200
+Message-Id: <20200716195227.65839-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: +++++
+X-Spam-Level: *****
+Authentication-Results: smtp.al2klimov.de;
+        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Am Donnerstag, 16. Juli 2020, 16:49:52 CEST schrieb Stephan Mueller:
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
 
-Hi Herbert,
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
 
-(resent, adding Herbert to the list and fix the keyrings address)
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+---
+ Continuing my work started at 93431e0607e5.
+ See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
 
-> Am Donnerstag, 16. Juli 2020, 16:41:26 CEST schrieb Elena Petrova:
-> 
-> Hi Herbert,
-> 
-> > > > > With these issues, I would assume you are better off creating your
-> > > > > own
-> > > > > kernel module just like I did that externalizes the crypto API to
-> > > > > user
-> > > > > space but is only available on your test kernel and will not affect
-> > > > > all
-> > > > > other users.
-> > > > 
-> > > > I considered publishing my kernel driver on GitHub, but there appears
-> > > > to
-> > > > be
-> > > > a sufficiently large number of users to justify having this
-> > > > functionality
-> > > > upstream.
-> > > 
-> > > So, I should then dust off my AF_ALG KPP and AF_ALG akcipher patches
-> > > then?
-> > > 
-> > > :-D
-> > 
-> > Sure :)
-> 
-> Long time ago when I released the patches now found in [1] and [2] they
-> where rejected as it was said, the official route to access the RSA/ECDSA
-> and the DH/ECDH ciphers is through the keyring.
-> 
-> Obviously this interface of the keyring is not suitable for testing these
-> algorithms. Considering the request that the kernel crypto API ciphers
-> should be testable with arbitrary test vectors, would the dusted-off
-> patches for AF_ALG KPP and akcipher be accepted?
-> 
-> Ciao
-> Stephan
-> 
-> [1]
-> https://github.com/smuellerDD/libkcapi/tree/master/kernel-patches/4.15-rc3/
-> asym
-> 
-> [2]
-> https://github.com/smuellerDD/libkcapi/tree/master/kernel-patches/4.15-rc3/
-> kpp
+ If there are any URLs to be removed completely or at least not just HTTPSified:
+ Just clearly say so and I'll *undo my change*.
+ See also: https://lkml.org/lkml/2020/6/27/64
+
+ If there are any valid, but yet not changed URLs:
+ See: https://lkml.org/lkml/2020/6/26/837
+
+ If you apply the patch, please let me know.
+
+ Sorry again to all maintainers who complained about subject lines.
+ Now I realized that you want an actually perfect prefixes,
+ not just subsystem ones.
+ I tried my best...
+ And yes, *I could* (at least half-)automate it.
+ Impossible is nothing! :)
 
 
-Ciao
-Stephan
+ include/keys/encrypted-type.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/include/keys/encrypted-type.h b/include/keys/encrypted-type.h
+index 38afb341c3f2..abfcbe02001a 100644
+--- a/include/keys/encrypted-type.h
++++ b/include/keys/encrypted-type.h
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (C) 2010 IBM Corporation
+  * Copyright (C) 2010 Politecnico di Torino, Italy
+- *                    TORSEC group -- http://security.polito.it
++ *                    TORSEC group -- https://security.polito.it
+  *
+  * Authors:
+  * Mimi Zohar <zohar@us.ibm.com>
+-- 
+2.27.0
 
