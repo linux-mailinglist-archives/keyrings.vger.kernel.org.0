@@ -2,107 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E9C225356
-	for <lists+keyrings@lfdr.de>; Sun, 19 Jul 2020 20:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E27812281B5
+	for <lists+keyrings@lfdr.de>; Tue, 21 Jul 2020 16:15:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbgGSSND (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 19 Jul 2020 14:13:03 -0400
-Received: from out02.mta.xmission.com ([166.70.13.232]:52428 "EHLO
-        out02.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgGSSND (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 19 Jul 2020 14:13:03 -0400
-Received: from in01.mta.xmission.com ([166.70.13.51])
-        by out02.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.90_1)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1jxDo4-0006mh-Ph; Sun, 19 Jul 2020 12:13:00 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1jxDo3-0004e5-LR; Sun, 19 Jul 2020 12:13:00 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     David Howells <dhowells@redhat.com>
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        keyrings@vger.kernel.org,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
-        jlayton@redhat.com, christian@brauner.io,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        containers@lists.linux-foundation.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <159493167778.3249370.8145886688150701997.stgit@warthog.procyon.org.uk>
-Date:   Sun, 19 Jul 2020 13:10:04 -0500
-In-Reply-To: <159493167778.3249370.8145886688150701997.stgit@warthog.procyon.org.uk>
-        (David Howells's message of "Thu, 16 Jul 2020 21:34:37 +0100")
-Message-ID: <87tuy3nzpf.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1jxDo3-0004e5-LR;;;mid=<87tuy3nzpf.fsf@x220.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX18n0FB3g8mviWS9DVa7xa6vqYpzduK73Jk=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa07.xmission.com
-X-Spam-Level: **
-X-Spam-Status: No, score=2.0 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,XMNoVowels,
-        XMSubLong autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4933]
-        *  0.7 XMSubLong Long Subject
-        *  1.5 XMNoVowels Alpha-numberic number with no vowels
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa07 0; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: ; sa07 0; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: **;David Howells <dhowells@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 498 ms - load_scoreonly_sql: 0.05 (0.0%),
-        signal_user_changed: 10 (2.0%), b_tie_ro: 9 (1.7%), parse: 0.84 (0.2%),
-         extract_message_metadata: 10 (2.0%), get_uri_detail_list: 0.88 (0.2%),
-         tests_pri_-1000: 13 (2.7%), tests_pri_-950: 1.21 (0.2%),
-        tests_pri_-900: 1.03 (0.2%), tests_pri_-90: 72 (14.5%), check_bayes:
-        71 (14.2%), b_tokenize: 6 (1.2%), b_tok_get_all: 5 (1.1%),
-        b_comp_prob: 1.83 (0.4%), b_tok_touch_all: 55 (11.0%), b_finish: 0.81
-        (0.2%), tests_pri_0: 376 (75.6%), check_dkim_signature: 0.48 (0.1%),
-        check_dkim_adsp: 2.0 (0.4%), poll_dns_idle: 0.47 (0.1%), tests_pri_10:
-        2.1 (0.4%), tests_pri_500: 8 (1.6%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [RFC PATCH 0/5] keys: Security changes, ACLs and Container keyring
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+        id S1726412AbgGUOP1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Jul 2020 10:15:27 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:23471 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726359AbgGUOP0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Jul 2020 10:15:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595340925;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=p3hi3xrdZQgrcmCmh6VAQFFWaZ++JX8czQmDuqdNFJw=;
+        b=E8rxVIvXUjz1pX3hfPcOx2rLyWVHtpwqyeMfxY+kXQ++g9tkaARrx8TxqqKI/EUa5hD8dF
+        uyE0C7pDekTnak6o2ZQGcm1liQvWGchYcsHcrcW0hsiRjELsBwm+ZSbDbxJaJAcXu732QD
+        qeWo9Id95EGK+QSh8bO2n0KHU1Y6o8c=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-420-DvyRmA1BOP2qHlvkVvIa6A-1; Tue, 21 Jul 2020 10:15:23 -0400
+X-MC-Unique: DvyRmA1BOP2qHlvkVvIa6A-1
+Received: by mail-qv1-f71.google.com with SMTP id x37so12417666qvf.4
+        for <keyrings@vger.kernel.org>; Tue, 21 Jul 2020 07:15:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=p3hi3xrdZQgrcmCmh6VAQFFWaZ++JX8czQmDuqdNFJw=;
+        b=ZIM8wVIE0IzAl/xJMoyJxGtLdRRoGHAt4OLXW8jjmGLmEXeuYOtGjhkV3D5zM33BCY
+         2+TJGNfKVWxbEvwSDht9Zycrzbgk2znyTmqU++Dlv0JgfkPLmlWrLVb4RyKCPOaHR8Fo
+         yS7mxGkwCmNgklNc80eERF6zLnuukgx/L+ER9ry8shpUDba/OjypvYofX9S4g2GuftId
+         AD36C133hjn1Pa7C0oUsjrcnGz0/wwv7qBa26gWmIyR9DV11phJLqngGBQ91VPUm1vBV
+         MA+bAE2ajCX/8wo2MqGFaYUGpbP0B0Pe7NEMbNQeYKENa4RgQiUUL5MIxSNXap5F3V3v
+         5KSw==
+X-Gm-Message-State: AOAM530iojhCvJTZ2J1mHr/E92MCVIGklDSt3OIDYlpQ18WHidmBCijj
+        9igYcq9XWhEmU/PmV4QATlpWBnjpubv/JIsVLc1Hztietj7LDQyMuMLvG+OZSQHk0B5hq0+OF4u
+        BxupK2EUrmY946V7Er1M=
+X-Received: by 2002:aed:2987:: with SMTP id o7mr29229968qtd.385.1595340923114;
+        Tue, 21 Jul 2020 07:15:23 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxpgbcSLCsIUUg/981LoMyBoE6jzlDFr+8f6gGViXBeoV3rMbiH7sCH6UBnDuUx0P9jhTDOgg==
+X-Received: by 2002:aed:2987:: with SMTP id o7mr29229939qtd.385.1595340922836;
+        Tue, 21 Jul 2020 07:15:22 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id d14sm22474159qti.41.2020.07.21.07.15.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2020 07:15:22 -0700 (PDT)
+From:   trix@redhat.com
+To:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        jmorris@namei.org, serge@hallyn.com, denkenz@gmail.com,
+        marcel@holtmann.org
+Cc:     keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
+Subject: [PATCH] KEYS: remove redundant memsets
+Date:   Tue, 21 Jul 2020 07:15:16 -0700
+Message-Id: <20200721141516.20335-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.1
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Howells <dhowells@redhat.com> writes:
+From: Tom Rix <trix@redhat.com>
 
-> Here are some patches to provide some security changes and some container
-> support:
+Reviewing use of memset in keyctrl_pkey.c
 
-Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+keyctl_pkey_params_get prologue code to set params up
 
-There remain unfixed security issues in the new mount api.   Those need
-to get fixed before it is even worth anyones time reviewing new code.
+	memset(params, 0, sizeof(*params));
+	params->encoding = "raw";
 
-Those issues came up in the review.  I successfully demonstrated how to
-address the security issues in the new mount api before the code was
-merged.  Yet the code was merged with the security issues present,
-and I have not seem those issues addressed.
+keyctl_pkey_params_get_2 and keyctl_pkey_query have the same
+prologue and they call keyctl_pkey_params_get.
 
-So far I have had to rewrite two filesystems because of bugs in the
-mount API.
+So remove the prologue from the callers.
 
-Enough is enough.  Let's get the what has already been merged sorted
-out before we had more.
+In keyctl_pkey_params_get_2, reorder the copy_from_user
+of uparams to closer to it's use to ensure that
+the keyctrl_pkey_params_get is called first.
 
-Eric
+Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
+
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ security/keys/keyctl_pkey.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/security/keys/keyctl_pkey.c b/security/keys/keyctl_pkey.c
+index 931d8dfb4a7f..60b504681388 100644
+--- a/security/keys/keyctl_pkey.c
++++ b/security/keys/keyctl_pkey.c
+@@ -119,12 +119,6 @@ static int keyctl_pkey_params_get_2(const struct keyctl_pkey_params __user *_par
+ 	struct kernel_pkey_query info;
+ 	int ret;
+ 
+-	memset(params, 0, sizeof(*params));
+-	params->encoding = "raw";
+-
+-	if (copy_from_user(&uparams, _params, sizeof(uparams)) != 0)
+-		return -EFAULT;
+-
+ 	ret = keyctl_pkey_params_get(uparams.key_id, _info, params);
+ 	if (ret < 0)
+ 		return ret;
+@@ -133,6 +127,9 @@ static int keyctl_pkey_params_get_2(const struct keyctl_pkey_params __user *_par
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (copy_from_user(&uparams, _params, sizeof(uparams)) != 0)
++		return -EFAULT;
++
+ 	switch (op) {
+ 	case KEYCTL_PKEY_ENCRYPT:
+ 	case KEYCTL_PKEY_DECRYPT:
+@@ -166,8 +163,6 @@ long keyctl_pkey_query(key_serial_t id,
+ 	struct kernel_pkey_query res;
+ 	long ret;
+ 
+-	memset(&params, 0, sizeof(params));
+-
+ 	ret = keyctl_pkey_params_get(id, _info, &params);
+ 	if (ret < 0)
+ 		goto error;
+-- 
+2.18.1
+
