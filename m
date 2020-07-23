@@ -2,79 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 860CC22A0AA
-	for <lists+keyrings@lfdr.de>; Wed, 22 Jul 2020 22:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FAAD22A49F
+	for <lists+keyrings@lfdr.de>; Thu, 23 Jul 2020 03:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726907AbgGVUUF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 22 Jul 2020 16:20:05 -0400
-Received: from smtprelay0162.hostedemail.com ([216.40.44.162]:37558 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726841AbgGVUUE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jul 2020 16:20:04 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id A061C1810988C;
-        Wed, 22 Jul 2020 20:20:03 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1434:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:4321:5007:7576:9108:10004:10400:10848:11026:11232:11658:11914:12043:12048:12296:12297:12438:12679:12740:12760:12895:13019:13069:13200:13229:13311:13357:13439:14181:14659:14721:21080:21451:21611:21627:30012:30054:30080:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: goat25_55034d926f38
-X-Filterd-Recvd-Size: 2322
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf02.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 22 Jul 2020 20:20:01 +0000 (UTC)
-Message-ID: <b60f9b3e07b86d0f8631f6990f61b5172c43841f.camel@perches.com>
-Subject: Re: [PATCH v2] KEYS: remove redundant memset
-From:   Joe Perches <joe@perches.com>
-To:     Tom Rix <trix@redhat.com>, dhowells@redhat.com,
-        jarkko.sakkinen@linux.intel.com, jmorris@namei.org,
-        serge@hallyn.com, denkenz@gmail.com, marcel@holtmann.org
-Cc:     keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 22 Jul 2020 13:20:00 -0700
-In-Reply-To: <e36c364e-22f4-c520-04da-ca1196fec049@redhat.com>
-References: <20200722134610.31947-1-trix@redhat.com>
-         <2bdd6b8ec731d180023d593b679afc66def19b4f.camel@perches.com>
-         <e36c364e-22f4-c520-04da-ca1196fec049@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.3-0ubuntu1 
+        id S1733229AbgGWBcj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 22 Jul 2020 21:32:39 -0400
+Received: from mga01.intel.com ([192.55.52.88]:59090 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733075AbgGWBcj (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 22 Jul 2020 21:32:39 -0400
+IronPort-SDR: +jqdWu9hzF+UozJIx3GeMjVwAHzx3jTzexjcBkX++A6/ErV7ESuE3s6bUgZ4OKAvahe3bhUZ33
+ 0EfV3PhOVeoQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9690"; a="168585605"
+X-IronPort-AV: E=Sophos;i="5.75,383,1589266800"; 
+   d="scan'208";a="168585605"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2020 18:32:38 -0700
+IronPort-SDR: pTsqcZHQQ3nPDSGFdQBjwFz9HTWkoVOffURZxPc2szniHsomaYCFLjyRjSjMQ/bejoqNdNeOwO
+ 3f582BsuQ/jw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,383,1589266800"; 
+   d="scan'208";a="488656357"
+Received: from schwings-mobl.ger.corp.intel.com (HELO localhost) ([10.252.33.132])
+  by fmsmga005.fm.intel.com with ESMTP; 22 Jul 2020 18:32:36 -0700
+Date:   Thu, 23 Jul 2020 04:32:35 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
+        Wei Yongjun <weiyongjun1@huawei.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] keys: asymmetric: fix error return code in
+ software_key_query()
+Message-ID: <20200723013223.GA45081@linux.intel.com>
+References: <159485211858.2340757.9890754969922775496.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <159485211858.2340757.9890754969922775496.stgit@warthog.procyon.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2020-07-22 at 13:10 -0700, Tom Rix wrote:
-> On 7/22/20 1:02 PM, Joe Perches wrote:
-> > On Wed, 2020-07-22 at 06:46 -0700, trix@redhat.com wrote:
-> > > From: Tom Rix <trix@redhat.com>
-> > > 
-> > > Reviewing use of memset in keyctrl_pkey.c
-> > > 
-> > > keyctl_pkey_params_get prologue code to set params up
-> > > 
-> > > 	memset(params, 0, sizeof(*params));
-> > > 	params->encoding = "raw";
-> > > 
-> > > keyctl_pkey_query has the same prologue
-> > > and calls keyctl_pkey_params_get.
-> > > 
-> > > So remove the prologue.
-> > > 
-> > > Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
-> > At best, this is a micro optimization.
-> Yes
-> > How is this appropriate for a Fixes: line?
-> Removing unneeded code is not a fix?
+On Wed, Jul 15, 2020 at 11:28:38PM +0100, David Howells wrote:
+> From: Wei Yongjun <weiyongjun1@huawei.com>
+> 
+> Fix to return negative error code -ENOMEM from kmalloc() error handling
+> case instead of 0, as done elsewhere in this function.
+> 
+> Fixes: f1774cb8956a ("X.509: parse public key parameters from x509 for akcipher")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-IMO: there's no "bug" here.
+Why f1774cb8956a lacked any possible testing? It extends ABI anyway.
 
-It's not a logic defect causing some unintended outcome.
-It doesn't need backporting to stable branches.
+I think it is a kind of change that would require more screening before
+getting applied.
 
-Documentation/process/submitting-patches.rst-If your patch fixes a bug in a specific commit, e.g. you found an issue using
-Documentation/process/submitting-patches.rst:``git bisect``, please use the 'Fixes:' tag with the first 12 characters of
-Documentation/process/submitting-patches.rst-the SHA-1 ID, and the one line summary.
+> ---
+> 
+>  crypto/asymmetric_keys/public_key.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+> index d7f43d4ea925..e5fae4e838c0 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -119,6 +119,7 @@ static int software_key_query(const struct kernel_pkey_params *params,
+>  	if (IS_ERR(tfm))
+>  		return PTR_ERR(tfm);
+>  
+> +	ret = -ENOMEM;
 
+This is extremely confusing to read way to handle 'ret'.
 
+Would be way more cleaner to be just simple and stupid:
 
+	if (!key) {
+		ret = -ENOMEM;
+		goto error_free_tfm;
+	}
+
+>  	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+>  		      GFP_KERNEL);
+>  	if (!key)
+
+/Jarkko
