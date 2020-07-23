@@ -2,92 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9003B22A55F
-	for <lists+keyrings@lfdr.de>; Thu, 23 Jul 2020 04:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151C122A9B2
+	for <lists+keyrings@lfdr.de>; Thu, 23 Jul 2020 09:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733169AbgGWCkB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 22 Jul 2020 22:40:01 -0400
-Received: from mga05.intel.com ([192.55.52.43]:50097 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730837AbgGWCkB (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 22 Jul 2020 22:40:01 -0400
-IronPort-SDR: Fszeu6/UJJqPZtklAQCYq2uF4CH5pvsyt4zBRsFo22vW+mTu+hvApetUh1EPkuoiU0Tl0qjnhf
- +MYcKjR0lsaw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9690"; a="235325252"
-X-IronPort-AV: E=Sophos;i="5.75,385,1589266800"; 
-   d="scan'208";a="235325252"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2020 19:40:01 -0700
-IronPort-SDR: v7v2cW3YGBSNRm4IH61Nw2j81BfF4tn9vG2sDk9InOKJE689Puu7Ck4QnV1pPg5MtQ24gVHIFc
- LXr0CbCTfWBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,385,1589266800"; 
-   d="scan'208";a="462682361"
-Received: from schwings-mobl.ger.corp.intel.com (HELO localhost) ([10.252.33.132])
-  by orsmga005.jf.intel.com with ESMTP; 22 Jul 2020 19:39:56 -0700
-Date:   Thu, 23 Jul 2020 05:39:54 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Tom Rix <trix@redhat.com>, dhowells@redhat.com, jmorris@namei.org,
-        serge@hallyn.com, denkenz@gmail.com, marcel@holtmann.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] KEYS: remove redundant memset
-Message-ID: <20200723023954.GJ45081@linux.intel.com>
-References: <20200722134610.31947-1-trix@redhat.com>
- <2bdd6b8ec731d180023d593b679afc66def19b4f.camel@perches.com>
- <e36c364e-22f4-c520-04da-ca1196fec049@redhat.com>
- <b60f9b3e07b86d0f8631f6990f61b5172c43841f.camel@perches.com>
+        id S1726304AbgGWHbc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 23 Jul 2020 03:31:32 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:47066 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726941AbgGWHbc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 23 Jul 2020 03:31:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595489491;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jQHRUT5gixVlpLT/vMX5zI5kpeZwUfmxkJZjL4H/0xo=;
+        b=NLzsT4RpemUKm/njc+zyByUbA4ewaS4iT71+0lcKZQ7Gv7kz9Sctid/a7c7WboTTiehrQz
+        BLnh3rlpJimy/0EYZ3ZpWVB4Tigx68e/tmWaw3Hujsl7z/v3j/7Bh0BGZ6czx2fLBZsPDr
+        mgdIsDiVvO8ILme18ZlG3+NKzQXqD80=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-425-IvtNbOVbOpabky9s9I6Xow-1; Thu, 23 Jul 2020 03:31:27 -0400
+X-MC-Unique: IvtNbOVbOpabky9s9I6Xow-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 91A3657;
+        Thu, 23 Jul 2020 07:31:25 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-32.rdu2.redhat.com [10.10.112.32])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1A4BC61176;
+        Thu, 23 Jul 2020 07:31:23 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20200723013223.GA45081@linux.intel.com>
+References: <20200723013223.GA45081@linux.intel.com> <159485211858.2340757.9890754969922775496.stgit@warthog.procyon.org.uk>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     dhowells@redhat.com, torvalds@linux-foundation.org,
+        Wei Yongjun <weiyongjun1@huawei.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] keys: asymmetric: fix error return code in software_key_query()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b60f9b3e07b86d0f8631f6990f61b5172c43841f.camel@perches.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1267852.1595489483.1@warthog.procyon.org.uk>
+Date:   Thu, 23 Jul 2020 08:31:23 +0100
+Message-ID: <1267853.1595489483@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jul 22, 2020 at 01:20:00PM -0700, Joe Perches wrote:
-> On Wed, 2020-07-22 at 13:10 -0700, Tom Rix wrote:
-> > On 7/22/20 1:02 PM, Joe Perches wrote:
-> > > On Wed, 2020-07-22 at 06:46 -0700, trix@redhat.com wrote:
-> > > > From: Tom Rix <trix@redhat.com>
-> > > > 
-> > > > Reviewing use of memset in keyctrl_pkey.c
-> > > > 
-> > > > keyctl_pkey_params_get prologue code to set params up
-> > > > 
-> > > > 	memset(params, 0, sizeof(*params));
-> > > > 	params->encoding = "raw";
-> > > > 
-> > > > keyctl_pkey_query has the same prologue
-> > > > and calls keyctl_pkey_params_get.
-> > > > 
-> > > > So remove the prologue.
-> > > > 
-> > > > Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
-> > > At best, this is a micro optimization.
-> > Yes
-> > > How is this appropriate for a Fixes: line?
-> > Removing unneeded code is not a fix?
+Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+
+> >  	if (IS_ERR(tfm))
+> >  		return PTR_ERR(tfm);
+> >  
+> > +	ret = -ENOMEM;
 > 
-> IMO: there's no "bug" here.
+> This is extremely confusing to read way to handle 'ret'.
 > 
-> It's not a logic defect causing some unintended outcome.
-> It doesn't need backporting to stable branches.
+> Would be way more cleaner to be just simple and stupid:
 > 
-> Documentation/process/submitting-patches.rst-If your patch fixes a bug in a specific commit, e.g. you found an issue using
-> Documentation/process/submitting-patches.rst:``git bisect``, please use the 'Fixes:' tag with the first 12 characters of
-> Documentation/process/submitting-patches.rst-the SHA-1 ID, and the one line summary.
+> 	if (!key) {
+> 		ret = -ENOMEM;
+> 		goto error_free_tfm;
+> 	}
 
-I agree.
+I agree, but we have some people who will (or who used to) moan at you for
+doing in four lines what you could've done in three.  I don't know if this is
+still the standard.
 
-At worst it can cause unnecessary merge conflicts when backporting
-bug fixes.
+David
 
-No measurable gain merging it.
-
-/Jarkko
