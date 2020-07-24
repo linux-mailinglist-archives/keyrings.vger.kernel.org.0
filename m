@@ -2,82 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50B2222BED3
-	for <lists+keyrings@lfdr.de>; Fri, 24 Jul 2020 09:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA3822C2F6
+	for <lists+keyrings@lfdr.de>; Fri, 24 Jul 2020 12:20:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727044AbgGXHQl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 24 Jul 2020 03:16:41 -0400
-Received: from mga17.intel.com ([192.55.52.151]:8331 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726607AbgGXHQj (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 24 Jul 2020 03:16:39 -0400
-IronPort-SDR: JBw9HJ8w3SQr9VKOkFXMvcTmcq8VvzfJiPxaz9V3mBzXhXPuGO7iSQDeQEdllvlMI/qd+rthLi
- HeEZWFTy6Big==
-X-IronPort-AV: E=McAfee;i="6000,8403,9691"; a="130744636"
-X-IronPort-AV: E=Sophos;i="5.75,389,1589266800"; 
-   d="scan'208";a="130744636"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2020 00:16:38 -0700
-IronPort-SDR: j2KK6kP0J+fDiKxJ95jlu/hDyyYP9v6JH6cA4bkpmW8feH7gE8IfsA4vWqkJ+k32bHItnhQeVf
- JDPgRgmGlMEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,389,1589266800"; 
-   d="scan'208";a="320922247"
-Received: from cbuerkle-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.36.184])
-  by fmsmga002.fm.intel.com with ESMTP; 24 Jul 2020 00:16:36 -0700
-Date:   Fri, 24 Jul 2020 10:16:34 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     torvalds@linux-foundation.org,
-        Wei Yongjun <weiyongjun1@huawei.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] keys: asymmetric: fix error return code in
- software_key_query()
-Message-ID: <20200724071634.GA1872662@linux.intel.com>
-References: <20200723013223.GA45081@linux.intel.com>
- <159485211858.2340757.9890754969922775496.stgit@warthog.procyon.org.uk>
- <1269137.1595490145@warthog.procyon.org.uk>
+        id S1726329AbgGXKUK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 24 Jul 2020 06:20:10 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:50590 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726271AbgGXKUJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 24 Jul 2020 06:20:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595586008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=iNwJ2cEmHYj+S0Ahc6f50GridTdh2KfTtR3COy4a8r0=;
+        b=FeW10BPJhm8IiKcp/ifw7qwIb14HJBv8QnxtKn6XNRE9YI6lkN2HmgYaHfqZ91PgYHMlDW
+        w/sFtENwfyQeS2TL9tsI2yP3hhg1xnv1A69w+5WlZP9DrjSIDYuybT0EIupABdgNlEKShN
+        c7APFcGvJJMn+4xLc/Hs45CPpmVYq74=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-109-tpfvniXtPBmBGWTxVCEyVQ-1; Fri, 24 Jul 2020 06:20:07 -0400
+X-MC-Unique: tpfvniXtPBmBGWTxVCEyVQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 26212800597;
+        Fri, 24 Jul 2020 10:20:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-32.rdu2.redhat.com [10.10.112.32])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3EF84872E5;
+        Fri, 24 Jul 2020 10:20:00 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <1293241.1595501326@warthog.procyon.org.uk>
+References: <1293241.1595501326@warthog.procyon.org.uk> <CAJfpegspWA6oUtdcYvYF=3fij=Bnq03b8VMbU9RNMKc+zzjbag@mail.gmail.com> <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk> <158454391302.2863966.1884682840541676280.stgit@warthog.procyon.org.uk>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     dhowells@redhat.com,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>, nicolas.dichtel@6wind.com,
+        Ian Kent <raven@themaw.net>,
+        Christian Brauner <christian@brauner.io>, andres@anarazel.de,
+        Jeff Layton <jlayton@redhat.com>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>, keyrings@vger.kernel.org,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org,
+        LSM <linux-security-module@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 13/17] watch_queue: Implement mount topology and attribute change notifications [ver #5]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1269137.1595490145@warthog.procyon.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2003786.1595585999.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Fri, 24 Jul 2020 11:19:59 +0100
+Message-ID: <2003787.1595585999@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 08:42:25AM +0100, David Howells wrote:
-> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
-> 
-> > Why f1774cb8956a lacked any possible testing? It extends ABI anyway.
-> > 
-> > I think it is a kind of change that would require more screening before
-> > getting applied.
-> 
-> Yeah.  It went in via a round-about route.  I left off development of it when
-> the tpm stuff I wrote broke because the tpm2 stuff went in upstream.  I then
-> handed the patches off to Denis who did the tpm support, but I never got my
-> stuff finished enough to work out how to do the testsuite (since it would
-> involve using a tpm).  However, since I did the PKCS#8 testing module as well,
-> I guess I don't need that to at least test the API.  I'll look at using that
-> to add some tests.  Any suggestions as to how to do testing via the tpm?
-> 
-> David
+David Howells <dhowells@redhat.com> wrote:
 
-The unfortunate thing is that I was not involved with asym_tpm.c review
-process in any possible way, which means that at the moment I lack both:
+> > What guarantees that mount_id is going to remain a 32bit entity?
+> =
 
-1. Knowledge of crypto/asymmetric_keys.
-2. How asym_tpm.c is implemented.
+> You think it likely we'd have >4 billion concurrent mounts on a system? =
+ That
+> would require >1.2TiB of RAM just for the struct mount allocations.
+> =
 
-I only became aware of asym_tpm.c's existence last Sep [*].
+> But I can expand it to __u64.
 
-I'll put to my backlog to try TPM asymmetric keys (earliest when I'm back
-from vacation 08/10).
+That said, sys_name_to_handle_at() assumes it's a 32-bit signed integer, s=
+o
+we're currently limited to ~2 billion concurrent mounts:-/
 
-[*] https://lore.kernel.org/linux-integrity/20190926171601.30404-1-jarkko.sakkinen@linux.intel.com/
+David
 
-/Jarkko
