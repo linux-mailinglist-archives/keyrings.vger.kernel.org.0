@@ -2,78 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC85231093
-	for <lists+keyrings@lfdr.de>; Tue, 28 Jul 2020 19:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E02231808
+	for <lists+keyrings@lfdr.de>; Wed, 29 Jul 2020 05:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731706AbgG1RKf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 Jul 2020 13:10:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35624 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731070AbgG1RKf (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 28 Jul 2020 13:10:35 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.213])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DAE9720786;
-        Tue, 28 Jul 2020 17:10:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595956234;
-        bh=mARbbccibp0w+1VVZDf+WZpyqmdv+vpiA7azcsNO8a8=;
+        id S1726245AbgG2DX7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 Jul 2020 23:23:59 -0400
+Received: from condef-09.nifty.com ([202.248.20.74]:63058 "EHLO
+        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726047AbgG2DX7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Jul 2020 23:23:59 -0400
+Received: from conuserg-10.nifty.com ([10.126.8.73])by condef-09.nifty.com with ESMTP id 06T3JUrR017274
+        for <keyrings@vger.kernel.org>; Wed, 29 Jul 2020 12:19:30 +0900
+Received: from oscar.flets-west.jp (softbank126025067101.bbtec.net [126.25.67.101]) (authenticated)
+        by conuserg-10.nifty.com with ESMTP id 06T3In2l014195;
+        Wed, 29 Jul 2020 12:18:49 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com 06T3In2l014195
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1595992730;
+        bh=Aqvte3DD/AyUCy7Xdqzd/obevCR0/al1WB3hYmo2NQY=;
         h=From:To:Cc:Subject:Date:From;
-        b=fI3JZFQU/DE0fiQGD5XtPP7NbgOcOz4Pbe0pd7kESFcTknNCtEKsN4v7TSW7fI4Al
-         EhJHUGBwWYr4Yyp6Vh9Ts7oT7mVdGxNUBlgJkQpacyzv+lCQ/GNWlWAmLyoHij5znj
-         iak0V6ZhN+/6TAWVfMJ0/EaM0XOQUKsG1iMEMvwI=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] KEYS: asymmetric: Fix kerneldoc
-Date:   Tue, 28 Jul 2020 19:10:29 +0200
-Message-Id: <20200728171029.28525-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        b=y1DJo4oQH5A1nPsfamA7v4G2OFAZ5qcbBRco+DkEzPxJ+hEMkJXtX3i8WCo+PjU6J
+         dVm44M0iMSf+KAgVW0c08NUwhszSEPkvx4JrBsdIoGxlEuqNjCENdUitvtaoHNUt3t
+         h0PPu6lXqy+RsZ/IHRI1TT9zVK1GLPva47m/VDxGZ+8qOCTbMZ97+vH6c43QklYG2n
+         mwrZYGDZZ0d45MdNQLak5v+QALWFkafD76h8IK8T3jNHVPvr+k7MnLNzZyVp5Dki/o
+         lJMcZfr1jgb6U+IME5Juesj1n5cYMPFvr2s2jHliQcKJbFVQ/3deT9r4NEqIkb7nnd
+         rPdkMuUquU6Sw==
+X-Nifty-SrcIP: [126.25.67.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] extract-cert: add static to local data
+Date:   Wed, 29 Jul 2020 12:18:45 +0900
+Message-Id: <20200729031845.38333-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Fix W=1 compile warnings (invalid kerneldoc):
+Fix the following warning from sparse:
 
-    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Function parameter or member 'kid1' not described in 'asymmetric_key_id_same'
-    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Function parameter or member 'kid2' not described in 'asymmetric_key_id_same'
-    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Excess function parameter 'kid_1' description in 'asymmetric_key_id_same'
-    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Excess function parameter 'kid_2' description in 'asymmetric_key_id_same'
+  scripts/extract-cert.c:74:5: warning: symbol 'kbuild_verbose' was not declared. Should it be static?
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- crypto/asymmetric_keys/asymmetric_type.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index 33e77d846caa..ad8af3d70ac0 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -152,7 +152,8 @@ EXPORT_SYMBOL_GPL(asymmetric_key_generate_id);
+ scripts/extract-cert.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/extract-cert.c b/scripts/extract-cert.c
+index b071bf476fea..3bc48c726c41 100644
+--- a/scripts/extract-cert.c
++++ b/scripts/extract-cert.c
+@@ -71,7 +71,7 @@ static void drain_openssl_errors(void)
+ static const char *key_pass;
+ static BIO *wb;
+ static char *cert_dst;
+-int kbuild_verbose;
++static int kbuild_verbose;
  
- /**
-  * asymmetric_key_id_same - Return true if two asymmetric keys IDs are the same.
-- * @kid_1, @kid_2: The key IDs to compare
-+ * @kid1: The key ID to compare
-+ * @kid2: The key ID to compare
-  */
- bool asymmetric_key_id_same(const struct asymmetric_key_id *kid1,
- 			    const struct asymmetric_key_id *kid2)
-@@ -168,7 +169,8 @@ EXPORT_SYMBOL_GPL(asymmetric_key_id_same);
- /**
-  * asymmetric_key_id_partial - Return true if two asymmetric keys IDs
-  * partially match
-- * @kid_1, @kid_2: The key IDs to compare
-+ * @kid1: The key ID to compare
-+ * @kid2: The key ID to compare
-  */
- bool asymmetric_key_id_partial(const struct asymmetric_key_id *kid1,
- 			       const struct asymmetric_key_id *kid2)
+ static void write_cert(X509 *x509)
+ {
 -- 
-2.17.1
+2.25.1
 
