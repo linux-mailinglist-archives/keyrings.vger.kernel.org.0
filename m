@@ -2,85 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1150233275
-	for <lists+keyrings@lfdr.de>; Thu, 30 Jul 2020 14:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 188BD233792
+	for <lists+keyrings@lfdr.de>; Thu, 30 Jul 2020 19:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726615AbgG3M4e (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 Jul 2020 08:56:34 -0400
-Received: from mx1.emlix.com ([188.40.240.192]:55920 "EHLO mx1.emlix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726535AbgG3M4e (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 30 Jul 2020 08:56:34 -0400
-X-Greylist: delayed 405 seconds by postgrey-1.27 at vger.kernel.org; Thu, 30 Jul 2020 08:56:33 EDT
-Received: from mailer.emlix.com (p5098be52.dip0.t-ipconnect.de [80.152.190.82])
-        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        id S1728492AbgG3RTn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 Jul 2020 13:19:43 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:52101 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728459AbgG3RTn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 30 Jul 2020 13:19:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596129582;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yfgpEad35QlSnKs/MBOCUF8OTtEP6rCnc2IsO7uLItY=;
+        b=PmaYikEAhKai4wSOW7s00YEWZGjELfndB6Kb/KwaRkhNpF5IW3c/gOWJgwCGaNnIlTTFu+
+        hs5k+c/Dyy3iLQgLG7wFve+QddGaKFMG83MiPhHqBZ8uEoT4p6m59cNbEsVCL227wXOJV3
+        jl4lFirypf8VE6l7eTqD0Pu2r83xk2s=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-315-XdgRvRDMN0yJ3P4Ns-mDBQ-1; Thu, 30 Jul 2020 13:19:39 -0400
+X-MC-Unique: XdgRvRDMN0yJ3P4Ns-mDBQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.emlix.com (Postfix) with ESMTPS id EF6E75FF99;
-        Thu, 30 Jul 2020 14:49:46 +0200 (CEST)
-From:   Rolf Eike Beer <eb@emlix.com>
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v4] scripts: use pkg-config to locate libcrypto
-Date:   Thu, 30 Jul 2020 14:49:41 +0200
-Message-ID: <1825784.enSSdDGVcg@devpool35>
-Organization: emlix GmbH
-In-Reply-To: <2278760.8Yd83Mgoko@devpool35>
-References: <20538915.Wj2CyUsUYa@devpool35> <2278760.8Yd83Mgoko@devpool35>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 71CCD79EC2;
+        Thu, 30 Jul 2020 17:19:38 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-32.rdu2.redhat.com [10.10.112.32])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 038325FC31;
+        Thu, 30 Jul 2020 17:19:36 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <439876.1596106009@warthog.procyon.org.uk>
+References: <439876.1596106009@warthog.procyon.org.uk> <159562904644.2287160.13294507067766261970.stgit@warthog.procyon.org.uk>
+To:     torvalds@linux-foundation.org
+Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] watch_queue: Limit the number of watches a user can hold
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart9679229.JMKxYvS3ME"; micalg="pgp-sha256"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <521561.1596129576.1@warthog.procyon.org.uk>
+Date:   Thu, 30 Jul 2020 18:19:36 +0100
+Message-ID: <521562.1596129576@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
---nextPart9679229.JMKxYvS3ME
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+David Howells <dhowells@redhat.com> wrote:
 
-Am Montag, 27. April 2020, 10:11:28 CEST schrieb Rolf Eike Beer:
-> From 082ba542ca4c710dcf592a6f9233603b9275d05d Mon Sep 17 00:00:00 2001
-> From: Rolf Eike Beer <eb@emlix.com>
-> Date: Thu, 22 Nov 2018 16:40:49 +0100
-> Subject: [PATCH 1/2] scripts: use pkg-config to locate libcrypto
->=20
-> Otherwise build fails if the headers are not in the default location. Whi=
-le
-> at it also ask pkg-config for the libs, with fallback to the existing
-> value.
+> Could you consider taking this patch as a bugfix since the problem exists
+> already in upstream code?
 
-Close to 2 years since the original patch=E2=80=A6 can this please be appli=
-ed? It=20
-get's annoying to patch every new kernel version the same way again.
+Alternatively, I can include it in a set with the mount notifications.
 
-Thx
-
-Eike
-=2D-=20
-Rolf Eike Beer, emlix GmbH, http://www.emlix.com
-=46on +49 551 30664-0, Fax +49 551 30664-11
-Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
-Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 3160
-Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke =E2=80=93 Ust-IdNr=
-=2E: DE 205 198 055
-
-emlix - smart embedded open source
-
---nextPart9679229.JMKxYvS3ME
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iLMEAAEIAB0WIQQ/Uctzh31xzAxFCLur5FH7Xu2t/AUCXyLB5gAKCRCr5FH7Xu2t
-/OfFBADHZ2FrSoVi6DAf2H7CaJx74tezgvQax1e0nMjCGpnAgonXf4+y3bjHjNBI
-mHCzvvybwqFG7hC3nVzw4mpptyc/nSv5kJGZZkxFvvJ3+YDWfhbtrovpAxKqBR9y
-D/1YIQ8cR/WoONrRs0BGUf6lDN9BspoABK6gPoXztzT8mz+ODA==
-=tpgR
------END PGP SIGNATURE-----
-
---nextPart9679229.JMKxYvS3ME--
-
-
+David
 
