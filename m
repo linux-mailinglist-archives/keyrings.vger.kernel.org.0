@@ -2,80 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B526A23285F
-	for <lists+keyrings@lfdr.de>; Thu, 30 Jul 2020 01:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27082233084
+	for <lists+keyrings@lfdr.de>; Thu, 30 Jul 2020 12:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726876AbgG2XuN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 29 Jul 2020 19:50:13 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:42807 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727087AbgG2XuN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 29 Jul 2020 19:50:13 -0400
-Received: by mail-ed1-f67.google.com with SMTP id df16so2316750edb.9
-        for <keyrings@vger.kernel.org>; Wed, 29 Jul 2020 16:50:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YsZNBDHt502uQNfqBAPLlhPWF3Q26FjHG7KwkPDxKY4=;
-        b=oswHXA5LhS4DeDN0kPg2Qrvx1OBgp2JqeysIOq6PCjus8FWUYTILmVn0k0ZFV6hwXs
-         X+ma/b/2wIyHXyo5r62GrYGwDmbU6TN7rMsnoB49xed+1Lw2zib0wU0eNJjWAPNrgN68
-         tVDSPYYvySNAbEib4DecB2fbFyKxwfKzk5PV63bUuSxJhuXDGVJGc7pyj/iAhp77UrXS
-         IL5lHspvpVNSNiwiuYVOz1LSWCzT0WPmR+daQe5YHnCLcMJPH6+phxIFuMaeovodaVma
-         0m57ZfKm2WgV6X00/XFH7YeTWqBAFQJqw6te2z7thMGACzAid7j/q3w56tVMqZdEFmgu
-         SWKg==
-X-Gm-Message-State: AOAM532DhYHP2RIH8iCxZiUN4JuqiHJhwTjzjA17V4ber8VDu/oG9wqZ
-        U+peHtrc2PVM+I6dysuJvaMuoPRqkmM=
-X-Google-Smtp-Source: ABdhPJz2hdgnyJLBJE1iKqtC6tnlNGhyLTwiFpIpwjr37bswqhHi0zc5/T9/3KFjbwPstRtwKTVPbg==
-X-Received: by 2002:a05:6402:c81:: with SMTP id cm1mr48751edb.256.1596066611208;
-        Wed, 29 Jul 2020 16:50:11 -0700 (PDT)
-Received: from localhost.localdomain (83.5.235.18.ipv4.supernova.orange.pl. [83.5.235.18])
-        by smtp.gmail.com with ESMTPSA id v9sm3214767ejd.102.2020.07.29.16.50.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2020 16:50:10 -0700 (PDT)
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-To:     keyrings@vger.kernel.org
-Cc:     David Howells <dhowells@redhat.com>
-Subject: [RESEND][PATCH] keys: Update comment for restrict_link_by_key_or_keyring_chain
-Date:   Thu, 30 Jul 2020 01:50:00 +0200
-Message-Id: <20200729235000.45250-2-andrew.zaborowski@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200729235000.45250-1-andrew.zaborowski@intel.com>
-References: <20200729235000.45250-1-andrew.zaborowski@intel.com>
+        id S1726832AbgG3KrA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 Jul 2020 06:47:00 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:39068 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725892AbgG3KrA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 30 Jul 2020 06:47:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596106018;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZpJBVrfk7CBP+2x9tuVRq2yFi/n5laYEQwJk4+y6mA8=;
+        b=N76ksBCZTSFQcbbISte1mvMExVHT6efxhLThUiu0SW8fU5QMA2vQhJhYJ+4M3aXTr6so/p
+        791erLbEjxAx8LLfHu3uRK0HLTwBhUkwsXs+0sbg4Q+csbYvqlUxLHozgFDK1mqqnApW/M
+        xdgCSs+Fl3horfPTm3HNb+X/aAyg4MQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-351-6b_sYAohM_epvOGm9Ig2HA-1; Thu, 30 Jul 2020 06:46:57 -0400
+X-MC-Unique: 6b_sYAohM_epvOGm9Ig2HA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B140B18C63D3;
+        Thu, 30 Jul 2020 10:46:51 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-32.rdu2.redhat.com [10.10.112.32])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 654B619D7B;
+        Thu, 30 Jul 2020 10:46:50 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <159562904644.2287160.13294507067766261970.stgit@warthog.procyon.org.uk>
+References: <159562904644.2287160.13294507067766261970.stgit@warthog.procyon.org.uk>
+To:     torvalds@linux-foundation.org
+Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] watch_queue: Limit the number of watches a user can hold
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <439875.1596106009.1@warthog.procyon.org.uk>
+Date:   Thu, 30 Jul 2020 11:46:49 +0100
+Message-ID: <439876.1596106009@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add the bit of information that makes
-restrict_link_by_key_or_keyring_chain different from
-restrict_link_by_key_or_keyring to the inline docs comment.
+Hi Linus,
 
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
----
- crypto/asymmetric_keys/restrict.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Could you consider taking this patch as a bugfix since the problem exists
+already in upstream code?
 
-diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-index 77ebebada29..84cefe3b358 100644
---- a/crypto/asymmetric_keys/restrict.c
-+++ b/crypto/asymmetric_keys/restrict.c
-@@ -244,9 +244,10 @@ int restrict_link_by_key_or_keyring(struct key *dest_keyring,
-  * @payload: The payload of the new key.
-  * @trusted: A key or ring of keys that can be used to vouch for the new cert.
-  *
-- * Check the new certificate only against the key or keys passed in the data
-- * parameter. If one of those is the signing key and validates the new
-- * certificate, then mark the new certificate as being ok to link.
-+ * Check the new certificate against the key or keys passed in the data
-+ * parameter and against the keys already linked to the destination keyring. If
-+ * one of those is the signing key and validates the new certificate, then mark
-+ * the new certificate as being ok to link.
-  *
-  * Returns 0 if the new certificate was accepted, -ENOKEY if we
-  * couldn't find a matching parent certificate in the trusted list,
--- 
-2.20.1
+David
 
