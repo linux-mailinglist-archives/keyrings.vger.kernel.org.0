@@ -2,36 +2,36 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78E9C23A283
-	for <lists+keyrings@lfdr.de>; Mon,  3 Aug 2020 12:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F7F123A2AA
+	for <lists+keyrings@lfdr.de>; Mon,  3 Aug 2020 12:18:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725968AbgHCKIf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 3 Aug 2020 06:08:35 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:22784 "EHLO
+        id S1726130AbgHCKSV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 3 Aug 2020 06:18:21 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:24124 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726457AbgHCKId (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Aug 2020 06:08:33 -0400
+        with ESMTP id S1726321AbgHCKSU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Aug 2020 06:18:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596449312;
+        s=mimecast20190719; t=1596449899;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=wb/gJmdKHBmw6w0WHlFlXyZB6Hy72W8IZAqpbVBmJts=;
-        b=ghXigTM0PV9KMysiz92r8Gcew6gEtZGExhkoMNxJHKSrWxZCOZZ+04ygOH1TO/1+lgG9Tk
-        DzARgWCSkBhC0jvt0fEGXGhP7yWnROlS8DCV6fnQ0cNaI48tKCQVyoSqUPCtnFtpf60Zof
-        whrSITLPj6X7bLEXoVRcy4133AHqOGA=
+        bh=bfXMCNI/Os0PHSTlvW49y4Nr2+FnMZYDapmptaEW04U=;
+        b=VBEL9t0Tt4gA/grwTrDZ2wi4qyr/OqEpSfoE2D9y2Kriajvba9USa8C5AAl9BQWE9skC1z
+        8wwB+lHyKNKam+MzzSWaq50JzNYlxr1bEOnvOOmda5QqAf+bJHzv2HsIy2/do6YFeNJa8y
+        3CA8uOkWlP19XIBMVYNOe0HuD7R+YXc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-165-7YYFm4bNOqa5LSseulTMqA-1; Mon, 03 Aug 2020 06:08:29 -0400
-X-MC-Unique: 7YYFm4bNOqa5LSseulTMqA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+ us-mta-368-K_5LoHEKMdSlR3ZUeqZ2fw-1; Mon, 03 Aug 2020 06:18:16 -0400
+X-MC-Unique: K_5LoHEKMdSlR3ZUeqZ2fw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F8761005504;
-        Mon,  3 Aug 2020 10:08:26 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 449B81005504;
+        Mon,  3 Aug 2020 10:18:13 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-112-32.rdu2.redhat.com [10.10.112.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BAFD85D9F7;
-        Mon,  3 Aug 2020 10:08:22 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 17FC888F20;
+        Mon,  3 Aug 2020 10:18:09 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
@@ -56,10 +56,10 @@ Cc:     dhowells@redhat.com, Ian Kent <raven@themaw.net>,
 Subject: Re: [PATCH 13/17] watch_queue: Implement mount topology and attribute change notifications [ver #5]
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1272196.1596449301.1@warthog.procyon.org.uk>
-Date:   Mon, 03 Aug 2020 11:08:21 +0100
-Message-ID: <1272197.1596449301@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-ID: <1283474.1596449889.1@warthog.procyon.org.uk>
+Date:   Mon, 03 Aug 2020 11:18:09 +0100
+Message-ID: <1283475.1596449889@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
@@ -71,7 +71,11 @@ Miklos Szeredi <miklos@szeredi.hu> wrote:
 > 
 > Shouldn't the notification interface provide the unique ID?
 
-It could make sense - instead of the reusable mnt_id.
+Hmmm...  If I'm going to do that, I have to put the fsinfo-core branch first
+otherwise you can't actually retrieve the unique ID - and thus won't be able
+to make sense of the notification record.  Such a rearrangement might make
+sense anyway since Ian and Karel have been primarily concentrating on fsinfo
+and only more recently started adding notification support.
 
 David
 
