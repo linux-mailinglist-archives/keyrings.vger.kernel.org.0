@@ -2,65 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 188BD233792
-	for <lists+keyrings@lfdr.de>; Thu, 30 Jul 2020 19:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D12D23A1BF
+	for <lists+keyrings@lfdr.de>; Mon,  3 Aug 2020 11:30:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728492AbgG3RTn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 30 Jul 2020 13:19:43 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:52101 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728459AbgG3RTn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 30 Jul 2020 13:19:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596129582;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yfgpEad35QlSnKs/MBOCUF8OTtEP6rCnc2IsO7uLItY=;
-        b=PmaYikEAhKai4wSOW7s00YEWZGjELfndB6Kb/KwaRkhNpF5IW3c/gOWJgwCGaNnIlTTFu+
-        hs5k+c/Dyy3iLQgLG7wFve+QddGaKFMG83MiPhHqBZ8uEoT4p6m59cNbEsVCL227wXOJV3
-        jl4lFirypf8VE6l7eTqD0Pu2r83xk2s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-315-XdgRvRDMN0yJ3P4Ns-mDBQ-1; Thu, 30 Jul 2020 13:19:39 -0400
-X-MC-Unique: XdgRvRDMN0yJ3P4Ns-mDBQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 71CCD79EC2;
-        Thu, 30 Jul 2020 17:19:38 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-32.rdu2.redhat.com [10.10.112.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 038325FC31;
-        Thu, 30 Jul 2020 17:19:36 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <439876.1596106009@warthog.procyon.org.uk>
-References: <439876.1596106009@warthog.procyon.org.uk> <159562904644.2287160.13294507067766261970.stgit@warthog.procyon.org.uk>
-To:     torvalds@linux-foundation.org
-Cc:     dhowells@redhat.com, jarkko.sakkinen@linux.intel.com,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] watch_queue: Limit the number of watches a user can hold
+        id S1726142AbgHCJ3y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 3 Aug 2020 05:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43162 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725968AbgHCJ3l (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Aug 2020 05:29:41 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A6CDC061757
+        for <keyrings@vger.kernel.org>; Mon,  3 Aug 2020 02:29:40 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id o10so17035642edh.6
+        for <keyrings@vger.kernel.org>; Mon, 03 Aug 2020 02:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=owNLFqTMe1SU5EaKmrLtcVAQ4KDndakWi4Xb0Cu0Z7c=;
+        b=E5LkGHz5hRcvvUwxDdXSDeNZX1oJy9nnYaDR4Qa2WN7LPbOyqMkQToA2KaIosRDx2l
+         /vAExylwGECGrMNjwVPDmYo7pNQ2YqGjS2ohu2O6bKfvmdR8zsidyAa/NkbgnEMDSLHI
+         4UqRBKbGyq8XWb5T0s7zheGCNIklGnT6FDvMg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=owNLFqTMe1SU5EaKmrLtcVAQ4KDndakWi4Xb0Cu0Z7c=;
+        b=mlVFG2WiiYv53P/XHIwI9giaiB6XDO9g3KMdb6iM6Pk/mxbDJV59DXIAUtrhzVaQsR
+         zea2OxbDJT/qBLMig39aqI0+IzRWvPM1XFlG4arLgd7qutz9GZ+xuZuLoSceG2L9YUwN
+         Fr2UvH3f/NLYbQab/j4V31K2CU+N++FBuKzMZmIiauG/v/NkAbcLU45WIWwivar/AjwZ
+         9syyayHzgQY0FSbwgNRWyW9BQ6H7Ou2pL4AVSUW5DIe+RlafCra+8NKj15NZB+igh+RD
+         wf/v1F98JK5iRWDgA+LHcGvk5Uk1LK7t/vK2SeW0zdCG9DfcGhtIwI2hYcy1QDUg90nb
+         QX0w==
+X-Gm-Message-State: AOAM533QEJkA6iGAZ4LeJ6gAa840xTXzmi2DRFNnwn6x0oR8D7jkZE6t
+        2IWjIJUy+bAIf0Tt95H1FwdS9l8vWJBhxiMiZrea+A==
+X-Google-Smtp-Source: ABdhPJwwRwE/z9+48aOsHKHN045IllUewS+ZVaDKVLXEbNVYV6u3PqSbaJ4L7LCc7hyeEJUAG7ii5G7P1/+cTZ4bZsc=
+X-Received: by 2002:aa7:c915:: with SMTP id b21mr15388861edt.17.1596446978906;
+ Mon, 03 Aug 2020 02:29:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <521561.1596129576.1@warthog.procyon.org.uk>
-Date:   Thu, 30 Jul 2020 18:19:36 +0100
-Message-ID: <521562.1596129576@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+References: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk>
+ <158454391302.2863966.1884682840541676280.stgit@warthog.procyon.org.uk>
+ <CAJfpegspWA6oUtdcYvYF=3fij=Bnq03b8VMbU9RNMKc+zzjbag@mail.gmail.com> <1293241.1595501326@warthog.procyon.org.uk>
+In-Reply-To: <1293241.1595501326@warthog.procyon.org.uk>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Mon, 3 Aug 2020 11:29:27 +0200
+Message-ID: <CAJfpeguvLMCw1H8+DPsfZE_k0sEiRtA17pD9HjnceSsAvqqAZw@mail.gmail.com>
+Subject: Re: [PATCH 13/17] watch_queue: Implement mount topology and attribute
+ change notifications [ver #5]
+To:     David Howells <dhowells@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Ian Kent <raven@themaw.net>,
+        Christian Brauner <christian@brauner.io>, andres@anarazel.de,
+        Jeff Layton <jlayton@redhat.com>, dray@redhat.com,
+        Karel Zak <kzak@redhat.com>, keyrings@vger.kernel.org,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org,
+        LSM <linux-security-module@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Howells <dhowells@redhat.com> wrote:
+On Thu, Jul 23, 2020 at 12:48 PM David Howells <dhowells@redhat.com> wrote:
 
-> Could you consider taking this patch as a bugfix since the problem exists
-> already in upstream code?
+>
+> > >                 __u32   topology_changes;
+> > >                 __u32   attr_changes;
+> > >                 __u32   aux_topology_changes;
+> >
+> > Being 32bit this introduces wraparound effects.  Is that really worth it?
+>
+> You'd have to make 2 billion changes without whoever's monitoring getting a
+> chance to update their counters.  But maybe it's not worth it putting them
+> here.  If you'd prefer, I can make the counters all 64-bit and just retrieve
+> them with fsinfo().
 
-Alternatively, I can include it in a set with the mount notifications.
+Yes, I think that would be preferable.
 
-David
+> > >         n->watch.info & NOTIFY_MOUNT_IS_RECURSIVE if true indicates that
+> > >         the notifcation was generated by an event (eg. SETATTR) that was
+> > >         applied recursively.  The notification is only generated for the
+> > >         object that initially triggered it.
+> >
+> > Unused in this patchset.  Please don't add things to the API which are not
+> > used.
+>
+> Christian Brauner has patches for mount_setattr() that will need to use this.
 
+Fine, then that patch can add the flag.
+
+Thanks,
+Miklos
