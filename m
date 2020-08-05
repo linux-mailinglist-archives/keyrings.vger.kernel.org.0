@@ -2,55 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8B223C71A
-	for <lists+keyrings@lfdr.de>; Wed,  5 Aug 2020 09:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B659523D107
+	for <lists+keyrings@lfdr.de>; Wed,  5 Aug 2020 21:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726507AbgHEHny (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 5 Aug 2020 03:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47022 "EHLO
+        id S1728600AbgHETzj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 5 Aug 2020 15:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbgHEHnv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Aug 2020 03:43:51 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5DCC06179F
-        for <keyrings@vger.kernel.org>; Wed,  5 Aug 2020 00:43:50 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id c15so22121561edj.3
-        for <keyrings@vger.kernel.org>; Wed, 05 Aug 2020 00:43:50 -0700 (PDT)
+        with ESMTP id S1728050AbgHEQqQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Aug 2020 12:46:16 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF6EC034608
+        for <keyrings@vger.kernel.org>; Wed,  5 Aug 2020 04:56:15 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id m19so5568995ejd.8
+        for <keyrings@vger.kernel.org>; Wed, 05 Aug 2020 04:56:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=c7MS/sDmqsu2UeEHE/y1WIBOLGRyoL/hTSKDaerW230=;
-        b=G2U85/Sh33+IcIW0dxhFoe+oW0YUFI67TOMZGh5yXHDRtVNTTIES6+/5ghbYizPlrA
-         NxqWRNYE+WiZQ5x/6V5NBGxTNuIsiyaYdE1+DK4um+EutgPdxUhLgshYgl+AqycDH9vs
-         4dvJRUCTUHLDjtWW+GCIgH/TbkBbaYm/yDD6c=
+        bh=EFzCfSOy2IvutgdDhPs5RnGz6j56czFjRkJZIjDwC5E=;
+        b=fHDQmOPFaJvbXbvEliSuXqTAPHK8v552b9np6X9cWK6tTGWtQJ8LY3S0vJn2HS00rJ
+         gVpdofbnaxr9+tJ+Mqj1cFGgRzfxwqq+vkUzACPs5rGvCTBqKNfOo+qeWAS+wlxzEwx6
+         SKI85B2YDPDIN9J5DECiCM+0m7oOnfVCzXQdk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=c7MS/sDmqsu2UeEHE/y1WIBOLGRyoL/hTSKDaerW230=;
-        b=AwJlg8NWtUwr9NjoYwotw+My89jPzjdoW7KVeklOqubUzq7H3WalM+xvAvfwTV6/sA
-         5odWNHZu08enYd3CXr4nsKeTjA/Bd26DOqvrui64qIJmfp7konP3bniyuIw1Aocvj/4B
-         Lq03RZYX8JHRLzxGTtZFzduLL2HiaMxZg18q1MNag3nCg1u5D5LDOFrfw+BB79VpORJk
-         q+TdIODZzCFyHBbF0sZDnvFq9Qt3L25EPtjHu1FkK2T4rBYvLXn557D5bi3Ir7bjdKvw
-         LH9ipz0qtRsnwnaNqONlcBGD3z6+SEJA9y6FWLsKVqIZFCgcuNXrAIOmCxENj1F3Rn4/
-         7Aew==
-X-Gm-Message-State: AOAM530OwA4oW116LLLDVmf8UOEph++orF+LFCRI+Y82GZLMv/By4xfb
-        7wKoQ0cuABy1A6rYw0FsS4yn/VjPXeKvamh64Zj15Q==
-X-Google-Smtp-Source: ABdhPJxB/evMZ5+0ZnmBx4YzSXoXDzPSNs9Cjc++wXkfuUDJKvalsR0eiNz5UMmlIUDOEP5Cy96B5iGq/jW2A8IePJ4=
-X-Received: by 2002:a50:fb10:: with SMTP id d16mr1638111edq.134.1596613429317;
- Wed, 05 Aug 2020 00:43:49 -0700 (PDT)
+        bh=EFzCfSOy2IvutgdDhPs5RnGz6j56czFjRkJZIjDwC5E=;
+        b=d3D8FI4IL2+Y6fjSs9QIPwWZgdCaKJ4SV3Ac/OPRBaLykg71UAuFsQwPfkoLyYmO/K
+         7pleW3qoKdy3UfE7pT2RONwnxgRJRbqX8/EYyivaOj0JVqqjD/Sqzpuw9QgVhssUyHPs
+         GE9gKkfeUeRUSoLbnBWa7k8OizmpEthplIUhWvNdb0/YoY2cjkbOKj6fXt0oqladxCZ7
+         mqmn8TqLZ6wdnwsr3py10cPltuzjie6cVZSTMSl7CUr6s4Mc0E4OmD+BCsIB9AjhUUCV
+         gn+l4YhRXic/ByOcHvS4kEwphz90cXkAlT1tWq7078ENTY9wgdEUsZ0+VEmIrlx/+Hpm
+         AQVA==
+X-Gm-Message-State: AOAM532QgytNXBjwRKQqm29l5pDmN1bJM7pR9LS3kQk9sNxxQkr9vq/k
+        ZvoWteES0MDn/o1QjezEurX/tOqbq2uPgD8iCdW/Qw==
+X-Google-Smtp-Source: ABdhPJwmuCMEiB1hUFa5v+mcjhs87JwPL8sH9pgCYuW0w9XS34zg5ONW/347iIy+Lf6dRHfU4LRWES4+b7uEih/9ov0=
+X-Received: by 2002:a17:906:22c1:: with SMTP id q1mr2735858eja.443.1596628572819;
+ Wed, 05 Aug 2020 04:56:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk>
  <158454391302.2863966.1884682840541676280.stgit@warthog.procyon.org.uk>
  <CAJfpegspWA6oUtdcYvYF=3fij=Bnq03b8VMbU9RNMKc+zzjbag@mail.gmail.com>
  <1293241.1595501326@warthog.procyon.org.uk> <CAJfpeguvLMCw1H8+DPsfZE_k0sEiRtA17pD9HjnceSsAvqqAZw@mail.gmail.com>
  <43c061d26ddef2aa3ca1ac726da7db9ab461e7be.camel@themaw.net>
- <CAJfpeguFkDDhz7+70pSUv_j=xY5L08ESpaE+jER9vE5p+ZmfFw@mail.gmail.com> <c558fc4af785f62a2751be3b297d1ccbbfcfa969.camel@themaw.net>
-In-Reply-To: <c558fc4af785f62a2751be3b297d1ccbbfcfa969.camel@themaw.net>
+ <CAJfpeguFkDDhz7+70pSUv_j=xY5L08ESpaE+jER9vE5p+ZmfFw@mail.gmail.com>
+ <c558fc4af785f62a2751be3b297d1ccbbfcfa969.camel@themaw.net>
+ <CAJfpegvxKTy+4Zk6banvxQ83PeFV7Xnt2Qv=kkOg57rxFKqVEg@mail.gmail.com> <013e9bb3cb1536c73a5b58c5ff000b3b00629561.camel@themaw.net>
+In-Reply-To: <013e9bb3cb1536c73a5b58c5ff000b3b00629561.camel@themaw.net>
 From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Wed, 5 Aug 2020 09:43:38 +0200
-Message-ID: <CAJfpegvxKTy+4Zk6banvxQ83PeFV7Xnt2Qv=kkOg57rxFKqVEg@mail.gmail.com>
+Date:   Wed, 5 Aug 2020 13:56:01 +0200
+Message-ID: <CAJfpegvT-UznTC5CT1kjVF=Gr+DfTJXKj5CEkP67G9zFhjLMEg@mail.gmail.com>
 Subject: Re: [PATCH 13/17] watch_queue: Implement mount topology and attribute
  change notifications [ver #5]
 To:     Ian Kent <raven@themaw.net>
@@ -73,29 +75,25 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Aug 5, 2020 at 3:54 AM Ian Kent <raven@themaw.net> wrote:
+On Wed, Aug 5, 2020 at 1:36 PM Ian Kent <raven@themaw.net> wrote:
 >
 
-> > > It's way more useful to have these in the notification than
-> > > obtainable
-> > > via fsinfo() IMHO.
-> >
-> > What is it useful for?
+> I can see in the kernel code that an error is returned if the message
+> buffer is full when trying to add a message, I just can't see where
+> to get it in the libmount code.
 >
-> Only to verify that you have seen all the notifications.
+> That's not really a communication protocol problem.
 >
-> If you have to grab that info with a separate call then the count
-> isn't necessarily consistent because other notifications can occur
-> while you grab it.
+> Still I need to work out how to detect it, maybe it is seen by
+> the code in libmount already and I simply can't see what I need
+> to do to recognise it ...
+>
+> So I'm stuck wanting to verify I have got everything that was
+> sent and am having trouble moving on from that.
 
-No, no no.   The watch queue will signal an overflow, without any
-additional overhead for the normal case.  If you think of this as a
-protocol stack, then the overflow detection happens on the transport
-layer, instead of the application layer.  The application layer is
-responsible for restoring state in case of a transport layer error,
-but detection of that error is not the responsibility of the
-application layer.
+This is the commit that should add the overrun detection capability:
 
+e7d553d69cf6 ("pipe: Add notification lossage handling")
 
 Thanks,
 Miklos
