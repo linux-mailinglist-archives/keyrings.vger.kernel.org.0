@@ -2,129 +2,358 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B3423D286
-	for <lists+keyrings@lfdr.de>; Wed,  5 Aug 2020 22:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F3723EFC2
+	for <lists+keyrings@lfdr.de>; Fri,  7 Aug 2020 17:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729601AbgHEUNq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 5 Aug 2020 16:13:46 -0400
-Received: from wnew3-smtp.messagingengine.com ([64.147.123.17]:37003 "EHLO
-        wnew3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726629AbgHEQX0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Aug 2020 12:23:26 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailnew.west.internal (Postfix) with ESMTP id 37C75970;
-        Wed,  5 Aug 2020 07:36:16 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 05 Aug 2020 07:36:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
-        message-id:subject:from:to:cc:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
-        TV/ywlemDl0JIUauxpySAysG0pozcgKEtLbmEq/dGCI=; b=AwFBpkUnA5Q3eZVP
-        GUBhoB/ilhwXI9VqrBWf6R5OCpprqNbp8Idwbc0ORpfdwf9XRzKHxTAwASOBHloP
-        C8kELv06f6HkCdmM7o/reWrBy3ZFHjtS93RPzrtwzpS9px9u0fikYwf5UfAk8BZ5
-        RcJHbvLqHaFZmmEjgxmdm0rRJiF6rzz0BWYeVdJTPAjS1R2mxJunWX3eTVWhiAW/
-        6Ap9JaHp1kY6tvHneM1y6nxLkgmPIl/GLPbviB/kmezKdXUMUKBQ6umnfBH0G58f
-        uP7AT57ilb7hRJHyP0HqrNRGP3Aw+xdw/wbrLXYX5oE44K2eyZIzhipL3rbEpcmc
-        S1RKug==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; bh=TV/ywlemDl0JIUauxpySAysG0pozcgKEtLbmEq/dG
-        CI=; b=lGi918tCPuQclchc60ZkZQcFuFeLnuEaz5oFvKYw47Yf6N9duODX99vQ0
-        v2wjcf/SgbslZcfvhprEmRgqBL19HB/1eb/JYzoYuP5jz2HFYgT/ak9IDUfwnhAJ
-        YkJIqH/75jxgyxwt67ZoBjpJqUEoP+E/n89yydB8voI+I/O7zCc7QhLrKKOuLxd8
-        vDlll4NR2YcE16zazVrfdI/a8y3gt5FGnB5CxQbKvQx0Q1/68uU+NYGdXE8gcVBZ
-        bHzmSNEbRP2lrp6vbGU5+8EiHmA2mQO1uyjzA/m5uW9PHXNgxKUgFedSPlxBTu5F
-        R1D43CcSiAfHDm04i23VAV+1VwUBw==
-X-ME-Sender: <xms:rpkqXxIM464vxKzxo1Ps1E1MNcoGOyyXu-byRxZmcehu1oS4oiPbAg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrjeekgdeggecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkuffhvfffjghftggfggfgsehtjeertddtreejnecuhfhrohhmpefkrghnucfm
-    vghnthcuoehrrghvvghnsehthhgvmhgrfidrnhgvtheqnecuggftrfgrthhtvghrnhepfe
-    efteetvdeguddvveefveeftedtffduudehueeihfeuvefgveehffeludeggfejnecukfhp
-    peehkedrjedrvdehhedrvddvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehrrghvvghnsehthhgvmhgrfidrnhgvth
-X-ME-Proxy: <xmx:rpkqX9JrEnjQ0a_60B4dCHApSvALGVOSkJ8Sxj0D243ONHuAEjv0JQ>
-    <xmx:rpkqX5vsriW3o_YwMp5QeyhNrGEqZvM_FMb5gGXkEH6Kldth5k2SAw>
-    <xmx:rpkqXyZs1QHUmAvW5-dnVwWP92AJYBeyrGhvLg8ZW4Z58zFbXsHgqw>
-    <xmx:r5kqX0T5XKAiop0pugkIzJKNdw90x3nEoU89eXDiXzbLMU5kcLe6uaYBMNU>
-Received: from mickey.themaw.net (58-7-255-220.dyn.iinet.net.au [58.7.255.220])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 1578A30600B1;
-        Wed,  5 Aug 2020 07:36:08 -0400 (EDT)
-Message-ID: <013e9bb3cb1536c73a5b58c5ff000b3b00629561.camel@themaw.net>
-Subject: Re: [PATCH 13/17] watch_queue: Implement mount topology and
- attribute change notifications [ver #5]
-From:   Ian Kent <raven@themaw.net>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     David Howells <dhowells@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Christian Brauner <christian@brauner.io>, andres@anarazel.de,
-        Jeff Layton <jlayton@redhat.com>, dray@redhat.com,
-        Karel Zak <kzak@redhat.com>, keyrings@vger.kernel.org,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org,
-        LSM <linux-security-module@vger.kernel.org>,
+        id S1726212AbgHGPGZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 7 Aug 2020 11:06:25 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57647 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726202AbgHGPGY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Aug 2020 11:06:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596812781;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uTzSeO9LJ/fgrO0vB/deWP/c4fURGdv9ZVO/IS4V2IA=;
+        b=DcmzLv/K8aYRHR/cMfPpSZMZpVH7FB12ShKcMSXyfmdgRT34Tm3HmeV2O4iz9e0I2aRrav
+        E1ilx9+4zibAChh10wAHZ/BW5C6XFsWUyyX4GCS3dsgfWOzVxwxfAKPOYs/whniK4woR4I
+        gzYwlt4c8EC1BRrPi34ES9v43Q9RsIo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-159-v6HwMxBdOUW-40cqebJcUg-1; Fri, 07 Aug 2020 11:06:20 -0400
+X-MC-Unique: v6HwMxBdOUW-40cqebJcUg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A3821100AA21;
+        Fri,  7 Aug 2020 15:06:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-113-69.rdu2.redhat.com [10.10.113.69])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 00FC05D9D5;
+        Fri,  7 Aug 2020 15:06:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH 1/2] Add a manpage for watch_queue(7)
+From:   David Howells <dhowells@redhat.com>
+To:     mtk.manpages@gmail.com
+Cc:     torvalds@linux-foundation.org, dhowells@redhat.com,
+        keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-man@vger.kernel.org, linux-api@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Wed, 05 Aug 2020 19:36:05 +0800
-In-Reply-To: <CAJfpegvxKTy+4Zk6banvxQ83PeFV7Xnt2Qv=kkOg57rxFKqVEg@mail.gmail.com>
-References: <158454378820.2863966.10496767254293183123.stgit@warthog.procyon.org.uk>
-         <158454391302.2863966.1884682840541676280.stgit@warthog.procyon.org.uk>
-         <CAJfpegspWA6oUtdcYvYF=3fij=Bnq03b8VMbU9RNMKc+zzjbag@mail.gmail.com>
-         <1293241.1595501326@warthog.procyon.org.uk>
-         <CAJfpeguvLMCw1H8+DPsfZE_k0sEiRtA17pD9HjnceSsAvqqAZw@mail.gmail.com>
-         <43c061d26ddef2aa3ca1ac726da7db9ab461e7be.camel@themaw.net>
-         <CAJfpeguFkDDhz7+70pSUv_j=xY5L08ESpaE+jER9vE5p+ZmfFw@mail.gmail.com>
-         <c558fc4af785f62a2751be3b297d1ccbbfcfa969.camel@themaw.net>
-         <CAJfpegvxKTy+4Zk6banvxQ83PeFV7Xnt2Qv=kkOg57rxFKqVEg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+Date:   Fri, 07 Aug 2020 16:06:16 +0100
+Message-ID: <159681277616.35436.11229310534842613599.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2020-08-05 at 09:43 +0200, Miklos Szeredi wrote:
-> On Wed, Aug 5, 2020 at 3:54 AM Ian Kent <raven@themaw.net> wrote:
-> > > > It's way more useful to have these in the notification than
-> > > > obtainable
-> > > > via fsinfo() IMHO.
-> > > 
-> > > What is it useful for?
-> > 
-> > Only to verify that you have seen all the notifications.
-> > 
-> > If you have to grab that info with a separate call then the count
-> > isn't necessarily consistent because other notifications can occur
-> > while you grab it.
-> 
-> No, no no.   The watch queue will signal an overflow, without any
-> additional overhead for the normal case.  If you think of this as a
-> protocol stack, then the overflow detection happens on the transport
-> layer, instead of the application layer.  The application layer is
-> responsible for restoring state in case of a transport layer error,
-> but detection of that error is not the responsibility of the
-> application layer.
+Add a manual page for the notifications/watch_queue facility.
 
-I can see in the kernel code that an error is returned if the message
-buffer is full when trying to add a message, I just can't see where
-to get it in the libmount code.
+Signed-off-by: David Howells <dhowells@redhat.com>
+---
 
-That's not really a communication protocol problem.
+ man7/watch_queue.7 |  285 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 285 insertions(+)
+ create mode 100644 man7/watch_queue.7
 
-Still I need to work out how to detect it, maybe it is seen by
-the code in libmount already and I simply can't see what I need
-to do to recognise it ...
+diff --git a/man7/watch_queue.7 b/man7/watch_queue.7
+new file mode 100644
+index 000000000..6b22ad689
+--- /dev/null
++++ b/man7/watch_queue.7
+@@ -0,0 +1,285 @@
++.\"
++.\" Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
++.\" Written by David Howells (dhowells@redhat.com)
++.\"
++.\" This program is free software; you can redistribute it and/or
++.\" modify it under the terms of the GNU General Public Licence
++.\" as published by the Free Software Foundation; either version
++.\" 2 of the Licence, or (at your option) any later version.
++.\"
++.TH WATCH_QUEUE 7 "2020-08-07" Linux "General Kernel Notifications"
++.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
++.SH NAME
++General kernel notification queue
++.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
++.SH SYNOPSIS
++#include <linux/watch_queue.h>
++.EX
++
++pipe2(fds, O_NOTIFICATION_PIPE);
++ioctl(fds[0], IOC_WATCH_QUEUE_SET_SIZE, max_message_count);
++ioctl(fds[0], IOC_WATCH_QUEUE_SET_FILTER, &filter);
++keyctl_watch_key(KEY_SPEC_SESSION_KEYRING, fds[0], 0x01);
++for (;;) {
++	buf_len = read(fds[0], buffer, sizeof(buffer));
++	...
++}
++.EE
++.SH OVERVIEW
++.PP
++The general kernel notification queue is a general purpose transport for kernel
++notification messages to userspace.  Notification messages are marked with type
++information so that events from multiple sources can be distinguished.
++Messages are also of variable length to accommodate different information for
++each type.
++.PP
++Queues are implemented on top of standard pipes and multiple independent queues
++can be created.  After a pipe has been created, its size and filtering can be
++configured and event sources attached.  The pipe can then be read or polled to
++wait for messages.
++.PP
++Multiple messages may be read out of the queue at a time if the buffer is large
++enough, but messages will not get split amongst multiple reads.  If the buffer
++isn't large enough for a message,
++.B ENOBUFS
++will be returned.
++.PP
++In the case of message loss,
++.BR read (2)
++will fabricate a loss message and pass that to userspace immediately after the
++point at which the loss occurred.
++.PP
++A notification pipe allocates a certain amount of locked kernel memory (so that
++the kernel can write a notification into it from contexts where allocation is
++restricted), and so is subject to pipe resource limit restrictions.
++.PP
++Sources must be attached to a queue manually; there's no single global event
++source, but rather a variety of sources, each of which can be attached to by
++multiple queues.  Attachments can be set up by:
++.TP
++.BR keyctl_watch_key (3)
++Monitor a key or keyring for changes.
++.PP
++Because a source can produce a lot of different events, not all of which may be
++of interest to the watcher, a filter can be set on a queue to determine whether
++a particular event will get inserted in a queue at the point of posting inside
++the kernel.
++
++.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
++.SH MESSAGE STRUCTURE
++.PP
++The output from reading the pipe is divided into variable length messages.
++Read will never split a message across two separate read calls.  Each message
++begins with a header of the form:
++.PP
++.in +4n
++.EX
++struct watch_notification {
++	__u32	type:24;
++	__u32	subtype:8;
++	__u32	info;
++};
++.EE
++.in
++.PP
++Where
++.I type
++indicates the general class of notification,
++.I subtype
++indicates the specific type of notification within that class and
++.I info
++includes the message length (in bytes), the watcher's ID and some type-specific
++information.
++.PP
++A special message type,
++.BR WATCH_TYPE_META ,
++exists to convey information about the notification facility itself.  It has a
++number of subtypes:
++.TP
++.B WATCH_META_LOSS_NOTIFICATION
++This indicates one or more messages were lost, probably due to a buffer
++overrun.
++.TP
++.B WATCH_META_REMOVAL_NOTIFICATION
++This indicates that a notification source went away whilst it is being watched.
++This comes in two lengths: a short variant that carries just the header and a
++long variant that includes a 64-bit identifier as well that identifies the
++source more precisely (which variant is used and how the identifier should be
++interpreted is source dependent).
++.PP
++.I info
++includes the following fields:
++.TP
++.B WATCH_INFO_LENGTH
++Bits 0-6 indicate the size of the message in bytes, and can be between 8 and
++127.
++.TP
++.B WATCH_INFO_ID
++Bits 8-15 indicate the tag given to the source binding call.  This is a number
++between 0 and 255 and is purely a source index for userspace's use and isn't
++interpreted by the kernel.
++.TP
++.B WATCH_INFO_TYPE_INFO
++Bits 16-31 indicate subtype-dependent information.
++
++.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
++.SH IOCTL COMMANDS
++Pipes opened O_NOTIFICATION_PIPE have the following
++.IR ioctl ()
++commands available:
++.TP
++.B IOC_WATCH_QUEUE_SET_SIZE
++The ioctl argument is indicates the maximum number of messages that can be
++inserted into the pipe.  This must be a power of two.  This command also
++pre-allocates memory to hold messages.
++.IP
++This may only be done once and the queue cannot be used until this command has
++been done.
++.TP
++.B IOC_WATCH_QUEUE_SET_FILTER
++This is used to set filters on the notifications that get written into the
++buffer.  The ioctl argument points to a structure of the following form:
++.IP
++.in +4n
++.EX
++struct watch_notification_filter {
++	__u32	nr_filters;
++	__u32	__reserved;
++	struct watch_notification_type_filter filters[];
++};
++.EE
++.in
++.IP
++Where
++.I nr_filters
++indicates the number of elements in the
++.IR filters []
++array.  Each element in the filters array specifies a filter and is of the
++following form:
++.IP
++.in +4n
++.EX
++struct watch_notification_type_filter {
++	__u32	type;
++	__u32	info_filter;
++	__u32	info_mask;
++	__u32	subtype_filter[8];
++};
++.EE
++.in
++.IP
++Where
++.I type
++refer to the type field in a notification record header, info_filter and
++info_mask refer to the info field and subtype_filter is a bit-mask of subtypes.
++.IP
++If no filters are installed, all notifications are allowed by default and if
++one or more filters are installed, notifications are disallowed by default.
++.IP
++A notifications matches a filter if, for notification N and filter F:
++.IP
++.in +4n
++.EX
++N->type == F->type &&
++(F->subtype_filter[N->subtype >> 5] &
++	(1U << (N->subtype & 31))) &&
++(N->info & F->info_mask) == F->info_filter)
++.EE
++.in
++.IP
++
++
++.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
++.SH EXAMPLE
++To use the notification mechanism, first of all the pipe has to be opened and
++the size must be set:
++.PP
++.in +4n
++.EX
++int fds[2];
++pipe2(fd[0], O_NOTIFICATION_QUEUE);
++int wfd = fd[0];
++
++ioctl(wfd, IOC_WATCH_QUEUE_SET_SIZE, 16);
++.EE
++.in
++.PP
++From this point, the queue is open for business.  Filters can be set to
++restrict the notifications that get inserted into the buffer from the sources
++that are being watched.  For example:
++.PP
++.in +4n
++.EX
++static struct watch_notification_filter filter = {
++	.nr_filters	= 1,
++	.__reserved	= 0,
++	.filters = {
++		[0]	= {
++			.type			= WATCH_TYPE_KEY_NOTIFY,
++			.subtype_filter[0]	= 1 << NOTIFY_KEY_LINKED,
++			.info_filter		= 1 << WATCH_INFO_FLAG_2,
++			.info_mask		= 1 << WATCH_INFO_FLAG_2,
++		},
++	},
++};
++
++ioctl(wfd, IOC_WATCH_QUEUE_SET_FILTER, &filter);
++.EE
++.in
++.PP
++will only allow key-change notifications that indicate a key is linked into a
++keyring and then only if type-specific flag WATCH_INFO_FLAG_2 is set on the
++notification.
++.PP
++Sources can then be watched, for example:
++.PP
++.in +4n
++.EX
++keyctl_watch_key(KEY_SPEC_SESSION_KEYRING, wfd, 0x33);
++.EE
++.in
++.PP
++The first places a watch on the process's session keyring, directing the
++notifications to the buffer we just created and specifying that they should be
++tagged with 0x33 in the info ID field.
++.PP
++When it is determined that there is something in the buffer, messages can be
++read out of the ring with something like the following:
++.PP
++.in +4n
++.EX
++for (;;) {
++	unsigned char buf[128];
++	read(fd, buf, sizeof(buf));
++	struct watch_notification *n = (struct watch_notification *)buf;
++	switch (n->type) {
++	case WATCH_TYPE_META:
++		switch (n->subtype) {
++		case WATCH_META_REMOVAL_NOTIFICATION:
++			saw_removal_notification(n);
++			break;
++		case WATCH_META_LOSS_NOTIFICATION:
++			printf("-- LOSS --\n");
++			break;
++		}
++		break;
++	case WATCH_TYPE_KEY_NOTIFY:
++		saw_key_change(n);
++		break;
++	}
++}
++.EE
++.in
++.PP
++
++.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
++.SH VERSIONS
++The notification queue driver first appeared in v5.8 of the Linux kernel.
++.SH SEE ALSO
++.ad l
++.nh
++.BR keyctl (1),
++.BR ioctl (2),
++.BR pipe2 (2),
++.BR read (2),
++.BR keyctl_watch_key (3)
 
-So I'm stuck wanting to verify I have got everything that was
-sent and am having trouble moving on from that.
-
-Ian
 
