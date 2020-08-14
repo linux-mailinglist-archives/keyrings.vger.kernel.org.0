@@ -2,93 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E78A823F183
-	for <lists+keyrings@lfdr.de>; Fri,  7 Aug 2020 18:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD2B62447F9
+	for <lists+keyrings@lfdr.de>; Fri, 14 Aug 2020 12:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726871AbgHGQvb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 7 Aug 2020 12:51:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39046 "EHLO
+        id S1726971AbgHNK21 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Aug 2020 06:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbgHGQv3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Aug 2020 12:51:29 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE97C061756;
-        Fri,  7 Aug 2020 09:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=WT4EsZ09q5GDbk6mx7GEfLZNbwgMgcuPWWQjqxXHSqU=; b=BW1BD/fNefW124izLPKM56T4x5
-        LKR4bsXz2ixqJGw6OTNhjw0/pB/EDzQdMN0wmgjEGYWKTVfvohcBEoEqnaIqW5irmI9jGhQfToxQk
-        4s0jN0qcf7kXyZAvrh6zV90cIrBPvA4sYu9naJ6y9tHaMjxvKoZ9PpJI8EKtbdtxarJX/eRESYmLc
-        hE5oSwFi3I9gZWDpbSfFORpI4yAEl0Jo1ylODA1wqBdq3jr9dF6+Wf5XaXSfEvRO3JxsndVPvuhFq
-        K+V6yafqdk40XdPF6a57UdTeESI6Q5qvf7WT8koFeg6xMothZtxl7xb+1kxlS/LzSTNzaMIa8a/ws
-        RN4Agaig==;
-Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac] (helo=smtpauth.infradead.org)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1k45aY-0004FW-K9; Fri, 07 Aug 2020 16:51:27 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        keyrings@vger.kernel.org, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH] security: keys: delete repeated words in comments
-Date:   Fri,  7 Aug 2020 09:51:23 -0700
-Message-Id: <20200807165123.3863-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        with ESMTP id S1726753AbgHNK20 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Aug 2020 06:28:26 -0400
+Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF785C061383
+        for <keyrings@vger.kernel.org>; Fri, 14 Aug 2020 03:28:25 -0700 (PDT)
+Received: by mail-vk1-xa36.google.com with SMTP id o2so1911673vkn.9
+        for <keyrings@vger.kernel.org>; Fri, 14 Aug 2020 03:28:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=GzalAsE9Rt8vlrKZLdv87Kp1rtKtoMFJavRXhq5lOmOL2f6GlTti3MYx0ngM3V7J+r
+         vbRu9oDUt7V23CJFdF3UFWYrNi3Ps0PYu1mVNN9E5ipu1yWRql2vqH74hVKRtFKX1amA
+         tkNuftfHH6sylPoSzhGobd/1QENn80aQQ9qpbMH5sDWnDu0Ooa6oLYSSs1CSCaevLthf
+         1dcm7fKiwNDgjMqkshHpgzA5DRV32gbCNRfyr19IOjrKEE0nM1atyr8gsuAeVtEqJYpp
+         5SgglbpqWJVqvCcNqcE2ABV8jzsia9N9I2SYxgfdedp8ENUN0/AZDQPvbq63GWxaupfU
+         8miQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=czSUJbSB2F+aD1Fd16conk8QQQ9eHRczHmGz8E4bLk89MsGHuMYb9eSgaqTHuNlsaE
+         NjvczvcxDdVsX1LFRYk8keW4mubteoxQNGUes4iHvOAb9XVBVdzKlSUEK2N8gkHiUnIt
+         jVGux+D5BQapumLm6gydJgQicUnvDTD9CSxAZtAVxJD5WiOFAT5thDL8j6DuvCgSIeSB
+         FbPEZfgZYQrubNXPkWZX8Hb68lByUnRgFC4YiaX1v8ekXQgjWHcxS4eM5PaGhilYRij1
+         stsYfjhyHLaZuNRfjO0kx5P4zMcoDcekalKuKxOTVgLRoBrXxerlWcrkxLuzFzHuRDiZ
+         IVfg==
+X-Gm-Message-State: AOAM531rustqw2vagRxnojCGi7nXh8OEaEmceeaNQfPXsgeSMFZOveDf
+        mApo575QpazqM9AtwLFrKi9G47VoOEkCHjbLaUE=
+X-Google-Smtp-Source: ABdhPJxIBnQkrcRP7dFsXBBwODjoZBZ+FsFGfBjIjNz2BKnfBDWoPd1/VwFCenmfVpV7rTbhBxLR0wbp4ZoKexFOB9c=
+X-Received: by 2002:a1f:a752:: with SMTP id q79mr360644vke.74.1597400904195;
+ Fri, 14 Aug 2020 03:28:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab0:234f:0:0:0:0:0 with HTTP; Fri, 14 Aug 2020 03:28:23
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <mes64543@gmail.com>
+Date:   Fri, 14 Aug 2020 03:28:23 -0700
+Message-ID: <CAF4hjb9+Pq34CgLokF9MnypbQWXhombhtDEObi6O9uyopL0L6Q@mail.gmail.com>
+Subject: Hello. Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Drop repeated words in comments.
-{to, will, the}
+--=20
+Dear Friend,
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc: keyrings@vger.kernel.org
-Cc: James Morris <jmorris@namei.org>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-security-module@vger.kernel.org
----
- security/keys/keyctl.c  |    2 +-
- security/keys/keyring.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+I'm Mr. Scott Donald a Successful businessMan dealing with
+Exportation, I got your mail contact through search to let you know my
+intension and my Ugly Situation Am a dying Man here in Los Angeles
+California Hospital Bed in (USA), I Lost my Wife and my only Daughter
+for Covid-19 and I also have a problem in my Health and I can die
+anytime I Know,
 
---- linux-next-20200731.orig/security/keys/keyctl.c
-+++ linux-next-20200731/security/keys/keyctl.c
-@@ -506,7 +506,7 @@ error:
-  * keyring, otherwise replace the link to the matching key with a link to the
-  * new key.
-  *
-- * The key must grant the caller Link permission and the the keyring must grant
-+ * The key must grant the caller Link permission and the keyring must grant
-  * the caller Write permission.  Furthermore, if an additional link is created,
-  * the keyring's quota will be extended.
-  *
---- linux-next-20200731.orig/security/keys/keyring.c
-+++ linux-next-20200731/security/keys/keyring.c
-@@ -881,7 +881,7 @@ found:
-  *
-  * Keys are matched to the type provided and are then filtered by the match
-  * function, which is given the description to use in any way it sees fit.  The
-- * match function may use any attributes of a key that it wishes to to
-+ * match function may use any attributes of a key that it wishes to
-  * determine the match.  Normally the match function from the key type would be
-  * used.
-  *
-@@ -1204,7 +1204,7 @@ static int keyring_detect_cycle_iterator
- }
- 
- /*
-- * See if a cycle will will be created by inserting acyclic tree B in acyclic
-+ * See if a cycle will be created by inserting acyclic tree B in acyclic
-  * tree A at the topmost level (ie: as a direct child of A).
-  *
-  * Since we are adding B to A at the top level, checking for cycles should just
+I have a project that I am about to hand over to you. and I already
+instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
+of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
+able you
+to give 50% of this fund to Charitable Home in your State and take 50%
+don't think otherwise and why would anybody send someone you barely
+know to help you deliver a message, help me do this for the happiness
+of my soul and for God to mercy me and my Family and give Us a good
+place.
+
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so badly I have no means to
+reach any Charitable Home there. that is why I go for a personal
+search of the Country and State and I got your mail contact through
+search to let you know my Bitterness and please, help me is getting
+Dark I ask my Doctor to help me keep you notice failure for me to
+reach you in person Your urgent Response, here is my Doctor Whats-app
+Number for urgent notice +13019692737
+
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
+
+My Regards.
+
+Mr. Scott Donald
+CEO
