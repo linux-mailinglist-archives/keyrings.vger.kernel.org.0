@@ -2,20 +2,20 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D31245469
-	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 00:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEB4524546F
+	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 00:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729204AbgHOWYA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 15 Aug 2020 18:24:00 -0400
-Received: from mx2.suse.de ([195.135.220.15]:37958 "EHLO mx2.suse.de"
+        id S1729368AbgHOWYH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 15 Aug 2020 18:24:07 -0400
+Received: from mx2.suse.de ([195.135.220.15]:37956 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726541AbgHOWXu (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 15 Aug 2020 18:23:50 -0400
+        id S1728765AbgHOWXq (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sat, 15 Aug 2020 18:23:46 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id C53CFB65B;
-        Sat, 15 Aug 2020 07:52:17 +0000 (UTC)
-From:   Coly Li <colyli@suse.de>
+        by mx2.suse.de (Postfix) with ESMTP id E9063AC50;
+        Sat, 15 Aug 2020 12:46:45 +0000 (UTC)
+From:   colyli@suse.de
 To:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Coly Li <colyli@suse.de>, Dan Williams <dan.j.williams@intel.com>,
         James Bottomley <jejb@linux.ibm.com>,
@@ -23,8 +23,8 @@ Cc:     Coly Li <colyli@suse.de>, Dan Williams <dan.j.williams@intel.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
         Stefan Berger <stefanb@linux.ibm.com>
 Subject: [PATCH RESEND] docs: update trusted-encrypted.rst
-Date:   Sat, 15 Aug 2020 15:51:43 +0800
-Message-Id: <20200815075143.47082-1-colyli@suse.de>
+Date:   Sat, 15 Aug 2020 20:46:14 +0800
+Message-Id: <20200815124614.115201-1-colyli@suse.de>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,6 +32,8 @@ Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
+
+From: Coly Li <colyli@suse.de>
 
 The parameters in tmp2 commands are outdated, people are not able to
 create trusted key by the example commands.
