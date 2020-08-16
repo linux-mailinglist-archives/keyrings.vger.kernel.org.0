@@ -2,20 +2,19 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3652458B1
-	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 19:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 803112458C4
+	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 19:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728555AbgHPRPW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 16 Aug 2020 13:15:22 -0400
-Received: from mx2.suse.de ([195.135.220.15]:37790 "EHLO mx2.suse.de"
+        id S1729401AbgHPRWd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 16 Aug 2020 13:22:33 -0400
+Received: from mx2.suse.de ([195.135.220.15]:39286 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726699AbgHPRPW (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 16 Aug 2020 13:15:22 -0400
+        id S1726511AbgHPRWd (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 16 Aug 2020 13:22:33 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 98C89ACE3;
-        Sun, 16 Aug 2020 17:15:44 +0000 (UTC)
-Subject: Re: [PATCH RESEND] docs: update trusted-encrypted.rst
+        by mx2.suse.de (Postfix) with ESMTP id 4A928B020;
+        Sun, 16 Aug 2020 17:22:55 +0000 (UTC)
 To:     jejb@linux.ibm.com
 Cc:     Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org,
@@ -24,9 +23,8 @@ Cc:     Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
         Mimi Zohar <zohar@linux.ibm.com>
 References: <20200815075143.47082-1-colyli@suse.de>
  <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
- <1597595769.8344.7.camel@linux.ibm.com>
- <f9d4c4a9-5059-eae2-bc89-51f16e8ca4d9@suse.de>
- <1597597933.8344.13.camel@linux.ibm.com>
+ <096636f4-a928-dd00-dba6-216651c3d63b@suse.de>
+ <1597597699.8344.11.camel@linux.ibm.com>
 From:   Coly Li <colyli@suse.de>
 Autocrypt: addr=colyli@suse.de; keydata=
  mQINBFYX6S8BEAC9VSamb2aiMTQREFXK4K/W7nGnAinca7MRuFUD4JqWMJ9FakNRd/E0v30F
@@ -71,53 +69,63 @@ Autocrypt: addr=colyli@suse.de; keydata=
  K0Jx4CEZubakJe+894sX6pvNFiI7qUUdB882i5GR3v9ijVPhaMr8oGuJ3kvwBIA8lvRBGVGn
  9xvzkQ8Prpbqh30I4NMp8MjFdkwCN6znBKPHdjNTwE5PRZH0S9J0o67IEIvHfH0eAWAsgpTz
  +jwc7VKH7vkvgscUhq/v1/PEWCAqh9UHy7R/jiUxwzw/288OpgO+i+2l11Y=
-Message-ID: <254177e3-3b15-e69c-c419-a4da3580bee5@suse.de>
-Date:   Mon, 17 Aug 2020 01:15:14 +0800
+Subject: Re: [PATCH RESEND] docs: update trusted-encrypted.rst
+Message-ID: <90ce83bf-3547-7ad4-ea6d-40e2e77e29dd@suse.de>
+Date:   Mon, 17 Aug 2020 01:22:26 +0800
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
  Gecko/20100101 Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <1597597933.8344.13.camel@linux.ibm.com>
+In-Reply-To: <1597597699.8344.11.camel@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2020/8/17 01:12, James Bottomley wrote:
-> On Mon, 2020-08-17 at 00:57 +0800, Coly Li wrote:
->> On 2020/8/17 00:36, James Bottomley wrote:
->>> On Sun, 2020-08-16 at 12:06 -0400, Stefan Berger wrote:
->>> [...]
->>>> A note in this file states this:
->>>>
->>>> Note: When using a TPM 2.0 with a persistent key with handle
->>>> 0x81000001, append 'keyhandle=0x81000001' to statements between
->>>> quotes, such as "new 32 keyhandle=0x81000001".
->>>>
->>>> Now if someone was (still) interested in TPM 1.2 
->>>> adapt the  note to state that these keyhandle=... should be
->>>> removed for the TPM 1.2 case.
+On 2020/8/17 01:08, James Bottomley wrote:
+> On Mon, 2020-08-17 at 01:01 +0800, Coly Li wrote:
+>> On 2020/8/17 00:06, Stefan Berger wrote:
+>>> On 8/15/20 3:51 AM, Coly Li wrote:
+> [...]
+>>>>     Usage::
+>>>> @@ -115,7 +114,7 @@ append 'keyhandle=0x81000001' to statements
+>>>> between quotes, such as
 >>>
->>> Actually, I also have a plan to match what userspace does and
->>> simply assume a keyhandle of 40000001 (generate an EC Storage
->>> Primary Key on the fly) if it's not specified, which will make the
->>> TPM1.2 and 2.0 versions of this the same.  Unfortunately the
->>> necessary precursor patches are taking an age to get upstream.
+>>>
+>>> A note in this file states this:
+>>>
+>>> Note: When using a TPM 2.0 with a persistent key with handle
+>>> 0x81000001, append 'keyhandle=0x81000001' to statements between
+>>> quotes, such as "new 32 keyhandle=0x81000001".
+>>>
+>>> Now if someone was (still) interested in TPM 1.2 then the below
+>>> changes you are proposing wouldn't work for them. Maybe you should
+>>> adapt the note to state that these keyhandle=... should be removed
+>>> for the TPM 1.2 case.
+>>>
 >>
->> Hi James,
->>
->> Do you have a plan to push such patches into upstream soon? If yes
->> than I may wait for your patch and withdraw this one.
+>> I agree. Indeed I have no idea why number 0x81000001 is used, and I
+>> don't have practice experience with TPM 1.2. Now the purpose of this
+>> patch accomplished: experts response and confirm my guess :-)
 > 
-> Well, as I said above it depends on not yet upstream precursor patches.
->  They have been pending for about a year, so I've no real idea of the
-> timeline.
+> It was the conventional persistent value for the RSA 2048 version of
+> the primary storage seed.  Originally the PC spec required the
+> manufacturer provision this on all TPM 2.0 based PC class systems. 
+> Unfortunately in spite of it being in the Windows Hardware guide no
+> manufacturer ever did, meaning you either have to create it yourself or
+> do something different.  Because of usability problems, every consumer
+> of TPM key function has opted to do something different, namely derive
+> the EC primary if no parent is specified.
 
-I see. Then I will post a v2 patch only does the s/-o/-c fix, and leave
-others untouched.
+Aha, thanks for the hint :-)
 
-Thanks.
+My motivation is for the NVDIMM security with TPM 2.0 chip on x86 server
+(Lenovo SR650). To automatically load a trusted key, I encounter the
+outdated command line in trusted-encrypted.rst. From your response, it
+seems 0x81000001 is still a working value that I can recommend to other
+people who want to encrypt/decrypt their NVDIMM banks.
 
 Coly Li
+
