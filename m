@@ -2,130 +2,115 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1FB22458A5
-	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 19:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F26C12458A9
+	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 19:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728977AbgHPRFc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 16 Aug 2020 13:05:32 -0400
-Received: from mx2.suse.de ([195.135.220.15]:36528 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726825AbgHPRFb (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 16 Aug 2020 13:05:31 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 2ADEBACE1;
-        Sun, 16 Aug 2020 17:05:54 +0000 (UTC)
+        id S1728551AbgHPRId (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 16 Aug 2020 13:08:33 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:30424 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726825AbgHPRIc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 16 Aug 2020 13:08:32 -0400
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07GH36N7022608;
+        Sun, 16 Aug 2020 13:08:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=4nXD3aImX6M64sQgFxiSKLNFtYkND9wGT+mb610YBpM=;
+ b=KyeXjMgm510MnIEDW5c8NBtutiuAAWGxDzP6EB0YgU5TlpmtU3A7t6ve8r1/fZ0pTYev
+ frwhBxa27Q2ienHvEgY45Mrwgqn1rDyfYRVNxJxxn/BKrdKZQfCkVBq+BNIom+M2ApD1
+ b8ikOChjOn/7zm2CBEPheQer5hallhk24L/tQ+bwyIc0byAgaHuxBhhr5Qr9KmQa/FP4
+ qSEN30WhErX3/leJh4uaKas3PdS6COZoONq+chAINTrBHsQJVJneUc1RlOxp85Z7tgNV
+ mTJ/tF2q007hLUveAnmV3AwyIA+4fM6HYSamXAVSRZkYUN7hqg5zj0w9/M5aMzRu0EjH ZQ== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 32y4kw4juj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 16 Aug 2020 13:08:24 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+        by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07GH2ZYh021533;
+        Sun, 16 Aug 2020 17:08:23 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+        by ppma02wdc.us.ibm.com with ESMTP id 32x7b8auj3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 16 Aug 2020 17:08:23 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07GH8McF62521822
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 16 Aug 2020 17:08:22 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9830A78060;
+        Sun, 16 Aug 2020 17:08:22 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2D3DB7805E;
+        Sun, 16 Aug 2020 17:08:21 +0000 (GMT)
+Received: from [153.66.254.174] (unknown [9.80.233.55])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Sun, 16 Aug 2020 17:08:20 +0000 (GMT)
+Message-ID: <1597597699.8344.11.camel@linux.ibm.com>
 Subject: Re: [PATCH RESEND] docs: update trusted-encrypted.rst
-To:     Stefan Berger <stefanb@linux.ibm.com>
+From:   James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To:     Coly Li <colyli@suse.de>, Stefan Berger <stefanb@linux.ibm.com>
 Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         Dan Williams <dan.j.williams@intel.com>,
-        James Bottomley <jejb@linux.ibm.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         Mimi Zohar <zohar@linux.ibm.com>
+Date:   Sun, 16 Aug 2020 10:08:19 -0700
+In-Reply-To: <096636f4-a928-dd00-dba6-216651c3d63b@suse.de>
 References: <20200815075143.47082-1-colyli@suse.de>
- <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
-From:   Coly Li <colyli@suse.de>
-Autocrypt: addr=colyli@suse.de; keydata=
- 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
-Message-ID: <dbe58528-e445-f637-4e22-fbcff7b6965a@suse.de>
-Date:   Mon, 17 Aug 2020 01:05:24 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+         <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
+         <096636f4-a928-dd00-dba6-216651c3d63b@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-16_07:2020-08-14,2020-08-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 spamscore=0 malwarescore=0 phishscore=0 mlxlogscore=799
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008160141
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2020/8/17 00:06, Stefan Berger wrote:
-> On 8/15/20 3:51 AM, Coly Li wrote:
->> The parameters in tmp2 commands are outdated, people are not able to
->> create trusted key by the example commands.
->>
->> This patch updates the paramerters of tpm2 commands, they are verified
->> by tpm2-tools-4.1 with Linux v5.8 kernel.
->>
->> Signed-off-by: Coly Li <colyli@suse.de>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: James Bottomley <jejb@linux.ibm.com>
->> Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->> Cc: Mimi Zohar <zohar@linux.ibm.com>
->> Cc: Stefan Berger <stefanb@linux.ibm.com>
->> ---
->>   Documentation/security/keys/trusted-encrypted.rst | 9 ++++-----
->>   1 file changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/Documentation/security/keys/trusted-encrypted.rst
->> b/Documentation/security/keys/trusted-encrypted.rst
->> index 9483a7425ad5..442a2775156e 100644
->> --- a/Documentation/security/keys/trusted-encrypted.rst
->> +++ b/Documentation/security/keys/trusted-encrypted.rst
->> @@ -39,10 +39,9 @@ With the IBM TSS 2 stack::
->>     Or with the Intel TSS 2 stack::
->>   -  #> tpm2_createprimary --hierarchy o -G rsa2048 -o key.ctxt
->> +  #> tpm2_createprimary --hierarchy o -G rsa2048 key.ctxt
->>     [...]
->> -  handle: 0x800000FF
+On Mon, 2020-08-17 at 01:01 +0800, Coly Li wrote:
+> On 2020/8/17 00:06, Stefan Berger wrote:
+> > On 8/15/20 3:51 AM, Coly Li wrote:
+[...]
+> > >     Usage::
+> > > @@ -115,7 +114,7 @@ append 'keyhandle=0x81000001' to statements
+> > > between quotes, such as
+> > 
+> > 
+> > A note in this file states this:
+> > 
+> > Note: When using a TPM 2.0 with a persistent key with handle
+> > 0x81000001, append 'keyhandle=0x81000001' to statements between
+> > quotes, such as "new 32 keyhandle=0x81000001".
+> > 
+> > Now if someone was (still) interested in TPM 1.2 then the below
+> > changes you are proposing wouldn't work for them. Maybe you should
+> > adapt the note to state that these keyhandle=... should be removed
+> > for the TPM 1.2 case.
+> > 
 > 
-> 
-> Are you sure about this? My documentation for 4.1.3 on F32 states
-> 
-> 
-> -c, --key-context=FILE:
-> 
->          The file path to save the object context of the generated
-> primary object.
-> 
+> I agree. Indeed I have no idea why number 0x81000001 is used, and I
+> don't have practice experience with TPM 1.2. Now the purpose of this
+> patch accomplished: experts response and confirm my guess :-)
 
-BTW, where can I get the document you mentioned for "4.1.3 on F32
-states" ? I only have a pdf file "A practical Guide to TPM 2.0" which
-does not have 4.1.3
+It was the conventional persistent value for the RSA 2048 version of
+the primary storage seed.  Originally the PC spec required the
+manufacturer provision this on all TPM 2.0 based PC class systems. 
+Unfortunately in spite of it being in the Windows Hardware guide no
+manufacturer ever did, meaning you either have to create it yourself or
+do something different.  Because of usability problems, every consumer
+of TPM key function has opted to do something different, namely derive
+the EC primary if no parent is specified.
 
-Thanks.
+James
 
-Coly Li
