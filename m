@@ -2,99 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71F3D245894
-	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 18:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10FF124589E
+	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 18:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729231AbgHPQgd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 16 Aug 2020 12:36:33 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:39696 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729270AbgHPQg2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 16 Aug 2020 12:36:28 -0400
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07GGVwM5058499;
-        Sun, 16 Aug 2020 12:36:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=pWPUnCfTTmcgB53FCS/Fqgx50gn2aVg6wZ+tQejc1bY=;
- b=pZOtNhvILgop3LaQn9adf3GMnMO+eYlsprkn347cWXSYAZWxa/jJtf86eYRgmE+aVcRf
- 3sv41IxlvA6YVx5U5xJWvTkUy/3REeyfsghVD0R3RyKBQm7hhLeIX6kRXkQdua2gkIxY
- flA7h+LJHTUT0Za52sIJhAy9oOhY3bCxtHM7GnC2ve37r/bwaTFlHwPAl+TVnuvc5ry8
- cHNVB9liIW1GBJpVQRdl5TfcFyYMcu1h7x4Pzg1aimD+hEObHR0CsUb42wdL3vhB+136
- l0dBAkyrfvOpUlS+Cxx/IG9LMQbdK56/4bAk71kGCRRUIK/YlZOmmEIq3QUQw9xTIHkw LA== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 32y24hepdd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 16 Aug 2020 12:36:24 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07GGYXlo020987;
-        Sun, 16 Aug 2020 16:36:23 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-        by ppma04wdc.us.ibm.com with ESMTP id 32x7b82pyt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 16 Aug 2020 16:36:23 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07GGaLSi41222416
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 16 Aug 2020 16:36:21 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AC3E278064;
-        Sun, 16 Aug 2020 16:36:21 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4EC5878060;
-        Sun, 16 Aug 2020 16:36:10 +0000 (GMT)
-Received: from [153.66.254.174] (unknown [9.80.233.55])
-        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Sun, 16 Aug 2020 16:36:10 +0000 (GMT)
-Message-ID: <1597595769.8344.7.camel@linux.ibm.com>
+        id S1728477AbgHPQ6K (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 16 Aug 2020 12:58:10 -0400
+Received: from mx2.suse.de ([195.135.220.15]:35336 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726511AbgHPQ6F (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 16 Aug 2020 12:58:05 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id A63EFAC19;
+        Sun, 16 Aug 2020 16:58:27 +0000 (UTC)
 Subject: Re: [PATCH RESEND] docs: update trusted-encrypted.rst
-From:   James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To:     Stefan Berger <stefanb@linux.ibm.com>, Coly Li <colyli@suse.de>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Dan Williams <dan.j.williams@intel.com>,
+To:     jejb@linux.ibm.com
+Cc:     Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         Mimi Zohar <zohar@linux.ibm.com>
-Date:   Sun, 16 Aug 2020 09:36:09 -0700
-In-Reply-To: <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
 References: <20200815075143.47082-1-colyli@suse.de>
-         <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
+ <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
+ <1597595769.8344.7.camel@linux.ibm.com>
+From:   Coly Li <colyli@suse.de>
+Autocrypt: addr=colyli@suse.de; keydata=
+ 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
+Message-ID: <f9d4c4a9-5059-eae2-bc89-51f16e8ca4d9@suse.de>
+Date:   Mon, 17 Aug 2020 00:57:56 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.11.0
+MIME-Version: 1.0
+In-Reply-To: <1597595769.8344.7.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-16_07:2020-08-14,2020-08-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 impostorscore=0
- clxscore=1011 suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0
- mlxlogscore=870 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008160132
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, 2020-08-16 at 12:06 -0400, Stefan Berger wrote:
-[...]
-> A note in this file states this:
+On 2020/8/17 00:36, James Bottomley wrote:
+> On Sun, 2020-08-16 at 12:06 -0400, Stefan Berger wrote:
+> [...]
+>> A note in this file states this:
+>>
+>> Note: When using a TPM 2.0 with a persistent key with handle
+>> 0x81000001, append 'keyhandle=0x81000001' to statements between
+>> quotes, such as "new 32 keyhandle=0x81000001".
+>>
+>> Now if someone was (still) interested in TPM 1.2 then the below
+>> changes you are proposing wouldn't work for them. Maybe you should
+>> adapt the  note to state that these keyhandle=... should be removed
+>> for the TPM 1.2 case.
 > 
-> Note: When using a TPM 2.0 with a persistent key with handle
-> 0x81000001, append 'keyhandle=0x81000001' to statements between
-> quotes, such as "new 32 keyhandle=0x81000001".
-> 
-> Now if someone was (still) interested in TPM 1.2 then the below
-> changes you are proposing wouldn't work for them. Maybe you should
-> adapt the  note to state that these keyhandle=... should be removed
-> for the TPM 1.2 case.
+> Actually, I also have a plan to match what userspace does and simply
+> assume a keyhandle of 40000001 (generate an EC Storage Primary Key on
+> the fly) if it's not specified, which will make the TPM1.2 and 2.0
+> versions of this the same.  Unfortunately the necessary precursor
+> patches are taking an age to get upstream.
 
-Actually, I also have a plan to match what userspace does and simply
-assume a keyhandle of 40000001 (generate an EC Storage Primary Key on
-the fly) if it's not specified, which will make the TPM1.2 and 2.0
-versions of this the same.  Unfortunately the necessary precursor
-patches are taking an age to get upstream.
+Hi James,
 
-James
+Do you have a plan to push such patches into upstream soon? If yes than
+I may wait for your patch and withdraw this one.
+
+Thanks.
+
+Coly Li
 
