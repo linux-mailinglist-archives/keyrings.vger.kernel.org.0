@@ -2,29 +2,28 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10FF124589E
-	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 18:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10FF32458A2
+	for <lists+keyrings@lfdr.de>; Sun, 16 Aug 2020 19:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728477AbgHPQ6K (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 16 Aug 2020 12:58:10 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35336 "EHLO mx2.suse.de"
+        id S1728306AbgHPRBs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 16 Aug 2020 13:01:48 -0400
+Received: from mx2.suse.de ([195.135.220.15]:35986 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726511AbgHPQ6F (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 16 Aug 2020 12:58:05 -0400
+        id S1726825AbgHPRBr (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 16 Aug 2020 13:01:47 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id A63EFAC19;
-        Sun, 16 Aug 2020 16:58:27 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 6773CAFD5;
+        Sun, 16 Aug 2020 17:02:08 +0000 (UTC)
 Subject: Re: [PATCH RESEND] docs: update trusted-encrypted.rst
-To:     jejb@linux.ibm.com
-Cc:     Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+To:     Stefan Berger <stefanb@linux.ibm.com>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         Dan Williams <dan.j.williams@intel.com>,
+        James Bottomley <jejb@linux.ibm.com>,
         Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
         Mimi Zohar <zohar@linux.ibm.com>
 References: <20200815075143.47082-1-colyli@suse.de>
  <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
- <1597595769.8344.7.camel@linux.ibm.com>
 From:   Coly Li <colyli@suse.de>
 Autocrypt: addr=colyli@suse.de; keydata=
  mQINBFYX6S8BEAC9VSamb2aiMTQREFXK4K/W7nGnAinca7MRuFUD4JqWMJ9FakNRd/E0v30F
@@ -69,46 +68,109 @@ Autocrypt: addr=colyli@suse.de; keydata=
  K0Jx4CEZubakJe+894sX6pvNFiI7qUUdB882i5GR3v9ijVPhaMr8oGuJ3kvwBIA8lvRBGVGn
  9xvzkQ8Prpbqh30I4NMp8MjFdkwCN6znBKPHdjNTwE5PRZH0S9J0o67IEIvHfH0eAWAsgpTz
  +jwc7VKH7vkvgscUhq/v1/PEWCAqh9UHy7R/jiUxwzw/288OpgO+i+2l11Y=
-Message-ID: <f9d4c4a9-5059-eae2-bc89-51f16e8ca4d9@suse.de>
-Date:   Mon, 17 Aug 2020 00:57:56 +0800
+Message-ID: <096636f4-a928-dd00-dba6-216651c3d63b@suse.de>
+Date:   Mon, 17 Aug 2020 01:01:38 +0800
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
  Gecko/20100101 Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <1597595769.8344.7.camel@linux.ibm.com>
+In-Reply-To: <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2020/8/17 00:36, James Bottomley wrote:
-> On Sun, 2020-08-16 at 12:06 -0400, Stefan Berger wrote:
-> [...]
->> A note in this file states this:
+On 2020/8/17 00:06, Stefan Berger wrote:
+> On 8/15/20 3:51 AM, Coly Li wrote:
+>> The parameters in tmp2 commands are outdated, people are not able to
+>> create trusted key by the example commands.
 >>
->> Note: When using a TPM 2.0 with a persistent key with handle
->> 0x81000001, append 'keyhandle=0x81000001' to statements between
->> quotes, such as "new 32 keyhandle=0x81000001".
+>> This patch updates the paramerters of tpm2 commands, they are verified
+>> by tpm2-tools-4.1 with Linux v5.8 kernel.
 >>
->> Now if someone was (still) interested in TPM 1.2 then the below
->> changes you are proposing wouldn't work for them. Maybe you should
->> adapt the  note to state that these keyhandle=... should be removed
->> for the TPM 1.2 case.
+>> Signed-off-by: Coly Li <colyli@suse.de>
+>> Cc: Dan Williams <dan.j.williams@intel.com>
+>> Cc: James Bottomley <jejb@linux.ibm.com>
+>> Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+>> Cc: Mimi Zohar <zohar@linux.ibm.com>
+>> Cc: Stefan Berger <stefanb@linux.ibm.com>
+>> ---
+>>   Documentation/security/keys/trusted-encrypted.rst | 9 ++++-----
+>>   1 file changed, 4 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/Documentation/security/keys/trusted-encrypted.rst
+>> b/Documentation/security/keys/trusted-encrypted.rst
+>> index 9483a7425ad5..442a2775156e 100644
+>> --- a/Documentation/security/keys/trusted-encrypted.rst
+>> +++ b/Documentation/security/keys/trusted-encrypted.rst
+>> @@ -39,10 +39,9 @@ With the IBM TSS 2 stack::
+>>     Or with the Intel TSS 2 stack::
+>>   -  #> tpm2_createprimary --hierarchy o -G rsa2048 -o key.ctxt
+>> +  #> tpm2_createprimary --hierarchy o -G rsa2048 key.ctxt
+>>     [...]
+>> -  handle: 0x800000FF
 > 
-> Actually, I also have a plan to match what userspace does and simply
-> assume a keyhandle of 40000001 (generate an EC Storage Primary Key on
-> the fly) if it's not specified, which will make the TPM1.2 and 2.0
-> versions of this the same.  Unfortunately the necessary precursor
-> patches are taking an age to get upstream.
+> 
+> Are you sure about this? My documentation for 4.1.3 on F32 states
+> 
+> 
+> -c, --key-context=FILE:
+> 
+>          The file path to save the object context of the generated
+> primary object.
+> 
+> 
 
-Hi James,
+Yes of course you are right, it is s/-o/-c
 
-Do you have a plan to push such patches into upstream soon? If yes than
-I may wait for your patch and withdraw this one.
+> 
+>> -  #> tpm2_evictcontrol -c key.ctxt -p 0x81000001
+>> +  #> tpm2_evictcontrol -c key.ctxt 0x81000001
+>>     persistentHandle: 0x81000001
+> 
+> 
+> This seems correct.
+> 
+> 
+>>     Usage::
+>> @@ -115,7 +114,7 @@ append 'keyhandle=0x81000001' to statements
+>> between quotes, such as
+> 
+> 
+> A note in this file states this:
+> 
+> Note: When using a TPM 2.0 with a persistent key with handle 0x81000001,
+> append 'keyhandle=0x81000001' to statements between quotes, such as
+> "new 32 keyhandle=0x81000001".
+> 
+> Now if someone was (still) interested in TPM 1.2 then the below changes
+> you are proposing wouldn't work for them. Maybe you should adapt the
+> note to state that these keyhandle=... should be removed for the TPM 1.2
+> case.
+> 
+
+I agree. Indeed I have no idea why number 0x81000001 is used, and I
+don't have practice experience with TPM 1.2. Now the purpose of this
+patch accomplished: experts response and confirm my guess :-)
 
 Thanks.
 
-Coly Li
+>>     ::
+>>   -    $ keyctl add trusted kmk "new 32" @u
+>> +    $ keyctl add trusted kmk "new 32 keyhandle=0x81000001" @u
+>>       440502848
+>>         $ keyctl show
+>> @@ -138,7 +137,7 @@ append 'keyhandle=0x81000001' to statements
+>> between quotes, such as
+>>     Load a trusted key from the saved blob::
+>>   -    $ keyctl add trusted kmk "load `cat kmk.blob`" @u
+>> +    $ keyctl add trusted kmk "load `cat kmk.blob`
+>> keyhandle=0x81000001" @u
+>>       268728824
+>>         $ keyctl print 268728824
+> 
+> 
 
+Coly Li
