@@ -2,143 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5FFC246416
-	for <lists+keyrings@lfdr.de>; Mon, 17 Aug 2020 12:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77170246855
+	for <lists+keyrings@lfdr.de>; Mon, 17 Aug 2020 16:28:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726385AbgHQKHf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Aug 2020 06:07:35 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:54348 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726367AbgHQKHe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Aug 2020 06:07:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1597658853;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=j/v002Gxe6nBxuXIo8xXJ4Ruh4kteZD7I/mhEJxj0MM=;
-        b=GiJsdnVU1uuaQ2zSnXbYJ8yfc4p2t3DVgftNvTzEcxl3e1cLpWQ6DLjlGIWsAGE4H0p+lp
-        XKj71nFtFzgoEBHUQjB00Lzg7i53GKtsABp6PbZjkDx0mU5EZ+NAnFLltDntz3pkljXkY/
-        Y+dqlEzYok1DgymObskxjlAHgweANN0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-444-zoNlyZsOPL2h4UiP-b4EoQ-1; Mon, 17 Aug 2020 06:07:31 -0400
-X-MC-Unique: zoNlyZsOPL2h4UiP-b4EoQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 379E1801AF2;
-        Mon, 17 Aug 2020 10:07:30 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-127.rdu2.redhat.com [10.10.120.127])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 053085C62B;
-        Mon, 17 Aug 2020 10:07:28 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH] watch_queue: Limit the number of watches a user can hold
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 17 Aug 2020 11:07:28 +0100
-Message-ID: <159765884811.1436382.16387370517871969276.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/0.23
+        id S1728900AbgHQO2r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 17 Aug 2020 10:28:47 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55152 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728669AbgHQO2q (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 17 Aug 2020 10:28:46 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id DCA04AB8B;
+        Mon, 17 Aug 2020 14:29:09 +0000 (UTC)
+From:   Coly Li <colyli@suse.de>
+To:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Coly Li <colyli@suse.de>, Dan Williams <dan.j.williams@intel.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v2] docs: update trusted-encrypted.rst
+Date:   Mon, 17 Aug 2020 22:28:37 +0800
+Message-Id: <20200817142837.5224-1-colyli@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Impose a limit on the number of watches that a user can hold so that they
-can't use this mechanism to fill up all the available memory.
+The parameters in tmp2 commands are outdated, people are not able to
+create trusted key by the example commands.
 
-This is done by putting a counter in user_struct that's incremented when a
-watch is allocated and decreased when it is released.  If the number
-exceeds the RLIMIT_NOFILE limit, the watch is rejected with EAGAIN.
+This patch updates the paramerters of tpm2 commands, they are verified
+by tpm2-tools-4.1 with Linux v5.8 kernel.
 
-This can be tested by the following means:
-
- (1) Create a watch queue and attach it to fd 5 in the program given - in
-     this case, bash:
-
-	keyctl watch_session /tmp/nlog /tmp/gclog 5 bash
-
- (2) In the shell, set the maximum number of files to, say, 99:
-
-	ulimit -n 99
-
- (3) Add 200 keyrings:
-
-	for ((i=0; i<200; i++)); do keyctl newring a$i @s || break; done
-
- (4) Try to watch all of the keyrings:
-
-	for ((i=0; i<200; i++)); do echo $i; keyctl watch_add 5 %:a$i || break; done
-
-     This should fail when the number of watches belonging to the user hits
-     99.
-
- (5) Remove all the keyrings and all of those watches should go away:
-
-	for ((i=0; i<200; i++)); do keyctl unlink %:a$i; done
-
- (6) Kill off the watch queue by exiting the shell spawned by
-     watch_session.
-
-Fixes: c73be61cede5 ("pipe: Add general notification queue support")
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Stefan Berger <stefanb@linux.ibm.com>
 ---
+Changelog:
+v2: remove the change of trusted key related operation.
+v1: initial version.
 
- include/linux/sched/user.h |    3 +++
- kernel/watch_queue.c       |    8 ++++++++
- 2 files changed, 11 insertions(+)
+ Documentation/security/keys/trusted-encrypted.rst | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/sched/user.h b/include/linux/sched/user.h
-index 917d88edb7b9..a8ec3b6093fc 100644
---- a/include/linux/sched/user.h
-+++ b/include/linux/sched/user.h
-@@ -36,6 +36,9 @@ struct user_struct {
-     defined(CONFIG_NET) || defined(CONFIG_IO_URING)
- 	atomic_long_t locked_vm;
- #endif
-+#ifdef CONFIG_WATCH_QUEUE
-+	atomic_t nr_watches;	/* The number of watches this user currently has */
-+#endif
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+index 9483a7425ad5..1da879a68640 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -39,10 +39,9 @@ With the IBM TSS 2 stack::
  
- 	/* Miscellaneous per-user rate limit */
- 	struct ratelimit_state ratelimit;
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index f74020f6bd9d..0ef8f65bd2d7 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -393,6 +393,7 @@ static void free_watch(struct rcu_head *rcu)
- 	struct watch *watch = container_of(rcu, struct watch, rcu);
+ Or with the Intel TSS 2 stack::
  
- 	put_watch_queue(rcu_access_pointer(watch->queue));
-+	atomic_dec(&watch->cred->user->nr_watches);
- 	put_cred(watch->cred);
- }
+-  #> tpm2_createprimary --hierarchy o -G rsa2048 -o key.ctxt
++  #> tpm2_createprimary --hierarchy o -G rsa2048 -c key.ctxt
+   [...]
+-  handle: 0x800000FF
+-  #> tpm2_evictcontrol -c key.ctxt -p 0x81000001
++  #> tpm2_evictcontrol -c key.ctxt 0x81000001
+   persistentHandle: 0x81000001
  
-@@ -452,6 +453,13 @@ int add_watch_to_object(struct watch *watch, struct watch_list *wlist)
- 	watch->cred = get_current_cred();
- 	rcu_assign_pointer(watch->watch_list, wlist);
- 
-+	if (atomic_inc_return(&watch->cred->user->nr_watches) >
-+	    task_rlimit(current, RLIMIT_NOFILE)) {
-+		atomic_dec(&watch->cred->user->nr_watches);
-+		put_cred(watch->cred);
-+		return -EAGAIN;
-+	}
-+
- 	spin_lock_bh(&wqueue->lock);
- 	kref_get(&wqueue->usage);
- 	kref_get(&watch->usage);
-
+ Usage::
+-- 
+2.26.2
 
