@@ -2,89 +2,149 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7155C248ACF
-	for <lists+keyrings@lfdr.de>; Tue, 18 Aug 2020 17:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0533F248B20
+	for <lists+keyrings@lfdr.de>; Tue, 18 Aug 2020 18:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbgHRPpv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Aug 2020 11:45:51 -0400
-Received: from mga09.intel.com ([134.134.136.24]:39627 "EHLO mga09.intel.com"
+        id S1726831AbgHRQIo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Aug 2020 12:08:44 -0400
+Received: from mga04.intel.com ([192.55.52.120]:11082 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727770AbgHRPpf (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 18 Aug 2020 11:45:35 -0400
-IronPort-SDR: PqBHDbmlU/dRhgnHQEu6bpTIgeeX0MTUm+tGgQWqzJcBOIuqj3nzuGCHpadezj1fAlwZmu0jpW
- /DMUSR9/b7/g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9716"; a="156016569"
-X-IronPort-AV: E=Sophos;i="5.76,327,1592895600"; 
-   d="scan'208";a="156016569"
+        id S1726670AbgHRQIj (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 18 Aug 2020 12:08:39 -0400
+IronPort-SDR: LG7V+o9WYzJ/Jy+X8eDDrGFr+O4/aTQwCYeZjSufYW0X4q+dQS95MXY+soh3V+cxr9t1ZOk16C
+ f115LFOAojlg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9716"; a="152352172"
+X-IronPort-AV: E=Sophos;i="5.76,328,1592895600"; 
+   d="scan'208";a="152352172"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 08:44:47 -0700
-IronPort-SDR: T9Fg95g8XxLenJ5jQDfLCFegfIwxQ9pjRGDy3DrWpASLq6K2h2Wvzw2iMobVVHYE72TcDFbo6R
- MMHEABIuZ0uQ==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 09:08:39 -0700
+IronPort-SDR: ehY5QtyP+1eMms9esyyAL4CxOzFvokfTm4NqkxEnwE9IQYhk/pedqSALFHjUNFnyrHnzccMFaT
+ xCt7wZ9Pi1PQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,327,1592895600"; 
-   d="scan'208";a="497411171"
+X-IronPort-AV: E=Sophos;i="5.76,328,1592895600"; 
+   d="scan'208";a="441273410"
 Received: from ribnhajh-mobl.ger.corp.intel.com (HELO localhost) ([10.249.47.113])
-  by fmsmga005.fm.intel.com with ESMTP; 18 Aug 2020 08:44:45 -0700
-Date:   Tue, 18 Aug 2020 18:44:44 +0300
+  by orsmga004.jf.intel.com with ESMTP; 18 Aug 2020 09:08:36 -0700
+Date:   Tue, 18 Aug 2020 19:08:35 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <jejb@linux.ibm.com>
-Cc:     Coly Li <colyli@suse.de>, Stefan Berger <stefanb@linux.ibm.com>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Coly Li <colyli@suse.de>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         Dan Williams <dan.j.williams@intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-Subject: Re: [PATCH RESEND] docs: update trusted-encrypted.rst
-Message-ID: <20200818154444.GA137138@linux.intel.com>
-References: <20200815075143.47082-1-colyli@suse.de>
- <cf667ea0-dab7-a242-886c-938582c62ff6@linux.ibm.com>
- <1597595769.8344.7.camel@linux.ibm.com>
- <f9d4c4a9-5059-eae2-bc89-51f16e8ca4d9@suse.de>
- <1597597933.8344.13.camel@linux.ibm.com>
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v2] docs: update trusted-encrypted.rst
+Message-ID: <20200818160835.GB137138@linux.intel.com>
+References: <20200817142837.5224-1-colyli@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1597597933.8344.13.camel@linux.ibm.com>
+In-Reply-To: <20200817142837.5224-1-colyli@suse.de>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Aug 16, 2020 at 10:12:13AM -0700, James Bottomley wrote:
-> On Mon, 2020-08-17 at 00:57 +0800, Coly Li wrote:
-> > On 2020/8/17 00:36, James Bottomley wrote:
-> > > On Sun, 2020-08-16 at 12:06 -0400, Stefan Berger wrote:
-> > > [...]
-> > > > A note in this file states this:
-> > > > 
-> > > > Note: When using a TPM 2.0 with a persistent key with handle
-> > > > 0x81000001, append 'keyhandle=0x81000001' to statements between
-> > > > quotes, such as "new 32 keyhandle=0x81000001".
-> > > > 
-> > > > Now if someone was (still) interested in TPM 1.2 
-> > > > adapt the  note to state that these keyhandle=... should be
-> > > > removed for the TPM 1.2 case.
-> > > 
-> > > Actually, I also have a plan to match what userspace does and
-> > > simply assume a keyhandle of 40000001 (generate an EC Storage
-> > > Primary Key on the fly) if it's not specified, which will make the
-> > > TPM1.2 and 2.0 versions of this the same.  Unfortunately the
-> > > necessary precursor patches are taking an age to get upstream.
-> > 
-> > Hi James,
-> > 
-> > Do you have a plan to push such patches into upstream soon? If yes
-> > than I may wait for your patch and withdraw this one.
-> 
-> Well, as I said above it depends on not yet upstream precursor patches.
->  They have been pending for about a year, so I've no real idea of the
-> timeline.
-> 
-> James
+On Mon, Aug 17, 2020 at 10:28:37PM +0800, Coly Li wrote:
+> The parameters in tmp2 commands are outdated, people are not able to
+> create trusted key by the example commands.
 
-As far as I remember there was not much left in the previous version to
-do. Some time has passed when it was discussed but I recall it was
-mainly about documenting the key format.
+Please write acronyms in capitals (e.g. TPM2).
+
+> This patch updates the paramerters of tpm2 commands, they are verified
+                         ~~~~~~~~~~~
+			 parameters, did you run checkpatch.pl?
+
+Ditto.
+
+> by tpm2-tools-4.1 with Linux v5.8 kernel.
+
+The preffered form is to write as "Update the parameters..." (in any
+kernel patch) when possible.
+
+I have to say that I don't know how to interpret either of the sentences
+in the long description. I don't understand how I should comprehend the
+change that you are making from all of this.
+
+Also, I don't understand how Linux v5.8 relates to this.
+
+Finally, we have multiple TPM user space.
+
+Maybe you want to start with like
+
+  Intel TSS since v4.1 requires to add '-p' before the keyhandle when
+  invoking tpm2_evictcontrol utility program because <...>. <And then
+  describe in imperative form what you want to do>
+
+BTW, this claim does not look right:
+
+"The user must first create a storage key and make it persistent, so the
+key is available after reboot. This can be done using the following
+commands."
+
+First, storage key is not a primary key, i.e. wrong wording is used.
+Secondly, afaik you don't *have to* make a primary key persistent.
+You can export it to dram and load when you need it.
+
+Thirdly, no warning of any sort that you should prefer not to use
+persistent keys for kernel testing, which is I think the worst issue
+in this documentation.
+
+This is the failing commit:
+
+commit 4264f27a0815c46dfda9c9dd6d5f4abc1df04415
+Author: Stefan Berger <stefanb@linux.ibm.com>
+Date:   Fri Oct 19 06:17:58 2018 -0400
+
+    docs: Extend trusted keys documentation for TPM 2.0
+    
+    Extend the documentation for trusted keys with documentation for how to
+    set up a key for a TPM 2.0 so it can be used with a TPM 2.0 as well.
+    
+    Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+    Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+    Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+    Acked-by: Dan Williams <dan.j.williams@intel.com>
+    Acked-by: Jerry Snitselaar <jsnitsel@redhat.com>
+    Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 
 /Jarkko
+
+
+> Signed-off-by: Coly Li <colyli@suse.de>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: James Bottomley <jejb@linux.ibm.com>
+> Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> Cc: Mimi Zohar <zohar@linux.ibm.com>
+> Cc: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+> Changelog:
+> v2: remove the change of trusted key related operation.
+> v1: initial version.
+> 
+>  Documentation/security/keys/trusted-encrypted.rst | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+> index 9483a7425ad5..1da879a68640 100644
+> --- a/Documentation/security/keys/trusted-encrypted.rst
+> +++ b/Documentation/security/keys/trusted-encrypted.rst
+> @@ -39,10 +39,9 @@ With the IBM TSS 2 stack::
+>  
+>  Or with the Intel TSS 2 stack::
+>  
+> -  #> tpm2_createprimary --hierarchy o -G rsa2048 -o key.ctxt
+> +  #> tpm2_createprimary --hierarchy o -G rsa2048 -c key.ctxt
+>    [...]
+> -  handle: 0x800000FF
+> -  #> tpm2_evictcontrol -c key.ctxt -p 0x81000001
+> +  #> tpm2_evictcontrol -c key.ctxt 0x81000001
+>    persistentHandle: 0x81000001
+>  
+>  Usage::
+> -- 
+> 2.26.2
+> 
