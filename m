@@ -2,135 +2,136 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6782124A9C9
-	for <lists+keyrings@lfdr.de>; Thu, 20 Aug 2020 01:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2072C24C230
+	for <lists+keyrings@lfdr.de>; Thu, 20 Aug 2020 17:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbgHSXD7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 19 Aug 2020 19:03:59 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:28280 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726209AbgHSXD7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 19 Aug 2020 19:03:59 -0400
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07JN1gKs148416;
-        Wed, 19 Aug 2020 19:03:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4s6ipMZo3PZmhZJSQMcgq/OpgKjCrEZX8FoVbwMjgJU=;
- b=kOsX/kv0YYOvZ/xidjKLiZkp31HfVUWkaPlQiclr+9X5wNn9EFNzuOd0dghk8fVhFjCZ
- 3bQY+y8YL7P/Z/y3VRa6L0b6snKNkzdKnjd1nOYrM9mNiatKGbEk5/2+GVhxOI1ZgT4I
- t0Htj7/N4Vs4LwFG6uJrVeTI2sMHAfW8kCppi7+/SwZwbDIwCV0e8TFQW9HVAzFhS4im
- TimpU/s1ZaS8DIZ1BCQQLnsLOqJKkVuqQ5MMz3gVLbVw+6Lg4FqL0rm8xcpQiyyInVkZ
- TGjgbLpDx4N5UQle18SnnnZnu2qV1ODcoPAKEDyhpxfYLMzjOczVLIm7vKDCfX6gFyDD CA== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 330yctarr8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Aug 2020 19:03:53 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07JN0GTQ013674;
-        Wed, 19 Aug 2020 23:03:52 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-        by ppma02wdc.us.ibm.com with ESMTP id 3304scygqe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Aug 2020 23:03:52 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07JN3pA430277992
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 19 Aug 2020 23:03:51 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5FC6B6A05D;
-        Wed, 19 Aug 2020 23:03:51 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 195466A04D;
-        Wed, 19 Aug 2020 23:03:49 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Wed, 19 Aug 2020 23:03:49 +0000 (GMT)
-Subject: Re: [PATCH v3] docs: trusted-encrypted.rst: update parameters for
- command examples
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Coly Li <colyli@suse.de>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-References: <20200818170002.38145-1-colyli@suse.de>
- <20200819210234.GB9942@linux.intel.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <ec431164-21ae-8019-a9c0-b1e15004e4b9@linux.ibm.com>
-Date:   Wed, 19 Aug 2020 19:03:49 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1726852AbgHTP2P (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 20 Aug 2020 11:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56006 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728251AbgHTP2K (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Aug 2020 11:28:10 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A18C061386
+        for <keyrings@vger.kernel.org>; Thu, 20 Aug 2020 08:28:10 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id j188so1288161vsd.2
+        for <keyrings@vger.kernel.org>; Thu, 20 Aug 2020 08:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=uYPF26fOsnSxq0X3BeFPOk0SUrFLHUyRFGGzgVJXfq8=;
+        b=yL9tqtIiWrwVP/vk+PNTbPQudFqQ/Nku03VDHttP1IrTMx970xW8h0wDtHQ7KNfK+I
+         SWrGQnvnwuRocjuXw6z77wNdi8Nvhd5I+47g+pDfhaHGkxBrHs04+0q9VRPmUi9bTZlD
+         CyuWwq4cV7pUsyLb2cOjDle8eG+aggRgOAFAwDs0D6Ae1uZ927VlLwHo6AXcdIyZePh4
+         js71qeG+n+b7/7Iy3nieGkp+iWW2pfeTaKbyCK8OA2Kn/JfDUMbsjTIKuFqRsGkM8i0J
+         MEXNsxeYZg2U1hetwLztffdgRucy6cAy8re+dFL3IgCy2CgB5p/DZOVQRHd3lgEY8iS1
+         WySg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=uYPF26fOsnSxq0X3BeFPOk0SUrFLHUyRFGGzgVJXfq8=;
+        b=mdj5O9lA0ErmClUEOxpuc8+Y3Ut4Fx/n9HgvfIe6XZka01mGKKOLa7glIqyrmQCkCx
+         pyJHg70FAuEtmOulMIwVmvCIvH4+SXVYnSYnqTxn4rkDg2uOAaf7Yo5c3yhNXG2c6Awq
+         jV77NzTqUTHN4/ofmpWxgEJ3LwGjXyKH0nHR+pzYqFgXQDOe/pBnEh8WchuEzkzhbudR
+         90idmivyqPINGjICgmpOcYJevBQWWz3xzPjcs+JkUQM65xf83ACSmXJsObmhobeB8XAR
+         V4y3NHrOvMbsXG6vP53te3ZzsruHfeKvaxfTrzRvVWIWT8+nRYRTz9ZhWxZ3VZxYRi6W
+         J+ag==
+X-Gm-Message-State: AOAM532IqppEf8WPoPQQ/G73/sJ07EdqOlqqJe/f/+VQp49DugVKdLlZ
+        Nw2p8JJ9ZE9ex0z4GrFPP9NZn+N/YUSBJ/QLuQwWXA==
+X-Google-Smtp-Source: ABdhPJw3x/JjWeGkqsHzLhjFeoMAMLmCjvIghKiFM19pnVR2pzadjfWz1sl+deP5Pc9dZd8e9wEdeR0iwIOlz36At6A=
+X-Received: by 2002:a67:e45:: with SMTP id 66mr2349582vso.191.1597937289189;
+ Thu, 20 Aug 2020 08:28:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200819210234.GB9942@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-19_13:2020-08-19,2020-08-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 adultscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 mlxscore=0 spamscore=0 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008190182
+References: <20200820091612.692383444@linuxfoundation.org>
+In-Reply-To: <20200820091612.692383444@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 20 Aug 2020 20:57:57 +0530
+Message-ID: <CA+G9fYtebf78TH-XpqArunHc1L6s9mHdLEbpY1EY9tSyDjp=sg@mail.gmail.com>
+Subject: Re: [PATCH 5.8 000/232] 5.8.3-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     open list <linux-kernel@vger.kernel.org>,
+        Shuah Khan <shuah@kernel.org>, patches@kernelci.org,
+        lkft-triage@lists.linaro.org,
+        Ben Hutchings <ben.hutchings@codethink.co.uk>,
+        linux- stable <stable@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        LTP List <ltp@lists.linux.it>,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        Eric Biggers <ebiggers@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 8/19/20 5:02 PM, Jarkko Sakkinen wrote:
-> On Wed, Aug 19, 2020 at 01:00:02AM +0800, Coly Li wrote:
->> The parameters in command examples for tpm2_createprimary and
->> tpm2_evictcontrol are outdated, people (like me) are not able to create
->> trusted key by these command examples.
->>
->> This patch updates the parameters of command example tpm2_createprimary
->> and tpm2_evictcontrol in trusted-encrypted.rst. With Linux kernel v5.8
->> and tpm2-tools-4.1, people can create a trusted key by following the
->> examples in this document.
->>
->> Signed-off-by: Coly Li <colyli@suse.de>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: James Bottomley <jejb@linux.ibm.com>
->> Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
->> Cc: Mimi Zohar <zohar@linux.ibm.com>
->> Cc: Stefan Berger <stefanb@linux.ibm.com>
-> OK, now it is clear. Thank you.
+On Thu, 20 Aug 2020 at 14:55, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> This is the start of the stable review cycle for the 5.8.3 release.
+> There are 232 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> /Jarkko
+> Responses should be made by Sat, 22 Aug 2020 09:15:09 +0000.
+> Anything received after that time might be too late.
 >
->> ---
->> Changelog:
->> v3: update commit log with review comments from Jarkko Sakkinen.
->> v2: remove the change of trusted key related operation.
->> v1: initial version.
->>
->>   Documentation/security/keys/trusted-encrypted.rst | 5 ++---
->>   1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
->> index 9483a7425ad5..1da879a68640 100644
->> --- a/Documentation/security/keys/trusted-encrypted.rst
->> +++ b/Documentation/security/keys/trusted-encrypted.rst
->> @@ -39,10 +39,9 @@ With the IBM TSS 2 stack::
->>   
->>   Or with the Intel TSS 2 stack::
->>   
->> -  #> tpm2_createprimary --hierarchy o -G rsa2048 -o key.ctxt
->> +  #> tpm2_createprimary --hierarchy o -G rsa2048 -c key.ctxt
->>     [...]
->> -  handle: 0x800000FF
->> -  #> tpm2_evictcontrol -c key.ctxt -p 0x81000001
->> +  #> tpm2_evictcontrol -c key.ctxt 0x81000001
->>     persistentHandle: 0x81000001
->>   
->>   Usage::
->> -- 
->> 2.26.2
->>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.8.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
+> Herbert Xu <herbert@gondor.apana.org.au>
+>     crypto: af_alg - Fix regression on empty requests
+
+Results from Linaro=E2=80=99s test farm.
+Regressions detected.
+
+  ltp-crypto-tests:
+    * af_alg02
+  ltp-cve-tests:
+    * cve-2017-17805
+
+af_alg02.c:52: BROK: Timed out while reading from request socket.
+We are running the LTP 20200515 tag released test suite.
+ https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/cry=
+pto/af_alg02.c
+
+Summary
+------------------------------------------------------------------------
+
+kernel: 5.8.3-rc1
+git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git
+git branch: linux-5.8.y
+git commit: 201fff807310ce10485bcff294d47be95f3769eb
+git describe: v5.8.2-233-g201fff807310
+Test details: https://qa-reports.linaro.org/lkft/linux-stable-rc-5.8-oe/bui=
+ld/v5.8.2-233-g201fff807310
+
+Regressions (compared to build v5.8.2)
+------------------------------------------------------------------------
+
+x15:
+  ltp-crypto-tests:
+    * af_alg02
+
+  ltp-cve-tests:
+    * cve-2017-17805
+
+
+--=20
+Linaro LKFT
+https://lkft.linaro.org
