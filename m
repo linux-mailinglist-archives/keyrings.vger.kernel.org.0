@@ -2,95 +2,85 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B3A2506F4
-	for <lists+keyrings@lfdr.de>; Mon, 24 Aug 2020 19:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF70125231F
+	for <lists+keyrings@lfdr.de>; Tue, 25 Aug 2020 23:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726581AbgHXRyJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 24 Aug 2020 13:54:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26483 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726373AbgHXRyI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 24 Aug 2020 13:54:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598291647;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ef4R5O5Cq7LZWsF/vmaYxvTJ7WpiMWWuCBWCNUUsdH0=;
-        b=exZhBBQuH9czr5ZykM5TicEW1la/JGCjJMdSCqwioNW1GANGdIudoNWGM8jMWxnVx5SqAf
-        U/Y5Sh+XN+gsFvPcVEeaxQofNPBKoZnmChihu8pfhPsjcq84GJcIxmAKRVc9TsZEA/S4RT
-        YSJHA/JVNU/xbfl60M3zMNPIP8E6Lqw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-415-VqlurWbUNcmfBK7sxFhF-Q-1; Mon, 24 Aug 2020 13:54:05 -0400
-X-MC-Unique: VqlurWbUNcmfBK7sxFhF-Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D02EA101963C;
-        Mon, 24 Aug 2020 17:54:03 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-127.rdu2.redhat.com [10.10.120.127])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2BD2360BF1;
-        Mon, 24 Aug 2020 17:54:02 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200824165802.GB408760@erythro.dev.benboeckel.internal>
-References: <20200824165802.GB408760@erythro.dev.benboeckel.internal> <20200807160531.GA1345000@erythro.dev.benboeckel.internal> <159681277616.35436.11229310534842613599.stgit@warthog.procyon.org.uk> <329586.1598282852@warthog.procyon.org.uk>
-To:     me@benboeckel.net
-Cc:     dhowells@redhat.com, mtk.manpages@gmail.com,
-        torvalds@linux-foundation.org, keyrings@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-man@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] Add a manpage for watch_queue(7)
+        id S1726697AbgHYVur (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 25 Aug 2020 17:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726337AbgHYVur (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 25 Aug 2020 17:50:47 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B65C061574
+        for <keyrings@vger.kernel.org>; Tue, 25 Aug 2020 14:50:46 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id x143so288257pfc.4
+        for <keyrings@vger.kernel.org>; Tue, 25 Aug 2020 14:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FryoKgP6rPdYyYwvpbGQmS+G8+hYYCxYYspoVM7JhZg=;
+        b=qTvJmd6RTrGMgAY4peOo+E5m3fvBayGatBUIwHCceGB8AW0B2ICdlxklQLdb55bhmS
+         GrlhvyJ+dgJvV01lIIkUFClOhOjxeubBUpgFUfsRl3/CeknNI0muiU+xkUyPDgA2SQjM
+         kzfgRJ3SyZvwEJ3akMD/pV38PbWFgI6UdBSw2G+tYoIqB+fjsQ+C2zMSEYZsOia8DY1I
+         6DEHS0k7JM1HjaIEtiFxmUp32LcOqElz+dB1SZetCUFx78LeDSFdTq0C7MhepL85FL6Q
+         KIaXTkvEaBItHGHaC2uERxVDpp5QzUsjvHGFuZu9jwsPeesKsOYi3eAauxKLC6Y45wwv
+         AK6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FryoKgP6rPdYyYwvpbGQmS+G8+hYYCxYYspoVM7JhZg=;
+        b=HieSgOv6UIE5WIf0Y0LWRnnioUqhOxrH3n2stc3e8IoYX4uVft/4tN53l8A9eRjU3r
+         R3qhA6VLbKEvDR3evZTL622frOavolsRtaOnwxFC8C1RqgCi1XS2tyFVYJfH2xJTTfh2
+         dShv1jS2kBOfZVPUqxHU7ivqy0GYR8R4rRD8NpWIFcQlnF7Dr+fgNSKyvAA+44+WbcnO
+         JIZipvAmNxfFqpjqJ20PxHUKU7yMyHYUk6mfzB5shM3obqsr4ta2w/EGDJ/ZKLeI8psH
+         CoylWeVHJVVwWtIncda47UxVXsKruGlPf551SlYjUWR7RUlIDKJbupLWydjoJmktt7Pz
+         sj2g==
+X-Gm-Message-State: AOAM532Y4QoeReAsPZiRDPHD3A2Sq4HDnfs7zHLT8IMKxXi6mf6qt+Sk
+        d5plTSAoy2V3yiKYQcEbUkFPxgR7tq+Vkg==
+X-Google-Smtp-Source: ABdhPJx/HswI2Qj949AZrOrFszQknx7agwAyfi9gL2MNqiaVWr5wF3K+sbGABM2IzC9CIYycgjj+Xg==
+X-Received: by 2002:a17:902:b405:: with SMTP id x5mr2815737plr.267.1598392246117;
+        Tue, 25 Aug 2020 14:50:46 -0700 (PDT)
+Received: from wolf.lan ([8.25.195.25])
+        by smtp.gmail.com with ESMTPSA id t63sm88130pgt.50.2020.08.25.14.50.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2020 14:50:45 -0700 (PDT)
+From:   Anatol Pomozov <anatol.pomozov@gmail.com>
+To:     zohar@linux.ibm.com, keyrings@vger.kernel.org
+Cc:     Anatol Pomozov <anatol.pomozov@gmail.com>
+Subject: [PATCH] keys: Print more useful debug info if encryption algo is not available
+Date:   Tue, 25 Aug 2020 14:50:40 -0700
+Message-Id: <20200825215040.307947-1-anatol.pomozov@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <348447.1598291641.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Mon, 24 Aug 2020 18:54:01 +0100
-Message-ID: <348448.1598291641@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Ben Boeckel <me@benboeckel.net> wrote:
+Signed-off-by: Anatol Pomozov <anatol.pomozov@gmail.com>
+---
+ security/keys/encrypted-keys/encrypted.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> > One loss message.  I set a flag on the last slot in the pipe ring to s=
-ay that
-> > message loss occurred, but there's insufficient space to store a count=
-er
-> > without making the slot larger (and I really don't want to do that).
-> > =
-
-> > Note that every slot in the pipe ring has such a flag, so you could,
-> > theoretically, get a loss message after every normal message that you =
-read
-> > out.
-> =
-
-> Ah, so a "you lost something" is just a flag on the next event that does
-> make it into the queue? I read it as a whole message existed indicating
-> that data was lost. Not sure of the best wording here.
-
-No.  That flag is internal.  It causes read() to fabricate a message and
-insert it into the user buffer after the flagged message has been copied o=
-ver.
-
-> > bit 0 is 2^0 in this case.  I'm not sure how better to describe it.
-> =
-
-> OK, so the bits are in native-endian order in the enclosing bytes. But C
-> just doesn't have a set ABI for bitfields (AFAIK), so I guess it's
-> "whatever GCC does" in practice?
-
-Hard to say - powerpc and s390 have bit 0 as the MSB:-/
-
-But "& (1 << 0)" gets you 2^0, whatever the CPU book says.
-
-David
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index 192e531c146f..c09d48f53682 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -84,8 +84,8 @@ static int aes_get_sizes(void)
+ 
+ 	tfm = crypto_alloc_skcipher(blkcipher_alg, 0, CRYPTO_ALG_ASYNC);
+ 	if (IS_ERR(tfm)) {
+-		pr_err("encrypted_key: failed to alloc_cipher (%ld)\n",
+-		       PTR_ERR(tfm));
++		pr_err("encrypted_key: failed to alloc_cipher for %s (%ld)\n",
++		       blkcipher_alg, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+ 	}
+ 	ivsize = crypto_skcipher_ivsize(tfm);
+-- 
+2.28.0
 
