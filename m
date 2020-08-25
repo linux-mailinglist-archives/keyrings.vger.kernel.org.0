@@ -2,57 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF70125231F
-	for <lists+keyrings@lfdr.de>; Tue, 25 Aug 2020 23:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3BBD25232B
+	for <lists+keyrings@lfdr.de>; Tue, 25 Aug 2020 23:53:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbgHYVur (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 25 Aug 2020 17:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        id S1726697AbgHYVx2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 25 Aug 2020 17:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726337AbgHYVur (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 25 Aug 2020 17:50:47 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B65C061574
-        for <keyrings@vger.kernel.org>; Tue, 25 Aug 2020 14:50:46 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id x143so288257pfc.4
-        for <keyrings@vger.kernel.org>; Tue, 25 Aug 2020 14:50:46 -0700 (PDT)
+        with ESMTP id S1726303AbgHYVx1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 25 Aug 2020 17:53:27 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676DDC061574
+        for <keyrings@vger.kernel.org>; Tue, 25 Aug 2020 14:53:27 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id m8so8400785pfh.3
+        for <keyrings@vger.kernel.org>; Tue, 25 Aug 2020 14:53:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=FryoKgP6rPdYyYwvpbGQmS+G8+hYYCxYYspoVM7JhZg=;
-        b=qTvJmd6RTrGMgAY4peOo+E5m3fvBayGatBUIwHCceGB8AW0B2ICdlxklQLdb55bhmS
-         GrlhvyJ+dgJvV01lIIkUFClOhOjxeubBUpgFUfsRl3/CeknNI0muiU+xkUyPDgA2SQjM
-         kzfgRJ3SyZvwEJ3akMD/pV38PbWFgI6UdBSw2G+tYoIqB+fjsQ+C2zMSEYZsOia8DY1I
-         6DEHS0k7JM1HjaIEtiFxmUp32LcOqElz+dB1SZetCUFx78LeDSFdTq0C7MhepL85FL6Q
-         KIaXTkvEaBItHGHaC2uERxVDpp5QzUsjvHGFuZu9jwsPeesKsOYi3eAauxKLC6Y45wwv
-         AK6w==
+        bh=4McPRWpAxlU32y8XaPFygwH2nMSoezEC1RLLmc+VFM0=;
+        b=g37z0Jr/wdFePaRL0zdXJrrXbY8NEX+7j3InqpskyIVkwBi2JxNuJV/aDWKxsirUOy
+         nBEYt3RVtDW1X99iGJS/JT/SCU4ZkT9zaBrjtFE4t4abQFquuHVmMcJlOqTu4m2BaH5a
+         0sjTIDYJZVTKI0kcgQWrvORN4hgP1vfawB8bTnqkomtHhiNXOnWHt9GW3RTepLLYjNTx
+         8yFzpEByDy57rNhl8oGzMaimTF5v/2aWFyi5ti60KNMp9MNogVHoSJLcZD+IfgLpMir1
+         8Bdj1FXWIL+Akl2sXSmhYXKrXCemckOw8HDdoZ+sEEY5WiogEel4I3aWODAx7MANvvPl
+         Uzhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=FryoKgP6rPdYyYwvpbGQmS+G8+hYYCxYYspoVM7JhZg=;
-        b=HieSgOv6UIE5WIf0Y0LWRnnioUqhOxrH3n2stc3e8IoYX4uVft/4tN53l8A9eRjU3r
-         R3qhA6VLbKEvDR3evZTL622frOavolsRtaOnwxFC8C1RqgCi1XS2tyFVYJfH2xJTTfh2
-         dShv1jS2kBOfZVPUqxHU7ivqy0GYR8R4rRD8NpWIFcQlnF7Dr+fgNSKyvAA+44+WbcnO
-         JIZipvAmNxfFqpjqJ20PxHUKU7yMyHYUk6mfzB5shM3obqsr4ta2w/EGDJ/ZKLeI8psH
-         CoylWeVHJVVwWtIncda47UxVXsKruGlPf551SlYjUWR7RUlIDKJbupLWydjoJmktt7Pz
-         sj2g==
-X-Gm-Message-State: AOAM532Y4QoeReAsPZiRDPHD3A2Sq4HDnfs7zHLT8IMKxXi6mf6qt+Sk
-        d5plTSAoy2V3yiKYQcEbUkFPxgR7tq+Vkg==
-X-Google-Smtp-Source: ABdhPJx/HswI2Qj949AZrOrFszQknx7agwAyfi9gL2MNqiaVWr5wF3K+sbGABM2IzC9CIYycgjj+Xg==
-X-Received: by 2002:a17:902:b405:: with SMTP id x5mr2815737plr.267.1598392246117;
-        Tue, 25 Aug 2020 14:50:46 -0700 (PDT)
+        bh=4McPRWpAxlU32y8XaPFygwH2nMSoezEC1RLLmc+VFM0=;
+        b=mFgkpM3WdXeIIwNqn2XsvT+oBqSE+JcxsAh9VxHtPjG9Yv4pF22AKnuBwOMgvAh3ih
+         gEM+NOuA8GPocRV5aHKQM5biRlG4NHGUcxNjqInL+kWsj2PQ6qt6lExZC3ZaQGz9qX3t
+         nTs2/wtOXp1oPo2pcQPGDLSzMaWDF01QFLE9AmPKzNpeIQbE7ixFcXVqEYu8OywGngZJ
+         5E9PkfwPmr3tX4YqX5UzJQ78MRkS7klI/2weyKVVkGg8lUPDEAAlJMjyBkgHelmZAP9l
+         0ySGGOH4fTHivQpZBMXIRHpxo/A466qKqX/30fAmnjK46/sadXPJxFtq4348U0haBEQq
+         kkyg==
+X-Gm-Message-State: AOAM530fPEsGemVIATaTGD/EnurpJFRU4TvqMLdvtuIyXQVMPoLcFm6q
+        dPVMh5UeKevDw11+DABv99Y=
+X-Google-Smtp-Source: ABdhPJyLXUqfq+zQQ1JdNtQ43ntUmU9NeouX0BioZWi8fOUp0DkiTEzH447lwdAHlYQQz9McEMvRlQ==
+X-Received: by 2002:a63:5459:: with SMTP id e25mr5539454pgm.155.1598392406701;
+        Tue, 25 Aug 2020 14:53:26 -0700 (PDT)
 Received: from wolf.lan ([8.25.195.25])
-        by smtp.gmail.com with ESMTPSA id t63sm88130pgt.50.2020.08.25.14.50.45
+        by smtp.gmail.com with ESMTPSA id e124sm219983pfa.87.2020.08.25.14.53.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2020 14:50:45 -0700 (PDT)
+        Tue, 25 Aug 2020 14:53:26 -0700 (PDT)
 From:   Anatol Pomozov <anatol.pomozov@gmail.com>
 To:     zohar@linux.ibm.com, keyrings@vger.kernel.org
 Cc:     Anatol Pomozov <anatol.pomozov@gmail.com>
-Subject: [PATCH] keys: Print more useful debug info if encryption algo is not available
-Date:   Tue, 25 Aug 2020 14:50:40 -0700
-Message-Id: <20200825215040.307947-1-anatol.pomozov@gmail.com>
+Subject: [PATCH] docs: crypto: Fix parameters order for keyctl()
+Date:   Tue, 25 Aug 2020 14:53:23 -0700
+Message-Id: <20200825215323.309899-1-anatol.pomozov@gmail.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -61,26 +61,26 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+key is the second parameter, keyring is the third one.
+
 Signed-off-by: Anatol Pomozov <anatol.pomozov@gmail.com>
 ---
- security/keys/encrypted-keys/encrypted.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/security/keys/core.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
-index 192e531c146f..c09d48f53682 100644
---- a/security/keys/encrypted-keys/encrypted.c
-+++ b/security/keys/encrypted-keys/encrypted.c
-@@ -84,8 +84,8 @@ static int aes_get_sizes(void)
+diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
+index aa0081685ee1..59f752bdfc47 100644
+--- a/Documentation/security/keys/core.rst
++++ b/Documentation/security/keys/core.rst
+@@ -604,7 +604,7 @@ The keyctl syscall functions are:
  
- 	tfm = crypto_alloc_skcipher(blkcipher_alg, 0, CRYPTO_ALG_ASYNC);
- 	if (IS_ERR(tfm)) {
--		pr_err("encrypted_key: failed to alloc_cipher (%ld)\n",
--		       PTR_ERR(tfm));
-+		pr_err("encrypted_key: failed to alloc_cipher for %s (%ld)\n",
-+		       blkcipher_alg, PTR_ERR(tfm));
- 		return PTR_ERR(tfm);
- 	}
- 	ivsize = crypto_skcipher_ivsize(tfm);
+   *  Unlink a key or keyring from another keyring::
+ 
+-	long keyctl(KEYCTL_UNLINK, key_serial_t keyring, key_serial_t key);
++	long keyctl(KEYCTL_UNLINK, key_serial_t key, key_serial_t keyring);
+ 
+      This function looks through the keyring for the first link to the
+      specified key, and removes it if found. Subsequent links to that key are
 -- 
 2.28.0
 
