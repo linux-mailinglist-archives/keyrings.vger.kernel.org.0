@@ -2,150 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2702678FB
-	for <lists+keyrings@lfdr.de>; Sat, 12 Sep 2020 10:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26354267B8D
+	for <lists+keyrings@lfdr.de>; Sat, 12 Sep 2020 19:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725878AbgILIuU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 12 Sep 2020 04:50:20 -0400
-Received: from vmicros1.altlinux.org ([194.107.17.57]:40718 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725833AbgILIuR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 12 Sep 2020 04:50:17 -0400
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id 6D69372CA54;
-        Sat, 12 Sep 2020 11:50:13 +0300 (MSK)
-Received: from altlinux.org (sole.flsd.net [185.75.180.6])
-        by imap.altlinux.org (Postfix) with ESMTPSA id 2144F4A4A16;
-        Sat, 12 Sep 2020 11:50:13 +0300 (MSK)
-Date:   Sat, 12 Sep 2020 11:50:13 +0300
-From:   Vitaly Chikunov <vt@altlinux.org>
-To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Howells <dhowells@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Stephan Mueller <smueller@chronox.de>,
-        Marcelo Henrique Cerri <marcelo.cerri@canonical.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Brendan Higgins <brendanhiggins@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Waiman Long <longman@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Tushar Sugandhi <tusharsu@linux.microsoft.com>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        Pascal van Leeuwen <pvanleeuwen@rambus.com>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-security-module@vger.kernel.org,
-        Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>,
-        Jia Zhang <zhang.jia@linux.alibaba.com>
-Subject: Re: [PATCH v6 6/8] X.509: support OSCCA certificate parse
-Message-ID: <20200912085013.ugm2azs5xr7iirda@altlinux.org>
-References: <20200903131242.128665-1-tianjia.zhang@linux.alibaba.com>
- <20200903131242.128665-7-tianjia.zhang@linux.alibaba.com>
+        id S1725854AbgILR05 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 12 Sep 2020 13:26:57 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:54756 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725838AbgILR0z (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 12 Sep 2020 13:26:55 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 432688EE0E2;
+        Sat, 12 Sep 2020 10:26:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1599931614;
+        bh=ZzgBcD0cresgukzEZAJhtnylE0Wwv7DUOy5EG62aFak=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BaP7KLePunZhWSmW6/zQ0eIjuvIlkSJUw2U03+GoBnhg3EqM+5dfK4atRRAZE7UiE
+         iAVzoW/TE8q02O8yXyRUq4waSQQQnvkiW9rk0ftoZlZqch0DE6IJXKDsGI/PEtKER6
+         3RvXVo8jZzPhJol2q75lUDMoaEdROQbhtfzvV+9M=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ujGRJLP3Dz5a; Sat, 12 Sep 2020 10:26:54 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id A6D348EE07B;
+        Sat, 12 Sep 2020 10:26:53 -0700 (PDT)
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: [PATCH v11 0/5] TPM 2.0 trusted key rework
+Date:   Sat, 12 Sep 2020 10:26:38 -0700
+Message-Id: <20200912172643.9063-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=koi8-r
-Content-Disposition: inline
-In-Reply-To: <20200903131242.128665-7-tianjia.zhang@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Sep 03, 2020 at 09:12:40PM +0800, Tianjia Zhang wrote:
-> The digital certificate format based on SM2 crypto algorithm as
-> specified in GM/T 0015-2012. It was published by State Encryption
-> Management Bureau, China.
-> 
-> This patch adds the OID object identifier defined by OSCCA. The
-> x509 certificate supports sm2-with-sm3 type certificate parsing.
-> It uses the standard elliptic curve public key, and the sm2
-> algorithm signs the hash generated by sm3.
-> 
-> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> Tested-by: Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>
-> ---
->  crypto/asymmetric_keys/x509_cert_parser.c | 14 +++++++++++++-
->  include/linux/oid_registry.h              |  6 ++++++
->  2 files changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-> index 26ec20ef4899..6a8aee22bfd4 100644
-> --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> @@ -234,6 +234,10 @@ int x509_note_pkey_algo(void *context, size_t hdrlen,
->  	case OID_gost2012Signature512:
->  		ctx->cert->sig->hash_algo = "streebog512";
->  		goto ecrdsa;
-> +
-> +	case OID_sm2_with_sm3:
-> +		ctx->cert->sig->hash_algo = "sm3";
-> +		goto sm2;
->  	}
->  
->  rsa_pkcs1:
-> @@ -246,6 +250,11 @@ int x509_note_pkey_algo(void *context, size_t hdrlen,
->  	ctx->cert->sig->encoding = "raw";
->  	ctx->algo_oid = ctx->last_oid;
->  	return 0;
-> +sm2:
-> +	ctx->cert->sig->pkey_algo = "sm2";
-> +	ctx->cert->sig->encoding = "raw";
-> +	ctx->algo_oid = ctx->last_oid;
-> +	return 0;
->  }
->  
->  /*
-> @@ -266,7 +275,8 @@ int x509_note_signature(void *context, size_t hdrlen,
->  	}
->  
->  	if (strcmp(ctx->cert->sig->pkey_algo, "rsa") == 0 ||
-> -	    strcmp(ctx->cert->sig->pkey_algo, "ecrdsa") == 0) {
-> +	    strcmp(ctx->cert->sig->pkey_algo, "ecrdsa") == 0 ||
-> +	    strcmp(ctx->cert->sig->pkey_algo, "sm2") == 0) {
->  		/* Discard the BIT STRING metadata */
->  		if (vlen < 1 || *(const u8 *)value != 0)
->  			return -EBADMSG;
-> @@ -456,6 +466,8 @@ int x509_extract_key_data(void *context, size_t hdrlen,
->  	else if (ctx->last_oid == OID_gost2012PKey256 ||
->  		 ctx->last_oid == OID_gost2012PKey512)
->  		ctx->cert->pub->pkey_algo = "ecrdsa";
-> +	else if (ctx->last_oid == OID_id_ecPublicKey)
-> +		ctx->cert->pub->pkey_algo = "sm2";
->  	else
->  		return -ENOPKG;
->  
-> diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-> index 657d6bf2c064..48fe3133ff39 100644
-> --- a/include/linux/oid_registry.h
-> +++ b/include/linux/oid_registry.h
-> @@ -107,6 +107,12 @@ enum OID {
->  	OID_gostTC26Sign512B,		/* 1.2.643.7.1.2.1.2.2 */
->  	OID_gostTC26Sign512C,		/* 1.2.643.7.1.2.1.2.3 */
->  
-> +	/* OSCCA */
-> +	OID_sm2,			/* 1.2.156.10197.1.301 */
-> +	OID_sm3,			/* 1.2.156.10197.1.401 */
-> +	OID_sm2_with_sm3,		/* 1.2.156.10197.1.501 */
-> +	OID_sm3WithRSAEncryption,	/* 1.2.156.10197.1.504 */
+As requested this is the patch set to make the TPM 2.0 trusted key
+infrastructure use the same ASN.1 format as the external key tools.
+The addition of the policy use cases has been broken out into a
+separate patch.  The new code here is adding a description of the
+ASN.1 key format to trusted-encrypted.rst.
 
-OID_sm3WithRSAEncryption identifier is unused and this mode looks not
-implemented. But, this is probably ok for possible future extension.
+General cover letter minus policy bit:
 
-Reviewed-by: Vitaly Chikunov <vt@altlinux.org>
+This patch updates the trusted key code to export keys in the ASN.1
+format used by current TPM key tools (openssl_tpm2_engine and
+openconnect).  The current code will try to load keys containing
+policy, but being unable to formulate the policy commands necessary to
+load them, the unseal will always fail unless the policy is executed
+in user space and a pre-formed policy session passed in.
 
-Thanks,
+The key format is designed to be compatible with our two openssl
+engine implementations as well as with the format used by openconnect.
+I've added seal/unseal to my engine so I can use it for
+interoperability testing and I'll later use this for sealed symmetric
+keys via engine:
 
+https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
 
-> +
->  	OID__NR
->  };
->  
+James
+
+---
+
+James Bottomley (5):
+  lib: add ASN.1 encoder
+  oid_registry: Add TCG defined OIDS for TPM keys
+  security: keys: trusted: fix TPM2 authorizations
+  security: keys: trusted: use ASN.1 TPM2 key format for the blobs
+  security: keys: trusted: Make sealed key properly interoperable
+
+ .../security/keys/trusted-encrypted.rst       |  58 +++
+ include/keys/trusted-type.h                   |   2 +
+ include/linux/asn1_encoder.h                  |  32 ++
+ include/linux/oid_registry.h                  |   5 +
+ include/linux/tpm.h                           |   2 +
+ lib/Kconfig                                   |   3 +
+ lib/Makefile                                  |   1 +
+ lib/asn1_encoder.c                            | 454 ++++++++++++++++++
+ security/keys/Kconfig                         |   1 +
+ security/keys/trusted-keys/Makefile           |   2 +-
+ security/keys/trusted-keys/tpm2key.asn1       |  11 +
+ security/keys/trusted-keys/trusted_tpm1.c     |  34 +-
+ security/keys/trusted-keys/trusted_tpm2.c     | 266 +++++++++-
+ 13 files changed, 840 insertions(+), 31 deletions(-)
+ create mode 100644 include/linux/asn1_encoder.h
+ create mode 100644 lib/asn1_encoder.c
+ create mode 100644 security/keys/trusted-keys/tpm2key.asn1
+
+-- 
+2.26.2
+
