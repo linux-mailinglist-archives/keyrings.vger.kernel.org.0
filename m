@@ -2,114 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE93268B41
-	for <lists+keyrings@lfdr.de>; Mon, 14 Sep 2020 14:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7552268EAA
+	for <lists+keyrings@lfdr.de>; Mon, 14 Sep 2020 16:59:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbgINMlb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 14 Sep 2020 08:41:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48812 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726535AbgINMhv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 14 Sep 2020 08:37:51 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A150C061A27
-        for <keyrings@vger.kernel.org>; Mon, 14 Sep 2020 05:11:50 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id k14so1402365edo.1
-        for <keyrings@vger.kernel.org>; Mon, 14 Sep 2020 05:11:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gxYQz48aGorfvze6exW0FuIKKJvVhs5z+cRnEenJUaY=;
-        b=CJjh07xIDkVwVr5IThKGuQVr0hblaCsgDabxLm1I4Z1TpzY3qB0jIxOsEDGf0m6vXo
-         wep/5WJwnO74sjuUhOdVdvY3fZ1BWCYFAro4jzs6XtN7eJqvYedfFczvY5Boer0RIbjw
-         gJucGbgkCJ3+hSQ+sBmXnq0UqctdFF8aHtQTvsIgUKZ30HuPArcsj/n6WhgZNGwC99tw
-         YtmfnTHov/uRZXDhPXO7fC6y039cIwCPIR4GuttjH94rP6WYUXkNZ6b7abvF7xd78JHx
-         8m+JWTEOoKnr6CeQ6j1ioid0KYvwrwzXiITVI99NjmxmsTWqvcSa2B1U6x5MRXZl7mh3
-         EHww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gxYQz48aGorfvze6exW0FuIKKJvVhs5z+cRnEenJUaY=;
-        b=slO4V8Ea1obQlHHoi2yqrZ4gZ5j1CF7QRZTSg2C3BAcIXxkOzcElO6Q+pyxXJY5iCV
-         SWE+va/M5D57KcMcdXFMHdefMaOO4oI4xIwpcdKd8TntUjHzpfU1ixxi/eMH+qmqy7Bi
-         hqXrT6GekgiHclLaHL6V+XIxN1WCruG9DFGugMhwIFyV6jtyjbjvv5r+KegUAYQ4VEwx
-         ugmlcqFFeBVwKtx/y6JcLgDPXuUH2H6NONdYjeSOecF4BdVFKI0RX+fkhv/WFI5fgXNT
-         Y8pe09KJdmhexBjtDk3qgFlCIqway7u7b//b/m2J1jBhDQ/kdUqy7TRbsEDkUvssKdSC
-         ASqQ==
-X-Gm-Message-State: AOAM532q/kT3BhUcfRopfDA0/mSF8q2FSSZ2eSABQdzfmF06KVNv24bn
-        KPMlPkxoXnaf40pQcI4KG13Vxx9uo4dksZICVuM=
-X-Google-Smtp-Source: ABdhPJwHlTpo44V7hpalfpH5qi8HReYrn1OIyty9zqQzW+QG1hW0/IFDAOy8XAO8lGTEsww1hWAfk/afNOWhp/P7kKY=
-X-Received: by 2002:a50:cc9a:: with SMTP id q26mr17550708edi.64.1600085508835;
- Mon, 14 Sep 2020 05:11:48 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a17:906:6945:0:0:0:0 with HTTP; Mon, 14 Sep 2020 05:11:48
- -0700 (PDT)
-Reply-To: mrsmegwilliam6@gmail.com
-From:   Ms Mary Mcniff <dhlcouriercompanymiami@gmail.com>
-Date:   Mon, 14 Sep 2020 05:11:48 -0700
-Message-ID: <CAG_Oktqa56Bp7PLufmpy8BRuakuVfeDqG3cGaWACLE6sUUX7kg@mail.gmail.com>
-Subject: Your Respond ASAP
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1726908AbgINO6f (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 14 Sep 2020 10:58:35 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:24011 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726702AbgINO6P (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 14 Sep 2020 10:58:15 -0400
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08EEWJ84130719
+        for <keyrings@vger.kernel.org>; Mon, 14 Sep 2020 10:58:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : date : in-reply-to : references : content-type : mime-version
+ : content-transfer-encoding; s=pp1;
+ bh=Eg5pTzzAeOgEE+kKZulRZPZMoks11s9ZZMjuBkkWXrE=;
+ b=TZaF7rxUECxpzVXonYt8zDJ2SpNeQpIYi1EpdDdL3kDNG2LuvhbL+sAt+nMMSTuhtR2B
+ q47BC1tquil74dnqmi4wradCSYIoX0+4JRlnVzGIe1dBwFmrnlaMOH7xvvetZcpayIQI
+ yoIObFBKhimBmA8j2BinB8lrNL9lgT9vXSZJDh7oXSJU5Brxu/8C4q7LCfb5NNRl00v9
+ pHrulTslsVoFCaI7QKyUM3CfU9xgfJdr6jE89+/K3IwZeHotN1RN2I/jYS14k4g8ToTF
+ b/OVGQSBt0ueZlAqXKwkCZolvvqP9ziMFhE2k+I9jRbREn7gxnteOPrxxrzsPEm6qG4w fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 33ja4rhaxs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <keyrings@vger.kernel.org>; Mon, 14 Sep 2020 10:58:08 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08EEWQLW131585
+        for <keyrings@vger.kernel.org>; Mon, 14 Sep 2020 10:58:08 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 33ja4rhax4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Sep 2020 10:58:08 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08EEvTaK018295;
+        Mon, 14 Sep 2020 14:58:06 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma03fra.de.ibm.com with ESMTP id 33gny8181c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Sep 2020 14:58:06 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08EEw4Gr29032880
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Sep 2020 14:58:04 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 34568AE053;
+        Mon, 14 Sep 2020 14:58:04 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6C93FAE056;
+        Mon, 14 Sep 2020 14:58:03 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.110.17])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 14 Sep 2020 14:58:03 +0000 (GMT)
+Message-ID: <aa7a1f5ae2b44b0f87ceca7e7719c80346b71cac.camel@linux.ibm.com>
+Subject: Re: [PATCH] keys: Print more useful debug info if encryption algo
+ is not available
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Anatol Pomozov <anatol.pomozov@gmail.com>, keyrings@vger.kernel.org
+Date:   Mon, 14 Sep 2020 10:58:02 -0400
+In-Reply-To: <20200825215040.307947-1-anatol.pomozov@gmail.com>
+References: <20200825215040.307947-1-anatol.pomozov@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-14_04:2020-09-14,2020-09-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 suspectscore=0 phishscore=0 mlxlogscore=914 bulkscore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009140115
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
--- 
-From Chief Compliance Officer, Citigroup Inc CITIBANK
-388 Greenwich St, New York, 10013, United States United.
-PAYMENT CODE: FRB010
-Swift: PTBLBXXX
-==============================================
+Hi Anatol,
 
-Attention: Beneficiary,
+On Tue, 2020-08-25 at 14:50 -0700, Anatol Pomozov wrote:
+> Signed-off-by: Anatol Pomozov <anatol.pomozov@gmail.com>
 
-We write to inform you that Series of meetings have been held over the
-past 2 weeks with the Secretary General of United Nations,U.S
-Department of State and Dubai Union Organization this ended last
-week.And parcel is under our custody right now, It will deliver to you
-within 24 hours once you clear the charges which will cost you
-according to the BANKERS COURIER SERVICES that wish to deliver your
-ATM CARD card to
-you immediately.
+The subject should be prefixed with "encrypted-keys:".   The patch
+description is missing.
 
-However, it is the pleasure of this office to inform you that your ATM
-CARD number; is 29741733 and it has been approved and upgraded in your
-favor .you call me for the pin code numbers. The ATM CARD value is us
-$10.5 Million only.
+Mimi
 
-Kindly contact the paying bank for the claim of your ATM visa card
-payment fund $10,500,000.00 through the below contact information;
 
-Contact Person:Mr Williams S Young
-Director of Financial Controller
-Bank Name: CITIBANK
-Bank address; 388 Greenwich St,
-New York City,10013, United States
-Email:mrsmegwilliam6@gmail.com
-
-Reconfirm the following information?
-
-(1)Your Full Name=============
-(2)Mobile Phone Number======
-(3)Current Home Address==== ====
-(4)Fax Number================
-(5)Passport/Drivers license ======
-
-Endeavor to keep me posted once you contacted the officer in charge
-through the above mentioned information.
-
-Your timely response is highly appreciated.To this end, you are
-required to forward your payment information as follows to enable us
-load your fund into the card with your information and deliver it to
-your door step. as the BANKERS COURIER SERVICES are in charge of the
-delivery services to your destination.
-
-Yours truly;
-
-Ms Mary Mcniff.
-Chief Compliance Officer, Citigroup Inc
-FEDERAL RESERVE SYSTEM.
-Email: marymcniff7@gmail.com.
