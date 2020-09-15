@@ -2,153 +2,174 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E825E26B051
-	for <lists+keyrings@lfdr.de>; Wed, 16 Sep 2020 00:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 110B026B26E
+	for <lists+keyrings@lfdr.de>; Wed, 16 Sep 2020 00:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727928AbgIOWII (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 15 Sep 2020 18:08:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727983AbgIOUVP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Sep 2020 16:21:15 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868D8C061788
-        for <keyrings@vger.kernel.org>; Tue, 15 Sep 2020 13:20:33 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id k14so2574460pgi.9
-        for <keyrings@vger.kernel.org>; Tue, 15 Sep 2020 13:20:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KKOXRLJhkGhiu92khwe8SCHm7fBcYmv/ys0l/XPzjKs=;
-        b=Wz+BieWsz9tBppl55cH0gZUAY+AWg0bv7saM/2nDohe3eL0PP9s7q0ZlQFWXA82A3/
-         7i0rO/EVbOXnbgU/Re1YvOR4pVy/dxFhLx50NgG323jKRkAIGglycn7vmPT59RtsbKfn
-         G8cojrdxnvoSJFIhiOxzAahRGvlqL7L3r4det3ATlvHWboIpPKriHFZPcDzMGYio/bcK
-         IYAeJeiakQUvcZnggP5T05SIEnwMvwVxkTdNyCN2Gb0Zg3YN5QflfqPsVJeqK91Ctpig
-         F4DBVPDSLClXVcinR++JFhI+TqKyJl4vh09kO+RTE/EjlPPmtLKwyOnQBzvmBLlVaH7h
-         D+6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KKOXRLJhkGhiu92khwe8SCHm7fBcYmv/ys0l/XPzjKs=;
-        b=JO0oWuU5deG3X680pUnn8pPb3rPICzyu7A8+4VKlWW1BVBCCFAZq39LAw+I6VKy8rQ
-         e7SK3+Cxa8qfwI+K9NEyTAOCVV781tYLzRGT/1GchJK5rmbcrimYXHdx1eVryA7ESWn3
-         yliRTcguMco6jjIfPyAJbudDByTHMYxs1E+d0GcPVWCQSvqbLyOqFrjRVkwzH5iVcBdw
-         1ZBImPTEuqWFw97Ao9WsOIpkIs2/gL4e7yQYsNg1ykBzuY+tLl2tMeu6CY/f4t2Rg/w6
-         HB0W5ZIHqNEolXjBtAOWjn/YNmq6fqaRPOa4boqvIJknb+TX2a+KruiBC7l/PgtzGL9t
-         i1+Q==
-X-Gm-Message-State: AOAM531BfMbvPWiNvwNTNHO8IlYjq0MQAmZJ23mZBNvR7poyH8gmtnqu
-        paKjmS9jCjPtYnlU5qRns8OEbAdvdSjQ8o0QCG+JbA==
-X-Google-Smtp-Source: ABdhPJzopiasXStsZ048nRyWlzMTOvMY5O+fmTdHlgtoYibbwZ7I2wht/t3RyRw/q/Vft3U9WgLWjsqor4gfSAj+bZs=
-X-Received: by 2002:a63:31d2:: with SMTP id x201mr16442770pgx.263.1600201232776;
- Tue, 15 Sep 2020 13:20:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200912172643.9063-5-James.Bottomley@HansenPartnership.com>
- <202009131413.8dt8QEc8%lkp@intel.com> <1600016571.7833.9.camel@HansenPartnership.com>
- <20200915091140.GC3612@linux.intel.com>
-In-Reply-To: <20200915091140.GC3612@linux.intel.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 15 Sep 2020 13:20:20 -0700
-Message-ID: <CAKwvOdnDJKPJ__sVKX2HmLUWyNPo=b0ccLvyBLyWoFfC0EFkiA@mail.gmail.com>
-Subject: Re: [PATCH v11 4/5] security: keys: trusted: use ASN.1 TPM2 key
- format for the blobs
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     kernel test robot <lkp@intel.com>, linux-integrity@vger.kernel.org,
-        kbuild-all@lists.01.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727722AbgIOWqw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Sep 2020 18:46:52 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:48738 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727490AbgIOPpH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Sep 2020 11:45:07 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FFP3ca146660;
+        Tue, 15 Sep 2020 15:44:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=dtTmhZe5n21zVdQpTOTAtBeFkVA42Abq50W1Y+Hydlc=;
+ b=OprU6tm8Pf4j3FOvGuBH51uVcE2dGBc9k0MwnaLrDqBQCLrURlJNlqWziuCTfnbk4Z7F
+ qHn24Yd4VFJjk8SX6+USk320Gh0QowSG/Ybhe/eXGv0E/LjcwhgrsHNulUbwxbh3B028
+ 8YhbegIF1sYOwt9YScVT8Y+ukRsj8mE4XnuHfODlKLRlXSRfJsWt5IzT/BdHjW0Y/BlO
+ 4nlL4AdKVN1as2QX2ae/nXhWTgxLXwDChJwCwWPnCvst5Kvhnje9b3kOHbBfJyIKbQnp
+ cVBi586AVkx4Ij/22PY89PVqyI1pm9PIvwilhHZYY2ITh4S+OxT7ZGIKK87pzf0ZMdaL Rg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 33gp9m5x17-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 15 Sep 2020 15:44:40 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FFJxKU017009;
+        Tue, 15 Sep 2020 15:42:39 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 33h7wpadr9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Sep 2020 15:42:39 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08FFgVH5017794;
+        Tue, 15 Sep 2020 15:42:33 GMT
+Received: from dhcp-10-65-178-159.vpn.oracle.com (/10.65.178.159)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 15 Sep 2020 15:42:30 +0000
+Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Subject: Re: [PATCH v3] certs: Add EFI_CERT_X509_GUID support for dbx entries
+From:   Eric Snowberg <eric.snowberg@oracle.com>
+In-Reply-To: <20200914181227.GF9369@linux.intel.com>
+Date:   Tue, 15 Sep 2020 09:42:27 -0600
+Cc:     dhowells@redhat.com, dwmw2@infradead.org, jmorris@namei.org,
+        serge@hallyn.com, nayna@linux.ibm.com, erichte@linux.ibm.com,
+        mpe@ellerman.id.au, zohar@linux.ibm.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, rdunlap@infradead.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F25F6F0E-7E13-4C9D-A7BA-33CDEF7074F2@oracle.com>
+References: <20200911182230.62266-1-eric.snowberg@oracle.com>
+ <20200914181227.GF9369@linux.intel.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+X-Mailer: Apple Mail (2.3273)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 malwarescore=0
+ adultscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009150128
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
+ spamscore=0 priorityscore=1501 suspectscore=3 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009150128
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Sep 15, 2020 at 2:11 AM Jarkko Sakkinen
+
+> On Sep 14, 2020, at 12:12 PM, Jarkko Sakkinen =
 <jarkko.sakkinen@linux.intel.com> wrote:
->
-> On Sun, Sep 13, 2020 at 10:02:51AM -0700, James Bottomley wrote:
-> > On Sun, 2020-09-13 at 14:26 +0800, kernel test robot wrote:
-> > > Hi James,
-> > >
-> > > I love your patch! Yet something to improve:
-> > >
-> > > [auto build test ERROR on integrity/next-integrity]
-> > > [also build test ERROR on linus/master v5.9-rc4 next-20200911]
-> > > [cannot apply to security/next-testing dhowells-fs/fscache-next]
-> > > [If your patch is applied to the wrong git tree, kindly drop us a
-> > > note.
-> > > And when submitting patch, we suggest to use '--base' as documented
-> > > in
-> > > https://git-scm.com/docs/git-format-patch]
-> > >
-> > > url:    https://github.com/0day-ci/linux/commits/James-Bottomley/TPM-
-> > > 2-0-trusted-key-rework/20200913-013201
-> > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-i
-> > > ntegrity.git next-integrity
-> > > config: arm-randconfig-r013-20200913 (attached as .config)
+>=20
+> On Fri, Sep 11, 2020 at 02:22:30PM -0400, Eric Snowberg wrote:
+>> The Secure Boot Forbidden Signature Database, dbx, contains a list of =
+now
+>> revoked signatures and keys previously approved to boot with UEFI =
+Secure
+>> Boot enabled.  The dbx is capable of containing any number of
+>> EFI_CERT_X509_SHA256_GUID, EFI_CERT_SHA256_GUID, and =
+EFI_CERT_X509_GUID
+>> entries.
+>>=20
+>> Currently when EFI_CERT_X509_GUID are contained in the dbx, the =
+entries are
+>> skipped.
+>>=20
+>> Add support for EFI_CERT_X509_GUID dbx entries. When a =
+EFI_CERT_X509_GUID
+>> is found, it is added as an asymmetrical key to the .blacklist =
+keyring.
+>> Anytime the .platform keyring is used, the keys in the .blacklist =
+keyring
+>> are referenced, if a matching key is found, the key will be rejected.
+>>=20
+>> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+>> ---
+>> v3:
+>> Fixed an issue when CONFIG_PKCS7_MESSAGE_PARSER is not builtin and =
+defined
+>> as a module instead, pointed out by Randy Dunlap
+>>=20
+>> v2:=20
+>> Fixed build issue reported by kernel test robot <lkp@intel.com>
+>> Commit message update (suggested by Jarkko Sakkinen)
+>> ---
+>> certs/blacklist.c                             | 33 =
++++++++++++++++++++
+>> certs/blacklist.h                             | 12 +++++++
+>> certs/system_keyring.c                        |  6 ++++
+>> include/keys/system_keyring.h                 | 11 +++++++
+>> .../platform_certs/keyring_handler.c          | 11 +++++++
+>> 5 files changed, 73 insertions(+)
+>>=20
+>> diff --git a/certs/blacklist.c b/certs/blacklist.c
+>> index 6514f9ebc943..3d1514ba5d47 100644
+>> --- a/certs/blacklist.c
+>> +++ b/certs/blacklist.c
+>> @@ -100,6 +100,39 @@ int mark_hash_blacklisted(const char *hash)
+>> 	return 0;
+>> }
+>>=20
+>> +int mark_key_revocationlisted(const char *data, size_t size)
+>> +{
+>> +	key_ref_t key;
+>> +
+>> +	key =3D key_create_or_update(make_key_ref(blacklist_keyring, =
+true),
+>> +				   "asymmetric",
+>> +				   NULL,
+>> +				   data,
+>> +				   size,
+>> +				   ((KEY_POS_ALL & ~KEY_POS_SETATTR) | =
+KEY_USR_VIEW),
+>> +				   KEY_ALLOC_NOT_IN_QUOTA | =
+KEY_ALLOC_BUILT_IN);
+>> +
+>> +	if (IS_ERR(key)) {
+>> +		pr_err("Problem with revocation key (%ld)\n", =
+PTR_ERR(key));
+>> +		return PTR_ERR(key);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +int is_key_revocationlisted(struct pkcs7_message *pkcs7)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret =3D validate_trust(pkcs7, blacklist_keyring);
+>> +
+>> +	if (ret =3D=3D 0)
+>> +		return -EKEYREJECTED;
+>> +
+>> +	return -ENOKEY;
+>> +}
+>> +EXPORT_SYMBOL_GPL(is_key_revocationlisted);
+>=20
+> Hmm... ignore my previous comment about this. Export symbol is called
+> only by system keyring code.
+>=20
+> Would be best if the commit message would explicitly reason new =
+exports.
 
-arm-randconfig ^  You'll need to download and gunzip then use the config file.
+I don=E2=80=99t see a good reason to keep the export now, I=E2=80=99ll =
+remove it from the
+next version.  Thanks.
 
-> > > compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project
-> > > 3170d54842655d6d936aae32b7d0bc92fce7f22e)
-> > > reproduce (this is a W=1 build):
-> > >         wget https://raw.githubusercontent.com/intel/lkp-tests/master
-> > > /sbin/make.cross -O ~/bin/make.cross
-> > >         chmod +x ~/bin/make.cross
-> > >         # install arm cross compiling tool for clang build
-> > >         # apt-get install binutils-arm-linux-gnueabi
-> > >         # save the attached .config to linux build tree
-> > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross
-> > > ARCH=arm
-> > >
-> > > If you fix the issue, kindly add following tag as appropriate
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > >
-> > > All errors (new ones prefixed by >>):
-> > >
-> > > > > security/keys/trusted-keys/trusted_tpm2.c:19:10: fatal error:
-> > > > > 'tpm2key.asn1.h' file not found
-> > >
-> > >    #include "tpm2key.asn1.h"
-> > >             ^~~~~~~~~~~~~~~~
-> > >    1 error generated.
-> >
-> > Do you have the actual build log for this?  On x86 the build process
-> > builds any precursors first, which is the tpm2key.asn1.o, which
-> > generates that header file, so we see:
-> >
-> >   ASN.1   security/keys/trusted-keys/tpm2key.asn1.[ch]
-> >   CC [M]  security/keys/trusted-keys/trusted_tpm2.o
-> >   CC [M]  security/keys/trusted-keys/tpm2-policy.o
-> >   CC [M]  security/keys/trusted-keys/tpm2key.asn1.o
-> >   LD [M]  security/keys/trusted-keys/trusted.o
-> >
-> > Is ARM doing a lazier version of that?  In which case the fix might be
-> > to move trusted_tpm2.o to after tpm2key.asn1.o in the Makefile, this
-> > line:
-> >
-> > trusted-y += trusted_tpm2.o tpm2key.asn1.o
-> >
-> > James
->
-> You can try to reproduce the arm build with BuildRoot. That's what I
-> usually do when bumping something like this with arm.
-
-You shouldn't need buildroot for build failures (we use buildroot, for
-boot testing).
-
-For an arm build, you should be able to cross compile with:
-$ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make CC=clang -j
-
-(You can try without CC=clang first, may not be clang specific)
-(You should install arm-linux-gnueabihf-gcc and the same for binutils.
-Some distros have separate target triples without `hf` in them; either
-should be fine for the kernel as long as your invocation of make
-matches what you have installed).
--- 
-Thanks,
-~Nick Desaulniers
