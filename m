@@ -2,110 +2,153 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1532B26A1B5
-	for <lists+keyrings@lfdr.de>; Tue, 15 Sep 2020 11:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E825E26B051
+	for <lists+keyrings@lfdr.de>; Wed, 16 Sep 2020 00:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726155AbgIOJJ7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 15 Sep 2020 05:09:59 -0400
-Received: from mga18.intel.com ([134.134.136.126]:37789 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726119AbgIOJJ6 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 15 Sep 2020 05:09:58 -0400
-IronPort-SDR: 1HvWKyEPmSJ40zRoYeycI+Zj7SqsCt8sdQZskuizJhK9tP+rtf1SozpS2sw6iga3b2KtZ9f81q
- JBvwI7yA56Og==
-X-IronPort-AV: E=McAfee;i="6000,8403,9744"; a="146967076"
-X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
-   d="scan'208";a="146967076"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:09:56 -0700
-IronPort-SDR: wppjluMxy0S5Wx5Ey4/7QgSn3ZnEEcFahxfF0jvcDA+rGIJaC5PWOQAvJz+wqU85rpiXBSkqR+
- WPfndzIvt1eA==
-X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
-   d="scan'208";a="451228991"
-Received: from blank-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.62.208])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:09:52 -0700
-Date:   Tue, 15 Sep 2020 12:09:50 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        id S1727928AbgIOWII (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Sep 2020 18:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32984 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727983AbgIOUVP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Sep 2020 16:21:15 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868D8C061788
+        for <keyrings@vger.kernel.org>; Tue, 15 Sep 2020 13:20:33 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id k14so2574460pgi.9
+        for <keyrings@vger.kernel.org>; Tue, 15 Sep 2020 13:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KKOXRLJhkGhiu92khwe8SCHm7fBcYmv/ys0l/XPzjKs=;
+        b=Wz+BieWsz9tBppl55cH0gZUAY+AWg0bv7saM/2nDohe3eL0PP9s7q0ZlQFWXA82A3/
+         7i0rO/EVbOXnbgU/Re1YvOR4pVy/dxFhLx50NgG323jKRkAIGglycn7vmPT59RtsbKfn
+         G8cojrdxnvoSJFIhiOxzAahRGvlqL7L3r4det3ATlvHWboIpPKriHFZPcDzMGYio/bcK
+         IYAeJeiakQUvcZnggP5T05SIEnwMvwVxkTdNyCN2Gb0Zg3YN5QflfqPsVJeqK91Ctpig
+         F4DBVPDSLClXVcinR++JFhI+TqKyJl4vh09kO+RTE/EjlPPmtLKwyOnQBzvmBLlVaH7h
+         D+6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KKOXRLJhkGhiu92khwe8SCHm7fBcYmv/ys0l/XPzjKs=;
+        b=JO0oWuU5deG3X680pUnn8pPb3rPICzyu7A8+4VKlWW1BVBCCFAZq39LAw+I6VKy8rQ
+         e7SK3+Cxa8qfwI+K9NEyTAOCVV781tYLzRGT/1GchJK5rmbcrimYXHdx1eVryA7ESWn3
+         yliRTcguMco6jjIfPyAJbudDByTHMYxs1E+d0GcPVWCQSvqbLyOqFrjRVkwzH5iVcBdw
+         1ZBImPTEuqWFw97Ao9WsOIpkIs2/gL4e7yQYsNg1ykBzuY+tLl2tMeu6CY/f4t2Rg/w6
+         HB0W5ZIHqNEolXjBtAOWjn/YNmq6fqaRPOa4boqvIJknb+TX2a+KruiBC7l/PgtzGL9t
+         i1+Q==
+X-Gm-Message-State: AOAM531BfMbvPWiNvwNTNHO8IlYjq0MQAmZJ23mZBNvR7poyH8gmtnqu
+        paKjmS9jCjPtYnlU5qRns8OEbAdvdSjQ8o0QCG+JbA==
+X-Google-Smtp-Source: ABdhPJzopiasXStsZ048nRyWlzMTOvMY5O+fmTdHlgtoYibbwZ7I2wht/t3RyRw/q/Vft3U9WgLWjsqor4gfSAj+bZs=
+X-Received: by 2002:a63:31d2:: with SMTP id x201mr16442770pgx.263.1600201232776;
+ Tue, 15 Sep 2020 13:20:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200912172643.9063-5-James.Bottomley@HansenPartnership.com>
+ <202009131413.8dt8QEc8%lkp@intel.com> <1600016571.7833.9.camel@HansenPartnership.com>
+ <20200915091140.GC3612@linux.intel.com>
+In-Reply-To: <20200915091140.GC3612@linux.intel.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 15 Sep 2020 13:20:20 -0700
+Message-ID: <CAKwvOdnDJKPJ__sVKX2HmLUWyNPo=b0ccLvyBLyWoFfC0EFkiA@mail.gmail.com>
+Subject: Re: [PATCH v11 4/5] security: keys: trusted: use ASN.1 TPM2 key
+ format for the blobs
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     kernel test robot <lkp@intel.com>, linux-integrity@vger.kernel.org,
+        kbuild-all@lists.01.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         David Woodhouse <dwmw2@infradead.org>,
         keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v11 3/5] security: keys: trusted: fix TPM2 authorizations
-Message-ID: <20200915090950.GB3612@linux.intel.com>
-References: <20200912172643.9063-1-James.Bottomley@HansenPartnership.com>
- <20200912172643.9063-4-James.Bottomley@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200912172643.9063-4-James.Bottomley@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, Sep 12, 2020 at 10:26:41AM -0700, James Bottomley wrote:
-> In TPM 1.2 an authorization was a 20 byte number.  The spec actually
-> recommended you to hash variable length passwords and use the sha1
-> hash as the authorization.  Because the spec doesn't require this
-> hashing, the current authorization for trusted keys is a 40 digit hex
-> number.  For TPM 2.0 the spec allows the passing in of variable length
-> passwords and passphrases directly, so we should allow that in trusted
-> keys for ease of use.  Update the 'blobauth' parameter to take this
-> into account, so we can now use plain text passwords for the keys.
-> 
-> so before
-> 
-> keyctl add trusted kmk "new 32 blobauth=f572d396fae9206628714fb2ce00f72e94f2258f"
-> 
-> after we will accept both the old hex sha1 form as well as a new
-> directly supplied password:
-> 
-> keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
-> 
-> Since a sha1 hex code must be exactly 40 bytes long and a direct
-> password must be 20 or less, we use the length as the discriminator
-> for which form is input.
-> 
-> Note this is both and enhancement and a potential bug fix.  The TPM
-> 2.0 spec requires us to strip leading zeros, meaning empyty
-> authorization is a zero length HMAC whereas we're currently passing in
-> 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but the
-> Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this patch
-> makes the Microsoft TPM emulator work with trusted keys.
-> 
-> Fixes: 0fe5480303a1 ("keys, trusted: seal/unseal with TPM 2.0 chips")
-> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+On Tue, Sep 15, 2020 at 2:11 AM Jarkko Sakkinen
+<jarkko.sakkinen@linux.intel.com> wrote:
+>
+> On Sun, Sep 13, 2020 at 10:02:51AM -0700, James Bottomley wrote:
+> > On Sun, 2020-09-13 at 14:26 +0800, kernel test robot wrote:
+> > > Hi James,
+> > >
+> > > I love your patch! Yet something to improve:
+> > >
+> > > [auto build test ERROR on integrity/next-integrity]
+> > > [also build test ERROR on linus/master v5.9-rc4 next-20200911]
+> > > [cannot apply to security/next-testing dhowells-fs/fscache-next]
+> > > [If your patch is applied to the wrong git tree, kindly drop us a
+> > > note.
+> > > And when submitting patch, we suggest to use '--base' as documented
+> > > in
+> > > https://git-scm.com/docs/git-format-patch]
+> > >
+> > > url:    https://github.com/0day-ci/linux/commits/James-Bottomley/TPM-
+> > > 2-0-trusted-key-rework/20200913-013201
+> > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-i
+> > > ntegrity.git next-integrity
+> > > config: arm-randconfig-r013-20200913 (attached as .config)
 
-I created a key:
+arm-randconfig ^  You'll need to download and gunzip then use the config file.
 
-$ sudo ./tpm2-root-key
-0x80000000
-$ sudo ./tpm2-list-handles
-0x80000000
-$ keyctl add trusted kmk "new 32 blobauth=hello keyhandle=0x80000000"
-<keyctl usage>
-$ lsmod
-Module                  Size  Used by
-sha1_generic           16384  2
-trusted                32768  0
-asn1_encoder           16384  1 trusted
-x86_pkg_temp_thermal    20480  0
-iwlmvm                356352  0
-iwlwifi               315392  1 iwlmvm
-tpm_crb                16384  0
-tpm_tis                16384  0
-tpm_tis_core           24576  1 tpm_tis
-tpm                    61440  4 tpm_tis,trusted,tpm_crb,tpm_tis_core
-efivarfs               16384  1
+> > > compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project
+> > > 3170d54842655d6d936aae32b7d0bc92fce7f22e)
+> > > reproduce (this is a W=1 build):
+> > >         wget https://raw.githubusercontent.com/intel/lkp-tests/master
+> > > /sbin/make.cross -O ~/bin/make.cross
+> > >         chmod +x ~/bin/make.cross
+> > >         # install arm cross compiling tool for clang build
+> > >         # apt-get install binutils-arm-linux-gnueabi
+> > >         # save the attached .config to linux build tree
+> > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross
+> > > ARCH=arm
+> > >
+> > > If you fix the issue, kindly add following tag as appropriate
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > >
+> > > All errors (new ones prefixed by >>):
+> > >
+> > > > > security/keys/trusted-keys/trusted_tpm2.c:19:10: fatal error:
+> > > > > 'tpm2key.asn1.h' file not found
+> > >
+> > >    #include "tpm2key.asn1.h"
+> > >             ^~~~~~~~~~~~~~~~
+> > >    1 error generated.
+> >
+> > Do you have the actual build log for this?  On x86 the build process
+> > builds any precursors first, which is the tpm2key.asn1.o, which
+> > generates that header file, so we see:
+> >
+> >   ASN.1   security/keys/trusted-keys/tpm2key.asn1.[ch]
+> >   CC [M]  security/keys/trusted-keys/trusted_tpm2.o
+> >   CC [M]  security/keys/trusted-keys/tpm2-policy.o
+> >   CC [M]  security/keys/trusted-keys/tpm2key.asn1.o
+> >   LD [M]  security/keys/trusted-keys/trusted.o
+> >
+> > Is ARM doing a lazier version of that?  In which case the fix might be
+> > to move trusted_tpm2.o to after tpm2key.asn1.o in the Makefile, this
+> > line:
+> >
+> > trusted-y += trusted_tpm2.o tpm2key.asn1.o
+> >
+> > James
+>
+> You can try to reproduce the arm build with BuildRoot. That's what I
+> usually do when bumping something like this with arm.
 
-What could be wrong? Have the full seris applied on a test kernel.
+You shouldn't need buildroot for build failures (we use buildroot, for
+boot testing).
 
-The root key creation is contained in create_root_key():
+For an arm build, you should be able to cross compile with:
+$ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make CC=clang -j
 
-https://github.com/jsakkine-intel/tpm2-scripts/blob/master/tpm2.py
-
-/Jarkko
+(You can try without CC=clang first, may not be clang specific)
+(You should install arm-linux-gnueabihf-gcc and the same for binutils.
+Some distros have separate target triples without `hf` in them; either
+should be fine for the kernel as long as your invocation of make
+matches what you have installed).
+-- 
+Thanks,
+~Nick Desaulniers
