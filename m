@@ -2,248 +2,274 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0B626B8EA
-	for <lists+keyrings@lfdr.de>; Wed, 16 Sep 2020 02:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF74126BEB6
+	for <lists+keyrings@lfdr.de>; Wed, 16 Sep 2020 10:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726474AbgIPAw1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 15 Sep 2020 20:52:27 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:39066 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726592AbgIPAwR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Sep 2020 20:52:17 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08G0oMEh142287;
-        Wed, 16 Sep 2020 00:51:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id; s=corp-2020-01-29;
- bh=P1pMOoWe6LNIy0K4uxNXT7zrnhjw8PJuQG/b1p84A/8=;
- b=NA/shWYmIU/HiJZQs68zdaRh+mh+f9i58n8nc+wpbk6gWgvsYkSIoYRXYBiqODqTQyNp
- PwMBbOESlIV6AUE+xmvI0TqKeZZevtT40RS8JNyzE5PFDyk00ho6am3VM5es7lyDTCge
- v7JisUOYAcbj7TAB9vF2q6mYq2aVo2BasPzvV+escOBUrT6YkKxezM9jmCPuYNoxCntM
- F+S/5+MWL5JwWuCT/qo46uLpE4OzDeQ5kmyj/xno3IjtIj79Rg6vvJueX5GIbszky3dy
- HkJZ9N9FJrtummgcUW3Vuo8U5H69bWRZXs72mt1bArIk11DvHNjWthl8sz3Mjrz8YkOb vg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 33gnrr0827-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Sep 2020 00:51:48 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08G0UjCe151431;
-        Wed, 16 Sep 2020 00:49:47 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 33h890bpgx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Sep 2020 00:49:47 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08G0naIe029785;
-        Wed, 16 Sep 2020 00:49:39 GMT
-Received: from localhost.us.oracle.com (/10.147.27.2)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 16 Sep 2020 00:49:35 +0000
-From:   Eric Snowberg <eric.snowberg@oracle.com>
-To:     dhowells@redhat.com, dwmw2@infradead.org,
-        jarkko.sakkinen@linux.intel.com
-Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
-        zohar@linux.ibm.com, eric.snowberg@oracle.com,
-        erichte@linux.ibm.com, mpe@ellerman.id.au,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
-Date:   Tue, 15 Sep 2020 20:49:27 -0400
-Message-Id: <20200916004927.64276-1-eric.snowberg@oracle.com>
-X-Mailer: git-send-email 2.18.1
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
- suspectscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009160001
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 bulkscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=999 adultscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009160002
+        id S1726475AbgIPIBu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 16 Sep 2020 04:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726302AbgIPIBp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 16 Sep 2020 04:01:45 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33283C06178B
+        for <keyrings@vger.kernel.org>; Wed, 16 Sep 2020 01:01:45 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id 67so3416749pgd.12
+        for <keyrings@vger.kernel.org>; Wed, 16 Sep 2020 01:01:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=benyossef-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Jzms5XAy0HxBD6ul+TJwAtKpEdXIIQEvIQXmembsOLs=;
+        b=QC/a9gxIFQcQOJO+uA+vjVshZqDN8e+LFRdyf/aIAVoxC6nt6GyZMHOWcZvoME0w87
+         aSe0E7xu0+ZGXIE7WrAXn//6ydaMyNBCBc+QjStY7SIQBm1YCSo7xYtzW0RFzRgNXf1f
+         1yLhZ0g0VuKfw3IfLpoz0voPYrp9ZPxHjaAovtMHgeQVMKX9bVGNvpS/rRgm/9pv0ToS
+         0V6gf+vOX7w9japVUv1/b/bs6Ze4C4xX7YFaUhdfalPVuIoiVi88/RAMDRrSVn4FyHSJ
+         rwDYrlp4PuzT/W5NxJEjng8q7U6zQwC8KQFZCIj1QyHKdfzL3/798HNVYEbVM8c7I2Wc
+         ZG3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Jzms5XAy0HxBD6ul+TJwAtKpEdXIIQEvIQXmembsOLs=;
+        b=kHH3RUCGV6M8b4NY3iGm+g6fKmizpjZ6sIQRDxmE2vciIqZdOGjDKYB1Fk2uYTi01j
+         iDPIgi9qXaEcrKaTzhXXsaHz8/O9ZUe48sJ/+4s8O+Gl1yYxnzgLAiWMHiJx6Ft+acbG
+         K/hiLM+ikYksVFtt1D5bY8LSSL1Oj6c4x+BHbCAtesVP0ADvPAANGMlgM51ocFoY2ewE
+         WgSUctFAmqGAjaMTf8fpDNDqZWCZHeYDGNvFYredaNtCJt1/GX/PKO+NSZBzqmDgS4Wb
+         qPzKmE/6Lp5V5r7gVe1b4OW2oBlXWJUe3fkxsxJIHbSDrhVJQmPNTCtkOVR+pal8TrDE
+         Ae1Q==
+X-Gm-Message-State: AOAM530N9+65vmoZJryWIc4X+2HizS9qXD3dncHlRSJcmlCvlVNNSK+L
+        +Q0q4YD5VC3uJrqSrZ78DrIWyRI8HBoXqImm2c1yFg==
+X-Google-Smtp-Source: ABdhPJwN2QFGXNPzAZFIilK1Py2rGwqQ0bbheksG8Mxx6NCNiQuM7ZG8NklYYP87LUBNlsvMF6HpPVEL1Zj6OHCa7iw=
+X-Received: by 2002:aa7:941a:0:b029:142:2501:35d1 with SMTP id
+ x26-20020aa7941a0000b0290142250135d1mr5277487pfo.49.1600243304416; Wed, 16
+ Sep 2020 01:01:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200903131242.128665-1-tianjia.zhang@linux.alibaba.com>
+ <20200903131242.128665-8-tianjia.zhang@linux.alibaba.com> <CAOtvUMfT5zgv=e9nCgz8-1r7LuYSRZ8Zdx2xc0JwckUJZufcvg@mail.gmail.com>
+ <6f251e1e-42a0-7e6c-e0cd-51fba3150d17@linux.alibaba.com>
+In-Reply-To: <6f251e1e-42a0-7e6c-e0cd-51fba3150d17@linux.alibaba.com>
+From:   Gilad Ben-Yossef <gilad@benyossef.com>
+Date:   Wed, 16 Sep 2020 11:01:34 +0300
+Message-ID: <CAOtvUMdxeYxztajMG=XDzV-G8cB2GLaVnNBSAxLkwuZwqPxr2A@mail.gmail.com>
+Subject: Re: [PATCH v6 7/8] X.509: support OSCCA sm2-with-sm3 certificate verification
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Howells <dhowells@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephan Mueller <smueller@chronox.de>,
+        Marcelo Henrique Cerri <marcelo.cerri@canonical.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Waiman Long <longman@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Tushar Sugandhi <tusharsu@linux.microsoft.com>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Pascal van Leeuwen <pvanleeuwen@rambus.com>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        keyrings@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-security-module@vger.kernel.org,
+        Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>,
+        Jia Zhang <zhang.jia@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: keyrings-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The Secure Boot Forbidden Signature Database, dbx, contains a list of now
-revoked signatures and keys previously approved to boot with UEFI Secure
-Boot enabled.  The dbx is capable of containing any number of
-EFI_CERT_X509_SHA256_GUID, EFI_CERT_SHA256_GUID, and EFI_CERT_X509_GUID
-entries.
+On Mon, Sep 14, 2020 at 9:34 AM Tianjia Zhang
+<tianjia.zhang@linux.alibaba.com> wrote:
+>
+> Hi Gilad,
+>
+> On 9/13/20 3:12 PM, Gilad Ben-Yossef wrote:
+> > Hi,
+> >
+> >
+> > On Thu, Sep 3, 2020 at 4:13 PM Tianjia Zhang
+> > <tianjia.zhang@linux.alibaba.com> wrote:
+> >>
+> >> The digital certificate format based on SM2 crypto algorithm as
+> >> specified in GM/T 0015-2012. It was published by State Encryption
+> >> Management Bureau, China.
+> >>
+> >> The method of generating Other User Information is defined as
+> >> ZA=3DH256(ENTLA || IDA || a || b || xG || yG || xA || yA), it also
+> >> specified in https://tools.ietf.org/html/draft-shen-sm2-ecdsa-02.
+> >>
+> >> The x509 certificate supports sm2-with-sm3 type certificate
+> >> verification.  Because certificate verification requires ZA
+> >> in addition to tbs data, ZA also depends on elliptic curve
+> >> parameters and public key data, so you need to access tbs in sig
+> >> and calculate ZA. Finally calculate the digest of the
+> >> signature and complete the verification work. The calculation
+> >> process of ZA is declared in specifications GM/T 0009-2012
+> >> and GM/T 0003.2-2012.
+> >>
+> >> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> >> Tested-by: Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>
+> >> ---
+> >>   crypto/asymmetric_keys/Makefile          |  1 +
+> >>   crypto/asymmetric_keys/public_key.c      |  6 +++
+> >>   crypto/asymmetric_keys/public_key_sm2.c  | 61 ++++++++++++++++++++++=
+++
+> >>   crypto/asymmetric_keys/x509_public_key.c |  3 ++
+> >>   include/crypto/public_key.h              | 15 ++++++
+> >>   5 files changed, 86 insertions(+)
+> >>   create mode 100644 crypto/asymmetric_keys/public_key_sm2.c
+> >>
+> >> diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/=
+Makefile
+> >> index 28b91adba2ae..1a99ea5acb6b 100644
+> >> --- a/crypto/asymmetric_keys/Makefile
+> >> +++ b/crypto/asymmetric_keys/Makefile
+> >> @@ -11,6 +11,7 @@ asymmetric_keys-y :=3D \
+> >>          signature.o
+> >>
+> >>   obj-$(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE) +=3D public_key.o
+> >> +obj-$(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE) +=3D public_key_sm2.o
+> >>   obj-$(CONFIG_ASYMMETRIC_TPM_KEY_SUBTYPE) +=3D asym_tpm.o
+> >>
+> >>   #
+> >> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_k=
+eys/public_key.c
+> >> index d8410ffd7f12..1d0492098bbd 100644
+> >> --- a/crypto/asymmetric_keys/public_key.c
+> >> +++ b/crypto/asymmetric_keys/public_key.c
+> >> @@ -299,6 +299,12 @@ int public_key_verify_signature(const struct publ=
+ic_key *pkey,
+> >>          if (ret)
+> >>                  goto error_free_key;
+> >>
+> >> +       if (strcmp(sig->pkey_algo, "sm2") =3D=3D 0 && sig->data_size) =
+{
+> >> +               ret =3D cert_sig_digest_update(sig, tfm);
+> >> +               if (ret)
+> >> +                       goto error_free_key;
+> >> +       }
+> >> +
+> >>          sg_init_table(src_sg, 2);
+> >>          sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+> >>          sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+> >> diff --git a/crypto/asymmetric_keys/public_key_sm2.c b/crypto/asymmetr=
+ic_keys/public_key_sm2.c
+> >> new file mode 100644
+> >> index 000000000000..7325cf21dbb4
+> >> --- /dev/null
+> >> +++ b/crypto/asymmetric_keys/public_key_sm2.c
+> >> @@ -0,0 +1,61 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> >> +/*
+> >> + * asymmetric public-key algorithm for SM2-with-SM3 certificate
+> >> + * as specified by OSCCA GM/T 0003.1-2012 -- 0003.5-2012 SM2 and
+> >> + * described at https://tools.ietf.org/html/draft-shen-sm2-ecdsa-02
+> >> + *
+> >> + * Copyright (c) 2020, Alibaba Group.
+> >> + * Authors: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> >> + */
+> >> +
+> >> +#include <crypto/sm3_base.h>
+> >> +#include <crypto/sm2.h>
+> >> +#include <crypto/public_key.h>
+> >> +
+> >> +#if IS_REACHABLE(CONFIG_CRYPTO_SM2)
+> >> +
+> >> +int cert_sig_digest_update(const struct public_key_signature *sig,
+> >> +                               struct crypto_akcipher *tfm_pkey)
+> >> +{
+> >> +       struct crypto_shash *tfm;
+> >> +       struct shash_desc *desc;
+> >> +       size_t desc_size;
+> >> +       unsigned char dgst[SM3_DIGEST_SIZE];
+> >> +       int ret;
+> >> +
+> >> +       BUG_ON(!sig->data);
+> >> +
+> >> +       ret =3D sm2_compute_z_digest(tfm_pkey, SM2_DEFAULT_USERID,
+> >> +                                       SM2_DEFAULT_USERID_LEN, dgst);
+> >> +       if (ret)
+> >> +               return ret;
+> >> +
+> >> +       tfm =3D crypto_alloc_shash(sig->hash_algo, 0, 0);
+> >> +       if (IS_ERR(tfm))
+> >> +               return PTR_ERR(tfm);
+> >> +
+> >> +       desc_size =3D crypto_shash_descsize(tfm) + sizeof(*desc);
+> >> +       desc =3D kzalloc(desc_size, GFP_KERNEL);
+> >> +       if (!desc)
+> >> +               goto error_free_tfm;
+> >> +
+> >> +       desc->tfm =3D tfm;
+> >> +
+> >> +       ret =3D crypto_shash_init(desc);
+> >> +       if (ret < 0)
+> >> +               goto error_free_desc;
+> >> +
+> >> +       ret =3D crypto_shash_update(desc, dgst, SM3_DIGEST_SIZE);
+> >> +       if (ret < 0)
+> >> +               goto error_free_desc;
+> >> +
+> >> +       ret =3D crypto_shash_finup(desc, sig->data, sig->data_size, si=
+g->digest);
+> >
+> > It looks like you are doing a separate init, update, finup every time
+> > - I would consider using crypto_shash_digest() in one go.
+> >
+> > In fact, considering the fact that you are allocating a tfm just for
+> > this use and then releasing it, I would consider switching to
+> > crypto_shash_tfm_digest() and dropping the kzalloc all together.
+> >
+> > This should simplify the code a bit.
+> >
+> > Other than that I don't have anything smart to say :-)
+> >
+> > Gilad
+> >
+>
+> The hash calculation here includes two parts of data, 'dgst' and
+> 'sig->data'. The last call is 'finup()' not 'final()'. I understand that
+> it should not be possible to use 'crypto_shash_tfm_digest()' This kind
+> of function is simplified.
+>
+> If a new scope is added, the assignment of desc can be optimized, as
+> follows:
+> ```
+> do {
+>      SHASH_DESC_ON_STACK(desc, tfm);
+>      desc->tfm =3D tfm;
+>
+>      /* ... */
+> } while (0);
+> ```
+> However, the kernel code may not accept this style. What is your opinion?
 
-Currently when EFI_CERT_X509_GUID are contained in the dbx, the entries are
-skipped.
+No, you are right. I've indeed missed that it's a finup() and not a
+final(). If the size of data was big enough it might have been worth
+going to the async. hash interface and creating a scatter list for
+this but I suspect it is not justified with the data sizes we are
+dealing with there.
 
-Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_GUID
-is found, it is added as an asymmetrical key to the .blacklist keyring.
-Anytime the .platform keyring is used, the keys in the .blacklist keyring
-are referenced, if a matching key is found, the key will be rejected.
+So:
 
-Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
----
-v4:
-Remove unneeded symbol export found by Jarkko Sakkinen
+Reviewed-by: Gilad Ben-Yossef <gilad@benyossef.com>
 
-v3:
-Fixed an issue when CONFIG_PKCS7_MESSAGE_PARSER is not builtin and defined
-as a module instead, pointed out by Randy Dunlap
+Thanks,
+Gilad
 
-v2: 
-Fixed build issue reported by kernel test robot <lkp@intel.com>
-Commit message update (suggested by Jarkko Sakkinen)
----
- certs/blacklist.c                             | 32 +++++++++++++++++++
- certs/blacklist.h                             | 12 +++++++
- certs/system_keyring.c                        |  6 ++++
- include/keys/system_keyring.h                 | 11 +++++++
- .../platform_certs/keyring_handler.c          | 11 +++++++
- 5 files changed, 72 insertions(+)
+--=20
+Gilad Ben-Yossef
+Chief Coffee Drinker
 
-diff --git a/certs/blacklist.c b/certs/blacklist.c
-index 6514f9ebc943..4adac7f8fd94 100644
---- a/certs/blacklist.c
-+++ b/certs/blacklist.c
-@@ -100,6 +100,38 @@ int mark_hash_blacklisted(const char *hash)
- 	return 0;
- }
- 
-+int mark_key_revocationlisted(const char *data, size_t size)
-+{
-+	key_ref_t key;
-+
-+	key = key_create_or_update(make_key_ref(blacklist_keyring, true),
-+				   "asymmetric",
-+				   NULL,
-+				   data,
-+				   size,
-+				   ((KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW),
-+				   KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_BUILT_IN);
-+
-+	if (IS_ERR(key)) {
-+		pr_err("Problem with revocation key (%ld)\n", PTR_ERR(key));
-+		return PTR_ERR(key);
-+	}
-+
-+	return 0;
-+}
-+
-+int is_key_revocationlisted(struct pkcs7_message *pkcs7)
-+{
-+	int ret;
-+
-+	ret = validate_trust(pkcs7, blacklist_keyring);
-+
-+	if (ret == 0)
-+		return -EKEYREJECTED;
-+
-+	return -ENOKEY;
-+}
-+
- /**
-  * is_hash_blacklisted - Determine if a hash is blacklisted
-  * @hash: The hash to be checked as a binary blob
-diff --git a/certs/blacklist.h b/certs/blacklist.h
-index 1efd6fa0dc60..420bb7c86e07 100644
---- a/certs/blacklist.h
-+++ b/certs/blacklist.h
-@@ -1,3 +1,15 @@
- #include <linux/kernel.h>
-+#include <linux/errno.h>
-+#include <crypto/pkcs7.h>
- 
- extern const char __initconst *const blacklist_hashes[];
-+
-+#ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
-+#define validate_trust pkcs7_validate_trust
-+#else
-+static inline int validate_trust(struct pkcs7_message *pkcs7,
-+				 struct key *trust_keyring)
-+{
-+	return -ENOKEY;
-+}
-+#endif
-diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-index 798291177186..f8ea96219155 100644
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -241,6 +241,12 @@ int verify_pkcs7_message_sig(const void *data, size_t len,
- 			pr_devel("PKCS#7 platform keyring is not available\n");
- 			goto error;
- 		}
-+
-+		ret = is_key_revocationlisted(pkcs7);
-+		if (ret != -ENOKEY) {
-+			pr_devel("PKCS#7 platform key revocationlisted\n");
-+			goto error;
-+		}
- 	}
- 	ret = pkcs7_validate_trust(pkcs7, trusted_keys);
- 	if (ret < 0) {
-diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.h
-index fb8b07daa9d1..b6991cfe1b6d 100644
---- a/include/keys/system_keyring.h
-+++ b/include/keys/system_keyring.h
-@@ -31,11 +31,14 @@ extern int restrict_link_by_builtin_and_secondary_trusted(
- #define restrict_link_by_builtin_and_secondary_trusted restrict_link_by_builtin_trusted
- #endif
- 
-+extern struct pkcs7_message *pkcs7;
- #ifdef CONFIG_SYSTEM_BLACKLIST_KEYRING
- extern int mark_hash_blacklisted(const char *hash);
-+extern int mark_key_revocationlisted(const char *data, size_t size);
- extern int is_hash_blacklisted(const u8 *hash, size_t hash_len,
- 			       const char *type);
- extern int is_binary_blacklisted(const u8 *hash, size_t hash_len);
-+extern int is_key_revocationlisted(struct pkcs7_message *pkcs7);
- #else
- static inline int is_hash_blacklisted(const u8 *hash, size_t hash_len,
- 				      const char *type)
-@@ -47,6 +50,14 @@ static inline int is_binary_blacklisted(const u8 *hash, size_t hash_len)
- {
- 	return 0;
- }
-+static inline int mark_key_revocationlisted(const char *data, size_t size)
-+{
-+	return 0;
-+}
-+static inline int is_key_revocationlisted(struct pkcs7_message *pkcs7)
-+{
-+	return -ENOKEY;
-+}
- #endif
- 
- #ifdef CONFIG_IMA_BLACKLIST_KEYRING
-diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
-index c5ba695c10e3..cc5a43804bc4 100644
---- a/security/integrity/platform_certs/keyring_handler.c
-+++ b/security/integrity/platform_certs/keyring_handler.c
-@@ -55,6 +55,15 @@ static __init void uefi_blacklist_binary(const char *source,
- 	uefi_blacklist_hash(source, data, len, "bin:", 4);
- }
- 
-+/*
-+ * Revocationlist the X509 cert
-+ */
-+static __init void uefi_revocationlist_x509(const char *source,
-+					    const void *data, size_t len)
-+{
-+	mark_key_revocationlisted(data, len);
-+}
-+
- /*
-  * Return the appropriate handler for particular signature list types found in
-  * the UEFI db and MokListRT tables.
-@@ -76,5 +85,7 @@ __init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type)
- 		return uefi_blacklist_x509_tbs;
- 	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
- 		return uefi_blacklist_binary;
-+	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
-+		return uefi_revocationlist_x509;
- 	return 0;
- }
--- 
-2.18.1
-
+values of =CE=B2 will give rise to dom!
