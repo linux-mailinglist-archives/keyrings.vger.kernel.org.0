@@ -2,51 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BD626DDEC
-	for <lists+keyrings@lfdr.de>; Thu, 17 Sep 2020 16:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2966D26DDB1
+	for <lists+keyrings@lfdr.de>; Thu, 17 Sep 2020 16:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727253AbgIQOMt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 17 Sep 2020 10:12:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53956 "EHLO
+        id S1726478AbgIQOMs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 17 Sep 2020 10:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727232AbgIQN6l (ORCPT
+        with ESMTP id S1727252AbgIQN6l (ORCPT
         <rfc822;keyrings@vger.kernel.org>); Thu, 17 Sep 2020 09:58:41 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CDA2C061A2D
-        for <keyrings@vger.kernel.org>; Thu, 17 Sep 2020 06:47:35 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id g29so1408751pgl.2
-        for <keyrings@vger.kernel.org>; Thu, 17 Sep 2020 06:47:35 -0700 (PDT)
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB39C061A31
+        for <keyrings@vger.kernel.org>; Thu, 17 Sep 2020 06:47:44 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id f1so1135079plo.13
+        for <keyrings@vger.kernel.org>; Thu, 17 Sep 2020 06:47:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=aIsejcsJ7icTxOyem8cwVZXkHEitHo8H+bkBiZNVJ+Y=;
-        b=AsXQkdBIH1NvCBpPgehUr/Xw0qxEpPXl+NISmZA0BAaIhtVl4veBs12LBArP9tpIXX
-         VKlPrpDFQ0gBWC+svssmMIkb5NVhMs1dMuEz5AK14mMV5l4zGvnk37p9NipMVodqD22n
-         3qmsg1wpK5oMUnOEV2wMRDLS72h8gnK965Sa/VdQzGJJwV9qAmGtUYuLxgOK2gjCpP3e
-         poYowXzEAwNh8oyau8/frGQelcd8XFZyXJ/eyhGXwXpeavy8lQqakeq5PVKK8Rcm4pzU
-         h8UD72oaF+H+eZK08Zw+3zxVfSUxtJLRt8w8VucpdrpOgyWmTewGM+aO0n4J23JPL41a
-         xo7g==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=+R0CfwNbMgOaTG4ScznT7OJX0b8ugIojVEfeSnnqNTc=;
+        b=zfzwax3PpdhSOHwd1Dziyh/EVuvLFMJgWgUyuNomMMIfOy+ltMgttpjv2PkG0QUrMg
+         VQ4tkC9yB0StxHOspic8lBEaytG89CvgXfNpG01BM65wRcafv1kgrlPLj2GCQY94wTgE
+         zMNTKBDl6YPTGmySD1a74bYQ5eCzuSljS+Xze4jq2M4G23zm2MM6oTyfwCwJdDnwWzFS
+         hSRNWA3rzc6ZJT5GuNLKkUue9ferEZlkW82DuXD+E8Su8oaJCTy5uj93w/vR2eM1e+LZ
+         OdZsqPF0JYLGzk0yeFhD0uDG4zhhs/QSWomdvTcDXSvQQtWEbM9IysNVgavJZt0qoVNB
+         SByQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=aIsejcsJ7icTxOyem8cwVZXkHEitHo8H+bkBiZNVJ+Y=;
-        b=TIgsPCTfmwGj7kPsSGoKDVltNNdSClxX/vEz7G/dRobq29bIqmmaT4xBwNdlHtTmDE
-         Hb8vMj04ZVCKZ2P+VuCY7EiLSn1l/zbXJeA/EU4CT1snJhf4gSzH2Afv0ffQykOAAeSp
-         SB9XINblPpeC+jSyEqnbkQCqUmNKCNZ2crjB3CgNflxv+lcKEIjdNhaSRvR1K2t7y8R6
-         bfRGda0ftoagnh/ib1/E8bS4dyUjiP467bsqmU3QITA7j3JVCPeYtaoU67C1XzpHp5iL
-         rzzBYohFxWoZ1Vop7MMj8nwjW42TXl0HgnDak++AE/QWkn+STGYk6USJR97BCAqCOsn0
-         +4eA==
-X-Gm-Message-State: AOAM533s5xcuSfl1zEUsirwF7uQix9YUY5xt+9P5IQbFD+cnD0oZPadu
-        e6NRmy7RvmTjsmb6+mPWQZkbfQ==
-X-Google-Smtp-Source: ABdhPJyQWPr/018DpJS78j3J4Bj/IQlZHr37DIPWdTllsmrFNi9P0YPa5jbl54DxGITFyx35fXW53w==
-X-Received: by 2002:a63:a4d:: with SMTP id z13mr16478207pgk.247.1600350454678;
-        Thu, 17 Sep 2020 06:47:34 -0700 (PDT)
+         :references;
+        bh=+R0CfwNbMgOaTG4ScznT7OJX0b8ugIojVEfeSnnqNTc=;
+        b=Hz7rJeeNmVXqtxoP6fIJC2CPKocSldlyh6d7+JMI2hBVWM2gmb9xWv587txQ8eb8GI
+         BdKjzsw/O0+SqQpjGoD7yhEwO+dhmQZRMMPsjVxSYe8Tmu/QiMV3jWRqe34IEBU91diz
+         Euy+gTLKZ7hb7n7ni++Mnaiuz8Zu69xpIzTmApqj2vA3Jsihzs9xjfkuW57pcdJk8nJR
+         iEKqeYJuZmINjBYITaIK+AJLnQl2rIObtjsxymNM7wkSUOqgn2q7UJr4qeVpB4wCpdH5
+         7rTZltVCsQLi+xvgLsXy38Bfg3lfXQcZmiGlEr6rK4lQWt3920SuuN5NFpjJNQkYRzBa
+         2t3w==
+X-Gm-Message-State: AOAM532uqgqycMJMPVUyBVOegrGuBEv1F+1mr/3zIB4pqbdBttPAYbMV
+        26Jhl6ljEpoHanyvQUlU+853bQ==
+X-Google-Smtp-Source: ABdhPJyvy8jjWm23ZilkLS4jB5OQY9gVJSrgQpws0JzwxO3vK5veKrElGyPGUmVKb+AhTbMGL/UX9g==
+X-Received: by 2002:a17:902:8305:b029:d1:cbfc:79b7 with SMTP id bd5-20020a1709028305b02900d1cbfc79b7mr17679996plb.33.1600350464395;
+        Thu, 17 Sep 2020 06:47:44 -0700 (PDT)
 Received: from localhost.localdomain ([117.252.66.163])
-        by smtp.gmail.com with ESMTPSA id i73sm6821120pfe.67.2020.09.17.06.47.25
+        by smtp.gmail.com with ESMTPSA id i73sm6821120pfe.67.2020.09.17.06.47.35
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 17 Sep 2020 06:47:33 -0700 (PDT)
+        Thu, 17 Sep 2020 06:47:43 -0700 (PDT)
 From:   Sumit Garg <sumit.garg@linaro.org>
 To:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
         jejb@linux.ibm.com
@@ -59,284 +58,43 @@ Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         op-tee@lists.trustedfirmware.org,
         Sumit Garg <sumit.garg@linaro.org>
-Subject: [PATCH v6 3/4] doc: trusted-encrypted: updates with TEE as a new trust source
-Date:   Thu, 17 Sep 2020 19:16:37 +0530
-Message-Id: <1600350398-4813-4-git-send-email-sumit.garg@linaro.org>
+Subject: [PATCH v6 4/4] MAINTAINERS: Add entry for TEE based Trusted Keys
+Date:   Thu, 17 Sep 2020 19:16:38 +0530
+Message-Id: <1600350398-4813-5-git-send-email-sumit.garg@linaro.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1600350398-4813-1-git-send-email-sumit.garg@linaro.org>
 References: <1600350398-4813-1-git-send-email-sumit.garg@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Update documentation for Trusted and Encrypted Keys with TEE as a new
-trust source. Following is brief description of updates:
-
-- Add a section to demostrate a list of supported devices along with
-  their security properties/guarantees.
-- Add a key generation section.
-- Updates for usage section including differences specific to a trust
-  source.
+Add MAINTAINERS entry for TEE based Trusted Keys framework.
 
 Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 ---
- Documentation/security/keys/trusted-encrypted.rst | 203 ++++++++++++++++++----
- 1 file changed, 171 insertions(+), 32 deletions(-)
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index 9483a74..a355045 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -6,30 +6,161 @@ Trusted and Encrypted Keys are two new key types added to the existing kernel
- key ring service.  Both of these new types are variable length symmetric keys,
- and in both cases all keys are created in the kernel, and user space sees,
- stores, and loads only encrypted blobs.  Trusted Keys require the availability
--of a Trusted Platform Module (TPM) chip for greater security, while Encrypted
--Keys can be used on any system.  All user level blobs, are displayed and loaded
--in hex ascii for convenience, and are integrity verified.
-+of a Trust Source for greater security, while Encrypted Keys can be used on any
-+system. All user level blobs, are displayed and loaded in hex ascii for
-+convenience, and are integrity verified.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0d0862b..0a913ba 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9668,6 +9668,14 @@ F:	include/keys/trusted-type.h
+ F:	include/keys/trusted_tpm.h
+ F:	security/keys/trusted-keys/
  
--Trusted Keys use a TPM both to generate and to seal the keys.  Keys are sealed
--under a 2048 bit RSA key in the TPM, and optionally sealed to specified PCR
--(integrity measurement) values, and only unsealed by the TPM, if PCRs and blob
--integrity verifications match.  A loaded Trusted Key can be updated with new
--(future) PCR values, so keys are easily migrated to new pcr values, such as
--when the kernel and initramfs are updated.  The same key can have many saved
--blobs under different PCR values, so multiple boots are easily supported.
- 
--TPM 1.2
---------
-+Trust Source
-+============
- 
--By default, trusted keys are sealed under the SRK, which has the default
--authorization value (20 zeros).  This can be set at takeownership time with the
--trouser's utility: "tpm_takeownership -u -z".
-+Trust Source provides the source of security for the Trusted Keys, on which
-+basis Trusted Keys establishes a Trust model with its user. A Trust Source could
-+differ from one system to another depending on its security requirements. It
-+could be either an off-chip device or an on-chip device. Following section
-+demostrates a list of supported devices along with their security properties/
-+guarantees:
- 
--TPM 2.0
---------
-+  *  Root of trust for storage
- 
--The user must first create a storage key and make it persistent, so the key is
--available after reboot. This can be done using the following commands.
-+     (1) TPM (Trusted Platform Module: hardware device)
++KEYS-TRUSTED-TEE
++M:	Sumit Garg <sumit.garg@linaro.org>
++L:	linux-integrity@vger.kernel.org
++L:	keyrings@vger.kernel.org
++S:	Supported
++F:	include/keys/trusted_tee.h
++F:	security/keys/trusted-keys/trusted_tee.c
 +
-+         Rooted to Storage Root Key (SRK) which never leaves the TPM that
-+         provides crypto operation to establish root of trust for storage.
-+
-+     (2) TEE (Trusted Execution Environment: OP-TEE based on Arm TrustZone)
-+
-+         Rooted to Hardware Unique Key (HUK) which is generally burnt in on-chip
-+         fuses and is accessible to TEE only.
-+
-+  *  Execution isolation
-+
-+     (1) TPM
-+
-+         Fixed set of operations running in isolated execution environment.
-+
-+     (2) TEE
-+
-+         Customizable set of operations running in isolated execution
-+         environment verified via Secure/Trusted boot process.
-+
-+  * Optional binding to platform integrity state
-+
-+     (1) TPM
-+
-+         Keys can be optionally sealed to specified PCR (integrity measurement)
-+         values, and only unsealed by the TPM, if PCRs and blob integrity
-+         verifications match. A loaded Trusted Key can be updated with new
-+         (future) PCR values, so keys are easily migrated to new PCR values,
-+         such as when the kernel and initramfs are updated. The same key can
-+         have many saved blobs under different PCR values, so multiple boots are
-+         easily supported.
-+
-+     (2) TEE
-+
-+         Relies on Secure/Trusted boot process for platform integrity. It can
-+         be extended with TEE based measured boot process.
-+
-+  *  On-chip versus off-chip
-+
-+     (1) TPM
-+
-+         Off-chip device connected via serial bus (like I2C, SPI etc.) exposing
-+         physical access which represents an attack surface that can be
-+         mitigated via tamper detection.
-+
-+     (2) TEE
-+
-+         On-chip functionality, immune to this attack surface.
-+
-+  *  Memory attacks (DRAM based like attaching a bus monitor etc.)
-+
-+     (1) TPM
-+
-+         Immune to these attacks as it doesn’t make use of system DRAM.
-+
-+     (2) TEE
-+
-+         An implementation based on TrustZone protected DRAM is susceptible to
-+         such attacks. In order to mitigate these attacks one needs to rely on
-+         on-chip secure RAM to store secrets or have the entire TEE
-+         implementation based on on-chip secure RAM. An alternative mitigation
-+         would be to use encrypted DRAM.
-+
-+  *  Side-channel attacks (cache, memory, CPU or time based)
-+
-+     (1) TPM
-+
-+         Immune to side-channel attacks as its resources are isolated from the
-+         main OS.
-+
-+     (2) TEE
-+
-+         A careful implementation is required to mitigate against these attacks
-+         for resources which are shared (eg. shared memory) with the main OS.
-+         Cache and CPU based side-channel attacks can be mitigated via
-+         invalidating caches and CPU registers during context switch to and from
-+         the secure world.
-+         To mitigate against time based attacks, one needs to have time
-+         invariant implementations (like crypto algorithms etc.).
-+
-+  *  Resistance to physical attacks (power analysis, electromagnetic emanation,
-+     probes etc.)
-+
-+     (1) TPM
-+
-+         Provides limited protection utilizing tamper resistance.
-+
-+     (2) TEE
-+
-+         Provides no protection by itself, relies on the underlying platform for
-+         features such as tamper resistance.
-+
-+
-+Key Generation
-+==============
-+
-+Trusted Keys
-+------------
-+
-+New keys are created from trust source generated random numbers, and are
-+encrypted/decrypted using trust source storage root key.
-+
-+  *  TPM (hardware device) based RNG
-+
-+     Strength of random numbers may vary from one device manufacturer to
-+     another.
-+
-+  *  TEE (OP-TEE based on Arm TrustZone) based RNG
-+
-+     RNG is customizable as per platform needs. It can either be direct output
-+     from platform specific hardware RNG or a software based Fortuna CSPRNG
-+     which can be seeded via multiple entropy sources.
-+
-+Encrypted Keys
-+--------------
-+
-+Encrypted keys do not depend on a trust source, and are faster, as they use AES
-+for encryption/decryption. New keys are created from kernel generated random
-+numbers, and are encrypted/decrypted using a specified ‘master’ key. The
-+‘master’ key can either be a trusted-key or user-key type. The main disadvantage
-+of encrypted keys is that if they are not rooted in a trusted key, they are only
-+as secure as the user key encrypting them. The master user key should therefore
-+be loaded in as secure a way as possible, preferably early in boot.
-+
-+
-+Usage
-+=====
-+
-+Trusted Keys usage: TPM
-+-----------------------
-+
-+TPM 1.2: By default, trusted keys are sealed under the SRK, which has the
-+default authorization value (20 zeros).  This can be set at takeownership time
-+with the TrouSerS utility: "tpm_takeownership -u -z".
-+
-+TPM 2.0: The user must first create a storage key and make it persistent, so the
-+key is available after reboot. This can be done using the following commands.
- 
- With the IBM TSS 2 stack::
- 
-@@ -79,14 +210,21 @@ TPM_STORED_DATA format.  The key length for new keys are always in bytes.
- Trusted Keys can be 32 - 128 bytes (256 - 1024 bits), the upper limit is to fit
- within the 2048 bit SRK (RSA) keylength, with all necessary structure/padding.
- 
--Encrypted keys do not depend on a TPM, and are faster, as they use AES for
--encryption/decryption.  New keys are created from kernel generated random
--numbers, and are encrypted/decrypted using a specified 'master' key.  The
--'master' key can either be a trusted-key or user-key type.  The main
--disadvantage of encrypted keys is that if they are not rooted in a trusted key,
--they are only as secure as the user key encrypting them.  The master user key
--should therefore be loaded in as secure a way as possible, preferably early in
--boot.
-+Trusted Keys usage: TEE
-+-----------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+"keyctl print" returns an ascii hex copy of the sealed key, which is in format
-+specific to TEE device implementation.  The key length for new keys are always
-+in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
-+Encrypted Keys usage
-+--------------------
- 
- The decrypted portion of encrypted keys can contain either a simple symmetric
- key or a more complex structure. The format of the more complex structure is
-@@ -104,8 +242,8 @@ Where::
- 	format:= 'default | ecryptfs | enc32'
- 	key-type:= 'trusted' | 'user'
- 
--
- Examples of trusted and encrypted key usage:
-+--------------------------------------------
- 
- Create and save a trusted key named "kmk" of length 32 bytes.
- 
-@@ -151,7 +289,7 @@ Load a trusted key from the saved blob::
-     f1f8fff03ad0acb083725535636addb08d73dedb9832da198081e5deae84bfaf0409c22b
-     e4a8aea2b607ec96931e6f4d4fe563ba
- 
--Reseal a trusted key under new pcr values::
-+Reseal (TPM specific) a trusted key under new PCR values::
- 
-     $ keyctl update 268728824 "update pcrinfo=`cat pcr.blob`"
-     $ keyctl print 268728824
-@@ -165,11 +303,12 @@ Reseal a trusted key under new pcr values::
-     7ef6a24defe4846104209bf0c3eced7fa1a672ed5b125fc9d8cd88b476a658a4434644ef
-     df8ae9a178e9f83ba9f08d10fa47e4226b98b0702f06b3b8
- 
-+
- The initial consumer of trusted keys is EVM, which at boot time needs a high
--quality symmetric key for HMAC protection of file metadata.  The use of a
-+quality symmetric key for HMAC protection of file metadata. The use of a
- trusted key provides strong guarantees that the EVM key has not been
--compromised by a user level problem, and when sealed to specific boot PCR
--values, protects against boot and offline attacks.  Create and save an
-+compromised by a user level problem, and when sealed to a platform integrity
-+state, protects against boot and offline attacks. Create and save an
- encrypted key "evm" using the above trusted key "kmk":
- 
- option 1: omitting 'format'::
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
+ M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 -- 
 2.7.4
 
