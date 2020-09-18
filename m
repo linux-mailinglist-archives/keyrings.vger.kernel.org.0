@@ -2,86 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73CF626E0A2
-	for <lists+keyrings@lfdr.de>; Thu, 17 Sep 2020 18:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D270E26F67C
+	for <lists+keyrings@lfdr.de>; Fri, 18 Sep 2020 09:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728507AbgIQQZg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 17 Sep 2020 12:25:36 -0400
-Received: from mga12.intel.com ([192.55.52.136]:44028 "EHLO mga12.intel.com"
+        id S1726471AbgIRHKx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 18 Sep 2020 03:10:53 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:57514 "EHLO fornost.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728180AbgIQQZ0 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 17 Sep 2020 12:25:26 -0400
-IronPort-SDR: DsXWU7/+aVl4TAJEdhk5F6Fs+Phw9NrPRiCQWH7IGatsQU9yHxXH632tOg0o67dpRUIRpldq1g
- ppDil8as2W/A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9747"; a="139236721"
-X-IronPort-AV: E=Sophos;i="5.77,271,1596524400"; 
-   d="scan'208";a="139236721"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2020 09:25:17 -0700
-IronPort-SDR: PDAql5mIiHxBEiUG7vy+HU9oL6HWgsVWHNIh7FEw8CEQMferWTmRWED5XCtGpsb0o5BI7eIdwZ
- xfH048D/iB3A==
-X-IronPort-AV: E=Sophos;i="5.77,271,1596524400"; 
-   d="scan'208";a="452375009"
-Received: from sdompke-mobl.ger.corp.intel.com (HELO localhost) ([10.249.45.123])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2020 09:25:08 -0700
-Date:   Thu, 17 Sep 2020 19:25:06 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     zohar@linux.ibm.com, jejb@linux.ibm.com, dhowells@redhat.com,
-        jens.wiklander@linaro.org, corbet@lwn.net, jmorris@namei.org,
-        serge@hallyn.com, casey@schaufler-ca.com, janne.karhunen@gmail.com,
-        daniel.thompson@linaro.org, Markus.Wamser@mixed-mode.de,
-        lhinds@redhat.com, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        op-tee@lists.trustedfirmware.org
-Subject: Re: [PATCH v6 1/4] KEYS: trusted: Add generic trusted keys framework
-Message-ID: <20200917162506.GC9750@linux.intel.com>
-References: <1600350398-4813-1-git-send-email-sumit.garg@linaro.org>
- <1600350398-4813-2-git-send-email-sumit.garg@linaro.org>
- <20200917162142.GB9750@linux.intel.com>
+        id S1726170AbgIRHKx (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 18 Sep 2020 03:10:53 -0400
+X-Greylist: delayed 1337 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Sep 2020 03:10:52 EDT
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1kJAAz-0002f5-5k; Fri, 18 Sep 2020 16:47:22 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Sep 2020 16:47:21 +1000
+Date:   Fri, 18 Sep 2020 16:47:21 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        David Howells <dhowells@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephan Mueller <smueller@chronox.de>,
+        Marcelo Henrique Cerri <marcelo.cerri@canonical.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Waiman Long <longman@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Tushar Sugandhi <tusharsu@linux.microsoft.com>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Pascal van Leeuwen <pvanleeuwen@rambus.com>,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-security-module@vger.kernel.org,
+        Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>,
+        Jia Zhang <zhang.jia@linux.alibaba.com>
+Subject: Re: [PATCH v6 5/8] crypto: testmgr - support test with different
+ ciphertext per encryption
+Message-ID: <20200918064721.GA9520@gondor.apana.org.au>
+References: <20200903131242.128665-1-tianjia.zhang@linux.alibaba.com>
+ <20200903131242.128665-6-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200917162142.GB9750@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200903131242.128665-6-tianjia.zhang@linux.alibaba.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Sep 17, 2020 at 07:21:49PM +0300, Jarkko Sakkinen wrote:
-> On Thu, Sep 17, 2020 at 07:16:35PM +0530, Sumit Garg wrote:
-> > Current trusted keys framework is tightly coupled to use TPM device as
-> > an underlying implementation which makes it difficult for implementations
-> > like Trusted Execution Environment (TEE) etc. to provide trusted keys
-> > support in case platform doesn't posses a TPM device.
-> > 
-> > So this patch tries to add generic trusted keys framework where underlying
-> > implementations like TPM, TEE etc. could be easily plugged-in.
+On Thu, Sep 03, 2020 at 09:12:39PM +0800, Tianjia Zhang wrote:
+> Some asymmetric algorithms will get different ciphertext after
+> each encryption, such as SM2, and let testmgr support the testing
+> of such algorithms.
 > 
-> I would rephrase this a bit:
+> In struct akcipher_testvec, set c and c_size to be empty, skip
+> the comparison of the ciphertext, and compare the decrypted
+> plaintext with m to achieve the test purpose.
 > 
-> "Add a generic trusted keys framework where underlying implementations
-> can be easily plugged in. Create struct trusted_key_ops to achieve this,
-> which contains necessary functions of a backend."
-> 
-> I remember asking about this approach that what if there was just a
-> header for trusted key functions and a compile time decision, which C
-> file to include instead of ops struct. I don't remember if these was a
-> conclusion on this or not.
-> 
-> E.g. lets say you have a device with TEE and TPM, should you be able
-> to be use both at run-time? I might play along how this works now but
-> somehow, in the commit message preferably, it should be conclude why
-> one alternative is chosen over another.
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> Tested-by: Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>
+> ---
+>  crypto/testmgr.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 
-We must somehow seal this discussion because the other changes are
-based on this decision.
+Is there supposed to be another patch that contains test vectors?
 
-I don't think tail of this patch set takes a long time spin. This
-is the main architectural decision.
-
-/Jarkko
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
