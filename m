@@ -2,65 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5361C26FD9E
-	for <lists+keyrings@lfdr.de>; Fri, 18 Sep 2020 14:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48E8426FEA0
+	for <lists+keyrings@lfdr.de>; Fri, 18 Sep 2020 15:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726260AbgIRM4S (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 18 Sep 2020 08:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726064AbgIRM4S (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Sep 2020 08:56:18 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A6EC06174A;
-        Fri, 18 Sep 2020 05:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=zoOf0E5vEVvypLQZvTu3Qa4P//IZej+JhDzkQ4SZUbU=; b=Twr3txXoOUgAutBdzGyZB+lY1J
-        jlGkbNw57ycQeyDICn1qQL9BIF49y+wvEY79YsJqm+klFYXfm0D4wJQy3SSrZuX4oN/X8scImOz1x
-        iAvwhjjALzGEztMeZqVmVcGLW9G+To4auxoqyNMS/2NkqC80s33Ta7xmNuQV1rY8qKanIvXoGLe8B
-        6fal0Zox8xpamGqpfYQasr4KUlD6H2FixgEIiyw2pdQ2ZDQlOzArXaJmv2bnI8JP8Jm2wf1+J0rcP
-        pG1NLuH/an00oo9pw7YDidPu4WRCYUnv3lQPu2dFwfhtiUQ2ogaw+KlPq/67Y5JGwwImp7XdmncP5
-        jHtexrUQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kJFvv-0001A7-Pu; Fri, 18 Sep 2020 12:56:11 +0000
-Date:   Fri, 18 Sep 2020 13:56:11 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        id S1726822AbgIRNev (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 18 Sep 2020 09:34:51 -0400
+Received: from out4436.biz.mail.alibaba.com ([47.88.44.36]:51263 "EHLO
+        out4436.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726768AbgIRNeu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Sep 2020 09:34:50 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R911e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0U9K7wHw_1600436072;
+Received: from B-455UMD6M-2027.local(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0U9K7wHw_1600436072)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 18 Sep 2020 21:34:34 +0800
+Subject: Re: [PATCH v6 5/8] crypto: testmgr - support test with different
+ ciphertext per encryption
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     "David S. Miller" <davem@davemloft.net>,
         David Howells <dhowells@redhat.com>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
-        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 3/9] fs: explicitly check for CHECK_IOVEC_ONLY in
- rw_copy_check_uvector
-Message-ID: <20200918125611.GE32101@casper.infradead.org>
-References: <20200918124533.3487701-1-hch@lst.de>
- <20200918124533.3487701-4-hch@lst.de>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephan Mueller <smueller@chronox.de>,
+        Marcelo Henrique Cerri <marcelo.cerri@canonical.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Waiman Long <longman@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Tushar Sugandhi <tusharsu@linux.microsoft.com>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Pascal van Leeuwen <pvanleeuwen@rambus.com>,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-security-module@vger.kernel.org,
+        Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>,
+        Jia Zhang <zhang.jia@linux.alibaba.com>
+References: <20200903131242.128665-1-tianjia.zhang@linux.alibaba.com>
+ <20200903131242.128665-6-tianjia.zhang@linux.alibaba.com>
+ <20200918064721.GA9520@gondor.apana.org.au>
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <861bc3cc-2119-0325-33ea-828bd7e8544d@linux.alibaba.com>
+Date:   Fri, 18 Sep 2020 21:34:32 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200918124533.3487701-4-hch@lst.de>
+In-Reply-To: <20200918064721.GA9520@gondor.apana.org.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Sep 18, 2020 at 02:45:27PM +0200, Christoph Hellwig wrote:
->  		}
-> -		if (type >= 0
-> -		    && unlikely(!access_ok(buf, len))) {
-> +		if (type != CHECK_IOVEC_ONLY && unlikely(!access_ok(buf, len))) {
 
-drop the unlikely() at the same time?  if it's really advantageous,
-that should be embedded in the access_ok macro.
 
+On 9/18/20 2:47 PM, Herbert Xu wrote:
+> On Thu, Sep 03, 2020 at 09:12:39PM +0800, Tianjia Zhang wrote:
+>> Some asymmetric algorithms will get different ciphertext after
+>> each encryption, such as SM2, and let testmgr support the testing
+>> of such algorithms.
+>>
+>> In struct akcipher_testvec, set c and c_size to be empty, skip
+>> the comparison of the ciphertext, and compare the decrypted
+>> plaintext with m to achieve the test purpose.
+>>
+>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+>> Tested-by: Xufeng Zhang <yunbo.xufeng@linux.alibaba.com>
+>> ---
+>>   crypto/testmgr.c | 7 ++++++-
+>>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> Is there supposed to be another patch that contains test vectors?
+> 
+> Thanks,
+> 
+
+Yes, I was negligent. It is necessary to provide a test vector and I 
+will support it as soon as possible.
+
+Thanks,
+Tianjia
