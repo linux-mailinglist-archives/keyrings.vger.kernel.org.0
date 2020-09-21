@@ -2,89 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD012721E9
-	for <lists+keyrings@lfdr.de>; Mon, 21 Sep 2020 13:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03ECB2727B3
+	for <lists+keyrings@lfdr.de>; Mon, 21 Sep 2020 16:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726424AbgIULL1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Mon, 21 Sep 2020 07:11:27 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:33968 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726355AbgIULL0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Sep 2020 07:11:26 -0400
-X-Greylist: delayed 159492 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 07:11:25 EDT
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-233-9UYq0ao9O6ejB4ujVxtO9g-1; Mon, 21 Sep 2020 12:11:22 +0100
-X-MC-Unique: 9UYq0ao9O6ejB4ujVxtO9g-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 21 Sep 2020 12:11:21 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 21 Sep 2020 12:11:21 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Christoph Hellwig' <hch@lst.de>
-CC:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1726973AbgIUOee (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Sep 2020 10:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42178 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726471AbgIUOec (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Sep 2020 10:34:32 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFDBC061755;
+        Mon, 21 Sep 2020 07:34:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=8Kz1DGu4Y1npvsQfjeR0IuDoooJXN+7G6DfyjI+HLNA=; b=OtPsbytGKDJDCuQypN2pYiSnoe
+        WW9gEK1h3pS7c+IQZpnzc0Z2syR2DXQhQvIG69gs0m4gIsYDKdpbqTPoJY0KAH/4RpKbeW8iZ1mRX
+        vxkW+18T3nFRDMLa0nVyDIB3SOH1V3r9kDVBdzpbv9bxb4RAEG9axuO1VhoVIBGbmODrrzwl7s4B2
+        WjgXwnbcnEwkrtq0pGDN05iXhBJjZM95u3BbE1Q7EZKpepfhIa4lsQpYT8cI9u/NrdyqDlTS9j0PA
+        aPYsG/HabbUElCCwrUATgfMpg2D12Ceg09o3ge7xKDfkMLp5samCXpvbTzXxzUTh1yaGtXuT5+Efi
+        QKoS47JA==;
+Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kKMtW-0007qY-0E; Mon, 21 Sep 2020 14:34:19 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
         David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: let import_iovec deal with compat_iovecs as well
-Thread-Topic: let import_iovec deal with compat_iovecs as well
-Thread-Index: AQHWjbnKEn35LxofhEeT1lmdzdUiWqlwBNiwgAJx3YCAAH2K4A==
-Date:   Mon, 21 Sep 2020 11:11:21 +0000
-Message-ID: <ac8a3691c4f5442f908c51298260ca0e@AcuMS.aculab.com>
-References: <20200918124533.3487701-1-hch@lst.de>
- <2c7bf42ee4314484ae0177280cd8f5f3@AcuMS.aculab.com>
- <20200921044125.GA16522@lst.de>
-In-Reply-To: <20200921044125.GA16522@lst.de>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        David Laight <David.Laight@aculab.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-aio@kvack.org, io-uring@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        netdev@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: let import_iovec deal with compat_iovecs as well v2
+Date:   Mon, 21 Sep 2020 16:34:23 +0200
+Message-Id: <20200921143434.707844-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-> On Sat, Sep 19, 2020 at 02:24:10PM +0000, David Laight wrote:
-> > I thought about that change while writing my import_iovec() => iovec_import()
-> > patch - and thought that the io_uring code would (as usual) cause grief.
-> >
-> > Christoph - did you see those patches?
+Hi Al,
 
-Link to cover email.
+this series changes import_iovec to transparently deal with comat iovec
+structures, and then cleanups up a lot of code dupliation.
 
-https://lkml.org/lkml/2020/9/15/661
+Changes since v1:
+ - improve a commit message
+ - drop a pointless unlikely
+ - drop the PF_FORCE_COMPAT flag
+ - add a few more cleanups (including two from David Laight)
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+Diffstat:
+ arch/arm64/include/asm/unistd32.h                  |   10 
+ arch/mips/kernel/syscalls/syscall_n32.tbl          |   10 
+ arch/mips/kernel/syscalls/syscall_o32.tbl          |   10 
+ arch/parisc/kernel/syscalls/syscall.tbl            |   10 
+ arch/powerpc/kernel/syscalls/syscall.tbl           |   10 
+ arch/s390/kernel/syscalls/syscall.tbl              |   10 
+ arch/sparc/kernel/syscalls/syscall.tbl             |   10 
+ arch/x86/entry/syscall_x32.c                       |    5 
+ arch/x86/entry/syscalls/syscall_32.tbl             |   10 
+ arch/x86/entry/syscalls/syscall_64.tbl             |   10 
+ block/scsi_ioctl.c                                 |   12 
+ drivers/scsi/sg.c                                  |    9 
+ fs/aio.c                                           |   38 --
+ fs/io_uring.c                                      |   20 -
+ fs/read_write.c                                    |  362 +--------------------
+ fs/splice.c                                        |   57 ---
+ include/linux/compat.h                             |   24 -
+ include/linux/fs.h                                 |   11 
+ include/linux/uio.h                                |   10 
+ include/uapi/asm-generic/unistd.h                  |   12 
+ lib/iov_iter.c                                     |  161 +++++++--
+ mm/process_vm_access.c                             |   85 ----
+ net/compat.c                                       |    4 
+ security/keys/compat.c                             |   37 --
+ security/keys/internal.h                           |    5 
+ security/keys/keyctl.c                             |    2 
+ tools/include/uapi/asm-generic/unistd.h            |   12 
+ tools/perf/arch/powerpc/entry/syscalls/syscall.tbl |   10 
+ tools/perf/arch/s390/entry/syscalls/syscall.tbl    |   10 
+ tools/perf/arch/x86/entry/syscalls/syscall_64.tbl  |   10 
+ 30 files changed, 280 insertions(+), 706 deletions(-)
