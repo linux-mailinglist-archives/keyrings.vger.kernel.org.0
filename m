@@ -2,260 +2,218 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 586B82738AB
-	for <lists+keyrings@lfdr.de>; Tue, 22 Sep 2020 04:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C89273AEE
+	for <lists+keyrings@lfdr.de>; Tue, 22 Sep 2020 08:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729848AbgIVCfD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Sep 2020 22:35:03 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:36308 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728517AbgIVCfD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Sep 2020 22:35:03 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id C1AE78EE194;
-        Mon, 21 Sep 2020 19:35:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1600742102;
-        bh=OPpMjFy1QsoKMOg+cIFgiCqejIImaytFXpxzpYNMjW4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aAVi58STIk38xJzeBowqB0kwlQqKXcBEDA4/N1DOxkjtOLIBU3elQ8jvuTxuXUOSf
-         1hQbUi97M5GhuqQiF83e758UUJslRyubOjxBJsy722DDLGe6GbyFAcscT/o+6eemYQ
-         sQ52X7AuLiNweKGAwBuvQq59YmExSUxp9ItPiybQ=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 8eKeLSneWo95; Mon, 21 Sep 2020 19:35:02 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 362CF8EE0CF;
-        Mon, 21 Sep 2020 19:35:02 -0700 (PDT)
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: [PATCH v13 3/3] security: keys: trusted: implement counter/timer policy
-Date:   Mon, 21 Sep 2020 19:32:18 -0700
-Message-Id: <20200922023218.7466-4-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200922023218.7466-1-James.Bottomley@HansenPartnership.com>
-References: <20200922023218.7466-1-James.Bottomley@HansenPartnership.com>
+        id S1728307AbgIVGco (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Sep 2020 02:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48616 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726898AbgIVGcn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Sep 2020 02:32:43 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85CE8C061755;
+        Mon, 21 Sep 2020 23:32:43 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id s12so15689127wrw.11;
+        Mon, 21 Sep 2020 23:32:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:references:from:autocrypt:subject:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=eDOz/JMLknkTw9g+y5dhApSm97qkVUEs/ZHTL0gz2fw=;
+        b=HaQCQALGHVNQEMfZjWIQPSNwZdZYY918PSJxIKXBtHGREzrfZs14l3A7EVqs2FMev/
+         IJEb11WYJ0Io7OvlAVv0yN7wti4dY6131+xDOqnq33+mYC8No5DoDKBA0p28miZblzSh
+         iNg4UEEi1t4FGDg7qM28k8HJWOiayhzucNTCXz50wqRizN5pQgGXudx9Eg67GPANhr56
+         mEa26Q61i7gAReMjuCfJwAh+HVaTrMT52kQoueu+Kbqdewu6qCadAh37ghukc7GFxD1C
+         O0B5pJecQysUZMJL8izt5QrVScpa7C7bG8FE9jy6GPyeF/acFygKkym3brbq6FgSx5HG
+         wh1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:autocrypt:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=eDOz/JMLknkTw9g+y5dhApSm97qkVUEs/ZHTL0gz2fw=;
+        b=Axole8VmCQWtxzHLCme95aa2gjvpwCeAqQ/XplPdXWi9n9Fq8DufMbCjLqXf5ZfTtO
+         Ch8tlHpb2sL1gQXm58m21ZO/davJUmJDN0xo7DerDQBFswX3WiLct+Wkv6EFgFETfPRe
+         ELQ5iaTNhTj/TCCYdsvYubqWqMZ1EUMopOMgcxeLLrt9uNa95+0rAA1Bf685XRPVKlRz
+         q/gzLtocacn9F8pNtAvlwDQ+8XvEn0tydk+QGFiCejguPN7WJbLJfqPUNvjQm95wkaTc
+         enrT+GO9dL/RT3RD3IFYoFdFjWhDyCPjq/KyBtycJKFYE9JC2YRNUT6uVFYGlfgNwkPY
+         HaDg==
+X-Gm-Message-State: AOAM5319ax/wOO1qbckVBBZwPS6hA56KhtDH0tdIUbSZsXuL+6nVvtbY
+        kRevcHEenz3p2xAxeUBBOG08goVq8kIyog==
+X-Google-Smtp-Source: ABdhPJzC1rbzyPo53+fNSxXWPDaZOzMzgC1GT/88osu+za3TOCt7+Tr5Ya9aJiKtMy5iRtpQZlj3MQ==
+X-Received: by 2002:adf:fa52:: with SMTP id y18mr3532704wrr.264.1600756361855;
+        Mon, 21 Sep 2020 23:32:41 -0700 (PDT)
+Received: from [192.168.43.240] ([5.100.192.97])
+        by smtp.gmail.com with ESMTPSA id d83sm3167538wmf.23.2020.09.21.23.32.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2020 23:32:41 -0700 (PDT)
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        David Howells <dhowells@redhat.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        Linux SCSI List <linux-scsi@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-aio <linux-aio@kvack.org>, io-uring@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        Network Development <netdev@vger.kernel.org>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>
+References: <CAK8P3a2Mi+1yttyGk4k7HxRVrMtmFqJewouVhynqUL0PJycmog@mail.gmail.com>
+ <D0791499-1190-4C3F-A984-0A313ECA81C7@amacapital.net>
+ <563138b5-7073-74bc-f0c5-b2bad6277e87@gmail.com>
+ <486c92d0-0f2e-bd61-1ab8-302524af5e08@gmail.com>
+ <CALCETrW3rwGsgfLNnu_0JAcL5jvrPVTLTWM3JpbB5P9Hye6Fdw@mail.gmail.com>
+ <d5c6736a-2cb4-4e22-78da-a667bda5c05a@gmail.com>
+ <CALCETrUEC81va8-fuUXG1uA5rbKxnKDYsDOXC70_HtKD4LAeAg@mail.gmail.com>
+From:   Pavel Begunkov <asml.silence@gmail.com>
+Autocrypt: addr=asml.silence@gmail.com; prefer-encrypt=mutual; keydata=
+ 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 bA==
+Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+Message-ID: <e0a1b4d1-ff47-18d1-d535-c62812cb3105@gmail.com>
+Date:   Tue, 22 Sep 2020 09:30:09 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
+In-Reply-To: <CALCETrUEC81va8-fuUXG1uA5rbKxnKDYsDOXC70_HtKD4LAeAg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This is actually a generic policy allowing a range of comparisons
-against any value set in the TPM Clock, which includes things like the
-reset count, a monotonic millisecond count and the restart count.  The
-most useful comparison is against the millisecond count for expiring
-keys.  However, you have to remember that currently Linux doesn't try
-to sync the epoch timer with the TPM, so the expiration is actually
-measured in how long the TPM itself has been powered on ... the TPM
-timer doesn't count while the system is powered down.  The millisecond
-counter is a u64 quantity found at offset 8 in the timer structure,
-and the <= comparision operand is 9, so a policy set to expire after the
-TPM has been up for 100 seconds would look like
+On 22/09/2020 03:58, Andy Lutomirski wrote:
+> On Mon, Sep 21, 2020 at 5:24 PM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>>>>>> Ah, so reading /dev/input/event* would suffer from the same issue,
+>>>>>>> and that one would in fact be broken by your patch in the hypothetical
+>>>>>>> case that someone tried to use io_uring to read /dev/input/event on x32...
+>>>>>>>
+>>>>>>> For reference, I checked the socket timestamp handling that has a
+>>>>>>> number of corner cases with time32/time64 formats in compat mode,
+>>>>>>> but none of those appear to be affected by the problem.
+>>>>>>>
+>>>>>>>> Aside from the potentially nasty use of per-task variables, one thing
+>>>>>>>> I don't like about PF_FORCE_COMPAT is that it's one-way.  If we're
+>>>>>>>> going to have a generic mechanism for this, shouldn't we allow a full
+>>>>>>>> override of the syscall arch instead of just allowing forcing compat
+>>>>>>>> so that a compat syscall can do a non-compat operation?
+>>>>>>>
+>>>>>>> The only reason it's needed here is that the caller is in a kernel
+>>>>>>> thread rather than a system call. Are there any possible scenarios
+>>>>>>> where one would actually need the opposite?
+>>>>>>>
+>>>>>>
+>>>>>> I can certainly imagine needing to force x32 mode from a kernel thread.
+>>>>>>
+>>>>>> As for the other direction: what exactly are the desired bitness/arch semantics of io_uring?  Is the operation bitness chosen by the io_uring creation or by the io_uring_enter() bitness?
+>>>>>
+>>>>> It's rather the second one. Even though AFAIR it wasn't discussed
+>>>>> specifically, that how it works now (_partially_).
+>>>>
+>>>> Double checked -- I'm wrong, that's the former one. Most of it is based
+>>>> on a flag that was set an creation.
+>>>>
+>>>
+>>> Could we get away with making io_uring_enter() return -EINVAL (or
+>>> maybe -ENOTTY?) if you try to do it with bitness that doesn't match
+>>> the io_uring?  And disable SQPOLL in compat mode?
+>>
+>> Something like below. If PF_FORCE_COMPAT or any other solution
+>> doesn't lend by the time, I'll take a look whether other io_uring's
+>> syscalls need similar checks, etc.
+>>
+>>
+>> diff --git a/fs/io_uring.c b/fs/io_uring.c
+>> index 0458f02d4ca8..aab20785fa9a 100644
+>> --- a/fs/io_uring.c
+>> +++ b/fs/io_uring.c
+>> @@ -8671,6 +8671,10 @@ SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
+>>         if (ctx->flags & IORING_SETUP_R_DISABLED)
+>>                 goto out;
+>>
+>> +       ret = -EINVAl;
+>> +       if (ctx->compat != in_compat_syscall())
+>> +               goto out;
+>> +
+> 
+> This seems entirely reasonable to me.  Sharing an io_uring ring
+> between programs with different ABIs seems a bit nutty.
+> 
+>>         /*
+>>          * For SQ polling, the thread will do all submissions and completions.
+>>          * Just return the requested submit count, and wake the thread if
+>> @@ -9006,6 +9010,10 @@ static int io_uring_create(unsigned entries, struct io_uring_params *p,
+>>         if (ret)
+>>                 goto err;
+>>
+>> +       ret = -EINVAL;
+>> +       if (ctx->compat)
+>> +               goto err;
+>> +
+> 
+> I may be looking at a different kernel than you, but aren't you
+> preventing creating an io_uring regardless of whether SQPOLL is
+> requested?
 
-0000016d00000000000f424000080009
+I diffed a not-saved file on a sleepy head, thanks for noticing.
+As you said, there should be an SQPOLL check.
 
-Where 0x16d is the counter timer policy code and 0xf4240 is 100 000 in
-hex.
+...
+if (ctx->compat && (p->flags & IORING_SETUP_SQPOLL))
+	goto err;
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- .../security/keys/trusted-encrypted.rst       | 31 +++++++++++++-
- include/linux/tpm.h                           |  1 +
- security/keys/trusted-keys/tpm2-policy.c      | 40 ++++++++++++++++++-
- security/keys/trusted-keys/trusted_tpm2.c     | 36 ++++++++++++++++-
- 4 files changed, 105 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index f001752adaa1..e5414ed996bf 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -242,7 +242,6 @@ Another new format 'enc32' has been defined in order to support encrypted keys
- with payload size of 32 bytes. This will initially be used for nvdimm security
- but may expand to other usages that require 32 bytes payload.
- 
--
- TPM 2.0 ASN.1 Key Format
- ------------------------
- 
-@@ -316,3 +315,33 @@ string length.
- privkey is the binary representation of TPM2B_PUBLIC excluding the
- initial TPM2B header which can be reconstructed from the ASN.1 octed
- string length.
-+
-+
-+Appendix
-+--------
-+
-+TPM 2.0 Policies
-+----------------
-+
-+The current TPM supports PCR lock policies as documented above and
-+CounterTimer policies which can be used to create expiring keys.  One
-+caveat with expiring keys is that the TPM millisecond counter does not
-+update while a system is powered off and Linux does not sync the TPM
-+millisecond count with its internal clock, so the best you can expire
-+in is in terms of how long any given TPM has been powered on.  (FIXME:
-+Linux should simply update the millisecond clock to the current number
-+of seconds past the epoch on boot).
-+
-+A CounterTimer policy is expressed in terms of length and offset
-+against the TPM clock structure (TPMS_TIME_INFO), which looks like the
-+packed structure::
-+
-+    struct tpms_time_info {
-+            u64 uptime;       /* time in ms since last start or reset */
-+	    u64 clock;        /* cumulative uptime in ms */
-+	    u32 resetcount;   /* numer of times the TPM has been reset */
-+	    u32 restartcount; /* number of times the TPM has been restarted */
-+	    u8  safe          /* time was safely loaded from NVRam */
-+    };
-+
-+The usual comparison for expiring keys is against clock, at offset 8.
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 254c33086288..cc0b94dcf21e 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -241,6 +241,7 @@ enum tpm2_command_codes {
- 	TPM2_CC_PCR_EXTEND	        = 0x0182,
- 	TPM2_CC_EVENT_SEQUENCE_COMPLETE = 0x0185,
- 	TPM2_CC_HASH_SEQUENCE_START     = 0x0186,
-+	TPM2_CC_POLICY_PASSWORD		= 0x018c,
- 	TPM2_CC_CREATE_LOADED           = 0x0191,
- 	TPM2_CC_LAST		        = 0x0193, /* Spec 1.36 */
- };
-diff --git a/security/keys/trusted-keys/tpm2-policy.c b/security/keys/trusted-keys/tpm2-policy.c
-index 78daa0310e9e..e0632838351c 100644
---- a/security/keys/trusted-keys/tpm2-policy.c
-+++ b/security/keys/trusted-keys/tpm2-policy.c
-@@ -199,7 +199,8 @@ int tpm2_generate_policy_digest(struct tpm2_policies *pols,
- 			len = *plen;
- 		}
- 
--		crypto_shash_update(sdesc, policy, len);
-+		if (len)
-+			crypto_shash_update(sdesc, policy, len);
- 
- 		/* now output the intermediate to the policydigest */
- 		crypto_shash_final(sdesc, policydigest);
-@@ -334,6 +335,16 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 		u32 cmd = pols->code[i];
- 		struct tpm_buf buf;
- 
-+		if (cmd == TPM2_CC_POLICY_AUTHVALUE)
-+			/*
-+			 * both PolicyAuthValue and PolicyPassword
-+			 * hash to the same thing, but one triggers
-+			 * HMAC authentication and the other simple
-+			 * authentication.  Since we have no HMAC
-+			 * code, we're choosing the simple
-+			 */
-+			cmd = TPM2_CC_POLICY_PASSWORD;
-+
- 		rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, cmd);
- 		if (rc)
- 			return rc;
-@@ -354,8 +365,35 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 			tpm_buf_append(&buf, pols->policies[i],
- 				       pols->len[i] - pols->hash_size);
- 			break;
-+
-+		case TPM2_CC_POLICY_COUNTER_TIMER: {
-+			/*
-+			 * the format of this is the last two u16
-+			 * quantities are the offset and operation
-+			 * respectively.  The rest is operandB which
-+			 * must be zero padded in a hash digest
-+			 */
-+			u16 opb_len = pols->len[i] - 4;
-+
-+			if (opb_len > pols->hash_size)
-+				return -EINVAL;
-+
-+			tpm_buf_append_u16(&buf, opb_len);
-+			tpm_buf_append(&buf, pols->policies[i], opb_len);
-+
-+			/* offset and operand*/
-+			tpm_buf_append(&buf, pols->policies[i] + opb_len, 4);
-+			failure = "Counter Timer";
-+
-+			break;
-+		}
-+
- 		default:
- 			failure = "unknown policy";
-+			if (pols->len[i])
-+				tpm_buf_append(&buf, pols->policies[i],
-+					       pols->len[i]);
-+
- 			break;
- 		}
- 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 98c65431ca75..3ec01ed874d9 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -248,6 +248,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 	u32 flags;
- 	int i;
- 	int rc;
-+	static const int POLICY_SIZE = 2 * PAGE_SIZE;
- 
- 	for (i = 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
- 		if (options->hash == tpm2_hash_map[i].crypto_id) {
-@@ -268,7 +269,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		/* 4 array len, 2 hash alg */
- 		const int len = 4 + 2 + options->pcrinfo_len;
- 
--		pols = kmalloc(sizeof(*pols) + len, GFP_KERNEL);
-+		pols = kmalloc(POLICY_SIZE, GFP_KERNEL);
- 		if (!pols)
- 			return -ENOMEM;
- 
-@@ -289,6 +290,39 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * if we already have a policy, we have to add authorization
-+	 * to it.  If we don't, we can simply follow the usual
-+	 * non-policy route.
-+	 */
-+	if (options->blobauth_len != 0 && payload->policies) {
-+		struct tpm2_policies *pols;
-+		static u8 *scratch;
-+		int i;
-+		bool found = false;
-+
-+		pols = payload->policies;
-+
-+		/* make sure it's not already in policy */
-+		for (i = 0; i < pols->count; i++) {
-+			if (pols->code[i] == TPM2_CC_POLICY_AUTHVALUE) {
-+				found = true;
-+
-+				break;
-+			}
-+		}
-+
-+		if (!found) {
-+			i = pols->count++;
-+			scratch = pols->policies[i - 1] + pols->len[i - 1];
-+
-+			/* the TPM2_PolicyPassword command has no payload */
-+			pols->policies[i] = scratch;
-+			pols->len[i] = 0;
-+			pols->code[i] = TPM2_CC_POLICY_AUTHVALUE;
-+		}
-+	}
-+
- 	if (payload->policies) {
- 		rc = tpm2_generate_policy_digest(payload->policies,
- 						 options->hash,
 -- 
-2.26.2
-
+Pavel Begunkov
