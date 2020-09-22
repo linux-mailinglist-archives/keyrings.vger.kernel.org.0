@@ -2,146 +2,161 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD78327466A
-	for <lists+keyrings@lfdr.de>; Tue, 22 Sep 2020 18:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E682748E3
+	for <lists+keyrings@lfdr.de>; Tue, 22 Sep 2020 21:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726667AbgIVQUO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Sep 2020 12:20:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54882 "EHLO
+        id S1726573AbgIVTOV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Sep 2020 15:14:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726656AbgIVQUO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Sep 2020 12:20:14 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE104C0613D3
-        for <keyrings@vger.kernel.org>; Tue, 22 Sep 2020 09:20:13 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id y1so12368420pgk.8
-        for <keyrings@vger.kernel.org>; Tue, 22 Sep 2020 09:20:13 -0700 (PDT)
+        with ESMTP id S1726603AbgIVTOV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Sep 2020 15:14:21 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1102C0613CF
+        for <keyrings@vger.kernel.org>; Tue, 22 Sep 2020 12:14:20 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id w7so13360076pfi.4
+        for <keyrings@vger.kernel.org>; Tue, 22 Sep 2020 12:14:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=OuYZ36WnxwIp9b6camA1INonBCd7PS5F7n5lbvDtQoE=;
-        b=vkrTbtOH4vHnR/84aYqVDHrQ5AGvI5gJZ+epaaRbPDginNWZ7IQOaHp0KiQGLoRIqK
-         lCtpCBfEppwh5xdm5Fg2E09yGBsQ1omUh0FsVnB0AGbc0KabsZevsMs5kdugIv8CVE5/
-         WA4g4A2X6yhuybhLsZ26G3b/9jK9koGpq3H8xumPWJXJrnSzbLUYbfDR++IgN0bKoBQq
-         n0DG/oDelKPnE35WpGCvEELD66Jz17cs7lC56sr6mITihQA1DVJ1mt9BGhniHUyWF6Lh
-         zzYPOu4uBf4nQ34xtWqSlA6XpnJ8NFviCNNpjE2H0nhrpatshwJ5hPmeTiRqtrX3VMpc
-         QmhQ==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ny/WX3SoGi3xA0aasg0y+S/O8JpZEz3cKfWCtfobAKg=;
+        b=c2pAKhYMfHPIvLNmZSQq/lUseuE2S6srkxcNVjAWRA3EAQyE4atTSXfXTAbReYVors
+         he2fThmMzezK+5ylnM4BuEvfPS+ZwQPjTGE1yvWgaNuD05j3do76CeSkQ+Rpg2tuw1UN
+         F/ZFOx4It1hffjBmBfcD50MY70vFFuJpw2pWKgKQxYW/Q1Vplj5tmNSkfsVlP5N2TiOU
+         4Tgoh6BrW0B776Okcdeqz1M/yTpT4dai4ajcRs3Aj2PzIwQPpsigrQ7+Ionx0QCoSd3U
+         480ZUxP7FwKS1MaQzO2nuUdnc/3wjZQXMHg2NXyuzKQWpCPMYdrjl6DIjVVAaTGyKCbl
+         dW8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=OuYZ36WnxwIp9b6camA1INonBCd7PS5F7n5lbvDtQoE=;
-        b=fRjGNhznPqyKSRmsNGSI21YzD+TabHB4U7BH7lhhAAvpKGcR0OocbGTmDxpMHclkA0
-         wxGv2V/CLFZxR8GC0dD3JeWeWKFO7YUjVqhgRMBv8+kEdW2AdVa3b07lUgV58Cr41u09
-         CUFSUquCHZ37v0G2lSX7yEITh/BDU0M5Zg4uH4vM5Zw4zEkzFzwAs4ZZD3pKpARUQhw1
-         mxC4Wk2iItozJjhFQvjNpA3OUJbx/o6ycDqZGvgUsofXZm9bJc7qgRogR2GmXyJN1Xmm
-         5yMXSmYRN+tA8feEVR4eoEgBSbS2Sjy4jYNJ9JzfM1jCUgOAWT9soRnW/2i0zxeHAKlJ
-         WR0g==
-X-Gm-Message-State: AOAM533R0j75E8xZUBtIfW6dgeMsCNjg1P3hk5VAa7x9hLyKt121plGf
-        HifeUH7jT5ABYEDClXcg6tOqeQ==
-X-Google-Smtp-Source: ABdhPJzVdW+N5Ufbpna8vjsXyt2h2YPelrT15cDlhJa791IGnC+04vroQZTdEBrKNKjccVmTF6OthA==
-X-Received: by 2002:a17:902:fe88:b029:d2:2a16:254 with SMTP id x8-20020a170902fe88b02900d22a160254mr5598643plm.23.1600791613205;
-        Tue, 22 Sep 2020 09:20:13 -0700 (PDT)
-Received: from localhost.localdomain ([2601:646:c200:1ef2:f4bd:fe2:85ed:ea92])
-        by smtp.gmail.com with ESMTPSA id gk14sm2982522pjb.41.2020.09.22.09.20.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2020 09:20:12 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   Andy Lutomirski <luto@amacapital.net>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
-Date:   Tue, 22 Sep 2020 09:20:07 -0700
-Message-Id: <446566DF-ECBC-449C-92A1-A7D5AEBE9935@amacapital.net>
-References: <CAK8P3a39jN+t2hhLg0oKZnbYATQXmYE2-Z1JkmFyc1EPdg1HXw@mail.gmail.com>
-Cc:     Pavel Begunkov <asml.silence@gmail.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        David Howells <dhowells@redhat.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Linux SCSI List <linux-scsi@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-aio <linux-aio@kvack.org>, io-uring@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Network Development <netdev@vger.kernel.org>,
-        keyrings@vger.kernel.org,
-        LSM List <linux-security-module@vger.kernel.org>
-In-Reply-To: <CAK8P3a39jN+t2hhLg0oKZnbYATQXmYE2-Z1JkmFyc1EPdg1HXw@mail.gmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-X-Mailer: iPhone Mail (18A373)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ny/WX3SoGi3xA0aasg0y+S/O8JpZEz3cKfWCtfobAKg=;
+        b=BgYVqrYdmWCw33jKEnkfZwipdVHzwom/s5br8wo6zxJgvsiyLLfyKjrBNJfwHuJ8RU
+         0v5edNVcJbP7eJSZKgGcQQETY2WmUU409GQkT+ibRMXarCLN89mGvFg9Z1VB0Ya19+1Y
+         AYW7MSOSPJnYqBDw7ck1FyNECLmAcHSNvPoiDyTEp8A6j8Q/2P0eNp/hlaDfXBNO8OgF
+         GqaAsVNTkz5/AyT+ZP67JlydZwA/2LKfDBBOnTBdPFtQL0EuVhyxVijTcsjofg4K0TBP
+         iH+JwtP3K+Ckob2m3YjuaXimxmRx5ezAmgNXTmbdquhOrXfGYEuOJDdPc97LAIITmt0y
+         lxfg==
+X-Gm-Message-State: AOAM530xnbEXft8OxzAvUGbO0nIZYSz3T9eXV4kLcg+XdcgWFwJxkXdh
+        g2E1I2W5TwgryIJOZAXqsIjjEHl5CrvGU9cd2gsGxQ==
+X-Google-Smtp-Source: ABdhPJx4+wQxUK2XmbPbZBrNY6pjvXyGq/eRBNGPwDxkBquhF1pENXesdgLF3QEPdD09v5Qog83AWah/9qGR004BUz0=
+X-Received: by 2002:a65:554a:: with SMTP id t10mr4839340pgr.263.1600802060042;
+ Tue, 22 Sep 2020 12:14:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200920163351.11293-5-James.Bottomley@HansenPartnership.com>
+ <202009210844.KCwzdqmx%lkp@intel.com> <2d395d924b70fba7f1867eb83946497ce1f6eb47.camel@HansenPartnership.com>
+In-Reply-To: <2d395d924b70fba7f1867eb83946497ce1f6eb47.camel@HansenPartnership.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 22 Sep 2020 12:14:08 -0700
+Message-ID: <CAKwvOd=yqYh9i1n84djbX_+8-4JbAUbRQL6FYnhugOocu+vCKg@mail.gmail.com>
+Subject: Re: [PATCH v12 4/5] security: keys: trusted: use ASN.1 TPM2 key
+ format for the blobs
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Philip Li <philip.li@intel.com>
+Cc:     kernel test robot <lkp@intel.com>, linux-integrity@vger.kernel.org,
+        kbuild-all@lists.01.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Mon, Sep 21, 2020 at 2:31 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> On Mon, 2020-09-21 at 08:07 +0800, kernel test robot wrote:
+> > Hi James,
+> >
+> > I love your patch! Yet something to improve:
+> >
+> > [auto build test ERROR on integrity/next-integrity]
+> > [also build test ERROR on linus/master v5.9-rc5 next-20200918]
+> > [cannot apply to security/next-testing dhowells-fs/fscache-next]
+> > [If your patch is applied to the wrong git tree, kindly drop us a
+> > note. And when submitting patch, we suggest to use '--base' as
+> > documented in https://git-scm.com/docs/git-format-patch]
+> >
+> > url:
+> > https://github.com/0day-ci/linux/commits/James-Bottomley/TPM-2-0-trusted-key-rework/20200921-003922
+> > base:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git
+> > next-integrity
+> > config: x86_64-randconfig-a003-20200921 (attached as .config)
+> > compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project
+> > f4e554180962aa6bc93678898b6933ea712bde50)
+> > reproduce (this is a W=1 build):
+> >         wget
+> > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
+> > -O ~/bin/make.cross
+> >         chmod +x ~/bin/make.cross
+> >         # install x86_64 cross compiling tool for clang build
+> >         # apt-get install binutils-x86-64-linux-gnu
+> >         # save the attached .config to linux build tree
+> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross
+> > ARCH=x86_64
+> >
+> > If you fix the issue, kindly add following tag as appropriate
+> > Reported-by: kernel test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> > > > make[4]: *** No rule to make target 'security/keys/trusted-
+> > > > keys/tpm2key.asn1.o', needed by 'security/keys/trusted-
+> > > > keys/built-in.a'.
+> >    make[4]: *** [scripts/Makefile.build:283: security/keys/trusted-
+> > keys/trusted_tpm2.o] Error 1
+> >    make[4]: Target '__build' not remade because of errors.
+>
+>
+> So can I still add that tracking this down involved installing an
+> entirely unnecessary ARM build environment, which was a huge effort I
+> didn't need to do if you'd just provided the build log which fingered
+> the ASN.1 compiler problem if you know what to look for.
 
+Having a link to the build log artifact is a valid criticism.
 
-> On Sep 22, 2020, at 2:01 AM, Arnd Bergmann <arnd@arndb.de> wrote:
->=20
-> =EF=BB=BFOn Tue, Sep 22, 2020 at 9:59 AM Pavel Begunkov <asml.silence@gmai=
-l.com> wrote:
->>> On 22/09/2020 10:23, Arnd Bergmann wrote:
->>> On Tue, Sep 22, 2020 at 8:32 AM Pavel Begunkov <asml.silence@gmail.com> w=
-rote:
->>>> On 22/09/2020 03:58, Andy Lutomirski wrote:
->>>>> On Mon, Sep 21, 2020 at 5:24 PM Pavel Begunkov <asml.silence@gmail.com=
-> wrote:
->>>>> I may be looking at a different kernel than you, but aren't you
->>>>> preventing creating an io_uring regardless of whether SQPOLL is
->>>>> requested?
->>>>=20
->>>> I diffed a not-saved file on a sleepy head, thanks for noticing.
->>>> As you said, there should be an SQPOLL check.
->>>>=20
->>>> ...
->>>> if (ctx->compat && (p->flags & IORING_SETUP_SQPOLL))
->>>>        goto err;
->>>=20
->>> Wouldn't that mean that now 32-bit containers behave differently
->>> between compat and native execution?
->>>=20
->>> I think if you want to prevent 32-bit applications from using SQPOLL,
->>> it needs to be done the same way on both to be consistent:
->>=20
->> The intention was to disable only compat not native 32-bit.
->=20
-> I'm not following why that would be considered a valid option,
-> as that clearly breaks existing users that update from a 32-bit
-> kernel to a 64-bit one.
->=20
-> Taking away the features from users that are still on 32-bit kernels
-> already seems questionable to me, but being inconsistent
-> about it seems much worse, in particular when the regression
-> is on the upgrade path.
->=20
->>> Can we expect all existing and future user space to have a sane
->>> fallback when IORING_SETUP_SQPOLL fails?
->>=20
->> SQPOLL has a few differences with non-SQPOLL modes, but it's easy
->> to convert between them. Anyway, SQPOLL is a privileged special
->> case that's here for performance/latency reasons, I don't think
->> there will be any non-accidental users of it.
->=20
-> Ok, so the behavior of 32-bit tasks would be the same as running
-> the same application as unprivileged 64-bit tasks, with applications
-> already having to implement that fallback, right?
->=20
->=20
+>
+> The reason for the problem is because ASN1 isn't selected in the
+> Kconfig which causes the ASN.1 compiler not to be built.  The way our
+> current build rules are structured causes the make rule for this simply
+> to be skipped, which means you have to know to look for the absence of
+> ASN.1 in the build log.  I propose adding this to the build rules,
+> which produces the much more explicit:
+>
+> /home/jejb/git/linux-build/scripts/Makefile.build:387: *** CONFIG_ASN1 must be defined for the asn1_compiler.  Stop.
+> make[3]: *** [/home/jejb/git/linux-build/scripts/Makefile.build:505: security/keys/trusted-keys] Error 2
+>
+> James
+>
+> ---
+>
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index a467b9323442..bca7003beac8 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -382,6 +382,11 @@ quiet_cmd_asn1_compiler = ASN.1   $(basename $@).[ch]
+>        cmd_asn1_compiler = $(objtree)/scripts/asn1_compiler $< \
+>                                 $(basename $@).c $(basename $@).h
+>
+> +ifndef CONFIG_ASN1
+> +$(objtree)/scripts/asn1_compiler:
+> +       $(error CONFIG_ASN1 must be defined for the asn1_compiler)
+> +endif
+> +
+>  $(obj)/%.asn1.c $(obj)/%.asn1.h: $(src)/%.asn1 $(objtree)/scripts/asn1_compiler
+>         $(call cmd,asn1_compiler)
 
-I don=E2=80=99t have any real preference wrt SQPOLL, and it may be that we h=
-ave a problem even without SQPOLL when IO gets punted without one of the fix=
-es discussed.
-
-But banning the mismatched io_uring and io_uring_enter seems like it may be w=
-orthwhile regardless.=
+Is there a better way via Kconfig to gate whatever consumes
+CONFIG_ASN1 on CONFIG_ASN1 being set, rather than erroring for
+randconfig builds? I don't see how the diff would solve the case of CI
+systems doing randconfig builds.
+-- 
+Thanks,
+~Nick Desaulniers
