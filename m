@@ -2,53 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F6A278C74
-	for <lists+keyrings@lfdr.de>; Fri, 25 Sep 2020 17:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD6E0278FC1
+	for <lists+keyrings@lfdr.de>; Fri, 25 Sep 2020 19:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729040AbgIYPXz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Sep 2020 11:23:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34026 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728678AbgIYPXz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Sep 2020 11:23:55 -0400
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9894C0613CE;
-        Fri, 25 Sep 2020 08:23:54 -0700 (PDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kLpZZ-0065RN-42; Fri, 25 Sep 2020 15:23:45 +0000
-Date:   Fri, 25 Sep 2020 16:23:45 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        David Laight <David.Laight@aculab.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, io-uring@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        netdev@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: let import_iovec deal with compat_iovecs as well v4
-Message-ID: <20200925152345.GX3421308@ZenIV.linux.org.uk>
-References: <20200925045146.1283714-1-hch@lst.de>
+        id S1727751AbgIYRjZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 25 Sep 2020 13:39:25 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:49308 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727495AbgIYRjZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Sep 2020 13:39:25 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id DDF208EE0A4;
+        Fri, 25 Sep 2020 10:39:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1601055564;
+        bh=79aK4bnvX6AODUjF5ShIPVvydnr/5XqKKRrLI9ZdIWE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=M6+OOWJ18AaN3QaQp5+PbgKaYU4iSm25QKB9+PYDguzPRvE7h+iAMGMa7NCfWFjCU
+         fSbgBxrwzzo0WdUWa1mrAS6bObWOyojv3G1skn62zzvzkUCffLTLXGaB3OG85Bpqho
+         A3lS0aclxeuiBMPEucCQ/MrHfJ7oa+FsQdpxEQEE=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EX4K2p5eBGIp; Fri, 25 Sep 2020 10:39:24 -0700 (PDT)
+Received: from [153.66.254.174] (c-73-35-198-56.hsd1.wa.comcast.net [73.35.198.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4D44E8EE064;
+        Fri, 25 Sep 2020 10:39:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1601055564;
+        bh=79aK4bnvX6AODUjF5ShIPVvydnr/5XqKKRrLI9ZdIWE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=M6+OOWJ18AaN3QaQp5+PbgKaYU4iSm25QKB9+PYDguzPRvE7h+iAMGMa7NCfWFjCU
+         fSbgBxrwzzo0WdUWa1mrAS6bObWOyojv3G1skn62zzvzkUCffLTLXGaB3OG85Bpqho
+         A3lS0aclxeuiBMPEucCQ/MrHfJ7oa+FsQdpxEQEE=
+Message-ID: <49f167946299ced25cf6ad0db1a53f8b319c3491.camel@HansenPartnership.com>
+Subject: Re: [PATCH v13 3/5] security: keys: trusted: fix TPM2 authorizations
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Date:   Fri, 25 Sep 2020 10:39:23 -0700
+In-Reply-To: <20200925072829.GA170658@linux.intel.com>
+References: <20200922022809.7105-1-James.Bottomley@HansenPartnership.com>
+         <20200922022809.7105-4-James.Bottomley@HansenPartnership.com>
+         <20200925072829.GA170658@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200925045146.1283714-1-hch@lst.de>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 06:51:37AM +0200, Christoph Hellwig wrote:
-> Hi Al,
+On Fri, 2020-09-25 at 10:28 +0300, Jarkko Sakkinen wrote:
+> On Mon, Sep 21, 2020 at 07:28:07PM -0700, James Bottomley wrote:
+[...]
+> > keyctl add trusted kmk "new 32
+> > blobauth=f572d396fae9206628714fb2ce00f72e94f2258fkeyhandle=81000001
+> > " @u
+> > 
+> > after we will accept both the old hex sha1 form as well as a new
+> > directly supplied password:
+> > 
+> > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
+> > @u
 > 
-> this series changes import_iovec to transparently deal with compat iovec
-> structures, and then cleanups up a lot of code dupliation.
+> I'm still getting -EINVAL from both with a Geminilake NUC.
 
-OK, I can live with that.  Applied, let's see if it passes smoke tests
-into -next it goes.
+Since I don't have one of those you're going to have to give me more to
+go on.  I've tested this works in a VM with the ibmtss and on a Rainbow
+Pass with a variety of physical TPMs.  Keyctl returns -EINVAL for an
+annoying number of conditions it shouldn't ... the most frequent of
+which is that the key already exists in the keyring.
+
+So what's different about the Geminilake NUC?  Either it's a kernel
+problem with the TPM, in which case there should be something in dmesg
+or it's a userspace problem with keyctl, in which case perhaps strace
+might get us further forward.
+
+James
+
+
