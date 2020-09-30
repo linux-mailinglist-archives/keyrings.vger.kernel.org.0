@@ -2,87 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4214E27A49E
-	for <lists+keyrings@lfdr.de>; Mon, 28 Sep 2020 01:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6675F27DF16
+	for <lists+keyrings@lfdr.de>; Wed, 30 Sep 2020 05:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726392AbgI0Xsv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 27 Sep 2020 19:48:51 -0400
-Received: from mga09.intel.com ([134.134.136.24]:48303 "EHLO mga09.intel.com"
+        id S1725497AbgI3DnS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 29 Sep 2020 23:43:18 -0400
+Received: from mga09.intel.com ([134.134.136.24]:12598 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726328AbgI0Xsv (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 27 Sep 2020 19:48:51 -0400
-IronPort-SDR: TgzUOOYXGmEjhyWJiyr0LDbZ6Omov1B5VTexBKHxvnsdwZXRWVgEJRGlslDvcJ7Q2PuBlsocuJ
- SYxYBUcHiViQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9757"; a="162804814"
-X-IronPort-AV: E=Sophos;i="5.77,311,1596524400"; 
-   d="scan'208";a="162804814"
+        id S1725306AbgI3DnS (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 29 Sep 2020 23:43:18 -0400
+IronPort-SDR: BGIfqJxvEzDWScUFKNYnDlGj0GRo6qy589dP8OT+8hxga2ULFVIVR7v9JfjoAu7VQMx4dK8qBB
+ WYc6QyUfKz5g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9759"; a="163218503"
+X-IronPort-AV: E=Sophos;i="5.77,320,1596524400"; 
+   d="scan'208";a="163218503"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2020 16:48:50 -0700
-IronPort-SDR: PE2GwxsBDdv7EB9yNJizh1uU5BdSnF4bdJQJNP1BzQXemGQTqpyJ4Xv0jbBrY5tn63pt1p9VHD
- lGmmDTuM0mIw==
-X-IronPort-AV: E=Sophos;i="5.77,311,1596524400"; 
-   d="scan'208";a="488338133"
-Received: from memara-mobl.ger.corp.intel.com (HELO localhost) ([10.252.49.157])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2020 16:48:49 -0700
-Date:   Mon, 28 Sep 2020 02:48:50 +0300
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 20:43:15 -0700
+IronPort-SDR: 2va6HXV67eEb6awrnM3uTZg5rq9GzeEiZSFuxgPmFsocB7umJI2yK4AhkG4tXhPZlyT6Ghh9Su
+ wSgnMEty7w+A==
+X-IronPort-AV: E=Sophos;i="5.77,320,1596524400"; 
+   d="scan'208";a="495175680"
+Received: from xinpan-mobl.ger.corp.intel.com (HELO localhost) ([10.249.35.239])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 20:43:13 -0700
+Date:   Wed, 30 Sep 2020 06:43:11 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     James Bottomley <James.Bottomley@HansenPartnership.com>
 Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
         David Woodhouse <dwmw2@infradead.org>,
         keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v13 3/5] security: keys: trusted: fix TPM2 authorizations
-Message-ID: <20200927234850.GB5283@linux.intel.com>
+Subject: Re: [PATCH v13 0/5] TPM 2.0 trusted key rework
+Message-ID: <20200930034311.GA881524@linux.intel.com>
 References: <20200922022809.7105-1-James.Bottomley@HansenPartnership.com>
- <20200922022809.7105-4-James.Bottomley@HansenPartnership.com>
- <20200925072829.GA170658@linux.intel.com>
- <49f167946299ced25cf6ad0db1a53f8b319c3491.camel@HansenPartnership.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <49f167946299ced25cf6ad0db1a53f8b319c3491.camel@HansenPartnership.com>
+In-Reply-To: <20200922022809.7105-1-James.Bottomley@HansenPartnership.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 10:39:23AM -0700, James Bottomley wrote:
-> On Fri, 2020-09-25 at 10:28 +0300, Jarkko Sakkinen wrote:
-> > On Mon, Sep 21, 2020 at 07:28:07PM -0700, James Bottomley wrote:
-> [...]
-> > > keyctl add trusted kmk "new 32
-> > > blobauth=f572d396fae9206628714fb2ce00f72e94f2258fkeyhandle=81000001
-> > > " @u
-> > > 
-> > > after we will accept both the old hex sha1 form as well as a new
-> > > directly supplied password:
-> > > 
-> > > keyctl add trusted kmk "new 32 blobauth=hello keyhandle=81000001"
-> > > @u
-> > 
-> > I'm still getting -EINVAL from both with a Geminilake NUC.
+On Mon, Sep 21, 2020 at 07:28:04PM -0700, James Bottomley wrote:
+> Updated to fix compile problem identified by 0day
 > 
-> Since I don't have one of those you're going to have to give me more to
-> go on.  I've tested this works in a VM with the ibmtss and on a Rainbow
-> Pass with a variety of physical TPMs.  Keyctl returns -EINVAL for an
-> annoying number of conditions it shouldn't ... the most frequent of
-> which is that the key already exists in the keyring.
+> General cover letter minus policy bit:
 > 
-> So what's different about the Geminilake NUC?  Either it's a kernel
-> problem with the TPM, in which case there should be something in dmesg
-> or it's a userspace problem with keyctl, in which case perhaps strace
-> might get us further forward.
+> This patch updates the trusted key code to export keys in the ASN.1
+> format used by current TPM key tools (openssl_tpm2_engine and
+> openconnect).  The current code will try to load keys containing
+> policy, but being unable to formulate the policy commands necessary to
+> load them, the unseal will always fail unless the policy is executed
+> in user space and a pre-formed policy session passed in.
+> 
+> The key format is designed to be compatible with our two openssl
+> engine implementations as well as with the format used by openconnect.
+> I've added seal/unseal to my engine so I can use it for
+> interoperability testing and I'll later use this for sealed symmetric
+> keys via engine:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
 > 
 > James
 
-I'll debug it further sometime next week, just acknowledged the issue.
-I'll use bpftrace for the purpose.
+I started a kernel build for GLK NUC that I have. I'm hopeful that
+tpm2-scripts fix will sort out this patch set. Will report the results
+once I have them. I have a hunch that things will finally work out.
 
-In your environment, would be interesting to see what happens if you use
-tpm2-root-key to generate the key instead of IBMTSS. It is now available
-here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/tpm2-scripts.git/
+Using my master branch without the trusted keys fixes that I did.
 
 /Jarkko
