@@ -2,106 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7492227F3FF
-	for <lists+keyrings@lfdr.de>; Wed, 30 Sep 2020 23:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB65727F466
+	for <lists+keyrings@lfdr.de>; Wed, 30 Sep 2020 23:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725799AbgI3VPh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 30 Sep 2020 17:15:37 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37510 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgI3VPg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Sep 2020 17:15:36 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UL9gtb188693;
-        Wed, 30 Sep 2020 21:15:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to;
- s=corp-2020-01-29; bh=PWAWzUlMvTLDptw0iAj4vY+L1nGbxFKy2BPdwEzu/50=;
- b=uiBh8hPTRiNe7PdfO9rQZnxU3VrotJTTvPEr53TYBTKBLaTBh9bW9DDyY3IthsMpXy9M
- Ev1GdD69Jlkm0hP7IWbkxwSW8Rq60vOgp6z6NCwj3Lrnt++ATUi6fdLztjyGS/X27R4r
- zhMwgwYznRJOKGcRP4W+rY5V7Zgcb99COwie8aq7nSvaqA91/TkF8LSVd8sguPAy3JIx
- sF0XCzAySJWu+PiWl5Jxgt3+KVtnnNHwAuhbReTkbwPo3XoWr+JokEoOJ5HXZVITU/IZ
- 7E420c2mbqI6l2BnJ5iqY/06jgLu37b3d+h5O5PjgtvbZQnPbyd5tPAGUGNd06pH+A3U eQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 33swkm2u83-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 30 Sep 2020 21:15:24 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08ULAwmU089432;
-        Wed, 30 Sep 2020 21:15:24 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 33uv2g0e0c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 30 Sep 2020 21:15:23 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08ULFDEm023807;
-        Wed, 30 Sep 2020 21:15:18 GMT
-Received: from dhcp-10-65-155-193.vpn.oracle.com (/10.65.155.193)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 30 Sep 2020 14:15:13 -0700
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-Subject: Re: [PATCH 1/2] certs: Move load_system_certificate_list to a common
- function
-From:   Eric Snowberg <eric.snowberg@oracle.com>
-In-Reply-To: <20200930210254.GB65339@linux.intel.com>
-Date:   Wed, 30 Sep 2020 15:15:10 -0600
+        id S1730998AbgI3Vtz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 30 Sep 2020 17:49:55 -0400
+Received: from mga02.intel.com ([134.134.136.20]:62005 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729912AbgI3Vtz (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 30 Sep 2020 17:49:55 -0400
+IronPort-SDR: n303Xxdnm4Vry6qFno62hJzzyuO/XNMwGBTKxnb/xXkk44pbNmmJJ2EdI4onZi+EPBPp8wYr46
+ 2MiOC97q+gNA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9760"; a="150207784"
+X-IronPort-AV: E=Sophos;i="5.77,322,1596524400"; 
+   d="scan'208";a="150207784"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2020 14:49:50 -0700
+IronPort-SDR: cHbLJX7YNzrydKgEumUKRaDaCeTl3zHYQ/hKgkrwsVqNdfRUbKPDK/e17LRwfxPtWKmwWmq25p
+ yBI/q2qig/4w==
+X-IronPort-AV: E=Sophos;i="5.77,322,1596524400"; 
+   d="scan'208";a="499650551"
+Received: from mmarder-mobl.ger.corp.intel.com (HELO localhost) ([10.252.50.231])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2020 14:49:47 -0700
+Date:   Thu, 1 Oct 2020 00:49:44 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
 Cc:     dhowells@redhat.com, dwmw2@infradead.org, masahiroy@kernel.org,
         michal.lkml@markovi.net, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Eric Snowberg <eric.snowberg@oracle.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9E194595-5A19-42F8-9657-7FB36DE59F16@oracle.com>
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH 1/2] certs: Move load_system_certificate_list to a common
+ function
+Message-ID: <20200930214944.GA67803@linux.intel.com>
 References: <20200930201508.35113-1-eric.snowberg@oracle.com>
  <20200930201508.35113-2-eric.snowberg@oracle.com>
  <20200930210254.GB65339@linux.intel.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-X-Mailer: Apple Mail (2.3273)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9760 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009300173
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9760 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009300173
+ <9E194595-5A19-42F8-9657-7FB36DE59F16@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9E194595-5A19-42F8-9657-7FB36DE59F16@oracle.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Wed, Sep 30, 2020 at 03:15:10PM -0600, Eric Snowberg wrote:
+> 
+> > On Sep 30, 2020, at 3:02 PM, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+> > 
+> > On Wed, Sep 30, 2020 at 04:15:07PM -0400, Eric Snowberg wrote:
+> >> Move functionality within load_system_certificate_list to a common
+> >> function, so it can be reused in the future.
+> >> 
+> >> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> > 
+> > I rather think now rather than the future. I think this should be part
+> > of a patch set where the re-use actually happens.
+> 
+> load_certificate_list is being used in the second patch in the series [1].
+> It uses the now common code, to load the revocation certificates, just like
+> the system certificates are being loaded in this patch.
 
-> On Sep 30, 2020, at 3:02 PM, Jarkko Sakkinen =
-<jarkko.sakkinen@linux.intel.com> wrote:
->=20
-> On Wed, Sep 30, 2020 at 04:15:07PM -0400, Eric Snowberg wrote:
->> Move functionality within load_system_certificate_list to a common
->> function, so it can be reused in the future.
->>=20
->> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
->=20
-> I rather think now rather than the future. I think this should be part
-> of a patch set where the re-use actually happens.
+Ugh, better to get some sleep. Double checked 2/2 and ack still holds.
+Sorry about this.
 
-load_certificate_list is being used in the second patch in the series =
-[1].
-It uses the now common code, to load the revocation certificates, just =
-like
-the system certificates are being loaded in this patch.
+Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-
-> Without that context, I rather not say anything about this patch.
-> Neither an issue for me if it gets applied. This is just a guideline
-> that I follow (in order to manage this chaos).
->=20
-> Looking at the code change, I do not see anything strikingly wrong in
-> it.
-
-Thanks
-
-[1] https://lore.kernel.org/patchwork/patch/1315486/
-
-
+/Jarkko
