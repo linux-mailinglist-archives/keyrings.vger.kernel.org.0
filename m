@@ -2,242 +2,215 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F97C27F31A
-	for <lists+keyrings@lfdr.de>; Wed, 30 Sep 2020 22:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3DCE27F310
+	for <lists+keyrings@lfdr.de>; Wed, 30 Sep 2020 22:15:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729792AbgI3URl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 30 Sep 2020 16:17:41 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:53226 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgI3URk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Sep 2020 16:17:40 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UK9cLN087784;
-        Wed, 30 Sep 2020 20:17:30 GMT
+        id S1729813AbgI3UPr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 30 Sep 2020 16:15:47 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:33918 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728660AbgI3UPq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Sep 2020 16:15:46 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UK968k027479;
+        Wed, 30 Sep 2020 20:15:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2020-01-29;
- bh=8+YjHgLoEHByilPsETufBgIIxemgj0lRXRq5q8j7QcA=;
- b=HwCBrv56hqszFJNu839yaRnCRx74q7wuKfhofe+c9tXFonZbdRGbfoHev/Uh8rv9bQbe
- UYjGC8lgANtwyNwVI2/iNUX5yEHzrHDOEb492ipfz0swKZYyZFyB68nlUZp3C8bgo1bP
- CMA0/8O2ez4BjqVWVINRbwuqnY2Yb/60T3N6C0tgxoidlTpPX57SpUvAnd9ZpuKtE9pY
- 5MA5R/eq+RTSgOw/FYNZp4uE2hrrYQz/BdhVWaC+Z+byu5a3v9OFAZfQjV93PwCY9So/
- bevkyAN6+RAweQvIA6HGDF2onJdsC+Oh+A42Zxb3RMHwp3IkSSkFfLkTU25A83RU///P hw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 33swkm2kv4-1
+ bh=IxEOgq4WlywNMdlTE5ZZC/146RxyMY0YB+K/R5GilZY=;
+ b=DEW5hcn51YZTDbHL2iXs2DTfcVAi/0xW3kmLpi+zC4c44Xf7DRuCGvYDixEM2U59c1Q4
+ Upy23LuANqA0jXd3jzG7b304EEk5gDbTxBpH/uEedHmW01/jkyxb/9pHiMqeuaY4M4vO
+ ThZIZYvBFBkTIuHiDnruhYh+l69BZnhyhLVTpmwNqiGDAF6RwBdA7sfWKV8U/rO/QY5Y
+ a+tZS6TMXuKPELVkwNdNg0Rm+rdGq1Wa66s9gc0vkfPhHXr9YqjyZk5AA8QaObjSL1MJ
+ F2EF32LQ/vZ79vCU1ijP6AoC25JYLJtEblhfdJGkQGMt6+zY2sF/iPqImhiwwzf6JKiz 2Q== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 33sx9nahd4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 30 Sep 2020 20:17:30 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UK9nxr091667;
+        Wed, 30 Sep 2020 20:15:29 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08UKEn9U196397;
         Wed, 30 Sep 2020 20:15:29 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 33tfk09gdj-1
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 33tfduhgyt-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
         Wed, 30 Sep 2020 20:15:29 +0000
 Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08UKFOhA009486;
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08UKFPGp028144;
         Wed, 30 Sep 2020 20:15:25 GMT
 Received: from localhost.us.oracle.com (/10.147.27.2)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 30 Sep 2020 13:15:24 -0700
+        with ESMTP ; Wed, 30 Sep 2020 13:15:25 -0700
 From:   Eric Snowberg <eric.snowberg@oracle.com>
 To:     dhowells@redhat.com, dwmw2@infradead.org
 Cc:     masahiroy@kernel.org, michal.lkml@markovi.net,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-kbuild@vger.kernel.org, jarkko.sakkinen@linux.intel.com,
         eric.snowberg@oracle.com
-Subject: [PATCH 1/2] certs: Move load_system_certificate_list to a common function
-Date:   Wed, 30 Sep 2020 16:15:07 -0400
-Message-Id: <20200930201508.35113-2-eric.snowberg@oracle.com>
+Subject: [PATCH 2/2] certs: Add ability to preload revocation certs
+Date:   Wed, 30 Sep 2020 16:15:08 -0400
+Message-Id: <20200930201508.35113-3-eric.snowberg@oracle.com>
 X-Mailer: git-send-email 2.18.1
 In-Reply-To: <20200930201508.35113-1-eric.snowberg@oracle.com>
 References: <20200930201508.35113-1-eric.snowberg@oracle.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9760 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
- phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009300163
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009300164
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9760 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2009300163
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Move functionality within load_system_certificate_list to a common
-function, so it can be reused in the future.
+Add a new Kconfig option called SYSTEM_REVOCATION_KEYS. If set,
+this option should be the filename of a PEM-formated file containing
+X.509 certificates to be included in the default blacklist keyring.
 
 Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
 ---
- certs/Makefile         |  2 +-
- certs/common.c         | 56 ++++++++++++++++++++++++++++++++++++++++++
- certs/common.h         |  9 +++++++
- certs/system_keyring.c | 49 +++---------------------------------
- 4 files changed, 69 insertions(+), 47 deletions(-)
- create mode 100644 certs/common.c
- create mode 100644 certs/common.h
+ certs/Kconfig                   |  8 ++++++++
+ certs/Makefile                  | 18 ++++++++++++++++--
+ certs/blacklist.c               | 17 +++++++++++++++++
+ certs/revocation_certificates.S | 21 +++++++++++++++++++++
+ scripts/Makefile                |  1 +
+ 5 files changed, 63 insertions(+), 2 deletions(-)
+ create mode 100644 certs/revocation_certificates.S
 
+diff --git a/certs/Kconfig b/certs/Kconfig
+index c94e93d8bccf..379a6e198459 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -83,4 +83,12 @@ config SYSTEM_BLACKLIST_HASH_LIST
+ 	  wrapper to incorporate the list into the kernel.  Each <hash> should
+ 	  be a string of hex digits.
+ 
++config SYSTEM_REVOCATION_KEYS
++	string "X.509 certificates to be preloaded into the system blacklist keyring"
++	depends on SYSTEM_BLACKLIST_KEYRING
++	help
++	  If set, this option should be the filename of a PEM-formatted file
++	  containing X.509 certificates to be included in the default blacklist
++	  keyring.
++
+ endmenu
 diff --git a/certs/Makefile b/certs/Makefile
-index f4c25b67aad9..f4b90bad8690 100644
+index f4b90bad8690..e3f4926fd21e 100644
 --- a/certs/Makefile
 +++ b/certs/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for the linux kernel signature checking certificates.
+@@ -4,7 +4,7 @@
  #
  
--obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += system_keyring.o system_certificates.o
-+obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += system_keyring.o system_certificates.o common.o
- obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist.o
+ obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += system_keyring.o system_certificates.o common.o
+-obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist.o
++obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist.o revocation_certificates.o common.o
  ifneq ($(CONFIG_SYSTEM_BLACKLIST_HASH_LIST),"")
  obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_hashes.o
-diff --git a/certs/common.c b/certs/common.c
-new file mode 100644
-index 000000000000..83800f51a1a1
---- /dev/null
-+++ b/certs/common.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
+ else
+@@ -29,7 +29,7 @@ $(obj)/x509_certificate_list: scripts/extract-cert $(SYSTEM_TRUSTED_KEYS_SRCPREF
+ 	$(call if_changed,extract_certs,$(SYSTEM_TRUSTED_KEYS_SRCPREFIX)$(CONFIG_SYSTEM_TRUSTED_KEYS))
+ endif # CONFIG_SYSTEM_TRUSTED_KEYRING
+ 
+-clean-files := x509_certificate_list .x509.list
++clean-files := x509_certificate_list .x509.list x509_revocation_list
+ 
+ ifeq ($(CONFIG_MODULE_SIG),y)
+ ###############################################################################
+@@ -104,3 +104,17 @@ targets += signing_key.x509
+ $(obj)/signing_key.x509: scripts/extract-cert $(X509_DEP) FORCE
+ 	$(call if_changed,extract_certs,$(MODULE_SIG_KEY_SRCPREFIX)$(CONFIG_MODULE_SIG_KEY))
+ endif # CONFIG_MODULE_SIG
 +
-+#include <linux/kernel.h>
-+#include <linux/key.h>
++ifeq ($(CONFIG_SYSTEM_BLACKLIST_KEYRING),y)
 +
-+int load_certificate_list(const u8 cert_list[],
-+			  const unsigned long list_size,
-+			  const struct key *keyring)
-+{
-+	key_ref_t key;
-+	const u8 *p, *end;
-+	size_t plen;
++$(eval $(call config_filename,SYSTEM_REVOCATION_KEYS))
 +
-+	p = cert_list;
-+	end = p + list_size;
-+	while (p < end) {
-+		/* Each cert begins with an ASN.1 SEQUENCE tag and must be more
-+		 * than 256 bytes in size.
-+		 */
-+		if (end - p < 4)
-+			goto dodgy_cert;
-+		if (p[0] != 0x30 &&
-+		    p[1] != 0x82)
-+			goto dodgy_cert;
-+		plen = (p[2] << 8) | p[3];
-+		plen += 4;
-+		if (plen > end - p)
-+			goto dodgy_cert;
++$(obj)/revocation_certificates.o: $(obj)/x509_revocation_list
 +
-+		key = key_create_or_update(make_key_ref(keyring, 1),
-+					   "asymmetric",
-+					   NULL,
-+					   p,
-+					   plen,
-+					   ((KEY_POS_ALL & ~KEY_POS_SETATTR) |
-+					   KEY_USR_VIEW | KEY_USR_READ),
-+					   KEY_ALLOC_NOT_IN_QUOTA |
-+					   KEY_ALLOC_BUILT_IN |
-+					   KEY_ALLOC_BYPASS_RESTRICTION);
-+		if (IS_ERR(key)) {
-+			pr_err("Problem loading in-kernel X.509 certificate (%ld)\n",
-+			       PTR_ERR(key));
-+		} else {
-+			pr_notice("Loaded X.509 cert '%s'\n",
-+				  key_ref_to_ptr(key)->description);
-+			key_ref_put(key);
-+		}
-+		p += plen;
-+	}
++quiet_cmd_extract_certs  = EXTRACT_CERTS   $(patsubst "%",%,$(2))
++      cmd_extract_certs  = scripts/extract-cert $(2) $@
 +
-+	return 0;
-+
-+dodgy_cert:
-+	pr_err("Problem parsing in-kernel X.509 certificate list\n");
-+	return 0;
-+}
-diff --git a/certs/common.h b/certs/common.h
-new file mode 100644
-index 000000000000..abdb5795936b
---- /dev/null
-+++ b/certs/common.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef _CERT_COMMON_H
-+#define _CERT_COMMON_H
-+
-+int load_certificate_list(const u8 cert_list[], const unsigned long list_size,
-+			  const struct key *keyring);
-+
-+#endif
-diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-index 798291177186..4510fb5462fb 100644
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -15,6 +15,7 @@
- #include <keys/asymmetric-type.h>
++targets += x509_revocation_list
++$(obj)/x509_revocation_list: scripts/extract-cert $(SYSTEM_REVOCATION_KEYS_SRCPREFIX)$(SYSTEM_REVOCATION_KEYS_FILENAME) FORCE
++	$(call if_changed,extract_certs,$(SYSTEM_REVOCATION_KEYS_SRCPREFIX)$(CONFIG_SYSTEM_REVOCATION_KEYS))
++endif
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index 6514f9ebc943..a0e7770895ce 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -16,9 +16,13 @@
+ #include <linux/seq_file.h>
  #include <keys/system_keyring.h>
- #include <crypto/pkcs7.h>
+ #include "blacklist.h"
 +#include "common.h"
  
- static struct key *builtin_trusted_keys;
- #ifdef CONFIG_SECONDARY_TRUSTED_KEYRING
-@@ -136,54 +137,10 @@ device_initcall(system_trusted_keyring_init);
+ static struct key *blacklist_keyring;
+ 
++extern __initconst const u8 revocation_certificate_list[];
++extern __initconst const unsigned long revocation_certificate_list_size;
++
+ /*
+  * The description must be a type prefix, a colon and then an even number of
+  * hex digits.  The hash is kept in the description.
+@@ -177,3 +181,16 @@ static int __init blacklist_init(void)
+  * Must be initialised before we try and load the keys into the keyring.
   */
- static __init int load_system_certificate_list(void)
- {
--	key_ref_t key;
--	const u8 *p, *end;
--	size_t plen;
--
- 	pr_notice("Loading compiled-in X.509 certificates\n");
+ device_initcall(blacklist_init);
++
++/*
++ * Load the compiled-in list of revocation X.509 certificates.
++ */
++static __init int load_revocation_certificate_list(void)
++{
++	if (revocation_certificate_list_size)
++		pr_notice("Loading compiled-in revocation X.509 certificates\n");
++
++	return load_certificate_list(revocation_certificate_list, revocation_certificate_list_size,
++				     blacklist_keyring);
++}
++late_initcall(load_revocation_certificate_list);
+diff --git a/certs/revocation_certificates.S b/certs/revocation_certificates.S
+new file mode 100644
+index 000000000000..f21aae8a8f0e
+--- /dev/null
++++ b/certs/revocation_certificates.S
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#include <linux/export.h>
++#include <linux/init.h>
++
++	__INITRODATA
++
++	.align 8
++	.globl revocation_certificate_list
++revocation_certificate_list:
++__revocation_list_start:
++	.incbin "certs/x509_revocation_list"
++__revocation_list_end:
++
++	.align 8
++	.globl revocation_certificate_list_size
++revocation_certificate_list_size:
++#ifdef CONFIG_64BIT
++	.quad __revocation_list_end - __revocation_list_start
++#else
++	.long __revocation_list_end - __revocation_list_start
++#endif
+diff --git a/scripts/Makefile b/scripts/Makefile
+index bc018e4b733e..fb105b2bc006 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -11,6 +11,7 @@ hostprogs-always-$(CONFIG_ASN1)				+= asn1_compiler
+ hostprogs-always-$(CONFIG_MODULE_SIG_FORMAT)		+= sign-file
+ hostprogs-always-$(CONFIG_SYSTEM_TRUSTED_KEYRING)	+= extract-cert
+ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
++ hostprogs-always-$(CONFIG_SYSTEM_BLACKLIST_KEYRING)	+= extract-cert
  
--	p = system_certificate_list;
--	end = p + system_certificate_list_size;
--	while (p < end) {
--		/* Each cert begins with an ASN.1 SEQUENCE tag and must be more
--		 * than 256 bytes in size.
--		 */
--		if (end - p < 4)
--			goto dodgy_cert;
--		if (p[0] != 0x30 &&
--		    p[1] != 0x82)
--			goto dodgy_cert;
--		plen = (p[2] << 8) | p[3];
--		plen += 4;
--		if (plen > end - p)
--			goto dodgy_cert;
--
--		key = key_create_or_update(make_key_ref(builtin_trusted_keys, 1),
--					   "asymmetric",
--					   NULL,
--					   p,
--					   plen,
--					   ((KEY_POS_ALL & ~KEY_POS_SETATTR) |
--					   KEY_USR_VIEW | KEY_USR_READ),
--					   KEY_ALLOC_NOT_IN_QUOTA |
--					   KEY_ALLOC_BUILT_IN |
--					   KEY_ALLOC_BYPASS_RESTRICTION);
--		if (IS_ERR(key)) {
--			pr_err("Problem loading in-kernel X.509 certificate (%ld)\n",
--			       PTR_ERR(key));
--		} else {
--			pr_notice("Loaded X.509 cert '%s'\n",
--				  key_ref_to_ptr(key)->description);
--			key_ref_put(key);
--		}
--		p += plen;
--	}
--
--	return 0;
--
--dodgy_cert:
--	pr_err("Problem parsing in-kernel X.509 certificate list\n");
--	return 0;
-+	return load_certificate_list(system_certificate_list, system_certificate_list_size,
-+				     builtin_trusted_keys);
- }
- late_initcall(load_system_certificate_list);
- 
+ HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
+ HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
 -- 
 2.18.1
 
