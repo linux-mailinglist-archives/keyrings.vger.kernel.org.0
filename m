@@ -2,72 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB65727F466
-	for <lists+keyrings@lfdr.de>; Wed, 30 Sep 2020 23:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00247281B87
+	for <lists+keyrings@lfdr.de>; Fri,  2 Oct 2020 21:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730998AbgI3Vtz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 30 Sep 2020 17:49:55 -0400
-Received: from mga02.intel.com ([134.134.136.20]:62005 "EHLO mga02.intel.com"
+        id S2388365AbgJBTVw convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 2 Oct 2020 15:21:52 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:64928 "EHLO mx.metalurgs.lv"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729912AbgI3Vtz (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 30 Sep 2020 17:49:55 -0400
-IronPort-SDR: n303Xxdnm4Vry6qFno62hJzzyuO/XNMwGBTKxnb/xXkk44pbNmmJJ2EdI4onZi+EPBPp8wYr46
- 2MiOC97q+gNA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9760"; a="150207784"
-X-IronPort-AV: E=Sophos;i="5.77,322,1596524400"; 
-   d="scan'208";a="150207784"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2020 14:49:50 -0700
-IronPort-SDR: cHbLJX7YNzrydKgEumUKRaDaCeTl3zHYQ/hKgkrwsVqNdfRUbKPDK/e17LRwfxPtWKmwWmq25p
- yBI/q2qig/4w==
-X-IronPort-AV: E=Sophos;i="5.77,322,1596524400"; 
-   d="scan'208";a="499650551"
-Received: from mmarder-mobl.ger.corp.intel.com (HELO localhost) ([10.252.50.231])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2020 14:49:47 -0700
-Date:   Thu, 1 Oct 2020 00:49:44 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     dhowells@redhat.com, dwmw2@infradead.org, masahiroy@kernel.org,
-        michal.lkml@markovi.net, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH 1/2] certs: Move load_system_certificate_list to a common
- function
-Message-ID: <20200930214944.GA67803@linux.intel.com>
-References: <20200930201508.35113-1-eric.snowberg@oracle.com>
- <20200930201508.35113-2-eric.snowberg@oracle.com>
- <20200930210254.GB65339@linux.intel.com>
- <9E194595-5A19-42F8-9657-7FB36DE59F16@oracle.com>
+        id S2388174AbgJBTVw (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:21:52 -0400
+X-Greylist: delayed 420 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:21:51 EDT
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 048AF62B29
+        for <keyrings@vger.kernel.org>; Fri,  2 Oct 2020 22:14:50 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id DD46A62B25
+        for <keyrings@vger.kernel.org>; Fri,  2 Oct 2020 22:14:49 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 10C8462AD9; Fri,  2 Oct 2020 22:14:48 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id BC81862A95;
+        Fri,  2 Oct 2020 22:14:42 +0300 (EEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9E194595-5A19-42F8-9657-7FB36DE59F16@oracle.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Fri, 02 Oct 2020 16:14:33 -0300
+Reply-To: binmurrah@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191449.10C8462AD9@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201002 notchecked
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Sep 30, 2020 at 03:15:10PM -0600, Eric Snowberg wrote:
-> 
-> > On Sep 30, 2020, at 3:02 PM, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
-> > 
-> > On Wed, Sep 30, 2020 at 04:15:07PM -0400, Eric Snowberg wrote:
-> >> Move functionality within load_system_certificate_list to a common
-> >> function, so it can be reused in the future.
-> >> 
-> >> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-> > 
-> > I rather think now rather than the future. I think this should be part
-> > of a patch set where the re-use actually happens.
-> 
-> load_certificate_list is being used in the second patch in the series [1].
-> It uses the now common code, to load the revocation certificates, just like
-> the system certificates are being loaded in this patch.
+Hello Dear,
 
-Ugh, better to get some sleep. Double checked 2/2 and ack still holds.
-Sorry about this.
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
 
-Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
 
-/Jarkko
+Please get back to me if you are interested for more
+details.
+
+Yours faithfully,
+Hashim Bin 
