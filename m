@@ -2,93 +2,62 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F94B282F26
-	for <lists+keyrings@lfdr.de>; Mon,  5 Oct 2020 05:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 563D3283873
+	for <lists+keyrings@lfdr.de>; Mon,  5 Oct 2020 16:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725896AbgJEDuW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 4 Oct 2020 23:50:22 -0400
-Received: from mga07.intel.com ([134.134.136.100]:58110 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725845AbgJEDuU (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 4 Oct 2020 23:50:20 -0400
-IronPort-SDR: uptD8U17immlurGd9ENjXZK0RLD0Vob5upo6+ncnSA74Py9+rbuTzUrhLtX75zKUE20hulglvf
- oAhAMxh7nYbg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9764"; a="227459661"
-X-IronPort-AV: E=Sophos;i="5.77,337,1596524400"; 
-   d="scan'208";a="227459661"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2020 20:50:15 -0700
-IronPort-SDR: +78de7BTlqIULS/Zxm5ve24hn9db3Xmtj/8xNCINYlnMzS6tR/HizVcMsHNpUKmwAymjxlVgtR
- BiOgwX62BQsg==
-X-IronPort-AV: E=Sophos;i="5.77,337,1596524400"; 
-   d="scan'208";a="295962488"
-Received: from sidorovd-mobl1.ccr.corp.intel.com (HELO localhost) ([10.252.48.68])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2020 20:50:11 -0700
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        stable@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
+        id S1725963AbgJEOrJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 5 Oct 2020 10:47:09 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:58057 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726860AbgJEOqf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Oct 2020 10:46:35 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UB3G6jf_1601909189;
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UB3G6jf_1601909189)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 05 Oct 2020 22:46:29 +0800
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
         David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Safford <safford@watson.ibm.com>,
-        keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
-        linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 3/3] KEYS: trusted: Fix migratable=1 failing
-Date:   Mon,  5 Oct 2020 06:49:48 +0300
-Message-Id: <20201005034948.174228-4-jarkko.sakkinen@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201005034948.174228-1-jarkko.sakkinen@linux.intel.com>
-References: <20201005034948.174228-1-jarkko.sakkinen@linux.intel.com>
+        "David S. Miller" <davem@davemloft.net>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH] X.509: fix error return value on the failed path
+Date:   Mon,  5 Oct 2020 22:46:28 +0800
+Message-Id: <20201005144628.83875-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Consider the following transcript:
+When memory allocation fails, an appropriate return value
+should be set.
 
-$ keyctl add trusted kmk "new 32 blobauth=helloworld keyhandle=80000000 migratable=1" @u
-add_key: Invalid argument
-
-The documentation has the following description:
-
-  migratable=   0|1 indicating permission to reseal to new PCR values,
-                default 1 (resealing allowed)
-
-The consequence is that "migratable=1" should succeed. Fix this by
-allowing this condition to pass instead of return -EINVAL.
-
-[*] Documentation/security/keys/trusted-encrypted.rst
-
-Cc: stable@vger.kernel.org
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: David Howells <dhowells@redhat.com>
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verification")
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 ---
- security/keys/trusted-keys/trusted_tpm1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/asymmetric_keys/public_key_sm2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-index c1dfc32c780b..20ca18e17437 100644
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -801,7 +801,7 @@ static int getoptions(char *c, struct trusted_key_payload *pay,
- 		case Opt_migratable:
- 			if (*args[0].from == '0')
- 				pay->migratable = 0;
--			else
-+			else if (*args[0].from != '1')
- 				return -EINVAL;
- 			break;
- 		case Opt_pcrlock:
+diff --git a/crypto/asymmetric_keys/public_key_sm2.c b/crypto/asymmetric_keys/public_key_sm2.c
+index 7325cf21dbb4..66b614e1eccd 100644
+--- a/crypto/asymmetric_keys/public_key_sm2.c
++++ b/crypto/asymmetric_keys/public_key_sm2.c
+@@ -36,8 +36,10 @@ int cert_sig_digest_update(const struct public_key_signature *sig,
+ 
+ 	desc_size = crypto_shash_descsize(tfm) + sizeof(*desc);
+ 	desc = kzalloc(desc_size, GFP_KERNEL);
+-	if (!desc)
++	if (!desc) {
++		ret = -ENOMEM;
+ 		goto error_free_tfm;
++	}
+ 
+ 	desc->tfm = tfm;
+ 
 -- 
-2.25.1
+2.24.3 (Apple Git-128)
 
