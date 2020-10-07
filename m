@@ -2,110 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DDFF2856EA
-	for <lists+keyrings@lfdr.de>; Wed,  7 Oct 2020 05:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 881C0285C6E
+	for <lists+keyrings@lfdr.de>; Wed,  7 Oct 2020 12:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbgJGDPT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Oct 2020 23:15:19 -0400
-Received: from mga07.intel.com ([134.134.136.100]:12958 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725981AbgJGDPT (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 6 Oct 2020 23:15:19 -0400
-IronPort-SDR: qBcwhjKMg6pINyONftLkqkG9hWmVeBx1q9P1yTQBWA94NSTqaPxRYN2cV7BLBJW1Bj32MqCmAT
- iPfji4H9Ys8g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9766"; a="228942113"
-X-IronPort-AV: E=Sophos;i="5.77,345,1596524400"; 
-   d="scan'208";a="228942113"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2020 20:15:18 -0700
-IronPort-SDR: z5WnzjaFn+K5ZOz8lGPBd/Wyp1GjDD06ljFykR1yiEuxeNWIK4pGjhlCrBDPQw7HMyVpNBc3Vd
- N0L0+citczMQ==
-X-IronPort-AV: E=Sophos;i="5.77,345,1596524400"; 
-   d="scan'208";a="527744838"
-Received: from thijsmet-mobl.ger.corp.intel.com (HELO localhost) ([10.249.34.36])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2020 20:15:17 -0700
-Date:   Wed, 7 Oct 2020 06:15:08 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Anatol Pomozov <anatol.pomozov@gmail.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2] encrypted-keys: Print more useful debug info if
- encryption algo is not available
-Message-ID: <20201007031508.GB143690@linux.intel.com>
-References: <20201005225258.200181-1-anatol.pomozov@gmail.com>
- <20201006155624.GC111447@linux.intel.com>
- <20201006155656.GD111447@linux.intel.com>
- <CAOMFOmWbxPZ4=XKPkX89DaGhGez94NZopexYUj7hA7rDXb9x0g@mail.gmail.com>
- <20201006233900.GA122646@linux.intel.com>
- <ca5aee11d71d825408a4bda71b5d5cfa879e8c18.camel@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ca5aee11d71d825408a4bda71b5d5cfa879e8c18.camel@linux.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1727908AbgJGKIR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 7 Oct 2020 06:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47708 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727870AbgJGKIQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Oct 2020 06:08:16 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C35FC0613D3
+        for <keyrings@vger.kernel.org>; Wed,  7 Oct 2020 03:08:16 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id n14so1058231pff.6
+        for <keyrings@vger.kernel.org>; Wed, 07 Oct 2020 03:08:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=0QkHBy45JfxZtUUWeVh+Xo9BADxCzwJcCK5i5tE7/VU=;
+        b=mjRB37NLj5SNoTE8pv7ujwZNmYXQSd/3yMHce8LtH63xvt4j7v4GQn5Vfx2QX1f6xJ
+         fznOlC0w4fVcF4jdN4xKUqJsiN5dyj64LIV4fbdoj6fO8eO2umNLNNFwkovMWiMXwltK
+         b0X3YB+JTIobDlZU6zCI5EQGkM36JsQfFxn3oYRIGXR7ZRlHCIWoKlqhoN9VAeC6gKwI
+         uk1OKtT9vgtJ5zmTo/Qp/RO/swoOZlgKmUGyKymHLhZDNVptK2IMXpAQEEC/AoqySwpf
+         nKouZsF6xRnLkoT+LckkTn/WcT3OQED6Rs1Wrr9DlJkM/Etba+XzIDydYmaVd6wukM7T
+         tBsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=0QkHBy45JfxZtUUWeVh+Xo9BADxCzwJcCK5i5tE7/VU=;
+        b=OcmKabZ/CBQhjAqm3qhjyb8B0bsPNSZy5TU8eqyxzTwxOIr96VzwDYpSm9cjLOWja+
+         zbvsGudAkwQgA17t8gJ1y0NEitSlqUOZGE1UNAWbssu5fcBc+ffpuixnQK7hr//MzSQn
+         9qVsgQI+c1j6s9gN3e8bF7qv0hjfdD0QNRpSsHIU8aCygcG3XoWqI8fEUhO5wxIE5T2g
+         3SNr0On0psIpVZfNrBDyeY3LcnMY6mgQmcLVNB342yA0f2cQMFanmv5KZTeHVZ8N1uF2
+         SMPluFZC531nfzL3567QQgGLRxwi2CfM33odR71/t9ib3547L7hIx4bdmp6y3ZSGyhoc
+         UZbA==
+X-Gm-Message-State: AOAM5320c3NruWzREpUm9sTSLXdEMlPZMPllb1354MXICOySpcaqlYb0
+        NzqwtxsSCGCmPWyAT2iko0MQzw==
+X-Google-Smtp-Source: ABdhPJylY343ok9cAC6Btln4FsnUmJ5S0BSBvwLDpHlJJvlvFlZ64WTgUaTu8PpnloGMXk0GhMRqqw==
+X-Received: by 2002:aa7:910c:0:b029:13e:d13d:a07b with SMTP id 12-20020aa7910c0000b029013ed13da07bmr2262427pfh.18.1602065295978;
+        Wed, 07 Oct 2020 03:08:15 -0700 (PDT)
+Received: from localhost.localdomain ([117.252.65.235])
+        by smtp.gmail.com with ESMTPSA id m4sm2322174pgv.87.2020.10.07.03.08.04
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 07 Oct 2020 03:08:15 -0700 (PDT)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
+        jejb@linux.ibm.com
+Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
+        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
+        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
+        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
+        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        op-tee@lists.trustedfirmware.org,
+        Sumit Garg <sumit.garg@linaro.org>
+Subject: [PATCH v7 0/4] Introduce TEE based Trusted Keys support
+Date:   Wed,  7 Oct 2020 15:37:44 +0530
+Message-Id: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 06, 2020 at 08:33:24PM -0400, Mimi Zohar wrote:
-> On Wed, 2020-10-07 at 02:39 +0300, Jarkko Sakkinen wrote:
-> > On Tue, Oct 06, 2020 at 10:18:43AM -0700, Anatol Pomozov wrote:
-> > > Hi
-> > > 
-> > > On Tue, Oct 6, 2020 at 8:59 AM Jarkko Sakkinen
-> > > <jarkko.sakkinen@linux.intel.com> wrote:
-> > > >
-> > > > On Tue, Oct 06, 2020 at 06:56:28PM +0300, Jarkko Sakkinen wrote:
-> > > > > On Mon, Oct 05, 2020 at 03:52:58PM -0700, Anatol Pomozov wrote:
-> > > > > > It helps to improve a cryptic message "encrypted_key failed to alloc_cipher (-2)".
-> > > > > > Adding algo name makes it easier to understand what cipher has failed.
-> > > > > >
-> > > > > > Signed-off-by: Anatol Pomozov <anatol.pomozov@gmail.com>
-> > > > >
-> > > > > NAK, because you are missing David Howells from the CC list.
-> > > >
-> > > > Oh and also me. You are essentially missing all the keyring maintainers.
-> > > 
-> > > The MAINTAINERS file states following:
-> > > 
-> > > KEYS-ENCRYPTED
-> > > M:      Mimi Zohar <zohar@linux.ibm.com>
-> > > L:      linux-integrity@vger.kernel.org
-> > > L:      keyrings@vger.kernel.org
-> > > S:      Supported
-> > > F:      Documentation/security/keys/trusted-encrypted.rst
-> > > F:      include/keys/encrypted-type.h
-> > > F:      security/keys/encrypted-keys/
-> > > 
-> > > Everything seems fine as I included the official maintainer and the
-> > > project maillist.
-> > > 
-> > > If David is not subscribed to the project maillist I'll be glad to CC
-> > > him as well.
-> > 
-> > Ugh, you are right then. Those two lists still confuse me thought
-> > but that is not your fault.
-> 
-> Please refer to Documentation/security/keys/trusted-encrypted.rst for
-> an explanation.
+Add support for TEE based trusted keys where TEE provides the functionality
+to seal and unseal trusted keys using hardware unique key. Also, this is
+an alternative in case platform doesn't possess a TPM device.
 
-Yeah, I was not sure about the organization and just spotted keyrings
-in the CC list :-)
+This patch-set has been tested with OP-TEE based early TA which is already
+merged in upstream [1].
 
-> 
-> > 
-> > Based on that I can give my ack because the change looks right
-> > still.
-> > 
-> > Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > 
-> > Thanks for explaining the situation.
-> 
-> Thanks, Jarrko.  I'm on vacation, returning next week.
+[1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
 
-Have a good one!
+Changes in v7:
+1. Added a trusted.source module parameter in order to enforce user's
+   choice in case a particular platform posses both TPM and TEE.
+2. Refine commit description for patch #1.
 
-> Mimi
+Changes in v6:
+1. Revert back to dynamic detection of trust source.
+2. Drop author mention from trusted_core.c and trusted_tpm1.c files.
+3. Rebased to latest tpmdd/master.
 
-/Jarkko
+Changes in v5:
+1. Drop dynamic detection of trust source and use compile time flags
+   instead.
+2. Rename trusted_common.c -> trusted_core.c.
+3. Rename callback: cleanup() -> exit().
+4. Drop "tk" acronym.
+5. Other misc. comments.
+6. Added review tags for patch #3 and #4.
+
+Changes in v4:
+1. Pushed independent TEE features separately:
+  - Part of recent TEE PR: https://lkml.org/lkml/2020/5/4/1062
+2. Updated trusted-encrypted doc with TEE as a new trust source.
+3. Rebased onto latest tpmdd/master.
+
+Changes in v3:
+1. Update patch #2 to support registration of multiple kernel pages.
+2. Incoporate dependency patch #4 in this patch-set:
+   https://patchwork.kernel.org/patch/11091435/
+
+Changes in v2:
+1. Add reviewed-by tags for patch #1 and #2.
+2. Incorporate comments from Jens for patch #3.
+3. Switch to use generic trusted keys framework.
+
+Sumit Garg (4):
+  KEYS: trusted: Add generic trusted keys framework
+  KEYS: trusted: Introduce TEE based Trusted Keys
+  doc: trusted-encrypted: updates with TEE as a new trust source
+  MAINTAINERS: Add entry for TEE based Trusted Keys
+
+ Documentation/security/keys/trusted-encrypted.rst | 203 ++++++++++---
+ MAINTAINERS                                       |   8 +
+ include/keys/trusted-type.h                       |  47 +++
+ include/keys/trusted_tee.h                        |  55 ++++
+ include/keys/trusted_tpm.h                        |  17 +-
+ security/keys/trusted-keys/Makefile               |   2 +
+ security/keys/trusted-keys/trusted_core.c         | 334 +++++++++++++++++++++
+ security/keys/trusted-keys/trusted_tee.c          | 278 ++++++++++++++++++
+ security/keys/trusted-keys/trusted_tpm1.c         | 336 ++++------------------
+ 9 files changed, 953 insertions(+), 327 deletions(-)
+ create mode 100644 include/keys/trusted_tee.h
+ create mode 100644 security/keys/trusted-keys/trusted_core.c
+ create mode 100644 security/keys/trusted-keys/trusted_tee.c
+
+-- 
+2.7.4
+
