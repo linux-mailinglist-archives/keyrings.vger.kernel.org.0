@@ -2,51 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28103286E40
-	for <lists+keyrings@lfdr.de>; Thu,  8 Oct 2020 07:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52127287D9F
+	for <lists+keyrings@lfdr.de>; Thu,  8 Oct 2020 23:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728270AbgJHFoI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 8 Oct 2020 01:44:08 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:41220 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726245AbgJHFoI (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 8 Oct 2020 01:44:08 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1kQOib-0006T4-2l; Thu, 08 Oct 2020 16:43:58 +1100
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 08 Oct 2020 16:43:57 +1100
-Date:   Thu, 8 Oct 2020 16:43:57 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] X.509: fix error return value on the failed path
-Message-ID: <20201008054357.GC9733@gondor.apana.org.au>
-References: <20201005144628.83875-1-tianjia.zhang@linux.alibaba.com>
+        id S1726301AbgJHVFq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 8 Oct 2020 17:05:46 -0400
+Received: from [58.87.100.240] ([58.87.100.240]:45012 "EHLO
+        mail.hebei-kuixing.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1725874AbgJHVFq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 8 Oct 2020 17:05:46 -0400
+X-Greylist: delayed 448 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Oct 2020 17:05:45 EDT
+Received: from localhost (unknown [127.0.0.1])
+        by mail.hebei-kuixing.com (Postfix) with ESMTP id 6DA2861287;
+        Thu,  8 Oct 2020 20:57:38 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at hebei-kuixing.com
+Received: from mail.hebei-kuixing.com ([127.0.0.1])
+        by localhost (mail.hebei-kuixing.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id SEPQUbzzRFgN; Fri,  9 Oct 2020 04:57:37 +0800 (CST)
+Received: from User (unknown [185.248.12.71])
+        by mail.hebei-kuixing.com (Postfix) with ESMTPA id 3001260D07;
+        Fri,  9 Oct 2020 04:57:16 +0800 (CST)
+Reply-To: <kim.leang2011@yahoo.com>
+From:   " Kim Leang" <sales@hebei-kuixing.com>
+Subject: Greeting!
+Date:   Thu, 8 Oct 2020 23:57:32 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201005144628.83875-1-tianjia.zhang@linux.alibaba.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201008205738.6DA2861287@mail.hebei-kuixing.com>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Oct 05, 2020 at 10:46:28PM +0800, Tianjia Zhang wrote:
-> When memory allocation fails, an appropriate return value
-> should be set.
-> 
-> Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verification")
-> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> ---
->  crypto/asymmetric_keys/public_key_sm2.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+Greeting!
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+
+I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+
+The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+
+Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
+
+Thanks and have a nice day,
+Mr. Kim Leang.
