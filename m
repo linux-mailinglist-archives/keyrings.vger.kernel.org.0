@@ -2,161 +2,249 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB8D28A88D
-	for <lists+keyrings@lfdr.de>; Sun, 11 Oct 2020 19:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05BD328BFDF
+	for <lists+keyrings@lfdr.de>; Mon, 12 Oct 2020 20:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728667AbgJKRpJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 11 Oct 2020 13:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44814 "EHLO
+        id S1729978AbgJLSjz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 12 Oct 2020 14:39:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726319AbgJKRpI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 11 Oct 2020 13:45:08 -0400
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0E4C0613CE;
-        Sun, 11 Oct 2020 10:45:08 -0700 (PDT)
-Received: by mail-qt1-x833.google.com with SMTP id q26so11979259qtb.5;
-        Sun, 11 Oct 2020 10:45:08 -0700 (PDT)
+        with ESMTP id S1729656AbgJLSjy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 12 Oct 2020 14:39:54 -0400
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D445BC0613D0;
+        Mon, 12 Oct 2020 11:39:54 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id j7so2139037oie.12;
+        Mon, 12 Oct 2020 11:39:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=K/LoyPsHfKdi1ZcF54EQc3/yoAQf3NlApRaky4RKPyc=;
-        b=C+5/IiiRVGGxoh+Ms5u7ykIDc/PvT2O8zozK5Gr3dfpziSnB40aH++yKtTu8WDhNVl
-         hnC5v3J9Go7/tPGhhl4NPMq38QJj69ROAUrkhK7IksDADPFZRQUHp1BT5d2WGS7kRvOi
-         5Vaury5XX4AQE6yZhCk+3Cfnoj0WZlI/n2peOBnNoeD3B1w3mpv+x1bXdWmLJJjd8xbz
-         G4qQPA/5/O7w5zlHH/EGGjsQ9e0iESScUX2L46Pv9ZMEcGgSIGHaIuTySp9WA7WOamSj
-         +FNdyyloyGuh8kDHaJ2DhEBvZjzV45Ebh+snLoO0M8Ay4oM2n6wS1ixU1jIUizN8x2ou
-         AFeA==
+        h=mime-version:reply-to:from:date:message-id:subject:to:cc;
+        bh=R/gYxTsYJFdTQ38CkcW02MIpSzR9RPkG/h3hLnnndhY=;
+        b=pZ8PPJfuk9F6Z1AKgc8pHbhiSMcYsSZFtzvTxccLwnMkYgT3/OEcNLvSKlFdJqD7P5
+         HvTGWQXCYXJmqywSL6OdTP40wSp2fg8haeRIYlHlkJF2qHpYqBgFyJ2bjioLHqrQHtC1
+         lhk78vwaSUg3NbnWnHZGwExASL/Rl1mIGG0qCEqJ5o48Je/qTAm8ZudczYHpCKN5QuPz
+         TsLnz4nhcn4n245TZNoPHIoSHw9oZbQehh2IxWpl8MiM4U6I3nAZCU03O7i0Fm3DYFCu
+         7mDq7v6Le2xMdp+42Vqjs292LnRFZBw+jOyDm4EyTligEGUh/unuN8aisX+z8VrNANP/
+         nCfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=K/LoyPsHfKdi1ZcF54EQc3/yoAQf3NlApRaky4RKPyc=;
-        b=SqHUu9+jjQSAJE2DCG+BhM0foRyvuqDWiL+z0cG/hPIbqw2Dn+bifkv5Afn3Kvl1i+
-         iyjXYhf3SC/EVhb96IBym+7gpdwsso0aKfT92fnDBbdMmiOwtGZjFRU3mjXFpu82J/XB
-         XnQj0VBGjtQW6VmGuRJaX/yJ7PpQSIXeFFRPu3OIYNN5/IoGoHfOkdPVCPp75p3503wP
-         WZnJVFGsN/oS7+oY3kdeTJKjTuIwaDNUBDFqXJP0uaM5fuuL9hVLqyi112JGytZdEjXL
-         F1Rx6NUQYfmb4fwtD7UcF4GNAox12HFqUTj0V3tt77LOLSglc7ssUYe7RzbAsFRxmkrD
-         /ocw==
-X-Gm-Message-State: AOAM533NqVfU979DIp3VYBXdZm77I6kcKpwjg5AXfoDgLUt+a4ko8Atf
-        4Gcq74CaT0fNTgAajKCenw1e7c7fm0wp0lJkSyAcnuNGsqc=
-X-Google-Smtp-Source: ABdhPJxuo+aCmgWZsDtGhosoNajO/8pXwJUo3wF2L6USdMnd1zioOSmaG8X/5Byia21t0o1w8QchekFEMJnJOiOVsRo=
-X-Received: by 2002:a05:622a:208:: with SMTP id b8mr6950167qtx.101.1602438307044;
- Sun, 11 Oct 2020 10:45:07 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=R/gYxTsYJFdTQ38CkcW02MIpSzR9RPkG/h3hLnnndhY=;
+        b=VelKh3AWxaFgt7GvZSSIGWAdTw+heIavlHTnURKKqHgSrST0NFZL/QXpFuE8XffEAa
+         8vEWq35+HZEJZhRi2g5GK9aOZP04EqVI4FZkBSQmszSnbc4Iz/J1EOFXWLLLvsy4VUjQ
+         VxEyZr9cQeuC8b3aEWptPhojRcLvO2ZbDkyf1lKYVUj+XCBPdEyMYTBwFfUH8NStRqz6
+         REft5UJ70br3YpPjcFZxQyqOcJMzpLPh2gnzaSeahmnWw4QW1ggKVZ9x1B7RzlHuCka/
+         ZPHLFbZnbH0CLy0xvKSGQjmGAkDsyS8LCQk4IGiY+X7g2ZosRGDU9H1WY16fL+zHzVZK
+         l0hg==
+X-Gm-Message-State: AOAM5308R80TIR4XIO+Z2RFFkiG/k7Yup0Gq81+KsAzayi/pHJJAvin0
+        0+gOoTN2NwxKmJckkTDQKZPqH9GtvzgDZFtzX3Q=
+X-Google-Smtp-Source: ABdhPJwcgUjAfcfxHqh9sGGJ577o7E+3OEBbUISmWiKBjAZPTlwZTf4GfCDmGknHmZg5F7JwQQD8LqB/iRBP7WbQJcA=
+X-Received: by 2002:aca:bb41:: with SMTP id l62mr9681768oif.148.1602527994142;
+ Mon, 12 Oct 2020 11:39:54 -0700 (PDT)
 MIME-Version: 1.0
-From:   rishi gupta <gupt21@gmail.com>
-Date:   Sun, 11 Oct 2020 23:14:54 +0530
-Message-ID: <CALUj-gs2-kCX00Pf42kb+fYo0UE6DD6he3z=-Lz8M52-AFFi_Q@mail.gmail.com>
-Subject: Does selinux rule needed for .ima keyring access - integrity: Request
- for unknown key 'id:87deb3bf' err -13
-To:     linux-integrity <linux-integrity@vger.kernel.org>,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Reply-To: mtk.manpages@gmail.com
+From:   "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
+Date:   Mon, 12 Oct 2020 20:39:41 +0200
+Message-ID: <CAKgNAkjMBGeAwF=2MKK758BhxvW58wYTgYKB2V-gY1PwXxrH+Q@mail.gmail.com>
+Subject: Regression: epoll edge-triggered (EPOLLET) for pipes/FIFOs
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Ian Kent <raven@themaw.net>,
+        Christian Brauner <christian@brauner.io>,
+        keyrings@vger.kernel.org,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Michael Kerrisk <mtk.manpages@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi IMA experts,
+Hello Linus,
 
-Do we need to write any rule for selinux to allow access to key in
-.ima keyring for all processes or I am thinking in wrong direction.
+Between Linux 5.4 and 5.5 a regression was introduced in the operation
+of the epoll EPOLLET flag. From some manual bisecting, the regression
+appears to have been introduced in
 
-"integrity: Request for unknown key 'id:87deb3bf' err -13" is the
-error with selinux enabled (kernel is 4.14). Without selinux enabled,
-IMA appraisal works fine.
-Audit logs:
-[10012.824868] type=1800 audit(315974764.149:5729): pid=7511 uid=1001
-auid=4294967295 ses=4294967295
-subj=system_u:system_r:testd_cm_t:s0-s15:c0.c1023 op="appraise_data"
-cause="invalid-signature" comm="sh" name="/sbin/testdaemon"
-dev="ubifs" ino=18446 res=0
+         commit 1b6b26ae7053e4914181eedf70f2d92c12abda8a
+         Author: Linus Torvalds <torvalds@linux-foundation.org>
+         Date:   Sat Dec 7 12:14:28 2019 -0800
 
-Output of few commands just in case it is useful:
+             pipe: fix and clarify pipe write wakeup logic
 
-# keyctl show -x %:.builtin_trusted_keys
-Keyring
-0x26edf4c7 ---lswrv      0     0  keyring: .builtin_trusted_keys
-0x3e65ef00 ---lswrv      0     0   \_ asymmetric: IMA-CA: IMA/EVM
-certificate signing key: 20c98dcf771b2a945c0ffd245011118299f90bdf
+(I also built a kernel from the  immediate preceding commit, and did
+not observe the regression.)
 
-# keyctl show -x %:.ima
-Keyring
-0x0e961ca8 ---lswrv      0     0  keyring: .ima
-0x2e3011f8 ---lswrv      0     0   \_ asymmetric: ima: signing key:
-edc4697e8b77ef2713e491616726090c87deb3bf
+The aim of ET (edge-triggered) notification is that epoll_wait() will
+tell us a file descriptor is ready only if there has been new activity
+on the FD since we were last informed about the FD. So, in the
+following scenario where the read end of a pipe is being monitored
+with EPOLLET, we see:
 
-/ # cat /proc/keys
-02fdee99 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-035ab7c0 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-0439d238 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-04964e3e I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-04da590e I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-054ef37d I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-055154e2 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-06511dd4 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-0761426a I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-0793080e I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-07f495f8 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-082f71d6 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-096dee7c I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-09904799 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-0b87b742 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-0c1b072c I--Q---     3 perm 3f030000     0     0 keyring   _ses: 1
-0d02c3ff I--Q---     2 perm 3f030000     0     0 keyring   _ses: 1
-0db26b5a I--Q---     8 perm 3f030000     0     0 keyring   _ses: 1
-0dc6c62e I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-0e961ca8 I------     1 perm 1f0f0000     0     0 keyring   .ima: 1
-0ff12212 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1156ac2d I--Q---    13 perm 3f030000     0     0 keyring   _ses: 1
-1252fe6f I--Q---     3 perm 3f030000     0     0 keyring   _ses: 1
-1285aef6 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1322fc5e I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-13866397 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-14173f44 I--Q---     2 perm 1f3f0000     0 65534 keyring   _uid.0: empty
-14931524 I--Q---     3 perm 3f030000     0     0 keyring   _ses: 1
-155502e8 I--Q---     3 perm 3f030000     0     0 keyring   _ses: 1
-1604215d I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-16b40b6b I--Q---     4 perm 3f030000     0     0 keyring   _ses: 1
-17db30d9 I--Q---     3 perm 3f030000     0     0 keyring   _ses: 1
-18ea41e0 I--Q---     5 perm 3f030000     0     0 keyring   _ses: 1
-19b92253 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-19eeed3f I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1b89b979 I--Q---     2 perm 3f030000     0     0 keyring   _ses: 1
-1c0a573f I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1cd763d5 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1d3caf71 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1d6a3880 I--Q---     2 perm 3f030000     0     0 keyring   _ses: 1
-1ddffca9 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-1df0c622 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-201c5a37 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2045b3bb I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-20993304 I--Q---     2 perm 3f030000     0     0 keyring   _ses: 1
-2154e4a6 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-22f2253f I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-25e97a49 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2665b7b4 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-26edf4c7 I------     1 perm 1f0b0000     0     0 keyring
-.builtin_trusted_keys: 1
-2798bd15 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-29931371 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2a3853b1 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2cc594f1 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2dc04d98 I--Q---     2 perm 3f030000     0     0 keyring   _ses: 1
-2e0e4f06 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2e3011f8 I------     1 perm 1f030000     0     0 asymmetri ima:
-signing key: edc4697e8b77ef2713e491616726090c87deb3bf: X509.rsa
-87deb3bf []
-2e769ee9 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-2ebb4809 I--Q---     1 perm 1f3f0000     0 65534 keyring   _uid_ses.0: 1
-2fdc0299 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-307f8910 I--Q---     1 perm 3f030000     0     0 keyring   _ses: 1
-3384a46f I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-357dd4d1 I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-3be9a95e I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-3c3162f6 I--Q---     3 perm 3f030000     0     0 keyring   _ses: 1
-3d47a3ab I--Q---     1 perm 0b0b0000     0     0 user      invocation_id: 16
-3e65ef00 I------     1 perm 1f030000     0     0 asymmetri IMA-CA:
-IMA/EVM certificate signing key:
-20c98dcf771b2a945c0ffd245011118299f90bdf: X509.rsa 99f90bdf []
-3f625ed4 I--Q---     5 perm 3f030000     0     0 keyring   _ses: 1
+[Write a byte to write end of pipe]
+1. Call epoll_wait() ==> tells us pipe read end is ready
+2. Call epoll_wait() [again] ==> does not tell us that the read end of
+pipe is ready
 
-Regards.,
-Rishi
+    (By contrast, in step 2, level-triggered notification would tell
+    us the read end of the pipe is read.)
+
+If we go further:
+
+[Write another byte to write end of pipe]
+3. Call epoll_wait() ==> tells us pipe read end is ready
+
+The above was true until the regression. Now, step 3 does not tell us
+that the pipe read end is ready, even though there is NEW input
+available on the pipe. (In the analogous situation for sockets and
+terminals, step 3 does (still) correctly tell us that the FD is
+ready.)
+
+I've appended a test program below. The following are the results on
+kernel 5.4.0:
+
+        $ ./pipe_epollet_test
+        Writing a byte to pipe()
+            1: OK:   ret = 1, events = [ EPOLLIN ]
+            2: OK:   ret = 0
+        Writing a byte to pipe()
+            3: OK:   ret = 1, events = [ EPOLLIN ]
+        Closing write end of pipe()
+            4: OK:   ret = 1, events = [ EPOLLIN EPOLLHUP ]
+
+On current kernels, the results are as follows:
+
+        $ ./pipe_epollet_test
+        Writing a byte to pipe()
+            1: OK:   ret = 1, events = [ EPOLLIN ]
+            2: OK:   ret = 0
+        Writing a byte to pipe()
+            3: FAIL: ret = 0; EXPECTED: ret = 1, events = [ EPOLLIN ]
+        Closing write end of pipe()
+            4: OK:   ret = 1, events = [ EPOLLIN EPOLLHUP ]
+
+Thanks,
+
+Michael
+
+=====
+
+/* pipe_epollet_test.c
+
+   Copyright (c) 2020, Michael Kerrisk <mtk.manpages@gmail.com>
+
+   Licensed under GNU GPLv2 or later.
+*/
+#include <sys/epoll.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \
+                        } while (0)
+
+static void
+printMask(int events)
+{
+    printf(" [ %s%s]",
+                (events & EPOLLIN)  ? "EPOLLIN "  : "",
+                (events & EPOLLHUP) ? "EPOLLHUP " : "");
+}
+
+static void
+doEpollWait(int epfd, int timeout, int expectedRetval, int expectedEvents)
+{
+    struct epoll_event ev;
+    static int callNum = 0;
+
+    int retval = epoll_wait(epfd, &ev, 1, timeout);
+    if (retval == -1) {
+        perror("epoll_wait");
+        return;
+    }
+
+    /* The test succeeded if (1) we got the expected return value and
+       (2) when the return value was 1, we got the expected events mask */
+
+    bool succeeded = retval == expectedRetval &&
+            (expectedRetval == 0 || expectedEvents == ev.events);
+
+    callNum++;
+    printf("    %d: ", callNum);
+
+    if (succeeded)
+        printf("OK:   ");
+    else
+        printf("FAIL: ");
+
+    printf("ret = %d", retval);
+
+    if (retval == 1) {
+        printf(", events =");
+        printMask(ev.events);
+    }
+
+    if (!succeeded) {
+        printf("; EXPECTED: ret = %d", expectedRetval);
+        if (expectedRetval == 1) {
+            printf(", events =");
+            printMask(expectedEvents);
+        }
+    }
+    printf("\n");
+}
+
+int
+main(int argc, char *argv[])
+{
+    int epfd;
+    int pfd[2];
+
+    epfd = epoll_create(1);
+    if (epfd == -1)
+        errExit("epoll_create");
+
+    /* Create a pipe and add read end to epoll interest list */
+
+    if (pipe(pfd) == -1)
+        errExit("pipe");
+
+    struct epoll_event ev;
+    ev.data.fd = pfd[0];
+    ev.events = EPOLLIN | EPOLLET;
+    if (epoll_ctl(epfd, EPOLL_CTL_ADD, pfd[0], &ev) == -1)
+        errExit("epoll_ctl");
+
+    /* Run some tests */
+
+    printf("Writing a byte to pipe()\n");
+    write(pfd[1], "a", 1);
+
+    doEpollWait(epfd, 0, 1, EPOLLIN);
+    doEpollWait(epfd, 0, 0, 0);
+
+    printf("Writing a byte to pipe()\n");
+    write(pfd[1], "a", 1);
+
+    doEpollWait(epfd, 0, 1, EPOLLIN);
+
+    printf("Closing write end of pipe()\n");
+    close(pfd[1]);
+
+    doEpollWait(epfd, 0, 1, EPOLLIN | EPOLLHUP);
+
+    exit(EXIT_SUCCESS);
+}
+
+
+--
+Michael Kerrisk
+Linux man-pages maintainer; http://www.kernel.org/doc/man-pages/
+Linux/UNIX System Programming Training: http://man7.org/training/
