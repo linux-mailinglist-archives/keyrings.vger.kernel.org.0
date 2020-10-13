@@ -2,56 +2,33 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B34B28CC92
-	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 13:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D655B28CD7A
+	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 14:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgJML3B (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Oct 2020 07:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36390 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726404AbgJML3A (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 07:29:00 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72962C0613D2
-        for <keyrings@vger.kernel.org>; Tue, 13 Oct 2020 04:29:00 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id a5so20010401ljj.11
-        for <keyrings@vger.kernel.org>; Tue, 13 Oct 2020 04:29:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0fe/rUPknWKjJHQfNjjMwuy0QlI3MJO2qD6YuDAy3qE=;
-        b=X04ds4sw8SJNth6bHlu9JhQBVORr5yXBEE2b8Ov6oelmRazUaaNvD13K/TWOr7gyQd
-         JtSzTS0gJ58yo0XSpqWYK1jQHHs/1WMjRF3P1PTENrCFQnIpZ5LiVmcWjBwm9T+zuUW2
-         SObFz5u+I6H+0434419wjVX6I/i1yL21PJbuy64REF65mLZ1WpcTPD35PS+JZGo92Aob
-         y7O2v7+WQ3tMF6CnPEJ6hDtes809zD5L1gVi2BClPDgRPJuYgAoZ+OVqNAzmgAcalLmv
-         x31cXMyUTmcv177luuQPMuZSOZ0Nom9Ci2+XWlhVqB1ZJJtUZ5FN0hrOTB5f9PgVV+6l
-         pixw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0fe/rUPknWKjJHQfNjjMwuy0QlI3MJO2qD6YuDAy3qE=;
-        b=twB2zqTKUGFOVEkqLx1wuFxahtblOWcBk2qRSDv3lNj0As5fBB6uhhMow9GpVuNlMe
-         6yN0yx1z3Ku0370lkrsLtH1ySU+syVRtwSI7+4C82UJybenZYAb2qRL5YxVfHUYlaOKE
-         ToPtsRGDubTS75704KWqROrKj8B9RZ6I7uRqVnxz2vCOmirnLSf5okf7IInlIeWxTXsH
-         UNMQgJAcwLF6I07Er6sh3iQSstcSjqUlzqBMnPSUZgUZQoiqeTi+O7r94IwOcp+WUB99
-         fkvbvQA0d2KCW4OaW37Dj4ZhRNSXY41oTRo2n1II1AJsUZk3Xx3epr01e4ftWnL8rLHc
-         6aqw==
-X-Gm-Message-State: AOAM5320RFME0car8QxBthEbCP/nvVWW8CMh23AgVjvZ1YbA3BNVqv+G
-        2j457bcbNcuQw1Jb6DNOAMuZF/j8Yf7TJPpJUwPU0g==
-X-Google-Smtp-Source: ABdhPJxOlDao8AKCPBsqF7gTeRCRcVgwmk5ldXZOHlGJBEkPdQNH+RZ2Xsbw1swjy/dOe6vjwFkeKOoQY7F5HG7Wnf4=
-X-Received: by 2002:a2e:9d8d:: with SMTP id c13mr11367812ljj.339.1602588538772;
- Tue, 13 Oct 2020 04:28:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
- <1602065268-26017-5-git-send-email-sumit.garg@linaro.org> <20201013022157.GA47751@linux.intel.com>
-In-Reply-To: <20201013022157.GA47751@linux.intel.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue, 13 Oct 2020 16:58:47 +0530
-Message-ID: <CAFA6WYO6zNKtxhpNpTpqAjZnMPrEygs1k7Gwg3hwJV8Ynrr=qQ@mail.gmail.com>
-Subject: Re: [PATCH v7 4/4] MAINTAINERS: Add entry for TEE based Trusted Keys
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+        id S1728609AbgJMMAP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Oct 2020 08:00:15 -0400
+Received: from mga02.intel.com ([134.134.136.20]:14109 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728481AbgJML72 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 13 Oct 2020 07:59:28 -0400
+IronPort-SDR: PpIHyXp+/qzvkeT84o78c5M1SCrAluqNEqAKGYMU16OHAMPDZR2RrZ0Foa9+rfq/xmFiWZbcgk
+ hp7TeW7m+BVw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9772"; a="152827280"
+X-IronPort-AV: E=Sophos;i="5.77,370,1596524400"; 
+   d="scan'208";a="152827280"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 04:59:26 -0700
+IronPort-SDR: +CYsTsmY3BO6jXl4YwQVqxzg7Mj0arD3Ox/RU3pLCDxWtYp6149sOP9VzZdMh63RZ3hO4rpB44
+ 8ZJkg+6UaVKg==
+X-IronPort-AV: E=Sophos;i="5.77,370,1596524400"; 
+   d="scan'208";a="530368699"
+Received: from sobrien1-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.35.215])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 04:59:21 -0700
+Date:   Tue, 13 Oct 2020 14:59:18 +0300
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
 Cc:     Mimi Zohar <zohar@linux.ibm.com>,
         James Bottomley <jejb@linux.ibm.com>,
         David Howells <dhowells@redhat.com>,
@@ -70,77 +47,100 @@ Cc:     Mimi Zohar <zohar@linux.ibm.com>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Content-Type: text/plain; charset="UTF-8"
+        op-tee@lists.trustedfirmware.org,
+        Josh Poimboeuf <jpoimboe@redhat.com>
+Subject: Re: [PATCH v7 1/4] KEYS: trusted: Add generic trusted keys framework
+Message-ID: <20201013115918.GB141833@linux.intel.com>
+References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
+ <1602065268-26017-2-git-send-email-sumit.garg@linaro.org>
+ <20201013014304.GC41176@linux.intel.com>
+ <CAFA6WYN1n_x1wUefXEf-4Y+bUZybNAMeD9cirvz4WQnK2E7djw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFA6WYN1n_x1wUefXEf-4Y+bUZybNAMeD9cirvz4WQnK2E7djw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 13 Oct 2020 at 07:52, Jarkko Sakkinen
-<jarkko.sakkinen@linux.intel.com> wrote:
->
-> On Wed, Oct 07, 2020 at 03:37:48PM +0530, Sumit Garg wrote:
-> > Add MAINTAINERS entry for TEE based Trusted Keys framework.
+On Tue, Oct 13, 2020 at 04:23:36PM +0530, Sumit Garg wrote:
+> On Tue, 13 Oct 2020 at 07:13, Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
 > >
-> > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > ---
-> >  MAINTAINERS | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
+> > On Wed, Oct 07, 2020 at 03:37:45PM +0530, Sumit Garg wrote:
+> > > Current trusted keys framework is tightly coupled to use TPM device as
+> > > an underlying implementation which makes it difficult for implementations
+> > > like Trusted Execution Environment (TEE) etc. to provide trusted keys
+> > > support in case platform doesn't posses a TPM device.
+> > >
+> > > Add a generic trusted keys framework where underlying implementations
+> > > can be easily plugged in. Create struct trusted_key_ops to achieve this,
+> > > which contains necessary functions of a backend.
+> > >
+> > > Also, add a module parameter in order to select a particular trust source
+> > > in case a platform support multiple trust sources.
+> > >
+> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 > >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 48aff80..eb3d889 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -9663,6 +9663,14 @@ F:     include/keys/trusted-type.h
-> >  F:   include/keys/trusted_tpm.h
-> >  F:   security/keys/trusted-keys/
+> > This is exactly kind of place where I think static_call() should be
+> > taken into use, which is a v5.10 feature [1]. For background and
+> > context, I'd read [2].
+> 
+> This looks like an interesting feature. But I am not sure about the
+> real benefits that it will provide in case of trusted keys. If we are
+> looking at it performance wise then I think the gain will be
+> negligible when compared with slow TPM communication interface (eg.
+> SPI, I2C) or when compared with context switching involved in TEE.
+> 
+> Also, it requires arch specific support too which currently seems to
+> be limited to x86 only.
+
+Please, do not purposely add indirect calls, unless you  must. Here it's
+not a must.
+
+static_call() is the correct kernel idiom to define what you are doing
+in this patch. arch's will catch up.
+
+> > The other thing that I see that does not make much else than additional
+> > complexity, is trusted_tpm.ko. We can do with one trusted.ko.
 > >
-> > +KEYS-TRUSTED-TEE
-> > +M:   Sumit Garg <sumit.garg@linaro.org>
-> > +L:   linux-integrity@vger.kernel.org
-> > +L:   keyrings@vger.kernel.org
-> > +S:   Supported
-> > +F:   include/keys/trusted_tee.h
-> > +F:   security/keys/trusted-keys/trusted_tee.c
-> > +
-> >  KEYS/KEYRINGS
-> >  M:   David Howells <dhowells@redhat.com>
-> >  M:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > --
-> > 2.7.4
->
-> I'm sorry but I think I have changed my mind on this. This has been
-> spinning for a while and sometimes conclusions change over the time.
->
-> I don't think that we really need a separate subsystem tag.
+> 
+> Current implementation only builds a single trusted.ko module. There
+> isn't any trusted_tpm.ko.
+> -Sumit
 
-I don't see it as a separate subsystem but rather a kind of underlying
-trust source (TEE) driver plugged into existing trusted keys
-subsystem. We could relate it to the RNG subsystem as well where there
-is a subsystem maintainer and specific driver maintainers.
+You're right, I'm sorry. I misread this:
 
-IMO, having a dedicated entry like this brings clarity in maintenance
-and in future we may have more trust sources like this added where
-everyone may not have access to all the trust sources to test.
+-static void __exit cleanup_trusted(void)
++static void __exit exit_tpm_trusted(void)
+ {
+ 	if (chip) {
+ 		put_device(&chip->dev);
+@@ -1257,7 +1029,11 @@  static void __exit cleanup_trusted(void)
+ 	}
+ }
+ 
+-late_initcall(init_trusted);
+-module_exit(cleanup_trusted);
+-
+-MODULE_LICENSE("GPL");
++struct trusted_key_ops tpm_trusted_key_ops = {
++	.migratable = 1, /* migratable by default */
++	.init = init_tpm_trusted,
++	.seal = tpm_trusted_seal,
++	.unseal = tpm_trusted_unseal,
++	.get_random = tpm_trusted_get_random,
++	.exit = exit_tpm_trusted,
++};
 
-> I'd be for a
-> new M-entry or R-entry to the existing subsystem tag. It's essential to
-> have ack from someone with ARM and TEE knowledge but this way too heavy
-> for the purpose.
+Please remove "__init" and  "__exit" for the functions as they are used
+as fields as members of a struct that has neither life span. That messed
+up my head.
 
-If you still think otherwise then I am fine with a new M-entry for
-existing trusted keys subsystem as well.
+Please use a single convention for the function names. It would
+be optimal to prefix with the subsystem name because that makes easier
+to use tracing tools:  trusted_tpm_<callback name> would work.
 
->
-> I also see it the most manageable if the trusted keys PR's come from a
-> single source.
-
-I echo here with you to have a single source for trusted keys PR's
-irrespective of whether we go with a separate trust source entry or
-update existing subsystem entry.
-
--Sumit
-
->
-> /Jarkko
+/Jarkko
