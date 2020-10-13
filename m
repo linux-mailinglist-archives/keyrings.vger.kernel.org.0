@@ -2,79 +2,143 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A6728CF4B
-	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 15:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE9728CF51
+	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 15:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728914AbgJMNj4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Oct 2020 09:39:56 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37733 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728852AbgJMNj4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 09:39:56 -0400
-Received: by mail-wm1-f67.google.com with SMTP id j136so21812024wmj.2
-        for <keyrings@vger.kernel.org>; Tue, 13 Oct 2020 06:39:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YsZNBDHt502uQNfqBAPLlhPWF3Q26FjHG7KwkPDxKY4=;
-        b=Z7nSX0xAVHCYqwLa3SBG2ZB1tUqehK2MXPwnHUronAJ3/uldWF6vBPT1+5dNbsxuLm
-         HLOW79e+3ZXwnKO7FDREHnzZZ60Qek+fGt8lxorHxOQejFQe/eynAmM2yUE3w5otKhp3
-         KR9DaQN/v12gbLoxNpAGxEcgOXjRjWmd6Y08SNeldrFUe+m4kWHda12fR3XpL663Wf9c
-         KSNJtGJ3WPRDrPTUDSX5eMM0EhAsEd8565uMlzzi9/z4rvBfVeDlxqGn6scNZ7obUvh8
-         KfADt2egn6O8f2/Ee/tgZtC5kjiJjzWmizwT5lFa5/DjzLudduc/l0Bdzvh32YHQ/mzr
-         nTVw==
-X-Gm-Message-State: AOAM533NKG0Z05aFOa/yGAtYF4HfJ2s+3y8t9qF+BfdiGSFCUbMtt9Bd
-        GQd/ySF42eBKmGBRA4bdoqZQKZcrk5FasA==
-X-Google-Smtp-Source: ABdhPJyKt7QNzfaAYcZqyB/YhIzlcvIdBAHUJwkhTRL7dv7jBjsazb8mhhIG00z6rNXJF8+a9tKH8Q==
-X-Received: by 2002:a1c:7f97:: with SMTP id a145mr16412390wmd.160.1602596394516;
-        Tue, 13 Oct 2020 06:39:54 -0700 (PDT)
-Received: from localhost.localdomain ([82.213.198.222])
-        by smtp.gmail.com with ESMTPSA id n2sm28861767wrt.82.2020.10.13.06.39.53
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2020 06:39:53 -0700 (PDT)
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-To:     keyrings@vger.kernel.org
-Subject: [RESEND][PATCH] keys: Update comment for restrict_link_by_key_or_keyring_chain
-Date:   Tue, 13 Oct 2020 15:39:39 +0200
-Message-Id: <20201013133939.1182462-2-andrew.zaborowski@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
-References: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
+        id S1729118AbgJMNkv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Oct 2020 09:40:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42818 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729110AbgJMNkv (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 13 Oct 2020 09:40:51 -0400
+Received: from localhost (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5114024741;
+        Tue, 13 Oct 2020 13:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602596450;
+        bh=hMKks0yH+1QbT8lmw2IcB9FvKt0uw8hZHVUF20d9isU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iEP+KtkxdbveqHc3o6dc0NabtkgQBAMQRm6bRQ2wdx9i0idUyeoN5bGhVU9LshPhp
+         RQ63GxGtL7rGZLClYXAzipFBusI5YRWl3Ei/5GCzmB4WQdmknstsXe4e0k9JPY8ebc
+         MIveOdrgpZSUwYYlnCVuFPoWuCxl9brA4QH81e+I=
+Date:   Tue, 13 Oct 2020 16:40:48 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Subject: Re: [PATCH v7 4/4] MAINTAINERS: Add entry for TEE based Trusted Keys
+Message-ID: <20201013134048.GA147135@kernel.org>
+References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
+ <1602065268-26017-5-git-send-email-sumit.garg@linaro.org>
+ <20201013022157.GA47751@linux.intel.com>
+ <CAFA6WYO6zNKtxhpNpTpqAjZnMPrEygs1k7Gwg3hwJV8Ynrr=qQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFA6WYO6zNKtxhpNpTpqAjZnMPrEygs1k7Gwg3hwJV8Ynrr=qQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add the bit of information that makes
-restrict_link_by_key_or_keyring_chain different from
-restrict_link_by_key_or_keyring to the inline docs comment.
+On Tue, Oct 13, 2020 at 04:58:47PM +0530, Sumit Garg wrote:
+> On Tue, 13 Oct 2020 at 07:52, Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
+> >
+> > On Wed, Oct 07, 2020 at 03:37:48PM +0530, Sumit Garg wrote:
+> > > Add MAINTAINERS entry for TEE based Trusted Keys framework.
+> > >
+> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > > Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > > ---
+> > >  MAINTAINERS | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > >
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 48aff80..eb3d889 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -9663,6 +9663,14 @@ F:     include/keys/trusted-type.h
+> > >  F:   include/keys/trusted_tpm.h
+> > >  F:   security/keys/trusted-keys/
+> > >
+> > > +KEYS-TRUSTED-TEE
+> > > +M:   Sumit Garg <sumit.garg@linaro.org>
+> > > +L:   linux-integrity@vger.kernel.org
+> > > +L:   keyrings@vger.kernel.org
+> > > +S:   Supported
+> > > +F:   include/keys/trusted_tee.h
+> > > +F:   security/keys/trusted-keys/trusted_tee.c
+> > > +
+> > >  KEYS/KEYRINGS
+> > >  M:   David Howells <dhowells@redhat.com>
+> > >  M:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > > --
+> > > 2.7.4
+> >
+> > I'm sorry but I think I have changed my mind on this. This has been
+> > spinning for a while and sometimes conclusions change over the time.
+> >
+> > I don't think that we really need a separate subsystem tag.
+> 
+> I don't see it as a separate subsystem but rather a kind of underlying
+> trust source (TEE) driver plugged into existing trusted keys
+> subsystem. We could relate it to the RNG subsystem as well where there
+> is a subsystem maintainer and specific driver maintainers.
+> 
+> IMO, having a dedicated entry like this brings clarity in maintenance
+> and in future we may have more trust sources like this added where
+> everyone may not have access to all the trust sources to test.
 
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
----
- crypto/asymmetric_keys/restrict.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+More entries pointing to the exact same stuff does not necessarily mean
+clarity in my books.
 
-diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-index 77ebebada29..84cefe3b358 100644
---- a/crypto/asymmetric_keys/restrict.c
-+++ b/crypto/asymmetric_keys/restrict.c
-@@ -244,9 +244,10 @@ int restrict_link_by_key_or_keyring(struct key *dest_keyring,
-  * @payload: The payload of the new key.
-  * @trusted: A key or ring of keys that can be used to vouch for the new cert.
-  *
-- * Check the new certificate only against the key or keys passed in the data
-- * parameter. If one of those is the signing key and validates the new
-- * certificate, then mark the new certificate as being ok to link.
-+ * Check the new certificate against the key or keys passed in the data
-+ * parameter and against the keys already linked to the destination keyring. If
-+ * one of those is the signing key and validates the new certificate, then mark
-+ * the new certificate as being ok to link.
-  *
-  * Returns 0 if the new certificate was accepted, -ENOKEY if we
-  * couldn't find a matching parent certificate in the trusted list,
--- 
-2.20.1
+> > I'd be for a
+> > new M-entry or R-entry to the existing subsystem tag. It's essential to
+> > have ack from someone with ARM and TEE knowledge but this way too heavy
+> > for the purpose.
+> 
+> If you still think otherwise then I am fine with a new M-entry for
+> existing trusted keys subsystem as well.
 
+Adding a M-entry does makes sense because trusted keys backends can be
+based on various technologies and standard. It's a different in that
+sense than lets say a TPM hardware driver.
+
+> > I also see it the most manageable if the trusted keys PR's come from a
+> > single source.
+> 
+> I echo here with you to have a single source for trusted keys PR's
+> irrespective of whether we go with a separate trust source entry or
+> update existing subsystem entry.
+> 
+> -Sumit
+
+And I echo that oviously if there is someone to say the final ack about
+TEE, I will require that as the minimum to ever pick any of those
+changes :-)
+
+I would resolve this with just the M-entry, and we can *later on*
+restructure, if there is a need for that. These things are not sealed
+to stone.
+
+/Jarkko
