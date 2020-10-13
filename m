@@ -2,145 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D655B28CD7A
-	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 14:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7A428CF4A
+	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 15:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728609AbgJMMAP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Oct 2020 08:00:15 -0400
-Received: from mga02.intel.com ([134.134.136.20]:14109 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728481AbgJML72 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 13 Oct 2020 07:59:28 -0400
-IronPort-SDR: PpIHyXp+/qzvkeT84o78c5M1SCrAluqNEqAKGYMU16OHAMPDZR2RrZ0Foa9+rfq/xmFiWZbcgk
- hp7TeW7m+BVw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9772"; a="152827280"
-X-IronPort-AV: E=Sophos;i="5.77,370,1596524400"; 
-   d="scan'208";a="152827280"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 04:59:26 -0700
-IronPort-SDR: +CYsTsmY3BO6jXl4YwQVqxzg7Mj0arD3Ox/RU3pLCDxWtYp6149sOP9VzZdMh63RZ3hO4rpB44
- 8ZJkg+6UaVKg==
-X-IronPort-AV: E=Sophos;i="5.77,370,1596524400"; 
-   d="scan'208";a="530368699"
-Received: from sobrien1-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.35.215])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 04:59:21 -0700
-Date:   Tue, 13 Oct 2020 14:59:18 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org,
-        Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: Re: [PATCH v7 1/4] KEYS: trusted: Add generic trusted keys framework
-Message-ID: <20201013115918.GB141833@linux.intel.com>
-References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
- <1602065268-26017-2-git-send-email-sumit.garg@linaro.org>
- <20201013014304.GC41176@linux.intel.com>
- <CAFA6WYN1n_x1wUefXEf-4Y+bUZybNAMeD9cirvz4WQnK2E7djw@mail.gmail.com>
+        id S1728905AbgJMNjz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Oct 2020 09:39:55 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36215 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728812AbgJMNjz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 09:39:55 -0400
+Received: by mail-wr1-f66.google.com with SMTP id x7so15495297wrl.3
+        for <keyrings@vger.kernel.org>; Tue, 13 Oct 2020 06:39:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ggDDYKqZEVjP47BfqE04dYFHPS0oX31wLempv+/K9N8=;
+        b=NBz5wocp2lm81i+ENmi+zbRcK1DuBHbNTEgNWi2G0yoQ86giyLai+JRVeCaNoHA/qv
+         MlnqlWQWB55imwCilSOARwLolxM9SZUmB4x+ovgKZE4ad2Y3lvofiWtkFXbfwAUdfgnF
+         Q3ZmEAI55AvCcDUssledyZ9J1KvSQ4SaFI0867Ll9XwCr5gTC2zNfg2KwnaYRj7cdLeG
+         hfFdBk1iohETC8xIg94LDqLjJLrxFk6E4tVkRGZnRo7gBS3vF0kNxxm40Rvr81BH2My4
+         zuh1qV/rIRst5U6/EXQrzS0P0j6zFDLO68ffPI07A40uvSvUh55Lr2123gnt2pRTlJNM
+         NR+w==
+X-Gm-Message-State: AOAM533YaX1iCp9Uea13u2SEG/ecYWcRHp85bRncbioR1p70cV/0zHoT
+        3UTbYCUoP3lKl6cQab/L2N3w/gw9yaW+Dg==
+X-Google-Smtp-Source: ABdhPJwS5NZ+rSqQqY5KKFgDOobbz2CDUfPylAXjCnN+umck5eVSNJqAKcWorsweXYKmxgMdZXLlwA==
+X-Received: by 2002:adf:c00b:: with SMTP id z11mr23277800wre.320.1602596393255;
+        Tue, 13 Oct 2020 06:39:53 -0700 (PDT)
+Received: from localhost.localdomain ([82.213.198.222])
+        by smtp.gmail.com with ESMTPSA id n2sm28861767wrt.82.2020.10.13.06.39.52
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2020 06:39:52 -0700 (PDT)
+From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
+To:     keyrings@vger.kernel.org
+Subject: [RESEND][PATCH] keys: Handle missing Authority Key Identifier X509 extension
+Date:   Tue, 13 Oct 2020 15:39:38 +0200
+Message-Id: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYN1n_x1wUefXEf-4Y+bUZybNAMeD9cirvz4WQnK2E7djw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 13, 2020 at 04:23:36PM +0530, Sumit Garg wrote:
-> On Tue, 13 Oct 2020 at 07:13, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Wed, Oct 07, 2020 at 03:37:45PM +0530, Sumit Garg wrote:
-> > > Current trusted keys framework is tightly coupled to use TPM device as
-> > > an underlying implementation which makes it difficult for implementations
-> > > like Trusted Execution Environment (TEE) etc. to provide trusted keys
-> > > support in case platform doesn't posses a TPM device.
-> > >
-> > > Add a generic trusted keys framework where underlying implementations
-> > > can be easily plugged in. Create struct trusted_key_ops to achieve this,
-> > > which contains necessary functions of a backend.
-> > >
-> > > Also, add a module parameter in order to select a particular trust source
-> > > in case a platform support multiple trust sources.
-> > >
-> > > Suggested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> >
-> > This is exactly kind of place where I think static_call() should be
-> > taken into use, which is a v5.10 feature [1]. For background and
-> > context, I'd read [2].
-> 
-> This looks like an interesting feature. But I am not sure about the
-> real benefits that it will provide in case of trusted keys. If we are
-> looking at it performance wise then I think the gain will be
-> negligible when compared with slow TPM communication interface (eg.
-> SPI, I2C) or when compared with context switching involved in TEE.
-> 
-> Also, it requires arch specific support too which currently seems to
-> be limited to x86 only.
+In a self-signed certificate the subject and issuer are the same and so
+the Authority Key Identifier X.509 v3 extension is explicitly made
+optional in RFC5280 section 4.2.1.1.
+crypto/asymmetric_keys/x509_cert_parser.c can't handle this and makes
+(at least) the restrict.c functions refuse to work with certificates
+that don't include the AKID.  Fix this by filling in the missing
+cert->sig->auth_ids with the certificate's own IDs after parsing and
+determinig the certificate is self-signed.
 
-Please, do not purposely add indirect calls, unless you  must. Here it's
-not a must.
+The asymmetric_key_generate_id return value is not checked because it's
+already succeeded once at this point.
 
-static_call() is the correct kernel idiom to define what you are doing
-in this patch. arch's will catch up.
+There are root X.509 v3 certificates in use where this is the case,
+mostly oldish ones.
 
-> > The other thing that I see that does not make much else than additional
-> > complexity, is trusted_tpm.ko. We can do with one trusted.ko.
-> >
-> 
-> Current implementation only builds a single trusted.ko module. There
-> isn't any trusted_tpm.ko.
-> -Sumit
+Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+---
+ crypto/asymmetric_keys/x509_cert_parser.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-You're right, I'm sorry. I misread this:
-
--static void __exit cleanup_trusted(void)
-+static void __exit exit_tpm_trusted(void)
- {
- 	if (chip) {
- 		put_device(&chip->dev);
-@@ -1257,7 +1029,11 @@  static void __exit cleanup_trusted(void)
- 	}
- }
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+index 26ec20ef489..a5a2f93e242 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -136,6 +136,25 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
+ 	if (ret < 0)
+ 		goto error_decode;
  
--late_initcall(init_trusted);
--module_exit(cleanup_trusted);
--
--MODULE_LICENSE("GPL");
-+struct trusted_key_ops tpm_trusted_key_ops = {
-+	.migratable = 1, /* migratable by default */
-+	.init = init_tpm_trusted,
-+	.seal = tpm_trusted_seal,
-+	.unseal = tpm_trusted_unseal,
-+	.get_random = tpm_trusted_get_random,
-+	.exit = exit_tpm_trusted,
-+};
++	if (cert->self_signed) {
++		if (!cert->sig->auth_ids[0]) {
++			/* Duplicate cert->id */
++			kid = asymmetric_key_generate_id(cert->raw_serial,
++							 cert->raw_serial_size,
++							 cert->raw_issuer,
++							 cert->raw_issuer_size);
++			cert->sig->auth_ids[0] = kid;
++		}
++
++		if (!cert->sig->auth_ids[1] && cert->skid) {
++			/* Duplicate cert->skid */
++			kid = asymmetric_key_generate_id(cert->raw_skid,
++							 cert->raw_skid_size,
++							 "", 0);
++			cert->sig->auth_ids[1] = kid;
++		}
++	}
++
+ 	kfree(ctx);
+ 	return cert;
+ 
+-- 
+2.20.1
 
-Please remove "__init" and  "__exit" for the functions as they are used
-as fields as members of a struct that has neither life span. That messed
-up my head.
-
-Please use a single convention for the function names. It would
-be optimal to prefix with the subsystem name because that makes easier
-to use tracing tools:  trusted_tpm_<callback name> would work.
-
-/Jarkko
