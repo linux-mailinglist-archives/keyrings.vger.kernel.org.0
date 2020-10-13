@@ -2,143 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE9728CF51
-	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 15:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 189CF28D156
+	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 17:35:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729118AbgJMNkv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Oct 2020 09:40:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42818 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729110AbgJMNkv (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 13 Oct 2020 09:40:51 -0400
-Received: from localhost (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5114024741;
-        Tue, 13 Oct 2020 13:40:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602596450;
-        bh=hMKks0yH+1QbT8lmw2IcB9FvKt0uw8hZHVUF20d9isU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iEP+KtkxdbveqHc3o6dc0NabtkgQBAMQRm6bRQ2wdx9i0idUyeoN5bGhVU9LshPhp
-         RQ63GxGtL7rGZLClYXAzipFBusI5YRWl3Ei/5GCzmB4WQdmknstsXe4e0k9JPY8ebc
-         MIveOdrgpZSUwYYlnCVuFPoWuCxl9brA4QH81e+I=
-Date:   Tue, 13 Oct 2020 16:40:48 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        id S1728744AbgJMPfw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Oct 2020 11:35:52 -0400
+Received: from smtprelay0120.hostedemail.com ([216.40.44.120]:40298 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727355AbgJMPfw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 11:35:52 -0400
+X-Greylist: delayed 308 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Oct 2020 11:35:52 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave02.hostedemail.com (Postfix) with ESMTP id B7B0A1800ACB3;
+        Tue, 13 Oct 2020 15:30:44 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 75E3B837F24D;
+        Tue, 13 Oct 2020 15:30:43 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1561:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:2895:3138:3139:3140:3141:3142:3622:3865:3867:4321:5007:10004:10400:10848:11232:11658:11914:12043:12114:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21433:21451:21627:30003:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: kiss33_4a0b51627204
+X-Filterd-Recvd-Size: 1377
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 13 Oct 2020 15:30:41 +0000 (UTC)
+Message-ID: <dce9442565fc3176ad770788bc1cf76b02080486.camel@perches.com>
+Subject: Re: [PATCH] MAINTAINERS: jarkko.sakkinen@linux.intel.com ->
+ jarkko@kernel.org
+From:   Joe Perches <joe@perches.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-sgx@vger.kernel.org, keyrings@vger.kernel.org,
         linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Subject: Re: [PATCH v7 4/4] MAINTAINERS: Add entry for TEE based Trusted Keys
-Message-ID: <20201013134048.GA147135@kernel.org>
-References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
- <1602065268-26017-5-git-send-email-sumit.garg@linaro.org>
- <20201013022157.GA47751@linux.intel.com>
- <CAFA6WYO6zNKtxhpNpTpqAjZnMPrEygs1k7Gwg3hwJV8Ynrr=qQ@mail.gmail.com>
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>
+Date:   Tue, 13 Oct 2020 08:30:38 -0700
+In-Reply-To: <20201013104705.140127-1-jarkko.sakkinen@linux.intel.com>
+References: <20201013104705.140127-1-jarkko.sakkinen@linux.intel.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYO6zNKtxhpNpTpqAjZnMPrEygs1k7Gwg3hwJV8Ynrr=qQ@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 13, 2020 at 04:58:47PM +0530, Sumit Garg wrote:
-> On Tue, 13 Oct 2020 at 07:52, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Wed, Oct 07, 2020 at 03:37:48PM +0530, Sumit Garg wrote:
-> > > Add MAINTAINERS entry for TEE based Trusted Keys framework.
-> > >
-> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > > Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > ---
-> > >  MAINTAINERS | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > >
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 48aff80..eb3d889 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -9663,6 +9663,14 @@ F:     include/keys/trusted-type.h
-> > >  F:   include/keys/trusted_tpm.h
-> > >  F:   security/keys/trusted-keys/
-> > >
-> > > +KEYS-TRUSTED-TEE
-> > > +M:   Sumit Garg <sumit.garg@linaro.org>
-> > > +L:   linux-integrity@vger.kernel.org
-> > > +L:   keyrings@vger.kernel.org
-> > > +S:   Supported
-> > > +F:   include/keys/trusted_tee.h
-> > > +F:   security/keys/trusted-keys/trusted_tee.c
-> > > +
-> > >  KEYS/KEYRINGS
-> > >  M:   David Howells <dhowells@redhat.com>
-> > >  M:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> > > --
-> > > 2.7.4
-> >
-> > I'm sorry but I think I have changed my mind on this. This has been
-> > spinning for a while and sometimes conclusions change over the time.
-> >
-> > I don't think that we really need a separate subsystem tag.
-> 
-> I don't see it as a separate subsystem but rather a kind of underlying
-> trust source (TEE) driver plugged into existing trusted keys
-> subsystem. We could relate it to the RNG subsystem as well where there
-> is a subsystem maintainer and specific driver maintainers.
-> 
-> IMO, having a dedicated entry like this brings clarity in maintenance
-> and in future we may have more trust sources like this added where
-> everyone may not have access to all the trust sources to test.
+On Tue, 2020-10-13 at 13:46 +0300, Jarkko Sakkinen wrote:
+> Use korg address as the main communications end point. Update the
+> corresponding M-entries.
 
-More entries pointing to the exact same stuff does not necessarily mean
-clarity in my books.
+Maybe add an equivalent entry to .mailmap?
 
-> > I'd be for a
-> > new M-entry or R-entry to the existing subsystem tag. It's essential to
-> > have ack from someone with ARM and TEE knowledge but this way too heavy
-> > for the purpose.
-> 
-> If you still think otherwise then I am fine with a new M-entry for
-> existing trusted keys subsystem as well.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+[]
+> -M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> +M:	Jarkko Sakkinen <jarkko@kernel.org>
 
-Adding a M-entry does makes sense because trusted keys backends can be
-based on various technologies and standard. It's a different in that
-sense than lets say a TPM hardware driver.
 
-> > I also see it the most manageable if the trusted keys PR's come from a
-> > single source.
-> 
-> I echo here with you to have a single source for trusted keys PR's
-> irrespective of whether we go with a separate trust source entry or
-> update existing subsystem entry.
-> 
-> -Sumit
-
-And I echo that oviously if there is someone to say the final ack about
-TEE, I will require that as the minimum to ever pick any of those
-changes :-)
-
-I would resolve this with just the M-entry, and we can *later on*
-restructure, if there is a need for that. These things are not sealed
-to stone.
-
-/Jarkko
