@@ -2,100 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B7A428CF4A
-	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 15:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38A6728CF4B
+	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 15:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728905AbgJMNjz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Oct 2020 09:39:55 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:36215 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728812AbgJMNjz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 09:39:55 -0400
-Received: by mail-wr1-f66.google.com with SMTP id x7so15495297wrl.3
-        for <keyrings@vger.kernel.org>; Tue, 13 Oct 2020 06:39:54 -0700 (PDT)
+        id S1728914AbgJMNj4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Oct 2020 09:39:56 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:37733 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728852AbgJMNj4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 09:39:56 -0400
+Received: by mail-wm1-f67.google.com with SMTP id j136so21812024wmj.2
+        for <keyrings@vger.kernel.org>; Tue, 13 Oct 2020 06:39:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ggDDYKqZEVjP47BfqE04dYFHPS0oX31wLempv+/K9N8=;
-        b=NBz5wocp2lm81i+ENmi+zbRcK1DuBHbNTEgNWi2G0yoQ86giyLai+JRVeCaNoHA/qv
-         MlnqlWQWB55imwCilSOARwLolxM9SZUmB4x+ovgKZE4ad2Y3lvofiWtkFXbfwAUdfgnF
-         Q3ZmEAI55AvCcDUssledyZ9J1KvSQ4SaFI0867Ll9XwCr5gTC2zNfg2KwnaYRj7cdLeG
-         hfFdBk1iohETC8xIg94LDqLjJLrxFk6E4tVkRGZnRo7gBS3vF0kNxxm40Rvr81BH2My4
-         zuh1qV/rIRst5U6/EXQrzS0P0j6zFDLO68ffPI07A40uvSvUh55Lr2123gnt2pRTlJNM
-         NR+w==
-X-Gm-Message-State: AOAM533YaX1iCp9Uea13u2SEG/ecYWcRHp85bRncbioR1p70cV/0zHoT
-        3UTbYCUoP3lKl6cQab/L2N3w/gw9yaW+Dg==
-X-Google-Smtp-Source: ABdhPJwS5NZ+rSqQqY5KKFgDOobbz2CDUfPylAXjCnN+umck5eVSNJqAKcWorsweXYKmxgMdZXLlwA==
-X-Received: by 2002:adf:c00b:: with SMTP id z11mr23277800wre.320.1602596393255;
-        Tue, 13 Oct 2020 06:39:53 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=YsZNBDHt502uQNfqBAPLlhPWF3Q26FjHG7KwkPDxKY4=;
+        b=Z7nSX0xAVHCYqwLa3SBG2ZB1tUqehK2MXPwnHUronAJ3/uldWF6vBPT1+5dNbsxuLm
+         HLOW79e+3ZXwnKO7FDREHnzZZ60Qek+fGt8lxorHxOQejFQe/eynAmM2yUE3w5otKhp3
+         KR9DaQN/v12gbLoxNpAGxEcgOXjRjWmd6Y08SNeldrFUe+m4kWHda12fR3XpL663Wf9c
+         KSNJtGJ3WPRDrPTUDSX5eMM0EhAsEd8565uMlzzi9/z4rvBfVeDlxqGn6scNZ7obUvh8
+         KfADt2egn6O8f2/Ee/tgZtC5kjiJjzWmizwT5lFa5/DjzLudduc/l0Bdzvh32YHQ/mzr
+         nTVw==
+X-Gm-Message-State: AOAM533NKG0Z05aFOa/yGAtYF4HfJ2s+3y8t9qF+BfdiGSFCUbMtt9Bd
+        GQd/ySF42eBKmGBRA4bdoqZQKZcrk5FasA==
+X-Google-Smtp-Source: ABdhPJyKt7QNzfaAYcZqyB/YhIzlcvIdBAHUJwkhTRL7dv7jBjsazb8mhhIG00z6rNXJF8+a9tKH8Q==
+X-Received: by 2002:a1c:7f97:: with SMTP id a145mr16412390wmd.160.1602596394516;
+        Tue, 13 Oct 2020 06:39:54 -0700 (PDT)
 Received: from localhost.localdomain ([82.213.198.222])
-        by smtp.gmail.com with ESMTPSA id n2sm28861767wrt.82.2020.10.13.06.39.52
+        by smtp.gmail.com with ESMTPSA id n2sm28861767wrt.82.2020.10.13.06.39.53
         for <keyrings@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2020 06:39:52 -0700 (PDT)
+        Tue, 13 Oct 2020 06:39:53 -0700 (PDT)
 From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
 To:     keyrings@vger.kernel.org
-Subject: [RESEND][PATCH] keys: Handle missing Authority Key Identifier X509 extension
-Date:   Tue, 13 Oct 2020 15:39:38 +0200
-Message-Id: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
+Subject: [RESEND][PATCH] keys: Update comment for restrict_link_by_key_or_keyring_chain
+Date:   Tue, 13 Oct 2020 15:39:39 +0200
+Message-Id: <20201013133939.1182462-2-andrew.zaborowski@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
+References: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-In a self-signed certificate the subject and issuer are the same and so
-the Authority Key Identifier X.509 v3 extension is explicitly made
-optional in RFC5280 section 4.2.1.1.
-crypto/asymmetric_keys/x509_cert_parser.c can't handle this and makes
-(at least) the restrict.c functions refuse to work with certificates
-that don't include the AKID.  Fix this by filling in the missing
-cert->sig->auth_ids with the certificate's own IDs after parsing and
-determinig the certificate is self-signed.
-
-The asymmetric_key_generate_id return value is not checked because it's
-already succeeded once at this point.
-
-There are root X.509 v3 certificates in use where this is the case,
-mostly oldish ones.
+Add the bit of information that makes
+restrict_link_by_key_or_keyring_chain different from
+restrict_link_by_key_or_keyring to the inline docs comment.
 
 Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
 ---
- crypto/asymmetric_keys/x509_cert_parser.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ crypto/asymmetric_keys/restrict.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 26ec20ef489..a5a2f93e242 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -136,6 +136,25 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
- 	if (ret < 0)
- 		goto error_decode;
- 
-+	if (cert->self_signed) {
-+		if (!cert->sig->auth_ids[0]) {
-+			/* Duplicate cert->id */
-+			kid = asymmetric_key_generate_id(cert->raw_serial,
-+							 cert->raw_serial_size,
-+							 cert->raw_issuer,
-+							 cert->raw_issuer_size);
-+			cert->sig->auth_ids[0] = kid;
-+		}
-+
-+		if (!cert->sig->auth_ids[1] && cert->skid) {
-+			/* Duplicate cert->skid */
-+			kid = asymmetric_key_generate_id(cert->raw_skid,
-+							 cert->raw_skid_size,
-+							 "", 0);
-+			cert->sig->auth_ids[1] = kid;
-+		}
-+	}
-+
- 	kfree(ctx);
- 	return cert;
- 
+diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
+index 77ebebada29..84cefe3b358 100644
+--- a/crypto/asymmetric_keys/restrict.c
++++ b/crypto/asymmetric_keys/restrict.c
+@@ -244,9 +244,10 @@ int restrict_link_by_key_or_keyring(struct key *dest_keyring,
+  * @payload: The payload of the new key.
+  * @trusted: A key or ring of keys that can be used to vouch for the new cert.
+  *
+- * Check the new certificate only against the key or keys passed in the data
+- * parameter. If one of those is the signing key and validates the new
+- * certificate, then mark the new certificate as being ok to link.
++ * Check the new certificate against the key or keys passed in the data
++ * parameter and against the keys already linked to the destination keyring. If
++ * one of those is the signing key and validates the new certificate, then mark
++ * the new certificate as being ok to link.
+  *
+  * Returns 0 if the new certificate was accepted, -ENOKEY if we
+  * couldn't find a matching parent certificate in the trusted list,
 -- 
 2.20.1
 
