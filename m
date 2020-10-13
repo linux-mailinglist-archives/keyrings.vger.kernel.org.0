@@ -2,61 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 189CF28D156
-	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 17:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE91128D46A
+	for <lists+keyrings@lfdr.de>; Tue, 13 Oct 2020 21:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728744AbgJMPfw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Oct 2020 11:35:52 -0400
-Received: from smtprelay0120.hostedemail.com ([216.40.44.120]:40298 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727355AbgJMPfw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Oct 2020 11:35:52 -0400
-X-Greylist: delayed 308 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Oct 2020 11:35:52 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave02.hostedemail.com (Postfix) with ESMTP id B7B0A1800ACB3;
-        Tue, 13 Oct 2020 15:30:44 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 75E3B837F24D;
-        Tue, 13 Oct 2020 15:30:43 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1561:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:2895:3138:3139:3140:3141:3142:3622:3865:3867:4321:5007:10004:10400:10848:11232:11658:11914:12043:12114:12297:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21433:21451:21627:30003:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: kiss33_4a0b51627204
-X-Filterd-Recvd-Size: 1377
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf16.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 13 Oct 2020 15:30:41 +0000 (UTC)
-Message-ID: <dce9442565fc3176ad770788bc1cf76b02080486.camel@perches.com>
-Subject: Re: [PATCH] MAINTAINERS: jarkko.sakkinen@linux.intel.com ->
- jarkko@kernel.org
-From:   Joe Perches <joe@perches.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-sgx@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
+        id S1728249AbgJMTZ2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Oct 2020 15:25:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33924 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387795AbgJMTZ1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 13 Oct 2020 15:25:27 -0400
+Received: from localhost (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 95F152145D;
+        Tue, 13 Oct 2020 19:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602617127;
+        bh=mNHekrnoR+JyAIK8u8gM3jPB9pCDNXlZtnicar8KIcE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Z/mFcueFktAomcAbbr+IF6D8MgmgVDMbxgeXvC1sNpq6GfEW8guNQeFb5LoNaU+sA
+         ZLNaeBPLdho/5ck60GSiW1TfEG6TDXxnUeZOA0zAobBefIw63D3Dyxoh+N0bHex/ZO
+         s9pfXqx1zRbOIjgxhYCHI6v3KnpzYNOuKZJy3bCs=
+Date:   Tue, 13 Oct 2020 22:25:24 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Rob Herring <robh@kernel.org>
-Date:   Tue, 13 Oct 2020 08:30:38 -0700
-In-Reply-To: <20201013104705.140127-1-jarkko.sakkinen@linux.intel.com>
+Subject: Re: [PATCH] MAINTAINERS: jarkko.sakkinen@linux.intel.com ->
+ jarkko@kernel.org
+Message-ID: <20201013192524.GA164334@kernel.org>
 References: <20201013104705.140127-1-jarkko.sakkinen@linux.intel.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+ <dce9442565fc3176ad770788bc1cf76b02080486.camel@perches.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dce9442565fc3176ad770788bc1cf76b02080486.camel@perches.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-10-13 at 13:46 +0300, Jarkko Sakkinen wrote:
-> Use korg address as the main communications end point. Update the
-> corresponding M-entries.
+On Tue, Oct 13, 2020 at 08:30:38AM -0700, Joe Perches wrote:
+> On Tue, 2020-10-13 at 13:46 +0300, Jarkko Sakkinen wrote:
+> > Use korg address as the main communications end point. Update the
+> > corresponding M-entries.
+> 
+> Maybe add an equivalent entry to .mailmap?
 
-Maybe add an equivalent entry to .mailmap?
+Ugh, neither has @linux.intel.com. So, I'll insert these two lines:
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-[]
-> -M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-> +M:	Jarkko Sakkinen <jarkko@kernel.org>
+Jarkko Sakkinen <jarkko@kernel.org>
+Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> []
+> > -M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+> > +M:	Jarkko Sakkinen <jarkko@kernel.org>
 
+Thanks.
+
+/Jarkko
