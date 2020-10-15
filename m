@@ -2,106 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB0628F4B0
-	for <lists+keyrings@lfdr.de>; Thu, 15 Oct 2020 16:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9C2528FA2A
+	for <lists+keyrings@lfdr.de>; Thu, 15 Oct 2020 22:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387776AbgJOO11 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 15 Oct 2020 10:27:27 -0400
-Received: from mga14.intel.com ([192.55.52.115]:14154 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730882AbgJOO11 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 15 Oct 2020 10:27:27 -0400
-IronPort-SDR: ZoXx9AkVkzjC6g6ZiMC/A/m9MmOiyiot9mr+kFmLM4bXUq6wuHtj/pgDGAOKHe9afKn/ox0gfY
- Rd8NzEFDHi9g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9774"; a="165581470"
-X-IronPort-AV: E=Sophos;i="5.77,379,1596524400"; 
-   d="scan'208";a="165581470"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 07:27:26 -0700
-IronPort-SDR: +ny1WHzu6fLRQQOwVpnzusLvy3sUUu1Iw0e1Vs3fvkxbTQO+G6HJ8C8PDm7uqKHLd9SNQTuSv+
- jNDWgwjcDqqw==
-X-IronPort-AV: E=Sophos;i="5.77,379,1596524400"; 
-   d="scan'208";a="300276779"
-Received: from cbenunes-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.35.89])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 07:27:21 -0700
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-sgx@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, Joe Perches <joe@perches.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v2] MAINTAINERS: jarkko.sakkinen@linux.intel.com -> jarkko@kernel.org
-Date:   Thu, 15 Oct 2020 17:26:37 +0300
-Message-Id: <20201015142710.8371-1-jarkko.sakkinen@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+        id S2392329AbgJOUf4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Oct 2020 16:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392305AbgJOUfq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Oct 2020 16:35:46 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7A8C061755
+        for <keyrings@vger.kernel.org>; Thu, 15 Oct 2020 13:35:46 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id e6so293092qtw.10
+        for <keyrings@vger.kernel.org>; Thu, 15 Oct 2020 13:35:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=date:from:to:subject:message-id:mime-version:content-disposition;
+        bh=qmIDBE0l1uIx8zfcHwL4cnvNZRp+t/rVRco+sGxV9eI=;
+        b=fmdgsW3yQQ5zlvNKXuRtVfOGo3o7KRfjidOTlF5fgIX/aarYDb0Ax6E/ClrKhbtNlB
+         OH9HmvuXvzbFyujfgtMNdZTnq/zyDs0meDeQB/BFsj6OCB/mGtq0l7GdLiVzKjRgdm3W
+         yZFu7uEgpYtwLa3IDf7BJSdc3Fqfk2YFNRjvs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition;
+        bh=qmIDBE0l1uIx8zfcHwL4cnvNZRp+t/rVRco+sGxV9eI=;
+        b=lamsgbis2E27z6gMNVCVQLVhamoT0DJqdj6Ldwyrr6GWw7q1p7Sa4kEFip4BbvnLw7
+         3TiDjeHZO0Pg41jJBXMKHWo3I2sL7VdpkVPE2FRfQN5qmtHoTE8s3e7NY1PrtJmWqBQw
+         gZbcVAF6saEjQcoiAfozIhc24Epcu7Pk0MW8FF+0svLubAFXv5C2lVMcaIzSxE0e2a3I
+         L/iKdn+GXcJyR+hO2FA8BrqlyAdXk/AUFnag3lrodTmIMHBmY7uCYAp5dEpWWWatf8eX
+         Opz2iAGoTfQt6IXW1ByONyHoZL0udFVmntfVxhSfi1+znb784QUompmThHaINkxjvZpW
+         sCCw==
+X-Gm-Message-State: AOAM532pxWhN9dg763Kju7hYTF3nm8d9mUG9mTSNWD610mdUIasWyy7C
+        hUTS3SEKyEtkhq5OmtN+QfjvIlCy8QbFKREg
+X-Google-Smtp-Source: ABdhPJx7DRAXMr7nWU/096KG1OGVeRp6n+Z73zgCAO6CtbXgaY/ayMCeyM7gCs6ItlSHzXVWWRuY0A==
+X-Received: by 2002:ac8:6a02:: with SMTP id t2mr131004qtr.103.1602794144842;
+        Thu, 15 Oct 2020 13:35:44 -0700 (PDT)
+Received: from chatter.i7.local ([89.36.78.230])
+        by smtp.gmail.com with ESMTPSA id g3sm28628qki.84.2020.10.15.13.35.43
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2020 13:35:43 -0700 (PDT)
+Date:   Thu, 15 Oct 2020 16:35:41 -0400
+From:   Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To:     keyrings@vger.kernel.org
+Subject: Keyrings list archives for lore.kernel.org
+Message-ID: <20201015203541.npofidmgdl3aioe2@chatter.i7.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Use @kernel.org address as the main communications end point. Update the
-corresponding M-entries and .mailmap (for git shortlog translation).
+Hi, all:
 
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
----
-v2:
-* Update the .mailmap (suggested by Joe Perches).
-  https://lore.kernel.org/lkml/b1ccdfbb3119528490ea10f40e1da084b1b23f87.camel@perches.com/
- .mailmap    | 1 +
- MAINTAINERS | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+We're in the process of adding this list to lore.kernel.org, but we need 
+a good source of prior archives. Unfortunately, we cannot use the 
+archives on spinics.net, as they are too mangled.
 
-diff --git a/.mailmap b/.mailmap
-index e4ccac4e2f88..1e14566a3d56 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -133,6 +133,7 @@ James Ketrenos <jketreno@io.(none)>
- Jan Glauber <jan.glauber@gmail.com> <jang@de.ibm.com>
- Jan Glauber <jan.glauber@gmail.com> <jang@linux.vnet.ibm.com>
- Jan Glauber <jan.glauber@gmail.com> <jglauber@cavium.com>
-+Jarkko Sakkinen <jarkko@kernel.org> <jarkko.sakkinen@linux.intel.com>
- Jason Gunthorpe <jgg@ziepe.ca> <jgg@mellanox.com>
- Jason Gunthorpe <jgg@ziepe.ca> <jgg@nvidia.com>
- Jason Gunthorpe <jgg@ziepe.ca> <jgunthorpe@obsidianresearch.com>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6594f0966716..afe2a20fb85a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9668,7 +9668,7 @@ F:	security/keys/encrypted-keys/
- 
- KEYS-TRUSTED
- M:	James Bottomley <jejb@linux.ibm.com>
--M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-+M:	Jarkko Sakkinen <jarkko@kernel.org>
- M:	Mimi Zohar <zohar@linux.ibm.com>
- L:	linux-integrity@vger.kernel.org
- L:	keyrings@vger.kernel.org
-@@ -9680,7 +9680,7 @@ F:	security/keys/trusted-keys/
- 
- KEYS/KEYRINGS
- M:	David Howells <dhowells@redhat.com>
--M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-+M:	Jarkko Sakkinen <jarkko@kernel.org>
- L:	keyrings@vger.kernel.org
- S:	Maintained
- F:	Documentation/security/keys/core.rst
-@@ -17616,7 +17616,7 @@ F:	drivers/platform/x86/toshiba-wmi.c
- 
- TPM DEVICE DRIVER
- M:	Peter Huewe <peterhuewe@gmx.de>
--M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-+M:	Jarkko Sakkinen <jarkko@kernel.org>
- R:	Jason Gunthorpe <jgg@ziepe.ca>
- L:	linux-integrity@vger.kernel.org
- S:	Maintained
--- 
-2.25.1
+If you're one of those email hoarders with full archives of this list, 
+please let me know -- we can use your (sanitized) mbox export to get 
+things going.
 
+Regards,
+-K
