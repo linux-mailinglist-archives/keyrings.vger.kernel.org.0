@@ -2,52 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A12F28F3AD
-	for <lists+keyrings@lfdr.de>; Thu, 15 Oct 2020 15:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB0628F4B0
+	for <lists+keyrings@lfdr.de>; Thu, 15 Oct 2020 16:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726925AbgJONvf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 15 Oct 2020 09:51:35 -0400
-Received: from edge.kilargo.pl ([77.252.52.110]:24065 "EHLO edge.kilargo.pl"
+        id S2387776AbgJOO11 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Oct 2020 10:27:27 -0400
+Received: from mga14.intel.com ([192.55.52.115]:14154 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729930AbgJONvc (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 15 Oct 2020 09:51:32 -0400
-X-Greylist: delayed 667 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 09:51:30 EDT
-Received: from mail.kilargo.pl (77.252.52.107) by edge.kilargo.pl
- (77.252.52.109) with Microsoft SMTP Server (TLS) id 8.3.485.1; Thu, 15 Oct
- 2020 15:40:09 +0200
-Received: from User (185.248.12.71) by MAIL.kilargo.pl (172.22.0.36) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Oct 2020 14:52:40 +0200
-Reply-To: <kim.leang2011@yahoo.com>
-From:   Kim Leang <mechanik@kilargo.pl>
-Subject: Greeting! !!
-Date:   Thu, 15 Oct 2020 15:52:46 +0300
+        id S1730882AbgJOO11 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 15 Oct 2020 10:27:27 -0400
+IronPort-SDR: ZoXx9AkVkzjC6g6ZiMC/A/m9MmOiyiot9mr+kFmLM4bXUq6wuHtj/pgDGAOKHe9afKn/ox0gfY
+ Rd8NzEFDHi9g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9774"; a="165581470"
+X-IronPort-AV: E=Sophos;i="5.77,379,1596524400"; 
+   d="scan'208";a="165581470"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 07:27:26 -0700
+IronPort-SDR: +ny1WHzu6fLRQQOwVpnzusLvy3sUUu1Iw0e1Vs3fvkxbTQO+G6HJ8C8PDm7uqKHLd9SNQTuSv+
+ jNDWgwjcDqqw==
+X-IronPort-AV: E=Sophos;i="5.77,379,1596524400"; 
+   d="scan'208";a="300276779"
+Received: from cbenunes-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.35.89])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2020 07:27:21 -0700
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-sgx@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, Joe Perches <joe@perches.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v2] MAINTAINERS: jarkko.sakkinen@linux.intel.com -> jarkko@kernel.org
+Date:   Thu, 15 Oct 2020 17:26:37 +0300
+Message-Id: <20201015142710.8371-1-jarkko.sakkinen@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <93c64c57c99f4887a746174418cb18d4@mail.kilargo.pl>
-To:     Undisclosed recipients:;
-X-Originating-IP: [185.248.12.71]
-X-ClientProxiedBy: mail.kilargo.pl (172.22.0.36) To MAIL.kilargo.pl
- (172.22.0.36)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A295AAB9B6B647163
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Greeting!
+Use @kernel.org address as the main communications end point. Update the
+corresponding M-entries and .mailmap (for git shortlog translation).
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+---
+v2:
+* Update the .mailmap (suggested by Joe Perches).
+  https://lore.kernel.org/lkml/b1ccdfbb3119528490ea10f40e1da084b1b23f87.camel@perches.com/
+ .mailmap    | 1 +
+ MAINTAINERS | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+diff --git a/.mailmap b/.mailmap
+index e4ccac4e2f88..1e14566a3d56 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -133,6 +133,7 @@ James Ketrenos <jketreno@io.(none)>
+ Jan Glauber <jan.glauber@gmail.com> <jang@de.ibm.com>
+ Jan Glauber <jan.glauber@gmail.com> <jang@linux.vnet.ibm.com>
+ Jan Glauber <jan.glauber@gmail.com> <jglauber@cavium.com>
++Jarkko Sakkinen <jarkko@kernel.org> <jarkko.sakkinen@linux.intel.com>
+ Jason Gunthorpe <jgg@ziepe.ca> <jgg@mellanox.com>
+ Jason Gunthorpe <jgg@ziepe.ca> <jgg@nvidia.com>
+ Jason Gunthorpe <jgg@ziepe.ca> <jgunthorpe@obsidianresearch.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6594f0966716..afe2a20fb85a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9668,7 +9668,7 @@ F:	security/keys/encrypted-keys/
+ 
+ KEYS-TRUSTED
+ M:	James Bottomley <jejb@linux.ibm.com>
+-M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
++M:	Jarkko Sakkinen <jarkko@kernel.org>
+ M:	Mimi Zohar <zohar@linux.ibm.com>
+ L:	linux-integrity@vger.kernel.org
+ L:	keyrings@vger.kernel.org
+@@ -9680,7 +9680,7 @@ F:	security/keys/trusted-keys/
+ 
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
+-M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
++M:	Jarkko Sakkinen <jarkko@kernel.org>
+ L:	keyrings@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/security/keys/core.rst
+@@ -17616,7 +17616,7 @@ F:	drivers/platform/x86/toshiba-wmi.c
+ 
+ TPM DEVICE DRIVER
+ M:	Peter Huewe <peterhuewe@gmx.de>
+-M:	Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
++M:	Jarkko Sakkinen <jarkko@kernel.org>
+ R:	Jason Gunthorpe <jgg@ziepe.ca>
+ L:	linux-integrity@vger.kernel.org
+ S:	Maintained
+-- 
+2.25.1
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
-
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
-
-Thanks and have a nice day,
-Mr. Kim Leang.
