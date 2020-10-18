@@ -2,116 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09396291962
-	for <lists+keyrings@lfdr.de>; Sun, 18 Oct 2020 21:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91BE4291FCA
+	for <lists+keyrings@lfdr.de>; Sun, 18 Oct 2020 22:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbgJRTSD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 18 Oct 2020 15:18:03 -0400
-Received: from bedivere.hansenpartnership.com ([96.44.175.130]:38858 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726249AbgJRTSD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 18 Oct 2020 15:18:03 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7A1D5128046A;
-        Sun, 18 Oct 2020 12:18:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1603048682;
-        bh=aTHhEGSm6DrUFNt/hKuOWL0f+WzaMvx/rc4IP5RJYRs=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=WcP5INjnqihCMCJ+2ZkHdzEWBsqi3wavZOcf0NGlcoun37UNiQ4GoZk+2AoMrr8hd
-         1s2t7Y8IzQcDUGm581+QcIuy/enpzpZm6HswhyX4zoKl9l3S5fk96frr/LU4I9kVw8
-         r8s7AtR/5wOGbwEsua/QdQrVgo3j6VSqYIXYukhg=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ywWMwLsGscQI; Sun, 18 Oct 2020 12:18:02 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
+        id S1726593AbgJRUWh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 18 Oct 2020 16:22:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55464 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726422AbgJRUWh (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 18 Oct 2020 16:22:37 -0400
+Received: from localhost (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 340C31280456;
-        Sun, 18 Oct 2020 12:18:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1603048682;
-        bh=aTHhEGSm6DrUFNt/hKuOWL0f+WzaMvx/rc4IP5RJYRs=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=WcP5INjnqihCMCJ+2ZkHdzEWBsqi3wavZOcf0NGlcoun37UNiQ4GoZk+2AoMrr8hd
-         1s2t7Y8IzQcDUGm581+QcIuy/enpzpZm6HswhyX4zoKl9l3S5fk96frr/LU4I9kVw8
-         r8s7AtR/5wOGbwEsua/QdQrVgo3j6VSqYIXYukhg=
-Message-ID: <0a739bcd421a3154c2521b49779b287e6c0d08a2.camel@HansenPartnership.com>
-Subject: Re: [Ocfs2-devel] [RFC] treewide: cleanup unreachable breaks
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     trix@redhat.com, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org, clang-built-linux@googlegroups.com,
-        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
-        storagedev@microchip.com, dri-devel@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
-        ath10k@lists.infradead.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-stm32@st-md-mailman.stormreply.com,
-        usb-storage@lists.one-eyed-alien.net,
-        linux-watchdog@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-nvdimm@lists.01.org, amd-gfx@lists.freedesktop.org,
-        linux-acpi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-pci@vger.kernel.org, spice-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-nfc@lists.01.org, linux-pm@vger.kernel.org,
-        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-gpio@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-amlogic@lists.infradead.org,
-        openipmi-developer@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-crypto@vger.kernel.org, patches@opensource.cirrus.com,
-        bpf@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-        linux-power@fi.rohmeurope.com
-Date:   Sun, 18 Oct 2020 12:17:59 -0700
-In-Reply-To: <20201018191618.GO20115@casper.infradead.org>
-References: <20201017160928.12698-1-trix@redhat.com>
-         <20201018185943.GM20115@casper.infradead.org>
-         <45efa7780c79972eae9ca9bdeb9f7edbab4f3643.camel@HansenPartnership.com>
-         <20201018191618.GO20115@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E95C22269;
+        Sun, 18 Oct 2020 20:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603052556;
+        bh=djgPT3OUbdriMIW6EBsKoPCp/kWKr1Yxd/g3Lx5LDoY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2RZvdZvsizq//jKiin6Ozq6c0RCfe716zQJbjFhPFkBXlsAMIOy7ivi5SN+HDNu/e
+         D2nUWMrz4+/9NP6lfEd7xB+KHYUqJM771TrNjVXn8PzJXHquHM2diPRb5EUp5n/z+y
+         h+9u2ZWnR/Kve3/hgtlIy/cR2WjTXx3ek3b5zNKY=
+Date:   Sun, 18 Oct 2020 23:22:34 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Andrew Zaborowski <andrew.zaborowski@intel.com>
+Cc:     keyrings@vger.kernel.org, dhowells@redhat.com
+Subject: Re: [RESEND][PATCH] keys: Handle missing Authority Key Identifier
+ X509 extension
+Message-ID: <20201018202234.GA574776@kapsi.fi>
+References: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, 2020-10-18 at 20:16 +0100, Matthew Wilcox wrote:
-> On Sun, Oct 18, 2020 at 12:13:35PM -0700, James Bottomley wrote:
-> > On Sun, 2020-10-18 at 19:59 +0100, Matthew Wilcox wrote:
-> > > On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
-> > > > clang has a number of useful, new warnings see
-> > > > https://urldefense.com/v3/__https://clang.llvm.org/docs/DiagnosticsReference.html__;!!GqivPVa7Brio!Krxz78O3RKcB9JBMVo_F98FupVhj_jxX60ddN6tKGEbv_cnooXc1nnBmchm-e_O9ieGnyQ$ 
-> > > 
-> > > Please get your IT department to remove that stupidity.  If you
-> > > can't, please send email from a non-Red Hat email address.
-> > 
-> > Actually, the problem is at Oracle's end somewhere in the ocfs2
-> > list ... if you could fix it, that would be great.  The usual real
-> > mailing lists didn't get this transformation
-> > 
-> > https://lore.kernel.org/bpf/20201017160928.12698-1-trix@redhat.com/
-> > 
-> > but the ocfs2 list archive did:
-> > 
-> > https://oss.oracle.com/pipermail/ocfs2-devel/2020-October/015330.html
-> > 
-> > I bet Oracle IT has put some spam filter on the list that mangles
-> > URLs this way.
+On Tue, Oct 13, 2020 at 03:39:38PM +0200, Andrew Zaborowski wrote:
+> In a self-signed certificate the subject and issuer are the same and so
+> the Authority Key Identifier X.509 v3 extension is explicitly made
+> optional in RFC5280 section 4.2.1.1.
+> crypto/asymmetric_keys/x509_cert_parser.c can't handle this and makes
+> (at least) the restrict.c functions refuse to work with certificates
+> that don't include the AKID.  Fix this by filling in the missing
+> cert->sig->auth_ids with the certificate's own IDs after parsing and
+> determinig the certificate is self-signed.
 > 
-> *sigh*.  I'm sure there's a way.  I've raised it with someone who
-> should be able to fix it.
+> The asymmetric_key_generate_id return value is not checked because it's
+> already succeeded once at this point.
+> 
+> There are root X.509 v3 certificates in use where this is the case,
+> mostly oldish ones.
+> 
+> Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
 
-As someone who works for IBM I can only say I feel your pain ...
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-James
+> ---
+>  crypto/asymmetric_keys/x509_cert_parser.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+> index 26ec20ef489..a5a2f93e242 100644
+> --- a/crypto/asymmetric_keys/x509_cert_parser.c
+> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> @@ -136,6 +136,25 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
+>  	if (ret < 0)
+>  		goto error_decode;
+>  
+> +	if (cert->self_signed) {
+> +		if (!cert->sig->auth_ids[0]) {
+> +			/* Duplicate cert->id */
+> +			kid = asymmetric_key_generate_id(cert->raw_serial,
+> +							 cert->raw_serial_size,
+> +							 cert->raw_issuer,
+> +							 cert->raw_issuer_size);
+> +			cert->sig->auth_ids[0] = kid;
+> +		}
+> +
+> +		if (!cert->sig->auth_ids[1] && cert->skid) {
+> +			/* Duplicate cert->skid */
+> +			kid = asymmetric_key_generate_id(cert->raw_skid,
+> +							 cert->raw_skid_size,
+> +							 "", 0);
+> +			cert->sig->auth_ids[1] = kid;
+> +		}
+> +	}
+> +
+>  	kfree(ctx);
+>  	return cert;
+>  
+> -- 
+> 2.20.1
+> 
+> 
 
-
+/Jarkko
