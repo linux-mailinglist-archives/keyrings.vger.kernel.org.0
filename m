@@ -2,79 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5957D291FCD
-	for <lists+keyrings@lfdr.de>; Sun, 18 Oct 2020 22:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E592292BFC
+	for <lists+keyrings@lfdr.de>; Mon, 19 Oct 2020 18:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727464AbgJRUZ3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 18 Oct 2020 16:25:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56110 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726422AbgJRUZ3 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sun, 18 Oct 2020 16:25:29 -0400
-Received: from localhost (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D9C0C22269;
-        Sun, 18 Oct 2020 20:25:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603052728;
-        bh=Dze6LNzD3UHLop9G1pwa2x8sh0NZKVh5h/EpVwZ8fnU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JZBrnBAvhaf57oiquWvKS0JaiWhSWXWGC/ndR0fwCPzI4IVYDq32LHGSbj+cgbCsX
-         yg1sGicoWhDL3c2ZtvkmXMkkq5emGJ8tEsvnX1JzK/3y6VPu8V89u2Q4+sIye/DQU8
-         35PZrPU4MvfewtxhcKA+f04j3SpA4+sM0p8f12DA=
-Date:   Sun, 18 Oct 2020 23:25:26 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Andrew Zaborowski <andrew.zaborowski@intel.com>
-Cc:     keyrings@vger.kernel.org, dhowells@redhat.com
-Subject: Re: [RESEND][PATCH] keys: Update comment for
- restrict_link_by_key_or_keyring_chain
-Message-ID: <20201018202526.GB574776@kapsi.fi>
-References: <20201013133939.1182462-1-andrew.zaborowski@intel.com>
- <20201013133939.1182462-2-andrew.zaborowski@intel.com>
+        id S1730645AbgJSQ5R (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 19 Oct 2020 12:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730642AbgJSQ5R (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 19 Oct 2020 12:57:17 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0252DC0613CE
+        for <keyrings@vger.kernel.org>; Mon, 19 Oct 2020 09:57:17 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: krisman)
+        with ESMTPSA id 2F1991F44F66
+From:   Gabriel Krisman Bertazi <krisman@collabora.com>
+To:     dhowells@redhat.com
+Cc:     jarkko@kernel.org, keyrings@vger.kernel.org,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH] watch_queue: Drop references to /dev/watch_queue
+Date:   Mon, 19 Oct 2020 12:57:09 -0400
+Message-Id: <20201019165709.5164-1-krisman@collabora.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201013133939.1182462-2-andrew.zaborowski@intel.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 13, 2020 at 03:39:39PM +0200, Andrew Zaborowski wrote:
-> Add the bit of information that makes
-> restrict_link_by_key_or_keyring_chain different from
-> restrict_link_by_key_or_keyring to the inline docs comment.
-> 
-> Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+The merged API doesn't use a watch_queue device, but instead relies on
+pipes, so let the documentation reflect that.
 
+Cc: David Howells <dhowells@redhat.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+---
+ Documentation/security/keys/core.rst | 4 ++--
+ samples/Kconfig                      | 2 +-
+ samples/watch_queue/watch_test.c     | 2 +-
+ security/keys/Kconfig                | 8 ++++----
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
+index aa0081685ee1..b3ed5c581034 100644
+--- a/Documentation/security/keys/core.rst
++++ b/Documentation/security/keys/core.rst
+@@ -1040,8 +1040,8 @@ The keyctl syscall functions are:
+ 
+      "key" is the ID of the key to be watched.
+ 
+-     "queue_fd" is a file descriptor referring to an open "/dev/watch_queue"
+-     which manages the buffer into which notifications will be delivered.
++     "queue_fd" is a file descriptor referring to an open pipe which
++     manages the buffer into which notifications will be delivered.
+ 
+      "filter" is either NULL to remove a watch or a filter specification to
+      indicate what events are required from the key.
+diff --git a/samples/Kconfig b/samples/Kconfig
+index 0ed6e4d71d87..e76cdfc50e25 100644
+--- a/samples/Kconfig
++++ b/samples/Kconfig
+@@ -210,7 +210,7 @@ config SAMPLE_WATCHDOG
+ 	depends on CC_CAN_LINK
+ 
+ config SAMPLE_WATCH_QUEUE
+-	bool "Build example /dev/watch_queue notification consumer"
++	bool "Build example watch_queue notification API consumer"
+ 	depends on CC_CAN_LINK && HEADERS_INSTALL
+ 	help
+ 	  Build example userspace program to use the new mount_notify(),
+diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
+index 46e618a897fe..8c6cb57d5cfc 100644
+--- a/samples/watch_queue/watch_test.c
++++ b/samples/watch_queue/watch_test.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/* Use /dev/watch_queue to watch for notifications.
++/* Use watch_queue API to watch for notifications.
+  *
+  * Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/security/keys/Kconfig b/security/keys/Kconfig
+index 83bc23409164..c161642a8484 100644
+--- a/security/keys/Kconfig
++++ b/security/keys/Kconfig
+@@ -119,7 +119,7 @@ config KEY_NOTIFICATIONS
+ 	bool "Provide key/keyring change notifications"
+ 	depends on KEYS && WATCH_QUEUE
+ 	help
+-	  This option provides support for getting change notifications on keys
+-	  and keyrings on which the caller has View permission.  This makes use
+-	  of the /dev/watch_queue misc device to handle the notification
+-	  buffer and provides KEYCTL_WATCH_KEY to enable/disable watches.
++	  This option provides support for getting change notifications
++	  on keys and keyrings on which the caller has View permission.
++	  This makes use of pipes to handle the notification buffer and
++	  provides KEYCTL_WATCH_KEY to enable/disable watches.
+-- 
+2.28.0
 
-> ---
->  crypto/asymmetric_keys/restrict.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-> index 77ebebada29..84cefe3b358 100644
-> --- a/crypto/asymmetric_keys/restrict.c
-> +++ b/crypto/asymmetric_keys/restrict.c
-> @@ -244,9 +244,10 @@ int restrict_link_by_key_or_keyring(struct key *dest_keyring,
->   * @payload: The payload of the new key.
->   * @trusted: A key or ring of keys that can be used to vouch for the new cert.
->   *
-> - * Check the new certificate only against the key or keys passed in the data
-> - * parameter. If one of those is the signing key and validates the new
-> - * certificate, then mark the new certificate as being ok to link.
-> + * Check the new certificate against the key or keys passed in the data
-> + * parameter and against the keys already linked to the destination keyring. If
-> + * one of those is the signing key and validates the new certificate, then mark
-> + * the new certificate as being ok to link.
->   *
->   * Returns 0 if the new certificate was accepted, -ENOKEY if we
->   * couldn't find a matching parent certificate in the trusted list,
-> -- 
-> 2.20.1
-> 
-> 
-
-/Jarkko
