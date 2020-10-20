@@ -2,92 +2,168 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE73C293D87
-	for <lists+keyrings@lfdr.de>; Tue, 20 Oct 2020 15:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2519293DD6
+	for <lists+keyrings@lfdr.de>; Tue, 20 Oct 2020 15:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407608AbgJTNmM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 20 Oct 2020 09:42:12 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27]:34851 "EHLO
-        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2407531AbgJTNmL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Oct 2020 09:42:11 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 578845C013A;
-        Tue, 20 Oct 2020 09:42:10 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Tue, 20 Oct 2020 09:42:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=date:from:to:cc:subject:message-id:reply-to:references
-        :mime-version:content-type:in-reply-to; s=fm3; bh=ZMa3Hsq3K6k+WS
-        uLm783S+v1/oervsBHxqi7iGWY/I4=; b=Uv/im2nZoer0hdGfr5/1zto0w7WIeF
-        0yZmxErjYDCKJevCcTc7WbpCpOMzz2BuqkVCoDlotinUlkni5oMlIyCcWWkNWLcs
-        liOKshgrPNrXFF0VZ3NTBHcJDBGtVxIOeKDFp3KMBZsFOb4i5Nj83Cqw7+fimAmm
-        vXxSmMWTyy+d2eWGxoXhK0pcpaHtsbGMK9kodpVOhC2QMZ5YJpH8I8LNmw3J3e6N
-        GVimvV2htCCqFOlMNIrT8B0PSBcH9WZZFZWMEYJK1jmjpBD/KraM6eNQERza0YV/
-        f0Lti5JcXMRyG+eZmvyBtZJYOWuU9fXKQA3Q7qnJNJEqwsl7WNaNNxIQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:reply-to:subject:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; bh=ZMa3Hsq3K6k+WSuLm783S+v1/oervsBHxqi7iGWY/I4=; b=DdH/db0e
-        ebewXcjVeVdw5hVlDo77I9TI1AY3bvbST2t0qrfOM+nd9PdyMWNLXBJ6p4G8DfaQ
-        WuFLLXAvLD1uFNmdPAfRLgF+I+R+vGpea0THoD/H4E5BsXHxOId9ix3x5T/DJheJ
-        2fxBtTZdvt+YHcf6OrKCxvv/TmdW5qOLhrzFO5CwJRap1faX8ANKtb1LixuNbceC
-        RBseVze5FxCtMHKl285sTq46BhSioNK11jC3DCh6uwlkSbTfTmknwyph5DwulLAU
-        eD7YandfKstBR+53JoYDot4mlcV3mb+XLN2LwLeDSPL4nhWx+Az8UqZ0+UbrNnFg
-        LcDzOrzS+cZ3Gg==
-X-ME-Sender: <xms:MemOXx91CV1zACq219WOPG7C9hXBzrgk1ooCYZ4oTlGxwrHUshvQ3Q>
-    <xme:MemOX1vUyj5AM2he_kA6MO2nBvlEDbwi4bqSZClrSDcfwfAID35DYa94bTvUMY5XK
-    ZMHi9fmT-pljX584AU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrjeefgdeiiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkrhhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
-    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
-    gvrhhnpeejtddvffehtefgkedtheevgfeileegfeehjedvhedtudeiteegtdeftdelvedv
-    ffenucfkphepvdegrdduieelrddvtddrvdehheenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:MemOX_CEapx_CgKEyP8UMfda87_RgGDsLPhyCHvh-siyrsxjprEQKA>
-    <xmx:MemOX1em7T5_lI2PnXoeeNW58u5aziQQg0eqYj7O8B9LxGDoWzFSZw>
-    <xmx:MemOX2PBGVWfFF0nwdTwUAhbcJCAPYFAe_GUqil_YzcXtWy4jeIfTw>
-    <xmx:MumOX933Qoe5fpH4IFCmYtqROWjVDCN2FuK4bfNX9XwPeDaxvPREpw>
-Received: from localhost (unknown [24.169.20.255])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 495C53064680;
-        Tue, 20 Oct 2020 09:42:09 -0400 (EDT)
-Date:   Tue, 20 Oct 2020 09:42:08 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Lee, Chun-Yi" <jlee@suse.com>
-Subject: Re: [RFC PATCH 2/2] PKCS#7: Check codeSigning EKU for kernel module
- and kexec pe verification
-Message-ID: <20201020134208.GA297878@erythro.dev.benboeckel.internal>
-Reply-To: list.lkml.keyrings@me.benboeckel.net
-References: <20201020065001.13836-1-jlee@suse.com>
- <20201020065001.13836-3-jlee@suse.com>
+        id S2407722AbgJTN4G (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Oct 2020 09:56:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:37115 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2407712AbgJTN4F (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Oct 2020 09:56:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603202163;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HyQ28xr5/lapv6azTtFCvHFT5XQ1+OzeHk+84iEm66Y=;
+        b=QUp+Tm/49C2D2ArfwdGiXcYEZLmxY3ITF9bXZyS+HEfcJJoqaGxmch+2EHiNHeADDWpHNz
+        Ouzap4oFcZixuWmorb4Ub+lRVmWRZDipZO+0tL8W1vnU06zVM/xfLz81/8VfcBPp80A1RW
+        EdBHqnK2mgm1gY9dzcmZeB2rW1Al8Fc=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-573-Ld2HFXbmP2WWwucZNlISqQ-1; Tue, 20 Oct 2020 09:56:01 -0400
+X-MC-Unique: Ld2HFXbmP2WWwucZNlISqQ-1
+Received: by mail-qk1-f199.google.com with SMTP id d5so1789423qkg.16
+        for <keyrings@vger.kernel.org>; Tue, 20 Oct 2020 06:56:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=HyQ28xr5/lapv6azTtFCvHFT5XQ1+OzeHk+84iEm66Y=;
+        b=XxgINVKfKMq/hTwrzd7qZnMSdfIomtImlVu9ABOqbPdbrNQLdDuBR7Cu/7oeamNFKa
+         Zsc5TNzWaforCUrcth1oyum7suZyOKKrP6Ve0Ygew43LaS0ijQALmscp0LWZMFbVsyfW
+         Tj4DxTqYk0ef/8yuUaFp7nS4gcTk26WPPmoqiNxjIMSUZRJRmPAl/TGfPJwTrX7Ki3UV
+         0LcZT9OmT8yip2Oqs2QVZhvrRMlgmhsGVoH8VckBZVn6wfXTXQ+EwFd/f35ZTJVC+U9D
+         mX0ZnaCK6H1FZfuhJykTzfG5CTw55M+uwzDmh4Z0w2EBEdBDqu0BZQw5E/ZTrMeQPkR5
+         dZUQ==
+X-Gm-Message-State: AOAM532qt0StWS8HRtpST6eA30ivy9ngLL3tBD2kGkbgbt4t5mF9amcc
+        mkmyIS3Yj0MfL/bxkk0ff8rDA0D5TXJ4XTf5bIBK+DQOMwkhww3UeZXCWhngnj7Z7n1U/Q0VEur
+        Q8Iyovrn2PD6KrA6gzyA=
+X-Received: by 2002:a05:6214:174f:: with SMTP id dc15mr3370435qvb.25.1603202160688;
+        Tue, 20 Oct 2020 06:56:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyLUAfqrAOJzxwKF3+voCBF5yQYNbMOvfOkDZhumkJj3bEnT15V4x8vUJ5iQ5pWt9KusIZtsQ==
+X-Received: by 2002:a05:6214:174f:: with SMTP id dc15mr3370377qvb.25.1603202160139;
+        Tue, 20 Oct 2020 06:56:00 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id b8sm775938qkn.133.2020.10.20.06.55.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Oct 2020 06:55:59 -0700 (PDT)
+Subject: Re: [RFC] treewide: cleanup unreachable breaks
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, linux-edac@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-power@fi.rohmeurope.com, linux-gpio@vger.kernel.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        nouveau@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        spice-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-can@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        intel-wired-lan@lists.osuosl.org, ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com, linux-nfc@lists.01.org,
+        linux-nvdimm <linux-nvdimm@lists.01.org>,
+        linux-pci@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
+        storagedev@microchip.com, devel@driverdev.osuosl.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        usb-storage@lists.one-eyed-alien.net,
+        linux-watchdog@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        bpf <bpf@vger.kernel.org>, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        alsa-devel@alsa-project.org,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        George Burgess <gbiv@google.com>, Joe Perches <joe@perches.com>
+References: <20201017160928.12698-1-trix@redhat.com>
+ <20201018054332.GB593954@kroah.com>
+ <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <ca1f50d6-1005-8e3d-8d5c-98c82a704338@redhat.com>
+Date:   Tue, 20 Oct 2020 06:55:52 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <CAKwvOdkR_Ttfo7_JKUiZFVqr=Uh=4b05KCPCSuzwk=zaWtA2_Q@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201020065001.13836-3-jlee@suse.com>
-User-Agent: Mutt/1.14.6 (2020-07-11)
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 20, 2020 at 14:50:01 +0800, Lee, Chun-Yi wrote:
-> +config CHECK_CODESIGN_EKU
-> +	bool "Check codeSigning extended key usage"
-> +	depends on PKCS7_MESSAGE_PARSER=y
-> +	depends on SYSTEM_DATA_VERIFICATION
-> +	help
-> +	  This option provides support for checking the codeSigning extended
-> +	  key usage extension when verifying the signature in PKCS#7. It
-> +	  affects kernel module verification and kexec PE binary verification
-> +	  now.
 
-Is the "now" necessary? Isn't it implied by the option's existence?
+On 10/19/20 12:42 PM, Nick Desaulniers wrote:
+> On Sat, Oct 17, 2020 at 10:43 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+>> On Sat, Oct 17, 2020 at 09:09:28AM -0700, trix@redhat.com wrote:
+>>> From: Tom Rix <trix@redhat.com>
+>>>
+>>> This is a upcoming change to clean up a new warning treewide.
+>>> I am wondering if the change could be one mega patch (see below) or
+>>> normal patch per file about 100 patches or somewhere half way by collecting
+>>> early acks.
+>> Please break it up into one-patch-per-subsystem, like normal, and get it
+>> merged that way.
+>>
+>> Sending us a patch, without even a diffstat to review, isn't going to
+>> get you very far...
+> Tom,
+> If you're able to automate this cleanup, I suggest checking in a
+> script that can be run on a directory.  Then for each subsystem you
+> can say in your commit "I ran scripts/fix_whatever.py on this subdir."
+>  Then others can help you drive the tree wide cleanup.  Then we can
+> enable -Wunreachable-code-break either by default, or W=2 right now
+> might be a good idea.
 
---Ben
+I should have waited for Joe Perches's fixer addition to checkpatch :)
+
+The easy fixes I did only cover about 1/2 of the problems.
+
+Remaining are mostly nested switches, which from a complexity standpoint is bad.
+
+>
+> Ah, George (gbiv@, cc'ed), did an analysis recently of
+> `-Wunreachable-code-loop-increment`, `-Wunreachable-code-break`, and
+> `-Wunreachable-code-return` for Android userspace.  From the review:
+> ```
+> Spoilers: of these, it seems useful to turn on
+> -Wunreachable-code-loop-increment and -Wunreachable-code-return by
+> default for Android
+
+In my simple add-a-cflag bot, i see there are about 250
+
+issues for -Wunreachable-code-return.
+
+I'll see about doing this one next.
+
+> ...
+> While these conventions about always having break arguably became
+> obsolete when we enabled -Wfallthrough, my sample turned up zero
+> potential bugs caught by this warning, and we'd need to put a lot of
+> effort into getting a clean tree. So this warning doesn't seem to be
+> worth it.
+> ```
+> Looks like there's an order of magnitude of `-Wunreachable-code-break`
+> than the other two.
+>
+> We probably should add all 3 to W=2 builds (wrapped in cc-option).
+> I've filed https://github.com/ClangBuiltLinux/linux/issues/1180 to
+> follow up on.
+
+Yes, i think think these should be added.
+
+Tom
+
