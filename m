@@ -2,173 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5441E2947ED
-	for <lists+keyrings@lfdr.de>; Wed, 21 Oct 2020 07:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 339B0294B1B
+	for <lists+keyrings@lfdr.de>; Wed, 21 Oct 2020 12:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440631AbgJUFqs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Oct 2020 01:46:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40508 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408424AbgJUFqr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Oct 2020 01:46:47 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB20C0613CE
-        for <keyrings@vger.kernel.org>; Tue, 20 Oct 2020 22:46:45 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id c141so1439739lfg.5
-        for <keyrings@vger.kernel.org>; Tue, 20 Oct 2020 22:46:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WerPUVIarQXcsPG2PPEIuIxUpZ3fOzaM0sErZC8Uvj8=;
-        b=Pz25AI/ZgGEoYZmJG/KQ/6e9wJOYkEcM3fU4cxTMhwpnGFVW//s2gikrdXVqqErNVr
-         zD9FmFDCaFYR1Obikt6RE99ezJMB6Nf8WZgVS2L2VJfcQ+DQcdEkh+xmbFetH/l0FvsM
-         U7csmAljt5FECfKyfs0iXyZp5gz0E4Gl1MqBsnXQq7EPBjlYFF96SpG686vJfM76aMOC
-         IM/v4hslOheQCHYYkKLp7gccz1LORYE0fflkTU13vk8YRqO5L4O8erpR/qT0z5qdVZ5y
-         CiXeRKaOlNFZdzO15SN513O8dfYcldrkbSWYA0g+QDU26HzaJ6g+8Wyjb03fiR22qpap
-         vwHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WerPUVIarQXcsPG2PPEIuIxUpZ3fOzaM0sErZC8Uvj8=;
-        b=EwLOPCk0xwsZToiq5DCjIPMU6s3njQFTpF8b8m2/v940uaxslY9qpyhaCtD2TQHxEr
-         FHG/ickIbqeC3it59sGwNZ8BZZXNGXHF4bVtQT4xTG2rpXCjkOqOmS8Hq8/j/JjVpsb9
-         1XHZSLLBiEHirpdm8l698NQqcDirSF8r1nQGVoLHTByjC8q4FlTgG4d9h25bptCIOEKm
-         I+OfQdphSofuaJC6fxhusAGPQeWMUO3q5g7cva/gAdTjt3oeFjMNd/iKcvBQpYw06S9+
-         RYQi8hXuPW8WFU9UteN4dbhiZaG04qXXX3sF39svWNdhYQWu5lD1OHn5E1kp646E7+jJ
-         KBFA==
-X-Gm-Message-State: AOAM533IGEN075kZvvs/blodzpsz2SgVpAKr+aS8TiySQRlHKKrbDBZe
-        oX5LcFBrX/kDhMY5ucmT9a8m9z4Buup7Zg1oWGYGdVJfUjeQTQ==
-X-Google-Smtp-Source: ABdhPJwDV2L1MFODb6ucOjs+0es8WlLMWrbz8e2HdBKFq1wq79tkl40AoAJdlcTyrjoren7MlXPnsTlS6MAnVD3VB0s=
-X-Received: by 2002:a19:c88c:: with SMTP id y134mr497757lff.283.1603259204205;
- Tue, 20 Oct 2020 22:46:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
- <1602065268-26017-2-git-send-email-sumit.garg@linaro.org> <8e07f9401c9f7e18fb1453b7b290472c0049c6e6.camel@linux.ibm.com>
-In-Reply-To: <8e07f9401c9f7e18fb1453b7b290472c0049c6e6.camel@linux.ibm.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 21 Oct 2020 11:16:33 +0530
-Message-ID: <CAFA6WYM7aJwP9j_ayGvbJPu-cyv87rsm9N4Wj2OCOMnmfDx+Rw@mail.gmail.com>
-Subject: Re: [PATCH v7 1/4] KEYS: trusted: Add generic trusted keys framework
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Bottomley <jejb@linux.ibm.com>,
+        id S2409607AbgJUKLP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Oct 2020 06:11:15 -0400
+Received: from de-smtp-delivery-102.mimecast.com ([62.140.7.102]:29003 "EHLO
+        de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2405591AbgJUKLP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Oct 2020 06:11:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
+        t=1603275071;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=89Yg6vbTn6BKVOpzF3QEaawYsgB85ymoJlzefQdDbKU=;
+        b=h12qQY397Ik1K3FAyfLvDPWbtYbj9WbR7KGEBy/gFzcj7MnKX+Sxv2JfpQTt7rGh3Tf+Nj
+        3bAL36dBkRfQxXnGuuKPRdRm2PmeGwFzXRzWwLUH+kIGEhd5THptoiLPdgomRA8/53Etr4
+        A2V4HBldB425se9m1yj+tz+sLH4S83I=
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com
+ (mail-he1eur01lp2051.outbound.protection.outlook.com [104.47.0.51]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ de-mta-28-Okk6C-cOOFCGXM_rI6Qm3Q-1; Wed, 21 Oct 2020 12:11:09 +0200
+X-MC-Unique: Okk6C-cOOFCGXM_rI6Qm3Q-1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fSs/nJ27RS0JitC60Ipi2Ll3zaiUIgqyOd/9nXOHP4XMrJ+s6nwRGq13Wqp5BJe5NxduxDvZUYKyvUj5nTeWHDnoZa4t1subz+GF0RjksM/tQkau4CFUFNibBaCXBaOnIJZLaSPRmS14uaIIWv2WqI8NY59lIj+2iF9Y5/wJ+q5USSh2A6tjoFPlm2AWjmGgowF7BlvbMOtWH7/rqH34IiUWirji6lXqZZPCxoXAkIjSFUJ/I3hLJ3oMnV8BIlHwifAwaVHSCWNs90y1LNUa93dIfrgBbofu15tE7SHteEr9opFKzvZ3MkTSMT+9gaJiA7kgV0h1tdUdNzgFGBwGng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=89Yg6vbTn6BKVOpzF3QEaawYsgB85ymoJlzefQdDbKU=;
+ b=MUlsMgwYaRqyZEmUjGMp73ldc47hFKsHsKCqjngf2IKvau78/oRvYk+Oc1+7Na83oZPX9iJjDFyvCXProRaAcvxsXZWrhpgqFVLQbt9dofWOZhP2oR2okvRHUXcZFKFUsOMA9ZOmR8GDpYvL41Vk9e7uOkIiZb+s8KdChun0G034w/xMa8XYWsWzx4Im+52SUq7YqeSnFCLbYiKofEkIP7fqHNVGqEtLcXLhs0NkhNGmgOTmwbwYelltHzjwTXkkT6vhEUOK8BwJ9OdWoa1JcGC701gRmjUYRwEnKsmhnNe1/V7KyhWz1hnoqdAt0+pfg7kBnhtRyxX2yg043jhOfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+Authentication-Results: me.benboeckel.net; dkim=none (message not signed)
+ header.d=none;me.benboeckel.net; dmarc=none action=none header.from=suse.com;
+Received: from VI1PR04MB7102.eurprd04.prod.outlook.com (2603:10a6:800:124::12)
+ by VI1PR04MB4303.eurprd04.prod.outlook.com (2603:10a6:803:3d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18; Wed, 21 Oct
+ 2020 10:11:07 +0000
+Received: from VI1PR04MB7102.eurprd04.prod.outlook.com
+ ([fe80::4850:c5a:699b:e466]) by VI1PR04MB7102.eurprd04.prod.outlook.com
+ ([fe80::4850:c5a:699b:e466%9]) with mapi id 15.20.3499.018; Wed, 21 Oct 2020
+ 10:11:07 +0000
+Date:   Wed, 21 Oct 2020 18:10:57 +0800
+From:   joeyli <jlee@suse.com>
+To:     list.lkml.keyrings@me.benboeckel.net
+Cc:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
         David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Content-Type: text/plain; charset="UTF-8"
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] PKCS#7: Check codeSigning EKU for kernel module
+ and kexec pe verification
+Message-ID: <20201021101057.GA13854@linux-l9pv.suse>
+References: <20201020065001.13836-1-jlee@suse.com>
+ <20201020065001.13836-3-jlee@suse.com>
+ <20201020134208.GA297878@erythro.dev.benboeckel.internal>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201020134208.GA297878@erythro.dev.benboeckel.internal>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [124.11.22.254]
+X-ClientProxiedBy: HK0PR01CA0069.apcprd01.prod.exchangelabs.com
+ (2603:1096:203:a6::33) To VI1PR04MB7102.eurprd04.prod.outlook.com
+ (2603:10a6:800:124::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from linux-l9pv.suse (124.11.22.254) by HK0PR01CA0069.apcprd01.prod.exchangelabs.com (2603:1096:203:a6::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21 via Frontend Transport; Wed, 21 Oct 2020 10:11:04 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 852619d2-99af-45a6-fe62-08d875a9a074
+X-MS-TrafficTypeDiagnostic: VI1PR04MB4303:
+X-Microsoft-Antispam-PRVS: <VI1PR04MB4303AA9F1663C87207DFFDB5A31C0@VI1PR04MB4303.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: e1VgN+iLUWjWUti4xN7ZxhAN6mje/zaxfjI075mCmeGtuDzshfXuUnkwbNHEugqcATYEkWBjfjTcCDvbbqVC8/yweNeStSAwZewI58wYinU/CFHSUT7cBMbu+N6P3HYdX48gyPLOiYuonvS89Po1wiJ9/Tq61nqI8NZlJhlfs3hkItL6SEYUfeSQ90JiOrBJWx+cjBAL2IxJzBB+yiQ6HRJKEA/SHR0UkU8Cn68/RpjO14pFPvx6gyRheYUq66V4nlsEAzJx0M2h6uT4GYw4m6y6bLEZ9zZNHP5bXON/EwHcCaQQjycVioUsbZOgwHiVMDOEic8iI61uKfo7ZQOZGPRluHdnwJsjuB6RgaiRiGgHl+roVrxdTQ9pyKZhx9iB
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7102.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(376002)(136003)(346002)(39860400002)(5660300002)(66946007)(8886007)(15650500001)(66476007)(6666004)(66556008)(1076003)(83380400001)(86362001)(16526019)(8936002)(478600001)(2906002)(6506007)(53546011)(4744005)(9686003)(54906003)(316002)(6916009)(36756003)(4326008)(956004)(7696005)(52116002)(8676002)(186003)(33656002)(26005)(55016002)(43062003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 1pBy9MB4hyKQq/9pvf8tD/6WD/Mv/NSIfZxjP2w2Fb8Al6p0QN4NlIailQZrQhD070ANF1Rg/SdLOod/nqjnS7cOmhIRQAawCrMtQbgDO0vsuUVPYmWWcNm5wrwQ2nhGL6Vyc45oQatEgrE4lEYNzVLUlsA20Ue7ABVpJ+ZRs4xbcTuH6kiRmMQcQJAa6GIv3yu4lJIVHHhc6zzeblnYBb1pnrKI0FNjA5Dp0DQadDcWj7VtR2OXqS3skMo3mMytEWwMao1RKaenPiJ+50FiPcN1t3q6IeMZNey1TwFlCirw5PfSxN6/swHq7IURKNmyx3GYjr2QPXOBlGL0OEdccdkbE2D1+ywYKskPllLu1DalG63fmhJRuiR+ejlSH/asut7uPXX46pvgWuuM/kgglR9yyYlt9vLJX3GA3ZxShEJR0gVcU29pU73bAN3JUWzfN39i+hTeF8yOSEOdA7wR09x0XFGiUyGwhqVh+EzPQbNRxPFqJnqgZlS2Lj55/4fTSzU1hB9o6OoZ2l5islDaB7zculmmz8vUEwm5lf/ZmTCnmAEevnHe6AtCc81tZuSYZHpYL7LblUiph/q2L2JZN7pblwsW0wtDEXzevpb8Cb+YjJs0DbhMSd6QV60O4kXFYlmrBJBdUrUmVOlg1XnyXg==
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 852619d2-99af-45a6-fe62-08d875a9a074
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7102.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2020 10:11:07.6064
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: twINEqPrG/G9LxcK9DAgJhUyeOgN88isJSpSq7pLkH30DVxGG7pcySDAIpI80DRN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4303
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Thanks Mimi for your comments.
+Hi Ben,
 
-On Wed, 21 Oct 2020 at 08:51, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> On Wed, 2020-10-07 at 15:37 +0530, Sumit Garg wrote:
->
-> > +/*
-> > + * trusted_destroy - clear and free the key's payload
-> > + */
-> > +static void trusted_destroy(struct key *key)
-> > +{
-> > +     kfree_sensitive(key->payload.data[0]);
-> > +}
-> > +
-> > +struct key_type key_type_trusted = {
-> > +     .name = "trusted",
-> > +     .instantiate = trusted_instantiate,
-> > +     .update = trusted_update,
-> > +     .destroy = trusted_destroy,
-> > +     .describe = user_describe,
-> > +     .read = trusted_read,
-> > +};
-> > +EXPORT_SYMBOL_GPL(key_type_trusted);
-> > +
-> > +static int __init init_trusted(void)
-> > +{
-> > +     int i, ret = 0;
-> > +
-> > +     for (i = 0; i < ARRAY_SIZE(trusted_key_sources); i++) {
-> > +             if (trusted_key_source &&
-> > +                 strncmp(trusted_key_source, trusted_key_sources[i].name,
-> > +                         strlen(trusted_key_sources[i].name)))
-> > +                     continue;
-> > +
-> > +             trusted_key_ops = trusted_key_sources[i].ops;
-> > +
-> > +             ret = trusted_key_ops->init();
-> > +             if (!ret)
-> > +                     break;
-> > +     }
->
-> In the case when the module paramater isn't specified and both TPM and
-> TEE are enabled, trusted_key_ops is set to the last source initialized.
+On Tue, Oct 20, 2020 at 09:42:08AM -0400, Ben Boeckel wrote:
+> On Tue, Oct 20, 2020 at 14:50:01 +0800, Lee, Chun-Yi wrote:
+> > +config CHECK_CODESIGN_EKU
+> > +	bool "Check codeSigning extended key usage"
+> > +	depends on PKCS7_MESSAGE_PARSER=y
+> > +	depends on SYSTEM_DATA_VERIFICATION
+> > +	help
+> > +	  This option provides support for checking the codeSigning extended
+> > +	  key usage extension when verifying the signature in PKCS#7. It
+> > +	  affects kernel module verification and kexec PE binary verification
+> > +	  now.
+> 
+> Is the "now" necessary? Isn't it implied by the option's existence?
 
-I guess there is some misunderstanding. Here it's only a single trust
-source (TPM *or* TEE) is initialized and only that trust source would
-be active at runtime. And trusted_key_ops would be initialized to the
-first trust source whose initialization is successful (see check: "if
-(!ret)").
+Thanks for your review. I will remove the "now" in next version.
 
-> After patch 2/4, the last trusted source initialized is TEE.  If the
-> intention is to limit it to either TPM or TEE, then trusted_key_ops
-> should have a default value, which could be overwritten at runtime.
-> That would address Luke Hind's concerns of making the decision at
-> compile time.
+Joey Lee
 
-I think traversing the trust source list with the initial value being
-TPM would be default value.
-
->
-> trusted_key_ops should be defined as __ro_after_init, like is currently
-> done for other LSM structures.
-
-Sure, will do.
-
->
-> > +
-> > +     /*
-> > +      * encrypted_keys.ko depends on successful load of this module even if
-> > +      * trusted key implementation is not found.
-> > +      */
-> > +     if (ret == -ENODEV)
-> > +             return 0;
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static void __exit cleanup_trusted(void)
-> > +{
-> > +     trusted_key_ops->exit();
->
-> If the intention is really to support both TPM and TEE trusted keys at
-> the same time, as James suggested, then the same "for" loop as in
-> init_trusted() is needed here and probably elsewhere.
-
-Current intention is to only support a single trust source (TPM or
-TEE) at runtime. But in future if there are use-cases then framework
-can be extended to support multiple trust sources at runtime as well.
-
--Sumit
-
->
-> thanks,
->
-> Mimi
->
