@@ -2,123 +2,204 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8ABB295CF9
-	for <lists+keyrings@lfdr.de>; Thu, 22 Oct 2020 12:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89638295D90
+	for <lists+keyrings@lfdr.de>; Thu, 22 Oct 2020 13:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2896685AbgJVKre (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Oct 2020 06:47:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56268 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2896574AbgJVKr3 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 22 Oct 2020 06:47:29 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8BA392177B;
-        Thu, 22 Oct 2020 10:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603363648;
-        bh=xBsbKD5SBQCcLeBR2tpUTrjFtW93i8KwvEiKlew6y/M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=feiTNY176OhJVWL6CnkF4kiU6NigFm/VD3Ui4E+wpATVknPWx7I4BQqdiJv/sMgNJ
-         H4Eb2Bc9W6InfW+morvNSQUtX8ZVPuBvKSpQrb3i+BcForuB10ZbuKl1VEpEEP0vUn
-         prey8EZuMSul8lL3YVDZeBuHUKxl2I6g/LFzXfXQ=
-Date:   Thu, 22 Oct 2020 12:48:05 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     David Laight <David.Laight@aculab.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201022104805.GA1503673@kroah.com>
-References: <20201021233914.GR3576660@ZenIV.linux.org.uk>
- <20201022082654.GA1477657@kroah.com>
- <80a2e5fa-718a-8433-1ab0-dd5b3e3b5416@redhat.com>
- <5d2ecb24db1e415b8ff88261435386ec@AcuMS.aculab.com>
- <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
- <20201022090155.GA1483166@kroah.com>
- <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
- <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
- <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
- <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+        id S2897434AbgJVLlE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Oct 2020 07:41:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2503029AbgJVLlA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Oct 2020 07:41:00 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4186CC0613D5
+        for <keyrings@vger.kernel.org>; Thu, 22 Oct 2020 04:41:00 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id d24so1550856ljg.10
+        for <keyrings@vger.kernel.org>; Thu, 22 Oct 2020 04:41:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5gzlInlR4QMg3ZQ/I04CuQTpDYmT0qaMY9vRAxu4Izc=;
+        b=mTKSsn/Q3P3WeHCjoX5IQNxgRPV8RleCVN6AJn7mcrVmanmbBnlGkT50iAk+PxYC5j
+         qQp9dWwiw/3KBUeWUcdU8Fz65Z4hbWiPLxYfYlJ2km2Apub6hdQ90j9/EiD63ru4QnUC
+         35Uu1f/K8zugcF0ZzbhV7dVmvdFnKt8vmm0OwH+9M+1zea7hY/I8uqan0ceGDBy9koWS
+         /SDmF5NqmFjznRTDWV9I8pKTm6iE2ADiCMXGzc9L7H0LAPxeKUHetrcuREUBZUMYa317
+         N/Dl8oD6wbmqaIyz6NX3u4V0w3I3OT4GnY6XMDFUUV8EWkgXIogzyJhTUm/ubnNSrbib
+         Vy9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5gzlInlR4QMg3ZQ/I04CuQTpDYmT0qaMY9vRAxu4Izc=;
+        b=KfptYel8wV+mf1b0ZtCxcVgkLOkyvhB5tWZCpFUtjVuwBpQqJYcWwyhXbfEdc1d3dr
+         ndE80BLYjgl/XNm+MZ86jQg3IzncmP+WKfmkiQPmmvft2PPrdD6E99G+GdpeCk5NNdi9
+         f5IcSZmr4V1em8qf7Hk9Cp85UHmvOD0YIbgeDW6Fpm/BLfCZDSMDrtQb4Y5WJtvG1N3k
+         YR/0s+OtZfSW/Yz+MOvZsLRywF6dzMauJHn6Y0n2q/JGRqXVSWRRrbOFeQno7wMT+p/j
+         KPGkb6ZJdKxrN1rm40hy6CvwGhdekJyAYIQZzT4BSA90q5fZGgsVP0wckVpiOmHQVCQu
+         VtBA==
+X-Gm-Message-State: AOAM530iVbVGDxuTfPERd34pZMKTWDLLUPGcK41pjyrUtc/qkG+p5aU1
+        ivPpzusoBi1+44ui8An5xhNAF+eKaIQdXApgFqCowg==
+X-Google-Smtp-Source: ABdhPJxUbvoDDVe1JBLdhgQ6HTPf1Z1n3SNPOWQyCMzodZYqfouUt/OW/JYE6i7f1PkVqM+wnwM+ontG7U00cKi1ihU=
+X-Received: by 2002:a2e:b009:: with SMTP id y9mr751337ljk.372.1603366858536;
+ Thu, 22 Oct 2020 04:40:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+References: <1602065268-26017-1-git-send-email-sumit.garg@linaro.org>
+ <1602065268-26017-2-git-send-email-sumit.garg@linaro.org> <8e07f9401c9f7e18fb1453b7b290472c0049c6e6.camel@linux.ibm.com>
+ <CAFA6WYM7aJwP9j_ayGvbJPu-cyv87rsm9N4Wj2OCOMnmfDx+Rw@mail.gmail.com> <7b2ccd620a9de5c2fd57b8e8aeb41d5476f83b28.camel@linux.ibm.com>
+In-Reply-To: <7b2ccd620a9de5c2fd57b8e8aeb41d5476f83b28.camel@linux.ibm.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Thu, 22 Oct 2020 17:10:46 +0530
+Message-ID: <CAFA6WYMk8g8i+zcEHYsUcZBq4_k5yGwYzLdEOMbRRnobz9xT4A@mail.gmail.com>
+Subject: Re: [PATCH v7 1/4] KEYS: trusted: Add generic trusted keys framework
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 11:36:40AM +0200, David Hildenbrand wrote:
-> On 22.10.20 11:32, David Laight wrote:
-> > From: David Hildenbrand
-> >> Sent: 22 October 2020 10:25
-> > ...
-> >> ... especially because I recall that clang and gcc behave slightly
-> >> differently:
-> >>
-> >> https://github.com/hjl-tools/x86-psABI/issues/2
-> >>
-> >> "Function args are different: narrow types are sign or zero extended to
-> >> 32 bits, depending on their type. clang depends on this for incoming
-> >> args, but gcc doesn't make that assumption. But both compilers do it
-> >> when calling, so gcc code can call clang code.
-> > 
-> > It really is best to use 'int' (or even 'long') for all numeric
-> > arguments (and results) regardless of the domain of the value.
-> > 
-> > Related, I've always worried about 'bool'....
-> > 
-> >> The upper 32 bits of registers are always undefined garbage for types
-> >> smaller than 64 bits."
-> > 
-> > On x86-64 the high bits are zeroed by all 32bit loads.
-> 
-> Yeah, but does not help here.
-> 
-> 
-> My thinking: if the compiler that calls import_iovec() has garbage in
-> the upper 32 bit
-> 
-> a) gcc will zero it out and not rely on it being zero.
-> b) clang will not zero it out, assuming it is zero.
-> 
-> But
-> 
-> a) will zero it out when calling the !inlined variant
-> b) clang will zero it out when calling the !inlined variant
-> 
-> When inlining, b) strikes. We access garbage. That would mean that we
-> have calling code that's not generated by clang/gcc IIUC.
-> 
-> We can test easily by changing the parameters instead of adding an "inline".
+On Wed, 21 Oct 2020 at 17:55, Mimi Zohar <zohar@linux.ibm.com> wrote:
+>
+> On Wed, 2020-10-21 at 11:16 +0530, Sumit Garg wrote:
+> > Thanks Mimi for your comments.
+> >
+> > On Wed, 21 Oct 2020 at 08:51, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > >
+> > > On Wed, 2020-10-07 at 15:37 +0530, Sumit Garg wrote:
+> > >
+> > > > +/*
+> > > > + * trusted_destroy - clear and free the key's payload
+> > > > + */
+> > > > +static void trusted_destroy(struct key *key)
+> > > > +{
+> > > > +     kfree_sensitive(key->payload.data[0]);
+> > > > +}
+> > > > +
+> > > > +struct key_type key_type_trusted = {
+> > > > +     .name = "trusted",
+> > > > +     .instantiate = trusted_instantiate,
+> > > > +     .update = trusted_update,
+> > > > +     .destroy = trusted_destroy,
+> > > > +     .describe = user_describe,
+> > > > +     .read = trusted_read,
+> > > > +};
+> > > > +EXPORT_SYMBOL_GPL(key_type_trusted);
+> > > > +
+> > > > +static int __init init_trusted(void)
+> > > > +{
+> > > > +     int i, ret = 0;
+> > > > +
+> > > > +     for (i = 0; i < ARRAY_SIZE(trusted_key_sources); i++) {
+> > > > +             if (trusted_key_source &&
+> > > > +                 strncmp(trusted_key_source, trusted_key_sources[i].name,
+> > > > +                         strlen(trusted_key_sources[i].name)))
+> > > > +                     continue;
+> > > > +
+> > > > +             trusted_key_ops = trusted_key_sources[i].ops;
+> > > > +
+> > > > +             ret = trusted_key_ops->init();
+> > > > +             if (!ret)
+> > > > +                     break;
+> > > > +     }
+> > >
+> > > In the case when the module paramater isn't specified and both TPM and
+> > > TEE are enabled, trusted_key_ops is set to the last source initialized.
+> >
+> > I guess there is some misunderstanding. Here it's only a single trust
+> > source (TPM *or* TEE) is initialized and only that trust source would
+> > be active at runtime. And trusted_key_ops would be initialized to the
+> > first trust source whose initialization is successful (see check: "if
+> > (!ret)").
+>
+> My mistake.
+>
+> >
+> > > After patch 2/4, the last trusted source initialized is TEE.  If the
+> > > intention is to limit it to either TPM or TEE, then trusted_key_ops
+> > > should have a default value, which could be overwritten at runtime.
+> > > That would address Luke Hind's concerns of making the decision at
+> > > compile time.
+> >
+> > I think traversing the trust source list with the initial value being
+> > TPM would be default value.
+>
+> Agreed
+> >
+> > >
+> > > trusted_key_ops should be defined as __ro_after_init, like is currently
+> > > done for other LSM structures.
+> >
+> > Sure, will do.
+>
+> Thanks
+> >
+> > >
+> > > > +
+> > > > +     /*
+> > > > +      * encrypted_keys.ko depends on successful load of this module even if
+> > > > +      * trusted key implementation is not found.
+> > > > +      */
+> > > > +     if (ret == -ENODEV)
+> > > > +             return 0;
+> > > > +
+> > > > +     return ret;
+> > > > +}
+> > > > +
+> > > > +static void __exit cleanup_trusted(void)
+> > > > +{
+> > > > +     trusted_key_ops->exit();
+> > >
+> > > If the intention is really to support both TPM and TEE trusted keys at
+> > > the same time, as James suggested, then the same "for" loop as in
+> > > init_trusted() is needed here and probably elsewhere.
+> >
+> > Current intention is to only support a single trust source (TPM or
+> > TEE) at runtime. But in future if there are use-cases then framework
+> > can be extended to support multiple trust sources at runtime as well.
+>
+> Ok, the last sentence of the patch description, "Also, add a module
+> parameter in order to select a particular trust source in case a
+> platform support multiple trust sources.", needs to be expanded to:
+> - indicate only one trust source at a time is supported
+> - indicate the default, if the module_param is not specified
+>
 
-Let me try that as well, as I seem to have a good reproducer, but it
-takes a while to run...
+Sure, I will expand that.
 
-greg k-h
+> I would also change the word from "add" to "define".
+
+Ack.
+
+>   The new "source"
+> module parameter needs to be added to the admin-guide/kernel-parameters
+> documentation.
+
+Okay, will update documentation as well.
+
+-Sumit
+
+>
+> thanks,
+>
+> Mimi
+>
+>
