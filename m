@@ -2,83 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8007729A11A
-	for <lists+keyrings@lfdr.de>; Tue, 27 Oct 2020 01:47:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7ACC29A22F
+	for <lists+keyrings@lfdr.de>; Tue, 27 Oct 2020 02:25:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440578AbgJ0AeH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 26 Oct 2020 20:34:07 -0400
-Received: from zeniv.linux.org.uk ([195.92.253.2]:44164 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436545AbgJ0Acv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 26 Oct 2020 20:32:51 -0400
-X-Greylist: delayed 1637 seconds by postgrey-1.27 at vger.kernel.org; Mon, 26 Oct 2020 20:32:46 EDT
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kXCUL-009VwG-7r; Tue, 27 Oct 2020 00:05:21 +0000
-Date:   Tue, 27 Oct 2020 00:05:21 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Kyle Huey <me@kylehuey.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Robert O'Callahan <robert@ocallahan.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-scsi@vger.kernel.org,
-        "open list:FILESYSTEMS (VFS and infrastructure)" 
-        <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
-        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [REGRESSION] mm: process_vm_readv testcase no longer works after
- compat_prcoess_vm_readv removed
-Message-ID: <20201027000521.GD3576660@ZenIV.linux.org.uk>
-References: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
- <70d5569e-4ad6-988a-e047-5d12d298684c@kernel.dk>
+        id S2503844AbgJ0BYh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 26 Oct 2020 21:24:37 -0400
+Received: from mga04.intel.com ([192.55.52.120]:50539 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2503842AbgJ0BYh (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 26 Oct 2020 21:24:37 -0400
+IronPort-SDR: lG2OCie9uMcdM5BnP7/krBB1D1/q7Ffu2Dy5Ap0aTA/VlbSi63psk7kdQkl82fA5aofMKCi0ok
+ n06kphYu2Qiw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="165421119"
+X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; 
+   d="scan'208";a="165421119"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 18:24:36 -0700
+IronPort-SDR: 6NmLwTBEWfrCpL1SxpFnfrcWRhcyVnrqQR3aGmAH2QtYp0AKqSGFTdzE7kLcYB5BBCTImMdMOq
+ iCwemuy/LOnA==
+X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; 
+   d="scan'208";a="535587383"
+Received: from ksprzacz-mobl1.ger.corp.intel.com (HELO linux.intel.com) ([10.252.59.214])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 18:24:30 -0700
+Date:   Tue, 27 Oct 2020 03:24:25 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     trix@redhat.com
+Cc:     zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, jmorris@namei.org,
+        serge@hallyn.com, jejb@linux.ibm.com, dhowells@redhat.com,
+        mortonm@chromium.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: Re: [PATCH] security: remove unneeded break
+Message-ID: <20201027012425.GA20485@linux.intel.com>
+References: <20201019173653.527-1-trix@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <70d5569e-4ad6-988a-e047-5d12d298684c@kernel.dk>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+In-Reply-To: <20201019173653.527-1-trix@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Oct 26, 2020 at 05:56:11PM -0600, Jens Axboe wrote:
-> On 10/26/20 4:55 PM, Kyle Huey wrote:
-> > A test program from the rr[0] test suite, vm_readv_writev[1], no
-> > longer works on 5.10-rc1 when compiled as a 32 bit binary and executed
-> > on a 64 bit kernel. The first process_vm_readv call (on line 35) now
-> > fails with EFAULT. I have bisected this to
-> > c3973b401ef2b0b8005f8074a10e96e3ea093823.
-> > 
-> > It should be fairly straightforward to extract the test case from our
-> > repository into a standalone program.
+On Mon, Oct 19, 2020 at 10:36:53AM -0700, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
 > 
-> Can you check with this applied?
+> A break is not needed if it is preceded by a return
 > 
-> diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-> index fd12da80b6f2..05676722d9cd 100644
-> --- a/mm/process_vm_access.c
-> +++ b/mm/process_vm_access.c
-> @@ -273,7 +273,8 @@ static ssize_t process_vm_rw(pid_t pid,
->  		return rc;
->  	if (!iov_iter_count(&iter))
->  		goto free_iov_l;
-> -	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r, false);
-> +	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r,
-> +				in_compat_syscall());
+> Signed-off-by: Tom Rix <trix@redhat.com>
 
-_ouch_
+Acked-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-There's a bug, all right, but I'm not sure that this is all there is to it.
-For now it's probably the right fix, but...  Consider the fun trying to
-use that from 32bit process to access the memory of 64bit one.  IOW, we
-might want to add an explicit flag for "force 64bit addresses/sizes
-in rvec".
+/Jarkko
