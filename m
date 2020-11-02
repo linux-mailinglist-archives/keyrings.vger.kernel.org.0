@@ -2,86 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E52BA2A12DD
-	for <lists+keyrings@lfdr.de>; Sat, 31 Oct 2020 03:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B41A52A269E
+	for <lists+keyrings@lfdr.de>; Mon,  2 Nov 2020 10:08:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725937AbgJaCjJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 30 Oct 2020 22:39:09 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:35286 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725536AbgJaCjI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 30 Oct 2020 22:39:08 -0400
-X-Greylist: delayed 66465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 22:38:58 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=nK3IDYT+DT+afspoRk1vnh030x
-        JBANriWCpwGFqkJTHXsxgXz4zPu7XOm+ROYW+1LhSp6Xws1Wm9Gxv0Soi++3fpbt9358vEM1Vilpv
-        5xlCNIs/Y8Yak5vs3SvhE9OTE/TC6Vf04ze0iphAaRgUliWRhAsWS8s68bwFyUv4tdChHxOH/JwR2
-        Vv+jWIv637j1UH3aZ6QLvXZrjdEmRucUTVxZtH4VnCDjrc4XZi9EwE5rzVsYDmyiNG+eYB+1QY+/8
-        bPWWeacOm9DyYRD9g3bLyiVv0uincEH4/sdJ6fuUSabQfGsi095GX6rsmNCONVo4/rhE4INecsjOZ
-        9QdrBN4A==;
-Received: from [::1] (port=55352 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPRU-0006Ky-OT; Fri, 30 Oct 2020 16:07:24 +0800
+        id S1728296AbgKBJIF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Mon, 2 Nov 2020 04:08:05 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:56254 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728292AbgKBJID (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Nov 2020 04:08:03 -0500
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id uk-mta-2-3gt7SuvxPWOqa-ZpIA1B2g-1;
+ Mon, 02 Nov 2020 09:06:39 +0000
+X-MC-Unique: 3gt7SuvxPWOqa-ZpIA1B2g-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 2 Nov 2020 09:06:38 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Mon, 2 Nov 2020 09:06:38 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Greg KH' <gregkh@linuxfoundation.org>
+CC:     'David Hildenbrand' <david@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "kernel-team@android.com" <kernel-team@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAASOeCgAF+12CAAB+UKYAAAQNg///yIQCAD2i/YA==
+Date:   Mon, 2 Nov 2020 09:06:38 +0000
+Message-ID: <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
+References: <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+ <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com>
+ <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
+ <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
+ <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
+ <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
+ <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
+ <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
+ <20201023144718.GA2525489@kroah.com>
+In-Reply-To: <20201023144718.GA2525489@kroah.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:07:24 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <8970d4ac30f8022b0ae628d9b69a2d43@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+From: 'Greg KH'
+> Sent: 23 October 2020 15:47
+> 
+> On Fri, Oct 23, 2020 at 02:39:24PM +0000, David Laight wrote:
+> > From: David Hildenbrand
+> > > Sent: 23 October 2020 15:33
+> > ...
+> > > I just checked against upstream code generated by clang 10 and it
+> > > properly discards the upper 32bit via a mov w23 w2.
+> > >
+> > > So at least clang 10 indeed properly assumes we could have garbage and
+> > > masks it off.
+> > >
+> > > Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
+> > > behaves differently.
+> >
+> > We'll need the disassembly from a failing kernel image.
+> > It isn't that big to hand annotate.
+> 
+> I've worked around the merge at the moment in the android tree, but it
+> is still quite reproducable, and will try to get a .o file to
+> disassemble on Monday or so...
 
+Did this get properly resolved?
 
--- 
-Sir/Madam,
+	David
 
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
-Regards,
-John Galvan
-
----------------------------------------------------------------
-
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan
