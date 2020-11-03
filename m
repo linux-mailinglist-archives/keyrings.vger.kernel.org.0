@@ -2,135 +2,142 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 303DE2A32D6
-	for <lists+keyrings@lfdr.de>; Mon,  2 Nov 2020 19:23:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 201782A4A93
+	for <lists+keyrings@lfdr.de>; Tue,  3 Nov 2020 17:02:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725927AbgKBSXR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Mon, 2 Nov 2020 13:23:17 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:29922 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726338AbgKBSXQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Nov 2020 13:23:16 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-221-3eybHYmXNVuuSrMONPCpiQ-1; Mon, 02 Nov 2020 18:23:12 +0000
-X-MC-Unique: 3eybHYmXNVuuSrMONPCpiQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 2 Nov 2020 18:23:11 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 2 Nov 2020 18:23:11 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Greg KH' <gregkh@linuxfoundation.org>
-CC:     'David Hildenbrand' <david@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAASOeCgAF+12CAAB+UKYAAAQNg///yIQCAD2i/YIAAT+MAgABLYlA=
-Date:   Mon, 2 Nov 2020 18:23:11 +0000
-Message-ID: <c751d3a7796e45a8a2640e2ded59d708@AcuMS.aculab.com>
-References: <20201022121849.GA1664412@kroah.com>
- <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
- <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
- <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
- <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
- <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
- <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
- <20201023144718.GA2525489@kroah.com>
- <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
- <20201102135202.GA1016272@kroah.com>
-In-Reply-To: <20201102135202.GA1016272@kroah.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+        id S1727665AbgKCQCY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 Nov 2020 11:02:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727109AbgKCQCY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Nov 2020 11:02:24 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 385C4C0613D1
+        for <keyrings@vger.kernel.org>; Tue,  3 Nov 2020 08:02:24 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id i26so14009481pgl.5
+        for <keyrings@vger.kernel.org>; Tue, 03 Nov 2020 08:02:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=8p0zAqijMFY2LZHySc9B1ski8j200B9xN63VufhvfZE=;
+        b=WUvK9hiBfaewCF9lu/rnHA/ky1TO9SLKq5ubWrc5NfyBQalP1EDJFCgB620q5hzm8P
+         w7RqbA90o7pWxpiD+JQTGkZj/vELhrwHlo53vmxaXkdrHs56KSdUT8cmWchK9SdOLPsb
+         MIyRS6VCBLK3GkPdVZpsjiuVJ8eZo29MM7dRDd/oC3PF2hJu9WHHNg8Q3/eeqDnEVe8M
+         u5s/UYCObUpv8BdQ2ssY0JMUat1++qs66Y2pTlhfDXutXg95e2WmlZ0amNC2BUaQsQfu
+         T+70gsyMITdKOD5SRY5wpAN6KRH2geAbi9LnGmLunPGcay45ZutIZULvHh8iF/s+a1Js
+         Z2xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8p0zAqijMFY2LZHySc9B1ski8j200B9xN63VufhvfZE=;
+        b=IPvQ+KVcv27YbWCdMklWP1TTPAJmhz+PqsGCKSV9PdmekmZ/YUg/m9GQlWEImbTkq1
+         v8RgszX27PPITXJxvPgYHQupXDKRptSZ3Si6mmPCUg9U6kRSXDK+FkvH9hGk9FLyRyp7
+         TlVyt7gum3uFpjrmgz2NF8giTGxclL6eBbBLMjVxlK+1rjzkmWPniLUI3dRRiyC6GHIQ
+         RMDk9Jhho6dj6qMq1Ad710ZPoLUaPEOHakmfpwgmkexbB9pm5VgD9m04xX3rabVdPQcO
+         codhUXuM1+B1KIyh7xU8hsQ4kZ+47WVU2VHUHjZIlgQYj3ZGZh8tmNSgiIX7L1RplpJp
+         B+cg==
+X-Gm-Message-State: AOAM531y7484p1uZLgkbaZ7cSv1ui2KZlFsWh4oBBSiE8ydMM2q1ddrh
+        VjjTBTA+KZrZ1rPLS8QzQY7Fvw==
+X-Google-Smtp-Source: ABdhPJzP+u5vyjCsNCaso/eSJbT/0D07SqbTdgo7fO1H1p7jSMwcJ3JjzNbr2nmtIaOIuGQqaoxE5Q==
+X-Received: by 2002:a63:5466:: with SMTP id e38mr17855102pgm.23.1604419343676;
+        Tue, 03 Nov 2020 08:02:23 -0800 (PST)
+Received: from localhost.localdomain ([122.173.169.225])
+        by smtp.gmail.com with ESMTPSA id j140sm8471006pfd.216.2020.11.03.08.02.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Nov 2020 08:02:22 -0800 (PST)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
+        jejb@linux.ibm.com
+Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
+        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
+        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
+        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
+        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        op-tee@lists.trustedfirmware.org,
+        Sumit Garg <sumit.garg@linaro.org>
+Subject: [PATCH v8 0/4] Introduce TEE based Trusted Keys support
+Date:   Tue,  3 Nov 2020 21:31:42 +0530
+Message-Id: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: 'Greg KH'
-> Sent: 02 November 2020 13:52
-> 
-> On Mon, Nov 02, 2020 at 09:06:38AM +0000, David Laight wrote:
-> > From: 'Greg KH'
-> > > Sent: 23 October 2020 15:47
-> > >
-> > > On Fri, Oct 23, 2020 at 02:39:24PM +0000, David Laight wrote:
-> > > > From: David Hildenbrand
-> > > > > Sent: 23 October 2020 15:33
-> > > > ...
-> > > > > I just checked against upstream code generated by clang 10 and it
-> > > > > properly discards the upper 32bit via a mov w23 w2.
-> > > > >
-> > > > > So at least clang 10 indeed properly assumes we could have garbage and
-> > > > > masks it off.
-> > > > >
-> > > > > Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
-> > > > > behaves differently.
-> > > >
-> > > > We'll need the disassembly from a failing kernel image.
-> > > > It isn't that big to hand annotate.
-> > >
-> > > I've worked around the merge at the moment in the android tree, but it
-> > > is still quite reproducable, and will try to get a .o file to
-> > > disassemble on Monday or so...
-> >
-> > Did this get properly resolved?
-> 
-> For some reason, 5.10-rc2 fixed all of this up.  I backed out all of the
-> patches I had to revert to get 5.10-rc1 to work properly, and then did
-> the merge and all is well.
-> 
-> It must have been something to do with the compat changes in this same
-> area that went in after 5.10-rc1, and something got reorganized in the
-> files somehow.  I really do not know, and at the moment, don't have the
-> time to track it down anymore.  So for now, I'd say it's all good, sorry
-> for the noise.
+Add support for TEE based trusted keys where TEE provides the functionality
+to seal and unseal trusted keys using hardware unique key. Also, this is
+an alternative in case platform doesn't possess a TPM device.
 
-Hopefully it won't appear again.
+This patch-set has been tested with OP-TEE based early TA which is already
+merged in upstream [1].
 
-Saved me spending a day off reading arm64 assembler.
+[1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
 
-	David
+Changes in v8:
+1. Added static calls support instead of indirect calls.
+2. Documented trusted keys source module parameter.
+3. Refined patch #1 commit message discription.
+4. Addressed misc. comments on patch #2.
+5. Added myself as Trusted Keys co-maintainer instead.
+6. Rebased to latest tpmdd master.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+Changes in v7:
+1. Added a trusted.source module parameter in order to enforce user's
+   choice in case a particular platform posses both TPM and TEE.
+2. Refine commit description for patch #1.
+
+Changes in v6:
+1. Revert back to dynamic detection of trust source.
+2. Drop author mention from trusted_core.c and trusted_tpm1.c files.
+3. Rebased to latest tpmdd/master.
+
+Changes in v5:
+1. Drop dynamic detection of trust source and use compile time flags
+   instead.
+2. Rename trusted_common.c -> trusted_core.c.
+3. Rename callback: cleanup() -> exit().
+4. Drop "tk" acronym.
+5. Other misc. comments.
+6. Added review tags for patch #3 and #4.
+
+Changes in v4:
+1. Pushed independent TEE features separately:
+  - Part of recent TEE PR: https://lkml.org/lkml/2020/5/4/1062
+2. Updated trusted-encrypted doc with TEE as a new trust source.
+3. Rebased onto latest tpmdd/master.
+
+Changes in v3:
+1. Update patch #2 to support registration of multiple kernel pages.
+2. Incoporate dependency patch #4 in this patch-set:
+   https://patchwork.kernel.org/patch/11091435/
+
+Changes in v2:
+1. Add reviewed-by tags for patch #1 and #2.
+2. Incorporate comments from Jens for patch #3.
+3. Switch to use generic trusted keys framework.
+
+Sumit Garg (4):
+  KEYS: trusted: Add generic trusted keys framework
+  KEYS: trusted: Introduce TEE based Trusted Keys
+  doc: trusted-encrypted: updates with TEE as a new trust source
+  MAINTAINERS: Add myself as Trusted Keys co-maintainer
+
+ Documentation/admin-guide/kernel-parameters.txt   |  12 +
+ Documentation/security/keys/trusted-encrypted.rst | 203 +++++++++++--
+ MAINTAINERS                                       |   2 +
+ include/keys/trusted-type.h                       |  47 +++
+ include/keys/trusted_tee.h                        |  55 ++++
+ include/keys/trusted_tpm.h                        |  17 +-
+ security/keys/trusted-keys/Makefile               |   2 +
+ security/keys/trusted-keys/trusted_core.c         | 354 ++++++++++++++++++++++
+ security/keys/trusted-keys/trusted_tee.c          | 278 +++++++++++++++++
+ security/keys/trusted-keys/trusted_tpm1.c         | 336 ++++----------------
+ 10 files changed, 979 insertions(+), 327 deletions(-)
+ create mode 100644 include/keys/trusted_tee.h
+ create mode 100644 security/keys/trusted-keys/trusted_core.c
+ create mode 100644 security/keys/trusted-keys/trusted_tee.c
+
+-- 
+2.7.4
 
