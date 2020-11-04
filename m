@@ -2,98 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662442A4AAB
-	for <lists+keyrings@lfdr.de>; Tue,  3 Nov 2020 17:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 211452A5BB7
+	for <lists+keyrings@lfdr.de>; Wed,  4 Nov 2020 02:18:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728258AbgKCQDM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 3 Nov 2020 11:03:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33786 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727706AbgKCQDM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Nov 2020 11:03:12 -0500
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2FC8C0613D1
-        for <keyrings@vger.kernel.org>; Tue,  3 Nov 2020 08:03:11 -0800 (PST)
-Received: by mail-pl1-x641.google.com with SMTP id x23so8772286plr.6
-        for <keyrings@vger.kernel.org>; Tue, 03 Nov 2020 08:03:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=zDggAsDI739UznsdJGV123TENJ6R94pJsrrMJ096A5w=;
-        b=Yogn/KZ7ijrqJ0T2z6E6jJ/rsJS/CsbY+bDuFIpVxXfqjMcWW2r08cwmXmAnkPO8Zk
-         c7p/xjaHTOXmoh8uNv5PKN9wLS4o5WIjsMHsU1kQq5RaEOxjg0bxrN7YquTnw/jETLzN
-         6O2kQyddalRqkFMq+FMzq6T1IBEUisid1qQEJQGyA09dLUaAvuP+4K8B6p04KoC/t/yB
-         dY4VycxSHAP9qayaKCSYcfYI4XUqe8Z6W/dVieZiJG51iCGiehSC/g42n2M4ylVHfJhE
-         gz+Q5wKalOZ/rS17Pyx2kfsZINr2mm7Q13P09PN8q5rP4/huSmsGxOCUU2wKZv1EorO5
-         8GDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=zDggAsDI739UznsdJGV123TENJ6R94pJsrrMJ096A5w=;
-        b=dOOiXAuu5G2Q/t1pDnPWUvthTnWevXNKgX1BrHILtgNX7VD6B83vthDKgIVSXd/iRW
-         S7yobBYvXJRHTg1iJryDC75A7dmufKJtj2r6/ykuzMRxzbD3GvoSV+BXjY9zlC/hdWBY
-         S2xUsU1uLrDq4924XK+78Pyn1AWAHqWyIX/8asOAEQLcHawK9GZKVnZwieESMqhQj0iQ
-         3qtlsVuzXbvYI4AJm6O8xltKd18iyGrRPtT9KW9grlx7C+3T5W2Dm9ZY7lHVjEOSFCm3
-         81WreadeQhKlVNxDBWO5MNOfNyCDbCufuRZJPUdAmwBhceOSaIGG4R4xT0/Am1QjY449
-         XQxQ==
-X-Gm-Message-State: AOAM5313wYj5YLjA1tlXkIUa+1PyiFQ4WUD+ukF9CZbZ9pdX0budmQaX
-        tRf9tOTysvLzn3nmh9wG6Tniww==
-X-Google-Smtp-Source: ABdhPJzq35Qf86wUQrahPKwseE7thoRB6fMPDxpfeiSBGzmY3jo07CAGFTuARsNI+6+8+yZsb+pOVQ==
-X-Received: by 2002:a17:902:6942:b029:d6:18b0:8a with SMTP id k2-20020a1709026942b02900d618b0008amr25452573plt.23.1604419391553;
-        Tue, 03 Nov 2020 08:03:11 -0800 (PST)
-Received: from localhost.localdomain ([122.173.169.225])
-        by smtp.gmail.com with ESMTPSA id j140sm8471006pfd.216.2020.11.03.08.03.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2020 08:03:10 -0800 (PST)
-From:   Sumit Garg <sumit.garg@linaro.org>
-To:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
-        jejb@linux.ibm.com
-Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
-        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
-        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
-        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
-        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        op-tee@lists.trustedfirmware.org,
-        Sumit Garg <sumit.garg@linaro.org>
-Subject: [PATCH v8 4/4] MAINTAINERS: Add myself as Trusted Keys co-maintainer
-Date:   Tue,  3 Nov 2020 21:31:46 +0530
-Message-Id: <1604419306-26105-5-git-send-email-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
+        id S1730278AbgKDBSY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 Nov 2020 20:18:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49732 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728157AbgKDBSY (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 3 Nov 2020 20:18:24 -0500
+Received: from kernel.org (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D068223EA;
+        Wed,  4 Nov 2020 01:18:20 +0000 (UTC)
+Date:   Wed, 4 Nov 2020 03:18:17 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        stable@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Kent Yoder <key@linux.vnet.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "H. Peter Anvin" <hpa@linux.intel.com>,
+        David Safford <safford@linux.vnet.ibm.com>,
+        "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 1/3,RESEND 2] KEYS: trusted: Fix incorrect handling of
+ tpm_get_random()
+Message-ID: <20201104011817.GB20387@kernel.org>
+References: <20201013025156.111305-1-jarkko.sakkinen@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201013025156.111305-1-jarkko.sakkinen@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add a Trusted Keys co-maintainer entry in order to support TEE based
-Trusted Keys framework.
+When tpm_get_random() was introduced, it defined the following API for the
+return value:
 
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+1. A positive value tells how many bytes of random data was generated.
+2. A negative value on error.
+
+However, in the call sites the API was used incorrectly, i.e. as it would
+only return negative values and otherwise zero. Returning he positive read
+counts to the user space does not make any possible sense.
+
+Fix this by returning -EIO when tpm_get_random() returns a positive value.
+
+Fixes: 41ab999c80f1 ("tpm: Move tpm_get_random api into the TPM device driver")
+Cc: stable@vger.kernel.org
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Kent Yoder <key@linux.vnet.ibm.com>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ security/keys/trusted-keys/trusted_tpm1.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e73636b..52687bb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9732,11 +9732,13 @@ KEYS-TRUSTED
- M:	James Bottomley <jejb@linux.ibm.com>
- M:	Jarkko Sakkinen <jarkko@kernel.org>
- M:	Mimi Zohar <zohar@linux.ibm.com>
-+M:	Sumit Garg <sumit.garg@linaro.org>
- L:	linux-integrity@vger.kernel.org
- L:	keyrings@vger.kernel.org
- S:	Supported
- F:	Documentation/security/keys/trusted-encrypted.rst
- F:	include/keys/trusted-type.h
-+F:	include/keys/trusted_tee.h
- F:	include/keys/trusted_tpm.h
- F:	security/keys/trusted-keys/
+diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+index b9fe02e5f84f..c7b1701cdac5 100644
+--- a/security/keys/trusted-keys/trusted_tpm1.c
++++ b/security/keys/trusted-keys/trusted_tpm1.c
+@@ -403,9 +403,12 @@ static int osap(struct tpm_buf *tb, struct osapsess *s,
+ 	int ret;
  
+ 	ret = tpm_get_random(chip, ononce, TPM_NONCE_SIZE);
+-	if (ret != TPM_NONCE_SIZE)
++	if (ret < 0)
+ 		return ret;
+ 
++	if (ret != TPM_NONCE_SIZE)
++		return -EIO;
++
+ 	tpm_buf_reset(tb, TPM_TAG_RQU_COMMAND, TPM_ORD_OSAP);
+ 	tpm_buf_append_u16(tb, type);
+ 	tpm_buf_append_u32(tb, handle);
+@@ -496,8 +499,12 @@ static int tpm_seal(struct tpm_buf *tb, uint16_t keytype,
+ 		goto out;
+ 
+ 	ret = tpm_get_random(chip, td->nonceodd, TPM_NONCE_SIZE);
++	if (ret < 0)
++		return ret;
++
+ 	if (ret != TPM_NONCE_SIZE)
+-		goto out;
++		return -EIO;
++
+ 	ordinal = htonl(TPM_ORD_SEAL);
+ 	datsize = htonl(datalen);
+ 	pcrsize = htonl(pcrinfosize);
+@@ -601,9 +608,12 @@ static int tpm_unseal(struct tpm_buf *tb,
+ 
+ 	ordinal = htonl(TPM_ORD_UNSEAL);
+ 	ret = tpm_get_random(chip, nonceodd, TPM_NONCE_SIZE);
++	if (ret < 0)
++		return ret;
++
+ 	if (ret != TPM_NONCE_SIZE) {
+ 		pr_info("trusted_key: tpm_get_random failed (%d)\n", ret);
+-		return ret;
++		return -EIO;
+ 	}
+ 	ret = TSS_authhmac(authdata1, keyauth, TPM_NONCE_SIZE,
+ 			   enonce1, nonceodd, cont, sizeof(uint32_t),
+@@ -1013,8 +1023,12 @@ static int trusted_instantiate(struct key *key,
+ 	case Opt_new:
+ 		key_len = payload->key_len;
+ 		ret = tpm_get_random(chip, payload->key, key_len);
++		if (ret < 0)
++			goto out;
++
+ 		if (ret != key_len) {
+ 			pr_info("trusted_key: key_create failed (%d)\n", ret);
++			ret = -EIO;
+ 			goto out;
+ 		}
+ 		if (tpm2)
 -- 
-2.7.4
+2.25.1
 
