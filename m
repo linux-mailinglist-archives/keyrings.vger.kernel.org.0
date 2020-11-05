@@ -2,50 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DAE92A765A
-	for <lists+keyrings@lfdr.de>; Thu,  5 Nov 2020 05:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A8D02A765F
+	for <lists+keyrings@lfdr.de>; Thu,  5 Nov 2020 05:25:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731124AbgKEEYe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 Nov 2020 23:24:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34906 "EHLO
+        id S1731118AbgKEEZA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Nov 2020 23:25:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731123AbgKEEYc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Nov 2020 23:24:32 -0500
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DCE7C0613CF;
-        Wed,  4 Nov 2020 20:24:32 -0800 (PST)
-Received: by mail-pf1-x443.google.com with SMTP id x13so352940pfa.9;
-        Wed, 04 Nov 2020 20:24:32 -0800 (PST)
+        with ESMTP id S1730078AbgKEEY7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Nov 2020 23:24:59 -0500
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202EEC0613CF;
+        Wed,  4 Nov 2020 20:24:59 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id x13so399577pgp.7;
+        Wed, 04 Nov 2020 20:24:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Fk1XjhsIVpehEyUHjISdm6QYmnqvAVbB3cg/2P5Gk18=;
-        b=fsdDrj9ulrPJymyx5BMLxNn/9u3dFjjW3GuKGSis2ZqEO+5vgwbnLLa6DwGBp2Mo1F
-         6oNXLNPYHrASASdw/N9mIaGJHDOoK+SafQXeEC7Y+HS3Eos9u8QT4RtRBbZqau5rLpV8
-         siPoWc1Aam1/XLWeSftRSleELG0MD7xEGPFBkcb0mADRrHjzi2cJVmhnmBD6lCgDhxyx
-         vY1KYea19IXOUQgG7EBo/26D4nMjcgh5VbJvzzLpoFz5mRAvoB4FcEMouIXQCcELO2SN
-         TFPZqM5eFzbRKN2CNI4tITgg5M6U74vuny+khO8L4hhA+iimBQF0+lGvC7S9IM022O/t
-         LRqw==
+        bh=rEVQORojpxPILZoW25n2HNyuoMNfuJyQRA19mYILOf8=;
+        b=i71nKCxm/Rk7Qe0vfqXmlNOIbt9fIuievRqcCn5TJ1yWIdb59otcj93oz7j+gpZZWo
+         Bp6lTHoFkgmmVJDji7oItHa5kc9VjRnHjZzsPiy/LrWinbv+5uRpmvxIuhDnTMid3S3x
+         x9JmlkWfqwTYLVEqsdgw1Shol9H+Mp4WsGw0er643fBik2QBf/oBlbKOXNg8BVHq1P7d
+         eweO2JBa6jgeNWz99UIYx/pKdjGP0px9q+CsV9n/AZpXUCCjEIpKBze+wCLNFthZ8LuJ
+         CySDEmIbmdVIhQxI03oDD+oIR2gX3i68ERDpDX2/L3OAVGtHDcT3nx+1ihH9vgWSyMue
+         A8Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Fk1XjhsIVpehEyUHjISdm6QYmnqvAVbB3cg/2P5Gk18=;
-        b=HPAao61VQEblQuGGoGGeMyzNMAsIX8iRLCOAtAA+Z8OrvriuacctZZs6FzkWe6DTdd
-         efvX1BFbMdlHpBTPpkHHa+KBPA3E5vonjnLQiHr/V1hcbu4E8NBHaiEd9uGugbTNFpxx
-         u4njpsJB3cC7Ok0LcA3EsdZtiikL5weXQHxd/9o/taGjcwjcCT/3E2C+gS0PDzOlYl1z
-         Vvf9HtCGb5fdJ/OxIu2NGMQhyyWuyGY+65cOvxPC66uLHqIXke4h1e7DJtklcGTIl+pv
-         W6KdOXHT36082xFHiKu8ABU3zcQ+wVH/2yzYNXayA4f6KApfr525+L0Skg3WTolYR89z
-         9+QQ==
-X-Gm-Message-State: AOAM532R70TZk49egSsMcO8ALDdA8B3cnjmQs/ooSmLbk6EXPhsTfSZ/
-        lLQCKMODaAphX5qLknp8rM2YSsGp8Bs=
-X-Google-Smtp-Source: ABdhPJwYYSxIsD0L45wrkYlchreKYoRYL2ClZqiXC3s448F8zN8aaIH/bi2tvRIgr3i1LEht9iXkwA==
-X-Received: by 2002:a05:6a00:22c6:b029:18b:3bb8:8b6d with SMTP id f6-20020a056a0022c6b029018b3bb88b6dmr607779pfj.31.1604550272199;
-        Wed, 04 Nov 2020 20:24:32 -0800 (PST)
+        bh=rEVQORojpxPILZoW25n2HNyuoMNfuJyQRA19mYILOf8=;
+        b=EFHxwh/aKzxhOhj40dQzqrXRW8Vl58l0Zs4S2FTh6O7awn9Ycn8z+tpwMznDWwDOfY
+         ZyrJMOZ1k2ZzKzMH2OeB+OtiStfrR0n6uo0k9nGAvmoLu2vpEFBZxpMH5LbSQSW74SjX
+         BOxBZsb6COLjNcRuxBi77N/iARbm7MKYWz/hq78QAYfX5NgCDcfRIFJECYAxQP9TOQPd
+         hhnBKuQfCz2aipwmZHrs9yUFGDeC6bQSGuflmrk79xlAC6bVYfxxVbsjOEw+kJFLc6TY
+         3YHbJnGEBPOhw2pt6xQ/4TwoKYV7YSdrkb2DknqXOq+s2q4keDeEmeVUDO/rrVuJF/Qv
+         F7pw==
+X-Gm-Message-State: AOAM5336vik3CNGFz6NYeb6Db1yYXQ1pt7G7FNm3qhYhGMthxT3+9jRg
+        uDypJdr84Ztv73KtKZA9L/k=
+X-Google-Smtp-Source: ABdhPJxxSyyliKXbv7VU2uhEsbi4aEkX5Awvipq0CP4TmL0j/U/T8uSPpKMflgkHnq9+9ELOvhfBgQ==
+X-Received: by 2002:aa7:8b50:0:b029:18a:adb4:8411 with SMTP id i16-20020aa78b500000b029018aadb48411mr775573pfd.66.1604550298712;
+        Wed, 04 Nov 2020 20:24:58 -0800 (PST)
 Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id z22sm472782pfa.220.2020.11.04.20.24.29
+        by smtp.gmail.com with ESMTPSA id z22sm472782pfa.220.2020.11.04.20.24.55
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Nov 2020 20:24:31 -0800 (PST)
+        Wed, 04 Nov 2020 20:24:58 -0800 (PST)
 From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
 X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
 To:     David Howells <dhowells@redhat.com>
@@ -55,9 +55,9 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Randy Dunlap <rdunlap@infradead.org>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH v2 1/2] X.509: Add CodeSigning extended key usage parsing
-Date:   Thu,  5 Nov 2020 12:24:05 +0800
-Message-Id: <20201105042406.5783-2-jlee@suse.com>
+Subject: [PATCH v2 2/2] PKCS#7: Check codeSigning EKU for kernel module and kexec pe verification
+Date:   Thu,  5 Nov 2020 12:24:06 +0800
+Message-Id: <20201105042406.5783-3-jlee@suse.com>
 X-Mailer: git-send-email 2.12.3
 In-Reply-To: <20201105042406.5783-1-jlee@suse.com>
 References: <20201105042406.5783-1-jlee@suse.com>
@@ -65,91 +65,137 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This patch adds the logic for parsing the CodeSign extended key usage
-extension in X.509. The parsing result will be set to the eku flag
-which is carried by public key. It can be used in the PKCS#7
-verification.
+This patch adds the logic for checking the CodeSigning extended
+key usage when verifying signature of kernel module or
+kexec PE binary in PKCS#7.
 
 Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
 ---
- crypto/asymmetric_keys/x509_cert_parser.c | 24 ++++++++++++++++++++++++
- include/crypto/public_key.h               |  1 +
- include/linux/oid_registry.h              |  5 +++++
- 3 files changed, 30 insertions(+)
+ certs/system_keyring.c               |  2 +-
+ crypto/asymmetric_keys/Kconfig       |  9 +++++++++
+ crypto/asymmetric_keys/pkcs7_trust.c | 37 +++++++++++++++++++++++++++++++++---
+ include/crypto/pkcs7.h               |  3 ++-
+ 4 files changed, 46 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 52c9b455fc7d..65721313b265 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -497,6 +497,8 @@ int x509_process_extension(void *context, size_t hdrlen,
- 	struct x509_parse_context *ctx = context;
- 	struct asymmetric_key_id *kid;
- 	const unsigned char *v = value;
-+	int i = 0;
-+	enum OID oid;
- 
- 	pr_debug("Extension: %u\n", ctx->last_oid);
- 
-@@ -526,6 +528,28 @@ int x509_process_extension(void *context, size_t hdrlen,
- 		return 0;
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index 798291177186..4104f5465d8a 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -242,7 +242,7 @@ int verify_pkcs7_message_sig(const void *data, size_t len,
+ 			goto error;
+ 		}
  	}
+-	ret = pkcs7_validate_trust(pkcs7, trusted_keys);
++	ret = pkcs7_validate_trust(pkcs7, trusted_keys, usage);
+ 	if (ret < 0) {
+ 		if (ret == -ENOKEY)
+ 			pr_devel("PKCS#7 signature not signed with a trusted key\n");
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 1f1f004dc757..1754812df989 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -96,4 +96,13 @@ config SIGNED_PE_FILE_VERIFICATION
+ 	  This option provides support for verifying the signature(s) on a
+ 	  signed PE binary.
  
-+	if (ctx->last_oid == OID_extKeyUsage) {
-+		if (v[0] != ((ASN1_UNIV << 6) | ASN1_CONS_BIT | ASN1_SEQ) ||
-+		    v[1] != vlen - 2)
-+			return -EBADMSG;
-+		i += 2;
++config CHECK_CODESIGN_EKU
++	bool "Check codeSigning extended key usage"
++	depends on PKCS7_MESSAGE_PARSER=y
++	depends on SYSTEM_DATA_VERIFICATION
++	help
++	  This option provides support for checking the codeSigning extended
++	  key usage when verifying the signature in PKCS#7. It affects kernel
++	  module verification and kexec PE binary verification.
 +
-+		while (i < vlen) {
-+			/* A 10 bytes EKU OID Octet blob =
-+			 * ASN1_OID + size byte + 8 bytes OID */
-+			if (v[i] != ASN1_OID || v[i + 1] != 8 || (i + 10) > vlen)
-+				return -EBADMSG;
+ endif # ASYMMETRIC_KEY_TYPE
+diff --git a/crypto/asymmetric_keys/pkcs7_trust.c b/crypto/asymmetric_keys/pkcs7_trust.c
+index 61af3c4d82cc..1d2318ff63db 100644
+--- a/crypto/asymmetric_keys/pkcs7_trust.c
++++ b/crypto/asymmetric_keys/pkcs7_trust.c
+@@ -16,12 +16,36 @@
+ #include <crypto/public_key.h>
+ #include "pkcs7_parser.h"
+ 
++#ifdef CONFIG_CHECK_CODESIGN_EKU
++static bool check_codesign_eku(struct key *key,
++			     enum key_being_used_for usage)
++{
++	struct public_key *public_key = key->payload.data[asym_crypto];
 +
-+			oid = look_up_OID(v + i + 2, v[i + 1]);
-+			if (oid == OID_codeSigning) {
-+				ctx->cert->pub->eku |= EKU_codeSigning;
-+			}
-+			i += 10;
-+		}
-+		pr_debug("extKeyUsage: %d\n", ctx->cert->pub->eku);
-+		return 0;
++	switch (usage) {
++	case VERIFYING_MODULE_SIGNATURE:
++	case VERIFYING_KEXEC_PE_SIGNATURE:
++		return !!(public_key->eku & EKU_codeSigning);
++	default:
++		break;
 +	}
++	return true;
++}
++#else
++static bool check_codesign_eku(struct key *key,
++			     enum key_being_used_for usage)
++{
++	return true;
++}
++#endif
 +
- 	return 0;
- }
+ /**
+  * Check the trust on one PKCS#7 SignedInfo block.
+  */
+ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
+ 				    struct pkcs7_signed_info *sinfo,
+-				    struct key *trust_keyring)
++				    struct key *trust_keyring,
++				    enum key_being_used_for usage)
+ {
+ 	struct public_key_signature *sig = sinfo->sig;
+ 	struct x509_certificate *x509, *last = NULL, *p;
+@@ -112,6 +136,12 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
+ 	return -ENOKEY;
  
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 948c5203ca9c..07a1b28460a2 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -29,6 +29,7 @@ struct public_key {
- 	bool key_is_private;
- 	const char *id_type;
- 	const char *pkey_algo;
-+	unsigned int eku : 9;      /* Extended Key Usage (9-bit) */
- };
+ matched:
++	if (!check_codesign_eku(key, usage)) {
++		pr_warn("sinfo %u: The signer %x key is not CodeSigning\n",
++			sinfo->index, key_serial(key));
++		key_put(key);
++		return -ENOKEY;
++	}
+ 	ret = verify_signature(key, sig);
+ 	key_put(key);
+ 	if (ret < 0) {
+@@ -156,7 +186,8 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
+  * May also return -ENOMEM.
+  */
+ int pkcs7_validate_trust(struct pkcs7_message *pkcs7,
+-			 struct key *trust_keyring)
++			 struct key *trust_keyring,
++			 enum key_being_used_for usage)
+ {
+ 	struct pkcs7_signed_info *sinfo;
+ 	struct x509_certificate *p;
+@@ -167,7 +198,7 @@ int pkcs7_validate_trust(struct pkcs7_message *pkcs7,
+ 		p->seen = false;
  
- extern void public_key_free(struct public_key *key);
-diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-index 4462ed2c18cd..e20e8eb53b21 100644
---- a/include/linux/oid_registry.h
-+++ b/include/linux/oid_registry.h
-@@ -113,9 +113,14 @@ enum OID {
- 	OID_SM2_with_SM3,		/* 1.2.156.10197.1.501 */
- 	OID_sm3WithRSAEncryption,	/* 1.2.156.10197.1.504 */
+ 	for (sinfo = pkcs7->signed_infos; sinfo; sinfo = sinfo->next) {
+-		ret = pkcs7_validate_trust_one(pkcs7, sinfo, trust_keyring);
++		ret = pkcs7_validate_trust_one(pkcs7, sinfo, trust_keyring, usage);
+ 		switch (ret) {
+ 		case -ENOKEY:
+ 			continue;
+diff --git a/include/crypto/pkcs7.h b/include/crypto/pkcs7.h
+index 38ec7f5f9041..b3b48240ba73 100644
+--- a/include/crypto/pkcs7.h
++++ b/include/crypto/pkcs7.h
+@@ -30,7 +30,8 @@ extern int pkcs7_get_content_data(const struct pkcs7_message *pkcs7,
+  * pkcs7_trust.c
+  */
+ extern int pkcs7_validate_trust(struct pkcs7_message *pkcs7,
+-				struct key *trust_keyring);
++				struct key *trust_keyring,
++				enum key_being_used_for usage);
  
-+	/* Extended key purpose OIDs [RFC 5280] */
-+	OID_codeSigning,		/* 1.3.6.1.5.5.7.3.3 */
-+
- 	OID__NR
- };
- 
-+#define EKU_codeSigning	(1 << 2)
-+
- extern enum OID look_up_OID(const void *data, size_t datasize);
- extern int sprint_oid(const void *, size_t, char *, size_t);
- extern int sprint_OID(enum OID, char *, size_t);
+ /*
+  * pkcs7_verify.c
 -- 
 2.16.4
 
