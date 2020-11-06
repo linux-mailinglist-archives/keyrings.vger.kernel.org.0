@@ -2,57 +2,93 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E7B2A97C7
-	for <lists+keyrings@lfdr.de>; Fri,  6 Nov 2020 15:38:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 968142A97E5
+	for <lists+keyrings@lfdr.de>; Fri,  6 Nov 2020 15:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbgKFOi5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 6 Nov 2020 09:38:57 -0500
-Received: from out4436.biz.mail.alibaba.com ([47.88.44.36]:58309 "EHLO
-        out4436.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726565AbgKFOi5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Nov 2020 09:38:57 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=alex.shi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0UERVqRn_1604673515;
-Received: from aliy80.localdomain(mailfrom:alex.shi@linux.alibaba.com fp:SMTPD_---0UERVqRn_1604673515)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 06 Nov 2020 22:38:36 +0800
-From:   Alex Shi <alex.shi@linux.alibaba.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] certs/blacklist: fix kernel doc interface issue
-Date:   Fri,  6 Nov 2020 22:38:33 +0800
-Message-Id: <1604673513-29088-1-git-send-email-alex.shi@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726317AbgKFOxB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 6 Nov 2020 09:53:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41134 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726694AbgKFOxB (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 6 Nov 2020 09:53:01 -0500
+Received: from kernel.org (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 68C9921556;
+        Fri,  6 Nov 2020 14:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604674380;
+        bh=EFmjPlOdyLT5ZNZK+D5Ee4aaKlYdMVdLhDBsCsU5sfI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K/OUy9MS5Am1Y+Darp4BPkNby574zAigogMyhAp4k8pvYpHAxPOYk4gX4KCmd8ecI
+         Ns7qUatjY6s1MEBfBIW8TWTkmlIs43PQiO60Kf9f1rcPqRnr45bVNb3AR7jD6Ucwlp
+         EqKT0+YVEJPn0xwiDQCx3AXVdCbVYsK1OPdwAWDk=
+Date:   Fri, 6 Nov 2020 16:52:52 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Subject: Re: [PATCH v8 0/4] Introduce TEE based Trusted Keys support
+Message-ID: <20201106145252.GA10434@kernel.org>
+References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
+ <20201105050736.GA702944@kernel.org>
+ <CAFA6WYPetvod-Wov2n_L5TL771j+-kt+_csyWYT-uM=haEKMZQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFA6WYPetvod-Wov2n_L5TL771j+-kt+_csyWYT-uM=haEKMZQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-certs/blacklist.c:84: warning: Function parameter or member 'hash' not
-described in 'mark_hash_blacklisted'
+On Fri, Nov 06, 2020 at 03:02:41PM +0530, Sumit Garg wrote:
+> On Thu, 5 Nov 2020 at 10:37, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Tue, Nov 03, 2020 at 09:31:42PM +0530, Sumit Garg wrote:
+> > > Add support for TEE based trusted keys where TEE provides the functionality
+> > > to seal and unseal trusted keys using hardware unique key. Also, this is
+> > > an alternative in case platform doesn't possess a TPM device.
+> > >
+> > > This patch-set has been tested with OP-TEE based early TA which is already
+> > > merged in upstream [1].
+> >
+> > Is the new RPI400 computer a platform that can be used for testing
+> > patch sets like this? I've been looking for a while something ARM64
+> > based with similar convenience as Intel NUC's, and on the surface
+> > this new RPI product looks great for kernel testing purposes.
+> 
+> Here [1] is the list of supported versions of Raspberry Pi in OP-TEE.
+> The easiest approach would be to pick up a supported version or else
+> do an OP-TEE port for an unsupported one (which should involve minimal
+> effort).
+> 
+> [1] https://optee.readthedocs.io/en/latest/building/devices/rpi3.html#what-versions-of-raspberry-pi-will-work
+> 
+> -Sumit
 
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
-Cc: David Howells <dhowells@redhat.com> 
-Cc: David Woodhouse <dwmw2@infradead.org> 
-Cc: keyrings@vger.kernel.org 
-Cc: linux-kernel@vger.kernel.org 
----
- certs/blacklist.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If porting is doable, then I'll just order RPI 400, and test with QEMU
+up until either I port OP-TEE myself or someone else does it.
 
-diff --git a/certs/blacklist.c b/certs/blacklist.c
-index 6514f9ebc943..02f1016ce6e8 100644
---- a/certs/blacklist.c
-+++ b/certs/blacklist.c
-@@ -78,7 +78,7 @@ static void blacklist_describe(const struct key *key, struct seq_file *m)
- 
- /**
-  * mark_hash_blacklisted - Add a hash to the system blacklist
-- * @hash - The hash as a hex string with a type prefix (eg. "tbs:23aa429783")
-+ * @hash: - The hash as a hex string with a type prefix (eg. "tbs:23aa429783")
-  */
- int mark_hash_blacklisted(const char *hash)
- {
--- 
-1.8.3.1
+For seldom ARM testing, RPI 400 is really convenient device with its
+boxed form factor.
 
+/Jarkko
