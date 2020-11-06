@@ -2,176 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ECE32A92CB
-	for <lists+keyrings@lfdr.de>; Fri,  6 Nov 2020 10:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E7B2A97C7
+	for <lists+keyrings@lfdr.de>; Fri,  6 Nov 2020 15:38:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726610AbgKFJcz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 6 Nov 2020 04:32:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53610 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbgKFJcy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Nov 2020 04:32:54 -0500
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCFBC0613CF
-        for <keyrings@vger.kernel.org>; Fri,  6 Nov 2020 01:32:53 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id v18so688832ljc.3
-        for <keyrings@vger.kernel.org>; Fri, 06 Nov 2020 01:32:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0O2pgo+UmfykEgd2uLe7m+qSlQ1nNk7dEj4yrwl58uc=;
-        b=PCF3l3Ux3vXSR5kq06buJzj4g2GvzwIdDnPfwEhAliNGMQHb2EJ8ea6CIuUPQqYO0l
-         MH2/8fMTEw5ILQZPz6XCopiBtBYIfavA0rSo2PS/TtPvNoGLbYyg5+8M11pfBw+XRYo8
-         zUwHn4AP/U596zU00e5leiBdAVOoqgMkc1BTnHl1/j5VFjIY8N+HPisMfLKA95pZRKVM
-         xyqolq45WIaB2bOJ21n3+EBkkokbPdX9zHpsVFN64JB8Y5jfk9b8osgV4oyXljOQseTm
-         h2+dW1o2oOgqTv1NjsyLLTEKA6nAd6KAW2L6LZUbJc6kPDgfKAIYXnlDsAJB5dHkh7tX
-         GiIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0O2pgo+UmfykEgd2uLe7m+qSlQ1nNk7dEj4yrwl58uc=;
-        b=ejnbaQTAYyuzF3bzZB5Iw9BDfisN3yfEPVJOq/HYgKV03rfrkm8PfyJ7Mt7w5aXTfT
-         xP2GDaIcnCOEt+NuJsUpGz2PwbpipjllysqfJ4InafJn3JmZMo4lELAQR7j2sm0+FVr+
-         ueNasXV5rAYEmwTf6/urgtNRa3PH59mcT/0dMFBA937JncbLChvPrHrV5TEx9X/VeDTo
-         Iqng2O3LlzJujB9sb9D5NvHhJQjvoBhRb01S9jh2ylDfVykK3ldfpFl+oDEGZC9c5MRk
-         PXUo+HVC6e8LfD+A1gffV+pKOeMcCVNsJszjGdrnKkmsMyoP5hxC1vvW9rBipLIsMeH8
-         kr5g==
-X-Gm-Message-State: AOAM531bByuWb2qCg5L+srMWeb/4Vsbx+DOSxUNVywZisbNJ62iE7848
-        JvUSX/fshsHAbQsFNmdmL2bEc+LnIzOmaox5g9WUrQ==
-X-Google-Smtp-Source: ABdhPJyRRWazWWTTUshMunq0JJz7PYcu9OaGawq4/1rjyTHlsj7AVCjaucCm9rask/L4TdYyqxDT6p+HAgCzzJBgLhs=
-X-Received: by 2002:a2e:9013:: with SMTP id h19mr405821ljg.4.1604655172333;
- Fri, 06 Nov 2020 01:32:52 -0800 (PST)
-MIME-Version: 1.0
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org> <20201105050736.GA702944@kernel.org>
-In-Reply-To: <20201105050736.GA702944@kernel.org>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Fri, 6 Nov 2020 15:02:41 +0530
-Message-ID: <CAFA6WYPetvod-Wov2n_L5TL771j+-kt+_csyWYT-uM=haEKMZQ@mail.gmail.com>
-Subject: Re: [PATCH v8 0/4] Introduce TEE based Trusted Keys support
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Content-Type: text/plain; charset="UTF-8"
+        id S1726694AbgKFOi5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 6 Nov 2020 09:38:57 -0500
+Received: from out4436.biz.mail.alibaba.com ([47.88.44.36]:58309 "EHLO
+        out4436.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726565AbgKFOi5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Nov 2020 09:38:57 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=alex.shi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0UERVqRn_1604673515;
+Received: from aliy80.localdomain(mailfrom:alex.shi@linux.alibaba.com fp:SMTPD_---0UERVqRn_1604673515)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 06 Nov 2020 22:38:36 +0800
+From:   Alex Shi <alex.shi@linux.alibaba.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] certs/blacklist: fix kernel doc interface issue
+Date:   Fri,  6 Nov 2020 22:38:33 +0800
+Message-Id: <1604673513-29088-1-git-send-email-alex.shi@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 5 Nov 2020 at 10:37, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> On Tue, Nov 03, 2020 at 09:31:42PM +0530, Sumit Garg wrote:
-> > Add support for TEE based trusted keys where TEE provides the functionality
-> > to seal and unseal trusted keys using hardware unique key. Also, this is
-> > an alternative in case platform doesn't possess a TPM device.
-> >
-> > This patch-set has been tested with OP-TEE based early TA which is already
-> > merged in upstream [1].
->
-> Is the new RPI400 computer a platform that can be used for testing
-> patch sets like this? I've been looking for a while something ARM64
-> based with similar convenience as Intel NUC's, and on the surface
-> this new RPI product looks great for kernel testing purposes.
+certs/blacklist.c:84: warning: Function parameter or member 'hash' not
+described in 'mark_hash_blacklisted'
 
-Here [1] is the list of supported versions of Raspberry Pi in OP-TEE.
-The easiest approach would be to pick up a supported version or else
-do an OP-TEE port for an unsupported one (which should involve minimal
-effort).
+Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
+Cc: David Howells <dhowells@redhat.com> 
+Cc: David Woodhouse <dwmw2@infradead.org> 
+Cc: keyrings@vger.kernel.org 
+Cc: linux-kernel@vger.kernel.org 
+---
+ certs/blacklist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1] https://optee.readthedocs.io/en/latest/building/devices/rpi3.html#what-versions-of-raspberry-pi-will-work
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index 6514f9ebc943..02f1016ce6e8 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -78,7 +78,7 @@ static void blacklist_describe(const struct key *key, struct seq_file *m)
+ 
+ /**
+  * mark_hash_blacklisted - Add a hash to the system blacklist
+- * @hash - The hash as a hex string with a type prefix (eg. "tbs:23aa429783")
++ * @hash: - The hash as a hex string with a type prefix (eg. "tbs:23aa429783")
+  */
+ int mark_hash_blacklisted(const char *hash)
+ {
+-- 
+1.8.3.1
 
--Sumit
-
->
-> /Jarkko
->
-> >
-> > [1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
-> >
-> > Changes in v8:
-> > 1. Added static calls support instead of indirect calls.
-> > 2. Documented trusted keys source module parameter.
-> > 3. Refined patch #1 commit message discription.
-> > 4. Addressed misc. comments on patch #2.
-> > 5. Added myself as Trusted Keys co-maintainer instead.
-> > 6. Rebased to latest tpmdd master.
-> >
-> > Changes in v7:
-> > 1. Added a trusted.source module parameter in order to enforce user's
-> >    choice in case a particular platform posses both TPM and TEE.
-> > 2. Refine commit description for patch #1.
-> >
-> > Changes in v6:
-> > 1. Revert back to dynamic detection of trust source.
-> > 2. Drop author mention from trusted_core.c and trusted_tpm1.c files.
-> > 3. Rebased to latest tpmdd/master.
-> >
-> > Changes in v5:
-> > 1. Drop dynamic detection of trust source and use compile time flags
-> >    instead.
-> > 2. Rename trusted_common.c -> trusted_core.c.
-> > 3. Rename callback: cleanup() -> exit().
-> > 4. Drop "tk" acronym.
-> > 5. Other misc. comments.
-> > 6. Added review tags for patch #3 and #4.
-> >
-> > Changes in v4:
-> > 1. Pushed independent TEE features separately:
-> >   - Part of recent TEE PR: https://lkml.org/lkml/2020/5/4/1062
-> > 2. Updated trusted-encrypted doc with TEE as a new trust source.
-> > 3. Rebased onto latest tpmdd/master.
-> >
-> > Changes in v3:
-> > 1. Update patch #2 to support registration of multiple kernel pages.
-> > 2. Incoporate dependency patch #4 in this patch-set:
-> >    https://patchwork.kernel.org/patch/11091435/
-> >
-> > Changes in v2:
-> > 1. Add reviewed-by tags for patch #1 and #2.
-> > 2. Incorporate comments from Jens for patch #3.
-> > 3. Switch to use generic trusted keys framework.
-> >
-> > Sumit Garg (4):
-> >   KEYS: trusted: Add generic trusted keys framework
-> >   KEYS: trusted: Introduce TEE based Trusted Keys
-> >   doc: trusted-encrypted: updates with TEE as a new trust source
-> >   MAINTAINERS: Add myself as Trusted Keys co-maintainer
-> >
-> >  Documentation/admin-guide/kernel-parameters.txt   |  12 +
-> >  Documentation/security/keys/trusted-encrypted.rst | 203 +++++++++++--
-> >  MAINTAINERS                                       |   2 +
-> >  include/keys/trusted-type.h                       |  47 +++
-> >  include/keys/trusted_tee.h                        |  55 ++++
-> >  include/keys/trusted_tpm.h                        |  17 +-
-> >  security/keys/trusted-keys/Makefile               |   2 +
-> >  security/keys/trusted-keys/trusted_core.c         | 354 ++++++++++++++++++++++
-> >  security/keys/trusted-keys/trusted_tee.c          | 278 +++++++++++++++++
-> >  security/keys/trusted-keys/trusted_tpm1.c         | 336 ++++----------------
-> >  10 files changed, 979 insertions(+), 327 deletions(-)
-> >  create mode 100644 include/keys/trusted_tee.h
-> >  create mode 100644 security/keys/trusted-keys/trusted_core.c
-> >  create mode 100644 security/keys/trusted-keys/trusted_tee.c
-> >
-> > --
-> > 2.7.4
-> >
-> >
