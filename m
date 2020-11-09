@@ -2,93 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 968142A97E5
-	for <lists+keyrings@lfdr.de>; Fri,  6 Nov 2020 15:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F15282ABDF2
+	for <lists+keyrings@lfdr.de>; Mon,  9 Nov 2020 14:57:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726317AbgKFOxB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 6 Nov 2020 09:53:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41134 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726694AbgKFOxB (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 6 Nov 2020 09:53:01 -0500
-Received: from kernel.org (83-245-197-237.elisa-laajakaista.fi [83.245.197.237])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 68C9921556;
-        Fri,  6 Nov 2020 14:52:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604674380;
-        bh=EFmjPlOdyLT5ZNZK+D5Ee4aaKlYdMVdLhDBsCsU5sfI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=K/OUy9MS5Am1Y+Darp4BPkNby574zAigogMyhAp4k8pvYpHAxPOYk4gX4KCmd8ecI
-         Ns7qUatjY6s1MEBfBIW8TWTkmlIs43PQiO60Kf9f1rcPqRnr45bVNb3AR7jD6Ucwlp
-         EqKT0+YVEJPn0xwiDQCx3AXVdCbVYsK1OPdwAWDk=
-Date:   Fri, 6 Nov 2020 16:52:52 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Subject: Re: [PATCH v8 0/4] Introduce TEE based Trusted Keys support
-Message-ID: <20201106145252.GA10434@kernel.org>
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
- <20201105050736.GA702944@kernel.org>
- <CAFA6WYPetvod-Wov2n_L5TL771j+-kt+_csyWYT-uM=haEKMZQ@mail.gmail.com>
+        id S1727774AbgKIN5G (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Nov 2020 08:57:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58036 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726691AbgKIN5G (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Nov 2020 08:57:06 -0500
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C9E4C0613CF;
+        Mon,  9 Nov 2020 05:57:06 -0800 (PST)
+Received: by mail-pg1-x541.google.com with SMTP id h6so7221878pgk.4;
+        Mon, 09 Nov 2020 05:57:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=o2rHmBfp4UJJgsx0SpTO4LT/XHGEr6OIj/CtIKO7hEw=;
+        b=taWHgWmWuTburqWSv9/sfo4twY8VRLjWPrV+Szo1cm890NyBVg7bcBJBPfOmy4nrBD
+         KTFtVadJsVGeRBQ1DZpsL3SJkpGGfPt5WK/+IMi0Tdux1olCbthUTJe4aC2G0A1jjHAl
+         2VIaddeeHqdYYytI7BqhKb7Rt13RPpzCtmMBmR0aWmc6UC376Nau90ongdT31LTWWxsa
+         Zn9w9s6avUDiJAqi++7jM6oLPG6L5kyEaqG+906W//xmEL1k1tyZE8bnlLnrIKxaGaWz
+         SVMhNRpnEuhGO8HFyPU0nUr0F8uT9XpdGcCksrwN/ynldQVt6K2sNC8KwaB3IYAQUKk+
+         SpYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=o2rHmBfp4UJJgsx0SpTO4LT/XHGEr6OIj/CtIKO7hEw=;
+        b=FJjADQ+qdvbEdMLPOPlX7S+RxttGTLmMUtNYgpxvJxR/YWwpkHUVIjuOP1JS/OHM16
+         xpf/9f5JrN8vj2kUQnMZeGWe/l8Hak3AyELnctSTTaA1/Y04S0PnujdD2l/emSFmHQTi
+         CTS7LfqLYc3qf+f9R9TJuCwC765pqIQHe5mg5O1wE/PXSaFrzcHarYmQGiDVU0j+HXPa
+         pfpV6wa78Ay3f2XncK/eO8ZbcYfA+yyTwHQMFvagTcw8dbpvES8IlaceP5yK2bkk5UK9
+         P42QIfVocvo1A2CKC5/3wb0clhpBde+F3mae9sorIqn88B/voLog/F2lfN7gPMfmeaKS
+         GhCQ==
+X-Gm-Message-State: AOAM533oaEzL/dcodnr2f8SwORw2L6wELFXLC3N0d6HQndR/r6/uwTMd
+        lxT6Pw0wTPzZDFpB9KKMu6rVKQmgA1A=
+X-Google-Smtp-Source: ABdhPJxQ3LpaB0xCE/9fy+VG3o1Z5OvvZWDwKLK9SUtH44/KFRDgteMSfdQy1xQvuMuF65fpCWSpeQ==
+X-Received: by 2002:aa7:86d8:0:b029:18b:585b:3b16 with SMTP id h24-20020aa786d80000b029018b585b3b16mr13335987pfo.72.1604930226165;
+        Mon, 09 Nov 2020 05:57:06 -0800 (PST)
+Received: from localhost.localdomain (ec2-54-250-46-57.ap-northeast-1.compute.amazonaws.com. [54.250.46.57])
+        by smtp.gmail.com with ESMTPSA id ck4sm12821376pjb.50.2020.11.09.05.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2020 05:57:05 -0800 (PST)
+From:   Dawning <dawning.pang@gmail.com>
+To:     dhowells@redhat.com, herbert@gondor.apana.org.au,
+        davem@davemloft.net, tianjia.zhang@linux.alibaba.com
+Cc:     gilad@benyossef.com, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dawning.pang@gmail.com
+Subject: [PATCH v1] include: crypto - remove the unused include
+Date:   Mon,  9 Nov 2020 21:56:50 +0800
+Message-Id: <20201109135650.31831-1-dawning.pang@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYPetvod-Wov2n_L5TL771j+-kt+_csyWYT-uM=haEKMZQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 03:02:41PM +0530, Sumit Garg wrote:
-> On Thu, 5 Nov 2020 at 10:37, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Tue, Nov 03, 2020 at 09:31:42PM +0530, Sumit Garg wrote:
-> > > Add support for TEE based trusted keys where TEE provides the functionality
-> > > to seal and unseal trusted keys using hardware unique key. Also, this is
-> > > an alternative in case platform doesn't possess a TPM device.
-> > >
-> > > This patch-set has been tested with OP-TEE based early TA which is already
-> > > merged in upstream [1].
-> >
-> > Is the new RPI400 computer a platform that can be used for testing
-> > patch sets like this? I've been looking for a while something ARM64
-> > based with similar convenience as Intel NUC's, and on the surface
-> > this new RPI product looks great for kernel testing purposes.
-> 
-> Here [1] is the list of supported versions of Raspberry Pi in OP-TEE.
-> The easiest approach would be to pick up a supported version or else
-> do an OP-TEE port for an unsupported one (which should involve minimal
-> effort).
-> 
-> [1] https://optee.readthedocs.io/en/latest/building/devices/rpi3.html#what-versions-of-raspberry-pi-will-work
-> 
-> -Sumit
+In the public_key.h file, the #include <crypto/akcipher.h> is not necessary
 
-If porting is doable, then I'll just order RPI 400, and test with QEMU
-up until either I port OP-TEE myself or someone else does it.
+Fixes: 215525639631a("X.509: support OSCCA SM2-with-SM3 certificate verification")
+Cc: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Signed-off-by: Dawning <dawning.pang@gmail.com>
+---
+ include/crypto/public_key.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-For seldom ARM testing, RPI 400 is really convenient device with its
-boxed form factor.
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 948c5203ca9c..47accec68cb0 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -12,7 +12,6 @@
+ 
+ #include <linux/keyctl.h>
+ #include <linux/oid_registry.h>
+-#include <crypto/akcipher.h>
+ 
+ /*
+  * Cryptographic data for the public-key subtype of the asymmetric key type.
+-- 
+2.25.1
 
-/Jarkko
