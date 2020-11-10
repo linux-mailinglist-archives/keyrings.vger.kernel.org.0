@@ -2,68 +2,56 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E532B5B0F
-	for <lists+keyrings@lfdr.de>; Tue, 17 Nov 2020 09:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE9C2B5B94
+	for <lists+keyrings@lfdr.de>; Tue, 17 Nov 2020 10:15:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbgKQIfq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 17 Nov 2020 03:35:46 -0500
-Received: from mail.zx2c4.com ([192.95.5.64]:42039 "EHLO mail.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726211AbgKQIfq (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 17 Nov 2020 03:35:46 -0500
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 5f5f8117;
-        Tue, 17 Nov 2020 08:31:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :references:in-reply-to:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=Hr+jI+KVdqgUSqaJucRaw9uwCVA=; b=ZAGMil
-        2h6me0N7K8kyNY4QsrK8PyskCMWyz9/JNkfEywmRPm2FPJumdSZdhMUWiS7+rAhK
-        Lf9kiMA4h/IN7aF+k5H1loaXIr4qOzlRV9lfv6JZIYnKhDaGyBHKW6R8gF9ChgRe
-        Vm+9S2rfvh/+/VC4GecX8VNItLHAF4CKT3EyesP/UgT26Us4wp2hhswk1IzIw6Ap
-        02a+1gT0CIlz15iy4VTiydfYh8WAxb/eA4wbKlzqH4UTPZuhsyC8QjkAckdW0OF4
-        LqBy0oobxCWUkYnFLWLg7GyAHS1YdUF5f88okOEmPC7YXb5CrtQJXJti3DAsOK9s
-        cJCi2qRlx5f9ZrAg==
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 14ca90a1 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Tue, 17 Nov 2020 08:31:54 +0000 (UTC)
-Received: by mail-yb1-f174.google.com with SMTP id c129so18201561yba.8;
-        Tue, 17 Nov 2020 00:35:42 -0800 (PST)
-X-Gm-Message-State: AOAM533TrTfq/08KF4CH8nr3aKc3kICHKnOdcu2qnwmGbjX6VM+J7X8u
-        k2HK4AypLey+Id8F3NkQKZ8DLzAzZmeNlN8KvVw=
-X-Google-Smtp-Source: ABdhPJxltpJ7lh/BAV2z4t5JKlLag1wKxZinZcAn5MaBtMCCdqxT5sWm5uXwl/7xTG7nwungx+QhIoCScN+KUkPRPIw=
-X-Received: by 2002:a25:6f83:: with SMTP id k125mr26083401ybc.123.1605602142005;
- Tue, 17 Nov 2020 00:35:42 -0800 (PST)
+        id S1725730AbgKQJOv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Tue, 17 Nov 2020 04:14:51 -0500
+Received: from tigeramira.ro ([88.158.78.30]:39631 "EHLO mail.tigeramira.ro"
+        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbgKQJOu (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 17 Nov 2020 04:14:50 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id D25A49BDDA7
+        for <keyrings@vger.kernel.org>; Sat, 14 Nov 2020 04:56:05 +0200 (EET)
+Received: from mail.tigeramira.ro ([127.0.0.1])
+        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id lx-c0lXSsntw for <keyrings@vger.kernel.org>;
+        Sat, 14 Nov 2020 04:55:50 +0200 (EET)
+Received: from mail.tigeramira.ro (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 6C67ED5D086
+        for <keyrings@vger.kernel.org>; Tue, 10 Nov 2020 20:11:46 +0200 (EET)
+Received: from [156.96.44.214] (unknown [192.168.12.254])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 811CBD3FBAA
+        for <keyrings@vger.kernel.org>; Tue, 10 Nov 2020 17:09:24 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20201117021839.4146-1-a@unstable.cc> <CAMj1kXFxk31wtD3H8V0KbMd82UL_babEWpVTSkfqPpNjSqPNLA@mail.gmail.com>
-In-Reply-To: <CAMj1kXFxk31wtD3H8V0KbMd82UL_babEWpVTSkfqPpNjSqPNLA@mail.gmail.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Tue, 17 Nov 2020 09:35:31 +0100
-X-Gmail-Original-Message-ID: <CAHmME9p8XNfz1ZdELVFXC4=QY-S6VzJfyf4oREgTM96WJUKeTQ@mail.gmail.com>
-Message-ID: <CAHmME9p8XNfz1ZdELVFXC4=QY-S6VzJfyf4oREgTM96WJUKeTQ@mail.gmail.com>
-Subject: Re: [PATCH cryptodev] crypto: lib/chacha20poly1305 - allow users to
- specify 96bit nonce
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Antonio Quartulli <a@unstable.cc>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        WireGuard mailing list <wireguard@lists.zx2c4.com>,
-        "open list:BPF JIT for MIPS (32-BIT AND 64-BIT)" 
-        <netdev@vger.kernel.org>, keyrings@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Antonio Quartulli <antonio@openvpn.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan/
+To:     keyrings@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Tue, 10 Nov 2020 06:09:52 -0800
+Reply-To: hmurrah39@gmail.com
+Message-Id: <20201110150924.811CBD3FBAA@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 9:32 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> If you are going back to the drawing board with in-kernel acceleration
-> for OpenVPN
+Hello keyrings@vger.kernel.org
 
-As far as I can tell, they're mostly after compatibility with their
-existing userspace stuff. Otherwise, if they were going back to the
-drawing board, they could just make openvpn userspace set up xfrm or
-wg tunnels to achieve basically the same design. And actually, the
-xfrm approach kind of makes a lot of sense for what they're doing; it
-was designed for that type of split-daemon tunneling design.
+
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+
+
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
