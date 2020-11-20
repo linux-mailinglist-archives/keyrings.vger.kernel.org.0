@@ -2,56 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13EF32B7DA2
-	for <lists+keyrings@lfdr.de>; Wed, 18 Nov 2020 13:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B13792BB237
+	for <lists+keyrings@lfdr.de>; Fri, 20 Nov 2020 19:17:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726156AbgKRMai (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Nov 2020 07:30:38 -0500
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:35879 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725747AbgKRMai (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Nov 2020 07:30:38 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R361e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UFoCyub_1605702631;
-Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UFoCyub_1605702631)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 18 Nov 2020 20:30:31 +0800
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Subject: [PATCH] crypto: public_key: Remove redundant header file from public_key.h
-Date:   Wed, 18 Nov 2020 20:30:31 +0800
-Message-Id: <20201118123031.551-1-tianjia.zhang@linux.alibaba.com>
-X-Mailer: git-send-email 2.19.1.3.ge56e4f7
+        id S1728200AbgKTSN4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Nov 2020 13:13:56 -0500
+Received: from smtp-bc0a.mail.infomaniak.ch ([45.157.188.10]:55509 "EHLO
+        smtp-bc0a.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726678AbgKTSN4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Nov 2020 13:13:56 -0500
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Cd4FF3WcZzlhSjB;
+        Fri, 20 Nov 2020 19:04:33 +0100 (CET)
+Received: from localhost (unknown [94.23.54.103])
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Cd4FD09NRzlh8T4;
+        Fri, 20 Nov 2020 19:04:31 +0100 (CET)
+From:   =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: [PATCH v1 0/9] Enable root to update the blacklist keyring
+Date:   Fri, 20 Nov 2020 19:04:17 +0100
+Message-Id: <20201120180426.922572-1-mic@digikod.net>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The akcipher.h header file was originally introduced in SM2, and
-then the definition of SM2 was moved to the existing code. This
-header file is left and should be removed.
+Hi,
 
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
----
- include/crypto/public_key.h | 1 -
- 1 file changed, 1 deletion(-)
+This patch series mainly add a new configuration option to enable the
+root user to load signed keys in the blacklist keyring.  This keyring is
+useful to "untrust" certificates or files.  Enabling to safely update
+this keyring without recompiling the kernel makes it more usable.
 
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 948c5203ca9c..47accec68cb0 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -12,7 +12,6 @@
- 
- #include <linux/keyctl.h>
- #include <linux/oid_registry.h>
--#include <crypto/akcipher.h>
- 
- /*
-  * Cryptographic data for the public-key subtype of the asymmetric key type.
+Regards,
+
+Mickaël Salaün (9):
+  certs: Fix blacklisted hexadecimal hash string check
+  certs: Make blacklist_vet_description() more strict
+  certs: Factor out the blacklist hash creation
+  certs: Check that builtin blacklist hashes are valid
+  PKCS#7: Fix missing include
+  certs: Fix blacklist flag type confusion
+  certs: Allow root user to append signed hashes to the blacklist
+    keyring
+  certs: Replace K{U,G}IDT_INIT() with GLOBAL_ROOT_{U,G}ID
+  tools/certs: Add print-cert-tbs-hash.sh
+
+ MAINTAINERS                                   |   2 +
+ certs/.gitignore                              |   1 +
+ certs/Kconfig                                 |  10 +
+ certs/Makefile                                |  15 +-
+ certs/blacklist.c                             | 210 +++++++++++++-----
+ certs/system_keyring.c                        |   5 +-
+ crypto/asymmetric_keys/x509_public_key.c      |   3 +-
+ include/keys/system_keyring.h                 |  14 +-
+ include/linux/verification.h                  |   2 +
+ scripts/check-blacklist-hashes.awk            |  37 +++
+ .../platform_certs/keyring_handler.c          |  26 +--
+ tools/certs/print-cert-tbs-hash.sh            |  91 ++++++++
+ 12 files changed, 335 insertions(+), 81 deletions(-)
+ create mode 100755 scripts/check-blacklist-hashes.awk
+ create mode 100755 tools/certs/print-cert-tbs-hash.sh
+
+
+base-commit: 09162bc32c880a791c6c0668ce0745cf7958f576
 -- 
-2.19.1.3.ge56e4f7
+2.29.2
 
