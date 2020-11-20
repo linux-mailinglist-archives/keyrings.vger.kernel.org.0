@@ -2,21 +2,22 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B13792BB237
-	for <lists+keyrings@lfdr.de>; Fri, 20 Nov 2020 19:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 377332BB224
+	for <lists+keyrings@lfdr.de>; Fri, 20 Nov 2020 19:13:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728200AbgKTSN4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Nov 2020 13:13:56 -0500
-Received: from smtp-bc0a.mail.infomaniak.ch ([45.157.188.10]:55509 "EHLO
-        smtp-bc0a.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726678AbgKTSN4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Nov 2020 13:13:56 -0500
+        id S1729475AbgKTSLM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Nov 2020 13:11:12 -0500
+Received: from smtp-bc09.mail.infomaniak.ch ([45.157.188.9]:37731 "EHLO
+        smtp-bc09.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729227AbgKTSLM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Nov 2020 13:11:12 -0500
+X-Greylist: delayed 391 seconds by postgrey-1.27 at vger.kernel.org; Fri, 20 Nov 2020 13:11:11 EST
 Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Cd4FF3WcZzlhSjB;
-        Fri, 20 Nov 2020 19:04:33 +0100 (CET)
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Cd4FG4VwpzlhGW4;
+        Fri, 20 Nov 2020 19:04:34 +0100 (CET)
 Received: from localhost (unknown [94.23.54.103])
-        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Cd4FD09NRzlh8T4;
-        Fri, 20 Nov 2020 19:04:31 +0100 (CET)
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Cd4FG2R9Dzlh8T9;
+        Fri, 20 Nov 2020 19:04:34 +0100 (CET)
 From:   =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
 To:     David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>
@@ -30,10 +31,12 @@ Cc:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
         "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v1 0/9] Enable root to update the blacklist keyring
-Date:   Fri, 20 Nov 2020 19:04:17 +0100
-Message-Id: <20201120180426.922572-1-mic@digikod.net>
+Subject: [PATCH v1 1/9] certs: Fix blacklisted hexadecimal hash string check
+Date:   Fri, 20 Nov 2020 19:04:18 +0100
+Message-Id: <20201120180426.922572-2-mic@digikod.net>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201120180426.922572-1-mic@digikod.net>
+References: <20201120180426.922572-1-mic@digikod.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -41,45 +44,40 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+From: Mickaël Salaün <mic@linux.microsoft.com>
 
-This patch series mainly add a new configuration option to enable the
-root user to load signed keys in the blacklist keyring.  This keyring is
-useful to "untrust" certificates or files.  Enabling to safely update
-this keyring without recompiling the kernel makes it more usable.
+When looking for a blacklisted hash, bin2hex() is used to transform a
+binary hash to an ascii (lowercase) hexadecimal string.  This string is
+then search for in the description of the keys from the blacklist
+keyring.  When adding a key to the blacklist keyring,
+blacklist_vet_description() checks the hash prefix and the hexadecimal
+string, but not that this string is lowercase.  It is then valid to set
+hashes with uppercase hexadecimal, which will be silently ignored by the
+kernel.
 
-Regards,
+Add an additional check to blacklist_vet_description() to check that
+hexadecimal strings are in lowercase.
 
-Mickaël Salaün (9):
-  certs: Fix blacklisted hexadecimal hash string check
-  certs: Make blacklist_vet_description() more strict
-  certs: Factor out the blacklist hash creation
-  certs: Check that builtin blacklist hashes are valid
-  PKCS#7: Fix missing include
-  certs: Fix blacklist flag type confusion
-  certs: Allow root user to append signed hashes to the blacklist
-    keyring
-  certs: Replace K{U,G}IDT_INIT() with GLOBAL_ROOT_{U,G}ID
-  tools/certs: Add print-cert-tbs-hash.sh
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+---
+ certs/blacklist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- MAINTAINERS                                   |   2 +
- certs/.gitignore                              |   1 +
- certs/Kconfig                                 |  10 +
- certs/Makefile                                |  15 +-
- certs/blacklist.c                             | 210 +++++++++++++-----
- certs/system_keyring.c                        |   5 +-
- crypto/asymmetric_keys/x509_public_key.c      |   3 +-
- include/keys/system_keyring.h                 |  14 +-
- include/linux/verification.h                  |   2 +
- scripts/check-blacklist-hashes.awk            |  37 +++
- .../platform_certs/keyring_handler.c          |  26 +--
- tools/certs/print-cert-tbs-hash.sh            |  91 ++++++++
- 12 files changed, 335 insertions(+), 81 deletions(-)
- create mode 100755 scripts/check-blacklist-hashes.awk
- create mode 100755 tools/certs/print-cert-tbs-hash.sh
-
-
-base-commit: 09162bc32c880a791c6c0668ce0745cf7958f576
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index 6514f9ebc943..4e1a58170d5c 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -37,7 +37,7 @@ static int blacklist_vet_description(const char *desc)
+ found_colon:
+ 	desc++;
+ 	for (; *desc; desc++) {
+-		if (!isxdigit(*desc))
++		if (!isxdigit(*desc) || isupper(*desc))
+ 			return -EINVAL;
+ 		n++;
+ 	}
 -- 
 2.29.2
 
