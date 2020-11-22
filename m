@@ -2,112 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 792122BC430
-	for <lists+keyrings@lfdr.de>; Sun, 22 Nov 2020 06:48:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 423E32BC62F
+	for <lists+keyrings@lfdr.de>; Sun, 22 Nov 2020 15:47:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727266AbgKVFrL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 22 Nov 2020 00:47:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55492 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726461AbgKVFrL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 22 Nov 2020 00:47:11 -0500
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4713C0613CF
-        for <keyrings@vger.kernel.org>; Sat, 21 Nov 2020 21:47:10 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: krisman)
-        with ESMTPSA id 8B26E1F411BA
-From:   Gabriel Krisman Bertazi <krisman@collabora.com>
-To:     dhowells@redhat.com
-Cc:     jarkko@kernel.org, keyrings@vger.kernel.org,
-        Gabriel Krisman Bertazi <krisman@collabora.com>,
-        kernel@collabora.com
-Subject: [RESEND PATCH] watch_queue: Drop references to /dev/watch_queue
-Date:   Sun, 22 Nov 2020 00:47:00 -0500
-Message-Id: <20201122054700.1499338-1-krisman@collabora.com>
-X-Mailer: git-send-email 2.29.2
+        id S1727905AbgKVOrK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 22 Nov 2020 09:47:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:58855 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727881AbgKVOq5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 22 Nov 2020 09:46:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606056416;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=apju6gP6XSpkYwp4WdL57a/nFAvNI/QCKhQkuBxc3S8=;
+        b=XA3Bdia/xK9rtALsHLhdMXNkl5EWPz83+inaq5KZnxbZp/pqE7ot4cuq9wfEbTWVu1jCkd
+        fkI/qAlh4sU3l8dOrlq7C5hNdTdH0le7t+rDrYZ5+jjUTJP5ekv3G25710udgF6Q97joi/
+        ih3DR460gM+B9YwlFm0ND3pgcFfhizQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-146-YCAEeEDHOgOTIa5ECxNLHA-1; Sun, 22 Nov 2020 09:46:52 -0500
+X-MC-Unique: YCAEeEDHOgOTIa5ECxNLHA-1
+Received: by mail-qk1-f197.google.com with SMTP id x85so12608198qka.14
+        for <keyrings@vger.kernel.org>; Sun, 22 Nov 2020 06:46:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=apju6gP6XSpkYwp4WdL57a/nFAvNI/QCKhQkuBxc3S8=;
+        b=s2dLkUgzaeBHbB+LUn87ZcDKOJB4sBFV6BRBzCPACWu22iuUA8IFsyzJziP+LSE61h
+         timiyNkr+puRR9UwDC9+zfhDtXeKG+Jlh0UJGZgkPKwd47OSYA+4pmxfSYV7ChS7lU/Z
+         2JTqKmtlE6BM44DS5Qk45N6H8EnmKH6DzEpSACl21CRidXF2ZoF6UfBWf2W81JAy+FX3
+         TX2gsyTd/TyiW2o5S6IYMcrBSn/0IJZ0JC+B6ZcPoHOja5BgN1RQHuTZsMsq26gK7ioy
+         fic24HOTCxC7+/W50AXmatg8eNGzYQw04XrfzKvVActEshJrejUoZ/wCXn0bo/H58sZv
+         eAGg==
+X-Gm-Message-State: AOAM533+RJgt7atQVXClVfTM5I+67QJ9bClKhEMu1PpNxNNPKYdIB02z
+        gUlDm/xqjFPhy/EEWuOTlDfBGPgB7smoXwXjU1cKjcrYuht9fVVHV7ON2n+nLnCkcHXsCOKF/p1
+        kWQ+oVRkay7NG1yF9MaI=
+X-Received: by 2002:ad4:476b:: with SMTP id d11mr26026167qvx.57.1606056412428;
+        Sun, 22 Nov 2020 06:46:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyPQ8vJIBgyJxmgPlUVzOaStXFRaD0Z+d8VDmnR7kdLyNkvwByAGPov006wc7+pJBCcgj+/zw==
+X-Received: by 2002:ad4:476b:: with SMTP id d11mr26026152qvx.57.1606056412222;
+        Sun, 22 Nov 2020 06:46:52 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id x72sm6888242qkb.90.2020.11.22.06.46.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Nov 2020 06:46:51 -0800 (PST)
+Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     joe@perches.com, clang-built-linux@googlegroups.com,
+        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+        xen-devel@lists.xenproject.org, tboot-devel@lists.sourceforge.net,
+        kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
+        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        ecryptfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        cluster-devel@redhat.com, linux-mtd@lists.infradead.org,
+        keyrings@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, alsa-devel@alsa-project.org,
+        bpf@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-nfs@vger.kernel.org, patches@opensource.cirrus.com
+References: <20201121165058.1644182-1-trix@redhat.com>
+ <20201122032304.GE4327@casper.infradead.org>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <ddb08a27-3ca1-fb2e-d51f-4b471f1a56a3@redhat.com>
+Date:   Sun, 22 Nov 2020 06:46:46 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201122032304.GE4327@casper.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
 
-I sent this a while ago and I haven't seen it pop-up in any trees yet.
-I'm sorry if I missed it somewhere.
+On 11/21/20 7:23 PM, Matthew Wilcox wrote:
+> On Sat, Nov 21, 2020 at 08:50:58AM -0800, trix@redhat.com wrote:
+>> The fixer review is
+>> https://reviews.llvm.org/D91789
+>>
+>> A run over allyesconfig for x86_64 finds 62 issues, 5 are false positives.
+>> The false positives are caused by macros passed to other macros and by
+>> some macro expansions that did not have an extra semicolon.
+>>
+>> This cleans up about 1,000 of the current 10,000 -Wextra-semi-stmt
+>> warnings in linux-next.
+> Are any of them not false-positives?  It's all very well to enable
+> stricter warnings, but if they don't fix any bugs, they're just churn.
+>
+While enabling additional warnings may be a side effect of this effort
 
-Otherwise, gently ping.
+the primary goal is to set up a cleaning robot. After that a refactoring robot.
 
--- >8 --
-
-The merged API doesn't use a watch_queue device, but instead relies on
-pipes, so let the documentation reflect that.
-
-Cc: David Howells <dhowells@redhat.com>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
----
- Documentation/security/keys/core.rst | 4 ++--
- samples/Kconfig                      | 2 +-
- samples/watch_queue/watch_test.c     | 2 +-
- security/keys/Kconfig                | 8 ++++----
- 4 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-index aa0081685ee1..b3ed5c581034 100644
---- a/Documentation/security/keys/core.rst
-+++ b/Documentation/security/keys/core.rst
-@@ -1040,8 +1040,8 @@ The keyctl syscall functions are:
- 
-      "key" is the ID of the key to be watched.
- 
--     "queue_fd" is a file descriptor referring to an open "/dev/watch_queue"
--     which manages the buffer into which notifications will be delivered.
-+     "queue_fd" is a file descriptor referring to an open pipe which
-+     manages the buffer into which notifications will be delivered.
- 
-      "filter" is either NULL to remove a watch or a filter specification to
-      indicate what events are required from the key.
-diff --git a/samples/Kconfig b/samples/Kconfig
-index 0ed6e4d71d87..e76cdfc50e25 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -210,7 +210,7 @@ config SAMPLE_WATCHDOG
- 	depends on CC_CAN_LINK
- 
- config SAMPLE_WATCH_QUEUE
--	bool "Build example /dev/watch_queue notification consumer"
-+	bool "Build example watch_queue notification API consumer"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
- 	help
- 	  Build example userspace program to use the new mount_notify(),
-diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
-index 46e618a897fe..8c6cb57d5cfc 100644
---- a/samples/watch_queue/watch_test.c
-+++ b/samples/watch_queue/watch_test.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--/* Use /dev/watch_queue to watch for notifications.
-+/* Use watch_queue API to watch for notifications.
-  *
-  * Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
-  * Written by David Howells (dhowells@redhat.com)
-diff --git a/security/keys/Kconfig b/security/keys/Kconfig
-index 83bc23409164..c161642a8484 100644
---- a/security/keys/Kconfig
-+++ b/security/keys/Kconfig
-@@ -119,7 +119,7 @@ config KEY_NOTIFICATIONS
- 	bool "Provide key/keyring change notifications"
- 	depends on KEYS && WATCH_QUEUE
- 	help
--	  This option provides support for getting change notifications on keys
--	  and keyrings on which the caller has View permission.  This makes use
--	  of the /dev/watch_queue misc device to handle the notification
--	  buffer and provides KEYCTL_WATCH_KEY to enable/disable watches.
-+	  This option provides support for getting change notifications
-+	  on keys and keyrings on which the caller has View permission.
-+	  This makes use of pipes to handle the notification buffer and
-+	  provides KEYCTL_WATCH_KEY to enable/disable watches.
--- 
-2.29.2
+Tom
 
