@@ -2,111 +2,186 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F12812C19A1
-	for <lists+keyrings@lfdr.de>; Tue, 24 Nov 2020 00:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D7712C1A51
+	for <lists+keyrings@lfdr.de>; Tue, 24 Nov 2020 01:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbgKWXyh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 23 Nov 2020 18:54:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49026 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727372AbgKWXyg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 23 Nov 2020 18:54:36 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E1BBC0613CF
-        for <keyrings@vger.kernel.org>; Mon, 23 Nov 2020 15:54:35 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id r3so2230286wrt.2
-        for <keyrings@vger.kernel.org>; Mon, 23 Nov 2020 15:54:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZB3RzTtOX5Vi4wJPeUnMotilF2kP22sMOQsBxc6+YQs=;
-        b=rX3Q/KMPxyAVPoYlG/3ex3KT+pJZzoCmRUPGxMABV+0J6MCzg40pmf24cvQC73ClD/
-         egCSQKk2ZVgLtnEoLw8RjKCX6TrsLh4F+L+FSHwbv9LhIn8UyzGSiuf+3RVQBsCFeTqs
-         6vYNqHgCxUvvNBZUo7a91GgGX3utvoFurF3zW+nobJzb+2JHT7dEMXZVAMadQu4871FL
-         tqzOVWPDQDlF4+q3eyEYCzYRhXgDVwY5juYAe5F7Br85R9rvKMXolbs8hcr6y3zXVILR
-         ijGnVWOGhA4ugHKpQU5m/piWwr2UWn70UpOHaHaRxIMlX2ra3vihp3t4wiAa/qdh4ULY
-         pmgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZB3RzTtOX5Vi4wJPeUnMotilF2kP22sMOQsBxc6+YQs=;
-        b=Nrzqw2tsNZZIY4NI9TIDc0wPbqwM7xAV2ZmgHTOtA54RDLYG3Rk2lBJoDtpuBPkSy9
-         Sw1LAbQ9ubbax3rGsDQAaU/xXjPQAd9NeCSpIONbQarTLVAgZUvthOa0pKV/FeBf3SdV
-         V87AxSlMLkXgiCVlchfCGfTcOGS+SoPFlz/GgFkdt+iB9weicRussZ9GjSQAT66gQunD
-         Tuo3s9dbPiWEpn6AoGSYiwxFERsN/Ep1jZmago6EH1B58U7fsSsxZ/s5yBE1NGY9ZVXS
-         9kWX4Mak2h98C/Ow3huGZzxFOT48r5Qxh7lorYlBcaYjL6shlt3N/feC+pKEqIrNutqz
-         yAgQ==
-X-Gm-Message-State: AOAM530p1was+0zMLDYPubJV+LVU5RlxUebWWL0SueBImVRhuVvWB68E
-        XoEC52aRUGTa2vzzoCQgS9K/9g==
-X-Google-Smtp-Source: ABdhPJwsyTAO+I0Qh+xGi5SqAtchc9g2tyh6CpqTZsdoVWlMyoEVUO+GzF8teUGJN6bMS4ndcE5NGw==
-X-Received: by 2002:adf:f5c8:: with SMTP id k8mr2230194wrp.2.1606175673552;
-        Mon, 23 Nov 2020 15:54:33 -0800 (PST)
-Received: from localhost ([2a02:168:96c5:1:55ed:514f:6ad7:5bcc])
-        by smtp.gmail.com with ESMTPSA id z6sm1704751wmi.1.2020.11.23.15.54.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2020 15:54:32 -0800 (PST)
-From:   Jann Horn <jannh@google.com>
-To:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] keys: Remove outdated __user annotations
-Date:   Tue, 24 Nov 2020 00:54:00 +0100
-Message-Id: <20201123235400.1609970-1-jannh@google.com>
-X-Mailer: git-send-email 2.29.2.454.gaff20da3a2-goog
+        id S1728703AbgKXA6q (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 23 Nov 2020 19:58:46 -0500
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:51159 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726803AbgKXA6q (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 23 Nov 2020 19:58:46 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 0EF842A8E0;
+        Mon, 23 Nov 2020 19:58:39 -0500 (EST)
+Date:   Tue, 24 Nov 2020 11:58:37 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
+        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
+        cluster-devel@redhat.com, coreteam@netfilter.org,
+        devel@driverdev.osuosl.org, dm-devel@redhat.com,
+        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-cifs@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-decnet-user@lists.sourceforge.net,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input <linux-input@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
+        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
+        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
+        selinux@vger.kernel.org, target-devel@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net,
+        usb-storage@lists.one-eyed-alien.net,
+        virtualization@lists.linux-foundation.org,
+        wcn36xx@lists.infradead.org,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
+In-Reply-To: <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2011241036520.7@nippy.intranet>
+References: <cover.1605896059.git.gustavoars@kernel.org> <20201120105344.4345c14e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011201129.B13FDB3C@keescook> <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com> <202011220816.8B6591A@keescook>
+ <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com> <CANiq72nZrHWTA4_Msg6MP9snTyenC6-eGfD27CyfNSu7QoVZbw@mail.gmail.com> <alpine.LNX.2.23.453.2011230938390.7@nippy.intranet>
+ <CANiq72=z+tmuey9wj3Kk7wX5s0hTHpsQdLhAqcOVNrHon6xn5Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When the semantics of the ->read() handlers were changed such that "buffer"
-is a kernel pointer, some __user annotations survived.
-Since they're wrong now, get rid of them.
 
-Fixes: d3ec10aa9581 ("KEYS: Don't write out to userspace while holding key =
-semaphore")
-Signed-off-by: Jann Horn <jannh@google.com>
----
- security/keys/keyring.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Mon, 23 Nov 2020, Miguel Ojeda wrote:
 
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 14abfe765b7e..977066208387 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -452,7 +452,7 @@ static void keyring_describe(const struct key *keyring,=
- struct seq_file *m)
- struct keyring_read_iterator_context {
- 	size_t			buflen;
- 	size_t			count;
--	key_serial_t __user	*buffer;
-+	key_serial_t		*buffer;
- };
-=20
- static int keyring_read_iterator(const void *object, void *data)
-@@ -479,7 +479,7 @@ static int keyring_read_iterator(const void *object, vo=
-id *data)
-  * times.
-  */
- static long keyring_read(const struct key *keyring,
--			 char __user *buffer, size_t buflen)
-+			 char *buffer, size_t buflen)
- {
- 	struct keyring_read_iterator_context ctx;
- 	long ret;
-@@ -491,7 +491,7 @@ static long keyring_read(const struct key *keyring,
-=20
- 	/* Copy as many key IDs as fit into the buffer */
- 	if (buffer && buflen) {
--		ctx.buffer =3D (key_serial_t __user *)buffer;
-+		ctx.buffer =3D (key_serial_t *)buffer;
- 		ctx.buflen =3D buflen;
- 		ctx.count =3D 0;
- 		ret =3D assoc_array_iterate(&keyring->keys,
+> On Mon, 23 Nov 2020, Finn Thain wrote:
+> 
+> > On Sun, 22 Nov 2020, Miguel Ojeda wrote:
+> > 
+> > > 
+> > > It isn't that much effort, isn't it? Plus we need to take into 
+> > > account the future mistakes that it might prevent, too.
+> > 
+> > We should also take into account optimisim about future improvements 
+> > in tooling.
+> > 
+> Not sure what you mean here. There is no reliable way to guess what the 
+> intention was with a missing fallthrough, even if you parsed whitespace 
+> and indentation.
+> 
 
-base-commit: d5beb3140f91b1c8a3d41b14d729aefa4dcc58bc
---=20
-2.29.2.454.gaff20da3a2-goog
+What I meant was that you've used pessimism as if it was fact.
 
+For example, "There is no way to guess what the effect would be if the 
+compiler trained programmers to add a knee-jerk 'break' statement to avoid 
+a warning".
+
+Moreover, what I meant was that preventing programmer mistakes is a 
+problem to be solved by development tools. The idea that retro-fitting new 
+language constructs onto mature code is somehow necessary to "prevent 
+future mistakes" is entirely questionable.
+
+> > > So even if there were zero problems found so far, it is still a 
+> > > positive change.
+> > > 
+> > 
+> > It is if you want to spin it that way.
+> > 
+> How is that a "spin"? It is a fact that we won't get *implicit* 
+> fallthrough mistakes anymore (in particular if we make it a hard error).
+> 
+
+Perhaps "handwaving" is a better term?
+
+> > > I would agree if these changes were high risk, though; but they are 
+> > > almost trivial.
+> > > 
+> > 
+> > This is trivial:
+> > 
+> >  case 1:
+> >         this();
+> > +       fallthrough;
+> >  case 2:
+> >         that();
+> > 
+> > But what we inevitably get is changes like this:
+> > 
+> >  case 3:
+> >         this();
+> > +       break;
+> >  case 4:
+> >         hmmm();
+> > 
+> > Why? Mainly to silence the compiler. Also because the patch author 
+> > argued successfully that they had found a theoretical bug, often in 
+> > mature code.
+> > 
+> If someone changes control flow, that is on them. Every kernel developer 
+> knows what `break` does.
+> 
+
+Sure. And if you put -Wimplicit-fallthrough into the Makefile and if that 
+leads to well-intentioned patches that cause regressions, it is partly on 
+you.
+
+Have you ever considered the overall cost of the countless 
+-Wpresume-incompetence flags?
+
+Perhaps you pay the power bill for a build farm that produces logs that 
+no-one reads? Perhaps you've run git bisect, knowing that the compiler 
+messages are not interesting? Or compiled software in using a language 
+that generates impenetrable messages? If so, here's a tip:
+
+# grep CFLAGS /etc/portage/make.conf 
+CFLAGS="... -Wno-all -Wno-extra ..."
+CXXFLAGS="${CFLAGS}"
+
+Now allow me some pessimism: the hardware upgrades, gigawatt hours and 
+wait time attributable to obligatory static analyses are a net loss.
+
+> > But is anyone keeping score of the regressions? If unreported bugs 
+> > count, what about unreported regressions?
+> > 
+> Introducing `fallthrough` does not change semantics. If you are really 
+> keen, you can always compare the objects because the generated code 
+> shouldn't change.
+> 
+
+No, it's not for me to prove that such patches don't affect code 
+generation. That's for the patch author and (unfortunately) for reviewers.
+
+> Cheers,
+> Miguel
+> 
