@@ -2,107 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4832C2A38
-	for <lists+keyrings@lfdr.de>; Tue, 24 Nov 2020 15:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FABF2C31F1
+	for <lists+keyrings@lfdr.de>; Tue, 24 Nov 2020 21:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389335AbgKXOrt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 24 Nov 2020 09:47:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58484 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388174AbgKXOrt (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 24 Nov 2020 09:47:49 -0500
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A5073206F9;
-        Tue, 24 Nov 2020 14:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606229266;
-        bh=KHWIOvsVxIgxzJ3ANvrXr+IcifXvCH3d9eC+5p4MJwo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tWoPDQgvsKVPCfxibPNl9c0zBQ9NfBrnsDyv8UIAtPJxHLfF4o1CuP3vwUt19y/P8
-         Y66kkjj2Cim4kMyRQiiYzb1whNr+v/N+nMKfcHqv3RaX8mBnUDrFmNddDbw9/dIVnH
-         xirANyC4hb8bYXXRvxw8qG9eYp8JWf8UX9D38PQM=
-Date:   Tue, 24 Nov 2020 08:47:54 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-sctp@vger.kernel.org,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-hardening@vger.kernel.org,
-        usb-storage@lists.one-eyed-alien.net, linux-block@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        bridge@lists.linux-foundation.org, GR-Linux-NIC-Dev@marvell.com,
-        rds-devel@oss.oracle.com, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        reiserfs-devel@vger.kernel.org, oss-drivers@netronome.com,
-        linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
-        virtualization@lists.linux-foundation.org,
-        Joe Perches <joe@perches.com>, patches@opensource.cirrus.com,
-        linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-cifs@vger.kernel.org, coreteam@netfilter.org,
-        Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-scsi@vger.kernel.org, linux-afs@lists.infradead.org,
-        netfilter-devel@vger.kernel.org, linux-geode@lists.infradead.org,
-        drbd-dev@lists.linbit.com, linux-ext4@vger.kernel.org,
-        linux-hams@vger.kernel.org, target-devel@vger.kernel.org,
-        samba-technical@lists.samba.org,
-        tipc-discussion@lists.sourceforge.net,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-renesas-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-nfs@vger.kernel.org,
-        devel@driverdev.osuosl.org, selinux@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, linux-iio@vger.kernel.org,
-        linux-i3c@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
-        linux-can@vger.kernel.org, linux-integrity@vger.kernel.org,
-        GR-everest-linux-l2@marvell.com, keyrings@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, linux-usb@vger.kernel.org,
-        nouveau@lists.freedesktop.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, linux-mm@kvack.org,
-        cluster-devel@redhat.com, linux1394-devel@lists.sourceforge.net,
-        linux-decnet-user@lists.sourceforge.net,
-        op-tee@lists.trustedfirmware.org, linux-ide@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        dm-devel@redhat.com, linux-watchdog@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-mtd@lists.infradead.org,
-        ceph-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-Message-ID: <20201124144754.GL16084@embeddedor>
-References: <cover.1605896059.git.gustavoars@kernel.org>
- <160616392671.21180.16517492185091399884.b4-ty@kernel.org>
+        id S1731008AbgKXU2O (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 24 Nov 2020 15:28:14 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:49904 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726631AbgKXU2O (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Nov 2020 15:28:14 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: krisman)
+        with ESMTPSA id 62DF81F45356
+From:   Gabriel Krisman Bertazi <krisman@collabora.com>
+To:     dhowells@redhat.com, jarkko@kernel.org
+Cc:     keyrings@vger.kernel.org,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v2] watch_queue: Drop references to /dev/watch_queue
+Date:   Tue, 24 Nov 2020 15:28:02 -0500
+Message-Id: <20201124202802.645739-1-krisman@collabora.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <160616392671.21180.16517492185091399884.b4-ty@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Nov 23, 2020 at 08:38:46PM +0000, Mark Brown wrote:
-> On Fri, 20 Nov 2020 12:21:39 -0600, Gustavo A. R. Silva wrote:
-> > This series aims to fix almost all remaining fall-through warnings in
-> > order to enable -Wimplicit-fallthrough for Clang.
-> > 
-> > In preparation to enable -Wimplicit-fallthrough for Clang, explicitly
-> > add multiple break/goto/return/fallthrough statements instead of just
-> > letting the code fall through to the next case.
-> > 
-> > [...]
-> 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-> 
-> Thanks!
-> 
-> [1/1] regulator: as3722: Fix fall-through warnings for Clang
->       commit: b52b417ccac4fae5b1f2ec4f1d46eb91e4493dc5
+The merged API doesn't use a watch_queue device, but instead relies on
+pipes, so let the documentation reflect that.
 
-Thank you, Mark.
---
-Gustavo
+Fixes: f7e47677e39a ("watch_queue: Add a key/keyring notification facility")
+Cc: David Howells <dhowells@redhat.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+
+---
+Changes since v1:
+  - Add Fixes tag (Jarkko Sakkinen)
+---
+ Documentation/security/keys/core.rst | 4 ++--
+ samples/Kconfig                      | 2 +-
+ samples/watch_queue/watch_test.c     | 2 +-
+ security/keys/Kconfig                | 8 ++++----
+ 4 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
+index aa0081685ee1..b3ed5c581034 100644
+--- a/Documentation/security/keys/core.rst
++++ b/Documentation/security/keys/core.rst
+@@ -1040,8 +1040,8 @@ The keyctl syscall functions are:
+ 
+      "key" is the ID of the key to be watched.
+ 
+-     "queue_fd" is a file descriptor referring to an open "/dev/watch_queue"
+-     which manages the buffer into which notifications will be delivered.
++     "queue_fd" is a file descriptor referring to an open pipe which
++     manages the buffer into which notifications will be delivered.
+ 
+      "filter" is either NULL to remove a watch or a filter specification to
+      indicate what events are required from the key.
+diff --git a/samples/Kconfig b/samples/Kconfig
+index 0ed6e4d71d87..e76cdfc50e25 100644
+--- a/samples/Kconfig
++++ b/samples/Kconfig
+@@ -210,7 +210,7 @@ config SAMPLE_WATCHDOG
+ 	depends on CC_CAN_LINK
+ 
+ config SAMPLE_WATCH_QUEUE
+-	bool "Build example /dev/watch_queue notification consumer"
++	bool "Build example watch_queue notification API consumer"
+ 	depends on CC_CAN_LINK && HEADERS_INSTALL
+ 	help
+ 	  Build example userspace program to use the new mount_notify(),
+diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
+index 46e618a897fe..8c6cb57d5cfc 100644
+--- a/samples/watch_queue/watch_test.c
++++ b/samples/watch_queue/watch_test.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/* Use /dev/watch_queue to watch for notifications.
++/* Use watch_queue API to watch for notifications.
+  *
+  * Copyright (C) 2020 Red Hat, Inc. All Rights Reserved.
+  * Written by David Howells (dhowells@redhat.com)
+diff --git a/security/keys/Kconfig b/security/keys/Kconfig
+index 83bc23409164..c161642a8484 100644
+--- a/security/keys/Kconfig
++++ b/security/keys/Kconfig
+@@ -119,7 +119,7 @@ config KEY_NOTIFICATIONS
+ 	bool "Provide key/keyring change notifications"
+ 	depends on KEYS && WATCH_QUEUE
+ 	help
+-	  This option provides support for getting change notifications on keys
+-	  and keyrings on which the caller has View permission.  This makes use
+-	  of the /dev/watch_queue misc device to handle the notification
+-	  buffer and provides KEYCTL_WATCH_KEY to enable/disable watches.
++	  This option provides support for getting change notifications
++	  on keys and keyrings on which the caller has View permission.
++	  This makes use of pipes to handle the notification buffer and
++	  provides KEYCTL_WATCH_KEY to enable/disable watches.
+-- 
+2.29.2
+
