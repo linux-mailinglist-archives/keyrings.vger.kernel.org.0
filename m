@@ -2,172 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A570F2C399A
-	for <lists+keyrings@lfdr.de>; Wed, 25 Nov 2020 08:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81CB72C3A0E
+	for <lists+keyrings@lfdr.de>; Wed, 25 Nov 2020 08:29:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbgKYHFn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Nov 2020 02:05:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55826 "EHLO
+        id S1726316AbgKYH1J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 25 Nov 2020 02:27:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725838AbgKYHFm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Nov 2020 02:05:42 -0500
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB3AC0613D4;
-        Tue, 24 Nov 2020 23:05:42 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 313DE1280408;
-        Tue, 24 Nov 2020 23:05:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1606287940;
-        bh=PpyvloC8ztllb7q8ndtGKJRs78ChiB3jg6tteM0zYL0=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=DUjk2u5mMxkvusJZ7TUknDmT+9jEkjAK5Du54VYrLnX3ZVAsqbXKInJF3+bjbWxe1
-         sPTOm9Jo8O4FiM37EcbSbGJ09Z6i3toRLj70BanOqmx/doOouqQw1ofRfirJ315HKN
-         ACp6UaCD/rMf1rqLOvr/v7W+FqOYQZREI5LkhaoU=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 8AuMCu2vLv9Z; Tue, 24 Nov 2020 23:05:40 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A873112803EC;
-        Tue, 24 Nov 2020 23:05:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1606287940;
-        bh=PpyvloC8ztllb7q8ndtGKJRs78ChiB3jg6tteM0zYL0=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=DUjk2u5mMxkvusJZ7TUknDmT+9jEkjAK5Du54VYrLnX3ZVAsqbXKInJF3+bjbWxe1
-         sPTOm9Jo8O4FiM37EcbSbGJ09Z6i3toRLj70BanOqmx/doOouqQw1ofRfirJ315HKN
-         ACp6UaCD/rMf1rqLOvr/v7W+FqOYQZREI5LkhaoU=
-Message-ID: <a841536fe65bb33f1c72ce2455a6eb47a0107565.camel@HansenPartnership.com>
-Subject: Re: [Intel-wired-lan] [PATCH 000/141] Fix fall-through warnings for
- Clang
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Jakub Kicinski <kuba@kernel.org>, alsa-devel@alsa-project.org,
-        linux-atm-general@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-ide@vger.kernel.org, dm-devel@redhat.com,
-        keyrings@vger.kernel.org, linux-mtd@lists.infradead.org,
-        GR-everest-linux-l2@marvell.com, wcn36xx@lists.infradead.org,
-        samba-technical@lists.samba.org, linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        usb-storage@lists.one-eyed-alien.net, drbd-dev@lists.linbit.com,
-        devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
-        oss-drivers@netronome.com, bridge@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org,
-        linux-stm32@st-md-mailman.stormreply.com, cluster-devel@redhat.com,
-        linux-acpi@vger.kernel.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-input@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-gpio@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        linux-mediatek@lists.infradead.org, xen-devel@lists.xenproject.org,
-        nouveau@lists.freedesktop.org, linux-hams@vger.kernel.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        x86@kernel.org, linux-nfs@vger.kernel.org,
-        GR-Linux-NIC-Dev@marvell.com, linux-mm@kvack.org,
-        netdev@vger.kernel.org, linux-decnet-user@lists.sourceforge.net,
-        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sctp@vger.kernel.org, linux-usb@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        patches@opensource.cirrus.com, linux-integrity@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Date:   Tue, 24 Nov 2020 23:05:35 -0800
-In-Reply-To: <202011241327.BB28F12F6@keescook>
-References: <202011201129.B13FDB3C@keescook>
-         <20201120115142.292999b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <202011220816.8B6591A@keescook>
-         <9b57fd4914b46f38d54087d75e072d6e947cb56d.camel@HansenPartnership.com>
-         <ca071decb87cc7e905411423c05a48f9fd2f58d7.camel@perches.com>
-         <0147972a72bc13f3629de8a32dee6f1f308994b5.camel@HansenPartnership.com>
-         <d8d1e9add08cdd4158405e77762d4946037208f8.camel@perches.com>
-         <dbd2cb703ed9eefa7dde9281ea26ab0f7acc8afe.camel@HansenPartnership.com>
-         <20201123130348.GA3119@embeddedor>
-         <8f5611bb015e044fa1c0a48147293923c2d904e4.camel@HansenPartnership.com>
-         <202011241327.BB28F12F6@keescook>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S1725308AbgKYH1I (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Nov 2020 02:27:08 -0500
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16FEC0613D4;
+        Tue, 24 Nov 2020 23:27:08 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id bj5so684355plb.4;
+        Tue, 24 Nov 2020 23:27:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=dE8a5WlGPDxWc2nopfLth4ca5yh3gzs/QZ1YaMzoCcg=;
+        b=JVTjCVNKIef82UXKWf0/tQJeETUdDE0HDCq4b2tt1MBvndGO8HI54SCQUN+hES57k7
+         Xp+bJUqF5W0s8QjVBiDKEFU8YPJ9aJHbmk3lnBGfM4iffNuIEvqwj30E8M8cil89PmTN
+         lYSuL2gyuFytg5uM5jgY3llpWirvDAOvzDQuEnFNH8Yr3eH76Sxn1oOqDjlM2/LzBKFk
+         Nw4B6AoMXScf6B+CYCkqvPo88hkJmnPZPkw3KMtCs6aRerN6pCpl7+Lna6ECzSjUA2aa
+         CpWcn981ACJPTQFGQbtxG8HWepHw/T+89YhkFbVjlKgwhyYb+JnK38pFB9+SonQ+cyU4
+         qdAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=dE8a5WlGPDxWc2nopfLth4ca5yh3gzs/QZ1YaMzoCcg=;
+        b=kErpUoyhy4eJonrJl4KCWBMcXUmuleXb0gRlqVDrTq0BajM5ZzSCiC7wBOIkLCHlyQ
+         wGVY/D9//Q2xNpivJN5NK9taWwPoerM8koLf5wunWonEzj2RG1e6EpZDelLcZEU1JqU0
+         LrVy2V6VFANYTC6QR7+FeJZaxjuLiuLnUpWaTpmkLI232ewrC9s+Mu0hiA0zuAq9r7g+
+         cQdG8ICcnDOjU6ybwDMobQL87zYbU7I9s5QXf7UVKf3BQvsgk+hQsUteNRtHYSmbfcHp
+         s5towGBIMBkjK4RrE+jjHV9wqZVz2zAZmChdBRgOdagaYceq/P0GxQgdT4QYEOY5Ar/1
+         Bj8A==
+X-Gm-Message-State: AOAM5312PEr21od7pNNO82ve0iZy3rH8ygDMlga06jF1/TedjXF8p+ee
+        zorM7Pjb9HVWuYv1O8Oh+4I=
+X-Google-Smtp-Source: ABdhPJzyK94324FGJdnuQQ8Th1gFIVXL9yGsRpw5lIrVTHJ4dqFIVuo81nVLEdEwM8Hliaa9p1Yp3A==
+X-Received: by 2002:a17:902:bf0b:b029:d8:f677:30f2 with SMTP id bi11-20020a170902bf0bb02900d8f67730f2mr1424461plb.25.1606289228251;
+        Tue, 24 Nov 2020 23:27:08 -0800 (PST)
+Received: from linux-l9pv.suse ([124.11.22.254])
+        by smtp.gmail.com with ESMTPSA id q7sm1006055pfh.91.2020.11.24.23.27.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Nov 2020 23:27:07 -0800 (PST)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Boeckel <me@benboeckel.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Subject: [PATCH 0/4] Check codeSigning extended key usage extension
+Date:   Wed, 25 Nov 2020 15:26:49 +0800
+Message-Id: <20201125072653.15657-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-11-24 at 13:32 -0800, Kees Cook wrote:
-> On Mon, Nov 23, 2020 at 08:31:30AM -0800, James Bottomley wrote:
-> > Really, no ... something which produces no improvement has no value
-> > at all ... we really shouldn't be wasting maintainer time with it
-> > because it has a cost to merge.  I'm not sure we understand where
-> > the balance lies in value vs cost to merge but I am confident in
-> > the zero value case.
-> 
-> What? We can't measure how many future bugs aren't introduced because
-> the kernel requires explicit case flow-control statements for all new
-> code.
+NIAP PP_OS certification requests that the OS shall validate the
+CodeSigning extended key usage extension field for integrity
+verifiction of exectable code:
 
-No but we can measure how vulnerable our current coding habits are to
-the mistake this warning would potentially prevent.  I don't think it's
-wrong to extrapolate that if we had no instances at all of prior coding
-problems we likely wouldn't have any in future either making adopting
-the changes needed to enable the warning valueless ... that's the zero
-value case I was referring to above.
+    https://www.niap-ccevs.org/MMO/PP/-442-/
+        FIA_X509_EXT.1.1
 
-Now, what we have seems to be about 6 cases (at least what's been shown
-in this thread) where a missing break would cause potentially user
-visible issues.  That means the value of this isn't zero, but it's not
-a no-brainer massive win either.  That's why I think asking what we've
-invested vs the return isn't a useless exercise.
+This patchset adds the logic for parsing the codeSigning EKU extension
+field in X.509. And checking the CodeSigning EKU when verifying
+signature of kernel module or kexec PE binary in PKCS#7.
 
-> We already enable -Wimplicit-fallthrough globally, so that's not the
-> discussion. The issue is that Clang is (correctly) even more strict
-> than GCC for this, so these are the remaining ones to fix for full
-> Clang coverage too.
-> 
-> People have spent more time debating this already than it would have
-> taken to apply the patches. :)
+v3:
+- Add codeSigning EKU to x509.genkey key generation config.
+- Add openssl command option example for generating CodeSign EKU to
+  module-signing.rst document. 
 
-You mean we've already spent 90% of the effort to come this far so we
-might as well go the remaining 10% because then at least we get some
-return? It's certainly a clinching argument in defence procurement ...
+v2:
+Changed the help wording in the Kconfig.
 
-> This is about robustness and language wrangling. It's a big code-
-> base, and this is the price of our managing technical debt for
-> permanent robustness improvements. (The numbers I ran from Gustavo's
-> earlier patches were that about 10% of the places adjusted were
-> identified as legitimate bugs being fixed. This final series may be
-> lower, but there are still bugs being found from it -- we need to
-> finish this and shut the door on it for good.)
+Lee, Chun-Yi (4):
+  X.509: Add CodeSigning extended key usage parsing
+  PKCS#7: Check codeSigning EKU for kernel module and kexec pe
+    verification
+  modsign: Add codeSigning EKU when generating X.509 key generation
+    config
+  Documentation/admin-guide/module-signing.rst: add openssl command
+    option example for CodeSign EKU
 
-I got my six patches by analyzing the lwn.net report of the fixes that
-was cited which had 21 of which 50% didn't actually change the emitted
-code, and 25% didn't have a user visible effect.
+ Documentation/admin-guide/module-signing.rst |  6 +++++
+ certs/Makefile                               |  1 +
+ certs/system_keyring.c                       |  2 +-
+ crypto/asymmetric_keys/Kconfig               |  9 +++++++
+ crypto/asymmetric_keys/pkcs7_trust.c         | 37 +++++++++++++++++++++++++---
+ crypto/asymmetric_keys/x509_cert_parser.c    | 24 ++++++++++++++++++
+ include/crypto/pkcs7.h                       |  3 ++-
+ include/crypto/public_key.h                  |  1 +
+ include/linux/oid_registry.h                 |  5 ++++
+ 9 files changed, 83 insertions(+), 5 deletions(-)
 
-But the broader point I'm making is just because the compiler people
-come up with a shiny new warning doesn't necessarily mean the problem
-it's detecting is one that causes us actual problems in the code base. 
-I'd really be happier if we had a theory about what classes of CVE or
-bug we could eliminate before we embrace the next new warning.
-
-James
-
-
+-- 
+2.16.4
 
