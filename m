@@ -2,104 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 953872C6A06
-	for <lists+keyrings@lfdr.de>; Fri, 27 Nov 2020 17:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 749682C6A0D
+	for <lists+keyrings@lfdr.de>; Fri, 27 Nov 2020 17:49:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731966AbgK0QqB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 27 Nov 2020 11:46:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:51435 "EHLO
+        id S1731905AbgK0QqL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 27 Nov 2020 11:46:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48238 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730675AbgK0QqB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 27 Nov 2020 11:46:01 -0500
+        by vger.kernel.org with ESMTP id S1731893AbgK0QqL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 27 Nov 2020 11:46:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606495560;
+        s=mimecast20190719; t=1606495569;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YwmNy2yecVSpA3zuuQKT7O6PCaKtPmRiW5EIYH3QEW8=;
-        b=Jlz0BKgZ3V7KTru6ljTUUoK6V/Ob9lg3NdBHvV6JJ4IeRMIOQ6DicgAJC7x1yWiLKNVF7C
-        X0sVDBrQG4XcjOzaCwwzxMiFVer5MzmoHV5JzaNe4ROlhaaE8n8q/uc09CmxmpYnICnA6T
-        dKMg5DQW6r08sDR3dYJFMubrxmgS+Gk=
+        bh=2hCEY4/SQPzDg3IIM7GlZ/Meflenf1/Y7AL3ZB5FbPk=;
+        b=NGbrhxbQGZX7qgqivG90PagwPBoB9uRlvIMMdFMnY4uiz1B9A0GfOO4/6bp63S4SdV34cf
+        bPQ4K/HuwiDfW2LYhGYUtuJqcvtKpo1yYhiK89S/1uGdns8F7xVBUM/lWWLlXfufhi81aX
+        BHyGDpkGijbOa/toeBcZUbiOzOdOzqU=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-56-YhBPAwE0PyikhJ33stj0TA-1; Fri, 27 Nov 2020 11:45:57 -0500
-X-MC-Unique: YhBPAwE0PyikhJ33stj0TA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+ us-mta-89-rbL1CJCzMbmWEYoHhNLmiA-1; Fri, 27 Nov 2020 11:46:05 -0500
+X-MC-Unique: rbL1CJCzMbmWEYoHhNLmiA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8EF388049C3;
-        Fri, 27 Nov 2020 16:45:56 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 00C658049CC;
+        Fri, 27 Nov 2020 16:46:04 +0000 (UTC)
 Received: from warthog.procyon.org.uk (ovpn-112-159.rdu2.redhat.com [10.10.112.159])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 859989CA0;
-        Fri, 27 Nov 2020 16:45:55 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 923565C1C2;
+        Fri, 27 Nov 2020 16:46:02 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH 4/9] security/keys: use kvfree_sensitive()
+Subject: [PATCH 5/9] KEYS: asymmetric: Fix kerneldoc
 From:   David Howells <dhowells@redhat.com>
 To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Denis Efremov <efremov@linux.com>, dhowells@redhat.com,
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Ben Boeckel <mathstuf@gmail.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@iki.fi>, dhowells@redhat.com,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 27 Nov 2020 16:45:54 +0000
-Message-ID: <160649555474.2744658.8529054739735872592.stgit@warthog.procyon.org.uk>
+Date:   Fri, 27 Nov 2020 16:46:01 +0000
+Message-ID: <160649556179.2744658.5657111975428542349.stgit@warthog.procyon.org.uk>
 In-Reply-To: <160649552401.2744658.15096366594785577090.stgit@warthog.procyon.org.uk>
 References: <160649552401.2744658.15096366594785577090.stgit@warthog.procyon.org.uk>
 User-Agent: StGit/0.23
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Denis Efremov <efremov@linux.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-Use kvfree_sensitive() instead of open-coding it.
+Fix W=1 compile warnings (invalid kerneldoc):
 
-Signed-off-by: Denis Efremov <efremov@linux.com>
+    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Function parameter or member 'kid1' not described in 'asymmetric_key_id_same'
+    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Function parameter or member 'kid2' not described in 'asymmetric_key_id_same'
+    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Excess function parameter 'kid_1' description in 'asymmetric_key_id_same'
+    crypto/asymmetric_keys/asymmetric_type.c:160: warning: Excess function parameter 'kid_2' description in 'asymmetric_key_id_same'
+
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Ben Boeckel <mathstuf@gmail.com>
+Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
 ---
 
- security/keys/big_key.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ crypto/asymmetric_keys/asymmetric_type.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/security/keys/big_key.c b/security/keys/big_key.c
-index 691347dea3c1..d17e5f09eeb8 100644
---- a/security/keys/big_key.c
-+++ b/security/keys/big_key.c
-@@ -121,8 +121,7 @@ int big_key_preparse(struct key_preparsed_payload *prep)
- 		*path = file->f_path;
- 		path_get(path);
- 		fput(file);
--		memzero_explicit(buf, enclen);
--		kvfree(buf);
-+		kvfree_sensitive(buf, enclen);
- 	} else {
- 		/* Just store the data in a buffer */
- 		void *data = kmalloc(datalen, GFP_KERNEL);
-@@ -140,8 +139,7 @@ int big_key_preparse(struct key_preparsed_payload *prep)
- err_enckey:
- 	kfree_sensitive(enckey);
- error:
--	memzero_explicit(buf, enclen);
--	kvfree(buf);
-+	kvfree_sensitive(buf, enclen);
- 	return ret;
- }
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index 33e77d846caa..ad8af3d70ac0 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -152,7 +152,8 @@ EXPORT_SYMBOL_GPL(asymmetric_key_generate_id);
  
-@@ -273,8 +271,7 @@ long big_key_read(const struct key *key, char *buffer, size_t buflen)
- err_fput:
- 		fput(file);
- error:
--		memzero_explicit(buf, enclen);
--		kvfree(buf);
-+		kvfree_sensitive(buf, enclen);
- 	} else {
- 		ret = datalen;
- 		memcpy(buffer, key->payload.data[big_key_data], datalen);
+ /**
+  * asymmetric_key_id_same - Return true if two asymmetric keys IDs are the same.
+- * @kid_1, @kid_2: The key IDs to compare
++ * @kid1: The key ID to compare
++ * @kid2: The key ID to compare
+  */
+ bool asymmetric_key_id_same(const struct asymmetric_key_id *kid1,
+ 			    const struct asymmetric_key_id *kid2)
+@@ -168,7 +169,8 @@ EXPORT_SYMBOL_GPL(asymmetric_key_id_same);
+ /**
+  * asymmetric_key_id_partial - Return true if two asymmetric keys IDs
+  * partially match
+- * @kid_1, @kid_2: The key IDs to compare
++ * @kid1: The key ID to compare
++ * @kid2: The key ID to compare
+  */
+ bool asymmetric_key_id_partial(const struct asymmetric_key_id *kid1,
+ 			       const struct asymmetric_key_id *kid2)
 
 
