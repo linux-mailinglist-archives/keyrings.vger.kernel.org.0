@@ -2,54 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E82B22C82F9
-	for <lists+keyrings@lfdr.de>; Mon, 30 Nov 2020 12:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2F72C8E90
+	for <lists+keyrings@lfdr.de>; Mon, 30 Nov 2020 21:00:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726337AbgK3LO5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Nov 2020 06:14:57 -0500
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:57078 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726270AbgK3LO5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Nov 2020 06:14:57 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=alex.shi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0UGzuhIU_1606734853;
-Received: from IT-FVFX43SYHV2H.local(mailfrom:alex.shi@linux.alibaba.com fp:SMTPD_---0UGzuhIU_1606734853)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 30 Nov 2020 19:14:13 +0800
-Subject: Re: [PATCH] certs/blacklist: fix kernel doc interface issue
-To:     David Howells <dhowells@redhat.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1604673513-29088-1-git-send-email-alex.shi@linux.alibaba.com>
- <3096975.1606730658@warthog.procyon.org.uk>
-From:   Alex Shi <alex.shi@linux.alibaba.com>
-Message-ID: <f8b65cac-2e42-c5e7-14da-37ac8946717d@linux.alibaba.com>
-Date:   Mon, 30 Nov 2020 19:14:11 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.0
+        id S1727850AbgK3T72 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Nov 2020 14:59:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726827AbgK3T71 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Nov 2020 14:59:27 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5723C0613D2;
+        Mon, 30 Nov 2020 11:58:47 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id CEC4F12809AB;
+        Mon, 30 Nov 2020 11:58:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1606766325;
+        bh=4RhT38g10G7wcqKLoI0zVVTecuh1LdwEcnKm/WVZ6Ew=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=tmIHIVqIHwDFUYkzPapd6YmhEfYPWq/h6yOryVsY6fsDJCRomSOqrpL6UT+nvaobi
+         nhL64zAxuGd5mUyKTDehI9O4i7MU90b3mrpHM8kQW9iHVlHrCx6i5IuPVZN13bwbMD
+         w+gMLC+EIejPFco6eQIJQ6T/jXqFpwiaRrRjJj4A=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Nvq0kSXZraV7; Mon, 30 Nov 2020 11:58:45 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4680C12809AA;
+        Mon, 30 Nov 2020 11:58:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1606766325;
+        bh=4RhT38g10G7wcqKLoI0zVVTecuh1LdwEcnKm/WVZ6Ew=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=tmIHIVqIHwDFUYkzPapd6YmhEfYPWq/h6yOryVsY6fsDJCRomSOqrpL6UT+nvaobi
+         nhL64zAxuGd5mUyKTDehI9O4i7MU90b3mrpHM8kQW9iHVlHrCx6i5IuPVZN13bwbMD
+         w+gMLC+EIejPFco6eQIJQ6T/jXqFpwiaRrRjJj4A=
+Message-ID: <5e94c7199c675bbfa7112f8b79fcb91f8d2d4fe7.camel@HansenPartnership.com>
+Subject: Re: [PATCH v14 4/5] security: keys: trusted: use ASN.1 TPM2 key
+ format for the blobs
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     kernel test robot <lkp@intel.com>, linux-integrity@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Date:   Mon, 30 Nov 2020 11:58:43 -0800
+In-Reply-To: <202011301002.yYRCOdq5-lkp@intel.com>
+References: <20201129222004.4428-5-James.Bottomley@HansenPartnership.com>
+         <202011301002.yYRCOdq5-lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-In-Reply-To: <3096975.1606730658@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=gbk
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Mon, 2020-11-30 at 10:10 +0800, kernel test robot wrote:
+[...]
+>  > 331		if (payload->blob_len < 0)
+>    332			return payload->blob_len;
 
+OK, I can rework this to use the signed version of blob len as below.
 
-ÔÚ 2020/11/30 ÏÂÎç6:04, David Howells Ð´µÀ:
-> Alex Shi <alex.shi@linux.alibaba.com> wrote:
-> 
->>  /**
->>   * mark_hash_blacklisted - Add a hash to the system blacklist
->> - * @hash - The hash as a hex string with a type prefix (eg. "tbs:23aa429783")
->> + * @hash: - The hash as a hex string with a type prefix (eg. "tbs:23aa429783")
-> 
-> You should remove the dash when making this change.  I'll do that for you.
+James
 
+---
 
-Hi David,
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index e50563f58900..0d4c6f138b94 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -242,7 +242,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+ 		      struct trusted_key_payload *payload,
+ 		      struct trusted_key_options *options)
+ {
+-	unsigned int blob_len;
++	int blob_len = 0;
+ 	struct tpm_buf buf;
+ 	u32 hash;
+ 	u32 flags;
+@@ -400,10 +400,9 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+ 		goto out;
+ 	}
+ 
+-	payload->blob_len =
+-		tpm2_key_encode(payload, options,
+-				&buf.data[TPM_HEADER_SIZE + 4],
+-				blob_len);
++	blob_len = tpm2_key_encode(payload, options,
++				   &buf.data[TPM_HEADER_SIZE + 4],
++				   blob_len);
+ 
+ out:
+ 	tpm_buf_destroy(&buf);
+@@ -414,8 +413,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+ 		else
+ 			rc = -EPERM;
+ 	}
+-	if (payload->blob_len < 0)
+-		return payload->blob_len;
++	if (blob_len < 0)
++		return blob_len;
++
++	payload->blob_len = blob_len;
+ 
+ 	return rc;
+ }
 
-Very appreciate for the fixing and reminder!
-
-Regards
-Alex
