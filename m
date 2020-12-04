@@ -2,80 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7922CDE72
-	for <lists+keyrings@lfdr.de>; Thu,  3 Dec 2020 20:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA8732CE710
+	for <lists+keyrings@lfdr.de>; Fri,  4 Dec 2020 05:45:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726142AbgLCTF0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Dec 2020 14:05:26 -0500
-Received: from mail-wr1-f43.google.com ([209.85.221.43]:37324 "EHLO
-        mail-wr1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728381AbgLCTF0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Dec 2020 14:05:26 -0500
-Received: by mail-wr1-f43.google.com with SMTP id i2so2994787wrs.4
-        for <keyrings@vger.kernel.org>; Thu, 03 Dec 2020 11:05:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yo2De2Pk0T/ha9hsXodD8WV8ytF7ugRHa6ZAnUm2dXY=;
-        b=t2zip4jUIJs4IGrlgWJgm6Gn6HXLeEOhhKuys9tKgvg4f/lIFRM0h9z0f7tpLA1buE
-         CHeM8rWDFOtjgJcT9oDlal5YhyVimNpwhItaumTKtfkgXN+9kbM/H163BwYrQyGYaoWr
-         ycmTcR+fLNY+K3Y2DqQD8AQE5FaIXZQREmVB1f76L7ED0Gu4Yu16Iz81kDp5LfWhqbdt
-         H+D9xL8dOjshCESQcVIXSH5Lp77KDGkgi8G7M6Zytfrr/7Uavsr1f4Jkalgz2jBSvapN
-         wBm3OYVf8vy0HE1YJevZI0yz9XYQllZC3E86c5bFNExWQVEH8lvqoUScMfAWbpGyCz93
-         tR1Q==
-X-Gm-Message-State: AOAM530dffTnDqd6FX56robQcVStS3/QO8rxJd5tC7eraEsFJxJxEDh3
-        unUI0hXV8qaLoHezxdnhwBlznqq/qRyPPQ==
-X-Google-Smtp-Source: ABdhPJyQo1IAHPhNsS0yhPXttl3q+PMGIpbs9AV1SK8vtNvq6kimqiOq66gE/87nlFb+kKyg3d9sVg==
-X-Received: by 2002:a5d:688b:: with SMTP id h11mr640542wru.417.1607022278111;
-        Thu, 03 Dec 2020 11:04:38 -0800 (PST)
-Received: from localhost.localdomain ([82.213.215.165])
-        by smtp.gmail.com with ESMTPSA id x25sm327540wmc.3.2020.12.03.11.04.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Dec 2020 11:04:37 -0800 (PST)
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-To:     keyrings@vger.kernel.org
-Cc:     David Howells <dhowells@redhat.com>
-Subject: [PATCH][RESEND] keys: Update comment for restrict_link_by_key_or_keyring_chain
-Date:   Thu,  3 Dec 2020 20:04:20 +0100
-Message-Id: <20201203190420.105681-2-andrew.zaborowski@intel.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201203190420.105681-1-andrew.zaborowski@intel.com>
-References: <20201203190420.105681-1-andrew.zaborowski@intel.com>
+        id S1726798AbgLDEo5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 3 Dec 2020 23:44:57 -0500
+Received: from mga05.intel.com ([192.55.52.43]:25401 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726270AbgLDEo5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 3 Dec 2020 23:44:57 -0500
+IronPort-SDR: JjPwbhfR5CN7Mv55E0DYbQBXE2uU3QZ2FNCSz+0yvbnsVgbR/jGTuC8UDS3T8YFU37RLqlGZqj
+ aVArcosGyiFQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9824"; a="258040361"
+X-IronPort-AV: E=Sophos;i="5.78,391,1599548400"; 
+   d="scan'208";a="258040361"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2020 20:43:14 -0800
+IronPort-SDR: ILfJr7B+C6Ud9vErCXT73j4pD9S8VIJrV0DlMT/y3p1M7mJ90cDFPpF0EwVWFTUluPXshYQXuu
+ HJhcXoIHndWA==
+X-IronPort-AV: E=Sophos;i="5.78,391,1599548400"; 
+   d="scan'208";a="315975966"
+Received: from kramerha-mobl.ger.corp.intel.com (HELO linux.intel.com) ([10.252.53.177])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2020 20:43:12 -0800
+Date:   Fri, 4 Dec 2020 06:43:07 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v14 1/5] lib: add ASN.1 encoder
+Message-ID: <20201204044307.GB84413@linux.intel.com>
+References: <20201129222004.4428-1-James.Bottomley@HansenPartnership.com>
+ <20201129222004.4428-2-James.Bottomley@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201129222004.4428-2-James.Bottomley@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add the bit of information that makes
-restrict_link_by_key_or_keyring_chain different from
-restrict_link_by_key_or_keyring to the inline docs comment.
+On Sun, Nov 29, 2020 at 02:20:00PM -0800, James Bottomley wrote:
+> We have a need in the TPM2 trusted keys to return the ASN.1 form of
+> the TPM key blob so it can be operated on by tools outside of the
+> kernel.  The specific tools are the openssl_tpm2_engine, openconnect
+> and the Intel tpm2-tss-engine.  To do that, we have to be able to read
+> and write the same binary key format the tools use.  The current ASN.1
+> decoder does fine for reading, but we need pieces of an ASN.1 encoder
+> to write the key blob in binary compatible form.
+> 
+> For backwards compatibility, the trusted key reader code will still
+> accept the two TPM2B quantities that it uses today, but the writer
+> will only output the ASN.1 form.
+> 
+> The current implementation only encodes the ASN.1 bits we actually need.
+> 
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> Reviewed-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- crypto/asymmetric_keys/restrict.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Also:
 
-diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-index 77ebebada29..84cefe3b358 100644
---- a/crypto/asymmetric_keys/restrict.c
-+++ b/crypto/asymmetric_keys/restrict.c
-@@ -244,9 +244,10 @@ int restrict_link_by_key_or_keyring(struct key *dest_keyring,
-  * @payload: The payload of the new key.
-  * @trusted: A key or ring of keys that can be used to vouch for the new cert.
-  *
-- * Check the new certificate only against the key or keys passed in the data
-- * parameter. If one of those is the signing key and validates the new
-- * certificate, then mark the new certificate as being ok to link.
-+ * Check the new certificate against the key or keys passed in the data
-+ * parameter and against the keys already linked to the destination keyring. If
-+ * one of those is the signing key and validates the new certificate, then mark
-+ * the new certificate as being ok to link.
-  *
-  * Returns 0 if the new certificate was accepted, -ENOKEY if we
-  * couldn't find a matching parent certificate in the trusted list,
--- 
-2.20.1
+Tested-by: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 
+I've successfully used this multiple times already.
+
+/Jarkko
