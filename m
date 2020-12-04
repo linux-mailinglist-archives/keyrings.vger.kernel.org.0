@@ -2,77 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F2C2CF165
-	for <lists+keyrings@lfdr.de>; Fri,  4 Dec 2020 17:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FD0B2CF86D
+	for <lists+keyrings@lfdr.de>; Sat,  5 Dec 2020 02:02:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725987AbgLDQCQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Dec 2020 11:02:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51780 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbgLDQCQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Dec 2020 11:02:16 -0500
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7267BC0613D1;
-        Fri,  4 Dec 2020 08:01:36 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id DA72212807D1;
-        Fri,  4 Dec 2020 08:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1607097693;
-        bh=531MZAcDtnYtUyV5u/GZDKSaWvEXqRhYBHHnJN96MOs=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=Q0vGytywPUFIsb3aRsyE4Csin0afWe1s/TPUpGcrd5ivM28T7V3qTid7cBoUhlbSP
-         O4B/o6ruNdQTE6CUcjFHMNQgVfIFXbvIzXMrKoSCgIdOVShFA9D0zz82oDOlE8GRWS
-         7/q6K3CPnhxB2wMJhPk20HPZ7Fz6LOiW0NO8dA4g=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id g-jYSrEeO_Yy; Fri,  4 Dec 2020 08:01:33 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 68A6212807CC;
-        Fri,  4 Dec 2020 08:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1607097693;
-        bh=531MZAcDtnYtUyV5u/GZDKSaWvEXqRhYBHHnJN96MOs=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=Q0vGytywPUFIsb3aRsyE4Csin0afWe1s/TPUpGcrd5ivM28T7V3qTid7cBoUhlbSP
-         O4B/o6ruNdQTE6CUcjFHMNQgVfIFXbvIzXMrKoSCgIdOVShFA9D0zz82oDOlE8GRWS
-         7/q6K3CPnhxB2wMJhPk20HPZ7Fz6LOiW0NO8dA4g=
-Message-ID: <4a10673aed90de1fe843a18f3790361239b8dbd7.camel@HansenPartnership.com>
-Subject: Re: [PATCH v14 2/5] oid_registry: Add TCG defined OIDS for TPM keys
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Date:   Fri, 04 Dec 2020 08:01:32 -0800
-In-Reply-To: <112051.1607089494@warthog.procyon.org.uk>
-References: <20201129222004.4428-3-James.Bottomley@HansenPartnership.com>
-         <20201129222004.4428-1-James.Bottomley@HansenPartnership.com>
-         <112051.1607089494@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        id S1726367AbgLEBAH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Dec 2020 20:00:07 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:36244 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726242AbgLEBAG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Dec 2020 20:00:06 -0500
+X-Greylist: delayed 14999 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 20:00:06 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 246161A30F1;
+        Sat,  5 Dec 2020 04:48:15 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 000536821CC;
+        Sat,  5 Dec 2020 04:48:14 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id C85C7838858;
+        Sat,  5 Dec 2020 04:48:14 +0900 (JST)
 MIME-Version: 1.0
+Message-ID: <20201204194814.00003DB9.0690@hyogo-dai.ac.jp>
+Date:   Sat, 05 Dec 2020 04:48:14 +0900
+From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
+To:     <infocarferr1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information. 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--4.326-5.0-31-10
+X-imss-scan-details: No--4.326-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
+        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
+        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2020-12-04 at 13:44 +0000, David Howells wrote:
-> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
-> 
-> > The TCG has defined an OID prefix "2.23.133.10.1" for the various
-> > TPM key uses.
-> 
-> Is this registered?  I've checked a couple of OID registry sites
-> (eg. www.oid-info.com) and it seems to be unknown.
+infocarfer@aim.com
 
-Yes, TCG owns 2.23.133, although I still don't think Monty has
-published it yet:
-
-https://lore.kernel.org/linux-integrity/26ED11907FC0F446BB0296B5357EEF0E316CDBB0@CINMBCNA02.e2k.ad.ge.com/
-
-James
 
 
