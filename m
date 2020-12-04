@@ -2,23 +2,25 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C352CF001
-	for <lists+keyrings@lfdr.de>; Fri,  4 Dec 2020 15:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B792CF029
+	for <lists+keyrings@lfdr.de>; Fri,  4 Dec 2020 15:59:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730289AbgLDOte (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Dec 2020 09:49:34 -0500
-Received: from smtp-bc08.mail.infomaniak.ch ([45.157.188.8]:56465 "EHLO
-        smtp-bc08.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727620AbgLDOte (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Dec 2020 09:49:34 -0500
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4CnbDv6MYszlhrjs;
-        Fri,  4 Dec 2020 15:48:47 +0100 (CET)
+        id S1730367AbgLDO7Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Dec 2020 09:59:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41978 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730365AbgLDO7X (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Dec 2020 09:59:23 -0500
+Received: from smtp-42ad.mail.infomaniak.ch (smtp-42ad.mail.infomaniak.ch [IPv6:2001:1600:3:17::42ad])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8B2C061A55
+        for <keyrings@vger.kernel.org>; Fri,  4 Dec 2020 06:58:10 -0800 (PST)
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4CnbRh4YtTzlhJNx;
+        Fri,  4 Dec 2020 15:58:08 +0100 (CET)
 Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4CnbDt1CdYzlh8TT;
-        Fri,  4 Dec 2020 15:48:46 +0100 (CET)
-Subject: Re: [PATCH v1 1/9] certs: Fix blacklisted hexadecimal hash string
- check
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4CnbRf4P6lzlh8Ts;
+        Fri,  4 Dec 2020 15:58:06 +0100 (CET)
+Subject: Re: [PATCH v1 5/9] PKCS#7: Fix missing include
 To:     David Howells <dhowells@redhat.com>
 Cc:     David Woodhouse <dwmw2@infradead.org>,
         "David S . Miller" <davem@davemloft.net>,
@@ -30,15 +32,15 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20201120180426.922572-2-mic@digikod.net>
+References: <20201120180426.922572-6-mic@digikod.net>
  <20201120180426.922572-1-mic@digikod.net>
- <113785.1607090759@warthog.procyon.org.uk>
+ <113849.1607090807@warthog.procyon.org.uk>
 From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-Message-ID: <c9664a67-61b7-6b4a-86d7-5aca9ff06fa5@digikod.net>
-Date:   Fri, 4 Dec 2020 15:48:45 +0100
+Message-ID: <ae14f82d-2145-83aa-f8e6-5a64b117b0f6@digikod.net>
+Date:   Fri, 4 Dec 2020 15:58:06 +0100
 User-Agent: 
 MIME-Version: 1.0
-In-Reply-To: <113785.1607090759@warthog.procyon.org.uk>
+In-Reply-To: <113849.1607090807@warthog.procyon.org.uk>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -47,36 +49,14 @@ List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 
-On 04/12/2020 15:05, David Howells wrote:
+On 04/12/2020 15:06, David Howells wrote:
 > Mickaël Salaün <mic@digikod.net> wrote:
 > 
->> When looking for a blacklisted hash, bin2hex() is used to transform a
->> binary hash to an ascii (lowercase) hexadecimal string.  This string is
->> then search for in the description of the keys from the blacklist
->> keyring.  When adding a key to the blacklist keyring,
->> blacklist_vet_description() checks the hash prefix and the hexadecimal
->> string, but not that this string is lowercase.  It is then valid to set
->> hashes with uppercase hexadecimal, which will be silently ignored by the
->> kernel.
->>
->> Add an additional check to blacklist_vet_description() to check that
->> hexadecimal strings are in lowercase.
+>> +#include <stddef.h>
 > 
-> I wonder if it would be a better idea to allow the keyring type to adjust the
-> description string - in this instance to change it to all lowercase.
+> Something like linux/types.h is probably a better choice.
 
-Right now, this patch helps user space identifies which hashes where
-ignored. I think it is an interesting information on its own because it
-enables to remove a false sense of security and warns about
-mis-blacklisted certificates or binaries.
-
-When authenticity/signature of such hash is taken into account, I also
-prefer to not change the data that user space signed and pushed to the
-kernel, but to teach user space what is correct.
-
-Moreover, modifying the description cannot be done with the
-vet_description-type function and would be a more invasive keyring
-modification because, AFAIK, no current key type already does such change.
+Indeed.
 
 > 
 > David
