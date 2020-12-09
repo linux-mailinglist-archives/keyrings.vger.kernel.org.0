@@ -2,115 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF98B2D4727
-	for <lists+keyrings@lfdr.de>; Wed,  9 Dec 2020 17:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E0B12D49D0
+	for <lists+keyrings@lfdr.de>; Wed,  9 Dec 2020 20:09:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730388AbgLIQvf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 9 Dec 2020 11:51:35 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:26846 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727156AbgLIQvf (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 9 Dec 2020 11:51:35 -0500
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0B9GWbLp073428;
-        Wed, 9 Dec 2020 11:50:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=Odsb8xyjIIIVuDCTk0SLDsR/3RdCoFAvh4mqCubQ+2A=;
- b=sou2VVe58bYe8S9Xkbe77OrgSXLpzFqyoHcV1WfYtP4zZZ0WjphhwqtJOy0oiQw7krQr
- EIWJzOIkE6p0zcdVpRRJjChuM5iWd+aMN4OJMCs3nBAXeW+SBwjx/l4HtdmDvusCJtQ+
- gdf0L3OhNN1SL3kFRCvDK4O+COOLYf6bN260MytuXNWezpa7FNTAdm6SiP4JF2R5NIux
- Xld2anv19DBl9Zbn6AaG01fSo1lyJEQoJspk6VR9zzlHakjbsWX/hH21fyn8BoBmelxW
- +6LkLmyoVapnZ39qMZP7JnERgLOAz5o39m69oBFF0n6C2tkfJOnlIdTQHbQqklG1UNeo kA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 35b1gxhm0y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Dec 2020 11:50:31 -0500
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B9GWh8i074282;
-        Wed, 9 Dec 2020 11:50:30 -0500
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 35b1gxhkyy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Dec 2020 11:50:30 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-        by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B9Gmomc002346;
-        Wed, 9 Dec 2020 16:50:28 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-        by ppma03fra.de.ibm.com with ESMTP id 3581u8q49p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Dec 2020 16:50:27 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0B9GoOJI47120874
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 9 Dec 2020 16:50:25 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D2A744C046;
-        Wed,  9 Dec 2020 16:50:24 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 248254C044;
-        Wed,  9 Dec 2020 16:50:20 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.20.48])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  9 Dec 2020 16:50:19 +0000 (GMT)
-Message-ID: <b2465d27f3683331019c5a9b6d0856304d992a0a.camel@linux.ibm.com>
-Subject: Re: [PATCH v8 3/4] doc: trusted-encrypted: updates with TEE as a
- new trust source
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>, sumit.garg@linaro.org
-Cc:     Elaine Palmer <erpalmerny@gmail.com>,
-        jarkko.sakkinen@linux.intel.com, jejb@linux.ibm.com,
-        dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
-        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
-        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
-        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
-        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        op-tee@lists.trustedfirmware.org,
-        Kenneth Goldman <kgoldman@us.ibm.com>, gcwilson@linux.ibm.com,
-        zgu@us.ibm.com, stefanb@us.ibm.com, NAYNA JAIN1 <naynjain@ibm.com>
-Date:   Wed, 09 Dec 2020 11:50:19 -0500
-In-Reply-To: <20201208174906.GA58572@kernel.org>
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
-         <1604419306-26105-4-git-send-email-sumit.garg@linaro.org>
-         <81A6B61D-3811-4957-B270-52AE5FA6DE4F@gmail.com>
-         <20201204153037.GC4922@kernel.org>
-         <ba6cd934bf7460cf6e9fc101a759a63fdd4e6e9b.camel@linux.ibm.com>
-         <20201208174906.GA58572@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2020-12-09_13:2020-12-09,2020-12-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- adultscore=0 suspectscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012090112
+        id S2387579AbgLITIM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 9 Dec 2020 14:08:12 -0500
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:58843 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1733296AbgLITIM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 9 Dec 2020 14:08:12 -0500
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+        by mailout.nyi.internal (Postfix) with ESMTP id 0C1375C00F9;
+        Wed,  9 Dec 2020 14:07:26 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 09 Dec 2020 14:07:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=1snqE7Ftfxop2fQ2t5zP5kMfY4U
+        OOZ/fUjqKfQxRkxk=; b=is2QQ14JuNoHaJ1w1fSoa1FgWLtiSJc9bUa8U0Udm7g
+        0G77gEzTh2QCkwCOKnhhHPS2Ifzu99SrT9J+L9f2SHtGv1n8D/WYNWjBszYP3abM
+        VZTRsSsbNPvKZR2hqhc7YMQXbsHAA16Je52h0LyspjX7z+K6BbKR0KbmLDLrdzLZ
+        kxDoDYrdPvIP+zJRn0KeWXXJ74PjkrS3T8wp3PzjXIRhHFuEf+Y6KgM8oecZ3cYG
+        K/6EB2/KOxeEVNXKkguRix3njAmRUg5AQBe//PwHvIuM39EM3nD95Nx0XnKHa3Ma
+        fD1u/diyAhyRjKKeXGhTosR28FsvUcDSS06wJzaIrmA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=1snqE7
+        Ftfxop2fQ2t5zP5kMfY4UOOZ/fUjqKfQxRkxk=; b=A1Lw2Wc6L55RAmE3chrRiv
+        /KDFxiLkRgL7iyuvMR1937uj66TeO5dDuBxIEols6o5bIpo+f53b0pUrNfVx4jzP
+        1fijL9GAGKVzwJDZT1Vvnl7bNGRYLzWHi96B4D5ZIr+w5xh4AM+yhjOcWNwbETzB
+        6KzIVRNoQKDQPVm+BexYHfOntgRHwknCUbysNn08ScWJJLROtIJ14dY4bq4Al9sv
+        lmxNbu+Kr6Jadvmx53dKHRBTJ0wAdCmCcQLVZh+zjBA8ZO6mYt4TUuDPi48d+o7n
+        +jaVcyoUZgqe1q3ot/aUcEnS19TnFPjm22Rt8FvjtKBnoFq3acLeThTTlP9GAkJQ
+        ==
+X-ME-Sender: <xms:bSDRX3gRKjuFCSQ0Ii54rJtDiz1YpJ2FoYc8XAZr1Au93aSAH6wWmg>
+    <xme:bSDRX0BcMW_gHXfmJ7_Nu_zMlitSc0o6MY-zWtzzfLA-Ifn6hPqFupoAxwe_4x4XM
+    LjXVXJBTmEUZno93ic>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedguddvvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
+    uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
+    htvghrnhepvefftdettefgtddtkeeufeegtddttdeuueegkeegteffueetffejudeihefh
+    kedtnecukfhppedvgedrudeiledrvddtrddvheehnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepmhgvsegsvghnsghovggtkhgvlhdrnhgvth
+X-ME-Proxy: <xmx:bSDRX3EfRjNdxBrBZrzb7Y3GYlzgarGzQFKuUq97e4SBiAsiaHy-0Q>
+    <xmx:bSDRX0RVKhTl6-WWgZpJy4-JKUX764WmBC2b6qFBxBPvzF60sVPUVA>
+    <xmx:bSDRX0wqlW3Lt75oRkL3geVLmLfv9-KfEmIB8Qq3BAD_YNWF2tFEQA>
+    <xmx:biDRX_-0RtOHy9dLqEW7RXyOmJxOyKpcUQBYRXCY9qWrzWnl9io5Rg>
+Received: from localhost (unknown [24.169.20.255])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 5AF591080059;
+        Wed,  9 Dec 2020 14:07:25 -0500 (EST)
+Date:   Wed, 9 Dec 2020 14:07:24 -0500
+From:   Ben Boeckel <me@benboeckel.net>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Tom Rix <trix@redhat.com>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 07/18] KEYS: remove redundant memset
+Message-ID: <20201209190724.GA1448831@erythro>
+References: <160751606428.1238376.14935502103503420781.stgit@warthog.procyon.org.uk>
+ <160751611918.1238376.7060458630378643472.stgit@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <160751611918.1238376.7060458630378643472.stgit@warthog.procyon.org.uk>
+User-Agent: Mutt/1.14.6 (2020-07-11)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-12-08 at 19:49 +0200, Jarkko Sakkinen wrote:
-> On Tue, Dec 08, 2020 at 10:02:57AM -0500, Mimi Zohar wrote:
-
-> > > Please also use a proper email client and split your paragraphs into
-> > > at most 80 character lines with new line characters when writing email.
-> > > I prefer to use 72 character line length so that there's some space
-> > > for longer email threads.
-> > 
-> > Sure, we'll re-post the suggested documentation changes/additions.
-> > 
-> > Mimi
+On Wed, Dec 09, 2020 at 12:15:19 +0000, David Howells wrote:
+> From: Tom Rix <trix@redhat.com>
 > 
-> So. Wouldn't it be a better idea to post a patch that Sumit could
-> squash to his (and add co-developed-by tag)?
+> Reviewing use of memset in keyctrl_pkey.c
 
-I just posted it on Elaine's behalf.
-  
-Mimi
+Typo: `keyctl_pkey.c`
 
+--Ben
