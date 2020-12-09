@@ -2,82 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0B12D49D0
-	for <lists+keyrings@lfdr.de>; Wed,  9 Dec 2020 20:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A242D49E4
+	for <lists+keyrings@lfdr.de>; Wed,  9 Dec 2020 20:15:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387579AbgLITIM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 9 Dec 2020 14:08:12 -0500
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:58843 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1733296AbgLITIM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 9 Dec 2020 14:08:12 -0500
+        id S1728488AbgLITN3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 9 Dec 2020 14:13:29 -0500
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:46315 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732900AbgLITNS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 9 Dec 2020 14:13:18 -0500
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailout.nyi.internal (Postfix) with ESMTP id 0C1375C00F9;
-        Wed,  9 Dec 2020 14:07:26 -0500 (EST)
+        by mailnew.nyi.internal (Postfix) with ESMTP id 15DB0580233;
+        Wed,  9 Dec 2020 14:12:09 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 09 Dec 2020 14:07:26 -0500
+  by compute2.internal (MEProxy); Wed, 09 Dec 2020 14:12:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
          h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=1snqE7Ftfxop2fQ2t5zP5kMfY4U
-        OOZ/fUjqKfQxRkxk=; b=is2QQ14JuNoHaJ1w1fSoa1FgWLtiSJc9bUa8U0Udm7g
-        0G77gEzTh2QCkwCOKnhhHPS2Ifzu99SrT9J+L9f2SHtGv1n8D/WYNWjBszYP3abM
-        VZTRsSsbNPvKZR2hqhc7YMQXbsHAA16Je52h0LyspjX7z+K6BbKR0KbmLDLrdzLZ
-        kxDoDYrdPvIP+zJRn0KeWXXJ74PjkrS3T8wp3PzjXIRhHFuEf+Y6KgM8oecZ3cYG
-        K/6EB2/KOxeEVNXKkguRix3njAmRUg5AQBe//PwHvIuM39EM3nD95Nx0XnKHa3Ma
-        fD1u/diyAhyRjKKeXGhTosR28FsvUcDSS06wJzaIrmA==
+        :content-type:in-reply-to; s=fm3; bh=xqge9GL++YyfKHKH4XONW7ozJfi
+        dwx7PvG5HtEjyOe0=; b=m3gY3WLVBfZGq/irJNiytLeMlzk/M5NTAAR/FH5jqHr
+        /0SmipuGZSJkkQHLZy03t4wdKQvKtNeyujVLs3QQvKg6JLC/JC0a4gxkEUkHjs/Y
+        6D28H4EaRr2kgLZg6QDgPG1GbppiuyflIO60t5BbxiK/X8UBOA/Y/utQsYwo1wtJ
+        Uh6IVwdCDmCplnnZi2RYkaZZdVHvDiCzM9vgsik+LUr8tl89CYu6l37DLHwPsktL
+        o+UB6Wp5njGfoUq7L/dB7O8Z+etIcobJUMMMBQX8yvNJJ7vFhPuM6PUORuTqjA4g
+        bs1GVO/iitBXudSv17VToLBGbG+ClYFILvVkN2z71BA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:content-type:date:from:in-reply-to
         :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=1snqE7
-        Ftfxop2fQ2t5zP5kMfY4UOOZ/fUjqKfQxRkxk=; b=A1Lw2Wc6L55RAmE3chrRiv
-        /KDFxiLkRgL7iyuvMR1937uj66TeO5dDuBxIEols6o5bIpo+f53b0pUrNfVx4jzP
-        1fijL9GAGKVzwJDZT1Vvnl7bNGRYLzWHi96B4D5ZIr+w5xh4AM+yhjOcWNwbETzB
-        6KzIVRNoQKDQPVm+BexYHfOntgRHwknCUbysNn08ScWJJLROtIJ14dY4bq4Al9sv
-        lmxNbu+Kr6Jadvmx53dKHRBTJ0wAdCmCcQLVZh+zjBA8ZO6mYt4TUuDPi48d+o7n
-        +jaVcyoUZgqe1q3ot/aUcEnS19TnFPjm22Rt8FvjtKBnoFq3acLeThTTlP9GAkJQ
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=xqge9G
+        L++YyfKHKH4XONW7ozJfidwx7PvG5HtEjyOe0=; b=ft6xD5Jxyu6vQl4RKJVLj6
+        JjuBWCO35p679lel5YZypf0d3CtLZ+mofFE6diDitfM4SIMkMmFL/S7pjyDaLBd0
+        FXRc5mXE8TbnacwOXp0V3eNzaEiZ8iley6vbY+XNGup1dzyU4XZuoEFbHnik06h7
+        oLjFf2pXRaFhCOAlgLGuQ4UN79LKgLzyx2k+Akqm0kiVvN+yGalW9Y9iMNwfKusB
+        FcaoX5E8ePqrDtY9yVUbSY+zJT/IBVBeKN5Pw0jAupaAm3oEWuj+ffPZSVQmwp4Y
+        CPzH0vzicO6eyFiXK3c+P9oINGZ2cNv1Zd7alLZV1r9ZRUjggyH8LhmRRhZtPBrA
         ==
-X-ME-Sender: <xms:bSDRX3gRKjuFCSQ0Ii54rJtDiz1YpJ2FoYc8XAZr1Au93aSAH6wWmg>
-    <xme:bSDRX0BcMW_gHXfmJ7_Nu_zMlitSc0o6MY-zWtzzfLA-Ifn6hPqFupoAxwe_4x4XM
-    LjXVXJBTmEUZno93ic>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedguddvvdcutefuodetggdotefrod
+X-ME-Sender: <xms:hCHRX66wOUyGK3PYwc_CEMwTAwRa3uQT0kiIgZHjHC1DLGz8t2w8Mg>
+    <xme:hCHRXz6qqlU5fATQNBifjZZ39A4oKbEqYwrL3zJb1wJaLpcZD3AJz8dxOExZHru6i
+    miQsrAYtmxxRnrhOp8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedguddvfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpeffhffvuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
     uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
-    htvghrnhepvefftdettefgtddtkeeufeegtddttdeuueegkeegteffueetffejudeihefh
-    kedtnecukfhppedvgedrudeiledrvddtrddvheehnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepmhgvsegsvghnsghovggtkhgvlhdrnhgvth
-X-ME-Proxy: <xmx:bSDRX3EfRjNdxBrBZrzb7Y3GYlzgarGzQFKuUq97e4SBiAsiaHy-0Q>
-    <xmx:bSDRX0RVKhTl6-WWgZpJy4-JKUX764WmBC2b6qFBxBPvzF60sVPUVA>
-    <xmx:bSDRX0wqlW3Lt75oRkL3geVLmLfv9-KfEmIB8Qq3BAD_YNWF2tFEQA>
-    <xmx:biDRX_-0RtOHy9dLqEW7RXyOmJxOyKpcUQBYRXCY9qWrzWnl9io5Rg>
+    htvghrnhepudffjeegieefudelveekueffkeffjeeiledvgfeiffekkeeihedvveejledt
+    tddtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdegrdduieelrddvtd
+    drvdehheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
+    pehmvgessggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:hCHRX5eIJntLG4IlKcBofqVmsx_lVi7N7qKKRe4dfnqeBDeIZUicpw>
+    <xmx:hCHRX3I-NzDLPiJ_DoGzTobgwfd_YWlR25la3yv4MNdyvl8c5C25jw>
+    <xmx:hCHRX-LG-9KAiEVWQ-Vh0exrJZqz9or-NauN9V41178F7D0uOAXq8w>
+    <xmx:iSHRX2DloI69yDVccwBkLxgeeTdCTFaaRs4phr7s_Un6Q6v7to5v-w>
 Received: from localhost (unknown [24.169.20.255])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 5AF591080059;
-        Wed,  9 Dec 2020 14:07:25 -0500 (EST)
-Date:   Wed, 9 Dec 2020 14:07:24 -0500
+        by mail.messagingengine.com (Postfix) with ESMTPA id 622931080066;
+        Wed,  9 Dec 2020 14:12:04 -0500 (EST)
+Date:   Wed, 9 Dec 2020 14:12:04 -0500
 From:   Ben Boeckel <me@benboeckel.net>
 To:     David Howells <dhowells@redhat.com>
 Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Tom Rix <trix@redhat.com>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 07/18] KEYS: remove redundant memset
-Message-ID: <20201209190724.GA1448831@erythro>
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        Petko Manolov <petkan@mip-labs.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>, linux-kernel@vger.kernel.org,
+        YueHaibing <yuehaibing@huawei.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jann Horn <jannh@google.com>, linux-crypto@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Ben Boeckel <mathstuf@gmail.com>, keyrings@vger.kernel.org,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        linux-security-module@vger.kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        Tom Rix <trix@redhat.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@iki.fi>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        Denis Efremov <efremov@linux.com>,
+        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@linux.microsoft.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: Re: [PATCH 00/18] keys: Miscellaneous fixes
+Message-ID: <20201209191204.GB1448831@erythro>
 References: <160751606428.1238376.14935502103503420781.stgit@warthog.procyon.org.uk>
- <160751611918.1238376.7060458630378643472.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <160751611918.1238376.7060458630378643472.stgit@warthog.procyon.org.uk>
+In-Reply-To: <160751606428.1238376.14935502103503420781.stgit@warthog.procyon.org.uk>
 User-Agent: Mutt/1.14.6 (2020-07-11)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Dec 09, 2020 at 12:15:19 +0000, David Howells wrote:
-> From: Tom Rix <trix@redhat.com>
+On Wed, Dec 09, 2020 at 12:14:24 +0000, David Howells wrote:
+> I've extended my collection of minor keyrings fixes for the next merge
+> window.  Anything else I should add (or anything I should drop)?
 > 
-> Reviewing use of memset in keyctrl_pkey.c
+> The patches can be found on the following branch:
+> 
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-fixes
 
-Typo: `keyctl_pkey.c`
+1-16 LGTM (modulo the typo in patch 7's commit message). 17 and 18 are
+outside my knowledge right now.
+
+Reviewed-by: Ben Boeckel <mathstuf@gmail.com>
 
 --Ben
