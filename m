@@ -2,38 +2,38 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 028672E12E8
-	for <lists+keyrings@lfdr.de>; Wed, 23 Dec 2020 03:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E0E2E157E
+	for <lists+keyrings@lfdr.de>; Wed, 23 Dec 2020 03:58:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727100AbgLWC0J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Dec 2020 21:26:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52102 "EHLO mail.kernel.org"
+        id S1729566AbgLWCWJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Dec 2020 21:22:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730660AbgLWCZ6 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:25:58 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7112922202;
-        Wed, 23 Dec 2020 02:25:42 +0000 (UTC)
+        id S1729561AbgLWCWI (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:22:08 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 42FD922A99;
+        Wed, 23 Dec 2020 02:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690343;
-        bh=B+8l2agkKDcZLAW+qbtt2QYxTPDQoPOWLdsRuzdY8ko=;
+        s=k20201202; t=1608690110;
+        bh=mCL/6JX8PjkAtZ/N2abdTYj3YjbBv9fu3lg3hFY6z3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MQO0d9k6S74vHpHrv5RZcCG53plCEwkDpHRZcbsyN3rV65HxKHGu4Mm6CLedcEvlZ
-         qTsF9D1EJIE+GSSivj4p8TuRkt1DNRCIHEVEy4pOJeqjrqAwb6/CMndvlIuHs38dSA
-         dcLUeIIq3mPKWV4Q2f8j+FZTlHx/PUZr2Y9bH2Xx/fnCGUlPhPxupu/4PahiNbrJ2V
-         t8kMXfOnj/DCVsSk09EB4Q5eshr6UnwQ/GftZetqjLo5DxMMXZf8gUrzyZNtUy+Mfi
-         bFI0inP4sd4bznD4nRufX+di1IZHl1NEe2hsCL/SR5unXPruklrfHprWfhjz1N/i1Q
-         6RvEo3aHnIs7w==
+        b=V/NN+3AHEvYErDjKGlM/CBQLfJ7XECL2AWuLD5SMWH73GsFBGR4TKpaB3hqeHQ68U
+         5ZKTOvu2Ikzsn0dUull0z2wZEQqMj0/n/t7vjNyDq+5N4vh3w59sQEhCoB5ZcscolT
+         T7H8cs9mfxikCzKMSpXC3oppaDRIcd0E8NfV3TrlPBe9wggXWlZIidhXhOGSsHU4x7
+         LVp1V0+sG3WiZy9LX4B0cGVyiHkldVzIJe5dRoJRLRSZbtZokc3DtNX8MkUE6WYu6K
+         gVN0h3xs0AHxhhBGO5tWdvsl8B4yb8eK+VfW8dUIPNph94KkTXIwgHRgrbeqqT+l0Y
+         zgm45jFgFoSYg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Howells <dhowells@redhat.com>,
         Sasha Levin <sashal@kernel.org>, linux-afs@lists.infradead.org,
         keyrings@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 21/38] rxrpc: Don't leak the service-side session key to userspace
-Date:   Tue, 22 Dec 2020 21:24:59 -0500
-Message-Id: <20201223022516.2794471-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 38/87] rxrpc: Don't leak the service-side session key to userspace
+Date:   Tue, 22 Dec 2020 21:20:14 -0500
+Message-Id: <20201223022103.2792705-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223022516.2794471-1-sashal@kernel.org>
-References: <20201223022516.2794471-1-sashal@kernel.org>
+In-Reply-To: <20201223022103.2792705-1-sashal@kernel.org>
+References: <20201223022103.2792705-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -55,11 +55,11 @@ Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  include/keys/rxrpc-type.h | 1 +
- net/rxrpc/ar-key.c        | 8 ++++++--
+ net/rxrpc/key.c           | 8 ++++++--
  2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/include/keys/rxrpc-type.h b/include/keys/rxrpc-type.h
-index fc48754338179..5bd32114a51ad 100644
+index 8cf829dbf20ec..1cb996dac3238 100644
 --- a/include/keys/rxrpc-type.h
 +++ b/include/keys/rxrpc-type.h
 @@ -88,6 +88,7 @@ struct rxk5_key {
@@ -70,11 +70,11 @@ index fc48754338179..5bd32114a51ad 100644
  	struct rxrpc_key_token *next;	/* the next token in the list */
  	union {
  		struct rxkad_key *kad;
-diff --git a/net/rxrpc/ar-key.c b/net/rxrpc/ar-key.c
-index ea615e53eab28..ab4e21ffb4de9 100644
---- a/net/rxrpc/ar-key.c
-+++ b/net/rxrpc/ar-key.c
-@@ -1081,7 +1081,8 @@ static long rxrpc_read(const struct key *key,
+diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+index 2fe2add62a8ed..dd8a12847b712 100644
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -1077,7 +1077,8 @@ static long rxrpc_read(const struct key *key,
  		case RXRPC_SECURITY_RXKAD:
  			toksize += 8 * 4;	/* viceid, kvno, key*2, begin,
  						 * end, primary, tktlen */
@@ -84,7 +84,7 @@ index ea615e53eab28..ab4e21ffb4de9 100644
  			break;
  
  		case RXRPC_SECURITY_RXK5:
-@@ -1190,7 +1191,10 @@ static long rxrpc_read(const struct key *key,
+@@ -1181,7 +1182,10 @@ static long rxrpc_read(const struct key *key,
  			ENCODE(token->kad->start);
  			ENCODE(token->kad->expiry);
  			ENCODE(token->kad->primary_flag);
