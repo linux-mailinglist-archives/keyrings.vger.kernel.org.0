@@ -2,265 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9752E9FB5
-	for <lists+keyrings@lfdr.de>; Mon,  4 Jan 2021 22:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 319AF2E9FB1
+	for <lists+keyrings@lfdr.de>; Mon,  4 Jan 2021 22:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726954AbhADV6r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 4 Jan 2021 16:58:47 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:11820 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726894AbhADV6r (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 4 Jan 2021 16:58:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1609797354;
-        s=strato-dkim-0002; d=chronox.de;
-        h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:
-        Subject:Sender;
-        bh=6fGapvYj1KUbHyiUaqLugayVcLwc8fLHw2DuUxRIf1I=;
-        b=Bz5ljw7tQ+MN6HibseZZb72afaYxc2bkLJFnUODmNBM8A/0ySGucRLIqURbKfbEBQe
-        /lDmjpo4SEiHYcfRgMhMFO4D53kzTWF7oX/kj1Be9r4phrf8nrtrAhnhpzNaiWjv1nYo
-        QsdN8Kh+pr/CPzruW574v9UcdAxXU1U6vsenoMwCqMTi18sD4wa/2SX5TWgXt6PcSGaG
-        ZkCJ8ymBg20QwlYcB1p//d1hNI6RSRNLrsw/WzCGItW0wAy4cdsxDyFLuoDU3+V1TR0m
-        qbxVBlnXYpQq4SYVM4ZyewbL6TLbAsQPUVinvoZmo+t2bB6M9872K/XwB+2wDpBqX/lH
-        Ymdw==
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPaIvSZFqc="
-X-RZG-CLASS-ID: mo00
-Received: from positron.chronox.de
-        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
-        with ESMTPSA id h02bd9x04LqhxfJ
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Mon, 4 Jan 2021 22:52:43 +0100 (CET)
-From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
-To:     herbert@gondor.apana.org.au, ebiggers@kernel.org,
-        mathew.j.martineau@linux.intel.com, dhowells@redhat.com
-Cc:     linux-crypto@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Subject: [PATCH 5/5] fs: use HKDF implementation from kernel crypto API
-Date:   Mon, 04 Jan 2021 22:50:49 +0100
-Message-ID: <7857050.T7Z3S40VBb@positron.chronox.de>
-In-Reply-To: <4616980.31r3eYUQgx@positron.chronox.de>
-References: <4616980.31r3eYUQgx@positron.chronox.de>
+        id S1726124AbhADV6U (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 4 Jan 2021 16:58:20 -0500
+Received: from mga12.intel.com ([192.55.52.136]:57536 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726098AbhADV6U (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 4 Jan 2021 16:58:20 -0500
+IronPort-SDR: PilyWOUSSM+B9FkcLzd52TPYif0uUCtWC4TmR9k3yFydCbrW9WhxPhDJLB3XMLfdINe+iGPcVo
+ zh+Z9723Qf+A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="156208356"
+X-IronPort-AV: E=Sophos;i="5.78,475,1599548400"; 
+   d="scan'208";a="156208356"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 13:56:33 -0800
+IronPort-SDR: xgtStRMq4Hk5kfpIb3tEnrCXjZevCH+TLLEFDvLN34DVrDG6D2y//DLulRHM6aaRXrem8sU5av
+ UxOTEv3h8eZQ==
+X-IronPort-AV: E=Sophos;i="5.78,475,1599548400"; 
+   d="scan'208";a="378589911"
+Received: from smestry-mobl1.gar.corp.intel.com (HELO linux.intel.com) ([10.252.62.64])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 13:56:25 -0800
+Date:   Mon, 4 Jan 2021 23:56:24 +0200
+From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Ken Goldman <kgold@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v14 3/5] security: keys: trusted: fix TPM2 authorizations
+Message-ID: <X/OPCHbAn8YjfQn8@linux.intel.com>
+References: <20201129222004.4428-1-James.Bottomley@HansenPartnership.com>
+ <20201129222004.4428-4-James.Bottomley@HansenPartnership.com>
+ <dfd33d3d-8e1c-8acf-a3aa-3b62659d5d68@linux.ibm.com>
+ <aa82e85e1a5055367517b1f0c0f00206f51353cb.camel@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa82e85e1a5055367517b1f0c0f00206f51353cb.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-As the kernel crypto API implements HKDF, replace the
-file-system-specific HKDF implementation with the generic HKDF
-implementation.
+On Wed, Dec 23, 2020 at 11:58:17AM -0800, James Bottomley wrote:
+> On Tue, 2020-12-22 at 18:01 -0500, Ken Goldman wrote:
+> > On 11/29/2020 5:20 PM, James Bottomley wrote:
+> > > Note this is both and enhancement and a potential bug fix.  The TPM
+> > > 2.0 spec requires us to strip leading zeros, meaning empyty
+> > > authorization is a zero length HMAC whereas we're currently passing
+> > > in 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but
+> > > the Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this
+> > > patch makes the Microsoft TPM emulator work with trusted keys.
+> > 
+> > 1 - To be precise, it strips trailing zeros, but 20 bytes of zero
+> > results in an empty buffer either way.
+> > 
+> > "
+> > Part 1 19.6.4.3	Authorization Size Convention
+> > 
+> > Trailing octets of zero are to be removed from any string before it
+> > is used as an authValue.
+> > "
+> > 
+> > 
+> > 2 - If you have a test case for the MS simulator, post it and I'll
+> > give it a try.
+> > 
+> > I did a quick test, power cycle to set platform auth to empty, than
+> > create primary with a parent password 20 bytes of zero, and the
+> > SW TPM accepted it.
+> > 
+> > This was a password session, not an HMAC session.
+> 
+> I reported it to Microsoft as soon as I found the problem, so, since
+> this patch set has been languishing for years, I'd hope it would be
+> fixed by now.  It is still, however, possible there still exist TPM
+> implementations based on the unfixed Microsoft reference platform.
+> 
+> James
 
-Signed-off-by: Stephan Mueller <smueller@chronox.de>
----
- fs/crypto/Kconfig           |   2 +-
- fs/crypto/fscrypt_private.h |   4 +-
- fs/crypto/hkdf.c            | 108 +++++++++---------------------------
- 3 files changed, 30 insertions(+), 84 deletions(-)
+One year :-) A bit over but by all practical means... [*]
 
-diff --git a/fs/crypto/Kconfig b/fs/crypto/Kconfig
-index a5f5c30368a2..9450e958f1d1 100644
---- a/fs/crypto/Kconfig
-+++ b/fs/crypto/Kconfig
-@@ -2,7 +2,7 @@
- config FS_ENCRYPTION
- 	bool "FS Encryption (Per-file encryption)"
- 	select CRYPTO
--	select CRYPTO_HASH
-+	select CRYPTO_HKDF
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_LIB_SHA256
- 	select KEYS
-diff --git a/fs/crypto/fscrypt_private.h b/fs/crypto/fscrypt_private.h
-index 3fa965eb3336..0d6871838099 100644
---- a/fs/crypto/fscrypt_private.h
-+++ b/fs/crypto/fscrypt_private.h
-@@ -304,7 +304,7 @@ struct fscrypt_hkdf {
- 	struct crypto_shash *hmac_tfm;
- };
- 
--int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
-+int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, u8 *master_key,
- 		      unsigned int master_key_size);
- 
- /*
-@@ -323,7 +323,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
- #define HKDF_CONTEXT_INODE_HASH_KEY	7 /* info=<empty>		*/
- 
- int fscrypt_hkdf_expand(const struct fscrypt_hkdf *hkdf, u8 context,
--			const u8 *info, unsigned int infolen,
-+			u8 *info, unsigned int infolen,
- 			u8 *okm, unsigned int okmlen);
- 
- void fscrypt_destroy_hkdf(struct fscrypt_hkdf *hkdf);
-diff --git a/fs/crypto/hkdf.c b/fs/crypto/hkdf.c
-index e0ec21055505..f837cb8ec0a5 100644
---- a/fs/crypto/hkdf.c
-+++ b/fs/crypto/hkdf.c
-@@ -9,7 +9,7 @@
-  * Copyright 2019 Google LLC
-  */
- 
--#include <crypto/hash.h>
-+#include <crypto/hkdf.h>
- #include <crypto/sha2.h>
- 
- #include "fscrypt_private.h"
-@@ -37,34 +37,25 @@
-  * unnecessarily long master keys.  Thus fscrypt still does HKDF-Extract.  No
-  * salt is used, since fscrypt master keys should already be pseudorandom and
-  * there's no way to persist a random salt per master key from kernel mode.
-- */
--
--/* HKDF-Extract (RFC 5869 section 2.2), unsalted */
--static int hkdf_extract(struct crypto_shash *hmac_tfm, const u8 *ikm,
--			unsigned int ikmlen, u8 prk[HKDF_HASHLEN])
--{
--	static const u8 default_salt[HKDF_HASHLEN];
--	int err;
--
--	err = crypto_shash_setkey(hmac_tfm, default_salt, HKDF_HASHLEN);
--	if (err)
--		return err;
--
--	return crypto_shash_tfm_digest(hmac_tfm, ikm, ikmlen, prk);
--}
--
--/*
-+ *
-  * Compute HKDF-Extract using the given master key as the input keying material,
-  * and prepare an HMAC transform object keyed by the resulting pseudorandom key.
-  *
-  * Afterwards, the keyed HMAC transform object can be used for HKDF-Expand many
-  * times without having to recompute HKDF-Extract each time.
-  */
--int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
-+int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, u8 *master_key,
- 		      unsigned int master_key_size)
- {
-+	/* HKDF-Extract (RFC 5869 section 2.2), unsalted */
-+	const struct kvec seed[] = { {
-+		.iov_base = NULL,
-+		.iov_len = 0
-+	}, {
-+		.iov_base = master_key,
-+		.iov_len = master_key_size
-+	} };
- 	struct crypto_shash *hmac_tfm;
--	u8 prk[HKDF_HASHLEN];
- 	int err;
- 
- 	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
-@@ -74,16 +65,12 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
- 		return PTR_ERR(hmac_tfm);
- 	}
- 
--	if (WARN_ON(crypto_shash_digestsize(hmac_tfm) != sizeof(prk))) {
-+	if (WARN_ON(crypto_shash_digestsize(hmac_tfm) != HKDF_HASHLEN)) {
- 		err = -EINVAL;
- 		goto err_free_tfm;
- 	}
- 
--	err = hkdf_extract(hmac_tfm, master_key, master_key_size, prk);
--	if (err)
--		goto err_free_tfm;
--
--	err = crypto_shash_setkey(hmac_tfm, prk, sizeof(prk));
-+	err = crypto_hkdf_setkey(hmac_tfm, seed, ARRAY_SIZE(seed));
- 	if (err)
- 		goto err_free_tfm;
- 
-@@ -93,7 +80,6 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
- err_free_tfm:
- 	crypto_free_shash(hmac_tfm);
- out:
--	memzero_explicit(prk, sizeof(prk));
- 	return err;
- }
- 
-@@ -109,65 +95,25 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
-  * accidentally repeat an info string when using HKDF for different purposes.)
-  */
- int fscrypt_hkdf_expand(const struct fscrypt_hkdf *hkdf, u8 context,
--			const u8 *info, unsigned int infolen,
-+			u8 *info, unsigned int infolen,
- 			u8 *okm, unsigned int okmlen)
- {
--	SHASH_DESC_ON_STACK(desc, hkdf->hmac_tfm);
--	u8 prefix[9];
--	unsigned int i;
--	int err;
--	const u8 *prev = NULL;
--	u8 counter = 1;
--	u8 tmp[HKDF_HASHLEN];
--
--	if (WARN_ON(okmlen > 255 * HKDF_HASHLEN))
--		return -EINVAL;
--
--	desc->tfm = hkdf->hmac_tfm;
--
--	memcpy(prefix, "fscrypt\0", 8);
--	prefix[8] = context;
--
--	for (i = 0; i < okmlen; i += HKDF_HASHLEN) {
-+	const struct kvec info_iov[] = { {
-+		.iov_base = "fscrypt\0",
-+		.iov_len = 8,
-+	}, {
-+		.iov_base = &context,
-+		.iov_len = 1,
-+	}, {
-+		.iov_base = info,
-+		.iov_len = infolen,
-+	} };
-+	int err = crypto_hkdf_generate(hkdf->hmac_tfm,
-+				       info_iov, ARRAY_SIZE(info_iov),
-+				       okm, okmlen);
- 
--		err = crypto_shash_init(desc);
--		if (err)
--			goto out;
--
--		if (prev) {
--			err = crypto_shash_update(desc, prev, HKDF_HASHLEN);
--			if (err)
--				goto out;
--		}
--
--		err = crypto_shash_update(desc, prefix, sizeof(prefix));
--		if (err)
--			goto out;
--
--		err = crypto_shash_update(desc, info, infolen);
--		if (err)
--			goto out;
--
--		BUILD_BUG_ON(sizeof(counter) != 1);
--		if (okmlen - i < HKDF_HASHLEN) {
--			err = crypto_shash_finup(desc, &counter, 1, tmp);
--			if (err)
--				goto out;
--			memcpy(&okm[i], tmp, okmlen - i);
--			memzero_explicit(tmp, sizeof(tmp));
--		} else {
--			err = crypto_shash_finup(desc, &counter, 1, &okm[i]);
--			if (err)
--				goto out;
--		}
--		counter++;
--		prev = &okm[i];
--	}
--	err = 0;
--out:
- 	if (unlikely(err))
- 		memzero_explicit(okm, okmlen); /* so caller doesn't need to */
--	shash_desc_zero(desc);
- 	return err;
- }
- 
--- 
-2.26.2
+BTW, can you use my kernel org address for v15? 
 
+[*] https://lore.kernel.org/linux-integrity/1575781600.14069.8.camel@HansenPartnership.com/
 
-
-
+/Jarkko
