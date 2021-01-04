@@ -2,91 +2,108 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 319AF2E9FB1
-	for <lists+keyrings@lfdr.de>; Mon,  4 Jan 2021 22:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DB272E9FCB
+	for <lists+keyrings@lfdr.de>; Mon,  4 Jan 2021 23:02:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726124AbhADV6U (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 4 Jan 2021 16:58:20 -0500
-Received: from mga12.intel.com ([192.55.52.136]:57536 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726098AbhADV6U (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 4 Jan 2021 16:58:20 -0500
-IronPort-SDR: PilyWOUSSM+B9FkcLzd52TPYif0uUCtWC4TmR9k3yFydCbrW9WhxPhDJLB3XMLfdINe+iGPcVo
- zh+Z9723Qf+A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="156208356"
-X-IronPort-AV: E=Sophos;i="5.78,475,1599548400"; 
-   d="scan'208";a="156208356"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 13:56:33 -0800
-IronPort-SDR: xgtStRMq4Hk5kfpIb3tEnrCXjZevCH+TLLEFDvLN34DVrDG6D2y//DLulRHM6aaRXrem8sU5av
- UxOTEv3h8eZQ==
-X-IronPort-AV: E=Sophos;i="5.78,475,1599548400"; 
-   d="scan'208";a="378589911"
-Received: from smestry-mobl1.gar.corp.intel.com (HELO linux.intel.com) ([10.252.62.64])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 13:56:25 -0800
-Date:   Mon, 4 Jan 2021 23:56:24 +0200
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Ken Goldman <kgold@linux.ibm.com>, linux-integrity@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v14 3/5] security: keys: trusted: fix TPM2 authorizations
-Message-ID: <X/OPCHbAn8YjfQn8@linux.intel.com>
-References: <20201129222004.4428-1-James.Bottomley@HansenPartnership.com>
- <20201129222004.4428-4-James.Bottomley@HansenPartnership.com>
- <dfd33d3d-8e1c-8acf-a3aa-3b62659d5d68@linux.ibm.com>
- <aa82e85e1a5055367517b1f0c0f00206f51353cb.camel@HansenPartnership.com>
+        id S1726636AbhADWBy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 4 Jan 2021 17:01:54 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.169]:32340 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726176AbhADWBy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 4 Jan 2021 17:01:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1609797542;
+        s=strato-dkim-0002; d=chronox.de;
+        h=Message-ID:Date:Subject:Cc:To:From:From:Subject:Sender;
+        bh=/l4AZil43hDxz8/ZZ/lKuvRDLAdZAYmH4XExlIK8Y+E=;
+        b=iTzsclHzfWa/rmOKHHo+ulzXGe7S871BrhEoerjLWTJ/QJIicz4CTUA5F+MGfrjJPS
+        BVdazQQ7FlcFXYEW4iDn80oN/P7pKDAB8TeeCzlgS0cztwX15MQqjeHYr62RVQgU3Wh3
+        25TmmIP7BNb8EFc/JU9U0lHxF+UHjBkWmLQN0we8fiyhyAYdVVuRKqkbA1g2v5LqK3n4
+        YdQBt5OUUqx+g1mlJ4GY5A8W71q9lg9+wsT+U70YBg6Jp7YfCUhEWBsdvy1ac3Embzhf
+        z+08mUqJoLmSmUkWTQlbUvTJdxcin1qOA1Ft+LWBKRCAAxBn39Ud90iGNhREEPSCiWMA
+        qdwQ==
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPaIvSZFqc="
+X-RZG-CLASS-ID: mo00
+Received: from positron.chronox.de
+        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
+        with ESMTPSA id h02bd9x04LqmxfO
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Mon, 4 Jan 2021 22:52:48 +0100 (CET)
+From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
+To:     herbert@gondor.apana.org.au, ebiggers@kernel.org,
+        mathew.j.martineau@linux.intel.com, dhowells@redhat.com
+Cc:     linux-crypto@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: [PATCH 0/5] Add KDF implementations to crypto API
+Date:   Mon, 04 Jan 2021 22:45:57 +0100
+Message-ID: <4616980.31r3eYUQgx@positron.chronox.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa82e85e1a5055367517b1f0c0f00206f51353cb.camel@HansenPartnership.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Dec 23, 2020 at 11:58:17AM -0800, James Bottomley wrote:
-> On Tue, 2020-12-22 at 18:01 -0500, Ken Goldman wrote:
-> > On 11/29/2020 5:20 PM, James Bottomley wrote:
-> > > Note this is both and enhancement and a potential bug fix.  The TPM
-> > > 2.0 spec requires us to strip leading zeros, meaning empyty
-> > > authorization is a zero length HMAC whereas we're currently passing
-> > > in 20 bytes of zeros.  A lot of TPMs simply accept this as OK, but
-> > > the Microsoft TPM emulator rejects it with TPM_RC_BAD_AUTH, so this
-> > > patch makes the Microsoft TPM emulator work with trusted keys.
-> > 
-> > 1 - To be precise, it strips trailing zeros, but 20 bytes of zero
-> > results in an empty buffer either way.
-> > 
-> > "
-> > Part 1 19.6.4.3	Authorization Size Convention
-> > 
-> > Trailing octets of zero are to be removed from any string before it
-> > is used as an authValue.
-> > "
-> > 
-> > 
-> > 2 - If you have a test case for the MS simulator, post it and I'll
-> > give it a try.
-> > 
-> > I did a quick test, power cycle to set platform auth to empty, than
-> > create primary with a parent password 20 bytes of zero, and the
-> > SW TPM accepted it.
-> > 
-> > This was a password session, not an HMAC session.
-> 
-> I reported it to Microsoft as soon as I found the problem, so, since
-> this patch set has been languishing for years, I'd hope it would be
-> fixed by now.  It is still, however, possible there still exist TPM
-> implementations based on the unfixed Microsoft reference platform.
-> 
-> James
+Hi,
 
-One year :-) A bit over but by all practical means... [*]
+The key derviation functions are considered to be a cryptographic
+operation. As cryptographic operations are provided via the kernel
+crypto API, this patch set consolidates the KDF implementations into the
+crypto API.
 
-BTW, can you use my kernel org address for v15? 
+The KDF implementations are provided as service functions. Yet, the
+interface to the two provided KDFs are identical with the goal to allow
+them to be transformed into a crypto API template eventually.
 
-[*] https://lore.kernel.org/linux-integrity/1575781600.14069.8.camel@HansenPartnership.com/
+The KDFs execute a power-on self test with test vectors from commonly
+known sources.
 
-/Jarkko
+Tbe SP800-108 KDF implementation is used to replace the implementation
+in the keys subsystem. The implementation was verified using the
+keyutils command line test code provided in
+tests/keyctl/dh_compute/valid. All tests show that the expected values
+are calculated with the new code.
+
+The HKDF addition is used to replace the implementation in the filesystem
+crypto extension. This code was tested by using an EXT4 encrypted file
+system that was created and contains files written to by the current
+implementation. Using the new implementation a successful read of the
+existing files was possible and new files / directories were created
+and read successfully. These newly added file system objects could be
+successfully read using the current code. Yet if there is a test suite
+to validate whether the invokcation of the HKDF calculates the same
+result as the existing implementation, I would be happy to validate
+the implementation accordingly.
+
+Stephan Mueller (5):
+  crypto: Add key derivation self-test support code
+  crypto: add SP800-108 counter key derivation function
+  crypto: add RFC5869 HKDF
+  security: DH - use KDF implementation from crypto API
+  fs: use HKDF implementation from kernel crypto API
+
+ crypto/Kconfig                         |  14 ++
+ crypto/Makefile                        |   6 +
+ crypto/hkdf.c                          | 226 +++++++++++++++++++++++++
+ crypto/kdf_sp800108.c                  | 149 ++++++++++++++++
+ fs/crypto/Kconfig                      |   2 +-
+ fs/crypto/fscrypt_private.h            |   4 +-
+ fs/crypto/hkdf.c                       | 108 +++---------
+ include/crypto/hkdf.h                  |  48 ++++++
+ include/crypto/internal/kdf_selftest.h |  68 ++++++++
+ include/crypto/kdf_sp800108.h          |  59 +++++++
+ security/keys/Kconfig                  |   2 +-
+ security/keys/dh.c                     | 118 ++-----------
+ 12 files changed, 617 insertions(+), 187 deletions(-)
+ create mode 100644 crypto/hkdf.c
+ create mode 100644 crypto/kdf_sp800108.c
+ create mode 100644 include/crypto/hkdf.h
+ create mode 100644 include/crypto/internal/kdf_selftest.h
+ create mode 100644 include/crypto/kdf_sp800108.h
+
+-- 
+2.26.2
+
+
+
+
