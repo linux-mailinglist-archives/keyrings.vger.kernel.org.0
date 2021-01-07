@@ -2,225 +2,199 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD4B2ECAE3
-	for <lists+keyrings@lfdr.de>; Thu,  7 Jan 2021 08:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADE9A2ECB06
+	for <lists+keyrings@lfdr.de>; Thu,  7 Jan 2021 08:46:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbhAGHT7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 7 Jan 2021 02:19:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54540 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726013AbhAGHT6 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 7 Jan 2021 02:19:58 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 53EE023100;
-        Thu,  7 Jan 2021 07:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610003957;
-        bh=guVgHVTP3Gev8lgSGqIAoa1rHgyY3KDR+7Zxa0APlGo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F70azlfau1NVNnHzTMaGDTQ3TrMVyfyOcKjATGlspkmCue1orQ4DtuvA3MaLIu3TB
-         A8TtdY1SyMQjmz7nwTUcqM7vORwOyNkr0PaglhnouYxFC8mgJ4qO8SHh2aG2xIh71L
-         dNiOKZGU3iI4eQD2FzKrNwCHQRFjiO0hWZulCpg9qoyhRg62W066ozQjaV84Hhks+P
-         XlS1VEsQJ9E+W9GdWIamUpkB/7KLHjF8nfvLj6awFlN+hjKphomWJpW0xeaVgi50sD
-         1OIeoCVCK+mIx/pG/hp9YL1n2GmST2rrHa+rUcJJ7pSvWDBWIIk6MnG+rTtH/ClALu
-         zSlRc37l4Zr1w==
-Date:   Wed, 6 Jan 2021 23:19:15 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Stephan =?iso-8859-1?Q?M=FCller?= <smueller@chronox.de>
-Cc:     herbert@gondor.apana.org.au, mathew.j.martineau@linux.intel.com,
-        dhowells@redhat.com, linux-crypto@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH 5/5] fs: use HKDF implementation from kernel crypto API
-Message-ID: <X/a18yALjUcrvXDC@sol.localdomain>
-References: <4616980.31r3eYUQgx@positron.chronox.de>
- <7857050.T7Z3S40VBb@positron.chronox.de>
+        id S1726329AbhAGHqi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 7 Jan 2021 02:46:38 -0500
+Received: from sender4-op-o19.zoho.com ([136.143.188.19]:17919 "EHLO
+        sender4-op-o19.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725306AbhAGHqh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 7 Jan 2021 02:46:37 -0500
+X-Greylist: delayed 1023 seconds by postgrey-1.27 at vger.kernel.org; Thu, 07 Jan 2021 02:46:36 EST
+ARC-Seal: i=1; a=rsa-sha256; t=1610004484; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=ZOlZBjL1tGL6wW5ogYdaP3LhfITvMFIlUq+KleYFLt98uSQtbfUYXz8iLv44hZgn1tFq8t9v3lIKae2EgW0DCaonO5wR2jBw0WAslQtbgS4prvrYoLN7l7rw0KLBDEuivFq7y9kRxYQnRtFQGvbtmPlZfs6AzjY1SHS5kravKD0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1610004484; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=eD6/WE90HuHkRQaCtXd0lt/gdZWoJw7z4a/cSu0o+B4=; 
+        b=aDNeLTNYdZfEHVWin2xno4gaiAja5Hj5H0DbqsGpdW20eTokNgFMUWrLpv745/l07PzZdlg11N0sY0AqXie7AoC/RN1MkRML0TQEmkeVEXaw3OlXYwZqxZP1mjtev7h0N/VLaAvH7+opU8lv5uAUPUUdyUVOVJ+nsvn2MlH0cu0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=in04.sg;
+        spf=pass  smtp.mailfrom=angelsl@in04.sg;
+        dmarc=pass header.from=<angelsl@in04.sg> header.from=<angelsl@in04.sg>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zoho; d=in04.sg; 
+  h=subject:to:cc:references:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
+  b=fBIYVSA4lJlUDaHidGE6B/MLwn8qku6aYCfeCSRpLpMr4w6+fZB8lJ1nIkRXHofzQa0UTZW4y2hi
+    QtyU2UH0sIwJIBnZf7WDJrbwHAEKlICD7GCFkwmqxagO4mJ9FCpquKN/aEpSpCWeiEVrKRgxfPgR
+    Vzkq82QhDPN72xqFem8=  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1610004484;
+        s=zoho; d=in04.sg; i=angelsl@in04.sg;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        bh=eD6/WE90HuHkRQaCtXd0lt/gdZWoJw7z4a/cSu0o+B4=;
+        b=IouKPSqKszSUGHa9PzSzYEayZLlD7JTGgEHsB8rPWjLdv2EGkzRFMqYdNez0Vgen
+        DoeMnfOcpArOs6Hn4ncf/A9WsGjl6i+m7aFPKTSOMlvnrqA+qokAzT1js9QvI/EcjoD
+        DeTS40dR+DdyDhexvPIqRaNJQWeAIqAa9le77mD0=
+Received: from [172.25.101.0] (137.132.211.132 [137.132.211.132]) by mx.zohomail.com
+        with SMTPS id 1610004480355206.69330990290632; Wed, 6 Jan 2021 23:28:00 -0800 (PST)
+Subject: Re: Null pointer dereference in public key verification (related to
+ SM2 introduction)
+To:     linux-crypto@vger.kernel.org
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        Tobias Markus <tobias@markus-regensburg.de>,
+        David Howells <dhowells@redhat.com>
+References: <67250277-7903-2005-b94b-193bce0a3388@markus-regensburg.de>
+ <3092220.1606727387@warthog.procyon.org.uk>
+ <96474593-2882-60a1-0dcf-5b3dc7526bfa@markus-regensburg.de>
+From:   Tee Hao Wei <angelsl@in04.sg>
+Message-ID: <36413597-f802-5816-abff-0f30e86242fb@in04.sg>
+Date:   Thu, 7 Jan 2021 15:27:54 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7857050.T7Z3S40VBb@positron.chronox.de>
+In-Reply-To: <96474593-2882-60a1-0dcf-5b3dc7526bfa@markus-regensburg.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: base64
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jan 04, 2021 at 10:50:49PM +0100, Stephan Müller wrote:
-> As the kernel crypto API implements HKDF, replace the
-> file-system-specific HKDF implementation with the generic HKDF
-> implementation.
-> 
-> Signed-off-by: Stephan Mueller <smueller@chronox.de>
-> ---
->  fs/crypto/Kconfig           |   2 +-
->  fs/crypto/fscrypt_private.h |   4 +-
->  fs/crypto/hkdf.c            | 108 +++++++++---------------------------
->  3 files changed, 30 insertions(+), 84 deletions(-)
-> 
-> diff --git a/fs/crypto/Kconfig b/fs/crypto/Kconfig
-> index a5f5c30368a2..9450e958f1d1 100644
-> --- a/fs/crypto/Kconfig
-> +++ b/fs/crypto/Kconfig
-> @@ -2,7 +2,7 @@
->  config FS_ENCRYPTION
->  	bool "FS Encryption (Per-file encryption)"
->  	select CRYPTO
-> -	select CRYPTO_HASH
-> +	select CRYPTO_HKDF
->  	select CRYPTO_SKCIPHER
->  	select CRYPTO_LIB_SHA256
->  	select KEYS
-> diff --git a/fs/crypto/fscrypt_private.h b/fs/crypto/fscrypt_private.h
-> index 3fa965eb3336..0d6871838099 100644
-> --- a/fs/crypto/fscrypt_private.h
-> +++ b/fs/crypto/fscrypt_private.h
-> @@ -304,7 +304,7 @@ struct fscrypt_hkdf {
->  	struct crypto_shash *hmac_tfm;
->  };
->  
-> -int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
-> +int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, u8 *master_key,
->  		      unsigned int master_key_size);
-
-It shouldn't be necessary to remove const here.
-
->  
->  /*
-> @@ -323,7 +323,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
->  #define HKDF_CONTEXT_INODE_HASH_KEY	7 /* info=<empty>		*/
->  
->  int fscrypt_hkdf_expand(const struct fscrypt_hkdf *hkdf, u8 context,
-> -			const u8 *info, unsigned int infolen,
-> +			u8 *info, unsigned int infolen,
->  			u8 *okm, unsigned int okmlen);
-
-Likewise.  In fact some callers rely on 'info' not being modified.
-
-> -/*
-> + *
->   * Compute HKDF-Extract using the given master key as the input keying material,
->   * and prepare an HMAC transform object keyed by the resulting pseudorandom key.
->   *
->   * Afterwards, the keyed HMAC transform object can be used for HKDF-Expand many
->   * times without having to recompute HKDF-Extract each time.
->   */
-> -int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
-> +int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, u8 *master_key,
->  		      unsigned int master_key_size)
->  {
-> +	/* HKDF-Extract (RFC 5869 section 2.2), unsalted */
-> +	const struct kvec seed[] = { {
-> +		.iov_base = NULL,
-> +		.iov_len = 0
-> +	}, {
-> +		.iov_base = master_key,
-> +		.iov_len = master_key_size
-> +	} };
->  	struct crypto_shash *hmac_tfm;
-> -	u8 prk[HKDF_HASHLEN];
->  	int err;
->  
->  	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
-> @@ -74,16 +65,12 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
->  		return PTR_ERR(hmac_tfm);
->  	}
->  
-> -	if (WARN_ON(crypto_shash_digestsize(hmac_tfm) != sizeof(prk))) {
-> +	if (WARN_ON(crypto_shash_digestsize(hmac_tfm) != HKDF_HASHLEN)) {
->  		err = -EINVAL;
->  		goto err_free_tfm;
->  	}
->  
-> -	err = hkdf_extract(hmac_tfm, master_key, master_key_size, prk);
-> -	if (err)
-> -		goto err_free_tfm;
-> -
-> -	err = crypto_shash_setkey(hmac_tfm, prk, sizeof(prk));
-> +	err = crypto_hkdf_setkey(hmac_tfm, seed, ARRAY_SIZE(seed));
->  	if (err)
->  		goto err_free_tfm;
-
-It's weird that the salt and key have to be passed in a kvec.
-Why not just have normal function parameters like:
-
-	int crypto_hkdf_setkey(struct crypto_shash *hmac_tfm,
-			       const u8 *key, size_t keysize,
-			       const u8 *salt, size_t saltsize);
-
->  int fscrypt_hkdf_expand(const struct fscrypt_hkdf *hkdf, u8 context,
-> -			const u8 *info, unsigned int infolen,
-> +			u8 *info, unsigned int infolen,
->  			u8 *okm, unsigned int okmlen)
->  {
-> -	SHASH_DESC_ON_STACK(desc, hkdf->hmac_tfm);
-> -	u8 prefix[9];
-> -	unsigned int i;
-> -	int err;
-> -	const u8 *prev = NULL;
-> -	u8 counter = 1;
-> -	u8 tmp[HKDF_HASHLEN];
-> -
-> -	if (WARN_ON(okmlen > 255 * HKDF_HASHLEN))
-> -		return -EINVAL;
-> -
-> -	desc->tfm = hkdf->hmac_tfm;
-> -
-> -	memcpy(prefix, "fscrypt\0", 8);
-> -	prefix[8] = context;
-> -
-> -	for (i = 0; i < okmlen; i += HKDF_HASHLEN) {
-> +	const struct kvec info_iov[] = { {
-> +		.iov_base = "fscrypt\0",
-> +		.iov_len = 8,
-> +	}, {
-> +		.iov_base = &context,
-> +		.iov_len = 1,
-> +	}, {
-> +		.iov_base = info,
-> +		.iov_len = infolen,
-> +	} };
-> +	int err = crypto_hkdf_generate(hkdf->hmac_tfm,
-> +				       info_iov, ARRAY_SIZE(info_iov),
-> +				       okm, okmlen);
->  
-> -		err = crypto_shash_init(desc);
-> -		if (err)
-> -			goto out;
-> -
-> -		if (prev) {
-> -			err = crypto_shash_update(desc, prev, HKDF_HASHLEN);
-> -			if (err)
-> -				goto out;
-> -		}
-> -
-> -		err = crypto_shash_update(desc, prefix, sizeof(prefix));
-> -		if (err)
-> -			goto out;
-> -
-> -		err = crypto_shash_update(desc, info, infolen);
-> -		if (err)
-> -			goto out;
-> -
-> -		BUILD_BUG_ON(sizeof(counter) != 1);
-> -		if (okmlen - i < HKDF_HASHLEN) {
-> -			err = crypto_shash_finup(desc, &counter, 1, tmp);
-> -			if (err)
-> -				goto out;
-> -			memcpy(&okm[i], tmp, okmlen - i);
-> -			memzero_explicit(tmp, sizeof(tmp));
-> -		} else {
-> -			err = crypto_shash_finup(desc, &counter, 1, &okm[i]);
-> -			if (err)
-> -				goto out;
-> -		}
-> -		counter++;
-> -		prev = &okm[i];
-> -	}
-> -	err = 0;
-> -out:
->  	if (unlikely(err))
->  		memzero_explicit(okm, okmlen); /* so caller doesn't need to */
-> -	shash_desc_zero(desc);
-
-Shouldn't crypto_hkdf_generate() handle the above memzero_explicit() of the
-output buffer on error, so that all callers don't need to do it?
-
-- Eric
+T24gMi8xMi8yMCA4OjI0IHBtLCBUb2JpYXMgTWFya3VzIHdyb3RlOg0KPiBIaSBEYXZpZCwN
+Cj4gDQo+IEknbSBhZnJhaWQgSSBjYW4ndCBwcm92aWRlIGFuIGV4YWN0bHkgbWF0Y2hpbmcg
+ZGlzYXNzZW1ibHkgb2YgdGhlIGZ1bmN0aW9uIHNpbmNlIEkndmUgc2luY2UgdXBkYXRlZCB0
+byBuZXdlciAtcmMga2VybmVscy4NCj4gQW5vdGhlciBkZWJ1Z2dpbmcgaHVyZGxlIGlzIHRo
+YXQgdGhlIHNwZWNpZmljIGtlcm5lbCBjb2RlIHBhdGggc2VlbXMgdG8gYmUgdHJpZ2dlcmVk
+IGJ5IGEgdmVyeSBzcGVjaWZpYyBpd2QgY29kZSBwYXRoIHRoYXQgaXdkIG9ubHkgdXNlcyBm
+b3IgODAyLjFYL0VBUC1zZWN1cmVkIG5ldHdvcmtzLCBhbmQgSSBzaW1wbHkgd2Fzbid0IG5l
+YXIgYW55IEVBUC1zZWN1cmVkIG5ldHdvcmtzIGluIHRoZSBsYXN0IGZldyB3ZWVrcy4NCj4g
+SSd2ZSB0cmllZCBjcmVhdGluZyBhIHJlcHJvZHVjZXIgdXNpbmcgYSBiYXNoIHNjcmlwdCBj
+YWxsaW5nIHZhcmlvdXMga2V5Y3RsIGNvbW1hbmRzIGJ1dCB0byBubyBzdWNjZXNzPiANCj4g
+RGF2aWQgSG93ZWxscyB3cm90ZToNCj4+IFRvYmlhcyBNYXJrdXMgPHRvYmlhc0BtYXJrdXMt
+cmVnZW5zYnVyZy5kZT4gd3JvdGU6DQo+Pg0KPj4+IGtlcm5lbDogUklQOiAwMDEwOnB1Ymxp
+Y19rZXlfdmVyaWZ5X3NpZ25hdHVyZSsweDE4OS8weDNmMA0KPj4NCj4+IElzIGl0IHBvc3Np
+YmxlIGZvciB5b3UgdG8gcHJvdmlkZSBhIGRpc2Fzc2VtYmx5IG9mIHRoaXMgZnVuY3Rpb24g
+ZnJvbSB0aGUNCj4+IGtlcm5lbCB5b3Ugd2VyZSB1c2luZz8gIEZvciB0aGlzIHRvIG9jY3Vy
+IG9uIHRoYXQgbGluZSwgaXQgYXBwZWFycyB0aGF0IHNpZw0KPj4gd291bGQgbmVlZCB0byBi
+ZSBOVUxMIC0gYnV0IHRoYXQgc2hvdWxkIHRyaXAgYW4gYXNzZXJ0aW9uIGF0IHRoZSB0b3Ag
+b2YgdGhlDQo+PiBmdW5jdGlvbiAtIG9yIGEgdmVyeSBzbWFsbCBudW1iZXIgKHdoaWNoIGNv
+dWxkIGJlIFJDWCwgUjA5IG9yIFIxMSkuDQo+Pg0KPj4gVGhhbmtzLA0KPj4gRGF2aWQNCj4+
+DQoNClRoaXMgcHJvYmxlbSBpcyBzdGlsbCBpbiA1LjEwLjQgKHdpdGggaXdkIDEuMTApOg0K
+DQotLS0NCmtlcm5lbDogQlVHOiBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlLCBh
+ZGRyZXNzOiAwMDAwMDAwMDAwMDAwMDAwDQprZXJuZWw6ICNQRjogc3VwZXJ2aXNvciByZWFk
+IGFjY2VzcyBpbiBrZXJuZWwgbW9kZQ0Ka2VybmVsOiAjUEY6IGVycm9yX2NvZGUoMHgwMDAw
+KSAtIG5vdC1wcmVzZW50IHBhZ2UNCmtlcm5lbDogUEdEIDAgUDREIDANCmtlcm5lbDogT29w
+czogMDAwMCBbIzZdIFBSRUVNUFQgU01QIFBUSQ0Ka2VybmVsOiBDUFU6IDcgUElEOiA2MDg5
+IENvbW06IGl3ZCBUYWludGVkOiBHIFMgICBVRCBXICBPRSAgICAgNS4xMC40LWFyY2gyLTEg
+IzENCmtlcm5lbDogSGFyZHdhcmUgbmFtZTogTEVOT1ZPIDIwTDdDVE8xV1cvMjBMN0NUTzFX
+VywgQklPUyBOMjJFVDYwUCAoMS4zNyApIDExLzI1LzIwMTkNCmtlcm5lbDogUklQOiAwMDEw
+OnB1YmxpY19rZXlfdmVyaWZ5X3NpZ25hdHVyZSsweDE4OS8weDQwMA0Ka2VybmVsOiBDb2Rl
+OiA0OCA4YiA0MCBkMCA0NCA4OSBjYSA0YyA4OSBmZSA0YyA4OSBlNyBlOCBlZiAzMyA5YiAw
+MCA4NSBjMCAwZiA4NSA4MCAwMSAwMCAwMCA0OCA4YiA3NSAzMCA0OCBjNyBjNyBmOCA4NCA5
+OSBiYSBiOSAwNCAwMCAwMCAwMCA8ZjM+IGE2IDBmIDk3IGMwIDFjIDAwIDg0IGMwIDc1IDBi
+IDhiIDQ1IDUwIDg1IGMwIDBmIDg1IGUwIDAxIDAwIDAwDQprZXJuZWw6IFJTUDogMDAxODpm
+ZmZmYWY2ZDgxMWIzZDUwIEVGTEFHUzogMDAwMTAyNDYNCmtlcm5lbDogUkFYOiAwMDAwMDAw
+MDAwMDAwMDAwIFJCWDogZmZmZjk5ZDZhMjRiYTU0MCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDQN
+Cmtlcm5lbDogUkRYOiBmZmZmOTlkNmEyNDM2YzAwIFJTSTogMDAwMDAwMDAwMDAwMDAwMCBS
+REk6IGZmZmZmZmZmYmE5OTg0ZjgNCmtlcm5lbDogUkJQOiBmZmZmYWY2ZDgxMWIzZTg4IFIw
+ODogZmZmZjk5ZDY4MWI1OGNjMCBSMDk6IDAwMDAwMDAwMDAwMDAwMDgNCmtlcm5lbDogUjEw
+OiAwMDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDAwMDAwMDAwYSBSMTI6IGZmZmY5OWQ2
+YTI0YmFiNDANCmtlcm5lbDogUjEzOiBmZmZmOTlkNmEyNDM3MjAwIFIxNDogZmZmZmFmNmQ4
+MTFiM2Q4OCBSMTU6IGZmZmY5OWQ1Y2UxMzQ4MDANCmtlcm5lbDogRlM6ICAwMDAwN2YxNGQx
+NTc4NzQwKDAwMDApIEdTOmZmZmY5OWRhYzc1YzAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAw
+MDAwMDAwMA0Ka2VybmVsOiBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAw
+MDAwMDgwMDUwMDMzDQprZXJuZWw6IENSMjogMDAwMDAwMDAwMDAwMDAwMCBDUjM6IDAwMDAw
+MDAxZTI2YWEwMDUgQ1I0OiAwMDAwMDAwMDAwMzcwNmUwDQprZXJuZWw6IENhbGwgVHJhY2U6
+DQprZXJuZWw6ICBhc3ltbWV0cmljX2tleV92ZXJpZnlfc2lnbmF0dXJlKzB4NWUvMHg4MA0K
+a2VybmVsOiAga2V5Y3RsX3BrZXlfdmVyaWZ5KzB4YzAvMHgxMjANCmtlcm5lbDogIGRvX3N5
+c2NhbGxfNjQrMHgzMy8weDQwDQprZXJuZWw6ICBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3
+ZnJhbWUrMHg0NC8weGE5DQprZXJuZWw6IFJJUDogMDAzMzoweDdmMTRkMTY3NWQ1ZA0Ka2Vy
+bmVsOiBDb2RlOiAwMCBjMyA2NiAyZSAwZiAxZiA4NCAwMCAwMCAwMCAwMCAwMCA5MCBmMyAw
+ZiAxZSBmYSA0OCA4OSBmOCA0OCA4OSBmNyA0OCA4OSBkNiA0OCA4OSBjYSA0ZCA4OSBjMiA0
+ZCA4OSBjOCA0YyA4YiA0YyAyNCAwOCAwZiAwNSA8NDg+IDNkIDAxIGYwIGZmIGZmIDczIDAx
+IGMzIDQ4IDhiIDBkIGUzIDcwIDBjIDAwIGY3IGQ4IDY0IDg5IDAxIDQ4DQprZXJuZWw6IFJT
+UDogMDAyYjowMDAwN2ZmY2U3NmRhNzI4IEVGTEFHUzogMDAwMDAyNDYgT1JJR19SQVg6IDAw
+MDAwMDAwMDAwMDAwZmENCmtlcm5lbDogUkFYOiBmZmZmZmZmZmZmZmZmZmRhIFJCWDogMDAw
+MDdmZmNlNzZkYTdiMCBSQ1g6IDAwMDA3ZjE0ZDE2NzVkNWQNCmtlcm5lbDogUkRYOiAwMDAw
+NTY1NDU3ZDA4YWMwIFJTSTogMDAwMDdmZmNlNzZkYTczMCBSREk6IDAwMDAwMDAwMDAwMDAw
+MWMNCmtlcm5lbDogUkJQOiAwMDAwNTY1NDU3ZDA4YWMwIFIwODogMDAwMDU2NTQ1N2QwYjJk
+ZCBSMDk6IDAwMDAwMDMwM2VjMmMwN2ENCmtlcm5lbDogUjEwOiAwMDAwN2ZmY2U3NmRhN2Iw
+IFIxMTogMDAwMDAwMDAwMDAwMDI0NiBSMTI6IDAwMDA1NjU0NTdkMGIyZGQNCmtlcm5lbDog
+UjEzOiAwMDAwN2YxNGQxNzdkOWMwIFIxNDogMDAwMDU2NTQ1N2QwYjI5NCBSMTU6IDAwMDA3
+ZmZjZTc2ZGE3YjANCmtlcm5lbDogTW9kdWxlcyBsaW5rZWQgaW46IGJuZXAgdXZjdmlkZW8g
+dmlkZW9idWYyX3ZtYWxsb2MgdmlkZW9idWYyX21lbW9wcyB2aWRlb2J1ZjJfdjRsMiB2aWRl
+b2J1ZjJfY29tbW9uIHZpZGVvZGV2IG1jIGNjbSBhbGdpZl9hZWFkIGRlc19nZW5lcmljIGxp
+YmRlcyBlY2IgYWxnaWZfc2tjaXBoZXIgY21hYyBtZDQgYWxnaWZfaGFzaCBhZl9hbGcgYnR1
+c2IgYnRydGwgYnRiY20gYnRpbnRlbCBibHVldG9vdGggc25kX3NvY19za2wgZWxhbl9pMmMg
+c25kX2hkYV9jb2RlY19oZG1pIHNuZF9zb2Nfc3N0X2lwYyBzbmRfc29jX3NzdF9kc3AgZWNk
+aF9nZW5lcmljIGVjYyBpVENPX3dkdCBzbmRfaGRhX2V4dF9jb3JlIGl3bG12bSBpbnRlbF9w
+bWNfYnh0IHNuZF9zb2NfYWNwaV9pbnRlbF9tYXRjaCBtZWlfaGRjcCBlZTEwMDQgaVRDT192
+ZW5kb3Jfc3VwcG9ydCBzbmRfaGRhX2NvZGVjX3JlYWx0ZWsgc25kX3NvY19hY3BpIHdtaV9i
+bW9mIGludGVsX3dtaV90aHVuZGVyYm9sdCBzbmRfaGRhX2NvZGVjX2dlbmVyaWMgaW50ZWxf
+cmFwbF9tc3Igc25kX2hkYV9pbnRlbCBtYWM4MDIxMSBzbmRfaW50ZWxfZHNwY2ZnIHNvdW5k
+d2lyZV9pbnRlbCBzb3VuZHdpcmVfZ2VuZXJpY19hbGxvY2F0aW9uIHNvdW5kd2lyZV9jYWRl
+bmNlIHNuZF9oZGFfY29kZWMgeDg2X3BrZ190ZW1wX3RoZXJtYWwgaW50ZWxfcG93ZXJjbGFt
+cCBjb3JldGVtcCBsaWJhcmM0IHNuZF9oZGFfY29yZSBrdm1faW50ZWwgc25kX2h3ZGVwIG5s
+c19pc284ODU5XzEgc291bmR3aXJlX2J1cyB2ZmF0IGZhdCBrdm0gc25kX3NvY19jb3JlIGl3
+bHdpZmkgc25kX2NvbXByZXNzIGlycWJ5cGFzcyByYXBsIGFjOTdfYnVzIGludGVsX2NzdGF0
+ZSBzbmRfcGNtX2RtYWVuZ2luZSBpbnRlbF91bmNvcmUgam95ZGV2IHNuZF9wY20gY2ZnODAy
+MTEgbW91c2VkZXYgbWVpX21lIHBjc3BrciBlMTAwMGUgaTJjX2k4MDEgc25kX3RpbWVyIGky
+Y19zbWJ1cyBtZWkgcHJvY2Vzc29yX3RoZXJtYWxfZGV2aWNlDQprZXJuZWw6ICBpbnRlbF94
+aGNpX3VzYl9yb2xlX3N3aXRjaCBpbnRlbF9yYXBsX2NvbW1vbiBpbnRlbF9wY2hfdGhlcm1h
+bCByb2xlcyBpbnRlbF9zb2NfZHRzX2lvc2YgdGhpbmtwYWRfYWNwaSB3bWkgbGVkdHJpZ19h
+dWRpbyByZmtpbGwgc25kIGludDM0MDNfdGhlcm1hbCBzb3VuZGNvcmUgaW50MzQweF90aGVy
+bWFsX3pvbmUgaW50MzQwMF90aGVybWFsIGFjcGlfdGhlcm1hbF9yZWwgYWNwaV9wYWQgbWFj
+X2hpZCBwa2NzOF9rZXlfcGFyc2VyIGNyeXB0b191c2VyIGZ1c2UgYWNwaV9jYWxsKE9FKSBi
+cGZfcHJlbG9hZCBpcF90YWJsZXMgeF90YWJsZXMgZXh0NCBjcmMzMmNfZ2VuZXJpYyBjcmMx
+NiBtYmNhY2hlIGpiZDIgdWFzIHVzYl9zdG9yYWdlIGRtX2NyeXB0IGNiYyBlbmNyeXB0ZWRf
+a2V5cyBkbV9tb2QgdHJ1c3RlZCB0cG0gcm5nX2NvcmUgY3JjdDEwZGlmX3BjbG11bCBjcmMz
+Ml9wY2xtdWwgY3JjMzJjX2ludGVsIGdoYXNoX2NsbXVsbmlfaW50ZWwgYWVzbmlfaW50ZWwg
+Y3J5cHRvX3NpbWQgY3J5cHRkIGdsdWVfaGVscGVyIHNlcmlvX3JhdyB4aGNpX3BjaSB4aGNp
+X3BjaV9yZW5lc2FzIGk5MTUgdmlkZW8gaW50ZWxfZ3R0IGkyY19hbGdvX2JpdCBkcm1fa21z
+X2hlbHBlciBzeXNjb3B5YXJlYSBzeXNmaWxscmVjdCBzeXNpbWdibHQgZmJfc3lzX2ZvcHMg
+Y2VjIGRybSBhZ3BnYXJ0DQprZXJuZWw6IENSMjogMDAwMDAwMDAwMDAwMDAwMA0Ka2VybmVs
+OiAtLS1bIGVuZCB0cmFjZSBmY2JiNDgyYjU0OTI1MGI2IF0tLS0NCmtlcm5lbDogUklQOiAw
+MDEwOnB1YmxpY19rZXlfdmVyaWZ5X3NpZ25hdHVyZSsweDE4OS8weDQwMA0Ka2VybmVsOiBD
+b2RlOiA0OCA4YiA0MCBkMCA0NCA4OSBjYSA0YyA4OSBmZSA0YyA4OSBlNyBlOCBlZiAzMyA5
+YiAwMCA4NSBjMCAwZiA4NSA4MCAwMSAwMCAwMCA0OCA4YiA3NSAzMCA0OCBjNyBjNyBmOCA4
+NCA5OSBiYSBiOSAwNCAwMCAwMCAwMCA8ZjM+IGE2IDBmIDk3IGMwIDFjIDAwIDg0IGMwIDc1
+IDBiIDhiIDQ1IDUwIDg1IGMwIDBmIDg1IGUwIDAxIDAwIDAwDQprZXJuZWw6IFJTUDogMDAx
+ODpmZmZmYWY2ZDgwYWQ3ZDUwIEVGTEFHUzogMDAwMTAyNDYNCmtlcm5lbDogUkFYOiAwMDAw
+MDAwMDAwMDAwMDAwIFJCWDogZmZmZjk5ZDYxZjU2MTFjMCBSQ1g6IDAwMDAwMDAwMDAwMDAw
+MDQNCmtlcm5lbDogUkRYOiBmZmZmOTlkNjY3MTRjYjAwIFJTSTogMDAwMDAwMDAwMDAwMDAw
+MCBSREk6IGZmZmZmZmZmYmE5OTg0ZjgNCmtlcm5lbDogUkJQOiBmZmZmYWY2ZDgwYWQ3ZTg4
+IFIwODogZmZmZjk5ZDVjNjBmZTc2MCBSMDk6IDAwMDAwMDAwMDAwMDAwMDgNCmtlcm5lbDog
+UjEwOiAwMDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDAwMDAwMDAwYSBSMTI6IGZmZmY5
+OWQ1ZTk3YWZlYzANCmtlcm5lbDogUjEzOiBmZmZmOTlkNjY3MTRkNjAwIFIxNDogZmZmZmFm
+NmQ4MGFkN2Q4OCBSMTU6IGZmZmY5OWQ1YzZlOTBhMDANCmtlcm5lbDogRlM6ICAwMDAwN2Yx
+NGQxNTc4NzQwKDAwMDApIEdTOmZmZmY5OWRhYzc1YzAwMDAoMDAwMCkga25sR1M6MDAwMDAw
+MDAwMDAwMDAwMA0Ka2VybmVsOiBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAw
+MDAwMDAwMDgwMDUwMDMzDQprZXJuZWw6IENSMjogMDAwMDAwMDAwMDAwMDAwMCBDUjM6IDAw
+MDAwMDAxZTI2YWEwMDUgQ1I0OiAwMDAwMDAwMDAwMzcwNmUwDQpzeXN0ZW1kWzFdOiBpd2Qu
+c2VydmljZTogTWFpbiBwcm9jZXNzIGV4aXRlZCwgY29kZT1raWxsZWQsIHN0YXR1cz05L0tJ
+TEwNCnN5c3RlbWRbMV06IGl3ZC5zZXJ2aWNlOiBGYWlsZWQgd2l0aCByZXN1bHQgJ3NpZ25h
+bCcuDQotLS0NCg0KSGVyZSBpcyB0aGUgZGlzYXNzZW1ibHkgb2YgcHVibGljX2tleV92ZXJp
+Znlfc2lnbmF0dXJlIGFyb3VuZCB0aGUgZmF1bHRpbmcgaW5zdHJ1Y3Rpb24NCg0KLS0tDQog
+ICAweGZmZmZmZmZmYjlhNGVhZjk6CW1vdiAgICAweDMwKCVyYnApLCVyc2kNCiAgIDB4ZmZm
+ZmZmZmZiOWE0ZWFmZDoJbW92ICAgICQweGZmZmZmZmZmYmE5OTg0ZjgsJXJkaQ0KICAgMHhm
+ZmZmZmZmZmI5YTRlYjA0Ogltb3YgICAgJDB4NCwlZWN4DQogICAweGZmZmZmZmZmYjlhNGVi
+MDk6CXJlcHogY21wc2IgJWVzOiglcmRpKSwlZHM6KCVyc2kpICMgZmF1bHQgaGVyZQ0KICAg
+MHhmZmZmZmZmZmI5YTRlYjBiOglzZXRhICAgJWFsDQogICAweGZmZmZmZmZmYjlhNGViMGU6
+CXNiYiAgICAkMHgwLCVhbA0KICAgMHhmZmZmZmZmZmI5YTRlYjEwOgl0ZXN0ICAgJWFsLCVh
+bA0KICAgMHhmZmZmZmZmZmI5YTRlYjEyOglqbmUgICAgMHhmZmZmZmZmZmI5YTRlYjFmDQog
+ICAweGZmZmZmZmZmYjlhNGViMTQ6CW1vdiAgICAweDUwKCVyYnApLCVlYXgNCiAgIDB4ZmZm
+ZmZmZmZiOWE0ZWIxNzoJdGVzdCAgICVlYXgsJWVheA0KICAgMHhmZmZmZmZmZmI5YTRlYjE5
+OglqbmUgICAgMHhmZmZmZmZmZmI5YTRlY2ZmDQotLS0NCg0KY29ycmVzcG9uZGluZyB0byB0
+aGlzOiBodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92NS4xMC40L3NvdXJjZS9j
+cnlwdG8vYXN5bW1ldHJpY19rZXlzL3B1YmxpY19rZXkuYyNMMzU5DQoNCi0tLQ0KCWlmIChz
+dHJjbXAoc2lnLT5wa2V5X2FsZ28sICJzbTIiKSA9PSAwICYmIHNpZy0+ZGF0YV9zaXplKSB7
+DQoJCXJldCA9IGNlcnRfc2lnX2RpZ2VzdF91cGRhdGUoc2lnLCB0Zm0pOw0KCQlpZiAocmV0
+KQ0KCQkJZ290byBlcnJvcl9mcmVlX2tleTsNCgl9DQotLS0NCg0KU28gaXQgc2VlbXMgbGlr
+ZSBzaWctPnBrZXlfYWxnbyBpcyBudWxsLiBJIHdpbGwgdHJ5IHRvIGRlYnVnLCBidXQgSSBk
+b24ndCBnZXQgYWNjZXNzIHRvIGFuIEVBUC1wcm90ZWN0ZWQgbmV0d29yayBvZnRlbiAobWF5
+YmUgb25jZSBvciB0d2ljZSBhIHdlZWspLCBzbyBpdCBtaWdodCB0YWtlIGEgd2hpbGUuDQoN
+Ci0tIA0KSGFvIFdlaQ0K
