@@ -2,84 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 420DD2EEA71
-	for <lists+keyrings@lfdr.de>; Fri,  8 Jan 2021 01:34:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B2F2EF1A5
+	for <lists+keyrings@lfdr.de>; Fri,  8 Jan 2021 12:51:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729480AbhAHAc0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 7 Jan 2021 19:32:26 -0500
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:33491 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729406AbhAHAc0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 7 Jan 2021 19:32:26 -0500
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailout.nyi.internal (Postfix) with ESMTP id 7DD015C0238;
-        Thu,  7 Jan 2021 19:31:40 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Thu, 07 Jan 2021 19:31:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=nfWvfYQDoqQotE2wDsq3+Z7Q4Rs
-        5JEQ3R0Us1TVe4Fc=; b=T0sNAXRq+qOAipF+9ZvDvlIF/E1zDPtD0jrxdVjRXYv
-        A349zDYuETIV8edQ8CxCChxks6XDGY9OtpLHA/Ukc8f5HFGNsqVsCgIPrXyL9Rva
-        Ug3ZTgJCfcApq/ZlQB3URpHSEgWF+NsCtlo1W/MIMSlDoKjcOkw15r6hBDPu5N+7
-        tDwxTySh2zYrj9x+EF3RTrNntc7ccDMf8YPtmRDDzTA9l8y/I5xCkWf8nZgmccEx
-        r7Gbxjpvp902qz/WEbZjNn3RS2oQvJHb2gXS+9qbemWUw20l3JFdwS997NCvkzfI
-        fhqrMlUlzOA3xzpkCA0dLWGoEOk2ueAhM0/8VLO575Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=nfWvfY
-        QDoqQotE2wDsq3+Z7Q4Rs5JEQ3R0Us1TVe4Fc=; b=StRyfmOIria0n11So8M7Ne
-        /mJnzqFrUxMVsOyWiOoDrJwikQrcFY8yepfp9SJS3cF1AKK8GWWIP2hsYlK6ap5S
-        c/vn/DY36d1lfUZBPdrglz9fG2MgJJ8lBQrOLSa+wK3cV50y1Xn5itSRii+d76HF
-        F+HOpZWt8FK2Br3qZU3buj6B86MeQiTIUftpet3c+M6Y70vXm/Hal7uEAP/pQCe2
-        3pcStq2s0o0VNrarvyUe3OT6BiAHN12pJu4wqWWN4VZu/62wa/naoJPgkVdHCWBS
-        5w8KkMMao8jDpOAAb7r6Ln3OxbYp02ZTz9/3xe4S5Xw0WKusYSNCJxMRDwoSI0cA
-        ==
-X-ME-Sender: <xms:7Kf3X3jn0ouyhaEHk2BULgEbAmLtC9kCtz5md6F4jsHHf6jWyLeHtQ>
-    <xme:7Kf3X0B6WL9He-ut7u_lUfykrJ718PO2otBJdwp3N2I0qowfE-rreLfV7Dh-yJ50b
-    uPIrNz6yzgcN4pLwxc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvdegfedghedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
-    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
-    gvrhhnpeevffdtteetgfdttdekueefgedttddtueeugeekgeetffeuteffjeduieehhfek
-    tdenucfkphepvdegrdduieelrddvtddrvdehheenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:7Kf3X3Hl4SCGBmOx69ldDivRrV5TnGlI_0ZDw8PNHVh6s1-vbTtz4g>
-    <xmx:7Kf3X0SjYbuXGWNInWsJ3qMmj_tXxiva7GCYQ-S-u1yFImkpmwPCwQ>
-    <xmx:7Kf3X0xgNTj8fB8uLTnlxzqob1-cVBMbuD2VBXS5aAlUcvAqSbBkIg>
-    <xmx:7Kf3X6bfQQvd0rmAN2CJIrBB-bSpOacMx8B2EtNKvigPoE9aXxddwQ>
-Received: from localhost (unknown [24.169.20.255])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 28B2924005D;
-        Thu,  7 Jan 2021 19:31:40 -0500 (EST)
-Date:   Thu, 7 Jan 2021 19:31:38 -0500
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Alison Schofield <alison.schofield@intel.com>
-Cc:     keyrings@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: Request_key from KMIP appliance
-Message-ID: <20210108003138.GB575130@erythro>
-References: <20210107213710.GA11415@alison-desk>
+        id S1726735AbhAHLvI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 8 Jan 2021 06:51:08 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:40611 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726832AbhAHLvH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 8 Jan 2021 06:51:07 -0500
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-227-JrkSGbMLN9-FUY2lxHNdvQ-1; Fri, 08 Jan 2021 11:49:28 +0000
+X-MC-Unique: JrkSGbMLN9-FUY2lxHNdvQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 8 Jan 2021 11:49:27 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 8 Jan 2021 11:49:27 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Christoph Hellwig' <hch@lst.de>,
+        Alexander Viro <viro@zeniv.linux.org.uk>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: RE: [PATCH 05/11] iov_iter: merge the compat case into
+ rw_copy_check_uvector
+Thread-Topic: [PATCH 05/11] iov_iter: merge the compat case into
+ rw_copy_check_uvector
+Thread-Index: AQHWkCRUvpDO9SBAlU68E+WeFLSma6oeR04A
+Date:   Fri, 8 Jan 2021 11:49:27 +0000
+Message-ID: <7167a94511a84f30b18733d56007a7a5@AcuMS.aculab.com>
+References: <20200921143434.707844-1-hch@lst.de>
+ <20200921143434.707844-6-hch@lst.de>
+In-Reply-To: <20200921143434.707844-6-hch@lst.de>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210107213710.GA11415@alison-desk>
-User-Agent: Mutt/1.14.6 (2020-07-11)
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jan 07, 2021 at 13:37:10 -0800, Alison Schofield wrote:
-> I'm looking into using an external key server to store the encrypted blobs
-> of kernel encrypted keys. Today they are stored in the rootfs, but we'd
-> like to address the need to store the keys in an external KMIP appliance,
-> separate from the platform where deployed.
+From: Christoph Hellwig <hch@lst.de>
+> Sent: 21 September 2020 15:34
 > 
-> Any leads, thoughts, experience with the Linux Kernel Key Service
-> requesting keys from an external Key Server such as this?
+> Stop duplicating the iovec verify code, and instead add add a
+> __import_iovec helper that does the whole verify and import, but takes
+> a bool compat to decided on the native or compat layout.  This also
+> ends up massively simplifying the calling conventions.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  lib/iov_iter.c | 195 ++++++++++++++++++-------------------------------
+>  1 file changed, 70 insertions(+), 125 deletions(-)
+> 
+> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> index a64867501a7483..8bfa47b63d39aa 100644
+> --- a/lib/iov_iter.c
+> +++ b/lib/iov_iter.c
+> @@ -10,6 +10,7 @@
+>  #include <net/checksum.h>
+>  #include <linux/scatterlist.h>
+>  #include <linux/instrumented.h>
+> +#include <linux/compat.h>
+> 
+>  #define PIPE_PARANOIA /* for now */
+> 
+> @@ -1650,43 +1651,76 @@ const void *dup_iter(struct iov_iter *new, struct iov_iter *old, gfp_t flags)
+>  }
+>  EXPORT_SYMBOL(dup_iter);
+> 
+> -static ssize_t rw_copy_check_uvector(int type,
+> -		const struct iovec __user *uvector, unsigned long nr_segs,
+> -		unsigned long fast_segs, struct iovec *fast_pointer,
+> -		struct iovec **ret_pointer)
+> +static int compat_copy_iovecs_from_user(struct iovec *iov,
+> +		const struct iovec __user *uvector, unsigned long nr_segs)
+> +{
+> +	const struct compat_iovec __user *uiov =
+> +		(const struct compat_iovec __user *)uvector;
+> +	unsigned long i;
+> +	int ret = -EFAULT;
+> +
+> +	if (!user_access_begin(uvector, nr_segs * sizeof(*uvector)))
+> +		return -EFAULT;
 
-See the `request-key.conf(5)` manpage. I don't have experience with
-actual usage or deployment though, so others might have more input.
+I little bit late, but the above isn't quite right.
+It should be sizeof(*iouv) - the length is double what it should be.
 
---Ben
+Not that access_ok() can fail for compat addresses
+and the extra length won't matter for architectures that
+need the address/length to open an address hole into userspace.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
