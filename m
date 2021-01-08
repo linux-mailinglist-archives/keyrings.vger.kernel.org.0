@@ -2,131 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45B2F2EF1A5
-	for <lists+keyrings@lfdr.de>; Fri,  8 Jan 2021 12:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 629742EF59F
+	for <lists+keyrings@lfdr.de>; Fri,  8 Jan 2021 17:17:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726735AbhAHLvI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 8 Jan 2021 06:51:08 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:40611 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726832AbhAHLvH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 8 Jan 2021 06:51:07 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-227-JrkSGbMLN9-FUY2lxHNdvQ-1; Fri, 08 Jan 2021 11:49:28 +0000
-X-MC-Unique: JrkSGbMLN9-FUY2lxHNdvQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 8 Jan 2021 11:49:27 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Fri, 8 Jan 2021 11:49:27 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Christoph Hellwig' <hch@lst.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-CC:     Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: [PATCH 05/11] iov_iter: merge the compat case into
- rw_copy_check_uvector
-Thread-Topic: [PATCH 05/11] iov_iter: merge the compat case into
- rw_copy_check_uvector
-Thread-Index: AQHWkCRUvpDO9SBAlU68E+WeFLSma6oeR04A
-Date:   Fri, 8 Jan 2021 11:49:27 +0000
-Message-ID: <7167a94511a84f30b18733d56007a7a5@AcuMS.aculab.com>
-References: <20200921143434.707844-1-hch@lst.de>
- <20200921143434.707844-6-hch@lst.de>
-In-Reply-To: <20200921143434.707844-6-hch@lst.de>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1727228AbhAHQRc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 8 Jan 2021 11:17:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43462 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726535AbhAHQRc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 8 Jan 2021 11:17:32 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF5F0C061381
+        for <keyrings@vger.kernel.org>; Fri,  8 Jan 2021 08:16:51 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id v126so8835347qkd.11
+        for <keyrings@vger.kernel.org>; Fri, 08 Jan 2021 08:16:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
+        b=QI+UMpDk1q6lkqlYTPvjwHMFas4jk2bj+zkOo6jpO7zyzVqDFS8juIsp/NdwriJbJh
+         B6KT9p4VKr//PcDizrl9v5NtvpIiZ6ZkixqurvaWXEzSy69kULV6lJiw0B8ansWrU5T4
+         Yhs5GzvEkvch5oCTfwaHQ5zK3ZCjvxPPpd/jX9UicO/7TieCFobiw+gDPw3QfpKUpByx
+         38NWGhRSAnrKvBUC/ubArFJ9gIeuQ8tcIUYio5ptHJA9a7fmgotNm8GNFr8YSyOJO5Zh
+         cUz+TKenKwIN/si5RmsMRGxrf34V1q4BW4j0MlZ1kdXuB84yxBD18Y3lP4Tr2RJQ/D6o
+         otEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
+         :from:date:message-id:subject:to:content-transfer-encoding;
+        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
+        b=Bcnyu/5Ep3Ru04Sb6opdPpWmHVUJzA6RmEA9rBCxTiiTOC7JsoHB/E9be3brsHbN6k
+         RbsjK44gPmsLmYbEmQ+oCCXmxuvd8ndgN/HV73EAzy7EH/BGMs6xFljYHkTrOvBYMd12
+         SCOZqPv6WRFvp/a1HTnxmFT0jl5aLHOkysS2MiytxznwNn4897I8Vsop5RolUQbxc36g
+         NxRx6rGJcz7V72Azihz6HuPqKFv/ZjUm8hMpBPE8R9XqH5kvsn5nc6Jq0kAa+BJ76gkJ
+         59Po6OhgwNy6kJ+wotsMupzXiK0YhDvfunWiUaiAwYbCytffYl7yL+g1HQZN3/YCR5Yy
+         IVig==
+X-Gm-Message-State: AOAM532HJhKCdVNomZga96rl/tABNo7NhezqbrXylYSWVNVQyNxbHJ/e
+        rocyQk6lKS84hsqBzQEvT20xhHDONVROGs0tfSw=
+X-Google-Smtp-Source: ABdhPJy4hyNFH/SYGcLnTu3ncVwfhOJKF3AiKZoRB2F9zw2RMY8nFzyNdWj1skdGEfJNlsOfZTxd1w8tiueOQQwZ0O4=
+X-Received: by 2002:a37:a8a:: with SMTP id 132mr4531751qkk.327.1610122611232;
+ Fri, 08 Jan 2021 08:16:51 -0800 (PST)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Received: by 2002:a05:6214:148d:0:0:0:0 with HTTP; Fri, 8 Jan 2021 08:16:50
+ -0800 (PST)
+Reply-To: camillejackson021@gmail.com
+In-Reply-To: <CAGCmbMQupVT-1ZX2--N7Bjf2eW4VuUQ4dE_hzd1qAGQuE_JBEQ@mail.gmail.com>
+References: <CAGCmbMQupVT-1ZX2--N7Bjf2eW4VuUQ4dE_hzd1qAGQuE_JBEQ@mail.gmail.com>
+From:   camille jackson <adamraouf78@gmail.com>
+Date:   Fri, 8 Jan 2021 16:16:50 +0000
+Message-ID: <CAGCmbMRyqpxC22FGuUwP6b3qrZb0FeXUiZo0kc9qNHvzw1UkYg@mail.gmail.com>
+Subject: =?UTF-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1LA==?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de>
-> Sent: 21 September 2020 15:34
-> 
-> Stop duplicating the iovec verify code, and instead add add a
-> __import_iovec helper that does the whole verify and import, but takes
-> a bool compat to decided on the native or compat layout.  This also
-> ends up massively simplifying the calling conventions.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  lib/iov_iter.c | 195 ++++++++++++++++++-------------------------------
->  1 file changed, 70 insertions(+), 125 deletions(-)
-> 
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index a64867501a7483..8bfa47b63d39aa 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -10,6 +10,7 @@
->  #include <net/checksum.h>
->  #include <linux/scatterlist.h>
->  #include <linux/instrumented.h>
-> +#include <linux/compat.h>
-> 
->  #define PIPE_PARANOIA /* for now */
-> 
-> @@ -1650,43 +1651,76 @@ const void *dup_iter(struct iov_iter *new, struct iov_iter *old, gfp_t flags)
->  }
->  EXPORT_SYMBOL(dup_iter);
-> 
-> -static ssize_t rw_copy_check_uvector(int type,
-> -		const struct iovec __user *uvector, unsigned long nr_segs,
-> -		unsigned long fast_segs, struct iovec *fast_pointer,
-> -		struct iovec **ret_pointer)
-> +static int compat_copy_iovecs_from_user(struct iovec *iov,
-> +		const struct iovec __user *uvector, unsigned long nr_segs)
-> +{
-> +	const struct compat_iovec __user *uiov =
-> +		(const struct compat_iovec __user *)uvector;
-> +	unsigned long i;
-> +	int ret = -EFAULT;
-> +
-> +	if (!user_access_begin(uvector, nr_segs * sizeof(*uvector)))
-> +		return -EFAULT;
-
-I little bit late, but the above isn't quite right.
-It should be sizeof(*iouv) - the length is double what it should be.
-
-Not that access_ok() can fail for compat addresses
-and the extra length won't matter for architectures that
-need the address/length to open an address hole into userspace.
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+0J/RgNC40LLQtdGC0YHRgtCy0YPRjiDRgtC10LHRjywg0LzQvtC5INC00YDRg9CzLCDQvdCw0LTQ
+tdGO0YHRjCwg0YLRiyDQsiDQv9C+0YDRj9C00LrQtSwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC+
+0YLQstC10YLRjCDQvNC90LUNCtCx0LvQsNCz0L7QtNCw0YDRjywNCg==
