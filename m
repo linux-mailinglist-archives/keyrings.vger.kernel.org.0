@@ -2,282 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CFA22F2597
-	for <lists+keyrings@lfdr.de>; Tue, 12 Jan 2021 02:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3100E2F25A3
+	for <lists+keyrings@lfdr.de>; Tue, 12 Jan 2021 02:48:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730905AbhALBfD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Jan 2021 20:35:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54266 "EHLO mail.kernel.org"
+        id S1732583AbhALBl2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Jan 2021 20:41:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54944 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728387AbhALBfD (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 11 Jan 2021 20:35:03 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7994022EBF;
-        Tue, 12 Jan 2021 01:34:19 +0000 (UTC)
+        id S1727908AbhALBl1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 11 Jan 2021 20:41:27 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C62022C7E;
+        Tue, 12 Jan 2021 01:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610415261;
-        bh=8NTfa6eB6TLOe0Z5onwHF/F50VvgNzpzch/K5lNaCHw=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=TOdq7chmA5Wkl9sp9lE6bjT1XcEsGkdTbNB2jEkcqY/ailx+Er81C7rU7B9iPnWV+
-         0XO4CLN/Nehhf/8cBkwgr8aKE0Dq5wZWx/orPjyW/Zs+tbXDQfCbsJgBj3P8sCTpTy
-         CfmhmZ9xARrhon/EzZPDno391vIQxkt1kRDuRoBBTcH9opm3+HNmaFIoXsvQDxQqNJ
-         3CX0xDSsOP01p38N1lXh9WK3VUclbwaCGo6zp0jPTCOiCIU0L5dmYUQKtcVCnz07+1
-         WRz09AiMjiJ/RsADFjK1oDgXjSlGC7ts0cw6T72O+JQ+k59LVNfJDTkk09K7C+nl+4
-         s4Gu8ueDvIooA==
-Message-ID: <12c867b87e67e7d7db0633928654f92b3bfc83d7.camel@kernel.org>
-Subject: Re: [PATCH 4/5] security: DH - use KDF implementation from crypto
- API
+        s=k20201202; t=1610415646;
+        bh=NCmuJPKcfAeVbFs+sFOl8s0Ha+YdTXHFtOfV5EHtKgM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=p83ugUiOpLDkI7j0ZsGpXi6luhIeGnXAPP4Bs+oPs4aMJ/NIV9bmi3hAODi6wEN/s
+         +YlNXVzS7Eau+3Q/5ZSCGzW230Av6jKdp3iLU/pcleuN7suXhnVOUm0hknj4OaHxbH
+         mC3hdNkauc7azSpW52Zv6UjaB5AM595wPh3jQRbCH9H+yTZB9y0jRee0SXqk4IHLxi
+         G2u40AQJmd4mO4v6Ik8FV1SzvAqcFvQFBtjTochEyLtCSjschtB6Ytm0wGhdq4llU8
+         iplSUw5aA8pS24OCBi1DHzIh8CkP0pM+3fYUZQf9MuCN0ubpHrumzvhR4Ll+Vb30TH
+         soK5Ua1qjFIWg==
+Date:   Tue, 12 Jan 2021 03:40:42 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>,
-        herbert@gondor.apana.org.au, ebiggers@kernel.org,
-        mathew.j.martineau@linux.intel.com, dhowells@redhat.com
-Cc:     linux-crypto@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
-Date:   Tue, 12 Jan 2021 03:34:16 +0200
-In-Reply-To: <3088284.aeNJFYEL58@positron.chronox.de>
-References: <4616980.31r3eYUQgx@positron.chronox.de>
-         <3088284.aeNJFYEL58@positron.chronox.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3 (by Flathub.org) 
+To:     Andrew Zaborowski <andrew.zaborowski@intel.com>
+Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH][RESEND#15] keys: Handle missing Authority Key Identifier
+ X509 extension
+Message-ID: <X/z+Gh54yOXsZieb@kernel.org>
+References: <20210104164048.1378237-1-andrew.zaborowski@intel.com>
+ <X/qGVSXVoTeEks/j@kernel.org>
+ <CAOq732LtM-_6LXw6F2RAB7NsJqEC_+1AHsCQ4h0qKZH1fKF3Ug@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOq732LtM-_6LXw6F2RAB7NsJqEC_+1AHsCQ4h0qKZH1fKF3Ug@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2021-01-04 at 22:49 +0100, Stephan Müller wrote:
-> The kernel crypto API provides the SP800-108 counter KDF implementation.
-> Thus, the separate implementation provided as part of the keys subsystem
-> can be replaced with calls to the KDF offered by the kernel crypto API.
+On Mon, Jan 11, 2021 at 03:27:57PM +0100, Andrew Zaborowski wrote:
+> Hi,
 > 
-> The keys subsystem uses the counter KDF with a hash cipher primitive.
-> Thus, it only uses the call to crypto_kdf108_ctr_generate.
+> On Sun, 10 Jan 2021 at 05:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > On Mon, Jan 04, 2021 at 05:40:47PM +0100, Andrew Zaborowski wrote:
+> > > In a self-signed certificate the subject and issuer are the same and so
+> > > the Authority Key Identifier X.509 v3 extension is explicitly made
+> > > optional in RFC5280 section 4.2.1.1.
+> > > crypto/asymmetric_keys/x509_cert_parser.c can't handle this and makes
+> > > (at least) the restrict.c functions refuse to work with certificates
+> > > that don't include the AKID.  Fix this by filling in the missing
+> > > cert->sig->auth_ids with the certificate's own IDs after parsing and
+> > > determinig the certificate is self-signed.
+> > >
+> > > The asymmetric_key_generate_id return value is not checked because it's
+> > > already succeeded once at this point.
+> > >
+> > > There are root X.509 v3 certificates in use where this is the case,
+> > > mostly oldish ones.
+> > >
+> > > Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+> > > Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >
+> > I'll take active role with these.
 > 
-> The change removes the specific code that adds a zero padding that was
-> intended to be invoked when the DH operation result was smaller than the
-> modulus. However, this cannot occur any more these days because the
-> function mpi_write_to_sgl is used in the code path that calculates the
-> shared secret in dh_compute_value. This MPI service function guarantees
-> that leading zeros are introduced as needed to ensure the resulting data
-> is exactly as long as the modulus. This implies that the specific code
-> to add zero padding is dead code which can be safely removed.
+> Great!
+> 
+> >
+> > I don't think that adding field data that does not exist is a great
+> > idea.
+> >
+> > I think that a more sane way to fix this issue, would be to add field
+> > 'self_signed' to 'struct public_key_signature', and remove the
+> > equivalent field from 'struct x509_certificate'.
+> 
+> Ok, that's also an option.  I went for directly adding the
+> cert->sig->auth_ids because the name ".auth_ids" only implies that it
+> contains the signing authority's key IDs, which is something that we
+> have and does exist in the input file.  The name doesn't imply that it
+> should specifically be in the AKID extension.  Similarly
+> x509_key_preparse even generates a key description even though a
+> description is not part of the x509 format.
+> 
+> >
+> > Minor updates are required to:
+> >
+> > - x509_check_for_self_signed()
+> > - pkcs7_verify_sig_chain()
+> >
+> > Then you can use then new field to refine the check in
+> > restrict_link_by_signature().
+> 
+> Ok.
 
-Should be thn split into two patches, i.e. prepended with a patch
-removing the dead code.
+I mean in common sense: kernel stores the information needed.
+It just needs a bit of relocation.
 
 /Jarkko
-
-> Signed-off-by: Stephan Mueller <smueller@chronox.de>
-> ---
->  security/keys/Kconfig |   2 +-
->  security/keys/dh.c    | 118 ++++++------------------------------------
->  2 files changed, 17 insertions(+), 103 deletions(-)
-> 
-> diff --git a/security/keys/Kconfig b/security/keys/Kconfig
-> index 83bc23409164..e6604499f0a8 100644
-> --- a/security/keys/Kconfig
-> +++ b/security/keys/Kconfig
-> @@ -106,7 +106,7 @@ config KEY_DH_OPERATIONS
->         bool "Diffie-Hellman operations on retained keys"
->         depends on KEYS
->         select CRYPTO
-> -       select CRYPTO_HASH
-> +       select CRYPTO_KDF800108_CTR
->         select CRYPTO_DH
->         help
->          This option provides support for calculating Diffie-Hellman
-> diff --git a/security/keys/dh.c b/security/keys/dh.c
-> index 1abfa70ed6e1..46fa442b81ec 100644
-> --- a/security/keys/dh.c
-> +++ b/security/keys/dh.c
-> @@ -11,6 +11,7 @@
->  #include <crypto/hash.h>
->  #include <crypto/kpp.h>
->  #include <crypto/dh.h>
-> +#include <crypto/kdf_sp800108.h>
->  #include <keys/user-type.h>
->  #include "internal.h"
->  
-> @@ -79,16 +80,9 @@ static void dh_crypto_done(struct crypto_async_request *req, int err)
->         complete(&compl->completion);
->  }
->  
-> -struct kdf_sdesc {
-> -       struct shash_desc shash;
-> -       char ctx[];
-> -};
-> -
-> -static int kdf_alloc(struct kdf_sdesc **sdesc_ret, char *hashname)
-> +static int kdf_alloc(struct crypto_shash **hash, char *hashname)
->  {
->         struct crypto_shash *tfm;
-> -       struct kdf_sdesc *sdesc;
-> -       int size;
->         int err;
->  
->         /* allocate synchronous hash */
-> @@ -102,14 +96,7 @@ static int kdf_alloc(struct kdf_sdesc **sdesc_ret, char *hashname)
->         if (crypto_shash_digestsize(tfm) == 0)
->                 goto out_free_tfm;
->  
-> -       err = -ENOMEM;
-> -       size = sizeof(struct shash_desc) + crypto_shash_descsize(tfm);
-> -       sdesc = kmalloc(size, GFP_KERNEL);
-> -       if (!sdesc)
-> -               goto out_free_tfm;
-> -       sdesc->shash.tfm = tfm;
-> -
-> -       *sdesc_ret = sdesc;
-> +       *hash = tfm;
->  
->         return 0;
->  
-> @@ -118,92 +105,20 @@ static int kdf_alloc(struct kdf_sdesc **sdesc_ret, char *hashname)
->         return err;
->  }
->  
-> -static void kdf_dealloc(struct kdf_sdesc *sdesc)
-> -{
-> -       if (!sdesc)
-> -               return;
-> -
-> -       if (sdesc->shash.tfm)
-> -               crypto_free_shash(sdesc->shash.tfm);
-> -
-> -       kfree_sensitive(sdesc);
-> -}
-> -
-> -/*
-> - * Implementation of the KDF in counter mode according to SP800-108 section 5.1
-> - * as well as SP800-56A section 5.8.1 (Single-step KDF).
-> - *
-> - * SP800-56A:
-> - * The src pointer is defined as Z || other info where Z is the shared secret
-> - * from DH and other info is an arbitrary string (see SP800-56A section
-> - * 5.8.1.2).
-> - *
-> - * 'dlen' must be a multiple of the digest size.
-> - */
-> -static int kdf_ctr(struct kdf_sdesc *sdesc, const u8 *src, unsigned int slen,
-> -                  u8 *dst, unsigned int dlen, unsigned int zlen)
-> +static void kdf_dealloc(struct crypto_shash *hash)
->  {
-> -       struct shash_desc *desc = &sdesc->shash;
-> -       unsigned int h = crypto_shash_digestsize(desc->tfm);
-> -       int err = 0;
-> -       u8 *dst_orig = dst;
-> -       __be32 counter = cpu_to_be32(1);
-> -
-> -       while (dlen) {
-> -               err = crypto_shash_init(desc);
-> -               if (err)
-> -                       goto err;
-> -
-> -               err = crypto_shash_update(desc, (u8 *)&counter, sizeof(__be32));
-> -               if (err)
-> -                       goto err;
-> -
-> -               if (zlen && h) {
-> -                       u8 tmpbuffer[32];
-> -                       size_t chunk = min_t(size_t, zlen, sizeof(tmpbuffer));
-> -                       memset(tmpbuffer, 0, chunk);
-> -
-> -                       do {
-> -                               err = crypto_shash_update(desc, tmpbuffer,
-> -                                                         chunk);
-> -                               if (err)
-> -                                       goto err;
-> -
-> -                               zlen -= chunk;
-> -                               chunk = min_t(size_t, zlen, sizeof(tmpbuffer));
-> -                       } while (zlen);
-> -               }
-> -
-> -               if (src && slen) {
-> -                       err = crypto_shash_update(desc, src, slen);
-> -                       if (err)
-> -                               goto err;
-> -               }
-> -
-> -               err = crypto_shash_final(desc, dst);
-> -               if (err)
-> -                       goto err;
-> -
-> -               dlen -= h;
-> -               dst += h;
-> -               counter = cpu_to_be32(be32_to_cpu(counter) + 1);
-> -       }
-> -
-> -       return 0;
-> -
-> -err:
-> -       memzero_explicit(dst_orig, dlen);
-> -       return err;
-> +       if (hash)
-> +               crypto_free_shash(hash);
->  }
->  
-> -static int keyctl_dh_compute_kdf(struct kdf_sdesc *sdesc,
-> +static int keyctl_dh_compute_kdf(struct crypto_shash *hash,
->                                  char __user *buffer, size_t buflen,
-> -                                uint8_t *kbuf, size_t kbuflen, size_t lzero)
-> +                                uint8_t *kbuf, size_t kbuflen)
->  {
-> +       struct kvec kbuf_iov = { .iov_base = kbuf, .iov_len = kbuflen };
->         uint8_t *outbuf = NULL;
->         int ret;
-> -       size_t outbuf_len = roundup(buflen,
-> -                                   crypto_shash_digestsize(sdesc->shash.tfm));
-> +       size_t outbuf_len = roundup(buflen, crypto_shash_digestsize(hash));
->  
->         outbuf = kmalloc(outbuf_len, GFP_KERNEL);
->         if (!outbuf) {
-> @@ -211,7 +126,7 @@ static int keyctl_dh_compute_kdf(struct kdf_sdesc *sdesc,
->                 goto err;
->         }
->  
-> -       ret = kdf_ctr(sdesc, kbuf, kbuflen, outbuf, outbuf_len, lzero);
-> +       ret = crypto_kdf108_ctr_generate(hash, &kbuf_iov, 1, outbuf, outbuf_len);
->         if (ret)
->                 goto err;
->  
-> @@ -240,7 +155,7 @@ long __keyctl_dh_compute(struct keyctl_dh_params __user *params,
->         struct kpp_request *req;
->         uint8_t *secret;
->         uint8_t *outbuf;
-> -       struct kdf_sdesc *sdesc = NULL;
-> +       struct crypto_shash *hash = NULL;
->  
->         if (!params || (!buffer && buflen)) {
->                 ret = -EINVAL;
-> @@ -273,7 +188,7 @@ long __keyctl_dh_compute(struct keyctl_dh_params __user *params,
->                 }
->  
->                 /* allocate KDF from the kernel crypto API */
-> -               ret = kdf_alloc(&sdesc, hashname);
-> +               ret = kdf_alloc(&hash, hashname);
->                 kfree(hashname);
->                 if (ret)
->                         goto out1;
-> @@ -383,9 +298,8 @@ long __keyctl_dh_compute(struct keyctl_dh_params __user *params,
->                         goto out6;
->                 }
->  
-> -               ret = keyctl_dh_compute_kdf(sdesc, buffer, buflen, outbuf,
-> -                                           req->dst_len + kdfcopy->otherinfolen,
-> -                                           outlen - req->dst_len);
-> +               ret = keyctl_dh_compute_kdf(hash, buffer, buflen, outbuf,
-> +                                           req->dst_len + kdfcopy->otherinfolen);
->         } else if (copy_to_user(buffer, outbuf, req->dst_len) == 0) {
->                 ret = req->dst_len;
->         } else {
-> @@ -403,7 +317,7 @@ long __keyctl_dh_compute(struct keyctl_dh_params __user *params,
->  out2:
->         dh_free_data(&dh_inputs);
->  out1:
-> -       kdf_dealloc(sdesc);
-> +       kdf_dealloc(hash);
->         return ret;
->  }
->  
-
-
