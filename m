@@ -2,104 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E458E2F3372
-	for <lists+keyrings@lfdr.de>; Tue, 12 Jan 2021 16:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7172F352A
+	for <lists+keyrings@lfdr.de>; Tue, 12 Jan 2021 17:13:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728064AbhALO7Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 12 Jan 2021 09:59:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38216 "EHLO
+        id S2392201AbhALQMu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Jan 2021 11:12:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:41208 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726713AbhALO7Y (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Jan 2021 09:59:24 -0500
+        by vger.kernel.org with ESMTP id S2387818AbhALQMu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Jan 2021 11:12:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610463478;
+        s=mimecast20190719; t=1610467884;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XlUm2JYDUqrCFaqRZjf68KX2pnc8iKtDpFI9TKkiM18=;
-        b=CivmYjR8C9bdFnQin+wimDMaVBgo7eGgcZgSTakvN/g5DOR6S25Aj2TZoL7mc5eImFRus/
-        VXqxSDVN8eghU+MeG4RZSZUNXbFK4AB3vEbUBAhet+kcOavK/PkTRA89+jq9df2d95kE7r
-        O9+OBrS3gbXCg+RTiTqVBCRrCxsFO/0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-323-mlPyzESvNF2x4AJowppFGg-1; Tue, 12 Jan 2021 09:57:54 -0500
-X-MC-Unique: mlPyzESvNF2x4AJowppFGg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C3DD8803F4C;
-        Tue, 12 Jan 2021 14:57:49 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-8.rdu2.redhat.com [10.10.112.8])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9EA5D6B540;
-        Tue, 12 Jan 2021 14:57:45 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com>
-References: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com> <20200916004927.64276-1-eric.snowberg@oracle.com> <1360578.1607593748@warthog.procyon.org.uk>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     dhowells@redhat.com, dwmw2@infradead.org,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
-        Mimi Zohar <zohar@linux.ibm.com>, erichte@linux.ibm.com,
-        mpe@ellerman.id.au, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7GrmVz3g5PnC6MejB1/FJv7gDiKaAZjfigOkKnsP7RY=;
+        b=LLN8ZYwXSFayWYvLsqT6Fl+TbNI8NYdcWl0hTMdwZ9zDQrGWTVZYltAKncIyCKpJ13gqaI
+        g7qR3HZ93X9RA2bhk3kXKxOj13g4Z0u2oEAw3awJWG7hPHsYmvRvLUl+eRb6nYZTbxd6bU
+        LH3T/tnqP/FPFRAqQf+4kRBE1QQDhcU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-390-YckKDQlYMQifQvXXoU1vaw-1; Tue, 12 Jan 2021 11:11:21 -0500
+X-MC-Unique: YckKDQlYMQifQvXXoU1vaw-1
+Received: by mail-wr1-f70.google.com with SMTP id z8so1370383wrh.5
+        for <keyrings@vger.kernel.org>; Tue, 12 Jan 2021 08:11:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7GrmVz3g5PnC6MejB1/FJv7gDiKaAZjfigOkKnsP7RY=;
+        b=p6vYkQoSXlosLjr4RXYMaDYlhX4rbOKeOe7c9CyQPTN8DhJTc5zfOUy/0LDi2Evs5W
+         bYrrKqfO0wZNpvd3ib7Svsmdij09nPnfKo3tkEP4LfLMjZejAZGFZL13N5lWp+hw/fyE
+         ekaaXCPr6FTMOkNhneSOSoKGo3ELFp5wbzTKmNV6TtxLLPRf/g0CKUcw3mTtiVErpnD2
+         0Fn4dHnt/DoSQAiuY2qFQpLgDJHdckjIoMLAbMkMy5jO0PTvrDlYDAAjytEiHLHTW8n9
+         kx8qaLtpMUBCoQeAacB/F5btFjig48FR7bfj/E/9ByHxFC6SabjxJm0+RiNdpqgL8kG0
+         F7bg==
+X-Gm-Message-State: AOAM530SSUMiw/mwJV2n4OEX132EAfhUWv8kx77pH/mBwYvxS37KgR8S
+        V8Q+mZF3SkFFhUYjookSjzrVj9IgUdkvPMjV6+m5d21Bb0paWy5OYuPIPRo28WGgK7RadFBNssb
+        Gfu3MVZdBBzAPHrInO2Y=
+X-Received: by 2002:a1c:7d94:: with SMTP id y142mr4317088wmc.105.1610467879455;
+        Tue, 12 Jan 2021 08:11:19 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJy9gtHso6LQWZ01xitLmZ7DVGmvVKcp38eals66lkxaBqWRIlrF6/TqEJ1hfzciMThkNCz2Iw==
+X-Received: by 2002:a1c:7d94:: with SMTP id y142mr4317069wmc.105.1610467879236;
+        Tue, 12 Jan 2021 08:11:19 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id e15sm5765658wrx.86.2021.01.12.08.11.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Jan 2021 08:11:18 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 2A2DF180322; Tue, 12 Jan 2021 17:11:17 +0100 (CET)
+From:   =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] crypto: public_key: check that pkey_algo is non-NULL before passing it to strcmp()
+Date:   Tue, 12 Jan 2021 17:10:44 +0100
+Message-Id: <20210112161044.3101-1-toke@redhat.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 12 Jan 2021 14:57:39 +0000
-Message-ID: <2442460.1610463459@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Eric Snowberg <eric.snowberg@oracle.com> wrote:
+When public_key_verify_signature() is called from
+asymmetric_key_verify_signature(), the pkey_algo field of struct
+public_key_signature will be NULL, which causes a NULL pointer dereference
+in the strcmp() check. Fix this by adding a NULL check.
 
-> > On Dec 10, 2020, at 2:49 AM, David Howells <dhowells@redhat.com> wrote:
-> >=20
-> > Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> >=20
-> >> Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_G=
-UID
-> >> is found, it is added as an asymmetrical key to the .blacklist keyring.
-> >> Anytime the .platform keyring is used, the keys in the .blacklist keyr=
-ing
-> >> are referenced, if a matching key is found, the key will be rejected.
-> >=20
-> > Ummm...  Why this way and not as a blacklist key which takes up less sp=
-ace?
-> > I'm guessing that you're using the key chain matching logic.  We really=
- only
-> > need to blacklist the key IDs.
->=20
-> I implemented it this way so that certs in the dbx would only impact=20
-> the .platform keyring. I was under the impression we didn=E2=80=99t want =
-to have=20
-> Secure Boot UEFI db/dbx certs dictate keyring functionality within the ke=
-rnel
-> itself. Meaning if we have a matching dbx cert in any other keyring (buil=
-tin,
-> secondary, ima, etc.), it would be allowed. If that is not how you=E2=80=
-=99d like to=20
-> see it done, let me know and I=E2=80=99ll make the change.
+One visible manifestation of this is that userspace programs (such as the
+'iwd' WiFi daemon) will be killed when trying to verify a TLS key using the
+keyctl(2) interface.
 
-I wonder if that is that the right thing to do.  I guess this is a policy
-decision and may depend on the particular user.
+Cc: stable@vger.kernel.org
+Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verification")
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ crypto/asymmetric_keys/public_key.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > Also, what should happen if a revocation cert rejected by the blacklist?
->=20
-> I=E2=80=99m not sure I understand the question. How would it be rejected?
-
-The SHA256 of a revocation cert being loaded could match an
-already-blacklisted SHA256 sum, either compiled in or already loaded from
-UEFI.
-
-David
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 8892908ad58c..35b09e95a870 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -356,7 +356,7 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	if (ret)
+ 		goto error_free_key;
+ 
+-	if (strcmp(sig->pkey_algo, "sm2") == 0 && sig->data_size) {
++	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") == 0 && sig->data_size) {
+ 		ret = cert_sig_digest_update(sig, tfm);
+ 		if (ret)
+ 			goto error_free_key;
+-- 
+2.30.0
 
