@@ -2,100 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3100E2F25A3
-	for <lists+keyrings@lfdr.de>; Tue, 12 Jan 2021 02:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E458E2F3372
+	for <lists+keyrings@lfdr.de>; Tue, 12 Jan 2021 16:00:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732583AbhALBl2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Jan 2021 20:41:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54944 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727908AbhALBl1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 11 Jan 2021 20:41:27 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C62022C7E;
-        Tue, 12 Jan 2021 01:40:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610415646;
-        bh=NCmuJPKcfAeVbFs+sFOl8s0Ha+YdTXHFtOfV5EHtKgM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=p83ugUiOpLDkI7j0ZsGpXi6luhIeGnXAPP4Bs+oPs4aMJ/NIV9bmi3hAODi6wEN/s
-         +YlNXVzS7Eau+3Q/5ZSCGzW230Av6jKdp3iLU/pcleuN7suXhnVOUm0hknj4OaHxbH
-         mC3hdNkauc7azSpW52Zv6UjaB5AM595wPh3jQRbCH9H+yTZB9y0jRee0SXqk4IHLxi
-         G2u40AQJmd4mO4v6Ik8FV1SzvAqcFvQFBtjTochEyLtCSjschtB6Ytm0wGhdq4llU8
-         iplSUw5aA8pS24OCBi1DHzIh8CkP0pM+3fYUZQf9MuCN0ubpHrumzvhR4Ll+Vb30TH
-         soK5Ua1qjFIWg==
-Date:   Tue, 12 Jan 2021 03:40:42 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Andrew Zaborowski <andrew.zaborowski@intel.com>
-Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH][RESEND#15] keys: Handle missing Authority Key Identifier
- X509 extension
-Message-ID: <X/z+Gh54yOXsZieb@kernel.org>
-References: <20210104164048.1378237-1-andrew.zaborowski@intel.com>
- <X/qGVSXVoTeEks/j@kernel.org>
- <CAOq732LtM-_6LXw6F2RAB7NsJqEC_+1AHsCQ4h0qKZH1fKF3Ug@mail.gmail.com>
+        id S1728064AbhALO7Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Jan 2021 09:59:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38216 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726713AbhALO7Y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Jan 2021 09:59:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1610463478;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XlUm2JYDUqrCFaqRZjf68KX2pnc8iKtDpFI9TKkiM18=;
+        b=CivmYjR8C9bdFnQin+wimDMaVBgo7eGgcZgSTakvN/g5DOR6S25Aj2TZoL7mc5eImFRus/
+        VXqxSDVN8eghU+MeG4RZSZUNXbFK4AB3vEbUBAhet+kcOavK/PkTRA89+jq9df2d95kE7r
+        O9+OBrS3gbXCg+RTiTqVBCRrCxsFO/0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-323-mlPyzESvNF2x4AJowppFGg-1; Tue, 12 Jan 2021 09:57:54 -0500
+X-MC-Unique: mlPyzESvNF2x4AJowppFGg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C3DD8803F4C;
+        Tue, 12 Jan 2021 14:57:49 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-8.rdu2.redhat.com [10.10.112.8])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9EA5D6B540;
+        Tue, 12 Jan 2021 14:57:45 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com>
+References: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com> <20200916004927.64276-1-eric.snowberg@oracle.com> <1360578.1607593748@warthog.procyon.org.uk>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        Mimi Zohar <zohar@linux.ibm.com>, erichte@linux.ibm.com,
+        mpe@ellerman.id.au, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOq732LtM-_6LXw6F2RAB7NsJqEC_+1AHsCQ4h0qKZH1fKF3Ug@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date:   Tue, 12 Jan 2021 14:57:39 +0000
+Message-ID: <2442460.1610463459@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jan 11, 2021 at 03:27:57PM +0100, Andrew Zaborowski wrote:
-> Hi,
-> 
-> On Sun, 10 Jan 2021 at 05:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > On Mon, Jan 04, 2021 at 05:40:47PM +0100, Andrew Zaborowski wrote:
-> > > In a self-signed certificate the subject and issuer are the same and so
-> > > the Authority Key Identifier X.509 v3 extension is explicitly made
-> > > optional in RFC5280 section 4.2.1.1.
-> > > crypto/asymmetric_keys/x509_cert_parser.c can't handle this and makes
-> > > (at least) the restrict.c functions refuse to work with certificates
-> > > that don't include the AKID.  Fix this by filling in the missing
-> > > cert->sig->auth_ids with the certificate's own IDs after parsing and
-> > > determinig the certificate is self-signed.
-> > >
-> > > The asymmetric_key_generate_id return value is not checked because it's
-> > > already succeeded once at this point.
-> > >
-> > > There are root X.509 v3 certificates in use where this is the case,
-> > > mostly oldish ones.
-> > >
-> > > Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
-> > > Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >
-> > I'll take active role with these.
-> 
-> Great!
-> 
-> >
-> > I don't think that adding field data that does not exist is a great
-> > idea.
-> >
-> > I think that a more sane way to fix this issue, would be to add field
-> > 'self_signed' to 'struct public_key_signature', and remove the
-> > equivalent field from 'struct x509_certificate'.
-> 
-> Ok, that's also an option.  I went for directly adding the
-> cert->sig->auth_ids because the name ".auth_ids" only implies that it
-> contains the signing authority's key IDs, which is something that we
-> have and does exist in the input file.  The name doesn't imply that it
-> should specifically be in the AKID extension.  Similarly
-> x509_key_preparse even generates a key description even though a
-> description is not part of the x509 format.
-> 
-> >
-> > Minor updates are required to:
-> >
-> > - x509_check_for_self_signed()
-> > - pkcs7_verify_sig_chain()
-> >
-> > Then you can use then new field to refine the check in
-> > restrict_link_by_signature().
-> 
-> Ok.
+Eric Snowberg <eric.snowberg@oracle.com> wrote:
 
-I mean in common sense: kernel stores the information needed.
-It just needs a bit of relocation.
+> > On Dec 10, 2020, at 2:49 AM, David Howells <dhowells@redhat.com> wrote:
+> >=20
+> > Eric Snowberg <eric.snowberg@oracle.com> wrote:
+> >=20
+> >> Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_G=
+UID
+> >> is found, it is added as an asymmetrical key to the .blacklist keyring.
+> >> Anytime the .platform keyring is used, the keys in the .blacklist keyr=
+ing
+> >> are referenced, if a matching key is found, the key will be rejected.
+> >=20
+> > Ummm...  Why this way and not as a blacklist key which takes up less sp=
+ace?
+> > I'm guessing that you're using the key chain matching logic.  We really=
+ only
+> > need to blacklist the key IDs.
+>=20
+> I implemented it this way so that certs in the dbx would only impact=20
+> the .platform keyring. I was under the impression we didn=E2=80=99t want =
+to have=20
+> Secure Boot UEFI db/dbx certs dictate keyring functionality within the ke=
+rnel
+> itself. Meaning if we have a matching dbx cert in any other keyring (buil=
+tin,
+> secondary, ima, etc.), it would be allowed. If that is not how you=E2=80=
+=99d like to=20
+> see it done, let me know and I=E2=80=99ll make the change.
 
-/Jarkko
+I wonder if that is that the right thing to do.  I guess this is a policy
+decision and may depend on the particular user.
+
+> > Also, what should happen if a revocation cert rejected by the blacklist?
+>=20
+> I=E2=80=99m not sure I understand the question. How would it be rejected?
+
+The SHA256 of a revocation cert being loaded could match an
+already-blacklisted SHA256 sum, either compiled in or already loaded from
+UEFI.
+
+David
+
