@@ -2,87 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BAAA2F4F5E
-	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 17:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 753342F5343
+	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 20:27:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726709AbhAMQA4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Jan 2021 11:00:56 -0500
-Received: from out3-smtp.messagingengine.com ([66.111.4.27]:43745 "EHLO
-        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726693AbhAMQAz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 11:00:55 -0500
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 9B2445C017C;
-        Wed, 13 Jan 2021 11:00:09 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 13 Jan 2021 11:00:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=WkkiuigdyQyNcR5yEmbXWwTKyNU
-        Y3+vv16S1l+0Mtcc=; b=Ih1L9IwVJAG+qsrVV3ju6alR0tOa3YMsoN03oO9AU8V
-        UVFqo7ORINtMkDRRa9inHQG0MKKuT9+NyCv4VUiFqFZ5cxEXzhQupOnvqse75Fta
-        jH1Q05jsdFoJAQ4jftaQPluOo6JUVah4+BipUvq+t8TuGFPt+zrPoTCt64DoAMB7
-        YE0NKrEPnEG+qQFmjJGX9ZnXIgcMORHlm69mdR6JAPDiwt0wv85J/DapDX3E0Spm
-        k4tBZmlKXqvI7K1D0CPCuZC9jjBPAU8QcwTWZxsqH35ui3xxiAkRRRwN1W2YmQAQ
-        PU7/wM/HK2WG7EAb4MYh0+buPFK5HP3d4Ljx0AY5gVw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=Wkkiui
-        gdyQyNcR5yEmbXWwTKyNUY3+vv16S1l+0Mtcc=; b=Thc6cq2wJftTQ9usmSXH1q
-        EfYJuxlyk3CeuulCL7WIlz0GPEEE32Y2k9s/q3ZSXvjinjJuwm0QZVChemQiTA06
-        iwQsqXgd+qb70pEnghcT9C0fm51GeWspVY0/uSUNcczV2zUWm08gj5o5YCGxesfs
-        ICgl9RMWkdNApMoi5f8+5bPJHNwh3LMjsNLKDY96kCxEOljRO2Oq7mXSEuXu+erB
-        OqvVrsUTQ26RxuSNMzVM5SIzR3S1Qg9yYZm1eBC7KO1FxRP3i075TJp8j53ur6M4
-        sxEjJ2EYEJX6dhN+iTXbCWZU6j4ga5NZK7R1a9CfIQIS57891aO07HW4M8OyELBA
-        ==
-X-ME-Sender: <xms:CRn_X1fcxoTBKRGGu4ETDCgkVB-LCZpBTgQ4u0IjfLw7DClCsOG1eA>
-    <xme:CRn_XxAJ9p08xFGFm_JrleNDEdOjbMZDcOyIsbxQ_-yPygd2J7lWAqfMxYJw_Utts
-    ewV2xukjqOgzOm1Uqc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedukedrtdefgdekvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghnuceu
-    ohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrthhtvg
-    hrnhepvefftdettefgtddtkeeufeegtddttdeuueegkeegteffueetffejudeihefhkedt
-    necukfhppedvgedrudeiledrvddtrddvheehnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepmhgvsegsvghnsghovggtkhgvlhdrnhgvth
-X-ME-Proxy: <xmx:CRn_X49x5zUfETr5_RAIz5G9rXLOwcRyRAnQTLw2IBRik8go9bpNOQ>
-    <xmx:CRn_X8Ih_ONPgW7TtkRRrFndwv-eI-C6ZUNWAYYCRuStL9ZS2y5avg>
-    <xmx:CRn_Xxi_cXtz1oyQfYamjM4Bzg0R8rFbHnxgfkh1z9uviFmjj2XlQA>
-    <xmx:CRn_X7U6Kn7Qo8di7bKeoaat_oFKuefh0tL3DHsOF7A9lSuCFPZRRA>
-Received: from localhost (unknown [24.169.20.255])
-        by mail.messagingengine.com (Postfix) with ESMTPA id B8F3424006E;
-        Wed, 13 Jan 2021 11:00:08 -0500 (EST)
-Date:   Wed, 13 Jan 2021 11:00:07 -0500
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Rolf Eike Beer <eb@emlix.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v5] scripts: use pkg-config to locate libcrypto
-Message-ID: <20210113160007.GB3081990@erythro>
-References: <20538915.Wj2CyUsUYa@devpool35>
- <2278760.8Yd83Mgoko@devpool35>
- <3394639.6NgGvCfkNl@devpool47>
- <20210113155757.GA3081990@erythro>
+        id S1728618AbhAMTZ1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Jan 2021 14:25:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:42847 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728485AbhAMTZ0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 14:25:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1610565840;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=HcC8AUhgxB2nKsEbFplqxs+UaFp2Qy31anNGiuGduMU=;
+        b=GgDhEAv7MWhdCqZTvFUEc0eDSNFTjsJgztsO0lmHXiLSGXojnuLZfbjNrWkIGxjwj/t+8M
+        Srv3KvyHIgz8YZkeuu5rSAMANwjbtBAS4002RxYgfDoFlTyfoiFNyBBxFX8KUeNgeaQ4Km
+        vopiDSUVHgBatOctM2rHRoSwtv6kv6k=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-150-AHAiIQ4VPOmJHO8dvXQUzg-1; Wed, 13 Jan 2021 14:23:56 -0500
+X-MC-Unique: AHAiIQ4VPOmJHO8dvXQUzg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3114D107ACF7;
+        Wed, 13 Jan 2021 19:23:55 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-8.rdu2.redhat.com [10.10.112.8])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7BF1810023B3;
+        Wed, 13 Jan 2021 19:23:51 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <2660556.1610545213@warthog.procyon.org.uk>
+References: <2660556.1610545213@warthog.procyon.org.uk>
+To:     torvalds@linux-foundation.org
+Cc:     dhowells@redhat.com, jarkko@kernel.org, eric.snowberg@oracle.com,
+        ard.biesheuvel@linaro.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] certs: Add EFI_CERT_X509_GUID support for dbx entries
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210113155757.GA3081990@erythro>
-User-Agent: Mutt/1.14.6 (2020-07-11)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2688930.1610565830.1@warthog.procyon.org.uk>
+Date:   Wed, 13 Jan 2021 19:23:50 +0000
+Message-ID: <2688931.1610565830@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 13, 2021 at 10:57:58 -0500, Ben Boeckel wrote:
-> > Cc: stable@vger.kernel.org # 5.6.x
-> 
-> Note that keyutils is not in the kernel, so I don't know how useful this
-> is.
+David Howells <dhowells@redhat.com> wrote:
 
-Scratch that; I remember a similar patch for keyutils; this is for the
-kernel.
+>     This fixes CVE-2020-26541.
 
---Ben
+Note that I added the CVE number, not Eric.
+
+David
+
