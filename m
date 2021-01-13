@@ -2,125 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A60902F49DD
-	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 12:21:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE8F2F4A46
+	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 12:40:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728280AbhAMLRy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Jan 2021 06:17:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728273AbhAMLRx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 06:17:53 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4722C061575
-        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 03:17:12 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id 23so2167236lfg.10
-        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 03:17:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TAxh0QRvG+U9nWMtk6yUVRJ8OL/Nsz5USXDEEU+kuLw=;
-        b=hjKQy54pj428UdfskrcDqwX2PEoAuGx3i2g7PycDem6NXMGRHHmGGyHmVKwWLb2K3J
-         GuCbG2pSWNT9EckrACedFivAg7m266Bek8bObR0AWPoaMYAIxLF4kyEoFgxdxCys/z2O
-         1M2sH3NJT6oCtEB49yIGbpWyB9hsme9sBdr9hxRICtZApQMPPnUjWWzc2M1Zd4hFsvgG
-         uji2fNoa/rsQcIj+hu18ZBNFHEL92k4D5/8f5dYZvaqKQELkydytmCDEthvAlm+xp2CH
-         jawETw48NCp3uaDciJagmM/I2m4mDeIiV0WqM9x++VNbLXd50mJ2oGlO07uAiYEAkZlM
-         TxiQ==
+        id S1727281AbhAMLax (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Jan 2021 06:30:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:37456 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727194AbhAMLaw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 06:30:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1610537366;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RBvUo/6vjpBKP0pLeQRwuVWC4Mf8TIQXAT6GH3pLh/A=;
+        b=Oa5dnnd7Kq7MCfMY8Nv0Vg/1QPTSNSQDSjfDoUq/UM6NlZ04lP4monn+nAAgGTH5dJDLx/
+        A0Z8xxXjvT+OJgzS6fcTCCWx+l+iKbSaikZEMsLumU+1zB4loZAtSj/9P9AMVCiavcuHPC
+        GwNXKbyoDcUDoeqmjILbp6JDmVR/x7U=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-476-XgAOFD21Pky-KcC7D17JmA-1; Wed, 13 Jan 2021 06:29:24 -0500
+X-MC-Unique: XgAOFD21Pky-KcC7D17JmA-1
+Received: by mail-ed1-f70.google.com with SMTP id u17so717454edi.18
+        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 03:29:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TAxh0QRvG+U9nWMtk6yUVRJ8OL/Nsz5USXDEEU+kuLw=;
-        b=YGYIAhVKRVaJOOhP5B0w8//v5JXlTd+/xBLjTa1sPhjSda+a8hEohk093VmV6uzxuI
-         NAnmn91qNlt2CCIy7ByfFmI8HDOY/X97cPM8JavNROQrUUU786SqRnhcG0jFKDeo/0Jh
-         mkEafKcSJnym0XmyCTkmhvOe0idCPpQF34FwrbwVZt+B4GkZCgfDeQk+MVMis0wuHvzo
-         BIkJQnrcecuupLDhGnrD95nyLiHnaskZ3BQne3b0nRjsJWh/AwzIPQNtRTOV5ZMo7iBc
-         hsO3EcJgnaTkS6305BSn7ZI7oTpOc9/Ia7FRiXcKzmGdWwZR1iFAi2mXZfhA2F1PQHut
-         OAPQ==
-X-Gm-Message-State: AOAM530840SUxypfCcbnGMGFqsx8FwFu2+2IXJbReidjIx6lBQVuQcVD
-        W+VGpRJpO4zWV9/AGeLBBscUU/OlCypIfb9HKW0Lng==
-X-Google-Smtp-Source: ABdhPJweF4+YKogH4cN92gRs6BUwNLlYpSWHBGR0Ptdw8KYpzPSd0hSF3S5iZRq39IC4We8OFJ8+kD0bPFuTv8QjcXc=
-X-Received: by 2002:a19:c211:: with SMTP id l17mr671408lfc.194.1610536631374;
- Wed, 13 Jan 2021 03:17:11 -0800 (PST)
-MIME-Version: 1.0
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
- <1604419306-26105-3-git-send-email-sumit.garg@linaro.org> <X/x+N0fgrzIZTeNi@kernel.org>
-In-Reply-To: <X/x+N0fgrzIZTeNi@kernel.org>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 13 Jan 2021 16:47:00 +0530
-Message-ID: <CAFA6WYOUvWAZtYfR4q8beZFkX-CtdxqwJaRQM+GHNMDfQiEWOA@mail.gmail.com>
-Subject: Re: [PATCH v8 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=RBvUo/6vjpBKP0pLeQRwuVWC4Mf8TIQXAT6GH3pLh/A=;
+        b=KnvODfFVYohNfLx5tsdsOZKkeps3B6CmoNWMMAVJy5G43d2xQV/hFlabbTHRkqkcOA
+         PMRg0l+Xg1d+4CVsPR5DvRuKaPKWMSTKkpxYEen3xXjQV/5/6nneMFD3VO2jazZjSqp2
+         nLh8nOUHjBdHznU4U97VFrqhVDQC8Wt38WJBrO+qPtBdrpYn2Csrq4eZ4TEWQaFXC/fV
+         Oxs20YHAxaZnqUT8cPC+DYbig5cW6YzL5GrECSGpXnG1OXZ7cfSiJqPFvE7Fog660j2J
+         8ANRTZetLQ7YRBFQP5Ap7vsdNo0CaSK1QRA52mIz35toLlXMBZHsLOz7u/00qbD2GuW3
+         GF7g==
+X-Gm-Message-State: AOAM530mzTIb+ynj3i/Q7/J36427KzszNAZlqoqYRw0xymcpw5K1lW4C
+        AEKReu9Xi6mwx0RBPDvvbXfLao/kf5+GwHlKmc/80KF5TgCl/7qgmBOzxighIIY7UbAkJZduU5J
+        rmjSIdzm3DFYqZ9TPZ/Y=
+X-Received: by 2002:a17:906:c10e:: with SMTP id do14mr1293942ejc.166.1610537362770;
+        Wed, 13 Jan 2021 03:29:22 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwV0UhPTkqnfz0zhus4V2pdERz5D9Xe87p960xLKFrM1TiE4FX3YbkCxBmnvrwbXxFrSOjddA==
+X-Received: by 2002:a17:906:c10e:: with SMTP id do14mr1293933ejc.166.1610537362623;
+        Wed, 13 Jan 2021 03:29:22 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id y22sm588794ejj.111.2021.01.13.03.29.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Jan 2021 03:29:22 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id ACE1618032B; Wed, 13 Jan 2021 12:29:20 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
         David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Content-Type: text/plain; charset="UTF-8"
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Gilad Ben-Yossef <gilad@benyossef.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: public_key: check that pkey_algo is non-NULL
+ before passing it to strcmp()
+In-Reply-To: <d7a50628-5559-a054-bc47-2d45746eb503@linux.alibaba.com>
+References: <20210112161044.3101-1-toke@redhat.com>
+ <d7a50628-5559-a054-bc47-2d45746eb503@linux.alibaba.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Wed, 13 Jan 2021 12:29:20 +0100
+Message-ID: <878s8x9isv.fsf@toke.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+Tianjia Zhang <tianjia.zhang@linux.alibaba.com> writes:
 
-On Mon, 11 Jan 2021 at 22:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> Hi,
 >
-> On Tue, Nov 03, 2020 at 09:31:44PM +0530, Sumit Garg wrote:
-> > Add support for TEE based trusted keys where TEE provides the functionality
-> > to seal and unseal trusted keys using hardware unique key.
-> >
-> > Refer to Documentation/tee.txt for detailed information about TEE.
-> >
-> > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
->
-> I haven't yet got QEMU environment working with aarch64, this produces
-> just a blank screen:
->
-> ./output/host/usr/bin/qemu-system-aarch64 -M virt -cpu cortex-a53 -smp 1 -kernel output/images/Image -initrd output/images/rootfs.cpio -serial stdio
->
-> My BuildRoot fork for TPM and keyring testing is located over here:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/buildroot-tpmdd.git/
->
-> The "ARM version" is at this point in aarch64 branch. Over time I will
-> define tpmdd-x86_64 and tpmdd-aarch64 boards and everything will be then
-> in the master branch.
->
-> To create identical images you just need to
->
-> $ make tpmdd_defconfig && make
->
-> Can you check if you see anything obviously wrong? I'm eager to test this
-> patch set, and in bigger picture I really need to have ready to run
-> aarch64 environment available.
+> I have fixed this problem last week. Still thanks for your fixing.
+> patch is here: https://lkml.org/lkml/2021/1/7/201
 
-I would rather suggest you to follow steps listed here [1] as to test
-this feature on Qemu aarch64 we need to build firmwares such as TF-A,
-OP-TEE, UEFI etc. which are all integrated into OP-TEE Qemu build
-system [2]. And then it would be easier to migrate them to your
-buildroot environment as well.
+Ah, awesome! I did look if this had already been fixed, but your patch
+wasn't in the crypto tree and didn't think to go perusing the mailing
+lists. So sorry for the duplicate, and thanks for fixing this :)
 
-[1] https://lists.trustedfirmware.org/pipermail/op-tee/2020-May/000027.html
-[2] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
+-Toke
 
--Sumit
-
->
-> /Jarkko
