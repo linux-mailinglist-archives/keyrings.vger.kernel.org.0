@@ -2,112 +2,125 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B253D2F49C8
-	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 12:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A60902F49DD
+	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 12:21:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728178AbhAMLMu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Jan 2021 06:12:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31325 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727873AbhAMLMt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 06:12:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610536283;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=A6uXIJTikyi8NRRLgwIPs52yHdAVnddGSD2hRw1TBXA=;
-        b=g60SQQX1AeMgUCBTTa681jUjnULayhxXQ6laFkSHtfFD1NxaIXLMBKQDn+MgJs5rHVEora
-        e+gCdza6TJc5VkePJnjZFofLmja2RhrJXFQQ5ZwnnwSzEQfQt5bMotvSwphMSFSlprIQ6/
-        j3wTUUZlPwe3XIRkB2bfC5krMNXCwwU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-25-Az6-8rUnM5yy6OiBe330kQ-1; Wed, 13 Jan 2021 06:11:21 -0500
-X-MC-Unique: Az6-8rUnM5yy6OiBe330kQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 43E561922961;
-        Wed, 13 Jan 2021 11:11:20 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-8.rdu2.redhat.com [10.10.112.8])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9206F60BD9;
-        Wed, 13 Jan 2021 11:11:14 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20210112161044.3101-1-toke@redhat.com>
-References: <20210112161044.3101-1-toke@redhat.com>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc:     dhowells@redhat.com, Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: public_key: check that pkey_algo is non-NULL before passing it to strcmp()
+        id S1728280AbhAMLRy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Jan 2021 06:17:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728273AbhAMLRx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 06:17:53 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4722C061575
+        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 03:17:12 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id 23so2167236lfg.10
+        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 03:17:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TAxh0QRvG+U9nWMtk6yUVRJ8OL/Nsz5USXDEEU+kuLw=;
+        b=hjKQy54pj428UdfskrcDqwX2PEoAuGx3i2g7PycDem6NXMGRHHmGGyHmVKwWLb2K3J
+         GuCbG2pSWNT9EckrACedFivAg7m266Bek8bObR0AWPoaMYAIxLF4kyEoFgxdxCys/z2O
+         1M2sH3NJT6oCtEB49yIGbpWyB9hsme9sBdr9hxRICtZApQMPPnUjWWzc2M1Zd4hFsvgG
+         uji2fNoa/rsQcIj+hu18ZBNFHEL92k4D5/8f5dYZvaqKQELkydytmCDEthvAlm+xp2CH
+         jawETw48NCp3uaDciJagmM/I2m4mDeIiV0WqM9x++VNbLXd50mJ2oGlO07uAiYEAkZlM
+         TxiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TAxh0QRvG+U9nWMtk6yUVRJ8OL/Nsz5USXDEEU+kuLw=;
+        b=YGYIAhVKRVaJOOhP5B0w8//v5JXlTd+/xBLjTa1sPhjSda+a8hEohk093VmV6uzxuI
+         NAnmn91qNlt2CCIy7ByfFmI8HDOY/X97cPM8JavNROQrUUU786SqRnhcG0jFKDeo/0Jh
+         mkEafKcSJnym0XmyCTkmhvOe0idCPpQF34FwrbwVZt+B4GkZCgfDeQk+MVMis0wuHvzo
+         BIkJQnrcecuupLDhGnrD95nyLiHnaskZ3BQne3b0nRjsJWh/AwzIPQNtRTOV5ZMo7iBc
+         hsO3EcJgnaTkS6305BSn7ZI7oTpOc9/Ia7FRiXcKzmGdWwZR1iFAi2mXZfhA2F1PQHut
+         OAPQ==
+X-Gm-Message-State: AOAM530840SUxypfCcbnGMGFqsx8FwFu2+2IXJbReidjIx6lBQVuQcVD
+        W+VGpRJpO4zWV9/AGeLBBscUU/OlCypIfb9HKW0Lng==
+X-Google-Smtp-Source: ABdhPJweF4+YKogH4cN92gRs6BUwNLlYpSWHBGR0Ptdw8KYpzPSd0hSF3S5iZRq39IC4We8OFJ8+kD0bPFuTv8QjcXc=
+X-Received: by 2002:a19:c211:: with SMTP id l17mr671408lfc.194.1610536631374;
+ Wed, 13 Jan 2021 03:17:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2648794.1610536273.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Wed, 13 Jan 2021 11:11:13 +0000
-Message-ID: <2648795.1610536273@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
+ <1604419306-26105-3-git-send-email-sumit.garg@linaro.org> <X/x+N0fgrzIZTeNi@kernel.org>
+In-Reply-To: <X/x+N0fgrzIZTeNi@kernel.org>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 13 Jan 2021 16:47:00 +0530
+Message-ID: <CAFA6WYOUvWAZtYfR4q8beZFkX-CtdxqwJaRQM+GHNMDfQiEWOA@mail.gmail.com>
+Subject: Re: [PATCH v8 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-I'm intending to use Tianjia's patch.  Would you like to add a Reviewed-by=
-?
+Hi Jarkko,
 
-David
----
-commit 11078a592e6dcea6b9f30e822d3d30e3defc99ca
-Author: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Date:   Thu Jan 7 17:28:55 2021 +0800
+On Mon, 11 Jan 2021 at 22:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> On Tue, Nov 03, 2020 at 09:31:44PM +0530, Sumit Garg wrote:
+> > Add support for TEE based trusted keys where TEE provides the functionality
+> > to seal and unseal trusted keys using hardware unique key.
+> >
+> > Refer to Documentation/tee.txt for detailed information about TEE.
+> >
+> > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+>
+> I haven't yet got QEMU environment working with aarch64, this produces
+> just a blank screen:
+>
+> ./output/host/usr/bin/qemu-system-aarch64 -M virt -cpu cortex-a53 -smp 1 -kernel output/images/Image -initrd output/images/rootfs.cpio -serial stdio
+>
+> My BuildRoot fork for TPM and keyring testing is located over here:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/buildroot-tpmdd.git/
+>
+> The "ARM version" is at this point in aarch64 branch. Over time I will
+> define tpmdd-x86_64 and tpmdd-aarch64 boards and everything will be then
+> in the master branch.
+>
+> To create identical images you just need to
+>
+> $ make tpmdd_defconfig && make
+>
+> Can you check if you see anything obviously wrong? I'm eager to test this
+> patch set, and in bigger picture I really need to have ready to run
+> aarch64 environment available.
 
-    X.509: Fix crash caused by NULL pointer
-    =
+I would rather suggest you to follow steps listed here [1] as to test
+this feature on Qemu aarch64 we need to build firmwares such as TF-A,
+OP-TEE, UEFI etc. which are all integrated into OP-TEE Qemu build
+system [2]. And then it would be easier to migrate them to your
+buildroot environment as well.
 
-    On the following call path, `sig->pkey_algo` is not assigned
-    in asymmetric_key_verify_signature(), which causes runtime
-    crash in public_key_verify_signature().
-    =
+[1] https://lists.trustedfirmware.org/pipermail/op-tee/2020-May/000027.html
+[2] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
 
-      keyctl_pkey_verify
-        asymmetric_key_verify_signature
-          verify_signature
-            public_key_verify_signature
-    =
+-Sumit
 
-    This patch simply check this situation and fixes the crash
-    caused by NULL pointer.
-    =
-
-    Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate ve=
-rification")
-    Cc: stable@vger.kernel.org # v5.10+
-    Reported-by: Tobias Markus <tobias@markus-regensburg.de>
-    Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-    Signed-off-by: David Howells <dhowells@redhat.com>
-
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/=
-public_key.c
-index 8892908ad58c..788a4ba1e2e7 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -356,7 +356,8 @@ int public_key_verify_signature(const struct public_ke=
-y *pkey,
- 	if (ret)
- 		goto error_free_key;
- =
-
--	if (strcmp(sig->pkey_algo, "sm2") =3D=3D 0 && sig->data_size) {
-+	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") =3D=3D 0 &&
-+	    sig->data_size) {
- 		ret =3D cert_sig_digest_update(sig, tfm);
- 		if (ret)
- 			goto error_free_key;
-
+>
+> /Jarkko
