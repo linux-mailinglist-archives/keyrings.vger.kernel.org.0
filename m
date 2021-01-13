@@ -2,470 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F22C2F4D12
-	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 15:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0CC82F4D25
+	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 15:33:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbhAMOYj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Jan 2021 09:24:39 -0500
-Received: from mail-wr1-f51.google.com ([209.85.221.51]:46586 "EHLO
-        mail-wr1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725949AbhAMOYi (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 09:24:38 -0500
-Received: by mail-wr1-f51.google.com with SMTP id d13so2288475wrc.13
-        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 06:24:15 -0800 (PST)
+        id S1726602AbhAMOcG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Jan 2021 09:32:06 -0500
+Received: from mail-qk1-f171.google.com ([209.85.222.171]:46971 "EHLO
+        mail-qk1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbhAMOcG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 09:32:06 -0500
+Received: by mail-qk1-f171.google.com with SMTP id d14so1667362qkc.13
+        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 06:31:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P+TWViqDz4/fXF+UM+LLSt0d/K+U+4+zbDBAIKu7nMg=;
-        b=ZkAdNtyTI+f6LVTvdZ6bp19B+4hNcIShzyOlQmYsNAEfk68UnrhFQxAvKMn+HAxxp+
-         Ujb+tDMOtIXtcsy3cPIDwhjNiA6/EkVjPYmbrbOSOwvNpG2f9gNb1Ur7h542fRdawFKI
-         YpKkh70y+cDVwgOxxi9Wxd0CPSFREEqjPfL+N2s9jG10FUcgRsuxTLV2oksL9oybKwiZ
-         Q5wqNgXmOUcpkU4tD0df/Br015SbyHh0KROktB9dnxgcuu6DLafuY+tDAgE0apNObFFs
-         115M5QqLRr1Ec3V7UcdNj6n1rqLfIC7saKJs9kFQw4109P14up895BoOKXFX83JJyDaq
-         qGDA==
-X-Gm-Message-State: AOAM531zW5lvltnmQE3rU6PxoBTlbTYqFiKXDl29Ngpme6Olp/uHDUFg
-        Lt1Fb0laPaGwYsKipz+oi2VfyTUBH7HkWw==
-X-Google-Smtp-Source: ABdhPJwQoXne59qsbZ1H+9lV6i2qbKUMnUQGhxUx4kW8yPzxc0lh4Gt3Z3Q6/KUFRHuoOpsg0JMuJA==
-X-Received: by 2002:a05:6000:4b:: with SMTP id k11mr2914291wrx.76.1610547829431;
-        Wed, 13 Jan 2021 06:23:49 -0800 (PST)
-Received: from localhost.localdomain ([82.213.213.214])
-        by smtp.gmail.com with ESMTPSA id a12sm3905418wrh.71.2021.01.13.06.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:23:48 -0800 (PST)
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-To:     keyrings@vger.kernel.org
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>
-Subject: [PATCH] keys: X.509 public key issuer lookup without AKID
-Date:   Wed, 13 Jan 2021 15:23:40 +0100
-Message-Id: <20210113142340.1963770-1-andrew.zaborowski@intel.com>
-X-Mailer: git-send-email 2.27.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h44jr+QZ7jrVl5XJQGCGGXZkye/5BiPXfGImPI5e+ok=;
+        b=fy9XoUk3rdu30H7otz81QGKt60zGmlAzByJ/nlSauyDSH60tJIdW1jNKjma0vnW8gI
+         HQskJIRIbK62cZMOUZDr9KMNsNUHdDI31tGM441kK9XdbxeIAaB5ZWMNAcyNEX0dbVRr
+         MuV55yOL0FYHdgzjLNTunp8a1g7g0mmPaMo7KvAgthPaNcWbPJk5TFIsRKsB2FVFnu8X
+         MFep3yuceL3XWdQwkEOZIRuJovwl1cUPDd7NN73oiWJvb3DHQd/CdSRMxHDyyaDczrqt
+         4VrPl/TukPnE/EdHFhh6w2EEwURDWW3KJRS/nmwuJs5x3PVkOlWslxJfGGGM0FHpZ611
+         k8AA==
+X-Gm-Message-State: AOAM530jCIdWbrnEaJ3xoe94d7d94AiM/cV5hbyDuUxjKXL6OVtw5jbP
+        csdxGO86Pl2QkPjgPxIcByNhN8Hpgkw=
+X-Google-Smtp-Source: ABdhPJyv9FIWe8cbQNALqpPKeqQu5QN4g/rL2CX5dirP55nNaUStW/z7V8PPgLenGncIIDrK3ALkxQ==
+X-Received: by 2002:a05:620a:673:: with SMTP id a19mr2225779qkh.353.1610548285427;
+        Wed, 13 Jan 2021 06:31:25 -0800 (PST)
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com. [209.85.222.169])
+        by smtp.gmail.com with ESMTPSA id g26sm1093170qka.76.2021.01.13.06.31.24
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Jan 2021 06:31:25 -0800 (PST)
+Received: by mail-qk1-f169.google.com with SMTP id 19so1682336qkm.8
+        for <keyrings@vger.kernel.org>; Wed, 13 Jan 2021 06:31:24 -0800 (PST)
+X-Received: by 2002:ae9:e517:: with SMTP id w23mr2354957qkf.34.1610548275668;
+ Wed, 13 Jan 2021 06:31:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210104164048.1378237-1-andrew.zaborowski@intel.com>
+ <X/qGVSXVoTeEks/j@kernel.org> <CAOq732LtM-_6LXw6F2RAB7NsJqEC_+1AHsCQ4h0qKZH1fKF3Ug@mail.gmail.com>
+ <X/z+Gh54yOXsZieb@kernel.org>
+In-Reply-To: <X/z+Gh54yOXsZieb@kernel.org>
+From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
+Date:   Wed, 13 Jan 2021 15:31:04 +0100
+X-Gmail-Original-Message-ID: <CAOq732LXcYQ2TpqunHzL0ZYy77X=BAJOotTvh--zf=UD9qdCnw@mail.gmail.com>
+Message-ID: <CAOq732LXcYQ2TpqunHzL0ZYy77X=BAJOotTvh--zf=UD9qdCnw@mail.gmail.com>
+Subject: Re: [PATCH][RESEND#15] keys: Handle missing Authority Key Identifier
+ X509 extension
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-There are non-root X.509 v3 certificates in use there that contain no
-Authority Key Identifier extension (RFC5280 section 4.2.1.1) which the
-kernel asymmetric key code relies on for any lookup and verification.
-Such certificates are generated by openssl if you don't explicitly tell
-it to include the extension.
+On Tue, 12 Jan 2021 at 02:41, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> On Mon, Jan 11, 2021 at 03:27:57PM +0100, Andrew Zaborowski wrote:
+> > On Sun, 10 Jan 2021 at 05:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > I think that a more sane way to fix this issue, would be to add field
+> > > 'self_signed' to 'struct public_key_signature', and remove the
+> > > equivalent field from 'struct x509_certificate'.
+> >
+> > Ok, that's also an option.  I went for directly adding the
+> > cert->sig->auth_ids because the name ".auth_ids" only implies that it
+> > contains the signing authority's key IDs, which is something that we
+> > have and does exist in the input file.  The name doesn't imply that it
+> > should specifically be in the AKID extension.  Similarly
+> > x509_key_preparse even generates a key description even though a
+> > description is not part of the x509 format.
+> >
+> > >
+> > > Minor updates are required to:
+> > >
+> > > - x509_check_for_self_signed()
+> > > - pkcs7_verify_sig_chain()
+> > >
+> > > Then you can use then new field to refine the check in
+> > > restrict_link_by_signature().
 
-Looking at RFC5280 4.2.1.1 it says:
+I decided to try supporting key lookups without the AKID extension
+first, as I proposed in
+https://marc.info/?l=linux-keyrings&m=158621913606374&w=2 , because
+this would make the new sig->self_signed field obsolete.  It's a just
+slightly bigger change but fixes verification for a bigger set of
+certificates that are in use.
 
-"This extension is used where an issuer has multiple signing keys [...]"
+If there are arguments against it then I'm going to send a patch to
+add a sig->self_signed as you suggested.
 
-making it sound like the extension is optional if the issuer uses only
-one signing key.  It also says:
-
-"The keyIdentifier field of the authorityKeyIdentifier extension MUST
-be included in all certificates [...]"
-
-now making it sound like it's mandatory for everyone.  It doesn't say it
-as explicitly as it does for the Subject Key Identifier extension though
-(4.2.1.2).  Openssl offers no code comments explaining why neither of
-the two is included by default.  It marks a certificate as V3 as soon as
-*any* extension is included.
-
-In this patch I add lookups by just the Distinguished Names in the
-certificate to handle this, I believe this is what (2) in the struct
-asymmetric_key_id (include/keys/asymmetric-type.h) talks about.  I add a
-third key ID in asymmetric_key_ids and I attempt to keep the logic
-intact whenever either of the first two IDs is present in the subject
-key (the ones derived from the AKID in the case of the the x509 public
-key subtype.)
-
-Lookups are still unambiguous provided that the CAs respect the condition
-that the AKID may only be omitted if they use a single signing key.
-I didn't apply the third ID logic to the certificate chain veritification
-in pkcs7_verify.c, the AKID extensions is still required there.
-
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
----
- crypto/asymmetric_keys/asymmetric_type.c  | 56 +++++++++++++++++------
- crypto/asymmetric_keys/pkcs7_trust.c      |  6 +--
- crypto/asymmetric_keys/restrict.c         | 48 +++++++++++--------
- crypto/asymmetric_keys/x509_cert_parser.c | 10 ++++
- crypto/asymmetric_keys/x509_public_key.c  | 10 ++++
- include/crypto/public_key.h               |  2 +-
- include/keys/asymmetric-type.h            |  3 +-
- 7 files changed, 98 insertions(+), 37 deletions(-)
-
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index 33e77d846ca..de2b21d9557 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -35,8 +35,9 @@ static DECLARE_RWSEM(asymmetric_key_parsers_sem);
- /**
-  * find_asymmetric_key - Find a key by ID.
-  * @keyring: The keys to search.
-- * @id_0: The first ID to look for or NULL.
-- * @id_1: The second ID to look for or NULL.
-+ * @id_0: The primary ID to look for or NULL.
-+ * @id_1: The first fallback ID to look for or NULL.
-+ * @id_2: The second fallback ID to look for or NULL.
-  * @partial: Use partial match if true, exact if false.
-  *
-  * Find a key in the given keyring by identifier.  The preferred identifier is
-@@ -46,6 +47,7 @@ static DECLARE_RWSEM(asymmetric_key_parsers_sem);
- struct key *find_asymmetric_key(struct key *keyring,
- 				const struct asymmetric_key_id *id_0,
- 				const struct asymmetric_key_id *id_1,
-+				const struct asymmetric_key_id *id_2,
- 				bool partial)
- {
- 	struct key *key;
-@@ -54,22 +56,30 @@ struct key *find_asymmetric_key(struct key *keyring,
- 	char *req, *p;
- 	int len;
- 
--	BUG_ON(!id_0 && !id_1);
-+	BUG_ON(!id_0 && !id_1 && !id_2);
- 
- 	if (id_0) {
- 		lookup = id_0->data;
- 		len = id_0->len;
--	} else {
-+	} else if (id_1) {
- 		lookup = id_1->data;
- 		len = id_1->len;
-+	} else {
-+		lookup = id_2->data;
-+		len = id_2->len;
- 	}
- 
- 	/* Construct an identifier "id:<keyid>". */
--	p = req = kmalloc(2 + 1 + len * 2 + 1, GFP_KERNEL);
-+	p = req = kmalloc(4 + 1 + len * 2 + 1, GFP_KERNEL);
- 	if (!req)
- 		return ERR_PTR(-ENOMEM);
- 
--	if (partial) {
-+	if (!id_0 && !id_1) {
-+		*p++ = 'n';
-+		*p++ = 'a';
-+		*p++ = 'm';
-+		*p++ = 'e';
-+	} else if (partial) {
- 		*p++ = 'i';
- 		*p++ = 'd';
- 	} else {
-@@ -183,8 +193,8 @@ bool asymmetric_key_id_partial(const struct asymmetric_key_id *kid1,
- EXPORT_SYMBOL_GPL(asymmetric_key_id_partial);
- 
- /**
-- * asymmetric_match_key_ids - Search asymmetric key IDs
-- * @kids: The list of key IDs to check
-+ * asymmetric_match_key_ids - Search asymmetric key IDs 1 & 2
-+ * @kids: The pair of key IDs to check
-  * @match_id: The key ID we're looking for
-  * @match: The match function to use
-  */
-@@ -198,7 +208,7 @@ static bool asymmetric_match_key_ids(
- 
- 	if (!kids || !match_id)
- 		return false;
--	for (i = 0; i < ARRAY_SIZE(kids->id); i++)
-+	for (i = 0; i < 2; i++)
- 		if (match(kids->id[i], match_id))
- 			return true;
- 	return false;
-@@ -242,7 +252,7 @@ struct asymmetric_key_id *asymmetric_key_hex_to_key_id(const char *id)
- }
- 
- /*
-- * Match asymmetric keys by an exact match on an ID.
-+ * Match asymmetric keys by an exact match on one of the first two IDs.
-  */
- static bool asymmetric_key_cmp(const struct key *key,
- 			       const struct key_match_data *match_data)
-@@ -255,7 +265,7 @@ static bool asymmetric_key_cmp(const struct key *key,
- }
- 
- /*
-- * Match asymmetric keys by a partial match on an IDs.
-+ * Match asymmetric keys by a partial match on one of the first two IDs.
-  */
- static bool asymmetric_key_cmp_partial(const struct key *key,
- 				       const struct key_match_data *match_data)
-@@ -267,6 +277,18 @@ static bool asymmetric_key_cmp_partial(const struct key *key,
- 					asymmetric_key_id_partial);
- }
- 
-+/*
-+ * Match asymmetric keys by an exact match on the third IDs.
-+ */
-+static bool asymmetric_key_cmp_name(const struct key *key,
-+				    const struct key_match_data *match_data)
-+{
-+	const struct asymmetric_key_ids *kids = asymmetric_key_ids(key);
-+	const struct asymmetric_key_id *match_id = match_data->preparsed;
-+
-+	return kids && asymmetric_key_id_same(kids->id[2], match_id);
-+}
-+
- /*
-  * Preparse the match criterion.  If we don't set lookup_type and cmp,
-  * the default will be an exact match on the key description.
-@@ -274,8 +296,9 @@ static bool asymmetric_key_cmp_partial(const struct key *key,
-  * There are some specifiers for matching key IDs rather than by the key
-  * description:
-  *
-- *	"id:<id>" - find a key by partial match on any available ID
-- *	"ex:<id>" - find a key by exact match on any available ID
-+ *	"id:<id>" - find a key by partial match on one of the first two IDs
-+ *	"ex:<id>" - find a key by exact match on one of the first two IDs
-+ *	"name:<id>" - find a key by exact match on the third ID
-  *
-  * These have to be searched by iteration rather than by direct lookup because
-  * the key is hashed according to its description.
-@@ -299,6 +322,13 @@ static int asymmetric_key_match_preparse(struct key_match_data *match_data)
- 		   spec[1] == 'x' &&
- 		   spec[2] == ':') {
- 		id = spec + 3;
-+	} else if (spec[0] == 'n' &&
-+		   spec[1] == 'a' &&
-+		   spec[2] == 'm' &&
-+		   spec[3] == 'e' &&
-+		   spec[4] == ':') {
-+		id = spec + 5;
-+		cmp = asymmetric_key_cmp_name;
- 	} else {
- 		goto default_match;
- 	}
-diff --git a/crypto/asymmetric_keys/pkcs7_trust.c b/crypto/asymmetric_keys/pkcs7_trust.c
-index 61af3c4d82c..998ba0e2ffb 100644
---- a/crypto/asymmetric_keys/pkcs7_trust.c
-+++ b/crypto/asymmetric_keys/pkcs7_trust.c
-@@ -48,7 +48,7 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
- 		 * keys.
- 		 */
- 		key = find_asymmetric_key(trust_keyring,
--					  x509->id, x509->skid, false);
-+					  x509->id, x509->skid, NULL, false);
- 		if (!IS_ERR(key)) {
- 			/* One of the X.509 certificates in the PKCS#7 message
- 			 * is apparently the same as one we already trust.
-@@ -82,7 +82,7 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
- 		key = find_asymmetric_key(trust_keyring,
- 					  last->sig->auth_ids[0],
- 					  last->sig->auth_ids[1],
--					  false);
-+					  NULL, false);
- 		if (!IS_ERR(key)) {
- 			x509 = last;
- 			pr_devel("sinfo %u: Root cert %u signer is key %x\n",
-@@ -97,7 +97,7 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
- 	 * the signed info directly.
- 	 */
- 	key = find_asymmetric_key(trust_keyring,
--				  sinfo->sig->auth_ids[0], NULL, false);
-+				  sinfo->sig->auth_ids[0], NULL, NULL, false);
- 	if (!IS_ERR(key)) {
- 		pr_devel("sinfo %u: Direct signer is key %x\n",
- 			 sinfo->index, key_serial(key));
-diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-index 77ebebada29..f77875ec942 100644
---- a/crypto/asymmetric_keys/restrict.c
-+++ b/crypto/asymmetric_keys/restrict.c
-@@ -87,7 +87,7 @@ int restrict_link_by_signature(struct key *dest_keyring,
- 	sig = payload->data[asym_auth];
- 	if (!sig)
- 		return -ENOPKG;
--	if (!sig->auth_ids[0] && !sig->auth_ids[1])
-+	if (!sig->auth_ids[0] && !sig->auth_ids[1] && !sig->auth_ids[2])
- 		return -ENOKEY;
- 
- 	if (ca_keyid && !asymmetric_key_id_partial(sig->auth_ids[1], ca_keyid))
-@@ -96,7 +96,7 @@ int restrict_link_by_signature(struct key *dest_keyring,
- 	/* See if we have a key that signed this one. */
- 	key = find_asymmetric_key(trust_keyring,
- 				  sig->auth_ids[0], sig->auth_ids[1],
--				  false);
-+				  sig->auth_ids[2], false);
- 	if (IS_ERR(key))
- 		return -ENOKEY;
- 
-@@ -108,11 +108,11 @@ int restrict_link_by_signature(struct key *dest_keyring,
- 	return ret;
- }
- 
--static bool match_either_id(const struct asymmetric_key_ids *pair,
-+static bool match_either_id(const struct asymmetric_key_id **pair,
- 			    const struct asymmetric_key_id *single)
- {
--	return (asymmetric_key_id_same(pair->id[0], single) ||
--		asymmetric_key_id_same(pair->id[1], single));
-+	return (asymmetric_key_id_same(pair[0], single) ||
-+		asymmetric_key_id_same(pair[1], single));
- }
- 
- static int key_or_keyring_common(struct key *dest_keyring,
-@@ -140,20 +140,22 @@ static int key_or_keyring_common(struct key *dest_keyring,
- 	sig = payload->data[asym_auth];
- 	if (!sig)
- 		return -ENOPKG;
--	if (!sig->auth_ids[0] && !sig->auth_ids[1])
-+	if (!sig->auth_ids[0] && !sig->auth_ids[1] && !sig->auth_ids[2])
- 		return -ENOKEY;
- 
- 	if (trusted) {
- 		if (trusted->type == &key_type_keyring) {
- 			/* See if we have a key that signed this one. */
- 			key = find_asymmetric_key(trusted, sig->auth_ids[0],
--						  sig->auth_ids[1], false);
-+						  sig->auth_ids[1],
-+						  sig->auth_ids[2], false);
- 			if (IS_ERR(key))
- 				key = NULL;
- 		} else if (trusted->type == &key_type_asymmetric) {
--			const struct asymmetric_key_ids *signer_ids;
-+			const struct asymmetric_key_id **signer_ids;
- 
--			signer_ids = asymmetric_key_ids(trusted);
-+			signer_ids = (const struct asymmetric_key_id **)
-+				asymmetric_key_ids(trusted)->id;
- 
- 			/*
- 			 * The auth_ids come from the candidate key (the
-@@ -164,22 +166,29 @@ static int key_or_keyring_common(struct key *dest_keyring,
- 			 * The signer_ids are identifiers for the
- 			 * signing key specified for dest_keyring.
- 			 *
--			 * The first auth_id is the preferred id, and
--			 * the second is the fallback. If only one
--			 * auth_id is present, it may match against
--			 * either signer_id. If two auth_ids are
--			 * present, the first auth_id must match one
--			 * signer_id and the second auth_id must match
--			 * the second signer_id.
-+			 * The first auth_id is the preferred id, 2nd and
-+			 * 3rd are the fallbacks. If excatly one of
-+			 * auth_ids[0] and auth_ids[1] is present, it may
-+			 * match either signer_ids[0] or signed_ids[1].
-+			 * If both are present the first one may match
-+			 * either signed_id but the second one must match
-+			 * the second signer_id. If neither of them is
-+			 * available, auth_ids[2] is matched against
-+			 * signer_ids[2] as a fallback.
- 			 */
--			if (!sig->auth_ids[0] || !sig->auth_ids[1]) {
-+			if (!sig->auth_ids[0] && !sig->auth_ids[1]) {
-+				if (asymmetric_key_id_same(signer_ids[2],
-+							   sig->auth_ids[2]))
-+					key = __key_get(trusted);
-+
-+			} else if (!sig->auth_ids[0] || !sig->auth_ids[1]) {
- 				const struct asymmetric_key_id *auth_id;
- 
- 				auth_id = sig->auth_ids[0] ?: sig->auth_ids[1];
- 				if (match_either_id(signer_ids, auth_id))
- 					key = __key_get(trusted);
- 
--			} else if (asymmetric_key_id_same(signer_ids->id[1],
-+			} else if (asymmetric_key_id_same(signer_ids[1],
- 							  sig->auth_ids[1]) &&
- 				   match_either_id(signer_ids,
- 						   sig->auth_ids[0])) {
-@@ -193,7 +202,8 @@ static int key_or_keyring_common(struct key *dest_keyring,
- 	if (check_dest && !key) {
- 		/* See if the destination has a key that signed this one. */
- 		key = find_asymmetric_key(dest_keyring, sig->auth_ids[0],
--					  sig->auth_ids[1], false);
-+					  sig->auth_ids[1], sig->auth_ids[2],
-+					  false);
- 		if (IS_ERR(key))
- 			key = NULL;
- 	}
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 52c9b455fc7..59dfffa77cf 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -415,8 +415,18 @@ int x509_note_issuer(void *context, size_t hdrlen,
- 		     const void *value, size_t vlen)
- {
- 	struct x509_parse_context *ctx = context;
-+	struct asymmetric_key_id *kid;
-+
- 	ctx->cert->raw_issuer = value;
- 	ctx->cert->raw_issuer_size = vlen;
-+
-+	if (!ctx->cert->sig->auth_ids[2]) {
-+		kid = asymmetric_key_generate_id(value, vlen, "", 0);
-+		if (IS_ERR(kid))
-+			return PTR_ERR(kid);
-+		ctx->cert->sig->auth_ids[2] = kid;
-+	}
-+
- 	return x509_fabricate_name(ctx, hdrlen, tag, &ctx->cert->issuer, vlen);
- }
- 
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index ae450eb8be1..a95cc351518 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -221,6 +221,13 @@ static int x509_key_preparse(struct key_preparsed_payload *prep)
- 		goto error_free_desc;
- 	kids->id[0] = cert->id;
- 	kids->id[1] = cert->skid;
-+	kids->id[2] = asymmetric_key_generate_id(cert->raw_subject,
-+						 cert->raw_subject_size,
-+						 "", 0);
-+	if (IS_ERR(kids->id[2])) {
-+		ret = PTR_ERR(kids->id[2]);
-+		goto error_free_kids;
-+	}
- 
- 	/* We're pinning the module by being linked against it */
- 	__module_get(public_key_subtype.owner);
-@@ -237,8 +244,11 @@ static int x509_key_preparse(struct key_preparsed_payload *prep)
- 	cert->skid = NULL;
- 	cert->sig = NULL;
- 	desc = NULL;
-+	kids = NULL;
- 	ret = 0;
- 
-+error_free_kids:
-+	kfree(kids);
- error_free_desc:
- 	kfree(desc);
- error_free_cert:
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 948c5203ca9..4819e63a772 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -37,7 +37,7 @@ extern void public_key_free(struct public_key *key);
-  * Public key cryptography signature data
-  */
- struct public_key_signature {
--	struct asymmetric_key_id *auth_ids[2];
-+	struct asymmetric_key_id *auth_ids[3];
- 	u8 *s;			/* Signature */
- 	u32 s_size;		/* Number of bytes in signature */
- 	u8 *digest;
-diff --git a/include/keys/asymmetric-type.h b/include/keys/asymmetric-type.h
-index a29d3ff2e7e..344ab9f178d 100644
---- a/include/keys/asymmetric-type.h
-+++ b/include/keys/asymmetric-type.h
-@@ -53,7 +53,7 @@ struct asymmetric_key_id {
- };
- 
- struct asymmetric_key_ids {
--	void		*id[2];
-+	void		*id[3];
- };
- 
- extern bool asymmetric_key_id_same(const struct asymmetric_key_id *kid1,
-@@ -75,6 +75,7 @@ const struct asymmetric_key_ids *asymmetric_key_ids(const struct key *key)
- extern struct key *find_asymmetric_key(struct key *keyring,
- 				       const struct asymmetric_key_id *id_0,
- 				       const struct asymmetric_key_id *id_1,
-+				       const struct asymmetric_key_id *id_2,
- 				       bool partial);
- 
- /*
--- 
-2.27.0
-
+Many thanks
