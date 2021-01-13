@@ -2,91 +2,73 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D55BF2F4BE8
-	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 14:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8ABA2F4BEC
+	for <lists+keyrings@lfdr.de>; Wed, 13 Jan 2021 14:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725824AbhAMM5k convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Wed, 13 Jan 2021 07:57:40 -0500
-Received: from mx1.emlix.com ([136.243.223.33]:34754 "EHLO mx1.emlix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725871AbhAMM5j (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 13 Jan 2021 07:57:39 -0500
-X-Greylist: delayed 464 seconds by postgrey-1.27 at vger.kernel.org; Wed, 13 Jan 2021 07:57:39 EST
-Received: from mailer.emlix.com (p5098be52.dip0.t-ipconnect.de [80.152.190.82])
-        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        id S1725801AbhAMM7d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Jan 2021 07:59:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:43250 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725747AbhAMM7d (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Jan 2021 07:59:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1610542687;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mAPeX5/ZEkCepmyGIJNpQYxJzy5jX84g3ceqEJc7zVU=;
+        b=X43FhAYKKzwbzamiKlKNiq5eTiYVeCXUDyto2LUZYohd+lQW2F+lPYU8mf3DexSxVt9k+E
+        lA3g6VJ4nRL4TOtUKebw+BkDH9eoMB8Smizq/U544oJUrtpAhfh0AQ3e+enVKyHq54G6J2
+        A7NIR1XGfT4e5S773wGUhwHtUEcfn/A=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-588--Sv83cdvNIWJZIXoVRqY1A-1; Wed, 13 Jan 2021 07:58:06 -0500
+X-MC-Unique: -Sv83cdvNIWJZIXoVRqY1A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.emlix.com (Postfix) with ESMTPS id 5386F5FA09;
-        Wed, 13 Jan 2021 13:49:13 +0100 (CET)
-From:   Rolf Eike Beer <eb@emlix.com>
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        linux-kbuild@vger.kernel.org
-Subject: [PATCH v5] scripts: use pkg-config to locate libcrypto
-Date:   Wed, 13 Jan 2021 13:49:12 +0100
-Message-ID: <3394639.6NgGvCfkNl@devpool47>
-Organization: emlix GmbH
-In-Reply-To: <2278760.8Yd83Mgoko@devpool35>
-References: <20538915.Wj2CyUsUYa@devpool35> <2278760.8Yd83Mgoko@devpool35>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B71168066E4;
+        Wed, 13 Jan 2021 12:58:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-8.rdu2.redhat.com [10.10.112.8])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0A2255D6A8;
+        Wed, 13 Jan 2021 12:58:00 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <875z419ihk.fsf@toke.dk>
+References: <875z419ihk.fsf@toke.dk> <20210112161044.3101-1-toke@redhat.com> <2648795.1610536273@warthog.procyon.org.uk>
+To:     Toke
+         =?us-ascii?Q?=3D=3Futf-8=3FQ=3FH=3DC3=3DB8iland-J=3DC3=3DB8rgense?=
+         =?us-ascii?Q?n=3F=3D?= <toke@redhat.com>
+Cc:     dhowells@redhat.com, Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: public_key: check that pkey_algo is non-NULL before passing it to strcmp()
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date:   Wed, 13 Jan 2021 12:57:59 +0000
+Message-ID: <2656681.1610542679@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Otherwise build fails if the headers are not in the default location. While at
-it also ask pkg-config for the libs, with fallback to the existing value.
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> wrote:
 
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Cc: stable@vger.kernel.org # 5.6.x
----
- scripts/Makefile | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+> Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>=20
+> and also, if you like:
+>=20
+> Tested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-This has been sent multiple times since more than 2 year, please pick it up 
-through whatever tree. I need to patch every new stable kernel version to 
-make them build in our chrooted environment.
+Thanks!
 
-
-diff --git a/scripts/Makefile b/scripts/Makefile
-index b5418ec587fb..7553692d241f 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -3,6 +3,11 @@
- # scripts contains sources for various helper programs used throughout
- # the kernel for the build process.
- 
-+PKG_CONFIG ?= pkg-config
-+
-+CRYPTO_LIBS = $(shell $(PKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
-+CRYPTO_CFLAGS = $(shell $(PKG_CONFIG) --cflags libcrypto 2> /dev/null)
-+
- hostprogs-always-$(CONFIG_BUILD_BIN2C)			+= bin2c
- hostprogs-always-$(CONFIG_KALLSYMS)			+= kallsyms
- hostprogs-always-$(BUILD_C_RECORDMCOUNT)		+= recordmcount
-@@ -14,8 +19,9 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
- 
- HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
- HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
--HOSTLDLIBS_sign-file = -lcrypto
--HOSTLDLIBS_extract-cert = -lcrypto
-+HOSTLDLIBS_sign-file = $(CRYPTO_LIBS)
-+HOSTCFLAGS_extract-cert.o = $(CRYPTO_CFLAGS)
-+HOSTLDLIBS_extract-cert = $(CRYPTO_LIBS)
- 
- ifdef CONFIG_UNWINDER_ORC
- ifeq ($(ARCH),x86_64)
--- 
-2.29.2
--- 
-Rolf Eike Beer, emlix GmbH, http://www.emlix.com
-Fon +49 551 30664-0, Fax +49 551 30664-11
-Gothaer Platz 3, 37083 Göttingen, Germany
-Sitz der Gesellschaft: Göttingen, Amtsgericht Göttingen HR B 3160
-Geschäftsführung: Heike Jordan, Dr. Uwe Kracke – Ust-IdNr.: DE 205 198 055
-
-emlix - smart embedded open source
-
-
+David
 
