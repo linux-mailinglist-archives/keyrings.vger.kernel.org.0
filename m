@@ -2,83 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4223E2F59D7
-	for <lists+keyrings@lfdr.de>; Thu, 14 Jan 2021 05:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D422F645F
+	for <lists+keyrings@lfdr.de>; Thu, 14 Jan 2021 16:25:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbhANEQL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Jan 2021 23:16:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32928 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725997AbhANEQK (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 13 Jan 2021 23:16:10 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A9062221EA;
-        Thu, 14 Jan 2021 04:15:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610597730;
-        bh=5bNu9OxM9PUIxaOuedQwfOFYLhmDVNIPEZSAT3dGhb4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lrSQCF9v7s7KHxfHt1nkxgsmvAit5IxBibLwjFe2veJ3/4mOHUNU1Z4GkBW3HKTfX
-         V5Vcy5OHNrVjf3NxqbB/STou7PmQ+6bK0zTLYvQieLffpEzIXdlAa3eMGytH4gxVoh
-         f/3+LsE4zIaW9espS0TlkNyF4vihVTAUORBcgS40TZDk2U/Pt3+4GV36s4mJ90qp6x
-         BmUWhC9474MZLGcxHWUG6uwhLPx/ECjuQ92VnC7nPZNhD+kXzamEL5TQbmzgUbDN2d
-         L0gmAdcGs8DocVDSD68w0WVDWbF+KNM4Gf1+s2XbynEQo9SR3QnfURob5hY+q2kRm8
-         H2ENi2WpF+SZg==
-Date:   Thu, 14 Jan 2021 06:15:24 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc:     David Howells <dhowells@redhat.com>,
+        id S1729601AbhANPVA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 Jan 2021 10:21:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47710 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729602AbhANPU7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Jan 2021 10:20:59 -0500
+Received: from smtp-42ae.mail.infomaniak.ch (smtp-42ae.mail.infomaniak.ch [IPv6:2001:1600:4:17::42ae])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C192FC06179F
+        for <keyrings@vger.kernel.org>; Thu, 14 Jan 2021 07:19:51 -0800 (PST)
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DGnyv17ylzMprrf;
+        Thu, 14 Jan 2021 16:19:03 +0100 (CET)
+Received: from localhost (unknown [23.97.221.149])
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DGnys0Ff7zlh8TH;
+        Thu, 14 Jan 2021 16:19:00 +0100 (CET)
+From:   =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To:     David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
         "David S . Miller" <davem@davemloft.net>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         James Morris <jmorris@namei.org>,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
+        =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@linux.microsoft.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
         "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] Enable root to update the blacklist keyring
-Message-ID: <X//FXJjQNV/ElHQg@kernel.org>
-References: <20201211190330.2586116-1-mic@digikod.net>
- <67945fa6-2796-bfcd-5541-d54662e9802a@digikod.net>
- <X/qJJsVe7+nP+gR6@kernel.org>
+Subject: [PATCH v3 00/10] Enable root to update the blacklist keyring
+Date:   Thu, 14 Jan 2021 16:18:59 +0100
+Message-Id: <20210114151909.2344974-1-mic@digikod.net>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <X/qJJsVe7+nP+gR6@kernel.org>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Jan 10, 2021 at 06:57:10AM +0200, Jarkko Sakkinen wrote:
-> On Tue, Jan 05, 2021 at 11:12:57AM +0100, Mickaël Salaün wrote:
-> > Jarkko, David, what is the status of this patch series? Do you need help
-> > to test it?
-> 
-> Hi, a leave/vacation and the holiday period badly mixed my schedules.
-> 
-> I'm testing this upcoming week.
-> 
-> /Jarkko
+This third patch series includes back three fix patches taken from the first
+series (and cherry-picked from David Howells's tree [1]), and one cosmetic fix
+from Alex Shi which helps avoid future conflicts.  I also added some Acked-by
+and improved comments.  As requested, this series is based on v5.11-rc3.
 
-❯ git-pw series apply 400795
-Applying: certs: Make blacklist_vet_description() more strict
-error: sha1 information is lacking or useless (certs/blacklist.c).
-error: could not build fake ancestor
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-Patch failed at 0001 certs: Make blacklist_vet_description() more strict
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+The goal of these patches is to add a new configuration option to enable the
+root user to load signed keys in the blacklist keyring.  This keyring is useful
+to "untrust" certificates or files.  Enabling to safely update this keyring
+without recompiling the kernel makes it more usable.
 
-Can you rebase to rc3 and resend? 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-fixes
 
-Also, please add this to the patches 1-3:
+Previous patch series:
+https://lore.kernel.org/lkml/20201211190330.2586116-1-mic@digikod.net/
 
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Regards,
 
-Also, 4-5 look good but I hold for testing before acking further.
+Alex Shi (1):
+  certs/blacklist: fix kernel doc interface issue
 
-Thanks, and apologies for such a long wait.
+David Howells (1):
+  certs: Fix blacklist flag type confusion
 
-/Jarkko
+Mickaël Salaün (8):
+  certs: Fix blacklisted hexadecimal hash string check
+  PKCS#7: Fix missing include
+  certs: Replace K{U,G}IDT_INIT() with GLOBAL_ROOT_{U,G}ID
+  certs: Make blacklist_vet_description() more strict
+  certs: Factor out the blacklist hash creation
+  certs: Check that builtin blacklist hashes are valid
+  certs: Allow root user to append signed hashes to the blacklist
+    keyring
+  tools/certs: Add print-cert-tbs-hash.sh
+
+ MAINTAINERS                                   |   2 +
+ certs/.gitignore                              |   1 +
+ certs/Kconfig                                 |  10 +
+ certs/Makefile                                |  15 +-
+ certs/blacklist.c                             | 217 ++++++++++++++----
+ certs/system_keyring.c                        |   5 +-
+ crypto/asymmetric_keys/x509_public_key.c      |   3 +-
+ include/keys/system_keyring.h                 |  14 +-
+ include/linux/key.h                           |   1 +
+ include/linux/verification.h                  |   2 +
+ scripts/check-blacklist-hashes.awk            |  37 +++
+ security/integrity/ima/ima_mok.c              |   4 +-
+ .../platform_certs/keyring_handler.c          |  26 +--
+ security/keys/key.c                           |   2 +
+ tools/certs/print-cert-tbs-hash.sh            |  91 ++++++++
+ 15 files changed, 345 insertions(+), 85 deletions(-)
+ create mode 100755 scripts/check-blacklist-hashes.awk
+ create mode 100755 tools/certs/print-cert-tbs-hash.sh
+
+
+base-commit: 7c53f6b671f4aba70ff15e1b05148b10d58c2837
+-- 
+2.30.0
+
