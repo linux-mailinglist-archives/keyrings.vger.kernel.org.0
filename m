@@ -2,103 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3382B2F750B
-	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 10:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E09F92F756E
+	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 10:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727242AbhAOJQX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 Jan 2021 04:16:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37426 "EHLO mail.kernel.org"
+        id S1728199AbhAOJ3Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Jan 2021 04:29:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43310 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726829AbhAOJQW (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 15 Jan 2021 04:16:22 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 103DA23444;
-        Fri, 15 Jan 2021 09:15:37 +0000 (UTC)
+        id S1726852AbhAOJ3X (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 15 Jan 2021 04:29:23 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 685E923436;
+        Fri, 15 Jan 2021 09:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610702141;
-        bh=HsXfEw2W9Ay3fvQyweDsIzqlVILEiC1heWJklEoBt5Y=;
+        s=k20201202; t=1610702922;
+        bh=apGADtKlrfa4YYghHsGMEpjHQn9bjjZ8mMzl0uMAbUU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fcWibo+9gXXZlUM+vzxrsMJelVmYiUHZYc220yDF3uUFmQ+HRIaPEymlQSGKpbjUK
-         VrrRLg6sznKlpFtwju9MTKJ8JvvyKWZ3xLChA+aBi7/f7MXa4de5GF6rjVPu6jv5EE
-         varvkyN0LuytWXLcBJLkgEY1RdChhxRrP1zKEIF1HNOnEah4x6jy6H8N43GMjM/Mrf
-         AJu2LAKWp5jZ6zHjxsCwIi3gfpwgkpJY8MC0A6DD0m+1IaKhpW6b0+v81MJziE4FMb
-         V0Vh0nwDMzppiPkGL/dMeoJPAEw414y8FTrn12khUGaYLY4QZFaYgcmcmlZCeqvY6+
-         jdL1+LdMzi+lw==
-Date:   Fri, 15 Jan 2021 11:15:34 +0200
+        b=Jr3i3MiraGrjKs3dkoOrrhe26xY9WZ3gv63Y830+mFmZ9n0uMvXfHG5CfK0CSGga8
+         zL01ymSiNWnvu6IzJFAvpoE2annb2KlC3299fymNakZtiTOLxPTALNu35jM0mY3i8n
+         qX3R7NGB93+EHg7HbgW/NLExg7g6WT3KIj/RkUxthccdljsyQnz+PBYBHRH3TjgRL/
+         SS/TcvR+RqeWK0R8RasrsAY6JlMl7dLojuPzmSSzhZFMN8fe0yWSCODXxhzHcD6Na6
+         6vWWIm+8FEoeDL0D4swTkpWSqkBXBBgNfQH1/j8FyojawxRoGbSKfAUjS+qCP5o6it
+         uAjUDiy5Mklpg==
+Date:   Fri, 15 Jan 2021 11:28:35 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>, dwmw2@infradead.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
-        Mimi Zohar <zohar@linux.ibm.com>, erichte@linux.ibm.com,
-        mpe@ellerman.id.au, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com
-Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
-Message-ID: <YAFdNiYZSWpB9vOw@kernel.org>
-References: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com>
- <20200916004927.64276-1-eric.snowberg@oracle.com>
- <1360578.1607593748@warthog.procyon.org.uk>
- <2442460.1610463459@warthog.procyon.org.uk>
- <X/9a8naM8p4tT5sO@linux.intel.com>
- <A05E3573-B1AF-474B-94A5-779E69E5880A@oracle.com>
+To:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v3 00/10] Enable root to update the blacklist keyring
+Message-ID: <YAFgQ1SN24iFujjx@kernel.org>
+References: <20210114151909.2344974-1-mic@digikod.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <A05E3573-B1AF-474B-94A5-779E69E5880A@oracle.com>
+In-Reply-To: <20210114151909.2344974-1-mic@digikod.net>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 13, 2021 at 05:11:10PM -0700, Eric Snowberg wrote:
+On Thu, Jan 14, 2021 at 04:18:59PM +0100, Mickaël Salaün wrote:
+> This third patch series includes back three fix patches taken from the first
+> series (and cherry-picked from David Howells's tree [1]), and one cosmetic fix
+> from Alex Shi which helps avoid future conflicts.  I also added some Acked-by
+> and improved comments.  As requested, this series is based on v5.11-rc3.
 > 
-> > On Jan 13, 2021, at 1:41 PM, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
-> > 
-> > On Tue, Jan 12, 2021 at 02:57:39PM +0000, David Howells wrote:
-> >> Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> >> 
-> >>>> On Dec 10, 2020, at 2:49 AM, David Howells <dhowells@redhat.com> wrote:
-> >>>> 
-> >>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> >>>> 
-> >>>>> Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_GUID
-> >>>>> is found, it is added as an asymmetrical key to the .blacklist keyring.
-> >>>>> Anytime the .platform keyring is used, the keys in the .blacklist keyring
-> >>>>> are referenced, if a matching key is found, the key will be rejected.
-> >>>> 
-> >>>> Ummm...  Why this way and not as a blacklist key which takes up less space?
-> >>>> I'm guessing that you're using the key chain matching logic.  We really only
-> >>>> need to blacklist the key IDs.
-> >>> 
-> >>> I implemented it this way so that certs in the dbx would only impact 
-> >>> the .platform keyring. I was under the impression we didnâ€™t want to have 
-> >>> Secure Boot UEFI db/dbx certs dictate keyring functionality within the kernel
-> >>> itself. Meaning if we have a matching dbx cert in any other keyring (builtin,
-> >>> secondary, ima, etc.), it would be allowed. If that is not how youâ€™d like to 
-> >>> see it done, let me know and Iâ€™ll make the change.
-> >> 
-> >> I wonder if that is that the right thing to do.  I guess this is a policy
-> >> decision and may depend on the particular user.
-> > 
-> > Why would you want to allow dbx entry in any keyring?
+> The goal of these patches is to add a new configuration option to enable the
+> root user to load signed keys in the blacklist keyring.  This keyring is useful
+> to "untrust" certificates or files.  Enabling to safely update this keyring
+> without recompiling the kernel makes it more usable.
 > 
-> Today, DB and MOK certs go into the platform keyring.  These certs are only
-> referenced during kexec.  They canâ€™t be used for other things like validating
-> kernel module signatures.  If we follow the same pattern, the DBX and MOKX entries
-> in the blacklist keyring should only impact kexec. 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-fixes
 > 
-> Currently, MickaÃ«l SalaÃ¼n has another outstanding series to allow root to update 
-> the blacklist keyring.  I assume the use case for this is around certificates used 
-> within the kernel, for example revoking kernel module signatures.  The question I have
-> is, should another keyring be introduced?  One that carries DBX and MOKX, which just
-> correspond to certs/hashes in the platform keyring; this keyring would only be
-> referenced for kexec, just like the platform keyring is today. Then, the current
-> blacklist keyring would be used for everything internal to the kernel.
+> Previous patch series:
+> https://lore.kernel.org/lkml/20201211190330.2586116-1-mic@digikod.net/
+> 
+> Regards,
+> 
+> Alex Shi (1):
+>   certs/blacklist: fix kernel doc interface issue
+> 
+> David Howells (1):
+>   certs: Fix blacklist flag type confusion
+> 
+> Mickaël Salaün (8):
+>   certs: Fix blacklisted hexadecimal hash string check
+>   PKCS#7: Fix missing include
+>   certs: Replace K{U,G}IDT_INIT() with GLOBAL_ROOT_{U,G}ID
+>   certs: Make blacklist_vet_description() more strict
+>   certs: Factor out the blacklist hash creation
+>   certs: Check that builtin blacklist hashes are valid
+>   certs: Allow root user to append signed hashes to the blacklist
+>     keyring
+>   tools/certs: Add print-cert-tbs-hash.sh
+> 
+>  MAINTAINERS                                   |   2 +
+>  certs/.gitignore                              |   1 +
+>  certs/Kconfig                                 |  10 +
+>  certs/Makefile                                |  15 +-
+>  certs/blacklist.c                             | 217 ++++++++++++++----
+>  certs/system_keyring.c                        |   5 +-
+>  crypto/asymmetric_keys/x509_public_key.c      |   3 +-
+>  include/keys/system_keyring.h                 |  14 +-
+>  include/linux/key.h                           |   1 +
+>  include/linux/verification.h                  |   2 +
+>  scripts/check-blacklist-hashes.awk            |  37 +++
+>  security/integrity/ima/ima_mok.c              |   4 +-
+>  .../platform_certs/keyring_handler.c          |  26 +--
+>  security/keys/key.c                           |   2 +
+>  tools/certs/print-cert-tbs-hash.sh            |  91 ++++++++
+>  15 files changed, 345 insertions(+), 85 deletions(-)
+>  create mode 100755 scripts/check-blacklist-hashes.awk
+>  create mode 100755 tools/certs/print-cert-tbs-hash.sh
+> 
+> 
+> base-commit: 7c53f6b671f4aba70ff15e1b05148b10d58c2837
+> -- 
+> 2.30.0
+> 
+> 
 
-Right, I'm following actively that series.
+Thank you. Unfortunately no time to review this anymore this week but I
+sanity checked that this applies cleanly now, so should be easy to get on
+testing this series next week:
 
-Why couldn't user space drive this process and use that feature to do it?
+$ git-pw series apply 414691
+Applying: certs/blacklist: fix kernel doc interface issue
+Applying: certs: Fix blacklisted hexadecimal hash string check
+Applying: PKCS#7: Fix missing include
+Applying: certs: Fix blacklist flag type confusion
+Applying: certs: Replace K{U,G}IDT_INIT() with GLOBAL_ROOT_{U,G}ID
+Applying: certs: Make blacklist_vet_description() more strict
+Applying: certs: Factor out the blacklist hash creation
+Applying: certs: Check that builtin blacklist hashes are valid
+Applying: certs: Allow root user to append signed hashes to the blacklist keyring
+Applying: tools/certs: Add print-cert-tbs-hash.sh
 
 /Jarkko
