@@ -2,91 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BABF02F76EE
-	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 11:47:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 099F12F7C19
+	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 14:10:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727152AbhAOKp1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 Jan 2021 05:45:27 -0500
-Received: from mail-io1-f44.google.com ([209.85.166.44]:46567 "EHLO
-        mail-io1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726402AbhAOKp0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Jan 2021 05:45:26 -0500
-Received: by mail-io1-f44.google.com with SMTP id q2so15568132iow.13
-        for <keyrings@vger.kernel.org>; Fri, 15 Jan 2021 02:45:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9USFh6s5IAR4KhlrWURgbztiJsOxc8zRtPNE8ox1MPk=;
-        b=NUEIJSyNAn/nmte/Iv0z4CMRnDquzldaUFblicjrrKJ7mqMbHnb/WWpjXMKKZMt1I3
-         7SWuGlh/f0bjAiz3JDnvyexeD1X0UoHHkBg8lwH08w/93r7r6sStDdiD9nd6ls9fX8YH
-         HK+9fMs1czhDq4wYbdoRUMkzW6TycpLqYop3ISGpCS+OhbQXjxnY8bhslxTgGqSKXMh2
-         SdHC2bMmkpBF2Jlvxfddgzj4ADQoj3da64ZdIVYGmlJGUi6bPZWFTyaSXg48lfKPhq5Z
-         X9DunQvREOlmDydLstLSgCVgnVJIZBdtue1aSuZeiM8dHCjLrrhKb9Fk6AQJnjo/49v4
-         fV1w==
-X-Gm-Message-State: AOAM532jwxIGg6ihkgZWFwD++D7xqZv4tIUYwUDK8mCUrKConPmymRtX
-        MWsHu3TySefuEJJFMIbJs0b3+hZAjwWZxw==
-X-Google-Smtp-Source: ABdhPJzWnv5fxPQCVL1GHd8lwgnr8LBmnTiZBTyOSq2mG7mOKMlndScjR/s94pTdgc3Y3P0K4NZ3Wg==
-X-Received: by 2002:a92:ba82:: with SMTP id t2mr9982574ill.139.1610707486266;
-        Fri, 15 Jan 2021 02:44:46 -0800 (PST)
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com. [209.85.166.41])
-        by smtp.gmail.com with ESMTPSA id x22sm3765408ion.3.2021.01.15.02.44.45
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Jan 2021 02:44:45 -0800 (PST)
-Received: by mail-io1-f41.google.com with SMTP id q2so15568084iow.13
-        for <keyrings@vger.kernel.org>; Fri, 15 Jan 2021 02:44:45 -0800 (PST)
-X-Received: by 2002:a05:6e02:10cf:: with SMTP id s15mr2073950ilj.285.1610707485712;
- Fri, 15 Jan 2021 02:44:45 -0800 (PST)
-MIME-Version: 1.0
-References: <20210114204035.2046219-1-andrew.zaborowski@intel.com>
- <YAFQBT/pKw4PDenV@kernel.org> <CAOq732JD-M-L3BBDskMBw-5qp=wZjY=Sjm_q5WQNhCq61NM3Yw@mail.gmail.com>
-In-Reply-To: <CAOq732JD-M-L3BBDskMBw-5qp=wZjY=Sjm_q5WQNhCq61NM3Yw@mail.gmail.com>
-From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
-Date:   Fri, 15 Jan 2021 11:44:34 +0100
-X-Gmail-Original-Message-ID: <CAOq732LmvspqeGwWWM_qpxxR9oEs468ibHsON=nMk1BR6JBuZA@mail.gmail.com>
-Message-ID: <CAOq732LmvspqeGwWWM_qpxxR9oEs468ibHsON=nMk1BR6JBuZA@mail.gmail.com>
-Subject: Re: [PATCH v2] keys: X.509 public key issuer lookup without AKID
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S2387960AbhAONJP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Jan 2021 08:09:15 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:20524 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732697AbhAONJN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Jan 2021 08:09:13 -0500
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10FD4XRt124176;
+        Fri, 15 Jan 2021 08:08:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=llJi/OMxHgn3H9Db7HWf4+KNzFiqFCWEBYm3DrO1KZ8=;
+ b=T2pgB+3ox1sTrn+4EPHbnVLShUJT7Z8S0dwBAul4yh1ZaeAJoqXYNp8GBBCaj5sQJnR3
+ xXE4I/e+GKzIGTlvtWJkWRZ/Z5v6YDM1r+bfsYheuFqegqTH4UBNR1vCpefIkZuzAP/h
+ 4TPgKCEUdl16vdVlqsD+q73MemzRAOOWxxHYvy9nD2kWxtYPMJZ158mUeyFW6LgpXcJy
+ dboaMvfe9PA+r4moTHQw1RRqxdx+1Xotxqjwp93VyoUk+ExmA6m0YsQXzsmHTnToEQq/
+ nmA1/qGSmXa/71TfE6JWo1yJk/9PqbsP3DQDsbm9JgayUpOUz8K9HRThqXtWpeWDBQAF Zw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 363af5t65b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 15 Jan 2021 08:08:01 -0500
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10FD5A5s127151;
+        Fri, 15 Jan 2021 08:07:23 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 363af5t5gu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 15 Jan 2021 08:07:23 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10FD6Wae005060;
+        Fri, 15 Jan 2021 13:07:04 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma04ams.nl.ibm.com with ESMTP id 35y448fr3a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 15 Jan 2021 13:07:04 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10FD71Ai35848662
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 Jan 2021 13:07:01 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9AEC64C04E;
+        Fri, 15 Jan 2021 13:07:01 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 56C6E4C046;
+        Fri, 15 Jan 2021 13:06:58 +0000 (GMT)
+Received: from sig-9-65-220-78.ibm.com (unknown [9.65.220.78])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 15 Jan 2021 13:06:58 +0000 (GMT)
+Message-ID: <e1c072eba237e75fc687e9318f65e7395e2ca00b.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 09/10] certs: Allow root user to append signed hashes
+ to the blacklist keyring
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Date:   Fri, 15 Jan 2021 08:06:57 -0500
+In-Reply-To: <20210114151909.2344974-10-mic@digikod.net>
+References: <20210114151909.2344974-1-mic@digikod.net>
+         <20210114151909.2344974-10-mic@digikod.net>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-15_07:2021-01-15,2021-01-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ bulkscore=0 mlxlogscore=834 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 suspectscore=0 impostorscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101150077
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 15 Jan 2021 at 11:40, Andrew Zaborowski
-<andrew.zaborowski@intel.com> wrote:
-> > Why are key ID 2 and key ID 3 handled differently? They are both
-> > optional.
->
-> This is to minimise the impact of having a new ID added.  I guess the
-> danger is that it could add ambiguity in the lookup, i.e. a different
-> key could be returned for an existing search query.
->
-> There's a specific logic in how ID 1 and 2 interact documented as
-> follows in restrict.c:
->
->                         * The first auth_id is the preferred id, and
->                         * the second is the fallback. If only one
->                         * auth_id is present, it may match against
->                         * either signer_id. If two auth_ids are
->                         * present, the first auth_id must match one
->                         * signer_id and the second auth_id must match
->                         * the second signer_id.
->
-> I'm not sure what the use case motivates this.  For the
-> x509_public_key subtype you'd expect that ID 1 in the signature
-> matches subject ID 1 of the issuer and ID 2 matches ID 2.  Most of the
-> time both will be present for a CA certificate.
->
-> I imagine restrict.c only tries to mirror the logic that was already
-> implemented in find_asymmetric_key when the restrict functions were
-> added.
->
-> For ID 2, only ever filled in by the x509_public_key subtype (right
-> now), we only have any use for it being matched against the issuer's
-> ID 2.
+Hi Mickaël,
 
-Sorry, I meant the new ID 3 here (ID 1 meaning auth_ids[0], and so on...)
+On Thu, 2021-01-14 at 16:19 +0100, Mickaël Salaün wrote:
+> From: Mickaël Salaün <mic@linux.microsoft.com>
+> 
+> Add a kernel option SYSTEM_BLACKLIST_AUTH_UPDATE to enable the root user
+> to dynamically add new keys to the blacklist keyring.  This enables to
+> invalidate new certificates, either from being loaded in a keyring, or
+> from being trusted in a PKCS#7 certificate chain.  This also enables to
+> add new file hashes to be denied by the integrity infrastructure.
+> 
+> Being able to untrust a certificate which could have normaly been
+> trusted is a sensitive operation.  This is why adding new hashes to the
+> blacklist keyring is only allowed when these hashes are signed and
+> vouched by the builtin trusted keyring.  A blacklist hash is stored as a
+> key description.  The PKCS#7 signature of this description must be
+> provided as the key payload.
+> 
+> Marking a certificate as untrusted should be enforced while the system
+> is running.  It is then forbiden to remove such blacklist keys.
+> 
+> Update blacklist keyring and blacklist key access rights:
+> * allows the root user to search for a specific blacklisted hash, which
+>   make sense because the descriptions are already viewable;
+> * forbids key update;
+> * restricts kernel rights on the blacklist keyring to align with the
+>   root user rights.
+> 
+> See the help in tools/certs/print-cert-tbs-hash.sh provided by a
+> following commit.
 
-Best regardds
+The design looks good.  I'm hoping to review/test at least this patch
+next week.
+
+thanks,
+
+Mimi
+
