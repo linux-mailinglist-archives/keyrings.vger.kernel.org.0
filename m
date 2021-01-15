@@ -2,91 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E61A92F8224
-	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 18:23:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37BF42F8854
+	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 23:19:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732139AbhAORWe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 Jan 2021 12:22:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727229AbhAORWd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Jan 2021 12:22:33 -0500
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9F7C061794;
-        Fri, 15 Jan 2021 09:21:53 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 52C0912806CB;
-        Fri, 15 Jan 2021 09:21:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1610731313;
-        bh=eVzompidzUYaKPM2zxaqKrfZo1Iu4LvdVyHg60ED2NQ=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=WVocnMLZzbCjnSOMORE5QuohV98hVmsC4Hz/QWR/W0oTeUIUqdCf6p0EDHmKngv1X
-         MpZlmnGnKPoCZOn+tbGrT62KYgsVHkSlMFopjgRL9OkH8K3qqkgmLdnTT0vYMpA2MH
-         oRhKJLIcx0zoCS9K0e6M5lGwWIl0sw4g1JBs+BPU=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zZuRvVCurBjz; Fri, 15 Jan 2021 09:21:53 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 83A4412806BA;
-        Fri, 15 Jan 2021 09:21:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1610731313;
-        bh=eVzompidzUYaKPM2zxaqKrfZo1Iu4LvdVyHg60ED2NQ=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=WVocnMLZzbCjnSOMORE5QuohV98hVmsC4Hz/QWR/W0oTeUIUqdCf6p0EDHmKngv1X
-         MpZlmnGnKPoCZOn+tbGrT62KYgsVHkSlMFopjgRL9OkH8K3qqkgmLdnTT0vYMpA2MH
-         oRhKJLIcx0zoCS9K0e6M5lGwWIl0sw4g1JBs+BPU=
-Message-ID: <0659f965b3321e793fee03136ae50cbbcd4a53bf.camel@HansenPartnership.com>
-Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
-        dwmw2@infradead.org, jarkko.sakkinen@linux.intel.com
-Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
-        zohar@linux.ibm.com, erichte@linux.ibm.com, mpe@ellerman.id.au,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
-Date:   Fri, 15 Jan 2021 09:21:51 -0800
-In-Reply-To: <20200916004927.64276-1-eric.snowberg@oracle.com>
-References: <20200916004927.64276-1-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        id S1726282AbhAOWTy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Jan 2021 17:19:54 -0500
+Received: from mga11.intel.com ([192.55.52.93]:35024 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726176AbhAOWTy (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 15 Jan 2021 17:19:54 -0500
+IronPort-SDR: AQ2QCrrm7kmrKOTVUT+61zCQD2MZV19X2xq+eim735y/vvHF0C6lMbarWeRN3X4Z2Qtpry2RF6
+ EmHIS4ZzhJXw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9865"; a="175110628"
+X-IronPort-AV: E=Sophos;i="5.79,350,1602572400"; 
+   d="scan'208";a="175110628"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2021 14:19:12 -0800
+IronPort-SDR: o+IHeP4AnwgrrLx/lXqSfNTp5obhJxaciuwq0Pyly94lafmC111MSBUe84bTT6LzKg0DGj8k4D
+ 57bxbl2RptPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,350,1602572400"; 
+   d="scan'208";a="354465840"
+Received: from alison-desk.jf.intel.com (HELO alison-desk) ([10.54.74.53])
+  by fmsmga008.fm.intel.com with ESMTP; 15 Jan 2021 14:19:12 -0800
+Date:   Fri, 15 Jan 2021 14:21:46 -0800
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     linux-fscrypt@vger.kernel.org, Ben Boeckel <me@benboeckel.net>
+Cc:     keyrings@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: Request_key from KMIP appliance
+Message-ID: <20210115222145.GA24894@alison-desk>
+References: <20210107213710.GA11415@alison-desk>
+ <20210108003138.GB575130@erythro>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210108003138.GB575130@erythro>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2020-09-15 at 20:49 -0400, Eric Snowberg wrote:
-> The Secure Boot Forbidden Signature Database, dbx, contains a list of
-> now revoked signatures and keys previously approved to boot with UEFI
-> Secure Boot enabled.  The dbx is capable of containing any number of
-> EFI_CERT_X509_SHA256_GUID, EFI_CERT_SHA256_GUID, and
-> EFI_CERT_X509_GUID entries.
+
++ linux-fscrypt
+
+Since I first wrote this question, realized we need to consider any
+external key server, not only ones that are KMIP compliant.
+
+
+On Thu, Jan 07, 2021 at 07:31:38PM -0500, Ben Boeckel wrote:
+> On Thu, Jan 07, 2021 at 13:37:10 -0800, Alison Schofield wrote:
+> > I'm looking into using an external key server to store the encrypted blobs
+> > of kernel encrypted keys. Today they are stored in the rootfs, but we'd
+> > like to address the need to store the keys in an external KMIP appliance,
+> > separate from the platform where deployed.
+> > 
+> > Any leads, thoughts, experience with the Linux Kernel Key Service
+> > requesting keys from an external Key Server such as this?
 > 
-> Currently when EFI_CERT_X509_GUID are contained in the dbx, the
-> entries are skipped.
+> See the `request-key.conf(5)` manpage. I don't have experience with
+> actual usage or deployment though, so others might have more input.
 > 
-> Add support for EFI_CERT_X509_GUID dbx entries. When a
-> EFI_CERT_X509_GUID is found, it is added as an asymmetrical key to
-> the .blacklist keyring. Anytime the .platform keyring is used, the
-> keys in the .blacklist keyring are referenced, if a matching key is
-> found, the key will be rejected.
-> 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-
-If you're using shim, as most of our users are, you have no access to
-dbx to blacklist certificates.  Plus our security envelope includes the
-Mok variables, so you should also be paying attestion to MokListX (or
-it's RT equivalent: MokListXRT).
-
-If you add this to the patch, we get something that is mechanistically
-complete and which also allows users to add certs to their Mok
-blacklist.
-
-James
-
-
+> --Ben
