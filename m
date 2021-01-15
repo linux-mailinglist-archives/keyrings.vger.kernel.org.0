@@ -2,128 +2,169 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 099F12F7C19
-	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 14:10:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ACFD2F812C
+	for <lists+keyrings@lfdr.de>; Fri, 15 Jan 2021 17:50:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387960AbhAONJP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 15 Jan 2021 08:09:15 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:20524 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732697AbhAONJN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Jan 2021 08:09:13 -0500
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10FD4XRt124176;
-        Fri, 15 Jan 2021 08:08:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=llJi/OMxHgn3H9Db7HWf4+KNzFiqFCWEBYm3DrO1KZ8=;
- b=T2pgB+3ox1sTrn+4EPHbnVLShUJT7Z8S0dwBAul4yh1ZaeAJoqXYNp8GBBCaj5sQJnR3
- xXE4I/e+GKzIGTlvtWJkWRZ/Z5v6YDM1r+bfsYheuFqegqTH4UBNR1vCpefIkZuzAP/h
- 4TPgKCEUdl16vdVlqsD+q73MemzRAOOWxxHYvy9nD2kWxtYPMJZ158mUeyFW6LgpXcJy
- dboaMvfe9PA+r4moTHQw1RRqxdx+1Xotxqjwp93VyoUk+ExmA6m0YsQXzsmHTnToEQq/
- nmA1/qGSmXa/71TfE6JWo1yJk/9PqbsP3DQDsbm9JgayUpOUz8K9HRThqXtWpeWDBQAF Zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 363af5t65b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Jan 2021 08:08:01 -0500
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10FD5A5s127151;
-        Fri, 15 Jan 2021 08:07:23 -0500
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 363af5t5gu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Jan 2021 08:07:23 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10FD6Wae005060;
-        Fri, 15 Jan 2021 13:07:04 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by ppma04ams.nl.ibm.com with ESMTP id 35y448fr3a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Jan 2021 13:07:04 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10FD71Ai35848662
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 Jan 2021 13:07:01 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9AEC64C04E;
-        Fri, 15 Jan 2021 13:07:01 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 56C6E4C046;
-        Fri, 15 Jan 2021 13:06:58 +0000 (GMT)
-Received: from sig-9-65-220-78.ibm.com (unknown [9.65.220.78])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 15 Jan 2021 13:06:58 +0000 (GMT)
-Message-ID: <e1c072eba237e75fc687e9318f65e7395e2ca00b.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 09/10] certs: Allow root user to append signed hashes
- to the blacklist keyring
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Morris <jmorris@namei.org>,
-        =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
-        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-Date:   Fri, 15 Jan 2021 08:06:57 -0500
-In-Reply-To: <20210114151909.2344974-10-mic@digikod.net>
-References: <20210114151909.2344974-1-mic@digikod.net>
-         <20210114151909.2344974-10-mic@digikod.net>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-15_07:2021-01-15,2021-01-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- bulkscore=0 mlxlogscore=834 lowpriorityscore=0 priorityscore=1501
- phishscore=0 adultscore=0 suspectscore=0 impostorscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101150077
+        id S1726151AbhAOQtI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Jan 2021 11:49:08 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:39506 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725923AbhAOQtH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 15 Jan 2021 11:49:07 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10FGiRV8088782;
+        Fri, 15 Jan 2021 16:47:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=ILbzVPXV4XeVV2ur9Xq/DKxJJzAW4T3/Zp9WwpWi4uQ=;
+ b=SSelSreVH1DY9G5M5PAOeuhT6vPaEiI9dnIa/6NeQA+e97wTyJIK4jye3XXfUHN4ARQJ
+ nLDJRv4Q1dOjDXQkxemRxUJwX4ITgaF3hL6NYKAkMcUFI7qBzaXRi6dDtCxh2biKZZ72
+ 5wr6nzt1SliVviyMBrjddVTBMb9d7vVnDj+US3rIj/HFVtn1u8ljTFa6oHCKT7sb4T7U
+ I5eI0tfAgS8KP6GoYBeKOjwvt6m2OiZUHQc2d76gKtK4vslDRh9F8WDkyUxwLOjngfkt
+ whrdOa+MFlmAlg+x09fZhOUdyECP5IQImq2ARsNDhJO1Y87CEhaQO0+CldUPHAGdAw7z ZA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 360kd05s6g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 Jan 2021 16:47:58 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10FGjktf188962;
+        Fri, 15 Jan 2021 16:47:58 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 360kebc9n8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 Jan 2021 16:47:58 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10FGlhP9010996;
+        Fri, 15 Jan 2021 16:47:44 GMT
+Received: from dhcp-10-154-96-160.vpn.oracle.com (/10.154.96.160)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 15 Jan 2021 08:47:43 -0800
+Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
+From:   Eric Snowberg <eric.snowberg@oracle.com>
+In-Reply-To: <YAFdNiYZSWpB9vOw@kernel.org>
+Date:   Fri, 15 Jan 2021 09:49:02 -0700
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        David Howells <dhowells@redhat.com>, dwmw2@infradead.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        Mimi Zohar <zohar@linux.ibm.com>, erichte@linux.ibm.com,
+        mpe@ellerman.id.au, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com,
+        Eric Snowberg <eric.snowberg@oracle.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CFBF6AEC-2832-44F7-9D7F-F20489498C33@oracle.com>
+References: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com>
+ <20200916004927.64276-1-eric.snowberg@oracle.com>
+ <1360578.1607593748@warthog.procyon.org.uk>
+ <2442460.1610463459@warthog.procyon.org.uk>
+ <X/9a8naM8p4tT5sO@linux.intel.com>
+ <A05E3573-B1AF-474B-94A5-779E69E5880A@oracle.com>
+ <YAFdNiYZSWpB9vOw@kernel.org>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+X-Mailer: Apple Mail (2.3273)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9864 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101150102
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9864 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1011 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101150101
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Mickaël,
 
-On Thu, 2021-01-14 at 16:19 +0100, Mickaël Salaün wrote:
-> From: Mickaël Salaün <mic@linux.microsoft.com>
-> 
-> Add a kernel option SYSTEM_BLACKLIST_AUTH_UPDATE to enable the root user
-> to dynamically add new keys to the blacklist keyring.  This enables to
-> invalidate new certificates, either from being loaded in a keyring, or
-> from being trusted in a PKCS#7 certificate chain.  This also enables to
-> add new file hashes to be denied by the integrity infrastructure.
-> 
-> Being able to untrust a certificate which could have normaly been
-> trusted is a sensitive operation.  This is why adding new hashes to the
-> blacklist keyring is only allowed when these hashes are signed and
-> vouched by the builtin trusted keyring.  A blacklist hash is stored as a
-> key description.  The PKCS#7 signature of this description must be
-> provided as the key payload.
-> 
-> Marking a certificate as untrusted should be enforced while the system
-> is running.  It is then forbiden to remove such blacklist keys.
-> 
-> Update blacklist keyring and blacklist key access rights:
-> * allows the root user to search for a specific blacklisted hash, which
->   make sense because the descriptions are already viewable;
-> * forbids key update;
-> * restricts kernel rights on the blacklist keyring to align with the
->   root user rights.
-> 
-> See the help in tools/certs/print-cert-tbs-hash.sh provided by a
-> following commit.
+> On Jan 15, 2021, at 2:15 AM, Jarkko Sakkinen <jarkko@kernel.org> =
+wrote:
+>=20
+> On Wed, Jan 13, 2021 at 05:11:10PM -0700, Eric Snowberg wrote:
+>>=20
+>>> On Jan 13, 2021, at 1:41 PM, Jarkko Sakkinen =
+<jarkko.sakkinen@linux.intel.com> wrote:
+>>>=20
+>>> On Tue, Jan 12, 2021 at 02:57:39PM +0000, David Howells wrote:
+>>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
+>>>>=20
+>>>>>> On Dec 10, 2020, at 2:49 AM, David Howells <dhowells@redhat.com> =
+wrote:
+>>>>>>=20
+>>>>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
+>>>>>>=20
+>>>>>>> Add support for EFI_CERT_X509_GUID dbx entries. When a =
+EFI_CERT_X509_GUID
+>>>>>>> is found, it is added as an asymmetrical key to the .blacklist =
+keyring.
+>>>>>>> Anytime the .platform keyring is used, the keys in the =
+.blacklist keyring
+>>>>>>> are referenced, if a matching key is found, the key will be =
+rejected.
+>>>>>>=20
+>>>>>> Ummm...  Why this way and not as a blacklist key which takes up =
+less space?
+>>>>>> I'm guessing that you're using the key chain matching logic.  We =
+really only
+>>>>>> need to blacklist the key IDs.
+>>>>>=20
+>>>>> I implemented it this way so that certs in the dbx would only =
+impact=20
+>>>>> the .platform keyring. I was under the impression we didn=E2=80=99t =
+want to have=20
+>>>>> Secure Boot UEFI db/dbx certs dictate keyring functionality within =
+the kernel
+>>>>> itself. Meaning if we have a matching dbx cert in any other =
+keyring (builtin,
+>>>>> secondary, ima, etc.), it would be allowed. If that is not how =
+you=E2=80=99d like to=20
+>>>>> see it done, let me know and I=E2=80=99ll make the change.
+>>>>=20
+>>>> I wonder if that is that the right thing to do.  I guess this is a =
+policy
+>>>> decision and may depend on the particular user.
+>>>=20
+>>> Why would you want to allow dbx entry in any keyring?
+>>=20
+>> Today, DB and MOK certs go into the platform keyring.  These certs =
+are only
+>> referenced during kexec.  They can=E2=80=99t be used for other things =
+like validating
+>> kernel module signatures.  If we follow the same pattern, the DBX and =
+MOKX entries
+>> in the blacklist keyring should only impact kexec.=20
+>>=20
+>> Currently, Micka=C3=ABl Sala=C3=BCn has another outstanding series to =
+allow root to update=20
+>> the blacklist keyring.  I assume the use case for this is around =
+certificates used=20
+>> within the kernel, for example revoking kernel module signatures.  =
+The question I have
+>> is, should another keyring be introduced?  One that carries DBX and =
+MOKX, which just
+>> correspond to certs/hashes in the platform keyring; this keyring =
+would only be
+>> referenced for kexec, just like the platform keyring is today. Then, =
+the current
+>> blacklist keyring would be used for everything internal to the =
+kernel.
+>=20
+> Right, I'm following actively that series.
+>=20
+> Why couldn't user space drive this process and use that feature to do =
+it?
 
-The design looks good.  I'm hoping to review/test at least this patch
-next week.
+I could see where the user would want to use both. With Micka=C3=ABl =
+Sala=C3=BCn=E2=80=99s
+series, the blacklist keyring is updated immediately.  However it does
+not survive a reboot.  With my patch, the blacklist keyring is updated
+during boot, based on what is in the dbx. Neither approach needs a new=20=
 
-thanks,
-
-Mimi
+kernel build.
 
