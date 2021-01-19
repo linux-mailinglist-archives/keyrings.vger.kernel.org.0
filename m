@@ -2,101 +2,151 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C1D92FADFD
-	for <lists+keyrings@lfdr.de>; Tue, 19 Jan 2021 01:16:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADAE82FBA42
+	for <lists+keyrings@lfdr.de>; Tue, 19 Jan 2021 15:56:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732667AbhASAOx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 Jan 2021 19:14:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:58592 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732649AbhASAOv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Jan 2021 19:14:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611015205;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=k8uZwZ9l9/9GHM34N72Urrm3zDwDS5163gHM9WUjrbg=;
-        b=Rsrzfo9EAxgJKl8r6yCT60Z0ycl/YvqG7PSzNQ90Fa6ZBaG1Te6/hx56WW81qskvJ6hHu3
-        TBtF0nIAwOSz6Gtx3mU8g3bnt9Frqe7ycLb8H2zJdxEQAR+3ORnghBMwfe7CLnD75KweVw
-        asIIU4hLIbx4bBrcKehfYudRXY/qWu4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-323-Fj6D9-fAOwi5YHvuGOer8Q-1; Mon, 18 Jan 2021 19:13:23 -0500
-X-MC-Unique: Fj6D9-fAOwi5YHvuGOer8Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2AB6F18C89C4;
-        Tue, 19 Jan 2021 00:13:22 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7A5A960C9C;
-        Tue, 19 Jan 2021 00:13:20 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     Tobias Markus <tobias@markus-regensburg.de>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] X.509: Fix crash caused by NULL pointer
+        id S2387894AbhASOuU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 19 Jan 2021 09:50:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43388 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390707AbhASKbZ (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 19 Jan 2021 05:31:25 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0CB002312D;
+        Tue, 19 Jan 2021 10:30:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611052242;
+        bh=h2qMavtnvnddHYsIZ0jOJ4lwQL4t55sNi0FQrUQUgKM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M3zfuZHNh6pYqWuJkZ1ld1MPIlEvZwcI5SuVKpHdROd+NhQOzYSDSbqOGO0Nbwy5+
+         AG1tjF3fPZCxUBFOIt9pIgy4ccVEPcyPPD0zhFJOm06CK9DLC8cgq6JEliFLC0BK92
+         7fvmRcXw8pBgofzgtpXQQytFdN2ty5IhDMz3RDxY+4KLcAGfrRZ0I9IVPY1U6oR/zE
+         El+GyUAXHGtfDUQFme2Cb8RrRQmRGZuy20RvkU0NXQB2FkJEJVEEPeIEJtHu5eKxVO
+         nzOL/Uty/HmIk9TEX4d92H3zqqJkjeM1yxOEXzLG6u2CkXlY0YF1ln0jsLFgHncf5h
+         SVHKA0KmQOnJw==
+Date:   Tue, 19 Jan 2021 12:30:34 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Subject: Re: [PATCH v8 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
+Message-ID: <YAa0ys4YJcZtKdfF@kernel.org>
+References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
+ <1604419306-26105-3-git-send-email-sumit.garg@linaro.org>
+ <X/x+N0fgrzIZTeNi@kernel.org>
+ <CAFA6WYOUvWAZtYfR4q8beZFkX-CtdxqwJaRQM+GHNMDfQiEWOA@mail.gmail.com>
+ <X/+m6+m2/snYj9Vc@kernel.org>
+ <CAFA6WYNyirit_AFhoE+XR9PHw=OjRgEdXDqz1uanj_SN2NXeMw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 19 Jan 2021 00:13:19 +0000
-Message-ID: <164034.1611015199@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFA6WYNyirit_AFhoE+XR9PHw=OjRgEdXDqz1uanj_SN2NXeMw@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Fri, Jan 15, 2021 at 11:32:31AM +0530, Sumit Garg wrote:
+> On Thu, 14 Jan 2021 at 07:35, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Wed, Jan 13, 2021 at 04:47:00PM +0530, Sumit Garg wrote:
+> > > Hi Jarkko,
+> > >
+> > > On Mon, 11 Jan 2021 at 22:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > >
+> > > > On Tue, Nov 03, 2020 at 09:31:44PM +0530, Sumit Garg wrote:
+> > > > > Add support for TEE based trusted keys where TEE provides the functionality
+> > > > > to seal and unseal trusted keys using hardware unique key.
+> > > > >
+> > > > > Refer to Documentation/tee.txt for detailed information about TEE.
+> > > > >
+> > > > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > > >
+> > > > I haven't yet got QEMU environment working with aarch64, this produces
+> > > > just a blank screen:
+> > > >
+> > > > ./output/host/usr/bin/qemu-system-aarch64 -M virt -cpu cortex-a53 -smp 1 -kernel output/images/Image -initrd output/images/rootfs.cpio -serial stdio
+> > > >
+> > > > My BuildRoot fork for TPM and keyring testing is located over here:
+> > > >
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/buildroot-tpmdd.git/
+> > > >
+> > > > The "ARM version" is at this point in aarch64 branch. Over time I will
+> > > > define tpmdd-x86_64 and tpmdd-aarch64 boards and everything will be then
+> > > > in the master branch.
+> > > >
+> > > > To create identical images you just need to
+> > > >
+> > > > $ make tpmdd_defconfig && make
+> > > >
+> > > > Can you check if you see anything obviously wrong? I'm eager to test this
+> > > > patch set, and in bigger picture I really need to have ready to run
+> > > > aarch64 environment available.
+> > >
+> > > I would rather suggest you to follow steps listed here [1] as to test
+> > > this feature on Qemu aarch64 we need to build firmwares such as TF-A,
+> > > OP-TEE, UEFI etc. which are all integrated into OP-TEE Qemu build
+> > > system [2]. And then it would be easier to migrate them to your
+> > > buildroot environment as well.
+> > >
+> > > [1] https://lists.trustedfirmware.org/pipermail/op-tee/2020-May/000027.html
+> > > [2] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
+> > >
+> > > -Sumit
+> >
+> > Can you provide 'keyctl_change'? Otherwise, the steps are easy to follow.
+> >
+> 
+> $ cat keyctl_change
+> diff --git a/common.mk b/common.mk
+> index aeb7b41..663e528 100644
+> --- a/common.mk
+> +++ b/common.mk
+> @@ -229,6 +229,7 @@ BR2_PACKAGE_OPTEE_TEST_SDK ?= $(OPTEE_OS_TA_DEV_KIT_DIR)
+>  BR2_PACKAGE_OPTEE_TEST_SITE ?= $(OPTEE_TEST_PATH)
+>  BR2_PACKAGE_STRACE ?= y
+>  BR2_TARGET_GENERIC_GETTY_PORT ?= $(if
+> $(CFG_NW_CONSOLE_UART),ttyAMA$(CFG_NW_CONSOLE_UART),ttyAMA0)
+> +BR2_PACKAGE_KEYUTILS := y
+> 
+>  # All BR2_* variables from the makefile or the environment are appended to
+>  # ../out-br/extra.conf. All values are quoted "..." except y and n.
+> diff --git a/kconfigs/qemu.conf b/kconfigs/qemu.conf
+> index 368c18a..832ab74 100644
+> --- a/kconfigs/qemu.conf
+> +++ b/kconfigs/qemu.conf
+> @@ -20,3 +20,5 @@ CONFIG_9P_FS=y
+>  CONFIG_9P_FS_POSIX_ACL=y
+>  CONFIG_HW_RANDOM=y
+>  CONFIG_HW_RANDOM_VIRTIO=y
+> +CONFIG_TRUSTED_KEYS=y
+> +CONFIG_ENCRYPTED_KEYS=y
+> 
+> > After I've successfully tested 2/4, I'd suggest that you roll out one more
+> > version and CC the documentation patch to Elaine and Mini, and clearly
+> > remark in the commit message that TEE is a standard, with a link to the
+> > specification.
+> >
+> 
+> Sure, I will roll out the next version after your testing.
 
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Thanks, I'll try this at instant, and give my feedback.
 
-On the following call path, `sig->pkey_algo` is not assigned
-in asymmetric_key_verify_signature(), which causes runtime
-crash in public_key_verify_signature().
-
-  keyctl_pkey_verify
-    asymmetric_key_verify_signature
-      verify_signature
-        public_key_verify_signature
-
-This patch simply check this situation and fixes the crash
-caused by NULL pointer.
-
-Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verific=
-ation")
-Reported-by: Tobias Markus <tobias@markus-regensburg.de>
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-and-tested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-Tested-by: Jo=C3=A3o Fonseca <jpedrofonseca@ua.pt>
-Cc: stable@vger.kernel.org # v5.10+
----
-
- crypto/asymmetric_keys/public_key.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/p=
-ublic_key.c
-index 8892908ad58c..788a4ba1e2e7 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -356,7 +356,8 @@ int public_key_verify_signature(const struct public_key=
- *pkey,
- 	if (ret)
- 		goto error_free_key;
-=20
--	if (strcmp(sig->pkey_algo, "sm2") =3D=3D 0 && sig->data_size) {
-+	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") =3D=3D 0 &&
-+	    sig->data_size) {
- 		ret =3D cert_sig_digest_update(sig, tfm);
- 		if (ret)
- 			goto error_free_key;
-
+/Jarkko
