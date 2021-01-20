@@ -2,95 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B570A2FCD99
-	for <lists+keyrings@lfdr.de>; Wed, 20 Jan 2021 10:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 802C12FD081
+	for <lists+keyrings@lfdr.de>; Wed, 20 Jan 2021 13:59:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729126AbhATJKm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 20 Jan 2021 04:10:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
+        id S2387433AbhATMjy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 20 Jan 2021 07:39:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729178AbhATJHK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 20 Jan 2021 04:07:10 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4261C0613D6;
-        Wed, 20 Jan 2021 01:06:12 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id cq1so1784214pjb.4;
-        Wed, 20 Jan 2021 01:06:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=M1CBK07C46laJoyWYovF4lSgfEz56MEL8US4G4KcnR0=;
-        b=n2l91F4By3VLGwLBJpVvXP1nkvLFb4J3UfQ45CgFVauOpq/R8UE7naJRjzVsK1Z6Tc
-         yWUZFgzSvOsCrj4dSiqWh5zkhzAAyNGOpRjfytobhn3SySy85wP/rh7m4zAat4FSGBVi
-         GATV3bkpxqrkswVNkMig1anryhdnb0I2uzsBHTN8EdV5edS/0Gvy2JAmU3Wio6v9sm9o
-         fk8/5az/W4xrAJyZbNPUJnnO8bb3S/8s2nydTMMcWJC8cZMWw3NOvyUcmF+2rr4sQXuF
-         tlXrpNK/tOOiOU+uCeNypTb3qrO3y35dI8eJKRbXPzu0zwu6zqzGldfo14lHb+JN+L+g
-         4WOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=M1CBK07C46laJoyWYovF4lSgfEz56MEL8US4G4KcnR0=;
-        b=gz/tnbNrS8+BuLvdl6LktTzRRSoglFNfueYJWJS5Y1cMRAMY6leNJJ5kZcPcCwp5Hi
-         tv5gYM/gMufM+4ufT+ygls9RB7xZ+/XFnXvMsEocW7avh4OHWRVo1V1f/jC39siS6RcE
-         cs2gEyon4o8DMmOVpAbtZEHSQNRNZPCwCLL+heOv0UUleH1JyZNbE0BqfEqAs6rRmW0o
-         PdyL+I/EKfOR3tSEpIEfzvLg2fldJiTONzwLs1NcIySO/rtQ97WqhaMH3BFPqfgjo1Wy
-         LBm8u0AKLwvVgn7UDUStLAWV0tw0miY3UEjOEGKHM3KSKVBrCbCC0zq+5wN+ZW+4xbGT
-         iWcg==
-X-Gm-Message-State: AOAM533Al0dSBFv9UYQobsq4sjHtv/bpi5bkS0JOpa8zP+hDreJu4rFc
-        SbM7/uEjmm54mEqOBbTkFuI=
-X-Google-Smtp-Source: ABdhPJwTBQGrDFW8IYQg0Vzds4hUdO8l4R2fsonSWR9cfY9ArY5yg0M0Z1wKgVBSjDJul+B2iZNz+Q==
-X-Received: by 2002:a17:90a:d3c7:: with SMTP id d7mr4594364pjw.169.1611133572338;
-        Wed, 20 Jan 2021 01:06:12 -0800 (PST)
-Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id z2sm1585226pgl.49.2021.01.20.01.06.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 Jan 2021 01:06:11 -0800 (PST)
-From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        with ESMTP id S2388936AbhATLOQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 20 Jan 2021 06:14:16 -0500
+Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [IPv6:2001:1600:4:17::42ac])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 205E4C0613CF
+        for <keyrings@vger.kernel.org>; Wed, 20 Jan 2021 03:13:12 -0800 (PST)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DLNDN5227zMqLkr;
+        Wed, 20 Jan 2021 12:13:08 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DLNDL1gRxzlh8T2;
+        Wed, 20 Jan 2021 12:13:06 +0100 (CET)
+Subject: Re: [PATCH v3 02/10] certs: Fix blacklisted hexadecimal hash string
+ check
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
         "David S . Miller" <davem@davemloft.net>,
-        Ben Boeckel <me@benboeckel.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH 4/4] Documentation/admin-guide/module-signing.rst: add openssl command option example for CodeSign EKU
-Date:   Wed, 20 Jan 2021 17:05:17 +0800
-Message-Id: <20210120090517.23851-5-jlee@suse.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20210120090517.23851-1-jlee@suse.com>
-References: <20210120090517.23851-1-jlee@suse.com>
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Ben Boeckel <mathstuf@gmail.com>
+References: <20210114151909.2344974-1-mic@digikod.net>
+ <20210114151909.2344974-3-mic@digikod.net> <YAem+DjBR92WG+bK@kernel.org>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+Message-ID: <05e3ce56-c27c-877d-8ebe-d088ba95f248@digikod.net>
+Date:   Wed, 20 Jan 2021 12:12:50 +0100
+User-Agent: 
+MIME-Version: 1.0
+In-Reply-To: <YAem+DjBR92WG+bK@kernel.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add an openssl command option example for generating CodeSign extended
-key usage in X.509 when CONFIG_CHECK_CODESIGN_EKU is enabled.
 
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
----
- Documentation/admin-guide/module-signing.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+On 20/01/2021 04:43, Jarkko Sakkinen wrote:
+> On Thu, Jan 14, 2021 at 04:19:01PM +0100, Mickaël Salaün wrote:
+>> From: Mickaël Salaün <mic@linux.microsoft.com>
+>>
+>> When looking for a blacklisted hash, bin2hex() is used to transform a
+>> binary hash to an ascii (lowercase) hexadecimal string.  This string is
+>> then search for in the description of the keys from the blacklist
+>> keyring.  When adding a key to the blacklist keyring,
+>> blacklist_vet_description() checks the hash prefix and the hexadecimal
+>> string, but not that this string is lowercase.  It is then valid to set
+>> hashes with uppercase hexadecimal, which will be silently ignored by the
+>> kernel.
+>>
+>> Add an additional check to blacklist_vet_description() to check that
+>> hexadecimal strings are in lowercase.
+>>
+>> Cc: David Woodhouse <dwmw2@infradead.org>
+>> Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+>> Signed-off-by: David Howells <dhowells@redhat.com>
+>> Reviewed-by: Ben Boeckel <mathstuf@gmail.com>
+>> ---
+>>
+>> Changes since v2:
+>> * Cherry-pick v1 patch from
+>>   https://lore.kernel.org/lkml/2659836.1607940186@warthog.procyon.org.uk/
+>>   to rebase on v5.11-rc3.
+>> * Rearrange Cc order.
+>> ---
+>>  certs/blacklist.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/certs/blacklist.c b/certs/blacklist.c
+>> index 2719fb2fbc1c..a888b934a1cd 100644
+>> --- a/certs/blacklist.c
+>> +++ b/certs/blacklist.c
+>> @@ -37,7 +37,7 @@ static int blacklist_vet_description(const char *desc)
+>>  found_colon:
+>>  	desc++;
+>>  	for (; *desc; desc++) {
+>> -		if (!isxdigit(*desc))
+>> +		if (!isxdigit(*desc) || isupper(*desc))
+>>  			return -EINVAL;
+>>  		n++;
+>>  	}
+>> -- 
+>> 2.30.0
+>>
+> 
+> Shouldn't this rather convert the upper case to lower case? I don't like
+> the ABI break that this causes.
 
-diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
-index 7d7c7c8a545c..b57b30c7125f 100644
---- a/Documentation/admin-guide/module-signing.rst
-+++ b/Documentation/admin-guide/module-signing.rst
-@@ -170,6 +170,12 @@ generate the public/private key files::
- 	   -config x509.genkey -outform PEM -out kernel_key.pem \
- 	   -keyout kernel_key.pem
- 
-+When ``CONFIG_CHECK_CODESIGN_EKU`` option be enabled, the following openssl
-+command option should be added for generating CodeSign extended key usage in
-+X.509::
-+
-+        -addext "extendedKeyUsage=codeSigning"
-+
- The full pathname for the resulting kernel_key.pem file can then be specified
- in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key therein will
- be used instead of an autogenerated keypair.
--- 
-2.16.4
+It doesn't break the ABI because keys loaded in the blacklist keyring
+can only happen with builtin hashes.  Moreover these builtin hashes will
+be checked by patch 10/10 at build time.
 
+This patch is also important to remove a false sense of security and
+warns about mis-blacklisted certificates or binaries:
+https://lore.kernel.org/lkml/c9664a67-61b7-6b4a-86d7-5aca9ff06fa5@digikod.net/
+
+Hot-patching keys doesn't seem a good idea, especially when these keys
+are signed. Moreover, it would bring additional complexity and will
+require to change the core of the key management.
+
+> 
+> /Jarkko
+> 
