@@ -2,160 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 872522FC6DD
-	for <lists+keyrings@lfdr.de>; Wed, 20 Jan 2021 02:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 906AB2FC73C
+	for <lists+keyrings@lfdr.de>; Wed, 20 Jan 2021 02:56:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728277AbhATBcA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 19 Jan 2021 20:32:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49234 "EHLO mail.kernel.org"
+        id S1731669AbhATBzw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 19 Jan 2021 20:55:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55130 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728286AbhATBby (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 19 Jan 2021 20:31:54 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 09B40206F9;
-        Wed, 20 Jan 2021 01:31:09 +0000 (UTC)
+        id S1731242AbhATBzg (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 19 Jan 2021 20:55:36 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ACE6D22472;
+        Wed, 20 Jan 2021 01:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611106273;
-        bh=1HkPn5jT7T+qZpeISImoewLL4KyY3IkZxz+hihW1ZXg=;
+        s=k20201202; t=1611107695;
+        bh=2f5OhbUOpbabH+Q9xfpEc2YvBgOCFoFZXokKL5Lqx9Y=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VjiUrvI6DCa3D9FgTg2N8RBQma5pmCVL54EtIdiGTGdMOlGUz27B5xOiGEui6cpM9
-         tUNIi5tTPpZYlzeXBMYsHIWJwUaOuAcOmOj0BFkzqTUR2XcqkzuoJyEdvSPN1RTtDM
-         enXztVS/o/zRCTmKHscCJQdup/3yraUt/xKRDzwbvxImhrLl6h+/oZigkAzfCW6wEi
-         7VhaPGU8TtwaThswmyak6o54B7juq+kRggr4iHv34iCEax0wdtf5rbXRust7fhJ/fk
-         Rs4sg/J4Zbs6W1HAACn6ctKIsbOqyFoIJBaffPaJ7X2oRJ8vuv5OYgYPmeXXUB1ap1
-         PkGaVJ2q0rmPw==
-Date:   Wed, 20 Jan 2021 03:31:06 +0200
+        b=JtGpZk2+/SuS4cU4Gl/5Y/ZjDczESwF4ku9D0DO4/4ACivGvwOK0nqg1ZtcRapbo3
+         ZIVoz8Kq11soMYsq8VP4Alq1FNqPVUf7Fnocm7hrXmk6NSIkkABF/f2caYxtk2Hc2f
+         HJIeNANEWy4Velf3Mc2unja28grExf8pPGU0RhWOCp6EOS/O0wD9Y/t/wfyuFMX3/n
+         998AbCvjLa/A1rQtS4j0jltLLpnbvHRT7gCQpH3+Yx6PJ3g23AuZ7j7aw2vjzYuvu6
+         b/RFKTR5ELpDcUOr6nxZiTsRAsFqKgYjCYe1ObYdRYZ5IzhF8AY+RM9LKV338PI8BW
+         jnBaDq53q+Ydw==
+Date:   Wed, 20 Jan 2021 03:54:51 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Subject: Re: [PATCH v8 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
-Message-ID: <YAeH2pb8szQyjusL@kernel.org>
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
- <1604419306-26105-3-git-send-email-sumit.garg@linaro.org>
- <X/x+N0fgrzIZTeNi@kernel.org>
- <CAFA6WYOUvWAZtYfR4q8beZFkX-CtdxqwJaRQM+GHNMDfQiEWOA@mail.gmail.com>
- <X/+m6+m2/snYj9Vc@kernel.org>
- <CAFA6WYNyirit_AFhoE+XR9PHw=OjRgEdXDqz1uanj_SN2NXeMw@mail.gmail.com>
- <YAa0ys4YJcZtKdfF@kernel.org>
+To:     Andrew Zaborowski <andrew.zaborowski@intel.com>
+Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v2] keys: X.509 public key issuer lookup without AKID
+Message-ID: <YAeNa6vqLGLfTRbw@kernel.org>
+References: <20210114204035.2046219-1-andrew.zaborowski@intel.com>
+ <YAFQBT/pKw4PDenV@kernel.org>
+ <CAOq732JD-M-L3BBDskMBw-5qp=wZjY=Sjm_q5WQNhCq61NM3Yw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YAa0ys4YJcZtKdfF@kernel.org>
+In-Reply-To: <CAOq732JD-M-L3BBDskMBw-5qp=wZjY=Sjm_q5WQNhCq61NM3Yw@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jan 19, 2021 at 12:30:42PM +0200, Jarkko Sakkinen wrote:
-> On Fri, Jan 15, 2021 at 11:32:31AM +0530, Sumit Garg wrote:
-> > On Thu, 14 Jan 2021 at 07:35, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+On Fri, Jan 15, 2021 at 11:40:18AM +0100, Andrew Zaborowski wrote:
+> On Fri, 15 Jan 2021 at 09:20, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > On Thu, Jan 14, 2021 at 09:40:35PM +0100, Andrew Zaborowski wrote:
+> > > @@ -183,8 +193,8 @@ bool asymmetric_key_id_partial(const struct asymmetric_key_id *kid1,
+> > >  EXPORT_SYMBOL_GPL(asymmetric_key_id_partial);
 > > >
-> > > On Wed, Jan 13, 2021 at 04:47:00PM +0530, Sumit Garg wrote:
-> > > > Hi Jarkko,
-> > > >
-> > > > On Mon, 11 Jan 2021 at 22:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > > > >
-> > > > > On Tue, Nov 03, 2020 at 09:31:44PM +0530, Sumit Garg wrote:
-> > > > > > Add support for TEE based trusted keys where TEE provides the functionality
-> > > > > > to seal and unseal trusted keys using hardware unique key.
-> > > > > >
-> > > > > > Refer to Documentation/tee.txt for detailed information about TEE.
-> > > > > >
-> > > > > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > > > >
-> > > > > I haven't yet got QEMU environment working with aarch64, this produces
-> > > > > just a blank screen:
-> > > > >
-> > > > > ./output/host/usr/bin/qemu-system-aarch64 -M virt -cpu cortex-a53 -smp 1 -kernel output/images/Image -initrd output/images/rootfs.cpio -serial stdio
-> > > > >
-> > > > > My BuildRoot fork for TPM and keyring testing is located over here:
-> > > > >
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/buildroot-tpmdd.git/
-> > > > >
-> > > > > The "ARM version" is at this point in aarch64 branch. Over time I will
-> > > > > define tpmdd-x86_64 and tpmdd-aarch64 boards and everything will be then
-> > > > > in the master branch.
-> > > > >
-> > > > > To create identical images you just need to
-> > > > >
-> > > > > $ make tpmdd_defconfig && make
-> > > > >
-> > > > > Can you check if you see anything obviously wrong? I'm eager to test this
-> > > > > patch set, and in bigger picture I really need to have ready to run
-> > > > > aarch64 environment available.
-> > > >
-> > > > I would rather suggest you to follow steps listed here [1] as to test
-> > > > this feature on Qemu aarch64 we need to build firmwares such as TF-A,
-> > > > OP-TEE, UEFI etc. which are all integrated into OP-TEE Qemu build
-> > > > system [2]. And then it would be easier to migrate them to your
-> > > > buildroot environment as well.
-> > > >
-> > > > [1] https://lists.trustedfirmware.org/pipermail/op-tee/2020-May/000027.html
-> > > > [2] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
-> > > >
-> > > > -Sumit
+> > >  /**
+> > > - * asymmetric_match_key_ids - Search asymmetric key IDs
+> > > - * @kids: The list of key IDs to check
+> > > + * asymmetric_match_key_ids - Search asymmetric key IDs 1 & 2
+> > > + * @kids: The pair of key IDs to check
+> > >   * @match_id: The key ID we're looking for
+> > >   * @match: The match function to use
+> > >   */
+> > > @@ -198,7 +208,7 @@ static bool asymmetric_match_key_ids(
 > > >
-> > > Can you provide 'keyctl_change'? Otherwise, the steps are easy to follow.
-> > >
-> > 
-> > $ cat keyctl_change
-> > diff --git a/common.mk b/common.mk
-> > index aeb7b41..663e528 100644
-> > --- a/common.mk
-> > +++ b/common.mk
-> > @@ -229,6 +229,7 @@ BR2_PACKAGE_OPTEE_TEST_SDK ?= $(OPTEE_OS_TA_DEV_KIT_DIR)
-> >  BR2_PACKAGE_OPTEE_TEST_SITE ?= $(OPTEE_TEST_PATH)
-> >  BR2_PACKAGE_STRACE ?= y
-> >  BR2_TARGET_GENERIC_GETTY_PORT ?= $(if
-> > $(CFG_NW_CONSOLE_UART),ttyAMA$(CFG_NW_CONSOLE_UART),ttyAMA0)
-> > +BR2_PACKAGE_KEYUTILS := y
-> > 
-> >  # All BR2_* variables from the makefile or the environment are appended to
-> >  # ../out-br/extra.conf. All values are quoted "..." except y and n.
-> > diff --git a/kconfigs/qemu.conf b/kconfigs/qemu.conf
-> > index 368c18a..832ab74 100644
-> > --- a/kconfigs/qemu.conf
-> > +++ b/kconfigs/qemu.conf
-> > @@ -20,3 +20,5 @@ CONFIG_9P_FS=y
-> >  CONFIG_9P_FS_POSIX_ACL=y
-> >  CONFIG_HW_RANDOM=y
-> >  CONFIG_HW_RANDOM_VIRTIO=y
-> > +CONFIG_TRUSTED_KEYS=y
-> > +CONFIG_ENCRYPTED_KEYS=y
-> > 
-> > > After I've successfully tested 2/4, I'd suggest that you roll out one more
-> > > version and CC the documentation patch to Elaine and Mini, and clearly
-> > > remark in the commit message that TEE is a standard, with a link to the
-> > > specification.
-> > >
-> > 
-> > Sure, I will roll out the next version after your testing.
+> > >       if (!kids || !match_id)
+> > >               return false;
+> > > -     for (i = 0; i < ARRAY_SIZE(kids->id); i++)
+> > > +     for (i = 0; i < 2; i++)
+> > >               if (match(kids->id[i], match_id))
+> > >                       return true;
+> > >       return false;
+> >
+> > Why are key ID 2 and key ID 3 handled differently? They are both
+> > optional.
 > 
-> Thanks, I'll try this at instant, and give my feedback.
+> This is to minimise the impact of having a new ID added.  I guess the
+> danger is that it could add ambiguity in the lookup, i.e. a different
+> key could be returned for an existing search query.
 
-I bump into this:
+Right I do get that. It could potentially break some scripts.
 
-$ make run-only
-ln -sf /home/jarkko/devel/tpm/optee/build/../out-br/images/rootfs.cpio.gz /home/jarkko/devel/tpm/optee/build/../out/bin/
-ln: failed to create symbolic link '/home/jarkko/devel/tpm/optee/build/../out/bin/': No such file or directory
-make: *** [Makefile:194: run-only] Error 1
+> 
+> There's a specific logic in how ID 1 and 2 interact documented as
+> follows in restrict.c:
+> 
+>                         * The first auth_id is the preferred id, and
+>                         * the second is the fallback. If only one
+>                         * auth_id is present, it may match against
+>                         * either signer_id. If two auth_ids are
+>                         * present, the first auth_id must match one
+>                         * signer_id and the second auth_id must match
+>                         * the second signer_id.
+> 
+> I'm not sure what the use case motivates this.  For the
+> x509_public_key subtype you'd expect that ID 1 in the signature
+> matches subject ID 1 of the issuer and ID 2 matches ID 2.  Most of the
+> time both will be present for a CA certificate.
+> 
+> I imagine restrict.c only tries to mirror the logic that was already
+> implemented in find_asymmetric_key when the restrict functions were
+> added.
+> 
+> For ID 2, only ever filled in by the x509_public_key subtype (right
+> now), we only have any use for it being matched against the issuer's
+> ID 2.
+> 
+> Note: asymmetric_match_key_ids can be used as part of a generic key
+> API query, or as part of a find_asymmetric_key call (only used in
+> crypto/asymmetric_keys/ for trust verification and similar) but
+> find_asymmetric_key will then perform an extra check.  In any case
+> without more background I think it's preferable to minimize the
+> matching logic changes, and even assuming that the logic could be
+> improved it may be best to keep it as is because existing tools may
+> rely on it.
+
+You could give a couple of usage examples, by using this cert
+
+https://letsencrypt.org/docs/certificates-for-localhost/
+
+That is good information to store in the commit log for future and
+also works as a tested-by criteria.
 
 /Jarkko
