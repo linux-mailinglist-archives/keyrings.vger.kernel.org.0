@@ -2,142 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A2A2FE312
-	for <lists+keyrings@lfdr.de>; Thu, 21 Jan 2021 07:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E782FE30B
+	for <lists+keyrings@lfdr.de>; Thu, 21 Jan 2021 07:40:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728926AbhATXnL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 20 Jan 2021 18:43:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48710 "EHLO mail.kernel.org"
+        id S1726004AbhAUGis (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 21 Jan 2021 01:38:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49450 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726189AbhATXle (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 20 Jan 2021 18:41:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 319492360D;
-        Wed, 20 Jan 2021 23:40:51 +0000 (UTC)
+        id S2387519AbhATXpp (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 20 Jan 2021 18:45:45 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FF75221FE;
+        Wed, 20 Jan 2021 23:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611186053;
-        bh=5ltyCuNfiUE9KRiJ8HW3CLWIbAjZ0q9Wk+JTvdTQgWs=;
+        s=k20201202; t=1611186302;
+        bh=DtYGGvkksfs7vXommXeJwl91lOsFd1rEuyBTgJv2+l0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=X9I4sy6Of1lMfYxINnVZu1UeYGGQAXahf1FcBiuaQta/L2fwHejCjspkH6Ub8Q6a0
-         ScqliR8ACPQRKFE8AfThrQZXS5kaKfo60+OVYA8Rlhv2bpyoG7gR1JAsLPluWbyQnZ
-         +Fynx8LyUfsDmzdpwmGqRCdVQkyEKt69fyCHO9HBoNiMWewZdg9kHeIPjbdtnHiKPv
-         +BXUHg7OeQdyPP0rSXe6A84K/lYQzuopI9Amwg7sNjnePwaxiE1/PS7WMimjjwe17c
-         QXkUXwBO4mXsxB78DTcf+Ab1CrDRU/PWiCVAqNaAV227Vh/eUZtULtt5jmre1Lz5fH
-         89Eb+elO6cN3g==
-Date:   Thu, 21 Jan 2021 01:40:48 +0200
+        b=E70AnGgrCqxaoh1vWdlhGmZ2hd7h/FB84wv2240pZVLQUYmrHgMKATyaqSOkK85F/
+         efCn9nc8j0I9yyif6cEaIBQ+Y8LWSf+T/dqeBGKToiPaLLnNeBV1+7hwW5AxIM/qIi
+         msPEsJTYyd/Wx5bu8Da6KODI7Zbxlq/djYsCS3CT/WKtcjJxGMw81TsvZN0B0zv+fH
+         yq1FOKDdleusG2CT5IJQua2USHSh1tGzSkT6kTlaaNQQJ6+uyly9wZta2XxuOIhExl
+         bu2B36wdUYjoVyWPzvMvz8AUR+XPQHfHGGqkXP6OrYIbAY4z8Hgjlm7KTVPVLiVjYh
+         Vr6VDSf5UWiWw==
+Date:   Thu, 21 Jan 2021 01:44:56 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+To:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
 Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        David Woodhouse <dwmw2@infradead.org>,
         "David S . Miller" <davem@davemloft.net>,
-        Ben Boeckel <me@benboeckel.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Lee, Chun-Yi" <jlee@suse.com>
-Subject: Re: [PATCH 1/4] X.509: Add CodeSigning extended key usage parsing
-Message-ID: <YAi/gERomykYZqKZ@kernel.org>
-References: <20210120090517.23851-1-jlee@suse.com>
- <20210120090517.23851-2-jlee@suse.com>
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Ben Boeckel <mathstuf@gmail.com>
+Subject: Re: [PATCH v3 02/10] certs: Fix blacklisted hexadecimal hash string
+ check
+Message-ID: <YAjAePytNXMC6HqX@kernel.org>
+References: <20210114151909.2344974-1-mic@digikod.net>
+ <20210114151909.2344974-3-mic@digikod.net>
+ <YAem+DjBR92WG+bK@kernel.org>
+ <05e3ce56-c27c-877d-8ebe-d088ba95f248@digikod.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210120090517.23851-2-jlee@suse.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <05e3ce56-c27c-877d-8ebe-d088ba95f248@digikod.net>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 20, 2021 at 05:05:14PM +0800, Lee, Chun-Yi wrote:
-> This patch adds the logic for parsing the CodeSign extended key usage
-> extension in X.509. The parsing result will be set to the eku flag
-> which is carried by public key. It can be used in the PKCS#7
-> verification.
+On Wed, Jan 20, 2021 at 12:12:50PM +0100, Mickaël Salaün wrote:
 > 
-> Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-> ---
->  crypto/asymmetric_keys/x509_cert_parser.c | 24 ++++++++++++++++++++++++
->  include/crypto/public_key.h               |  1 +
->  include/linux/oid_registry.h              |  5 +++++
->  3 files changed, 30 insertions(+)
+> On 20/01/2021 04:43, Jarkko Sakkinen wrote:
+> > On Thu, Jan 14, 2021 at 04:19:01PM +0100, Mickaël Salaün wrote:
+> >> From: Mickaël Salaün <mic@linux.microsoft.com>
+> >>
+> >> When looking for a blacklisted hash, bin2hex() is used to transform a
+> >> binary hash to an ascii (lowercase) hexadecimal string.  This string is
+> >> then search for in the description of the keys from the blacklist
+> >> keyring.  When adding a key to the blacklist keyring,
+> >> blacklist_vet_description() checks the hash prefix and the hexadecimal
+> >> string, but not that this string is lowercase.  It is then valid to set
+> >> hashes with uppercase hexadecimal, which will be silently ignored by the
+> >> kernel.
+> >>
+> >> Add an additional check to blacklist_vet_description() to check that
+> >> hexadecimal strings are in lowercase.
+> >>
+> >> Cc: David Woodhouse <dwmw2@infradead.org>
+> >> Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+> >> Signed-off-by: David Howells <dhowells@redhat.com>
+> >> Reviewed-by: Ben Boeckel <mathstuf@gmail.com>
+> >> ---
+> >>
+> >> Changes since v2:
+> >> * Cherry-pick v1 patch from
+> >>   https://lore.kernel.org/lkml/2659836.1607940186@warthog.procyon.org.uk/
+> >>   to rebase on v5.11-rc3.
+> >> * Rearrange Cc order.
+> >> ---
+> >>  certs/blacklist.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/certs/blacklist.c b/certs/blacklist.c
+> >> index 2719fb2fbc1c..a888b934a1cd 100644
+> >> --- a/certs/blacklist.c
+> >> +++ b/certs/blacklist.c
+> >> @@ -37,7 +37,7 @@ static int blacklist_vet_description(const char *desc)
+> >>  found_colon:
+> >>  	desc++;
+> >>  	for (; *desc; desc++) {
+> >> -		if (!isxdigit(*desc))
+> >> +		if (!isxdigit(*desc) || isupper(*desc))
+> >>  			return -EINVAL;
+> >>  		n++;
+> >>  	}
+> >> -- 
+> >> 2.30.0
+> >>
+> > 
+> > Shouldn't this rather convert the upper case to lower case? I don't like
+> > the ABI break that this causes.
 > 
-> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-> index 52c9b455fc7d..65721313b265 100644
-> --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> @@ -497,6 +497,8 @@ int x509_process_extension(void *context, size_t hdrlen,
->  	struct x509_parse_context *ctx = context;
->  	struct asymmetric_key_id *kid;
->  	const unsigned char *v = value;
-> +	int i = 0;
-> +	enum OID oid;
->  
->  	pr_debug("Extension: %u\n", ctx->last_oid);
->  
-> @@ -526,6 +528,28 @@ int x509_process_extension(void *context, size_t hdrlen,
->  		return 0;
->  	}
->  
-> +	if (ctx->last_oid == OID_extKeyUsage) {
-> +		if (v[0] != ((ASN1_UNIV << 6) | ASN1_CONS_BIT | ASN1_SEQ) ||
-> +		    v[1] != vlen - 2)
-> +			return -EBADMSG;
-> +		i += 2;
-> +
-> +		while (i < vlen) {
-> +			/* A 10 bytes EKU OID Octet blob =
-> +			 * ASN1_OID + size byte + 8 bytes OID */
-> +			if (v[i] != ASN1_OID || v[i + 1] != 8 || (i + 10) > vlen)
-> +				return -EBADMSG;
-> +
-> +			oid = look_up_OID(v + i + 2, v[i + 1]);
-> +			if (oid == OID_codeSigning) {
-> +				ctx->cert->pub->eku |= EKU_codeSigning;
-> +			}
-> +			i += 10;
-> +		}
-> +		pr_debug("extKeyUsage: %d\n", ctx->cert->pub->eku);
+> It doesn't break the ABI because keys loaded in the blacklist keyring
+> can only happen with builtin hashes.  Moreover these builtin hashes will
+> be checked by patch 10/10 at build time.
 
-With eBPF around, does this make any sense?
+Right the patches are just out of order then.
 
 /Jarkko
 
-> +		return 0;
-> +	}
-> +
->  	return 0;
->  }
->  
-> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-> index 948c5203ca9c..07a1b28460a2 100644
-> --- a/include/crypto/public_key.h
-> +++ b/include/crypto/public_key.h
-> @@ -29,6 +29,7 @@ struct public_key {
->  	bool key_is_private;
->  	const char *id_type;
->  	const char *pkey_algo;
-> +	unsigned int eku : 9;      /* Extended Key Usage (9-bit) */
->  };
->  
->  extern void public_key_free(struct public_key *key);
-> diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-> index 4462ed2c18cd..e20e8eb53b21 100644
-> --- a/include/linux/oid_registry.h
-> +++ b/include/linux/oid_registry.h
-> @@ -113,9 +113,14 @@ enum OID {
->  	OID_SM2_with_SM3,		/* 1.2.156.10197.1.501 */
->  	OID_sm3WithRSAEncryption,	/* 1.2.156.10197.1.504 */
->  
-> +	/* Extended key purpose OIDs [RFC 5280] */
-> +	OID_codeSigning,		/* 1.3.6.1.5.5.7.3.3 */
-> +
->  	OID__NR
->  };
->  
-> +#define EKU_codeSigning	(1 << 2)
-> +
->  extern enum OID look_up_OID(const void *data, size_t datasize);
->  extern int sprint_oid(const void *, size_t, char *, size_t);
->  extern int sprint_OID(enum OID, char *, size_t);
-> -- 
-> 2.16.4
 > 
+> This patch is also important to remove a false sense of security and
+> warns about mis-blacklisted certificates or binaries:
+> https://lore.kernel.org/lkml/c9664a67-61b7-6b4a-86d7-5aca9ff06fa5@digikod.net/
+> 
+> Hot-patching keys doesn't seem a good idea, especially when these keys
+> are signed. Moreover, it would bring additional complexity and will
+> require to change the core of the key management.
+> 
+> > 
+> > /Jarkko
+> > 
 > 
