@@ -2,276 +2,204 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6819D2FF028
-	for <lists+keyrings@lfdr.de>; Thu, 21 Jan 2021 17:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8602FF10F
+	for <lists+keyrings@lfdr.de>; Thu, 21 Jan 2021 17:53:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387674AbhAUQYo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 21 Jan 2021 11:24:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387841AbhAUQY3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 21 Jan 2021 11:24:29 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4EA5C0613ED
-        for <keyrings@vger.kernel.org>; Thu, 21 Jan 2021 08:23:48 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id e15so2048213wme.0
-        for <keyrings@vger.kernel.org>; Thu, 21 Jan 2021 08:23:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=forissier-org.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zG4fhjKVJiNuv6SqQJL4fQU8mayLNazz740d5icTHSk=;
-        b=ACQBorxu3/kwafewpeR3kASLaNW2qE3a+LeKpdv3M3TLSCnWLdjLbiYm+U6tjQV+RE
-         ONy6LTJsNkMfU+MGdsm7xL5NqmfuKLFh3dXnZQWL0a9fSUos9Vn/jhVqCi8fwXEkaXOm
-         5r+qexj+CeJ4/QQuaWLRcx++MWLjWrFRcA0Hehd6iwC0yUiCQNK02Y8hmvyyuEk9Rq1v
-         r4BY60ZDPS+O6KufQY1Mm1oLPkkbwJCAs+zhkqu28cyPxoux8LhD31uZFLpShOmd/5N4
-         UL7P/WTIhQcMzzt/lHKN+qZneImjTFe6iL/lNR9+SiBQseOY7Gc21I8BWl+cMlEz2R3y
-         o7hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zG4fhjKVJiNuv6SqQJL4fQU8mayLNazz740d5icTHSk=;
-        b=RX5Nlssvx3RBn0bwLHLs8h777BZmeyN8asZ2aksY8MtUryOMo2qkYO3O4rIa+datLd
-         /QWm+rCAbGs7GpoUTe2Hj0RFq3G3KynKX9WW1k0rHnwaOZ/OL/36WQQCbS1Hm02jKVDD
-         3VKTAHnpI7wZ5089RyTLIkrhcJQw6eum4em6syInZFx5B4DxAvel4RVmTpqeQ6j3JDb8
-         nHRNIhLuSvjcRAx32JB6lsY9101x1HEYjCEzBekojWbzCQkvpvoQV9L6dBlNq1311X19
-         M8hgw10pUWpgzOKRmFyxrl+BfLBQj9G3CBsEjeWPZjiglmfnmr7h4zE6r/DRwz7DCLj5
-         RQ6A==
-X-Gm-Message-State: AOAM530i9CHk2AxW1JgRQLKUtHNu0pQRaC9QX7tZyTTJzdehEkBCKYEL
-        RrHydLuttbFiKChZjqeOfWlAJQ==
-X-Google-Smtp-Source: ABdhPJy7Jlp7SoWm7votj5JQCx3T1dGKSThe0DyKuoodKhe3dXjGdBt2Qq4v/5CcRHsGUxbv38P4cw==
-X-Received: by 2002:a1c:2501:: with SMTP id l1mr129269wml.41.1611246227264;
-        Thu, 21 Jan 2021 08:23:47 -0800 (PST)
-Received: from ?IPv6:2a01:e0a:3cb:7bb0:7932:cf59:b36c:1f60? ([2a01:e0a:3cb:7bb0:7932:cf59:b36c:1f60])
-        by smtp.gmail.com with ESMTPSA id w13sm9082040wrt.52.2021.01.21.08.23.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Jan 2021 08:23:46 -0800 (PST)
-Subject: Re: [PATCH v8 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        op-tee@lists.trustedfirmware.org, Jonathan Corbet <corbet@lwn.net>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        id S1731734AbhAUQwK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 21 Jan 2021 11:52:10 -0500
+Received: from smtp-190b.mail.infomaniak.ch ([185.125.25.11]:43139 "EHLO
+        smtp-190b.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731142AbhAUP4m (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 21 Jan 2021 10:56:42 -0500
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DM6Rd4TrPzMr5H6;
+        Thu, 21 Jan 2021 16:55:25 +0100 (CET)
+Received: from localhost (unknown [23.97.221.149])
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4DM6Rd2K7fzlh8TL;
+        Thu, 21 Jan 2021 16:55:25 +0100 (CET)
+From:   =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         James Morris <jmorris@namei.org>,
+        =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@linux.microsoft.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Luke Hinds <lhinds@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        linux-integrity@vger.kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-References: <X/x+N0fgrzIZTeNi@kernel.org>
- <CAFA6WYOUvWAZtYfR4q8beZFkX-CtdxqwJaRQM+GHNMDfQiEWOA@mail.gmail.com>
- <X/+m6+m2/snYj9Vc@kernel.org>
- <CAFA6WYNyirit_AFhoE+XR9PHw=OjRgEdXDqz1uanj_SN2NXeMw@mail.gmail.com>
- <YAa0ys4YJcZtKdfF@kernel.org> <YAeH2pb8szQyjusL@kernel.org>
- <CAFA6WYP5G6NfGk96ePOC+2kpD6B+4hz9nywyUM9Nh=dJDYMiuA@mail.gmail.com>
- <01000177223f74d3-1eef7685-4a19-40d2-ace6-d4cd7f35579d-000000@email.amazonses.com>
- <dc3979e8-6bf0-adb7-164d-d50e805a048f@forissier.org>
- <YAmYu9FxWcLPhBhs@kernel.org> <YAmcyKnYCK+Y4IGW@kernel.org>
-From:   Jerome Forissier <jerome@forissier.org>
-Message-ID: <1486cfe8-bc30-1266-12bd-0049f2b64820@forissier.org>
-Date:   Thu, 21 Jan 2021 17:23:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH v4 02/10] certs: Check that builtin blacklist hashes are valid
+Date:   Thu, 21 Jan 2021 16:55:05 +0100
+Message-Id: <20210121155513.539519-3-mic@digikod.net>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210121155513.539519-1-mic@digikod.net>
+References: <20210121155513.539519-1-mic@digikod.net>
 MIME-Version: 1.0
-In-Reply-To: <YAmcyKnYCK+Y4IGW@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+From: Mickaël Salaün <mic@linux.microsoft.com>
 
+Add and use a check-blacklist-hashes.awk script to make sure that the
+builtin blacklist hashes set with CONFIG_SYSTEM_BLACKLIST_HASH_LIST will
+effectively be taken into account as blacklisted hashes.  This is useful
+to debug invalid hash formats, and it make sure that previous hashes
+which could have been loaded in the kernel, but silently ignored, are
+now noticed and deal with by the user at kernel build time.
 
-On 1/21/21 4:24 PM, Jarkko Sakkinen wrote:
-> On Thu, Jan 21, 2021 at 05:07:42PM +0200, Jarkko Sakkinen wrote:
->> On Thu, Jan 21, 2021 at 09:44:07AM +0100, Jerome Forissier wrote:
->>>
->>>
->>> On 1/21/21 1:02 AM, Jarkko Sakkinen via OP-TEE wrote:
->>>> On Wed, Jan 20, 2021 at 12:53:28PM +0530, Sumit Garg wrote:
->>>>> On Wed, 20 Jan 2021 at 07:01, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->>>>>>
->>>>>> On Tue, Jan 19, 2021 at 12:30:42PM +0200, Jarkko Sakkinen wrote:
->>>>>>> On Fri, Jan 15, 2021 at 11:32:31AM +0530, Sumit Garg wrote:
->>>>>>>> On Thu, 14 Jan 2021 at 07:35, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->>>>>>>>>
->>>>>>>>> On Wed, Jan 13, 2021 at 04:47:00PM +0530, Sumit Garg wrote:
->>>>>>>>>> Hi Jarkko,
->>>>>>>>>>
->>>>>>>>>> On Mon, 11 Jan 2021 at 22:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->>>>>>>>>>>
->>>>>>>>>>> On Tue, Nov 03, 2020 at 09:31:44PM +0530, Sumit Garg wrote:
->>>>>>>>>>>> Add support for TEE based trusted keys where TEE provides the functionality
->>>>>>>>>>>> to seal and unseal trusted keys using hardware unique key.
->>>>>>>>>>>>
->>>>>>>>>>>> Refer to Documentation/tee.txt for detailed information about TEE.
->>>>>>>>>>>>
->>>>>>>>>>>> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
->>>>>>>>>>>
->>>>>>>>>>> I haven't yet got QEMU environment working with aarch64, this produces
->>>>>>>>>>> just a blank screen:
->>>>>>>>>>>
->>>>>>>>>>> ./output/host/usr/bin/qemu-system-aarch64 -M virt -cpu cortex-a53 -smp 1 -kernel output/images/Image -initrd output/images/rootfs.cpio -serial stdio
->>>>>>>>>>>
->>>>>>>>>>> My BuildRoot fork for TPM and keyring testing is located over here:
->>>>>>>>>>>
->>>>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/buildroot-tpmdd.git/
->>>>>>>>>>>
->>>>>>>>>>> The "ARM version" is at this point in aarch64 branch. Over time I will
->>>>>>>>>>> define tpmdd-x86_64 and tpmdd-aarch64 boards and everything will be then
->>>>>>>>>>> in the master branch.
->>>>>>>>>>>
->>>>>>>>>>> To create identical images you just need to
->>>>>>>>>>>
->>>>>>>>>>> $ make tpmdd_defconfig && make
->>>>>>>>>>>
->>>>>>>>>>> Can you check if you see anything obviously wrong? I'm eager to test this
->>>>>>>>>>> patch set, and in bigger picture I really need to have ready to run
->>>>>>>>>>> aarch64 environment available.
->>>>>>>>>>
->>>>>>>>>> I would rather suggest you to follow steps listed here [1] as to test
->>>>>>>>>> this feature on Qemu aarch64 we need to build firmwares such as TF-A,
->>>>>>>>>> OP-TEE, UEFI etc. which are all integrated into OP-TEE Qemu build
->>>>>>>>>> system [2]. And then it would be easier to migrate them to your
->>>>>>>>>> buildroot environment as well.
->>>>>>>>>>
->>>>>>>>>> [1] https://lists.trustedfirmware.org/pipermail/op-tee/2020-May/000027.html
->>>>>>>>>> [2] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
->>>>>>>>>>
->>>>>>>>>> -Sumit
->>>>>>>>>
->>>>>>>>> Can you provide 'keyctl_change'? Otherwise, the steps are easy to follow.
->>>>>>>>>
->>>>>>>>
->>>>>>>> $ cat keyctl_change
->>>>>>>> diff --git a/common.mk b/common.mk
->>>>>>>> index aeb7b41..663e528 100644
->>>>>>>> --- a/common.mk
->>>>>>>> +++ b/common.mk
->>>>>>>> @@ -229,6 +229,7 @@ BR2_PACKAGE_OPTEE_TEST_SDK ?= $(OPTEE_OS_TA_DEV_KIT_DIR)
->>>>>>>>  BR2_PACKAGE_OPTEE_TEST_SITE ?= $(OPTEE_TEST_PATH)
->>>>>>>>  BR2_PACKAGE_STRACE ?= y
->>>>>>>>  BR2_TARGET_GENERIC_GETTY_PORT ?= $(if
->>>>>>>> $(CFG_NW_CONSOLE_UART),ttyAMA$(CFG_NW_CONSOLE_UART),ttyAMA0)
->>>>>>>> +BR2_PACKAGE_KEYUTILS := y
->>>>>>>>
->>>>>>>>  # All BR2_* variables from the makefile or the environment are appended to
->>>>>>>>  # ../out-br/extra.conf. All values are quoted "..." except y and n.
->>>>>>>> diff --git a/kconfigs/qemu.conf b/kconfigs/qemu.conf
->>>>>>>> index 368c18a..832ab74 100644
->>>>>>>> --- a/kconfigs/qemu.conf
->>>>>>>> +++ b/kconfigs/qemu.conf
->>>>>>>> @@ -20,3 +20,5 @@ CONFIG_9P_FS=y
->>>>>>>>  CONFIG_9P_FS_POSIX_ACL=y
->>>>>>>>  CONFIG_HW_RANDOM=y
->>>>>>>>  CONFIG_HW_RANDOM_VIRTIO=y
->>>>>>>> +CONFIG_TRUSTED_KEYS=y
->>>>>>>> +CONFIG_ENCRYPTED_KEYS=y
->>>>>>>>
->>>>>>>>> After I've successfully tested 2/4, I'd suggest that you roll out one more
->>>>>>>>> version and CC the documentation patch to Elaine and Mini, and clearly
->>>>>>>>> remark in the commit message that TEE is a standard, with a link to the
->>>>>>>>> specification.
->>>>>>>>>
->>>>>>>>
->>>>>>>> Sure, I will roll out the next version after your testing.
->>>>>>>
->>>>>>> Thanks, I'll try this at instant, and give my feedback.
->>>>>>
->>>>>> I bump into this:
->>>>>>
->>>>>> $ make run-only
->>>>>> ln -sf /home/jarkko/devel/tpm/optee/build/../out-br/images/rootfs.cpio.gz /home/jarkko/devel/tpm/optee/build/../out/bin/
->>>>>> ln: failed to create symbolic link '/home/jarkko/devel/tpm/optee/build/../out/bin/': No such file or directory
->>>>>> make: *** [Makefile:194: run-only] Error 1
->>>>>>
->>>>>
->>>>> Could you check if the following directory tree is built after
->>>>> executing the below command?
->>>>>
->>>>> $ make -j`nproc`
->>>>> CFG_IN_TREE_EARLY_TAS=trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c
->>>>>
->>>>> $ tree out/bin/
->>>>> out/bin/
->>>>> ├── bl1.bin -> /home/sumit/build/optee/build/../trusted-firmware-a/build/qemu/release/bl1.bin
->>>>> ├── bl2.bin -> /home/sumit/build/optee/build/../trusted-firmware-a/build/qemu/release/bl2.bin
->>>>> ├── bl31.bin ->
->>>>> /home/sumit/build/optee/build/../trusted-firmware-a/build/qemu/release/bl31.bin
->>>>> ├── bl32.bin ->
->>>>> /home/sumit/build/optee/build/../optee_os/out/arm/core/tee-header_v2.bin
->>>>> ├── bl32_extra1.bin ->
->>>>> /home/sumit/build/optee/build/../optee_os/out/arm/core/tee-pager_v2.bin
->>>>> ├── bl32_extra2.bin ->
->>>>> /home/sumit/build/optee/build/../optee_os/out/arm/core/tee-pageable_v2.bin
->>>>> ├── bl33.bin ->
->>>>> /home/sumit/build/optee/build/../edk2/Build/ArmVirtQemuKernel-AARCH64/RELEASE_GCC49/FV/QEMU_EFI.fd
->>>>> ├── Image -> /home/sumit/build/optee/build/../linux/arch/arm64/boot/Image
->>>>> └── rootfs.cpio.gz ->
->>>>> /home/sumit/build/optee/build/../out-br/images/rootfs.cpio.gz
->>>>>
->>>>> 0 directories, 9 files
->>>>>
->>>>> -Sumit
->>>>
->>>> I actually spotted a build error that was unnoticed last time:
->>>>
->>>> make[2]: Entering directory '/home/jarkko/devel/tpm/optee/edk2/BaseTools/Tests'
->>>> /bin/sh: 1: python: not found
->>>>
->>>> I'd prefer not to install Python2. It has been EOL over a year.
->>>
->>> AFAIK, everything should build fine with Python3. On my Ubuntu 20.04
->>> machine, this is accomplished by installing package "python-is-python3"
->>> (after uninstalling "python-is-python2" if need be).
->>>
->>> $ ls -l /usr/bin/python
->>> lrwxrwxrwx 1 root root 7 Apr 15  2020 /usr/bin/python -> python3
->>
->> Right, just found about this in unrelated context :-) [*]
->>
->> Hope this will work out...
->>
->> [*] https://github.com/surge-synthesizer/surge/pull/3655
-> 
-> Now I get
-> 
-> Traceback (most recent call last):
->   File "/home/jarkko/Projects/tpm/optee/edk2/BaseTools/Tests/RunTests.py", line 36, in <module>
->     allTests = GetAllTestsSuite()
->   File "/home/jarkko/Projects/tpm/optee/edk2/BaseTools/Tests/RunTests.py", line 33, in GetAllTestsSuite
->     return unittest.TestSuite([GetCTestSuite(), GetPythonTestSuite()])
->   File "/home/jarkko/Projects/tpm/optee/edk2/BaseTools/Tests/RunTests.py", line 25, in GetCTestSuite
->     import CToolsTests
->   File "/home/jarkko/Projects/tpm/optee/edk2/BaseTools/Tests/CToolsTests.py", line 22, in <module>
->     import TianoCompress
->   File "/home/jarkko/Projects/tpm/optee/edk2/BaseTools/Tests/TianoCompress.py", line 69, in <module>
->     TheTestSuite = TestTools.MakeTheTestSuite(locals())
->   File "/home/jarkko/Projects/tpm/optee/edk2/BaseTools/Tests/TestTools.py", line 43, in MakeTheTestSuite
->     for name, item in localItems.iteritems():
-> AttributeError: 'dict' object has no attribute 'iteritems'
+This also prevent stricter blacklist key description checking (provided
+by following commits) to failed for builtin hashes.
 
-Right. Same here after removing all traces of Python2 from my system :-/
+Update CONFIG_SYSTEM_BLACKLIST_HASH_LIST help to explain the content of
+a hash string and how to generate certificate ones.
 
-A couple of fixes are needed:
-1. EDK2 needs to be upgraded to tag or later [1]
-2. The PYTHON3_ENABLE environment variable needs to be set to TRUE [2]
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+---
 
-[1] https://github.com/OP-TEE/manifest/pull/177
-[2] https://github.com/OP-TEE/build/pull/450
+Changes since v3:
+* Improve commit description.
+* Update CONFIG_SYSTEM_BLACKLIST_HASH_LIST help.
+* Remove Acked-by Jarkko Sakkinen because of the above changes.
 
-HTH,
+Changes since v2:
+* Add Jarkko's Acked-by.
+
+Changes since v1:
+* Prefix script path with $(scrtree)/ (suggested by David Howells).
+* Fix hexadecimal number check.
+---
+ MAINTAINERS                        |  1 +
+ certs/.gitignore                   |  1 +
+ certs/Kconfig                      |  7 ++++--
+ certs/Makefile                     | 15 +++++++++++-
+ scripts/check-blacklist-hashes.awk | 37 ++++++++++++++++++++++++++++++
+ 5 files changed, 58 insertions(+), 3 deletions(-)
+ create mode 100755 scripts/check-blacklist-hashes.awk
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 773a362e807f..a18fd3d283c6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4118,6 +4118,7 @@ L:	keyrings@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/admin-guide/module-signing.rst
+ F:	certs/
++F:	scripts/check-blacklist-hashes.awk
+ F:	scripts/extract-cert.c
+ F:	scripts/sign-file.c
+ F:	tools/certs/
+diff --git a/certs/.gitignore b/certs/.gitignore
+index 2a2483990686..42cc2ac24b93 100644
+--- a/certs/.gitignore
++++ b/certs/.gitignore
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++blacklist_hashes_checked
+ x509_certificate_list
+diff --git a/certs/Kconfig b/certs/Kconfig
+index c94e93d8bccf..6d09dec4a9e3 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -80,7 +80,10 @@ config SYSTEM_BLACKLIST_HASH_LIST
+ 	help
+ 	  If set, this option should be the filename of a list of hashes in the
+ 	  form "<hash>", "<hash>", ... .  This will be included into a C
+-	  wrapper to incorporate the list into the kernel.  Each <hash> should
+-	  be a string of hex digits.
++	  wrapper to incorporate the list into the kernel.  Each <hash> must be a
++	  string starting with a prefix ("tbs" or "bin"), then a colon (":"), and
++	  finally an even number of hexadecimal lowercase characters (up to 128).
++	  Certificate hashes can be generated with
++	  tools/certs/print-cert-tbs-hash.sh .
+ 
+ endmenu
+diff --git a/certs/Makefile b/certs/Makefile
+index f4c25b67aad9..eb45407ff282 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -6,7 +6,20 @@
+ obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += system_keyring.o system_certificates.o
+ obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist.o
+ ifneq ($(CONFIG_SYSTEM_BLACKLIST_HASH_LIST),"")
++
++quiet_cmd_check_blacklist_hashes = CHECK   $(patsubst "%",%,$(2))
++      cmd_check_blacklist_hashes = $(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(2); touch $@
++
++$(eval $(call config_filename,SYSTEM_BLACKLIST_HASH_LIST))
++
++$(obj)/blacklist_hashes.o: $(obj)/blacklist_hashes_checked
++
++targets += blacklist_hashes_checked
++$(obj)/blacklist_hashes_checked: $(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(SYSTEM_BLACKLIST_HASH_LIST_FILENAME) scripts/check-blacklist-hashes.awk FORCE
++	$(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
++
+ obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_hashes.o
++
+ else
+ obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_nohashes.o
+ endif
+@@ -29,7 +42,7 @@ $(obj)/x509_certificate_list: scripts/extract-cert $(SYSTEM_TRUSTED_KEYS_SRCPREF
+ 	$(call if_changed,extract_certs,$(SYSTEM_TRUSTED_KEYS_SRCPREFIX)$(CONFIG_SYSTEM_TRUSTED_KEYS))
+ endif # CONFIG_SYSTEM_TRUSTED_KEYRING
+ 
+-clean-files := x509_certificate_list .x509.list
++clean-files := x509_certificate_list .x509.list blacklist_hashes_checked
+ 
+ ifeq ($(CONFIG_MODULE_SIG),y)
+ ###############################################################################
+diff --git a/scripts/check-blacklist-hashes.awk b/scripts/check-blacklist-hashes.awk
+new file mode 100755
+index 000000000000..107c1d3204d4
+--- /dev/null
++++ b/scripts/check-blacklist-hashes.awk
+@@ -0,0 +1,37 @@
++#!/usr/bin/awk -f
++# SPDX-License-Identifier: GPL-2.0
++#
++# Copyright © 2020, Microsoft Corporation. All rights reserved.
++#
++# Author: Mickaël Salaün <mic@linux.microsoft.com>
++#
++# Check that a CONFIG_SYSTEM_BLACKLIST_HASH_LIST file contains a valid array of
++# hash strings.  Such string must start with a prefix ("tbs" or "bin"), then a
++# colon (":"), and finally an even number of hexadecimal lowercase characters
++# (up to 128).
++
++BEGIN {
++	RS = ","
++}
++{
++	if (!match($0, "^[ \t\n\r]*\"([^\"]*)\"[ \t\n\r]*$", part1)) {
++		print "Not a string (item " NR "):", $0;
++		exit 1;
++	}
++	if (!match(part1[1], "^(tbs|bin):(.*)$", part2)) {
++		print "Unknown prefix (item " NR "):", part1[1];
++		exit 1;
++	}
++	if (!match(part2[2], "^([0-9a-f]+)$", part3)) {
++		print "Not a lowercase hexadecimal string (item " NR "):", part2[2];
++		exit 1;
++	}
++	if (length(part3[1]) > 128) {
++		print "Hash string too long (item " NR "):", part3[1];
++		exit 1;
++	}
++	if (length(part3[1]) % 2 == 1) {
++		print "Not an even number of hexadecimal characters (item " NR "):", part3[1];
++		exit 1;
++	}
++}
 -- 
-Jerome
+2.30.0
+
