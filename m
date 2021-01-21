@@ -2,144 +2,202 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 003F62FDE35
-	for <lists+keyrings@lfdr.de>; Thu, 21 Jan 2021 01:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4272FDF22
+	for <lists+keyrings@lfdr.de>; Thu, 21 Jan 2021 03:18:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbhAUAxD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 20 Jan 2021 19:53:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37546 "EHLO mail.kernel.org"
+        id S1728795AbhAUAwx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 20 Jan 2021 19:52:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53188 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727770AbhAUAhd (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 20 Jan 2021 19:37:33 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2B082224D1;
-        Thu, 21 Jan 2021 00:36:46 +0000 (UTC)
+        id S1731633AbhAUAD2 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 20 Jan 2021 19:03:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C55DB2368A;
+        Thu, 21 Jan 2021 00:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611189410;
-        bh=wQ8RTAAdqKPawygxmXduBoC5eOWU4KdTfxeWk7uby9o=;
+        s=k20201202; t=1611187313;
+        bh=Eh0u5i8AW4x9ntLsFlUAc6rlbY2JykroCggN1fE25ec=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RePUxeC/sF5jSjok7HRtFf8tz6/BH6MmHiMCw4vM67j1iIncx0gbwbvHPXIqnguzL
-         cR+t/k4/sFoEf49TaEj2iuB6W/TCzph7tNXE+P6K9ghJLHElc3IzDDCqrnnrd06xYS
-         RXwsfi2ensCprZqc51clJe7f3DbOppEiyr64TgqIGqcXPA9+1tREMO0hIIhcPZ2PDP
-         Fxw0rNc0u1khVNsOertQylIj1q7EHOBGUOm+ibTz/I40OUQfF1WSeyMd6cEIueBujC
-         coleKskonEc5FeEJuB0yyTOaJIExz6dSBRbl6ojz1ewBVZ36uDsjgbLRGJMXPH0vtT
-         h1qDMFAunbopg==
-Date:   Thu, 21 Jan 2021 02:36:43 +0200
+        b=gZ2nE1nWc5IEdueOVVKR9vTP5loybR/I49ORFIwya9nGkp8IRtTWQXNmdnpsV9SHt
+         IbC4NVTSRTaW/UTjXdq3t02Fixqlc484JqdK3sdr59lnUVQTR5HL2nmYDC4pzq1Zdl
+         qtVGeiJMy2stNYuVaJGshQIh1w82JdOV4Txew7VIhlSAW1jXPry/NY4csB5Ch2gHbo
+         UifuHCqGdSgu/kcRvIlwwIsX4+vTLbjmba7Rh6/dmaKun51d+pSOHgGzYj48BPQMmL
+         N8XAe+Ze+T3z+dF15H49ScwHfVm4IiTfiLegna6iqRUOAFensVr6vH+u3F/YwcZ+rf
+         3owAiDsd4Zxqg==
+Date:   Thu, 21 Jan 2021 02:01:46 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
 Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        David Howells <dhowells@redhat.com>, dwmw2@infradead.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
-        Mimi Zohar <zohar@linux.ibm.com>, erichte@linux.ibm.com,
-        mpe@ellerman.id.au, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com
-Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
-Message-ID: <YAjMm9Gq/FFOzQYG@kernel.org>
-References: <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com>
- <20200916004927.64276-1-eric.snowberg@oracle.com>
- <1360578.1607593748@warthog.procyon.org.uk>
- <2442460.1610463459@warthog.procyon.org.uk>
- <X/9a8naM8p4tT5sO@linux.intel.com>
- <A05E3573-B1AF-474B-94A5-779E69E5880A@oracle.com>
- <YAFdNiYZSWpB9vOw@kernel.org>
- <CFBF6AEC-2832-44F7-9D7F-F20489498C33@oracle.com>
- <YAgTawk3EENF/P6j@kernel.org>
- <D9F5E0BD-E2FC-428F-91B3-35D2750493A0@oracle.com>
+        Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Subject: Re: [PATCH v8 2/4] KEYS: trusted: Introduce TEE based Trusted Keys
+Message-ID: <YAjEaq+ZWD/eHU/x@kernel.org>
+References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
+ <1604419306-26105-3-git-send-email-sumit.garg@linaro.org>
+ <X/x+N0fgrzIZTeNi@kernel.org>
+ <CAFA6WYOUvWAZtYfR4q8beZFkX-CtdxqwJaRQM+GHNMDfQiEWOA@mail.gmail.com>
+ <X/+m6+m2/snYj9Vc@kernel.org>
+ <CAFA6WYNyirit_AFhoE+XR9PHw=OjRgEdXDqz1uanj_SN2NXeMw@mail.gmail.com>
+ <YAa0ys4YJcZtKdfF@kernel.org>
+ <YAeH2pb8szQyjusL@kernel.org>
+ <CAFA6WYP5G6NfGk96ePOC+2kpD6B+4hz9nywyUM9Nh=dJDYMiuA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <D9F5E0BD-E2FC-428F-91B3-35D2750493A0@oracle.com>
+In-Reply-To: <CAFA6WYP5G6NfGk96ePOC+2kpD6B+4hz9nywyUM9Nh=dJDYMiuA@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 20, 2021 at 03:13:11PM -0700, Eric Snowberg wrote:
+On Wed, Jan 20, 2021 at 12:53:28PM +0530, Sumit Garg wrote:
+> On Wed, 20 Jan 2021 at 07:01, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Tue, Jan 19, 2021 at 12:30:42PM +0200, Jarkko Sakkinen wrote:
+> > > On Fri, Jan 15, 2021 at 11:32:31AM +0530, Sumit Garg wrote:
+> > > > On Thu, 14 Jan 2021 at 07:35, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > >
+> > > > > On Wed, Jan 13, 2021 at 04:47:00PM +0530, Sumit Garg wrote:
+> > > > > > Hi Jarkko,
+> > > > > >
+> > > > > > On Mon, 11 Jan 2021 at 22:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > > > >
+> > > > > > > On Tue, Nov 03, 2020 at 09:31:44PM +0530, Sumit Garg wrote:
+> > > > > > > > Add support for TEE based trusted keys where TEE provides the functionality
+> > > > > > > > to seal and unseal trusted keys using hardware unique key.
+> > > > > > > >
+> > > > > > > > Refer to Documentation/tee.txt for detailed information about TEE.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > > > > > >
+> > > > > > > I haven't yet got QEMU environment working with aarch64, this produces
+> > > > > > > just a blank screen:
+> > > > > > >
+> > > > > > > ./output/host/usr/bin/qemu-system-aarch64 -M virt -cpu cortex-a53 -smp 1 -kernel output/images/Image -initrd output/images/rootfs.cpio -serial stdio
+> > > > > > >
+> > > > > > > My BuildRoot fork for TPM and keyring testing is located over here:
+> > > > > > >
+> > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/buildroot-tpmdd.git/
+> > > > > > >
+> > > > > > > The "ARM version" is at this point in aarch64 branch. Over time I will
+> > > > > > > define tpmdd-x86_64 and tpmdd-aarch64 boards and everything will be then
+> > > > > > > in the master branch.
+> > > > > > >
+> > > > > > > To create identical images you just need to
+> > > > > > >
+> > > > > > > $ make tpmdd_defconfig && make
+> > > > > > >
+> > > > > > > Can you check if you see anything obviously wrong? I'm eager to test this
+> > > > > > > patch set, and in bigger picture I really need to have ready to run
+> > > > > > > aarch64 environment available.
+> > > > > >
+> > > > > > I would rather suggest you to follow steps listed here [1] as to test
+> > > > > > this feature on Qemu aarch64 we need to build firmwares such as TF-A,
+> > > > > > OP-TEE, UEFI etc. which are all integrated into OP-TEE Qemu build
+> > > > > > system [2]. And then it would be easier to migrate them to your
+> > > > > > buildroot environment as well.
+> > > > > >
+> > > > > > [1] https://lists.trustedfirmware.org/pipermail/op-tee/2020-May/000027.html
+> > > > > > [2] https://optee.readthedocs.io/en/latest/building/devices/qemu.html#qemu-v8
+> > > > > >
+> > > > > > -Sumit
+> > > > >
+> > > > > Can you provide 'keyctl_change'? Otherwise, the steps are easy to follow.
+> > > > >
+> > > >
+> > > > $ cat keyctl_change
+> > > > diff --git a/common.mk b/common.mk
+> > > > index aeb7b41..663e528 100644
+> > > > --- a/common.mk
+> > > > +++ b/common.mk
+> > > > @@ -229,6 +229,7 @@ BR2_PACKAGE_OPTEE_TEST_SDK ?= $(OPTEE_OS_TA_DEV_KIT_DIR)
+> > > >  BR2_PACKAGE_OPTEE_TEST_SITE ?= $(OPTEE_TEST_PATH)
+> > > >  BR2_PACKAGE_STRACE ?= y
+> > > >  BR2_TARGET_GENERIC_GETTY_PORT ?= $(if
+> > > > $(CFG_NW_CONSOLE_UART),ttyAMA$(CFG_NW_CONSOLE_UART),ttyAMA0)
+> > > > +BR2_PACKAGE_KEYUTILS := y
+> > > >
+> > > >  # All BR2_* variables from the makefile or the environment are appended to
+> > > >  # ../out-br/extra.conf. All values are quoted "..." except y and n.
+> > > > diff --git a/kconfigs/qemu.conf b/kconfigs/qemu.conf
+> > > > index 368c18a..832ab74 100644
+> > > > --- a/kconfigs/qemu.conf
+> > > > +++ b/kconfigs/qemu.conf
+> > > > @@ -20,3 +20,5 @@ CONFIG_9P_FS=y
+> > > >  CONFIG_9P_FS_POSIX_ACL=y
+> > > >  CONFIG_HW_RANDOM=y
+> > > >  CONFIG_HW_RANDOM_VIRTIO=y
+> > > > +CONFIG_TRUSTED_KEYS=y
+> > > > +CONFIG_ENCRYPTED_KEYS=y
+> > > >
+> > > > > After I've successfully tested 2/4, I'd suggest that you roll out one more
+> > > > > version and CC the documentation patch to Elaine and Mini, and clearly
+> > > > > remark in the commit message that TEE is a standard, with a link to the
+> > > > > specification.
+> > > > >
+> > > >
+> > > > Sure, I will roll out the next version after your testing.
+> > >
+> > > Thanks, I'll try this at instant, and give my feedback.
+> >
+> > I bump into this:
+> >
+> > $ make run-only
+> > ln -sf /home/jarkko/devel/tpm/optee/build/../out-br/images/rootfs.cpio.gz /home/jarkko/devel/tpm/optee/build/../out/bin/
+> > ln: failed to create symbolic link '/home/jarkko/devel/tpm/optee/build/../out/bin/': No such file or directory
+> > make: *** [Makefile:194: run-only] Error 1
+> >
 > 
-> > On Jan 20, 2021, at 4:26 AM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > 
-> > On Fri, Jan 15, 2021 at 09:49:02AM -0700, Eric Snowberg wrote:
-> >> 
-> >>> On Jan 15, 2021, at 2:15 AM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >>> 
-> >>> On Wed, Jan 13, 2021 at 05:11:10PM -0700, Eric Snowberg wrote:
-> >>>> 
-> >>>>> On Jan 13, 2021, at 1:41 PM, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
-> >>>>> 
-> >>>>> On Tue, Jan 12, 2021 at 02:57:39PM +0000, David Howells wrote:
-> >>>>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> >>>>>> 
-> >>>>>>>> On Dec 10, 2020, at 2:49 AM, David Howells <dhowells@redhat.com> wrote:
-> >>>>>>>> 
-> >>>>>>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> >>>>>>>> 
-> >>>>>>>>> Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_GUID
-> >>>>>>>>> is found, it is added as an asymmetrical key to the .blacklist keyring.
-> >>>>>>>>> Anytime the .platform keyring is used, the keys in the .blacklist keyring
-> >>>>>>>>> are referenced, if a matching key is found, the key will be rejected.
-> >>>>>>>> 
-> >>>>>>>> Ummm...  Why this way and not as a blacklist key which takes up less space?
-> >>>>>>>> I'm guessing that you're using the key chain matching logic.  We really only
-> >>>>>>>> need to blacklist the key IDs.
-> >>>>>>> 
-> >>>>>>> I implemented it this way so that certs in the dbx would only impact 
-> >>>>>>> the .platform keyring. I was under the impression we didn’t want to have 
-> >>>>>>> Secure Boot UEFI db/dbx certs dictate keyring functionality within the kernel
-> >>>>>>> itself. Meaning if we have a matching dbx cert in any other keyring (builtin,
-> >>>>>>> secondary, ima, etc.), it would be allowed. If that is not how you’d like to 
-> >>>>>>> see it done, let me know and I’ll make the change.
-> >>>>>> 
-> >>>>>> I wonder if that is that the right thing to do.  I guess this is a policy
-> >>>>>> decision and may depend on the particular user.
-> >>>>> 
-> >>>>> Why would you want to allow dbx entry in any keyring?
-> >>>> 
-> >>>> Today, DB and MOK certs go into the platform keyring.  These certs are only
-> >>>> referenced during kexec.  They can’t be used for other things like validating
-> >>>> kernel module signatures.  If we follow the same pattern, the DBX and MOKX entries
-> >>>> in the blacklist keyring should only impact kexec. 
-> >>>> 
-> >>>> Currently, Mickaël Salaün has another outstanding series to allow root to update 
-> >>>> the blacklist keyring.  I assume the use case for this is around certificates used 
-> >>>> within the kernel, for example revoking kernel module signatures.  The question I have
-> >>>> is, should another keyring be introduced?  One that carries DBX and MOKX, which just
-> >>>> correspond to certs/hashes in the platform keyring; this keyring would only be
-> >>>> referenced for kexec, just like the platform keyring is today. Then, the current
-> >>>> blacklist keyring would be used for everything internal to the kernel.
-> >>> 
-> >>> Right, I'm following actively that series.
-> >>> 
-> >>> Why couldn't user space drive this process and use that feature to do it?
-> >> 
-> >> I could see where the user would want to use both. With Mickaël Salaün’s
-> >> series, the blacklist keyring is updated immediately.  However it does
-> >> not survive a reboot.  With my patch, the blacklist keyring is updated
-> >> during boot, based on what is in the dbx. Neither approach needs a new 
-> >> kernel build.
-> > 
-> > I don't want to purposely challenge this, but why does it matter
-> > that it doesn't survive the boot? I'm referring here to the golden
-> > principle of kernel defining a mechanism, not policy. User space
-> > can do the population however it wants to for every boot.
-> > 
-> > E.g. systemd service could do this.
-> > 
-> > What am I missing here?
+> Could you check if the following directory tree is built after
+> executing the below command?
 > 
-> This change simply adds support for a missing type.  The kernel 
-> already supports cert and hash entries (EFI_CERT_X509_SHA256_GUID,
-> EFI_CERT_SHA256_GUID) that originate from the dbx and are loaded 
-> into the blacklist keyring during boot.  I’m not sure why a cert 
-> defined with EFI_CERT_X509_GUID should be handled in a different 
-> manner.
+> $ make -j`nproc`
+> CFG_IN_TREE_EARLY_TAS=trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c
 > 
-> I suppose a user space tool could be created. But wouldn’t what is
-> currently done in the kernel in this area need to be removed?
+> $ tree out/bin/
+> out/bin/
+> ├── bl1.bin -> /home/sumit/build/optee/build/../trusted-firmware-a/build/qemu/release/bl1.bin
+> ├── bl2.bin -> /home/sumit/build/optee/build/../trusted-firmware-a/build/qemu/release/bl2.bin
+> ├── bl31.bin ->
+> /home/sumit/build/optee/build/../trusted-firmware-a/build/qemu/release/bl31.bin
+> ├── bl32.bin ->
+> /home/sumit/build/optee/build/../optee_os/out/arm/core/tee-header_v2.bin
+> ├── bl32_extra1.bin ->
+> /home/sumit/build/optee/build/../optee_os/out/arm/core/tee-pager_v2.bin
+> ├── bl32_extra2.bin ->
+> /home/sumit/build/optee/build/../optee_os/out/arm/core/tee-pageable_v2.bin
+> ├── bl33.bin ->
+> /home/sumit/build/optee/build/../edk2/Build/ArmVirtQemuKernel-AARCH64/RELEASE_GCC49/FV/QEMU_EFI.fd
+> ├── Image -> /home/sumit/build/optee/build/../linux/arch/arm64/boot/Image
+> └── rootfs.cpio.gz ->
+> /home/sumit/build/optee/build/../out-br/images/rootfs.cpio.gz
+> 
+> 0 directories, 9 files
+> 
+> -Sumit
 
-Right. I don't think this was a great idea in the first place to
-do to the kernel but since it exists, I guess the patch does make
-sense.
+I actually spotted a build error that was unnoticed last time:
+
+make[2]: Entering directory '/home/jarkko/devel/tpm/optee/edk2/BaseTools/Tests'
+/bin/sh: 1: python: not found
+
+I'd prefer not to install Python2. It has been EOL over a year.
 
 /Jarkko
