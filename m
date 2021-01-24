@@ -2,46 +2,39 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5B98301C80
-	for <lists+keyrings@lfdr.de>; Sun, 24 Jan 2021 15:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 532F2301CA2
+	for <lists+keyrings@lfdr.de>; Sun, 24 Jan 2021 15:16:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725939AbhAXOJh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 24 Jan 2021 09:09:37 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:27633 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725779AbhAXOJg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Jan 2021 09:09:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1611497203;
+        id S1725771AbhAXOQN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 24 Jan 2021 09:16:13 -0500
+Received: from mo4-p03-ob.smtp.rzone.de ([85.215.255.100]:16373 "EHLO
+        mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725769AbhAXOQN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Jan 2021 09:16:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1611497591;
         s=strato-dkim-0002; d=chronox.de;
-        h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:
-        Subject:Sender;
-        bh=Y189rnv2QfUxhT1OemVIrE8/eQASWIoiVDAuFGKd78c=;
-        b=Ko+nN1D7CEDfucvwiaFEisPLQKxG3kEGrJqur6G03Q2Ywk8OEP3NLzIyMLbA55RXgv
-        TKvcANrsazw9D08kgS1eDoKT43wwZvdfrFP6/tGuKuMQYblSOPTUcuyVdEvoVuYH8TgC
-        HsmebSwyR4HHC0h0Mv3PR2u3trpiy0JyU1CAqIjD/mBNFkjsoEbJlvAoRSW1ILPW0oq5
-        lUsNuxbxzkdX5M6E/Qy/e9cC+L3e4FcZZeMJBhYHa/vNpRbbLCrpYnnkK5x/A13BIOHw
-        nL9S26Bz4cfbt2KqO3Lo+0SENX7y+Z98UHklEcXdAVJ4QZ++BeFQ1guOoKJw3Bw6AD4u
-        3L8w==
+        h=Message-ID:Date:Subject:Cc:To:From:From:Subject:Sender;
+        bh=EfwRCaVmOmu2bkiazi/BUFb6HBO1WhdP4qskcsCIDWs=;
+        b=jEaGxxc1GZsb+vpbjjZyRyJAMkQeRxILQBeS3jCC4a2WH4U2kMwnzhq8kiMwFgfvL7
+        wmI3I7AReXqdGVf/r0vhwRJ3jYzg5DS/Kps+wWVLn/wlzJOQeVPaM7IaZ0CKq/uLZGBs
+        fn0nNVXXB2fSaOPhESBCo5zg+EH/6aA1ABGWuDvMMQ9hYrZm6w3/8mo8HeSugbI2bPNo
+        zNwDjPXVkp7Vsd4hByY4ApuMFRNVH1z26+l1B1zi4FhHyV1oVXDjPHlciqi6hmKdmxe5
+        LEW0xE0F9ry18I8C1n0LkwjhCdVNCmhzLg56drseNenP6lK6i3jgxt003eObW+vhsGes
+        S0bQ==
 X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPZI/ScIzb9"
 X-RZG-CLASS-ID: mo00
 Received: from positron.chronox.de
         by smtp.strato.de (RZmta 47.12.1 DYNA|AUTH)
-        with ESMTPSA id Z04c46x0OE6feiU
+        with ESMTPSA id Z04c46x0OEDBejW
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-        Sun, 24 Jan 2021 15:06:41 +0100 (CET)
+        Sun, 24 Jan 2021 15:13:11 +0100 (CET)
 From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
-To:     herbert@gondor.apana.org.au
-Cc:     ebiggers@kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
-        mathew.j.martineau@linux.intel.com, dhowells@redhat.com,
-        linux-crypto@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        simo@redhat.com
-Subject: [PATCH v2 7/7] fs: HKDF - remove duplicate memory clearing
-Date:   Sun, 24 Jan 2021 15:04:50 +0100
-Message-ID: <8714658.CDJkKcVGEf@positron.chronox.de>
-In-Reply-To: <1772794.tdWV9SEqCh@positron.chronox.de>
-References: <1772794.tdWV9SEqCh@positron.chronox.de>
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org
+Subject: Keyctl: DH test failure
+Date:   Sun, 24 Jan 2021 15:13:10 +0100
+Message-ID: <7903360.NyiUUSuA9g@positron.chronox.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -49,39 +42,34 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The clearing of the OKM memory buffer in case of an error is already
-performed by the HKDF implementation crypto_hkdf_expand. Thus, the
-code clearing is not needed any more in the file system code base.
+Hi,
 
-Signed-off-by: Stephan Mueller <smueller@chronox.de>
----
- fs/crypto/hkdf.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+The keyctl test COMPUTE DERIVED KEY WITH LEADING ZEROS fails on current 
+kernels.
 
-diff --git a/fs/crypto/hkdf.c b/fs/crypto/hkdf.c
-index ae236b42b1f0..c48dd8ca3a46 100644
---- a/fs/crypto/hkdf.c
-+++ b/fs/crypto/hkdf.c
-@@ -102,13 +102,10 @@ int fscrypt_hkdf_expand(const struct fscrypt_hkdf *hkdf, u8 context,
- 		.iov_base = (u8 *)info,
- 		.iov_len = infolen,
- 	} };
--	int err = crypto_hkdf_expand(hkdf->hmac_tfm,
--				     info_iov, ARRAY_SIZE(info_iov),
--				     okm, okmlen);
- 
--	if (unlikely(err))
--		memzero_explicit(okm, okmlen); /* so caller doesn't need to */
--	return err;
-+	return crypto_hkdf_expand(hkdf->hmac_tfm,
-+				  info_iov, ARRAY_SIZE(info_iov),
-+				  okm, okmlen);
- }
- 
- void fscrypt_destroy_hkdf(struct fscrypt_hkdf *hkdf)
--- 
-2.26.2
+keyutils/tests/keyctl/dh_compute/valid
+
++++ LOAD SOURCE KEYS
++++ COMPUTE DH PUBLIC KEY
++++ LOAD SHA-256 SOURCE KEYS
++++ COMPUTE DH SHARED SECRET
++++ COMPUTE DERIVED KEY FROM DH SHARED SECRET (SHA-256)
++++ COMPUTE DERIVED KEY WITH LEADING ZEROS
+FAILED
++++ LOAD SHA-224 SOURCE KEYS
++++ COMPUTE DH SHARED SECRET
++++ COMPUTE DERIVED KEY FROM DH SHARED SECRET (SHA-224)
 
 
+The failure happens in the following check:
+
++ '[' 2 '!=' 2 -o 'xf571d0e7 18e00aba c6c1962b 11ded645' '!=' 'x0066207b 
+cdab1d64 bbf489b3 d6a0dadc' ']'
+
+I.e. the kernel returns "xf571d0e7 18e00aba c6c1962b 11ded645" but the test 
+expects "x0066207b cdab1d64 bbf489b3 d6a0dadc".
+
+Ciao
+Stephan
 
 
