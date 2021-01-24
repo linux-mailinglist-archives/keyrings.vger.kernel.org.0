@@ -2,128 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 165CC300C59
-	for <lists+keyrings@lfdr.de>; Fri, 22 Jan 2021 20:22:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD00301C98
+	for <lists+keyrings@lfdr.de>; Sun, 24 Jan 2021 15:11:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729143AbhAVTTT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 22 Jan 2021 14:19:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729371AbhAVTFl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 22 Jan 2021 14:05:41 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65DCAC061351
-        for <keyrings@vger.kernel.org>; Fri, 22 Jan 2021 11:04:53 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1l31jk-0003zG-BI; Fri, 22 Jan 2021 20:04:48 +0100
-Subject: Re: [PATCH 2/2] dm crypt: support using trusted keys
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
-        Song Liu <song@kernel.org>, kernel@pengutronix.de,
-        =?UTF-8?Q?Jan_L=c3=bcbbe?= <jlu@pengutronix.de>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        Dmitry Baryshkov <dbaryshkov@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
-        Sumit Garg <sumit.garg@linaro.org>
-References: <20210122084321.24012-1-a.fatoum@pengutronix.de>
- <20210122084321.24012-2-a.fatoum@pengutronix.de>
- <YAsT/N8CHHNTZcj3@kernel.org> <YAsW8DAt3vc68rLA@kernel.org>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <5d44e50e-4309-830b-79f6-f5d888b1ef69@pengutronix.de>
-Date:   Fri, 22 Jan 2021 20:04:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1726030AbhAXOKg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 24 Jan 2021 09:10:36 -0500
+Received: from mo4-p03-ob.smtp.rzone.de ([85.215.255.101]:18552 "EHLO
+        mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726160AbhAXOKE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Jan 2021 09:10:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1611497208;
+        s=strato-dkim-0002; d=chronox.de;
+        h=Message-ID:Date:Subject:Cc:To:From:From:Subject:Sender;
+        bh=kD8GXYJD7ne6R4TTKn1bkqiMktIc67naKuk3V4KmkGQ=;
+        b=rKxsCcbDsx8r0ELNMQf1n5B3j+esMZgzC0W7FX0UjSgcgth7aU9NBMVQGTe1H7gykp
+        JVXaej1zwuBQ4aNW9HhfYbX9k/LKWHPzuHDxFuUDFdzBr07PGcFmcPB10nuh4cRsnBAo
+        FGJiZtfly+IZ9IDK5T409UgcSA559dFGaeVD+jGQpCuYbzeEljJjbiIvArGT5kHxZ9/u
+        TzkBoc1e4uua1MutLxb16tshVgv5dE26nEwmBH1Nj9xfWldbbk8/WC9jBAX7GmEGMBgk
+        YtPGw5DjyB53RInjJUzVxAkj/ksFPIZG+QEIk5iMeg5HsVSH3CA+kyXJM+yFgPc25gEr
+        1YGg==
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPZI/ScIzb9"
+X-RZG-CLASS-ID: mo00
+Received: from positron.chronox.de
+        by smtp.strato.de (RZmta 47.12.1 DYNA|AUTH)
+        with ESMTPSA id Z04c46x0OE6meic
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Sun, 24 Jan 2021 15:06:48 +0100 (CET)
+From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
+To:     herbert@gondor.apana.org.au
+Cc:     ebiggers@kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
+        mathew.j.martineau@linux.intel.com, dhowells@redhat.com,
+        linux-crypto@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
+        simo@redhat.com
+Subject: [PATCH v2 0/7] Add KDF implementations to crypto API
+Date:   Sun, 24 Jan 2021 15:01:12 +0100
+Message-ID: <1772794.tdWV9SEqCh@positron.chronox.de>
 MIME-Version: 1.0
-In-Reply-To: <YAsW8DAt3vc68rLA@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Jarkko,
+Hi,
 
-On 22.01.21 19:18, Jarkko Sakkinen wrote:
-> On Fri, Jan 22, 2021 at 08:05:51PM +0200, Jarkko Sakkinen wrote:
->> On Fri, Jan 22, 2021 at 09:43:21AM +0100, Ahmad Fatoum wrote:
->>> Commit 27f5411a718c ("dm crypt: support using encrypted keys") extended
->>> dm-crypt to allow use of "encrypted" keys along with "user" and "logon".
->>>
->>> Along the same lines, teach dm-crypt to support "trusted" keys as well.
->>>
->>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>> ---
->>
->> Is it possible to test run this with tmpfs? Would be a good test
->> target for Sumit's ARM-TEE trusted keys patches.
+The key derviation functions are considered to be a cryptographic
+operation. As cryptographic operations are provided via the kernel
+crypto API, this patch set consolidates the KDF implementations into the
+crypto API.
 
-I tested these on top of Sumit's patches with TPM and a CAAM blobifier
-backend, I am preparing. The system I am developing these patches against
-doesn't have a TEE.  Steps to test these changes:
+The KDF implementations are provided as service functions. Yet, the
+interface to the two provided KDFs are identical with the goal to allow
+them to be transformed into a crypto API template eventually.
 
-#!/bin/sh
+The KDFs execute a power-on self test with test vectors from commonly
+known sources.
 
-DEV=/dev/loop0
-ALGO=aes-cbc-essiv:sha256
-KEYNAME=kmk
-BLOCKS=20
+Tbe SP800-108 KDF implementation is used to replace the implementation
+in the keys subsystem. The implementation was verified using the
+keyutils command line test code provided in
+tests/keyctl/dh_compute/valid. All tests show that the expected values
+are calculated with the new code.
 
-fallocate -l $((BLOCKS*512)) /tmp/loop0.img
-losetup -P $DEV /tmp/loop0.img
-mount -o remount,rw /
-KEY="$(keyctl add trusted $KEYNAME 'new 32' @s)"
-keyctl pipe $KEY >$HOME/kmk.blob
+The HKDF addition is used to replace the implementation in the filesystem
+crypto extension. This code was tested by using an EXT4 encrypted file
+system that was created and contains files written to by the current
+implementation. Using the new implementation a successful read of the
+existing files was possible and new files / directories were created
+and read successfully. These newly added file system objects could be
+successfully read using the current code. Yet if there is a test suite
+to validate whether the invokcation of the HKDF calculates the same
+result as the existing implementation, I would be happy to validate
+the implementation accordingly.
 
-TABLE="0 $BLOCKS crypt $ALGO :32:trusted:$KEYNAME 0 $DEV 0 1 allow_discards"
-echo $TABLE | dmsetup create mydev
-echo $TABLE | dmsetup load mydev
-dd if=/dev/zero of=/dev/mapper/mydev
-echo "It works!" 1<> /dev/mapper/mydev
-cryptsetup close mydev
+Changes v2:
 
-reboot
+* change HKDF function names
+* change HKDF/SP800-108 KDF extract / seed function prototype
+* ensure clearing of memory of destination buffer in KDF implementation
+  if KDF operation fails
+* security DH: split the removal of dead code into separate patch
 
-DEV=/dev/loop0
-ALGO=aes-cbc-essiv:sha256
-KEYNAME=kmk
-BLOCKS=20
+Stephan Mueller (7):
+  crypto: Add key derivation self-test support code
+  crypto: add SP800-108 counter key derivation function
+  crypto: add RFC5869 HKDF
+  security: DH - remove dead code for zero padding
+  security: DH - use KDF implementation from crypto API
+  fs: use HKDF implementation from kernel crypto API
+  fs: HKDF - remove duplicate memory clearing
 
-losetup -P $DEV $HOME/loop0.img
-keyctl add trusted $KEYNAME "load $(cat $HOME/kmk.blob)" @s
-TABLE="0 $BLOCKS crypt $ALGO :32:trusted:$KEYNAME 0 $DEV 0 1 allow_discards"
-echo $TABLE | dmsetup create mydev
-echo $TABLE | dmsetup load mydev
-
-# should print that It works!
-hexdump -C /dev/mapper/mydev
-
->> https://lore.kernel.org/linux-integrity/1604419306-26105-1-git-send-email-sumit.garg@linaro.org/
-> 
-> Also, I would hold merging *this* patch up until we are able to
-> test TEE trusted keys with TEE trusted keys.
-
-Which blocks which? I tested this with TPM-Trusted keys, so it's usable
-as is. For convenient usage, it would be nice to have cryptsetup
-support for trusted and encrypted keys. I intended to look at this next week.
-
-Cheers,
-Ahmad
-
-> 
-> /Jarkko
-> 
+ crypto/Kconfig                         |  14 ++
+ crypto/Makefile                        |   6 +
+ crypto/hkdf.c                          | 199 +++++++++++++++++++++++++
+ crypto/kdf_sp800108.c                  | 149 ++++++++++++++++++
+ fs/crypto/Kconfig                      |   2 +-
+ fs/crypto/hkdf.c                       | 103 +++----------
+ include/crypto/hkdf.h                  |  48 ++++++
+ include/crypto/internal/kdf_selftest.h |  71 +++++++++
+ include/crypto/kdf_sp800108.h          |  61 ++++++++
+ security/keys/Kconfig                  |   2 +-
+ security/keys/dh.c                     | 118 ++-------------
+ 11 files changed, 586 insertions(+), 187 deletions(-)
+ create mode 100644 crypto/hkdf.c
+ create mode 100644 crypto/kdf_sp800108.c
+ create mode 100644 include/crypto/hkdf.h
+ create mode 100644 include/crypto/internal/kdf_selftest.h
+ create mode 100644 include/crypto/kdf_sp800108.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.2
+
+
+
+
