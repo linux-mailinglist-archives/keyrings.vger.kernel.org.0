@@ -2,79 +2,149 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34F19305A71
-	for <lists+keyrings@lfdr.de>; Wed, 27 Jan 2021 12:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D95CD305B99
+	for <lists+keyrings@lfdr.de>; Wed, 27 Jan 2021 13:38:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234597AbhA0L4A (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 27 Jan 2021 06:56:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:44238 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234254AbhA0Lrs (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Jan 2021 06:47:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611747982;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uGnFFbNsJBXnBWydvWton8GaNo0bt/G64Cx3q+ooLGE=;
-        b=FRvO9NAD05eCKxqu0jenJskPI55i0i8V/72Oe0EPT66t/hkB4aljVieLGaPjyAnvOrj8Hr
-        4lNBtJYcv/AZSM41qarb5ayHI/yPXRVEEn0VdAz0jGy7GgZTdIPfypW9WFjJowgoF9sSCR
-        L+gwwJUbwUp8TJSDcWRFZaVx5n6jMkE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-525-BzXRkwwmNAyQlm6f4Tn4tg-1; Wed, 27 Jan 2021 06:46:18 -0500
-X-MC-Unique: BzXRkwwmNAyQlm6f4Tn4tg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4694B8030A3;
-        Wed, 27 Jan 2021 11:46:16 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 355375C1A1;
-        Wed, 27 Jan 2021 11:46:12 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <YAjMm9Gq/FFOzQYG@kernel.org>
-References: <YAjMm9Gq/FFOzQYG@kernel.org> <E090372C-06A3-4991-8FC3-F06A0DA60729@oracle.com> <20200916004927.64276-1-eric.snowberg@oracle.com> <1360578.1607593748@warthog.procyon.org.uk> <2442460.1610463459@warthog.procyon.org.uk> <X/9a8naM8p4tT5sO@linux.intel.com> <A05E3573-B1AF-474B-94A5-779E69E5880A@oracle.com> <YAFdNiYZSWpB9vOw@kernel.org> <CFBF6AEC-2832-44F7-9D7F-F20489498C33@oracle.com> <YAgTawk3EENF/P6j@kernel.org> <D9F5E0BD-E2FC-428F-91B3-35D2750493A0@oracle.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     dhowells@redhat.com, Eric Snowberg <eric.snowberg@oracle.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, jmorris@namei.org, serge@hallyn.com,
-        nayna@linux.ibm.com, Mimi Zohar <zohar@linux.ibm.com>,
-        erichte@linux.ibm.com, mpe@ellerman.id.au,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com
-Subject: Re: [PATCH v4] certs: Add EFI_CERT_X509_GUID support for dbx entries
+        id S237944AbhA0Mhs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 27 Jan 2021 07:37:48 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:19704 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1343518AbhA0Mex (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Jan 2021 07:34:53 -0500
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10RCVNDd134379;
+        Wed, 27 Jan 2021 07:33:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=IGrrrNYvITiLLwmEvTEKqx9468YFWQGSYuHwIhpwLD8=;
+ b=IMo2Fp2US9fM9hoT7kBc4GkdOyRzCcxVLyIgPRy8gYPlsG9PRMmBrFUyDYgIIsMjMfPk
+ fAoBqM/PNmd++7cFq0kSocNNYALsOYz80fkb49lbg6PqGH+Mn2cUUfu8oX5lSEPF969M
+ plE+3ZeNM7mOZR8fqttGmnUXrPUr/WiX3bqrMcVkRhyrpCpuxf9olEVN9CBvC8CejYhL
+ E+qU5SWXbm0jBScv6D3zbhjEClQDQN/kMGyh10z/sTbsM9bSjBXYT7v5Aqe/MyMle4jI
+ pJ5qy89PF1cSplfy7qDHJYSXrMOVJx91oVsXbql8zrf4ziNop1JGM4WknnLeeT+oSZHK HQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36ayn8dbq1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Jan 2021 07:33:55 -0500
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10RCVYf0135008;
+        Wed, 27 Jan 2021 07:33:54 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36ayn8dbpq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Jan 2021 07:33:54 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10RCWnR3002862;
+        Wed, 27 Jan 2021 12:33:53 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+        by ppma05wdc.us.ibm.com with ESMTP id 36a3qbve97-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Jan 2021 12:33:53 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10RCXqT937749046
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 Jan 2021 12:33:53 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D5CCC136059;
+        Wed, 27 Jan 2021 12:33:52 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 282F113604F;
+        Wed, 27 Jan 2021 12:33:52 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Wed, 27 Jan 2021 12:33:51 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.vnet.ibm.com>
+To:     dhowells@redhat.com, keyrings@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net, linux-crypto@vger.kernel.org,
+        patrick@puiterwijk.org, Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v3 0/3] Add support for x509 certs with NIST p256 and p192 keys
+Date:   Wed, 27 Jan 2021 07:33:47 -0500
+Message-Id: <20210127123350.817593-1-stefanb@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date:   Wed, 27 Jan 2021 11:46:11 +0000
-Message-ID: <3063834.1611747971@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-27_05:2021-01-27,2021-01-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ suspectscore=0 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101270067
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> wrote:
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-> > I suppose a user space tool could be created. But wouldn=E2=80=99t what=
- is
-> > currently done in the kernel in this area need to be removed?
->=20
-> Right. I don't think this was a great idea in the first place to
-> do to the kernel but since it exists, I guess the patch does make
-> sense.
+This series of patches adds support for x509 certificates signed by a CA
+that uses NIST p256 or p192 keys for signing. It also adds support for
+certificates where the public key is a NIST p256 or p192 key. The math
+for ECDSA signature verification is also added.
 
-This information needs to be loaded from the UEFI tables before the system
-starts loading any kernel modules or running any programs (if we do
-verification of such, which I think IMA can do).
+Since self-signed certificates are verified upon loading, the following
+script can be used for testing:
 
-David
+k=$(keyctrl newring test @u)
+
+while :; do
+	for hash in sha1 sha224 sha256 sha384 sha512; do
+		openssl req \
+			-x509 \
+			-${hash} \
+			-newkey ec \
+			-pkeyopt ec_paramgen_curve:prime256v1 \
+			-keyout key.pem \
+			-days 365 \
+			-subj '/CN=test' \
+			-nodes \
+			-outform der \
+			-out cert.der
+		keyctl padd asymmetric testkey $k < cert.der
+		if [ $? -ne 0 ]; then
+			echo "ERROR"
+			exit 1
+		fi
+	done
+done
+
+It also works with restricted keyrings where an RSA key is used to sign
+a NIST P256/P192 key. Scripts for testing are here:
+
+https://github.com/stefanberger/eckey-testing
+
+The ECDSA signature verification will be used by IMA Appraisal where ECDSA
+file signatures stored in RPM packages will use substantially less space
+than if RSA signatures were to be used.
+
+   Stefan
+
+v2->v3:
+  - patch 2 now includes linux/scatterlist.h
+
+v1->v2:
+  - using faster vli_sub rather than newly added vli_mod_fast to 'reduce'
+    result
+  - rearranged switch statements to follow after RSA
+  - 3rd patch from 1st posting is now 1st patch
+
+Stefan Berger (3):
+  x509: Detect sm2 keys by their parameters OID
+  x509: Add support for parsing x509 certs with NIST p256 keys
+  x509: Add support for NIST p192 keys in certificates and akcipher
+
+ crypto/Makefile                           |   9 +-
+ crypto/asymmetric_keys/public_key.c       |  19 ++
+ crypto/asymmetric_keys/x509_cert_parser.c |  45 ++-
+ crypto/ecc.c                              | 318 ++++++++++++++++++++++
+ crypto/ecc.h                              |   2 +
+ crypto/ecc_curve_defs.h                   |   4 +
+ crypto/eccsignature.asn1                  |   4 +
+ include/linux/oid_registry.h              |   6 +
+ 8 files changed, 404 insertions(+), 3 deletions(-)
+ create mode 100644 crypto/eccsignature.asn1
+
+-- 
+2.25.4
 
