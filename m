@@ -2,104 +2,124 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7916306D31
-	for <lists+keyrings@lfdr.de>; Thu, 28 Jan 2021 07:02:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E333306DAE
+	for <lists+keyrings@lfdr.de>; Thu, 28 Jan 2021 07:40:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbhA1GBb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 28 Jan 2021 01:01:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37542 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229462AbhA1GBb (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 28 Jan 2021 01:01:31 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B061961492;
-        Thu, 28 Jan 2021 06:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611813650;
-        bh=teUHGyAjCjPfkBxZ3i0lEJwRQIyDMft5Td689zeTnzg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L+/FLBEnsy7zi/vb4OhUiq4SOtifApjlFwsxXY3tb0Qi5Kzui/CjiZsDSUPffQP8z
-         nHv9wXtmRo7prHCPC/rnunZvGW0r9WuCMIr13YIYDT+ZvHCo6h1oHIgfIB8aQMXwvY
-         ARG3t4c45hdCwcYtSxVqFeOC2Y0H9+1eBP8rhn6vxmysoDYe8lv9xtoo6rIzOf/Xz0
-         c8Q2TLhtOG/mzUEfCJ4eehT+WNPEf5nj3Tv1LnSYty1J2+6ma5DqgiMs3IE34bBoyd
-         Bw0nn55UPe6/LYjaoLCTdiVJs6YXI1aN3GccA2Cj1R0ucbnTZCdA4Of71/OJKhCZNd
-         mZLXzyqyVO+8Q==
-Date:   Thu, 28 Jan 2021 08:00:45 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v15 0/5] TPM 2.0 trusted key rework
-Message-ID: <YBJTDfUCItiuzr08@kernel.org>
-References: <20210127190617.17564-1-James.Bottomley@HansenPartnership.com>
+        id S229513AbhA1Gjg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 28 Jan 2021 01:39:36 -0500
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:16693 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229504AbhA1Gj1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 28 Jan 2021 01:39:27 -0500
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id 10S6cVto026509;
+        Thu, 28 Jan 2021 15:38:32 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 10S6cVto026509
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1611815912;
+        bh=EE6oo7GF4ijvvjJyoAxlXeyJ1ZPQQAQ64OLvBXG81Qo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=zvsk1AU4PAwbQKMYzfw5a0Ra2RFqdukNUvKczCDcPMJaGjUvBeYY6kTsU2dRFE0/S
+         7/RrsmurA99AN0f723zIbbJoLORO8n1Wkq6Jm9lEGlSw0xNQSLb10CUj2KJy1ZNHb9
+         2b8mIJEO6EEaDa/4rD6VTXLt0zSjWulRF0CEDSTMERviFCmeQBny//6OBFHxQiudHt
+         M+hsqi4SVK22CD3KnHm8pJlQOw81g6BCJ3/dFiCtGCQmy7/+QPG1NzVhHT6g9SNK6m
+         bIgDuStOibW8gkHr5EBUz8tGZ3DbU1epHPOxCuqYwwOrRkbd1Q5usaJXC++jJnXCMY
+         IW+mh7lZ58r/A==
+X-Nifty-SrcIP: [209.85.210.169]
+Received: by mail-pf1-f169.google.com with SMTP id q131so3354654pfq.10;
+        Wed, 27 Jan 2021 22:38:32 -0800 (PST)
+X-Gm-Message-State: AOAM5303QR6v3/cJ6oW8ee/GWQrEv6ExM1OxoIL8QLpmbtT6hCSC03fN
+        VcocgOXsv4IKH/qv6Kr4eS3e2AuqQqpSdV0uhuQ=
+X-Google-Smtp-Source: ABdhPJwYoK7zkT9RUEpOdut1O6wbz7EgzzQPAJEClu1M0y3kYlcXnvf+k6BNtRBrRrSNSQ7BjsT/B8AYiTABfP0ya1w=
+X-Received: by 2002:a63:1f1d:: with SMTP id f29mr15124521pgf.47.1611815911327;
+ Wed, 27 Jan 2021 22:38:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210127190617.17564-1-James.Bottomley@HansenPartnership.com>
+References: <20538915.Wj2CyUsUYa@devpool35> <2278760.8Yd83Mgoko@devpool35>
+ <3394639.6NgGvCfkNl@devpool47> <3207945.kN7qQvqmsI@devpool47>
+In-Reply-To: <3207945.kN7qQvqmsI@devpool47>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Thu, 28 Jan 2021 15:37:54 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATMFicsV3Lz3RfrqjzKOOpcyEomVJOPqM29X6y4pXiFDA@mail.gmail.com>
+Message-ID: <CAK7LNATMFicsV3Lz3RfrqjzKOOpcyEomVJOPqM29X6y4pXiFDA@mail.gmail.com>
+Subject: Re: [PATCH v6] scripts: use pkg-config to locate libcrypto
+To:     Rolf Eike Beer <eb@emlix.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 11:06:12AM -0800, James Bottomley wrote:
-> v15: fix 0day sign issue and add reviews and testeds
-> 
-> General cover letter minus policy bit:
-> 
-> This patch updates the trusted key code to export keys in the ASN.1
-> format used by current TPM key tools (openssl_tpm2_engine and
-> openconnect).  The current code will try to load keys containing
-> policy, but being unable to formulate the policy commands necessary to
-> load them, the unseal will always fail unless the policy is executed
-> in user space and a pre-formed policy session passed in.
-> 
-> The key format is designed to be compatible with our two openssl
-> engine implementations as well as with the format used by openconnect.
-> I've added seal/unseal to my engine so I can use it for
-> interoperability testing and I'll later use this for sealed symmetric
-> keys via engine:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
-> 
-> James
-> 
+On Wed, Jan 27, 2021 at 5:06 PM Rolf Eike Beer <eb@emlix.com> wrote:
+>
+> From f467f251e44cd406c9556ea7d68d131f56e0d832 Mon Sep 17 00:00:00 2001
+> From: Rolf Eike Beer <eb@emlix.com>
+> Date: Thu, 22 Nov 2018 16:40:49 +0100
+> Subject: [PATCH] scripts: use pkg-config to locate libcrypto
+>
+> Otherwise build fails if the headers are not in the default location. Whi=
+le at
+> it also ask pkg-config for the libs, with fallback to the existing value.
+>
+> Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+> Cc: stable@vger.kernel.org # 5.6.x
 > ---
-> 
-> James Bottomley (5):
->   lib: add ASN.1 encoder
->   oid_registry: Add TCG defined OIDS for TPM keys
->   security: keys: trusted: fix TPM2 authorizations
->   security: keys: trusted: use ASN.1 TPM2 key format for the blobs
->   security: keys: trusted: Make sealed key properly interoperable
+>  scripts/Makefile | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> Changes in v6:
+>  - hardcode pkg-config
+>
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index b5418ec587fb..9de3c03b94aa 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -3,6 +3,9 @@
+>  # scripts contains sources for various helper programs used throughout
+>  # the kernel for the build process.
+>
+> +CRYPTO_LIBS =3D $(shell pkg-config --libs libcrypto 2> /dev/null || echo=
+ -lcrypto)
+> +CRYPTO_CFLAGS =3D $(shell pkg-config --cflags libcrypto 2> /dev/null)
+> +
+>  hostprogs-always-$(CONFIG_BUILD_BIN2C)                 +=3D bin2c
+>  hostprogs-always-$(CONFIG_KALLSYMS)                    +=3D kallsyms
+>  hostprogs-always-$(BUILD_C_RECORDMCOUNT)               +=3D recordmcount
+> @@ -14,8 +17,9 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)   +=
+=3D insert-sys-cert
+>
+>  HOSTCFLAGS_sorttable.o =3D -I$(srctree)/tools/include
+>  HOSTCFLAGS_asn1_compiler.o =3D -I$(srctree)/include
+> -HOSTLDLIBS_sign-file =3D -lcrypto
+> -HOSTLDLIBS_extract-cert =3D -lcrypto
+> +HOSTLDLIBS_sign-file =3D $(CRYPTO_LIBS)
+> +HOSTCFLAGS_extract-cert.o =3D $(CRYPTO_CFLAGS)
+> +HOSTLDLIBS_extract-cert =3D $(CRYPTO_LIBS)
+>
+>  ifdef CONFIG_UNWINDER_ORC
+>  ifeq ($(ARCH),x86_64)
+> --
+> 2.30.0
+>
+> --
+> Rolf Eike Beer, emlix GmbH, http://www.emlix.com
+> Fon +49 551 30664-0, Fax +49 551 30664-11
+> Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
+> Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 31=
+60
+> Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke =E2=80=93 Ust-Id=
+Nr.: DE 205 198 055
+>
+> emlix - smart embedded open source
+>
+>
+>
 
-AFAIK, bug fixes should merged before functional changes and migratable
-flag has a regression:
+Applied to linux-kbuild. Thanks.
 
-https://marc.info/?l=linux-integrity&m=160255753405345
-
-I'll send an update to this series.
-
-/Jarkko
-
-> 
->  .../security/keys/trusted-encrypted.rst       |  58 +++
->  include/keys/trusted-type.h                   |   2 +
->  include/linux/asn1_encoder.h                  |  32 ++
->  include/linux/oid_registry.h                  |   5 +
->  include/linux/tpm.h                           |   2 +
->  lib/Kconfig                                   |   3 +
->  lib/Makefile                                  |   1 +
->  lib/asn1_encoder.c                            | 454 ++++++++++++++++++
->  security/keys/Kconfig                         |   3 +
->  security/keys/trusted-keys/Makefile           |   4 +-
->  security/keys/trusted-keys/tpm2key.asn1       |  11 +
->  security/keys/trusted-keys/trusted_tpm1.c     |  34 +-
->  security/keys/trusted-keys/trusted_tpm2.c     | 269 ++++++++++-
->  13 files changed, 846 insertions(+), 32 deletions(-)
->  create mode 100644 include/linux/asn1_encoder.h
->  create mode 100644 lib/asn1_encoder.c
->  create mode 100644 security/keys/trusted-keys/tpm2key.asn1
-> 
-> -- 
-> 2.26.2
-> 
-> 
+--=20
+Best Regards
+Masahiro Yamada
