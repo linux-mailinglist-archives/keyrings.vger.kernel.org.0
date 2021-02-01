@@ -2,71 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD1E630AD1D
-	for <lists+keyrings@lfdr.de>; Mon,  1 Feb 2021 17:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11BBB30AD5E
+	for <lists+keyrings@lfdr.de>; Mon,  1 Feb 2021 18:07:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231750AbhBAQws (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 1 Feb 2021 11:52:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59266 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231771AbhBAQwG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Feb 2021 11:52:06 -0500
-Received: from smtp-42a9.mail.infomaniak.ch (smtp-42a9.mail.infomaniak.ch [IPv6:2001:1600:3:17::42a9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC207C061573;
-        Mon,  1 Feb 2021 08:51:16 -0800 (PST)
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
-        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DTv8z06B5zMqCNG;
-        Mon,  1 Feb 2021 17:51:15 +0100 (CET)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DTv8w3YSxzlh8Td;
-        Mon,  1 Feb 2021 17:51:12 +0100 (CET)
-Subject: Re: [PATCH v5 0/5] Enable root to update the blacklist keyring
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-To:     David Howells <dhowells@redhat.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
+        id S231346AbhBARF5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 1 Feb 2021 12:05:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20403 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231217AbhBARF5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Feb 2021 12:05:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612199071;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rH9wytnzyB+U91tV+Pg1sRMVmzeBVEAmUAO/MwEXhFQ=;
+        b=CHyT4KcuzqbrTEwR4o10jD3OUznvFUpBH7o9O+CgxMxScDo9xXkf6bdrB9cQxZBohIMKmg
+        VGOg+qUGCfsAXw4Gnkst2TkrRGMzJAM744sdcMjkwUwDXBxOG8Tv+pjmXbK4SPZ7Ezh/oj
+        w4qnCGv0BDiWSDMDKGhTAZT3/Vo5W3Q=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-277-g-a_wvW3N6WhlKwRHXdFGg-1; Mon, 01 Feb 2021 12:04:27 -0500
+X-MC-Unique: g-a_wvW3N6WhlKwRHXdFGg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2CCAF10054FF;
+        Mon,  1 Feb 2021 17:04:25 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4E0855C1A1;
+        Mon,  1 Feb 2021 17:04:23 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <6b362abd95b116e26c65809a3a1525c7951ed0bd.camel@pengutronix.de>
+References: <6b362abd95b116e26c65809a3a1525c7951ed0bd.camel@pengutronix.de> <8b9477e150d7c939dc0def3ebb4443efcc83cd85.camel@pengutronix.de> <74830d4f-5a76-8ba8-aad0-0d79f7c01af9@pengutronix.de> <6dc99fd9ffbc5f405c5f64d0802d1399fc6428e4.camel@kernel.org> <d1bed49f89495ceb529355cb41655a208fdb2197.camel@linux.ibm.com> <4153718.1612179361@warthog.procyon.org.uk>
+To:     Jan =?us-ascii?Q?=3D=3FISO-8859-1=3FQ=3FL=3DFCbbe=3F=3D?= 
+        <jlu@pengutronix.de>
+Cc:     dhowells@redhat.com, Mimi Zohar <zohar@linux.ibm.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Morris <jmorris@namei.org>,
-        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@linux.microsoft.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Tyler Hicks <tyhicks@linux.microsoft.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        James Bottomley <jejb@linux.ibm.com>, keyrings@vger.kernel.org,
+        Sumit Garg <sumit.garg@linaro.org>,
         linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-References: <20210128191705.3568820-1-mic@digikod.net>
- <4160652.1612184844@warthog.procyon.org.uk>
- <9d95ec74-cc89-9e0c-dac8-c05ea52991ac@digikod.net>
-Message-ID: <702232df-e229-a716-b688-918fe7e168e8@digikod.net>
-Date:   Mon, 1 Feb 2021 17:51:11 +0100
-User-Agent: 
+        linux-security-module@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: Migration to trusted keys: sealing user-provided key?
 MIME-Version: 1.0
-In-Reply-To: <9d95ec74-cc89-9e0c-dac8-c05ea52991ac@digikod.net>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Date:   Mon, 01 Feb 2021 17:04:22 +0000
+Message-ID: <35960.1612199062@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-It doesn't contain Jarkko's Tested-by and Reviewed-by tags though.
+Jan L=C3=BCbbe <jlu@pengutronix.de> wrote:
 
-On 01/02/2021 17:48, Mickaël Salaün wrote:
-> Hi,
-> 
-> Yes, you can pull this patchset from here:
-> https://github.com/l0kod/linux branch dyn-auth-blacklist-v5 (commit
-> 33b94bcd56843b4235c6ba4a44157b3c5a8792f1).
-> 
->  Mickaël
-> 
-> 
-> On 01/02/2021 14:07, David Howells wrote:
->>
->> Hi Mickaël,
->>
->> Do you have a public branch somewhere I can pull from?
->>
->> David
->>
+> > > ... But at this point, you can still do 'keyctl read' on that key, ex=
+posing
+> > > the key material to user space.
+> >=20
+> > I wonder if it would help to provide a keyctl function to mark a key as=
+ being
+> > permanently unreadable - so that it overrides the READ permission bit.
+> >=20
+> > Alternatively, you can disable READ and SETATTR permission - but that t=
+hen
+> > prevents you from removing other perms if you want to :-/
+>=20
+> That would mean using user type keys, right? Then we'd still have the core
+> problem how a master key can be protected against simply reading it from
+> flash/disk, as it would be unencrypted in this scenario.
+
+It would apply to any type of key or keyring on which it was set.  It would
+cause keyctl_read() on a flagged key to return EPERM.
+
+David
+
