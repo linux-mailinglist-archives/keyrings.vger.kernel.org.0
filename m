@@ -2,136 +2,76 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED6330A59A
-	for <lists+keyrings@lfdr.de>; Mon,  1 Feb 2021 11:41:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2927030A6AF
+	for <lists+keyrings@lfdr.de>; Mon,  1 Feb 2021 12:38:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233230AbhBAKkc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 1 Feb 2021 05:40:32 -0500
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:46948 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233296AbhBAKjw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Feb 2021 05:39:52 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UNYB3r1_1612175940;
-Received: from B-455UMD6M-2027.local(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UNYB3r1_1612175940)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 01 Feb 2021 18:39:01 +0800
-Subject: Re: [PATCH v6 2/4] x509: Detect sm2 keys by their parameters OID
-To:     Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
-        linux-integrity@vger.kernel.org,
-        David Howells <dhowells@redhat.com>
-References: <20210131233301.1301787-1-stefanb@linux.ibm.com>
- <20210131233301.1301787-3-stefanb@linux.ibm.com>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <75a8ff37-3c23-6cf1-f844-cf692eb8adfc@linux.alibaba.com>
-Date:   Mon, 1 Feb 2021 18:39:00 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.0
+        id S229783AbhBALhg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 1 Feb 2021 06:37:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:59497 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229525AbhBALhf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Feb 2021 06:37:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612179369;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=VTFNHmYMNxGpEuIhBb8TR1rvnZN6QF66geki9lSctnE=;
+        b=S8ZeQHhbP5+auBTWeu/+MLlfprMaS3JRFvyZw4SxLNq/KE+3/ajlgBCWWkaKBFojgw995R
+        832tBaSa+mRumBL4tqSmyupHq9zMusM8te35J3W2TolJjP/UwOsY1cEoBkV419tDUE/zAM
+        YP/5mSkZqX4ZQAPBv8Aki8Bc/BU82Pc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-278-65b3QYUnN6WdbbNFkB38Fw-1; Mon, 01 Feb 2021 06:36:05 -0500
+X-MC-Unique: 65b3QYUnN6WdbbNFkB38Fw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DCE08801817;
+        Mon,  1 Feb 2021 11:36:03 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D25303AE1;
+        Mon,  1 Feb 2021 11:36:01 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <8b9477e150d7c939dc0def3ebb4443efcc83cd85.camel@pengutronix.de>
+References: <8b9477e150d7c939dc0def3ebb4443efcc83cd85.camel@pengutronix.de> <74830d4f-5a76-8ba8-aad0-0d79f7c01af9@pengutronix.de> <6dc99fd9ffbc5f405c5f64d0802d1399fc6428e4.camel@kernel.org> <d1bed49f89495ceb529355cb41655a208fdb2197.camel@linux.ibm.com>
+To:     Jan =?us-ascii?Q?=3D=3FISO-8859-1=3FQ=3FL=3DFCbbe=3F=3D?= 
+        <jlu@pengutronix.de>
+Cc:     dhowells@redhat.com, Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        James Bottomley <jejb@linux.ibm.com>, keyrings@vger.kernel.org,
+        Sumit Garg <sumit.garg@linaro.org>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: Migration to trusted keys: sealing user-provided key?
 MIME-Version: 1.0
-In-Reply-To: <20210131233301.1301787-3-stefanb@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date:   Mon, 01 Feb 2021 11:36:01 +0000
+Message-ID: <4153718.1612179361@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Jan L=C3=BCbbe <jlu@pengutronix.de> wrote:
 
+> ... But at this point, you can still do 'keyctl read' on that key, exposi=
+ng
+> the key material to user space.
 
-On 2/1/21 7:32 AM, Stefan Berger wrote:
-> Detect whether a key is an sm2 type of key by its OID in the parameters
-> array rather than assuming that everything under OID_id_ecPublicKey
-> is sm2, which is not the case.
-> 
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: keyrings@vger.kernel.org
-> ---
->   crypto/asymmetric_keys/x509_cert_parser.c | 12 +++++++++++-
->   include/linux/oid_registry.h              |  1 +
->   lib/oid_registry.c                        | 13 +++++++++++++
->   3 files changed, 25 insertions(+), 1 deletion(-)
-> 
-> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-> index 52c9b455fc7d..1621ceaf5c95 100644
-> --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> @@ -459,6 +459,7 @@ int x509_extract_key_data(void *context, size_t hdrlen,
->   			  const void *value, size_t vlen)
->   {
->   	struct x509_parse_context *ctx = context;
-> +	enum OID oid;
->   
->   	ctx->key_algo = ctx->last_oid;
->   	switch (ctx->last_oid) {
-> @@ -470,7 +471,16 @@ int x509_extract_key_data(void *context, size_t hdrlen,
->   		ctx->cert->pub->pkey_algo = "ecrdsa";
->   		break;
->   	case OID_id_ecPublicKey:
-> -		ctx->cert->pub->pkey_algo = "sm2";
-> +		if (parse_OID(ctx->params, ctx->params_size, &oid) != 0)
-> +			return -EBADMSG;
-> +
-> +		switch (oid) {
-> +		case OID_sm2:
-> +			ctx->cert->pub->pkey_algo = "sm2";
-> +			break;
-> +		default:
-> +			return -ENOPKG;
-> +		}
->   		break;
->   	default:
->   		return -ENOPKG;
-> diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-> index 4462ed2c18cd..d4982e42c0d2 100644
-> --- a/include/linux/oid_registry.h
-> +++ b/include/linux/oid_registry.h
-> @@ -117,6 +117,7 @@ enum OID {
->   };
->   
->   extern enum OID look_up_OID(const void *data, size_t datasize);
-> +extern int parse_OID(const void *data, size_t datasize, enum OID *oid);
->   extern int sprint_oid(const void *, size_t, char *, size_t);
->   extern int sprint_OID(enum OID, char *, size_t);
->   
-> diff --git a/lib/oid_registry.c b/lib/oid_registry.c
-> index f7ad43f28579..508e0b34b5f0 100644
-> --- a/lib/oid_registry.c
-> +++ b/lib/oid_registry.c
-> @@ -11,6 +11,7 @@
->   #include <linux/kernel.h>
->   #include <linux/errno.h>
->   #include <linux/bug.h>
-> +#include <linux/asn1.h>
->   #include "oid_registry_data.c"
->   
->   MODULE_DESCRIPTION("OID Registry");
-> @@ -92,6 +93,18 @@ enum OID look_up_OID(const void *data, size_t datasize)
->   }
->   EXPORT_SYMBOL_GPL(look_up_OID);
->   
-> +int parse_OID(const void *data, size_t datasize, enum OID *oid)
-> +{
-> +	const unsigned char *v = data;
-> +
-> +	if (datasize < 2 || v[0] != ASN1_OID || v[1] != datasize - 2)
-> +		return -EBADMSG;
-> +
-> +	*oid = look_up_OID(data + 2, datasize - 2);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(parse_OID);
-> +
->   /*
->    * sprint_OID - Print an Object Identifier into a buffer
->    * @data: The encoded OID to print
-> 
+I wonder if it would help to provide a keyctl function to mark a key as bei=
+ng
+permanently unreadable - so that it overrides the READ permission bit.
 
-Great job, I'm just curious why we need to add a new function, this 
-seems unnecessary, if possible, please add
+Alternatively, you can disable READ and SETATTR permission - but that then
+prevents you from removing other perms if you want to :-/
 
-Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+David
 
-Best regards,
-Tianjia
