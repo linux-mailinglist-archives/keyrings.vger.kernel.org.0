@@ -2,76 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2927030A6AF
-	for <lists+keyrings@lfdr.de>; Mon,  1 Feb 2021 12:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CDA030A837
+	for <lists+keyrings@lfdr.de>; Mon,  1 Feb 2021 14:03:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbhBALhg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 1 Feb 2021 06:37:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:59497 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229525AbhBALhf (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Feb 2021 06:37:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612179369;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VTFNHmYMNxGpEuIhBb8TR1rvnZN6QF66geki9lSctnE=;
-        b=S8ZeQHhbP5+auBTWeu/+MLlfprMaS3JRFvyZw4SxLNq/KE+3/ajlgBCWWkaKBFojgw995R
-        832tBaSa+mRumBL4tqSmyupHq9zMusM8te35J3W2TolJjP/UwOsY1cEoBkV419tDUE/zAM
-        YP/5mSkZqX4ZQAPBv8Aki8Bc/BU82Pc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-278-65b3QYUnN6WdbbNFkB38Fw-1; Mon, 01 Feb 2021 06:36:05 -0500
-X-MC-Unique: 65b3QYUnN6WdbbNFkB38Fw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DCE08801817;
-        Mon,  1 Feb 2021 11:36:03 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D25303AE1;
-        Mon,  1 Feb 2021 11:36:01 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <8b9477e150d7c939dc0def3ebb4443efcc83cd85.camel@pengutronix.de>
-References: <8b9477e150d7c939dc0def3ebb4443efcc83cd85.camel@pengutronix.de> <74830d4f-5a76-8ba8-aad0-0d79f7c01af9@pengutronix.de> <6dc99fd9ffbc5f405c5f64d0802d1399fc6428e4.camel@kernel.org> <d1bed49f89495ceb529355cb41655a208fdb2197.camel@linux.ibm.com>
-To:     Jan =?us-ascii?Q?=3D=3FISO-8859-1=3FQ=3FL=3DFCbbe=3F=3D?= 
-        <jlu@pengutronix.de>
-Cc:     dhowells@redhat.com, Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        James Bottomley <jejb@linux.ibm.com>, keyrings@vger.kernel.org,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: Migration to trusted keys: sealing user-provided key?
+        id S231603AbhBANDK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 1 Feb 2021 08:03:10 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:35556 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S231407AbhBANDI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Feb 2021 08:03:08 -0500
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 111D1QCm081851;
+        Mon, 1 Feb 2021 08:02:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ZigMs+1+OGFbFSIyjvMcFvWe6jq3VvhSgTQtQqwSDi0=;
+ b=atNROLZxC41VitSLou85LOJRynReYFXzJYQNGOD2fZv81OTgynnPPA5Xq370d/Alqgr5
+ TDRaKHA3W+9jtFfqYH8hqw8XBPqdrTpCpZL88X0aSEEB6bmuEmkNug++RVXwVJYiEHYP
+ +RXK8t6DbPSnO9ivxzYckpBh62swtsMns1To1HSMgdKXmh/2alty4l/974d6OUYMrK5V
+ 5eOEvUwtHz+J763ZF0iMIyEs5yIJC+nRsi0sYApAnDo75weGEWTx3CHe6aj3k4xvRGYV
+ s3ZcE3kGWgugbrvXVjekDqNIRxadVGmSUEzcjGKZH3u+lm/XmtaukBd9Pkaym+syoUjR ig== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 36ehe81bpp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 01 Feb 2021 08:02:24 -0500
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 111D1j6Q083550;
+        Mon, 1 Feb 2021 08:02:22 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 36ehe81bp3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 01 Feb 2021 08:02:22 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 111Cv49C029932;
+        Mon, 1 Feb 2021 13:02:21 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+        by ppma05wdc.us.ibm.com with ESMTP id 36cy38pfkf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 01 Feb 2021 13:02:21 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 111D2LoF6882014
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 1 Feb 2021 13:02:21 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 69050AC05E;
+        Mon,  1 Feb 2021 13:02:21 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 59DC6AC059;
+        Mon,  1 Feb 2021 13:02:21 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon,  1 Feb 2021 13:02:21 +0000 (GMT)
+Subject: Re: [PATCH v6 2/4] x509: Detect sm2 keys by their parameters OID
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
+        linux-integrity@vger.kernel.org,
+        David Howells <dhowells@redhat.com>
+References: <20210131233301.1301787-1-stefanb@linux.ibm.com>
+ <20210131233301.1301787-3-stefanb@linux.ibm.com>
+ <75a8ff37-3c23-6cf1-f844-cf692eb8adfc@linux.alibaba.com>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+Message-ID: <ace09744-e6c9-32da-27d8-accadd5d0252@linux.ibm.com>
+Date:   Mon, 1 Feb 2021 08:02:21 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date:   Mon, 01 Feb 2021 11:36:01 +0000
-Message-ID: <4153718.1612179361@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+In-Reply-To: <75a8ff37-3c23-6cf1-f844-cf692eb8adfc@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-01_05:2021-01-29,2021-02-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ adultscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010065
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jan L=C3=BCbbe <jlu@pengutronix.de> wrote:
+On 2/1/21 5:39 AM, Tianjia Zhang wrote:
+>
+>> index f7ad43f28579..508e0b34b5f0 100644
+>> --- a/lib/oid_registry.c
+>> +++ b/lib/oid_registry.c
+>> @@ -11,6 +11,7 @@
+>>   #include <linux/kernel.h>
+>>   #include <linux/errno.h>
+>>   #include <linux/bug.h>
+>> +#include <linux/asn1.h>
+>>   #include "oid_registry_data.c"
+>>     MODULE_DESCRIPTION("OID Registry");
+>> @@ -92,6 +93,18 @@ enum OID look_up_OID(const void *data, size_t 
+>> datasize)
+>>   }
+>>   EXPORT_SYMBOL_GPL(look_up_OID);
+>>   +int parse_OID(const void *data, size_t datasize, enum OID *oid)
+>> +{
+>> +    const unsigned char *v = data;
+>> +
+>> +    if (datasize < 2 || v[0] != ASN1_OID || v[1] != datasize - 2)
+>> +        return -EBADMSG;
+>> +
+>> +    *oid = look_up_OID(data + 2, datasize - 2);
+>> +    return 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(parse_OID);
+>> +
+>>   /*
+>>    * sprint_OID - Print an Object Identifier into a buffer
+>>    * @data: The encoded OID to print
+>>
+>
+> Great job, I'm just curious why we need to add a new function, this 
+> seems unnecessary, if possible, please add
 
-> ... But at this point, you can still do 'keyctl read' on that key, exposi=
-ng
-> the key material to user space.
 
-I wonder if it would help to provide a keyctl function to mark a key as bei=
-ng
-permanently unreadable - so that it overrides the READ permission bit.
+Thanks. I call this function in two places now. I thought it was 'worth it'.
 
-Alternatively, you can disable READ and SETATTR permission - but that then
-prevents you from removing other perms if you want to :-/
 
-David
+>
+> Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+>
+> Best regards,
+> Tianjia
+
 
