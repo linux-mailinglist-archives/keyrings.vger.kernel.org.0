@@ -2,59 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CBA030B622
-	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 05:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6414A30B9E4
+	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 09:30:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231194AbhBBEAO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 1 Feb 2021 23:00:14 -0500
-Received: from helcar.hmeau.com ([216.24.177.18]:43614 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230168AbhBBEAM (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 1 Feb 2021 23:00:12 -0500
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1l6mqU-0000MM-FM; Tue, 02 Feb 2021 14:59:19 +1100
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Tue, 02 Feb 2021 14:59:18 +1100
-Date:   Tue, 2 Feb 2021 14:59:18 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Stefan Berger <stefanb@linux.ibm.com>
-Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, davem@davemloft.net,
-        zohar@linux.ibm.com, linux-kernel@vger.kernel.org,
-        patrick@puiterwijk.org, linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v7 0/4] Add support for x509 certs with NIST p256 and
- p192 keys
-Message-ID: <20210202035918.GB26997@gondor.apana.org.au>
-References: <7836898a-0a42-5c9b-3a42-7ff4c7a03ea4@linux.ibm.com>
- <20210201151910.1465705-1-stefanb@linux.ibm.com>
- <32177.1612196003@warthog.procyon.org.uk>
- <33903.1612197412@warthog.procyon.org.uk>
- <ab3f4f96-6aec-4586-21fa-318fcee997a5@linux.ibm.com>
+        id S232376AbhBBI3O (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 2 Feb 2021 03:29:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:49498 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229537AbhBBI3K (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Feb 2021 03:29:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612254463;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Pl4uhcMFYXNVqbgTMnS7qgsoAWnyf+3tpQCijBxwzZk=;
+        b=e7gwRmAF//mCYp7mLaZdwr9nbEagLB1cUojn+LYt5ijo4oIDRdpSu6jxX6UQQlfTEl9nEN
+        M3z91EsJjORwg11pWOyK1odRVL0QESw8tQXynpRfL8GaNKG6DBv5aJBp1/5BAtcFnVPrt1
+        cDaATwYS4LBMPnc1lWAcFEFS1XlaU+o=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-580-VPJrjoISPsaxxLNbIj-Xmg-1; Tue, 02 Feb 2021 03:27:40 -0500
+X-MC-Unique: VPJrjoISPsaxxLNbIj-Xmg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7845410054FF;
+        Tue,  2 Feb 2021 08:27:38 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3B1AA5D9C6;
+        Tue,  2 Feb 2021 08:27:36 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20210202035655.GA26997@gondor.apana.org.au>
+References: <20210202035655.GA26997@gondor.apana.org.au> <58935b00f65e389e9ae3da2425d06bd88d280e43.camel@linux.ibm.com> <20210129150355.850093-3-stefanb@linux.vnet.ibm.com> <20210129150355.850093-1-stefanb@linux.vnet.ibm.com> <4162801.1612185801@warthog.procyon.org.uk> <71a77d10-e645-194f-5073-ebf180a8d70e@linux.ibm.com> <4170408.1612192055@warthog.procyon.org.uk>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     dhowells@redhat.com, Mimi Zohar <zohar@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
+        linux-integrity@vger.kernel.org,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v5 2/4] x509: Detect sm2 keys by their parameters OID
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab3f4f96-6aec-4586-21fa-318fcee997a5@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <110278.1612254455.1@warthog.procyon.org.uk>
+Date:   Tue, 02 Feb 2021 08:27:35 +0000
+Message-ID: <110279.1612254455@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Feb 01, 2021 at 11:45:16AM -0500, Stefan Berger wrote:
->
-> With the crypto module missing in the kernel you will get an error trying to
-> load an x509 certificate that needs the algorithm to verify the self-signed
-> signature.
+Herbert Xu <herbert@gondor.apana.org.au> wrote:
+
+> > Herbert wants the first patch to go through the crypto tree.  Maybe all of
+> > them should proceed by that route if Herbert is willing?
 > 
-> Before I post yet another series I hope that Herbert can say whether option
-> 1) would work for him.
+> I'm not actually all that fussed about where it goes through.  It's
+> just the first patch happens to touch an area that is still under
+> discussion for the Crypto API.  So once that's settled I'm more than
+> happy for it to go through your tree if that's the easiest way to go.
 
-Please be patient.  We need to make sure that whatever scheme you
-use for your algorithm also works for the driver authors who are
-working in the same area.  Because if we end up having to change
-the scheme then that'll just create more churn for you and David.
+Should I defer it till the next merge window?
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+David
+
