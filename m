@@ -2,142 +2,134 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F2F30BE55
-	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 13:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A645130C469
+	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 16:52:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231517AbhBBMhV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 2 Feb 2021 07:37:21 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:34745 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbhBBMhU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Feb 2021 07:37:20 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <jlu@pengutronix.de>)
-        id 1l6ust-0007Jm-15; Tue, 02 Feb 2021 13:34:19 +0100
-Received: from localhost ([127.0.0.1])
-        by ptx.hi.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <jlu@pengutronix.de>)
-        id 1l6usr-0001nH-QE; Tue, 02 Feb 2021 13:34:17 +0100
-Message-ID: <2012751fd653c284679aa2c6ac9a56a5edbf1410.camel@pengutronix.de>
-Subject: Re: Migration to trusted keys: sealing user-provided key?
-From:   Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-To:     Sumit Garg <sumit.garg@linaro.org>,
-        James Bottomley <jejb@linux.ibm.com>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        David Howells <dhowells@redhat.com>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>, kernel@pengutronix.de
-Date:   Tue, 02 Feb 2021 13:34:17 +0100
-In-Reply-To: <CAFA6WYMn519aF=uodjnSUZ+kKaRzdoh6Enu0OsRMge=21iBNBA@mail.gmail.com>
-References: <74830d4f-5a76-8ba8-aad0-0d79f7c01af9@pengutronix.de>
-         <6dc99fd9ffbc5f405c5f64d0802d1399fc6428e4.camel@kernel.org>
-         <d1bed49f89495ceb529355cb41655a208fdb2197.camel@linux.ibm.com>
-         <8b9477e150d7c939dc0def3ebb4443efcc83cd85.camel@pengutronix.de>
-         <18529562ed71becf21401ec9fd9d95c4ac44fdc0.camel@linux.ibm.com>
-         <CAFA6WYMn519aF=uodjnSUZ+kKaRzdoh6Enu0OsRMge=21iBNBA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+        id S235098AbhBBPvD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 2 Feb 2021 10:51:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36810 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235096AbhBBPNK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Feb 2021 10:13:10 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01972C06174A
+        for <keyrings@vger.kernel.org>; Tue,  2 Feb 2021 07:12:30 -0800 (PST)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1l6xLu-0002oq-Ri; Tue, 02 Feb 2021 16:12:26 +0100
+Subject: Re: [PATCH 2/2] dm crypt: support using trusted keys
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Mike Snitzer <snitzer@redhat.com>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        =?UTF-8?Q?Jan_L=c3=bcbbe?= <jlu@pengutronix.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Dmitry Baryshkov <dbaryshkov@gmail.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-raid@vger.kernel.org, Song Liu <song@kernel.org>,
+        dm-devel@redhat.com, keyrings@vger.kernel.org,
+        kernel@pengutronix.de, linux-integrity@vger.kernel.org,
+        Alasdair Kergon <agk@redhat.com>
+References: <20210122084321.24012-1-a.fatoum@pengutronix.de>
+ <20210122084321.24012-2-a.fatoum@pengutronix.de>
+ <YAsT/N8CHHNTZcj3@kernel.org> <YAsW8DAt3vc68rLA@kernel.org>
+ <5d44e50e-4309-830b-79f6-f5d888b1ef69@pengutronix.de>
+Message-ID: <8cd946c4-558d-ca66-7026-a574034b4757@pengutronix.de>
+Date:   Tue, 2 Feb 2021 16:12:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: jlu@pengutronix.de
+In-Reply-To: <5d44e50e-4309-830b-79f6-f5d888b1ef69@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2021-02-02 at 17:45 +0530, Sumit Garg wrote:
-> Hi Jan,
+On 22.01.21 20:04, Ahmad Fatoum wrote:
+> On 22.01.21 19:18, Jarkko Sakkinen wrote:
+>> On Fri, Jan 22, 2021 at 08:05:51PM +0200, Jarkko Sakkinen wrote:
+>>> On Fri, Jan 22, 2021 at 09:43:21AM +0100, Ahmad Fatoum wrote:
+>>>> Commit 27f5411a718c ("dm crypt: support using encrypted keys") extended
+>>>> dm-crypt to allow use of "encrypted" keys along with "user" and "logon".
+>>>>
+>>>> Along the same lines, teach dm-crypt to support "trusted" keys as well.
+
+Gentle ping.
+Is there anything further you require from me regarding these two patches?
+
+>>>>
+>>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> ---
+>>>
+>>> Is it possible to test run this with tmpfs? Would be a good test
+>>> target for Sumit's ARM-TEE trusted keys patches.
 > 
-> On Sun, 31 Jan 2021 at 23:40, James Bottomley <jejb@linux.ibm.com> wrote:
-> > 
-> > On Sun, 2021-01-31 at 15:14 +0100, Jan Lübbe wrote:
-> > > On Sun, 2021-01-31 at 07:09 -0500, Mimi Zohar wrote:
-> > > > On Sat, 2021-01-30 at 19:53 +0200, Jarkko Sakkinen wrote:
-> > > > > On Thu, 2021-01-28 at 18:31 +0100, Ahmad Fatoum wrote:
-> > > > > > Hello,
-> > > > > > 
-> > > > > > I've been looking into how a migration to using
-> > > > > > trusted/encrypted keys would look like (particularly with dm-
-> > > > > > crypt).
-> > > > > > 
-> > > > > > Currently, it seems the the only way is to re-encrypt the
-> > > > > > partitions because trusted/encrypted keys always generate their
-> > > > > > payloads from RNG.
-> > > > > > 
-> > > > > > If instead there was a key command to initialize a new
-> > > > > > trusted/encrypted key with a user provided value, users could
-> > > > > > use whatever mechanism they used beforehand to get a plaintext
-> > > > > > key and use that to initialize a new trusted/encrypted key.
-> > > > > > From there on, the key will be like any other trusted/encrypted
-> > > > > > key and not be disclosed again to userspace.
-> > > > > > 
-> > > > > > What are your thoughts on this? Would an API like
-> > > > > > 
-> > > > > >   keyctl add trusted dmcrypt-key 'set <content>' # user-
-> > > > > > supplied content
-> > > > > > 
-> > > > > > be acceptable?
-> > > > > 
-> > > > > Maybe it's the lack of knowledge with dm-crypt, but why this
-> > > > > would be useful? Just want to understand the bottleneck, that's
-> > > > > all.
-> > > 
-> > > Our goal in this case is to move away from having the dm-crypt key
-> > > material accessible to user-space on embedded devices. For an
-> > > existing dm-crypt volume, this key is fixed. A key can be loaded into
-> > > user key type and used by dm-crypt (cryptsetup can already do it this
-> > > way). But at this point, you can still do 'keyctl read' on that key,
-> > > exposing the key material to user space.
-> > > 
-> > > Currently, with both encrypted and trusted keys, you can only
-> > > generate new random keys, not import existing key material.
-> > > 
-> > > James Bottomley mentioned in the other reply that the key format will
-> > > become compatible with the openssl_tpm2_engine, which would provide a
-> > > workaround. This wouldn't work with OP-TEE-based trusted keys (see
-> > > Sumit Garg's series), though.
-> > 
-> > Assuming OP-TEE has the same use model as the TPM, someone will
-> > eventually realise the need for interoperable key formats between key
-> > consumers and then it will work in the same way once the kernel gets
-> > updated to speak whatever format they come up with.
+> I tested these on top of Sumit's patches with TPM and a CAAM blobifier
+> backend, I am preparing. The system I am developing these patches against
+> doesn't have a TEE.  Steps to test these changes:
 > 
-> IIUC, James re-work for TPM trusted keys is to allow loading of sealed
-> trusted keys directly via user-space (with proper authorization) into
-> the kernel keyring.
+> #!/bin/sh
 > 
-> I think similar should be achievable with OP-TEE (via extending pseudo
-> TA [1]) as well to allow restricted user-space access (with proper
-> authorization) to generate sealed trusted key blob that should be
-> interoperable with the kernel. Currently OP-TEE exposes trusted key
-> interfaces for kernel users only.
-
-What is the security benefit of having the key blob creation in user-space
-instead of in the kernel? Key import is a standard operation in HSMs or PKCS#11
-tokens.
-
-I mainly see the downside of having to add another API to access the underlying
-functionality (be it trusted key TA or the NXP CAAM HW *) and requiring
-platform-specific userspace code.
-
-This CAAM specific API (in out-of-tree patches) was exactly the part I was
-trying to get rid of. ;)
-
-Regards,
-Jan
+> DEV=/dev/loop0
+> ALGO=aes-cbc-essiv:sha256
+> KEYNAME=kmk
+> BLOCKS=20
+> 
+> fallocate -l $((BLOCKS*512)) /tmp/loop0.img
+> losetup -P $DEV /tmp/loop0.img
+> mount -o remount,rw /
+> KEY="$(keyctl add trusted $KEYNAME 'new 32' @s)"
+> keyctl pipe $KEY >$HOME/kmk.blob
+> 
+> TABLE="0 $BLOCKS crypt $ALGO :32:trusted:$KEYNAME 0 $DEV 0 1 allow_discards"
+> echo $TABLE | dmsetup create mydev
+> echo $TABLE | dmsetup load mydev
+> dd if=/dev/zero of=/dev/mapper/mydev
+> echo "It works!" 1<> /dev/mapper/mydev
+> cryptsetup close mydev
+> 
+> reboot
+> 
+> DEV=/dev/loop0
+> ALGO=aes-cbc-essiv:sha256
+> KEYNAME=kmk
+> BLOCKS=20
+> 
+> losetup -P $DEV $HOME/loop0.img
+> keyctl add trusted $KEYNAME "load $(cat $HOME/kmk.blob)" @s
+> TABLE="0 $BLOCKS crypt $ALGO :32:trusted:$KEYNAME 0 $DEV 0 1 allow_discards"
+> echo $TABLE | dmsetup create mydev
+> echo $TABLE | dmsetup load mydev
+> 
+> # should print that It works!
+> hexdump -C /dev/mapper/mydev
+> 
+>>> https://lore.kernel.org/linux-integrity/1604419306-26105-1-git-send-email-sumit.garg@linaro.org/
+>>
+>> Also, I would hold merging *this* patch up until we are able to
+>> test TEE trusted keys with TEE trusted keys.
+> 
+> Which blocks which? I tested this with TPM-Trusted keys, so it's usable
+> as is. For convenient usage, it would be nice to have cryptsetup
+> support for trusted and encrypted keys. I intended to look at this next week.
+> 
+> Cheers,
+> Ahmad
+> 
+>>
+>> /Jarkko
+>>
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
