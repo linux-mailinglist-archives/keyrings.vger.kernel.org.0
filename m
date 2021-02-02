@@ -2,134 +2,90 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A645130C469
-	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 16:52:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D73330C37C
+	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 16:21:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235098AbhBBPvD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 2 Feb 2021 10:51:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235096AbhBBPNK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 2 Feb 2021 10:13:10 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01972C06174A
-        for <keyrings@vger.kernel.org>; Tue,  2 Feb 2021 07:12:30 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1l6xLu-0002oq-Ri; Tue, 02 Feb 2021 16:12:26 +0100
-Subject: Re: [PATCH 2/2] dm crypt: support using trusted keys
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Mike Snitzer <snitzer@redhat.com>
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
-        =?UTF-8?Q?Jan_L=c3=bcbbe?= <jlu@pengutronix.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Dmitry Baryshkov <dbaryshkov@gmail.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-raid@vger.kernel.org, Song Liu <song@kernel.org>,
-        dm-devel@redhat.com, keyrings@vger.kernel.org,
-        kernel@pengutronix.de, linux-integrity@vger.kernel.org,
-        Alasdair Kergon <agk@redhat.com>
-References: <20210122084321.24012-1-a.fatoum@pengutronix.de>
- <20210122084321.24012-2-a.fatoum@pengutronix.de>
- <YAsT/N8CHHNTZcj3@kernel.org> <YAsW8DAt3vc68rLA@kernel.org>
- <5d44e50e-4309-830b-79f6-f5d888b1ef69@pengutronix.de>
-Message-ID: <8cd946c4-558d-ca66-7026-a574034b4757@pengutronix.de>
-Date:   Tue, 2 Feb 2021 16:12:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S235364AbhBBPTm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 2 Feb 2021 10:19:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41200 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235415AbhBBPRr (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 2 Feb 2021 10:17:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3836764EBF;
+        Tue,  2 Feb 2021 15:17:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612279025;
+        bh=gsqH5R2MIBk8ennetSW+5uxOlY9Y3VrMrn7TTPDHofU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CFneDKyiNp/x1cpnR5unToS/CuwUXHXJEVCQdz92PdwdNubg8GGIf5DFIUJxv/cFX
+         SUMlzfH3SqgpbjIf64QxC56MT+TDwD6gVrdhv5SSH9/CMHjS78KR7SPmVAGE+wqaU1
+         Kp2LvNItkEyd3h4QFpvWVyPZEIAQHBxz4Iwp3R8oQXvgMP7Sa4zU6OImzZdgBGyZcu
+         UyfBoeC1KXYczlJrb6ze/DeC52nRFQYCtNOyYMFfTOVI0GAB+9Z0jvKqroDMk8rxZw
+         cJuZRND0porSFY2zcQKH9JPSANa9HIqHBeslgrZ3K7AOV4v5wBV9eIB2WfNU1FoYXM
+         Iclmbsp1jEhoA==
+Date:   Tue, 2 Feb 2021 17:16:58 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Stefan Berger <stefanb@linux.ibm.com>
+Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>, dhowells@redhat.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        linux-crypto@vger.kernel.org, patrick@puiterwijk.org
+Subject: Re: [PATCH v3 1/3] x509: Detect sm2 keys by their parameters OID
+Message-ID: <YBls6paPlQ9L797n@kernel.org>
+References: <20210127123350.817593-1-stefanb@linux.vnet.ibm.com>
+ <20210127123350.817593-2-stefanb@linux.vnet.ibm.com>
+ <689c44925d60238181390e775b52809e89e0b26a.camel@kernel.org>
+ <e975bd1e-5256-ea8f-2247-fc362302e647@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <5d44e50e-4309-830b-79f6-f5d888b1ef69@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e975bd1e-5256-ea8f-2247-fc362302e647@linux.ibm.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 22.01.21 20:04, Ahmad Fatoum wrote:
-> On 22.01.21 19:18, Jarkko Sakkinen wrote:
->> On Fri, Jan 22, 2021 at 08:05:51PM +0200, Jarkko Sakkinen wrote:
->>> On Fri, Jan 22, 2021 at 09:43:21AM +0100, Ahmad Fatoum wrote:
->>>> Commit 27f5411a718c ("dm crypt: support using encrypted keys") extended
->>>> dm-crypt to allow use of "encrypted" keys along with "user" and "logon".
->>>>
->>>> Along the same lines, teach dm-crypt to support "trusted" keys as well.
+On Sat, Jan 30, 2021 at 09:57:40PM -0500, Stefan Berger wrote:
+> On 1/30/21 4:26 PM, Jarkko Sakkinen wrote:
+> > On Wed, 2021-01-27 at 07:33 -0500, Stefan Berger wrote:
+> > > From: Stefan Berger <stefanb@linux.ibm.com>
+> > > 
+> > > Detect whether a key is an sm2 type of key by its OID in the parameters
+> > > array rather than assuming that everything under OID_id_ecPublicKey
+> > > is sm2, which is not the case.
+> > > 
+> > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > ---
+> > >   crypto/asymmetric_keys/x509_cert_parser.c | 13 ++++++++++++-
+> > >   1 file changed, 12 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+> > > index 52c9b455fc7d..4643fe5ed69a 100644
+> > > --- a/crypto/asymmetric_keys/x509_cert_parser.c
+> > > +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> > > @@ -459,6 +459,7 @@ int x509_extract_key_data(void *context, size_t hdrlen,
+> > >                            const void *value, size_t vlen)
+> > >   {
+> > >          struct x509_parse_context *ctx = context;
+> > > +       enum OID oid;
+> > >          ctx->key_algo = ctx->last_oid;
+> > >          switch (ctx->last_oid) {
+> > > @@ -470,7 +471,17 @@ int x509_extract_key_data(void *context, size_t hdrlen,
+> > >                  ctx->cert->pub->pkey_algo = "ecrdsa";
+> > >                  break;
+> > >          case OID_id_ecPublicKey:
+> > > -               ctx->cert->pub->pkey_algo = "sm2";
+> > > +               if (ctx->params_size < 2)
+> > Either a named constant, or at least a comment instead of just '2'.
+> 
+> 
+> I will look at the 2 entries whether they contain the expected values:
+> ASN1_OID and length
+> 
+> Thanks!
+> 
+>    Stefan
 
-Gentle ping.
-Is there anything further you require from me regarding these two patches?
+Just add inline comment that explains that.
 
->>>>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> ---
->>>
->>> Is it possible to test run this with tmpfs? Would be a good test
->>> target for Sumit's ARM-TEE trusted keys patches.
-> 
-> I tested these on top of Sumit's patches with TPM and a CAAM blobifier
-> backend, I am preparing. The system I am developing these patches against
-> doesn't have a TEE.  Steps to test these changes:
-> 
-> #!/bin/sh
-> 
-> DEV=/dev/loop0
-> ALGO=aes-cbc-essiv:sha256
-> KEYNAME=kmk
-> BLOCKS=20
-> 
-> fallocate -l $((BLOCKS*512)) /tmp/loop0.img
-> losetup -P $DEV /tmp/loop0.img
-> mount -o remount,rw /
-> KEY="$(keyctl add trusted $KEYNAME 'new 32' @s)"
-> keyctl pipe $KEY >$HOME/kmk.blob
-> 
-> TABLE="0 $BLOCKS crypt $ALGO :32:trusted:$KEYNAME 0 $DEV 0 1 allow_discards"
-> echo $TABLE | dmsetup create mydev
-> echo $TABLE | dmsetup load mydev
-> dd if=/dev/zero of=/dev/mapper/mydev
-> echo "It works!" 1<> /dev/mapper/mydev
-> cryptsetup close mydev
-> 
-> reboot
-> 
-> DEV=/dev/loop0
-> ALGO=aes-cbc-essiv:sha256
-> KEYNAME=kmk
-> BLOCKS=20
-> 
-> losetup -P $DEV $HOME/loop0.img
-> keyctl add trusted $KEYNAME "load $(cat $HOME/kmk.blob)" @s
-> TABLE="0 $BLOCKS crypt $ALGO :32:trusted:$KEYNAME 0 $DEV 0 1 allow_discards"
-> echo $TABLE | dmsetup create mydev
-> echo $TABLE | dmsetup load mydev
-> 
-> # should print that It works!
-> hexdump -C /dev/mapper/mydev
-> 
->>> https://lore.kernel.org/linux-integrity/1604419306-26105-1-git-send-email-sumit.garg@linaro.org/
->>
->> Also, I would hold merging *this* patch up until we are able to
->> test TEE trusted keys with TEE trusted keys.
-> 
-> Which blocks which? I tested this with TPM-Trusted keys, so it's usable
-> as is. For convenient usage, it would be nice to have cryptsetup
-> support for trusted and encrypted keys. I intended to look at this next week.
-> 
-> Cheers,
-> Ahmad
-> 
->>
->> /Jarkko
->>
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+/Jarkko
