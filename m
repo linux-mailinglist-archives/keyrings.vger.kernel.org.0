@@ -2,90 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D73330C37C
-	for <lists+keyrings@lfdr.de>; Tue,  2 Feb 2021 16:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D94C30E807
+	for <lists+keyrings@lfdr.de>; Thu,  4 Feb 2021 00:59:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235364AbhBBPTm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 2 Feb 2021 10:19:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41200 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235415AbhBBPRr (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 2 Feb 2021 10:17:47 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3836764EBF;
-        Tue,  2 Feb 2021 15:17:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612279025;
-        bh=gsqH5R2MIBk8ennetSW+5uxOlY9Y3VrMrn7TTPDHofU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CFneDKyiNp/x1cpnR5unToS/CuwUXHXJEVCQdz92PdwdNubg8GGIf5DFIUJxv/cFX
-         SUMlzfH3SqgpbjIf64QxC56MT+TDwD6gVrdhv5SSH9/CMHjS78KR7SPmVAGE+wqaU1
-         Kp2LvNItkEyd3h4QFpvWVyPZEIAQHBxz4Iwp3R8oQXvgMP7Sa4zU6OImzZdgBGyZcu
-         UyfBoeC1KXYczlJrb6ze/DeC52nRFQYCtNOyYMFfTOVI0GAB+9Z0jvKqroDMk8rxZw
-         cJuZRND0porSFY2zcQKH9JPSANa9HIqHBeslgrZ3K7AOV4v5wBV9eIB2WfNU1FoYXM
-         Iclmbsp1jEhoA==
-Date:   Tue, 2 Feb 2021 17:16:58 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Stefan Berger <stefanb@linux.ibm.com>
-Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>, dhowells@redhat.com,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        linux-crypto@vger.kernel.org, patrick@puiterwijk.org
-Subject: Re: [PATCH v3 1/3] x509: Detect sm2 keys by their parameters OID
-Message-ID: <YBls6paPlQ9L797n@kernel.org>
-References: <20210127123350.817593-1-stefanb@linux.vnet.ibm.com>
- <20210127123350.817593-2-stefanb@linux.vnet.ibm.com>
- <689c44925d60238181390e775b52809e89e0b26a.camel@kernel.org>
- <e975bd1e-5256-ea8f-2247-fc362302e647@linux.ibm.com>
+        id S233449AbhBCX5n (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 3 Feb 2021 18:57:43 -0500
+Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:41668 "EHLO
+        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S233315AbhBCX5m (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 3 Feb 2021 18:57:42 -0500
+X-Greylist: delayed 59540 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 18:57:38 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=rgk1ikauAU1hvTn54IcRsZV7jN
+        7ew7UnoHYswDbiAn0BwsDPvi1y7NYnu6spVFzd7wuCzuSXaeHSKXCbOKsfovgDS9G8VDov60T9hnO
+        az+ZrAdd9l4q7KVCSxwWKCfCVJbfHTSf42W46YnBkpxHquHw5LLqdFj5EdNb7huiQ1YCWmqOknYH9
+        SyIGPObfTFO7iFaqVfyi8Xbiiafcx4hzvN/iZIY/q1CFEZM+hVR0h+YPMSL3k9qRCiHtO0Ucth7ip
+        RJzG/T6UUDEki2hIinuZoSZa3/L4hnnytmaQT+A2HqKGkNS4nukEOez1R6NMYmAg56m6DyuuzrLgl
+        lDuKQ5eg==;
+Received: from [127.0.0.1] (port=45986 helo=dot.dotlines.com.sg)
+        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
+        (envelope-from <noreply@carnivalassure.com.bd>)
+        id 1l7CVc-0005Wr-DK; Wed, 03 Feb 2021 01:23:28 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Date:   Wed, 03 Feb 2021 01:23:26 -0600
+From:   Francois Pinault <noreply@carnivalassure.com.bd>
+To:     undisclosed-recipients:;
+Subject: Hello/Hallo
+Organization: Donation
+Reply-To: francoispinault1936@outlook.com
+Mail-Reply-To: francoispinault1936@outlook.com
+Message-ID: <1a89ab2763fcfd9504c577b99b1b1baa@carnivalassure.com.bd>
+X-Sender: noreply@carnivalassure.com.bd
+User-Agent: Roundcube Webmail/1.3.15
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e975bd1e-5256-ea8f-2247-fc362302e647@linux.ibm.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
+X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
+X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, Jan 30, 2021 at 09:57:40PM -0500, Stefan Berger wrote:
-> On 1/30/21 4:26 PM, Jarkko Sakkinen wrote:
-> > On Wed, 2021-01-27 at 07:33 -0500, Stefan Berger wrote:
-> > > From: Stefan Berger <stefanb@linux.ibm.com>
-> > > 
-> > > Detect whether a key is an sm2 type of key by its OID in the parameters
-> > > array rather than assuming that everything under OID_id_ecPublicKey
-> > > is sm2, which is not the case.
-> > > 
-> > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> > > ---
-> > >  †crypto/asymmetric_keys/x509_cert_parser.c | 13 ++++++++++++-
-> > >  †1 file changed, 12 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-> > > index 52c9b455fc7d..4643fe5ed69a 100644
-> > > --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> > > +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> > > @@ -459,6 +459,7 @@ int x509_extract_key_data(void *context, size_t hdrlen,
-> > >  ††††††††††††††††††††††††† const void *value, size_t vlen)
-> > >  †{
-> > >  ††††††††struct x509_parse_context *ctx = context;
-> > > +†††††††enum OID oid;
-> > >  ††††††††ctx->key_algo = ctx->last_oid;
-> > >  ††††††††switch (ctx->last_oid) {
-> > > @@ -470,7 +471,17 @@ int x509_extract_key_data(void *context, size_t hdrlen,
-> > >  ††††††††††††††††ctx->cert->pub->pkey_algo = "ecrdsa";
-> > >  ††††††††††††††††break;
-> > >  ††††††††case OID_id_ecPublicKey:
-> > > -†††††††††††††††ctx->cert->pub->pkey_algo = "sm2";
-> > > +†††††††††††††††if (ctx->params_size < 2)
-> > Either a named constant, or at least a comment instead of just '2'.
-> 
-> 
-> I will look at the 2 entries whether they contain the expected values:
-> ASN1_OID and length
-> 
-> Thanks!
-> 
-> †† Stefan
 
-Just add inline comment that explains that.
 
-/Jarkko
+-- 
+Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
+k√∂nnen mein Profil auf Wikipedia, Google oder Forbes √ºberpr√ºfen.
+
+F√ºr Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
+mich umgehend unter francoispinault1936@outlook.com
+
+Mit freundlichen Gr√º√üen,
+Herr Francois Pinault
