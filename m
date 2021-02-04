@@ -2,136 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB8430EC2C
-	for <lists+keyrings@lfdr.de>; Thu,  4 Feb 2021 06:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA45830EE4E
+	for <lists+keyrings@lfdr.de>; Thu,  4 Feb 2021 09:30:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230152AbhBDFoe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Feb 2021 00:44:34 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:38284 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229508AbhBDFoc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Feb 2021 00:44:32 -0500
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 1145VwUw161726;
-        Thu, 4 Feb 2021 00:43:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=H1K8keCfYd88y6FeSveP1pC8C27fc39xWe+VR3onYlE=;
- b=CJEcxLIDhyqyfdt2Jix9eiA87XNU5WkfN0+j22NxH0FBsy0j2cbcUajnfttUTwTXGGZq
- Nn6Pyleb4h4dnuylf6XjytZw6IOkI9k4d1OR6uB78DmrjD7VvXKPOGF/VODvk6JHvhUI
- hi7hP+w1wNOqUlNs1TjhcIQBuOY7TzOVGUGCoshj++646AJOfj9oKBp3YP6d6hrSGDyY
- sBAiXe69Yi+fESxAt6y5BnjTXnzNoj2jXZ+mwxN31NH6qV4/LlrBbbkVVN3042GMtY2w
- uFBw8P2PPhqteme3WIkN1rOPhgoOenFVdjaN1UIGV553GozY2MLKMDHdz7TWMISqeyMh Gw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 36gams0kjq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Feb 2021 00:43:45 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 1145Wx5e165902;
-        Thu, 4 Feb 2021 00:43:44 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 36gams0kje-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Feb 2021 00:43:44 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1145SKiv016451;
-        Thu, 4 Feb 2021 05:43:44 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-        by ppma02wdc.us.ibm.com with ESMTP id 36cy39kxwe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Feb 2021 05:43:44 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1145hhl641550302
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 4 Feb 2021 05:43:43 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5A341124054;
-        Thu,  4 Feb 2021 05:43:43 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 47CE3124053;
-        Thu,  4 Feb 2021 05:43:43 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu,  4 Feb 2021 05:43:43 +0000 (GMT)
-Subject: Re: [PATCH v7 1/4] crypto: Add support for ECDSA signature
- verification
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Saulo Alessandre <saulo.alessandre@gmail.com>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        davem@davemloft.net, dhowells@redhat.com, zohar@linux.ibm.com,
-        linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
-        linux-integrity@vger.kernel.org
-References: <20210201151910.1465705-1-stefanb@linux.ibm.com>
- <20210201151910.1465705-2-stefanb@linux.ibm.com>
- <20210204052738.GA7086@gondor.apana.org.au>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <652c922b-a231-b1ab-43ce-d4d670c90eef@linux.ibm.com>
-Date:   Thu, 4 Feb 2021 00:43:43 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S234732AbhBDI1J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Feb 2021 03:27:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32952 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234919AbhBDI1H (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Feb 2021 03:27:07 -0500
+Received: from smtp-1909.mail.infomaniak.ch (smtp-1909.mail.infomaniak.ch [IPv6:2001:1600:3:17::1909])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA6AC061573;
+        Thu,  4 Feb 2021 00:26:21 -0800 (PST)
+Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DWWpy3ZwNzMqWB2;
+        Thu,  4 Feb 2021 09:26:18 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4DWWpv3gtrzlpq06;
+        Thu,  4 Feb 2021 09:26:15 +0100 (CET)
+Subject: =?UTF-8?Q?Re=3a_Conflict_with_Micka=c3=abl_Sala=c3=bcn=27s_blacklis?=
+ =?UTF-8?Q?t_patches_=5bwas_=5bPATCH_v5_0/4=5d_Add_EFI=5fCERT=5fX509=5fGUID_?=
+ =?UTF-8?Q?support_for_dbx/mokx_entries=5d?=
+To:     Eric Snowberg <eric.snowberg@oracle.com>,
+        David Howells <dhowells@redhat.com>
+Cc:     dwmw2@infradead.org, Jarkko Sakkinen <jarkko@kernel.org>,
+        James.Bottomley@HansenPartnership.com, masahiroy@kernel.org,
+        michal.lkml@markovi.net, jmorris@namei.org, serge@hallyn.com,
+        ardb@kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        lszubowi@redhat.com, javierm@redhat.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Tyler Hicks <tyhicks@linux.microsoft.com>
+References: <20210122181054.32635-1-eric.snowberg@oracle.com>
+ <1103491.1612369600@warthog.procyon.org.uk>
+ <10e6616e-0598-9f33-2de9-4a5268bba586@digikod.net>
+ <A5B5DEC0-E47A-4C3D-8E79-AF37B6C2E565@oracle.com>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+Message-ID: <7924ce4c-ea94-9540-0730-bddae7c6af07@digikod.net>
+Date:   Thu, 4 Feb 2021 09:26:19 +0100
+User-Agent: 
 MIME-Version: 1.0
-In-Reply-To: <20210204052738.GA7086@gondor.apana.org.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <A5B5DEC0-E47A-4C3D-8E79-AF37B6C2E565@oracle.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
- definitions=2021-02-04_02:2021-02-03,2021-02-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- bulkscore=0 mlxlogscore=999 spamscore=0 mlxscore=0 malwarescore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102040029
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2/4/21 12:27 AM, Herbert Xu wrote:
-> On Mon, Feb 01, 2021 at 10:19:07AM -0500, Stefan Berger wrote:
->> Add support for parsing the parameters of a NIST P256 or NIST P192 key.
->> Enable signature verification using these keys. The new module is
->> enabled with CONFIG_ECDSA:
->>    Elliptic Curve Digital Signature Algorithm (NIST P192, P256 etc.)
->>    is A NIST cryptographic standard algorithm. Only signature verification
->>    is implemented.
+
+On 04/02/2021 04:53, Eric Snowberg wrote:
+> 
+>> On Feb 3, 2021, at 11:49 AM, Mickaël Salaün <mic@digikod.net> wrote:
 >>
->> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->> Cc: Herbert Xu <herbert@gondor.apana.org.au>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: linux-crypto@vger.kernel.org
->> ---
->>   crypto/Kconfig               |  10 +
->>   crypto/Makefile              |   6 +
->>   crypto/ecc.c                 |  13 +-
->>   crypto/ecc.h                 |  28 +++
->>   crypto/ecdsa.c               | 361 +++++++++++++++++++++++++++++++++++
->>   crypto/ecdsasignature.asn1   |   4 +
->>   crypto/testmgr.c             |  12 ++
->>   crypto/testmgr.h             | 267 ++++++++++++++++++++++++++
->>   include/linux/oid_registry.h |   4 +
->>   9 files changed, 694 insertions(+), 11 deletions(-)
->>   create mode 100644 crypto/ecdsa.c
->>   create mode 100644 crypto/ecdsasignature.asn1
-> Saulo Alessandre is implementing ecdsa with signing so you two
-> should coordinate on this.
+>> This looks good to me, and it still works for my use case. Eric's
+>> patchset only looks for asymmetric keys in the blacklist keyring, so
+>> even if we use the same keyring we don't look for the same key types. My
+>> patchset only allows blacklist keys (i.e. hashes, not asymmetric keys)
+>> to be added by user space (if authenticated), but because Eric's
+>> asymmetric keys are loaded with KEY_ALLOC_BYPASS_RESTRICTION, it should
+>> be OK for his use case.  There should be no interference between the two
+>> new features, but I find it a bit confusing to have such distinct use of
+>> keys from the same keyring depending on their type.
+> 
+> I agree, it is a bit confusing.  What is the thought of having a dbx 
+> keyring, similar to how the platform keyring works?
+> 
+> https://www.spinics.net/lists/linux-security-module/msg40262.html
+> 
+> 
+>> On 03/02/2021 17:26, David Howells wrote:
+>>>
+>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
+>>>
+>>>> This is the fifth patch series for adding support for 
+>>>> EFI_CERT_X509_GUID entries [1].  It has been expanded to not only include
+>>>> dbx entries but also entries in the mokx.  Additionally my series to
+>>>> preload these certificate [2] has also been included.
+>>>
+>>> Okay, I've tentatively applied this to my keys-next branch.  However, it
+>>> conflicts minorly with Mickaël Salaün's patches that I've previously merged on
+>>> the same branch.  Can you have a look at the merge commit
+>>>
+>>> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=keys-next&id=fdbbe7ceeb95090d09c33ce0497e0394c82aa33d
+>>>
+>>> 	(the top patch of my keys-next branch)
+>>>
+>>> to see if that is okay by both of you?  If so, can you give it a whirl?
+> 
+> 
+> I’m seeing a build error within blacklist_hashes_checked with
+> one of my configs.
+> 
+> The config is as follows:
+> 
+> $ grep CONFIG_SYSTEM_BLACKLIST_HASH_LIST .config
+> CONFIG_SYSTEM_BLACKLIST_HASH_LIST=“revocation_list"
+> 
+> $ cat certs/revocation_list
+> "tbs:1e125ea4f38acb7b29b0c495fd8e7602c2c3353b913811a9da3a2fb505c08a32”
+> 
+> make[1]: *** No rule to make target 'revocation_list', needed by 'certs/blacklist_hashes_checked'.  Stop.
 
-Hello Saulo,
+It requires an absolute path. This is to align with other variables
+using the config_filename macro: CONFIG_SYSTEM_TRUSTED_KEYS,
+CONFIG_MODULE_SIG_KEY and now CONFIG_SYSTEM_REVOCATION_KEYS.
+Cf. https://lore.kernel.org/lkml/1221725.1607515111@warthog.procyon.org.uk/
 
-  so this series here supports NIST P256 and NIST P192 for usage by IMA 
-for example. It looks like you want to support more elliptic curves than 
-these: p384 and even p521. Do you have any suggestion on how to proceed? 
-Would you want to add patches with your additional curves on top of this 
-series?
-
-I have a project here with some test scripts that may also be relevant 
-for your case: https://github.com/stefanberger/eckey-testing
-
-
-     Stefan
-
-
->
-> Thanks,
-
-
+We may want to patch scripts/kconfig/streamline_config.pl for both
+CONFIG_SYSTEM_REVOCATION_KEYS and CONFIG_SYSTEM_BLACKLIST_HASH_LIST, to
+warn user (and exit with an error) if such files are not found.
