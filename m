@@ -2,84 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4484930F57C
-	for <lists+keyrings@lfdr.de>; Thu,  4 Feb 2021 15:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 981EB30F5B7
+	for <lists+keyrings@lfdr.de>; Thu,  4 Feb 2021 16:04:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236978AbhBDOz0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Feb 2021 09:55:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45476 "EHLO mail.kernel.org"
+        id S233400AbhBDPC3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Feb 2021 10:02:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46994 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236960AbhBDOyu (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 4 Feb 2021 09:54:50 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 222AB64F4D;
-        Thu,  4 Feb 2021 14:54:08 +0000 (UTC)
+        id S237042AbhBDPAW (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 4 Feb 2021 10:00:22 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D9E1864F60;
+        Thu,  4 Feb 2021 14:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612450449;
-        bh=F8e5Tfs+0+dMxhX3r0RE96VAf6DE6tlY4KDDXyE/GLY=;
+        s=k20201202; t=1612450711;
+        bh=Gkl5QjMLL9cstN7D689exW6RO9F/yfq6ZQ1XMZN1V+k=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ORPNu+5bXFexfQJ92eaq58Qp6ZZuITVcdddmQtQnyEO3kb8O6mxS5SEs0WqmccRih
-         uF1ruXcFkZMK4rHDyGZZFdTjGFg72XTN4brEobXlD1Ujy/MeFcD3riwtMWrefFFCpC
-         wRq9bO/ic6vRKFMEHfgtlgOI0xRKais6VtaXD4P2EyGGNpoT6qU/0un7xhAWVdq9gr
-         gbLT/tW21jm9O46UwWBqxNy6NITZD0D9/isSckjsG7F1eXoloL3+1MXqgOSh2BO+zQ
-         zLTtWHRP4wLBIrR8cOV7bTwc9LW9e6EuwjpfWNbWAr9vCkxOF+L941iQ8oi4yY4F3Z
-         nNPb4Y+08sCUg==
-Date:   Thu, 4 Feb 2021 16:54:01 +0200
+        b=r1FvdF0heZuFmuqdo0dHu3sLr8/I8cmWlT2CSDUdGkPM/JF0RyifSAFkwLaPLumqI
+         4sOOu4MH1lODcMRT4j5Ncjve0F5oGTNNamwSzKrdbYhzmd0K+5Dpc3nIuqaGI3OSpI
+         B4/xOw4I5xKsdGR9v6dqRwSDaPIPO2cNTrO9aZPONvd6sS+ksHXU56ovqPJk8Xqz4Y
+         9xuDQiz32W/CoLoiLjgOEBiuyUQOGW9A32jKRkPor9SCx9+Pw67Gs8PhhwKgifCOVy
+         RYyy7eTRduNvneoqUyJui+ZV1Jm2w2TNAJ+N+Nd2FbmMIKndRxSup9Fr7QAzNh8+Ga
+         AdXSDhTqCNbtA==
+Date:   Thu, 4 Feb 2021 16:58:23 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     dhowells@redhat.com, dwmw2@infradead.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] certs: include prototype for load_certificate_list
-Message-ID: <YBwKicD1tRcDWZ17@kernel.org>
-References: <20210204033208.1389901-1-eric.snowberg@oracle.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Stefan Berger <stefanb@linux.ibm.com>,
+        Saulo Alessandre <saulo.alessandre@gmail.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        davem@davemloft.net, dhowells@redhat.com, zohar@linux.ibm.com,
+        linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
+        linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v7 1/4] crypto: Add support for ECDSA signature
+ verification
+Message-ID: <YBwLj+8kHIHMA3xH@kernel.org>
+References: <20210201151910.1465705-1-stefanb@linux.ibm.com>
+ <20210201151910.1465705-2-stefanb@linux.ibm.com>
+ <20210204052738.GA7086@gondor.apana.org.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210204033208.1389901-1-eric.snowberg@oracle.com>
+In-Reply-To: <20210204052738.GA7086@gondor.apana.org.au>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Feb 03, 2021 at 10:32:08PM -0500, Eric Snowberg wrote:
-> The build test robot reports the following when building
-> with -Wmissing-prototypes
-> 
->   int load_certificate_list(const u8 cert_list[],
->       ^
->   certs/common.c:6:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
->   int load_certificate_list(const u8 cert_list[],
->   ^
->  static
->   1 warning generated.
-> 
-> Fix the warning by including the header file.
-> 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-> Reported-by: kernel test robot <lkp@intel.com>
+On Thu, Feb 04, 2021 at 04:27:39PM +1100, Herbert Xu wrote:
+> On Mon, Feb 01, 2021 at 10:19:07AM -0500, Stefan Berger wrote:
+> > Add support for parsing the parameters of a NIST P256 or NIST P192 key.
+> > Enable signature verification using these keys. The new module is
+> > enabled with CONFIG_ECDSA:
+> >   Elliptic Curve Digital Signature Algorithm (NIST P192, P256 etc.)
+> >   is A NIST cryptographic standard algorithm. Only signature verification
+> >   is implemented.
+> > 
+> > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> > Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: linux-crypto@vger.kernel.org
+> > ---
+> >  crypto/Kconfig               |  10 +
+> >  crypto/Makefile              |   6 +
+> >  crypto/ecc.c                 |  13 +-
+> >  crypto/ecc.h                 |  28 +++
+> >  crypto/ecdsa.c               | 361 +++++++++++++++++++++++++++++++++++
+> >  crypto/ecdsasignature.asn1   |   4 +
+> >  crypto/testmgr.c             |  12 ++
+> >  crypto/testmgr.h             | 267 ++++++++++++++++++++++++++
+> >  include/linux/oid_registry.h |   4 +
+> >  9 files changed, 694 insertions(+), 11 deletions(-)
+> >  create mode 100644 crypto/ecdsa.c
+> >  create mode 100644 crypto/ecdsasignature.asn1
 
 
 Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-BTW, should the bot have reported-by tagged?
+Great, ECDSA has been lacking for a way too long. Just wanted to
+acknowledge support for this, I just now also skimmed the change
+from patchwrok (way too quickly for reviewed-by but well enough
+for ack).
 
 /Jarkko
-
-> ---
->  certs/common.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/certs/common.c b/certs/common.c
-> index 83800f51a1a1..16a220887a53 100644
-> --- a/certs/common.c
-> +++ b/certs/common.c
-> @@ -2,6 +2,7 @@
->  
->  #include <linux/kernel.h>
->  #include <linux/key.h>
-> +#include "common.h"
->  
->  int load_certificate_list(const u8 cert_list[],
->  			  const unsigned long list_size,
-> -- 
-> 2.18.4
-> 
-> 
