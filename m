@@ -2,64 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF3403104E2
-	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 07:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62ABE31069C
+	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 09:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbhBEGMM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Feb 2021 01:12:12 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:53708 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S230161AbhBEGMK (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 5 Feb 2021 01:12:10 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=f6hjJpK7iTF3TCbNxenXh+g36I7UjwQWNUTNTAsmxD0wobeIvVD5W4k5EUiBpDZpxjEGt3kbjZKsapDLxfrOBgycHAVm4PwqG2etWo64cqL26WBF38JygSeOM8slP9wlbE1iCBGaofxYVlFFkTgVTgPhdwoGMvSd8JppjnbSqOBdQClDkpebvd6vjPa1r/xaFKQvG6WR+iyfEqwnUpaPRRvSJqbaBKvP9XVBaiEfWewv2bjluTzYPw4vUS
-        g85ba/itG5HM5InLT3T2McRq539y+/DiaiU5y60mcuyRHg1rNk0ukLdwFIydiiWx1z9M4brRFn2RPoWgWtWOyliOy1rw==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Mon, 1 Feb 2021 05:42:36 +0000
-Message-ID: <26CCB9D9-05E5-4F3B-BE9A-9A7F9352BCE2@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Mon, 1 Feb 2021 05:42:34 -0000
+        id S229703AbhBEI1K (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Feb 2021 03:27:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:55543 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229692AbhBEI1I (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Feb 2021 03:27:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612513542;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=LxANOstSwBXrn0OC3M8r/TM5reax6AnMqz1DHOK0g18=;
+        b=d9RTDFg7RRBjm4pOOU94WtvZ2CEH1CPazpCXEs7xy0XfACKF9ACcE8Eu+N6ufuX8ui0bO4
+        qlqNVnbdIIvYZz12+hTgwWwdGBCaG5lisFBQQLNzvpuknNz/vYMu3xxGd8w4i8/cLx02PD
+        iwMSAI7wTkZrUVNe0nUsfEJHgo2pE4g=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-98-Aund-JwENnm_luJEaMImoA-1; Fri, 05 Feb 2021 03:25:40 -0500
+X-MC-Unique: Aund-JwENnm_luJEaMImoA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AAAB81800D50;
+        Fri,  5 Feb 2021 08:25:38 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B582D1970A;
+        Fri,  5 Feb 2021 08:25:36 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <YByxkDi0Ruhb0AA8@kernel.org>
+References: <YByxkDi0Ruhb0AA8@kernel.org> <161246085160.1990927.13137391845549674518.stgit@warthog.procyon.org.uk> <161246085966.1990927.2555272056564793056.stgit@warthog.procyon.org.uk>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     dhowells@redhat.com, sprabhu@redhat.com, christian@brauner.io,
+        selinux@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, containers@lists.linux-foundation.org
+Subject: Re: [PATCH 1/2] Add namespace tags that can be used for matching without pinning a ns
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2094923.1612513535.1@warthog.procyon.org.uk>
+Date:   Fri, 05 Feb 2021 08:25:35 +0000
+Message-ID: <2094924.1612513535@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+Jarkko Sakkinen <jarkko@kernel.org> wrote:
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+> > + * init_ns_common - Initialise the common part of a namespace
+> 
+> Nit: init_ns_common()
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+Interesting.  The majority of code doesn't put the brackets in.
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+> I've used lately (e.g. arch/x86/kernel/cpu/sgx/ioctl.c) along the lines:
+> 
+> * Return:
+> * - 0:          Initialization was successful.
+> * - -ENOMEM:    Out of memory.
 
-Regards,
-Ms. Reem.
+Actually, looking at kernel-doc.rst, this isn't necessarily the recommended
+approach as it will much everything into one line, complete with dashes, and
+can't handle splitting over lines.  You probably meant:
+
+      * Return:
+      * * 0		- OK to runtime suspend the device
+      * * -EBUSY	- Device should not be runtime suspended
+
+> * Return:
+> * - 0:          Initialization was successful.
+> * - -ENOMEM:    Out of memory.
+> 
+> Looking at the implementation, I guess this is a complete representation of
+> what it can return?
+
+It isn't.  It can return at least -ENOSPC as well, but it's awkward detailing
+the errors from functions it calls since they can change and then the
+description here is wrong.  I'm not sure there's a perfect answer to that.
+
+David
 
