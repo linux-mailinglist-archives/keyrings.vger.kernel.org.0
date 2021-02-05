@@ -2,92 +2,148 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62ABE31069C
-	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 09:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C4DC31091C
+	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 11:32:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbhBEI1K (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Feb 2021 03:27:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:55543 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229692AbhBEI1I (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Feb 2021 03:27:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612513542;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=LxANOstSwBXrn0OC3M8r/TM5reax6AnMqz1DHOK0g18=;
-        b=d9RTDFg7RRBjm4pOOU94WtvZ2CEH1CPazpCXEs7xy0XfACKF9ACcE8Eu+N6ufuX8ui0bO4
-        qlqNVnbdIIvYZz12+hTgwWwdGBCaG5lisFBQQLNzvpuknNz/vYMu3xxGd8w4i8/cLx02PD
-        iwMSAI7wTkZrUVNe0nUsfEJHgo2pE4g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-98-Aund-JwENnm_luJEaMImoA-1; Fri, 05 Feb 2021 03:25:40 -0500
-X-MC-Unique: Aund-JwENnm_luJEaMImoA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AAAB81800D50;
-        Fri,  5 Feb 2021 08:25:38 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B582D1970A;
-        Fri,  5 Feb 2021 08:25:36 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <YByxkDi0Ruhb0AA8@kernel.org>
-References: <YByxkDi0Ruhb0AA8@kernel.org> <161246085160.1990927.13137391845549674518.stgit@warthog.procyon.org.uk> <161246085966.1990927.2555272056564793056.stgit@warthog.procyon.org.uk>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     dhowells@redhat.com, sprabhu@redhat.com, christian@brauner.io,
-        selinux@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        id S231345AbhBEKbr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Feb 2021 05:31:47 -0500
+Received: from smtp-bc0f.mail.infomaniak.ch ([45.157.188.15]:60915 "EHLO
+        smtp-bc0f.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231228AbhBEK2C (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Feb 2021 05:28:02 -0500
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DXBRj2YVDzMqWkX;
+        Fri,  5 Feb 2021 11:26:57 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DXBRf1R7Xzlh8TK;
+        Fri,  5 Feb 2021 11:26:54 +0100 (CET)
+Subject: =?UTF-8?Q?Re=3a_Conflict_with_Micka=c3=abl_Sala=c3=bcn=27s_blacklis?=
+ =?UTF-8?Q?t_patches_=5bwas_=5bPATCH_v5_0/4=5d_Add_EFI=5fCERT=5fX509=5fGUID_?=
+ =?UTF-8?Q?support_for_dbx/mokx_entries=5d?=
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     David Howells <dhowells@redhat.com>, dwmw2@infradead.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James.Bottomley@HansenPartnership.com, masahiroy@kernel.org,
+        michal.lkml@markovi.net, jmorris@namei.org, serge@hallyn.com,
+        ardb@kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        lszubowi@redhat.com, javierm@redhat.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, containers@lists.linux-foundation.org
-Subject: Re: [PATCH 1/2] Add namespace tags that can be used for matching without pinning a ns
+        Tyler Hicks <tyhicks@linux.microsoft.com>
+References: <20210122181054.32635-1-eric.snowberg@oracle.com>
+ <1103491.1612369600@warthog.procyon.org.uk>
+ <10e6616e-0598-9f33-2de9-4a5268bba586@digikod.net>
+ <A5B5DEC0-E47A-4C3D-8E79-AF37B6C2E565@oracle.com>
+ <7924ce4c-ea94-9540-0730-bddae7c6af07@digikod.net>
+ <BFC930B3-7994-4C5B-A8EF-1DD1C73F5750@oracle.com>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+Message-ID: <dc6a4524-3935-fda6-40a8-cebf80942cdf@digikod.net>
+Date:   Fri, 5 Feb 2021 11:27:02 +0100
+User-Agent: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2094923.1612513535.1@warthog.procyon.org.uk>
-Date:   Fri, 05 Feb 2021 08:25:35 +0000
-Message-ID: <2094924.1612513535@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+In-Reply-To: <BFC930B3-7994-4C5B-A8EF-1DD1C73F5750@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> wrote:
 
-> > + * init_ns_common - Initialise the common part of a namespace
+On 05/02/2021 01:24, Eric Snowberg wrote:
 > 
-> Nit: init_ns_common()
-
-Interesting.  The majority of code doesn't put the brackets in.
-
-> I've used lately (e.g. arch/x86/kernel/cpu/sgx/ioctl.c) along the lines:
+>> On Feb 4, 2021, at 1:26 AM, Mickaël Salaün <mic@digikod.net> wrote:
+>>
+>>
+>> On 04/02/2021 04:53, Eric Snowberg wrote:
+>>>
+>>>> On Feb 3, 2021, at 11:49 AM, Mickaël Salaün <mic@digikod.net> wrote:
+>>>>
+>>>> This looks good to me, and it still works for my use case. Eric's
+>>>> patchset only looks for asymmetric keys in the blacklist keyring, so
+>>>> even if we use the same keyring we don't look for the same key types. My
+>>>> patchset only allows blacklist keys (i.e. hashes, not asymmetric keys)
+>>>> to be added by user space (if authenticated), but because Eric's
+>>>> asymmetric keys are loaded with KEY_ALLOC_BYPASS_RESTRICTION, it should
+>>>> be OK for his use case.  There should be no interference between the two
+>>>> new features, but I find it a bit confusing to have such distinct use of
+>>>> keys from the same keyring depending on their type.
+>>>
+>>> I agree, it is a bit confusing.  What is the thought of having a dbx 
+>>> keyring, similar to how the platform keyring works?
+>>>
+>>> https://www.spinics.net/lists/linux-security-module/msg40262.html
+>>>
+>>>
+>>>> On 03/02/2021 17:26, David Howells wrote:
+>>>>>
+>>>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
+>>>>>
+>>>>>> This is the fifth patch series for adding support for 
+>>>>>> EFI_CERT_X509_GUID entries [1].  It has been expanded to not only include
+>>>>>> dbx entries but also entries in the mokx.  Additionally my series to
+>>>>>> preload these certificate [2] has also been included.
+>>>>>
+>>>>> Okay, I've tentatively applied this to my keys-next branch.  However, it
+>>>>> conflicts minorly with Mickaël Salaün's patches that I've previously merged on
+>>>>> the same branch.  Can you have a look at the merge commit
+>>>>>
+>>>>> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=keys-next&id=fdbbe7ceeb95090d09c33ce0497e0394c82aa33d
+>>>>>
+>>>>> 	(the top patch of my keys-next branch)
+>>>>>
+>>>>> to see if that is okay by both of you?  If so, can you give it a whirl?
+>>>
+>>>
+>>> I’m seeing a build error within blacklist_hashes_checked with
+>>> one of my configs.
+>>>
+>>> The config is as follows:
+>>>
+>>> $ grep CONFIG_SYSTEM_BLACKLIST_HASH_LIST .config
+>>> CONFIG_SYSTEM_BLACKLIST_HASH_LIST=“revocation_list"
+>>>
+>>> $ cat certs/revocation_list
+>>> "tbs:1e125ea4f38acb7b29b0c495fd8e7602c2c3353b913811a9da3a2fb505c08a32”
+>>>
+>>> make[1]: *** No rule to make target 'revocation_list', needed by 'certs/blacklist_hashes_checked'.  Stop.
+>>
+>> It requires an absolute path.
 > 
-> * Return:
-> * - 0:          Initialization was successful.
-> * - -ENOMEM:    Out of memory.
-
-Actually, looking at kernel-doc.rst, this isn't necessarily the recommended
-approach as it will much everything into one line, complete with dashes, and
-can't handle splitting over lines.  You probably meant:
-
-      * Return:
-      * * 0		- OK to runtime suspend the device
-      * * -EBUSY	- Device should not be runtime suspended
-
-> * Return:
-> * - 0:          Initialization was successful.
-> * - -ENOMEM:    Out of memory.
+> Ok, if I use an absolute path now with CONFIG_SYSTEM_BLACKLIST_HASH_LIST 
+> it works.
 > 
-> Looking at the implementation, I guess this is a complete representation of
-> what it can return?
+>> This is to align with other variables
+>> using the config_filename macro: CONFIG_SYSTEM_TRUSTED_KEYS,
+>> CONFIG_MODULE_SIG_KEY and now CONFIG_SYSTEM_REVOCATION_KEYS.
+> 
+> I just did a quick test with CONFIG_SYSTEM_TRUSTED_KEYS. It looks like we 
+> can use either a relative or absolute path with CONFIG_SYSTEM_TRUSTED_KEYS. 
+> Shouldn’t this be consistent?
 
-It isn't.  It can return at least -ENOSPC as well, but it's awkward detailing
-the errors from functions it calls since they can change and then the
-description here is wrong.  I'm not sure there's a perfect answer to that.
+CONFIG_SYSTEM_TRUSTED_KEYS (and similar config) works with relative path
+to $(srctree) not $(srctree)/certs as in your example.
 
-David
+We can make CONFIG_SYSTEM_BLACKLIST_HASH_LIST works with $(srctree) with
+this patch:
 
+diff --git a/certs/Makefile b/certs/Makefile
+index eb45407ff282..92a233eaa926 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -14,6 +14,8 @@ $(eval $(call config_filename,SYSTEM_BLACKLIST_HASH_LIST))
+
+ $(obj)/blacklist_hashes.o: $(obj)/blacklist_hashes_checked
+
++CFLAGS_blacklist_hashes.o += -I$(srctree)
++
+ targets += blacklist_hashes_checked
+
+
+> 
+>> Cf. https://lore.kernel.org/lkml/1221725.1607515111@warthog.procyon.org.uk/
+>>
+>> We may want to patch scripts/kconfig/streamline_config.pl for both
+>> CONFIG_SYSTEM_REVOCATION_KEYS and CONFIG_SYSTEM_BLACKLIST_HASH_LIST, to
+>> warn user (and exit with an error) if such files are not found.
+> 
