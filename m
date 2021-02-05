@@ -2,67 +2,216 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A3D23102CF
-	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 03:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D43533102F6
+	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 03:48:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbhBECbN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Feb 2021 21:31:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230097AbhBECbK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Feb 2021 21:31:10 -0500
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4050C0613D6
-        for <keyrings@vger.kernel.org>; Thu,  4 Feb 2021 18:30:23 -0800 (PST)
-Received: by mail-ed1-x52b.google.com with SMTP id c6so6978158ede.0
-        for <keyrings@vger.kernel.org>; Thu, 04 Feb 2021 18:30:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=RSX1cWsC+f6xWkTSc2MKywAO/PKJ3HqRCMCMxElocFloq66tsxGEEBMa4v29bEtLF0
-         ov+a4TLhlV3hwYDnx5m8Qgrto/gg2w8oa7cDkHCuQF2b21GYc28pGoMd5T0ByDtBu5dD
-         ZlkjlE5UcDI7/Bz4OKGZd12daMTyGu3SX3/FpqJEndMjrSM9zNK8odymAWIgi85XY9SZ
-         wEDHrXudRryLQCxa5wnv9PvBP4HkeFNEItH1u4gzIKtwgI7sE/Cv3SXh+Ndk1+QJBvIa
-         fM42n1JGxhfsqroVqR1rYJAtvLlu0ZXuGJZ3u1DrLGMmwRk7+zKq3OZnc0YwXJetN2ai
-         oMrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=O/4YJGILO23xuTphsLzGHAADP6SSTUNgfvsohU80svqws0vQJasY7qgr48TU84meuZ
-         0aec9RHyK3tmDwWutsstZn7TQdYWB6KxiWmb8q8Wyt+3WHXkvU/lp3CATYeytpMuGc//
-         VFI3fbLuNnLgPUFW3XhHvBYp6gCarkAjjMEWr+2kmolXBJaY3v6C8MFAKCIiirFkMAqm
-         8zeVq3tMKB3Y8KchHTtdUzE/wRF7HMH4zVXoSbBgBf07s4wHzN2BoB6ksJZmCq4Duj0L
-         oGPMnqbZiVR08fFJGAIbE5wOGJM/o4e6wQ8lPitj5+MHP56RZooYMH16Hlfr6S58NjKK
-         hwNA==
-X-Gm-Message-State: AOAM532mNULYonpH7SNG4gbuDyX8J1rk3ZrajNtnXncPl7aiD8AiFP9u
-        8/r2PoRG5Tn2FTmjwbJYOFk=
-X-Google-Smtp-Source: ABdhPJwXWOujLVRDh42ziRoxcVn1lykmwzA/TYJIOwVszHO6dyMvixZhDgmwK/B5Dz2f1QIC7XSeEg==
-X-Received: by 2002:a05:6402:1249:: with SMTP id l9mr1372976edw.375.1612492222765;
-        Thu, 04 Feb 2021 18:30:22 -0800 (PST)
-Received: from [192.168.1.6] ([154.124.28.35])
-        by smtp.gmail.com with ESMTPSA id r23sm3228975ejd.56.2021.02.04.18.30.18
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 04 Feb 2021 18:30:22 -0800 (PST)
-Message-ID: <601cadbe.1c69fb81.9923d.f252@mx.google.com>
-Sender: skylar anderson <unitedbankofafricaserviceuba@gmail.com>
-From:   calantha camara <sgt.andersonskylar0@gmail.com>
-X-Google-Original-From: calantha camara
-Content-Type: text/plain; charset="iso-8859-1"
+        id S229716AbhBECrb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Feb 2021 21:47:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47554 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229705AbhBECr3 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 4 Feb 2021 21:47:29 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 38AF464FA7;
+        Fri,  5 Feb 2021 02:46:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612493208;
+        bh=u7fCLAhX1pOwBx9BOcb331n4nXXbCELnac9pfuMdw40=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aKqP2NtJwTWkkRvAXb7ogJw+spwaPwbSFR6MdVHrrbndME/wehMGYfotFjvjy44rN
+         EdnmJvO8unOg33HhXcSolWitHCL+LnXtd/2PDVjdeMUpItQyGKMMp0VBQYQTHSrIqb
+         zLsSTv7Xlht5g1dcjBN4b59L57IfHiVHyB5JQe0ULO5D4icYj+qHxFrhvo2iTR1ZBl
+         CdLEX8Od2/oABQQtdkcHad7hv4GhSaGt6UWHQMeWAigWU0tyrEnoqV/nnqY7ti2V5F
+         g3tD5v2wmksqiD/Bg3SxiISs6hagCAqXIDn8hDPKaoMHfNQ6L4fFxY+1g3oDePZK4W
+         JCnl0mclkQrbg==
+Date:   Fri, 5 Feb 2021 04:46:40 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     sprabhu@redhat.com, christian@brauner.io, selinux@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, containers@lists.linux-foundation.org
+Subject: Re: [PATCH 1/2] Add namespace tags that can be used for matching
+ without pinning a ns
+Message-ID: <YByxkDi0Ruhb0AA8@kernel.org>
+References: <161246085160.1990927.13137391845549674518.stgit@warthog.procyon.org.uk>
+ <161246085966.1990927.2555272056564793056.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: hi dear
-To:     Recipients <calantha@vger.kernel.org>
-Date:   Fri, 05 Feb 2021 02:30:13 +0000
-Reply-To: calanthac20@gmail.com
-X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161246085966.1990927.2555272056564793056.stgit@warthog.procyon.org.uk>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-do you speak Eglish
+On Thu, Feb 04, 2021 at 05:47:39PM +0000, David Howells wrote:
+> Add a ns tag struct that consists of just a refcount.  It's address can be
+> used to compare namespaces without the need to pin a namespace.  Just the
+> tag needs pinning.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> ---
+> 
+>  fs/namespace.c            |   18 ++++++++----------
+>  include/linux/ns_common.h |   23 +++++++++++++++++++++++
+>  include/linux/proc_ns.h   |   38 +++++++++++++++++++++++++++++++++++---
+>  init/version.c            |    9 ++++++++-
+>  ipc/msgutil.c             |    7 ++++++-
+>  ipc/namespace.c           |    8 +++-----
+>  kernel/cgroup/cgroup.c    |    5 +++++
+>  kernel/cgroup/namespace.c |    6 +++---
+>  kernel/pid.c              |    5 +++++
+>  kernel/pid_namespace.c    |   18 +++++++++---------
+>  kernel/time/namespace.c   |   13 +++++--------
+>  kernel/user.c             |    5 +++++
+>  kernel/user_namespace.c   |    7 +++----
+>  kernel/utsname.c          |   24 +++++++++++++-----------
+>  net/core/net_namespace.c  |   38 +++++++++++++++-----------------------
+>  15 files changed, 146 insertions(+), 78 deletions(-)
+> 
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index 9d33909d0f9e..f8da9be8c6f7 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
+> @@ -3238,10 +3238,9 @@ static void dec_mnt_namespaces(struct ucounts *ucounts)
+>  
+>  static void free_mnt_ns(struct mnt_namespace *ns)
+>  {
+> -	if (!is_anon_ns(ns))
+> -		ns_free_inum(&ns->ns);
+>  	dec_mnt_namespaces(ns->ucounts);
+>  	put_user_ns(ns->user_ns);
+> +	destroy_ns_common(&ns->ns);
+>  	kfree(ns);
+>  }
+>  
+> @@ -3269,18 +3268,17 @@ static struct mnt_namespace *alloc_mnt_ns(struct user_namespace *user_ns, bool a
+>  		dec_mnt_namespaces(ucounts);
+>  		return ERR_PTR(-ENOMEM);
+>  	}
+> -	if (!anon) {
+> -		ret = ns_alloc_inum(&new_ns->ns);
+> -		if (ret) {
+> -			kfree(new_ns);
+> -			dec_mnt_namespaces(ucounts);
+> -			return ERR_PTR(ret);
+> -		}
+> +
+> +	ret = init_ns_common(&new_ns->ns, anon);
+> +	if (ret) {
+> +		destroy_ns_common(&new_ns->ns);
+> +		kfree(new_ns);
+> +		dec_mnt_namespaces(ucounts);
+> +		return ERR_PTR(ret);
+>  	}
+>  	new_ns->ns.ops = &mntns_operations;
+>  	if (!anon)
+>  		new_ns->seq = atomic64_add_return(1, &mnt_ns_seq);
+> -	refcount_set(&new_ns->ns.count, 1);
+>  	INIT_LIST_HEAD(&new_ns->list);
+>  	init_waitqueue_head(&new_ns->poll);
+>  	spin_lock_init(&new_ns->ns_lock);
+> diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
+> index 0f1d024bd958..45174ad8a435 100644
+> --- a/include/linux/ns_common.h
+> +++ b/include/linux/ns_common.h
+> @@ -3,14 +3,37 @@
+>  #define _LINUX_NS_COMMON_H
+>  
+>  #include <linux/refcount.h>
+> +#include <linux/slab.h>
+>  
+>  struct proc_ns_operations;
+>  
+> +/*
+> + * Comparable tag for namespaces so that namespaces don't have to be pinned by
+> + * something that wishes to detect if a namespace matches a criterion.
+> + */
+> +struct ns_tag {
+> +	refcount_t	usage;
+
+Is that indentation necessary? I'd put just a space.
+
+> +};
+> +
+>  struct ns_common {
+>  	atomic_long_t stashed;
+>  	const struct proc_ns_operations *ops;
+> +	struct ns_tag *tag;
+>  	unsigned int inum;
+>  	refcount_t count;
+>  };
+>  
+> +static inline struct ns_tag *get_ns_tag(struct ns_tag *tag)
+> +{
+> +	if (tag)
+> +		refcount_inc(&tag->usage);
+> +	return tag;
+> +}
+> +
+> +static inline void put_ns_tag(struct ns_tag *tag)
+> +{
+> +	if (tag && refcount_dec_and_test(&tag->usage))
+> +		kfree(tag);
+> +}
+> +
+>  #endif
+> diff --git a/include/linux/proc_ns.h b/include/linux/proc_ns.h
+> index 75807ecef880..9fb7eb403923 100644
+> --- a/include/linux/proc_ns.h
+> +++ b/include/linux/proc_ns.h
+> @@ -64,13 +64,45 @@ static inline void proc_free_inum(unsigned int inum) {}
+>  
+>  #endif /* CONFIG_PROC_FS */
+>  
+> -static inline int ns_alloc_inum(struct ns_common *ns)
+> +/**
+> + * init_ns_common - Initialise the common part of a namespace
+
+Nit: init_ns_common()
+
+> + * @ns: The namespace to initialise
+> + * @anon: The namespace will be anonymous
+> + *
+> + * Set up the common part of a namespace, assigning an inode number and
+> + * creating a tag.  Returns 0 on success and a negative error code on failure.
+> + * On failure, the caller must call destroy_ns_common().
+
+I've used lately (e.g. arch/x86/kernel/cpu/sgx/ioctl.c) along the lines:
+
+* Return:
+* - 0:          Initialization was successful.
+* - -ENOMEM:    Out of memory.
+
+Looking at the implementation, I guess this is a complete representation of
+what it can return?
+
+The driving point here is that this nicely lines up when rendered with
+"make htmldocs".
+
+> + */
+> +static inline int init_ns_common(struct ns_common *ns, bool anon)
+>  {
+> +	struct ns_tag *tag;
+> +
+> +	tag = kzalloc(sizeof(*tag), GFP_KERNEL);
+> +	if (!tag)
+> +		return -ENOMEM;
+> +
+> +	refcount_set(&tag->usage, 1);
+> +	ns->tag = tag;
+> +	ns->inum = 0;
+>  	atomic_long_set(&ns->stashed, 0);
+> -	return proc_alloc_inum(&ns->inum);
+> +	refcount_set(&ns->count, 1);
+> +
+> +	return anon ? 0 : proc_alloc_inum(&ns->inum);
+>  }
+>  
+> -#define ns_free_inum(ns) proc_free_inum((ns)->inum)
+> +/**
+> + * destroy_ns_common - Clean up the common part of a namespace
+
+Nit: destroy_ns_common()
+
+/Jarkko
