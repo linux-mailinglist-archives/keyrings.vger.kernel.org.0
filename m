@@ -2,148 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4DC31091C
-	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 11:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D460310B0F
+	for <lists+keyrings@lfdr.de>; Fri,  5 Feb 2021 13:29:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231345AbhBEKbr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Feb 2021 05:31:47 -0500
-Received: from smtp-bc0f.mail.infomaniak.ch ([45.157.188.15]:60915 "EHLO
-        smtp-bc0f.mail.infomaniak.ch" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231228AbhBEK2C (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Feb 2021 05:28:02 -0500
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
-        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DXBRj2YVDzMqWkX;
-        Fri,  5 Feb 2021 11:26:57 +0100 (CET)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DXBRf1R7Xzlh8TK;
-        Fri,  5 Feb 2021 11:26:54 +0100 (CET)
-Subject: =?UTF-8?Q?Re=3a_Conflict_with_Micka=c3=abl_Sala=c3=bcn=27s_blacklis?=
- =?UTF-8?Q?t_patches_=5bwas_=5bPATCH_v5_0/4=5d_Add_EFI=5fCERT=5fX509=5fGUID_?=
- =?UTF-8?Q?support_for_dbx/mokx_entries=5d?=
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     David Howells <dhowells@redhat.com>, dwmw2@infradead.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James.Bottomley@HansenPartnership.com, masahiroy@kernel.org,
-        michal.lkml@markovi.net, jmorris@namei.org, serge@hallyn.com,
-        ardb@kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        lszubowi@redhat.com, javierm@redhat.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Tyler Hicks <tyhicks@linux.microsoft.com>
-References: <20210122181054.32635-1-eric.snowberg@oracle.com>
- <1103491.1612369600@warthog.procyon.org.uk>
- <10e6616e-0598-9f33-2de9-4a5268bba586@digikod.net>
- <A5B5DEC0-E47A-4C3D-8E79-AF37B6C2E565@oracle.com>
- <7924ce4c-ea94-9540-0730-bddae7c6af07@digikod.net>
- <BFC930B3-7994-4C5B-A8EF-1DD1C73F5750@oracle.com>
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-Message-ID: <dc6a4524-3935-fda6-40a8-cebf80942cdf@digikod.net>
-Date:   Fri, 5 Feb 2021 11:27:02 +0100
-User-Agent: 
-MIME-Version: 1.0
-In-Reply-To: <BFC930B3-7994-4C5B-A8EF-1DD1C73F5750@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S232123AbhBEM2J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Feb 2021 07:28:09 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:29544 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232046AbhBEMZh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Feb 2021 07:25:37 -0500
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 115C3GPJ130347;
+        Fri, 5 Feb 2021 07:24:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=UXMTnONaM1M6hPx6NdQOBybyrZ8DbchDfplowPWQEDo=;
+ b=TqePX8K6Tyu+ITrsknKNyn3o8sz0j2weSoIEzb0UQb1tAHBuzDJw0YI1bP/gq5iBeaj+
+ qleHcXYkpklEDQEjOQ9F9IMLNVyn8d0RZfPVgtkGULf3NAX693GtML/6B35jLSpmRSLb
+ fSXuDA4eylD7ytGs+M3m9QddKC3KHdUneyuI/ILS6fIvv8ksvjYJDuv4VXblK3sg6A7F
+ pEDWg90Vjw8wbrxrHz3BQxLKJWqC8f/hbrjDy25w6eU8JRjsE3jfb8iKIXj7XfBOyUhB
+ mqhHWy64Gjt2yQehAmGjbaP0wVZ4294O0tiiqQIkKJc1t/NerLsvM29Wb6niG08YFmgX 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36h5n90twh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 Feb 2021 07:24:45 -0500
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 115C4NsH138342;
+        Fri, 5 Feb 2021 07:24:44 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36h5n90tvu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 Feb 2021 07:24:44 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 115CCvka002358;
+        Fri, 5 Feb 2021 12:24:42 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 36cy38nw77-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 Feb 2021 12:24:42 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 115COU5137224878
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 5 Feb 2021 12:24:30 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E09E942041;
+        Fri,  5 Feb 2021 12:24:39 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 28E824203F;
+        Fri,  5 Feb 2021 12:24:37 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.9.149])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri,  5 Feb 2021 12:24:36 +0000 (GMT)
+Message-ID: <5cb27bdb74e394a9048af702a7d8acfa181b4d9b.camel@linux.ibm.com>
+Subject: Re: [PATCH v7 4/4] ima: Support EC keys for signature verification
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, davem@davemloft.net,
+        herbert@gondor.apana.org.au, dhowells@redhat.com
+Cc:     linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
+        linux-integrity@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+Date:   Fri, 05 Feb 2021 07:24:36 -0500
+In-Reply-To: <20210201151910.1465705-5-stefanb@linux.ibm.com>
+References: <20210201151910.1465705-1-stefanb@linux.ibm.com>
+         <20210201151910.1465705-5-stefanb@linux.ibm.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-05_06:2021-02-05,2021-02-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 impostorscore=0
+ mlxscore=0 adultscore=0 priorityscore=1501 clxscore=1015 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102050076
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-
-On 05/02/2021 01:24, Eric Snowberg wrote:
+On Mon, 2021-02-01 at 10:19 -0500, Stefan Berger wrote:
+> Add support for IMA signature verification for EC keys. Since SHA type
+> of hashes can be used by RSA and ECDSA signature schemes we need to
+> look at the key and derive from the key which signature scheme to use.
+> Since this can be applied to all types of keys, we change the selection
+> of the encoding type to be driven by the key's signature scheme rather
+> than by the hash type.
 > 
->> On Feb 4, 2021, at 1:26 AM, Mickaël Salaün <mic@digikod.net> wrote:
->>
->>
->> On 04/02/2021 04:53, Eric Snowberg wrote:
->>>
->>>> On Feb 3, 2021, at 11:49 AM, Mickaël Salaün <mic@digikod.net> wrote:
->>>>
->>>> This looks good to me, and it still works for my use case. Eric's
->>>> patchset only looks for asymmetric keys in the blacklist keyring, so
->>>> even if we use the same keyring we don't look for the same key types. My
->>>> patchset only allows blacklist keys (i.e. hashes, not asymmetric keys)
->>>> to be added by user space (if authenticated), but because Eric's
->>>> asymmetric keys are loaded with KEY_ALLOC_BYPASS_RESTRICTION, it should
->>>> be OK for his use case.  There should be no interference between the two
->>>> new features, but I find it a bit confusing to have such distinct use of
->>>> keys from the same keyring depending on their type.
->>>
->>> I agree, it is a bit confusing.  What is the thought of having a dbx 
->>> keyring, similar to how the platform keyring works?
->>>
->>> https://www.spinics.net/lists/linux-security-module/msg40262.html
->>>
->>>
->>>> On 03/02/2021 17:26, David Howells wrote:
->>>>>
->>>>> Eric Snowberg <eric.snowberg@oracle.com> wrote:
->>>>>
->>>>>> This is the fifth patch series for adding support for 
->>>>>> EFI_CERT_X509_GUID entries [1].  It has been expanded to not only include
->>>>>> dbx entries but also entries in the mokx.  Additionally my series to
->>>>>> preload these certificate [2] has also been included.
->>>>>
->>>>> Okay, I've tentatively applied this to my keys-next branch.  However, it
->>>>> conflicts minorly with Mickaël Salaün's patches that I've previously merged on
->>>>> the same branch.  Can you have a look at the merge commit
->>>>>
->>>>> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=keys-next&id=fdbbe7ceeb95090d09c33ce0497e0394c82aa33d
->>>>>
->>>>> 	(the top patch of my keys-next branch)
->>>>>
->>>>> to see if that is okay by both of you?  If so, can you give it a whirl?
->>>
->>>
->>> I’m seeing a build error within blacklist_hashes_checked with
->>> one of my configs.
->>>
->>> The config is as follows:
->>>
->>> $ grep CONFIG_SYSTEM_BLACKLIST_HASH_LIST .config
->>> CONFIG_SYSTEM_BLACKLIST_HASH_LIST=“revocation_list"
->>>
->>> $ cat certs/revocation_list
->>> "tbs:1e125ea4f38acb7b29b0c495fd8e7602c2c3353b913811a9da3a2fb505c08a32”
->>>
->>> make[1]: *** No rule to make target 'revocation_list', needed by 'certs/blacklist_hashes_checked'.  Stop.
->>
->> It requires an absolute path.
-> 
-> Ok, if I use an absolute path now with CONFIG_SYSTEM_BLACKLIST_HASH_LIST 
-> it works.
-> 
->> This is to align with other variables
->> using the config_filename macro: CONFIG_SYSTEM_TRUSTED_KEYS,
->> CONFIG_MODULE_SIG_KEY and now CONFIG_SYSTEM_REVOCATION_KEYS.
-> 
-> I just did a quick test with CONFIG_SYSTEM_TRUSTED_KEYS. It looks like we 
-> can use either a relative or absolute path with CONFIG_SYSTEM_TRUSTED_KEYS. 
-> Shouldn’t this be consistent?
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> Reviewed-by: Vitaly Chikunov <vt@altlinux.org>
+> Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 
-CONFIG_SYSTEM_TRUSTED_KEYS (and similar config) works with relative path
-to $(srctree) not $(srctree)/certs as in your example.
+Thanks, Stefan!
 
-We can make CONFIG_SYSTEM_BLACKLIST_HASH_LIST works with $(srctree) with
-this patch:
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 
-diff --git a/certs/Makefile b/certs/Makefile
-index eb45407ff282..92a233eaa926 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -14,6 +14,8 @@ $(eval $(call config_filename,SYSTEM_BLACKLIST_HASH_LIST))
-
- $(obj)/blacklist_hashes.o: $(obj)/blacklist_hashes_checked
-
-+CFLAGS_blacklist_hashes.o += -I$(srctree)
-+
- targets += blacklist_hashes_checked
-
-
-> 
->> Cf. https://lore.kernel.org/lkml/1221725.1607515111@warthog.procyon.org.uk/
->>
->> We may want to patch scripts/kconfig/streamline_config.pl for both
->> CONFIG_SYSTEM_REVOCATION_KEYS and CONFIG_SYSTEM_BLACKLIST_HASH_LIST, to
->> warn user (and exit with an error) if such files are not found.
-> 
