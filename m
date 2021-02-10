@@ -2,48 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77BF7316479
-	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 11:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D753165FB
+	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 13:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229837AbhBJK7S (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Feb 2021 05:59:18 -0500
-Received: from [125.140.134.231] ([125.140.134.231]:61340 "EHLO
-        WINDOWS-63LO558" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231256AbhBJK4s (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 05:56:48 -0500
-Received: from WIN-U2MN3QEVVH1 ([154.127.53.41]) by WINDOWS-63LO558 with Microsoft SMTPSVC(10.0.14393.2608);
-         Wed, 10 Feb 2021 19:56:13 +0900
-Reply-To: <mrs.verenich_ekmaterina@yahoo.com>
-From:   "erenich ekaterina" <verenichekaterinaekaterina@gmail.com>
-Subject: Dear Beloved
-Date:   Wed, 10 Feb 2021 02:56:13 -0800
+        id S231440AbhBJMHG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Feb 2021 07:07:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231253AbhBJMFA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 07:05:00 -0500
+Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [IPv6:2001:1600:3:17::bc0f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA881C061756
+        for <keyrings@vger.kernel.org>; Wed, 10 Feb 2021 04:03:56 -0800 (PST)
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DbJM90QZBzMqW88;
+        Wed, 10 Feb 2021 13:03:49 +0100 (CET)
+Received: from localhost (unknown [23.97.221.149])
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DbJM65mq6zlh8Tk;
+        Wed, 10 Feb 2021 13:03:46 +0100 (CET)
+From:   =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH v6 0/5] Enable root to update the blacklist keyring
+Date:   Wed, 10 Feb 2021 13:04:05 +0100
+Message-Id: <20210210120410.471693-1-mic@digikod.net>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WINDOWS-63LO5580scL000351c6@WINDOWS-63LO558>
-X-OriginalArrivalTime: 10 Feb 2021 10:56:14.0247 (UTC) FILETIME=[599CCB70:01D6FF9B]
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear Beloved
+This new patch series is a rebase on David Howells's keys-misc branch.
+This mainly fixes UEFI DBX and the new Eric Snowberg's feature to import
+asymmetric keys to the blacklist keyring.
+I successfully tested this patch series with the 186 entries from
+https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin (184
+binary hashes and 2 certificates).
 
-Life is gradually passing away from me as a result of my present medical condition and my personal doctor confided in me yesterday that I have only but few more weeks to live.
+The goal of these patches is to add a new configuration option to enable the
+root user to load signed keys in the blacklist keyring.  This keyring is useful
+to "untrust" certificates or files.  Enabling to safely update this keyring
+without recompiling the kernel makes it more usable.
 
-In view of this setback, I want to donate my estate for humanitarian assistance, since this has always been the plan of my late husband and besides I have no child.
+This can be applied on top of David Howells's keys-next branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-next
+Git commits can be found in https://github.com/l0kod/linux branch
+dyn-auth-blacklist-v6 commit fcf976b74ffcd4551683e6b70dbf5fb102cf9906 .
 
-In an effort to compliment the good work of God almighty and the wish of my late Husband I donate the sum of $2,800,000.00 (Two Million Eight Hundred Thousand United States Dollars) to you.
+Previous patch series:
+https://lore.kernel.org/lkml/20210128191705.3568820-1-mic@digikod.net/
 
-On your acknowledgment of this mail and informing me of your nationality and current place of resident, my Bank will facilitate due processes for transfer of this legacy to you.
+Regards,
 
-May God bless you as you use this money judiciously for the work of charity.
+Mickaël Salaün (5):
+  tools/certs: Add print-cert-tbs-hash.sh
+  certs: Check that builtin blacklist hashes are valid
+  certs: Make blacklist_vet_description() more strict
+  certs: Factor out the blacklist hash creation
+  certs: Allow root user to append signed hashes to the blacklist
+    keyring
 
-Sincere regards,
+ MAINTAINERS                                   |   2 +
+ certs/.gitignore                              |   1 +
+ certs/Kconfig                                 |  17 +-
+ certs/Makefile                                |  17 +-
+ certs/blacklist.c                             | 218 ++++++++++++++----
+ crypto/asymmetric_keys/x509_public_key.c      |   3 +-
+ include/keys/system_keyring.h                 |  14 +-
+ scripts/check-blacklist-hashes.awk            |  37 +++
+ .../platform_certs/keyring_handler.c          |  26 +--
+ tools/certs/print-cert-tbs-hash.sh            |  91 ++++++++
+ 10 files changed, 346 insertions(+), 80 deletions(-)
+ create mode 100755 scripts/check-blacklist-hashes.awk
+ create mode 100755 tools/certs/print-cert-tbs-hash.sh
 
-Mrs.verenich ekaterina
+
+base-commit: 5bcd72358a7d7794ade0452ed12919b8c4d6ffc7
+-- 
+2.30.0
+
