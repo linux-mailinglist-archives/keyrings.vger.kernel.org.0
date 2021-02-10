@@ -2,78 +2,48 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC94316112
-	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 09:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BF7316479
+	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 11:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbhBJIbx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Feb 2021 03:31:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32050 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229839AbhBJIbQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 03:31:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612945790;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qcVgQraBw5PgsGVvVLBD0on1pKnJN9TwEpaKo1fWo0E=;
-        b=RJqTQXeVi3koyEugUFhK/ir2pLABWi1tdlxvQ6infewyu78Ad88LY6W1mjJpz4D+E7ehBE
-        q1l9/RNjbUjr4rf5Ga18/v4+rLsO726j4n+Tsvs+Ci+5sWiAOH2JNEs2NcxWMj54wyf4Ey
-        SJRIGbWehpvqC+Ka1KLiq4J9DZ1UhKE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-312-7Wvpi0goNve8RpadM8uzzg-1; Wed, 10 Feb 2021 03:29:47 -0500
-X-MC-Unique: 7Wvpi0goNve8RpadM8uzzg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 70A25846208;
-        Wed, 10 Feb 2021 08:29:46 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D81AA18B42;
-        Wed, 10 Feb 2021 08:29:44 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20210210074554.81100-1-songyang@linux.alibaba.com>
-References: <20210210074554.81100-1-songyang@linux.alibaba.com>
-To:     Yang Song <songyang@linux.alibaba.com>
-Cc:     dhowells@redhat.com, dwmw2@infradead.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zhang.jia@linux.alibaba.com,
-        tianjia.zhang@linux.alibaba.com
-Subject: Re: [PATCH] sign-file: add openssl engine support
+        id S229837AbhBJK7S (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Feb 2021 05:59:18 -0500
+Received: from [125.140.134.231] ([125.140.134.231]:61340 "EHLO
+        WINDOWS-63LO558" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231256AbhBJK4s (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 05:56:48 -0500
+Received: from WIN-U2MN3QEVVH1 ([154.127.53.41]) by WINDOWS-63LO558 with Microsoft SMTPSVC(10.0.14393.2608);
+         Wed, 10 Feb 2021 19:56:13 +0900
+Reply-To: <mrs.verenich_ekmaterina@yahoo.com>
+From:   "erenich ekaterina" <verenichekaterinaekaterina@gmail.com>
+Subject: Dear Beloved
+Date:   Wed, 10 Feb 2021 02:56:13 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <664915.1612945784.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Wed, 10 Feb 2021 08:29:44 +0000
-Message-ID: <664916.1612945784@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <WINDOWS-63LO5580scL000351c6@WINDOWS-63LO558>
+X-OriginalArrivalTime: 10 Feb 2021 10:56:14.0247 (UTC) FILETIME=[599CCB70:01D6FF9B]
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Yang Song <songyang@linux.alibaba.com> wrote:
+Dear Beloved
 
-> +		"Usage: scripts/sign-file [-edp] [<openssl engine>] <hash algo> <key>=
- <x509> <module> [<dest>]\n");
+Life is gradually passing away from me as a result of my present medical condition and my personal doctor confided in me yesterday that I have only but few more weeks to live.
 
-Do you mean:
+In view of this setback, I want to donate my estate for humanitarian assistance, since this has always been the plan of my late husband and besides I have no child.
 
-		"Usage: scripts/sign-file [-dp] [-e <openssl engine>] <hash algo> <key> =
-<x509> <module> [<dest>]\n");
+In an effort to compliment the good work of God almighty and the wish of my late Husband I donate the sum of $2,800,000.00 (Two Million Eight Hundred Thousand United States Dollars) to you.
 
-> +		opt =3D getopt(argc, argv, "sedpk");
+On your acknowledgment of this mail and informing me of your nationality and current place of resident, my Bank will facilitate due processes for transfer of this legacy to you.
 
-"se:dpk"?
+May God bless you as you use this money judiciously for the work of charity.
 
-> +		if (use_engine) {
-> +			ossl_engine =3D argv[0];
+Sincere regards,
 
-use_engine ought to be a redundant variable.
-
-David
-
+Mrs.verenich ekaterina
