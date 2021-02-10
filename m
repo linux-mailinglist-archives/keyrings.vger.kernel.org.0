@@ -2,67 +2,201 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD21316BFE
-	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 18:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 094D33172B9
+	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 22:53:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbhBJRBp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Feb 2021 12:01:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39236 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232159AbhBJRBg (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 10 Feb 2021 12:01:36 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4707564DF6;
-        Wed, 10 Feb 2021 17:00:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612976456;
-        bh=H7GaOW+CiBvaeY1yYaT/BLhAmPmDWl62qWGA8z+LWpE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=moAfNVCjfFxnZKnAhRc+lbDyBoG0CzSSD4svV6t34566SHtjaTQaILzmcSpytKcN6
-         6ZyunSK/Q0VeXwZNg99SMzv4TbQUenOMQ+F2lU+d41OfjFMaMvKYCo0xe/zUdOAOxp
-         aSA6T5N4akhoDz3agOWkj8TtDV9QIL7iUAKGzPY9R2lCbcS9t5bdad5fu9qgKwWjQ1
-         /XtDLtVe7ZjbWJuwuSPvT+JTmZO8w0V9oydRT26oW/RDRzLxxcGGefQKF+CEKtiSbC
-         U0GJpe1dEEhTZ9gLLm8bdLRt1FlI4cnosdVslVSvahasqIQwQffVygPUC9Ec4XVVY0
-         zSbRzHQucknLA==
-Date:   Wed, 10 Feb 2021 19:00:46 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
-        jejb@linux.ibm.com, dhowells@redhat.com, jens.wiklander@linaro.org,
-        corbet@lwn.net, jmorris@namei.org, serge@hallyn.com,
-        casey@schaufler-ca.com, janne.karhunen@gmail.com,
-        daniel.thompson@linaro.org, Markus.Wamser@mixed-mode.de,
-        lhinds@redhat.com, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        op-tee@lists.trustedfirmware.org
-Subject: Re: [PATCH v8 1/4] KEYS: trusted: Add generic trusted keys framework
-Message-ID: <YCQRPo0o6MZ0pcUa@kernel.org>
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
- <1604419306-26105-2-git-send-email-sumit.garg@linaro.org>
+        id S233594AbhBJVxI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Feb 2021 16:53:08 -0500
+Received: from mail-il1-f169.google.com ([209.85.166.169]:34560 "EHLO
+        mail-il1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232602AbhBJVw7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 16:52:59 -0500
+Received: by mail-il1-f169.google.com with SMTP id q9so3333174ilo.1
+        for <keyrings@vger.kernel.org>; Wed, 10 Feb 2021 13:52:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lzeFhvoIZfDq4s+XJ3MX+pm+LZa1cKXW0uJQFqIrU/8=;
+        b=q5waXr2+ZIoZ2k+I02ANiif5pxr9E9txMtCZbfXrqxGNryzR1Y0rEhqSjvQ3tuZ8Su
+         uqEGXCot34/GjPOXIHTQU7UGK06w9Yhgy4BAuToOL9vAuL5XE7rEhyn6mBUzBx9yvVJS
+         yvvb7v3rLuW0X4WYiOFLD4LkSCcHRNt2d2j9bsb6g5LYfbrxsFQRd5HfWiwOTLBPS5BD
+         MXHou97ukRngiUdLJnwePHculuNomVJrwWOE9rp03GorNXMYck6Wi7pq4ytmBwCBFuOb
+         M1HTMBNydRCBtDznv2JkMJdTll5hI+dTat0fUh2oXGZhWcO6L6y1yQLzWs1VOvCHrGgy
+         egIw==
+X-Gm-Message-State: AOAM533XEM3a2w2+xmaVltK/3gsn6mNPllXX7AvMhEGfog9gRQmfL+3Z
+        KaFZutrJkFFbHX+Mv77i5f5UVFqeVERmZQ==
+X-Google-Smtp-Source: ABdhPJw3rNrq5enBHUPJlBGhdwotkmRhWvDgvYeNOuwublDxd8ohirr5Cjyw8BinvvJj+lcTFS8N5w==
+X-Received: by 2002:a92:ad0a:: with SMTP id w10mr2814634ilh.235.1612993938042;
+        Wed, 10 Feb 2021 13:52:18 -0800 (PST)
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com. [209.85.166.48])
+        by smtp.gmail.com with ESMTPSA id j204sm1555925iof.18.2021.02.10.13.52.17
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Feb 2021 13:52:17 -0800 (PST)
+Received: by mail-io1-f48.google.com with SMTP id u8so3561194ior.13
+        for <keyrings@vger.kernel.org>; Wed, 10 Feb 2021 13:52:17 -0800 (PST)
+X-Received: by 2002:a05:6638:3c6:: with SMTP id r6mr5407832jaq.115.1612993937333;
+ Wed, 10 Feb 2021 13:52:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1604419306-26105-2-git-send-email-sumit.garg@linaro.org>
+References: <20210121121156.2285391-1-andrew.zaborowski@intel.com> <YCQE+l1o0brg8XEb@kernel.org>
+In-Reply-To: <YCQE+l1o0brg8XEb@kernel.org>
+From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
+Date:   Wed, 10 Feb 2021 22:52:06 +0100
+X-Gmail-Original-Message-ID: <CAOq732+V0fKY8Ef9W_KLtvg9ctLR5jhPeXcZbme46mMYhumyFw@mail.gmail.com>
+Message-ID: <CAOq732+V0fKY8Ef9W_KLtvg9ctLR5jhPeXcZbme46mMYhumyFw@mail.gmail.com>
+Subject: Re: [PATCH v3] keys: X.509 public key issuer lookup without AKID
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Nov 03, 2020 at 09:31:43PM +0530, Sumit Garg wrote:
-> +	case Opt_new:
-> +		key_len = payload->key_len;
-> +		ret = static_call(trusted_key_get_random)(payload->key,
-> +							  key_len);
-> +		if (ret != key_len) {
-> +			pr_info("trusted_key: key_create failed (%d)\n", ret);
-> +			goto out;
-> +		}
+On Wed, 10 Feb 2021 at 17:10, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> On Thu, Jan 21, 2021 at 01:11:56PM +0100, Andrew Zaborowski wrote:
+> > There are non-root X.509 v3 certificates in use out there that contain
+> > no Authority Key Identifier extension (RFC5280 section 4.2.1.1).  The
+> > asymmetric key's issuer key IDs 1 and 2 for those certificates are
+> > generated from the AKID data so current code has no way to look up the
+> > issuer certificate for verification.  Add a third ID blob to the arrays
+>
+> The 2nd sentence is a bit confused. Generated by *who* and *when*, i.e.
+> in what situation?
 
-This repeats a regression in existing code, i.e. does not check
-"ret < 0" condition. I noticed this now when I rebased the code
-on top of my fixes.
+Good point, I'll fix this.  I think I moved the sentences around
+between versions resulting in this sentence losing its context.
 
-I.e. it's fixed in my master branch, which caused a merge conflict,
-and I found this.
+> I hate sentences that do not clearly define the actor
+> and event. Things do not "just happen". It's usually best idea to clearly
+> state even the most obvious facts.
+>
+> I would start a new paragraph from "Add ...".
+>
+> > in both asymmetric_key_ids (for certficate subject) and in the
+> > public_keys_signature's auth_ids (for issuer lookup), using just raw
+> > subject and issuer DNs from the certificate.  There's no other place
+> > this data is currently saved that could be used in find_asymmetric_key.
+> > Adapt asymmetric_key_ids() and the callers to use the third ID for
+> > lookups when none of the other two are available.  Attempt to keep the
+> > logic intact when they are, to minimise behaviour changes.  Adapt the
+> > restrict functions' NULL-checks to include that ID too.  The lookup
+> > logic in pkcs7_verify.c is not modified, the AKID extensions are still
+> > required there.
+>
+> Generally passive sentences are forbidden in commit messages. E.g.
+> write "Do not modify the lookup logic in pkcs7.c...".
 
-/Jarkko
+Ok.
+
+In reality, as a convention, it's followed mainly in short commit
+messages as I look through the commit log.
+
+>
+> > This implements what (2) in the struct asymmetric_key_id comment
+> > (include/keys/asymmetric-type.h) is probably talking about already, so
+> > that comment isn't modified.  It's also how "openssl verify" looks up
+> > issuer certificates without the AKID available.
+>
+> Ditto.
+
+Ok.
+
+>
+> > Internally the search specifier string generated for the key lookup in
+> > find_asymmetric_key() uses a new "dn:" prefix that tells
+> > asymmetric_key_match_preparse to only match the data against the raw
+> > Distinguished Name in the third ID and shouldn't conflict with search
+> > specifiers already in use.
+>
+> Ditto.
+
+Ok.
+
+>
+> > Lookups are unambiguous only provided that the CAs respect the condition
+> > in RFC5280 4.2.1.1 that the AKID may only be omitted if the CA uses a
+> > single signing key.  The following is an example of two things that this
+> > change enables.  A self-signed ceritficate is generated following the
+> > example from https://letsencrypt.org/docs/certificates-for-localhost/,
+> > and can be looked up by an identifier and verified against itself
+> > by linking to a restricted keyring -- both things not possible before
+> > due to the missing AKID extension:
+>
+> The commit message is both exhausting and contains passive sentences.
+> It's very hard to separate the theory and the list of things that the
+> patch does.
+>
+> >
+> > $ openssl req -x509 -out localhost.crt -outform DER -keyout localhost.key \
+> >   -newkey rsa:2048 -nodes -sha256 \
+> >   -subj '/CN=localhost' -extensions EXT -config <( \
+> >    echo -e "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\n" \
+> >           "subjectAltName=DNS:localhost\nkeyUsage=digitalSignature\n" \
+> >         "extendedKeyUsage=serverAuth")
+> > $ keyring=`keyctl newring test @u`
+> > $ trusted=`keyctl padd asymmetric trusted $keyring < localhost.crt`; \
+> >   echo $trusted
+> > 39726322
+> > $ keyctl search $keyring asymmetric dn:3112301006035504030c096c6f63616c686f7374
+> > 39726322
+>
+> OK, this is one bad pattern. It would be better idea to provide strings
+> instead of hex strings. Obviously it comes from inheriting the existing
+> lookup logic.
+>
+> But maybe it would be possible to introduce a string based search logic
+> in a prepending patch? Not a demand, just something to consider.
+>
+> I'm reflecting this againt something we did recently did for trusted
+> keys, see:
+>
+> https://patchwork.kernel.org/project/linux-integrity/patch/20210127190617.17564-4-James.Bottomley@HansenPartnership.com/
+
+Kernel asymmetric keys have a "description" property which is textual
+and you can look up by that if you pass no "id:", "ex:" or "dn:"
+prefix.  But for certificate chain validation we need lookups by
+strictly defined properties (combinations of properties) of the
+certificates as listed in the struct asymmetric_key_id comment in
+include/keys/asymmetric-type.h:
+
+ * serial number + issuer's Distringuished Name combination
+
+   As for the serial number, I think sometimes it's as simple as 1 or
+2 but usually it's a 20-byte random sequence.  As a decimal number it
+would have 48-49 digits usually.
+
+   Distinguished names I *think* can be unambiguously converted from
+the "/O=organization/CN=common name/emailAddress=.../..." form into
+the BER representation but you'd have to be *very* careful dealing
+with the various ASN.1 text encodings, the ordering of the fields, and
+escaping the '/' characters.
+
+  * subject Distinguished Name (being added in this patch)
+
+  * key identifier: strictly a hexstring
+
+Lookups by those IDs are only used for in-kernel trust chain
+verification (that I know of), so I'd personally say it's not worth
+adding new ways to use those IDs from the command line utility.
+There's also the common thinking that once you expose an API to
+userspace you may be locked into maintaining backwards compatibility
+so it should be thought through.
+
+Let me also say that I use the keys subsystem from a few different
+places in one userspace project I work on, but I've never needed to
+use the command line utility until you asked me for an example of use.
+
+>
+> > $ keyctl restrict_keyring $keyring asymmetric key_or_keyring:$trusted
+> > $ keyctl padd asymmetric verified $keyring < localhost.crt
+> >
+> > Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+>
+> In the code change, I do not see anything obviously wrong. I could not
+> test this because this patch does not apply on top of latest mainline
+> unfortunately (apologies, should have tested earlier)>
+
+I'll rebase the patch as I update the commit message.
+
+Best regards
