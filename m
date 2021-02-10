@@ -2,128 +2,186 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5417E316664
-	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 13:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 429A2316997
+	for <lists+keyrings@lfdr.de>; Wed, 10 Feb 2021 16:00:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231649AbhBJMPn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Feb 2021 07:15:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40456 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbhBJMN3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 07:13:29 -0500
-Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [IPv6:2001:1600:4:17::42ac])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40CDC06178A
-        for <keyrings@vger.kernel.org>; Wed, 10 Feb 2021 04:08:21 -0800 (PST)
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4DbJRS2vZ7zMpnnY;
-        Wed, 10 Feb 2021 13:07:32 +0100 (CET)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4DbJRP6qQzzlh8TJ;
-        Wed, 10 Feb 2021 13:07:29 +0100 (CET)
-Subject: =?UTF-8?Q?Re=3a_Conflict_with_Micka=c3=abl_Sala=c3=bcn=27s_blacklis?=
- =?UTF-8?Q?t_patches_=5bwas_=5bPATCH_v5_0/4=5d_Add_EFI=5fCERT=5fX509=5fGUID_?=
- =?UTF-8?Q?support_for_dbx/mokx_entries=5d?=
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-To:     Eric Snowberg <eric.snowberg@oracle.com>,
-        David Howells <dhowells@redhat.com>
-Cc:     dwmw2@infradead.org, Jarkko Sakkinen <jarkko@kernel.org>,
-        James.Bottomley@HansenPartnership.com, masahiroy@kernel.org,
-        michal.lkml@markovi.net, jmorris@namei.org, serge@hallyn.com,
-        ardb@kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        lszubowi@redhat.com, javierm@redhat.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Tyler Hicks <tyhicks@linux.microsoft.com>
-References: <20210122181054.32635-1-eric.snowberg@oracle.com>
- <1103491.1612369600@warthog.procyon.org.uk>
- <10e6616e-0598-9f33-2de9-4a5268bba586@digikod.net>
- <A5B5DEC0-E47A-4C3D-8E79-AF37B6C2E565@oracle.com>
- <7924ce4c-ea94-9540-0730-bddae7c6af07@digikod.net>
- <BFC930B3-7994-4C5B-A8EF-1DD1C73F5750@oracle.com>
- <dc6a4524-3935-fda6-40a8-cebf80942cdf@digikod.net>
- <188DE1AF-A011-4631-B88A-2C4324DA013B@oracle.com>
- <99066eb7-53ac-41b0-46cf-36ea3d7f6590@digikod.net>
- <74EC102D-BD18-4863-A7FB-C88439654C8C@oracle.com>
- <456712ef-1349-ffe2-9e34-7d49848980ff@digikod.net>
-Message-ID: <999f0763-b1c1-a9ad-0efe-d3e148663ced@digikod.net>
-Date:   Wed, 10 Feb 2021 13:07:59 +0100
-User-Agent: 
+        id S231784AbhBJO7Q (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Feb 2021 09:59:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31096 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231774AbhBJO7A (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Feb 2021 09:59:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612969052;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=z2dPGwBXCWSVZ5g1pGm6UIqGI0ADcDy1IxFOAnmlTEE=;
+        b=QzDF3vLj2CQafKLw1NTtknyaRd9MW/8vyDf/KHiFkcfoTdbNg5nEUDTbJ5l59n8qtZVjBy
+        mgShMLmYfcUevpLct+0Ard1IFiSWyTfOTuzcCoYqmWyswOjjUaBeGxP4JVcpDTLKaE9+nA
+        Ilw7pl/awho7Ah6C0gjqvYajMGWAeW4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-505-BUzlBjMCPu-BrVdmGJSJcQ-1; Wed, 10 Feb 2021 09:57:28 -0500
+X-MC-Unique: BUzlBjMCPu-BrVdmGJSJcQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9451C192CC40;
+        Wed, 10 Feb 2021 14:57:24 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 517BE60657;
+        Wed, 10 Feb 2021 14:57:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+cc:     dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Ben Boeckel <mathstuf@gmail.com>,
+        Denis Efremov <efremov@linux.com>,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        Jann Horn <jannh@google.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Tom Rix <trix@redhat.com>, YueHaibing <yuehaibing@huawei.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: 
 MIME-Version: 1.0
-In-Reply-To: <456712ef-1349-ffe2-9e34-7d49848980ff@digikod.net>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Date:   Wed, 10 Feb 2021 14:57:19 +0000
+Message-ID: <1322700.1612969039@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 
-On 09/02/2021 22:53, Mickaël Salaün wrote:
-> 
-> On 09/02/2021 00:05, Eric Snowberg wrote:
->>
->>> On Feb 6, 2021, at 11:30 AM, Mickaël Salaün <mic@digikod.net> wrote:
->>>
->>> On 06/02/2021 02:14, Eric Snowberg wrote:
->>>
->>>> I have done some additional testing, I am seeing a regression. The blacklist 
->>>> keyring is no longer picking up any of the hashes from the dbx during boot. 
->>>> I backed out the merge with my changes  (fdbbe7ceeb95090d09c33ce0497e0394c82aa33d) 
->>>> and still see the regression.  I then backed out Mickaël merge
->>>> (5bf1adccf5c41dbdd51d1f4de220d335d9548598) and it fixes the regression.
->>>>
->>>> On a x86 with the updated dbx from uefi.org, I’d expect to see 234 bin hash entries
->>>> in the blacklist keyring.  With the current merged code, there is none.
->>>
->>> Hum, I missed a part in refactoring (commit
->>> f78e50c8f750c0ac6767ac1ed006360cf77c56c4). :/
->>> Could you please test the following patch?
->>>
->>> diff --git a/certs/blacklist.c b/certs/blacklist.c
->>> index 07c592ae5307..f998a2e85ddc 100644
->>> --- a/certs/blacklist.c
->>> +++ b/certs/blacklist.c
->>> @@ -197,13 +197,16 @@ int mark_hash_blacklisted(const u8 *hash, size_t
->>> hash_len,
->>>                enum blacklist_hash_type hash_type)
->>> {
->>>        const char *buffer;
->>> +       int err;
->>>
->>>        buffer = get_raw_hash(hash, hash_len, hash_type);
->>>        if (IS_ERR(buffer))
->>>                return PTR_ERR(buffer);
->>> +       err = mark_raw_hash_blacklisted(buffer);
->>>        kfree(buffer);
->>> -       return 0;
->>> +       return err;
->>> }
->>
->> I applied this patch, it works better, but there is still a regression. 
->> Most of the hashes show up in the blacklist keyring now.  However some 
->> do not, here is what I see in the log during boot:
->>
->> [    2.321876] blacklist: Problem blacklisting hash (-13)
->> [    2.322729] blacklist: Problem blacklisting hash (-13)
->> [    2.323549] blacklist: Problem blacklisting hash (-13)
->> [    2.324369] blacklist: Problem blacklisting hash (-13)
->>
->>> Is it possible to test these kind of dbx blacklist with Qemu?
->>
->> Yes, just use OVMF. 
->>
-> 
-> My changes (with the fix) don't change the previous semantic. I just
-> tested without my changes and with my changes (and the fix), and I get
-> the same result: 184 bin hashes with
-> https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin
-> 
-> Could you please re-test and if there is still an issue bisect and share
-> the certificates causing this issue?
-> 
-> David, do you want me to send the two new patches or an updated full
-> patch series?
-> 
+Hi Linus,
 
-I found the issue and fixed it in a new patch series:
-https://lore.kernel.org/lkml/20210210120410.471693-1-mic@digikod.net/
+Here's a set of minor keyrings fixes/cleanups that I've collected from
+various people for the upcoming merge window.
+
+A couple of them might, in theory, be visible to userspace:
+
+ (*) Make blacklist_vet_description() reject uppercase letters as they
+     don't match the all-lowercase hex string generated for a blacklist
+     search.
+
+     This may want reconsideration in the future, but, currently, you can't
+     add to the blacklist keyring from userspace and the only source of
+     blacklist keys generates lowercase descriptions.
+
+ (*) Fix blacklist_init() to use a new KEY_ALLOC_* flag to indicate that it
+     wants KEY_FLAG_KEEP to be set rather than passing KEY_FLAG_KEEP into
+     keyring_alloc() as KEY_FLAG_KEEP isn't a valid alloc flag.
+
+     This isn't currently a problem as the blacklist keyring isn't
+     currently writable by userspace.
+
+The rest of the patches are cleanups and I don't think they should have any
+visible effect.
+
+I've fixed the compilation error, added another patch and rebased to
+v5.11-rc4 since the last request.
+
+David
+---
+The following changes since commit 19c329f6808995b142b3966301f217c831e7cf31:
+
+  Linux 5.11-rc4 (2021-01-17 16:37:05 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/=
+keys-misc-20210126
+
+for you to fetch changes up to 8f0bfc25c907f38e7f9dc498e8f43000d77327ef:
+
+  watch_queue: rectify kernel-doc for init_watch() (2021-01-26 11:16:34 +00=
+00)
+
+----------------------------------------------------------------
+Keyrings miscellany
+
+----------------------------------------------------------------
+Alex Shi (2):
+      PKCS#7: drop function from kernel-doc pkcs7_validate_trust_one
+      certs/blacklist: fix kernel doc interface issue
+
+Alexander A. Klimov (1):
+      encrypted-keys: Replace HTTP links with HTTPS ones
+
+David Howells (1):
+      certs: Fix blacklist flag type confusion
+
+Denis Efremov (1):
+      security/keys: use kvfree_sensitive()
+
+Gabriel Krisman Bertazi (1):
+      watch_queue: Drop references to /dev/watch_queue
+
+Gustavo A. R. Silva (1):
+      security: keys: Fix fall-through warnings for Clang
+
+Jann Horn (1):
+      keys: Remove outdated __user annotations
+
+Krzysztof Kozlowski (1):
+      KEYS: asymmetric: Fix kerneldoc
+
+Lukas Bulwahn (1):
+      watch_queue: rectify kernel-doc for init_watch()
+
+Micka=C3=ABl Sala=C3=BCn (3):
+      certs: Fix blacklisted hexadecimal hash string check
+      PKCS#7: Fix missing include
+      certs: Replace K{U,G}IDT_INIT() with GLOBAL_ROOT_{U,G}ID
+
+Randy Dunlap (2):
+      security: keys: delete repeated words in comments
+      crypto: asymmetric_keys: fix some comments in pkcs7_parser.h
+
+Tianjia Zhang (1):
+      crypto: public_key: Remove redundant header file from public_key.h
+
+Tom Rix (2):
+      KEYS: remove redundant memset
+      keys: remove trailing semicolon in macro definition
+
+YueHaibing (1):
+      crypto: pkcs7: Use match_string() helper to simplify the code
+
+ Documentation/security/keys/core.rst     |  4 ++--
+ certs/blacklist.c                        | 10 +++++-----
+ certs/system_keyring.c                   |  5 +++--
+ crypto/asymmetric_keys/asymmetric_type.c |  6 ++++--
+ crypto/asymmetric_keys/pkcs7_parser.h    |  5 ++---
+ crypto/asymmetric_keys/pkcs7_trust.c     |  2 +-
+ crypto/asymmetric_keys/pkcs7_verify.c    |  9 ++++-----
+ include/crypto/public_key.h              |  1 -
+ include/keys/encrypted-type.h            |  2 +-
+ include/linux/key.h                      |  5 +++--
+ include/linux/verification.h             |  2 ++
+ kernel/watch_queue.c                     |  2 +-
+ samples/Kconfig                          |  2 +-
+ samples/watch_queue/watch_test.c         |  2 +-
+ security/integrity/ima/ima_mok.c         |  5 ++---
+ security/keys/Kconfig                    |  8 ++++----
+ security/keys/big_key.c                  |  9 +++------
+ security/keys/key.c                      |  2 ++
+ security/keys/keyctl.c                   |  2 +-
+ security/keys/keyctl_pkey.c              |  2 --
+ security/keys/keyring.c                  | 10 +++++-----
+ security/keys/process_keys.c             |  1 +
+ 22 files changed, 48 insertions(+), 48 deletions(-)
+
