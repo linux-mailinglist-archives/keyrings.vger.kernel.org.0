@@ -2,90 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A0FE318856
-	for <lists+keyrings@lfdr.de>; Thu, 11 Feb 2021 11:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E8C3318C0C
+	for <lists+keyrings@lfdr.de>; Thu, 11 Feb 2021 14:31:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230201AbhBKKit (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Feb 2021 05:38:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230034AbhBKKgp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Feb 2021 05:36:45 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7232C0611C3
-        for <keyrings@vger.kernel.org>; Thu, 11 Feb 2021 02:34:38 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1lA9Ip-0004Vc-KZ; Thu, 11 Feb 2021 11:34:27 +0100
-Subject: Re: [PATCH v8 1/4] KEYS: trusted: Add generic trusted keys framework
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Sumit Garg <sumit.garg@linaro.org>
-Cc:     linux-security-module@vger.kernel.org, daniel.thompson@linaro.org,
-        op-tee@lists.trustedfirmware.org, corbet@lwn.net,
-        jejb@linux.ibm.com, janne.karhunen@gmail.com,
-        linux-doc@vger.kernel.org, jmorris@namei.org, zohar@linux.ibm.com,
-        linux-kernel@vger.kernel.org, dhowells@redhat.com,
-        lhinds@redhat.com, keyrings@vger.kernel.org,
-        jarkko.sakkinen@linux.intel.com, Markus.Wamser@mixed-mode.de,
-        casey@schaufler-ca.com, linux-integrity@vger.kernel.org,
-        jens.wiklander@linaro.org, linux-arm-kernel@lists.infradead.org,
-        serge@hallyn.com
-References: <1604419306-26105-1-git-send-email-sumit.garg@linaro.org>
- <1604419306-26105-2-git-send-email-sumit.garg@linaro.org>
- <YCQRPo0o6MZ0pcUa@kernel.org>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f51409f7-05b4-31b6-f1c5-d9e6d7c0bb46@pengutronix.de>
-Date:   Thu, 11 Feb 2021 11:34:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S229752AbhBKN3d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Feb 2021 08:29:33 -0500
+Received: from mail-wm1-f51.google.com ([209.85.128.51]:54989 "EHLO
+        mail-wm1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231265AbhBKNZs (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Feb 2021 08:25:48 -0500
+Received: by mail-wm1-f51.google.com with SMTP id w4so5541728wmi.4
+        for <keyrings@vger.kernel.org>; Thu, 11 Feb 2021 05:25:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yVOAMLQtHgH63cMZg+F/kTpWBAiKNH2of3Em41CxuKU=;
+        b=ir10PXr9PwmBMWKMnf/FxlWha2LCHONMN2uCvaZb+ql85T82wdD4U/9fPtRY65oZHx
+         BFjrZj44DSjS/szHgF+uxa7WGXfFHI5RQ9z5CCQwh+oKrAym9uTnXDWDznitqdV8NQay
+         kjAvbdjmMtj8xH16WGVHJXCR+FLTvECK8Y0tvx893jf4Tu5kFDM2M3jtzDMQ2BGDNroL
+         J99cAeTX4hC5eNVIwMz0c2KzKyD+nUWaHfig4UkY03FsfddlCYWHpj4FB093n9pmTshd
+         npvQzro/9U25RooI6zdBuKGjpPk+UuWdH5comqudKmIY4AV/HgHX3J6ICurZiAffrlAi
+         2yTg==
+X-Gm-Message-State: AOAM532OUGs3fWmSFbybPuQ+gKEDuMGfIfhgmkHQD4YUc/PtDni/9YoR
+        8avNzLYoXyYRiT7r2uzKPokUXnlXYvxBXeo6
+X-Google-Smtp-Source: ABdhPJye81XaiYaPrp+yoxRuWXdHmOI+9MWJCCMupzNjDIYiQJmBWfOVWzGJhmsXRn+7eRwLuPkBHg==
+X-Received: by 2002:a05:600c:1552:: with SMTP id f18mr5173543wmg.46.1613049903907;
+        Thu, 11 Feb 2021 05:25:03 -0800 (PST)
+Received: from localhost.localdomain ([82.213.213.214])
+        by smtp.gmail.com with ESMTPSA id n5sm8558489wmq.7.2021.02.11.05.25.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Feb 2021 05:25:03 -0800 (PST)
+From:   Andrew Zaborowski <andrew.zaborowski@intel.com>
+To:     keyrings@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH v3 1/2] keys: crypto: Replace BUG_ON() with WARN() in find_asymmetric_key()
+Date:   Thu, 11 Feb 2021 14:24:28 +0100
+Message-Id: <20210211132429.283122-1-andrew.zaborowski@intel.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <YCQRPo0o6MZ0pcUa@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Jarkko,
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-On 10.02.21 18:00, Jarkko Sakkinen wrote:
-> On Tue, Nov 03, 2020 at 09:31:43PM +0530, Sumit Garg wrote:
->> +	case Opt_new:
->> +		key_len = payload->key_len;
->> +		ret = static_call(trusted_key_get_random)(payload->key,
->> +							  key_len);
->> +		if (ret != key_len) {
->> +			pr_info("trusted_key: key_create failed (%d)\n", ret);
->> +			goto out;
->> +		}
-> 
-> This repeats a regression in existing code, i.e. does not check
-> "ret < 0" condition. I noticed this now when I rebased the code
-> on top of my fixes.
-> 
-> I.e. it's fixed in my master branch, which caused a merge conflict,
-> and I found this.
+BUG_ON() should not be used in the kernel code, unless there are
+exceptional reasons to do so. Replace BUG_ON() with WARN() and
+return.
 
-Does that mean this series will go out for the next merge window?
-Can you point me where your git tree is, so I can rebase on top?
+Cc: stable@vger.kernel.org
+Fixes: b3811d36a3e7 ("KEYS: checking the input id parameters before finding asymmetric key")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+No changes from original submission by Jarkko.
 
-> 
-> /Jarkko
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+ crypto/asymmetric_keys/asymmetric_type.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index 33e77d846ca..47cc88fa0fa 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -54,7 +54,10 @@ struct key *find_asymmetric_key(struct key *keyring,
+ 	char *req, *p;
+ 	int len;
+ 
+-	BUG_ON(!id_0 && !id_1);
++	if (!id_0 && !id_1) {
++		WARN(1, "All ID's are NULL\n");
++		return ERR_PTR(-EINVAL);
++	}
+ 
+ 	if (id_0) {
+ 		lookup = id_0->data;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.27.0
+
