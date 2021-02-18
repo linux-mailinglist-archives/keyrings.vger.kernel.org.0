@@ -2,64 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D99B332036F
-	for <lists+keyrings@lfdr.de>; Sat, 20 Feb 2021 04:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 353C9320514
+	for <lists+keyrings@lfdr.de>; Sat, 20 Feb 2021 12:22:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229887AbhBTDKE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 19 Feb 2021 22:10:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45064 "EHLO mail.kernel.org"
+        id S229542AbhBTLWM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 20 Feb 2021 06:22:12 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:13620 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229765AbhBTDKD (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 19 Feb 2021 22:10:03 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B717064EE0;
-        Sat, 20 Feb 2021 03:09:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613790563;
-        bh=BKUd+jallq37FDOP7XZNlKIoHsBYEgg+risJ2luufz8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F2sQxU/R9X/6fZkIEcVkTVPkOug75dkQlMgvr2tDh/+49Rn3rP6Xe1/UPE2raBAdJ
-         vwTG3NOpHrftST365HlCBYQy9WyZeUmhZd8sFnZrz6G3xt4Vxw6IMGFzYXM+VyRRoH
-         DPCB+GmOfOlA1oAVNNoeEwWxZyvHX3UvF/2+YEEdvC1+xoKwbZrN+k2CAIZ+oYHvMq
-         r94OWRrCDwG+C3kJFKachpZkSh3PrpCsozjuVgnrL7oAMk2o9vZfbe/WcNsT6WetAd
-         xgZakwtUVC5GMfYJrUVPPXhxbeRFRdLpq/Cpa+Pz0aMKD5aKH9RNu1SCyjkdIPllxy
-         ciQmefUC0pHgw==
-Date:   Sat, 20 Feb 2021 05:09:07 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Matthew Garrett <matthewgarrett@google.com>
-Cc:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-pm@vger.kernel.org, keyrings@vger.kernel.org,
-        zohar@linux.ibm.com, jejb@linux.ibm.com, corbet@lwn.net,
-        rjw@rjwysocki.net, Matthew Garrett <mjg59@google.com>
-Subject: Re: [PATCH 5/9] security: keys: trusted: Allow storage of PCR values
- in creation data
-Message-ID: <YDB9U2oyt0fmvLDF@kernel.org>
-References: <20210220013255.1083202-1-matthewgarrett@google.com>
- <20210220013255.1083202-6-matthewgarrett@google.com>
+        id S229476AbhBTLWL (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sat, 20 Feb 2021 06:22:11 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Thu, 18 Feb 2021 08:50:31 -0800
+Received: from User (20.48.109.21) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Thu, 18 Feb 2021
+ 08:50:18 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Re:ok
+Date:   Thu, 18 Feb 2021 16:50:30 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210220013255.1083202-6-matthewgarrett@google.com>
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <19d04da4b0c845bf8ee96df543d89218@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, Feb 20, 2021 at 01:32:51AM +0000, Matthew Garrett wrote:
-> When TPMs generate keys, they can also generate some information
-> describing the state of the PCRs at creation time. This data can then
-> later be certified by the TPM, allowing verification of the PCR values.
-> This allows us to determine the state of the system at the time a key
-> was generated. Add an additional argument to the trusted key creation
-> options, allowing the user to provide the set of PCRs that should have
-> their values incorporated into the creation data.
-> 
-> Signed-off-by: Matthew Garrett <mjg59@google.com>
+Hello,
 
-LGTM too.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Something popped into mind: could we make PCR 23 reservation dynamic
-instead of a config option.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-E.g. if the user space uses it, then it's dirty and hibernate will
-fail. I really dislike the static compilation time firewall on it.
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-/Jarkko
+Regards,
+Ms. Reem.
