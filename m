@@ -2,134 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FB0231EA1C
-	for <lists+keyrings@lfdr.de>; Thu, 18 Feb 2021 14:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D3331EE64
+	for <lists+keyrings@lfdr.de>; Thu, 18 Feb 2021 19:35:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232875AbhBRM5W (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 18 Feb 2021 07:57:22 -0500
-Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:40722 "EHLO
-        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232895AbhBRKdG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Feb 2021 05:33:06 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=songyang@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UOtYoLz_1613644342;
-Received: from localhost(mailfrom:songyang@linux.alibaba.com fp:SMTPD_---0UOtYoLz_1613644342)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 18 Feb 2021 18:32:22 +0800
-From:   Yang Song <songyang@linux.alibaba.com>
-To:     dhowells@redhat.com, dwmw2@infradead.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     zhang.jia@linux.alibaba.com, tianjia.zhang@linux.alibaba.com,
-        songyang@linux.alibaba.com
-Subject: [PATCH v2] sign-file: add openssl engine support
-Date:   Thu, 18 Feb 2021 18:32:22 +0800
-Message-Id: <20210218103222.58854-1-songyang@linux.alibaba.com>
-X-Mailer: git-send-email 2.19.1.3.ge56e4f7
+        id S231290AbhBRSd4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 Feb 2021 13:33:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:35903 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230099AbhBRQ0I (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Feb 2021 11:26:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1613665481;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ol04b9SwBsNodyJM22S45r12k9peEbiT8MJxTqE+tN4=;
+        b=XIPU9QS8avCBZQqYaID/j+rT1twJpTjM6YdvhJv77i9lblrM2+7rIS+fhuImZ02t7wPocZ
+        H3Bpiv99IUrqP/U0a4bxUlezpG/Nz3Hc/wsLy0ZLvd/tO/PsAFgFwFWqHb/59R4eiNK0Fe
+        KlKPeO36vdPSm2hyJLUH3J5wm+tLzMc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-416-rW-hvFsBMdK8XUyn30FbIQ-1; Thu, 18 Feb 2021 11:24:37 -0500
+X-MC-Unique: rW-hvFsBMdK8XUyn30FbIQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 59FF380364E;
+        Thu, 18 Feb 2021 16:24:36 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-119-68.rdu2.redhat.com [10.10.119.68])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 319C519D9F;
+        Thu, 18 Feb 2021 16:24:35 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+In-Reply-To: <160751619550.1238376.2380930476046994051.stgit@warthog.procyon.org.uk>
+References: <160751619550.1238376.2380930476046994051.stgit@warthog.procyon.org.uk> <160751606428.1238376.14935502103503420781.stgit@warthog.procyon.org.uk>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@linux.microsoft.com>
+Cc:     dhowells@redhat.com, Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 17/18] certs: Fix blacklist flag type confusion
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   David Howells <dhowells@redhat.com>
+Date:   Thu, 18 Feb 2021 16:24:34 +0000
+Message-ID: <2031808.1613665474@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Use a customized signature service supported by openssl engine
-to sign the kernel module.
-Add command line parameters that support engine for sign-file
-to use the customized openssl engine service to sign kernel modules.
 
-Signed-off-by: Yang Song <songyang@linux.alibaba.com>
----
- scripts/sign-file.c | 54 +++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 52 insertions(+), 2 deletions(-)
+Hi Micka=C3=ABl, Jarkko,
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index fbd34b8e8f57..897976c859da 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -70,7 +70,7 @@ static __attribute__((noreturn))
- void format(void)
- {
- 	fprintf(stderr,
--		"Usage: scripts/sign-file [-dp] <hash algo> <key> <x509> <module> [<dest>]\n");
-+		"Usage: scripts/sign-file [-dp] [-e <openssl engine>] <hash algo> <key> <x509> <module> [<dest>]\n");
- 	fprintf(stderr,
- 		"       scripts/sign-file -s <raw sig> <hash algo> <x509> <module> [<dest>]\n");
- 	exit(2);
-@@ -206,9 +206,52 @@ static X509 *read_x509(const char *x509_name)
- 	return x509;
- }
- 
-+/* Try to load an engine in a shareable library */
-+static ENGINE *try_load_engine(const char *engine)
-+{
-+	ENGINE *e = NULL;
-+
-+	e = ENGINE_by_id("dynamic");
-+	if (e) {
-+		if (!ENGINE_ctrl_cmd_string(e, "SO_PATH", engine, 0)
-+			|| !ENGINE_ctrl_cmd_string(e, "LOAD", NULL, 0)) {
-+			ENGINE_free(e);
-+			e = NULL;
-+		}
-+	}
-+	return e;
-+}
-+
-+static ENGINE *setup_engine(const char *engine)
-+{
-+	ENGINE *e = NULL;
-+
-+	if (engine) {
-+		e = ENGINE_by_id(engine);
-+		if (e == NULL) {
-+			e = try_load_engine(engine);
-+			if (e == NULL) {
-+				ERR(1, "Invalid engine \"%s\"\n", engine);
-+				return NULL;
-+			}
-+		}
-+
-+		if (!ENGINE_set_default(e, ENGINE_METHOD_ALL)) {
-+			ERR(1, "Can't use that engine\n");
-+			ENGINE_free(e);
-+			return NULL;
-+		}
-+
-+		fprintf(stdout,  "Engine \"%s\" set.\n", ENGINE_get_id(e));
-+	}
-+
-+	return e;
-+}
-+
- int main(int argc, char **argv)
- {
- 	struct module_signature sig_info = { .id_type = PKEY_ID_PKCS7 };
-+	char *ossl_engine = NULL;
- 	char *hash_algo = NULL;
- 	char *private_key_name = NULL, *raw_sig_name = NULL;
- 	char *x509_name, *module_name, *dest_name;
-@@ -242,8 +285,9 @@ int main(int argc, char **argv)
- #endif
- 
- 	do {
--		opt = getopt(argc, argv, "sdpk");
-+		opt = getopt(argc, argv, "se:dpk");
- 		switch (opt) {
-+		case 'e': ossl_engine = optarg; break;
- 		case 's': raw_sig = true; break;
- 		case 'p': save_sig = true; break;
- 		case 'd': sign_only = true; save_sig = true; break;
-@@ -291,6 +335,12 @@ int main(int argc, char **argv)
- 	ERR(!bm, "%s", module_name);
- 
- 	if (!raw_sig) {
-+		if (ossl_engine != NULL) {
-+			/* Engine setup */
-+			ENGINE_load_builtin_engines();
-+			setup_engine(ossl_engine);
-+		}
-+
- 		/* Read the private key and the X.509 cert the PKCS#7 message
- 		 * will point to.
- 		 */
--- 
-2.19.1.3.ge56e4f7
+Can I transfer your acks from:
+
+	https://lore.kernel.org/lkml/20210121155513.539519-5-mic@digikod.net/
+
+to here?
+
+David
 
