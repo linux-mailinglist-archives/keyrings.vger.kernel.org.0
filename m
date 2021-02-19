@@ -2,78 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B44A231FE39
-	for <lists+keyrings@lfdr.de>; Fri, 19 Feb 2021 18:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CAAF31FEC4
+	for <lists+keyrings@lfdr.de>; Fri, 19 Feb 2021 19:26:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbhBSRsK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 19 Feb 2021 12:48:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39196 "EHLO mail.kernel.org"
+        id S229896AbhBSSZz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 19 Feb 2021 13:25:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46252 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229527AbhBSRsJ (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 19 Feb 2021 12:48:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AFD3964E15;
-        Fri, 19 Feb 2021 17:47:28 +0000 (UTC)
+        id S229879AbhBSSZx (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 19 Feb 2021 13:25:53 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8D7AC64DA8;
+        Fri, 19 Feb 2021 18:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613756849;
-        bh=m6rAWAFgOM3ef0SD8I84idRS7AgJL+jWbMk1gCQij+o=;
+        s=k20201202; t=1613759113;
+        bh=3SOsL63I1e4HLF82yT5C2pj5BfH4Zygn+ix2rcnwZWQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bGHuD922XC1b45O1tiaggLTuMTRp7NKr7H1mV4tmsmPqeQr4B2pw2FVTl9kmO9MHF
-         xGROBgGp1QL6pu43GCxIyU/02C3EERLfWmpSxCyexdKsAXpPJh2FHwD+p+34tFKOw7
-         8a433nSSRoFXaSMSKA0xuu8mrHxOq4cydZw/Qh7/NiPD4ofijUxSpwoidpWHVZnwao
-         Y57cxop8pYJzwcQneiL3e+pDahWhNBdX7MUNvi6uwrnprnquULBpuS/AVHTkPdxC9/
-         pdtBMNeQXUy5b2i4M8wUCqLSMRrCxPG2bO5KeEddECdZs8oA7gbSgXilwDc0upM9HL
-         o8r+f2mFf1cVQ==
-Date:   Fri, 19 Feb 2021 19:47:14 +0200
+        b=dGtuOuvbBjfWA+3K1ByolXIL9TmcuAVl4Iw3OKYhvRnHYZ+Bx3zV+MnF0VD2FrkcK
+         mnfkNMMWEVf7eer8x0GjQXHZqLnh2DbCYXULREdnEfwQZIXLvfJFZWxovOYngkXwbc
+         6Y+a0KzsuJFrJjmeqYGq5a1HHJd8xGtRfWMWrJnrkO1s2HLxRazSUEPVOMp40hIOjM
+         /ygNVL2PLcIyGj2AW7zVjZfTMM5LwiRO70m6yAUPB+/GW2aG9bPj/y4/reQB/V6k1N
+         4MaKpX0DtmKwP5y/CZqPfQGX7/mYlEzXlos2NRh3yOZgZl+HTuD5n2r/LN/6X1EnvV
+         JTw3ixqyZwEBg==
+Date:   Fri, 19 Feb 2021 20:24:58 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        mchehab+huawei@kernel.org, linux-doc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] watch_queue: rectify kernel-doc for init_watch()
-Message-ID: <YC/5ojC2fwkY5Y9T@kernel.org>
-References: <161373161298.2157082.10755433120775444271.stgit@warthog.procyon.org.uk>
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v15 0/5] TPM 2.0 trusted key rework
+Message-ID: <YDACehLCy4f2sDzo@kernel.org>
+References: <20210127190617.17564-1-James.Bottomley@HansenPartnership.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <161373161298.2157082.10755433120775444271.stgit@warthog.procyon.org.uk>
+In-Reply-To: <20210127190617.17564-1-James.Bottomley@HansenPartnership.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Feb 19, 2021 at 10:46:53AM +0000, David Howells wrote:
-> From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On Wed, Jan 27, 2021 at 11:06:12AM -0800, James Bottomley wrote:
+> v15: fix 0day sign issue and add reviews and testeds
 > 
-> The command './scripts/kernel-doc -none kernel/watch_queue.c'
-> reported a mismatch in the kernel-doc of init_watch().
+> General cover letter minus policy bit:
 > 
-> Rectify the kernel-doc, such that no issues remain for watch_queue.c.
+> This patch updates the trusted key code to export keys in the ASN.1
+> format used by current TPM key tools (openssl_tpm2_engine and
+> openconnect).  The current code will try to load keys containing
+> policy, but being unable to formulate the policy commands necessary to
+> load them, the unseal will always fail unless the policy is executed
+> in user space and a pre-formed policy session passed in.
 > 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Link: https://lore.kernel.org/lkml/20210125161409.8478-1-lukas.bulwahn@gmail.com
+> The key format is designed to be compatible with our two openssl
+> engine implementations as well as with the format used by openconnect.
+> I've added seal/unseal to my engine so I can use it for
+> interoperability testing and I'll later use this for sealed symmetric
+> keys via engine:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
+> 
+> James
+> 
 > ---
 > 
->  kernel/watch_queue.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-> index 0ef8f65bd2d7..9c9eb20dd2c5 100644
-> --- a/kernel/watch_queue.c
-> +++ b/kernel/watch_queue.c
-> @@ -413,7 +413,7 @@ static void put_watch(struct watch *watch)
->  }
->  
->  /**
-> - * init_watch_queue - Initialise a watch
-> + * init_watch - Initialise a watch
->   * @watch: The watch to initialise.
->   * @wqueue: The queue to assign.
->   *
-> 
-> 
-> 
+> James Bottomley (5):
+>   lib: add ASN.1 encoder
+>   oid_registry: Add TCG defined OIDS for TPM keys
+>   security: keys: trusted: fix TPM2 authorizations
+>   security: keys: trusted: use ASN.1 TPM2 key format for the blobs
+>   security: keys: trusted: Make sealed key properly interoperable
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+This is online again in the master branch. 
+
+I've mangled the commits as follows:
+
+1. Fixed my emails to jarkko@kernel.org.
+2. Adjusted the Makefile, i.e. separate lines for each entry.
+3. Fixed the checkpatch issues.
+
+I guess we could potentially re-consider this to rc2 pull? With all the
+mangling required, did not make sense to include this to the first pull.
 
 /Jarkko
