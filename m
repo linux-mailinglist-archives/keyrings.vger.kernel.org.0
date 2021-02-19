@@ -2,60 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEB9631F694
-	for <lists+keyrings@lfdr.de>; Fri, 19 Feb 2021 10:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A256531F6A9
+	for <lists+keyrings@lfdr.de>; Fri, 19 Feb 2021 10:45:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbhBSJc0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 19 Feb 2021 04:32:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41020 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229876AbhBSJcY (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 19 Feb 2021 04:32:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 82C2F614A7;
-        Fri, 19 Feb 2021 09:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613727104;
-        bh=KfoE8Rmr0IxukoOBwdP3XRkzUvE+piUGHia/TAIvQQ8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=swphxQbtR9Y0Rl0V0RCrJIvbKHNdokDcF72NLenq5m2D9iZtOKVzGwyZbjyFjkMPy
-         5AzD09jb+mwBvkT593FL+clJavNscNeB4Pe+e5WH3uI6WEmCyQOqTmCDcC27RNXk36
-         hGkYGj/MiYuWlwSnDCgpaGp0xh09OYAFFH8EJtjIicaPBBnHJie6Y5FF9S18Z9W4n3
-         aFfyKYX09FQXMANuFXZrcweO46RcuzTvmJYyOW6r/MtMXm4Z/QRlMJfTqtrhld2d+9
-         zcr4sj6fAb3f/oCK/j36pgIwBmQ1j4GYIJkUqAl4ybQbNiHzhwBHWBMDCaKyufH5Xq
-         axYo17sLNskdA==
-Date:   Fri, 19 Feb 2021 11:31:29 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
+        id S229952AbhBSJn3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 19 Feb 2021 04:43:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38374 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229800AbhBSJn2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 19 Feb 2021 04:43:28 -0500
+Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [IPv6:2001:1600:3:17::bc0f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88063C061574
+        for <keyrings@vger.kernel.org>; Fri, 19 Feb 2021 01:42:43 -0800 (PST)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Dhmp77220zMqZdF;
+        Fri, 19 Feb 2021 10:42:39 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Dhmp7189Tzlh8T7;
+        Fri, 19 Feb 2021 10:42:39 +0100 (CET)
+Subject: Re: [PATCH 17/18] certs: Fix blacklist flag type confusion
 To:     David Howells <dhowells@redhat.com>
-Cc:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@linux.microsoft.com>,
         Mimi Zohar <zohar@linux.vnet.ibm.com>,
         David Woodhouse <dwmw2@infradead.org>,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 17/18] certs: Fix blacklist flag type confusion
-Message-ID: <YC+FcZaurTMWDeNm@kernel.org>
-References: <160751619550.1238376.2380930476046994051.stgit@warthog.procyon.org.uk>
+References: <ca631011-08c2-d44d-cce9-436a6a08405f@digikod.net>
+ <160751619550.1238376.2380930476046994051.stgit@warthog.procyon.org.uk>
  <160751606428.1238376.14935502103503420781.stgit@warthog.procyon.org.uk>
  <2031808.1613665474@warthog.procyon.org.uk>
+ <2106667.1613688936@warthog.procyon.org.uk>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+Message-ID: <394233f3-6298-f719-4e1e-c2964841a653@digikod.net>
+Date:   Fri, 19 Feb 2021 10:43:42 +0100
+User-Agent: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <2106667.1613688936@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2031808.1613665474@warthog.procyon.org.uk>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Feb 18, 2021 at 04:24:34PM +0000, David Howells wrote:
+
+On 18/02/2021 23:55, David Howells wrote:
+> Mickaël Salaün <mic@digikod.net> wrote:
 > 
-> Hi Micka�l, Jarkko,
+>>> Can I transfer your acks from:
+>>>
+>>> 	https://lore.kernel.org/lkml/20210121155513.539519-5-mic@digikod.net/
+>>>
+>>> to here?
+>>
+>> No, the current thread contains an old version with an error in the
+>> patch for ima_mok_init(). Please take the last series (fixing this
+>> patch) that I rebased on your next branch:
+>> https://lore.kernel.org/keyrings/20210210120410.471693-1-mic@digikod.net/
 > 
-> Can I transfer your acks from:
-> 
-> 	https://lore.kernel.org/lkml/20210121155513.539519-5-mic@digikod.net/
-> 
-> to here?
+> Is there a quick fix for the error?  If I replace your patches I'll probably
+> have to withdraw my pull request for this cycle.
+
+I think you just replied to the wrong thread. You have the correct
+commit(s) in your tree here:
+-
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=keys-fixes&id=a03da41508b177da59780d759af16207a00686bb
+-
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=keys-next&id=4993e1f9479a4161fd7d93e2b8b30b438f00cb0f
+-
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=keys-misc&id=508f44ffefbf879fbb82fdbc8bf1e6023b85158a
+
+For all of these you can add my Reviewed-by or Acked-by.
+
+Thanks!
+
 > 
 > David
-
-Yes, thanks.
-
-/Jarkko
+> 
