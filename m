@@ -2,85 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8893231F797
-	for <lists+keyrings@lfdr.de>; Fri, 19 Feb 2021 11:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D231731FB82
+	for <lists+keyrings@lfdr.de>; Fri, 19 Feb 2021 16:00:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbhBSKsf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 19 Feb 2021 05:48:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:45203 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229681AbhBSKsd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 19 Feb 2021 05:48:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613731626;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=B/+AiInwMmJVizsS16te2eSr4y8I9kEMenZeJ0/mh6o=;
-        b=FzRoCj5nk72r7bRj1dtiEZRxeKr/U4kTchwn+u00xbbPrIUkXG/4AJZ831bY145uqnXJ1x
-        PSkMMx3ndbODBt7/+atwJSzKyEQskTaYpgFJjifPqsLTRgGQDEwHZm/T6Z4qAfml7vHIIN
-        F3Tf+1jkXyKaqdotAoW6UVUJNUSKLZA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-23-GzT0t4zPMGm7QLnhRZPU6A-1; Fri, 19 Feb 2021 05:46:57 -0500
-X-MC-Unique: GzT0t4zPMGm7QLnhRZPU6A-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A83A874980;
-        Fri, 19 Feb 2021 10:46:55 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-119-68.rdu2.redhat.com [10.10.119.68])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E29DB19D9D;
-        Fri, 19 Feb 2021 10:46:53 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH] watch_queue: rectify kernel-doc for init_watch()
-From:   David Howells <dhowells@redhat.com>
-To:     jarkko@kernel.org
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        mchehab+huawei@kernel.org, linux-doc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Fri, 19 Feb 2021 10:46:53 +0000
-Message-ID: <161373161298.2157082.10755433120775444271.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/0.23
+        id S229524AbhBSPAN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 19 Feb 2021 10:00:13 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:19814 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229498AbhBSPAL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 19 Feb 2021 10:00:11 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 11JEXBNf046343;
+        Fri, 19 Feb 2021 09:59:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=DmjTMspybTAP0gLH018aBzVAdBBAVLNG8P4fmWI/iCo=;
+ b=AI6N8PGwkswNFf0P5iMjAUt+Rpc3AlYlKpcJZJjL4AnmeIopLtB6sFGPTWmKWFWuHMSb
+ wLkTLnQYkI8RIMb/7MgmC67kb8zOmf3xbK8x4bgaO4XM7b4b72oYWnxrZ3y5hobDRFkN
+ hf6n1bdVYKOAeyNKOV3iJb+Pb2bNk7v1TpgOvRpLzi8HjMJXs1E6m9Vy9WDDZJormEGW
+ oYs5d/rBO4Lc0UnjyAiHFo4RMjomWndHzmK6WHKMJ0A5ZIUu2pQvfG98OfGFiq4157hG
+ SQuIkRo34r7IT2lYVjhXrDjYoXvGpGCMkTLoWp3+yfBV8D9RatEaFGs5hFd4l1dJ7QsE dw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36tf488u05-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Feb 2021 09:59:27 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11JEXdfJ047284;
+        Fri, 19 Feb 2021 09:59:22 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36tf488ttv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Feb 2021 09:59:21 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11JEpo8e007086;
+        Fri, 19 Feb 2021 14:59:09 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+        by ppma05wdc.us.ibm.com with ESMTP id 36p6d9x4s0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 19 Feb 2021 14:59:09 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 11JEx9QW22151452
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Feb 2021 14:59:09 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3E59A12405B;
+        Fri, 19 Feb 2021 14:59:09 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0EF00124053;
+        Fri, 19 Feb 2021 14:59:09 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+        Fri, 19 Feb 2021 14:59:08 +0000 (GMT)
+Subject: Re: [PATCH v2 5/5] ima: enable loading of build time generated key on
+ .ima keyring
+To:     Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org
+Cc:     linux-security-module@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210218220011.67625-1-nayna@linux.ibm.com>
+ <20210218220011.67625-6-nayna@linux.ibm.com>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+Message-ID: <c53a186b-23ca-f27d-44f3-e8b308886ea8@linux.ibm.com>
+Date:   Fri, 19 Feb 2021 09:59:08 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20210218220011.67625-6-nayna@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-02-19_05:2021-02-18,2021-02-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ malwarescore=0 bulkscore=0 phishscore=0 clxscore=1015 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102190112
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On 2/18/21 5:00 PM, Nayna Jain wrote:
+> The kernel currently only loads the kernel module signing key onto
+> the builtin trusted keyring. To support IMA, load the module signing
+> key selectively either onto the builtin or IMA keyring based on MODULE_SIG
+> or MODULE_APPRAISE_MODSIG config respectively; and loads the CA kernel
+> key onto the builtin trusted keyring.
+>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 
-The command './scripts/kernel-doc -none kernel/watch_queue.c'
-reported a mismatch in the kernel-doc of init_watch().
 
-Rectify the kernel-doc, such that no issues remain for watch_queue.c.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/lkml/20210125161409.8478-1-lukas.bulwahn@gmail.com
----
-
- kernel/watch_queue.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index 0ef8f65bd2d7..9c9eb20dd2c5 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -413,7 +413,7 @@ static void put_watch(struct watch *watch)
- }
- 
- /**
-- * init_watch_queue - Initialise a watch
-+ * init_watch - Initialise a watch
-  * @watch: The watch to initialise.
-  * @wqueue: The queue to assign.
-  *
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
 
