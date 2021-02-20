@@ -2,95 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6436320313
-	for <lists+keyrings@lfdr.de>; Sat, 20 Feb 2021 03:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8593932032F
+	for <lists+keyrings@lfdr.de>; Sat, 20 Feb 2021 03:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbhBTCVJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 19 Feb 2021 21:21:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229700AbhBTCVI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 19 Feb 2021 21:21:08 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FBBC061574;
-        Fri, 19 Feb 2021 18:20:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=vkHct5nZ9eo2GX6kg3o550luk7j4MmaPBgMkq/hkd9k=; b=svpg8ZecDW5spllYjvOFHvISS6
-        lqXen/Xmy3JT1u52u0xFPmZxmZdfzmPqSmaGmNof4WwY6rwjS9TKXbYB5GVWGfLdKP9KuXLOaoxhi
-        ihhhrUiDCgwzeh4vLfItkNNk1ql5BlYrAHVB8+bv/qHSE00eHtIcDW1wP82Rtse6n7+N3A+kHHNMW
-        tOU9Tx1WXQzgRev/EUMEuLNimJxsmJReUD32fiPI+aM8TOJXQwA4WuxxSPVSSi3054Bn5diizYZBh
-        roB+iwkSHGYLL+jErZRVCItdXROC6kkw3m0L8F1EJlqzRnUTcpzZgP+OU7JeR0SslIm1lionRolKy
-        JPqNdLlg==;
-Received: from [2601:1c0:6280:3f0::d05b]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1lDHsZ-0001CX-1i; Sat, 20 Feb 2021 02:20:19 +0000
-Subject: Re: [PATCH 7/9] pm: hibernate: Optionally use TPM-backed keys to
- protect image integrity
-To:     Matthew Garrett <matthewgarrett@google.com>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-integrity@vger.kernel.org, linux-pm@vger.kernel.org,
-        keyrings@vger.kernel.org, zohar@linux.ibm.com, jejb@linux.ibm.com,
-        jarkko@kernel.org, corbet@lwn.net, rjw@rjwysocki.net,
-        Matthew Garrett <mjg59@google.com>
-References: <20210220013255.1083202-1-matthewgarrett@google.com>
- <20210220013255.1083202-8-matthewgarrett@google.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <4c265e1d-0a02-207a-cc10-9a49b4fc5169@infradead.org>
-Date:   Fri, 19 Feb 2021 18:20:13 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S229765AbhBTCko (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 19 Feb 2021 21:40:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42898 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229725AbhBTCkl (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 19 Feb 2021 21:40:41 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 14FCC64E54;
+        Sat, 20 Feb 2021 02:39:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613788800;
+        bh=ooKzW00f3SI1Zam8q3gu3lwsl6GYn5NRNI8l11jdPfE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nQu695I5upgN13n//hmuAnF+I9q+8+A9v0B0PksNfg3xe7mDKkZL3qvxbsrK4n4Sj
+         xTpp6NVp/6XNCCqZEtNjceoA3bYeqmjBHrT382KR4o0ERg0WAtAZEu2s/7yauX9ApY
+         6CZUieAu8eya6dTm+zRMir+hN3kkAvNARsILruM4qIwQdesJERNr7Yb2OTQ4kNSO30
+         3ilaY8vgLj7c3NKfy4Yvy1u9z5NN27sU/MN9dQ5zzvt0gFjpWJmvaubdP7x8d1V06c
+         S5T7hNMEM9CuvFDe8Py4I6TWxlzxduaCzsu/oJWEECIpjMtPLj8lJ+PR0VPra+Nay3
+         iQ2bBzCmbnypA==
+Date:   Sat, 20 Feb 2021 04:39:45 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v15 0/5] TPM 2.0 trusted key rework
+Message-ID: <YDB2cdk9mGPaBpdB@kernel.org>
+References: <20210127190617.17564-1-James.Bottomley@HansenPartnership.com>
+ <YDACehLCy4f2sDzo@kernel.org>
+ <17a8229bf8ebc87ad02429643aeee78d803f34f2.camel@HansenPartnership.com>
 MIME-Version: 1.0
-In-Reply-To: <20210220013255.1083202-8-matthewgarrett@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17a8229bf8ebc87ad02429643aeee78d803f34f2.camel@HansenPartnership.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi--
+On Fri, Feb 19, 2021 at 10:35:00AM -0800, James Bottomley wrote:
+> On Fri, 2021-02-19 at 20:24 +0200, Jarkko Sakkinen wrote:
+> > On Wed, Jan 27, 2021 at 11:06:12AM -0800, James Bottomley wrote:
+> > > v15: fix 0day sign issue and add reviews and testeds
+> > > 
+> > > General cover letter minus policy bit:
+> > > 
+> > > This patch updates the trusted key code to export keys in the ASN.1
+> > > format used by current TPM key tools (openssl_tpm2_engine and
+> > > openconnect).  The current code will try to load keys containing
+> > > policy, but being unable to formulate the policy commands necessary
+> > > to
+> > > load them, the unseal will always fail unless the policy is
+> > > executed
+> > > in user space and a pre-formed policy session passed in.
+> > > 
+> > > The key format is designed to be compatible with our two openssl
+> > > engine implementations as well as with the format used by
+> > > openconnect.
+> > > I've added seal/unseal to my engine so I can use it for
+> > > interoperability testing and I'll later use this for sealed
+> > > symmetric
+> > > keys via engine:
+> > > 
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/
+> > > 
+> > > James
+> > > 
+> > > ---
+> > > 
+> > > James Bottomley (5):
+> > >   lib: add ASN.1 encoder
+> > >   oid_registry: Add TCG defined OIDS for TPM keys
+> > >   security: keys: trusted: fix TPM2 authorizations
+> > >   security: keys: trusted: use ASN.1 TPM2 key format for the blobs
+> > >   security: keys: trusted: Make sealed key properly interoperable
+> > 
+> > This is online again in the master branch. 
+> > 
+> > I've mangled the commits as follows:
+> > 
+> > 1. Fixed my emails to jarkko@kernel.org.
+> > 2. Adjusted the Makefile, i.e. separate lines for each entry.
+> > 3. Fixed the checkpatch issues.
+> > 
+> > I guess we could potentially re-consider this to rc2 pull? With all
+> > the mangling required, did not make sense to include this to the
+> > first pull.
+> 
+> The way I usually do this in SCSI, because stuff always happens
+> immediately before the merge window that causes some pull material to
+> be held over, is an early push, which you've done followed by a late
+> push on the Friday before the merge window closes of the rest of the
+> stuff.  This is an example from the last but one merge window:
+> 
+> https://lore.kernel.org/linux-scsi/fdee2336d2a7eada3749e07c3cc6ea682f8200b3.camel@HansenPartnership.com/
+> https://lore.kernel.org/linux-scsi/4affd2a9c347e5f1231485483bf852737ea08151.camel@HansenPartnership.com/
+> 
+> Linus seems to be happy with this pattern as long as it's well
+> explained.
+> 
+> James
 
-On 2/19/21 5:32 PM, Matthew Garrett wrote:
-> diff --git a/kernel/power/Kconfig b/kernel/power/Kconfig
-> index a7320f07689d..0279cc10f319 100644
-> --- a/kernel/power/Kconfig
-> +++ b/kernel/power/Kconfig
-> @@ -92,6 +92,21 @@ config HIBERNATION_SNAPSHOT_DEV
->  
->  	  If in doubt, say Y.
->  
-> +config SECURE_HIBERNATION
-> +       bool "Implement secure hibernation support"
-> +       depends on HIBERNATION && TCG_TPM
-> +       select KEYS
-> +       select TRUSTED_KEYS
-> +       select CRYPTO
-> +       select CRYPTO_SHA256
-> +       select CRYPTO_AES
-> +       select TCG_TPM_RESTRICT_PCR
-> +       help
-> +         Use a TPM-backed key to securely determine whether a hibernation
-> +	 image was written out by the kernel and has not been tampered with.
-> +	 This requires a TCG-compliant TPM2 device, which is present on most
-> +	 modern hardware.
+OK, thanks, I'll keep this in mind.
 
-Please follow coding-style for Kconfig files:
-
-from Documentation/process/coding-style.rst, section 10):
-
-  For all of the Kconfig* configuration files throughout the source tree,
-  the indentation is somewhat different.  Lines under a ``config`` definition
-  are indented with one tab, while help text is indented an additional two
-  spaces.
-
-
-Also, one feature should not be responsible for enabling other "subsystems,"
-such as KEYS and CRYPTO. They should instead be listed as dependencies.
-
-
--- 
-~Randy
-
+/Jarkko
