@@ -2,60 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 353C9320514
-	for <lists+keyrings@lfdr.de>; Sat, 20 Feb 2021 12:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0693209CD
+	for <lists+keyrings@lfdr.de>; Sun, 21 Feb 2021 12:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbhBTLWM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 20 Feb 2021 06:22:12 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:13620 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229476AbhBTLWL (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Sat, 20 Feb 2021 06:22:11 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Thu, 18 Feb 2021 08:50:31 -0800
-Received: from User (20.48.109.21) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Thu, 18 Feb 2021
- 08:50:18 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Re:ok
-Date:   Thu, 18 Feb 2021 16:50:30 +0000
+        id S229905AbhBULRe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 21 Feb 2021 06:17:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49954 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229903AbhBULRc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 21 Feb 2021 06:17:32 -0500
+Received: from smtp-8fa9.mail.infomaniak.ch (smtp-8fa9.mail.infomaniak.ch [IPv6:2001:1600:3:17::8fa9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785B1C061574
+        for <keyrings@vger.kernel.org>; Sun, 21 Feb 2021 03:16:46 -0800 (PST)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Dk2nm4X2pzMqFPR;
+        Sun, 21 Feb 2021 12:16:44 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Dk2nj6xrTzlh8T8;
+        Sun, 21 Feb 2021 12:16:41 +0100 (CET)
+Subject: Re: [PATCH v6 0/5] Enable root to update the blacklist keyring
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+References: <20210210120410.471693-1-mic@digikod.net>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+Message-ID: <132a6049-e91b-3922-cd3f-89574dd049fe@digikod.net>
+Date:   Sun, 21 Feb 2021 12:17:54 +0100
+User-Agent: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <19d04da4b0c845bf8ee96df543d89218@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+In-Reply-To: <20210210120410.471693-1-mic@digikod.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+David, Eric, what is the status of this patch series?
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
-
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
+On 10/02/2021 13:04, Mickaël Salaün wrote:
+> This new patch series is a rebase on David Howells's keys-misc branch.
+> This mainly fixes UEFI DBX and the new Eric Snowberg's feature to import
+> asymmetric keys to the blacklist keyring.
+> I successfully tested this patch series with the 186 entries from
+> https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin (184
+> binary hashes and 2 certificates).
+> 
+> The goal of these patches is to add a new configuration option to enable the
+> root user to load signed keys in the blacklist keyring.  This keyring is useful
+> to "untrust" certificates or files.  Enabling to safely update this keyring
+> without recompiling the kernel makes it more usable.
+> 
+> This can be applied on top of David Howells's keys-next branch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-next
+> Git commits can be found in https://github.com/l0kod/linux branch
+> dyn-auth-blacklist-v6 commit fcf976b74ffcd4551683e6b70dbf5fb102cf9906 .
+> 
+> Previous patch series:
+> https://lore.kernel.org/lkml/20210128191705.3568820-1-mic@digikod.net/
+> 
+> Regards,
+> 
+> Mickaël Salaün (5):
+>   tools/certs: Add print-cert-tbs-hash.sh
+>   certs: Check that builtin blacklist hashes are valid
+>   certs: Make blacklist_vet_description() more strict
+>   certs: Factor out the blacklist hash creation
+>   certs: Allow root user to append signed hashes to the blacklist
+>     keyring
+> 
+>  MAINTAINERS                                   |   2 +
+>  certs/.gitignore                              |   1 +
+>  certs/Kconfig                                 |  17 +-
+>  certs/Makefile                                |  17 +-
+>  certs/blacklist.c                             | 218 ++++++++++++++----
+>  crypto/asymmetric_keys/x509_public_key.c      |   3 +-
+>  include/keys/system_keyring.h                 |  14 +-
+>  scripts/check-blacklist-hashes.awk            |  37 +++
+>  .../platform_certs/keyring_handler.c          |  26 +--
+>  tools/certs/print-cert-tbs-hash.sh            |  91 ++++++++
+>  10 files changed, 346 insertions(+), 80 deletions(-)
+>  create mode 100755 scripts/check-blacklist-hashes.awk
+>  create mode 100755 tools/certs/print-cert-tbs-hash.sh
+> 
+> 
+> base-commit: 5bcd72358a7d7794ade0452ed12919b8c4d6ffc7
+> 
