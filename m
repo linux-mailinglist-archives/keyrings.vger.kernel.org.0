@@ -2,76 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB2A32500A
-	for <lists+keyrings@lfdr.de>; Thu, 25 Feb 2021 13:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D8E132515C
+	for <lists+keyrings@lfdr.de>; Thu, 25 Feb 2021 15:16:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233820AbhBYM5Z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 25 Feb 2021 07:57:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53072 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233087AbhBYM5Y (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 25 Feb 2021 07:57:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8DB3D64EC4;
-        Thu, 25 Feb 2021 12:56:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614257803;
-        bh=7w0ppqJfZpS/4Y+thDZTIjsZ8b0D17qBZlWVYwUGMfM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ira5MTPkyaYPrhXegW3NMyDVH566eXHhFudA1UsXRYlIgIabyblknyofFmYY/Gpj5
-         wIUaT+rKgHzJTl0PB5Rp1SqX05tfolXf/u0wmvKvpCwaFJ1d94QGD+GJ3CTCBAXIMu
-         muXC0OnWHO6WTFB5VKAmdGV43gTWK5CLDvGtmOIdR1vraK9Rhg8+zr6+zVihJ32tQ5
-         fhCE+wVV7/zpePeRJJOywSdmrZu/WTdk9IKou/qK/yaSgPvDpR7NO9iuS6pnDryISE
-         Zvzxv7rujIDZ5MVpiI4CP4/emS/ibSvFSpGP268uafuzapTy3F0xvErCKDED2sqLXs
-         XinhROH3sMO5A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
+        id S229596AbhBYONm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 25 Feb 2021 09:13:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:25958 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232495AbhBYONk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 25 Feb 2021 09:13:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614262333;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=YqccJEy9AMMCMPnTdlBzCqoK7M5ik4LsaWv1terBdfs=;
+        b=dewhnBpaAgBcfc8+YTpl0sqgfClrAO62UR+DyJCdppqtfH7+u2R7HCMf9Tc0c96t0n1X71
+        DnUKMWB79uzWQ89ifnZH8aydsdPHYijd20EbEbF73JIyc5TuHyurK2IqBl/2wMVGcbvuEc
+        9H2RH/ur9UDesxhdue2wQWEQXbGHYYY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-552-NeSnUbl3MyOVYDPN93fGAA-1; Thu, 25 Feb 2021 09:12:11 -0500
+X-MC-Unique: NeSnUbl3MyOVYDPN93fGAA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 640E6107ACE3;
+        Thu, 25 Feb 2021 14:12:10 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-119-68.rdu2.redhat.com [10.10.119.68])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DE3AE19C79;
+        Thu, 25 Feb 2021 14:12:08 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20210225125638.1841436-1-arnd@kernel.org>
+References: <20210225125638.1841436-1-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     dhowells@redhat.com, David Woodhouse <dwmw2@infradead.org>,
         Eric Snowberg <eric.snowberg@oracle.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] certs: select PKCS7_MESSAGE_PARSER if needed
-Date:   Thu, 25 Feb 2021 13:56:30 +0100
-Message-Id: <20210225125638.1841436-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+Subject: Re: [PATCH] certs: select PKCS7_MESSAGE_PARSER if needed
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <347809.1614262328.1@warthog.procyon.org.uk>
+Date:   Thu, 25 Feb 2021 14:12:08 +0000
+Message-ID: <347810.1614262328@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-When CONFIG_SYSTEM_BLACKLIST_KEYRING and CONFIG_INTEGRITY_PLATFORM_KEYRING
-are both enabled, the system blacklist tries calling the
-pkcs7_validate_trust() function, causing a link failure if the driver
-that defines it is disabled or a loadable module:
+> +	select PKCS7_MESSAGE_PARSER if INTEGRITY_PLATFORM_KEYRING
 
-ld.lld: error: undefined symbol: pkcs7_validate_trust
->>> referenced by blacklist.c
->>>               blacklist.o:(is_key_on_revocation_list) in archive certs/built-in.a
+I think a better way to do it is to add a separate config option for dealing
+with revocation certs, which is part of what I suggested here:
 
-Add a Kconfig 'select' statement for this specific case that force-
-enables the pkcs7 code as well.
+	https://lore.kernel.org/keyrings/3731128.1614163916@warthog.procyon.org.uk/
 
-Fixes: 30fdba3f40fd ("certs: Add EFI_CERT_X509_GUID support for dbx entries")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- certs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 379a6e198459..21192bb25c79 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -68,6 +68,7 @@ config SECONDARY_TRUSTED_KEYRING
- config SYSTEM_BLACKLIST_KEYRING
- 	bool "Provide system-wide ring of blacklisted keys"
- 	depends on KEYS
-+	select PKCS7_MESSAGE_PARSER if INTEGRITY_PLATFORM_KEYRING
- 	help
- 	  Provide a system keyring to which blacklisted keys can be added.
- 	  Keys in the keyring are considered entirely untrusted.  Keys in this
--- 
-2.29.2
+David
 
