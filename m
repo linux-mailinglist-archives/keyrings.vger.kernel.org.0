@@ -2,66 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4231325188
-	for <lists+keyrings@lfdr.de>; Thu, 25 Feb 2021 15:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F22D23251B5
+	for <lists+keyrings@lfdr.de>; Thu, 25 Feb 2021 15:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbhBYOd3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 25 Feb 2021 09:33:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56298 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232139AbhBYOd1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 25 Feb 2021 09:33:27 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 86F1464F06;
-        Thu, 25 Feb 2021 14:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614263566;
-        bh=pweKDcCfbwiPFpgl8eYLrSmwbhz1890DPEAEgI0kxXM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WaR3MzFHqW+EdsjzeI9f6EjF0XbqDCNLzBKDnmo5nM3B8P86LmTTK5OhSOanDdJzr
-         J9xVZwTEcxW6yOQ3ESG8tJAynaLAXeu8VS8YsqJ+bWtmrMVItP0Su6qM0xnzp3a9H0
-         RCs+0TdHYQPadlL6XTrTqQGAbs/7j+2gdnyo2/MP30HQnR59iolk6zglNS7ZRBjnwH
-         /2mNxWBZyf4ef1gJPmP1+88/YrXRUayVUFvSdqWxLCsZ59KmvQSN9VZ1gDarGrSm7E
-         /ZopQI5vVtJZL7SIrQWC2Zouaz7DQpHBlO875V2yqFIahV6Ga0i1hgK1lDnszX37QP
-         b+2xnRN0G8RpQ==
-Received: by mail-ot1-f49.google.com with SMTP id d9so5786356ote.12;
-        Thu, 25 Feb 2021 06:32:46 -0800 (PST)
-X-Gm-Message-State: AOAM532R6c1UZ12yahyQ7cKcfEZlD9ItveZFUdBF8jH2MOk7xvobHE95
-        pll837jg5V+lPNx9+rhMSd9PuSANuSUmju4AayI=
-X-Google-Smtp-Source: ABdhPJxtdthWZ8TUXpcqxTVamctwd2ch7Pb0DhXDRuDJl/T0ZFFF2LvSRKDa8UmjGVCGmOV4lrtoc0LOKBY8tmr4wE0=
-X-Received: by 2002:a9d:6b8b:: with SMTP id b11mr2518462otq.210.1614263565720;
- Thu, 25 Feb 2021 06:32:45 -0800 (PST)
+        id S229722AbhBYOpJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 25 Feb 2021 09:45:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57621 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232557AbhBYOpG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 25 Feb 2021 09:45:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614264217;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Bro6K1L61Sgcgif8LOhoB45JhdsJvdKQppn6eGahtEs=;
+        b=gPhWLdv3OI+OeIZMYrQ5ZRZbo+UvgVybX2TzP0laWpswV3wAlPQLZ0KDN0fehyFvOYeOa1
+        lBcUDJ52lYJX/FSdg0An0PWBMFBKZGLJqfdDOKVNm2wzklW+EZPBHU/K3L5gD5htJR8+2X
+        eJVQUoArcuMDEFRZRhuWSaFtYhZDbJE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-98-ueaSdkpkNOq9pf5i1BRPjg-1; Thu, 25 Feb 2021 09:43:35 -0500
+X-MC-Unique: ueaSdkpkNOq9pf5i1BRPjg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B3F2C86A066;
+        Thu, 25 Feb 2021 14:43:33 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-119-68.rdu2.redhat.com [10.10.119.68])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 68B6C60861;
+        Thu, 25 Feb 2021 14:43:32 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <B7E35D95-1A22-4277-B41B-B3FCC2E93743@oracle.com>
+References: <B7E35D95-1A22-4277-B41B-B3FCC2E93743@oracle.com> <F6980CA4-737D-416A-BBE3-390CEBA8B192@oracle.com> <20210217165058.1336155-1-eric.snowberg@oracle.com> <3524595.1614124044@warthog.procyon.org.uk> <3731128.1614163916@warthog.procyon.org.uk>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
+        =?us-ascii?Q?=3D=3Futf-8=3FQ=3FMicka=3DC3=3DABl?=
+         =?us-ascii?Q?=5FSala=3DC3=3DBCn=3F=3D?= <mic@linux.microsoft.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cert: Add kconfig dependency for validate_trust
 MIME-Version: 1.0
-References: <20210225125638.1841436-1-arnd@kernel.org> <347810.1614262328@warthog.procyon.org.uk>
-In-Reply-To: <347810.1614262328@warthog.procyon.org.uk>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Thu, 25 Feb 2021 15:32:29 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1dTn--2_3d6HXD0Dx13av8dJLB57790SQ2L0Ag0b_xaQ@mail.gmail.com>
-Message-ID: <CAK8P3a1dTn--2_3d6HXD0Dx13av8dJLB57790SQ2L0Ag0b_xaQ@mail.gmail.com>
-Subject: Re: [PATCH] certs: select PKCS7_MESSAGE_PARSER if needed
-To:     David Howells <dhowells@redhat.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, keyrings@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date:   Thu, 25 Feb 2021 14:43:31 +0000
+Message-ID: <506021.1614264211@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Feb 25, 2021 at 3:12 PM David Howells <dhowells@redhat.com> wrote:
->
-> Arnd Bergmann <arnd@kernel.org> wrote:
->
-> > +     select PKCS7_MESSAGE_PARSER if INTEGRITY_PLATFORM_KEYRING
->
-> I think a better way to do it is to add a separate config option for dealing
-> with revocation certs, which is part of what I suggested here:
->
->         https://lore.kernel.org/keyrings/3731128.1614163916@warthog.procyon.org.uk/
+Eric Snowberg <eric.snowberg@oracle.com> wrote:
 
-Ok, sounds good. Can this make it into v5.12 though, or do we need an
-intermediate
-fix to avoid the build failure?
+> > I've added an extra config option to turn on SYSTEM_REVOCATION_LIST sup=
+port.
+>=20
+> I believe this is ok.  However currently, whenever the kernel finds eithe=
+r a
+> EFI_CERT_SHA256_GUID or EFI_CERT_X509_SHA256_GUID entry in the dbx, it lo=
+ads
+> it into the blacklist keyring.  Then anytime signature validation takes
+> place, these entries are referenced.  If there is a match, the signature
+> check fails.  Now with the inclusion of EFI_CERT_X509_GUID, I question why
+> we want to enable it thru a Kconfig option, when we don=E2=80=99t for the=
+ other two
+> types.
 
-        Arnd
+But we do.
+
+mark_hash_blacklisted(), is_hash_blacklisted() and is_binary_blacklisted() =
+do
+nothing if CONFIG_SYSTEM_BLACKLIST_KEYRING=3Dn.
+
+David
+
