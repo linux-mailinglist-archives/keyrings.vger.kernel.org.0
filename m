@@ -2,80 +2,157 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED40432717C
-	for <lists+keyrings@lfdr.de>; Sun, 28 Feb 2021 09:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 238B9327F1F
+	for <lists+keyrings@lfdr.de>; Mon,  1 Mar 2021 14:13:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230299AbhB1H7r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 28 Feb 2021 02:59:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44544 "EHLO
+        id S235466AbhCANMj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 1 Mar 2021 08:12:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbhB1H7q (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 28 Feb 2021 02:59:46 -0500
-Received: from cavan.codon.org.uk (cavan.codon.org.uk [IPv6:2a00:1098:84:22e::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18070C06174A;
-        Sat, 27 Feb 2021 23:59:05 -0800 (PST)
-Received: by cavan.codon.org.uk (Postfix, from userid 1000)
-        id 1B1A540A0A; Sun, 28 Feb 2021 07:59:02 +0000 (UTC)
-Date:   Sun, 28 Feb 2021 07:59:02 +0000
-From:   Matthew Garrett <mjg59@srcf.ucam.org>
-To:     James Bottomley <jejb@linux.ibm.com>
-Cc:     Matthew Garrett <matthewgarrett@google.com>,
-        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-pm@vger.kernel.org, keyrings@vger.kernel.org,
-        zohar@linux.ibm.com, jarkko@kernel.org, corbet@lwn.net,
-        rjw@rjwysocki.net, Matthew Garrett <mjg59@google.com>
-Subject: Re: [PATCH 2/9] tpm: Allow PCR 23 to be restricted to kernel-only use
-Message-ID: <20210228075902.GA9183@codon.org.uk>
-References: <20210220013255.1083202-1-matthewgarrett@google.com>
- <20210220013255.1083202-3-matthewgarrett@google.com>
- <b0c4980c8fad14115daa3040979c52f07f7fbe2c.camel@linux.ibm.com>
+        with ESMTP id S235460AbhCANMd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Mar 2021 08:12:33 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D81C06178A
+        for <keyrings@vger.kernel.org>; Mon,  1 Mar 2021 05:11:53 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id k22so9839007pll.6
+        for <keyrings@vger.kernel.org>; Mon, 01 Mar 2021 05:11:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=b3ExXcrTKtaMKYTLWvaQqay72x46/EzChsHCCF6qzCU=;
+        b=b7sA/vRm3WrAy3bA3s72thm96GXP3C0iIoAmX4jN9pYjQl0r5bYZemIFYL1D7mdLPO
+         k05WugUa2MpwiovRwKnXYw4IXWJmkcQtuwHQ/n9CHO9ejxb6r6s7bbP7QUQESrItpO6Y
+         oyASWNdvVq3nIil5HSbzF+yQNjV7M2E6+Zv6V9Do8DL85lR7GZjBGXJHSj4kMR7XP30W
+         6ZqC3zCcKih4QsFHFmeZhdxJPKCHXgVP2uYCmSsqmlCaof0V+65bGCJI0/jFIuztXHeX
+         1z5ZoImHLP572W4obDz3LssDrMtgDektzGkLh7qZzjB5sfi0F8K8IF2pz3T7yqOWX9YJ
+         YkQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=b3ExXcrTKtaMKYTLWvaQqay72x46/EzChsHCCF6qzCU=;
+        b=Fp5T9LP4d1w06FJ/K+q/QwqTN0i379+8EddrbceZLYWA0W3yEk9wf/pp1WIXvW2B3r
+         EKS/C0YAh4c88BGvokySK1zbhkSgTv1GxA8ng5eHciRjJW1NZ5H08XSIyU2m37cEgg1O
+         hrbouR8QljxsjBL7bM9hkFYmXY7VSOAxZ4T+sg/Xwzgr4O7zvRGFr31XQ2uSXcPcpLuA
+         RGT7UZPazHQUK/NS941o54wfkstWs4BL0kTkSDpbGg2iz0qstCCF7nftB20C7yT5UljG
+         ofUIS5wi+/toyz3a6KbBMBA978tRzMi1LggYH3SSwim2MTS7r3zCIZYUi+fqhheVK5qN
+         8Hxw==
+X-Gm-Message-State: AOAM533Snz8fiakVy0Fv/clGDNz4SmTNIIz4N15+dS6TF2kB5C1COH7Q
+        jOp4BLjqcQh2CAOHyoXQ8KKd6A==
+X-Google-Smtp-Source: ABdhPJzEwXoFW5aHXjckvLnyESk7reRavQszrdC8mYNQ9CxHGgFAhrl6FUGikFWhCrRy8h0bxbZLBg==
+X-Received: by 2002:a17:90a:1a59:: with SMTP id 25mr16193091pjl.54.1614604312435;
+        Mon, 01 Mar 2021 05:11:52 -0800 (PST)
+Received: from localhost.localdomain ([110.226.35.200])
+        by smtp.gmail.com with ESMTPSA id b3sm13964523pjg.41.2021.03.01.05.11.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Mar 2021 05:11:51 -0800 (PST)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
+        jejb@linux.ibm.com
+Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
+        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
+        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
+        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
+        erpalmer@us.ibm.com, a.fatoum@pengutronix.de,
+        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        op-tee@lists.trustedfirmware.org,
+        Sumit Garg <sumit.garg@linaro.org>
+Subject: [PATCH v9 0/4] Introduce TEE based Trusted Keys support
+Date:   Mon,  1 Mar 2021 18:41:23 +0530
+Message-Id: <20210301131127.793707-1-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0c4980c8fad14115daa3040979c52f07f7fbe2c.camel@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Feb 24, 2021 at 10:00:53AM -0800, James Bottomley wrote:
-> On Sat, 2021-02-20 at 01:32 +0000, Matthew Garrett wrote:
-> > Under certain circumstances it might be desirable to enable the
-> > creation of TPM-backed secrets that are only accessible to the
-> > kernel. In an ideal world this could be achieved by using TPM
-> > localities, but these don't appear to be available on consumer
-> > systems.
-> 
-> I don't understand this ... the localities seem to work fine on all the
-> systems I have ... is this some embedded thing?
+Add support for TEE based trusted keys where TEE provides the functionality
+to seal and unseal trusted keys using hardware unique key. Also, this is
+an alternative in case platform doesn't possess a TPM device.
 
-I haven't made it work on an HP Z440 or a Lenovo P520. So now I'm
-wondering whether having chipsets with TXT support (even if it's turned
-off) confuse this point. Sigh. I'd really prefer to use localities than
-a PCR, so if it works on client platforms I'd be inclined to say we'll
-do a self-test and go for that, and workstation vendors can just
-recommend their customers use UPSes or something.
+This patch-set has been tested with OP-TEE based early TA which is already
+merged in upstream [1].
 
-> >  An alternative is to simply block userland from modifying one of the
-> > resettable PCRs, leaving it available to the kernel. If the kernel
-> > ensures that no userland can access the TPM while it is carrying out
-> > work, it can reset PCR 23, extend it to an arbitrary value, create or
-> > load a secret, and then reset the PCR again. Even if userland somehow
-> > obtains the sealed material, it will be unable to unseal it since PCR
-> > 23 will never be in the appropriate state.
-> 
-> This seems a bit arbitrary: You're removing this PCR from user space
-> accessibility, but PCR 23 is defined as "Application Support" how can
-> we be sure no application will actually want to use it (and then fail)?
+[1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
 
-Absolutely no way of guaranteeing that, and enabling this option is
-certainly an ABI break.
+Changes in v9:
+1. Rebased to latest tpmdd/master.
+2. Defined pr_fmt() and removed redundant tags.
+3. Patch #2: incorporated misc. comments.
+4. Patch #3: incorporated doc changes from Elaine and misc. comments
+   from Randy.
+5. Patch #4: reverted to separate maintainer entry as per request from
+   Jarkko.
+6. Added Jarkko's Tested-by: tag on patch #2.
 
-> Since PCRs are very scarce, why not use a NV index instead.  They're
-> still a bounded resource, but most TPMs have far more of them than they
-> do PCRs, and the address space is much bigger so picking a nice
-> arbitrary 24 bit value reduces the chance of collisions.
+Changes in v8:
+1. Added static calls support instead of indirect calls.
+2. Documented trusted keys source module parameter.
+3. Refined patch #1 commit message discription.
+4. Addressed misc. comments on patch #2.
+5. Added myself as Trusted Keys co-maintainer instead.
+6. Rebased to latest tpmdd master.
 
-How many write cycles do we expect the NV to survive? But I'll find a
-client system with a TPM and play with locality support there - maybe we
-can just avoid this problem anyway.
+Changes in v7:
+1. Added a trusted.source module parameter in order to enforce user's
+   choice in case a particular platform posses both TPM and TEE.
+2. Refine commit description for patch #1.
+
+Changes in v6:
+1. Revert back to dynamic detection of trust source.
+2. Drop author mention from trusted_core.c and trusted_tpm1.c files.
+3. Rebased to latest tpmdd/master.
+
+Changes in v5:
+1. Drop dynamic detection of trust source and use compile time flags
+   instead.
+2. Rename trusted_common.c -> trusted_core.c.
+3. Rename callback: cleanup() -> exit().
+4. Drop "tk" acronym.
+5. Other misc. comments.
+6. Added review tags for patch #3 and #4.
+
+Changes in v4:
+1. Pushed independent TEE features separately:
+  - Part of recent TEE PR: https://lkml.org/lkml/2020/5/4/1062
+2. Updated trusted-encrypted doc with TEE as a new trust source.
+3. Rebased onto latest tpmdd/master.
+
+Changes in v3:
+1. Update patch #2 to support registration of multiple kernel pages.
+2. Incoporate dependency patch #4 in this patch-set:
+   https://patchwork.kernel.org/patch/11091435/
+
+Changes in v2:
+1. Add reviewed-by tags for patch #1 and #2.
+2. Incorporate comments from Jens for patch #3.
+3. Switch to use generic trusted keys framework.
+
+Sumit Garg (4):
+  KEYS: trusted: Add generic trusted keys framework
+  KEYS: trusted: Introduce TEE based Trusted Keys
+  doc: trusted-encrypted: updates with TEE as a new trust source
+  MAINTAINERS: Add entry for TEE based Trusted Keys
+
+ .../admin-guide/kernel-parameters.txt         |  12 +
+ .../security/keys/trusted-encrypted.rst       | 171 ++++++--
+ MAINTAINERS                                   |   8 +
+ include/keys/trusted-type.h                   |  53 +++
+ include/keys/trusted_tee.h                    |  16 +
+ include/keys/trusted_tpm.h                    |  29 +-
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     | 358 +++++++++++++++++
+ security/keys/trusted-keys/trusted_tee.c      | 317 +++++++++++++++
+ security/keys/trusted-keys/trusted_tpm1.c     | 366 ++++--------------
+ 10 files changed, 981 insertions(+), 351 deletions(-)
+ create mode 100644 include/keys/trusted_tee.h
+ create mode 100644 security/keys/trusted-keys/trusted_core.c
+ create mode 100644 security/keys/trusted-keys/trusted_tee.c
+
+-- 
+2.25.1
+
