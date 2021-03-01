@@ -2,157 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 238B9327F1F
-	for <lists+keyrings@lfdr.de>; Mon,  1 Mar 2021 14:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD02327F19
+	for <lists+keyrings@lfdr.de>; Mon,  1 Mar 2021 14:13:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235466AbhCANMj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 1 Mar 2021 08:12:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbhCANMd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Mar 2021 08:12:33 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D81C06178A
-        for <keyrings@vger.kernel.org>; Mon,  1 Mar 2021 05:11:53 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id k22so9839007pll.6
-        for <keyrings@vger.kernel.org>; Mon, 01 Mar 2021 05:11:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=b3ExXcrTKtaMKYTLWvaQqay72x46/EzChsHCCF6qzCU=;
-        b=b7sA/vRm3WrAy3bA3s72thm96GXP3C0iIoAmX4jN9pYjQl0r5bYZemIFYL1D7mdLPO
-         k05WugUa2MpwiovRwKnXYw4IXWJmkcQtuwHQ/n9CHO9ejxb6r6s7bbP7QUQESrItpO6Y
-         oyASWNdvVq3nIil5HSbzF+yQNjV7M2E6+Zv6V9Do8DL85lR7GZjBGXJHSj4kMR7XP30W
-         6ZqC3zCcKih4QsFHFmeZhdxJPKCHXgVP2uYCmSsqmlCaof0V+65bGCJI0/jFIuztXHeX
-         1z5ZoImHLP572W4obDz3LssDrMtgDektzGkLh7qZzjB5sfi0F8K8IF2pz3T7yqOWX9YJ
-         YkQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=b3ExXcrTKtaMKYTLWvaQqay72x46/EzChsHCCF6qzCU=;
-        b=Fp5T9LP4d1w06FJ/K+q/QwqTN0i379+8EddrbceZLYWA0W3yEk9wf/pp1WIXvW2B3r
-         EKS/C0YAh4c88BGvokySK1zbhkSgTv1GxA8ng5eHciRjJW1NZ5H08XSIyU2m37cEgg1O
-         hrbouR8QljxsjBL7bM9hkFYmXY7VSOAxZ4T+sg/Xwzgr4O7zvRGFr31XQ2uSXcPcpLuA
-         RGT7UZPazHQUK/NS941o54wfkstWs4BL0kTkSDpbGg2iz0qstCCF7nftB20C7yT5UljG
-         ofUIS5wi+/toyz3a6KbBMBA978tRzMi1LggYH3SSwim2MTS7r3zCIZYUi+fqhheVK5qN
-         8Hxw==
-X-Gm-Message-State: AOAM533Snz8fiakVy0Fv/clGDNz4SmTNIIz4N15+dS6TF2kB5C1COH7Q
-        jOp4BLjqcQh2CAOHyoXQ8KKd6A==
-X-Google-Smtp-Source: ABdhPJzEwXoFW5aHXjckvLnyESk7reRavQszrdC8mYNQ9CxHGgFAhrl6FUGikFWhCrRy8h0bxbZLBg==
-X-Received: by 2002:a17:90a:1a59:: with SMTP id 25mr16193091pjl.54.1614604312435;
-        Mon, 01 Mar 2021 05:11:52 -0800 (PST)
-Received: from localhost.localdomain ([110.226.35.200])
-        by smtp.gmail.com with ESMTPSA id b3sm13964523pjg.41.2021.03.01.05.11.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Mar 2021 05:11:51 -0800 (PST)
-From:   Sumit Garg <sumit.garg@linaro.org>
-To:     jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com,
-        jejb@linux.ibm.com
-Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
-        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
-        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
-        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
-        erpalmer@us.ibm.com, a.fatoum@pengutronix.de,
-        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        op-tee@lists.trustedfirmware.org,
-        Sumit Garg <sumit.garg@linaro.org>
-Subject: [PATCH v9 0/4] Introduce TEE based Trusted Keys support
-Date:   Mon,  1 Mar 2021 18:41:23 +0530
-Message-Id: <20210301131127.793707-1-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+        id S235418AbhCANMa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 1 Mar 2021 08:12:30 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:1620 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235381AbhCANM2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Mar 2021 08:12:28 -0500
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 121D47DD154971;
+        Mon, 1 Mar 2021 08:11:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=tJ9ufPL3b03q4eIjrN7DuEgd4aWZDYb3QhchfQ4FRbI=;
+ b=j8Y2IacpCeG31mBIQisurejZbgnX9kjSdByPP/jdWaxfRURSVQmyv+2d+E+ShnbJOM1z
+ ODjptmUvTr34UxjNOtJt5eBCh8ksvv1fJ7thC1R9cdbq9vsvPigIjuIn/1zueRNZM/XH
+ s5fntKr1877MaedAD+IKBcgPE7dq6rnAvRVoMBtKKKHuKiOyjOqyX0RqiHIu1KwVUNcG
+ NxGn0wvA9Lvk7Y6GcUTszd19HhqjO1n4bvOaaGHQp6yxE1U0VE9PtClV9XCeK836rMcD
+ 9BkNGa7e8AyK7W8R9aPxrqYsIu4g7a2GyEQofsC/N5HkxQu6jkd30ppTg2RIxyIpNL3u dA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3710tk0a9w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 01 Mar 2021 08:11:34 -0500
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 121D4RKT161377;
+        Mon, 1 Mar 2021 08:11:34 -0500
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3710tk0a8v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 01 Mar 2021 08:11:34 -0500
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+        by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 121D7nsY002485;
+        Mon, 1 Mar 2021 13:11:31 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma02fra.de.ibm.com with ESMTP id 36yj530w1k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 01 Mar 2021 13:11:31 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 121DBSGG30343558
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 1 Mar 2021 13:11:28 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BDA174C04E;
+        Mon,  1 Mar 2021 13:11:28 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id ADCCE4C046;
+        Mon,  1 Mar 2021 13:11:25 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.211.103.165])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon,  1 Mar 2021 13:11:25 +0000 (GMT)
+Message-ID: <8618fdb7107ec6ec1aeb4e37faf82421050bdf91.camel@linux.ibm.com>
+Subject: Re: [PATCH v9 9/9] certs: Add support for using elliptic curve keys
+ for signing modules
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     yumeng <yumeng18@huawei.com>,
+        Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        davem@davemloft.net, herbert@gondor.apana.org.au,
+        dhowells@redhat.com
+Cc:     linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
+        linux-integrity@vger.kernel.org,
+        Stefan Berger <stefanb@linux.ibm.com>
+Date:   Mon, 01 Mar 2021 08:11:24 -0500
+In-Reply-To: <ce098224-893c-fba8-5995-a7bac90f82c2@huawei.com>
+References: <20210225160802.2478700-1-stefanb@linux.vnet.ibm.com>
+         <20210225160802.2478700-10-stefanb@linux.vnet.ibm.com>
+         <ce098224-893c-fba8-5995-a7bac90f82c2@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-01_08:2021-03-01,2021-03-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103010108
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add support for TEE based trusted keys where TEE provides the functionality
-to seal and unseal trusted keys using hardware unique key. Also, this is
-an alternative in case platform doesn't possess a TPM device.
+On Sat, 2021-02-27 at 11:35 +0800, yumeng wrote:
+> 在 2021/2/26 0:08, Stefan Berger 写道:
+> > From: Stefan Berger <stefanb@linux.ibm.com>
+> > 
+> 
+> > diff --git a/certs/Makefile b/certs/Makefile
+> > index 3fe6b73786fa..c487d7021c54 100644
+> > --- a/certs/Makefile
+> > +++ b/certs/Makefile
+> > @@ -69,6 +69,18 @@ else
+> >   SIGNER = -signkey $(obj)/signing_key.key
+> >   endif # CONFIG_IMA_APPRAISE_MODSIG
+> >   
+> 
+> Is there anything wrong in this patch?
+> I can't apply it when I use 'git am '.
+> errors like below:
+> 
+> error: certs/Kconfig: does not match index
+> error: patch failed: certs/Makefile:69
+> error: certs/Makefile: patch does not apply
+> 
+> Thanks
 
-This patch-set has been tested with OP-TEE based early TA which is already
-merged in upstream [1].
+Nothing wrong with the patch, just a dependency.  From the Change log:
+   - This patch builds on top Nayna's series for 'kernel build support
+   for loading the kernel module signing key'.
+   - https://lkml.org/lkml/2021/2/18/856
 
-[1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
+thanks,
 
-Changes in v9:
-1. Rebased to latest tpmdd/master.
-2. Defined pr_fmt() and removed redundant tags.
-3. Patch #2: incorporated misc. comments.
-4. Patch #3: incorporated doc changes from Elaine and misc. comments
-   from Randy.
-5. Patch #4: reverted to separate maintainer entry as per request from
-   Jarkko.
-6. Added Jarkko's Tested-by: tag on patch #2.
+Mimi
 
-Changes in v8:
-1. Added static calls support instead of indirect calls.
-2. Documented trusted keys source module parameter.
-3. Refined patch #1 commit message discription.
-4. Addressed misc. comments on patch #2.
-5. Added myself as Trusted Keys co-maintainer instead.
-6. Rebased to latest tpmdd master.
-
-Changes in v7:
-1. Added a trusted.source module parameter in order to enforce user's
-   choice in case a particular platform posses both TPM and TEE.
-2. Refine commit description for patch #1.
-
-Changes in v6:
-1. Revert back to dynamic detection of trust source.
-2. Drop author mention from trusted_core.c and trusted_tpm1.c files.
-3. Rebased to latest tpmdd/master.
-
-Changes in v5:
-1. Drop dynamic detection of trust source and use compile time flags
-   instead.
-2. Rename trusted_common.c -> trusted_core.c.
-3. Rename callback: cleanup() -> exit().
-4. Drop "tk" acronym.
-5. Other misc. comments.
-6. Added review tags for patch #3 and #4.
-
-Changes in v4:
-1. Pushed independent TEE features separately:
-  - Part of recent TEE PR: https://lkml.org/lkml/2020/5/4/1062
-2. Updated trusted-encrypted doc with TEE as a new trust source.
-3. Rebased onto latest tpmdd/master.
-
-Changes in v3:
-1. Update patch #2 to support registration of multiple kernel pages.
-2. Incoporate dependency patch #4 in this patch-set:
-   https://patchwork.kernel.org/patch/11091435/
-
-Changes in v2:
-1. Add reviewed-by tags for patch #1 and #2.
-2. Incorporate comments from Jens for patch #3.
-3. Switch to use generic trusted keys framework.
-
-Sumit Garg (4):
-  KEYS: trusted: Add generic trusted keys framework
-  KEYS: trusted: Introduce TEE based Trusted Keys
-  doc: trusted-encrypted: updates with TEE as a new trust source
-  MAINTAINERS: Add entry for TEE based Trusted Keys
-
- .../admin-guide/kernel-parameters.txt         |  12 +
- .../security/keys/trusted-encrypted.rst       | 171 ++++++--
- MAINTAINERS                                   |   8 +
- include/keys/trusted-type.h                   |  53 +++
- include/keys/trusted_tee.h                    |  16 +
- include/keys/trusted_tpm.h                    |  29 +-
- security/keys/trusted-keys/Makefile           |   2 +
- security/keys/trusted-keys/trusted_core.c     | 358 +++++++++++++++++
- security/keys/trusted-keys/trusted_tee.c      | 317 +++++++++++++++
- security/keys/trusted-keys/trusted_tpm1.c     | 366 ++++--------------
- 10 files changed, 981 insertions(+), 351 deletions(-)
- create mode 100644 include/keys/trusted_tee.h
- create mode 100644 security/keys/trusted-keys/trusted_core.c
- create mode 100644 security/keys/trusted-keys/trusted_tee.c
-
--- 
-2.25.1
 
