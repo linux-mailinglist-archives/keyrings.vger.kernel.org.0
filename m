@@ -2,133 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E263D32D4C0
-	for <lists+keyrings@lfdr.de>; Thu,  4 Mar 2021 15:01:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4069332D69F
+	for <lists+keyrings@lfdr.de>; Thu,  4 Mar 2021 16:29:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232488AbhCDOAv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Mar 2021 09:00:51 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:54618 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S232591AbhCDOAb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Mar 2021 09:00:31 -0500
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 124DcIPr170802;
-        Thu, 4 Mar 2021 08:59:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=AR0H8gw8Jtn8ZcHHNn5tbGNJ1AS3AbzB1oQc+pxjvo0=;
- b=EqcZb7u8cIbQ2KuK2xSkb3wW+sqm3m0vdgQQmd3EbAOzLEWmJmnIHilCJwnFAR56ltlI
- XEKQgVzXPfK0u9mbYKUfyzIQ+Fp6cF7NN8/I3jZ3PBK1l8X575SvdiiETJqrSUFJvzmd
- Awidpml/HJy9bEhOwGkOOJMRZ0nCDSP6pRNg/Gdg+OQawn8p6YqfJopSXUi7ZcMf3yOo
- Raz/FHejtDXE72uAZ7UwhlcHk0B+PA/W2kiJGz0s2/om7++5aUs3jvLsg1l2GVCFd/LL
- xpPw6fdZmCjxSIqPH/AwHMnWBilZfZBO3WL4JvUR9tFRqygBu6tYSU1vlnPCWhd1Niko nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 372yd9au0f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Mar 2021 08:59:38 -0500
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 124DcMcR171101;
-        Thu, 4 Mar 2021 08:59:37 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 372yd9atyt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Mar 2021 08:59:37 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 124DwHEk031000;
-        Thu, 4 Mar 2021 13:59:37 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma03dal.us.ibm.com with ESMTP id 3720r0pjwr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 Mar 2021 13:59:37 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 124DxaK87996006
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 4 Mar 2021 13:59:36 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4647AAE062;
-        Thu,  4 Mar 2021 13:59:36 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 35E89AE05C;
-        Thu,  4 Mar 2021 13:59:36 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu,  4 Mar 2021 13:59:36 +0000 (GMT)
-Subject: Re: [PATCH v9 6/9] crypto: Add NIST P384 curve parameters
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        davem@davemloft.net, dhowells@redhat.com, zohar@linux.ibm.com,
-        linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
-        linux-integrity@vger.kernel.org,
-        Saulo Alessandre <saulo.alessandre@tse.jus.br>
-References: <20210225160802.2478700-1-stefanb@linux.vnet.ibm.com>
- <20210225160802.2478700-7-stefanb@linux.vnet.ibm.com>
- <20210304052809.GB25972@gondor.apana.org.au>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <37e5c232-11e8-0533-ab3e-676829091d19@linux.ibm.com>
-Date:   Thu, 4 Mar 2021 08:59:36 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S234727AbhCDP1R (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Mar 2021 10:27:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:56500 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233885AbhCDP1H (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Mar 2021 10:27:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614871542;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bRJEiSefcrHEzMDzADLTwg9cPsOXIHiUbrP1luK3dts=;
+        b=HPE3d2u39m1WD2lZusSc3Plf0wdnlNMWKZGvCK2uFq3w3FfWZMHeZvhAIUKTLN3WpIAh0y
+        PgGITJBd/eNrUzFvGN/oREKdw2BIA/ckQNYvR20dk32ftgJ8kXO9c0CKcXxZouIpNt8VQJ
+        2/r4tYbuFFbboRtXgi2cbFRU0Zr8MiQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-154-5CdpKfNZM72oNq1BKhT6dw-1; Thu, 04 Mar 2021 10:25:40 -0500
+X-MC-Unique: 5CdpKfNZM72oNq1BKhT6dw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DC199A0BDE;
+        Thu,  4 Mar 2021 15:25:38 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-112-66.rdu2.redhat.com [10.10.112.66])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C65F660C0F;
+        Thu,  4 Mar 2021 15:25:37 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <10ECA885-8F0B-4BB1-8CD9-B3D1993E20E0@oracle.com>
+References: <10ECA885-8F0B-4BB1-8CD9-B3D1993E20E0@oracle.com> <20210303034418.106762-1-eric.snowberg@oracle.com> <2033457.1614763481@warthog.procyon.org.uk>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, Randy Dunlap <rdunlap@infradead.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] certs: Fix wrong kconfig option used for x509_revocation_list
 MIME-Version: 1.0
-In-Reply-To: <20210304052809.GB25972@gondor.apana.org.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-04_03:2021-03-03,2021-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 spamscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103040063
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3021688.1614871536.1@warthog.procyon.org.uk>
+Date:   Thu, 04 Mar 2021 15:25:36 +0000
+Message-ID: <3021689.1614871536@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/4/21 12:28 AM, Herbert Xu wrote:
-> On Thu, Feb 25, 2021 at 11:07:59AM -0500, Stefan Berger wrote:
->> From: Saulo Alessandre <saulo.alessandre@tse.jus.br>
->>
->> * crypto/ecc_curve_defs.h
->>    - add nist_p384 params
->>
->> * include/crypto/ecdh.h
->>    - add ECC_CURVE_NIST_P384
->>
->> Signed-off-by: Saulo Alessandre <saulo.alessandre@tse.jus.br>
->> Tested-by: Stefan Berger <stefanb@linux.ibm.com>
->> ---
->>   crypto/ecc_curve_defs.h | 32 ++++++++++++++++++++++++++++++++
->>   include/crypto/ecdh.h   |  1 +
->>   2 files changed, 33 insertions(+)
-> Can you reorder the patches so that the crypto patches come first
-> and then I can apply them?
+Eric Snowberg <eric.snowberg@oracle.com> wrote:
 
-Yes, sounds good.
+> Since S_R_K is a string, I could not get that to work.
 
-Are you going to take the other patches as well, except for maybe 9/9, 
-which depends on Nayan's patch series. Mimi suggested to me to ask you 
-whether you could create a topic branch where we can apply other patches 
-to, such as Nayna's?
+Okay.
 
-The NIST P384 patch temporarily introduces this warning, which goes away 
-when the immediately following patch (current 7/9) is applied. Is this 
-an issue or should I squash Saulo's patches or put the top hunk from 7/9 
-into 6/9?
+> >> + hostprogs-always-$(CONFIG_SYSTEM_BLACKLIST_KEYRING)   += extract-cert
 
+I think this should then refer to CONFIG_SYSTEM_REVOCATION_LIST.
 
-In file included from crypto/ecc.c:38:
-crypto/ecc_curve_defs.h:76:25: warning: ?nist_p384? defined but not used 
-[-Wunused-variable]
-    76 | static struct ecc_curve nist_p384 = {
-       |                         ^~~~~~~~~
-
-    Stefan
-
-
->
-> Thanks,
-
+David
 
