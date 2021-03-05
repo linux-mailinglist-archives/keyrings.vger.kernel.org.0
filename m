@@ -2,113 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCBD32F282
-	for <lists+keyrings@lfdr.de>; Fri,  5 Mar 2021 19:28:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 325F032F435
+	for <lists+keyrings@lfdr.de>; Fri,  5 Mar 2021 20:47:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbhCES17 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Mar 2021 13:27:59 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49574 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230035AbhCES1a (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Mar 2021 13:27:30 -0500
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 125I9AYx075497;
-        Fri, 5 Mar 2021 13:27:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=VmxNsh0XuesPJtzAnS19czukR9HyMk0qR6Q685xZu74=;
- b=edgko5t8u5px0TkS7wtqbjUWSEFAr02jTmJ1wc1BlW9m8+43mEj80qde0obNzlDDerB+
- ZuKiCtO9FSnAGmewQYrWK8YD4XGoipj6zeh6eKPhYcibX0gTDRSa7YAekuiiAHvsrh76
- CEFSD2yF3+BCu+2e+RJiTKCKv8QPNfezZBaxD+KimjQZbzHS31FQ5vpPXoCJYGd2QpJs
- qSTbHcBzgcQp2QB/s+tw362UQMS4TTPMvawFXKmMMvtFFfrKpZTao/conVKkZu23ViY+
- 7L8utfVSUzmyTsydwDNlhGQxHyiyoMtzUTBu3GbrgrvDRGSDFg1mt4XKNSxzYTpWD2/S 4g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 373rhwjckr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 13:27:20 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 125I9Q0x077349;
-        Fri, 5 Mar 2021 13:27:20 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 373rhwjcka-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 13:27:19 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 125IGtPU023489;
-        Fri, 5 Mar 2021 18:27:19 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma04dal.us.ibm.com with ESMTP id 36ydqa5mrs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 18:27:19 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 125IRId711469296
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 5 Mar 2021 18:27:18 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 44255112066;
-        Fri,  5 Mar 2021 18:27:18 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2FFEB112065;
-        Fri,  5 Mar 2021 18:27:18 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Fri,  5 Mar 2021 18:27:18 +0000 (GMT)
-Subject: Re: [PATCH v10 4/9] ecdsa: Register NIST P384 and extend test suite
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        id S229805AbhCETrS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Mar 2021 14:47:18 -0500
+Received: from vmicros1.altlinux.org ([194.107.17.57]:51486 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229719AbhCETqm (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Mar 2021 14:46:42 -0500
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 5F25A72C8B8;
+        Fri,  5 Mar 2021 22:46:40 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+        by imap.altlinux.org (Postfix) with ESMTPSA id 490AE4A4737;
+        Fri,  5 Mar 2021 22:46:40 +0300 (MSK)
+Date:   Fri, 5 Mar 2021 22:46:40 +0300
+From:   Vitaly Chikunov <vt@altlinux.org>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         davem@davemloft.net, herbert@gondor.apana.org.au,
         dhowells@redhat.com, zohar@linux.ibm.com,
         linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
         linux-integrity@vger.kernel.org,
-        Saulo Alessandre <saulo.alessandre@tse.jus.br>
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v10 1/9] crypto: Add support for ECDSA signature
+ verification
+Message-ID: <20210305194640.nnerhdadoczqyta3@altlinux.org>
 References: <20210305005203.3547587-1-stefanb@linux.vnet.ibm.com>
- <20210305005203.3547587-5-stefanb@linux.vnet.ibm.com>
- <YEJl/SxdisIJxncp@kernel.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <a4cafd1b-c548-9a6f-e275-53093d4c71bb@linux.ibm.com>
-Date:   Fri, 5 Mar 2021 13:27:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ <20210305005203.3547587-2-stefanb@linux.vnet.ibm.com>
+ <YEJk44FXEl0+mEPr@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <YEJl/SxdisIJxncp@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-05_13:2021-03-03,2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- malwarescore=0 mlxscore=0 clxscore=1015 suspectscore=0 priorityscore=1501
- mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103050092
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YEJk44FXEl0+mEPr@kernel.org>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/5/21 12:10 PM, Jarkko Sakkinen wrote:
-> On Thu, Mar 04, 2021 at 07:51:58PM -0500, Stefan Berger wrote:
->> From: Saulo Alessandre <saulo.alessandre@tse.jus.br>
->>
->> * crypto/ecdsa.c
->>    - add ecdsa_nist_p384_init_tfm
->>    - register and unregister P384 tfm
->>
->> * crypto/testmgr.c
->>    - add test vector for P384 on vector of tests
->>
->> * crypto/testmgr.h
->>    - add test vector params for P384(sha1, sha224, sha256, sha384
->>      and sha512)
->>
->> Signed-off-by: Saulo Alessandre <saulo.alessandre@tse.jus.br>
->> Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-> "diffstat"
+Jarkko,
 
-I will add an explanation on top but leave what Saulo wrote in place. It 
-has been accepted before like this in this corner of the kernel: 
-https://github.com/torvalds/linux/commit/0d7a78643f6972214e99205b364e508f8ea9598e#diff-334794133a31417069722ddf2cc2725b04d4f5e3e4cfbbfdd627ae058e261c38
+On Fri, Mar 05, 2021 at 07:05:39PM +0200, Jarkko Sakkinen wrote:
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/*
+> > + * Copyright (c) 2021 IBM Corporation
+> > + *
+> > + * Redistribution and use in source and binary forms, with or without
+> > + * modification, are permitted provided that the following conditions are
+> > + * met:
+> > + *  * Redistributions of source code must retain the above copyright
+> > + *   notice, this list of conditions and the following disclaimer.
+> > + *  * Redistributions in binary form must reproduce the above copyright
+> > + *    notice, this list of conditions and the following disclaimer in the
+> > + *    documentation and/or other materials provided with the distribution.
+> > + *
+> > + * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+> > + * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+> > + * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+> > + * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+> > + * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+> > + * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+> > + * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+> > + * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+> > + * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+> > + * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+> > + * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> > + */
+> 
+> This license platter is redundant, given SPDX.
 
+I think SPDX identifier supplements license plate and is machine readable
+identifier, but it does not replace or making adding of license plate
+redundant.
+
+- Quoting https://spdx.dev/ids/
+
+  "When a license defines a recommended notice to attach to files under
+  that license (sometimes called a “standard header”), the SPDX project
+  recommends that the standard header be included in the files, in
+  addition to an SPDX ID.
+
+  Additionally, when a file already contains a standard header or other
+  license notice, the SPDX project recommends that those existing
+  notices should not be removed. The SPDX ID is recommended to be used
+  to supplement, not replace, existing notices in files."
+
+- GPL license text have section on "How to Apply These Terms to Your New
+  Programs" which says to add license boilerplate text and it does not
+  say SPDX identifier is enough.
+
+- Also, page https://www.kernel.org/doc/html/latest/process/license-rules.html
+  does not forbid adding license plate text. (Even though it misguidedly
+  says "alternative to boilerplate text" is the use of SPDX.)
+
+- License text is a readable text and not just identifier.
+  I think SPDX tag could be not legally binding in all jurisdictions.
+
+By there reasons I believe you cannot request removing license platter
+from the source and this should be author's decision.
+
+Thanks,
 
