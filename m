@@ -2,159 +2,132 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4778432F5C2
-	for <lists+keyrings@lfdr.de>; Fri,  5 Mar 2021 23:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0952332FCBA
+	for <lists+keyrings@lfdr.de>; Sat,  6 Mar 2021 20:26:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbhCEWQ0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Mar 2021 17:16:26 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:40406 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229576AbhCEWPv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Mar 2021 17:15:51 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 125M5LcM049164;
-        Fri, 5 Mar 2021 17:15:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=VAzirJe/Hk/A2gCMur0L8RjwwmeZlMeq9cZyz2PGjEw=;
- b=bM+NyN1PJ3UAim5D3wAptX1h+/xc074+OPS9f5qvFsX+MtIAUhhjre8/BPbDIKgpHO3C
- K3pcmEeJOFP2xZmef4rhbAtWVudoTTEPFVfINYeSngV58UDPtUxa03xWzV8bojBSkpXj
- 0jKXBUAe0Wrg68RXrcgVYT43l3tjgpVHEr5xIcOvJT5uzrELWcYcFU9/aRB6ZWUnNhO5
- Nu4ARkCbVCw/nRD0DylOg6LSgKWQXFBO5nE6c61GYh46mC68FG8B6/Oni0SfMCwLkKfD
- xco1XmOGKBdaWj+fp2W58N4Z1Jxl8pljAvCrevN0GJ4VU60++45ZwOh3XF97GRQtJHpm EA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 373tntuuxs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 17:15:41 -0500
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 125M78Q3057284;
-        Fri, 5 Mar 2021 17:15:41 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 373tntuuxa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 17:15:41 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 125MCQ0m012336;
-        Fri, 5 Mar 2021 22:15:40 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by ppma03dal.us.ibm.com with ESMTP id 3720r14th5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Mar 2021 22:15:40 +0000
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 125MFd2N12583468
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 5 Mar 2021 22:15:39 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EFA13BE086;
-        Fri,  5 Mar 2021 22:15:38 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EAC52BE054;
-        Fri,  5 Mar 2021 22:15:37 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Fri,  5 Mar 2021 22:15:37 +0000 (GMT)
-Subject: Re: [PATCH v10 1/9] crypto: Add support for ECDSA signature
- verification
-To:     Vitaly Chikunov <vt@altlinux.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        id S231295AbhCFT0P (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 6 Mar 2021 14:26:15 -0500
+Received: from vmicros1.altlinux.org ([194.107.17.57]:50130 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231292AbhCFTZ4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 6 Mar 2021 14:25:56 -0500
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 9FAA872C8B8;
+        Sat,  6 Mar 2021 22:25:53 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+        by imap.altlinux.org (Postfix) with ESMTPSA id 51E974A4736;
+        Sat,  6 Mar 2021 22:25:53 +0300 (MSK)
+Date:   Sat, 6 Mar 2021 22:25:53 +0300
+From:   Vitaly Chikunov <vt@altlinux.org>
+To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
+Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         davem@davemloft.net, herbert@gondor.apana.org.au,
         dhowells@redhat.com, zohar@linux.ibm.com,
         linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
-        linux-integrity@vger.kernel.org
+        linux-integrity@vger.kernel.org,
+        Saulo Alessandre <saulo.alessandre@tse.jus.br>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v10 3/9] crypto: Add math to support fast NIST P384
+Message-ID: <20210306192553.lxy5w262g2vs2hvv@altlinux.org>
 References: <20210305005203.3547587-1-stefanb@linux.vnet.ibm.com>
- <20210305005203.3547587-2-stefanb@linux.vnet.ibm.com>
- <YEJk44FXEl0+mEPr@kernel.org> <20210305194640.nnerhdadoczqyta3@altlinux.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <4abdc777-03a9-bee1-3ae1-93d77e14eea0@linux.ibm.com>
-Date:   Fri, 5 Mar 2021 17:15:37 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ <20210305005203.3547587-4-stefanb@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20210305194640.nnerhdadoczqyta3@altlinux.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-05_14:2021-03-03,2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0
- mlxscore=0 suspectscore=0 mlxlogscore=712 phishscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050112
+Content-Type: text/plain; charset=koi8-r
+Content-Disposition: inline
+In-Reply-To: <20210305005203.3547587-4-stefanb@linux.vnet.ibm.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/5/21 2:46 PM, Vitaly Chikunov wrote:
-> Jarkko,
->
-> On Fri, Mar 05, 2021 at 07:05:39PM +0200, Jarkko Sakkinen wrote:
->>> +// SPDX-License-Identifier: GPL-2.0+
->>> +/*
->>> + * Copyright (c) 2021 IBM Corporation
->>> + *
->>> + * Redistribution and use in source and binary forms, with or without
->>> + * modification, are permitted provided that the following conditions are
->>> + * met:
->>> + *  * Redistributions of source code must retain the above copyright
->>> + *   notice, this list of conditions and the following disclaimer.
->>> + *  * Redistributions in binary form must reproduce the above copyright
->>> + *    notice, this list of conditions and the following disclaimer in the
->>> + *    documentation and/or other materials provided with the distribution.
->>> + *
->>> + * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
->>> + * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
->>> + * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
->>> + * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
->>> + * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
->>> + * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
->>> + * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
->>> + * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
->>> + * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
->>> + * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
->>> + * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
->>> + */
->> This license platter is redundant, given SPDX.
-> I think SPDX identifier supplements license plate and is machine readable
-> identifier, but it does not replace or making adding of license plate
-> redundant.
->
-> - Quoting https://spdx.dev/ids/
->
->    "When a license defines a recommended notice to attach to files under
->    that license (sometimes called a “standard header”), the SPDX project
->    recommends that the standard header be included in the files, in
->    addition to an SPDX ID.
->
->    Additionally, when a file already contains a standard header or other
->    license notice, the SPDX project recommends that those existing
->    notices should not be removed. The SPDX ID is recommended to be used
->    to supplement, not replace, existing notices in files."
->
-> - GPL license text have section on "How to Apply These Terms to Your New
->    Programs" which says to add license boilerplate text and it does not
->    say SPDX identifier is enough.
->
-> - Also, page https://www.kernel.org/doc/html/latest/process/license-rules.html
->    does not forbid adding license plate text. (Even though it misguidedly
->    says "alternative to boilerplate text" is the use of SPDX.)
->
-> - License text is a readable text and not just identifier.
->    I think SPDX tag could be not legally binding in all jurisdictions.
->
-> By there reasons I believe you cannot request removing license platter
-> from the source and this should be author's decision.
->
-> Thanks,
->
-Thanks for looking into this. I am fine with the SPDX identifier.
+Stefan,
 
-Regards,
+On Thu, Mar 04, 2021 at 07:51:57PM -0500, Stefan Berger wrote:
+> From: Saulo Alessandre <saulo.alessandre@tse.jus.br>
+> 
+> * crypto/ecc.c
+>   - add vli_mmod_fast_384
+>   - change some routines to pass ecc_curve forward until vli_mmod_fast
+> 
+> * crypto/ecc.h
+>   - add ECC_CURVE_NIST_P384_DIGITS
+>   - change ECC_MAX_DIGITS to P384 size
+> 
+> Signed-off-by: Saulo Alessandre <saulo.alessandre@tse.jus.br>
+> Tested-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  crypto/ecc.c | 266 +++++++++++++++++++++++++++++++++++++--------------
+>  crypto/ecc.h |   3 +-
+>  2 files changed, 194 insertions(+), 75 deletions(-)
+> 
+> diff --git a/crypto/ecc.c b/crypto/ecc.c
+> index f6cef5a7942d..c125576cda6b 100644
+> --- a/crypto/ecc.c
+> +++ b/crypto/ecc.c
+> @@ -778,18 +778,133 @@ static void vli_mmod_fast_256(u64 *result, const u64 *product,
+>  ...
+>  /* Computes result = product % curve_prime for different curve_primes.
+>   *
+>   * Note that curve_primes are distinguished just by heuristic check and
+>   * not by complete conformance check.
+>   */
+>  static bool vli_mmod_fast(u64 *result, u64 *product,
+> -			  const u64 *curve_prime, unsigned int ndigits)
+> +			  const struct ecc_curve *curve)
+>  {
+>  	u64 tmp[2 * ECC_MAX_DIGITS];
+> +	const u64 *curve_prime = curve->p;
+> +	const unsigned int ndigits = curve->g.ndigits;
+>  
+> -	/* Currently, both NIST primes have -1 in lowest qword. */
+> -	if (curve_prime[0] != -1ull) {
+> +	/* Currently, all NIST have name nist_.* */
+> +	if (strncmp(curve->name, "nist_", 5) != 0) {
 
-    Stefan
+I am not sure, but maybe this strncmp should not be optimized somehow,
+since vli_mmod_fast could be called quite frequently. Perhaps by integer
+algo id or even callback?
 
+Thanks,
 
+>  		/* Try to handle Pseudo-Marsenne primes. */
+>  		if (curve_prime[ndigits - 1] == -1ull) {
+>  			vli_mmod_special(result, product, curve_prime,
+> @@ -812,6 +927,9 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
+>  	case 4:
+>  		vli_mmod_fast_256(result, product, curve_prime, tmp);
+>  		break;
+> +	case 6:
+> +		vli_mmod_fast_384(result, product, curve_prime, tmp);
+> +		break;
+>  	default:
+>  		pr_err_ratelimited("ecc: unsupported digits size!\n");
+>  		return false;
+> @@ -835,22 +953,22 @@ EXPORT_SYMBOL(vli_mod_mult_slow);
+>  
+>  /* Computes result = (left * right) % curve_prime. */
+>  static void vli_mod_mult_fast(u64 *result, const u64 *left, const u64 *right,
+> -			      const u64 *curve_prime, unsigned int ndigits)
+> +			      const struct ecc_curve *curve)
+>  {
+>  	u64 product[2 * ECC_MAX_DIGITS];
+>  
+> -	vli_mult(product, left, right, ndigits);
+> -	vli_mmod_fast(result, product, curve_prime, ndigits);
+> +	vli_mult(product, left, right, curve->g.ndigits);
+> +	vli_mmod_fast(result, product, curve);
+>  }
+>  
+>  /* Computes result = left^2 % curve_prime. */
+>  static void vli_mod_square_fast(u64 *result, const u64 *left,
+> -				const u64 *curve_prime, unsigned int ndigits)
+> +				const struct ecc_curve *curve)
+>  {
+>  	u64 product[2 * ECC_MAX_DIGITS];
+>  
+> -	vli_square(product, left, ndigits);
+> -	vli_mmod_fast(result, product, curve_prime, ndigits);
+> +	vli_square(product, left, curve->g.ndigits);
+> +	vli_mmod_fast(result, product, curve);
+>  }
+>  
+>  #define EVEN(vli) (!(vli[0] & 1))
