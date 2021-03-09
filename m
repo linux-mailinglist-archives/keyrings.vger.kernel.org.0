@@ -2,58 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 842103321E8
-	for <lists+keyrings@lfdr.de>; Tue,  9 Mar 2021 10:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 017363321EC
+	for <lists+keyrings@lfdr.de>; Tue,  9 Mar 2021 10:28:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbhCIJZZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 9 Mar 2021 04:25:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48984 "EHLO
+        id S229840AbhCIJ1g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 9 Mar 2021 04:27:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbhCIJZR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Mar 2021 04:25:17 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF44DC06174A
-        for <keyrings@vger.kernel.org>; Tue,  9 Mar 2021 01:25:14 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id mj10so26016946ejb.5
-        for <keyrings@vger.kernel.org>; Tue, 09 Mar 2021 01:25:14 -0800 (PST)
+        with ESMTP id S229815AbhCIJ1c (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Mar 2021 04:27:32 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53DAC06174A
+        for <keyrings@vger.kernel.org>; Tue,  9 Mar 2021 01:27:31 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id l12so18897301edt.3
+        for <keyrings@vger.kernel.org>; Tue, 09 Mar 2021 01:27:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
+        h=mime-version:reply-to:from:date:message-id:subject:cc;
         bh=ahga65lr767luhHGqJNijIFfSJvyVAVslhDECcMidPI=;
-        b=QuKKO2T5rrFuBmqaoaRWBIjTm5FjZR/7W4PNh6K/J9AhLPk4moa9EhiF6+0wYStWHL
-         y4ix6l9d3c+IQoCb0aAfAGq6FnisjQDpN/YYUmJLsp1m9K/9wSBD+7SjfxCS6XpVJur4
-         XdengsthPZJayhluyi6k/NwgZr4Sx8GIXSSQ4NtU3e1DLLk36IHZzOY5f7eqmwT28cfl
-         otl4SbrbxZIHLk9UuQ5WoPs6WWdzQHKm2jYNYj8+NcohnxvquM5G2N0q5vQIT8VnK8Ag
-         GdbsSwMqnceKFH8mrYtwRgsXKk83/Bf9XIqitVfZrCZhHJx9XGAkkcay6ZbOGRqGIZJF
-         4bAg==
+        b=hdBCATb2anKJ5FUVzw1TIIma7bQKJ/fWrdYM6nQvc68x7apsAcEzhg+jfPAhoD5KVL
+         f7qeErl1jbGR0IGw+DkGOFkSai0OdE96UNWOWqD/aUTf6pftFmX9Y3e+pSQP7RgFVyXk
+         3SDOmgFIiRda3QKIHaaMuA8mXaWWehC2SkgRgz8PQdakeaCMGyXrCTNdOJwBVSy7TYrO
+         HYPtQ34/W0AJ5gYJl+MpfewwpBbfWUR4v/baBJnnBwKp0xHmrKeUlHi/9fLoZ/UnGe86
+         Muo4hiFgk5Gb4ZSQ6Fq4SA9ZB0q5wIlHIxwgEBLfn3hQWNFWKItmBiDWf1CxSqeED7tS
+         SKcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
+         :subject:cc;
         bh=ahga65lr767luhHGqJNijIFfSJvyVAVslhDECcMidPI=;
-        b=rYvoju6OPNIKCyjRmuDLAqZC2I962e+mOGQUoeJ9msOPA5sPt0DUy3VAr/kfHGGI95
-         UTSr9rfPAr8tCrjqZUHKryFLkK2mb+93MNRe8vk9k7/rhgJ3qTjVqF9VmtzHeR+YQ5FR
-         dwP9bKr3nDFK3c4NXZK0U+UURzHp1xbptzu+Ib5HSjedo2lH4NzCflYaA3RsHyLlyRxO
-         VQXQ/byojUwFzjCmQTEuKYbBSCOJgAfe75u/qybJS+PmeA+d1H4AyHTWxNyzjpUXub63
-         ej0qn7NNHxWUJZi9E835esrxNiHoG6W35QmMVsSiPox9t1d8n8sgpllO/o2XMsFeaMHV
-         KQEg==
-X-Gm-Message-State: AOAM531Sl8vBJjguUqUFNPvOxTip1lo7444wNi9dWpYNL30UutAm4vEx
-        oA7rA4WSAg2C3Rsv1wFVwIfyCGVv66aPAsuPOqw=
-X-Google-Smtp-Source: ABdhPJwJrlkXLtIRAnFQVrPSGSIXBOyuq0Klnh8+LK+RDPFOIXJLkSjXOUjaiOa9mo2SmfkZ5MUQ4xttChWks8YTotw=
-X-Received: by 2002:a17:907:77d4:: with SMTP id kz20mr19248190ejc.93.1615281913277;
- Tue, 09 Mar 2021 01:25:13 -0800 (PST)
+        b=EfQJR9YbPNuxDTlA4kfUlyunsF40OF/6oltKcoWLTCkcE0vycEVGNJdaFasfaI0kxg
+         7WIE3MStWbqEKVHMhpAkBhWIZEVLE9KZkYOmWIcSRuNIpaIkbpTxAKI+alJOtngcG1CB
+         W3R9OYudjKWRADtlYR+tgJyEE6hEY1yzOzPOAT0upCI+bTx0ssRJAGkzyZMcJ9eHInkV
+         xlBDEF1jnQQ6x6bQ5sV9Hv96PIwVspKrU+BalSslWH7FnnGtB0Ji66W+BfjMozG5GAzV
+         p/A0MYMaUXFJ7cpyupfshTBUIjRDlEdrQwfTZl1FoaaZ4dMekPgk7FfVmFH5VrVNFZhw
+         Hkpw==
+X-Gm-Message-State: AOAM531ljZyTYGAqcyPfC+dznBHSgZAady/AiJQzXI1szPSzoRaIzgB/
+        xbmdFcyyhZhYQF/J/iKL/Sf5Kbb6CNskJF5S+v8=
+X-Received: by 2002:aa7:cf02:: with SMTP id a2mt2553093edy.59.1615282050493;
+ Tue, 09 Mar 2021 01:27:30 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a17:906:d14f:0:0:0:0 with HTTP; Tue, 9 Mar 2021 01:25:12
+Received: by 2002:a17:906:d14f:0:0:0:0 with HTTP; Tue, 9 Mar 2021 01:27:30
  -0800 (PST)
 Reply-To: mikebenz25@aol.com
 From:   "Barrister Robert Richter, UN Attorney Law Court-Benin" 
         <currency1000000@gmail.com>
-Date:   Tue, 9 Mar 2021 10:25:12 +0100
-Message-ID: <CAPqfnSHB5B83y+XWe9fftvH11HQiZ-pND_wkFR5F5oKV47fGCw@mail.gmail.com>
+Date:   Tue, 9 Mar 2021 10:27:30 +0100
+Message-ID: <CAPqfnSHs2GjE2_v=Z5a_tYfpuzLca7ny+1Q+7Gdo_ZzqdPqDuA@mail.gmail.com>
 Subject: Did you authorized this woman called, Mr.David Bollen to receive your
  transfer $35.850,000Million USD from the Bank?
-To:     undisclosed-recipients:;
+Cc:     1stcryptkeeper@gmail.com, 3177961308@mms.cricketwireless.net,
+        8552classic@gmail.com, Cmoorefbhs@aol.com, ESPTX18@protonmail.com,
+        LEVRIER@airmail.net, Michael_gabriel@bellsouth.net,
+        Robin.Goodall@btinternet.com, Txgoodson@verizon.net,
+        Venaladegbami@gmail.com, adriennefuller@gmail.com,
+        alanboatsong@gmail.com, alanstoetzl@gmail.com,
+        albertchendao@gmail.com, albertotschnauzer@gmail.com,
+        alishawylie13@gmail.com, anardy@gmail.com, anatsil@inbox.lv,
+        anromarine@consultant.com, artempesta22@gmail.com,
+        badguy2day@aol.com, blaws05@gmail.com, bmoore442002@aol.com,
+        briankyalo6051@gmail.com, bryonwattie@aol.com,
+        craigwalshuk@yahoo.co.uk, cresposamantha@yahoo.com,
+        currency1000000@gmail.com, currencymoney120@gmail.com,
+        daveandpinny@hotmail.com, davidlargs@googlemail.com,
+        depul625@yahoo.com, dkj1972@gmail.com, dmoving2006@gmail.com,
+        elaine.stiffler@oneamerica.com, elixir5000@yahoo.ro,
+        espringle@aol.com, esptx0415@gmx.com,
+        forrestmillport@btopenworld.com, getsusangetsold@gmail.com,
+        goldentc10@yahoo.in, graylingn@aol.com, grzibovskaja1@gmail.com,
+        haganjoinery@aol.com, haverkornt@yahoo.com, henrykerr@sky.com,
+        immanuela@aol.com, industriasfema@arnetbiz.com.ar,
+        iriskern1@yahoo.com, j.lochridge@btinternet.com,
+        jaharc@rediffmail.com, jameselyse@gmail.com, jdailey08@gmail.com,
+        johnjacobs@ratchetmail.com, jospeh16595@netzero.net, js_w_pl@op.pl,
+        jucealso1@hotmail.com, kaiser_consultancy@yahoo.com,
+        karaman@eim.ae, karitcoke@comcast.net, kas@fi.muni.cz,
+        keyrings@vger.kernel.org, kjp1010@gmail.com,
+        kolyadairina12@gmail.com, legousb-devel@lists.sourceforge.net,
+        len.brown@intel.com, lina2silva@yahoo.com.br,
+        linux-hippi@sunsite.dk, lisamiller_10@yahoo.co.uk, lourdu@live.com,
+        ltp@lists.linux.it, lucassantyago1@gmail.com, m1012@bright.net,
+        mandy71169@gmail.com, marvelousmuch1564@gmail.com,
+        mercsteca@gmail.com, mhskier952@gmail.com,
+        michael.hiland@erols.com, mikesmechanical@y7mail.com,
+        mkhilaire@yahoo.fr, mmachine704@gmail.com,
+        odairpaulodecampos@gmail.com, officeservice128@gmail.com,
+        onnolandman@gmail.com, oseid2700@gmail.com, peterpalmer@f-m.fm,
+        peterritter307@gmail.com, phcljc@bellsouth.net,
+        polmacgroup@bigpond.com, richard@fraih.freeserve.co.uk,
+        rjfjoseph@yahoo.ca, roberson@hushmail.com, runodaley@gmail.com,
+        samuelelia746@gmail.com, scottmay1919@gmail.com,
+        seetonghuat@yahoo.com, sheryld@dpcap.com, sheryldhome@yahoo.com,
+        sieedc@yahoo.com, silberzahn1@yahoo.com
 Content-Type: text/plain; charset="UTF-8"
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
