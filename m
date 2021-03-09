@@ -2,118 +2,112 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C8AC33219E
-	for <lists+keyrings@lfdr.de>; Tue,  9 Mar 2021 10:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 193903321A7
+	for <lists+keyrings@lfdr.de>; Tue,  9 Mar 2021 10:11:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229599AbhCIJKt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 9 Mar 2021 04:10:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45798 "EHLO
+        id S229656AbhCIJLV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 9 Mar 2021 04:11:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbhCIJKV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Mar 2021 04:10:21 -0500
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96566C06174A
-        for <keyrings@vger.kernel.org>; Tue,  9 Mar 2021 01:10:20 -0800 (PST)
-Received: by mail-lf1-x12d.google.com with SMTP id q25so25809709lfc.8
-        for <keyrings@vger.kernel.org>; Tue, 09 Mar 2021 01:10:20 -0800 (PST)
+        with ESMTP id S229840AbhCIJLU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Mar 2021 04:11:20 -0500
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9CBC06174A;
+        Tue,  9 Mar 2021 01:11:19 -0800 (PST)
+Received: by mail-pg1-x52d.google.com with SMTP id x29so8346152pgk.6;
+        Tue, 09 Mar 2021 01:11:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wKD+yQjGrl7OUNRHRyxFsQZJDZyYo41ddQeYWHD+EP0=;
-        b=HTohe6xlqSsa9ysdqGaDx/LKiLgeY77hqdlLI5nZOMc7bJyltab5PD7dPzX7NKciVI
-         CiR0s2nUBmoC8xS7Fx4FxibTJ6bZfsYvhj45Fgg3+IADOfkL5vNu6q4PmCDEYnN4eGiW
-         MVh2GdGnAqFUnHDgWXCDI/GUauwAnCR8CqsK+Y5A1lu3sqYOd1P63aWs0Sw6kQRAlQ/J
-         sWj1qF4z5PALe45obJIuGKem1TrGlbvLr2Lvd6d2kEnUqnjaIjdQeR3PBK9qMETa/XGv
-         w1WiD1gwAN6H+FW6uZfkVLEnlnB+w9D61pMvCAVVj5ZrgusV7trTi5Pt3J0lrw8Igz5m
-         MzVw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=/CvRWYjORCw8flby47H5HqIvyfw8yrJSz4E5Q321rKY=;
+        b=KhGsELbeaVZ6fva0mXjyYAtemsZGD5reVs23Ve6MCIp49iOr9f/Z8lsUe9PzyN4AiN
+         ahCfPk4zBSGIceUjwb+XTczDg+nl1Ghpp4KG69cgItLu6iUpx2+w6tjgmPtd1yKHZ9o/
+         0n3EVCwaKUO9cF3G5NFK0/hENzH4tX4ecvB/NkMIFRRfnTFjptPK7HteEBjVRUh0t89T
+         3yu10uBdV+7u75xJym5RIIrTMn5/foqi5+JXHXwD4vQZg6VGqbfDB2p0XFPuyeETEoaf
+         43OOW+39Ubp6f9vcxDCobgRculalzTl1FXuEQhJIYUzNATifBuuhPjJl38ei6BYDS28m
+         3QgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wKD+yQjGrl7OUNRHRyxFsQZJDZyYo41ddQeYWHD+EP0=;
-        b=bs/awmcyocayK7MmJLKLhBYAhKRv1V00F0qNmIcngsW7rzV4gItYjyyD1HXTUFh7PK
-         iRtKAgvomgoc7ITraorgj51sOVeva0JkB2jd/62zUXpVk3WQ1YqG9YpxeTKjoFdNgeNl
-         EvTuKbmh4IOJkaawMPKE0dxTwdeegX2jfG5YwpM90+93AknY9vIdwvdPKVCVDiwXvEIe
-         oSEV8yGJpac+VPmKRQMeaYj5zqA/qAD4rRZL2iVQ7V8tAVrnAPrtI0v5OwyGLUDOdESo
-         gXrIRP1dU+93ICeId1nZKm47FJJCZttsodJ55NRAkXLqmXrEdJgHqg9cYnO2d/22O8fP
-         vOZw==
-X-Gm-Message-State: AOAM530QOBC3eBCzYlOTaITS0DSZcXQSwoviF04PTQAWjUwSPEo6EScS
-        jOSWuvjjxLQWwC6l0xcH+VrEuvVmxfo8Rhg6wsOoYg==
-X-Google-Smtp-Source: ABdhPJwsYPinGD4rPMc2OYJcBuXtSZFtl07YktW+xNb1utv1lOShAxTn8gj6iLPahmv3R1yl8oBj1yKfBXITAAXQeCU=
-X-Received: by 2002:ac2:46db:: with SMTP id p27mr16853964lfo.396.1615281018970;
- Tue, 09 Mar 2021 01:10:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20210301131127.793707-1-sumit.garg@linaro.org>
- <CAFA6WYO4HHhtymaUzmkuaCZybTAWBQ=4K9Dez1pe1kqo3AJhuA@mail.gmail.com> <YEEANW+khw3nJtcQ@kernel.org>
-In-Reply-To: <YEEANW+khw3nJtcQ@kernel.org>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue, 9 Mar 2021 14:40:07 +0530
-Message-ID: <CAFA6WYOxsYin8wBB_yU=S-bnqM-g5TFnTU_KXxc3wSBfx_N_6A@mail.gmail.com>
-Subject: Re: [PATCH v9 0/4] Introduce TEE based Trusted Keys support
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        Elaine Palmer <erpalmer@us.ibm.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=/CvRWYjORCw8flby47H5HqIvyfw8yrJSz4E5Q321rKY=;
+        b=ebrdna47zz1/fhm3YwYrjvOULG2zEGQWFHbM3Y4s9AWWHsJcw170CiEhqpGhIfPP9a
+         tLLwDY0hJxnIg7urBNk2WpWE3ACyrOlWglfMcUcDyMkH413sYcugK9MulyGOc1kZdfz8
+         6YopXTGxU86OPIOfhgLCvg63SZPCS5NCWB1SZOCljkTdvq6BtiBH2/zzReWVg9M75OlL
+         00Ft65q6mlcwOA8rVqIr+k0otAaehuvJmHiVDTZ7ZMrD1oKIxZz94YrA1BOtWeFygp3K
+         d3Iaha8sbxfeQUrWRX9UYTqJydfjnbvpxOmjMXTnnaqNtVxD8UPlEBh7SEait7a04VUV
+         5aig==
+X-Gm-Message-State: AOAM532AFGOhcicePyGVo0NGnQxY17N+slFlGfkvfwx86RTjl6OKuCg/
+        N1fxuEnldY+xApnaqyIzyK8=
+X-Google-Smtp-Source: ABdhPJxamEBcduvWmfcWf0H1uPFhPcgfg3x1QwED2/BSxm/iKPknJszw4cmj9AGseSWhD21+HGXi+g==
+X-Received: by 2002:a63:ab05:: with SMTP id p5mr8228421pgf.149.1615281078913;
+        Tue, 09 Mar 2021 01:11:18 -0800 (PST)
+Received: from linux-l9pv.suse ([124.11.22.254])
+        by smtp.gmail.com with ESMTPSA id js16sm2094860pjb.21.2021.03.09.01.11.16
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 09 Mar 2021 01:11:18 -0800 (PST)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Boeckel <me@benboeckel.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Subject: [PATCH v5 0/4] Check codeSigning extended key usage extension
+Date:   Tue,  9 Mar 2021 17:10:40 +0800
+Message-Id: <20210309091044.2298-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 4 Mar 2021 at 21:14, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> On Thu, Mar 04, 2021 at 03:30:18PM +0530, Sumit Garg wrote:
-> > Hi Jarkko,
-> >
-> > On Mon, 1 Mar 2021 at 18:41, Sumit Garg <sumit.garg@linaro.org> wrote:
-> > >
-> > > Add support for TEE based trusted keys where TEE provides the functionality
-> > > to seal and unseal trusted keys using hardware unique key. Also, this is
-> > > an alternative in case platform doesn't possess a TPM device.
-> > >
-> > > This patch-set has been tested with OP-TEE based early TA which is already
-> > > merged in upstream [1].
-> > >
-> > > [1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
-> > >
-> > > Changes in v9:
-> > > 1. Rebased to latest tpmdd/master.
-> > > 2. Defined pr_fmt() and removed redundant tags.
-> > > 3. Patch #2: incorporated misc. comments.
-> > > 4. Patch #3: incorporated doc changes from Elaine and misc. comments
-> > >    from Randy.
-> > > 5. Patch #4: reverted to separate maintainer entry as per request from
-> > >    Jarkko.
-> > > 6. Added Jarkko's Tested-by: tag on patch #2.
-> >
-> > It looks like we don't have any further comments on this patch-set. So
-> > would you be able to pick up this patch-set?
->
-> I'm cool with that - I can pick this for 5.13.
->
+NIAP PP_OS certification requests that the OS shall validate the
+CodeSigning extended key usage extension field for integrity
+verifiction of exectable code:
 
-Thanks.
+    https://www.niap-ccevs.org/MMO/PP/-442-/
+        FIA_X509_EXT.1.1
 
--Sumit
+This patchset adds the logic for parsing the codeSigning EKU extension
+field in X.509. And checking the CodeSigning EKU when verifying
+signature of kernel module or kexec PE binary in PKCS#7.
 
-> /Jarkko
+v5:
+Fixed the wording in module-signing.rst.
+
+v4:
+Fixed the wording in patch description.
+
+v3:
+- Add codeSigning EKU to x509.genkey key generation config.
+- Add openssl command option example for generating CodeSign EKU to
+  module-signing.rst document. 
+
+v2:
+Changed the help wording in the Kconfig.
+
+Lee, Chun-Yi (4):
+  X.509: Add CodeSigning extended key usage parsing
+  PKCS#7: Check codeSigning EKU for kernel module and kexec pe
+    verification
+  modsign: Add codeSigning EKU when generating X.509 key generation
+    config
+  Documentation/admin-guide/module-signing.rst: add openssl command
+    option example for CodeSign EKU
+
+ Documentation/admin-guide/module-signing.rst |  6 +++++
+ certs/Makefile                               |  1 +
+ certs/system_keyring.c                       |  2 +-
+ crypto/asymmetric_keys/Kconfig               |  9 +++++++
+ crypto/asymmetric_keys/pkcs7_trust.c         | 37 +++++++++++++++++++++++++---
+ crypto/asymmetric_keys/x509_cert_parser.c    | 24 ++++++++++++++++++
+ include/crypto/pkcs7.h                       |  3 ++-
+ include/crypto/public_key.h                  |  1 +
+ include/linux/oid_registry.h                 |  5 ++++
+ 9 files changed, 83 insertions(+), 5 deletions(-)
+
+-- 
+2.16.4
+
