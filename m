@@ -2,50 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E3A73321B1
-	for <lists+keyrings@lfdr.de>; Tue,  9 Mar 2021 10:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 952183321AD
+	for <lists+keyrings@lfdr.de>; Tue,  9 Mar 2021 10:12:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbhCIJLz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 9 Mar 2021 04:11:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46066 "EHLO
+        id S230052AbhCIJL4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 9 Mar 2021 04:11:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230035AbhCIJLa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Mar 2021 04:11:30 -0500
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B0B3C06174A;
-        Tue,  9 Mar 2021 01:11:30 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id t85so3768681pfc.13;
-        Tue, 09 Mar 2021 01:11:30 -0800 (PST)
+        with ESMTP id S230045AbhCIJLc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Mar 2021 04:11:32 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846D0C06174A;
+        Tue,  9 Mar 2021 01:11:32 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id p21so8346235pgl.12;
+        Tue, 09 Mar 2021 01:11:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=QytjAJtOx4I9dfHfggs5vaGHYdTZvLqDyfwbAQPftuk=;
-        b=nSIvOGb6tSCjl8BQSt7eWgl//EkVoKhdJMfrQGwR0QS5gAAbCkuuyhV1Mwe/g+BY/8
-         Iy8pUA604rKGXX8TKh6nEm/+pStveBGKpMCxdqpHd/fJQVCRrjG7ODylW1bGm7pHnMfX
-         ysZZWqZ1qNtW+zs8Icm/ndLnizaH6hBXCSX84U2UiNG6unaF8tZ4hFC+SO5Vv2EoITEX
-         M6uMZcR6TKSahCjE/K/t8jbuDO81eWrzv9dfbRCBkp6Q1gi2dWv4f/sQfmbQgEH7Z+s7
-         VWwDoB8RYR27rqoV/NIvmDrxEi5IWxNVbWpCrwM2UyrIPhech3r/zP4Deaiin5TzBaE9
-         rmxQ==
+        bh=wB1I6Nqq7AfdRuGhioLL2RWvT/EvSUrtBmeOoGNpC4c=;
+        b=e6FOS+NacLfH/xWKXxkeAAl8YYsBU2mL4UMX6ikAkgoSs8yPJVmUIHx4/QxTYE7fw0
+         w1ZHyv2GTZ/sZH0ktGLEAcY9a6ElhPgegk3vcOiSJ59PQbnGcuBEFKe6ix5bDKH60vTd
+         ohs2TH4haNKwYDw8GY3L6JlMx2FWPsr52kbeGiLqCmYqEL/tp+s3Bpyh9FblH9Ba6dKs
+         lEcuLqrhCNP20MShXa2M3UJkt387aYsqSMbnTFOQv8I4leMji6uZ/F5vPbZ8P7XG0qf5
+         nDMdjI6r3ElkvoHfOay4uOTrV+d41TqT/cdppn1HaCzE5kO+KET84M7lFqb0X0/pCkdh
+         e9yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=QytjAJtOx4I9dfHfggs5vaGHYdTZvLqDyfwbAQPftuk=;
-        b=s+pIj7jPYnj8XVC2tj/3h1k7TaCzDvjbjxYjDMAJL3kfS1sH2+3H4xL0i5bOAWmB3x
-         1j1FkEh1tvJ1Ce4sNyHjBVH1/7KrH0PmpyEXgMnrZum68hS/Muo+ZPeZ7bNPpobeYrdj
-         Mbf0xtpRcgLQZT6i6FsNHvx6IEmTx8ed83XH2nMprAoBrYtijOkFBn1Eog4mm4NJ/opR
-         igNTbzUFvdARA+Sz2EUZvVqmVHFwhh1lkD4axj1XDD9o/d5a4LsMZTcSNNS/WpeWxkiu
-         YCqiqT7k8T+ft0hEPbH23vipuGfA7i4YLDckGE3A0LwXhcBtph/P4S0XiKGIIa6HDjGk
-         CDig==
-X-Gm-Message-State: AOAM531O9b3CkVKE9gECK8SNJXEo9W3D1FVtIQUku5rerKKBfEoHOfmA
-        BRyVEatfV7yS4JWkYulPVEw=
-X-Google-Smtp-Source: ABdhPJy3C0f3UgsS7MmGuwLZomizZ0NzjpPvyjFQcXLxJQHl/Tgb5Ixaf18ACIDmJOL6N4qCbvrIsA==
-X-Received: by 2002:a63:5b0e:: with SMTP id p14mr23981985pgb.110.1615281089934;
-        Tue, 09 Mar 2021 01:11:29 -0800 (PST)
+        bh=wB1I6Nqq7AfdRuGhioLL2RWvT/EvSUrtBmeOoGNpC4c=;
+        b=aqn6uIwCULQHA4eeUsSf0Yzbh95pNyTABmcMFNW9y1TDsZA4lo4nABTTcpDL7242ar
+         i9q32839fBhhElCQ+YYFxwQdKMDk1aDJ0Jg5PXWh6l85xwruqC4g8ep9HCO6tYJqWNDg
+         o/c3942p+bh0EYXWSYFPE1DWAls9kS6Ej+Bz3ZnhMLWdwX8KCrjRST+hCXEqPYzJNMSV
+         XGcsiuqV/WtSVFBYS0dcY2FNf9PwO1Yp/mHSMfAP+MJ6IyBVpkUwjLKrR4m54xrtFmzH
+         bbzd3PFqi41gJeYq2gxloSuJn/thK7buf3ZXmYfzdogp07vL9rSfIeLm+Pdq+sWdu+jE
+         ca+Q==
+X-Gm-Message-State: AOAM530MFH+ZI9WPCasY6G7wkwgiznCgQmCxav0iVhfoMurWXjDaxgnh
+        j6Yt5JJHsdtML1diiAUc/Bw=
+X-Google-Smtp-Source: ABdhPJy79MblW78n0Euz3R9cSKXRk+Qbo1KkS1pr1AsyVwJFY6AjUqYDYZLO4jOyJPm0b9F9vDFHYw==
+X-Received: by 2002:a63:c0a:: with SMTP id b10mr24874934pgl.251.1615281092137;
+        Tue, 09 Mar 2021 01:11:32 -0800 (PST)
 Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id js16sm2094860pjb.21.2021.03.09.01.11.27
+        by smtp.gmail.com with ESMTPSA id js16sm2094860pjb.21.2021.03.09.01.11.30
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Mar 2021 01:11:29 -0800 (PST)
+        Tue, 09 Mar 2021 01:11:31 -0800 (PST)
 From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
 X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
 To:     David Howells <dhowells@redhat.com>
@@ -56,9 +56,9 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH 3/4] modsign: Add codeSigning EKU when generating X.509 key generation config
-Date:   Tue,  9 Mar 2021 17:10:43 +0800
-Message-Id: <20210309091044.2298-4-jlee@suse.com>
+Subject: [PATCH 4/4] Documentation/admin-guide/module-signing.rst: add openssl command option example for CodeSign EKU
+Date:   Tue,  9 Mar 2021 17:10:44 +0800
+Message-Id: <20210309091044.2298-5-jlee@suse.com>
 X-Mailer: git-send-email 2.12.3
 In-Reply-To: <20210309091044.2298-1-jlee@suse.com>
 References: <20210309091044.2298-1-jlee@suse.com>
@@ -66,26 +66,31 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add codeSigning EKU to the X.509 key generation config for the build time
-autogenerated kernel key.
+Add an openssl command option example for generating CodeSign extended
+key usage in X.509 when CONFIG_CHECK_CODESIGN_EKU is enabled.
 
 Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
 ---
- certs/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/module-signing.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/certs/Makefile b/certs/Makefile
-index f4c25b67aad9..1ef4d6ca43b7 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -88,6 +88,7 @@ $(obj)/x509.genkey:
- 	@echo >>$@ "keyUsage=digitalSignature"
- 	@echo >>$@ "subjectKeyIdentifier=hash"
- 	@echo >>$@ "authorityKeyIdentifier=keyid"
-+	@echo >>$@ "extendedKeyUsage=codeSigning"
- endif # CONFIG_MODULE_SIG_KEY
+diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
+index 7d7c7c8a545c..ca3b8f19466c 100644
+--- a/Documentation/admin-guide/module-signing.rst
++++ b/Documentation/admin-guide/module-signing.rst
+@@ -170,6 +170,12 @@ generate the public/private key files::
+ 	   -config x509.genkey -outform PEM -out kernel_key.pem \
+ 	   -keyout kernel_key.pem
  
- $(eval $(call config_filename,MODULE_SIG_KEY))
++When ``CONFIG_CHECK_CODESIGN_EKU`` option is enabled, the following openssl
++command option should be added where for generating CodeSign extended key usage
++in X.509::
++
++        -addext "extendedKeyUsage=codeSigning"
++
+ The full pathname for the resulting kernel_key.pem file can then be specified
+ in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key therein will
+ be used instead of an autogenerated keypair.
 -- 
 2.16.4
 
