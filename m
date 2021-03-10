@@ -2,114 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7BB334865
-	for <lists+keyrings@lfdr.de>; Wed, 10 Mar 2021 20:57:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F2A334978
+	for <lists+keyrings@lfdr.de>; Wed, 10 Mar 2021 22:09:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232327AbhCJT5D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Mar 2021 14:57:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52242 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230183AbhCJT4g (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 10 Mar 2021 14:56:36 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C48BC64FBB;
-        Wed, 10 Mar 2021 19:56:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615406196;
-        bh=hwRJ4cG4gqJew/418K/AK/eJ2RNvo2awfPKya7n8mDg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XtllEriXv8/gtCDkxJYIV7SDLDwu7sw9sOKCVkXgOTUMdivht+ZtVq4PCt+TAfFeS
-         u28LRMoaTpINTeO1/Hx7YceweS9U+4Crn369Yz9oMfBz5oiBZOL8aYKxeTNbVGvMBh
-         FHFDLqPWtJ/mS+EGZzUMs+3YyAzmgV+cq0sZABuPdR1kuff2p48tjR/EnCpIC33YfV
-         Z4mkyZ4AeH9a4PsWoRw7wbDb8DkmRSIMUk5trAMAgPAal+G7E/sGoqnKSb/xjIvfp6
-         nD7WDa8pqaKTJq7Yxpjm5mdFTAy7oHD3o1m896WQLcQ+8MmN0Uc9A5RESRoLVCROoC
-         g3jqIaUCZmoOQ==
-Date:   Wed, 10 Mar 2021 21:56:13 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Sumit Garg <sumit.garg@linaro.org>, jejb@linux.ibm.com
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Janne Karhunen <janne.karhunen@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Markus Wamser <Markus.Wamser@mixed-mode.de>,
-        Luke Hinds <lhinds@redhat.com>,
-        Elaine Palmer <erpalmer@us.ibm.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        op-tee@lists.trustedfirmware.org
-Subject: Re: [PATCH v9 0/4] Introduce TEE based Trusted Keys support
-Message-ID: <YEkkXbWrYBTcGXEd@kernel.org>
-References: <20210301131127.793707-1-sumit.garg@linaro.org>
- <CAFA6WYO4HHhtymaUzmkuaCZybTAWBQ=4K9Dez1pe1kqo3AJhuA@mail.gmail.com>
- <YEEANW+khw3nJtcQ@kernel.org>
- <CAFA6WYOxsYin8wBB_yU=S-bnqM-g5TFnTU_KXxc3wSBfx_N_6A@mail.gmail.com>
+        id S231293AbhCJVIr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Mar 2021 16:08:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:35044 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229602AbhCJVIR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Mar 2021 16:08:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1615410496;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=l5MvdvNqgLulzxneBJsB2bgilIJpPxPGUd0qWzobxoU=;
+        b=Z6NyOEHi3WMDWFhebcfODyyF0DodYBx2/2WdEqMVtBpC5eavKrTM63joHyC+pZyslIU2Mt
+        FVzppTwdJfj4yzZ6On9vV0StrOCjpeT9SZ/PlmYaYqG06+Pj2CaQH3kttGQsA0H3gSWlG8
+        zh7RbMETmJdlSY7t8eJGNO70kj4F1/o=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-472-UfAqW5lXOqquGR65FNcb1A-1; Wed, 10 Mar 2021 16:08:14 -0500
+X-MC-Unique: UfAqW5lXOqquGR65FNcb1A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1196C1019638;
+        Wed, 10 Mar 2021 21:08:13 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-118-152.rdu2.redhat.com [10.10.118.152])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 788D960C05;
+        Wed, 10 Mar 2021 21:08:11 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <161529606657.163428.3340689182456495390.stgit@warthog.procyon.org.uk>
+References: <161529606657.163428.3340689182456495390.stgit@warthog.procyon.org.uk> <161529604216.163428.4905283330048991183.stgit@warthog.procyon.org.uk>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] certs: Add ability to preload revocation certs
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYOxsYin8wBB_yU=S-bnqM-g5TFnTU_KXxc3wSBfx_N_6A@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <305837.1615410490.1@warthog.procyon.org.uk>
+Date:   Wed, 10 Mar 2021 21:08:10 +0000
+Message-ID: <305838.1615410490@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 09, 2021 at 02:40:07PM +0530, Sumit Garg wrote:
-> On Thu, 4 Mar 2021 at 21:14, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Thu, Mar 04, 2021 at 03:30:18PM +0530, Sumit Garg wrote:
-> > > Hi Jarkko,
-> > >
-> > > On Mon, 1 Mar 2021 at 18:41, Sumit Garg <sumit.garg@linaro.org> wrote:
-> > > >
-> > > > Add support for TEE based trusted keys where TEE provides the functionality
-> > > > to seal and unseal trusted keys using hardware unique key. Also, this is
-> > > > an alternative in case platform doesn't possess a TPM device.
-> > > >
-> > > > This patch-set has been tested with OP-TEE based early TA which is already
-> > > > merged in upstream [1].
-> > > >
-> > > > [1] https://github.com/OP-TEE/optee_os/commit/f86ab8e7e0de869dfa25ca05a37ee070d7e5b86b
-> > > >
-> > > > Changes in v9:
-> > > > 1. Rebased to latest tpmdd/master.
-> > > > 2. Defined pr_fmt() and removed redundant tags.
-> > > > 3. Patch #2: incorporated misc. comments.
-> > > > 4. Patch #3: incorporated doc changes from Elaine and misc. comments
-> > > >    from Randy.
-> > > > 5. Patch #4: reverted to separate maintainer entry as per request from
-> > > >    Jarkko.
-> > > > 6. Added Jarkko's Tested-by: tag on patch #2.
-> > >
-> > > It looks like we don't have any further comments on this patch-set. So
-> > > would you be able to pick up this patch-set?
-> >
-> > I'm cool with that - I can pick this for 5.13.
-> >
-> 
-> Thanks.
-> 
-> -Sumit
+Hi Eric,
 
-I'll make it available soon'ish.
+Can you check this patch?  I rolled your changes into it.
 
-I also need to apply 
+David
 
-https://lore.kernel.org/linux-integrity/20210127190617.17564-1-James.Bottomley@HansenPartnership.com/
-
-and I would like to do both while I'm at it.
-
-James, there was one patch that needed fixing but I cannot find
-lore.kernel.org link. Can you point me to that so that we
-can proceed?
-
-/Jarkko
