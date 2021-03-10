@@ -2,112 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 801EB3347AE
-	for <lists+keyrings@lfdr.de>; Wed, 10 Mar 2021 20:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAEAB334802
+	for <lists+keyrings@lfdr.de>; Wed, 10 Mar 2021 20:33:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232828AbhCJTOZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Mar 2021 14:14:25 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:57720 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229526AbhCJTOP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Mar 2021 14:14:15 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12AJC2Ed141522;
-        Wed, 10 Mar 2021 14:14:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=amzags5YcX+M0MJ1WgRdmRhqbumE4K+Zq6EJs80Aru0=;
- b=TqspHXiH1DhaCkEtORVakTEYbeZOVpF+upmAptCFYCDRnR42+gpwPJ/WJIWV346FWVIo
- qPX/c7nRYq7Pk6e+ChNluZSpKQVsAZUh2UezlcHi7oYwIZX7Ojt3zRIjvDpNlEGxfUuc
- qvZU5kypOc2bnMe7jmBmWUTvwLzbOTvLGavS46SU+LCmCbLJNw6Ip0XZ1QC8NIcmLBQh
- FMUHXUIhymOy3dh1gITIIdA6JSjsijnAJl4lyyuHjOpHSMA1SWUS7vrLPG+gNczMcEGL
- l+TL8H3ApUPviyYPIYtq+FWTkL8Q6n0RwAoBwtmKEN+B2wCHJj7g48TdYEmG03IU8F79 Gg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 37742d85e6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 Mar 2021 14:14:06 -0500
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12AJCFic143091;
-        Wed, 10 Mar 2021 14:13:58 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 37742d82gm-20
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 Mar 2021 14:13:58 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12AIbcBW009470;
-        Wed, 10 Mar 2021 18:38:14 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-        by ppma03dal.us.ibm.com with ESMTP id 3768s24cxg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 Mar 2021 18:38:14 +0000
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12AIcDVQ15270284
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Mar 2021 18:38:13 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 52A21BE05D;
-        Wed, 10 Mar 2021 18:38:13 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 94BF9BE058;
-        Wed, 10 Mar 2021 18:38:12 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Wed, 10 Mar 2021 18:38:12 +0000 (GMT)
-Subject: Re: [PATCH v11 01/10] oid_registry: Add OIDs for ECDSA with
- sha224/256/384/512
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        davem@davemloft.net, herbert@gondor.apana.org.au,
-        dhowells@redhat.com, zohar@linux.ibm.com,
-        linux-kernel@vger.kernel.org, patrick@puiterwijk.org,
-        linux-integrity@vger.kernel.org
-References: <20210305205956.3594375-1-stefanb@linux.vnet.ibm.com>
- <20210305205956.3594375-2-stefanb@linux.vnet.ibm.com>
- <YEjnPZOVit+U9YcG@kernel.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <b2672c92-ddf5-51ba-bb4c-f3aadee26daf@linux.ibm.com>
-Date:   Wed, 10 Mar 2021 13:38:12 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S232196AbhCJTdV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Mar 2021 14:33:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49180 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233942AbhCJTdU (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 10 Mar 2021 14:33:20 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BDA0564FB2;
+        Wed, 10 Mar 2021 19:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615404800;
+        bh=HSKJm/eop7og5BaIReOnqWqOik9WWlx22NnmsHLVihY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oZOTDRKn+Tj787FecJjq3VI/Dei6KMXECNi0da8WYHvBYG7p78WCLP0VTjaN6LHpz
+         SIALime9msIZkUsgCN5wRPyvzqQcQT++oebwPji1on3KqmeIAvqkCS3LTUweaB9/MW
+         z8K3OY9Zof7NG0da35FMfArutjvvJrdWW7owSRlWjmdEMwCJXT8ExQzYlxGoINxACq
+         hAomrQzt/iUUByOUGMYguT+R13Llf1CdB/6P2AZn9q6/ie1kRnvKPD00zz5LHeM9wB
+         KP7fthHUwruPtQ/ozi7u5+NP0tSvm8ogv/NvABl0qrbVeEvb8+xFH/NbmIsWAGRTo/
+         qNiSbS7biX3+A==
+Date:   Wed, 10 Mar 2021 21:32:56 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Arnd Bergmann <arnd@kernel.org>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] keys: Add EFI_CERT_X509_GUID support for dbx/mokx
+ entries
+Message-ID: <YEke6BU5QshCDA2C@kernel.org>
+References: <161529604216.163428.4905283330048991183.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <YEjnPZOVit+U9YcG@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-10_10:2021-03-10,2021-03-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- impostorscore=0 suspectscore=0 spamscore=0 priorityscore=1501 bulkscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103100090
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161529604216.163428.4905283330048991183.stgit@warthog.procyon.org.uk>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, Mar 09, 2021 at 01:20:42PM +0000, David Howells wrote:
+> 
+> Here's my take on v5 of Eric Snowberg's patches[1]:
+> 
+> This series of patches adds support for EFI_CERT_X509_GUID entries [2].  It has
+> been expanded to not only include dbx entries but also entries in the mokx.
+> Additionally Eric included his patches to preload these certificate [3].
+> 
+> The patches can be found on the following branch:
+> 
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-cve-2020-26541-branch
+> 
+> Changes:
+> 
+> ver #3:
+>  - Rolled in changes from Eric to fix conditional building issues[7].
+> 
+> ver #2:
+>  - Rolled in a fix to the second patch to include certs/common.h in
+>    certs/common.c[6].
+> 
+> ver #1:
+>  - I've modified the first patch in the series to fix a configuration
+>    problem[4][5], to move the added functions to a more logical place
+>    within thefile and to add kerneldoc comments.
+> 
+> Link: https://lore.kernel.org/r/20210122181054.32635-1-eric.snowberg@oracle.com [1]
+> Link: https://patchwork.kernel.org/project/linux-security-module/patch/20200916004927.64276-1-eric.snowberg@oracle.com/ [2]
+> Link: https://lore.kernel.org/patchwork/cover/1315485/ [3]
+> Link: https://lore.kernel.org/r/bc2c24e3-ed68-2521-0bf4-a1f6be4a895d@infradead.org/ [4]
+> Link: https://lore.kernel.org/r/20210225125638.1841436-1-arnd@kernel.org/ [5]
+> Link: https://lore.kernel.org/r/EDA280F9-F72D-4181-93C7-CDBE95976FF7@oracle.com/ [6]
+> Link: https://lore.kernel.org/r/161428671215.677100.6372209948022011988.stgit@warthog.procyon.org.uk/ # v1 posting
+> Link: https://lore.kernel.org/r/161433310139.902181.11787442834918634133.stgit@warthog.procyon.org.uk/ # v2 posting
+> Link: https://lore.kernel.org/r/20210304175030.184131-1-eric.snowberg@oracle.com/ [7]
+> 
+> David
+> ---
+> Eric Snowberg (4):
+>       certs: Add EFI_CERT_X509_GUID support for dbx entries
+>       certs: Move load_system_certificate_list to a common function
+>       certs: Add ability to preload revocation certs
+>       integrity: Load mokx variables into the blacklist keyring
+> 
+> 
+>  certs/Kconfig                                 |  8 +++
+>  certs/Makefile                                | 21 ++++++-
+>  certs/blacklist.c                             | 21 +++++++
+>  certs/common.c                                | 57 +++++++++++++++++++
+>  certs/common.h                                |  9 +++
+>  certs/revocation_certificates.S               | 21 +++++++
+>  certs/system_keyring.c                        | 49 +---------------
+>  scripts/Makefile                              |  1 +
+>  security/integrity/platform_certs/load_uefi.c | 20 ++++++-
+>  9 files changed, 156 insertions(+), 51 deletions(-)
+>  create mode 100644 certs/common.c
+>  create mode 100644 certs/common.h
+>  create mode 100644 certs/revocation_certificates.S
+> 
+> 
+> 
 
-On 3/10/21 10:35 AM, Jarkko Sakkinen wrote:
-> On Fri, Mar 05, 2021 at 03:59:47PM -0500, Stefan Berger wrote:
->> From: Stefan Berger <stefanb@linux.ibm.com>
->>
->> Add OIDs for ECDSA with sha224/256/384/512.
-> Nit: SHA224/256/384/512 (sorry cannot help myself with these, have been
-> doing this way too much, consider me as a bot :-) )
->
->> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->   
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Looks good to me.
 
-Jarrko,
-
-   I applied the nit and the 4 Acked-by's.
-
-Thank you!
-
-
-    Stefan
-
-
+/Jarkko
