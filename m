@@ -2,47 +2,47 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04AC033392D
-	for <lists+keyrings@lfdr.de>; Wed, 10 Mar 2021 10:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5B9333A08
+	for <lists+keyrings@lfdr.de>; Wed, 10 Mar 2021 11:30:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbhCJJti (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Mar 2021 04:49:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55260 "EHLO
+        id S232425AbhCJK34 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 10 Mar 2021 05:29:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230525AbhCJJtH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Mar 2021 04:49:07 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9F6C061760
-        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 01:48:50 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id u18so24760281ljd.3
-        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 01:48:50 -0800 (PST)
+        with ESMTP id S231828AbhCJK3j (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Mar 2021 05:29:39 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D4EC061763
+        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 02:29:38 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id v9so32616683lfa.1
+        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 02:29:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XtHA2WDlEgIkr4gPC6h7Fo/UqIYBpPKwlhK+eaqepyw=;
-        b=tY/zIW4Jt+MrodIYY2WZdIiCNb/lU3TrDkCWVH1GC0ZPyU8Fx0CiEb9Y0y6cWNwv7U
-         3+UQ4tj0HCbX1WI9IIyo1VQinhXuWm4yZ4/FrglyModxavmcD8ic3hi8VDuL0mu7sjvO
-         r5E3kNoy61v/83xcWywtQVUii/xoonAa4J0vcuc4IIrtgr+1XAGhb6OW3Mi4t5bvbWxc
-         GIgozN4dt2GxWFomJxp6BI7YoAy/xPboNJQTdjjKnrHxVFj4+9L5cBB9ed/Szln9egGk
-         D9vT9z4k3NfBlpCqmdhXbTHzIRr2dVJNtXzUNIocr7litDYcpUQG9qfLgvf2bTY4K7bC
-         /Isw==
+        bh=hZu8kYWcUsjJZQZLgu1XKiWKVJDy+c+Bw7NCUyMv0Bc=;
+        b=RJH9YJ4ctf1i7yh5gwJmVZ6iIZEtaOi4hcZsPJS+3fHl6JJRW9vQcHUJuIbxI7ELPW
+         4WWZ7RYqXaZCBUAmpCBQibq4rGpusj9qpj7lq4rIsorl11VcXQWfGJ/1U8KC/nXVH0lC
+         X5enEIdvBbbV7lC+KCEhzTEZxen86rsiL5tYoCOGGj56VETxgkV3iU/jxhh+EA3a9RPu
+         3rzJnssS2eVBVNTlQRd/h34engsUMq7A63Zn5Va3+VeF/B5tGfVPWLfn5WR4G2Mtxn0I
+         9Ry+cNgqM6c5mrkJFQS4CxtCLc91eV+wfOLKMTeAdLbtGmTT4WDXeKYQ2R9eZ1bsyD1g
+         Y35A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XtHA2WDlEgIkr4gPC6h7Fo/UqIYBpPKwlhK+eaqepyw=;
-        b=DCIwoz271KlQfskuz3J0Ws7uqKwfjP2nDMUspYIelFpaYrF1rw77Ekg7TDdvrukIim
-         7lQTRvSpxQ3bPbZ1oXGuqOCgmw/ofyJp9gD2MdAlwnR9YX+d8HrDr2F2yZPvxVPwmumj
-         rRE14KzkGGq4PjDxDGueGiK0xQN60tlAYNHdlgV9zcf+Dxw7Kj7Zm7daUCt+0XqbPstH
-         5UFMNDyLofQaXSyX/S8jPxGHCCPZER21LLdd/Nkjf3Zz+Eh9GDkDpbSJUIUc0DrYRmCi
-         w7a379CgcIe+XOHbMlITxQ1HfifIIaTKeY8eZQLDL1GTT9nPkj5xxMeo3ruIsODE/q/Y
-         gRuw==
-X-Gm-Message-State: AOAM530+mRW6GFnzczjSwRzK2/VWUZEVR+gsPBkyn1JGgWfG1KjkUHwh
-        2lGUzkloeoYQpNBO4hT38kbzEKRtgJf8VfFSxooGwA==
-X-Google-Smtp-Source: ABdhPJy+6iVKLlhEs9ytjE2yJ6jzfWyAjkcYGwRmlv2dADiCXewf+sSTgUSixyA6cjqoVwsnHGvaAVVLYVVNGU7AOWM=
-X-Received: by 2002:a2e:864a:: with SMTP id i10mr1268524ljj.467.1615369729068;
- Wed, 10 Mar 2021 01:48:49 -0800 (PST)
+        bh=hZu8kYWcUsjJZQZLgu1XKiWKVJDy+c+Bw7NCUyMv0Bc=;
+        b=ln/Jnohtsza0pGIKzWEuztqc2XaYmRx3PIqIM7YX4pQHtnoxjwqqPUQEK42nA4eEvp
+         HVNswY9ymijBXpOwp8D1FjtTLy39ne/kjgrKZ9QH7YD6QT7bsxac9qLKtrn34gpneNCa
+         ax3xfKOTQwLq9HR8MsnVj/USTkIYi5j+HNZixF7N6U+fD6eaYagZDCSU6gkZv8fe0gnw
+         NwJYhJAPKzXrG8JWES3NVMy8z/TZ+aaH2LYnH2OrKd7e45ZUYVMGObL209L/E+zv+Q4+
+         jfTC8Ig06AeFo7j3CeEpOLpyOfHGixw7So/V+jRfpIKzHeH9yE7EhGFUjPAbjEIfUjzm
+         aYzw==
+X-Gm-Message-State: AOAM532/F5AGpZWWjJqmR/Cc2Gf/DpnfeZvb0lSlw58XsnWbsg09yS/g
+        ardCXjejn8NE//+DkMhXyuLuHNHQYP714k6cBnSTSQ==
+X-Google-Smtp-Source: ABdhPJzV5rCJIjqxQ3LiucCut2xv+IIf2U8hV+WxjX4O6mNhhvyogQZlfhPtOtXXp1t/ll9omuk+MAkZGnu5Q6bJfH0=
+X-Received: by 2002:ac2:46db:: with SMTP id p27mr1639785lfo.396.1615372177245;
+ Wed, 10 Mar 2021 02:29:37 -0800 (PST)
 MIME-Version: 1.0
 References: <20210303135500.24673-1-alex.bennee@linaro.org>
  <20210303135500.24673-2-alex.bennee@linaro.org> <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
@@ -51,15 +51,16 @@ References: <20210303135500.24673-1-alex.bennee@linaro.org>
  <6c542548-cc16-af68-c755-df52bd13b209@marcan.st> <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
  <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
 In-Reply-To: <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 10 Mar 2021 10:48:38 +0100
-Message-ID: <CACRpkdbQks5pRFNHkNLVvLHCBhh0XCv7pHYq25EVAbU60PcwsA@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 10 Mar 2021 15:59:25 +0530
+Message-ID: <CAFA6WYMSJxK2CjmoLJ6mdNNEfOQOMVXZPbbFRfah7KLeZNfguw@mail.gmail.com>
 Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB) subsystem
-To:     Hector Martin <marcan@marcan.st>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Arnd Bergmann <arnd@linaro.org>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Joakim Bech <joakim.bech@linaro.org>,
         =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -77,8 +78,33 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Mar 10, 2021 at 9:47 AM Hector Martin <marcan@marcan.st> wrote:
-
+On Wed, 10 Mar 2021 at 14:17, Hector Martin <marcan@marcan.st> wrote:
+>
+> On 10/03/2021 14.14, Sumit Garg wrote:
+> > On Wed, 10 Mar 2021 at 02:47, Hector Martin <marcan@marcan.st> wrote:
+> >>
+> >> On 09/03/2021 01.20, Linus Walleij wrote:
+> >>> I suppose it would be a bit brutal if the kernel would just go in and
+> >>> appropriate any empty RPMB it finds, but I suspect it is the right way
+> >>> to make use of this facility given that so many of them are just sitting
+> >>> there unused. Noone will run $CUSTOM_UTILITY any more than they
+> >>> run the current RPMB tools in mmc-tools.
+> >>
+> >> AIUI the entire thing relies on a shared key that is programmed once
+> >> into the RPMB device, which is a permanent operation. This key has to be
+> >> secure, usually stored on CPU fuses or derived based on such a root of
+> >> trust. To me it would seem ill-advised to attempt to automate this
+> >> process and have the kernel do a permanent take-over of any RPMBs it
+> >> finds (with what key, for one?) :)
+> >>
+> >
+> > Wouldn't it be a good idea to use DT here to represent whether a
+> > particular RPMB is used as a TEE backup or is available for normal
+> > kernel usage?
+> >
+> > In case of normal kernel usage, I think the RPMB key can come from
+> > trusted and encrypted keys subsystem.
+>
 > Remember that if the key is ever lost, the RPMB is now completely
 > useless forever.
 >
@@ -86,22 +112,16 @@ On Wed, Mar 10, 2021 at 9:47 AM Hector Martin <marcan@marcan.st> wrote:
 > values to derive this kind of thing, not any kind of key stored in
 > erasable storage.
 
-You're right. In the mobile phone world this is a given fact.
+AFAIK, trusted and encrypted keys are generally loaded from initramfs
+(as an encrypted blob) which happens during boot and if an attacker is
+able to erase initramfs then it's already able to make the device
+non-bootable (DoS attack which is hard to prevent against).
 
-If we are thinking devices are to be repurposed or reinstalled
-from scratch for example, like ordinary desktops or servers,
-RPMB does not make generic sense: it is not for
-"generic computing" but rather for protecting devices that you
-carry around and can be lost: mobile phones, chromebooks,
-maybe laptops.
+Although, I agree with you that fuses are the preferred way to store
+RPMB key but not every platform may possess it and vendors may decide
+to re-flash a bricked device via recovery image.
 
-If and only if the user so desires, I would say, but sometimes
-the vendors decide policy...
-
-(+/- the fact that some recent supply chain attacks for server
-software may actually make cloud people start thinking like this
-about their servers integrity, what do I know.)
-
+>
 > Also, newly provisioned keys are sent in plain text, which means that
 > any kind of "if the RPMB is blank, take it over" automation equates to
 > handing over your key who an attacker who removes the RPMB and replaces
@@ -112,36 +132,15 @@ about their servers integrity, what do I know.)
 > I really think trying to automate any kind of "default" usage of an RPMB
 > is a terrible idea. It needs to be a conscious decision on a
 > per-platform basis.
+>
 
-OK sorry for my bad ideas, what was I thinking :D
+Agree and via DT method I only meant to assign already provisioned
+RPMB device/s either to TEE or Linux kernel. And RPMB key provisioning
+being a one time process should be carried out carefully during device
+manufacturing only.
 
-For a laptop or so, I would say, a user who is paranoid that their
-device gets stolen and used by someone else, should be able to
-set their device up, with some tool, such that a secret key from
-somewhere and RPMB is used to lock down the machine so that
-attackers cannot get into it and get the data out.
+-Sumit
 
-Disk is encrypted, and RPMB is there to block any exhaustive
-password or other authentication token search.
-
-Ideally: the only way to make use of the hardware again would
-be to solder off the eMMC, if eMMC is used for RPMB.
-If we have RPMB on an NVME or UFS drive, the idea is
-to lock that thing such that it becomes useless and need to
-be replaced with a new part in this scenario.
-
-In practice: make it hard, because we know no such jail is
-perfect. Make it not worth the effort, make it cheaper for thieves
-to just buy a new harddrive to use a stolen laptop, locking
-the data that was in it away forever by making the drive
-useless for any practical attacks.
-
-Maybe it will be possible to blank the drive and use without
-RPMB since that is now locked with a key they can no longer
-acces: the end result is the same: RPMB protected the data
-of the original user. So a one-time user protection such
-as a seal, once broken this seal cannot be reused to seal
-anything again and that is OK.
-
-Yours,
-Linus Walleij
+> --
+> Hector Martin (marcan@marcan.st)
+> Public Key: https://mrcn.st/pub
