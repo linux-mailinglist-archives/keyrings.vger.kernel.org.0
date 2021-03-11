@@ -2,81 +2,142 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 250213373FD
-	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 14:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E556B337514
+	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 15:08:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233544AbhCKNb3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Mar 2021 08:31:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:40761 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233588AbhCKNbY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 08:31:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1615469483;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=e4Idb2N8an2x83JxsD8aodpPtXFyz97ff2I1Pwu5oE8=;
-        b=gBJnJnarf9mGz97oHT19CduiNc7BLPTpOT+tLbXVHB1RxV34nOlnXN+wTNQVw91ZQC4H7H
-        I5B7BhRIhNohu9dZ4blmo3N1mpA1trGBULLekcuWnXV/wudKZYtO7M1pMRb7xjLzjhUaMA
-        XwIexiEvGFk+vlV3KOsB7zEYqpROv+g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-482-xPNgStTmNqya1OWn-46Ryg-1; Thu, 11 Mar 2021 08:31:19 -0500
-X-MC-Unique: xPNgStTmNqya1OWn-46Ryg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E1F42100D671;
-        Thu, 11 Mar 2021 13:31:17 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-118-152.rdu2.redhat.com [10.10.118.152])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CA73D19704;
-        Thu, 11 Mar 2021 13:31:16 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <1486567.1615464259@warthog.procyon.org.uk>
-References: <1486567.1615464259@warthog.procyon.org.uk> <109018.1615463088@turing-police> <91190.1615444370@turing-police> <972381.1615459754@warthog.procyon.org.uk>
-To:     valdis.kletnieks@vt.edu
-Cc:     dhowells@redhat.com, David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: 'make O=' indigestion with module signing
+        id S233563AbhCKOHu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Mar 2021 09:07:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233716AbhCKOHS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 09:07:18 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192DDC061760
+        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 06:07:18 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id r20so2290329ljk.4
+        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 06:07:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CHnGCeoowP5PFesTvIESZpd7+nGkmxFN1dwqmxmprX0=;
+        b=P9jt8a/PZFgZ7/tm4OY+mMakXBfjAqCxLNc6hLIgsguSdWN+nw9CovlkNe3KK5Tmm0
+         9cTobVG9wP6LXfdR3gKpkt9q/YmzFNYCeVMlrGeA+PZJLepUZmSrIEhG0Ghd3ZFyg3JB
+         kfBsIL3bPaLsqZH+HPi3KYwe8BcF90sxYez8S7jZ9bWMiog+XmtKQgDKHZOUgoUQC3fw
+         xtedydsZXIpmMrz8LXXH8XzApOPD0h+75d5pIFB8aAk5K2qhq35R1Jv9i2HEecEtnoBA
+         WylYvJkZIKq+BX2l6xYPvS0nFLZQyIQH+OSzO1wCq3pVD8Q93813Cspex8me5vTILhVT
+         hPYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CHnGCeoowP5PFesTvIESZpd7+nGkmxFN1dwqmxmprX0=;
+        b=TTCLLV6te4/WXvsdlWURVENXqrWEzci23wmK04CZFrBnlbF6iqV4v+WlcMbyo1/7ZO
+         nZjEdn+paPwDLdCEMpKT9xnkNNdn+n4a+kBA3JRtkIeaxkwHtD2YVU8btWzMUgW8Gbz2
+         lY2XVYOIYwcRbXMUKZ/gAU3CSk8Hy3atywZaUfzMYdXr7sc0e9hrS/99FfMVdeRJOk4R
+         YG76UTbz2HBSEbwKvbuzpER63hfttYyZULy7BqaAcHMj01DPuToILAvF8T1gNlIxk4D6
+         Oovwmb8oq4mL1MBIHnONruTPx8fIMxtDntOlSKAaUGxzjdgPAOeEPtTdWa/f8lPCAil3
+         wyAA==
+X-Gm-Message-State: AOAM533k+5Bij99dJua5vlk5pOemtBIfNo2jWDgn7fUehS6Y6tsbk4bN
+        riSW7Dxljujwu/zYvGat98o4B5sCD+oqp8lRBTiGYA==
+X-Google-Smtp-Source: ABdhPJwQ5esO5Sin3fijGmoE+OqN66wCX8HD+BkG0ZXsi8bRbxw+rjWiMQ9W9fBkMMlpK8/9mHZZhTuy1tNh/JkXIy8=
+X-Received: by 2002:a2e:864a:: with SMTP id i10mr4758406ljj.467.1615471636398;
+ Thu, 11 Mar 2021 06:07:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1864397.1615469475.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Thu, 11 Mar 2021 13:31:15 +0000
-Message-ID: <1864398.1615469475@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+References: <20210303135500.24673-1-alex.bennee@linaro.org>
+ <20210303135500.24673-2-alex.bennee@linaro.org> <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
+ <20210305075131.GA15940@goby> <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
+ <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
+ <6c542548-cc16-af68-c755-df52bd13b209@marcan.st> <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
+ <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st> <CACRpkdbQks5pRFNHkNLVvLHCBhh0XCv7pHYq25EVAbU60PcwsA@mail.gmail.com>
+ <0a26713a-8988-1713-4358-bc62364b9e25@marcan.st> <CACRpkda9f-BNmu-CaNsghnDoOcSXvvvji=tag2Xos+tg_nNZ0w@mail.gmail.com>
+ <32bdceb1-e70d-7481-96e3-a064a7108eb9@marcan.st>
+In-Reply-To: <32bdceb1-e70d-7481-96e3-a064a7108eb9@marcan.st>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 11 Mar 2021 15:06:57 +0100
+Message-ID: <CACRpkdZ_-rqGBUOxUcBPeqVkLzX=Q9pjO9M+zY20-S9tNXAE0Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB) subsystem
+To:     Hector Martin <marcan@marcan.st>
+Cc:     David Howells <dhowells@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Arnd Bergmann <arnd@linaro.org>,
+        Joakim Bech <joakim.bech@linaro.org>,
+        =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Maxim Uvarov <maxim.uvarov@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Ruchika Gupta <ruchika.gupta@linaro.org>,
+        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
+        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
+        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-nvme@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Arnd Bergmann <arnd.bergmann@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-David Howells <dhowells@redhat.com> wrote:
+On Thu, Mar 11, 2021 at 10:22 AM Hector Martin <marcan@marcan.st> wrote:
+> On 11/03/2021 09.36, Linus Walleij wrote:
 
-> I'll have to try with the aarch64 build, see if it's something in that t=
-hat's
-> the problem.
+> > The typical use-case mentioned in one reference is to restrict
+> > the number of password/pin attempts and  combine that with
+> > secure time to make sure that longer and longer intervals are
+> > required between password attempts.
+> >
+> > This seems pretty neat to me.
+>
+> Yes, but to implement that you don't need any secure storage *at all*.
+> If all the RPMB did was authenticate an incrementing counter, you could
+> just store the <last timestamp, attempts remaining> tuple inside a blob
+> of secure (encrypted and MACed) storage on any random Flash device,
+> along with the counter value, and thus prevent rollbacks that way (some
+> finer design points are needed to deal with power loss protection and
+> ordering, but the theory holds).
 
-That works too... kind of.  Building in the certs/ dir is fine - and all t=
-he
-cert generation and extraction is done in the expected place, but the link
-fails with errors like:
+Yes. And this is what mobile phone vendors typically did.
 
-aarch64-linux-gnu-ld: arch/arm64/kernel/paravirt.o: relocation R_AARCH64_A=
-BS32 against `__crc_pv_ops' can not be used when making a shared object
-arch/arm64/kernel/paravirt.o:(__patchable_function_entries+0x0): dangerous=
- relocation: unsupported relocation
-arch/arm64/kernel/paravirt.o:(__patchable_function_entries+0x8): dangerous=
- relocation: unsupported relocation
-arch/arm64/kernel/paravirt.o:(__patchable_function_entries+0x10): dangerou=
-s relocation: unsupported relocation
-arch/arm64/kernel/paravirt.o:(__patchable_function_entries+0x18): dangerou=
-s relocation: unsupported relocation
-...
+But the nature of different electrical attacks made them worried
+about different schemes involving cutting power and disturbing
+signals with different probes, so they wanted this counter
+implemented in hardware and that is why RPMB exists at all
+(IIUC).
 
-David
+It is fine to be of the opinion that this entire piece of hardware
+is pointless because the same can be achieved using
+well written software.
 
+The position that the kernel community shall just ignore this
+hardware is a possible outcome of this discussion, but we need
+to have the discussion anyway, because now a RPMB framework
+is being promoted. The people who want it will need to sell it to
+us.
+
+> > With RPMB this can be properly protected against because
+> > the next attempt can not be made until after the RPMB
+> > monotonic counter has been increased.
+>
+> But this is only enforced by software. If you do not have secure boot,
+> you can just patch software to allow infinite tries without touching the
+> RPMB. The RPMB doesn't check PINs for you, it doesn't even gate read
+> access to data in any way. All it does is promise you cannot make the
+> counter count down, or make the data stored within go back in time.
+
+This is true, I guess the argument is something along the
+line that if one link in the chain is weaker, why harden
+any other link, the chain will break anyway?
+
+(The rest of your message seems to underscore this
+position.)
+
+I am more of the position let's harden this link if we can
+and then deal with the others when they come up, i.e.
+my concern is this piece of the puzzle, even if it is not
+the centerpiece (maybe the centerpiece is secure boot
+what do I know).
+
+Yours,
+Linus Walleij
