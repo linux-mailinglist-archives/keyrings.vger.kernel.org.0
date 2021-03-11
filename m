@@ -2,133 +2,167 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E6C336C4D
-	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 07:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA131336EBB
+	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 10:23:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbhCKGdT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Mar 2021 01:33:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41780 "EHLO
+        id S231844AbhCKJW5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Mar 2021 04:22:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229901AbhCKGcx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 01:32:53 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0962BC061574
-        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 22:32:53 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id r14so404444qtt.7
-        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 22:32:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vt-edu.20150623.gappssmtp.com; s=20150623;
-        h=sender:from:to:cc:subject:mime-version:content-transfer-encoding
-         :date:message-id;
-        bh=BizFYMd4lnfnBCNV1I/csBONi2AAiqpb4n7PCn9WcW8=;
-        b=DzhYAAvXKF93EBOHLTIeuCFiN2xnFJkBMayInq9r9s4V5WwKwrhefz1OLvDmsAqPIG
-         mPSJXZgAWKIXuBhn6PCHMWKW0Hj92SNEljy5tsuIa7Q1aTR1V4GEZYw55e8AHBC7gnmK
-         tbxYAIr2z30giHd30rMn945CxEiVK1LP6Sa/kXkYObC54RfL6nf2UA4vaHDx2SKnw6sV
-         F0e+C46e7Tv2WQ7AAV2NTLgyIoKjaGW1pLDKY7ri8K9E7+b9jz725cRFcz6LxLY+kogh
-         lfY4cvIcYHC43ZbYnWgmIgO5nvH8fUQeIlO1fTDr8VV0dAITs6TO2cY8a7TS21ztjEdL
-         xWsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:mime-version
-         :content-transfer-encoding:date:message-id;
-        bh=BizFYMd4lnfnBCNV1I/csBONi2AAiqpb4n7PCn9WcW8=;
-        b=o5Ntr+kYDioquGz9IJGEoxQhMvw2OvpCIH89bhXavJc6Xegb5BIE7QHL7uR7EKnDgx
-         2+05x4CMD9xrekJ55pWZJPhK0YUU94R199qngG98+RZkDY+jwyJaRvEOygqAJHPHCsaq
-         PeX9G6lnLlqzLOJQwWll5gYkM0TBBqa5SgCooB3YzV6Phtuq0FGmXHo2ML4lcFm5q/21
-         9GCHkgrkeie4eYyeLEuS+jiWT6KJRvLeHcYQSGFKfv/lesKaaqF79I0WBIBitKYv95jt
-         BdmM5nxYLbrd8/hBm9ImYDjbURruZlkw0lj++TP5OTgxSZcPYWLLCwx7Pb+kB0zfGTtW
-         K7YA==
-X-Gm-Message-State: AOAM53265hxsw7yMjvpWG1h2/iMV5majhx7rqVyHpQMsnacn+0JTkrz1
-        kOa99fygUd8m8gW0sf3KJqFrWiPfoDtcWg==
-X-Google-Smtp-Source: ABdhPJxo9JCV0i430aeowSbupXwCUIw61RVhNtF1B9UvTEK16su2H+ORwzLBs+/eyCNbi9dDAiKzKg==
-X-Received: by 2002:ac8:7153:: with SMTP id h19mr6367855qtp.176.1615444372117;
-        Wed, 10 Mar 2021 22:32:52 -0800 (PST)
-Received: from turing-police ([2601:5c0:c380:d61:2b0f:e860:4e22:d54f])
-        by smtp.gmail.com with ESMTPSA id d10sm1108163qtq.78.2021.03.10.22.32.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Mar 2021 22:32:51 -0800 (PST)
-Sender: Valdis Kletnieks <valdis@vt.edu>
-From:   "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <valdis.kletnieks@vt.edu>
-X-Google-Original-From: "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <Valdis.Kletnieks@vt.edu>
-X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
-To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: 'make O=' indigestion with module signing
-Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="==_Exmh_1615444370_76436P";
-         micalg=pgp-sha1; protocol="application/pgp-signature"
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 11 Mar 2021 01:32:50 -0500
-Message-ID: <91190.1615444370@turing-police>
+        with ESMTP id S231759AbhCKJWw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 04:22:52 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FA5AC061574;
+        Thu, 11 Mar 2021 01:22:51 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id CD16C41ECC;
+        Thu, 11 Mar 2021 09:22:43 +0000 (UTC)
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Arnd Bergmann <arnd@linaro.org>,
+        Joakim Bech <joakim.bech@linaro.org>,
+        =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Maxim Uvarov <maxim.uvarov@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Ruchika Gupta <ruchika.gupta@linaro.org>,
+        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
+        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
+        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-nvme@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Arnd Bergmann <arnd.bergmann@linaro.org>
+References: <20210303135500.24673-1-alex.bennee@linaro.org>
+ <20210303135500.24673-2-alex.bennee@linaro.org>
+ <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
+ <20210305075131.GA15940@goby>
+ <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
+ <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
+ <6c542548-cc16-af68-c755-df52bd13b209@marcan.st>
+ <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
+ <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
+ <CACRpkdbQks5pRFNHkNLVvLHCBhh0XCv7pHYq25EVAbU60PcwsA@mail.gmail.com>
+ <0a26713a-8988-1713-4358-bc62364b9e25@marcan.st>
+ <CACRpkda9f-BNmu-CaNsghnDoOcSXvvvji=tag2Xos+tg_nNZ0w@mail.gmail.com>
+From:   Hector Martin <marcan@marcan.st>
+Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB)
+ subsystem
+Message-ID: <32bdceb1-e70d-7481-96e3-a064a7108eb9@marcan.st>
+Date:   Thu, 11 Mar 2021 18:22:41 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+MIME-Version: 1.0
+In-Reply-To: <CACRpkda9f-BNmu-CaNsghnDoOcSXvvvji=tag2Xos+tg_nNZ0w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: es-ES
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
---==_Exmh_1615444370_76436P
-Content-Type: text/plain; charset=us-ascii
+On 11/03/2021 09.36, Linus Walleij wrote:
+>> It is not intended to store keys in a way that is somehow safer than
+>> other mechanisms. After all, you need to securely store the RPMB key to
+>> begin with; you might as well use that to encrypt a keystore on any
+>> random block device.
+> 
+> The typical use-case mentioned in one reference is to restrict
+> the number of password/pin attempts and  combine that with
+> secure time to make sure that longer and longer intervals are
+> required between password attempts.
+> 
+> This seems pretty neat to me.
 
-So, I tried doing a 'make O=... allmodconfig', with a setup where the uid of
-the build process had write permission to the O= directory, but intentionally
-did *not* have write permission to the source tree (so they couldn't mess up
-the tree - I got tired of having to repeatedly do 'make mrproper' because of
-pilot error)
+Yes, but to implement that you don't need any secure storage *at all*. 
+If all the RPMB did was authenticate an incrementing counter, you could 
+just store the <last timestamp, attempts remaining> tuple inside a blob 
+of secure (encrypted and MACed) storage on any random Flash device, 
+along with the counter value, and thus prevent rollbacks that way (some 
+finer design points are needed to deal with power loss protection and 
+ordering, but the theory holds).
 
-allmodconfig gave me a .config that had:
+Basically what I'm saying is that for security *guarantee* purposes, 
+AFAICT the storage part of RPMB makes no difference. It is useful in 
+practical implementations for various reasons, but if you think you can 
+use that secure storage to provide security properties which you 
+couldn't do otherwise, you are probably being misled. If you're trying 
+to understand what having RPMB gets you over not having it, it helps if 
+you ignore all the storage stuff and just view it as a single secure, 
+increment-only counter.
 
-CONFIG_MODULE_SIG_FORMAT=y
-CONFIG_MODULE_SIG=y
-CONFIG_MODULE_SIG_FORCE=y
-CONFIG_MODULE_SIG_ALL=y
-CONFIG_MODULE_SIG_SHA1=y
-# CONFIG_MODULE_SIG_SHA224 is not set
-# CONFIG_MODULE_SIG_SHA256 is not set
-# CONFIG_MODULE_SIG_SHA384 is not set
-# CONFIG_MODULE_SIG_SHA512 is not set
-CONFIG_MODULE_SIG_HASH="sha1"
-CONFIG_IMA_APPRAISE_REQUIRE_MODULE_SIGS=y
-CONFIG_MODULE_SIG_KEY="certs/signing_key.pem"
+> 
+>> But RPMB does not enforce any of this policy for you. RPMB only gives
+>> you a primitive: the ability to have storage that cannot be externally
+>> rolled back. So none of this works unless the entire system is set up to
+>> securely boot all the way until the drive unlock happens, and there are
+>> no other blatant code execution avenues.
+> 
+> This is true for firmware anti-rollback or say secure boot.
+> 
+> But RPMB can also be used for example for restricting the
+> number of PIN attempts.
+> 
+> A typical attack vector on phones (I think candybar phones
+> even) was a robot that was punching PIN codes to unlock
+> the phone, combined with an electronic probe that would
+> cut the WE (write enable) signal to the flash right after
+> punching a code. The counter was stored in the flash.
+> 
+> (A bit silly example as this can be countered by reading back
+> the counter from flash and checking etc, but you get the idea,
+> various versions of this attack is possible,)
+> 
+> With RPMB this can be properly protected against because
+> the next attempt can not be made until after the RPMB
+> monotonic counter has been increased.
 
-What i *expected* was that multiple builds with different O= would each
-generate themselves a unique signing key and put it in their own O= directory
-and stay out of each other's way.
+But this is only enforced by software. If you do not have secure boot, 
+you can just patch software to allow infinite tries without touching the 
+RPMB. The RPMB doesn't check PINs for you, it doesn't even gate read 
+access to data in any way. All it does is promise you cannot make the 
+counter count down, or make the data stored within go back in time.
 
-What actually happened:
+> Of course the system can be compromised in other ways,
+> (like, maybe it doesn't even have secure boot or even
+> no encrypted drive) but this is one of the protection
+> mechanisms that can plug one hole.
 
-  EXTRACT_CERTS   /usr/src/linux-next/"certs/signing_key.pem"
-At main.c:142:
-- SSL error:0200100D:system library:fopen:Permission denied: ../crypto/bio/bss_file.c:69
-- SSL error:2006D002:BIO routines:BIO_new_file:system lib: ../crypto/bio/bss_file.c:78
-extract-cert: /usr/src/linux-next/certs/signing_key.pem: Permission denied
-make[2]: *** [/usr/src/linux-next/certs/Makefile:106: certs/signing_key.x509] Error 1
-make[1]: *** [/usr/src/linux-next/Makefile:1847: certs] Error 2
-make[1]: Leaving directory '/usr/src/linux-next/out/arm64'
-make: *** [Makefile:215: __sub-make] Error 2
+This is hot how security systems are designed though; you do not "plug 
+holes", what you do is cover more attack scenarios, and you do that in 
+the order from simplest to hardest.
 
-It tried to put the key into the source tree rather than the build tree.
+If we are trying to crack the PIN on a device we have physical access 
+to, the simplest and most effective attack is to just run your own 
+software on the machine, extract whatever hash or material you need to 
+validate PINs, and do it offline.
 
-Before I try to code up a fix for this, is this intentionally designed
-behavior, or have I just managed to trip over a rarely-tested corner case?
+To protect against that, you first need to move the PIN checking into a 
+trust domain where an attacker with physical access can't easily break 
+in, which means secure boot.
 
---==_Exmh_1615444370_76436P
-Content-Type: application/pgp-signature
+*Then* the next simplest attack is a secure storage rollback attack, 
+which is what I described in that blog post about iOS. And *now* it 
+makes sense to start thinking about the RPMB.
 
------BEGIN PGP SIGNATURE-----
-Comment: Exmh version 2.9.0 11/07/2018
+But RPMB alone doesn't make any sense on a system without secure boot. 
+It doesn't change anything; in both cases the simplest attack is to just 
+run your own software.
 
-iQIVAwUBYEm5kgdmEQWDXROgAQKR7A//a5ygFNNhhw7c953h2Tz4djYPSGEgBOLV
-nPyT9ZRRU0cmaZjw3bCfZNfP5BBioFDrvN0vYjopP2eZ8yJXJ/qFB9oST8eu4YsO
-BFTvRglMsvwDvHoKORM0jUkxFgsIwK6IficTZldx1h//4+frT4LkxLaAVWCZOGa2
-yWnHT2xGPXpirlTy3EuQR9oseshC4NYw2unGAVQ69t8e55uAmGCST3pe5zuBuSOb
-2WDEnxdU7A0hyWIlmwRZvKPUPZvl2K5eM5C1+9PDB/0KLJ0mouJBxP48x5yUw3Ci
-0V4YYDtnGRXNYniJeX0eaqIWX/Pkx+Z/PVjWR+Ys4U+z6eZuMMVCIyw3wfBsprSj
-kPz0KXxpShMfmkIdwH0piZNwd+4axDM1akgOp8PHkI5uuhOw8pxanqIy7uLB/E0j
-9Og5LlnuVDa4bawYD4+iAjdelcA98CbWaORB2cmG9/uI+1VSi75uWYAa2VIRokGm
-yTWVXtuJq/2JCviF6hF6HMxXkxhUQKn2P71fzhPqVSnlUb+duAnpOBB1P07LjMyq
-LfWKdrTl+mSt4r2XICnWilozkwkMb3Uq2VB2CF5JSJmjM1dXt/sMC9hTxEHr/MAZ
-wf0Z6DF3iBqDDQ6sQ0jFrOxWdifGyOAjE2iscqJ7gyH0WkM5+q9OTpGHBglqM6lL
-QuGzzjsLpxE=
-=TNNH
------END PGP SIGNATURE-----
+> It is thus a countermeasure to keyboard emulators and other
+> evil hardware trying to brute force their way past screen
+> locks and passwords. Such devices exist, sadly.
 
---==_Exmh_1615444370_76436P--
+If you're trying to protect against a "dumb" attack with a keyboard 
+emulator that doesn't consider access to physical storage, then you 
+don't need RPMB either; you can just put the PIN unlock counter in a 
+random file.
+
+-- 
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
