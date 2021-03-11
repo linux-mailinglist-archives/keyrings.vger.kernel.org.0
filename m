@@ -2,111 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD341336968
-	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 02:08:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E6C336C4D
+	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 07:33:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbhCKBII (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 10 Mar 2021 20:08:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56764 "EHLO
+        id S229817AbhCKGdT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Mar 2021 01:33:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbhCKBHj (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 10 Mar 2021 20:07:39 -0500
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29DDC061574;
-        Wed, 10 Mar 2021 17:07:38 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D65C61280622;
-        Wed, 10 Mar 2021 17:07:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1615424856;
-        bh=rPT+VYV1+Cvgf3klr7B1cClAbrNcSs/uscoE5EBQ0nc=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=p12GzutZqy8xcUa2GnBy4AOa+gxAVmux6akGb/gVO8WcPowOFQyN5jmyE52Lyz7/r
-         BnDxvXjx8FggJ+nr1mNWUTNHncvcWJIEcSSWGK5if6n5S5UvFcoGs9xCV/aH6Zx5oI
-         cLwFa94vi+9FtHBA27LQV/mVFHIhmeEXGaeMba6U=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id gW20K4LJnFMI; Wed, 10 Mar 2021 17:07:36 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id AA7E31280610;
-        Wed, 10 Mar 2021 17:07:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1615424856;
-        bh=rPT+VYV1+Cvgf3klr7B1cClAbrNcSs/uscoE5EBQ0nc=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=p12GzutZqy8xcUa2GnBy4AOa+gxAVmux6akGb/gVO8WcPowOFQyN5jmyE52Lyz7/r
-         BnDxvXjx8FggJ+nr1mNWUTNHncvcWJIEcSSWGK5if6n5S5UvFcoGs9xCV/aH6Zx5oI
-         cLwFa94vi+9FtHBA27LQV/mVFHIhmeEXGaeMba6U=
-Message-ID: <d93321502a3df2f7afa42da417137d79f6e49961.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB)
- subsystem
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Sumit Garg <sumit.garg@linaro.org>
-Cc:     Hector Martin <marcan@marcan.st>, Arnd Bergmann <arnd@linaro.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Joakim Bech <joakim.bech@linaro.org>,
-        Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ruchika Gupta <ruchika.gupta@linaro.org>,
-        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
-        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
-        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-nvme@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd.bergmann@linaro.org>
-Date:   Wed, 10 Mar 2021 17:07:34 -0800
-In-Reply-To: <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
-References: <20210303135500.24673-1-alex.bennee@linaro.org>
-         <20210303135500.24673-2-alex.bennee@linaro.org>
-         <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
-         <20210305075131.GA15940@goby>
-         <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
-         <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
-         <6c542548-cc16-af68-c755-df52bd13b209@marcan.st>
-         <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
-         <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
-         <CAFA6WYMSJxK2CjmoLJ6mdNNEfOQOMVXZPbbFRfah7KLeZNfguw@mail.gmail.com>
-         <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
-MIME-Version: 1.0
+        with ESMTP id S229901AbhCKGcx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 01:32:53 -0500
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0962BC061574
+        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 22:32:53 -0800 (PST)
+Received: by mail-qt1-x829.google.com with SMTP id r14so404444qtt.7
+        for <keyrings@vger.kernel.org>; Wed, 10 Mar 2021 22:32:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:mime-version:content-transfer-encoding
+         :date:message-id;
+        bh=BizFYMd4lnfnBCNV1I/csBONi2AAiqpb4n7PCn9WcW8=;
+        b=DzhYAAvXKF93EBOHLTIeuCFiN2xnFJkBMayInq9r9s4V5WwKwrhefz1OLvDmsAqPIG
+         mPSJXZgAWKIXuBhn6PCHMWKW0Hj92SNEljy5tsuIa7Q1aTR1V4GEZYw55e8AHBC7gnmK
+         tbxYAIr2z30giHd30rMn945CxEiVK1LP6Sa/kXkYObC54RfL6nf2UA4vaHDx2SKnw6sV
+         F0e+C46e7Tv2WQ7AAV2NTLgyIoKjaGW1pLDKY7ri8K9E7+b9jz725cRFcz6LxLY+kogh
+         lfY4cvIcYHC43ZbYnWgmIgO5nvH8fUQeIlO1fTDr8VV0dAITs6TO2cY8a7TS21ztjEdL
+         xWsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:mime-version
+         :content-transfer-encoding:date:message-id;
+        bh=BizFYMd4lnfnBCNV1I/csBONi2AAiqpb4n7PCn9WcW8=;
+        b=o5Ntr+kYDioquGz9IJGEoxQhMvw2OvpCIH89bhXavJc6Xegb5BIE7QHL7uR7EKnDgx
+         2+05x4CMD9xrekJ55pWZJPhK0YUU94R199qngG98+RZkDY+jwyJaRvEOygqAJHPHCsaq
+         PeX9G6lnLlqzLOJQwWll5gYkM0TBBqa5SgCooB3YzV6Phtuq0FGmXHo2ML4lcFm5q/21
+         9GCHkgrkeie4eYyeLEuS+jiWT6KJRvLeHcYQSGFKfv/lesKaaqF79I0WBIBitKYv95jt
+         BdmM5nxYLbrd8/hBm9ImYDjbURruZlkw0lj++TP5OTgxSZcPYWLLCwx7Pb+kB0zfGTtW
+         K7YA==
+X-Gm-Message-State: AOAM53265hxsw7yMjvpWG1h2/iMV5majhx7rqVyHpQMsnacn+0JTkrz1
+        kOa99fygUd8m8gW0sf3KJqFrWiPfoDtcWg==
+X-Google-Smtp-Source: ABdhPJxo9JCV0i430aeowSbupXwCUIw61RVhNtF1B9UvTEK16su2H+ORwzLBs+/eyCNbi9dDAiKzKg==
+X-Received: by 2002:ac8:7153:: with SMTP id h19mr6367855qtp.176.1615444372117;
+        Wed, 10 Mar 2021 22:32:52 -0800 (PST)
+Received: from turing-police ([2601:5c0:c380:d61:2b0f:e860:4e22:d54f])
+        by smtp.gmail.com with ESMTPSA id d10sm1108163qtq.78.2021.03.10.22.32.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Mar 2021 22:32:51 -0800 (PST)
+Sender: Valdis Kletnieks <valdis@vt.edu>
+From:   "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis =?utf-8?Q?Kl=c4=93tnieks?=" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: 'make O=' indigestion with module signing
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1615444370_76436P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
 Content-Transfer-Encoding: 7bit
+Date:   Thu, 11 Mar 2021 01:32:50 -0500
+Message-ID: <91190.1615444370@turing-police>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2021-03-11 at 01:49 +0100, Linus Walleij wrote:
-> The use case for TPM on laptops is similar: it can be used by a
-> provider to lock down a machine, but it can also be used by the
-> random user to store keys. Very few users beside James
-> Bottomley are capable of doing that (I am not)
+--==_Exmh_1615444370_76436P
+Content-Type: text/plain; charset=us-ascii
 
-Yes, that's the problem with the TPM: pretty much no-one other than
-someone prepared to become an expert in the subject can use it.  This
-means that enabling RPMB is unlikely to be useful ... you have to
-develop easy use cases for it as well.
+So, I tried doing a 'make O=... allmodconfig', with a setup where the uid of
+the build process had write permission to the O= directory, but intentionally
+did *not* have write permission to the source tree (so they couldn't mess up
+the tree - I got tired of having to repeatedly do 'make mrproper' because of
+pilot error)
 
->  but they exist.
-> https://blog.hansenpartnership.com/using-your-tpm-as-a-secure-key-store/
+allmodconfig gave me a .config that had:
 
-It's the difficulty of actually *using* the thing as a keystore which
-causes the problem.   The trick to expanding use it to make it simple.
-Not to derail the thread, but this should hopefully become a whole lot
-easier soon.  Gnupg-2.3 will release with easy to use TPM support for
-all your gpg keys:
+CONFIG_MODULE_SIG_FORMAT=y
+CONFIG_MODULE_SIG=y
+CONFIG_MODULE_SIG_FORCE=y
+CONFIG_MODULE_SIG_ALL=y
+CONFIG_MODULE_SIG_SHA1=y
+# CONFIG_MODULE_SIG_SHA224 is not set
+# CONFIG_MODULE_SIG_SHA256 is not set
+# CONFIG_MODULE_SIG_SHA384 is not set
+# CONFIG_MODULE_SIG_SHA512 is not set
+CONFIG_MODULE_SIG_HASH="sha1"
+CONFIG_IMA_APPRAISE_REQUIRE_MODULE_SIGS=y
+CONFIG_MODULE_SIG_KEY="certs/signing_key.pem"
 
-https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=log;h=6720f1343aef9342127380b155c19e12c92d65ac
+What i *expected* was that multiple builds with different O= would each
+generate themselves a unique signing key and put it in their own O= directory
+and stay out of each other's way.
 
-It's not the end of the road by any means, but hopefully it will become
-a beach head of sorts for more uses.
+What actually happened:
 
-James
+  EXTRACT_CERTS   /usr/src/linux-next/"certs/signing_key.pem"
+At main.c:142:
+- SSL error:0200100D:system library:fopen:Permission denied: ../crypto/bio/bss_file.c:69
+- SSL error:2006D002:BIO routines:BIO_new_file:system lib: ../crypto/bio/bss_file.c:78
+extract-cert: /usr/src/linux-next/certs/signing_key.pem: Permission denied
+make[2]: *** [/usr/src/linux-next/certs/Makefile:106: certs/signing_key.x509] Error 1
+make[1]: *** [/usr/src/linux-next/Makefile:1847: certs] Error 2
+make[1]: Leaving directory '/usr/src/linux-next/out/arm64'
+make: *** [Makefile:215: __sub-make] Error 2
 
+It tried to put the key into the source tree rather than the build tree.
 
+Before I try to code up a fix for this, is this intentionally designed
+behavior, or have I just managed to trip over a rarely-tested corner case?
+
+--==_Exmh_1615444370_76436P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
+
+iQIVAwUBYEm5kgdmEQWDXROgAQKR7A//a5ygFNNhhw7c953h2Tz4djYPSGEgBOLV
+nPyT9ZRRU0cmaZjw3bCfZNfP5BBioFDrvN0vYjopP2eZ8yJXJ/qFB9oST8eu4YsO
+BFTvRglMsvwDvHoKORM0jUkxFgsIwK6IficTZldx1h//4+frT4LkxLaAVWCZOGa2
+yWnHT2xGPXpirlTy3EuQR9oseshC4NYw2unGAVQ69t8e55uAmGCST3pe5zuBuSOb
+2WDEnxdU7A0hyWIlmwRZvKPUPZvl2K5eM5C1+9PDB/0KLJ0mouJBxP48x5yUw3Ci
+0V4YYDtnGRXNYniJeX0eaqIWX/Pkx+Z/PVjWR+Ys4U+z6eZuMMVCIyw3wfBsprSj
+kPz0KXxpShMfmkIdwH0piZNwd+4axDM1akgOp8PHkI5uuhOw8pxanqIy7uLB/E0j
+9Og5LlnuVDa4bawYD4+iAjdelcA98CbWaORB2cmG9/uI+1VSi75uWYAa2VIRokGm
+yTWVXtuJq/2JCviF6hF6HMxXkxhUQKn2P71fzhPqVSnlUb+duAnpOBB1P07LjMyq
+LfWKdrTl+mSt4r2XICnWilozkwkMb3Uq2VB2CF5JSJmjM1dXt/sMC9hTxEHr/MAZ
+wf0Z6DF3iBqDDQ6sQ0jFrOxWdifGyOAjE2iscqJ7gyH0WkM5+q9OTpGHBglqM6lL
+QuGzzjsLpxE=
+=TNNH
+-----END PGP SIGNATURE-----
+
+--==_Exmh_1615444370_76436P--
