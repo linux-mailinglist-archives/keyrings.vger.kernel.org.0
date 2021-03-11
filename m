@@ -2,133 +2,130 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F5F336F1F
-	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 10:46:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE39336F46
+	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 10:52:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232059AbhCKJp6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Mar 2021 04:45:58 -0500
-Received: from [212.63.208.185] ([212.63.208.185]:49688 "EHLO
-        mail.marcansoft.com" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232152AbhCKJpp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 04:45:45 -0500
-X-Greylist: delayed 71604 seconds by postgrey-1.27 at vger.kernel.org; Thu, 11 Mar 2021 04:45:44 EST
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id D365C4246F;
-        Thu, 11 Mar 2021 09:45:32 +0000 (UTC)
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Sumit Garg <sumit.garg@linaro.org>
-Cc:     Arnd Bergmann <arnd@linaro.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Joakim Bech <joakim.bech@linaro.org>,
-        =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ruchika Gupta <ruchika.gupta@linaro.org>,
-        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
-        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
-        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-nvme@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd.bergmann@linaro.org>
-References: <20210303135500.24673-1-alex.bennee@linaro.org>
- <20210303135500.24673-2-alex.bennee@linaro.org>
- <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
- <20210305075131.GA15940@goby>
- <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
- <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
- <6c542548-cc16-af68-c755-df52bd13b209@marcan.st>
- <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
- <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
- <CAFA6WYMSJxK2CjmoLJ6mdNNEfOQOMVXZPbbFRfah7KLeZNfguw@mail.gmail.com>
- <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB)
- subsystem
-Message-ID: <e5d3f4b5-748e-0700-b897-393187b2bb1a@marcan.st>
-Date:   Thu, 11 Mar 2021 18:45:30 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: es-ES
-Content-Transfer-Encoding: 8bit
+        id S231826AbhCKJwX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Mar 2021 04:52:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232100AbhCKJvw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 04:51:52 -0500
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80770C061574
+        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 01:51:52 -0800 (PST)
+Received: by mail-qv1-xf2c.google.com with SMTP id l15so2275449qvl.4
+        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 01:51:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:in-reply-to:references:mime-version
+         :content-transfer-encoding:date:message-id;
+        bh=2Z5KFbpoZoKx3xPK/QW5i6Kd1QKjNeYD38tnwCHsyF8=;
+        b=i1jBcHgUGSgigIMBO+DKplyCYBPD6kW8rwDbo65wSugoVcUXh0XsUUWt0pLSDVqu4U
+         6GeZH6sGiQbKxcrTtzh68nvxB64U1a3WrvOZocEEruO35wpxS0+GKXgMQHbmi8fB9hUf
+         PdE9upbBgCtWLAE7y59g/QkNAeBK868Il27eiEWRXyfUuNfPciUq8f67SZzvFUYepZks
+         P66+r+VYAk+6620yeUi3mWyobwnwOirwLbUhuIAcvH6LVxsFurfj375E/vFMPykDZj4J
+         hzXf22SKWGkYiOG1TCEy6c6+Z8xQRt7JsI1QdTh1NFnu62nzTY9cKmXaE3BTBgb9NsJG
+         4Tyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :mime-version:content-transfer-encoding:date:message-id;
+        bh=2Z5KFbpoZoKx3xPK/QW5i6Kd1QKjNeYD38tnwCHsyF8=;
+        b=FfxXyr/GKBsNwQi5berwjxSBzhqJDyF8rHtOjxBS3XN2A2GpwBKB5QUNQz+AlKxiGw
+         m4NHi3GH+oRSDwWP5fniAzCNu7E7bQOhw70Jknys2FljrTNyQZhYqj8Q8MhjSZhn8BDH
+         Vl9aJZqg1/VKF/2S/hrLCjZqgVQI/SQRQVcAW3maz66vMgz35xNK8yEqBbedt4koJTzA
+         RfujXvp1IONXnPPOR83QRofobO8UiPukOsCxltcGVJHvw0l5XRL5GrTfMD84TwOO0+L7
+         ozNXAszpVHKC8ZTau9Gb2J08OzZYVd7aiIjesrt02JoTExPvR+SJt+SStp/IC/utGubm
+         wJ9Q==
+X-Gm-Message-State: AOAM532omvUR23XUk3s6KTR9xLcWhJKFIQKPMYcc1efYCZjTQfOUJg5h
+        Lqcc0/6s4vHevwxzP/5L0Mujfw==
+X-Google-Smtp-Source: ABdhPJwGb334duzGB4dbTv8VoBPxtR1DzgtLcfSaeSkCINGEyVHbn8TfuUmF8n4M7qC3yuVwjIg/+g==
+X-Received: by 2002:a0c:cc8c:: with SMTP id f12mr6684470qvl.14.1615456311156;
+        Thu, 11 Mar 2021 01:51:51 -0800 (PST)
+Received: from turing-police ([2601:5c0:c380:d61:2b0f:e860:4e22:d54f])
+        by smtp.gmail.com with ESMTPSA id w197sm1462903qkb.89.2021.03.11.01.51.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Mar 2021 01:51:50 -0800 (PST)
+Sender: Valdis Kletnieks <valdis@vt.edu>
+From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     David Howells <dhowells@redhat.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: 'make O=' indigestion with module signing
+In-Reply-To: <860945.1615455241@warthog.procyon.org.uk>
+References: <91190.1615444370@turing-police>
+ <860945.1615455241@warthog.procyon.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1615456309_76436P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 11 Mar 2021 04:51:49 -0500
+Message-ID: <102790.1615456309@turing-police>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 11/03/2021 09.49, Linus Walleij wrote:
-> The use case for TPM on laptops is similar: it can be used by a
-> provider to lock down a machine, but it can also be used by the
-> random user to store keys. Very few users beside James
-> Bottomley are capable of doing that (I am not) but they exist.
-> https://blog.hansenpartnership.com/using-your-tpm-as-a-secure-key-store/
+--==_Exmh_1615456309_76436P
+Content-Type: text/plain; charset=us-ascii
 
-I've used a TPM as an SSH key keystore in the past (these days I use 
-YubiKeys, but same idea). TPMs are useful because they *do* implement 
-policy and cryptographic operations. So you can, in fact, get security 
-guarantees out of a TPM without secureboot.
+On Thu, 11 Mar 2021 09:34:01 +0000, David Howells said:
+> Valdis Klētnieks <valdis.kletnieks@vt.edu> wrote:
+>
+> > What i *expected* was that multiple builds with different O= would each
+> > generate themselves a unique signing key and put it in their own O= directory
+> > and stay out of each other's way.
+>
+> Hmmm...  Works for me.  I use separate build dirs all the time.
+>
+> What version of the kernel are you using and what's the build command line -
+> in particular the full O= option?
 
-For example, assuming the TPM is secure, it is impossible to clone an 
-SSH key private key managed by a TPM. This means that any usage has to 
-be on-device, which provides inherent rate-limiting. Then, the TPM can 
-gate access to the key based on a passphrase, which again provides 
-inherent rate-limits on cracking attempts. TPM 2.0 devices also provide 
-explicit count limits and time-based throttling for unlocking attempts.
+This is linux-next as of yesterday. For testing, I've been using:
 
-We have much the same story with the Secure Enclave Processor on Apple 
-Silicon machines (which I'm working on porting Linux to) - it provides 
-policy, and can even authenticate with fingerprints (there is a hardware 
-secure channel between the reader and the SEP) as well as passphrases. 
-For all intents and purposes it is an Apple-managed TPM (with its own 
-secureboot). So it is similarly useful for us to support the SEP for key 
-storage, and perhaps even integrate it with kernel subsystems at some 
-point. It's useful for our regular users, even though they are unlikely 
-to be running with full secureboot on the main CPU (though Apple's 
-implementation does allow for a user-controlled secureboot subset, and 
-it should be possible to provide hard guarantees there as well, but I 
-digress).
+LANG=C make O=/tmp/arm64 V=1 ARCH=arm64 ASFLAGS='-mcpu=all' CROSS_COMPILE=/opt/aarch64/bin/aarch64-linux-gnu- certs/
 
-All of these things make putting keys into TPMs, YubiKeys, the SEP, etc 
-a useful thing for anyone, regardless of whether their machine is locked 
-down or not.
+and it insists on trying to make the certs in /usr/src/linux-next rather than /tmp/arm64:
 
-This is not the case for RPMB. RPMB *relies* on the software running on 
-the other side being trusted. RPMB, alone, provides zero new security 
-guarantees, without trusted software communicating with it.
+make -f /usr/src/linux-next/scripts/Makefile.build obj=certs \
+single-build= \
+need-builtin=1 need-modorder=1
+  scripts/extract-cert /usr/src/linux-next/"certs/signing_key.pem" certs/signing_key.x509
+At main.c:142:
+- SSL error:0200100D:system library:fopen:Permission denied: ../crypto/bio/bss_file.c:69
+- SSL error:2006D002:BIO routines:BIO_new_file:system lib: ../crypto/bio/bss_file.c:78
+extract-cert: /usr/src/linux-next/certs/signing_key.pem: Permission denied
+make[2]: *** [/usr/src/linux-next/certs/Makefile:106: certs/signing_key.x509] Error 1
+make[1]: *** [/usr/src/linux-next/Makefile:1847: certs] Error 2
+make[1]: Leaving directory '/tmp/arm64'
+make: *** [Makefile:215: __sub-make] Error 2
 
-The key initialization story is also a lot thornier in RPMB. TPMs, the 
-SEP, and YubiKeys are all designed so that they can be factory-reset 
-(losing all key material in the process) by a user with physical access, 
-which means that provisioning operations and experiments are risk-free, 
-and the only danger is data loss, not making the hardware less useful. 
-With the MAC key provisioning for RPMB being a one-time process, it is 
-inherently a very risky operation that a user must commit to with great 
-care, as they only get one chance, ever. Better have that key backed up 
-somewhere (but not somewhere an attacker can get to... see the 
-problem?). This is like fusing secureboot keys on SoCs (I remember being 
-*very* nervous about hitting <enter> on the command to fuse a Tegra X1 
-board with a secureboot key for some experiments... these kinds of 
-irreversible things are no joke).
 
-Basically, TPMs, SEP, YubiKeys, etc were designed to be generally useful 
-and flexible devices for various crypto and authentication use cases. 
-RPMB was designed for the sole purpose of plugging the secure storage 
-replay exploit for Android phones running TrustZone secure monitors. It 
-doesn't really do anything else; it's just a single low-level primitive 
-and you need to already have an equivalent design that is only missing 
-that piece to get anything from it. And its provisioning model assumes a 
-typical OEM device production pipeline and integration with CPU fusing; 
-it isn't friendly to Linux hackers messing around with securing LUKS 
-unlock attempt counters.
+Is it possible that it works for you because although you have
+separate build dirs, it's still able to write to the source tree?
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+
+--==_Exmh_1615456309_76436P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
+
+iQIVAwUBYEnoNQdmEQWDXROgAQIeahAAk0hEOVyD2An8GEIm/htx8n04cbX8WF7O
+j8OZk+N5OHOZ1RI/ORTvZiNDfz/tNjSv6W4ELTe481ozAs3N8syGNzTbKi4m615Q
+9OLHfw5EwOc/KMydbedZveB1kS2y03dsBnsZU/lnuHQq4mPvnyvWIv5rEUIXtRf9
+SGXxl1vIVxuBasmn30C8fShhDWf6W9dtGIGynQs7dhOOpFOpqh4Vyb/VYiRDVDCy
+r/1LLQXgUgPIbcJSvAeOucte6wENNmEtYpf16T1vJZ0eoUK7MymD71Xhv/i48o2C
+lDmflllLJb1XLGKeHC04Jp5jTsmvdcmmynjAhiU6pvziFMyas7JKbK3isS8B00JC
+NvLk+f4v1g4CkG5ExryQe7Z9+pqVoUAQri+AmPFAUvALNycqJojOTxH3QOeZ+D/T
+CMuSKeQoswcJm1BE/FmvyaGPzpwL7eS3YjZ5cV2Gi8Wz+kQVtQpakuIvH1TNnWC3
+1qrsB1pyfe69uTfrtmdpaVTiQ+g1QtzDnWpbmSmrgUXvvhBmB3upjMQAQNG6KDqs
+YVEG4eaIsSjsxV9lGyut2acbpgC/jR8EYSIrIH5Xl/UdI+FxhYQZ3rHg7gJknazv
+GeYgcs1pB56dPEuTH281eVxD4goqZH6UA01gEj3MeXs8xWnVs0sXiq47pYEPGjmV
+I3L/oA3HRXQ=
+=b6qj
+-----END PGP SIGNATURE-----
+
+--==_Exmh_1615456309_76436P--
