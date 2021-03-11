@@ -2,152 +2,212 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A01C8337A62
-	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 18:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 922C7337EA1
+	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 21:03:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229901AbhCKRFV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Mar 2021 12:05:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53587 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229992AbhCKRFN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 12:05:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1615482312;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=psOPtICF11pXofHXlU7Z/Nk2n88gRhtlSBfRfAKoCVk=;
-        b=P8hklgiDgtxKPNMTHq01F53SDPJzoo4jnnt2J8KtFTlmK4uRsF2DSQDXL3BXuCgvfze0Ra
-        p/5hxwP2SYVOCqIklZwgJ+IURFhltEVDis8FYNk1mGiPo1sCYBPIjOJjl381IOkMymvHrp
-        usn4iWZemJPSamNDIAGyJBjdouyabNw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-29-KeXUfcKpNEWteOEHWTYlUg-1; Thu, 11 Mar 2021 12:05:10 -0500
-X-MC-Unique: KeXUfcKpNEWteOEHWTYlUg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S229868AbhCKUCp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Mar 2021 15:02:45 -0500
+Received: from [212.63.208.185] ([212.63.208.185]:43780 "EHLO
+        mail.marcansoft.com" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229796AbhCKUCh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 15:02:37 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AEB85100C661;
-        Thu, 11 Mar 2021 17:05:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-118-152.rdu2.redhat.com [10.10.118.152])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E91AE10023AF;
-        Thu, 11 Mar 2021 17:05:06 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-cc:     dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@linux.microsoft.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Add EFI_CERT_X509_GUID support for dbx/mokx entries
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 7A616424D9;
+        Thu, 11 Mar 2021 20:02:24 +0000 (UTC)
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Arnd Bergmann <arnd@linaro.org>,
+        Joakim Bech <joakim.bech@linaro.org>,
+        =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Maxim Uvarov <maxim.uvarov@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Ruchika Gupta <ruchika.gupta@linaro.org>,
+        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
+        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
+        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-nvme@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Arnd Bergmann <arnd.bergmann@linaro.org>
+References: <20210303135500.24673-1-alex.bennee@linaro.org>
+ <20210303135500.24673-2-alex.bennee@linaro.org>
+ <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
+ <20210305075131.GA15940@goby>
+ <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
+ <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
+ <6c542548-cc16-af68-c755-df52bd13b209@marcan.st>
+ <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
+ <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
+ <CACRpkdbQks5pRFNHkNLVvLHCBhh0XCv7pHYq25EVAbU60PcwsA@mail.gmail.com>
+ <0a26713a-8988-1713-4358-bc62364b9e25@marcan.st>
+ <CACRpkda9f-BNmu-CaNsghnDoOcSXvvvji=tag2Xos+tg_nNZ0w@mail.gmail.com>
+ <32bdceb1-e70d-7481-96e3-a064a7108eb9@marcan.st>
+ <CACRpkdZ_-rqGBUOxUcBPeqVkLzX=Q9pjO9M+zY20-S9tNXAE0Q@mail.gmail.com>
+From:   Hector Martin <marcan@marcan.st>
+Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB)
+ subsystem
+Message-ID: <d7f8a732-7a44-f609-52dc-3ba824a3d192@marcan.st>
+Date:   Fri, 12 Mar 2021 05:02:22 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Date:   Thu, 11 Mar 2021 17:05:06 +0000
-Message-ID: <1884195.1615482306@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+In-Reply-To: <CACRpkdZ_-rqGBUOxUcBPeqVkLzX=Q9pjO9M+zY20-S9tNXAE0Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: es-ES
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On 11/03/2021 23.06, Linus Walleij wrote:
+> Yes. And this is what mobile phone vendors typically did.
+> 
+> But the nature of different electrical attacks made them worried
+> about different schemes involving cutting power and disturbing
+> signals with different probes, so they wanted this counter
+> implemented in hardware and that is why RPMB exists at all
+> (IIUC).
 
-Hi Linus,
+No, prior to RPMB there was no such secure counter at all. The problem 
+is that non-volatile erasable storage (i.e. EEPROM/Flash) is 
+incompatible with modern SoC manufacturing processes, so there is no way 
+to embed a secure counter into the main SoC. And once your counter needs 
+to be external, there needs to be a secure communications protocol to 
+access it. This is what RPMB implements.
 
-Here's a set of patches from Eric Snowberg[1] that add support for
-EFI_CERT_X509_GUID entries in the dbx and mokx UEFI tables (such entries
-cause matching certificates to be rejected).  These are currently ignored
-and only the hash entries are made use of.  Additionally Eric included his
-patches to allow such certificates to be preloaded.
+For preventing software downgrades, especially of bootloader code, this 
+can be implemented with one-time fuses embedded in the SoC, but there is 
+a limited supply of those. So this doesn't work for things like PIN 
+attempt counters. For that you need a secure external counter.
 
-These patches deal with CVE-2020-26541.
+> It is fine to be of the opinion that this entire piece of hardware
+> is pointless because the same can be achieved using
+> well written software.
 
-To quote Eric:
+You've misunderstood me. RPMB isn't pointless; what I am saying is that 
+if you strip away everything but the counter functionality, you can 
+still build equivalent security guarantees. You still need the counter. 
+There is no way to get that counter without RPMB or something like it 
+(another option is e.g. to use a smartcard IC as a secure element; AIUI 
+modern Apple devices do this). Software alone doesn't work. This is why 
+I wrote that article about how the FBI cracks iPhones; that works 
+because they weren't using a secure rollback-protected storage/counter 
+chip of any kind.
 
-	This is the fifth patch series for adding support for
-	EFI_CERT_X509_GUID entries [2].  It has been expanded to not only
-	include dbx entries but also entries in the mokx.  Additionally my
-	series to preload these certificate [3] has also been included.
+> The position that the kernel community shall just ignore this
+> hardware is a possible outcome of this discussion, but we need
+> to have the discussion anyway, because now a RPMB framework
+> is being promoted. The people who want it will need to sell it to
+> us.
 
-	This series is based on v5.11-rc4.
+Again, you're kind of misunderstanding me here. I'm not saying the 
+feature is useless. What I'm saying is that, to understand *how* it is 
+useful, it helps if you forget about the read/write commands and treat 
+it as a simple counter.
 
-Notes:
+Once you do that, you'll realize that e.g. putting keys in RPMB doesn't 
+really make sense as a kernel primitive. The usefulness of RPMB is 
+purely in the integration of that counter (which is equivalent to 
+rollback-protected storage) with a policy system. Everything else is 
+icing on the cake; it doesn't create new use cases.
 
- (*) These patches fix a security loophole rather than actual fixing kernel
-     breakage, so they could theoretically wait for the next merge window
-     if you prefer.
+Consider this:
 
- (*) Patch 3 adds the extract-cert target a second time.  I think make
-     should just handle this, though it could be better to add a config
-     option specifically for building that program (it's used by multiple
-     options).
+* You have RPMB, but you will use it as a counter only.
+* To use RPMB, you need to have a secure shared key.
+* You use the RPMB key (or a hash, or whatever) to encrypt a GPG key in 
+your filesystem
+* You have a Git repo. This is your secure rollback-protected storage.
+* We assume the filesystem can be potentially read, written, and 
+intercepted.
 
-Changes:
- - Changed Jarkko's acks to his kernel.org address.
+To read from your rollback-protected storage, you:
 
-ver #3:
- - Rolled in changes from Eric to fix conditional building issues[7].
+* Read the RPMB counter securely
+* Fetch the Git tag named "v%d" with the counter value
+* Ensure the Git tag is correctly signed with your secure GPG key
+* Ensure the commit description of the signed commit is also "v%d"
 
-ver #2:
- - Rolled in a fix to the second patch to include certs/common.h in
-   certs/common.c[6].
+To write to your rollback protected storage, you:
 
-ver #1:
- - I've modified the first patch in the series to fix a configuration
-   problem[4][5], to move the added functions to a more logical place
-   within thefile and to add kerneldoc comments.
+* Commit your changes to the repository (as a child of the current known 
+good commit, which you know is secure via the prevous read process) with 
+the commit message "v%d" with the counter value + 1
+* Tag it "v%d" with the current counter value + 1, signing the tag with 
+your GPG private key
+* Ensure all changes are flushed to disk
+* Perform an increment operation on the RPMB counter
 
-Link: https://lore.kernel.org/r/20210122181054.32635-1-eric.snowberg@oracle.com [1]
-Link: https://patchwork.kernel.org/project/linux-security-module/patch/20200916004927.64276-1-eric.snowberg@oracle.com/ [2]
-Link: https://lore.kernel.org/patchwork/cover/1315485/ [3]
-Link: https://lore.kernel.org/r/bc2c24e3-ed68-2521-0bf4-a1f6be4a895d@infradead.org/ [4]
-Link: https://lore.kernel.org/r/20210225125638.1841436-1-arnd@kernel.org/ [5]
-Link: https://lore.kernel.org/r/EDA280F9-F72D-4181-93C7-CDBE95976FF7@oracle.com/ [6]
-Link: https://lore.kernel.org/r/161428671215.677100.6372209948022011988.stgit@warthog.procyon.org.uk/ # v1
-Link: https://lore.kernel.org/r/161433310139.902181.11787442834918634133.stgit@warthog.procyon.org.uk/ # v2
-Link: https://lore.kernel.org/r/161529604216.163428.4905283330048991183.stgit@warthog.procyon.org.uk/ # v3
-Link: https://lore.kernel.org/r/20210304175030.184131-1-eric.snowberg@oracle.com/ [7]
+You have now built a secure, rollback-protected Git repository, with 
+similar security properties to RPMB storage, without using RPMB storage; 
+just a counter.
 
-David
----
-The following changes since commit 8f0bfc25c907f38e7f9dc498e8f43000d77327ef:
+Just like RPMB storage, the repo is readable without a key.
+Just like RPMB storage, you need to have a secured master key stored 
+somewhere; if the attacker gets your key it is game over.
+Just like RPMB storage, the repo can only be updated (in a way that 
+would be accepted) with the key available
+Just like RPMB storage, the repo cannot be rolled back to a prior 
+version (because it would not match the counter value)
 
-  watch_queue: rectify kernel-doc for init_watch() (2021-01-26 11:16:34 +0000)
+Thus, we can conclude that the storage features of RPMB do not provide 
+additional security properties that cannot be derived from a simple counter.
 
-are available in the Git repository at:
+* Disclaimer: please don't actually deploy this; I'm trying to make a 
+point here, it's 5AM and I'm not claiming this is a perfectly secure 
+design and I haven't missed anything. Please don't design 
+rollback-protected Git repositories without expert review. I am assuming 
+filesystem mutations only happen between operations and handwaving away 
+active attacks, which I doubt Git is designed to be robust against. A 
+scheme like this can be implemented securely with care, but not naively.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/keys-cve-2020-26541-v3
+>>> With RPMB this can be properly protected against because
+>>> the next attempt can not be made until after the RPMB
+>>> monotonic counter has been increased.
+>>
+>> But this is only enforced by software. If you do not have secure boot,
+>> you can just patch software to allow infinite tries without touching the
+>> RPMB. The RPMB doesn't check PINs for you, it doesn't even gate read
+>> access to data in any way. All it does is promise you cannot make the
+>> counter count down, or make the data stored within go back in time.
+> 
+> This is true, I guess the argument is something along the
+> line that if one link in the chain is weaker, why harden
+> any other link, the chain will break anyway?
 
-for you to fetch changes up to ebd9c2ae369a45bdd9f8615484db09be58fc242b:
+This is how security works, yes :-)
 
-  integrity: Load mokx variables into the blacklist keyring (2021-03-11 16:34:48 +0000)
+I'm not saying hardening a link in the chain is pointless in every case, 
+but in this case it's like heat treating one link in the chain, then 
+joining it to the next one with a ziptie. Only once you at least have 
+the entire chain of steel does it make sense to start thinking about 
+heat treatment.
 
-----------------------------------------------------------------
-Fix CVE-2020-26541
+> I am more of the position let's harden this link if we can
+> and then deal with the others when they come up, i.e.
+> my concern is this piece of the puzzle, even if it is not
+> the centerpiece (maybe the centerpiece is secure boot
+> what do I know).
 
-----------------------------------------------------------------
-Eric Snowberg (4):
-      certs: Add EFI_CERT_X509_GUID support for dbx entries
-      certs: Move load_system_certificate_list to a common function
-      certs: Add ability to preload revocation certs
-      integrity: Load mokx variables into the blacklist keyring
+Well, that's what I'm saying, you do need secureboot for this to make 
+sense :-)
 
- certs/Kconfig                                      | 17 ++++++
- certs/Makefile                                     | 21 ++++++-
- certs/blacklist.c                                  | 64 ++++++++++++++++++++++
- certs/blacklist.h                                  |  2 +
- certs/common.c                                     | 57 +++++++++++++++++++
- certs/common.h                                     |  9 +++
- certs/revocation_certificates.S                    | 21 +++++++
- certs/system_keyring.c                             | 55 +++----------------
- include/keys/system_keyring.h                      | 15 +++++
- scripts/Makefile                                   |  1 +
- .../integrity/platform_certs/keyring_handler.c     | 11 ++++
- security/integrity/platform_certs/load_uefi.c      | 20 ++++++-
- 12 files changed, 242 insertions(+), 51 deletions(-)
- create mode 100644 certs/common.c
- create mode 100644 certs/common.h
- create mode 100644 certs/revocation_certificates.S
+RPMB isn't useless and some systems should implement it; but there's no 
+real way for the kernel to transparently use it to improve security in 
+general (for anyone) without the user being aware. Since any security 
+benefit from RPMB must come from integration with user policy, it 
+doesn't make sense to "well, just do something else with RPMB because 
+it's better than nothing"; just doing "something" doesn't make systems 
+more secure. There needs to be a specific, practical use case that we'd 
+be trying to solve with RPMB here.
 
+-- 
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
