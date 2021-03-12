@@ -2,124 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F610338989
-	for <lists+keyrings@lfdr.de>; Fri, 12 Mar 2021 11:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 000B6338B63
+	for <lists+keyrings@lfdr.de>; Fri, 12 Mar 2021 12:20:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232867AbhCLKA4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 12 Mar 2021 05:00:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233016AbhCLKAi (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 12 Mar 2021 05:00:38 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486E3C061762
-        for <keyrings@vger.kernel.org>; Fri, 12 Mar 2021 02:00:38 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id 18so44760701lff.6
-        for <keyrings@vger.kernel.org>; Fri, 12 Mar 2021 02:00:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=x7b0YhLiDRYT0yOrjk/x/Y6N+KIRlemcKfsY/iEVybQ=;
-        b=F52JBUW2RVO02xz7XfNFfnrhSZLb7p6RwfOQXW0+QwKiTpTiaiE/kwYwO+y5kvwTTb
-         xZxDlKTU0zC8iGi9s3eB3O1qh9vAuqnCzdm0FQbgsL4bLr3Ruqn3fhleGWalnmxC38rB
-         FgK2CVQxAaWOiBRWXiXhaAdbIjpvXMgUpIWczpQhvC4dfF3O6uaqfZeXxiEEoU7pYdoh
-         v0OxguUFdiCEoCC7zzxnbDnPPd+iR1h3DsnWmx5o1uALjWmEGFn0rxgH7VcoOP1somqS
-         7HT5R8y07TA7h0PvmtdQ9IxgC4c4DqqDp/Sprqpgk7IqJYUO5UnI+msLE1D5pICduzc5
-         BEYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=x7b0YhLiDRYT0yOrjk/x/Y6N+KIRlemcKfsY/iEVybQ=;
-        b=ipAfTdz2NYdCXrDNBJ1LfDOIl4oLZTiJmKfDHGgpTt9o8Ys3DCGBZf0jrSRM4cUY80
-         Mi8Gc/93arT9Qrzpt37BiqhmboQKRMmoR7cY2vDWNuvnrg3NKt3hltusl3wBr1+rIPQZ
-         DgsbWs6/xYaVGWG6DNM75QRAS/i3K5WSdWI25S8n0yYWvWW2ykjSTuvQ2QfMlCe0QJ9Q
-         kL85WDngikfRiwfxrv1fJveAgT5zm/sWHVQ2KfeH2dWMBICPMsulQ2ie53jPqYzzOCDd
-         EALcaVHgAa+GH4lmYUcwcLeqTPpX4RF9/iOb77lnka26ETwViOYj2oiOw18gHv4QTGFJ
-         F/Nw==
-X-Gm-Message-State: AOAM533Wi0L0Mw41phNQng7DwD4jEq+F0Z2C53fJ/W/Z4IMnWmoMUTVn
-        czPHhS6ZNa2dFl9aJfRhqcqXO21Eoafo0vyor5W0NQ==
-X-Google-Smtp-Source: ABdhPJzDpESWQoECqt1prXQcSIVot287iP/QjDAbfHp3ibm4TSWaAfKPuHPAW9M9l7h49Y9aMEgq9QJPlARRE4cVnxQ=
-X-Received: by 2002:ac2:4d95:: with SMTP id g21mr5165763lfe.29.1615543236661;
- Fri, 12 Mar 2021 02:00:36 -0800 (PST)
+        id S233799AbhCLLUF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 12 Mar 2021 06:20:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50424 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233691AbhCLLTh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 12 Mar 2021 06:19:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1615547976;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lq8VZTvhiQyjj3632ogoEtY0kjN8T+zd6L5p5AcI2Ho=;
+        b=MGZ7hCoKJRogEzDkMnFSH972/p1W4qXONZ4dTRaklKFKg0aIzCZqhxvpET2givVQBFYJYZ
+        KVQWuaUw3Efspim82Az2EAqiKzssZk47wSCTnG4iY4KbEss/A+w2wkj4KQkcBFT+TWuVWu
+        bnSTV4Th5/yQ3/c+h4ujjUVzsXt/JPg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-411-J4tJfRUMN6iVAt6BEQcGXw-1; Fri, 12 Mar 2021 06:19:34 -0500
+X-MC-Unique: J4tJfRUMN6iVAt6BEQcGXw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ACA98101F010;
+        Fri, 12 Mar 2021 11:19:33 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-118-152.rdu2.redhat.com [10.10.118.152])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9124760D06;
+        Fri, 12 Mar 2021 11:19:32 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <159991.1615539999@turing-police>
+References: <159991.1615539999@turing-police> <134696.1615510534@turing-police> <109018.1615463088@turing-police> <91190.1615444370@turing-police> <972381.1615459754@warthog.procyon.org.uk> <1486567.1615464259@warthog.procyon.org.uk> <2026575.1615539696@warthog.procyon.org.uk>
+To:     =?us-ascii?Q?Valdis_Kl=3D=3Futf-8=3FQ=3F=3Dc4=3D93=3F=3Dtnieks?= 
+        <valdis.kletnieks@vt.edu>
+Cc:     dhowells@redhat.com, David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] certs: Clean up signing_key.pem and x509.genkey on make mrproper
 MIME-Version: 1.0
-References: <20210303135500.24673-1-alex.bennee@linaro.org>
- <20210303135500.24673-2-alex.bennee@linaro.org> <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
- <20210305075131.GA15940@goby> <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
- <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
- <6c542548-cc16-af68-c755-df52bd13b209@marcan.st> <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
- <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st> <CAFA6WYMSJxK2CjmoLJ6mdNNEfOQOMVXZPbbFRfah7KLeZNfguw@mail.gmail.com>
- <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
- <e5d3f4b5-748e-0700-b897-393187b2bb1a@marcan.st> <CACRpkdYxMGN3N-jFt1Uw4AkBR-x=dRj6HEvDp6g+2ku7+qCLwg@mail.gmail.com>
- <02d035ca-697d-1634-a434-a43b9c01f4a9@marcan.st> <87k0qd7615.fsf@linaro.org>
-In-Reply-To: <87k0qd7615.fsf@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 12 Mar 2021 11:00:24 +0100
-Message-ID: <CACRpkdYNdoK9T503en6dPfz5sSc0eDGLzhnUBqRUbZR3j43byA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB) subsystem
-To:     =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Arnd Bergmann <arnd@linaro.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Joakim Bech <joakim.bech@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ruchika Gupta <ruchika.gupta@linaro.org>,
-        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
-        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
-        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd.bergmann@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Date:   Fri, 12 Mar 2021 11:19:31 +0000
+Message-ID: <2243141.1615547971@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Mar 11, 2021 at 10:08 PM Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
+Valdis Kl=C4=93tnieks <valdis.kletnieks@vt.edu> wrote:
 
-> I guess what we are saying is that real secure monitors should come up
-> with their own common API for interfacing with RPMB devices without
-> looking to the Linux kernel for inspiration?
+> > Possibly I can add something like:
+> >
+> > 	clean-files :=3D signing_key.pem x509.genkey
+> >
+> > inside the
+> >
+> > 	ifeq ($(CONFIG_MODULE_SIG_KEY),"certs/signing_key.pem")
+> > 	...
+> > 	endif
+>=20
+> Would that remove them on a 'make clean', or only a 'make mrproper'?
+> The latter sounds like the correct solution to me, as the signing key sho=
+uld
+> have (roughly) the same lifetime rules as the .config file.
 
-The problem is that eMMC at least (I don't know about NVME etc)
-has serialized commands, meaning you execute one command at
-a time (some augmentation exist nowadays to speed up things).
+It would appear that it works on neither.  Neither of them seem to have any
+CONFIG_xxx symbols set.
 
-When it comes to RPMB, the eMMC device must stop all other
-activity (such as reading/writing any blocks to the eMMC) send a
-special command to switch to the RPMB  partition, then execute
-the RPMB command(s) then send a special command to switch
-back to ordinary storage.
+How about the attached patch?
 
-Someone has to be in control of the eMMC arbitration. Right now
-Linux MMC/SD storage stack does this.
+David
+---
+commit 95897dc8dc13ad13c637a477a1ead9b63ff1fafa
+Author: David Howells <dhowells@redhat.com>
+Date:   Fri Mar 12 10:48:25 2021 +0000
 
-If the secure world want to use RPMB independently of the Linux
-kernel there are two solutions:
+    certs: Clean up signing_key.pem and x509.genkey on make mrproper
+=20=20=20=20
+    Autogenerated signing_key.pem and x509.genkey files aren't removed from=
+ the
+    build certs/ directory when "make mrproper" is run.  This is somewhat
+    deliberate since the "file" is specified by the CONFIG_MODULE_SIG_KEY
+    string option and may not be in the build tree - and may not even be a
+    filename, but rather a PKCS#7 URI (also the config variables doesn't se=
+em
+    to be set when cleaning).
+=20=20=20=20
+    Fix this by unconditionally listing signing_key.pem and x509.genkey for
+    removal from the build certs/ directory - which will just do nothing if
+    they're not there, and shouldn't remove signing keys that are configure=
+d to
+    be elsewhere.
+=20=20=20=20
+    Note that this will permanently erase the autogenerated private key, so
+    anyone that is relying on it still being around after doing make mrprop=
+er
+    will no longer find it.
+=20=20=20=20
+    Fixes: cfc411e7fff3 ("Move certificate handling to its own directory")
+    Reported-by: Valdis Kl=C4=93tnieks <valdis.kletnieks@vt.edu>
+    Signed-off-by: David Howells <dhowells@redhat.com>
+    Link: https://lore.kernel.org/r/134696.1615510534@turing-police/ [1]
 
-- Mount a second eMMC just for the secure world - looks expensive
-  so some other secure counter storage would likely be cheaper
-  and it inevitably increases the BOM which is sensitive to
-  manufacturers (this option is unrealistic)
+diff --git a/certs/Makefile b/certs/Makefile
+index f4c25b67aad9..2ae1dd518bc7 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -104,3 +104,5 @@ targets +=3D signing_key.x509
+ $(obj)/signing_key.x509: scripts/extract-cert $(X509_DEP) FORCE
+ 	$(call if_changed,extract_certs,$(MODULE_SIG_KEY_SRCPREFIX)$(CONFIG_MODUL=
+E_SIG_KEY))
+ endif # CONFIG_MODULE_SIG
++
++clean-files +=3D signing_key.pem x509.genkey
 
-- Let the secure world arbitrate all access to the eMMC - looks
-  inefficient and also dangerous since the secure world now has to
-  implement everything in drivers/mmc/core which is a few 100
-  KB of really complex code that need to be maintained perpetually.
-  (IMO this option is also unrealistic for performance and
-  maintenance reasons, but who knows what secure world
-  imperialists are out there).
-
-This leaves Linux in control of the eMMC RPMB under all
-circumstances as far as I can see.
-
-Yours,
-Linus Walleij
