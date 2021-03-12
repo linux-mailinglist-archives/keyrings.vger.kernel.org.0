@@ -2,170 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75029337F5A
-	for <lists+keyrings@lfdr.de>; Thu, 11 Mar 2021 22:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2303382F0
+	for <lists+keyrings@lfdr.de>; Fri, 12 Mar 2021 01:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230425AbhCKVI1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Mar 2021 16:08:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60940 "EHLO
+        id S231550AbhCLA4L (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 Mar 2021 19:56:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230422AbhCKVIK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 16:08:10 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9355C061762
-        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 13:08:09 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id e7so4913435edu.10
-        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 13:08:09 -0800 (PST)
+        with ESMTP id S230341AbhCLAzg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Mar 2021 19:55:36 -0500
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8A1C061760
+        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 16:55:36 -0800 (PST)
+Received: by mail-qt1-x830.google.com with SMTP id l13so2643346qtu.9
+        for <keyrings@vger.kernel.org>; Thu, 11 Mar 2021 16:55:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=references:user-agent:from:to:cc:subject:date:in-reply-to
-         :message-id:mime-version:content-transfer-encoding;
-        bh=WprC7wQ8pjk4v3rRNQRsNnfM+sFohsfztPY3hS+tZkY=;
-        b=dqHaE7uAtCtfTturKUgGaMRMcA5A6xT5Sf8lWsZrZvnIOXfijL+712llEvyyGGggiF
-         wBWpjvliIAbOJwKVKtia5E8gK+FEXGp883lN5XdlpTcUthISPjGAzEDaQzMjNHqIAyOS
-         gQxFTfquWRQsSAYvti2QLI1048+HoB/47fTF6sUFrKPoXb2cwjYenOd15JYOR4ifTgKP
-         Y/aP63Q2Vv9xef4NdGHljiTVumdtsFEIsGT/+DcDiRDvrywW83Y9ZV/VMTxOfTmODQul
-         6JA203LPm32+ADaE3s3VxsP3fZrJNfIzDdNhjPisiCu+P05s6e6Z3rOo4A6pucodFt3d
-         MOWQ==
+        d=vt-edu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:in-reply-to:references:mime-version
+         :content-transfer-encoding:date:message-id;
+        bh=w3ezRd8mrL0vAlCG9mcLso4UK6wUF99UVQ05HbiwLYY=;
+        b=kiJZeSikOkc8czMLKzeWH9ffmzDLvThbUaeVZz1bKAtKLUNvHQ26mJuveGVN2FK8mG
+         1roAJcxVD6dJA4a0z9oPYs4EMv6mdv0xou/NGvGnOsA7rVS/FAR4FMPa+RxQxx786GBQ
+         VwJE9cehe+p/0hOSm4vN8oYb7P0J63PlxPcEjdUwBpJumQQCCkD/eT/TOB+ndF9SaTn7
+         kahOG2u7YU5ryUai6AXQqBQYg2K76m9sgzm1zeSh0ma7kUg4gj0/dulG1m7VlN7hwngt
+         OG0qE5q4dzcK/9Ul++OYo1aAWQd8Zevzw9vSSmKMONREyoiSh3e4DjglevUKPkpwkXMW
+         zNJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject:date
-         :in-reply-to:message-id:mime-version:content-transfer-encoding;
-        bh=WprC7wQ8pjk4v3rRNQRsNnfM+sFohsfztPY3hS+tZkY=;
-        b=WrMp6yRTq6SJSKFnlKxC2kqeG7odmChlWs3Q3ukwVnP55yIqqzs80stVLQXGwyENqx
-         9K8Y0rb0jRsdsM/L93M1MuCtdz4bW5f44AHwWkFpyz8GjwdCu3uHMizhBePCBV4Y34oM
-         RuZoH1S+MOxLyoJ3O/4UV6BKlgY1qmeVK6Ic9tVq6punmvNgH3jdOAdxoQE+a5klI91y
-         NXIInGDhhHEhHDC6X4ifT39LNYmBVpsNEjlV/0h1BhTfzgfcniGWR9sUakgr+vfza9DB
-         ZBHslA3Q/GUwd1qIgH7j064mV7kvYfHfcx6axgu4fwWV729uD/DTfscLNfqvy/dbGEec
-         Z2cQ==
-X-Gm-Message-State: AOAM532OplADbDT1klaErEbyv/lSKKSqdgtIsqc8UoYXs6rBsxpKPQUu
-        YN0axpZ7cv7QnFW/EZ9m01dlAA==
-X-Google-Smtp-Source: ABdhPJwAmSWpyfZATg+lLALZWFEJgeSck6q627M8RqFqEoi+++wgypQpRJHtQ7KuVGQHjPuTtFTqTQ==
-X-Received: by 2002:a05:6402:3075:: with SMTP id bs21mr10586641edb.274.1615496888399;
-        Thu, 11 Mar 2021 13:08:08 -0800 (PST)
-Received: from zen.linaroharston ([51.148.130.216])
-        by smtp.gmail.com with ESMTPSA id r17sm1875032ejz.109.2021.03.11.13.08.07
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :mime-version:content-transfer-encoding:date:message-id;
+        bh=w3ezRd8mrL0vAlCG9mcLso4UK6wUF99UVQ05HbiwLYY=;
+        b=sYVzzQXyqRxAL+trnWmALwJqyMJjjqKNJ+ND/jGnJZBtCGHkRDgSsqiZ+I90nrY7Vj
+         2wEre7wfW2X8bJe3zWMwToq7Uebo8YOGWu+Wv3jX26w1UpkkLHoV0H+0XOal3fyZjDhQ
+         yesId9zNwB2YeL/MIkR8nCAd3g2ZJfDOWeK7wfGgRylgjRAYVtM/Vg7+mS4hAEoZyms5
+         PIl63Ebfl3eC3SCEgbWCMNcgODJUe/Ol1u+DiAiv50BFEq9CtvBxqwMh5UbmpSLk4v4G
+         DIC71x6wP0wpvCXWWdF2+lFrBwKJQhzlE9pwzfwBNJsdg2F+Bg24k5qzozPcXZ7Ocy32
+         uvsw==
+X-Gm-Message-State: AOAM532BtXRfMmo86Xal/5j2llqWeIlefqejmGIsw0em1opKZAFs2kh7
+        6OBmR5lgiV9HWjzZWFjXYZlCbw==
+X-Google-Smtp-Source: ABdhPJyvsGA5BrK/amG59j1KL/mhguJcprjIbfsfNg87KvAlJcryJ3NOfIJR+JDOSfinplM+cZl2sg==
+X-Received: by 2002:ac8:6909:: with SMTP id e9mr9580752qtr.291.1615510535640;
+        Thu, 11 Mar 2021 16:55:35 -0800 (PST)
+Received: from turing-police ([2601:5c0:c380:d61::359])
+        by smtp.gmail.com with ESMTPSA id d70sm3349298qkg.30.2021.03.11.16.55.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Mar 2021 13:08:07 -0800 (PST)
-Received: from zen (localhost [127.0.0.1])
-        by zen.linaroharston (Postfix) with ESMTP id 85CC91FF7E;
-        Thu, 11 Mar 2021 21:08:06 +0000 (GMT)
-References: <20210303135500.24673-1-alex.bennee@linaro.org>
- <20210303135500.24673-2-alex.bennee@linaro.org>
- <CAK8P3a0W5X8Mvq0tDrz7d67SfQA=PqthpnGDhn8w1Xhwa030-A@mail.gmail.com>
- <20210305075131.GA15940@goby>
- <CAK8P3a0qtByN4Fnutr1yetdVZkPJn87yK+w+_DAUXOMif-13aA@mail.gmail.com>
- <CACRpkdb4RkQvDBgTMW_+7yYBsHNRyJZiT5bn04uQJgk7tKGDOA@mail.gmail.com>
- <6c542548-cc16-af68-c755-df52bd13b209@marcan.st>
- <CAFA6WYOYmTgguVDwpyjnt3gLssqW48qzAkRD_nyPYg0nNhxT2A@mail.gmail.com>
- <beca6bc8-8970-bd01-8de0-6ded1fb69be2@marcan.st>
- <CAFA6WYMSJxK2CjmoLJ6mdNNEfOQOMVXZPbbFRfah7KLeZNfguw@mail.gmail.com>
- <CACRpkdZb5UMyq5qSJE==3ZnH-7fh92q_t4AnE8mPm0oFEJxqpQ@mail.gmail.com>
- <e5d3f4b5-748e-0700-b897-393187b2bb1a@marcan.st>
- <CACRpkdYxMGN3N-jFt1Uw4AkBR-x=dRj6HEvDp6g+2ku7+qCLwg@mail.gmail.com>
- <02d035ca-697d-1634-a434-a43b9c01f4a9@marcan.st>
-User-agent: mu4e 1.5.8; emacs 28.0.50
-From:   Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Arnd Bergmann <arnd@linaro.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Joakim Bech <joakim.bech@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Maxim Uvarov <maxim.uvarov@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ruchika Gupta <ruchika.gupta@linaro.org>,
-        "Winkler, Tomas" <tomas.winkler@intel.com>, yang.huang@intel.com,
-        bing.zhu@intel.com, Matti.Moell@opensynergy.com,
-        hmo@opensynergy.com, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd.bergmann@linaro.org>
-Subject: Re: [RFC PATCH 1/5] rpmb: add Replay Protected Memory Block (RPMB)
- subsystem
-Date:   Thu, 11 Mar 2021 20:57:50 +0000
-In-reply-to: <02d035ca-697d-1634-a434-a43b9c01f4a9@marcan.st>
-Message-ID: <87k0qd7615.fsf@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        Thu, 11 Mar 2021 16:55:35 -0800 (PST)
+Sender: Valdis Kletnieks <valdis@vt.edu>
+From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     David Howells <dhowells@redhat.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: 'make O=' indigestion with module signing
+In-Reply-To: <1486567.1615464259@warthog.procyon.org.uk>
+References: <109018.1615463088@turing-police> <91190.1615444370@turing-police> <972381.1615459754@warthog.procyon.org.uk>
+ <1486567.1615464259@warthog.procyon.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1615510534_20296P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 11 Mar 2021 19:55:34 -0500
+Message-ID: <134696.1615510534@turing-police>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+--==_Exmh_1615510534_20296P
+Content-Type: text/plain; charset=us-ascii
 
-Hector Martin <marcan@marcan.st> writes:
+On Thu, 11 Mar 2021 12:04:19 +0000, David Howells said:
 
-> On 11/03/2021 23.31, Linus Walleij wrote:
->> I understand your argument, is your position such that the nature
->> of the hardware is such that community should leave this hardware
->> alone and not try to make use of RPMB  for say ordinary (self-installed)
->> Linux distributions?
+> 	EXTRACT_CERTS   /usr/src/linux-next/"certs/signing_key.pem"
 >
-> It's not really that the community should leave this hardware alone, so=20
-> much that I think there is a very small subset of users who will be able=
-=20
-> to benefit from it, and that subset will be happy with a usable=20
-> kernel/userspace interface and some userspace tooling for this purpose,=20
-> including provisioning and such.
+> but I don't know why.  There are some odd quotes in your line also which may
+> be related to the problem.  The relevant config line looks the same:
 >
-> Consider the prerequisites for using RPMB usefully here:
->
-> * You need (user-controlled) secureboot
-> * You need secret key storage - so either some kind of CPU-fused key, or=
-=20
-> one protected by a TPM paired with the secureboot (key sealed to PCR=20
-> values and such)
-> * But if you have a TPM, that can handle secure counters for you already=
-=20
-> AIUI, so you don't need RPMB
-> * So this means you must be running a non-TPM secureboot system
->
-> And so we're back to embedded platforms like Android phones and other=20
-> SoC stuff... user-controlled secureboot is already somewhat rare here,=20
-> and even rarer are the cases where the user controls the whole chain=20
-> including the TEE if any (otherwise it'll be using RPMB already); this=20
-> pretty much excludes all production Android phones except for a few=20
-> designed as completely open systems; we're left with those and a subset=20
-> of dev boards (e.g. the Jetson TX1 I did fuse experiments on). In the=20
-> end, those systems will probably end up with fairly bespoke set-ups for=20
-> any given device or SoC family, for using RPMB.
->
-> But then again, if you have a full secureboot system where you control=20
-> the TEE level, wouldn't you want to put the RPMB shenanigans there and=20
-> get some semblance of secure TPM/keystore/attempt throttling=20
-> functionality that is robust against Linux exploits and has a smaller=20
-> attack surface? Systems without EL3 are rare (Apple M1 :-)) so it makes=20
-> more sense to do this on those that do have it. If you're paranoid=20
-> enough to be getting into building your own secure system with=20
-> anti-rollback for retry counters, you should be heading in that directly=
-=20
-> anyway.
->
-> And now Linux's RPMB code is useless because you're running the stack in=
-=20
-> the secure monitor instead :-)
+> 	CONFIG_MODULE_SIG_KEY="certs/signing_key.pem"
 
-Well quiet - the principle use-case of virtio-rpmb is to provide a RPMB
-like device emulation for things like OPTEE when running under QEMU's
-full-system emulation. However when it came to testing it out I went for
-Thomas' patches because that was the only virtio FE implementation
-available.
+Aha.  I figured it out.
 
-When I finished the implementation and Ilias started on the uBoot
-front-end for virtio-rpmb. uBoot being firmware could very well be
-running in the secure world so would have a valid use case accessing an
-RPMB device. We ran into API dissonance because uboot's driver model is
-roughly modelled on the kernel so expects to be talking to eMMC devices
-which lead to requirements to fake something up to keep the driver
-stacks happy.
+If you have a *totally* clean source tree, 'make -O' works for all users.
+If you have in the past done a build in the tree, and then done a 'make mrproper'
+to clean it out so 'make -O' doesn't complain, it fails because it
+finds an *old* certs/signing_key.pem in /usr/src/linux-next and tries to
+put the new generated files in the same directory.
 
-I guess what we are saying is that real secure monitors should come up
-with their own common API for interfacing with RPMB devices without
-looking to the Linux kernel for inspiration?
+So the root cause was: 'make mrproper doesn't clean certs/' out enough,
+and this chunk of certs/Makefile
 
---=20
-Alex Benn=C3=A9e
+# If CONFIG_MODULE_SIG_KEY isn't a PKCS#11 URI, depend on it
+ifeq ($(patsubst pkcs11:%,%,$(firstword $(MODULE_SIG_KEY_FILENAME))),$(firstword $(MODULE_SIG_KEY_FILENAME)))
+X509_DEP := $(MODULE_SIG_KEY_SRCPREFIX)$(MODULE_SIG_KEY_FILENAME)
+endif
+
+MODULE_SIG_KEY_SRCPREFIX was where my /usr/src/linux-next was coming from...
+
+I admit not being sure how (or if) this should be fixed
+
+
+
+
+--==_Exmh_1615510534_20296P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
+
+iQIVAwUBYEq8BQdmEQWDXROgAQKRsQ//QSElUxJzHZdEgOtQv8I7u83Unzhk7zf4
+6m4Oz5J40dYCv38GNPCqW3Pq8Gu2ebxjGsjfuOeqG8lZRnAnp4WXgrkrk++uYEef
+BgdqtP07VF0c1/11YjDtpheoa5X90IFCM+/MNpW6NtgznsATvu8BXtKp4BaU0ZYk
+7rFk7hSV5FNFmcO7djPfZIdRrnwVCWm976PyL+hvb6bsMdVQhPr0+BEe1d/3Sthk
+oTtFpHK7NpFA6vpyegiCccpKplUfTyo//PWgnFX1nbiw0rYL9TuGAWsEjqD0ZYTP
+iGlbZVyC+PJGIWj/NRYko9OegbPuLlDZEvM6qtB0CRmvIagHWi8ZLnFEr74FensE
+d6DikoR6rsktqGFV8AwQT2LwOzxOuI/vQKK7Ku38aPKDPz2NuxGr10ULSK/sVPkg
+tN3sVqOJs4UpX2PIiGNIEe/TAxM6X9H3U16MpkCcnqxayXCRvM4uKO/U4Qp0zxz9
+w6jhG81RHLjUcjZWahwZJaBLbSAlVzJlD/WzjpGTorye65/OHByOHjB+ao2dZDEz
+I5bj/I3EQtxnNOUodmF/i24lMqufqW4usth0wn8D8zxQC1YeN6SbJvBsn25wJANF
+6w3N2BXp25uTb8gb70UJ2XAYrE4J0cZxipJaI6y5z2/MmyJqgtK7p+iD0AfvTGv3
+Qk/MmHbwdNU=
+=aW+D
+-----END PGP SIGNATURE-----
+
+--==_Exmh_1615510534_20296P--
