@@ -2,69 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0AE339CD5
-	for <lists+keyrings@lfdr.de>; Sat, 13 Mar 2021 09:14:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42ED3339DA6
+	for <lists+keyrings@lfdr.de>; Sat, 13 Mar 2021 11:46:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233401AbhCMION (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 13 Mar 2021 03:14:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:31277 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233411AbhCMIOA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 13 Mar 2021 03:14:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1615623239;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=HD8GasGxLOGjWEPXW1RDIOCj5Ig8QuD9ZoJ4u7PPXP0=;
-        b=IxF2FTT+WgRFmjWcxpFbGrJlVr0pV2IDK4lRl8LUub7/y+VELXrtXN1Ih0VSanUeYbLwu0
-        myTZG9gx2WV3+/5s3jTE77Vki9HNqMXAD8m9KbcEbNm+lJWNG2j3P9FliFQRaic26Fs6pf
-        8Er4BpEAT/8JQOZgNegXT/uvc783OJI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-37-w_ZGOYuuO2OX7mnkzaBhgQ-1; Sat, 13 Mar 2021 03:13:57 -0500
-X-MC-Unique: w_ZGOYuuO2OX7mnkzaBhgQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 81E2A1084C83;
-        Sat, 13 Mar 2021 08:13:55 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-118-152.rdu2.redhat.com [10.10.118.152])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C328E5C3E4;
-        Sat, 13 Mar 2021 08:13:53 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <337B72A8-C81A-4C53-A4D6-FFFD7FA66CEC@oracle.com>
-References: <337B72A8-C81A-4C53-A4D6-FFFD7FA66CEC@oracle.com> <161428671215.677100.6372209948022011988.stgit@warthog.procyon.org.uk> <161428674320.677100.12637282414018170743.stgit@warthog.procyon.org.uk> <4b275a33-28ac-78c2-e075-ea2eda4f13a8@canonical.com> <92182F5F-327E-4F1D-A7D9-42355625C84C@oracle.com> <b10f51dc-b9d7-e84d-3a52-438ebd358a7d@canonical.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     dhowells@redhat.com,
-        Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] integrity: Load mokx variables into the blacklist keyring
+        id S229615AbhCMKpV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 13 Mar 2021 05:45:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41850 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233155AbhCMKpV (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sat, 13 Mar 2021 05:45:21 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1B10564F1B;
+        Sat, 13 Mar 2021 10:45:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615632320;
+        bh=Uhy5dEacUbBiUn386NQTz78v2sd2V04Ad12yd4wbvEU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ay6p0+ZYtwNhEep6crBrqspBKNqkh0R9ePYUUtSgJ0efW6xUMKbuV8OacPEQsDkri
+         BGLK8OMxihBxTZcsRZTgoyIxB/6v0oWjK+wiSsZ3hL0BJMnGnR6azUP9rZYSwv9L4m
+         Ho6volvT38PYrLAFj+mqc0ODICyuKXo+zSadMS04F0CRUB8XBnkO5vboCLB2i00hCp
+         RtuTx2Ppus8u7VYor+EGBOC9svjuC9KZKxcsMi0xRKQofkVtMwKoeqPOVNinDVnnCp
+         pXzTVWazbBSKI4L6rf6ZR9GVd34/f0dZVSjcloa6uB7cD81woJ/17telQJjEU/atF7
+         bAgIGf8ISYd4Q==
+Date:   Sat, 13 Mar 2021 12:44:55 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     James Bottomley <jejb@linux.ibm.com>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity@vger.kernel.org,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Subject: Re: [PATCH v9 0/4] Introduce TEE based Trusted Keys support
+Message-ID: <YEyXpwilJq8DR7vI@kernel.org>
+References: <20210301131127.793707-1-sumit.garg@linaro.org>
+ <CAFA6WYO4HHhtymaUzmkuaCZybTAWBQ=4K9Dez1pe1kqo3AJhuA@mail.gmail.com>
+ <YEEANW+khw3nJtcQ@kernel.org>
+ <CAFA6WYOxsYin8wBB_yU=S-bnqM-g5TFnTU_KXxc3wSBfx_N_6A@mail.gmail.com>
+ <YEkkXbWrYBTcGXEd@kernel.org>
+ <9aa3173ab46b0aa7edb8146ffd3df05c1f74207e.camel@linux.ibm.com>
+ <YEuWTet0wr5DuDy/@kernel.org>
+ <5dfe8f6b5f25cc38c8410b849aaef2c3dbed7f65.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2579342.1615623232.1@warthog.procyon.org.uk>
-Date:   Sat, 13 Mar 2021 08:13:52 +0000
-Message-ID: <2579343.1615623232@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dfe8f6b5f25cc38c8410b849aaef2c3dbed7f65.camel@linux.ibm.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Eric Snowberg <eric.snowberg@oracle.com> wrote:
+On Fri, Mar 12, 2021 at 08:30:36AM -0800, James Bottomley wrote:
+> On Fri, 2021-03-12 at 18:26 +0200, Jarkko Sakkinen wrote:
+> > On Wed, Mar 10, 2021 at 02:26:27PM -0800, James Bottomley wrote:
+> > > On Wed, 2021-03-10 at 21:56 +0200, Jarkko Sakkinen wrote:
+> > > [...]
+> > > > I also need to apply 
+> > > > 
+> > > > https://lore.kernel.org/linux-integrity/20210127190617.17564-1-James.Bottomley@HansenPartnership.com/
+> > > > 
+> > > > and I would like to do both while I'm at it.
+> > > > 
+> > > > James, there was one patch that needed fixing but I cannot find
+> > > > lore.kernel.org link. Can you point me to that so that we
+> > > > can proceed?
+> > > 
+> > > I think you mean this one observing a missing space in the commit
+> > > message:
+> > > 
+> > > https://lore.kernel.org/keyrings/1327393.1612972717@warthog.procyon.org.uk/
+> > > 
+> > > James
+> > 
+> > Makefile needed fixing (separate lines), and spaces where missing
+> > between
+> > commas in one file (checkpatch complained).
+> > 
+> > I digged a version from my reflog but as I noted privately it's
+> > missing one
+> > file.
+> > 
+> > Either provide that file or send a new version of the full patch set.
+> 
+> This is the file that got lost
+> 
+> James
+> 
 
-> If MOKx will be available thru a config table in the next shim, 
-> I'll prepare a follow on patch to add this support. 
+> ---
+> --- ASN.1 for TPM 2.0 keys
+> ---
+> 
+> TPMKey ::= SEQUENCE {
+> 	type		OBJECT IDENTIFIER ({tpm2_key_type}),
+> 	emptyAuth	[0] EXPLICIT BOOLEAN OPTIONAL,
+> 	parent		INTEGER ({tpm2_key_parent}),
+> 	pubkey		OCTET STRING ({tpm2_key_pub}),
+> 	privkey		OCTET STRING ({tpm2_key_priv})
+> 	}
 
-Can this go separately, or would it be better rolled into the existing
-patchset?
+Thanks, NP, I amended the commit.
 
-David
+/Jarkko
 
+
+/Jarkko
