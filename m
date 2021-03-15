@@ -2,72 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F57333A106
-	for <lists+keyrings@lfdr.de>; Sat, 13 Mar 2021 21:28:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB4533B065
+	for <lists+keyrings@lfdr.de>; Mon, 15 Mar 2021 11:53:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234182AbhCMU2L (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 13 Mar 2021 15:28:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:43339 "EHLO
+        id S229789AbhCOKxB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Mar 2021 06:53:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22833 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234512AbhCMU14 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 13 Mar 2021 15:27:56 -0500
+        by vger.kernel.org with ESMTP id S229699AbhCOKw5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Mar 2021 06:52:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1615667275;
+        s=mimecast20190719; t=1615805576;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=npd6iH7N0eZ87v+8lRO4RqkY5NTrMAoR2uHc3q8d1l0=;
-        b=KDB3HVThf76mwOx/TwzHWtfY44I9mSpqPYvyTq6lQKLtni3BSmJ2Ao6oqfoAubesHv3IPD
-        A0FxxsFJhiu35KNuX34FnNn8FQq5EpbCu6QomxjRDdBJOMZkwrgCKUZGvxOK2epTbX/XsS
-        yQ4uswWgV0iIIGB1xrNPHTufdP0wE4A=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-506-wfTq5RUkPb68YwdkHN7alg-1; Sat, 13 Mar 2021 15:27:53 -0500
-X-MC-Unique: wfTq5RUkPb68YwdkHN7alg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 126493EB9;
-        Sat, 13 Mar 2021 20:27:52 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-118-152.rdu2.redhat.com [10.10.118.152])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1D4CD60C5F;
-        Sat, 13 Mar 2021 20:27:47 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <12AAB359-A315-490E-8B94-FF947997B30E@oracle.com>
-References: <12AAB359-A315-490E-8B94-FF947997B30E@oracle.com> <337B72A8-C81A-4C53-A4D6-FFFD7FA66CEC@oracle.com> <161428671215.677100.6372209948022011988.stgit@warthog.procyon.org.uk> <161428674320.677100.12637282414018170743.stgit@warthog.procyon.org.uk> <4b275a33-28ac-78c2-e075-ea2eda4f13a8@canonical.com> <92182F5F-327E-4F1D-A7D9-42355625C84C@oracle.com> <b10f51dc-b9d7-e84d-3a52-438ebd358a7d@canonical.com> <2579343.1615623232@warthog.procyon.org.uk>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     dhowells@redhat.com,
-        Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] integrity: Load mokx variables into the blacklist keyring
+        bh=LK2mxkow7e8brVvXEdY4+jZpUz8M80ZpwI/loM8Aq14=;
+        b=Hge9OH3UCfbXi8dRnUK+ZbtH3kfJ0w2Gfh0aDB1RGguIEo29/QGHXAtMS7g/6hIJgAAFfY
+        4G2xx0o8oklIxGdvVVxFnYiay1cWhIkRoNKCDYXPi15vchYo50HUalh6DnvxtD/oNttVLE
+        RHYkVFbtj0OZejt7kZgApFsqlt09EoM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-529-FV7OMxADOnCWOcBiL7Bong-1; Mon, 15 Mar 2021 06:52:54 -0400
+X-MC-Unique: FV7OMxADOnCWOcBiL7Bong-1
+Received: by mail-ej1-f69.google.com with SMTP id a22so10036709ejx.10
+        for <keyrings@vger.kernel.org>; Mon, 15 Mar 2021 03:52:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=LK2mxkow7e8brVvXEdY4+jZpUz8M80ZpwI/loM8Aq14=;
+        b=Cscn1DmeD2ODhrgAVR2ORv4WNBAXgK1Q8NcSupTFZt/1eP36cUI7pYtr6lkn08yUFY
+         z8VNg0XJXEAn+Fzn45mbHKr/uMKZJFQRTutExqjW4HRniy2vCa2aK4mGip3N2oNLZ2wo
+         fE9W6I53B1oKLnolxjgkCHFJiDaVSnI9B984OGYLXFbWZtu/1zRKyJGxwxQ/XIrqk+Xv
+         SIRtXdrbBuxsUXj3VA8hCntWILA4bsCqplc0B5FT9zJIT1neagAjS7F88PO4hba1f1i0
+         LssGEfIp9D+pFVgHnxKprAJ23P9dBgobukfSPCNuPOXe/jM1uZ8weH3mJoZbL47GD3tg
+         CcQA==
+X-Gm-Message-State: AOAM533bk5k7ZxNiF+ZNQF3sIAW/fwzafJzfqfvrIjwkA3rk3CjDZY9N
+        3qRTA/hFQZIi4eJJMjfyWirLOKOmlFy0JEqW3pSalBLA821j3VlFUSgALijBODWkj+S3kXwKfup
+        e7ndW1ZwRBUGgWaFAuM8=
+X-Received: by 2002:aa7:df84:: with SMTP id b4mr28919055edy.240.1615805573750;
+        Mon, 15 Mar 2021 03:52:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwx9wCpiGKad6zkmoQf20XvPw/JdC59hTlwQbulqEsV40iMgbgWHPodUkiEnuXQgGqtdDrTYA==
+X-Received: by 2002:aa7:df84:: with SMTP id b4mr28919049edy.240.1615805573623;
+        Mon, 15 Mar 2021 03:52:53 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id lk12sm7058344ejb.14.2021.03.15.03.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Mar 2021 03:52:53 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 76BD418027E; Mon, 15 Mar 2021 11:52:52 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: public_key: check that pkey_algo is non-NULL
+ before passing it to strcmp()
+In-Reply-To: <YEi1RgPgwfT7qHQM@kroah.com>
+References: <875z419ihk.fsf@toke.dk> <20210112161044.3101-1-toke@redhat.com>
+ <2648795.1610536273@warthog.procyon.org.uk>
+ <2656681.1610542679@warthog.procyon.org.uk> <87sg6yqich.fsf@toke.dk>
+ <YEi1RgPgwfT7qHQM@kroah.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Mon, 15 Mar 2021 11:52:52 +0100
+Message-ID: <87czw0pu2j.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2625019.1615667266.1@warthog.procyon.org.uk>
-Date:   Sat, 13 Mar 2021 20:27:46 +0000
-Message-ID: <2625020.1615667266@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Eric Snowberg <eric.snowberg@oracle.com> wrote:
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-> > Can this go separately, or would it be better rolled into the existing
-> > patchset?
-> 
-> IMHO, since you have already sent a pull request and this is not available
-> yet in shim, it seems save to have it go separately.  I should have time 
-> to send something out next week to address this change.
+> On Mon, Jan 18, 2021 at 06:13:02PM +0100, Toke H=C3=B8iland-J=C3=B8rgense=
+n wrote:
+>> David Howells <dhowells@redhat.com> writes:
+>>=20
+>> > Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> wrote:
+>> >
+>> >> Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>> >>=20
+>> >> and also, if you like:
+>> >>=20
+>> >> Tested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>> >
+>> > Thanks!
+>>=20
+>> Any chance of that patch getting into -stable anytime soon? Would be
+>> nice to have working WiFi without having to compile my own kernels ;)
+>
+> What ever happened to this patch?  I can't seem to find it in Linus's
+> tree anywhere :(
 
-Ok, thanks.
+This was a matter of crossed streams: Tianjia had already submitted an
+identical fix, which went in as:
 
-David
+7178a107f5ea ("X.509: Fix crash caused by NULL pointer")
+
+And that has made it into -stable, so all is well as far as I'm
+concerned. Sorry for the confusion!
+
+-Toke
 
