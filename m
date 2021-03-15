@@ -2,83 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14BD733B21F
-	for <lists+keyrings@lfdr.de>; Mon, 15 Mar 2021 13:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0487233C29E
+	for <lists+keyrings@lfdr.de>; Mon, 15 Mar 2021 17:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbhCOMIA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Mar 2021 08:08:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56570 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230142AbhCOMH5 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 15 Mar 2021 08:07:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 492A464E27;
-        Mon, 15 Mar 2021 12:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1615810076;
-        bh=+UjJckQjWriZ1B6VVWueYRdQH/YSy1cULoyhhX7jdpc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=w099lT/GaS7+7lwl13vyWY8l5SQ95TYQWPb2GL0GZf3p5j0wJ1EXuRGeVARBaiY07
-         /6JZOwU9Ddvy3hVNBIOBRFLYxt+CzdkVvK+RsMuOxfh3NRaqRYldlFBq98QJryQQtG
-         mC249GcDSj1/wk7ywNf2Y9Ndl6iqzWAf0xU3eCCs=
-Date:   Mon, 15 Mar 2021 13:07:54 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: public_key: check that pkey_algo is non-NULL
- before passing it to strcmp()
-Message-ID: <YE9OGk/iLq5kW7zo@kroah.com>
-References: <875z419ihk.fsf@toke.dk>
- <20210112161044.3101-1-toke@redhat.com>
- <2648795.1610536273@warthog.procyon.org.uk>
- <2656681.1610542679@warthog.procyon.org.uk>
- <87sg6yqich.fsf@toke.dk>
- <YEi1RgPgwfT7qHQM@kroah.com>
- <87czw0pu2j.fsf@toke.dk>
+        id S233956AbhCOQ4D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Mar 2021 12:56:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233951AbhCOQzz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Mar 2021 12:55:55 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD271C06174A
+        for <keyrings@vger.kernel.org>; Mon, 15 Mar 2021 09:55:54 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id x4so51259264lfu.7
+        for <keyrings@vger.kernel.org>; Mon, 15 Mar 2021 09:55:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=NFIKK+nfxU1Bk+3WCrU9O3MGPlJFWuI8pQsA4NO+khcy4IfqkRAKK0AWxN7+EKZoLp
+         ZJdTuC+bpEdcdWNQ48J87QTkicfcXwM5vDqZ8THerD1aG4Htzvz9a8JuF6RyJkH/0P/H
+         YgO1aQNpeqjVVeUnRQEq3uywJyLa3nZEYCEBnu4oOP+0oHYiPqvxycfJjg+Miw3Su0Ly
+         Onkizp0dFVpKsHJYeRS3jOJIv2iHgnLZCWQKktBFLeEPOJEkBM6YPDst3Txzn97hyyCo
+         2L0z4aN/23aR2RV7uI7XCiWyNGs6jwGUBK0c+VJVf2SO//1QRq75v2XWVIep95A54pTN
+         yPCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=GA1VZAx1q3BsMDLVTp6BqjGUyzB57zAz+lG4QS1eF6BAK1Q3Ab7HigbPzKutA427Or
+         T1cA4Q3xzcr+zRpxi4hVAh4kkTyNxbYpbXuCHUg/qgeWVoN7sZGM77qyGKSSDafLnZQw
+         vLpLct56Q9Ciu/yECw5dXsqgm5P/YEe4xlu64IqYrS+14dcCF8vNjDbHorDHn4FZCZ8S
+         79pvhROFpX/B5fdcWN6mA8X3CLe2JvBv1LOElM/vBm3hGbzOuK6jDVIQpGuhVCX+rOGJ
+         gsR0EAKPmg+bWFsiS9CsT75VUng809szNd7v+qtIypFl3m4B01gpT0IbHu8K0GKKxduy
+         C+pw==
+X-Gm-Message-State: AOAM5316nd4TEvjUEUfkGeN8ZdPOjE7HbrmbFZF/k/z6oEpElZwUJ37u
+        66NLDOnIPtTMG87GLdV11vrHdwKvJ4FbMPq5pQ4=
+X-Google-Smtp-Source: ABdhPJyti9j1xbG7VWGMZ7aPtd7Btkjs1GN0IVYGnPzacRUiAM0k8HHHlBfAb/Fiz24mX/Aiqm6jmarQAvIoeTz7Yr8=
+X-Received: by 2002:a19:c309:: with SMTP id t9mr8176362lff.348.1615827353222;
+ Mon, 15 Mar 2021 09:55:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87czw0pu2j.fsf@toke.dk>
+Received: by 2002:a05:651c:1382:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:55:52
+ -0700 (PDT)
+Reply-To: ezbtg22@gmail.com
+From:   "Mrs.Glenn" <mrganuserge@gmail.com>
+Date:   Mon, 15 Mar 2021 09:55:52 -0700
+Message-ID: <CA+Wfa7YVrx0ws3646y2_O1kPsYemM7JwcJJmf2b35t-FLHsF1g@mail.gmail.com>
+Subject: From Mrs.Glenn
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Mar 15, 2021 at 11:52:52AM +0100, Toke Høiland-Jørgensen wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
-> > On Mon, Jan 18, 2021 at 06:13:02PM +0100, Toke Høiland-Jørgensen wrote:
-> >> David Howells <dhowells@redhat.com> writes:
-> >> 
-> >> > Toke Høiland-Jørgensen <toke@redhat.com> wrote:
-> >> >
-> >> >> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> >> >> 
-> >> >> and also, if you like:
-> >> >> 
-> >> >> Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> >> >
-> >> > Thanks!
-> >> 
-> >> Any chance of that patch getting into -stable anytime soon? Would be
-> >> nice to have working WiFi without having to compile my own kernels ;)
-> >
-> > What ever happened to this patch?  I can't seem to find it in Linus's
-> > tree anywhere :(
-> 
-> This was a matter of crossed streams: Tianjia had already submitted an
-> identical fix, which went in as:
-> 
-> 7178a107f5ea ("X.509: Fix crash caused by NULL pointer")
-> 
-> And that has made it into -stable, so all is well as far as I'm
-> concerned. Sorry for the confusion!
+-- 
+Dear Beloved,
 
-No worries, thanks for letting me know.
+I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
+in a hospital bed in Israel. I am 59 years and childless; my husband
+is dead. I was diagnosed with terminal cancer. And my doctor just
+predicted that I have but very limited time to live due to damages in
+my system and as a result of that I decided to dispose my 10.5 million
+US dollars to a God-fearing one for the continuation of charitable
+work. This is why I located you.My guess about you may not be accurate
+because I came across your contact at the humanitarian calendar event
+of the year but I believe in God who  divinely directed me to you for
+this solemn proposal of charitable work. I wholeheartedly wish to
+bequeath my fortune to you as a God-fearing person for the
+continuation of charitable work anywhere around the world.
 
-greg k-h
+I shall be going in for a surgery operations soonest and desire this
+money to be transferred to you as I do not wish to leave this money in
+the bank because bankers might misuse it for their own interest after
+my death. As soon as I receive your quick reply assuring me that you
+will utilize the money as I instructed you for the benefit of the less
+privilege, I shall give you more details and also instruct my bank to
+release the money to you for the charity project. I hope you receive
+this mail in good health.
+
+Because I don t know what will be my situation in next minute,
+
+I am waiting for your reply.
+
+Yours sincerely,
+Mrs Elizabet Glenn.
