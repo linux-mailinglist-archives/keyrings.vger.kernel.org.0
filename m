@@ -2,95 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E39B5345682
-	for <lists+keyrings@lfdr.de>; Tue, 23 Mar 2021 04:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EE0F3459D1
+	for <lists+keyrings@lfdr.de>; Tue, 23 Mar 2021 09:36:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbhCWD4e (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 22 Mar 2021 23:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbhCWD4D (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 22 Mar 2021 23:56:03 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0D9BC061574;
-        Mon, 22 Mar 2021 20:56:02 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id v186so10383240pgv.7;
-        Mon, 22 Mar 2021 20:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wB1I6Nqq7AfdRuGhioLL2RWvT/EvSUrtBmeOoGNpC4c=;
-        b=UXpW9XC2NJqo7rfMeftU26YMoK90BHzqbUDDT4ow5DfNL2VY+06Rp3ATLnompDaf29
-         URFgJYp6bGlRdf6keBw/FE901PTen0GhQYjwTk6cy4jhT4xib/LgUOwWieEVhO+sJtL7
-         wjcrbxUunWkk7MzMd/JsGvObERbO7waXPGrN2rkh59FTQWf2/q55VYiah2Ck3m0jeLX+
-         mWZolC7MH7YNibNKr9zFS745BMoJvI2qHpEcJW0HSpidbJXDE13vn+g9EQ8+HsWFeReh
-         VWEuC0VwGiSzjOMRF9Dc/tG5wFBK+tZKtdMiXsLcxP6bMfMKRHZ5W6V54dPVbcvgrxlh
-         lsLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=wB1I6Nqq7AfdRuGhioLL2RWvT/EvSUrtBmeOoGNpC4c=;
-        b=hDTDBoVlhOT+p8Kv9G13LcLJwLfgUo33jbbwT42YR1AbyqEUnvvaAJ97zNyF1C5p4o
-         tq7P0LXBT//7uPi1T9o9QPWJpbJjaTPAkiSdafhy0mvFfUOC64uAU0WdiEkrpyAzhhur
-         b+LDoEogVBLMgzoRbRIDh/ueBtHy2cdzZjOQbhr2sLQqQf3xW/sxFxMV4f6QwPMGHDgd
-         b1K3Owxq6OSGOfnae3CVUOp3ii5QggHrQ5ZHQm5Zd4o+vzMkuscCq1mvYwXmnTiE+rH0
-         U3WVqirzOoMjXIEGuKWFA5e++jlR6eUNiyvdD9k7QgekVrPbaf5KF6NLi26zLEo3iqja
-         OrGA==
-X-Gm-Message-State: AOAM531BJ1plwk544CD1S+mtxj68+7JJJNHz//SL/NpvI2hZuirsKkAr
-        gKZNLAxze21Gzjz3FTiVPMU=
-X-Google-Smtp-Source: ABdhPJydHbGnZnMAt1icAGF5YoesfMt9wBbr8Fj49YkpN2/TMf4kipg460iug9SOSvZFlO4f3LGzeA==
-X-Received: by 2002:aa7:9910:0:b029:1f1:b41b:f95c with SMTP id z16-20020aa799100000b02901f1b41bf95cmr2960636pff.5.1616471762418;
-        Mon, 22 Mar 2021 20:56:02 -0700 (PDT)
-Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id z22sm14415630pfa.41.2021.03.22.20.56.00
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Mar 2021 20:56:02 -0700 (PDT)
-From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ben Boeckel <me@benboeckel.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH 4/4] Documentation/admin-guide/module-signing.rst: add openssl command option example for CodeSign EKU
-Date:   Tue, 23 Mar 2021 11:55:21 +0800
-Message-Id: <20210323035521.5843-5-jlee@suse.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20210323035521.5843-1-jlee@suse.com>
-References: <20210323035521.5843-1-jlee@suse.com>
+        id S229812AbhCWIfl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 23 Mar 2021 04:35:41 -0400
+Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:37920 "EHLO
+        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229972AbhCWIfe (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Mar 2021 04:35:34 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0UT38Cws_1616488528;
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UT38Cws_1616488528)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 23 Mar 2021 16:35:29 +0800
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Nick Terrell <terrelln@fb.com>, KP Singh <kpsingh@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Vlastimil Babka <vbabka@suse.cz>, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        Jia Zhang <zhang.jia@linux.alibaba.com>
+Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH] init/Kconfig: Support sign module with SM3 hash algorithm
+Date:   Tue, 23 Mar 2021 16:35:28 +0800
+Message-Id: <20210323083528.25678-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.19.1.3.ge56e4f7
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add an openssl command option example for generating CodeSign extended
-key usage in X.509 when CONFIG_CHECK_CODESIGN_EKU is enabled.
+The kernel module signature supports the option to use the SM3
+secure hash (OSCCA GM/T 0004-2012 SM3).
 
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 ---
- Documentation/admin-guide/module-signing.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/admin-guide/module-signing.rst | 5 +++--
+ crypto/asymmetric_keys/pkcs7_parser.c        | 7 +++++++
+ init/Kconfig                                 | 5 +++++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
-index 7d7c7c8a545c..ca3b8f19466c 100644
+index 7d7c7c8a545c..8d8980808b5b 100644
 --- a/Documentation/admin-guide/module-signing.rst
 +++ b/Documentation/admin-guide/module-signing.rst
-@@ -170,6 +170,12 @@ generate the public/private key files::
- 	   -config x509.genkey -outform PEM -out kernel_key.pem \
- 	   -keyout kernel_key.pem
+@@ -30,8 +30,8 @@ This facility uses X.509 ITU-T standard certificates to encode the public keys
+ involved.  The signatures are not themselves encoded in any industrial standard
+ type.  The facility currently only supports the RSA public key encryption
+ standard (though it is pluggable and permits others to be used).  The possible
+-hash algorithms that can be used are SHA-1, SHA-224, SHA-256, SHA-384, and
+-SHA-512 (the algorithm is selected by data in the signature).
++hash algorithms that can be used are SHA-1, SHA-224, SHA-256, SHA-384, SHA-512,
++and SM3 (the algorithm is selected by data in the signature).
  
-+When ``CONFIG_CHECK_CODESIGN_EKU`` option is enabled, the following openssl
-+command option should be added where for generating CodeSign extended key usage
-+in X.509::
+ 
+ ==========================
+@@ -86,6 +86,7 @@ This has a number of options available:
+ 	``CONFIG_MODULE_SIG_SHA256``	:menuselection:`Sign modules with SHA-256`
+ 	``CONFIG_MODULE_SIG_SHA384``	:menuselection:`Sign modules with SHA-384`
+ 	``CONFIG_MODULE_SIG_SHA512``	:menuselection:`Sign modules with SHA-512`
++	``CONFIG_MODULE_SIG_SM3``	:menuselection:`Sign modules with SM3`
+         =============================== ==========================================
+ 
+      The algorithm selected here will also be built into the kernel (rather
+diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
+index 967329e0a07b..6cf6c4552c11 100644
+--- a/crypto/asymmetric_keys/pkcs7_parser.c
++++ b/crypto/asymmetric_keys/pkcs7_parser.c
+@@ -248,6 +248,9 @@ int pkcs7_sig_note_digest_algo(void *context, size_t hdrlen,
+ 	case OID_sha224:
+ 		ctx->sinfo->sig->hash_algo = "sha224";
+ 		break;
++	case OID_sm3:
++		ctx->sinfo->sig->hash_algo = "sm3";
++		break;
+ 	default:
+ 		printk("Unsupported digest algo: %u\n", ctx->last_oid);
+ 		return -ENOPKG;
+@@ -269,6 +272,10 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
+ 		ctx->sinfo->sig->pkey_algo = "rsa";
+ 		ctx->sinfo->sig->encoding = "pkcs1";
+ 		break;
++	case OID_SM2_with_SM3:
++		ctx->sinfo->sig->pkey_algo = "sm2";
++		ctx->sinfo->sig->encoding = "raw";
++		break;
+ 	default:
+ 		printk("Unsupported pkey algo: %u\n", ctx->last_oid);
+ 		return -ENOPKG;
+diff --git a/init/Kconfig b/init/Kconfig
+index 5f5c776ef192..fed9236078e4 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2202,6 +2202,10 @@ config MODULE_SIG_SHA512
+ 	bool "Sign modules with SHA-512"
+ 	select CRYPTO_SHA512
+ 
++config MODULE_SIG_SM3
++	bool "Sign modules with SM3"
++	select CRYPTO_SM3
 +
-+        -addext "extendedKeyUsage=codeSigning"
-+
- The full pathname for the resulting kernel_key.pem file can then be specified
- in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key therein will
- be used instead of an autogenerated keypair.
+ endchoice
+ 
+ config MODULE_SIG_HASH
+@@ -2212,6 +2216,7 @@ config MODULE_SIG_HASH
+ 	default "sha256" if MODULE_SIG_SHA256
+ 	default "sha384" if MODULE_SIG_SHA384
+ 	default "sha512" if MODULE_SIG_SHA512
++	default "sm3" if MODULE_SIG_SM3
+ 
+ config MODULE_COMPRESS
+ 	bool "Compress modules on installation"
 -- 
-2.16.4
+2.19.1.3.ge56e4f7
 
