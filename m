@@ -2,37 +2,37 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B0F834F240
-	for <lists+keyrings@lfdr.de>; Tue, 30 Mar 2021 22:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6308F34F24E
+	for <lists+keyrings@lfdr.de>; Tue, 30 Mar 2021 22:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232802AbhC3Ub1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 Mar 2021 16:31:27 -0400
-Received: from de-smtp-delivery-102.mimecast.com ([194.104.109.102]:53910 "EHLO
+        id S231743AbhC3UgS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 Mar 2021 16:36:18 -0400
+Received: from de-smtp-delivery-102.mimecast.com ([62.140.7.102]:59295 "EHLO
         de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232698AbhC3UbE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Mar 2021 16:31:04 -0400
+        by vger.kernel.org with ESMTP id S232333AbhC3UgE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Mar 2021 16:36:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
-        t=1617136263;
+        t=1617136563;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eYB76umgftXzIzTxgCT9UWRo+Rrcqi57VJ/bps+IU5I=;
-        b=FXz8iNzmOHlrAxd/JVVFG+wT5cIYV5lFlyBcok4FW4FEk5ULQOvlXKNZ30yuhojQMusJPG
-        b37ITu6TrAYXM/j6xHtdfHE12e2yNrYe38iMO7+wh8qOxMzuu39vXJXsdNRsYKVamnriDo
-        eXiZ1kOrv+cXAkadawr328AUZMRNYKs=
+        bh=9zKKEj6MKz/JIXNozOfbnLGlLfXIRj4Xfb3E1WrMoKc=;
+        b=QoIRLP+Gz1Z/XJj0zaesd070/ZI+VjhJBkN6VLPoy7oqrrcj/6bLIF3a7uokpD8JhRDwyt
+        LpWhd+7+/MUpxutVXeZnIf7FrQQeQu46OY+NDKz3y13ThOBx0qDrIM8F8lN0a/3dFjGhb1
+        HRmBIN7IdvcTIpZWmO0gegx7SDtflTQ=
 Received: from EUR04-HE1-obe.outbound.protection.outlook.com
  (mail-he1eur04lp2059.outbound.protection.outlook.com [104.47.13.59]) (Using
- TLS) by relay.mimecast.com with ESMTP id de-mta-2-fZTKmsXlO3S83kwIq_5Qzw-4;
- Tue, 30 Mar 2021 22:29:50 +0200
-X-MC-Unique: fZTKmsXlO3S83kwIq_5Qzw-4
+ TLS) by relay.mimecast.com with ESMTP id de-mta-2-1T9VMgkXOxK41rOU3XVbkQ-5;
+ Tue, 30 Mar 2021 22:29:52 +0200
+X-MC-Unique: 1T9VMgkXOxK41rOU3XVbkQ-5
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GS5u1sM7/kJfvA3ABM2ZIf4CsNNMIdTezj2VUYJGEdoF1Bl3FO/fi08aoo7f+OQBmqijsvxELWaBU9Q8UhaHCJanHkEfGR03ryIs6KGT/q5vTMPS8KUZjwcZpXg2uCn99pSO1sbyAI488d2gWX8LF/hbf/M82Tk5TBynRXJS08Y70oeta/FmvZPR9XSF/VqnCM+uo42CvmpNBq7u6V+WSTPzMCo+YkY8Huy76TiFKGpKDsinauYCeDoyNRYQ/jDNb/cCW5UyCT1PUqpxwdCc8abCpSvt3CiTkY6gZovOOmSIg82lWohdoGu73j7FBxm+yZrnkaMAPeqQ3UtWlazLGQ==
+ b=M9RUYUPo9OYm9Oyn1GvKp2/kmgv+ixw27L5yvljB4YwVZWF9T7K3W3UqQXga5EVnIBumqbsOg9gnKca4u9/4OgneGB+18n+rqMk8AwJx+RTGoLCcevqp6maFl3DbCBzDpH+h3P6C7Hn4Db3l1NW081A4ff++yurx0c3TkOPmkdFna0IVEk5EPc1DUjUDbyqC1vdzh3E+7i+qbsUq14Kg/RAu6RlZX+XCEmAUpJKzfUmRSSnur0RvuVOj2iWGSHVsvz7sZ6G3CLzuM+X3e+wTPv0IG9PL6iwVjeBeDvSIXlbNdsuOEU+IM2+a46ArO4/NsoP5QzZpmvFHobR0R077WQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AsVzAqmtMgrcub9RNoaTFnQsWtFf3tkKDhatQU8Kmds=;
- b=JHA2pF/qGwr4Ws5G4PxHOY0C9yXaSYVJwcA/z1xBFB8AI0eoJW/Um4Go9k+oAmWhL9rvdkS61nLhYtqhVMSI/CWrAFPeKtgKDjmVZqW1d2E5YOZNMYXI4eydomOhQ/5chfYsNTq08Pqk0T+GW4Y0dMUjvPa/YBr3aOHLSIf30cQGXosw6N4tks28SFZB5NP27WyRl5Dyr6Z40E3yyc9UCD12e5dhFE6XGmTminAqvThv7SN7oXyyo3gqd515r9dtN9yoTDpOpC/l9qtXof0RkcRB5IDy2e0vcf1LSVtxe556MgoD27UABqbbUAdOye6EX6Xi5J2nMA3GNVOt6OlaqA==
+ bh=0PGs18I+TKe1h2xOALY1QG3g4J+7kNSWv6sCbnQ4WQ4=;
+ b=A7TrO2Eut/GSeDfgTdDda2tw3c9WJL5OPxwBgklTpp83RsJcQV96y/ozrJWvad3aOq8v83vOhwI4wcWq8tjCecj8CWlAUzH3s0g012TestlCMKTzGokkD8ZOQ1aArqtxDbc7THIe0dzC/NtlY1vMdRPp20H0XKVNbexVziedjRVjQQ63QxsfY57TbgRKl7qEVTjOkD2NjY7spvyv+ebLbbi5qyHima6LS4l4zI6dUUO+X8pmP2yL2Cu8uS5osjx5/BA598hQItyVWmc59vE8IhjSpGqKrmFi1au2pLgyRhol9JS6Of9R67L+qkp+6O1PQPk/wIe9G4csaymJ6H4hlQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
  dkim=pass header.d=suse.com; arc=none
@@ -42,22 +42,26 @@ Received: from AM0PR04MB5650.eurprd04.prod.outlook.com (2603:10a6:208:128::18)
  by AM4PR0401MB2321.eurprd04.prod.outlook.com (2603:10a6:200:4e::27) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.29; Tue, 30 Mar
- 2021 20:29:49 +0000
+ 2021 20:29:50 +0000
 Received: from AM0PR04MB5650.eurprd04.prod.outlook.com
  ([fe80::40bd:b7d7:74a7:5679]) by AM0PR04MB5650.eurprd04.prod.outlook.com
  ([fe80::40bd:b7d7:74a7:5679%3]) with mapi id 15.20.3977.033; Tue, 30 Mar 2021
- 20:29:48 +0000
+ 20:29:50 +0000
 From:   Varad Gautam <varad.gautam@suse.com>
 To:     linux-crypto@vger.kernel.org
 CC:     Varad Gautam <varad.gautam@suse.com>,
         David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
         keyrings@vger.kernel.org (open list:ASYMMETRIC KEYS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 17/18] crypto: Accept pss as valid encoding during signature verification
-Date:   Tue, 30 Mar 2021 22:28:28 +0200
-Message-ID: <20210330202829.4825-18-varad.gautam@suse.com>
+        linux-kernel@vger.kernel.org (open list),
+        linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
+Subject: [PATCH 18/18] keyctl_pkey: Add pkey parameter slen to pass in PSS salt length
+Date:   Tue, 30 Mar 2021 22:28:29 +0200
+Message-ID: <20210330202829.4825-19-varad.gautam@suse.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210330202829.4825-1-varad.gautam@suse.com>
 References: <20210330202829.4825-1-varad.gautam@suse.com>
@@ -69,112 +73,125 @@ X-ClientProxiedBy: AM3PR03CA0066.eurprd03.prod.outlook.com
  (2603:10a6:208:128::18)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from xps13.suse.de (95.90.93.216) by AM3PR03CA0066.eurprd03.prod.outlook.com (2603:10a6:207:5::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.25 via Frontend Transport; Tue, 30 Mar 2021 20:29:47 +0000
+Received: from xps13.suse.de (95.90.93.216) by AM3PR03CA0066.eurprd03.prod.outlook.com (2603:10a6:207:5::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.25 via Frontend Transport; Tue, 30 Mar 2021 20:29:49 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 18df6bb2-4e77-4901-98f5-08d8f3ba9083
+X-MS-Office365-Filtering-Correlation-Id: 15ccd719-31f2-4bed-73b9-08d8f3ba91a2
 X-MS-TrafficTypeDiagnostic: AM4PR0401MB2321:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM4PR0401MB2321881A707959C89DAA31FDE07D9@AM4PR0401MB2321.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:546;
+X-Microsoft-Antispam-PRVS: <AM4PR0401MB23210F24916B0CC9D262E867E07D9@AM4PR0401MB2321.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:366;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: IYnvxXSRHNUWEJ1rFfCpmdw478f/4J/PrhBJkf/NGUrkmyAJVvm5LLsnvYTjLujwyGDXIYq2kMg20EFq2BqJAno7OXbfM5pRfXT7b2SHwIA7GmWtEcnDsibww+5R8MOak5vHsC5l7ADtcCcrH6FoE86CQkuhwVYV4ih4srxhRFxssEAcXqkWvWq/gcrkv8PNPveRM3U5J5RFTWkPW4kD7HCJa336Jnp1kJQVj49UHzkgdpTm0KqttNKc074LxfItA8gPqeuWtgSr1rBFaICfxnsWYytxi4wBeRhPfXBAMXEWYq+KqDgq+jVq6mGpPgt8z5/vEpXfbD6VbD6decboMo2vwFjK9dujpC+O9uKJAOVgGGm8Wk8bDaGq5V+/WXVbnFx8nXCRo0J3SfqfYBYGTjTW3wH4W8yhL+9Uw3xiAjQIoow9m5ZzmMcXPzn/VX/jECANmQyUr2/GuXUvk8Rg9Te3BuLtMwmXlgR6AehhLXKy/tOKhxKdVMFq1ra0sPbcLIxrbutNjZlltPhVL2Wa9OstuR9qlJ6ygovaH5DsBEeum/hkqmd6LA3U/t7ZUKpbCpVFRFrXmsrFNVAllSD3BfXX+rYLp56/p2A61FvkKkkgPZZrP0tGXKdCP5U1NKfmSGKfu40cQsPEejmllUtwqg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5650.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(346002)(136003)(376002)(366004)(39850400004)(478600001)(4326008)(8676002)(36756003)(186003)(6916009)(38100700001)(66476007)(26005)(66556008)(8936002)(6666004)(66946007)(5660300002)(86362001)(54906003)(316002)(6512007)(1076003)(16526019)(52116002)(83380400001)(44832011)(2906002)(956004)(6486002)(2616005)(6506007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?kbUOK0+NmqcGwcnCPnxw6P7Pno+kyA8LZO+kNZk0lBQ8EMzLK21r7B8gm1rc?=
- =?us-ascii?Q?lPgeRoV4tRgCjDo6ViWUGYaUgU99WOcPHnTxjZJrWaHn1EW3vcooXsOlmaDP?=
- =?us-ascii?Q?INIuKvLMIeaEBmHe4gdb44YIYUO+rUZBqnJ3U78/hOczHmaRj/U/KZw0x2Ev?=
- =?us-ascii?Q?jEFswke0olEwAv6U7RRYI6egXKWj8fOtqW0kFzOInVNrszECC94DRiiBtCF8?=
- =?us-ascii?Q?UUFzVJ0wXpE7bZPHHtjRSF42vJb56s/xHJSm8SzIfsqojsMP0ZO2L8Nn4vSv?=
- =?us-ascii?Q?Ysl2njCYuWf3Y79S+nmlMFaGDRnK42CCwv+5ji3G6Gq0KlCS3vMSkphYyedp?=
- =?us-ascii?Q?Ex1onnOIIE3xNjh3CfY0z72LH1AWUlFPpELZDZ68CFSHqDt1+wt060ByViWN?=
- =?us-ascii?Q?i2V6y9ux03Xx5Dt6luPOxSzdc27JjwUzImQEhvGOSVP3zKYF5faO8mV/rwsR?=
- =?us-ascii?Q?W/mhViYGxtAc0KCMpeGLASj2G3f+2D8auNEjudJ26As/t1JiH8MAJVTizU8G?=
- =?us-ascii?Q?UgBIacmBEwtXNOuOy6O15z8KpWG0hrlCwZsVQdOznwcKy+xss07+56ebQlKR?=
- =?us-ascii?Q?7EFWTXG+Juc/3F0XOjKG0rEc+Gnz8PZJkGaUb4Qfdp6JB8vRPTyH9gdOh5C6?=
- =?us-ascii?Q?HIwBlVhAGrnPQoWFDc1IzvZ4nkVJ/MwxmAPPW24b1UW/74AIsUH6cHWf30aZ?=
- =?us-ascii?Q?VdsQxaR12cPJNpydvf/wHyOTmocgTQbp5bVNmVGkxIxEymEtgjZYt0EHmzCY?=
- =?us-ascii?Q?IKeHkU5Gk4i14Scf9nDybyCa3PH7Ccp7q5bCXp4D1SgI7Yxyql0BOgiRAqgV?=
- =?us-ascii?Q?C19lMkXFEcM4UaT1D4237hbMdbMLyGl230LFLdW8zqBWdCoqaZmx6ex/6N4l?=
- =?us-ascii?Q?UC12kMdRIoMWkWTj9VN40UnyXPejiFBOC4ZP4qEVO8PzHKHgXzgwyUysAyCY?=
- =?us-ascii?Q?81+2PNnKVrFco4p1yhfQn8aqtbT3cL/lhESB5Q6i4UZA2LLZCCRoiRpqoaxw?=
- =?us-ascii?Q?AYLzJXzhgmklKRBxx3YUTzN1KcWtu0zXNV6/rh0Dzg2l0RcZyYkhPybugnIR?=
- =?us-ascii?Q?kLL4l410FpY/b0X8TTT5xHNHcEuaSaudxwvwcQP5vmkPPxKfC//tn0liN1hh?=
- =?us-ascii?Q?XVtJIo6jkoDaaCeOpAgHWvzBLR76qbU4/OGtTIvqtoXVj0bFtAODGi9pR4Vw?=
- =?us-ascii?Q?FdmpZH/sKu3jWX9tuLaNEFSlDiDemPzsqK7CqNyj+P3OatjP4mgTDF39qqt5?=
- =?us-ascii?Q?HPxY3Bi745LyTM5MElV1tu2iqBb65BHWJqhJNf+AUlZMTf3gn1YHQS0Vy+oQ?=
- =?us-ascii?Q?5v6lLYnnwRbyr1mfZr+2yPee?=
+X-Microsoft-Antispam-Message-Info: CnLOumaz7PKgFVT5rwTmttS6CsR/9KTjcBVagzaidQr2+Lr478SDYx5/drqm9gTkef3dQTfCVLU5dZ2dKstUhp5i5OjY+WKrNRU6syyEojSv88WP0gBfQf3fSOs48cCalyq3Ou++xKAArLjMGTjDriW/xR3GTyL3G4+eq9iVQeQ5wU2BEfFBw5yqmCF/aT24xlJN58tTDxBOOG8k0tUFAEkn5EJfdX0BXoRyXUwIiyTD/Kg8+ie2cvfOVukU+rDdEejC2tjXN9pR4EvVRZe3r2jXQzJu6Y0c0qSS80wLOMtoW/WwqFmQOmh+lkAGt9m/hPXRhQWJWwFDpchQ6nsXQ/psolaQ2J9G6FaWxNcmUfK08M6PLimNOus1JlRVFU4b6sVzUpjzqm9sNh9JPR7OeE2910tpHsJES613msjvJIzBvSp2VKMMx3Hs4d4WzOIbKz3MKPKunppFzkfuVMlt2su13wUP3wQLAbTLW+KruSiCa7u/ZfFJ/KijP09EoJBZLd2Ij8jj622W/8T1RxuM0BRVDC1PPpVE8N5LVWmJ0P4JySVBALncf1XOOTCiFVSx/CXiyY2axKQuqXt5li76dH3bJ+NF2+RONocQwF98RcXwN4ch5fNIWm0rTIhv4os0K4Lq8sQHefFbpp9uYlUV0Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5650.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(346002)(136003)(376002)(366004)(39850400004)(478600001)(4326008)(8676002)(36756003)(186003)(6916009)(7416002)(38100700001)(66476007)(26005)(66556008)(8936002)(6666004)(66946007)(5660300002)(86362001)(54906003)(316002)(6512007)(1076003)(16526019)(52116002)(83380400001)(44832011)(2906002)(956004)(6486002)(2616005)(6506007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?IgddJZYhEEWDrsRka/46BTacDL53UkVauxk67rtWsZEO1uyoN3vP735hhIpl?=
+ =?us-ascii?Q?Cq2c18whlE6CUUm9185CyKDpii8gICdpeUyDxJSof8EQlSMngirHaSJC30Bz?=
+ =?us-ascii?Q?BTfEws9KHGVvK9cBusxIgdLT35EmV9V/gFGQAKU9D6ceNAF8V8nYcqvBcuKN?=
+ =?us-ascii?Q?baInfH7ipoB8kamlO2boR81H5stfNe0I1RhT3y3GMPpTZxbc9BvG7g+qUrQt?=
+ =?us-ascii?Q?SmmYqUU0WXpFcEARUPYV29JjdjnnkuEAPB0OCVmhS9p0zR6EEfqN1u+sn7WE?=
+ =?us-ascii?Q?k3Z0M7DAJ14LxZBIL1XMmvWHs5SMTfGCG8BP0wFh4j6LaDLMLPq2EdH+7DtV?=
+ =?us-ascii?Q?sXPhA5MLAtsCMseMVoKjcRxNsPqT718mhtdKWrR+vXM2ccH16PHI8QuM9lR/?=
+ =?us-ascii?Q?rvCx/RDRNAr13O+Bdo4Jc66MuJiAOnU+S9gBctExcnrh3CDimlFQc+x45BKH?=
+ =?us-ascii?Q?ss7DJKIKpn1N2Ro24/jyFA3zSRVnDRaewJpiQsQV6YCd3qE12BUSDED+9nYY?=
+ =?us-ascii?Q?Ap3mtwC8rrBLCM2rMSyJs5+MiYwqLi2V2/ZC22cla8jpS1sD/V9OvOQSKZM6?=
+ =?us-ascii?Q?yoBZulTbXfu1I0qT3sJaF5Af6BxG9TVdafmoSotBcvul1FnE9Bs5ySlLEdx4?=
+ =?us-ascii?Q?aMIFGaxaJ4rgOxAAW8/jrrdpoz9qu+/uhTQhTDi3t5Wwk254y+H/0SkuDKFE?=
+ =?us-ascii?Q?Tdy+3UBGG9Zi3nMkC6VbWSmiwVc4fF1wyrxoo97JoW4R8+wYLEfwhxNNvx2W?=
+ =?us-ascii?Q?w+xVLSj/CTol3iRUyMGR0xX4zkjiJ23e2LfvZM0pFvRVe0seh+6+kOqV+KDL?=
+ =?us-ascii?Q?ShwXEFv4D3umxmBpxlXpdPqGIUj0jIZlW1VfQgdR733AnxyV0RE32XSwp68Z?=
+ =?us-ascii?Q?mkXOAgRsUVfCQn/111PRLN3GJ8CuPcthWc9LynqkA/fT+ctm5KbwEdKv/WAR?=
+ =?us-ascii?Q?lvfJLU9V/oqHaTezZosxYFSYGK6lcoW3Al3yK8uJl+2lQRPf6L49t4Af3AW4?=
+ =?us-ascii?Q?z++68y7y6kes9SjDbPvLgiTSwxCmbzhhJUIvxlmmjw9MZZP6Qm3YpFnQCy/E?=
+ =?us-ascii?Q?5XmVHfTqOvyxZjgPlgjN/XmgPFtJZHAeLZifWYe0QPYNVNd9XpwhFIuc/Tpg?=
+ =?us-ascii?Q?BkCAZWFUWpFYfVfPfp/ZEqHZCg38KsysYejR3Y30KUp3jMwlMUu59des4XZc?=
+ =?us-ascii?Q?wgHchAAKTw95khXZ+dciOiAWrJ7wZdZGR2/xqVkJM+96ZneeoZe8/9ee5/Ph?=
+ =?us-ascii?Q?CQdK4enEZmB0Xl1jwmx3sc7E45yRnMKbyOxwXEiaWresYqXbgm/hqfTgqbFj?=
+ =?us-ascii?Q?Rrcv0A7CMvH/sprxcdYTWAuG?=
 X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18df6bb2-4e77-4901-98f5-08d8f3ba9083
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15ccd719-31f2-4bed-73b9-08d8f3ba91a2
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5650.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2021 20:29:48.8684
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2021 20:29:50.7613
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qmHlKAqitXlxA3EpHb2lr+RAQEJRW2goDCc7vVSVXUK1KQ5yE8r4qIx2qi881dLqPPr1WPwXLqiilYmJc5CEqw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: STsh3HwcwDOQGFS8jMo1y5V4njnoPk7L7djVQks0ZqXw97i+4UsB1GwDH0r7cO+9k+J+pFsPbRv/PtxaT7Tw0w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR0401MB2321
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Accept pss encoding for public_key_verify_signature. If
-CONFIG_CRYPTO_RSASSA_PSS is disabled, crypto_alloc_akcipher will
-fail to find a pss backend anyway.
+keyctl pkey_* operations accept enc and hash parameters at present.
+RSASSA-PSS signatures also require passing in the signature salt
+length.
+
+Add another parameter 'slen' to feed in salt length of a PSS
+signature.
 
 Signed-off-by: Varad Gautam <varad.gautam@suse.com>
 ---
- crypto/asymmetric_keys/public_key.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ crypto/asymmetric_keys/asymmetric_type.c | 1 +
+ include/linux/keyctl.h                   | 1 +
+ security/keys/keyctl_pkey.c              | 6 ++++++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/p=
-ublic_key.c
-index 788a4ba1e2e7..b9cc83ba7a12 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -69,19 +69,20 @@ int software_key_determine_akcipher(const char *encodin=
-g,
- {
- 	int n;
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_k=
+eys/asymmetric_type.c
+index ad8af3d70ac0..eb2ef4a07f8e 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -571,6 +571,7 @@ static int asymmetric_key_verify_signature(struct kerne=
+l_pkey_params *params,
+ 		.hash_algo	=3D params->hash_algo,
+ 		.digest		=3D (void *)in,
+ 		.s		=3D (void *)in2,
++		.salt_length	=3D params->slen,
+ 	};
 =20
--	if (strcmp(encoding, "pkcs1") =3D=3D 0) {
-+	if (strcmp(encoding, "pkcs1") =3D=3D 0 || strcmp(encoding, "pss") =3D=3D =
-0) {
- 		/* The data wangled by the RSA algorithm is typically padded
- 		 * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
--		 * sec 8.2].
-+		 * sec 8.2] or EMSA-PSS [RFC8017 sec 9.1].
- 		 */
- 		if (!hash_algo)
- 			n =3D snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
--				     "pkcs1pad(%s)",
-+				     "%spad(%s)",
-+				     encoding,
- 				     pkey->pkey_algo);
- 		else
- 			n =3D snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
--				     "pkcs1pad(%s,%s)",
--				     pkey->pkey_algo, hash_algo);
-+				     "%spad(%s,%s)",
-+				     encoding, pkey->pkey_algo, hash_algo);
- 		return n >=3D CRYPTO_MAX_ALG_NAME ? -EINVAL : 0;
- 	}
+ 	return verify_signature(params->key, &sig);
+diff --git a/include/linux/keyctl.h b/include/linux/keyctl.h
+index 5b79847207ef..970c7bed3082 100644
+--- a/include/linux/keyctl.h
++++ b/include/linux/keyctl.h
+@@ -37,6 +37,7 @@ struct kernel_pkey_params {
+ 		__u32	in2_len;	/* 2nd input data size (verify) */
+ 	};
+ 	enum kernel_pkey_operation op : 8;
++	__u32		slen;
+ };
 =20
-@@ -363,6 +364,13 @@ int public_key_verify_signature(const struct public_ke=
-y *pkey,
- 			goto error_free_key;
- 	}
+ #endif /* __LINUX_KEYCTL_H */
+diff --git a/security/keys/keyctl_pkey.c b/security/keys/keyctl_pkey.c
+index 5de0d599a274..b54a021e16b1 100644
+--- a/security/keys/keyctl_pkey.c
++++ b/security/keys/keyctl_pkey.c
+@@ -24,11 +24,13 @@ enum {
+ 	Opt_err,
+ 	Opt_enc,		/* "enc=3D<encoding>" eg. "enc=3Doaep" */
+ 	Opt_hash,		/* "hash=3D<digest-name>" eg. "hash=3Dsha1" */
++	Opt_slen,		/* "slen=3D<salt-length>" eg. "slen=3D32" */
+ };
 =20
-+	if (strcmp(sig->encoding, "pss") =3D=3D 0) {
-+		ret =3D crypto_akcipher_set_sig_params(tfm, sig, sizeof(*sig));
-+		if (ret) {
-+			goto error_free_key;
-+		}
-+	}
-+
- 	sg_init_table(src_sg, 2);
- 	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
- 	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+ static const match_table_t param_keys =3D {
+ 	{ Opt_enc,	"enc=3D%s" },
+ 	{ Opt_hash,	"hash=3D%s" },
++	{ Opt_slen,	"slen=3D%u" },
+ 	{ Opt_err,	NULL }
+ };
+=20
+@@ -63,6 +65,10 @@ static int keyctl_pkey_params_parse(struct kernel_pkey_p=
+arams *params)
+ 			params->hash_algo =3D q;
+ 			break;
+=20
++		case Opt_slen:
++			if (kstrtouint(q, 0, &params->slen))
++				return -EINVAL;
++			break;
+ 		default:
+ 			return -EINVAL;
+ 		}
 --=20
 2.30.2
 
