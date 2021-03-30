@@ -2,249 +2,432 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F8F534E8C8
-	for <lists+keyrings@lfdr.de>; Tue, 30 Mar 2021 15:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC8234F225
+	for <lists+keyrings@lfdr.de>; Tue, 30 Mar 2021 22:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbhC3NRd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 Mar 2021 09:17:33 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:20034 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232006AbhC3NRG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Mar 2021 09:17:06 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12UD3tut052668;
-        Tue, 30 Mar 2021 09:17:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=hCx2pyFl8NZJWI/gvhH5lakNnGcU4/hycynVYfk31Q4=;
- b=oSiTruNtqX9xZHCxAiFQccE9wk/xgjvs3Ab7BhR62c/Z8Blm4+lxzuIh7HjgDmmgduio
- gtupak6gqWj3rC6aE76S31Oue6Zk1NJuEl9KNxKDsqbAkrNu9nJjm8x9UDo3HicaQKhM
- bVBk6AcUZQ9iqvPbVygAHfhIA+BTHJVFb4FSeHDLiHaBofOXIOsvjZy7ZQwilU9ed2w9
- ufIgT4BhM+Y/HABbe0eVhAjgkNhcM4SmISSh79EatGuIJ0B0f05CycMP3iDurzTAYdMO
- MCmK+fomLC5IZaN6om52iLDXiAqTePYhKKGHTbE8iJ2zBC+fmdMhPhJkmJE97N69a3ts CA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 37juyp12v4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 Mar 2021 09:17:04 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12UD4eMU059484;
-        Tue, 30 Mar 2021 09:17:03 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 37juyp12tp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 Mar 2021 09:17:03 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-        by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12UDH17e005187;
-        Tue, 30 Mar 2021 13:17:01 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-        by ppma06fra.de.ibm.com with ESMTP id 37huyh9f6u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 Mar 2021 13:17:01 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12UDGdsr31457748
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 Mar 2021 13:16:39 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4E6854C052;
-        Tue, 30 Mar 2021 13:16:58 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0DD104C040;
-        Tue, 30 Mar 2021 13:16:56 +0000 (GMT)
-Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.103.158])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 30 Mar 2021 13:16:55 +0000 (GMT)
-From:   Nayna Jain <nayna@linux.ibm.com>
-To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
-Cc:     linux-security-module@vger.kernel.org,
+        id S232490AbhC3U3x (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 Mar 2021 16:29:53 -0400
+Received: from de-smtp-delivery-102.mimecast.com ([194.104.109.102]:23603 "EHLO
+        de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232388AbhC3U3T (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Mar 2021 16:29:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
+        t=1617136158;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qdem7GtNQJjxheN5+rkLdDitmma+4OvEEv1YRqVbfm0=;
+        b=aFoCxQLvWYc7B+CuXN0fwG1ZdEqMEIlmJd8NDzHkwGxyfdMDH1ih0/RNAcm1ElY1fRjEwU
+        KbkBD0465CUNAZqBfZNOUNdABr8/ODkvPZwyJvZ3phgZooYpcFeCeOY2vr1N+2SHYdU2Xf
+        ipfcbKqSgC5YeuIkudkmy3V04hknQ6E=
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com
+ (mail-vi1eur05lp2171.outbound.protection.outlook.com [104.47.17.171])
+ (Using TLS) by relay.mimecast.com with ESMTP id
+ de-mta-19-Hb5A568aOI28vK-dLy0YvA-1; Tue, 30 Mar 2021 22:29:17 +0200
+X-MC-Unique: Hb5A568aOI28vK-dLy0YvA-1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XLURc1z8hYkbgMzQfwkSdnk6x9n05gzac14lTq9KsMuS8ppZIOo4GgkDkrrROyezDH9Px9zPV47305eZh3xr4dFhueSUr4B8cOQd83SxzYktaF2nFnoSIwIG2e5kDv1NT9gDLCyKZho68O6WldnbFjcbaqPI629YwWF1ZViN9UDQBtrSl5XNep4vM0LUezbcFDiwbGtgpgf9XEKC3YMkyI+/rrOzZHxzOr3BuRwlfUKxdKXhMr54ogbYNBaG0agZ8h3G1ma/b6sGxyvndbVivEN+Ab+N3owsK4/vBCtRSvOVdOJ6ZoRrqyxtgJiwxUwEDv3s/+mZRJqqq8yQ7EyKFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hW4LGOtzXaKr/7M6mGxIocq0Qm+7pVnmjJ8Jl2t662s=;
+ b=MJhWNZqyma9+9SCPbLOxBGjmlN/CfpgLP6Fk6DFtX41APUwk2gH7eKCcUYyu8+ADogBRwkh+eMXRXr8/8J3VDPqCO4yDl91uPm78ymKdZMZ1vgG5eVSLne4yYfSkt8ACCkW5i9H+rqmBz7MyqE3BHctNEQkCaWiHqioMJIF6XS3/csiFHafvbjiHN4O/LaURo+4tJ9eWAzTAxysYlsa1t6bhyok8JxGUXdZPmczupLz/XG35wdhPHR7HxpX1MyLDxyih8bhyaWZp5XBZXoLS40OO7HJF4WnJr4Z99JLPaR/Xqgs+Yl+lHk0ZeRdXtIxhe2TsbT5tHN59roEtx9D1UA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=suse.com;
+Received: from AM0PR04MB5650.eurprd04.prod.outlook.com (2603:10a6:208:128::18)
+ by AM0PR0402MB3393.eurprd04.prod.outlook.com (2603:10a6:208:21::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.33; Tue, 30 Mar
+ 2021 20:29:15 +0000
+Received: from AM0PR04MB5650.eurprd04.prod.outlook.com
+ ([fe80::40bd:b7d7:74a7:5679]) by AM0PR04MB5650.eurprd04.prod.outlook.com
+ ([fe80::40bd:b7d7:74a7:5679%3]) with mapi id 15.20.3977.033; Tue, 30 Mar 2021
+ 20:29:15 +0000
+From:   Varad Gautam <varad.gautam@suse.com>
+To:     linux-crypto@vger.kernel.org
+CC:     Varad Gautam <varad.gautam@suse.com>,
         David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Nayna Jain <nayna@linux.ibm.com>
-Subject: [PATCH v3 3/3] ima: enable loading of build time generated key on .ima keyring
-Date:   Tue, 30 Mar 2021 09:16:36 -0400
-Message-Id: <20210330131636.21711-4-nayna@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210330131636.21711-1-nayna@linux.ibm.com>
-References: <20210330131636.21711-1-nayna@linux.ibm.com>
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        keyrings@vger.kernel.org (open list:ASYMMETRIC KEYS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 01/18] X.509: Parse RSASSA-PSS style certificates
+Date:   Tue, 30 Mar 2021 22:28:12 +0200
+Message-ID: <20210330202829.4825-2-varad.gautam@suse.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210330202829.4825-1-varad.gautam@suse.com>
+References: <20210330202829.4825-1-varad.gautam@suse.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [95.90.93.216]
+X-ClientProxiedBy: AM3PR03CA0066.eurprd03.prod.outlook.com
+ (2603:10a6:207:5::24) To AM0PR04MB5650.eurprd04.prod.outlook.com
+ (2603:10a6:208:128::18)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3Yq-VkukkJGo81HZefSDwP3rSGOkSiCw
-X-Proofpoint-GUID: _lk4JPAzk7TUA1I2to7b3HOYVlOQIztJ
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-30_03:2021-03-30,2021-03-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- phishscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- bulkscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103250000 definitions=main-2103300094
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from xps13.suse.de (95.90.93.216) by AM3PR03CA0066.eurprd03.prod.outlook.com (2603:10a6:207:5::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.25 via Frontend Transport; Tue, 30 Mar 2021 20:29:14 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a1f8350b-aef2-4977-3634-08d8f3ba7c9e
+X-MS-TrafficTypeDiagnostic: AM0PR0402MB3393:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR0402MB3393653676B7CE18D63002A8E07D9@AM0PR0402MB3393.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:663;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZrSapY6feWT5Mx1XXzbaJo1wr9MsWsN64iDoA3TjMuBV8zHvYimb7BS2zV3nGGgGI4TCIOzaiirHuUxRNDZ0p3hDHfTcMjPHkuk6gv8JWcGdJ3oVWv8CqKrRgFPzF9MoBq97G1aqyat2DWrSHHqBTg0eqB1lfWd3QOpi5mca7UJ71MX2pgFQzftE+HslcpAB2m934SbILKQXo/cdBWo4qukkxpgTUNSgsNsVhV2P0axBQCmQ1sM1aHe/KwntECyxfLA5UAPuBYNXH2Id7K4Rj3EjoXHudVvdSJ7atNVH/yXUR4RrRkg2Z/rMQY0lRpqcayMdPPKuyAYdsJ+3399LFHaRfi46gsCRUfa1cTtFUTZd93+mWGu0UrOTCLZdq2T93clzeJ+t6vow2jUR7WYVa//k75hwG+8eZKph7K9pwbUUHdznwjrqeBcE42WW17k1eJ+cqT/3Z2M2xTqFoYniOCyX+VF+VyXRr62jP4vairHOqWtu/drsu/H3MxMlyP38JqHp2ztrvbmviK2IgufSD9IjRP/+C+WngES5f7Ql6OAIBZxBxcstxj/7Mc+m7A4ui8cyaDC09c8rXlwnB+VubvqvfxhOMuvlqzIMuHF13juuwEzP65jSJY4hYyYcFJeWTvBqOqm7ExQeElfONtNIBrc0QFADWoQ4VBLy9t7RKg5uqQNXez6OHJTX17WxN/tNyATa0rYKVbCY7MMRoXolSyhoF7HfM4pySPZH8gk8750=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5650.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(39850400004)(396003)(136003)(346002)(366004)(376002)(66476007)(66556008)(54906003)(66946007)(83380400001)(8936002)(316002)(6506007)(6486002)(966005)(1076003)(52116002)(478600001)(6512007)(5660300002)(38100700001)(36756003)(4326008)(86362001)(6916009)(8676002)(2906002)(16526019)(2616005)(956004)(186003)(26005)(44832011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?0mfEArq4qmI23MBiwIxUbuMrlHSRGtW2tzeZ4HZq9wujMTJtkIN3zhLCUdS3?=
+ =?us-ascii?Q?u5D7P2k/wPs6MqmwXGK91jlIdKcOZGf60pmeevwoPKfRQZRyNug8VJOBE2aQ?=
+ =?us-ascii?Q?7SEOoYY+6SA2wgEEDOIOPcdRy3FVD3AGp3CRV6FNwr93js5kIS4RJOSWKNPr?=
+ =?us-ascii?Q?UtPRquOh8OixviipxJmGhxpj5Yb40E4+x1j1cGGV8mzN3Axgm3cYNccOjNBG?=
+ =?us-ascii?Q?9jTZBDGEuNi3JOxbKUjyjCI3KKI3crUV3Gf1zAfR6RYH5bl1D7LxwnX4kp0O?=
+ =?us-ascii?Q?zjsdZeeanHro8BNIAKswoDty8WERQEeb9HOf5eq0c9dccnWwB/HbUHVHImvz?=
+ =?us-ascii?Q?dZChdEU/bkHoIh3mnvLRNj5TuxPeM1+oTESxEZow3AZGtsopovw0xUqqEf3v?=
+ =?us-ascii?Q?fFbiXP4csCWY3zTAbkYfpHCMP6rbbhIZIHUAu9QV2qMCIxcohHhF0ez1Sk9v?=
+ =?us-ascii?Q?ULM+xP5vY05auZoNhuwU0OzIOncVpmsT+cZo4rmucPKCobdsEkhI6oxrYbzO?=
+ =?us-ascii?Q?WlmMOvP7chHya/L8QK5IhCQXXuxTcZbt5ghk/+U1Rpj+AT2qFpSYSE1gpbRp?=
+ =?us-ascii?Q?7BhDGf8yfyppZBNJKu0jaskjTE1NquhwK1vP5HGRE/aqdVIL6Our6JrZ9IuB?=
+ =?us-ascii?Q?njYRTuruIK9PsLSGxgYdTMVA2tP7kQclNmYF1EMXMjFMeKs/o7kaBuG+y4p8?=
+ =?us-ascii?Q?rl8WD3v8+VML8EImBH888slnWXef7JTBCwRDMmoyvg4/7zmcobPKA8AU2EJO?=
+ =?us-ascii?Q?0hGgpVVHwYAa68bcssBW7S1OAFlzrNnyayEnwK5ssH/Q3lVwCF+COSew3tl6?=
+ =?us-ascii?Q?1OVsofn1s2Md+/LGXiA5z27QeTZVrQ9C3DekTb7T5S7z+KsmQBPlGizx8xVw?=
+ =?us-ascii?Q?gLl3/6fnjUmMPpEAr7MIL4UGBfAZLdcM/GW6VCAxZbTVI81UEkS1kWUhM+bv?=
+ =?us-ascii?Q?m2DH6qDApZHKOHugseuOD+r5RqB+aNBsQuaK6mm5+N3huSN9+WZm8xgHnvsq?=
+ =?us-ascii?Q?G3MZF+lseykpqFPeaf6HrY3sOHvIuNcgqaNn94O4X2hz7nvYQIzcQ4MMb+pv?=
+ =?us-ascii?Q?NUOC9nsGDtULYsO8IJcmSnonN2kv1HaJs0U04IdpONhkr0dGS8Y0FI6p0+0C?=
+ =?us-ascii?Q?kad03uBGptnU34c9k63MRFzPAD0GRZ76/OEO7FCejZ2GewDUlKr4T3rDefIM?=
+ =?us-ascii?Q?RaVOO4NsaCPUrRmQCVT5iVK+4V73eqyconRBctLV+vw6sruD1G7XTIpJaFn1?=
+ =?us-ascii?Q?FZVKOzwWs/Sz+7hCpGChEWTtGiVl4vqtut+a3zSsFJ4+dRUEIplyPM09j4vN?=
+ =?us-ascii?Q?rHovy+iBxoFssmw8i/cGbvNu?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1f8350b-aef2-4977-3634-08d8f3ba7c9e
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5650.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2021 20:29:15.8212
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Za/+4RLFtrtQa+K1YaiOFOd9kprfVZ/gWWCHIBZLhv6q+zRKfPM7772IyDnMqtIZ1VeEgpRb3eqUxGstLjgjDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0402MB3393
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The kernel currently only loads the kernel module signing key onto the
-builtin trusted keyring. Load the module signing key onto the IMA keyring
-as well.
+An X.509 wrapper for a RSASSA-PSS signature contains additional
+signature parameters over the PKCSv.15 encoding scheme. Extend the
+x509 parser to allow parsing RSASSA-PSS encoded certificates, with
+the defaults taken from RFC8017.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+A certificate is rejected if the hash function used for the MGF is
+different from the hash function used for signature generation,
+although this is allowed in RFC8017.
+
+References: https://tools.ietf.org/html/rfc8017#appendix-C
+Signed-off-by: Varad Gautam <varad.gautam@suse.com>
 ---
- certs/system_certificates.S   | 13 +++++++++-
- certs/system_keyring.c        | 47 +++++++++++++++++++++++++++--------
- include/keys/system_keyring.h |  7 ++++++
- security/integrity/digsig.c   |  2 ++
- 4 files changed, 58 insertions(+), 11 deletions(-)
+ crypto/asymmetric_keys/Makefile           |   5 +-
+ crypto/asymmetric_keys/x509_cert_parser.c | 152 ++++++++++++++++++++++
+ crypto/asymmetric_keys/x509_rsassa.asn1   |  17 +++
+ include/crypto/public_key.h               |   4 +
+ include/linux/oid_registry.h              |   3 +
+ 5 files changed, 180 insertions(+), 1 deletion(-)
+ create mode 100644 crypto/asymmetric_keys/x509_rsassa.asn1
 
-diff --git a/certs/system_certificates.S b/certs/system_certificates.S
-index 8f29058adf93..dcad27ea8527 100644
---- a/certs/system_certificates.S
-+++ b/certs/system_certificates.S
-@@ -8,9 +8,11 @@
- 	.globl system_certificate_list
- system_certificate_list:
- __cert_list_start:
--#ifdef CONFIG_MODULE_SIG
-+__module_cert_start:
-+#if defined(CONFIG_MODULE_SIG) || defined(CONFIG_IMA_APPRAISE_MODSIG)
- 	.incbin "certs/signing_key.x509"
- #endif
-+__module_cert_end:
- 	.incbin "certs/x509_certificate_list"
- __cert_list_end:
- 
-@@ -35,3 +37,12 @@ system_certificate_list_size:
- #else
- 	.long __cert_list_end - __cert_list_start
- #endif
+diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makef=
+ile
+index 28b91adba2ae..f79ed8e8ef8e 100644
+--- a/crypto/asymmetric_keys/Makefile
++++ b/crypto/asymmetric_keys/Makefile
+@@ -20,15 +20,18 @@ obj-$(CONFIG_X509_CERTIFICATE_PARSER) +=3D x509_key_par=
+ser.o
+ x509_key_parser-y :=3D \
+ 	x509.asn1.o \
+ 	x509_akid.asn1.o \
++	x509_rsassa.asn1.o \
+ 	x509_cert_parser.o \
+ 	x509_public_key.o
+=20
+ $(obj)/x509_cert_parser.o: \
+ 	$(obj)/x509.asn1.h \
+-	$(obj)/x509_akid.asn1.h
++	$(obj)/x509_akid.asn1.h \
++	$(obj)/x509_rsassa.asn1.h
+=20
+ $(obj)/x509.asn1.o: $(obj)/x509.asn1.c $(obj)/x509.asn1.h
+ $(obj)/x509_akid.asn1.o: $(obj)/x509_akid.asn1.c $(obj)/x509_akid.asn1.h
++$(obj)/x509_rsassa.asn1.o: $(obj)/x509_rsassa.asn1.c $(obj)/x509_rsassa.as=
+n1.h
+=20
+ #
+ # PKCS#8 private key handling
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_=
+keys/x509_cert_parser.c
+index 52c9b455fc7d..3738355618cd 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -15,6 +15,7 @@
+ #include "x509_parser.h"
+ #include "x509.asn1.h"
+ #include "x509_akid.asn1.h"
++#include "x509_rsassa.asn1.h"
+=20
+ struct x509_parse_context {
+ 	struct x509_certificate	*cert;		/* Certificate being constructed */
+@@ -38,6 +39,8 @@ struct x509_parse_context {
+ 	const void	*raw_akid;		/* Raw authorityKeyId in ASN.1 */
+ 	const void	*akid_raw_issuer;	/* Raw directoryName in authorityKeyId */
+ 	unsigned	akid_raw_issuer_size;
++	const void	*raw_sig_params;	/* Signature AlgorithmIdentifier.parameters *=
+/
++	unsigned	raw_sig_params_size;
+ };
+=20
+ /*
+@@ -101,6 +104,15 @@ struct x509_certificate *x509_cert_parse(const void *d=
+ata, size_t datalen)
+ 		}
+ 	}
+=20
++	if (strcmp(ctx->cert->sig->encoding, "pss") =3D=3D 0) {
++		pr_devel("rsa enc=3Dpss hash=3D%s mgf=3D%s mgf_hash=3D%s salt=3D0x%x tf=
+=3D0x%x\n",
++			 ctx->cert->sig->hash_algo,
++			 ctx->cert->sig->mgf,
++			 ctx->cert->sig->mgf_hash_algo,
++			 ctx->cert->sig->salt_length,
++			 ctx->cert->sig->trailer_field);
++	}
 +
-+	.align 8
-+	.globl module_cert_size
-+module_cert_size:
-+#ifdef CONFIG_64BIT
-+	.quad __module_cert_end - __module_cert_start
-+#else
-+	.long __module_cert_end - __module_cert_start
-+#endif
-diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-index 4b693da488f1..bb122bf4cc17 100644
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -27,6 +27,7 @@ static struct key *platform_trusted_keys;
- 
- extern __initconst const u8 system_certificate_list[];
- extern __initconst const unsigned long system_certificate_list_size;
-+extern __initconst const unsigned long module_cert_size;
- 
- /**
-  * restrict_link_to_builtin_trusted - Restrict keyring addition by built in CA
-@@ -132,19 +133,11 @@ static __init int system_trusted_keyring_init(void)
-  */
- device_initcall(system_trusted_keyring_init);
- 
--/*
-- * Load the compiled-in list of X.509 certificates.
-- */
--static __init int load_system_certificate_list(void)
-+static __init int load_cert(const u8 *p, const u8 *end, struct key *keyring)
+ 	ret =3D -ENOMEM;
+ 	cert->pub->key =3D kmemdup(ctx->key, ctx->key_size, GFP_KERNEL);
+ 	if (!cert->pub->key)
+@@ -194,6 +206,7 @@ int x509_note_pkey_algo(void *context, size_t hdrlen,
+ 			const void *value, size_t vlen)
  {
- 	key_ref_t key;
--	const u8 *p, *end;
- 	size_t plen;
- 
--	pr_notice("Loading compiled-in X.509 certificates\n");
--
--	p = system_certificate_list;
--	end = p + system_certificate_list_size;
- 	while (p < end) {
- 		/* Each cert begins with an ASN.1 SEQUENCE tag and must be more
- 		 * than 256 bytes in size.
-@@ -159,7 +152,7 @@ static __init int load_system_certificate_list(void)
- 		if (plen > end - p)
- 			goto dodgy_cert;
- 
--		key = key_create_or_update(make_key_ref(builtin_trusted_keys, 1),
-+		key = key_create_or_update(make_key_ref(keyring, 1),
- 					   "asymmetric",
- 					   NULL,
- 					   p,
-@@ -186,6 +179,40 @@ static __init int load_system_certificate_list(void)
- 	pr_err("Problem parsing in-kernel X.509 certificate list\n");
+ 	struct x509_parse_context *ctx =3D context;
++	int ret =3D 0;
+=20
+ 	pr_debug("PubKey Algo: %u\n", ctx->last_oid);
+=20
+@@ -238,6 +251,39 @@ int x509_note_pkey_algo(void *context, size_t hdrlen,
+ 	case OID_SM2_with_SM3:
+ 		ctx->cert->sig->hash_algo =3D "sm3";
+ 		goto sm2;
++
++	case OID_rsassaPSS:
++		/* For rsassaPSS, the hash algorithm is packed as a mandatory
++		 * parameter in AlgorithmIdentifier.parameters.
++		 */
++		if (ctx->raw_sig_params =3D=3D NULL && ctx->raw_sig_params_size !=3D 1)
++			return -EBADMSG;
++
++		ctx->cert->sig->pkey_algo =3D "rsa";
++		ctx->cert->sig->encoding =3D "pss";
++		ctx->algo_oid =3D ctx->last_oid;
++		if (ctx->raw_sig_params) {
++			ret =3D asn1_ber_decoder(&x509_rsassa_decoder, ctx,
++					       ctx->raw_sig_params,
++					       ctx->raw_sig_params_size);
++			if (ret < 0)
++				return ret;
++		}
++
++		/* Fill in RSASSA-PSS-params defaults if left out. */
++		if (!ctx->cert->sig->hash_algo)
++			ctx->cert->sig->hash_algo =3D "sha1";
++		if (!ctx->cert->sig->mgf)
++			ctx->cert->sig->mgf =3D "mgf1";
++		if (!ctx->cert->sig->mgf_hash_algo)
++			ctx->cert->sig->mgf_hash_algo =3D "sha1";
++		ctx->cert->sig->trailer_field =3D 0xbc;
++
++		/* Reject if digest and mgf use different hashalgs. */
++		if (strcmp(ctx->cert->sig->hash_algo, ctx->cert->sig->mgf_hash_algo) !=
+=3D 0)
++			return -ENOPKG;
++
++		return 0;
+ 	}
+=20
+ rsa_pkcs1:
+@@ -439,6 +485,18 @@ int x509_note_params(void *context, size_t hdrlen,
+ {
+ 	struct x509_parse_context *ctx =3D context;
+=20
++	if (ctx->last_oid =3D=3D OID_rsassaPSS && !ctx->raw_sig_params) {
++		/* Stash AlgorithmIdentifier.parameters for RSASSA-PSS. */
++		ctx->raw_sig_params_size =3D vlen + hdrlen;
++		if (ctx->raw_sig_params_size) {
++			ctx->raw_sig_params =3D value - hdrlen;
++		} else {
++			ctx->raw_sig_params =3D NULL;
++			ctx->raw_sig_params_size =3D 1;
++		}
++		return 0;
++	}
++
+ 	/*
+ 	 * AlgorithmIdentifier is used three times in the x509, we should skip
+ 	 * first and ignore third, using second one which is after subject and
+@@ -705,3 +763,97 @@ int x509_akid_note_serial(void *context, size_t hdrlen=
+,
+ 	ctx->cert->sig->auth_ids[0] =3D kid;
  	return 0;
  }
 +
-+__init int load_module_cert(struct key *keyring)
++int x509_note_hash_algo(void *context, size_t hdrlen,
++			unsigned char tag,
++			const void *value, size_t vlen)
 +{
-+	const u8 *p, *end;
++	struct x509_parse_context *ctx =3D context;
++	const char **ptr =3D NULL;
 +
-+	if (!IS_ENABLED(CONFIG_IMA_APPRAISE_MODSIG))
-+		return 0;
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
 +
-+	pr_notice("Loading compiled-in module X.509 certificates\n");
++	if (ctx->cert->sig->mgf)
++		ptr =3D &ctx->cert->sig->mgf_hash_algo;
++	else
++		ptr =3D &ctx->cert->sig->hash_algo;
 +
-+	p = system_certificate_list;
-+	end = p + module_cert_size;
++	switch (look_up_OID(value, vlen)) {
++	case OID_sha224:
++		*ptr =3D "sha224";
++		break;
++	case OID_sha256:
++		*ptr =3D "sha256";
++		break;
++	case OID_sha384:
++		*ptr =3D "sha384";
++		break;
++	case OID_sha512:
++		*ptr =3D "sha512";
++		break;
++	case OID_sha1:
++	default:
++		*ptr =3D "sha1";
++		break;
++	}
 +
-+	return load_cert(p, end, keyring);
-+}
-+
-+/*
-+ * Load the compiled-in list of X.509 certificates.
-+ */
-+static __init int load_system_certificate_list(void)
-+{
-+	const u8 *p, *end;
-+
-+	pr_notice("Loading compiled-in X.509 certificates\n");
-+
-+#ifdef CONFIG_MODULE_SIG
-+	p = system_certificate_list;
-+#else
-+	p = system_certificate_list + module_cert_size;
-+#endif
-+
-+	end = p + system_certificate_list_size;
-+	return load_cert(p, end, builtin_trusted_keys);
-+}
- late_initcall(load_system_certificate_list);
- 
- #ifdef CONFIG_SYSTEM_DATA_VERIFICATION
-diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.h
-index fb8b07daa9d1..f954276c616a 100644
---- a/include/keys/system_keyring.h
-+++ b/include/keys/system_keyring.h
-@@ -16,9 +16,16 @@ extern int restrict_link_by_builtin_trusted(struct key *keyring,
- 					    const struct key_type *type,
- 					    const union key_payload *payload,
- 					    struct key *restriction_key);
-+extern __init int load_module_cert(struct key *keyring);
- 
- #else
- #define restrict_link_by_builtin_trusted restrict_link_reject
-+
-+static inline __init int load_module_cert(struct key *keyring)
-+{
 +	return 0;
 +}
 +
- #endif
- 
- #ifdef CONFIG_SECONDARY_TRUSTED_KEYRING
-diff --git a/security/integrity/digsig.c b/security/integrity/digsig.c
-index 250fb0836156..3b06a01bd0fd 100644
---- a/security/integrity/digsig.c
-+++ b/security/integrity/digsig.c
-@@ -111,6 +111,8 @@ static int __init __integrity_init_keyring(const unsigned int id,
- 	} else {
- 		if (id == INTEGRITY_KEYRING_PLATFORM)
- 			set_platform_trusted_keys(keyring[id]);
-+		if (id == INTEGRITY_KEYRING_IMA)
-+			load_module_cert(keyring[id]);
- 	}
- 
- 	return err;
--- 
-2.29.2
++int x509_note_hash_algo_params(void *context, size_t hdrlen,
++			       unsigned char tag,
++			       const void *value, size_t vlen)
++{
++	return -EOPNOTSUPP;
++}
++
++int x509_note_mgf(void *context, size_t hdrlen,
++		  unsigned char tag,
++		  const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	/* RFC8017 PKCS1MGFAlgorithms */
++	if (look_up_OID(value, vlen) !=3D OID_mgf1)
++		return -EINVAL;
++
++	ctx->cert->sig->mgf =3D "mgf1";
++
++	return 0;
++}
++
++int x509_note_salt_length(void *context, size_t hdrlen,
++			  unsigned char tag,
++			  const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	if (!value || !vlen || vlen > sizeof(ctx->cert->sig->salt_length))
++		return -EINVAL;
++
++	ctx->cert->sig->salt_length =3D (vlen =3D=3D 2) ?
++		be16_to_cpu(*((u16 *) value)) : *((u8 *) value);
++
++	return 0;
++}
++
++int x509_note_trailer_field(void *context, size_t hdrlen,
++			    unsigned char tag,
++			    const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	/* trailerField 0xbc per RFC8017 A.2.3 regardless of if
++	 * specified. */
++	return 0;
++}
+diff --git a/crypto/asymmetric_keys/x509_rsassa.asn1 b/crypto/asymmetric_ke=
+ys/x509_rsassa.asn1
+new file mode 100644
+index 000000000000..e524b978856d
+--- /dev/null
++++ b/crypto/asymmetric_keys/x509_rsassa.asn1
+@@ -0,0 +1,17 @@
++-- RFC8017
++RSASSA-PSS-params ::=3D SEQUENCE {
++	hashAlgorithm      [0] HashAlgorithm DEFAULT,
++	maskGenAlgorithm   [1] MaskGenAlgorithm DEFAULT,
++	saltLength         [2] INTEGER DEFAULT ({ x509_note_salt_length }),
++	trailerField       [3] INTEGER DEFAULT ({ x509_note_trailer_field })
++}
++
++HashAlgorithm ::=3D SEQUENCE {
++	algorithm		OBJECT IDENTIFIER ({ x509_note_hash_algo }),
++	parameters		ANY OPTIONAL ({ x509_note_hash_algo_params })
++}
++
++MaskGenAlgorithm ::=3D SEQUENCE {
++	mgf	OBJECT IDENTIFIER ({ x509_note_mgf }),
++	parameters	HashAlgorithm
++}
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 47accec68cb0..f36834c8bb13 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -46,6 +46,10 @@ struct public_key_signature {
+ 	const char *encoding;
+ 	const void *data;
+ 	unsigned int data_size;
++	const char *mgf;
++	const char *mgf_hash_algo;
++	u16 salt_length;
++	u16 trailer_field;
+ };
+=20
+ extern void public_key_signature_free(struct public_key_signature *sig);
+diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
+index 4462ed2c18cd..c247adc8a41e 100644
+--- a/include/linux/oid_registry.h
++++ b/include/linux/oid_registry.h
+@@ -113,6 +113,9 @@ enum OID {
+ 	OID_SM2_with_SM3,		/* 1.2.156.10197.1.501 */
+ 	OID_sm3WithRSAEncryption,	/* 1.2.156.10197.1.504 */
+=20
++	OID_mgf1,			/* 1.2.840.113549.1.1.8 */
++	OID_rsassaPSS,			/* 1.2.840.113549.1.1.10 */
++
+ 	OID__NR
+ };
+=20
+--=20
+2.30.2
 
