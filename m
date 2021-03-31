@@ -2,126 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4505F350A99
-	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 01:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 758AE350A9D
+	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 01:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbhCaXNf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Mar 2021 19:13:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53506 "EHLO mail.kernel.org"
+        id S232772AbhCaXPK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Mar 2021 19:15:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54282 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229497AbhCaXNO (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 31 Mar 2021 19:13:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3CE2760FE8;
-        Wed, 31 Mar 2021 23:13:13 +0000 (UTC)
+        id S232356AbhCaXOw (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 31 Mar 2021 19:14:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A284F61003;
+        Wed, 31 Mar 2021 23:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617232393;
-        bh=8tenvRLSfJsN0kvZ2jkfZemaePWY+JI0zsmmOYXQJ0I=;
+        s=k20201202; t=1617232492;
+        bh=WjxyFBkmPm+gzU0axrCxNopetlu+vQikrjFiYWKVaX8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ooZGAaYjlPs4i61oFkp5lRQ7p2EcWL9MuI6+fbS3mdCSn91aYN9TYxlnLhKgFRONw
-         gXlbZdvE9p2vslGAV6LPXYtLcPJ8/Eyj//w5x1Lxa40EsAEenMdOibravm+RYN6dBU
-         766vdHhCPQBfz8sJcofKwA6HyrjRmmQ0buM2w98ndh4xFxp/mxsnS3B7v4W8UBSJEw
-         uec7ILJ/Qxp+V5/RUhA0LJWknZoMbhEN8cjq2AeqHWi2P77UBTjy0sQWeyzWQUA/en
-         Q4KlUk0cOmboOxEeRbc4cdTgRq6jWwPGtBXdxu9JyBnH/rE+C0DQWPk/21q+Ig7+vr
-         3aWAbkKYBE/Hw==
-Date:   Thu, 1 Apr 2021 02:13:11 +0300
+        b=hDFteJct3n5Xjw8DiMEynCqUmkIQiba51625hZQyML53eneKKX2S53TS/oxuychcP
+         KrsMCa9pspD71Ui6U36EVOYaJe25O9LK/vbD0xYaMoOtXQ0cc1yEM99px4hJFl9o4P
+         FtcxYBa92ZXgrx6+h4kYIobHxoskVh1aD8hfyNTPlA7vMylK00kPowmVxp9v3CNONi
+         NvsVyrdSMuDmzhPjVqNQAd+vmmWU4GDsO52KJjzl1d+fW4FdPBs/V1YGQkF4rxsIEV
+         OfIS3WKf6WdCHDsET2q9cL6HS9TqoXynk8iK0NLKlrQ181w0mIWkV5qenTfWGTFK7+
+         1+wR4ulF32IKw==
+Date:   Thu, 1 Apr 2021 02:14:48 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
 To:     Varad Gautam <varad.gautam@suse.com>
 Cc:     linux-crypto@vger.kernel.org, David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
         "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH 18/18] keyctl_pkey: Add pkey parameter slen to pass in
- PSS salt length
-Message-ID: <YGUCB1jKCPvn60n2@kernel.org>
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 17/18] crypto: Accept pss as valid encoding during
+ signature verification
+Message-ID: <YGUCaNuUFLlrX887@kernel.org>
 References: <20210330202829.4825-1-varad.gautam@suse.com>
- <20210330202829.4825-19-varad.gautam@suse.com>
+ <20210330202829.4825-18-varad.gautam@suse.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210330202829.4825-19-varad.gautam@suse.com>
+In-Reply-To: <20210330202829.4825-18-varad.gautam@suse.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 30, 2021 at 10:28:29PM +0200, Varad Gautam wrote:
-> keyctl pkey_* operations accept enc and hash parameters at present.
-> RSASSA-PSS signatures also require passing in the signature salt
-> length.
-> 
-> Add another parameter 'slen' to feed in salt length of a PSS
-> signature.
+On Tue, Mar 30, 2021 at 10:28:28PM +0200, Varad Gautam wrote:
+> Accept pss encoding for public_key_verify_signature. If
+> CONFIG_CRYPTO_RSASSA_PSS is disabled, crypto_alloc_akcipher will
+> fail to find a pss backend anyway.
 > 
 > Signed-off-by: Varad Gautam <varad.gautam@suse.com>
 > ---
 
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 /Jarkko
 
->  crypto/asymmetric_keys/asymmetric_type.c | 1 +
->  include/linux/keyctl.h                   | 1 +
->  security/keys/keyctl_pkey.c              | 6 ++++++
->  3 files changed, 8 insertions(+)
+>  crypto/asymmetric_keys/public_key.c | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
 > 
-> diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-> index ad8af3d70ac0..eb2ef4a07f8e 100644
-> --- a/crypto/asymmetric_keys/asymmetric_type.c
-> +++ b/crypto/asymmetric_keys/asymmetric_type.c
-> @@ -571,6 +571,7 @@ static int asymmetric_key_verify_signature(struct kernel_pkey_params *params,
->  		.hash_algo	= params->hash_algo,
->  		.digest		= (void *)in,
->  		.s		= (void *)in2,
-> +		.salt_length	= params->slen,
->  	};
+> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+> index 788a4ba1e2e7..b9cc83ba7a12 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -69,19 +69,20 @@ int software_key_determine_akcipher(const char *encoding,
+>  {
+>  	int n;
 >  
->  	return verify_signature(params->key, &sig);
-> diff --git a/include/linux/keyctl.h b/include/linux/keyctl.h
-> index 5b79847207ef..970c7bed3082 100644
-> --- a/include/linux/keyctl.h
-> +++ b/include/linux/keyctl.h
-> @@ -37,6 +37,7 @@ struct kernel_pkey_params {
->  		__u32	in2_len;	/* 2nd input data size (verify) */
->  	};
->  	enum kernel_pkey_operation op : 8;
-> +	__u32		slen;
->  };
+> -	if (strcmp(encoding, "pkcs1") == 0) {
+> +	if (strcmp(encoding, "pkcs1") == 0 || strcmp(encoding, "pss") == 0) {
+>  		/* The data wangled by the RSA algorithm is typically padded
+>  		 * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
+> -		 * sec 8.2].
+> +		 * sec 8.2] or EMSA-PSS [RFC8017 sec 9.1].
+>  		 */
+>  		if (!hash_algo)
+>  			n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
+> -				     "pkcs1pad(%s)",
+> +				     "%spad(%s)",
+> +				     encoding,
+>  				     pkey->pkey_algo);
+>  		else
+>  			n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
+> -				     "pkcs1pad(%s,%s)",
+> -				     pkey->pkey_algo, hash_algo);
+> +				     "%spad(%s,%s)",
+> +				     encoding, pkey->pkey_algo, hash_algo);
+>  		return n >= CRYPTO_MAX_ALG_NAME ? -EINVAL : 0;
+>  	}
 >  
->  #endif /* __LINUX_KEYCTL_H */
-> diff --git a/security/keys/keyctl_pkey.c b/security/keys/keyctl_pkey.c
-> index 5de0d599a274..b54a021e16b1 100644
-> --- a/security/keys/keyctl_pkey.c
-> +++ b/security/keys/keyctl_pkey.c
-> @@ -24,11 +24,13 @@ enum {
->  	Opt_err,
->  	Opt_enc,		/* "enc=<encoding>" eg. "enc=oaep" */
->  	Opt_hash,		/* "hash=<digest-name>" eg. "hash=sha1" */
-> +	Opt_slen,		/* "slen=<salt-length>" eg. "slen=32" */
->  };
+> @@ -363,6 +364,13 @@ int public_key_verify_signature(const struct public_key *pkey,
+>  			goto error_free_key;
+>  	}
 >  
->  static const match_table_t param_keys = {
->  	{ Opt_enc,	"enc=%s" },
->  	{ Opt_hash,	"hash=%s" },
-> +	{ Opt_slen,	"slen=%u" },
->  	{ Opt_err,	NULL }
->  };
->  
-> @@ -63,6 +65,10 @@ static int keyctl_pkey_params_parse(struct kernel_pkey_params *params)
->  			params->hash_algo = q;
->  			break;
->  
-> +		case Opt_slen:
-> +			if (kstrtouint(q, 0, &params->slen))
-> +				return -EINVAL;
-> +			break;
->  		default:
->  			return -EINVAL;
->  		}
+> +	if (strcmp(sig->encoding, "pss") == 0) {
+> +		ret = crypto_akcipher_set_sig_params(tfm, sig, sizeof(*sig));
+> +		if (ret) {
+> +			goto error_free_key;
+> +		}
+> +	}
+> +
+>  	sg_init_table(src_sg, 2);
+>  	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+>  	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
 > -- 
 > 2.30.2
 > 
