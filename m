@@ -2,98 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C768735076E
-	for <lists+keyrings@lfdr.de>; Wed, 31 Mar 2021 21:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4505F350A99
+	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 01:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235416AbhCaTg1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Wed, 31 Mar 2021 15:36:27 -0400
-Received: from lithops.sigma-star.at ([195.201.40.130]:45764 "EHLO
-        lithops.sigma-star.at" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236030AbhCaTgX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Mar 2021 15:36:23 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id D0CE860FB284;
-        Wed, 31 Mar 2021 21:36:20 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id eH0n2r8fHPTn; Wed, 31 Mar 2021 21:36:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 45DA360FB282;
-        Wed, 31 Mar 2021 21:36:20 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id nxuy-sYQlTu2; Wed, 31 Mar 2021 21:36:20 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 03BFF60FB281;
-        Wed, 31 Mar 2021 21:36:20 +0200 (CEST)
-Date:   Wed, 31 Mar 2021 21:36:19 +0200 (CEST)
-From:   Richard Weinberger <richard@nod.at>
-To:     James Bottomley <jejb@linux.ibm.com>
-Cc:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        horia geanta <horia.geanta@nxp.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        aymen sghaier <aymen.sghaier@nxp.com>,
+        id S232532AbhCaXNf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Mar 2021 19:13:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53506 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229497AbhCaXNO (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 31 Mar 2021 19:13:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3CE2760FE8;
+        Wed, 31 Mar 2021 23:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617232393;
+        bh=8tenvRLSfJsN0kvZ2jkfZemaePWY+JI0zsmmOYXQJ0I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ooZGAaYjlPs4i61oFkp5lRQ7p2EcWL9MuI6+fbS3mdCSn91aYN9TYxlnLhKgFRONw
+         gXlbZdvE9p2vslGAV6LPXYtLcPJ8/Eyj//w5x1Lxa40EsAEenMdOibravm+RYN6dBU
+         766vdHhCPQBfz8sJcofKwA6HyrjRmmQ0buM2w98ndh4xFxp/mxsnS3B7v4W8UBSJEw
+         uec7ILJ/Qxp+V5/RUhA0LJWknZoMbhEN8cjq2AeqHWi2P77UBTjy0sQWeyzWQUA/en
+         Q4KlUk0cOmboOxEeRbc4cdTgRq6jWwPGtBXdxu9JyBnH/rE+C0DQWPk/21q+Ig7+vr
+         3aWAbkKYBE/Hw==
+Date:   Thu, 1 Apr 2021 02:13:11 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Varad Gautam <varad.gautam@suse.com>
+Cc:     linux-crypto@vger.kernel.org, David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        davem <davem@davemloft.net>, kernel <kernel@pengutronix.de>,
-        David Howells <dhowells@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
-        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-        Udit Agarwal <udit.agarwal@nxp.com>,
-        Jan Luebbe <j.luebbe@pengutronix.de>,
-        david <david@sigma-star.at>,
-        Franck Lenormand <franck.lenormand@nxp.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>
-Message-ID: <2034693332.137003.1617219379831.JavaMail.zimbra@nod.at>
-In-Reply-To: <a57192d9d9a5a9a66d11b38d054a5a3a70466a4b.camel@linux.ibm.com>
-References: <cover.56fff82362af6228372ea82e6bd7e586e23f0966.1615914058.git-series.a.fatoum@pengutronix.de> <CAFLxGvzWLje+_HFeb+hKNch4U1f5uypVUOuP=QrEPn_JNM+scg@mail.gmail.com> <ca2a7c17-3ed0-e52f-2e2f-c0f8bbe10323@pengutronix.de> <CAFLxGvwNomKOo3mQLMxYGDA8T8zN=Szpo2q5jrp4D1CaMHydWA@mail.gmail.com> <f01c80a0da7cffd3115ce4e16a793a2db5cbe2ed.camel@linux.ibm.com> <1777909690.136833.1617215767704.JavaMail.zimbra@nod.at> <a57192d9d9a5a9a66d11b38d054a5a3a70466a4b.camel@linux.ibm.com>
-Subject: Re: [PATCH v1 0/3] KEYS: trusted: Introduce support for NXP
- CAAM-based trusted keys
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH 18/18] keyctl_pkey: Add pkey parameter slen to pass in
+ PSS salt length
+Message-ID: <YGUCB1jKCPvn60n2@kernel.org>
+References: <20210330202829.4825-1-varad.gautam@suse.com>
+ <20210330202829.4825-19-varad.gautam@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF78 (Linux)/8.8.12_GA_3809)
-Thread-Topic: KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
-Thread-Index: qVNalfbj1gU0jLT0w1bk9F+qRZwlVw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210330202829.4825-19-varad.gautam@suse.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-James,
+On Tue, Mar 30, 2021 at 10:28:29PM +0200, Varad Gautam wrote:
+> keyctl pkey_* operations accept enc and hash parameters at present.
+> RSASSA-PSS signatures also require passing in the signature salt
+> length.
+> 
+> Add another parameter 'slen' to feed in salt length of a PSS
+> signature.
+> 
+> Signed-off-by: Varad Gautam <varad.gautam@suse.com>
+> ---
 
------ Ursprüngliche Mail -----
-> Von: "James Bottomley" <jejb@linux.ibm.com>
-> Well, yes.  For the TPM, there's a defined ASN.1 format for the keys:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/tree/tpm2-asn.h
-> 
-> and part of the design of the file is that it's distinguishable either
-> in DER or PEM (by the guards) format so any crypto application can know
-> it's dealing with a TPM key simply by inspecting the file.  I think you
-> need the same thing for CAAM and any other format.
-> 
-> We're encouraging new ASN.1 formats to be of the form
-> 
-> SEQUENCE {
->    type   OBJECT IDENTIFIER
->    ... key specific fields ...
-> }
-> 
-> Where you choose a defined OID to represent the key and that means
-> every key even in DER form begins with a unique binary signature.
 
-I like this idea.
-Ahmad, what do you think?
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-That way we could also get rid off the kernel parameter and all the fall back logic,
-given that we find a way to reliable detect TEE blobs too...
+/Jarkko
 
-Thanks,
-//richard
+>  crypto/asymmetric_keys/asymmetric_type.c | 1 +
+>  include/linux/keyctl.h                   | 1 +
+>  security/keys/keyctl_pkey.c              | 6 ++++++
+>  3 files changed, 8 insertions(+)
+> 
+> diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+> index ad8af3d70ac0..eb2ef4a07f8e 100644
+> --- a/crypto/asymmetric_keys/asymmetric_type.c
+> +++ b/crypto/asymmetric_keys/asymmetric_type.c
+> @@ -571,6 +571,7 @@ static int asymmetric_key_verify_signature(struct kernel_pkey_params *params,
+>  		.hash_algo	= params->hash_algo,
+>  		.digest		= (void *)in,
+>  		.s		= (void *)in2,
+> +		.salt_length	= params->slen,
+>  	};
+>  
+>  	return verify_signature(params->key, &sig);
+> diff --git a/include/linux/keyctl.h b/include/linux/keyctl.h
+> index 5b79847207ef..970c7bed3082 100644
+> --- a/include/linux/keyctl.h
+> +++ b/include/linux/keyctl.h
+> @@ -37,6 +37,7 @@ struct kernel_pkey_params {
+>  		__u32	in2_len;	/* 2nd input data size (verify) */
+>  	};
+>  	enum kernel_pkey_operation op : 8;
+> +	__u32		slen;
+>  };
+>  
+>  #endif /* __LINUX_KEYCTL_H */
+> diff --git a/security/keys/keyctl_pkey.c b/security/keys/keyctl_pkey.c
+> index 5de0d599a274..b54a021e16b1 100644
+> --- a/security/keys/keyctl_pkey.c
+> +++ b/security/keys/keyctl_pkey.c
+> @@ -24,11 +24,13 @@ enum {
+>  	Opt_err,
+>  	Opt_enc,		/* "enc=<encoding>" eg. "enc=oaep" */
+>  	Opt_hash,		/* "hash=<digest-name>" eg. "hash=sha1" */
+> +	Opt_slen,		/* "slen=<salt-length>" eg. "slen=32" */
+>  };
+>  
+>  static const match_table_t param_keys = {
+>  	{ Opt_enc,	"enc=%s" },
+>  	{ Opt_hash,	"hash=%s" },
+> +	{ Opt_slen,	"slen=%u" },
+>  	{ Opt_err,	NULL }
+>  };
+>  
+> @@ -63,6 +65,10 @@ static int keyctl_pkey_params_parse(struct kernel_pkey_params *params)
+>  			params->hash_algo = q;
+>  			break;
+>  
+> +		case Opt_slen:
+> +			if (kstrtouint(q, 0, &params->slen))
+> +				return -EINVAL;
+> +			break;
+>  		default:
+>  			return -EINVAL;
+>  		}
+> -- 
+> 2.30.2
+> 
+> 
