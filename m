@@ -2,108 +2,148 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 758AE350A9D
-	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 01:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DBAA350AC9
+	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 01:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232772AbhCaXPK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Mar 2021 19:15:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54282 "EHLO mail.kernel.org"
+        id S232757AbhCaX3x (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Mar 2021 19:29:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60914 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232356AbhCaXOw (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 31 Mar 2021 19:14:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A284F61003;
-        Wed, 31 Mar 2021 23:14:51 +0000 (UTC)
+        id S231620AbhCaX3Y (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 31 Mar 2021 19:29:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B823561057;
+        Wed, 31 Mar 2021 23:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617232492;
-        bh=WjxyFBkmPm+gzU0axrCxNopetlu+vQikrjFiYWKVaX8=;
+        s=k20201202; t=1617233364;
+        bh=JebS+wdY/3yB7SUptLSmC/sUwEFAeCuSulf8NIrcDyQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hDFteJct3n5Xjw8DiMEynCqUmkIQiba51625hZQyML53eneKKX2S53TS/oxuychcP
-         KrsMCa9pspD71Ui6U36EVOYaJe25O9LK/vbD0xYaMoOtXQ0cc1yEM99px4hJFl9o4P
-         FtcxYBa92ZXgrx6+h4kYIobHxoskVh1aD8hfyNTPlA7vMylK00kPowmVxp9v3CNONi
-         NvsVyrdSMuDmzhPjVqNQAd+vmmWU4GDsO52KJjzl1d+fW4FdPBs/V1YGQkF4rxsIEV
-         OfIS3WKf6WdCHDsET2q9cL6HS9TqoXynk8iK0NLKlrQ181w0mIWkV5qenTfWGTFK7+
-         1+wR4ulF32IKw==
-Date:   Thu, 1 Apr 2021 02:14:48 +0300
+        b=SqAPqz6e3245+08kGeFKcOh4uuGzFMATtNMfF4K+fHHKK7c7Kr+hRXR7G5pE/6bur
+         2AAhu97AchtYopAQpd7v7t2dSKJTgqspLKJRtje04wwY93yNMFxsjnLLuH5Xcqpsgt
+         nyRnchFKt0uVCzAAvKVXFwXjrBOpmBf/FDijVMKj9WrZ/0YQN9ZCkdgdJWHYQrVK4H
+         MOASZSPhGjhT7gUrSqEj93YYqJfnZyk7dLb96c51Z0+LSQEdo+Z0tKmT1sgeUNuwQS
+         wJz/irzAboWWXhLW4rxkSOn3T6RvUYPi5Ube+yGfNcneWYDq80ONpPMu8sds8946YL
+         5ceiA4W9mVfcQ==
+Date:   Thu, 1 Apr 2021 02:29:22 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Varad Gautam <varad.gautam@suse.com>
-Cc:     linux-crypto@vger.kernel.org, David Howells <dhowells@redhat.com>,
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     David Gstir <david@sigma-star.at>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        David Howells <dhowells@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 17/18] crypto: Accept pss as valid encoding during
- signature verification
-Message-ID: <YGUCaNuUFLlrX887@kernel.org>
-References: <20210330202829.4825-1-varad.gautam@suse.com>
- <20210330202829.4825-18-varad.gautam@suse.com>
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        Franck Lenormand <franck.lenormand@nxp.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v1 3/3] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+Message-ID: <YGUF0sArOSy2gdpS@kernel.org>
+References: <01e6e13d-2968-0aa5-c4c8-7458b7bde462@nxp.com>
+ <45a9e159-2dcb-85bf-02bd-2993d50b5748@pengutronix.de>
+ <f9c0087d299be1b9b91b242f41ac6ef7b9ee3ef7.camel@linux.ibm.com>
+ <63dd7d4b-4729-9e03-cd8f-956b94eab0d9@pengutronix.de>
+ <CAFA6WYOw_mQwOUN=onhzb7zCTyYDBrcx0E7C3LRk6nPLAVCWEQ@mail.gmail.com>
+ <557b92d2-f3b8-d136-7431-419429f0e059@pengutronix.de>
+ <CAFA6WYNE44=Y7Erfc-xNtOrf7TkJjh+odmYH5vzhEHR6KqBfeQ@mail.gmail.com>
+ <6F812C20-7585-4718-997E-0306C4118468@sigma-star.at>
+ <YGDpA4yPWmTWEyx+@kernel.org>
+ <1171de9c-97b9-3936-707b-16ec34cf94d5@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210330202829.4825-18-varad.gautam@suse.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1171de9c-97b9-3936-707b-16ec34cf94d5@pengutronix.de>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 30, 2021 at 10:28:28PM +0200, Varad Gautam wrote:
-> Accept pss encoding for public_key_verify_signature. If
-> CONFIG_CRYPTO_RSASSA_PSS is disabled, crypto_alloc_akcipher will
-> fail to find a pss backend anyway.
+On Mon, Mar 29, 2021 at 12:11:24PM +0200, Ahmad Fatoum wrote:
+> Hello Jarkko,
 > 
-> Signed-off-by: Varad Gautam <varad.gautam@suse.com>
-> ---
+> On 28.03.21 22:37, Jarkko Sakkinen wrote:
+> > On Sat, Mar 27, 2021 at 01:41:24PM +0100, David Gstir wrote:
+> >> Generally speaking, I’d say trusting the CAAM RNG and trusting in it’s
+> >> other features are two separate things. However, reading through the CAAM
+> >> key blob spec I’ve got here, CAAM key blob keys (the keys that secure a blob’s
+> >> content) are generated using its internal RNG. So I’d save if the CAAM RNG
+> >> is insecure, so are generated key blobs. Maybe somebody with more insight
+> >> into the CAAM internals can verify that, but I don’t see any point in using
+> >> the kernel’s RNG as long as we let CAAM generate the key blob keys for us.
+> > 
+> > Here's my long'ish analysis. Please read it to the end if by ever means
+> > possible, and apologies, I usually try to keep usually my comms short, but
+> > this requires some more meat than the usual.
+> 
+> Thanks for the write-up!
+> 
+> > The Bad News
+> > ============
+> > 
+> > Now that we add multiple hardware trust sources for trusted keys, will
+> > there ever be a scenario where a trusted key is originally sealed with a
+> > backing hardware A, unsealed, and resealed with hardware B?
+> > 
+> > The hardware and vendor neutral way to generate the key material would be
+> > unconditionally always just the kernel RNG.
+> > 
+> > CAAM is actually worse than TCG because it's not even a standards body, if
+> > I got it right. Not a lot but at least a tiny fraction.
+> 
+> CAAM is how NXP calls the crypto accelerator built into some of its SoCs.
+> 
+> > This brings an open item in TEE patches: trusted_tee_get_random() is an
+> > issue in generating kernel material. I would rather replace that with
+> > kernel RNG *for now*, because the same open question applies also to ARM
+> > TEE. It's also a single company controlled backing technology.
+> > 
+> > By all practical means, I do trust ARM TEE in my personal life but this is
+> > not important.
+> > 
+> > CAAM *and* TEE backends break the golden rule of putting as little trust as
+> > possible to anything, even not anything weird is clear at sight, as
+> > security is essentially a game of known unknowns and unknown unknowns.
+> 
+> Agreed.
+> 
+> > The GOOD News
+> > =============
+> > 
+> > So there's actually option (C) that also fixes the TPM trustd keys issue:
+> > 
+> > Add a new kernel patch, which:
+> > 
+> > 1. Adds the use of kernel RNG as a boot option.
+> > 2. If this boot option is not active, the subsystem will print a warning
+> >    to klog denoting this.
+> > 3. Default is of course vendor RNG given the bad design issue in the TPM
+> >    trusted keys, but the warning in klog will help to address it at least
+> >    a bit.
+> 
+> Why should the TPM backend's choice influence later backends? We could add
+> a new option for key creation time, e.g.:
+> 
+>    keyctl add trusted kmk "new keylen rng=kernel" @s
+> 
+> The default would be rng=vendor if available with a fallback to rng=kernel,
+> which should always be available.
 
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+It matters a lot because it is existing ABI - for better or worse.
+
+I think a new option is a bad idea, because it cannot easily enforced.
+Kernel command-line on the other hand can be even signed.
 
 /Jarkko
-
->  crypto/asymmetric_keys/public_key.c | 18 +++++++++++++-----
->  1 file changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-> index 788a4ba1e2e7..b9cc83ba7a12 100644
-> --- a/crypto/asymmetric_keys/public_key.c
-> +++ b/crypto/asymmetric_keys/public_key.c
-> @@ -69,19 +69,20 @@ int software_key_determine_akcipher(const char *encoding,
->  {
->  	int n;
->  
-> -	if (strcmp(encoding, "pkcs1") == 0) {
-> +	if (strcmp(encoding, "pkcs1") == 0 || strcmp(encoding, "pss") == 0) {
->  		/* The data wangled by the RSA algorithm is typically padded
->  		 * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
-> -		 * sec 8.2].
-> +		 * sec 8.2] or EMSA-PSS [RFC8017 sec 9.1].
->  		 */
->  		if (!hash_algo)
->  			n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
-> -				     "pkcs1pad(%s)",
-> +				     "%spad(%s)",
-> +				     encoding,
->  				     pkey->pkey_algo);
->  		else
->  			n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
-> -				     "pkcs1pad(%s,%s)",
-> -				     pkey->pkey_algo, hash_algo);
-> +				     "%spad(%s,%s)",
-> +				     encoding, pkey->pkey_algo, hash_algo);
->  		return n >= CRYPTO_MAX_ALG_NAME ? -EINVAL : 0;
->  	}
->  
-> @@ -363,6 +364,13 @@ int public_key_verify_signature(const struct public_key *pkey,
->  			goto error_free_key;
->  	}
->  
-> +	if (strcmp(sig->encoding, "pss") == 0) {
-> +		ret = crypto_akcipher_set_sig_params(tfm, sig, sizeof(*sig));
-> +		if (ret) {
-> +			goto error_free_key;
-> +		}
-> +	}
-> +
->  	sg_init_table(src_sg, 2);
->  	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
->  	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
-> -- 
-> 2.30.2
-> 
-> 
