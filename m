@@ -2,113 +2,150 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F2B035175B
-	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 19:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8548F35175E
+	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 19:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235043AbhDARmE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Apr 2021 13:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
+        id S235060AbhDARmI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Apr 2021 13:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234337AbhDARg5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Apr 2021 13:36:57 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E01CAC05BD16
-        for <keyrings@vger.kernel.org>; Thu,  1 Apr 2021 05:55:16 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id z8so2099871ljm.12
-        for <keyrings@vger.kernel.org>; Thu, 01 Apr 2021 05:55:16 -0700 (PDT)
+        with ESMTP id S234623AbhDARiw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Apr 2021 13:38:52 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98548C08E935
+        for <keyrings@vger.kernel.org>; Thu,  1 Apr 2021 06:20:15 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id r20so2241808ljk.4
+        for <keyrings@vger.kernel.org>; Thu, 01 Apr 2021 06:20:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VIk1VyBFqF5fVZFBu0yexXHYaS9Jn30Rld7o2bVbBwk=;
-        b=Apd+UzHEAEi98S6OdfucHkNROZU7jCgX5/KNygYU3cVOLmi2PHXIN8LRL/INjJMZT2
-         +T7sbpkA1dHoI5hc7fww5ba5aE2TjM8dwGwwufSllGQiwylrGI0cS488JL/xNibDw5Cu
-         2+eknYxHVIfteXbHDfVGnwtETKC61+6Ys9Q59Y5+NreZIXf3O8ek1f6nwiPeAZ31FLYx
-         JP07cdx8Lht2U45g70INCV2MprWQgxaOUq4Y3uGF3LwH7J/nRfQOjuLD03XeTBhbnZ3w
-         3kGM/AEkbnuu9X/oEc2B9w4enaBqVfgrhZYb3ySlCRAGSvA6qD8rW+w9ga1FZsJLnIXC
-         z8Dg==
+         :cc:content-transfer-encoding;
+        bh=Wc8br82rdSUXocjUVRdeobzbTuG/H9DWpf5YwUpebsM=;
+        b=TIxRpaOOIxphi2ILfb/UobjRISoGFs2T1tAJaBLLjQzu+AbbD0FecdbT54DYSLngFe
+         3+EADpzGqP2gMrqDdA3TeB2uhst595q7AbwPmYAQuRON+ML+DZ4N/TYyB7yf4c3+jzMq
+         Sljkl13NM/ND2qkrqfOqBAtZDnTu2VdmUiTRspBDqq7UK7QsYopO2+k/3807SVFcBQ0j
+         9f6es/Xyfesjx8pUTIuP7o7rn/SqrA92pF5tfufSgEsY0BYJvz+WjDMUBKvs1upZIhn9
+         zFXi9wHlKfWvZWg/VlcENdoZpwr0a3HJf7h+k9kSC1fzQnF8Ly6Bh161piCYqG1Hb3sk
+         AZDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VIk1VyBFqF5fVZFBu0yexXHYaS9Jn30Rld7o2bVbBwk=;
-        b=EzYC8NxFKaM4NMpP5PAO94668LYAz0DgD1JBFweX5qo+cpYZ5rGDH+7fd26mvlMFyY
-         hcyttAbM1xYE1GAbNYmRodeZJZc96T1vlaYyQTeoubU6FjyFpWxJFR/e2y2M0cN5TIp0
-         EjQwDdcLmXfzku4tjs4xc3mN4J4ws40CzzhbxKTT5oFthCEa3S1xkesqaQIyWVvQXwpR
-         3Bn+OZM/kg0Dd2mlPLGBN/tyzWVm8NjmSS/MOYH6uTuqzDdUOzXIuFxeDh4c9PGSXh8T
-         9YXUTbCUcDr6vmRd7WosDPu99Z2JD3KNsgSH2IC1Lja2xyWkwZauUWhalFSTEV8gVQyn
-         I52Q==
-X-Gm-Message-State: AOAM531VTHQqKSX+WszYI4vy/2uu/MWfCZDRqWjNq/FeW+pLAdfg72S+
-        WV5LTFZRHjHWZDXeZGY25LyFUeVy2p0jg3Nx0Y3IBw==
-X-Google-Smtp-Source: ABdhPJzxwz2LDe0yIeonE1iDSI5e5lDG4mIYMjWxL+WfT+GgrPcNFOKL6OGonaimUeBpqxqGZ9SE9Ng/p3VJVcrOnEs=
-X-Received: by 2002:a2e:8e33:: with SMTP id r19mr5136316ljk.40.1617281715310;
- Thu, 01 Apr 2021 05:55:15 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Wc8br82rdSUXocjUVRdeobzbTuG/H9DWpf5YwUpebsM=;
+        b=czLIuDDSxEHSpV0MdHYkTElF3PQv10Sa0Yz4WxzQNDAk1N2DAsiWlHFZzishQlA3ZW
+         kzhKjT1Z1lUerfhyQhp3Ld7eaDfl4coXbvrw5Rsr4Os5boqPCuLd0cu28kDRSkPNBDwB
+         R//ea1fn4VDpTHKBa5cEuKCw3bJdGAtTKhtydzwbkFX2/SBzbbXQUwB1xLem7HsOFAr2
+         UTIw4gr2xy2cU+hi27tAWBisz84EkpSGWYV7Q9qbqRQnPZPMer1ebWJtA1KxbGfcTviu
+         EJbq1+2ZHGt+sCcJYGC90fqkGl+nmfXUk2I4j/m12VAN/EK2VH/717d37Us4/D8hT/UY
+         2+Tg==
+X-Gm-Message-State: AOAM532FbZl65tnHUHio7UJbljJMT9sPUZoPzgjaD7FhQR2M8iWhDHZP
+        8eS0xZnFMsJ+9olKEOQm5DKfFFryMsTPItLSnbYazg==
+X-Google-Smtp-Source: ABdhPJzxpxJUHPy/rHadVQcvjnq3ze8Sdx2IjZshc/3dTdswe4RjMnfdGfW2KoJLH94WfM7eO5OZIzl8xYSArYs4cXU=
+X-Received: by 2002:a2e:9acc:: with SMTP id p12mr5271081ljj.442.1617283213842;
+ Thu, 01 Apr 2021 06:20:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.56fff82362af6228372ea82e6bd7e586e23f0966.1615914058.git-series.a.fatoum@pengutronix.de>
  <CAFLxGvzWLje+_HFeb+hKNch4U1f5uypVUOuP=QrEPn_JNM+scg@mail.gmail.com>
  <ca2a7c17-3ed0-e52f-2e2f-c0f8bbe10323@pengutronix.de> <CAFLxGvwNomKOo3mQLMxYGDA8T8zN=Szpo2q5jrp4D1CaMHydWA@mail.gmail.com>
-In-Reply-To: <CAFLxGvwNomKOo3mQLMxYGDA8T8zN=Szpo2q5jrp4D1CaMHydWA@mail.gmail.com>
+ <f01c80a0da7cffd3115ce4e16a793a2db5cbe2ed.camel@linux.ibm.com>
+ <1777909690.136833.1617215767704.JavaMail.zimbra@nod.at> <a57192d9d9a5a9a66d11b38d054a5a3a70466a4b.camel@linux.ibm.com>
+ <2034693332.137003.1617219379831.JavaMail.zimbra@nod.at> <f3399480-020e-e3ca-7e7c-eec641fe5afc@pengutronix.de>
+In-Reply-To: <f3399480-020e-e3ca-7e7c-eec641fe5afc@pengutronix.de>
 From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Thu, 1 Apr 2021 18:25:03 +0530
-Message-ID: <CAFA6WYO29o73nSg4ikU9cyaOr0kpaXFJpcGLGmFLgjKQWchcEg@mail.gmail.com>
+Date:   Thu, 1 Apr 2021 18:50:02 +0530
+Message-ID: <CAFA6WYNd7PEcZheSYPbEmFbkkMx4dmafeYcSpMBSdNZgqz=TyQ@mail.gmail.com>
 Subject: Re: [PATCH v1 0/3] KEYS: trusted: Introduce support for NXP
  CAAM-based trusted keys
-To:     Richard Weinberger <richard.weinberger@gmail.com>
-Cc:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        James Bottomley <jejb@linux.ibm.com>
+Cc:     Richard Weinberger <richard@nod.at>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        =?UTF-8?Q?Horia_Geant=C4=83?= <horia.geanta@nxp.com>,
+        horia geanta <horia.geanta@nxp.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        aymen sghaier <aymen.sghaier@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Bottomley <jejb@linux.ibm.com>, kernel@pengutronix.de,
+        davem <davem@davemloft.net>, kernel <kernel@pengutronix.de>,
         David Howells <dhowells@redhat.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Steffen Trumtrar <s.trumtrar@pengutronix.de>,
         Udit Agarwal <udit.agarwal@nxp.com>,
         Jan Luebbe <j.luebbe@pengutronix.de>,
-        David Gstir <david@sigma-star.at>,
-        Franck LENORMAND <franck.lenormand@nxp.com>,
-        linux-integrity@vger.kernel.org,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        david <david@sigma-star.at>,
+        Franck Lenormand <franck.lenormand@nxp.com>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         LSM <linux-security-module@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Richard,
+On Thu, 1 Apr 2021 at 15:36, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> Hello Richard,
+>
+> On 31.03.21 21:36, Richard Weinberger wrote:
+> > James,
+> >
+> > ----- Urspr=C3=BCngliche Mail -----
+> >> Von: "James Bottomley" <jejb@linux.ibm.com>
+> >> Well, yes.  For the TPM, there's a defined ASN.1 format for the keys:
+> >>
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engi=
+ne.git/tree/tpm2-asn.h
+> >>
+> >> and part of the design of the file is that it's distinguishable either
+> >> in DER or PEM (by the guards) format so any crypto application can kno=
+w
+> >> it's dealing with a TPM key simply by inspecting the file.  I think yo=
+u
+> >> need the same thing for CAAM and any other format.
+> >>
+> >> We're encouraging new ASN.1 formats to be of the form
+> >>
+> >> SEQUENCE {
+> >>    type   OBJECT IDENTIFIER
+> >>    ... key specific fields ...
+> >> }
+> >>
+> >> Where you choose a defined OID to represent the key and that means
+> >> every key even in DER form begins with a unique binary signature.
+> >
+> > I like this idea.
+> > Ahmad, what do you think?
+> >
+> > That way we could also get rid off the kernel parameter and all the fal=
+l back logic,
+> > given that we find a way to reliable detect TEE blobs too...
+>
+> Sounds good to me. Sumit, your thoughts on doing this for TEE as well?
+>
 
-On Wed, 31 Mar 2021 at 03:34, Richard Weinberger
-<richard.weinberger@gmail.com> wrote:
->
-> Ahmad,
->
-> On Wed, Mar 17, 2021 at 3:08 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> >     keyctl add trusted $KEYNAME "load $(cat ~/kmk.blob)" @s
->
-> Is there a reason why we can't pass the desired backend name in the
-> trusted key parameters?
-> e.g.
-> keyctl add trusted $KEYNAME "backendtype caam load $(cat ~/kmk.blob)" @s
->
+AFAIU, ASN.1 formating should be independent of trusted keys backends
+which could be abstracted to trusted keys core layer so that every
+backend could be plugged in seamlessly.
 
-IIUC, this would require support for multiple trusted keys backends at
-runtime but currently the trusted keys subsystem only supports a
-single backend which is selected via kernel module parameter during
-boot.
+James,
 
-So the trusted keys framework needs to evolve to support multiple
-trust sources at runtime but I would like to understand the use-cases
-first. IMO, selecting the best trust source available on a platform
-for trusted keys should be a one time operation, so why do we need to
-have other backends available at runtime as well?
+Would it be possible to achieve this?
 
 -Sumit
 
+> >
+> > Thanks,
+> > //richard
+> >
+>
 > --
-> Thanks,
-> //richard
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
