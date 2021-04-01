@@ -2,58 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E44D33513B9
-	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 12:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E683513F7
+	for <lists+keyrings@lfdr.de>; Thu,  1 Apr 2021 12:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233665AbhDAKhL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 1 Apr 2021 06:37:11 -0400
-Received: from lithops.sigma-star.at ([195.201.40.130]:60504 "EHLO
+        id S233850AbhDAKz2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Thu, 1 Apr 2021 06:55:28 -0400
+Received: from lithops.sigma-star.at ([195.201.40.130]:60844 "EHLO
         lithops.sigma-star.at" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234081AbhDAKgp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Apr 2021 06:36:45 -0400
+        with ESMTP id S234057AbhDAKy5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Apr 2021 06:54:57 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 6CAB4606BA27;
-        Thu,  1 Apr 2021 12:23:58 +0200 (CEST)
+        by lithops.sigma-star.at (Postfix) with ESMTP id E55D960FB28C;
+        Thu,  1 Apr 2021 12:53:38 +0200 (CEST)
 Received: from lithops.sigma-star.at ([127.0.0.1])
         by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id XWsDeVM0dlYR; Thu,  1 Apr 2021 12:23:58 +0200 (CEST)
+        with ESMTP id kHf6bXNSWmLt; Thu,  1 Apr 2021 12:53:38 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id E6125606BA2C;
-        Thu,  1 Apr 2021 12:23:57 +0200 (CEST)
+        by lithops.sigma-star.at (Postfix) with ESMTP id 76B666071A7C;
+        Thu,  1 Apr 2021 12:53:38 +0200 (CEST)
 Received: from lithops.sigma-star.at ([127.0.0.1])
         by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id AXT7SBVIcz0n; Thu,  1 Apr 2021 12:23:57 +0200 (CEST)
+        with ESMTP id Q_FICC5ApzVQ; Thu,  1 Apr 2021 12:53:38 +0200 (CEST)
 Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lithops.sigma-star.at (Postfix) with ESMTP id AF33B606BA27;
-        Thu,  1 Apr 2021 12:23:57 +0200 (CEST)
-Date:   Thu, 1 Apr 2021 12:23:57 +0200 (CEST)
+        by lithops.sigma-star.at (Postfix) with ESMTP id 3928660FB28C;
+        Thu,  1 Apr 2021 12:53:38 +0200 (CEST)
+Date:   Thu, 1 Apr 2021 12:53:38 +0200 (CEST)
 From:   Richard Weinberger <richard@nod.at>
 To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        kernel <kernel@pengutronix.de>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
         horia geanta <horia.geanta@nxp.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         aymen sghaier <aymen.sghaier@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        davem <davem@davemloft.net>, Udit Agarwal <udit.agarwal@nxp.com>,
+        davem <davem@davemloft.net>,
+        James Bottomley <jejb@linux.ibm.com>,
+        kernel <kernel@pengutronix.de>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+        Udit Agarwal <udit.agarwal@nxp.com>,
         Jan Luebbe <j.luebbe@pengutronix.de>,
         david <david@sigma-star.at>,
         Franck Lenormand <franck.lenormand@nxp.com>,
         Sumit Garg <sumit.garg@linaro.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
         "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         LSM <linux-security-module@vger.kernel.org>
-Message-ID: <628222835.139597.1617272637645.JavaMail.zimbra@nod.at>
-In-Reply-To: <dc284c67-3777-3558-df77-53b54c63aa66@pengutronix.de>
-References: <cover.56fff82362af6228372ea82e6bd7e586e23f0966.1615914058.git-series.a.fatoum@pengutronix.de> <319e558e1bd19b80ad6447c167a2c3942bdafea2.1615914058.git-series.a.fatoum@pengutronix.de> <CAFLxGvwT_y-xxj_81kEyE4X-ydfoPiekTiOeMR1dRP1SpaOh=g@mail.gmail.com> <dc284c67-3777-3558-df77-53b54c63aa66@pengutronix.de>
-Subject: Re: [PATCH v1 3/3] KEYS: trusted: Introduce support for NXP
+Message-ID: <717795270.139671.1617274418087.JavaMail.zimbra@nod.at>
+In-Reply-To: <27d7d3fa-5df8-1880-df21-200de31cc629@pengutronix.de>
+References: <cover.56fff82362af6228372ea82e6bd7e586e23f0966.1615914058.git-series.a.fatoum@pengutronix.de> <CAFLxGvzWLje+_HFeb+hKNch4U1f5uypVUOuP=QrEPn_JNM+scg@mail.gmail.com> <ca2a7c17-3ed0-e52f-2e2f-c0f8bbe10323@pengutronix.de> <CAFLxGvyj1aZ_3MuxJC6onejchV_6A8WbNR1vTLpSBF5QTxvLyQ@mail.gmail.com> <897df7dd-83a1-3e3e-1d9f-5a1adfd5b2fb@pengutronix.de> <1263763932.139584.1617272457698.JavaMail.zimbra@nod.at> <27d7d3fa-5df8-1880-df21-200de31cc629@pengutronix.de>
+Subject: Re: [PATCH v1 0/3] KEYS: trusted: Introduce support for NXP
  CAAM-based trusted keys
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -61,7 +62,7 @@ Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [195.201.40.130]
 X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF78 (Linux)/8.8.12_GA_3809)
 Thread-Topic: KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
-Thread-Index: bRpCX2JQ5lnT2KZCBTYRFn2CLxkWdw==
+Thread-Index: DfD/q4ZvfJZf2mMkmIDHHYWuBGwS1g==
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
@@ -69,17 +70,28 @@ X-Mailing-List: keyrings@vger.kernel.org
 Ahmad,
 
 ----- Ursprüngliche Mail -----
-> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
->> That way existing blobs can also be used with this implementation.
->> IIRC the NXP vendor tree uses "SECURE_KEY" as default modifier.
-> 
-> Being binary compatible with other implementations is not an objective
-> for this patch set. If you need to migrate I'd suggest to get out a
-> clear text password and side-load it into the trusted key framework.
+> Do you mean systemd-cryptsetup? It looks to me like it's just a way to supply
+> the keyphrase. With trusted keys and a keyphrase unknown to userspace, this
+> won't work.
 
-Compatibility is only one argument, IMHO the much stronger argument is that there are
-people out there that want to salt the CAAM blob with a key modifier of their
-own choice.
+Nah, I meant existing scripts/service Files.
+
+> I don't (yet) see the utility of it without LUKS. Perhaps a command dump on how
+> to do the same I did with dmsetup, but with cryptsetup plain instead could
+> help me to see the benefits?
+
+My reasoning is simple, why do I need a different tool when there is already one
+that could do the task too?
+Usually the systems I get my hands on use already dm-crypt with cryptsetup in some way.
+So I have the tooling already in my initramfs, etc.. and need to adopt the callers of cryptsetup a little.
+
+If I need all of a sudden different/additional tooling, it means more work, more docs to write,
+more hassle with crypto/system reviewers, etc...
+
+I don't want you to force to use cryptsetup.
+The only goal was pointing out that it can be done with cryptsetup and that there
+is already code such that no work is done twice.
+One the kernel side it does not matter.
 
 Thanks,
 //richard
