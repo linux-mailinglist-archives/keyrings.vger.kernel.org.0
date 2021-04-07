@@ -2,182 +2,158 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 521C2355BC0
-	for <lists+keyrings@lfdr.de>; Tue,  6 Apr 2021 20:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23861356183
+	for <lists+keyrings@lfdr.de>; Wed,  7 Apr 2021 04:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238107AbhDFSyu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Apr 2021 14:54:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49188 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240705AbhDFSx5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Apr 2021 14:53:57 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 136IZE8g016009;
-        Tue, 6 Apr 2021 14:53:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=smmRE6MNAeTbnKpReJ5A0is8bniX576Pnw/Hil94MoY=;
- b=FUDT0P7PfTxP4Q4k5FsSMJCzboOkg/3CjT656PFhlKDBKbH/IZuahuSvoXIMzrxfziny
- tjK3rzHCKgjIdGmQLcs9ZU8vtY7/Vcyp0a8/Tusc7U8nStcFLI1RtBxx7QLDZYX02unE
- ImttaalfO+iM89F9CEJeCt14gc/T68fOoym+GNEPaSugblYkaTTN3l5uETjES1+qe96D
- 7wwjHKfbx6lCRhrL3lD7tOHuBreyLtGGc2s51x9InD2mdUinOZpU7dl3oxLGw+T+qb5u
- RyoVCThEOT1OMmATy5Dt+qpvqQ9/Fq4tFT+7Ra0i/qFklHcLsuo3jPZrja9rD8P2RDCf gA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 37rvum0su6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Apr 2021 14:53:49 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 136IZX0p017249;
-        Tue, 6 Apr 2021 14:53:48 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 37rvum0stx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Apr 2021 14:53:48 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 136IcbHn007021;
-        Tue, 6 Apr 2021 18:53:47 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-        by ppma03dal.us.ibm.com with ESMTP id 37rvc28eac-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Apr 2021 18:53:47 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 136IrjPp27918592
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 6 Apr 2021 18:53:46 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E36CF6A051;
-        Tue,  6 Apr 2021 18:53:45 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 67C1A6A047;
-        Tue,  6 Apr 2021 18:53:45 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.47.158.152])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Tue,  6 Apr 2021 18:53:45 +0000 (GMT)
-From:   Stefan Berger <stefanb@linux.ibm.com>
-To:     keyrings@vger.kernel.org, dhowells@redhat.com, zohar@linux.ibm.com,
-        jarkko@kernel.org
-Cc:     nayna@linux.ibm.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH 2/2] certs: Add support for using elliptic curve keys for signing modules
-Date:   Tue,  6 Apr 2021 14:53:40 -0400
-Message-Id: <20210406185340.1079403-3-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210406185340.1079403-1-stefanb@linux.ibm.com>
-References: <20210406185340.1079403-1-stefanb@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qprp7teVTG0-_351RHuESRuIiyAdGM5l
-X-Proofpoint-ORIG-GUID: 9QlJEbJI84ShQ1RWRDRkZWVMnpqLXovf
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-04-06_06:2021-04-06,2021-04-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- mlxlogscore=999 priorityscore=1501 phishscore=0 lowpriorityscore=0
- bulkscore=0 impostorscore=0 mlxscore=0 clxscore=1015 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104060127
+        id S242585AbhDGC5x (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Apr 2021 22:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37144 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234004AbhDGC5w (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Apr 2021 22:57:52 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0E98C06174A;
+        Tue,  6 Apr 2021 19:57:41 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id kk2-20020a17090b4a02b02900c777aa746fso529064pjb.3;
+        Tue, 06 Apr 2021 19:57:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=L2ZahL3BM9zMTRN6qi10FAZfrxjb2GT5DQ+NiJkPnJE=;
+        b=Hd0UTjhJSstOUBcrTdU2wjrY+VSKdETfSSQe4iTsMvGfbJShPm2Wzex9b+7epOFKd7
+         jYdcuppeXpj65MXNWExMgnOuiM2eNjcs8qxED1BiwiuwMCYQaB9JagW4zUoLJjghGUPd
+         bdsRe7KuTWAHqYQG9yTWrZn2WdVlHrgFfKjyQXXjb0e7PJAEJUmxVqUyLX1KvbA5/IwP
+         Y1T+23bjBUx1ip7/tZi4o/xF1nWSpu0Gb0aOhfTX21brm/sLY9k43rdbK7F9MI3SnkuL
+         9I8f54vEZvvbruTlUkebnovK8empXmrhbaz+UgazTy9LW/nc6QP4B4YUejN7A2c6frd6
+         4kwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=L2ZahL3BM9zMTRN6qi10FAZfrxjb2GT5DQ+NiJkPnJE=;
+        b=DcRAj5Tq9F0yq9SinqoX4Pj7M+8Dv0WSH06r034w/96YVLwfz5zLlVcEBzoquBjz1I
+         RUeJfligap4+v/LkGVWUSo6PSTPIgjLnRhl7jXdpoPkWLB0WxaiR1uchvRSsLfnIhZNH
+         8UdwHENPk2JQuKVsH16wlbqHkNxdO4Lq3avFz92w7chrTmzQlJTDkvCEca1y/5d2sbuA
+         kCeQgJu19HQD2wqL8tBLGj9Mzx7lEQTqB8cSAB79YW1wE11ql/WNjkKqQ3eB/e8DKDQr
+         QUqkLkUBzbJrsQPU7KbXQzhvABfeDksOkbLa0sbGvqVA0X+BcNLfQ+r4VXY4rBQt+WAr
+         6iRQ==
+X-Gm-Message-State: AOAM5332wBb+DYAB4O80Zia+BfJqaATW9aHYyc1NXp7oiN+zKqX8goW+
+        qb7FK0Eseui9NtaqG3zd8p5nGQK5JQ5T8A==
+X-Google-Smtp-Source: ABdhPJywRWd5lwTeaMP5a3F/XyWkE5jFJEABf4BHjoe3C57uaYS7xSCQKFak727DO6g//sB+q8w1mQ==
+X-Received: by 2002:a17:902:708b:b029:e6:77ca:3cb6 with SMTP id z11-20020a170902708bb02900e677ca3cb6mr1079572plk.84.1617764260995;
+        Tue, 06 Apr 2021 19:57:40 -0700 (PDT)
+Received: from localhost.localdomain ([203.205.141.39])
+        by smtp.gmail.com with ESMTPSA id s22sm3574981pjs.42.2021.04.06.19.57.38
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Apr 2021 19:57:40 -0700 (PDT)
+From:   Hongbo Li <herbert.tencent@gmail.com>
+To:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, dhowells@redhat.com,
+        zohar@linux.ibm.com, jarkko@kernel.org, herberthbli@tencent.com
+Cc:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        Hongbo Li <herbert.tencent@gmail.com>
+Subject: [PATCH 0/5] crypto: add rsa pss support for x509
+Date:   Wed,  7 Apr 2021 10:56:59 +0800
+Message-Id: <1617764223-14275-1-git-send-email-herbert.tencent@gmail.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add support for using elliptic curve keys for signing modules. It uses
-a NIST P384 (secp384r1) key if the user chooses an elliptic curve key
-and will have ECDSA support built into the kernel.
+From: Hongbo Li <herberthbli@tencent.com>
 
-Note: A developer choosing an ECDSA key for signing modules should
-delete the signing key (rm certs/signing_key.*) when falling back to
-building an older version of a kernel that only supports RSA keys
-since otherwise ECDSA-signed modules will not be usable when that
-older kernel runs and the ECDSA key was still used for signing modules.
+This series of patches adds support for x509 cert signed by RSA
+with PSS encoding method. RSA PSS is described in rfc8017.
 
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- certs/Kconfig                         | 25 +++++++++++++++++++++++++
- certs/Makefile                        |  9 +++++++++
- crypto/asymmetric_keys/pkcs7_parser.c |  4 ++++
- 3 files changed, 38 insertions(+)
+Patch1 make x509 support rsa pss encoding and parse hash parameter.
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 48675ad319db..6f8337874ae0 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -15,6 +15,31 @@ config MODULE_SIG_KEY
-          then the kernel will automatically generate the private key and
-          certificate as described in Documentation/admin-guide/module-signing.rst
- 
-+choice
-+	prompt "Type of module signing key to be generated"
-+	default MODULE_SIG_KEY_TYPE_RSA
-+	help
-+	 The type of module signing key type to generate. This option
-+	 does not apply if a #PKCS11 URI is used.
-+
-+config MODULE_SIG_KEY_TYPE_RSA
-+	bool "RSA"
-+	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
-+	help
-+	 Use an RSA key for module signing.
-+
-+config MODULE_SIG_KEY_TYPE_ECDSA
-+	bool "ECDSA"
-+	select CRYPTO_ECDSA
-+	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
-+	help
-+	 Use an elliptic curve key (NIST P384) for module signing.
-+
-+	 Note: Remove all ECDSA signing keys, e.g. certs/signing_key.pem,
-+	 when falling back to building Linux 5.11 and older kernels.
-+
-+endchoice
-+
- config SYSTEM_TRUSTED_KEYRING
- 	bool "Provide system-wide ring of trusted keys"
- 	depends on KEYS
-diff --git a/certs/Makefile b/certs/Makefile
-index f64bc89ccbf1..c07736ec5a9a 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -62,7 +62,15 @@ ifeq ($(CONFIG_MODULE_SIG_KEY),"certs/signing_key.pem")
- 
- X509TEXT=$(shell openssl x509 -in $(CONFIG_MODULE_SIG_KEY) -text)
- 
-+# Support user changing key type
-+ifdef CONFIG_MODULE_SIG_KEY_TYPE_ECDSA
-+keytype_openssl = -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
-+$(if $(findstring ecdsa-with-,$(X509TEXT)),,$(shell rm -f $(CONFIG_MODULE_SIG_KEY)))
-+endif
-+
-+ifdef CONFIG_MODULE_SIG_KEY_TYPE_RSA
- $(if $(findstring rsaEncryption,$(X509TEXT)),,$(shell rm -f $(CONFIG_MODULE_SIG_KEY)))
-+endif
- 
- $(obj)/signing_key.pem: $(obj)/x509.genkey
- 	@$(kecho) "###"
-@@ -77,6 +85,7 @@ $(obj)/signing_key.pem: $(obj)/x509.genkey
- 		-batch -x509 -config $(obj)/x509.genkey \
- 		-outform PEM -out $(obj)/signing_key.pem \
- 		-keyout $(obj)/signing_key.pem \
-+		$(keytype_openssl) \
- 		$($(quiet)redirect_openssl)
- 	@$(kecho) "###"
- 	@$(kecho) "### Key pair generated."
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 967329e0a07b..2546ec6a0505 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -269,6 +269,10 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
- 		ctx->sinfo->sig->pkey_algo = "rsa";
- 		ctx->sinfo->sig->encoding = "pkcs1";
- 		break;
-+	case OID_id_ecdsa_with_sha256:
-+		ctx->sinfo->sig->pkey_algo = "ecdsa";
-+		ctx->sinfo->sig->encoding = "x962";
-+		break;
- 	default:
- 		printk("Unsupported pkey algo: %u\n", ctx->last_oid);
- 		return -ENOPKG;
+Patch2 add rsa pss template.
+
+Patch3 add test vector for rsa pss.
+
+Patch4 is the rsa-pss's ima patch.
+
+Test by the following script, it tests different saltlen, hash, mgfhash.
+
+keyctl newring test @u
+
+while :; do
+    for modbits in 1024 2048 4096; do
+	if [ $modbits -eq 1024 ]; then
+	    saltlen=(-1 -2 0 20 32 48 64 94)
+	elif [ $modbits -eq 2048 ]; then
+	    saltlen=(-1 -2 0 20 32 48 64 222)
+	else
+	    saltlen=(-1 -2 0 20 32 48 64 478)
+	fi
+
+	for slen in ${saltlen[@]}; do
+	    for hash in sha1 sha224 sha256 sha384 sha512; do
+		for mgfhash in sha1 sha224 sha256 sha384 sha512; do
+		    certfile="cert.der"
+		    echo slen $slen
+		    openssl req \
+			    -x509 \
+			    -${hash} \
+			    -newkey rsa:$modbits \
+			    -keyout key.pem \
+			    -days 365 \
+			    -subj '/CN=test' \
+			    -nodes \
+			    -sigopt rsa_padding_mode:pss \
+			    -sigopt rsa_mgf1_md:$mgfhash \
+			    -sigopt rsa_pss_saltlen:${slen} \
+			    -outform der \
+			    -out ${certfile} 2>/dev/null
+
+		    exp=0
+		    id=$(keyctl padd asymmetric testkey %keyring:test < "${certfile}")
+		    rc=$?
+		    if [ $rc -ne $exp ]; then
+			case "$exp" in
+			    0) echo "Error: Could not load rsa-pss certificate!";;
+			esac
+			echo "modbits $modbits sha: $hash mgfhash $mgfhash saltlen: $slen"
+			exit 1
+		    else
+			case "$rc" in
+			    0) echo "load cert: keyid: $id modbits $modbits hash: $hash mgfhash $mgfhash saltlen $slen"
+			esac
+		    fi
+		done
+	    done
+	done
+    done
+done
+
+Best Regards
+
+Hongbo
+
+v1->v2:
+  -rebase patches to cryptodev/master to fix the issues that
+   reported-by: kernel test robot <lkp@intel.com>
+
+Hongbo Li (5):
+  x509: add support for rsa-pss
+  crypto: support rsa-pss encoding
+  crypto: add rsa pss test vector
+  crypto: ecdsa ima support
+  ima: add support for rsa pss verification
+
+ crypto/Makefile                           |   7 +-
+ crypto/asymmetric_keys/Makefile           |   7 +-
+ crypto/asymmetric_keys/public_key.c       |   5 ++
+ crypto/asymmetric_keys/x509_cert_parser.c |  71 ++++++++++++++++-
+ crypto/rsa.c                              |  14 ++--
+ crypto/rsa_helper.c                       | 127 ++++++++++++++++++++++++++++++
+ crypto/testmgr.c                          |   7 ++
+ crypto/testmgr.h                          |  87 ++++++++++++++++++++
+ include/crypto/internal/rsa.h             |  25 +++++-
+ include/keys/asymmetric-type.h            |   6 ++
+ include/linux/oid_registry.h              |   2 +
+ security/integrity/digsig_asymmetric.c    |  34 ++++----
+ 12 files changed, 363 insertions(+), 29 deletions(-)
+
 -- 
-2.29.2
+1.8.3.1
 
