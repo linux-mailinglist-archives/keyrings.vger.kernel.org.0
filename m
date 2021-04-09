@@ -2,95 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 637BF35922F
-	for <lists+keyrings@lfdr.de>; Fri,  9 Apr 2021 04:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E101E35A0D3
+	for <lists+keyrings@lfdr.de>; Fri,  9 Apr 2021 16:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233049AbhDICsC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 8 Apr 2021 22:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43838 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232921AbhDICsB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 8 Apr 2021 22:48:01 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE6AC061760;
-        Thu,  8 Apr 2021 19:47:49 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id g10so2017678plt.8;
-        Thu, 08 Apr 2021 19:47:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wB1I6Nqq7AfdRuGhioLL2RWvT/EvSUrtBmeOoGNpC4c=;
-        b=m6llg1wz1AbvRLP0qKhVjJidA0yD+i4LsoBJ6TfkuD9vnR6jyqNnTzfVsq6VPlkZrm
-         DQP64fvm6kJQkRWdrQptJbTtjnBz/4aL8GYABAvauNucff1sUg6/oS7Ya3O86ZmwpZkQ
-         L1FBYM1A5reg1N0LbpjR13lI9uRIP6GrAXUjn4uWDEoac/5VuOUzgDbqwyE9FqxijXqp
-         6oiKv/s+v/xpPdivKYc38MX9O6CV6uq+44JjDRAkf0sWEsJ+DDPiY7HwYyO6t6Ke9JoM
-         lhVh2OPTIVD3qEb+p5b/krUgqsPC2chn3LzRVYumb/lW60UFU319y21iTyORgVW4p1AK
-         ErCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=wB1I6Nqq7AfdRuGhioLL2RWvT/EvSUrtBmeOoGNpC4c=;
-        b=tTWT50owUosFLFQMY0jyabGt1nBmTOoiQSuWF3ZQpsmCVrhbXhn8ny33P5F7ck/ymN
-         wF3pLp8S+TzyXrXS0iiBsJD57avghmTTiVA1hN24ZzhapSkzF3yEDz8bnjzD9JwpwPYf
-         eNaMVxW/nLjcUUTr/5XHIIpxVwtIRrtlkbbit7hqSQQxxRqSh232wkgtaqWG/mG/t0Db
-         yR//s1fSTMxb6MYNzrIpJQOwnI56D4JxEzbaWL2Kg7F3oVXlI9mSDVESedseYYTMbHrp
-         xZKEQQ93fmggNqtWYRMnMv+0rTuuleKFt1ylMyKLnAsvlg36gfCcJ2W5w2DgBiOGZ2YK
-         Ag0g==
-X-Gm-Message-State: AOAM531htF8ui6ot2nkRO/gxDAQGmMGChEJ5W7z1VNqjJKuPbIKg4PRI
-        LzmADTfjEKvj1YjZA/rZdOk=
-X-Google-Smtp-Source: ABdhPJxUYDPGfXbWq6ZhgcPjptCXqH2cmifLVZBYRe/Vs49P/0+eEQ4Hxh/QRFDGUb/2TZdNZVPTvA==
-X-Received: by 2002:a17:902:b210:b029:e6:33b4:cd9e with SMTP id t16-20020a170902b210b02900e633b4cd9emr10575859plr.67.1617936469326;
-        Thu, 08 Apr 2021 19:47:49 -0700 (PDT)
-Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id d26sm665525pfo.162.2021.04.08.19.47.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Apr 2021 19:47:49 -0700 (PDT)
-From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ben Boeckel <me@benboeckel.net>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Malte Gell <malte.gell@gmx.de>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH 4/4] Documentation/admin-guide/module-signing.rst: add openssl command option example for CodeSign EKU
-Date:   Fri,  9 Apr 2021 10:46:56 +0800
-Message-Id: <20210409024656.8083-5-jlee@suse.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20210409024656.8083-1-jlee@suse.com>
-References: <20210409024656.8083-1-jlee@suse.com>
+        id S233019AbhDIOQQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 9 Apr 2021 10:16:16 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:35311 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231402AbhDIOQN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 9 Apr 2021 10:16:13 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+        by mailnew.nyi.internal (Postfix) with ESMTP id B6ED9580825;
+        Fri,  9 Apr 2021 10:15:57 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Fri, 09 Apr 2021 10:15:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=VTWVSPSXMxU3eqkzvycOyKEaZ8j
+        Pje2Egd37ULlw91I=; b=LJ1tXVR4CleGK91S0PFuJ8ctXbzH7y/xja8CQhsEVMq
+        Wffr1Pe+r9B0Jnl1UnGkY8nVY1In/udfnCXOdIC8Fys5zvk3f9Fo4VpdBHgyEzEL
+        eV6bCllI/g8KQIEBSUgmSi4hsFRq+wjyWVgsoO80cDlJAWacWDq0CPNdtjG0nY1f
+        BzWl5v3dOSi8qzxwiDh/dvh1oo5b3rFyDmt5AuacEOIfm8YqCb+QlEftK75i3jE+
+        5DEEWiGFnWhYLtSAWmb7W5HosiACKUbMWkJ5GmMjmAO4ePdrO2xz8zkvbESlY/ZL
+        jdvwX88fyOzQ2rsd/bm0FAzFdCPwMd7hT++xd71gc8w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=VTWVSP
+        SXMxU3eqkzvycOyKEaZ8jPje2Egd37ULlw91I=; b=TbKTg0vOgFGapSkoVphX+4
+        pV2XiuC8fzuWO5DP3ZbMMtI+4lc8CyIOz7+6K4Gfoy75XBffrO/C+CihQBFrK8MK
+        lSDNZRKhhFM4AMyE8JXOL9uoOVcx0x7a0p4+aUB5zSm0T1b77K9f5/BGGYVmp+b4
+        eAuYTeiXOxJ55/xQ/3Hk4rP9E1/oDCXNgMvHtKWfFOw4TBC1WxixDr1ANs9DL62f
+        2DpwZJDGpakH/WbTvYBNviwwrxE8kfokIkCWQ4aLjaq3LWLPoDabsFPopmTwbExj
+        A5C2soiKWje1t3BUd5+HaslTC2ghIbVkBnHn5DooHmpxt0KwrcjmvD370ecKRumA
+        ==
+X-ME-Sender: <xms:mmFwYJfKtY1f3QEXyBLJgi1138bfBGZaHN4HNvLIgrnX4UHJaEIllA>
+    <xme:mmFwYHMIlaeWCXJJ1zpD5ut53Hobrf7jFNYTce4VDkrXnIviplGdJReigZYg0HkR7
+    PVFGZkYnk1lw1yAiaw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrudekuddgjeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
+    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeevffdtteetgfdttdekueefgedttddtueeugeekgeetffeuteffjeduieehhfek
+    tdenucfkphepjeefrddutddurdefvddrvddtudenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:mmFwYChDcLuA3lygQQZIkYmoGXDsVmMq55NMGNl_Ej6_5jwtm-1emQ>
+    <xmx:mmFwYC_05Yh3-4QXzLnLA4ewN8tCMGeG3bbsU1CPzIZ0bz4ztLsc-w>
+    <xmx:mmFwYFv24vyjs-K4bUgcgG-XPytfAb1AigpyDIIhVXE0zT1N7oyYaA>
+    <xmx:nWFwYGnVL03gKX_b-I-tKklTB7H9c3BTJq34K9Pc7eFP4JyWIVQSug>
+Received: from localhost (c-73-101-32-201.hsd1.pa.comcast.net [73.101.32.201])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 873911080067;
+        Fri,  9 Apr 2021 10:15:54 -0400 (EDT)
+Date:   Fri, 9 Apr 2021 10:15:48 -0400
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Varad Gautam <varad.gautam@suse.com>
+Cc:     linux-crypto@vger.kernel.org, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net, vt@altlinux.org,
+        tianjia.zhang@linux.alibaba.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jarkko@kernel.org,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v2 18/18] keyctl_pkey: Add pkey parameters slen and
+ mgfhash for PSS
+Message-ID: <YHBhlNsMTrOq0POE@erythro>
+References: <20210408141516.11369-1-varad.gautam@suse.com>
+ <20210408141516.11369-19-varad.gautam@suse.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210408141516.11369-19-varad.gautam@suse.com>
+User-Agent: Mutt/2.0.5 (2021-01-21)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add an openssl command option example for generating CodeSign extended
-key usage in X.509 when CONFIG_CHECK_CODESIGN_EKU is enabled.
+On Thu, Apr 08, 2021 at 16:15:16 +0200, Varad Gautam wrote:
+> keyctl pkey_* operations accept enc and hash parameters at present.
+> RSASSA-PSS signatures also require passing in the signature salt
+> length and the mgf hash function.
+> 
+> Add parameters:
+> - 'slen' to feed in salt length of a PSS signature.
+> - 'mgfhash' to feed in the hash function used for MGF.
 
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
----
- Documentation/admin-guide/module-signing.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+Could `Documentation/security/keys/core.rst` be updated to mention these
+new parameters? Statements on what values are allowed would be
+appreciated as well (e.g., that `saltlen` (a far better name IMO) is
+unsigned 32-bits and where valid algorithm names could be found as
+well).
 
-diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
-index 7d7c7c8a545c..ca3b8f19466c 100644
---- a/Documentation/admin-guide/module-signing.rst
-+++ b/Documentation/admin-guide/module-signing.rst
-@@ -170,6 +170,12 @@ generate the public/private key files::
- 	   -config x509.genkey -outform PEM -out kernel_key.pem \
- 	   -keyout kernel_key.pem
- 
-+When ``CONFIG_CHECK_CODESIGN_EKU`` option is enabled, the following openssl
-+command option should be added where for generating CodeSign extended key usage
-+in X.509::
-+
-+        -addext "extendedKeyUsage=codeSigning"
-+
- The full pathname for the resulting kernel_key.pem file can then be specified
- in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key therein will
- be used instead of an autogenerated keypair.
--- 
-2.16.4
+Thanks,
 
+--Ben
