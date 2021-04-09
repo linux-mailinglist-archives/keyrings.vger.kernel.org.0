@@ -2,98 +2,144 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E101E35A0D3
-	for <lists+keyrings@lfdr.de>; Fri,  9 Apr 2021 16:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0BB635A126
+	for <lists+keyrings@lfdr.de>; Fri,  9 Apr 2021 16:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233019AbhDIOQQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 9 Apr 2021 10:16:16 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:35311 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231402AbhDIOQN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 9 Apr 2021 10:16:13 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailnew.nyi.internal (Postfix) with ESMTP id B6ED9580825;
-        Fri,  9 Apr 2021 10:15:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Fri, 09 Apr 2021 10:15:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=VTWVSPSXMxU3eqkzvycOyKEaZ8j
-        Pje2Egd37ULlw91I=; b=LJ1tXVR4CleGK91S0PFuJ8ctXbzH7y/xja8CQhsEVMq
-        Wffr1Pe+r9B0Jnl1UnGkY8nVY1In/udfnCXOdIC8Fys5zvk3f9Fo4VpdBHgyEzEL
-        eV6bCllI/g8KQIEBSUgmSi4hsFRq+wjyWVgsoO80cDlJAWacWDq0CPNdtjG0nY1f
-        BzWl5v3dOSi8qzxwiDh/dvh1oo5b3rFyDmt5AuacEOIfm8YqCb+QlEftK75i3jE+
-        5DEEWiGFnWhYLtSAWmb7W5HosiACKUbMWkJ5GmMjmAO4ePdrO2xz8zkvbESlY/ZL
-        jdvwX88fyOzQ2rsd/bm0FAzFdCPwMd7hT++xd71gc8w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=VTWVSP
-        SXMxU3eqkzvycOyKEaZ8jPje2Egd37ULlw91I=; b=TbKTg0vOgFGapSkoVphX+4
-        pV2XiuC8fzuWO5DP3ZbMMtI+4lc8CyIOz7+6K4Gfoy75XBffrO/C+CihQBFrK8MK
-        lSDNZRKhhFM4AMyE8JXOL9uoOVcx0x7a0p4+aUB5zSm0T1b77K9f5/BGGYVmp+b4
-        eAuYTeiXOxJ55/xQ/3Hk4rP9E1/oDCXNgMvHtKWfFOw4TBC1WxixDr1ANs9DL62f
-        2DpwZJDGpakH/WbTvYBNviwwrxE8kfokIkCWQ4aLjaq3LWLPoDabsFPopmTwbExj
-        A5C2soiKWje1t3BUd5+HaslTC2ghIbVkBnHn5DooHmpxt0KwrcjmvD370ecKRumA
-        ==
-X-ME-Sender: <xms:mmFwYJfKtY1f3QEXyBLJgi1138bfBGZaHN4HNvLIgrnX4UHJaEIllA>
-    <xme:mmFwYHMIlaeWCXJJ1zpD5ut53Hobrf7jFNYTce4VDkrXnIviplGdJReigZYg0HkR7
-    PVFGZkYnk1lw1yAiaw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrudekuddgjeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
-    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
-    gvrhhnpeevffdtteetgfdttdekueefgedttddtueeugeekgeetffeuteffjeduieehhfek
-    tdenucfkphepjeefrddutddurdefvddrvddtudenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:mmFwYChDcLuA3lygQQZIkYmoGXDsVmMq55NMGNl_Ej6_5jwtm-1emQ>
-    <xmx:mmFwYC_05Yh3-4QXzLnLA4ewN8tCMGeG3bbsU1CPzIZ0bz4ztLsc-w>
-    <xmx:mmFwYFv24vyjs-K4bUgcgG-XPytfAb1AigpyDIIhVXE0zT1N7oyYaA>
-    <xmx:nWFwYGnVL03gKX_b-I-tKklTB7H9c3BTJq34K9Pc7eFP4JyWIVQSug>
-Received: from localhost (c-73-101-32-201.hsd1.pa.comcast.net [73.101.32.201])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 873911080067;
-        Fri,  9 Apr 2021 10:15:54 -0400 (EDT)
-Date:   Fri, 9 Apr 2021 10:15:48 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Varad Gautam <varad.gautam@suse.com>
-Cc:     linux-crypto@vger.kernel.org, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net, vt@altlinux.org,
-        tianjia.zhang@linux.alibaba.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jarkko@kernel.org,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v2 18/18] keyctl_pkey: Add pkey parameters slen and
- mgfhash for PSS
-Message-ID: <YHBhlNsMTrOq0POE@erythro>
-References: <20210408141516.11369-1-varad.gautam@suse.com>
- <20210408141516.11369-19-varad.gautam@suse.com>
+        id S233535AbhDIOfl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 9 Apr 2021 10:35:41 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:5002 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232990AbhDIOfl (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 9 Apr 2021 10:35:41 -0400
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 139EXaI0085427;
+        Fri, 9 Apr 2021 10:35:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=oj488HEf7RPPYjulmvJ2vG21D298AQH7SaGsElt1NvY=;
+ b=IeQQcV5xXmmpHOOLkbdVAdJpbTdFJD/+bORZdab2P3jdYJWEtLjaQKUwr30jKCNJfMPw
+ R6Px7emagEopHDvrg+6PKKCs7uQJJ/GC3S27gF5IGhGU1loCiEfJmOcPVwSEeq5uemlU
+ a94V5PJJVf3YZC+LOx8iFh+MTt21NUscW7iC4mD9W7TQAzv2SaO2yLifghJPPMjVS+Od
+ jx6EcA+bFGYGMPHrABcOcsrp+A+2lYZWkdT07aDINEq73FGABB2VR91wsSp4D8+ZhHmM
+ +rukwZoha+LNmyw9+wenIq57FflCXugmDlnjrTYKoYLvCq6Lc+I1MzUpt92WwsqiiJg9 Pg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 37trdq8t3u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Apr 2021 10:35:20 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 139EZGO4094867;
+        Fri, 9 Apr 2021 10:35:19 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 37trdq8t1m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Apr 2021 10:35:19 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 139EXj0j022369;
+        Fri, 9 Apr 2021 14:35:17 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma06ams.nl.ibm.com with ESMTP id 37rvbwahfu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Apr 2021 14:35:17 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 139EZEmo45154730
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 9 Apr 2021 14:35:14 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8EDD94C046;
+        Fri,  9 Apr 2021 14:35:14 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4E17C4C059;
+        Fri,  9 Apr 2021 14:35:12 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.63.3])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri,  9 Apr 2021 14:35:12 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
+Cc:     linux-security-module@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v4 0/3] ima: kernel build support for loading the kernel module signing key
+Date:   Fri,  9 Apr 2021 10:35:04 -0400
+Message-Id: <20210409143507.191443-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210408141516.11369-19-varad.gautam@suse.com>
-User-Agent: Mutt/2.0.5 (2021-01-21)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: m9hJgK75bCvlDCQEcTTShVGaAQQdyQX1
+X-Proofpoint-GUID: q488RcEmc2np1Skacn4GiR-D3S_ezGPJ
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-09_06:2021-04-09,2021-04-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
+ mlxscore=0 suspectscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104090110
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Apr 08, 2021 at 16:15:16 +0200, Varad Gautam wrote:
-> keyctl pkey_* operations accept enc and hash parameters at present.
-> RSASSA-PSS signatures also require passing in the signature salt
-> length and the mgf hash function.
-> 
-> Add parameters:
-> - 'slen' to feed in salt length of a PSS signature.
-> - 'mgfhash' to feed in the hash function used for MGF.
+Kernel modules are currently only signed when CONFIG_MODULE_SIG is enabled.
+The kernel module signing key is a self-signed CA only loaded onto the
+.builtin_trusted_key keyring.  On secure boot enabled systems with an arch
+specific IMA policy enabled, but without MODULE_SIG enabled, kernel modules
+are not signed, nor is the kernel module signing public key loaded onto the
+IMA keyring.
 
-Could `Documentation/security/keys/core.rst` be updated to mention these
-new parameters? Statements on what values are allowed would be
-appreciated as well (e.g., that `saltlen` (a far better name IMO) is
-unsigned 32-bits and where valid algorithm names could be found as
-well).
+In order to load the the kernel module signing key onto the IMA trusted
+keyring ('.ima'), the certificate needs to be signed by a CA key either on
+the builtin or secondary keyrings. The original version of this patch set
+created and loaded a kernel-CA key onto the builtin keyring. The kernel-CA
+key signed the kernel module signing key, allowing it to be loaded onto the
+IMA trusted keyring.
 
-Thanks,
+However, missing from this version was support for the kernel-CA to sign the
+hardware token certificate. Adding that support would add additional
+complexity.
 
---Ben
+Since the kernel module signing key is embedded into the Linux kernel at
+build time, instead of creating and loading a kernel-CA onto the builtin
+trusted keyring, this version makes an exception and allows the 
+self-signed kernel module signing key to be loaded directly onto the 
+trusted IMA keyring.
+
+v4:
+* Updated Jarkko's Reviewed-by and Stefan's Ack-by. 
+* Fixed a bug where size was miscalculated for the case when only
+IMA_APPRAISE_MODSIG is enabled. Thanks Mimi for noticing it.
+
+v3:
+
+* Fix the "Fixes" tag as suggested by Stefan for Patch 1/3.
+* Revert back the CA signed module signing key to only self-signed.
+* Allow self signed key as exception only for build time generated
+module signing key onto .ima keyring.
+
+v2:
+
+* Include feedback from Stefan - corrected the Fixes commit id in Patch 1
+and cleaned Patch 5/5.
+* Fix the issue reported by kernel test bot.
+* Include Jarkko's feedback on patch description.
+
+Nayna Jain (3):
+  keys: cleanup build time module signing keys
+  ima: enable signing of modules with build time generated key
+  ima: enable loading of build time generated key on .ima keyring
+
+ Makefile                      |  6 ++---
+ certs/Kconfig                 |  2 +-
+ certs/Makefile                |  8 ++++++
+ certs/system_certificates.S   | 13 ++++++++-
+ certs/system_keyring.c        | 50 ++++++++++++++++++++++++++++-------
+ include/keys/system_keyring.h |  7 +++++
+ init/Kconfig                  |  6 ++---
+ security/integrity/digsig.c   |  2 ++
+ 8 files changed, 76 insertions(+), 18 deletions(-)
+
+-- 
+2.29.2
