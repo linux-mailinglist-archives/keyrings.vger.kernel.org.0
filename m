@@ -2,162 +2,62 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2185735ECE1
-	for <lists+keyrings@lfdr.de>; Wed, 14 Apr 2021 08:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D72235F1E7
+	for <lists+keyrings@lfdr.de>; Wed, 14 Apr 2021 13:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233121AbhDNGJu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 14 Apr 2021 02:09:50 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:52368 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbhDNGJt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 14 Apr 2021 02:09:49 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13E64ZWa128459;
-        Wed, 14 Apr 2021 06:09:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=QVyht9+yJ8dfT9u8/h2qi0FFBihCppmvtUsB/7xN34o=;
- b=XD221qAHFQ7YOfWFC+j5D3mO++IQ1s/pBnb6VxCzqPofgai4zSWydUihR44gjLxLaou3
- B8P4B0w6F4+7n3e3YBz8CPop2eN8/BgHCwlK6j42ps8/p/pyhgfEIFLPTyJWBg5088Qh
- 9XgHd2tDYcud+fKbyj2i6ORnERurWKyqNKvenDdqyyKAn/3ykoY3mDJULXr7ekPtVx2E
- 4tMi5XAZRcgPpr1G/2vhTh6Ku0pt66bPLxw9LRAB6UPkYPVcS9w40Grx77WKDQ3OmIxA
- p+/NccSwwaaBUdMJo970w7tjfxYSdLOpc4Ow1CHlACTbf3ThL9xE3NS7/RLHR50h114d FA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 37u3ymh5sf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 14 Apr 2021 06:09:14 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13E64Vfn112554;
-        Wed, 14 Apr 2021 06:09:12 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 37unkqjppa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 14 Apr 2021 06:09:12 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13E695DF023914;
-        Wed, 14 Apr 2021 06:09:09 GMT
-Received: from mwanda (/10.175.166.128)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 14 Apr 2021 06:09:05 +0000
-Date:   Wed, 14 Apr 2021 09:08:58 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
+        id S242311AbhDNLII (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 14 Apr 2021 07:08:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40728 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239428AbhDNLII (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 14 Apr 2021 07:08:08 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7BD1A6103D;
+        Wed, 14 Apr 2021 11:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618398467;
+        bh=fp4lQztsNG/Z1CQUfIxUw9+Sv3sdaVopx3+oJQp1PI0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=O7mb4fLhexO3tpqRmWk/PqQWFURwVwFN08AAHLoYUaWG5sb5LssosCnbTBULY/MaW
+         uL8Q5PHDdrrlFlGCUfVnG/UCEfaGZNx15PblylhNI7hiw55Td4coLqKxOUVj7uu2QL
+         s1rUd21wp1e+t0cF/Znox/UttPff54wY0vjW2WEkYI9nAA432tNu97PknXUlLSsmVI
+         afIv7tGOioWiBjFOrX0j/ylSitsd9zPRbdyxbKT9H2JxYTbFf+Cxtu58JWkZYkkXRA
+         aRQslMoQRozJZjcDkOqkLatVFQXH6QssLSHOOp/RHO8I+JQfFaGp0NWeu9Rj3uzFY8
+         hoCfwPeOqkcFg==
+Date:   Wed, 14 Apr 2021 14:07:44 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Colin King <colin.king@canonical.com>
 Cc:     James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
         David Howells <dhowells@redhat.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
         linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] KEYS: trusted: fix a couple error pointer dereferences
-Message-ID: <YHaG+p5nlOXQFp1n@mwanda>
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] KEYS: trusted: Fix missing null return from
+ kzalloc call
+Message-ID: <YHbNAFMdQO0/ugHE@kernel.org>
+References: <20210412160101.1627882-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9953 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- adultscore=0 phishscore=0 malwarescore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104140043
-X-Proofpoint-GUID: RJNP3oqmP6_MQGiSmuiOdzohr_7cx_9X
-X-Proofpoint-ORIG-GUID: RJNP3oqmP6_MQGiSmuiOdzohr_7cx_9X
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9953 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 spamscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104140043
+In-Reply-To: <20210412160101.1627882-1-colin.king@canonical.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-If registering "reg_shm_out" fails, then it is an error pointer and the
-error handling will call tee_shm_free(reg_shm_out) which leads to an
-error pointer dereference and an Oops.
+On Mon, Apr 12, 2021 at 05:01:01PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The kzalloc call can return null with the GFP_KERNEL flag so
+> add a null check and exit via a new error exit label. Use the
+> same exit error label for another error path too.
+> 
+> Addresses-Coverity: ("Dereference null return value")
+> Fixes: 830027e2cb55 ("KEYS: trusted: Add generic trusted keys framework")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+ 
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-I've re-arranged it so we only free things that have been allocated
-successfully.
-
-Fixes: 6dd95e650c8a ("KEYS: trusted: Introduce TEE based Trusted Keys")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- security/keys/trusted-keys/trusted_tee.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
-
-diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
-index 2ce66c199e1d..45f96f6ed673 100644
---- a/security/keys/trusted-keys/trusted_tee.c
-+++ b/security/keys/trusted-keys/trusted_tee.c
-@@ -65,7 +65,7 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
- 	int ret;
- 	struct tee_ioctl_invoke_arg inv_arg;
- 	struct tee_param param[4];
--	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-+	struct tee_shm *reg_shm_in, *reg_shm_out;
- 
- 	memset(&inv_arg, 0, sizeof(inv_arg));
- 	memset(&param, 0, sizeof(param));
-@@ -84,7 +84,7 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
- 	if (IS_ERR(reg_shm_out)) {
- 		dev_err(pvt_data.dev, "blob shm register failed\n");
- 		ret = PTR_ERR(reg_shm_out);
--		goto out;
-+		goto free_shm_in;
- 	}
- 
- 	inv_arg.func = TA_CMD_SEAL;
-@@ -109,11 +109,9 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
- 		p->blob_len = param[1].u.memref.size;
- 	}
- 
--out:
--	if (reg_shm_out)
--		tee_shm_free(reg_shm_out);
--	if (reg_shm_in)
--		tee_shm_free(reg_shm_in);
-+	tee_shm_free(reg_shm_out);
-+free_shm_in:
-+	tee_shm_free(reg_shm_in);
- 
- 	return ret;
- }
-@@ -126,7 +124,7 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
- 	int ret;
- 	struct tee_ioctl_invoke_arg inv_arg;
- 	struct tee_param param[4];
--	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-+	struct tee_shm *reg_shm_in, *reg_shm_out;
- 
- 	memset(&inv_arg, 0, sizeof(inv_arg));
- 	memset(&param, 0, sizeof(param));
-@@ -145,7 +143,7 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
- 	if (IS_ERR(reg_shm_out)) {
- 		dev_err(pvt_data.dev, "key shm register failed\n");
- 		ret = PTR_ERR(reg_shm_out);
--		goto out;
-+		goto free_shm_in;
- 	}
- 
- 	inv_arg.func = TA_CMD_UNSEAL;
-@@ -170,11 +168,9 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
- 		p->key_len = param[1].u.memref.size;
- 	}
- 
--out:
--	if (reg_shm_out)
--		tee_shm_free(reg_shm_out);
--	if (reg_shm_in)
--		tee_shm_free(reg_shm_in);
-+	tee_shm_free(reg_shm_out);
-+free_shm_in:
-+	tee_shm_free(reg_shm_in);
- 
- 	return ret;
- }
--- 
-2.30.2
-
+/Jarkko
