@@ -2,84 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 190053621C8
-	for <lists+keyrings@lfdr.de>; Fri, 16 Apr 2021 16:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B7583623A7
+	for <lists+keyrings@lfdr.de>; Fri, 16 Apr 2021 17:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243611AbhDPOJm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 16 Apr 2021 10:09:42 -0400
-Received: from mail.hallyn.com ([178.63.66.53]:39982 "EHLO mail.hallyn.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244335AbhDPOI7 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 16 Apr 2021 10:08:59 -0400
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-        id 302AA64A; Fri, 16 Apr 2021 09:08:26 -0500 (CDT)
-Date:   Fri, 16 Apr 2021 09:08:26 -0500
-From:   "Serge E. Hallyn" <serge@hallyn.com>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] KEYS: trusted: fix a couple error pointer dereferences
-Message-ID: <20210416140826.GA21299@mail.hallyn.com>
-References: <YHaG+p5nlOXQFp1n@mwanda>
- <20210414140734.GB11180@mail.hallyn.com>
- <CAFA6WYOfy0mtM071GoSjeARRNWJ7ozJdZNsNa4v0ba=TxFnE8g@mail.gmail.com>
+        id S1343600AbhDPPQs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 16 Apr 2021 11:16:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:44209 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S245714AbhDPPPe (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 16 Apr 2021 11:15:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618586104;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=Pn6yvUUjNUSlzuQVqqIMB1mfmQSsMpS8xNJAq4YBzK8=;
+        b=GNOOCsNKc5VD+fervF4m2Ym4dIv/71FhL+GALJ8PXPtFcRkYnVx8EpjO6QS74TzadLg7X4
+        QRxhtxmySB4poHJ+dfwJUOcZSueP24pMSNsJEdaN5O8iqBimCt5AhF3thFNwoQL9n/Cy+L
+        X8JsJN864dbgpJRnj00gVpn0HusPMTs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-217-hjNCdYNrOQubG6COtEDHvg-1; Fri, 16 Apr 2021 11:15:00 -0400
+X-MC-Unique: hjNCdYNrOQubG6COtEDHvg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BBEDF8030A0;
+        Fri, 16 Apr 2021 15:14:58 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-119-35.rdu2.redhat.com [10.10.119.35])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 25B392B3C8;
+        Fri, 16 Apr 2021 15:14:56 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+cc:     dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@linux.microsoft.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Fix for CVE-2020-26541
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFA6WYOfy0mtM071GoSjeARRNWJ7ozJdZNsNa4v0ba=TxFnE8g@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
+Date:   Fri, 16 Apr 2021 16:14:56 +0100
+Message-ID: <1609249.1618586096@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 06:15:58PM +0530, Sumit Garg wrote:
-> Hi Serge,
-> 
-> On Wed, 14 Apr 2021 at 19:37, Serge E. Hallyn <serge@hallyn.com> wrote:
-> >
-> > On Wed, Apr 14, 2021 at 09:08:58AM +0300, Dan Carpenter wrote:
-> > > If registering "reg_shm_out" fails, then it is an error pointer and the
-> > > error handling will call tee_shm_free(reg_shm_out) which leads to an
-> > > error pointer dereference and an Oops.
-> > >
-> > > I've re-arranged it so we only free things that have been allocated
-> > > successfully.
-> > >
-> > > Fixes: 6dd95e650c8a ("KEYS: trusted: Introduce TEE based Trusted Keys")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > >  security/keys/trusted-keys/trusted_tee.c | 24 ++++++++++--------------
-> > >  1 file changed, 10 insertions(+), 14 deletions(-)
-> > >
-> > > diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
-> > > index 2ce66c199e1d..45f96f6ed673 100644
-> > > --- a/security/keys/trusted-keys/trusted_tee.c
-> > > +++ b/security/keys/trusted-keys/trusted_tee.c
-> > > @@ -65,7 +65,7 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
-> > >       int ret;
-> > >       struct tee_ioctl_invoke_arg inv_arg;
-> > >       struct tee_param param[4];
-> > > -     struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-> > > +     struct tee_shm *reg_shm_in, *reg_shm_out;
-> >
-> > I don't have this file (trusted_tee.c) in my tree and there's no lore
-> > link here to previous what threads this depends on.  Based on the
-> > context I can't verify that reg_shm_in will always be initialized
-> > before you get to the free_shm_in label.
-> >
-> 
-> You can find trusted_tee.c here [1].
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/tree/security/keys/trusted-keys/trusted_tee.c
 
-Thanks.  Looks good then :)
+Hi Linus,
+
+I posted a pull request for a fix for CVE-2020-26541:
+
+	https://lore.kernel.org/keyrings/1884195.1615482306@warthog.procyon.org.uk/
+	[GIT PULL] Add EFI_CERT_X509_GUID support for dbx/mokx entries
+
+I'm guessing you're not going to pull it now for 5.12, so should I just
+reissue the request in the merge window?  Also, do you want the base pulling
+up to something a bit more recent than 5.11-rc4?
+
+David
+
