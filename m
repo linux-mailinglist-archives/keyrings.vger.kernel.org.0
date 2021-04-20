@@ -2,153 +2,157 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D57B365A0E
-	for <lists+keyrings@lfdr.de>; Tue, 20 Apr 2021 15:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97FDB365AB9
+	for <lists+keyrings@lfdr.de>; Tue, 20 Apr 2021 16:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232558AbhDTN1m (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 20 Apr 2021 09:27:42 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:40301 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231422AbhDTN1l (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Apr 2021 09:27:41 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailnew.nyi.internal (Postfix) with ESMTP id B835C580BEA;
-        Tue, 20 Apr 2021 09:27:09 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 20 Apr 2021 09:27:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=lf7gZahL/CrZJJ2BAIN/GfdWHpC
-        6k25LB28HnVyHJ24=; b=aHQfJNIfJMDDuMBwwETqMm4922gp0e/0stzqSx4sZ3a
-        IW/AXnYDor/sb7PJZUeLsh0hk1r/KweQzQ+ApWidEl+B3/Xmha+0W9pAo9u1j+cg
-        dcRhxdR7YWlBSEX4JReNIwAI516wHYAWR5Ptl8CoLF+DgteWFNHYYqbf1wRwZJR1
-        dUG0RK8IDki0UdgtLOZR99rVu+bzoeAJZwshtHU9RcSALBJhzwAjbBG7o0sDg69s
-        f4NfTgmKsHEz+qBwSOH1MlMnUfhI9/p1dL1vspP0rszctc5Gppw3Ee6FlZ4S9+On
-        PHQjr/SvyCSoVw6MMIe+zrwu6/Q2BYX3ziLcLDbTqoA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=lf7gZa
-        hL/CrZJJ2BAIN/GfdWHpC6k25LB28HnVyHJ24=; b=XmAEdqb6EucLwKqbzKynCg
-        cg9Q9fwpCfia6QU3+NiczikPeGSoWr46j/b5WIsQKYxhx33RwgUVGNEI+mymmuaA
-        U33jD/mzsYdjEsAyNn0TzKoloP9+EKd/qSpIgmkq8863ose7rOvSWv/fia1RbHRi
-        5C0LDhxC8k4xjQkBQBv71wv7I67qy/eWAtI74XDsDjJF/xG7G7O9B1uWca56F8Ku
-        hWUfMgCouZhK/N1ZXZOR8XfQBRp8frBVILhsIpYvxvLStykD8I9cdEz7OOyq8sDo
-        Yz+eTLx2TnihH9ciCy6jHkMs/YKaFr4e+YHOgINrNUEgw8jxMILco0nJcIMmVMaA
-        ==
-X-ME-Sender: <xms:qtZ-YAVw4ljvfvo2dUZjFRnIVyR3mpKTUBNuF687kA0Iut8KEXVmpA>
-    <xme:qtZ-YEixH0wxP7D6QplvBF7C3e9meCxIUB_c67TigAll-66DLMRmGHfUeyQ4LVxaM
-    oOZ2-guyatM76ZiJnQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvddtiedgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
-    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
-    gvrhhnpeevffdtteetgfdttdekueefgedttddtueeugeekgeetffeuteffjeduieehhfek
-    tdenucfkphepvdegrdduieelrddvtddrvdehheenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:qtZ-YBQhSmKY4hV3Pap0xsiUJFtijExxgBD_z2uCW9SJepXlYK0r1w>
-    <xmx:qtZ-YHH6YgtJ1Ijsz_FRSmUETK39ukNGUbYIcuUiqLatxoXh9BdYJw>
-    <xmx:qtZ-YJkxUbN7oyPxjrX-m6JjFAK1ExOYhLg7SFsA8dVspAGs9-6TPA>
-    <xmx:rdZ-YITUwajNWGhgAXvAupjvtkXNSARTHax81wgO1ND1A0-YQjeMfQ>
-Received: from localhost (unknown [24.169.20.255])
-        by mail.messagingengine.com (Postfix) with ESMTPA id C81FB240057;
-        Tue, 20 Apr 2021 09:27:06 -0400 (EDT)
-Date:   Tue, 20 Apr 2021 09:27:05 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Varad Gautam <varad.gautam@suse.com>
-Cc:     linux-crypto@vger.kernel.org, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net, vt@altlinux.org,
-        tianjia.zhang@linux.alibaba.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jarkko@kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v3 18/18] keyctl_pkey: Add pkey parameters saltlen and
- mgfhash for PSS
-Message-ID: <YH7WqfjNo33vI0VM@erythro>
-References: <20210420114124.9684-1-varad.gautam@suse.com>
- <20210420114124.9684-19-varad.gautam@suse.com>
+        id S232084AbhDTOEB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Apr 2021 10:04:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38682 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232304AbhDTOEA (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 20 Apr 2021 10:04:00 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5F251613B6;
+        Tue, 20 Apr 2021 14:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618927408;
+        bh=hCrOPJTY3Fd4qxmAG0UmOelLAoekKGpQd0q0vXVkEWg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=L4ZXbHvT9TAnR/8F9ABzSzhPq3pKkSvD1ElRUnbnkC7PPkxsDwYJGak3627J4c0Kn
+         RJwh5uIxQuxcf0BadYm88AHaC3gX6p/QLJ9kpvllm4D3ZywAe7+m93D0u54jkneY/g
+         Sq0qSFn1K5VZqMt2Du2Tb8AUt1WepS2wugw/frkU7OoNepyZu9GShYLG3xZ2ayfp4j
+         e8JkEk8Wu+jE1tMAumHTG6eXZl++VkgUXH+64wAY8b8Kq1PsA/aeVj1rxpPOzkEbEu
+         IbXfoeAIgeqN5X3RMeqLQSiUemRX5l55GjWsAXg6VMo2Eq2KjBSsYljCDAVEyQY2JK
+         itGj94ogWH9Xg==
+Date:   Tue, 20 Apr 2021 16:03:21 +0200
+From:   Jessica Yu <jeyu@kernel.org>
+To:     Stefan Berger <stefanb@linux.ibm.com>
+Cc:     keyrings@vger.kernel.org, dhowells@redhat.com, zohar@linux.ibm.com,
+        jarkko@kernel.org, nayna@linux.ibm.com,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] certs: Add support for using elliptic curve keys
+ for signing modules
+Message-ID: <YH7fKUjJoynyPkHt@gunter>
+References: <20210408152403.1189121-1-stefanb@linux.ibm.com>
+ <20210408152403.1189121-3-stefanb@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20210420114124.9684-19-varad.gautam@suse.com>
-User-Agent: Mutt/2.0.5 (2021-01-21)
+In-Reply-To: <20210408152403.1189121-3-stefanb@linux.ibm.com>
+X-OS:   Linux gunter 5.11.12-1-default x86_64
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 20, 2021 at 13:41:23 +0200, Varad Gautam wrote:
-> keyctl pkey_* operations accept enc and hash parameters at present.
-> RSASSA-PSS signatures also require passing in the signature salt
-> length and the mgf hash function.
-> 
-> Add parameters:
-> - 'saltlen' to feed in salt length of a PSS signature.
-> - 'mgfhash' to feed in the hash function used for MGF.
-> 
-> Signed-off-by: Varad Gautam <varad.gautam@suse.com>
-> CC: Jarkko Sakkinen <jarkko@kernel.org>
-> CC: Ben Boeckel <me@benboeckel.net>
-> ---
-> v3: Rename slen to saltlen, update Documentation/security/keys/core.rst.
-> 
->  Documentation/security/keys/core.rst     | 14 +++++++++++++-
->  crypto/asymmetric_keys/asymmetric_type.c |  2 ++
->  include/linux/keyctl.h                   |  2 ++
->  security/keys/keyctl_pkey.c              | 13 +++++++++++++
->  4 files changed, 30 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-> index b3ed5c581034c..4bd774c56899e 100644
-> --- a/Documentation/security/keys/core.rst
-> +++ b/Documentation/security/keys/core.rst
-> @@ -1022,6 +1022,15 @@ The keyctl syscall functions are:
->  			which hash function was used, the hash function can be
->  			specified with this, eg. "hash=sha256".
->  
-> +	``mgfhash=<algo>`` In case of "RSASSA-PSS" ("enc=pss"), this specifies
-> +			the hash function used with the Mask Generation Function
-> +			to generate a signature, eg. "mgfhash=sha256". Supported
-> +			hashes are: sha1, sha224, sha256, sha384, and sha512.
-> +
-> +	``saltlen=<salt_length>`` In case of "RSASSA-PSS" ("enc=pss"), this
-> +			specifies the salt length as a u16, used to generate a
-                                                ^
++++ Stefan Berger [08/04/21 11:24 -0400]:
+>Add support for using elliptic curve keys for signing modules. It uses
+>a NIST P384 (secp384r1) key if the user chooses an elliptic curve key
+>and will have ECDSA support built into the kernel.
+>
+>Note: A developer choosing an ECDSA key for signing modules should still
+>delete the signing key (rm certs/signing_key.*) when building an older
+>version of a kernel that only supports RSA keys. Unless kbuild automati-
+>cally detects and generates a new kernel module key, ECDSA-signed kernel
+>modules will fail signature verification.
+>
+>Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>
+>---
+>v2:
+>  - check for ECDSA key by id-ecPublicKey from output line
+>    'Public Key Algorithm: id-ecPublicKey'.
+>---
+> certs/Kconfig                         | 25 +++++++++++++++++++++++++
+> certs/Makefile                        |  9 +++++++++
+> crypto/asymmetric_keys/pkcs7_parser.c |  4 ++++
+> 3 files changed, 38 insertions(+)
+>
+>diff --git a/certs/Kconfig b/certs/Kconfig
+>index 48675ad319db..6f8337874ae0 100644
+>--- a/certs/Kconfig
+>+++ b/certs/Kconfig
+>@@ -15,6 +15,31 @@ config MODULE_SIG_KEY
+>          then the kernel will automatically generate the private key and
+>          certificate as described in Documentation/admin-guide/module-signing.rst
+>
+>+choice
+>+	prompt "Type of module signing key to be generated"
+>+	default MODULE_SIG_KEY_TYPE_RSA
+>+	help
+>+	 The type of module signing key type to generate. This option
+>+	 does not apply if a #PKCS11 URI is used.
+>+
+>+config MODULE_SIG_KEY_TYPE_RSA
+>+	bool "RSA"
+>+	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
+>+	help
+>+	 Use an RSA key for module signing.
+>+
+>+config MODULE_SIG_KEY_TYPE_ECDSA
+>+	bool "ECDSA"
+>+	select CRYPTO_ECDSA
+>+	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
+>+	help
+>+	 Use an elliptic curve key (NIST P384) for module signing.
+>+
+>+	 Note: Remove all ECDSA signing keys, e.g. certs/signing_key.pem,
+>+	 when falling back to building Linux 5.11 and older kernels.
+>+
+>+endchoice
+>+
+> config SYSTEM_TRUSTED_KEYRING
+> 	bool "Provide system-wide ring of trusted keys"
+> 	depends on KEYS
+>diff --git a/certs/Makefile b/certs/Makefile
+>index f64bc89ccbf1..c2fabc288550 100644
+>--- a/certs/Makefile
+>+++ b/certs/Makefile
+>@@ -62,7 +62,15 @@ ifeq ($(CONFIG_MODULE_SIG_KEY),"certs/signing_key.pem")
+>
+> X509TEXT=$(shell openssl x509 -in $(CONFIG_MODULE_SIG_KEY) -text)
+>
+>+# Support user changing key type
+>+ifdef CONFIG_MODULE_SIG_KEY_TYPE_ECDSA
+>+keytype_openssl = -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
+>+$(if $(findstring id-ecPublicKey,$(X509TEXT)),,$(shell rm -f $(CONFIG_MODULE_SIG_KEY)))
+>+endif
+>+
+>+ifdef CONFIG_MODULE_SIG_KEY_TYPE_RSA
+> $(if $(findstring rsaEncryption,$(X509TEXT)),,$(shell rm -f $(CONFIG_MODULE_SIG_KEY)))
+>+endif
+>
+> $(obj)/signing_key.pem: $(obj)/x509.genkey
+> 	@$(kecho) "###"
+>@@ -77,6 +85,7 @@ $(obj)/signing_key.pem: $(obj)/x509.genkey
+> 		-batch -x509 -config $(obj)/x509.genkey \
+> 		-outform PEM -out $(obj)/signing_key.pem \
+> 		-keyout $(obj)/signing_key.pem \
+>+		$(keytype_openssl) \
+> 		$($(quiet)redirect_openssl)
+> 	@$(kecho) "###"
+> 	@$(kecho) "### Key pair generated."
+>diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
+>index 967329e0a07b..2546ec6a0505 100644
+>--- a/crypto/asymmetric_keys/pkcs7_parser.c
+>+++ b/crypto/asymmetric_keys/pkcs7_parser.c
+>@@ -269,6 +269,10 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
+> 		ctx->sinfo->sig->pkey_algo = "rsa";
+> 		ctx->sinfo->sig->encoding = "pkcs1";
+> 		break;
+>+	case OID_id_ecdsa_with_sha256:
+>+		ctx->sinfo->sig->pkey_algo = "ecdsa";
+>+		ctx->sinfo->sig->encoding = "x962";
+>+		break;
 
-This feels like it is missing a comma at the designated location (after
-`length` if the whitespace gets mangled).
+Hi Stefan,
 
-> +			signature. Eg. "saltlen=32".
-> +
->       The ``__spare[]`` space in the parameter block must be set to 0.  This is
->       intended, amongst other things, to allow the passing of passphrases
->       required to unlock a key.
-> @@ -1700,6 +1709,8 @@ The structure has a number of fields, some of which are mandatory:
->  			__u32	in2_len;
->  		};
->  		enum kernel_pkey_operation op : 8;
-> +		__u16		salt_len;
-> +		const char	*mgf_hash_algo;
->  	};
->  
->       This includes the key to be used; a string indicating the encoding to use
-> @@ -1707,7 +1718,8 @@ The structure has a number of fields, some of which are mandatory:
->       RSASSA-PKCS1-v1.5 or RSAES-PKCS1-v1.5 encoding or "raw" if no encoding);
->       the name of the hash algorithm used to generate the data for a signature
->       (if appropriate); the sizes of the input and output (or second input)
-> -     buffers; and the ID of the operation to be performed.
-> +     buffers; the ID of the operation to be performed; salt length to be used
-> +     in case of RSASSA-PSS; and hash algorithm used with MGF for RSASSA-PSS.
->  
->       For a given operation ID, the input and output buffers are used as
->       follows::
+Does CONFIG_MODULE_SIG_KEY_TYPE_ECDSA have a dependency on MODULE_SIG_SHA256?
+By default, MODULE_SIG_SHA1 is selected when CONFIG_MODULE_SIG is enabled.
+I was doing some quick testing and found that when I enabled
+MODULE_SIG_KEY_TYPE_ECDSA I get a "Unsupported pkey algo: 5" error on
+module load, which goes away after fixing my config and selecting
+MODULE_SIG_SHA256.
 
-Thanks for the docs, they look good to me overall. Other than the comma:
+Thanks,
 
-    Acked-by: Ben Boeckel <mathstuf@gmail.com>
-
---Ben
+Jessica
