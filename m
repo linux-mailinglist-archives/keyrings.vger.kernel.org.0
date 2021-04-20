@@ -2,123 +2,347 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADC336614D
-	for <lists+keyrings@lfdr.de>; Tue, 20 Apr 2021 23:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEE7E366269
+	for <lists+keyrings@lfdr.de>; Wed, 21 Apr 2021 01:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233882AbhDTVDW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 20 Apr 2021 17:03:22 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:26534 "EHLO
+        id S234290AbhDTXSL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Apr 2021 19:18:11 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:48430 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233548AbhDTVDV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Apr 2021 17:03:21 -0400
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13KKY6ZT125881;
-        Tue, 20 Apr 2021 17:02:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=tjLwptpGapR+G6kW/74l72xR3hpJOewr9nnuMzs60Gs=;
- b=L8hCkc6705h8XBeoZlkxOu3RHuWi/jzm2IQY/0BCJefllhIUDaDlwQll+qDU+KS898VV
- uVPrpch8+HpXe4x7gO7TKXnNcYIBFo88qOZAVgOKJvSRSk+jBeSP7H5skvSE4tFdZroC
- 9/80OOaVr7yLkwBKzh6LdO0bPfH7tIdgiFV6D6hzpy9Jvb0eJCNm4IeDJWGoFWBNRImQ
- C5NG+4LUwL6WFV45xWzNSCc21XK+vrIUGilWVBD6fIsTM/F6wuB4UICNde47bJRZ9OxX
- 0Uoc/rPrcqKjRr85KsdDhtp0cGU7IrGlEWfvVSQYQXY0jSn+H2BkVQ00rmS2urgzJ3rC Eg== 
+        by vger.kernel.org with ESMTP id S233964AbhDTXSK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Apr 2021 19:18:10 -0400
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13KN2pe7027749;
+        Tue, 20 Apr 2021 19:17:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=1dIihKNheRj3DD52LPeB9StYSyrd5TgRgcCXq/i15VU=;
+ b=if536T0lzuNVet6LO1A4M73uVZnbs3Q5RC5RZjAbLW9v0rKYYRis5EY9Av/iHQ44qrKV
+ vWTfN1J2xyKB6Bf1a+x+CCK6AtzB4dNY58vakUGRwRCLm4DYskuP7nbJkJ3J3aSgS9hd
+ Gb40U8hq9vaRJvb8EzMMluA2WJ3rOZKE5DFdiYdLVrn1f4hakAZnexhGMvzfYapsmzwa
+ HHlPjLutGr5qqNvwCmfkVrvCqCnhFoxaVuOfdnOcr8rubtUlDPYfMSSpZi0zZ6/ZyrHo
+ do6GgHpFWtmAf05mNvdLxbH/9bELVMTobgy20EqHT3eL1M/Mr2h9kpLTAoKb7gagogzm NQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3820863srr-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3826pbjg3w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Apr 2021 17:02:48 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13KKsTEh018571;
-        Tue, 20 Apr 2021 17:02:47 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3820863srf-1
+        Tue, 20 Apr 2021 19:17:03 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13KN3Wn4030008;
+        Tue, 20 Apr 2021 19:17:03 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3826pbjg3k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Apr 2021 17:02:47 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13KKuXtN017741;
-        Tue, 20 Apr 2021 21:02:46 GMT
+        Tue, 20 Apr 2021 19:17:03 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13KNGjOM008572;
+        Tue, 20 Apr 2021 23:17:02 GMT
 Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-        by ppma01dal.us.ibm.com with ESMTP id 37yqaa4akk-1
+        by ppma02dal.us.ibm.com with ESMTP id 37yqaad5pd-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Apr 2021 21:02:46 +0000
-Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
-        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13KL2jlM33751438
+        Tue, 20 Apr 2021 23:17:02 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13KNH1l420775312
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 20 Apr 2021 21:02:45 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4D3D06E052;
-        Tue, 20 Apr 2021 21:02:45 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CE6B26E050;
-        Tue, 20 Apr 2021 21:02:44 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Tue, 20 Apr 2021 21:02:44 +0000 (GMT)
-Subject: Re: [PATCH v2 2/2] certs: Add support for using elliptic curve keys
- for signing modules
-To:     Jessica Yu <jeyu@kernel.org>
-Cc:     keyrings@vger.kernel.org, dhowells@redhat.com, zohar@linux.ibm.com,
-        jarkko@kernel.org, nayna@linux.ibm.com,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210408152403.1189121-1-stefanb@linux.ibm.com>
- <20210408152403.1189121-3-stefanb@linux.ibm.com> <YH7fKUjJoynyPkHt@gunter>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <794ef635-de91-9207-f28b-ab6805fd95c9@linux.ibm.com>
-Date:   Tue, 20 Apr 2021 17:02:44 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        Tue, 20 Apr 2021 23:17:01 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 057CB78060;
+        Tue, 20 Apr 2021 23:17:01 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A90787805E;
+        Tue, 20 Apr 2021 23:16:57 +0000 (GMT)
+Received: from jarvis.int.hansenpartnership.com (unknown [9.85.203.222])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Tue, 20 Apr 2021 23:16:57 +0000 (GMT)
+Message-ID: <65dcc9fa28833e6beb1eadf98b0ed3402404d693.camel@linux.ibm.com>
+Subject: Re: [PATCH v9 1/4] KEYS: trusted: Add generic trusted keys framework
+From:   James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To:     Sumit Garg <sumit.garg@linaro.org>,
+        jarkko.sakkinen@linux.intel.com, zohar@linux.ibm.com
+Cc:     dhowells@redhat.com, jens.wiklander@linaro.org, corbet@lwn.net,
+        jmorris@namei.org, serge@hallyn.com, casey@schaufler-ca.com,
+        janne.karhunen@gmail.com, daniel.thompson@linaro.org,
+        Markus.Wamser@mixed-mode.de, lhinds@redhat.com,
+        erpalmer@us.ibm.com, a.fatoum@pengutronix.de,
+        keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        op-tee@lists.trustedfirmware.org
+Date:   Tue, 20 Apr 2021 16:16:56 -0700
+In-Reply-To: <20210301131127.793707-2-sumit.garg@linaro.org>
+References: <20210301131127.793707-1-sumit.garg@linaro.org>
+         <20210301131127.793707-2-sumit.garg@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-In-Reply-To: <YH7fKUjJoynyPkHt@gunter>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: I5XP_N6a_PhFOdCTJgRAYyMeGJ6I1AWC
-X-Proofpoint-ORIG-GUID: kGtwcPUsKloKTA-e0-UPqv-xapRc5t27
+X-Proofpoint-GUID: Kxqcmd9hhCUhx8lvYAs_EcvRp6NNSOls
+X-Proofpoint-ORIG-GUID: HtJEB5WM4I2IjoYGEO79dIhwU6c1Xhpm
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
  definitions=2021-04-20_11:2021-04-20,2021-04-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 clxscore=1011 phishscore=0 adultscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104200141
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 clxscore=1011
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104200163
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Mon, 2021-03-01 at 18:41 +0530, Sumit Garg wrote:
+> Current trusted keys framework is tightly coupled to use TPM device
+> as an underlying implementation which makes it difficult for
+> implementations like Trusted Execution Environment (TEE) etc. to
+> provide trusted keys support in case platform doesn't posses a TPM
+> device.
+> 
+> Add a generic trusted keys framework where underlying implementations
+> can be easily plugged in. Create struct trusted_key_ops to achieve
+> this, which contains necessary functions of a backend.
+> 
+> Also, define a module parameter in order to select a particular trust
+> source in case a platform support multiple trust sources. In case its
+> not specified then implementation itetrates through trust sources
+> list starting with TPM and assign the first trust source as a backend
+> which has initiazed successfully during iteration.
+> 
+> Note that current implementation only supports a single trust source
+> at runtime which is either selectable at compile time or during boot
+> via aforementioned module parameter.
 
-On 4/20/21 10:03 AM, Jessica Yu wrote:
-> +++ Stefan Berger [08/04/21 11:24 -0400]:
->>
->> diff --git a/crypto/asymmetric_keys/pkcs7_parser.c 
->> b/crypto/asymmetric_keys/pkcs7_parser.c
->> index 967329e0a07b..2546ec6a0505 100644
->> --- a/crypto/asymmetric_keys/pkcs7_parser.c
->> +++ b/crypto/asymmetric_keys/pkcs7_parser.c
->> @@ -269,6 +269,10 @@ int pkcs7_sig_note_pkey_algo(void *context, 
->> size_t hdrlen,
->>         ctx->sinfo->sig->pkey_algo = "rsa";
->>         ctx->sinfo->sig->encoding = "pkcs1";
->>         break;
->> +    case OID_id_ecdsa_with_sha256:
->> +        ctx->sinfo->sig->pkey_algo = "ecdsa";
->> +        ctx->sinfo->sig->encoding = "x962";
->> +        break;
->
-> Hi Stefan,
->
-> Does CONFIG_MODULE_SIG_KEY_TYPE_ECDSA have a dependency on 
-> MODULE_SIG_SHA256?
+You never actually tested this, did you?  I'm now getting EINVAL from
+all the trusted TPM key operations because of this patch.
 
-You are right, per the code above it does have a dependency on SHA256. 
-ECDSA is using NIST p384 (secp384r1) for signing and per my tests it can 
-be paired with all the sha hashes once the code above is extended. Now 
-when it comes to module signing, should we pair it with a particular 
-hash? I am not currently aware of a guidance document on this but sha256 
-and sha384 seem to be good choices these days, so maybe selecting ECDSA 
-module signing should have a 'depends on' on these?
+The reason is quite simple:  this function:
 
-   Stefan
+> index 000000000000..0db86b44605d
+> --- /dev/null
+> +++ b/security/keys/trusted-keys/trusted_core.c
+[...]
+> +static int datablob_parse(char *datablob, struct trusted_key_payload
+> *p)
+> +{
+> +	substring_t args[MAX_OPT_ARGS];
+> +	long keylen;
+> +	int ret = -EINVAL;
+> +	int key_cmd;
+> +	char *c;
+> +
+> +	/* main command */
+> +	c = strsep(&datablob, " \t");
+
+Modifies its argument to consume tokens and separates them with NULL.
+
+so the arguments for
+
+keyctl add trusted kmk "new 34 keyhandle=0x81000001"
+
+Go into this function as
+
+datablob="new 34 keyhandle=0x81000001"
+
+After we leave it, it looks like
+
+datablob="new\034\0keyhandle=0x81000001"
+
+However here:
+
+> +static int trusted_instantiate(struct key *key,
+> +			       struct key_preparsed_payload *prep)
+> +{
+> +	struct trusted_key_payload *payload = NULL;
+> +	size_t datalen = prep->datalen;
+> +	char *datablob;
+> +	int ret = 0;
+> +	int key_cmd;
+> +	size_t key_len;
+> +
+> +	if (datalen <= 0 || datalen > 32767 || !prep->data)
+> +		return -EINVAL;
+> +
+> +	datablob = kmalloc(datalen + 1, GFP_KERNEL);
+> +	if (!datablob)
+> +		return -ENOMEM;
+> +	memcpy(datablob, prep->data, datalen);
+> +	datablob[datalen] = '\0';
+> +
+> +	payload = trusted_payload_alloc(key);
+> +	if (!payload) {
+> +		ret = -ENOMEM;
+> +		goto out;
+> +	}
+> +
+> +	key_cmd = datablob_parse(datablob, payload);
+> +	if (key_cmd < 0) {
+> +		ret = key_cmd;
+> +		goto out;
+> +	}
+> +
+> +	dump_payload(payload);
+> +
+> +	switch (key_cmd) {
+> +	case Opt_load:
+> +		ret = static_call(trusted_key_unseal)(payload,
+> datablob);
+
+We're passing the unmodified
+
+datablob="new\034\0keyhandle=0x81000001"
+
+Into the tpm trusted_key_unseal function.  However, it only sees "new"
+and promply gives EINVAL because you've removed the ability to process
+the new option from it.  What should have happened is you should have
+moved data blob up to passed the consumed tokens, so it actually reads
+
+datablob="keyhandle=0x81000001"
+
+However, to do that you'd have to have the updated pointer passed out
+of your datablob_parse() above.
+
+There's also a lost !tpm2 in the check for options->keyhandle, but I
+suspect Jarkko lost that merging the two patches.  I think what's below
+fixes all of this, so if you can test it for trusted_tee, I'll package
+it up as two separate patches fixing all of this.
+
+James
+
+---
+
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index ec3a066a4b42..7c636212429b 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -62,7 +62,7 @@ static const match_table_t key_tokens = {
+  *
+  * On success returns 0, otherwise -EINVAL.
+  */
+-static int datablob_parse(char *datablob, struct trusted_key_payload *p)
++static int datablob_parse(char **datablob, struct trusted_key_payload *p)
+ {
+ 	substring_t args[MAX_OPT_ARGS];
+ 	long keylen;
+@@ -71,14 +71,14 @@ static int datablob_parse(char *datablob, struct trusted_key_payload *p)
+ 	char *c;
+ 
+ 	/* main command */
+-	c = strsep(&datablob, " \t");
++	c = strsep(datablob, " \t");
+ 	if (!c)
+ 		return -EINVAL;
+ 	key_cmd = match_token(c, key_tokens, args);
+ 	switch (key_cmd) {
+ 	case Opt_new:
+ 		/* first argument is key size */
+-		c = strsep(&datablob, " \t");
++		c = strsep(datablob, " \t");
+ 		if (!c)
+ 			return -EINVAL;
+ 		ret = kstrtol(c, 10, &keylen);
+@@ -89,7 +89,7 @@ static int datablob_parse(char *datablob, struct trusted_key_payload *p)
+ 		break;
+ 	case Opt_load:
+ 		/* first argument is sealed blob */
+-		c = strsep(&datablob, " \t");
++		c = strsep(datablob, " \t");
+ 		if (!c)
+ 			return -EINVAL;
+ 		p->blob_len = strlen(c) / 2;
+@@ -138,7 +138,7 @@ static int trusted_instantiate(struct key *key,
+ {
+ 	struct trusted_key_payload *payload = NULL;
+ 	size_t datalen = prep->datalen;
+-	char *datablob;
++	char *datablob, *orig_datablob;
+ 	int ret = 0;
+ 	int key_cmd;
+ 	size_t key_len;
+@@ -146,7 +146,7 @@ static int trusted_instantiate(struct key *key,
+ 	if (datalen <= 0 || datalen > 32767 || !prep->data)
+ 		return -EINVAL;
+ 
+-	datablob = kmalloc(datalen + 1, GFP_KERNEL);
++	orig_datablob = datablob = kmalloc(datalen + 1, GFP_KERNEL);
+ 	if (!datablob)
+ 		return -ENOMEM;
+ 	memcpy(datablob, prep->data, datalen);
+@@ -158,7 +158,7 @@ static int trusted_instantiate(struct key *key,
+ 		goto out;
+ 	}
+ 
+-	key_cmd = datablob_parse(datablob, payload);
++	key_cmd = datablob_parse(&datablob, payload);
+ 	if (key_cmd < 0) {
+ 		ret = key_cmd;
+ 		goto out;
+@@ -194,7 +194,7 @@ static int trusted_instantiate(struct key *key,
+ 		ret = -EINVAL;
+ 	}
+ out:
+-	kfree_sensitive(datablob);
++	kfree_sensitive(orig_datablob);
+ 	if (!ret)
+ 		rcu_assign_keypointer(key, payload);
+ 	else
+@@ -218,7 +218,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
+ 	struct trusted_key_payload *p;
+ 	struct trusted_key_payload *new_p;
+ 	size_t datalen = prep->datalen;
+-	char *datablob;
++	char *datablob, *orig_datablob;
+ 	int ret = 0;
+ 
+ 	if (key_is_negative(key))
+@@ -229,7 +229,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
+ 	if (datalen <= 0 || datalen > 32767 || !prep->data)
+ 		return -EINVAL;
+ 
+-	datablob = kmalloc(datalen + 1, GFP_KERNEL);
++	orig_datablob = datablob = kmalloc(datalen + 1, GFP_KERNEL);
+ 	if (!datablob)
+ 		return -ENOMEM;
+ 
+@@ -241,7 +241,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
+ 
+ 	memcpy(datablob, prep->data, datalen);
+ 	datablob[datalen] = '\0';
+-	ret = datablob_parse(datablob, new_p);
++	ret = datablob_parse(&datablob, new_p);
+ 	if (ret != Opt_update) {
+ 		ret = -EINVAL;
+ 		kfree_sensitive(new_p);
+@@ -265,7 +265,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
+ 	rcu_assign_keypointer(key, new_p);
+ 	call_rcu(&p->rcu, trusted_rcu_free);
+ out:
+-	kfree_sensitive(datablob);
++	kfree_sensitive(orig_datablob);
+ 	return ret;
+ }
+ 
+diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+index 4e5c50138f92..bc702ba0a596 100644
+--- a/security/keys/trusted-keys/trusted_tpm1.c
++++ b/security/keys/trusted-keys/trusted_tpm1.c
+@@ -747,6 +747,9 @@ static int getoptions(char *c, struct trusted_key_payload *pay,
+ 
+ 	opt->hash = tpm2 ? HASH_ALGO_SHA256 : HASH_ALGO_SHA1;
+ 
++	if (!c)
++		return 0;
++
+ 	while ((p = strsep(&c, " \t"))) {
+ 		if (*p == '\0' || *p == ' ' || *p == '\t')
+ 			continue;
+@@ -944,7 +947,7 @@ static int trusted_tpm_unseal(struct trusted_key_payload *p, char *datablob)
+ 		goto out;
+ 	dump_options(options);
+ 
+-	if (!options->keyhandle) {
++	if (!options->keyhandle && !tpm2) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
 
 
