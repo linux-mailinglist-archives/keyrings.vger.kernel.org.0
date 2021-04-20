@@ -2,36 +2,37 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B21373657D4
-	for <lists+keyrings@lfdr.de>; Tue, 20 Apr 2021 13:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA993657D9
+	for <lists+keyrings@lfdr.de>; Tue, 20 Apr 2021 13:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231877AbhDTLqs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 20 Apr 2021 07:46:48 -0400
-Received: from de-smtp-delivery-102.mimecast.com ([194.104.109.102]:49724 "EHLO
+        id S231960AbhDTLqv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Apr 2021 07:46:51 -0400
+Received: from de-smtp-delivery-102.mimecast.com ([194.104.109.102]:45864 "EHLO
         de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231840AbhDTLqr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Apr 2021 07:46:47 -0400
+        by vger.kernel.org with ESMTP id S231949AbhDTLqu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Apr 2021 07:46:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
-        t=1618919175;
+        t=1618919178;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=vUlctdSoqOFNxY4UtcL4eG0wJQBPXiruH/HbQNh30Yc=;
-        b=gkxK747skX/GF2UQ8cMrQiOmrMml5CY+L+eEr4uUgG3dUzHmKHsFuXz/is6L7bhfJigIPY
-        gkuFED+Yzs/7ZEIgV+DYZNhwn1G9NL70zF82yTP72Pedf5DNot5U9Lwy4Su5KCNer5rBFg
-        uNGaMabAzSFmJm77yabCngxWR9Cd2AM=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6fL98t5zZN0iCvyW4Pat9TU44DEzWzujgQbdoqyxf5A=;
+        b=AWJkYpkmexESZRQL6dvmds0tzlrJZEI79jsE4FSwT4trEMhaYKDjwHhciPktSAhNHyMidA
+        RPxeE1XiLjlDUwTn28GlhptgCbkxooOjnzDavEwz8ollssSz86MB8Y3aXDmBgjqLCKNgEJ
+        OKaeyGLwwOOlmYH3CI1ew+1n6EkF7Eo=
 Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- (mail-vi1eur05lp2172.outbound.protection.outlook.com [104.47.17.172])
+ (mail-vi1eur05lp2169.outbound.protection.outlook.com [104.47.17.169])
  (Using TLS) by relay.mimecast.com with ESMTP id
- de-mta-31-6Eu8FyC_NRaIhn18VK7kfw-1; Tue, 20 Apr 2021 13:46:14 +0200
-X-MC-Unique: 6Eu8FyC_NRaIhn18VK7kfw-1
+ de-mta-35-oXuShDJuOdypKjVYQKlG9w-1; Tue, 20 Apr 2021 13:46:16 +0200
+X-MC-Unique: oXuShDJuOdypKjVYQKlG9w-1
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=axpN/FVEdZD2wX9Z/xysdauRwvmf4zeXqSkUQflNsM9Is7qzgPJB2ElUmD9RFHz8CWfBj2+vhDFH9ZhFuk+gUUJD6F3xPmb5dZFLozyX4uvuU2BG14bKQp77IlUtlGTaIJ8npnskqr9HSSqGwhP8IIUGUzq3WIS9LshrmHF3nWmhhgv+PxIafFbu37FZmTo/NhHnqtVBR/YFwpVWLEujYCVmwqh/GksInGY6A6+ogvgx4zUzUwaZ7KzgKyGPiTYZW/rGmIjVSPv7HAVWrju8LEAlVPY+eP3CG6ADFdG4FHwSI4TErhAk1zt2XEePmwiL3W9fmRffb0u+YYNvj5E5/w==
+ b=d3NxH+SeNzUV+nEtlMtmJeqTF6ZGrrnYnwI8ATiIpMjQgwybZ2ezvG/SvAv1FZCVQJ0+o4wDqFpzd4mnNXMHrSZXWrq7TCiHjs6Qyqgybe5O3RZ4ZDW/mOx/ns2/dRSqe9CXa0NXI1s1YJGV/o7qz8RbNXLRuMePPBq/JupkFOUBa3uIztBLRh1GZsu+uKpvySzhdpyRMdDHTNJQ1ujiNco0XwMhf2OBddMtDP6raMQq2+J2mzk+AZY8XUvfSkcAKrDQ1p9/bysT2D5HaJMRCrmc8dY1M0L+43lwEt6D8EGBBEcrAswObHxskaQ0LNzAscRVwoH9NYuSCvEgDGAGzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VUELCHFtDk7kf95esCwh6IKf6RTZrtnvupTYz0cMp0A=;
- b=Mmbe9FYmP52JM9XK3akWyfWk7/t/im9R2vChjbRTmT1h3z3hGNmaYl3JDIs1ESBaIia1n407HTQ+9mHqm7LFOsxXYhVkIuoxq3UdjY6tqY/3ju4yROudNj3axWxlW+vP9ARFiJLXyrGk2FVeSfT+pVXlnji7vvX+JlVxspb/sKq3ZNK+m0ifTSW/BDrSEft9KYUz82GpHpwpSnOM6yRhfmEv3NbVZ00lZpAYE24xtnHbKbGXJrngt1brgY1M48Dcsjifa1+6GGFKQtciESOjgCTBYegLp7m1Mey0ZrPNBo6zQ3KkXhgdVB57LG5RazFD3Hj62wlXGnYdJb/T0RbSFA==
+ bh=Sj5+vSrW7VRmF6gKH5OlFOxZGJYseHq1OU1GF+D6wvc=;
+ b=MdEVqX2CylpIqXN4qXkWkhrwtYfhLv6wjpnFIh8t8ShdFt8lFknRnJ1AlncP+Eln+JiiBXcBPQo56KkuV/nMYHTIyCBLbJWZSlBk6UpF1hVfuM2tDHNZulWCmwN+SXhOz1qxk1Bi8DrtrQW/nfm0wZmXI1oddeTIllxmLzHlI3HHDawHap6P3K4HwSyDOx49z+iIsW9x1maJbb6WdueNs4H3esoksnCFsOncybdXI+ano4h05fDbcy5zQnL8ZRWasqPDYmCFJawJ2VZREI61uEDBIn4exu6cK4wE6K4IZiwX/r+WArqRDw9dXX3EOnRPGco/zBMjF8cpqHivUrSDwg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
  dkim=pass header.d=suse.com; arc=none
@@ -41,21 +42,23 @@ Received: from AM0PR04MB5650.eurprd04.prod.outlook.com (2603:10a6:208:128::18)
  by AM0PR04MB5154.eurprd04.prod.outlook.com (2603:10a6:208:c4::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.19; Tue, 20 Apr
- 2021 11:46:12 +0000
+ 2021 11:46:15 +0000
 Received: from AM0PR04MB5650.eurprd04.prod.outlook.com
  ([fe80::756a:86b8:8283:733d]) by AM0PR04MB5650.eurprd04.prod.outlook.com
  ([fe80::756a:86b8:8283:733d%6]) with mapi id 15.20.4042.024; Tue, 20 Apr 2021
- 11:46:12 +0000
+ 11:46:15 +0000
 From:   Varad Gautam <varad.gautam@suse.com>
 To:     linux-crypto@vger.kernel.org
 CC:     varad.gautam@suse.com, dhowells@redhat.com,
         herbert@gondor.apana.org.au, davem@davemloft.net, vt@altlinux.org,
         tianjia.zhang@linux.alibaba.com, keyrings@vger.kernel.org,
         linux-kernel@vger.kernel.org, jarkko@kernel.org
-Subject: [PATCH v3 00/18] Implement RSASSA-PSS signature verification
-Date:   Tue, 20 Apr 2021 13:41:05 +0200
-Message-ID: <20210420114124.9684-1-varad.gautam@suse.com>
+Subject: [PATCH v3 01/18] X.509: Parse RSASSA-PSS style certificates
+Date:   Tue, 20 Apr 2021 13:41:06 +0200
+Message-ID: <20210420114124.9684-2-varad.gautam@suse.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210420114124.9684-1-varad.gautam@suse.com>
+References: <20210420114124.9684-1-varad.gautam@suse.com>
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-Originating-IP: [95.90.93.216]
@@ -64,181 +67,354 @@ X-ClientProxiedBy: PR3P189CA0083.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:208:128::18)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from xps13.suse.de (95.90.93.216) by PR3P189CA0083.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:b4::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16 via Frontend Transport; Tue, 20 Apr 2021 11:46:10 +0000
+Received: from xps13.suse.de (95.90.93.216) by PR3P189CA0083.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:b4::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16 via Frontend Transport; Tue, 20 Apr 2021 11:46:14 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 39023091-67a9-4d52-b479-08d903f1e566
+X-MS-Office365-Filtering-Correlation-Id: 3dfc24c3-495e-4cc0-d941-08d903f1e73e
 X-MS-TrafficTypeDiagnostic: AM0PR04MB5154:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR04MB515496CA16F68783D56F3FD6E0489@AM0PR04MB5154.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1091;
+X-Microsoft-Antispam-PRVS: <AM0PR04MB51541B7DF904139152927135E0489@AM0PR04MB5154.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:597;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +TWzBHt71YP13dP/lJ2EUmWdpXRyRqJsIaeK6P9E/zrDJX2tGoG3IfzNTE2c6VxwHXRtTfBqpgosk7zr6EOldHbdtLvGpLT5q0HGYHn2niZVWWbzuck83MXB1pawfMVNYW9kFrW5mrXmYgc0WHETnzpc+7n4oA7z9boQM1aD00xJW15s4sIDxYBSTpe7k+aqou0r1dQIQukty1gPhcfAz7PAq4AaXO+EQNbkwDeRfGrmrm/hg4boTBaGQVFor1KW/joPudBUnz4SFRL6YcVULmTivAU9aqI0lz1an9ebK+s0gdAdgNSoLZG6iHmrveoI5gu0a0lUcBjqCh9zEEnJELeIN7VhxY4uktmLiKKUF9jwDd4sTKDMO6K4KZpIH6MM32XI1xcEv1duuAPmcu5si/vhs6JKWtuYMdV14qChm0diopKU7FpAszN0+fUkVjYfGSTNErSPvvXggW9N+6/0dXxLqc0fg2/pTO9ayiEO9ZpNqZhDJsONopS/9gzabB4pCpLBLFmqNcr3kDe7A5jT8ICxT+i6YQvykic6xyQ0Z5Z9JndTDoBHPFW+bxdtbDLIMBBW0TfMguRrbgbN8qJBjtXgK9LmLFDgylacVQdGlLNu9lTrNfclUD689HWI+O2hxk5pRAhOSyEUh092kqmYp/RUlTieVgAFagUsA78vVHK9IeBEP2tR7tiHkU0I6exTw2zBnBuZXPxj6WdRQh/fSdofyHTpt5Jp93GXK9hw7qiiHHl1YU36jWZfghbLgRQz
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5650.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(136003)(366004)(346002)(396003)(39850400004)(15650500001)(26005)(966005)(16526019)(86362001)(186003)(956004)(66476007)(8936002)(5660300002)(66946007)(6506007)(44832011)(4326008)(6512007)(6486002)(8676002)(2616005)(316002)(6666004)(66556008)(36756003)(38350700002)(52116002)(478600001)(38100700002)(83380400001)(6916009)(1076003)(2906002)(473944003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?FS2kB7mtwEPbNil+3PT0CELw93+6hLvJirk7yBB6hTWF784la0CSezerMRsM?=
- =?us-ascii?Q?W1nUZ4uvWfUDpxgBviW9W2aPFWBSY768u/aOGnNQ9i8euKrEsjFoGRue1LMK?=
- =?us-ascii?Q?YcAcxWeJOy6sD/JLlqM2lMrFvakyx7+y3qxHYKmKJ4ESunS+MrVM08M5P9Dj?=
- =?us-ascii?Q?JfCaonL7EhHBUWEVJUL4bLvt3V6IY7DWhahCsXvag4lNwjj7YotxjqZxISXj?=
- =?us-ascii?Q?IcFivk102RDBG8jjcIMV3wieSNRiOcn+ujtcUSTkK3ugWdvx6UUb4SzJ7gBR?=
- =?us-ascii?Q?mOHw5Xs0MNKMrWRlwJ4punOCzFbSrXP7bsunrpL6GewdoKx1pRo14v55B24m?=
- =?us-ascii?Q?uEyrBknfyGDv//En/qWWcG+Wl0Dnf3q3WtTLLLTS8y/ZFOVGWPtrvk3LJYe1?=
- =?us-ascii?Q?egkOFclGknn8jz8lZGzmBVgZ6m3X2Mp9kxgsqa0D6b8r19np+gX3ReetZiW5?=
- =?us-ascii?Q?6V5JEri8xytD7esKhHt6YjDdHzMiBKpX6ulB72cc/s5fqvkQ5eNXbnUTUTXb?=
- =?us-ascii?Q?fPl7Gnwk+kqVpYEXBiicDH4sV29y5c0VmGVamXrpbjV8m6OM9UW0p6RKMqNX?=
- =?us-ascii?Q?S0trkncYKbD5ae38cSQrJStfuGs160AcWQ7wNSyMP5KeQytcytT5klGyTyLk?=
- =?us-ascii?Q?n9MQRnneHT1UrUZUoSebrOeerSMZpm+4um/xYVqnt/H5a8pXkcrY79q8B+eV?=
- =?us-ascii?Q?TSS4LiQD980kXxULfK+AlW2BrjIChIH32rl+x3VSQpJKoVirpl6RKSkcz/qH?=
- =?us-ascii?Q?7G7EPMgl+Ifr3SiNuoQkqFeyCN4FTYBQCLUuWUI6EhgDKxOJX56GsZ7dUNlH?=
- =?us-ascii?Q?ntuCQnBLUCTPac7Wjo9Qs+12b3qFZHv4OPtK0+XlM2hkOlvRr7ZBc0rbmw1Q?=
- =?us-ascii?Q?9bBbBW9KaHOTtN+kDouLMgdIdPcI1DUbsr9XNqsw1T2dhPr97v33sVTH9sjL?=
- =?us-ascii?Q?0P6XdO0altlfv7g+6fhR4Rw9busdq5VoWW5zWWUHjpiVTSOuHu7p9hlGWzVD?=
- =?us-ascii?Q?/zGRuykiD4eTEymfc6JzwL4y0bG/NvbMCIzZnvbsE4+UUIEsSu9Uk1r38cNY?=
- =?us-ascii?Q?nHZ10uxUG9thDeMjAKVC+qH/DqpKkIUpjuHl8X1DAHB5GtIgW59Q3r4FaP0w?=
- =?us-ascii?Q?jc+SbC5iys7W9+9CvwLls9ETXhZZU5iUNFrvyVFAIX7N92jqXNgx/P2qKBlz?=
- =?us-ascii?Q?gcOrJTJftjccDbYHqELLoA5+5vBxVnWY8Heh3ipsKgfAQN5SapPa8gV2/qkC?=
- =?us-ascii?Q?i92jior5F9wZ65+8DqNkqQvjrjny9kLumpGXWR/vcD6ecVvvN9RaNFJrKddW?=
- =?us-ascii?Q?21Ews/2HE75AT2F4UkkONvMK?=
+X-Microsoft-Antispam-Message-Info: wiwR76UUzcKjRdXWEJksBVLVwx0rybR/EHPjER5MFfYhw8gRYpPy6/nJXqyu8Ik4jl6Ei0jS7HJvi4lS4cL/n4P3cE/zTNZXXbA+DRW/K5zqWUYL61xPKaQqviqazSJG426AYYnvPgLSBNU3y0ModrYhyaKi7gAxrKLar6L0aqDy29p/cuJU61oUUvyObDwKMMj1jD0qpXUxKsbcHalZ3GAkQXvm7JXFxeUXg9rHovhas6/95MMrZTQFIrENFegu6CdylGwoJCHv+LCJQbrhQzN7pb3vaGRsmNBbT2wZOiP0a5toiUWlILobDGL4ShmOB6+GI4hxFQW37nluI4sbxU0NHbLj3Lydm/QGu1+60AXPcZZr/N6Bfgrp5dtW4v4nLUTUYco0QzB/zMWsiF/o84Hl1jfMKgjjAeYhwzoa7ZA0dQVPHYD9yS4fIItUWX4gFDD8gbfM7PF6svWoKbdnYuErYRLxkkXLDy7hy7KPj/2oGLJbxHoV5EkxIJ2oYDkuNDYadLu2Xcg6IZUfcSdFJemkNlbv4tkFtmi83GNLAVcSY0mYLYG5dE9xFedEGGh/yhXtRAJhTXQ6RIwuDoWeSvnbqd1uoD13VR97OuhStds0vKAdLnM7CVAZSgXEssRFdd0ZkqzfNalcoEMfMimz9pC7nDl6GE3NwTJMzZmJqDt7bP9+XUfx4BiR17e9R2oYozSFLxuKyEJFjwUlFw7EwVPkH/E2+ZGgljqY0lYEAIA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5650.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(136003)(366004)(346002)(396003)(39850400004)(26005)(966005)(16526019)(86362001)(186003)(956004)(66476007)(8936002)(5660300002)(66946007)(6506007)(44832011)(4326008)(6512007)(6486002)(8676002)(2616005)(316002)(6666004)(66556008)(36756003)(38350700002)(52116002)(478600001)(38100700002)(83380400001)(6916009)(1076003)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?SzROJ5eyNfL2oXGDyrcSGuavYgb3nJ9sRsTBxFi83NekGtxpzoEdwZ3XxdnN?=
+ =?us-ascii?Q?gviYz8nehfo+2yaj3o235ry16/7k/66/pNzfYH0Mhr21qdywsh++1qH0knuo?=
+ =?us-ascii?Q?dt3N7aaA+zNG7KFmf6MwVzmeFr9yyV+iVr1UZc87vv4C26aRMxZfiBCQZGNg?=
+ =?us-ascii?Q?EHLHlXbE+jae8TLMIolXR4Yoq/6+Fl8pfLCBmJe3cz5fq1XNV9l0ZO0Sa8vB?=
+ =?us-ascii?Q?RuYtOXIsHX6BOd9hlaBFghqF0aLFIq3zGe8MTz4nxAX5t8+ApppdMI9kXrVP?=
+ =?us-ascii?Q?0zjxwdXgn2ATETV+RiKxV2hauRh2B5q9qz7UTJcAGdtgvWMzkFZHafWeMj66?=
+ =?us-ascii?Q?rZwBRltQF+WnF2HJ2V4v6HJEPWKe5xPaHxWPiZ3K5Lm6D1paUS/w7Q8M5jqp?=
+ =?us-ascii?Q?AbY71ZsPCP97spVyLIJeM71KaZt1gZF6cJVDWGPnVRq3ymMIB6Pfp3+puM3a?=
+ =?us-ascii?Q?jv/cuxCgJY/tT8GTIJqQoJKZX2M6Luop5ANuRfJF5upLyfZJIcC3nWYStaaZ?=
+ =?us-ascii?Q?9dP6/U+KJYG50ohgnnsxfJybriyGdX94R3SUiDwmc4oQu4x7X+x+r0dtNBGf?=
+ =?us-ascii?Q?wcy2Ghv7d29RiuUVswVgIAi/8/g/57ajzMEncF99KL68NXpBfGKka2K8Rsdq?=
+ =?us-ascii?Q?KBBUlOx7mP54yK4kXOTZCGa8opdX5SNTI0tGbgLIqlpA+PQXWgr9Pa0fflkD?=
+ =?us-ascii?Q?gZX43xHhaCh4dVAKnVlx+y12ZzgeJtcdDdgTI8xTCzTXQ3JVvh529kLZH3LZ?=
+ =?us-ascii?Q?ZTIkAXuw3iOZ8jBUKwzdX9Idmy1LiBK9MPQTMvdV4lFEHJ3PPPP/63Zeo2A5?=
+ =?us-ascii?Q?BjGVPiJVTXXuX3RyoLQv4YgevKJ48tkcoCoR1Y9J0ew/ZPaqFNnDuSpaUBGN?=
+ =?us-ascii?Q?j/c8lb8M52H9oeyIYHrixpzakGF4UHNTq0bfE+pfMTMXh9ZW6xyx4ay6oIFd?=
+ =?us-ascii?Q?orw2GVW45Nv1MizU2bj+Mru8KtjsykHv4h5vXSXSzzKAdIL/nPjAKrpNpo/U?=
+ =?us-ascii?Q?02pUyGIGBbSgazdY+0C3eNelwSPgCnEZYCcye6kNoKKSfAqoUXvnsEZ7pvny?=
+ =?us-ascii?Q?g4FAZb2YSpTmtYnAfRYHvMvaepcmU95+Fj34mOXpWNIeJ0rOF/qDDR6ltNro?=
+ =?us-ascii?Q?SEvWb+lHFhuCfLFpKcGKpbMR0D1PpKwqWubXUEfJ5mPL9GEyw+61vCOJ5fdf?=
+ =?us-ascii?Q?ZvosHYajgh2dmi1FeEAf3kRT+trKmx4aNdv6wlAp/zVxrRsBLtXt1fFCL1dn?=
+ =?us-ascii?Q?38LJ+lIew9nirniq/7xfjFXvHtPfvSGE18jX4lD3jyDM8hmaoW/aUtIRMWAB?=
+ =?us-ascii?Q?rgKNLtrvi+tYLw/mScHN06oc?=
 X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39023091-67a9-4d52-b479-08d903f1e566
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3dfc24c3-495e-4cc0-d941-08d903f1e73e
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5650.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2021 11:46:12.1770
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2021 11:46:15.2752
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QU5fO0Qi1JvzQ4mUcRxtvnb6+vmgWrTgbN/wEeeRxldOEACYlfZkjYcTEMyzU9sgeAcAIU3bdMCMuu1CQf57BQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: I2gTxBKNkX9TiwsrdAp5RcEqd2tJiClQH4GPaZWlr7A2tXPdhQCqo5V2O8yMNBwm6BC89z2ov+hlV2AVwtH0Yw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5154
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Linux currently supports RSA PKCSv1.5 encoding scheme for
-signing / verification. This adds support for RSASSA PSS signature
-verification as described in RFC8017 [1].
+An X.509 wrapper for a RSASSA-PSS signature contains additional
+signature parameters over the PKCSv.15 encoding scheme. Extend the
+x509 parser to allow parsing RSASSA-PSS encoded certificates, with
+the defaults taken from RFC8017.
 
-Patch 1 extends the x509 certificate parser to unpack PSS signature
-  parameters.
-Patches 2-8 pull out the common functions / struct definitions from
-  rsa-pkcs1pad.c into rsa-common.c, to be shared across RSA encoding
-  scheme implementations.
-Patches 9, 10 provide some more plumbing to export the data needed to
-  perform PSS operations (salt length, RSA modulus).
-Patches 11-16 set up PSS scaffolding and provide the verification
-  operation per RFC8017.
-Patches 17, 18 turn the final knobs on to allow lowering PSS signatures
-  for verification via keyctl.
-
-The patchset is available as a git tree at [2].
-
-Testing:
-The implementation was tested by adding reference public keys to the
-kernel's keyring via `keyctl padd` and then verifying a known
-message digest / signature against this public key via `keyctl pkey_verify`=
-.
-The reference vectors were taken from:
-- the Wycheproof testsuite [3]
-- FIPS 186-2 and 186-4 test vectors [4]
-
-The test harness is available at [5].
-
-Example keyctl usage for PSS verification:
-rsa_bits=3D4096 # 2048/3072/4096
-hash_algo=3Dsha256 # sha1/sha224/sha256/sha384/sha512
-saltlen=3D32
-# Generate keys, certificate:
-openssl req -x509 -newkey rsa:$rsa_bits -nodes -keyout private.pem -out cer=
-t.der \
-  -days 100 -outform der -$hash_algo -sigopt rsa_padding_mode:pss \
-  -sigopt rsa_pss_saltlen:$saltlen -sigopt rsa_mgf1_md:$hash_algo
-
-# Sign data.txt:
-openssl dgst -${hash_algo} -sign private.pem -sigopt rsa_padding_mode:pss \
-  -sigopt rsa_pss_saltlen:${saltlen} -out sig.bin data.txt
-
-# Digest data.txt:
-openssl dgst -${hash_algo} -binary -out data.${hash_algo}.raw data.txt
-
-# Load pubkey into the kernel's keyring:
-kv=3D$(keyctl padd asymmetric "test-key" @u < cert.der)
-
-# Verify with `enc=3Dpss`:
-keyctl pkey_verify $kv "0" data.${hash_algo}.raw \
-    sig.bin "enc=3Dpss hash=3D${hash_algo} saltlen=3D${saltlen} mgfhash=3D$=
-{hash_algo}"
-
-v3:
-- Rename pkey_verify parameter for salt length to "saltlen".
-- Update Documentation/security/keys/core.rst.
-- Add validation for the hash algorithm passed to psspad_setup_shash.
-
-v2:
-- Allow certificates where mgf hash algorithm is different from the digest =
-hash
-  algorithm.
-- Fix sparse warnings on "X.509: Parse RSASSA-PSS style certificates".
-
-https://lore.kernel.org/lkml/20210408141516.11369-1-varad.gautam@suse.com/
-https://github.com/varadgautam/kernel/tree/rsassa-psspad-v2
-
-v1 is available at:
-https://lore.kernel.org/lkml/20210330202829.4825-1-varad.gautam@suse.com/
-https://github.com/varadgautam/kernel/tree/rsassa-psspad
-
-[1] https://tools.ietf.org/html/rfc8017#section-8.1
-[2] https://github.com/varadgautam/kernel/tree/rsassa-psspad-v3
-[3] https://github.com/google/wycheproof/blob/master/testvectors/
-[4] https://csrc.nist.gov/projects/cryptographic-algorithm-validation-progr=
-am/digital-signatures#rsavs
-[5] https://github.com/varadgautam/keyctl-rsa-tests
-
-
-Varad Gautam (18):
-  X.509: Parse RSASSA-PSS style certificates
-  crypto: rsa-pkcs1pad: Rename pkcs1pad-specific functions to rsapad
-  crypto: rsa-pkcs1pad: Extract pkcs1pad_create into a generic helper
-  crypto: rsa-pkcs1pad: Pull out child req processing code into helpers
-  crypto: rsa-pkcs1pad: Rename pkcs1pad_* structs to rsapad_*
-  crypto: rsa: Start moving RSA common code to rsa-common
-  crypto: rsa: Move more common code to rsa-common
-  crypto: rsa: Move rsapad_akcipher_setup_child and callback to
-    rsa-common
-  crypto: Extend akcipher API to pass signature parameters
-  crypto: rsa: Move struct rsa_mpi_key definition to rsa.h
-  crypto: Scaffolding for RSA-PSS signature style
-  crypto: rsa-psspad: Introduce shash alloc/dealloc helpers
-  crypto: rsa-psspad: Get signature parameters from a given signature
-  crypto: Implement MGF1 Mask Generation Function for RSASSA-PSS
-  crypto: rsa-psspad: Provide PSS signature verify operation
-  crypto: rsa-psspad: Implement signature verify callback
-  crypto: Accept pss as valid encoding during signature verification
-  keyctl_pkey: Add pkey parameters slen and mgfhash for PSS
-
- Documentation/security/keys/core.rst      |  14 +-
- crypto/Kconfig                            |   6 +
- crypto/Makefile                           |   2 +
+References: https://tools.ietf.org/html/rfc8017#appendix-C
+Signed-off-by: Varad Gautam <varad.gautam@suse.com>
+---
  crypto/asymmetric_keys/Makefile           |   5 +-
- crypto/asymmetric_keys/asymmetric_type.c  |   2 +
- crypto/asymmetric_keys/public_key.c       |  18 +-
- crypto/asymmetric_keys/x509_cert_parser.c | 148 ++++++++
- crypto/asymmetric_keys/x509_rsassa.asn1   |  17 +
- crypto/rsa-common.c                       | 291 ++++++++++++++++
- crypto/rsa-pkcs1pad.c                     | 400 +++-------------------
- crypto/rsa-psspad.c                       | 310 +++++++++++++++++
- crypto/rsa.c                              |  26 +-
- include/crypto/akcipher.h                 |  26 ++
- include/crypto/internal/rsa-common.h      |  61 ++++
- include/crypto/internal/rsa.h             |  10 +
+ crypto/asymmetric_keys/x509_cert_parser.c | 148 ++++++++++++++++++++++
+ crypto/asymmetric_keys/x509_rsassa.asn1   |  17 +++
  include/crypto/public_key.h               |   4 +
- include/linux/keyctl.h                    |   2 +
  include/linux/oid_registry.h              |   3 +
- security/keys/keyctl_pkey.c               |  13 +
- 19 files changed, 993 insertions(+), 365 deletions(-)
+ 5 files changed, 176 insertions(+), 1 deletion(-)
  create mode 100644 crypto/asymmetric_keys/x509_rsassa.asn1
- create mode 100644 crypto/rsa-common.c
- create mode 100644 crypto/rsa-psspad.c
- create mode 100644 include/crypto/internal/rsa-common.h
 
+diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makef=
+ile
+index 28b91adba2aed..f79ed8e8ef8e2 100644
+--- a/crypto/asymmetric_keys/Makefile
++++ b/crypto/asymmetric_keys/Makefile
+@@ -20,15 +20,18 @@ obj-$(CONFIG_X509_CERTIFICATE_PARSER) +=3D x509_key_par=
+ser.o
+ x509_key_parser-y :=3D \
+ 	x509.asn1.o \
+ 	x509_akid.asn1.o \
++	x509_rsassa.asn1.o \
+ 	x509_cert_parser.o \
+ 	x509_public_key.o
+=20
+ $(obj)/x509_cert_parser.o: \
+ 	$(obj)/x509.asn1.h \
+-	$(obj)/x509_akid.asn1.h
++	$(obj)/x509_akid.asn1.h \
++	$(obj)/x509_rsassa.asn1.h
+=20
+ $(obj)/x509.asn1.o: $(obj)/x509.asn1.c $(obj)/x509.asn1.h
+ $(obj)/x509_akid.asn1.o: $(obj)/x509_akid.asn1.c $(obj)/x509_akid.asn1.h
++$(obj)/x509_rsassa.asn1.o: $(obj)/x509_rsassa.asn1.c $(obj)/x509_rsassa.as=
+n1.h
+=20
+ #
+ # PKCS#8 private key handling
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_=
+keys/x509_cert_parser.c
+index 52c9b455fc7df..19cd162acdb06 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -15,6 +15,7 @@
+ #include "x509_parser.h"
+ #include "x509.asn1.h"
+ #include "x509_akid.asn1.h"
++#include "x509_rsassa.asn1.h"
+=20
+ struct x509_parse_context {
+ 	struct x509_certificate	*cert;		/* Certificate being constructed */
+@@ -38,6 +39,8 @@ struct x509_parse_context {
+ 	const void	*raw_akid;		/* Raw authorityKeyId in ASN.1 */
+ 	const void	*akid_raw_issuer;	/* Raw directoryName in authorityKeyId */
+ 	unsigned	akid_raw_issuer_size;
++	const void	*raw_sig_params;	/* Signature AlgorithmIdentifier.parameters *=
+/
++	unsigned	raw_sig_params_size;
+ };
+=20
+ /*
+@@ -101,6 +104,15 @@ struct x509_certificate *x509_cert_parse(const void *d=
+ata, size_t datalen)
+ 		}
+ 	}
+=20
++	if (strcmp(ctx->cert->sig->encoding, "pss") =3D=3D 0) {
++		pr_devel("rsa enc=3Dpss hash=3D%s mgf=3D%s mgf_hash=3D%s salt=3D0x%x tf=
+=3D0x%x\n",
++			 ctx->cert->sig->hash_algo,
++			 ctx->cert->sig->mgf,
++			 ctx->cert->sig->mgf_hash_algo,
++			 ctx->cert->sig->salt_length,
++			 ctx->cert->sig->trailer_field);
++	}
++
+ 	ret =3D -ENOMEM;
+ 	cert->pub->key =3D kmemdup(ctx->key, ctx->key_size, GFP_KERNEL);
+ 	if (!cert->pub->key)
+@@ -194,6 +206,7 @@ int x509_note_pkey_algo(void *context, size_t hdrlen,
+ 			const void *value, size_t vlen)
+ {
+ 	struct x509_parse_context *ctx =3D context;
++	int ret =3D 0;
+=20
+ 	pr_debug("PubKey Algo: %u\n", ctx->last_oid);
+=20
+@@ -238,6 +251,35 @@ int x509_note_pkey_algo(void *context, size_t hdrlen,
+ 	case OID_SM2_with_SM3:
+ 		ctx->cert->sig->hash_algo =3D "sm3";
+ 		goto sm2;
++
++	case OID_rsassaPSS:
++		/* For rsassaPSS, the hash algorithm is packed as a mandatory
++		 * parameter in AlgorithmIdentifier.parameters.
++		 */
++		if (ctx->raw_sig_params =3D=3D NULL && ctx->raw_sig_params_size !=3D 1)
++			return -EBADMSG;
++
++		ctx->cert->sig->pkey_algo =3D "rsa";
++		ctx->cert->sig->encoding =3D "pss";
++		ctx->algo_oid =3D ctx->last_oid;
++		if (ctx->raw_sig_params) {
++			ret =3D asn1_ber_decoder(&x509_rsassa_decoder, ctx,
++					       ctx->raw_sig_params,
++					       ctx->raw_sig_params_size);
++			if (ret < 0)
++				return ret;
++		}
++
++		/* Fill in RSASSA-PSS-params defaults if left out. */
++		if (!ctx->cert->sig->hash_algo)
++			ctx->cert->sig->hash_algo =3D "sha1";
++		if (!ctx->cert->sig->mgf)
++			ctx->cert->sig->mgf =3D "mgf1";
++		if (!ctx->cert->sig->mgf_hash_algo)
++			ctx->cert->sig->mgf_hash_algo =3D "sha1";
++		ctx->cert->sig->trailer_field =3D 0xbc;
++
++		return 0;
+ 	}
+=20
+ rsa_pkcs1:
+@@ -439,6 +481,18 @@ int x509_note_params(void *context, size_t hdrlen,
+ {
+ 	struct x509_parse_context *ctx =3D context;
+=20
++	if (ctx->last_oid =3D=3D OID_rsassaPSS && !ctx->raw_sig_params) {
++		/* Stash AlgorithmIdentifier.parameters for RSASSA-PSS. */
++		ctx->raw_sig_params_size =3D vlen + hdrlen;
++		if (ctx->raw_sig_params_size) {
++			ctx->raw_sig_params =3D value - hdrlen;
++		} else {
++			ctx->raw_sig_params =3D NULL;
++			ctx->raw_sig_params_size =3D 1;
++		}
++		return 0;
++	}
++
+ 	/*
+ 	 * AlgorithmIdentifier is used three times in the x509, we should skip
+ 	 * first and ignore third, using second one which is after subject and
+@@ -705,3 +759,97 @@ int x509_akid_note_serial(void *context, size_t hdrlen=
+,
+ 	ctx->cert->sig->auth_ids[0] =3D kid;
+ 	return 0;
+ }
++
++int x509_note_hash_algo(void *context, size_t hdrlen,
++			unsigned char tag,
++			const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++	const char **ptr =3D NULL;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	if (ctx->cert->sig->mgf)
++		ptr =3D &ctx->cert->sig->mgf_hash_algo;
++	else
++		ptr =3D &ctx->cert->sig->hash_algo;
++
++	switch (look_up_OID(value, vlen)) {
++	case OID_sha224:
++		*ptr =3D "sha224";
++		break;
++	case OID_sha256:
++		*ptr =3D "sha256";
++		break;
++	case OID_sha384:
++		*ptr =3D "sha384";
++		break;
++	case OID_sha512:
++		*ptr =3D "sha512";
++		break;
++	case OID_sha1:
++	default:
++		*ptr =3D "sha1";
++		break;
++	}
++
++	return 0;
++}
++
++int x509_note_hash_algo_params(void *context, size_t hdrlen,
++			       unsigned char tag,
++			       const void *value, size_t vlen)
++{
++	return -EOPNOTSUPP;
++}
++
++int x509_note_mgf(void *context, size_t hdrlen,
++		  unsigned char tag,
++		  const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	/* RFC8017 PKCS1MGFAlgorithms */
++	if (look_up_OID(value, vlen) !=3D OID_mgf1)
++		return -EINVAL;
++
++	ctx->cert->sig->mgf =3D "mgf1";
++
++	return 0;
++}
++
++int x509_note_salt_length(void *context, size_t hdrlen,
++			  unsigned char tag,
++			  const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	if (!value || !vlen || vlen > sizeof(ctx->cert->sig->salt_length))
++		return -EINVAL;
++
++	ctx->cert->sig->salt_length =3D (vlen =3D=3D 2) ?
++		be16_to_cpu(*((__force __be16 *) value)) : *((u8 *) value);
++
++	return 0;
++}
++
++int x509_note_trailer_field(void *context, size_t hdrlen,
++			    unsigned char tag,
++			    const void *value, size_t vlen)
++{
++	struct x509_parse_context *ctx =3D context;
++
++	if (ctx->last_oid !=3D OID_rsassaPSS)
++		return -EBADMSG;
++
++	/* trailerField 0xbc per RFC8017 A.2.3 regardless of if
++	 * specified. */
++	return 0;
++}
+diff --git a/crypto/asymmetric_keys/x509_rsassa.asn1 b/crypto/asymmetric_ke=
+ys/x509_rsassa.asn1
+new file mode 100644
+index 0000000000000..e524b978856d2
+--- /dev/null
++++ b/crypto/asymmetric_keys/x509_rsassa.asn1
+@@ -0,0 +1,17 @@
++-- RFC8017
++RSASSA-PSS-params ::=3D SEQUENCE {
++	hashAlgorithm      [0] HashAlgorithm DEFAULT,
++	maskGenAlgorithm   [1] MaskGenAlgorithm DEFAULT,
++	saltLength         [2] INTEGER DEFAULT ({ x509_note_salt_length }),
++	trailerField       [3] INTEGER DEFAULT ({ x509_note_trailer_field })
++}
++
++HashAlgorithm ::=3D SEQUENCE {
++	algorithm		OBJECT IDENTIFIER ({ x509_note_hash_algo }),
++	parameters		ANY OPTIONAL ({ x509_note_hash_algo_params })
++}
++
++MaskGenAlgorithm ::=3D SEQUENCE {
++	mgf	OBJECT IDENTIFIER ({ x509_note_mgf }),
++	parameters	HashAlgorithm
++}
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 47accec68cb0f..f36834c8bb139 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -46,6 +46,10 @@ struct public_key_signature {
+ 	const char *encoding;
+ 	const void *data;
+ 	unsigned int data_size;
++	const char *mgf;
++	const char *mgf_hash_algo;
++	u16 salt_length;
++	u16 trailer_field;
+ };
+=20
+ extern void public_key_signature_free(struct public_key_signature *sig);
+diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
+index 4462ed2c18cdd..c247adc8a41e4 100644
+--- a/include/linux/oid_registry.h
++++ b/include/linux/oid_registry.h
+@@ -113,6 +113,9 @@ enum OID {
+ 	OID_SM2_with_SM3,		/* 1.2.156.10197.1.501 */
+ 	OID_sm3WithRSAEncryption,	/* 1.2.156.10197.1.504 */
+=20
++	OID_mgf1,			/* 1.2.840.113549.1.1.8 */
++	OID_rsassaPSS,			/* 1.2.840.113549.1.1.10 */
++
+ 	OID__NR
+ };
+=20
 --=20
 2.30.2
 
