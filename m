@@ -2,106 +2,158 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B589B366B65
-	for <lists+keyrings@lfdr.de>; Wed, 21 Apr 2021 14:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334F0367138
+	for <lists+keyrings@lfdr.de>; Wed, 21 Apr 2021 19:21:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235921AbhDUM6s (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Apr 2021 08:58:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38676 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235456AbhDUM6s (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 21 Apr 2021 08:58:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D941E61434;
-        Wed, 21 Apr 2021 12:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619009890;
-        bh=+Vokp/hoysnd0ul6sqTObqxG1xjfg9z0T5zVe8JDfTM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Xio9DuO3AqovPWlvpx123fd2rDGmBn9t1ZYqhU2C9FB8wir4Q4gQzSyCpeblX7Dxt
-         6Gq5HQSvAoruL6ZkEmTfcYVJsBNwNYuVV5UjohZ8sxkguGQW9hViA4tcZks/8R9Y9y
-         vPCxoeuccfxC7SGtL+8t3oxsl8mWRlSRIV3b80wlqf93W5RDC7mmogbw+UEb2a2fAB
-         zlTC6DphLLDKCtSCuqxmhWhUPCQvU37UqtEkR46zH9E3sCIKMq4oAkmb0zVxAn/rGa
-         1Mt5tVLIJgaFWNMbQE27nbxvEeSLPMojiKozl06eIu2uL/7q6JvxkGi4d7suR5elAz
-         rdD4W7uE7ZWGQ==
-Date:   Wed, 21 Apr 2021 14:58:05 +0200
-From:   Jessica Yu <jeyu@kernel.org>
-To:     Stefan Berger <stefanb@linux.ibm.com>
-Cc:     keyrings@vger.kernel.org, dhowells@redhat.com, zohar@linux.ibm.com,
-        jarkko@kernel.org, nayna@linux.ibm.com,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] certs: Add support for using elliptic curve keys
- for signing modules
-Message-ID: <YIAhXfFiHjzPU19U@gunter>
-References: <20210408152403.1189121-1-stefanb@linux.ibm.com>
- <20210408152403.1189121-3-stefanb@linux.ibm.com>
- <YH7fKUjJoynyPkHt@gunter>
- <794ef635-de91-9207-f28b-ab6805fd95c9@linux.ibm.com>
- <YIAf9jYGu03lrJLn@gunter>
- <c562e50f-b25c-4cf0-80c7-a5aa56d0d5f7@linux.ibm.com>
+        id S244711AbhDURWI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Apr 2021 13:22:08 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:29412 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244628AbhDURWH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Apr 2021 13:22:07 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13LH2g7M113466;
+        Wed, 21 Apr 2021 13:21:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : content-transfer-encoding : mime-version; s=pp1;
+ bh=lstJpaHwPFkUUecS6me/y6hgIuRLr1B2Zik2vEOtV1I=;
+ b=d46kAqLLCLEbrPtCRsPmtm1U89QGxXVQSHqXIITTdg2OtAMICXksXzAHLA8llP/qoC60
+ 6/p0cc4NGLDpXpuBCdhhwGLdCp2fltGN5vmMYysSIBT4t7H28rDXiUkbAchScDz8PbeC
+ QIURB8kH0vGCzlQJNG9hjhMthuf+bpndktdEwfk9tdi1hY7327kwc+PBFB0YwD5tQq3P
+ Y4tAWMFmxWuQUIUP826vmWocwRXGBipqyTwmVRwhwqHrkejDzqtFxqmW0l7Ii02kxh9e
+ prYQeaNVgOWRWr3MO0YT4/NvQQeohRxxy/4FLDmE6opejJz4v/grRlJKEF9h16Z3edCN og== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 382pqjm504-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 13:21:08 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13LH374m114846;
+        Wed, 21 Apr 2021 13:21:08 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 382pqjm4xw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 13:21:08 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13LHCZEJ012292;
+        Wed, 21 Apr 2021 17:21:06 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by ppma04wdc.us.ibm.com with ESMTP id 3813tav4qy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 17:21:06 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13LHL56629098260
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 17:21:05 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4CD3D7805F;
+        Wed, 21 Apr 2021 17:21:04 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4DD4A78060;
+        Wed, 21 Apr 2021 17:21:00 +0000 (GMT)
+Received: from jarvis.int.hansenpartnership.com (unknown [9.85.203.222])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Wed, 21 Apr 2021 17:21:00 +0000 (GMT)
+Message-ID: <e7a91c8c09722afe1fb1ec3aa7b6544e713183af.camel@linux.ibm.com>
+Subject: Re: [PATCH v9 1/4] KEYS: trusted: Add generic trusted keys framework
+From:   James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Janne Karhunen <janne.karhunen@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Markus Wamser <Markus.Wamser@mixed-mode.de>,
+        Luke Hinds <lhinds@redhat.com>,
+        Elaine Palmer <erpalmer@us.ibm.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        op-tee@lists.trustedfirmware.org
+Date:   Wed, 21 Apr 2021 10:20:59 -0700
+In-Reply-To: <CAFA6WYOzD-qhHrcnzvd9P7iFvEqWwf0NCKXrgrEgvnB5i_-SxQ@mail.gmail.com>
+References: <20210301131127.793707-1-sumit.garg@linaro.org>
+         <20210301131127.793707-2-sumit.garg@linaro.org>
+         <65dcc9fa28833e6beb1eadf98b0ed3402404d693.camel@linux.ibm.com>
+         <CAFA6WYOzD-qhHrcnzvd9P7iFvEqWwf0NCKXrgrEgvnB5i_-SxQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mF_mQJ94uIxxjn9pVwPv8BfLpLfMiGuW
+X-Proofpoint-GUID: 6unQ4mr8lhL0JY8r4cz4nOfNC94-vrI6
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c562e50f-b25c-4cf0-80c7-a5aa56d0d5f7@linux.ibm.com>
-X-OS:   Linux gunter 5.11.12-1-default x86_64
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-21_05:2021-04-21,2021-04-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 suspectscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 priorityscore=1501 adultscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104210122
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-+++ Stefan Berger [21/04/21 08:54 -0400]:
->
->On 4/21/21 8:52 AM, Jessica Yu wrote:
->>+++ Stefan Berger [20/04/21 17:02 -0400]:
->>>
->>>On 4/20/21 10:03 AM, Jessica Yu wrote:
->>>>+++ Stefan Berger [08/04/21 11:24 -0400]:
->>>>>
->>>>>diff --git a/crypto/asymmetric_keys/pkcs7_parser.c 
->>>>>b/crypto/asymmetric_keys/pkcs7_parser.c
->>>>>index 967329e0a07b..2546ec6a0505 100644
->>>>>--- a/crypto/asymmetric_keys/pkcs7_parser.c
->>>>>+++ b/crypto/asymmetric_keys/pkcs7_parser.c
->>>>>@@ -269,6 +269,10 @@ int pkcs7_sig_note_pkey_algo(void 
->>>>>*context, size_t hdrlen,
->>>>>        ctx->sinfo->sig->pkey_algo = "rsa";
->>>>>        ctx->sinfo->sig->encoding = "pkcs1";
->>>>>        break;
->>>>>+    case OID_id_ecdsa_with_sha256:
->>>>>+        ctx->sinfo->sig->pkey_algo = "ecdsa";
->>>>>+        ctx->sinfo->sig->encoding = "x962";
->>>>>+        break;
->>>>
->>>>Hi Stefan,
->>>>
->>>>Does CONFIG_MODULE_SIG_KEY_TYPE_ECDSA have a dependency on 
->>>>MODULE_SIG_SHA256?
->>>
->>>You are right, per the code above it does have a dependency on 
->>>SHA256. ECDSA is using NIST p384 (secp384r1) for signing and per 
->>>my tests it can be paired with all the sha hashes once the code 
->>>above is extended. Now when it comes to module signing, should we 
->>>pair it with a particular hash? I am not currently aware of a 
->>>guidance document on this but sha256 and sha384 seem to be good 
->>>choices these days, so maybe selecting ECDSA module signing should 
->>>have a 'depends on' on these?
->>
->>Yeah, I would tack on the 'depends on' until the code above has been
->>extended to cover more sha hashes - because currently if someone
->>builds and signs a bunch of modules with an ECDSA key, they will fail
->>to load if they picked something other than sha256. I am unfortunately
->>not knowledgeable enough to suggest an official guideline on choice of
->>hash, but for now it is reasonable to have a 'depends on' for which
->>hashes the code currently supports, so that users don't run into
->>module loading rejection issues.
->
->
->I was going to repost this series now with the additional OIDs 
->supported above and a recommendation to use sha384 in the help text 
->for ECDSA-signed modules, but not enforcing this but instead trusting 
->the user that they will choose a reasonable hash (probably >= sha256).
+On Wed, 2021-04-21 at 16:38 +0530, Sumit Garg wrote:
+> Hi James,
+> 
+> On Wed, 21 Apr 2021 at 04:47, James Bottomley <jejb@linux.ibm.com>
+> wrote:
+> > On Mon, 2021-03-01 at 18:41 +0530, Sumit Garg wrote:
+> > > Current trusted keys framework is tightly coupled to use TPM
+> > > device as an underlying implementation which makes it difficult
+> > > for implementations like Trusted Execution Environment (TEE) etc.
+> > > to provide trusted keys support in case platform doesn't posses a
+> > > TPM device.
+> > > 
+> > > Add a generic trusted keys framework where underlying
+> > > implementations can be easily plugged in. Create struct
+> > > trusted_key_ops to achieve this, which contains necessary
+> > > functions of a backend.
+> > > 
+> > > Also, define a module parameter in order to select a particular
+> > > trust source in case a platform support multiple trust sources.
+> > > In case its not specified then implementation itetrates through
+> > > trust sources list starting with TPM and assign the first trust
+> > > source as a backend which has initiazed successfully during
+> > > iteration.
+> > > 
+> > > Note that current implementation only supports a single trust
+> > > source at runtime which is either selectable at compile time or
+> > > during boot via aforementioned module parameter.
+> > 
+> > You never actually tested this, did you?  I'm now getting EINVAL
+> > from all the trusted TPM key operations because of this patch.
+> > 
+> 
+> Unfortunately, I don't possess a development machine with a TPM
+> device. So mine testing was entirely based on TEE as a backend which
+> doesn't support any optional parameters. And that being the reason I
+> didn't catch this issue at first instance.
+> 
+> Is there any TPM emulation environment available that I can use for
+> testing?
 
-OK, that sounds good to me.
+Well use the same as we all use: A software TPM running in the host
+coupled with a virtual machine guest for the kernel:
 
-Thanks Stefan!
+https://en.opensuse.org/Software_TPM_Emulator_For_QEMU
+
+It doesn't catch interface issues (like TIS timeouts) but it does catch
+TPM operations problems like this patch had.
+
+James
+
 
