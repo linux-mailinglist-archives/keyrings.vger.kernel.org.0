@@ -2,211 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A21836755A
-	for <lists+keyrings@lfdr.de>; Thu, 22 Apr 2021 00:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DDC2367598
+	for <lists+keyrings@lfdr.de>; Thu, 22 Apr 2021 01:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343585AbhDUWxN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Apr 2021 18:53:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56012 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235481AbhDUWxM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Apr 2021 18:53:12 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75860C06174A;
-        Wed, 21 Apr 2021 15:52:38 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 383E8128017B;
-        Wed, 21 Apr 2021 15:52:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1619045558;
-        bh=65pamZPNVatXTCiWrNHPd8mAhwMvTJEFQ1K830XlC7A=;
-        h=Message-ID:Subject:From:To:Date:From;
-        b=c80xcgH6ARPu7HkHLebeNzNL0vyA6szp57Xl3H1GnrqMumPaJ+8PogU93LS68cJ/R
-         jeURXg7nysGSYhhuPyohaG/Yh9fVe0Ft6SstuHqwzM47gxdlgHhPNlVhKok+aWKttU
-         av7VlK4AVzDWxubPT4PQ4OZHVx18+UXiACiZStfs=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id StQDnBVK16O5; Wed, 21 Apr 2021 15:52:38 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C72EF1280165;
-        Wed, 21 Apr 2021 15:52:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1619045558;
-        bh=65pamZPNVatXTCiWrNHPd8mAhwMvTJEFQ1K830XlC7A=;
-        h=Message-ID:Subject:From:To:Date:From;
-        b=c80xcgH6ARPu7HkHLebeNzNL0vyA6szp57Xl3H1GnrqMumPaJ+8PogU93LS68cJ/R
-         jeURXg7nysGSYhhuPyohaG/Yh9fVe0Ft6SstuHqwzM47gxdlgHhPNlVhKok+aWKttU
-         av7VlK4AVzDWxubPT4PQ4OZHVx18+UXiACiZStfs=
-Message-ID: <c1b82b603a28934cc45b9dc486688c306aab644e.camel@HansenPartnership.com>
-Subject: [PATCH] KEYS: trusted: fix TPM trusted keys for generic framework
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
-Cc:     jarkko@kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 21 Apr 2021 15:52:37 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
-MIME-Version: 1.0
+        id S243703AbhDUXMp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Apr 2021 19:12:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:13330 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1343618AbhDUXMo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Apr 2021 19:12:44 -0400
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13LN4HUI043461;
+        Wed, 21 Apr 2021 19:12:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=HukO25WBoa6+3VpFRlnoB2ozqMqe9XYU+yPpXvRpiOY=;
+ b=VSTrKQR5khI7ZagFWogMFrd2FtdaI8CVrTxZs0Kj7Fm+8pSLKzWJAQ8QXHCSl+Ve/dGA
+ 2/PKaQAU9v4owezqAJS7jJ9MobOxWmB521zWaHiaVd/6vyDN2QhJu2yRETIwaGXHp7kG
+ mp+3CbTg4WLjI1+34hMk5x+1f9TuilvCG4lzR2trX0yrnGLtCDo6yI+0cJJL4MHmpej1
+ EmcqQTvRkrIS1iAx0rj4c/eaLou65vA4enW3t6O7Ve7cne2bI7UpcNdVjovfpSzKwI7B
+ LSXk7A4c21S/nx8Ho5x2k6LLLq+XabqyPs7rwc0Y+wQBrQUSfK6j2EesHiJOnbi9vCgS aA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 382vd7hew7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 19:12:06 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13LNC2gD002586;
+        Wed, 21 Apr 2021 23:12:04 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma06ams.nl.ibm.com with ESMTP id 37yt2rtg0f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 23:12:04 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13LNC2Gi43123126
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 23:12:02 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3EB25A405C;
+        Wed, 21 Apr 2021 23:12:02 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E129EA405B;
+        Wed, 21 Apr 2021 23:12:00 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.211.157.65])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 21 Apr 2021 23:12:00 +0000 (GMT)
+Message-ID: <19b01258a143f0eae421f6500a739ec4a53b702e.camel@linux.ibm.com>
+Subject: Re: [PATCH] KEYS: trusted: Fix TPM reservation for seal/unseal
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
+Cc:     jarkko@kernel.org
+Date:   Wed, 21 Apr 2021 19:11:59 -0400
+In-Reply-To: <30acbe05a0569bd3b3a9f968c4863e1f42b6d320.camel@HansenPartnership.com>
+References: <30acbe05a0569bd3b3a9f968c4863e1f42b6d320.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sy-pGGOVmNQc-2pSfcXs0ZqzMi9iCTNd
+X-Proofpoint-ORIG-GUID: sy-pGGOVmNQc-2pSfcXs0ZqzMi9iCTNd
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-21_06:2021-04-21,2021-04-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 mlxlogscore=999 mlxscore=0 malwarescore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ clxscore=1011 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104210152
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The generic framework patch broke the current TPM trusted keys because
-it doesn't correctly remove the values consumed by the generic parser
-before passing them on to the implementation specific parser.  Fix
-this by having the generic parser return the string minus the consumed
-tokens.
+On Wed, 2021-04-21 at 15:42 -0700, James Bottomley wrote:
+> The original patch 8c657a0590de ("KEYS: trusted: Reserve TPM for seal
+> and unseal operations") was correct on the mailing list:
+> 
+> https://lore.kernel.org/linux-integrity/20210128235621.127925-4-jarkko@kernel.org/
+> 
+> But somehow got rebased so that the tpm_try_get_ops() in
+> tpm2_seal_trusted() got lost.  This causes an imbalanced put of the
+> TPM ops and causes oopses on TIS based hardware.
+> 
+> This fix puts back the lost tpm_try_get_ops()
+> 
+> Fixes: 8c657a0590de ("KEYS: trusted: Reserve TPM for seal and unseal operations")
+> Reported-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-Additionally, there may be no tokens left for the implementation
-specific parser, so make it handle the NULL case correctly and finally
-fix a TPM 1.2 specific check for no keyhandle.
+Thanks, James!
 
-Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
-Tested-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- security/keys/trusted-keys/trusted_core.c | 24 +++++++++++------------
- security/keys/trusted-keys/trusted_tpm1.c |  5 ++++-
- 2 files changed, 16 insertions(+), 13 deletions(-)
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 
-diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-index 90774793f0b1..d5c891d8d353 100644
---- a/security/keys/trusted-keys/trusted_core.c
-+++ b/security/keys/trusted-keys/trusted_core.c
-@@ -62,7 +62,7 @@ static const match_table_t key_tokens = {
-  *
-  * On success returns 0, otherwise -EINVAL.
-  */
--static int datablob_parse(char *datablob, struct trusted_key_payload *p)
-+static int datablob_parse(char **datablob, struct trusted_key_payload *p)
- {
- 	substring_t args[MAX_OPT_ARGS];
- 	long keylen;
-@@ -71,14 +71,14 @@ static int datablob_parse(char *datablob, struct trusted_key_payload *p)
- 	char *c;
- 
- 	/* main command */
--	c = strsep(&datablob, " \t");
-+	c = strsep(datablob, " \t");
- 	if (!c)
- 		return -EINVAL;
- 	key_cmd = match_token(c, key_tokens, args);
- 	switch (key_cmd) {
- 	case Opt_new:
- 		/* first argument is key size */
--		c = strsep(&datablob, " \t");
-+		c = strsep(datablob, " \t");
- 		if (!c)
- 			return -EINVAL;
- 		ret = kstrtol(c, 10, &keylen);
-@@ -89,7 +89,7 @@ static int datablob_parse(char *datablob, struct trusted_key_payload *p)
- 		break;
- 	case Opt_load:
- 		/* first argument is sealed blob */
--		c = strsep(&datablob, " \t");
-+		c = strsep(datablob, " \t");
- 		if (!c)
- 			return -EINVAL;
- 		p->blob_len = strlen(c) / 2;
-@@ -140,7 +140,7 @@ static int trusted_instantiate(struct key *key,
- {
- 	struct trusted_key_payload *payload = NULL;
- 	size_t datalen = prep->datalen;
--	char *datablob;
-+	char *datablob, *orig_datablob;
- 	int ret = 0;
- 	int key_cmd;
- 	size_t key_len;
-@@ -148,7 +148,7 @@ static int trusted_instantiate(struct key *key,
- 	if (datalen <= 0 || datalen > 32767 || !prep->data)
- 		return -EINVAL;
- 
--	datablob = kmalloc(datalen + 1, GFP_KERNEL);
-+	orig_datablob = datablob = kmalloc(datalen + 1, GFP_KERNEL);
- 	if (!datablob)
- 		return -ENOMEM;
- 	memcpy(datablob, prep->data, datalen);
-@@ -160,7 +160,7 @@ static int trusted_instantiate(struct key *key,
- 		goto out;
- 	}
- 
--	key_cmd = datablob_parse(datablob, payload);
-+	key_cmd = datablob_parse(&datablob, payload);
- 	if (key_cmd < 0) {
- 		ret = key_cmd;
- 		goto out;
-@@ -196,7 +196,7 @@ static int trusted_instantiate(struct key *key,
- 		ret = -EINVAL;
- 	}
- out:
--	kfree_sensitive(datablob);
-+	kfree_sensitive(orig_datablob);
- 	if (!ret)
- 		rcu_assign_keypointer(key, payload);
- 	else
-@@ -220,7 +220,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
- 	struct trusted_key_payload *p;
- 	struct trusted_key_payload *new_p;
- 	size_t datalen = prep->datalen;
--	char *datablob;
-+	char *datablob, *orig_datablob;
- 	int ret = 0;
- 
- 	if (key_is_negative(key))
-@@ -231,7 +231,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
- 	if (datalen <= 0 || datalen > 32767 || !prep->data)
- 		return -EINVAL;
- 
--	datablob = kmalloc(datalen + 1, GFP_KERNEL);
-+	orig_datablob = datablob = kmalloc(datalen + 1, GFP_KERNEL);
- 	if (!datablob)
- 		return -ENOMEM;
- 
-@@ -243,7 +243,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
- 
- 	memcpy(datablob, prep->data, datalen);
- 	datablob[datalen] = '\0';
--	ret = datablob_parse(datablob, new_p);
-+	ret = datablob_parse(&datablob, new_p);
- 	if (ret != Opt_update) {
- 		ret = -EINVAL;
- 		kfree_sensitive(new_p);
-@@ -267,7 +267,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
- 	rcu_assign_keypointer(key, new_p);
- 	call_rcu(&p->rcu, trusted_rcu_free);
- out:
--	kfree_sensitive(datablob);
-+	kfree_sensitive(orig_datablob);
- 	return ret;
- }
- 
-diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-index 798dc7820084..469394550801 100644
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -747,6 +747,9 @@ static int getoptions(char *c, struct trusted_key_payload *pay,
- 
- 	opt->hash = tpm2 ? HASH_ALGO_SHA256 : HASH_ALGO_SHA1;
- 
-+	if (!c)
-+		return 0;
-+
- 	while ((p = strsep(&c, " \t"))) {
- 		if (*p == '\0' || *p == ' ' || *p == '\t')
- 			continue;
-@@ -944,7 +947,7 @@ static int trusted_tpm_unseal(struct trusted_key_payload *p, char *datablob)
- 		goto out;
- 	dump_options(options);
- 
--	if (!options->keyhandle) {
-+	if (!options->keyhandle && !tpm2) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
--- 
-2.26.2
-
+Mimi
 
