@@ -2,199 +2,368 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B68F33695D5
-	for <lists+keyrings@lfdr.de>; Fri, 23 Apr 2021 17:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A81536A521
+	for <lists+keyrings@lfdr.de>; Sun, 25 Apr 2021 08:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243041AbhDWPNf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 23 Apr 2021 11:13:35 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:37742 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S243005AbhDWPNe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Apr 2021 11:13:34 -0400
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13NF4FXt151520;
-        Fri, 23 Apr 2021 11:12:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=qUw0lW0dXNuL7WfQ7hZ1LPj+CCjq9zNz/LszVkgFJhA=;
- b=QQhaAQY4QWUmto+rwpgGBRmcCr0e7BOUo6epnfSIw0qfMsEFYVmsjlvl+dPrP8ewC57c
- 7Zu5uTy0zPVi/X4N03UsqxSUmYoWRfjD/nsDo7akyG0Ki1yCd+5xswmkKLTQGqZSQlwt
- Hpz430cH6fhVZoplWAxRKoyNnZtPIS7zWnW6w/7a/k6dd6oUFbTLh4vYg7GtM9ITO0zx
- 89MmHqVx9ydGhvltP0KxSxdtw4zslMfCITB8/LZd9TIgLPuPhYfcFG7Rkjw5SI402V3S
- I6q6HsUn6vlN58EtKkxNSiV9DpT+NHDhez6Uam4AmqrU9oFzNy/cW3oKI4jpN17Ew4R9 9w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 383ywhhn5v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Apr 2021 11:12:56 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13NF5lN7159734;
-        Fri, 23 Apr 2021 11:12:56 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 383ywhhn5k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Apr 2021 11:12:56 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13NFConH001053;
-        Fri, 23 Apr 2021 15:12:55 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-        by ppma04dal.us.ibm.com with ESMTP id 37yqaap37p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Apr 2021 15:12:55 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13NFCrmX15663442
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 23 Apr 2021 15:12:53 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 972036A051;
-        Fri, 23 Apr 2021 15:12:53 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E4EE46A054;
-        Fri, 23 Apr 2021 15:12:52 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.47.158.152])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Fri, 23 Apr 2021 15:12:52 +0000 (GMT)
-From:   Stefan Berger <stefanb@linux.ibm.com>
-To:     jeyu@kernel.org, keyrings@vger.kernel.org, dhowells@redhat.com,
-        zohar@linux.ibm.com, jarkko@kernel.org
-Cc:     nayna@linux.ibm.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH v4 2/2] certs: Add support for using elliptic curve keys for signing modules
-Date:   Fri, 23 Apr 2021 11:12:47 -0400
-Message-Id: <20210423151247.1517808-3-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210423151247.1517808-1-stefanb@linux.ibm.com>
-References: <20210423151247.1517808-1-stefanb@linux.ibm.com>
+        id S229566AbhDYGfx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 25 Apr 2021 02:35:53 -0400
+Received: from condef-03.nifty.com ([202.248.20.68]:64544 "EHLO
+        condef-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229480AbhDYGfx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 25 Apr 2021 02:35:53 -0400
+X-Greylist: delayed 354 seconds by postgrey-1.27 at vger.kernel.org; Sun, 25 Apr 2021 02:35:52 EDT
+Received: from conuserg-11.nifty.com ([10.126.8.74])by condef-03.nifty.com with ESMTP id 13P6QTTk032562;
+        Sun, 25 Apr 2021 15:26:30 +0900
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-11.nifty.com with ESMTP id 13P6OBfL031298;
+        Sun, 25 Apr 2021 15:24:13 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com 13P6OBfL031298
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1619331854;
+        bh=pHJt3NARoAElt9Jf/+b1t0lrVzcVf5LdrItofT0Do8M=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=FyxJCmD24XlBXV7s8x5LiC2xJk90iS0IX2rGcmaSick2GxqBSG6OVn4gd532IqGJX
+         9zRaolsSXCIR17YFvODgSHk5WlVUusQr2saC2oqrLQrmmJELQNiC5Nc9myZWSnWdc5
+         rW2yCbt6Y4UIUT65UJRqjmPv1BhaydcwEM9rrGwvXpMGUIM3/UIiIwFOqydorVYcq1
+         VXNtDz4s+ya4c2xAWGqYEleACURyS3EamQgnSo+eM6hUHEy8umOdwj8lepLRKGc/2A
+         FnhnKdJuPreLJLRkFc65zwHkOqDoqlQ5hLbu0hvanGIG7ypqgZY7uegqKtXNNcVRQr
+         LlfhV7VJeuUkg==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Alexandru Ciobotaru <alcioa@amazon.com>,
+        Alexandru Vasile <lexnv@amazon.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andra Paraschiv <andraprs@amazon.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Song Liu <songliubraving@fb.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
+        devicetree@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH 4/5] .gitignore: prefix local generated files with a slash
+Date:   Sun, 25 Apr 2021 15:24:06 +0900
+Message-Id: <20210425062407.1183801-4-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210425062407.1183801-1-masahiroy@kernel.org>
+References: <20210425062407.1183801-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1hltd47NsCraGJjuZjQxg-vdsU14SO8p
-X-Proofpoint-ORIG-GUID: 0t0yBPYixbPWqL1aldmDqIZs5RqYWi-t
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-23_07:2021-04-23,2021-04-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 phishscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104230098
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Add support for using elliptic curve keys for signing modules. It uses
-a NIST P384 (secp384r1) key if the user chooses an elliptic curve key
-and will have ECDSA support built into the kernel.
+The pattern prefixed with '/' matches a file in the same directory,
+but not a one in sub-directories.
 
-Note: A developer choosing an ECDSA key for signing modules should still
-delete the signing key (rm certs/signing_key.*) when building an older
-version of a kernel that only supports RSA keys. Unless kbuild automati-
-cally detects and generates a new kernel module key, ECDSA-signed kernel
-modules will fail signature verification.
-
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
-v4:
-  - extending 'depends on' with MODULES to (IMA_APPRAISE_MODSIG && MODULES)
 
-v3:
-  - added missing OIDs for ECDSA signed hashes to pkcs7_sig_note_pkey_algo
-  - added recommendation to use string hash to Kconfig help text
+ Documentation/devicetree/bindings/.gitignore |  4 ++--
+ arch/.gitignore                              |  4 ++--
+ certs/.gitignore                             |  2 +-
+ drivers/memory/.gitignore                    |  2 +-
+ drivers/tty/vt/.gitignore                    |  6 +++---
+ kernel/.gitignore                            |  2 +-
+ lib/.gitignore                               | 10 +++++-----
+ samples/auxdisplay/.gitignore                |  2 +-
+ samples/binderfs/.gitignore                  |  3 ++-
+ samples/connector/.gitignore                 |  2 +-
+ samples/hidraw/.gitignore                    |  2 +-
+ samples/mei/.gitignore                       |  2 +-
+ samples/nitro_enclaves/.gitignore            |  2 +-
+ samples/pidfd/.gitignore                     |  2 +-
+ samples/seccomp/.gitignore                   |  8 ++++----
+ samples/timers/.gitignore                    |  2 +-
+ samples/vfs/.gitignore                       |  4 ++--
+ samples/watch_queue/.gitignore               |  3 ++-
+ samples/watchdog/.gitignore                  |  2 +-
+ scripts/.gitignore                           | 18 +++++++++---------
+ scripts/basic/.gitignore                     |  2 +-
+ scripts/dtc/.gitignore                       |  4 ++--
+ scripts/gcc-plugins/.gitignore               |  2 +-
+ scripts/genksyms/.gitignore                  |  2 +-
+ scripts/mod/.gitignore                       |  8 ++++----
+ usr/.gitignore                               |  4 ++--
+ 26 files changed, 53 insertions(+), 51 deletions(-)
 
-v2:
-  - check for ECDSA key by id-ecPublicKey from output line
-    'Public Key Algorithm: id-ecPublicKey'.
----
- certs/Kconfig                         | 26 ++++++++++++++++++++++++++
- certs/Makefile                        |  9 +++++++++
- crypto/asymmetric_keys/pkcs7_parser.c |  8 ++++++++
- 3 files changed, 43 insertions(+)
-
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 48675ad319db..4c0e6113c710 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -15,6 +15,32 @@ config MODULE_SIG_KEY
-          then the kernel will automatically generate the private key and
-          certificate as described in Documentation/admin-guide/module-signing.rst
- 
-+choice
-+	prompt "Type of module signing key to be generated"
-+	default MODULE_SIG_KEY_TYPE_RSA
-+	help
-+	 The type of module signing key type to generate. This option
-+	 does not apply if a #PKCS11 URI is used.
-+
-+config MODULE_SIG_KEY_TYPE_RSA
-+	bool "RSA"
-+	depends on MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)
-+	help
-+	 Use an RSA key for module signing.
-+
-+config MODULE_SIG_KEY_TYPE_ECDSA
-+	bool "ECDSA"
-+	select CRYPTO_ECDSA
-+	depends on MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)
-+	help
-+	 Use an elliptic curve key (NIST P384) for module signing. Consider
-+	 using a strong hash like sha256 or sha384 for hashing modules.
-+
-+	 Note: Remove all ECDSA signing keys, e.g. certs/signing_key.pem,
-+	 when falling back to building Linux 5.11 and older kernels.
-+
-+endchoice
-+
- config SYSTEM_TRUSTED_KEYRING
- 	bool "Provide system-wide ring of trusted keys"
- 	depends on KEYS
-diff --git a/certs/Makefile b/certs/Makefile
-index f64bc89ccbf1..c2fabc288550 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -62,7 +62,15 @@ ifeq ($(CONFIG_MODULE_SIG_KEY),"certs/signing_key.pem")
- 
- X509TEXT=$(shell openssl x509 -in $(CONFIG_MODULE_SIG_KEY) -text)
- 
-+# Support user changing key type
-+ifdef CONFIG_MODULE_SIG_KEY_TYPE_ECDSA
-+keytype_openssl = -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
-+$(if $(findstring id-ecPublicKey,$(X509TEXT)),,$(shell rm -f $(CONFIG_MODULE_SIG_KEY)))
-+endif
-+
-+ifdef CONFIG_MODULE_SIG_KEY_TYPE_RSA
- $(if $(findstring rsaEncryption,$(X509TEXT)),,$(shell rm -f $(CONFIG_MODULE_SIG_KEY)))
-+endif
- 
- $(obj)/signing_key.pem: $(obj)/x509.genkey
- 	@$(kecho) "###"
-@@ -77,6 +85,7 @@ $(obj)/signing_key.pem: $(obj)/x509.genkey
- 		-batch -x509 -config $(obj)/x509.genkey \
- 		-outform PEM -out $(obj)/signing_key.pem \
- 		-keyout $(obj)/signing_key.pem \
-+		$(keytype_openssl) \
- 		$($(quiet)redirect_openssl)
- 	@$(kecho) "###"
- 	@$(kecho) "### Key pair generated."
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 967329e0a07b..6592279d839a 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -269,6 +269,14 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
- 		ctx->sinfo->sig->pkey_algo = "rsa";
- 		ctx->sinfo->sig->encoding = "pkcs1";
- 		break;
-+	case OID_id_ecdsa_with_sha1:
-+	case OID_id_ecdsa_with_sha224:
-+	case OID_id_ecdsa_with_sha256:
-+	case OID_id_ecdsa_with_sha384:
-+	case OID_id_ecdsa_with_sha512:
-+		ctx->sinfo->sig->pkey_algo = "ecdsa";
-+		ctx->sinfo->sig->encoding = "x962";
-+		break;
- 	default:
- 		printk("Unsupported pkey algo: %u\n", ctx->last_oid);
- 		return -ENOPKG;
+diff --git a/Documentation/devicetree/bindings/.gitignore b/Documentation/devicetree/bindings/.gitignore
+index 3a05b99bfa26..a77719968a7e 100644
+--- a/Documentation/devicetree/bindings/.gitignore
++++ b/Documentation/devicetree/bindings/.gitignore
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ *.example.dts
+-processed-schema*.yaml
+-processed-schema*.json
++/processed-schema*.yaml
++/processed-schema*.json
+diff --git a/arch/.gitignore b/arch/.gitignore
+index 4191da401dbb..756c19c34f99 100644
+--- a/arch/.gitignore
++++ b/arch/.gitignore
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-i386
+-x86_64
++/i386/
++/x86_64/
+diff --git a/certs/.gitignore b/certs/.gitignore
+index 2a2483990686..5759643f638b 100644
+--- a/certs/.gitignore
++++ b/certs/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-x509_certificate_list
++/x509_certificate_list
+diff --git a/drivers/memory/.gitignore b/drivers/memory/.gitignore
+index caedc4c7d2db..5e84bee05ef8 100644
+--- a/drivers/memory/.gitignore
++++ b/drivers/memory/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-ti-emif-asm-offsets.h
++/ti-emif-asm-offsets.h
+diff --git a/drivers/tty/vt/.gitignore b/drivers/tty/vt/.gitignore
+index 3ecf42234d89..0221709b177d 100644
+--- a/drivers/tty/vt/.gitignore
++++ b/drivers/tty/vt/.gitignore
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+-conmakehash
+-consolemap_deftbl.c
+-defkeymap.c
++/conmakehash
++/consolemap_deftbl.c
++/defkeymap.c
+diff --git a/kernel/.gitignore b/kernel/.gitignore
+index 4abc4e033ed8..4dc1ffe9770b 100644
+--- a/kernel/.gitignore
++++ b/kernel/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-kheaders.md5
++/kheaders.md5
+diff --git a/lib/.gitignore b/lib/.gitignore
+index 327cb2c7f2c9..5e7fa54c4536 100644
+--- a/lib/.gitignore
++++ b/lib/.gitignore
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-gen_crc32table
+-gen_crc64table
+-crc32table.h
+-crc64table.h
+-oid_registry_data.c
++/crc32table.h
++/crc64table.h
++/gen_crc32table
++/gen_crc64table
++/oid_registry_data.c
+diff --git a/samples/auxdisplay/.gitignore b/samples/auxdisplay/.gitignore
+index 2ed744c0e741..d023816849bd 100644
+--- a/samples/auxdisplay/.gitignore
++++ b/samples/auxdisplay/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-cfag12864b-example
++/cfag12864b-example
+diff --git a/samples/binderfs/.gitignore b/samples/binderfs/.gitignore
+index eb60241e8087..8fa415a3640b 100644
+--- a/samples/binderfs/.gitignore
++++ b/samples/binderfs/.gitignore
+@@ -1 +1,2 @@
+-binderfs_example
++# SPDX-License-Identifier: GPL-2.0
++/binderfs_example
+diff --git a/samples/connector/.gitignore b/samples/connector/.gitignore
+index d86f2ff9c947..0e26039f39b5 100644
+--- a/samples/connector/.gitignore
++++ b/samples/connector/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-ucon
++/ucon
+diff --git a/samples/hidraw/.gitignore b/samples/hidraw/.gitignore
+index d7a6074ebcf9..5233ab63262e 100644
+--- a/samples/hidraw/.gitignore
++++ b/samples/hidraw/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-hid-example
++/hid-example
+diff --git a/samples/mei/.gitignore b/samples/mei/.gitignore
+index db5e802f041e..fe894bcb6a62 100644
+--- a/samples/mei/.gitignore
++++ b/samples/mei/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-mei-amt-version
++/mei-amt-version
+diff --git a/samples/nitro_enclaves/.gitignore b/samples/nitro_enclaves/.gitignore
+index 827934129c90..6a718eec71f4 100644
+--- a/samples/nitro_enclaves/.gitignore
++++ b/samples/nitro_enclaves/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0
+-ne_ioctl_sample
++/ne_ioctl_sample
+diff --git a/samples/pidfd/.gitignore b/samples/pidfd/.gitignore
+index eea857fca736..d4cfa3176b1b 100644
+--- a/samples/pidfd/.gitignore
++++ b/samples/pidfd/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-pidfd-metadata
++/pidfd-metadata
+diff --git a/samples/seccomp/.gitignore b/samples/seccomp/.gitignore
+index 4a5a5b7db30b..a6df0da77c5d 100644
+--- a/samples/seccomp/.gitignore
++++ b/samples/seccomp/.gitignore
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-bpf-direct
+-bpf-fancy
+-dropper
+-user-trap
++/bpf-direct
++/bpf-fancy
++/dropper
++/user-trap
+diff --git a/samples/timers/.gitignore b/samples/timers/.gitignore
+index 40510c33cf08..cd9ff7b95383 100644
+--- a/samples/timers/.gitignore
++++ b/samples/timers/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-hpet_example
++/hpet_example
+diff --git a/samples/vfs/.gitignore b/samples/vfs/.gitignore
+index 8fdabf7e5373..79212d91285b 100644
+--- a/samples/vfs/.gitignore
++++ b/samples/vfs/.gitignore
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-test-fsmount
+-test-statx
++/test-fsmount
++/test-statx
+diff --git a/samples/watch_queue/.gitignore b/samples/watch_queue/.gitignore
+index 2aa3c7e56a1a..823b351d3db9 100644
+--- a/samples/watch_queue/.gitignore
++++ b/samples/watch_queue/.gitignore
+@@ -1 +1,2 @@
+-watch_test
++# SPDX-License-Identifier: GPL-2.0-only
++/watch_test
+diff --git a/samples/watchdog/.gitignore b/samples/watchdog/.gitignore
+index 74153b831244..a70a0150ed9f 100644
+--- a/samples/watchdog/.gitignore
++++ b/samples/watchdog/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-watchdog-simple
++/watchdog-simple
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index a6c11316c969..e83c620ef52c 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -1,11 +1,11 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-bin2c
+-kallsyms
+-unifdef
+-recordmcount
+-sorttable
+-asn1_compiler
+-extract-cert
+-sign-file
+-insert-sys-cert
++/asn1_compiler
++/bin2c
++/extract-cert
++/insert-sys-cert
++/kallsyms
+ /module.lds
++/recordmcount
++/sign-file
++/sorttable
++/unifdef
+diff --git a/scripts/basic/.gitignore b/scripts/basic/.gitignore
+index 98ae1f509592..961c91c8a884 100644
+--- a/scripts/basic/.gitignore
++++ b/scripts/basic/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-fixdep
++/fixdep
+diff --git a/scripts/dtc/.gitignore b/scripts/dtc/.gitignore
+index 8a8b62bf3d3c..e0b5c1d2464a 100644
+--- a/scripts/dtc/.gitignore
++++ b/scripts/dtc/.gitignore
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-dtc
+-fdtoverlay
++/dtc
++/fdtoverlay
+diff --git a/scripts/gcc-plugins/.gitignore b/scripts/gcc-plugins/.gitignore
+index b04e0f0f033e..5cc385b9eb97 100644
+--- a/scripts/gcc-plugins/.gitignore
++++ b/scripts/gcc-plugins/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-randomize_layout_seed.h
++/randomize_layout_seed.h
+diff --git a/scripts/genksyms/.gitignore b/scripts/genksyms/.gitignore
+index 999af710f83d..0b275abf9405 100644
+--- a/scripts/genksyms/.gitignore
++++ b/scripts/genksyms/.gitignore
+@@ -1,2 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-genksyms
++/genksyms
+diff --git a/scripts/mod/.gitignore b/scripts/mod/.gitignore
+index 07e4a39f90a6..ed2e13b708ce 100644
+--- a/scripts/mod/.gitignore
++++ b/scripts/mod/.gitignore
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-elfconfig.h
+-mk_elfconfig
+-modpost
+-devicetable-offsets.h
++/elfconfig.h
++/mk_elfconfig
++/modpost
++/devicetable-offsets.h
+diff --git a/usr/.gitignore b/usr/.gitignore
+index 935442ed1eb2..8996e7a88902 100644
+--- a/usr/.gitignore
++++ b/usr/.gitignore
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-gen_init_cpio
+-initramfs_data.cpio
++/gen_init_cpio
++/initramfs_data.cpio
+ /initramfs_inc_data
 -- 
-2.29.2
+2.27.0
 
