@@ -2,53 +2,41 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6C5B36B1E3
-	for <lists+keyrings@lfdr.de>; Mon, 26 Apr 2021 12:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FF8036B5D8
+	for <lists+keyrings@lfdr.de>; Mon, 26 Apr 2021 17:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233134AbhDZKve (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 26 Apr 2021 06:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232452AbhDZKvd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 26 Apr 2021 06:51:33 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37108C061574;
-        Mon, 26 Apr 2021 03:50:52 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 82so64274461yby.7;
-        Mon, 26 Apr 2021 03:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UfH1Zmn9d8AenTubEewZ4u4D1igD8DxPFj71s3RAr6c=;
-        b=mLMzD40qG+9eX3ZnUCjGA+yGPb37K+3PdedTTL7WBrHpcer8kn8eSytkwPbGv8yLrX
-         QJqqwBtUWD+ENBPwdqPvRlqguSSpPUndyA2cRz+epvbREuCrJw9ghtxnceDpeIANKC5f
-         O0dUSjtj7CX9Au5/8ROzypfBbnnjDCGYi0Q9ewqp9y9GTeVAsg6tDeJ9Uw9v1uTQ4Rjj
-         9/48Cw7UTnp+37rB1SgbXdBNpcDUbwV0FwBiRD1x8Z+ttQ1yltxHhkfpYS1DJxoqsC6p
-         LjNpoaCy6xYVKOm2wq3aoc01V57QScVXcCwotWjnyWsNJzEzUAvzzDQmSmqmMWvyLcc2
-         6m3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UfH1Zmn9d8AenTubEewZ4u4D1igD8DxPFj71s3RAr6c=;
-        b=M/luv70g0Z3K3XQVEjA2VYm3mrXeChKXxG4IFRgSsAQ+9QS/xJPIfrxfS7Y/3q0VZL
-         kOwUw6WQlaD7XX/wO7nya0cQW2nEAtqieHpz3sBl7g+YoQJG7fgEOF+t90jr8umz9KPR
-         q1cs1AKxuqebILa7utEfcP5ABLT/w2EyE6SNKkB3MDYCYIEgPvg3WW5VmYSqmfMdgS40
-         RsZmk48JEx6NZwvYYKykk3EHK0NRpcrR5v4of4Zt8dCAX7bWRb6S/c7jDqzXXV/NKkTd
-         HdmtZYtIKVQw4y9F9YIo7qG6/vr+bohFQBatBnpUQ9wUJFlOfrmUJ+shDmTu8Vx5kqe1
-         fQPQ==
-X-Gm-Message-State: AOAM5337LiONpcoZwf/+7cyMVPDwQYc+StlcGq5MOjlRbjgJUbn7rbC5
-        71S6UdQ/cEQdF+3Fvb+vz9KcotxcpXtQRt81n6g=
-X-Google-Smtp-Source: ABdhPJylpudlDbmdOGRLzjwnDBVt78BpV+y3O7BGDcgF8HzpDY3sdjpc9mL6w+3Q+hDt74v9Pa2YPtH6wiJ9tuhSD48=
-X-Received: by 2002:a25:7909:: with SMTP id u9mr22993292ybc.22.1619434251524;
- Mon, 26 Apr 2021 03:50:51 -0700 (PDT)
+        id S234024AbhDZPe1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 26 Apr 2021 11:34:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233736AbhDZPe1 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 26 Apr 2021 11:34:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 88CD3613AA;
+        Mon, 26 Apr 2021 15:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619451225;
+        bh=osgS3AXWXNp6bu1C3444Rsv8qP3XldCS7p+4U7Jf+QQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=QnzaRhQqB0igf+Z3asuX4irg9G+Z71kWG43WoW+NoERsheTVoAHqIICNUJNgpMf2U
+         /lGvHd6yDTgOpXLHBEA7EH63mH9sMPjAVTO3TJwRM1I/0JNAywZGDIPUhU3HnoBM7y
+         bFVpYnOUw5MywEuyM17mo1HzKn4fF9uQQmhGaqWWyKAtS3s1lF8mZKrFGBU5UhxQqa
+         tcYJVk6QPDK8VSRkQVk+BXWx6UTDTNNoSGFKdJKw28rMnujinKh0vPJLtWOsGA77+V
+         DNjkaq7Zjd0B8N1f9hnUs5GLIdPgUWNXQS/s8my3IP6XiMpLnFuwMgqArurbMfnNps
+         grQdeaWRNY9Ag==
+Received: by mail-ed1-f47.google.com with SMTP id c22so2593747edn.7;
+        Mon, 26 Apr 2021 08:33:45 -0700 (PDT)
+X-Gm-Message-State: AOAM5331z1ldKIitX2pQUjIj0iENByj8rlSBx3C6Zj/OfbwBc/KPAJ9N
+        1NTlEAnY+ErvpU5DjgffSrLixlJDv3sBNCLkEQ==
+X-Google-Smtp-Source: ABdhPJwNZx4cfsajqvqtdLrLKygdGbSxP3pzTySFadKKNqqDSrOBLVNGECi/ddGsCdNYPDUa3AHPPOcKOGvNnPqAGpI=
+X-Received: by 2002:a05:6402:234b:: with SMTP id r11mr3697822eda.137.1619451223941;
+ Mon, 26 Apr 2021 08:33:43 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210425062407.1183801-1-masahiroy@kernel.org> <20210425062407.1183801-4-masahiroy@kernel.org>
 In-Reply-To: <20210425062407.1183801-4-masahiroy@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 26 Apr 2021 12:50:40 +0200
-Message-ID: <CANiq72nfXMfZzuSV_LG8xB7K90QZLRw773xkOpwgqA1nM5Eoew@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 26 Apr 2021 10:33:31 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJK50tmc+gqi2sSse+v032otJTp8NF3v8inA9MtP4ZeTw@mail.gmail.com>
+Message-ID: <CAL_JsqJK50tmc+gqi2sSse+v032otJTp8NF3v8inA9MtP4ZeTw@mail.gmail.com>
 Subject: Re: [PATCH 4/5] .gitignore: prefix local generated files with a slash
 To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
@@ -70,29 +58,52 @@ Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
         Martin KaFai Lau <kafai@fb.com>,
         Michal Marek <michal.lkml@markovi.net>,
-        Rob Herring <robh+dt@kernel.org>,
         Song Liu <songliubraving@fb.com>,
         Tomas Winkler <tomas.winkler@intel.com>,
-        Yonghong Song <yhs@fb.com>, bpf <bpf@vger.kernel.org>,
+        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
         devicetree@vger.kernel.org, keyrings@vger.kernel.org,
         linux-hardening@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Apr 25, 2021 at 8:28 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Sun, Apr 25, 2021 at 1:35 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
 > The pattern prefixed with '/' matches a file in the same directory,
 > but not a one in sub-directories.
 >
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+>  Documentation/devicetree/bindings/.gitignore |  4 ++--
+>  arch/.gitignore                              |  4 ++--
+>  certs/.gitignore                             |  2 +-
+>  drivers/memory/.gitignore                    |  2 +-
+>  drivers/tty/vt/.gitignore                    |  6 +++---
+>  kernel/.gitignore                            |  2 +-
+>  lib/.gitignore                               | 10 +++++-----
+>  samples/auxdisplay/.gitignore                |  2 +-
+>  samples/binderfs/.gitignore                  |  3 ++-
+>  samples/connector/.gitignore                 |  2 +-
+>  samples/hidraw/.gitignore                    |  2 +-
+>  samples/mei/.gitignore                       |  2 +-
+>  samples/nitro_enclaves/.gitignore            |  2 +-
+>  samples/pidfd/.gitignore                     |  2 +-
+>  samples/seccomp/.gitignore                   |  8 ++++----
+>  samples/timers/.gitignore                    |  2 +-
+>  samples/vfs/.gitignore                       |  4 ++--
+>  samples/watch_queue/.gitignore               |  3 ++-
+>  samples/watchdog/.gitignore                  |  2 +-
+>  scripts/.gitignore                           | 18 +++++++++---------
+>  scripts/basic/.gitignore                     |  2 +-
+>  scripts/dtc/.gitignore                       |  4 ++--
+>  scripts/gcc-plugins/.gitignore               |  2 +-
+>  scripts/genksyms/.gitignore                  |  2 +-
+>  scripts/mod/.gitignore                       |  8 ++++----
+>  usr/.gitignore                               |  4 ++--
+>  26 files changed, 53 insertions(+), 51 deletions(-)
 
-Good idea, it helps to be more explicit.
-
-    Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Cheers,
-Miguel
+Acked-by: Rob Herring <robh@kernel.org>
