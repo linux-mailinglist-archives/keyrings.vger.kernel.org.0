@@ -2,67 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C62F36E27C
-	for <lists+keyrings@lfdr.de>; Thu, 29 Apr 2021 02:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8D036E503
+	for <lists+keyrings@lfdr.de>; Thu, 29 Apr 2021 08:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbhD2AQl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 28 Apr 2021 20:16:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50576 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbhD2AQk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Apr 2021 20:16:40 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF80C06138B
-        for <keyrings@vger.kernel.org>; Wed, 28 Apr 2021 17:15:55 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id b14-20020a17090a6e0eb0290155c7f6a356so2890075pjk.0
-        for <keyrings@vger.kernel.org>; Wed, 28 Apr 2021 17:15:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=TvDH0Ufqq951p1SmGaor3zZZi0JBju1aRHwGT5Ex+6c=;
-        b=GqYMawZVTZNTIXib6cL5XHr5AMnjfw529Sg/NzKJcJP9D5xvI3YHAeJmFSvuc2ZQmL
-         nWpsHIMc5FFn/kVU2NK11GVIRQOH/6xBeJU0hVBrWnhUdBIKsrEA+HxRvwyHlCtwLGzT
-         7ZOMIYHDzo22c+ifvxtJ5teg0ihRHYSsik1bqXqeXXAy6zGwJQSi6IRCX6G/8UXlvV+5
-         xhRSIPu0YCRD4xyFfzt669eLDi85vrCEAspheYBjITadHlVV0KqBWVzdoxXj87pzJzhM
-         BX6/7XmVRRnFFahZanMLeCJ2v6wOvYw+q4jRp3pIPCbP7H/mRaKromZPtvWSSq3Ki7oF
-         LgLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=TvDH0Ufqq951p1SmGaor3zZZi0JBju1aRHwGT5Ex+6c=;
-        b=dCDh4jZ+ZpAeBAig3a8dyqp9PTY3euxK4sSA9VKCZqbS5DEeoT2vfURvxhs8YRL4yZ
-         y11OGFKcreKOgmPzjSLMqPrB46Do02HSKkmKE8Mqbh12iV9ZNhGORIj5GbwqGKwgFkxN
-         2oqFUvrzPWqjATfNPyxVjQsRZ8SZpGaa4ivOaRjGF3F30mbcojY9pSzeFhG6nzxOF0xL
-         rQR1K+DgvUCKI4pqoiI9QQZ86b4fArbr/1PwrLdSHdGPeNe0Zf9cbonbh0WC49CDcTpl
-         TKyoJwx91Wqs9TnneFCjGQa1o6/9Wa9YsG+IEIwNn9rYrppi6ozbxBl8MG1uNghKjMeG
-         vRtA==
-X-Gm-Message-State: AOAM531/nlb62pVWOjkadev7p772dWj0AoHpZqUD5Kp1aInprEgcC0HL
-        FgYC2Z8VQ05TBLF2/Ef9z0LrpbNUkgh3dXOf6/A=
-X-Google-Smtp-Source: ABdhPJzv/JSZ1zxO7xSSfzdpHXSyuhjOrd/RVirGajjRgE5+aTow/23YKLUiqqfEUdmLXbTdOjA9UlokLd3Hz8i0/8o=
-X-Received: by 2002:a17:90a:ab02:: with SMTP id m2mr6586730pjq.234.1619655355113;
- Wed, 28 Apr 2021 17:15:55 -0700 (PDT)
+        id S230309AbhD2GqK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Apr 2021 02:46:10 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:34534 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238950AbhD2GqJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Apr 2021 02:46:09 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13T6UENP077017;
+        Thu, 29 Apr 2021 06:45:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=MYrHmjtF9T1eVTcrooB6Uv3/JzEpCF95vYix1bR3a/Y=;
+ b=b5D8y7bBD4iBLwkMTWtIKJV9N5J95mBJNrqK20Z+7nlmWVLiPfFrp5m//DpHNv7JxUJJ
+ anSyO6/V2nSXdnStddQ+csPDGkYHD8I10my6nGSWJd0m7h0qPzrzn/zVzFyisR5wVAFo
+ aOiSiT+BhKx3pGf2bmokT/THxYtGtY0ikqnoQgtAnpBKbLzADXFlE3XT5sK3wAW22Yr6
+ JkgRk5L7er3CWdzYjMVoovM1mBi+umTfuBFsmASerle1ms4zsiM75fgYZnEqOvTmmmpQ
+ U4tTZdfK2esR16cO+9DtoW365my9YFbnLfO7jUounXF8mJjTBBtnOdj/eWWoKovnKifs HQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 385ahbu6c0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Apr 2021 06:45:21 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13T6Urxe074703;
+        Thu, 29 Apr 2021 06:45:20 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3030.oracle.com with ESMTP id 3848f0mp25-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Apr 2021 06:45:20 +0000
+Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13T6eqTT103974;
+        Thu, 29 Apr 2021 06:45:20 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 3848f0mp1j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Apr 2021 06:45:20 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13T6jGSw027916;
+        Thu, 29 Apr 2021 06:45:19 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 28 Apr 2021 23:45:16 -0700
+Date:   Thu, 29 Apr 2021 09:45:10 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     James.Bottomley@hansenpartnership.com
+Cc:     keyrings@vger.kernel.org
+Subject: [bug report] security: keys: trusted: use ASN.1 TPM2 key format for
+ the blobs
+Message-ID: <YIpV9pcyM9/rWqEt@mwanda>
 MIME-Version: 1.0
-Received: by 2002:a05:7300:6426:b029:19:764e:b00a with HTTP; Wed, 28 Apr 2021
- 17:15:54 -0700 (PDT)
-Reply-To: bwalysam@gmail.com
-From:   Mr Kingsley Obiora <maryclove123@gmail.com>
-Date:   Thu, 29 Apr 2021 01:15:54 +0100
-Message-ID: <CAFBdPmdRCbdm0Nb-OghRgA2npfUEtAnr2yb_qbgJLwY2WS2_qQ@mail.gmail.com>
-Subject: Hello From Dr Kingsley Obiora
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-GUID: M5MJ--YlzJokHdJW3ovtWGzTiFGqc9TT
+X-Proofpoint-ORIG-GUID: M5MJ--YlzJokHdJW3ovtWGzTiFGqc9TT
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9968 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=636
+ priorityscore=1501 clxscore=1011 adultscore=0 suspectscore=0 spamscore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104290050
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear Sir,
+Hello James Bottomley,
 
-After our meeting held today based on your funds, the management want
-to bring to your notice that we are making a special arrangement to
-bring your said fund by cash through diplomatic Immunity to your
-country home. Further details of this arrangement will be given to you
-once you acknowledged this idea.
+The patch f2219745250f: "security: keys: trusted: use ASN.1 TPM2 key
+format for the blobs" from Jan 27, 2021, leads to the following
+static checker warning:
 
-Waiting for your soonest response.
-Kingsley Obiora
+security/keys/trusted-keys/trusted_tpm2.c:344 tpm2_seal_trusted() warn: inconsistent returns '&chip->ops_sem'.
+  Locked on  : 339
+  Unlocked on: 258,344
+security/keys/trusted-keys/trusted_tpm2.c:344 tpm2_seal_trusted() warn: inconsistent returns '&chip->tpm_mutex'.
+  Locked on  : 339
+  Unlocked on: 258,344
+
+security/keys/trusted-keys/trusted_tpm2.c
+   324  
+   325          blob_len = tpm2_key_encode(payload, options,
+   326                                     &buf.data[TPM_HEADER_SIZE + 4],
+   327                                     blob_len);
+   328  
+   329  out:
+   330          tpm_buf_destroy(&buf);
+   331  
+   332          if (rc > 0) {
+   333                  if (tpm2_rc_value(rc) == TPM2_RC_HASH)
+   334                          rc = -EINVAL;
+   335                  else
+   336                          rc = -EPERM;
+   337          }
+   338          if (blob_len < 0)
+   339                  return blob_len;
+                        ^^^^^^^^^^^^^^^^
+Need to call tpm_put_ops() or something before returning.
+
+   340  
+   341          payload->blob_len = blob_len;
+   342  
+   343          tpm_put_ops(chip);
+   344          return rc;
+   345  }
+
+regards,
+dan carpenter
