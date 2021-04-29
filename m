@@ -2,111 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D8D036E503
-	for <lists+keyrings@lfdr.de>; Thu, 29 Apr 2021 08:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA00F36E5F5
+	for <lists+keyrings@lfdr.de>; Thu, 29 Apr 2021 09:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230309AbhD2GqK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Apr 2021 02:46:10 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:34534 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238950AbhD2GqJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Apr 2021 02:46:09 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13T6UENP077017;
-        Thu, 29 Apr 2021 06:45:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=MYrHmjtF9T1eVTcrooB6Uv3/JzEpCF95vYix1bR3a/Y=;
- b=b5D8y7bBD4iBLwkMTWtIKJV9N5J95mBJNrqK20Z+7nlmWVLiPfFrp5m//DpHNv7JxUJJ
- anSyO6/V2nSXdnStddQ+csPDGkYHD8I10my6nGSWJd0m7h0qPzrzn/zVzFyisR5wVAFo
- aOiSiT+BhKx3pGf2bmokT/THxYtGtY0ikqnoQgtAnpBKbLzADXFlE3XT5sK3wAW22Yr6
- JkgRk5L7er3CWdzYjMVoovM1mBi+umTfuBFsmASerle1ms4zsiM75fgYZnEqOvTmmmpQ
- U4tTZdfK2esR16cO+9DtoW365my9YFbnLfO7jUounXF8mJjTBBtnOdj/eWWoKovnKifs HQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 385ahbu6c0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Apr 2021 06:45:21 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13T6Urxe074703;
-        Thu, 29 Apr 2021 06:45:20 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3030.oracle.com with ESMTP id 3848f0mp25-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Apr 2021 06:45:20 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13T6eqTT103974;
-        Thu, 29 Apr 2021 06:45:20 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 3848f0mp1j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Apr 2021 06:45:20 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13T6jGSw027916;
-        Thu, 29 Apr 2021 06:45:19 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 28 Apr 2021 23:45:16 -0700
-Date:   Thu, 29 Apr 2021 09:45:10 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James.Bottomley@hansenpartnership.com
-Cc:     keyrings@vger.kernel.org
-Subject: [bug report] security: keys: trusted: use ASN.1 TPM2 key format for
- the blobs
-Message-ID: <YIpV9pcyM9/rWqEt@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-GUID: M5MJ--YlzJokHdJW3ovtWGzTiFGqc9TT
-X-Proofpoint-ORIG-GUID: M5MJ--YlzJokHdJW3ovtWGzTiFGqc9TT
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9968 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=636
- priorityscore=1501 clxscore=1011 adultscore=0 suspectscore=0 spamscore=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104290050
+        id S239639AbhD2Haf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 29 Apr 2021 03:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60248 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232082AbhD2Hac (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Apr 2021 03:30:32 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C3EC06138B;
+        Thu, 29 Apr 2021 00:29:08 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id m12so5781258pgr.9;
+        Thu, 29 Apr 2021 00:29:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=lZMvbMppjpPZmuxlkLQ5Yw5wPz86LXmS4L9P6/MEvlk=;
+        b=hgcZnthuzmqZq5NREAgPhsiKiJBmDRL2JkZKWCUOvKbqLBQWpCSYLhwja+iiHUgCU1
+         J8nKfSqKjS0jmXBNMPpoeX0M4UoZLJkY97a7rqiZ+ASX6253sgD5dzfdkjSRPGPtVUDZ
+         UtYW6CZSAKmpS6N2TDIbsoDMszZ8zrfIlXMRt3tbCA/WATM3sp4xSPI344xwxrq98/Xd
+         eiRUkzaScYG+KomgAkweesU17OCMAXcfW6RNhCvJlh+YYvlLnBC7bwvjLjES5vPGVeiW
+         BhR+Eh4M31hX7cf0s5sD586nhP/4twOMtJuoVV+xkWIg5kv7U6BAOzfdqbTZx6kJBmKF
+         1a7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=lZMvbMppjpPZmuxlkLQ5Yw5wPz86LXmS4L9P6/MEvlk=;
+        b=mknvJLcAJBmcTvm6ROCKp2NSh6gQ7/27fQqVrRbKB2psOAyuhpczAbwARiPOkft+PJ
+         ynzn16TTYpL69FcLEOelkOCrmZCllPYfOoqegG7N1Y2MhUzUFmkJA/HNijb0HHnzlN2V
+         9AVA21pSp1nm0owXipIe2tiHvlY3NJH7zYqU92hDjbMkSjJdHINHGJnFk2CzUUklrxY2
+         oCsDGzjDHSOpUdrKvO1nZPyMSy5gQzznDq7kDEKpPueKHcO40A3pxJGW8Ek7ZYKFV0zC
+         QukczsTqlYnF8Sv1ZB47ox+uEGcYCgCF9NC28QFiGYwHJJN2TZ0UopgqmfLixdOAYmHa
+         EmVA==
+X-Gm-Message-State: AOAM531vK0zT1Im2ZvxtGnRad4c8/1i0M5Vr2Bok+QLHXrNCuh6N2zmm
+        bdbn8yyMY0He3R82w1MW/yA=
+X-Google-Smtp-Source: ABdhPJyXBZu43sKug8SqQTf/zxeF8hKBVbti8QunGDCHFiZ16mANPrKR0hHzlHtxZ07GrjLESvrXiA==
+X-Received: by 2002:a63:31cb:: with SMTP id x194mr7306534pgx.290.1619681348525;
+        Thu, 29 Apr 2021 00:29:08 -0700 (PDT)
+Received: from linux-l9pv.suse ([124.11.22.254])
+        by smtp.gmail.com with ESMTPSA id z29sm1632085pga.52.2021.04.29.00.29.05
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 29 Apr 2021 00:29:07 -0700 (PDT)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Boeckel <me@benboeckel.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Malte Gell <malte.gell@gmx.de>,
+        Varad Gautam <varad.gautam@suse.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Subject: [PATCH v6 0/4] Check codeSigning extended key usage extension
+Date:   Thu, 29 Apr 2021 15:28:47 +0800
+Message-Id: <20210429072851.24057-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello James Bottomley,
+NIAP PP_OS certification requests that the OS shall validate the
+CodeSigning extended key usage extension field for integrity
+verifiction of exectable code:
 
-The patch f2219745250f: "security: keys: trusted: use ASN.1 TPM2 key
-format for the blobs" from Jan 27, 2021, leads to the following
-static checker warning:
+    https://www.niap-ccevs.org/MMO/PP/-442-/
+        FIA_X509_EXT.1.1
 
-security/keys/trusted-keys/trusted_tpm2.c:344 tpm2_seal_trusted() warn: inconsistent returns '&chip->ops_sem'.
-  Locked on  : 339
-  Unlocked on: 258,344
-security/keys/trusted-keys/trusted_tpm2.c:344 tpm2_seal_trusted() warn: inconsistent returns '&chip->tpm_mutex'.
-  Locked on  : 339
-  Unlocked on: 258,344
+This patchset adds the logic for parsing the codeSigning EKU extension
+field in X.509. And checking the CodeSigning EKU when verifying
+signature of kernel module or kexec PE binary in PKCS#7.
 
-security/keys/trusted-keys/trusted_tpm2.c
-   324  
-   325          blob_len = tpm2_key_encode(payload, options,
-   326                                     &buf.data[TPM_HEADER_SIZE + 4],
-   327                                     blob_len);
-   328  
-   329  out:
-   330          tpm_buf_destroy(&buf);
-   331  
-   332          if (rc > 0) {
-   333                  if (tpm2_rc_value(rc) == TPM2_RC_HASH)
-   334                          rc = -EINVAL;
-   335                  else
-   336                          rc = -EPERM;
-   337          }
-   338          if (blob_len < 0)
-   339                  return blob_len;
-                        ^^^^^^^^^^^^^^^^
-Need to call tpm_put_ops() or something before returning.
+v6:
+- Add more length checking when parsing extKeyUsage and EKU's OID blob.
+- Add 'usage' parameter to the comment of pkcs7_validate_trust function.
 
-   340  
-   341          payload->blob_len = blob_len;
-   342  
-   343          tpm_put_ops(chip);
-   344          return rc;
-   345  }
+v5:
+Fixed the wording in module-signing.rst.
 
-regards,
-dan carpenter
+v4:
+Fixed the wording in patch description.
+
+v3:
+- Add codeSigning EKU to x509.genkey key generation config.
+- Add openssl command option example for generating CodeSign EKU to
+  module-signing.rst document. 
+
+v2:
+Changed the help wording in the Kconfig.
+
+Lee, Chun-Yi (4):
+  X.509: Add CodeSigning extended key usage parsing
+  PKCS#7: Check codeSigning EKU for kernel module and kexec pe
+    verification
+  modsign: Add codeSigning EKU when generating X.509 key generation
+    config
+  Documentation/admin-guide/module-signing.rst: add openssl command
+    option example for CodeSign EKU
+
+ Documentation/admin-guide/module-signing.rst |  6 +++++
+ certs/Makefile                               |  1 +
+ certs/system_keyring.c                       |  2 +-
+ crypto/asymmetric_keys/Kconfig               |  9 +++++++
+ crypto/asymmetric_keys/pkcs7_trust.c         | 37 +++++++++++++++++++++++++---
+ crypto/asymmetric_keys/x509_cert_parser.c    | 24 ++++++++++++++++++
+ include/crypto/pkcs7.h                       |  3 ++-
+ include/crypto/public_key.h                  |  1 +
+ include/linux/oid_registry.h                 |  5 ++++
+ 9 files changed, 83 insertions(+), 5 deletions(-)
+
+-- 
+2.16.4
+
