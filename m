@@ -2,105 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4B73700D9
-	for <lists+keyrings@lfdr.de>; Fri, 30 Apr 2021 20:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7714D3701A9
+	for <lists+keyrings@lfdr.de>; Fri, 30 Apr 2021 22:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231136AbhD3S7H (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 30 Apr 2021 14:59:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:41494 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229954AbhD3S7G (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 30 Apr 2021 14:59:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1619809097;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=k42L3xryaez+oSKmSu1QdAMryLEAIpMx64ypVwr/urA=;
-        b=HSCfNmcC5FNNo0sClUmd7Qv56qS+P6IBK7c2S84PLUFA2CtCYPAVlNIlBQe/TYGH6KRh+3
-        A5TpflRhccUa2yx20sbmKW1p56t9ewBTFZdVjOWoCRhNNHhCyRAkK1EC4XEfy38ZZbiQ6J
-        CiqdsDsoNnHH7fxHVqbBQV3FYoZNhTQ=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-356-nfWcONYzPjynnYkldjApbQ-1; Fri, 30 Apr 2021 14:58:15 -0400
-X-MC-Unique: nfWcONYzPjynnYkldjApbQ-1
-Received: by mail-qt1-f200.google.com with SMTP id h12-20020ac8744c0000b02901ba644d864fso19652182qtr.8
-        for <keyrings@vger.kernel.org>; Fri, 30 Apr 2021 11:58:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=k42L3xryaez+oSKmSu1QdAMryLEAIpMx64ypVwr/urA=;
-        b=tHSjjClO2XQZCTa+JNp8AZ5RnAKvsryvMfEkhWGqhQZVHDsg6XYUud7tOv2KLCpP36
-         0Wk1nu+G+Wy/B6okt8tkDb/zcRRtdYjVVGoW3mrQj88+SgEoF+x82oMRbWRqIOWqGBSs
-         dgLtm2WgBby51IZD9Q2vOrcFzGajme+5+DB37uQyUs6nS6kZrr6ECvXTS2MccS4FjwCR
-         LJKbN4NA8vVSp1gs5vfTOhAV2QcClHYvIJUQoTWluZuA9JRLNzasrx5+2xK/Se0uJOZE
-         CSZ4VdpLqyPmr0Ienol0oTl8lTTLf0K4E3b63ebGR5UkjAtPpRO+I+gA26vwaeqWdi6V
-         oE4Q==
-X-Gm-Message-State: AOAM531PkckS4bS+OoKM4+/dfgMwR5+D3cLkJeAAzO6QdYGOm/4vLKo8
-        g2y3nbV0W7MujjhuQOoIZbLMSy7a3TCm5em/NpiEjuGjuXw/zQH+JIntkLPYtJwpg6E8CYoA1YE
-        cKOAl6Lagmo+ipE6uXDA=
-X-Received: by 2002:ae9:f205:: with SMTP id m5mr6950980qkg.101.1619809095101;
-        Fri, 30 Apr 2021 11:58:15 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyR2o64jnSyLn3IiYpCSQfqm0Tweb+Lrh1Ejl4G4c7Bimvr+FTabvOuLg5CiYAx+Ty5nMnEEg==
-X-Received: by 2002:ae9:f205:: with SMTP id m5mr6950963qkg.101.1619809094911;
-        Fri, 30 Apr 2021 11:58:14 -0700 (PDT)
-Received: from localhost.localdomain.com (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id b17sm2802557qto.88.2021.04.30.11.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Apr 2021 11:58:14 -0700 (PDT)
-From:   trix@redhat.com
-To:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
-        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        id S233754AbhD3T5O (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 30 Apr 2021 15:57:14 -0400
+Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:45389 "EHLO
+        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233671AbhD3T5L (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 30 Apr 2021 15:57:11 -0400
+X-Greylist: delayed 356 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Apr 2021 15:57:11 EDT
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.west.internal (Postfix) with ESMTP id 139241EAC;
+        Fri, 30 Apr 2021 15:50:22 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Fri, 30 Apr 2021 15:50:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=PtajBDBgytedXM7xt9/aNsUr4Q+
+        i946QjqQp1VhqJa0=; b=mJJOo7rS8hXM00Wzh05jeER5Vf3Ld3NnGG9ASX9Do7n
+        MTQnxS+peMdL2PAAmeXBAnOliWXZLjWbVORnHc2tZ+zdVAq+FrrjQrRghZYGMNsu
+        C5jiv/W4NiHy73v+9zORRbE5bfhqAdk5uMGH7iHztDco185BwAgjLaJJCbwi4b/U
+        +DRbmVu/soNpkYIzA8wVINuZJKBdidbNeTXZP9HYSSqPTSM4v7SgmCy3MMqW1r6K
+        zBNCCqC0o+QorvcPBEjr4IsTgkh3AQxYBi/khA8kYojegwY2uDp47E9ITbTJAS7w
+        0Af8o5u0sHR27UR4Y5ePJFGpY3WQmaLs0QrzcYlYjSQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=PtajBD
+        BgytedXM7xt9/aNsUr4Q+i946QjqQp1VhqJa0=; b=CQw2WcmK0fpUBvOrNdkrDt
+        AAWM/QVfy+qlNpPT+VPwx9PNzbCCq6ePBp+b4Q6Wl4hI/bAsqgRjZ8DFUSC9fizQ
+        vhVXOsCZzuvOq9dpF0s9UpB6oo4tuMcm1jvtFdkegkhtFMwLRKeyjLkQlVsuk7Tf
+        113wZGyzLKai5j5g8jRONyowqb0RWqak+oaGvlNW4fpWE42y8S3ikxlUp/cVgSi4
+        DlGTd/JD3/4/Ogcf4sFEGhFVlH9jlAziHaYdXSg3v5cJhEn4s27xBB52ZCuAqtgq
+        nYhZGf5ybpWEpS3ddGuvLxz4raHynVZmOj+jy7n6qQ2cndY0uVaABLoQj7PUzbmA
+        ==
+X-ME-Sender: <xms:fV-MYGCuNY33RtIZbJ2dAPFK-P6e3VGSCt-Qz7WlOG0ov0WXdKygwQ>
+    <xme:fV-MYAib-6LePyxvkfHUzCAv0PJnkZ9MgCo72TC797hKCm5nhhNnE9_dhkA_80FKW
+    cQclyz51QwWwlVkpZ0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvddviedgudegfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
+    uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
+    htvghrnhepvefftdettefgtddtkeeufeegtddttdeuueegkeegteffueetffejudeihefh
+    kedtnecukfhppedvgedrudeiledrvddtrddvheehnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepmhgvsegsvghnsghovggtkhgvlhdrnhgvth
+X-ME-Proxy: <xmx:fV-MYJmKKkUaZ3Vg6hQeQFv6z0sonlUX9aZ6s_HkpIQ4Iqvw1acM_A>
+    <xmx:fV-MYEzlkWO2rbOYKSWEGCIc0TwEtVU7W6_Fz3V-YsQKTFki7ArI7g>
+    <xmx:fV-MYLStdP-ko4iAxttjv0Qh8tF8vO1MUVQH82APFsVxUDNIfv4oGw>
+    <xmx:fV-MYA_xWu_ni5RFR_Vbc-9xPIpzruTB8Xs3eqDeuNBkSKU6b0r3VDOOCBo>
+Received: from localhost (unknown [24.169.20.255])
+        by mail.messagingengine.com (Postfix) with ESMTPA;
+        Fri, 30 Apr 2021 15:50:20 -0400 (EDT)
+Date:   Fri, 30 Apr 2021 15:50:18 -0400
+From:   Ben Boeckel <me@benboeckel.net>
+To:     trix@redhat.com
+Cc:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
+        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
-Subject: [PATCH] KEYS: trusted: fix memory leak
-Date:   Fri, 30 Apr 2021 11:58:10 -0700
-Message-Id: <20210430185810.3331311-1-trix@redhat.com>
-X-Mailer: git-send-email 2.26.3
+        linux-kernel@vger.kernel.org, Colin King <colin.king@canonical.com>
+Subject: Re: [PATCH] KEYS: trusted: fix memory leak
+Message-ID: <YIxfehTLhWe58sNE@erythro>
+References: <20210430185810.3331311-1-trix@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210430185810.3331311-1-trix@redhat.com>
+User-Agent: Mutt/2.0.5 (2021-01-21)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+On Fri, Apr 30, 2021 at 11:58:10 -0700, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
+> 
+> Static analysis reports this problem
+> trusted-keys/trusted_tpm1.c:496:10: warning: Potential memory leak
+>   return ret;
+>          ^~~
+> 
+> In tpm_seal() some failure handling returns directly, without
+> freeing memory.
+> 
+> Fixes: 5df16caada3f ("KEYS: trusted: Fix incorrect handling of tpm_get_random()")
+> Signed-off-by: Tom Rix <trix@redhat.com>
+> ---
+>  security/keys/trusted-keys/trusted_tpm1.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+> index 469394550801..aa108bea6739 100644
+> --- a/security/keys/trusted-keys/trusted_tpm1.c
+> +++ b/security/keys/trusted-keys/trusted_tpm1.c
+> @@ -493,10 +493,12 @@ static int tpm_seal(struct tpm_buf *tb, uint16_t keytype,
+>  
+>  	ret = tpm_get_random(chip, td->nonceodd, TPM_NONCE_SIZE);
+>  	if (ret < 0)
+> -		return ret;
+> +		goto out;
+>  
+> -	if (ret != TPM_NONCE_SIZE)
+> -		return -EIO;
+> +	if (ret != TPM_NONCE_SIZE) {
+> +		ret = -EIO;
+> +		goto out;
+> +	}
+>  
+>  	ordinal = htonl(TPM_ORD_SEAL);
+>  	datsize = htonl(datalen);
 
-Static analysis reports this problem
-trusted-keys/trusted_tpm1.c:496:10: warning: Potential memory leak
-  return ret;
-         ^~~
+I see this patch also submitted by Colin (Cc'd) in Message-Id:
 
-In tpm_seal() some failure handling returns directly, without
-freeing memory.
+    <20210430113724.110746-1-colin.king@canonical.com>
 
-Fixes: 5df16caada3f ("KEYS: trusted: Fix incorrect handling of tpm_get_random()")
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- security/keys/trusted-keys/trusted_tpm1.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+To my eyes, the commit message seems a bit better over there.
 
-diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-index 469394550801..aa108bea6739 100644
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -493,10 +493,12 @@ static int tpm_seal(struct tpm_buf *tb, uint16_t keytype,
- 
- 	ret = tpm_get_random(chip, td->nonceodd, TPM_NONCE_SIZE);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
--	if (ret != TPM_NONCE_SIZE)
--		return -EIO;
-+	if (ret != TPM_NONCE_SIZE) {
-+		ret = -EIO;
-+		goto out;
-+	}
- 
- 	ordinal = htonl(TPM_ORD_SEAL);
- 	datsize = htonl(datalen);
--- 
-2.26.3
-
+--Ben
