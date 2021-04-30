@@ -2,77 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E5F36F579
-	for <lists+keyrings@lfdr.de>; Fri, 30 Apr 2021 07:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C236B36F96C
+	for <lists+keyrings@lfdr.de>; Fri, 30 Apr 2021 13:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbhD3Fsb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 30 Apr 2021 01:48:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44038 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229482AbhD3Fsb (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 30 Apr 2021 01:48:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A6B75613F7;
-        Fri, 30 Apr 2021 05:47:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1619761662;
-        bh=uN3W5AsIapviMEagZO43iHfN9y2Xy6Ij7KqfAJPPtz0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CbEaoj2E6jBJmYQcnUXfa3aPLm0l7wwk1dgTz0uFUCwhHQwokIRT5q2Gcg1hZk7oM
-         vTFXxNAySKTzmBc22szg0+AcfrACnHSlGdYvoA6kXn/713Gjxue91RkVIZBWSvvJfx
-         lYMGF3UflgKEwN52TBYLAsMcjB+9rOMsBSphbZDQ=
-Date:   Fri, 30 Apr 2021 07:47:38 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Andra Paraschiv <andraprs@amazon.com>,
-        Alexandru Ciobotaru <alcioa@amazon.com>,
-        Alexandru Vasile <lexnv@amazon.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        id S231877AbhD3LiU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 30 Apr 2021 07:38:20 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56602 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229911AbhD3LiT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 30 Apr 2021 07:38:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lcRSW-0004rU-TC; Fri, 30 Apr 2021 11:37:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Gabriel Krisman Bertazi <krisman@collabora.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
-        devicetree@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2] .gitignore: prefix local generated files with a slash
-Message-ID: <YIuZ+rDdYzvTcSSB@kroah.com>
-References: <20210430020308.66792-1-masahiroy@kernel.org>
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: [PATCH] KEYS: trusted: Fix memory leak on object td
+Date:   Fri, 30 Apr 2021 12:37:24 +0100
+Message-Id: <20210430113724.110746-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210430020308.66792-1-masahiroy@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 30, 2021 at 11:03:08AM +0900, Masahiro Yamada wrote:
-> The pattern prefixed with '/' matches files in the same directory,
-> but not ones in sub-directories.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> Acked-by: Rob Herring <robh@kernel.org>
-> Acked-by: Andra Paraschiv <andraprs@amazon.com>
-> ---
-> 
-> Changes in v2:
->   - rebase
+From: Colin Ian King <colin.king@canonical.com>
 
+Two error return paths are neglecting to free allocated object td,
+causing a memory leak. Fix this by returning via the error return
+path that securely kfree's td.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes clang scan-build warning:
+security/keys/trusted-keys/trusted_tpm1.c:496:10: warning: Potential
+memory leak [unix.Malloc]
+
+Fixes: 5df16caada3f ("KEYS: trusted: Fix incorrect handling of tpm_get_random()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ security/keys/trusted-keys/trusted_tpm1.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+index 469394550801..aa108bea6739 100644
+--- a/security/keys/trusted-keys/trusted_tpm1.c
++++ b/security/keys/trusted-keys/trusted_tpm1.c
+@@ -493,10 +493,12 @@ static int tpm_seal(struct tpm_buf *tb, uint16_t keytype,
+ 
+ 	ret = tpm_get_random(chip, td->nonceodd, TPM_NONCE_SIZE);
+ 	if (ret < 0)
+-		return ret;
++		goto out;
+ 
+-	if (ret != TPM_NONCE_SIZE)
+-		return -EIO;
++	if (ret != TPM_NONCE_SIZE) {
++		ret = -EIO;
++		goto out;
++	}
+ 
+ 	ordinal = htonl(TPM_ORD_SEAL);
+ 	datsize = htonl(datalen);
+-- 
+2.30.2
+
