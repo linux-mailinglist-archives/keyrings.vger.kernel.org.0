@@ -2,104 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B83C4372E5D
-	for <lists+keyrings@lfdr.de>; Tue,  4 May 2021 19:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6BD37321C
+	for <lists+keyrings@lfdr.de>; Tue,  4 May 2021 23:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231824AbhEDRCv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 4 May 2021 13:02:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54554 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231773AbhEDRCu (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 4 May 2021 13:02:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6AE786101D;
-        Tue,  4 May 2021 17:01:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620147715;
-        bh=f5jEOgnbHsOfDlpo88Jj2D5L5O3g0o4OFA7mG7XvBKw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VXNMBP6b2+7Yp0/mUNXRSqDbMGvmGY5Jp27WbJvhrjGZpfkgCJHgatjyaNRRSRPto
-         LxfXdXHQYJBrxoTPQEmrX/lOQkUSgVj7CojPqKA5ry5B2sxWElUVvKo2HYKgXl45RD
-         sEAVszs/3OC3WUs9XXiYSkHRexEzigEAdrJenR7VPlfF9Vd3OXt6ZWKjAM8PabyBDd
-         9KRYJ0bHfp0sIa+tFzDajPDDkX0FNOMmVA4kPPQVWxU3QgA+hfPOaqBZoB+0L6YJDL
-         C2voEXXa8rf8OCPagPFTQyGDUB6ZXTG6ZtV1BHK+TKaVcErcyIWF1eUUIpLFbrjn0n
-         v+DF+xJvGX0nw==
-Date:   Tue, 4 May 2021 10:01:54 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Marco Elver <elver@google.com>
-Cc:     syzbot <syzbot+e4eb6db47eb0f80308c6@syzkaller.appspotmail.com>,
-        David Howells <dhowells@redhat.com>, jarkko@kernel.org,
-        jmorris@namei.org, keyrings@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, serge@hallyn.com,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Subject: Re: [syzbot] KCSAN: data-race in assoc_array_apply_edit /
- search_nested_keyrings
-Message-ID: <YJF+AiEM3K8VRkk3@gmail.com>
-References: <000000000000c224d005c17f7142@google.com>
- <CANpmjNOJ3Yhu77mU-8WvYFSnFgCYhctkCcTZhwpO5jrMzPejtA@mail.gmail.com>
+        id S232948AbhEDV6K (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 4 May 2021 17:58:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232667AbhEDV6J (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 4 May 2021 17:58:09 -0400
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40D3C061761
+        for <keyrings@vger.kernel.org>; Tue,  4 May 2021 14:57:13 -0700 (PDT)
+Received: by mail-oi1-x22e.google.com with SMTP id d21so278846oic.11
+        for <keyrings@vger.kernel.org>; Tue, 04 May 2021 14:57:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=h6nDWrO9L8CxbAXjtDgqv4B1xC4L9HAr7ltSEuwJLk8=;
+        b=lp8Ds+q4uHoTq/2xNdc6nB8zMv9+EVRduoGZhmPcTiX40X3BRyVq20/wmbznOaJKXk
+         48InIae6D+ySRAWfUzgcwxVE0xLGPx4ZpJGtdte6bTc/hYHkp3FD8UDSB6B4obl0gPal
+         6Anx4jvxkyiRcU36eEj3cO21HPg5+rRJm7jyA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h6nDWrO9L8CxbAXjtDgqv4B1xC4L9HAr7ltSEuwJLk8=;
+        b=o6VxuhJAIAP5ZFBN4FuKLc0GnkMqHMvmyej/MsqeSTZqif886p4KZ/h0tc/EcG/I/0
+         aXfButCUCRS9qkXznqSrExp7gQGTMPn0bI1roG4OKxM4NK0x/dqyBZHkyH24MB2dlAVT
+         WHuErVeev+cDomRpIJOsS3IH7eDIn75vhw38eM2UycyH0neVW5BOZ3eDGGnQGZsFv1jP
+         PonRJwrSpZXBsmZFFJdD60uYvGavC5WjCX4BknbQj9NMyK5ppolyn4C2yZgRPdXs2Oag
+         t2EV00SL0bP3dWCSnqXeBpHSBdXiIWbjWvbYcFe4okvCjpMeghL7y/kyghc446+jByT1
+         nCxA==
+X-Gm-Message-State: AOAM5308fahLJmtowzFRUsleVtwqKMNw23dli1VJMDCXgdVCt6hTAzlM
+        jcKxTJmLKgrXbJH9wdrjxtLSZ/EFukXt5UuV
+X-Google-Smtp-Source: ABdhPJwbeZPeWg6GI16LALBfQ8Kii3x7G6oLeHrIoDavMKast6OmSBvDRPUXzEH0GzLxD8XR0khjrw==
+X-Received: by 2002:a05:6808:488:: with SMTP id z8mr718096oid.135.1620165432970;
+        Tue, 04 May 2021 14:57:12 -0700 (PDT)
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com. [209.85.210.53])
+        by smtp.gmail.com with ESMTPSA id c95sm215465otb.80.2021.05.04.14.57.11
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 May 2021 14:57:12 -0700 (PDT)
+Received: by mail-ot1-f53.google.com with SMTP id 92-20020a9d02e50000b029028fcc3d2c9eso3342otl.0
+        for <keyrings@vger.kernel.org>; Tue, 04 May 2021 14:57:11 -0700 (PDT)
+X-Received: by 2002:a05:6830:a:: with SMTP id c10mr21052802otp.21.1620165431621;
+ Tue, 04 May 2021 14:57:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNOJ3Yhu77mU-8WvYFSnFgCYhctkCcTZhwpO5jrMzPejtA@mail.gmail.com>
+References: <20210220013255.1083202-1-matthewgarrett@google.com>
+In-Reply-To: <20210220013255.1083202-1-matthewgarrett@google.com>
+From:   Evan Green <evgreen@chromium.org>
+Date:   Tue, 4 May 2021 14:56:35 -0700
+X-Gmail-Original-Message-ID: <CAE=gft4HnQKP3RK1hOGpThccLPanQzWpssCsEyUQGLbTMpzrFw@mail.gmail.com>
+Message-ID: <CAE=gft4HnQKP3RK1hOGpThccLPanQzWpssCsEyUQGLbTMpzrFw@mail.gmail.com>
+Subject: Re: [PATCH 0/9] Enable hibernation when Lockdown is enabled
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     linux-integrity@vger.kernel.org, linux-pm@vger.kernel.org,
+        keyrings@vger.kernel.org, zohar@linux.ibm.com,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>, jarkko@kernel.org,
+        Jonathan Corbet <corbet@lwn.net>, rjw@rjwysocki.net
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, May 04, 2021 at 01:38:20PM +0200, 'Marco Elver' via syzkaller-bugs wrote:
-> Hello,
-> 
-> On Tue, 4 May 2021 at 13:33, syzbot
-> <syzbot+e4eb6db47eb0f80308c6@syzkaller.appspotmail.com> wrote:
-> > HEAD commit:    5e321ded Merge tag 'for-5.13/parisc' of git://git.kernel.o..
-> > git tree:       upstream
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=111cafb9d00000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=a4da2ebcb6e8f526
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=e4eb6db47eb0f80308c6
-> > compiler:       Debian clang version 11.0.1-2
-> >
-> > Unfortunately, I don't have any reproducer for this issue yet.
-> >
-> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > Reported-by: syzbot+e4eb6db47eb0f80308c6@syzkaller.appspotmail.com
-> >
-> > ==================================================================
-> > BUG: KCSAN: data-race in assoc_array_apply_edit / search_nested_keyrings
-> >
-> > write to 0xffff8881065ffc10 of 8 bytes by task 30966 on cpu 1:
-> >  assoc_array_apply_edit+0x3e/0x660 lib/assoc_array.c:1357
-> >  __key_link+0x8a/0xc0 security/keys/keyring.c:1372
-> >  __key_instantiate_and_link+0x15b/0x290 security/keys/key.c:459
-> >  key_create_or_update+0x750/0x990 security/keys/key.c:941
-> >  __do_sys_add_key security/keys/keyctl.c:134 [inline]
-> >  __se_sys_add_key+0x26f/0x300 security/keys/keyctl.c:74
-> >  __x64_sys_add_key+0x63/0x70 security/keys/keyctl.c:74
-> >  do_syscall_64+0x4a/0x90 arch/x86/entry/common.c:47
-> >  entry_SYSCALL_64_after_hwframe+0x44/0xae
-> >
-> > read to 0xffff8881065ffc10 of 8 bytes by task 30971 on cpu 0:
-> >  search_nested_keyrings+0x34f/0x920 security/keys/keyring.c:751
-> >  keyring_search_rcu+0xf4/0x180 security/keys/keyring.c:922
-> >  search_cred_keyrings_rcu+0x135/0x240 security/keys/process_keys.c:480
-> >  search_process_keyrings_rcu security/keys/process_keys.c:544 [inline]
-> >  lookup_user_key+0xab6/0xd40 security/keys/process_keys.c:762
-> >  __do_sys_add_key security/keys/keyctl.c:126 [inline]
-> >  __se_sys_add_key+0x23a/0x300 security/keys/keyctl.c:74
-> >  __x64_sys_add_key+0x63/0x70 security/keys/keyctl.c:74
-> >  do_syscall_64+0x4a/0x90 arch/x86/entry/common.c:47
-> >  entry_SYSCALL_64_after_hwframe+0x44/0xae
-> 
-> I found this interesting because the code around
-> security/keys/keyring.c:751 is diligent in marking concurrency
-> accesses with READ_ONCE(). So on the off-chance there is unexpected
-> concurrency here, I thought it'd be worth double-checking as I wasn't
-> able to conclude if this is just missing a READ_ONCE().
-> 
-> Thank you!
-> 
+Does anyone know if this series is abandoned, or is Matthew planning
+to do another spin? Email to matthewgarrett@google.com bounces.
 
-It looks more like the problem is missing WRITE_ONCE(), not READ_ONCE().
-
-smp_store_release() would also handle this properly, without the need for the
-explicit smp_wmb().
-
-- Eric
+-Evan
