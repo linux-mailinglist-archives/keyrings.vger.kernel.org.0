@@ -2,207 +2,81 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E2C3747EA
-	for <lists+keyrings@lfdr.de>; Wed,  5 May 2021 20:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10BF0376C86
+	for <lists+keyrings@lfdr.de>; Sat,  8 May 2021 00:24:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234590AbhEESTx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 5 May 2021 14:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33190 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234547AbhEESTw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 5 May 2021 14:19:52 -0400
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC07FC061763
-        for <keyrings@vger.kernel.org>; Wed,  5 May 2021 11:18:54 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id 92-20020a9d02e50000b029028fcc3d2c9eso2587246otl.0
-        for <keyrings@vger.kernel.org>; Wed, 05 May 2021 11:18:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+IwZXLRXE7YG5YvYLQLnS3XtjuwltWw/8OV4sZc7FtQ=;
-        b=cYMtDHKCglXEKCG8XFCDw0mo6ut3vuH0OSwu3mg8bbcS7aam9fkng1amjKuyWy10gd
-         pkqctId/qGP2+eknKgPx5r2246N18DmMuTnicvkkmVtsBT1oL6PveOm2wAvFLXjhYPlA
-         gSMZ4vYuD/VbxHvkEziYMpUWpKR8r79Q+Xdgc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+IwZXLRXE7YG5YvYLQLnS3XtjuwltWw/8OV4sZc7FtQ=;
-        b=bHHwi6uPZBXXT0PO4SerQ+kBXaP9ITVKWU5T2n/MjA/rwlb2KdDL+dmOEUDCsiMyIt
-         Ww8hpV9WCATNHPTXX7fXlITfOxaLmeeUBxDm+uglSB33X/tK05kz/ltlR5pe8TATjSnp
-         LF0xHCLks89KHeBuMr1r6PVrPVUU/IUZ8ZTk1IEj08YTbZyHd2UTcUPdCM8POBys8b+P
-         qVWyYlL68E2eAgJkIJcbm18Q6UsoUABJjpk35qy10MZLYuiIZ+eYx9GPEQM9ayK7pSkE
-         X0gRjX+8MNw0kznENCHjKdhFzxX//mSHVR1Ck1BK3LjcBABSNMddsfUoAtZxHPx2BgQE
-         k2WQ==
-X-Gm-Message-State: AOAM532Ys5ODUIqF75RDfccoANhi8KuMw2UnQkD6Dkw6POZyQlQNXKO6
-        69cCWJyq66OXgWHZrMhCujQq6gMHPAHlJw==
-X-Google-Smtp-Source: ABdhPJwal5WZk9uAShn05MRYwqeKMxKOmMiLywY2TaVbQ+jk9aQfMPg7A4MqVcetd99Rc3tW5+QuwA==
-X-Received: by 2002:a9d:28d:: with SMTP id 13mr25277051otl.278.1620238733904;
-        Wed, 05 May 2021 11:18:53 -0700 (PDT)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com. [209.85.210.49])
-        by smtp.gmail.com with ESMTPSA id w66sm24368ooa.37.2021.05.05.11.18.52
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 May 2021 11:18:53 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id n32-20020a9d1ea30000b02902a53d6ad4bdso2544390otn.3
-        for <keyrings@vger.kernel.org>; Wed, 05 May 2021 11:18:52 -0700 (PDT)
-X-Received: by 2002:a9d:425:: with SMTP id 34mr25334436otc.25.1620238732448;
- Wed, 05 May 2021 11:18:52 -0700 (PDT)
+        id S229870AbhEGWZp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 7 May 2021 18:25:45 -0400
+Received: from bosmailout03.eigbox.net ([66.96.186.3]:45669 "EHLO
+        bosmailout03.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhEGWZo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 7 May 2021 18:25:44 -0400
+X-Greylist: delayed 1816 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:25:34 EDT
+Received: from bosmailscan08.eigbox.net ([10.20.15.8])
+        by bosmailout03.eigbox.net with esmtp (Exim)
+        id 1lf8QM-0003Fa-7M; Fri, 07 May 2021 17:54:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=I+6Bb1DJY/YYTRas0wZTN+AC1D
+        vtIg40M7SDAM/b29+/wY3GjGjzug9/OzX2aPoevJgNlEKSTs0SrEPfP3WhSQM0PCLHlkQfkyX8QT9
+        UZ7TTwAz03WtyNGtE+DdqqC0pYUcPkHvqE4MDSKlo5Vm1z1vJqGpkJRtWe2MFWIr6++JBuHOfV7Fd
+        34Die1lJ1lpPfDh70Zq++IiTaMjdlcGGo7pbn4hVn1WweIC9h772TR5+6npXCISSeeyCgPsBbikdE
+        ZWIrJkpukBwvBgblKKCxDugovauKoCEDbS56mNadJP+sg7ztteNlHrnEQFJYYsCNrcdD1v8ilxnSi
+        f8nqykSw==;
+Received: from [10.115.3.32] (helo=bosimpout12)
+        by bosmailscan08.eigbox.net with esmtp (Exim)
+        id 1lf8QK-0002fP-Rn; Fri, 07 May 2021 17:54:16 -0400
+Received: from boswebmail06.eigbox.net ([10.20.16.6])
+        by bosimpout12 with 
+        id 1xuC2500D07qujN01xuFUj; Fri, 07 May 2021 17:54:16 -0400
+X-EN-SP-DIR: OUT
+X-EN-SP-SQ: 1
+Received: from [127.0.0.1] (helo=homestead)
+        by boswebmail06.eigbox.net with esmtp (Exim)
+        id 1lf8PX-0006IT-Ae; Fri, 07 May 2021 17:53:27 -0400
+Received: from [197.239.81.229]
+ by emailmg.homestead.com
+ with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:53:27 -0400
 MIME-Version: 1.0
-References: <20210220013255.1083202-1-matthewgarrett@google.com> <20210220013255.1083202-7-matthewgarrett@google.com>
-In-Reply-To: <20210220013255.1083202-7-matthewgarrett@google.com>
-From:   Evan Green <evgreen@chromium.org>
-Date:   Wed, 5 May 2021 11:18:16 -0700
-X-Gmail-Original-Message-ID: <CAE=gft76T7tgvd51e1Wzo6LN9afCLLkjGtN7xDbb6yq=CzbjHA@mail.gmail.com>
-Message-ID: <CAE=gft76T7tgvd51e1Wzo6LN9afCLLkjGtN7xDbb6yq=CzbjHA@mail.gmail.com>
-Subject: Re: [PATCH 6/9] pm: hibernate: Optionally store and verify a hash of
- the image
-To:     Matthew Garrett <matthewgarrett@google.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-integrity@vger.kernel.org, linux-pm@vger.kernel.org,
-        keyrings@vger.kernel.org, zohar@linux.ibm.com,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>, rjw@rjwysocki.net,
-        Matthew Garrett <mjg59@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Fri, 07 May 2021 21:53:27 +0000
+From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
+To:     undisclosed-recipients:;
+Subject: URGENT REPLY NEEDED
+Reply-To: suzara2017malingwan@gmail.com
+Mail-Reply-To: suzara2017malingwan@gmail.com
+Message-ID: <4c6a48748f6731dac9b66cce1916443b@godsofu4.com>
+X-Sender: fast65@godsofu4.com
+User-Agent: Roundcube Webmail/1.3.14
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-EN-AuthUser: fast65@godsofu4.com
+Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Feb 19, 2021 at 5:36 PM Matthew Garrett
-<matthewgarrett@google.com> wrote:
->
-> Calculate and store a cryptographically secure hash of the hibernation
-> image if SF_VERIFY_IMAGE is set in the hibernation flags. This allows
-> detection of a corrupt image, but has the disadvantage that it requires
-> the blocks be read in in linear order.
->
-> Signed-off-by: Matthew Garrett <mjg59@google.com>
-> ---
->  kernel/power/power.h |   1 +
->  kernel/power/swap.c  | 131 +++++++++++++++++++++++++++++++++++--------
->  2 files changed, 110 insertions(+), 22 deletions(-)
->
-> diff --git a/kernel/power/power.h b/kernel/power/power.h
-> index 778bf431ec02..b8e00b9dcee8 100644
-> --- a/kernel/power/power.h
-> +++ b/kernel/power/power.h
-> @@ -168,6 +168,7 @@ extern int swsusp_swap_in_use(void);
->  #define SF_PLATFORM_MODE       1
->  #define SF_NOCOMPRESS_MODE     2
->  #define SF_CRC32_MODE          4
-> +#define SF_VERIFY_IMAGE         8
->
->  /* kernel/power/hibernate.c */
->  extern int swsusp_check(void);
-> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-> index 72e33054a2e1..a13241a20567 100644
-> --- a/kernel/power/swap.c
-> +++ b/kernel/power/swap.c
-> @@ -31,6 +31,8 @@
->  #include <linux/kthread.h>
->  #include <linux/crc32.h>
->  #include <linux/ktime.h>
-> +#include <crypto/hash.h>
-> +#include <crypto/sha2.h>
->
->  #include "power.h"
->
-> @@ -95,17 +97,20 @@ struct swap_map_page_list {
->  struct swap_map_handle {
->         struct swap_map_page *cur;
->         struct swap_map_page_list *maps;
-> +       struct shash_desc *desc;
->         sector_t cur_swap;
->         sector_t first_sector;
->         unsigned int k;
->         unsigned long reqd_free_pages;
->         u32 crc32;
-> +       u8 digest[SHA256_DIGEST_SIZE];
->  };
->
->  struct swsusp_header {
->         char reserved[PAGE_SIZE - 20 - sizeof(sector_t) - sizeof(int) -
-> -                     sizeof(u32)];
-> +                     sizeof(u32) - SHA256_DIGEST_SIZE];
->         u32     crc32;
-> +       u8      digest[SHA256_DIGEST_SIZE];
->         sector_t image;
->         unsigned int flags;     /* Flags to pass to the "boot" kernel */
->         char    orig_sig[10];
-> @@ -305,6 +310,9 @@ static blk_status_t hib_wait_io(struct hib_bio_batch *hb)
->          * We are relying on the behavior of blk_plug that a thread with
->          * a plug will flush the plug list before sleeping.
->          */
-> +       if (!hb)
-> +               return 0;
-> +
->         wait_event(hb->wait, atomic_read(&hb->count) == 0);
->         return blk_status_to_errno(hb->error);
->  }
-> @@ -327,6 +335,8 @@ static int mark_swapfiles(struct swap_map_handle *handle, unsigned int flags)
->                 swsusp_header->flags = flags;
->                 if (flags & SF_CRC32_MODE)
->                         swsusp_header->crc32 = handle->crc32;
-> +               memcpy(swsusp_header->digest, handle->digest,
-> +                      SHA256_DIGEST_SIZE);
->                 error = hib_submit_io(REQ_OP_WRITE, REQ_SYNC,
->                                       swsusp_resume_block, swsusp_header, NULL);
->         } else {
-> @@ -417,6 +427,7 @@ static void release_swap_writer(struct swap_map_handle *handle)
->  static int get_swap_writer(struct swap_map_handle *handle)
->  {
->         int ret;
-> +       struct crypto_shash *tfm;
->
->         ret = swsusp_swap_check();
->         if (ret) {
-> @@ -437,7 +448,28 @@ static int get_swap_writer(struct swap_map_handle *handle)
->         handle->k = 0;
->         handle->reqd_free_pages = reqd_free_pages();
->         handle->first_sector = handle->cur_swap;
-> +
-> +       tfm = crypto_alloc_shash("sha256", 0, 0);
-> +       if (IS_ERR(tfm)) {
-> +               ret = -EINVAL;
-> +               goto err_rel;
-> +       }
-> +       handle->desc = kmalloc(sizeof(struct shash_desc) +
-> +                              crypto_shash_descsize(tfm), GFP_KERNEL);
-> +       if (!handle->desc) {
-> +               ret = -ENOMEM;
-> +               goto err_rel;
-> +       }
-> +
-> +       handle->desc->tfm = tfm;
-> +
-> +       ret = crypto_shash_init(handle->desc);
-> +       if (ret != 0)
-> +               goto err_free;
-> +
->         return 0;
-> +err_free:
-> +       kfree(handle->desc);
->  err_rel:
->         release_swap_writer(handle);
->  err_close:
-> @@ -446,7 +478,7 @@ static int get_swap_writer(struct swap_map_handle *handle)
->  }
->
->  static int swap_write_page(struct swap_map_handle *handle, void *buf,
-> -               struct hib_bio_batch *hb)
-> +                          struct hib_bio_batch *hb, bool hash)
->  {
->         int error = 0;
->         sector_t offset;
-> @@ -454,6 +486,7 @@ static int swap_write_page(struct swap_map_handle *handle, void *buf,
->         if (!handle->cur)
->                 return -EINVAL;
->         offset = alloc_swapdev_block(root_swap);
-> +       crypto_shash_update(handle->desc, buf, PAGE_SIZE);
 
-Was this supposed to be conditionalized behind the new parameter, ie:
-if (hash) crypto_shash_update()? If so, the same comment would apply
-to the read as well.
+
+My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
+of the Philippine presently base in West Africa B/F, dealing with
+exportation of Gold, I was diagnose of blood Causal decease, and my
+doctor have announce to me that I have few days to leave due to the
+condition of my sickness.
+
+I have a desire to build an orphanage home in your country of which i
+cannot execute the project myself due to my present health condition,
+I am willing to hand over the project under your care for you to help
+me fulfill my dreams and desire of building an orphanage home in your
+country.
+
+Reply in you are will to help so that I can direct you to my bank for
+the urgent transfer of the fund/money require for the project to your
+account as I have already made the fund/money available.
+
+With kind regards
+Mrs Suzara Maling Wan
