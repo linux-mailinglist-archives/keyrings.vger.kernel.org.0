@@ -2,64 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0D0377112
-	for <lists+keyrings@lfdr.de>; Sat,  8 May 2021 11:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA72377723
+	for <lists+keyrings@lfdr.de>; Sun,  9 May 2021 17:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230414AbhEHJwb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 8 May 2021 05:52:31 -0400
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:33359 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229583AbhEHJw2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 8 May 2021 05:52:28 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=alimailimapcm10staff010182156082;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0UY8pXIE_1620467482;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UY8pXIE_1620467482)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sat, 08 May 2021 17:51:24 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     dhowells@redhat.com
-Cc:     jarkko@kernel.org, jmorris@namei.org, serge@hallyn.com,
-        nathan@kernel.org, ndesaulniers@google.com,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] Keys: Remove redundant initialization of cred
-Date:   Sat,  8 May 2021 17:51:21 +0800
-Message-Id: <1620467481-110575-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S229635AbhEIPMV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 9 May 2021 11:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229618AbhEIPMV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 9 May 2021 11:12:21 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252B0C061573;
+        Sun,  9 May 2021 08:11:18 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id t4so20832276ejo.0;
+        Sun, 09 May 2021 08:11:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=uGbBfBDdd27ACbtuU1IcDMGTiO49DUlYvgrRV0jM4gc=;
+        b=T36kbnA5q3XgUHp75M44R1ULfkZmAo7kFZXbv495VUupuO5EUgvagD5KdrXlK7W8PL
+         LkKg3QE9Zneg5TOemZDjWspb9yzDp/3swh7kTvQE/QwkMKR/KY2yQkjrakwKE97deDGD
+         mlopZn5CUDVVSvnmxZtRKbTfhb6OpXyS7CMW4TDgAgn6g81ipikMJNvXjC55QDLrtL1y
+         az3p0t5SIt9BOeZuMBAR0tXJtlLllioQzhPVyllM5AfdADicsyPdGrAxq8IfV0eiGy7/
+         8fv8zH/pXUbOUro2psS+FeznIUthRnGomQ7JpOHSne7es/FazGknXUsRDzdFZzA4kpaT
+         yfKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=uGbBfBDdd27ACbtuU1IcDMGTiO49DUlYvgrRV0jM4gc=;
+        b=hL0iaz8vBtY7xs/NZ4WOUy7hLWu7Ohx1bu2PXZmtrbLbwUl12PYxol5ntGuZ6oByxY
+         qm7MwF1egWWc2hRCa8lhn0K0llt34aXnn1gY7T5FhLm+ThqkTMyx1NzglP9FduvHXUpW
+         79pD9G7mMFgh5k1YH4U6ktwpHxH0IwTYOjMDnSKv3Re2U7vo/5Pmfg/NMw9I3l8jGwxV
+         F2V+4lQGK8QtyzX3RKYSYW+75rkWq1CuMEwjAwtk/JRzHVqj5M8Uw6MMp87j80yaPrEs
+         J4Ou2dX6y6V93Ugp6d8EwDVFUCF3wxTN+Gq2mxc1HDQD6mSQNxMCRWB0xe4a5Vdgrigc
+         zf6Q==
+X-Gm-Message-State: AOAM533cU44RHkO0vGEVlDMTIQp2UBEaG/aeUQVwLSilBBaX+vXCa/Fe
+        37LnUk/ArLVcX4t+pgqa+BQ=
+X-Google-Smtp-Source: ABdhPJx2OrA83CaWegJKdEVv8+rk5M7JCtI80qpL4yLmEy2KKtTfcjWXrxOosouQnt/hRGBSO0aChA==
+X-Received: by 2002:a17:906:36da:: with SMTP id b26mr21532198ejc.8.1620573075316;
+        Sun, 09 May 2021 08:11:15 -0700 (PDT)
+Received: from gmail.com (0526E777.dsl.pool.telekom.hu. [5.38.231.119])
+        by smtp.gmail.com with ESMTPSA id p13sm6901728ejr.87.2021.05.09.08.11.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 May 2021 08:11:14 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Sun, 9 May 2021 17:11:12 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Valdis Kl=?utf-8?Q?=c4=93?=tnieks <valdis.kletnieks@vt.edu>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: 'make O=' indigestion with module signing
+Message-ID: <20210509151112.GA839293@gmail.com>
+References: <134696.1615510534@turing-police>
+ <109018.1615463088@turing-police>
+ <91190.1615444370@turing-police>
+ <972381.1615459754@warthog.procyon.org.uk>
+ <1486567.1615464259@warthog.procyon.org.uk>
+ <2026575.1615539696@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026575.1615539696@warthog.procyon.org.uk>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Pointer cred is being initialized however this value is never
-read as cred is assigned an updated value from the returned
-call to get_current_cred(). Remove the redundant initialization.
 
-Cleans up clang warning:
+* David Howells <dhowells@redhat.com> wrote:
 
-security/keys/request_key.c:119:21: warning: Value stored to 'cred'
-during its initialization is never read
-[clang-analyzer-deadcode.DeadStores]
+> Valdis Klētnieks <valdis.kletnieks@vt.edu> wrote:
+> 
+> > So the root cause was: 'make mrproper doesn't clean certs/' out enough,
+> > and this chunk of certs/Makefile
+> > ...
+> > I admit not being sure how (or if) this should be fixed
+> 
+> It's tricky because CONFIG_MODULE_SIG_KEY may not point to a file, let alone a
+> file that was autogenerated - it can be given a PKCS#11 URI, for instance.  I
+> had to put in the autogeneration based on a magic config string value to stop
+> randconfig blowing up - but it only does the autogeneration if you don't put
+> in your own file there before building.
+> 
+> Possibly I can add something like:
+> 
+> 	clean-files := signing_key.pem x509.genkey
+> 
+> inside the
+> 
+> 	ifeq ($(CONFIG_MODULE_SIG_KEY),"certs/signing_key.pem")
+> 	...
+> 	endif
+> 
+> section.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Fixes: 'commit bb952bb98a7e ("CRED: Separate per-task-group keyrings from signal_struct")'
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- security/keys/request_key.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Note that this bug is now upstream in Linus's tree and has broken
+the deb-pkg distro kernel build method.
 
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 2da4404..873c31f 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -116,7 +116,7 @@ static int call_sbin_request_key(struct key *authkey, void *aux)
- {
- 	static char const request_key[] = "/sbin/request-key";
- 	struct request_key_auth *rka = get_request_key_auth(authkey);
--	const struct cred *cred = current_cred();
-+	const struct cred *cred;
- 	key_serial_t prkey, sskey;
- 	struct key *key = rka->target_key, *keyring, *session, *user_session;
- 	char *argv[9], *envp[3], uid_str[12], gid_str[12];
--- 
-1.8.3.1
+Would be nice to make 'make mrproper' work again.
 
+Thanks,
+
+	Ingo
