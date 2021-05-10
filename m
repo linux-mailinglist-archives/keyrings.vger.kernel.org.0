@@ -2,101 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76BAF379A26
-	for <lists+keyrings@lfdr.de>; Tue, 11 May 2021 00:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBE8379AAA
+	for <lists+keyrings@lfdr.de>; Tue, 11 May 2021 01:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231221AbhEJWh3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 10 May 2021 18:37:29 -0400
-Received: from tartarus.angband.pl ([51.83.246.204]:34704 "EHLO
-        tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbhEJWh2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 10 May 2021 18:37:28 -0400
-X-Greylist: delayed 1784 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 May 2021 18:37:20 EDT
-Received: from kilobyte by tartarus.angband.pl with local (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1lgDtp-00EKjz-Lm; Mon, 10 May 2021 23:57:13 +0200
-Date:   Mon, 10 May 2021 23:57:13 +0200
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as ASCII
-Message-ID: <YJmsOYzPIsQ04Zxb@angband.pl>
-References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+        id S229892AbhEJXUI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 May 2021 19:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229661AbhEJXUI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 10 May 2021 19:20:08 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E03C061574;
+        Mon, 10 May 2021 16:19:02 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1AC04128053C;
+        Mon, 10 May 2021 16:19:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1620688742;
+        bh=f905pQyWkLsAp05euszWRJr8cxZx1j0A/Ts4bKkRP00=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=XQZ17b4EHOcvNHKQV/G8NkHCK5QxyRs75nHIZ+NU2BwsXSjaecY1bVumMHyAck4Wn
+         60U7vbdMuochf82VrqCSIZzrzb0HDq1OX4D9waKUC7aDU346wWkTEZyCcN94BvGdPG
+         T2MCS1JMSBSLHu7/ngRue3NnMf4vLfNdlxA5OMAY=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EwNIEwqsrRQ2; Mon, 10 May 2021 16:19:02 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 9AA13128053B;
+        Mon, 10 May 2021 16:19:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1620688741;
+        bh=f905pQyWkLsAp05euszWRJr8cxZx1j0A/Ts4bKkRP00=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=QOWswFUiFRIpMgsESW8uArfM77pN5AYcAO2vNZYwPyon+5xq+UNgc3VSaym99y43n
+         G44OYK1QAH17v4gZWWBel6GKTmDHsW/kpEtQ5eJsLjQd4bhsCFo4HLnFcIkpFHFsiT
+         GUvttcLwC7WAA882wwkHuxKDCYo3LsEQNdrM9oMM=
+Message-ID: <c896e4fd24aa649081cb0ce712580a8400ab36d6.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 1/1] trusted-keys: match tpm_get_ops on all return
+ paths
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Ben Boeckel <me@benboeckel.net>, keyrings@vger.kernel.org
+Cc:     Ben Boeckel <mathstuf@gmail.com>, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Date:   Mon, 10 May 2021 16:19:00 -0700
+In-Reply-To: <YJmf4Q0l+MTFEaEo@erythro.dev.benboeckel.internal>
+References: <20210429192156.770145-1-list.lkml.keyrings@me.benboeckel.net>
+         <20210429192156.770145-2-list.lkml.keyrings@me.benboeckel.net>
+         <YJmf4Q0l+MTFEaEo@erythro.dev.benboeckel.internal>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1620641727.git.mchehab+huawei@kernel.org>
-X-Junkbait: aaron@angband.pl, zzyx@angband.pl
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: kilobyte@angband.pl
-X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, May 10, 2021 at 12:26:12PM +0200, Mauro Carvalho Chehab wrote:
-> There are several UTF-8 characters at the Kernel's documentation.
-[...]
-> Other UTF-8 characters were added along the time, but they're easily
-> replaceable by ASCII chars.
+On Mon, 2021-05-10 at 17:04 -0400, Ben Boeckel wrote:
+> On Thu, Apr 29, 2021 at 15:21:56 -0400, Ben Boeckel wrote:
+> > From: Ben Boeckel <mathstuf@gmail.com>
+> > 
+> > The `tpm_get_ops` call at the beginning of the function is not
+> > paired
+> > with a `tpm_put_ops` on this return path.
+> > 
+> > Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key
+> > format for the blobs")
+> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
+> > ---
+> >  security/keys/trusted-keys/trusted_tpm2.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/security/keys/trusted-keys/trusted_tpm2.c
+> > b/security/keys/trusted-keys/trusted_tpm2.c
+> > index 617fabd4d913..0165da386289 100644
+> > --- a/security/keys/trusted-keys/trusted_tpm2.c
+> > +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> > @@ -336,9 +336,9 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+> >  			rc = -EPERM;
+> >  	}
+> >  	if (blob_len < 0)
+> > -		return blob_len;
+> > -
+> > -	payload->blob_len = blob_len;
+> > +		rc = blob_len;
+> > +	else
+> > +		payload->blob_len = blob_len;
+> >  
+> >  	tpm_put_ops(chip);
+> >  	return rc;
 > 
-> As Linux developers are all around the globe, and not everybody has UTF-8
-> as their default charset
+> Ping? Is this going to make 5.13? This fixes an issue that is in
+> 5.13-rc1.
 
-I'm not aware of a distribution that still allows selecting a non-UTF-8
-charset in a normal flow in their installer.  And if they haven't purged
-support for ancient encodings, that support is thoroughly bitrotten.
-Thus, I disagree that this is a legitimate concern.
+It's not urgent, since it's in an error in the ASN.1 encoder, the only
+real way to produce it is if the system runs out of memory, which is
+highly unlikely since the allocations are all GFP_KERNEL.  We've also
+got another 8 or so weeks before 5.13 so there's time for this to go
+through the normal review process.
 
-What _could_ be a legitimate reason is that someone is on a _terminal_
-that can't display a wide enough set of glyphs.  Such terminals are:
- • Linux console (because of vgacon limitations; patchsets to improve
-   other cons haven't been mainlined)
- • some Windows terminals (putty, old Windows console) that can't borrow
-   glyphs from other fonts like fontconfig can
-
-For the former, it's whatever your distribution ships in
-/usr/share/consolefonts/ or an equivalent, which is based on historic
-ISO-8859 and VT100 traditions.
-
-For the latter, the near-guaranteed character set is WGL4.
+James
 
 
-Thus, at least two of your choices seem to disagree with the above:
-[dropped]
-> 	0xd7   => 'x',		# MULTIPLICATION SIGN
-[retained]
-> 	- U+2b0d ('⬍'): UP DOWN BLACK ARROW
-
-× is present in ISO-8859, V100, WGL4; I've found no font in
-/usr/share/consolefonts/ on my Debian unstable box that lacks this
-character.
-
-⬍ is not found in any of the above.  You might want to at least
-convert it to ↕ which is at least present in WGL4, and thus likely
-to be supported in fonts heeding Windows/Mac/OpenType recommendations.
-That still won't make it work on VT.
-
-
-Meow!
--- 
-⢀⣴⠾⠻⢶⣦⠀ .--[ Makefile ]
-⣾⠁⢠⠒⠀⣿⡁ # beware of races
-⢿⡄⠘⠷⠚⠋⠀ all: pillage burn
-⠈⠳⣄⠀⠀⠀⠀ `----
