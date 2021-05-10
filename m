@@ -2,123 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A88C378DC8
-	for <lists+keyrings@lfdr.de>; Mon, 10 May 2021 15:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56C45378F33
+	for <lists+keyrings@lfdr.de>; Mon, 10 May 2021 15:52:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241707AbhEJMxR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 10 May 2021 08:53:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40450 "EHLO
+        id S232302AbhEJNnH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 May 2021 09:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349555AbhEJMto (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 10 May 2021 08:49:44 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EAE0C0611EE;
-        Mon, 10 May 2021 05:41:48 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id t4so24356168ejo.0;
-        Mon, 10 May 2021 05:41:48 -0700 (PDT)
+        with ESMTP id S236863AbhEJNR0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 10 May 2021 09:17:26 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED3A6C06138C;
+        Mon, 10 May 2021 06:16:19 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 82-20020a1c01550000b0290142562ff7c9so8868251wmb.3;
+        Mon, 10 May 2021 06:16:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=rPnjj7CcDT7Ek5LVYSpFT50vZUaAaBcOH5bltoGapPU=;
-        b=CiZDfhVL3JV3m6t6D4g5Uqhp1EPHsM9BxmpkK61WAUKNTXpyhV9F9eumP93Cf3JxTq
-         0RdnVauyd0ECPpIgfQ6R0HryOpHX22rh5Mz1yaBizVnzg/EuHEzSa+4cCAedClMwVNLK
-         ZxdAGzYSiv3BLLi+RRmP0atYiFayG2FxCm3rNuUQufGwWZ5WeIUg6jRmS14cnmj8mIX0
-         ostU1vsRE3jo+VSNS1+AIIPrg/l6j/bVgIh+e3C4fc1dkpkhGdaM+OXuymzsaVeWuKXh
-         12LdBtxHEP42Yz55Nxr2SMIzqRBcbbsDymJ5tv34AslUvz5Y1+nHAYs6w5aojhk3WaA8
-         MPvw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Sh4i9feljTPFrIfpR/IU/E8n0D3Fda88xyQfypmum7w=;
+        b=GfQpYA/u/ESXNzCwhJN35I1L0Sb2vRVeukRNG83W8xG2OMlDA6+i5W0OODo/+LWE9E
+         ivWW5//Dci3M+PXPgJnH/odM7KtTO7yjQKrEe7KAvh4E7fvrd/ZuLkJAZP62sWtsDMuB
+         AIqgCRqoTLZzj0iGC6/REa3QuGlmZjiRxifV0mZYrMLJSap8JjiujnvbMmFTzTlx+O95
+         x9XnwiLNDr5qqWcsdoyW+ETG1hWAlzA+FW12aKJEwh2j5DlnppfpjkE6ahf9DAyZ8V+v
+         c4HLN0tsaWZM2+zfMzrOFU3u/mXI98pyg6LlDYSgFBtDuHlk1DmX0lhge4HX1KOLhtwA
+         z+4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=rPnjj7CcDT7Ek5LVYSpFT50vZUaAaBcOH5bltoGapPU=;
-        b=Swp9ybG+NZr/QCaBHtIlJREZ1D2yolD1lliWaO8cV4EZ+MSWsxIbHb0FDUneLT9k0/
-         TxZqEq09TVypn4ajAhJ8JyUE7WEt9XHm4dxPrj6KlH4+TH2/TkqvPdFkETmIccqbKlTa
-         yLsWwLTkxa7pI1friTeuGJyFK9yEb6d+rtYnVdRX4Nwrpi3iSLAVp41rBISmK5rFvwcd
-         CVcWzNoqCiFA4Vd1roxok1pqv2w+hrZGqUP71B+9f4/bV2GWgwwYXpJoSm60VoQXrfJS
-         wRpPynumNQA4GS4oYxftaY6K1+FIuK/pvJSgDw1GnGMIVPk7sPvU1SFPhftrqQ2l5Cx4
-         0I9A==
-X-Gm-Message-State: AOAM532SGhwKhO0je6HbtAd1t7gNZAbAU3375IjAS5sYg1UUMVpU0WS8
-        1j/F35OTYCKrKSKEAm6Ppes=
-X-Google-Smtp-Source: ABdhPJzK0+r8dgR2IDmFPLK8afHqKCX3W+D5qXcQhruMZDZJjTKcyr3IJKISP1z+pSvNqk5nZLbbOw==
-X-Received: by 2002:a17:906:2bd0:: with SMTP id n16mr25552395ejg.110.1620650507431;
-        Mon, 10 May 2021 05:41:47 -0700 (PDT)
-Received: from gmail.com (0526E777.dsl.pool.telekom.hu. [5.38.231.119])
-        by smtp.gmail.com with ESMTPSA id h11sm11208696eds.15.2021.05.10.05.41.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 05:41:46 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Mon, 10 May 2021 14:41:45 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: 'make O=' indigestion with module signing
-Message-ID: <YJkqCZmTMRLUh+vf@gmail.com>
-References: <134696.1615510534@turing-police>
- <109018.1615463088@turing-police>
- <91190.1615444370@turing-police>
- <972381.1615459754@warthog.procyon.org.uk>
- <1486567.1615464259@warthog.procyon.org.uk>
- <2026575.1615539696@warthog.procyon.org.uk>
- <20210509151112.GA839293@gmail.com>
- <20210509151556.GA842014@gmail.com>
- <20210509161914.GB839293@gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Sh4i9feljTPFrIfpR/IU/E8n0D3Fda88xyQfypmum7w=;
+        b=cYGoVbnuzC8qi/rSzJ+ExaPcPY6WDiRnoQYrUOJUW/LDLaupeK70YlIz31CC6DpEIO
+         YjQqqXw2K1KRvLE2EmkMqZgmSNaOqjLw3WgaQER7nKYN78smSnUQvql/Lq9C3BYIAbbS
+         A89hiMUo84LxHpIIH5PXWbH2rmZnREpJ+CAq/H0QPEPvY3481ifRRLSpOK8Cv3AHyzwB
+         Y9C4Y5kQCgYC6MsNt9LSL+mATP7JJWBNR9KZjed7REYhOTmkJTYOrQnd1aSrwgzazjvo
+         Ixtv6yd4OPdU4nF7WYCxOtY9Watsai28mxpDWeEFK5xhy198jgxuKAvRFJqigderRiYZ
+         zU/w==
+X-Gm-Message-State: AOAM5320WfRdSTq1VXESkXjcB7G2WrDl9rtLEDxZcnwiFr7WOtK+XUaU
+        ikYqT3CuD1N4pbhEXWdxDhI=
+X-Google-Smtp-Source: ABdhPJysoQ4YBpE1J87NsTC/Z24p8NQqGLKPSudpVCmtLwZFhM2Wy0R7/k0aKiXMKdpTI23nPdYVEw==
+X-Received: by 2002:a05:600c:47d7:: with SMTP id l23mr36980376wmo.95.1620652578722;
+        Mon, 10 May 2021 06:16:18 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159425-cmbg20-2-0-cust403.5-4.cable.virginm.net. [86.7.189.148])
+        by smtp.gmail.com with ESMTPSA id s1sm27945073wmj.8.2021.05.10.06.16.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 May 2021 06:16:17 -0700 (PDT)
+Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as ASCII
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org, x86@kernel.org
+References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+ <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
+ <20210510135518.305cc03d@coco.lan>
+From:   Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <df6b4567-030c-a480-c5a6-fe579830e8c0@gmail.com>
+Date:   Mon, 10 May 2021 14:16:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210509161914.GB839293@gmail.com>
+In-Reply-To: <20210510135518.305cc03d@coco.lan>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On 10/05/2021 12:55, Mauro Carvalho Chehab wrote:
+> The main point on this series is to replace just the occurrences
+> where ASCII represents the symbol equally well
 
-* Ingo Molnar <mingo@kernel.org> wrote:
+> 	- U+2014 ('—'): EM DASH
+Em dash is not the same thing as hyphen-minus, and the latter does not
+ serve 'equally well'.  People use em dashes because — even in
+ monospace fonts — they make text easier to read and comprehend, when
+ used correctly.
+I accept that some of the other distinctions — like en dashes — are
+ needlessly pedantic (though I don't doubt there is someone out there
+ who will gladly defend them with the same fervour with which I argue
+ for the em dash) and I wouldn't take the trouble to use them myself;
+ but I think there is a reasonable assumption that when someone goes
+ to the effort of using a Unicode punctuation mark that is semantic
+ (rather than merely typographical), they probably had a reason for
+ doing so.
 
-> 
-> * Ingo Molnar <mingo@kernel.org> wrote:
-> 
-> > Correction - there appears to be something else going on, but the
-> > error messages are similar:
-> > 
-> >   At main.c:291:
-> >   - SSL error:02001002:system library:fopen:No such file or directory: ../crypto/bio/bss_file.c:69
-> >   - SSL error:2006D080:BIO routines:BIO_new_file:no such file: ../crypto/bio/bss_file.c:76
-> >   sign-file: debian/linux-image/lib/modules/5.12.0-custom/kernel/arch/x86/crypto/aegis128-aesni.ko: No such file or directory
-> >   At main.c:291:
-> > 
-> > The error messages look pretty obscure to me. :-/
-> 
-> I didn't find any stray build files left in the tree, so 'make mrproper'
-> is innocent I believe.
-> 
-> I ended up with the config tweak below to get the kernel package to build,
-> which is not an ideal solution. :-/
-> 
-> Let me know if you'd like me to send you the .config and/or any diagnostic
-> messages or other details.
+> 	- U+2018 ('‘'): LEFT SINGLE QUOTATION MARK
+> 	- U+2019 ('’'): RIGHT SINGLE QUOTATION MARK
+> 	- U+201c ('“'): LEFT DOUBLE QUOTATION MARK
+> 	- U+201d ('”'): RIGHT DOUBLE QUOTATION MARK
+(These are purely typographic, I have no problem with dumping them.)
 
-Update: I now have a config that builds & boots fine, and I've done a 
-.config bisection to figure out which config option combination breaks the 
-build, which turned out to be the new MODULE_COMPRESS options:
+> 	- U+00d7 ('×'): MULTIPLICATION SIGN
+Presumably this is appearing in mathematical formulae, in which case
+ changing it to 'x' loses semantic information.
 
---- .config.good.002	2021-05-10 14:34:48.932206255 +0200
-+++ .config.bad.002	2021-05-10 14:40:48.587450742 +0200
-@@ -899,8 +899,8 @@ CONFIG_MODULE_SIG_ALL=y
- # CONFIG_MODULE_SIG_SHA384 is not set
- CONFIG_MODULE_SIG_SHA512=y
- CONFIG_MODULE_SIG_HASH="sha512"
--CONFIG_MODULE_COMPRESS_NONE=y
--# CONFIG_MODULE_COMPRESS_GZIP is not set
-+# CONFIG_MODULE_COMPRESS_NONE is not set
-+CONFIG_MODULE_COMPRESS_GZIP=y
- # CONFIG_MODULE_COMPRESS_XZ is not set
- # CONFIG_MODULE_COMPRESS_ZSTD is not set
- # CONFIG_MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS is not set
+> Using the above symbols will just trick tools like grep for no good
+> reason.
+NBSP, sure.  That one's probably an artefact of some document format
+ conversion somewhere along the line, anyway.
+But what kinds of things with × or — in are going to be grept for?
 
-Setting it to gzip triggered this build bug.
+If there are em dashes lying around that semantically _should_ be
+ hyphen-minus (one of your patches I've seen, for instance, fixes an
+ *en* dash moonlighting as the option character in an `ethtool`
+ command line), then sure, convert them.
+But any time someone is using a Unicode character to *express
+ semantics*, even if you happen to think the semantic distinction
+ involved is a pedantic or unimportant one, I think you need an
+ explicit grep case to justify ASCIIfying it.
 
-Thanks,
-
-	Ingo
+-ed
