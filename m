@@ -2,79 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFB737A9FC
-	for <lists+keyrings@lfdr.de>; Tue, 11 May 2021 16:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2D937B2B1
+	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 01:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231734AbhEKO5D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 11 May 2021 10:57:03 -0400
-Received: from mxout04.lancloud.ru ([45.84.86.114]:37372 "EHLO
-        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231609AbhEKO5D (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 11 May 2021 10:57:03 -0400
-X-Greylist: delayed 489 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 May 2021 10:57:02 EDT
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru 5209420C1E1A
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Date:   Tue, 11 May 2021 17:47:44 +0300
-From:   Elvira Khabirova <e.khabirova@omp.ru>
-To:     <keyrings@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <davem@davemloft.net>, <herbert@gondor.apana.org.au>,
-        <dhowells@redhat.com>, <vt@altlinux.org>
-Subject: [PATCH] pkcs7: support EC-RDSA/streebog in SignerInfo
-Message-ID: <20210511174744.4f3c6c59@msk1wst204>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S229973AbhEKXkU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 11 May 2021 19:40:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57534 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229637AbhEKXkT (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 11 May 2021 19:40:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 58A28616ED;
+        Tue, 11 May 2021 23:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620776352;
+        bh=opdv1vl7F9qgMxjqwo7kS8bgDqLanKuizbh/7bPX1d0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=N3NSyN2UVXQiYlvizM1YqCinboJ8Wfii4PUN8SQhqD2QB0Xdnv7Ykj1YG8mKI7Cpf
+         gqfrvt2QHJN8Ujb8u7niKauxwRL0mVCx3tBXUXRMSb4TkETeZUY00rBLWwMa5AejPn
+         lRUxCviwZNMoyS78geR89xun0Oi6LkcYwVkK4L0kchVgOB7Em0xQPMoXYjF7F2m5OJ
+         NCRaol8+SGYnCe4+bFkSkhbX2Fis4hbFXVVlByLTCe9UazKq750ROu3np0ksNhWiYb
+         CJgjqTdVc74bnX/H/W2Oce8NWva5s3HorKX2DRFNGN5SbuCLZ9aebr0f2/b8UVYcUS
+         fE2bTwZsUkPfQ==
+Date:   Wed, 12 May 2021 02:39:10 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Ben Boeckel <me@benboeckel.net>
+Cc:     keyrings@vger.kernel.org, Ben Boeckel <mathstuf@gmail.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH v2 1/1] trusted-keys: match tpm_get_ops on all return
+ paths
+Message-ID: <YJsVnjXYEokBC1N6@kernel.org>
+References: <20210429192156.770145-1-list.lkml.keyrings@me.benboeckel.net>
+ <20210429192156.770145-2-list.lkml.keyrings@me.benboeckel.net>
+ <YJmf4Q0l+MTFEaEo@erythro.dev.benboeckel.internal>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
- LFEX1903.lancloud.ru (fd00:f066::73)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YJmf4Q0l+MTFEaEo@erythro.dev.benboeckel.internal>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Allow using EC-RDSA/streebog in pkcs7 certificates in a similar way
-to how it's done in the x509 parser.
+On Mon, May 10, 2021 at 05:04:33PM -0400, Ben Boeckel wrote:
+> On Thu, Apr 29, 2021 at 15:21:56 -0400, Ben Boeckel wrote:
+> > From: Ben Boeckel <mathstuf@gmail.com>
+> > 
+> > The `tpm_get_ops` call at the beginning of the function is not paired
+> > with a `tpm_put_ops` on this return path.
+> > 
+> > Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Signed-off-by: Ben Boeckel <mathstuf@gmail.com>
+> > ---
+> >  security/keys/trusted-keys/trusted_tpm2.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+> > index 617fabd4d913..0165da386289 100644
+> > --- a/security/keys/trusted-keys/trusted_tpm2.c
+> > +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> > @@ -336,9 +336,9 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+> >  			rc = -EPERM;
+> >  	}
+> >  	if (blob_len < 0)
+> > -		return blob_len;
+> > -
+> > -	payload->blob_len = blob_len;
+> > +		rc = blob_len;
+> > +	else
+> > +		payload->blob_len = blob_len;
+> >  
+> >  	tpm_put_ops(chip);
+> >  	return rc;
+> 
+> Ping? Is this going to make 5.13? This fixes an issue that is in
+> 5.13-rc1.
 
-This is needed e.g. for loading kernel modules signed with EC-RDSA.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Signed-off-by: Elvira Khabirova <e.khabirova@omp.ru>
----
- crypto/asymmetric_keys/pkcs7_parser.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 967329e0a07b..39c260a04167 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -248,6 +248,12 @@ int pkcs7_sig_note_digest_algo(void *context, size_t hdrlen,
- 	case OID_sha224:
- 		ctx->sinfo->sig->hash_algo = "sha224";
- 		break;
-+	case OID_gost2012Digest256:
-+		ctx->sinfo->sig->hash_algo = "streebog256";
-+		break;
-+	case OID_gost2012Digest512:
-+		ctx->sinfo->sig->hash_algo = "streebog512";
-+		break;
- 	default:
- 		printk("Unsupported digest algo: %u\n", ctx->last_oid);
- 		return -ENOPKG;
-@@ -269,6 +275,11 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
- 		ctx->sinfo->sig->pkey_algo = "rsa";
- 		ctx->sinfo->sig->encoding = "pkcs1";
- 		break;
-+	case OID_gost2012PKey256:
-+	case OID_gost2012PKey512:
-+		ctx->sinfo->sig->pkey_algo = "ecrdsa";
-+		ctx->sinfo->sig->encoding = "raw";
-+		break;
- 	default:
- 		printk("Unsupported pkey algo: %u\n", ctx->last_oid);
- 		return -ENOPKG;
--- 
-2.25.1
-
+/Jarkko
