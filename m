@@ -2,59 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F09D37BF50
-	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 16:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B30937BF53
+	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 16:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231464AbhELOGr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 12 May 2021 10:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56822 "EHLO
+        id S230292AbhELOGt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 12 May 2021 10:06:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231294AbhELOGl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 10:06:41 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F76DC06174A;
-        Wed, 12 May 2021 07:05:32 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id x188so18575937pfd.7;
-        Wed, 12 May 2021 07:05:32 -0700 (PDT)
+        with ESMTP id S231336AbhELOGn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 10:06:43 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FFB0C061763;
+        Wed, 12 May 2021 07:05:35 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id gj14so13566333pjb.5;
+        Wed, 12 May 2021 07:05:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=dV0x/tnHtDFzJC3L/bpk43LWIqmMV6OlE9B94s6d0EA=;
-        b=I9/3EclVAtXYZ9A3M3aVahb/Zre1/dWPYpdmZIE63plFu/WOheS3z9F4jbzPqDsH2C
-         0T8NPo8mLOWdIWyx/k2shbeqoPit5V2UfbAtTcZMCd9Xk303VOf0S7bx6sCxJrUoygDt
-         vRd5MzejgOcF387hw5xmh9m5iGUZYzexV4KObUwcHqz2EcnVkFAzm7ncbn35Sno4FXKJ
-         9i3eeIghVEG/MUaorcaq0eQ6Nza8/UrDrbBxzdU9sokC52lLdP29uqBeVbkddKwW6/ro
-         KzI4H/fu3TCTMgUgRvwnDc0Az9zFSCKudW+GOCCJA6WIUAfwoF5R6/blkd5zciJ35gGs
-         HbCw==
+        bh=4znfNHCvAf0LuBf9Lt4gHMIKonsCtEQvtpgsQeaCVgU=;
+        b=pquzZyG6tSg66JJlOUEXihCkd0tQOSgykNjb6Y7f7XTTUrokGEN4iJfs4svcE4Gwq9
+         xftjSZ1r4tF57bqo4CLoEqhxGHjhoFpMWsRY47IdG9n4sG1eP+B0Xlf9McmfkpsHYHeh
+         xfsorAZXgbvA3OlxahrqqOov00b0vq7yWWu0ng4PTssLJ8hPFQTYPyOerYBd75TaFsN6
+         JGKkwtg3QMVSQFPLYk/GmmUw7k+M3ncdywATrfv4jQeEu5JwEsgQPus80fzwU83S0F1d
+         hEIhD9VYX8IzHy5DRNcDladabnYGbr3Bl80nwZ2DBaPPqFvhpcdiN3hGr7Ns75OOgQBx
+         U7cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=dV0x/tnHtDFzJC3L/bpk43LWIqmMV6OlE9B94s6d0EA=;
-        b=rTUCEIjciJVSmasc1B97aL1CMSRUdiXmFdcCvU9e5hq4Rcw0kEZ8LMNuY3EdZJGigB
-         5uR1V2mVQqVCspyQzzJRdY0GRyFNfWrsT6yWw+xkqW7FgSuu+PeUXrwUxsqeG89D4pNu
-         VjRifVUnMv2MrKwZfQjgZoIWlDaiEixn8/ajBvLpnBzJN2kkRGGoTu5+qd2BpZFQqFcb
-         mEvIpJS8P/gsaFOm8kdhq7rz2T6EVEOHz79WGrl+f5wi6rMaMz67jDQlN0mcmB90EmCB
-         HD2zBCrPHQTNjx4v4xt0S0Ru0dCivxNx6BR9N89mqzQi8rOH7MBlxmyJEiPJsImdHBhh
-         adhA==
-X-Gm-Message-State: AOAM532YIo43wQpfr0ArHDJTK+cyZRNOopLki67VwjDTQCKGeiKTyIxy
-        OAtbKNxZO13KVk6tvTMIUwVgS+BVHoM=
-X-Google-Smtp-Source: ABdhPJzUMKypvnAoXNtmhiTrLzVQ0nTGGaLiobH88hKLo0+/IU8wKH50DxzRJjOhr/AXBA2CELj7Ag==
-X-Received: by 2002:a63:d509:: with SMTP id c9mr35730614pgg.280.1620828331896;
-        Wed, 12 May 2021 07:05:31 -0700 (PDT)
+        bh=4znfNHCvAf0LuBf9Lt4gHMIKonsCtEQvtpgsQeaCVgU=;
+        b=H/pzIhBBxOJ7/AaAa37QjjQejiAUBks3H47IE7Y9e18XT8ugNMHpY1p10LyZntExIe
+         3JQCh8biAITv5pm+sXX30dPDWmH8O6fVlXfzG2ys6JCzAiL+9wBOGKxSEeMSZMGh57lR
+         14KFxXD3bR8ePGqJKpFXivdXCOIDQMC62L7jc7v5CIkr7CrlA0v0urDx74aEskTmsw0d
+         6aaY6fjdNln5QVbqMskkf+anyo6jLp2hRC8AsuPrOzpaqOSxxjc0bfqTD3RGA4nqb1d/
+         CRAkRd/KGbNYtgR3tLvvHl83H0I87x94aq+rmnxaB8gslObHbh/sUZ7hyWOc5DIYE6Ig
+         7CZA==
+X-Gm-Message-State: AOAM5320ANDcDKlnIwcJD+IbW2RdpWNXuVE4BegXGAM1UJzOXqcz0bWe
+        dFuT7VpBsBRBeGEDMuWTYGP9vso/Jv4=
+X-Google-Smtp-Source: ABdhPJxrxZCS7gM6osjRUdMPb2RtzuWFMMInEkA69rHEtW1XcNqPTGgG3HwaINMydifS6MvndZEl7A==
+X-Received: by 2002:a17:90a:6345:: with SMTP id v5mr11327813pjs.139.1620828334167;
+        Wed, 12 May 2021 07:05:34 -0700 (PDT)
 Received: from localhost.localdomain ([203.205.141.39])
-        by smtp.gmail.com with ESMTPSA id in16sm28546pjb.14.2021.05.12.07.05.30
+        by smtp.gmail.com with ESMTPSA id in16sm28546pjb.14.2021.05.12.07.05.32
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 May 2021 07:05:31 -0700 (PDT)
+        Wed, 12 May 2021 07:05:33 -0700 (PDT)
 From:   Hongbo Li <herbert.tencent@gmail.com>
 To:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         herbert@gondor.apana.org.au, dhowells@redhat.com,
         jarkko@kernel.org, tianjia.zhang@linux.alibaba.com,
         herberthbli@tencent.com
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 5/7] crypto: move common code in sm2 to ec_mpi.c and ec_mpi.h
-Date:   Wed, 12 May 2021 22:04:12 +0800
-Message-Id: <1620828254-25545-6-git-send-email-herbert.tencent@gmail.com>
+Subject: [PATCH 6/7] crypto: ed25519 cert verification
+Date:   Wed, 12 May 2021 22:04:13 +0800
+Message-Id: <1620828254-25545-7-git-send-email-herbert.tencent@gmail.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
 References: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
@@ -64,325 +64,387 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Hongbo Li <herberthbli@tencent.com>
 
-Some structs and functions in sm2 are common codes, and could be
-used by the following eddsa patch. So move them to common files:
-ec_mpi.c and ec_mpi.h.
+This patch adds the support of eddsa(currently ed25519) which is described
+in RFC8032 section 5.1.7 [1].
+
+[1]: https://tools.ietf.org/html/rfc8032#section-5.1.7
 
 Signed-off-by: Hongbo Li <herberthbli@tencent.com>
 ---
- crypto/Kconfig  |  4 +++
- crypto/Makefile |  1 +
- crypto/ec_mpi.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++
- crypto/ec_mpi.h | 37 ++++++++++++++++++++++
- crypto/sm2.c    | 98 ++-------------------------------------------------------
- 5 files changed, 127 insertions(+), 95 deletions(-)
- create mode 100644 crypto/ec_mpi.c
- create mode 100644 crypto/ec_mpi.h
+ crypto/Kconfig  |  11 ++
+ crypto/Makefile |   3 +
+ crypto/eddsa.c  | 326 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 340 insertions(+)
+ create mode 100644 crypto/eddsa.c
 
 diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 4a0d187..75ae7d3 100644
+index 75ae7d3..6463c85 100644
 --- a/crypto/Kconfig
 +++ b/crypto/Kconfig
-@@ -265,6 +265,9 @@ config CRYPTO_ECRDSA
- 	  standard algorithms (called GOST algorithms). Only signature verification
- 	  is implemented.
+@@ -268,6 +268,17 @@ config CRYPTO_ECRDSA
+ config CRYPTO_EC_MPI
+ 	tristate
  
-+config CRYPTO_EC_MPI
-+	tristate
++config CRYPTO_EDDSA
++	tristate "EDDSA (ed25519) algorithm"
++	select CRYPTO_ECC
++	select CRYPTO_EC_MPI
++	select CRYPTO_AKCIPHER
++	select ASN1
++	help
++	  Edwards-curve Digital Signature Algorithm (ed25519) is a variant
++	  of Schnorr's signature system with (possibly twisted) Edwards curves.
++	  Only signature verification is implemented.
 +
  config CRYPTO_SM2
  	tristate "SM2 algorithm"
  	select CRYPTO_SM3
-@@ -272,6 +275,7 @@ config CRYPTO_SM2
- 	select CRYPTO_MANAGER
- 	select MPILIB
- 	select ASN1
-+	select CRYPTO_EC_MPI
- 	help
- 	  Generic implementation of the SM2 public key algorithm. It was
- 	  published by State Encryption Management Bureau, China.
 diff --git a/crypto/Makefile b/crypto/Makefile
-index 10526d4..8afb393 100644
+index 8afb393..2bbdfad 100644
 --- a/crypto/Makefile
 +++ b/crypto/Makefile
-@@ -177,6 +177,7 @@ obj-$(CONFIG_CRYPTO_OFB) += ofb.o
- obj-$(CONFIG_CRYPTO_ECC) += ecc.o
- obj-$(CONFIG_CRYPTO_ESSIV) += essiv.o
- obj-$(CONFIG_CRYPTO_CURVE25519) += curve25519-generic.o
-+obj-$(CONFIG_CRYPTO_EC_MPI) += ec_mpi.o
+@@ -56,6 +56,9 @@ ecdsa_generic-y += ecdsa.o
+ ecdsa_generic-y += ecdsasignature.asn1.o
+ obj-$(CONFIG_CRYPTO_ECDSA) += ecdsa_generic.o
  
- ecdh_generic-y += ecdh.o
- ecdh_generic-y += ecdh_helper.o
-diff --git a/crypto/ec_mpi.c b/crypto/ec_mpi.c
++eddsa_generic-y += eddsa.o
++obj-$(CONFIG_CRYPTO_EDDSA) += eddsa_generic.o
++
+ crypto_acompress-y := acompress.o
+ crypto_acompress-y += scompress.o
+ obj-$(CONFIG_CRYPTO_ACOMP2) += crypto_acompress.o
+diff --git a/crypto/eddsa.c b/crypto/eddsa.c
 new file mode 100644
-index 0000000..a537e6f
+index 0000000..06e86be
 --- /dev/null
-+++ b/crypto/ec_mpi.c
-@@ -0,0 +1,82 @@
++++ b/crypto/eddsa.c
+@@ -0,0 +1,326 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * EC MPI common functions.
++ * EDDSA generic algorithm.
 + *
-+ * Copyright (c) 2020, Alibaba Group.
-+ * Authors: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
++ * Copyright (c) 2021 Hongbo Li <herberthbli@tencent.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the Free
++ * Software Foundation; either version 2 of the License, or (at your option)
++ * any later version.
 + */
 +
-+#include <linux/module.h>
 +#include <linux/mpi.h>
++#include <linux/module.h>
++#include <linux/oid_registry.h>
++#include <crypto/hash.h>
++#include <crypto/sha2.h>
++#include <crypto/ecdh.h>
++#include <crypto/curve25519.h>
++#include <crypto/internal/akcipher.h>
 +#include "ec_mpi.h"
 +
-+int ec_mpi_ctx_init(struct mpi_ec_ctx *ec, const struct ecc_domain_parms *ecp)
-+{
-+	MPI p, a, b;
-+	MPI x, y;
-+	int rc = -EINVAL;
-+
-+	p = mpi_scanval(ecp->p);
-+	a = mpi_scanval(ecp->a);
-+	b = mpi_scanval(ecp->b);
-+	if (!p || !a || !b)
-+		goto free_p;
-+
-+	x = mpi_scanval(ecp->g_x);
-+	y = mpi_scanval(ecp->g_y);
-+	if (!x || !y)
-+		goto free;
-+
-+	rc = -ENOMEM;
-+
-+	ec->Q = mpi_point_new(0);
-+	if (!ec->Q)
-+		goto free;
-+
-+	/* mpi_ec_setup_elliptic_curve */
-+	ec->G = mpi_point_new(0);
-+	if (!ec->G) {
-+		mpi_point_release(ec->Q);
-+		goto free;
-+	}
-+
-+	mpi_set(ec->G->x, x);
-+	mpi_set(ec->G->y, y);
-+	mpi_set_ui(ec->G->z, 1);
-+
-+	rc = -EINVAL;
-+	ec->n = mpi_scanval(ecp->n);
-+	if (!ec->n) {
-+		mpi_point_release(ec->Q);
-+		mpi_point_release(ec->G);
-+		goto free;
-+	}
-+
-+	ec->h = ecp->h;
-+	ec->name = ecp->desc;
-+	mpi_ec_init(ec, ecp->model, ecp->dialect, 0, p, a, b);
-+
-+	rc = 0;
-+
-+free:
-+	mpi_free(x);
-+	mpi_free(y);
-+free_p:
-+	mpi_free(p);
-+	mpi_free(a);
-+	mpi_free(b);
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL(ec_mpi_ctx_init);
-+
-+void ec_mpi_ctx_deinit(struct mpi_ec_ctx *ec)
-+{
-+	mpi_ec_deinit(ec);
-+
-+	memset(ec, 0, sizeof(*ec));
-+}
-+EXPORT_SYMBOL(ec_mpi_ctx_deinit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Tianjia Zhang <tianjia.zhang@linux.alibaba.com>");
-diff --git a/crypto/ec_mpi.h b/crypto/ec_mpi.h
-new file mode 100644
-index 0000000..e1f6d3aa
---- /dev/null
-+++ b/crypto/ec_mpi.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * EC MPI common structs.
-+ *
-+ * Copyright (c) 2020, Alibaba Group.
-+ * Authors: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-+ */
-+
-+#include <linux/mpi.h>
-+
-+struct ecc_domain_parms {
-+	const char *desc;           /* Description of the curve.  */
-+	unsigned int nbits;         /* Number of bits.  */
-+	unsigned int fips:1; /* True if this is a FIPS140-2 approved curve */
-+
-+	/* The model describing this curve.  This is mainly used to select
-+	 * the group equation.
-+	 */
-+	enum gcry_mpi_ec_models model;
-+
-+	/* The actual ECC dialect used.  This is used for curve specific
-+	 * optimizations and to select encodings etc.
-+	 */
-+	enum ecc_dialects dialect;
-+
-+	const char *p;              /* The prime defining the field.  */
-+	const char *a, *b;          /* The coefficients.  For Twisted Edwards
-+				     * Curves b is used for d.  For Montgomery
-+				     * Curves (a,b) has ((A-2)/4,B^-1).
-+				     */
-+	const char *n;              /* The order of the base point.  */
-+	const char *g_x, *g_y;      /* Base point.  */
-+	unsigned int h;             /* Cofactor.  */
++struct eddsa_ctx {
++	enum OID algo_oid;
++	struct mpi_ec_ctx ec_ctx;
 +};
 +
-+int ec_mpi_ctx_init(struct mpi_ec_ctx *ec, const struct ecc_domain_parms *ecp);
-+void ec_mpi_ctx_deinit(struct mpi_ec_ctx *ec);
-diff --git a/crypto/sm2.c b/crypto/sm2.c
-index db8a4a2..ea1676b 100644
---- a/crypto/sm2.c
-+++ b/crypto/sm2.c
-@@ -9,42 +9,17 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/mpi.h>
- #include <crypto/internal/akcipher.h>
- #include <crypto/akcipher.h>
- #include <crypto/hash.h>
- #include <crypto/sm3_base.h>
- #include <crypto/rng.h>
- #include <crypto/sm2.h>
-+#include "ec_mpi.h"
- #include "sm2signature.asn1.h"
- 
- #define MPI_NBYTES(m)   ((mpi_get_nbits(m) + 7) / 8)
- 
--struct ecc_domain_parms {
--	const char *desc;           /* Description of the curve.  */
--	unsigned int nbits;         /* Number of bits.  */
--	unsigned int fips:1; /* True if this is a FIPS140-2 approved curve */
--
--	/* The model describing this curve.  This is mainly used to select
--	 * the group equation.
--	 */
--	enum gcry_mpi_ec_models model;
--
--	/* The actual ECC dialect used.  This is used for curve specific
--	 * optimizations and to select encodings etc.
--	 */
--	enum ecc_dialects dialect;
--
--	const char *p;              /* The prime defining the field.  */
--	const char *a, *b;          /* The coefficients.  For Twisted Edwards
--				     * Curves b is used for d.  For Montgomery
--				     * Curves (a,b) has ((A-2)/4,B^-1).
--				     */
--	const char *n;              /* The order of the base point.  */
--	const char *g_x, *g_y;      /* Base point.  */
--	unsigned int h;             /* Cofactor.  */
--};
--
- static const struct ecc_domain_parms sm2_ecp = {
- 	.desc = "sm2p256v1",
- 	.nbits = 256,
-@@ -60,73 +35,6 @@ struct ecc_domain_parms {
- 	.h = 1
- };
- 
--static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
--{
--	const struct ecc_domain_parms *ecp = &sm2_ecp;
--	MPI p, a, b;
--	MPI x, y;
--	int rc = -EINVAL;
--
--	p = mpi_scanval(ecp->p);
--	a = mpi_scanval(ecp->a);
--	b = mpi_scanval(ecp->b);
--	if (!p || !a || !b)
--		goto free_p;
--
--	x = mpi_scanval(ecp->g_x);
--	y = mpi_scanval(ecp->g_y);
--	if (!x || !y)
--		goto free;
--
--	rc = -ENOMEM;
--
--	ec->Q = mpi_point_new(0);
--	if (!ec->Q)
--		goto free;
--
--	/* mpi_ec_setup_elliptic_curve */
--	ec->G = mpi_point_new(0);
--	if (!ec->G) {
--		mpi_point_release(ec->Q);
--		goto free;
--	}
--
--	mpi_set(ec->G->x, x);
--	mpi_set(ec->G->y, y);
--	mpi_set_ui(ec->G->z, 1);
--
--	rc = -EINVAL;
--	ec->n = mpi_scanval(ecp->n);
--	if (!ec->n) {
--		mpi_point_release(ec->Q);
--		mpi_point_release(ec->G);
--		goto free;
--	}
--
--	ec->h = ecp->h;
--	ec->name = ecp->desc;
--	mpi_ec_init(ec, ecp->model, ecp->dialect, 0, p, a, b);
--
--	rc = 0;
--
--free:
--	mpi_free(x);
--	mpi_free(y);
--free_p:
--	mpi_free(p);
--	mpi_free(a);
--	mpi_free(b);
--
--	return rc;
--}
--
--static void sm2_ec_ctx_deinit(struct mpi_ec_ctx *ec)
--{
--	mpi_ec_deinit(ec);
--
--	memset(ec, 0, sizeof(*ec));
--}
--
- /* RESULT must have been initialized and is set on success to the
-  * point given by VALUE.
-  */
-@@ -416,14 +324,14 @@ static int sm2_init_tfm(struct crypto_akcipher *tfm)
- {
- 	struct mpi_ec_ctx *ec = akcipher_tfm_ctx(tfm);
- 
--	return sm2_ec_ctx_init(ec);
-+	return ec_mpi_ctx_init(ec, &sm2_ecp);
- }
- 
- static void sm2_exit_tfm(struct crypto_akcipher *tfm)
- {
- 	struct mpi_ec_ctx *ec = akcipher_tfm_ctx(tfm);
- 
--	sm2_ec_ctx_deinit(ec);
-+	ec_mpi_ctx_deinit(ec);
- }
- 
- static struct akcipher_alg sm2 = {
++static MPI p58;
++static MPI seven;
++static MPI m1;
++
++static const struct ecc_domain_parms ed25519_domain_params = {
++	.desc = "ed25519",
++	.nbits = 256,
++	.fips = 0,
++	.model = MPI_EC_EDWARDS,
++	.dialect = ECC_DIALECT_ED25519,
++	.p = "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFED",
++	.a = "-0x01",
++	.b = "-0x2DFC9311D490018C7338BF8688861767FF8FF5B2BEBE27548A14B235ECA6874A",
++	.n = "0x1000000000000000000000000000000014DEF9DEA2F79CD65812631A5CF5D3ED",
++	.g_x = "0x216936D3CD6E53FEC0A4E231FDD6DC5C692CC7609525A7B2C9562D608F25D51A",
++	.g_y = "0x6666666666666666666666666666666666666666666666666666666666666658",
++	.h = 8,
++};
++
++static void reverse_buffer(u8 *buffer, u32 length)
++{
++	u32 tmp, i;
++
++	for (i = 0; i < length / 2; i++) {
++		tmp = buffer[i];
++		buffer[i] = buffer[length - 1 - i];
++		buffer[length - 1 - i] = tmp;
++	}
++}
++
++static int eddsa_encode_x_y(MPI x, MPI y, u8 *buf, u32 key_size)
++{
++	memcpy(buf, y->d, key_size);
++	if (mpi_test_bit(x, 0))
++		buf[key_size - 1] |= 0x80;
++
++	return 0;
++}
++
++int ecc_eddsa_encodepoint(MPI_POINT point, struct mpi_ec_ctx *ec,
++			  MPI x, MPI y, u8 *buf, u32 key_size)
++{
++	if (mpi_ec_get_affine(x, y, point, ec))
++		return -EINVAL;
++
++	return eddsa_encode_x_y(x, y, buf, key_size);
++}
++
++/* Recover X from Y and SIGN (which actually is a parity bit).  */
++static int eddsa_recover_x(MPI x, MPI y, int sign, struct mpi_ec_ctx *ec)
++{
++	MPI u, v, v3, t;
++	int ret = 0;
++
++	if (ec->dialect != ECC_DIALECT_ED25519)
++		return -ENOPKG;
++
++	u = mpi_new(0);
++	v = mpi_new(0);
++	v3 = mpi_new(0);
++	t = mpi_new(0);
++
++	/* Compute u and v */
++	/* u = y^2 */
++	mpi_mulm(u, y, y, ec->p);
++	/* v = b*y^2 */
++	mpi_mulm(v, ec->b, u, ec->p);
++	/* u = y^2-1 */
++	mpi_sub_ui(u, u, 1);
++	/* v = b*y^2+1 */
++	mpi_add_ui(v, v, 1);
++
++	/* Compute sqrt(u/v) */
++	/* v3 = v^3 */
++	mpi_powm(v3, v, mpi_const(MPI_C_THREE), ec->p);
++	/* t = v3 * v3 * u * v = u * v^7 */
++	mpi_powm(t, v, seven, ec->p);
++	mpi_mulm(t, t, u, ec->p);
++	/* t = t^((p-5)/8) = (u * v^7)^((p-5)/8)  */
++	mpi_powm(t, t, p58, ec->p);
++	/* x = t * u * v^3 = (u * v^3) * (u * v^7)^((p-5)/8) */
++	mpi_mulm(t, t, u, ec->p);
++	mpi_mulm(x, t, v3, ec->p);
++
++	/* Adjust if needed. */
++	/* t = v * x^2 */
++	mpi_mulm(t, x, x, ec->p);
++	mpi_mulm(t, t, v, ec->p);
++	/* -t == u ? x = x * sqrt(-1) */
++	mpi_sub(t, ec->p, t);
++	if (!mpi_cmp(t, u)) {
++		mpi_mulm(x, x, m1, ec->p);
++		/* t = v * x^2 */
++		mpi_mulm(t, x, x, ec->p);
++		mpi_mulm(t, t, v, ec->p);
++		/* -t == u ? x = x * sqrt(-1) */
++		mpi_sub(t, ec->p, t);
++		if (!mpi_cmp(t, u))
++			ret = -EINVAL;
++	}
++
++	/* Choose the desired square root according to parity */
++	if (mpi_test_bit(x, 0) != !!sign)
++		mpi_sub(x, ec->p, x);
++
++	mpi_free(t);
++	mpi_free(v3);
++	mpi_free(v);
++	mpi_free(u);
++
++	return ret;
++}
++
++static int ecc_eddsa_decodepoint(const u8 *pk, int key_size,
++				 struct mpi_ec_ctx *ec, MPI_POINT result)
++{
++	MPI y;
++	u8 *rawmpi;
++	int sign, ret = 0;
++
++	rawmpi = kmalloc(key_size, GFP_KERNEL);
++	if (!rawmpi)
++		return -ENOMEM;
++	memcpy(rawmpi, pk, key_size);
++	reverse_buffer(rawmpi, key_size);
++
++	sign = !!(rawmpi[0] & 0x80);
++	rawmpi[0] &= 0x7f;
++
++	y = mpi_read_raw_data(rawmpi, key_size);
++	if (!y) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	mpi_normalize(y);
++	mpi_set(result->y, y);
++	mpi_free(y);
++
++	ret = eddsa_recover_x(result->x, result->y, sign, ec);
++	mpi_set_ui(result->z, 1);
++out:
++	kfree(rawmpi);
++	return ret;
++}
++
++int eddsa_verify(struct akcipher_request *req)
++{
++	struct crypto_akcipher *tfm = crypto_akcipher_reqtfm(req);
++	struct eddsa_ctx *ctx = akcipher_tfm_ctx(tfm);
++	struct mpi_ec_ctx *ec = &ctx->ec_ctx;
++	struct gcry_mpi_point sb, ka;
++	MPI s = NULL;
++	MPI k = NULL;
++	u8 sig[CURVE25519_KEY_SIZE * 2], digest[SHA512_DIGEST_SIZE];
++	u8 *buf;
++	u32 key_size;
++	int ret = 0;
++
++	if (ctx->algo_oid != OID_ed25519)
++		return -ENOPKG;
++
++	key_size = CURVE25519_KEY_SIZE;
++
++	if (!ec->Q || req->src_len != key_size * 2)
++		return -EINVAL;
++
++	sg_copy_to_buffer(req->src, sg_nents_for_len(req->src, req->src_len),
++			  sig, req->src_len);
++
++	sg_pcopy_to_buffer(req->src,
++			   sg_nents_for_len(req->src,
++					    req->src_len + req->dst_len),
++			   digest, req->dst_len, req->src_len);
++
++	reverse_buffer(digest, SHA512_DIGEST_SIZE);
++	k = mpi_read_raw_data(digest, SHA512_DIGEST_SIZE);
++
++	reverse_buffer(sig + key_size, key_size);
++	s = mpi_read_raw_data(sig + key_size, key_size);
++
++	mpi_point_init(&sb);
++	mpi_point_init(&ka);
++
++	mpi_ec_mul_point(&sb, s, ec->G, ec);
++	mpi_ec_mul_point(&ka, k, ec->Q, ec);
++	mpi_sub(ka.x, ec->p, ka.x);
++	mpi_ec_add_points(&sb, &sb, &ka, ec);
++
++	buf = kmalloc(key_size, GFP_KERNEL);
++	if (!buf) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	ret = ecc_eddsa_encodepoint(&sb, ec, s, k, buf, key_size);
++	if (ret)
++		goto out;
++
++	if (memcmp(buf, sig, key_size))
++		ret = -EKEYREJECTED;
++
++out:
++	mpi_point_free_parts(&sb);
++	mpi_point_free_parts(&ka);
++	mpi_free(k);
++	mpi_free(s);
++	kfree(buf);
++	return ret;
++}
++
++static int eddsa_set_pub_key(struct crypto_akcipher *tfm, const void *key,
++			     unsigned int keylen)
++{
++	struct eddsa_ctx *ctx = akcipher_tfm_ctx(tfm);
++	struct mpi_ec_ctx *ec = &ctx->ec_ctx;
++	const u8 *pk = key;
++
++	if (ctx->algo_oid != OID_ed25519)
++		return -ENOPKG;
++
++	if (keylen != CURVE25519_KEY_SIZE)
++		return -EINVAL;
++
++	return ecc_eddsa_decodepoint(pk, keylen, ec, ec->Q);
++}
++
++u32 eddsa_max_size(struct crypto_akcipher *tfm)
++{
++	struct eddsa_ctx *ctx = akcipher_tfm_ctx(tfm);
++
++	if (ctx->algo_oid == OID_ed25519)
++		return CURVE25519_KEY_SIZE;
++
++	return 0;
++}
++
++static int eddsa_25519_init_tfm(struct crypto_akcipher *tfm)
++{
++	struct eddsa_ctx *ctx = akcipher_tfm_ctx(tfm);
++
++	ctx->algo_oid = OID_ed25519;
++	p58 = mpi_scanval("0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD");
++	if (!p58)
++		return -ENOMEM;
++
++	m1 = mpi_scanval("2B8324804FC1DF0B2B4D00993DFBD7A72F431806AD2FE478C4EE1B274A0EA0B0");
++	if (!m1)
++		return -ENOMEM;
++
++	seven = mpi_set_ui(NULL, 7);
++
++	return ec_mpi_ctx_init(&ctx->ec_ctx, &ed25519_domain_params);
++}
++
++static void eddsa_exit_tfm(struct crypto_akcipher *tfm)
++{
++	struct eddsa_ctx *ctx = akcipher_tfm_ctx(tfm);
++
++	ec_mpi_ctx_deinit(&ctx->ec_ctx);
++	mpi_free(p58);
++	mpi_free(seven);
++	mpi_free(m1);
++}
++
++
++static struct akcipher_alg eddsa_25519 = {
++	.verify = eddsa_verify,
++	.set_pub_key = eddsa_set_pub_key,
++	.max_size = eddsa_max_size,
++	.init = eddsa_25519_init_tfm,
++	.exit = eddsa_exit_tfm,
++	.base = {
++		.cra_name = "eddsa-25519",
++		.cra_driver_name = "eddsa-25519-generic",
++		.cra_priority = 100,
++		.cra_module = THIS_MODULE,
++		.cra_ctxsize = sizeof(struct eddsa_ctx),
++	},
++};
++
++static int eddsa_mod_init(void)
++{
++	return crypto_register_akcipher(&eddsa_25519);
++}
++
++static void eddsa_mod_exit(void)
++{
++	crypto_unregister_akcipher(&eddsa_25519);
++}
++
++module_init(eddsa_mod_init);
++module_exit(eddsa_mod_exit);
++
++MODULE_LICENSE("GPL v2");
++MODULE_AUTHOR("Hongbo Li <herberthbli@tencent.com>");
++MODULE_ALIAS_CRYPTO("eddsa");
++MODULE_ALIAS_CRYPTO("eddsa-generic");
++MODULE_DESCRIPTION("EDDSA generic algorithm");
 -- 
 1.8.3.1
 
