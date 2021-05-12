@@ -2,98 +2,225 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C168E37C57B
-	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 17:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A03A637C53D
+	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 17:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233754AbhELPlD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 12 May 2021 11:41:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49178 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235091AbhELPfS (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 12 May 2021 11:35:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 455F961C3E;
-        Wed, 12 May 2021 15:17:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620832672;
-        bh=zB2G4t5ozyJ72g68BGRplKf2lQRTS6CtRvJ7FVX3NWE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DBjrvZcbfODq6o/u3ovhcKp34o3mQ/2g2kqOKbw7rqi0UbJcuDmNkgLMMy0M05dFs
-         mwfV7fdqIvkaHvs5FkFIxP3pQ5mW2wuelKsM0Zg1XI928MZ1g6hDtwlC/lZ6mTYtDn
-         L0yXyxJPdKzjgMXD6Vs/vdQOXuvQV+DBBKSwRDhM/LlZ9x9/DV6Qnq7MjBym4Ue3He
-         LklNFflnfSaW1SCikrvqRJriPDliUiNhIaGm2pb/3nXItDzT/4/obeOPpO0NPN/v0m
-         Pwish5sD0axq4vDEIuCSUJZyKrnPcy3P6Nd30IKN+fHXybC5E+QSyK+xdLgaNeWw/l
-         +EUyGcBOd8VUw==
-Date:   Wed, 12 May 2021 17:17:41 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     "Theodore Ts'o" <tytso@mit.edu>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mali DP Maintainers <malidp@foss.arm.com>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate
- symbols
-Message-ID: <20210512171741.2870bcbc@coco.lan>
-In-Reply-To: <YJvi1L2ss5Tfi+My@mit.edu>
-References: <cover.1620823573.git.mchehab+huawei@kernel.org>
-        <YJvi1L2ss5Tfi+My@mit.edu>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S233782AbhELPjB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 12 May 2021 11:39:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33213 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234154AbhELPcO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 11:32:14 -0400
+Received: from mail-wr1-f72.google.com ([209.85.221.72])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <dimitri.ledkov@canonical.com>)
+        id 1lgqpF-0000rI-Dw
+        for keyrings@vger.kernel.org; Wed, 12 May 2021 15:31:05 +0000
+Received: by mail-wr1-f72.google.com with SMTP id h104-20020adf90710000b029010de8455a3aso10260623wrh.12
+        for <keyrings@vger.kernel.org>; Wed, 12 May 2021 08:31:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fZI9VWslQbAkaL9+aHE2bKwdaoPdjTN0bkodyxaVHrI=;
+        b=WeZ2P02z5khDOooMqGU3/rRDr0IMZFikryoD/GgGxYIfmJUllt++pI0hNT8vbnu9Cq
+         VES5uZeIX2rTbHShp5YBWuUxFfbBS9nznHOcAK7H6CI528YsuqUlTjvgCjcj26aXUAGH
+         k/GQcMSY5U68EU2mOAgVEk6Ml9incwFjJXNva4vlopbEMJ3RgMELcBSnQhTPkjjEsyAY
+         h4uE1DgbtLiMk1OblxhwOL+HrhCP2fMN8yipeq6LfwSpcwgcgUocqNjh3Y+nDK2ynS9n
+         vYA0TU4h1JTDLUI4XsN2fUoJK9PVMqSeX8efqbItgT/Er+JpX6RLcUWhofvLTdsz5Ho8
+         MMMw==
+X-Gm-Message-State: AOAM532dcLIBq5n6V+Nsl6U/y3tC3Bh3sKat8yFtRN4APq8BQOzi3seT
+        Bk38/3ER5FO2O2f31oACLNhkyH3m2941oa7bI3B/1VPaNM+E7KZGPYwnumIjYIxmdupTeS762jB
+        CLB1kCUcxlkfi6afTHxhJoR+nNJsrXF9Qo0/z
+X-Received: by 2002:adf:e947:: with SMTP id m7mr47459871wrn.70.1620833465046;
+        Wed, 12 May 2021 08:31:05 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwo53elL32JG7xaTmhg1ws1K3bI1DUcpZXe8E1r6krk8pxvSGElDVeDAzJWgiXjHolsOTLYAw==
+X-Received: by 2002:adf:e947:: with SMTP id m7mr47459838wrn.70.1620833464799;
+        Wed, 12 May 2021 08:31:04 -0700 (PDT)
+Received: from localhost ([2a01:4b00:85fd:d700:8f2c:460b:dbba:6128])
+        by smtp.gmail.com with ESMTPSA id c16sm4576031wrn.92.2021.05.12.08.31.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 May 2021 08:31:03 -0700 (PDT)
+From:   Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+        keyrings@vger.kernel.org, Eric Snowberg <eric.snowberg@oracle.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        David Howells <dhowells@redhat.com>
+Subject: [PATCH] integrity: Load mokx certs from the EFI MOK config table
+Date:   Wed, 12 May 2021 16:31:00 +0100
+Message-Id: <20210512153100.285169-1-dimitri.ledkov@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Em Wed, 12 May 2021 10:14:44 -0400
-"Theodore Ts'o" <tytso@mit.edu> escreveu:
+Refactor load_moklist_certs() to load either MokListRT into db, or
+MokListXRT into dbx. Call load_moklist_certs() twice - first to load
+mokx certs into dbx, then mok certs into db.
 
-> On Wed, May 12, 2021 at 02:50:04PM +0200, Mauro Carvalho Chehab wrote:
-> > v2:
-> > - removed EM/EN DASH conversion from this patchset; =20
->=20
-> Are you still thinking about doing the
->=20
-> EN DASH --> "--"
-> EM DASH --> "---"
->=20
-> conversion? =20
+This thus now attempts to load mokx certs via the EFI MOKvar config
+table first, and if that fails, via the EFI variable. Previously mokx
+certs were only loaded via the EFI variable. Which fails when
+MokListXRT is large. Instead of large MokListXRT variable, only
+MokListXRT{1,2,3} are available which are not loaded. This is the case
+with Ubuntu's 15.4 based shim. This patch is required to address
+CVE-2020-26541 when certificates are revoked via MokListXRT.
 
-Yes, but I intend to submit it on a separate patch series, probably after
-having this one merged. Let's first cleanup the large part of the=20
-conversion-generated UTF-8 char noise ;-)
+Fixes: ebd9c2ae369a ("integrity: Load mokx variables into the blacklist keyring")
 
-> That's not going to change what the documentation will
-> look like in the HTML and PDF output forms, and I think it would make
-> life easier for people are reading and editing the Documentation/*
-> files in text form.
+Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+cc: keyrings@vger.kernel.org
+cc: Eric Snowberg <eric.snowberg@oracle.com>
+cc: Jarkko Sakkinen <jarkko@kernel.org>
+cc: David Woodhouse <dwmw2@infradead.org>
+cc: David Howells <dhowells@redhat.com>
+---
+ security/integrity/platform_certs/load_uefi.c | 74 ++++++++++---------
+ 1 file changed, 40 insertions(+), 34 deletions(-)
 
-Agreed. I'm also considering to add a couple of cases of this char:
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+index f290f78c3f30..f4b913ec76e4 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -66,17 +66,18 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+ }
+ 
+ /*
+- * load_moklist_certs() - Load MokList certs
++ * load_moklist_certs() - Load Mok(X)List certs
++ * @load_db: Load MokListRT into db when true; MokListXRT into dbx when false
+  *
+- * Load the certs contained in the UEFI MokListRT database into the
+- * platform trusted keyring.
++ * Load the certs contained in the UEFI MokList(X)RT database into the
++ * platform trusted/denied keyring.
+  *
+  * This routine checks the EFI MOK config table first. If and only if
+- * that fails, this routine uses the MokListRT ordinary UEFI variable.
++ * that fails, this routine uses the MokList(X)RT ordinary UEFI variable.
+  *
+  * Return:	Status
+  */
+-static int __init load_moklist_certs(void)
++static int __init load_moklist_certs(const bool load_db)
+ {
+ 	struct efi_mokvar_table_entry *mokvar_entry;
+ 	efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
+@@ -84,41 +85,55 @@ static int __init load_moklist_certs(void)
+ 	unsigned long moksize;
+ 	efi_status_t status;
+ 	int rc;
++	const char *mokvar_name = "MokListRT";
++	/* Should be const, but get_cert_list() doesn't have it as const yet */
++	efi_char16_t *efivar_name = L"MokListRT";
++	const char *parse_mokvar_name = "UEFI:MokListRT (MOKvar table)";
++	const char *parse_efivar_name = "UEFI:MokListRT";
++	efi_element_handler_t (*get_handler_for_guid)(const efi_guid_t *) = get_handler_for_db;
++
++	if (!load_db) {
++		mokvar_name = "MokListXRT";
++		efivar_name = L"MokListXRT";
++		parse_mokvar_name = "UEFI:MokListXRT (MOKvar table)";
++		parse_efivar_name = "UEFI:MokListXRT";
++		get_handler_for_guid = get_handler_for_dbx;
++	}
+ 
+ 	/* First try to load certs from the EFI MOKvar config table.
+ 	 * It's not an error if the MOKvar config table doesn't exist
+ 	 * or the MokListRT entry is not found in it.
+ 	 */
+-	mokvar_entry = efi_mokvar_entry_find("MokListRT");
++	mokvar_entry = efi_mokvar_entry_find(mokvar_name);
+ 	if (mokvar_entry) {
+-		rc = parse_efi_signature_list("UEFI:MokListRT (MOKvar table)",
++		rc = parse_efi_signature_list(parse_mokvar_name,
+ 					      mokvar_entry->data,
+ 					      mokvar_entry->data_size,
+-					      get_handler_for_db);
++					      get_handler_for_guid);
+ 		/* All done if that worked. */
+ 		if (!rc)
+ 			return rc;
+ 
+-		pr_err("Couldn't parse MokListRT signatures from EFI MOKvar config table: %d\n",
+-		       rc);
++		pr_err("Couldn't parse %s signatures from EFI MOKvar config table: %d\n",
++		       mokvar_name, rc);
+ 	}
+ 
+ 	/* Get MokListRT. It might not exist, so it isn't an error
+ 	 * if we can't get it.
+ 	 */
+-	mok = get_cert_list(L"MokListRT", &mok_var, &moksize, &status);
++	mok = get_cert_list(efivar_name, &mok_var, &moksize, &status);
+ 	if (mok) {
+-		rc = parse_efi_signature_list("UEFI:MokListRT",
+-					      mok, moksize, get_handler_for_db);
++		rc = parse_efi_signature_list(parse_efivar_name,
++					      mok, moksize, get_handler_for_guid);
+ 		kfree(mok);
+ 		if (rc)
+-			pr_err("Couldn't parse MokListRT signatures: %d\n", rc);
++			pr_err("Couldn't parse %s signatures: %d\n", mokvar_name, rc);
+ 		return rc;
+ 	}
+ 	if (status == EFI_NOT_FOUND)
+-		pr_debug("MokListRT variable wasn't found\n");
++		pr_debug("%s variable wasn't found\n", mokvar_name);
+ 	else
+-		pr_info("Couldn't get UEFI MokListRT\n");
++		pr_info("Couldn't get UEFI %s\n", mokvar_name);
+ 	return 0;
+ }
+ 
+@@ -132,9 +147,8 @@ static int __init load_moklist_certs(void)
+ static int __init load_uefi_certs(void)
+ {
+ 	efi_guid_t secure_var = EFI_IMAGE_SECURITY_DATABASE_GUID;
+-	efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
+-	void *db = NULL, *dbx = NULL, *mokx = NULL;
+-	unsigned long dbsize = 0, dbxsize = 0, mokxsize = 0;
++	void *db = NULL, *dbx = NULL;
++	unsigned long dbsize = 0, dbxsize = 0;
+ 	efi_status_t status;
+ 	int rc = 0;
+ 
+@@ -176,23 +190,15 @@ static int __init load_uefi_certs(void)
+ 		kfree(dbx);
+ 	}
+ 
+-	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
+-	if (!mokx) {
+-		if (status == EFI_NOT_FOUND)
+-			pr_debug("mokx variable wasn't found\n");
+-		else
+-			pr_info("Couldn't get mokx list\n");
+-	} else {
+-		rc = parse_efi_signature_list("UEFI:MokListXRT",
+-					      mokx, mokxsize,
+-					      get_handler_for_dbx);
+-		if (rc)
+-			pr_err("Couldn't parse mokx signatures %d\n", rc);
+-		kfree(mokx);
+-	}
++	/* Load the MokListXRT certs */
++	rc = load_moklist_certs(false);
++	if (rc)
++		pr_err("Couldn't parse mokx signatures: %d\n", rc);
+ 
+ 	/* Load the MokListRT certs */
+-	rc = load_moklist_certs();
++	rc = load_moklist_certs(true);
++	if (rc)
++		pr_err("Couldn't parse mok signatures: %d\n", rc);
+ 
+ 	return rc;
+ }
+-- 
+2.27.0
 
-	- U+2026 ('=E2=80=A6'): HORIZONTAL ELLIPSIS
-
-As Sphinx also replaces "..." into HORIZONTAL ELLIPSIS.
-
--
-
-Anyway, I'm opting to submitting those in separate because it seems
-that at least some maintainers added EM/EN DASH intentionally.
-
-So, it may generate case-per-case discussions.
-
-Also, IMO, at least a couple of EN/EM DASH cases would be better served=20
-with a single hyphen.
-
-Thanks,
-Mauro
