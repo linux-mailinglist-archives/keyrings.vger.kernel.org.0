@@ -2,59 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF41937BF46
-	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 16:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB2037BF4B
+	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 16:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbhELOGh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 12 May 2021 10:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
+        id S231438AbhELOGj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 12 May 2021 10:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbhELOGf (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 10:06:35 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52BE1C061760;
-        Wed, 12 May 2021 07:05:26 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id h127so18569101pfe.9;
-        Wed, 12 May 2021 07:05:26 -0700 (PDT)
+        with ESMTP id S231420AbhELOGh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 10:06:37 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FEE3C06174A;
+        Wed, 12 May 2021 07:05:28 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id x188so18575759pfd.7;
+        Wed, 12 May 2021 07:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=xI4f2jHshcNN/xZ7UCPPVmcOswo5V25dZp2u2z1jqBw=;
-        b=gc9YnntSPNz2/AvwSpUiiLzpWw6Eqosgt6fQcpmHhXQWOcMr03/DkZkVhklNPAfiI3
-         aBBH1YeUSoPlW2Y7Y/yhnb9hzCaRcVtfyr6lH1Q7mu0LssCgM9LkhCrIF8xqZl7PTdQG
-         MNNB+uWVS8RS4NiWtWWPXZbj7ccQhLvalIPJ8szPZstmWoQl177cZbMH7CzlWJ3sQ2f+
-         RdcTCv41LLTwqEMW/btyM9veS6JejHl2SQqYYgedXEFfGzKC9TsTADSTMKsb4xHqLYi3
-         mGLKh5jMxMBCCWEUmE8zXpuoTQ796oQg3KcN19sjMTzM58R2ZEB82uan3HYC289F9NiC
-         YzBw==
+        bh=0iTHD8zuIlPTE898HuuCtTAOQQCCVuFMCLG1W0mYvD8=;
+        b=fQS5AExTbuQNLhj5Cx/AIC9784YYkzdGI0uou8BuAomrNO+mhHRES/de/4eEJLLaNR
+         DbF8AisIAFEFqlah3QPAhcgLDUuro3A4adCxqOTAqDu+inexgsNhcqj5CbjYk3G7GwNN
+         +FGebi3HrqfzrVdnICVtsxdjH6E4IfY0L7J5y/tTgsOK0xtGlLMzGZOVW2Eqyo1ZbPsy
+         3vXNExGq/7UolhNRagCJGo6fBe/b/ybtgMscYZ4l2WJOiRzuYyVxE91O/edzLDOkn+H+
+         5+/+6N3HNa5L42j8phHDXRqWddUfAXirLfBIbwd8dD302JvHPmgzRWUoR1tjfmdJPzpP
+         ZaXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=xI4f2jHshcNN/xZ7UCPPVmcOswo5V25dZp2u2z1jqBw=;
-        b=Xi22bxDlx6yn+ng3P7p48yH5BRUaRvSEYZ0lt3AoYUhguIMGiI7Z/VkwdjKjQCm/3k
-         WVwyUeQQm/DtWHsDDCTNQnKHVrOZ1yiel4aRjsVc/bPFVoWqKPijmkoI9BoIyMA5wFnG
-         aVxXWqFlcTTNMwG7tOkFx7WMr+rE8vmpyPM2XnDTL6fadcRLLilAttr7RI3d74b/cV/q
-         A4/QDE+obDYEsR/ej8uyon2EeM+deDaqlP5NWipYdKrUOgmme1ppv0dLr+/PW+Xucsh3
-         4ZunB27bcsDPVt2hufNeZx9etxoBt6X+5U8xgmTKgWuqL/JhKAWjdb82NQNAiPBt/daL
-         9m7w==
-X-Gm-Message-State: AOAM533F7j1LfkdbdEwhjfKMwDGpv1GhZeFxq3rbz6SMyNytzfBTARw2
-        pYduNMF0Iy+6UPSNGTXD23I4eDYmoTA=
-X-Google-Smtp-Source: ABdhPJyKHy6cfsgyN+W2lcUIolCFe2Ns9m99z7n8iEgjk6AY+ld7wWEIGB1fyhEstB01bvsNxF94Pg==
-X-Received: by 2002:a62:1450:0:b029:2c8:a185:8a19 with SMTP id 77-20020a6214500000b02902c8a1858a19mr9458522pfu.78.1620828325727;
-        Wed, 12 May 2021 07:05:25 -0700 (PDT)
+        bh=0iTHD8zuIlPTE898HuuCtTAOQQCCVuFMCLG1W0mYvD8=;
+        b=chfjOo4xfFZpKU9rqPbFjPLwpgKSRuKRpxxSiEt8vlgpHthgkW5VUqtwRHetOlY2K4
+         WzSF4XEk7UJucui7Lk860np474VgRr7l7sfogaQHaV0eRPOfwqQ34dnM9dKevaC5RBzS
+         tK5D4NX2Mj3NHi8P/MIko0Ytkf9aTX4PJP6K5+cUCoekN1E+WwuIiMXPTDqiMBRJZjME
+         3sH0Zj8uVKWAsLKsbBeLqRaa1+nvRtGmEPiFGrQYDCtqN6FOQHmL5gqbqXLon6Ms+Dsu
+         Xb8z5jnhGxnro3kEb6BBm0U9fIighpwRmgX7/u3DdOjRxK9IawiOtoW3+4PbOmJB7lKw
+         ME9Q==
+X-Gm-Message-State: AOAM531hVQYEAM6JYpokIS8Zb6/eKW/gO0wNPoZkhKLxy6ZghwrXWR4c
+        sRMPkCi5HqENSTVfpO3BcC1BvB8HM9Q=
+X-Google-Smtp-Source: ABdhPJxbxCq4PZGLHMRFPuMvC1mk3p/3Qr/urbAvLOFFCYL7Igg3vhDM20P+NgdBipiMz5v5qHmUQw==
+X-Received: by 2002:aa7:90d5:0:b029:28e:df57:47ff with SMTP id k21-20020aa790d50000b029028edf5747ffmr36520615pfk.74.1620828327769;
+        Wed, 12 May 2021 07:05:27 -0700 (PDT)
 Received: from localhost.localdomain ([203.205.141.39])
-        by smtp.gmail.com with ESMTPSA id in16sm28546pjb.14.2021.05.12.07.05.24
+        by smtp.gmail.com with ESMTPSA id in16sm28546pjb.14.2021.05.12.07.05.25
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 May 2021 07:05:25 -0700 (PDT)
+        Wed, 12 May 2021 07:05:27 -0700 (PDT)
 From:   Hongbo Li <herbert.tencent@gmail.com>
 To:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         herbert@gondor.apana.org.au, dhowells@redhat.com,
         jarkko@kernel.org, tianjia.zhang@linux.alibaba.com,
         herberthbli@tencent.com
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 2/7] lib/mpi: use kcalloc in mpi_resize
-Date:   Wed, 12 May 2021 22:04:09 +0800
-Message-Id: <1620828254-25545-3-git-send-email-herbert.tencent@gmail.com>
+Subject: [PATCH 3/7] lib/mpi: export some common function
+Date:   Wed, 12 May 2021 22:04:10 +0800
+Message-Id: <1620828254-25545-4-git-send-email-herbert.tencent@gmail.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
 References: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
@@ -64,27 +64,36 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Hongbo Li <herberthbli@tencent.com>
 
-We should set the additional space to 0 in mpi_resize().
-So use kcalloc() instead of kmalloc_array().
+Export mpi_add_ui() and mpi_sub() that are used by the following
+eddsa patch.
 
 Signed-off-by: Hongbo Li <herberthbli@tencent.com>
 ---
- lib/mpi/mpiutil.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/mpi/mpi-add.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/mpi/mpiutil.c b/lib/mpi/mpiutil.c
-index 3c63710..e6c4b31 100644
---- a/lib/mpi/mpiutil.c
-+++ b/lib/mpi/mpiutil.c
-@@ -148,7 +148,7 @@ int mpi_resize(MPI a, unsigned nlimbs)
- 		return 0;	/* no need to do it */
+diff --git a/lib/mpi/mpi-add.c b/lib/mpi/mpi-add.c
+index 2cdae54..d34c6c1 100644
+--- a/lib/mpi/mpi-add.c
++++ b/lib/mpi/mpi-add.c
+@@ -62,7 +62,7 @@ void mpi_add_ui(MPI w, MPI u, unsigned long v)
+ 	w->nlimbs = wsize;
+ 	w->sign   = wsign;
+ }
+-
++EXPORT_SYMBOL_GPL(mpi_add_ui);
  
- 	if (a->d) {
--		p = kmalloc_array(nlimbs, sizeof(mpi_limb_t), GFP_KERNEL);
-+		p = kcalloc(nlimbs, sizeof(mpi_limb_t), GFP_KERNEL);
- 		if (!p)
- 			return -ENOMEM;
- 		memcpy(p, a->d, a->alloced * sizeof(mpi_limb_t));
+ void mpi_add(MPI w, MPI u, MPI v)
+ {
+@@ -138,7 +138,7 @@ void mpi_sub(MPI w, MPI u, MPI v)
+ 	mpi_add(w, u, vv);
+ 	mpi_free(vv);
+ }
+-
++EXPORT_SYMBOL_GPL(mpi_sub);
+ 
+ void mpi_addm(MPI w, MPI u, MPI v, MPI m)
+ {
 -- 
 1.8.3.1
 
