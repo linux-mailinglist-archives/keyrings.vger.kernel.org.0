@@ -2,59 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D95237BF45
+	by mail.lfdr.de (Postfix) with ESMTP id EF41937BF46
 	for <lists+keyrings@lfdr.de>; Wed, 12 May 2021 16:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbhELOGe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 12 May 2021 10:06:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56776 "EHLO
+        id S231414AbhELOGh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 12 May 2021 10:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231381AbhELOGd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 10:06:33 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60431C061574;
-        Wed, 12 May 2021 07:05:24 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id a5so11537243pfa.11;
-        Wed, 12 May 2021 07:05:24 -0700 (PDT)
+        with ESMTP id S231396AbhELOGf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 12 May 2021 10:06:35 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52BE1C061760;
+        Wed, 12 May 2021 07:05:26 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id h127so18569101pfe.9;
+        Wed, 12 May 2021 07:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=16+UcKJ3Nq0KBbp7Mrl/Wv8e7UFYuoLVoKmj9Zo7By8=;
-        b=GeerjIcvcY5NT9eSYvebylybP0WBNmMIfiXZnvDzrDau2PYQ0BMA/0IawGwtzLT8qX
-         pGcHGuG1HXR5/G5jef19lgjd3N5rKQj1ztkk3FUWKyVBkZiPXOcEu1+5RKjkZtNmB5ld
-         FXs3lbuxcbnKUj/+yegu0lrFUtAYjujVqsImGpT4dpRYX8SvpnsbCiAFGBLPxeW1ge37
-         UsWKXrT3lGWQ8WJb3RuiW0JaHmBp5Ega2c5xi6M+GgoqVJYMjtVWy1lOBWg1w74zQP9i
-         Icg3CZCFXYERhmVaOIFUkMWB4Kc4ZgSzyAWc/J4N9Hk7oSTsowaQ8FHf4+f+mgc5WUBW
-         snjQ==
+        bh=xI4f2jHshcNN/xZ7UCPPVmcOswo5V25dZp2u2z1jqBw=;
+        b=gc9YnntSPNz2/AvwSpUiiLzpWw6Eqosgt6fQcpmHhXQWOcMr03/DkZkVhklNPAfiI3
+         aBBH1YeUSoPlW2Y7Y/yhnb9hzCaRcVtfyr6lH1Q7mu0LssCgM9LkhCrIF8xqZl7PTdQG
+         MNNB+uWVS8RS4NiWtWWPXZbj7ccQhLvalIPJ8szPZstmWoQl177cZbMH7CzlWJ3sQ2f+
+         RdcTCv41LLTwqEMW/btyM9veS6JejHl2SQqYYgedXEFfGzKC9TsTADSTMKsb4xHqLYi3
+         mGLKh5jMxMBCCWEUmE8zXpuoTQ796oQg3KcN19sjMTzM58R2ZEB82uan3HYC289F9NiC
+         YzBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=16+UcKJ3Nq0KBbp7Mrl/Wv8e7UFYuoLVoKmj9Zo7By8=;
-        b=QMPVFnSmnPouak9imT7Ba+ipLeFB/TBNANrkoDXL9uaBxe+p9G0TUtJIsMFGyCqNsS
-         LJ9wnTJnQQjozlzccteLwKUR7EMN53gNFIEZayRvUfGkMbJRsGgcyfNiJoURjNeKfYJQ
-         bS/eC1DMYad1/vX+aEnHR5AMoFLt0tDXrK6/jEyWiA5BittJl79kgeLogmcphp/UD+XH
-         c/kmH68BSXXLVNvxu7fcCTnjAdfvoNwrbKNkAvnguR4CCN3/83ooKyEH828OBIhxPi5G
-         TlCjZrTgb5aJGgLzuWkuWdaYJuilF6HdMxbcymftOM2nBM47voWfdjLkxOGwZdN+BWHd
-         +7GA==
-X-Gm-Message-State: AOAM532OGABN5buLlVPFRWuOj96F6RAuXWm9BFbPiPCHzVT1+qRPbUC4
-        byGcW0ZTz2ksXc9ZTiyXFv1pS4W4Dvs=
-X-Google-Smtp-Source: ABdhPJzpolpGG1BHqchMLQCzmQT3qG8IPSkC+pTJirG6QyiPleBDZGTKv53LgiMzR+Mx3pM/dqiWHQ==
-X-Received: by 2002:a62:b415:0:b029:2cc:61be:6db4 with SMTP id h21-20020a62b4150000b02902cc61be6db4mr5968995pfn.50.1620828323782;
-        Wed, 12 May 2021 07:05:23 -0700 (PDT)
+        bh=xI4f2jHshcNN/xZ7UCPPVmcOswo5V25dZp2u2z1jqBw=;
+        b=Xi22bxDlx6yn+ng3P7p48yH5BRUaRvSEYZ0lt3AoYUhguIMGiI7Z/VkwdjKjQCm/3k
+         WVwyUeQQm/DtWHsDDCTNQnKHVrOZ1yiel4aRjsVc/bPFVoWqKPijmkoI9BoIyMA5wFnG
+         aVxXWqFlcTTNMwG7tOkFx7WMr+rE8vmpyPM2XnDTL6fadcRLLilAttr7RI3d74b/cV/q
+         A4/QDE+obDYEsR/ej8uyon2EeM+deDaqlP5NWipYdKrUOgmme1ppv0dLr+/PW+Xucsh3
+         4ZunB27bcsDPVt2hufNeZx9etxoBt6X+5U8xgmTKgWuqL/JhKAWjdb82NQNAiPBt/daL
+         9m7w==
+X-Gm-Message-State: AOAM533F7j1LfkdbdEwhjfKMwDGpv1GhZeFxq3rbz6SMyNytzfBTARw2
+        pYduNMF0Iy+6UPSNGTXD23I4eDYmoTA=
+X-Google-Smtp-Source: ABdhPJyKHy6cfsgyN+W2lcUIolCFe2Ns9m99z7n8iEgjk6AY+ld7wWEIGB1fyhEstB01bvsNxF94Pg==
+X-Received: by 2002:a62:1450:0:b029:2c8:a185:8a19 with SMTP id 77-20020a6214500000b02902c8a1858a19mr9458522pfu.78.1620828325727;
+        Wed, 12 May 2021 07:05:25 -0700 (PDT)
 Received: from localhost.localdomain ([203.205.141.39])
-        by smtp.gmail.com with ESMTPSA id in16sm28546pjb.14.2021.05.12.07.05.21
+        by smtp.gmail.com with ESMTPSA id in16sm28546pjb.14.2021.05.12.07.05.24
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 May 2021 07:05:23 -0700 (PDT)
+        Wed, 12 May 2021 07:05:25 -0700 (PDT)
 From:   Hongbo Li <herbert.tencent@gmail.com>
 To:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         herbert@gondor.apana.org.au, dhowells@redhat.com,
         jarkko@kernel.org, tianjia.zhang@linux.alibaba.com,
         herberthbli@tencent.com
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 1/7] crypto: fix a memory leak in sm2
-Date:   Wed, 12 May 2021 22:04:08 +0800
-Message-Id: <1620828254-25545-2-git-send-email-herbert.tencent@gmail.com>
+Subject: [PATCH 2/7] lib/mpi: use kcalloc in mpi_resize
+Date:   Wed, 12 May 2021 22:04:09 +0800
+Message-Id: <1620828254-25545-3-git-send-email-herbert.tencent@gmail.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
 References: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
@@ -64,77 +64,27 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Hongbo Li <herberthbli@tencent.com>
 
-SM2 module alloc ec->Q in sm2_set_pub_key(), when doing alg test in
-test_akcipher_one(), it will set public key for every test vector,
-and don't free ec->Q. This will cause a memory leak.
-
-This patch alloc ec->Q in sm2_ec_ctx_init().
+We should set the additional space to 0 in mpi_resize().
+So use kcalloc() instead of kmalloc_array().
 
 Signed-off-by: Hongbo Li <herberthbli@tencent.com>
 ---
- crypto/sm2.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ lib/mpi/mpiutil.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/sm2.c b/crypto/sm2.c
-index b21addc..db8a4a2 100644
---- a/crypto/sm2.c
-+++ b/crypto/sm2.c
-@@ -79,10 +79,17 @@ static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
- 		goto free;
+diff --git a/lib/mpi/mpiutil.c b/lib/mpi/mpiutil.c
+index 3c63710..e6c4b31 100644
+--- a/lib/mpi/mpiutil.c
++++ b/lib/mpi/mpiutil.c
+@@ -148,7 +148,7 @@ int mpi_resize(MPI a, unsigned nlimbs)
+ 		return 0;	/* no need to do it */
  
- 	rc = -ENOMEM;
-+
-+	ec->Q = mpi_point_new(0);
-+	if (!ec->Q)
-+		goto free;
-+
- 	/* mpi_ec_setup_elliptic_curve */
- 	ec->G = mpi_point_new(0);
--	if (!ec->G)
-+	if (!ec->G) {
-+		mpi_point_release(ec->Q);
- 		goto free;
-+	}
- 
- 	mpi_set(ec->G->x, x);
- 	mpi_set(ec->G->y, y);
-@@ -91,6 +98,7 @@ static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
- 	rc = -EINVAL;
- 	ec->n = mpi_scanval(ecp->n);
- 	if (!ec->n) {
-+		mpi_point_release(ec->Q);
- 		mpi_point_release(ec->G);
- 		goto free;
- 	}
-@@ -386,27 +394,15 @@ static int sm2_set_pub_key(struct crypto_akcipher *tfm,
- 	MPI a;
- 	int rc;
- 
--	ec->Q = mpi_point_new(0);
--	if (!ec->Q)
--		return -ENOMEM;
--
- 	/* include the uncompressed flag '0x04' */
--	rc = -ENOMEM;
- 	a = mpi_read_raw_data(key, keylen);
- 	if (!a)
--		goto error;
-+		return -ENOMEM;
- 
- 	mpi_normalize(a);
- 	rc = sm2_ecc_os2ec(ec->Q, a);
- 	mpi_free(a);
--	if (rc)
--		goto error;
--
--	return 0;
- 
--error:
--	mpi_point_release(ec->Q);
--	ec->Q = NULL;
- 	return rc;
- }
- 
+ 	if (a->d) {
+-		p = kmalloc_array(nlimbs, sizeof(mpi_limb_t), GFP_KERNEL);
++		p = kcalloc(nlimbs, sizeof(mpi_limb_t), GFP_KERNEL);
+ 		if (!p)
+ 			return -ENOMEM;
+ 		memcpy(p, a->d, a->alloced * sizeof(mpi_limb_t));
 -- 
 1.8.3.1
 
