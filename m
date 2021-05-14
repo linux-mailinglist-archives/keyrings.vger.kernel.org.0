@@ -2,52 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A95DF37EE03
-	for <lists+keyrings@lfdr.de>; Thu, 13 May 2021 00:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6BB38031A
+	for <lists+keyrings@lfdr.de>; Fri, 14 May 2021 06:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239822AbhELU7F (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 12 May 2021 16:59:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47434 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245050AbhELTNB (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 12 May 2021 15:13:01 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 10BA461006;
-        Wed, 12 May 2021 19:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620846712;
-        bh=OYsxcWeekp828YfaCh6Kfwv4L7JFwCxqEclFG+gGImw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Zb8nC3BGHB7KoLaqDOaGd0M4MgbZtU7l5kTlibUSbQFSm1s6psyqjbtYosNJsCs6B
-         bUUC5BD85e1dMlyN6iO3/bTS3ADWueizqBewFLX2/PUQZ6UNjVS+40EZbsv/oqhXXb
-         6Bc5y3ZyaZrEG9a2IabLtmBsUtbuKLMcZ8Xla3p8KDdRVX2F9GmORBwgL8dousszWP
-         WM6X7U0bKsW7RUuObNlTBBlc/VEyaOSSYcPUXsNIh85p5JsolKEKIS+AsLXY6+9xXu
-         fyzTITve5J91gt1wd0szCe0OQs7nHZudw7EZifRdmyXihpjcxaPjcSqjLfefUy701O
-         v5NMyS2N1plLA==
-Date:   Wed, 12 May 2021 12:11:50 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Hongbo Li <herbert.tencent@gmail.com>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        herbert@gondor.apana.org.au, dhowells@redhat.com,
-        jarkko@kernel.org, tianjia.zhang@linux.alibaba.com,
-        herberthbli@tencent.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/7] crypto: add eddsa support for x509
-Message-ID: <YJwodhUpsdBbknLo@gmail.com>
+        id S232243AbhENExp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 May 2021 00:53:45 -0400
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:51986 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231967AbhENExp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 May 2021 00:53:45 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0UYoDsTm_1620967950;
+Received: from B-455UMD6M-2027.local(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UYoDsTm_1620967950)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 14 May 2021 12:52:31 +0800
+Subject: Re: [PATCH 1/7] crypto: fix a memory leak in sm2
+To:     Hongbo Li <herbert.tencent@gmail.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
+        dhowells@redhat.com, jarkko@kernel.org, herberthbli@tencent.com,
+        stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
 References: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
+ <1620828254-25545-2-git-send-email-herbert.tencent@gmail.com>
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <246ad441-76c9-0934-d132-42d263d63195@linux.alibaba.com>
+Date:   Fri, 14 May 2021 12:52:29 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1620828254-25545-1-git-send-email-herbert.tencent@gmail.com>
+In-Reply-To: <1620828254-25545-2-git-send-email-herbert.tencent@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 12, 2021 at 10:04:07PM +0800, Hongbo Li wrote:
+Hi Hongbo,
+
+On 5/12/21 10:04 PM, Hongbo Li wrote:
 > From: Hongbo Li <herberthbli@tencent.com>
 > 
-> This series of patches add support for x509 cert signed by eddsa,
-> which is described in RFC8032 [1], currently ed25519 only.
+> SM2 module alloc ec->Q in sm2_set_pub_key(), when doing alg test in
+> test_akcipher_one(), it will set public key for every test vector,
+> and don't free ec->Q. This will cause a memory leak.
+> 
+> This patch alloc ec->Q in sm2_ec_ctx_init().
+> 
+> Signed-off-by: Hongbo Li <herberthbli@tencent.com>
+> ---
+>   crypto/sm2.c | 24 ++++++++++--------------
+>   1 file changed, 10 insertions(+), 14 deletions(-)
+> 
+> diff --git a/crypto/sm2.c b/crypto/sm2.c
+> index b21addc..db8a4a2 100644
+> --- a/crypto/sm2.c
+> +++ b/crypto/sm2.c
+> @@ -79,10 +79,17 @@ static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
+>   		goto free;
+>   
+>   	rc = -ENOMEM;
+> +
+> +	ec->Q = mpi_point_new(0);
+> +	if (!ec->Q)
+> +		goto free;
+> +
+>   	/* mpi_ec_setup_elliptic_curve */
+>   	ec->G = mpi_point_new(0);
+> -	if (!ec->G)
+> +	if (!ec->G) {
+> +		mpi_point_release(ec->Q);
+>   		goto free;
+> +	}
+>   
+>   	mpi_set(ec->G->x, x);
+>   	mpi_set(ec->G->y, y);
+> @@ -91,6 +98,7 @@ static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
+>   	rc = -EINVAL;
+>   	ec->n = mpi_scanval(ecp->n);
+>   	if (!ec->n) {
+> +		mpi_point_release(ec->Q);
+>   		mpi_point_release(ec->G);
+>   		goto free;
+>   	}
+> @@ -386,27 +394,15 @@ static int sm2_set_pub_key(struct crypto_akcipher *tfm,
+>   	MPI a;
+>   	int rc;
+>   
+> -	ec->Q = mpi_point_new(0);
+> -	if (!ec->Q)
+> -		return -ENOMEM;
+> -
+>   	/* include the uncompressed flag '0x04' */
+> -	rc = -ENOMEM;
+>   	a = mpi_read_raw_data(key, keylen);
+>   	if (!a)
+> -		goto error;
+> +		return -ENOMEM;
+>   
+>   	mpi_normalize(a);
+>   	rc = sm2_ecc_os2ec(ec->Q, a);
+>   	mpi_free(a);
+> -	if (rc)
+> -		goto error;
+> -
+> -	return 0;
+>   
+> -error:
+> -	mpi_point_release(ec->Q);
+> -	ec->Q = NULL;
+>   	return rc;
+>   }
+>   
+> 
 
-It would be helpful to explain how this is related to the kernel's existing
-Curve25519 support.
+Thanks a lot for fixing this issue.
 
-- Eric
+Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+
+Also added:
+
+Cc: stable@vger.kernel.org # v5.10+
+
+Best regards,
+Tianjia
