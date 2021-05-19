@@ -2,50 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0E363888C4
-	for <lists+keyrings@lfdr.de>; Wed, 19 May 2021 09:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC44B3890FB
+	for <lists+keyrings@lfdr.de>; Wed, 19 May 2021 16:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237693AbhESH4z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 19 May 2021 03:56:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44790 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234405AbhESH4z (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 19 May 2021 03:56:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 79CA060FDC;
-        Wed, 19 May 2021 07:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621410936;
-        bh=yUbE+px/6gOPTPVPQfpUK35kefreBxxbJ76GQwwDZs0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DjtMlupdr4JiIPMb/7FeiANrvoq4Pyz32YH1n6tRgM6QhtPlS3Ugghe/IdvNwi+9D
-         BaNcpCJDwI1zjqrYW0P5590cSRL/uKSvmHC8VtXV0wZWPgW37GyMMJicrmU5Ig7nYr
-         p07d4y0BZB12bWbYBnBAXYYDQys8xd/nQAcYqHNRB0QG43lSES18xIrghAa9+W5k4U
-         7VhRK/TJCX0VYB0a6RPAmA0TxDvnejiS9RSKyDhOt5ioURQEXEA1S7oGnT2or4SpYA
-         l4yzGgjNgTkzQqlk1/foV1MIrl9Vg1Dr52yEhT/U/T12Iv9E5yHi8WIYx8syR++flH
-         W8sDnAEFa4QJQ==
-Date:   Wed, 19 May 2021 10:55:33 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        dhowells@redhat.com, dwmw2@infradead.org,
-        dmitry.kasatkin@gmail.com, jmorris@namei.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, zohar@linux.ibm.com,
-        torvalds@linux-foundation.org, serge@hallyn.com,
-        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
-        glin@suse.com
+        id S241065AbhESOeT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 19 May 2021 10:34:19 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:34028 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S240748AbhESOeS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 19 May 2021 10:34:18 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14JEGqUx130080;
+        Wed, 19 May 2021 10:32:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=y/O3yzKmZ5S/nF30qtkhN4pFKCGjmMbwXJWy7EalH7Y=;
+ b=dxLkg4t3xTxmgQ0/oc64iowxGb3YTxZjRh94jqw32U5yrHZStR/2kN+uG3ma+lQ6j257
+ zUgscK0rcp/Rph72b9OtmpcwJFa/hEdhE6B7+N6SC/QHLr0pwfIFkO8fn3KwAc1jthBl
+ emWGdAbvP1g3voCrGxY6v119KtK0ip4GQwzJ4mh7F1QjMF4W0d7BiGZK6/OSIXUUI4OC
+ OfrdM2faa7lZ2OhsQO4fXs9FX6TS+QKYRyFhlAoIYlfshsdE8fAADv0SB+Gkvowl5qgq
+ qQibZdrXzljPaPLY1ToODx6zuYjLRoXEubIHLtLHFNS1NwEoFQhawTgURGRimH6KlNOw 5A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 38n4a48f72-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 May 2021 10:32:34 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14JEHhVr131996;
+        Wed, 19 May 2021 10:32:34 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 38n4a48f62-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 May 2021 10:32:33 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14JEWWBw006834;
+        Wed, 19 May 2021 14:32:32 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma06ams.nl.ibm.com with ESMTP id 38j5jgt634-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 May 2021 14:32:32 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14JEWT5e31850820
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 May 2021 14:32:29 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C38DBA4060;
+        Wed, 19 May 2021 14:32:29 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DDF2DA4064;
+        Wed, 19 May 2021 14:32:26 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.6.141])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 19 May 2021 14:32:26 +0000 (GMT)
+Message-ID: <fdb42621e7145ce81a34840cbcf0914874c78913.camel@linux.ibm.com>
 Subject: Re: [RFC PATCH 0/3] Add additional MOK vars
-Message-ID: <YKTEdWgwy0R1qpOE@kernel.org>
-References: <20210517225714.498032-1-eric.snowberg@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Cc:     dhowells@redhat.com, dwmw2@infradead.org,
+        dmitry.kasatkin@gmail.com, jmorris@namei.org, jarkko@kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        torvalds@linux-foundation.org, serge@hallyn.com,
+        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
+        glin@suse.com
+Date:   Wed, 19 May 2021 10:32:26 -0400
 In-Reply-To: <20210517225714.498032-1-eric.snowberg@oracle.com>
+References: <20210517225714.498032-1-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Uz0m6BshD-Whk-r4KS0C61M6yjtaS8ZK
+X-Proofpoint-GUID: Dvfcj28MJQ7usNP2HwRzr5tcZDczTIye
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-19_06:2021-05-19,2021-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 phishscore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2105190084
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, May 17, 2021 at 06:57:11PM -0400, Eric Snowberg wrote:
+Hi Eric,
+
+On Mon, 2021-05-17 at 18:57 -0400, Eric Snowberg wrote:
 > This series is being sent as an RFC. I am looking for feedback; if
 > adding additional MOK variables would be an acceptable solution to help
 > downstream Linux distros solve some of the problems we are facing?
@@ -79,9 +123,6 @@ On Mon, May 17, 2021 at 06:57:11PM -0400, Eric Snowberg wrote:
 > 
 > This series adds two new MOK variables to shim. The first variable
 > allows the end-user to decide if they want to trust keys contained
-
-Nit: would be nice to just say "what it is" instead "what it allows".
-
 > within the platform keyring within the Linux trust boundary. By default,
 > nothing changes; platform keys are not trusted within the Linux kernel.
 > They are only trusted after the end-user makes the decision themself.
@@ -90,9 +131,6 @@ Nit: would be nice to just say "what it is" instead "what it allows".
 > to enable/disable signature validation as well as use/ignore the db.
 > 
 > The second MOK variable allows a downstream Linux distro to make
-
-...
-
 > better use of the IMA architecture specific Secure Boot policy.  This
 > IMA policy is enabled whenever Secure Boot is enabled.  By default, this 
 > new MOK variable is not defined.  This causes the IMA architecture 
@@ -108,27 +146,32 @@ Nit: would be nice to just say "what it is" instead "what it allows".
 > made to support this new functionality.
 > 
 > Thank you and looking forward to hearing your reviews.
-> 
-> [1] https://lore.kernel.org/lkml/1556221605.24945.3.camel@HansenPartnership.com/
-> [2] https://lore.kernel.org/patchwork/cover/902768/
-> [3] https://github.com/esnowberg/mokutil/tree/0.3.0-mokvars
-> [4] https://github.com/esnowberg/shim/tree/mokvars
-> 
-> Eric Snowberg (3):
->   keys: Add ability to trust the platform keyring
->   keys: Trust platform keyring if MokTrustPlatform found
->   ima: Enable IMA SB Policy if MokIMAPolicy found
-> 
->  certs/system_keyring.c                        | 19 ++++++++-
->  include/keys/system_keyring.h                 | 10 +++++
->  security/integrity/ima/Kconfig                |  8 ++++
->  security/integrity/ima/ima_efi.c              | 24 ++++++++++++
->  .../platform_certs/platform_keyring.c         | 39 +++++++++++++++++++
->  5 files changed, 99 insertions(+), 1 deletion(-)
-> 
-> -- 
-> 2.18.4
-> 
-> 
 
-/Jarkko
+This patch set addresses two very different issues - allowing keys on
+the platform keyring to be trusted for things other than verifying the
+kexec kernel image signature, overwriting the arch specific IMA secure
+boot policy rules.  The only common denominator is basing those
+decisions on UEFI variables, which has been previously suggested and
+rejected.  The threat model hasn't changed.
+
+The desire for allowing a single local CA key to be loaded onto a
+trusted keyring is understandable.  A local CA key can be used to sign
+certificates, allowing them to be loaded onto the IMA keyring.  What is
+the need for multiple keys? 
+
+Making an exception for using a UEFI key for anything other than
+verifying the kexec kernel image, can not be based solely on UEFI
+variables, but should require some form of kernel
+agreement/confirmation.  If/when a safe mechanism for identifying a
+single local CA key is defined, the certificate should be loaded
+directly onto the secondary keyring, not linked to the platform
+keyring.
+
+The system owner can enable/disable secure boot.  Disabling the arch
+secure boot IMA policy rules is not needed.  However, another mechanism
+for enabling them would be acceptable.
+
+thanks,
+
+Mimi
+
