@@ -2,243 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05AB4387AF9
-	for <lists+keyrings@lfdr.de>; Tue, 18 May 2021 16:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0E363888C4
+	for <lists+keyrings@lfdr.de>; Wed, 19 May 2021 09:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349969AbhEROVE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 May 2021 10:21:04 -0400
-Received: from mail.hallyn.com ([178.63.66.53]:58296 "EHLO mail.hallyn.com"
+        id S237693AbhESH4z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 19 May 2021 03:56:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44790 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349959AbhEROVC (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 18 May 2021 10:21:02 -0400
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-        id 1849AA52; Tue, 18 May 2021 09:19:42 -0500 (CDT)
-Date:   Tue, 18 May 2021 09:19:42 -0500
-From:   "Serge E. Hallyn" <serge@hallyn.com>
-To:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Cc:     linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>, serge@hallyn.com,
-        Paul Moore <paul@paul-moore.com>
-Subject: Re: [PATCH] integrity: Load mokx certs from the EFI MOK config table
-Message-ID: <20210518141942.GA1269@mail.hallyn.com>
-References: <20210512153100.285169-1-dimitri.ledkov@canonical.com>
+        id S234405AbhESH4z (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 19 May 2021 03:56:55 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 79CA060FDC;
+        Wed, 19 May 2021 07:55:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621410936;
+        bh=yUbE+px/6gOPTPVPQfpUK35kefreBxxbJ76GQwwDZs0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DjtMlupdr4JiIPMb/7FeiANrvoq4Pyz32YH1n6tRgM6QhtPlS3Ugghe/IdvNwi+9D
+         BaNcpCJDwI1zjqrYW0P5590cSRL/uKSvmHC8VtXV0wZWPgW37GyMMJicrmU5Ig7nYr
+         p07d4y0BZB12bWbYBnBAXYYDQys8xd/nQAcYqHNRB0QG43lSES18xIrghAa9+W5k4U
+         7VhRK/TJCX0VYB0a6RPAmA0TxDvnejiS9RSKyDhOt5ioURQEXEA1S7oGnT2or4SpYA
+         l4yzGgjNgTkzQqlk1/foV1MIrl9Vg1Dr52yEhT/U/T12Iv9E5yHi8WIYx8syR++flH
+         W8sDnAEFa4QJQ==
+Date:   Wed, 19 May 2021 10:55:33 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+        dhowells@redhat.com, dwmw2@infradead.org,
+        dmitry.kasatkin@gmail.com, jmorris@namei.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, zohar@linux.ibm.com,
+        torvalds@linux-foundation.org, serge@hallyn.com,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        glin@suse.com
+Subject: Re: [RFC PATCH 0/3] Add additional MOK vars
+Message-ID: <YKTEdWgwy0R1qpOE@kernel.org>
+References: <20210517225714.498032-1-eric.snowberg@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210512153100.285169-1-dimitri.ledkov@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210517225714.498032-1-eric.snowberg@oracle.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 12, 2021 at 04:31:00PM +0100, Dimitri John Ledkov wrote:
-> Refactor load_moklist_certs() to load either MokListRT into db, or
-> MokListXRT into dbx. Call load_moklist_certs() twice - first to load
-> mokx certs into dbx, then mok certs into db.
+On Mon, May 17, 2021 at 06:57:11PM -0400, Eric Snowberg wrote:
+> This series is being sent as an RFC. I am looking for feedback; if
+> adding additional MOK variables would be an acceptable solution to help
+> downstream Linux distros solve some of the problems we are facing?
 > 
-> This thus now attempts to load mokx certs via the EFI MOKvar config
-> table first, and if that fails, via the EFI variable. Previously mokx
-> certs were only loaded via the EFI variable. Which fails when
-> MokListXRT is large. Instead of large MokListXRT variable, only
-> MokListXRT{1,2,3} are available which are not loaded. This is the case
-> with Ubuntu's 15.4 based shim. This patch is required to address
-> CVE-2020-26541 when certificates are revoked via MokListXRT.
-
-Hi Dimitri,
-
-I don't see any problems with this technically, and based on 
-https://bugs.launchpad.net/bugs/1928679 it looks like it is in fact needed.
-
-I suggest a change below, but I'm not sure you should make the change
-without confirmation from one of the maintainers that it matches what
-they would want.
-
-> Fixes: ebd9c2ae369a ("integrity: Load mokx variables into the blacklist keyring")
+> Currently, pre-boot keys are not trusted within the Linux boundary [1].
+> Pre-boot keys include UEFI Secure Boot DB keys and MOKList keys. These
+> keys are loaded into the platform keyring and can only be used for kexec.
+> If an end-user wants to use their own key within the Linux trust
+> boundary, they must either compile it into the kernel themselves or use
+> the insert-sys-cert script. Both options present a problem. Many
+> end-users do not want to compile their own kernels. With the
+> insert-sys-cert option, there are missing upstream changes [2].  Also,
+> with the insert-sys-cert option, the end-user must re-sign their kernel
+> again with their own key, and then insert that key into the MOK db.
+> Another problem with insert-sys-cert is that only a single key can be
+> inserted into a compressed kernel.
 > 
-> Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-> cc: keyrings@vger.kernel.org
-> cc: Eric Snowberg <eric.snowberg@oracle.com>
-> cc: Jarkko Sakkinen <jarkko@kernel.org>
-> cc: David Woodhouse <dwmw2@infradead.org>
-> cc: David Howells <dhowells@redhat.com>
-
-Acked-by: Serge Hallyn <serge@hallyn.com>
-
-> ---
->  security/integrity/platform_certs/load_uefi.c | 74 ++++++++++---------
->  1 file changed, 40 insertions(+), 34 deletions(-)
+> Having the ability to insert a key into the Linux trust boundary opens
+> up various possibilities.  The end-user can use a pre-built kernel and
+> sign their own kernel modules.  It also opens up the ability for an
+> end-user to more easily use digital signature based IMA-appraisal.  To
+> get a key into the ima keyring, it must be signed by a key within the
+> Linux trust boundary.
 > 
-> diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-> index f290f78c3f30..f4b913ec76e4 100644
-> --- a/security/integrity/platform_certs/load_uefi.c
-> +++ b/security/integrity/platform_certs/load_uefi.c
-> @@ -66,17 +66,18 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
->  }
->  
->  /*
-> - * load_moklist_certs() - Load MokList certs
-> + * load_moklist_certs() - Load Mok(X)List certs
-> + * @load_db: Load MokListRT into db when true; MokListXRT into dbx when false
->   *
-> - * Load the certs contained in the UEFI MokListRT database into the
-> - * platform trusted keyring.
-> + * Load the certs contained in the UEFI MokList(X)RT database into the
-> + * platform trusted/denied keyring.
->   *
->   * This routine checks the EFI MOK config table first. If and only if
-> - * that fails, this routine uses the MokListRT ordinary UEFI variable.
-> + * that fails, this routine uses the MokList(X)RT ordinary UEFI variable.
->   *
->   * Return:	Status
->   */
-> -static int __init load_moklist_certs(void)
-> +static int __init load_moklist_certs(const bool load_db)
+> Downstream Linux distros try to have a single signed kernel for each
+> architecture.  Each end-user may use this kernel in entirely different
+> ways.  Some downstream kernels have chosen to always trust platform keys
+> within the Linux trust boundary.  In addition, most downstream kernels
+> do not have an easy way for an end-user to use digital signature based
+> IMA-appraisal.
+> 
+> This series adds two new MOK variables to shim. The first variable
+> allows the end-user to decide if they want to trust keys contained
 
-Rather than passing in a bool here, I would suggest, above this function,
-doing something like:
+Nit: would be nice to just say "what it is" instead "what it allows".
 
-struct moklist_desc {
-	const char *mokvar_name;
-	efi_char16_t *efivar_name;
-	const char *parse_mokvar_name;
-	const char *parse_efivar_name;
-	efi_element_handler_t (*get_handler_for_guid)(const efi_guid_t *);
-};
+> within the platform keyring within the Linux trust boundary. By default,
+> nothing changes; platform keys are not trusted within the Linux kernel.
+> They are only trusted after the end-user makes the decision themself.
+> The end-user would set this through mokutil using a new --trust-platform
+> option [3]. This would work similar to how the kernel uses MOK variables
+> to enable/disable signature validation as well as use/ignore the db.
+> 
+> The second MOK variable allows a downstream Linux distro to make
 
-struct moklist_desc moklist_descriptor = {
-	.mokvar_name = "MokListRT",
-	.efivar_name = L"MokListRT",
-	.parse_mokvar_name =  "UEFI:MokListRT (MOKvar table)",
-	.parse_efivar_name = "UEFI:MokListRT",
-	.get_handler_for_guid = get_handler_for_db,
-};
+...
 
-struct moklist_desc moxklist_descriptor = {
-	.mokvar_name = "MokListXRT",
-	.efivar_name = L"MokListXRT",
-	.parse_mokvar_name =  "UEFI:MokListXRT (MOKvar table)",
-	.parse_efivar_name = "UEFI:MokListXRT",
-	.get_handler_for_guid = get_handler_for_dbx,
-};
-
-And pass each of those into load_moklist_certs() once.
-
->  {
->  	struct efi_mokvar_table_entry *mokvar_entry;
->  	efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
-> @@ -84,41 +85,55 @@ static int __init load_moklist_certs(void)
->  	unsigned long moksize;
->  	efi_status_t status;
->  	int rc;
-> +	const char *mokvar_name = "MokListRT";
-> +	/* Should be const, but get_cert_list() doesn't have it as const yet */
-> +	efi_char16_t *efivar_name = L"MokListRT";
-> +	const char *parse_mokvar_name = "UEFI:MokListRT (MOKvar table)";
-> +	const char *parse_efivar_name = "UEFI:MokListRT";
-> +	efi_element_handler_t (*get_handler_for_guid)(const efi_guid_t *) = get_handler_for_db;
-> +
-> +	if (!load_db) {
-> +		mokvar_name = "MokListXRT";
-> +		efivar_name = L"MokListXRT";
-> +		parse_mokvar_name = "UEFI:MokListXRT (MOKvar table)";
-> +		parse_efivar_name = "UEFI:MokListXRT";
-> +		get_handler_for_guid = get_handler_for_dbx;
-> +	}
->  
->  	/* First try to load certs from the EFI MOKvar config table.
->  	 * It's not an error if the MOKvar config table doesn't exist
->  	 * or the MokListRT entry is not found in it.
->  	 */
-> -	mokvar_entry = efi_mokvar_entry_find("MokListRT");
-> +	mokvar_entry = efi_mokvar_entry_find(mokvar_name);
->  	if (mokvar_entry) {
-> -		rc = parse_efi_signature_list("UEFI:MokListRT (MOKvar table)",
-> +		rc = parse_efi_signature_list(parse_mokvar_name,
->  					      mokvar_entry->data,
->  					      mokvar_entry->data_size,
-> -					      get_handler_for_db);
-> +					      get_handler_for_guid);
->  		/* All done if that worked. */
->  		if (!rc)
->  			return rc;
->  
-> -		pr_err("Couldn't parse MokListRT signatures from EFI MOKvar config table: %d\n",
-> -		       rc);
-> +		pr_err("Couldn't parse %s signatures from EFI MOKvar config table: %d\n",
-> +		       mokvar_name, rc);
->  	}
->  
->  	/* Get MokListRT. It might not exist, so it isn't an error
->  	 * if we can't get it.
->  	 */
-> -	mok = get_cert_list(L"MokListRT", &mok_var, &moksize, &status);
-> +	mok = get_cert_list(efivar_name, &mok_var, &moksize, &status);
->  	if (mok) {
-> -		rc = parse_efi_signature_list("UEFI:MokListRT",
-> -					      mok, moksize, get_handler_for_db);
-> +		rc = parse_efi_signature_list(parse_efivar_name,
-> +					      mok, moksize, get_handler_for_guid);
->  		kfree(mok);
->  		if (rc)
-> -			pr_err("Couldn't parse MokListRT signatures: %d\n", rc);
-> +			pr_err("Couldn't parse %s signatures: %d\n", mokvar_name, rc);
->  		return rc;
->  	}
->  	if (status == EFI_NOT_FOUND)
-> -		pr_debug("MokListRT variable wasn't found\n");
-> +		pr_debug("%s variable wasn't found\n", mokvar_name);
->  	else
-> -		pr_info("Couldn't get UEFI MokListRT\n");
-> +		pr_info("Couldn't get UEFI %s\n", mokvar_name);
->  	return 0;
->  }
->  
-> @@ -132,9 +147,8 @@ static int __init load_moklist_certs(void)
->  static int __init load_uefi_certs(void)
->  {
->  	efi_guid_t secure_var = EFI_IMAGE_SECURITY_DATABASE_GUID;
-> -	efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
-> -	void *db = NULL, *dbx = NULL, *mokx = NULL;
-> -	unsigned long dbsize = 0, dbxsize = 0, mokxsize = 0;
-> +	void *db = NULL, *dbx = NULL;
-> +	unsigned long dbsize = 0, dbxsize = 0;
->  	efi_status_t status;
->  	int rc = 0;
->  
-> @@ -176,23 +190,15 @@ static int __init load_uefi_certs(void)
->  		kfree(dbx);
->  	}
->  
-> -	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
-> -	if (!mokx) {
-> -		if (status == EFI_NOT_FOUND)
-> -			pr_debug("mokx variable wasn't found\n");
-> -		else
-> -			pr_info("Couldn't get mokx list\n");
-> -	} else {
-> -		rc = parse_efi_signature_list("UEFI:MokListXRT",
-> -					      mokx, mokxsize,
-> -					      get_handler_for_dbx);
-> -		if (rc)
-> -			pr_err("Couldn't parse mokx signatures %d\n", rc);
-> -		kfree(mokx);
-> -	}
-> +	/* Load the MokListXRT certs */
-> +	rc = load_moklist_certs(false);
-> +	if (rc)
-> +		pr_err("Couldn't parse mokx signatures: %d\n", rc);
->  
->  	/* Load the MokListRT certs */
-> -	rc = load_moklist_certs();
-> +	rc = load_moklist_certs(true);
-> +	if (rc)
-> +		pr_err("Couldn't parse mok signatures: %d\n", rc);
->  
->  	return rc;
->  }
+> better use of the IMA architecture specific Secure Boot policy.  This
+> IMA policy is enabled whenever Secure Boot is enabled.  By default, this 
+> new MOK variable is not defined.  This causes the IMA architecture 
+> specific Secure Boot policy to be disabled.  Since this changes the 
+> current behavior, it is placed behind a new Kconfig option.  Kernels
+> built with IMA_UEFI_ARCH_POLICY enabled would  allow the end-user
+> to enable this through mokutil using a new --ima-sb-enable option [3].
+> This gives the downstream Linux distro the capability to offer the
+> IMA architecture specific Secure Boot policy option, while giving
+> the end-user the ability to decide if they want to use it.
+> 
+> I have included links to both the mokutil [3] and shim [4] changes I
+> made to support this new functionality.
+> 
+> Thank you and looking forward to hearing your reviews.
+> 
+> [1] https://lore.kernel.org/lkml/1556221605.24945.3.camel@HansenPartnership.com/
+> [2] https://lore.kernel.org/patchwork/cover/902768/
+> [3] https://github.com/esnowberg/mokutil/tree/0.3.0-mokvars
+> [4] https://github.com/esnowberg/shim/tree/mokvars
+> 
+> Eric Snowberg (3):
+>   keys: Add ability to trust the platform keyring
+>   keys: Trust platform keyring if MokTrustPlatform found
+>   ima: Enable IMA SB Policy if MokIMAPolicy found
+> 
+>  certs/system_keyring.c                        | 19 ++++++++-
+>  include/keys/system_keyring.h                 | 10 +++++
+>  security/integrity/ima/Kconfig                |  8 ++++
+>  security/integrity/ima/ima_efi.c              | 24 ++++++++++++
+>  .../platform_certs/platform_keyring.c         | 39 +++++++++++++++++++
+>  5 files changed, 99 insertions(+), 1 deletion(-)
+> 
 > -- 
-> 2.27.0
+> 2.18.4
 > 
+> 
+
+/Jarkko
