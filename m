@@ -2,164 +2,124 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6688B38BAFC
-	for <lists+keyrings@lfdr.de>; Fri, 21 May 2021 02:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E5938C39C
+	for <lists+keyrings@lfdr.de>; Fri, 21 May 2021 11:43:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235372AbhEUArp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 20 May 2021 20:47:45 -0400
-Received: from bedivere.hansenpartnership.com ([96.44.175.130]:47062 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235348AbhEUAro (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 20 May 2021 20:47:44 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 9BF7E12806C8;
-        Thu, 20 May 2021 17:46:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1621557982;
-        bh=nSMAvFQ2qf9u9Cj4tHSExvhtmIcTBRz0nwDD/jHDViE=;
-        h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-        b=At7D9XLAKMgLsUo3Y5WU/PXR0kQEUjlyJEMRuFQyc07gwDFuO/+YJbo1Evrek0jpQ
-         HSjQIj9iFEcmyTV9uWqb0jJ7/Z2VNRTiUPZec9/pV7STMBvDUKrD5mFWOGkRSM2nXA
-         Lx1r6NBnBa3jLqlrAS+1DS5Qy5KTV4nU6P8lqEiM=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id biPT8wdljmij; Thu, 20 May 2021 17:46:22 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2203412806B1;
-        Thu, 20 May 2021 17:46:22 -0700 (PDT)
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: [PATCH 4/4] security: keys: trusted: implement authorization policy
-Date:   Thu, 20 May 2021 17:44:01 -0700
-Message-Id: <20210521004401.4167-5-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210521004401.4167-1-James.Bottomley@HansenPartnership.com>
-References: <20210521004401.4167-1-James.Bottomley@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S236973AbhEUJoc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 21 May 2021 05:44:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237002AbhEUJoY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 21 May 2021 05:44:24 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83DD7C061574;
+        Fri, 21 May 2021 02:43:00 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 27so12490498pgy.3;
+        Fri, 21 May 2021 02:43:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=KZgfiEzIPvsgTFxoIStVxbrN1vw78Fru0mAoJ7v9Q38=;
+        b=KJkka3pOqaaPrpeHGbn/5qJgNS7ejHBSZ04McsUUJTogdMBAjzZHGA2mimzEl9RzEL
+         xqnqMNAS7mSXVPF3onxn48E8Br7a89j5cGo2+Z/K06LBcsvMc7gZcKJ2DCiH3FtWhXEL
+         YIlDr29Jeis0iwcbQEhBpcnm0HwgqeScX3zW502DJHCRJcGtEIf3oEmB1tEop1KyKG4d
+         CkWMTjCb5d+gZQZdmvggnKYnDyd9/L++XGKi7khuNSqEu7dkMvshuanwLvCHhFoqgf+l
+         R2Tl975qVDswKyTSKaWOoRzvu2dRmAMGl0qhVAdQ8fR1X14gH096OayPYAxJof80cqN8
+         gLfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=KZgfiEzIPvsgTFxoIStVxbrN1vw78Fru0mAoJ7v9Q38=;
+        b=eSwX3DZHRRvm+p87MG62hU20GrGJK63Wcyoe0FlX/9DcdGd9pksWArDBMtnGT7tYAd
+         lLR07uYx1XcVRt5X9TwXhYh9BI4VuvvbQ8F2K7W23MMmr9BonhGv2G0QASj907RtZ7f2
+         sMvOfVHg1+IEOKr+SK7yedxfFWHoMaZOwBBpHvmdvNqxDfsY8MFIWlRN+amoMma7B83X
+         w+XCf1dhM5PWeqLEp+htPf0vneSXMakKkO7hSgVG7QGnge6gr4D8Y3MmU8BGiI4bTdOt
+         svzk8vlqKh5HOMsfEva4ZKSyI9GutOEUUL/MYgoZKEGXLLDIqMlOwsf72gwAu0bQWG4i
+         /ygw==
+X-Gm-Message-State: AOAM530xVPkso/ieeRgM/7KI8jmlfLtGFP8SVXSV3sV9jOuTfLZ2H5zD
+        I4ZgG7rLsJqXjsTo7PNE1M0=
+X-Google-Smtp-Source: ABdhPJwP2eDcCNOHj+jbX58H/KMkHnEV1mkrlpdFs13/Y4d0vhEg0tcECDTbxxEeUxCr2wSLODYBfg==
+X-Received: by 2002:a62:d447:0:b029:291:19f7:ddcd with SMTP id u7-20020a62d4470000b029029119f7ddcdmr9437698pfl.54.1621590180094;
+        Fri, 21 May 2021 02:43:00 -0700 (PDT)
+Received: from linux-l9pv.suse ([124.11.22.254])
+        by smtp.gmail.com with ESMTPSA id g202sm4091931pfb.54.2021.05.21.02.42.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 21 May 2021 02:42:59 -0700 (PDT)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Boeckel <me@benboeckel.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Malte Gell <malte.gell@gmx.de>,
+        Varad Gautam <varad.gautam@suse.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Subject: [PATCH v7 0/4] Check codeSigning extended key usage extension
+Date:   Fri, 21 May 2021 17:42:16 +0800
+Message-Id: <20210521094220.1238-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When using authorizations (passwords) with a policy, the trigger for
-the authorizations must be present in the policy statements that are
-required to build to the policy hash.  Add this required policy statement
-if blobauth is present.
+NIAP PP_OS certification requests that the OS shall validate the
+CodeSigning extended key usage extension field for integrity
+verifiction of exectable code:
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- include/linux/tpm.h                       |  2 ++
- security/keys/trusted-keys/tpm2-policy.c  | 14 +++++++++-
- security/keys/trusted-keys/trusted_tpm2.c | 33 +++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 1 deletion(-)
+    https://www.niap-ccevs.org/MMO/PP/-442-/
+        FIA_X509_EXT.1.1
 
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 85e167ae2c65..081ed7d6d4ac 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -230,6 +230,7 @@ enum tpm2_command_codes {
- 	TPM2_CC_CONTEXT_LOAD	        = 0x0161,
- 	TPM2_CC_CONTEXT_SAVE	        = 0x0162,
- 	TPM2_CC_FLUSH_CONTEXT	        = 0x0165,
-+	TPM2_CC_POLICY_AUTHVALUE	= 0x016B,
- 	TPM2_CC_POLICY_COUNTER_TIMER	= 0x016D,
- 	TPM2_CC_START_AUTH_SESS		= 0x0176,
- 	TPM2_CC_VERIFY_SIGNATURE        = 0x0177,
-@@ -240,6 +241,7 @@ enum tpm2_command_codes {
- 	TPM2_CC_PCR_EXTEND	        = 0x0182,
- 	TPM2_CC_EVENT_SEQUENCE_COMPLETE = 0x0185,
- 	TPM2_CC_HASH_SEQUENCE_START     = 0x0186,
-+	TPM2_CC_POLICY_PASSWORD		= 0x018c,
- 	TPM2_CC_CREATE_LOADED           = 0x0191,
- 	TPM2_CC_LAST		        = 0x0193, /* Spec 1.36 */
- };
-diff --git a/security/keys/trusted-keys/tpm2-policy.c b/security/keys/trusted-keys/tpm2-policy.c
-index 21bfeb686287..0f5daa5653bf 100644
---- a/security/keys/trusted-keys/tpm2-policy.c
-+++ b/security/keys/trusted-keys/tpm2-policy.c
-@@ -67,6 +67,7 @@ static int tpm2_validate_policy(struct tpm2_policies *pols)
- 		switch (pols->code[i]) {
- 		case TPM2_CC_POLICY_COUNTER_TIMER:
- 		case TPM2_CC_POLICY_PCR:
-+		case TPM2_CC_POLICY_AUTHVALUE:
- 			break;
- 		default:
- 			pr_warn("tpm2 policy 0x%x is unsupported",
-@@ -198,7 +199,8 @@ int tpm2_generate_policy_digest(struct tpm2_policies *pols,
- 			len = *plen;
- 		}
- 
--		crypto_shash_update(sdesc, policy, len);
-+		if (len)
-+			crypto_shash_update(sdesc, policy, len);
- 
- 		/* now output the intermediate to the policydigest */
- 		crypto_shash_final(sdesc, policydigest);
-@@ -334,6 +336,16 @@ int tpm2_get_policy_session(struct tpm_chip *chip, struct tpm2_policies *pols,
- 		u32 cmd = pols->code[i];
- 		struct tpm_buf buf;
- 
-+		if (cmd == TPM2_CC_POLICY_AUTHVALUE)
-+			/*
-+			 * both PolicyAuthValue and PolicyPassword
-+			 * hash to the same thing, but one triggers
-+			 * HMAC authentication and the other simple
-+			 * authentication.  Since we have no HMAC
-+			 * code, we're choosing the simple
-+			 */
-+			cmd = TPM2_CC_POLICY_PASSWORD;
-+
- 		rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, cmd);
- 		if (rc)
- 			return rc;
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index b7eb919de8ef..282c633bd2ec 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -294,6 +294,39 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * if we already have a policy, we have to add authorization
-+	 * to it.  If we don't, we can simply follow the usual
-+	 * non-policy route.
-+	 */
-+	if (options->blobauth_len != 0 && payload->policies) {
-+		struct tpm2_policies *pols;
-+		static u8 *scratch;
-+		int i;
-+		bool found = false;
-+
-+		pols = payload->policies;
-+
-+		/* make sure it's not already in policy */
-+		for (i = 0; i < pols->count; i++) {
-+			if (pols->code[i] == TPM2_CC_POLICY_AUTHVALUE) {
-+				found = true;
-+
-+				break;
-+			}
-+		}
-+
-+		if (!found) {
-+			i = pols->count++;
-+			scratch = pols->policies[i - 1] + pols->len[i - 1];
-+
-+			/* the TPM2_PolicyPassword command has no payload */
-+			pols->policies[i] = scratch;
-+			pols->len[i] = 0;
-+			pols->code[i] = TPM2_CC_POLICY_AUTHVALUE;
-+		}
-+	}
-+
- 	if (payload->policies) {
- 		rc = tpm2_generate_policy_digest(payload->policies,
- 						 options->hash,
+This patchset adds the logic for parsing the codeSigning EKU extension
+field in X.509. And checking the CodeSigning EKU when verifying
+signature of kernel module or kexec PE binary in PKCS#7.
+
+v7:
+- Fixed the broken function call in is_key_on_revocation_list().
+  (be found by kernel test robot)
+- Use a general name check_eku_by_usage() instead of check_codesign_eku().
+
+v6:
+- Add more length checking when parsing extKeyUsage and EKU's OID blob.
+- Add 'usage' parameter to the comment of pkcs7_validate_trust function.
+
+v5:
+Fixed the wording in module-signing.rst.
+
+v4:
+Fixed the wording in patch description.
+
+v3:
+- Add codeSigning EKU to x509.genkey key generation config.
+- Add openssl command option example for generating CodeSign EKU to
+  module-signing.rst document.
+
+v2:
+Changed the help wording in the Kconfig.
+
+Lee, Chun-Yi (4):
+  X.509: Add CodeSigning extended key usage parsing
+  PKCS#7: Check codeSigning EKU for kernel module and kexec pe
+    verification
+  modsign: Add codeSigning EKU when generating X.509 key generation
+    config
+  Documentation/admin-guide/module-signing.rst: add openssl command
+    option example for CodeSign EKU
+
+ Documentation/admin-guide/module-signing.rst |  6 ++++
+ certs/Makefile                               |  1 +
+ certs/blacklist.c                            |  6 ++--
+ certs/system_keyring.c                       |  4 +--
+ crypto/asymmetric_keys/Kconfig               |  9 ++++++
+ crypto/asymmetric_keys/pkcs7_trust.c         | 43 ++++++++++++++++++++++++++--
+ crypto/asymmetric_keys/x509_cert_parser.c    | 25 ++++++++++++++++
+ include/crypto/pkcs7.h                       |  4 ++-
+ include/crypto/public_key.h                  |  1 +
+ include/keys/system_keyring.h                |  7 +++--
+ include/linux/oid_registry.h                 |  5 ++++
+ 11 files changed, 101 insertions(+), 10 deletions(-)
+
 -- 
-2.26.2
+2.16.4
 
