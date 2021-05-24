@@ -2,101 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8274F38E2E2
-	for <lists+keyrings@lfdr.de>; Mon, 24 May 2021 11:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0301F38E42C
+	for <lists+keyrings@lfdr.de>; Mon, 24 May 2021 12:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbhEXJDn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 24 May 2021 05:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232449AbhEXJDn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 24 May 2021 05:03:43 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693BAC061756
-        for <keyrings@vger.kernel.org>; Mon, 24 May 2021 02:02:14 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id b7so10139996plg.0
-        for <keyrings@vger.kernel.org>; Mon, 24 May 2021 02:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=from:content-transfer-encoding:mime-version:subject:message-id:date
-         :cc:to;
-        bh=iPvQM7Ju1ffWKIo+8yldAlBUkBMS+sJNZu1vYtZK95Y=;
-        b=yIcCS+Cbcf4SQbB2ozxN/mlL7P4irXdIn7392izp1/M0hZPWyJmx5Mnf6JwadtddWU
-         TCkMwGtLO+7KYH+JpjZjYgfdzdM8nRuV9dOaCvCOD4nO/LZjHdJ2SecQs69SNLfi65Y8
-         bqJdj5C9wc1QwY/z+pVa3ItifpQ/iGqZ0y5ISArHIo6ecofDch0FIOAdoV2ETbmFhCXL
-         7oqzcPtKdvDmjgYT4h/DHcjVNb4Rf1ViFcLzu52Jzm4/YXxT6r0sifDo2gEBf2pMjV2R
-         O6mWqBwOZn3K/laIlYa3NqHNuXXF1xkkW3TdrA53cAsbE+6SaWovnRNyfniUnk2Q65oB
-         dUxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:content-transfer-encoding:mime-version
-         :subject:message-id:date:cc:to;
-        bh=iPvQM7Ju1ffWKIo+8yldAlBUkBMS+sJNZu1vYtZK95Y=;
-        b=Ub47LmBhrutduZbROBnFFMQlIMEJoNGb1vDr2S42RwAEkKcXLl2kqrjwqBLi1lXL6F
-         Fa/sV8zjoDWwW917FvoQsSvLqm6p400S4yzAnkfgDJxZ77bwx7Zj29MXhAuIyFB6Ip/6
-         AKcGxaIVUdPS5SFghqPWA87LCTuiuZiKowSm+Dr0f3RCfg+8uBCtVsXf01haWgG8/2ku
-         +n2g1/LklSJKkGrwA8/ExYeDyTFE9k19qjgm9m4l+VJ/rUKyyq85ljyjdv9HxX8IltkO
-         QK+5p6yIv9YxZRXniVS78mTgJ8ja+ilMEirjsY/LyP47lb1XDYza9568PpVUFPdGem/3
-         g6KA==
-X-Gm-Message-State: AOAM53365mHwmRTVPcQqho5UEJ/4ZYpD8+4OOedwJiymJHzSfjQI9LIg
-        i5qEpvsRx8qvQmBWAWpAbAOR1g==
-X-Google-Smtp-Source: ABdhPJxW3Ih0kl/t8C0f7Wph1i/gPeyb71D336JNHAC/M7n6qXeQx4sBV+IJSEb5+uqi9NQU7eRRDw==
-X-Received: by 2002:a17:903:1cd:b029:f0:c1c2:9e75 with SMTP id e13-20020a17090301cdb02900f0c1c29e75mr24517969plh.54.1621846933651;
-        Mon, 24 May 2021 02:02:13 -0700 (PDT)
-Received: from smtpclient.apple ([139.177.225.224])
-        by smtp.gmail.com with ESMTPSA id a65sm9098526pfb.177.2021.05.24.02.02.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 May 2021 02:02:13 -0700 (PDT)
-From:   Chunxin Zang <zangchunxin@bytedance.com>
-Content-Type: text/plain;
-        charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
-Subject: =?utf-8?Q?Documentation/admin-guide/module-signing=2Erst=3A_Does_?=
- =?utf-8?Q?the_function_of_adding_a_key_to_=E2=80=98Builtin=5Ftrusted=5Fke?=
- =?utf-8?Q?y=E2=80=99_work=3F?=
-Message-Id: <49DB247F-F485-45D5-87F9-4FCB85CB7767@bytedance.com>
-Date:   Mon, 24 May 2021 17:02:07 +0800
-Cc:     keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To:     dhowells@redhat.com, dwmw2@infradead.org, corbet@lwn.net
-X-Mailer: Apple Mail (2.3654.80.0.2.43)
+        id S232614AbhEXKim (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 24 May 2021 06:38:42 -0400
+Received: from wind.enjellic.com ([76.10.64.91]:49442 "EHLO wind.enjellic.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232640AbhEXKil (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 24 May 2021 06:38:41 -0400
+X-Greylist: delayed 1628 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 May 2021 06:38:40 EDT
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 14OA9Pxw029605;
+        Mon, 24 May 2021 05:09:25 -0500
+Received: (from greg@localhost)
+        by wind.enjellic.com (8.15.2/8.15.2/Submit) id 14OA9Ndt029604;
+        Mon, 24 May 2021 05:09:23 -0500
+Date:   Mon, 24 May 2021 05:09:23 -0500
+From:   "Dr. Greg" <greg@enjellic.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        dmitry.kasatkin@gmail.com, James Morris <jmorris@namei.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        torvalds@linux-foundation.org,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        pjones@redhat.com, glin@suse.com,
+        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>
+Subject: Re: [RFC PATCH 0/3] Add additional MOK vars
+Message-ID: <20210524100923.GA29476@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <20210517225714.498032-1-eric.snowberg@oracle.com> <fdb42621e7145ce81a34840cbcf0914874c78913.camel@linux.ibm.com> <7F861393-7971-43AB-A741-223B8A50FFA0@oracle.com> <c134ad45d924e8b719f8abb6d36b426b889e9394.camel@linux.ibm.com> <4A887886-BDB2-4F88-9D83-73B9BC9E641F@oracle.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4A887886-BDB2-4F88-9D83-73B9BC9E641F@oracle.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Mon, 24 May 2021 05:09:25 -0500 (CDT)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Recently, I am learning how to use module signature.
-But I got 'Permission denied' when I trying to add a=20
-public key to the 'builtin_trusted_keys' keyring.
+On Thu, May 20, 2021 at 02:37:31PM -0600, Eric Snowberg wrote:
 
-root@:~# cat /proc/keys
-3471e123 I------     1 perm 1f030000     0     0 asymmetri Build time =
-autogenerated kernel key: xxxx: X509.rsa xxxx []
-37e8db03 I------     1 perm 1f0b0000     0     0 keyring   =
-.builtin_trusted_keys: 1
-root@:~# keyctl padd asymmetric "" 0x37e8db03  < =
-./signing_key_test_sign.x509
-add_key: Permission denied
+Good morning, I hope the week is starting well for everyone.
 
-The reason is the 'builtin_trusted_keys'  keyring's perm was set=20
-'1f0b0000' by below operate when kernel starting.=20
+> > On May 19, 2021, at 8:32 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >
+> >> After going through the mailing list history related to IMA appraisal, 
+> >> is this feature strictly geared towards a custom kernel used for a 
+> >> specific purpose?  Do you view it as not being a feature suitable for 
+> >> a generic distribution kernel to offer? 
+> > 
+> > IMA-appraisal is enabled by distros, but requires labeling the
+> > filesystem with security.ima xattrs, before loading an appraisal
+> > policy.
 
-builtin_trusted_keys =3D
-                keyring_alloc(".builtin_trusted_keys",
-                              KUIDT_INIT(0), KGIDT_INIT(0), =
-current_cred(),
-                              ((KEY_POS_ALL & ~KEY_POS_SETATTR) |=20
-                              KEY_USR_VIEW | KEY_USR_READ | =
-KEY_USR_SEARCH),
-                              KEY_ALLOC_NOT_IN_QUOTA,
-                              NULL, NULL);
+> I was referring to digital signature based IMA-appraisal.  If a
+> company wanted to ship a distro where all immutable files are IMA
+> signed, today it would not be feasible.  The end-user will
+> undoubtably want to install their own application, but this is not
+> possible. The end-user can not IMA sign anything since they do not
+> have the ability to add their own IMA CA.
 
-And,  'add_key' interface pass the KEY_NEED_WRITE
-perm to lookup_user_key.=20
-So -EACCES returned in key_task_permission check.
+I've spent 6+ years working on this issue, with a focus on trusted
+endpoint devices and their communications with trusted cloud
+endpoints.
 
-Is there something wrong in  module-signing.rst ?
-Or I missed some information about it.
+The challenge to trusted systems is that they not only have to be
+secure, they have to be tractable for the general development
+community to easily target, that is currently not the case.  Eric, as
+you note, this extends to the notion of generic Linux distributions
+being able to deliver this tractability and flexibility to their user
+communities.
 
-Best wishes
-Chunxin=
+Making this happen requires a much more generic system for modeling
+security behavior then what currently exists.  If one looks at how
+security co-processors are going to evolve, this modeling will end up
+going out of the kernel into external devices, which are not going to
+be generic TPM's [*].
+
+We have such an architecture for the 5.4 kernel, that with a little
+luck, we hope to be able to release by mid-summer.  It peacefully
+co-exists with all of the existing integrity infrastructure which
+would make it tractable for a value add patch.
+
+It includes a namespace implementation for the security event
+modeling, without which, tractable trusted system development is a
+non-starter.
+
+If you are interested I will keep you in the loop.
+
+Have a good day.
+
+Greg
+
+[*] We've used SGX enclaves and ST based micro-controller
+implementations.
+
+As always,
+Dr. Greg Wettstein, Ph.D, Worker      Autonomously self-defensive
+Enjellic Systems Development, LLC     IOT platforms and edge devices.
+4206 N. 19th Ave.
+Fargo, ND  58102
+PH: 701-281-1686                      EMAIL: greg@enjellic.com
+------------------------------------------------------------------------------
+"The vast majority of human beings dislike and even dread all notions
+ with which they are not familiar.  Hence it comes about that at their
+ first appearance innovators have always been derided as fools and
+ madmen."
+                                -- Aldous Huxley
