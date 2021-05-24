@@ -2,49 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA9A38DF1D
-	for <lists+keyrings@lfdr.de>; Mon, 24 May 2021 04:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87ACF38DF20
+	for <lists+keyrings@lfdr.de>; Mon, 24 May 2021 04:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231782AbhEXCRr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 23 May 2021 22:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37766 "EHLO
+        id S232200AbhEXCR4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 23 May 2021 22:17:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231765AbhEXCRr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 23 May 2021 22:17:47 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E868BC061574;
-        Sun, 23 May 2021 19:16:19 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id t193so18984847pgb.4;
-        Sun, 23 May 2021 19:16:19 -0700 (PDT)
+        with ESMTP id S232181AbhEXCRz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 23 May 2021 22:17:55 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9776C061574;
+        Sun, 23 May 2021 19:16:26 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id e15so7228434plh.1;
+        Sun, 23 May 2021 19:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=REpFUlwG9YyO4uUcvzf9xd7mKCJ1K3fsaXFmDtloqeU=;
-        b=EAqPI2htLPLB05N5AW8/lIAtfkVMsUi2eQ4x2423BT6z5z+mpYn4DiMzpeZxrP3UFW
-         m58RqJfD6XE/dgsB/+tkaL+5uBL94jpbMmElA/aUaFmy6gihjh8CEPzugJlTpbDzVev7
-         42Dwh8yFJezBd8QH05KOPnUJYGHGNoRdebqKxpYPxvi9b9J3ULEk1xCHy7fXf+ZkN0wE
-         R+lbllDQ5BLWthUF5MMxInlV7Z1lxYGOACCrqRvU3oFmcXADkCMSeIpqmU0fQtHkPYq4
-         +yizZ6IfUEE95O9GL4BOHpDrMczqB1AdIzTP5EoiPJwcpI2yzo21QudgMYN4JW91ii5v
-         4NmQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=yT6CAnQjd1D49HHgiYY1r24DT674aBCTUWawwoMceAU=;
+        b=e/Q/uFQU9E2sCnd5rs2wvbkMmgo9ak8GOQQySy8NchYMzNtJkJnSEm8iZkCf/5KWh7
+         FbHSQjGeCjk1HxLBeCixsdnTkp4SvJNSXjzR/aN91S5T8DTmj2+4EJ/E/pDUk60JgIYb
+         3zCB2qG07DBgMRkJOFOxGk/Q+L1GtvqHBp0rv87wsfMchhprFBVYPwUri1pH3k17GRcH
+         tmLfmw+RaBmUQxzcGG2XxbUQqgPSDW7WlPJhdpPqQPJdBPhZoW1V4HM6OD2DH1JH15zC
+         F53RNmaVVmiMaxQLI2cSFuhjLaaZjeU4pXGQSYk4QFLBK/V+Jkh2BQcVKlM7LTKFsDlu
+         dfWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=REpFUlwG9YyO4uUcvzf9xd7mKCJ1K3fsaXFmDtloqeU=;
-        b=DcywDF62c2mmpXyo0Mz1KqTC7LTH6WRIeEYPCD+z9YUJsIdWFe7FjvGkscGofz5sJa
-         EzXnfrw9w4UsHE9H1YOmh3f2SCa0Vn/IvRbxk48thdBNnIs/znTReCLpRsYbYwEJL1Q2
-         YeRBOGD36ZYu5nql++aq4L+HVTcJCWeo2g2HLQ0MUdKPT3/DGRIY0O/f4p9KXhpCmhD8
-         DcCJYr9j0IRyOuybBjdzFSwK+Vk9ZT+A4/Xb+1F/EgWBEk/ryGlQQGB3sSI2dW0XStwo
-         GAJkCUtDd+9oCIl6jNMX8aiEl2kwwfupdmSfmFOiuCSU/ZlPeYOQXNg6oM4HakdAOepA
-         tBCA==
-X-Gm-Message-State: AOAM5300xoNuEMwLrmzAkaG1GQ29VOut67leuJ7po8a9v/Loe1vYmSDg
-        bWY2A36BK1m8Ed3VQ9WQM7Q=
-X-Google-Smtp-Source: ABdhPJzhuNImg6uhg4chPxDmo1i2mCfi/irL8NnoGd7Ba6/yD0EosWRSgOKoTcGmTO9pa1OUCkG6jg==
-X-Received: by 2002:a63:da0a:: with SMTP id c10mr11039211pgh.255.1621822579282;
-        Sun, 23 May 2021 19:16:19 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=yT6CAnQjd1D49HHgiYY1r24DT674aBCTUWawwoMceAU=;
+        b=iuib8wb4JUGDScQcuDoYWd98cCzBWjZa2j+L3Wxz59KEEJ6Xc/TFMSzIAAsiFwuvli
+         37w2LWNF1ZIdd3e6s3u0z9LRzNacn1d8vVnTBv/qK+QN7ee2zi1MZRsT4mRbN4tTsDIc
+         87eSSTkgFavDz10e5jOHWL+VSQzJE+2QDNFMQAVGTyCoV1K2u37tZSJW7csP/YJaHhxS
+         5KPcD7FdPkfSOlPAfJdGoSQiGi/hlmxEJH9ZBV2YM2+Mec5Q61i0gYZm34C3nFN8E+cN
+         UqquxHEx3w98ULb2f8a885WJgHeyFpJ4Yj/sMfrgzOmir1WwvZ2p11mkYfvh/0b+p5LM
+         009w==
+X-Gm-Message-State: AOAM53259OCgsrFdehckno6YG4cGm1098C5pNHAZ1jBrlwoAjkDZpS+q
+        gkuffhjx+bcF0FPkzwrKfHnEYV7Byjo=
+X-Google-Smtp-Source: ABdhPJwnRgxNX8wM3Zf9NW0OJ3HR1hczibMQ69jXQF/gRFMfjUxLCCBuge+blklLtDr+MHDdrvPS7g==
+X-Received: by 2002:a17:902:9342:b029:f0:cc10:3f with SMTP id g2-20020a1709029342b02900f0cc10003fmr23571228plp.72.1621822586321;
+        Sun, 23 May 2021 19:16:26 -0700 (PDT)
 Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id h1sm9474960pfh.72.2021.05.23.19.16.14
+        by smtp.gmail.com with ESMTPSA id h1sm9474960pfh.72.2021.05.23.19.16.19
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 23 May 2021 19:16:18 -0700 (PDT)
+        Sun, 23 May 2021 19:16:25 -0700 (PDT)
 From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
 X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
 To:     David Howells <dhowells@redhat.com>
@@ -56,74 +57,102 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Varad Gautam <varad.gautam@suse.com>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Lee, Chun-Yi" <jlee@suse.com>
-Subject: [PATCH v8 0/4] Check codeSigning extended key usage extension
-Date:   Mon, 24 May 2021 10:15:36 +0800
-Message-Id: <20210524021540.18736-1-jlee@suse.com>
+Subject: [PATCH v8,1/4] X.509: Add CodeSigning extended key usage parsing
+Date:   Mon, 24 May 2021 10:15:37 +0800
+Message-Id: <20210524021540.18736-2-jlee@suse.com>
 X-Mailer: git-send-email 2.12.3
+In-Reply-To: <20210524021540.18736-1-jlee@suse.com>
+References: <20210524021540.18736-1-jlee@suse.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-NIAP PP_OS certification requests that the OS shall validate the
-CodeSigning extended key usage extension field for integrity
-verifiction of exectable code:
+This patch adds the logic for parsing the CodeSign extended key usage
+extension in X.509. The parsing result will be set to the eku flag
+which is carried by public key. It can be used in the PKCS#7
+verification.
 
-    https://www.niap-ccevs.org/MMO/PP/-442-/
-        FIA_X509_EXT.1.1
+Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+---
+ crypto/asymmetric_keys/x509_cert_parser.c | 25 +++++++++++++++++++++++++
+ include/crypto/public_key.h               |  1 +
+ include/linux/oid_registry.h              |  5 +++++
+ 3 files changed, 31 insertions(+)
 
-This patchset adds the logic for parsing the codeSigning EKU extension
-field in X.509. And checking the CodeSigning EKU when verifying
-signature of kernel module or kexec PE binary in PKCS#7.
-
-v8:
-- Fixed the bug of is_key_on_revocation_list() when
-  CONFIG_SYSTEM_REVOCATION_LIST is not set. 
-
-v7:
-- Fixed the broken function call in is_key_on_revocation_list().
-  (be found by kernel test robot)
-- Use a general name check_eku_by_usage() instead of check_codesign_eku().
-
-v6:
-- Add more length checking when parsing extKeyUsage and EKU's OID blob.
-- Add 'usage' parameter to the comment of pkcs7_validate_trust function.
-
-v5:
-Fixed the wording in module-signing.rst.
-
-v4:
-Fixed the wording in patch description.
-
-v3:
-- Add codeSigning EKU to x509.genkey key generation config.
-- Add openssl command option example for generating CodeSign EKU to
-  module-signing.rst document.
-
-v2:
-Changed the help wording in the Kconfig.
-
-Lee, Chun-Yi (4):
-  X.509: Add CodeSigning extended key usage parsing
-  PKCS#7: Check codeSigning EKU for kernel module and kexec pe
-    verification
-  modsign: Add codeSigning EKU when generating X.509 key generation
-    config
-  Documentation/admin-guide/module-signing.rst: add openssl command
-    option example for CodeSign EKU
-
- Documentation/admin-guide/module-signing.rst |  6 ++++
- certs/Makefile                               |  1 +
- certs/blacklist.c                            |  6 ++--
- certs/system_keyring.c                       |  4 +--
- crypto/asymmetric_keys/Kconfig               |  9 ++++++
- crypto/asymmetric_keys/pkcs7_trust.c         | 43 ++++++++++++++++++++++++++--
- crypto/asymmetric_keys/x509_cert_parser.c    | 25 ++++++++++++++++
- include/crypto/pkcs7.h                       |  4 ++-
- include/crypto/public_key.h                  |  1 +
- include/keys/system_keyring.h                |  7 +++--
- include/linux/oid_registry.h                 |  5 ++++
- 11 files changed, 101 insertions(+), 10 deletions(-)
-
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+index 6d003096b5bc..996db9419474 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -542,6 +542,8 @@ int x509_process_extension(void *context, size_t hdrlen,
+ 	struct x509_parse_context *ctx = context;
+ 	struct asymmetric_key_id *kid;
+ 	const unsigned char *v = value;
++	int i = 0;
++	enum OID oid;
+ 
+ 	pr_debug("Extension: %u\n", ctx->last_oid);
+ 
+@@ -571,6 +573,29 @@ int x509_process_extension(void *context, size_t hdrlen,
+ 		return 0;
+ 	}
+ 
++	if (ctx->last_oid == OID_extKeyUsage) {
++		if (vlen < 2 ||
++		    v[0] != ((ASN1_UNIV << 6) | ASN1_CONS_BIT | ASN1_SEQ) ||
++		    v[1] != vlen - 2)
++			return -EBADMSG;
++		i += 2;
++
++		while (i < vlen) {
++			/* A 10 bytes EKU OID Octet blob =
++			 * ASN1_OID + size byte + 8 bytes OID */
++			if ((i + 10) > vlen || v[i] != ASN1_OID || v[i + 1] != 8)
++				return -EBADMSG;
++
++			oid = look_up_OID(v + i + 2, v[i + 1]);
++			if (oid == OID_codeSigning) {
++				ctx->cert->pub->eku |= EKU_codeSigning;
++			}
++			i += 10;
++		}
++		pr_debug("extKeyUsage: %d\n", ctx->cert->pub->eku);
++		return 0;
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 47accec68cb0..1ccaebe2a28b 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -28,6 +28,7 @@ struct public_key {
+ 	bool key_is_private;
+ 	const char *id_type;
+ 	const char *pkey_algo;
++	unsigned int eku : 9;      /* Extended Key Usage (9-bit) */
+ };
+ 
+ extern void public_key_free(struct public_key *key);
+diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
+index 461b7aa587ba..8c8935f0eb73 100644
+--- a/include/linux/oid_registry.h
++++ b/include/linux/oid_registry.h
+@@ -125,9 +125,14 @@ enum OID {
+ 	OID_TPMImportableKey,		/* 2.23.133.10.1.4 */
+ 	OID_TPMSealedData,		/* 2.23.133.10.1.5 */
+ 
++	/* Extended key purpose OIDs [RFC 5280] */
++	OID_codeSigning,		/* 1.3.6.1.5.5.7.3.3 */
++
+ 	OID__NR
+ };
+ 
++#define EKU_codeSigning	(1 << 2)
++
+ extern enum OID look_up_OID(const void *data, size_t datasize);
+ extern int parse_OID(const void *data, size_t datasize, enum OID *oid);
+ extern int sprint_oid(const void *, size_t, char *, size_t);
 -- 
 2.16.4
 
