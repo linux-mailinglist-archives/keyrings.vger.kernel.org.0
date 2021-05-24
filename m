@@ -2,118 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0301F38E42C
-	for <lists+keyrings@lfdr.de>; Mon, 24 May 2021 12:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DEC038E3D5
+	for <lists+keyrings@lfdr.de>; Mon, 24 May 2021 12:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232614AbhEXKim (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 24 May 2021 06:38:42 -0400
-Received: from wind.enjellic.com ([76.10.64.91]:49442 "EHLO wind.enjellic.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232640AbhEXKil (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 24 May 2021 06:38:41 -0400
-X-Greylist: delayed 1628 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 May 2021 06:38:40 EDT
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 14OA9Pxw029605;
-        Mon, 24 May 2021 05:09:25 -0500
-Received: (from greg@localhost)
-        by wind.enjellic.com (8.15.2/8.15.2/Submit) id 14OA9Ndt029604;
-        Mon, 24 May 2021 05:09:23 -0500
-Date:   Mon, 24 May 2021 05:09:23 -0500
-From:   "Dr. Greg" <greg@enjellic.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        dmitry.kasatkin@gmail.com, James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        torvalds@linux-foundation.org,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        pjones@redhat.com, glin@suse.com,
-        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>
-Subject: Re: [RFC PATCH 0/3] Add additional MOK vars
-Message-ID: <20210524100923.GA29476@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20210517225714.498032-1-eric.snowberg@oracle.com> <fdb42621e7145ce81a34840cbcf0914874c78913.camel@linux.ibm.com> <7F861393-7971-43AB-A741-223B8A50FFA0@oracle.com> <c134ad45d924e8b719f8abb6d36b426b889e9394.camel@linux.ibm.com> <4A887886-BDB2-4F88-9D83-73B9BC9E641F@oracle.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A887886-BDB2-4F88-9D83-73B9BC9E641F@oracle.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Mon, 24 May 2021 05:09:25 -0500 (CDT)
+        id S232546AbhEXKU6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 24 May 2021 06:20:58 -0400
+Received: from out30-54.freemail.mail.aliyun.com ([115.124.30.54]:36631 "EHLO
+        out30-54.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232511AbhEXKU4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 24 May 2021 06:20:56 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0UZvJBtZ_1621851566;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UZvJBtZ_1621851566)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 24 May 2021 18:19:27 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     dhowells@redhat.com
+Cc:     dwmw2@infradead.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>
+Subject: [PATCH] certs: Fix kernel-doc
+Date:   Mon, 24 May 2021 18:19:23 +0800
+Message-Id: <1621851563-30425-1-git-send-email-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, May 20, 2021 at 02:37:31PM -0600, Eric Snowberg wrote:
+Fix function name in system_keyring.c kernel-doc comment
+to remove a warning.
 
-Good morning, I hope the week is starting well for everyone.
+certs/system_keyring.c:41: warning: expecting prototype for
+restrict_link_to_builtin_trusted(). Prototype was for
+restrict_link_by_builtin_trusted() instead.
 
-> > On May 19, 2021, at 8:32 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >
-> >> After going through the mailing list history related to IMA appraisal, 
-> >> is this feature strictly geared towards a custom kernel used for a 
-> >> specific purpose?  Do you view it as not being a feature suitable for 
-> >> a generic distribution kernel to offer? 
-> > 
-> > IMA-appraisal is enabled by distros, but requires labeling the
-> > filesystem with security.ima xattrs, before loading an appraisal
-> > policy.
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Fixes: 'commit d3bfe84129f6 ("certs: Add a secondary system keyring that
+can be added to dynamically")'
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ certs/system_keyring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I was referring to digital signature based IMA-appraisal.  If a
-> company wanted to ship a distro where all immutable files are IMA
-> signed, today it would not be feasible.  The end-user will
-> undoubtably want to install their own application, but this is not
-> possible. The end-user can not IMA sign anything since they do not
-> have the ability to add their own IMA CA.
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index 692365d..06c0c3d 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -31,7 +31,7 @@
+ extern __initconst const unsigned long module_cert_size;
+ 
+ /**
+- * restrict_link_to_builtin_trusted - Restrict keyring addition by built in CA
++ * restrict_link_by_builtin_trusted - Restrict keyring addition by built in CA
+  *
+  * Restrict the addition of keys into a keyring based on the key-to-be-added
+  * being vouched for by a key in the built in system keyring.
+-- 
+1.8.3.1
 
-I've spent 6+ years working on this issue, with a focus on trusted
-endpoint devices and their communications with trusted cloud
-endpoints.
-
-The challenge to trusted systems is that they not only have to be
-secure, they have to be tractable for the general development
-community to easily target, that is currently not the case.  Eric, as
-you note, this extends to the notion of generic Linux distributions
-being able to deliver this tractability and flexibility to their user
-communities.
-
-Making this happen requires a much more generic system for modeling
-security behavior then what currently exists.  If one looks at how
-security co-processors are going to evolve, this modeling will end up
-going out of the kernel into external devices, which are not going to
-be generic TPM's [*].
-
-We have such an architecture for the 5.4 kernel, that with a little
-luck, we hope to be able to release by mid-summer.  It peacefully
-co-exists with all of the existing integrity infrastructure which
-would make it tractable for a value add patch.
-
-It includes a namespace implementation for the security event
-modeling, without which, tractable trusted system development is a
-non-starter.
-
-If you are interested I will keep you in the loop.
-
-Have a good day.
-
-Greg
-
-[*] We've used SGX enclaves and ST based micro-controller
-implementations.
-
-As always,
-Dr. Greg Wettstein, Ph.D, Worker      Autonomously self-defensive
-Enjellic Systems Development, LLC     IOT platforms and edge devices.
-4206 N. 19th Ave.
-Fargo, ND  58102
-PH: 701-281-1686                      EMAIL: greg@enjellic.com
-------------------------------------------------------------------------------
-"The vast majority of human beings dislike and even dread all notions
- with which they are not familiar.  Hence it comes about that at their
- first appearance innovators have always been derided as fools and
- madmen."
-                                -- Aldous Huxley
