@@ -2,590 +2,232 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C021238F58F
-	for <lists+keyrings@lfdr.de>; Tue, 25 May 2021 00:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE44638FF56
+	for <lists+keyrings@lfdr.de>; Tue, 25 May 2021 12:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbhEXWWW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 24 May 2021 18:22:22 -0400
-Received: from bedivere.hansenpartnership.com ([96.44.175.130]:34718 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229610AbhEXWWW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 24 May 2021 18:22:22 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id A97F612802B1;
-        Mon, 24 May 2021 15:20:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1621894853;
-        bh=640M06xr+9CtCzlqcM9Gps1qTuEwI1bzhyzyhngux/I=;
-        h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-        b=qlEfo/JcovIJYt8g7pSkK7rdosr9XM90mW4lRutXCMhyV8oDRzfsunNnOdV5MdvrX
-         ytAcJxWYRQ4zqCvORz1U9ylvqdOHrhVasBdID5o83teSP5ULezeJC/ozU4+77iVvfS
-         2inzOx6lAs907D0R/DUWHuhZXVqi7sBiEi/t49jw=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JvnGDgs-Kru2; Mon, 24 May 2021 15:20:53 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2F9F7128029D;
-        Mon, 24 May 2021 15:20:53 -0700 (PDT)
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     openssl-tpm2-engine@groups.io
-Cc:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: [PATCH v2 1/1] doc: add draft RFC for TPM Key format
-Date:   Mon, 24 May 2021 15:20:11 -0700
-Message-Id: <20210524222011.24313-2-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210524222011.24313-1-James.Bottomley@HansenPartnership.com>
-References: <20210524222011.24313-1-James.Bottomley@HansenPartnership.com>
+        id S231981AbhEYKiA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 25 May 2021 06:38:00 -0400
+Received: from de-smtp-delivery-102.mimecast.com ([194.104.111.102]:55553 "EHLO
+        de-smtp-delivery-102.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231899AbhEYKhh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 25 May 2021 06:37:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
+        t=1621938930;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ng6qFt1NkmwomrGq3+v+WldxvMxnLBTGsTINBOuSv7k=;
+        b=gJfr8YkAo1nZwjAU4QQ4v1Yk5lRpdQ9qP0Z7Tr/pxZKQuxOBSX7r+2P+G+tslLtgIp6/eD
+        JH/6Q9KcOBaZO/OeZ5xJyN5OYY4c6XtySQSQPvKtNGV5csLXpNTE5GFMMdRo8uH8K26QIz
+        CAKx4lN/XijxMavKpmiTs7nVc8Vtws0=
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (mail-db3eur04lp2056.outbound.protection.outlook.com [104.47.12.56]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ de-mta-24-IwCZkctoMMCWkLuL8Zu8tQ-1; Tue, 25 May 2021 12:35:29 +0200
+X-MC-Unique: IwCZkctoMMCWkLuL8Zu8tQ-1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g4FRRTZU1dd9AHB3xy/pj2zxgGRBWF0+uupLbs/7sI2VeZW2SDHhKSJXULCaBPyQi20TMEoeNNrGT5btcjMYqwAB6xkOqB5gYi1ZjUcaoA7F9ZVaRcGlBLNusZXO49AJJosbvUaVgxPHkWozkVNOFzwwXOts9R0T4N0sAaPfvKc3q2/QEzzOq0UbfD1v0pLycmnzMa0oJ/1rwVhW5dToj7Ketoe2RZHsTKENpIcXTKUlzsx8fKgof1KJWDMkDrKAvjidcmStNsZb21SmAuXwnRMXOSPj3Vja0czmenlab/J8rkzdQoT+PlF85OocOJ+xObgV0nQlF9V/8I/s43ogkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ng6qFt1NkmwomrGq3+v+WldxvMxnLBTGsTINBOuSv7k=;
+ b=UCmuqV6zrtg/oU8x1E8K78mKmXnwa48DjzH7oYr/d12GR0xfca6SXsIKNzPyeXJLKLxoV/zreKvtrY6aCAbKZSzwAeuSHsjTZHQVo6JG2c8y8NhZVbdbrXpoxfgTmg1qcVlVThogt3WqVcJenj0qRHkfBv6YteTutaSv8iMktErumWH0CqCs1vlLH1ReOAuMgbptAbt6HgjmUdu/+VCa4iism3LRJS14RDTaOIdhb7eo7rK2NtTm2cHlusWKQBhlI7E+x1L3wJjNPSVilwJhU7Hu5H1L0z2GLr5ixONn2p5kXv8jIZTNRNsKMhwJHVpFQ72b6o10MdSMAPbSs8gqPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=suse.com;
+Received: from VI1PR04MB7102.eurprd04.prod.outlook.com (2603:10a6:800:124::12)
+ by VI1PR04MB7023.eurprd04.prod.outlook.com (2603:10a6:800:12f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4150.23; Tue, 25 May
+ 2021 10:35:26 +0000
+Received: from VI1PR04MB7102.eurprd04.prod.outlook.com
+ ([fe80::e0f8:e927:79f:232a]) by VI1PR04MB7102.eurprd04.prod.outlook.com
+ ([fe80::e0f8:e927:79f:232a%3]) with mapi id 15.20.4150.027; Tue, 25 May 2021
+ 10:35:26 +0000
+Date:   Tue, 25 May 2021 18:35:14 +0800
+From:   joeyli <jlee@suse.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Boeckel <me@benboeckel.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Malte Gell <malte.gell@gmx.de>,
+        Varad Gautam <varad.gautam@suse.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8,1/4] X.509: Add CodeSigning extended key usage parsing
+Message-ID: <20210525103514.GA32436@linux-l9pv.suse>
+References: <20210524021540.18736-1-jlee@suse.com>
+ <20210524021540.18736-2-jlee@suse.com>
+ <YKwbrlXGePkinTHb@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YKwbrlXGePkinTHb@kernel.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [124.11.22.254]
+X-ClientProxiedBy: HK2PR02CA0211.apcprd02.prod.outlook.com
+ (2603:1096:201:20::23) To VI1PR04MB7102.eurprd04.prod.outlook.com
+ (2603:10a6:800:124::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from linux-l9pv.suse (124.11.22.254) by HK2PR02CA0211.apcprd02.prod.outlook.com (2603:1096:201:20::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4150.23 via Frontend Transport; Tue, 25 May 2021 10:35:22 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6f9e1484-d835-4cfb-fbae-08d91f68cee2
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7023:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR04MB70232B94E32F2A366CCC8DB3A3259@VI1PR04MB7023.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 61tr1nMjD3BIEATGcTpsffjHacBvriy7cgJK2UySOS7B5CRBGOKqMTnQF+NeCjrsFe+Jr2c/Eat17a/0y4PuW5ZyraHxcUpwRZQPK3eQpHxkOaIjC+mEfXFLSJQY/WhzkZwQQ78bGGYMBFdBmTqIbhCtRITylC0fuWFJOtcNz8C+CArEhoA5edvlDyZT4eR4FAkDc2tixZg41qcNHZaXhhxV+KKHAWCY9tVxDkycQMSWNxZheFVE1D3axuUMg28TS7/NDBAeZrLcP6+lgE/RD7EK2AnLkq9rfMrazrrlFOtI/7Xky49kSKmvGyETe8apRtETAiWhTlHBnQllOcIram6WudSYPPaQu8K/4dPaZIAp80uZbw9/4k74HAKlAaXN2xCbNbUZ0QZcXt0QCLzncz3/SBxaR7yGSlsJXJU0BH95RdnBGn5xEQN71YBoCC48eUB5ruicglPTYStxo3q7Xtd/x+9I4Sah+jf75iDcxr7sHpkb7QdAiVLrp9ZvMxrx8PXr6EAl/PorIGIM+fODDeFc9FwDZT7gSjx2qNnLP8gZZABKqlhbZ/NhRKIlTQ0ee9zawmpI2fyhAO4KyyUrDejGSrcUqKRWPX0+GBvMYAJBKQRFiHLaTou5Ug2dRBqbXUilHQRmQ1LYy4/yhu4mctdP+TfRp3tKMm2YWbS7cpY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7102.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(366004)(39860400002)(376002)(136003)(396003)(8886007)(8936002)(8676002)(478600001)(38100700002)(86362001)(55016002)(6666004)(66476007)(83380400001)(7416002)(26005)(9686003)(38350700002)(956004)(66946007)(36756003)(66556008)(186003)(54906003)(6916009)(4326008)(2906002)(52116002)(7696005)(6506007)(316002)(1076003)(33656002)(16526019)(5660300002)(43062005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?YYTH0UEWsYtL24LsXDFPmJpCb5XeRodyP2kgGOxN5W2P/eOXYboYkyhk58eI?=
+ =?us-ascii?Q?nJXRe8JQPTs1Gw9ewIOydz9BGEV8jt4Yp9oTAoJhSnfUsWTICGMVP0Clt0aH?=
+ =?us-ascii?Q?YIW6cMaZAfLrv2v5MpxP7fFHNBBfU0pQCetxI/YRjJgxnpdADL9Uqi70PUY6?=
+ =?us-ascii?Q?NOqYamwJapfQX3JFG4AWZdxh+Tjp8aOb3eHwbvAKaYP5ZFF31OjUVoFnsdge?=
+ =?us-ascii?Q?RXHuIUO85ZIIIzxMOVQjYigdCx+sFEZifw2aE27n0FSibEtvv6nFidoIhrWj?=
+ =?us-ascii?Q?pOBsdDSgSmJmedOP5HLhCaUUfbF59U7/sSwxvMIOliHtK1prHEW0I6/KjNg4?=
+ =?us-ascii?Q?iiXZIRHl5Cn9RAex3PaKe0nIWtna5Z1mjCQOgKpKRlSYJsbYVAZ4bfRn26cO?=
+ =?us-ascii?Q?eWf2gqKJ/4oXyf12ZNj+UoRZVMYqzo9l1frcsWKDKJLp3QKcz9eQOIVihSrG?=
+ =?us-ascii?Q?UC8g7pJYst9xBeZFP8qajC3Htt1M9gbkEE8Ram9apDarzGSJHGRF/+zsdL8m?=
+ =?us-ascii?Q?XDKIdjQWN/1UGU25VbinjnaWfy4k22LYqZeEed+WOID7WdtUEalxU+oJ8Y5G?=
+ =?us-ascii?Q?qpzho5Aj/pNcJCTQxqLeNEfzNeROxInX+Qa9oQhvYRpNBOLAnJSfs652VkaJ?=
+ =?us-ascii?Q?7gnPiJAF3+VApIynCJclmDoivoCFzWV4nFHDbOgdoxeA+WCdcalr/DfRGAY3?=
+ =?us-ascii?Q?z1Fs+46RLBv1bDwcjejNBW2TkuLtK3sp1bTOzkVDLkdXj+PubK3vP0+3TK9B?=
+ =?us-ascii?Q?PcM/I2ABoNHxuuCT25N9p+5kLAt6joMtxlo0mZ5QZMhpMpzCz65Kd9gmCp/r?=
+ =?us-ascii?Q?ObWgDF5e8FFGwoZa1IBkBpzKtmifQCmNPnJc/+9nUz7A7ju6fYzR+CL7VqD1?=
+ =?us-ascii?Q?uyiFdv8UiGW5JSjkaHhuHAIIc99Qfl+nN3BAemcqsVJ/d3ijAJRJLx8eS5zY?=
+ =?us-ascii?Q?BY07hE4KPnZMojLWe4ERw9Oo/hhWbsFP8LOB+x0/5PsiqHT1GvDFAOQ2q0M9?=
+ =?us-ascii?Q?cvlWal+4k96DfqpjT2TU1Ehwya0AacSd7u8NmbC+UAPq6mWUbmUDnEMDpYHP?=
+ =?us-ascii?Q?31i85ZTcf4x4zsY0AlsRfreLwJW1KD9QDqOv73apI3ixAvvPD6BAK/6M2hLj?=
+ =?us-ascii?Q?zLnS/WLVQR0+Ko7+mNHA/jaLZ7fGuuniHZqKhN4GuoASWYqdcoqU2pPPICK5?=
+ =?us-ascii?Q?aGNA181/3Qxg28cveiPfLjPt/vP9E44qOEhxt3LkotqPL9oJMPg+ppSF7atv?=
+ =?us-ascii?Q?XIwAibmtq6m9aag05opwie2HGBx8d5fEhiULxb8PkMfVnp01fcJriucYVtNd?=
+ =?us-ascii?Q?GhpEJ3gu3ioJwV1c32RNIcQD?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f9e1484-d835-4cfb-fbae-08d91f68cee2
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7102.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2021 10:35:25.9479
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: R3psW3emyl5bdpQHLQPdg8iCSBNmAcYs3IazQsY4DMQOLUTQihGoejcyqrqTxRm0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7023
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Adds the xml file for the draft RFC and builds text and html versions
-if the xml2rfc program is found.
+Hi Jarkko,
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+On Tue, May 25, 2021 at 12:33:34AM +0300, Jarkko Sakkinen wrote:
+> On Mon, May 24, 2021 at 10:15:37AM +0800, Lee, Chun-Yi wrote:
+> > This patch adds the logic for parsing the CodeSign extended key usage
+> > extension in X.509. The parsing result will be set to the eku flag
+> > which is carried by public key. It can be used in the PKCS#7
+> > verification.
+> > 
+> > Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+> > ---
+> >  crypto/asymmetric_keys/x509_cert_parser.c | 25 +++++++++++++++++++++++++
+> >  include/crypto/public_key.h               |  1 +
+> >  include/linux/oid_registry.h              |  5 +++++
+> >  3 files changed, 31 insertions(+)
+> > 
+> > diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+> > index 6d003096b5bc..996db9419474 100644
+> > --- a/crypto/asymmetric_keys/x509_cert_parser.c
+> > +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> > @@ -542,6 +542,8 @@ int x509_process_extension(void *context, size_t hdrlen,
+> >  	struct x509_parse_context *ctx = context;
+> >  	struct asymmetric_key_id *kid;
+> >  	const unsigned char *v = value;
+> > +	int i = 0;
+> > +	enum OID oid;
+> >  
+> >  	pr_debug("Extension: %u\n", ctx->last_oid);
+> >  
+> > @@ -571,6 +573,29 @@ int x509_process_extension(void *context, size_t hdrlen,
+> >  		return 0;
+> >  	}
+> >  
+> > +	if (ctx->last_oid == OID_extKeyUsage) {
+> > +		if (vlen < 2 ||
+> > +		    v[0] != ((ASN1_UNIV << 6) | ASN1_CONS_BIT | ASN1_SEQ) ||
+> > +		    v[1] != vlen - 2)
+> > +			return -EBADMSG;
+> > +		i += 2;
+> > +
+> > +		while (i < vlen) {
+> > +			/* A 10 bytes EKU OID Octet blob =
+> > +			 * ASN1_OID + size byte + 8 bytes OID */
+> > +			if ((i + 10) > vlen || v[i] != ASN1_OID || v[i + 1] != 8)
+> > +				return -EBADMSG;
+> > +
+> > +			oid = look_up_OID(v + i + 2, v[i + 1]);
+> > +			if (oid == OID_codeSigning) {
+> > +				ctx->cert->pub->eku |= EKU_codeSigning;
+> > +			}
+> > +			i += 10;
+> > +		}
+> > +		pr_debug("extKeyUsage: %d\n", ctx->cert->pub->eku);
+> > +		return 0;
+> > +	}
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> > index 47accec68cb0..1ccaebe2a28b 100644
+> > --- a/include/crypto/public_key.h
+> > +++ b/include/crypto/public_key.h
+> > @@ -28,6 +28,7 @@ struct public_key {
+> >  	bool key_is_private;
+> >  	const char *id_type;
+> >  	const char *pkey_algo;
+> > +	unsigned int eku : 9;      /* Extended Key Usage (9-bit) */
+> 
+> Why no just name it ext_key_usage? I get the use of "EKU" elsewhere
+> but not in the variable name. Now you have to remember too much
+> context when just looking at this (and it's even undocumented to
+> add that).
+>
 
----
+Thanks for your suggestion. I will use a better name in next version.
 
-v2: Add missing sections plus minor updates
----
- Makefile.am                       |   2 +-
- configure.ac                      |   4 +-
- doc/Makefile.am                   |  15 +
- doc/draft-bottomley-tpm2-keys.xml | 465 ++++++++++++++++++++++++++++++
- 4 files changed, 484 insertions(+), 2 deletions(-)
- create mode 100644 doc/Makefile.am
- create mode 100644 doc/draft-bottomley-tpm2-keys.xml
-
-diff --git a/Makefile.am b/Makefile.am
-index 33de0d9..787ba29 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -41,4 +41,4 @@ $(builddir)/%.1: $(srcdir)/%.1.in $(top_builddir)/%
- install-data-hook:
- 	cd $(DESTDIR)$(openssl_enginedir) && $(LN_S) -f libtpm2@SHREXT@ tpm2@SHREXT@
+Joey Lee
  
--SUBDIRS = tests
-+SUBDIRS = tests doc
-diff --git a/configure.ac b/configure.ac
-index 6efa7a5..e102dd2 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -128,6 +128,8 @@ fi
- AC_PATH_PROG(TPMSERVER, tpm_server,,/bin:/usr/bin:/usr/lib/ibmtss:/usr/libexec/ibmtss)
- AC_PATH_PROG(SWTPM, swtpm,,/bin:/usr/bin:/usr/lib/ibmtss:/usr/libexec/ibmtss)
- AC_PATH_PROG(SWTPM_IOCTL, swtpm_ioctl,,/bin:/usr/bin:/usr/lib/ibmtss:/usr/libexec/ibmtss)
-+AC_CHECK_PROG(XML2RFC, xml2rfc, xml2rfc)
-+AM_CONDITIONAL(HAVE_XML2RFC, test -n "${XML2RFC}")
- CFLAGS="$CFLAGS -Wall"
- SHREXT=$shrext_cmds
- AC_SUBST(CFLAGS)
-@@ -147,7 +149,7 @@ fi
- 
- AC_SUBST(testtpm)
- 
--AC_OUTPUT([Makefile tests/Makefile])
-+AC_OUTPUT([Makefile tests/Makefile doc/Makefile])
- 
- cat <<EOF
- 
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-new file mode 100644
-index 0000000..0c24ce0
---- /dev/null
-+++ b/doc/Makefile.am
-@@ -0,0 +1,15 @@
-+XML2RFC_TARGETS = draft-bottomley-tpm2-keys.txt \
-+		draft-bottomley-tpm2-keys.html
-+
-+if HAVE_XML2RFC
-+all: $(XML2RFC_TARGETS)
-+
-+clean-local:
-+	rm -fr $(XML2RFC_TARGETS)
-+endif
-+
-+$(builddir)/%.txt: $(srcdir)/%.xml
-+	$(XML2RFC) --text -o $@ $<
-+
-+$(builddir)/%.html: $(srcdir)/%.xml
-+	$(XML2RFC) --html -o $@ $<
-diff --git a/doc/draft-bottomley-tpm2-keys.xml b/doc/draft-bottomley-tpm2-keys.xml
-new file mode 100644
-index 0000000..d2e9235
---- /dev/null
-+++ b/doc/draft-bottomley-tpm2-keys.xml
-@@ -0,0 +1,465 @@
-+<?xml version="1.0"?>
-+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-+<!-- One method to get references from the online citation libraries.
-+There has to be one entity for each item to be referenced.
-+An alternate method (rfc include) is described in the references.
-+-->
-+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-+<!ENTITY RFC8017 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8017.xml">
-+]>
-+<?rfc toc="yes" ?>
-+<rfc ipr="trust200902" category="info" docName="draft-bottomley-tpm-keys-00">
-+  <front>
-+    <title abbrev="TPM 2 Key Format">ASN.1 Specification for TPM 2.0 Key Files</title>
-+    <author initials="J." surname="Bottomley" fullname="James E.J. Bottomley">
-+      <organization>Linux Kernel</organization>
-+      <address>
-+        <postal>
-+          <street/>
-+          <city/>
-+          <region/>
-+          <country>USA</country>
-+        </postal>
-+        <email>James.Bottomley@HansenPartnership.com</email>
-+      </address>
-+    </author>
-+    <date month="May" year="2021"/>
-+    <area>Security</area>
-+    <keyword>I-D</keyword>
-+    <keyword>Internet-Draft</keyword>
-+    <keyword>X.509</keyword>
-+    <abstract>
-+      <t>
-+	This specification is designed to be an extension to the ASN.1
-+	(defined in <xref target="X.680"/>) specification of PKCS #1
-+	<xref target="RFC8017"/> to define the file format of private
-+	keys that need to be loaded into a TPM 2 device to operate.
-+      </t>
-+    </abstract>
-+  </front>
-+  <middle>
-+    <section anchor="intro" title="Introduction">
-+      <t>
-+	The Security of private keys has long been a concern and the
-+	ability of ubiquitous devices like TPMs has made it useful to
-+	use them for secure private key storage.  With the advent of
-+	TPM 2.0, private key storage inside the TPM (acting as a token
-+	which could be referred to by PKCS #11) has been discouraged,
-+	and instead key files which are loaded and evicted as
-+	necessary is the encouraged format.  This standard defines an
-+	interoperable ASN.1 representation for such key files, so that
-+	a key created by one tool should be loadable by a different
-+	one.
-+      </t>
-+    </section>
-+    <section anchor="terms" title="Terminology">
-+      <t>
-+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-+        "OPTIONAL" in this document are to be interpreted as described in
-+        <xref target="RFC2119"/>.
-+      </t>
-+      <section title="Notation">
-+	<dl>
-+	  <dt>ASN.1</dt>
-+	  <dd>Abstract Syntax Notation defined in
-+	  <xref target="X.680"/></dd>
-+	  <dt>DER</dt>
-+	  <dd>Distinguished Encoding Rules. Basically a defined binary
-+	  representation for ASN.1</dd>
-+	  <dt>MSO</dt>
-+	  <dd>Most Significant Octet (the highest order
-+	  byte of an integer)</dd>
-+	  <dt>PEM</dt>
-+	  <dd>Privacy enhanced Electronic Mail.  An ASCII compatible
-+	  representation of DER</dd>
-+	  <dt>TCG</dt>
-+	  <dd>Trusted Computing Group</dd>
-+	  <dt>TPM</dt>
-+	  <dd>Trusted Platform Module</dd>
-+	</dl>
-+      </section>
-+    </section>
-+    <section anchor="keyrep" title="Key Representation">
-+      <t>
-+	All TPM 2.0 keys consist of two binary pieces, a public part,
-+	which can be parsed according to the TPM specification for
-+	TPM2B_PUBLIC <xref target="TPM2.0"/> and a private part, which
-+	is cryptographically sealed in such a way as to be only
-+	readable on the TPM that created it.  The purpose of this
-+	specification is to specify a format by which the public and
-+	private pieces of a TPM key can be loaded.
-+      </t>
-+      <t>
-+	The design of the TPMkey ASN.1 format is that it should have a
-+	distinguishing OID at the beginning so the DER form of the
-+	key can be easily recognized.  In PEM form, the key MUST have
-+	"-----BEGIN TSS2 PRIVATE KEY-----" and "-----END TSS2 PRIVATE
-+	KEY-----" as the PEM guards. All additional information that
-+	may be needed to load the key is specified as optional
-+	explicit elements, which can be extended by later
-+	specifications, which is why the TPMkey is not versioned.
-+      </t>
-+      <section anchor="tpmkey" title="TPMkey Syntax">
-+	<figure><artwork>
-+ TPMKey ::= SEQUENCE {
-+    type        OBJECT IDENTIFIER
-+    emptyAuth   [0] EXPLICIT BOOLEAN OPTIONAL
-+    policy      [1] EXPLICIT SEQUENCE OF TPMPolicy OPTIONAL
-+    secret      [2] EXPLICIT OCTET STRING OPTIONAL
-+    parent      INTEGER
-+    pubkey      OCTET STRING
-+    privkey     OCTET STRING
-+  }
-+	</artwork></figure>
-+	<t>
-+	  The fields of type TPMKey have the following meanings:
-+	</t>
-+	<section title="type">
-+	  <t>
-+	    A unique OID specifying the key type.  This standard
-+	    currently defines three types of keys: a loadable key,
-+	    specified by id-loadablekey, (to be loaded with
-+	    TPM2_Load), an importable key, specified by
-+	    id-importablekey, (to be loaded with TPM2_Import) and a
-+	    sealed data key, specified by id-sealedkey, (to be
-+	    extracted with TPM2_Unseal).  The TCG has reserved the
-+	    following OID prefix for this:
-+	  </t>
-+	  <figure><artwork>
-+  id-tpmkey OBJECT IDENTIFIER ::=
-+    {joint-iso-itu-t(2) international-organizations(23) 133 10}
-+	  </artwork></figure>
-+	  <t>
-+	    And the three key types are:
-+	  </t>
-+	  <figure><artwork>
-+  id-loadablekey OBJECT IDENTIFIER ::=
-+    {id-tpmkey 3}
-+	  </artwork></figure>
-+	  <figure><artwork>
-+  id-importablekey OBJECT IDENTIFIER ::=
-+    {id-tpmkey 4}
-+	  </artwork></figure>
-+	  <figure><artwork>
-+  id-sealedkey OBJECT IDENTIFIER ::=
-+    {id-tpmkey 5}
-+	  </artwork></figure>
-+	</section>
-+	<section title="emptyAuth">
-+	  <t>
-+	    An implementation needs to know as it formulates the
-+	    TPM2_Load/Import/Unseal command whether it must also send
-+	    down an authorization, so this parameter gives that
-+	    indication.  emptyAuth MUST be true if authorization is
-+	    NOT required and MUST BE either false or absent if
-+	    authorization is required.  Since this element has
-+	    three states (one representing true and two representing
-+	    false) it is RECOMMENDED that implementations emitting
-+	    TPMkey representations use absence of the tag to represent
-+	    false.  However, implementations reading TPMKey MUST
-+	    be able to process all three possible states.
-+	  </t>
-+	</section>
-+	<section title="policy">
-+	  <t>
-+	    This MUST be present if the TPM key has a policy hash
-+	    because it describes to the implementation how to
-+	    construct the policy.  The forms of the policy statement
-+	    are described in section <xref target="policy"/>.
-+	  </t>
-+	</section>
-+	<section title="secret">
-+	  <t>
-+	    This section describes the additional cryptographic
-+	    secret used to specify the outer wrapping of an
-+	    importable key.  It MUST be present for key type
-+	    id-importablekey and MUST NOT be present for any other
-+	    key type.
-+	  </t>
-+	  <t>
-+	    Importable keys (designed to be processed by TPM2_Import)
-+	    MUST have an unencrypted inner wrapper (symmetricAlg MUST
-+	    be TPM_ALG_NULL and encryptionKey MUST be empty) and an
-+	    outer wrapper encrypted to the parent key using
-+	    inSymSeed. The secret parameter is the fully marshalled
-+	    TPM2B_ENCRYPTED_SECRET form of inSymSeed.
-+	  </t>
-+	</section>
-+	<section title="parent">
-+	  <t>
-+	    This MUST be present for all keys and specifies the handle
-+	    of the parent key.  The parent key SHOULD be either a
-+	    persistent handle (MSO 0x81) or a permanent handle (MSO
-+	    0x40).  Since volatile handle numbering can change
-+	    unexpectedly depending on key load order, the parent
-+	    SHOULD NOT be a volatile handle (MSO 0x80). The parent MUST
-+	    NOT have any other MSO.
-+	  </t>
-+	  <t>
-+	     If a permanent handle (MSO 0x40) is specified then the
-+	     implementation MUST run TPM2_CreatePrimary on the handle
-+	     using the TCG specified Elliptic Curve template for the
-+	     NIST P-256 curve and use the primary key so generated as
-+	     the parent.
-+	  </t>
-+	</section>
-+	<section title="pubkey">
-+	  <t>
-+	    This MUST be present and MUST correspond to the fully
-+	    marshalled TPM2B_PUBLIC structure of the TPM Key.
-+	  </t>
-+	</section>
-+	<section title="privkey">
-+	  <t>
-+	    This MUST be present and MUST correspond to the fully
-+	    marshalled TPM2B_PRIVATE structure of the TPM Key.  For
-+	    importable keys, this must be the duplicate parameter that
-+	    would be input to TPM2_Import.
-+	  </t>
-+	</section>
-+      </section>
-+    </section>
-+    <section anchor="policy" title="Key Policy Specification">
-+      <t>
-+	Policy is constructed on a TPM by executing a sequence of
-+	policy statements.  This specification currently only defines
-+	a limited subset of the allowed policy statements.  The policy
-+	is specified by a hash, which the execution of the policy
-+	statements must reach in order for the policy to be validated
-+	(See <xref target="TPM2.0"/> Part 1 for a detailed description.
-+      </t>
-+      <t>
-+	The TPMPolicy ASN.1 MUST be a sequence of policy statements
-+	which correspond exactly to TPM policy instructions in the
-+	order they should be executed and additionally from which the
-+	ultimate policy hash can be constructed.
-+      </t>
-+      <t>
-+	The current policy specification is strictly for AND based
-+	policy only and may be extended at a later date with OR
-+	policy.  However, the ASN.1 for policy is formulated as CONS
-+	elements, leaving the possibility of adding additional but
-+	optional elements for policy statements which are not
-+	supported by this standard (such as TPM2_PolicyAuthorize).
-+      </t>
-+      <section title="TPMPolicy Syntax">
-+	<figure><artwork>
-+ TPMPolicy ::= SEQUENCE {
-+    CommandCode   [0] EXPLICIT INTEGER
-+    CommandPolicy [1] EXPLICIT OCTET STRING
-+  }
-+	</artwork></figure>
-+	<t>
-+	  The Fields of type TPMPolicy have the following meanings:
-+	</t>
-+	<section title="CommandCode">
-+	  <t>
-+	    This is the integer representation of the TPM command code
-+	    for the policy statement.
-+	  </t>
-+	</section>
-+	<section title="CommandPolicy">
-+	  <t>
-+	    This is a binary string representing a fully marshalled,
-+	    TPM ordered, command body for the TPM policy command.
-+	    Therefore to send the command, the implementation simply
-+	    marshalls the command code and appends this octet string
-+	    as the body.
-+	  </t>
-+	  <t>
-+	    Commands which have no body, such as TPM2_AuthVal, MUST be
-+	    specified as a zero length OCTET STRING
-+	  </t>
-+	</section>
-+      </section>
-+      <section title="Policy Implementation Considerations">
-+	<t>
-+	  The policy hash for AND based policies is constructed by extension of the prior policy hash
-+	</t>
-+	<figure><artwork>
-+  newHash = HASH ( oldHash || policyHash )
-+	</artwork></figure>
-+	<t>
-+	  where policyHash is usually simply the hash of the fully
-+	  marshalled policy command (including the CommandCode).
-+	  However, this isn't true for TPM2_PolicyCounterTimer() so
-+	  always consult the <xref target="TPM2.0"/> specifications
-+	  for how to construct the policyHash.
-+	</t>
-+	<t>
-+	  The implementation should fail fast for policy problems, so
-+	  if an individual policy command returns a failure (which
-+	  usually indicates a particular policy requirement cannot be
-+	  met), that failure should be reported in as much detail as
-+	  possible and processing of the key should fail at that
-+	  point.
-+	</t>
-+	<section title="Authorization Policy">
-+	  <t>
-+	    When Authorization (Passing in a password) is required,
-+	    the emptyAuth parameter MUST be absent or set to false
-+	    and additionally the TPM_CC_PolicyAuthValue MUST be
-+	    specified as the command code for one entry in the
-+	    TPMPolicy sequence.  However, the implementation MAY
-+	    choose to execute either TPM2_PolicyPassword for TPM_RS_PW
-+	    or TPM2_PolicyAuthValue for HMAC based authorization
-+	    depending on whether the command being authorized is using
-+	    sessions or not.  If the policy does not require an
-+	    authorization then the emptyAuth parameter MUST be set to
-+	    true.
-+	  </t>
-+	</section>
-+      </section>
-+    </section>
-+    <section anchor="implementation" title="Implementation Considerations">
-+      <t>
-+	Implementations SHOULD support all TCG mandated algorithms,
-+	but MAY omit those deemed insecure, such as the SHA1 hash.
-+      </t>
-+      <t>
-+	TPM2_Import transforms the privKey into a TPM2B_PRIVATE which
-+	can then be used as a source to TPM2_Load, making the loading
-+	of importable keys is necessarily a two stage process, which
-+	can be time consuming on some TPMs.  Since the TPM2B_PRIVATE
-+	structure emitted by TPM2_Import is fully secure,
-+	Implementations SHOULD minimize the number of TPM2_Import
-+	operations by caching the emitted TPM2B_PRIVATE.
-+      </t>
-+    </section>
-+    <section anchor="security" title="Security Considerations">
-+      <t>
-+	The TPM 2.0 supports a variety of algorithms, the most common
-+	being SHA1 and SHA256 for hashing and RSA2048 and NIST P-256
-+	for asymmetric keys.  Implementors SHOULD NOT use deprecated
-+	algorithms, such as SHA1, for any TPM operation.  In
-+	particular, the algorithm used for the policy hash SHOULD NOT
-+	be SHA1 and this means that SHA1 SHOULD NOT be used as the
-+	name algorithm hash for any TPM key.
-+      </t>
-+      <t>
-+	TPM 2.0 supports a session mode (TPM_RS_PW) where
-+	authorizations are passed to the TPM in clear text over the
-+	TPM connection.  Implementations SHOULD consider the
-+	possibility of snooping on the wire between the implementation
-+	and the TPM, such as <xref target="TPM GENIE"/>, and SHOULD
-+	use HMAC session authorizations as best practice for all TPM
-+	keys.
-+      </t>
-+      <t>
-+	In addition to snooping authorizations, snooping may also
-+	occur when key material is being exchanged between the TPM and
-+	the implementation, such as wrapping of private keys and the
-+	sealing and unsealing operations for sealed keys.
-+	Implementations SHOULD always use HMAC sessions with
-+	TPMA_SESSION_DECRYPT when sensitive information is passed in
-+	to the TPM and HMAC sessions with TPMA_SESSION_ENCRYPT when
-+	sensitive information is received from the TPM.
-+      </t>
-+      <t>
-+	The easiest way to get the TPM to wrap an external private key
-+	is to use TPM2_Import.  However, since TPMA_SESSION_DECRYPT
-+	only protects the first parameter (which is encryptionKey),
-+	the duplicate should use inner symmetric encryption with a
-+	randomly generated ephemeral key, which is then presented to
-+	the TPM via the protected encryptionKey parameter.
-+      </t>
-+      <t>
-+	The TPM has a mode where it can generate private key material
-+	internally (using TPM2_Create) such that the private part of
-+	the key can never leave the TPM.  Implementations SHOULD
-+	support this mode but should be aware that while keys created
-+	like this may be more secure than wrapped keys, they can also
-+	be used only while access to the TPM that created them is
-+	available, so implementations SHOULD also support wrapping for
-+	keys that are expected to outlive the TPM that's using them.
-+	Clients can then develop best practices around TPM wrapped
-+	identity keys, possibly with TPM created sub keys, which can
-+	only be used on the device they were wrapped for.
-+      </t>
-+      <t>
-+	Since TPM keys can only be used by the specific TPM that
-+	created them, which is usually embedded in a piece of
-+	hardware, they are secure against exfiltration attacks.
-+	However, consideration should be given to an attacker gaining
-+	access to the system containing the TPM.  TPM keys are most
-+	secure when used as part of an operating system that has
-+	guaranteed trust properties, such as secure and measured boot.
-+	Implementations SHOULD assist users in constructing key
-+	policies that ensure the key can be used only when the
-+	operating system is within its trusted parameters to minimize
-+	threats from co-located attackers.
-+      </t>
-+    </section>
-+    <section anchor="IANA" title="IANA Considerations">
-+      <t>
-+	None.
-+      </t>
-+    </section>
-+    <section anchor="comments" title="Comments on and Enhancements to this Document">
-+      <t>
-+	Comments on this document should be addressed to the author
-+	(James.Bottomley@HansenPartnership.com) but should also CC the
-+	email lists of the two projects implementing this
-+	specification:
-+      </t>
-+      <t>
-+	The OpenSSL engine: openssl_tpm2_engine@groups.io
-+      </t>
-+      <t>
-+	The Linux Kernel: linux-integrity@vger.kernel.org
-+      </t>
-+      <t>
-+	The OpenSSL TPM2 engine <xref target="OPENSSL TPM2 ENGINE"/>
-+	is currently the only implementation of this full
-+	specification, so enhancements should be proposed after
-+	patches implementing the enhancement have been accepted by
-+	openssl_tpm2_engine or another full specification
-+	implementation.
-+      </t>
-+    </section>
-+
-+  </middle>
-+  <back>
-+    <references title="Normative References">
-+      &RFC2119;
-+      &RFC8017;
-+      <reference anchor="TPM2.0" target="https://trustedcomputinggroup.org/resource/tpm-library-specification/">
-+	<front>
-+          <title>TPM 2.0 Library Specification</title>
-+          <author>
-+            <organization>Trusted Computing Group</organization>
-+          </author>
-+          <date year="2013" month="March" day="15"/>
-+	</front>
-+      </reference>
-+      <reference anchor="X.680" target="https://itu.int/rec/T-REC-X.680-201508-I/en">
-+	<front>
-+	  <title>ITU-T Recommendation X.680,
-+              Information technology - Abstract Syntax Notation One
-+          (ASN.1):  Specification of basic notation.</title>
-+	  <author><organization>International Telecommunication Union</organization></author>
-+	  <date year="2015" month="August"/>
-+	</front>
-+      </reference>
-+    </references>
-+    <references title="Informative References">
-+      <reference anchor="TPM GENIE" target="https://www.nccgroup.com/globalassets/about-us/us/documents/tpm-genie.pdf">
-+	<front>
-+	  <title>TPM Genie: Interposer Attacks Against the Trusted
-+	  Platform Module Serial Bus</title>
-+	  <author initials="J." surname="Boone" fullname="J. Boone">
-+	    <organization>NCC Group</organization>
-+	  </author>
-+	  <date year="2018" month="March" day="9"/>
-+	</front>
-+      </reference>
-+      <reference anchor="OPENSSL TPM2 ENGINE" target="https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/">
-+	<front>
-+	  <title>OpenSSL TPM2 Engine</title>
-+	  <author><organization>Open Source Project</organization></author>
-+	</front>
-+      </reference>
-+    </references>
-+  </back>
-+</rfc>
--- 
-2.26.2
+> >  };
+> >  
+> >  extern void public_key_free(struct public_key *key);
+> > diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
+> > index 461b7aa587ba..8c8935f0eb73 100644
+> > --- a/include/linux/oid_registry.h
+> > +++ b/include/linux/oid_registry.h
+> > @@ -125,9 +125,14 @@ enum OID {
+> >  	OID_TPMImportableKey,		/* 2.23.133.10.1.4 */
+> >  	OID_TPMSealedData,		/* 2.23.133.10.1.5 */
+> >  
+> > +	/* Extended key purpose OIDs [RFC 5280] */
+> > +	OID_codeSigning,		/* 1.3.6.1.5.5.7.3.3 */
+> > +
+> >  	OID__NR
+> >  };
+> >  
+> > +#define EKU_codeSigning	(1 << 2)
+> > +
+> >  extern enum OID look_up_OID(const void *data, size_t datasize);
+> >  extern int parse_OID(const void *data, size_t datasize, enum OID *oid);
+> >  extern int sprint_oid(const void *, size_t, char *, size_t);
+> > -- 
+> > 2.16.4
+> > 
+> >005diaq6539262 
+> 
+> 
+> /Jarkko
 
