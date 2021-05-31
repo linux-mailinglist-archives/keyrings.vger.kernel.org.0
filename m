@@ -2,108 +2,138 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BCB3395ACB
-	for <lists+keyrings@lfdr.de>; Mon, 31 May 2021 14:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55761395D4A
+	for <lists+keyrings@lfdr.de>; Mon, 31 May 2021 15:42:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbhEaMpH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 31 May 2021 08:45:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48518 "EHLO
+        id S232515AbhEaNnp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 31 May 2021 09:43:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231565AbhEaMo4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 31 May 2021 08:44:56 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73812C061574;
-        Mon, 31 May 2021 05:43:16 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id v5so14794776ljg.12;
-        Mon, 31 May 2021 05:43:16 -0700 (PDT)
+        with ESMTP id S232730AbhEaNlu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 31 May 2021 09:41:50 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975D1C061343;
+        Mon, 31 May 2021 06:27:41 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id b15-20020a17090a550fb029015dad75163dso1365pji.0;
+        Mon, 31 May 2021 06:27:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=A73j5gfyhf0kaSot1r4cuCgREnISlDQgXL2RSfW904E=;
-        b=TVlblWlh307l5p4aWPY8vA4Jihb6CDsGKAr/G9XH/4AqnapaTB3R8huPmSNsVuZx+b
-         yzZQ6MSRCncH+7IfjCpYfXUi/XG1Hx9688sqFNArkPEJ5ENbWc6qwmhUTA/IjPpsoLPp
-         HpAjNodzljr0vbzRT/h+74w0sYtsbLEMRzfwUtbmKKSo000u8gFjaWHpmPgtvRA90448
-         MwO6NsxsLtK1K7xgKubwjGjmC6dpBehlXoufd6CSSV8pHfgzX7ejSedvRUshZ/gk4Xio
-         YhWmLxdPe50XPrm6qkLfCFAhaCucxbRuu/CExBhxC+IL+8M7AyUMCBbDQgGl2NvuS90A
-         XxNA==
+        h=from:to:cc:subject:date:message-id;
+        bh=6mf9vxePMwOECmPy8sralSQirr3sPMiFyk3gZWElr34=;
+        b=O5h0B6VMZFSPjV0vMk0DbNJvcKsqAmnAGvnRN9UJC61qBB9qAi8ktmFIJ1gNe8zVfO
+         rzSrFVJd8HIrAeIUytZNJMbZfUF2FtaOHbnE9nyDebhfwPcL9Qc3Um9pd3J+TIxCB8BW
+         yqW0aDTRI2wdgB+6zxgnOqMnThDwVdwSMZttyvF4EDO+sPbmEt98+VqlHBF8ERGSPCbM
+         DG4FY+8DcK/6sljrV6RhfnYcjhOgQxfbNJTAcHAEVipYttgDt7Wp4A6j/W1ByQw6dMyL
+         IQQWRoyBcFqJJLNHpHP5eFi9RT2nlxGbN7jMxEY9TtvTxaIr+5DFKPvkXUT4SLmjoO08
+         UAMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=A73j5gfyhf0kaSot1r4cuCgREnISlDQgXL2RSfW904E=;
-        b=mT2c6HA6UXIB/BXe0Y1cLbUkhICXvHgcYYQ6ywKVIOSS+H6PvDTrGxGX1rvlKSrhmm
-         z9DY9x4obZP+y7TKglMUHDbp77xvhH0xWPBid2dzrfU28yHGLNZE6b+e6X1DTzFVVdce
-         RB2eKMIYdPmJ931d0PgISyuLsWDv2E/g4HDEroO+Bk4ecKAR4I4LM3H9jen5xi4zG6ND
-         hvB+kMeavQlBqx1Iw2e719/gvbjBW7gio8SmEIVhcIFtMejMbzrQybc4R2qMYjKfVyHd
-         Sq54qkK4msT3Uciq4m/jvkrROMD73VmFaihze6UcqU6Cbb89MzZyIsTp7Ic2XO6jTjCm
-         QUoQ==
-X-Gm-Message-State: AOAM531chcPriWG+y/ZkWrSmy33ZTDDVu/dVryh0EnNg8pSsj6uuCHwF
-        E/XjnQOz5UeIsf/54VvmcsB1Ln2NR4kCazAIGzfALnjU
-X-Google-Smtp-Source: ABdhPJy2wSR7fuTYBXX5HkgOt6f7QpRaKy1VKFMom6FmaoLaw15313yuwsmOlRJhDm2tsCT3+gTuNcPONDo5b05HaMQ=
-X-Received: by 2002:a2e:b80b:: with SMTP id u11mr16911734ljo.94.1622464994778;
- Mon, 31 May 2021 05:43:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <1622123615-15517-1-git-send-email-herbert.tencent@gmail.com>
- <1622123615-15517-2-git-send-email-herbert.tencent@gmail.com> <47cf4353-b4bb-3907-6017-60bf87805d0c@linux.alibaba.com>
-In-Reply-To: <47cf4353-b4bb-3907-6017-60bf87805d0c@linux.alibaba.com>
-From:   hongbo li <herbert.tencent@gmail.com>
-Date:   Mon, 31 May 2021 20:43:04 +0800
-Message-ID: <CABpmuwLUZY=aPjeH=AdPvP2jq2+jnTyUyLLOoAwCg+hBZJB2Xg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] crypto: fix a memory leak in sm2
-To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Cc:     "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Eric Biggers <ebiggers@kernel.org>,
-        David Howells <dhowells@redhat.com>, jarkko@kernel.org,
-        =?UTF-8?B?aGVyYmVydGhibGko5p2O5byY5Y2aKQ==?= 
-        <herberthbli@tencent.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-integrity@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6mf9vxePMwOECmPy8sralSQirr3sPMiFyk3gZWElr34=;
+        b=LWleLclT0CahTaRNpDYL2TED0aBmyFkXv64g4n8XbL5P+DuPyyd//SH8L0LYYRs+8g
+         csp0/Afhpd9DWZOfhztiRB6y+CbSsg5Voj8WnGk2UVO8vuQGFE4bK4n+ifGKnWaPBph2
+         pCDY0wFybR00OrGnAnZndAH4Qr/Bi/gi1+7o9t8YOxL9mnA9/4zlebsYEzAEixg0mAuP
+         MjEu+puee+rWjdZ8rxJIluTDvzA10Qy8fHQJxcsi1tnS2T7sNkDZStpOe3s31LvdDDGx
+         zQ6p6c4FkvD+jEBY9D4SStrtbhajxt+Y2GTrA/vCJ55z/O4M1TEwHbjjQTpyDjYvgqGr
+         nmuQ==
+X-Gm-Message-State: AOAM530BYVBEy3nDhdXIZYhMOEQECsotu82cNKZlCApEBNNHVliSHfVj
+        jCL8kydts1iY5cfb0L8Q65CIwPfs5Vg=
+X-Google-Smtp-Source: ABdhPJw1W6y+qvRwnCEGZ7SJOr+gmHDZqS3gazPCOP9+eL15gPdoMAQYipZvSQvuITgeol8jSwX42g==
+X-Received: by 2002:a17:902:7b8e:b029:ec:f35a:918e with SMTP id w14-20020a1709027b8eb02900ecf35a918emr20776958pll.77.1622467660913;
+        Mon, 31 May 2021 06:27:40 -0700 (PDT)
+Received: from localhost.localdomain ([203.205.141.39])
+        by smtp.gmail.com with ESMTPSA id o10sm11015225pfh.67.2021.05.31.06.27.38
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 31 May 2021 06:27:40 -0700 (PDT)
+From:   Hongbo Li <herbert.tencent@gmail.com>
+To:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, ebiggers@kernel.org,
+        dhowells@redhat.com, jarkko@kernel.org,
+        tianjia.zhang@linux.alibaba.com, herberthbli@tencent.com
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH] crypto: fix a memory leak in sm2
+Date:   Mon, 31 May 2021 21:26:51 +0800
+Message-Id: <1622467611-30383-1-git-send-email-herbert.tencent@gmail.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Tianjia Zhang <tianjia.zhang@linux.alibaba.com> =E4=BA=8E2021=E5=B9=B45=E6=
-=9C=8828=E6=97=A5=E5=91=A8=E4=BA=94 =E4=B8=8B=E5=8D=882:27=E5=86=99=E9=81=
-=93=EF=BC=9A
->
-> Hi Herbert, Hongbo,
->
-> On 5/27/21 9:53 PM, Hongbo Li wrote:
-> > From: Hongbo Li <herberthbli@tencent.com>
-> >
-> > SM2 module alloc ec->Q in sm2_set_pub_key(), when doing alg test in
-> > test_akcipher_one(), it will set public key for every test vector,
-> > and don't free ec->Q. This will cause a memory leak.
-> >
-> > This patch alloc ec->Q in sm2_ec_ctx_init().
-> >
-> > Fixes: ea7ecb66440b ("crypto: sm2 - introduce OSCCA SM2 asymmetric ciph=
-er algorithm")
-> > Signed-off-by: Hongbo Li <herberthbli@tencent.com>
-> > Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> > ---
-> >   crypto/sm2.c | 24 ++++++++++--------------
-> >   1 file changed, 10 insertions(+), 14 deletions(-)
-> >
->
-> Patch 1/7 is an independent bugfix patch. If possible, consider applying
-> it first.
->
-> The commit message header should start with: crypto: sm2 -
->
-> Also added:
->
-> Cc: stable@vger.kernel.org # v5.10+
->
-> Best regards,
-> Tianjia
+From: Hongbo Li <herberthbli@tencent.com>
 
-OK, will send this patch later.
+SM2 module alloc ec->Q in sm2_set_pub_key(), when doing alg test in
+test_akcipher_one(), it will set public key for every test vector,
+and don't free ec->Q. This will cause a memory leak.
 
-Regards,
-Hongbo
+This patch alloc ec->Q in sm2_ec_ctx_init().
+
+Fixes: ea7ecb66440b ("crypto: sm2 - introduce OSCCA SM2 asymmetric cipher algorithm")
+Signed-off-by: Hongbo Li <herberthbli@tencent.com>
+Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+---
+ crypto/sm2.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
+
+diff --git a/crypto/sm2.c b/crypto/sm2.c
+index b21addc..db8a4a2 100644
+--- a/crypto/sm2.c
++++ b/crypto/sm2.c
+@@ -79,10 +79,17 @@ static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
+ 		goto free;
+ 
+ 	rc = -ENOMEM;
++
++	ec->Q = mpi_point_new(0);
++	if (!ec->Q)
++		goto free;
++
+ 	/* mpi_ec_setup_elliptic_curve */
+ 	ec->G = mpi_point_new(0);
+-	if (!ec->G)
++	if (!ec->G) {
++		mpi_point_release(ec->Q);
+ 		goto free;
++	}
+ 
+ 	mpi_set(ec->G->x, x);
+ 	mpi_set(ec->G->y, y);
+@@ -91,6 +98,7 @@ static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
+ 	rc = -EINVAL;
+ 	ec->n = mpi_scanval(ecp->n);
+ 	if (!ec->n) {
++		mpi_point_release(ec->Q);
+ 		mpi_point_release(ec->G);
+ 		goto free;
+ 	}
+@@ -386,27 +394,15 @@ static int sm2_set_pub_key(struct crypto_akcipher *tfm,
+ 	MPI a;
+ 	int rc;
+ 
+-	ec->Q = mpi_point_new(0);
+-	if (!ec->Q)
+-		return -ENOMEM;
+-
+ 	/* include the uncompressed flag '0x04' */
+-	rc = -ENOMEM;
+ 	a = mpi_read_raw_data(key, keylen);
+ 	if (!a)
+-		goto error;
++		return -ENOMEM;
+ 
+ 	mpi_normalize(a);
+ 	rc = sm2_ecc_os2ec(ec->Q, a);
+ 	mpi_free(a);
+-	if (rc)
+-		goto error;
+-
+-	return 0;
+ 
+-error:
+-	mpi_point_release(ec->Q);
+-	ec->Q = NULL;
+ 	return rc;
+ }
+ 
+-- 
+1.8.3.1
+
