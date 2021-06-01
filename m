@@ -2,65 +2,130 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F8F1396BA3
-	for <lists+keyrings@lfdr.de>; Tue,  1 Jun 2021 04:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 259B33971DB
+	for <lists+keyrings@lfdr.de>; Tue,  1 Jun 2021 12:53:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232651AbhFAC4G (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 31 May 2021 22:56:06 -0400
-Received: from out4436.biz.mail.alibaba.com ([47.88.44.36]:13572 "EHLO
-        out4436.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232268AbhFAC4D (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 31 May 2021 22:56:03 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0UaoGXlt_1622516047;
-Received: from B-455UMD6M-2027.local(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UaoGXlt_1622516047)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 01 Jun 2021 10:54:08 +0800
-Subject: Re: [PATCH] crypto: sm2 - fix a memory leak in sm2
-To:     Hongbo Li <herbert.tencent@gmail.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
-        ebiggers@kernel.org, dhowells@redhat.com, jarkko@kernel.org,
-        herberthbli@tencent.com
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <1622467801-30957-1-git-send-email-herbert.tencent@gmail.com>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <91999e12-a7de-ad4b-72c4-2376ac682c92@linux.alibaba.com>
-Date:   Tue, 1 Jun 2021 10:54:07 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.2
+        id S230288AbhFAKyz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 1 Jun 2021 06:54:55 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49114 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230282AbhFAKyy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 1 Jun 2021 06:54:54 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 151AYUmg127868;
+        Tue, 1 Jun 2021 06:53:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=O6+15U1jHDaRO3zTydJwOiJvWDq2cPKa9PSHST/xjSk=;
+ b=NvlAGPkuNCWKwTpQeXlHBORgYaEJytqC0qD+YR+d6Frg6g3O/9k6FHVUM424IiX6G6d8
+ FNdxt8hNuxuZ4d2FjPtgM4ufCFZvYCgFDR3ssFLFsgNAoyUJcLvW4dJOol0Nat32eQ7q
+ fQ4ibtytJqVp+Xn3dQIhJ0R1YaZMVY0D+WNyDd/vEbHT8BlZ3t2lGWXiGZhvnjq39IA6
+ FOr9/+VQmV13r+hA1u5DnQ68B06VfdSq7bGQJUxn6I2pVNjI+cldLFFgXX9QCvppKCpI
+ PDlbUdnbI/jOuATRtb8t+dVMnp/+tslUb7DptRdr7ZspFXS0sckL6J6t4cgK+QZsXUlK qw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 38whsjjt25-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Jun 2021 06:53:06 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 151AYkwQ129583;
+        Tue, 1 Jun 2021 06:53:04 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 38whsjjt16-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Jun 2021 06:53:04 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 151AqhiG006938;
+        Tue, 1 Jun 2021 10:53:03 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+        by ppma02wdc.us.ibm.com with ESMTP id 38ud89eapb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Jun 2021 10:53:03 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 151Ar2U825493960
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 1 Jun 2021 10:53:02 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BC741124058;
+        Tue,  1 Jun 2021 10:53:02 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id ABD55124054;
+        Tue,  1 Jun 2021 10:53:02 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.47.158.152])
+        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+        Tue,  1 Jun 2021 10:53:02 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.ibm.com>
+To:     jeyu@kernel.org, keyrings@vger.kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org, zohar@linux.ibm.com, jarkko@kernel.org
+Cc:     nayna@linux.ibm.com, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v5 0/2] Add support for ECDSA-signed kernel modules
+Date:   Tue,  1 Jun 2021 06:52:43 -0400
+Message-Id: <20210601105245.213767-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tcDuMc0YbD4VCkjjrn3drxagZ1DALczs
+X-Proofpoint-ORIG-GUID: _pFMB0HBMRkDlTYOyHjkLqwrYnjFMI3B
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-In-Reply-To: <1622467801-30957-1-git-send-email-herbert.tencent@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-06-01_05:2021-05-31,2021-06-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 clxscore=1011 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106010071
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Hongbo,
+This series adds support for ECDSA-signed kernel modules. It also
+attempts to address a kbuild issue where a developer created an ECDSA
+key for signing kernel modules and then builds an older version of the
+kernel, when bisecting the kernel for example, that does not support
+ECDSA keys.
 
-On 5/31/21 9:30 PM, Hongbo Li wrote:
-> From: Hongbo Li <herberthbli@tencent.com>
-> 
-> SM2 module alloc ec->Q in sm2_set_pub_key(), when doing alg test in
-> test_akcipher_one(), it will set public key for every test vector,
-> and don't free ec->Q. This will cause a memory leak.
-> 
-> This patch alloc ec->Q in sm2_ec_ctx_init().
-> 
-> Fixes: ea7ecb66440b ("crypto: sm2 - introduce OSCCA SM2 asymmetric cipher algorithm")
-> Signed-off-by: Hongbo Li <herberthbli@tencent.com>
-> Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> ---
->   crypto/sm2.c | 24 ++++++++++--------------
->   1 file changed, 10 insertions(+), 14 deletions(-)
-> 
+The first patch addresses the kbuild issue of needing to delete that
+ECDSA key if it is in certs/signing_key.pem and trigger the creation
+of an RSA key. However, for this to work this patch would have to be
+backported to previous versions of the kernel but would also only work
+for the developer if he/she used a stable version of the kernel to which
+this patch was applied. So whether this patch actually achieves the
+wanted effect is not always guaranteed.
 
-Just add Cc: to SOB, like this:
+The 2nd patch adds the support for the ECSDA-signed kernel modules.
 
-   Fixes: ea7ecb66440b (...)
-   Signed-off-by: Hongbo Li <herberthbli@tencent.com>
-   Cc: stable@vger.kernel.org # v5.10+
-   Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+This patch depends on the ECDSA support series currently queued here:
+https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git/log/?h=ecc
 
-Thanks,
-Tianjia
+  Stefan
+
+v5:
+  - Added Jarkko's and Mimi's tags
+
+v4:
+  - extending 'depends on' with MODULES to (IMA_APPRAISE_MODSIG && MODULES)
+  
+v3:
+  - added missing OIDs for ECDSA signed hashes to pkcs7_sig_note_pkey_algo
+  - added recommendation to use string hash to Kconfig help text
+
+v2:
+  - Adjustment to ECDSA key detector string in 2/2
+  - Rephrased cover letter and patch descriptions with Mimi
+
+
+Stefan Berger (2):
+  certs: Trigger creation of RSA module signing key if it's not an RSA
+    key
+  certs: Add support for using elliptic curve keys for signing modules
+
+ certs/Kconfig                         | 26 ++++++++++++++++++++++++++
+ certs/Makefile                        | 14 ++++++++++++++
+ crypto/asymmetric_keys/pkcs7_parser.c |  8 ++++++++
+ 3 files changed, 48 insertions(+)
+
+-- 
+2.29.2
+
