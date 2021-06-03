@@ -2,102 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C3C39A105
-	for <lists+keyrings@lfdr.de>; Thu,  3 Jun 2021 14:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121BB39A11E
+	for <lists+keyrings@lfdr.de>; Thu,  3 Jun 2021 14:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbhFCMex (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Jun 2021 08:34:53 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:29920 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229876AbhFCMex (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Jun 2021 08:34:53 -0400
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 153C4AJP095306;
-        Thu, 3 Jun 2021 08:33:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Hwq66EGg2XWj2KdlQHVnfsT2F/0lkUQs+MW4ZqGdRA4=;
- b=laXiT9UoghEtzk1UZPSouu9/kvpQMQDYtbULJGs07q8d0BilLR7VdiMHJcZBBV2fnznA
- hZM3XHb5fjMumDKkMzpZmnP14T2DAP9NKnKvEDon/GUN7/o0mKX95QZ1jYGSk6SBSjSt
- hxSOo39mD5ZlumAs5CB3b2H/cSqMMvJa+ycPa/CPMWcFPkpDrj3AEhJ4+W5M4wjIGSKJ
- RZJcHnmcNsmMSkV3b3H2e4Kx22TbCuzIR7w7KTuj9aQreFD4bd11Emr78N3vWR5whypt
- U7a5qt2XxGSxH8/bej/0y6itqNW5TZcihyOk4klec1V/aiCsh0PYkr1iIRsOvHL4MEqA qw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 38xxfqsftp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 03 Jun 2021 08:33:02 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 153C4KLl096737;
-        Thu, 3 Jun 2021 08:33:02 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 38xxfqsftc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 03 Jun 2021 08:33:02 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 153CWx3C007336;
-        Thu, 3 Jun 2021 12:33:01 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-        by ppma02wdc.us.ibm.com with ESMTP id 38ud89yn7e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 03 Jun 2021 12:33:01 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 153CX0Kj20513066
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 3 Jun 2021 12:33:00 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7351478064;
-        Thu,  3 Jun 2021 12:33:00 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CE93878063;
-        Thu,  3 Jun 2021 12:32:59 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu,  3 Jun 2021 12:32:59 +0000 (GMT)
-Subject: Re: [PATCH v5 0/2] Add support for ECDSA-signed kernel modules
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     jeyu@kernel.org, keyrings@vger.kernel.org, dhowells@redhat.com,
-        dwmw2@infradead.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210602143537.545132-1-stefanb@linux.ibm.com>
- <20210603064738.pwfq3n7erzmncdmw@kernel.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <8b79651b-1fe4-48c0-3498-529344ac6243@linux.ibm.com>
-Date:   Thu, 3 Jun 2021 08:32:59 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S230386AbhFCMge (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 3 Jun 2021 08:36:34 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:32772 "EHLO deadmen.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230255AbhFCMge (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 3 Jun 2021 08:36:34 -0400
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+        by deadmen.hmeau.com with esmtp (Exim 4.92 #5 (Debian))
+        id 1lomYb-0002Da-T8; Thu, 03 Jun 2021 20:34:41 +0800
+Received: from herbert by gondobar with local (Exim 4.92)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1lomYa-0001iF-5L; Thu, 03 Jun 2021 20:34:40 +0800
+Date:   Thu, 3 Jun 2021 20:34:40 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Hongbo Li <herbert.tencent@gmail.com>
+Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        ebiggers@kernel.org, dhowells@redhat.com, jarkko@kernel.org,
+        tianjia.zhang@linux.alibaba.com, herberthbli@tencent.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: sm2 - fix a memory leak in sm2
+Message-ID: <20210603123357.GM6161@gondor.apana.org.au>
+References: <1622552752-15501-1-git-send-email-herbert.tencent@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210603064738.pwfq3n7erzmncdmw@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BZYzHRmbjzbEdXfphBXsqbIrb3K_9DcV
-X-Proofpoint-ORIG-GUID: TvOPFa_85iNyyTwlcLODZfjyx3dfeXLe
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-06-03_08:2021-06-02,2021-06-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 phishscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
- malwarescore=0 mlxlogscore=919 impostorscore=0 bulkscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106030082
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1622552752-15501-1-git-send-email-herbert.tencent@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, Jun 01, 2021 at 09:05:52PM +0800, Hongbo Li wrote:
+> From: Hongbo Li <herberthbli@tencent.com>
+> 
+> SM2 module alloc ec->Q in sm2_set_pub_key(), when doing alg test in
+> test_akcipher_one(), it will set public key for every test vector,
+> and don't free ec->Q. This will cause a memory leak.
+> 
+> This patch alloc ec->Q in sm2_ec_ctx_init().
+> 
+> Fixes: ea7ecb66440b ("crypto: sm2 - introduce OSCCA SM2 asymmetric cipher algorithm")
+> Signed-off-by: Hongbo Li <herberthbli@tencent.com>
+> Cc: stable@vger.kernel.org # v5.10+
+> Reviewed-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> ---
+>  crypto/sm2.c | 24 ++++++++++--------------
+>  1 file changed, 10 insertions(+), 14 deletions(-)
 
-On 6/3/21 2:47 AM, Jarkko Sakkinen wrote:
->
->> -- 
->> 2.29.2
->>
->>
-> Please instead send a fix.
+Your patch has been discarded by patchwork because you didn't
+update the Subject.  The usual method is to use a version prefix
+such as v2, v3, etc. so that the Subject remains distinct.
 
-We have a Fixes tag in 1/2, so we want this to propagate to older 
-kernels and need the fix in 1/2 for that reason.
+Please resubmit with a new Subject.
 
-    Stefan
+Oh and don't cc stable@vger.kernel.org.
 
-
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
