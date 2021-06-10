@@ -2,69 +2,76 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC733A1CE3
-	for <lists+keyrings@lfdr.de>; Wed,  9 Jun 2021 20:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82623A27A9
+	for <lists+keyrings@lfdr.de>; Thu, 10 Jun 2021 11:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbhFISmw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 9 Jun 2021 14:42:52 -0400
-Received: from flippies-beckerwealth.xyz ([62.173.138.167]:36526 "EHLO
-        host.flippies-beckerwealth.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229655AbhFISmv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 9 Jun 2021 14:42:51 -0400
-X-Greylist: delayed 9652 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 14:42:51 EDT
-Received: from flippies-beckerwealth.xyz (ec2-34-227-16-149.compute-1.amazonaws.com [34.227.16.149])
-        by host.flippies-beckerwealth.xyz (Postfix) with ESMTPA id 0EA7411FDD0F
-        for <keyrings@vger.kernel.org>; Wed,  9 Jun 2021 16:40:26 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippies-beckerwealth.xyz 0EA7411FDD0F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippies-beckerwealth.xyz; s=default; t=1623246027;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=Skkbw3DbmfewrM1/U8quYez0V5zDipv7sRxvfXM39w6ZKHgD/QZP+/8SKgGLNwjsc
-         337KtrtXBdPgN+4zZ60bMdTr2lcMWFCdq2BNLBxfWXgfIffUEq23KTrmzE4DuAYZLc
-         v8TIyucmrnjCoD+yqwmnT/aL9T40BsqHRU/UMNN8=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippies-beckerwealth.xyz 0EA7411FDD0F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippies-beckerwealth.xyz; s=default; t=1623246027;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=Skkbw3DbmfewrM1/U8quYez0V5zDipv7sRxvfXM39w6ZKHgD/QZP+/8SKgGLNwjsc
-         337KtrtXBdPgN+4zZ60bMdTr2lcMWFCdq2BNLBxfWXgfIffUEq23KTrmzE4DuAYZLc
-         v8TIyucmrnjCoD+yqwmnT/aL9T40BsqHRU/UMNN8=
-Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippies-beckerwealth.xyz>
-To:     keyrings@vger.kernel.org
-Subject: Projects
-Date:   09 Jun 2021 13:40:26 +0000
-Message-ID: <20210609134026.E16F97718619DBBA@flippies-beckerwealth.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        id S230148AbhFJJFX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 10 Jun 2021 05:05:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42720 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230117AbhFJJFX (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 10 Jun 2021 05:05:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CB34360FD8;
+        Thu, 10 Jun 2021 09:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623315807;
+        bh=qGY0QZc6tRdG5jSPQ1whVRHSm4J+Iy/w7u4SlqbvRaw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DmGXI17K4+Ve2TeAZVAOf2YiXh4Yov1SyAtMZtCh/BP/ZGR/m8aSz1EvwAVNuyFBd
+         coBHql1i/eDZVrv3cInf3A2mYkQ4NCz72OCZ/h9QBBEsqpWZpEwSRzGVJUx3ia+CUJ
+         l0ne9Z9g0YfvkzWQgpBgqbh13WcENxO8hCqqoz9V8JvQ8zPzEal66SonDZxGz1tjcQ
+         n1nIzIEwUKacfEftegcCioPXqPvGSE07lxPAujLSjZ9kQBy1KxMFd8vRCFLCDj6hdE
+         Wlm1aZesClr9emvqe4gxV/+UvDpeDd+q0HnOxwvg9JpJbJIgWwMOyntO+FpxxOXMk4
+         /9jaVkwK8Mh6g==
+Date:   Thu, 10 Jun 2021 12:03:23 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Stefan Berger <stefanb@linux.ibm.com>
+Cc:     jeyu@kernel.org, keyrings@vger.kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/2] Add support for ECDSA-signed kernel modules
+Message-ID: <20210610090323.f7b47xqxbkwnm5cx@kernel.org>
+References: <20210602143537.545132-1-stefanb@linux.ibm.com>
+ <20210603064738.pwfq3n7erzmncdmw@kernel.org>
+ <8b79651b-1fe4-48c0-3498-529344ac6243@linux.ibm.com>
+ <20210609124412.engcrbo3fezuzyoq@kernel.org>
+ <f22e7ae1-8779-e995-091c-8a899fd7fd76@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f22e7ae1-8779-e995-091c-8a899fd7fd76@linux.ibm.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello there,
+On Wed, Jun 09, 2021 at 09:58:29AM -0400, Stefan Berger wrote:
+> 
+> On 6/9/21 8:44 AM, Jarkko Sakkinen wrote:
+> > On Thu, Jun 03, 2021 at 08:32:59AM -0400, Stefan Berger wrote:
+> > > On 6/3/21 2:47 AM, Jarkko Sakkinen wrote:
+> > > > > -- 
+> > > > > 2.29.2
+> > > > > 
+> > > > > 
+> > > > Please instead send a fix.
+> > > We have a Fixes tag in 1/2, so we want this to propagate to older kernels
+> > > and need the fix in 1/2 for that reason.
+> > > 
+> > >     Stefan
+> > So please do an additional fix and send it.
+> 
+> 1/2 is supposed to propagate to older kernels and needs to change as posted
+> here in v5 (assuming that this does indeed fix what the build bot was
+> complaining about). 2/2 also changes. A fix on top of v4 would fix 2/2 but
+> won't apply cleanly to 1/2 as cannot easily propagate to older kernels. Is
+> that what we want? Why can you not remove v4 from your queue and replace it
+> with v5?
+> 
+>    Stefan
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Jotham=20
-Masuku, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+What you can do is to send fix or fixes with appropriate fixes tags and
+I can then squash them for appropriate patches. That's less work for me.
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
-
-Best regards
-
-J Masuku
-Flippiebecker Wealth
+/Jarkko
