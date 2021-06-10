@@ -2,156 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 334AF3A28B5
-	for <lists+keyrings@lfdr.de>; Thu, 10 Jun 2021 11:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9E7E3A2AB1
+	for <lists+keyrings@lfdr.de>; Thu, 10 Jun 2021 13:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbhFJJwU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 10 Jun 2021 05:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbhFJJwU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 10 Jun 2021 05:52:20 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142D7C061574;
-        Thu, 10 Jun 2021 02:50:10 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id a20so1569929wrc.0;
-        Thu, 10 Jun 2021 02:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ttr6YN1lz3HlA7JpnhNQqRjKhBQi4menpBStyTqJFI0=;
-        b=aGFtsBpo7/zgt1hm3mMxBXTN35Ob9QVJ3Fd+e5btkS8d483FCslcwRhZ60IbIvhVdh
-         pGslzkesy3RQy6tCeMeA7eO5NsC5ovqRb6eI7XhxYOCXVRt1xt9f418vLf1l79SzJE1I
-         i9QNUlD71x+LD1PqXVMcTL+ffKk5hkSsVvKMRdzxAX8IrMbXsugWsSqotEQ7apMPZS2h
-         T7cwH4VkKb/8dzCHoBbZ9GTvD4qbx1Lkyy0EUIDEt6CDuu00xvVlTqLyFTqmrNMLES4h
-         0vxZAadPBsMGRYzj1ZBFq3kw73ZPb6dzZXUgI6gM9svc6WxTbSem4pq/kyRpkwqECQqo
-         JxqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ttr6YN1lz3HlA7JpnhNQqRjKhBQi4menpBStyTqJFI0=;
-        b=acKyN/YXysmQLiSw3YW+Mbv+oatEnnk92h6HvZw7fWo8WMjOrO4ktEMWpD5IUYc51z
-         MpGb6wFbMUB95N77GERxCATxCAPCiMO+noLw+gwh+SvLPjSyhUPs7hjTwduk/p5GtUt2
-         iocAW4i7DpkQmTuWQ0TPSCqTddtFLGgEvKfGOuKi7keTwm5JzGKiwdd1lYA5UTOkdr3E
-         f/ZvlOqvd+a+bUtNPkfk0ko9iZK33PbyZ+uS6/bTM8SJbD6fmBUu1yPmyLK0AzvSPqOj
-         a7ofZsFHWKwB4k9AmEzKszUDzlYRv8elmutziuNwM7ySXypn2/AflumrKCy2uXtdigVu
-         fx2A==
-X-Gm-Message-State: AOAM531IQO2lOGSMxbLv2poiGKb+C7FmGAVU501OONRpcymwTU5F4Sqv
-        r0SgFTL9ENCbMm4reA49M/iZJ8rEXA6XKQ==
-X-Google-Smtp-Source: ABdhPJyIfVDgdrW8pz+W8ACyqC9SBgmnQiwZRDdDgVt0vwXbQaoWTl5RrGgiyzkeIthPX1tcF2l75A==
-X-Received: by 2002:a05:6000:1563:: with SMTP id 3mr4325714wrz.59.1623318608487;
-        Thu, 10 Jun 2021 02:50:08 -0700 (PDT)
-Received: from localhost.localdomain (190.1.93.209.dyn.plus.net. [209.93.1.190])
-        by smtp.gmail.com with ESMTPSA id p16sm3006200wrs.52.2021.06.10.02.50.07
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 10 Jun 2021 02:50:08 -0700 (PDT)
-From:   Dhiraj Shah <find.dhiraj@gmail.com>
-Cc:     find.dhiraj@gmail.com, James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        id S230265AbhFJLwF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 10 Jun 2021 07:52:05 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:5228 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230215AbhFJLwF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 10 Jun 2021 07:52:05 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15ABXaLF183501;
+        Thu, 10 Jun 2021 07:50:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=sOsx0by8qj910X989Lv9ljQz1oCfdyYidDzCaLjOnTg=;
+ b=ijtqNJmOo2TDpS0meMgb+r59PqcV9M6g+HpaZPdIMEwipmECcEOZl/aVRUR/6vj5JPRI
+ vW1gaVxWSLaDxLkQDvGeIIJ3ZCDnOIWtUvMfBZbZi0pUqBf4mkmCXElxg22HMx9sPx7c
+ VQ9HzmWlTh6hfl7YPrK7GmH7XKBd0/RGJMij1BTUrPt7g3GxtCWA/uLFKyJuEUaiEcc8
+ sbvo+OgOTySTqLMBlxVNkbeqXQr1TvT0KvGJCluAYHEoBldzvh7kPrUBPCA1tJY5Q9J1
+ lG3w5Tj9w6y8jE1VUNgOrngbDlhnvxoZcoj8AWdjJc+eni8xgAvbt00RYWluQYMo4Itu 7g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 393guhah2s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Jun 2021 07:50:03 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15ABYetF187223;
+        Thu, 10 Jun 2021 07:50:03 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 393guhah22-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Jun 2021 07:50:03 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15ABlZDQ027823;
+        Thu, 10 Jun 2021 11:50:01 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+        by ppma03wdc.us.ibm.com with ESMTP id 3900wa7qrj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Jun 2021 11:50:01 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
+        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 15ABo1SM38273324
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Jun 2021 11:50:01 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6E4F9AE063;
+        Thu, 10 Jun 2021 11:50:01 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 58FBCAE060;
+        Thu, 10 Jun 2021 11:50:01 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+        Thu, 10 Jun 2021 11:50:01 +0000 (GMT)
+Subject: Re: [PATCH v5 0/2] Add support for ECDSA-signed kernel modules
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     jeyu@kernel.org, keyrings@vger.kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
+        linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] tpm2_load_command leaks memory
-Date:   Thu, 10 Jun 2021 10:49:51 +0100
-Message-Id: <20210610094952.17068-1-find.dhiraj@gmail.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+References: <20210602143537.545132-1-stefanb@linux.ibm.com>
+ <20210603064738.pwfq3n7erzmncdmw@kernel.org>
+ <8b79651b-1fe4-48c0-3498-529344ac6243@linux.ibm.com>
+ <20210609124412.engcrbo3fezuzyoq@kernel.org>
+ <f22e7ae1-8779-e995-091c-8a899fd7fd76@linux.ibm.com>
+ <20210610090323.f7b47xqxbkwnm5cx@kernel.org>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+Message-ID: <66d4a4be-c01c-7f33-9a7f-20cfdb5dcf96@linux.ibm.com>
+Date:   Thu, 10 Jun 2021 07:50:01 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
+In-Reply-To: <20210610090323.f7b47xqxbkwnm5cx@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dlR1wW0VT6VLBzpDlzMqUeHn6uKE9cdf
+X-Proofpoint-ORIG-GUID: FL6cxQpNyhmm27US8oOx8axdF_GmBkMr
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-06-10_07:2021-06-10,2021-06-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 spamscore=0 phishscore=0 mlxscore=0 priorityscore=1501
+ adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106100072
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-tpm2_key_decode allocates memory which is stored in blob and it's not freed.
 
-Signed-off-by: Dhiraj Shah <find.dhiraj@gmail.com>
----
- security/keys/trusted-keys/trusted_tpm2.c | 41 +++++++++++++++--------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+On 6/10/21 5:03 AM, Jarkko Sakkinen wrote:
+> On Wed, Jun 09, 2021 at 09:58:29AM -0400, Stefan Berger wrote:
+>> On 6/9/21 8:44 AM, Jarkko Sakkinen wrote:
+>>> On Thu, Jun 03, 2021 at 08:32:59AM -0400, Stefan Berger wrote:
+>>>> On 6/3/21 2:47 AM, Jarkko Sakkinen wrote:
+>>>>>> -- 
+>>>>>> 2.29.2
+>>>>>>
+>>>>>>
+>>>>> Please instead send a fix.
+>>>> We have a Fixes tag in 1/2, so we want this to propagate to older kernels
+>>>> and need the fix in 1/2 for that reason.
+>>>>
+>>>>      Stefan
+>>> So please do an additional fix and send it.
+>> 1/2 is supposed to propagate to older kernels and needs to change as posted
+>> here in v5 (assuming that this does indeed fix what the build bot was
+>> complaining about). 2/2 also changes. A fix on top of v4 would fix 2/2 but
+>> won't apply cleanly to 1/2 as cannot easily propagate to older kernels. Is
+>> that what we want? Why can you not remove v4 from your queue and replace it
+>> with v5?
+>>
+>>     Stefan
+> What you can do is to send fix or fixes with appropriate fixes tags and
+> I can then squash them for appropriate patches. That's less work for me.
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 0165da386289..52dd43bb8cdb 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -378,22 +378,31 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 	}
- 
- 	/* new format carries keyhandle but old format doesn't */
--	if (!options->keyhandle)
--		return -EINVAL;
-+	if (!options->keyhandle) {
-+		rc = -EINVAL;
-+		goto err;
-+	}
- 
- 	/* must be big enough for at least the two be16 size counts */
--	if (payload->blob_len < 4)
--		return -EINVAL;
-+	if (payload->blob_len < 4) {
-+		rc = -EINVAL;
-+		goto err;
-+	}
- 
- 	private_len = get_unaligned_be16(blob);
- 
- 	/* must be big enough for following public_len */
--	if (private_len + 2 + 2 > (payload->blob_len))
--		return -E2BIG;
-+	if (private_len + 2 + 2 > (payload->blob_len)) {
-+		rc = -E2BIG;
-+		goto err;
-+	}
- 
- 	public_len = get_unaligned_be16(blob + 2 + private_len);
--	if (private_len + 2 + public_len + 2 > payload->blob_len)
--		return -E2BIG;
-+
-+	if (private_len + 2 + public_len + 2 > payload->blob_len) {
-+		rc = -E2BIG;
-+		goto err;
-+	}
- 
- 	pub = blob + 2 + private_len + 2;
- 	/* key attributes are always at offset 4 */
-@@ -406,13 +415,16 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 		payload->migratable = 1;
- 
- 	blob_len = private_len + public_len + 4;
--	if (blob_len > payload->blob_len)
--		return -E2BIG;
- 
--	rc = tpm_buf_init(&buf, TPM2_ST_SESSIONS, TPM2_CC_LOAD);
--	if (rc)
--		return rc;
-+	if (blob_len > payload->blob_len) {
-+		rc = -E2BIG;
-+		goto err;
-+	}
- 
-+	if (tpm_buf_init(&buf, TPM2_ST_SESSIONS, TPM2_CC_LOAD) != 0)
-+		rc = -ENOMEM;
-+		goto out;
-+	}
- 	tpm_buf_append_u32(&buf, options->keyhandle);
- 	tpm2_buf_append_auth(&buf, TPM2_RS_PW,
- 			     NULL /* nonce */, 0,
-@@ -433,9 +445,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 			(__be32 *) &buf.data[TPM_HEADER_SIZE]);
- 
- out:
-+	tpm_buf_destroy(&buf);
-+err:
- 	if (blob != payload->blob)
- 		kfree(blob);
--	tpm_buf_destroy(&buf);
- 
- 	if (rc > 0)
- 		rc = -EPERM;
--- 
-2.30.1 (Apple Git-130)
+
+Once you squash a fix on top of existing 1/2 , existing 2/2 will not 
+apply anymore. I am not sure what to send you. I think it would take 
+less time to remove the existing 2 patches and replace them with v5.
+
+    Stefan
+
 
