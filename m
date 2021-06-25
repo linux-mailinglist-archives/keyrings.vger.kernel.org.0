@@ -2,55 +2,24 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E047C3B430C
-	for <lists+keyrings@lfdr.de>; Fri, 25 Jun 2021 14:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 503A33B4327
+	for <lists+keyrings@lfdr.de>; Fri, 25 Jun 2021 14:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229940AbhFYMXv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Jun 2021 08:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbhFYMXu (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Jun 2021 08:23:50 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE956C061574;
-        Fri, 25 Jun 2021 05:21:28 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id bj15so18777906qkb.11;
-        Fri, 25 Jun 2021 05:21:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=L4Q8/3z6OXZZ/9ZPmsJ32/nlpjgIm8YhI1f+Jp/7/2Y=;
-        b=WL+io1HK1tNOQKxbIBVMbIy/T9/bxFpeWFQvqPXHqNMk5T4+AzsEpeX0jFWiv9/8JZ
-         jZtyRkg67eHuVI9mrtSDtLdoKttYBAd0QtM+kiimuZXFrImzRoEIj4tiiCiZuZWVK3at
-         /2AQyUybsp5Wvx+iUGQt65JBdrZ4UBQ+4YsR+UmhadndSpBw46mHRT+rxy1HlaLvPWmD
-         lk6c6KCfWGhg9b0ALrbaPrmS5kl3oyUk15k5Q/4T2sPvGaUwZXqkpGQrqPVjsMUrl/VF
-         Aw166696i0P9ahVNEqPGnX1zw3YB7HbKbk5AxMmT1p/qUnAHnZvv8Rqr9wjh4N2KBZsq
-         nGvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=L4Q8/3z6OXZZ/9ZPmsJ32/nlpjgIm8YhI1f+Jp/7/2Y=;
-        b=WjZGKOXbtkk5rE2Y2IKfbJsfDPIN/ldzTISdruO8cG3RyD17bJAyWfW9edo8AEraH0
-         kaw0QpwNmWix8L27DV361ejsLmQIfFpIYpN+oEpXdZfcMJZCjSqITf2MEyzQsRPAIXm9
-         fExhZCzFG5UXWbE0NjgA+2JYP0HBJDaQgmAU2T6DooLqea14spAiNjkX13liEiiHwE81
-         zG30yGzrsuod9TptlCZxurR8ymXE5HFrl+w/D2nxIA+H4kc/jqi6Xe0LMVw3zgtpVLt5
-         p3nj5ARdAZBvoi3nr+kIZZ2Gs4JHYhG5IKGyq3j5wBdcNvP8WqAephuzQcmmWQSWQFCR
-         tulA==
-X-Gm-Message-State: AOAM531/3NqTRrJ4mGhGn+HTaPbkbMT3tVE28fBRbtm6RIhuxduDrK7V
-        mXdBU/59lTOjjeMhMFQlm8I2Rpslmwb6KEVJ74Y=
-X-Google-Smtp-Source: ABdhPJx/f94SRCZdAiHGi/ly1dG35ye7G0aXHvgj8OgWk+mDDpVCnednOPUsuVtmlcQHWovAMDoeKz0kkOsoi5QKHGA=
-X-Received: by 2002:a37:9005:: with SMTP id s5mr10980983qkd.108.1624623687811;
- Fri, 25 Jun 2021 05:21:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210614201620.30451-1-richard@nod.at> <20210614201620.30451-2-richard@nod.at>
-In-Reply-To: <20210614201620.30451-2-richard@nod.at>
-From:   Richard Weinberger <richard.weinberger@gmail.com>
-Date:   Fri, 25 Jun 2021 14:21:16 +0200
-Message-ID: <CAFLxGvyyybqsgXOQ2f2BmpTCnC=7UdWhwnCpGfZMxYuK-AQ-_w@mail.gmail.com>
-Subject: Re: [PATCH 1/3] crypto: mxs-dcp: Add support for hardware provided keys
-To:     Herbert Xu <herbert@gondor.apana.org.au>
+        id S230270AbhFYMbl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 25 Jun 2021 08:31:41 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:50880 "EHLO deadmen.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229498AbhFYMbl (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 25 Jun 2021 08:31:41 -0400
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+        by deadmen.hmeau.com with esmtp (Exim 4.92 #5 (Debian))
+        id 1lwkxD-0008Um-SF; Fri, 25 Jun 2021 20:29:03 +0800
+Received: from herbert by gondobar with local (Exim 4.92)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1lwkwy-0006no-Iw; Fri, 25 Jun 2021 20:28:48 +0800
+Date:   Fri, 25 Jun 2021 20:28:48 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Richard Weinberger <richard.weinberger@gmail.com>
 Cc:     keyrings@vger.kernel.org, Richard Weinberger <richard@nod.at>,
         Ahmad Fatoum <a.fatoum@pengutronix.de>,
         David Gstir <david@sigma-star.at>,
@@ -72,68 +41,34 @@ Cc:     keyrings@vger.kernel.org, Richard Weinberger <richard@nod.at>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Shawn Guo <shawnguo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 1/3] crypto: mxs-dcp: Add support for hardware provided
+ keys
+Message-ID: <20210625122848.GA26048@gondor.apana.org.au>
+References: <20210614201620.30451-1-richard@nod.at>
+ <20210614201620.30451-2-richard@nod.at>
+ <CAFLxGvyyybqsgXOQ2f2BmpTCnC=7UdWhwnCpGfZMxYuK-AQ-_w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFLxGvyyybqsgXOQ2f2BmpTCnC=7UdWhwnCpGfZMxYuK-AQ-_w@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Herbert,
+On Fri, Jun 25, 2021 at 02:21:16PM +0200, Richard Weinberger wrote:
+>
+> This patch was judged as not applicable in your patchwork.
+> Is something missing? How can we proceed?
 
-On Mon, Jun 14, 2021 at 10:18 PM Richard Weinberger <richard@nod.at> wrote:
->
-> DCP is capable to performing AES with hardware-bound keys.
-> These keys are not stored in main memory and are therefore not directly
-> accessible by the operating system.
->
-> So instead of feeding the key into DCP, we need to place a
-> reference to such a key before initiating the crypto operation.
-> Keys are referenced by a one byte identifiers.
->
-> DCP supports 6 different keys: 4 slots in the secure memory area,
-> a one time programmable key which can be burnt via on-chip fuses
-> and an unique device key.
->
-> Using these keys is restricted to in-kernel users that use them as building
-> block for other crypto tools such as trusted keys. Allowing userspace
-> (e.g. via AF_ALG) to use these keys to crypt or decrypt data is a security
-> risk, because there is no access control mechanism.
->
-> Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Cc: David Gstir <david@sigma-star.at>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> Cc: James Bottomley <jejb@linux.ibm.com>
-> Cc: James Morris <jmorris@namei.org>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: keyrings@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-crypto@vger.kernel.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-integrity@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-security-module@vger.kernel.org
-> Cc: Mimi Zohar <zohar@linux.ibm.com>
-> Cc: NXP Linux Team <linux-imx@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: "Serge E. Hallyn" <serge@hallyn.com>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Co-developed-by: David Gstir <david@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> ---
->  drivers/crypto/mxs-dcp.c | 110 ++++++++++++++++++++++++++++++++++-----
->  include/linux/mxs-dcp.h  |  19 +++++++
->  2 files changed, 117 insertions(+), 12 deletions(-)
->  create mode 100644 include/linux/mxs-dcp.h
+I'm happy to take this patch.  I marked it as not applicable
+mainly because the other two patches didn't have acks and I'm
+not sure if they were meant for the crypto tree or not.
 
-This patch was judged as not applicable in your patchwork.
-Is something missing? How can we proceed?
+Would you like me to take just the first patch?
 
+Cheers,
 -- 
-Thanks,
-//richard
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
