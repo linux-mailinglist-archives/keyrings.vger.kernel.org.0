@@ -2,99 +2,271 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96BA13B4429
-	for <lists+keyrings@lfdr.de>; Fri, 25 Jun 2021 15:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 105543B607A
+	for <lists+keyrings@lfdr.de>; Mon, 28 Jun 2021 16:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231375AbhFYNOy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Jun 2021 09:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230151AbhFYNOx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Jun 2021 09:14:53 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2F4C061574;
-        Fri, 25 Jun 2021 06:12:32 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id c23so18952509qkc.10;
-        Fri, 25 Jun 2021 06:12:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EtH+YaguYetgfT8kdoojx9dl0VFAOn0Yx63g1VXsJew=;
-        b=ibebuR7OhuuvKztdC31VfGhCLFYwF5mP1pV/+hJ3huZCAhmuaKBvXpB1tjgs9IIMr9
-         kTpQ++d8sLN88ao1wBevONYfKDcD/mCLTqaTEEQhvwrAgQ6MhQJ66epchgndDQjHyVh5
-         Z+Jmv6umAuv435h93xu44fqA9IkyadeNoFp9G+XwLX2Yjil+8Y+IY3CRxsEvxggMxW7D
-         JyeF3c2fUUFPtgYf0vfL3g18kIHJRNdH+wSRaileVeU715wrAIbj7N50gz5J9LsMHEPJ
-         IYYVngXW/9d46V1Zn8Uqe1SSGNgswJ0er2+QI/NfBav9egxI0h+kZ3RgR2yGNCxjQPDt
-         w3DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EtH+YaguYetgfT8kdoojx9dl0VFAOn0Yx63g1VXsJew=;
-        b=U6s6QHm0iM95vfCwde4UlhuLxEAgr20xrNVk+aTStvskBk03xe7Y7t4OhhwIyX7BYk
-         0q7FL+TWFYwJ6EylRJ0Uq7eMwzPXZezi9AOoBoMe2RDDpFfvrozpnROLt1+OvSOzNIoV
-         MTjCaFs5m2ZsNkdYJ7I12lZdhicbSZ+3s974Hk37g70coQS+laG5+ClW6cmzqhgWcItW
-         N9p/Tufvf2C+iqFXAD3pBiIs+t15SNSBmSlKZvYmNoCyFP8QmKht6Bx16+3vpDtX7k5f
-         4aDoYklSfSUfVSYJBPquwco+z/gBeavrNLyWOrEK8x0XOk91NYfF7b5+GkVwijSKAQh1
-         k6yA==
-X-Gm-Message-State: AOAM532riY9QBMDTOnE/JXVi1h29bbBVfBR7ISSWXjlaPiZKASiFFeET
-        FJiXs1HoyX7jRIWXJAscgImxEm2uP2po1uv7sFQ=
-X-Google-Smtp-Source: ABdhPJwtcJBfZh6+UIt9Kg9D23mEveqk6UdDJLrv+I1aDYiyVGB7RwiNeAuD+xRyfZcD0pFjoPQMpri+pbEPlM5lJ0o=
-X-Received: by 2002:a37:e110:: with SMTP id c16mr11117736qkm.237.1624626751519;
- Fri, 25 Jun 2021 06:12:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210614201620.30451-1-richard@nod.at> <20210614201620.30451-2-richard@nod.at>
- <CAFLxGvyyybqsgXOQ2f2BmpTCnC=7UdWhwnCpGfZMxYuK-AQ-_w@mail.gmail.com> <20210625122848.GA26048@gondor.apana.org.au>
-In-Reply-To: <20210625122848.GA26048@gondor.apana.org.au>
-From:   Richard Weinberger <richard.weinberger@gmail.com>
-Date:   Fri, 25 Jun 2021 15:12:20 +0200
-Message-ID: <CAFLxGvyFy-BWjLF5z2=TaQ+MPEh+Djj3-PSAMArMoquekLWgBQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] crypto: mxs-dcp: Add support for hardware provided keys
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     keyrings@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        David Gstir <david@sigma-star.at>,
+        id S233782AbhF1OZI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 28 Jun 2021 10:25:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54752 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233626AbhF1OXj (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 28 Jun 2021 10:23:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 62DBF61CA1;
+        Mon, 28 Jun 2021 14:20:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624890021;
+        bh=38E7WAWrTTNitozFlnIRmZDn4WYWBI5rTmeCkotGG8E=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=SF7707/cCOA0NhUOKrdKMn1D3tIOPrdSU45HpBKQUGe+Oz8QuB1Z6ZX8eF0iTq2Ra
+         faNwzU38WVwZdjJFhCuIFUOeAkntaJLzvWqDrMPidC8s94Mtc8EPKNg7yUER6YDeaT
+         uB51yIZwOaI0dIDqX+C65lupP10Soih4aQ7nlA9XCGWJgq6UKz6B17eSFZpdEJWzEW
+         UZIUVLuD9xYBtPSe2QvgiUcbq6SxJepabKwKHBCXNhj17HU1cjONTuydOr/i+DDxqs
+         TN3zc00Q7PblwFPZZukPq6WAoVcjd+v2SZlGam4y1X0ctxolSE6Fyq+UtTFCAc4Qr4
+         ujfj38h6NH5tw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
         David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fabio Estevam <festevam@gmail.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-arm-kernel@lists.infradead.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-doc@vger.kernel.org, linux-integrity@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Shawn Guo <shawnguo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        Arnd Bergmann <arnd@kernel.org>, keyrings@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.12 106/110] certs: Add EFI_CERT_X509_GUID support for dbx entries
+Date:   Mon, 28 Jun 2021 10:18:24 -0400
+Message-Id: <20210628141828.31757-107-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210628141828.31757-1-sashal@kernel.org>
+References: <20210628141828.31757-1-sashal@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.12.14-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.12.14-rc1
+X-KernelTest-Deadline: 2021-06-30T14:18+00:00
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Herbert,
+From: Eric Snowberg <eric.snowberg@oracle.com>
 
-On Fri, Jun 25, 2021 at 2:29 PM Herbert Xu <herbert@gondor.apana.org.au> wrote:
-> > This patch was judged as not applicable in your patchwork.
-> > Is something missing? How can we proceed?
->
-> I'm happy to take this patch.  I marked it as not applicable
-> mainly because the other two patches didn't have acks and I'm
-> not sure if they were meant for the crypto tree or not.
+[ Upstream commit 56c5812623f95313f6a46fbf0beee7fa17c68bbf ]
 
-Maybe we have a chicken/egg situation and integrity folks wait for you. ;-)
+This fixes CVE-2020-26541.
 
-> Would you like me to take just the first patch?
+The Secure Boot Forbidden Signature Database, dbx, contains a list of now
+revoked signatures and keys previously approved to boot with UEFI Secure
+Boot enabled.  The dbx is capable of containing any number of
+EFI_CERT_X509_SHA256_GUID, EFI_CERT_SHA256_GUID, and EFI_CERT_X509_GUID
+entries.
 
-IMHO all three patches should go through the integrity tree.
-Given that you're fine with the first patch, can you please ack it?
+Currently when EFI_CERT_X509_GUID are contained in the dbx, the entries are
+skipped.
 
+Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_GUID
+is found, it is added as an asymmetrical key to the .blacklist keyring.
+Anytime the .platform keyring is used, the keys in the .blacklist keyring
+are referenced, if a matching key is found, the key will be rejected.
+
+[DH: Made the following changes:
+ - Added to have a config option to enable the facility.  This allows a
+   Kconfig solution to make sure that pkcs7_validate_trust() is
+   enabled.[1][2]
+ - Moved the functions out from the middle of the blacklist functions.
+ - Added kerneldoc comments.]
+
+Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+cc: Randy Dunlap <rdunlap@infradead.org>
+cc: Mickaël Salaün <mic@digikod.net>
+cc: Arnd Bergmann <arnd@kernel.org>
+cc: keyrings@vger.kernel.org
+Link: https://lore.kernel.org/r/20200901165143.10295-1-eric.snowberg@oracle.com/ # rfc
+Link: https://lore.kernel.org/r/20200909172736.73003-1-eric.snowberg@oracle.com/ # v2
+Link: https://lore.kernel.org/r/20200911182230.62266-1-eric.snowberg@oracle.com/ # v3
+Link: https://lore.kernel.org/r/20200916004927.64276-1-eric.snowberg@oracle.com/ # v4
+Link: https://lore.kernel.org/r/20210122181054.32635-2-eric.snowberg@oracle.com/ # v5
+Link: https://lore.kernel.org/r/161428672051.677100.11064981943343605138.stgit@warthog.procyon.org.uk/
+Link: https://lore.kernel.org/r/161433310942.902181.4901864302675874242.stgit@warthog.procyon.org.uk/ # v2
+Link: https://lore.kernel.org/r/161529605075.163428.14625520893961300757.stgit@warthog.procyon.org.uk/ # v3
+Link: https://lore.kernel.org/r/bc2c24e3-ed68-2521-0bf4-a1f6be4a895d@infradead.org/ [1]
+Link: https://lore.kernel.org/r/20210225125638.1841436-1-arnd@kernel.org/ [2]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ certs/Kconfig                                 |  9 ++++
+ certs/blacklist.c                             | 43 +++++++++++++++++++
+ certs/blacklist.h                             |  2 +
+ certs/system_keyring.c                        |  6 +++
+ include/keys/system_keyring.h                 | 15 +++++++
+ .../platform_certs/keyring_handler.c          | 11 +++++
+ 6 files changed, 86 insertions(+)
+
+diff --git a/certs/Kconfig b/certs/Kconfig
+index c94e93d8bccf..76e469b56a77 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -83,4 +83,13 @@ config SYSTEM_BLACKLIST_HASH_LIST
+ 	  wrapper to incorporate the list into the kernel.  Each <hash> should
+ 	  be a string of hex digits.
+ 
++config SYSTEM_REVOCATION_LIST
++	bool "Provide system-wide ring of revocation certificates"
++	depends on SYSTEM_BLACKLIST_KEYRING
++	depends on PKCS7_MESSAGE_PARSER=y
++	help
++	  If set, this allows revocation certificates to be stored in the
++	  blacklist keyring and implements a hook whereby a PKCS#7 message can
++	  be checked to see if it matches such a certificate.
++
+ endmenu
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index bffe4c6f4a9e..2b8644123d5f 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -145,6 +145,49 @@ int is_binary_blacklisted(const u8 *hash, size_t hash_len)
+ }
+ EXPORT_SYMBOL_GPL(is_binary_blacklisted);
+ 
++#ifdef CONFIG_SYSTEM_REVOCATION_LIST
++/**
++ * add_key_to_revocation_list - Add a revocation certificate to the blacklist
++ * @data: The data blob containing the certificate
++ * @size: The size of data blob
++ */
++int add_key_to_revocation_list(const char *data, size_t size)
++{
++	key_ref_t key;
++
++	key = key_create_or_update(make_key_ref(blacklist_keyring, true),
++				   "asymmetric",
++				   NULL,
++				   data,
++				   size,
++				   ((KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW),
++				   KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_BUILT_IN);
++
++	if (IS_ERR(key)) {
++		pr_err("Problem with revocation key (%ld)\n", PTR_ERR(key));
++		return PTR_ERR(key);
++	}
++
++	return 0;
++}
++
++/**
++ * is_key_on_revocation_list - Determine if the key for a PKCS#7 message is revoked
++ * @pkcs7: The PKCS#7 message to check
++ */
++int is_key_on_revocation_list(struct pkcs7_message *pkcs7)
++{
++	int ret;
++
++	ret = pkcs7_validate_trust(pkcs7, blacklist_keyring);
++
++	if (ret == 0)
++		return -EKEYREJECTED;
++
++	return -ENOKEY;
++}
++#endif
++
+ /*
+  * Initialise the blacklist
+  */
+diff --git a/certs/blacklist.h b/certs/blacklist.h
+index 1efd6fa0dc60..51b320cf8574 100644
+--- a/certs/blacklist.h
++++ b/certs/blacklist.h
+@@ -1,3 +1,5 @@
+ #include <linux/kernel.h>
++#include <linux/errno.h>
++#include <crypto/pkcs7.h>
+ 
+ extern const char __initconst *const blacklist_hashes[];
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index 4b693da488f1..ed98754d5795 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -242,6 +242,12 @@ int verify_pkcs7_message_sig(const void *data, size_t len,
+ 			pr_devel("PKCS#7 platform keyring is not available\n");
+ 			goto error;
+ 		}
++
++		ret = is_key_on_revocation_list(pkcs7);
++		if (ret != -ENOKEY) {
++			pr_devel("PKCS#7 platform key is on revocation list\n");
++			goto error;
++		}
+ 	}
+ 	ret = pkcs7_validate_trust(pkcs7, trusted_keys);
+ 	if (ret < 0) {
+diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.h
+index fb8b07daa9d1..875e002a4180 100644
+--- a/include/keys/system_keyring.h
++++ b/include/keys/system_keyring.h
+@@ -31,6 +31,7 @@ extern int restrict_link_by_builtin_and_secondary_trusted(
+ #define restrict_link_by_builtin_and_secondary_trusted restrict_link_by_builtin_trusted
+ #endif
+ 
++extern struct pkcs7_message *pkcs7;
+ #ifdef CONFIG_SYSTEM_BLACKLIST_KEYRING
+ extern int mark_hash_blacklisted(const char *hash);
+ extern int is_hash_blacklisted(const u8 *hash, size_t hash_len,
+@@ -49,6 +50,20 @@ static inline int is_binary_blacklisted(const u8 *hash, size_t hash_len)
+ }
+ #endif
+ 
++#ifdef CONFIG_SYSTEM_REVOCATION_LIST
++extern int add_key_to_revocation_list(const char *data, size_t size);
++extern int is_key_on_revocation_list(struct pkcs7_message *pkcs7);
++#else
++static inline int add_key_to_revocation_list(const char *data, size_t size)
++{
++	return 0;
++}
++static inline int is_key_on_revocation_list(struct pkcs7_message *pkcs7)
++{
++	return -ENOKEY;
++}
++#endif
++
+ #ifdef CONFIG_IMA_BLACKLIST_KEYRING
+ extern struct key *ima_blacklist_keyring;
+ 
+diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
+index c5ba695c10e3..5604bd57c990 100644
+--- a/security/integrity/platform_certs/keyring_handler.c
++++ b/security/integrity/platform_certs/keyring_handler.c
+@@ -55,6 +55,15 @@ static __init void uefi_blacklist_binary(const char *source,
+ 	uefi_blacklist_hash(source, data, len, "bin:", 4);
+ }
+ 
++/*
++ * Add an X509 cert to the revocation list.
++ */
++static __init void uefi_revocation_list_x509(const char *source,
++					     const void *data, size_t len)
++{
++	add_key_to_revocation_list(data, len);
++}
++
+ /*
+  * Return the appropriate handler for particular signature list types found in
+  * the UEFI db and MokListRT tables.
+@@ -76,5 +85,7 @@ __init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type)
+ 		return uefi_blacklist_x509_tbs;
+ 	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
+ 		return uefi_blacklist_binary;
++	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
++		return uefi_revocation_list_x509;
+ 	return 0;
+ }
 -- 
-Thanks,
-//richard
+2.30.2
+
