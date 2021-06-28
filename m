@@ -2,47 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E213B6083
-	for <lists+keyrings@lfdr.de>; Mon, 28 Jun 2021 16:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5DB3B6174
+	for <lists+keyrings@lfdr.de>; Mon, 28 Jun 2021 16:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbhF1OZX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 28 Jun 2021 10:25:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54380 "EHLO mail.kernel.org"
+        id S234813AbhF1OgD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 28 Jun 2021 10:36:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37130 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233317AbhF1OX4 (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 28 Jun 2021 10:23:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 81FDB61990;
-        Mon, 28 Jun 2021 14:20:23 +0000 (UTC)
+        id S234611AbhF1Odj (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 28 Jun 2021 10:33:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 61B2061C91;
+        Mon, 28 Jun 2021 14:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624890024;
-        bh=vkswk7UbOZ3+JsU+pqXCR6lirRP7QuJ+DcBMYyBrDnE=;
+        s=k20201202; t=1624890471;
+        bh=MofWOokSsDYOdPg8LC7QYMKT2us9PHcRk8KMM5L2OAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SHkl/p/GmBY2PyfYfhPluG2g01VTQzg0L4UPjI3DV/NQi958aCe2iokt1QbxCGZj+
-         /cWrkOC3a4O1qIud8hZK4h7t6T+RWwUhhBoX1ztRW2p6Zmi76t+y0WHybt621hAd/y
-         gW9MEyyXOLg37eGWE2xaM6b8j1XJWGRu6FEg0qe8SSKntGs5Zc+bkWMSbH67sKLP9e
-         B1AlIjekR+yQlUrmvsFsPl+LA9xWC16jU+13JssM9nOyfCOkObUoA0hvO4cbentbpf
-         w/FJaOEtL4u7S8Wc1guOXb4IqhB+E6dhGZJekBx4M3h/1CQ7yq8P9zjq3RPtVBXGls
-         sBr/mPok4Lr8Q==
+        b=FQaWhpQo200UUL7zOt0rOeiipUOFvyQwBVysXcYhUQG99GBpCyn8xH3jYrkYihOuY
+         S1hPiKYoOVHrrSplK5r1k3LF85ClF7CF6H6jJRQk5jbgNGVjiKTj6UIZduqKJD7ekC
+         aElck61khck54j8I4nxdPylspJ7eMqKPXJGJO0oaU/FF9XOM8k8FzwTeVZA10rSkST
+         A1u1a/01stifL6DN/3867FmJilsLCoAuS3YJWm21smt8n8YQHLZX7pu+EseoDLvf63
+         4jjO62l4E41yxunRp22HyovvE5HZusSs4ZvJMfG6kxEC/HRZwY7W3Vp75C4fYXGXWA
+         pXFM1bbgl30lg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
         David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        Arnd Bergmann <arnd@kernel.org>, keyrings@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.12 109/110] integrity: Load mokx variables into the blacklist keyring
-Date:   Mon, 28 Jun 2021 10:18:27 -0400
-Message-Id: <20210628141828.31757-110-sashal@kernel.org>
+Subject: [PATCH 5.10 097/101] certs: Add EFI_CERT_X509_GUID support for dbx entries
+Date:   Mon, 28 Jun 2021 10:26:03 -0400
+Message-Id: <20210628142607.32218-98-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210628141828.31757-1-sashal@kernel.org>
-References: <20210628141828.31757-1-sashal@kernel.org>
+In-Reply-To: <20210628142607.32218-1-sashal@kernel.org>
+References: <20210628142607.32218-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.12.14-rc1.gz
+Content-Type: text/plain; charset=UTF-8
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.47-rc1.gz
 X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.12.y
+X-KernelTest-Branch: linux-5.10.y
 X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.12.14-rc1
-X-KernelTest-Deadline: 2021-06-30T14:18+00:00
+X-KernelTest-Version: 5.10.47-rc1
+X-KernelTest-Deadline: 2021-06-30T14:25+00:00
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -52,69 +55,218 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Eric Snowberg <eric.snowberg@oracle.com>
 
-[ Upstream commit ebd9c2ae369a45bdd9f8615484db09be58fc242b ]
+[ Upstream commit 56c5812623f95313f6a46fbf0beee7fa17c68bbf ]
 
-During boot the Secure Boot Forbidden Signature Database, dbx,
-is loaded into the blacklist keyring.  Systems booted with shim
-have an equivalent Forbidden Signature Database called mokx.
-Currently mokx is only used by shim and grub, the contents are
-ignored by the kernel.
+This fixes CVE-2020-26541.
 
-Add the ability to load mokx into the blacklist keyring during boot.
+The Secure Boot Forbidden Signature Database, dbx, contains a list of now
+revoked signatures and keys previously approved to boot with UEFI Secure
+Boot enabled.  The dbx is capable of containing any number of
+EFI_CERT_X509_SHA256_GUID, EFI_CERT_SHA256_GUID, and EFI_CERT_X509_GUID
+entries.
+
+Currently when EFI_CERT_X509_GUID are contained in the dbx, the entries are
+skipped.
+
+Add support for EFI_CERT_X509_GUID dbx entries. When a EFI_CERT_X509_GUID
+is found, it is added as an asymmetrical key to the .blacklist keyring.
+Anytime the .platform keyring is used, the keys in the .blacklist keyring
+are referenced, if a matching key is found, the key will be rejected.
+
+[DH: Made the following changes:
+ - Added to have a config option to enable the facility.  This allows a
+   Kconfig solution to make sure that pkcs7_validate_trust() is
+   enabled.[1][2]
+ - Moved the functions out from the middle of the blacklist functions.
+ - Added kerneldoc comments.]
 
 Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-Suggested-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+cc: Randy Dunlap <rdunlap@infradead.org>
+cc: Mickaël Salaün <mic@digikod.net>
+cc: Arnd Bergmann <arnd@kernel.org>
 cc: keyrings@vger.kernel.org
-Link: https://lore.kernel.org/r/c33c8e3839a41e9654f41cc92c7231104931b1d7.camel@HansenPartnership.com/
-Link: https://lore.kernel.org/r/20210122181054.32635-5-eric.snowberg@oracle.com/ # v5
-Link: https://lore.kernel.org/r/161428674320.677100.12637282414018170743.stgit@warthog.procyon.org.uk/
-Link: https://lore.kernel.org/r/161433313205.902181.2502803393898221637.stgit@warthog.procyon.org.uk/ # v2
-Link: https://lore.kernel.org/r/161529607422.163428.13530426573612578854.stgit@warthog.procyon.org.uk/ # v3
+Link: https://lore.kernel.org/r/20200901165143.10295-1-eric.snowberg@oracle.com/ # rfc
+Link: https://lore.kernel.org/r/20200909172736.73003-1-eric.snowberg@oracle.com/ # v2
+Link: https://lore.kernel.org/r/20200911182230.62266-1-eric.snowberg@oracle.com/ # v3
+Link: https://lore.kernel.org/r/20200916004927.64276-1-eric.snowberg@oracle.com/ # v4
+Link: https://lore.kernel.org/r/20210122181054.32635-2-eric.snowberg@oracle.com/ # v5
+Link: https://lore.kernel.org/r/161428672051.677100.11064981943343605138.stgit@warthog.procyon.org.uk/
+Link: https://lore.kernel.org/r/161433310942.902181.4901864302675874242.stgit@warthog.procyon.org.uk/ # v2
+Link: https://lore.kernel.org/r/161529605075.163428.14625520893961300757.stgit@warthog.procyon.org.uk/ # v3
+Link: https://lore.kernel.org/r/bc2c24e3-ed68-2521-0bf4-a1f6be4a895d@infradead.org/ [1]
+Link: https://lore.kernel.org/r/20210225125638.1841436-1-arnd@kernel.org/ [2]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/platform_certs/load_uefi.c | 20 +++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ certs/Kconfig                                 |  9 ++++
+ certs/blacklist.c                             | 43 +++++++++++++++++++
+ certs/blacklist.h                             |  2 +
+ certs/system_keyring.c                        |  6 +++
+ include/keys/system_keyring.h                 | 15 +++++++
+ .../platform_certs/keyring_handler.c          | 11 +++++
+ 6 files changed, 86 insertions(+)
 
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index ee4b4c666854..f290f78c3f30 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -132,8 +132,9 @@ static int __init load_moklist_certs(void)
- static int __init load_uefi_certs(void)
- {
- 	efi_guid_t secure_var = EFI_IMAGE_SECURITY_DATABASE_GUID;
--	void *db = NULL, *dbx = NULL;
--	unsigned long dbsize = 0, dbxsize = 0;
-+	efi_guid_t mok_var = EFI_SHIM_LOCK_GUID;
-+	void *db = NULL, *dbx = NULL, *mokx = NULL;
-+	unsigned long dbsize = 0, dbxsize = 0, mokxsize = 0;
- 	efi_status_t status;
- 	int rc = 0;
+diff --git a/certs/Kconfig b/certs/Kconfig
+index c94e93d8bccf..76e469b56a77 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -83,4 +83,13 @@ config SYSTEM_BLACKLIST_HASH_LIST
+ 	  wrapper to incorporate the list into the kernel.  Each <hash> should
+ 	  be a string of hex digits.
  
-@@ -175,6 +176,21 @@ static int __init load_uefi_certs(void)
- 		kfree(dbx);
- 	}
++config SYSTEM_REVOCATION_LIST
++	bool "Provide system-wide ring of revocation certificates"
++	depends on SYSTEM_BLACKLIST_KEYRING
++	depends on PKCS7_MESSAGE_PARSER=y
++	help
++	  If set, this allows revocation certificates to be stored in the
++	  blacklist keyring and implements a hook whereby a PKCS#7 message can
++	  be checked to see if it matches such a certificate.
++
+ endmenu
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index f1c434b04b5e..59b2f106b294 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -144,6 +144,49 @@ int is_binary_blacklisted(const u8 *hash, size_t hash_len)
+ }
+ EXPORT_SYMBOL_GPL(is_binary_blacklisted);
  
-+	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
-+	if (!mokx) {
-+		if (status == EFI_NOT_FOUND)
-+			pr_debug("mokx variable wasn't found\n");
-+		else
-+			pr_info("Couldn't get mokx list\n");
-+	} else {
-+		rc = parse_efi_signature_list("UEFI:MokListXRT",
-+					      mokx, mokxsize,
-+					      get_handler_for_dbx);
-+		if (rc)
-+			pr_err("Couldn't parse mokx signatures %d\n", rc);
-+		kfree(mokx);
++#ifdef CONFIG_SYSTEM_REVOCATION_LIST
++/**
++ * add_key_to_revocation_list - Add a revocation certificate to the blacklist
++ * @data: The data blob containing the certificate
++ * @size: The size of data blob
++ */
++int add_key_to_revocation_list(const char *data, size_t size)
++{
++	key_ref_t key;
++
++	key = key_create_or_update(make_key_ref(blacklist_keyring, true),
++				   "asymmetric",
++				   NULL,
++				   data,
++				   size,
++				   ((KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW),
++				   KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_BUILT_IN);
++
++	if (IS_ERR(key)) {
++		pr_err("Problem with revocation key (%ld)\n", PTR_ERR(key));
++		return PTR_ERR(key);
 +	}
 +
- 	/* Load the MokListRT certs */
- 	rc = load_moklist_certs();
++	return 0;
++}
++
++/**
++ * is_key_on_revocation_list - Determine if the key for a PKCS#7 message is revoked
++ * @pkcs7: The PKCS#7 message to check
++ */
++int is_key_on_revocation_list(struct pkcs7_message *pkcs7)
++{
++	int ret;
++
++	ret = pkcs7_validate_trust(pkcs7, blacklist_keyring);
++
++	if (ret == 0)
++		return -EKEYREJECTED;
++
++	return -ENOKEY;
++}
++#endif
++
+ /*
+  * Initialise the blacklist
+  */
+diff --git a/certs/blacklist.h b/certs/blacklist.h
+index 1efd6fa0dc60..51b320cf8574 100644
+--- a/certs/blacklist.h
++++ b/certs/blacklist.h
+@@ -1,3 +1,5 @@
+ #include <linux/kernel.h>
++#include <linux/errno.h>
++#include <crypto/pkcs7.h>
  
+ extern const char __initconst *const blacklist_hashes[];
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index 798291177186..cc165b359ea3 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -241,6 +241,12 @@ int verify_pkcs7_message_sig(const void *data, size_t len,
+ 			pr_devel("PKCS#7 platform keyring is not available\n");
+ 			goto error;
+ 		}
++
++		ret = is_key_on_revocation_list(pkcs7);
++		if (ret != -ENOKEY) {
++			pr_devel("PKCS#7 platform key is on revocation list\n");
++			goto error;
++		}
+ 	}
+ 	ret = pkcs7_validate_trust(pkcs7, trusted_keys);
+ 	if (ret < 0) {
+diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.h
+index fb8b07daa9d1..875e002a4180 100644
+--- a/include/keys/system_keyring.h
++++ b/include/keys/system_keyring.h
+@@ -31,6 +31,7 @@ extern int restrict_link_by_builtin_and_secondary_trusted(
+ #define restrict_link_by_builtin_and_secondary_trusted restrict_link_by_builtin_trusted
+ #endif
+ 
++extern struct pkcs7_message *pkcs7;
+ #ifdef CONFIG_SYSTEM_BLACKLIST_KEYRING
+ extern int mark_hash_blacklisted(const char *hash);
+ extern int is_hash_blacklisted(const u8 *hash, size_t hash_len,
+@@ -49,6 +50,20 @@ static inline int is_binary_blacklisted(const u8 *hash, size_t hash_len)
+ }
+ #endif
+ 
++#ifdef CONFIG_SYSTEM_REVOCATION_LIST
++extern int add_key_to_revocation_list(const char *data, size_t size);
++extern int is_key_on_revocation_list(struct pkcs7_message *pkcs7);
++#else
++static inline int add_key_to_revocation_list(const char *data, size_t size)
++{
++	return 0;
++}
++static inline int is_key_on_revocation_list(struct pkcs7_message *pkcs7)
++{
++	return -ENOKEY;
++}
++#endif
++
+ #ifdef CONFIG_IMA_BLACKLIST_KEYRING
+ extern struct key *ima_blacklist_keyring;
+ 
+diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
+index c5ba695c10e3..5604bd57c990 100644
+--- a/security/integrity/platform_certs/keyring_handler.c
++++ b/security/integrity/platform_certs/keyring_handler.c
+@@ -55,6 +55,15 @@ static __init void uefi_blacklist_binary(const char *source,
+ 	uefi_blacklist_hash(source, data, len, "bin:", 4);
+ }
+ 
++/*
++ * Add an X509 cert to the revocation list.
++ */
++static __init void uefi_revocation_list_x509(const char *source,
++					     const void *data, size_t len)
++{
++	add_key_to_revocation_list(data, len);
++}
++
+ /*
+  * Return the appropriate handler for particular signature list types found in
+  * the UEFI db and MokListRT tables.
+@@ -76,5 +85,7 @@ __init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type)
+ 		return uefi_blacklist_x509_tbs;
+ 	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
+ 		return uefi_blacklist_binary;
++	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
++		return uefi_revocation_list_x509;
+ 	return 0;
+ }
 -- 
 2.30.2
 
