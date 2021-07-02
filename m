@@ -2,117 +2,114 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC8AD3B9C60
-	for <lists+keyrings@lfdr.de>; Fri,  2 Jul 2021 08:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0E2E3B9D3D
+	for <lists+keyrings@lfdr.de>; Fri,  2 Jul 2021 10:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbhGBGwu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Jul 2021 02:52:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41944 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230001AbhGBGwt (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 2 Jul 2021 02:52:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B348061413;
-        Fri,  2 Jul 2021 06:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625208616;
-        bh=o+phWmQp9hkxTI4UpBQ/lXbHLrZIIqcGKXHa40ptZ2g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SN+CHPU066BMSWA49opSuDUyuyOZhwved+Tt798IBKCSm2/iR7Z4JZncEzzEWN4Kf
-         6DcY4nKp4IYPLWuBlRY8lE9eslrploAADH4kgHKzDKP4rFfBwlrFyD9RlpOeu3NS9O
-         TKrcM9fKc9m/l9DPEciZrU+e15meZsxeCcAKSfUvbE1G7xazaeAhP2sJ0IwTaWGgr3
-         JHO3RjwfpxyJ8ezFLDx/pdVADG1VTUZMJ6RduIWm6OQ1DVwA76tXF4hfqflwqxLHTw
-         UyEX2wPZDs3G7YNss8WjFjhk6tcTz4Xw9++n1PGxLDFTCwUnqx3vipQtDrtFMBeJgM
-         6i7V3XZSmLnSQ==
-Date:   Fri, 2 Jul 2021 09:50:13 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     jeyu@kernel.org, keyrings@vger.kernel.org, dhowells@redhat.com,
-        dwmw2@infradead.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v8 0/2] Add support for ECDSA-signed kernel modules
-Message-ID: <20210702065013.ywu2a7u5vbo4o3mu@kernel.org>
-References: <20210629213421.60320-1-stefanb@linux.vnet.ibm.com>
+        id S230215AbhGBIC6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Jul 2021 04:02:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39190 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230235AbhGBICy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Jul 2021 04:02:54 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFB5C0613DB
+        for <keyrings@vger.kernel.org>; Fri,  2 Jul 2021 01:00:22 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1lzE5x-0007GU-04; Fri, 02 Jul 2021 10:00:17 +0200
+Subject: Re: [PATCH v2 6/6] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+To:     Richard Weinberger <richard@nod.at>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        kernel <kernel@pengutronix.de>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        horia geanta <horia.geanta@nxp.com>,
+        aymen sghaier <aymen.sghaier@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        davem <davem@davemloft.net>, Udit Agarwal <udit.agarwal@nxp.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        david <david@sigma-star.at>,
+        Franck Lenormand <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        LSM <linux-security-module@vger.kernel.org>
+References: <cover.1dfbb73645d917b3c76d01290804a3410bd9932e.1624364386.git-series.a.fatoum@pengutronix.de>
+ <39e6d65ca5d2a0a35fb71d6c1f85add8ee489a19.1624364386.git-series.a.fatoum@pengutronix.de>
+ <1850833581.13438.1625172175436.JavaMail.zimbra@nod.at>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <2f608e5a-5a12-6db1-b9bd-a2cd9e3e3671@pengutronix.de>
+Date:   Fri, 2 Jul 2021 10:00:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210629213421.60320-1-stefanb@linux.vnet.ibm.com>
+In-Reply-To: <1850833581.13438.1625172175436.JavaMail.zimbra@nod.at>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jun 29, 2021 at 05:34:19PM -0400, Stefan Berger wrote:
-> From: Stefan Berger <stefanb@linux.ibm.com>
+Hello Richard,
+
+On 01.07.21 22:42, Richard Weinberger wrote:
+> Ahmad,
 > 
-> This series adds support for ECDSA-signed kernel modules. It also
-> attempts to address a kbuild issue where a developer created an ECDSA
-> key for signing kernel modules and then builds an older version of the
-> kernel, when bisecting the kernel for example, that does not support
-> ECDSA keys.
+> ----- Ursprüngliche Mail -----
+>> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+>> +static struct caam_blob_priv *blobifier;
+>> +
+>> +#define KEYMOD "kernel:trusted"
 > 
-> The first patch addresses the kbuild issue of needing to delete that
-> ECDSA key if it is in certs/signing_key.pem and trigger the creation
-> of an RSA key. However, for this to work this patch would have to be
-> backported to previous versions of the kernel but would also only work
-> for the developer if he/she used a stable version of the kernel to which
-> this patch was applied. So whether this patch actually achieves the
-> wanted effect is not always guaranteed.
+> I'm still think that hard coding the key modifier is not wise.
+> As I said[0], there are folks out there that want to provide their own modifier,
+> so it is not only about being binary compatible with other CAAM blob patches in the wild.
+
+I don't think the characterization as a salt is accurate. AFAIU it's more
+of a namespace, so blobs being loaded are "type-checked" against the modifier.
+
+> I'll happily implement that feature after your patches got merged but IMHO we should first agree on an interface.
+> How about allowing another optional parameter to Opt_new and Opt_load
+
+Sound good to me. pcrlock for TPM trusted keys has the same interface.
+
+I'd prefer the new option to accept strings, not hex though.
+
+
+> and having a key modifier per struct trusted_key_payload instance?
+
+Ye, possibly a void *backend_data, which other trust sources could leverage
+as well. But that should be separate discussion.
+
+
+Cheers,
+Ahmad
+
 > 
-> The 2nd patch adds the support for the ECSDA-signed kernel modules.
+> Thanks,
+> //richard
 > 
->   Stefan
-> 
-> v8:
->   - Removed R-b tags and reordered Cc tags
-> 
-> v7:
->   - Changed Kconfig reference to kernel version from 5.11 to 5.13
->   - Redirecting stderr of openssl to NULL device to address kernel robot
->     detected issue
->   - Replaced $(CONFIG_MODULE_SIG_KEY) with "certs/signing_key.pem" following
->     Linus's suggestion
-> 
-> v6:
->   - Patch 2/4 is fixing V4's 1/2 and 4/4 is fixing V4's 2/2. Both fixup
->     patches to be squashed.
-> 
-> v5:
->   - do not touch the key files if openssl is not installed; likely
->     addresses an issue pointed out by kernel test robot
-> 
-> v4:
->   - extending 'depends on' with MODULES to (IMA_APPRAISE_MODSIG && MODULES)
->   
-> v3:
->   - added missing OIDs for ECDSA signed hashes to pkcs7_sig_note_pkey_algo
->   - added recommendation to use string hash to Kconfig help text
-> 
-> v2:
->   - Adjustment to ECDSA key detector string in 2/2
->   - Rephrased cover letter and patch descriptions with Mimi
-> 
-> 
-> Stefan Berger (2):
->   certs: Trigger creation of RSA module signing key if it's not an RSA
->     key
->   certs: Add support for using elliptic curve keys for signing modules
-> 
->  certs/Kconfig                         | 26 ++++++++++++++++++++++++++
->  certs/Makefile                        | 21 +++++++++++++++++++++
->  crypto/asymmetric_keys/pkcs7_parser.c |  8 ++++++++
->  3 files changed, 55 insertions(+)
-> 
-> -- 
-> 2.31.1
+> [0]
+> https://patchwork.kernel.org/project/linux-crypto/patch/319e558e1bd19b80ad6447c167a2c3942bdafea2.1615914058.git-series.a.fatoum@pengutronix.de/#24085397
 > 
 > 
 
-LGTM
-
-For both:
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-/Jarkko
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
