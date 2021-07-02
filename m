@@ -2,90 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA22E3B97BD
-	for <lists+keyrings@lfdr.de>; Thu,  1 Jul 2021 22:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F9D3B9C5B
+	for <lists+keyrings@lfdr.de>; Fri,  2 Jul 2021 08:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234145AbhGAUpa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 1 Jul 2021 16:45:30 -0400
-Received: from lithops.sigma-star.at ([195.201.40.130]:51298 "EHLO
-        lithops.sigma-star.at" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230063AbhGAUp3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jul 2021 16:45:29 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 6216D6108476;
-        Thu,  1 Jul 2021 22:42:56 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id kLydErpcW5Ws; Thu,  1 Jul 2021 22:42:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id C39FC6108472;
-        Thu,  1 Jul 2021 22:42:55 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id LbgvkTJUFHdW; Thu,  1 Jul 2021 22:42:55 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 844066083273;
-        Thu,  1 Jul 2021 22:42:55 +0200 (CEST)
-Date:   Thu, 1 Jul 2021 22:42:55 +0200 (CEST)
-From:   Richard Weinberger <richard@nod.at>
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
+        id S230126AbhGBGwN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Jul 2021 02:52:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41794 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230026AbhGBGwM (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 2 Jul 2021 02:52:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 836A861413;
+        Fri,  2 Jul 2021 06:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1625208581;
+        bh=mo46QY2t5vhAtKI/bBVodYsVpTI5odDwqCU6VrYAZFo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=inf79rYfYqGyUdMLlMUOuzH0M3QBSdYreJqZXaAAs8xgITxMzfan7F6DWYKFpz0HN
+         nepBs1nOvzl/fadqk3LzBMej+2vsgSUPKBpxQg8ugE//KLl/gAjAuQQXWwjupPZmn2
+         oJY5tP4H3SGIQq9h7C6JLNlO8GtrMO1vovtCFso+TQr947UYR+BahTrZTE3179QqeE
+         jIJ9aiaFa9hUkIQgVtTHeMGzFqCKiD5G5F6BIClaEJKE8GV1AO3kkURA0tMOTmHQtk
+         f8auKwxgvmu8dXbrVihbCKpSndQJ8BvdtwbZy12jsgSvJ6iu/Hcxt8Q88YfNAm6qgF
+         0HBhlA2qMIpjQ==
+Date:   Fri, 2 Jul 2021 09:49:38 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        Jessica Yu <jeyu@kernel.org>, keyrings@vger.kernel.org,
         David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Bottomley <jejb@linux.ibm.com>,
+        David Woodhouse <dwmw2@infradead.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        kernel <kernel@pengutronix.de>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        horia geanta <horia.geanta@nxp.com>,
-        aymen sghaier <aymen.sghaier@nxp.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        davem <davem@davemloft.net>, Udit Agarwal <udit.agarwal@nxp.com>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Jan Luebbe <j.luebbe@pengutronix.de>,
-        david <david@sigma-star.at>,
-        Franck Lenormand <franck.lenormand@nxp.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
         linux-integrity <linux-integrity@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>
-Message-ID: <1850833581.13438.1625172175436.JavaMail.zimbra@nod.at>
-In-Reply-To: <39e6d65ca5d2a0a35fb71d6c1f85add8ee489a19.1624364386.git-series.a.fatoum@pengutronix.de>
-References: <cover.1dfbb73645d917b3c76d01290804a3410bd9932e.1624364386.git-series.a.fatoum@pengutronix.de> <39e6d65ca5d2a0a35fb71d6c1f85add8ee489a19.1624364386.git-series.a.fatoum@pengutronix.de>
-Subject: Re: [PATCH v2 6/6] KEYS: trusted: Introduce support for NXP
- CAAM-based trusted keys
+        LSM List <linux-security-module@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v8 1/2] certs: Trigger creation of RSA module signing key
+ if it's not an RSA key
+Message-ID: <20210702064938.k2xr2cdtj2oybenc@kernel.org>
+References: <20210629213421.60320-1-stefanb@linux.vnet.ibm.com>
+ <20210629213421.60320-2-stefanb@linux.vnet.ibm.com>
+ <CAHk-=wgVZ6PUJ6Q=vqnhSkHnE2Rvr72xPFjoRU4=HHn-Rqxu4w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF78 (Linux)/8.8.12_GA_3809)
-Thread-Topic: KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
-Thread-Index: g8issG6CVMbkLEBHiev9vrinZL1Dqw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgVZ6PUJ6Q=vqnhSkHnE2Rvr72xPFjoRU4=HHn-Rqxu4w@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Ahmad,
+On Wed, Jun 30, 2021 at 12:17:38PM -0700, Linus Torvalds wrote:
+> On Tue, Jun 29, 2021 at 2:34 PM Stefan Berger
+> <stefanb@linux.vnet.ibm.com> wrote:
+> >
+> > Address a kbuild issue where a developer created an ECDSA key for signing
+> > kernel modules and then builds an older version of the kernel, when bi-
+> > secting the kernel for example, that does not support ECDSA keys.
+> 
+> Thanks, these two don't confuse me any more.
+> 
+>                 Linus
 
------ Ursprüngliche Mail -----
-> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-> +static struct caam_blob_priv *blobifier;
-> +
-> +#define KEYMOD "kernel:trusted"
+I'll (re-)test the changes, and make a PR after rc1 out.
 
-I'm still think that hard coding the key modifier is not wise.
-As I said[0], there are folks out there that want to provide their own modifier,
-so it is not only about being binary compatible with other CAAM blob patches in the wild.
-
-I'll happily implement that feature after your patches got merged but IMHO we should first agree on an interface.
-How about allowing another optional parameter to Opt_new and Opt_load and having a key modifier
-per struct trusted_key_payload instance?
-
-Thanks,
-//richard
-
-[0]
-https://patchwork.kernel.org/project/linux-crypto/patch/319e558e1bd19b80ad6447c167a2c3942bdafea2.1615914058.git-series.a.fatoum@pengutronix.de/#24085397
-
+/Jarkko
