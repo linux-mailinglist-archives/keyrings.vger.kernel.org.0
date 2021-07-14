@@ -2,79 +2,205 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 388593C6360
-	for <lists+keyrings@lfdr.de>; Mon, 12 Jul 2021 21:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 884F13C7E98
+	for <lists+keyrings@lfdr.de>; Wed, 14 Jul 2021 08:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236186AbhGLTP3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 12 Jul 2021 15:15:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
+        id S238068AbhGNGj6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 14 Jul 2021 02:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234389AbhGLTP3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 12 Jul 2021 15:15:29 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A50C0613DD
-        for <keyrings@vger.kernel.org>; Mon, 12 Jul 2021 12:12:40 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id p12-20020a05683019ccb02904b7e9d93563so7899343otp.13
-        for <keyrings@vger.kernel.org>; Mon, 12 Jul 2021 12:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=97xiwDDsR+7+iJikvmWeKGCruLdclXauVN1FbElaVQU=;
-        b=plUk/gnradRxR64SX3S/oUe/pXhEWnM3am5y0FXmaCY3OPDhEjxWr1TmZYhC4gMNb2
-         16Gr8OA+bQOgVNKVC8mlmar7nDFBUaqgbMCrShW2mZC+A9kWEOxPFYqaN5jV1wRW6nZw
-         gSvfHVE+gmqj4QwXUpzhOjicyLZI74DZlcpk2GmGPYr1n/xlD6xT6H5t8P/kKbBbeN8X
-         /fzh61RMtIs6PNaSC1WD9/UdoGAdP1cUzlOT9KLI9YVVWW+HkzlcJWRDrqa9sc/ZOoGk
-         C0zW7n69uVAwBJNGC1+SdC6t6/UaEInulEiDWAuvLIH8pRH56642e1DGDKxiB1PA/u6B
-         cI8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=97xiwDDsR+7+iJikvmWeKGCruLdclXauVN1FbElaVQU=;
-        b=TSdgrVSkY1VG8IETx1nfarogHcA8ngDTg/orMyJ3DTA1rE4rtIDnSAFC63nTDv2kuX
-         hkyyCS6KoBZ0IjVT4Rjz5yxwNpDa8QqhuMSggqXnvd3F6dupUFUo7BF7/xmoh+b46Y3/
-         4s+s4dkFacUa3PNjtohM18uL1ExfI2/7BsBinvvjM74EKKWGEW3L/O0uqIXM2o9SJbjC
-         /eLGTk2p+VwY3wPKYF1+vJO141ej8G1MM3nMcHlqYIZOvSchM0lssu+rkIyoPzpxDuJ7
-         +PRYPAMdVDG7Dn6N8V2HPyfCI14JltlsSH6KhU+LEqxdFz9I9yQ2mgecy3+2tqxsswpS
-         FsQQ==
-X-Gm-Message-State: AOAM531QTOqDU5Tttse6JV5BTYAV13TanIP+UzfWZ/sNwCw2Z0ygsp1k
-        AdCnzcCNkb2ZHctayc7EUkMmbrxUa9HwX1Y9I5I=
-X-Google-Smtp-Source: ABdhPJyvlu06GkmwyvXmAoQvQaa+ENpa23jdG4DonHYpc6JfeDofWB7z9pH97v37mlGmtI9SXadbR2ZacoXjVVBcZvM=
-X-Received: by 2002:a9d:dc1:: with SMTP id 59mr421081ots.246.1626117159862;
- Mon, 12 Jul 2021 12:12:39 -0700 (PDT)
+        with ESMTP id S237958AbhGNGj6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 14 Jul 2021 02:39:58 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142E8C061574
+        for <keyrings@vger.kernel.org>; Tue, 13 Jul 2021 23:37:07 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1m3YVv-0002gz-F1; Wed, 14 Jul 2021 08:36:59 +0200
+Subject: Re: [PATCH v2 0/6] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        James Bottomley <jejb@linux.ibm.com>
+Cc:     Jan Luebbe <j.luebbe@pengutronix.de>,
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Gstir <david@sigma-star.at>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        Richard Weinberger <richard@nod.at>,
+        James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+        linux-integrity@vger.kernel.org,
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+References: <cover.1dfbb73645d917b3c76d01290804a3410bd9932e.1624364386.git-series.a.fatoum@pengutronix.de>
+Message-ID: <6e6e0207-f137-e305-f9d7-3b8cd1ebe330@pengutronix.de>
+Date:   Wed, 14 Jul 2021 08:36:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Received: by 2002:a9d:654d:0:0:0:0:0 with HTTP; Mon, 12 Jul 2021 12:12:39
- -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mrs. David Morgan" <reservebank.ny93@gmail.com>
-Date:   Mon, 12 Jul 2021 21:12:39 +0200
-Message-ID: <CADR6Ot1FMreKwMR_BmZN_oHGXgUPSCyJksoS3PKRVV=+L-TZeg@mail.gmail.com>
-Subject: Contact Money Gram to receive your overdue compensation payment funds
- total amount $4.800,000Million US Dollars,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <cover.1dfbb73645d917b3c76d01290804a3410bd9932e.1624364386.git-series.a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Attn, Dear.
-Contact Money Gram to receive your overdue compensation payment funds
-total amount $4.800,000Million US Dollars, Deposited this Morning.
+Dear Trusted Keys and CAAM maintainers/reviewers,
 
-Contact Person, Mrs. Helen Mark
+On 22.06.21 14:37, Ahmad Fatoum wrote:
+> The first three patches are new and are applicable regardless of this
+> series, but the rest won't apply cleanly without them. I chose to
+> include them this time, but I can split them up for v3 if that's
+> preferred.
+> 
+> v1 -> v2:
+>  - Added new commit to make trusted key Kconfig option independent
+>    of TPM and added new Kconfig file and symbols for trusted keys
+>  - Add new commit for importing existing key material (Jan)
+>  - Allow users to force use of kernel RNG (Jarkko)
+>  - Enforce maximum keymod size (Horia)
+>  - Use append_seq_(in|out)_ptr_intlen instead of append_seq_(in|out)_ptr
+>    (Horia)
+>  - Make blobifier handle private to CAAM glue code file (Horia)
+>  - Extend trusted keys documentation for CAAM
+>  - Rebased on v5.12-rc7 and updated cover letter:
+> 
+> The Cryptographic Acceleration and Assurance Module (CAAM) is an IP core
+> built into many newer i.MX and QorIQ SoCs by NXP.
+> 
+> Its blob mechanism can AES encrypt/decrypt user data using a unique
+> never-disclosed device-specific key.
+> 
+> There has been multiple discussions on how to represent this within the kernel:
+> 
+> The Cryptographic Acceleration and Assurance Module (CAAM) is an IP core
+> built into many newer i.MX and QorIQ SoCs by NXP.
+> 
+> Its blob mechanism can AES encrypt/decrypt user data using a unique
+> never-disclosed device-specific key. There has been multiple
+> discussions on how to represent this within the kernel:
+> 
+>  - [RFC] crypto: caam - add red blobifier
+>    Steffen implemented[1] a PoC sysfs driver to start a discussion on how to
+>    best integrate the blob mechanism.
+>    Mimi suggested that it could be used to implement trusted keys.
+>    Trusted keys back then were a TPM-only feature.
+> 
+>  - security/keys/secure_key: Adds the secure key support based on CAAM.
+>    Udit added[2] a new "secure" key type with the CAAM as backend. The key
+>    material stays within the kernel only.
+>    Mimi and James agreed that this needs a generic interface, not specific
+>    to CAAM. Mimi suggested trusted keys. Jan noted that this could serve as
+>    basis for TEE-backed keys.
+> 
+>  - [RFC] drivers: crypto: caam: key: Add caam_tk key type
+>    Franck added[3] a new "caam_tk" key type based on Udit's work. This time
+>    it uses CAAM "black blobs" instead of "red blobs", so key material stays
+>    within the CAAM and isn't exposed to kernel in plaintext.
+>    James voiced the opinion that there should be just one user-facing generic
+>    wrap/unwrap key type with multiple possible handlers.
+>    David suggested trusted keys.
+> 
+>  - Introduce TEE based Trusted Keys support
+>    Sumit reworked[4] trusted keys to support multiple possible backends with
+>    one chosen at boot time and added a new TEE backend along with TPM.
+>    This now sits in Jarkko's master branch to be sent out for v5.13
+> 
+> This patch series builds on top of Sumit's rework to have the CAAM as yet another
+> trusted key backend.
+> 
+> The CAAM bits are based on Steffen's initial patch from 2015. His work had been
+> used in the field for some years now, so I preferred not to deviate too much from it.
+> 
+> This series has been tested with dmcrypt[5] on an i.MX6DL.
+> 
+> Looking forward to your feedback.
 
-Email: moneygram.1820@outlook.fr
+Gentle Ping.
 
-Telephone: +229 99069872
+> Cheers,
+> Ahmad
+> 
+>  [1]: https://lore.kernel.org/linux-crypto/1447082306-19946-2-git-send-email-s.trumtrar@pengutronix.de/
+>  [2]: https://lore.kernel.org/linux-integrity/20180723111432.26830-1-udit.agarwal@nxp.com/
+>  [3]: https://lore.kernel.org/lkml/1551456599-10603-2-git-send-email-franck.lenormand@nxp.com/
+>  [4]: https://lore.kernel.org/lkml/1604419306-26105-1-git-send-email-sumit.garg@linaro.org/
+>  [5]: https://lore.kernel.org/linux-integrity/20210122084321.24012-2-a.fatoum@pengutronix.de/
+> 
+> ---
+> To: Jarkko Sakkinen <jarkko@kernel.org>
+> To: "Horia Geantă" <horia.geanta@nxp.com>
+> To: Mimi Zohar <zohar@linux.ibm.com>
+> To: Aymen Sghaier <aymen.sghaier@nxp.com>
+> To: Herbert Xu <herbert@gondor.apana.org.au>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: James Bottomley <jejb@linux.ibm.com>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: James Morris <jmorris@namei.org>
+> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Cc: Udit Agarwal <udit.agarwal@nxp.com>
+> Cc: Jan Luebbe <j.luebbe@pengutronix.de>
+> Cc: David Gstir <david@sigma-star.at>
+> Cc: Eric Biggers <ebiggers@kernel.org>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: Franck LENORMAND <franck.lenormand@nxp.com>
+> Cc: Sumit Garg <sumit.garg@linaro.org>
+> Cc: linux-integrity@vger.kernel.org
+> Cc: keyrings@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> 
+> Ahmad Fatoum (6):
+>   KEYS: trusted: allow use of TEE as backend without TCG_TPM support
+>   KEYS: trusted: Allow import from existing key material for development
+>   KEYS: trusted: allow users to use kernel RNG for key material
+>   KEYS: trusted: allow trust sources to use kernel RNG for key material
+>   crypto: caam - add in-kernel interface for blob generator
+>   KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
+> 
+>  Documentation/admin-guide/kernel-parameters.txt   |   8 +-
+>  Documentation/security/keys/trusted-encrypted.rst |  74 ++++-
+>  drivers/crypto/caam/Kconfig                       |   3 +-
+>  drivers/crypto/caam/Makefile                      |   1 +-
+>  drivers/crypto/caam/blob_gen.c                    | 230 +++++++++++++++-
+>  include/keys/trusted-type.h                       |   2 +-
+>  include/keys/trusted_caam.h                       |  11 +-
+>  include/soc/fsl/caam-blob.h                       |  56 ++++-
+>  security/keys/Kconfig                             |  14 +-
+>  security/keys/trusted-keys/Kconfig                |  49 +++-
+>  security/keys/trusted-keys/Makefile               |  10 +-
+>  security/keys/trusted-keys/trusted_caam.c         |  74 +++++-
+>  security/keys/trusted-keys/trusted_core.c         |  48 ++-
+>  13 files changed, 554 insertions(+), 26 deletions(-)
+>  create mode 100644 drivers/crypto/caam/blob_gen.c
+>  create mode 100644 include/keys/trusted_caam.h
+>  create mode 100644 include/soc/fsl/caam-blob.h
+>  create mode 100644 security/keys/trusted-keys/Kconfig
+>  create mode 100644 security/keys/trusted-keys/trusted_caam.c
+> 
+> base-commit: 13311e74253fe64329390df80bed3f07314ddd61
+> 
 
-She will be sending the transfer to you daily US10,000.00,  until you
-received your fund completely.
-Finally,Re-confirm your address below to her to avoid wrong transfer.
-Your Full Name_____________________
-Address___________________
-Phone Numbers_____________________
-Let me know once you pick up your first payment today.
 
-Receive your funds transfer $4.800,000Million US Dollars as we agreed.
-Mrs. David Morgan
-Director Reserve Bank Ny USA.
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
