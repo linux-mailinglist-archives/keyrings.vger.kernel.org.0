@@ -2,187 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDBD3C835C
-	for <lists+keyrings@lfdr.de>; Wed, 14 Jul 2021 13:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F08963C9AE7
+	for <lists+keyrings@lfdr.de>; Thu, 15 Jul 2021 10:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239205AbhGNLEe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 14 Jul 2021 07:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41882 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239196AbhGNLEd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 14 Jul 2021 07:04:33 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601B9C061760
-        for <keyrings@vger.kernel.org>; Wed, 14 Jul 2021 04:01:42 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1m3cdh-00038r-J8; Wed, 14 Jul 2021 13:01:17 +0200
-Subject: Re: [PATCH 1/3] crypto: mxs-dcp: Add support for hardware provided
- keys
-To:     Richard Weinberger <richard@nod.at>
-Cc:     "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        david <david@sigma-star.at>, David Howells <dhowells@redhat.com>,
-        davem <davem@davemloft.net>, festevam <festevam@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Bottomley <jejb@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-imx <linux-imx@nxp.com>, kernel <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        shawnguo <shawnguo@kernel.org>
-References: <20210614201620.30451-1-richard@nod.at>
- <20210614201620.30451-2-richard@nod.at>
- <76db3736-5a5f-bf7b-3b52-62d01a84ee2d@pengutronix.de>
- <1409091619.25467.1626259183269.JavaMail.zimbra@nod.at>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <efa704fa-7817-7654-7664-447fa56e5ab2@pengutronix.de>
-Date:   Wed, 14 Jul 2021 13:01:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S232291AbhGOI64 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Thu, 15 Jul 2021 04:58:56 -0400
+Received: from ps11.myhostcenter.com ([64.6.248.4]:41727 "EHLO
+        ps11.myhostcenter.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230523AbhGOI64 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jul 2021 04:58:56 -0400
+Received: (qmail 12558 invoked from network); 15 Jul 2021 04:33:31 -0400
+Received: from ec2-35-156-104-175.eu-central-1.compute.amazonaws.com (HELO johnlewis.com) (35.156.104.175)
+  by cafglobal.com with (DHE-RSA-AES256-SHA encrypted) SMTP; 15 Jul 2021 04:33:30 -0400
+Reply-To: robert_turner@johnlewis-trades.com,
+          pippawicks.sales@johnlewis-trades.com
+From:   John Lewis & Partners <robert.turner01@johnlewis.com>
+To:     keyrings@vger.kernel.org
+Subject: Order Inquiry. (JL) 7/15/2021.
+Date:   15 Jul 2021 08:33:41 +0000
+Message-ID: <20210715082825.A89545DAC059E84F@johnlewis.com>
 MIME-Version: 1.0
-In-Reply-To: <1409091619.25467.1626259183269.JavaMail.zimbra@nod.at>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+Dear keyrings
 
-On 14.07.21 12:39, Richard Weinberger wrote:
-> Ahmad,
-> 
-> ----- Ursprüngliche Mail -----
->> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
->> Let's trade reviews to get the ball rolling?
-> 
-> Sounds like a fair deal. :-)
+The famous brand John Lewis Partnership, is UK's largest multi-
+channel retailer with over 126 shops and multiple expansion in 
+Africa furnished by European/Asian/American products. We are
+sourcing new products to attract new customers and also retain 
+our existing ones, create new partnerships with companies dealing 
+with different kinds of goods globally.
 
-:)
+Your company's products are of interest to our market as we have 
+an amazing market for your products.
 
-> [...]
-> 
->>> --- a/drivers/crypto/mxs-dcp.c
->>> +++ b/drivers/crypto/mxs-dcp.c
->>> @@ -15,6 +15,7 @@
->>>  #include <linux/platform_device.h>
->>>  #include <linux/stmp_device.h>
->>>  #include <linux/clk.h>
->>> +#include <linux/mxs-dcp.h>
->>
->> The CAAM specific headers are in <soc/fsl/*.h>.
->> Should this be done likewise here as well?
-> 
-> I have no preferences. If soc/fsl/ is the way to go, fine by me.
+Provide us your current catalog through email to review more. We 
+hope to be able to order with you and start a long-term friendly, 
+respectable and solid business partnership. Please we would
+appreciate it if you could send us your stock availability via 
+email if any.
 
-I think it's the more appropriate place, but if the maintainers
-are fine with <linux/mxs-dcp.h>, I don't mind.
-
-> 
-> [...]
-> 
->>> @@ -219,15 +224,18 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *actx,
->>>  	struct dcp *sdcp = global_sdcp;
->>>  	struct dcp_dma_desc *desc = &sdcp->coh->desc[actx->chan];
->>>  	struct dcp_aes_req_ctx *rctx = skcipher_request_ctx(req);
->>> +	dma_addr_t src_phys, dst_phys, key_phys = {0};
->>
->> Why = {0}; ? dma_addr_t is a scalar type and the value is always
->> written here before access.
-> 
-> Initializing a scalar with {} is allowed in C, the braces are optional.
-> I like the braces because it works even when the underlaying type changes.
-> But that's just a matter of taste.
-> 
-> key_phys is initialized because it triggered a false positive gcc warning
-> on one of my targets. Let me re-run again to be sure, the code saw a lot of
-> refactoring since that.
->  
-> [...]
->   
->>> +static int mxs_dcp_aes_setrefkey(struct crypto_skcipher *tfm, const u8 *key,
->>> +				 unsigned int len)
->>> +{
->>> +	struct dcp_async_ctx *actx = crypto_skcipher_ctx(tfm);
->>> +	int ret = -EINVAL;
->>> +
->>> +	if (len != DCP_PAES_KEYSIZE)
->>> +		goto out;
->>
->> Nitpick: there is no cleanup, so why not return -EINVAL here
->> and unconditionally return 0 below?
-> 
-> What is the benefit?
-
-Similar to why you wouldn't write: 
-
-  if (len == DCP_PAES_KEYSIZE) { 
-  	/* longer code block */
-  }
-
-  return ret;
-
-Code is easier to scan through with early-exits.
-
-> Usually I try to use goto to have a single exit point of a function
-> but I don't have a strong preference...
-
-It's just a nitpick. I am fine with it either way.
-
->>> +
->>> +	actx->key_len = len;
->>> +	actx->refkey = true;
->>> +
->>> +	switch (key[0]) {
->>> +	case DCP_PAES_KEY_SLOT0:
->>> +	case DCP_PAES_KEY_SLOT1:
->>> +	case DCP_PAES_KEY_SLOT2:
->>> +	case DCP_PAES_KEY_SLOT3:
->>> +	case DCP_PAES_KEY_UNIQUE:
->>> +	case DCP_PAES_KEY_OTP:
->>> +		memcpy(actx->key, key, len);
->>> +		ret = 0;
->>> +	}
->>
->> In the error case you return -EINVAL below, but you still write
->> into actx. Is that intentional?
-> 
-> You mean acts->key_len and actk->refkey?
-> Is this a problem?
-
-It's easier to reason about code when it doesn't leave objects
-it operates on in invalid states on failure. Changing key_len,
-but leaving actx->key uninitialized is surprising IMO.
-
-I can't judge whether this is a problem in practice, but less
-surprises are a worthwhile goal.
-
-Cheers,
-Ahmad
-
-> 
-> Thanks,
-> //richard
-> 
+Our payment terms are 15 days net in Europe, 30 days Net in UK 
+and 30 days net in Asia/USA as we operate with over 5297 
+suppliers around the globe for the past 50 years now. For
+immediate response Send your reply to "robert_turner@johnlewis-
+trades.com" for us to be able to treat with care and urgency.
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards
+
+Rob Turner
+Head Of Procurement Operations
+John Lewis & Partners.
+robert_turner@johnlewis-trades.com
+Tel: +44-7451-274090
+WhatsApp: +447497483925
+www.johnlewis.com
+REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 
