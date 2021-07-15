@@ -2,65 +2,76 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F08963C9AE7
-	for <lists+keyrings@lfdr.de>; Thu, 15 Jul 2021 10:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43EE43CA406
+	for <lists+keyrings@lfdr.de>; Thu, 15 Jul 2021 19:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232291AbhGOI64 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 15 Jul 2021 04:58:56 -0400
-Received: from ps11.myhostcenter.com ([64.6.248.4]:41727 "EHLO
-        ps11.myhostcenter.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230523AbhGOI64 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jul 2021 04:58:56 -0400
-Received: (qmail 12558 invoked from network); 15 Jul 2021 04:33:31 -0400
-Received: from ec2-35-156-104-175.eu-central-1.compute.amazonaws.com (HELO johnlewis.com) (35.156.104.175)
-  by cafglobal.com with (DHE-RSA-AES256-SHA encrypted) SMTP; 15 Jul 2021 04:33:30 -0400
-Reply-To: robert_turner@johnlewis-trades.com,
-          pippawicks.sales@johnlewis-trades.com
-From:   John Lewis & Partners <robert.turner01@johnlewis.com>
-To:     keyrings@vger.kernel.org
-Subject: Order Inquiry. (JL) 7/15/2021.
-Date:   15 Jul 2021 08:33:41 +0000
-Message-ID: <20210715082825.A89545DAC059E84F@johnlewis.com>
+        id S234501AbhGOR14 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Jul 2021 13:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234845AbhGOR1y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jul 2021 13:27:54 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7162C0613DE
+        for <keyrings@vger.kernel.org>; Thu, 15 Jul 2021 10:24:59 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id v1so9212225edt.6
+        for <keyrings@vger.kernel.org>; Thu, 15 Jul 2021 10:24:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=t9W6ZUbHNRJ0qNSUPxxJ7rwyS6/T47LB8+GEvcGcZS2vgBILYApln75Pntcxn5fpNm
+         CtF83dHhK1sI0unp5//UIaTiWHKSRWhdzbLUXmwOWE0siga3uT7o6KbbqJLCuXISRJEQ
+         al8pRwAY03/IaxE3qXnt42v0CTRaHD2tppbU0LS/FZIzL8IxPeIaPJ1YZkyHqWZX3beM
+         4+xYQxqDDYwD9dyjX1Mc60oWXcAcZdalOCke9n3oDr1w+I8lJlufH05RbTPxRhFGiMAD
+         BpEH+2hcDtItf0cKj4UhyaFm0jsA0qnOxoGC5g15c9fNdeV0dFm2Efrq/yuK05wZR73f
+         O6jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=hcY6fUoOKkin3363H1LoWBikKRK2CLvdJRqG4FtMzPMbv+nOYIdxVChh3bQ4pxx2mK
+         097Q4/wukGYTCmPou46DY32ptJ3ActcbKTdAB3mSMYmcoEDE6uMirB5T4kHhjVBqYOAE
+         mdJM+zdyRLig9dTQAy+KL0DtRzqEv/Jo+CeiqnTrqDLpdou31poMUaJEc+x8fr0hM2kJ
+         oF5DlsbbQLJGkt18lEAUkDkmHROyR7iqkNH6kQVZJmzIEyZm47s7MF1QIxKhZyywBH3K
+         k8ceU4xkYg/ws3W6PphExMBZJorPaGz21aPXGdoyNcuECZMMQ0hvIvhkvA5jzZHJrXwY
+         nXzw==
+X-Gm-Message-State: AOAM531EBDREzscnzxEBiNrqKA682yveZnkNBeNfYke1R92Tc3TYoi9u
+        QmzdaNLbbUfpPCiwW/UZhE5ufTbg5qYKINjWnQw=
+X-Google-Smtp-Source: ABdhPJyxueRlfHltyUCESR67vWAXcLtdouVP7pOna84WJs+57H00WkQ1yY0EfL0teWyNwd8lnwpCvuhD/ZS2cFmHFwA=
+X-Received: by 2002:a50:9faf:: with SMTP id c44mr8582001edf.197.1626369898073;
+ Thu, 15 Jul 2021 10:24:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Received: by 2002:a54:2dcd:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:24:57
+ -0700 (PDT)
+Reply-To: faty.muhamad@gmail.com
+From:   Fatima Muhammad <matinscott.chambers@gmail.com>
+Date:   Thu, 15 Jul 2021 17:24:57 +0000
+Message-ID: <CAG26VvVWiHB2u8iO1e8bETcuSekW3UnVoiXKLwNZ2yh0MOiBWw@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear keyrings
+Hello Dear,
 
-The famous brand John Lewis Partnership, is UK's largest multi-
-channel retailer with over 126 shops and multiple expansion in 
-Africa furnished by European/Asian/American products. We are
-sourcing new products to attract new customers and also retain 
-our existing ones, create new partnerships with companies dealing 
-with different kinds of goods globally.
+My name is Ms.Fatima Muhammad., Please forgive me for stressing you
+with my predicaments and I sorry to approach you through this media
+because is serves the fastest means of  my communication right now,
 
-Your company's products are of interest to our market as we have 
-an amazing market for your products.
+I came across your Email from my personal search and I decided to
+contact you believing you will be honest to fulfill my business
+proposal which I believe that will be a very good opportunity for both
+of us. Please it is my pleasure to contact you today for a business
+partnership investments projects worth $4.6 million USD which I intend
+to establish in your country..
 
-Provide us your current catalog through email to review more. We 
-hope to be able to order with you and start a long-term friendly, 
-respectable and solid business partnership. Please we would
-appreciate it if you could send us your stock availability via 
-email if any.
+Pls If this business proposal offends your moral and ethic values do
+accept my apology. therefore kindly contact me immediately if you are
+interested for more details.
 
-Our payment terms are 15 days net in Europe, 30 days Net in UK 
-and 30 days net in Asia/USA as we operate with over 5297 
-suppliers around the globe for the past 50 years now. For
-immediate response Send your reply to "robert_turner@johnlewis-
-trades.com" for us to be able to treat with care and urgency.
-
-
-Best Regards
-
-Rob Turner
-Head Of Procurement Operations
-John Lewis & Partners.
-robert_turner@johnlewis-trades.com
-Tel: +44-7451-274090
-WhatsApp: +447497483925
-www.johnlewis.com
-REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 
+Thank you for your wiliness to help me
+Yours Sincerely Fatima Muhammad
