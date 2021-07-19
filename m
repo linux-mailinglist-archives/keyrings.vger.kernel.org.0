@@ -2,124 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDFD73CCDE1
-	for <lists+keyrings@lfdr.de>; Mon, 19 Jul 2021 08:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C657B3CCE40
+	for <lists+keyrings@lfdr.de>; Mon, 19 Jul 2021 09:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233717AbhGSG36 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 19 Jul 2021 02:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34714 "EHLO
+        id S234441AbhGSHNJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 19 Jul 2021 03:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233626AbhGSG35 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 19 Jul 2021 02:29:57 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 615EAC061766
-        for <keyrings@vger.kernel.org>; Sun, 18 Jul 2021 23:26:58 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id y42so28339379lfa.3
-        for <keyrings@vger.kernel.org>; Sun, 18 Jul 2021 23:26:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=3lPCqQljJf2IbScxAFf1031HOfRkixI8y+inmwaEQLU=;
-        b=z2jvnSeXzDI9LPibiAzjKQbSIyzToX8RVGLxm1q6JUMlUH1kl0pL+3wgTp6oW882g1
-         xyogIuA7XaCw1fRG5z7RhOMgH7biVV5AJlOQdCUiWu3H+tGYqv9Tt7WoqluESFL1MZMM
-         OHBSr0ZQ02dme41z/gRxG57q+hi8wfHMVnKtqMsq3xhqnqG/s2gfePY6gNoS7TLPCo6k
-         tke5hJgz9GFURVOKSr8GxysmbIi3gC/Mv9BHcGYzVkYS5BQUlGSei4TOQO5jBnXilObb
-         DdjvuG4IVAo/JDgW2wnUXhK6joE88nG97kREx8s15jqnx1MJVFWv4ljjNeTnvwnZfN6v
-         zioQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=3lPCqQljJf2IbScxAFf1031HOfRkixI8y+inmwaEQLU=;
-        b=rX8V7dI8k9z/qTnit8Z6hrCNCk53SA2EK04TH6zhvCb4DxMC5ipgTUOW+OxQl826LY
-         BtLWPXVfaW/yRmpaepttbC2lsUqSnz02kEQte4eqSFqeDgaxiD9WZVh4dj4Bo52MUSi4
-         n8MNZ0c1VLcOjDHhNdIS6Il96PvuQBxVsAyuej7bFnunZDyNxo2YV1YX/btkkK4feUIb
-         kiNUKLC9uZc/pO2YhjZ1pT3f1F7VG8yQBtGkiSFzpE3HovlAJ61r0LijN9GF+Xlt+FBi
-         MetNWOG7upuLrF65erdZvfYshxItCrwvtQCKDHCkGC8BAWHz+3UIVO7JLNkoHTikHdQh
-         uRag==
-X-Gm-Message-State: AOAM5306o29vLG1fdNugVtnmvoWMj4ZY395Oy/777EcPvl+kF0ahViFY
-        xekwFuPYtk5p5afZ1iJHtX7JbMx2uy6werQ7IU5ukQ==
-X-Google-Smtp-Source: ABdhPJwcVB5VSPOP+/OH08BW5Jay0hN57oGFKlGhOhwsFjFhAJ5AjL1LvhtxB4k5IkyqvZfHbetmuyk5aibT9lfPDQ0=
-X-Received: by 2002:a19:c757:: with SMTP id x84mr17381730lff.302.1626676016627;
- Sun, 18 Jul 2021 23:26:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210716081722.4130161-1-andreas@rammhold.de>
-In-Reply-To: <20210716081722.4130161-1-andreas@rammhold.de>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Mon, 19 Jul 2021 11:56:45 +0530
-Message-ID: <CAFA6WYNu+XxESXKLUQ8k3TDY18n1Y-R7m9=iTp-BerU69wLWdg@mail.gmail.com>
-Subject: Re: [PATCH] KEYS: trusted: Fix trusted key backends when building as module
-To:     Andreas Rammhold <andreas@rammhold.de>
-Cc:     James Bottomley <jejb@linux.ibm.com>,
+        with ESMTP id S234728AbhGSHNJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 19 Jul 2021 03:13:09 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA83C061762
+        for <keyrings@vger.kernel.org>; Mon, 19 Jul 2021 00:10:09 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1m5NPg-0006h3-8C; Mon, 19 Jul 2021 09:10:04 +0200
+Subject: Re: [PATCH] KEYS: trusted: Fix trusted key backends when building as
+ module
+To:     Andreas Rammhold <andreas@rammhold.de>,
+        James Bottomley <jejb@linux.ibm.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
         David Howells <dhowells@redhat.com>,
         James Morris <jmorris@namei.org>,
         "Serge E . Hallyn" <serge@hallyn.com>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20210716081722.4130161-1-andreas@rammhold.de>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <0a684d56-66d0-184e-4853-9faafa2d243d@pengutronix.de>
+Date:   Mon, 19 Jul 2021 09:10:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <20210716081722.4130161-1-andreas@rammhold.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 16 Jul 2021 at 13:54, Andreas Rammhold <andreas@rammhold.de> wrote:
->
+Hello Andreas,
+
+On 16.07.21 10:17, Andreas Rammhold wrote:
 > Before this commit the kernel could end up with no trusted key sources
 > even thought both of the currently supported backends (tpm & tee) were
-
-s/thought/though/
-
 > compoiled as modules. This manifested in the trusted key type not being
-
-s/compoiled/compiled/
-
 > registered at all.
->
-> When checking if a CONFIG_=E2=80=A6 preprocessor variable is defined we o=
-nly
-> test for the builtin (=3Dy) case and not the module (=3Dm) case. By using
-> the IS_ENABLE(=E2=80=A6) macro we to test for both cases.
->
 
-s/to/do/
+I assume (TPM) trusted key module use worked before the TEE rework? If so,
+
+an appropriate Fixes: Tag would then be in order.
+
+> When checking if a CONFIG_… preprocessor variable is defined we only
+> test for the builtin (=y) case and not the module (=m) case. By using
+> the IS_ENABLE(…) macro we to test for both cases.
+
+It looks to me like you could now provoke a link error if TEE is a module
+and built-in trusted key core tries to link against trusted_key_tee_ops.
+
+One solution for that IS_REACHABLE(). Another is to address the root cause,
+which is the inflexible trusted keys Kconfig description:
+
+- Trusted keys despite TEE support can still only be built when TCG_TPM is enabled
+- There is no support to have TEE or TPM enabled without using those for
+  enabled trusted keys as well
+- As you noticed, module build of the backend has issues
+
+I addressed these three issues in a patch[1], a month ago, but have yet to
+receive feedback.
+
+[1]: https://lore.kernel.org/linux-integrity/f8285eb0135ba30c9d846cf9dd395d1f5f8b1efc.1624364386.git-series.a.fatoum@pengutronix.de/
+
+Cheers,
+Ahmad
 
 > Signed-off-by: Andreas Rammhold <andreas@rammhold.de>
 > ---
 >  security/keys/trusted-keys/trusted_core.c | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
->
-
-Apart from minor nits above, add a corresponding fixes tag. With that:
-
-Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
-
--Sumit
-
-> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/tr=
-usted-keys/trusted_core.c
+> 
+> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
 > index d5c891d8d353..fd640614b168 100644
 > --- a/security/keys/trusted-keys/trusted_core.c
 > +++ b/security/keys/trusted-keys/trusted_core.c
-> @@ -27,10 +27,10 @@ module_param_named(source, trusted_key_source, charp,=
- 0);
+> @@ -27,10 +27,10 @@ module_param_named(source, trusted_key_source, charp, 0);
 >  MODULE_PARM_DESC(source, "Select trusted keys source (tpm or tee)");
->
->  static const struct trusted_key_source trusted_key_sources[] =3D {
+>  
+>  static const struct trusted_key_source trusted_key_sources[] = {
 > -#if defined(CONFIG_TCG_TPM)
 > +#if IS_ENABLED(CONFIG_TCG_TPM)
->         { "tpm", &trusted_key_tpm_ops },
+>  	{ "tpm", &trusted_key_tpm_ops },
 >  #endif
 > -#if defined(CONFIG_TEE)
 > +#if IS_ENABLED(CONFIG_TEE)
->         { "tee", &trusted_key_tee_ops },
+>  	{ "tee", &trusted_key_tee_ops },
 >  #endif
 >  };
-> --
-> 2.32.0
->
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
