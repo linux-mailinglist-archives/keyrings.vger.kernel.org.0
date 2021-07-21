@@ -2,211 +2,292 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3BF33D14F9
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jul 2021 19:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E1C3D17D5
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jul 2021 22:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235120AbhGUQhs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Jul 2021 12:37:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39186 "EHLO
+        id S232910AbhGUTg6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Jul 2021 15:36:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235104AbhGUQhs (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Jul 2021 12:37:48 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 721D6C061575
-        for <keyrings@vger.kernel.org>; Wed, 21 Jul 2021 10:18:24 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1m6FrA-0008OQ-Fm; Wed, 21 Jul 2021 19:18:04 +0200
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [PATCH 2/3] KEYS: trusted: Introduce support for NXP DCP-based
- trusted keys
-To:     Richard Weinberger <richard@nod.at>
-Cc:     "open list, ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
-        david <david@sigma-star.at>, David Howells <dhowells@redhat.com>,
-        davem <davem@davemloft.net>, festevam <festevam@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Bottomley <jejb@linux.ibm.com>,
+        with ESMTP id S229597AbhGUTg5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Jul 2021 15:36:57 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A09C0613C1
+        for <keyrings@vger.kernel.org>; Wed, 21 Jul 2021 13:17:33 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id g12so2045024wme.2
+        for <keyrings@vger.kernel.org>; Wed, 21 Jul 2021 13:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rammhold-de.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RzWGiaagIa+Q7L2PhhLkZOLjGFlmYMVy3i21G4oii0o=;
+        b=hg9bf8bp9/+oVytTPNZGNsGpXsfhP+ltQcQdOeOos2S+DC/+obEuyCd+EksdGKgcNr
+         qhNFia8tV4FqlF7A8TqgO9XYoKpVEkKU2tRCxLc7wFViPR8ptgVyscc9u7PpRegocJ1o
+         V1WtAw+qHxrdToqhCz1RYE2WN3JuJboxvzWLaJC7AP8NA9fLYeOLmhDL4wc5zBdOvd3X
+         OqUqlh2JG34l9mI5DcappLDSv23u0dlBPcIeqiKzo2Uwe/m145vJC8lOAucKyMLwpQdc
+         N5z0H+wnrbS+daMOjH7VzrwgqjNrWK88O8XtP2Vt4MIr4qZkmyjPBmC86O2AAeVvsIwR
+         IqKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RzWGiaagIa+Q7L2PhhLkZOLjGFlmYMVy3i21G4oii0o=;
+        b=UNbhPE/U9bvTZZF5Sd+QD0NdUDTy92NiGDwIDrciizCiQKTxVET7O7tgttfYPL0pvN
+         omAPciNm3Dn/AKzx9orYpL8o/TOHdccRER/YwCzbQvkyU2A5Ovz81ePrfX0DU+A267+x
+         FBdKfVi83fxS+BwnpZMUspy/CKP3JCsut1Twyc9NUF17ry+wKbxXrx7PFjnXJP1MRiVT
+         qj8u90S+bfeM7KFR6sg57RlfSUxWNiNIBLCEjpgKGhNdvaqaqGTzIr/Xh+J6cF0vnVnd
+         APbEc2LKvYUB6gYcK6kJ5+WJztRahskQvDqByKav1K4na5M7GgQpbDIdI65wJiueF8ll
+         vmfg==
+X-Gm-Message-State: AOAM533D/DhWQEp+Y3bGfuiestTeIZMiIaKKWf04ttqVrdHQoePEdYSB
+        I+VraZQ6+iob3Ftz5E372obojQ==
+X-Google-Smtp-Source: ABdhPJyLmFvWnbZv8MzcPJRWHhABrM7/gVLkhAvmGtqmhfzW4ZIBsFWlIsrc4dsI50VxqrB1aEks7Q==
+X-Received: by 2002:a1c:f414:: with SMTP id z20mr5920081wma.94.1626898651823;
+        Wed, 21 Jul 2021 13:17:31 -0700 (PDT)
+Received: from localhost ([2a00:e67:5c9:a:74ac:453c:5f76:676a])
+        by smtp.gmail.com with ESMTPSA id s4sm26200835wmh.41.2021.07.21.13.17.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jul 2021 13:17:31 -0700 (PDT)
+Date:   Wed, 21 Jul 2021 22:17:30 +0200
+From:   Andreas Rammhold <andreas@rammhold.de>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
         James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-imx <linux-imx@nxp.com>, kernel <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
         "Serge E. Hallyn" <serge@hallyn.com>,
-        shawnguo <shawnguo@kernel.org>
-References: <20210614201620.30451-1-richard@nod.at>
- <20210614201620.30451-3-richard@nod.at>
- <714571a1-e8dd-3417-b5ab-2a6d611fb3ee@pengutronix.de>
- <2032322938.25484.1626259466410.JavaMail.zimbra@nod.at>
-Message-ID: <5c381015-64dc-039f-8bc2-3109dd3b9bf4@pengutronix.de>
-Date:   Wed, 21 Jul 2021 19:17:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, kernel@pengutronix.de,
+        Andreas Rammhold <andreas@rammhold.de>,
+        David Gstir <david@sigma-star.at>,
+        Richard Weinberger <richard@nod.at>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v2] KEYS: trusted: fix use as module when CONFIG_TCG_TPM=m
+Message-ID: <20210721201730.ht75blv5pd7qgyep@wrt>
+References: <20210721160258.7024-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <2032322938.25484.1626259466410.JavaMail.zimbra@nod.at>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Content-Disposition: inline
+In-Reply-To: <20210721160258.7024-1-a.fatoum@pengutronix.de>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Richard,
+On 18:02 21.07.21, Ahmad Fatoum wrote:
+> Since commit 5d0682be3189 ("KEYS: trusted: Add generic trusted keys
+> framework"), trusted.ko built with CONFIG_TCG_TPM=CONFIG_TRUSTED_KEYS=m
+> will not register the TPM trusted key type at runtime.
+> 
+> This is because, after that rework, CONFIG_DEPENDENCY of the TPM
+> and TEE backends were checked with #ifdef, but that's only true
+> when they're built-in.
+> 
+> Fix this by introducing two new boolean Kconfig symbols:
+> TRUSTED_KEYS_TPM and TRUSTED_KEYS_TEE with the appropriate
+> dependencies and use them to check which backends are available.
+> 
+> This also has a positive effect on user experience:
+> 
+>  - It's now possible to use TEE trusted keys without CONFIG_TCG_TPM
+>  - It's now possible to enable CONFIG_TCG_TPM, but exclude TPM from
+>    available trust sources
+>  - TEE=m && TRUSTED_KEYS=y no longer leads to TEE support
+>    being silently dropped
+> 
+> Any code depending on the TPM trusted key backend or symbols exported
+> by it will now need to explicitly state that it
+> 
+>   depends on TRUSTED_KEYS && TRUSTED_KEYS_TPM
+> 
+> The latter to ensure the dependency is built and the former to ensure
+> it's reachable for module builds. This currently only affects
+> CONFIG_ASYMMETRIC_TPM_KEY_SUBTYPE, so it's fixed up here as well.
+> 
+> Reported-by: Andreas Rammhold <andreas@rammhold.de>
+> Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> 
+> (Implicit) v1 was as a preparatory patch for CAAM trusted keys[1] with the
+> goal of fixing the Kconfig inflexibility after the TEE trusted key rework.
+> 
+> Unbeknownst to me, it also fixes a regression, which was later
+> reported by Andreas[2] along with a patch.
+> 
+> I split out the fix from the CAAM series and adjusted the commit
+> message to explain the regression.
+> 
+> v1 -> v2:
+>   - Move rest of TPM-related selects from TRUSTED_KEYS to
+>     TRUSTED_KEYS_TPM (Sumit)
+>   - Remove left-over line in Makefile (Sumit)
+>   - added Fixes: tag
+>   - adjust commit message to reference the regression reported
+>     by Andreas
+>   - have ASYMMETRIC_TPM_KEY_SUBTYPE depend on TRUSTED_KEYS_TPM,
+>     because it references global symbols that are exported
+>     by the trusted key TPM backend.
+> 
+> [1]: https://lore.kernel.org/linux-integrity/f8285eb0135ba30c9d846cf9dd395d1f5f8b1efc.1624364386.git-series.a.fatoum@pengutronix.de/
+> [2]: https://lore.kernel.org/linux-integrity/20210719091335.vwfebcpkf4pag3wm@wrt/T/#t
+> 
+> To: Jarkko Sakkinen <jarkko@kernel.org>
+> To: James Morris <jmorris@namei.org>
+> To: "Serge E. Hallyn" <serge@hallyn.com>
+> To: James Bottomley <jejb@linux.ibm.com>
+> To: Mimi Zohar <zohar@linux.ibm.com>
+> To: Sumit Garg <sumit.garg@linaro.org>
+> To: David Howells <dhowells@redhat.com>
+> To: Herbert Xu <herbert@gondor.apana.org.au>
+> To: "David S. Miller" <davem@davemloft.net>
+> Cc: David Gstir <david@sigma-star.at>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: keyrings@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> Cc: linux-integrity@vger.kernel.org
+> ---
+>  crypto/asymmetric_keys/Kconfig            |  2 +-
+>  security/keys/Kconfig                     | 18 ++++++--------
+>  security/keys/trusted-keys/Kconfig        | 29 +++++++++++++++++++++++
+>  security/keys/trusted-keys/Makefile       |  8 +++----
+>  security/keys/trusted-keys/trusted_core.c |  4 ++--
+>  5 files changed, 43 insertions(+), 18 deletions(-)
+>  create mode 100644 security/keys/trusted-keys/Kconfig
+> 
+> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+> index 1f1f004dc757..8886eddbf881 100644
+> --- a/crypto/asymmetric_keys/Kconfig
+> +++ b/crypto/asymmetric_keys/Kconfig
+> @@ -25,7 +25,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+>  config ASYMMETRIC_TPM_KEY_SUBTYPE
+>  	tristate "Asymmetric TPM backed private key subtype"
+>  	depends on TCG_TPM
+> -	depends on TRUSTED_KEYS
+> +	depends on TRUSTED_KEYS && TRUSTED_KEYS_TPM
+>  	select CRYPTO_HMAC
+>  	select CRYPTO_SHA1
+>  	select CRYPTO_HASH_INFO
+> diff --git a/security/keys/Kconfig b/security/keys/Kconfig
+> index 64b81abd087e..9ec302962fe2 100644
+> --- a/security/keys/Kconfig
+> +++ b/security/keys/Kconfig
+> @@ -70,23 +70,19 @@ config BIG_KEYS
+>  
+>  config TRUSTED_KEYS
+>  	tristate "TRUSTED KEYS"
+> -	depends on KEYS && TCG_TPM
+> -	select CRYPTO
+> -	select CRYPTO_HMAC
+> -	select CRYPTO_SHA1
+> -	select CRYPTO_HASH_INFO
+> -	select ASN1_ENCODER
+> -	select OID_REGISTRY
+> -	select ASN1
+> +	depends on KEYS
+>  	help
+>  	  This option provides support for creating, sealing, and unsealing
+>  	  keys in the kernel. Trusted keys are random number symmetric keys,
+> -	  generated and RSA-sealed by the TPM. The TPM only unseals the keys,
+> -	  if the boot PCRs and other criteria match.  Userspace will only ever
+> -	  see encrypted blobs.
+> +	  generated and sealed by a trust source selected at kernel boot-time.
+> +	  Userspace will only ever see encrypted blobs.
+>  
+>  	  If you are unsure as to whether this is required, answer N.
+>  
+> +if TRUSTED_KEYS
+> +source "security/keys/trusted-keys/Kconfig"
+> +endif
+> +
+>  config ENCRYPTED_KEYS
+>  	tristate "ENCRYPTED KEYS"
+>  	depends on KEYS
+> diff --git a/security/keys/trusted-keys/Kconfig b/security/keys/trusted-keys/Kconfig
+> new file mode 100644
+> index 000000000000..c163cfeedff6
+> --- /dev/null
+> +++ b/security/keys/trusted-keys/Kconfig
+> @@ -0,0 +1,29 @@
+> +config TRUSTED_KEYS_TPM
+> +	bool "TPM-based trusted keys"
+> +	depends on TCG_TPM >= TRUSTED_KEYS
+> +	default y
+> +	select CRYPTO
+> +	select CRYPTO_HMAC
+> +	select CRYPTO_SHA1
+> +	select CRYPTO_HASH_INFO
+> +	select ASN1_ENCODER
+> +	select OID_REGISTRY
+> +	select ASN1
+> +	help
+> +	  Enable use of the Trusted Platform Module (TPM) as trusted key
+> +	  backend. Trusted keys are are random number symmetric keys,
+> +	  which will be generated and RSA-sealed by the TPM.
+> +	  The TPM only unseals the keys, if the boot PCRs and other
+> +	  criteria match.
+> +
+> +config TRUSTED_KEYS_TEE
+> +	bool "TEE-based trusted keys"
+> +	depends on TEE >= TRUSTED_KEYS
+> +	default y
+> +	help
+> +	  Enable use of the Trusted Execution Environment (TEE) as trusted
+> +	  key backend.
+> +
+> +if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE
+> +comment "No trust source selected!"
+> +endif
+> diff --git a/security/keys/trusted-keys/Makefile b/security/keys/trusted-keys/Makefile
+> index feb8b6c3cc79..2e2371eae4d5 100644
+> --- a/security/keys/trusted-keys/Makefile
+> +++ b/security/keys/trusted-keys/Makefile
+> @@ -5,10 +5,10 @@
+>  
+>  obj-$(CONFIG_TRUSTED_KEYS) += trusted.o
+>  trusted-y += trusted_core.o
+> -trusted-y += trusted_tpm1.o
+> +trusted-$(CONFIG_TRUSTED_KEYS_TPM) += trusted_tpm1.o
+>  
+>  $(obj)/trusted_tpm2.o: $(obj)/tpm2key.asn1.h
+> -trusted-y += trusted_tpm2.o
+> -trusted-y += tpm2key.asn1.o
+> +trusted-$(CONFIG_TRUSTED_KEYS_TPM) += trusted_tpm2.o
+> +trusted-$(CONFIG_TRUSTED_KEYS_TPM) += tpm2key.asn1.o
+>  
+> -trusted-$(CONFIG_TEE) += trusted_tee.o
+> +trusted-$(CONFIG_TRUSTED_KEYS_TEE) += trusted_tee.o
+> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+> index d5c891d8d353..8cab69e5d0da 100644
+> --- a/security/keys/trusted-keys/trusted_core.c
+> +++ b/security/keys/trusted-keys/trusted_core.c
+> @@ -27,10 +27,10 @@ module_param_named(source, trusted_key_source, charp, 0);
+>  MODULE_PARM_DESC(source, "Select trusted keys source (tpm or tee)");
+>  
+>  static const struct trusted_key_source trusted_key_sources[] = {
+> -#if defined(CONFIG_TCG_TPM)
+> +#if defined(CONFIG_TRUSTED_KEYS_TPM)
+>  	{ "tpm", &trusted_key_tpm_ops },
+>  #endif
+> -#if defined(CONFIG_TEE)
+> +#if defined(CONFIG_TRUSTED_KEYS_TEE)
+>  	{ "tee", &trusted_key_tee_ops },
+>  #endif
+>  };
+> -- 
+> 2.30.2
+> 
 
-On 14.07.21 12:44, Richard Weinberger wrote:
-> Ahmad,
-> 
-> ----- Ursprüngliche Mail -----
->> Von: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-> 
-> [...]
-> 
-> Sure, why not? It shows that you will also in future take care of it.
+Works like a charm here. The key type was registered even thought I
+built the kernel with CONFIG_TRUSTED_KEYS=m.
 
-Good point. I did that for v3.
+I've not actually tested if that key type works (as I've not progressed
+that far in my toy project just yet).
 
-> 
-> [...]
-> 
->>> +} __packed;
->>> +
->>> +static bool use_otp_key;
->>> +module_param_named(dcp_use_otp_key, use_otp_key, bool, 0);
->>> +MODULE_PARM_DESC(dcp_use_otp_key, "Use OTP instead of UNIQUE key for sealing");
->>
->> Shouldn't these be documented in admin-guide/kernel-parameters.txt as well?
-> 
-> Yes. Will do.
-> 
->>> +static bool skip_zk_test;
->>> +module_param_named(dcp_skip_zk_test, skip_zk_test, bool, 0);
->>> +MODULE_PARM_DESC(dcp_skip_zk_test, "Don't test whether device keys are
->>> zero'ed");
->>
->> Does this need to be configurible? I'd assume this can only happen when using an
->> unfused OTP. In such a case, it's ok to always warn, so you don't need to make
->> this configurible.
-> 
-> We found such a setting super useful while working with targets where the keys are
-> zero'ed for various reasons.
-> There are cases where you want to use/test trusted keys even when the master key
-> is void. Our detection logic does not only print a warning, it refuses to load
-> blobs. So IMHO the config knob makes sense.
+Feel free to add my Test-By.
 
-Ah, I missed that it refuses to continue in that case.
-
-> 
->>> +
->>> +static unsigned int calc_blob_len(unsigned int payload_len) 
->>> +{
->>> +	return sizeof(struct dcp_blob_fmt) + payload_len + DCP_BLOB_AUTHLEN;
->>> +}
->>> +
->>> +static int do_dcp_crypto(u8 *in, u8 *out, bool is_encrypt)
->>
->> I assume in can't be const because the use with sg APIs?
-> 
-> I'm pretty sure this was the main reason, but I can check again.
-> 
->>> +{
->>> +	int res = 0;
->>> +	struct skcipher_request *req = NULL;
->>> +	DECLARE_CRYPTO_WAIT(wait);
->>> +	struct scatterlist src_sg, dst_sg;
->>> +	struct crypto_skcipher *tfm;
->>> +	u8 paes_key[DCP_PAES_KEYSIZE];
->>> +
->>> +	if (!use_otp_key)
->>
->> I'd invert this. Makes code easier to read.
-> 
-> Ok. :-)
-> 
->>> +		paes_key[0] = DCP_PAES_KEY_UNIQUE;
->>> +	else
->>> +		paes_key[0] = DCP_PAES_KEY_OTP;
->>> +
->>> +	tfm = crypto_alloc_skcipher("ecb-paes-dcp", CRYPTO_ALG_INTERNAL,
->>> +				    CRYPTO_ALG_INTERNAL);
->>> +	if (IS_ERR(tfm)) {
->>> +		res = PTR_ERR(tfm);
->>> +		pr_err("Unable to request DCP pAES-ECB cipher: %i\n", res);
->>
->> Can you define pr_fmt above? There's also %pe now that can directly print out an
->> error pointer.
-> 
-> pr_fmt is not defined on purpose. include/keys/trusted-type.h defines already one
-> and I assumed "trusted_key:" is the desired prefix for all kinds of trusted keys.
-
-Ah, all good then. I didn't define it for CAAM either, but forgot why I didn't
-along the way. May've been the same reason.
-
-> [...]
-> 
->> - payload_len is at offset 33, but MIN_KEY_SIZE == 32 and there are no minimum
->>   size checks. Couldn't you read beyond the buffer this way?
-> 
-> The key has a minimum size of MIN_KEY_SIZE, but p->blob (being struct trusted_key_payload->blob[MAX_BLOB_SIZE])
-> is much larger.
-> So the assumption is that a DCP blob will always be smaller than MAX_BLOB_SIZE.
-> 
->> - offset 33 is unaligned for payload_len. Please use get_unaligned_le32 here.
-> 
-> Oh yes. Makes sense!
-> 
-> [...]
-> 
->>
->> jfyi, in the prelude of my CAAM series, I made this the default
->> when .get_random == NULL.
-> 
-> Right. :-)
-> 
-> [...]
-> 
->>> +	ret = do_dcp_crypto(buf, buf, true);
->>> +	if (ret)
->>> +		goto out;
->>> +
->>> +	if (memcmp(buf, bad, AES_BLOCK_SIZE) == 0) {
->>> +		pr_err("Device neither in secure nor trusted mode!\n");
->>
->> What's the difference between secure and trusted? Can't this test be skipped
->> if use_otp_key == false?
-> 
-> DCP has many modes of operation. Secure is one level above trusted.
-> For the gory details see "Security Reference Manual for the i.MX 6ULL Applications Processor".
-> I'm not sure whether all information my manual describes is publicly available so I
-> don't dare to copy&paste from it.
-> 
-> As David and I understood the logic, both OTP and UNIQUE keys can be zero'ed.
-> It is also possible that DCP has no support at all for these keys,
-> then you'll also get a zero key. That's why we have this check here.
-
-Thanks for the clarification.
-
-Cheers,
-Ahmad
-
-> 
-> Thanks,
-> //richard
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Tested-By: Andreas Rammhold <andreas@rammhold.de>
