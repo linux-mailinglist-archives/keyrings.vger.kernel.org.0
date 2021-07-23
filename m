@@ -2,166 +2,130 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 766453D20A5
-	for <lists+keyrings@lfdr.de>; Thu, 22 Jul 2021 11:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C2013D3E6B
+	for <lists+keyrings@lfdr.de>; Fri, 23 Jul 2021 19:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbhGVIh7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Jul 2021 04:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231370AbhGVIh4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Jul 2021 04:37:56 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11D0C06179A
-        for <keyrings@vger.kernel.org>; Thu, 22 Jul 2021 02:18:31 -0700 (PDT)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <afa@pengutronix.de>)
-        id 1m6UqF-0001NO-DL; Thu, 22 Jul 2021 11:18:07 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <afa@pengutronix.de>)
-        id 1m6UqC-0001D1-HE; Thu, 22 Jul 2021 11:18:04 +0200
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-To:     David Howells <dhowells@redhat.com>,
+        id S231375AbhGWQkx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 23 Jul 2021 12:40:53 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:51134
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231166AbhGWQkx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Jul 2021 12:40:53 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id AC9073F325;
+        Fri, 23 Jul 2021 17:21:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1627060884;
+        bh=7FQD/B711wUP78UGWXd/xXfRyIQyD6tfXLIddfxdlcc=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=MIpg2zVyane9SunkaQ6m9KeX6+ptvvm8nBjPPToZ+jE+O8Udpx2/Hbt3KIM9AsnKT
+         15av06BGurLcNcGDj6vbShhx7AEj2S5U1YUJVBo9G4n5qkVO+o03wYR+ClVinO47rd
+         YMzTHOBW3XCPNf1b6cwBNLfQTObnplThPTRn+cf7LMBC9zC8dIWVJNMT5cCleyilum
+         +jYVy0XJ0ILlsAQMEspBu4tpIAeQsH2wBw3i+HsmtuGkTjr3kJUlkfl4wsxcDgIDcY
+         /D1H9HfoBkcbFQEKQWuVU5VAosMEY1/JylzJ5x8vS2kVVbFDoK7MVAjg+GNLXzAPKS
+         yPzFytvYsyq/g==
+From:   Colin King <colin.king@canonical.com>
+To:     James Bottomley <jejb@linux.ibm.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
-        Song Liu <song@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     kernel@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-raid@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-mtd@lists.infradead.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Subject: [RFC PATCH v1 4/4] ubifs: auth: consult encrypted and trusted keys if no logon key was found
-Date:   Thu, 22 Jul 2021 11:18:02 +0200
-Message-Id: <f5891611f329583baef32089c8b322850d81166a.1626945419.git-series.a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.b2fdd70b830d12853b12a12e32ceb0c8162c1346.1626945419.git-series.a.fatoum@pengutronix.de>
-References: <cover.b2fdd70b830d12853b12a12e32ceb0c8162c1346.1626945419.git-series.a.fatoum@pengutronix.de>
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] security: keys: trusted: Fix memory leaks on allocated blob
+Date:   Fri, 23 Jul 2021 18:21:21 +0100
+Message-Id: <20210723172121.156687-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: afa@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Currently, UBIFS auth_key can only be a logon key: This is a user key
-that's provided to the kernel in plaintext and that then remains within
-the kernel. Linux also supports trusted and encrypted keys, which have
-stronger guarantees: They are only exposed to userspace in encrypted
-form and, in the case of trusted keys, can be directly rooted to a trust
-source like a TPM chip.
+From: Colin Ian King <colin.king@canonical.com>
 
-Add support for auth_key to be either a logon, encrypted or trusted key.
-At mount time, the keyring will be searched for a key with the supplied
-name in that order.
+There are several error return paths that don't kfree the allocated
+blob, leading to memory leaks. Ensure blob is initialized to null as
+some of the error return paths in function tpm2_key_decode do not
+change blob. Add an error return path to kfree blob and use this on
+the current leaky returns.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Addresses-Coverity: ("Resource leak")
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-To: David Howells <dhowells@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-To: James Morris <jmorris@namei.org>
-To: "Serge E. Hallyn" <serge@hallyn.com>
-To: Alasdair Kergon <agk@redhat.com>
-To: Mike Snitzer <snitzer@redhat.com>
-To: dm-devel@redhat.com
-To: Song Liu <song@kernel.org>
-To: Richard Weinberger <richard@nod.at>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-raid@vger.kernel.org
-Cc: keyrings@vger.kernel.org
-Cc: linux-mtd@lists.infradead.org
-Cc: linux-security-module@vger.kernel.org
-Cc: linux-integrity@vger.kernel.org
----
- Documentation/filesystems/ubifs.rst |  2 +-
- fs/ubifs/auth.c                     | 19 ++++++++++++-------
- 2 files changed, 13 insertions(+), 8 deletions(-)
+ security/keys/trusted-keys/trusted_tpm2.c | 30 ++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/filesystems/ubifs.rst b/Documentation/filesystems/ubifs.rst
-index e6ee99762534..12d08458b3d7 100644
---- a/Documentation/filesystems/ubifs.rst
-+++ b/Documentation/filesystems/ubifs.rst
-@@ -101,7 +101,7 @@ compr=zlib              override default compressor and set it to "zlib"
- auth_key=		specify the key used for authenticating the filesystem.
- 			Passing this option makes authentication mandatory.
- 			The passed key must be present in the kernel keyring
--			and must be of type 'logon'
-+			and must be of type 'logon', 'encrypted' or 'trusted'.
- auth_hash_name=		The hash algorithm used for authentication. Used for
- 			both hashing and for creating HMACs. Typical values
- 			include "sha256" or "sha512"
-diff --git a/fs/ubifs/auth.c b/fs/ubifs/auth.c
-index 6a0b8d858d81..af8e9eb58a60 100644
---- a/fs/ubifs/auth.c
-+++ b/fs/ubifs/auth.c
-@@ -14,6 +14,8 @@
- #include <crypto/hash.h>
- #include <crypto/algapi.h>
- #include <keys/user-type.h>
-+#include <keys/trusted-type.h>
-+#include <keys/encrypted-type.h>
- #include <keys/asymmetric-type.h>
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 0165da386289..930c67f98611 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -366,7 +366,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 	unsigned int private_len;
+ 	unsigned int public_len;
+ 	unsigned int blob_len;
+-	u8 *blob, *pub;
++	u8 *blob = NULL, *pub;
+ 	int rc;
+ 	u32 attrs;
  
- #include "ubifs.h"
-@@ -256,9 +258,10 @@ out_destroy:
- int ubifs_init_authentication(struct ubifs_info *c)
- {
- 	struct key *keyring_key;
--	const struct user_key_payload *ukp;
- 	int err;
-+	unsigned int len;
- 	char hmac_name[CRYPTO_MAX_ALG_NAME];
-+	const void *key_material;
- 
- 	if (!c->auth_hash_name) {
- 		ubifs_err(c, "authentication hash name needed with authentication");
-@@ -277,6 +280,10 @@ int ubifs_init_authentication(struct ubifs_info *c)
- 		 c->auth_hash_name);
- 
- 	keyring_key = request_key(&key_type_logon, c->auth_key_name, NULL);
-+	if (IS_ERR(keyring_key) && IS_REACHABLE(CONFIG_ENCRYPTED_KEYS))
-+		keyring_key = request_key(&key_type_encrypted, c->auth_key_name, NULL);
-+	if (IS_ERR(keyring_key) && IS_REACHABLE(CONFIG_TRUSTED_KEYS))
-+		keyring_key = request_key(&key_type_trusted, c->auth_key_name, NULL);
- 
- 	if (IS_ERR(keyring_key)) {
- 		ubifs_err(c, "Failed to request key: %ld",
-@@ -286,12 +293,10 @@ int ubifs_init_authentication(struct ubifs_info *c)
- 
- 	down_read(&keyring_key->sem);
- 
--	ukp = user_key_payload_locked(keyring_key);
--	if (!ukp) {
--		/* key was revoked before we acquired its semaphore */
--		err = -EKEYREVOKED;
-+	key_material = key_extract_material(keyring_key, &len);
-+	err = PTR_ERR_OR_ZERO(key_material);
-+	if (err < 0)
- 		goto out;
--	}
- 
- 	c->hash_tfm = crypto_alloc_shash(c->auth_hash_name, 0, 0);
- 	if (IS_ERR(c->hash_tfm)) {
-@@ -324,7 +329,7 @@ int ubifs_init_authentication(struct ubifs_info *c)
- 		goto out_free_hmac;
+@@ -378,22 +378,30 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
  	}
  
--	err = crypto_shash_setkey(c->hmac_tfm, ukp->data, ukp->datalen);
-+	err = crypto_shash_setkey(c->hmac_tfm, key_material, len);
- 	if (err)
- 		goto out_free_hmac;
+ 	/* new format carries keyhandle but old format doesn't */
+-	if (!options->keyhandle)
+-		return -EINVAL;
++	if (!options->keyhandle) {
++		rc = -EINVAL;
++		goto err;
++	}
  
+ 	/* must be big enough for at least the two be16 size counts */
+-	if (payload->blob_len < 4)
+-		return -EINVAL;
++	if (payload->blob_len < 4) {
++		rc = -EINVAL;
++		goto err;
++	}
+ 
+ 	private_len = get_unaligned_be16(blob);
+ 
+ 	/* must be big enough for following public_len */
+-	if (private_len + 2 + 2 > (payload->blob_len))
+-		return -E2BIG;
++	if (private_len + 2 + 2 > (payload->blob_len)) {
++		rc = -E2BIG;
++		goto err;
++	}
+ 
+ 	public_len = get_unaligned_be16(blob + 2 + private_len);
+-	if (private_len + 2 + public_len + 2 > payload->blob_len)
+-		return -E2BIG;
++	if (private_len + 2 + public_len + 2 > payload->blob_len) {
++		rc = -E2BIG;
++		goto err;
++	}
+ 
+ 	pub = blob + 2 + private_len + 2;
+ 	/* key attributes are always at offset 4 */
+@@ -441,6 +449,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 		rc = -EPERM;
+ 
+ 	return rc;
++
++err:
++	kfree(blob);
++	return rc;
+ }
+ 
+ /**
 -- 
-git-series 0.9.1
+2.31.1
+
