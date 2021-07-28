@@ -2,95 +2,132 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146443D8C5F
-	for <lists+keyrings@lfdr.de>; Wed, 28 Jul 2021 13:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A5263D92B9
+	for <lists+keyrings@lfdr.de>; Wed, 28 Jul 2021 18:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234289AbhG1LBF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 28 Jul 2021 07:01:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231994AbhG1LBE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Jul 2021 07:01:04 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45349C061757
-        for <keyrings@vger.kernel.org>; Wed, 28 Jul 2021 04:01:02 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id ga41so3857694ejc.10
-        for <keyrings@vger.kernel.org>; Wed, 28 Jul 2021 04:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=+0WqgiOtf+C3NLOdKbRNc6t0lDLWWXULMR2VuY5+mf8=;
-        b=PAzfOPXWIdz7KKUWo3IQBAO9MyOFpZmbrwDDFJA/pdLuIhJxZYtV/Yv7MRBTW1p7YF
-         4/z+3lRXOFbgDImzYnPlnrx2rPFwU4gmLLInJpq/2TPNjlgJAE9GRsMIcwUzkDqJI0Z7
-         m8G97XXMTedXY/1Zhx4VCsJatm0ohTx6dmlW8tpDg6U8jYOCS9ki/+IZ9/XNY6JzmkC2
-         ArSoeYaxa/zB60mhAR9QeBIQle78EHfUfimQB3vfjXkmM+9aMyVqIldk3GjRiT3rsdVl
-         EAFwnAHYFddTeb3yok2adfI3jhCYWr4fLjTzPsMvdibINf5FrVJJuxTqQImVsYRfL0n2
-         6ILg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=+0WqgiOtf+C3NLOdKbRNc6t0lDLWWXULMR2VuY5+mf8=;
-        b=LBbh9zkZByZpI0Adz61AIZfis/QOLUoaniUdXpN75x0NTOn2oyN7KoRmZ8fiQg3ZVg
-         RWuhyQ00ugMUuPDunQh+PzW6ElfOWhQ39QDar4rlnsfneewubjXPtcwgg8KsnwJGPC5j
-         GCOU8a9n683p0HuP19Jlf92nNuYVE0hmGSXXASOrXswOl6XKT0xnCF3JRAawnQJXzAFG
-         QwjHXc3zmfunqFNVZoHOZf5CDwXycAdJ88Z2TWx61jHWqFnWkOfntB5NM01HVsCkw3tw
-         CEukur2HCtGubfY1285tOgkGcMfQM1FLI+cnd20dwbDsexYuEEkWow4/f1ZClOGImvfx
-         xPkA==
-X-Gm-Message-State: AOAM530EwTaFGB6FPCNub7+Y/NcD+0ZfRycn+vYr2Cc+VtFcN+SAP5FM
-        8bLPBxOv1d3tEJsW5A7a6JhssTzitPgGR/aaadU=
-X-Google-Smtp-Source: ABdhPJzT6WY3FAAMAgLuos9BcjGL3wZjPkOK8fA9cDiaVv2C37GEF3r2aLRUciXSLkld3Wr2nNmYEM6cimMu8FjYju0=
-X-Received: by 2002:a17:906:c304:: with SMTP id s4mr19597347ejz.346.1627470060808;
- Wed, 28 Jul 2021 04:01:00 -0700 (PDT)
+        id S230478AbhG1QH6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 28 Jul 2021 12:07:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57024 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237402AbhG1QFW (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 28 Jul 2021 12:05:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 805C160F93;
+        Wed, 28 Jul 2021 16:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627488315;
+        bh=mtlOEjAp0ZaGN8O1thI4Ls/GpTvqSvAbJ+P7xB2uW9k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uGb09cwCNSkXfP+k0uos/ECMpj7PWsDGBwTi5+FvDBprC+zJ6BfucHxDsHBbwEQiJ
+         7X7fwv1xOkt8e/MYIsO7NliM7xV6FbJj9upUwPMBeKNqVZPjXpah5kcwQG86/jY6s7
+         olm0khDFNJwAXph5MR1EIh6jn5sI9nF28mKfDLP6g9C0BJcSh+sqTpngCmDT7Q2fNo
+         Wm6BAOjSwA3YpETAXnVH3HCwmc+LvnxmTl4YAbqbs1HLViv/dRl0IXH8J3Wst6H6U1
+         WqFZ9ZFDiB9K/5hoVa2Gpf4JQ8oy63HVN00dXpTp+McuvtwtDETTYLnnJ61YvCtwR5
+         kG8EbXh9kjSRQ==
+Date:   Wed, 28 Jul 2021 09:05:13 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Howells <dhowells@redhat.com>,
+        linux-fscrypt@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, git@andred.net,
+        Omar Sandoval <osandov@osandov.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [RFC PATCH v1] fscrypt: support encrypted and trusted keys
+Message-ID: <YQGAOTdQRHFv9rlr@gmail.com>
+References: <20210727144349.11215-1-a.fatoum@pengutronix.de>
+ <YQA2fHPwH6EsH9BR@sol.localdomain>
+ <367ea5bb-76cf-6020-cb99-91b5ca82d679@pengutronix.de>
 MIME-Version: 1.0
-Received: by 2002:a05:6402:10d8:0:0:0:0 with HTTP; Wed, 28 Jul 2021 04:01:00
- -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "MRS.NNEKA J.OKEREKE" <eco.bank1204@gmail.com>
-Date:   Wed, 28 Jul 2021 13:01:00 +0200
-Message-ID: <CAOE+jACK9k0ABV7JzdXvD7SkGVjS0LXoOR5BroLjS8ya+xQb6Q@mail.gmail.com>
-Subject: I' have already sent you Money Gram payment of $7,000USD today, MTCN 102**095
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <367ea5bb-76cf-6020-cb99-91b5ca82d679@pengutronix.de>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Attn Beneficiary,
-I' have already sent you Money Gram payment of $7,000USD today,M.T.C.N 102**095
-This is because we have finally concluded to effect your transfer
-funds total amount $4.8MILLION USD through MONEY GRAM International
-Fund transfer Service,
-Each payment will be sending to you by $7000 daily until the
-($4.8,000.000 USD) is completely transferred to you.
-we have this morning sent First MONEY GRAM payment of $7,000 in your name today
-So contact the MONEY GRAM Agent to pick up this first payment of $7000 now.
-Contact person Mrs. HELEN MARK
-Director MONEY GRAM Int'l Service,Benin
-Phone number: +229 99069872
-E-mail: moneygram.1820@outlook.fr
+On Wed, Jul 28, 2021 at 10:50:42AM +0200, Ahmad Fatoum wrote:
+> Hello Eric,
+> 
+> On 27.07.21 18:38, Eric Biggers wrote:
+> > On Tue, Jul 27, 2021 at 04:43:49PM +0200, Ahmad Fatoum wrote:
+> >> For both v1 and v2 key setup mechanisms, userspace supplies the raw key
+> >> material to the kernel after which it is never again disclosed to
+> >> userspace.
+> >>
+> >> Use of encrypted and trusted keys offers stronger guarantees:
+> >> The key material is generated within the kernel and is never disclosed to
+> >> userspace in clear text and, in the case of trusted keys, can be
+> >> directly rooted to a trust source like a TPM chip.
+> > 
+> > Please include a proper justification for this feature
+> 
+> I've patches pending for extending trusted keys to wrap the key sealing
+> functionality of the CAAM IP on NXP SoCs[1]. I want the kernel to
+> generate key material in the factory, have the CAAM encrypt it using its
+> undisclosed unique key and pass it to userspace as encrypted blob that is
+> persisted to an unencrypted volume. The intention is to thwart offline
+> decryption of an encrypted file system in an embedded system, where a
+> passphrase can't be supplied by an end user.
+> 
+> Employing TPM and TEE trusted keys with this is already possible with
+> dm-crypt, but I'd like this to be possible out-of-the-box with
+> ubifs + fscrypt as well.
 
-Ask her to give you the complete M.T.C.N, sender name, question and
-answer to enable you pick up the $7.000 sent ,
-Also you are instructed to re-confirm and
-send her your information's as listed below to avoid wrong transactions
-(1. Your Full name:............................................
-(2. Phone number.....................................................
-(3. Contact address:.....................................
-(4. Age:..................................................................
-(5. Country..............................................
-(6. Sex .................................................................
-(7. your occupation...........................................
-(8.Passport/By Attach or Drivers License Number:
-Contact Mrs. Helen Mark for your MONEY GRAM payment of $4.8Million USD.
-Note,please You are required to pay for the renewal of your transfer
-file, which is sum of $19usd Only.
-before Mrs. Helen Mark will give you the full senders details to
-enable you Pick Up your first transfer $7000USD today.
-Request her to send you information where you can forward the $19.00
-fee to her immediately so that you quickly Pick Up your transfer
-$7000USD today,Ok.
-We need your urgent reply.
+Why not do the key management in userspace, like tpm-tools
+(https://github.com/tpm2-software/tpm2-tools)?  There are a lot of uses for this
+type of hardware besides in-kernel crypto.  See
+https://wiki.archlinux.org/title/Trusted_Platform_Module for all the things you
+can do with the TPM on Linux, including LUKS encryption; this is all with
+userspace key management.  Wouldn't the CAAM hardware be useful for similar
+purposes and thus need a similar design as well, e.g. with functionality exposed
+through some /dev node for userspace to use?  Or are you saying it will only
+ever be useful for in-kernel crypto?
 
-Best Regards
-MRS.NNEKA J.OKEREKE
+> > Note that there are several design flaws with the encrypted and trusted key
+> > types:
+> > 
+> > - By default, trusted keys are generated using the TPM's RNG rather than the
+> >   kernel's RNG, which places all trust in an unauditable black box.
+> 
+> Patch to fix that awaits feedback on linux-integrity[2].
+
+It does *not* fix it, as your patch only provides an option to use the kernel's
+RNG whereas the default is still the TPM's RNG.
+
+Most people don't change defaults.
+
+Essentially your same argument was used for Dual_EC_DRBG; people argued it was
+okay to standardize because people had the option to choose their own constants
+if they felt the default constants were backdoored.  That didn't really matter,
+though, since in practice everyone just used the default constants.
+
+> 
+> > - trusted and encrypted keys aren't restricted to specific uses in the kernel
+> >   (like the fscrypt-provisioning key type is) but rather are general-purpose.
+> >   Hence, it may be possible to leak their contents to userspace by requesting
+> >   their use for certain algorithms/features, e.g. to encrypt a dm-crypt target
+> >   using a weak cipher that is vulnerable to key recovery attacks.
+> 
+> The footgun is already there by allowing users to specify their own
+> 
+> raw key. Users can already use $keyid for dm-crypt and then do
+> 
+>   $ keyctl pipe $keyid | fscryptctl add_key /mnt
+> 
+> The responsibility to not reuse key material already lies with the users,
+> regardless if they handle the raw key material directly or indirectly via
+> a trusted key description/ID.
+
+Elsewhere you are claiming that "trusted" keys can never be disclosed to
+userspace.  So you can't rely on userspace cooperating, right?
+
+- Eric
