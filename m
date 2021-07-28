@@ -2,198 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78D0B3D8A03
-	for <lists+keyrings@lfdr.de>; Wed, 28 Jul 2021 10:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 146443D8C5F
+	for <lists+keyrings@lfdr.de>; Wed, 28 Jul 2021 13:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235362AbhG1Iu6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 28 Jul 2021 04:50:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45178 "EHLO
+        id S234289AbhG1LBF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 28 Jul 2021 07:01:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbhG1Iux (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Jul 2021 04:50:53 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34D6C061757
-        for <keyrings@vger.kernel.org>; Wed, 28 Jul 2021 01:50:50 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1m8fH5-00087o-36; Wed, 28 Jul 2021 10:50:47 +0200
-Subject: Re: [RFC PATCH v1] fscrypt: support encrypted and trusted keys
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        David Howells <dhowells@redhat.com>,
-        linux-fscrypt@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, git@andred.net,
-        Omar Sandoval <osandov@osandov.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20210727144349.11215-1-a.fatoum@pengutronix.de>
- <YQA2fHPwH6EsH9BR@sol.localdomain>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <367ea5bb-76cf-6020-cb99-91b5ca82d679@pengutronix.de>
-Date:   Wed, 28 Jul 2021 10:50:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        with ESMTP id S231994AbhG1LBE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Jul 2021 07:01:04 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45349C061757
+        for <keyrings@vger.kernel.org>; Wed, 28 Jul 2021 04:01:02 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id ga41so3857694ejc.10
+        for <keyrings@vger.kernel.org>; Wed, 28 Jul 2021 04:01:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=+0WqgiOtf+C3NLOdKbRNc6t0lDLWWXULMR2VuY5+mf8=;
+        b=PAzfOPXWIdz7KKUWo3IQBAO9MyOFpZmbrwDDFJA/pdLuIhJxZYtV/Yv7MRBTW1p7YF
+         4/z+3lRXOFbgDImzYnPlnrx2rPFwU4gmLLInJpq/2TPNjlgJAE9GRsMIcwUzkDqJI0Z7
+         m8G97XXMTedXY/1Zhx4VCsJatm0ohTx6dmlW8tpDg6U8jYOCS9ki/+IZ9/XNY6JzmkC2
+         ArSoeYaxa/zB60mhAR9QeBIQle78EHfUfimQB3vfjXkmM+9aMyVqIldk3GjRiT3rsdVl
+         EAFwnAHYFddTeb3yok2adfI3jhCYWr4fLjTzPsMvdibINf5FrVJJuxTqQImVsYRfL0n2
+         6ILg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=+0WqgiOtf+C3NLOdKbRNc6t0lDLWWXULMR2VuY5+mf8=;
+        b=LBbh9zkZByZpI0Adz61AIZfis/QOLUoaniUdXpN75x0NTOn2oyN7KoRmZ8fiQg3ZVg
+         RWuhyQ00ugMUuPDunQh+PzW6ElfOWhQ39QDar4rlnsfneewubjXPtcwgg8KsnwJGPC5j
+         GCOU8a9n683p0HuP19Jlf92nNuYVE0hmGSXXASOrXswOl6XKT0xnCF3JRAawnQJXzAFG
+         QwjHXc3zmfunqFNVZoHOZf5CDwXycAdJ88Z2TWx61jHWqFnWkOfntB5NM01HVsCkw3tw
+         CEukur2HCtGubfY1285tOgkGcMfQM1FLI+cnd20dwbDsexYuEEkWow4/f1ZClOGImvfx
+         xPkA==
+X-Gm-Message-State: AOAM530EwTaFGB6FPCNub7+Y/NcD+0ZfRycn+vYr2Cc+VtFcN+SAP5FM
+        8bLPBxOv1d3tEJsW5A7a6JhssTzitPgGR/aaadU=
+X-Google-Smtp-Source: ABdhPJzT6WY3FAAMAgLuos9BcjGL3wZjPkOK8fA9cDiaVv2C37GEF3r2aLRUciXSLkld3Wr2nNmYEM6cimMu8FjYju0=
+X-Received: by 2002:a17:906:c304:: with SMTP id s4mr19597347ejz.346.1627470060808;
+ Wed, 28 Jul 2021 04:01:00 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YQA2fHPwH6EsH9BR@sol.localdomain>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Received: by 2002:a05:6402:10d8:0:0:0:0 with HTTP; Wed, 28 Jul 2021 04:01:00
+ -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   "MRS.NNEKA J.OKEREKE" <eco.bank1204@gmail.com>
+Date:   Wed, 28 Jul 2021 13:01:00 +0200
+Message-ID: <CAOE+jACK9k0ABV7JzdXvD7SkGVjS0LXoOR5BroLjS8ya+xQb6Q@mail.gmail.com>
+Subject: I' have already sent you Money Gram payment of $7,000USD today, MTCN 102**095
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Eric,
+Attn Beneficiary,
+I' have already sent you Money Gram payment of $7,000USD today,M.T.C.N 102**095
+This is because we have finally concluded to effect your transfer
+funds total amount $4.8MILLION USD through MONEY GRAM International
+Fund transfer Service,
+Each payment will be sending to you by $7000 daily until the
+($4.8,000.000 USD) is completely transferred to you.
+we have this morning sent First MONEY GRAM payment of $7,000 in your name today
+So contact the MONEY GRAM Agent to pick up this first payment of $7000 now.
+Contact person Mrs. HELEN MARK
+Director MONEY GRAM Int'l Service,Benin
+Phone number: +229 99069872
+E-mail: moneygram.1820@outlook.fr
 
-On 27.07.21 18:38, Eric Biggers wrote:
-> On Tue, Jul 27, 2021 at 04:43:49PM +0200, Ahmad Fatoum wrote:
->> For both v1 and v2 key setup mechanisms, userspace supplies the raw key
->> material to the kernel after which it is never again disclosed to
->> userspace.
->>
->> Use of encrypted and trusted keys offers stronger guarantees:
->> The key material is generated within the kernel and is never disclosed to
->> userspace in clear text and, in the case of trusted keys, can be
->> directly rooted to a trust source like a TPM chip.
-> 
-> Please include a proper justification for this feature
+Ask her to give you the complete M.T.C.N, sender name, question and
+answer to enable you pick up the $7.000 sent ,
+Also you are instructed to re-confirm and
+send her your information's as listed below to avoid wrong transactions
+(1. Your Full name:............................................
+(2. Phone number.....................................................
+(3. Contact address:.....................................
+(4. Age:..................................................................
+(5. Country..............................................
+(6. Sex .................................................................
+(7. your occupation...........................................
+(8.Passport/By Attach or Drivers License Number:
+Contact Mrs. Helen Mark for your MONEY GRAM payment of $4.8Million USD.
+Note,please You are required to pay for the renewal of your transfer
+file, which is sum of $19usd Only.
+before Mrs. Helen Mark will give you the full senders details to
+enable you Pick Up your first transfer $7000USD today.
+Request her to send you information where you can forward the $19.00
+fee to her immediately so that you quickly Pick Up your transfer
+$7000USD today,Ok.
+We need your urgent reply.
 
-I've patches pending for extending trusted keys to wrap the key sealing
-functionality of the CAAM IP on NXP SoCs[1]. I want the kernel to
-generate key material in the factory, have the CAAM encrypt it using its
-undisclosed unique key and pass it to userspace as encrypted blob that is
-persisted to an unencrypted volume. The intention is to thwart offline
-decryption of an encrypted file system in an embedded system, where a
-passphrase can't be supplied by an end user.
-
-Employing TPM and TEE trusted keys with this is already possible with
-dm-crypt, but I'd like this to be possible out-of-the-box with
-ubifs + fscrypt as well.
-
-> and update the relevant
-> sections of Documentation/filesystems/fscrypt.rst to explain why someone would
-> want to use this feature and what it accomplishes.
-
-How about:
-
--  type "fscrypt-provisioning" whose payload is
-+  type "fscrypt-provisioning" or "trusted":
-+  "fscrypt-provisioning" keys have a payload of
-   struct fscrypt_provisioning_key_payload whose ``raw`` field contains
-   the raw key and whose ``type`` field matches ``key_spec.type``.
-   Since ``raw`` is variable-length, the total size of this key's
-   payload must be ``sizeof(struct fscrypt_provisioning_key_payload)``
--  plus the raw key size.  The process must have Search permission on
--  this key.
-+  plus the raw key size.
-+  For "trusted" keys, the payload is directly taken as the raw key.
-
-+  The process must have Search permission on this key.
-
--  Most users should leave this 0 and specify the raw key directly.
-
-+  Most users leave this 0 and specify the raw key directly.
--  The support for specifying a Linux keyring key is intended mainly to
-
--  allow re-adding keys after a filesystem is unmounted and re-mounted,
-+  "trusted" keys are useful to leverage kernel support for sealing and
-+  unsealing key material. Sealed keys can be persisted to unencrypted
-+  storage and later used to decrypt the file system without requiring
-+  userspace to know the raw key material.
-+  "fscrypt-provisioning" key support is intended mainly to allow
-+  re-adding keys after a filesystem is unmounted and re-mounted,
-
-> As-is, this feature doesn't seem to have a very strong justification.  Please
-> also see previous threads where this feature was discussed/requested:
-> https://lkml.kernel.org/linux-fscrypt/20180110124418.24385-1-git@andred.net/T/#u,
-> https://lkml.kernel.org/linux-fscrypt/20180118131359.8365-1-git@andred.net/T/#u,
-> https://lkml.kernel.org/linux-fscrypt/20200116193228.GA266386@vader/T/#u
-
-Thanks. I wasn't aware of the last one. I (re-)read them now. I hope
-this mail manages to address the concerns.
-
-(Also added original authors of these mail threads to CC)
-
-> Note that there are several design flaws with the encrypted and trusted key
-> types:
-> 
-> - By default, trusted keys are generated using the TPM's RNG rather than the
->   kernel's RNG, which places all trust in an unauditable black box.
-
-Patch to fix that awaits feedback on linux-integrity[2].
-
-> - trusted and encrypted keys aren't restricted to specific uses in the kernel
->   (like the fscrypt-provisioning key type is) but rather are general-purpose.
->   Hence, it may be possible to leak their contents to userspace by requesting
->   their use for certain algorithms/features, e.g. to encrypt a dm-crypt target
->   using a weak cipher that is vulnerable to key recovery attacks.
-
-The footgun is already there by allowing users to specify their own
-
-raw key. Users can already use $keyid for dm-crypt and then do
-
-  $ keyctl pipe $keyid | fscryptctl add_key /mnt
-
-The responsibility to not reuse key material already lies with the users,
-regardless if they handle the raw key material directly or indirectly via
-a trusted key description/ID.
-
-> - "encrypted" keys that use a master key of type "user" are supported, despite
->   these being easily obtainable in the clear by userspace providing their own
->   master key.  This violates one of the main design goals of "encrypted" keys.
-
-I care for trusted keys foremost, so I've no problems dropping the encrypted
-key support.
-
-> Also, using the "trusted" key type isn't necessary to achieve TPM-bound
-> encryption, as TPM binding can be handled in userspace instead.
-
-Trusted keys support TEE and hopefully CAAM soon as well. I don't want my
-userspace directly poking a DMA master.
-> So I really would like to see a proper justification for this feature, and have
-> it be properly documented.
-
-In light of the extended justification above, do you want me to respin with
-the proposed changes?
-
-> One comment on the UAPI below.
-
-> Why not just allow the key_id field to specify a "trusted" or "encrypted" key?
-> Why is it necessary for FS_IOC_ADD_ENCRYPTION_KEY to support two different ways
-> of looking up keyring keys -- by ID and by description?  Looking up by ID works
-> fine for "fscrypt-provisioning" keys; why are "trusted" and "encrypted" keys
-> different in this regard?
-
-Mixture of reading emails predating key_id and misunderstanding the API.
-key_id would be much cleaner indeed. I can change this for v2.
-
-Thanks for your review.
-
-[1]: https://lore.kernel.org/linux-integrity/655aab117f922320e2123815afb5bf3daeb7b8b3.1626885907.git-series.a.fatoum@pengutronix.de/
-[2]: https://lore.kernel.org/linux-integrity/cover.9fc9298fd9d63553491871d043a18affc2dbc8a8.1626885907.git-series.a.fatoum@pengutronix.de/T/#meaefcdc9ac091944ddadaebe0410c2325af0032e
-
-Cheers,
-Ahmad
-
-> 
-> - Eric
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards
+MRS.NNEKA J.OKEREKE
