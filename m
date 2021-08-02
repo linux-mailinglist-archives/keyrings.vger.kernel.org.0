@@ -2,108 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 684983DB37A
-	for <lists+keyrings@lfdr.de>; Fri, 30 Jul 2021 08:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84BAB3DCF38
+	for <lists+keyrings@lfdr.de>; Mon,  2 Aug 2021 06:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237522AbhG3GWL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 30 Jul 2021 02:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
+        id S229495AbhHBEVF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Aug 2021 00:21:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237427AbhG3GWL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 30 Jul 2021 02:22:11 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E99C061765
-        for <keyrings@vger.kernel.org>; Thu, 29 Jul 2021 23:22:07 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1m9LuD-0001G3-Cj; Fri, 30 Jul 2021 08:22:01 +0200
-Subject: Re: [PATCH v2] KEYS: trusted: fix use as module when CONFIG_TCG_TPM=m
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, kernel@pengutronix.de,
-        Andreas Rammhold <andreas@rammhold.de>,
-        David Gstir <david@sigma-star.at>,
-        Richard Weinberger <richard@nod.at>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-References: <20210721160258.7024-1-a.fatoum@pengutronix.de>
- <20210727030433.3dwod2elwtdkhwsc@kernel.org>
- <fe39a449-88df-766b-a13a-290f4847d43e@pengutronix.de>
- <20210728215200.nfvnm5s2b27ang7i@kernel.org>
- <f0f05df9-95bb-8b67-cecc-742af0b19f1e@pengutronix.de>
- <20210730002101.2tcb3bs2lxdvmuqk@kernel.org>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <e372db1d-0909-42b8-7d52-9e5354601c68@pengutronix.de>
-Date:   Fri, 30 Jul 2021 08:21:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        with ESMTP id S229457AbhHBEVE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Aug 2021 00:21:04 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92812C06175F
+        for <keyrings@vger.kernel.org>; Sun,  1 Aug 2021 21:20:55 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id h9so13271996ejs.4
+        for <keyrings@vger.kernel.org>; Sun, 01 Aug 2021 21:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=gwdbQFY0rRQDa2/B0mCVO0IPXbl7fa/rCglAJPvA5miDASRiGd5SnoIL57qwtU5yMF
+         I7OhvyUmR2vbwsbb/8mbVjDjEOfiewMkHcz3UGCxhPJN6TTGMHlph0cYK7paI/6BFgjP
+         8nLAYZ5M4Q9sxC1IyWpjqxC+fmCh1yM27uTF4sJ29TUyBJZiXIhwrNyp1p+IVdD2mkd5
+         GY5P1zZ6fRy8W1i7dOAjKU2v0BghPCNaaVOprDN/QvbOSANmO4u88CRQMcGE6if/SMFX
+         N8Rx/WXeYdeDGPJzHw3HZrjD7dIcm89oS48z3zgtv9n1ARXX7gXvx6cZ1tdRayFkrCJK
+         8VuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=n9VH2qIgGqjiqY3/i03bE6u1HkZS0aLzKcm/wl9Tx/gE9HurovBNu75iXSckwiYt1n
+         8oq1bd/J5VFMA+bzC9hW8DC9E1h3mh/57zf81rDBqxhoT9BL1xnfSFwhA+1oL8p4fWUy
+         J9af+f9m6jx+JLMdCRCskCoqV9UbVAQM/8UTknx+sqEKnCaVhbCLKfSoqjv7ZtDhgDhd
+         bQ1y1XrGurHTNwZ7yVdXczHzP0wwuQW/FI7rHaoQhjSY8wE/c7HXr/zV3zsjnVu2b1K4
+         mfn/wfvqbnhtoa3ty/sjYuXPyBVFxjS5qYcFPKOeLFQB3j9wme9Mi7zdvFHu0eAZu+NY
+         qGdQ==
+X-Gm-Message-State: AOAM530nTnC8bNp+AWHHHECZ8SbXjSNEigexsXHS+ss3iMqNV0gXtn5z
+        rKUEy8lQUHQvFKszV9h66dv37tfclnmguC/MjCg=
+X-Google-Smtp-Source: ABdhPJyc6xU77Uya79xsKq623NoXtNDP/oj3ZYznumwjn3GuQptXcLaZdYvJhir7/qoPnGgHVWnLcq5ghGquD0BNxPw=
+X-Received: by 2002:a17:906:c055:: with SMTP id bm21mr13836056ejb.350.1627878054267;
+ Sun, 01 Aug 2021 21:20:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210730002101.2tcb3bs2lxdvmuqk@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:20:53
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:20:53 +0100
+Message-ID: <CAKwBCXu9HOs8oiB1eZS22dUtdOxCt7Dh8TfQBzitf_fYM=cahg@mail.gmail.com>
+Subject: More Authentic Information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 30.07.21 02:31, Jarkko Sakkinen wrote:
-> On Thu, Jul 29, 2021 at 12:29:38AM +0200, Ahmad Fatoum wrote:
->> On 28.07.21 23:52, Jarkko Sakkinen wrote:
->>> On Tue, Jul 27, 2021 at 06:24:49AM +0200, Ahmad Fatoum wrote:
->>>> On 27.07.21 05:04, Jarkko Sakkinen wrote:
->>>>>> Reported-by: Andreas Rammhold <andreas@rammhold.de>
->>>>>> Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
->>>>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>>>
->>>>> Is it absolutely need to do all this *just* to fix the bug?
->>>>>
->>>>> For a pure bug fix the most essential thing is to be able the backport
->>>>> it to stable kernels.
->>>>
->>>> Not much happened in-between, so a backport should be trivial.
->>>> I can provide these if needed.
->>>
->>> "not much" is not good enough. It should be "not anything".
->>
->> "Not much" [code that could conflict was added in-between].
->>
->> I just checked and it applies cleanly on v5.13. On the off chance
->> that this patch conflicts with another stable backport by the time
->> it's backported, I'll get a friendly automated email and send out
->> a rebased patch.
-> 
-> What you should do is to split this into patch that exactly
-> fixes the issue, and to one that adds the "niceties".
-
-I'd rather not send out patches I believe to be incomplete, sorry.
-If you want to fix the regression's root cause of insufficient
-Kconfig description, that here is what it takes.
-
-You can take Andreas' regression fix for stable and replace it with my patch later.
-I'll send out a new version removing references that it fixes a regression.
-
-Cheers,
-Ahmad
-
-> 
-> /Jarkko
-> 
-
-
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Dear Partner,
+
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
+
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
+
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
+
+
+Regards :  Abdoulahi Kazim
