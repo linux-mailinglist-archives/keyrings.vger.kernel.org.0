@@ -2,207 +2,174 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA213E163D
-	for <lists+keyrings@lfdr.de>; Thu,  5 Aug 2021 16:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF52B3E19C5
+	for <lists+keyrings@lfdr.de>; Thu,  5 Aug 2021 18:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241817AbhHEOBH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Aug 2021 10:01:07 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:12732 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238069AbhHEOBH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Aug 2021 10:01:07 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 175DZAVU064983;
-        Thu, 5 Aug 2021 10:00:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=wouwzQZTCNlnpx1DBk0AV8sywz7PyVmLvpTAhdYJBxY=;
- b=eZvtyKD7C82YMCP1szP4BSGOtS3u6aONh02QNEaBc8W2rAZ3iRRBZtCEDZEoY9u1tu3B
- UIwVvNjDS2/QXYB3wYL9oBFNKXEA9xTdc0kNUTIahpySOgMmHjbfFDo53fwxm8nIL8cQ
- uE+2iRT1ZhhNehcVshwaX4lSLELzTvdKF6kcOqck+DlF5MyKyvczMrsJhI3mc4nWh2wo
- 3i6I2qbQwYjhvrLCeHt0MW3uG/rBtnUlvCLFa/ae0eUUqVNyr3v11MD9dug+ZfjItLcG
- G5OUepNpaxnVsb5wBlTvkJcMyrw1WgAAL5RtPJIDH0+XEjeJBBpylN8AoeF7sU6b6OQ3 XA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3a897nn8dg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 05 Aug 2021 10:00:31 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 175DnlYK136073;
-        Thu, 5 Aug 2021 10:00:30 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3a897nn8b6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 05 Aug 2021 10:00:30 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 175Dwrtt024086;
-        Thu, 5 Aug 2021 14:00:27 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-        by ppma02fra.de.ibm.com with ESMTP id 3a4x58t51y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 05 Aug 2021 14:00:27 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 175DvQvg31588654
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 5 Aug 2021 13:57:26 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 45C1FAE05A;
-        Thu,  5 Aug 2021 14:00:24 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 349D1AE0A6;
-        Thu,  5 Aug 2021 14:00:19 +0000 (GMT)
-Received: from sig-9-65-205-127.ibm.com (unknown [9.65.205.127])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  5 Aug 2021 14:00:18 +0000 (GMT)
-Message-ID: <456fea5f63f14a342791388e6e8d34605ef13eb5.camel@linux.ibm.com>
-Subject: Re: [PATCH RFC v2 02/12] KEYS: CA link restriction
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, dhowells@redhat.com,
-        dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, jarkko@kernel.org, jmorris@namei.org,
-        serge@hallyn.com
-Cc:     keescook@chromium.org, gregkh@linuxfoundation.org,
-        torvalds@linux-foundation.org, scott.branden@broadcom.com,
-        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
-        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
-        glin@suse.com, konrad.wilk@oracle.com
-Date:   Thu, 05 Aug 2021 10:00:18 -0400
-In-Reply-To: <20210726171319.3133879-3-eric.snowberg@oracle.com>
-References: <20210726171319.3133879-1-eric.snowberg@oracle.com>
-         <20210726171319.3133879-3-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
+        id S233784AbhHEQoH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 5 Aug 2021 12:44:07 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3598 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233551AbhHEQoG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Aug 2021 12:44:06 -0400
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GgZDd526gz6F8ML;
+        Fri,  6 Aug 2021 00:43:29 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 5 Aug 2021 18:43:48 +0200
+Received: from localhost (10.227.96.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Thu, 5 Aug 2021
+ 17:43:47 +0100
+Date:   Thu, 5 Aug 2021 17:43:46 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>
+CC:     <keyrings@vger.kernel.org>, <dan.j.williams@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>, <linuxarm@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Jeremy Kerr <jk@codeconstruct.com.au>
+Subject: Re: [RFC PATCH 0/4] PCI/CMA and SPDM library
+Message-ID: <20210805174346.000047f1@huawei.com>
+In-Reply-To: <20210804161839.3492053-1-Jonathan.Cameron@huawei.com>
+References: <20210804161839.3492053-1-Jonathan.Cameron@huawei.com>
+Organization: Huawei tech. R&D (UK)  Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: H3nh4gAsq6mDfpVhyljeEIsVgs87D9JY
-X-Proofpoint-GUID: sHb-rYluSo52uSCH5PQ8YjaifqQNNbBa
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-05_04:2021-08-05,2021-08-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 mlxscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 phishscore=0 suspectscore=0 bulkscore=0
- adultscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108050082
+X-Originating-IP: [10.227.96.57]
+X-ClientProxiedBy: lhreml741-chm.china.huawei.com (10.201.108.191) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2021-07-26 at 13:13 -0400, Eric Snowberg wrote:
-> Add a new link restriction.  Restrict the addition of keys in a keyring
-> based on the key to be added being a CA (self-signed) or by being
-> vouched for by a key in either the built-in or the secondary trusted
-> keyrings.
+On Thu, 5 Aug 2021 00:18:35 +0800
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+
+> This is an RFC to start discussions about how we support the Component
+> Measurement and Authentication (CMA) ECN (pcisig.com)
 > 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> CMA provides an adaptation of the data objects and underlying protocol
+> defined in the DMTF SPDM specification to be used to authenticate and
+> conduct run-time measurements of the state of PCI devices (kind of like
+> IMA for devices / firmware). This is done using a Data Object Exchange (DOE)
+> protocol described in the ECN.
+> 
+> The CMA ECN is available from the PCI SIG and SPDM can be found at
+> https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.1.pdf
+> 
+> CMA/SPDM is focused on establishing trust of the device by:
+> 1) Negotiate algorithms supported.
+> 2) Retrieve and check the certificate chain from the device against
+>    a suitable signing certificate on the host.
+> 3) Issue a challenge to the device to verify it can sign with the private
+>    key associated with the leaf certificate.
+> 4) (Request a measurement of device state)
+> 5) (Establish a secure channel for further measurements or other uses)
+> 6) (Mutual authentication)
+> 
+> This RFC only does steps 1-3
+> 
+> Testing of this patch set has been conducted against QEMU emulation of
+> the device backed by openSPDM emulation of the SPDM protocol.
 
-As discussed, please remove "or by being vouched for by a key in
-either the built-in or the secondary trusted keyrings."
+Note testing also works with libspdm and libspdm-emu from
+https://github.com/DMTF/spdm-emu with no modifications.
 
-If these keys were to be loaded onto a keyring other than the platform
-keyring, they should be loaded onto the secondary keyring.  The
-secondary restriction currently allows certificates signed by keys on
-either the builtin or the secondary keyring, to be loaded onto the
-secondary keyring.   A new restriction would also allow certificates
-signed by keys on the ".mok" keyring.
+The openSPDM modifications Chris and team made were all associated with the host
+end and are not needed for this code (the QEMU part is still needed to provide
+the DOE emulation and forward the traffic to spdm_responder_emu)
 
-> +/**
-> + * restrict_link_by_ca - Restrict additions to a ring of public keys
-> + * based on it being a CA
-> + * @dest_keyring: Keyring being linked to.
-> + * @type: The type of key being added.
-> + * @payload: The payload of the new key.
-> + * @trusted: A key or ring of keys that can be used to vouch for the new cert.
-> + *
-> + * Check if the new certificate is a CA or if they key can be vouched for
-> + * by keys already linked in the destination keyring or the trusted
-> + * keyring.  If one of those is the signing key or it is self signed, then
-> + * mark the new certificate as being ok to link.
-> + *
-> + * Returns 0 if the new certificate was accepted, -ENOKEY if we could not find
-> + * a matching parent certificate in the trusted list.  -ENOPKG if the signature
-> + * uses unsupported crypto, or some other error if there is a matching
-> + * certificate  but the signature check cannot be performed.
-> + */
+I should also have mentioned this series is on top of the recently posted
+DOE series rebased onto the linux-cxl next git tree.  I'm not really expecting
+anyone to test it at this stage, but if desired I can push a full tree out
+somewhere with this in place.
 
-Please update the function description as discussed, removing "or if they
-key can be vouched for by keys already linked in the destination
-keyring or the trusted keyring."
+Jonathan
 
-The kernel doc "Brief description of function" should not wrap.  The
-variable definition shouldn't be suffixed with a period.  Please refer
-to Documentation/doc-guide/kernel-doc.rst.
-
-> +int restrict_link_by_ca(struct key *dest_keyring,
-
-The UEFI db CA keys should only be loaded on boot.  Should this be
-annotated as __init?
-
-> +			const struct key_type *type,
-> +			const union key_payload *payload,
-> +			struct key *trust_keyring)
-> +{
-> +	const struct public_key_signature *sig;
-> +	const struct public_key *pkey;
-> +	struct key *key;
-> +	int ret;
-> +
-> +	if (type != &key_type_asymmetric)
-> +		return -EOPNOTSUPP;
-> +
-> +	sig = payload->data[asym_auth];
-> +	if (!sig)
-> +		return -ENOPKG;
-> +
-> +	if (!sig->auth_ids[0] && !sig->auth_ids[1])
-> +		return -ENOKEY;
-> +
-> +	pkey = payload->data[asym_crypto];
-> +	if (!pkey)
-> +		return -ENOPKG;
-> +
-> +	ret = public_key_verify_signature(pkey, sig);
-> +	if (!ret)
-> +		return 0;
-> +
-> +	if (!trust_keyring)
-> +		return -ENOKEY;
-> +
-> +	key = find_asymmetric_key(trust_keyring,
-> +				  sig->auth_ids[0], sig->auth_ids[1],
-> +				  false);
-> +	if (IS_ERR(key))
-> +		return -ENOKEY;
-> +
-> +	ret = verify_signature(key, sig);
-> +	key_put(key);
-> +	return ret;
-> +}
-> +
->  static bool match_either_id(const struct asymmetric_key_ids *pair,
->  			    const struct asymmetric_key_id *single)
->  {
-
-
-> +extern int restrict_link_by_system_trusted_or_ca(
-> +	struct key *dest_keyring,
-> +	const struct key_type *type,
-> +	const union key_payload *payload,
-> +	struct key *restrict_key);
-
-After the discussed change, this shouldn't be needed.
-
-thanks,
-
-Mimi
-
-> +
->  #ifdef CONFIG_SECONDARY_TRUSTED_KEYRING
->  extern int restrict_link_by_builtin_and_secondary_trusted(
->  	struct key *keyring,
-
+> 
+> https://lore.kernel.org/qemu-devel/1624665723-5169-1-git-send-email-cbrowy@avery-design.com/
+> 
+> Open questions are called out in the individual patches but the big ones are
+> probably:
+> 
+> 1) Certificate management.
+>    Current code uses a _cma keyring created by the kernel, into which a
+>    suitable root certificate can be inserted from userspace.
+> 
+>    A=$(keyctl search %:_cma  keyring _cma)
+>    evmctl import ecdsaca.cert.der $A
+> 
+>    Is this an acceptable way to load the root certificates for this purpose?
+> 
+>    The root of the device provided certificate chain is then checked against
+>    certificates on this keychain, but is itself (with the other certificates
+>    in the chain) loaded into an SPDM instance specific keychain.  Currently
+>    there is no safe cleanup of this which will need to be fixed.
+> 
+>    Using the keychain mechanism provides a very convenient way to manage these
+>    certificates and to allow userspace to read them for debug purpose etc, but
+>    is this the right use model?
+> 
+>    Finally the leaf certificate of this chain is used to check signatures of
+>    the rest of the communications with the device.
+> 
+> 2) ASNL1 encoder for ECDSA signature
+>    It seems from the openSPDM implementation that for these signatures,
+>    the format is a simple pair of raw values.  The kernel implementation of
+>    ECDSA signature verification assumes ASN1 encoding as seems to be used
+>    in x509 certificates.  Currently I work around that by encoding the
+>    signatures so that the ECDSA code can un-encode them again and use them.
+>    This seems slightly silly, but it is minimum impact on current code.
+>    Other suggestions welcome.
+> 
+> 3) Interface to present to drivers. Currently I'm providing just one exposed
+>    function that wraps up all the exhanges until a challenge authentication
+>    response from the device. This is done using one possible sequence.
+>    I don't think it makes sense to expose the low level components due to the
+>    underlying spdm_state updates and there only being a fixed set of valid
+>    orderings.
+> 
+> Future patches will raise questions around management of the measurements, but
+> I'll leave those until I have some sort of implementation to shoot at.
+> The 'on probe' use in the CXL driver is only one likely time when authentication
+> would be needed.
+> 
+> Note I'm new to a bunch of the areas of the kernel this touches, so have
+> probably done things that are totally wrong.
+> 
+> CC list is best effort to identify those who 'might' care.  Please share
+> with anyone I've missed.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+> Jonathan Cameron (4):
+>   lib/asn1_encoder: Add a function to encode many byte integer values.
+>   spdm: Introduce a library for DMTF SPDM
+>   PCI/CMA: Initial support for Component Measurement and Authentication
+>     ECN
+>   cxl/pci: Add really basic CMA authentication support.
+> 
+>  drivers/cxl/Kconfig          |    1 +
+>  drivers/cxl/mem.h            |    2 +
+>  drivers/cxl/pci.c            |   13 +-
+>  drivers/pci/Kconfig          |    9 +
+>  drivers/pci/Makefile         |    1 +
+>  drivers/pci/doe.c            |    2 -
+>  include/linux/asn1_encoder.h |    3 +
+>  include/linux/pci-doe.h      |    2 +
+>  lib/Kconfig                  |    3 +
+>  lib/Makefile                 |    2 +
+>  lib/asn1_encoder.c           |   54 ++
+>  lib/spdm.c                   | 1196 ++++++++++++++++++++++++++++++++++
+>  12 files changed, 1285 insertions(+), 3 deletions(-)
+>  create mode 100644 lib/spdm.c
+> 
 
