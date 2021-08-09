@@ -2,79 +2,173 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21B383E3CCB
-	for <lists+keyrings@lfdr.de>; Sun,  8 Aug 2021 22:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB943E4124
+	for <lists+keyrings@lfdr.de>; Mon,  9 Aug 2021 09:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232486AbhHHUwz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 8 Aug 2021 16:52:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34654 "EHLO
+        id S233654AbhHIHwz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Aug 2021 03:52:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbhHHUwz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 8 Aug 2021 16:52:55 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C73C0613CF;
-        Sun,  8 Aug 2021 13:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=gvBqJCrtIO7/h5aTsrK4fKh+UErHls5iIKGGR8pWIJQ=; b=3277cQlvW9TXLh5cofuwuIbmFU
-        jRx52bNUMB9HpOaBT6GpljuPJkwT2my40FTx6voCeaTi1gZkD0XyLaQ8ouDBDj8cZF8dnqBhxsS9h
-        5uqxKuBvoVeuChG/wY5CHVtO70sn9r4hgLMmNcMOoSZ0tQlKwkpUy8yLwTOTKL71Dr4CGDbG7BdiR
-        1HlI0aCDVHZ3ILgZCmf5TZBBdTkLpKwMXRLv8UpfPTljVgWzHY8Bs+OHEKUimSJ2nm5YYNIk80pBR
-        LYpg9HJbWk6d7xSThLv3nrdBYVnosBBkX/Vw7Gsgynqz9f3q4Y96FxoEKV/IMdZht7zCEUOmYy988
-        FlZ/7YsQ==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mCpmd-00GUaQ-Pz; Sun, 08 Aug 2021 20:52:35 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        with ESMTP id S233653AbhHIHwy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Aug 2021 03:52:54 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83A0C0613CF
+        for <keyrings@vger.kernel.org>; Mon,  9 Aug 2021 00:52:33 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1mD05D-0004PL-Ob; Mon, 09 Aug 2021 09:52:27 +0200
+Subject: Re: [PATCH 2/4] KEYS: trusted: allow trust sources to use kernel RNG
+ for key material
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        kernel <kernel@pengutronix.de>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org
-Subject: [PATCH] asymmetric_keys: verify_pefile: fix kernel-doc notation
-Date:   Sun,  8 Aug 2021 13:52:35 -0700
-Message-Id: <20210808205235.21903-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        David Gstir <david@sigma-star.at>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>
+References: <cover.9fc9298fd9d63553491871d043a18affc2dbc8a8.1626885907.git-series.a.fatoum@pengutronix.de>
+ <7b771da7b09a01c8b4da2ed21f05251ea797b2e8.1626885907.git-series.a.fatoum@pengutronix.de>
+ <CAFA6WYOskwZNe5Wb5PTtnSHQBonSXZ48eEex0w9jQ+JW4vG=+w@mail.gmail.com>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <7537c853-3641-a6d3-91d8-70fea9f01a89@pengutronix.de>
+Date:   Mon, 9 Aug 2021 09:52:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
+In-Reply-To: <CAFA6WYOskwZNe5Wb5PTtnSHQBonSXZ48eEex0w9jQ+JW4vG=+w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Correct the warnings from scripts/kernel-doc:
+Hello Sumit,
 
-crypto/asymmetric_keys/verify_pefile.c:419: warning: Function parameter or member 'trusted_keys' not described in 'verify_pefile_signature'
-crypto/asymmetric_keys/verify_pefile.c:419: warning: Excess function parameter 'trust_keys' description in 'verify_pefile_signature'
-crypto/asymmetric_keys/verify_pefile.c:419: warning: No description found for return value of 'verify_pefile_signature'
+On 22.07.21 08:31, Sumit Garg wrote:
+> On Wed, 21 Jul 2021 at 22:19, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>>
+>> The two existing trusted key sources don't make use of the kernel RNG,
+>> but instead let the hardware that does the sealing/unsealing also
+>> generate the random key material. While a previous change offers users
+>> the choice to use the kernel RNG instead for both, new trust sources
+>> may want to unconditionally use the kernel RNG for generating key
+>> material, like it's done elsewhere in the kernel.
+>>
+>> This is especially prudent for hardware that has proven-in-production
+>> HWRNG drivers implemented, as otherwise code would have to be duplicated
+>> only to arrive at a possibly worse result.
+>>
+>> Make this possible by turning struct trusted_key_ops::get_random
+>> into an optional member. If a driver leaves it NULL, kernel RNG
+>> will be used instead.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>> To: James Bottomley <jejb@linux.ibm.com>
+>> To: Jarkko Sakkinen <jarkko@kernel.org>
+>> To: Mimi Zohar <zohar@linux.ibm.com>
+>> To: David Howells <dhowells@redhat.com>
+>> Cc: James Morris <jmorris@namei.org>
+>> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+>> Cc: "Horia Geantă" <horia.geanta@nxp.com>
+>> Cc: Aymen Sghaier <aymen.sghaier@nxp.com>
+>> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Udit Agarwal <udit.agarwal@nxp.com>
+>> Cc: Eric Biggers <ebiggers@kernel.org>
+>> Cc: Jan Luebbe <j.luebbe@pengutronix.de>
+>> Cc: David Gstir <david@sigma-star.at>
+>> Cc: Richard Weinberger <richard@nod.at>
+>> Cc: Franck LENORMAND <franck.lenormand@nxp.com>
+>> Cc: Sumit Garg <sumit.garg@linaro.org>
+>> Cc: keyrings@vger.kernel.org
+>> Cc: linux-crypto@vger.kernel.org
+>> Cc: linux-integrity@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linux-security-module@vger.kernel.org
+>> ---
+>>  include/keys/trusted-type.h               | 2 +-
+>>  security/keys/trusted-keys/trusted_core.c | 2 +-
+>>  2 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
+>> index d89fa2579ac0..4eb64548a74f 100644
+>> --- a/include/keys/trusted-type.h
+>> +++ b/include/keys/trusted-type.h
+>> @@ -64,7 +64,7 @@ struct trusted_key_ops {
+>>         /* Unseal a key. */
+>>         int (*unseal)(struct trusted_key_payload *p, char *datablob);
+>>
+>> -       /* Get a randomized key. */
+>> +       /* Optional: Get a randomized key. */
+>>         int (*get_random)(unsigned char *key, size_t key_len);
+>>
+>>         /* Exit key interface. */
+>> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+>> index 569af9af8df0..d2b7626cde8b 100644
+>> --- a/security/keys/trusted-keys/trusted_core.c
+>> +++ b/security/keys/trusted-keys/trusted_core.c
+>> @@ -334,7 +334,7 @@ static int __init init_trusted(void)
+>>                         continue;
+>>
+>>                 get_random = trusted_key_sources[i].ops->get_random;
+>> -               if (trusted_kernel_rng)
+>> +               if (trusted_kernel_rng || !get_random)
+>>                         get_random = kernel_get_random;
+>>
+> 
+> For ease of understanding, I would prefer to write it as:
+> 
+>                   get_random = trusted_key_sources[i].ops->get_random ?:
+>                                          kernel_get_random;
+>                   if (trusted_kernel_rng)
+>                         get_random = kernel_get_random;
+> 
+> With that:
+> 
+> Acked-by: Sumit Garg <sumit.garg@linaro.org>
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-crypto@vger.kernel.org
----
- crypto/asymmetric_keys/verify_pefile.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I don't think it improves readability to split up the conditional.
+At least I need to take a second pass over the code to understand
+the second conditional.
 
---- linux-next-20210806.orig/crypto/asymmetric_keys/verify_pefile.c
-+++ linux-next-20210806/crypto/asymmetric_keys/verify_pefile.c
-@@ -387,13 +387,13 @@ error_no_desc:
-  * verify_pefile_signature - Verify the signature on a PE binary image
-  * @pebuf: Buffer containing the PE binary image
-  * @pelen: Length of the binary image
-- * @trust_keys: Signing certificate(s) to use as starting points
-+ * @trusted_keys: Signing certificate(s) to use as starting points
-  * @usage: The use to which the key is being put.
-  *
-  * Validate that the certificate chain inside the PKCS#7 message inside the PE
-  * binary image intersects keys we already know and trust.
-  *
-- * Returns, in order of descending priority:
-+ * Return: in order of descending priority:
-  *
-  *  (*) -ELIBBAD if the image cannot be parsed, or:
-  *
+Cheers,
+Ahmad
+
+> 
+> -Sumit
+> 
+>>                 static_call_update(trusted_key_init,
+>> --
+>> git-series 0.9.1
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
