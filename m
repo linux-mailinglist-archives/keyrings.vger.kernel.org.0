@@ -2,113 +2,108 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7D983E43AD
-	for <lists+keyrings@lfdr.de>; Mon,  9 Aug 2021 12:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B113E4E1D
+	for <lists+keyrings@lfdr.de>; Mon,  9 Aug 2021 22:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234869AbhHIKRU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Aug 2021 06:17:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43728 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233400AbhHIKRT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Aug 2021 06:17:19 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B66FC061798
-        for <keyrings@vger.kernel.org>; Mon,  9 Aug 2021 03:16:59 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1mD2L1-0006Uv-IB; Mon, 09 Aug 2021 12:16:55 +0200
-Subject: Re: [PATCH 0/4] KEYS: trusted: Introduce support for NXP CAAM-based
- trusted keys
+        id S235026AbhHIUwY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Aug 2021 16:52:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42706 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231439AbhHIUwY (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Mon, 9 Aug 2021 16:52:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A5C3E61019;
+        Mon,  9 Aug 2021 20:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628542323;
+        bh=Hmwxlf5nQ7ImK2R2BhO30AV/6FpqvIYKru/OacCO/yI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e+SB5V7BnHWZA1+CxKpnSYavXT98W4ODpDVlD+XnnVvKsjZbLwcMZaIjQPimc+wty
+         HeRSgLLvr0bL+nvQEhQYmFMNzgUdXpBUkYxsSofCOST9b7gtqMsLb2dS7ZywqI+PfJ
+         jqWJKwkDczv9HXamv4LdC1Y841+ehrsggFvhehTUWt4TynfJ6pvOvuxqH61NN+//ne
+         Gq4IRclpNdCln9SoQCCKdwGoZXM4gtSbwAkO/wl/MTpKkfwNxMV3A0FtsKSuL69t0K
+         r1O31SpBeVUg8PgVABpL4gGF6vvwr/qnYH33nxARtCg1w9zNGYpYLU7C5fHtDAKQcy
+         5fS2dwdG18wgw==
+Date:   Mon, 9 Aug 2021 13:52:01 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
 To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Aymen Sghaier <aymen.sghaier@nxp.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
+Cc:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, kernel@pengutronix.de,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
         James Bottomley <jejb@linux.ibm.com>,
-        Jan Luebbe <j.luebbe@pengutronix.de>,
-        Udit Agarwal <udit.agarwal@nxp.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         Sumit Garg <sumit.garg@linaro.org>,
-        David Gstir <david@sigma-star.at>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Franck LENORMAND <franck.lenormand@nxp.com>,
-        Richard Weinberger <richard@nod.at>,
-        James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
         David Howells <dhowells@redhat.com>,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+        linux-fscrypt@vger.kernel.org, linux-crypto@vger.kernel.org,
         linux-integrity@vger.kernel.org,
-        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-References: <cover.9fc9298fd9d63553491871d043a18affc2dbc8a8.1626885907.git-series.a.fatoum@pengutronix.de>
- <b9e44f8e-84a0-90be-6cfc-d3a0bde12178@pengutronix.de>
- <20210809093519.er32rmspuvkrww45@kernel.org>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8321cac9-350b-1325-4b7e-390f4f292070@pengutronix.de>
-Date:   Mon, 9 Aug 2021 12:16:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] fscrypt: support trusted keys
+Message-ID: <YRGVcaquAJiuc8bp@gmail.com>
+References: <20210806150928.27857-1-a.fatoum@pengutronix.de>
+ <20210809094408.4iqwsx77u64usfx6@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20210809093519.er32rmspuvkrww45@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210809094408.4iqwsx77u64usfx6@kernel.org>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 09.08.21 11:35, Jarkko Sakkinen wrote:
-> On Fri, Aug 06, 2021 at 05:12:19PM +0200, Ahmad Fatoum wrote:
->> Dear trusted key maintainers,
->>
->> On 21.07.21 18:48, Ahmad Fatoum wrote:
->>> Series applies on top of
->>> https://lore.kernel.org/linux-integrity/20210721160258.7024-1-a.fatoum@pengutronix.de/T/#u
->>>
->>> v2 -> v3:
->>>  - Split off first Kconfig preparation patch. It fixes a regression,
->>>    so sent that out, so it can be applied separately (Sumit)
->>>  - Split off second key import patch. I'll send that out separately
->>>    as it's a development aid and not required within the CAAM series
->>>  - add MAINTAINERS entry
->>
->> Gentle ping. I'd appreciate feedback on this series.
+On Mon, Aug 09, 2021 at 12:44:08PM +0300, Jarkko Sakkinen wrote:
+> > @@ -577,28 +578,44 @@ static int get_keyring_key(u32 key_id, u32 type,
+> >  	key_ref_t ref;
+> >  	struct key *key;
+> >  	const struct fscrypt_provisioning_key_payload *payload;
+> > -	int err;
+> > +	int err = 0;
+> >  
+> >  	ref = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
+> >  	if (IS_ERR(ref))
+> >  		return PTR_ERR(ref);
+> >  	key = key_ref_to_ptr(ref);
+> >  
+> > -	if (key->type != &key_type_fscrypt_provisioning)
+> > -		goto bad_key;
+> > -	payload = key->payload.data[0];
+> > +	if (key->type == &key_type_fscrypt_provisioning) {
 > 
-> Simple question: what is fscrypt?
+> Why does fscrypt have own key type, and does not extend 'encrypted' with a
+> new format [*]?
 
-For supported file systems, fscrypt[1] allows you to encrypt at a directory level.
-It has no trusted key integration yet, which is something I am trying to upstream
-in parallel to this series, so I eventually can use fscrypt together with CAAM-backed
-trusted keys on an unpatched kernel.
+Are you referring to the "fscrypt-provisioning" key type?  That is an existing
+feature (which in most cases isn't used, but there is a use case that requires
+it), not something being added by this patch.  We just needed a key type where
+userspace can add a raw key to the kernel and not be able to read it back (so
+like the "logon" key type), but also have the kernel enforce that that key is
+only used for fscrypt with a particular KDF version, and not with other random
+kernel features.  The "encrypted" key type wouldn't have worked for this at all;
+it's a totally different thing.
 
-If it interests you, I described[2] my CAAM+ubifs+fscrypt use case in the
-discussion thread on my fscrypt-trusted-keys v1. Jan, a colleague of mine, held a
-talk[3] on the different solutions for authenticated and encrypted storage, which
-you may want to check out.
-
-I'd really appreciate feedback here on the the CAAM parts of this series, so this can
-eventually go mainline.
-
-Thanks,
-Ahmad
-
-
-[1]: https://www.kernel.org/doc/html/v5.13/filesystems/fscrypt.html
-[2]: https://lore.kernel.org/linux-fscrypt/367ea5bb-76cf-6020-cb99-91b5ca82d679@pengutronix.de/
-[3]: https://www.youtube.com/watch?v=z_y84v9076c
-
+> > +	} else if (IS_REACHABLE(CONFIG_TRUSTED_KEYS) && key->type == &key_type_trusted) {
+> > +		struct trusted_key_payload *tkp;
+> > +
+> > +		/* avoid reseal changing payload while we memcpy key */
+> > +		down_read(&key->sem);
+> > +		tkp = key->payload.data[0];
+> > +		if (!tkp || tkp->key_len < FSCRYPT_MIN_KEY_SIZE ||
+> > +		    tkp->key_len > FSCRYPT_MAX_KEY_SIZE) {
+> > +			up_read(&key->sem);
+> > +			err = -EINVAL;
+> > +			goto out_put;
+> > +		}
+> > +
+> > +		secret->size = tkp->key_len;
+> > +		memcpy(secret->raw, tkp->key, secret->size);
+> > +		up_read(&key->sem);
+> > +	} else {
 > 
-> /Jarkko
 > 
+> I don't think this is right, or at least it does not follow the pattern
+> in [*]. I.e. you should rather use trusted key to seal your fscrypt key.
 
+What's the benefit of the extra layer of indirection over just using a "trusted"
+key directly?  The use case for "encrypted" keys is not at all clear to me.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+- Eric
