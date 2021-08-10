@@ -2,105 +2,224 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C22113E53AA
-	for <lists+keyrings@lfdr.de>; Tue, 10 Aug 2021 08:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 860993E547C
+	for <lists+keyrings@lfdr.de>; Tue, 10 Aug 2021 09:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236708AbhHJGkZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 10 Aug 2021 02:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38432 "EHLO
+        id S233034AbhHJHls (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 Aug 2021 03:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236696AbhHJGkY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Aug 2021 02:40:24 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F3CC061798
-        for <keyrings@vger.kernel.org>; Mon,  9 Aug 2021 23:40:03 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id w14so1132414pjh.5
-        for <keyrings@vger.kernel.org>; Mon, 09 Aug 2021 23:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=gJh5g6sBkUyDOxH0aazRQXEM04p3XrayCtaq3Xsy8GM=;
-        b=yeGYerUfG0kXBiPcCujcvz6H84DiZtZfboDXJUsbds5MuuXbah9S4F8JURE6f0/Pu4
-         w10WRWwPwTRweg+7Rp8mD32OKwsEYIb28WLedjmAXZAPa6QYDlBRLtZ1gfWXLusFKQu/
-         U439iCD6UHoEsCwyshBGhnBqxQVdXyPS1RdK8RqfuDKwqAswf0/poUvb7dbv2L0nhnxQ
-         2yZQZhry4s3r4o9ohN0ePux2dIPrGVrWTnQsGLkW6C1QHGCSlMQfw2gAutQq0g6LVHVw
-         46Dm7ddYllxXF8DwQwVrZSFcXja92nqCiXnJ2pnXpEH06RGP6Ojd1xHWaiOEvHSwNj4p
-         REEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=gJh5g6sBkUyDOxH0aazRQXEM04p3XrayCtaq3Xsy8GM=;
-        b=WhzkkUGJn/EFK0iHq+fRPDQiaJsMlTQjOCkLuKDsLZXCi50rGi1cdxCL8kZMCyNTqS
-         U08luJ4+zX7z/akr+Mwu1w7VkkapuskcWC++DQ5TW+tdC4VxJbxPEXHBRFlOiK2VRpjO
-         EpCii7xWeytp8nI7mnkRpAGxCvu820iOOKagV05vq4wPsm9rBx0+UbvuJI/1TqrOn+ZK
-         6G73NNRqvtpv+xQmKJzdmlitPImkQ5Gjqy4o11Xo//MyjZS49jrEJ6YOcRM2d8toq3AE
-         hvXFQgHW5DEEZIaHPUmOQoHJ6iEomIXoh78bhOUwRwccnMEC5s0OEDDw+g3zIBz/g7lM
-         9PoA==
-X-Gm-Message-State: AOAM533Un3NnhEWrEZNzTrVriM2KqS7l5RuZB3Mmj1o9LQ00mihg22yH
-        qNifaJbPOlA7/Uy46KdvNyWo2g==
-X-Google-Smtp-Source: ABdhPJwjGXEPnknZWOpS6jE/Tehvvsx9C9n+uRUSkeCrF295hclr2rjt9RO6XkB4IapiATVWdosRLA==
-X-Received: by 2002:a17:90a:7e0d:: with SMTP id i13mr29815845pjl.146.1628577602836;
-        Mon, 09 Aug 2021 23:40:02 -0700 (PDT)
-Received: from libai.bytedance.net ([61.120.150.71])
-        by smtp.gmail.com with ESMTPSA id q4sm25769355pgv.16.2021.08.09.23.39.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Aug 2021 23:40:02 -0700 (PDT)
-From:   zhenwei pi <pizhenwei@bytedance.com>
-To:     dhowells@redhat.com, herbert@gondor.apana.org.au,
-        davem@davemloft.net
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH] crypto: public_key: fix overflow during implicit conversion
-Date:   Tue, 10 Aug 2021 14:39:54 +0800
-Message-Id: <20210810063954.628244-1-pizhenwei@bytedance.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229760AbhHJHls (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Aug 2021 03:41:48 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2134C0613D3
+        for <keyrings@vger.kernel.org>; Tue, 10 Aug 2021 00:41:26 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1mDMO4-0005bc-BD; Tue, 10 Aug 2021 09:41:24 +0200
+Subject: Re: [PATCH v2] fscrypt: support trusted keys
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, kernel@pengutronix.de,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Howells <dhowells@redhat.com>,
+        linux-fscrypt@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210806150928.27857-1-a.fatoum@pengutronix.de>
+ <YRGdBiJQ3xqZAT4w@gmail.com>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <2bc19003-82a1-0d2d-4548-3315686d77b4@pengutronix.de>
+Date:   Tue, 10 Aug 2021 09:41:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <YRGdBiJQ3xqZAT4w@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hit kernel warning like this, it can be reproduced by verifying 256
-bytes datafile by keyctl command.
+Hello Eric,
 
- WARNING: CPU: 5 PID: 344556 at crypto/rsa-pkcs1pad.c:540 pkcs1pad_verify+0x160/0x190
- ...
- Call Trace:
-  public_key_verify_signature+0x282/0x380
-  ? software_key_query+0x12d/0x180
-  ? keyctl_pkey_params_get+0xd6/0x130
-  asymmetric_key_verify_signature+0x66/0x80
-  keyctl_pkey_verify+0xa5/0x100
-  do_syscall_64+0x35/0xb0
-  entry_SYSCALL_64_after_hwframe+0x44/0xae
+On 09.08.21 23:24, Eric Biggers wrote:
+> Hi Ahmad,
+> 
+> This generally looks okay, but I have some comments below.
+> 
+> On Fri, Aug 06, 2021 at 05:09:28PM +0200, Ahmad Fatoum wrote:
+>> Kernel trusted keys don't require userspace knowledge of the raw key
+>> material and instead export a sealed blob, which can be persisted to
+>> unencrypted storage. Userspace can then load this blob into the kernel,
+>> where it's unsealed and from there on usable for kernel crypto.
+> 
+> Please be explicit about where and how the keys get generated in this case.
 
-'.digest_size(u8) = params->in_len(u32)' leads overflow of an u8 value,
-so use u32 instead of u8 of digest. And reorder struct
-public_key_signature, it could save 8 bytes on a 64 bit machine.
+I intentionally avoided talking about this. You see, the trusted key documentation[1]
+phrases it as "all keys are created in the kernel", but you consider
+"'The key material is generated
+ within the kernel' [a] misleading claim'. [2]
 
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
----
- include/crypto/public_key.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Also, I hope patches to force kernel RNG and CAAM support (using kernel RNG as
+default) will soon be accepted, which would invalidate any further claims in the
+commit message without a means to correct them.
 
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 47accec68cb0..f603325c0c30 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -38,9 +38,9 @@ extern void public_key_free(struct public_key *key);
- struct public_key_signature {
- 	struct asymmetric_key_id *auth_ids[2];
- 	u8 *s;			/* Signature */
--	u32 s_size;		/* Number of bytes in signature */
- 	u8 *digest;
--	u8 digest_size;		/* Number of bytes in digest */
-+	u32 s_size;		/* Number of bytes in signature */
-+	u32 digest_size;	/* Number of bytes in digest */
- 	const char *pkey_algo;
- 	const char *hash_algo;
- 	const char *encoding;
+I thus restricted my commit message to the necessary bit that are needed to
+understand the patch, which is: userspace knowledge of the key material is
+not required. If you disagree, could you provide me the text you'd prefer?
+
+>> This is incompatible with fscrypt, where userspace is supposed to supply
+>> the raw key material. For TPMs, a work around is to do key unsealing in
+>> userspace, but this may not be feasible for other trusted key backends.
+> 
+> As far as I can see, "Key unsealing in userspace" actually is the preferred way
+> to implement TPM-bound encryption.  So it doesn't seem fair to call it a "work
+> around".
+
+In the context of *kernel trusted keys*, direct interaction with the TPM
+outside the kernel to decrypt a kernel-encrypted blob is surely not the
+preferred way.
+
+For TPM-bound encryption completely in userspace? Maybe. But that's not
+what this patch is about. It's about kernel trusted keys and offloading
+part of its functionality to userspace to _work around_ lack of kernel-side
+integration is exactly that: a _work around_.
+
+>> +  Most users leave this 0 and specify the raw key directly.
+>> +  "trusted" keys are useful to leverage kernel support for sealing
+>> +  and unsealing key material. Sealed keys can be persisted to
+>> +  unencrypted storage and later be used to decrypt the file system
+>> +  without requiring userspace to have knowledge of the raw key
+>> +  material.
+>> +  "fscrypt-provisioning" key support is intended mainly to allow
+>> +  re-adding keys after a filesystem is unmounted and re-mounted,
+>>    without having to store the raw keys in userspace memory.
+>>  
+>>  - ``raw`` is a variable-length field which must contain the actual
+>>    key, ``raw_size`` bytes long.  Alternatively, if ``key_id`` is
+>>    nonzero, then this field is unused.
+>>  
+>> +.. note::
+>> +
+>> +   Users should take care not to reuse the fscrypt key material with
+>> +   different ciphers or in multiple contexts as this may make it
+>> +   easier to deduce the key.
+>> +   This also applies when the key material is supplied indirectly
+>> +   via a kernel trusted key. In this case, the trusted key should
+>> +   perferably be used only in a single context.
+> 
+> Again, please be explicit about key generation.  Note that key generation is
+> already discussed in a different section, "Master Keys".  There should be a
+> mention of trusted keys there.  The above note about not reusing keys probably
+> belongs there too.  (The section you're editing here is
+> "FS_IOC_ADD_ENCRYPTION_KEY", which is primarily intended to just document the
+> ioctl, so it's not necessarily the best place for this type of information.)
+
+Yes. The content of the note is more appropriate there.
+
+>> @@ -577,28 +578,44 @@ static int get_keyring_key(u32 key_id, u32 type,
+>>  	key_ref_t ref;
+>>  	struct key *key;
+>>  	const struct fscrypt_provisioning_key_payload *payload;
+>> -	int err;
+>> +	int err = 0;
+>>  
+>>  	ref = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
+>>  	if (IS_ERR(ref))
+>>  		return PTR_ERR(ref);
+>>  	key = key_ref_to_ptr(ref);
+>>  
+>> -	if (key->type != &key_type_fscrypt_provisioning)
+>> -		goto bad_key;
+>> -	payload = key->payload.data[0];
+>> +	if (key->type == &key_type_fscrypt_provisioning) {
+> 
+> This function is getting long; it probably should be broken this up into several
+> functions.  E.g.:
+
+Will do for v3.
+
+> static int get_keyring_key(u32 key_id, u32 type,
+>                            struct fscrypt_master_key_secret *secret)
+> {
+>         key_ref_t ref;
+>         struct key *key;
+>         int err;
+> 
+>         ref = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
+>         if (IS_ERR(ref))
+>                 return PTR_ERR(ref);
+>         key = key_ref_to_ptr(ref);
+> 
+>         if (key->type == &key_type_fscrypt_provisioning) {
+>                 err = fscrypt_get_provisioning_key(key, type, secret);
+>         } else if (IS_REACHABLE(CONFIG_TRUSTED_KEYS) &&
+>                    key->type == &key_type_trusted) {
+>                 err = fscrypt_get_trusted_key(key, secret);
+>         } else {
+>                 err = -EKEYREJECTED;
+>         }
+>         key_ref_put(ref);
+>         return err;
+> }
+> 
+>> +		/* Don't allow fscrypt v1 keys to be used as v2 keys and vice versa. */
+> 
+> Please avoid overly-long lines.
+
+For v3 with helper functions, there will be one indentation level less,
+so this will be less 79 again instead of 87.
+
+> 
+>> +		tkp = key->payload.data[0];
+>> +		if (!tkp || tkp->key_len < FSCRYPT_MIN_KEY_SIZE ||
+>> +		    tkp->key_len > FSCRYPT_MAX_KEY_SIZE) {
+>> +			up_read(&key->sem);
+>> +			err = -EINVAL;
+>> +			goto out_put;
+>> +		}
+> 
+> What does the !tkp case mean?  For "user" and "logon" keys it means "key
+> revoked", but the "trusted" key type doesn't implement revoke.  Is this included
+> just to be safe?
+
+Oh, good point. I think I cargo-culted it off encrypted key support for
+eCryptfs and dm-crypt. Encrypted keys don't support revoke either..
+
+That might be reasonable, but perhaps the error code in that
+> case (but not the invalid length cases) should be -EKEYREVOKED instead?
+
+Yes. It was like this for v1, but I missed it when dropping the
+dependency on the key_extract_material patch. Will fix for v3.
+
+[1]: https://www.kernel.org/doc/html/v5.14-rc5/security/keys/trusted-encrypted.html
+[2]: https://lore.kernel.org/linux-fscrypt/YQLzOwnPF1434kUk@gmail.com/
+
+
+Cheers and thanks for the review,
+Ahmad
+
+
+> 
+> - Eric
+> 
+
+
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
