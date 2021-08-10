@@ -2,163 +2,198 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B302C3E4E66
-	for <lists+keyrings@lfdr.de>; Mon,  9 Aug 2021 23:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D562F3E52E4
+	for <lists+keyrings@lfdr.de>; Tue, 10 Aug 2021 07:25:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236444AbhHIVYs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Aug 2021 17:24:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49690 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236441AbhHIVYq (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Mon, 9 Aug 2021 17:24:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 203B860EB9;
-        Mon,  9 Aug 2021 21:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628544264;
-        bh=D2aOWPkZRvo4FPeQiqOYNBi8S+9DKShgichgczsHHWo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iZLhpA+/gitAAaAEJQa+SuwtTRtdWqNg6KiI+uJ7wTvD3Slz3f1q3M9eNHEFeRye0
-         skvrWsmpZpvzteGIgxz4pTEpOgAipWgy9d7eUlNX8TSLP79IWGFGwweo0PtzzXd7OB
-         AEZsAAVVZ292uDGutkHjSqtKaODj/EDag/I63+6go3rh+dCs85LjWzbrvCixe8fofF
-         dgyiqfDqJVa2wzIudk1PTzSFI5sW3HaAMH3j/iQ+w7cgz2z0y4fJVAo4aRdc/zM6FO
-         /bYKoXwAhjmPGJpABv1eqcLcp3CKE5y689yJhJ/+5zZVIW9+Yy4Zn2AvdCx12kotWk
-         fG+pgXQ5/og3w==
-Date:   Mon, 9 Aug 2021 14:24:22 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, kernel@pengutronix.de,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
+        id S234316AbhHJFZW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 Aug 2021 01:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237645AbhHJFZV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Aug 2021 01:25:21 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2506C06179A
+        for <keyrings@vger.kernel.org>; Mon,  9 Aug 2021 22:24:59 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id u13so27219302lje.5
+        for <keyrings@vger.kernel.org>; Mon, 09 Aug 2021 22:24:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=CFWqBCQp2YlhCV7jSxWtmoCr8RILzISB86MNoTEBHeU=;
+        b=kOohwNbQp4KuzGJcZF4yy50pxkQN5Pb3iyD+ksrmfBVybK+TUfjtOwUyb7bKShe8tW
+         SdRFWAigtNDsjm+fYfhVo3pIxT6X/DNEHzlL1Yb+k45momrT3GI3kLzx/UC1L3NV5WvG
+         6dFgkqQwdB9tsG044F0FDPRv7bPPwEyO0WdNtgH2iU48kKdX3L++yX8EzxA0ZGhCs3f8
+         fJ5M+aYhbYV2OGcTpV+3ZpCUjy6t4JcreBfppE3CEU/cX5lIAyYfeMjg11Z4yiCF8DEQ
+         bxpEyJUVg8TveXXvdXTMtRzWZrcVTWIQZBTGaawTSWC3BK3cVJm1GvVbvcK1fDoPfnOF
+         sDYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=CFWqBCQp2YlhCV7jSxWtmoCr8RILzISB86MNoTEBHeU=;
+        b=FkPhm394tGJ46Ln4uAfZDbNw8j/m0tEXlRT+HIam6AQNyvT8XQ1TJt5CdEXfuFCEb5
+         tTuyzv+xHJVU/v0XDTMbQJxjZOlHgg+jky82dMcMoP7DjE+IKEkfHjh4wKiSiOH3UBsU
+         lCzaExHpS+XxKUXeMSm0UooZpnfTSwKDvb94tnkq9hCbrA6+GYOuMUUc7RP4iJ5UHein
+         8paQkCXmKjQYuKDXV9pMoJzEzMo5HiyTULhDgvVqUfkAMUQlW7IlLCuSnWgjSjJFHpuY
+         ZM8jwENZIyfCGZyYjJBr8dLjQNwmEFltdaUYuhJeouq/Z0yYbpI5PzB8p5Z00BDdg+iL
+         DFrA==
+X-Gm-Message-State: AOAM532mMPeE+RfqyeaJPFbDwIxFf3pVQYsWmIgJdWIojAntkKTDpwap
+        tgcU0xAfFWGvmoGfgbOVjgj52Ui/ifkGHSHJ/yp5jw==
+X-Google-Smtp-Source: ABdhPJwAO97YdfcdCAmTaAWes9GxsrI5CP30XQe+NgCZoBVV5RVlt4j0z3ZrFIcGb4t5MvWxg/JuOLFUnrMQtk2HCJI=
+X-Received: by 2002:a05:651c:516:: with SMTP id o22mr17678549ljp.152.1628573097700;
+ Mon, 09 Aug 2021 22:24:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.9fc9298fd9d63553491871d043a18affc2dbc8a8.1626885907.git-series.a.fatoum@pengutronix.de>
+ <7b771da7b09a01c8b4da2ed21f05251ea797b2e8.1626885907.git-series.a.fatoum@pengutronix.de>
+ <CAFA6WYOskwZNe5Wb5PTtnSHQBonSXZ48eEex0w9jQ+JW4vG=+w@mail.gmail.com>
+ <7537c853-3641-a6d3-91d8-70fea9f01a89@pengutronix.de> <20210809095647.7xcxjeot5gyvmlpj@kernel.org>
+In-Reply-To: <20210809095647.7xcxjeot5gyvmlpj@kernel.org>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Tue, 10 Aug 2021 10:54:46 +0530
+Message-ID: <CAFA6WYPg20EiYATXStt1mgGJVjkOK5BK7WDbTdzOujBdcH6KLg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] KEYS: trusted: allow trust sources to use kernel RNG
+ for key material
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
         James Bottomley <jejb@linux.ibm.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
         David Howells <dhowells@redhat.com>,
-        linux-fscrypt@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] fscrypt: support trusted keys
-Message-ID: <YRGdBiJQ3xqZAT4w@gmail.com>
-References: <20210806150928.27857-1-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210806150928.27857-1-a.fatoum@pengutronix.de>
+        kernel <kernel@pengutronix.de>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        =?UTF-8?Q?Horia_Geant=C4=83?= <horia.geanta@nxp.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        David Gstir <david@sigma-star.at>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        "open list:ASYMMETRIC KEYS" <keyrings@vger.kernel.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Ahmad,
+On Mon, 9 Aug 2021 at 15:26, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> On Mon, Aug 09, 2021 at 09:52:20AM +0200, Ahmad Fatoum wrote:
+> > Hello Sumit,
+> >
+> > On 22.07.21 08:31, Sumit Garg wrote:
+> > > On Wed, 21 Jul 2021 at 22:19, Ahmad Fatoum <a.fatoum@pengutronix.de> =
+wrote:
+> > >>
+> > >> The two existing trusted key sources don't make use of the kernel RN=
+G,
+> > >> but instead let the hardware that does the sealing/unsealing also
+> > >> generate the random key material. While a previous change offers use=
+rs
+> > >> the choice to use the kernel RNG instead for both, new trust sources
+> > >> may want to unconditionally use the kernel RNG for generating key
+> > >> material, like it's done elsewhere in the kernel.
+> > >>
+> > >> This is especially prudent for hardware that has proven-in-productio=
+n
+> > >> HWRNG drivers implemented, as otherwise code would have to be duplic=
+ated
+> > >> only to arrive at a possibly worse result.
+> > >>
+> > >> Make this possible by turning struct trusted_key_ops::get_random
+> > >> into an optional member. If a driver leaves it NULL, kernel RNG
+> > >> will be used instead.
+> > >>
+> > >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > >> ---
+> > >> To: James Bottomley <jejb@linux.ibm.com>
+> > >> To: Jarkko Sakkinen <jarkko@kernel.org>
+> > >> To: Mimi Zohar <zohar@linux.ibm.com>
+> > >> To: David Howells <dhowells@redhat.com>
+> > >> Cc: James Morris <jmorris@namei.org>
+> > >> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> > >> Cc: "Horia Geant=C4=83" <horia.geanta@nxp.com>
+> > >> Cc: Aymen Sghaier <aymen.sghaier@nxp.com>
+> > >> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> > >> Cc: "David S. Miller" <davem@davemloft.net>
+> > >> Cc: Udit Agarwal <udit.agarwal@nxp.com>
+> > >> Cc: Eric Biggers <ebiggers@kernel.org>
+> > >> Cc: Jan Luebbe <j.luebbe@pengutronix.de>
+> > >> Cc: David Gstir <david@sigma-star.at>
+> > >> Cc: Richard Weinberger <richard@nod.at>
+> > >> Cc: Franck LENORMAND <franck.lenormand@nxp.com>
+> > >> Cc: Sumit Garg <sumit.garg@linaro.org>
+> > >> Cc: keyrings@vger.kernel.org
+> > >> Cc: linux-crypto@vger.kernel.org
+> > >> Cc: linux-integrity@vger.kernel.org
+> > >> Cc: linux-kernel@vger.kernel.org
+> > >> Cc: linux-security-module@vger.kernel.org
+> > >> ---
+> > >>  include/keys/trusted-type.h               | 2 +-
+> > >>  security/keys/trusted-keys/trusted_core.c | 2 +-
+> > >>  2 files changed, 2 insertions(+), 2 deletions(-)
+> > >>
+> > >> diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type=
+.h
+> > >> index d89fa2579ac0..4eb64548a74f 100644
+> > >> --- a/include/keys/trusted-type.h
+> > >> +++ b/include/keys/trusted-type.h
+> > >> @@ -64,7 +64,7 @@ struct trusted_key_ops {
+> > >>         /* Unseal a key. */
+> > >>         int (*unseal)(struct trusted_key_payload *p, char *datablob)=
+;
+> > >>
+> > >> -       /* Get a randomized key. */
+> > >> +       /* Optional: Get a randomized key. */
+> > >>         int (*get_random)(unsigned char *key, size_t key_len);
+> > >>
+> > >>         /* Exit key interface. */
+> > >> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/ke=
+ys/trusted-keys/trusted_core.c
+> > >> index 569af9af8df0..d2b7626cde8b 100644
+> > >> --- a/security/keys/trusted-keys/trusted_core.c
+> > >> +++ b/security/keys/trusted-keys/trusted_core.c
+> > >> @@ -334,7 +334,7 @@ static int __init init_trusted(void)
+> > >>                         continue;
+> > >>
+> > >>                 get_random =3D trusted_key_sources[i].ops->get_rando=
+m;
+> > >> -               if (trusted_kernel_rng)
+> > >> +               if (trusted_kernel_rng || !get_random)
+> > >>                         get_random =3D kernel_get_random;
+> > >>
+> > >
+> > > For ease of understanding, I would prefer to write it as:
+> > >
+> > >                   get_random =3D trusted_key_sources[i].ops->get_rand=
+om ?:
+> > >                                          kernel_get_random;
+> > >                   if (trusted_kernel_rng)
+> > >                         get_random =3D kernel_get_random;
+> > >
+> > > With that:
+> > >
+> > > Acked-by: Sumit Garg <sumit.garg@linaro.org>
+> >
+> > I don't think it improves readability to split up the conditional.
+> > At least I need to take a second pass over the code to understand
+> > the second conditional.
+>
+> Ternary operators are pain to read, unless a super trivial case.
+>
+> I'd stick to what you did.
 
-This generally looks okay, but I have some comments below.
+Fair enough, I am fine with the current patch.
 
-On Fri, Aug 06, 2021 at 05:09:28PM +0200, Ahmad Fatoum wrote:
-> Kernel trusted keys don't require userspace knowledge of the raw key
-> material and instead export a sealed blob, which can be persisted to
-> unencrypted storage. Userspace can then load this blob into the kernel,
-> where it's unsealed and from there on usable for kernel crypto.
+-Sumit
 
-Please be explicit about where and how the keys get generated in this case.
-
-> This is incompatible with fscrypt, where userspace is supposed to supply
-> the raw key material. For TPMs, a work around is to do key unsealing in
-> userspace, but this may not be feasible for other trusted key backends.
-
-As far as I can see, "Key unsealing in userspace" actually is the preferred way
-to implement TPM-bound encryption.  So it doesn't seem fair to call it a "work
-around".
-
-> +  Most users leave this 0 and specify the raw key directly.
-> +  "trusted" keys are useful to leverage kernel support for sealing
-> +  and unsealing key material. Sealed keys can be persisted to
-> +  unencrypted storage and later be used to decrypt the file system
-> +  without requiring userspace to have knowledge of the raw key
-> +  material.
-> +  "fscrypt-provisioning" key support is intended mainly to allow
-> +  re-adding keys after a filesystem is unmounted and re-mounted,
->    without having to store the raw keys in userspace memory.
->  
->  - ``raw`` is a variable-length field which must contain the actual
->    key, ``raw_size`` bytes long.  Alternatively, if ``key_id`` is
->    nonzero, then this field is unused.
->  
-> +.. note::
-> +
-> +   Users should take care not to reuse the fscrypt key material with
-> +   different ciphers or in multiple contexts as this may make it
-> +   easier to deduce the key.
-> +   This also applies when the key material is supplied indirectly
-> +   via a kernel trusted key. In this case, the trusted key should
-> +   perferably be used only in a single context.
-
-Again, please be explicit about key generation.  Note that key generation is
-already discussed in a different section, "Master Keys".  There should be a
-mention of trusted keys there.  The above note about not reusing keys probably
-belongs there too.  (The section you're editing here is
-"FS_IOC_ADD_ENCRYPTION_KEY", which is primarily intended to just document the
-ioctl, so it's not necessarily the best place for this type of information.)
-
-> @@ -577,28 +578,44 @@ static int get_keyring_key(u32 key_id, u32 type,
->  	key_ref_t ref;
->  	struct key *key;
->  	const struct fscrypt_provisioning_key_payload *payload;
-> -	int err;
-> +	int err = 0;
->  
->  	ref = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
->  	if (IS_ERR(ref))
->  		return PTR_ERR(ref);
->  	key = key_ref_to_ptr(ref);
->  
-> -	if (key->type != &key_type_fscrypt_provisioning)
-> -		goto bad_key;
-> -	payload = key->payload.data[0];
-> +	if (key->type == &key_type_fscrypt_provisioning) {
-
-This function is getting long; it probably should be broken this up into several
-functions.  E.g.:
-
-static int get_keyring_key(u32 key_id, u32 type,
-                           struct fscrypt_master_key_secret *secret)
-{
-        key_ref_t ref;
-        struct key *key;
-        int err;
-
-        ref = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
-        if (IS_ERR(ref))
-                return PTR_ERR(ref);
-        key = key_ref_to_ptr(ref);
-
-        if (key->type == &key_type_fscrypt_provisioning) {
-                err = fscrypt_get_provisioning_key(key, type, secret);
-        } else if (IS_REACHABLE(CONFIG_TRUSTED_KEYS) &&
-                   key->type == &key_type_trusted) {
-                err = fscrypt_get_trusted_key(key, secret);
-        } else {
-                err = -EKEYREJECTED;
-        }
-        key_ref_put(ref);
-        return err;
-}
-
-> +		/* Don't allow fscrypt v1 keys to be used as v2 keys and vice versa. */
-
-Please avoid overly-long lines.
-
-> +		tkp = key->payload.data[0];
-> +		if (!tkp || tkp->key_len < FSCRYPT_MIN_KEY_SIZE ||
-> +		    tkp->key_len > FSCRYPT_MAX_KEY_SIZE) {
-> +			up_read(&key->sem);
-> +			err = -EINVAL;
-> +			goto out_put;
-> +		}
-
-What does the !tkp case mean?  For "user" and "logon" keys it means "key
-revoked", but the "trusted" key type doesn't implement revoke.  Is this included
-just to be safe?  That might be reasonable, but perhaps the error code in that
-case (but not the invalid length cases) should be -EKEYREVOKED instead?
-
-- Eric
+>
+> /Jarkko
