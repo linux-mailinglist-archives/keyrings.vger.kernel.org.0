@@ -2,126 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3D983EBC0F
-	for <lists+keyrings@lfdr.de>; Fri, 13 Aug 2021 20:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6803EECFD
+	for <lists+keyrings@lfdr.de>; Tue, 17 Aug 2021 15:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233222AbhHMS1x (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 13 Aug 2021 14:27:53 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:9620 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232611AbhHMS1w (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Aug 2021 14:27:52 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17DI3jOQ042063;
-        Fri, 13 Aug 2021 14:26:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=j1lczph9q4hxdvWvkJjwrPNCN+2CWHiDAOVh9v5sYiU=;
- b=F1+hlBD2gBPPNoUXcTiipWWtJWpJU6FA9KmkHDnQOfBVoCgwR2Gvxv0+7AkkSRL9NLFb
- IuJ4dAHIwl9hU6p2JZ9DKch49Qulh294Gwyy7a7ilsJyADL90YH1lcmLlXD/4gvvNNwR
- RXvrl+7pTe27FIpzGMwC1DqD22gyKtJU/wF5/gTs6ux1Pxjfe7IVF6mLjqA6Iu53yZ7q
- 5mfElFskMjqkkkLE/zBIazGY6BhvHp6ivganzgDRCP1gPbuBMmL6UOMLP9po7E1W9/lE
- Q+s9FxubEmUypH5IIDwBtCWissidvLRObSxaa7VoV8Ap1VEMey3qVFtynTWRNk6ySgVt CA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3adsf3yww9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Aug 2021 14:26:26 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17DI3lvf042231;
-        Fri, 13 Aug 2021 14:26:26 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3adsf3ywvr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Aug 2021 14:26:26 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17DIJkBu001449;
-        Fri, 13 Aug 2021 18:26:24 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by ppma01dal.us.ibm.com with ESMTP id 3ackhs8q50-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Aug 2021 18:26:24 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17DIQM5i30343530
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Aug 2021 18:26:22 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 38BE8112061;
-        Fri, 13 Aug 2021 18:26:22 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 745E3112062;
-        Fri, 13 Aug 2021 18:26:19 +0000 (GMT)
-Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.211.76.133])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Fri, 13 Aug 2021 18:26:19 +0000 (GMT)
-Subject: Re: [PATCH v3 01/14] integrity: Introduce a Linux keyring for the
- Machine Owner Key (MOK)
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>, dhowells@redhat.com,
-        dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, jmorris@namei.org, serge@hallyn.com,
-        keescook@chromium.org, gregkh@linuxfoundation.org,
-        torvalds@linux-foundation.org, scott.branden@broadcom.com,
-        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
-        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
-        glin@suse.com, konrad.wilk@oracle.com
-References: <20210812021855.3083178-1-eric.snowberg@oracle.com>
- <20210812021855.3083178-2-eric.snowberg@oracle.com>
- <20210812185853.p5mgsgrftgwvt5fx@kernel.org>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <a3d7ce08-47e8-7287-772d-f7e789c47449@linux.vnet.ibm.com>
-Date:   Fri, 13 Aug 2021 14:26:18 -0400
+        id S237370AbhHQNFm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 Aug 2021 09:05:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230251AbhHQNFm (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Aug 2021 09:05:42 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F081C0613C1
+        for <keyrings@vger.kernel.org>; Tue, 17 Aug 2021 06:05:09 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1mFymB-0006MT-9m; Tue, 17 Aug 2021 15:05:07 +0200
+Subject: Re: [PATCH v2] fscrypt: support trusted keys
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, kernel@pengutronix.de,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Howells <dhowells@redhat.com>,
+        linux-fscrypt@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210806150928.27857-1-a.fatoum@pengutronix.de>
+ <20210809094408.4iqwsx77u64usfx6@kernel.org> <YRGVcaquAJiuc8bp@gmail.com>
+ <20210810180636.vqwaeftv7alsodgn@kernel.org> <YRLJmaafp941uOdA@gmail.com>
+ <20210810212140.sdq5dq2wy5uaj7h7@kernel.org> <YRLvPJehAeMiYb2Z@gmail.com>
+ <20210811001743.ofzkwdwa6rcjsf4d@kernel.org>
+ <d4f5c2593380c82ceebae2c8782a1c440b35f165.camel@linux.ibm.com>
+ <YRQF09f8st95yrFZ@gmail.com>
+ <0e69a0aa394dd20347b06ae4e700aa17d52583ef.camel@linux.ibm.com>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <a6eb6f38-b9f4-c59c-4181-2049f181e67d@pengutronix.de>
+Date:   Tue, 17 Aug 2021 15:04:59 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <20210812185853.p5mgsgrftgwvt5fx@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <0e69a0aa394dd20347b06ae4e700aa17d52583ef.camel@linux.ibm.com>
+Content-Type: text/plain; charset=iso-8859-15
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: NtaYsAueNdNnB6kwL7VEQdE3reAq6bwi
-X-Proofpoint-GUID: 33tuCCwIGg_cW1kX4YoburxLjhDz1bfR
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-13_06:2021-08-13,2021-08-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 phishscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
- definitions=main-2108130107
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Hi,
 
-On 8/12/21 2:58 PM, Jarkko Sakkinen wrote:
-> On Wed, Aug 11, 2021 at 10:18:42PM -0400, Eric Snowberg wrote:
->> Many UEFI Linux distributions boot using shim.  The UEFI shim provides
->> what is called Machine Owner Keys (MOK). Shim uses both the UEFI Secure
->> Boot DB and MOK keys to validate the next step in the boot chain.  The
->> MOK facility can be used to import user generated keys.  These keys can
->> be used to sign an end-users development kernel build.  When Linux
->> boots, both UEFI Secure Boot DB and MOK keys get loaded in the Linux
->> .platform keyring.
->>
->> Add a new Linux keyring called .mok.  This keyring shall contain just
-> I would consider ".machine" instead. It holds MOK keys but is not a
-> MOK key.
+On 12.08.21 02:54, Mimi Zohar wrote:
+> On Wed, 2021-08-11 at 10:16 -0700, Eric Biggers wrote:
+> 
+>> Neither of you actually answered my question, which is whether the support for
+>> trusted keys in dm-crypt is a mistake.  I think you're saying that it is?  That
+>> would imply that fscrypt shouldn't support trusted keys, but rather encrypted
+>> keys -- which conflicts with Ahmad's patch which is adding support for trusted
+>> keys.  Note that your reasoning for this is not documented at all in the
+>> trusted-encrypted keys documentation; it needs to be (email threads don't really
+>> matter), otherwise how would anyone know when/how to use this feature?
+> 
+> True, but all of the trusted-encrypted key examples in the
+> documentation are "encrypted" type keys, encrypted/decrypted based on a
+> "trusted" type key.  There are no examples of using the "trusted" key
+> type directly.  Before claiming that adding "trusted" key support in
+> dm-crypt was a mistake, we should ask Ahmad why he felt dm-crypt needed
+> to directly support "trusted" type keys.
 
-I agree with changing the name.
+I wanted to persist the dm-crypt key as a sealed blob. With encrypted keys,
+I would have to persist and unseal two blobs (load trusted key blob, load
+encrypted key blob rooted to trusted key) with no extra benefit.
 
-I believe the underlying source from where CA keys are loaded might vary 
-based on the architecture (".mok" is UEFI specific.). The key part is 
-that this new keyring should contain only CA keys which can be later 
-used to vouch for user keys loaded onto IMA or secondary keyring at 
-runtime. It would be good to have a "ca" in the name, like .xxxx-ca, 
-where xxxx can be machine, owner, or system. I prefer .system-ca.
+I thus added direct support for trusted keys. Jarkko even commented on the
+thread, but didn't voice objection to the approach (or agreement for that
+matter), so I assumed the approach is fine.
 
-Thanks & Regards,
+I can see the utility of using a single trusted key for TPMs, but for CAAM,
+I see none and having an encrypted key for every trusted key just makes
+it more cumbersome.
 
-      - Nayna
+In v1 here, I added encrypted key support as well, but dropped it for v2,
+because I am not in a position to justify its use. Now that you and Eric
+discussed it, should I send v3 with support for both encrypted and trusted
+keys like with dm-crypt or how should we proceed?
 
+Cheers,
+Ahmad
+
+> 
+> Mimi
+> 
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
