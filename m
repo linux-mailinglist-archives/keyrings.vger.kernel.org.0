@@ -2,101 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD18A3F0DE2
-	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 00:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CD033F0DE9
+	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 00:10:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234491AbhHRWJK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Aug 2021 18:09:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44356 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbhHRWJJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Aug 2021 18:09:09 -0400
-Received: from hr2.samba.org (hr2.samba.org [IPv6:2a01:4f8:192:486::2:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0298C061764;
-        Wed, 18 Aug 2021 15:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-        s=42; h=Message-ID:Cc:To:From:Date;
-        bh=Ju/dpIFvvmJW3Fub8AWFitRq1oXbAkBfTKObVumNQi8=; b=G7rncJVIF5nbFsZfhGeDFC/CU0
-        bRDH6v3YqRj34n3iYxdqIkJQW1xOhqPFfHBHm5RTVgWPIIbYV8dk9UgY08gWaqIDMo4esX7ZdUYK4
-        1WRbkNzB4h7tkgcEMlEtEBgSy3JTL2zthqNx2uu+XJ8BvKiprY/fCsaNfPOAFwmFOiHiQ7U0b/BWC
-        H9WIAzWl/Wpi9ChcsX0wFeqBBIUcakViTNNlVLt0ImXo8pEYFJXUKjNBYUSex7jIPyrnCDwpyg5Hb
-        +q8pLSgtgU+EFb6iMVpre9oSYcCVKN7eig77/m1kJQarZs25IsKHCx52ap1St+rq8TNjAPrjjRYxS
-        c1ywXgyVf9By1fBd/2tktGPR+dGH56kIB+2La1LSnKw7+E43BTZVJvEJqX8fU8oBCvG+SUv6Nr5NT
-        hj2ad5Nr0ZxymPmaf09lN/6wTH4jIJ3L1l+feGMMQm7Sh9O9V9Y0nLyvnhIlPfaBVWi11xx2HqjYv
-        6RcE8Mxv1fSXt/UgUHJTvRAi;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-        by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-        (Exim)
-        id 1mGTjZ-001yez-6y; Wed, 18 Aug 2021 22:08:29 +0000
-Date:   Wed, 18 Aug 2021 15:08:24 -0700
-From:   Jeremy Allison <jra@samba.org>
-To:     Steve French <smfrench@gmail.com>
-Cc:     Denis Kenzior <denkenz@gmail.com>,
-        linux-cifs <linux-cifs@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        samba-technical <samba-technical@lists.samba.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Steve French <sfrench@samba.org>, keyrings@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH 0/2] crypto: remove MD4 generic shash
-Message-ID: <YR2E2FZNdMj2xl+0@jeremy-acer>
-Reply-To: Jeremy Allison <jra@samba.org>
-References: <20210818144617.110061-1-ardb@kernel.org>
- <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
- <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com>
- <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
- <CAH2r5muhHnrAbu-yX3h1VPjW+2CUyUtSCzyoOs7MXw=fE7HA_Q@mail.gmail.com>
+        id S234286AbhHRWLB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Aug 2021 18:11:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47320 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234121AbhHRWLA (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Wed, 18 Aug 2021 18:11:00 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8A75161104;
+        Wed, 18 Aug 2021 22:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629324625;
+        bh=sDBzNw75J5/eNBK4sO+1Vj5AeZa+B85FYHSELHvSFEM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IK1M/XGJVpyZM5kqE4KeFWxMdfgiKj29X5qURIIv7L3TinJNhB15kvxeWQK3IaGFJ
+         tkOKq1fZy7FAZDfoHmttdJefBjCjgEeAPnm3kpSb7BrGWcG5+Q5aQwObfDcZOdGIhK
+         GWy/TOAdxPcQSV0dcU2BPwGMPhKJ13qh3xfaI1odeknxEee0HE7exRPkVEig7MErBR
+         9b5+20Xi+ooOZ0VHHO/rYl5bdO912tx0z48zmUpFd8qQOrQ796BmTG87n9xpyKq4uZ
+         FiTFbWo4f8/3TD9R7r2YrVzWRFMgPS/kEgVTgXeTM0peWAxBX4OESHJqZbJfYfh4Qy
+         bXEuvQ1l3x3xw==
+Received: by mail-oo1-f48.google.com with SMTP id z3-20020a4a98430000b029025f4693434bso1190453ooi.3;
+        Wed, 18 Aug 2021 15:10:25 -0700 (PDT)
+X-Gm-Message-State: AOAM533fL/HYZLjUtcIlvCWTgT3D2xu/HCP9W4MGrFTLpFUfIE/io/KZ
+        CM3LA62Bba1kYIdnsisf0JtRnbzOnE2KCY3q8ts=
+X-Google-Smtp-Source: ABdhPJzzUZjV4MsjdJJZIiDT6rz0w/bAI3aIZSbaTkLuLKA7taliPXb+EOhFIKnbc5VrFACMi2oN9yq66f+Cb4gCQ+0=
+X-Received: by 2002:a4a:dfac:: with SMTP id k12mr8612844ook.41.1629324624922;
+ Wed, 18 Aug 2021 15:10:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAH2r5muhHnrAbu-yX3h1VPjW+2CUyUtSCzyoOs7MXw=fE7HA_Q@mail.gmail.com>
+References: <20210818144617.110061-1-ardb@kernel.org> <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
+ <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com> <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
+In-Reply-To: <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 19 Aug 2021 00:10:13 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEO8PwLfT8uAYgeFF7T3TznWz4E=R1JArvCdKXk8qiAMQ@mail.gmail.com>
+Message-ID: <CAMj1kXEO8PwLfT8uAYgeFF7T3TznWz4E=R1JArvCdKXk8qiAMQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] crypto: remove MD4 generic shash
+To:     Denis Kenzior <denkenz@gmail.com>
+Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Eric Biggers <ebiggers@kernel.org>,
+        ronnie sahlberg <ronniesahlberg@gmail.com>,
+        linux-cifs <linux-cifs@vger.kernel.org>,
+        Steve French <sfrench@samba.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Aug 18, 2021 at 11:47:53AM -0500, Steve French via samba-technical wrote:
->I don't object to moving ARC4 and/or MD4 into cifs.ko, but we do have
->to be careful that we don't make the defaults "less secure" as an
->unintentional side effect.
+On Wed, 18 Aug 2021 at 18:23, Denis Kenzior <denkenz@gmail.com> wrote:
 >
->The use of ARC4 and MD4 is the NTLMSSP authentication workflow is
->relatively small (narrow use case), and NTLMSSP is the default for
->many servers and clients - and some of the exploits do not apply in
->the case of SMB2.1 and later (which is usually required on mount in
->any case).
+> Hi Ard,
 >
->There is little argument that kerberos ("sec=krb5") is more secure and
->does not rely on these algorithms ... but there are millions of
->devices (probably over 100 million) that can support SMB3.1.1 (or at
->least SMB3) mounts but couldn't realistically join a domain and use
->"sec=krb5" so would be forced to use "guest" mounts (or in the case of
->removing RC4 use less secure version of NTLMSSP).
+> >>   The previous ARC4 removal
+> >> already caused some headaches [0].
+> >
+> > This is the first time this has been reported on an upstream kernel list.
+> >
+> > As you know, I went out of my way to ensure that this removal would
+> > happen as smoothly as possible, which is why I contributed code to
+> > both iwd and libell beforehand, and worked with distros to ensure that
+> > the updated versions would land before the removal of ARC4 from the
+> > kernel.
+> >
+> > It is unfortunate that one of the distros failed to take that into
+> > account for the backport of a newer kernel to an older distro release,
+> > but I don't think it is fair to blame that on the process.
 >
->In the longer term where I would like this to go is:
->- make it easier to "require Kerberos" (in module load parameters for cifs.ko)
->- make sure cifs.ko builds even if these algorithms are removed from
->the kernel, and that mount by default isn't broken if the user chooses
->to build without support for NTLMSSP, the default auth mechanism (ie
->NTLMSSP being disabled because required crypto algorithms aren't
->available)
->- add support in Linux for a "peer to peer" auth mechanism (even if it
->requires an upcall), perhaps one that is certificate based and one
->that is not (and thus much easier to use) that we can plumb into
->SPNEGO (RFC2478).    By comparison, it sounds like it is much easier
->in Windows to add in additional authentication mechanisms (beyond
->Kerberos, PKU2U and NTLMSSP) - see
->https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/jj852232(v=ws.11)
->so perhaps we just need to do something similar for the kernel client
->and samba and ksmbd where they call out to a library which is
->configured to provide the SPNEGO blobs for the new stronger
->peer-to-peer authentication mechanism the distro chooses to enable
->(for cases where using Kerberos for authentication is not practical)
+> Please don't misunderstand, I don't blame you at all.  I was in favor of ARC4
+> removal since the kernel AF_ALG implementation was broken and the ell
+> implementation had to work around that.  And you went the extra mile to make
+> sure the migration was smooth.  The reported bug is still a fairly minor
+> inconvenience in the grand scheme of things.
+>
+> But, I'm not in favor of doing the same for MD4...
+>
 
-My 2 cents. Preventing NTLM authentication/signing from working would be
-a negative for the Linux kernel client. I don't mind if that code has
-to be isolated inside cifs.ko, but it really needs to keep working,
-at least until we have a pluggable client auth in cifs.ko and Samba
-that allows the single-server (non AD-Domain) case to keep working
-easily.
+Fair enough.
+
+> >
+> >>   Please note that iwd does use MD4 for MSCHAP
+> >> and MSCHAPv2 based 802.1X authentication.
+> >>
+> >
+> > Thanks for reporting that.
+> >
+> > So what is your timeline for retaining MD4 support in iwd? You are
+> > aware that it has been broken since 1991, right? Please, consider
+> > having a deprecation path, so we can at least agree on *some* point in
+> > time (in 6 months, in 6 years, etc) where we can start culling this
+> > junk.
+> >
+>
+> That is not something that iwd has any control over though?  We have to support
+> it for as long as there are  organizations using TTLS + MD5 or PEAPv0.  There
+> are still surprisingly many today.
+>
+
+Does that code rely on MD4 as well?
