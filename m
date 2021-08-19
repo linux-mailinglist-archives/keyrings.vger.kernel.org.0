@@ -2,101 +2,110 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C7263F12B9
-	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 07:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C3FA3F1758
+	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 12:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbhHSFYV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Aug 2021 01:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57668 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbhHSFYV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Aug 2021 01:24:21 -0400
-Received: from hr2.samba.org (hr2.samba.org [IPv6:2a01:4f8:192:486::2:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C4B6C061756;
-        Wed, 18 Aug 2021 22:23:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-        s=42; h=Date:Cc:To:From:Message-ID;
-        bh=FKXJJR+E/d8HbrkHuWmDXOz37OkPecELRHt/LNShliU=; b=huKyadOm7s+DNRYIGOpDDkpH2S
-        obnwZPzaIGeW7jkSCpclmxk7tQT/XngBfUbT8+0xZ6HngQFeAUK+D1MMpKnOT9w/e6U4rY9ryFvAP
-        lCyyw2cc8ovxUQlT7kszBcF2kwCtdQDGbojJadVLB0Zh9cPv3QvUCutMFgzTkaVFsGKyXN5TAhMGZ
-        OFMLsAbrrEcWD4kdO6o01vjDbcUqUhLBK9XX5RHuRxrj++U5g1bg1rLWzYeigxA7g/KgNjaNtWnhf
-        Mg4w97sc9fc5ohclNm6OGo1x1/UJt5A+HQwt8n1435WwID8SnS9U7lTlbDpvBm0A36PpXMaqMsKyM
-        5lYPN2Yamatzw3/HcbWAE9SztrFLmGFq3IB4tsH8uX9lWsLCrDg2b0vOK4sewKuQCi+Kx55a/7xz2
-        rDgu+m7GI41GedbKS+11yCYizWmCF1ct3nALgsPc1Lllf3QU6DbMLpR3TYlpSjCOMDbs0n4563DJi
-        M9lPqnFFf3Hl48nfqp4oQYbi;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-        by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-        (Exim)
-        id 1mGaWi-0020ip-MC; Thu, 19 Aug 2021 05:23:41 +0000
-Message-ID: <ba396d64c1ed0336530c465aff55f768fae8d95d.camel@samba.org>
-Subject: Re: [PATCH 0/2] crypto: remove MD4 generic shash
-From:   Andrew Bartlett <abartlet@samba.org>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Jeremy Allison <jra@samba.org>, Steve French <smfrench@gmail.com>,
-        linux-cifs <linux-cifs@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        samba-technical <samba-technical@lists.samba.org>,
-        David Howells <dhowells@redhat.com>,
-        Steve French <sfrench@samba.org>, keyrings@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Denis Kenzior <denkenz@gmail.com>
-Date:   Thu, 19 Aug 2021 17:23:30 +1200
-In-Reply-To: <YR3pi9HEbhknJdl6@sol.localdomain>
-References: <20210818144617.110061-1-ardb@kernel.org>
-         <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
-         <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com>
-         <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
-         <CAH2r5muhHnrAbu-yX3h1VPjW+2CUyUtSCzyoOs7MXw=fE7HA_Q@mail.gmail.com>
-         <YR2E2FZNdMj2xl+0@jeremy-acer>
-         <d08c99b8550cc48fe04cc9f4cd5eca0532f5733d.camel@samba.org>
-         <YR3pi9HEbhknJdl6@sol.localdomain>
+        id S237730AbhHSKgb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Aug 2021 06:36:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50220 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236149AbhHSKgb (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 19 Aug 2021 06:36:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A9B516113C;
+        Thu, 19 Aug 2021 10:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629369355;
+        bh=0gYRryj8WcD05dNv3C5iWMMOAQxCqY5AJZQHDbt70CM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=sU+wf523Fhx9pa4dA9UUzGeQLvn1NmWrexhEeM+W79+r6bFT4h08kDualdcJX/cR/
+         KKdvTP0AE3jyDYU0voFEsFLa1xtF+vulKLMh/r+ider7dC707giPUjGbtQC66Oqo7Q
+         PlKT205Fb99WfNYfiMO15yG7Euc+Vz9Xo5Gq6XPw88UXbx5HPcJ4kvxfNbrn8GY9lx
+         j93Z5yAwclYd4D3mtXXrhdknB3+2wRPJroWDt3U8jQ4S2lmJXcDIpQZ5oRRrtI4nSO
+         up0w/GlPyjErtJW6to2SKVObs6aRzEaPfCPLCg9jwNtK4FVz6Y751YPYCs0/WVyPEA
+         Au4J9yVOa13Zg==
+Message-ID: <6db55147350d81ed205d37031d81b03b80f639cc.camel@kernel.org>
+Subject: Re: Re: PING: [PATCH] crypto: public_key: fix overflow during
+ implicit conversion
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     zhenwei pi <pizhenwei@bytedance.com>, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net
+Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 19 Aug 2021 13:35:52 +0300
+In-Reply-To: <8bf3a04d-f1a7-cd8c-5c5a-ace3de500b2f@bytedance.com>
+References: <20210810063954.628244-1-pizhenwei@bytedance.com>
+         <4dcd4254-030b-4489-d5d3-e320eb2953e7@bytedance.com>
+         <74aef8a2f2331358371a87931e632287dad9af59.camel@iki.fi>
+         <8bf3a04d-f1a7-cd8c-5c5a-ace3de500b2f@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2021-08-18 at 22:18 -0700, Eric Biggers wrote:
+On Thu, 2021-08-19 at 10:03 +0800, zhenwei pi wrote:
+> On 8/18/21 8:33 PM, Jarkko Sakkinen wrote:
+> > On Wed, 2021-08-18 at 16:33 +0800, zhenwei pi wrote:
+> > > PING
+> >=20
+> > Please, do not top-post.
+> >=20
+> > You are lacking Herbert Xu:
+> >=20
+> > $ scripts/get_maintainer.pl crypto/asymmetric_keys/public_key.c
+> > David Howells <dhowells@redhat.com> (maintainer:ASYMMETRIC KEYS)
+> > Herbert Xu <herbert@gondor.apana.org.au> (maintainer:CRYPTO API)
+> > "David S. Miller" <davem@davemloft.net> (maintainer:CRYPTO API)
+> > keyrings@vger.kernel.org (open list:ASYMMETRIC KEYS)
+> > linux-crypto@vger.kernel.org (open list:CRYPTO API)
+> > linux-kernel@vger.kernel.org (open list)
+> >=20
+> > > On 8/10/21 2:39 PM, zhenwei pi wrote:
+> > > > Hit kernel warning like this, it can be reproduced by verifying
+> > > > 256
+> > > > bytes datafile by keyctl command.
+> > > >=20
+> > > >    WARNING: CPU: 5 PID: 344556 at crypto/rsa-pkcs1pad.c:540
+> > > > pkcs1pad_verify+0x160/0x190
+> > > >    ...
+> > > >    Call Trace:
+> > > >     public_key_verify_signature+0x282/0x380
+> > > >     ? software_key_query+0x12d/0x180
+> > > >     ? keyctl_pkey_params_get+0xd6/0x130
+> > > >     asymmetric_key_verify_signature+0x66/0x80
+> > > >     keyctl_pkey_verify+0xa5/0x100
+> > > >     do_syscall_64+0x35/0xb0
+> > > >     entry_SYSCALL_64_after_hwframe+0x44/0xae
+> > > >=20
+> > > > '.digest_size(u8) =3D params->in_len(u32)' leads overflow of an
+> > > > u8
+> >=20
+> > Where is this statement?
+> >=20
+>=20
+> In function "static int asymmetric_key_verify_signature(struct=20
+> kernel_pkey_params *params, const void *in, const void *in2)"
+>=20
+> > > > value,
+> > > > so use u32 instead of u8 of digest. And reorder struct
+> > > > public_key_signature, it could save 8 bytes on a 64 bit
+> > > > machine.
+> >                                                       ~~~~~
+> >                                                       64-bit
+> >                                                      =20
+> > What do you mean by "could"? Does it, or does it
+> > not?
+> >                                         			=09
+> > =09
+> >=20
+> After reordering struct public_key_signature, sizeof(struct=20
+> public_key_signature) gets smaller than the original version.
 
-> I'm not sure you understand how embarrassing it is to still be using
-> these
-> algorithms.  MD4 has been broken for over 25 years, and better
-> algorithms have
-> been recommended for 29 years.  Similarly MD5 has been broken for 16
-> years and
-> better algorithms have been recommended for 25 years (though granted,
-> HMAC-MD5
-> is more secure than plain MD5 when properly used).  Meanwhile SHA-2
-> is 20 years
-> old and is still considered secure.  So this isn't something that
-> changes every
-> month -- we're talking about no one bothering to do anything in 30
-> years.
-> 
-> Of course, if cryptography isn't actually applicable to the use case,
-> then
-> cryptography shouldn't be used at all.
+OK, then just state is as "it saves" instead of "it could save".
 
-I'm sorry that Samba - or the Kernel, you could implement whatever is
-desired between cifs.ko and kcifsd -  hasn't gone it alone to build a
-new peer-to-peer mechanism, but absent a Samba-only solution Microsoft
-has been asked and has no intention of updating NTLM, so embarrassing
-or otherwise this is how it is.
+Not a requirement but have you been able to trigger this for a
+kernel that does not have this fix?
 
-Thankfully only the HMAC-MD5 step in what you mention is
-cryptographically significant, the rest are just very lossy compression
-algorithms.  
-
-Andrew Bartlett
-
--- 
-Andrew Bartlett (he/him)       https://samba.org/~abartlet/
-Samba Team Member (since 2001) https://samba.org
-Samba Team Lead, Catalyst IT   https://catalyst.net.nz/services/samba
-
-Samba Development and Support, Catalyst IT - Expert Open Source
-Solutions
-
+/Jarkko
