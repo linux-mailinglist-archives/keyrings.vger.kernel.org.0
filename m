@@ -2,95 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 712B23F1218
-	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 05:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4EA53F12AF
+	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 07:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235893AbhHSDuF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Aug 2021 23:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37044 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235806AbhHSDuE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Aug 2021 23:50:04 -0400
-Received: from hr2.samba.org (hr2.samba.org [IPv6:2a01:4f8:192:486::2:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A293DC061764;
-        Wed, 18 Aug 2021 20:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-        s=42; h=Date:Cc:To:From:Message-ID;
-        bh=j5tjpwG95NMneNvkZrZuuP58BNA+DYtbNUwlFLXa088=; b=a5x+MjnJdalNxaXTqFlHAcM74Y
-        BeWcrdGfHsRK2BUUKzE5rHJUJNzlKIEUi6JpR1OwX5XADMJrfHBHfYwt7Re/tqYH0FKqVYpVdU+J/
-        +++gJ81R7ghl1fIv+OsLYX+Fl4Kn0ybRIxSOB4x+PJeQwLN8WDEkd4dNrcLcqH+1bZOWrVZwlKZ2G
-        7es3417aDlkCMz6VnUxf4Jiynxo4++wcgU7uTr5RW886HTEx17R3z2u+KvZ8Pj33JWUQtl++HCZGV
-        ExraIrEsSgAHL/4ctZpua/e8wm/Xn+jGo/q/VVChYmuZX4mvZOdd5On9g5iDFZWiBJ6jOYN69WZXx
-        RVnc+rpcqtVa7YYn53PCk0fC8kc88tzPkukFQjMwwAkzYQ76pCzOuXNGL88TvM+IY4Zu+PwLPSrAM
-        jFbrfZruvdtWvv8wp5uU2/61Z3/+r/Jv7u9FCX0AHoA2UBzBvX/ssGUAOdyOEAg7IWIQM3TtIPOTd
-        fM423ije1pODh1jMqDy4Ben6;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-        by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-        (Exim)
-        id 1mGZ3U-0020Ds-IC; Thu, 19 Aug 2021 03:49:25 +0000
-Message-ID: <d08c99b8550cc48fe04cc9f4cd5eca0532f5733d.camel@samba.org>
-Subject: Re: [PATCH 0/2] crypto: remove MD4 generic shash
-From:   Andrew Bartlett <abartlet@samba.org>
-To:     Jeremy Allison <jra@samba.org>, Steve French <smfrench@gmail.com>
-Cc:     linux-cifs <linux-cifs@vger.kernel.org>,
+        id S229782AbhHSFSl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Aug 2021 01:18:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54548 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229451AbhHSFSk (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 19 Aug 2021 01:18:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AFD9761107;
+        Thu, 19 Aug 2021 05:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629350285;
+        bh=eUe4iHnO0QHSuRxWzei4ahFKR+9XbVenRz1m8RYT/Po=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YAxEpkeMOOlK+qVLQkf/bw0q39y8+yKlOzTlwmF4dZ2BQaF03yq0t3lgO29d3NuRx
+         ta/DGg9tUOjujlyFjUNE01uxBdwjAW4i8n/J1xy9MbM8/B7RKksI4tDPvtu+h9nDLz
+         w+OA6QaSSNRwHlbdyozyguXwQWd1efrSBoqwj7xv+8Hd0IrCtKom2MOAHEpXMGcH2c
+         Bxa0kP0F9ZWvMRj0e3EIGlpoyk6YskjrZc2etlbIgq5CR7yJ+N8DnAhOiKeCeF9ntH
+         Tlcz3wnrI5eTZwmYFVW/i2vOZugfWZfNnxb631vcykVm3Bqtgj4nCyfiDhONSMXxDZ
+         KX3j8igFhCS1g==
+Date:   Wed, 18 Aug 2021 22:18:03 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Andrew Bartlett <abartlet@samba.org>
+Cc:     Jeremy Allison <jra@samba.org>, Steve French <smfrench@gmail.com>,
+        linux-cifs <linux-cifs@vger.kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        Eric Biggers <ebiggers@kernel.org>,
         samba-technical <samba-technical@lists.samba.org>,
         David Howells <dhowells@redhat.com>,
         Steve French <sfrench@samba.org>, keyrings@vger.kernel.org,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>,
         Denis Kenzior <denkenz@gmail.com>
-Date:   Thu, 19 Aug 2021 15:49:14 +1200
-In-Reply-To: <YR2E2FZNdMj2xl+0@jeremy-acer>
+Subject: Re: [PATCH 0/2] crypto: remove MD4 generic shash
+Message-ID: <YR3pi9HEbhknJdl6@sol.localdomain>
 References: <20210818144617.110061-1-ardb@kernel.org>
-         <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
-         <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com>
-         <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
-         <CAH2r5muhHnrAbu-yX3h1VPjW+2CUyUtSCzyoOs7MXw=fE7HA_Q@mail.gmail.com>
-         <YR2E2FZNdMj2xl+0@jeremy-acer>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+ <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
+ <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com>
+ <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
+ <CAH2r5muhHnrAbu-yX3h1VPjW+2CUyUtSCzyoOs7MXw=fE7HA_Q@mail.gmail.com>
+ <YR2E2FZNdMj2xl+0@jeremy-acer>
+ <d08c99b8550cc48fe04cc9f4cd5eca0532f5733d.camel@samba.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d08c99b8550cc48fe04cc9f4cd5eca0532f5733d.camel@samba.org>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2021-08-18 at 15:08 -0700, Jeremy Allison via samba-technical
-wrote:
-> 
-> My 2 cents. Preventing NTLM authentication/signing from working would
-> be
-> a negative for the Linux kernel client. I don't mind if that code has
-> to be isolated inside cifs.ko, but it really needs to keep working,
-> at least until we have a pluggable client auth in cifs.ko and Samba
-> that allows the single-server (non AD-Domain) case to keep working
-> easily.
+On Thu, Aug 19, 2021 at 03:49:14PM +1200, Andrew Bartlett wrote:
+> I know neither MD4 nor HMAC-MD5 is not flavour of the month any more,
+> with good reason, but we would not want to go with way of NFSv4 which
+> is, as I understand it, full Kerberos or bust (so folks choose no
+> protection).
 
-I would echo that, and also just remind folks that MD4 in NTLMSSP is
-used as a compression only, it has no security value.  The security
-would be the same if the password was compressed with MD4, SHA1 or
-SHA256 - the security comes from the complexity of the password and the
-HMAC-MD5 rounds inside NTLMv2.  
+I'm not sure you understand how embarrassing it is to still be using these
+algorithms.  MD4 has been broken for over 25 years, and better algorithms have
+been recommended for 29 years.  Similarly MD5 has been broken for 16 years and
+better algorithms have been recommended for 25 years (though granted, HMAC-MD5
+is more secure than plain MD5 when properly used).  Meanwhile SHA-2 is 20 years
+old and is still considered secure.  So this isn't something that changes every
+month -- we're talking about no one bothering to do anything in 30 years.
 
-I'll also mention the use of MD4, which is used to re-encrypt a short-
-term key with the long-term key out of the NTLMv2 scheme.  This
-thankfully is an unchecksumed simple RC4 round of one random value with
-another, so not subject to known-plaintext attacks here.
+Of course, if cryptography isn't actually applicable to the use case, then
+cryptography shouldn't be used at all.
 
-I know neither MD4 nor HMAC-MD5 is not flavour of the month any more,
-with good reason, but we would not want to go with way of NFSv4 which
-is, as I understand it, full Kerberos or bust (so folks choose no
-protection).
-
-Andrew Bartlett
-
--- 
-Andrew Bartlett (he/him)       https://samba.org/~abartlet/
-Samba Team Member (since 2001) https://samba.org
-Samba Team Lead, Catalyst IT   https://catalyst.net.nz/services/samba
-
-Samba Development and Support, Catalyst IT - Expert Open Source
-Solutions
-
+- Eric
