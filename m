@@ -2,165 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A023F178C
-	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 12:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDFEA3F1852
+	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 13:38:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238337AbhHSKx6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Aug 2021 06:53:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237959AbhHSKx5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Aug 2021 06:53:57 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82812C061575
-        for <keyrings@vger.kernel.org>; Thu, 19 Aug 2021 03:53:21 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id a21so5096616pfh.5
-        for <keyrings@vger.kernel.org>; Thu, 19 Aug 2021 03:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=h4KO30BvVWuiGQptVgC51BO6IaUhsm/PFOqkXub0zOs=;
-        b=qdBDfQ3KQ8bOclGbW+YW5iLXEbXFbaNA2jYCdJxlEmpZDDyTAIGXluu4zcw/lM9Qnp
-         1/8mNapQvN5b9ytb2YRudIEw24n6777t0coWFgvmkWGN2FHxC3DHa2aWBF1FnWldG6hU
-         8Z0+bdamP7zND5vrX4FAtMATsp9a5s1p0D8VH3qYZUPaYwe0j3o86CJ4ZNJDHEzK6hCW
-         mDljIFR6G11Ets0juG53oEfIjZP0GaLW+G/CFrwE6BGZLfyJohGjIglQiyoR+Qta3CLp
-         4lm+1mBE5dVuAQ1LEP63mV6yy9m4EzOxEITeEQ/iySAjNTNsnQ9af/Ayf5obtjJfnUy0
-         ICKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=h4KO30BvVWuiGQptVgC51BO6IaUhsm/PFOqkXub0zOs=;
-        b=oximZU4NyTo0Se07wtFV3BlqnkwlsJ227m5qtOy/DWU7RtpqKhXZolrSKyklGugwo7
-         MkOba2h0YtkaJhyMpUFutmzzxdEUHdGfJf2yFh0IkVuOfeaniY7YJlDNJWuib9YoA92n
-         n05cmAbFfOUelLvAzXA1Xs4drk4FHr4k6FuFHr2uVXu949LYFgMlRE3K7EqPJWiJJufJ
-         0leex7Z1FgEwfwqz56IBwM1gUuTKvlP2fXOjlc8vVSz1xzENra0rvMe5jB64Zr5uWFo2
-         Kxpybpu5l/XkXdGmzdFyAvwAl/A8IbjVPv7CSAZVBSiy/RmUdB+yXBXe7UeWO463p6wq
-         5wvA==
-X-Gm-Message-State: AOAM531l30gUdvZpcrmq/pwNwsDKeUYvHlGhqUpktXlnoIouzmhNwisd
-        AYXA1DhX71IgWuGf8zhty9sShQ==
-X-Google-Smtp-Source: ABdhPJx7Cx0+w3t1VnEIYAFnOAtwgswFS8P0T8A5W04ehcDbeTPEkzsi01Ezbe2oOvGZB88G9/ekJQ==
-X-Received: by 2002:a65:6805:: with SMTP id l5mr13823371pgt.0.1629370400929;
-        Thu, 19 Aug 2021 03:53:20 -0700 (PDT)
-Received: from [10.2.24.177] ([61.120.150.70])
-        by smtp.gmail.com with ESMTPSA id c196sm3516747pga.92.2021.08.19.03.53.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Aug 2021 03:53:18 -0700 (PDT)
-Subject: Re: Re: Re: PING: [PATCH] crypto: public_key: fix overflow during
- implicit conversion
-To:     Jarkko Sakkinen <jarkko@kernel.org>, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210810063954.628244-1-pizhenwei@bytedance.com>
- <4dcd4254-030b-4489-d5d3-e320eb2953e7@bytedance.com>
- <74aef8a2f2331358371a87931e632287dad9af59.camel@iki.fi>
- <8bf3a04d-f1a7-cd8c-5c5a-ace3de500b2f@bytedance.com>
- <6db55147350d81ed205d37031d81b03b80f639cc.camel@kernel.org>
-From:   zhenwei pi <pizhenwei@bytedance.com>
-Message-ID: <7ae0836f-884b-e262-6ade-d0ca6ea0eb93@bytedance.com>
-Date:   Thu, 19 Aug 2021 18:52:23 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S238829AbhHSLim (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Aug 2021 07:38:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59800 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238276AbhHSLim (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 19 Aug 2021 07:38:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6B14A61152;
+        Thu, 19 Aug 2021 11:38:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629373085;
+        bh=ztpTlKzDLnuXMkA6oqHi+0cvd0vo10eKEycotaJ9HBo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=HUowvtbQtFmr68GYqsmFe38XS4JsbnrsAO+F4q2I/tDtZxtgQILgLJgEGc8+f/Cz0
+         uF8Ubu3FSMm8ezSeqFodFen4pHy/m4q7VrYbBct6Y4SEymSKzj6Ufc0u6kb/BloHFa
+         MNKWa+cD49KUeXPOK2WvNvhKTeS4nY7kv459yxcJCmdrIjGQNsbN6JQW9LXGzt7e5x
+         DCqe9yLWhvphgQGYiAXRUF2OM+ATZbvmlXeBM0j6DsYeRI1WNrXDDynv6Y36TLEC73
+         djxJnjdAtPzSGGtrluo65CZd6rhR/zah6L6wG7Bi9S4MCc3W8RtGmGe3gc9AFPs+6B
+         w2BNLl0YwdGqw==
+Message-ID: <fcb30226f378ef12cd8bd15938f0af0e1a3977a2.camel@kernel.org>
+Subject: Re: [PATCH v4 00/12] Enroll kernel keys thru MOK
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, zohar@linux.ibm.com,
+        dhowells@redhat.com, dwmw2@infradead.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        jmorris@namei.org, serge@hallyn.com
+Cc:     keescook@chromium.org, gregkh@linuxfoundation.org,
+        torvalds@linux-foundation.org, scott.branden@broadcom.com,
+        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
+        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Thu, 19 Aug 2021 14:38:03 +0300
+In-Reply-To: <20210819002109.534600-1-eric.snowberg@oracle.com>
+References: <20210819002109.534600-1-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-In-Reply-To: <6db55147350d81ed205d37031d81b03b80f639cc.camel@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 8/19/21 6:35 PM, Jarkko Sakkinen wrote:
-> On Thu, 2021-08-19 at 10:03 +0800, zhenwei pi wrote:
->> On 8/18/21 8:33 PM, Jarkko Sakkinen wrote:
->>> On Wed, 2021-08-18 at 16:33 +0800, zhenwei pi wrote:
->>>> PING
->>>
->>> Please, do not top-post.
->>>
->>> You are lacking Herbert Xu:
->>>
->>> $ scripts/get_maintainer.pl crypto/asymmetric_keys/public_key.c
->>> David Howells <dhowells@redhat.com> (maintainer:ASYMMETRIC KEYS)
->>> Herbert Xu <herbert@gondor.apana.org.au> (maintainer:CRYPTO API)
->>> "David S. Miller" <davem@davemloft.net> (maintainer:CRYPTO API)
->>> keyrings@vger.kernel.org (open list:ASYMMETRIC KEYS)
->>> linux-crypto@vger.kernel.org (open list:CRYPTO API)
->>> linux-kernel@vger.kernel.org (open list)
->>>
->>>> On 8/10/21 2:39 PM, zhenwei pi wrote:
->>>>> Hit kernel warning like this, it can be reproduced by verifying
->>>>> 256
->>>>> bytes datafile by keyctl command.
->>>>>
->>>>>     WARNING: CPU: 5 PID: 344556 at crypto/rsa-pkcs1pad.c:540
->>>>> pkcs1pad_verify+0x160/0x190
->>>>>     ...
->>>>>     Call Trace:
->>>>>      public_key_verify_signature+0x282/0x380
->>>>>      ? software_key_query+0x12d/0x180
->>>>>      ? keyctl_pkey_params_get+0xd6/0x130
->>>>>      asymmetric_key_verify_signature+0x66/0x80
->>>>>      keyctl_pkey_verify+0xa5/0x100
->>>>>      do_syscall_64+0x35/0xb0
->>>>>      entry_SYSCALL_64_after_hwframe+0x44/0xae
->>>>>
->>>>> '.digest_size(u8) = params->in_len(u32)' leads overflow of an
->>>>> u8
->>>
->>> Where is this statement?
->>>
->>
->> In function "static int asymmetric_key_verify_signature(struct
->> kernel_pkey_params *params, const void *in, const void *in2)"
->>
->>>>> value,
->>>>> so use u32 instead of u8 of digest. And reorder struct
->>>>> public_key_signature, it could save 8 bytes on a 64 bit
->>>>> machine.
->>>                                                        ~~~~~
->>>                                                        64-bit
->>>                                                        
->>> What do you mean by "could"? Does it, or does it
->>> not?
->>>                                          				
->>> 	
->>>
->> After reordering struct public_key_signature, sizeof(struct
->> public_key_signature) gets smaller than the original version.
-> 
-> OK, then just state is as "it saves" instead of "it could save".
-> 
-> Not a requirement but have you been able to trigger this for a
-> kernel that does not have this fix?
-> 
-This kernel warning can be reproduced on debian11(Linux-5.10.0-8-amd64) 
-by the following script:
+On Wed, 2021-08-18 at 20:20 -0400, Eric Snowberg wrote:
+> Many UEFI Linux distributions boot using shim.  The UEFI shim provides
+> what is called Machine Owner Keys (MOK).  Shim uses both the UEFI Secure
+> Boot DB and MOK keys to validate the next step in the boot chain.  The
+> MOK facility can be used to import user generated keys.  These keys can
+> be used to sign an end-user development kernel build.  When Linux boots,
+> pre-boot keys (both UEFI Secure Boot DB and MOK keys) get loaded in the
+> Linux .platform keyring. =20
+>=20
+> Currently, pre-boot keys are not trusted within the Linux trust boundary
+> [1]. These platform keys can only be used for kexec. If an end-user
+> wants to use their own key within the Linux trust boundary, they must
+> either compile it into the kernel themselves or use the insert-sys-cert
+> script. Both options present a problem. Many end-users do not want to
+> compile their own kernels. With the insert-sys-cert option, there are
+> missing upstream changes [2].  Also, with the insert-sys-cert option,
+> the end-user must re-sign their kernel again with their own key, and
+> then insert that key into the MOK db. Another problem with
+> insert-sys-cert is that only a single key can be inserted into a
+> compressed kernel.
+>=20
+> Having the ability to insert a key into the Linux trust boundary opens
+> up various possibilities.  The end-user can use a pre-built kernel and
+> sign their own kernel modules.  It also opens up the ability for an
+> end-user to more easily use digital signature based IMA-appraisal.  To
+> get a key into the ima keyring, it must be signed by a key within the
+> Linux trust boundary.
 
-RAWDATA=rawdata
-SIGDATA=sigdata
+As of today, I can use a prebuilt kernel, crate my own MOK key and sign
+modules. What will be different?
 
-modprobe pkcs8_key_parser
+> Downstream Linux distros try to have a single signed kernel for each
+> architecture.  Each end-user may use this kernel in entirely different
+> ways.  Some downstream kernels have chosen to always trust platform keys
+> within the Linux trust boundary for kernel module signing.  These
+> kernels have no way of using digital signature base IMA appraisal.
+>=20
+> This series introduces a new Linux kernel keyring containing the Machine
+> Owner Keys (MOK) called .mok. It also adds a new MOK variable to shim.
 
-rm -rf *.der *.pem *.pfx
-rm -rf $RAWDATA
-dd if=/dev/random of=$RAWDATA bs=256 count=1
+I would name it as ".machine" because it is more "re-usable" name, e.g.
+could be used for similar things as MOK. ".mok" is a bad name because
+it binds directly to a single piece of user space software.
 
-openssl req -nodes -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem 
--subj "/C=CN/ST=GD/L=SZ/O=vihoo/OU=dev/CN=xx.com/emailAddress=yy@xx.com"
-
-KEY_ID=`openssl pkcs8 -in key.pem -topk8 -nocrypt -outform DER | keyctl 
-padd asymmetric 123 @s`
-
-keyctl pkey_sign $KEY_ID 0 $RAWDATA enc=pkcs1 hash=sha1 > $SIGDATA
-keyctl pkey_verify $KEY_ID 0 $RAWDATA $SIGDATA enc=pkcs1 hash=sha1
-
-
-> /Jarkko
-> 
-
--- 
-zhenwei pi
+/Jarkko
