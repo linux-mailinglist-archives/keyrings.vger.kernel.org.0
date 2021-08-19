@@ -2,109 +2,166 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 359EF3F1E74
-	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 18:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9EE33F1EC8
+	for <lists+keyrings@lfdr.de>; Thu, 19 Aug 2021 19:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbhHSQ47 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 Aug 2021 12:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50090 "EHLO
+        id S231411AbhHSRLJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 Aug 2021 13:11:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbhHSQ47 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Aug 2021 12:56:59 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB642C061575;
-        Thu, 19 Aug 2021 09:56:22 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id t35so9322768oiw.9;
-        Thu, 19 Aug 2021 09:56:22 -0700 (PDT)
+        with ESMTP id S230459AbhHSRLI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 19 Aug 2021 13:11:08 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA92CC061575;
+        Thu, 19 Aug 2021 10:10:31 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id z2so14499901lft.1;
+        Thu, 19 Aug 2021 10:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=i2gbj7G7HBNjxMMAYhYLQe8DyR1uM3Beytnzkyrqm2w=;
-        b=E5ZdojLIBb5f/jbn9oD7NZCyiGEfL7kcevdndmyg+JVvIzMXCTRZRDV+8GEEMk07Eg
-         AFQGdc6wXOn0uaxcbwVXkWbVCntAzjNmFCi0iXWW4kINejhR2YkQCl0AS5kgb4GQbDuE
-         4ET12KfRmXTgJ/XyKmjSQVR1EwUHYT108DIQeWgEUnTHlpuzF+uDfCWOmhOcTj9Z1sB7
-         JIWhWtV219Jbs2z15DcUsaKVO0t6DfARJaWqon5RvMw1FI3yu7FheCxvCupt9GcbBMes
-         ZjIeBTQPOg9CLivabIZ3evjNFtzdN14TXTuZ/HoPpxkHXE+F6HeV6mPiKfr3Mm+sxU0+
-         a9gA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Rt9r8foKOvZ5SSHXtY6wyrnjmVskOSD8TkF1Gg1rNU0=;
+        b=gAJy411CGDX+HFRkV9Ei2t/kwmWFWaHD+xZTKJozq8ZgAhoy9r205hC0gn6uaPmctx
+         X19n6w9YjwM7ZKcADbpS/4PvFoNhAucsZ76nk6gC5snqN2+Q7BOiFnXcrve9Cb74uU8z
+         8hbwgxkpc9ynXrMD+UYpyp/NF0V1K3cEYrBorYLpZlvS4dhWAYMc8giIwTdgBA/jLXFy
+         U4D0DqJddetkAEEA0RajHL++S77wp8fIvwBRlrQTT8LhDL7UCGvIv98cYmg6YuMoOtQE
+         SqnLM2zp2kPm2VcFcm4eeB6bP8X0DmJNziyg0eOFQNu9u+1iuqPMS89LIf3hQsK4ph2o
+         c2aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=i2gbj7G7HBNjxMMAYhYLQe8DyR1uM3Beytnzkyrqm2w=;
-        b=t46NE39WdyM58T/NZLZg2HJ3C0ydzXi5Fx8wUgARXG0NldBbWvCOO0BZW9dTsOhzPw
-         VDW+TJO6z2FFSq4Mppj2iK00cwOzAvs7owMvCywRBq4vDnwTq/q9WMH0j2wdJwL2jzSb
-         0sJ7FG0hq1wFfUS8ABlmVkSDn/ckoMqM1A6bOpagEQMG/GvwR3FxiaUN10k5fwIgI9Ki
-         Ma1Qup8jFhkNXRZXLOgIQPIftsk7QRjLkVuF2ICLrgEQyFK8fZT6hrwCKC8ZKwTV6f/D
-         2Ic6xggr22AGga9DsStMzIWEVvcoiE4JcoTcpdpWV2rTBvONHSZivZjQ8u1ec1+YZNpG
-         d1FA==
-X-Gm-Message-State: AOAM533B9uTzUxXTk6Uq5yBYFmoip3tWaSsCvp6j0Yy1sJv4F7McaDJP
-        3KnVJK9E196VRqcSBA//fmxPjcscPts=
-X-Google-Smtp-Source: ABdhPJzmOEAQn8TFcTvrsrE8s6/LmYlIPVWuFWUq5v8j57GKYajgcZdfUybMb5Bxtd8g16QtLbudLg==
-X-Received: by 2002:a05:6808:220c:: with SMTP id bd12mr3485319oib.157.1629392182091;
-        Thu, 19 Aug 2021 09:56:22 -0700 (PDT)
-Received: from [10.0.2.15] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id y138sm758744oie.22.2021.08.19.09.56.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Aug 2021 09:56:21 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Rt9r8foKOvZ5SSHXtY6wyrnjmVskOSD8TkF1Gg1rNU0=;
+        b=PojjqovzE8/PUds5gVRoXbQT/c+i0SIqJYVVJOG+Es2Ra2zi5Y9+JPrXTcpqVZa+NZ
+         2o3VMFtELlsODfg88ezdYNxNGji7mxmc0cVzZegDqkeY1DskT3YPG3L5W3V/Tx1ddp4l
+         s8LEgKGZeIPf4X3bGUyAVfCFO5l0FWb1m4/kKvBwDuc9Ow0/uOFBckMjVFREV+V0BFH+
+         u+RO/TjrGGJmfKb4N2hB4nY8LOQlpy/+qTGCtTgAr5FPdQuFlecbGk4mlt8SeznaqPeG
+         eS13TdG2/xVCP6fFN612c5zfaK9NiVWglCmSis50PT6b8HDh2Ld56L1MZsBjhw7NjAYG
+         Vhzg==
+X-Gm-Message-State: AOAM533u4hGqtN051z5niyffs2APet22XRnLhxPEDM+D91oBWmx1ScFd
+        qTdeM8dO/Ovtoj6pB3b3j0/nSBXyamgMVRnODm8=
+X-Google-Smtp-Source: ABdhPJwRmM2SdGcXYA+7pfMJAJ60TZ/eAP/4ZABuOl1fhOc+0mAmvPCgSh8qEW2NeVclfDYVIO8LwcvPMtgsVZZfzps=
+X-Received: by 2002:a19:c796:: with SMTP id x144mr11188920lff.395.1629393030147;
+ Thu, 19 Aug 2021 10:10:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210818144617.110061-1-ardb@kernel.org> <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
+ <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com> <1cbfe2bbb46ab48bf6dddee9a15a7c04c99db8f7.camel@kernel.org>
+In-Reply-To: <1cbfe2bbb46ab48bf6dddee9a15a7c04c99db8f7.camel@kernel.org>
+From:   Steve French <smfrench@gmail.com>
+Date:   Thu, 19 Aug 2021 12:10:19 -0500
+Message-ID: <CAH2r5mv59hrujeJzReUsYtGkTQ7VH01L7FKH5rUpdmJW92HHCA@mail.gmail.com>
 Subject: Re: [PATCH 0/2] crypto: remove MD4 generic shash
-To:     Steve French <smfrench@gmail.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Denis Kenzior <denkenz@gmail.com>,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Eric Biggers <ebiggers@kernel.org>,
         ronnie sahlberg <ronniesahlberg@gmail.com>,
         linux-cifs <linux-cifs@vger.kernel.org>,
         Steve French <sfrench@samba.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-References: <20210818144617.110061-1-ardb@kernel.org>
- <946591db-36aa-23db-a5c4-808546eab762@gmail.com>
- <CAMj1kXEjHojAZ0_DPkogHAbmS6XAOFN3t8-4VB0+zN8ruTPVCg@mail.gmail.com>
- <24606605-71ae-f918-b71a-480be7d68e43@gmail.com>
- <CAMj1kXEO8PwLfT8uAYgeFF7T3TznWz4E=R1JArvCdKXk8qiAMQ@mail.gmail.com>
- <e2462d50-57e9-b7d7-bc07-0f365a01d215@gmail.com>
- <CAH2r5muUQT5EX0Z=9MFr=QHGaajF5unwnDwib8CN0hbKP7J4Rw@mail.gmail.com>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <a2934f93-e4cf-4cd1-c9c4-fa68dbae9277@gmail.com>
-Date:   Thu, 19 Aug 2021 11:56:20 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <CAH2r5muUQT5EX0Z=9MFr=QHGaajF5unwnDwib8CN0hbKP7J4Rw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Andrew Bartlett <abartlet@samba.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Steve,
+On Thu, Aug 19, 2021 at 5:42 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> On Wed, 2021-08-18 at 18:10 +0200, Ard Biesheuvel wrote:
+> > On Wed, 18 Aug 2021 at 16:51, Denis Kenzior <denkenz@gmail.com>
+> > wrote:
+> > > Hi Ard,
+> > >
+> > > On 8/18/21 9:46 AM, Ard Biesheuvel wrote:
+> > > > As discussed on the list [0], MD4 is still being relied upon by
+> > > > the CIFS
+> > > > driver, even though successful attacks on MD4 are as old as Linux
+> > > > itself.
+> > > >
+> > > > So let's move the code into the CIFS driver, and remove it from
+> > > > the
+> > > > crypto API so that it is no longer exposed to other subsystems or
+> > > > to
+> > > > user space via AF_ALG.
+> > > >
+> > >
+> > > Can we please stop removing algorithms from AF_ALG?
+> >
+> > I don't think we can, to be honest. We need to have a deprecation
+> > path
+> > for obsolete and insecure algorithms: the alternative is to keep
+> > supporting a long tail of broken crypto indefinitely.
+>
+> I think you are ignoring the fact that by doing that you might be
+> removing a migration path to more secure algorithms, for some legacy
+> systems.
+>
+> I.e. in some cases this might mean sticking to insecure algorithm *and*
+> old kernel for unnecessary long amount of time because migration is
+> more costly.
+>
+> Perhaps there could be a comman-line parameter or similar to enable
+> legacy crypto?
 
->> But the answer is yes.  Both PEAP and TTLS use MSCHAP or MSCHAPv2 in some form.
->>    These are commonly used for Username/Password based WPA(2|3)-Enterprise
->> authentication.  Think 'eduroam' for example.
-> 
-> Can you give some background here?  IIRC MS-CHAPv2 is much worse than
-> the NTLMSSP case
+There are.   For example less secure NTLMv1 is disabled in the build.
+On the command line "sec=krb5" will use kerberos, and we can move that
+to be the default,
+or at least autonegotiate it, but will require some minor changes to
+cifs-utils to detect if
+plausible Kerberos ticket is available for this mount before
+requesting krb5 automatically.
 
-What background are you looking for?  iwd [0] is a wifi management daemon, so we 
-implement various EAP [1] and wifi authentication protocols.
+But ... we already have parameters to disable SMB1, and in fact if you
+mount with
+"mount -t smb3 ..." we won't let you use SMB1 or SMB2 so we get the
+security advantages
+of preventing man-in-the-middle attacks during negotiation and encryption etc.
+In addition, SMB1 can be disabled completely by simply doing
 
-> in cifs.ko (where RC4/MD5 is used narrowly).   Doesn't MS-CHAPv2 depend on DES?
-> 
+"echo 1  > /sys/module/cifs/parameters/disable_legacy_dialects"
 
-You are quite correct.  MSCHAPv2 also uses DES for generating the responses. 
-EAP with TTLS+MSCHAPv2 and PEAP+MSCHAPv2 are two of the most deployed variants 
-of WPA-Enterprise authentication using Username + Password.
+but even without that, to mount insecurely with SMB1 requires
+specifying it (vers=1.0) on the command line.
 
-Deprecating MD4, MD5, SHA1 or DES would be quite disruptive for us.  We are 
-using these through AF_ALG userspace API, so if they're removed, some 
-combination of kernel + iwd version will break.  We went through this with ARC4, 
-and while that was justified, I don't think the same justification exists for MD4.
+In addition requiring the strongest encryption can be set by
 
-[0] https://git.kernel.org/pub/scm/network/wireless/iwd.git
-[1] https://en.wikipedia.org/wiki/Extensible_Authentication_Protocol
+"echo 1 > /sys/module/parameters/cifs/require_gcm_256"
 
-Regards,
--Denis
+
+Although moving to a peer to peer auth solution better than NTLMSSP is
+something important to do ASAP
+(we should follow up e.g. on making sure we work with the "peer to
+peer Kerberos" (which is used by Apple
+for this purpose) see e.g.
+https://discussions-cn-prz.apple.com/en/thread/252949265)
+
+Andrew Bartlett's note explains the bigger picture well:
+
+"I would echo that, and also just remind folks that MD4 in NTLMSSP is
+used as a compression only, it has no security value.  The security
+would be the same if the password was compressed with MD4, SHA1 or
+SHA256 - the security comes from the complexity of the password and the
+HMAC-MD5 rounds inside NTLMv2.
+
+I'll also mention the use of MD4, which is used to re-encrypt a short-
+term key with the long-term key out of the NTLMv2 scheme.  This
+thankfully is an unchecksumed simple RC4 round of one random value with
+another, so not subject to known-plaintext attacks here. I know neither
+MD4 nor HMAC-MD5 is not flavour of the month any more,
+with good reason, but we would not want to go with way of NFSv4 which
+is, as I understand it, full Kerberos or bust (so folks choose no
+protection)."
+
+"Thankfully only the HMAC-MD5 step in what you mention is
+cryptographically significant, the rest are just very lossy compression
+algorithms."
+
+
+
+--
+Thanks,
+
+Steve
