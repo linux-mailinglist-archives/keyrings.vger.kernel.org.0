@@ -2,123 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF83C3F590F
-	for <lists+keyrings@lfdr.de>; Tue, 24 Aug 2021 09:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215153F6087
+	for <lists+keyrings@lfdr.de>; Tue, 24 Aug 2021 16:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235027AbhHXHes (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 24 Aug 2021 03:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234962AbhHXHeq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Aug 2021 03:34:46 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E99C1C061575
-        for <keyrings@vger.kernel.org>; Tue, 24 Aug 2021 00:34:01 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1mIQwC-0007OI-KS; Tue, 24 Aug 2021 09:33:36 +0200
-Subject: Re: [PATCH 0/4] KEYS: trusted: Introduce support for NXP CAAM-based
- trusted keys
-To:     Tim Harvey <tharvey@gateworks.com>
-Cc:     David Gstir <david@sigma-star.at>,
-        Aymen Sghaier <aymen.sghaier@nxp.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Jan Luebbe <j.luebbe@pengutronix.de>, keyrings@vger.kernel.org,
-        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-        linux-security-module@vger.kernel.org,
-        Udit Agarwal <udit.agarwal@nxp.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
-        Richard Weinberger <richard@nod.at>,
-        James Morris <jmorris@namei.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Franck LENORMAND <franck.lenormand@nxp.com>,
-        David Howells <dhowells@redhat.com>,
-        open list <linux-kernel@vger.kernel.org>,
+        id S237853AbhHXOiN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 24 Aug 2021 10:38:13 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:15730 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237852AbhHXOiN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Aug 2021 10:38:13 -0400
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17OEaQIV088398;
+        Tue, 24 Aug 2021 10:36:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=LscKHOmM4JXne0ldvl9TPd0dEiLHWZoKTEFyx0n/fFk=;
+ b=Vt5FXLCTugPQWD9ChXt6LeboeDn2bqF/B+EuObl75hT2ljdFNqWEsUFjOmtuB8AepbA+
+ wEmjaN2um8Z3RUgkRk79Dw5yXtfG+tIi1iybUnxkF7RM6Wn0MndCrVzC2LbYmNROndA+
+ ZPb78OhAPtzrKssNQsfxKAjv0LFjnl/yN/dBNkmMuatOobejo6zAGalji0x+LG64+UfF
+ JrxLeF8lk1Z7qs93J0nerCmF4Aak8+qohTz4jwMakuQ/zTU1eEuncTSctRAmzITG9bIT
+ TFNgWJOKfqEltaEye4oRFsDHx4uY6TSOJX7lEmFHzHjeShMEVDr6r97FKW0LtlCr+6ZD QA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3amv09beb3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Aug 2021 10:36:43 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17OEacmN089288;
+        Tue, 24 Aug 2021 10:36:43 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3amv09bdt3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Aug 2021 10:36:43 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17OEXVaS004979;
+        Tue, 24 Aug 2021 14:34:18 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma04ams.nl.ibm.com with ESMTP id 3ajs48wbvr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Aug 2021 14:34:17 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17OEYFQc54133198
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Aug 2021 14:34:15 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6709F42041;
+        Tue, 24 Aug 2021 14:34:15 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 622124204C;
+        Tue, 24 Aug 2021 14:34:10 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.88.64])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 24 Aug 2021 14:34:10 +0000 (GMT)
+Message-ID: <9526a4e0be9579a9e52064dd590a78c6496ee025.camel@linux.ibm.com>
+Subject: Re: [PATCH v4 00/12] Enroll kernel keys thru MOK
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Nayna <nayna@linux.vnet.ibm.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, Sascha Hauer <kernel@pengutronix.de>,
-        linux-integrity@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>
-References: <cover.9fc9298fd9d63553491871d043a18affc2dbc8a8.1626885907.git-series.a.fatoum@pengutronix.de>
- <CAJ+vNU23cXPmiqKcKH_WAgD-ea+=pEJzGK+q7zOy=v2o0XU7kA@mail.gmail.com>
- <2b48a848-d70b-9c43-5ca0-9ab72622ed12@pengutronix.de>
- <CAJ+vNU225mgHHg00r67f1L6bEub+_h55hCBAMhCq2rd8kWU-qg@mail.gmail.com>
- <9200d46d-94a2-befd-e9b0-93036e56eb8a@pengutronix.de>
- <CAJ+vNU19z0syr0oHOrSGxL0cVW+Kjv76kmp6uvGc2akHbtX0Nw@mail.gmail.com>
- <fa530833-2bb9-f8f3-68c6-99423d29e2ca@pengutronix.de>
- <CAJ+vNU0iRTagc5_qvsG4jvt=B_wruj=1O2ZRixqWek8JTN=aeg@mail.gmail.com>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8b559c9c-a4c0-d335-5e54-40b9acc08707@pengutronix.de>
-Date:   Tue, 24 Aug 2021 09:33:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <CAJ+vNU0iRTagc5_qvsG4jvt=B_wruj=1O2ZRixqWek8JTN=aeg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>, keescook@chromium.org,
+        gregkh@linuxfoundation.org, torvalds@linux-foundation.org,
+        scott.branden@broadcom.com, weiyongjun1@huawei.com,
+        nayna@linux.ibm.com, ebiggers@google.com, ardb@kernel.org,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        lszubowi@redhat.com, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        pjones@redhat.com,
+        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>,
+        Patrick Uiterwijk <patrick@puiterwijk.org>
+Date:   Tue, 24 Aug 2021 10:34:09 -0400
+In-Reply-To: <bffb33a3-d5b5-f376-9d7d-706d38357d1a@linux.vnet.ibm.com>
+References: <20210819002109.534600-1-eric.snowberg@oracle.com>
+         <fcb30226f378ef12cd8bd15938f0af0e1a3977a2.camel@kernel.org>
+         <f76fcf41728fbdd65f2b3464df0821f248b2cba0.camel@linux.ibm.com>
+         <91B1FE51-C6FC-4ADF-B05A-B1E59E20132E@oracle.com>
+         <e7e251000432cf7c475e19c56b0f438b92fec16e.camel@linux.ibm.com>
+         <cedc77fefdf22b2cec086f3e0dd9cc698db9bca2.camel@kernel.org>
+         <bffb33a3-d5b5-f376-9d7d-706d38357d1a@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: r_swUgDIao0jShx0mbE5bkkPhHhggCoq
+X-Proofpoint-GUID: SQpjP5z9YPQ9zB2BIjFB6bvDvc41h9gG
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-08-24_05:2021-08-24,2021-08-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxlogscore=999 mlxscore=0 phishscore=0 clxscore=1015
+ suspectscore=0 bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108240094
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 23.08.21 19:50, Tim Harvey wrote:
-> On Mon, Aug 23, 2021 at 6:29 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->> On 20.08.21 23:19, Tim Harvey wrote:
->>> On Fri, Aug 20, 2021 at 1:36 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>> On 20.08.21 22:20, Tim Harvey wrote:
->>> It works for a user keyring but not a session keyring... does that
->>> explain anything?
->>> # keyctl add trusted mykey 'new 32' @u
->>> 941210782
->>> # keyctl print 941210782
->>> 83b7845cb45216496aead9ee2c6a406f587d64aad47bddc539d8947a247e618798d9306b36398b5dc2722a4c3f220a3a763ee175f6bd64758fdd49ca4db597e8ce328121b60edbba9b8d8d55056be896
->>> # keyctl add trusted mykey 'new 32' @s
->>> 310571960
->>> # keyctl print 310571960
->>> keyctl_read_alloc: Unknown error 126
->>
->> Both sequences work for me.
->>
->> My getty is started by systemd. I think systemd allocates a new session
->> keyring for the getty that's inherited by the shell and the commands I run
->> it in. If you don't do that, each command will get its own session key.
->>
->>> Sorry, I'm still trying to wrap my head around the differences in
->>> keyrings and trusted vs user keys.
->>
->> No problem. HTH.
+
+> >> Jarkko, I think the emphasis should not be on "machine" from Machine
+> >> Owner Key (MOK), but on "owner".  Whereas Nayna is focusing more on the
+> >> "_ca" aspect of the name.   Perhaps consider naming it
+> >> "system_owner_ca" or something along those lines.
+
+> > What do you gain such overly long identifier? Makes no sense. What
+> > is "ca aspect of the name" anyway?
 > 
-> Ahmad,
-> 
-> Ok that explains it - my testing is using a very basic buildroot
-> ramdisk rootfs. If I do a 'keyctl new_session' first I can use the
-> system keyring fine as well.
+> As I mentioned previously, the main usage of this new keyring is that it 
+> should contain only CA keys which can be later used to vouch for user 
+> keys loaded onto secondary or IMA keyring at runtime. Having ca in the 
+> name like .xxxx_ca, would make the keyring name self-describing. Since 
+> you preferred .system, we can call it .system_ca.
 
-Great. Does this mean I can get your Tested-by: ? :)
+Sounds good to me.  Jarkko?
 
-> Thanks - hoping to see this merged soon!
+thanks,
 
-You and me both.
+Mimi
 
-Cheers,
-Ahmad
-
-
-> 
-> Tim
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
