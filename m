@@ -2,207 +2,217 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C9A3FBB20
-	for <lists+keyrings@lfdr.de>; Mon, 30 Aug 2021 19:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDA863FC7A8
+	for <lists+keyrings@lfdr.de>; Tue, 31 Aug 2021 14:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238255AbhH3Rlq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Aug 2021 13:41:46 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:3160 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238247AbhH3Rlp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Aug 2021 13:41:45 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 17UGhbAV019528;
-        Mon, 30 Aug 2021 17:40:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
- subject : from : in-reply-to : date : cc : content-transfer-encoding :
- message-id : references : to : mime-version; s=corp-2021-07-09;
- bh=wIwK4BR3I48F0fiFMkaf/e5RWAgJLQB6QYF/3GYy8zc=;
- b=Jh6NvgTKzGpPa93CypgEjRd3mMFVPzUSkkkqrnM7aDfE3MmMhYD04h8MGztgycX+xqVT
- mFVFcA2uJR9bxHoj85/N6wrEUrzkMIOBgI0hKru2NShLvuEW/7Dt5CWKHTZaF9cNdAbW
- cxOegdcy2LUhowdYfpPgj/8q9rKmt0FjqpLdx3aOCZOkx5mP97NZ747Yi7pAfnUr94eL
- HObSvm5Gii2ST7N44gu8lkw30Wgee0EWGIV/5t9GAtf/4VGCknW2h5YODVkI2uo3qTlP
- 0uUfgNWLexlcrz4xg3F/HdtviSZvbmoWKsBbkMtqkrr1mY3FpxIoGPbnvmIl5A3y6ZHO BQ== 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
- subject : from : in-reply-to : date : cc : content-transfer-encoding :
- message-id : references : to : mime-version; s=corp-2020-01-29;
- bh=wIwK4BR3I48F0fiFMkaf/e5RWAgJLQB6QYF/3GYy8zc=;
- b=anKHZnnCCs0KYlnERYRIjh4b7/2qqMQA884U7E4OGWfvr5Nmdyv4pm+nZECcWZvztyXp
- fjAQ1L4mklZLYoySJNqw3ZMg4VWI14wpzrLM1PiX/1KFjLiWUTnmxEpMBuxksCnIqYRy
- s/msrS7dj6HCPUxACmZmzRd3ONwW9aigTGjyK7nWpuGLJSTXz2DxVA/CgsD9l4qpcSmq
- SGkpfvPAXwl18di2jCBEdtTPn81nC79XsQYQDEaNo9y1G3LPPgoYNBrq75S7vqglWqlv
- 3BHt7i5YZhWc2vksAjkQY8PIESEu/VSLVbtvdJ/PXx8yWPvVUGHUXLE/hHMyPWnMtYOL yg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3arc1a28rf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 30 Aug 2021 17:40:08 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 17UHQSlY115612;
-        Mon, 30 Aug 2021 17:40:07 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
-        by userp3030.oracle.com with ESMTP id 3arpf2qqmw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 30 Aug 2021 17:40:07 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=doX/O6AWgNuOnTifMWI4LxJ2D7yi0PdRjAU6FrvWjfGGD+bZvbtmxz/J9VLoG+1TQrwPQjXaJC2t3ss+Ajet/imkX1f92mFCJuL1EcQ6sEP9zzA5m0iKoQskxN+N5Q8W8PUJhdReHr4uQjb+vIVn7HqHJqqFUTpyMsuXBhwHYV9EG3EEdTXqAu1v0v30XgpcXinaMZOGPO4iFXcX5Vq0X/DuKSQ6HjF1LOaA+pnwbGSm5tujOLEF+psGej5JvCNapSy3HEkHDibGEoW/Rd0gvnwoVoVeLA0DhUtS2a0U5xC64ReVIyL2l8IYNbnbC/44WuCp4UsrfuCeKgkvfQMPYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wIwK4BR3I48F0fiFMkaf/e5RWAgJLQB6QYF/3GYy8zc=;
- b=hMxLeF0OzkIQpJmftirZQKYBZwfbZMspX2iCiEWOm0/ZIn4Zb64yL0bDYhgHYHn/EvFafCcEjsBDR/1gwlcFgpean4Ll2zthS8Px7Rp4dAS6Dho7aJlQQWfNkNyDlPgeWYkeqzo0RFtZFYkoXiTc3c1xQYt56NHERRG9lNGtKxUK38SfgkryHL9IFVipj/4TRkcXm9h9Llh4Q4ZDx7rynrn5n+0UUatbcBcyHwT6/K0+Bk0ooaqcJvrD8lPnjXG4+WelO91XZlkdwc3w3XLXXGG/c8QswFkq+5wmXINNCm42WjWo0bxR2iq2XZs+zYj6mnWsVp49ppJ9RxZSazayxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wIwK4BR3I48F0fiFMkaf/e5RWAgJLQB6QYF/3GYy8zc=;
- b=W/0xc7HbR85vntg55a1TB5dULnkSFIOwRN7jXSOogK9V/hazggEMZ9KvUHBJ82G95ri7nQ64LtaOoLhD1YvBZYK4PGNP3OvdeUT7wnsYvfRj4k/ODrl4P3mxDMZRYsufCkxY2//GSYDXKt9aKos6+m3S4+4EFPMkUsqzDonXekQ=
-Authentication-Results: linux.vnet.ibm.com; dkim=none (message not signed)
- header.d=none;linux.vnet.ibm.com; dmarc=none action=none
- header.from=oracle.com;
-Received: from CH2PR10MB4150.namprd10.prod.outlook.com (2603:10b6:610:ac::13)
- by CH0PR10MB5115.namprd10.prod.outlook.com (2603:10b6:610:c4::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.20; Mon, 30 Aug
- 2021 17:40:02 +0000
-Received: from CH2PR10MB4150.namprd10.prod.outlook.com
- ([fe80::340c:c4d9:1efa:5bc7]) by CH2PR10MB4150.namprd10.prod.outlook.com
- ([fe80::340c:c4d9:1efa:5bc7%6]) with mapi id 15.20.4457.024; Mon, 30 Aug 2021
- 17:40:02 +0000
-Content-Type: text/plain; charset=utf-8
-Subject: Re: [PATCH v4 00/12] Enroll kernel keys thru MOK
-From:   Eric Snowberg <eric.snowberg@oracle.com>
-In-Reply-To: <10bc1017-2b45-43f3-ad91-d09310b24c2c@linux.vnet.ibm.com>
-Date:   Mon, 30 Aug 2021 11:39:49 -0600
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>, keescook@chromium.org,
-        gregkh@linuxfoundation.org, torvalds@linux-foundation.org,
-        scott.branden@broadcom.com, weiyongjun1@huawei.com,
-        nayna@linux.ibm.com, ebiggers@google.com, ardb@kernel.org,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        lszubowi@redhat.com, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org, pjones@redhat.com,
-        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>,
-        Patrick Uiterwijk <patrick@puiterwijk.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D07DE64F-FE8B-4020-8EC2-94C3C0F9920A@oracle.com>
-References: <20210819002109.534600-1-eric.snowberg@oracle.com>
- <fcb30226f378ef12cd8bd15938f0af0e1a3977a2.camel@kernel.org>
- <f76fcf41728fbdd65f2b3464df0821f248b2cba0.camel@linux.ibm.com>
- <91B1FE51-C6FC-4ADF-B05A-B1E59E20132E@oracle.com>
- <e7e251000432cf7c475e19c56b0f438b92fec16e.camel@linux.ibm.com>
- <cedc77fefdf22b2cec086f3e0dd9cc698db9bca2.camel@kernel.org>
- <bffb33a3-d5b5-f376-9d7d-706d38357d1a@linux.vnet.ibm.com>
- <9526a4e0be9579a9e52064dd590a78c6496ee025.camel@linux.ibm.com>
- <9067ff7142d097698b827f3c1630a751898a76bf.camel@kernel.org>
- <bc37d1da3ef5aae16e69eeda25d6ce6fe6a51a77.camel@HansenPartnership.com>
- <10bc1017-2b45-43f3-ad91-d09310b24c2c@linux.vnet.ibm.com>
-To:     Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>
-X-Mailer: Apple Mail (2.3273)
-X-ClientProxiedBy: BYAPR05CA0092.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::33) To CH2PR10MB4150.namprd10.prod.outlook.com
- (2603:10b6:610:ac::13)
+        id S230175AbhHaM4O (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 Aug 2021 08:56:14 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3710 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230154AbhHaM4O (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 31 Aug 2021 08:56:14 -0400
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GzRvP04mpz67Zt6;
+        Tue, 31 Aug 2021 20:53:37 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Tue, 31 Aug 2021 14:55:15 +0200
+Received: from localhost (10.52.121.53) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Tue, 31 Aug
+ 2021 13:55:14 +0100
+Date:   Tue, 31 Aug 2021 13:55:17 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>
+CC:     <keyrings@vger.kernel.org>, <dan.j.williams@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>, <linuxarm@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Jeremy Kerr <jk@codeconstruct.com.au>
+Subject: Re: [RFC PATCH 0/4] PCI/CMA and SPDM library
+Message-ID: <20210831135517.0000716f@Huawei.com>
+In-Reply-To: <20210805174346.000047f1@huawei.com>
+References: <20210804161839.3492053-1-Jonathan.Cameron@huawei.com>
+        <20210805174346.000047f1@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [IPv6:2606:b400:2001:91:8000::f0] (2606:b400:8024:1010::17c6) by BYAPR05CA0092.namprd05.prod.outlook.com (2603:10b6:a03:e0::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.10 via Frontend Transport; Mon, 30 Aug 2021 17:39:55 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3092e5d4-40ac-4526-59d6-08d96bdd31ab
-X-MS-TrafficTypeDiagnostic: CH0PR10MB5115:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CH0PR10MB5115245DF52E4A2A75A1D3E287CB9@CH0PR10MB5115.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OVu3Y23GaXBwwQWTQoYFgArpf7EsRW0hg0VcOsxchY5kGs/shqvKHb+cUw0rTgACsVofYFXKDs63aDHdkUfxXkt90YZ0ykFu6iMhlGn48FYiiMs9KCE3MvtXoPWMaueM8B4HEZfjsHZINVaFxojCPt2xdYr/1hk2cMcwTDZbDA+GSCvxjWEkOuzPLGZCCAPW1zfd7hEz9VChaTXVN98Inhgk1YM/4YvM7isFyreg/6oRx+ibC5jw2zHewDWeuSW7pd0ZuEXDl5owHhRC4IJTwDX3tKk9YpVpXEgBkN8+uqRgAirtxkmohN5UnuaiKlUyrMg01/G8thbVyCkwQwEjxW69Vb2MwDEFapydDUjMU9tTfgS33wuY2sFJ0HcD7AthYYyj9Hh5McytT/T8EG/+hXo886I7Q72iTL4AeLjQU29uhaeMxZHeHix4lSxYULTPTe6iS4ZobdYS4vOWUXQChwhTjSB7RgcAZXjN27BKVRAQDWTr1f4x3W7/NAoaE/XhfXcOEx2bC5JGptagt0EqdweHYVImruFAoAdjGFRnLnr0wWvbxkbfuXWfXiqAt8WC9AKAm8pJD9dg/wXIQFXhf5j+ydzkf+UffPBbztldKGX1Y+XJ5cu3yiC7vQhMSsOvItPLY3y0E0BP2jeL0LaycXj0TyxWlWizJE3c5lQexRScmjLKJspTicmFRVXrtJdhZ3pppjGoBbxmLC11l0mRyQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4150.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(33656002)(52116002)(7416002)(186003)(6666004)(36756003)(44832011)(53546011)(8676002)(508600001)(38100700002)(6486002)(8936002)(83380400001)(316002)(86362001)(66556008)(66476007)(110136005)(5660300002)(54906003)(2906002)(2616005)(4326008)(66946007)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M05EUFBwaWNWak1mTTh1VE5WZzR5M3UxMVV2bjV3MEcyZGxQU3pjWmdLYnJa?=
- =?utf-8?B?cTg4V2tFcC93cU9mclF1L1hHK3BHVEJxN3ZsVy8zeDVrbXJHSkVUczRnVDR0?=
- =?utf-8?B?RWRYL3l6SzFQUVNBanBEUTc2TEQrY2RTeUpOcE9SbEc5Z0l2aHo3dFY5bTR4?=
- =?utf-8?B?bkFZZ1djL1JtSU9STjVIZkRCQ1c0QzF1S3EwanFQSDh5WGpWTTRQN2NQaEs5?=
- =?utf-8?B?MDNyZ290VWpNWGRXRUczUE9ZWFR4aldHWmFsOGN4Rkl3dW5MeHhTQ2Y1enRL?=
- =?utf-8?B?N3Z2Q3JiZFUrVnc1OG5XY25ZUWVIbSszVzhqdW9ZYVJ3Z1ArS0tzWFJWQ0ZY?=
- =?utf-8?B?elF4bTkvcGw0cysrUmhQUm02MXdiaG83dVRuS3gxQUZCNzhWUTkyL09JMHhE?=
- =?utf-8?B?dHhzOVRFUXFqZFcrVytqd1ozS0lkRGorRlRqRVJuTkwvejUybU9oVHJza0g0?=
- =?utf-8?B?aG0zbkJFSFRMYVdleW9yN2RzN0I1Qkw2Q0RLWG1PRzYrRC92MjBtWkIvdHZo?=
- =?utf-8?B?NDcxd0dQNmd6TWdYQ0VmS3QwUHNiQ0hVdEFmMGFlK1I0QmFyN2QrQitYdTZh?=
- =?utf-8?B?SDkyKzgzcXVjNldEZFFDVDJGdUFXYmpTUFlJeHFreFU1R2RlOHZrZWxkL1hH?=
- =?utf-8?B?RVpxRkNmSk9HcTJqVXRVYTFuNEkwUE1GckhzbXhQcWVQMWphQlZEYkZFelRh?=
- =?utf-8?B?dnNDc0h6YkgyUDA5aWhJczdLN1cyV3lVMUZOUmhVcDVOSlZRVTRERGk3MTBh?=
- =?utf-8?B?N2xrOFVibkhrYWxvakRYZER0WG10ZCtSMTVrSysrUlY1ZVZSbXV4dGZWQlg3?=
- =?utf-8?B?elhJTEdXSUVnRjVEWUFZVDBNYWtoRWxkWXB5N3h1N08wNlM5am5JT1JqZTEr?=
- =?utf-8?B?c1YxMTRMMDh0RFlxWVpoSjV0eGVuRXltYVBuMmk3VWZveWN4LytFSHRPcjBp?=
- =?utf-8?B?TTkvbDZ5L291MW40SVZtQWZMMkJWcTNBRW1iVzBuMjd3Y3k1RTBzbjJzTEZs?=
- =?utf-8?B?Qkh4ZXBtM29ZWFJhdEdSYm1Cc2Z5ZTZSRkZoTnZ3TXR0aVJQeGZFS3JGeUhW?=
- =?utf-8?B?SFdZUVp3N29lcXdqdm9VTDVKYmJ5bnh1dmVibGxvZFFkTWtOSHl2UmN6QWNF?=
- =?utf-8?B?VXpnTkx4WDhiOHFQWFM2a0RlUEZtWlFYeFkrYW5La3RYN2NVT0VZNWJSMHU2?=
- =?utf-8?B?bHBrM3JReGpJeDU1WkxqWEo3VHowS2NScTBUWE55eXdTMDNBOUFoMUc1R1J5?=
- =?utf-8?B?THhUYzEwNlhvTWxJcGh1Y0xZR205ZXdkN3g0RzBNYjZDVkJ5MVFJM0JQWTdB?=
- =?utf-8?B?TzhtcXptL2d4WnYrM2R0VFAxRjZQOVdtSGZBbTkzWjVKbS9GbXNtWmc3MGw4?=
- =?utf-8?B?eUt6OGJjZU9SNHQvNUdHZEUzcEsvcTM0cUxOc05RL0xoVDV5R0RPbDRzUW9Z?=
- =?utf-8?B?T09qZHBJRTh0YmFNNEg5V1J4OTQzdkpCNklwcGx1NjNzMmh5K1o5MXpMQzVh?=
- =?utf-8?B?eU5zRU1HSmUyeVhrWGYwYXJIWnRLZDFuUGNncFNqalRUOWNpU1pUck5BM1Bq?=
- =?utf-8?B?TjRMbksxNkpuL25iY2oyeENzRnVWT0pxTmpsaFJGbG9Ma1kreWFmMm9GWEgz?=
- =?utf-8?B?bUYwNzFlNmszVzlmU1NFU1poVkZuRnZWd0dyYzVUdVhVbUVLcTZiTHMwS1FU?=
- =?utf-8?B?NkN4MGpDZkRuQmZIMVBUMkZUVUVBVUVXU0E3dkgzdTJ2aEJ3bUh5V01oYlBG?=
- =?utf-8?B?VTBMdzhTOHhoemkwMWdLQVJPei91NjhLeGJ1cGxNdHVydkN5UWdnMElOY3JX?=
- =?utf-8?B?SXdCSlgzcmFIaGlQMkF5dz09?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3092e5d4-40ac-4526-59d6-08d96bdd31ab
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4150.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2021 17:40:01.8408
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CZm+o5ipU4GcwVd3cRiMGNrd04QhK8GM6q13U7P/9RFhpxzC/dxMtW46IzJ4Tm2Hjnfd8/TnP9qMm760gP2FXIkZu0nPZ/XjfqEAvge5ZIk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5115
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10092 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 phishscore=0
- spamscore=0 mlxlogscore=999 adultscore=0 suspectscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
- definitions=main-2108300118
-X-Proofpoint-GUID: 1Dh3sSc4eXh-bXHUFBlU0ZMLaaZbuV_6
-X-Proofpoint-ORIG-GUID: 1Dh3sSc4eXh-bXHUFBlU0ZMLaaZbuV_6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.121.53]
+X-ClientProxiedBy: lhreml719-chm.china.huawei.com (10.201.108.70) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Thu, 5 Aug 2021 17:43:46 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> On Aug 27, 2021, at 2:44 PM, Nayna <nayna@linux.vnet.ibm.com> wrote:
-> On 8/25/21 6:27 PM, James Bottomley wrote:
->>=20
->> Remember, a CA cert is a self signed cert with the CA:TRUE basic
->> constraint.  Pretty much no secure boot key satisfies this (secure boot
->> chose deliberately NOT to use CA certificates, so they're all some type
->> of intermediate or leaf), so the design seems to be only to pick out
->> the CA certificates you put in the MOK keyring.  Adding the _ca suffix
->> may deflect some of the "why aren't all my MOK certificates in the
->> keyring" emails ...
->=20
->=20
-> My understanding is the .system_ca keyring should not be restricted only
-> to self-signed CAs (Root CA). Any cert that can qualify as Root or
-> Intermediate CA with Basic Constraints CA:TRUE should be allowed. In
-> fact, the intermediate CA certificates closest to the leaf nodes would be
-> best.
+> On Thu, 5 Aug 2021 00:18:35 +0800
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> 
+> > This is an RFC to start discussions about how we support the Component
+> > Measurement and Authentication (CMA) ECN (pcisig.com)
+> > 
+> > CMA provides an adaptation of the data objects and underlying protocol
+> > defined in the DMTF SPDM specification to be used to authenticate and
+> > conduct run-time measurements of the state of PCI devices (kind of like
+> > IMA for devices / firmware). This is done using a Data Object Exchange (DOE)
+> > protocol described in the ECN.
+> > 
+> > The CMA ECN is available from the PCI SIG and SPDM can be found at
+> > https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.1.pdf
+> > 
+> > CMA/SPDM is focused on establishing trust of the device by:
+> > 1) Negotiate algorithms supported.
+> > 2) Retrieve and check the certificate chain from the device against
+> >    a suitable signing certificate on the host.
+> > 3) Issue a challenge to the device to verify it can sign with the private
+> >    key associated with the leaf certificate.
+> > 4) (Request a measurement of device state)
+> > 5) (Establish a secure channel for further measurements or other uses)
+> > 6) (Mutual authentication)
+> > 
+> > This RFC only does steps 1-3
+> > 
+> > Testing of this patch set has been conducted against QEMU emulation of
+> > the device backed by openSPDM emulation of the SPDM protocol.  
+> 
+> Note testing also works with libspdm and libspdm-emu from
+> https://github.com/DMTF/spdm-emu with no modifications.
+> 
+> The openSPDM modifications Chris and team made were all associated with the host
+> end and are not needed for this code (the QEMU part is still needed to provide
+> the DOE emulation and forward the traffic to spdm_responder_emu)
+> 
+> I should also have mentioned this series is on top of the recently posted
+> DOE series rebased onto the linux-cxl next git tree.  I'm not really expecting
+> anyone to test it at this stage, but if desired I can push a full tree out
+> somewhere with this in place.
 
-With an intermediate containing CA:TRUE, the intermediate cert would not=20
-be self signed. Just for my clarification, does this mean I should remove
-the check that validates if it is self signed and instead somehow check if=
-=20
-the CA flag is set?  Wouldn=E2=80=99t this potentially allow improperly sig=
-ned certs=20
-into this new keyring?
+A couple of updates:
+
+1. This topic is on the agenda for the linaro-open-discussions call tomorrow.
+https://linaro.atlassian.net/wiki/spaces/LOD/overview
+It's a public call and anyone interested is welcome to join in. Time is rather
+unfriendly for US based people unfortunately. I'll throw together some sort of
+overview / open questions slide deck which will be posted on that page. Note
+related topics on plumbers microconf agenda later in the month - I'll share details
+of that once known.
+
+2. Related to that I had a request for trees as the base of the various series are not
+obvious (involved a bunch of rebases of various other patch sets)
+
+https://github.com/hisilicon/kernel-dev/tree/doe-spdm-v1 rebased to 5.14-rc7
+https://github.com/hisilicon/qemu/tree/cxl-hacks rebased to qemu/master as of Friday
+
+For qemu side of things you need to be running spdm_responder_emu --trans PCI_DOE 
+from https://github.com/DMTF/spdm-emu first (that will act as server to qemu acting
+as a client). Various parameters allow you to change the algorithms advertised and the
+kernel code should work for all the ones CMA mandates (but nothing beyond that for now).
+
+For the cxl device the snippet of qemu commandline needed is:
+-device cxl-type3,bus=root_port13,memdev=cxl-mem1,lsa=cxl-mem1, id=cxl-pmem0,size=2G,spdm=true
+
+Otherwise much the same as https://people.kernel.org/jic23/ (instructions written to enable
+testing of the DOE patches this built on).
+
+Build at least the cxl_pci driver as a module as we need to poke the certificate into the keychain
+before that (find the cert in spdm_emu tree).
+Instructions to do that with keyctl and evmctl are in the cover letter of the patch series.
+
+Hopefully I'll find some time soonish to update that blog post with instructions.
+
+Thanks,
+
+Jonathan
+
+> 
+> Jonathan
+> 
+> > 
+> > https://lore.kernel.org/qemu-devel/1624665723-5169-1-git-send-email-cbrowy@avery-design.com/
+> > 
+> > Open questions are called out in the individual patches but the big ones are
+> > probably:
+> > 
+> > 1) Certificate management.
+> >    Current code uses a _cma keyring created by the kernel, into which a
+> >    suitable root certificate can be inserted from userspace.
+> > 
+> >    A=$(keyctl search %:_cma  keyring _cma)
+> >    evmctl import ecdsaca.cert.der $A
+> > 
+> >    Is this an acceptable way to load the root certificates for this purpose?
+> > 
+> >    The root of the device provided certificate chain is then checked against
+> >    certificates on this keychain, but is itself (with the other certificates
+> >    in the chain) loaded into an SPDM instance specific keychain.  Currently
+> >    there is no safe cleanup of this which will need to be fixed.
+> > 
+> >    Using the keychain mechanism provides a very convenient way to manage these
+> >    certificates and to allow userspace to read them for debug purpose etc, but
+> >    is this the right use model?
+> > 
+> >    Finally the leaf certificate of this chain is used to check signatures of
+> >    the rest of the communications with the device.
+> > 
+> > 2) ASNL1 encoder for ECDSA signature
+> >    It seems from the openSPDM implementation that for these signatures,
+> >    the format is a simple pair of raw values.  The kernel implementation of
+> >    ECDSA signature verification assumes ASN1 encoding as seems to be used
+> >    in x509 certificates.  Currently I work around that by encoding the
+> >    signatures so that the ECDSA code can un-encode them again and use them.
+> >    This seems slightly silly, but it is minimum impact on current code.
+> >    Other suggestions welcome.
+> > 
+> > 3) Interface to present to drivers. Currently I'm providing just one exposed
+> >    function that wraps up all the exhanges until a challenge authentication
+> >    response from the device. This is done using one possible sequence.
+> >    I don't think it makes sense to expose the low level components due to the
+> >    underlying spdm_state updates and there only being a fixed set of valid
+> >    orderings.
+> > 
+> > Future patches will raise questions around management of the measurements, but
+> > I'll leave those until I have some sort of implementation to shoot at.
+> > The 'on probe' use in the CXL driver is only one likely time when authentication
+> > would be needed.
+> > 
+> > Note I'm new to a bunch of the areas of the kernel this touches, so have
+> > probably done things that are totally wrong.
+> > 
+> > CC list is best effort to identify those who 'might' care.  Please share
+> > with anyone I've missed.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> > 
+> > Jonathan Cameron (4):
+> >   lib/asn1_encoder: Add a function to encode many byte integer values.
+> >   spdm: Introduce a library for DMTF SPDM
+> >   PCI/CMA: Initial support for Component Measurement and Authentication
+> >     ECN
+> >   cxl/pci: Add really basic CMA authentication support.
+> > 
+> >  drivers/cxl/Kconfig          |    1 +
+> >  drivers/cxl/mem.h            |    2 +
+> >  drivers/cxl/pci.c            |   13 +-
+> >  drivers/pci/Kconfig          |    9 +
+> >  drivers/pci/Makefile         |    1 +
+> >  drivers/pci/doe.c            |    2 -
+> >  include/linux/asn1_encoder.h |    3 +
+> >  include/linux/pci-doe.h      |    2 +
+> >  lib/Kconfig                  |    3 +
+> >  lib/Makefile                 |    2 +
+> >  lib/asn1_encoder.c           |   54 ++
+> >  lib/spdm.c                   | 1196 ++++++++++++++++++++++++++++++++++
+> >  12 files changed, 1285 insertions(+), 3 deletions(-)
+> >  create mode 100644 lib/spdm.c
+> >   
+> 
 
