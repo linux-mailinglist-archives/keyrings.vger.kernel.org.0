@@ -2,36 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C942D3FD287
-	for <lists+keyrings@lfdr.de>; Wed,  1 Sep 2021 06:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 221563FEC07
+	for <lists+keyrings@lfdr.de>; Thu,  2 Sep 2021 12:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241855AbhIAEr4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Sep 2021 00:47:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56338 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241684AbhIAErz (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 1 Sep 2021 00:47:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3427661008;
-        Wed,  1 Sep 2021 04:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630471619;
-        bh=6mPcbqd3sra2Eh4c8H6A89Ite2nAKh2TgjuRTl49Vag=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=NT7M1T+hYKngyLYyi2TW+0++hwLLmqhfDEvn+yIbz2aCCdq0StaqWYvrr5SXGFBTU
-         DGqxGNvEibsvCSmdzTAcMcbTN362OQyHIyskhn0PAcTsOXxaf0tqyETk1EGECIwfgU
-         AFvklTNxr3diXlr0wwTvLE2r711mtWFwq2RKghfa2i9IvKcBqtEZmKHPAgvbVBPSSQ
-         hcSe6HTLgYhVSBNlCy+reE5zD8S2jliInHVWot6SDM291iiCZD0zZYd+e/Avv9dyNV
-         T1SothX5F9wxNowWTRw9fpN1ZIr+tHL62OEUQ9M6JL8AgTFyrg1XOEwjrzOxIf6vJM
-         dsDRo8VU2XEVQ==
-Message-ID: <809185b33150a7d25da6b11323af3d8dbe549836.camel@kernel.org>
+        id S242668AbhIBKUa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 2 Sep 2021 06:20:30 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45402 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233716AbhIBKU2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 2 Sep 2021 06:20:28 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 182AGMps189559;
+        Thu, 2 Sep 2021 06:18:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=qJKX3OAaHlW+MwDMgKwO9dzOxTJmQcQS8OEW09vAzkM=;
+ b=PzeYjjT5UE7SOybxQLPHr4kSgVYAZOax1uzgwtLaK5AqUbQkLG/fFmnAbfJjOXhf75N3
+ ofFyy+Q7xqd4Rt+quJFO/xWpGREMieN9g486/kyN5bMmcZSAPf3qPpRVmb2WiRZRWLPB
+ a5/AdTZhoWhzLHwhEkWqj4HW0nYZNtRcwGEOUuWhpis46/f93pahS2NDZri4wdYVYdTr
+ vaaUCl//50ZYDE17nQEo6drbmof0H1mAif2VEl5Y/EIe2HngAF3P9HCejTA5nbmdBgQf
+ BdD6Bqb9C5zYvllHR2r1a1aahjCJ5bfP7P87Ne/DTqCMAvlrgwnVIv9TcDoyiNVIejdN zQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3atvqcg1h1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Sep 2021 06:18:47 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 182AIksm008444;
+        Thu, 2 Sep 2021 06:18:47 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3atvqcg1gc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Sep 2021 06:18:46 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 182ABj4c007335;
+        Thu, 2 Sep 2021 10:18:44 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma01fra.de.ibm.com with ESMTP id 3atdxsg8be-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Sep 2021 10:18:44 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 182AIfOW38994286
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 2 Sep 2021 10:18:41 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6D38EA405B;
+        Thu,  2 Sep 2021 10:18:41 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7B972A4054;
+        Thu,  2 Sep 2021 10:18:35 +0000 (GMT)
+Received: from sig-9-65-193-241.ibm.com (unknown [9.65.193.241])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu,  2 Sep 2021 10:18:35 +0000 (GMT)
+Message-ID: <da852592bff4d162a6a1a77fc01df55727199885.camel@linux.ibm.com>
 Subject: Re: [PATCH v4 00/12] Enroll kernel keys thru MOK
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Nayna <nayna@linux.vnet.ibm.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        David Howells <dhowells@redhat.com>
-Cc:     keyrings@vger.kernel.org,
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>,
+        Nayna <nayna@linux.vnet.ibm.com>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
         linux-integrity <linux-integrity@vger.kernel.org>,
         David Woodhouse <dwmw2@infradead.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
@@ -47,8 +77,8 @@ Cc:     keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org, pjones@redhat.com,
         "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>,
         Patrick Uiterwijk <patrick@puiterwijk.org>
-Date:   Wed, 01 Sep 2021 07:46:57 +0300
-In-Reply-To: <e2c7eaceed715a92887b3d5aeafad01e047b6fab.camel@kernel.org>
+Date:   Thu, 02 Sep 2021 06:18:34 -0400
+In-Reply-To: <D5553DD8-7CD4-4D78-A9D6-FC22BA16181B@oracle.com>
 References: <20210819002109.534600-1-eric.snowberg@oracle.com>
          <fcb30226f378ef12cd8bd15938f0af0e1a3977a2.camel@kernel.org>
          <f76fcf41728fbdd65f2b3464df0821f248b2cba0.camel@linux.ibm.com>
@@ -60,87 +90,80 @@ References: <20210819002109.534600-1-eric.snowberg@oracle.com>
          <9067ff7142d097698b827f3c1630a751898a76bf.camel@kernel.org>
          <bc37d1da3ef5aae16e69eeda25d6ce6fe6a51a77.camel@HansenPartnership.com>
          <10bc1017-2b45-43f3-ad91-d09310b24c2c@linux.vnet.ibm.com>
-         <18c0a9ca6b3ab8103e3b9270a6f59539787f6e12.camel@kernel.org>
-         <e2c7eaceed715a92887b3d5aeafad01e047b6fab.camel@kernel.org>
+         <D07DE64F-FE8B-4020-8EC2-94C3C0F9920A@oracle.com>
+         <89a37802-1423-6b1c-c0ef-6f84e544ac33@linux.vnet.ibm.com>
+         <D5553DD8-7CD4-4D78-A9D6-FC22BA16181B@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.36.5-0ubuntu1 
-MIME-Version: 1.0
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cQVsDurILdUYFQFQw8xB44aL22GCET1q
+X-Proofpoint-ORIG-GUID: zJvOY9nZGAuZDU2Qq7Ca6IuyxegSX9Hs
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-09-02_03:2021-09-01,2021-09-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 adultscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
+ phishscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2108310000
+ definitions=main-2109020063
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2021-09-01 at 07:36 +0300, Jarkko Sakkinen wrote:
-> On Wed, 2021-09-01 at 07:34 +0300, Jarkko Sakkinen wrote:
-> > On Fri, 2021-08-27 at 16:44 -0400, Nayna wrote:
-> > > On 8/25/21 6:27 PM, James Bottomley wrote:
-> > > > On Thu, 2021-08-26 at 01:21 +0300, Jarkko Sakkinen wrote:
-> > > > > On Tue, 2021-08-24 at 10:34 -0400, Mimi Zohar wrote:
-> > > > > > > > > Jarkko, I think the emphasis should not be on "machine" f=
-rom
-> > > > > > > > > Machine Owner Key (MOK), but on "owner".  Whereas Nayna i=
-s
-> > > > > > > > > focusing more on the "_ca" aspect of the name.   Perhaps
-> > > > > > > > > consider naming it "system_owner_ca" or something along t=
-hose
-> > > > > > > > > lines.
-> > > > > > > > What do you gain such overly long identifier? Makes no sens=
-e.
-> > > > > > > > What is "ca aspect of the name" anyway?
-> > > > > > > As I mentioned previously, the main usage of this new keyring=
- is
-> > > > > > > that it should contain only CA keys which can be later used t=
-o
-> > > > > > > vouch for user keys loaded onto secondary or IMA keyring at
-> > > > > > > runtime. Having ca in the  name like .xxxx_ca, would make the
-> > > > > > > keyring name self-describing. Since you preferred .system, we=
- can
-> > > > > > > call it .system_ca.
-> > > > > > Sounds good to me.  Jarkko?
-> > > > > >=20
-> > > > > > thanks,
-> > > > > >=20
-> > > > > > Mimi
-> > > > > I just wonder what you exactly gain with "_ca"?
-> > > > Remember, a CA cert is a self signed cert with the CA:TRUE basic
-> > > > constraint.  Pretty much no secure boot key satisfies this (secure =
-boot
-> > > > chose deliberately NOT to use CA certificates, so they're all some =
-type
-> > > > of intermediate or leaf), so the design seems to be only to pick ou=
-t
-> > > > the CA certificates you put in the MOK keyring.  Adding the _ca suf=
-fix
-> > > > may deflect some of the "why aren't all my MOK certificates in the
-> > > > keyring" emails ...
-> > >=20
-> > > My understanding is the .system_ca keyring should not be restricted o=
-nly=20
-> > > to self-signed CAs (Root CA). Any cert that can qualify as Root or=
-=20
-> > > Intermediate CA with Basic Constraints CA:TRUE should be allowed. In=
-=20
-> > > fact, the intermediate CA certificates closest to the leaf nodes woul=
-d=20
-> > > be best.
-> > >=20
-> > > Thanks for bringing up that adding the _ca suffix may deflect some of=
-=20
-> > > the "why aren't all my MOK certificates in the keyring" emails.
-> >=20
-> > What the heck is the pragamatic gain of adding such a suffix? Makes
-> > zero sense
->=20
-> If this series needs both "system" and "system_ca" keyrings, then
-> there would be some sanity in this.
->=20
-> Also, I still *fully* lack understanding of the use of word system.
->=20
-> Why MOK is not SOK then??
+On Tue, 2021-08-31 at 19:51 -0600, Eric Snowberg wrote:
+> > On Aug 31, 2021, at 6:52 PM, Nayna <nayna@linux.vnet.ibm.com> wrote:
+> > On 8/30/21 1:39 PM, Eric Snowberg wrote:
+> >>> On Aug 27, 2021, at 2:44 PM, Nayna <nayna@linux.vnet.ibm.com> wrote:
+> >>> On 8/25/21 6:27 PM, James Bottomley wrote:
+> >>>> Remember, a CA cert is a self signed cert with the CA:TRUE basic
+> >>>> constraint.  Pretty much no secure boot key satisfies this (secure boot
+> >>>> chose deliberately NOT to use CA certificates, so they're all some type
+> >>>> of intermediate or leaf), so the design seems to be only to pick out
+> >>>> the CA certificates you put in the MOK keyring.  Adding the _ca suffix
+> >>>> may deflect some of the "why aren't all my MOK certificates in the
+> >>>> keyring" emails ...
+> >>> 
+> >>> My understanding is the .system_ca keyring should not be restricted only
+> >>> to self-signed CAs (Root CA). Any cert that can qualify as Root or
+> >>> Intermediate CA with Basic Constraints CA:TRUE should be allowed. In
+> >>> fact, the intermediate CA certificates closest to the leaf nodes would be
+> >>> best.
+> >> With an intermediate containing CA:TRUE, the intermediate cert would not
+> >> be self signed. Just for my clarification, does this mean I should remove
+> >> the check that validates if it is self signed and instead somehow check if
+> >> the CA flag is set?  Wouldn’t this potentially allow improperly signed certs
+> >> into this new keyring?
+> >> 
+> > In this model, we are relying on the admin to ensure the authenticity of the certificate(s) being loaded onto the new keyring. It is similar to trusting the admin to enable the variable and add keys to MOK. Following are the checks that must pass before adding it to .system_ca keyring.
+> > 
+> > 1. Check against revocation_list.
+> > 2. Check Basic Constraints: CA=TRUE.
+> > 3. Check keyUsage = keyCertSign.
+> 
+> Originally I thought the request to only load CA certs into this new keyring 
+> was so root of trust could be validated for the entire chain.  If a portion
+> of the model now relies on the admin to ensure authenticity, and the complete
+> chain is not needed, why not have the admin also check for #2 and #3? Meaning,
+> when the Kconfig option is enabled and the new MokListTrustedRT UEFI is set, 
+> whatever the admin has placed in the MOKList goes into this new keyring.
 
-Please just call it "machine". You have machines that hold the keyring.
+The root of trust for the new "machine" keyring, at least in the UEFI
+use case, is registering keys in the MOK db, which requires physical
+presence.  So we're trusting the MOK db, which means we're really
+trusting both the admin and UEFI to do the right things.  There is no
+harm in verifying the CA assumption when loading the certs onto the
+"machine" keyring.
 
-"system" does not mean anything concrete. I don't know what a "system"
-is.
+From an IMA perspective, all that is needed to sign an IMA custom
+policy and local code is the ability to load a single self-signed CA
+certificate.  So the self-signed CA restriction is fine.  Obviously
+other use cases are being discussed here.  If the other use cases want
+to relax the self-signed CA restriction to allow intermediary CA's, it
+should be explicitly called out in a separate patch, with its own patch
+description, providing the motivation.
 
-/Jarkko
+thanks,
+
+Mimi
+
