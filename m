@@ -2,79 +2,207 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E89D4059B0
-	for <lists+keyrings@lfdr.de>; Thu,  9 Sep 2021 16:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84A4405A18
+	for <lists+keyrings@lfdr.de>; Thu,  9 Sep 2021 17:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236715AbhIIOwM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Sep 2021 10:52:12 -0400
-Received: from smtp.usa.ultra.group ([52.243.161.112]:44252 "EHLO
-        smtp.usa.ultra.group" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S236606AbhIIOwM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Sep 2021 10:52:12 -0400
-Received: from AMERUSHC4VPEX01.us.ultra.group (AMERUSHC4VPEX01.us.ultra.group [10.22.7.10])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smtp.usa.ultra.group (MTA) with ESMTPS id 4H524j30s1z5RY4
-        for <keyrings@vger.kernel.org>; Thu,  9 Sep 2021 10:51:01 -0400 (EDT)
-Received: from AMERUSHC4VPEX01.us.ultra.group (10.22.7.10) by
- AMERUSHC4VPEX01.us.ultra.group (10.22.7.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10; Thu, 9 Sep 2021 10:51:00 -0400
-Received: from AMERUSHC4VPEX01.us.ultra.group ([fe80::4944:fcbb:d19d:4a8a]) by
- AMERUSHC4VPEX01.us.ultra.group ([fe80::4944:fcbb:d19d:4a8a%4]) with mapi id
- 15.01.2242.010; Thu, 9 Sep 2021 10:51:00 -0400
-From:   Mike Murphy <Mike.Murphy@ultra-3eti.com>
-To:     "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>
-Subject: key.c line 144
-Thread-Topic: key.c line 144
-Thread-Index: AdeliipmoD3rUPLXQsaqqIaMeSY6fg==
-Date:   Thu, 9 Sep 2021 14:51:00 +0000
-Message-ID: <ef82efdc8861448c924312804ae1ef92@ultra-3eti.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.22.8.11]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-x-msw-jemd-newsletter: false
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ultra-3eti.com; s=dkim1;
-        t=1631199062; bh=har2PgHCoqdT81BoVU8np/jQ2ngLt8g4w8Ce4w3GFbM=;
-        h=From:To:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
-         Accept-Language:Content-Language:Content-Type:
-         Content-Transfer-Encoding:MIME-Version;
-        b=HY+0BuEPVDeD/ceA8UsrtaQ2mc1SeBgKkkEgzjxd5Qn7QEn9Ghsd8FFHodVqNgka+
-         wkEh8igdP58joBIrMP2CnbYlTDxn0yscShfDEoNYexy8gEyYPj4bQ953HibcSdYrDi
-         Kmmq48KMsny8pCfthKlr9HbBBme98gRjSnXkd14V//W41lNjwMxR6tOcpOkkJSqyDA
-         Eq1kQWxHU8EpWy68qloQ4Gy6zoi2+geriAgC8UCgwy2lnTp6ALtSyIs8XUDQn9RPGF
-         mM8QWHRTspPs8iTJL3de4a5Id1Ye2ZFkX2bGK/gNoAIBarnZbjb6+qkscXoIZlQ0wm
-         /hmt8Fh9Yc68w==
+        id S237911AbhIIPVn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Sep 2021 11:21:43 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:56564 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S233473AbhIIPVk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Sep 2021 11:21:40 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 189F3FHX048023;
+        Thu, 9 Sep 2021 11:19:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=lpgD5vGEmIaRlhyfMXPRmGy9zj9rf8ajeuGtr4XPduY=;
+ b=bw8f8en2UXaRxE+/+5vgFZJpeYlXD97XTnewnEK1ERTUvBPn0vx8hd4hQc6EmdtFYEJO
+ goSChKyGUg1DjUSqKfglO3yL2gYJ7Y/d+veQJEgrSTR3Y4Y6IgRr1vjL/xP3EMQA/zgV
+ SaI2JC0qovKkpX6alJpljFXapg6MfqJNJH+Jo8xLr349dZWrsM5GrhMwZ0nY72gxjVjh
+ 4tkJV96edNg/P/PwUd77fYDbi+Apok4MRhaPkRIphmEf/EzHw6w7sxTo/OWa1YwXNiZh
+ mWwwh7UdqlPou6l7eav8NpGdslgSRNAVL+rSLJIhjwo2c7BZZhDNyS7xrit/lJOviA9p oA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3ayhwr5jqw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Sep 2021 11:19:55 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 189F4CKI052407;
+        Thu, 9 Sep 2021 11:19:54 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3ayhwr5jpj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Sep 2021 11:19:54 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 189FIEn0025560;
+        Thu, 9 Sep 2021 15:19:52 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma02fra.de.ibm.com with ESMTP id 3axcnkew6n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Sep 2021 15:19:52 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 189FFTKS14156272
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 9 Sep 2021 15:15:29 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 97F1D4204D;
+        Thu,  9 Sep 2021 15:19:49 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CE4B842041;
+        Thu,  9 Sep 2021 15:19:44 +0000 (GMT)
+Received: from sig-9-65-72-231.ibm.com (unknown [9.65.72.231])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu,  9 Sep 2021 15:19:44 +0000 (GMT)
+Message-ID: <02024a370f3180e5a6668282e5843ab58bf2a073.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 01/12] integrity: Introduce a Linux keyring called
+ machine
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net, jarkko@kernel.org, jmorris@namei.org,
+        serge@hallyn.com
+Cc:     keescook@chromium.org, gregkh@linuxfoundation.org,
+        torvalds@linux-foundation.org, scott.branden@broadcom.com,
+        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
+        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Thu, 09 Sep 2021 11:19:43 -0400
+In-Reply-To: <20210907160110.2699645-2-eric.snowberg@oracle.com>
+References: <20210907160110.2699645-1-eric.snowberg@oracle.com>
+         <20210907160110.2699645-2-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wspITacEcQ5vvoXOSzWgB8P8y2gYDHE7
+X-Proofpoint-ORIG-GUID: TI866xkV7-3Gg1LO0soUIQh1MMBaIjNY
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-09-09_05:2021-09-09,2021-09-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=999
+ adultscore=0 phishscore=0 mlxscore=0 priorityscore=1501 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109090093
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Maintainer,
+On Tue, 2021-09-07 at 12:00 -0400, Eric Snowberg wrote:
+> Many UEFI Linux distributions boot using shim.  The UEFI shim provides
+> what is called Machine Owner Keys (MOK). Shim uses both the UEFI Secure
+> Boot DB and MOK keys to validate the next step in the boot chain.  The
+> MOK facility can be used to import user generated keys.  These keys can
+> be used to sign an end-users development kernel build.  When Linux
+> boots, both UEFI Secure Boot DB and MOK keys get loaded in the Linux
+> .platform keyring.
+> 
+> Add a new Linux keyring called machine.  This keyring shall contain just
 
-Current mainline (5.14), source file:
-security/keys/key.c
+^Define
 
-line 144:
+> MOK CA keys and not the remaining keys in the platform keyring. This new
+> machine keyring will be used in follow on patches.  Unlike keys in the
+> platform keyring, keys contained in the machine keyring will be trusted
+> within the kernel if the end-user has chosen to do so.
+> 
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> ---
+> v1: Initial version
+> v2: Removed destory keyring code
+> v3: Unmodified from v2
+> v4: Add Kconfig, merged in "integrity: add add_to_mok_keyring" 
+> v5: Rename to machine keyring
+> ---
+>  security/integrity/Kconfig                    | 11 +++++
+>  security/integrity/Makefile                   |  1 +
+>  security/integrity/digsig.c                   |  1 +
+>  security/integrity/integrity.h                | 12 +++++-
+>  .../platform_certs/machine_keyring.c          | 42 +++++++++++++++++++
+>  5 files changed, 66 insertions(+), 1 deletion(-)
+>  create mode 100644 security/integrity/platform_certs/machine_keyring.c
+> 
+> diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+> index 71f0177e8716..52193b86768a 100644
+> --- a/security/integrity/Kconfig
+> +++ b/security/integrity/Kconfig
+> @@ -62,6 +62,17 @@ config INTEGRITY_PLATFORM_KEYRING
+>           provided by the platform for verifying the kexec'ed kerned image
+>           and, possibly, the initramfs signature.
+>  
+> +config INTEGRITY_MACHINE_KEYRING
+> +	bool "Provide a keyring to which CA Machine Owner Keys may be added"
+> +	depends on SECONDARY_TRUSTED_KEYRING
+> +	depends on INTEGRITY_ASYMMETRIC_KEYS
+> +	depends on SYSTEM_BLACKLIST_KEYRING
+> +	help
+> +	 If set, provide a keyring to which CA Machine Owner Keys (MOK) may
+> +	 be added. This keyring shall contain just CA MOK keys.  Unlike keys
+> +	 in the platform keyring, keys contained in the .machine keyring will
+> +	 be trusted within the kernel.
 
-key->serial >>=3D 1; /* negative numbers are not permitted */
+No sense in creating the ".machine" keyring, unless it is possible to
+safely load CA certificates on it.  At least for the time being, this
+should also be dependent on EFI.
 
-where serial is int32_t.   >> 1 is not converting negative to positive. It =
-is making a smaller negative value.=20
+<snip>
 
-Regards,
-Mike M.
+> +++ b/security/integrity/platform_certs/machine_keyring.c
+> @@ -0,0 +1,42 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Machine keyring routines.
+> + *
+> + * Copyright (c) 2021, Oracle and/or its affiliates.
+> + */
+> +
+> +#include "../integrity.h"
+> +
+> +static __init int machine_keyring_init(void)
+> +{
+> +	int rc;
+> +
+> +	rc = integrity_init_keyring(INTEGRITY_KEYRING_MACHINE);
+> +	if (rc)
+> +		return rc;
+> +
+> +	pr_notice("Machine keyring initialized\n");
+> +	return 0;
+> +}
+> +device_initcall(machine_keyring_init);
+> +
+> +void __init add_to_machine_keyring(const char *source, const void *data, size_t len)
+> +{
+> +	key_perm_t perm;
+> +	int rc;
+> +
+> +	perm = (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW;
+> +	rc = integrity_load_cert(INTEGRITY_KEYRING_MACHINE, source, data, len, perm);
+> +
+> +	/*
+> +	 * Some MOKList keys may not pass the machine keyring restrictions.
+> +	 * If the restriction check does not pass and the platform keyring
+> +	 * is configured, try to add it into that keyring instead.
+> +	 */
+> +	if (rc)
 
-This e-mail is from Ultra Electronics Defense, Inc. (or a subsidiary of).  =
-This message and any attachment may contain confidential, privileged or oth=
-erwise protected information. If you are not the intended recipient, please=
- do not use, copy, forward or disclose the contents of this message or any =
-attachment. Instead, please delete this message and any attachment from you=
-r system immediately.  All communications may be subject to interception or=
- monitoring for operational and/or security purposes. Please rely on your o=
-wn virus checking as the sender cannot accept any liability for any damage =
-arising from any bug or virus infection.
+In addition to the comment, also test to see if the ".platform" keyring
+is configured.
+
+thanks,
+
+Mimi
+
+> +		rc = integrity_load_cert(INTEGRITY_KEYRING_PLATFORM, source,
+> +					 data, len, perm);
+> +
+> +	if (rc)
+> +		pr_info("Error adding keys to machine keyring %s\n", source);
+> +}
+
+
