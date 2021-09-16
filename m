@@ -2,111 +2,143 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CD940EB50
-	for <lists+keyrings@lfdr.de>; Thu, 16 Sep 2021 22:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 080EC40ED33
+	for <lists+keyrings@lfdr.de>; Fri, 17 Sep 2021 00:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236698AbhIPUG7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 16 Sep 2021 16:06:59 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:27566 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233356AbhIPUG7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Sep 2021 16:06:59 -0400
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18GK0i4u018920;
-        Thu, 16 Sep 2021 16:05:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=I8WeDmPI0MEkPVFIH6T9tJ6ZkkfSB2x0+8T7Nri6nTs=;
- b=YbHttMVptamkis3i2eSBpHlkflBgiGbF4IpmhOE1E2IR9nzI9fB+/v4FU3wJzgdT3Eey
- n+RQxvUJ7+V0lw84Rhd6ysfuXB+9DSPHRKNOodjFtdXICSgJgHToGcTnsJaygfXH8HQd
- LpsW4ogmqNMFO9juQ7YGJVhDMFRX7MsGd5/9wcem7Fuj9DG1ABve58sZ2BiUZWjPoU/N
- FboYx8bnM4MptPOALQw7daPMbbvl/EJCtne5ExgKOxdOylIKNU2M8A4ZrlhTCdFgBBke
- bd63hrVJKENQOuRdQJ0WQr+oyUKPzpBYIBUbacO0Hy/TB5MBW6Y+p+OodtRkBTez7bUy tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3b48psnea4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Sep 2021 16:05:12 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18GK1HTu023304;
-        Thu, 16 Sep 2021 16:05:08 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3b48psne8b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Sep 2021 16:05:08 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18GJwBJh021984;
-        Thu, 16 Sep 2021 20:05:05 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-        by ppma04dal.us.ibm.com with ESMTP id 3b0m3cxvy1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Sep 2021 20:05:05 +0000
-Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
-        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18GK53Jc39453040
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Sep 2021 20:05:03 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BD39E6E06C;
-        Thu, 16 Sep 2021 20:05:03 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3A44C6E079;
-        Thu, 16 Sep 2021 20:05:02 +0000 (GMT)
-Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.163.30.115])
-        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu, 16 Sep 2021 20:05:02 +0000 (GMT)
-Subject: Re: [PATCH v6 03/13] KEYS: CA link restriction
-To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+        id S240832AbhIPWPt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Sep 2021 18:15:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:24858 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240764AbhIPWPt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Sep 2021 18:15:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1631830468;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=E0CG1ZeRgflAc20F7zcmBoOrMfwo5YGuJv5LLNqTMkY=;
+        b=RUkrjnlNB71Q7S8ZyMixsP02D72FR71S/AnPvwoQMjMlwCV2uh42pp2FwmeTshsDSiFxKH
+        tFKJIS/QwXIr8lK6GJf4gt+oxdVS8D5zCQ6M2tYbeUC/SObqdeWyPP7+2gzlQkvNZzOQCW
+        cmwWy5NgQEkEjtOomN57/JbROwHCwj0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-162-Yjm4HXchPxOivu-FlClMIQ-1; Thu, 16 Sep 2021 18:14:25 -0400
+X-MC-Unique: Yjm4HXchPxOivu-FlClMIQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B08541084681;
+        Thu, 16 Sep 2021 22:14:21 +0000 (UTC)
+Received: from redhat.com (ovpn-112-133.phx2.redhat.com [10.3.112.133])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8637F7A5CF;
+        Thu, 16 Sep 2021 22:14:18 +0000 (UTC)
+Date:   Thu, 16 Sep 2021 18:14:16 -0400
+From:   Peter Jones <pjones@redhat.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
         linux-integrity@vger.kernel.org, zohar@linux.ibm.com,
         dhowells@redhat.com, dwmw2@infradead.org,
         herbert@gondor.apana.org.au, davem@davemloft.net,
-        jarkko@kernel.org, jmorris@namei.org, serge@hallyn.com
-Cc:     keescook@chromium.org, gregkh@linuxfoundation.org,
-        torvalds@linux-foundation.org, scott.branden@broadcom.com,
-        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
-        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
+        jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
+        gregkh@linuxfoundation.org, torvalds@linux-foundation.org,
+        scott.branden@broadcom.com, weiyongjun1@huawei.com,
+        nayna@linux.ibm.com, ebiggers@google.com, ardb@kernel.org,
+        nramas@linux.microsoft.com, lszubowi@redhat.com,
         linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
-        konrad.wilk@oracle.com
+        James.Bottomley@HansenPartnership.com,
+        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>
+Subject: Re: [PATCH v6 00/13] Enroll kernel keys thru MOK
+Message-ID: <20210916221416.onvqgz5iij3c7e6j@redhat.com>
 References: <20210914211416.34096-1-eric.snowberg@oracle.com>
- <20210914211416.34096-4-eric.snowberg@oracle.com>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <d3d8a1ce-a982-2662-28f6-3c06cb679d5f@linux.vnet.ibm.com>
-Date:   Thu, 16 Sep 2021 16:05:01 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-In-Reply-To: <20210914211416.34096-4-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8XXxDtkcikJYvbvBEOythfdkGkYX1Zys
-X-Proofpoint-ORIG-GUID: Vehnqpk729pJQxbKMrLp6UJ6qaIbxbfZ
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ <bee0ebc354a651ea5b263897f9b155dc604fa7c5.camel@kernel.org>
+ <A02EE1DA-12BE-4998-ACE6-2D74FF380297@oracle.com>
+ <f6e2e17cc6c8a3056cc066a7baa4d943eeb47c84.camel@kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
- definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- spamscore=0 malwarescore=0 phishscore=0 priorityscore=1501 suspectscore=0
- impostorscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109160113
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f6e2e17cc6c8a3056cc066a7baa4d943eeb47c84.camel@kernel.org>
+User-Agent: NeoMutt/20180716
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Thu, Sep 16, 2021 at 06:15:50PM +0300, Jarkko Sakkinen wrote:
+> On Wed, 2021-09-15 at 15:28 -0600, Eric Snowberg wrote:
+> > > On Sep 15, 2021, at 11:57 AM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > 
+> > > On Tue, 2021-09-14 at 17:14 -0400, Eric Snowberg wrote:
+> > > > Back in 2013 Linus requested a feature to allow end-users to have the 
+> > > > ability "to add their own keys and sign modules they trust". This was
+> > > > his *second* order outlined here [1]. There have been many attempts 
+> > > > over the years to solve this problem, all have been rejected.  Many 
+> > > > of the failed attempts loaded all preboot firmware keys into the kernel,
+> > > > including the Secure Boot keys. Many distributions carry one of these 
+> > > > rejected attempts [2], [3], [4]. This series tries to solve this problem 
+> > > > with a solution that takes into account all the problems brought up in 
+> > > > the previous attempts.
+> > > > 
+> > > > On UEFI based systems, this series introduces a new Linux kernel keyring 
+> > > > containing the Machine Owner Keys (MOK) called machine. It also defines
+> > > > a new MOK variable in shim. This variable allows the end-user to decide 
+> > > > if they want to load MOK keys into the machine keyring. Mimi has suggested 
+> > > > that only CA keys contained within the MOK be loaded into the machine 
+> > > > keyring. All other certs will load into the platform keyring instead.
+> > > > 
+> > > > By default, nothing changes; MOK keys are not loaded into the machine
+> > > > keyring.  They are only loaded after the end-user makes the decision 
+> > > > themselves.  The end-user would set this through mokutil using a new 
+> > > > --trust-mok option [5]. This would work similar to how the kernel uses 
+> > > > MOK variables to enable/disable signature validation as well as use/ignore 
+> > > > the db. Any kernel operation that uses either the builtin or secondary 
+> > > > trusted keys as a trust source shall also reference the new machine 
+> > > > keyring as a trust source.
+> > > > 
+> > > > Secure Boot keys will never be loaded into the machine keyring.  They
+> > > > will always be loaded into the platform keyring.  If an end-user wanted 
+> > > > to load one, they would need to enroll it into the MOK.
+> > > > 
+> > > > Steps required by the end user:
+> > > > 
+> > > > Sign kernel module with user created key:
+> > > > $ /usr/src/kernels/$(uname -r)/scripts/sign-file sha512 \
+> > > >   machine_signing_key.priv machine_signing_key.x509 my_module.ko
+> > > > 
+> > > > Import the key into the MOK
+> > > > $ mokutil --import machine_signing_key.x509
+> > > > 
+> > > > Setup the kernel to load MOK keys into the .machine keyring
+> > > > $ mokutil --trust-mok
+> > > > 
+> > > > Then reboot, the MokManager will load and ask if you want to trust the
+> > > > MOK key and enroll the MOK into the MOKList.  Afterwards the signed kernel
+> > > > module will load.
+> > > > 
+> > > > I have included links to both the mokutil [5] and shim [6] changes I
+> > > > have made to support this new functionality.
+> > > 
+> > > How hard it is to self-compile shim and boot it with QEMU (I
+> > > do not know even the GIT location of Shim)?
+> > 
+> > It is not hard, that is the setup I use for my testing.  Upstream shim 
+> > is located here [1].  Or you can use my repo which contains the necessary
+> > changes [2].
+> > 
+> > [1] https://github.com/rhboot/shim
+> > [2] https://github.com/esnowberg/shim/tree/mokvars-v2
+> > 
+> 
+> So, my 2nd Q would be: which order these should be upstreamed?
+> 
+> Linux patch set cannot depend on "yet to be upstreamed" things.
+> 
+> Code changes look good enough to me.
 
-On 9/14/21 5:14 PM, Eric Snowberg wrote:
-> Add a new link restriction.  Restrict the addition of keys in a keyring
-> based on the key to be added being a CA (self-signed).
+We can carry this support in shim before it's in kernel.  Eric's current
+patch for shim and mokutil looks mostly reasonable, though I see a few
+minor nits we'll have to sort out.
 
-A self-signed cert can be a root CA cert or a code-signing cert. The way 
-to differentiate a CA cert is by checking BasicConstraints CA:TRUE and 
-keyUsage:keyCertSign. Refer to Section Basic Constraints and Key Usage 
-in the document - https://datatracker.ietf.org/doc/html/rfc5280.
-
-Thanks & Regards,
-
-      - Nayna
+-- 
+        Peter
 
