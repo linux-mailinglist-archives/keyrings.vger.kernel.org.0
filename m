@@ -2,178 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A425740FEE9
-	for <lists+keyrings@lfdr.de>; Fri, 17 Sep 2021 20:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F78C4102F4
+	for <lists+keyrings@lfdr.de>; Sat, 18 Sep 2021 04:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236975AbhIQSEE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 17 Sep 2021 14:04:04 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:47308 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230115AbhIQSED (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Sep 2021 14:04:03 -0400
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18HHTsnv017258;
-        Fri, 17 Sep 2021 14:02:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=6dl0XdISYgflLHA8V5h7HYVl7CaFpcLBWAuWqzylDms=;
- b=sTobmfwgVTNOV/NRtxCApV+FSlmKV5v/M3S9hvq3zHx0OPlo/PhPGm9HnC+1xLNFzOvi
- p/feHcH57Lf/MUuc9W0liRw7y51JFu1lVsg702HTyHC0qLmNoNQWzLBeKD6Iw7inKIrZ
- YL+OQN9yInH/Z9+KQmbuSeCrf+4x5fIVJW7ivxOBIw0aJZd2qNmJcbtWuuKZsl/eEH4N
- jx6Gw6AFwYYU0sG8qGZZF4skO+jGIF9k5lv4GuL03GXIOsqhB+YxVb0vCz6+tazIPWtQ
- hsvs7jciwTZ3h5kdgHnjD6M7HCDuf9FcmMYv9W5XMdzi306CunRPRfUu4qW1gxPQUI2A 3g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3b4yf5gpkj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 17 Sep 2021 14:02:17 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18HHnpBA022627;
-        Fri, 17 Sep 2021 14:02:16 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3b4yf5gpj6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 17 Sep 2021 14:02:16 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18HHqYZ4014044;
-        Fri, 17 Sep 2021 18:02:13 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma06ams.nl.ibm.com with ESMTP id 3b0kqksh93-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 17 Sep 2021 18:02:13 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18HI2BsQ54329800
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Sep 2021 18:02:11 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4403B11C05C;
-        Fri, 17 Sep 2021 18:02:11 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A30BD11C06E;
-        Fri, 17 Sep 2021 18:02:06 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.166.232])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 17 Sep 2021 18:02:06 +0000 (GMT)
-Message-ID: <12efec9ce26b0f372653935379dc8ebfd6086804.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 00/13] Enroll kernel keys thru MOK
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>,
-        Nayna <nayna@linux.vnet.ibm.com>
-Cc:     keyrings@vger.kernel.org,
-        linux-integrity <linux-integrity@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
+        id S235704AbhIRC0b (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 17 Sep 2021 22:26:31 -0400
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:38332 "EHLO
+        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232711AbhIRC0a (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Sep 2021 22:26:30 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0Uojb6DE_1631931902;
+Received: from B-455UMD6M-2027.local(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0Uojb6DE_1631931902)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sat, 18 Sep 2021 10:25:04 +0800
+Subject: Re: [PATCH] X.509: Support parsing certificate using SM2 algorithm
+To:     David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>, keescook@chromium.org,
-        gregkh@linuxfoundation.org, torvalds@linux-foundation.org,
-        scott.branden@broadcom.com, weiyongjun1@huawei.com,
-        nayna@linux.ibm.com, ebiggers@google.com, ardb@kernel.org,
-        nramas@linux.microsoft.com, lszubowi@redhat.com,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
-        "konrad.wilk@oracle.com" <konrad.wilk@oracle.com>
-Date:   Fri, 17 Sep 2021 14:02:05 -0400
-In-Reply-To: <37D6AC4A-372D-497A-AF97-CEA03EFC9BBA@oracle.com>
-References: <20210914211416.34096-1-eric.snowberg@oracle.com>
-         <7e83a42f-22ff-350a-2017-d286b1b1b02c@linux.vnet.ibm.com>
-         <37D6AC4A-372D-497A-AF97-CEA03EFC9BBA@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@google.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Pascal van Leeuwen <pvanleeuwen@rambus.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jia Zhang <zhang.jia@linux.alibaba.com>,
+        "YiLin . Li" <YiLin.Li@linux.alibaba.com>
+References: <20210712081352.23692-1-tianjia.zhang@linux.alibaba.com>
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <99a79ccb-8dd9-ac37-2a1d-ec390bcb0c8a@linux.alibaba.com>
+Date:   Sat, 18 Sep 2021 10:25:02 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20210712081352.23692-1-tianjia.zhang@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YXy4Tj_1a00UooTNj6_41O1SpLTr5v-1
-X-Proofpoint-ORIG-GUID: ZrGZZcum32u3kchhxHKbi9J7MPo0oO7l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-17_07,2021-09-17_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 phishscore=0 priorityscore=1501 adultscore=0 suspectscore=0
- bulkscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109170109
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2021-09-16 at 19:55 -0600, Eric Snowberg wrote:
-> > On Sep 16, 2021, at 2:03 PM, Nayna <nayna@linux.vnet.ibm.com> wrote:
-> > 
-> > 
-> > On 9/14/21 5:14 PM, Eric Snowberg wrote:
-> >> Back in 2013 Linus requested a feature to allow end-users to have the
-> >> ability "to add their own keys and sign modules they trust". This was
-> >> his *second* order outlined here [1]. There have been many attempts
-> >> over the years to solve this problem, all have been rejected.  Many
-> >> of the failed attempts loaded all preboot firmware keys into the kernel,
-> >> including the Secure Boot keys. Many distributions carry one of these
-> >> rejected attempts [2], [3], [4]. This series tries to solve this problem
-> >> with a solution that takes into account all the problems brought up in
-> >> the previous attempts.
-> >> 
-> >> On UEFI based systems, this series introduces a new Linux kernel keyring
-> >> containing the Machine Owner Keys (MOK) called machine. It also defines
-> >> a new MOK variable in shim. This variable allows the end-user to decide
-> >> if they want to load MOK keys into the machine keyring. Mimi has suggested
-> >> that only CA keys contained within the MOK be loaded into the machine
-> >> keyring. All other certs will load into the platform keyring instead.
-> >> 
-> >> By default, nothing changes; MOK keys are not loaded into the machine
-> >> keyring.  They are only loaded after the end-user makes the decision
-> >> themselves.  The end-user would set this through mokutil using a new
-> >> --trust-mok option [5]. This would work similar to how the kernel uses
-> >> MOK variables to enable/disable signature validation as well as use/ignore
-> >> the db. Any kernel operation that uses either the builtin or secondary
-> >> trusted keys as a trust source shall also reference the new machine
-> >> keyring as a trust source.
-> >> 
-> >> Secure Boot keys will never be loaded into the machine keyring.  They
-> >> will always be loaded into the platform keyring.  If an end-user wanted
-> >> to load one, they would need to enroll it into the MOK.
-> >> 
-> >> Steps required by the end user:
-> >> 
-> >> Sign kernel module with user created key:
-> >> $ /usr/src/kernels/$(uname -r)/scripts/sign-file sha512 \
-> >>    machine_signing_key.priv machine_signing_key.x509 my_module.ko
-> >> 
-> >> Import the key into the MOK
-> >> $ mokutil --import machine_signing_key.x509
-> >> 
-> >> Setup the kernel to load MOK keys into the .machine keyring
-> >> $ mokutil --trust-mok
-> >> 
-> >> Then reboot, the MokManager will load and ask if you want to trust the
-> >> MOK key and enroll the MOK into the MOKList.  Afterwards the signed kernel
-> >> module will load.
-> > 
-> > machine_signing_key.x509 appears to be a code-signing, self-signed key.  It's not a CA key, but the intent of the patchset is to load only CA keys to .machine keyring.
-> > 
-> > Shouldn't there be two steps: one to load the CA key into MOK, and a second one to load the code-signing key which is signed by this CA ?
+ping.
+
+On 7/12/21 4:13 PM, Tianjia Zhang wrote:
+> The SM2-with-SM3 certificate generated by latest openssl no longer
+> reuses the OID_id_ecPublicKey, but directly uses OID_sm2. This patch
+> supports this type of x509 certificate parsing.
 > 
-> I think that would depend on how the end-user wants to do things. If they 
-> are just looking to quickly self-sign their own kernel module, I doubt they 
-> would go through the effort of having two keys.  This is what I tried to 
-> document in the example above. 
-
-Thank you for providing the example.  We've spent quite a bit of time
-discussing CA keys stored in the MOK db being the new root(s) of trust.
-While other certificates signed by the new root(s) of trust would be
-added to the secondary or IMA keyrings.
-
-At this point, the patch descriptions, and probably code, are written
-in terms of CA keys stored in the MOK db, which the self signed
-certificate restriction does not require.  With this design, these self
-signed certs may be loaded directly onto the IMA keyring.  That's a
-problem.  To fix the discrepancy between the cover letter, patch
-descriptions and code, all that is needed is to verify that the self-
-signed cert is in fact a CA.
-
-thanks,
-
-Mimi
-
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> ---
+>   crypto/asymmetric_keys/x509_cert_parser.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+> index 6d003096b5bc..6a945a6ce787 100644
+> --- a/crypto/asymmetric_keys/x509_cert_parser.c
+> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> @@ -496,6 +496,9 @@ int x509_extract_key_data(void *context, size_t hdrlen,
+>   	case OID_gost2012PKey512:
+>   		ctx->cert->pub->pkey_algo = "ecrdsa";
+>   		break;
+> +	case OID_sm2:
+> +		ctx->cert->pub->pkey_algo = "sm2";
+> +		break;
+>   	case OID_id_ecPublicKey:
+>   		if (parse_OID(ctx->params, ctx->params_size, &oid) != 0)
+>   			return -EBADMSG;
+> 
