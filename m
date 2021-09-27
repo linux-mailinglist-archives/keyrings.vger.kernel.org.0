@@ -2,71 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B1C4151AC
-	for <lists+keyrings@lfdr.de>; Wed, 22 Sep 2021 22:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84E29419118
+	for <lists+keyrings@lfdr.de>; Mon, 27 Sep 2021 10:51:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237774AbhIVUxw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 22 Sep 2021 16:53:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33252 "EHLO
+        id S233499AbhI0IxD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 27 Sep 2021 04:53:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233797AbhIVUxv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Sep 2021 16:53:51 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F40C061574
-        for <keyrings@vger.kernel.org>; Wed, 22 Sep 2021 13:52:21 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id h129so5290688iof.1
-        for <keyrings@vger.kernel.org>; Wed, 22 Sep 2021 13:52:21 -0700 (PDT)
+        with ESMTP id S233403AbhI0IxC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Sep 2021 04:53:02 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DFE3C061575
+        for <keyrings@vger.kernel.org>; Mon, 27 Sep 2021 01:51:23 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id dj4so66326548edb.5
+        for <keyrings@vger.kernel.org>; Mon, 27 Sep 2021 01:51:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=SnCuXDdRkrXiy2ckFAW+MIX4YvyhvSPwYw078qaexn4skagZXxAt7/RKB6MiTTnKMZ
-         vYSXy3I5f2T9imbMRwqSD5sLZfoblkeq1MIQWefcsDXFwbO19mmJviJs/4cwdw1cwRzq
-         fwrzTL95ZvxCVtXS2bDOHdLlf7ft/GxY87gW6Bce3zCAlVyoifezNJLQoNXYVbwMXJQD
-         Wzs/ab6aulJyJiF97bpvC6zrWmVF5BUoFDxMGt2KLLhEKLpr4xUjJmBE4hooWcVeRJv2
-         3NmpjZndHz3ofaP40jMJB7o4uh0LevYOun8DKborlkuZl0eKLqw4ul6HUbluaiVd6Lj8
-         Imig==
+        d=rammhold-de.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=vpiI5pj2Ftv2EK8BLb2NkBV+XKtwEHr6p/9jAqbGbAE=;
+        b=BhkSvc+zNkulAdU66B6+X3PLa6HTc7zTdIZ7CKNvaupwXco2ce3J1ojxFID/7Avvkh
+         vKV7Lz9TZZzOIcWGJuAukVWFdUKSHRmCT3np3zdY1ZBbv0sVjr96CwPggmpFw7VmdXON
+         sklUqge3izjUabowL5z/oxI0ot81qap1t4eJaodiGkQoSjjEv3IJjpNDuSqMM6wx2FJj
+         E1gBvz+oQ2DE86AidE5KJcGWKHarVm4zQUhDS2y0WpBY0ly2VN/7d6fYscJ/HiwFV9xl
+         eZ0fpHR6SvqVFFTjkFuf0J3o0ardaYbzmKiBhX0OWTYjcOzeHlqylWK4ScUTazBiL+m7
+         eAHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=FhImMgoh8S+ZDkeAqCgrDjwd/zrS9btq5idd+CiXcdvtekRoiCZcF7weAm9uCBY+qJ
-         pm2vq6zwhZxdPm8FbDS9RFC+yDKqG5zC6Jpcs108ojkS2BZUfxbVabjrIqZEv39w9TqN
-         G4vQAwd/j9AIjlQ/TDWu1p13wtjEsezkpsIei5ZqC6RmULICKsjRM0yXe99lLxWP8fZ8
-         su7rTxvOZ5odHf4FvKq+blp7r9j3Arb537wUrlRdW8xX6Kmc5lwJtJcJt5Ex4TVKNQxn
-         cYuPBWQETrkDlRuWY2s9OtsriCisRmbASiDXWtDla3dTKGZ0pijBVhEM75KSAT/rn+sp
-         GAng==
-X-Gm-Message-State: AOAM533bXo460BIM3kChUQP8blzOu9wJWjjtGUECeabTi1VH4Hp63RgZ
-        DcpQT/7JTnwZeCtOvFyXJPno1ij2xnzSGL9sXzI=
-X-Google-Smtp-Source: ABdhPJzvvMP5JiWv7GTJxTE2uCn+a1pdHFuEL9puLt2EQmV3zyHHRa+OEt4I8VsevSxgs8jwmp203hDbKnLerHbZLjI=
-X-Received: by 2002:a05:6638:13d0:: with SMTP id i16mr867925jaj.111.1632343940954;
- Wed, 22 Sep 2021 13:52:20 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=vpiI5pj2Ftv2EK8BLb2NkBV+XKtwEHr6p/9jAqbGbAE=;
+        b=IX3i9JHRT1cSMQoS5qe/gqds3L5kfdfpkIsXhNH1LEcQgryHZaDmc46fJ69wX16J91
+         I/JuUVWpTCxGklQ7nuNCzspc3QkUB/dL98kQa9TYjAW4vC1+D0bVPZ4qGrhB85ieaz0T
+         jvDRYtA/mvInj/DX/szneXlEqkZN5PMzJCyJzYsDf9gpmEtcaJS1cOebUDYNeDrzI/My
+         S/P4wUGxZgYpKmdR+MkG4b/MQHbDah8djf037iWK/5SlS06tldW0QhSdN8rcsWs+v82Z
+         0jACigT8HCY0Dn18XqGWEOivv4KKUtRAXf6RcTidHPorFyRCHZ4VT4IcyWQFgUTPSyJI
+         J8fA==
+X-Gm-Message-State: AOAM531+8qtv2vqDQOpHsYf9ZpmjqP8ZA+uYuo1wQ1pbUci0zAmiHhUh
+        bXCTqGvFxHeurZTuANo4BkvJ/g==
+X-Google-Smtp-Source: ABdhPJyGrcZoq7BRymoATY3WZexa99+brf/ZH5Kkqlnjq0KM2/GBXtUm597ruB9k9urrT5xeVjJXVA==
+X-Received: by 2002:a17:906:2505:: with SMTP id i5mr25674695ejb.450.1632732681907;
+        Mon, 27 Sep 2021 01:51:21 -0700 (PDT)
+Received: from localhost ([2a00:e67:5c9:a:6d7b:fc0:e9e9:7254])
+        by smtp.gmail.com with ESMTPSA id m22sm10262359edq.71.2021.09.27.01.51.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Sep 2021 01:51:20 -0700 (PDT)
+Date:   Mon, 27 Sep 2021 10:51:04 +0200
+From:   Andreas Rammhold <andreas@rammhold.de>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Andreas Rammhold <andreas@rammhold.de>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: trusted: Fix trusted key backends when building
+ as module
+Message-ID: <20210927085104.vq42feghtaqiv6ni@wrt>
+References: <20210730012822.3460913-1-andreas@rammhold.de>
+ <0d42a11a-0117-49a9-d2c9-bc6cc405235d@pengutronix.de>
 MIME-Version: 1.0
-Sender: mrsaisha.muammargaddafi2@gmail.com
-Received: by 2002:a05:6e04:594:0:0:0:0 with HTTP; Wed, 22 Sep 2021 13:52:20
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
-Date:   Wed, 22 Sep 2021 21:52:20 +0100
-X-Google-Sender-Auth: duAY5qIU890UXjbDay1JLsnyWL0
-Message-ID: <CAFv4QVe3R9ym9RL0kBHGCzhAqCuJ_ZGC_5+V_NLronPcA1fvVg@mail.gmail.com>
-Subject: My Dear Friend
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0d42a11a-0117-49a9-d2c9-bc6cc405235d@pengutronix.de>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Assalamu alaikum,
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological,
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children. I have investment funds
-worth Twenty Seven Million Five Hundred Thousand United State Dollar
-($27.500.000.00 ) and i need a trusted  investment Manager/Partner
-because of my current refugee status, however, I am interested in you
-for investment project assistance in your country. If you are willing
-to handle this project on my behalf kindly reply urgently to enable me
-to provide you more information about the investment
-funds.
-Best Regards
+On 09:47 13.09.21, Ahmad Fatoum wrote:
+> Dear trusted key maintainers,
+> 
+> On 30.07.21 03:28, Andreas Rammhold wrote:
+> > Before this commit the kernel could end up with no trusted key sources
+> > even though both of the currently supported backends (TPM and TEE) were
+> > compiled as modules. This manifested in the trusted key type not being
+> > registered at all.
+> > 
+> > When checking if a CONFIG_… preprocessor variable is defined we only
+> > test for the builtin (=y) case and not the module (=m) case. By using
+> > the IS_REACHABLE() macro we do test for both cases.
+> > 
+> > Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+> > Signed-off-by: Andreas Rammhold <andreas@rammhold.de>
+> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Does anyone intend to pick this up?
+
+Did this end up in any tree by now? I am wondering if I should resend
+the patch instead. Perhaps it was just overlooked?
+
+
+Andi
