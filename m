@@ -2,93 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE13C41E67F
-	for <lists+keyrings@lfdr.de>; Fri,  1 Oct 2021 06:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E378541EC4A
+	for <lists+keyrings@lfdr.de>; Fri,  1 Oct 2021 13:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231140AbhJAENl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Oct 2021 00:13:41 -0400
-Received: from condef-09.nifty.com ([202.248.20.74]:41143 "EHLO
-        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbhJAENl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Oct 2021 00:13:41 -0400
-X-Greylist: delayed 344 seconds by postgrey-1.27 at vger.kernel.org; Fri, 01 Oct 2021 00:13:41 EDT
-Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-09.nifty.com with ESMTP id 191422Xf007736
-        for <keyrings@vger.kernel.org>; Fri, 1 Oct 2021 13:02:26 +0900
-Received: from grover.. (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id 19141WTN003428;
-        Fri, 1 Oct 2021 13:01:32 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 19141WTN003428
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1633060893;
-        bh=Lu4p3V/xxGLNCSHJGvk3pxjNusgCANavrVDQnaMoHTM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dd+t/k+M03RVwQkpC5ZUDDZYCKXtUcg7oOPUfEZzH9Ry9tdF3CGEyF5DorfcR6CYL
-         27khpNWL/OqoQ6CCGv9n7vJO4yb4tI6Xx8mkORAY1oR691dP1ZA4V3A6l6MuES37xb
-         5mXa4ldxR6xIIlFNJmY75N5R5L1CKUxwc5SPol0Oy7ES2wMXHLm2/Q4Cz4KnOxfKAH
-         wXw7ldfyHxah4z9/W/ixRJcUrnkaYHlZTRJI9h3bLrgxwulnGBTSPJGg/YnoGD6EAU
-         RP8RG+m77whzXA7C/DpZPX0x5n/9ij/FMcEYybvMEXZv+fJJRWIjG1W9VWmRC0F8h+
-         ZVK9zz9kUpN7A==
-X-Nifty-SrcIP: [133.32.232.101]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     keyrings@vger.kernel.org
-Cc:     Stefan Berger <stefanb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] certs: move the 'depends on' to the choice of module signing keys
-Date:   Fri,  1 Oct 2021 13:01:26 +0900
-Message-Id: <20211001040126.1200230-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S1354041AbhJALhH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Oct 2021 07:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41378 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354058AbhJALhF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Oct 2021 07:37:05 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F7AC0613E4
+        for <keyrings@vger.kernel.org>; Fri,  1 Oct 2021 04:35:20 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id l7so9903245edq.3
+        for <keyrings@vger.kernel.org>; Fri, 01 Oct 2021 04:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=Igu7yJaWAmhucLg/mwHvKTeuu/qZkMxa3XykEe7w6Hw3qw49v0TOOQYSaKwBDTq4aI
+         57SBERv4ZZomvdwJSieMXAklKTYg9x5cG/4RGGaev//uOS4LfBzLbIShMJBLRKq8+xYF
+         M5/yF76N6gheRodudIAELxM/z+AwHj5/DaaMG5x1DPRRY/1XbumQ70fuY8738RkcMstK
+         FI39p68pHQsMpnPVufTwz+fuHq6EWkHFTlRsiJ+SQE/jhgsOGdblxsl293ZSA++mZ9QB
+         8ARQ2VvTy77xe1z9EvO6zi62zyhUOYBCeVNeQ1JMsDjVOk0rgsSO8UgLAWotB+u9EuiI
+         LWqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=uNtoFsMCpwpqWOikC0BJ+c8kcmqEKkznylNfUw1RfZHG2FB+A+BvHS4tA9o2AzHpK9
+         p95Lbq2olIZOujd2GepWImNbMY1KLV+U/Bzdqg89n3U4PM8oDV/V1eyQfT/8kQ2pifUG
+         zISl3kUaOz4+8IMhP6QXPQYADn+UHrPobq0Bz2CsBFsUakktvzzirlb+sMik4b/P7xGN
+         Ifj6NstWeYeYA5HbCj5PBmQ9G8XmL8iSLUneb5HOVeE1AESmMSYLBkOAXQcCZtIF1DDf
+         UA19IkKXQPga0SVVC3GoQ6XDsR2jBySbdloAcWJLF+TeIOAFssvYlQJnOSsXsSKK+3YG
+         fK0g==
+X-Gm-Message-State: AOAM530qw4xc+oGhZba15KWbYrGJCP03+ZbhaPPfTmGKKuYyEUFiDAdD
+        dla8jB6BKbJLkB6OwCpwAeTx9vnqM0fj0z5vG80=
+X-Google-Smtp-Source: ABdhPJxi034eV9rZI26vCO3pMFKpKwwgMYIMcmCe0FyVx2q8+lwfNTibcjOoiM5Oum/bpuPlg1eK4TR/OFITysPMdws=
+X-Received: by 2002:a17:906:564e:: with SMTP id v14mr5636253ejr.424.1633088119082;
+ Fri, 01 Oct 2021 04:35:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:35:18
+ -0700 (PDT)
+Reply-To: joymat52@gmail.com
+From:   Joyce Thomas <tjoyc1234@gmail.com>
+Date:   Fri, 1 Oct 2021 04:35:18 -0700
+Message-ID: <CAF-RpUhU=R3ySUquSc6MHpjtPVmoTZA7CFh8hiR6fMJ+Z2710g@mail.gmail.com>
+Subject: ATTN:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When the condition "MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)"
-is unmet, you cannot choose anything in the choice, but the choice
-menu is still displayed in the menuconfig etc.
-
-Move the 'depends on' to the choice to hide the meaningless menu.
-
-Also delete the redundant 'default'. In a choice, the first entry is
-the default.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- certs/Kconfig | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/certs/Kconfig b/certs/Kconfig
-index ae7f2e876a31..73d1350c223a 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -17,21 +17,19 @@ config MODULE_SIG_KEY
- 
- choice
- 	prompt "Type of module signing key to be generated"
--	default MODULE_SIG_KEY_TYPE_RSA
-+	depends on MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)
- 	help
- 	 The type of module signing key type to generate. This option
- 	 does not apply if a #PKCS11 URI is used.
- 
- config MODULE_SIG_KEY_TYPE_RSA
- 	bool "RSA"
--	depends on MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)
- 	help
- 	 Use an RSA key for module signing.
- 
- config MODULE_SIG_KEY_TYPE_ECDSA
- 	bool "ECDSA"
- 	select CRYPTO_ECDSA
--	depends on MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)
- 	help
- 	 Use an elliptic curve key (NIST P384) for module signing. Consider
- 	 using a strong hash like sha256 or sha384 for hashing modules.
--- 
-2.30.2
-
+Hello Dear
+My Name is Mr. Joyce Thomas. Contact me for more information on the
+transfer of ($7.9 million dollars) left by my late client from your
+Country. I want to present you as a business partner and next of kin
+of the fund. I will give you the details of this transaction, as soon
+as I hear from you. I need the information below:
+Full Name:
+Address:
+Occupation:
+Age:
+Personal Email:
+Personal Telephone:
+Best Regards,
+Mr.Joyce  Thomas
