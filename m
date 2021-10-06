@@ -2,80 +2,55 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE8642450A
-	for <lists+keyrings@lfdr.de>; Wed,  6 Oct 2021 19:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84B37424515
+	for <lists+keyrings@lfdr.de>; Wed,  6 Oct 2021 19:45:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239630AbhJFRoa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 6 Oct 2021 13:44:30 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27]:38909 "EHLO
-        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239592AbhJFRne (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Oct 2021 13:43:34 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 509905C02D5;
-        Wed,  6 Oct 2021 13:41:40 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Wed, 06 Oct 2021 13:41:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=B6xWX/HPA7qmLqQfhnZa5DC/rvu
-        bRmsOYtvzs98jPQ4=; b=L0BKwOc/tpyqm1qr1+H6St1SdWnZVB9IP4g8q6Y84qO
-        EQ55ZIEwqLVUIrAcJLKJ4vMc0vBdOOEGn4JQ9u5VfdGTmeJu/w8vEiN5Q9nDk/8i
-        QETqoX/p/PNRXL0Mi+k/HsukVYLXDkqKb7ZDZjM7eF9lX1b3vhnsUyXH+cUSq/MA
-        eo32YpUw+bZ0egj0rH722YYfnKDl1rM8PlGAIbXLj/kL5jOIovTgb9H62yP78MhW
-        KjNtYQF11Xj6jVkq5ve6MwNfK17ERPqQ/wcnpTpTtUswwzUsKl9wytTj9hzpH/FF
-        0kbJe5/eQC2Lpu14uY4NqBlgXZ13YlTspGxUHA+H5qw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=B6xWX/
-        HPA7qmLqQfhnZa5DC/rvubRmsOYtvzs98jPQ4=; b=c6M64nB5Kiuc794NiPxomo
-        Qs47be7wmUBoF++Q7EOpUUBQ0oHlzD0VqEbSVQkA+UUTKQM83gLfR9h85o433Dmm
-        wP2Zeqh/JCdznsx6nNkMVPgzSsvqtvAmvVNGdWiheDWI4tUBSfajJAVz6XgIV7+M
-        IWsjQfbGYM+Yls7RHpdZZxBSBxVDcLP4Rjm3ZlezAS0tXitDVgfw+aUFH1lHTOnc
-        KG5WtPqASuq9kpvOecXa04JASMfwu1GnEqQw+72Wcg+dhIp4ij8NWjXb2prWO2c4
-        A9GoTM4QpGDgPJkjVmAEKtNFvdg3osyc4LiQLVC3JsK3oBzbfpwKcja+R7FbWgCw
-        ==
-X-ME-Sender: <xms:099dYR0dbVQErfaJpiZeX-kudrqG5K1fJ9kdRxuEJfUdNTI3sET_Rw>
-    <xme:099dYYGPTz-k-zwkrKfGYHHWqaTwAiwv_tN85iayAXML-WODqNZHgvWDKM2V_0Rpb
-    g9wi5x4GQp-LvffnBg>
-X-ME-Received: <xmr:099dYR5YGpBImKoVjF1liux9ufiFVG9iZwwTPbnH1ao10837eSRlkdMIxYY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudeliedguddufecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
-    uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
-    htvghrnhepvefftdettefgtddtkeeufeegtddttdeuueegkeegteffueetffejudeihefh
-    kedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmh
-    gvsegsvghnsghovggtkhgvlhdrnhgvth
-X-ME-Proxy: <xmx:099dYe3k7YqA-AdY0mCY16Nyr3hRqHDFVERUCH2m2C6BwRuWDGArhw>
-    <xmx:099dYUErt6_yARxolgdvDYuAc1_wyZYLCHPww1N9GSNCtdfP6NQg7g>
-    <xmx:099dYf9srCDJwzrNUYjRo37uODpHzDDIcJtBmPWqrkQwpxv46Ju7oA>
-    <xmx:1N9dYf37LwuyEZNqc1ut80QDNQig96xBiG0ewGdayfQI4p6nOI8oQg>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 6 Oct 2021 13:41:39 -0400 (EDT)
-Date:   Wed, 6 Oct 2021 13:41:38 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+        id S231175AbhJFRrK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 6 Oct 2021 13:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238855AbhJFRrI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Oct 2021 13:47:08 -0400
+Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02E0C061760;
+        Wed,  6 Oct 2021 10:45:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=PatXNQxmOQjxiHWrwXkktLjgcdiJPD6/YOk4tIq1Pzg=; b=ErhstRH0tSja37HpQ938k4tHME
+        frSD9VW21xctow2D+Tz5myTEOXImYHO5AtqjzpVZsfRExChy0v3uE0nAwhlAnN0yAmi4QyqBlQtlH
+        XdHzYwhnR81Xgia1hVQqBc8eHNdfb3FgdoXW2/dbxPdNSRN5aSBLhxR/SI1bRjeo6cUmFcFVPRFjm
+        iaxibuzoaaHNtola1xFZ7j2d40G6f7u4XKQwstpVrQKsFBxVxXbeyronRqM1DAOxQM8t5sts2rIWu
+        al0n1ZBaG5EbiGAVXyc90b/AIB0jsXbBy3sWuXzb+KVc5k7o6sXonTEQ04985+B2tGPxWiMfej0GP
+        vEA5pJuQ==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mYAya-00FF3J-1b; Wed, 06 Oct 2021 17:45:08 +0000
 Subject: Re: [PATCH] crypto : asymmetric_keys: Fix function description to
  match prototype
-Message-ID: <YV3f0gTu/epdCX/E@erythro.dev.benboeckel.internal>
+To:     Colin King <colin.king@canonical.com>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20211006172350.1025091-1-colin.king@canonical.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <6f1f6221-6628-5445-cfa9-ae4d7557d33b@infradead.org>
+Date:   Wed, 6 Oct 2021 10:45:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 In-Reply-To: <20211006172350.1025091-1-colin.king@canonical.com>
-User-Agent: Mutt/2.0.7 (2021-05-04)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 06, 2021 at 18:23:50 +0100, Colin King wrote:
+On 10/6/21 10:23 AM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
 > The function arguments in the description does not match the prototype.
@@ -83,27 +58,26 @@ On Wed, Oct 06, 2021 at 18:23:50 +0100, Colin King wrote:
 > 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  crypto/asymmetric_keys/verify_pefile.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   crypto/asymmetric_keys/verify_pefile.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/crypto/asymmetric_keys/verify_pefile.c b/crypto/asymmetric_keys/verify_pefile.c
 > index 7553ab18db89..148cad70fe79 100644
 > --- a/crypto/asymmetric_keys/verify_pefile.c
 > +++ b/crypto/asymmetric_keys/verify_pefile.c
 > @@ -387,7 +387,7 @@ static int pefile_digest_pe(const void *pebuf, unsigned int pelen,
->   * verify_pefile_signature - Verify the signature on a PE binary image
->   * @pebuf: Buffer containing the PE binary image
->   * @pelen: Length of the binary image
+>    * verify_pefile_signature - Verify the signature on a PE binary image
+>    * @pebuf: Buffer containing the PE binary image
+>    * @pelen: Length of the binary image
 > - * @trust_keys: Signing certificate(s) to use as starting points
 > + * @trusted_keys: Signing certificate(s) to use as starting points
->   * @usage: The use to which the key is being put.
->   *
->   * Validate that the certificate chain inside the PKCS#7 message inside the PE
+>    * @usage: The use to which the key is being put.
+>    *
+>    * Validate that the certificate chain inside the PKCS#7 message inside the PE
+> 
 
-FYI, this was submitted earlier this week with Message-Id:
+or this one (which I have sent 2x):
+https://lore.kernel.org/all/20211004001731.26240-1-rdunlap@infradead.org/
 
-    20211004001731.26240-1-rdunlap@infradead.org
-
-which also fixes the `Return:` notation for the return value docs.
-
---Ben
+-- 
+~Randy
