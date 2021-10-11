@@ -2,80 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5552D428AAC
-	for <lists+keyrings@lfdr.de>; Mon, 11 Oct 2021 12:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B3C8428B50
+	for <lists+keyrings@lfdr.de>; Mon, 11 Oct 2021 12:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235854AbhJKKV0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Oct 2021 06:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42976 "EHLO
+        id S236086AbhJKK6C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Oct 2021 06:58:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235850AbhJKKVY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Oct 2021 06:21:24 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA582C06161C
-        for <keyrings@vger.kernel.org>; Mon, 11 Oct 2021 03:19:24 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1mZsOv-0000l7-F2; Mon, 11 Oct 2021 12:19:21 +0200
-Subject: Re: [PATCH v3] KEYS: trusted: Fix trusted key backends when building
- as module
-To:     Andreas Rammhold <andreas@rammhold.de>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Bottomley <jejb@linux.ibm.com>
-Cc:     James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210730012822.3460913-1-andreas@rammhold.de>
- <0d42a11a-0117-49a9-d2c9-bc6cc405235d@pengutronix.de>
- <20210927085104.vq42feghtaqiv6ni@wrt>
- <856359f263575f01d0ce2fcf8f042321f750b38c.camel@linux.ibm.com>
- <20210927200835.wvazk73cek3t5tkf@wrt>
- <2ad2c536367028ef6d9300745586a123cb13d9f1.camel@linux.ibm.com>
- <20210927205521.7c4psu4vz5eoyfnf@wrt>
- <81602197662f3e6d032103bd1ac3690342544b7e.camel@linux.ibm.com>
- <20211002214725.fqmtbfjwtlom745c@wrt>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <db5ea3c2-42df-420b-6813-f6ef2c30df6f@pengutronix.de>
-Date:   Mon, 11 Oct 2021 12:19:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S236063AbhJKK6C (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Oct 2021 06:58:02 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C9BC061767
+        for <keyrings@vger.kernel.org>; Mon, 11 Oct 2021 03:56:01 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id r10so54858749wra.12
+        for <keyrings@vger.kernel.org>; Mon, 11 Oct 2021 03:56:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
+        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
+         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
+         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
+         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
+         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
+         +E4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
+        b=xH+em7Q8smycePVq7SevMUxRbMdwqCNaSCAAwqHrBJ72ACGaOuoYaudgja64bw5Ex4
+         +s6NBRhrtxtQk26PLIaC23fMeHl0PC23hPCpz/YxoWRnZqANuARvgMeZyheHV7h060cL
+         DJWqyUmJVyypS80r0b2oZNrzrPZ78HVBD+iiRxsJVwk6ShSKtgUV9b2U5Gk7rdvMSSRL
+         h7UlDDVtQpP4i7pi4rvbw094tSJJzWKDzcOTwK+bmp4q3IeTtswez7XAuUpvhHorEGbi
+         1cOPXpuRBX87Eiiwh7MbtS/OiPQ1solR5NbPlxs7RmMVTnh/Q21QKdnnefsT9u9S/i0L
+         lz6g==
+X-Gm-Message-State: AOAM533mKvNEld9bMkhFUTghHrhojCB26SUEo1S4CqnutJy9pdZDAXnz
+        mgefzPS4/BYCa4JQzLL1+jI6UhZJtaANry+ZgsI=
+X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
+X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
+ Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20211002214725.fqmtbfjwtlom745c@wrt>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
+Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
+ -0700 (PDT)
+Reply-To: ramcharan9910@outlook.com
+From:   "Cr.David Ramcharan" <convy0101@gmail.com>
+Date:   Mon, 11 Oct 2021 03:55:59 -0700
+Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
+Subject: Thank You
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Mimi, David, Jarkko and James,
+Please I am writing to notify you again on my intention to list your
+name as a beneficiary to the total sum of GBP6.350 million (Six
+million, Three hundred and fifty thousand British Pounds Sterlings) in
+the intent of the deceased (name now withheld since this is my second
+letter to you).
 
-On 02.10.21 23:47, Andreas Rammhold wrote:
->> My mistake.  Trusted and encrypted key types have always been defined
->> as tristate.  Only when EVM selects encrypted keys, and by extension
->> trusted keys, are they builtin.
-> 
-> So how do we go about this patch? Building the TPM support as module has
-> broken actually using the trusted backend. This patch fixes that while
-> still allowing it to be a builtin. If there is some configuration there
-> a module isn't acceptable I am sure that is handled within Kconfig?
-Can anyone of you four pick this up? Andreas' regression fix has
-had Jarkko's Reviewed-by for close to two months and a half now.
+I contacted you because you bear the surname identity and therefore
+can present you as the beneficiary to inherit the account proceeds of
+the deceased since there is no written "WILL" or trace to the deceased
+family relatives. My aim is to present you to my Bank Authorities as
+the Next of Kin to our deceased client. I will guide you all through
+the Claim procedure by providing all relevant Information and guiding
+you in your decisions and response to the Bank Management. All the
+papers will be processed after your acceptance.
 
-Thanks,
-Ahmad
+In your acceptance of this deal, I request that you kindly forward to
+me your letter of acceptance; your current telephone and fax numbers
+,age, occupational status and a forwarding address to enable me submit
+to the Bank Management the details as the Next of Kin to their
+deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Yours faithfully,
+Cr.David Ramcharan
