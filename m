@@ -2,80 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3C8428B50
-	for <lists+keyrings@lfdr.de>; Mon, 11 Oct 2021 12:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5CA42A825
+	for <lists+keyrings@lfdr.de>; Tue, 12 Oct 2021 17:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236086AbhJKK6C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Oct 2021 06:58:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51472 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236063AbhJKK6C (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Oct 2021 06:58:02 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C9BC061767
-        for <keyrings@vger.kernel.org>; Mon, 11 Oct 2021 03:56:01 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id r10so54858749wra.12
-        for <keyrings@vger.kernel.org>; Mon, 11 Oct 2021 03:56:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
-         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
-         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
-         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
-         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
-         +E4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=xH+em7Q8smycePVq7SevMUxRbMdwqCNaSCAAwqHrBJ72ACGaOuoYaudgja64bw5Ex4
-         +s6NBRhrtxtQk26PLIaC23fMeHl0PC23hPCpz/YxoWRnZqANuARvgMeZyheHV7h060cL
-         DJWqyUmJVyypS80r0b2oZNrzrPZ78HVBD+iiRxsJVwk6ShSKtgUV9b2U5Gk7rdvMSSRL
-         h7UlDDVtQpP4i7pi4rvbw094tSJJzWKDzcOTwK+bmp4q3IeTtswez7XAuUpvhHorEGbi
-         1cOPXpuRBX87Eiiwh7MbtS/OiPQ1solR5NbPlxs7RmMVTnh/Q21QKdnnefsT9u9S/i0L
-         lz6g==
-X-Gm-Message-State: AOAM533mKvNEld9bMkhFUTghHrhojCB26SUEo1S4CqnutJy9pdZDAXnz
-        mgefzPS4/BYCa4JQzLL1+jI6UhZJtaANry+ZgsI=
-X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
-X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
- Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
- -0700 (PDT)
-Reply-To: ramcharan9910@outlook.com
-From:   "Cr.David Ramcharan" <convy0101@gmail.com>
-Date:   Mon, 11 Oct 2021 03:55:59 -0700
-Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
-Subject: Thank You
-To:     undisclosed-recipients:;
+        id S233270AbhJLPYC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Oct 2021 11:24:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53246 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229633AbhJLPYB (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Tue, 12 Oct 2021 11:24:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E13A60E97;
+        Tue, 12 Oct 2021 15:21:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634052120;
+        bh=7kLs+anK8k4vNTJePwcFay1rHFEUNiKPKTkIEwb7lwg=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=Lh/U8KEpnd0AV4fQ2vdTWljX2AdZEDVW+cizGOOUT3kljayrHoKbQNSQY5U0rtFQ0
+         EVlWZirNeLCQNlTVHGqzBygB3+VrjFQ2aAozexudpy+UIysKF2cEA2Y+nqg4syafOZ
+         vdhRPoXJ37fmo2FtHGD2ChP3tzIoO3TFEYOTSeqVre1o0Kf9J45LdOf6UwntHu/CzK
+         9ELsfgEd6iPBuGBR+WKqVmoy6MSHcDWe2qPK7pr/8w0Jx+iU+yHuKmjG65R3v6PB6J
+         0nKuoNUZSbluZxxUDX1uihmCchN4jku4K0uu0MYbYItJyl8M2w9FUNr7j2b2SOQtDy
+         7zStw67Xf4C2Q==
+Message-ID: <c6c2337ed83c237f70716cb4c62794d1d3da31f2.camel@kernel.org>
+Subject: Re: [PATCH 2/2] tpm: use SM3 instead of SM3_256
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+Date:   Tue, 12 Oct 2021 18:21:57 +0300
+In-Reply-To: <20211009130828.101396-3-tianjia.zhang@linux.alibaba.com>
+References: <20211009130828.101396-1-tianjia.zhang@linux.alibaba.com>
+         <20211009130828.101396-3-tianjia.zhang@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.40.0-1 
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Please I am writing to notify you again on my intention to list your
-name as a beneficiary to the total sum of GBP6.350 million (Six
-million, Three hundred and fifty thousand British Pounds Sterlings) in
-the intent of the deceased (name now withheld since this is my second
-letter to you).
+On Sat, 2021-10-09 at 21:08 +0800, Tianjia Zhang wrote:
+> According to https://tools.ietf.org/id/draft-oscca-cfrg-sm3-01.html,
+> SM3 always produces a 256-bit hash value and there are no plans for
+> other length development, so there is no ambiguity in the name of sm3.
+>=20
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 
-I contacted you because you bear the surname identity and therefore
-can present you as the beneficiary to inherit the account proceeds of
-the deceased since there is no written "WILL" or trace to the deceased
-family relatives. My aim is to present you to my Bank Authorities as
-the Next of Kin to our deceased client. I will guide you all through
-the Claim procedure by providing all relevant Information and guiding
-you in your decisions and response to the Bank Management. All the
-papers will be processed after your acceptance.
+This is not enough to make any changes because the commit message
+does not describe what goes wrong if we keep it as it was.
 
-In your acceptance of this deal, I request that you kindly forward to
-me your letter of acceptance; your current telephone and fax numbers
-,age, occupational status and a forwarding address to enable me submit
-to the Bank Management the details as the Next of Kin to their
-deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
+/Jarkko
 
-Yours faithfully,
-Cr.David Ramcharan
