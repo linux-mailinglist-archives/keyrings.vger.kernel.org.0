@@ -2,21 +2,31 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D8E42D65D
-	for <lists+keyrings@lfdr.de>; Thu, 14 Oct 2021 11:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164A142F6E8
+	for <lists+keyrings@lfdr.de>; Fri, 15 Oct 2021 17:20:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229988AbhJNJsc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 Oct 2021 05:48:32 -0400
-Received: from out4436.biz.mail.alibaba.com ([47.88.44.36]:60790 "EHLO
-        out4436.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229468AbhJNJsb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Oct 2021 05:48:31 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0UroTJsU_1634204772;
-Received: from B-455UMD6M-2027.local(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UroTJsU_1634204772)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 14 Oct 2021 17:46:13 +0800
+        id S240908AbhJOPWH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 15 Oct 2021 11:22:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60894 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232267AbhJOPWG (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 15 Oct 2021 11:22:06 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9E2F361181;
+        Fri, 15 Oct 2021 15:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634311200;
+        bh=fWcVkFP52FOs/xPDPEmntNU+EM79bIknhYN49kApNB4=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=YYOZC4O91hPiL10R/oH31GOv5+FZW9yAD+ts/qdMMK/TcNeY9mPXAB0gH71liXiic
+         99nPBL5dLmNzjPFxqZAsnhnwpeZjtx4vVunzgJlnuA2bb/3XVQN8Go3D7y23I/ST4K
+         3ORRS0xJy+bBt9TNFJThGvytaAPCrzbSMCr6hSUYoPkGysgTvAGb9KO1w4y7ONwbxk
+         mf47iBiT9GeewpngVjCJxzHp7u8/L9lHRNPqL1oZWDG6E6nZwa5mrugJUSUBX+wvpp
+         nSXtdyiDm4POrtW70M3cx/IL8vZh/JMTuJHxOvdjlgllK7/A++/v9ZnBOZRJmUubU3
+         FqUD22sGJLv5A==
+Message-ID: <31d49f7785dd82fd2f0c1078c9a94153e3c389ac.camel@kernel.org>
 Subject: Re: [PATCH 2/2] tpm: use SM3 instead of SM3_256
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
         James Bottomley <jejb@linux.ibm.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
         Jonathan Corbet <corbet@lwn.net>,
@@ -31,43 +41,51 @@ To:     Jarkko Sakkinen <jarkko@kernel.org>,
         linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+Date:   Fri, 15 Oct 2021 18:19:57 +0300
+In-Reply-To: <5db32f21-1df7-c92e-42a1-a2a85b29dfbf@linux.alibaba.com>
 References: <20211009130828.101396-1-tianjia.zhang@linux.alibaba.com>
- <20211009130828.101396-3-tianjia.zhang@linux.alibaba.com>
- <c6c2337ed83c237f70716cb4c62794d1d3da31f2.camel@kernel.org>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <5db32f21-1df7-c92e-42a1-a2a85b29dfbf@linux.alibaba.com>
-Date:   Thu, 14 Oct 2021 17:46:11 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+         <20211009130828.101396-3-tianjia.zhang@linux.alibaba.com>
+         <c6c2337ed83c237f70716cb4c62794d1d3da31f2.camel@kernel.org>
+         <5db32f21-1df7-c92e-42a1-a2a85b29dfbf@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
-In-Reply-To: <c6c2337ed83c237f70716cb4c62794d1d3da31f2.camel@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+On Thu, 2021-10-14 at 17:46 +0800, Tianjia Zhang wrote:
+> Hi Jarkko,
+>=20
+> On 10/12/21 11:21 PM, Jarkko Sakkinen wrote:
+> > On Sat, 2021-10-09 at 21:08 +0800, Tianjia Zhang wrote:
+> > > According to https://tools.ietf.org/id/draft-oscca-cfrg-sm3-01.html,
+> > > SM3 always produces a 256-bit hash value and there are no plans for
+> > > other length development, so there is no ambiguity in the name of sm3=
+.
+> > >=20
+> > > Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> >=20
+> > This is not enough to make any changes because the commit message
+> > does not describe what goes wrong if we keep it as it was.
+> >=20
+> > /Jarkko
+> >=20
+>=20
+> This did not cause an error, just to use a more standard algorithm name.=
+=20
+> If it is possible to use the SM3 name instead of SM3_256 if it can be=20
+> specified from the source, it is of course better. I have contacted the=
+=20
+> trustedcomputinggroup and have not yet received a reply.
+>=20
+> Best regards,
+> Tianjia
 
-On 10/12/21 11:21 PM, Jarkko Sakkinen wrote:
-> On Sat, 2021-10-09 at 21:08 +0800, Tianjia Zhang wrote:
->> According to https://tools.ietf.org/id/draft-oscca-cfrg-sm3-01.html,
->> SM3 always produces a 256-bit hash value and there are no plans for
->> other length development, so there is no ambiguity in the name of sm3.
->>
->> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> 
-> This is not enough to make any changes because the commit message
-> does not describe what goes wrong if we keep it as it was.
-> 
-> /Jarkko
-> 
+Why don't you then create a patch set that fully removes SM3_256, if it
+is incorrect?
 
-This did not cause an error, just to use a more standard algorithm name. 
-If it is possible to use the SM3 name instead of SM3_256 if it can be 
-specified from the source, it is of course better. I have contacted the 
-trustedcomputinggroup and have not yet received a reply.
+This looks a bit half-baked patch set.
 
-Best regards,
-Tianjia
+/Jarkko
