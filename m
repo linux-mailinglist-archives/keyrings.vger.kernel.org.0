@@ -2,123 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 679D3437BF8
-	for <lists+keyrings@lfdr.de>; Fri, 22 Oct 2021 19:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C647438126
+	for <lists+keyrings@lfdr.de>; Sat, 23 Oct 2021 02:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233643AbhJVRe1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 22 Oct 2021 13:34:27 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:54972 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233653AbhJVRe0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 22 Oct 2021 13:34:26 -0400
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19MFGnDF011671;
-        Fri, 22 Oct 2021 13:32:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=LGet4gWh6uuOfKai4o/ygLsRdjpy8G+X5B+4rb0PL7Q=;
- b=UpGC8iWc9gCDlpaUNL8dybendO09hmNF9xAUtsulp+G2yLL9iQA1bHreouend5R9Er2P
- kaEZj2HnDd2R3Ril8laz+IrwgfZdQ4UP3yCTx0ZzvNnK+1wQXausDGobu7dR73x/LiB7
- h14jjd7w0CfS5cIf+CfLdKJtUYBGYUJbyLFUBJz8PXzWDVm//1SCLj2PzGIlq8wUcKGZ
- 8/4bQqLxV2dihnYb1TBqwnBYfAHibLC+9HeqEaVcH6wgAgOV86ES1aKb0Lu98Y1hU5Z+
- 0R3+563RcIduA1PmqZ/h2H+YlY5lnzJeqAFbveB5XEC8S/V3zEe2ckSo0Gb3eUDBw+3J aQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3bux284vxa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Oct 2021 13:32:04 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19MHS5SH000485;
-        Fri, 22 Oct 2021 13:32:03 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3bux284vwq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Oct 2021 13:32:03 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19MHEUqs026478;
-        Fri, 22 Oct 2021 17:32:02 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma04ams.nl.ibm.com with ESMTP id 3bqpcbjgmx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Oct 2021 17:32:01 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 19MHVxMw65536374
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 22 Oct 2021 17:31:59 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 741244204B;
-        Fri, 22 Oct 2021 17:31:59 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 098634204C;
-        Fri, 22 Oct 2021 17:31:58 +0000 (GMT)
-Received: from sig-9-65-85-11.ibm.com (unknown [9.65.85.11])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 22 Oct 2021 17:31:57 +0000 (GMT)
-Message-ID: <beedd453a1ec674d3986f7c3851f30df516d2fbb.camel@linux.ibm.com>
-Subject: Re: [PATCH v3] integrity: support including firmware ".platform"
- keys at build time
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Nayna <nayna@linux.vnet.ibm.com>, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org
-Cc:     dhowells@redhat.com, jarkko@kernel.org, seth.forshee@canonical.com,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        Nayna Jain <nayna@linux.ibm.com>
-Date:   Fri, 22 Oct 2021 13:31:57 -0400
-In-Reply-To: <03ed8621-8fd0-a83f-24f6-eb9455dc0ca5@linux.vnet.ibm.com>
-References: <20211004145258.14056-1-nayna@linux.ibm.com>
-         <03ed8621-8fd0-a83f-24f6-eb9455dc0ca5@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LNCtwtP0OBEhkJW0v2DbrWymUsDmRESP
-X-Proofpoint-ORIG-GUID: KWv8y4aHdsvB_sL2g0M-TsRM8m0xDpz1
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        id S229935AbhJWAui (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 22 Oct 2021 20:50:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55618 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229507AbhJWAui (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 22 Oct 2021 20:50:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ADB5F6101C;
+        Sat, 23 Oct 2021 00:48:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634950100;
+        bh=kbtNHfGbGhSMTAw0+cA9930pf9e1d4ODVtDxLJB8ts0=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=Eo8NRWz4J4aoPfPJ2sLX/Xrbd8+vVzacRcBGYaC9WBuZFnUcrew6/6//GZeuq8O2C
+         htN23e6J3Q39RBFAS1DqXxIkQZHS0Y3YFPwj35yEkRbXfwq18VaLc4+akTbmegKa61
+         QFkDW3igonoSEBFsbbIKyixv6VOIKcSmE0CUPd5UUqDAIbg46od8rLrcDXwIfEYzxP
+         M31o7JQvj69xmboEk2A1IIfALhcDrpiV4q7usN9F8+IfUKLw4hwQkubO4xQNHuxpz+
+         ekIbOSY7ZPdDliovD/MLBeP08CcI1j1Jb8gQrRZIUZ2+EzRhs7V2Dz1MblFasLw//m
+         xF89ZSZqBo7+Q==
+Message-ID: <f5c87a233027c8026ae8574f3e25c9162da3bfff.camel@kernel.org>
+Subject: Re: [PATCH v2 1/2] crypto: use SM3 instead of SM3_256
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+Date:   Sat, 23 Oct 2021 03:48:17 +0300
+In-Reply-To: <20211019100423.43615-2-tianjia.zhang@linux.alibaba.com>
+References: <20211019100423.43615-1-tianjia.zhang@linux.alibaba.com>
+         <20211019100423.43615-2-tianjia.zhang@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.40.4-1 
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-22_04,2021-10-22_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0
- adultscore=0 spamscore=0 bulkscore=0 clxscore=1011 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110220101
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2021-10-19 at 14:25 -0400, Nayna wrote:
-> Gentle reminder for v3. Is this version good now for acceptance ?
-> 
-> Thanks & Regards,
-> 
->       - Nayna
-> 
-> On 10/4/21 10:52 AM, Nayna Jain wrote:
-> > Some firmware support secure boot by embedding static keys to verify the
-> > Linux kernel during boot. However, these firmware do not expose an
-> > interface for the kernel to load firmware keys onto ".platform" keyring.
-> > This would prevent kernel signature verification on kexec.
-> >
-> > For these environments, a new function load_builtin_platform_cert() is
-> > defined to load compiled in certificates onto the ".platform" keyring.
-> >
-> > load_certificate_list() is currently used for parsing compiled in
-> > certificates to be loaded onto the .builtin or .blacklist keyrings.
-> > Export load_certificate_list() allowing it to be used for parsing compiled
-> > in ".platform" keyring certificates as well.
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>(auto build test ERROR)
-> > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> > ---
-> > NOTE: I am wondering if we should split this patch into two:
-> > (https://lore.kernel.org/linux-integrity/be4bd13d-659d-710d-08b9-1a34a65e5c5d@linux.vnet.ibm.com/).
-> > I can do so if you also prefer the same.
-
-Yes, splitting this patch would make it easier to review and upstream.
-
-thanks,
-
-Mimi
+T24gVHVlLCAyMDIxLTEwLTE5IGF0IDE4OjA0ICswODAwLCBUaWFuamlhIFpoYW5nIHdyb3RlOgo+
+IEFjY29yZGluZyB0byBodHRwczovL3Rvb2xzLmlldGYub3JnL2lkL2RyYWZ0LW9zY2NhLWNmcmct
+c20zLTAxLmh0bWwsCj4gU00zIGFsd2F5cyBwcm9kdWNlcyBhIDI1Ni1iaXQgaGFzaCB2YWx1ZSBh
+bmQgdGhlcmUgYXJlIG5vIHBsYW5zIGZvcgo+IG90aGVyIGxlbmd0aCBkZXZlbG9wbWVudCwgc28g
+dGhlcmUgaXMgbm8gYW1iaWd1aXR5IGluIHRoZSBuYW1lIG9mIHNtMy4KPiAKPiBTdWdnZXN0ZWQt
+Ynk6IEphbWVzIEJvdHRvbWxleSA8amVqYkBsaW51eC5pYm0uY29tPgo+IFNpZ25lZC1vZmYtYnk6
+IFRpYW5qaWEgWmhhbmcgPHRpYW5qaWEuemhhbmdAbGludXguYWxpYmFiYS5jb20+Cj4gLS0tCj4g
+wqBEb2N1bWVudGF0aW9uL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1lbmNyeXB0ZWQucnN0IHwgMiAr
+LQo+IMKgY3J5cHRvL2hhc2hfaW5mby5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCA0ICsrLS0KPiDCoGRyaXZlcnMvY2hhci90
+cG0vdHBtMi1jbWQuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IHwgMiArLQo+IMKgaW5jbHVkZS9jcnlwdG8vaGFzaF9pbmZvLmjCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMiArLQo+IMKgaW5jbHVkZS91YXBpL2xpbnV4
+L2hhc2hfaW5mby5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAzICsr
+LQo+IMKgc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMvdHJ1c3RlZF90cG0yLmPCoMKgwqDCoMKg
+wqDCoMKgIHwgMiArLQo+IMKgNiBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDcgZGVs
+ZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vc2VjdXJpdHkva2V5cy90
+cnVzdGVkLWVuY3J5cHRlZC5yc3QgYi9Eb2N1bWVudGF0aW9uL3NlY3VyaXR5L2tleXMvdHJ1c3Rl
+ZC1lbmNyeXB0ZWQucnN0Cj4gaW5kZXggODBkNWE1YWY2MmExLi4zMjkyNDYxNTE3ZjYgMTAwNjQ0
+Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi9zZWN1cml0eS9rZXlzL3RydXN0ZWQtZW5jcnlwdGVkLnJz
+dAo+ICsrKyBiL0RvY3VtZW50YXRpb24vc2VjdXJpdHkva2V5cy90cnVzdGVkLWVuY3J5cHRlZC5y
+c3QKPiBAQCAtMTYyLDcgKzE2Miw3IEBAIFVzYWdlOjoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgZGVmYXVsdCAxIChyZXNlYWxpbmcgYWxsb3dlZCkKPiDCoMKg
+wqDCoMKgwqDCoCBoYXNoPcKgwqDCoMKgwqDCoMKgwqAgaGFzaCBhbGdvcml0aG0gbmFtZSBhcyBh
+IHN0cmluZy4gRm9yIFRQTSAxLnggdGhlIG9ubHkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgYWxsb3dlZCB2YWx1ZSBpcyBzaGExLiBGb3IgVFBNIDIueCB0aGUg
+YWxsb3dlZCB2YWx1ZXMKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBhcmUgc2hhMSwgc2hhMjU2LCBzaGEzODQsIHNoYTUxMiBhbmQgc20zLTI1Ni4KPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhcmUgc2hhMSwgc2hhMjU2LCBzaGEz
+ODQsIHNoYTUxMiBhbmQgc20zLgoKWW91IGNhbm5vdCByZW1vdmUgc20zLTI1NiBmcm9tIHVhcGku
+CgovSmFya2tvCgo=
 
