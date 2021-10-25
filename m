@@ -2,162 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8726A438CD5
-	for <lists+keyrings@lfdr.de>; Mon, 25 Oct 2021 02:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A682E438DA2
+	for <lists+keyrings@lfdr.de>; Mon, 25 Oct 2021 05:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbhJYAkh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 24 Oct 2021 20:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbhJYAkh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Oct 2021 20:40:37 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14116C061745;
-        Sun, 24 Oct 2021 17:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=9hAsGCm4JturhoyBVVdTBZyVQWWW3CL5Y+jli5Oa+Ts=; b=vguOr5ZgXw2jesoN4FsDEZ52+d
-        nJhY6NsJzgP0BwP/hejawgr8spE4IuW2lUVosmebS1Ewqm+gk6h+eKdWjGx/n659zL5oScPSZj+DR
-        tMkK2w/RbfWRHOSvGxRJD/+Un1W3PyqKwNDcQOpAGeg65UriSnJ5GA+P5EJaOIJZlfpXL8Gk+0vVB
-        pKtvWkCHC3N7hfmW7331bkIomPw5S1DU7gIUlmt7hW/w0zJ4M2p98a0jMqfyfSBsVu8sW5yNrmPcF
-        4N7kILrK6C9rs49sGYzJzR1da3mj9zWXNX98lbXn7O00HugFgbFYDme9O5n8Hhhc9odd2ipWAxTWl
-        /pf5+Lsw==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1meo0E-00EqBf-On; Mon, 25 Oct 2021 00:38:14 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: [PATCH] certs: system_keyring.c: clean up kernel-doc
-Date:   Sun, 24 Oct 2021 17:38:13 -0700
-Message-Id: <20211025003813.5164-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        id S231938AbhJYDGc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 24 Oct 2021 23:06:32 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:55363 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230040AbhJYDGc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Oct 2021 23:06:32 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0UtUyMKi_1635131045;
+Received: from 30.240.102.8(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UtUyMKi_1635131045)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 25 Oct 2021 11:04:06 +0800
+Message-ID: <0997d70b-9f28-ba0a-853f-2160922dc722@linux.alibaba.com>
+Date:   Mon, 25 Oct 2021 11:04:02 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.0
+Subject: Re: [PATCH v2 1/2] crypto: use SM3 instead of SM3_256
+Content-Language: en-US
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+References: <20211019100423.43615-1-tianjia.zhang@linux.alibaba.com>
+ <20211019100423.43615-2-tianjia.zhang@linux.alibaba.com>
+ <f5c87a233027c8026ae8574f3e25c9162da3bfff.camel@kernel.org>
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+In-Reply-To: <f5c87a233027c8026ae8574f3e25c9162da3bfff.camel@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Fix some kernel-doc warnings in system_keyring.c:
+Hi Jarkko,
 
-system_keyring.c:43: warning: expecting prototype for restrict_link_to_builtin_trusted(). Prototype was for restrict_link_by_builtin_trusted() instead
-system_keyring.c:77: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Allocate a struct key_restriction for the "builtin and secondary trust"
-system_keyring.c:77: warning: missing initial short description on line:
- * Allocate a struct key_restriction for the "builtin and secondary trust"
+On 10/23/21 8:48 AM, Jarkko Sakkinen wrote:
+> On Tue, 2021-10-19 at 18:04 +0800, Tianjia Zhang wrote:
+>> According to https://tools.ietf.org/id/draft-oscca-cfrg-sm3-01.html,
+>> SM3 always produces a 256-bit hash value and there are no plans for
+>> other length development, so there is no ambiguity in the name of sm3.
+>>
+>> Suggested-by: James Bottomley <jejb@linux.ibm.com>
+>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+>> ---
+>>   Documentation/security/keys/trusted-encrypted.rst | 2 +-
+>>   crypto/hash_info.c                                | 4 ++--
+>>   drivers/char/tpm/tpm2-cmd.c                       | 2 +-
+>>   include/crypto/hash_info.h                        | 2 +-
+>>   include/uapi/linux/hash_info.h                    | 3 ++-
+>>   security/keys/trusted-keys/trusted_tpm2.c         | 2 +-
+>>   6 files changed, 8 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+>> index 80d5a5af62a1..3292461517f6 100644
+>> --- a/Documentation/security/keys/trusted-encrypted.rst
+>> +++ b/Documentation/security/keys/trusted-encrypted.rst
+>> @@ -162,7 +162,7 @@ Usage::
+>>                        default 1 (resealing allowed)
+>>          hash=         hash algorithm name as a string. For TPM 1.x the only
+>>                        allowed value is sha1. For TPM 2.x the allowed values
+>> -                     are sha1, sha256, sha384, sha512 and sm3-256.
+>> +                     are sha1, sha256, sha384, sha512 and sm3.
+> 
+> You cannot remove sm3-256 from uapi.
+> 
 
-Fix the warnings above and then see & fix these:
+Thanks for pointing it out, Maybe this fix is more appropriate in patch 2.
 
-system_keyring.c:43: warning: No description found for return value of 'restrict_link_by_builtin_trusted'
-system_keyring.c:62: warning: No description found for return value of 'restrict_link_by_builtin_and_secondary_trusted'
-system_keyring.c:190: warning: No description found for return value of 'verify_pkcs7_message_sig'
-system_keyring.c:275: warning: No description found for return value of 'verify_pkcs7_signature'
-
-This still leaves non-exported two functions that do not have their
-functions parameters documented: restrict_link_by_builtin_trusted() and
-restrict_link_by_builtin_and_secondary_trusted().
-
-Use '%' preceding constants in kernel-doc notation.
-
-Use "builtin" consistently instead of "built in" or "built-in".
-
-Don't use "/**" to begin a comment that is not in kernel-doc format.
-
-Document the use of VERIFY_USE_SECONDARY_KEYRING and
-VERIFY_USE_PLATFORM_KEYRING.
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Cc: keyrings@vger.kernel.org
----
- certs/system_keyring.c |   30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
-
---- linux-next-20211022.orig/certs/system_keyring.c
-+++ linux-next-20211022/certs/system_keyring.c
-@@ -31,10 +31,12 @@ extern __initconst const unsigned long s
- extern __initconst const unsigned long module_cert_size;
- 
- /**
-- * restrict_link_to_builtin_trusted - Restrict keyring addition by built in CA
-+ * restrict_link_by_builtin_trusted - Restrict keyring addition by builtin CA
-  *
-  * Restrict the addition of keys into a keyring based on the key-to-be-added
-- * being vouched for by a key in the built in system keyring.
-+ * being vouched for by a key in the builtin system keyring.
-+ *
-+ * Return: %0 on success or a negative value on error
-  */
- int restrict_link_by_builtin_trusted(struct key *dest_keyring,
- 				     const struct key_type *type,
-@@ -51,8 +53,10 @@ int restrict_link_by_builtin_trusted(str
-  *   addition by both builtin and secondary keyrings
-  *
-  * Restrict the addition of keys into a keyring based on the key-to-be-added
-- * being vouched for by a key in either the built-in or the secondary system
-+ * being vouched for by a key in either the builtin or the secondary system
-  * keyrings.
-+ *
-+ * Return: %0 on success or a negative value on error
-  */
- int restrict_link_by_builtin_and_secondary_trusted(
- 	struct key *dest_keyring,
-@@ -73,7 +77,7 @@ int restrict_link_by_builtin_and_seconda
- 					  secondary_trusted_keys);
- }
- 
--/**
-+/*
-  * Allocate a struct key_restriction for the "builtin and secondary trust"
-  * keyring. Only for use in system_trusted_keyring_init().
-  */
-@@ -170,14 +174,17 @@ late_initcall(load_system_certificate_li
- 
- /**
-  * verify_pkcs7_message_sig - Verify a PKCS#7-based signature on system data.
-- * @data: The data to be verified (NULL if expecting internal data).
-+ * @data: The data to be verified (%NULL if expecting internal data).
-  * @len: Size of @data.
-  * @pkcs7: The PKCS#7 message that is the signature.
-- * @trusted_keys: Trusted keys to use (NULL for builtin trusted keys only,
-- *					(void *)1UL for all trusted keys).
-+ * @trusted_keys: Trusted keys to use (%NULL for builtin trusted keys only,
-+ *		  %VERIFY_USE_SECONDARY_KEYRING for secondary trusted keys,
-+ *		  %VERIFY_USE_PLATFORM_KEYRING for platform trusted keys).
-  * @usage: The use to which the key is being put.
-  * @view_content: Callback to gain access to content.
-  * @ctx: Context for callback.
-+ *
-+ * Return: %0 on success or a negative value on error
-  */
- int verify_pkcs7_message_sig(const void *data, size_t len,
- 			     struct pkcs7_message *pkcs7,
-@@ -254,15 +261,18 @@ error:
- 
- /**
-  * verify_pkcs7_signature - Verify a PKCS#7-based signature on system data.
-- * @data: The data to be verified (NULL if expecting internal data).
-+ * @data: The data to be verified (%NULL if expecting internal data).
-  * @len: Size of @data.
-  * @raw_pkcs7: The PKCS#7 message that is the signature.
-  * @pkcs7_len: The size of @raw_pkcs7.
-- * @trusted_keys: Trusted keys to use (NULL for builtin trusted keys only,
-- *					(void *)1UL for all trusted keys).
-+ * @trusted_keys: Trusted keys to use (%NULL for builtin trusted keys only,
-+ *		  %VERIFY_USE_SECONDARY_KEYRING for secondary trusted keys,
-+ *		  %VERIFY_USE_PLATFORM_KEYRING for platform trusted keys).
-  * @usage: The use to which the key is being put.
-  * @view_content: Callback to gain access to content.
-  * @ctx: Context for callback.
-+ *
-+ * Return: %0 on success or a negative value on error
-  */
- int verify_pkcs7_signature(const void *data, size_t len,
- 			   const void *raw_pkcs7, size_t pkcs7_len,
+Best regards,
+Tianjia
