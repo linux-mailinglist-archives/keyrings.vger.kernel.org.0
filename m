@@ -2,86 +2,162 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C647438126
-	for <lists+keyrings@lfdr.de>; Sat, 23 Oct 2021 02:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8726A438CD5
+	for <lists+keyrings@lfdr.de>; Mon, 25 Oct 2021 02:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbhJWAui (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 22 Oct 2021 20:50:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55618 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229507AbhJWAui (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Fri, 22 Oct 2021 20:50:38 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ADB5F6101C;
-        Sat, 23 Oct 2021 00:48:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634950100;
-        bh=kbtNHfGbGhSMTAw0+cA9930pf9e1d4ODVtDxLJB8ts0=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=Eo8NRWz4J4aoPfPJ2sLX/Xrbd8+vVzacRcBGYaC9WBuZFnUcrew6/6//GZeuq8O2C
-         htN23e6J3Q39RBFAS1DqXxIkQZHS0Y3YFPwj35yEkRbXfwq18VaLc4+akTbmegKa61
-         QFkDW3igonoSEBFsbbIKyixv6VOIKcSmE0CUPd5UUqDAIbg46od8rLrcDXwIfEYzxP
-         M31o7JQvj69xmboEk2A1IIfALhcDrpiV4q7usN9F8+IfUKLw4hwQkubO4xQNHuxpz+
-         ekIbOSY7ZPdDliovD/MLBeP08CcI1j1Jb8gQrRZIUZ2+EzRhs7V2Dz1MblFasLw//m
-         xF89ZSZqBo7+Q==
-Message-ID: <f5c87a233027c8026ae8574f3e25c9162da3bfff.camel@kernel.org>
-Subject: Re: [PATCH v2 1/2] crypto: use SM3 instead of SM3_256
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        James Bottomley <jejb@linux.ibm.com>,
+        id S229915AbhJYAkh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 24 Oct 2021 20:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229706AbhJYAkh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Oct 2021 20:40:37 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14116C061745;
+        Sun, 24 Oct 2021 17:38:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=9hAsGCm4JturhoyBVVdTBZyVQWWW3CL5Y+jli5Oa+Ts=; b=vguOr5ZgXw2jesoN4FsDEZ52+d
+        nJhY6NsJzgP0BwP/hejawgr8spE4IuW2lUVosmebS1Ewqm+gk6h+eKdWjGx/n659zL5oScPSZj+DR
+        tMkK2w/RbfWRHOSvGxRJD/+Un1W3PyqKwNDcQOpAGeg65UriSnJ5GA+P5EJaOIJZlfpXL8Gk+0vVB
+        pKtvWkCHC3N7hfmW7331bkIomPw5S1DU7gIUlmt7hW/w0zJ4M2p98a0jMqfyfSBsVu8sW5yNrmPcF
+        4N7kILrK6C9rs49sGYzJzR1da3mj9zWXNX98lbXn7O00HugFgbFYDme9O5n8Hhhc9odd2ipWAxTWl
+        /pf5+Lsw==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1meo0E-00EqBf-On; Mon, 25 Oct 2021 00:38:14 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
         David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
-Date:   Sat, 23 Oct 2021 03:48:17 +0300
-In-Reply-To: <20211019100423.43615-2-tianjia.zhang@linux.alibaba.com>
-References: <20211019100423.43615-1-tianjia.zhang@linux.alibaba.com>
-         <20211019100423.43615-2-tianjia.zhang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.40.4-1 
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: [PATCH] certs: system_keyring.c: clean up kernel-doc
+Date:   Sun, 24 Oct 2021 17:38:13 -0700
+Message-Id: <20211025003813.5164-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-T24gVHVlLCAyMDIxLTEwLTE5IGF0IDE4OjA0ICswODAwLCBUaWFuamlhIFpoYW5nIHdyb3RlOgo+
-IEFjY29yZGluZyB0byBodHRwczovL3Rvb2xzLmlldGYub3JnL2lkL2RyYWZ0LW9zY2NhLWNmcmct
-c20zLTAxLmh0bWwsCj4gU00zIGFsd2F5cyBwcm9kdWNlcyBhIDI1Ni1iaXQgaGFzaCB2YWx1ZSBh
-bmQgdGhlcmUgYXJlIG5vIHBsYW5zIGZvcgo+IG90aGVyIGxlbmd0aCBkZXZlbG9wbWVudCwgc28g
-dGhlcmUgaXMgbm8gYW1iaWd1aXR5IGluIHRoZSBuYW1lIG9mIHNtMy4KPiAKPiBTdWdnZXN0ZWQt
-Ynk6IEphbWVzIEJvdHRvbWxleSA8amVqYkBsaW51eC5pYm0uY29tPgo+IFNpZ25lZC1vZmYtYnk6
-IFRpYW5qaWEgWmhhbmcgPHRpYW5qaWEuemhhbmdAbGludXguYWxpYmFiYS5jb20+Cj4gLS0tCj4g
-wqBEb2N1bWVudGF0aW9uL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1lbmNyeXB0ZWQucnN0IHwgMiAr
-LQo+IMKgY3J5cHRvL2hhc2hfaW5mby5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCA0ICsrLS0KPiDCoGRyaXZlcnMvY2hhci90
-cG0vdHBtMi1jbWQuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IHwgMiArLQo+IMKgaW5jbHVkZS9jcnlwdG8vaGFzaF9pbmZvLmjCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMiArLQo+IMKgaW5jbHVkZS91YXBpL2xpbnV4
-L2hhc2hfaW5mby5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAzICsr
-LQo+IMKgc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMvdHJ1c3RlZF90cG0yLmPCoMKgwqDCoMKg
-wqDCoMKgIHwgMiArLQo+IMKgNiBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDcgZGVs
-ZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vc2VjdXJpdHkva2V5cy90
-cnVzdGVkLWVuY3J5cHRlZC5yc3QgYi9Eb2N1bWVudGF0aW9uL3NlY3VyaXR5L2tleXMvdHJ1c3Rl
-ZC1lbmNyeXB0ZWQucnN0Cj4gaW5kZXggODBkNWE1YWY2MmExLi4zMjkyNDYxNTE3ZjYgMTAwNjQ0
-Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi9zZWN1cml0eS9rZXlzL3RydXN0ZWQtZW5jcnlwdGVkLnJz
-dAo+ICsrKyBiL0RvY3VtZW50YXRpb24vc2VjdXJpdHkva2V5cy90cnVzdGVkLWVuY3J5cHRlZC5y
-c3QKPiBAQCAtMTYyLDcgKzE2Miw3IEBAIFVzYWdlOjoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgZGVmYXVsdCAxIChyZXNlYWxpbmcgYWxsb3dlZCkKPiDCoMKg
-wqDCoMKgwqDCoCBoYXNoPcKgwqDCoMKgwqDCoMKgwqAgaGFzaCBhbGdvcml0aG0gbmFtZSBhcyBh
-IHN0cmluZy4gRm9yIFRQTSAxLnggdGhlIG9ubHkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgYWxsb3dlZCB2YWx1ZSBpcyBzaGExLiBGb3IgVFBNIDIueCB0aGUg
-YWxsb3dlZCB2YWx1ZXMKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBhcmUgc2hhMSwgc2hhMjU2LCBzaGEzODQsIHNoYTUxMiBhbmQgc20zLTI1Ni4KPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhcmUgc2hhMSwgc2hhMjU2LCBzaGEz
-ODQsIHNoYTUxMiBhbmQgc20zLgoKWW91IGNhbm5vdCByZW1vdmUgc20zLTI1NiBmcm9tIHVhcGku
-CgovSmFya2tvCgo=
+Fix some kernel-doc warnings in system_keyring.c:
 
+system_keyring.c:43: warning: expecting prototype for restrict_link_to_builtin_trusted(). Prototype was for restrict_link_by_builtin_trusted() instead
+system_keyring.c:77: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ * Allocate a struct key_restriction for the "builtin and secondary trust"
+system_keyring.c:77: warning: missing initial short description on line:
+ * Allocate a struct key_restriction for the "builtin and secondary trust"
+
+Fix the warnings above and then see & fix these:
+
+system_keyring.c:43: warning: No description found for return value of 'restrict_link_by_builtin_trusted'
+system_keyring.c:62: warning: No description found for return value of 'restrict_link_by_builtin_and_secondary_trusted'
+system_keyring.c:190: warning: No description found for return value of 'verify_pkcs7_message_sig'
+system_keyring.c:275: warning: No description found for return value of 'verify_pkcs7_signature'
+
+This still leaves non-exported two functions that do not have their
+functions parameters documented: restrict_link_by_builtin_trusted() and
+restrict_link_by_builtin_and_secondary_trusted().
+
+Use '%' preceding constants in kernel-doc notation.
+
+Use "builtin" consistently instead of "built in" or "built-in".
+
+Don't use "/**" to begin a comment that is not in kernel-doc format.
+
+Document the use of VERIFY_USE_SECONDARY_KEYRING and
+VERIFY_USE_PLATFORM_KEYRING.
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: keyrings@vger.kernel.org
+---
+ certs/system_keyring.c |   30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
+
+--- linux-next-20211022.orig/certs/system_keyring.c
++++ linux-next-20211022/certs/system_keyring.c
+@@ -31,10 +31,12 @@ extern __initconst const unsigned long s
+ extern __initconst const unsigned long module_cert_size;
+ 
+ /**
+- * restrict_link_to_builtin_trusted - Restrict keyring addition by built in CA
++ * restrict_link_by_builtin_trusted - Restrict keyring addition by builtin CA
+  *
+  * Restrict the addition of keys into a keyring based on the key-to-be-added
+- * being vouched for by a key in the built in system keyring.
++ * being vouched for by a key in the builtin system keyring.
++ *
++ * Return: %0 on success or a negative value on error
+  */
+ int restrict_link_by_builtin_trusted(struct key *dest_keyring,
+ 				     const struct key_type *type,
+@@ -51,8 +53,10 @@ int restrict_link_by_builtin_trusted(str
+  *   addition by both builtin and secondary keyrings
+  *
+  * Restrict the addition of keys into a keyring based on the key-to-be-added
+- * being vouched for by a key in either the built-in or the secondary system
++ * being vouched for by a key in either the builtin or the secondary system
+  * keyrings.
++ *
++ * Return: %0 on success or a negative value on error
+  */
+ int restrict_link_by_builtin_and_secondary_trusted(
+ 	struct key *dest_keyring,
+@@ -73,7 +77,7 @@ int restrict_link_by_builtin_and_seconda
+ 					  secondary_trusted_keys);
+ }
+ 
+-/**
++/*
+  * Allocate a struct key_restriction for the "builtin and secondary trust"
+  * keyring. Only for use in system_trusted_keyring_init().
+  */
+@@ -170,14 +174,17 @@ late_initcall(load_system_certificate_li
+ 
+ /**
+  * verify_pkcs7_message_sig - Verify a PKCS#7-based signature on system data.
+- * @data: The data to be verified (NULL if expecting internal data).
++ * @data: The data to be verified (%NULL if expecting internal data).
+  * @len: Size of @data.
+  * @pkcs7: The PKCS#7 message that is the signature.
+- * @trusted_keys: Trusted keys to use (NULL for builtin trusted keys only,
+- *					(void *)1UL for all trusted keys).
++ * @trusted_keys: Trusted keys to use (%NULL for builtin trusted keys only,
++ *		  %VERIFY_USE_SECONDARY_KEYRING for secondary trusted keys,
++ *		  %VERIFY_USE_PLATFORM_KEYRING for platform trusted keys).
+  * @usage: The use to which the key is being put.
+  * @view_content: Callback to gain access to content.
+  * @ctx: Context for callback.
++ *
++ * Return: %0 on success or a negative value on error
+  */
+ int verify_pkcs7_message_sig(const void *data, size_t len,
+ 			     struct pkcs7_message *pkcs7,
+@@ -254,15 +261,18 @@ error:
+ 
+ /**
+  * verify_pkcs7_signature - Verify a PKCS#7-based signature on system data.
+- * @data: The data to be verified (NULL if expecting internal data).
++ * @data: The data to be verified (%NULL if expecting internal data).
+  * @len: Size of @data.
+  * @raw_pkcs7: The PKCS#7 message that is the signature.
+  * @pkcs7_len: The size of @raw_pkcs7.
+- * @trusted_keys: Trusted keys to use (NULL for builtin trusted keys only,
+- *					(void *)1UL for all trusted keys).
++ * @trusted_keys: Trusted keys to use (%NULL for builtin trusted keys only,
++ *		  %VERIFY_USE_SECONDARY_KEYRING for secondary trusted keys,
++ *		  %VERIFY_USE_PLATFORM_KEYRING for platform trusted keys).
+  * @usage: The use to which the key is being put.
+  * @view_content: Callback to gain access to content.
+  * @ctx: Context for callback.
++ *
++ * Return: %0 on success or a negative value on error
+  */
+ int verify_pkcs7_signature(const void *data, size_t len,
+ 			   const void *raw_pkcs7, size_t pkcs7_len,
