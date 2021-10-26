@@ -2,28 +2,22 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A682E438DA2
-	for <lists+keyrings@lfdr.de>; Mon, 25 Oct 2021 05:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7B043ADA6
+	for <lists+keyrings@lfdr.de>; Tue, 26 Oct 2021 09:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbhJYDGc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 24 Oct 2021 23:06:32 -0400
-Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:55363 "EHLO
-        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230040AbhJYDGc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 24 Oct 2021 23:06:32 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0UtUyMKi_1635131045;
-Received: from 30.240.102.8(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UtUyMKi_1635131045)
+        id S233768AbhJZH6z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 26 Oct 2021 03:58:55 -0400
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:45046 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232840AbhJZH6y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Oct 2021 03:58:54 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0UtlJeVX_1635234986;
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0UtlJeVX_1635234986)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 25 Oct 2021 11:04:06 +0800
-Message-ID: <0997d70b-9f28-ba0a-853f-2160922dc722@linux.alibaba.com>
-Date:   Mon, 25 Oct 2021 11:04:02 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.2.0
-Subject: Re: [PATCH v2 1/2] crypto: use SM3 instead of SM3_256
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        James Bottomley <jejb@linux.ibm.com>,
+          Tue, 26 Oct 2021 15:56:26 +0800
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To:     James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Herbert Xu <herbert@gondor.apana.org.au>,
@@ -37,51 +31,43 @@ To:     Jarkko Sakkinen <jarkko@kernel.org>,
         linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20211019100423.43615-1-tianjia.zhang@linux.alibaba.com>
- <20211019100423.43615-2-tianjia.zhang@linux.alibaba.com>
- <f5c87a233027c8026ae8574f3e25c9162da3bfff.camel@kernel.org>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-In-Reply-To: <f5c87a233027c8026ae8574f3e25c9162da3bfff.camel@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH v3 0/2] use SM3 instead of SM3_256
+Date:   Tue, 26 Oct 2021 15:56:24 +0800
+Message-Id: <20211026075626.61975-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.19.1.3.ge56e4f7
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+According to https://tools.ietf.org/id/draft-oscca-cfrg-sm3-01.html,
+SM3 always produces a 256-bit hash value and there are no plans for
+other length development, so there is no ambiguity in the name of sm3.
 
-On 10/23/21 8:48 AM, Jarkko Sakkinen wrote:
-> On Tue, 2021-10-19 at 18:04 +0800, Tianjia Zhang wrote:
->> According to https://tools.ietf.org/id/draft-oscca-cfrg-sm3-01.html,
->> SM3 always produces a 256-bit hash value and there are no plans for
->> other length development, so there is no ambiguity in the name of sm3.
->>
->> Suggested-by: James Bottomley <jejb@linux.ibm.com>
->> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
->> ---
->>   Documentation/security/keys/trusted-encrypted.rst | 2 +-
->>   crypto/hash_info.c                                | 4 ++--
->>   drivers/char/tpm/tpm2-cmd.c                       | 2 +-
->>   include/crypto/hash_info.h                        | 2 +-
->>   include/uapi/linux/hash_info.h                    | 3 ++-
->>   security/keys/trusted-keys/trusted_tpm2.c         | 2 +-
->>   6 files changed, 8 insertions(+), 7 deletions(-)
->>
->> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
->> index 80d5a5af62a1..3292461517f6 100644
->> --- a/Documentation/security/keys/trusted-encrypted.rst
->> +++ b/Documentation/security/keys/trusted-encrypted.rst
->> @@ -162,7 +162,7 @@ Usage::
->>                        default 1 (resealing allowed)
->>          hash=         hash algorithm name as a string. For TPM 1.x the only
->>                        allowed value is sha1. For TPM 2.x the allowed values
->> -                     are sha1, sha256, sha384, sha512 and sm3-256.
->> +                     are sha1, sha256, sha384, sha512 and sm3.
-> 
-> You cannot remove sm3-256 from uapi.
-> 
+---
+v3 changes:
+ - The fix of document trusted-encrypted.rst is put in patch 2
 
-Thanks for pointing it out, Maybe this fix is more appropriate in patch 2.
+v2 changes:
+ - an additional macro with the same value is defined for uapi instead
+   of renaming directly
 
-Best regards,
-Tianjia
+Tianjia Zhang (2):
+  crypto: use SM3 instead of SM3_256
+  tpm: use SM3 instead of SM3_256
+
+ Documentation/security/keys/trusted-encrypted.rst | 2 +-
+ crypto/hash_info.c                                | 4 ++--
+ drivers/char/tpm/tpm-sysfs.c                      | 4 ++--
+ drivers/char/tpm/tpm2-cmd.c                       | 2 +-
+ include/crypto/hash_info.h                        | 2 +-
+ include/linux/tpm.h                               | 2 +-
+ include/uapi/linux/hash_info.h                    | 3 ++-
+ security/keys/trusted-keys/trusted_tpm2.c         | 2 +-
+ 8 files changed, 11 insertions(+), 10 deletions(-)
+
+-- 
+2.19.1.3.ge56e4f7
+
