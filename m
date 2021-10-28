@@ -2,78 +2,124 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC0843BF47
-	for <lists+keyrings@lfdr.de>; Wed, 27 Oct 2021 04:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0AA43D7F1
+	for <lists+keyrings@lfdr.de>; Thu, 28 Oct 2021 02:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237728AbhJ0CJK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 26 Oct 2021 22:09:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237774AbhJ0CJK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Oct 2021 22:09:10 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7634C061767
-        for <keyrings@vger.kernel.org>; Tue, 26 Oct 2021 19:06:45 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id t5-20020a17090a4e4500b001a0a284fcc2so3856318pjl.2
-        for <keyrings@vger.kernel.org>; Tue, 26 Oct 2021 19:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
-        b=pbsU4JsYYFUFjCjx+JZF5c1OYZBLpJ2UGwtS16JHoeY38qFJ4QcvkQvT/X2/rBDXYH
-         C/Q+MipnlmjMlUnP71jnmypJuEYvE1uiGyRE4gLY6gXXQ5F9EmHrskbY2pToT96hQIfB
-         0e4Rc8FbFMHSwNoyuJas2bwrd3mYk6ohc5mVArFLX7m7yQ1M4lTbCfVunyDVrbB2sECh
-         +RHCLMHiStKuAnzyHsdgd2i5Mc/Js+gNXBQpjywntgBsWyzaCf7mryFWQkS15c9fhTxB
-         SL0Q3g10VxlLJh0aMGimI69MeodO3sJ9dKouqiYt0DgClPio8KcSKcnOgb40u3uaDC/l
-         rLwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
-        b=BVBGG4hhegZ+WLulPeoFUjIJxGahBlZy2QQ7/7cD9+0I4y5SmB/yO8EHmGiPubY1+b
-         /s/BoFdlkzxrsXjjSiunSFYPFisH1HsfWyjx/QcZKHl8IiyIOJvSoFLzuwkHwjC20z2L
-         V0WDcfhf4EoVP3d3SyNSqnZsv4/tLQhGiHHkjOiCItlbIaoheHqnVCAKuro6e8VhHE/a
-         VK4Hiyf2P/SB9bfupxwHYEDME80OKkZnVax8oFYlPHoBpnq9Nryis6ajUWxtezvsm/8K
-         +9QOr6b6wzmv77qnKQbsHcwMYm/hpV0Q+ns6/BRskaV1JkDKhArdAe7oSOj8A9a4WiYh
-         maVA==
-X-Gm-Message-State: AOAM5326OGza5yws+q8DYUgO0AZ5nxqaFMEiMgbuGFAKLjTZVAzHL51r
-        mvB+wI+wY8gRjnSmVuTQk7/59kwBA5P4ag7/sfw=
-X-Google-Smtp-Source: ABdhPJxtBWflMfmnet9808mrORYau0Kt+zN7cU/kNqdGnpT2FWvzwJKbZhnaprZFTXaoGpInfjZnUS+9+GluN6Rmvzo=
-X-Received: by 2002:a17:90b:3504:: with SMTP id ls4mr2664362pjb.111.1635300405277;
- Tue, 26 Oct 2021 19:06:45 -0700 (PDT)
-MIME-Version: 1.0
-Sender: officedeskofgeneral0@gmail.com
-Received: by 2002:a17:90b:4c11:0:0:0:0 with HTTP; Tue, 26 Oct 2021 19:06:44
- -0700 (PDT)
-From:   "Mr. Mustafa Ali." <muafalia@gmail.com>
-Date:   Wed, 27 Oct 2021 03:06:44 +0100
-X-Google-Sender-Auth: JIajqc_3fGM4J3-mHCscD3Xnq08
-Message-ID: <CAL=mczWaGVHhBHM_X9fAa7QJwWn_LaSO=516G4eXXb_xWQcqcg@mail.gmail.com>
-Subject: Greetings Dear Friend.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S229484AbhJ1APQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 27 Oct 2021 20:15:16 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:11614 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229437AbhJ1APQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Oct 2021 20:15:16 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19RNGrmZ020299;
+        Thu, 28 Oct 2021 00:12:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=JQfn+YDEuSEBpiuw2kNP5wGK5U/Tl6YuZKRspV0yObo=;
+ b=lFbYy2j9R9rePXTiquYiTjU8OiXzC1sGz4V37dlpbiZkYy9j9l4TH7o9RHyLgtTeMoWy
+ 2rr/JeTUgNh2wtyLfL1B5Y7TiyF9iWIs9zxHDMDp9/LbEdhapqJALUrvRNSqgDaUKAzW
+ QNBdESC+f7Ad/+2TQrQUhTX76TZcmnSp2Nb2DYF9bbZ5KMK5PT8kO782X06noECyefu4
+ KYhpxzOPau4gyjQ2Lqwo0JhSTCzTEo8FB0qFmK+dxZr45vwwKMFGMwz59kaL0C872D6j
+ 8sqSC+ckFo3HsoDWs93N4F6QSS4A/jlbw8PqxPvtstnpklIcCUQkRO844r8dFjSx2Uf+ UA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3byga78rhq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Oct 2021 00:12:44 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19S007hO008318;
+        Thu, 28 Oct 2021 00:12:43 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3byga78rhc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Oct 2021 00:12:43 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19S090PF016110;
+        Thu, 28 Oct 2021 00:12:41 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma06ams.nl.ibm.com with ESMTP id 3bx4f1kra2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Oct 2021 00:12:41 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 19S0Ccxt59900382
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Oct 2021 00:12:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9F45B4204B;
+        Thu, 28 Oct 2021 00:12:38 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B815F42045;
+        Thu, 28 Oct 2021 00:12:37 +0000 (GMT)
+Received: from sig-9-65-78-33.ibm.com (unknown [9.65.78.33])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 28 Oct 2021 00:12:37 +0000 (GMT)
+Message-ID: <2ed333a24e8a3009acd4ef406ff8c2c39e95e2cf.camel@linux.ibm.com>
+Subject: Re: [PATCH] certs: system_keyring.c: clean up kernel-doc
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Date:   Wed, 27 Oct 2021 20:12:37 -0400
+In-Reply-To: <20211025003813.5164-1-rdunlap@infradead.org>
+References: <20211025003813.5164-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3YJAV5kM681TurNM6-Vp9HwanSc_DIT9
+X-Proofpoint-ORIG-GUID: UsK2DJ-W5IiPRMvBCyuGf4SasP5ZRTql
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-27_07,2021-10-26_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 suspectscore=0 clxscore=1011 mlxscore=0 phishscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2110270131
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Friend,
+Hi Randy,
 
-This message might meet you in utmost surprise. However, It's just my
-urgent need for a foreign partner that made me contact you for this
-transaction. I assured you of honesty and reliability to champion this
-business opportunity. I am a banker by profession in Turkey, and
-currently holding the post of Auditor in Standard Chartered Bank.
+On Sun, 2021-10-24 at 17:38 -0700, Randy Dunlap wrote:
+> Fix some kernel-doc warnings in system_keyring.c:
+> 
+> system_keyring.c:43: warning: expecting prototype for restrict_link_to_builtin_trusted(). Prototype was for restrict_link_by_builtin_trusted() instead
+> system_keyring.c:77: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>  * Allocate a struct key_restriction for the "builtin and secondary trust"
+> system_keyring.c:77: warning: missing initial short description on line:
+>  * Allocate a struct key_restriction for the "builtin and secondary trust"
+> 
+> Fix the warnings above and then see & fix these:
+> 
+> system_keyring.c:43: warning: No description found for return value of 'restrict_link_by_builtin_trusted'
+> system_keyring.c:62: warning: No description found for return value of 'restrict_link_by_builtin_and_secondary_trusted'
+> system_keyring.c:190: warning: No description found for return value of 'verify_pkcs7_message_sig'
+> system_keyring.c:275: warning: No description found for return value of 'verify_pkcs7_signature'
+> 
+> This still leaves non-exported two functions that do not have their
+> functions parameters documented: restrict_link_by_builtin_trusted() and
+> restrict_link_by_builtin_and_secondary_trusted().
+> 
+> Use '%' preceding constants in kernel-doc notation.
+> 
+> Use "builtin" consistently instead of "built in" or "built-in".
+> 
+> Don't use "/**" to begin a comment that is not in kernel-doc format.
+> 
+> Document the use of VERIFY_USE_SECONDARY_KEYRING and
+> VERIFY_USE_PLATFORM_KEYRING.
+> 
 
-I have the opportunity of transferring the leftover funds ($15 Million
-Dollars) of one of my clients who died along with his entire family in
-a crisis in Myanmar Asia. I am inviting you for a business deal where
-this money can be shared between us if you agree to my business
-proposal.
+Thanks, Randy.  Even after these changes there are additional kernel
+doc warnings.   Missing are the parameter definitions for
+restrict_link_by_builtin_trusted() and
+restrict_link_by_builtin_and_secondary_trusted().   The first three are
+exactly the same as for restrict_link_by_signature().  The fourth parm
+needs to be tweaked.
 
-Further details of the transfer will be forwarded to you immediately
-after I receive your return letter.
+Mimi
 
-Best Regards,
-Mr. Mustafa Ali.
-mustafa.ali@rahroco.com
