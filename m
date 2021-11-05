@@ -2,31 +2,31 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6102E445F02
-	for <lists+keyrings@lfdr.de>; Fri,  5 Nov 2021 05:03:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE1C445EFA
+	for <lists+keyrings@lfdr.de>; Fri,  5 Nov 2021 05:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbhKEEG0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Nov 2021 00:06:26 -0400
-Received: from condef-04.nifty.com ([202.248.20.69]:61766 "EHLO
-        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhKEEGZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Nov 2021 00:06:25 -0400
-Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-04.nifty.com with ESMTP id 1A540ge5002124
-        for <keyrings@vger.kernel.org>; Fri, 5 Nov 2021 13:00:57 +0900
+        id S229481AbhKEEFB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 5 Nov 2021 00:05:01 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:31046 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhKEEFB (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Nov 2021 00:05:01 -0400
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-08.nifty.com with ESMTP id 1A540g2B014494
+        for <keyrings@vger.kernel.org>; Fri, 5 Nov 2021 13:01:00 +0900
 Received: from grover.. (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id 1A5403LQ022540;
-        Fri, 5 Nov 2021 13:00:04 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 1A5403LQ022540
+        by conuserg-08.nifty.com with ESMTP id 1A5403LR022540;
+        Fri, 5 Nov 2021 13:00:05 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 1A5403LR022540
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1636084804;
-        bh=UBeP22s4xfPYWsFjyoiM12my2Sqc+H6BgyJExMAZa7Y=;
+        s=dec2015msa; t=1636084805;
+        bh=EPDtRPV2+xH9RWj1xZYWenqqZGDd4nEA5G4pvBvsUB0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aZz5LIrfqBkBbjSDtExiwKrybXovZ8unNqfpMxgJjRutoLT+GtFTH5GdfrpBNq4BC
-         Vsi/Hzwi8uBSoNYEUSPSg/Qbla0bPpAPR2mpkhgA09sFfekMN2B6EO9T2JGK0oyInW
-         2TA63C5OkJYB+mbwIkTX0+fd7kfChD9Co7LHdZ5fvuSx9aDIKmT5c71dE6vEQnH+UT
-         8YG/0lJLWtpv9ZZk+6D1sINOx9hB7xBOaVKK2oVLEv1XEB5BXZ6wCKBsOnLV9C1RI6
-         uQwBDFfcnQt+RlCrTLMDBwFckCIHfbyni+CE8ypEqrKSgdscIsYu/efoYxvHVcJf+r
-         /h61pD40FPUiA==
+        b=sT0YkNOglsncCLPqLtafFuBl+1IGVXOaf3w2FmjLCnR834e+5PXK/ofKEbaCLP1Ne
+         lUvZFsVn9fjRIS0p5UFcuAgGAk6qAIuqH2RFaEIKRNP4dD04wnH6fMVonUZL2os6We
+         vAKWKgHv3Fnq+CbcvbvvOSACLYDj1NHf0krZwv8Ioqb6F/qdSHVrB2gAumIIeIZur2
+         30+cld5q8KY7Y2cmZGoy0NKZaJviLt0NgDpFlAw7/lr1L764U2PrNURQ5VRPZyGs62
+         uDgfGM9XIkf88y5e/rQdOOfJx7jbnDhauulhAt+pNR4tk5YZ3/0TEbjbpuyisHMWcE
+         mEYvexfW02+rg==
 X-Nifty-SrcIP: [133.32.232.101]
 From:   Masahiro Yamada <masahiroy@kernel.org>
 To:     Jarkko Sakkinen <jarkko@kernel.org>,
@@ -35,9 +35,9 @@ To:     Jarkko Sakkinen <jarkko@kernel.org>,
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Masahiro Yamada <masahiroy@kernel.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] certs: remove meaningless $(error ...) in certs/Makefile
-Date:   Fri,  5 Nov 2021 12:59:54 +0900
-Message-Id: <20211105035959.93748-2-masahiroy@kernel.org>
+Subject: [PATCH 2/5] certs: check-in the default x509 config file
+Date:   Fri,  5 Nov 2021 12:59:55 +0900
+Message-Id: <20211105035959.93748-3-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211105035959.93748-1-masahiroy@kernel.org>
 References: <20211105035959.93748-1-masahiroy@kernel.org>
@@ -47,29 +47,86 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-CONFIG_MODULE_SIG_HASH is defined by init/Kconfig. This $(error ...) is
-never reachable. (If it is, you need to fix the bug.)
+When x509.genkey is created, it prints a log:
+
+  Generating X.509 key generation config
+
+..., which is not the ordinary Kbuild log style.
+
+Check-in the default config as certs/default_x509.genkey to make it
+readable, and copy it to certs/x509.genkey if it is not present.
+
+The log is shown in the Kbuild style.
+
+  COPY    certs/x509.genkey
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- certs/Makefile | 3 ---
- 1 file changed, 3 deletions(-)
+ certs/Makefile            | 24 ++++++------------------
+ certs/default_x509.genkey | 17 +++++++++++++++++
+ 2 files changed, 23 insertions(+), 18 deletions(-)
+ create mode 100644 certs/default_x509.genkey
 
 diff --git a/certs/Makefile b/certs/Makefile
-index 279433783b10..db1fd2f4b950 100644
+index db1fd2f4b950..fc94a260e3f3 100644
 --- a/certs/Makefile
 +++ b/certs/Makefile
-@@ -50,9 +50,6 @@ ifdef SIGN_KEY
- # fail and that the kernel may be used afterwards.
- #
- ###############################################################################
--ifndef CONFIG_MODULE_SIG_HASH
--$(error Could not determine digest type to use from kernel config)
--endif
+@@ -98,25 +98,13 @@ $(obj)/signing_key.pem: $(obj)/x509.genkey
+ 	@$(kecho) "### Key pair generated."
+ 	@$(kecho) "###"
  
- redirect_openssl	= 2>&1
- quiet_redirect_openssl	= 2>&1
++quiet_cmd_copy_x509_config = COPY    $@
++      cmd_copy_x509_config = cat $(srctree)/$(src)/default_x509.genkey > $@
++
++# You can provide your own config file. If not present, copy the default one.
+ $(obj)/x509.genkey:
+-	@$(kecho) Generating X.509 key generation config
+-	@echo  >$@ "[ req ]"
+-	@echo >>$@ "default_bits = 4096"
+-	@echo >>$@ "distinguished_name = req_distinguished_name"
+-	@echo >>$@ "prompt = no"
+-	@echo >>$@ "string_mask = utf8only"
+-	@echo >>$@ "x509_extensions = myexts"
+-	@echo >>$@
+-	@echo >>$@ "[ req_distinguished_name ]"
+-	@echo >>$@ "#O = Unspecified company"
+-	@echo >>$@ "CN = Build time autogenerated kernel key"
+-	@echo >>$@ "#emailAddress = unspecified.user@unspecified.company"
+-	@echo >>$@
+-	@echo >>$@ "[ myexts ]"
+-	@echo >>$@ "basicConstraints=critical,CA:FALSE"
+-	@echo >>$@ "keyUsage=digitalSignature"
+-	@echo >>$@ "subjectKeyIdentifier=hash"
+-	@echo >>$@ "authorityKeyIdentifier=keyid"
++	$(call cmd,copy_x509_config)
++
+ endif # CONFIG_MODULE_SIG_KEY
+ 
+ $(eval $(call config_filename,MODULE_SIG_KEY))
+diff --git a/certs/default_x509.genkey b/certs/default_x509.genkey
+new file mode 100644
+index 000000000000..d4c6628cb8e5
+--- /dev/null
++++ b/certs/default_x509.genkey
+@@ -0,0 +1,17 @@
++[ req ]
++default_bits = 4096
++distinguished_name = req_distinguished_name
++prompt = no
++string_mask = utf8only
++x509_extensions = myexts
++
++[ req_distinguished_name ]
++#O = Unspecified company
++CN = Build time autogenerated kernel key
++#emailAddress = unspecified.user@unspecified.company
++
++[ myexts ]
++basicConstraints=critical,CA:FALSE
++keyUsage=digitalSignature
++subjectKeyIdentifier=hash
++authorityKeyIdentifier=keyid
 -- 
 2.30.2
 
