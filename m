@@ -2,162 +2,179 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C731E45533B
-	for <lists+keyrings@lfdr.de>; Thu, 18 Nov 2021 04:14:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4AD45564A
+	for <lists+keyrings@lfdr.de>; Thu, 18 Nov 2021 09:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239873AbhKRDRQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 17 Nov 2021 22:17:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54892 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239637AbhKRDRP (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 17 Nov 2021 22:17:15 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CDD9E61507;
-        Thu, 18 Nov 2021 03:14:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637205255;
-        bh=/CsQ1mpqXvq8j6eKOBaGsDwpNoQJqGhnqNZpfFmZkMQ=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=kgVX51Asa5Wqvj478HWtq/8Z1Vsf5aZMylfhRQ1T193i10YWv3gZwPGyMPXRHCSzK
-         uBax/QkQCeXGQxDkLk3FkLANV/E5fFPAg4i1OqZTRb9rxZunNe9ZVtfZ4eI7Kr+xZm
-         hUWpXCFPw74+6C2pEa1DV+hLeTwaylX65yZ/AuHCPGJJndSIwFLzrFxzi0bNEOh67i
-         Ocvkq5iJjXnK5LFDPjmK22CvHLOIFcGm5wDx0FUKkKm2WmR8X6upcHDDUtTILWN2OQ
-         SSRG3v6qjE4l+eDRwnTSxQViCMTYStpxud7nSltF8WPErPt/mLqJ3BvjoW+a5sYecD
-         qK97S67Sg6/nQ==
-Message-ID: <10919ebd45263cd790ef928891ff54e4b3dd1407.camel@kernel.org>
-Subject: Re: [PATCH v7 00/17] Enroll kernel keys thru MOK
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Snowberg <eric.snowberg@oracle.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>
-Cc:     "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        id S244237AbhKRIL0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 Nov 2021 03:11:26 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:19266 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244233AbhKRILD (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Nov 2021 03:11:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1637222876;
+    s=strato-dkim-0002; d=chronox.de;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=pqxqeDLYvduBqgPCaONKS31VBdYNk/GP5KTwPLPfQJE=;
+    b=e4TfzP/RSBFBhnYFpBG0Oz/NFSBdc86BMUSY4fs9cnwFrdsPztGri2n8/50l5cnp14
+    F8F5ozqprk8iyO//8YFnEQq5WmogWtbBGNHVUf7PDKxuulPTj0GHxcRFYdfBpyfGiGpa
+    61h2yC0qE8nKtycvwukgutOH1BhY+ofPCb1DgfkWuAyMgLFUsptPAVru0dd9Yn3Tlw0P
+    /FkRt5wEtNuSH78oLrtUDNN/kkcQ5fk73XoYRot1tR/AFYXYe/Q7jHSwM+FDuU2m88F4
+    VNDVG6XoYEgA0yir4ebvzY7djV/nnMJnjU1U30/GvssOPG1u/KInw4Y+V3ke2fLvAU6Z
+    rAXQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPbJvScPP/G"
+X-RZG-CLASS-ID: mo00
+Received: from tauon.chronox.de
+    by smtp.strato.de (RZmta 47.34.5 DYNA|AUTH)
+    with ESMTPSA id U02dfbxAI87toU9
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Thu, 18 Nov 2021 09:07:55 +0100 (CET)
+From:   Stephan Mueller <smueller@chronox.de>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     herbert@gondor.apana.org.au, Jarkko Sakkinen <jarkko@kernel.org>,
+        Mat Martineau <mathew.j.martineau@linux.intel.com>,
         "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "ebiggers@google.com" <ebiggers@google.com>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        "nramas@linux.microsoft.com" <nramas@linux.microsoft.com>,
-        "lszubowi@redhat.com" <lszubowi@redhat.com>,
-        "jason@zx2c4.com" <jason@zx2c4.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "pjones@redhat.com" <pjones@redhat.com>
-Date:   Thu, 18 Nov 2021 05:14:12 +0200
-In-Reply-To: <7E672BCB-EEA7-4DB8-AEB1-644B46EBE124@oracle.com>
-References: <20211116001545.2639333-1-eric.snowberg@oracle.com>
-         <eac5f11d7ddcc65d16a9a949c5cf44851bff8f5f.camel@kernel.org>
-         <YZPZww0bafYEQ0VS@0xbeefdead.lan>
-         <f30a1399208a88257b3ff25b369088cf88a96367.camel@kernel.org>
-         <YZPevFtTucji7gIm@0xbeefdead.lan>
-         <8fcadcf2a5da5118fb7f9caea0a61440525a67b2.camel@kernel.org>
-         <3939a2fac50d2e836c48855b1b00c7b36659f23f.camel@kernel.org>
-         <YZU1lkBkphf73dF+@0xbeefdead.lan>
-         <7E672BCB-EEA7-4DB8-AEB1-644B46EBE124@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.40.4-1 
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings <keyrings@vger.kernel.org>, simo@redhat.com
+Subject: Re: [PATCH v3 2/4] crypto: add SP800-108 counter key derivation function
+Date:   Thu, 18 Nov 2021 09:07:55 +0100
+Message-ID: <3820150.6QZi0asr2n@tauon.chronox.de>
+In-Reply-To: <YZVTx01YyvCsPc9i@gmail.com>
+References: <2589009.vuYhMxLoTh@positron.chronox.de> <3412396.dWV9SEqChM@positron.chronox.de> <YZVTx01YyvCsPc9i@gmail.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2021-11-17 at 17:20 +0000, Eric Snowberg wrote:
->=20
->=20
-> > On Nov 17, 2021, at 10:02 AM, Konrad Wilk <konrad.wilk@oracle.com> wrot=
-e:
-> >=20
-> > On Wed, Nov 17, 2021 at 09:51:25AM +0200, Jarkko Sakkinen wrote:
-> > > On Wed, 2021-11-17 at 09:50 +0200, Jarkko Sakkinen wrote:
-> > > > On Tue, 2021-11-16 at 11:39 -0500, Konrad Rzeszutek Wilk wrote:
-> > > > > On Tue, Nov 16, 2021 at 06:24:52PM +0200, Jarkko Sakkinen wrote:
-> > > > > > On Tue, 2021-11-16 at 11:18 -0500, Konrad Rzeszutek Wilk wrote:
-> > > > > > > > > I have included=C2=A0 a link to the mokutil [5] changes I=
- have made to support=20
-> > > > > > > > > this new functionality.=C2=A0 The shim changes have now b=
-een accepted
-> > > > > > > > > upstream [6].
-> > > > > > >=20
-> > > > > > > ..snip..
-> > > > > > > > > [6] https://github.com/rhboot/shim/commit/4e513405b4f1641=
-710115780d19dcec130c5208f
-> > > > > > >=20
-> > > > > > > ..snip..
-> > > > > > > >=20
-> > > > > > > > Does shim have the necessary features in a release?
-> > > > > > >=20
-> > > > > > > Hi!
-> > > > > > >=20
-> > > > > > > It has been accepted in the upstream shim. If you are looking
-> > > > > > > for a distribution having rolled out a shim with this feature=
- (so signed
-> > > > > > > by MSF) I fear that distributions are not that fast with shim=
- releases.
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~~~
-> > > >=20
-> > > > Should that be MS, or what does MSF mean?
-> >=20
-> > Microsoft :-)
->=20
-> Correct, I=E2=80=99ll fix that in the next round.
->=20
-> > > > > > >=20
-> > > > > > > Also these:
-> > > > > > > https://github.com/rhboot/shim/pulls
-> > > > > > > https://github.com/rhboot/shim/issues
-> > > > > > >=20
-> > > > > > > do mean some extra work would need to go in before an officia=
-l
-> > > > > > > release is cut.
-> > > > > > >=20
-> > > > > > > Hope this helps?
-> > > > > >=20
-> > > > > > Yes. I'll hold with this up until there is an official release.=
- Thank you.
-> > > > >=20
-> > > > > Not sure I understand - but what are the concerns you have with s=
-him
-> > > > > code that has been accepted?
-> > > >=20
-> > > > Maybe my concern is that none of the patches have a tested-by?
-> > > >=20
-> > > > Probably would be easier to get a test coverage, e.g. for people li=
-ke
-> > > > me who do not even know how to self-compile Shim, how to setup user
-> > > > space using the product and so forth.
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~~~~~~~~~~~~~~~~~
-> > >=20
-> > > for the end product
-> >=20
-> > <nods> That makes total sense. Thanks for the explanation, let me doubl=
-e
-> > check whether
-> >=20
-> > https://github.com/rhboot/shim/blob/main/BUILDING
-> >=20
-> > is still correct.
->=20
-> Those are the steps I use for building.=C2=A0=C2=A0 I then move over mmx6=
-4.efi and=C2=A0=20
-> shimx64.efi to the ESP.=C2=A0 I can add the shim build/install instructio=
-ns to the next
-> cover letter If you think that would be appropriate.
+Am Mittwoch, 17. November 2021, 20:11:03 CET schrieb Eric Biggers:
 
-Yeah, that would be great. I'll try to setup VM for that purpose. I have
-already a script to build UEFI enabled archlinux VM's, which I use to
-test SGX patches. I can probably tailor that for this purpose.
+Hi Eric,
 
-/Jarkko
+thanks for your comments.
+
+> On Mon, Nov 15, 2021 at 09:43:13AM +0100, Stephan M=FCller wrote:
+> > SP800-108 defines three KDFs - this patch provides the counter KDF
+> > implementation.
+> >=20
+> > The KDF is implemented as a service function where the caller has to
+> > maintain the hash / HMAC state. Apart from this hash/HMAC state, no
+> > additional state is required to be maintained by either the caller or
+> > the KDF implementation.
+> >=20
+> > The key for the KDF is set with the crypto_kdf108_setkey function which
+> > is intended to be invoked before the caller requests a key derivation
+> > operation via crypto_kdf108_ctr_generate.
+> >=20
+> > SP800-108 allows the use of either a HMAC or a hash as crypto primitive
+> > for the KDF. When a HMAC primtive is intended to be used,
+> > crypto_kdf108_setkey must be used to set the HMAC key. Otherwise, for a
+> > hash crypto primitve crypto_kdf108_ctr_generate can be used immediately
+> > after allocating the hash handle.
+> >=20
+> > Signed-off-by: Stephan Mueller <smueller@chronox.de>
+> > ---
+> >=20
+> >  crypto/Kconfig                |   7 ++
+> >  crypto/Makefile               |   5 ++
+> >  crypto/kdf_sp800108.c         | 149 ++++++++++++++++++++++++++++++++++
+> >  include/crypto/kdf_sp800108.h |  61 ++++++++++++++
+> >  4 files changed, 222 insertions(+)
+> >  create mode 100644 crypto/kdf_sp800108.c
+> >  create mode 100644 include/crypto/kdf_sp800108.h
+> >=20
+> > diff --git a/crypto/Kconfig b/crypto/Kconfig
+> > index 285f82647d2b..09c393a57b58 100644
+> > --- a/crypto/Kconfig
+> > +++ b/crypto/Kconfig
+> > @@ -1845,6 +1845,13 @@ config CRYPTO_JITTERENTROPY
+> >=20
+> >  	  random numbers. This Jitterentropy RNG registers with
+> >  	  the kernel crypto API and can be used by any caller.
+> >=20
+> > +config CRYPTO_KDF800108_CTR
+> > +	tristate "Counter KDF (SP800-108)"
+> > +	select CRYPTO_HASH
+> > +	help
+> > +	  Enable the key derivation function in counter mode compliant to
+> > +	  SP800-108.
+>=20
+> These are just some library functions, so they shouldn't be user-selectab=
+le.
+
+Ok, I will remove the user-visible entry in the kernel configuration.
+
+> > +/*
+> > + * The seeding of the KDF
+> > + */
+> > +int crypto_kdf108_setkey(struct crypto_shash *kmd,
+> > +			 const u8 *key, size_t keylen,
+> > +			 const u8 *ikm, size_t ikmlen)
+> > +{
+> > +	unsigned int ds =3D crypto_shash_digestsize(kmd);
+> > +
+> > +	/* SP800-108 does not support IKM */
+> > +	if (ikm || ikmlen)
+> > +		return -EINVAL;
+>=20
+> Why have the ikm parameter if it's not supported?
+
+The original idea is that we have a common function declaration for SP800-1=
+08=20
+and HKDF. I am still thinking that in the long run, a KDF template support =
+may=20
+make sense. In this case, a common function declaration would be needed for=
+=20
+all KDF implementations.
+
+=46urthermore, the test code can be shared between the different KDFs when =
+we=20
+allow the ikm/ikmlen parameter for this function.
+>=20
+> > +	/*
+> > +	 * We require that we operate on a MAC -- if we do not operate on a
+> > +	 * MAC, this function returns an error.
+> > +	 */
+> > +	return crypto_shash_setkey(kmd, key, keylen);
+> > +}
+> > +EXPORT_SYMBOL(crypto_kdf108_setkey);
+>=20
+> Well, crypto_shash_setkey() will succeed if the hash algorithm takes a
+> "key". That doesn't necessarily mean that it's a MAC.	It could be crc32 or
+> xxhash64, for example; those interpret the "key" as the initial value.
+
+Agreed. But I am not sure a check in this regard would be needed considerin=
+g=20
+that this KDF is only an internal service function.
+
+I have updated the comment accordingly.
+>=20
+> > +static int __init crypto_kdf108_init(void)
+> > +{
+> > +	int ret =3D kdf_test(&kdf_ctr_hmac_sha256_tv_template[0],=20
+"hmac(sha256)",
+> > +			   crypto_kdf108_setkey, crypto_kdf108_ctr_generate);
+> > +
+> > +	if (ret)
+> > +		pr_warn("alg: self-tests for CTR-KDF (hmac(sha256)) failed=20
+(rc=3D%d)\n",
+> > +			ret);
+>=20
+> This should be a WARN() since it indicates a kernel bug.
+
+Changed. Considering that the test result behavior should be identical to=20
+testmgr.c, I have added also the panic() call in case of fips_enabled.
+
+Thanks a lot for your review.
+>=20
+> - Eric
+
+
+Ciao
+Stephan
+
 
