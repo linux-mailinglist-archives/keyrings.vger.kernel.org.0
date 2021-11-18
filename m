@@ -2,196 +2,156 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80F354565C0
-	for <lists+keyrings@lfdr.de>; Thu, 18 Nov 2021 23:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B664565FB
+	for <lists+keyrings@lfdr.de>; Fri, 19 Nov 2021 00:00:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232349AbhKRWhf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 18 Nov 2021 17:37:35 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:52052 "EHLO
+        id S232909AbhKRXDb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 Nov 2021 18:03:31 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60798 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229521AbhKRWhe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Nov 2021 17:37:34 -0500
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AIKxYo6019153;
-        Thu, 18 Nov 2021 22:34:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3sZP65E5byhIvz4i90BuqnvbuxB6Skk0Z/nrqSuw/UU=;
- b=LtdEAQpZQ05KH5eWVBSStMhM3evlFg17GYUOrqiEEofJjF7olEuXJDGAhK/ypIfKoOEO
- 8GF6QG9C4QQR5ZNJWrVJv248tj4jW/G88iXQNnKU2SHmhKiz78/lOaH5ksQ3wznTAEW7
- k0OV5qeRSLfQY6YrEZw+TWpvjoeYbDUKOJ9TG6EnjSfn2xPRPTdjgkwYlSqmK3hG/NZD
- BfKELpL8fKNQ7oZez7ucVBq2QpCch/kfKfc6aV6QA+KOJMQQW6hZ4qW1/JtxxSGt58H5
- Hasrmk6b8pfNF0IoFg0puoGk85s41/jy9eqRxipxUZY8vKsWyTU7GSmQyY+EvYsgI3dt QQ== 
+        by vger.kernel.org with ESMTP id S232879AbhKRXDb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Nov 2021 18:03:31 -0500
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AIMfEoB030957;
+        Thu, 18 Nov 2021 23:00:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=DQnLDTzciCHghFIlOd+xNi8zoJSyz211x4H5X+3Z/bY=;
+ b=oEBAJVNsIG4FEW/pLprfAxi52topAZ4iB2VUdVD2xDo2AYp88TS4fMMVfiVteANnpScQ
+ Io5oAYrU8acL+BpVKqGghASSnaIqXHJ/Ko/s8otmEZNTOLSvxZQG10afCUa3ehLCYonT
+ CEX7cML3cET7/LvE9XF7LEC1WL7iF1RQmlgUXeGpFaw18FPvfcuwDU5scW7m/XWd8tQm
+ mIBl1kOg2qbyyQoeXFMClA/RoTsFRayT+FwZuqbRkrPMpttoCLEY9zmutjLAY5NYkK93
+ j+2iy6bAdftJaYK8uAuyqXiIIevHSJBq5SV+ldMymhGuzKcpUsMsqAaTTJ5hlH1BLhkC iA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3cdxbvt7mc-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3cdyufr8gt-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Nov 2021 22:34:13 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AIMNMYg013965;
-        Thu, 18 Nov 2021 22:34:13 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3cdxbvt7m5-1
+        Thu, 18 Nov 2021 23:00:03 +0000
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AIMiJdP008274;
+        Thu, 18 Nov 2021 23:00:02 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3cdyufr8fe-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Nov 2021 22:34:12 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AIMR5mD011651;
-        Thu, 18 Nov 2021 22:34:11 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-        by ppma04wdc.us.ibm.com with ESMTP id 3ca50cfmfu-1
+        Thu, 18 Nov 2021 23:00:02 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AIMrngq022719;
+        Thu, 18 Nov 2021 23:00:00 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma06fra.de.ibm.com with ESMTP id 3ca4mkrw85-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Nov 2021 22:34:11 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1AIMY7FK36241826
+        Thu, 18 Nov 2021 23:00:00 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1AIMxvW262259634
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 18 Nov 2021 22:34:07 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 34C12AC089;
-        Thu, 18 Nov 2021 22:34:07 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C7D03AC06C;
-        Thu, 18 Nov 2021 22:34:02 +0000 (GMT)
-Received: from [9.211.61.197] (unknown [9.211.61.197])
-        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 18 Nov 2021 22:34:02 +0000 (GMT)
-Message-ID: <604dad24-5406-509c-d765-905d74880523@linux.vnet.ibm.com>
-Date:   Thu, 18 Nov 2021 17:34:01 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
-Content-Language: en-US
-To:     =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
-        Rob Herring <robh@kernel.org>, linux-s390@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Frank van der Linden <fllinden@amazon.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com
-References: <cover.1635948742.git.msuchanek@suse.de>
- <87czneeurr.fsf@dja-thinkpad.axtens.net>
- <20211105131401.GL11195@kunlun.suse.cz>
- <87a6ifehin.fsf@dja-thinkpad.axtens.net>
- <20211108120500.GO11195@kunlun.suse.cz>
- <56d2ae87-b9bf-c9fc-1395-db4769a424ea@linux.vnet.ibm.com>
- <20211112083055.GA34414@kunlun.suse.cz>
- <8cd90fea-05c9-b5f9-5e0c-84f98b2f55cd@linux.vnet.ibm.com>
- <20211116095343.GG34414@kunlun.suse.cz>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <20211116095343.GG34414@kunlun.suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Thu, 18 Nov 2021 22:59:57 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5158BA4065;
+        Thu, 18 Nov 2021 22:59:57 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DF7A9A4054;
+        Thu, 18 Nov 2021 22:59:52 +0000 (GMT)
+Received: from sig-9-65-86-194.ibm.com (unknown [9.65.86.194])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 18 Nov 2021 22:59:52 +0000 (GMT)
+Message-ID: <90223050186b384288e5d8f7aed8af5c8111d3e8.camel@linux.ibm.com>
+Subject: Re: [PATCH v7 04/17] X.509: Parse Basic Constraints for CA
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net, jarkko@kernel.org, jmorris@namei.org,
+        serge@hallyn.com
+Cc:     keescook@chromium.org, torvalds@linux-foundation.org,
+        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
+        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
+        jason@zx2c4.com, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Thu, 18 Nov 2021 17:59:52 -0500
+In-Reply-To: <20211116001545.2639333-5-eric.snowberg@oracle.com>
+References: <20211116001545.2639333-1-eric.snowberg@oracle.com>
+         <20211116001545.2639333-5-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: x398kgBnLb2ZNX7NPbVzUTEXr0d2VD96
-X-Proofpoint-GUID: G_o52HHXc1RIsRhcs9H375AtA3LqBl1o
+X-Proofpoint-ORIG-GUID: BrmCOSPI_JEOenTmJCdGmv7HgBg67WSA
+X-Proofpoint-GUID: NErLt8s8iodGUEHssnsz8Zd8Y1lR8LQN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
  definitions=2021-11-18_12,2021-11-17_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 phishscore=0 adultscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 impostorscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2110150000 definitions=main-2111180115
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Hi Eric,
 
-On 11/16/21 04:53, Michal Suchánek wrote:
-> On Mon, Nov 15, 2021 at 06:53:53PM -0500, Nayna wrote:
->> On 11/12/21 03:30, Michal Suchánek wrote:
->>> Hello,
->>>
->>> On Thu, Nov 11, 2021 at 05:26:41PM -0500, Nayna wrote:
->>>> On 11/8/21 07:05, Michal Suchánek wrote:
->>>>> Hello,
->>>>>
->>>>> The other part is that distributions apply 'lockdown' patches that change
->>>>> the security policy depending on secure boot status which were rejected
->>>>> by upstream which only hook into the _SIG options, and not into the IMA_
->>>>> options. Of course, I expect this to change when the IMA options are
->>>>> universally available across architectures and the support picked up by
->>>>> distributions.
->>>>>
->>>>> Which brings the third point: IMA features vary across architectures,
->>>>> and KEXEC_SIG is more common than IMA_KEXEC.
->>>>>
->>>>> config/arm64/default:CONFIG_HAVE_IMA_KEXEC=y
->>>>> config/ppc64le/default:CONFIG_HAVE_IMA_KEXEC=y
->>>>>
->>>>> config/arm64/default:CONFIG_KEXEC_SIG=y
->>>>> config/s390x/default:CONFIG_KEXEC_SIG=y
->>>>> config/x86_64/default:CONFIG_KEXEC_SIG=y
->>>>>
->>>>> KEXEC_SIG makes it much easier to get uniform features across
->>>>> architectures.
->>>> Architectures use KEXEC_SIG vs IMA_KEXEC based on their requirement.
->>>> IMA_KEXEC is for the kernel images signed using sign-file (appended
->>>> signatures, not PECOFF), provides measurement along with verification, and
->>> That's certainly not the case. S390 uses appended signatures with
->>> KEXEC_SIG, arm64 uses PECOFF with both KEXEC_SIG and IMA_KEXEC.
->> Yes, S390 uses appended signature, but they also do not support
->> measurements.
->>
->> On the other hand for arm64/x86, PECOFF works only with KEXEC_SIG. Look at
->> the KEXEC_IMAGE_VERIFY_SIG config dependencies in arch/arm64/Kconfig and
->> KEXEC_BZIMAGE_VERIFY_SIG config dependencies in arch/x86/Kconfig. Now, if
->> KEXEC_SIG is not enabled, then IMA appraisal policies are enforced if secure
->> boot is enabled, refer to security/integrity/ima_efi.c . IMA would fail
->> verification if kernel is not signed with module sig appended signatures or
->> signature verification fails.
->>
->> In short, IMA is used to enforce the existence of a policy if secure boot is
->> enabled. If they don't support module sig appended signatures, by definition
->> it fails. Thus PECOFF doesn't work with both KEXEC_SIG and IMA_KEXEC, but
->> only with KEXEC_SIG.
-> Then IMA_KEXEC is a no-go. It is not supported on all architectures and
-> it principially cannot be supported because it does not support PECOFF
-> which is needed to boot the kernel on EFI platforms. To get feature
-> parity across architectures KEXEC_SIG is required.
+On Mon, 2021-11-15 at 19:15 -0500, Eric Snowberg wrote:
+> Parse the X.509 Basic Constraints.  The basic constraints extension
+> identifies whether the subject of the certificate is a CA.
+> 
+> BasicConstraints ::= SEQUENCE {
+>         cA                      BOOLEAN DEFAULT FALSE,
+>         pathLenConstraint       INTEGER (0..MAX) OPTIONAL }
+> 
+> If the CA is true, store it in a new public_key field call key_is_ca.
+> This will be used in a follow on patch that requires knowing if the
+> public key is a CA.
+> 
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> ---
+> v7: Initial version
+> ---
+>  crypto/asymmetric_keys/x509_cert_parser.c | 9 +++++++++
+>  include/crypto/public_key.h               | 1 +
+>  2 files changed, 10 insertions(+)
+> 
+> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+> index 6d003096b5bc..f4299b8a4926 100644
+> --- a/crypto/asymmetric_keys/x509_cert_parser.c
+> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> @@ -571,6 +571,15 @@ int x509_process_extension(void *context, size_t hdrlen,
+>  		return 0;
+>  	}
+>  
+> +	if (ctx->last_oid == OID_basicConstraints) {
+> +		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
+> +			return -EBADMSG;
+> +		if (v[1] != vlen - 2)
+> +			return -EBADMSG;
+> +		if (v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1)
+> +			ctx->cert->pub->key_is_ca = true;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index a9b2e600b7cc..61c66be80995 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -28,6 +28,7 @@ struct public_key {
+>  	bool key_is_private;
+>  	const char *id_type;
+>  	const char *pkey_algo;
+> +	bool key_is_ca;
 
-I would not say "a no-go", it is based on user requirements.
+David added "key_is_private" intentionally where he did.  Adding the
+"key_is_ca" immediately afterwards doesn't change the struct size.
 
-The key takeaway from this discussion is that both KEXEC_SIG and 
-IMA_KEXEC support functionality with some small degree of overlap, and 
-that documenting the differences is needed.  This will help kernel 
-consumers to understand the difference and enable the appropriate 
-functionality for their environment.
+Mimi
 
-As per my understanding:
+>  };
+>  
+>  extern void public_key_free(struct public_key *key);
 
-KEXEC_SIG:
-* Supports kernel image verification
-* Linked with secureboot state using downstream patch
-* Supports PECOFF and module sig appended signature format
-* Supports blocklisting of keys
-
-IMA_KEXEC:
-* Supports kernel image verification
-* Linked with secureboot state in upstream
-* Supports module sig appended signature format and signatures in 
-extended attribute.
-* Supports blocklisting of keys
-* Supports blocklisting single kernel binary
-* Supports measurements for attestation
-* Supports audit log
-
-Users can enable the option based on their requirements.
-
-Thanks for the good discussion and enabling KEXEC_SIG for POWER as well. 
-It would be good to have updated kernel documentation to go along with 
-KEXEC_SIG support in the patchset.
-
-Thanks & Regards,
-     - Nayna
 
