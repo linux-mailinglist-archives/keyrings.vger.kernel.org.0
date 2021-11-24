@@ -2,123 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F1145CA85
-	for <lists+keyrings@lfdr.de>; Wed, 24 Nov 2021 18:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F45145CE5C
+	for <lists+keyrings@lfdr.de>; Wed, 24 Nov 2021 21:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243038AbhKXRFT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 24 Nov 2021 12:05:19 -0500
-Received: from mail-m972.mail.163.com ([123.126.97.2]:47782 "EHLO
-        mail-m972.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242707AbhKXRFT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 24 Nov 2021 12:05:19 -0500
-X-Greylist: delayed 924 seconds by postgrey-1.27 at vger.kernel.org; Wed, 24 Nov 2021 12:05:17 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=8ERBp
-        /cCG6WzioJCfEWJSK1orI4R+L3An4qXLiZdnB0=; b=OXoqhebDEZzeJ7/tZsJ8J
-        SmHIkZsNHWXXKsahcfmp5T5PaR4vFOn43TKWCwZtcdsvse2Y3iS9n2yfkEkCP2Ci
-        UjVtEpPgC5S6Qv0Tiq1HAYq9yLfeKz9fnQYKqFL7FONJ8brCFR5+TGnmQhNDGfVy
-        crGX80h2iLKCQeg3+CzZFY=
-Received: from localhost.localdomain (unknown [218.106.182.227])
-        by smtp2 (Coremail) with SMTP id GtxpCgBHHNXNa55h7hmJKQ--.39097S4;
-        Thu, 25 Nov 2021 00:44:01 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
-        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        id S239050AbhKXUut (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 24 Nov 2021 15:50:49 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:2154 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235709AbhKXUur (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 24 Nov 2021 15:50:47 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AOKOpeg017746;
+        Wed, 24 Nov 2021 20:47:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=A9bqNV1Jy3zIemg25SOA8ivP5X6E17/v2bKeKAuwHlM=;
+ b=E/Aog28GYCWBW/Z+CXRAVgFW5JuMzck15BRE3ABOhqKVH2Z6hKi9b/QM8dCyJbVaW50G
+ sUiIzVDpS6e3h0otQPA8xFTKnHJ1vkiwAI7PKXuZwpQ0je7BLGR4wWj/tTymDbjS3p8r
+ DxeNmKnbvOeVPOeF9kZzZp8up2DsGZdL/eKodFfJ5YpZSyQ4QR1HArAW1A8j+qXAuX1C
+ qxTCNMZIDPS4y5jy4pMMX7zeDi/1/DqB3O63ooG+wEczqjCiIwoJmR8AruoKDCnSvEU1
+ kqmwOeP/Gf/UsqZkj+4o4Fot7J3n01jUiGYoyrS+d+Y5ZGa+Pik8pJxMSvqIb/O81epe oA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3chu00242k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 24 Nov 2021 20:47:32 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AOKXEbi033083;
+        Wed, 24 Nov 2021 20:47:32 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3chu002423-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 24 Nov 2021 20:47:31 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AOKd1nV032104;
+        Wed, 24 Nov 2021 20:47:29 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma03ams.nl.ibm.com with ESMTP id 3cernadamt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 24 Nov 2021 20:47:29 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1AOKlQX619464544
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 24 Nov 2021 20:47:26 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 29FD552052;
+        Wed, 24 Nov 2021 20:47:26 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.59.116])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id CF7075204F;
+        Wed, 24 Nov 2021 20:47:22 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, zohar@linux.ibm.com, jarkko@kernel.org,
         linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jianglei Nie <niejianglei@gmail.com>
-Subject: [PATCH] security:trusted_tpm2: Fix memory leak in tpm2_key_encode()
-Date:   Thu, 25 Nov 2021 00:43:54 +0800
-Message-Id: <20211124164354.20448-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
+        linux-kernel@vger.kernel.org,
+        Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+        Seth Forshee <seth@forshee.me>,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v5 0/2] integrity: support including firmware ".platform" keys at build time 
+Date:   Wed, 24 Nov 2021 15:47:12 -0500
+Message-Id: <20211124204714.82514-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GtxpCgBHHNXNa55h7hmJKQ--.39097S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJw18Ww1kWF15Gry3XrWrZrb_yoW5XryUpF
-        ZxKF17ZrWagry7Ary7Ja1Svr1fCay5Gr47GwsrW39rGasxJFsxtFy7ArWYgrnrAFWfKw15
-        ZF4qvFWUWrWDtrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07bY2-5UUUUU=
-X-Originating-IP: [218.106.182.227]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbi6xFVjFXlyRVF+AAAsy
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: bLgZ8gi3qI0QiBF3sOZZsJojyrtQw9a2
+X-Proofpoint-GUID: vfQycDDeUUbr_gXLI41Z43iN6NcxGoEZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-24_06,2021-11-24_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 adultscore=0 phishscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111240103
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Jianglei Nie <niejianglei@gmail.com>
+Some firmware support secure boot by embedding static keys to verify the
+Linux kernel during boot. However, these firmware do not expose an
+interface for the kernel to load firmware keys onto the ".platform"
+keyring, preventing the kernel from verifying the kexec kernel image
+signature.
 
-Line 36 (#1) allocates a memory chunk for scratch by kmalloc(), but
-it is never freed through the function, which will lead to a memory
-leak.
+This patchset exports load_certificate_list() and defines a new function
+load_builtin_platform_cert() to load compiled in certificates onto the
+".platform" keyring.
 
-We should kfree() scratch before the function returns (#2, #3 and #4).
+Changelog:
 
-31 static int tpm2_key_encode(struct trusted_key_payload *payload,
-32			   struct trusted_key_options *options,
-33			   u8 *src, u32 len)
-34 {
-36	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
-        // #1: kmalloc space
-37	u8 *work = scratch, *work1;
-50	if (!scratch)
-51		return -ENOMEM;
+v5:
+* Renamed load_builtin_platform_cert() to load_platform_certificate_list()
+and config INTEGRITY_PLATFORM_BUILTIN_KEYS to INTEGRITY_PLATFORM_KEYS, as
+suggested by Mimi Zohar.
 
-56	if (options->blobauth_len == 0) {
-60		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-61			return PTR_ERR(w); // #2: missing kfree
-63	}
+v4:
+* Split into two patches as per Mimi Zohar and Dimitri John Ledkov
+recommendation.
 
-71	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
-72		 "BUG: scratch buffer is too small"))
-73		return -EINVAL; // #3: missing kfree
+v3:
+* Included Jarkko's feedback
+ ** updated patch description to include approach.
+ ** removed extern for function declaration in the .h file.
+* Included load_certificate_list() within #ifdef CONFIG_KEYS condition.
 
-  	// #4: missing kfree: scratch is never used afterwards.
-82	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
-83		return PTR_ERR(work1);
+v2:
+* Fixed the error reported by kernel test robot
+* Updated patch description based on Jarkko's feedback.
 
-85	return work1 - payload->blob;
-86 }
+Nayna Jain (2):
+  certs: export load_certificate_list() to be used outside certs/
+  integrity: support including firmware ".platform" keys at build time
 
-Signed-off-by: Jianglei Nie <niejianglei@gmail.com>
----
- security/keys/trusted-keys/trusted_tpm2.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ certs/Makefile                                |  5 ++--
+ certs/blacklist.c                             |  1 -
+ certs/common.c                                |  2 +-
+ certs/common.h                                |  9 -------
+ certs/system_keyring.c                        |  1 -
+ include/keys/system_keyring.h                 |  6 +++++
+ security/integrity/Kconfig                    | 10 +++++++
+ security/integrity/Makefile                   | 17 +++++++++++-
+ security/integrity/digsig.c                   |  2 +-
+ security/integrity/integrity.h                |  6 +++++
+ .../integrity/platform_certs/platform_cert.S  | 23 ++++++++++++++++
+ .../platform_certs/platform_keyring.c         | 26 +++++++++++++++++++
+ 12 files changed, 92 insertions(+), 16 deletions(-)
+ delete mode 100644 certs/common.h
+ create mode 100644 security/integrity/platform_certs/platform_cert.S
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 0165da386289..99bb8b2409ac 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -57,8 +57,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 		unsigned char bool[3], *w = bool;
- 		/* tag 0 is emptyAuth */
- 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
--		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-+		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
-+			kfree(scratch);
- 			return PTR_ERR(w);
-+		}
- 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
- 	}
- 
-@@ -69,8 +71,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	 * trigger, so if it does there's something nefarious going on
- 	 */
- 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
--		 "BUG: scratch buffer is too small"))
-+		 "BUG: scratch buffer is too small")){
-+		kfree(scratch);
- 		return -EINVAL;
-+	}
- 
- 	work = asn1_encode_integer(work, end_work, options->keyhandle);
- 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
-@@ -79,6 +83,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
-+	kfree(scratch);
- 	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
- 		return PTR_ERR(work1);
- 
 -- 
-2.25.1
-
+2.27.0
