@@ -2,51 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 927CB464813
-	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 08:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ADD6464839
+	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 08:28:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230349AbhLAH2p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Dec 2021 02:28:45 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:43386 "EHLO
+        id S231202AbhLAHbW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Dec 2021 02:31:22 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:43490 "EHLO
         smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232272AbhLAH2p (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 02:28:45 -0500
+        with ESMTP id S234851AbhLAHbW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 02:31:22 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id AB16E1FD34;
-        Wed,  1 Dec 2021 07:25:23 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id E367F1FD58;
+        Wed,  1 Dec 2021 07:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638343523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1638343680; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nLj01s8GQdZv5zoUcchVQ9uvHRTc8OShs3IViAEaL5I=;
-        b=ZlCNcwuBrk6O808pOqY0NNjzvp3ngZ6lrAolmNVwwHFuxbddzs+YqxFaw/Jx8SBp/wMNhc
-        7RX7oQFQt4uDisg+dBj0VfugWCDtn78nIaY8he5wD+Ffo4IIlYLbLKry9eGYUmY4RhSlGO
-        IhZJnf/o4c6FVhvYN0YOCA2WMvOezZk=
+        bh=vITv66nrLsCY3ceXgLRzjbEaUVbSjy/+8VfYifLFPEo=;
+        b=SX5L1dGtRG+RvZG/1Bo+Qft9yPaSAFz3aOBFznojsOCcw7Pn6vB92t3m36kOk5mqKJW2u0
+        gdd8AaTTHLIdU97qFariE2AOo1mG+sNIQb9rh+LgC9+Ec12m/VoaMx7nLBVzY1J81TwJE2
+        CtnFYmco/QWMUy7CPuy2fEyC3Z57BV4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638343523;
+        s=susede2_ed25519; t=1638343680;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nLj01s8GQdZv5zoUcchVQ9uvHRTc8OShs3IViAEaL5I=;
-        b=8jklU5phSbarTO74ckJxt3OB2djWnaMALAMimxpIIRDUt/ljQZwhVad7yqNUc+pHXzwrom
-        Smrc+1P1OjS8WQBA==
+        bh=vITv66nrLsCY3ceXgLRzjbEaUVbSjy/+8VfYifLFPEo=;
+        b=oDoBI18+Vig9glTMBXiwpSYWxmYyleZE5pghZmFKvJewFrW0eN19JLkXdBHQLW6t+4orz2
+        BcrzrW3xuZITltCg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 692BA13AE2;
-        Wed,  1 Dec 2021 07:25:23 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A0E4D13AE2;
+        Wed,  1 Dec 2021 07:28:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id f0cYGGMjp2GpFAAAMHmgww
-        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 07:25:23 +0000
-Subject: Re: [PATCH 07/18] crypto: testmgr - add DH RFC 3526 modp2048 test
- vector
+        id vL0PJgAkp2FxFQAAMHmgww
+        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 07:28:00 +0000
+Subject: Re: [PATCH 08/18] crypto: testmgr - run only subset of DH vectors
+ based on config
 To:     Nicolai Stange <nstange@suse.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>
@@ -58,14 +58,14 @@ Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org
 References: <20211201004858.19831-1-nstange@suse.de>
- <20211201004858.19831-8-nstange@suse.de>
+ <20211201004858.19831-9-nstange@suse.de>
 From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <9b87b348-1e4d-d7f0-2780-c428556c8204@suse.de>
-Date:   Wed, 1 Dec 2021 08:25:22 +0100
+Message-ID: <e93452b8-5779-c2a8-b099-3910eba9a88e@suse.de>
+Date:   Wed, 1 Dec 2021 08:28:00 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <20211201004858.19831-8-nstange@suse.de>
+In-Reply-To: <20211201004858.19831-9-nstange@suse.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -74,27 +74,75 @@ List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 On 12/1/21 1:48 AM, Nicolai Stange wrote:
-> The previous patch introduced support for the safe-prime groups specified
-> by RFC 3526. In order to test this functionality, add a corresponding test
-> vector to testmgr. The test data has been generated with OpenSSL.
+> With the previous patches, the testmgr now has up to four test vectors for
+> DH which all test more or less the same thing:
+> - the two vectors from before this series,
+> - the vector for the ffdhe2048 group, enabled if
+>    CONFIG_CRYPTO_DH_GROUPS_RFC7919 is set and
+> - the vector for the modp2048 group, similarly enabled if
+>    CONFIG_CRYPTO_DH_GROUPS_RFC3526 is set.
 > 
-> Note that this new entry provides test coverage for the recent change to
-> crypto_dh_encode_key(), which made it to skip the serialization of domain
-> parameters for known groups, i.e. those with
-> ->group_id != dh_group_id_unknown.
+> In order to avoid too much redundancy during DH testing, enable only a
+> subset of these depending on the kernel config:
+> - if CONFIG_CRYPTO_DH_GROUPS_RFC7919 is set, enable only the ffdhe2048
+>    vector,
+> - otherwise, if CONFIG_CRYPTO_DH_GROUPS_RFC3526 is set, enable only
+>    the modp2048 vector and
+> - only enable the original two vectors if neither of these options
+>    has been selected.
 > 
-> Moreover, a future patch will make the DH implementation to reject domain
-> parameters not corresponding to some safe-prime group approved by
-> SP800-56Arev3 in FIPS mode and the existing DH test vectors don't qualify.
-> So this patch here will ensure that there's still some suitable test vector
-> available.
+> Note that an upcoming patch will make the DH implementation to reject any
+> domain parameters not corresponding to some safe-prime group approved by
+> SP800-56Arev3 in FIPS mode. Thus, having CONFIG_FIPS enabled, but
+> both of CONFIG_CRYPTO_DH_GROUPS_RFC7919 and
+> CONFIG_CRYPTO_DH_GROUPS_RFC3526 unset wouldn't make much sense as it would
+> render the DH implementation unusable in FIPS mode. Conversely, any
+> reasonable configuration would ensure that the original, non-conforming
+> test vectors would not get to run in FIPS mode.
 > 
+
+For some weird reason the NVMe spec mandates for its TLS profile the 
+ffdhe3072 group, so I would prefer if you would be using that as the 
+default group for testing.
+
 > Signed-off-by: Nicolai Stange <nstange@suse.de>
 > ---
->   crypto/testmgr.h | 92 ++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 92 insertions(+)
+>   crypto/testmgr.h | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+> diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+> index d18844c7499e..b295512c8f22 100644
+> --- a/crypto/testmgr.h
+> +++ b/crypto/testmgr.h
+> @@ -1331,8 +1331,7 @@ static const struct kpp_testvec dh_tv_template[] = {
+>   	.expected_a_public_size = 256,
+>   	.expected_ss_size = 256,
+>   	},
+> -#endif /* IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC7919) */
+> -#if IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC3526)
+> +#elif IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC3526)
+>   	{
+>   	.secret =
+>   #ifdef __LITTLE_ENDIAN
+> @@ -1423,7 +1422,7 @@ static const struct kpp_testvec dh_tv_template[] = {
+>   	.expected_a_public_size = 256,
+>   	.expected_ss_size = 256,
+>   	},
+> -#endif /* IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC3526) */
+> +#else
+>   	{
+>   	.secret =
+>   #ifdef __LITTLE_ENDIAN
+> @@ -1642,6 +1641,7 @@ static const struct kpp_testvec dh_tv_template[] = {
+>   	.expected_a_public_size = 256,
+>   	.expected_ss_size = 256,
+>   	},
+> +#endif
+>   };
+>   
+>   static const struct kpp_testvec curve25519_tv_template[] = {
+> 
+... and maybe add a config option to run a full test.
 
 Cheers,
 
