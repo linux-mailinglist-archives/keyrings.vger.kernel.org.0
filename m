@@ -2,155 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FEE4648E7
-	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 08:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 481A6464B1B
+	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 10:59:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347716AbhLAHiM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Dec 2021 02:38:12 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:34466 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347643AbhLAHiM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 02:38:12 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id ED7F2212B8;
-        Wed,  1 Dec 2021 07:34:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638344090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HPv/KSMpc/6Afkdxg6YXrd1HWK9ePYOkSEJiDy0z6gs=;
-        b=OBd7/uzxysF1VJxsi6+YbcpDOyZJMc6LTNXRaNpgCa5ijaMUTiYYbmVbe1e532tVSJFTgF
-        Vfvn/iaZqaR5iPPRbviC/IK2fpDOfSAJyXWmFrmPZlEmqAER9nQ+r0eoMyUMoosIfkfPg2
-        Sy7WOndg9LxNi/50+bMLV3/g0zKGqAE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638344090;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HPv/KSMpc/6Afkdxg6YXrd1HWK9ePYOkSEJiDy0z6gs=;
-        b=Q09n1yg2YecMeskcC3S6ho/DtqNK9Ti3LOpYJZd8DntuLWMaazzmejYiOSMxwBASu4+luh
-        +giwebBV5vOl4cDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1635E13AE2;
-        Wed,  1 Dec 2021 07:34:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id VH0kA5olp2HVFwAAMHmgww
-        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 07:34:50 +0000
-Subject: Re: [PATCH 18/18] crypto: dh - accept only approved safe-prime groups
- in FIPS mode
-To:     Nicolai Stange <nstange@suse.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
-        Torsten Duwe <duwe@suse.de>, Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        David Howells <dhowells@redhat.com>,
+        id S1348415AbhLAKC4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Dec 2021 05:02:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40286 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348388AbhLAKCx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 05:02:53 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529DFC06174A
+        for <keyrings@vger.kernel.org>; Wed,  1 Dec 2021 01:59:32 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <afa@pengutronix.de>)
+        id 1msMOL-0000TW-VX; Wed, 01 Dec 2021 10:59:09 +0100
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <afa@pengutronix.de>)
+        id 1msMOI-00Ccql-PN; Wed, 01 Dec 2021 10:59:06 +0100
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+To:     andreas@rammhold.de, James Bottomley <jejb@linux.ibm.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org
-References: <20211201004858.19831-1-nstange@suse.de>
- <20211201004858.19831-19-nstange@suse.de>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <aed13346-94b7-80db-5a80-058e6dfd5bd0@suse.de>
-Date:   Wed, 1 Dec 2021 08:34:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Sumit Garg <sumit.garg@linaro.org>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH v4] KEYS: trusted: Fix trusted key backends when building as module
+Date:   Wed,  1 Dec 2021 10:59:00 +0100
+Message-Id: <20211201095900.3009225-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20211201004858.19831-19-nstange@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: afa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 12/1/21 1:48 AM, Nicolai Stange wrote:
-> SP800-56Arev3, sec. 5.5.2 ("Assurance of Domain-Parameter Validity")
-> asserts that an implementation needs to verify domain paramtere validity,
-> which boils down to either
-> - the domain parameters corresponding to some known safe-prime group
->    explicitly listed to be approved in the document or
-> - for parameters conforming to a "FIPS 186-type parameter-size set",
->    that the implementation needs to perform an explicit domain parameter
->    verification, which would require access to the "seed" and "counter"
->    values used in their generation.
-> 
-> The latter is not easily feasible and moreover, SP800-56Arev3 states that
-> safe-prime groups are preferred and that FIPS 186-type parameter sets
-> should only be supported for backward compatibility, if it all.
-> 
-> Make the dh implementations reject any domain parameters which don't
-> correspond to any of the approved safe-prime groups in FIPS mode. The
-> approved safe-prime groups are the ones specified in RFC 7919 and RFC 3526,
-> and given that all possible values of enum dh_group_id correspond to
-> either groups from these RFCs or to dh_group_id_unknown, it suffices to
-> make crypto_dh_decode_key() to reject any parameter set where
-> ->group_id == dh_group_id_unknown.
-> 
-> As this change will effectively render the dh implementation unusable in
-> FIPS mode if neither of the CRYPTO_DH_GROUPS_RFC7919 or
-> CRYPTO_DH_GROUPS_RFC3526 Kconfig options enabled, make CRYPTO_DH imply
-> these two if CRYPTO_FIPS is set.
-> 
-> Signed-off-by: Nicolai Stange <nstange@suse.de>
-> ---
->   crypto/Kconfig     | 2 ++
->   crypto/dh_helper.c | 4 ++++
->   2 files changed, 6 insertions(+)
-> 
-> diff --git a/crypto/Kconfig b/crypto/Kconfig
-> index 578711b02bb3..571f2271ad2e 100644
-> --- a/crypto/Kconfig
-> +++ b/crypto/Kconfig
-> @@ -229,6 +229,8 @@ menuconfig CRYPTO_DH
->   	select CRYPTO_KPP
->   	select MPILIB
->   	select CRYPTO_RNG_DEFAULT
-> +	imply CRYPTO_DH_GROUPS_RFC7919 if CRYPTO_FIPS
-> +	imply CRYPTO_DH_GROUPS_RFC3526 if CRYPTO_FIPS
->   	help
->   	  Generic implementation of the Diffie-Hellman algorithm.
->   
-> diff --git a/crypto/dh_helper.c b/crypto/dh_helper.c
-> index cf632beca65e..f30674df0d76 100644
-> --- a/crypto/dh_helper.c
-> +++ b/crypto/dh_helper.c
-> @@ -7,6 +7,7 @@
->   #include <linux/export.h>
->   #include <linux/err.h>
->   #include <linux/string.h>
-> +#include <linux/fips.h>
->   #include <crypto/dh.h>
->   #include <crypto/kpp.h>
->   #include <crypto/rng.h>
-> @@ -622,6 +623,9 @@ int crypto_dh_decode_key(const char *buf, unsigned int len, struct dh *params)
->   	    params->g_size > params->p_size)
->   		return -EINVAL;
->   
-> +	/* Only safe-prime groups are allowed in FIPS mode. */
-> +	if (fips_enabled && params->group_id == dh_group_id_unknown)
-> +		return -EINVAL;
->   
->   	return 0;
->   }
-> 
-That was cheap.
-Maybe merge it with the previous patch?
+From: Andreas Rammhold <andreas@rammhold.de>
 
-Cheers,
+Before this commit the kernel could end up with no trusted key sources
+even though both of the currently supported backends (TPM and TEE) were
+compiled as modules. This manifested in the trusted key type not being
+registered at all.
 
-Hannes
+When checking if a CONFIG_… preprocessor variable is defined we only
+test for the builtin (=y) case and not the module (=m) case. By using
+the IS_REACHABLE() macro we do test for both cases.
+
+Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Andreas Rammhold <andreas@rammhold.de>
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Timeline so far:
+  - 2021-05-09: Regression hits mainline with v5.13-rc1
+  - 2021-07-16: Issue reported. v1 of this patch sent out
+  - 2021-07-21: Ahmad sends out alternative patch to fix issue
+  - 2021-07-27: Jarkko (Maintainer) NACKs Ahmad's patch because of scope
+  - 2021-07-29: v2 with fixes sent out
+  - 2021-07-29: Jarkko gives his Reviewed-by and requests one more v3
+  - 2021-07-31: v3 sent out
+  - 2021-09-13: Pinged, no maintainer feedback
+  - 2021-09-27: Pinged, Mimi (Maintainer) comments due to to misunderstanding.
+                Question about why this is not picked up ignored
+  - 2021-10-11: Pinged, no maintainer feedback
+  - 2021-11-01: Resend with timeline, but dropped R-b's, no maintainer feedback
+  - 2021-12-01: This resend with timeline and tags
+
+v3 -> v4:
+  * Add my Tested-by
+  * Add Reviewed-by's missed during v3 RESEND
+  * Update timeline and resent in agreement with Andreas
+v3 -> v3 RESEND:
+  * Add timeline
+v2 -> v3:
+  * Fixed patch formatting
+v1 -> v2:
+  * Fixed commit message
+  * Switched from IS_DEFINED() to IS_REACHABLE()
+---
+ security/keys/trusted-keys/trusted_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index d5c891d8d353..5b35f1b87644 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -27,10 +27,10 @@ module_param_named(source, trusted_key_source, charp, 0);
+ MODULE_PARM_DESC(source, "Select trusted keys source (tpm or tee)");
+ 
+ static const struct trusted_key_source trusted_key_sources[] = {
+-#if defined(CONFIG_TCG_TPM)
++#if IS_REACHABLE(CONFIG_TCG_TPM)
+ 	{ "tpm", &trusted_key_tpm_ops },
+ #endif
+-#if defined(CONFIG_TEE)
++#if IS_REACHABLE(CONFIG_TEE)
+ 	{ "tee", &trusted_key_tee_ops },
+ #endif
+ };
 -- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+2.30.2
+
