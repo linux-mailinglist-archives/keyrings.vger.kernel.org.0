@@ -2,142 +2,108 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0775A464500
-	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 03:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C914647A4
+	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 08:11:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346237AbhLACle (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 Nov 2021 21:41:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:30671 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1346224AbhLACl2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Nov 2021 21:41:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1638326287;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=W0n5k4sl9AYBphe6cujkRUTAtSAAGA+Ca8Fn1jgb3kw=;
-        b=N3mzgk9UowmoT9bOELTegEg+modpoOEo2XRxoZTD2ZXoKI8rBY5ktzlsSp7cEDex0f4GM5
-        PbSWp/f4WI7VrjtC8cbiIG/PUy4NLouem1PL0surhgLCqlVQxmJtyJR33k858Un97cROcV
-        jgl/5eajJjl23AtbjXmW4lJNzUyD28c=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-420-PtZgyoLZM6iWg_vjmPTmng-1; Tue, 30 Nov 2021 21:38:04 -0500
-X-MC-Unique: PtZgyoLZM6iWg_vjmPTmng-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1347093AbhLAHOj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Dec 2021 02:14:39 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:60656 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232517AbhLAHOi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 02:14:38 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 133C5102C7EB;
-        Wed,  1 Dec 2021 02:37:59 +0000 (UTC)
-Received: from localhost (ovpn-12-42.pek2.redhat.com [10.72.12.42])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 3ADC560C13;
-        Wed,  1 Dec 2021 02:37:50 +0000 (UTC)
-Date:   Wed, 1 Dec 2021 10:37:47 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Michal Suchanek <msuchanek@suse.de>
-Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
-        Philipp Rudo <prudo@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
-        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Frank van der Linden <fllinden@amazon.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 33A512170C;
+        Wed,  1 Dec 2021 07:11:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1638342677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PGUV/rmr4WK2I6xHEGfZKUi+C6xsZwWRBRrGbtWgvDI=;
+        b=USg932ykwEHtE3+p1NUw0ZYPJry/hOn8Y7rA1KWBRTT9WrPZY9HIwtnyaZ6vQBQnEI9xIb
+        duQd8rNP/Gyli069lWECJEjLKSh8QmJCT2HaWl01xY6hAazKfmVFunI9dgzhfogXai/ZsK
+        NfSfQ8PbYcdQ0CWlifmQw9NZ48EEyzM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1638342677;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PGUV/rmr4WK2I6xHEGfZKUi+C6xsZwWRBRrGbtWgvDI=;
+        b=JFEM7hm1HLbtYEydTN8TsYyhC6HPV4Ch+saobTqe9hcid+HeqJvFz4WdP1nmsnOR8ImyRN
+        K8p10QxAW8wuiWCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id ED02A13AE2;
+        Wed,  1 Dec 2021 07:11:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id cCoXORQgp2E+EAAAMHmgww
+        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 07:11:16 +0000
+Subject: Re: [PATCH 01/18] crypto: dh - remove struct dh's ->q member
+To:     Nicolai Stange <nstange@suse.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
-Message-ID: <20211201023747.GN21646@MiWiFi-R3L-srv>
-References: <cover.1637862358.git.msuchanek@suse.de>
+        "David S. Miller" <davem@davemloft.net>
+Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
+        Torsten Duwe <duwe@suse.de>, Zaibo Xu <xuzaibo@huawei.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        qat-linux@intel.com, keyrings@vger.kernel.org
+References: <20211201004858.19831-1-nstange@suse.de>
+ <20211201004858.19831-2-nstange@suse.de>
+From:   Hannes Reinecke <hare@suse.de>
+Message-ID: <18cd40ee-d9a9-9fcc-1227-efd486cc72ef@suse.de>
+Date:   Wed, 1 Dec 2021 08:11:15 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1637862358.git.msuchanek@suse.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+In-Reply-To: <20211201004858.19831-2-nstange@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+On 12/1/21 1:48 AM, Nicolai Stange wrote:
+> The only current user of the DH KPP algorithm, the
+> keyctl(KEYCTL_DH_COMPUTE) syscall, doesn't set the domain parameter ->q
+> in struct dh. Remove it and any associated (de)serialization code in
+> crypto_dh_encode_key() and crypto_dh_decode_key. Adjust the encoded
+> ->secret values in testmgr's DH test vectors accordingly.
+> 
+> Note that the dh-generic implementation would have initialized its
+> struct dh_ctx's ->q from the decoded struct dh's ->q, if present. If this
+> struct dh_ctx's ->q would ever have been non-NULL, it would have enabled a
+> full key validation as specified in NIST SP800-56A in dh_is_pubkey_valid().
+> However, as outlined above, ->q is always NULL in practice and the full key
+> validation code is effectively dead. A later patch will make
+> dh_is_pubkey_valid() to calculate Q from P on the fly, if possible, so
+> don't remove struct dh_ctx's ->q now, but leave it there until that has
+> happened.
+> 
+> Signed-off-by: Nicolai Stange <nstange@suse.de>
+> ---
+>   crypto/dh.c         |  6 ------
+>   crypto/dh_helper.c  | 17 ++++-------------
+>   crypto/testmgr.h    | 16 ++++++----------
+>   include/crypto/dh.h |  4 ----
+>   4 files changed, 10 insertions(+), 33 deletions(-)
+> 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-On 11/25/21 at 07:02pm, Michal Suchanek wrote:
-> Hello,
-> 
-> This is resend of the KEXEC_SIG patchset.
-> 
-> The first patch is new because it'a a cleanup that does not require any
-> change to the module verification code.
-> 
-> The second patch is the only one that is intended to change any
-> functionality.
-> 
-> The rest only deduplicates code but I did not receive any review on that
-> part so I don't know if it's desirable as implemented.
+Cheers,
 
-Do you have the link of your 1st version?
-
-And after going through the whole series, it doesn't tell what this
-patch series intends to do in cover-letter or patch log.
-
-Thanks
-Baoquan
-
-> 
-> The first two patches can be applied separately without the rest.
-> 
-> Thanks
-> 
-> Michal
-> 
-> Michal Suchanek (6):
->   s390/kexec_file: Don't opencode appended signature check.
->   powerpc/kexec_file: Add KEXEC_SIG support.
->   kexec_file: Don't opencode appended signature verification.
->   module: strip the signature marker in the verification function.
->   module: Use key_being_used_for for log messages in
->     verify_appended_signature
->   module: Move duplicate mod_check_sig users code to mod_parse_sig
-> 
->  arch/powerpc/Kconfig                     | 11 +++++
->  arch/powerpc/kexec/elf_64.c              | 14 ++++++
->  arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
->  crypto/asymmetric_keys/asymmetric_type.c |  1 +
->  include/linux/module_signature.h         |  1 +
->  include/linux/verification.h             |  4 ++
->  kernel/module-internal.h                 |  2 -
->  kernel/module.c                          | 12 +++--
->  kernel/module_signature.c                | 56 +++++++++++++++++++++++-
->  kernel/module_signing.c                  | 33 +++++++-------
->  security/integrity/ima/ima_modsig.c      | 22 ++--------
->  11 files changed, 113 insertions(+), 85 deletions(-)
-> 
-> -- 
-> 2.31.1
-> 
-> 
-> _______________________________________________
-> kexec mailing list
-> kexec@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kexec
-> 
-
+Hannes
+-- 
+Dr. Hannes Reinecke                Kernel Storage Architect
+hare@suse.de                              +49 911 74053 688
+SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
