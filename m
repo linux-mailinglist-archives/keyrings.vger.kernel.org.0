@@ -2,153 +2,144 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAFB464D48
-	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 12:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10CD7464DF5
+	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 13:36:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348988AbhLALwD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Dec 2021 06:52:03 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:42012 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348563AbhLALwC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 06:52:02 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id E8C3D212C2;
-        Wed,  1 Dec 2021 11:48:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638359319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=WrpXoBK/4LwwvZ609Va7mvqZYMz7+OB0m9N/bzmDziw=;
-        b=HoFAEUtdm1wIBQkZ8wytWV68qtGZn5Zx5grFcSya42VQirGgSCl6A+DC2vIcZ5TdyxdbTr
-        W2NAmwDLCRrnNBybHxojCOdjDjD70hWsiQ6QiXdF+k7JVvpls0tm3Ngx0XWYwG/B7neevV
-        w/0YAfAcfrGr1j1OEHqZd2YRZeXZFvw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638359319;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=WrpXoBK/4LwwvZ609Va7mvqZYMz7+OB0m9N/bzmDziw=;
-        b=lFf3wqoLPgzv6s+15hy2N/O1nDrvid9mKt3tQRAPUvx23YZo+486dPM+tI4vMosa0+voxm
-        ihq/i/mlKzqbKOBA==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 3A7ECA3B81;
-        Wed,  1 Dec 2021 11:48:37 +0000 (UTC)
-Date:   Wed, 1 Dec 2021 12:48:36 +0100
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Baoquan He <bhe@redhat.com>
-Cc:     Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        Paul Mackerras <paulus@samba.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Rob Herring <robh@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>,
-        linux-crypto@vger.kernel.org,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>,
-        Philipp Rudo <prudo@redhat.com>,
-        Frank van der Linden <fllinden@amazon.com>,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        linux-security-module@vger.kernel.org,
-        Jessica Yu <jeyu@kernel.org>, linux-integrity@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        buendgen@de.ibm.com
-Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
-Message-ID: <20211201114836.GD117207@kunlun.suse.cz>
-References: <cover.1637862358.git.msuchanek@suse.de>
- <20211201023747.GN21646@MiWiFi-R3L-srv>
+        id S1349351AbhLAMjW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Dec 2021 07:39:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349342AbhLAMim (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 07:38:42 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08031C06175D
+        for <keyrings@vger.kernel.org>; Wed,  1 Dec 2021 04:35:05 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id r25so35636397edq.7
+        for <keyrings@vger.kernel.org>; Wed, 01 Dec 2021 04:35:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Ec3fONBeWcSDN4EkjiIzcOoZSlQPMWaQXuIeo3kdiSo=;
+        b=bItIC1Amc7/opHCPCvM9Ngr39H+vD3e1ADR2hPrP2S1rSH3w1RbH2TxXxWYTT8ybDa
+         tKFlVi1IMmsk3dKHN6ZPpOW1eZ7aHcUR+RBiZHVkr74qj/TD6A0RJoiupAKv3B+4CmdL
+         mt9hQ6bwxNQEPdNwvEKxXikt73aWmZ8hzGlPfkkbm5pRRv1Qw7M3HuxzEYv4UrZv0XgK
+         0X/RwJRYn5i2uxNxHz29B7VSdi2oOd9Ukc5395iVkN+cTo/+P7LNjF/axL8UDZObazEj
+         NVjGH+Wda7NPfy4eT37sblrN4qOL7Kd7frtMOWq0xr+EYB8cldUATu1aGjYQo9sh/iOX
+         RAmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Ec3fONBeWcSDN4EkjiIzcOoZSlQPMWaQXuIeo3kdiSo=;
+        b=ewHYXPy9OFLB3t6oxQkQrSW76dCyiltRau9V3in2Z5eTX0X8iq69GiTOBKN5NuM9io
+         2hZAZqfS10eg7ev1DRRClxkXETxd+b8Z80EuORmhGpIL+HuD/FsJwsm7dp0oZhKUtoD2
+         iUeVkgAEXcCcn7NflKOogFaIMSiO6fiaoq0kf6xCjk4Pdf+ruq5ntsuA2Dx9e0LOTOE5
+         wvHfmX+ix9RRROc71ELtKIFgjtA3xv+q7mXro5VEpQqSCJxkHyR1E06lZhIf8iSc7Jwm
+         EaGvfggEpB47Ax8jSJHnA4FcLGxs7oFIu5ZsvamdWylg1Q51WjF+vmegmc7nHHfTE/l7
+         8POQ==
+X-Gm-Message-State: AOAM530/sUIT42AxaIG5h3y27MHOODYFCUTSRB5Ej7NL/hPODU251nrn
+        ZIhxibJ/mXnOtDOSlcwb318o5rTyTnWKurO6OWc=
+X-Google-Smtp-Source: ABdhPJwf6q8YDPXYNqmSuB9Gq+2sY1qhrzInWMqA++jEojnz2sDGww8HnCEnRWjDJdsNbya6SxbmHHVFWivYEGygKZQ=
+X-Received: by 2002:a50:eacb:: with SMTP id u11mr8200126edp.290.1638362103487;
+ Wed, 01 Dec 2021 04:35:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211201023747.GN21646@MiWiFi-R3L-srv>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a17:906:4bd9:0:0:0:0 with HTTP; Wed, 1 Dec 2021 04:35:03
+ -0800 (PST)
+Reply-To: gtbank107@yahoo.com
+From:   "MRS.NNEKA J.OKEREKE" <currency1000000@gmail.com>
+Date:   Wed, 1 Dec 2021 13:35:03 +0100
+Message-ID: <CAPqfnSGqyEa1TCaUxNHf8=CzbDzffzPrp4uBj3wLvULRMp-j5Q@mail.gmail.com>
+Subject: I request your urgent rseponse to this email,
+To:     D Cureton <mmachine704@gmail.com>,
+        Darrell Rolle <dmoving2006@gmail.com>,
+        Osei Daniel <oseid2700@gmail.com>, drvic3 <drvic3@yahoo.com>,
+        depul625 <depul625@yahoo.com>,
+        alan stoetzl <alanstoetzl@gmail.com>,
+        Sam Elia <samuelelia746@gmail.com>,
+        Simon Njuguna <kkconsult09@gmail.com>,
+        stephenpearson2 <stephenpearson2@sky.com>,
+        seetonghuat <seetonghuat@yahoo.com>,
+        squaregrouperfound <squaregrouperfound@gmail.com>,
+        quarkbark88a <quarkbark88a@earthlink.net>,
+        quarcoo <quarcoo@gmail.com>,
+        Abaine Michael <mightyabaine@gmail.com>,
+        Acherotich Amina <aminaacherotich@gmail.com>,
+        Adiga Geoffrey <morogaben@gmail.com>,
+        anita adoch <adochanita12@gmail.com>,
+        Maureen Acayo <mgacayo@gmail.com>,
+        andreasonny83 <andreasonny83@gmail.com>,
+        anyichux <anyichux@gmail.com>,
+        armstrong0111 <armstrong0111@gmail.com>,
+        zulkiflee_kairudin <zulkiflee_kairudin@yahoo.com.my>,
+        "z.liuxinliang" <z.liuxinliang@hisilicon.com>,
+        zach <zach@richterdynamics.com>, zaga <zaga@fly.cc.fer.hr>,
+        zaitcev <zaitcev@redhat.com>, zaitounp <zaitounp@aol.com>,
+        zajec5 <zajec5@gmail.com>, zbr <zbr@ioremap.net>,
+        zd1211-devs <zd1211-devs@lists.sourceforge.net>,
+        "zdravko.kukovic" <zdravko.kukovic@promles-hise.si>,
+        zeeshan_khi <zeeshan_khi@yahoo.com>,
+        zhaimingyue82 <zhaimingyue82@126.com>, zhjzh13 <zhjzh13@163.com>,
+        zilinskidaveann <zilinskidaveann@msn.com>,
+        zohar <zohar@linux.vnet.ibm.com>,
+        "theonilla.mailong" <theonilla.mailong@nbpol.com.pg>,
+        therenan <therenan@yahoo.com.br>,
+        theresal_88 <theresal_88@hotmail.com>,
+        "thierry.reding" <thierry.reding@gmail.com>,
+        thilton <thilton@avidxchange.com>,
+        thinleewangmo <thinleewangmo@yahoo.co.in>,
+        thloh <thloh@altera.com>,
+        "tie-fei.zang" <tie-fei.zang@freescale.com>,
+        ttvalen2012 <ttvalen2012@yahoo.com>,
+        "thomas.lendacky" <thomas.lendacky@amd.com>,
+        thomas <thomas@winischhofer.net>,
+        tiago <tiago@ladeiramiranda.com.br>,
+        johnmd0940 <johnmd0940@gmail.com>, j-keerthy <j-keerthy@ti.com>,
+        j-lopes-ribeiro <j-lopes-ribeiro@bol.com.br>,
+        "j.anaszewski" <j.anaszewski@samsung.com>,
+        "j.anise" <j.anise@yahoo.fr>, "j.dumon" <j.dumon@option.com>,
+        "j.napolitano7" <j.napolitano7@gmail.com>,
+        "j.orellana" <j.orellana@exertisbm.fr>,
+        "j.vosburgh" <j.vosburgh@gmail.com>, ja <ja@ssi.bg>,
+        jack <jack@nationalalertsecurity.com>, jack <jack@suse.com>,
+        jackgregory <jackgregory@sbcglobal.net>,
+        brian kyalo <briankyalo6051@gmail.com>,
+        kaiser_consultancy <kaiser_consultancy@yahoo.com>,
+        karaman <karaman@eim.ae>,
+        Karen Ferrell-White <marvelousmuch1564@gmail.com>,
+        kas <kas@fi.muni.cz>, keyrings <keyrings@vger.kernel.org>,
+        "k.eugene.e" <k.eugene.e@gmail.com>,
+        "k.kershaw" <k.kershaw@cox.net>,
+        "k.opasiak" <k.opasiak@samsung.com>, kaloz <kaloz@openwrt.org>,
+        kaduliver <kaduliver@bol.com.br>, kajani <kajani@kajanilaw.com>,
+        kadlec <kadlec@blackhole.kfki.hu>, kaber <kaber@trash.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+Attn Dear.
+I request your urgent rseponse to this email,
+Content is well noted,
+I am personalized on int'l delivery,
+UN is in support of my
+Abibilty of delivery at best time,
+ I will deliver this ATM Card to your doorstep,
+I will help you to receive your
+Shipment at house today.
+Point of view,
+I supposed to inform you about this delivery process,
+Constantly regarding the accurate delivery fee of your ATM CARD to your address,
+note that cost of the delivery fee is $75.00 Only,
+I must receive it here,
+to pay for
+1.Airport Enterance,
+2. In'tl Delivery permit,
+3.Custom Clearance,
+I am happy to assure that your delivery will be arrived to your country today,
+after i receive $75.00 Only,
+from you.
+indicate your ATM CARD PIN CODE.(ATM-1003)
+Shipment Identification N0. 1.1
 
-On Wed, Dec 01, 2021 at 10:37:47AM +0800, Baoquan He wrote:
-> Hi,
-> 
-> On 11/25/21 at 07:02pm, Michal Suchanek wrote:
-> > Hello,
-> > 
-> > This is resend of the KEXEC_SIG patchset.
-> > 
-> > The first patch is new because it'a a cleanup that does not require any
-> > change to the module verification code.
-> > 
-> > The second patch is the only one that is intended to change any
-> > functionality.
-> > 
-> > The rest only deduplicates code but I did not receive any review on that
-> > part so I don't know if it's desirable as implemented.
-> 
-> Do you have the link of your 1st version?
-
-This is the previous version:
-https://lore.kernel.org/lkml/cover.1635948742.git.msuchanek@suse.de/
-
-Thanks
-
-Michal
-
-> And after going through the whole series, it doesn't tell what this
-> patch series intends to do in cover-letter or patch log.
-> 
-> Thanks
-> Baoquan
-> 
-> > 
-> > The first two patches can be applied separately without the rest.
-> > 
-> > Thanks
-> > 
-> > Michal
-> > 
-> > Michal Suchanek (6):
-> >   s390/kexec_file: Don't opencode appended signature check.
-> >   powerpc/kexec_file: Add KEXEC_SIG support.
-> >   kexec_file: Don't opencode appended signature verification.
-> >   module: strip the signature marker in the verification function.
-> >   module: Use key_being_used_for for log messages in
-> >     verify_appended_signature
-> >   module: Move duplicate mod_check_sig users code to mod_parse_sig
-> > 
-> >  arch/powerpc/Kconfig                     | 11 +++++
-> >  arch/powerpc/kexec/elf_64.c              | 14 ++++++
-> >  arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
-> >  crypto/asymmetric_keys/asymmetric_type.c |  1 +
-> >  include/linux/module_signature.h         |  1 +
-> >  include/linux/verification.h             |  4 ++
-> >  kernel/module-internal.h                 |  2 -
-> >  kernel/module.c                          | 12 +++--
-> >  kernel/module_signature.c                | 56 +++++++++++++++++++++++-
-> >  kernel/module_signing.c                  | 33 +++++++-------
-> >  security/integrity/ima/ima_modsig.c      | 22 ++--------
-> >  11 files changed, 113 insertions(+), 85 deletions(-)
-> > 
-> > -- 
-> > 2.31.1
-> > 
-> > 
-> > _______________________________________________
-> > kexec mailing list
-> > kexec@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/kexec
-> > 
-> 
+Delivery is ready to your Doorstep.
+MR. JOHN TERRY
