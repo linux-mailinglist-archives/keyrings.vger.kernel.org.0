@@ -2,141 +2,142 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 622BE464431
-	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 01:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0775A464500
+	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 03:38:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345953AbhLAAxv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 Nov 2021 19:53:51 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:58232 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345938AbhLAAw5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Nov 2021 19:52:57 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id BE9C61FDFC;
-        Wed,  1 Dec 2021 00:49:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638319776; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+        id S1346237AbhLACle (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 Nov 2021 21:41:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:30671 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1346224AbhLACl2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Nov 2021 21:41:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638326287;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=JThRvp/hqu9/eogpWopPh6mPtHyPqDj7JZnDSMgotJE=;
-        b=FwbOLHLshva1FoWxPh4H6OarQHxZlUFGmMIfAHOLRpN9eYbc9zO93VYLKVVoC4wS9uc/Rb
-        b8ygRIhNC4s+oMQF9DZo26XkxWBOmdEWFnmizAYAuzCqTri2HsczxOcF0LhGge1rysF5Ye
-        zUt84BONyayw3F+dhP3PKERDX82fF7o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638319776;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JThRvp/hqu9/eogpWopPh6mPtHyPqDj7JZnDSMgotJE=;
-        b=QeYNWon0GhKbN1dmlA/goUz+dvD53jvtp5GUP9DtPTbyr/fQ3e4/IAL5YiZi1tuv/iJAFg
-        2ebc87UCXqdRnXCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        bh=W0n5k4sl9AYBphe6cujkRUTAtSAAGA+Ca8Fn1jgb3kw=;
+        b=N3mzgk9UowmoT9bOELTegEg+modpoOEo2XRxoZTD2ZXoKI8rBY5ktzlsSp7cEDex0f4GM5
+        PbSWp/f4WI7VrjtC8cbiIG/PUy4NLouem1PL0surhgLCqlVQxmJtyJR33k858Un97cROcV
+        jgl/5eajJjl23AtbjXmW4lJNzUyD28c=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-420-PtZgyoLZM6iWg_vjmPTmng-1; Tue, 30 Nov 2021 21:38:04 -0500
+X-MC-Unique: PtZgyoLZM6iWg_vjmPTmng-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AAC2613C10;
-        Wed,  1 Dec 2021 00:49:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 11odKKDGpmENKQAAMHmgww
-        (envelope-from <nstange@suse.de>); Wed, 01 Dec 2021 00:49:36 +0000
-From:   Nicolai Stange <nstange@suse.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
-        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 133C5102C7EB;
+        Wed,  1 Dec 2021 02:37:59 +0000 (UTC)
+Received: from localhost (ovpn-12-42.pek2.redhat.com [10.72.12.42])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 3ADC560C13;
+        Wed,  1 Dec 2021 02:37:50 +0000 (UTC)
+Date:   Wed, 1 Dec 2021 10:37:47 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Michal Suchanek <msuchanek@suse.de>
+Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
+        Philipp Rudo <prudo@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
+        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
         David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org,
-        Nicolai Stange <nstange@suse.de>
-Subject: [PATCH 18/18] crypto: dh - accept only approved safe-prime groups in FIPS mode
-Date:   Wed,  1 Dec 2021 01:48:58 +0100
-Message-Id: <20211201004858.19831-19-nstange@suse.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20211201004858.19831-1-nstange@suse.de>
-References: <20211201004858.19831-1-nstange@suse.de>
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Frank van der Linden <fllinden@amazon.com>,
+        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
+Message-ID: <20211201023747.GN21646@MiWiFi-R3L-srv>
+References: <cover.1637862358.git.msuchanek@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1637862358.git.msuchanek@suse.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-SP800-56Arev3, sec. 5.5.2 ("Assurance of Domain-Parameter Validity")
-asserts that an implementation needs to verify domain paramtere validity,
-which boils down to either
-- the domain parameters corresponding to some known safe-prime group
-  explicitly listed to be approved in the document or
-- for parameters conforming to a "FIPS 186-type parameter-size set",
-  that the implementation needs to perform an explicit domain parameter
-  verification, which would require access to the "seed" and "counter"
-  values used in their generation.
+Hi,
 
-The latter is not easily feasible and moreover, SP800-56Arev3 states that
-safe-prime groups are preferred and that FIPS 186-type parameter sets
-should only be supported for backward compatibility, if it all.
+On 11/25/21 at 07:02pm, Michal Suchanek wrote:
+> Hello,
+> 
+> This is resend of the KEXEC_SIG patchset.
+> 
+> The first patch is new because it'a a cleanup that does not require any
+> change to the module verification code.
+> 
+> The second patch is the only one that is intended to change any
+> functionality.
+> 
+> The rest only deduplicates code but I did not receive any review on that
+> part so I don't know if it's desirable as implemented.
 
-Make the dh implementations reject any domain parameters which don't
-correspond to any of the approved safe-prime groups in FIPS mode. The
-approved safe-prime groups are the ones specified in RFC 7919 and RFC 3526,
-and given that all possible values of enum dh_group_id correspond to
-either groups from these RFCs or to dh_group_id_unknown, it suffices to
-make crypto_dh_decode_key() to reject any parameter set where
-->group_id == dh_group_id_unknown.
+Do you have the link of your 1st version?
 
-As this change will effectively render the dh implementation unusable in
-FIPS mode if neither of the CRYPTO_DH_GROUPS_RFC7919 or
-CRYPTO_DH_GROUPS_RFC3526 Kconfig options enabled, make CRYPTO_DH imply
-these two if CRYPTO_FIPS is set.
+And after going through the whole series, it doesn't tell what this
+patch series intends to do in cover-letter or patch log.
 
-Signed-off-by: Nicolai Stange <nstange@suse.de>
----
- crypto/Kconfig     | 2 ++
- crypto/dh_helper.c | 4 ++++
- 2 files changed, 6 insertions(+)
+Thanks
+Baoquan
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 578711b02bb3..571f2271ad2e 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -229,6 +229,8 @@ menuconfig CRYPTO_DH
- 	select CRYPTO_KPP
- 	select MPILIB
- 	select CRYPTO_RNG_DEFAULT
-+	imply CRYPTO_DH_GROUPS_RFC7919 if CRYPTO_FIPS
-+	imply CRYPTO_DH_GROUPS_RFC3526 if CRYPTO_FIPS
- 	help
- 	  Generic implementation of the Diffie-Hellman algorithm.
- 
-diff --git a/crypto/dh_helper.c b/crypto/dh_helper.c
-index cf632beca65e..f30674df0d76 100644
---- a/crypto/dh_helper.c
-+++ b/crypto/dh_helper.c
-@@ -7,6 +7,7 @@
- #include <linux/export.h>
- #include <linux/err.h>
- #include <linux/string.h>
-+#include <linux/fips.h>
- #include <crypto/dh.h>
- #include <crypto/kpp.h>
- #include <crypto/rng.h>
-@@ -622,6 +623,9 @@ int crypto_dh_decode_key(const char *buf, unsigned int len, struct dh *params)
- 	    params->g_size > params->p_size)
- 		return -EINVAL;
- 
-+	/* Only safe-prime groups are allowed in FIPS mode. */
-+	if (fips_enabled && params->group_id == dh_group_id_unknown)
-+		return -EINVAL;
- 
- 	return 0;
- }
--- 
-2.26.2
+> 
+> The first two patches can be applied separately without the rest.
+> 
+> Thanks
+> 
+> Michal
+> 
+> Michal Suchanek (6):
+>   s390/kexec_file: Don't opencode appended signature check.
+>   powerpc/kexec_file: Add KEXEC_SIG support.
+>   kexec_file: Don't opencode appended signature verification.
+>   module: strip the signature marker in the verification function.
+>   module: Use key_being_used_for for log messages in
+>     verify_appended_signature
+>   module: Move duplicate mod_check_sig users code to mod_parse_sig
+> 
+>  arch/powerpc/Kconfig                     | 11 +++++
+>  arch/powerpc/kexec/elf_64.c              | 14 ++++++
+>  arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
+>  crypto/asymmetric_keys/asymmetric_type.c |  1 +
+>  include/linux/module_signature.h         |  1 +
+>  include/linux/verification.h             |  4 ++
+>  kernel/module-internal.h                 |  2 -
+>  kernel/module.c                          | 12 +++--
+>  kernel/module_signature.c                | 56 +++++++++++++++++++++++-
+>  kernel/module_signing.c                  | 33 +++++++-------
+>  security/integrity/ima/ima_modsig.c      | 22 ++--------
+>  11 files changed, 113 insertions(+), 85 deletions(-)
+> 
+> -- 
+> 2.31.1
+> 
+> 
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
+> 
 
