@@ -2,51 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADD6464839
-	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 08:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CAD4464858
+	for <lists+keyrings@lfdr.de>; Wed,  1 Dec 2021 08:28:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231202AbhLAHbW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 1 Dec 2021 02:31:22 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:43490 "EHLO
+        id S1347487AbhLAHcM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Dec 2021 02:32:12 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:43510 "EHLO
         smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234851AbhLAHbW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 02:31:22 -0500
+        with ESMTP id S1347540AbhLAHcI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Dec 2021 02:32:08 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id E367F1FD58;
-        Wed,  1 Dec 2021 07:28:00 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 3A3C61FD58;
+        Wed,  1 Dec 2021 07:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638343680; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1638343727; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vITv66nrLsCY3ceXgLRzjbEaUVbSjy/+8VfYifLFPEo=;
-        b=SX5L1dGtRG+RvZG/1Bo+Qft9yPaSAFz3aOBFznojsOCcw7Pn6vB92t3m36kOk5mqKJW2u0
-        gdd8AaTTHLIdU97qFariE2AOo1mG+sNIQb9rh+LgC9+Ec12m/VoaMx7nLBVzY1J81TwJE2
-        CtnFYmco/QWMUy7CPuy2fEyC3Z57BV4=
+        bh=daENsoaCp97Bu9Tq80zHy5qetiTXSh4XFCCKPoNigBk=;
+        b=D+UWjBnWoLPYtKwkFkTdaO15M3QAX48NHQgLgjYuEq1uxMURyA+YmnH39pGSchTI914l5n
+        VarsRy5tIsUcrjTHb3rpNJypSmhjGb0CLATA6xMAAuz17p8O1Adv6HZ462Y+h022kZUy+F
+        0phfTCvEJTe6fKKXoLuKuz1LQ43Mesc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638343680;
+        s=susede2_ed25519; t=1638343727;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vITv66nrLsCY3ceXgLRzjbEaUVbSjy/+8VfYifLFPEo=;
-        b=oDoBI18+Vig9glTMBXiwpSYWxmYyleZE5pghZmFKvJewFrW0eN19JLkXdBHQLW6t+4orz2
-        BcrzrW3xuZITltCg==
+        bh=daENsoaCp97Bu9Tq80zHy5qetiTXSh4XFCCKPoNigBk=;
+        b=+lpIEvQkIoYZ0VpmXcVA+d4bSYBzIjJ3avxzc811+R9GlWNAoo4CTx0Hfsaw7lF8qAP0XI
+        h0FfSmGo25yKRVCw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A0E4D13AE2;
-        Wed,  1 Dec 2021 07:28:00 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E781E13AE2;
+        Wed,  1 Dec 2021 07:28:46 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id vL0PJgAkp2FxFQAAMHmgww
-        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 07:28:00 +0000
-Subject: Re: [PATCH 08/18] crypto: testmgr - run only subset of DH vectors
- based on config
+        id Xi+iNy4kp2GoFQAAMHmgww
+        (envelope-from <hare@suse.de>); Wed, 01 Dec 2021 07:28:46 +0000
+Subject: Re: [PATCH 09/18] crypto: dh - implement private key generation
+ primitive
 To:     Nicolai Stange <nstange@suse.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>
@@ -58,14 +58,14 @@ Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org
 References: <20211201004858.19831-1-nstange@suse.de>
- <20211201004858.19831-9-nstange@suse.de>
+ <20211201004858.19831-10-nstange@suse.de>
 From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <e93452b8-5779-c2a8-b099-3910eba9a88e@suse.de>
-Date:   Wed, 1 Dec 2021 08:28:00 +0100
+Message-ID: <b0c981ed-2ba2-e884-d2b5-4d4b3fc8c04b@suse.de>
+Date:   Wed, 1 Dec 2021 08:28:46 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <20211201004858.19831-9-nstange@suse.de>
+In-Reply-To: <20211201004858.19831-10-nstange@suse.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -74,75 +74,45 @@ List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 On 12/1/21 1:48 AM, Nicolai Stange wrote:
-> With the previous patches, the testmgr now has up to four test vectors for
-> DH which all test more or less the same thing:
-> - the two vectors from before this series,
-> - the vector for the ffdhe2048 group, enabled if
->    CONFIG_CRYPTO_DH_GROUPS_RFC7919 is set and
-> - the vector for the modp2048 group, similarly enabled if
->    CONFIG_CRYPTO_DH_GROUPS_RFC3526 is set.
+> The support for NVME in-band authentication currently in the works ([1])
+> needs to generate ephemeral DH keys.
 > 
-> In order to avoid too much redundancy during DH testing, enable only a
-> subset of these depending on the kernel config:
-> - if CONFIG_CRYPTO_DH_GROUPS_RFC7919 is set, enable only the ffdhe2048
->    vector,
-> - otherwise, if CONFIG_CRYPTO_DH_GROUPS_RFC3526 is set, enable only
->    the modp2048 vector and
-> - only enable the original two vectors if neither of these options
->    has been selected.
+> Implement crypto_dh_gen_privkey() which is intended to be used from
+> the DH implementations just in analogy to how ecc_gen_privkey() is used
+> for ECDH.
 > 
-> Note that an upcoming patch will make the DH implementation to reject any
-> domain parameters not corresponding to some safe-prime group approved by
-> SP800-56Arev3 in FIPS mode. Thus, having CONFIG_FIPS enabled, but
-> both of CONFIG_CRYPTO_DH_GROUPS_RFC7919 and
-> CONFIG_CRYPTO_DH_GROUPS_RFC3526 unset wouldn't make much sense as it would
-> render the DH implementation unusable in FIPS mode. Conversely, any
-> reasonable configuration would ensure that the original, non-conforming
-> test vectors would not get to run in FIPS mode.
+> Make the new crypto_dh_gen_privkey() to follow the approach specified
+> in SP800-56Arev3, sec. 5.6.1.1.3 ("Key-Pair Generation Using Extra Random
+> Bits").
 > 
-
-For some weird reason the NVMe spec mandates for its TLS profile the 
-ffdhe3072 group, so I would prefer if you would be using that as the 
-default group for testing.
-
+> SP800-56Arev3 specifies a lower as well as an upper bound on the generated
+> key's length:
+> - it must be >= two times the maximum supported security strength of
+>    the group in question and
+> - it must be <= the length of the domain parameter Q.
+> Both of these are available only for the safe-prime groups from
+> RFC 3526 or RFC 7919, which had been introduced to the kernel with previous
+> patches: for any safe-prime group Q = (P - 1)/2 by definition and the
+> individual maximum supported security strength as specified by
+> SP800-56Arev3 has already been made available alongside the resp. domain
+> parameters with said previous patches. Restrict crypto_dh_gen_privkey() to
+> these safe-prime groups, i.e. to those groups with any group_id but
+> dh_group_id_unknown. Make it pick twice the maximum supported strength
+> rounded up to the next power of two for the output key size. This choice
+> respects both, the lower and upper bounds given by SP800-90Arev3 for
+> all safe-prime groups known to the kernel by now and is also in line with
+> the NVME base spec 2.0, which requires the key size to be >= 256bits.
+> 
+> [1] https://lkml.kernel.org/r/20211122074727.25988-4-hare@suse.de
+> 
 > Signed-off-by: Nicolai Stange <nstange@suse.de>
 > ---
->   crypto/testmgr.h | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   crypto/Kconfig      |   1 +
+>   crypto/dh_helper.c  | 128 ++++++++++++++++++++++++++++++++++++++++++++
+>   include/crypto/dh.h |  22 ++++++++
+>   3 files changed, 151 insertions(+)
 > 
-> diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-> index d18844c7499e..b295512c8f22 100644
-> --- a/crypto/testmgr.h
-> +++ b/crypto/testmgr.h
-> @@ -1331,8 +1331,7 @@ static const struct kpp_testvec dh_tv_template[] = {
->   	.expected_a_public_size = 256,
->   	.expected_ss_size = 256,
->   	},
-> -#endif /* IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC7919) */
-> -#if IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC3526)
-> +#elif IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC3526)
->   	{
->   	.secret =
->   #ifdef __LITTLE_ENDIAN
-> @@ -1423,7 +1422,7 @@ static const struct kpp_testvec dh_tv_template[] = {
->   	.expected_a_public_size = 256,
->   	.expected_ss_size = 256,
->   	},
-> -#endif /* IS_ENABLED(CONFIG_CRYPTO_DH_GROUPS_RFC3526) */
-> +#else
->   	{
->   	.secret =
->   #ifdef __LITTLE_ENDIAN
-> @@ -1642,6 +1641,7 @@ static const struct kpp_testvec dh_tv_template[] = {
->   	.expected_a_public_size = 256,
->   	.expected_ss_size = 256,
->   	},
-> +#endif
->   };
->   
->   static const struct kpp_testvec curve25519_tv_template[] = {
-> 
-... and maybe add a config option to run a full test.
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
 Cheers,
 
