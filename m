@@ -2,115 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CB474689B6
-	for <lists+keyrings@lfdr.de>; Sun,  5 Dec 2021 07:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B0E468B39
+	for <lists+keyrings@lfdr.de>; Sun,  5 Dec 2021 14:46:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231849AbhLEGO4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 5 Dec 2021 01:14:56 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:16547 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231862AbhLEGOz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Dec 2021 01:14:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1638684687;
-    s=strato-dkim-0002; d=chronox.de;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=+n8+frBf6zx7jHVeUpPB6FrmkjWf9HAjFsL4dnKcH6I=;
-    b=QIYNnTum1A0FrCkDOhRYPN0PzOsnLvw8H8YtLfI1qMbM6KGEdwtBLS5siM1N0bgg8Y
-    K8Zhmg+XSO99gwkNv61sUr7YCUnfBtqWninvUcrOsdq4fyExV9zpYKaeAcPfX9XVfN/H
-    pUIJjIJ2LoGt59YKWbe9KZ7yYuj9vnLwiblQZ5s5ze5PDXTsG4asCFmJMzCWCcFRmRbn
-    BqHIICllC9C32XnJI4ini/Zg2/398cx7EdnshgpWkR4Zk8EV6/1nRx1HQJw4zX12eVso
-    w4oNZTYhSKbYsSuTM9ZNebW8AyVYdc8pZ8wPyCScYoo2KIxiUl+jHtVOxC3biX1PB6IN
-    oVAQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPZJfSf8vUi"
-X-RZG-CLASS-ID: mo00
-Received: from positron.chronox.de
-    by smtp.strato.de (RZmta 47.34.10 DYNA|AUTH)
-    with ESMTPSA id 006230xB56BQtvK
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sun, 5 Dec 2021 07:11:26 +0100 (CET)
-From:   Stephan =?ISO-8859-1?Q?M=FCller?= <smueller@chronox.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicolai Stange <nstange@suse.de>
-Cc:     Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org,
-        Nicolai Stange <nstange@suse.de>
-Subject: Re: [PATCH 11/18] crypto: dh - introduce support for ephemeral key generation to hpre driver
-Date:   Sun, 05 Dec 2021 07:11:26 +0100
-Message-ID: <2523630.fDdHjke4Dd@positron.chronox.de>
-In-Reply-To: <20211201004858.19831-12-nstange@suse.de>
-References: <20211201004858.19831-1-nstange@suse.de> <20211201004858.19831-12-nstange@suse.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        id S234275AbhLENtb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 5 Dec 2021 08:49:31 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:50368 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234262AbhLENtb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 5 Dec 2021 08:49:31 -0500
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B5CN13K007443;
+        Sun, 5 Dec 2021 13:45:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=uq+AJfUUdXCU9Ajg5O7XIV10npUdSRW06wBMMOmm5y4=;
+ b=EcdsgUG3f+ycK/ALvsNwaq20OWFxbUtTFVbHBhidm4sBh3TwyfyzqLMalUqDTCCMMwyM
+ x24nsqRKYv9TP3FahCtLQnxHNqxRHs4tsh7l8X7ZVQo9ktnCCgLJBea+duXj/j2ZDmY9
+ vZ6DzAuegfx+8sPH+lVuX8ml00u6sX1WmW0o9/qXaXAi2MY9+QmArn7L/V1Dkxt/1d6t
+ QzyuKPqllBi/q+DO+2ljkSTMMyanxpnUHsU4owZwg3Bj9OshG7d3uUZlcsrWZOvFT/Kb
+ uLVGAHzdUG4gN0KhrmqgPgLSqa5TpwrBc4CVoZWY8HqJ9TTOFW+pFS+tljOZUDsyTsB8 PQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3crwcg8r4y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 05 Dec 2021 13:45:53 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B5Djq4Y005812;
+        Sun, 5 Dec 2021 13:45:52 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3crwcg8r4p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 05 Dec 2021 13:45:52 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B5Dhkh3024052;
+        Sun, 5 Dec 2021 13:45:50 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma03fra.de.ibm.com with ESMTP id 3cqyy8w912-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 05 Dec 2021 13:45:50 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1B5DcCIZ30081472
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 5 Dec 2021 13:38:12 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5F479A404D;
+        Sun,  5 Dec 2021 13:45:48 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2D974A4051;
+        Sun,  5 Dec 2021 13:45:47 +0000 (GMT)
+Received: from sig-9-65-73-15.ibm.com (unknown [9.65.73.15])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sun,  5 Dec 2021 13:45:47 +0000 (GMT)
+Message-ID: <6922478fa0df30aae2e97a930a374b2a4e6a1d39.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 1/2] certs: export load_certificate_list() to be used
+ outside certs/
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, jarkko@kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+        Seth Forshee <seth@forshee.me>,
+        kernel test robot <lkp@intel.com>
+Date:   Sun, 05 Dec 2021 08:45:46 -0500
+In-Reply-To: <20211124204714.82514-2-nayna@linux.ibm.com>
+References: <20211124204714.82514-1-nayna@linux.ibm.com>
+         <20211124204714.82514-2-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: l4kKLuKKRTmsdzCgwokd-b4aBt_QcyOX
+X-Proofpoint-ORIG-GUID: d-bEQyz7SFuXcWn5SZP6YV76eH4BpOcF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-05_04,2021-12-02_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ phishscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
+ mlxlogscore=999 impostorscore=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112050076
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Am Mittwoch, 1. Dezember 2021, 01:48:51 CET schrieb Nicolai Stange:
-
-Hi Nicolai,
-
-> A previous patch made the dh-generic implementation's ->set_secret() to
-> generate an ephemeral key in case the input ->key_size is zero, just in
-> analogy with ecdh. Make the hpre crypto driver's DH implementation to
-> behave consistently by doing the same.
+On Wed, 2021-11-24 at 15:47 -0500, Nayna Jain wrote:
+> load_certificate_list() parses certificates embedded in the kernel
+> image to load them onto the keyring.
 > 
-> Signed-off-by: Nicolai Stange <nstange@suse.de>
-> ---
->  drivers/crypto/hisilicon/hpre/hpre_crypto.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+> Commit "2565ca7f5ec1 (certs: Move load_system_certificate_list to a common
+> function)" made load_certificate_list() a common function in the certs/
+> directory. Now, export load_certificate_list() outside certs/ to be used
+> by other functions.
 > 
-> diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
-> b/drivers/crypto/hisilicon/hpre/hpre_crypto.c index
-> a032c192ef1d..02ca79e263f1 100644
-> --- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
-> +++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
-> @@ -701,11 +701,20 @@ static int hpre_dh_set_secret(struct crypto_kpp *tfm,
-> const void *buf, {
->  	struct hpre_ctx *ctx = kpp_tfm_ctx(tfm);
->  	struct dh params;
-> +	char key[CRYPTO_DH_MAX_PRIVKEY_SIZE];
->  	int ret;
-> 
->  	if (crypto_dh_decode_key(buf, len, &params) < 0)
->  		return -EINVAL;
-> 
-> +	if (!params.key_size) {
+> Reported-by: kernel test robot <lkp@intel.com> (auto build test ERROR)
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 
-dto.
+Thanks, Nayna.
 
-> +		ret = crypto_dh_gen_privkey(params.group_id, key,
-> +					    &params.key_size);
-> +		if (ret)
-> +			return ret;
-> +		params.key = key;
-> +	}
-> +
->  	/* Free old secret if any */
->  	hpre_dh_clear_ctx(ctx, false);
-> 
-> @@ -716,6 +725,8 @@ static int hpre_dh_set_secret(struct crypto_kpp *tfm,
-> const void *buf, memcpy(ctx->dh.xa_p + (ctx->key_sz - params.key_size),
-> params.key, params.key_size);
-> 
-> +	memzero_explicit(key, sizeof(key));
-> +
->  	return 0;
-> 
->  err_clear_ctx:
-
-
-Ciao
-Stephan
-
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
