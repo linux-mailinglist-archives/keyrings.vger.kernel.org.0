@@ -2,41 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2932946C071
-	for <lists+keyrings@lfdr.de>; Tue,  7 Dec 2021 17:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8A1F46C1D1
+	for <lists+keyrings@lfdr.de>; Tue,  7 Dec 2021 18:32:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239511AbhLGQO7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Dec 2021 11:14:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:45639 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233472AbhLGQO7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Dec 2021 11:14:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1638893488;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        id S240024AbhLGRf6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Dec 2021 12:35:58 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:60796 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240016AbhLGRf6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Dec 2021 12:35:58 -0500
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id DF2B621B3A;
+        Tue,  7 Dec 2021 17:32:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1638898345; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=q14zqMaClWT6A6pjsZ9r/kKotJ2Nm5bDx7Gi7LWBtyI=;
-        b=LYD0u2jtFpVoW+a55U9gyxzCudDqIEnVga7fWi3DNlvEGxJ0OH6LY7WIMhwfsGj9fczZM0
-        meZqb2mqJmqfO3+wN5WUb0iLuNWhF8kcapgjRdXU0Vuw2zIMBr7THCOeLU1hzN95UtNMF3
-        vcqQXGGsIlMegUsTjHck3gth7EKpAAg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-505-BdX3DYBpO-KAjRBFDzmJRA-1; Tue, 07 Dec 2021 11:11:25 -0500
-X-MC-Unique: BdX3DYBpO-KAjRBFDzmJRA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        bh=p08l+Qiu75dUbkbrDOZgOW1nBpHuW/LpB0uPvXqmigg=;
+        b=cH4AxDh7Z5spAiCFuPHAKizEL1PsQcuD6sHy/nDy6g6DqJxWj6EKz9trYz9SGJPlcnDGb8
+        9bDOPN4fQWIT+Snc356AncuT877BC9fLVRUEESgMaCpLUQ6mQ3DLrgvBE5l/VAwWgPb/Gd
+        DydMC8itHDTzzR0LreU778OxrU87fbU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1638898345;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=p08l+Qiu75dUbkbrDOZgOW1nBpHuW/LpB0uPvXqmigg=;
+        b=S/L+c98qLLuIOJFQUyXpN3vhB98AZn1gpW5qWmNanBuCQ6j06b/XWIz1noRFtgEfQIaB3q
+        LER5Q9QzIbV0TYCA==
+Received: from kunlun.suse.cz (unknown [10.100.128.76])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 106B31006AA2;
-        Tue,  7 Dec 2021 16:11:21 +0000 (UTC)
-Received: from rhtmp (unknown [10.39.192.202])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D0F241972E;
-        Tue,  7 Dec 2021 16:11:14 +0000 (UTC)
-Date:   Tue, 7 Dec 2021 17:11:12 +0100
-From:   Philipp Rudo <prudo@redhat.com>
-To:     Michal Suchanek <msuchanek@suse.de>
+        by relay2.suse.de (Postfix) with ESMTPS id 05243A3B83;
+        Tue,  7 Dec 2021 17:32:23 +0000 (UTC)
+Date:   Tue, 7 Dec 2021 18:32:21 +0100
+From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To:     Philipp Rudo <prudo@redhat.com>
 Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
         Mimi Zohar <zohar@linux.ibm.com>,
         Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
@@ -66,150 +67,94 @@ Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
         Baoquan He <bhe@redhat.com>, linux-crypto@vger.kernel.org,
         linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] module: strip the signature marker in the
- verification function.
-Message-ID: <20211207171112.03850036@rhtmp>
-In-Reply-To: <0f9bbbc4800d5329485b6bdabbbe1ef3b2169b02.1637862358.git.msuchanek@suse.de>
+Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
+Message-ID: <20211207173221.GM117207@kunlun.suse.cz>
 References: <cover.1637862358.git.msuchanek@suse.de>
-        <0f9bbbc4800d5329485b6bdabbbe1ef3b2169b02.1637862358.git.msuchanek@suse.de>
-Organization: Red Hat inc.
+ <20211207171014.2cfc4a54@rhtmp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211207171014.2cfc4a54@rhtmp>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Michal,
-
-On Thu, 25 Nov 2021 19:02:42 +0100
-Michal Suchanek <msuchanek@suse.de> wrote:
-
-> It is stripped by each caller separately.
+On Tue, Dec 07, 2021 at 05:10:14PM +0100, Philipp Rudo wrote:
+> Hi Michal,
 > 
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
->  arch/powerpc/kexec/elf_64.c           |  9 ---------
->  arch/s390/kernel/machine_kexec_file.c |  9 ---------
->  kernel/module.c                       |  7 +------
->  kernel/module_signing.c               | 12 ++++++++++--
+> i finally had the time to take a closer look at the series. Except for
+> the nit in patch 4 and my personal preference in patch 6 the code looks
+> good to me.
+> 
+> What I don't like are the commit messages on the first commits. In my
+> opinion they are so short that they are almost useless. For example in
+> patch 2 there is absolutely no explanation why you can simply copy the
+> s390 over to ppc.
 
-kernel/module_signing.c is only compiled with MODULE_SIG enabled but
-KEXEC_SIG only selects MODULE_SIG_FORMAT. In the unlikely case that
-KEXEC_SIG is enabled but MODULE_SIG isn't this causes a build breakage.
-So you need to update KEXEC_SIG to select MODULE_SIG instead of
-MODULE_SIG_FORMAT for s390 and ppc.
+They use the same signature format. I suppose I can add a note saying
+that.
+
+> Or in patch 3 you are silently changing the error
+> code in kexec from EKEYREJECT to ENODATA. So I would appreciate it if
+
+Not sure what I should do about this. The different implementations use
+different random error codes, and when they are unified the error code
+clearly changes for one or the other.
+
+Does anything depend on a particular error code returned?
 
 Thanks
-Philipp
 
->  4 files changed, 11 insertions(+), 26 deletions(-)
+Michal
+
+> you could improve them a little.
 > 
-> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> index 266cb26d3ca0..63634c95265d 100644
-> --- a/arch/powerpc/kexec/elf_64.c
-> +++ b/arch/powerpc/kexec/elf_64.c
-> @@ -156,15 +156,6 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->  int elf64_verify_sig(const char *kernel, unsigned long length)
->  {
->  	size_t kernel_len = length;
-> -	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
-> -
-> -	if (marker_len > kernel_len)
-> -		return -EKEYREJECTED;
-> -
-> -	if (memcmp(kernel + kernel_len - marker_len, MODULE_SIG_STRING,
-> -		   marker_len))
-> -		return -EKEYREJECTED;
-> -	kernel_len -= marker_len;
->  
->  	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
->  					"kexec_file");
-> diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
-> index 432797249db3..c4632c1a1b59 100644
-> --- a/arch/s390/kernel/machine_kexec_file.c
-> +++ b/arch/s390/kernel/machine_kexec_file.c
-> @@ -27,20 +27,11 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
->  int s390_verify_sig(const char *kernel, unsigned long length)
->  {
->  	size_t kernel_len = length;
-> -	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
->  
->  	/* Skip signature verification when not secure IPLed. */
->  	if (!ipl_secure_flag)
->  		return 0;
->  
-> -	if (marker_len > kernel_len)
-> -		return -EKEYREJECTED;
-> -
-> -	if (memcmp(kernel + kernel_len - marker_len, MODULE_SIG_STRING,
-> -		   marker_len))
-> -		return -EKEYREJECTED;
-> -	kernel_len -= marker_len;
-> -
->  	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
->  					"kexec_file");
->  }
-> diff --git a/kernel/module.c b/kernel/module.c
-> index 8481933dfa92..d91ca0f93a40 100644
-> --- a/kernel/module.c
-> +++ b/kernel/module.c
-> @@ -2882,7 +2882,6 @@ static inline void kmemleak_load_module(const struct module *mod,
->  static int module_sig_check(struct load_info *info, int flags)
->  {
->  	int err = -ENODATA;
-> -	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
->  	const char *reason;
->  	const void *mod = info->hdr;
->  
-> @@ -2890,11 +2889,7 @@ static int module_sig_check(struct load_info *info, int flags)
->  	 * Require flags == 0, as a module with version information
->  	 * removed is no longer the module that was signed
->  	 */
-> -	if (flags == 0 &&
-> -	    info->len > markerlen &&
-> -	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
-> -		/* We truncate the module to discard the signature */
-> -		info->len -= markerlen;
-> +	if (flags == 0) {
->  		err = verify_appended_signature(mod, &info->len,
->  						VERIFY_USE_SECONDARY_KEYRING, "module");
->  		if (!err) {
-> diff --git a/kernel/module_signing.c b/kernel/module_signing.c
-> index f492e410564d..4c28cb55275f 100644
-> --- a/kernel/module_signing.c
-> +++ b/kernel/module_signing.c
-> @@ -15,8 +15,7 @@
->  #include "module-internal.h"
->  
->  /**
-> - * verify_appended_signature - Verify the signature on a module with the
-> - * signature marker stripped.
-> + * verify_appended_signature - Verify the signature on a module
->   * @data: The data to be verified
->   * @len: Size of @data.
->   * @trusted_keys: Keyring to use for verification
-> @@ -25,12 +24,21 @@
->  int verify_appended_signature(const void *data, size_t *len,
->  			      struct key *trusted_keys, const char *what)
->  {
-> +	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
->  	struct module_signature ms;
->  	size_t sig_len, modlen = *len;
->  	int ret;
->  
->  	pr_devel("==>%s(,%zu)\n", __func__, modlen);  
->  
-> +	if (markerlen > modlen)
-> +		return -ENODATA;
-> +
-> +	if (memcmp(data + modlen - markerlen, MODULE_SIG_STRING,
-> +		   markerlen))
-> +		return -ENODATA;
-> +	modlen -= markerlen;
-> +
->  	if (modlen <= sizeof(ms))
->  		return -EBADMSG;
->  
-
+> Thanks
+> Philipp
+> 
+> On Thu, 25 Nov 2021 19:02:38 +0100
+> Michal Suchanek <msuchanek@suse.de> wrote:
+> 
+> > Hello,
+> > 
+> > This is resend of the KEXEC_SIG patchset.
+> > 
+> > The first patch is new because it'a a cleanup that does not require any
+> > change to the module verification code.
+> > 
+> > The second patch is the only one that is intended to change any
+> > functionality.
+> > 
+> > The rest only deduplicates code but I did not receive any review on that
+> > part so I don't know if it's desirable as implemented.
+> > 
+> > The first two patches can be applied separately without the rest.
+> > 
+> > Thanks
+> > 
+> > Michal
+> > 
+> > Michal Suchanek (6):
+> >   s390/kexec_file: Don't opencode appended signature check.
+> >   powerpc/kexec_file: Add KEXEC_SIG support.
+> >   kexec_file: Don't opencode appended signature verification.
+> >   module: strip the signature marker in the verification function.
+> >   module: Use key_being_used_for for log messages in
+> >     verify_appended_signature
+> >   module: Move duplicate mod_check_sig users code to mod_parse_sig
+> > 
+> >  arch/powerpc/Kconfig                     | 11 +++++
+> >  arch/powerpc/kexec/elf_64.c              | 14 ++++++
+> >  arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
+> >  crypto/asymmetric_keys/asymmetric_type.c |  1 +
+> >  include/linux/module_signature.h         |  1 +
+> >  include/linux/verification.h             |  4 ++
+> >  kernel/module-internal.h                 |  2 -
+> >  kernel/module.c                          | 12 +++--
+> >  kernel/module_signature.c                | 56 +++++++++++++++++++++++-
+> >  kernel/module_signing.c                  | 33 +++++++-------
+> >  security/integrity/ima/ima_modsig.c      | 22 ++--------
+> >  11 files changed, 113 insertions(+), 85 deletions(-)
+> > 
+> 
