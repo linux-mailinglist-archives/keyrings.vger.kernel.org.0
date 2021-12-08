@@ -2,49 +2,49 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1176F46CDCB
-	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 07:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B093146CDDE
+	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 07:41:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239797AbhLHGfg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Dec 2021 01:35:36 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:34972 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235346AbhLHGff (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 01:35:35 -0500
+        id S235212AbhLHGoz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Dec 2021 01:44:55 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:39388 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230403AbhLHGoz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 01:44:55 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 1E2B31FDFE;
-        Wed,  8 Dec 2021 06:32:03 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id AFE632190C;
+        Wed,  8 Dec 2021 06:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638945123; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1638945682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+/OFgrJg3W9nn6/Kqzh+BgZeGYFx7UuSvS81HK6RnJQ=;
-        b=iDFsPJqXvCDcZRCkP21WE8uoRqRheLnzGlbYvZBBoFvWAxdC86lbmNWQZyEGpH1o+TdR22
-        6I4At0mt2DvnGYOPNW3JRbJxTreDXwk3xjGwW/gTLigPHmcD/dR1Ikjd0nhvnh+Po179Bq
-        UhPpsGOAPoHpZSa+aj+SKyMpMitYUeA=
+        bh=JyrpoNw8nsRtEfjAdK2RgQyqMvaZ9i/qH0Pct+Spvfw=;
+        b=uUYMuoaktDpHwVQqhD6SPxrBPnUl+k2musNlDAUytq3PIKubSELZr88//wU1BHeAb5wZLK
+        IAOqO7+1Ej/T+MC222c01XzMO/6KRTLtcFrFNTnR26RNb1BbibYRhnbBqezCZu4Nt7fwjm
+        hSyWsTAR853eXNXvCtPHtPmHvRsHKaY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638945123;
+        s=susede2_ed25519; t=1638945682;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+/OFgrJg3W9nn6/Kqzh+BgZeGYFx7UuSvS81HK6RnJQ=;
-        b=lfi5w1Ph7bw+I2rCtpAIDNgDYj+DwNooYMybWDawUplTGGMR49FgFb06Q1hYExxBffk15D
-        n71El7Wxyp7Y/XCA==
+        bh=JyrpoNw8nsRtEfjAdK2RgQyqMvaZ9i/qH0Pct+Spvfw=;
+        b=s6ZnbiVxl7kWgFp1vc9GUrsjGURzw6l0Z2JbP1jJdJItKfr10lp9CHIEZJtSwgxY8PbqZI
+        pDKiGiBy0ZngLJDg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4652F13B49;
-        Wed,  8 Dec 2021 06:32:02 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 263DE13B28;
+        Wed,  8 Dec 2021 06:41:22 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id KRZbD2JRsGHfPwAAMHmgww
-        (envelope-from <nstange@suse.de>); Wed, 08 Dec 2021 06:32:02 +0000
+        id f8tHB5JTsGGzQgAAMHmgww
+        (envelope-from <nstange@suse.de>); Wed, 08 Dec 2021 06:41:22 +0000
 From:   Nicolai Stange <nstange@suse.de>
 To:     Stephan =?utf-8?Q?M=C3=BCller?= <smueller@chronox.de>
 Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
@@ -57,16 +57,16 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org
-Subject: Re: [PATCH 10/18] crypto: dh - introduce support for ephemeral key generation to dh-generic
-In-Reply-To: <1972149.YKUYFuaPT4@positron.chronox.de> ("Stephan
- \=\?utf-8\?Q\?M\=C3\=BCller\=22's\?\=
-        message of "Sun, 05 Dec 2021 07:11:22 +0100")
+Subject: Re: [PATCH 16/18] crypto: dh - calculate Q from P for the full public key verification
 References: <20211201004858.19831-1-nstange@suse.de>
-        <20211201004858.19831-11-nstange@suse.de>
-        <1972149.YKUYFuaPT4@positron.chronox.de>
+        <20211201004858.19831-17-nstange@suse.de>
+        <4182894.UPlyArG6xL@positron.chronox.de>
+Date:   Wed, 08 Dec 2021 07:41:22 +0100
+In-Reply-To: <4182894.UPlyArG6xL@positron.chronox.de> ("Stephan
+ \=\?utf-8\?Q\?M\=C3\=BCller\=22's\?\=
+        message of "Sun, 05 Dec 2021 07:07:11 +0100")
+Message-ID: <878rwvegz1.fsf@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
-Date:   Wed, 08 Dec 2021 07:32:02 +0100
-Message-ID: <87czm7ehel.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -76,102 +76,45 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 Stephan M=C3=BCller <smueller@chronox.de> writes:
 
-> Am Mittwoch, 1. Dezember 2021, 01:48:50 CET schrieb Nicolai Stange:
+> Am Mittwoch, 1. Dezember 2021, 01:48:56 CET schrieb Nicolai Stange:
 >
-> Hi Nicolai,
+>> As the ->q in struct dh_ctx gets never set anywhere, the code
+>> in dh_is_pubkey_valid() for doing the full public key validation in
+>> accordance to SP800-56Arev3 is effectively dead.
+>>=20
+>> However, for safe-prime groups, Q =3D (P - 1)/2 by definition and this
+>> enables dh_is_pubkey_valid() to calculate Q on the fly for these groups.
+>> Implement this.
+>>=20
+>> With this change, the last code accessing struct dh_ctx's ->q is now gon=
+e.
+>> Remove this member from struct dh_ctx.
 >
->> The support for NVME in-band authentication currently in the works ([1])
->> needs to generate ephemeral DH keys. Make dh-generic's ->set_secret()
->> to generate an ephemeral key via the recently added crypto_dh_gen_privke=
-y()
->> in case the input ->key_size is zero. Note that this behaviour is in
->> analogy to ecdh's ->set_secret().
->>=20
->> [1] https://lkml.kernel.org/r/20211122074727.25988-4-hare@suse.de
->>=20
->> Signed-off-by: Nicolai Stange <nstange@suse.de>
->> ---
->>  crypto/dh.c | 24 ++++++++++++++++++++----
->>  1 file changed, 20 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/crypto/dh.c b/crypto/dh.c
->> index 131b80064cb1..2e49b114e038 100644
->> --- a/crypto/dh.c
->> +++ b/crypto/dh.c
->> @@ -71,25 +71,41 @@ static int dh_set_secret(struct crypto_kpp *tfm, con=
-st
->> void *buf, {
->>  	struct dh_ctx *ctx =3D dh_get_ctx(tfm);
->>  	struct dh params;
->> +	char key[CRYPTO_DH_MAX_PRIVKEY_SIZE];
->> +	int err;
->>=20
->>  	/* Free the old MPI key if any */
->>  	dh_clear_ctx(ctx);
->>=20
->> -	if (crypto_dh_decode_key(buf, len, &params) < 0)
->> +	err =3D crypto_dh_decode_key(buf, len, &params);
->> +	if (err)
->>  		goto err_clear_ctx;
->>=20
->> -	if (dh_set_params(ctx, &params) < 0)
->> +	if (!params.key_size) {
->
-> As this params data may come from user space, shouldn't we use the same l=
-ogic=20
-> as in ecdh's set_key function:
->
-> if (!params.key || !params.key_size)
+> Isn't it expensive to always calculate Q for a-priori known values? Why n=
+ot=20
+> add Q to the safe-prime definitions and do not do this operation here?
 
-crypto_dh_decode_key() always leaves params.key set even for
-!params.key_size, so checking for !params.key wouldn't buy anything
-here. FWIW, it seems like it's actually the same for
-crypto_ecdh_decode_key().
-
-I'd personally prefer to not add the !params.key check, because it would
-suggest that there are code paths which can lead to the condition
-params.key_size && !params.key. I would find this confusing when reading
-the code, but OTOH I don't have strong objections, so if you insist on
-adding the !params.key check, I'd be Ok with it.
+I actually considered this when writing the patch: it's basically a
+time-memory tradeoff and I opted for time here. The reason is that I'd
+expect the rather trivial Q calculation to be negligible when compared
+to the subsequent mpi_powm() operation in dh_is_pubkey_valid(). OTOH, as
+the size of Q is (almost) equal to that of P, the space needed for
+storing all the the individual groups' precomputed Qs would be
+significant. So I'd say let's wait and see whether the dynamic Q
+calculation does actually show up in profiles before thinking about
+optimizations like e.g. precomputations.
 
 Thanks,
 
 Nicolai
 
 >
-> ?
+> If you need Q for all of those safe-primes, you may get them from [1] and=
+=20
+> following lines.
 >
->
->> +		err =3D crypto_dh_gen_privkey(params.group_id, key,
->> +					    &params.key_size);
->> +		if (err)
->> +			goto err_clear_ctx;
->> +		params.key =3D key;
->> +	}
->> +
->> +	err =3D dh_set_params(ctx, &params);
->> +	if (err)
->>  		goto err_clear_ctx;
->>=20
->>  	ctx->xa =3D mpi_read_raw_data(params.key, params.key_size);
->> -	if (!ctx->xa)
->> +	if (!ctx->xa) {
->> +		err =3D -EINVAL;
->>  		goto err_clear_ctx;
->> +	}
->> +
->> +	memzero_explicit(key, sizeof(key));
->>=20
->>  	return 0;
->>=20
->>  err_clear_ctx:
->>  	dh_clear_ctx(ctx);
->> -	return -EINVAL;
->> +	return err;
->>  }
->>=20
->>  /*
->
+> [1] https://github.com/smuellerDD/acvpparser/blob/master/parser/
+> safeprimes.h#L346
 >
 > Ciao
 > Stephan
