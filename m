@@ -2,108 +2,187 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82DCC46CE30
-	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 08:16:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D51CA46D069
+	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 10:55:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231476AbhLHHUA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Dec 2021 02:20:00 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:21580 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231363AbhLHHUA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 02:20:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1638947780;
-    s=strato-dkim-0002; d=chronox.de;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=zer9Wm6M9T/aEwxo7eP5PvBiD7v5uvhksWn/IfzxL40=;
-    b=QyfBeJI1VweDUXY13rASeoy0hbsTKKJqdm/3nmecvRTh30byFQfBcwz6dHwCYoFIag
-    O+TpGLunT7roiTmRnwvAfsLxDSIlwH6ZxhyIB92r0qgJwzpFL2PF4fgJLWLecfXjoT1A
-    FLKwJiiAb0TuDsS7UNKDnhw5n1dDettpfUMM+74u56Qur8tyB5ZOp6QX+685EIanKIYk
-    LiqTwWRGZX79gTfLHrB9MuEV+Oj7l/CEf8epvPQI47GGhKb+6coza4vnzLpUsVXEkSnL
-    6BWbWhtNEjXDpj4ZoM/VW4my130PPBMjZbXqB6vB9MtUH22+PEkAf8EImgCwIYU5K2XG
-    +Tlw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPaJPSf8yic"
-X-RZG-CLASS-ID: mo00
-Received: from tauon.chronox.de
-    by smtp.strato.de (RZmta 47.35.1 DYNA|AUTH)
-    with ESMTPSA id m07e9dxB87GJ6E7
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Wed, 8 Dec 2021 08:16:19 +0100 (CET)
-From:   Stephan Mueller <smueller@chronox.de>
-To:     Nicolai Stange <nstange@suse.de>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicolai Stange <nstange@suse.de>,
-        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        id S231215AbhLHJ6u (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Dec 2021 04:58:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:39275 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231237AbhLHJ6t (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 04:58:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638957317;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RbXsax9ldMWCPX0huGTH/ykVh4lOIdMfM3HnOVtd9Sg=;
+        b=aIngM+RNlDJYqmFVsxxa/oDJnNiNn9DbRcV1bedZrbJoegN7HM4sl68oOoNS5OtMBiHZPZ
+        +9VnOhbTUpfLg+4+W7TaUhK5oWXD7mYxvh3Kf/s3RfcImuIz1SRGQWreGeFlFK94l7QSXV
+        38KpndJoC2fotNGC0rhLRX6MPZmDVTw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-413-MBArii7hOAGNVhEwT_QDGA-1; Wed, 08 Dec 2021 04:55:12 -0500
+X-MC-Unique: MBArii7hOAGNVhEwT_QDGA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8C4231023F4D;
+        Wed,  8 Dec 2021 09:55:07 +0000 (UTC)
+Received: from rhtmp (unknown [10.39.193.91])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A1B142B178;
+        Wed,  8 Dec 2021 09:54:57 +0000 (UTC)
+Date:   Wed, 8 Dec 2021 10:54:55 +0100
+From:   Philipp Rudo <prudo@redhat.com>
+To:     Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
+        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
         David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org
-Subject: Re: [PATCH 09/18] crypto: dh - implement private key generation primitive
-Date:   Wed, 08 Dec 2021 08:16:18 +0100
-Message-ID: <4767831.y2tiDqZFiq@tauon.chronox.de>
-In-Reply-To: <87pmq7ehxg.fsf@suse.de>
-References: <20211201004858.19831-1-nstange@suse.de> <25213093.1r3eYUQgxm@positron.chronox.de> <87pmq7ehxg.fsf@suse.de>
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Frank van der Linden <fllinden@amazon.com>,
+        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Baoquan He <bhe@redhat.com>, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
+Message-ID: <20211208105455.00085532@rhtmp>
+In-Reply-To: <20211207173221.GM117207@kunlun.suse.cz>
+References: <cover.1637862358.git.msuchanek@suse.de>
+        <20211207171014.2cfc4a54@rhtmp>
+        <20211207173221.GM117207@kunlun.suse.cz>
+Organization: Red Hat inc.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Am Mittwoch, 8. Dezember 2021, 07:20:43 CET schrieb Nicolai Stange:
+Hi Michal,
 
-Hi Nicolai,
+On Tue, 7 Dec 2021 18:32:21 +0100
+Michal Such=C3=A1nek <msuchanek@suse.de> wrote:
 
-> >> +		return -EINVAL;
-> >> +
-> >> +	/*
-> >> +	 * 5.6.1.1.1: choose key length N such that
-> >> +	 * 2 * ->max_strength <= N <= log2(q) + 1 = ->p_size * 8 - 1
-> >> +	 * with q = (p - 1) / 2 for the safe-prime groups.
-> >> +	 * Choose the lower bound's next power of two for N in order to
-> >> +	 * avoid excessively large private keys while still
-> >> +	 * maintaining some extra reserve beyond the bare minimum in
-> >> +	 * most cases. Note that for each entry in safe_prime_groups[],
-> >> +	 * the following holds for such N:
-> >> +	 * - N >= 256, in particular it is a multiple of 2^6 = 64
-> >> +	 *   bits and
-> >> +	 * - N < log2(q) + 1, i.e. N respects the upper bound.
-> >> +	 */
-> >> +	n = roundup_pow_of_two(2 * g->max_strength);
-> >> +	WARN_ON_ONCE(n & ((1u << 6) - 1));
-> >> +	n >>= 6; /* Convert N into units of u64. */
-> > 
-> > Couldn't we pre-compute that value for each of the safeprime groups? This
-> > value should be static for each of them.
-> 
-> Can you elaborate why this would be better? As long as the value
-> calculated above is considered reasonable for every usecase, I don't see
-> the advantage of storing it somewhere.
+> On Tue, Dec 07, 2021 at 05:10:14PM +0100, Philipp Rudo wrote:
+> > Hi Michal,
+> >=20
+> > i finally had the time to take a closer look at the series. Except for
+> > the nit in patch 4 and my personal preference in patch 6 the code looks
+> > good to me.
+> >=20
+> > What I don't like are the commit messages on the first commits. In my
+> > opinion they are so short that they are almost useless. For example in
+> > patch 2 there is absolutely no explanation why you can simply copy the
+> > s390 over to ppc. =20
+>=20
+> They use the same signature format. I suppose I can add a note saying
+> that.
 
-Well, I usually try to avoid using CPU resources if I have information a-
-priori. And as we have only known domain parameters in this code path, I 
-thought we can spare a few CPU cycles.
+The note is what I was asking for. For me the commit message is an
+important piece of documentation for other developers (or yourself in a
+year). That's why in my opinion it's important to describe _why_ you do
+something in it as you cannot get the _why_ by reading the code.
 
-> 
-> OTOH, calculating the value on the fly
-> - enforces conformance to 5.6.1.1.1 (>= twice the sec strength)
-> - and guarantees that it is a multiple of 64 bits, as required
->   by the implementation,
-> whereas you'd had to examine each and every individual group's setting
-> for correctness when storing precomputed values alongside the other,
-> "primary" group parameters.
+> > Or in patch 3 you are silently changing the error
+> > code in kexec from EKEYREJECT to ENODATA. So I would appreciate it if =
+=20
+>=20
+> Not sure what I should do about this. The different implementations use
+> different random error codes, and when they are unified the error code
+> clearly changes for one or the other.
 
-You are right, but when we reach this code path we only have well-known 
-parameters. Hence my suggestion.
+My complaint wasn't that you change the return code. There's no way to
+avoid choosing one over the other. It's again that you don't document
+the change in the commit message for others.
 
-Ciao
-Stephan
+> Does anything depend on a particular error code returned?
+
+Not that I know of. At least in the kexec-tools ENODATA and EKEYREJECT
+are handled the same way.
+
+Thanks
+Philipp
 
 
+> Thanks
+>=20
+> Michal
+>=20
+> > you could improve them a little.
+> >=20
+> > Thanks
+> > Philipp
+> >=20
+> > On Thu, 25 Nov 2021 19:02:38 +0100
+> > Michal Suchanek <msuchanek@suse.de> wrote:
+> >  =20
+> > > Hello,
+> > >=20
+> > > This is resend of the KEXEC_SIG patchset.
+> > >=20
+> > > The first patch is new because it'a a cleanup that does not require a=
+ny
+> > > change to the module verification code.
+> > >=20
+> > > The second patch is the only one that is intended to change any
+> > > functionality.
+> > >=20
+> > > The rest only deduplicates code but I did not receive any review on t=
+hat
+> > > part so I don't know if it's desirable as implemented.
+> > >=20
+> > > The first two patches can be applied separately without the rest.
+> > >=20
+> > > Thanks
+> > >=20
+> > > Michal
+> > >=20
+> > > Michal Suchanek (6):
+> > >   s390/kexec_file: Don't opencode appended signature check.
+> > >   powerpc/kexec_file: Add KEXEC_SIG support.
+> > >   kexec_file: Don't opencode appended signature verification.
+> > >   module: strip the signature marker in the verification function.
+> > >   module: Use key_being_used_for for log messages in
+> > >     verify_appended_signature
+> > >   module: Move duplicate mod_check_sig users code to mod_parse_sig
+> > >=20
+> > >  arch/powerpc/Kconfig                     | 11 +++++
+> > >  arch/powerpc/kexec/elf_64.c              | 14 ++++++
+> > >  arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
+> > >  crypto/asymmetric_keys/asymmetric_type.c |  1 +
+> > >  include/linux/module_signature.h         |  1 +
+> > >  include/linux/verification.h             |  4 ++
+> > >  kernel/module-internal.h                 |  2 -
+> > >  kernel/module.c                          | 12 +++--
+> > >  kernel/module_signature.c                | 56 ++++++++++++++++++++++=
++-
+> > >  kernel/module_signing.c                  | 33 +++++++-------
+> > >  security/integrity/ima/ima_modsig.c      | 22 ++--------
+> > >  11 files changed, 113 insertions(+), 85 deletions(-)
+> > >  =20
+> >  =20
+>=20
 
