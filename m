@@ -2,51 +2,38 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B093146CDDE
-	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 07:41:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82DCC46CE30
+	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 08:16:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235212AbhLHGoz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Dec 2021 01:44:55 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:39388 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbhLHGoz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 01:44:55 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id AFE632190C;
-        Wed,  8 Dec 2021 06:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638945682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JyrpoNw8nsRtEfjAdK2RgQyqMvaZ9i/qH0Pct+Spvfw=;
-        b=uUYMuoaktDpHwVQqhD6SPxrBPnUl+k2musNlDAUytq3PIKubSELZr88//wU1BHeAb5wZLK
-        IAOqO7+1Ej/T+MC222c01XzMO/6KRTLtcFrFNTnR26RNb1BbibYRhnbBqezCZu4Nt7fwjm
-        hSyWsTAR853eXNXvCtPHtPmHvRsHKaY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638945682;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JyrpoNw8nsRtEfjAdK2RgQyqMvaZ9i/qH0Pct+Spvfw=;
-        b=s6ZnbiVxl7kWgFp1vc9GUrsjGURzw6l0Z2JbP1jJdJItKfr10lp9CHIEZJtSwgxY8PbqZI
-        pDKiGiBy0ZngLJDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 263DE13B28;
-        Wed,  8 Dec 2021 06:41:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id f8tHB5JTsGGzQgAAMHmgww
-        (envelope-from <nstange@suse.de>); Wed, 08 Dec 2021 06:41:22 +0000
-From:   Nicolai Stange <nstange@suse.de>
-To:     Stephan =?utf-8?Q?M=C3=BCller?= <smueller@chronox.de>
+        id S231476AbhLHHUA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Dec 2021 02:20:00 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:21580 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231363AbhLHHUA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 02:20:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1638947780;
+    s=strato-dkim-0002; d=chronox.de;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=zer9Wm6M9T/aEwxo7eP5PvBiD7v5uvhksWn/IfzxL40=;
+    b=QyfBeJI1VweDUXY13rASeoy0hbsTKKJqdm/3nmecvRTh30byFQfBcwz6dHwCYoFIag
+    O+TpGLunT7roiTmRnwvAfsLxDSIlwH6ZxhyIB92r0qgJwzpFL2PF4fgJLWLecfXjoT1A
+    FLKwJiiAb0TuDsS7UNKDnhw5n1dDettpfUMM+74u56Qur8tyB5ZOp6QX+685EIanKIYk
+    LiqTwWRGZX79gTfLHrB9MuEV+Oj7l/CEf8epvPQI47GGhKb+6coza4vnzLpUsVXEkSnL
+    6BWbWhtNEjXDpj4ZoM/VW4my130PPBMjZbXqB6vB9MtUH22+PEkAf8EImgCwIYU5K2XG
+    +Tlw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPaJPSf8yic"
+X-RZG-CLASS-ID: mo00
+Received: from tauon.chronox.de
+    by smtp.strato.de (RZmta 47.35.1 DYNA|AUTH)
+    with ESMTPSA id m07e9dxB87GJ6E7
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Wed, 8 Dec 2021 08:16:19 +0100 (CET)
+From:   Stephan Mueller <smueller@chronox.de>
+To:     Nicolai Stange <nstange@suse.de>
 Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
         Nicolai Stange <nstange@suse.de>,
@@ -57,71 +44,66 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org
-Subject: Re: [PATCH 16/18] crypto: dh - calculate Q from P for the full public key verification
-References: <20211201004858.19831-1-nstange@suse.de>
-        <20211201004858.19831-17-nstange@suse.de>
-        <4182894.UPlyArG6xL@positron.chronox.de>
-Date:   Wed, 08 Dec 2021 07:41:22 +0100
-In-Reply-To: <4182894.UPlyArG6xL@positron.chronox.de> ("Stephan
- \=\?utf-8\?Q\?M\=C3\=BCller\=22's\?\=
-        message of "Sun, 05 Dec 2021 07:07:11 +0100")
-Message-ID: <878rwvegz1.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+Subject: Re: [PATCH 09/18] crypto: dh - implement private key generation primitive
+Date:   Wed, 08 Dec 2021 08:16:18 +0100
+Message-ID: <4767831.y2tiDqZFiq@tauon.chronox.de>
+In-Reply-To: <87pmq7ehxg.fsf@suse.de>
+References: <20211201004858.19831-1-nstange@suse.de> <25213093.1r3eYUQgxm@positron.chronox.de> <87pmq7ehxg.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Stephan M=C3=BCller <smueller@chronox.de> writes:
+Am Mittwoch, 8. Dezember 2021, 07:20:43 CET schrieb Nicolai Stange:
 
-> Am Mittwoch, 1. Dezember 2021, 01:48:56 CET schrieb Nicolai Stange:
->
->> As the ->q in struct dh_ctx gets never set anywhere, the code
->> in dh_is_pubkey_valid() for doing the full public key validation in
->> accordance to SP800-56Arev3 is effectively dead.
->>=20
->> However, for safe-prime groups, Q =3D (P - 1)/2 by definition and this
->> enables dh_is_pubkey_valid() to calculate Q on the fly for these groups.
->> Implement this.
->>=20
->> With this change, the last code accessing struct dh_ctx's ->q is now gon=
-e.
->> Remove this member from struct dh_ctx.
->
-> Isn't it expensive to always calculate Q for a-priori known values? Why n=
-ot=20
-> add Q to the safe-prime definitions and do not do this operation here?
+Hi Nicolai,
 
-I actually considered this when writing the patch: it's basically a
-time-memory tradeoff and I opted for time here. The reason is that I'd
-expect the rather trivial Q calculation to be negligible when compared
-to the subsequent mpi_powm() operation in dh_is_pubkey_valid(). OTOH, as
-the size of Q is (almost) equal to that of P, the space needed for
-storing all the the individual groups' precomputed Qs would be
-significant. So I'd say let's wait and see whether the dynamic Q
-calculation does actually show up in profiles before thinking about
-optimizations like e.g. precomputations.
+> >> +		return -EINVAL;
+> >> +
+> >> +	/*
+> >> +	 * 5.6.1.1.1: choose key length N such that
+> >> +	 * 2 * ->max_strength <= N <= log2(q) + 1 = ->p_size * 8 - 1
+> >> +	 * with q = (p - 1) / 2 for the safe-prime groups.
+> >> +	 * Choose the lower bound's next power of two for N in order to
+> >> +	 * avoid excessively large private keys while still
+> >> +	 * maintaining some extra reserve beyond the bare minimum in
+> >> +	 * most cases. Note that for each entry in safe_prime_groups[],
+> >> +	 * the following holds for such N:
+> >> +	 * - N >= 256, in particular it is a multiple of 2^6 = 64
+> >> +	 *   bits and
+> >> +	 * - N < log2(q) + 1, i.e. N respects the upper bound.
+> >> +	 */
+> >> +	n = roundup_pow_of_two(2 * g->max_strength);
+> >> +	WARN_ON_ONCE(n & ((1u << 6) - 1));
+> >> +	n >>= 6; /* Convert N into units of u64. */
+> > 
+> > Couldn't we pre-compute that value for each of the safeprime groups? This
+> > value should be static for each of them.
+> 
+> Can you elaborate why this would be better? As long as the value
+> calculated above is considered reasonable for every usecase, I don't see
+> the advantage of storing it somewhere.
 
-Thanks,
+Well, I usually try to avoid using CPU resources if I have information a-
+priori. And as we have only known domain parameters in this code path, I 
+thought we can spare a few CPU cycles.
 
-Nicolai
+> 
+> OTOH, calculating the value on the fly
+> - enforces conformance to 5.6.1.1.1 (>= twice the sec strength)
+> - and guarantees that it is a multiple of 64 bits, as required
+>   by the implementation,
+> whereas you'd had to examine each and every individual group's setting
+> for correctness when storing precomputed values alongside the other,
+> "primary" group parameters.
 
->
-> If you need Q for all of those safe-primes, you may get them from [1] and=
-=20
-> following lines.
->
-> [1] https://github.com/smuellerDD/acvpparser/blob/master/parser/
-> safeprimes.h#L346
->
-> Ciao
-> Stephan
->
->
+You are right, but when we reach this code path we only have well-known 
+parameters. Hence my suggestion.
 
---=20
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
-ermany
-(HRB 36809, AG N=C3=BCrnberg), GF: Ivo Totev
+Ciao
+Stephan
+
+
+
