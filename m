@@ -2,49 +2,49 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 721EE46CDAA
-	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 07:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1176F46CDCB
+	for <lists+keyrings@lfdr.de>; Wed,  8 Dec 2021 07:32:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237825AbhLHGYQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Dec 2021 01:24:16 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:34702 "EHLO
+        id S239797AbhLHGfg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Dec 2021 01:35:36 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:34972 "EHLO
         smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237786AbhLHGYQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 01:24:16 -0500
+        with ESMTP id S235346AbhLHGff (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 01:35:35 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id C4B9B1FD56;
-        Wed,  8 Dec 2021 06:20:43 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 1E2B31FDFE;
+        Wed,  8 Dec 2021 06:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638944443; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1638945123; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=prUp9E5iELM42hNscuZFI/L0Ecis4jkmojPZicXIVcA=;
-        b=v6EM3N2N1xwpUaQepFBi+PcZjEx0mUHh7jPuuoWBDJ2JFsi55aL5xeYu9oqrMIE1asTasI
-        2bMZQuo5mCAD2RR8qTyMx8D4nzGqFuXrfaH9V1I5i+XzKo79GrGGaJGl1MnwOeDvm9eK+3
-        A95n6rLwELQnjDoqq5j9NvGKM9qkMwA=
+        bh=+/OFgrJg3W9nn6/Kqzh+BgZeGYFx7UuSvS81HK6RnJQ=;
+        b=iDFsPJqXvCDcZRCkP21WE8uoRqRheLnzGlbYvZBBoFvWAxdC86lbmNWQZyEGpH1o+TdR22
+        6I4At0mt2DvnGYOPNW3JRbJxTreDXwk3xjGwW/gTLigPHmcD/dR1Ikjd0nhvnh+Po179Bq
+        UhPpsGOAPoHpZSa+aj+SKyMpMitYUeA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638944443;
+        s=susede2_ed25519; t=1638945123;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=prUp9E5iELM42hNscuZFI/L0Ecis4jkmojPZicXIVcA=;
-        b=80hALWZ0WTYdVGkrgtQ2VZMmseUnItp6u9EUgYJoinMYid61kbBJcDRw0dzQX2zmuGqXId
-        Pp1PGcYdV4nTMiCA==
+        bh=+/OFgrJg3W9nn6/Kqzh+BgZeGYFx7UuSvS81HK6RnJQ=;
+        b=lfi5w1Ph7bw+I2rCtpAIDNgDYj+DwNooYMybWDawUplTGGMR49FgFb06Q1hYExxBffk15D
+        n71El7Wxyp7Y/XCA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3B6A713B49;
-        Wed,  8 Dec 2021 06:20:43 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4652F13B49;
+        Wed,  8 Dec 2021 06:32:02 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id PggADLtOsGFPPAAAMHmgww
-        (envelope-from <nstange@suse.de>); Wed, 08 Dec 2021 06:20:43 +0000
+        id KRZbD2JRsGHfPwAAMHmgww
+        (envelope-from <nstange@suse.de>); Wed, 08 Dec 2021 06:32:02 +0000
 From:   Nicolai Stange <nstange@suse.de>
 To:     Stephan =?utf-8?Q?M=C3=BCller?= <smueller@chronox.de>
 Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
@@ -57,16 +57,16 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org
-Subject: Re: [PATCH 09/18] crypto: dh - implement private key generation primitive
-References: <20211201004858.19831-1-nstange@suse.de>
-        <20211201004858.19831-10-nstange@suse.de>
-        <25213093.1r3eYUQgxm@positron.chronox.de>
-Date:   Wed, 08 Dec 2021 07:20:43 +0100
-In-Reply-To: <25213093.1r3eYUQgxm@positron.chronox.de> ("Stephan
+Subject: Re: [PATCH 10/18] crypto: dh - introduce support for ephemeral key generation to dh-generic
+In-Reply-To: <1972149.YKUYFuaPT4@positron.chronox.de> ("Stephan
  \=\?utf-8\?Q\?M\=C3\=BCller\=22's\?\=
-        message of "Sun, 05 Dec 2021 06:52:28 +0100")
-Message-ID: <87pmq7ehxg.fsf@suse.de>
+        message of "Sun, 05 Dec 2021 07:11:22 +0100")
+References: <20211201004858.19831-1-nstange@suse.de>
+        <20211201004858.19831-11-nstange@suse.de>
+        <1972149.YKUYFuaPT4@positron.chronox.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+Date:   Wed, 08 Dec 2021 07:32:02 +0100
+Message-ID: <87czm7ehel.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,281 +74,109 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Stephan,
-
-first of all, many thanks for your review!
-
 Stephan M=C3=BCller <smueller@chronox.de> writes:
 
-> Am Mittwoch, 1. Dezember 2021, 01:48:49 CET schrieb Nicolai Stange:
+> Am Mittwoch, 1. Dezember 2021, 01:48:50 CET schrieb Nicolai Stange:
+>
+> Hi Nicolai,
 >
 >> The support for NVME in-band authentication currently in the works ([1])
->> needs to generate ephemeral DH keys.
->>=20
->> Implement crypto_dh_gen_privkey() which is intended to be used from
->> the DH implementations just in analogy to how ecc_gen_privkey() is used
->> for ECDH.
->>=20
->> Make the new crypto_dh_gen_privkey() to follow the approach specified
->> in SP800-56Arev3, sec. 5.6.1.1.3 ("Key-Pair Generation Using Extra Random
->> Bits").
->>=20
->> SP800-56Arev3 specifies a lower as well as an upper bound on the generat=
-ed
->> key's length:
->> - it must be >=3D two times the maximum supported security strength of
->>   the group in question and
->> - it must be <=3D the length of the domain parameter Q.
->> Both of these are available only for the safe-prime groups from
->> RFC 3526 or RFC 7919, which had been introduced to the kernel with previ=
-ous
->> patches: for any safe-prime group Q =3D (P - 1)/2 by definition and the
->> individual maximum supported security strength as specified by
->> SP800-56Arev3 has already been made available alongside the resp. domain
->> parameters with said previous patches. Restrict crypto_dh_gen_privkey() =
-to
->> these safe-prime groups, i.e. to those groups with any group_id but
->> dh_group_id_unknown. Make it pick twice the maximum supported strength
->> rounded up to the next power of two for the output key size. This choice
->> respects both, the lower and upper bounds given by SP800-90Arev3 for
->> all safe-prime groups known to the kernel by now and is also in line with
->> the NVME base spec 2.0, which requires the key size to be >=3D 256bits.
+>> needs to generate ephemeral DH keys. Make dh-generic's ->set_secret()
+>> to generate an ephemeral key via the recently added crypto_dh_gen_privke=
+y()
+>> in case the input ->key_size is zero. Note that this behaviour is in
+>> analogy to ecdh's ->set_secret().
 >>=20
 >> [1] https://lkml.kernel.org/r/20211122074727.25988-4-hare@suse.de
 >>=20
 >> Signed-off-by: Nicolai Stange <nstange@suse.de>
 >> ---
->>  crypto/Kconfig      |   1 +
->>  crypto/dh_helper.c  | 128 ++++++++++++++++++++++++++++++++++++++++++++
->>  include/crypto/dh.h |  22 ++++++++
->>  3 files changed, 151 insertions(+)
+>>  crypto/dh.c | 24 ++++++++++++++++++++----
+>>  1 file changed, 20 insertions(+), 4 deletions(-)
 >>=20
->> diff --git a/crypto/Kconfig b/crypto/Kconfig
->> index fcb044bdc90a..578711b02bb3 100644
->> --- a/crypto/Kconfig
->> +++ b/crypto/Kconfig
->> @@ -228,6 +228,7 @@ menuconfig CRYPTO_DH
->>  	tristate "Diffie-Hellman algorithm"
->>  	select CRYPTO_KPP
->>  	select MPILIB
->> +	select CRYPTO_RNG_DEFAULT
->>  	help
->>  	  Generic implementation of the Diffie-Hellman algorithm.
->>=20
->> diff --git a/crypto/dh_helper.c b/crypto/dh_helper.c
->> index fb8df4734dc1..5a8c9c50297f 100644
->> --- a/crypto/dh_helper.c
->> +++ b/crypto/dh_helper.c
->> @@ -9,6 +9,7 @@
->>  #include <linux/string.h>
->>  #include <crypto/dh.h>
->>  #include <crypto/kpp.h>
->> +#include <crypto/rng.h>
->>=20
->>  #define DH_KPP_SECRET_MIN_SIZE (sizeof(struct kpp_secret) + \
->>  				sizeof(enum dh_group_id) + 3 * sizeof(int))
->> @@ -592,3 +593,130 @@ int crypto_dh_decode_key(const char *buf, unsigned=
- int
->> len, struct dh *params) return 0;
->>  }
->>  EXPORT_SYMBOL_GPL(crypto_dh_decode_key);
->> +
->> +static u64 __add_u64_to_be(__be64 *dst, unsigned int n, u64 val)
->> +{
->> +	unsigned int i;
->> +
->> +	for (i =3D n; val && i > 0; --i) {
->> +		u64 tmp =3D be64_to_cpu(dst[i - 1]);
->> +
->> +		tmp +=3D val;
->> +		val =3D tmp >=3D val ? 0 : 1;
->> +		dst[i - 1] =3D cpu_to_be64(tmp);
->> +	}
->> +
->> +	return val;
->> +}
->> +
->> +int crypto_dh_gen_privkey(enum dh_group_id group_id,
->> +			  char key[CRYPTO_DH_MAX_PRIVKEY_SIZE],
->> +			  unsigned int *key_size)
->> +{
->> +	const struct safe_prime_group *g;
->> +	unsigned int n, tmp_size;
->> +	__be64 *tmp;
+>> diff --git a/crypto/dh.c b/crypto/dh.c
+>> index 131b80064cb1..2e49b114e038 100644
+>> --- a/crypto/dh.c
+>> +++ b/crypto/dh.c
+>> @@ -71,25 +71,41 @@ static int dh_set_secret(struct crypto_kpp *tfm, con=
+st
+>> void *buf, {
+>>  	struct dh_ctx *ctx =3D dh_get_ctx(tfm);
+>>  	struct dh params;
+>> +	char key[CRYPTO_DH_MAX_PRIVKEY_SIZE];
 >> +	int err;
->> +	u64 h, o;
->> +
->> +	/*
->> +	 * Generate a private key following NIST SP800-56Ar3,
->> +	 * sec. 5.6.1.1.1 and 5.6.1.1.3 resp.. This is supported only
->> +	 * for the (approved) safe-prime groups.
->> +	 */
->> +	g =3D get_safe_prime_group(group_id);
->> +	if (!g)
+>>=20
+>>  	/* Free the old MPI key if any */
+>>  	dh_clear_ctx(ctx);
+>>=20
+>> -	if (crypto_dh_decode_key(buf, len, &params) < 0)
+>> +	err =3D crypto_dh_decode_key(buf, len, &params);
+>> +	if (err)
+>>  		goto err_clear_ctx;
+>>=20
+>> -	if (dh_set_params(ctx, &params) < 0)
+>> +	if (!params.key_size) {
 >
-> What about
+> As this params data may come from user space, shouldn't we use the same l=
+ogic=20
+> as in ecdh's set_key function:
 >
-> if (g =3D=3D dh_group_id_unknown)
->
-> ?
+> if (!params.key || !params.key_size)
 
-No, I think this is correct: get_safe_prime_group() returns a pointer to
-a struct safe_prime_group instances looked up from the
-safe_prime_groups[] array and for dh_group_id_unknown NULL is returned.
+crypto_dh_decode_key() always leaves params.key set even for
+!params.key_size, so checking for !params.key wouldn't buy anything
+here. FWIW, it seems like it's actually the same for
+crypto_ecdh_decode_key().
 
-
->
->> +		return -EINVAL;
->> +
->> +	/*
->> +	 * 5.6.1.1.1: choose key length N such that
->> +	 * 2 * ->max_strength <=3D N <=3D log2(q) + 1 =3D ->p_size * 8 - 1
->> +	 * with q =3D (p - 1) / 2 for the safe-prime groups.
->> +	 * Choose the lower bound's next power of two for N in order to
->> +	 * avoid excessively large private keys while still
->> +	 * maintaining some extra reserve beyond the bare minimum in
->> +	 * most cases. Note that for each entry in safe_prime_groups[],
->> +	 * the following holds for such N:
->> +	 * - N >=3D 256, in particular it is a multiple of 2^6 =3D 64
->> +	 *   bits and
->> +	 * - N < log2(q) + 1, i.e. N respects the upper bound.
->> +	 */
->> +	n =3D roundup_pow_of_two(2 * g->max_strength);
->> +	WARN_ON_ONCE(n & ((1u << 6) - 1));
->> +	n >>=3D 6; /* Convert N into units of u64. */
->
-> Couldn't we pre-compute that value for each of the safeprime groups? This=
-=20
-> value should be static for each of them.
-
-Can you elaborate why this would be better? As long as the value
-calculated above is considered reasonable for every usecase, I don't see
-the advantage of storing it somewhere.
-
-OTOH, calculating the value on the fly
-- enforces conformance to 5.6.1.1.1 (>=3D twice the sec strength)
-- and guarantees that it is a multiple of 64 bits, as required
-  by the implementation,
-whereas you'd had to examine each and every individual group's setting
-for correctness when storing precomputed values alongside the other,
-"primary" group parameters.
+I'd personally prefer to not add the !params.key check, because it would
+suggest that there are code paths which can lead to the condition
+params.key_size && !params.key. I would find this confusing when reading
+the code, but OTOH I don't have strong objections, so if you insist on
+adding the !params.key check, I'd be Ok with it.
 
 Thanks,
 
 Nicolai
 
->> +
->> +	/*
->> +	 * Reserve one extra u64 to hold the extra random bits
->> +	 * required as per 5.6.1.1.3.
->> +	 */
->> +	tmp_size =3D (n + 1) * sizeof(__be64);
 >
-> Maybe add this to the pre-computed value?
+> ?
 >
 >
->> +	tmp =3D kmalloc(tmp_size, GFP_KERNEL);
->> +	if (!tmp)
->> +		return -ENOMEM;
+>> +		err =3D crypto_dh_gen_privkey(params.group_id, key,
+>> +					    &params.key_size);
+>> +		if (err)
+>> +			goto err_clear_ctx;
+>> +		params.key =3D key;
+>> +	}
 >> +
->> +	/*
->> +	 * 5.6.1.1.3, step 3 (and implicitly step 4): obtain N + 64
->> +	 * random bits and interpret them as a big endian integer.
->> +	 */
->> +	err =3D -EFAULT;
->> +	if (crypto_get_default_rng())
->> +		goto out;
->> +
->> +	err =3D crypto_rng_get_bytes(crypto_default_rng, (u8 *)tmp, tmp_size);
->> +	crypto_put_default_rng();
+>> +	err =3D dh_set_params(ctx, &params);
 >> +	if (err)
->> +		goto out;
->> +
->> +	/*
->> +	 * 5.6.1.1.3, step 5 is implicit: 2^N < q and thus,
->> +	 * M =3D min(2^N, q) =3D 2^N.
->> +	 *
->> +	 * For step 6, calculate
->> +	 * key =3D (tmp[] mod (M - 1)) + 1 =3D (tmp[] mod (2^N - 1)) + 1.
->> +	 *
->> +	 * In order to avoid expensive divisions, note that
->> +	 * 2^N mod (2^N - 1) =3D 1 and thus, for any integer h,
->> +	 * 2^N * h mod (2^N - 1) =3D h mod (2^N - 1) always holds.
->> +	 * The big endian integer tmp[] composed of n + 1 64bit words
->> +	 * may be written as tmp[] =3D h * 2^N + l, with h =3D tmp[0]
->> +	 * representing the 64 most significant bits and l
->> +	 * corresponding to the remaining 2^N bits. With the remark
->> +	 * from above,
->> +	 * h * 2^N + l mod (2^N - 1) =3D l + h mod (2^N - 1).
->> +	 * As both, l and h are less than 2^N, their sum after
->> +	 * this first reduction is guaranteed to be <=3D 2^(N + 1) - 2.
->> +	 * Or equivalently, that their sum can again be written as
->> +	 * h' * 2^N + l' with h' now either zero or one and if one,
->> +	 * then l' <=3D 2^N - 2. Thus, all bits at positions >=3D N will
->> +	 * be zero after a second reduction:
->> +	 * h' * 2^N + l' mod (2^N - 1) =3D l' + h' mod (2^N - 1).
->> +	 * At this point, it is still possible that
->> +	 * l' + h' =3D 2^N - 1, i.e. that l' + h' mod (2^N - 1)
->> +	 * is zero. This condition will be detected below by means of
->> +	 * the final increment overflowing in this case.
->> +	 */
->> +	h =3D be64_to_cpu(tmp[0]);
->> +	h =3D __add_u64_to_be(tmp + 1, n, h);
->> +	h =3D __add_u64_to_be(tmp + 1, n, h);
->> +	WARN_ON_ONCE(h);
->> +
->> +	/* Increment to obtain the final result. */
->> +	o =3D __add_u64_to_be(tmp + 1, n, 1);
->> +	/*
->> +	 * The overflow bit o from the increment is either zero or
->> +	 * one. If zero, tmp[1:n] holds the final result in big-endian
->> +	 * order. If one, tmp[1:n] is zero now, but needs to be set to
->> +	 * one, c.f. above.
->> +	 */
->> +	if (o)
->> +		tmp[n] =3D cpu_to_be64(1);
->> +
->> +	/* n is in units of u64, convert to bytes. */
->> +	*key_size =3D n << 3;
->> +	memcpy(key, &tmp[1], *key_size);
->> +
->> +out:
->> +	kfree_sensitive(tmp);
->> +	return err;
->> +}
->> +EXPORT_SYMBOL_GPL(crypto_dh_gen_privkey);
->> diff --git a/include/crypto/dh.h b/include/crypto/dh.h
->> index 7eb1fad93d02..182100395bbb 100644
->> --- a/include/crypto/dh.h
->> +++ b/include/crypto/dh.h
->> @@ -99,4 +99,26 @@ int crypto_dh_encode_key(char *buf, unsigned int len,
->> const struct dh *params); */
->>  int crypto_dh_decode_key(const char *buf, unsigned int len, struct dh
->> *params);
+>>  		goto err_clear_ctx;
 >>=20
->> +/*
->> + * The maximum key length is two times the max. sec. strength of the
->> + * safe-prime groups, rounded up to the next power of two.
->> + */
->> +#define CRYPTO_DH_MAX_PRIVKEY_SIZE (512 / 8)
+>>  	ctx->xa =3D mpi_read_raw_data(params.key, params.key_size);
+>> -	if (!ctx->xa)
+>> +	if (!ctx->xa) {
+>> +		err =3D -EINVAL;
+>>  		goto err_clear_ctx;
+>> +	}
 >> +
->> +/**
->> + * crypto_dh_gen_privkey() - generate a DH private key
->> + * @buf:	The DH group to generate a key for
->> + * @key:	Buffer provided by the caller to receive the generated
->> + *		key
->> + * @key_size:	Pointer to an unsigned integer the generated key's length
->> + *		will be stored in
->> + *
->> + * This function is intended to generate an ephemeral DH key.
->> + *
->> + * Return:	Negative error code on failure, 0 on success
->> + */
->> +int crypto_dh_gen_privkey(enum dh_group_id group_id,
->> +			  char key[CRYPTO_DH_MAX_PRIVKEY_SIZE],
->> +			  unsigned int *key_size);
->> +
->>  #endif
+>> +	memzero_explicit(key, sizeof(key));
+>>=20
+>>  	return 0;
+>>=20
+>>  err_clear_ctx:
+>>  	dh_clear_ctx(ctx);
+>> -	return -EINVAL;
+>> +	return err;
+>>  }
+>>=20
+>>  /*
+>
+>
+> Ciao
+> Stephan
+>
+>
 
 --=20
 SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
