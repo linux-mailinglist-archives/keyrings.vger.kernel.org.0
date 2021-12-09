@@ -2,144 +2,182 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED6A46E06E
-	for <lists+keyrings@lfdr.de>; Thu,  9 Dec 2021 02:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E10A346E4D3
+	for <lists+keyrings@lfdr.de>; Thu,  9 Dec 2021 10:04:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237537AbhLIBzU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Dec 2021 20:55:20 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:62774 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229680AbhLIBzT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Dec 2021 20:55:19 -0500
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B8NpFij020559;
-        Thu, 9 Dec 2021 01:51:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=lzNkL6HlG8uoD4LD2dknfufOrMTAzaPjmA2GavdwoYk=;
- b=bGfF52MtqCIan3T31khGXLZ5V9SQmsU4tNjRDTsPk0R+5fMLn2gtnBKPbdfDuVa5s9QK
- XmTVr0wMHAec3IqMumy0uRK150V/ZkYtf4Px4RsbTrVM9NS2NME5CgfEGqgnV82aUZ00
- papvyzMMEPdotAsvuLc65+p4/1d6b7TvD2FdY3ubuGHJYgUW4w64dSV5iQqjf1stp22s
- j91697c2DmCOoxj+0FsETRnoxKIVyspCZ/X0ets/IywZblS6I8ZBW/n5mKd5sRTVMANF
- C8GODj+RezSazeQblBkrne22Q7MD+gT2+p8iZAbeqaa2y20zWnjaUpcNtyfi0g7Nsbgn 0w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3cu1gk88we-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Dec 2021 01:51:01 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B91k8st023060;
-        Thu, 9 Dec 2021 01:51:00 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3cu1gk88w2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Dec 2021 01:51:00 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B91mA8k014682;
-        Thu, 9 Dec 2021 01:50:59 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by ppma04dal.us.ibm.com with ESMTP id 3cqyybtxwq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Dec 2021 01:50:59 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1B91ovro28115566
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 Dec 2021 01:50:57 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 00C6BC6063;
-        Thu,  9 Dec 2021 01:50:57 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F1C6DC6062;
-        Thu,  9 Dec 2021 01:50:54 +0000 (GMT)
-Received: from [9.211.91.166] (unknown [9.211.91.166])
-        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu,  9 Dec 2021 01:50:54 +0000 (GMT)
-Message-ID: <b5e6ec36-a9ec-22f4-be58-28d48bdc38b4@linux.vnet.ibm.com>
-Date:   Wed, 8 Dec 2021 20:50:54 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
-Content-Language: en-US
-To:     Michal Suchanek <msuchanek@suse.de>, keyrings@vger.kernel.org
-Cc:     kexec@lists.infradead.org, Philipp Rudo <prudo@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Rob Herring <robh@kernel.org>, linux-s390@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
+        id S235494AbhLIJHs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Dec 2021 04:07:48 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:35356 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231889AbhLIJHr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Dec 2021 04:07:47 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 3E1E01FD2A;
+        Thu,  9 Dec 2021 09:04:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1639040653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=dy5EIQogcANc1+1ibfr3CIN9AEbr+NI+ov2gssvL908=;
+        b=FiQ+4E2bIZsy6g7+8NRVvPP0l0y7rpTEkx6BhA3WdY+ImMLvPt4YcLoUK/rMWgApQcSSXC
+        tKcN0LbF7nx9qjS2CXg0bkIy4i25Ymx7xEVbIAhaB+dlmkV7wAC9cjuAxkHbwqHpEHB+ZK
+        oStdqj5wDnlMIOFkiIAhPOsMj7T35zk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1639040653;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=dy5EIQogcANc1+1ibfr3CIN9AEbr+NI+ov2gssvL908=;
+        b=/kxTa8g/Z8zTcJP8tGdsk8AV2CnbCwdI2ehi6ED4DVN4aY3FTl2u+93hnppWePWuTgR4ry
+        6q/pInJ0cdJs/6CQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 213E713A86;
+        Thu,  9 Dec 2021 09:04:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id lFDkBo3GsWFuaQAAMHmgww
+        (envelope-from <nstange@suse.de>); Thu, 09 Dec 2021 09:04:13 +0000
+From:   Nicolai Stange <nstange@suse.de>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
+        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
+        Zaibo Xu <xuzaibo@huawei.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
         David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Frank van der Linden <fllinden@amazon.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Baoquan He <bhe@redhat.com>, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-References: <cover.1637862358.git.msuchanek@suse.de>
-From:   Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <cover.1637862358.git.msuchanek@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        qat-linux@intel.com, keyrings@vger.kernel.org,
+        Nicolai Stange <nstange@suse.de>
+Subject: [PATCH v2 00/18] crypto: dh - infrastructure for NVM in-band auth and FIPS conformance
+Date:   Thu,  9 Dec 2021 10:03:40 +0100
+Message-Id: <20211209090358.28231-1-nstange@suse.de>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xrnPnY685HKWDzMtt8FN4mvhzwUwSKub
-X-Proofpoint-ORIG-GUID: PnjZLCiMbUjVAQT56miJWZSqnDdO6KM6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2021-12-09_01,2021-12-08_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=984
- lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0 suspectscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 mlxscore=0 clxscore=1011
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2112090006
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Hi all,
 
-On 11/25/21 13:02, Michal Suchanek wrote:
-> Hello,
+first of all, to the people primarily interested in security/keys/, there's
+a rather trivial change to security/keys/dh.c in patch 2/18. It would be
+great to get ACKs for that...
 
-Hi Michael,
+This is v2, v1 can be found at
 
->
-> This is resend of the KEXEC_SIG patchset.
->
-> The first patch is new because it'a a cleanup that does not require any
-> change to the module verification code.
->
-> The second patch is the only one that is intended to change any
-> functionality.
->
-> The rest only deduplicates code but I did not receive any review on that
-> part so I don't know if it's desirable as implemented.
->
-> The first two patches can be applied separately without the rest.
+  https://lore.kernel.org/r/20211201004858.19831-1-nstange@suse.de
 
-Patch 2 fails to apply on v5.16-rc4. Can you please also include git 
-tree/branch while posting the patches ?
+For a list of changes, see below.
 
-Secondly, I see that you add the powerpc support in Patch 2 and then 
-modify it again in Patch 5 after cleanup. Why not add the support for 
-powerpc after the clean up ? This will reduce some rework and also 
-probably simplify patches.
+Quote from v1's cover letter:
+===
+Hannes' recent work on NVME in-band authentication ([1]) needs access to
+the RFC 7919 DH group parameters and also some means to generate ephemeral
+keys. He currently implements both as part of his patchset (patches 3/12
+and 8/12). After some internal discussion, we decided to split off the bits
+needed from crypto/dh into a separate series, i.e. this one here:
+ - for the RFC 7919 DH group parameters, it's undesirable from a
+   performance POV to serialize the well-known domain parameters via
+   crypto_dh_encode_key() just to deserialize them shortly after again,
+ - from an architectural POV, it would be preferrable to have the key
+   generation code in crypto/dh.c rather than in drivers/nvme/,
+   just in analogy to how key generation is supported by crypto/ecdh.c
+   already.
 
-Thanks & Regards,
+Patches 1-13/18 implement all that is needed for the NVME in-band
+authentication support. 
 
-      - Nayna
+Unfortunately, due to the lack of HW, I have not been able to test
+the changes to the QAT or HPRE drivers (other than mere compile tests).
+Yet I figured it would be a good idea to have them behave consistently with
+dh_generic, and so I chose to introduce support for privkey generation to
+these as well.
+
+
+By coincidence, NIST SP800-56Arev3 compliance effectively requires that
+the domain parameters are checked against an approved set, which happens
+to consists of those safe-prime group parameters specified in RFC 7919,
+among others. Thus, introducing the RFC 7919 parameters to the kernel
+allows for making the DH implementation to conform to SP800-56Arev3 with
+only little effort. I used the opportunity to work crypto/dh towards
+SP800-56Arev3 conformance with the rest of this patch series, i.e.
+patches 14-18/18. I can split these into another series on its own, if you
+like. But as they depend on the earlier patches 1-13/18, I sent them
+alongside for now.
+===
+
+This patchset has been tested with and without fips_enabled on x86_64,
+ppc64le and s390x, the latter being big endian.
+
+
+Changes v1 -> v2:
+- Throughout the patchset:
+  - Upcase enum group_id members and strip superfluous _RFCXYZ_ parts from
+    the names.
+  - Carry Hannes' Reviewed-bys from v1 over for those patches which
+    have not changed (except for that group_id member renaming)
+- [03/18] ("crypto: dh - optimize domain parameter serialization for
+            well-known groups"):
+  - For better portability, don't serialize/deserialize directly from/to
+    an enum group_id, but use an intermediate int for that.
+- [05/18] ("crypto: testmgr - add DH RFC 7919 ffdhe2048 test vector")
+  - Use ffdhe3072 TVs rather than ones for ffdhe2048. Requested by Hannes,
+    because "the NVMe spec mandates for its TLS profile the ffdhe3072
+    group".
+- [13/18] ("crypto: testmgr - add DH test vectors for key generation")
+  - Use ffdhe3072 in place of ffdhe2048 here as well.
+  - Rather than introducing completely new keypairs, reuse the ones
+    from the known answer test introduced previously in this patchset.
+
+Thanks,
+
+Nicolai
+
+[1] https://lkml.kernel.org/r/20211123123801.73197-1-hare@suse.de
+
+
+Nicolai Stange (18):
+  crypto: dh - remove struct dh's ->q member
+  crypto: dh - constify struct dh's pointer members
+  crypto: dh - optimize domain parameter serialization for well-known
+    groups
+  crypto: dh - introduce RFC 7919 safe-prime groups
+  crypto: testmgr - add DH RFC 7919 ffdhe3072 test vector
+  crypto: dh - introduce RFC 3526 safe-prime groups
+  crypto: testmgr - add DH RFC 3526 modp2048 test vector
+  crypto: testmgr - run only subset of DH vectors based on config
+  crypto: dh - implement private key generation primitive
+  crypto: dh - introduce support for ephemeral key generation to
+    dh-generic
+  crypto: dh - introduce support for ephemeral key generation to hpre
+    driver
+  crypto: dh - introduce support for ephemeral key generation to qat
+    driver
+  crypto: testmgr - add DH test vectors for key generation
+  lib/mpi: export mpi_rshift
+  crypto: dh - store group id in dh-generic's dh_ctx
+  crypto: dh - calculate Q from P for the full public key verification
+  crypto: dh - try to match domain parameters to a known safe-prime
+    group
+  crypto: dh - accept only approved safe-prime groups in FIPS mode
+
+ crypto/Kconfig                                |  20 +-
+ crypto/dh.c                                   |  73 +-
+ crypto/dh_helper.c                            | 691 +++++++++++++++++-
+ crypto/testmgr.h                              | 388 +++++++++-
+ drivers/crypto/hisilicon/hpre/hpre_crypto.c   |  11 +
+ drivers/crypto/qat/qat_common/qat_asym_algs.c |   9 +
+ include/crypto/dh.h                           |  52 +-
+ lib/mpi/mpi-bit.c                             |   1 +
+ security/keys/dh.c                            |   2 +-
+ 9 files changed, 1189 insertions(+), 58 deletions(-)
+
+-- 
+2.26.2
 
