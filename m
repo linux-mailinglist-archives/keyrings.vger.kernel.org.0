@@ -2,42 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 710DE46EA68
-	for <lists+keyrings@lfdr.de>; Thu,  9 Dec 2021 15:57:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB42E46F63D
+	for <lists+keyrings@lfdr.de>; Thu,  9 Dec 2021 22:54:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239004AbhLIPBW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Dec 2021 10:01:22 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:54906 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbhLIPBW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Dec 2021 10:01:22 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 2EB09210FF;
-        Thu,  9 Dec 2021 14:57:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1639061867; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=B7f6qRahiw5jhS0ShhXv7YNAlwGFAuEPvz02wcswTDY=;
-        b=gPgeGBOqAj1w2/IfiYiUJZQKOR5J82A1Jcgx9IB9Lg4xy6yn6SJ5BFAlgLdbOLu1hHG7vE
-        0panrH92CgFnCxooEeYXPRniRiGQzT2/9Wq8WzmBRRrKzV/iXa5gM6ei/5FlPbBPij83bp
-        vqSVzkoMk5Lf/ek96wOP4gFIEnDAhro=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1639061867;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=B7f6qRahiw5jhS0ShhXv7YNAlwGFAuEPvz02wcswTDY=;
-        b=ifKqt7859hHQVpcEXofA567hptOij+KjdqlWOciBCOlO/gkAk2kGLrViK2ee2A72WKzrh7
-        l33DkpGEwGJL82CQ==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 44CA3A3B95;
-        Thu,  9 Dec 2021 14:57:45 +0000 (UTC)
-Date:   Thu, 9 Dec 2021 15:57:44 +0100
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Nayna <nayna@linux.vnet.ibm.com>
+        id S233007AbhLIV5w (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Dec 2021 16:57:52 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:29846 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231868AbhLIV5v (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Dec 2021 16:57:51 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B9KZHjb027392;
+        Thu, 9 Dec 2021 21:53:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=WMWPuPqMKkG7POp8eawwV4RyD7I/ba69OipN2SLIhY8=;
+ b=CQvQZs82boi9r/eoannQphMh+dI0uZhcqNDtBHo5FK+3ZSVy6ZL3noAsV3RzaXUdAGzl
+ maworrN7wm4zu+ueXaE6DbbtmSyABIcqp3AXXadrzv59wybqvXuAiuLBhi5sYRo/ohAJ
+ KCp3bTvihHt2x2Ds7SHmcr3I20WigbNag2S85aN29mmldXcx/mukpQvKbKjsbvmAmccA
+ oPqB5T4kaw7VFy9Ge8WASuFOY7fm/qdgclaufYBEC1CY8jzy1HiwAWIcqr+CpV+q3gFW
+ uu4KBoZ7QjsoTPorlYuWd4XViUrgqUQbBg/bFzKhQdsD5AhNDK374+iog2ZV9WYkTyCq SA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3cup7pwehy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Dec 2021 21:53:39 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B9LrdNB019382;
+        Thu, 9 Dec 2021 21:53:39 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3cup7pwehr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Dec 2021 21:53:39 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B9LcEZB011635;
+        Thu, 9 Dec 2021 21:53:37 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+        by ppma02wdc.us.ibm.com with ESMTP id 3cqyyc2mqn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Dec 2021 21:53:37 +0000
+Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1B9LrZ3927132204
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 9 Dec 2021 21:53:35 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 93B856E056;
+        Thu,  9 Dec 2021 21:53:35 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 97FCF6E052;
+        Thu,  9 Dec 2021 21:53:33 +0000 (GMT)
+Received: from [9.211.103.28] (unknown [9.211.103.28])
+        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Thu,  9 Dec 2021 21:53:33 +0000 (GMT)
+Message-ID: <790c68ce-070d-c391-0c3a-4637c616fa5e@linux.vnet.ibm.com>
+Date:   Thu, 9 Dec 2021 16:53:33 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+Content-Language: en-US
+To:     =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
 Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
         Philipp Rudo <prudo@redhat.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
@@ -68,61 +92,68 @@ Cc:     keyrings@vger.kernel.org, kexec@lists.infradead.org,
         Baoquan He <bhe@redhat.com>, linux-crypto@vger.kernel.org,
         linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
-Message-ID: <20211209145744.GQ117207@kunlun.suse.cz>
 References: <cover.1637862358.git.msuchanek@suse.de>
- <b5e6ec36-a9ec-22f4-be58-28d48bdc38b4@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5e6ec36-a9ec-22f4-be58-28d48bdc38b4@linux.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+ <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
+ <20211209092155.GO117207@kunlun.suse.cz>
+From:   Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <20211209092155.GO117207@kunlun.suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: x2XUc9cxjnO1DJ8AfathjBta2FnXVAlc
+X-Proofpoint-ORIG-GUID: HZolCF3M1gk1kZAg8NUwVeVyMGL04EK2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-09_09,2021-12-08_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501
+ clxscore=1015 suspectscore=0 adultscore=0 bulkscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112090112
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
 
-On Wed, Dec 08, 2021 at 08:50:54PM -0500, Nayna wrote:
-> 
-> On 11/25/21 13:02, Michal Suchanek wrote:
-> > Hello,
-> 
-> Hi Michael,
-> 
-> > 
-> > This is resend of the KEXEC_SIG patchset.
-> > 
-> > The first patch is new because it'a a cleanup that does not require any
-> > change to the module verification code.
-> > 
-> > The second patch is the only one that is intended to change any
-> > functionality.
-> > 
-> > The rest only deduplicates code but I did not receive any review on that
-> > part so I don't know if it's desirable as implemented.
-> > 
-> > The first two patches can be applied separately without the rest.
-> 
-> Patch 2 fails to apply on v5.16-rc4. Can you please also include git
-> tree/branch while posting the patches ?
+On 12/9/21 04:21, Michal Suchánek wrote:
+> Hello,
+Hi,
+> On Wed, Dec 08, 2021 at 08:51:47PM -0500, Nayna wrote:
+>> On 11/25/21 13:02, Michal Suchanek wrote:
+>>> Copy the code from s390x
+>>>
+>>> Signed-off-by: Michal Suchanek<msuchanek@suse.de>
+>>> ---
+>>>    arch/powerpc/Kconfig        | 11 +++++++++++
+>>>    arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
+>>>    2 files changed, 47 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>> index ac0c515552fd..ecc1227a77f1 100644
+>>> --- a/arch/powerpc/Kconfig
+>>> +++ b/arch/powerpc/Kconfig
+>>> @@ -561,6 +561,17 @@ config KEXEC_FILE
+>>>    config ARCH_HAS_KEXEC_PURGATORY
+>>>    	def_bool KEXEC_FILE
+>>>
+>>> +config KEXEC_SIG
+>>> +	bool "Verify kernel signature during kexec_file_load() syscall"
+>>> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+>> After manually applying the patch, the build is failing with the following
+>> error:
+>>
+>> build failed with error "arch/powerpc/kexec/elf_64.o: In function
+>> `elf64_verify_sig':
+>> /root/kernel/linus/linux/arch/powerpc/kexec/elf_64.c:160: undefined
+>> reference to `verify_appended_signature'"
+> This patch does not add call to verify_appended_signature.
+>
+> Maybe you applied the following patch as well?
 
-Sorry, I did not have a clean base and the Kconfig had another change.
+Yes, I tried build after applying all the patches.
 
-Here is a tree with the changes applied:
-https://github.com/hramrach/kernel/tree/kexec_sig
+Thanks & Regards,
 
-> 
-> Secondly, I see that you add the powerpc support in Patch 2 and then modify
-> it again in Patch 5 after cleanup. Why not add the support for powerpc after
-> the clean up ? This will reduce some rework and also probably simplify
-> patches.
+     - Nayna
 
-That's because I don't know if the later patches will be accepted. By
-queueing this patch first it can be applied standalone to ppc tree
-without regard for the other patches. It's a copy of the s390 code so it
-needs the same rework - not really adding complexity.
-
-Thanks
-
-Michal
