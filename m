@@ -2,51 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCDF470008
-	for <lists+keyrings@lfdr.de>; Fri, 10 Dec 2021 12:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A917447001D
+	for <lists+keyrings@lfdr.de>; Fri, 10 Dec 2021 12:36:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240558AbhLJLip (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 10 Dec 2021 06:38:45 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:33240 "EHLO
+        id S238051AbhLJLj7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 10 Dec 2021 06:39:59 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:33478 "EHLO
         smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237724AbhLJLip (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Dec 2021 06:38:45 -0500
+        with ESMTP id S238056AbhLJLjz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Dec 2021 06:39:55 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 2F7E1210FE;
-        Fri, 10 Dec 2021 11:35:09 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id EBCD121108;
+        Fri, 10 Dec 2021 11:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1639136109; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1639136179; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s//Xyr2vcUyv1kwXdQNN6eSotv9mCjoaNs6MD+O+gBk=;
-        b=PFVGW/nnxxPv3gogjxKEFJcPIpfY5fo24OqTmlfM48xM+tAG3Yp+qMnrl+Nu9UCozvYSwc
-        MPIrzCcFo87RfOjC9NdwtIybmPkYrThfnGWXPeCxNmeQiw4Q9jq3/M/edeOnHnKfRWDDmS
-        DoGQcdhtIZS3TpD6qNUVvClsdm27PKQ=
+        bh=JkdFI9UbtURaawwRNhX75kfGoLfWeXUlWV68RRspE9c=;
+        b=dBl6yOItGP/JsS4XH15L8b1D93c7NLjDMMcXUeVb3n+5jaY/5O5VmsontyvuMoxnYA1r5U
+        1hhW9Fk+EKm0fz8TfNIxKXC5UEtWhUG8hn7dfweUTcULFcqnQdQ3sUtMg4U9elvvSV+/71
+        X7AK20+IbPSL5wgTsNOGbOeaeiD+Wfg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1639136109;
+        s=susede2_ed25519; t=1639136179;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s//Xyr2vcUyv1kwXdQNN6eSotv9mCjoaNs6MD+O+gBk=;
-        b=NB1VCA4M1sUs6jClHBLcqmdVkHq4hEwi1aKDz23RvfO7V/9tAbeW3hrnUWYgmx8tbDAapX
-        T9j6uMtfIKUPo8DA==
+        bh=JkdFI9UbtURaawwRNhX75kfGoLfWeXUlWV68RRspE9c=;
+        b=Lc6GN5gEYl1gQok89kJ5rbzkIHmNFAT9s+IgmHu+jwyYu2vf7CvPJ/R1xi9i9xL+pxQcMp
+        8vg8Fc2txyPDCnAw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1A64D13DDE;
-        Fri, 10 Dec 2021 11:35:09 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C97F713DDE;
+        Fri, 10 Dec 2021 11:36:19 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id rQ4fBm07s2EJbwAAMHmgww
-        (envelope-from <hare@suse.de>); Fri, 10 Dec 2021 11:35:09 +0000
-Subject: Re: [PATCH v2 06/18] crypto: dh - introduce RFC 3526 safe-prime
- groups
+        id dTnmMLM7s2GFbwAAMHmgww
+        (envelope-from <hare@suse.de>); Fri, 10 Dec 2021 11:36:19 +0000
+Subject: Re: [PATCH v2 08/18] crypto: testmgr - run only subset of DH vectors
+ based on config
 To:     Nicolai Stange <nstange@suse.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>
@@ -58,14 +58,14 @@ Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org
 References: <20211209090358.28231-1-nstange@suse.de>
- <20211209090358.28231-7-nstange@suse.de>
+ <20211209090358.28231-9-nstange@suse.de>
 From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <8954c4c9-6fa6-aed9-f0be-4873118efb16@suse.de>
-Date:   Fri, 10 Dec 2021 12:35:08 +0100
+Message-ID: <e08d4112-e001-5cc1-ebaf-74e299af68e3@suse.de>
+Date:   Fri, 10 Dec 2021 12:36:19 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <20211209090358.28231-7-nstange@suse.de>
+In-Reply-To: <20211209090358.28231-9-nstange@suse.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -74,31 +74,36 @@ List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 On 12/9/21 10:03 AM, Nicolai Stange wrote:
-> A future patch will make the DH implementation to reject domain parameters
-> not corresponding to any of the safe-prime groups approved by SP800-56Arev3
-> in FIPS mode.
+> With the previous patches, the testmgr now has up to four test vectors for
+> DH which all test more or less the same thing:
+> - the two vectors from before this series,
+> - the vector for the ffdhe3072 group, enabled if
+>   CONFIG_CRYPTO_DH_GROUPS_RFC7919 is set and
+> - the vector for the modp2048 group, similarly enabled if
+>   CONFIG_CRYPTO_DH_GROUPS_RFC3526 is set.
 > 
-> The MODP groups specified by RFC 3526 are among those approved safe-prime
-> groups. Make them known to the kernel in order to enable the DH
-> implementation to recognize those when passed in from e.g. the
-> keyctl(KEYCTL_DH_COMPUTE) syscall.
+> In order to avoid too much redundancy during DH testing, enable only a
+> subset of these depending on the kernel config:
+> - if CONFIG_CRYPTO_DH_GROUPS_RFC7919 is set, enable only the ffdhe3072
+>   vector,
+> - otherwise, if CONFIG_CRYPTO_DH_GROUPS_RFC3526 is set, enable only
+>   the modp2048 vector and
+> - only enable the original two vectors if neither of these options
+>   has been selected.
 > 
-> More specifically, introduce corresponding members to enum dh_group_id
-> as well as entries with the resp. domain parameters to the
-> safe_prime_groups[] array queried by crypto_dh_decode_key(). The resp.
-> ->max_strength value is set to the maximum supported security strength as
-> specified in SP800-56Arev3.
-> 
-> As the domain parameters consume an substantial amount of space, make
-> RFC 3526 safe-prime group support selectable by means of the new
-> CRYPTO_DH_GROUPS_RFC3526 Kconfig option.
+> Note that an upcoming patch will make the DH implementation to reject any
+> domain parameters not corresponding to some safe-prime group approved by
+> SP800-56Arev3 in FIPS mode. Thus, having CONFIG_FIPS enabled, but
+> both of CONFIG_CRYPTO_DH_GROUPS_RFC7919 and
+> CONFIG_CRYPTO_DH_GROUPS_RFC3526 unset wouldn't make much sense as it would
+> render the DH implementation unusable in FIPS mode. Conversely, any
+> reasonable configuration would ensure that the original, non-conforming
+> test vectors would not get to run in FIPS mode.
 > 
 > Signed-off-by: Nicolai Stange <nstange@suse.de>
 > ---
->  crypto/Kconfig      |   6 ++
->  crypto/dh_helper.c  | 216 ++++++++++++++++++++++++++++++++++++++++++++
->  include/crypto/dh.h |   7 ++
->  3 files changed, 229 insertions(+)
+>  crypto/testmgr.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
