@@ -2,71 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC8F46FC1F
-	for <lists+keyrings@lfdr.de>; Fri, 10 Dec 2021 08:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3091546FE59
+	for <lists+keyrings@lfdr.de>; Fri, 10 Dec 2021 11:01:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235843AbhLJIAa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 10 Dec 2021 03:00:30 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:32421 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235454AbhLJIAa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Dec 2021 03:00:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1639123006;
-    s=strato-dkim-0002; d=chronox.de;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=OBEXN3+J8NPwvzJeHEFksdn+3uj088q/3sXGKE144pc=;
-    b=NXr3QQ2t7hG24aeMS2RUNDJaQMSPl+tgq8M7SdxTKb2XAUgeWaL96tl/+JHnhK3MoE
-    9a7uy26FeLA3emxdc9ZWXJB9vaup4u6KXgCCS7v5IH4gPKI/aaulcU0rhSiuUNQzLQ9Q
-    NYEaNAYcRwP52nzhBAxpyvhnh3sracnUe1Ffgbxe3zNLH0lQ3Bohr52YBIT7W+fXtZPh
-    oXQynIfIh3yZ5KtnB/rdS0B4zqQwjREoYtxbiYxxBq+F8vQHy3pc7ivd4lsP5mYd4cQS
-    tm5HVXMlz9oE6XVOJ3lVqeBu07DnIZrzufGPPrUS/O9gxyHMsTuhjmpQ0e7L78vbugBN
-    bljg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9xmwdNnzGHXPaI/SfwWp+"
-X-RZG-CLASS-ID: mo00
-Received: from tauon.chronox.de
-    by smtp.strato.de (RZmta 47.35.3 DYNA|AUTH)
-    with ESMTPSA id z09342xBA7uj5TI
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 10 Dec 2021 08:56:45 +0100 (CET)
-From:   Stephan Mueller <smueller@chronox.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        id S234244AbhLJKEc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 10 Dec 2021 05:04:32 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:34082 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239846AbhLJKE3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Dec 2021 05:04:29 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 048971F3A1;
+        Fri, 10 Dec 2021 10:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1639130454; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ul+ABzZ41ukEAiazH3jaH2jdypjmeOVGz0JMsInLYyw=;
+        b=DXBbv0lZLFNyORI+qqBbqxIl6CSOnWfqZgn3S/KD7VCpIzZSpwM8PGWiNDlf/1XoA4R9EF
+        O4+Gv9PLEqCOIDJSVNc7d0NapM32wfzssyWaxPkz6wfbwVUbg2mW9zRQlIOuEA7Xs5TlHf
+        wQsex5bZ0Fa8y4DvOIRZncODHsUXMpY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1639130454;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ul+ABzZ41ukEAiazH3jaH2jdypjmeOVGz0JMsInLYyw=;
+        b=s36vKVoJbkxIzvMQmUQTGsHnwI41C5jiOswOx9Dqv1PWQWeyxadHuP9Kf2S1trGTupWQ2D
+        649xe8Uk2z74BtDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 77DB413C1D;
+        Fri, 10 Dec 2021 10:00:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id yGYcG1Uls2F8QwAAMHmgww
+        (envelope-from <nstange@suse.de>); Fri, 10 Dec 2021 10:00:53 +0000
+From:   Nicolai Stange <nstange@suse.de>
+To:     Stephan Mueller <smueller@chronox.de>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        Nicolai Stange <nstange@suse.de>
-Cc:     Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
+        Nicolai Stange <nstange@suse.de>,
+        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
         Zaibo Xu <xuzaibo@huawei.com>,
         Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org,
-        Nicolai Stange <nstange@suse.de>
+        qat-linux@intel.com, keyrings@vger.kernel.org
 Subject: Re: [PATCH v2 00/18] crypto: dh - infrastructure for NVM in-band auth and FIPS conformance
-Date:   Fri, 10 Dec 2021 08:56:44 +0100
-Message-ID: <3288406.bErb3Tvseg@tauon.chronox.de>
-In-Reply-To: <20211209090358.28231-1-nstange@suse.de>
 References: <20211209090358.28231-1-nstange@suse.de>
+        <3288406.bErb3Tvseg@tauon.chronox.de>
+Date:   Fri, 10 Dec 2021 11:00:52 +0100
+In-Reply-To: <3288406.bErb3Tvseg@tauon.chronox.de> (Stephan Mueller's message
+        of "Fri, 10 Dec 2021 08:56:44 +0100")
+Message-ID: <877dccdbjf.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Am Donnerstag, 9. Dezember 2021, 10:03:40 CET schrieb Nicolai Stange:
+Stephan Mueller <smueller@chronox.de> writes:
 
-Hi Nicolai,
+> Am Donnerstag, 9. Dezember 2021, 10:03:40 CET schrieb Nicolai Stange:
+>
+> I successfully tested the entire patch set with the NIST ACVP reference=20
+> implementation which covers key generation for all safe prime groups defi=
+ned=20
+> in your patch set.
+>
+> Tested-by: Stephan Mueller <smueller@chronox.de>
 
-I successfully tested the entire patch set with the NIST ACVP reference 
-implementation which covers key generation for all safe prime groups defined 
-in your patch set.
+Thank you!
 
-Tested-by: Stephan Mueller <smueller@chronox.de>
+Nicolai
 
-Ciao
-Stephan
-
-
+--=20
+SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
+ermany
+(HRB 36809, AG N=C3=BCrnberg), GF: Ivo Totev
