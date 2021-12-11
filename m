@@ -2,202 +2,274 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2E76470034
-	for <lists+keyrings@lfdr.de>; Fri, 10 Dec 2021 12:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7DD24712BE
+	for <lists+keyrings@lfdr.de>; Sat, 11 Dec 2021 09:11:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233382AbhLJLmL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 10 Dec 2021 06:42:11 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:33830 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240656AbhLJLmH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Dec 2021 06:42:07 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        id S229596AbhLKIK6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 11 Dec 2021 03:10:58 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:35624 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229577AbhLKIK6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 11 Dec 2021 03:10:58 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id C62CB210FE;
-        Fri, 10 Dec 2021 11:38:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1639136311; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HT1IPygTfLcSdf/S3UzlR3XyAhpLtShiK2l6TIU5LMo=;
-        b=fJBdq08nMTbxukq6CZdUY/8iQcx25/uQmANNP0Sow8GsZIg1E9zUGlgwc4eodlTtGmiP1H
-        5i3wf+ntW/Z5uPQ0Whl+XjiTSCoEeG6xkEigmL6AFkU/igrBU/FSrIXGDrKlF1QJt+pVsn
-        T+cCcSGW2YfEXhgHL0IFt6xcmtBJyOY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1639136311;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HT1IPygTfLcSdf/S3UzlR3XyAhpLtShiK2l6TIU5LMo=;
-        b=kJhajqgJYCKpyDt8LLNSLqVU5XrKcxl6DeS6ii1qHaRR13Cfl+q5jvoEJDk32nw+8in3Xc
-        gLn7TmsVtQw25eAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A5B9413DDE;
-        Fri, 10 Dec 2021 11:38:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id yrMnKDc8s2FqcQAAMHmgww
-        (envelope-from <hare@suse.de>); Fri, 10 Dec 2021 11:38:31 +0000
-Subject: Re: [PATCH v2 00/18] crypto: dh - infrastructure for NVM in-band auth
- and FIPS conformance
-To:     Nicolai Stange <nstange@suse.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
-        Torsten Duwe <duwe@suse.de>, Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org
-References: <20211209090358.28231-1-nstange@suse.de>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <aabe44df-0b6c-8550-0138-b08f90ef9233@suse.de>
-Date:   Fri, 10 Dec 2021 12:38:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        by sin.source.kernel.org (Postfix) with ESMTPS id 04E9BCE2F2E;
+        Sat, 11 Dec 2021 08:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF93C004DD;
+        Sat, 11 Dec 2021 08:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639210254;
+        bh=oI+5/sY/L+5iscdhfDYqcwxVdpLCj2U5gYE5uvfSF84=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=PSQeWoYZFP5ERRveMRS37qY8u3LQsZgP6Vp6Cbrxi7jRHR0+VTAGSef6cS95rTceq
+         kc3D8/nf3tEpnoIXEFTZYNVx/CAonAp5ip3NF0kPhoOHxErpIIF9Ah+vJDKiJJhIdC
+         aE/WdLt6P273VsBhsX4/zTLYT3almJOsqEuhBItdfIckiIC9SpjZ4htzZmbJzZ4mLo
+         jYpv6//uE6liBfAqVg+eDS9SXOxDPw2gVD9OBg5bE/st9g8iXGFOnPHP55edmUXDRx
+         j9sFoDC10In/vcqsgT6LB+CRxE1vgzzmsKprFhSp37tLwuWalBeb/nJCb2BIrSwZpY
+         3bb/nGBVUE3eg==
+Message-ID: <2751d6f75d030cbb51abc916f2edbc5218d7f3f7.camel@kernel.org>
+Subject: Re: [PATCH v5 2/2] integrity: support including firmware
+ ".platform" keys at build time
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, zohar@linux.ibm.com,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+        Seth Forshee <seth@forshee.me>
+Date:   Sat, 11 Dec 2021 10:10:50 +0200
+In-Reply-To: <20211124204714.82514-3-nayna@linux.ibm.com>
+References: <20211124204714.82514-1-nayna@linux.ibm.com>
+         <20211124204714.82514-3-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.42.2 
 MIME-Version: 1.0
-In-Reply-To: <20211209090358.28231-1-nstange@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 12/9/21 10:03 AM, Nicolai Stange wrote:
-> Hi all,
-> 
-> first of all, to the people primarily interested in security/keys/, there's
-> a rather trivial change to security/keys/dh.c in patch 2/18. It would be
-> great to get ACKs for that...
-> 
-> This is v2, v1 can be found at
-> 
->   https://lore.kernel.org/r/20211201004858.19831-1-nstange@suse.de
-> 
-> For a list of changes, see below.
-> 
-> Quote from v1's cover letter:
-> ===
-> Hannes' recent work on NVME in-band authentication ([1]) needs access to
-> the RFC 7919 DH group parameters and also some means to generate ephemeral
-> keys. He currently implements both as part of his patchset (patches 3/12
-> and 8/12). After some internal discussion, we decided to split off the bits
-> needed from crypto/dh into a separate series, i.e. this one here:
->  - for the RFC 7919 DH group parameters, it's undesirable from a
->    performance POV to serialize the well-known domain parameters via
->    crypto_dh_encode_key() just to deserialize them shortly after again,
->  - from an architectural POV, it would be preferrable to have the key
->    generation code in crypto/dh.c rather than in drivers/nvme/,
->    just in analogy to how key generation is supported by crypto/ecdh.c
->    already.
-> 
-> Patches 1-13/18 implement all that is needed for the NVME in-band
-> authentication support. 
-> 
-> Unfortunately, due to the lack of HW, I have not been able to test
-> the changes to the QAT or HPRE drivers (other than mere compile tests).
-> Yet I figured it would be a good idea to have them behave consistently with
-> dh_generic, and so I chose to introduce support for privkey generation to
-> these as well.
-> 
-> 
-> By coincidence, NIST SP800-56Arev3 compliance effectively requires that
-> the domain parameters are checked against an approved set, which happens
-> to consists of those safe-prime group parameters specified in RFC 7919,
-> among others. Thus, introducing the RFC 7919 parameters to the kernel
-> allows for making the DH implementation to conform to SP800-56Arev3 with
-> only little effort. I used the opportunity to work crypto/dh towards
-> SP800-56Arev3 conformance with the rest of this patch series, i.e.
-> patches 14-18/18. I can split these into another series on its own, if you
-> like. But as they depend on the earlier patches 1-13/18, I sent them
-> alongside for now.
-> ===
-> 
-> This patchset has been tested with and without fips_enabled on x86_64,
-> ppc64le and s390x, the latter being big endian.
-> 
-> 
-> Changes v1 -> v2:
-> - Throughout the patchset:
->   - Upcase enum group_id members and strip superfluous _RFCXYZ_ parts from
->     the names.
->   - Carry Hannes' Reviewed-bys from v1 over for those patches which
->     have not changed (except for that group_id member renaming)
-> - [03/18] ("crypto: dh - optimize domain parameter serialization for
->             well-known groups"):
->   - For better portability, don't serialize/deserialize directly from/to
->     an enum group_id, but use an intermediate int for that.
-> - [05/18] ("crypto: testmgr - add DH RFC 7919 ffdhe2048 test vector")
->   - Use ffdhe3072 TVs rather than ones for ffdhe2048. Requested by Hannes,
->     because "the NVMe spec mandates for its TLS profile the ffdhe3072
->     group".
-> - [13/18] ("crypto: testmgr - add DH test vectors for key generation")
->   - Use ffdhe3072 in place of ffdhe2048 here as well.
->   - Rather than introducing completely new keypairs, reuse the ones
->     from the known answer test introduced previously in this patchset.
-> 
-> Thanks,
-> 
-> Nicolai
-> 
-> [1] https://lkml.kernel.org/r/20211123123801.73197-1-hare@suse.de
-> 
-> 
-> Nicolai Stange (18):
->   crypto: dh - remove struct dh's ->q member
->   crypto: dh - constify struct dh's pointer members
->   crypto: dh - optimize domain parameter serialization for well-known
->     groups
->   crypto: dh - introduce RFC 7919 safe-prime groups
->   crypto: testmgr - add DH RFC 7919 ffdhe3072 test vector
->   crypto: dh - introduce RFC 3526 safe-prime groups
->   crypto: testmgr - add DH RFC 3526 modp2048 test vector
->   crypto: testmgr - run only subset of DH vectors based on config
->   crypto: dh - implement private key generation primitive
->   crypto: dh - introduce support for ephemeral key generation to
->     dh-generic
->   crypto: dh - introduce support for ephemeral key generation to hpre
->     driver
->   crypto: dh - introduce support for ephemeral key generation to qat
->     driver
->   crypto: testmgr - add DH test vectors for key generation
->   lib/mpi: export mpi_rshift
->   crypto: dh - store group id in dh-generic's dh_ctx
->   crypto: dh - calculate Q from P for the full public key verification
->   crypto: dh - try to match domain parameters to a known safe-prime
->     group
->   crypto: dh - accept only approved safe-prime groups in FIPS mode
-> 
->  crypto/Kconfig                                |  20 +-
->  crypto/dh.c                                   |  73 +-
->  crypto/dh_helper.c                            | 691 +++++++++++++++++-
->  crypto/testmgr.h                              | 388 +++++++++-
->  drivers/crypto/hisilicon/hpre/hpre_crypto.c   |  11 +
->  drivers/crypto/qat/qat_common/qat_asym_algs.c |   9 +
->  include/crypto/dh.h                           |  52 +-
->  lib/mpi/mpi-bit.c                             |   1 +
->  security/keys/dh.c                            |   2 +-
->  9 files changed, 1189 insertions(+), 58 deletions(-)
-> 
-I have run this implementation against my NVMe In-band authentication
-test suite and have found no issues.
+On Wed, 2021-11-24 at 15:47 -0500, Nayna Jain wrote:
+> A new function load_builtin_platform_cert() is defined to load compiled
+> in certificates onto the ".platform" keyring.
+>=20
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 
-Tested-by: Hannes Reinecke <hare@suse.de>
+This is way too non-verbose.
 
-Cheers,
+It does not *really* describe what the patch does, e.g. it is
+completely any description that a kconfig option is added.
+You should describe all things that are going to happen as a
+consequence of applying this patch.
 
-Hannes
--- 
-Dr. Hannes Reinecke		           Kernel Storage Architect
-hare@suse.de			                  +49 911 74053 688
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), GF: Felix Imendörffer
+It's not like the commit is just adding a function, and that's
+the whole story.
+
+Nit: always use imperative form: "Add a new function...".
+
+
+> ---
+>  security/integrity/Kconfig                    | 10 +++++++
+>  security/integrity/Makefile                   | 17 +++++++++++-
+>  security/integrity/digsig.c                   |  2 +-
+>  security/integrity/integrity.h                |  6 +++++
+>  .../integrity/platform_certs/platform_cert.S  | 23 ++++++++++++++++
+>  .../platform_certs/platform_keyring.c         | 26 +++++++++++++++++++
+>  6 files changed, 82 insertions(+), 2 deletions(-)
+>  create mode 100644 security/integrity/platform_certs/platform_cert.S
+>=20
+> diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+> index 71f0177e8716..9fccf1368b8a 100644
+> --- a/security/integrity/Kconfig
+> +++ b/security/integrity/Kconfig
+> @@ -62,6 +62,16 @@ config INTEGRITY_PLATFORM_KEYRING
+>           provided by the platform for verifying the kexec'ed kerned imag=
+e
+>           and, possibly, the initramfs signature.
+> =20
+> +config INTEGRITY_PLATFORM_KEYS
+> +        string "Builtin X.509 keys for .platform keyring"
+> +        depends on KEYS
+> +        depends on ASYMMETRIC_KEY_TYPE
+> +        depends on INTEGRITY_PLATFORM_KEYRING
+> +        help
+> +          If set, this option should be the filename of a PEM-formatted =
+file
+> +          containing X.509 certificates to be loaded onto the ".platform=
+"
+> +          keyring.
+> +
+>  config LOAD_UEFI_KEYS
+>         depends on INTEGRITY_PLATFORM_KEYRING
+>         depends on EFI
+> diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+> index 7ee39d66cf16..46629f5ef4f6 100644
+> --- a/security/integrity/Makefile
+> +++ b/security/integrity/Makefile
+> @@ -3,13 +3,18 @@
+>  # Makefile for caching inode integrity data (iint)
+>  #
+> =20
+> +quiet_cmd_extract_certs  =3D EXTRACT_CERTS   $(patsubst "%",%,$(2))
+> +      cmd_extract_certs  =3D scripts/extract-cert $(2) $@
+> +$(eval $(call config_filename,INTEGRITY_PLATFORM_KEYS))
+> +
+>  obj-$(CONFIG_INTEGRITY) +=3D integrity.o
+> =20
+>  integrity-y :=3D iint.o
+>  integrity-$(CONFIG_INTEGRITY_AUDIT) +=3D integrity_audit.o
+>  integrity-$(CONFIG_INTEGRITY_SIGNATURE) +=3D digsig.o
+>  integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) +=3D digsig_asymmetric.o
+> -integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) +=3D platform_certs/platf=
+orm_keyring.o
+> +integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) +=3D platform_certs/platf=
+orm_keyring.o \
+> +						  platform_certs/platform_cert.o
+>  integrity-$(CONFIG_LOAD_UEFI_KEYS) +=3D platform_certs/efi_parser.o \
+>  				      platform_certs/load_uefi.o \
+>  				      platform_certs/keyring_handler.o
+> @@ -19,3 +24,13 @@ integrity-$(CONFIG_LOAD_PPC_KEYS) +=3D platform_certs/=
+efi_parser.o \
+>                                       platform_certs/keyring_handler.o
+>  obj-$(CONFIG_IMA)			+=3D ima/
+>  obj-$(CONFIG_EVM)			+=3D evm/
+> +
+> +
+> +$(obj)/platform_certs/platform_cert.o: $(obj)/platform_certs/platform_ce=
+rtificate_list
+> +
+> +targets +=3D platform_certificate_list
+> +
+> +$(obj)/platform_certs/platform_certificate_list: scripts/extract-cert $(=
+INTEGRITY_PLATFORM_KEYS_FILENAME) FORCE
+> +	$(call if_changed,extract_certs,$(CONFIG_INTEGRITY_PLATFORM_KEYS))
+> +
+> +clean-files :=3D platform_certs/platform_certificate_list
+> diff --git a/security/integrity/digsig.c b/security/integrity/digsig.c
+> index 3b06a01bd0fd..0ea40ed8dfcb 100644
+> --- a/security/integrity/digsig.c
+> +++ b/security/integrity/digsig.c
+> @@ -38,7 +38,7 @@ static const char * const keyring_name[INTEGRITY_KEYRIN=
+G_MAX] =3D {
+>  #define restrict_link_to_ima restrict_link_by_builtin_trusted
+>  #endif
+> =20
+> -static struct key *integrity_keyring_from_id(const unsigned int id)
+> +struct key *integrity_keyring_from_id(const unsigned int id)
+
+This export should be split into separate patch.
+
+>  {
+>  	if (id >=3D INTEGRITY_KEYRING_MAX)
+>  		return ERR_PTR(-EINVAL);
+> diff --git a/security/integrity/integrity.h b/security/integrity/integrit=
+y.h
+> index 547425c20e11..feb84e1b1105 100644
+> --- a/security/integrity/integrity.h
+> +++ b/security/integrity/integrity.h
+> @@ -167,6 +167,7 @@ int __init integrity_init_keyring(const unsigned int =
+id);
+>  int __init integrity_load_x509(const unsigned int id, const char *path);
+>  int __init integrity_load_cert(const unsigned int id, const char *source=
+,
+>  			       const void *data, size_t len, key_perm_t perm);
+> +struct key *integrity_keyring_from_id(const unsigned int id);
+>  #else
+> =20
+>  static inline int integrity_digsig_verify(const unsigned int id,
+> @@ -194,6 +195,11 @@ static inline int __init integrity_load_cert(const u=
+nsigned int id,
+>  {
+>  	return 0;
+>  }
+> +
+> +static inline struct key *integrity_keyring_from_id(const unsigned int i=
+d)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+>  #endif /* CONFIG_INTEGRITY_SIGNATURE */
+> =20
+>  #ifdef CONFIG_INTEGRITY_ASYMMETRIC_KEYS
+> diff --git a/security/integrity/platform_certs/platform_cert.S b/security=
+/integrity/platform_certs/platform_cert.S
+> new file mode 100644
+> index 000000000000..20bccce5dc5a
+> --- /dev/null
+> +++ b/security/integrity/platform_certs/platform_cert.S
+> @@ -0,0 +1,23 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#include <linux/export.h>
+> +#include <linux/init.h>
+> +
+> +	__INITRODATA
+> +
+> +	.align 8
+> +#ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
+> +	.globl platform_certificate_list
+> +platform_certificate_list:
+> +__cert_list_start:
+> +	.incbin "security/integrity/platform_certs/platform_certificate_list"
+> +__cert_list_end:
+> +#endif
+> +
+> +	.align 8
+> +	.globl platform_certificate_list_size
+> +platform_certificate_list_size:
+> +#ifdef CONFIG_64BIT
+> +	.quad __cert_list_end - __cert_list_start
+> +#else
+> +	.long __cert_list_end - __cert_list_start
+> +#endif
+> diff --git a/security/integrity/platform_certs/platform_keyring.c b/secur=
+ity/integrity/platform_certs/platform_keyring.c
+> index bcafd7387729..b45de142c5f5 100644
+> --- a/security/integrity/platform_certs/platform_keyring.c
+> +++ b/security/integrity/platform_certs/platform_keyring.c
+> @@ -12,8 +12,12 @@
+>  #include <linux/cred.h>
+>  #include <linux/err.h>
+>  #include <linux/slab.h>
+> +#include <keys/system_keyring.h>
+>  #include "../integrity.h"
+> =20
+> +extern __initconst const u8 platform_certificate_list[];
+> +extern __initconst const unsigned long platform_certificate_list_size;
+> +
+>  /**
+>   * add_to_platform_keyring - Add to platform keyring without validation.
+>   * @source: Source of key
+> @@ -37,6 +41,28 @@ void __init add_to_platform_keyring(const char *source=
+, const void *data,
+>  		pr_info("Error adding keys to platform keyring %s\n", source);
+>  }
+> =20
+> +static __init int load_platform_certificate_list(void)
+> +{
+> +	const u8 *p;
+> +	unsigned long size;
+> +	int rc;
+> +	struct key *keyring;
+> +
+> +	p =3D platform_certificate_list;
+> +	size =3D platform_certificate_list_size;
+> +
+> +	keyring =3D integrity_keyring_from_id(INTEGRITY_KEYRING_PLATFORM);
+> +	if (IS_ERR(keyring))
+> +		return PTR_ERR(keyring);
+> +
+> +	rc =3D load_certificate_list(p, size, keyring);
+> +	if (rc)
+> +		pr_info("Error adding keys to platform keyring %d\n", rc);
+> +
+> +	return rc;
+> +}
+> +late_initcall(load_platform_certificate_list);
+> +
+>  /*
+>   * Create the trusted keyrings.
+>   */
+
+/Jarkko
