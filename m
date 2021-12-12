@@ -2,115 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B27E471A82
-	for <lists+keyrings@lfdr.de>; Sun, 12 Dec 2021 14:55:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A14AE471C9E
+	for <lists+keyrings@lfdr.de>; Sun, 12 Dec 2021 20:31:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbhLLNzX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 12 Dec 2021 08:55:23 -0500
-Received: from mail-m971.mail.163.com ([123.126.97.1]:33742 "EHLO
-        mail-m971.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229979AbhLLNzX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 12 Dec 2021 08:55:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cdE7N
-        cm9pcQKaI/4ppM0Xh5ubS5gPNoRT9n4pnfsXNs=; b=JAArMrvR0UajIpByVpHFM
-        X3hCg5Dcp+wJRdyxipD00Fw4+hjSO2ishCUReaCUuzMwRipbIYX+1Av0u/CrEbAx
-        39FB5A7wglb1cCz7v1Y3xY+MRcJtI/QaNWbHLLdk5DByXWtAM23TfjwhVTA6+iKX
-        j4S6Wh3kaozRisa3cHFTfw=
-Received: from localhost.localdomain (unknown [36.112.214.113])
-        by smtp1 (Coremail) with SMTP id GdxpCgBHmx_9_rVhaB4NBQ--.25678S4;
-        Sun, 12 Dec 2021 21:54:33 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
-        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jianglei Nie <niejianglei2021@163.com>
-Subject: [PATCH] security:trusted_tpm2: Fix memory leak in tpm2_key_encode()
-Date:   Sun, 12 Dec 2021 21:54:03 +0800
-Message-Id: <20211212135403.59724-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
+        id S229907AbhLLTbE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 12 Dec 2021 14:31:04 -0500
+Received: from conuserg-08.nifty.com ([210.131.2.75]:25054 "EHLO
+        conuserg-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229600AbhLLTbC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 12 Dec 2021 14:31:02 -0500
+Received: from grover.. (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id 1BCJTqAk000552;
+        Mon, 13 Dec 2021 04:29:52 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 1BCJTqAk000552
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1639337393;
+        bh=FXw958wyo8ETkKfX7PUkbCcYnUmIcy1cqQ//+4bN/Sg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ohvtGUFWSUwc68OTx4V2VSL2Wv0mzlcaItMXt9jwLUaF37y0y5w++Hdivpi6k8cgz
+         96UrTLG0976RF4BOZrskI2YFO7GJcwbVMIOsHgqei7Ikn2o774YMePwh7y5izqUokg
+         CM7vSOxLPHo1LhvsfCOImQlYbnRzAirsTYvDqDKMXfzrlVhrkH3IyGiTW7fyjG9xbG
+         YaGLO2pExbYrar9c6TQUHzJBdUcz1e4kQyoJySslYGnzo0WkOiYsNnKxxv9L+rsN9w
+         tWYebiiak+JP/IvuNV2UB/8Zh2bcuwiqEESoUaLYux/i/xNJTvwaoHv/R27ZerMBBS
+         TaXme7Ke5Dxuw==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Michal Simek <michal.simek@xilinx.com>, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 00/10] kbuild: do not quote string values in Makefile
+Date:   Mon, 13 Dec 2021 04:29:31 +0900
+Message-Id: <20211212192941.1149247-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GdxpCgBHmx_9_rVhaB4NBQ--.25678S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww4DGFy7XF4UZr4xZrWrKrg_yoW8Kw4fpF
-        W5KF1UZrWagry7Ary7JF4Svr1fCa98KF47Kws7W39rG3ZxJFsxtFy7Ar4Ygr17ZFWfKw15
-        Za1qvFWUWrWqvwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jf9N3UUUUU=
-X-Originating-IP: [36.112.214.113]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbi6xlnjFXlyhOO9wAAsJ
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Line 36 (#1) allocates a memory chunk for scratch by kmalloc(), but
-it is never freed through the function, which will lead to a memory
-leak.
 
-We should kfree() scratch before the function returns (#2, #3 and #4).
+This patch refactors the code as outlined in:
 
-31 static int tpm2_key_encode(struct trusted_key_payload *payload,
-32			   struct trusted_key_options *options,
-33			   u8 *src, u32 len)
-34 {
-36	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
-      	// #1: kmalloc space
-37	u8 *work = scratch, *work1;
-50	if (!scratch)
-51		return -ENOMEM;
+  https://lore.kernel.org/linux-kbuild/CAK7LNAR-VXwHFEJqCcrFDZj+_4+Xd6oynbj_0eS8N504_ydmyw@mail.gmail.com/
 
-56	if (options->blobauth_len == 0) {
-60		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-61			return PTR_ERR(w); // #2: missing kfree
-63	}
+First some patches refactor certs/Makefile. This Makefile is written
+in a too complicated way.
 
-71	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
-72		 "BUG: scratch buffer is too small"))
-73		return -EINVAL; // #3: missing kfree
+I will revert cd8c917a56f20f48748dd43d9ae3caff51d5b987
+after this lands in the upstream.
 
-  	// #4: missing kfree: scratch is never used afterwards.
-82	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
-83		return PTR_ERR(work1);
 
-85	return work1 - payload->blob;
-86 }
 
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
----
- security/keys/trusted-keys/trusted_tpm2.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Masahiro Yamada (10):
+  certs: use $@ to simplify the key generation rule
+  certs: unify duplicated cmd_extract_certs and improve the log
+  certs: remove unneeded -I$(srctree) option for system_certificates.o
+  certs: refactor file cleaning
+  certs: remove misleading comments about GCC PR
+  kbuild: stop using config_filename in scripts/Makefile.modsign
+  certs: simplify $(srctree)/ handling and remove config_filename macro
+  kbuild: do not include include/config/auto.conf from shell scripts
+  kbuild: do not quote string values in include/config/auto.conf
+  microblaze: use built-in function to get CPU_{MAJOR,MINOR,REV}
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 0165da386289..3408a74c855f 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -57,8 +57,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 		unsigned char bool[3], *w = bool;
- 		/* tag 0 is emptyAuth */
- 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
--		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-+		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
-+			kfree(scratch);
- 			return PTR_ERR(w);
-+		}
- 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
- 	}
- 
-@@ -69,9 +71,12 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	 * trigger, so if it does there's something nefarious going on
- 	 */
- 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
--		 "BUG: scratch buffer is too small"))
-+		 "BUG: scratch buffer is too small")) {
-+		kfree(scratch);
- 		return -EINVAL;
-+	}
- 
-+	kfree(scratch);
- 	work = asn1_encode_integer(work, end_work, options->keyhandle);
- 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
- 	work = asn1_encode_octet_string(work, end_work, priv, priv_len);
+ Makefile                                      |  6 +--
+ arch/arc/Makefile                             |  4 +-
+ arch/arc/boot/dts/Makefile                    |  4 +-
+ arch/h8300/boot/dts/Makefile                  |  6 +--
+ arch/microblaze/Makefile                      |  8 ++--
+ arch/nds32/boot/dts/Makefile                  |  7 +--
+ arch/nios2/boot/dts/Makefile                  |  2 +-
+ arch/openrisc/boot/dts/Makefile               |  7 +--
+ arch/powerpc/boot/Makefile                    |  2 +-
+ arch/riscv/boot/dts/canaan/Makefile           |  4 +-
+ arch/sh/boot/dts/Makefile                     |  4 +-
+ arch/xtensa/Makefile                          |  2 +-
+ arch/xtensa/boot/dts/Makefile                 |  5 +-
+ certs/Makefile                                | 48 ++++++-------------
+ drivers/acpi/Makefile                         |  2 +-
+ drivers/base/firmware_loader/builtin/Makefile |  4 +-
+ init/Makefile                                 |  2 +-
+ net/wireless/Makefile                         |  4 +-
+ scripts/Kbuild.include                        | 47 ------------------
+ scripts/Makefile.modinst                      |  4 +-
+ scripts/gen_autoksyms.sh                      |  6 +--
+ scripts/kconfig/confdata.c                    |  2 +-
+ scripts/link-vmlinux.sh                       | 47 +++++++++---------
+ scripts/setlocalversion                       |  9 ++--
+ usr/Makefile                                  |  2 +-
+ 25 files changed, 74 insertions(+), 164 deletions(-)
+
 -- 
-2.25.1
+2.32.0
 
