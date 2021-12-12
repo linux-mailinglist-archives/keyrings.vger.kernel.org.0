@@ -2,75 +2,114 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2BD9471C9A
-	for <lists+keyrings@lfdr.de>; Sun, 12 Dec 2021 20:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7137471E10
+	for <lists+keyrings@lfdr.de>; Sun, 12 Dec 2021 22:29:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230251AbhLLTbG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 12 Dec 2021 14:31:06 -0500
-Received: from conuserg-08.nifty.com ([210.131.2.75]:25068 "EHLO
-        conuserg-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229677AbhLLTbD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 12 Dec 2021 14:31:03 -0500
-Received: from grover.. (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id 1BCJTqAu000552;
-        Mon, 13 Dec 2021 04:30:00 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 1BCJTqAu000552
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1639337401;
-        bh=UTYKGj88xYToscrUiygI8mCc6KISWEtozuMy+fS5oOs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KCgeTjseCnfEnf23cAtZpH+SF1PG0fz94Jpmlvqj0rdXjFDYgkDHcMXziM2yJ5H21
-         +OYWsJWkMJ187PTnH0UP5p7uAKOYtcKcoerV0vpo0c9t9qUwEbs4rrOkS5rJYG+sYf
-         mkKieUCPcYuxbhuxivVDGd+X2o/4hrxMfLJMWwuWuzD7UWHiRiP4Fg9ADWzlYaXOHV
-         x/lNyL9ESqR48kcOllow/sxJoe/pOJm7CsPi4al9IU45pr30i+AjJCHoaoWq695NSx
-         9yPDuUtXA/f3GK8vm3c6nuDktGb8/IUPNxHXb+AuYFQ+fcr6z/lW50RN/FaDO/b3YE
-         CtJ9/RihBpFYQ==
-X-Nifty-SrcIP: [133.32.232.101]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     Michal Simek <michal.simek@xilinx.com>, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 10/10] microblaze: use built-in function to get CPU_{MAJOR,MINOR,REV}
-Date:   Mon, 13 Dec 2021 04:29:41 +0900
-Message-Id: <20211212192941.1149247-11-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211212192941.1149247-1-masahiroy@kernel.org>
-References: <20211212192941.1149247-1-masahiroy@kernel.org>
+        id S229628AbhLLV3e (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 12 Dec 2021 16:29:34 -0500
+Received: from mail.hallyn.com ([178.63.66.53]:32972 "EHLO mail.hallyn.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229619AbhLLV3d (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Sun, 12 Dec 2021 16:29:33 -0500
+X-Greylist: delayed 492 seconds by postgrey-1.27 at vger.kernel.org; Sun, 12 Dec 2021 16:29:33 EST
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+        id 6FF246B4; Sun, 12 Dec 2021 15:21:17 -0600 (CST)
+Date:   Sun, 12 Dec 2021 15:21:17 -0600
+From:   "Serge E. Hallyn" <serge@hallyn.com>
+To:     Jianglei Nie <niejianglei2021@163.com>
+Cc:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
+        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] security:trusted_tpm2: Fix memory leak in
+ tpm2_key_encode()
+Message-ID: <20211212212117.GA5737@mail.hallyn.com>
+References: <20211212135403.59724-1-niejianglei2021@163.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211212135403.59724-1-niejianglei2021@163.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Use built-in functions instead of shell commands to avoid forking
-processes.
+On Sun, Dec 12, 2021 at 09:54:03PM +0800, Jianglei Nie wrote:
+> Line 36 (#1) allocates a memory chunk for scratch by kmalloc(), but
+> it is never freed through the function, which will lead to a memory
+> leak.
+> 
+> We should kfree() scratch before the function returns (#2, #3 and #4).
+> 
+> 31 static int tpm2_key_encode(struct trusted_key_payload *payload,
+> 32			   struct trusted_key_options *options,
+> 33			   u8 *src, u32 len)
+> 34 {
+> 36	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
+>       	// #1: kmalloc space
+> 37	u8 *work = scratch, *work1;
+> 50	if (!scratch)
+> 51		return -ENOMEM;
+> 
+> 56	if (options->blobauth_len == 0) {
+> 60		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+> 61			return PTR_ERR(w); // #2: missing kfree
+> 63	}
+> 
+> 71	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+> 72		 "BUG: scratch buffer is too small"))
+> 73		return -EINVAL; // #3: missing kfree
+> 
+>   	// #4: missing kfree: scratch is never used afterwards.
+> 82	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+> 83		return PTR_ERR(work1);
+> 
+> 85	return work1 - payload->blob;
+> 86 }
+> 
+> Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+I don't know that we need to keep the line by line recap in
+the full git log, but it def looks correct:
 
- arch/microblaze/Makefile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
 
-diff --git a/arch/microblaze/Makefile b/arch/microblaze/Makefile
-index a25e76d89e86..1826d9ce4459 100644
---- a/arch/microblaze/Makefile
-+++ b/arch/microblaze/Makefile
-@@ -6,9 +6,9 @@ UTS_SYSNAME = -DUTS_SYSNAME=\"Linux\"
- # What CPU version are we building for, and crack it open
- # as major.minor.rev
- CPU_VER   := $(CONFIG_XILINX_MICROBLAZE0_HW_VER)
--CPU_MAJOR := $(shell echo $(CPU_VER) | cut -d '.' -f 1)
--CPU_MINOR := $(shell echo $(CPU_VER) | cut -d '.' -f 2)
--CPU_REV   := $(shell echo $(CPU_VER) | cut -d '.' -f 3)
-+CPU_MAJOR := $(word 1, $(subst ., , $(CPU_VER)))
-+CPU_MINOR := $(word 2, $(subst ., , $(CPU_VER)))
-+CPU_REV   := $(word 3, $(subst ., , $(CPU_VER)))
- 
- export CPU_VER CPU_MAJOR CPU_MINOR CPU_REV
- 
--- 
-2.32.0
+thanks,
+-serge
 
+> ---
+>  security/keys/trusted-keys/trusted_tpm2.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+> index 0165da386289..3408a74c855f 100644
+> --- a/security/keys/trusted-keys/trusted_tpm2.c
+> +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> @@ -57,8 +57,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  		unsigned char bool[3], *w = bool;
+>  		/* tag 0 is emptyAuth */
+>  		w = asn1_encode_boolean(w, w + sizeof(bool), true);
+> -		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+> +		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
+> +			kfree(scratch);
+>  			return PTR_ERR(w);
+> +		}
+>  		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
+>  	}
+>  
+> @@ -69,9 +71,12 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  	 * trigger, so if it does there's something nefarious going on
+>  	 */
+>  	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+> -		 "BUG: scratch buffer is too small"))
+> +		 "BUG: scratch buffer is too small")) {
+> +		kfree(scratch);
+>  		return -EINVAL;
+> +	}
+>  
+> +	kfree(scratch);
+>  	work = asn1_encode_integer(work, end_work, options->keyhandle);
+>  	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
+>  	work = asn1_encode_octet_string(work, end_work, priv, priv_len);
+> -- 
+> 2.25.1
