@@ -2,88 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D00D4728BC
-	for <lists+keyrings@lfdr.de>; Mon, 13 Dec 2021 11:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12B61472A5A
+	for <lists+keyrings@lfdr.de>; Mon, 13 Dec 2021 11:39:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239363AbhLMKOg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 13 Dec 2021 05:14:36 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:50500 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241231AbhLMKMP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Dec 2021 05:12:15 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id BC08A1F3BA;
-        Mon, 13 Dec 2021 10:12:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1639390333; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TNx1zR1/Fgli6BcXKjYqn4bJ2J/OPNdQFzUAIa8NmyE=;
-        b=0J/vMt/v6XkwCvfxE0NAQav/yMfYnF4C8ClGrKDW3xjYjK3aX6+R5CkyTWs8JLhRp9Nct+
-        q0AEcCJJq0FxLi/Ama8K0kZQrm/D3E/N7hmXVKdYXOyxMOssVPwT1+URPlDJyzOtTWkQEi
-        q9C7VSywNjsjzMEMw6uCx8yZhkv3YPU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1639390333;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TNx1zR1/Fgli6BcXKjYqn4bJ2J/OPNdQFzUAIa8NmyE=;
-        b=5Yn4+sr7mgXf55O1QMlKDpLuYVvzLGMnWbXSrvWaErNfSoM1DNRZrmz/mvthjMmrCjheZV
-        Au6SlfP1bAgO1CBw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 296F813CE5;
-        Mon, 13 Dec 2021 10:12:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 1hkoCH0ct2GvNwAAMHmgww
-        (envelope-from <nstange@suse.de>); Mon, 13 Dec 2021 10:12:13 +0000
-From:   Nicolai Stange <nstange@suse.de>
-To:     Hannes Reinecke <hare@suse.de>
-Cc:     Nicolai Stange <nstange@suse.de>,
+        id S241551AbhLMKjy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 13 Dec 2021 05:39:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244215AbhLMKjr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Dec 2021 05:39:47 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02DB0C050B27
+        for <keyrings@vger.kernel.org>; Mon, 13 Dec 2021 02:29:19 -0800 (PST)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1mwia1-0006sI-QH; Mon, 13 Dec 2021 11:29:13 +0100
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v4 2/5] KEYS: trusted: allow users to use kernel RNG for
+ key material
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>, kernel@pengutronix.de,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Gstir <david@sigma-star.at>,
+        Tim Harvey <tharvey@gateworks.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        Stephan =?utf-8?Q?M=C3=BCller?= <smueller@chronox.de>,
-        Torsten Duwe <duwe@suse.de>, Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 00/18] crypto: dh - infrastructure for NVM in-band auth and FIPS conformance
-References: <20211209090358.28231-1-nstange@suse.de>
-        <aabe44df-0b6c-8550-0138-b08f90ef9233@suse.de>
-Date:   Mon, 13 Dec 2021 11:12:12 +0100
-In-Reply-To: <aabe44df-0b6c-8550-0138-b08f90ef9233@suse.de> (Hannes Reinecke's
-        message of "Fri, 10 Dec 2021 12:38:31 +0100")
-Message-ID: <87ee6greyr.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+References: <cover.8f40b6d1b93adc80aed2cac29a134f7a7fb5ee98.1633946449.git-series.a.fatoum@pengutronix.de>
+ <9bd8c969d5c656825a35aab6fb0725282a8a62cc.1633946449.git-series.a.fatoum@pengutronix.de>
+ <YawE8cQ2SZjxqWUo@iki.fi>
+Message-ID: <3f58a16d-ae57-bb78-f04e-878dd5408a4f@pengutronix.de>
+Date:   Mon, 13 Dec 2021 11:29:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <YawE8cQ2SZjxqWUo@iki.fi>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hannes Reinecke <hare@suse.de> writes:
+Hello Jarkko,
 
-> I have run this implementation against my NVMe In-band authentication
-> test suite and have found no issues.
->
-> Tested-by: Hannes Reinecke <hare@suse.de>
+On 05.12.21 01:16, Jarkko Sakkinen wrote:
+> On Mon, Oct 11, 2021 at 12:02:35PM +0200, Ahmad Fatoum wrote:
+>> The two existing trusted key sources don't make use of the kernel RNG,
+>> but instead let the hardware doing the sealing/unsealing also
+>> generate the random key material. However, Users may want to place
+> 
+> "Users" -> "users"
 
-Thank you!
+Will fix for v5.
 
-Nicolai
+>> +static bool trusted_kernel_rng;
+>> +module_param_named(kernel_rng, trusted_kernel_rng, bool, 0);
+>> +MODULE_PARM_DESC(kernel_rng, "Generate key material from kernel RNG");
+> 
+> It's not then always kernel RNG, i.e. that is a very misleading name.
 
---=20
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
-ermany
-(HRB 36809, AG N=C3=BCrnberg), GF: Ivo Totev
+trusted.kernel_rng=1 always forces kernel RNG, trusted.kernel_rng=0 will
+choose trust source default.
+
+> I'd prefer trusted_rng with string values "kernel", "tee". That makes
+> it explicit what you are using.
+
+This is also a bit misleading for trust sources that don't provide their
+own RNG, either because the driver doesn't implement it, or because the
+IP doesn't have its own RNG (like DCP on NXP's i.MX6UL SoC).
+
+For v5, I'd implement following 'tristate-with-strings' scheme:
+
+ trusted.rng=""
+	=> Use trust source default, fall back to kernel RNG if there's none
+           (trusted.kernel_rng=0 in current patch)
+
+ trusted.rng=kernel
+	=> Always use kernel RNG
+           (trusted.kernel_rng=1 in current patch)
+
+ trusted.rng=$trusted.source
+	=> Use trust source default, but error out if trust source
+           doesn't implement its own RNG to avoid misleading users
+           about key randomness source
+
+ trusted.rng="anything-else"
+	=> Error out with warning that only valid values are
+	   "kernel,${trust.source}" where trust.source is the currently
+	   active one.
+
+Sounds good?
+
+Cheers,
+Ahmad
+
+> 
+> /Jarkko
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
