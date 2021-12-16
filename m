@@ -2,79 +2,85 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64AAA4764FF
-	for <lists+keyrings@lfdr.de>; Wed, 15 Dec 2021 22:54:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4E147708A
+	for <lists+keyrings@lfdr.de>; Thu, 16 Dec 2021 12:42:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbhLOVyo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Dec 2021 16:54:44 -0500
-Received: from mga02.intel.com ([134.134.136.20]:17599 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230240AbhLOVyo (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Wed, 15 Dec 2021 16:54:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639605284; x=1671141284;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=B0vqHfMyzR9vwKEdxmc/UrUPdTcJ6nMSGV+7f2d5s6o=;
-  b=STRYoPYQaV7YDAtK/lLPY/wCyWzxBCwi8ACVE17XGfMcDXsV++epR0wz
-   6jOuPx0s7ZPpq2jsvErvGSC4onwE9iP0rR9z2aqavowWye1J6y3GD5R2x
-   7CbxIzc2Idj5ElTdkhrJhXGimf45kuFa4eAeleBIbx2I013J670QO9vWp
-   OpiyXQGEomu68u3qxacfvLkihXxHk/u9bcgjW1RFUC7J0weVmOpakwGPv
-   S+sGC2qjvVQ6W1zTt9Tg34XOr2l3xo5gUE+Rw6Be3kbWJBtMs+niXxjsj
-   sr+qjY8xqjoHu7Wqj1zbCq8EAhXgSKWZEo4BVkeG2QQhBWEJFEr2WNA1B
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="226626704"
-X-IronPort-AV: E=Sophos;i="5.88,209,1635231600"; 
-   d="scan'208";a="226626704"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2021 13:54:43 -0800
-X-IronPort-AV: E=Sophos;i="5.88,209,1635231600"; 
-   d="scan'208";a="614883453"
-Received: from silpixa00400314.ir.intel.com (HELO silpixa00400314) ([10.237.222.76])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2021 13:54:41 -0800
-Date:   Wed, 15 Dec 2021 21:54:34 +0000
-From:   Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To:     Nicolai Stange <nstange@suse.de>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Stephan =?iso-8859-1?Q?M=FCller?= <smueller@chronox.de>,
-        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        Zaibo Xu <xuzaibo@huawei.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        qat-linux <qat-linux@intel.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>
-Subject: Re: [PATCH v2 12/18] crypto: dh - introduce support for ephemeral
- key generation to qat driver
-Message-ID: <YbpkGtH6dYCXNOZu@silpixa00400314>
-References: <20211209090358.28231-1-nstange@suse.de>
- <20211209090358.28231-13-nstange@suse.de>
+        id S233143AbhLPLmW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Dec 2021 06:42:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60110 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233079AbhLPLmR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Dec 2021 06:42:17 -0500
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DA7C06179B
+        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
+Received: by mail-qk1-x731.google.com with SMTP id 132so22971679qkj.11
+        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=RYToo8NyNPhlgiHYmZ1ikup312GHYFKKh+SoiQn5DFM08VhX1fCTukNf+Ub7gXZH+R
+         Fdt5I+ZO38LiZ7aX4HrBDtCguvWjGt4+jG/EN+k0G3h02B6emUjwzPzxnL4uWQz6AWTD
+         WqO7wKZcX2hj88TEq1skHq9q03JmZTMsDYFAuzRyTE65aq8YfmTLKW6klN/Aemrjl5Su
+         VOqZm/oCKsPxxvibvSdyBq0qcyBC7yt8asycNVxLymhtuzVbvkdkv8HRw/7WHA5ZhBTe
+         lfMRM7TjowGzvp5BFYZjQfF4jcwfD0Oa7xMNuJL1tGpMndUewyeeM3+DNYanGu61M7GC
+         kNpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=bSkY/5aFNQjanxctoydZCzkMp8PLJ4/ji0IstoEAnagl7Gufc/9nxqcg+3kwM/in2t
+         /trGvIgdZKoX10FDtWG6RScwljYWNZzSr/9HSuSCQ3uNITcxRt7kPiLiaWwuvaOShHl9
+         prd1mFzOgH07SV1tusDwnsghw5gnN0nldwMKPW7IlOOAos4b9HL828hdKFQK8qvpK+DU
+         K1ZI3YeEesG1cna2YxVqMKZBuJ0GwVHjErm3zrM05U3tqauX0UxJWralyFOx5t38HSCO
+         ny+tMoyoJ+uV9Iu64tC/Wo5caQSMZ7t/XZWsBN5Q3uEP2PxBzpc2aCimKtiFGAGlq1X8
+         JwSQ==
+X-Gm-Message-State: AOAM532b3NVc9V/hq90snGEJr2Oc/+3WAdx/lNIIaCLOcQZcp4XMFrxl
+        4UMlwFcM/v8lY2BS+6c/pZ0iatP2tvZHwUK6088=
+X-Google-Smtp-Source: ABdhPJxYJ2zBl8EMgF/vH/Si0uACMgpOTf1urUCOAwYb4fXYvwfKJa3PKYFOZBbaDpp9AFOjwJ3sIeVfeVjNcnbyBfg=
+X-Received: by 2002:a05:620a:bc3:: with SMTP id s3mr11727889qki.197.1639654936129;
+ Thu, 16 Dec 2021 03:42:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211209090358.28231-13-nstange@suse.de>
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 -
- Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:15
+ -0800 (PST)
+Reply-To: selviasantiago1@gmail.com
+From:   Selvia Santiago <mariamatinez119@gmail.com>
+Date:   Thu, 16 Dec 2021 11:42:15 +0000
+Message-ID: <CAONDhKPUij_8sWOmcDAVKuHSL7avy+Ti7bOVRu6x__3ouvD7kw@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Dec 09, 2021 at 09:03:52AM +0000, Nicolai Stange wrote:
-> A previous patch made the dh-generic implementation's ->set_secret() to
-> generate an ephemeral key in case the input ->key_size is zero, just in
-> analogy with ecdh. Make the qat crypto driver's DH implementation to
-> behave consistently by doing the same.
-I ran a few tests on QAT GEN2 HW and this patch/set does not causes
-regressions.
-
-On the headline of the commit, should this be crypto: qat - ... ?
-
-> Signed-off-by: Nicolai Stange <nstange@suse.de>
-> Reviewed-by: Hannes Reinecke <hare@suse.de>
- Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-
 -- 
-Giovanni
+Urgent
+
+I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
+suffering from long time illness (Cancer), there is funds I inherited
+from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
+Million Dollars) which he deposited in bank before his death, I need a
+honest and Faithful person that can use these funds for humanity work.
+
+I took this decision because I don't have any child that will inherit
+this money and I don't want a situation where this money will be used
+in an ungodly way. That is why I am taking this decision, and my
+doctor has confirmed to me that I have less than two weeks to live,
+having known my condition I decided to donate this fund to a charity
+or individual that will utilize this money to assist the poor and the
+needy in accordance to my instructions.
+
+I want you to use 70% of this funds for orphanages, school, church,
+widows, propagating the word and other humanity works,The remaining
+30% should be yours for your efforts as the new beneficiary.
+
+Please if you would be able to use these funds for humanity work
+kindly reply me. As soon as I have received your response, I will give
+you further directives on how you are to go about the claims of the
+said funds.
+
+Remain blessed.
+Mrs Selvia Santiago.
