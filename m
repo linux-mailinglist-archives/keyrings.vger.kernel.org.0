@@ -2,85 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4E147708A
-	for <lists+keyrings@lfdr.de>; Thu, 16 Dec 2021 12:42:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AEEB477D0D
+	for <lists+keyrings@lfdr.de>; Thu, 16 Dec 2021 21:07:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233143AbhLPLmW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 16 Dec 2021 06:42:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60110 "EHLO
+        id S241233AbhLPUHA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Dec 2021 15:07:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbhLPLmR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Dec 2021 06:42:17 -0500
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DA7C06179B
-        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
-Received: by mail-qk1-x731.google.com with SMTP id 132so22971679qkj.11
-        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
+        with ESMTP id S241218AbhLPUG7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Dec 2021 15:06:59 -0500
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0459AC061401
+        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 12:06:59 -0800 (PST)
+Received: by mail-ed1-x543.google.com with SMTP id y13so90973213edd.13
+        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 12:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=RYToo8NyNPhlgiHYmZ1ikup312GHYFKKh+SoiQn5DFM08VhX1fCTukNf+Ub7gXZH+R
-         Fdt5I+ZO38LiZ7aX4HrBDtCguvWjGt4+jG/EN+k0G3h02B6emUjwzPzxnL4uWQz6AWTD
-         WqO7wKZcX2hj88TEq1skHq9q03JmZTMsDYFAuzRyTE65aq8YfmTLKW6klN/Aemrjl5Su
-         VOqZm/oCKsPxxvibvSdyBq0qcyBC7yt8asycNVxLymhtuzVbvkdkv8HRw/7WHA5ZhBTe
-         lfMRM7TjowGzvp5BFYZjQfF4jcwfD0Oa7xMNuJL1tGpMndUewyeeM3+DNYanGu61M7GC
-         kNpg==
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=ZrXWblgkMkUeOVMwrHbqPdxUk4Wv8EP/e+TCg8ZthSOEtpHXkCvqz6ArgY8LCiNWRT
+         JbPWJ3GanvDDqJ5dZHUAvrn50IAoYY3nL+jzkSLZiSNEzXM7J73Wkfr9q3g1tPFG8nJU
+         1pViRjrV2exzVkdhaQbIeO1C7Zlkp0ia56QKkb4ISBVGwZnpC8wL8XEEODhp+vzWKgYo
+         V+X7qkXx2ehE43OyUcP4K2F8DjokbDkSUrxS9i4+2A7+yO8C9DhGH+Zh/Q5v5fK45ovZ
+         MfuJYrtj5wBKx0OycQmQ1sISa6ueyrf46MshW8Q4NeSH9MrMM/dit0t5FUk1xo+lqzVA
+         AUNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=bSkY/5aFNQjanxctoydZCzkMp8PLJ4/ji0IstoEAnagl7Gufc/9nxqcg+3kwM/in2t
-         /trGvIgdZKoX10FDtWG6RScwljYWNZzSr/9HSuSCQ3uNITcxRt7kPiLiaWwuvaOShHl9
-         prd1mFzOgH07SV1tusDwnsghw5gnN0nldwMKPW7IlOOAos4b9HL828hdKFQK8qvpK+DU
-         K1ZI3YeEesG1cna2YxVqMKZBuJ0GwVHjErm3zrM05U3tqauX0UxJWralyFOx5t38HSCO
-         ny+tMoyoJ+uV9Iu64tC/Wo5caQSMZ7t/XZWsBN5Q3uEP2PxBzpc2aCimKtiFGAGlq1X8
-         JwSQ==
-X-Gm-Message-State: AOAM532b3NVc9V/hq90snGEJr2Oc/+3WAdx/lNIIaCLOcQZcp4XMFrxl
-        4UMlwFcM/v8lY2BS+6c/pZ0iatP2tvZHwUK6088=
-X-Google-Smtp-Source: ABdhPJxYJ2zBl8EMgF/vH/Si0uACMgpOTf1urUCOAwYb4fXYvwfKJa3PKYFOZBbaDpp9AFOjwJ3sIeVfeVjNcnbyBfg=
-X-Received: by 2002:a05:620a:bc3:: with SMTP id s3mr11727889qki.197.1639654936129;
- Thu, 16 Dec 2021 03:42:16 -0800 (PST)
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=L+s/EJbpG+7JloLoeLSYHCrPzhEp64EKiSXDN9B1T6Jp1SD/j3bjgVjCEviMhfgzPR
+         Fp69hpPCUwX9iARkU8RQajpbdnOucsakdTyoIR23847P+jE2uYkwWY/NP/SV4tmc8ssq
+         gxhjOB32NtflfMF6nly6xGF/6O08dSSwLj41IXbSkp5HdbvZ0FQbvcxNOjNXo9tGEtuM
+         DvolnM2DtCmNtSnc85lT/1vZ7cERBPJoYwD8ZTcqD801bXsU8ChMMKJ/Cu8upghpedv7
+         5ac+uWfP2xV7QwdvK3d8BsX9LfVgnS6+N14ohDcYWf4kA/lZ2f2wfWLsvLVakd4yZKwx
+         COdg==
+X-Gm-Message-State: AOAM533hsVfs9y3HWpEtXWyiMuEVx7sIEX7uNbmyE/Xj3OArFN7Xe8kn
+        5RyBuvLfIthst/v/Kcxxau3SH2kuqUuSrRlECBI=
+X-Google-Smtp-Source: ABdhPJxY8ZseiOLcF4JhZFN/isY4L65SXfDZijYM7VSjcy9jLEsnUH0r6wFqy+WuGoeKNVzsqP0ALIQnH3cmbYlXFs4=
+X-Received: by 2002:a17:907:2ce7:: with SMTP id hz7mr552143ejc.479.1639685215266;
+ Thu, 16 Dec 2021 12:06:55 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:15
+Received: by 2002:a17:906:2c04:0:0:0:0 with HTTP; Thu, 16 Dec 2021 12:06:53
  -0800 (PST)
-Reply-To: selviasantiago1@gmail.com
-From:   Selvia Santiago <mariamatinez119@gmail.com>
-Date:   Thu, 16 Dec 2021 11:42:15 +0000
-Message-ID: <CAONDhKPUij_8sWOmcDAVKuHSL7avy+Ti7bOVRu6x__3ouvD7kw@mail.gmail.com>
-Subject: Urgent
+Reply-To: revfrpaulwilliams2@gmail.com
+From:   "Rev. Fr. Paul Williams" <fatimamonge75@gmail.com>
+Date:   Fri, 17 Dec 2021 01:36:53 +0530
+Message-ID: <CANO8M73tfggSz8U4JHkR657BL=QDZ8uMOnYj+7g3RUuCOz7XEw@mail.gmail.com>
+Subject: Donation From Williams Foundation.
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
--- 
-Urgent
-
-I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
-suffering from long time illness (Cancer), there is funds I inherited
-from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
-Million Dollars) which he deposited in bank before his death, I need a
-honest and Faithful person that can use these funds for humanity work.
-
-I took this decision because I don't have any child that will inherit
-this money and I don't want a situation where this money will be used
-in an ungodly way. That is why I am taking this decision, and my
-doctor has confirmed to me that I have less than two weeks to live,
-having known my condition I decided to donate this fund to a charity
-or individual that will utilize this money to assist the poor and the
-needy in accordance to my instructions.
-
-I want you to use 70% of this funds for orphanages, school, church,
-widows, propagating the word and other humanity works,The remaining
-30% should be yours for your efforts as the new beneficiary.
-
-Please if you would be able to use these funds for humanity work
-kindly reply me. As soon as I have received your response, I will give
-you further directives on how you are to go about the claims of the
-said funds.
-
-Remain blessed.
-Mrs Selvia Santiago.
+Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
+$6,200,000.00 United States Dollars At E-Mail:
+revfrpaulwilliams2@gmail.com
