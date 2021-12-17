@@ -2,60 +2,85 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AEEB477D0D
-	for <lists+keyrings@lfdr.de>; Thu, 16 Dec 2021 21:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6864784B4
+	for <lists+keyrings@lfdr.de>; Fri, 17 Dec 2021 06:52:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241233AbhLPUHA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 16 Dec 2021 15:07:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241218AbhLPUG7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Dec 2021 15:06:59 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0459AC061401
-        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 12:06:59 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id y13so90973213edd.13
-        for <keyrings@vger.kernel.org>; Thu, 16 Dec 2021 12:06:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
-        b=ZrXWblgkMkUeOVMwrHbqPdxUk4Wv8EP/e+TCg8ZthSOEtpHXkCvqz6ArgY8LCiNWRT
-         JbPWJ3GanvDDqJ5dZHUAvrn50IAoYY3nL+jzkSLZiSNEzXM7J73Wkfr9q3g1tPFG8nJU
-         1pViRjrV2exzVkdhaQbIeO1C7Zlkp0ia56QKkb4ISBVGwZnpC8wL8XEEODhp+vzWKgYo
-         V+X7qkXx2ehE43OyUcP4K2F8DjokbDkSUrxS9i4+2A7+yO8C9DhGH+Zh/Q5v5fK45ovZ
-         MfuJYrtj5wBKx0OycQmQ1sISa6ueyrf46MshW8Q4NeSH9MrMM/dit0t5FUk1xo+lqzVA
-         AUNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
-        b=L+s/EJbpG+7JloLoeLSYHCrPzhEp64EKiSXDN9B1T6Jp1SD/j3bjgVjCEviMhfgzPR
-         Fp69hpPCUwX9iARkU8RQajpbdnOucsakdTyoIR23847P+jE2uYkwWY/NP/SV4tmc8ssq
-         gxhjOB32NtflfMF6nly6xGF/6O08dSSwLj41IXbSkp5HdbvZ0FQbvcxNOjNXo9tGEtuM
-         DvolnM2DtCmNtSnc85lT/1vZ7cERBPJoYwD8ZTcqD801bXsU8ChMMKJ/Cu8upghpedv7
-         5ac+uWfP2xV7QwdvK3d8BsX9LfVgnS6+N14ohDcYWf4kA/lZ2f2wfWLsvLVakd4yZKwx
-         COdg==
-X-Gm-Message-State: AOAM533hsVfs9y3HWpEtXWyiMuEVx7sIEX7uNbmyE/Xj3OArFN7Xe8kn
-        5RyBuvLfIthst/v/Kcxxau3SH2kuqUuSrRlECBI=
-X-Google-Smtp-Source: ABdhPJxY8ZseiOLcF4JhZFN/isY4L65SXfDZijYM7VSjcy9jLEsnUH0r6wFqy+WuGoeKNVzsqP0ALIQnH3cmbYlXFs4=
-X-Received: by 2002:a17:907:2ce7:: with SMTP id hz7mr552143ejc.479.1639685215266;
- Thu, 16 Dec 2021 12:06:55 -0800 (PST)
+        id S231277AbhLQFw6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 17 Dec 2021 00:52:58 -0500
+Received: from helcar.hmeau.com ([216.24.177.18]:58062 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230405AbhLQFw6 (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Fri, 17 Dec 2021 00:52:58 -0500
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1my6AO-0007S3-2k; Fri, 17 Dec 2021 16:52:29 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Dec 2021 16:52:27 +1100
+Date:   Fri, 17 Dec 2021 16:52:27 +1100
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Nicolai Stange <nstange@suse.de>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Stephan =?iso-8859-1?Q?M=FCller?= <smueller@chronox.de>,
+        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
+        Zaibo Xu <xuzaibo@huawei.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        qat-linux@intel.com, keyrings@vger.kernel.org
+Subject: Re: [PATCH v2 03/18] crypto: dh - optimize domain parameter
+ serialization for well-known groups
+Message-ID: <20211217055227.GA20698@gondor.apana.org.au>
+References: <20211209090358.28231-1-nstange@suse.de>
+ <20211209090358.28231-4-nstange@suse.de>
 MIME-Version: 1.0
-Received: by 2002:a17:906:2c04:0:0:0:0 with HTTP; Thu, 16 Dec 2021 12:06:53
- -0800 (PST)
-Reply-To: revfrpaulwilliams2@gmail.com
-From:   "Rev. Fr. Paul Williams" <fatimamonge75@gmail.com>
-Date:   Fri, 17 Dec 2021 01:36:53 +0530
-Message-ID: <CANO8M73tfggSz8U4JHkR657BL=QDZ8uMOnYj+7g3RUuCOz7XEw@mail.gmail.com>
-Subject: Donation From Williams Foundation.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211209090358.28231-4-nstange@suse.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
-$6,200,000.00 United States Dollars At E-Mail:
-revfrpaulwilliams2@gmail.com
+On Thu, Dec 09, 2021 at 10:03:43AM +0100, Nicolai Stange wrote:
+>> diff --git a/include/crypto/dh.h b/include/crypto/dh.h
+> index 67f3f6bca527..f0ed899e2168 100644
+> --- a/include/crypto/dh.h
+> +++ b/include/crypto/dh.h
+> @@ -19,6 +19,11 @@
+>   * the KPP API function call of crypto_kpp_set_secret.
+>   */
+>  
+> +/** enum dh_group_id - identify well-known domain parameter sets */
+> +enum dh_group_id {
+> +	DH_GROUP_ID_UNKNOWN = 0, /* Constants are used in test vectors. */
+> +};
+
+We try to avoid hard-coded ID lists like these in the Crypto API.
+
+I've had a look at your subsequent patches and I don't think you
+really need this.
+
+For instance, instead of shoehorning this into "dh", you could
+instead create new kpp algorithms modpXXXX and ffdheXXXX which
+can be templates around the underlying dh algorithm.  Sure this
+might involve a copy of the parameters but given the speed of
+the algorithms that we're talking about here I don't think it's
+really relevant.
+
+That way the underlying drivers don't need to be touched at all.
+
+Yes I do realise that this means the keyrings DH user-space API
+cannot be used in FIPS mode, but that is probably a good thing
+as users who care about modp/ffdhe shouldn't really have to stuff
+the raw vectors into this interface just to access the kernel DH
+implementation.
+
+On a side note, are there really keyrings DH users out there in
+the wild? If not can we deprecate and remove this interface
+completely?
+
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
