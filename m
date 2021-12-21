@@ -2,121 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45C1047BC94
-	for <lists+keyrings@lfdr.de>; Tue, 21 Dec 2021 10:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F4A47BF56
+	for <lists+keyrings@lfdr.de>; Tue, 21 Dec 2021 13:06:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231602AbhLUJKI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 Dec 2021 04:10:08 -0500
-Received: from mail-m973.mail.163.com ([123.126.97.3]:37532 "EHLO
-        mail-m973.mail.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbhLUJKI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Dec 2021 04:10:08 -0500
-X-Greylist: delayed 917 seconds by postgrey-1.27 at vger.kernel.org; Tue, 21 Dec 2021 04:10:07 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=gPtm4
-        1ZRhN2hM6/uWkxP17bgJY7N8owgKDTDBYkkLEE=; b=HZqm69xsMl/M5Z2ptYTtS
-        QMPPcI1giHMnW1Gm7D3H4LHkGM/D8XfdusdOH3ASlOxgVzYWGHmn4g209yyKdrhB
-        rXT9Ayyo+h9X5UbBC1gUYxvTN9ab/w6K0KI+y3VxHptmPd0K3ZKLffQW618wcadX
-        rINiKkHhHOsa/Wv5vxvEm4=
-Received: from localhost.localdomain (unknown [36.112.214.113])
-        by smtp3 (Coremail) with SMTP id G9xpCgB3W+8ulsFheyJVCQ--.60164S4;
-        Tue, 21 Dec 2021 16:54:18 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
-        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jianglei Nie <niejianglei2021@163.com>
-Subject: [PATCH] security:trusted_tpm2: Fix memory leak in tpm2_key_encode()
-Date:   Tue, 21 Dec 2021 16:54:04 +0800
-Message-Id: <20211221085404.6769-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: G9xpCgB3W+8ulsFheyJVCQ--.60164S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJw18Ww1kWF15GryxurykXwb_yoW5GF4DpF
-        ZxKF1UZFWagry7Ary7JF4Svr1Ska98Gr47KwsrW39rGasxJFsxtFy7Ar4YgrnrAFWfKw15
-        ZF4qvFWUWrWqqwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jhKsUUUUUU=
-X-Originating-IP: [36.112.214.113]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/xtbB3Q9wjGBHLhNxswAAs2
+        id S237396AbhLUMGN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Dec 2021 07:06:13 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:9984 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231465AbhLUMGM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Dec 2021 07:06:12 -0500
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BLBUa3H003298;
+        Tue, 21 Dec 2021 12:06:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=/NmlB8WtA95C16z+XV5kpgZwtnKCGF+0mPiPBFfVRxs=;
+ b=sRl0Rmezc7TIPGFmxgK7vey3dtw3i5Zg0h381mC7LcFw5+DWiF5v/TLOCXKsdtiy3xCE
+ z3fPXsVkIQrUO/N0Agd/4pLqF6KTMdFMM5HkrMbp39A36FUlR2/1Rhpn+n4yRgXYjwcR
+ h7hQ/kSbBsZ4haZJR25nORcW+CEgOHx4t2m9NvA7U+b6xHtF9xGZUo+JTwGQWPYPH4ZL
+ gqQLUEZP/fa4Q5LF4dRqTjA+IHPqVRm6I/1eEtzajGWOERA3lcOBo7eoYi2l0ivfYHd+
+ mKFQ5uaZemjMjM8EZQ2M+IZ8f1dPoYmNs2gp4lWqkslgLpKUgi63xzIZTDYS/G2sBgkV xg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3d1s7quf3w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Dec 2021 12:06:00 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BLC0mpi006648;
+        Tue, 21 Dec 2021 12:06:00 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3d1s7quf39-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Dec 2021 12:05:59 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BLBxhBQ016872;
+        Tue, 21 Dec 2021 12:05:57 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma06fra.de.ibm.com with ESMTP id 3d16wjv4h0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Dec 2021 12:05:57 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1BLC5tig37028314
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 21 Dec 2021 12:05:55 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0BE49AE057;
+        Tue, 21 Dec 2021 12:05:55 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 91F6CAE055;
+        Tue, 21 Dec 2021 12:05:53 +0000 (GMT)
+Received: from sig-9-65-69-22.ibm.com (unknown [9.65.69.22])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 21 Dec 2021 12:05:53 +0000 (GMT)
+Message-ID: <58e2dbed22d07b9bc381554ada2f14ae655a2f31.camel@linux.ibm.com>
+Subject: Re: [PATCH v2] Instantiate key with user-provided decrypted data.
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Yael Tiomkin <yaelt@google.com>
+Cc:     linux-integrity@vger.kernel.org, jejb@linux.ibm.com,
+        corbet@lwn.net, dhowells@redhat.com, jmorris@namei.org,
+        serge@hallyn.com, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Date:   Tue, 21 Dec 2021 07:05:53 -0500
+In-Reply-To: <YcGQMScGMvBd+0+L@iki.fi>
+References: <20211213192030.125091-1-yaelt@google.com>
+         <YcGQMScGMvBd+0+L@iki.fi>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vQYBL5cME9gL9Q8-6eWJduBHOUA9Jm0T
+X-Proofpoint-ORIG-GUID: 1lKwsPkWtbvgERbfllU33Gh2f7d5OrRG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-21_04,2021-12-21_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ malwarescore=0 mlxlogscore=946 priorityscore=1501 adultscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112210054
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Line 36 (#1) allocates a memory chunk for scratch by kmalloc(), but
-it is never freed through the function, which will lead to a memory
-leak.
+On Tue, 2021-12-21 at 10:28 +0200, Jarkko Sakkinen wrote:
+> On Mon, Dec 13, 2021 at 02:20:30PM -0500, Yael Tiomkin wrote:
+> > The encrypted.c class supports instantiation of encrypted keys with
+> 
+> What is "the encrypted.c class"?
 
-We should kfree() scratch before the function returns (#2, #3 and #4).
+This is the other key type as described in
+Documentation/security/keys/trusted-encrypted.rst, which is not
+dependent on a TPM.  This patch adds support for userspace provided key
+data, when the key is created.
 
-31 static int tpm2_key_encode(struct trusted_key_payload *payload,
-32			   struct trusted_key_options *options,
-33			   u8 *src, u32 len)
-34 {
-36	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
-      	// #1: kmalloc space
-50	if (!scratch)
-51		return -ENOMEM;
+thanks,
 
-56	if (options->blobauth_len == 0) {
-60		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-61			return PTR_ERR(w); // #2: missing kfree
-63	}
-
-71	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
-72		 "BUG: scratch buffer is too small"))
-73		return -EINVAL; // #3: missing kfree
-
-  	// #4: missing kfree: scratch is never used afterwards.
-82	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
-83		return PTR_ERR(work1);
-
-85	return work1 - payload->blob;
-86 }
-
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
----
- security/keys/trusted-keys/trusted_tpm2.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 0165da386289..7bb1119b1dea 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -57,8 +57,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 		unsigned char bool[3], *w = bool;
- 		/* tag 0 is emptyAuth */
- 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
--		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-+		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
-+			kfree(scratch);
- 			return PTR_ERR(w);
-+		}
- 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
- 	}
- 
-@@ -69,8 +71,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	 * trigger, so if it does there's something nefarious going on
- 	 */
- 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
--		 "BUG: scratch buffer is too small"))
-+		 "BUG: scratch buffer is too small")) {
-+		kfree(scratch);
- 		return -EINVAL;
-+	}
- 
- 	work = asn1_encode_integer(work, end_work, options->keyhandle);
- 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
-@@ -79,6 +83,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
-+	kfree(scratch);
- 	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
- 		return PTR_ERR(work1);
- 
--- 
-2.25.1
+Mimi
 
