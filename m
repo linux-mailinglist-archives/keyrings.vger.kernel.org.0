@@ -2,96 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D762484799
-	for <lists+keyrings@lfdr.de>; Tue,  4 Jan 2022 19:13:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE431484B57
+	for <lists+keyrings@lfdr.de>; Wed,  5 Jan 2022 00:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236142AbiADSNq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 4 Jan 2022 13:13:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236107AbiADSNq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jan 2022 13:13:46 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B926FC061761;
-        Tue,  4 Jan 2022 10:13:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=qCo/EEOuXkGQd3ORVen9TvUPi33M9r4hwOqzu/uF62I=; b=mcznDQresetsRf92LUuK6tJp/5
-        TJzXRLBa39LwWGSHJEC8hQutFTEidjOdAoE9EcGp+wT/OUH47f2CdRSXbIIJNwcpf2SemholjxoIx
-        Hp4pA9qI1VNzeq3OHtDW0jSdsF/hPWjooUOIv/1H3cHthrO+lllWXaKKJaEwtzFeo3ClWQ41HvvET
-        t0An4YbGGIpg5ZOc0yBTb3udJ+nA67Bbvjk5LIP593BHG87JYBPIJ3/WR4bTWz9Rg9KBv5hkwP71r
-        54gQawIjXFddkK2tjFiabLr4ws7CvM2u0uokGvEjg4bP9+u3u08SzpvreA2GuDo2gSelcT/h7PafG
-        HiCDEmkQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1n4oJb-00Dt2B-9M; Tue, 04 Jan 2022 18:13:43 +0000
-Date:   Tue, 4 Jan 2022 18:13:43 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        efi@lists.einval.com,
-        debian-kernel <debian-kernel@lists.debian.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
- signing key
-Message-ID: <YdSOV7LL0vWCMcWl@casper.infradead.org>
-References: <20211218031122.4117631-1-willy@infradead.org>
- <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+        id S230253AbiADXs7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 4 Jan 2022 18:48:59 -0500
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:30195 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234238AbiADXs6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jan 2022 18:48:58 -0500
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 204NmcIT030502;
+        Wed, 5 Jan 2022 08:48:38 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 204NmcIT030502
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1641340119;
+        bh=n/Pj0GuzGOQz52d0M2ySHYPW8PnjPW/MC0KNt6VisQU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=WNyXe+TNpD+5PhYmJl/5PzFyxxou0Gl28BaS9COblPxjUDBR6TbjkF02wKfbqJOe4
+         KQSI+cDKcTkBo2o4ZnJgkJDEJe5laVDVEBMOAkAhHvz0q4/pIDfFGtJ/6vFPoZUAtf
+         rpBSCStylfIchiziCNptVJlKsjT+uHV5Cz7uXAZrV8qwM1I5qxtSNmfaQshmh9Aru4
+         XauiZuwvYIjgoMJgyKwnqzt0h2ixDCx9d1nBA9TaSAWnR/AGOA5gcF/lSuOYXJbQHX
+         2oeWMitgvKnev1/NtAs1UsVQxP9Th8k/A37YNHq80egjyIN9r/Bngg26ay8VH8eszE
+         Hf4HoCHsK91vA==
+X-Nifty-SrcIP: [209.85.210.170]
+Received: by mail-pf1-f170.google.com with SMTP id 196so33569911pfw.10;
+        Tue, 04 Jan 2022 15:48:38 -0800 (PST)
+X-Gm-Message-State: AOAM530rldZX5KL0DzN1ShVV871i0KAXp1xrkoqNTQWwzvfg5mtT0aVP
+        7n5Jftln7ooJzs5kgIwDzpT3Dpi/NMNHZtXvepM=
+X-Google-Smtp-Source: ABdhPJy1ElIOgaDmwcYlNYCKdVORotcnknHA9hhyGHQzzGq2dcvsZQ4k61/RlcmBwmUA89kzriKYSp+QP7PuwVN5vSo=
+X-Received: by 2002:a63:7148:: with SMTP id b8mr23513297pgn.616.1641340117654;
+ Tue, 04 Jan 2022 15:48:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+References: <20211214025355.1267796-1-masahiroy@kernel.org>
+In-Reply-To: <20211214025355.1267796-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 5 Jan 2022 08:48:00 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQ98p=UbtdgdTkdO1djA--Ch7QwmR=0Q11QL6aKKZYC2w@mail.gmail.com>
+Message-ID: <CAK7LNAQ98p=UbtdgdTkdO1djA--Ch7QwmR=0Q11QL6aKKZYC2w@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] kbuild: do not quote string values in Makefile
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        Nicolas Schier <n.schier@avm.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
-> > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
-> > +key=
-> > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
-> > +       cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
-> > +       if [ ! -f $cert ]; then
-> > +               cert=$srctree/$cert
-> > +       fi
-> > +
-> > +       key=${cert%pem}priv
-> > +       if [ ! -f $key ]; then
-> > +               key=$cert
-> > +       fi
-> 
-> 
-> I still do not understand this part.
-> 
-> It is true that the Debian document you referred to creates separate files
-> for the key and the certificate:
->   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
-> DER -out MOK.der -days 36500 -subj "/CN=My Name/" -nodes
-> 
-> but, is such a use-case possible in Kbuild?
+On Tue, Dec 14, 2021 at 11:55 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+>
+> This patch refactors the code as outlined in:
+>
+>   https://lore.kernel.org/linux-kbuild/CAK7LNAR-VXwHFEJqCcrFDZj+_4+Xd6oynbj_0eS8N504_ydmyw@mail.gmail.com/
+>
+> First some patches refactor certs/Makefile. This Makefile is written
+> in a too complicated way.
+>
+> I will revert cd8c917a56f20f48748dd43d9ae3caff51d5b987
+> after this lands in the upstream.
+>
+>
 
-If someone has followed the Debian instructions for creating a MOK,
-then they will have two separate files.  We should support both the case
-where someone has created a Debian MOK and the case where someone has
-used Kbuild to create this foolish blob with both private and public
-key in one file.
 
-> In the old days, yes, the key and the certificate were stored in separate files.
-> (the key in *.priv and the certificate in *.x509)
-> 
-> 
-> Please read this commit:
 
-Yes, I did.
+Applied to linux-kbuild.
 
-> The motivation for this change is still questionable to me;
-> the commit description sounds like they merged *.priv and *.x509
-> into *.pem just because they could not write a correct Makefile.
-> (If requested, I can write a correct Makefile that works in parallel build)
 
-I think that would be preferable.  Putting the private and public keys
-in the same file cannot be good security practice!
+
+> Masahiro Yamada (11):
+>   certs: use $< and $@ to simplify the key generation rule
+>   certs: unify duplicated cmd_extract_certs and improve the log
+>   certs: remove unneeded -I$(srctree) option for system_certificates.o
+>   certs: refactor file cleaning
+>   certs: remove misleading comments about GCC PR
+>   kbuild: stop using config_filename in scripts/Makefile.modsign
+>   certs: simplify $(srctree)/ handling and remove config_filename macro
+>   kbuild: do not include include/config/auto.conf from shell scripts
+>   kbuild: do not quote string values in include/config/auto.conf
+>   certs: move scripts/extract-cert to certs/
+>   microblaze: use built-in function to get CPU_{MAJOR,MINOR,REV}
+>
+>  MAINTAINERS                                   |  1 -
+>  Makefile                                      |  6 +-
+>  arch/arc/Makefile                             |  4 +-
+>  arch/arc/boot/dts/Makefile                    |  4 +-
+>  arch/h8300/boot/dts/Makefile                  |  6 +-
+>  arch/microblaze/Makefile                      |  8 +--
+>  arch/nds32/boot/dts/Makefile                  |  7 +--
+>  arch/nios2/boot/dts/Makefile                  |  2 +-
+>  arch/openrisc/boot/dts/Makefile               |  7 +--
+>  arch/powerpc/boot/Makefile                    |  2 +-
+>  arch/riscv/boot/dts/canaan/Makefile           |  4 +-
+>  arch/sh/boot/dts/Makefile                     |  4 +-
+>  arch/xtensa/Makefile                          |  2 +-
+>  arch/xtensa/boot/dts/Makefile                 |  5 +-
+>  certs/.gitignore                              |  1 +
+>  certs/Makefile                                | 55 +++++++------------
+>  {scripts => certs}/extract-cert.c             |  2 +-
+>  drivers/acpi/Makefile                         |  2 +-
+>  drivers/base/firmware_loader/builtin/Makefile |  4 +-
+>  init/Makefile                                 |  2 +-
+>  net/wireless/Makefile                         |  4 +-
+>  scripts/.gitignore                            |  1 -
+>  scripts/Kbuild.include                        | 47 ----------------
+>  scripts/Makefile                              | 11 +---
+>  scripts/Makefile.modinst                      |  4 +-
+>  scripts/gen_autoksyms.sh                      | 11 +---
+>  scripts/kconfig/confdata.c                    |  2 +-
+>  scripts/link-vmlinux.sh                       | 47 ++++++++--------
+>  scripts/remove-stale-files                    |  2 +
+>  scripts/setlocalversion                       |  9 ++-
+>  usr/Makefile                                  |  2 +-
+>  31 files changed, 87 insertions(+), 181 deletions(-)
+>  rename {scripts => certs}/extract-cert.c (98%)
+>
+> --
+> 2.32.0
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
