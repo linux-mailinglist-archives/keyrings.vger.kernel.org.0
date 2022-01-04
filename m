@@ -2,78 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A283D4845B6
-	for <lists+keyrings@lfdr.de>; Tue,  4 Jan 2022 16:59:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D762484799
+	for <lists+keyrings@lfdr.de>; Tue,  4 Jan 2022 19:13:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbiADP7t (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 4 Jan 2022 10:59:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
+        id S236142AbiADSNq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 4 Jan 2022 13:13:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbiADP7t (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jan 2022 10:59:49 -0500
-X-Greylist: delayed 497 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Jan 2022 07:59:49 PST
-Received: from smtp-42ab.mail.infomaniak.ch (smtp-42ab.mail.infomaniak.ch [IPv6:2001:1600:3:17::42ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E58C061761
-        for <keyrings@vger.kernel.org>; Tue,  4 Jan 2022 07:59:49 -0800 (PST)
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
-        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4JSxtT3mH9zMptZJ;
-        Tue,  4 Jan 2022 16:51:29 +0100 (CET)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4JSxtR5Z2WzljsVx;
-        Tue,  4 Jan 2022 16:51:27 +0100 (CET)
-Message-ID: <5030a9ff-a1d1-a9bd-902a-77c3d1d87446@digikod.net>
-Date:   Tue, 4 Jan 2022 16:56:36 +0100
+        with ESMTP id S236107AbiADSNq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jan 2022 13:13:46 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B926FC061761;
+        Tue,  4 Jan 2022 10:13:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=qCo/EEOuXkGQd3ORVen9TvUPi33M9r4hwOqzu/uF62I=; b=mcznDQresetsRf92LUuK6tJp/5
+        TJzXRLBa39LwWGSHJEC8hQutFTEidjOdAoE9EcGp+wT/OUH47f2CdRSXbIIJNwcpf2SemholjxoIx
+        Hp4pA9qI1VNzeq3OHtDW0jSdsF/hPWjooUOIv/1H3cHthrO+lllWXaKKJaEwtzFeo3ClWQ41HvvET
+        t0An4YbGGIpg5ZOc0yBTb3udJ+nA67Bbvjk5LIP593BHG87JYBPIJ3/WR4bTWz9Rg9KBv5hkwP71r
+        54gQawIjXFddkK2tjFiabLr4ws7CvM2u0uokGvEjg4bP9+u3u08SzpvreA2GuDo2gSelcT/h7PafG
+        HiCDEmkQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1n4oJb-00Dt2B-9M; Tue, 04 Jan 2022 18:13:43 +0000
+Date:   Tue, 4 Jan 2022 18:13:43 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        efi@lists.einval.com,
+        debian-kernel <debian-kernel@lists.debian.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
+ signing key
+Message-ID: <YdSOV7LL0vWCMcWl@casper.infradead.org>
+References: <20211218031122.4117631-1-willy@infradead.org>
+ <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: 
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Morris <jmorris@namei.org>,
-        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@linux.microsoft.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Tyler Hicks <tyhicks@linux.microsoft.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Andreas Rammhold <andreas@rammhold.de>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>
-References: <20210712170313.884724-1-mic@digikod.net>
- <7e8d27da-b5d4-e42c-af01-5c03a7f36a6b@digikod.net> <YcGVZitNa23PCSFV@iki.fi>
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-Subject: Re: [PATCH v8 0/5] Enable root to update the blacklist keyring
-In-Reply-To: <YcGVZitNa23PCSFV@iki.fi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-
-On 21/12/2021 09:50, Jarkko Sakkinen wrote:
-> On Mon, Dec 13, 2021 at 04:30:29PM +0100, Mickaël Salaün wrote:
->> Hi Jarkko,
->>
->> Since everyone seems OK with this and had plenty of time to complain, could
->> you please take this patch series in your tree? It still applies on
->> v5.16-rc5 and it is really important to us. Please let me know if you need
->> something more.
->>
->> Regards,
->>   Mickaël
+On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
+> > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
+> > +key=
+> > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
+> > +       cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
+> > +       if [ ! -f $cert ]; then
+> > +               cert=$srctree/$cert
+> > +       fi
+> > +
+> > +       key=${cert%pem}priv
+> > +       if [ ! -f $key ]; then
+> > +               key=$cert
+> > +       fi
 > 
-> I'm off-work up until end of the year, i.e. I will address only important
-> bug fixes and v5.16 up until that.
 > 
-> If any of the patches is yet missing my ack, feel free to
+> I still do not understand this part.
 > 
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+> It is true that the Debian document you referred to creates separate files
+> for the key and the certificate:
+>   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
+> DER -out MOK.der -days 36500 -subj "/CN=My Name/" -nodes
+> 
+> but, is such a use-case possible in Kbuild?
 
-Thanks Jarkko. Can you please take it into your tree?
+If someone has followed the Debian instructions for creating a MOK,
+then they will have two separate files.  We should support both the case
+where someone has created a Debian MOK and the case where someone has
+used Kbuild to create this foolish blob with both private and public
+key in one file.
 
-Regards,
-  Mickaël
+> In the old days, yes, the key and the certificate were stored in separate files.
+> (the key in *.priv and the certificate in *.x509)
+> 
+> 
+> Please read this commit:
+
+Yes, I did.
+
+> The motivation for this change is still questionable to me;
+> the commit description sounds like they merged *.priv and *.x509
+> into *.pem just because they could not write a correct Makefile.
+> (If requested, I can write a correct Makefile that works in parallel build)
+
+I think that would be preferable.  Putting the private and public keys
+in the same file cannot be good security practice!
