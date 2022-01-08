@@ -2,60 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F0BA488239
-	for <lists+keyrings@lfdr.de>; Sat,  8 Jan 2022 09:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB0E4883D6
+	for <lists+keyrings@lfdr.de>; Sat,  8 Jan 2022 14:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233743AbiAHHs4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 8 Jan 2022 02:48:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49664 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233665AbiAHHs4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 8 Jan 2022 02:48:56 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AFA4C061574
-        for <keyrings@vger.kernel.org>; Fri,  7 Jan 2022 23:48:55 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id v7so4669835qtw.13
-        for <keyrings@vger.kernel.org>; Fri, 07 Jan 2022 23:48:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=hLe6inFIpheC1g9qja6CKVg1LizD8q2whZW2tg94BWw=;
-        b=UO5lObkJSpBPtGDWwBICur2fWUyb4KOc6zMA+j+v24lvZof49IDMPGxPdYN2oxNYjc
-         XxfYL70rLmHQHLvJ8p0LBq6QSZriLSj1TIah9M2rRmLpvbzqwepl6Q6kkCaZV+QxNWAh
-         wowNQGuM9EEFD9Cs6xBmotzciFYsAuLHVoS6HQGi1ElHI5IvJ9/SgeTI2P8X8ZKdbrvU
-         L0bGOq7BMR3xciqjvW+hnVS+rL5IApvzL7jpBm0J6PCtjs4cJNab82qlYUki3MWf+l01
-         0j1N47CjDzzemY/cRvMrZyuHtq1zUfQFhkZaqW87snV7yJAVhtZ5NWjupekktw7Wuebr
-         bXeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=hLe6inFIpheC1g9qja6CKVg1LizD8q2whZW2tg94BWw=;
-        b=BF97y0Ry4sNfnUcVRA5oHol7M+nXKwEMEK+WnWgZMDlUodPM3/V2loPRd/hLj4PEx0
-         zq8uGDgRRxbzkZC3994ObZNMf31FKuM0bKlPkCkoDTpq3KJnI+DHoXkAUWJb7kwTbPXx
-         xn1x1nnoSHU9VwbAejsjAgcWSJP/kpfI2osM7nXp4hfcvRjBZ9lGyWQpv8PU0PWsecOz
-         C8dfpJv8/UMV4f1pBITWdXpqkSEXWrQOs1qav0VNPTjV9j9R496PsxMGP+wWSE+1LDF6
-         FwAUIP4MjjXUd8ZLySnKzHqTR5f8jLJ+NEYbo6+ATB+moHQAvUbb+71S8von2WKechOj
-         SmGw==
-X-Gm-Message-State: AOAM533FGKBpwbc/GGTMm+H0nLrgZVd/VfN7rYVGZYvf2xYEfXfAJIjo
-        8/NvBJqTI2QAY//xkhT45uvr3qvD+QarY0MDvpo=
-X-Google-Smtp-Source: ABdhPJzRVIH9SkBieuk+2/giZHkc8AUb8a5kSRLXEqmEUyJ+kgTj81A3988WRQtYQNL4pdQ7/iCzVUHZVWaDK6TMJ1Q=
-X-Received: by 2002:ac8:5743:: with SMTP id 3mr59443587qtx.38.1641628134747;
- Fri, 07 Jan 2022 23:48:54 -0800 (PST)
+        id S230023AbiAHNyj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 8 Jan 2022 08:54:39 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:38892 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229486AbiAHNyj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 8 Jan 2022 08:54:39 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 12A4560FE3;
+        Sat,  8 Jan 2022 13:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6763C36AE3;
+        Sat,  8 Jan 2022 13:54:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641650078;
+        bh=n5CeQCaLX9Mzw9S1NmoY2amBI7g7s0AkC2jF7xAlLyM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K+ogBxxYTpdgBjcT/wO+UcZrBbhsRc09XQsPgGkIYjMUSlgcwixQW1+jEmJKLEFP7
+         KW514n95Nua1MGpXaoDBlTC0etUPA6Bq5uGuSVfeauyqlf/FXX9pfp7HAfgfeRISOr
+         7NgcO+ZJ72WMuS0ZN89gnzi2ZnLxoiUGkpN0qeSNaettUepL/v6ko+Ph1fSDbrg3yE
+         S71sladMHh4gz0Dmu/4VSmBTO7BIYZmEpRbRP8bMF/mj+hctdFcTATqekx1vBFQInZ
+         xS3D0PhOz3c1I++ya2Pl7zZtPYT3MU/5KYpMESsJ27H/IWr4iUi/KKfTPSaM+rsR6O
+         ujBoKniWx5hKA==
+Date:   Sat, 8 Jan 2022 15:54:29 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Nayna Jain <nayna@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        dhowells@redhat.com, zohar@linux.ibm.com,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
+        seth@forshee.me, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v7 1/3] certs: export load_certificate_list() to be used
+ outside certs/
+Message-ID: <YdmXlUcsa+xRcwSN@iki.fi>
+References: <20220105175410.554444-1-nayna@linux.ibm.com>
+ <20220105175410.554444-2-nayna@linux.ibm.com>
 MIME-Version: 1.0
-Received: by 2002:ac8:5fc1:0:0:0:0:0 with HTTP; Fri, 7 Jan 2022 23:48:54 -0800 (PST)
-Reply-To: jean1nasri@gmail.com
-From:   Jean nasri <edae6906@gmail.com>
-Date:   Sat, 8 Jan 2022 08:48:54 +0100
-Message-ID: <CAANBhRJS90019TQx9zUbfyX+dH16aMDSZufpWas8wSMdx5A96Q@mail.gmail.com>
-Subject: Yes,it is true
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220105175410.554444-2-nayna@linux.ibm.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
--- 
-Do you have an account to receive donation funds? Please reply for
-further explanation.
-Nasri.
+On Wed, Jan 05, 2022 at 12:54:08PM -0500, Nayna Jain wrote:
+> load_certificate_list() parses certificates embedded in the kernel
+> image to load them onto the keyring.
+> 
+> Commit "2565ca7f5ec1 (certs: Move load_system_certificate_list to a common
+> function)" made load_certificate_list() a common function in the certs/
+> directory. Now, export load_certificate_list() outside certs/ to be used
+> by load_platform_certificate_list() which is added later in the patchset.
+> 
+> Reported-by: kernel test robot <lkp@intel.com> (auto build test ERROR)
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+
+This lacking fixes tag, if it is a bug, or "reported-by" needs to be
+completely removed.
+
+/Jarkko
