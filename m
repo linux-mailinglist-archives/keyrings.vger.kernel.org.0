@@ -2,131 +2,147 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3508B48B594
-	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 19:19:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2171248B5C4
+	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 19:37:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344767AbiAKSTP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 11 Jan 2022 13:19:15 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:10116 "EHLO
+        id S1345406AbiAKShJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 11 Jan 2022 13:37:09 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:25674 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344629AbiAKSTL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 13:19:11 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20BHdmUx000777;
-        Tue, 11 Jan 2022 18:16:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=f23pSkAQkmTfG63MYPw5lvGkPGpCHSGtCMNQ0RMPVVw=;
- b=N+it7FobbBF3xJcmaNg2iZZ98mYKy6HWCX+u8RfBEw1GG7keGo90reSd69lYwS0WJHuK
- loz4psJdgKhiSFY8/6YeQOlTmpq7hYJlDVeifMzDYezPJPhxG5wTCZg1h4KGL0W+CUvH
- c+UIkBqMgIYHYPUZYVW1trpsRaf7PaE0eTGT4P0IBT7HHnnqjz5kkwIR/uqV46WkryRz
- cUyagGQPvwlIj327i35I3wXvbkp2ZR1gt3ZaL4JqBJJrq4/uF/yi5kJSNfJK0qTAnVFT
- 9zb4jLQHby+Y6QDkWZZD0FoVcOtQ0N5k1bXjLNC0QD3GrSOmCj2l2jE65WRU72kBofS6 zA== 
+        by vger.kernel.org with ESMTP id S241327AbiAKShJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 13:37:09 -0500
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20BIVlLa032525;
+        Tue, 11 Jan 2022 18:37:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=1VAPgis7HD/1t1YbL6qX5csf/GGTN0INMcKQ2ZvaZzg=;
+ b=qzPP3F9zMkLX/Y4jcKufFGAirD1X8ILiZ7ubNOwhhr14HG72gIF4lE8dvqDZmRHg3Ug1
+ 8JHAsFp0uwX5SiMHSLPKL8Vt2tLNPTGMXCQ5wuz15x/6pNNWZLWXJisHPQA8DUU6ESE3
+ xzX4QryA2nofBk+PKAjFRon5+ot1sHXbhiS83+xMvLV5LfFHX/VmLdhkXbw3ndm/TYR8
+ fBzFGvGRZuoDdOTNJU70o8mINwtT5glKqfaYut+it9L4449ya7GNt51H3c3DYDvfk28X
+ jH8YmetzQ2sU2M2YiGvfKeBpyuwN7KwRnefJbT0Lrr65FWTbowA1/QQtaVhfJetkJv8f aA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3dhbp7e0pn-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dh9fwt1a2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jan 2022 18:16:45 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20BIDEJU016077;
-        Tue, 11 Jan 2022 18:16:44 GMT
+        Tue, 11 Jan 2022 18:37:04 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20BIXj8s008085;
+        Tue, 11 Jan 2022 18:37:03 GMT
 Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3dhbp7e0nf-1
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dh9fwt19f-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jan 2022 18:16:44 +0000
+        Tue, 11 Jan 2022 18:37:03 +0000
 Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20BIFZZY006044;
-        Tue, 11 Jan 2022 18:16:41 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-        by ppma04ams.nl.ibm.com with ESMTP id 3df2892wsv-1
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20BIQnrK018636;
+        Tue, 11 Jan 2022 18:37:01 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 3df28931wv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jan 2022 18:16:41 +0000
+        Tue, 11 Jan 2022 18:37:01 +0000
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20BIGdvP45875706
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20BIaw3o46924146
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Jan 2022 18:16:39 GMT
+        Tue, 11 Jan 2022 18:36:58 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4395611C050;
-        Tue, 11 Jan 2022 18:16:39 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 4B80011C04C;
+        Tue, 11 Jan 2022 18:36:58 +0000 (GMT)
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0C56911C05B;
-        Tue, 11 Jan 2022 18:16:37 +0000 (GMT)
-Received: from sig-9-65-94-95.ibm.com (unknown [9.65.94.95])
+        by IMSVA (Postfix) with ESMTP id 00E1511C04A;
+        Tue, 11 Jan 2022 18:36:56 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.85.241])
         by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 11 Jan 2022 18:16:36 +0000 (GMT)
-Message-ID: <a384fcf8bdd9ff79456e9669fc61ab50ec4e1c55.camel@linux.ibm.com>
-Subject: Re: [PATCH v9 2/8] integrity: Introduce a Linux keyring called
- machine
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "pjones@redhat.com" <pjones@redhat.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>
-Date:   Tue, 11 Jan 2022 13:16:36 -0500
-In-Reply-To: <100B070F-7EB4-4BF7-B2B9-E5AE78D3066A@oracle.com>
-References: <20220105235012.2497118-1-eric.snowberg@oracle.com>
-         <20220105235012.2497118-3-eric.snowberg@oracle.com>
-         <883da244c04fcb07add9984859a09d7b1827880a.camel@linux.ibm.com>
-         <100B070F-7EB4-4BF7-B2B9-E5AE78D3066A@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Tue, 11 Jan 2022 18:36:55 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, zohar@linux.ibm.com, jarkko@kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
+        seth@forshee.me, Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v8 0/3] integrity: support including firmware ".platform" keys at build time 
+Date:   Tue, 11 Jan 2022 13:36:44 -0500
+Message-Id: <20220111183647.977037-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GtMCw9gU-05vUSKvCgnmnFZN-mUkf-aF
-X-Proofpoint-ORIG-GUID: zoiRmxjG6RJRitTOPoRW8Bc1iQ31vQ07
+X-Proofpoint-GUID: tdgA4dnUAXF2Usk07g0DEQh_y-o8XMC3
+X-Proofpoint-ORIG-GUID: qmSt03qo3oqxoawmkWQdB4KzSKRxNXj1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-01-11_04,2022-01-11_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 clxscore=1015 impostorscore=0 priorityscore=1501
- mlxscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2110150000 definitions=main-2201110098
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ bulkscore=0 adultscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201110100
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2022-01-10 at 23:25 +0000, Eric Snowberg wrote:
-> > Jarkko, my concern is that once this version of the patch set is
-> > upstreamed, would limiting which keys may be loaded onto the .machine
-> > keyring be considered a regression?
-> 
-> 
-> Currently certificates built into the kernel do not have a CA restriction on them.  
-> IMA will trust anything in this keyring even if the CA bit is not set.  While it would 
-> be advisable for a kernel to be built with a CA, nothing currently enforces it. 
-> 
-> My thinking for the dropped CA restriction patches was to introduce a new Kconfig.  
-> This Kconfig would do the CA enforcement on the machine keyring.  However if the 
-> Kconfig option was not set for enforcement, it would work as it does in this series, 
-> plus it would allow IMA to work with non-CA keys.  This would be done by removing 
-> the restriction placed in this patch. Let me know your thoughts on whether this would 
-> be an appropriate solution.  I believe this would get around what you are identifying as 
-> a possible regression.
+Some firmware support secure boot by embedding static keys to verify the
+Linux kernel during boot. However, these firmware do not expose an
+interface for the kernel to load firmware keys onto the ".platform"
+keyring, preventing the kernel from verifying the kexec kernel image
+signature.
 
-True the problem currently exists with the builtin keys, but there's a
-major difference between trusting the builtin keys and those being
-loading via MOK.  This is an integrity gap that needs to be closed and
-shouldn't be expanded to keys on the .machine keyring.
+This patchset exports load_certificate_list() and defines a new function
+load_builtin_platform_cert() to load compiled in certificates onto the
+".platform" keyring.
 
-"plus it would allow IMA to work with non-CA keys" is unacceptable.
+Changelog:
 
-Mimi
+v8:
+* Includes Jarkko's feedback on patch description and removed Reported-by
+for Patch 1.
 
+v7:
+* Incldues Jarkko's feedback on patch description for Patch 1 and 3.
+
+v6:
+* Includes Jarkko's feedback:
+ * Split Patch 2 into two.
+ * Update Patch description.
+
+v5:
+* Renamed load_builtin_platform_cert() to load_platform_certificate_list()
+and config INTEGRITY_PLATFORM_BUILTIN_KEYS to INTEGRITY_PLATFORM_KEYS, as
+suggested by Mimi Zohar.
+
+v4:
+* Split into two patches as per Mimi Zohar and Dimitri John Ledkov
+recommendation.
+
+v3:
+* Included Jarkko's feedback
+ ** updated patch description to include approach.
+ ** removed extern for function declaration in the .h file.
+* Included load_certificate_list() within #ifdef CONFIG_KEYS condition.
+
+v2:
+* Fixed the error reported by kernel test robot
+* Updated patch description based on Jarkko's feedback.
+
+Nayna Jain (3):
+  certs: export load_certificate_list() to be used outside certs/
+  integrity: make integrity_keyring_from_id() non-static
+  integrity: support including firmware ".platform" keys at build time
+
+ certs/Makefile                                |  5 ++--
+ certs/blacklist.c                             |  1 -
+ certs/common.c                                |  2 +-
+ certs/common.h                                |  9 -------
+ certs/system_keyring.c                        |  1 -
+ include/keys/system_keyring.h                 |  6 +++++
+ security/integrity/Kconfig                    | 10 +++++++
+ security/integrity/Makefile                   | 17 +++++++++++-
+ security/integrity/digsig.c                   |  2 +-
+ security/integrity/integrity.h                |  6 +++++
+ .../integrity/platform_certs/platform_cert.S  | 23 ++++++++++++++++
+ .../platform_certs/platform_keyring.c         | 26 +++++++++++++++++++
+ 12 files changed, 92 insertions(+), 16 deletions(-)
+ delete mode 100644 certs/common.h
+ create mode 100644 security/integrity/platform_certs/platform_cert.S
+
+-- 
+2.27.0
