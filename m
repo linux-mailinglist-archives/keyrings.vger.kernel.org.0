@@ -2,153 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0C048B542
-	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 19:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3508B48B594
+	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 19:19:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345559AbiAKSGb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 11 Jan 2022 13:06:31 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4402 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345411AbiAKSEC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 13:04:02 -0500
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JYJQ13qZMz688Bk;
-        Wed, 12 Jan 2022 02:00:25 +0800 (CST)
-Received: from roberto-ThinkStation-P620.huawei.com (10.204.63.22) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 11 Jan 2022 19:03:58 +0100
-From:   Roberto Sassu <roberto.sassu@huawei.com>
-To:     <dhowells@redhat.com>, <dwmw2@infradead.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>
-CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <linux-integrity@vger.kernel.org>, <linux-fscrypt@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <zohar@linux.ibm.com>,
-        <ebiggers@kernel.org>, Roberto Sassu <roberto.sassu@huawei.com>
-Subject: [PATCH 14/14] KEYS: Introduce load_pgp_public_keyring()
-Date:   Tue, 11 Jan 2022 19:03:18 +0100
-Message-ID: <20220111180318.591029-15-roberto.sassu@huawei.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220111180318.591029-1-roberto.sassu@huawei.com>
-References: <20220111180318.591029-1-roberto.sassu@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.204.63.22]
-X-ClientProxiedBy: lhreml754-chm.china.huawei.com (10.201.108.204) To
- fraeml714-chm.china.huawei.com (10.206.15.33)
-X-CFilter-Loop: Reflected
+        id S1344767AbiAKSTP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 11 Jan 2022 13:19:15 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:10116 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1344629AbiAKSTL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 13:19:11 -0500
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20BHdmUx000777;
+        Tue, 11 Jan 2022 18:16:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=f23pSkAQkmTfG63MYPw5lvGkPGpCHSGtCMNQ0RMPVVw=;
+ b=N+it7FobbBF3xJcmaNg2iZZ98mYKy6HWCX+u8RfBEw1GG7keGo90reSd69lYwS0WJHuK
+ loz4psJdgKhiSFY8/6YeQOlTmpq7hYJlDVeifMzDYezPJPhxG5wTCZg1h4KGL0W+CUvH
+ c+UIkBqMgIYHYPUZYVW1trpsRaf7PaE0eTGT4P0IBT7HHnnqjz5kkwIR/uqV46WkryRz
+ cUyagGQPvwlIj327i35I3wXvbkp2ZR1gt3ZaL4JqBJJrq4/uF/yi5kJSNfJK0qTAnVFT
+ 9zb4jLQHby+Y6QDkWZZD0FoVcOtQ0N5k1bXjLNC0QD3GrSOmCj2l2jE65WRU72kBofS6 zA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dhbp7e0pn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Jan 2022 18:16:45 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20BIDEJU016077;
+        Tue, 11 Jan 2022 18:16:44 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dhbp7e0nf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Jan 2022 18:16:44 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20BIFZZY006044;
+        Tue, 11 Jan 2022 18:16:41 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 3df2892wsv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Jan 2022 18:16:41 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20BIGdvP45875706
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 11 Jan 2022 18:16:39 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4395611C050;
+        Tue, 11 Jan 2022 18:16:39 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0C56911C05B;
+        Tue, 11 Jan 2022 18:16:37 +0000 (GMT)
+Received: from sig-9-65-94-95.ibm.com (unknown [9.65.94.95])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 11 Jan 2022 18:16:36 +0000 (GMT)
+Message-ID: <a384fcf8bdd9ff79456e9669fc61ab50ec4e1c55.camel@linux.ibm.com>
+Subject: Re: [PATCH v9 2/8] integrity: Introduce a Linux keyring called
+ machine
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "James.Bottomley@hansenpartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "pjones@redhat.com" <pjones@redhat.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>
+Date:   Tue, 11 Jan 2022 13:16:36 -0500
+In-Reply-To: <100B070F-7EB4-4BF7-B2B9-E5AE78D3066A@oracle.com>
+References: <20220105235012.2497118-1-eric.snowberg@oracle.com>
+         <20220105235012.2497118-3-eric.snowberg@oracle.com>
+         <883da244c04fcb07add9984859a09d7b1827880a.camel@linux.ibm.com>
+         <100B070F-7EB4-4BF7-B2B9-E5AE78D3066A@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GtMCw9gU-05vUSKvCgnmnFZN-mUkf-aF
+X-Proofpoint-ORIG-GUID: zoiRmxjG6RJRitTOPoRW8Bc1iQ31vQ07
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-11_04,2022-01-11_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1015 impostorscore=0 priorityscore=1501
+ mlxscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2110150000 definitions=main-2201110098
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Preload PGP keys from 'pubring.gpg', placed in certs/ of the kernel source
-directory.
+On Mon, 2022-01-10 at 23:25 +0000, Eric Snowberg wrote:
+> > Jarkko, my concern is that once this version of the patch set is
+> > upstreamed, would limiting which keys may be loaded onto the .machine
+> > keyring be considered a regression?
+> 
+> 
+> Currently certificates built into the kernel do not have a CA restriction on them.  
+> IMA will trust anything in this keyring even if the CA bit is not set.  While it would 
+> be advisable for a kernel to be built with a CA, nothing currently enforces it. 
+> 
+> My thinking for the dropped CA restriction patches was to introduce a new Kconfig.  
+> This Kconfig would do the CA enforcement on the machine keyring.  However if the 
+> Kconfig option was not set for enforcement, it would work as it does in this series, 
+> plus it would allow IMA to work with non-CA keys.  This would be done by removing 
+> the restriction placed in this patch. Let me know your thoughts on whether this would 
+> be an appropriate solution.  I believe this would get around what you are identifying as 
+> a possible regression.
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- certs/Kconfig               | 11 +++++++++++
- certs/Makefile              |  7 +++++++
- certs/system_certificates.S | 18 ++++++++++++++++++
- certs/system_keyring.c      | 21 +++++++++++++++++++++
- 4 files changed, 57 insertions(+)
+True the problem currently exists with the builtin keys, but there's a
+major difference between trusting the builtin keys and those being
+loading via MOK.  This is an integrity gap that needs to be closed and
+shouldn't be expanded to keys on the .machine keyring.
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index ae7f2e876a31..2f7fa68cd958 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -126,4 +126,15 @@ config SYSTEM_REVOCATION_KEYS
- 	  containing X.509 certificates to be included in the default blacklist
- 	  keyring.
- 
-+config PGP_PRELOAD_PUBLIC_KEYS
-+	bool "Preload PGP public keys"
-+	depends on SYSTEM_TRUSTED_KEYRING
-+	select PGP_PRELOAD
-+	default n
-+	help
-+	  Load at boot time the PGP public keys from a reserved area (populated
-+	  with the content of 'certs/pubring.gpg' provided at kernel build
-+	  time), and add them to the built-in keyring. Invalid keys are ignored
-+	  and the loading continues.
-+
- endmenu
-diff --git a/certs/Makefile b/certs/Makefile
-index 279433783b10..c85e0ff560ca 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -22,6 +22,13 @@ $(obj)/system_certificates.o: $(obj)/x509_certificate_list
- # Cope with signing_key.x509 existing in $(srctree) not $(objtree)
- AFLAGS_system_certificates.o := -I$(srctree)
- 
-+ifdef CONFIG_PGP_PRELOAD_PUBLIC_KEYS
-+ifeq ($(shell ls $(srctree)/certs/pubring.gpg 2> /dev/null), $(srctree)/certs/pubring.gpg)
-+AFLAGS_system_certificates.o += -DHAVE_PUBRING_GPG
-+$(obj)/system_certificates.o: $(srctree)/certs/pubring.gpg
-+endif
-+endif
-+
- quiet_cmd_extract_certs  = EXTRACT_CERTS   $(patsubst "%",%,$(2))
-       cmd_extract_certs  = scripts/extract-cert $(2) $@
- 
-diff --git a/certs/system_certificates.S b/certs/system_certificates.S
-index e1645e6f4d97..03b361bec758 100644
---- a/certs/system_certificates.S
-+++ b/certs/system_certificates.S
-@@ -47,3 +47,21 @@ module_cert_size:
- #else
- 	.long __module_cert_end - __module_cert_start
- #endif
-+
-+	.align 8
-+	.globl pgp_public_keys
-+pgp_public_keys:
-+__pgp_key_list_start:
-+#ifdef HAVE_PUBRING_GPG
-+	.incbin "certs/pubring.gpg"
-+#endif
-+__pgp_key_list_end:
-+
-+	.align 8
-+	.globl pgp_public_keys_size
-+pgp_public_keys_size:
-+#ifdef CONFIG_64BIT
-+	.quad __pgp_key_list_end - __pgp_key_list_start
-+#else
-+	.long __pgp_key_list_end - __pgp_key_list_start
-+#endif
-diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-index 26a11b1dcd59..1612fb97a652 100644
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -167,6 +167,27 @@ static __init int load_system_certificate_list(void)
- }
- late_initcall(load_system_certificate_list);
- 
-+#ifdef CONFIG_PGP_PRELOAD_PUBLIC_KEYS
-+extern __initconst const u8 pgp_public_keys[];
-+extern __initconst const unsigned long pgp_public_keys_size;
-+
-+/*
-+ * Load a list of PGP keys.
-+ */
-+static __init int load_pgp_public_keyring(void)
-+{
-+	pr_notice("Load PGP public keys\n");
-+
-+	if (preload_pgp_keys(pgp_public_keys,
-+			     pgp_public_keys_size,
-+			     builtin_trusted_keys) < 0)
-+		pr_err("Can't load PGP public keys\n");
-+
-+	return 0;
-+}
-+late_initcall(load_pgp_public_keyring);
-+#endif /* CONFIG_PGP_PRELOAD_PUBLIC_KEYS */
-+
- #ifdef CONFIG_SYSTEM_DATA_VERIFICATION
- 
- /**
--- 
-2.32.0
+"plus it would allow IMA to work with non-CA keys" is unacceptable.
+
+Mimi
 
