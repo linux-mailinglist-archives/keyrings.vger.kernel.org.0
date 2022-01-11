@@ -2,23 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F87548A7A2
-	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 07:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B94A48A8D2
+	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 08:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347898AbiAKGOW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 11 Jan 2022 01:14:22 -0500
-Received: from helcar.hmeau.com ([216.24.177.18]:59320 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232314AbiAKGOV (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Tue, 11 Jan 2022 01:14:21 -0500
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1n7APq-0007Yd-To; Tue, 11 Jan 2022 17:13:56 +1100
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Tue, 11 Jan 2022 17:13:54 +1100
-Date:   Tue, 11 Jan 2022 17:13:54 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Stephan Mueller <smueller@chronox.de>
-Cc:     Nicolai Stange <nstange@suse.de>,
+        id S235026AbiAKHuV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 11 Jan 2022 02:50:21 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:32828 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235852AbiAKHuV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 02:50:21 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id B7C6F1F3B6;
+        Tue, 11 Jan 2022 07:50:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1641887419; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=f3gaq6Fpe5yLaoONtNRasnCAJt2YNbe9vyw0v/wh8RM=;
+        b=Cr1hVVSDkKm8OAexg5DDB+dGf2zC7om6VHZeb89mGfgZairV5/zYM6qqomXYu703GAn+c7
+        KsXGU7mMbwD8CSnLwifyQrQgR2LHnrd5PcFRQjNN04bq2Ca9tFnDzW3Yitt7jty2FqlJvT
+        kKDgGz2RJseZzFFy2+9/pkBFvyKWyFE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1641887419;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=f3gaq6Fpe5yLaoONtNRasnCAJt2YNbe9vyw0v/wh8RM=;
+        b=aM2phZ+2niAVTXvv0kG1thwWspUyZUJkS7JegG6g8PcnsEHUIelzKess/CCVQQbsg57Z0y
+        UV7XEbV7GitE6iCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 37DC313638;
+        Tue, 11 Jan 2022 07:50:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id OXZVCbs23WHEfwAAMHmgww
+        (envelope-from <nstange@suse.de>); Tue, 11 Jan 2022 07:50:19 +0000
+From:   Nicolai Stange <nstange@suse.de>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Stephan Mueller <smueller@chronox.de>,
+        Nicolai Stange <nstange@suse.de>,
         "David S. Miller" <davem@davemloft.net>,
         Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
         Zaibo Xu <xuzaibo@huawei.com>,
@@ -28,211 +58,68 @@ Cc:     Nicolai Stange <nstange@suse.de>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         qat-linux@intel.com, keyrings@vger.kernel.org, simo@redhat.com,
         Eric Biggers <ebiggers@kernel.org>, Petr Vorel <pvorel@suse.cz>
-Subject: [PATCH] crypto: api - Disallow sha1 in FIPS-mode while allowing
- hmac(sha1)
-Message-ID: <Yd0gInht+V+Kcsw2@gondor.apana.org.au>
-References: <20211209090358.28231-1-nstange@suse.de>
- <87r1a7thy0.fsf@suse.de>
- <YcvEkfS4cONDXXB9@gondor.apana.org.au>
- <2468270.qO8rWLYou6@tauon.chronox.de>
- <YdepEhTI/LB9wdJr@gondor.apana.org.au>
+Subject: Re: [PATCH] crypto: api - Disallow sha1 in FIPS-mode while allowing hmac(sha1)
+In-Reply-To: <Yd0gInht+V+Kcsw2@gondor.apana.org.au> (Herbert Xu's message of
+        "Tue, 11 Jan 2022 17:13:54 +1100")
+References: <20211209090358.28231-1-nstange@suse.de> <87r1a7thy0.fsf@suse.de>
+        <YcvEkfS4cONDXXB9@gondor.apana.org.au>
+        <2468270.qO8rWLYou6@tauon.chronox.de>
+        <YdepEhTI/LB9wdJr@gondor.apana.org.au>
+        <Yd0gInht+V+Kcsw2@gondor.apana.org.au>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+Date:   Tue, 11 Jan 2022 08:50:18 +0100
+Message-ID: <871r1eyamd.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YdepEhTI/LB9wdJr@gondor.apana.org.au>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jan 07, 2022 at 01:44:34PM +1100, Herbert Xu wrote:
->
-> I'm already writing this up for sha1 anyway so let me polish it
-> off and I'll post it soon which you can then reuse it for dh.
+Hi Herbert,
 
-Here is something that seems to work for sha1/hmac.  Please let
-me know if you see any issues with this approach for dh.
+Herbert Xu <herbert@gondor.apana.org.au> writes:
+
+> On Fri, Jan 07, 2022 at 01:44:34PM +1100, Herbert Xu wrote:
+>>
+>> I'm already writing this up for sha1 anyway so let me polish it
+>> off and I'll post it soon which you can then reuse it for dh.
+>
+> Here is something that seems to work for sha1/hmac.  Please let
+> me know if you see any issues with this approach for dh.
+>
+> Thanks,
+>
+> ---8<---
+> Currently we do not distinguish between algorithms that fail on
+> the self-test vs. those which are disabled in FIPS mode (not allowed).
+> Both are marked as having failed the self-test.
+>
+> As it has been requested that we need to disable sha1 in FIPS
+> mode while still allowing hmac(sha1) this approach needs to change.
+>
+> This patch allows this scenario by adding a new flag FIPS_INTERNAL
+> to indicate those algorithms that have passed the self-test and are
+> not FIPS-allowed.  They can then be used for the self-testing of
+> other algorithms or by those that are explicitly allowed to use them
+> (currently just hmac).
+
+I haven't tried, but wouldn't this allow the instantiation of e.g.
+hmac(blake2s-256) in FIPS mode?
 
 Thanks,
 
----8<---
-Currently we do not distinguish between algorithms that fail on
-the self-test vs. those which are disabled in FIPS mode (not allowed).
-Both are marked as having failed the self-test.
+Nicolai
 
-As it has been requested that we need to disable sha1 in FIPS
-mode while still allowing hmac(sha1) this approach needs to change.
+>
+> Note that as a side-effect of this patch algorithms which are not
+> FIPS-allowed will now return ENOENT instead of ELIBBAD.  Hopefully
+> this is not an issue as some people were relying on this already.
+>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+>
 
-This patch allows this scenario by adding a new flag FIPS_INTERNAL
-to indicate those algorithms that have passed the self-test and are
-not FIPS-allowed.  They can then be used for the self-testing of
-other algorithms or by those that are explicitly allowed to use them
-(currently just hmac).
-
-Note that as a side-effect of this patch algorithms which are not
-FIPS-allowed will now return ENOENT instead of ELIBBAD.  Hopefully
-this is not an issue as some people were relying on this already.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index a366cb3e8aa1..649731856843 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -322,7 +322,13 @@ void crypto_alg_tested(const char *name, int err)
- found:
- 	q->cra_flags |= CRYPTO_ALG_DEAD;
- 	alg = test->adult;
--	if (err || list_empty(&alg->cra_list))
-+
-+	if (list_empty(&alg->cra_list))
-+		goto complete;
-+
-+	if (err == -ECANCELED)
-+		alg->cra_flags |= CRYPTO_ALG_FIPS_INTERNAL;
-+	else if (err)
- 		goto complete;
- 
- 	alg->cra_flags |= CRYPTO_ALG_TESTED;
-diff --git a/crypto/api.c b/crypto/api.c
-index cf0869dd130b..4c343585d4ea 100644
---- a/crypto/api.c
-+++ b/crypto/api.c
-@@ -314,6 +314,10 @@ struct crypto_alg *crypto_alg_mod_lookup(const char *name, u32 type, u32 mask)
- 	if (!((type | mask) & CRYPTO_ALG_INTERNAL))
- 		mask |= CRYPTO_ALG_INTERNAL;
- 
-+	/* Ditto for FIPS_INTERNAL. */
-+	if (!((type | mask) & CRYPTO_ALG_FIPS_INTERNAL))
-+		mask |= CRYPTO_ALG_FIPS_INTERNAL;
-+
- 	larval = crypto_larval_lookup(name, type, mask);
- 	if (IS_ERR(larval) || !crypto_is_larval(larval))
- 		return larval;
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index 25856aa7ccbf..fea669310f52 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -169,6 +169,7 @@ static int hmac_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	struct crypto_alg *alg;
- 	struct shash_alg *salg;
- 	u32 mask;
-+	u32 type;
- 	int err;
- 	int ds;
- 	int ss;
-@@ -182,8 +183,9 @@ static int hmac_create(struct crypto_template *tmpl, struct rtattr **tb)
- 		return -ENOMEM;
- 	spawn = shash_instance_ctx(inst);
- 
-+	type = CRYPTO_ALG_FIPS_INTERNAL;
- 	err = crypto_grab_shash(spawn, shash_crypto_instance(inst),
--				crypto_attr_alg_name(tb[1]), 0, mask);
-+				crypto_attr_alg_name(tb[1]), type, mask);
- 	if (err)
- 		goto err_free_inst;
- 	salg = crypto_spawn_shash_alg(spawn);
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index 5831d4bbc64f..6e2221a492e8 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -1664,7 +1664,8 @@ static int test_hash_vs_generic_impl(const char *generic_driver,
- 	if (strcmp(generic_driver, driver) == 0) /* Already the generic impl? */
- 		return 0;
- 
--	generic_tfm = crypto_alloc_shash(generic_driver, 0, 0);
-+	generic_tfm = crypto_alloc_shash(generic_driver,
-+					 CRYPTO_ALG_FIPS_INTERNAL, 0);
- 	if (IS_ERR(generic_tfm)) {
- 		err = PTR_ERR(generic_tfm);
- 		if (err == -ENOENT) {
-@@ -2387,7 +2388,8 @@ static int test_aead_vs_generic_impl(struct aead_extra_tests_ctx *ctx)
- 	if (strcmp(generic_driver, driver) == 0) /* Already the generic impl? */
- 		return 0;
- 
--	generic_tfm = crypto_alloc_aead(generic_driver, 0, 0);
-+	generic_tfm = crypto_alloc_aead(generic_driver,
-+					CRYPTO_ALG_FIPS_INTERNAL, 0);
- 	if (IS_ERR(generic_tfm)) {
- 		err = PTR_ERR(generic_tfm);
- 		if (err == -ENOENT) {
-@@ -2986,7 +2988,8 @@ static int test_skcipher_vs_generic_impl(const char *generic_driver,
- 	if (strcmp(generic_driver, driver) == 0) /* Already the generic impl? */
- 		return 0;
- 
--	generic_tfm = crypto_alloc_skcipher(generic_driver, 0, 0);
-+	generic_tfm = crypto_alloc_skcipher(generic_driver,
-+					    CRYPTO_ALG_FIPS_INTERNAL, 0);
- 	if (IS_ERR(generic_tfm)) {
- 		err = PTR_ERR(generic_tfm);
- 		if (err == -ENOENT) {
-@@ -5328,7 +5331,6 @@ static const struct alg_test_desc alg_test_descs[] = {
- 	}, {
- 		.alg = "sha1",
- 		.test = alg_test_hash,
--		.fips_allowed = 1,
- 		.suite = {
- 			.hash = __VECS(sha1_tv_template)
- 		}
-@@ -5637,9 +5639,6 @@ int alg_test(const char *driver, const char *alg, u32 type, u32 mask)
- 		if (i < 0)
- 			goto notest;
- 
--		if (fips_enabled && !alg_test_descs[i].fips_allowed)
--			goto non_fips_alg;
--
- 		rc = alg_test_cipher(alg_test_descs + i, driver, type, mask);
- 		goto test_done;
- 	}
-@@ -5649,8 +5648,7 @@ int alg_test(const char *driver, const char *alg, u32 type, u32 mask)
- 	if (i < 0 && j < 0)
- 		goto notest;
- 
--	if (fips_enabled && ((i >= 0 && !alg_test_descs[i].fips_allowed) ||
--			     (j >= 0 && !alg_test_descs[j].fips_allowed)))
-+	if (fips_enabled && (j >= 0 && !alg_test_descs[j].fips_allowed))
- 		goto non_fips_alg;
- 
- 	rc = 0;
-@@ -5671,10 +5669,15 @@ int alg_test(const char *driver, const char *alg, u32 type, u32 mask)
- 		}
- 		WARN(1, "alg: self-tests for %s (%s) failed (rc=%d)",
- 		     driver, alg, rc);
--	} else {
--		if (fips_enabled)
--			pr_info("alg: self-tests for %s (%s) passed\n",
-+	} else if (fips_enabled) {
-+		pr_info("alg: self-tests for %s (%s) passed\n",
-+			driver, alg);
-+
-+		if (i >= 0 && !alg_test_descs[i].fips_allowed) {
-+			pr_info("alg: %s (%s) is disabled due to FIPS\n",
- 				driver, alg);
-+			rc = -ECANCELED;
-+		}
- 	}
- 
- 	return rc;
-diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-index 855869e1fd32..df3f68dfe8c7 100644
---- a/include/linux/crypto.h
-+++ b/include/linux/crypto.h
-@@ -132,6 +132,15 @@
-  */
- #define CRYPTO_ALG_ALLOCATES_MEMORY	0x00010000
- 
-+/*
-+ * Mark an algorithm as a service implementation only usable by a
-+ * template and never by a normal user of the kernel crypto API.
-+ * This is intended to be used by algorithms that are themselves
-+ * not FIPS-approved but may instead be used to implement parts of
-+ * a FIPS-approved algorithm (e.g., sha1 vs. hmac(sha1)).
-+ */
-+#define CRYPTO_ALG_FIPS_INTERNAL	0x00020000
-+
- /*
-  * Transform masks and values (for crt_flags).
-  */
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+--=20
+SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
+ermany
+(HRB 36809, AG N=C3=BCrnberg), GF: Ivo Totev
