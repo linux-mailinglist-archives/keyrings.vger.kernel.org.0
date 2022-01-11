@@ -2,295 +2,170 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A8048ACAB
-	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 12:38:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B82448B4DD
+	for <lists+keyrings@lfdr.de>; Tue, 11 Jan 2022 19:04:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349672AbiAKLiH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 11 Jan 2022 06:38:07 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:34626 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238542AbiAKLiA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 06:38:00 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 87B8B21639;
-        Tue, 11 Jan 2022 11:37:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1641901078; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Nnudm31TWLhKvg8iKBvA1bfNToyh2dvEbi+Aqj3JOf0=;
-        b=Fp+F/vKcFMIPQuUQo8UVNYTohpH+hIN5v1sf3mvXCWYdHNhkYzinY1elREcV4EAoB2XrU6
-        w2s4w4eM6vF23rHLly3Thnnn0hO/93uEQ4XB3IwNPW+WsrvbrFTAcuNCfdHfprvBEaNnhb
-        E9kPOPr5vwJdhr6w0HzffkSX82F0lPw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1641901078;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Nnudm31TWLhKvg8iKBvA1bfNToyh2dvEbi+Aqj3JOf0=;
-        b=fAw0JhWNwop5nDbpxOR5hDu1JdKpGwH7AXDTV128GOp5d8eA8ZaWvQxIzuH9ztG3pbiEh0
-        VT07iLtEGTaYHwAA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-        by relay2.suse.de (Postfix) with ESMTP id 3A301A3B92;
-        Tue, 11 Jan 2022 11:37:58 +0000 (UTC)
-From:   Michal Suchanek <msuchanek@suse.de>
-To:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Cc:     Michal Suchanek <msuchanek@suse.de>, kexec@lists.infradead.org,
-        Philipp Rudo <prudo@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
-        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Frank van der Linden <fllinden@amazon.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Baoquan He <bhe@redhat.com>,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH v5 6/6] module: Move duplicate mod_check_sig users code to mod_parse_sig
-Date:   Tue, 11 Jan 2022 12:37:48 +0100
-Message-Id: <687db74a714d50b9c83d7ac024da4f7dec0d9a1d.1641900831.git.msuchanek@suse.de>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1641900831.git.msuchanek@suse.de>
-References: <cover.1641900831.git.msuchanek@suse.de>
+        id S1350002AbiAKSEB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 11 Jan 2022 13:04:01 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4388 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345156AbiAKSDv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 11 Jan 2022 13:03:51 -0500
+Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JYJQj1JcLz67Cr0;
+        Wed, 12 Jan 2022 02:01:01 +0800 (CST)
+Received: from roberto-ThinkStation-P620.huawei.com (10.204.63.22) by
+ fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Tue, 11 Jan 2022 19:03:46 +0100
+From:   Roberto Sassu <roberto.sassu@huawei.com>
+To:     <dhowells@redhat.com>, <dwmw2@infradead.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>
+CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-integrity@vger.kernel.org>, <linux-fscrypt@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <zohar@linux.ibm.com>,
+        <ebiggers@kernel.org>, Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH 00/14] KEYS: Add support for PGP keys and signatures
+Date:   Tue, 11 Jan 2022 19:03:04 +0100
+Message-ID: <20220111180318.591029-1-roberto.sassu@huawei.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.204.63.22]
+X-ClientProxiedBy: lhreml754-chm.china.huawei.com (10.201.108.204) To
+ fraeml714-chm.china.huawei.com (10.206.15.33)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Multiple users of mod_check_sig check for the marker, then call
-mod_check_sig, extract signature length, and remove the signature.
+Support for PGP keys and signatures was proposed by David long time ago,
+before the decision of using PKCS#7 for kernel modules signatures
+verification was made. After that, there has been not enough interest to
+support PGP too.
 
-Put this code in one place together with mod_check_sig.
+Lately, when discussing a proposal of introducing fsverity signatures in
+Fedora [1], developers expressed their preference on not having a separate
+key for signing, which would complicate the management of the distribution.
+They would be more in favor of using the same PGP key, currently used for
+signing RPM headers, also for file-based signatures (not only fsverity, but
+also IMA ones).
 
-This changes the error from ENOENT to ENODATA for ima_read_modsig in the
-case the signature marker is missing.
+Another envisioned use case would be to add the ability to appraise RPM
+headers with their existing PGP signature, so that they can be used as an
+authenticated source of reference values for appraising remaining
+files [2].
 
-This also changes the buffer length in ima_read_modsig from size_t to
-unsigned long. This reduces the possible value range on 32bit but the
-length refers to kernel in-memory buffer which cannot be longer than
-ULONG_MAX.
+To make these use cases possible, introduce support for PGP keys and
+signatures in the kernel, and load provided PGP keys in the built-in
+keyring, so that PGP signatures of RPM headers, fsverity digests, and IMA
+digests can be verified from this trust anchor.
 
-Also change mod_check_sig to unsigned long while at it.
+In addition to the original version of the patch set, also introduce
+support for signature verification of PGP keys, so that those keys can be
+added to keyrings with a signature-based restriction (e.g. .ima). PGP keys
+are searched with partial IDs, provided with signature subtype 16 (Issuer).
+Search with full IDs could be supported with
+draft-ietf-openpgp-rfc4880bis-10, by retrieving the information from
+signature subtype 33 (Issuer Fingerprint). Due to the possibility of ID
+collisions, the key_or_keyring restriction is not supported.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
-v3: - Philipp Rudo <prudo@redhat.com>: Update the commit with note about
-      change of raturn value
-    - Preserve the EBADMSG error code while moving code araound
-v4: - remove unused variable ms in module_signing.c
-    - note about buffer length
-v5: - also change the functions in module_signature.c to unsigned long
----
- include/linux/module_signature.h    |  4 +-
- kernel/module_signature.c           | 58 ++++++++++++++++++++++++++++-
- kernel/module_signing.c             | 27 ++------------
- security/integrity/ima/ima_modsig.c | 22 ++---------
- 4 files changed, 66 insertions(+), 45 deletions(-)
+The patch set includes two preliminary patches: patch 1 introduces
+mpi_key_length(), to get the number of bits and bytes of an MPI; patch 2
+introduces rsa_parse_priv_key_raw() and rsa_parse_pub_key_raw(), to parse
+an RSA key in RAW format if the ASN.1 parser returns an error.
 
-diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
-index 7eb4b00381ac..e5fb157c085c 100644
---- a/include/linux/module_signature.h
-+++ b/include/linux/module_signature.h
-@@ -40,7 +40,9 @@ struct module_signature {
- 	__be32	sig_len;	/* Length of signature data */
- };
- 
--int mod_check_sig(const struct module_signature *ms, size_t file_len,
-+int mod_check_sig(const struct module_signature *ms, unsigned long file_len,
-+		  const char *name);
-+int mod_parse_sig(const void *data, unsigned long *len, unsigned long *sig_len,
- 		  const char *name);
- 
- #endif /* _LINUX_MODULE_SIGNATURE_H */
-diff --git a/kernel/module_signature.c b/kernel/module_signature.c
-index 00132d12487c..4a36405ecd08 100644
---- a/kernel/module_signature.c
-+++ b/kernel/module_signature.c
-@@ -8,17 +8,39 @@
- 
- #include <linux/errno.h>
- #include <linux/printk.h>
-+#include <linux/string.h>
- #include <linux/module_signature.h>
- #include <asm/byteorder.h>
- 
-+/**
-+ * mod_check_sig_marker - check that the given data has signature marker at the end
-+ *
-+ * @data:	Data with appended signature
-+ * @len:	Length of data. Signature marker length is subtracted on success.
-+ */
-+static inline int mod_check_sig_marker(const void *data, unsigned long *len)
-+{
-+	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
-+
-+	if (markerlen > *len)
-+		return -ENODATA;
-+
-+	if (memcmp(data + *len - markerlen, MODULE_SIG_STRING,
-+		   markerlen))
-+		return -ENODATA;
-+
-+	*len -= markerlen;
-+	return 0;
-+}
-+
- /**
-  * mod_check_sig - check that the given signature is sane
-  *
-  * @ms:		Signature to check.
-- * @file_len:	Size of the file to which @ms is appended.
-+ * @file_len:	Size of the file to which @ms is appended (without the marker).
-  * @name:	What is being checked. Used for error messages.
-  */
--int mod_check_sig(const struct module_signature *ms, size_t file_len,
-+int mod_check_sig(const struct module_signature *ms, unsigned long file_len,
- 		  const char *name)
- {
- 	if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
-@@ -44,3 +66,35 @@ int mod_check_sig(const struct module_signature *ms, size_t file_len,
- 
- 	return 0;
- }
-+
-+/**
-+ * mod_parse_sig - check that the given signature is sane and determine signature length
-+ *
-+ * @data:	Data with appended signature.
-+ * @len:	Length of data. Signature and marker length is subtracted on success.
-+ * @sig_len:	Length of signature. Filled on success.
-+ * @name:	What is being checked. Used for error messages.
-+ */
-+int mod_parse_sig(const void *data, unsigned long *len, unsigned long *sig_len, const char *name)
-+{
-+	const struct module_signature *sig;
-+	int rc;
-+
-+	rc = mod_check_sig_marker(data, len);
-+	if (rc)
-+		return rc;
-+
-+	if (*len < sizeof(*sig))
-+		return -EBADMSG;
-+
-+	sig = data + (*len - sizeof(*sig));
-+
-+	rc = mod_check_sig(sig, *len, name);
-+	if (rc)
-+		return rc;
-+
-+	*sig_len = be32_to_cpu(sig->sig_len);
-+	*len -= *sig_len + sizeof(*sig);
-+
-+	return 0;
-+}
-diff --git a/kernel/module_signing.c b/kernel/module_signing.c
-index 20857d2a15ca..1d4cb03cce21 100644
---- a/kernel/module_signing.c
-+++ b/kernel/module_signing.c
-@@ -25,35 +25,16 @@ int verify_appended_signature(const void *data, unsigned long *len,
- 			      struct key *trusted_keys,
- 			      enum key_being_used_for purpose)
- {
--	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
--	struct module_signature *ms;
--	unsigned long sig_len, modlen = *len;
-+	unsigned long sig_len;
- 	int ret;
- 
--	pr_devel("==>%s %s(,%lu)\n", __func__, key_being_used_for[purpose], modlen);
-+	pr_devel("==>%s %s(,%lu)\n", __func__, key_being_used_for[purpose], *len);
- 
--	if (markerlen > modlen)
--		return -ENODATA;
--
--	if (memcmp(data + modlen - markerlen, MODULE_SIG_STRING,
--		   markerlen))
--		return -ENODATA;
--	modlen -= markerlen;
--
--	if (modlen <= sizeof(*ms))
--		return -EBADMSG;
--
--	ms = data + modlen - sizeof(*ms);
--
--	ret = mod_check_sig(ms, modlen, key_being_used_for[purpose]);
-+	ret = mod_parse_sig(data, len, &sig_len, key_being_used_for[purpose]);
- 	if (ret)
- 		return ret;
- 
--	sig_len = be32_to_cpu(ms->sig_len);
--	modlen -= sig_len + sizeof(*ms);
--	*len = modlen;
--
--	return verify_pkcs7_signature(data, modlen, data + modlen, sig_len,
-+	return verify_pkcs7_signature(data, *len, data + *len, sig_len,
- 				      trusted_keys,
- 				      purpose,
- 				      NULL, NULL);
-diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
-index fb25723c65bc..b40c8fdf6139 100644
---- a/security/integrity/ima/ima_modsig.c
-+++ b/security/integrity/ima/ima_modsig.c
-@@ -37,33 +37,17 @@ struct modsig {
-  *
-  * Return: 0 on success, error code otherwise.
-  */
--int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
-+int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t len,
- 		    struct modsig **modsig)
- {
--	const size_t marker_len = strlen(MODULE_SIG_STRING);
--	const struct module_signature *sig;
- 	struct modsig *hdr;
--	size_t sig_len;
--	const void *p;
-+	unsigned long sig_len, buf_len = len;
- 	int rc;
- 
--	if (buf_len <= marker_len + sizeof(*sig))
--		return -ENOENT;
--
--	p = buf + buf_len - marker_len;
--	if (memcmp(p, MODULE_SIG_STRING, marker_len))
--		return -ENOENT;
--
--	buf_len -= marker_len;
--	sig = (const struct module_signature *)(p - sizeof(*sig));
--
--	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
-+	rc = mod_parse_sig(buf, &buf_len, &sig_len, func_tokens[func]);
- 	if (rc)
- 		return rc;
- 
--	sig_len = be32_to_cpu(sig->sig_len);
--	buf_len -= sig_len + sizeof(*sig);
--
- 	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
- 	hdr = kzalloc(sizeof(*hdr) + sig_len, GFP_KERNEL);
- 	if (!hdr)
+Patches 3-5 introduce the library necessary to parse PGP keys and
+signatures, whose support is added with patches 6-10. Patch 11 introduces
+verify_pgp_signature() to be used by kernel subsystems (e.g. fsverity and
+IMA). Patch 12 is for testing of PGP signatures. Finally, patches 13-14
+allow loading a set of PGP keys from a supplied blob at boot time.
+
+I generated the diff from [3] (rebased). It is available at:
+
+https://github.com/robertosassu/linux/compare/pgp-signatures-v1-orig..pgp-signatures-v1
+
+Changelog
+
+v0 [3]:
+- style fixes
+- move include/linux/pgp.h and pgplib.h to crypto/asymmetric_keys
+- introduce verify_pgp_signature()
+- replace KEY_ALLOC_TRUSTED flag with KEY_ALLOC_BUILT_IN
+- don't fetch PGP subkeys
+- drop support for DSA
+- store number of MPIs in pgp_key_algo_p_num_mpi array
+- replace dynamic memory allocations with static ones in
+  pgp_generate_fingerprint()
+- store only keys with capability of verifying signatures
+- remember selection of PGP signature packet and don't repeat parsing
+- move search of the PGP key to verify the signature from the beginning
+  to the end of the verification process (to be similar with PKCS#7)
+- don't retry key search in the session keyring from the signature
+  verification code, let the caller pass the desired keyring
+- for the PGP signature test key type, retry the key search in the session
+  keyring
+- retry key search in restrict_link_by_signature() with a partial ID
+  (provided in the PGP signature)
+
+[1] https://fedoraproject.org/wiki/Changes/FsVerityRPM
+[2] https://fedoraproject.org/wiki/Changes/DIGLIM
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-modsign.git/log/?h=pgp-parser
+
+David Howells (8):
+  PGPLIB: PGP definitions (RFC 4880)
+  PGPLIB: Basic packet parser
+  PGPLIB: Signature parser
+  KEYS: PGP data parser
+  KEYS: Provide PGP key description autogeneration
+  KEYS: PGP-based public key signature verification
+  PGP: Provide a key type for testing PGP signatures
+  KEYS: Provide a function to load keys from a PGP keyring blob
+
+Roberto Sassu (6):
+  mpi: Introduce mpi_key_length()
+  rsa: add parser of raw format
+  KEYS: Retry asym key search with partial ID in
+    restrict_link_by_signature()
+  KEYS: Calculate key digest and get signature of the key
+  verification: introduce verify_pgp_signature()
+  KEYS: Introduce load_pgp_public_keyring()
+
+ MAINTAINERS                             |   1 +
+ certs/Kconfig                           |  11 +
+ certs/Makefile                          |   7 +
+ certs/system_certificates.S             |  18 +
+ certs/system_keyring.c                  |  91 ++++
+ crypto/asymmetric_keys/Kconfig          |  38 ++
+ crypto/asymmetric_keys/Makefile         |  13 +
+ crypto/asymmetric_keys/pgp.h            | 206 ++++++++
+ crypto/asymmetric_keys/pgp_library.c    | 620 ++++++++++++++++++++++++
+ crypto/asymmetric_keys/pgp_parser.h     |  18 +
+ crypto/asymmetric_keys/pgp_preload.c    | 110 +++++
+ crypto/asymmetric_keys/pgp_public_key.c | 484 ++++++++++++++++++
+ crypto/asymmetric_keys/pgp_signature.c  | 507 +++++++++++++++++++
+ crypto/asymmetric_keys/pgp_test_key.c   | 129 +++++
+ crypto/asymmetric_keys/pgplib.h         |  74 +++
+ crypto/asymmetric_keys/restrict.c       |  10 +-
+ crypto/rsa.c                            |  14 +-
+ crypto/rsa_helper.c                     |  69 +++
+ include/crypto/internal/rsa.h           |   6 +
+ include/crypto/pgp.h                    |  35 ++
+ include/linux/mpi.h                     |   2 +
+ include/linux/verification.h            |  23 +
+ lib/mpi/mpicoder.c                      |  33 +-
+ 23 files changed, 2506 insertions(+), 13 deletions(-)
+ create mode 100644 crypto/asymmetric_keys/pgp.h
+ create mode 100644 crypto/asymmetric_keys/pgp_library.c
+ create mode 100644 crypto/asymmetric_keys/pgp_parser.h
+ create mode 100644 crypto/asymmetric_keys/pgp_preload.c
+ create mode 100644 crypto/asymmetric_keys/pgp_public_key.c
+ create mode 100644 crypto/asymmetric_keys/pgp_signature.c
+ create mode 100644 crypto/asymmetric_keys/pgp_test_key.c
+ create mode 100644 crypto/asymmetric_keys/pgplib.h
+ create mode 100644 include/crypto/pgp.h
+
 -- 
-2.31.1
+2.32.0
 
