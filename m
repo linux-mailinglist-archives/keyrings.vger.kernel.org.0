@@ -2,41 +2,43 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01A5848DE21
-	for <lists+keyrings@lfdr.de>; Thu, 13 Jan 2022 20:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 430C248DE41
+	for <lists+keyrings@lfdr.de>; Thu, 13 Jan 2022 20:45:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231237AbiAMTfY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jan 2022 14:35:24 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:37208 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230046AbiAMTfX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 14:35:23 -0500
+        id S231485AbiAMTps (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jan 2022 14:45:48 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:38202 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231135AbiAMTps (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 14:45:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48B5AB82346;
-        Thu, 13 Jan 2022 19:35:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E5CC36AEB;
-        Thu, 13 Jan 2022 19:35:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D1F61DA6;
+        Thu, 13 Jan 2022 19:45:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4087C36AE9;
+        Thu, 13 Jan 2022 19:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642102521;
-        bh=wYviKH9qH01/t9E4TtjTCCpdE0iv7ux6iBNVX8pYgIo=;
+        s=k20201202; t=1642103147;
+        bh=qUIz564hA58GlcmritwUGxqMiLjCVu3CSYxmP8ZeheE=;
         h=From:To:Cc:Subject:Date:From;
-        b=N6REC3rp+dUrAXlbK8nIB/9a4BxlbPU+N0eHfxlmqRsVs9zr87tezylMIO4zkSCKU
-         iEVJ8PO2UzWtLIYvuwlrrhwfcDLijfUC/Jr0XglvM1mgpTeK+t0SXBu93ZU54ckiPj
-         FcfyHKmWr6vgi03ZzdNOma4GHBBPf81N8LUsJtiMggXiMxJrqr+YJPvRKq16ucNu5a
-         Vv8yyXfTL0X9rXTWJMwOpdUpjSxH8KYS9XoBTdsMt0VId2rWVzcpZloLoN8V3bssOB
-         b8fkwN31xwL6rR1n9W1/ZgsP5iwi4Vpg8+58Ot9jCGJhs3ZitVRRcjMjsjGCJs67my
-         blDKqJEJ7ZmEA==
+        b=cpqEDmLTi1J3H7onY8OaCcJ9ZaXItc6LVmOJGUMcjrs2hCrCwco4Fdrz+2JBxRzfR
+         SpigUYpylvdrLejYhJErcLlKRCzK0xP1af6o0b2U/TzJQEdh+oKh84IPGQsWt/xlOh
+         TGAi6JhHgdir8rAe3VyokdAZBtMy6QdFr1hHpOtogH1zb1pklkwHtA/rv/0ZZ7aE/h
+         m+rmHgTDSgr+l9dIdPimIIq59SReqlNkbSU/CZ3UR9gF27mOx76WSLdQV2N9Wy+XsQ
+         /BkrhpubPPD+sBsmtH7ZHYBpySs3RD/wg3G6MzKJiTeE4CodCnXmqny6FRaad4DsFz
+         xRevbhX1XeWiw==
 From:   Eric Biggers <ebiggers@kernel.org>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-crypto@vger.kernel.org
-Cc:     keyrings@vger.kernel.org,
-        Andrzej Zaborowski <andrew.zaborowski@intel.com>,
+To:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+Cc:     keyrings@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         stable@vger.kernel.org
-Subject: [PATCH] crypto: rsa-pkcs1pad - only allow with rsa
-Date:   Thu, 13 Jan 2022 11:34:35 -0800
-Message-Id: <20220113193435.64281-1-ebiggers@kernel.org>
+Subject: [PATCH] ima: fix reference leak in asymmetric_verify()
+Date:   Thu, 13 Jan 2022 11:44:38 -0800
+Message-Id: <20220113194438.69202-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -46,33 +48,51 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-The pkcs1pad template can be instantiated with an arbitrary akcipher
-algorithm, which doesn't make sense; it is specifically an RSA padding
-scheme.  Make it check that the underlying algorithm really is RSA.
+Don't leak a reference to the key if its algorithm is unknown.
 
-Fixes: 3d5b1ecdea6f ("crypto: rsa - RSA padding algorithm")
-Cc: <stable@vger.kernel.org> # v4.5+
+Fixes: 947d70597236 ("ima: Support EC keys for signature verification")
+Cc: <stable@vger.kernel.org> # v5.13+
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- crypto/rsa-pkcs1pad.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ security/integrity/digsig_asymmetric.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/crypto/rsa-pkcs1pad.c b/crypto/rsa-pkcs1pad.c
-index 8ac3e73e8ea6..1b3545781425 100644
---- a/crypto/rsa-pkcs1pad.c
-+++ b/crypto/rsa-pkcs1pad.c
-@@ -621,6 +621,11 @@ static int pkcs1pad_create(struct crypto_template *tmpl, struct rtattr **tb)
+diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
+index 23240d793b07..895f4b9ce8c6 100644
+--- a/security/integrity/digsig_asymmetric.c
++++ b/security/integrity/digsig_asymmetric.c
+@@ -109,22 +109,25 @@ int asymmetric_verify(struct key *keyring, const char *sig,
  
- 	rsa_alg = crypto_spawn_akcipher_alg(&ctx->spawn);
- 
-+	if (strcmp(rsa_alg->base.cra_name, "rsa") != 0) {
-+		err = -EINVAL;
-+		goto err_free_inst;
+ 	pk = asymmetric_key_public_key(key);
+ 	pks.pkey_algo = pk->pkey_algo;
+-	if (!strcmp(pk->pkey_algo, "rsa"))
++	if (!strcmp(pk->pkey_algo, "rsa")) {
+ 		pks.encoding = "pkcs1";
+-	else if (!strncmp(pk->pkey_algo, "ecdsa-", 6))
++	} else if (!strncmp(pk->pkey_algo, "ecdsa-", 6)) {
+ 		/* edcsa-nist-p192 etc. */
+ 		pks.encoding = "x962";
+-	else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
+-		   !strcmp(pk->pkey_algo, "sm2"))
++	} else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
++		   !strcmp(pk->pkey_algo, "sm2")) {
+ 		pks.encoding = "raw";
+-	else
+-		return -ENOPKG;
++	} else {
++		ret = -ENOPKG;
++		goto out;
 +	}
-+
- 	err = -ENAMETOOLONG;
- 	hash_name = crypto_attr_alg_name(tb[2]);
- 	if (IS_ERR(hash_name)) {
+ 
+ 	pks.digest = (u8 *)data;
+ 	pks.digest_size = datalen;
+ 	pks.s = hdr->sig;
+ 	pks.s_size = siglen;
+ 	ret = verify_signature(key, &pks);
++out:
+ 	key_put(key);
+ 	pr_debug("%s() = %d\n", __func__, ret);
+ 	return ret;
 
 base-commit: feb7a43de5ef625ad74097d8fd3481d5dbc06a59
 -- 
