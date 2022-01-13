@@ -2,43 +2,44 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 430C248DE41
-	for <lists+keyrings@lfdr.de>; Thu, 13 Jan 2022 20:45:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 354C248DE9B
+	for <lists+keyrings@lfdr.de>; Thu, 13 Jan 2022 21:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231485AbiAMTps (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jan 2022 14:45:48 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:38202 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231135AbiAMTps (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 14:45:48 -0500
+        id S232530AbiAMUFN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jan 2022 15:05:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231193AbiAMUFK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 15:05:10 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F0A4C061574;
+        Thu, 13 Jan 2022 12:05:10 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D1F61DA6;
-        Thu, 13 Jan 2022 19:45:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4087C36AE9;
-        Thu, 13 Jan 2022 19:45:46 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 30C93B8232B;
+        Thu, 13 Jan 2022 20:05:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AF4C36AE9;
+        Thu, 13 Jan 2022 20:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642103147;
-        bh=qUIz564hA58GlcmritwUGxqMiLjCVu3CSYxmP8ZeheE=;
+        s=k20201202; t=1642104306;
+        bh=8Vf+iIeeZu4MFaBzEEPCVogN6kju/taexe/y383Lzqc=;
         h=From:To:Cc:Subject:Date:From;
-        b=cpqEDmLTi1J3H7onY8OaCcJ9ZaXItc6LVmOJGUMcjrs2hCrCwco4Fdrz+2JBxRzfR
-         SpigUYpylvdrLejYhJErcLlKRCzK0xP1af6o0b2U/TzJQEdh+oKh84IPGQsWt/xlOh
-         TGAi6JhHgdir8rAe3VyokdAZBtMy6QdFr1hHpOtogH1zb1pklkwHtA/rv/0ZZ7aE/h
-         m+rmHgTDSgr+l9dIdPimIIq59SReqlNkbSU/CZ3UR9gF27mOx76WSLdQV2N9Wy+XsQ
-         /BkrhpubPPD+sBsmtH7ZHYBpySs3RD/wg3G6MzKJiTeE4CodCnXmqny6FRaad4DsFz
-         xRevbhX1XeWiw==
+        b=ViDsrCDb0oYI5aEJ6DYiprjTzNy43HcOHkdbg30hDiw8i+LyLwQNCpe8FgSxxpGR7
+         pzy21WBZvl/1S5LhVn4nbUuFcdyd0aKNXy2mZq1v26qMLd4aMI37JOEL6hEv37d+f3
+         21lr7umz3KffdTdLvLeEukEWeJsMieNdNb/CPE2ubViocudiYbOHQfOoEMad9CLeQQ
+         EfIai0V8Tf9U+0P1C3ff+B3q3oFbRN83LxJ5/euhRKbiLlPxsO/5pEWmu9IwiJZZUh
+         Fjj2ZkYAsXJNrMmi67hkL+8kWBqpwwqjfh8qie0y6Fo/5LXNSNCJB9QRcYQrji0pCu
+         B1Z8PW+qPSAKg==
 From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-Cc:     keyrings@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        stable@vger.kernel.org
-Subject: [PATCH] ima: fix reference leak in asymmetric_verify()
-Date:   Thu, 13 Jan 2022 11:44:38 -0800
-Message-Id: <20220113194438.69202-1-ebiggers@kernel.org>
+To:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-crypto@vger.kernel.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Denis Kenzior <denkenz@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] KEYS: fix length validation in keyctl_pkey_params_get_2()
+Date:   Thu, 13 Jan 2022 12:04:54 -0800
+Message-Id: <20220113200454.72609-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -48,51 +49,62 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Don't leak a reference to the key if its algorithm is unknown.
+In many cases, keyctl_pkey_params_get_2() is validating the user buffer
+lengths against the wrong algorithm properties.  Fix it to check against
+the correct properties.
 
-Fixes: 947d70597236 ("ima: Support EC keys for signature verification")
-Cc: <stable@vger.kernel.org> # v5.13+
+Probably this wasn't noticed before because for all asymmetric keys of
+the "public_key" subtype, max_data_size == max_sig_size == max_enc_size
+== max_dec_size.  However, this isn't necessarily true for the
+"asym_tpm" subtype (it should be, but it's not strictly validated).  Of
+course, future key types could have different values as well.
+
+Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
+Cc: <stable@vger.kernel.org> # v4.20+
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- security/integrity/digsig_asymmetric.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ security/keys/keyctl_pkey.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
-index 23240d793b07..895f4b9ce8c6 100644
---- a/security/integrity/digsig_asymmetric.c
-+++ b/security/integrity/digsig_asymmetric.c
-@@ -109,22 +109,25 @@ int asymmetric_verify(struct key *keyring, const char *sig,
+diff --git a/security/keys/keyctl_pkey.c b/security/keys/keyctl_pkey.c
+index 5de0d599a274..97bc27bbf079 100644
+--- a/security/keys/keyctl_pkey.c
++++ b/security/keys/keyctl_pkey.c
+@@ -135,15 +135,23 @@ static int keyctl_pkey_params_get_2(const struct keyctl_pkey_params __user *_par
  
- 	pk = asymmetric_key_public_key(key);
- 	pks.pkey_algo = pk->pkey_algo;
--	if (!strcmp(pk->pkey_algo, "rsa"))
-+	if (!strcmp(pk->pkey_algo, "rsa")) {
- 		pks.encoding = "pkcs1";
--	else if (!strncmp(pk->pkey_algo, "ecdsa-", 6))
-+	} else if (!strncmp(pk->pkey_algo, "ecdsa-", 6)) {
- 		/* edcsa-nist-p192 etc. */
- 		pks.encoding = "x962";
--	else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
--		   !strcmp(pk->pkey_algo, "sm2"))
-+	} else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
-+		   !strcmp(pk->pkey_algo, "sm2")) {
- 		pks.encoding = "raw";
--	else
--		return -ENOPKG;
-+	} else {
-+		ret = -ENOPKG;
-+		goto out;
-+	}
+ 	switch (op) {
+ 	case KEYCTL_PKEY_ENCRYPT:
++		if (uparams.in_len  > info.max_dec_size ||
++		    uparams.out_len > info.max_enc_size)
++			return -EINVAL;
++		break;
+ 	case KEYCTL_PKEY_DECRYPT:
+ 		if (uparams.in_len  > info.max_enc_size ||
+ 		    uparams.out_len > info.max_dec_size)
+ 			return -EINVAL;
+ 		break;
+ 	case KEYCTL_PKEY_SIGN:
++		if (uparams.in_len  > info.max_data_size ||
++		    uparams.out_len > info.max_sig_size)
++			return -EINVAL;
++		break;
+ 	case KEYCTL_PKEY_VERIFY:
+-		if (uparams.in_len  > info.max_sig_size ||
+-		    uparams.out_len > info.max_data_size)
++		if (uparams.in_len  > info.max_data_size ||
++		    uparams.in2_len > info.max_sig_size)
+ 			return -EINVAL;
+ 		break;
+ 	default:
+@@ -151,7 +159,7 @@ static int keyctl_pkey_params_get_2(const struct keyctl_pkey_params __user *_par
+ 	}
  
- 	pks.digest = (u8 *)data;
- 	pks.digest_size = datalen;
- 	pks.s = hdr->sig;
- 	pks.s_size = siglen;
- 	ret = verify_signature(key, &pks);
-+out:
- 	key_put(key);
- 	pr_debug("%s() = %d\n", __func__, ret);
- 	return ret;
+ 	params->in_len  = uparams.in_len;
+-	params->out_len = uparams.out_len;
++	params->out_len = uparams.out_len; /* Note: same as in2_len */
+ 	return 0;
+ }
+ 
 
 base-commit: feb7a43de5ef625ad74097d8fd3481d5dbc06a59
 -- 
