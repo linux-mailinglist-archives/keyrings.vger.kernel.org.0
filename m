@@ -2,144 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C1348DF1B
-	for <lists+keyrings@lfdr.de>; Thu, 13 Jan 2022 21:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4A748E053
+	for <lists+keyrings@lfdr.de>; Thu, 13 Jan 2022 23:35:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232361AbiAMUjo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jan 2022 15:39:44 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:22454 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230515AbiAMUjo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 15:39:44 -0500
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20DJZiAx020950;
-        Thu, 13 Jan 2022 20:39:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Z/NxvYLJ0R9maqs8jMyHv0ywql34gZYMeiU/jBwxQzA=;
- b=pGr6xSJPLLwa2GjSHQv3xmcAlyXAZep/36oi4KZFzqY6/YouLyCJRfmpBrA0Jp6tuQO4
- VqYwo3pJwruM72NTWTbunj/rPEDzeAtuZoPLoFliiP5YDB6ah8O4z3tTjTidoUeogFw0
- AnIKtH3UXimqc+lkrUpI7wjFWH2FABt1T6aD1KNawmtiqmN4CqcEACdgNJQfsa8MMBAP
- SoW72hooYyUe8M2a6myRR6oiC85QAl0a2jbzw03JeAG5En42FbQV5fbSqQCegd3s8HTk
- Q86AB472t96uiCFwsKmtGE3MYNo1hEsbuS6IvhwrNABE14/xI2qTBdHdCMUjhPBOxopg Dg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3djt6msmpr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jan 2022 20:39:26 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20DJaPRb024308;
-        Thu, 13 Jan 2022 20:39:25 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3djt6msmpe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jan 2022 20:39:25 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20DKRsru020462;
-        Thu, 13 Jan 2022 20:39:24 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma02wdc.us.ibm.com with ESMTP id 3df28c2rtd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jan 2022 20:39:24 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20DKdN3M6816544
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jan 2022 20:39:23 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9D0182806A;
-        Thu, 13 Jan 2022 20:39:23 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7692628064;
-        Thu, 13 Jan 2022 20:39:23 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 13 Jan 2022 20:39:23 +0000 (GMT)
-Message-ID: <ef9da2e6-908b-a35f-7873-05cbd353be62@linux.ibm.com>
-Date:   Thu, 13 Jan 2022 15:39:23 -0500
+        id S237852AbiAMWfN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jan 2022 17:35:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237704AbiAMWfN (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 17:35:13 -0500
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF93C06161C
+        for <keyrings@vger.kernel.org>; Thu, 13 Jan 2022 14:35:13 -0800 (PST)
+Received: by mail-pj1-x1042.google.com with SMTP id hv15so11796697pjb.5
+        for <keyrings@vger.kernel.org>; Thu, 13 Jan 2022 14:35:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
+        b=MhcmJOWsvyy8WW6RIx4vCL7wxrGY+bGoU8hTU1m5TZrUtDPvK8XIZ0f5NPTV0W1zuU
+         HQlOr18h+VyYDOs9AV1/rr8LGH8aSo5m1kga/ZHTUWijgh/alfKjrND4hEMe/R4GG6a6
+         ua4vDU1LZQUWwEMPzJ/uvM+hRA9Cmui6vMDXq2JvULQzgxhuG6ELztfn0sC/e7j6/Fg2
+         M1KXQY1eaS3kXSmnrcGMyp8/IVa1+XW4lhDfsDcTVWV5OP0hdbccdRby1LC72I4SAFuC
+         lcmkcbl6GUW8YEGmURhiKVJy3fKF51SmtZmWVzuoH3rL+O8hcL3mWTm9zV88qyu1zM9I
+         iyKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
+        b=M38ZtGas4c4okD1eajAuWtuuFdD0i+wjakprc0mSCjOo9nqT6ctkgxHqm5HTo6tfz8
+         0KALy03KRWXHg7yyuwWoQu2tW+5MNSK4N7y/9TTweecZMNOt/H6Qkquwo4xEIC+yBYcb
+         YgQyeqEU0iZmXOedvttQC/DY31Tt0rk1u41B8kL5/yBfkDAN2ElbosWnnyaWIVHLeydX
+         +Bb17A3/m86ZHJRWl4MF2mEJFH1/dtnwMRRw8AEepgCu/kpVM8FaO+ipRsPpIfTF1SpZ
+         ez9Im6srWGXjq/LRgEmT6cUaWPRsAo3itnP1i46m9DwkalxldjJ7oDh7mKpBbiXOxJzU
+         SPfg==
+X-Gm-Message-State: AOAM530rm9kop5Yj2FgaBmbYhICYWMfdH8xgl010528d0AeoOu6WTUEG
+        nP6ucRYPKesYILCrioKCk+wjar5d5FncDl53kBI=
+X-Google-Smtp-Source: ABdhPJy/Ee2vWLvZx1hJuegIbv/zT7ifWcgo+3fw2EEDKmlYq9TLzAF31E6JnM+l93VWfJz6NdnEbqrm6UgVSq/zLWY=
+X-Received: by 2002:a17:90a:cc0d:: with SMTP id b13mr16787647pju.236.1642113312923;
+ Thu, 13 Jan 2022 14:35:12 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] ima: fix reference leak in asymmetric_verify()
-Content-Language: en-US
-To:     Eric Biggers <ebiggers@kernel.org>,
-        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-Cc:     keyrings@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        stable@vger.kernel.org
-References: <20220113194438.69202-1-ebiggers@kernel.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20220113194438.69202-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -iUbV7gQaLjWev4FHICoPUvb2mgjwei4
-X-Proofpoint-GUID: UGv0B54m_1zwgVOain2YbwuYw9gWLb7S
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-13_09,2022-01-13_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
- lowpriorityscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 phishscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201130127
+Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:35:12
+ -0800 (PST)
+Reply-To: mchristophdaniel@gmail.com
+From:   Marcus Galois <marcus.galois@gmail.com>
+Date:   Thu, 13 Jan 2022 23:35:12 +0100
+Message-ID: <CANqBaXVUiwKJ6bGEoL839OM+yCs0h3tPvh73vranE1GtHwAh2g@mail.gmail.com>
+Subject: Good News Finally.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Hello friend.
 
-On 1/13/22 14:44, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
->
-> Don't leak a reference to the key if its algorithm is unknown.
->
-> Fixes: 947d70597236 ("ima: Support EC keys for signature verification")
-> Cc: <stable@vger.kernel.org> # v5.13+
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->   security/integrity/digsig_asymmetric.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
->
-> diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
-> index 23240d793b07..895f4b9ce8c6 100644
-> --- a/security/integrity/digsig_asymmetric.c
-> +++ b/security/integrity/digsig_asymmetric.c
-> @@ -109,22 +109,25 @@ int asymmetric_verify(struct key *keyring, const char *sig,
->   
->   	pk = asymmetric_key_public_key(key);
->   	pks.pkey_algo = pk->pkey_algo;
-> -	if (!strcmp(pk->pkey_algo, "rsa"))
-> +	if (!strcmp(pk->pkey_algo, "rsa")) {
->   		pks.encoding = "pkcs1";
-> -	else if (!strncmp(pk->pkey_algo, "ecdsa-", 6))
-> +	} else if (!strncmp(pk->pkey_algo, "ecdsa-", 6)) {
->   		/* edcsa-nist-p192 etc. */
->   		pks.encoding = "x962";
-> -	else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
-> -		   !strcmp(pk->pkey_algo, "sm2"))
-> +	} else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
-> +		   !strcmp(pk->pkey_algo, "sm2")) {
->   		pks.encoding = "raw";
-> -	else
-> -		return -ENOPKG;
-> +	} else {
-> +		ret = -ENOPKG;
-> +		goto out;
-> +	}
->   
->   	pks.digest = (u8 *)data;
->   	pks.digest_size = datalen;
->   	pks.s = hdr->sig;
->   	pks.s_size = siglen;
->   	ret = verify_signature(key, &pks);
-> +out:
->   	key_put(key);
->   	pr_debug("%s() = %d\n", __func__, ret);
->   	return ret;
->
-> base-commit: feb7a43de5ef625ad74097d8fd3481d5dbc06a59
+You might find it so difficult to remember me, though it is indeed a
+very long time, I am much delighted to contact you again after a long
+period of time, I remember you despite circumstances that made things
+not worked out as we projected then. I want to inform you that the
+transaction we're doing together then finally worked out and I decided
+to contact you and to let you know because of your tremendous effort
+to make things work out then.
 
+Meanwhile I must inform you that I'm presently in Caribbean Island for
+numerous business negotiation with some partners. with my sincere
+heart i have decided to compensate you with USD$900,000 for your
+dedication then on our transaction, you tried so much that period and
+I appreciated your effort. I wrote a cheque/check on your name, as
+soon as you receive it, you let me know.
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Contact my secretary now on his email: mchristophdaniel@gmail.com
+Name: Mr. Christoph Daniel
 
+You are to forward to him your Name........ Address.......,Phone
+number......for shipment/dispatch of the cheque/Check to you
+
+Regards,
+Mr. Marcus Galois
