@@ -2,101 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E02848E14C
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jan 2022 00:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC68A48E18C
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jan 2022 01:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238303AbiAMX4d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jan 2022 18:56:33 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:50072 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238256AbiAMX4c (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 18:56:32 -0500
+        id S238426AbiANAay (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jan 2022 19:30:54 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:35686 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238427AbiANAay (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 19:30:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70BDE61D0E;
-        Thu, 13 Jan 2022 23:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C32C36AF3;
-        Thu, 13 Jan 2022 23:56:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id ABC8DB823E5;
+        Fri, 14 Jan 2022 00:30:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C70FC36AEB;
+        Fri, 14 Jan 2022 00:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642118191;
-        bh=OYwT1/oic13UOKNCipi3UaLYBkRKybjJlJF3WtRhuG4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RvWoRghf90qh2LA7WNHy1/8tcMzHX8zcw/Gmsa/qP/q8lePpPoEW9GtFkmjQW9bd5
-         JFAotM4xGK02KKcpmZAJ0fKSUm5hMcoAEvNtILJJbvljTSXpZ6yk1i0CZ3ctTiygpu
-         tP2mzFLJdsViO3WAQhkfl6bckXDCDLpM72JAa1EdwgBKX42bI4WznUgtSlcMUBzKa8
-         xtOh0FXxUQrp2KC0m2VfNWN5Nauo9v1U4fzanbtNrTQmuHfgHD5Fezy+tUAhu5ubFa
-         NuxucdotQX2gwrucH5fRRPepv27AY5ta6rRX18OYpb4ke5KGKRDUFuNX4F4/x/DW3F
-         7vuiOnsp1SN9A==
+        s=k20201202; t=1642120251;
+        bh=9/XHk4RvSS656zeV4onzLM9pbNe+LNr64q6UP1/ojFk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XtUe/NIl2zu1Z31gD4pEN8MqcT5TspPEtx8phreKcha0rn3+4HPYaKSCfBLSETgfV
+         OKjnwxQINPO/BY0UkQkVclpUOGwhhVwVC1hoKrGn8shPyGArpuAjk/MVNz+VSaXknN
+         5g8CC22S4bIC8fJ3FPdpQ/qYllPOgfrxL3ynAh9av2Vedfjq93fbdDxfl66gtbVopT
+         KZLyxCOgX+zrhd6Osz80mmPcXHqgPmdN25kLMhOjFnTy0DLqwG7cpQ/kERnTdW0YVp
+         0vQlDHiHPl90wlL8htT+8pRk6xjp/Xbv+7W2zaNEvotNUphLB2AGDB2sLQs9qe9skp
+         rnsYwqWPpZs9A==
 From:   Eric Biggers <ebiggers@kernel.org>
 To:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Denis Kenzior <denkenz@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        James Morris <james.morris@microsoft.com>,
-        linux-crypto@vger.kernel.org
-Subject: [PATCH 3/3] KEYS: asym_tpm: rename derive_pub_key()
-Date:   Thu, 13 Jan 2022 15:54:40 -0800
-Message-Id: <20220113235440.90439-4-ebiggers@kernel.org>
+Cc:     linux-crypto@vger.kernel.org
+Subject: [PATCH 0/4] KEYS: x509: various cleanups
+Date:   Thu, 13 Jan 2022 16:29:16 -0800
+Message-Id: <20220114002920.103858-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220113235440.90439-1-ebiggers@kernel.org>
-References: <20220113235440.90439-1-ebiggers@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+This series cleans up a few things in the X.509 certificate parser.
 
-derive_pub_key() doesn't actually derive a key; it just formats one.
-Rename it accordingly.
+Eric Biggers (4):
+  KEYS: x509: clearly distinguish between key and signature algorithms
+  KEYS: x509: remove unused fields
+  KEYS: x509: remove never-set ->unsupported_key flag
+  KEYS: x509: remove dead code that set ->unsupported_sig
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- crypto/asymmetric_keys/asym_tpm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ crypto/asymmetric_keys/pkcs7_verify.c     |  3 --
+ crypto/asymmetric_keys/x509.asn1          |  2 +-
+ crypto/asymmetric_keys/x509_cert_parser.c | 34 ++++++++++++-----------
+ crypto/asymmetric_keys/x509_parser.h      |  1 -
+ crypto/asymmetric_keys/x509_public_key.c  | 18 ------------
+ 5 files changed, 19 insertions(+), 39 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
-index 2e365a221fbe..d2e0036d34a5 100644
---- a/crypto/asymmetric_keys/asym_tpm.c
-+++ b/crypto/asymmetric_keys/asym_tpm.c
-@@ -336,7 +336,7 @@ static inline uint8_t *encode_tag_length(uint8_t *buf, uint8_t tag,
- 	return buf + 3;
- }
- 
--static uint32_t derive_pub_key(const void *pub_key, uint32_t len, uint8_t *buf)
-+static uint32_t format_pub_key(const void *pub_key, uint32_t len, uint8_t *buf)
- {
- 	uint8_t *cur = buf;
- 	uint32_t n_len = definite_length(len) + 1 + len + 1;
-@@ -409,7 +409,7 @@ static int tpm_key_query(const struct kernel_pkey_params *params,
- 	if (IS_ERR(tfm))
- 		return PTR_ERR(tfm);
- 
--	der_pub_key_len = derive_pub_key(tk->pub_key, tk->pub_key_len,
-+	der_pub_key_len = format_pub_key(tk->pub_key, tk->pub_key_len,
- 					 der_pub_key);
- 
- 	ret = crypto_akcipher_set_pub_key(tfm, der_pub_key, der_pub_key_len);
-@@ -463,7 +463,7 @@ static int tpm_key_encrypt(struct tpm_key *tk,
- 	if (IS_ERR(tfm))
- 		return PTR_ERR(tfm);
- 
--	der_pub_key_len = derive_pub_key(tk->pub_key, tk->pub_key_len,
-+	der_pub_key_len = format_pub_key(tk->pub_key, tk->pub_key_len,
- 					 der_pub_key);
- 
- 	ret = crypto_akcipher_set_pub_key(tfm, der_pub_key, der_pub_key_len);
-@@ -758,7 +758,7 @@ static int tpm_key_verify_signature(const struct key *key,
- 	if (IS_ERR(tfm))
- 		return PTR_ERR(tfm);
- 
--	der_pub_key_len = derive_pub_key(tk->pub_key, tk->pub_key_len,
-+	der_pub_key_len = format_pub_key(tk->pub_key, tk->pub_key_len,
- 					 der_pub_key);
- 
- 	ret = crypto_akcipher_set_pub_key(tfm, der_pub_key, der_pub_key_len);
+
+base-commit: feb7a43de5ef625ad74097d8fd3481d5dbc06a59
 -- 
 2.34.1
 
