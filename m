@@ -2,81 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A1E48E18A
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jan 2022 01:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD0D48E24A
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jan 2022 02:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238425AbiANAay (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 13 Jan 2022 19:30:54 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:40060 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238430AbiANAax (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 19:30:53 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68FCA61D56;
-        Fri, 14 Jan 2022 00:30:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA86C36AF3;
-        Fri, 14 Jan 2022 00:30:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642120252;
-        bh=fOz/UM0VhzggK9q9eIMuqedBHgMOdwdEDBvF2lLwyd8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DECvSpMap06//4eXqbugj949vUuuY1w+Rcs+FGzvl0ZwQkfU9MLIfTLCxgT6nOmyY
-         t7lIXL8Slbweetz28iX4w1jMKPo/aCSo1c2XzBBxFOTuZ5/raAjSGG2BpKyZj1feIX
-         aAnzqQyWWHAqaYLnV7j61CIav0+A+/CK/dpvpPPSs/XQ9bZc00L7OLAvHSgOTGj891
-         mDAhdVLATc7YBWc7SzV3O3qdrO2XXaZX4vpbx9IwgKt1w5NoBq8pJ1Dl1Tkrdedars
-         M6OvBu5T1497XQWeXK1J2FDRnUDatwa4Fp5qlpod0jHEozsgqUOW3wP5oaTKko9NBo
-         dP2RSkmvBOfQw==
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     linux-crypto@vger.kernel.org
-Subject: [PATCH 4/4] KEYS: x509: remove dead code that set ->unsupported_sig
-Date:   Thu, 13 Jan 2022 16:29:20 -0800
-Message-Id: <20220114002920.103858-5-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220114002920.103858-1-ebiggers@kernel.org>
-References: <20220114002920.103858-1-ebiggers@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S238722AbiANBxP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 13 Jan 2022 20:53:15 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:53170 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229808AbiANBxP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 13 Jan 2022 20:53:15 -0500
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20E1pbJZ006919;
+        Fri, 14 Jan 2022 01:53:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=JcIci3AxnUW4yvMJHng9Li4Rw+AsTCwVPvc5ny10ma4=;
+ b=j7PTJPEAUUFvDyVz3EWJScaPeAbWTgjN0UpVeEwo9PQBQZh+Wslf34zDi5K0v0EuygDZ
+ ZZmragRWVBUzjkluIpH7hU4NgnW6qnvh5KwKzWo9LjL1Y7cs3Iy6GVF51YF2GanGI7cV
+ JYrMSkMpTI+0so7iGsgECtWRJImlwR8DjuF0fAdNB5ahs2t+0za2d9LigfZFEzJRIATk
+ 3w/sGuiS1SbLy7QQNsh7Mvm3gs6sPHD4QkvGr4RBYspAC97fPUqN4m5MEMT5CdCyW9L1
+ /XeWZAkgCXNThbi0WUfpcKaP2363nZad0vACgZcpcEG4zAGwIHP6tMDV0KMtlHur/XCI Cg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3djyvr80n7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jan 2022 01:53:06 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20E1pa54006783;
+        Fri, 14 Jan 2022 01:53:05 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3djyvr80mt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jan 2022 01:53:05 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20E1lVpR024026;
+        Fri, 14 Jan 2022 01:53:03 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma04fra.de.ibm.com with ESMTP id 3df28a7rnu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jan 2022 01:53:03 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20E1r1cH38732274
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 14 Jan 2022 01:53:01 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6898211C058;
+        Fri, 14 Jan 2022 01:53:01 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 12BC111C05E;
+        Fri, 14 Jan 2022 01:53:00 +0000 (GMT)
+Received: from sig-9-65-76-253.ibm.com (unknown [9.65.76.253])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 14 Jan 2022 01:52:59 +0000 (GMT)
+Message-ID: <55c5576db2bb0f8a2b9d509f4d1160911388fa41.camel@linux.ibm.com>
+Subject: Re: [PATCH] ima: fix reference leak in asymmetric_verify()
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Biggers <ebiggers@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+Cc:     keyrings@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        stable@vger.kernel.org
+Date:   Thu, 13 Jan 2022 20:52:59 -0500
+In-Reply-To: <20220113194438.69202-1-ebiggers@kernel.org>
+References: <20220113194438.69202-1-ebiggers@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: WgYj4asX8fmvzEP5hTnXD2QokhNzji6-
+X-Proofpoint-GUID: afQ1f_8IqhHu0nCkg1aclmYtO7gg4L2y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-13_10,2022-01-13_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxscore=0 suspectscore=0 phishscore=0 mlxlogscore=769 clxscore=1011
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201140007
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+Hi Eric,
 
-The X.509 parser always sets cert->sig->pkey_algo and
-cert->sig->hash_algo on success, since x509_note_sig_algo() is a
-mandatory action in the X.509 ASN.1 grammar, and it returns an error if
-the signature's algorithm is unknown.  Thus, remove the dead code which
-handled these fields being NULL.
+On Thu, 2022-01-13 at 11:44 -0800, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
+> 
+> Don't leak a reference to the key if its algorithm is unknown.
+> 
+> Fixes: 947d70597236 ("ima: Support EC keys for signature verification")
+> Cc: <stable@vger.kernel.org> # v5.13+
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- crypto/asymmetric_keys/x509_public_key.c | 9 ---------
- 1 file changed, 9 deletions(-)
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index b03d04d78eb9..8c77a297a82d 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -33,15 +33,6 @@ int x509_get_sig_params(struct x509_certificate *cert)
- 	sig->data = cert->tbs;
- 	sig->data_size = cert->tbs_size;
- 
--	if (!sig->pkey_algo)
--		cert->unsupported_sig = true;
--
--	/* We check the hash if we can - even if we can't then verify it */
--	if (!sig->hash_algo) {
--		cert->unsupported_sig = true;
--		return 0;
--	}
--
- 	sig->s = kmemdup(cert->raw_sig, cert->raw_sig_size, GFP_KERNEL);
- 	if (!sig->s)
- 		return -ENOMEM;
--- 
-2.34.1
+thanks,
+
+Mimi
 
