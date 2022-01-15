@@ -2,79 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 678C548F98E
-	for <lists+keyrings@lfdr.de>; Sat, 15 Jan 2022 22:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A647348F996
+	for <lists+keyrings@lfdr.de>; Sat, 15 Jan 2022 22:42:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233768AbiAOVlD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 15 Jan 2022 16:41:03 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:47632 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229671AbiAOVlC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 15 Jan 2022 16:41:02 -0500
+        id S233773AbiAOVm2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 15 Jan 2022 16:42:28 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:38372 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233774AbiAOVm2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 15 Jan 2022 16:42:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B163760EFE;
-        Sat, 15 Jan 2022 21:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB49C36AE7;
-        Sat, 15 Jan 2022 21:41:00 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id D412FCE0AE5;
+        Sat, 15 Jan 2022 21:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5635C36AE5;
+        Sat, 15 Jan 2022 21:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642282861;
-        bh=1MzPi0BXY8b13RSJb71FRfp5CNfpUxsORzKKV2hp2rw=;
+        s=k20201202; t=1642282945;
+        bh=UCi6bl9WDlzd/MWB+FRVtRgWBjSR8OlEmFFmEb6dAi8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VZydSC4GsSbo545jx5E9CTMD/cBbwrLU5a9khdoy9ZYMHm3TGY+9P5KlE9x2BUSP2
-         43ZuvgL2eWI4w1UlbZhyp2AG80ukDWPRD3HHDmQAEoTYl5K/e9Y0M+aSowAC8Jcpa3
-         MF41d7oT4+OY9IniSltO1wloMv8ZIs1mqYhXhVpzFVCoAS7x8kFWxNiIKig0Bz55qa
-         3z13iCn0G978EyMQ1X2VY8qxc42ki96TCMh1C/AzRJ62t7s5GD06x8PqQn+Ql7b9QT
-         Vrrcvh8/ft0PJq+PW8pya2IVvcrv+YXnb/OawnGHpVAa8ILmnwJ7JDYVQl1YtEv7Qc
-         0UMXCj1j0icXw==
-Date:   Sat, 15 Jan 2022 23:40:48 +0200
+        b=B58kPCzqiyScd1n3Ah6Q3i0BWS5b4CYajs8TPWvhJMzvNaQtiUQ96G9ompxOOHe0h
+         IYdF1j6qqWHxz3cfkOkH/1qlpZLfyj+fgZLsw7dMxWOO2iSxNYj6TxvP9AzMey4Wdx
+         oeyPX/uD8qN2uKkkVK+AbTz2U91BPGK8kQ323X19XNxVX+tZoW+tVvsPj6wHxWVuYQ
+         UnNZbpXeJ3simSKa1nDpYjiWHqQCN3OXhsCnQ8j5NEiBH53zxZ5Ua5JxcVCaTLjUkK
+         8aDKi6L0Y7596H0IumHS1l17MqgPkUFVEFLHj99kiI9FATgSuesYkg46kJI4OuGASs
+         25dE1vOWbBeFQ==
+Date:   Sat, 15 Jan 2022 23:42:12 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
 To:     Eric Biggers <ebiggers@kernel.org>
 Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
         Denis Kenzior <denkenz@gmail.com>,
         Marcel Holtmann <marcel@holtmann.org>,
         James Morris <james.morris@microsoft.com>,
-        linux-crypto@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] KEYS: asym_tpm: fix buffer overreads in
- extract_key_parameters()
-Message-ID: <YeM/YIUTEwL4jNf3@iki.fi>
+        linux-crypto@vger.kernel.org
+Subject: Re: [PATCH 0/3] KEYS: fixes for asym_tpm keys
+Message-ID: <YeM/tAuyjKVT0YS4@iki.fi>
 References: <20220113235440.90439-1-ebiggers@kernel.org>
- <20220113235440.90439-2-ebiggers@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220113235440.90439-2-ebiggers@kernel.org>
+In-Reply-To: <20220113235440.90439-1-ebiggers@kernel.org>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Jan 13, 2022 at 03:54:38PM -0800, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
+On Thu, Jan 13, 2022 at 03:54:37PM -0800, Eric Biggers wrote:
+> This series fixes some bugs in asym_tpm.c.
 > 
-> extract_key_parameters() can read past the end of the input buffer due
-> to buggy and missing bounds checks.  Fix it as follows:
+> Eric Biggers (3):
+>   KEYS: asym_tpm: fix buffer overreads in extract_key_parameters()
+>   KEYS: asym_tpm: fix incorrect comment
+>   KEYS: asym_tpm: rename derive_pub_key()
 > 
-> - Before reading each key length field, verify that there are at least 4
->   bytes remaining.
-
-Maybe start with a "Key length is described as an unsigned 32-bit integer
-in the TPM header". Just for clarity.
-
+>  crypto/asymmetric_keys/asym_tpm.c | 44 +++++++++++++++++++------------
+>  1 file changed, 27 insertions(+), 17 deletions(-)
 > 
-> - Avoid integer overflows when validating size fields; 'sz + 12' and
->   '4 + sz' overflowed if 'sz' is near U32_MAX.
-
-So we have a struct tpm_header in include/linux/tpm.h. It would be way
-more informative to use sizeof(struct tpm_header) than number 12, even
-if the patch does not otherwise use the struct. It tells what it is, 12
-does not.
-
-> - Before saving the pointer to the public key, check that it doesn't run
->   past the end of the buffer.
 > 
-> Fixes: f8c54e1ac4b8 ("KEYS: asym_tpm: extract key size & public key [ver #2]")
-> Cc: <stable@vger.kernel.org> # v4.20+
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> base-commit: feb7a43de5ef625ad74097d8fd3481d5dbc06a59
+> -- 
+> 2.34.1
+> 
+
+I really appreciate your effort to go and fix this key type. Thank you.
 
 BR, Jarkko
