@@ -2,76 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 285974921E4
-	for <lists+keyrings@lfdr.de>; Tue, 18 Jan 2022 10:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D3B49231B
+	for <lists+keyrings@lfdr.de>; Tue, 18 Jan 2022 10:50:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345141AbiARJEM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Jan 2022 04:04:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
+        id S229585AbiARJus (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jan 2022 04:50:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345147AbiARJEB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jan 2022 04:04:01 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DAAC06173E
-        for <keyrings@vger.kernel.org>; Tue, 18 Jan 2022 01:03:59 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id v45so3378988ybi.0
-        for <keyrings@vger.kernel.org>; Tue, 18 Jan 2022 01:03:59 -0800 (PST)
+        with ESMTP id S231138AbiARJur (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jan 2022 04:50:47 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF78C061574
+        for <keyrings@vger.kernel.org>; Tue, 18 Jan 2022 01:50:46 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id cx27so3444903edb.1
+        for <keyrings@vger.kernel.org>; Tue, 18 Jan 2022 01:50:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=IAamEH5Xu1dJ3X0trVcFTPIrL7aTtcDGn5mUS4vw1a8=;
-        b=NHprezroMsvNvJXQj44poYAHm3bYOXBJZX5Wg8cW9F++sdGchhDxOadiHN0N74BqVo
-         LLsuxLOWO8eNb9Df+WO3omzRkxx9CES4mNA3Io5+oAgtUVpSbYHogg87+gCtw68c4I2t
-         jU5NFjjkmYDNDUVEzOuCjT2//b/zcZNUhM8rDEil4EjAKikZAouVCPfFT1ek6iBkNaWB
-         bcv0AUKVrFCVpxHEBYPBv8KSS3FHlu8eykSeEYJmKwrS5qbSbzeHmao2+zqXdm7uNchU
-         Rqamo/TlsQaFmHXGfCx8STX0aSjqEkHcratuhlypnT20IcvCVcqt6eV72JWjrAN3qvU0
-         7wEQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=TVk0lOUaKGDPaTC31TX5Ak7w7N6/pFWZ0m2919kRD0c=;
+        b=EZMV2cDNph+JMXlIT23Wl7T3l77GWSVFcqTmrYI9XwWdKdPFkHVjUXDAZhxPaRHZQS
+         DHjmhQYr0ycxiWObH6liO3+I0OW2mng2T+ib1Mq8xY9ZH20Gs3IiM2KBmMQjfKDTpcf2
+         QuMHvaWGnGTUEUMoaXmQMxqWBV0ACCJYvRkO75w6KBjzMH6ugcPQ71UnnLJ3QT3LlqMq
+         Fe519VCHzXPAsklXKD6QC6Jjczzh9oKL6IFf/JRiETuhjZjZNYxeFqWbW8M6XLxlvRKR
+         ts4EmoForAN/AioMfzVZtl4yoP03UqRnLfAw8Eum9m+BD/MvZwHb5t9ONScjDHbWGvG4
+         ADbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=IAamEH5Xu1dJ3X0trVcFTPIrL7aTtcDGn5mUS4vw1a8=;
-        b=JCOhEAXrFuQl744dYBWk1a66uRgKYDuwgiOWoglJ4jAMkFhiCjoCzSZFetZY4rC2wb
-         dkjRwyU8dNwltA1gYcW8rdnNiaKv35AiOcM44kyCmMX1Xpb0TY1zw4PdH2AT1iyscZCT
-         EdMErzd8zy3uAkCcKQq8PrTOVybPja+zeGrUrwx1o71EnMZ1xucWyS+QOco0hPnHZvNh
-         7GZSfC5CCuig2HBeprVaR2E5cTgfl548vcav5CZEMJLoeVIdOSowiYXjUpy7itJYX8s9
-         p/xFGSCQoy4m8QyT9IELKKHzwq8yakj3CyGyMz5NNGwDNtiflNe3G5daNzddr3EOyd8N
-         x0Iw==
-X-Gm-Message-State: AOAM533RHXrI90/RDLIKvvoqTkEi8K8bPybmnv5klRiJsk1diEL7w/Ki
-        jWLiuRiXhTNbEUPc5ZFS5fVaKR6PGOGVDpkn1es=
-X-Google-Smtp-Source: ABdhPJykqN6yybQfaT0kT/1JcofcZUp4wlVhtJ/gATn7SS5XA0pfx+GW8LgTxWINZerrn1yMSBF81skqvw8cEBrK9Sg=
-X-Received: by 2002:a25:e549:: with SMTP id c70mr10839900ybh.339.1642496638937;
- Tue, 18 Jan 2022 01:03:58 -0800 (PST)
+         :subject:to:content-transfer-encoding;
+        bh=TVk0lOUaKGDPaTC31TX5Ak7w7N6/pFWZ0m2919kRD0c=;
+        b=xEycQ6CEOSYAEL1Y0Fu+Y5wrijBYQt1s9v+5y6IRBk5i6Mq49XVpIPEVL6mlR/1b2L
+         tUWbj5p2GI9VXC4K9QNk/7T3QMkzkzCXNMNAK77N1qLBlA2YM/GTUoTbdkWnJUukUeST
+         DWEu1wTA+adGeAMVUc74e+RXfKwFSFDfNtmRKJ+qrDETUr5d+CES9Vkpd3FSXwDesT7C
+         SkH7Tv7CErmwoiAYAXYniCzFz5EuIiIz7G4p8T4oVP0GZdcdiFkvBjPXZOYL/U+793Va
+         CO0P3Nnkgzi3DzGg2miVZWd5Stj+iAOpiiGI2zFJVnz4bEcAXfHKadKEPDXPjqGz1azk
+         XVYg==
+X-Gm-Message-State: AOAM532cMa0Gms/4J5GPntNgRwYJjAqfAeYvYdb/ap2QL8uvm/M4yqth
+        KWhEpbEAj4qajRW+dT6/WU4hWytLZQEcuXbKwfE=
+X-Google-Smtp-Source: ABdhPJyj6RLf0GEmV4KsGn6XatSDq4IojEFLdJIlziH2KD/oyoKyKYyOupSGF9qxlIFW077iUlwiTcMs9hODLzmhoyk=
+X-Received: by 2002:a50:da48:: with SMTP id a8mr24197141edk.146.1642499445309;
+ Tue, 18 Jan 2022 01:50:45 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:03:58
+Received: by 2002:a17:907:2d88:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:50:44
  -0800 (PST)
-Reply-To: asil.ajwad@gmail.com
-From:   Asil Ajwad <graceyaogokamboule@gmail.com>
-Date:   Mon, 17 Jan 2022 21:03:58 -1200
-Message-ID: <CA+Yy_gCoV9jOYW1qG-5psBKMTZyzWOj2x6Pu5iusfy4TEMaBwQ@mail.gmail.com>
-Subject: Greetings,
+Reply-To: info.olivisa@gmail.com
+From:   Olivisa William <williiams.john111@gmail.com>
+Date:   Tue, 18 Jan 2022 10:50:44 +0100
+Message-ID: <CAOuh_8mLq4A-T4e47UkLgzgY0_PTkZhrtR_CBFdWCyZvT=-WUQ@mail.gmail.com>
+Subject: My Dear Friend,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
--- 
-Greetings,
+Dear Friend.
 
-I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
-an ATM Visa Card to withdraw money at, ATM Cash Machine in your
-country, if yes I want to transfer abounded fund the sum of $10.5million
-US-Dollars, to you from my country, this is part of the money that was
-abounded by our late old client a politician who unfortunately lost
-his life and was forced out of power Du to greedy act, the bank will
+I got your contact from the house of commerce here in USA
+during the search ,search for a honest person.My name is Mrs Olivisa
+William 60 years old from USA ,
+i am childless and i am suffering form a pro-long critical cancer
+my doctors confirmed i may not live beyond 3 month for now as my ill
+heath has defiled all forms of medical treatmnet
 
-change the account details to your name, and apply for a Visa Card
-with your details, the Visa Card will be send to you, and you can be
-withdrawing money with it always, whatever any amount you withdraw
-daily, you will send 60% to me and you will take 40%, the Visa Card
-and the bank account will be on your name, I will be waiting for your
-response for more details, thanks to you a lot for giving me your time.
+Since my days are numbered, I=E2=80=99ve decided, willingly to fulfill my
+long-time promise to donate you the sum ($10.000.000.00) million
+dollars in the bank I inherited from my late husband Mr.William David ,fore=
+ign
+bank account over years I need a very honest person who can assist in
+transfer of this money to his or her account and use the funds for
+charities work of God while you use 50% for yourself. I want you to
+know there is no risk involved; it is 100% hitch free & safe. If you
+will be interesting to assist in getting this fund into your account
+for charity project to fulfill my promise before I die please let me
+know immediately. I will appreciate your utmost confidentiality as I
+wait for your reply.
 
-regards,
-Mr.Asil Ajwad.
+Best Regards
+Mrs Olivisa William
