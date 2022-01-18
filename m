@@ -2,101 +2,221 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C78B3491170
-	for <lists+keyrings@lfdr.de>; Mon, 17 Jan 2022 22:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C51C491F75
+	for <lists+keyrings@lfdr.de>; Tue, 18 Jan 2022 07:47:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234856AbiAQVyy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Jan 2022 16:54:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54730 "EHLO
+        id S231492AbiARGrM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jan 2022 01:47:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232126AbiAQVyx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jan 2022 16:54:53 -0500
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A9FC06161C
-        for <keyrings@vger.kernel.org>; Mon, 17 Jan 2022 13:54:53 -0800 (PST)
-Received: by mail-qk1-x730.google.com with SMTP id p9so5794892qkh.3
-        for <keyrings@vger.kernel.org>; Mon, 17 Jan 2022 13:54:53 -0800 (PST)
+        with ESMTP id S230021AbiARGrK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jan 2022 01:47:10 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F5DC06173E
+        for <keyrings@vger.kernel.org>; Mon, 17 Jan 2022 22:47:10 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id bu18so43681740lfb.5
+        for <keyrings@vger.kernel.org>; Mon, 17 Jan 2022 22:47:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=KmBygC3q5AQG8qkNJvnSnx+ggl7+9U+ombjnJKusFG4=;
-        b=BBYk7pWCxTpa4e9gEBi36zq0wZnDK1j8g3Khe3W2pLKftHSHr/CXDUEoyfqz3ooNbi
-         Glv8rYMWVGazEcND3kjnCvRMhHh/gu6xQWjwk8OJcUpOewIl+l/ejIwlhSRThY2N0OVs
-         mwTbFhmbf+K+mhRd0FmNjgwoVw20osV7MBe8U=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ndRmdqMdJ9799j8PWgE96Wh//o3D2hfldSG13u5SeAM=;
+        b=YB+Kge9lFu1w7LVUa5FlGUi7PZaLnS8FNV8sMwK0FPqqG0Lk2PUL7PRgao61YZQSU8
+         3/JPbrKoffRa3xJh3qPEuFRzwkbTeYnhZK0i3jHv7Q7X2waL25oHJU1p6im42FbswCSs
+         Ug69yVzHk9/Wmztwy3F8QTh8w2X6tZjB36qmOuzjwqEg4ZdDg1m2wZWDLniLM00kGvDN
+         7tTN5RWg6e9J+S9w5Cc2SEcm7/jA6zzRdoUnhJNiSN7hO/EyjynW9TVag9qAp2VVtfE4
+         wj4QBzzIlAqEZb63Nh++4Y9PPsElMmAn3PShGpukX0PibdcmJlXUdOqIb9oLyi9WcFXd
+         5T0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=KmBygC3q5AQG8qkNJvnSnx+ggl7+9U+ombjnJKusFG4=;
-        b=CuY+80D1YiGq16+JLa9BbQzasQCI5CrDLkWT96rDeERKwdw/PO14ON0GD0Zyh91yjD
-         JMHt1aK+msxEtMsM2R3u8QsttT+r7Q0xFTTPDNV/0jN+xPrjFtQ3tIf/JstCvU1v4FCG
-         fBND2L+qeudz6Q5cAZF5qVD5uudz2xoptGmCVp2ujGBR3E2gI3DLeagkrJ18T4gt4K2y
-         5n54M3ziF0baWKWRZhy9cCbpppFC5w5zdltQTR+OhuOvKziE1+iavR2dmZhs1srtdg14
-         RLuZH2QyWP+corun7hUG57ALxAvCbGKiZpKCq1XzVVEapM/dFf0VA242o0MB+nAcfiqq
-         KLYA==
-X-Gm-Message-State: AOAM531nyGzb0PGGZTmtxQ9MlL2loyTxZVa4RqwkBFPStdxJ1mlRmTxk
-        NxxtgcS0nTpSmodMwmAC53o7og==
-X-Google-Smtp-Source: ABdhPJxaMz1oYURs6e5lMt7vVVBbGEnFSB7TjiLRH+xlZuiq3V/0TG+DoST9VWbXv6HeYfW5osR6TA==
-X-Received: by 2002:a37:aad8:: with SMTP id t207mr15930861qke.216.1642456492290;
-        Mon, 17 Jan 2022 13:54:52 -0800 (PST)
-Received: from nitro.local (bras-base-mtrlpq5031w-grc-32-216-209-220-181.dsl.bell.ca. [216.209.220.181])
-        by smtp.gmail.com with ESMTPSA id f9sm9371606qkp.94.2022.01.17.13.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jan 2022 13:54:51 -0800 (PST)
-Date:   Mon, 17 Jan 2022 16:54:49 -0500
-From:   Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To:     "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc:     Roberto Sassu <roberto.sassu@huawei.com>, dhowells@redhat.com,
-        dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
-        zohar@linux.ibm.com, ebiggers@kernel.org,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH 00/14] KEYS: Add support for PGP keys and signatures
-Message-ID: <20220117215449.2qboqd3nmsky2g3w@nitro.local>
-References: <20220111180318.591029-1-roberto.sassu@huawei.com>
- <YeV+jkGg6mpQdRID@zx2c4.com>
- <20220117165933.l3762ppcbj5jxicc@meerkat.local>
- <392d28fa-7a2c-867a-5fbb-640064461eb7@maciej.szmigiero.name>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ndRmdqMdJ9799j8PWgE96Wh//o3D2hfldSG13u5SeAM=;
+        b=RpKDmU5QqdfMZy1dgk818KHuzRq8U/AZfmScL2CVUwR3gPrvr95pLCpifDbw+/8sqY
+         iCz35lsI78dfO41KIlvMYVhnfZKDMMM1wKvYxoQCVLt1VlggUiVLmI1pyOOMAabXd3+t
+         K2h3o5oi09LEIqWPSY3w/TLp/g8FEYWU6wSQqct/ujgvaaxeiOWc9ojj08RykMrf/S4w
+         G4ognHo4SiF/roAKIqITNu6/XIkseg7HpM8wrb6Pfk6xvxpmG/qo5XJxiPeNclMM+ShW
+         etm0S9045gDV77AURUz9drtxxkc+YwRxNgVaUrQzCwkRYDl9fRfZRs5GG2aNIbqjs137
+         Lk+w==
+X-Gm-Message-State: AOAM533fgGD1yXeIeUaTsBOLNbhz1S7tfnoy1g+KMvEPi8BE3N0CdecN
+        P+b3jGfbU1J3ic559VLKEUt16ECLtXL2xHHUe5UTzQ==
+X-Google-Smtp-Source: ABdhPJzjbz4/fCjr33TO7htvx9gliX688kTeU0cO2lulCwM/tQ2dIG+ra+iboLhNbvF1fx0/jEaSHO1aZFb/EfqXukY=
+X-Received: by 2002:a2e:bf01:: with SMTP id c1mr18353250ljr.511.1642488428506;
+ Mon, 17 Jan 2022 22:47:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <392d28fa-7a2c-867a-5fbb-640064461eb7@maciej.szmigiero.name>
+References: <20211229215330.4134835-1-yaelt@google.com> <CAFA6WYPuPHgcnzt6j+Q-EA2Dos6vBDukrjpheo5srLVXFrifEg@mail.gmail.com>
+ <5a38824152eeee0fc9ba0a4fd2308bb6e0970059.camel@linux.ibm.com>
+ <CAFA6WYOJt3=YMTt_QQSq6Z-MK42hwWspgSpasw2fuPtVFcP3uA@mail.gmail.com>
+ <CAKoutNvW1c7MkTaFwyrD7MjUVXvTtcBOGFULMittJ5vzjMN0mg@mail.gmail.com>
+ <CAFA6WYPQRagZF8-grn_LC8_SAaxBzh=cSgHhFAQQOYK+L2KuBQ@mail.gmail.com>
+ <CAKoutNtuY0+L29d6xzn6BgEKBytFsBHZ_kgkCOJZuicb_uNPHg@mail.gmail.com>
+ <CAFA6WYPxogLMk1EDqvM_mwgCmU1s_yDwYFPjq6wurnQGhG=-_w@mail.gmail.com> <CAKoutNtj8nxvGyZu=m1_7+rGck9dm76E=O93333Yfb5En+8HNQ@mail.gmail.com>
+In-Reply-To: <CAKoutNtj8nxvGyZu=m1_7+rGck9dm76E=O93333Yfb5En+8HNQ@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Tue, 18 Jan 2022 12:16:56 +0530
+Message-ID: <CAFA6WYNr5L+=Hz8JGztLH5AZs3+5BwtN4rTF=CmyRdi0CjkRqA@mail.gmail.com>
+Subject: Re: [PATCH v4] KEYS: encrypted: Instantiate key with user-provided
+ decrypted data
+To:     Yael Tiomkin <yaelt@google.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        jejb@linux.ibm.com, Jarkko Sakkinen <jarkko@kernel.org>,
+        corbet@lwn.net, dhowells@redhat.com, jmorris@namei.org,
+        serge@hallyn.com, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        =?UTF-8?Q?Jan_L=C3=BCbbe?= <jlu@pengutronix.de>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jan 17, 2022 at 09:59:22PM +0100, Maciej S. Szmigiero wrote:
-> > I am concerned that ed25519 private key management is very rudimentary -- more
-> > often than not it is just kept somewhere on disk, often without any passphrase
-> > encryption.
-> > 
-> > With all its legacy warts, GnuPG at least has decent support for hardware
-> > off-load via OpenPGP smartcards or TPM integration in GnuPG 2.3, but the best
-> > we have with ed25519 is passhprase protection as implemented in minisign (and
-> 
-> I am not sure that I understood your point here correctly, but GnuPG
-> already supports ed25519 keys, including stored on a smartcard - for
-> example, on a YubiKey [1].
+On Fri, 14 Jan 2022 at 00:45, Yael Tiomkin <yaelt@google.com> wrote:
+>
+> On Fri, Jan 7, 2022 at 8:32 AM Sumit Garg <sumit.garg@linaro.org> wrote:
+> >
+> > On Fri, 7 Jan 2022 at 18:23, Yael Tiomkin <yaelt@google.com> wrote:
+> > >
+> > > Hi Sumit,
+> > >
+> > > On Fri, Jan 7, 2022 at 12:15 AM Sumit Garg <sumit.garg@linaro.org> wrote:
+> > > >
+> > > > Hi Yael,
+> > > >
+> > > > On Thu, 6 Jan 2022 at 01:48, Yael Tiomkin <yaelt@google.com> wrote:
+> > > > >
+> > > > > Hi Sumit,
+> > > > >
+> > > > > On Mon, Jan 3, 2022 at 1:51 AM Sumit Garg <sumit.garg@linaro.org> wrote:
+> > > > > >
+> > > > > > Hi Mimi,
+> > > > > >
+> > > > > > Apologies for the delayed reply as I was on leave for a long new year weekend.
+> > > > > >
+> > > > > > On Thu, 30 Dec 2021 at 18:59, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > > > > > >
+> > > > > > > Hi Sumit,
+> > > > > > >
+> > > > > > > On Thu, 2021-12-30 at 15:37 +0530, Sumit Garg wrote:
+> > > > > > > > + Jan, Ahmad
+> > > > > > > >
+> > > > > > > > On Thu, 30 Dec 2021 at 03:24, Yael Tiomkin <yaelt@google.com> wrote:
+> > > > > > > > >
+> > > > > > > > > The encrypted.c class supports instantiation of encrypted keys with
+> > > > > > > > > either an already-encrypted key material, or by generating new key
+> > > > > > > > > material based on random numbers. This patch defines a new datablob
+> > > > > > > > > format: [<format>] <master-key name> <decrypted data length>
+> > > > > > > > > <decrypted data> that allows to instantiate encrypted keys using
+> > > > > > > > > user-provided decrypted data, and therefore allows to perform key
+> > > > > > > > > encryption from userspace. The decrypted key material will be
+> > > > > > > > > inaccessible from userspace.
+> > > > > > > >
+> > > > > > > > This type of user-space key import feature has already been discussed
+> > > > > > > > at large in the context of trusted keys here [1]. So what makes it
+> > > > > > > > special in case of encrypted keys such that it isn't a "UNSAFE_IMPORT"
+> > > > > > > > or "DEBUGGING_IMPORT" or "DEVELOPMENT_IMPORT", ...?
+> > > > > > > >
+> > > > > > > > [1] https://lore.kernel.org/linux-integrity/74830d4f-5a76-8ba8-aad0-0d79f7c01af9@pengutronix.de/
+> > > > > > > >
+> > > > > > > > -Sumit
+> > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > > > > > > > > Signed-off-by: Yael Tiomkin <yaelt@google.com>
+> > > > > > >
+> > > > > > > There is a difference between trusted and encrypted keys.
+> > > > > >
+> > > > > > Yeah I understand the implementation differences.
+> > > > > >
+> > > > > > >  So in
+> > > > > > > addition to pointing to the rather long discussion thread, please
+> > > > > > > summarize the conclusion and, assuming you agree, include why in once
+> > > > > > > case it was acceptable and in the other it wasn't to provide userspace
+> > > > > > > key data.
+> > > > > >
+> > > > > > My major concern with importing user-space key data in *plain* format
+> > > > > > is that if import is *not* done in a safe (manufacturing or
+> > > > > > production) environment then the plain key data is susceptible to
+> > > > > > user-space compromises when the device is in the field.
+> > > > >
+> > > > > I agree this can happen. Key distribution in any scenario needs to be
+> > > > > secure and this could also potentially be an issue if the key is first
+> > > > > encrypted and then imported.
+> > > >
+> > > > Currently its not the case with encrypted keys. These are random keys
+> > > > generated within the kernel and encrypted with master key within the
+> > > > kernel and then exposed to user-space as encrypted blob only.
+> > >
+> > >
+> > > There are two different ways to create encrypted keys. One is to have
+> > > them generated within the kernel using random numbers, and the other
+> > > is by importing them in their encrypted form from user-space.
+> > > I was referring to the latter in my previous statement.
+> > >
+> >
+> > So, from a key distribution security point of view, encrypted key
+> > user-space import is **not equal to** plain key user-space import.
+> > That's why we need to have a separate compile time option as every
+> > device may come with its own threat model and may choose to enable or
+> > disable this user-space plain key import feature.
+> >
+> > -Sumit
+> >
+> > > >
+> > > > > We can make sure the documentation
+> > > > > highlights the safety requirement.
+> > > > >
+> > > >
+> > > > IMO, you should enable this feature as a compile time option. The help
+> > > > text for that config option should highlight the use-case along with a
+> > > > safety warning.
+> > > >
+> > > > -Sumit
+> > > >
+> > > > > >
+> > > > > > And it sounds like we are diverting from basic definition [1] of encrypted keys:
+> > > > > >
+> > > > > > "Trusted and Encrypted Keys are two new key types added to the
+> > > > > > existing kernel key ring service. Both of these new types are variable
+> > > > > > length symmetric keys, and in both cases all keys are created in the
+> > > > > > kernel, and **user space sees, stores, and loads** only encrypted
+> > > > > > blobs."
+> > > > > >
+> > > > > > Also, as Jarrko mentioned earlier the use-case is still not clear to
+> > > > > > me as well. Isn't user logon keys an alternative option for
+> > > > > > non-readable user-space keys?
+> > > > >
+> > > > > The goal in this change is to allow key encryption from userspace,
+> > > > > using user-provided decrypted data. This cannot be achieved in logon
+> > > > > keys, which as you mentioned, are simply non-readable user type keys.
+> > > > >
+> > > > >
+> > > > > >
+> > > > > > [1] https://www.kernel.org/doc/html/v4.13/security/keys/trusted-encrypted.html
+> > > > > >
+> > > > > > -Sumit
+> > > > > >
+> > > > > > >
+> > > > > > > thanks,
+> > > > > > >
+> > > > > > > Mimi
+> > > > > > >
+> > > > >
+> > > > > Yael
+>
+> Hi Sumit,
+> The encrypted-keys module is already controlled by the
+> CONFIG_ENCRYPTED_KEYS option, which I think might give sufficient
+> granularity to control the behavior. Do you still think a feature
+> dedicated option is needed?
+>
 
-Yes, I know, but you cannot use ed25519-capable OpenPGP smartcards to create
-non-PGP signatures. The discussion was about using ed25519 signatures
-directly (e.g. like signify/minisign do). Jason pointed out to me on IRC that
-it's possible to do it with YubiHSM, but it's an expensive device ($650 USD
-from Yubico).
+Since this feature will change security properties for encrypted keys
+which can be considered as a regression for existing users during
+uprev. So it needs to be an optional key import feature with a clear
+user visible warning. Thinking more about this, you can even have a
+module param to turn it on with a runtime warning as well.
 
-> While the current software support for ed25519 might be limited, there
-> is certainly progress being made, RFC 8410 allowed these algos for X.509
-> certificates.
-> Support for such certificates is already implemented in OpenSSL [2].
-> 
-> ECDSA, on the other hand, is very fragile with respect to random number
-> generation at signing time.
-> We know that people got burned here in the past.
+-Sumit
 
-I think this is taking us far away from the main topic (which
-signing/verification standards to use in-kernel).
-
--K
+> Yael
