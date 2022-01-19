@@ -2,113 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 174EC4931E1
-	for <lists+keyrings@lfdr.de>; Wed, 19 Jan 2022 01:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2FE493209
+	for <lists+keyrings@lfdr.de>; Wed, 19 Jan 2022 01:55:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241290AbiASA20 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Jan 2022 19:28:26 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:53138 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237177AbiASA2Z (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jan 2022 19:28:25 -0500
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20INRrEm011450;
-        Wed, 19 Jan 2022 00:28:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=0s3EPiTBBJVqZJT2McfkGgt7LnKRIJ6MavHK+e9cY5g=;
- b=CnFTON8KYNfeuWtaNcHIOXapRqHfFvptL2miNnJBXebNxtFRLPs6jFSX5tLe5gglHGxg
- j/UIiUFvijYZ3lH5Xdi8Hm2KVN4+6wYeyH6+vkLY87V8nQexbqrko/n8KOzeKeI6bCsC
- QrLysnErSXPjBBiAODUPo+7WCRSiZfxv+XuhdTus9/g8h7LnYQ0ogo4maBhUvX+9B9nj
- NMFuvAeh9RzojwW2RRzaAk0lXdhKiOFW0qn7JxFxdnoJVdOumEWyt9fNk57pTZu2hYfx
- ZG7UuWl92nu9PQH+ahUyFoPQoD8wuHLfuwpdnvozzjKaAPZ67XtYcFPBvKLYhzvt1o06 yw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3dp78dgru1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Jan 2022 00:28:17 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20J0DFNU017809;
-        Wed, 19 Jan 2022 00:28:16 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3dp78dgrtp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Jan 2022 00:28:16 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20J0IA0v007720;
-        Wed, 19 Jan 2022 00:28:14 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma04fra.de.ibm.com with ESMTP id 3dknw9f7v0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Jan 2022 00:28:14 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20J0SCRr44106078
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 19 Jan 2022 00:28:12 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 45FC852054;
-        Wed, 19 Jan 2022 00:28:12 +0000 (GMT)
-Received: from sig-9-65-88-194.ibm.com (unknown [9.65.88.194])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id DAB6B5204F;
-        Wed, 19 Jan 2022 00:28:10 +0000 (GMT)
-Message-ID: <c349477264b23b401d6142d686b61b401a52c542.camel@linux.ibm.com>
-Subject: Re: [PATCH] ima: fix reference leak in asymmetric_verify()
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     linux-integrity@vger.kernel.org,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        keyrings@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        stable@vger.kernel.org
-Date:   Tue, 18 Jan 2022 19:28:10 -0500
-In-Reply-To: <YedY1BCKSKXn2Dcc@sol.localdomain>
-References: <20220113194438.69202-1-ebiggers@kernel.org>
-         <55c5576db2bb0f8a2b9d509f4d1160911388fa41.camel@linux.ibm.com>
-         <YedY1BCKSKXn2Dcc@sol.localdomain>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ldYC7ke2Tse4QaFML4mY9Fy1tvxIJqL4
-X-Proofpoint-ORIG-GUID: e9QuXZGyKkJz8r_4K8TjScVx_7rvzUDF
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        id S1350516AbiASAzO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jan 2022 19:55:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350544AbiASAzL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jan 2022 19:55:11 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5487CC061574;
+        Tue, 18 Jan 2022 16:55:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2051614DC;
+        Wed, 19 Jan 2022 00:55:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21430C340E0;
+        Wed, 19 Jan 2022 00:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642553710;
+        bh=NGkBY5pZL1xINxMqyx1wMnRtQ+uGBnKSSP3TCy+p67Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DXC3OO8ayneOE2iP8tHftJuPV1NAPew7G3gpOTGI6o43NNzsEs9FtgBXzkJ4PTH1X
+         W4Udhhd/bZ0YCAGvkNGHmibhh0E9H4EZkVfjcvj9KgTM9862dcI54AsvjZ0pjvOalV
+         +P/mngFxyPOwqa9Mar7mB+f5UhCc/1R9HXUZAowU8vOCu+C2y0tNXnR7R/IkLKFknz
+         TKx9rV94pj9J/34/ZrEE8pgNci+OkKhxTIj/SK4f8S/HWm5FBi2+zLH2/dtbF2dpiW
+         KQuEp89CjrBZOcnooUbNK99Tnb4t1D48d4kGm1pQE4OaaX1GPGvGf6jeAEAIjkjE9u
+         OQpvsPa0B6uVQ==
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-crypto@vger.kernel.org
+Subject: [PATCH v2 0/4] KEYS: x509: various cleanups
+Date:   Tue, 18 Jan 2022 16:54:32 -0800
+Message-Id: <20220119005436.119072-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-18_06,2022-01-18_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- mlxlogscore=788 lowpriorityscore=0 mlxscore=0 suspectscore=0 phishscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2201180132
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2022-01-18 at 16:18 -0800, Eric Biggers wrote:
-> On Thu, Jan 13, 2022 at 08:52:59PM -0500, Mimi Zohar wrote:
-> > Hi Eric,
-> > 
-> > On Thu, 2022-01-13 at 11:44 -0800, Eric Biggers wrote:
-> > > From: Eric Biggers <ebiggers@google.com>
-> > > 
-> > > Don't leak a reference to the key if its algorithm is unknown.
-> > > 
-> > > Fixes: 947d70597236 ("ima: Support EC keys for signature verification")
-> > > Cc: <stable@vger.kernel.org> # v5.13+
-> > > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > 
-> > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > 
-> 
-> Thanks.  You're intending to apply this patch, right?  Or are you expecting
-> someone else to?  get_maintainer.pl didn't associate this file with IMA, but I
-> see you sent out a patch to fix that
-> (https://lore.kernel.org/linux-integrity/20220117230229.16475-1-zohar@linux.ibm.com/T/#u).
+This series cleans up a few things in the X.509 certificate parser.
 
-Once the open window closes, I'll apply it.
+Changed v1 => v2:
+  - Renamed label in patch 3
+  - Added Acked-by's
 
-Mimi
+Eric Biggers (4):
+  KEYS: x509: clearly distinguish between key and signature algorithms
+  KEYS: x509: remove unused fields
+  KEYS: x509: remove never-set ->unsupported_key flag
+  KEYS: x509: remove dead code that set ->unsupported_sig
+
+ crypto/asymmetric_keys/pkcs7_verify.c     |  7 ++---
+ crypto/asymmetric_keys/x509.asn1          |  2 +-
+ crypto/asymmetric_keys/x509_cert_parser.c | 34 ++++++++++++-----------
+ crypto/asymmetric_keys/x509_parser.h      |  1 -
+ crypto/asymmetric_keys/x509_public_key.c  | 18 ------------
+ 5 files changed, 21 insertions(+), 41 deletions(-)
+
+-- 
+2.34.1
 
