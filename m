@@ -2,140 +2,257 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82083493B0A
-	for <lists+keyrings@lfdr.de>; Wed, 19 Jan 2022 14:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7FA54952F8
+	for <lists+keyrings@lfdr.de>; Thu, 20 Jan 2022 18:14:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354167AbiASNZQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 19 Jan 2022 08:25:16 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4432 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350184AbiASNZP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 19 Jan 2022 08:25:15 -0500
-Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Jf5wV6qk1z67HKP;
-        Wed, 19 Jan 2022 21:24:58 +0800 (CST)
-Received: from fraeml714-chm.china.huawei.com (10.206.15.33) by
- fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Wed, 19 Jan 2022 14:25:12 +0100
-Received: from fraeml714-chm.china.huawei.com ([10.206.15.33]) by
- fraeml714-chm.china.huawei.com ([10.206.15.33]) with mapi id 15.01.2308.021;
- Wed, 19 Jan 2022 14:25:12 +0100
-From:   Roberto Sassu <roberto.sassu@huawei.com>
-To:     Eric Biggers <ebiggers@kernel.org>,
-        Antony Vennard <antony@vennard.ch>
-CC:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "linux-fscrypt@vger.kernel.org" <linux-fscrypt@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>
-Subject: RE: [PATCH 00/14] KEYS: Add support for PGP keys and signatures
-Thread-Topic: [PATCH 00/14] KEYS: Add support for PGP keys and signatures
-Thread-Index: AQHYBxWUAJoIvMeqLk2UYoD6PZRMZ6xnP9oAgAAHlwCAAfOkgIAAJTmAgAD7bXA=
-Date:   Wed, 19 Jan 2022 13:25:12 +0000
-Message-ID: <d71ea8ae51e1438c894b44b011f3efda@huawei.com>
-References: <20220111180318.591029-1-roberto.sassu@huawei.com>
- <YeV+jkGg6mpQdRID@zx2c4.com>
- <d92912bba61ee37e42d04b64073b9031604acc0f.camel@HansenPartnership.com>
- <079f10b9-060b-3a36-2224-fa1b483cbad5@vennard.ch>
- <YedHR93wPLS/JEsE@sol.localdomain>
-In-Reply-To: <YedHR93wPLS/JEsE@sol.localdomain>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.214.59]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1377263AbiATROE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 20 Jan 2022 12:14:04 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:60374 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1377264AbiATRNz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Jan 2022 12:13:55 -0500
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20KGBp7w027507;
+        Thu, 20 Jan 2022 17:13:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=cy6JvmbrB4OvjBhbkd9zN86yJGoLMa3Ke4n5j516s7E=;
+ b=YB719x6l25BChElHxBCWxertUHOFGLYeeSXcKK0caSm/ocdx6Br2pxoOy6Oi3WFWTqM+
+ ym/S52KqMplJoLl3natOzm1odGz0xIXj8Py9ciKZJaAZpIM6R7tXB3DYFp8Fxvu6OM8F
+ SyEV4ValtXCOp0QFjzm+lxLsRhCm0fHpK8fEDbuXMgp6mwMoHw2vF328NcKbFsq7Zmch
+ suDGcbgYNvZ1QIghDcx8syoeBaNXu9QKb1len3B5iEo1vyigE48czVdSVFU8eVFbhPu4
+ 32vbKV5CZMqtnaPnJLB5pRQ54zYPSiMEPb1iQIolYvX4GFNOroNFAEVy2YSMmPtj+3jW Hw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3dqb1sse8n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Jan 2022 17:13:42 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20KHBFvJ003183;
+        Thu, 20 Jan 2022 17:13:42 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3dqb1sse8b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Jan 2022 17:13:42 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20KH2BsX023368;
+        Thu, 20 Jan 2022 17:13:41 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+        by ppma02dal.us.ibm.com with ESMTP id 3dknwd54u1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Jan 2022 17:13:41 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20KHDdju30278014
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 20 Jan 2022 17:13:39 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F2A69B2074;
+        Thu, 20 Jan 2022 17:13:38 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D9CF5B2065;
+        Thu, 20 Jan 2022 17:13:34 +0000 (GMT)
+Received: from [9.211.61.238] (unknown [9.211.61.238])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Thu, 20 Jan 2022 17:13:34 +0000 (GMT)
+Message-ID: <533aa459-f28b-2888-ef9f-3036ece5f023@linux.vnet.ibm.com>
+Date:   Thu, 20 Jan 2022 12:13:33 -0500
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v4] KEYS: encrypted: Instantiate key with user-provided
+ decrypted data
+Content-Language: en-US
+To:     Yael Tiomkin <yaelt@google.com>
+Cc:     linux-integrity@vger.kernel.org, jejb@linux.ibm.com,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>, corbet@lwn.net,
+        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com,
+        keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>
+References: <20211229215330.4134835-1-yaelt@google.com>
+ <e29dc7de-b656-7c27-2294-fb4936e99e69@linux.vnet.ibm.com>
+ <CAKoutNspnn-VuKsxODYdX4P68vCpRveRFG=FKCVG9Vu-vev4fg@mail.gmail.com>
+From:   Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <CAKoutNspnn-VuKsxODYdX4P68vCpRveRFG=FKCVG9Vu-vev4fg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: aZr-kX8pR7U3kzzJouKo7AS08-npRhe7
+X-Proofpoint-GUID: 1rp5NW1T7eVrMQmUmT2IZzyZxrUpL-dD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-20_06,2022-01-20_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 malwarescore=0 mlxscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201200088
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-PiBGcm9tOiBFcmljIEJpZ2dlcnMgW21haWx0bzplYmlnZ2Vyc0BrZXJuZWwub3JnXQ0KPiBTZW50
-OiBXZWRuZXNkYXksIEphbnVhcnkgMTksIDIwMjIgMTI6MDQgQU0NCj4gT24gVHVlLCBKYW4gMTgs
-IDIwMjIgYXQgMDk6NTA6MjFQTSArMDEwMCwgQW50b255IFZlbm5hcmQgd3JvdGU6DQo+ID4NCj4g
-PiBIaSBBbGwsDQo+ID4NCj4gPiBPbiAxNy8wMS8yMDIyIDE2OjAyLCBKYW1lcyBCb3R0b21sZXkg
-d3JvdGU6DQo+ID4gPiBPbiBNb24sIDIwMjItMDEtMTcgYXQgMTU6MzQgKzAxMDAsIEphc29uIEEu
-IERvbmVuZmVsZCB3cm90ZToNCj4gPiA+ID4gSGksDQo+ID4gPiA+DQo+ID4gPiA+IFdoaWxlIGl0
-IGxvb2tzIGxpa2UgeW91IHB1dCBhIGxvdCBvZiB3b3JrIGludG8gdGhpcyBwYXRjaHNldCwgSSB0
-aGluaw0KPiA+ID4gPiB0aGUgZ2VuZXJhbCBpZGVhIG9mIGFkZGluZyBQR1AgKnRvIHRoZSBrZXJu
-ZWwqIGlzIGEgcHJldHR5IGRhdW50aW5nDQo+ID4gPiA+IHByb3Bvc2l0aW9uLiBUaGUgZ2VuZXJh
-bCBjb25zZW5zdXMgaW4gdGhlIGNyeXB0byBlbmdpbmVlcmluZyB3b3JsZCBpcw0KPiA+ID4gPiB0
-aGF0IFBHUCBvdWdodCB0byBiZSBvbiBpdHMgd2F5IG91dC4gV2UgZGVmaW5pdGVseSBkb24ndCB3
-YW50IHRvDQo+ID4gPiA+IHBlcnBldHVhdGUgdGhpcyBwcm9qZWN0LW9uLWxpZmUtc3VwcG9ydCBp
-bnRvIHRoZSBwZXJtYW5lbmNlIG9mIGtlcm5lbA0KPiA+ID4gPiBjb2RlLiBTb21lIHF1aWNrIEdv
-b2dsZSBzZWFyY2hlcyB3aWxsIHJldmVhbCBhIGxpdGFueSBvZiBibG9nIHBvc3RzDQo+ID4gPiA+
-IHRvIHRoZSB0dW5lIG9mLCAid2h5IG9oIHdoeSBhcmUgcGVvcGxlIHN0aWxsIHVzaW5nIHRoaXM/
-IiBIZXJlJ3Mgb25lDQo+ID4gPiA+IGZyb20gMjAxOToNCj4gPiA+ID4gaHR0cHM6Ly9sYXRhY29y
-YS5taWNyby5ibG9nLzIwMTkvMDcvMTYvdGhlLXBncC1wcm9ibGVtLmh0bWwgLiBJDQo+ID4gPiA+
-IHRoaW5rIHRoZXNlIGFyZSBhcmd1bWVudHMgdG8gdGFrZSBzZXJpb3VzbHkuIEFuZCBldmVuIGlm
-IHlvdSBkaXNhZ3JlZQ0KPiA+ID4gPiB3aXRoIHNvbWUgcGFydHMsIHlvdSBtYXkgd2FudCB0byBj
-b25zaWRlciB3aGV0aGVyIHRoZSByZW1haW5pbmcgcGFydHMNCj4gPiA+ID4gd2FycmFudCBhIGJp
-dCBvZiBwYXVzZSBiZWZvcmUgYWRkaW5nIHRoaXMgdG8gdGhlIGtlcm5lbCBhbmQNCj4gPiA+ID4g
-cGVycGV0dWF0aW5nIFBHUCdzIGRlc2lnbiBmdXJ0aGVyLg0KPiA+DQo+ID4gU28gd2hpbGUgSSB1
-bmRlcnN0YW5kIHdoeSB0aGlzIGlzIGJlaW5nIHByb3Bvc2VkIGFuZCBjbGVhcmx5IGVmZm9ydCBo
-YXMgZ29uZQ0KPiA+IGludG8gaXQsIEkgYWxzbyB0aGluayBpdCBpcyBub3QgdGhlIHJpZ2h0IGFw
-cHJvYWNoLiBJdCBzZWVtcyB0aGlzIHByb3Bvc2FsDQo+ID4gaXMgdG8gaW5jbHVkZSBhIGZ1bGwg
-UEdQIHBhY2tldCBwYXJzZXIgYW5kIHZlcmlmaWNhdGlvbiBsb2dpYyBpbiB0aGUga2VybmVsDQo+
-ID4gYXMgYW4gZXF1aXZhbGVudCB0byBhbGxvdyBQR1Agc2lnbmF0dXJlcyB0byBiZSBzdWJtaXR0
-ZWQgdmlhDQo+ID4gRlNfSU9DX0VOQUJMRV9WRVJJVFk6DQo+ID4NCj4gPiAiRlNfSU9DX0VOQUJM
-RV9WRVJJVFkgYWNjZXB0cyBhIHBvaW50ZXIgdG8gYSBQS0NTIzcgZm9ybWF0dGVkIGRldGFjaGVk
-DQo+ID4gc2lnbmF0dXJlIGluIERFUiBmb3JtYXQgb2YgdGhlIGZpbGXigJlzIGZzLXZlcml0eSBk
-aWdlc3QuIg0KPiA+DQo+IA0KPiBJdCdzIHdvcnRoIG5vdGluZyB0aGF0IGlmIGZzLXZlcml0eSBi
-dWlsdC1pbiBzaWduYXR1cmVzIGFyZSB1c2VkLCBhIHRydXN0ZWQNCj4gdXNlcnNwYWNlIHByb2dy
-YW0gaXMgc3RpbGwgcmVxdWlyZWQgdG8gZGV0ZXJtaW5lIGFuZCBlbmZvcmNlIHRoZSBwb2xpY3kg
-b2Ygd2hpY2gNCj4gZmlsZXMgYXJlIHJlcXVpcmVkIHRvIGJlIHNpZ25lZC4gIFRoZSBrZXJuZWwg
-b25seSBoYW5kbGVzIHRoZSBhY3R1YWwgc2lnbmF0dXJlDQo+IHZlcmlmaWNhdGlvbi4gIFRoaXMg
-d2FzIGJhc2ljYWxseSBhIHByb29mLW9mLWNvbmNlcHQgd2hpY2ggcmV1c2VkIHRoZSBrZXJuZWwn
-cw0KPiBtb2R1bGUgc2lnbmF0dXJlIHZlcmlmaWNhdGlvbiBjb2RlICh3aGljaCBoYXBwZW5zIHRv
-IHVzZSBQS0NTIzcpLg0KDQpKdXN0IHRvIHNob3cgaG93IHRoZSBmc3Zlcml0eSBjb2RlIHdpbGwg
-bG9vayBsaWtlIGFmdGVyIGFkZGluZyBzdXBwb3J0DQpmb3IgUEdQIHNpZ25hdHVyZXM6DQoNCisg
-ICAgICAgc3dpdGNoICh2aS0+dHlwZSkgew0KKyAgICAgICBjYXNlIFBLRVlfSURfUEtDUzc6DQor
-ICAgICAgICAgICAgICAgZXJyID0gdmVyaWZ5X3BrY3M3X3NpZ25hdHVyZShkLCBzaXplb2YoKmQp
-ICsgaGFzaF9hbGctPmRpZ2VzdF9zaXplLA0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgc2lnbmF0dXJlLCBzaWdfc2l6ZSwgZnN2ZXJpdHlfa2V5cmluZywNCisg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFZFUklGWUlOR19VTlNQ
-RUNJRklFRF9TSUdOQVRVUkUsDQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBOVUxMLCBOVUxMKTsNCisgICAgICAgICAgICAgICBicmVhazsNCisgICAgICAgY2Fz
-ZSBQS0VZX0lEX1BHUDoNCisgICAgICAgICAgICAgICBlcnIgPSB2ZXJpZnlfcGdwX3NpZ25hdHVy
-ZShkLCBzaXplb2YoKmQpICsgaGFzaF9hbGctPmRpZ2VzdF9zaXplLA0KKyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpZ25hdHVyZSwgc2lnX3NpemUsIGZzdmVyaXR5
-X2tleXJpbmcsDQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVkVS
-SUZZSU5HX1VOU1BFQ0lGSUVEX1NJR05BVFVSRSwNCisgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBOVUxMLCBOVUxMKTsNCisgICAgICAgICAgICAgICBicmVhazsNCisg
-ICAgICAgZGVmYXVsdDoNCisgICAgICAgICAgICAgICBlcnIgPSAtRU9QTk9UU1VQUDsNCisgICAg
-ICAgfQ0KDQpBcyB5b3UgY2FuIHNlZSwgdGhlIGNoYW5nZSB3aWxsIGJlIHN0cmFpZ2h0Zm9yd2Fy
-ZC4NCg0KT24gdXNlciBzcGFjZSBzaWRlLCBJIHBsYW4gdG8gYWRkIHRoZSBjYXBhYmlsaXR5IHRv
-IGZzdmVyaXR5LXV0aWxzDQp0byBwcm9kdWNlIGEgUEdQIHNpZ25hdHVyZSB3aXRoIHRoZSBHUEcg
-a2V5IHBhc3NlZCBieSBycG1zaWduLg0KDQo+IEknZCBlbmNvdXJhZ2UgbmV3IHVzZXJzIHRvIGVp
-dGhlciBnbyBhbGwtaW4gb24gYSB1c2Vyc3BhY2Ugc29sdXRpb24sIHVzaW5nIGENCj4gdHJ1c3Rl
-ZCB1c2Vyc3BhY2UgcHJvZ3JhbSB0byB2ZXJpZnkgc2lnbmF0dXJlcyBvZiBmcy12ZXJpdHkgZmls
-ZSBkaWdlc3RzOw0KPiAqb3IqIGdvIGFsbC1pbiBvbiBhbiBpbi1rZXJuZWwgc29sdXRpb24sIHVz
-aW5nIHRoZSBJTUEgc3VwcG9ydCBmb3IgZnMtdmVyaXR5DQo+IHdoaWNoIE1pbWkgWm9oYXIgaXMg
-d29ya2luZyBvbi4gIEEgdXNlcnNwYWNlIHNvbHV0aW9uIGNvdWxkIHVzZSBhIHNpbXBsZQ0KDQpQ
-cm9iYWJseSwgdGhlcmUgaXMgYWxzbyB0aGUgdGhpcmQgb3B0aW9uIG9mIGFuIExTTSAoc3VjaCBh
-cyBJUEUpIHRoYXQgZ2V0cw0KZnJvbSBmc3Zlcml0eSB0aGUgaW5mb3JtYXRpb24gaWYgdGhlIHNp
-Z25hdHVyZSB3YXMgdmFsaWRhdGVkLCBhbmQgZGVjaWRlDQpkZXBlbmRpbmcgb24gYSBwb2xpY3ku
-IEkgd291bGQgYWxzbyBleHBvc2UgdGhlIGluZm9ybWF0aW9uIGFib3V0IHRoZQ0KcmVzdHJpY3Rp
-b24gaW1wb3NlZCBvbiB0aGUga2V5cmluZyBmcm9tIHdoaWNoIHRoZSBrZXkgdXNlZCB0byB2ZXJp
-ZnkNCnRoZSBzaWduYXR1cmUgd2FzIGZvdW5kLg0KDQpNYXliZSBJTUEgY291bGQgdXNlIHRoaXMg
-YXBwcm9hY2ggdG9vLCB3aGljaCB3b3VsZCBhdm9pZCB0aGUgbmVlZA0Kb2YgaW50cm9kdWNpbmcg
-YW5vdGhlciBzaWduYXR1cmUgZm9ybWF0LiBJZiB0aGF0IGlzIGRlc2lyZWQsIHlvdSBtaWdodA0K
-d2FudCB0byBjb29yZGluYXRlIHdpdGggdGhlIGF1dGhvcnMgb2YgYSBGZWRvcmEgZmVhdHVyZToN
-Cg0KaHR0cHM6Ly9mZWRvcmFwcm9qZWN0Lm9yZy93aWtpL0NoYW5nZXMvRnNWZXJpdHlSUE0NCg0K
-d2hpY2gsIGFzIGZhciBhcyBJIGtub3csIHBsYW4gdG8gdXNlIHRoZSBzaWduYXR1cmUgZm9ybWF0
-IGFscmVhZHkNCnVwc3RyZWFtZWQuDQoNClRoYW5rcw0KDQpSb2JlcnRvDQoNCkhVQVdFSSBURUNI
-Tk9MT0dJRVMgRHVlc3NlbGRvcmYgR21iSCwgSFJCIDU2MDYzDQpNYW5hZ2luZyBEaXJlY3Rvcjog
-TGkgUGVuZywgWmhvbmcgUm9uZ2h1YQ0KDQo+IHNpZ25hdHVyZSBmb3JtYXQsIHVzaW5nIGEgbW9k
-ZXJuIGFsZ29yaXRobSBzdWNoIGFzIEVkMjU1MTkuICBJTUEgdXNlcyBhIHNpbXBsZQ0KPiBzaWdu
-YXR1cmUgZm9ybWF0IHRvbywgdGhvdWdoIGl0IHVzZXMgYSBjb21wbGV4IGZvcm1hdCAoWC41MDkp
-IGZvciBwdWJsaWMga2V5cy4NCj4gDQo+IC0gRXJpYw0K
+
+On 1/13/22 14:01, Yael Tiomkin wrote:
+> On Mon, Jan 10, 2022 at 11:04 AM Nayna <nayna@linux.vnet.ibm.com> wrote:
+>>
+>> On 12/29/21 16:53, Yael Tiomkin wrote:
+>>> The encrypted.c class supports instantiation of encrypted keys with
+>>> either an already-encrypted key material, or by generating new key
+>>> material based on random numbers. This patch defines a new datablob
+>>> format: [<format>] <master-key name> <decrypted data length>
+>>> <decrypted data> that allows to instantiate encrypted keys using
+>>> user-provided decrypted data, and therefore allows to perform key
+>>> encryption from userspace. The decrypted key material will be
+>>> inaccessible from userspace.
+>>>
+>>> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+>>> Signed-off-by: Yael Tiomkin <yaelt@google.com>
+>>> ---
+>>>
+>>> Notes:
+>>>       v -> v2: fixed compilation error.
+>>>
+>>>       v2 -> v3: modified documentation.
+>>>
+>>>       v3 -> v4: modified commit message.
+>>>
+>>>    .../security/keys/trusted-encrypted.rst       | 25 ++++++--
+>>>    security/keys/encrypted-keys/encrypted.c      | 62 +++++++++++++------
+>>>    2 files changed, 63 insertions(+), 24 deletions(-)
+>>>
+>>> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+>>> index 80d5a5af62a1..f614dad7de12 100644
+>>> --- a/Documentation/security/keys/trusted-encrypted.rst
+>>> +++ b/Documentation/security/keys/trusted-encrypted.rst
+>>> @@ -107,12 +107,13 @@ Encrypted Keys
+>>>    --------------
+>>>
+>>>    Encrypted keys do not depend on a trust source, and are faster, as they use AES
+>>> -for encryption/decryption. New keys are created from kernel-generated random
+>>> -numbers, and are encrypted/decrypted using a specified ‘master’ key. The
+>>> -‘master’ key can either be a trusted-key or user-key type. The main disadvantage
+>>> -of encrypted keys is that if they are not rooted in a trusted key, they are only
+>>> -as secure as the user key encrypting them. The master user key should therefore
+>>> -be loaded in as secure a way as possible, preferably early in boot.
+>>> +for encryption/decryption. New keys are created either from kernel-generated
+>>> +random numbers or user-provided decrypted data, and are encrypted/decrypted
+>>> +using a specified ‘master’ key. The ‘master’ key can either be a trusted-key or
+>>> +user-key type. The main disadvantage of encrypted keys is that if they are not
+>>> +rooted in a trusted key, they are only as secure as the user key encrypting
+>>> +them. The master user key should therefore be loaded in as secure a way as
+>>> +possible, preferably early in boot.
+>>>
+>>>
+>>>    Usage
+>>> @@ -199,6 +200,8 @@ Usage::
+>>>
+>>>        keyctl add encrypted name "new [format] key-type:master-key-name keylen"
+>>>            ring
+>>> +    keyctl add encrypted name "new [format] key-type:master-key-name keylen
+>>> +        decrypted-data" ring
+>>>        keyctl add encrypted name "load hex_blob" ring
+>>>        keyctl update keyid "update key-type:master-key-name"
+>>>
+>>> @@ -303,6 +306,16 @@ Load an encrypted key "evm" from saved blob::
+>>>        82dbbc55be2a44616e4959430436dc4f2a7a9659aa60bb4652aeb2120f149ed197c564e0
+>>>        24717c64 5972dcb82ab2dde83376d82b2e3c09ffc
+>>>
+>>> +Instantiate an encrypted key "evm" using user-provided decrypted data::
+>>> +
+>>> +    $ keyctl add encrypted evm "new default user:kmk 32 `cat evm_decrypted_data.blob`" @u
+>>> +    794890253
+>>> +
+>>> +    $ keyctl print 794890253
+>>> +    default user:kmk 32 2375725ad57798846a9bbd240de8906f006e66c03af53b1b382d
+>>> +    bbc55be2a44616e4959430436dc4f2a7a9659aa60bb4652aeb2120f149ed197c564e0247
+>>> +    17c64 5972dcb82ab2dde83376d82b2e3c09ffc
+>>> +
+>>>    Other uses for trusted and encrypted keys, such as for disk and file encryption
+>>>    are anticipated.  In particular the new format 'ecryptfs' has been defined
+>>>    in order to use encrypted keys to mount an eCryptfs filesystem.  More details
+>>> diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+>>> index 87432b35d771..baf6fba5e05e 100644
+>>> --- a/security/keys/encrypted-keys/encrypted.c
+>>> +++ b/security/keys/encrypted-keys/encrypted.c
+>>> @@ -159,6 +159,7 @@ static int valid_master_desc(const char *new_desc, const char *orig_desc)
+>>>     *
+>>>     * datablob format:
+>>>     * new [<format>] <master-key name> <decrypted data length>
+>>> + * new [<format>] <master-key name> <decrypted data length> <decrypted data>
+>>>     * load [<format>] <master-key name> <decrypted data length>
+>>>     *     <encrypted iv + data>
+>>>     * update <new-master-key name>
+>>> @@ -170,7 +171,7 @@ static int valid_master_desc(const char *new_desc, const char *orig_desc)
+>>>     */
+>>>    static int datablob_parse(char *datablob, const char **format,
+>>>                          char **master_desc, char **decrypted_datalen,
+>>> -                       char **hex_encoded_iv)
+>>> +                       char **hex_encoded_iv, char **decrypted_data)
+>>>    {
+>>>        substring_t args[MAX_OPT_ARGS];
+>>>        int ret = -EINVAL;
+>>> @@ -231,6 +232,8 @@ static int datablob_parse(char *datablob, const char **format,
+>>>                                "when called from .update method\n", keyword);
+>>>                        break;
+>>>                }
+>>> +             *decrypted_data = strsep(&datablob, " \t");
+>>> +
+>>>                ret = 0;
+>>>                break;
+>>>        case Opt_load:
+>>> @@ -595,7 +598,8 @@ static int derived_key_decrypt(struct encrypted_key_payload *epayload,
+>>>    static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+>>>                                                         const char *format,
+>>>                                                         const char *master_desc,
+>>> -                                                      const char *datalen)
+>>> +                                                      const char *datalen,
+>>> +                                                      const char *decrypted_data)
+>>>    {
+>>>        struct encrypted_key_payload *epayload = NULL;
+>>>        unsigned short datablob_len;
+>>> @@ -604,6 +608,7 @@ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+>>>        unsigned int encrypted_datalen;
+>>>        unsigned int format_len;
+>>>        long dlen;
+>>> +     int i;
+>>>        int ret;
+>>>
+>>>        ret = kstrtol(datalen, 10, &dlen);
+>>> @@ -613,6 +618,20 @@ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+>>>        format_len = (!format) ? strlen(key_format_default) : strlen(format);
+>>>        decrypted_datalen = dlen;
+>>>        payload_datalen = decrypted_datalen;
+>>> +
+>>> +     if (decrypted_data) {
+>>> +             if (strlen(decrypted_data) != decrypted_datalen) {
+>>> +                     pr_err("encrypted key: decrypted data provided does not match decrypted data length provided\n");
+>>> +                     return ERR_PTR(-EINVAL);
+>>> +             }
+>>> +             for (i = 0; i < strlen(decrypted_data); i++) {
+>>> +                     if (!isalnum(decrypted_data[i])) {
+>> User-provided decrypted data may have special characters, commonly used
+>> in passwords or key phrases, apart from alphanumeric.  Replace isalnum
+>> with !iscntrl() to validate against control characters but allow special
+>> characters.
+>>
+>> Thanks & Regards,
+>>
+>>        - Nayna
+>>
+> Hi Nayna,
+> I wonder if we should use isprint() instead?
+
+I have been thinking more about this. Encrypted keys documentation says, 
+"All user level blobs, are displayed and loaded in hex ascii for 
+convenience."
+
+Should we use a similar hex ascii encoding for user-provided data?  
+Verification would then be isxdigit().
+
+Users should convert their input to hex ascii before passing it to keyctl.
+
+Thanks & Regards,
+
+      - Nayna
+
