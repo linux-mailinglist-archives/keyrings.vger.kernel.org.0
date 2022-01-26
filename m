@@ -2,118 +2,141 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C707849D3E5
-	for <lists+keyrings@lfdr.de>; Wed, 26 Jan 2022 21:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D686449D4DB
+	for <lists+keyrings@lfdr.de>; Wed, 26 Jan 2022 23:06:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231443AbiAZU47 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 26 Jan 2022 15:56:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36438 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231428AbiAZU44 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 26 Jan 2022 15:56:56 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 083DFC061749
-        for <keyrings@vger.kernel.org>; Wed, 26 Jan 2022 12:56:56 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id c10so2514348ybb.2
-        for <keyrings@vger.kernel.org>; Wed, 26 Jan 2022 12:56:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iRMR5V4vy0P4D7D6HxdHshjQs9Ym01noa/r6EwRPAu0=;
-        b=oes9XtJSyShtzx2CSBVGbMTDKHa0l4kalzCjnYYyxsVbTsQorvNCdxvHS6Xl+X54y6
-         pdqAiycUiIq6AAx0LYmnhXnSo2d0kn4xhNIlipzNVIZp8lwNer0tDWyJl3TEi4bQ4KB+
-         SWMAKF9ezNb6zBFz1hY7fyxFEA16hGRfz7WXTKbfSZ4V3alS9s6Ade6Ae20COXz5oZEq
-         Tu6C+RwPdefEiuexRtHqXilwQRvbmBRACea3Dz/nFO0uikBYQr0R2ZfWRUVWryW/S6KD
-         pq3FQ4xTzz1llkK2fKyrnFYmacEZ6JR1V6pXmNRd5hvwEUU69UFjfvmwQlr8TvF05+9c
-         dUcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iRMR5V4vy0P4D7D6HxdHshjQs9Ym01noa/r6EwRPAu0=;
-        b=u4bLSqWDUgn0LkT/e+duc2499C1kUhDAN0lzZoTx1ziq0Uef72oUiZqGLbzIAVpjo4
-         UZYD795G5nK/VUlDmsMnHR0Nprj2e+ISc1Zl4V6oqcI/7dqW1RA0YtRr7IKkFyrJOsEq
-         FmqsoPE6J3J3iRSLD5drC4RpD7cut4jQbCjIA9BFajUnQRWgvpbC1Gi/W134g1fUsVJg
-         rH6GFz9VEQNVrkrkNaDjoXUVG3Vs9nAPQtP31XjmmlgsnR/Ra614fdQq8WSIlSE85Jq5
-         xyKCwIXZ8zNVulWP0tY8yzxZXzWTl/CyOtjhnYkdVAQ5+s4ZgmqSh791ZNfFVbDu/O3T
-         KiVw==
-X-Gm-Message-State: AOAM5304fqO0bqoH3rNmZpdPj1IykrYedEz6+QKfw6+AlxJSbvkbouoW
-        XDcaqLNVJ2Qgj8BlNAse+iAkQh4V/VhD0d9RmWG0nw==
-X-Google-Smtp-Source: ABdhPJz5X7xefsqfdpcr/O0hB6Yp3iMquc+kP8ciOakKuBqThWgY0V24etdk6Xb6ydBgpI8kSaTtR9k+jdyNoEDGFEo=
-X-Received: by 2002:a25:b11e:: with SMTP id g30mr1202035ybj.328.1643230614970;
- Wed, 26 Jan 2022 12:56:54 -0800 (PST)
-MIME-Version: 1.0
-References: <CA++MVV3Jse4WZ-zr-SUWQz3Gk_dByU6JduVfUkvQNW+jgm9O4Q@mail.gmail.com>
- <YfFe9+XDPDIdSqF1@iki.fi> <YfFf8fvsDm8lQJgJ@iki.fi>
-In-Reply-To: <YfFf8fvsDm8lQJgJ@iki.fi>
-From:   Yael Tiomkin <yaelt@google.com>
-Date:   Wed, 26 Jan 2022 15:56:44 -0500
-Message-ID: <CAKoutNsaHNriobnsQ1X0Qfs=K+YN3JvfhTBnQqPL01AvjRm5EA@mail.gmail.com>
-Subject: Re: [PATCH v4] KEYS: encrypted: Instantiate key with user-provided
- decrypted data
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Martin Ross <mross@pobox.com>, corbet@lwn.net, dhowells@redhat.com,
-        jejb@linux.ibm.com, jmorris@namei.org, keyrings@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        serge@hallyn.com, Mimi Zohar <zohar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S232753AbiAZWGw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 26 Jan 2022 17:06:52 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:45262 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232435AbiAZWGv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 26 Jan 2022 17:06:51 -0500
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20QM5wDL009872;
+        Wed, 26 Jan 2022 22:06:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=gCtkiHzTbqSrH2u9etoNqX7uZpL/Whb949Lu+ka6atU=;
+ b=QeOgzOtJTEYSH10K7VyCVT1r7qJ0X0moELU4y5QcYjIzTZxaxa4yFD+pfxbHBRqhMvn7
+ VSBNFpjq3bmLIyIIXV0YsBtdHb7Q1pj6xHxefF4aDAyINbDweduB57jZwh91SHWpbf/U
+ FKviAGkgbdCGQ35e301xd02met3CTx4pFw08zB8DK10tpOH4CQl9IPTcGozuBQsL7nY6
+ JD/uOtc/JSeRxCPR57lOvjy+rouWlmbGAdE5bjh4K+8CxARBaq7iAHgVzpslCiVETfw7
+ f+Wkrbq1ZWIs2Ljc0xIyhAX0MckEaS97BnaDscYURQfds9pBybvbKK/rI7CwobMLMXhn hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3duc883t2x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jan 2022 22:06:18 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20QM6GHp011192;
+        Wed, 26 Jan 2022 22:06:18 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3duc883t1w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jan 2022 22:06:17 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20QM3qb4010794;
+        Wed, 26 Jan 2022 22:06:15 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma03fra.de.ibm.com with ESMTP id 3dr9j9g9h4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jan 2022 22:06:15 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20QM6Cx520709734
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jan 2022 22:06:13 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CC6A1A404D;
+        Wed, 26 Jan 2022 22:06:12 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7509FA4051;
+        Wed, 26 Jan 2022 22:06:10 +0000 (GMT)
+Received: from sig-9-65-92-33.ibm.com (unknown [9.65.92.33])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 26 Jan 2022 22:06:10 +0000 (GMT)
+Message-ID: <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org, ardb@kernel.org,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        keescook@chromium.org, torvalds@linux-foundation.org,
+        weiyongjun1@huawei.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Wed, 26 Jan 2022 17:06:09 -0500
+In-Reply-To: <YfFTf6vIpNMIrwH0@iki.fi>
+References: <20220126025834.255493-1-eric.snowberg@oracle.com>
+         <YfFP6OHqBVNWKL2C@iki.fi> <YfFTf6vIpNMIrwH0@iki.fi>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: etmyN5YAXvGtQh0yQw-jIA-9NN3fVEju
+X-Proofpoint-ORIG-GUID: lthRogrj7NlEDFdckfcoVisT7sVxmNnF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-26_08,2022-01-26_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ suspectscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015
+ malwarescore=0 phishscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2201260128
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 9:51 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> On Wed, Jan 26, 2022 at 04:47:22PM +0200, Jarkko Sakkinen wrote:
-> > On Tue, Jan 18, 2022 at 01:26:05PM -0500, Martin Ross wrote:
-> > > Hi Jarkko,
-> > >
-> > > I have been working with Yael on this project so I thought I might add
-> > > a bit of background here around the use case that this series of
-> > > patches is trying to address.
-> > >
-> > > At a high level we are trying to provide users of encryption that have
-> > > key management hierarchies a better tradeoff between security and
-> > > availability.  For available and performance reasons master keys often
-> > > need to be released (or derived/wrapped keys created) outside of a KMS
-> > > to clients (which may in turn further wrap those keys in a series of
-> > > levels).  What we are trying to do is provide a mechanism where the
-> > > wrapping/unwrapping of these keys is not dependent on a remote call at
-> > > runtime.  e.g.  To unwrap a key if you are using AWS KMS or Google
-> > > Service you need to make an RPC.  In practice to defend against
-> > > availability or performance issues, designers end up building their
-> > > own kms and effectively encrypting everything with a DEK.  The DEK
-> > > encrypts same set as the master key thereby eliminating the security
-> > > benefit of keeping the master key segregated in the first place.
->
-> Mainly this part (would be enough to explain why it is there).
->
-> BR, Jarkko
-
 Hi Jarkko,
 
-As for the commit message, WDYT about the following:
+> > Thank you. I'll pick these soon. Is there any objections?
 
-KEYS: encrypted: Instantiate key with user-provided decrypted data
+No objections.
+> 
+> Mimi brought up that we need a MAINTAINERS update for this and also
+> .platform.
+> 
+> We have these:
+> 
+> - KEYS/KEYRINGS
+> - CERTIFICATE HANDLING
+> 
+> I would put them under KEYRINGS for now and would not consider further
+> subdivision for the moment.
 
-For availability and performance reasons master keys often need to be
-released outside of a KMS to clients. It would be beneficial to provide a
-mechanism where the wrapping/unwrapping of DEKs is not dependent
-on a remote call at runtime yet security is not (or only minimally) compromised.
-Master keys could be securely stored in the Kernel and be used to wrap/unwrap
-keys from userspace.
+IMA has dependencies on the platform_certs/ and now on the new .machine
+keyring.  Just adding "F: security/integrity/platform_certs/" to the
+KEYS/KEYRINGS record, ignores that dependency.  The discussion wouldn't
+even be on the linux-integrity mailing list.
 
-The encrypted.c class supports instantiation of encrypted keys with
-either an already-encrypted key material, or by generating new key
-material based on random numbers. This patch defines a new datablob
-format: [<format>] <master-key name> <decrypted data length>
-<decrypted data> that allows to inject and encrypt user-provided
-decrypted data.
+Existing requirement:
+- The keys on the .platform keyring are limited to verifying the kexec
+image.
 
+New requirements based on Eric Snowbergs' patch set:
+- When IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY is enabled,
+the MOK keys will not be loaded directly onto the .machine keyring or
+indirectly onto the .secondary_trusted_keys keyring.
 
-I want to make sure we're on the same page before publishing a new version.
+- Only when a new IMA Kconfig explicitly allows the keys on the
+.machine keyrings, will the CA keys stored in MOK be loaded onto the
+.machine keyring.
 
-Thanks,
-Yael
+Unfortunately I don't think there is any choice, but to define a new
+MAINTAINERS entry.  Perhaps something along the lines of:
+
+KEYS/KEYRINGS_INTEGRITY
+M:     Jarkko Sakkinen <jarkko@kernel.org>
+M:     Mimi Zohar <zohar@linux.ibm.com>
+L:      keyrings@vger.kernel.org
+L:      linux-integrity@vger.kernel.org
+F:      security/integrity/platform_certs
+
+thanks,
+
+Mimi
+
