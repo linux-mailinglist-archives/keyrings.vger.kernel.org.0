@@ -2,182 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AD7849CBB2
-	for <lists+keyrings@lfdr.de>; Wed, 26 Jan 2022 14:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2C749CBCE
+	for <lists+keyrings@lfdr.de>; Wed, 26 Jan 2022 15:06:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235439AbiAZN6r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 26 Jan 2022 08:58:47 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:36286 "EHLO
+        id S235176AbiAZOGY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 26 Jan 2022 09:06:24 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:39776 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241824AbiAZN6q (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 26 Jan 2022 08:58:46 -0500
+        with ESMTP id S235083AbiAZOGY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 26 Jan 2022 09:06:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 27E88B81E4D;
-        Wed, 26 Jan 2022 13:58:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A15EC340E3;
-        Wed, 26 Jan 2022 13:58:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A9D85B81E18;
+        Wed, 26 Jan 2022 14:06:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED0AC340E3;
+        Wed, 26 Jan 2022 14:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643205523;
-        bh=MlpAabmQ4JYtkGLQhJb5n6x2seaU5znAQKHx0ndMt54=;
+        s=k20201202; t=1643205981;
+        bh=fBo2lZFgwC79lVOAmFUYUrB+mT5nY4lcwlxA8CcRsbk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dWbayifqJn9GedIaDKfjq3/DuTJ4jHHDsI5rnoaBzL/2LTKxVqWoQrSzlVajew0+U
-         mpGUFmNMZimI+rteE1Vc2xUrYty7ilhCY5uuAXIt5dcrAOFOpvZ1eIdDYuDzE5j+P6
-         Mb2sgxm/ZcKcxXFKeS1h+Kys5eJEJkZtaDF1/S1qKTfImcWY2vOfLkQnJwFdHNMCWq
-         Fhi1OWh2aFgZD9eY6jL6fRdlcSOEgQu2o5ei3SnoQVzRHA/I6RqkCkKh0zb6HaORBZ
-         EcWi4m2Cn4D6HdZyOzykpuvQ18iYt1vgi6wyrHMxI3fOqorVc3kiPmpKb2r3Ejuhom
-         LYviphbqlRuaQ==
-Date:   Wed, 26 Jan 2022 15:58:23 +0200
+        b=E5JedRAuSt2BXKLv1ulUjQUsLn2JcJIdAl/jD7mmMZNI1fn+59RUDTae5Yjl3vorR
+         SVYzC97i4ru3pk11qodYEk+ISVvz75ZwEgtl8g6kik+ZtmH4962M974pikiExoUscu
+         mSjDb62Al1fyqRkrYkWlWWDJE1wY1jCerVE+6YnhV4Co7UQdVZdELCZ6uB+eH+LVGG
+         GSC1dIjaew/HdKYMuijnlyajrQvd8RDjacb+7dFzo4arFnsdE1V499X2ld4ULYQpBy
+         FCNJJkgPiehpqawBLn+8OD5l+w31poawlpoqWM8MttTBNLsAydmDOUNRInooxJFQiK
+         NosvKY9bJC4lQ==
+Date:   Wed, 26 Jan 2022 16:06:01 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     dhowells@redhat.com, dwmw2@infradead.org, ardb@kernel.org,
-        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
-        zohar@linux.ibm.com, keescook@chromium.org,
-        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
-        konrad.wilk@oracle.com
-Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
-Message-ID: <YfFTf6vIpNMIrwH0@iki.fi>
-References: <20220126025834.255493-1-eric.snowberg@oracle.com>
- <YfFP6OHqBVNWKL2C@iki.fi>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        linux-crypto@vger.kernel.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Denis Kenzior <denkenz@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KEYS: fix length validation in keyctl_pkey_params_get_2()
+Message-ID: <YfFVSeWAFi8eqjpj@iki.fi>
+References: <20220113200454.72609-1-ebiggers@kernel.org>
+ <YeMWLyceg4xcwShF@iki.fi>
+ <YeMmPs+gf+q7XUv4@sol.localdomain>
+ <YeM7+Nyi2p7Yv7+Q@iki.fi>
+ <YedZviVNB2X7yeTX@sol.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YfFP6OHqBVNWKL2C@iki.fi>
+In-Reply-To: <YedZviVNB2X7yeTX@sol.localdomain>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 03:43:07PM +0200, Jarkko Sakkinen wrote:
-> On Tue, Jan 25, 2022 at 09:58:26PM -0500, Eric Snowberg wrote:
-> > Back in 2013 Linus requested a feature to allow end-users to have the 
-> > ability "to add their own keys and sign modules they trust". This was
-> > his *second* order outlined here [1]. There have been many attempts 
-> > over the years to solve this problem, all have been rejected.  Many 
-> > of the failed attempts loaded all preboot firmware keys into the kernel,
-> > including the Secure Boot keys. Many distributions carry one of these 
-> > rejected attempts [2], [3], [4]. This series tries to solve this problem 
-> > with a solution that takes into account all the problems brought up in 
-> > the previous attempts.
+On Tue, Jan 18, 2022 at 04:22:22PM -0800, Eric Biggers wrote:
+> On Sat, Jan 15, 2022 at 11:26:16PM +0200, Jarkko Sakkinen wrote:
+> > On Sat, Jan 15, 2022 at 11:53:34AM -0800, Eric Biggers wrote:
+> > > On Sat, Jan 15, 2022 at 08:45:03PM +0200, Jarkko Sakkinen wrote:
+> > > > On Thu, Jan 13, 2022 at 12:04:54PM -0800, Eric Biggers wrote:
+> > > > > From: Eric Biggers <ebiggers@google.com>
+> > > > > 
+> > > > > In many cases, keyctl_pkey_params_get_2() is validating the user buffer
+> > > > > lengths against the wrong algorithm properties.  Fix it to check against
+> > > > > the correct properties.
+> > > > > 
+> > > > > Probably this wasn't noticed before because for all asymmetric keys of
+> > > > > the "public_key" subtype, max_data_size == max_sig_size == max_enc_size
+> > > > > == max_dec_size.  However, this isn't necessarily true for the
+> > > > > "asym_tpm" subtype (it should be, but it's not strictly validated).  Of
+> > > > > course, future key types could have different values as well.
+> > > > 
+> > > > With a quick look, asym_tpm is TPM 1.x only, which only has 2048-bit RSA
+> > > > keys.
+> > > 
+> > > The code allows other lengths, as well as the case where the "RSA key size"
+> > > doesn't match the "public key size".  Probably both are bugs and they should
+> > > both be 256 bytes (2048 bits) only.  Anyway, that would be a separate fix.
+> > > 
+> > > - Eric
 > > 
-> > On UEFI based systems, this series introduces a new Linux kernel keyring 
-> > containing the Machine Owner Keys (MOK) called machine. It also defines
-> > a new MOK variable in shim. This variable allows the end-user to decide 
-> > if they want to load MOK keys into the machine keyring. 
+> > I'm fine with the current commit message. E.g. I have no idea at this
+> > point whether there should be in future separate asym_tpm2 or all bundled
+> > to asym_tpm.
 > > 
-> > By default, nothing changes; MOK keys are not loaded into the machine
-> > keyring.  They are only loaded after the end-user makes the decision 
-> > themselves.  The end-user would set this through mokutil using a new 
-> > --trust-mok option [5]. This would work similar to how the kernel uses 
-> > MOK variables to enable/disable signature validation as well as use/ignore 
-> > the db. Any kernel operation that uses either the builtin or secondary 
-> > trusted keys as a trust source shall also reference the new machine 
-> > keyring as a trust source.
-> > 
-> > Secure Boot keys will never be loaded into the machine keyring.  They
-> > will always be loaded into the platform keyring.  If an end-user wanted 
-> > to load one, they would need to enroll it into the MOK.
-> > 
-> > Unlike previous versions of this patch set, IMA support has been removed
-> > to simplify the series. After acceptance, a follow-on series will add IMA 
-> > support.
-> > 
-> > Steps required by the end user:
-> > 
-> > Sign kernel module with user created key:
-> > $ /usr/src/kernels/$(uname -r)/scripts/sign-file sha512 \
-> >    machine_signing_key.priv machine_signing_key.x509 my_module.ko
-> > 
-> > Import the key into the MOK
-> > $ mokutil --import machine_signing_key.x509
-> > 
-> > Setup the kernel to load MOK keys into the .machine keyring
-> > $ mokutil --trust-mok
-> > 
-> > Then reboot, the MokManager will load and ask if you want to trust the
-> > MOK key and enroll the MOK into the MOKList.  Afterwards the signed kernel
-> > module will load.
-> > 
-> > I have included  a link to the mokutil [5] changes I have made to support 
-> > this new functionality.  The shim changes have now been accepted
-> > upstream [6].
-> > 
-> > Upstream shim is located here [7], the build instructions are here [8].
-> > TLDR:
-> > 
-> > $ git clone --recurse-submodules https://github.com/rhboot/shim
-> > $ cd shim
-> > $ make
-> > 
-> > After building shim, move shimx64.efi and mmx64.efi to the vendor or 
-> > distribution specific directory on your EFI System Partition (assuming
-> > you are building on x86). The instructions above are the minimal
-> > steps needed to build shim to test this feature. It is assumed
-> > Secure Boot shall not be enabled for this testing. To do testing
-> > with Secure Boot enabled, all steps in the build instructions [8]
-> > must be followed.
-> > 
-> > Instructions for building mokutil (including the new changes):
-> > 
-> > $ git clone -b mokvars-v3 https://github.com/esnowberg/mokutil.git
-> > $ cd mokutil/
-> > $ ./autogen.sh
-> > $ make
-> > 
-> > [1] https://marc.info/?l=linux-kernel&m=136185386310140&w=2
-> > [2] https://lore.kernel.org/lkml/1479737095.2487.34.camel@linux.vnet.ibm.com/
-> > [3] https://lore.kernel.org/lkml/1556221605.24945.3.camel@HansenPartnership.com/
-> > [4] https://lore.kernel.org/linux-integrity/1e41f22b1f11784f1e943f32bf62034d4e054cdb.camel@HansenPartnership.com/
-> > [5] https://github.com/esnowberg/mokutil/tree/mokvars-v3
-> > [6] https://github.com/rhboot/shim/commit/4e513405b4f1641710115780d19dcec130c5208f
-> > [7] https://github.com/rhboot/shim
-> > [8] https://github.com/rhboot/shim/blob/main/BUILDING
-> > 
-> > Eric Snowberg (8):
-> >   integrity: Fix warning about missing prototypes
-> >   integrity: Introduce a Linux keyring called machine
-> >   integrity: add new keyring handler for mok keys
-> >   KEYS: store reference to machine keyring
-> >   KEYS: Introduce link restriction for machine keys
-> >   efi/mokvar: move up init order
-> >   integrity: Trust MOK keys if MokListTrustedRT found
-> >   integrity: Only use machine keyring when uefi_check_trust_mok_keys is
-> >     true
-> > 
-> >  certs/system_keyring.c                        | 44 ++++++++++-
-> >  drivers/firmware/efi/mokvar-table.c           |  2 +-
-> >  include/keys/system_keyring.h                 | 14 ++++
-> >  security/integrity/Kconfig                    | 13 ++++
-> >  security/integrity/Makefile                   |  1 +
-> >  security/integrity/digsig.c                   | 15 +++-
-> >  security/integrity/integrity.h                | 17 +++-
-> >  .../platform_certs/keyring_handler.c          | 18 ++++-
-> >  .../platform_certs/keyring_handler.h          |  5 ++
-> >  security/integrity/platform_certs/load_uefi.c |  4 +-
-> >  .../platform_certs/machine_keyring.c          | 77 +++++++++++++++++++
-> >  11 files changed, 202 insertions(+), 8 deletions(-)
-> >  create mode 100644 security/integrity/platform_certs/machine_keyring.c
-> > 
-> > 
-> > base-commit: e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
-> > -- 
-> > 2.18.4
+> > Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 > > 
 > 
-> Thank you. I'll pick these soon. Is there any objections?
+> Okay, great.  Just to be clear, I'm expecting either you or David
+> (maintainer:KEYS/KEYRINGS) to apply this patch.  Acked-by is usually given by a
+> maintainer when someone else applies a patch.
 
-Mimi brought up that we need a MAINTAINERS update for this and also
-.platform.
+I changed it to reviewed-by and applied.
 
-We have these:
-
-- KEYS/KEYRINGS
-- CERTIFICATE HANDLING
-
-I would put them under KEYRINGS for now and would not consider further
-subdivision for the moment.
-
-/Jarkko
+BR, Jarkko
