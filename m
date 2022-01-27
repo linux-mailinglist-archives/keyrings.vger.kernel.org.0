@@ -2,111 +2,110 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C0249DA4D
-	for <lists+keyrings@lfdr.de>; Thu, 27 Jan 2022 06:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B19349E52F
+	for <lists+keyrings@lfdr.de>; Thu, 27 Jan 2022 15:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbiA0FnA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 27 Jan 2022 00:43:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236307AbiA0FnA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 27 Jan 2022 00:43:00 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F57C061748
-        for <keyrings@vger.kernel.org>; Wed, 26 Jan 2022 21:42:59 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id c7so2134118ljr.13
-        for <keyrings@vger.kernel.org>; Wed, 26 Jan 2022 21:42:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+dTkxGYUlNJhi8u43pDWWFCeIctkqPXxzUpp/O4S0VA=;
-        b=nU20B3sS+LfpIOekeMws0AVgBv3fCRJS76MRe4s0LAuZQVhhAvtfAV5olP2ivrN59l
-         5zeRsgnktL6Gh4MkXAVpb6Bp23tNdq/1tLPjsvfLRwI3OMfBwNGsB0Jc3RvHLlPfBfnL
-         HKo9in79rxbzyxK8JtvmKzXpBgAV9ugJJTxOVzXwP7Q8+62WUgzkuWniGrg2gYPDMoBF
-         c7p1VpqVy6TN2X8A3kTEI9fSO9lZvhhZUlq7TOQeUiAolULuL+SdRceM15KyO5pjO0cH
-         7dDaCp1y9OQHXifcOULncCnTUu3T7HLzB3+F3W8CoQ+nfl+G+vpgHa76c8ugsypfL8JO
-         JlYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+dTkxGYUlNJhi8u43pDWWFCeIctkqPXxzUpp/O4S0VA=;
-        b=5UjZuOor7oPq+tNchPDijRMeY/H2T2lSHJ8cx41AgC11zctOlQ+r4TQDmsBtUFHH/6
-         vWtyEhevqPlpvzha8zJgu4eTqkH5YMJG0K/U8ZNPbDxmeWRlBnQmmcQcxdlJS4vp6MYw
-         /AWG1perLScqTz3H3sdz5Wh5ql+B3+3nDOjK0c3MEbWImh8JckTTusVSOXBU3ZMmvxUE
-         U04NDZGId0Z7e9Z3CPQm8Zj+LD/1+pmocSlNWfwVOwdNeaMoaLrbIFrurCAxWNpydj2G
-         edhsRfJ/XDU7KtLqvTSN5TBgiR4PDieiFPWRlyJw32AImhLpqrDPV6BZ1kMNWYjuWf5n
-         tMkA==
-X-Gm-Message-State: AOAM532/8i1miJc0g5gbNN5MjRceB3gV+3Nd6TntgRk306BVpN8CLlsl
-        TfieLqA4jdwhyGH52l4IyGcpONABt8uiNl4be4E2EA==
-X-Google-Smtp-Source: ABdhPJyjFKH1eFW8c9iG7GHHeCKkvytQDNzjWI5d62tvhNQl3Ul3xJNWa6SY4dzAjSPxwo3VLvCGUsvgjdEPz7BsWPQ=
-X-Received: by 2002:a2e:8754:: with SMTP id q20mr1764155ljj.71.1643262177779;
- Wed, 26 Jan 2022 21:42:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20220126203243.231822-1-dave.kleikamp@oracle.com>
-In-Reply-To: <20220126203243.231822-1-dave.kleikamp@oracle.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Thu, 27 Jan 2022 11:12:46 +0530
-Message-ID: <CAFA6WYNiWo+wrKp_=jC+g5DcXrg-JzwSqND+8wL9FFeZwGH+Kg@mail.gmail.com>
-Subject: Re: [PATCH v2] KEYS: trusted: Avoid calling null function trusted_key_exit
-To:     Dave Kleikamp <dave.kleikamp@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S234720AbiA0Ow7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 27 Jan 2022 09:52:59 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:51292 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S242701AbiA0Ow6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 27 Jan 2022 09:52:58 -0500
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20REg3Hm017937;
+        Thu, 27 Jan 2022 14:52:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=Yr8IgIpkJRS+CCsx/gVAlf3PpaBHoF4MFuTIopSDAM8=;
+ b=YnO6jIXU3hCJss8d5kLMhzGHfmbMKUAu0cRjaIQyvzIyZPhyoaPw1AkAf71ULSN42bTB
+ QDHD0nNPruZX9TYQl1DnV6Q5tVg8YVQzlRUQd7HZcQz8/fc5VsHzKiBem7GHeu0D/Dn+
+ UP3pVAHCovlvhnpvq+JWIBlTJCNGEnDDTjUw3hZCK8KcP81pqW9tdxMe2WgiPvnlRomo
+ lJUGYZyJfg2IkHG9fhsolAuifIbSpwx2iuQSJXpnfaCUz6U0AGxw21F28gLGjeyF1iVh
+ 3W2abYYBlbkfpNw3ZAaQI5GC7V98RQcHCvVFdW8H8zAzgklfgHHNj1ly2eMi0FPvn4+J 8A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3duvhe9p3a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jan 2022 14:52:54 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20REgV7S019908;
+        Thu, 27 Jan 2022 14:52:54 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3duvhe9p2r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jan 2022 14:52:54 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20REpuKd014775;
+        Thu, 27 Jan 2022 14:52:52 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma03fra.de.ibm.com with ESMTP id 3dr9j9q0t8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jan 2022 14:52:52 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20REhBuh39387466
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jan 2022 14:43:11 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 51AD54C046;
+        Thu, 27 Jan 2022 14:52:49 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9CBFA4C050;
+        Thu, 27 Jan 2022 14:52:47 +0000 (GMT)
+Received: from sig-9-65-89-165.ibm.com (unknown [9.65.89.165])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 27 Jan 2022 14:52:47 +0000 (GMT)
+Message-ID: <76e7b1aa85c1ce2d147713306e5996eb55ba3987.camel@linux.ibm.com>
+Subject: Re: [PATCH v8 1/3] certs: export load_certificate_list() to be used
+ outside certs/
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, jarkko@kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
+        seth@forshee.me
+Date:   Thu, 27 Jan 2022 09:52:47 -0500
+In-Reply-To: <20220111183647.977037-2-nayna@linux.ibm.com>
+References: <20220111183647.977037-1-nayna@linux.ibm.com>
+         <20220111183647.977037-2-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EoXkdXQsPi_WAuXyhGKQxDE-Zo_uOkQs
+X-Proofpoint-GUID: Ruf-JrV98J0oljczjZY1o49RpwwOQgV9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-27_03,2022-01-27_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 spamscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2201270088
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 27 Jan 2022 at 02:02, Dave Kleikamp <dave.kleikamp@oracle.com> wrote:
->
-> If one loads and unloads the trusted module, trusted_key_exit can be
-> NULL. Call it through static_call_cond() to avoid a kernel trap.
->
-> Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
-> Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-> Cc: Sumit Garg <sumit.garg@linaro.org>
-> Cc: James Bottomley <jejb@linux.ibm.com>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: Mimi Zohar <zohar@linux.ibm.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: James Morris <jmorris@namei.org>
-> Cc: "Serge E. Hallyn" <serge@hallyn.com>
-> Cc: linux-integrity@vger.kernel.org
-> Cc: keyrings@vger.kernel.org
-> Cc: linux-security-module@vger.kernel.org
-> ---
-> v2 changes:
-> Header cleanup - removed empty line and cc:stable
->  security/keys/trusted-keys/trusted_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+Hi Jarkko,
 
-Thanks for the fix.
+On Tue, 2022-01-11 at 13:36 -0500, Nayna Jain wrote:
+> load_certificate_list() parses certificates embedded in the kernel
+> image to load them onto the keyring.
+> 
+> Commit "2565ca7f5ec1 (certs: Move load_system_certificate_list to a common
+> function)" made load_certificate_list() a common function in the certs/
+> directory. Export load_certificate_list() outside certs/ to be used by
+> load_platform_certificate_list() for loading compiled in platform keys
+> onto the .platform keyring at boot time. 
+> 
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 
-Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
+I think Nayna addressed your concerns.  Did you want to upstream this
+patch set or would you prefer I did?
 
--Sumit
+thanks,
 
-> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-> index d5c891d8d353..8c14e04e2112 100644
-> --- a/security/keys/trusted-keys/trusted_core.c
-> +++ b/security/keys/trusted-keys/trusted_core.c
-> @@ -351,7 +351,7 @@ static int __init init_trusted(void)
->
->  static void __exit cleanup_trusted(void)
->  {
-> -       static_call(trusted_key_exit)();
-> +       static_call_cond(trusted_key_exit)();
->  }
->
->  late_initcall(init_trusted);
-> --
-> 2.35.0
->
+Mimi
+
