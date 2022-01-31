@@ -2,104 +2,93 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F074A45B5
-	for <lists+keyrings@lfdr.de>; Mon, 31 Jan 2022 12:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFAA04A4E74
+	for <lists+keyrings@lfdr.de>; Mon, 31 Jan 2022 19:35:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358954AbiAaLqc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 31 Jan 2022 06:46:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51654 "EHLO
+        id S1348123AbiAaSfJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 31 Jan 2022 13:35:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350915AbiAaLk2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 31 Jan 2022 06:40:28 -0500
-Received: from smtp-42ad.mail.infomaniak.ch (smtp-42ad.mail.infomaniak.ch [IPv6:2001:1600:3:17::42ad])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE39C034629;
-        Mon, 31 Jan 2022 03:25:54 -0800 (PST)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
-        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4JnQjX476KzMqHf0;
-        Mon, 31 Jan 2022 12:25:52 +0100 (CET)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4JnQjT5rHWzljTg9;
-        Mon, 31 Jan 2022 12:25:49 +0100 (CET)
-Message-ID: <e4707df2-ecc2-0471-87fc-c54e774fe315@digikod.net>
-Date:   Mon, 31 Jan 2022 12:33:51 +0100
+        with ESMTP id S1347899AbiAaSfJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 31 Jan 2022 13:35:09 -0500
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D23EC061714
+        for <keyrings@vger.kernel.org>; Mon, 31 Jan 2022 10:35:09 -0800 (PST)
+Received: by mail-yb1-xb34.google.com with SMTP id g14so43228105ybs.8
+        for <keyrings@vger.kernel.org>; Mon, 31 Jan 2022 10:35:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=u9Qfkri6jX/sQ0Plg06I49DERYzJZPhPBEoaK3/DqF0=;
+        b=XZo5poX5GmLGJxWtJL1b2gs5qLP8aMO2ewqK+3XBVBGdtJE50pJHRHQDu2Vbt9htlk
+         /3J6ecrnDcCNoH5NsfFKSAHjsXhHVl7HQZMukPzsukLmPFAnsdZKP+0NiYWW8lxe+Jfb
+         dS3W9NkCrYZDxp/ghtxjb/c0A6hP+1xvgDaoYYMzBntbEbZ5BdPzMLyFqSxB+72FJ5ar
+         Z0qBzno4KdNa9BYbg9LEG9Rn9SnF5TvCK7ckUfz5oNvkx8/eM6Bd0XIOsCkaN/+dkgR+
+         OVL3gOuofwyc2tVMFa3QL/GPFEO4tRJO6uXi4Gv976BHUfqUPVaZXWg4liulPCCtiRI6
+         ToTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=u9Qfkri6jX/sQ0Plg06I49DERYzJZPhPBEoaK3/DqF0=;
+        b=it/25DL01L4aeyo4OQlGBcP+xOffxVA/MGKZ4OeoGIwNaaqiAtxsISO/ZibHYetLKf
+         N6tq5/PZFqCCzZYewB1EaXa7aYECPPZCRZykKS6Cft0Jp3mgazZwlO+W3l0ptKpsWnPv
+         xX5yynsL5D0NmK1jl7kDwd7rtiJ9fkN9t6S1MVcf5ePT6TxOmt4I/3gdGXv4ofv42mUa
+         a7p1Uhf002BGQQmsi8C2fqz6fuXTzvfth6sjM3x1Ic7wLDcb1xsu2OoC1DD8Lx1BQwYz
+         kAUHpFfXRY9AMpbbQznFCgSk5/g7g3VjaQ7HN3jTIX6KLwS5xE3GxagC+KHOyRmMPKHp
+         c/ag==
+X-Gm-Message-State: AOAM531haXKETHZjzpKlnVJvDk8hPnFOFnj9m+F1SEcHXq0Sx4Kp5z2v
+        OiVvExgoVYdQNqx6Hf3fplGzFcVVS2JBP13bcPw=
+X-Google-Smtp-Source: ABdhPJwCFlT0chVPGBUXjpAeqeIbawtzS3g7ENlPQdEFoJGiN8LRLMY7xCi7fll0/paKOfNy7HqI+nxNtj7tSad0Rag=
+X-Received: by 2002:a25:7d02:: with SMTP id y2mr30579590ybc.23.1643654108289;
+ Mon, 31 Jan 2022 10:35:08 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: 
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Morris <jmorris@namei.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Tyler Hicks <tyhicks@linux.microsoft.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Andreas Rammhold <andreas@rammhold.de>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>
-References: <20210712170313.884724-1-mic@digikod.net>
- <7e8d27da-b5d4-e42c-af01-5c03a7f36a6b@digikod.net> <YcGVZitNa23PCSFV@iki.fi>
- <5030a9ff-a1d1-a9bd-902a-77c3d1d87446@digikod.net> <Ydc/E3S2vmtDOnpw@iki.fi>
- <YddADJJNLDlQAYRW@iki.fi> <86c5010e-a926-023a-8915-d6605cfc4f0a@digikod.net>
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-Subject: Re: [PATCH v8 0/5] Enable root to update the blacklist keyring
-In-Reply-To: <86c5010e-a926-023a-8915-d6605cfc4f0a@digikod.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:7000:6e89:0:0:0:0 with HTTP; Mon, 31 Jan 2022 10:35:07
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompanybenin@gmail.com
+From:   "Dr.Mrs Mary Richter, UN Attorney At Law Court-Benin." 
+        <eco.bank1204@gmail.com>
+Date:   Mon, 31 Jan 2022 19:35:07 +0100
+Message-ID: <CAOE+jAAiEFF-mY0DCr2mtriimU7ZNVyuLcQKZBMtY8mg8yj+sQ@mail.gmail.com>
+Subject: Contact Dr. Robert Sinclair (Director) D.H.L Express Benin to receive
+ your ATM Debit Card amount $10.5Million US Dollars.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Attention Dear.
+Happily Happily Happily, I Really want you to start celebrating with
+your family as God has done it for you, it is very marvelous and i
+thank God for you and your family, I am excited for all the
+arrangement of this transaction as everything goes normally,
 
-On 07/01/2022 13:14, Mickaël Salaün wrote:
-> 
-> On 06/01/2022 20:16, Jarkko Sakkinen wrote:
->> On Thu, Jan 06, 2022 at 09:12:22PM +0200, Jarkko Sakkinen wrote:
->>> On Tue, Jan 04, 2022 at 04:56:36PM +0100, Mickaël Salaün wrote:
->>>>
->>>> On 21/12/2021 09:50, Jarkko Sakkinen wrote:
->>>>> On Mon, Dec 13, 2021 at 04:30:29PM +0100, Mickaël Salaün wrote:
->>>>>> Hi Jarkko,
->>>>>>
->>>>>> Since everyone seems OK with this and had plenty of time to 
->>>>>> complain, could
->>>>>> you please take this patch series in your tree? It still applies on
->>>>>> v5.16-rc5 and it is really important to us. Please let me know if 
->>>>>> you need
->>>>>> something more.
->>>>>>
->>>>>> Regards,
->>>>>>    Mickaël
->>>>>
->>>>> I'm off-work up until end of the year, i.e. I will address only 
->>>>> important
->>>>> bug fixes and v5.16 up until that.
->>>>>
->>>>> If any of the patches is yet missing my ack, feel free to
->>>>>
->>>>> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
->>>>
->>>> Thanks Jarkko. Can you please take it into your tree?
->>>
->>> I can yes, as I need to anyway do a revised PR for v5.17, as one commit
->>> in my first trial had a truncated fixes tag.
->>
->> Please check:
->>
->> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
->>
->> /Jarkko
-> 
-> Great, thanks!
+Contact Dr. Robert Sinclair (Director) D.H.L Express Benin to receive
+your ATM Debit Card amount $10.5Million US Dollars.
+This ATM Debit Card will be delivered at your doorstep through D.H.L,
 
-Hi Jarkko,
+unto to help you receive your compensation payment very faster before
+it is too late.
 
-I noticed your commits 
-https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/commit/?id=3ec9c3a0531ac868422be3b12fc17310ed8c07dc 
-are no more referenced in your tree. Is there an issue?
+CONTACT D.H.L ON THIS EMAIL ADDRESS.
+EMAIL:  dhlexpresscouriercompanybenin@gmail.com
+Phone Line, +229 99069872
 
+Delivery of your ATM Debit Card worth $10.500.000 is ready from this office=
+,
+Pin code (atm11205)
+Reconfirm your Informations to receive your ATM CARD today.
+1.YOUR FULL NAME=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+2.YOUR COUNTRY=E2=80=A6=E2=80=A6=E2=80=A6
+3.YOUR HOME ADDRESS=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+4.YOUR CURRENT HOME TELEPHONE NUMBER=E2=80=A6=E2=80=A6=E2=80=A6
+5.YOUR CURRENT OFFICE TELEPHONE=E2=80=A6=E2=80=A6=E2=80=A6
+6.A COPY OF YOUR PICTURE=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+
+You are hereby assured to receive in 24hours.
 Regards,
-  Mickaël
+Dr.Mrs Mary Richter, UN Attorney At Law Court-Benin.
+Government of Benin.
