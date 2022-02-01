@@ -2,93 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAA04A4E74
-	for <lists+keyrings@lfdr.de>; Mon, 31 Jan 2022 19:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A32F34A541C
+	for <lists+keyrings@lfdr.de>; Tue,  1 Feb 2022 01:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348123AbiAaSfJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 31 Jan 2022 13:35:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37632 "EHLO
+        id S230492AbiBAAe5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 31 Jan 2022 19:34:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347899AbiAaSfJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 31 Jan 2022 13:35:09 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D23EC061714
-        for <keyrings@vger.kernel.org>; Mon, 31 Jan 2022 10:35:09 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id g14so43228105ybs.8
-        for <keyrings@vger.kernel.org>; Mon, 31 Jan 2022 10:35:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=u9Qfkri6jX/sQ0Plg06I49DERYzJZPhPBEoaK3/DqF0=;
-        b=XZo5poX5GmLGJxWtJL1b2gs5qLP8aMO2ewqK+3XBVBGdtJE50pJHRHQDu2Vbt9htlk
-         /3J6ecrnDcCNoH5NsfFKSAHjsXhHVl7HQZMukPzsukLmPFAnsdZKP+0NiYWW8lxe+Jfb
-         dS3W9NkCrYZDxp/ghtxjb/c0A6hP+1xvgDaoYYMzBntbEbZ5BdPzMLyFqSxB+72FJ5ar
-         Z0qBzno4KdNa9BYbg9LEG9Rn9SnF5TvCK7ckUfz5oNvkx8/eM6Bd0XIOsCkaN/+dkgR+
-         OVL3gOuofwyc2tVMFa3QL/GPFEO4tRJO6uXi4Gv976BHUfqUPVaZXWg4liulPCCtiRI6
-         ToTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=u9Qfkri6jX/sQ0Plg06I49DERYzJZPhPBEoaK3/DqF0=;
-        b=it/25DL01L4aeyo4OQlGBcP+xOffxVA/MGKZ4OeoGIwNaaqiAtxsISO/ZibHYetLKf
-         N6tq5/PZFqCCzZYewB1EaXa7aYECPPZCRZykKS6Cft0Jp3mgazZwlO+W3l0ptKpsWnPv
-         xX5yynsL5D0NmK1jl7kDwd7rtiJ9fkN9t6S1MVcf5ePT6TxOmt4I/3gdGXv4ofv42mUa
-         a7p1Uhf002BGQQmsi8C2fqz6fuXTzvfth6sjM3x1Ic7wLDcb1xsu2OoC1DD8Lx1BQwYz
-         kAUHpFfXRY9AMpbbQznFCgSk5/g7g3VjaQ7HN3jTIX6KLwS5xE3GxagC+KHOyRmMPKHp
-         c/ag==
-X-Gm-Message-State: AOAM531haXKETHZjzpKlnVJvDk8hPnFOFnj9m+F1SEcHXq0Sx4Kp5z2v
-        OiVvExgoVYdQNqx6Hf3fplGzFcVVS2JBP13bcPw=
-X-Google-Smtp-Source: ABdhPJwCFlT0chVPGBUXjpAeqeIbawtzS3g7ENlPQdEFoJGiN8LRLMY7xCi7fll0/paKOfNy7HqI+nxNtj7tSad0Rag=
-X-Received: by 2002:a25:7d02:: with SMTP id y2mr30579590ybc.23.1643654108289;
- Mon, 31 Jan 2022 10:35:08 -0800 (PST)
+        with ESMTP id S230483AbiBAAe4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 31 Jan 2022 19:34:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8739FC06173D;
+        Mon, 31 Jan 2022 16:34:56 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE7FB6116E;
+        Tue,  1 Feb 2022 00:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08072C340E8;
+        Tue,  1 Feb 2022 00:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643675695;
+        bh=lXBovqo+R3QKjCrOtBlrRmBSkmbzyMj69jJ1tFnSyPk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=na13lXmoATd2GRBbnrQQu9ZuqCrsT2iYgJXc4JQUooti1j7DJpbB+G4EzVR/8DU0I
+         /D7aI/Bd2U6oe1n2cP7kg9I8tsoUz8qK7rwLtGvVReelM+t0/FWV5eADB4jabiG1kb
+         5uu8GxczziDdZSINWyzuosUKoXyF5Y66Wuh5Z9ekQlNRWwduNdl5sgIR0Pf2t5rzzO
+         UBG5hFzIthenO9A+zxr5nTdjJjWr3R0mFJvb71kGQeeea9r0P0WYXbHPJNhjOOjKmr
+         2wLIjD7SupP6gXsM3KHFX8YwKevVyogz2xku5LiTuwya9BGOgXr8fCLSyPkdtxr6Do
+         VnJHLJT44GG5w==
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>
+Cc:     linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 0/2] Fix bugs in public_key_verify_signature()
+Date:   Mon, 31 Jan 2022 16:34:12 -0800
+Message-Id: <20220201003414.55380-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Received: by 2002:a05:7000:6e89:0:0:0:0 with HTTP; Mon, 31 Jan 2022 10:35:07
- -0800 (PST)
-Reply-To: dhlexpresscouriercompanybenin@gmail.com
-From:   "Dr.Mrs Mary Richter, UN Attorney At Law Court-Benin." 
-        <eco.bank1204@gmail.com>
-Date:   Mon, 31 Jan 2022 19:35:07 +0100
-Message-ID: <CAOE+jAAiEFF-mY0DCr2mtriimU7ZNVyuLcQKZBMtY8mg8yj+sQ@mail.gmail.com>
-Subject: Contact Dr. Robert Sinclair (Director) D.H.L Express Benin to receive
- your ATM Debit Card amount $10.5Million US Dollars.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Attention Dear.
-Happily Happily Happily, I Really want you to start celebrating with
-your family as God has done it for you, it is very marvelous and i
-thank God for you and your family, I am excited for all the
-arrangement of this transaction as everything goes normally,
+This patchset fixes some bugs in public_key_verify_signature() where it
+could be tricked into using the wrong algorithm, as was discussed at
+https://lore.kernel.org/linux-integrity/20211202215507.298415-1-zohar@linux.ibm.com/T/#t
 
-Contact Dr. Robert Sinclair (Director) D.H.L Express Benin to receive
-your ATM Debit Card amount $10.5Million US Dollars.
-This ATM Debit Card will be delivered at your doorstep through D.H.L,
+I'd appreciate it if the people who care about each of the supported
+public key algorithms (RSA, ECDSA, ECRDSA, and SM2) would test this
+patchset to make sure it still works for their use case(s).  I've tested
+that X.509 and PKCS#7 with RSA still work.
 
-unto to help you receive your compensation payment very faster before
-it is too late.
+Note, I have *not* included a fix for SM2 being implemented incorrectly.
+That is another bug that I pointed out in the above thread.  I think
+that bug is for the people who actually care about SM2.
 
-CONTACT D.H.L ON THIS EMAIL ADDRESS.
-EMAIL:  dhlexpresscouriercompanybenin@gmail.com
-Phone Line, +229 99069872
+This applies to v5.17-rc2.
 
-Delivery of your ATM Debit Card worth $10.500.000 is ready from this office=
-,
-Pin code (atm11205)
-Reconfirm your Informations to receive your ATM CARD today.
-1.YOUR FULL NAME=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
-2.YOUR COUNTRY=E2=80=A6=E2=80=A6=E2=80=A6
-3.YOUR HOME ADDRESS=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
-4.YOUR CURRENT HOME TELEPHONE NUMBER=E2=80=A6=E2=80=A6=E2=80=A6
-5.YOUR CURRENT OFFICE TELEPHONE=E2=80=A6=E2=80=A6=E2=80=A6
-6.A COPY OF YOUR PICTURE=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+Eric Biggers (2):
+  KEYS: asymmetric: enforce that sig algo matches key algo
+  KEYS: asymmetric: properly validate hash_algo and encoding
 
-You are hereby assured to receive in 24hours.
-Regards,
-Dr.Mrs Mary Richter, UN Attorney At Law Court-Benin.
-Government of Benin.
+ crypto/asymmetric_keys/pkcs7_verify.c    |   6 --
+ crypto/asymmetric_keys/public_key.c      | 126 ++++++++++++++++-------
+ crypto/asymmetric_keys/x509_public_key.c |   6 --
+ 3 files changed, 91 insertions(+), 47 deletions(-)
+
+
+base-commit: 26291c54e111ff6ba87a164d85d4a4e134b7315c
+-- 
+2.35.1
+
