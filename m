@@ -2,212 +2,152 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1789E4A6E66
-	for <lists+keyrings@lfdr.de>; Wed,  2 Feb 2022 11:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 162204A6EE3
+	for <lists+keyrings@lfdr.de>; Wed,  2 Feb 2022 11:41:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245650AbiBBKJ4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 2 Feb 2022 05:09:56 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:34058 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232791AbiBBKJz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Feb 2022 05:09:55 -0500
+        id S231931AbiBBKl1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 2 Feb 2022 05:41:27 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:41748 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231252AbiBBKl0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Feb 2022 05:41:26 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 6DCFA1F37C;
-        Wed,  2 Feb 2022 10:09:54 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id B7AB32110B;
+        Wed,  2 Feb 2022 10:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1643796594; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rv3DpmMzmKwvVC3/qSgFBvA6xDpaSKNqJgEBvx5lH/8=;
-        b=TENCR/hDabRnO7kSTRbkZIZ2z7f25vnwCjT6dczFEwgnrUYYXFFjvzDg/YbJhN74UMfg0X
-        EruqeGJfVu+nEqls6mm8gBqeVS4r8zXnrzK//qxSPv/b21Elr+Hhr0Gq5cDuzh2E9yGm3F
-        hjMmvMVpV4gpWxCJ8fu/HkmHEt+Tdc4=
+        t=1643798485; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=ltQWgxs1hZJaXyb5EOG83MmulANVyd58GuQIHA710Gw=;
+        b=tv/afUwIFi1MQ3xi4QXiQphZqX3xdC0KwmWeKxuQ7ggbrjof7uL1ZhODZziE5cqp7u5+Q+
+        lEVkm4aIiy/t2+KSM3D+t2zA7vPhn7dUD8cnsEMT0kyYV5sjAHV71KGugpiGMdSUB0mCk/
+        dEqhSd0+vy7bkERxfoED2PoUwqDjU9Y=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1643796594;
+        s=susede2_ed25519; t=1643798485;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rv3DpmMzmKwvVC3/qSgFBvA6xDpaSKNqJgEBvx5lH/8=;
-        b=PLsEmUNpOxm84VIsEeLE6VrC7TR6K4vFEtNhzkf0QQ+gj0NtWXWPrTvVEWewtRmNjD1v0e
-        WFMuSXwrwYdzeFCg==
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=ltQWgxs1hZJaXyb5EOG83MmulANVyd58GuQIHA710Gw=;
+        b=B3y0aeF5gz2ntvs7wCZKEcZu1eD+glUdPfNRot9SPHwcd/gxZVxb0VA+IMesG0jK0Qu1C3
+        7DpADPw+ONun/1Dw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D463813DFF;
-        Wed,  2 Feb 2022 10:09:53 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A2F7B13E02;
+        Wed,  2 Feb 2022 10:41:25 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id S0WwMXFY+mFkWwAAMHmgww
-        (envelope-from <nstange@suse.de>); Wed, 02 Feb 2022 10:09:53 +0000
+        id hTVhJ9Vf+mFNbAAAMHmgww
+        (envelope-from <nstange@suse.de>); Wed, 02 Feb 2022 10:41:25 +0000
 From:   Nicolai Stange <nstange@suse.de>
-To:     Stephan Mueller <smueller@chronox.de>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Nicolai Stange <nstange@suse.de>,
-        "David S. Miller" <davem@davemloft.net>,
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
         Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        Zaibo Xu <xuzaibo@huawei.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        qat-linux@intel.com, keyrings@vger.kernel.org, simo@redhat.com,
-        Eric Biggers <ebiggers@kernel.org>, Petr Vorel <pvorel@suse.cz>
-Subject: Re: [v2 PATCH] crypto: api - Disallow sha1 in FIPS-mode while allowing hmac(sha1)
-References: <20211209090358.28231-1-nstange@suse.de>
-        <YeFWnscvXtv73KBl@gondor.apana.org.au> <87v8y4dk1c.fsf@suse.de>
-        <1738803.My4pmAdfGn@tauon.chronox.de>
-Date:   Wed, 02 Feb 2022 11:09:53 +0100
-In-Reply-To: <1738803.My4pmAdfGn@tauon.chronox.de> (Stephan Mueller's message
-        of "Fri, 28 Jan 2022 16:49:54 +0100")
-Message-ID: <87czk5vatq.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+        keyrings@vger.kernel.org, Nicolai Stange <nstange@suse.de>
+Subject: [PATCH v3 00/15] crypto: dh - infrastructure for NVM in-band auth and FIPS conformance
+Date:   Wed,  2 Feb 2022 11:39:57 +0100
+Message-Id: <20220202104012.4193-1-nstange@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Stephan,
+Hi all,
 
-Stephan Mueller <smueller@chronox.de> writes:
+first of all, to the people primarily interested in security/keys/, there's
+a rather trivial change to security/keys/dh.c in patch 4/15. It would be
+great to get ACKs for that...
 
-> Am Freitag, 28. Januar 2022, 15:14:39 CET schrieb Nicolai Stange:
->
->> Herbert Xu <herbert@gondor.apana.org.au> writes:
->> > On Fri, Jan 14, 2022 at 10:09:02AM +0100, Nicolai Stange wrote:
->> >> This looks all good to me, but as !->fips_allowed tests aren't skipped
->> >> over anymore now, it would perhaps make sense to make their failure
->> >> non-fatal in FIPS mode. Because in FIPS mode a failure could mean a
->> >> panic and some of the existing TVs might not pass because of e.g. some
->> >> key length checks or so active only for fips_enabled...
->> >=20
->> > You mean a buggy non-FIPS algorithm that fails when tested in
->> > FIPS mode?  I guess we could skip the panic in that case if
->> > everyone is happy with that.  Stephan?
->>=20
->> One more thing I just realized: dracut's fips module ([1]) modprobes
->> tcrypt (*) and failure is considered fatal, i.e. the system would not
->> boot up.
->>=20
->> First of all this would mean that tcrypt_test() needs to ignore
->> -ECANCELED return values from alg_test() in FIPS mode, in addition to
->> the -EINVAL it is already prepared for.
->>=20
->> However, chances are that some of the !fips_allowed algorithms looped
->> over by tcrypt are not available (i.e. not enabled at build time) and as
->> this change here makes alg_test() to unconditionally attempt a test
->> execution now, this would fail with -ENOENT AFAICS.
->>=20
->> One way to work around this is to make tcrypt_test() to ignore -ENOENT
->> in addition to -EINVAL and -ECANCELED.
->>=20
->> It might be undesirable though that the test executions triggered from
->> tcrypt would still instantiate/load a ton of !fips_allowed algorithms at
->> boot, most of which will effectively be inaccessible (because they're
->> not used as FIPS_INTERNAL arguments to fips_allowed =3D=3D 1 template
->> instances).
->>=20
->> So how about making alg_test() to skip the !fips_allowed tests in FIPS
->> mode as before, but to return -ECANCELED and eventually set
->> FIPS_INTERNAL as implemented with this patch here.
->>=20
->> This would imply that FIPS_INTERNAL algorithms by themselves remain
->> untested, but I think this might be Ok as they would be usable only as
->> template arguments in fips_allowed instantiations. That is, they will
->> still receive some form of testing when the larger construction they're
->> part of gets tested.
->>=20
->> For example, going with the "dh" example, where "dh" and "ffdhe3072(dh)"
->> would have fips_allowed unset and set respecively, ffdhe3072(dh) as
->> a whole would get tested, but not the "dh" argument individually.
->>=20
->> Stephan, would this approach work from a FIPS 140-3 perspective?
->
-> Are we sure that we always will have power-up tests of the compound algor=
-ithms=20
-> when we disable the lower-level algorithm testing?
+This is a complete rework of the v2 patchset to be found at [1]. Most
+notably, the ffdheXYZ groups are now made accessible by means of templates
+wrapping the generic dh: ffdhe2048(dh) ffdhe3072(dh), etc, rather than by
+that fixed enum dh_group_id as before. For your reference, this change has
+been suggested at [2].
 
-Yes. The compound algorithms having ->fips_allowed =3D=3D 1 and alg_test_nu=
-ll
-entries are:
+Plain "dh" usage will be disallowed in FIPS mode now, which will break
+keyctl(KEYCTL_DH_COMPUTE) functionality in FIPS mode. As per the
+discussion from [2], this is acceptable or perhaps even desirable.
 
-  authenc(hmac(sha1),ctr(aes))
-  authenc(hmac(sha1),rfc3686(ctr(aes)))
-  authenc(hmac(sha256),ctr(aes))
-  authenc(hmac(sha256),rfc3686(ctr(aes)))
-  authenc(hmac(sha384),ctr(aes))
-  authenc(hmac(sha384),rfc3686(ctr(aes)))
-  authenc(hmac(sha512),ctr(aes))
-  authenc(hmac(sha512),rfc3686(ctr(aes)))
+The only motivation to include the RFC 3526 MODP groups in the previous v2
+had been to keep keyctl(KEYCTL_DH_COMPUTE) somewhat workable in FIPS mode.
+These groups have been dropped accordingly now and this patchset only
+introduces support for the RFC 7919 FFDHE groups, which is what is needed
+by NVM in-band authentication.
 
-The hmac(sha*), ctr(aes) and rfc3686(ctr(aes)) all have
-->fips_allowed =3D=3D 1 and proper non-alg_test_null test entries. So no
-change here.
+In order to be able to restrict plain "dh" usage in FIPS mode while
+still allowing the usage of those new ffdheXYZ(dh) instantiations, I
+incorporated a modified version of the patch posted by Herbert at
+[3] ("crypto: api - Disallow sha1 in FIPS-mode while allowing hmac(sha1)")
+into this series here as [12/15] ("crypto: api - allow algs only in
+specific constructions in FIPS mode"). There had been two changes worth
+mentioning:
+- An attempt to make it more generic by having crypto_grab_spawn()
+  to include FIPS_INTERNAL in the lookup and also, to let
+  crypto_register_instance() to propagate this flag from the
+  child spawns into the instance to be registered.
+- To skip the actual self-test executions for !->fips_allowed algorithms,
+  just as before. The rationale for this can be found in the discussion to
+  [3].
+With these changes, all breakage is to blame on me and thus, I assumed
+authorship of this patch. I reflected the fact that this is heavily based
+on Herbert's work by means of an Originally-by tag and sincerely hope this
+is an appropriate way of recording the patch's history.
 
-  cbc(paes)
-  ctr(paes)
-  ecb(paes)
-  ofb(paes)
-  xts(paes)
-  xts4096(paes)
-  xts512(paes)
-  cts(cbc(paes))
+This series has been tested on x86_64 and s390x (big endian) with FIPS mode
+both enabled and disabled each.
 
-As ecb(paes) has only a alg_test_null() entry, no test would have been
-performed at all before this change for these. So no change here either.
-=20=20
-  ecb(cipher_null)
-
-No change here either.
-
-  pkcs1pad(rsa,sha224)
-  pkcs1pad(rsa,sha384)
-  pkcs1pad(rsa,sha512)
-
-The sha* and rsa all have ->fips_allowed =3D=3D 1 and proper
-non-alg_test_null test entries. So no change here.
-
-
->
-> For example, consider the DH work you are preparing: we currently have a =
-self=20
-> test for dh - which then will be marked as FIPS_INTERNAL and not executed=
-.=20
-> Would we now have self tests for modpXXX(dh) or ffdheXXX(dh)?
-
-Yes, exactly.
-
-> If not, how would it be guaranteed that DH is tested?
->
-> The important part is that the algorithm testing is guaranteed. I see a n=
-umber=20
-> of alg_test_null in testmgr.c. I see the potential that some algorithms d=
-o not=20
-> get tested at all when we skip FIPS_INTERNAL algorithms.
-
-See above. But of course one needs to be careful not to add
-->fips_allowed + alg_test_null entries for compound algorithms where any
-of the template arguments isn't approved in the future.
-
-
-> From a FIPS perspective it is permissible that compound algo power up tes=
-ts=20
-> are claimed to cover respective lower-level algos.
-
-Perfect.
-
-Thanks,
+Thanks!
 
 Nicolai
 
---=20
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
-ermany
-(HRB 36809, AG N=C3=BCrnberg), GF: Ivo Totev
+[1] https://lore.kernel.org/r/20211209090358.28231-1-nstange@suse.de
+[2] https://lore.kernel.org/r/20211217055227.GA20698@gondor.apana.org.au
+[3] https://lore.kernel.org/r/Yd0gInht+V+Kcsw2@gondor.apana.org.au
+
+Nicolai Stange (15):
+  crypto: kpp - provide support for KPP template instances
+  crypto: kpp - provide support for KPP spawns
+  crypto: dh - remove struct dh's ->q member
+  crypto: dh - constify struct dh's pointer members
+  crypto: dh - split out deserialization code from crypto_dh_decode()
+  crypto: dh - introduce common code for built-in safe-prime group
+    support
+  crypto: dh - implement ffdheXYZ(dh) templates
+  crypto: testmgr - add known answer tests for ffdheXYZ(dh) templates
+  crypto: dh - implement private key generation primitive for
+    ffdheXYZ(dh)
+  crypto: testmgr - add keygen tests for ffdheXYZ(dh) templates
+  crypto: dh - allow for passing NULL to the ffdheXYZ(dh)s'
+    ->set_secret()
+  crypto: api - allow algs only in specific constructions in FIPS mode
+  crypto: dh - disallow plain "dh" usage in FIPS mode
+  lib/mpi: export mpi_rshift
+  crypto: dh - calculate Q from P for the full public key verification
+
+ crypto/Kconfig                |    8 +
+ crypto/algapi.c               |   18 +-
+ crypto/api.c                  |   19 +-
+ crypto/dh.c                   |  687 +++++++++++++++-
+ crypto/dh_helper.c            |   44 +-
+ crypto/kpp.c                  |   29 +
+ crypto/tcrypt.c               |    4 +-
+ crypto/testmgr.c              |   61 +-
+ crypto/testmgr.h              | 1445 ++++++++++++++++++++++++++++++++-
+ include/crypto/dh.h           |   26 +-
+ include/crypto/internal/kpp.h |  158 ++++
+ include/linux/crypto.h        |    9 +
+ lib/mpi/mpi-bit.c             |    1 +
+ security/keys/dh.c            |    2 +-
+ 14 files changed, 2443 insertions(+), 68 deletions(-)
+
+-- 
+2.26.2
+
