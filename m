@@ -2,171 +2,115 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD0BB4A6F08
-	for <lists+keyrings@lfdr.de>; Wed,  2 Feb 2022 11:42:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC074A7121
+	for <lists+keyrings@lfdr.de>; Wed,  2 Feb 2022 13:55:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245208AbiBBKlw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 2 Feb 2022 05:41:52 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:41990 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244174AbiBBKls (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Feb 2022 05:41:48 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id E002D21135;
-        Wed,  2 Feb 2022 10:41:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1643798506; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F2A3VejHfy1pwgtKHo9p3Kst3JXAr0emkFaSCeEGE/0=;
-        b=JZDZpdbjFKh+YY3KxsmmD/ZBGuoQr4nBI5vhM80mBrOU8PQhY3T7KKzqVBbVDGnTKEJ8XK
-        ZlB/Nl8+pQkNgveH0sSMiab2MPO/LHSWwxhYX4r4QDkY5SOSEGMbkqf6WvqAogOlzwYsq4
-        oxPwcE7Em2lQeWHybzAnvGPjdyP3sXg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1643798506;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F2A3VejHfy1pwgtKHo9p3Kst3JXAr0emkFaSCeEGE/0=;
-        b=bqfvYoU4KwaDU4wiQiHKZyRqpKWn458SLcfSzj8kCpSV+0FlumTnm91TkEshVYyx5F34BL
-        mJAcWUMQ4TT+BVAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CBFF013E02;
-        Wed,  2 Feb 2022 10:41:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id odWLMOpf+mGhbAAAMHmgww
-        (envelope-from <nstange@suse.de>); Wed, 02 Feb 2022 10:41:46 +0000
-From:   Nicolai Stange <nstange@suse.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
-        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Nicolai Stange <nstange@suse.de>
-Subject: [PATCH v3 15/15] crypto: dh - calculate Q from P for the full public key verification
-Date:   Wed,  2 Feb 2022 11:40:12 +0100
-Message-Id: <20220202104012.4193-16-nstange@suse.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20220202104012.4193-1-nstange@suse.de>
-References: <20220202104012.4193-1-nstange@suse.de>
+        id S240523AbiBBMzu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 2 Feb 2022 07:55:50 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:35310 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231500AbiBBMzu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Feb 2022 07:55:50 -0500
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 212AekuH015286;
+        Wed, 2 Feb 2022 12:55:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zeswlkAxStLCD9AUMlaDRFijspzLCsEycfEF1UtQJuU=;
+ b=Bi91+InWGHvs8TcgtwsHaIRwxJiB2MNV0i6IOKvZcKjuCWzo9DjSHc8nCo5Mnm7UwZ1x
+ jc5pBgDeInyHLYujULcZDEhrsA66JvTdOnP1G0/w1n16wlTcXMeyDAizsjVBsi+n5MbS
+ 5MhFm5wNAMh/jauPYjFQDbLGDG/b5G2Pnap0zi95Ws6YUe80ssZtU0dadpp9iwjUuzhZ
+ uPao6uNSy6QRcIg7Oob04pDnayvdG1n8BrjwYMAimBc2Zm3CZ1r0iUPHwf36LCG6d0j3
+ cGGEoNdVdCFXIvL7O6Tox/WjbF6aoVfXok9rUivTITFYMvBxOtWY3AsHZU848b7Nydrs 0g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dym3gf8pf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Feb 2022 12:55:46 +0000
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 212Cdrrc021978;
+        Wed, 2 Feb 2022 12:55:45 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dym3gf8p8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Feb 2022 12:55:45 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 212CmdP6020595;
+        Wed, 2 Feb 2022 12:55:44 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
+        by ppma02dal.us.ibm.com with ESMTP id 3dvw7bdhc5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Feb 2022 12:55:44 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
+        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 212CthED42861006
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 2 Feb 2022 12:55:43 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 997EBAE05F;
+        Wed,  2 Feb 2022 12:55:43 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7C097AE064;
+        Wed,  2 Feb 2022 12:55:43 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed,  2 Feb 2022 12:55:43 +0000 (GMT)
+Message-ID: <5bb23626-afe1-9e05-566b-8830882904f6@linux.ibm.com>
+Date:   Wed, 2 Feb 2022 07:55:43 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [RFC PATCH] KEYS: Double max_size to make keyctl pkey_verify work
+Content-Language: en-US
+To:     Vitaly Chikunov <vt@altlinux.org>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>
+Cc:     linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        Eric Biggers <ebiggers@kernel.org>
+References: <20220202065906.2598366-1-vt@altlinux.org>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20220202065906.2598366-1-vt@altlinux.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UJG6tWGYH90PXu3y_n590Xc3XPIe-SW5
+X-Proofpoint-GUID: p5qSS0QwBzqR_LRhObcAjxcm6MWyq742
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-02_06,2022-02-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0 mlxscore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxlogscore=999
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202020068
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-As the ->q in struct dh_ctx gets never set anywhere, the code in
-dh_is_pubkey_valid() for doing the full public key validation in accordance
-to SP800-56Arev3 is effectively dead.
 
-However, for safe-prime groups Q = (P - 1)/2 by definition and
-as the safe-prime groups are the only possible groups in FIPS mode (via
-those ffdheXYZ() templates), this enables dh_is_pubkey_valid() to calculate
-Q on the fly for these.
-Implement this.
+On 2/2/22 01:59, Vitaly Chikunov wrote:
+> Rarely used `keyctl pkey_verify' can verify raw signatures, but was
+> failing, because ECDSA/EC-RDSA signature sizes are twice key sizes which
+> does not pass in/out sizes check in keyctl_pkey_params_get_2.
+> This in turn because these values cannot be distinguished by a single
+> `max_size' callback return value.
+> Also, `keyctl pkey_query` displays incorrect `max_sig_size' about these
+> algorithms.
+>
+> Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
 
-With this change, the last code accessing struct dh_ctx's ->q is now gone.
-Remove this member from struct dh_ctx.
+How do you use pkey_query?
 
-Signed-off-by: Nicolai Stange <nstange@suse.de>
----
- crypto/dh.c | 40 +++++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
+$ keyctl padd asymmetric testkey %keyring:test < cert.der
+385037223
+$ keyctl pkey_query 385037223 ''
+Password passing is not yet supported
+$ keyctl pkey_query 385037223
+Format:
+   keyctl --version
+   keyctl add <type> <desc> <data> <keyring>
+[...]
 
-diff --git a/crypto/dh.c b/crypto/dh.c
-index d0d24f615b2d..cca289477485 100644
---- a/crypto/dh.c
-+++ b/crypto/dh.c
-@@ -15,7 +15,6 @@
- 
- struct dh_ctx {
- 	MPI p;	/* Value is guaranteed to be set. */
--	MPI q;	/* Value is optional. */
- 	MPI g;	/* Value is guaranteed to be set. */
- 	MPI xa;	/* Value is guaranteed to be set. */
- };
-@@ -23,7 +22,6 @@ struct dh_ctx {
- static void dh_clear_ctx(struct dh_ctx *ctx)
- {
- 	mpi_free(ctx->p);
--	mpi_free(ctx->q);
- 	mpi_free(ctx->g);
- 	mpi_free(ctx->xa);
- 	memset(ctx, 0, sizeof(*ctx));
-@@ -99,11 +97,12 @@ static int dh_set_secret(struct crypto_kpp *tfm, const void *buf,
- /*
-  * SP800-56A public key verification:
-  *
-- * * If Q is provided as part of the domain paramenters, a full validation
-- *   according to SP800-56A section 5.6.2.3.1 is performed.
-+ * * For the safe-prime groups in FIPS mode, Q can be computed
-+ *   trivially from P and a full validation according to SP800-56A
-+ *   section 5.6.2.3.1 is performed.
-  *
-- * * If Q is not provided, a partial validation according to SP800-56A section
-- *   5.6.2.3.2 is performed.
-+ * * For all other sets of group parameters, only a partial validation
-+ *   according to SP800-56A section 5.6.2.3.2 is performed.
-  */
- static int dh_is_pubkey_valid(struct dh_ctx *ctx, MPI y)
- {
-@@ -114,21 +113,40 @@ static int dh_is_pubkey_valid(struct dh_ctx *ctx, MPI y)
- 	 * Step 1: Verify that 2 <= y <= p - 2.
- 	 *
- 	 * The upper limit check is actually y < p instead of y < p - 1
--	 * as the mpi_sub_ui function is yet missing.
-+	 * in order to save one mpi_sub_ui() invocation here. Note that
-+	 * p - 1 is the non-trivial element of the subgroup of order 2 and
-+	 * thus, the check on y^q below would fail if y == p - 1.
- 	 */
- 	if (mpi_cmp_ui(y, 1) < 1 || mpi_cmp(y, ctx->p) >= 0)
- 		return -EINVAL;
- 
--	/* Step 2: Verify that 1 = y^q mod p */
--	if (ctx->q) {
--		MPI val = mpi_alloc(0);
-+	/*
-+	 * Step 2: Verify that 1 = y^q mod p
-+	 *
-+	 * For the safe-prime groups q = (p - 1)/2.
-+	 */
-+	if (fips_enabled) {
-+		MPI val, q;
- 		int ret;
- 
-+		val = mpi_alloc(0);
- 		if (!val)
- 			return -ENOMEM;
- 
--		ret = mpi_powm(val, y, ctx->q, ctx->p);
-+		q = mpi_alloc(mpi_get_nlimbs(ctx->p));
-+		if (!q) {
-+			mpi_free(val);
-+			return -ENOMEM;
-+		}
- 
-+		/*
-+		 * ->p is odd, so no need to explicitly subtract one
-+		 * from it before shifting to the right.
-+		 */
-+		mpi_rshift(q, ctx->p, 1);
-+
-+		ret = mpi_powm(val, y, q, ctx->p);
-+		mpi_free(q);
- 		if (ret) {
- 			mpi_free(val);
- 			return ret;
--- 
-2.26.2
+$ keyctl unlink 385037223
+1 links removed
+
 
