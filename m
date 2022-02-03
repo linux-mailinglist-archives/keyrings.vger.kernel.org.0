@@ -2,145 +2,112 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D06EE4A82AC
-	for <lists+keyrings@lfdr.de>; Thu,  3 Feb 2022 11:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86E0F4A898E
+	for <lists+keyrings@lfdr.de>; Thu,  3 Feb 2022 18:12:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233411AbiBCKtc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Feb 2022 05:49:32 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:40092 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbiBCKtb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Feb 2022 05:49:31 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 831C61F399;
-        Thu,  3 Feb 2022 10:49:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1643885369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=a6gXtaxF4sUpqNbpvqW3e+eeQ67Q3V181j1MpX5xCXw=;
-        b=HaY3A8a7CHu+p6SkQfzXFxoRVgaixyso1zTY8l10onfr+4M1WM6Keh9Ypvjdw1ey18+Cq8
-        Pz48XGKgBpP8Ki2zWHuhHY1Gy46s/PE0MAZ4LbmxhJWmPuIQIKdMYbozDUo4+Q7MCpXRpB
-        UgCTlfrM191QhW6/Am1jz3JKp4une/4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1643885369;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=a6gXtaxF4sUpqNbpvqW3e+eeQ67Q3V181j1MpX5xCXw=;
-        b=4EJKGBft4bAsvWMXkRCyg9VCRvMq2sAKI0INSYlhae42A7n/QFT0juKBfObRurO+3478Iw
-        wdlekzqTUvDT8pBQ==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 7AACFA3B85;
-        Thu,  3 Feb 2022 10:49:27 +0000 (UTC)
-Date:   Thu, 3 Feb 2022 11:49:26 +0100
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        kexec@lists.infradead.org, Philipp Rudo <prudo@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
-        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Frank van der Linden <fllinden@amazon.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        id S229532AbiBCRMB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 3 Feb 2022 12:12:01 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:39199 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234879AbiBCRL7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Feb 2022 12:11:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1643908315;
+    s=strato-dkim-0002; d=chronox.de;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=in3ANS4p1/EJ1Vk8fAo3enQEiM4qdqkOrQ7NVZWdrM0=;
+    b=g43WW+klKEcQR1r6HM6JPA2vjUlwLzEaEEnxW/6JKB4llxJzBhans5dXOIxpgSEtAn
+    wZJFOOwTRwvty9UnrL9uTsIV54zWKO/4x21z9kk9OAictzIeZMNeT3kW9NLIUNzhCnnA
+    naRiTC0XbuMUoeJuJxoHCSE62589gRJs2QF6ImUIBqLe/Cbndn4rGu4XYGO4t3JssvZ5
+    cZQQh8oGjrosgrv61nXxlKKDfs+uDjMkIpqdW/vdwx/yzJMps4sQAeVrrHcDAxTpTnMy
+    16Wo0pMxJ6R+4GouMHQSo87JowHowitTTVIEpQnzD7I+vbUH4pZm/43s18q6TBjhRuvr
+    5K9A==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9zW8BKRp5UFiyGZZ4jof7Xg=="
+X-RZG-CLASS-ID: mo00
+Received: from tauon.chronox.de
+    by smtp.strato.de (RZmta 47.39.0 AUTH)
+    with ESMTPSA id z28df7y13HBsGQ7
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Thu, 3 Feb 2022 18:11:54 +0100 (CET)
+From:   Stephan Mueller <smueller@chronox.de>
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Baoquan He <bhe@redhat.com>,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v5 3/6] kexec_file: Don't opencode appended signature
- verification.
-Message-ID: <20220203104926.GA3113@kunlun.suse.cz>
-References: <cover.1641900831.git.msuchanek@suse.de>
- <7834eb187ef67cd88fc67f10e831130e3717d776.1641900831.git.msuchanek@suse.de>
- <YfBafIXgnLzf0QMb@bombadil.infradead.org>
+        Nicolai Stange <nstange@suse.de>
+Cc:     Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, Nicolai Stange <nstange@suse.de>
+Subject: Re: [PATCH v3 00/15] crypto: dh - infrastructure for NVM in-band auth and FIPS conformance
+Date:   Thu, 03 Feb 2022 18:11:53 +0100
+Message-ID: <8937519.l8FpVtv5Hg@tauon.chronox.de>
+In-Reply-To: <20220202104012.4193-1-nstange@suse.de>
+References: <20220202104012.4193-1-nstange@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YfBafIXgnLzf0QMb@bombadil.infradead.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+Am Mittwoch, 2. Februar 2022, 11:39:57 CET schrieb Nicolai Stange:
 
-thanks for the review.
+Hi Nicolai,
 
-On Tue, Jan 25, 2022 at 12:15:56PM -0800, Luis Chamberlain wrote:
-> On Tue, Jan 11, 2022 at 12:37:45PM +0100, Michal Suchanek wrote:
-> > diff --git a/include/linux/verification.h b/include/linux/verification.h
-> > index a655923335ae..32db9287a7b0 100644
-> > --- a/include/linux/verification.h
-> > +++ b/include/linux/verification.h
-> > @@ -60,5 +60,8 @@ extern int verify_pefile_signature(const void *pebuf, unsigned pelen,
-> >  				   enum key_being_used_for usage);
-> >  #endif
-> >  
-> > +int verify_appended_signature(const void *data, unsigned long *len,
-> > +			      struct key *trusted_keys, const char *what);
-> > +
+> Hi all,
 > 
-> Looks very non-module specific.
-
-Which it is now that the same signature format is used for kernels.
-
+> first of all, to the people primarily interested in security/keys/, there's
+> a rather trivial change to security/keys/dh.c in patch 4/15. It would be
+> great to get ACKs for that...
 > 
-> > diff --git a/kernel/module_signing.c b/kernel/module_signing.c
-> > index 8723ae70ea1f..30149969f21f 100644
-> > --- a/kernel/module_signing.c
-> > +++ b/kernel/module_signing.c
-> > @@ -14,32 +14,38 @@
-> >  #include <crypto/public_key.h>
-> >  #include "module-internal.h"
-> >  
-> > -/*
-> > - * Verify the signature on a module.
-> > +/**
-> > + * verify_appended_signature - Verify the signature on a module with the
-> > + * signature marker stripped.
-> > + * @data: The data to be verified
-> > + * @len: Size of @data.
-> > + * @trusted_keys: Keyring to use for verification
-> > + * @what: Informational string for log messages
-> >   */
-> > -int mod_verify_sig(const void *mod, struct load_info *info)
-> > +int verify_appended_signature(const void *data, unsigned long *len,
-> > +			      struct key *trusted_keys, const char *what)
-> >  {
-> > -	struct module_signature ms;
-> > -	size_t sig_len, modlen = info->len;
-> > +	struct module_signature *ms;
+> This is a complete rework of the v2 patchset to be found at [1]. Most
+> notably, the ffdheXYZ groups are now made accessible by means of templates
+> wrapping the generic dh: ffdhe2048(dh) ffdhe3072(dh), etc, rather than by
+> that fixed enum dh_group_id as before. For your reference, this change has
+> been suggested at [2].
 > 
-> There goes the abstraction, so why not make this clear where we re-use
-> the struct module_signature for various things and call it as it is,
-> verify_mod_appended_signature() or some such?
+> Plain "dh" usage will be disallowed in FIPS mode now, which will break
+> keyctl(KEYCTL_DH_COMPUTE) functionality in FIPS mode. As per the
+> discussion from [2], this is acceptable or perhaps even desirable.
+> 
+> The only motivation to include the RFC 3526 MODP groups in the previous v2
+> had been to keep keyctl(KEYCTL_DH_COMPUTE) somewhat workable in FIPS mode.
+> These groups have been dropped accordingly now and this patchset only
+> introduces support for the RFC 7919 FFDHE groups, which is what is needed
+> by NVM in-band authentication.
+> 
+> In order to be able to restrict plain "dh" usage in FIPS mode while
+> still allowing the usage of those new ffdheXYZ(dh) instantiations, I
+> incorporated a modified version of the patch posted by Herbert at
+> [3] ("crypto: api - Disallow sha1 in FIPS-mode while allowing hmac(sha1)")
+> into this series here as [12/15] ("crypto: api - allow algs only in
+> specific constructions in FIPS mode"). There had been two changes worth
+> mentioning:
+> - An attempt to make it more generic by having crypto_grab_spawn()
+>   to include FIPS_INTERNAL in the lookup and also, to let
+>   crypto_register_instance() to propagate this flag from the
+>   child spawns into the instance to be registered.
+> - To skip the actual self-test executions for !->fips_allowed algorithms,
+>   just as before. The rationale for this can be found in the discussion to
+>   [3].
+> With these changes, all breakage is to blame on me and thus, I assumed
+> authorship of this patch. I reflected the fact that this is heavily based
+> on Herbert's work by means of an Originally-by tag and sincerely hope this
+> is an appropriate way of recording the patch's history.
+> 
+> This series has been tested on x86_64 and s390x (big endian) with FIPS mode
+> both enabled and disabled each.
 
-It sounds like the abstraction is actually improved by callers no longer
-dealing with struct module_signature when verifying signature on a
-kernel. That is the structure is misnamed but it is now hidden behind
-an abstraction.
+Using the NIST ACVP reference implementation, shared secret computation and 
+key generation was successfully tested.
 
-Or am I missing something?
+Tested-by: Stephan Mueller <smueller@chronox.de>
 
-Thanks
 
-Michal
+Ciao
+Stephan
+
+
