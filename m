@@ -2,112 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86E0F4A898E
-	for <lists+keyrings@lfdr.de>; Thu,  3 Feb 2022 18:12:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 713F34A8C8A
+	for <lists+keyrings@lfdr.de>; Thu,  3 Feb 2022 20:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229532AbiBCRMB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Feb 2022 12:12:01 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:39199 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234879AbiBCRL7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Feb 2022 12:11:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1643908315;
-    s=strato-dkim-0002; d=chronox.de;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=in3ANS4p1/EJ1Vk8fAo3enQEiM4qdqkOrQ7NVZWdrM0=;
-    b=g43WW+klKEcQR1r6HM6JPA2vjUlwLzEaEEnxW/6JKB4llxJzBhans5dXOIxpgSEtAn
-    wZJFOOwTRwvty9UnrL9uTsIV54zWKO/4x21z9kk9OAictzIeZMNeT3kW9NLIUNzhCnnA
-    naRiTC0XbuMUoeJuJxoHCSE62589gRJs2QF6ImUIBqLe/Cbndn4rGu4XYGO4t3JssvZ5
-    cZQQh8oGjrosgrv61nXxlKKDfs+uDjMkIpqdW/vdwx/yzJMps4sQAeVrrHcDAxTpTnMy
-    16Wo0pMxJ6R+4GouMHQSo87JowHowitTTVIEpQnzD7I+vbUH4pZm/43s18q6TBjhRuvr
-    5K9A==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9zW8BKRp5UFiyGZZ4jof7Xg=="
-X-RZG-CLASS-ID: mo00
-Received: from tauon.chronox.de
-    by smtp.strato.de (RZmta 47.39.0 AUTH)
-    with ESMTPSA id z28df7y13HBsGQ7
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 3 Feb 2022 18:11:54 +0100 (CET)
-From:   Stephan Mueller <smueller@chronox.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicolai Stange <nstange@suse.de>
-Cc:     Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Nicolai Stange <nstange@suse.de>
-Subject: Re: [PATCH v3 00/15] crypto: dh - infrastructure for NVM in-band auth and FIPS conformance
-Date:   Thu, 03 Feb 2022 18:11:53 +0100
-Message-ID: <8937519.l8FpVtv5Hg@tauon.chronox.de>
-In-Reply-To: <20220202104012.4193-1-nstange@suse.de>
-References: <20220202104012.4193-1-nstange@suse.de>
+        id S238904AbiBCThe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 3 Feb 2022 14:37:34 -0500
+Received: from [106.75.164.200] ([106.75.164.200]:52309 "EHLO ts3card.com"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S237715AbiBCThe (ORCPT <rfc822;keyrings@vger.kernel.org>);
+        Thu, 3 Feb 2022 14:37:34 -0500
+Message-ID: <20220204033734466770@ts3card.com>
+From:   =?utf-8?B?44OI44Oo44K/44OV44Kh44Kk44OK44Oz44K55qCq5byP5Lya56S+?= 
+        <info@ts3card.com>
+To:     <keyrings@vger.kernel.org>
+Subject: =?utf-8?B?44CQVFMzIFRTIENVQklDQ0FSROOAkemHjeimgQ==?=
+        =?utf-8?B?OuW/heOBmuOBiuiqreOBv+OBj+OBoOOBleOBhA==?=
+Date:   Fri, 4 Feb 2022 03:37:25 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: base64
+X-mailer: Ervefwaz 7
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Am Mittwoch, 2. Februar 2022, 11:39:57 CET schrieb Nicolai Stange:
-
-Hi Nicolai,
-
-> Hi all,
-> 
-> first of all, to the people primarily interested in security/keys/, there's
-> a rather trivial change to security/keys/dh.c in patch 4/15. It would be
-> great to get ACKs for that...
-> 
-> This is a complete rework of the v2 patchset to be found at [1]. Most
-> notably, the ffdheXYZ groups are now made accessible by means of templates
-> wrapping the generic dh: ffdhe2048(dh) ffdhe3072(dh), etc, rather than by
-> that fixed enum dh_group_id as before. For your reference, this change has
-> been suggested at [2].
-> 
-> Plain "dh" usage will be disallowed in FIPS mode now, which will break
-> keyctl(KEYCTL_DH_COMPUTE) functionality in FIPS mode. As per the
-> discussion from [2], this is acceptable or perhaps even desirable.
-> 
-> The only motivation to include the RFC 3526 MODP groups in the previous v2
-> had been to keep keyctl(KEYCTL_DH_COMPUTE) somewhat workable in FIPS mode.
-> These groups have been dropped accordingly now and this patchset only
-> introduces support for the RFC 7919 FFDHE groups, which is what is needed
-> by NVM in-band authentication.
-> 
-> In order to be able to restrict plain "dh" usage in FIPS mode while
-> still allowing the usage of those new ffdheXYZ(dh) instantiations, I
-> incorporated a modified version of the patch posted by Herbert at
-> [3] ("crypto: api - Disallow sha1 in FIPS-mode while allowing hmac(sha1)")
-> into this series here as [12/15] ("crypto: api - allow algs only in
-> specific constructions in FIPS mode"). There had been two changes worth
-> mentioning:
-> - An attempt to make it more generic by having crypto_grab_spawn()
->   to include FIPS_INTERNAL in the lookup and also, to let
->   crypto_register_instance() to propagate this flag from the
->   child spawns into the instance to be registered.
-> - To skip the actual self-test executions for !->fips_allowed algorithms,
->   just as before. The rationale for this can be found in the discussion to
->   [3].
-> With these changes, all breakage is to blame on me and thus, I assumed
-> authorship of this patch. I reflected the fact that this is heavily based
-> on Herbert's work by means of an Originally-by tag and sincerely hope this
-> is an appropriate way of recording the patch's history.
-> 
-> This series has been tested on x86_64 and s390x (big endian) with FIPS mode
-> both enabled and disabled each.
-
-Using the NIST ACVP reference implementation, shared secret computation and 
-key generation was successfully tested.
-
-Tested-by: Stephan Mueller <smueller@chronox.de>
-
-
-Ciao
-Stephan
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSBDQoNCuKYheOAgi46KjpUUyBDVUJJQyBDQVJE5Lya5ZOh5YCL5Lq65oOF5aCx5aSJ5pu0
+44CC4piF44CCLjoqOg0KDQrilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIENCg0KDQpUUyBDVUJJQyBDQVJE5Lya5ZOh5qijDQoNCuOB
+k+OBruOBn+OBs+OBr+OAgVRTIENVQklDIENBUkRF44Oh44O844Or44K144O844OT44K544KS44GU
+5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CCDQoNCuW9
+k+ekvuOBr+OCu+OCreODpeODquODhuOCo+OCt+OCueODhuODoOOBruWkp+W5heOBquOCouODg+OD
+l+OCsOODrOODvOODieOCkuWun+aWveOBl+OBpuOBhOOCi+OBn+OCgeOAgeWAi+S6uuaDheWgseOB
+rg0K5YaN6KqN6Ki844GM5a6M5LqG44GZ44KL44G+44Gn44CBVFMgQ1VCSUMgQ0FSROODoeODs+OD
+kOODvOOBruOCteODvOODk+OCueOBr+OBmeOBueOBpuWBnOatouOBleOCjOOBvuOBmeOAgg0KDQrm
+nKzml6XjgYvjgonjgIFUUyBDVUJJQyBDQVJE44Oh44Oz44OQ44O844Gu44Om44O844K244O844GM
+6YCa5bi45L2/55So44GX44Gf44GE5aC05ZCI44Gv44CBMjTmmYLplpPku6XlhoXjgasNCuS7peS4
+i+OBruWAi+S6uuaDheWgseaUueWWhOiqjeiovOOCkuihjOOBhuW/heimgeOBjOOBguOCiuOBvuOB
+meaJv+iqjeW+jOOBq+OBruOBv+S9v+eUqOOBp+OBjeOBvuOBmSANCg0K44Ot44Kw44Kk44Oz6KqN
+6Ki8Omh0dHBzOi8vbXktdHMzY2FyZC1jb20uamFjY3NpY21jbHUudG9wDQoNCuOBk+OBruOCteOD
+vOODk+OCueOBr+OAgVRTIENVQklDIENBUkTjg6Hjg47jg5Djg7zlsILnlKjjga7pgJrnn6XjgrXj
+g7zjg5PjgrnjgafjgZnjgILjgZPjga7jg6Hjg7zjg6vjga7lhoXlrrkNCuOBq+OBlOazqOaEj+OB
+hOOBn+OBoOOBjeOAgeS4jeW/heimgeOBque0m+WkseOCkumBv+OBkeOBpuOBj+OBoOOBleOBhOOA
+gg0KDQrilI/ilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilJMNCg0K44CA4pag5pys44Oh44O844Or44Gv6YCB5L+h5bCC55So44Gu44Gf44KB44CB
+44GT44Gh44KJ44Gu44Oh44O844Or44Ki44OJ44Os44K544Gr44GU6L+U5L+h44GE44Gf44Gg44GE
+44Gm44KCDQrjgIDjgIDlr77lv5zjga/jgYTjgZ/jgZfjgYvjga3jgb7jgZnjga7jgafjgZTkuobm
+ib/jgY/jgaDjgZXjgYTjgIINCuOAgOOAgOOBquOBiuOAgeacrOODoeODvOODq+OBq+OBpOOBhOOB
+puOBiuW/g+W9k+OBn+OCiuOBjOOBquOBhOWgtOWQiOOBq+OBr+OAgQ0K44CAIOOBiuaJi+aVsOOB
+p+OBmeOBjOOAgeS4i+iomOOBiuWVj+OBhOWQiOOCj+OBm+WFiOOBvuOBp+OBiumbu+ipseOBq+OB
+pumAo+e1oeOCkuOBiumhmOOBhOOBhOOBn+OBl+OBvuOBmeOAgg0KDQrjgIA9PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoNCuOA
+gOKWoOeZuuihjO+8mlRTIENVQklDIENBUkTjgIzjg4bjgqPjg7zjgqjjgrnjgq3jg6Xjg7zjg5Pj
+g4Pjgq/jgqvjg7zjg4njgI0NCuOAgOOAgOOAgOOAgOOAgCBodHRwczovL3RzY3ViaWMuY29tLw0K
+44CA44CA44CA44CA44CA44OI44Oo44K/44OV44Kh44Kk44OK44Oz44K55qCq5byP5Lya56S+DQrj
+gIDjgIDjgIDjgIDjgIDjgJI0NTEtNjAxNOOAgOaEm+efpeecjOWQjeWPpOWxi+W4guilv+WMuueJ
+m+WztueUujbnlaox5Y+3DQoNCuOAgOKWoOacrOODoeODvOODq+OBq+OBpOOBhOOBpuOBruOBiuWV
+j+OBhOWQiOOCj+OBm++8mg0K4pePVE9ZT1RBLCBEQUlIQVRTVSwg44K444Kn44O844Og44K5LCDj
+g4jjg6jjgr/jg6zjg7Pjgr/jgqvjg7wgRkRD44GuDQrjgIDjgIDjgIDjgIDjgIDjgIBUUyBDVUJJ
+QyBDQVJELCBUUyBDVUJJQyBWSUVXIENBUkTjgpLjgYrmjIHjgaHjga7mlrnjga/jgZPjgaHjgokN
+CuOAgOOAgOOAgOOAgOOAgOOAgOOCpOODs+ODleOCqeODoeODvOOCt+ODp+ODs+ODh+OCueOCrw0K
+44CA44CA44CA44CA44CA44CAWyDmnbHkuqwgXeOAgDAz77yNNTYxN++8jTI1MTENCuOAgOOAgOOA
+gOOAgOOAgOOAgFvlkI3lj6TlsYtd44CAMDUy77yNMjM577yNMjUxMQ0KKDk6MDDvvZ4xNzozMCDl
+ubTkuK3nhKHkvJEg5bm05pyr5bm05aeL6Zmk44GPKQ0K4peP5LiK6KiY5Lul5aSW44Gu44Kr44O8
+44OJ5Lya5ZOh44GV44G+44Gv44CB44GK5omL5oyB44Gh44Gu44Kr44O844OJ5Yi46Z2i6KOP44Gr
+6KiY6LyJ44GuDQrjgIDjgIDjgIDjgIDjgIDjgIDjgqvjg7zjg4njgavplqLjgZnjgovjgYrllY/j
+gYTlkIjjgo/jgZvpm7voqbHnlarlj7fjgavjgYrjgYvjgZHjgY/jgaDjgZXjgYQNCuOAgOOAgOOA
+gOOAgOOAgA0K4pSX4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSbDQo=
 
 
