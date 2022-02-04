@@ -2,78 +2,114 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 713F34A8C8A
-	for <lists+keyrings@lfdr.de>; Thu,  3 Feb 2022 20:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E15304A93FA
+	for <lists+keyrings@lfdr.de>; Fri,  4 Feb 2022 07:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238904AbiBCThe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Feb 2022 14:37:34 -0500
-Received: from [106.75.164.200] ([106.75.164.200]:52309 "EHLO ts3card.com"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237715AbiBCThe (ORCPT <rfc822;keyrings@vger.kernel.org>);
-        Thu, 3 Feb 2022 14:37:34 -0500
-Message-ID: <20220204033734466770@ts3card.com>
-From:   =?utf-8?B?44OI44Oo44K/44OV44Kh44Kk44OK44Oz44K55qCq5byP5Lya56S+?= 
-        <info@ts3card.com>
-To:     <keyrings@vger.kernel.org>
-Subject: =?utf-8?B?44CQVFMzIFRTIENVQklDQ0FSROOAkemHjeimgQ==?=
-        =?utf-8?B?OuW/heOBmuOBiuiqreOBv+OBj+OBoOOBleOBhA==?=
-Date:   Fri, 4 Feb 2022 03:37:25 +0800
+        id S243514AbiBDG2b (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Feb 2022 01:28:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50072 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234257AbiBDG2a (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Feb 2022 01:28:30 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAEB8C061714;
+        Thu,  3 Feb 2022 22:28:29 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 77903B82FF0;
+        Fri,  4 Feb 2022 06:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC95C004E1;
+        Fri,  4 Feb 2022 06:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643956107;
+        bh=QaFOZ+4F9bVAF26M1HaVC5kjbiVDzIfY69jkftb6Kao=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=b9ngHE683pVzCGLDEjg491rrD5f6vfgfZUE06M7/XMoPJEmYmGSHLSU9NmKeeAOtw
+         uyHttVx16YZbBlN9iAmOdfYLBCbstjpUytRpE6jy+BP8WAf6kzrDZKENykhFdNrFEM
+         j2xP2uhqLJyBld79JNy4sQzvZGhg4+h/uM8Jc9q56sHW7sSbd0SU/K+q5nBddJ19NE
+         aKCWCl7FrlSaqGYeC263P60on+RXOp9sRjfXBj5Egt7bMmrvn+Cch/R05SmqGuxGeL
+         joZglMI26btTOAKwxwTzpMfo5GmjefOEWnot7IusAJjMCei9lt6Peo1/BQ48k8dVou
+         PHMFm7gKDSSUg==
+Date:   Fri, 4 Feb 2022 08:27:59 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Yael Tiomkin <yaelt@google.com>
+Cc:     Martin Ross <mross@pobox.com>, corbet@lwn.net, dhowells@redhat.com,
+        jejb@linux.ibm.com, jmorris@namei.org, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        serge@hallyn.com, Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH v4] KEYS: encrypted: Instantiate key with user-provided
+ decrypted data
+Message-ID: <YfzHb9K5wZciy5um@iki.fi>
+References: <CA++MVV3Jse4WZ-zr-SUWQz3Gk_dByU6JduVfUkvQNW+jgm9O4Q@mail.gmail.com>
+ <YfFe9+XDPDIdSqF1@iki.fi>
+ <YfFf8fvsDm8lQJgJ@iki.fi>
+ <CAKoutNsaHNriobnsQ1X0Qfs=K+YN3JvfhTBnQqPL01AvjRm5EA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: base64
-X-mailer: Ervefwaz 7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKoutNsaHNriobnsQ1X0Qfs=K+YN3JvfhTBnQqPL01AvjRm5EA@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
-4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
-4pSB4pSBDQoNCuKYheOAgi46KjpUUyBDVUJJQyBDQVJE5Lya5ZOh5YCL5Lq65oOF5aCx5aSJ5pu0
-44CC4piF44CCLjoqOg0KDQrilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
-lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
-lIHilIHilIHilIHilIHilIHilIHilIENCg0KDQpUUyBDVUJJQyBDQVJE5Lya5ZOh5qijDQoNCuOB
-k+OBruOBn+OBs+OBr+OAgVRTIENVQklDIENBUkRF44Oh44O844Or44K144O844OT44K544KS44GU
-5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CCDQoNCuW9
-k+ekvuOBr+OCu+OCreODpeODquODhuOCo+OCt+OCueODhuODoOOBruWkp+W5heOBquOCouODg+OD
-l+OCsOODrOODvOODieOCkuWun+aWveOBl+OBpuOBhOOCi+OBn+OCgeOAgeWAi+S6uuaDheWgseOB
-rg0K5YaN6KqN6Ki844GM5a6M5LqG44GZ44KL44G+44Gn44CBVFMgQ1VCSUMgQ0FSROODoeODs+OD
-kOODvOOBruOCteODvOODk+OCueOBr+OBmeOBueOBpuWBnOatouOBleOCjOOBvuOBmeOAgg0KDQrm
-nKzml6XjgYvjgonjgIFUUyBDVUJJQyBDQVJE44Oh44Oz44OQ44O844Gu44Om44O844K244O844GM
-6YCa5bi45L2/55So44GX44Gf44GE5aC05ZCI44Gv44CBMjTmmYLplpPku6XlhoXjgasNCuS7peS4
-i+OBruWAi+S6uuaDheWgseaUueWWhOiqjeiovOOCkuihjOOBhuW/heimgeOBjOOBguOCiuOBvuOB
-meaJv+iqjeW+jOOBq+OBruOBv+S9v+eUqOOBp+OBjeOBvuOBmSANCg0K44Ot44Kw44Kk44Oz6KqN
-6Ki8Omh0dHBzOi8vbXktdHMzY2FyZC1jb20uamFjY3NpY21jbHUudG9wDQoNCuOBk+OBruOCteOD
-vOODk+OCueOBr+OAgVRTIENVQklDIENBUkTjg6Hjg47jg5Djg7zlsILnlKjjga7pgJrnn6XjgrXj
-g7zjg5PjgrnjgafjgZnjgILjgZPjga7jg6Hjg7zjg6vjga7lhoXlrrkNCuOBq+OBlOazqOaEj+OB
-hOOBn+OBoOOBjeOAgeS4jeW/heimgeOBque0m+WkseOCkumBv+OBkeOBpuOBj+OBoOOBleOBhOOA
-gg0KDQrilI/ilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
-lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
-lIHilIHilJMNCg0K44CA4pag5pys44Oh44O844Or44Gv6YCB5L+h5bCC55So44Gu44Gf44KB44CB
-44GT44Gh44KJ44Gu44Oh44O844Or44Ki44OJ44Os44K544Gr44GU6L+U5L+h44GE44Gf44Gg44GE
-44Gm44KCDQrjgIDjgIDlr77lv5zjga/jgYTjgZ/jgZfjgYvjga3jgb7jgZnjga7jgafjgZTkuobm
-ib/jgY/jgaDjgZXjgYTjgIINCuOAgOOAgOOBquOBiuOAgeacrOODoeODvOODq+OBq+OBpOOBhOOB
-puOBiuW/g+W9k+OBn+OCiuOBjOOBquOBhOWgtOWQiOOBq+OBr+OAgQ0K44CAIOOBiuaJi+aVsOOB
-p+OBmeOBjOOAgeS4i+iomOOBiuWVj+OBhOWQiOOCj+OBm+WFiOOBvuOBp+OBiumbu+ipseOBq+OB
-pumAo+e1oeOCkuOBiumhmOOBhOOBhOOBn+OBl+OBvuOBmeOAgg0KDQrjgIA9PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoNCuOA
-gOKWoOeZuuihjO+8mlRTIENVQklDIENBUkTjgIzjg4bjgqPjg7zjgqjjgrnjgq3jg6Xjg7zjg5Pj
-g4Pjgq/jgqvjg7zjg4njgI0NCuOAgOOAgOOAgOOAgOOAgCBodHRwczovL3RzY3ViaWMuY29tLw0K
-44CA44CA44CA44CA44CA44OI44Oo44K/44OV44Kh44Kk44OK44Oz44K55qCq5byP5Lya56S+DQrj
-gIDjgIDjgIDjgIDjgIDjgJI0NTEtNjAxNOOAgOaEm+efpeecjOWQjeWPpOWxi+W4guilv+WMuueJ
-m+WztueUujbnlaox5Y+3DQoNCuOAgOKWoOacrOODoeODvOODq+OBq+OBpOOBhOOBpuOBruOBiuWV
-j+OBhOWQiOOCj+OBm++8mg0K4pePVE9ZT1RBLCBEQUlIQVRTVSwg44K444Kn44O844Og44K5LCDj
-g4jjg6jjgr/jg6zjg7Pjgr/jgqvjg7wgRkRD44GuDQrjgIDjgIDjgIDjgIDjgIDjgIBUUyBDVUJJ
-QyBDQVJELCBUUyBDVUJJQyBWSUVXIENBUkTjgpLjgYrmjIHjgaHjga7mlrnjga/jgZPjgaHjgokN
-CuOAgOOAgOOAgOOAgOOAgOOAgOOCpOODs+ODleOCqeODoeODvOOCt+ODp+ODs+ODh+OCueOCrw0K
-44CA44CA44CA44CA44CA44CAWyDmnbHkuqwgXeOAgDAz77yNNTYxN++8jTI1MTENCuOAgOOAgOOA
-gOOAgOOAgOOAgFvlkI3lj6TlsYtd44CAMDUy77yNMjM577yNMjUxMQ0KKDk6MDDvvZ4xNzozMCDl
-ubTkuK3nhKHkvJEg5bm05pyr5bm05aeL6Zmk44GPKQ0K4peP5LiK6KiY5Lul5aSW44Gu44Kr44O8
-44OJ5Lya5ZOh44GV44G+44Gv44CB44GK5omL5oyB44Gh44Gu44Kr44O844OJ5Yi46Z2i6KOP44Gr
-6KiY6LyJ44GuDQrjgIDjgIDjgIDjgIDjgIDjgIDjgqvjg7zjg4njgavplqLjgZnjgovjgYrllY/j
-gYTlkIjjgo/jgZvpm7voqbHnlarlj7fjgavjgYrjgYvjgZHjgY/jgaDjgZXjgYQNCuOAgOOAgOOA
-gOOAgOOAgA0K4pSX4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
-4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
-4pSB4pSB4pSB4pSbDQo=
+On Wed, Jan 26, 2022 at 03:56:44PM -0500, Yael Tiomkin wrote:
+> On Wed, Jan 26, 2022 at 9:51 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Wed, Jan 26, 2022 at 04:47:22PM +0200, Jarkko Sakkinen wrote:
+> > > On Tue, Jan 18, 2022 at 01:26:05PM -0500, Martin Ross wrote:
+> > > > Hi Jarkko,
+> > > >
+> > > > I have been working with Yael on this project so I thought I might add
+> > > > a bit of background here around the use case that this series of
+> > > > patches is trying to address.
+> > > >
+> > > > At a high level we are trying to provide users of encryption that have
+> > > > key management hierarchies a better tradeoff between security and
+> > > > availability.  For available and performance reasons master keys often
+> > > > need to be released (or derived/wrapped keys created) outside of a KMS
+> > > > to clients (which may in turn further wrap those keys in a series of
+> > > > levels).  What we are trying to do is provide a mechanism where the
+> > > > wrapping/unwrapping of these keys is not dependent on a remote call at
+> > > > runtime.  e.g.  To unwrap a key if you are using AWS KMS or Google
+> > > > Service you need to make an RPC.  In practice to defend against
+> > > > availability or performance issues, designers end up building their
+> > > > own kms and effectively encrypting everything with a DEK.  The DEK
+> > > > encrypts same set as the master key thereby eliminating the security
+> > > > benefit of keeping the master key segregated in the first place.
+> >
+> > Mainly this part (would be enough to explain why it is there).
+> >
+> > BR, Jarkko
+> 
+> Hi Jarkko,
+> 
+> As for the commit message, WDYT about the following:
+> 
+> KEYS: encrypted: Instantiate key with user-provided decrypted data
+> 
+> For availability and performance reasons master keys often need to be
+> released outside of a KMS to clients. It would be beneficial to provide a
+> mechanism where the wrapping/unwrapping of DEKs is not dependent
+> on a remote call at runtime yet security is not (or only minimally) compromised.
+> Master keys could be securely stored in the Kernel and be used to wrap/unwrap
+> keys from userspace.
+> 
+> The encrypted.c class supports instantiation of encrypted keys with
+> either an already-encrypted key material, or by generating new key
+> material based on random numbers. This patch defines a new datablob
+> format: [<format>] <master-key name> <decrypted data length>
+> <decrypted data> that allows to inject and encrypt user-provided
+> decrypted data.
+> 
+> 
+> I want to make sure we're on the same page before publishing a new version.
+> 
+> Thanks,
+> Yael
 
+It looks really good.
 
+/Jarkko
