@@ -2,114 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B24A4AAED9
-	for <lists+keyrings@lfdr.de>; Sun,  6 Feb 2022 11:37:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67B494AB630
+	for <lists+keyrings@lfdr.de>; Mon,  7 Feb 2022 09:12:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233156AbiBFKhL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 6 Feb 2022 05:37:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48744 "EHLO
+        id S229509AbiBGHwm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Feb 2022 02:52:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbiBFKhK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 6 Feb 2022 05:37:10 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561D3C061A73
-        for <keyrings@vger.kernel.org>; Sun,  6 Feb 2022 02:37:10 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1nGeuc-0002la-07; Sun, 06 Feb 2022 11:36:54 +0100
-Message-ID: <a45010a4-2b86-aa22-d7bd-3c4839356cf1@pengutronix.de>
-Date:   Sun, 6 Feb 2022 11:36:48 +0100
+        with ESMTP id S243745AbiBGHpQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Feb 2022 02:45:16 -0500
+Received: from out199-16.us.a.mail.aliyun.com (out199-16.us.a.mail.aliyun.com [47.90.199.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33104C043181;
+        Sun,  6 Feb 2022 23:45:13 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0V3leFSM_1644219908;
+Received: from 30.240.99.213(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0V3leFSM_1644219908)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 07 Feb 2022 15:45:09 +0800
+Message-ID: <dada6beb-bc68-4fe0-82ad-ac502e8c1512@linux.alibaba.com>
+Date:   Mon, 7 Feb 2022 15:45:07 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] KEYS: trusted: fix crash when TPM/TEE are built as module
-To:     Tong Zhang <ztong0001@gmail.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andreas Rammhold <andreas@rammhold.de>
-References: <20220204200342.48665-1-ztong0001@gmail.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.5.0
+Subject: Re: [PATCH 0/2] Fix bugs in public_key_verify_signature()
 Content-Language: en-US
-In-Reply-To: <20220204200342.48665-1-ztong0001@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Eric Biggers <ebiggers@kernel.org>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>
+Cc:     linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Vitaly Chikunov <vt@altlinux.org>,
+        Mimi Zohar <zohar@linux.ibm.com>
+References: <20220201003414.55380-1-ebiggers@kernel.org>
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+In-Reply-To: <20220201003414.55380-1-ebiggers@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Tong,
+Hi Eric,
 
-On 04.02.22 21:03, Tong Zhang wrote:
-> when TCG_TPM and TEE are built as module, trusted_key_sources will be an
-> empty array, loading it won't do what it is supposed to do and unloading
-> it will cause kernel crash.
-
-Jarkko reported picking up an equivalent fix two months ago:
-https://lkml.kernel.org/keyrings/YadRAWbl2aiapf8l@iki.fi/
-
-But it seems to have never made it to Linus.
-
-Cheers,
-Ahmad
-
+On 2/1/22 8:34 AM, Eric Biggers wrote:
+> This patchset fixes some bugs in public_key_verify_signature() where it
+> could be tricked into using the wrong algorithm, as was discussed at
+> https://lore.kernel.org/linux-integrity/20211202215507.298415-1-zohar@linux.ibm.com/T/#t
 > 
-> To reproduce:
-> $ modprobe trusted
-> $ modprobe -r trusted
+> I'd appreciate it if the people who care about each of the supported
+> public key algorithms (RSA, ECDSA, ECRDSA, and SM2) would test this
+> patchset to make sure it still works for their use case(s).  I've tested
+> that X.509 and PKCS#7 with RSA still work.
 > 
-> [  173.749423] Unable to handle kernel NULL pointer dereference at virtual address 00000000
-> [  173.755268] Backtrace:
-> [  173.755378]  cleanup_trusted [trusted] from sys_delete_module+0x15c/0x22c
-> [  173.755589]  sys_delete_module from ret_fast_syscall+0x0/0x1c
+> Note, I have *not* included a fix for SM2 being implemented incorrectly.
+> That is another bug that I pointed out in the above thread.  I think
+> that bug is for the people who actually care about SM2.
 > 
-> To fix this issue, we also need to check CONFIG_TCG_TPM_MODULE and
-> CONFIG_TEE_MODULE.
+> This applies to v5.17-rc2.
 > 
-> Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
-> Signed-off-by: Tong Zhang <ztong0001@gmail.com>
-> ---
->  security/keys/trusted-keys/trusted_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-> index d5c891d8d353..b3a3b2f2d4a4 100644
-> --- a/security/keys/trusted-keys/trusted_core.c
-> +++ b/security/keys/trusted-keys/trusted_core.c
-> @@ -27,10 +27,10 @@ module_param_named(source, trusted_key_source, charp, 0);
->  MODULE_PARM_DESC(source, "Select trusted keys source (tpm or tee)");
->  
->  static const struct trusted_key_source trusted_key_sources[] = {
-> -#if defined(CONFIG_TCG_TPM)
-> +#if defined(CONFIG_TCG_TPM) || defined(CONFIG_TCG_TPM_MODULE)
->  	{ "tpm", &trusted_key_tpm_ops },
->  #endif
-> -#if defined(CONFIG_TEE)
-> +#if defined(CONFIG_TEE) || defined(CONFIG_TEE_MODULE)
->  	{ "tee", &trusted_key_tee_ops },
->  #endif
->  };
 
+Sorry for the late reply, thanks for your work.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I did the test and the x509 certificate for SM2-with-SM3 is working
+fine.
+
+Tested-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+
+Regarding the algorithm information in the signature data used by SM2,
+I will add a patch to fix this issue, thanks for pointing it out.
+
+Best regards,
+Tianjia
+
+> Eric Biggers (2):
+>    KEYS: asymmetric: enforce that sig algo matches key algo
+>    KEYS: asymmetric: properly validate hash_algo and encoding
+> 
+>   crypto/asymmetric_keys/pkcs7_verify.c    |   6 --
+>   crypto/asymmetric_keys/public_key.c      | 126 ++++++++++++++++-------
+>   crypto/asymmetric_keys/x509_public_key.c |   6 --
+>   3 files changed, 91 insertions(+), 47 deletions(-)
+> 
+> 
+> base-commit: 26291c54e111ff6ba87a164d85d4a4e134b7315c
