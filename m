@@ -2,123 +2,148 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C3134AD6CA
-	for <lists+keyrings@lfdr.de>; Tue,  8 Feb 2022 12:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25ADE4AD6C4
+	for <lists+keyrings@lfdr.de>; Tue,  8 Feb 2022 12:29:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349955AbiBHL3p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 8 Feb 2022 06:29:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45656 "EHLO
+        id S1346515AbiBHL3i (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 8 Feb 2022 06:29:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355553AbiBHJps (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Feb 2022 04:45:48 -0500
-Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83BD7C03FEC0;
-        Tue,  8 Feb 2022 01:45:46 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R371e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V3vxzfq_1644313541;
-Received: from 30.240.99.213(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0V3vxzfq_1644313541)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 08 Feb 2022 17:45:42 +0800
-Message-ID: <8ca7c447-3fd6-612b-f903-3111eaddf6e6@linux.alibaba.com>
-Date:   Tue, 8 Feb 2022 17:45:40 +0800
+        with ESMTP id S236903AbiBHLB3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Feb 2022 06:01:29 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CEE0C03FEC5
+        for <keyrings@vger.kernel.org>; Tue,  8 Feb 2022 03:01:27 -0800 (PST)
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 8F8743F199
+        for <keyrings@vger.kernel.org>; Tue,  8 Feb 2022 11:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1644318085;
+        bh=h+cFJMi1xb4flwS0iIFDQtCt6NF1A16pKH4nxV2+IDA=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To;
+        b=GwoGAkqAffHGGy2fiA8iRsaYhkQspGwEEPLbENk8R/ULWYX0J6K1vWDiVnbxNbC1J
+         hdf9+CtU9rNfRz5i2MzpG/Dbk62/2aPaz/KFRooiyDny+slXveSaamtLx1z21PbM0R
+         sDmyGe3+UgL4ArRP0SKseuA+tGKo8fchyjN2+WZS2XV+guEGWMbXDuNCYhonQsKIHf
+         BScLrDlAYsYo7B2cNpxSbeqScU9myWXjRD8J7pTO0UnVtLh6GbRByzdXjT2J6pdPsM
+         HnM+u6qymF7tnSxgFHF82lNYaMT/pzrzEGpc3ytYbOe+p5ud63LDa6D7Dd/NDGq+c/
+         UAnYbRQHm/4XQ==
+Received: by mail-ej1-f72.google.com with SMTP id aj9-20020a1709069a4900b006cd205be806so682163ejc.18
+        for <keyrings@vger.kernel.org>; Tue, 08 Feb 2022 03:01:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :accept-language:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=h+cFJMi1xb4flwS0iIFDQtCt6NF1A16pKH4nxV2+IDA=;
+        b=K8/IsBSoJ5stUhlbc3jZ+Htw7VBovOwmYnfWDOmSBpTtEMSsgm4LuxNYIVV5XjtpLl
+         jEXcC6LitNNu5TuToPFoJQdlrTgPz/MRW6bcqRIBLydEee1YrK2OUvvd8sIlGJzrGKLO
+         mFTjYOTgU34vPh8y4SeMt/c8S8RNLskNxrG6L+H60jZAsLrr8QgK2RRsC8a7aNte8n0q
+         f4OHRLMLQ0bdG7R0+JkKybeEkyn2jl2aB8k0wfQHDqaT+Uiy4PGR+9LO5AHiShWNzPXy
+         1BDomduixRwgKZzS7r2ByyGdF+tgbcdRZVcIWuBoIkotfPfRCF6OrUJ6Jr6SU8GaSDra
+         MQiw==
+X-Gm-Message-State: AOAM531MHd9zyQ/Npn5JUphLwYnQXqaEkNbKjaf4rTOpimF3a0H/XOhd
+        2n+9/yf+BzzHFN1zKJxOvw6wTefpnpirr4t5y3ep5Q0ii1d1iD0OsK/T4DbpHWXjRPDi3wlk102
+        J7dbIii0bUlkr5FNjqCUpwFOWBYfK9w55aeEp
+X-Received: by 2002:a17:907:ca6:: with SMTP id gi38mr3161164ejc.353.1644318085033;
+        Tue, 08 Feb 2022 03:01:25 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwxACgnXnX7fIEVvj4qxHqqw8VFmaLxZX4IbrZlxGRyJ060h9XkxffeP1tfwABTxY8px7NzyA==
+X-Received: by 2002:a17:907:ca6:: with SMTP id gi38mr3161129ejc.353.1644318084766;
+        Tue, 08 Feb 2022 03:01:24 -0800 (PST)
+Received: from jak-t480s ([2a02:908:2816:fb20:f0af:b464:53a3:b411])
+        by smtp.gmail.com with ESMTPSA id g15sm537137edz.100.2022.02.08.03.01.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Feb 2022 03:01:24 -0800 (PST)
+Date:   Tue, 8 Feb 2022 12:01:22 +0100
+From:   Julian Andres Klode <julian.klode@canonical.com>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        Ben Hutchings <ben@decadent.org.uk>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        efi@lists.einval.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        debian-kernel <debian-kernel@lists.debian.org>
+Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
+ signing key
+Message-ID: <20220208110122.2z4cmbqexmnxuxld@jak-t480s>
+Accept-Language: de-DE, de, en-GB, en-US, en
+References: <20211218031122.4117631-1-willy@infradead.org>
+ <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+ <YdSOV7LL0vWCMcWl@casper.infradead.org>
+ <CAK7LNAQgixJSnDUMfjc+tg90oMdVoh+i5faEn-rqgmHR3Bk6dQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.0
-Subject: Re: [PATCH] KEYS: asymmetric: enforce SM2 signature use pkey algo
-Content-Language: en-US
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        Vitaly Chikunov <vt@altlinux.org>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org
-References: <20220201003414.55380-1-ebiggers@kernel.org>
- <20220207114327.7929-1-tianjia.zhang@linux.alibaba.com>
- <YgIBKeFkiKtD1unK@sol.localdomain>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-In-Reply-To: <YgIBKeFkiKtD1unK@sol.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAQgixJSnDUMfjc+tg90oMdVoh+i5faEn-rqgmHR3Bk6dQ@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Eric,
-
-On 2/8/22 1:35 PM, Eric Biggers wrote:
-> On Mon, Feb 07, 2022 at 07:43:27PM +0800, Tianjia Zhang wrote:
->> The signature verification of SM2 needs to add the Za value and
->> recalculate sig->digest, which requires the detection of the pkey_algo
->> in public_key_verify_signature(). As Eric Biggers said, the pkey_algo
->> field in sig is attacker-controlled and should be use pkey->pkey_algo
->> instead of sig->pkey_algo, and secondly, if sig->pkey_algo is NULL, it
->> will also cause signature verification failure.
->>
->> The software_key_determine_akcipher() already forces the algorithms
->> are matched, so the SM3 algorithm is enforced in the SM2 signature,
->> although this has been checked, we still avoid using any algorithm
->> information in the signature as input.
->>
->> Reported-by: Eric Biggers <ebiggers@google.com>
->> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+On Mon, Feb 07, 2022 at 09:33:46PM +0900, Masahiro Yamada wrote:
+> Added "Ben Hutchings <ben@decadent.org.uk>"
 > 
-> Can you add a Fixes tag?
+> On Wed, Jan 5, 2022 at 3:13 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
+> > > > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
+> > > > +key=
+> > > > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
+> > > > +       cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
+> > > > +       if [ ! -f $cert ]; then
+> > > > +               cert=$srctree/$cert
+> > > > +       fi
+> > > > +
+> > > > +       key=${cert%pem}priv
+> > > > +       if [ ! -f $key ]; then
+> > > > +               key=$cert
+> > > > +       fi
+> > >
+> > >
+> > > I still do not understand this part.
+> > >
+> > > It is true that the Debian document you referred to creates separate files
+> > > for the key and the certificate:
+> > >   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
+> > > DER -out MOK.der -days 36500 -subj "/CN=My Name/" -nodes
+> > >
+> > > but, is such a use-case possible in Kbuild?
+> >
+> > If someone has followed the Debian instructions for creating a MOK,
+> > then they will have two separate files.  We should support both the case
+> > where someone has created a Debian MOK and the case where someone has
+> > used Kbuild to create this foolish blob with both private and public
+> > key in one file.
 > 
-
-Thanks, the v2 patch with Fixes tag added has been appended to your
-v2 series.
-
->> ---
->>   crypto/asymmetric_keys/public_key.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
->> index a603ee8afdb8..ea9a5501f87e 100644
->> --- a/crypto/asymmetric_keys/public_key.c
->> +++ b/crypto/asymmetric_keys/public_key.c
->> @@ -309,7 +309,8 @@ static int cert_sig_digest_update(const struct public_key_signature *sig,
->>   	if (ret)
->>   		return ret;
->>   
->> -	tfm = crypto_alloc_shash(sig->hash_algo, 0, 0);
->> +	/* SM2 signatures always use the SM3 hash algorithm */
->> +	tfm = crypto_alloc_shash("sm3", 0, 0);
->>   	if (IS_ERR(tfm))
->>   		return PTR_ERR(tfm);
->>   
->> @@ -414,8 +415,7 @@ int public_key_verify_signature(const struct public_key *pkey,
->>   	if (ret)
->>   		goto error_free_key;
->>   
->> -	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") == 0 &&
->> -	    sig->data_size) {
->> +	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
->>   		ret = cert_sig_digest_update(sig, tfm);
->>   		if (ret)
->>   			goto error_free_key;
->> -- 
+> But, this patch is doing different things than the Debian document.
 > 
-> This is an improvement, but do you also have a plan to address the problem where
-> the code allows the "Za" hash step to be skipped?  The definitions of SM2 that I
-> could find require that step.  So, it is unclear that the algorithm with that
-> step skipped is still SM2, and how its security relates to that of the SM2
-> algorithm as actually defined.
 > 
-> - Eric
-The design of this Za has indeed brought us a lot of trouble, which
-makes the two separate steps of calculating the hash and signature
-forced to be coupled together. At present, it is a better way to design
-skipping Za as an option. I will try to do this, which of course also
-includes application layer libraries, like openssl.
+> The Debian document you referred to says:
+>   "Ubuntu puts its MOK key under /var/lib/shim-signed/mok/ and some
+>    software such as Oracle's virtualbox package expect the key there
+>    so we follow suit (see 989463 for reference) and put it at the same place"
+> 
+> 
+> 
+> In Debian, MOK is generated under /var/lib/shim-signed/mok/,
+> and its primary use is for signing the kernel.
+> Then, you can reuse it for signing modules as well.
 
-Best regards,
-Tianjia
+It's worth pointing out that in Ubuntu, the generated MOK key
+is for module signing only (extended key usage 1.3.6.1.4.1.2312.16.1.2),
+kernels signed with it will NOT be bootable.
+
+-- 
+debian developer - deb.li/jak | jak-linux.org - free software dev
+ubuntu core developer                              i speak de, en
