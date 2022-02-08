@@ -2,56 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FDD4AD4D7
-	for <lists+keyrings@lfdr.de>; Tue,  8 Feb 2022 10:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB9CB4AD4E0
+	for <lists+keyrings@lfdr.de>; Tue,  8 Feb 2022 10:30:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354483AbiBHJ2f (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 8 Feb 2022 04:28:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
+        id S1354729AbiBHJaL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 8 Feb 2022 04:30:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237653AbiBHJ2e (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Feb 2022 04:28:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E643CC03FEC0;
-        Tue,  8 Feb 2022 01:28:32 -0800 (PST)
+        with ESMTP id S1354765AbiBHJaI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Feb 2022 04:30:08 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52758C03FEC1;
+        Tue,  8 Feb 2022 01:30:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 81C35614C4;
-        Tue,  8 Feb 2022 09:28:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAC7C004E1;
-        Tue,  8 Feb 2022 09:28:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0E062B81904;
+        Tue,  8 Feb 2022 09:30:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBD5C004E1;
+        Tue,  8 Feb 2022 09:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644312511;
-        bh=xg6lF3WqgMKyMC4n+ayD5APVx6cp2PqDNjyejBcqeJY=;
+        s=k20201202; t=1644312601;
+        bh=sJbnbAI3ywBQ7hx30HFqlVdAKbjSjmRv7VYOn/IssGk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uqOPs70ARuits274PJBtl8AYteGVMbp1Q+Rcn46o0mE+MQ1hmG2FguFczvPl5d7/i
-         /TESayuhRAd1GIqhCiJIn2nkiZ70wMp3Vk/JkRr6hERDIyhpjuljH1MyzZft6uUzxO
-         7lNnEwWQ+3W+ZRKUaVcLlArJSQl9DxA/W4hL0eNF/lQcXLL1JxrI0nHDVTXgR6kiVK
-         et5vFWP7sG3fEO1CRvAc4tHHnFmC0FpppfFWZTTVfPOxoLOef/cw+AyUlZPItgecUL
-         GlTPzZXiL1HwAYzRQGbON1NkCwL7sVvjBXbbwVop09qk0OdM/7RV+hRA+bkYki8ZQ9
-         JMbC9rhwzp1zQ==
-Date:   Tue, 8 Feb 2022 10:28:56 +0100
+        b=K0l/w9CHwNMnI6/9cwaN+5LXE0+L7wKw1mduHWwFts752hr/etqzO3avLRsZ+4UtW
+         gMYnKot+uHjOiNtu3b5CgP9SPfMHblTTrG8vsUxbQM9vHd3m+h5M+pjrkmfAOjoTFM
+         VQ1uUXPn+zNWJA2p9xgqx2p1l2DkIZoFYKXEVqNmh15Fr1jmLRCvEEnELPzJOK43Rt
+         +8kPLyV/LkaDUPGHLvBlS59w7/pDoZsrpjFAliOazqXRIaCasJYg9bEE9W3F07r65N
+         XOHaqyWGNnYo53MspwRti3haAZ+ejLKjFBerHS9rsFRU+pcMA3oUUtgMaenOHeuJyI
+         1k90G1sRylq8Q==
+Date:   Tue, 8 Feb 2022 10:30:27 +0100
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
-        dwmw2@infradead.org, ardb@kernel.org, jmorris@namei.org,
-        serge@hallyn.com, nayna@linux.ibm.com, keescook@chromium.org,
-        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
-        konrad.wilk@oracle.com
-Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
-Message-ID: <YgI32LAFgGSW6ugh@iki.fi>
-References: <20220126025834.255493-1-eric.snowberg@oracle.com>
- <YfFP6OHqBVNWKL2C@iki.fi>
- <YfFTf6vIpNMIrwH0@iki.fi>
- <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     keyrings@vger.kernel.org, Denis Kenzior <denkenz@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        James Morris <james.morris@microsoft.com>,
+        linux-crypto@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] KEYS: asym_tpm: fix buffer overreads in
+ extract_key_parameters()
+Message-ID: <YgI4M88wvxcY41RK@iki.fi>
+References: <20220113235440.90439-1-ebiggers@kernel.org>
+ <20220113235440.90439-2-ebiggers@kernel.org>
+ <YeM/YIUTEwL4jNf3@iki.fi>
+ <Yedigyl+WNhB58MO@sol.localdomain>
+ <YfFY/trrVl3vse5I@iki.fi>
+ <YfFZPbKkgYJGWu1Q@iki.fi>
+ <YfQ9PEp9zi+xWvQk@sol.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+In-Reply-To: <YfQ9PEp9zi+xWvQk@sol.localdomain>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,56 +63,40 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 05:06:09PM -0500, Mimi Zohar wrote:
-> Hi Jarkko,
-> 
-> > > Thank you. I'll pick these soon. Is there any objections?
-> 
-> No objections.
+On Fri, Jan 28, 2022 at 11:00:12AM -0800, Eric Biggers wrote:
+> On Wed, Jan 26, 2022 at 04:22:53PM +0200, Jarkko Sakkinen wrote:
+> > On Wed, Jan 26, 2022 at 04:21:53PM +0200, Jarkko Sakkinen wrote:
+> > > On Tue, Jan 18, 2022 at 04:59:47PM -0800, Eric Biggers wrote:
+> > > > On Sat, Jan 15, 2022 at 11:40:48PM +0200, Jarkko Sakkinen wrote:
+> > > > > > 
+> > > > > > - Avoid integer overflows when validating size fields; 'sz + 12' and
+> > > > > >   '4 + sz' overflowed if 'sz' is near U32_MAX.
+> > > > > 
+> > > > > So we have a struct tpm_header in include/linux/tpm.h. It would be way
+> > > > > more informative to use sizeof(struct tpm_header) than number 12, even
+> > > > > if the patch does not otherwise use the struct. It tells what it is, 12
+> > > > > does not.
+> > > > 
+> > > > I don't think that would be an improvement, given that the code is using
+> > > > hard-coded offsets.  If it's reading 4 bytes from cur + 8, it's much easier to
+> > > > understand that it needs 12 bytes than 'sizeof(struct tpm_header)' bytes.
+> > > > 
+> > > > I'd certainly encourage whoever is maintaining this code to change it to use
+> > > > structs instead, but that's not what this patch is meant to do.
+> > > 
+> > > I would consider dropping asym_tpm as it has no practical use cases
+> > > existing.
 > > 
-> > Mimi brought up that we need a MAINTAINERS update for this and also
-> > .platform.
-> > 
-> > We have these:
-> > 
-> > - KEYS/KEYRINGS
-> > - CERTIFICATE HANDLING
-> > 
-> > I would put them under KEYRINGS for now and would not consider further
-> > subdivision for the moment.
+> > At least I have zero motivation to maintain it as it does not meet
+> > any quality standards and is based on insecure crypto algorithms.
+> > I neither have participated to its review process.
 > 
-> IMA has dependencies on the platform_certs/ and now on the new .machine
-> keyring.  Just adding "F: security/integrity/platform_certs/" to the
-> KEYS/KEYRINGS record, ignores that dependency.  The discussion wouldn't
-> even be on the linux-integrity mailing list.
-> 
-> Existing requirement:
-> - The keys on the .platform keyring are limited to verifying the kexec
-> image.
-> 
-> New requirements based on Eric Snowbergs' patch set:
-> - When IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY is enabled,
-> the MOK keys will not be loaded directly onto the .machine keyring or
-> indirectly onto the .secondary_trusted_keys keyring.
-> 
-> - Only when a new IMA Kconfig explicitly allows the keys on the
-> .machine keyrings, will the CA keys stored in MOK be loaded onto the
-> .machine keyring.
-> 
-> Unfortunately I don't think there is any choice, but to define a new
-> MAINTAINERS entry.  Perhaps something along the lines of:
-> 
-> KEYS/KEYRINGS_INTEGRITY
-> M:     Jarkko Sakkinen <jarkko@kernel.org>
-> M:     Mimi Zohar <zohar@linux.ibm.com>
-> L:      keyrings@vger.kernel.org
-> L:      linux-integrity@vger.kernel.org
-> F:      security/integrity/platform_certs
+> Fair enough, I'll send a patch to remove it then.
 
-WFM. BTW, the patches are now in my tree:
+It is IMHO. I mean having this advertising insecure ways to to do crypto.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
+Thank you.
 
-I can add any tags requested. I'll mirror this at some point to linux-next.
+PS. My latency is because I've been moving to a new job. It is temporary.
 
 /Jarkko
