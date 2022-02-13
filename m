@@ -2,153 +2,193 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5824B3A3E
-	for <lists+keyrings@lfdr.de>; Sun, 13 Feb 2022 09:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 717C54B3CA2
+	for <lists+keyrings@lfdr.de>; Sun, 13 Feb 2022 18:51:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233719AbiBMIgw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 13 Feb 2022 03:36:52 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51890 "EHLO
+        id S237519AbiBMRvq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 13 Feb 2022 12:51:46 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiBMIgw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Feb 2022 03:36:52 -0500
-Received: from IND01-MA1-obe.outbound.protection.outlook.com (mail-ma1ind01olkn0166.outbound.protection.outlook.com [104.47.100.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1505E15F;
-        Sun, 13 Feb 2022 00:36:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dCtB2KuVIczv+VQgLzb0LYjvlZ06e2sO1PnNwM07RMhlol3nBznjB+d194kWI4IVbQkCLniFTsWXp7ndrFzftn/rl7rlha0OqZAhxp20vJ3LsltMeGlnbVXPm3PVutLPdbX+iJ3k/rz0M1nh3DlG0UqF56Bq0UTe/cXkkYfG68e/Ndzk8NzVIYZeZQpUvmilLq9wly2VMt933mYHQEigCG8//BP0TiAJ9VZ4DXGHvButKriozQCoEVkvdXDBFLWCCI0tYyFjVP943oObZ6RB0Moqx9ti3ncqOB6EJdthenfzPj5LftGRnYdq6pBxQIMy9U/L1Cgr+1DIBUOr/OElHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hofoMKxDqk66TdQGEat0pfTaeLDCXiFpceuu9kwAeUQ=;
- b=isJVjZQyMKbIGg1ifresvq7Y5/njKzjESBVjDcE8EV/YnxBjrWZl7zYLEgbzx12/FsrV7gRVXR4r7QmokWHz98Hq1C/9wYjagLb2bJMkuoIi9rfJzL4L3Q9fhFlg6qbAZRysayCsRL5uLgI+7Ykcg7sDNAcZBfI9p3pUimFvTSZoUZola+UkPv56KVlBbiT7V1n+rrmNGoJg2i5dfMURjdGmVqc5a5zrAr6dwn9ALLD9E4r+WvVQdk2D3M/ZbB3rAxWmp8jajNSDIHmnlMQJn2zAnKLf2wf44S7zAUVQKHOosrlSlX8LqzJUMTAboE0JPrGUEFA8GlGgBFPe9ug4cA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hofoMKxDqk66TdQGEat0pfTaeLDCXiFpceuu9kwAeUQ=;
- b=KgQQe3P/xxyg5184Qen7regAZEwI/23Wb8nLoHz6uClXWZ/cfAdQLGE8AWXyDcy0TNWYVJeSc3KG/y91cKiM2a7Dx1QtVkDiiR7DjBVjAg2r6csD9g/pN1Pki1Ar/ONJNPFJdJPquX1GwJHEvct7oCfpHCAwGY3Blc6r23yi49EUOJIpnNi25D3xz84zGyYsMkvr9b3JHQAynXFJM3TXTW7Zdq1tByNgK7B7zPWousWAFXprCGK3D/j6fw48xk6jlV2DLzyDe6ka+JlngDtjC2LMVVUz6tSdO4Pd3ruZBiCUz1dWle+zkR1RuO4y0reZIslbuY+u1qDy9DUd3ErpFA==
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
- by BM1PR01MB2993.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:46::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Sun, 13 Feb
- 2022 08:36:38 +0000
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::d19b:7cd1:3760:b055]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::d19b:7cd1:3760:b055%9]) with mapi id 15.20.4975.011; Sun, 13 Feb 2022
- 08:36:38 +0000
-From:   Aditya Garg <gargaditya08@live.com>
-To:     Lukas Wunner <lukas@wunner.de>
-CC:     David Laight <David.Laight@ACULAB.COM>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Jeremy Kerr <jk@ozlabs.org>,
-        "joeyli.kernel@gmail.com" <joeyli.kernel@gmail.com>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "eric.snowberg@oracle.com" <eric.snowberg@oracle.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "jlee@suse.com" <jlee@suse.com>,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "mic@digikod.net" <mic@digikod.net>,
-        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        Orlando Chamberlain <redecorating@protonmail.com>,
-        Aun-Ali Zaidi <admin@kodeit.net>
-Subject: Re: [PATCH v3] efi: Do not import certificates from UEFI Secure Boot
- for T2 Macs
-Thread-Topic: [PATCH v3] efi: Do not import certificates from UEFI Secure Boot
- for T2 Macs
-Thread-Index: AQHYHmuXCUX8clA/f0+kyOomS1U+nayRHM0AgAAP+oA=
-Date:   Sun, 13 Feb 2022 08:36:37 +0000
-Message-ID: <96399AA5-F014-4817-B9E0-B6A988B6268E@live.com>
-References: <9D0C961D-9999-4C41-A44B-22FEAF0DAB7F@live.com>
- <755cffe1dfaf43ea87cfeea124160fe0@AcuMS.aculab.com>
- <B6D697AB-2AC5-4925-8300-26BBB4AC3D99@live.com>
- <20103919-A276-4CA6-B1AD-6E45DB58500B@live.com>
- <7038A8ED-AC52-4966-836B-7B346713AEE9@live.com>
- <20220213073924.GA7648@wunner.de>
-In-Reply-To: <20220213073924.GA7648@wunner.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [rd215yZdXrhSoV97/WLyInrsHy12UGqaVGhhnEKj0aaMpPxYdIm89zqHh6UQEygz]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 21f3195c-797d-4103-12d6-08d9eecbf391
-x-ms-traffictypediagnostic: BM1PR01MB2993:EE_
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: S0PhH3DFgCCWk5+9uxUiWsrD/S0QFyWKSGVr8L222YQ56GlPEaLC2l0F5pTFpbQiznM/C6AOACqBex3MpSjbsIDtNa8lEVj1VQFEGOenjjpwv1xZgQ5bNnOF4AaD1tIi1xqaIWefAC+hvsJ7teOahtvUKqGpM1cAVgFPRs+WNMiTY9oSPYdZWnOOKem+BFZ5D4o74ZL1jr4U9HkQmJimORqKObb/2CVJUMfKwlkce7e5DA0qBH6GUOoBJocBEI4BrK01SE05jjLX5CMP0/BoYqvpIBY3x0TwipLmRv2iiJL/m63i07zgk6gkGBAZOnYOQfmh1MSMn85Bvvwe6w80zpt2NIfOPqEYdyQTT0AfTcFP5t/ZXZQq0Hsb5+kbR3chBkXuVQzK/buc6/bwKodA9xgad8V55xT2k7Cd2SbfDBhOy5L5d2Syc8CMlERgsgiqdCt6KNOeaJYB9J9VXhi1iP/A1eD53fexbcb3P0VTjIOxqhljFZA2IoqkbyGSGvpY6iIcWCXhbT+PSbDVlVukkJ7kJ1h64ksBjw2tV9XkU/opl2chmvvExHVIM0Z/BXbLaKtEj3uVKZ3TE9uXCQEy0Q==
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?LzNwVGwveDZucVI1aUx4eFVnMkxTTDlTa1l4M1NGN3pGNDVrclBYNFZZVm56?=
- =?utf-8?B?NGZ2cDk1OW5GdlV1UEdKbWRrWEQ4V2JvRi8vVzlnb3pOMTVNbU1iSE8wL3hu?=
- =?utf-8?B?L3RtYWV2T3I3Z1pCOXJxV3VpQzBWU2Q3OXljMks4bE9CR3RBSEx5RWNiQjJZ?=
- =?utf-8?B?WnNXUG11YjNNNnBXcExLTytrZzcxMnFOaG9DdzdSRmRDYTRBK0R1eW1PNG9h?=
- =?utf-8?B?YWt5SHNqTFZSQzd0VWJoWGladEUrdGVHTk9RSW0ydC9TaXlZQVFpellydFZK?=
- =?utf-8?B?Wnd1eTRId1FJM2dnL0ZKWEpFUTVxcDBubmZKd0x1UGM2a1ZtNm41UDRTWEVu?=
- =?utf-8?B?aDFlSGV2bkRrQ2hsSUlXZjJnNnVBRGdHQytBS1YraU0wN29kYmpIMWFJeDZ2?=
- =?utf-8?B?alhabFk3dFVBaVpUc2E3TUttYUZBWEtBQzZDSWRuSU1YTlB1clVnZDlnZGpw?=
- =?utf-8?B?QXhKTjNOQW0yZ3ZvYm9MQVdwZE5VUDNwblhWUUx5SFczbTdHdktvOFYyWURz?=
- =?utf-8?B?NmtyZXVTSWZMWHRqcHZHZlRyWHRxQ2NTMXR0VElLY0hGeHYyZGVvRzBzY3Vh?=
- =?utf-8?B?bnFYL3NqYUp2VHdWZ1RuZWx1NFMvR1hSUC9xZit6Nk4vcFRIQTB5L2VvVDhu?=
- =?utf-8?B?VmhCMzYzVkg0QnMvQ2RhTlZMUVBaRlloUlRqbmVTZ3hhdE1kNHp5TFppT00y?=
- =?utf-8?B?YXFVVWlweU84OWtVTXE1dy81eVF4VVhmRkcxSlB1MStqcVhnVnRIRFFXOW1C?=
- =?utf-8?B?L0k2TTBKdDk4VDVTY3hOdXVoMXRNc2ZKdmIzeEtyQUlBRnZOakpwajRhOWd0?=
- =?utf-8?B?cnFMTVcraWlQWXlXTUZyZWVjdTZPcUZ3K3JjZHZyOFNPSkMwbnR4RmIyeGJa?=
- =?utf-8?B?clBQRUhxY3pDa1VBR2hTcGxVckdyaFFHTFRTSGJSS0NweFdFRDAxQytvaHRv?=
- =?utf-8?B?WElSOUxhUVFCSkE0V1c4K1dOYlROL0gvdCs0SjU2MU1UY3JVaHNSejgzMTA0?=
- =?utf-8?B?bnd2L0UwVFdnWXBsV0g0bVJjYXY5b0g4eitySGhkTDgxZExsU2xlRjROakZV?=
- =?utf-8?B?akViTmdaVHJFMHpvMlc3NVpFTS9TTnpTUlNvZ3dncFQ5ekdOcVlWdGNDTEJK?=
- =?utf-8?B?dktjQ0VBYWtmME10RVNBbW5SeXVEN3d0elhrcGF0dzNUMktVejFSSGRNdm1Y?=
- =?utf-8?B?c0luUHpKcjlKcmlLRXdHUUlXdzdreW56ZTFRZ1hCM21ybkJ5V0RkVlduRW9X?=
- =?utf-8?B?bDlCY2s2NkVkMmxkQ0pwcDhlL29hUW9RMXRxY0pVaEJuN0V5ZkZTWDNNdlNS?=
- =?utf-8?B?MnNWQzNDUXdOMHdjZVBxWkxuRFlQZ1c2U2x6aXdJaUphaUlCcUlHeERCVHRo?=
- =?utf-8?B?NlFKQ0FKMUw3cUE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B6134F423DF9B2489096816AFFFC88C4@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21f3195c-797d-4103-12d6-08d9eecbf391
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2022 08:36:37.8966
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BM1PR01MB2993
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231580AbiBMRvp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Feb 2022 12:51:45 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BC15A0B8;
+        Sun, 13 Feb 2022 09:51:39 -0800 (PST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21DEvUKg032201;
+        Sun, 13 Feb 2022 17:50:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=ljGnu5uOYQaHl1nPo2n2pEFc0He+WiMjy0EB3bb4xVY=;
+ b=CYAeo3soE6RuStkIaHmKMpNiai5cihSKV2bk3EVB+NYbRnDfew2ymWWXc204VTaFIHP5
+ kofuTuaqbxmTTFucnK/su1TFMXWXkxERF6JcpmBCsm5d+76cVn7ZjuNM+zwYJ7XXq67E
+ GnPERhytl/LMYAJLK6L37O4rXgKGWCcNca70huxJxH8BVyVmoEoURN4z0RH+wpEKXNSM
+ syZTBzKMgA9JV1R/hmN5KV+KuOVSv1WQI0+mHivArh1+7cwsfMaLC5AfV74RWltOyEQH
+ kyTHhsEm24UMi59Q9uXSLnm47Gp2gEwdJNt6v2vu3tcSUKYmvrciW/IXzlLbAPk92fUN zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3e7475t1x2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 13 Feb 2022 17:50:45 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21DHoi2i029058;
+        Sun, 13 Feb 2022 17:50:44 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3e7475t1wg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 13 Feb 2022 17:50:44 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21DHlebI015751;
+        Sun, 13 Feb 2022 17:50:42 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by ppma03fra.de.ibm.com with ESMTP id 3e64h9et2m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 13 Feb 2022 17:50:42 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 21DHoaW147317488
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 13 Feb 2022 17:50:36 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9D00B4C04E;
+        Sun, 13 Feb 2022 17:50:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D52074C044;
+        Sun, 13 Feb 2022 17:50:31 +0000 (GMT)
+Received: from sig-9-65-82-84.ibm.com (unknown [9.65.82.84])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sun, 13 Feb 2022 17:50:31 +0000 (GMT)
+Message-ID: <b49cb41873655f4fc1269faab5729111d55ce9da.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
+        Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, kexec@lists.infradead.org,
+        Philipp Rudo <prudo@redhat.com>,
+        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
+        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Frank van der Linden <fllinden@amazon.com>,
+        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Baoquan He <bhe@redhat.com>,
+        linux-security-module@vger.kernel.org
+Date:   Sun, 13 Feb 2022 12:50:31 -0500
+In-Reply-To: <20220209120154.GC3113@kunlun.suse.cz>
+References: <cover.1641900831.git.msuchanek@suse.de>
+         <d95f7c6865bcad5ee37dcbec240e79aa742f5e1d.1641900831.git.msuchanek@suse.de>
+         <b56fe3a2-b145-9d4e-acf2-4991204b3102@molgen.mpg.de>
+         <20220209120154.GC3113@kunlun.suse.cz>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Fz9cM9T58h_IIyXjwjjaFhI_FECO2xCo
+X-Proofpoint-ORIG-GUID: Pc1fQeK8JagJOLRcr98_--QyPz-FtBn0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-13_07,2022-02-11_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 mlxlogscore=999 bulkscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202130120
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-DQo+IA0KPiBUaGUgVDIgaXMgcmVwcmVzZW50ZWQgYnkgYSBQQ0kgZGV2aWNlIHdpdGggSUQgMTA2
-QjoxODAyLiAgSSB0aGluayBpdA0KPiB3b3VsZCBiZSBtb3JlIGVsZWdhbnQgdG8gc2Vuc2UgcHJl
-c2VuY2Ugb2YgdGhhdCBkZXZpY2UgaW5zdGVhZCBvZg0KPiBoYXJkY29kaW5nIGEgbG9uZyBkbWkg
-bGlzdCwgaS5lLjoNCj4gDQo+IHN0YXRpYyBib29sIGFwcGxlX3QyX3ByZXNlbnQodm9pZCkNCj4g
-ew0KPiAJc3RydWN0IHBjaV9kZXYgKnBkZXY7DQo+IA0KPiAJaWYgKCF4ODZfYXBwbGVfbWFjaGlu
-ZSkNCj4gCQlyZXR1cm4gZmFsc2U7DQo+IA0KPiAJcGRldiA9IHBjaV9nZXRfZGV2aWNlKFBDSV9W
-RU5ET1JfSURfQVBQTEUsIDB4MTgwMiwgTlVMTCk7DQo+IAlpZiAocGRldikgew0KPiAJCXBjaV9w
-dXRfZGV2KHBkZXYpOw0KPiAJCXJldHVybiB0cnVlOw0KPiAJfQ0KPiANCj4gCXJldHVybiBmYWxz
-ZTsNCj4gfQ0KDQpJ4oCZZCByYXRoZXIgcHJlZmVyIERNSSBjYXVzZSA6LQ0KMS4gVGhlcmUgYXJl
-IGNoYW5jZXMgdGhhdCBzb21lIG5vbiBUMiBNYWNzIG1heSByZXF1aXJlIHRoaXMgcXVpcmsgYXMg
-d2VsbC4gKEFmdGVyIGFsbCB3ZSBhcmUgdGFsa2luZyBhYm91dCBBcHBsZSkNCjIuIFRoZXJlIGFy
-ZSBzbGlnaHQgY2hhbmNlcyB0aGF0IHNvbWUgbm9uIEFwcGxlIE1hY2hpbmVzIG1heSByZXF1aXJl
-IHRoaXMgYXMgd2VsbA0KDQpJIGFsc28gYW0gbm90IHVzZWQgdG8gcGNpIGJhc2VkIHF1aXJrcywg
-bWFraW5nIGl0IGEgYml0IGRpZmZpY3VsdCBmb3IgbWUgdG8gbWFrZSBhIHBhdGNoIGJhc2VkIG9u
-IHRoYXQgOiguDQpUaGUgY29kZSBsZW5ndGggaXMgYW55d2F5cyBzaG9ydCBub3cuDQoNCg==
+Hi Michal,
+
+On Wed, 2022-02-09 at 13:01 +0100, Michal Suchánek wrote:
+> > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > > index dea74d7717c0..1cde9b6c5987 100644
+> > > --- a/arch/powerpc/Kconfig
+> > > +++ b/arch/powerpc/Kconfig
+> > > @@ -560,6 +560,22 @@ config KEXEC_FILE
+> > >   config ARCH_HAS_KEXEC_PURGATORY
+> > >     def_bool KEXEC_FILE
+> > > +config KEXEC_SIG
+> > > +   bool "Verify kernel signature during kexec_file_load() syscall"
+> > > +   depends on KEXEC_FILE && MODULE_SIG_FORMAT
+> > > +   help
+> > > +     This option makes kernel signature verification mandatory for
+> > > +     the kexec_file_load() syscall.
+> > > +
+> > > +     In addition to that option, you need to enable signature
+> > > +     verification for the corresponding kernel image type being
+> > > +     loaded in order for this to work.
+> > > +
+> > > +     Note: on powerpc IMA_ARCH_POLICY also implements kexec'ed kernel
+> > > +     verification. In addition IMA adds kernel hashes to the measurement
+> > > +     list, extends IMA PCR in the TPM, and implements kernel image
+> > > +     blacklist by hash.
+> > 
+> > So, what is the takeaway for the user? IMA_ARCH_POLICY is preferred? What is
+> > the disadvantage, and two implementations(?) needed then? More overhead?
+> 
+> IMA_KEXEC does more than KEXEC_SIG. The overhead is probably not big
+> unless you are trying to really minimize the kernel code size.
+> 
+> Arguably the simpler implementation hass less potential for bugs, too.
+> Both in code and in user configuration required to enable the feature.
+> 
+> Interestingly IMA_ARCH_POLICY depends on KEXEC_SIG rather than
+> IMA_KEXEC. Just mind-boggling.
+
+FYI, a soft boot doesn't clear the TPM PCRs.  To be able to verify the
+IMA measurement list after a kexec against a TPM quote, requires
+carrying the measurement list across kexec.
+
+The "IMA_KEXEC" config enables carrying the IMA measurement list across
+kexec.  It has nothing to do with verifying the appended signature. 
+That is based on kernel module appended signature code.
+
+> 
+> The main problem with IMA_KEXEC from my point of view is it is not portable.
+> To record the measurements TPM support is requireed which is not available on
+> all platforms.
+
+Measuring the kexec kernel image and extending the TPM with the
+measurement is required for trusted boot.  Boot loaders extend the
+TPM's BIOS measurements. Similarly, IMA does not require a TPM, but if
+one is available the kexec kernel image measurement is extended into
+the IMA measurement list.  Otherwise, IMA goes into "TPM by-pass" mode.
+
+> It does not support PE so it cannot be used on platforms
+> that use PE kernel signature format.
+
+True.  However, a kernel image with an appended signature may be
+kexec'ed, regardless of the architecture.  Because some boot loaders
+don't support appended signatures, from my point of view does not make
+IMA kexec support not portable.
+
+-- 
+thanks,
+
+Mimi
+
