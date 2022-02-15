@@ -2,279 +2,411 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7168F4B581E
-	for <lists+keyrings@lfdr.de>; Mon, 14 Feb 2022 18:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF024B6EBB
+	for <lists+keyrings@lfdr.de>; Tue, 15 Feb 2022 15:20:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233045AbiBNRKt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 14 Feb 2022 12:10:49 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43988 "EHLO
+        id S238585AbiBOOUS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Feb 2022 09:20:18 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232397AbiBNRKo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 14 Feb 2022 12:10:44 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A0E6517E;
-        Mon, 14 Feb 2022 09:10:36 -0800 (PST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21EGuNxd012523;
-        Mon, 14 Feb 2022 17:09:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=l1qY/KEWmdOMqmt+7QpJnh4JMsoqsWK/gOpMsLH3vhU=;
- b=iOBmuVvF67xHukzHUkqyir7qEu/gzPLzycgcWIzc7esx1oZwqXQy2lYJocb/8IOyCzNJ
- JfmQDr2/AzpfN4sxXg8FoHY1ry1JGbDUMSTQv3uC+1yOt6/VHNKnGReTXRn1YeGynbm6
- YpeFn5+LCzDu0HeXDL+RrFWsmTk/3mH9r0Lgd7X7wROxKnRTXtTnkya3r5P+uDQG+lsn
- vkSHj+xkBczZq6SzMwqxlyUflVXyYuGm98NMk3ZNiDOxC8hs9uw3RZ15Mt+KHBYnp7R/
- keCirXfZuEcoG0F5/Nrh28QOFpukDJjzIKpmMxIl7F/ccChLhk6MkDzGkSdh4OXRGjnM iA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4e4aus-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Feb 2022 17:09:56 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21EH8s3K012602;
-        Mon, 14 Feb 2022 17:09:56 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4e4ate-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Feb 2022 17:09:56 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21EH3ptd006254;
-        Mon, 14 Feb 2022 17:09:53 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma04ams.nl.ibm.com with ESMTP id 3e64h9qj1q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Feb 2022 17:09:53 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 21EH9itQ48103784
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Feb 2022 17:09:44 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6B5DBA4059;
-        Mon, 14 Feb 2022 17:09:44 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9B65BA404D;
-        Mon, 14 Feb 2022 17:09:39 +0000 (GMT)
-Received: from sig-9-65-94-151.ibm.com (unknown [9.65.94.151])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Mon, 14 Feb 2022 17:09:39 +0000 (GMT)
-Message-ID: <f324d8e04e4576d01325a4cfcad939abef29821b.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org, kexec@lists.infradead.org,
-        Philipp Rudo <prudo@redhat.com>,
-        Nayna <nayna@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
-        linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jessica Yu <jeyu@kernel.org>, linux-kernel@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Frank van der Linden <fllinden@amazon.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Daniel Axtens <dja@axtens.net>, buendgen@de.ibm.com,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Baoquan He <bhe@redhat.com>,
-        linux-security-module@vger.kernel.org
-Date:   Mon, 14 Feb 2022 12:09:39 -0500
-In-Reply-To: <20220214155524.GN3113@kunlun.suse.cz>
-References: <cover.1641900831.git.msuchanek@suse.de>
-         <d95f7c6865bcad5ee37dcbec240e79aa742f5e1d.1641900831.git.msuchanek@suse.de>
-         <cff97dbe262919ff709a5ad2c4af6a702cc72a95.camel@linux.ibm.com>
-         <a8d717a44e5e919676e9b1e197cac781db46da87.camel@linux.ibm.com>
-         <20220214155524.GN3113@kunlun.suse.cz>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+        with ESMTP id S238580AbiBOOUR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Feb 2022 09:20:17 -0500
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD31C7D4F
+        for <keyrings@vger.kernel.org>; Tue, 15 Feb 2022 06:20:06 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id j17-20020a25ec11000000b0061dabf74012so40920879ybh.15
+        for <keyrings@vger.kernel.org>; Tue, 15 Feb 2022 06:20:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=GUpyRZejn9Pwp27JxxD0pUffrRYlyMDKoKZilOQs1zg=;
+        b=ZT3OQfsZ54iVJEPKmgnr6hFCGXDZyAiFXDqjcgogSLta37V38o2S575RNzSUmFaYlQ
+         sBcNLxR0aousgBT7pc3TimkUjD7hG0UxRA+ol/5xFlFPc9A44J2+cwpB5isbrElaADWg
+         ByLLlcew3BUlw28GvalAoynFSY691tLCRPhJS44fdgw/GgNgksCzfvnRLd8hgCBNXyYj
+         QRziQIOlDb0mwfus4ltBYK1+uIRCUMDizFQqNkHeRs4I6MIkMvRGLgfai//StkfUZCGN
+         HrHjzFKmZFXD6mgE909pV+QiuO0WbjAuUvyoYKTF+F7vsye5L4YSOXSbWfYBWSQJcjbm
+         wHrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=GUpyRZejn9Pwp27JxxD0pUffrRYlyMDKoKZilOQs1zg=;
+        b=FSfGDiLsYRCXE6bFvtB18vmO9Y40gg7nAPj3Yl+sYKgLLPu2vBBoUrtboEiHqKJ2mk
+         PrTFs3Ly4ArsohxZk5LkXs8FLV94mOvSXVuZFWdebXgayWwxh30k5YVgIIoRrWVf8OVX
+         3uuP7MpXQlk0dI8qz8fKrK9YgyQrm0ZrxD2ahmhnAtLI+O0t/NkbRFFe3o003i8YmZzB
+         YKbMX+1UjgB17JYcaTIuGVIyk1fW3+dw0/nGmdq8pr9A7sCHfL7S/Ba0kgOVKBFh3bdM
+         S/LqM0outRN2K9SeS0TRjv/Vbut8nz2a+RDm3N/hqrnaeA/NpNqlDF3a1W4TMNIZ/3JM
+         qc5A==
+X-Gm-Message-State: AOAM532070HqWFtuwaUxwWxkRSc+7Ea4nTgt5PgQkE1CS3kIQn+qJcjW
+        a5uwlUuq1tQ//syvCichw0ZGCocr/Q==
+X-Google-Smtp-Source: ABdhPJzcCCkgAq2s1mmwNW6OZq/24SwP0p0I0cyzx87weaxppuFpiwOk92W7HltKnDkACdBa+pjsXQVyQQ==
+X-Received: from yaelt.nyc.corp.google.com ([2620:0:1003:415:4733:5913:aeb8:dca6])
+ (user=yaelt job=sendgmr) by 2002:a81:4417:: with SMTP id r23mr3907750ywa.443.1644934805301;
+ Tue, 15 Feb 2022 06:20:05 -0800 (PST)
+Date:   Tue, 15 Feb 2022 09:19:53 -0500
+Message-Id: <20220215141953.1557009-1-yaelt@google.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: U1aZDtPbNOEZaiWcjzBgyJkPBcT_272k
-X-Proofpoint-ORIG-GUID: EsCqYyegF9IoZXPxKwIORY0TvjlMSVhJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-14_07,2022-02-14_03,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=916 priorityscore=1501 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202140102
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mailer: git-send-email 2.35.1.265.g69c8d7142f-goog
+Subject: [PATCH v5] KEYS: encrypted: Instantiate key with user-provided
+ decrypted data
+From:   Yael Tzur <yaelt@google.com>
+To:     linux-integrity@vger.kernel.org
+Cc:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
+        corbet@lwn.net, dhowells@redhat.com, jmorris@namei.org,
+        serge@hallyn.com, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, Yael Tzur <yaelt@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2022-02-14 at 16:55 +0100, Michal Suchánek wrote:
-> Hello,
-> 
-> On Mon, Feb 14, 2022 at 10:14:16AM -0500, Mimi Zohar wrote:
-> > Hi Michal,
-> > 
-> > On Sun, 2022-02-13 at 21:59 -0500, Mimi Zohar wrote:
-> > 
-> > > 
-> > > On Tue, 2022-01-11 at 12:37 +0100, Michal Suchanek wrote:
-> > > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > > > index dea74d7717c0..1cde9b6c5987 100644
-> > > > --- a/arch/powerpc/Kconfig
-> > > > +++ b/arch/powerpc/Kconfig
-> > > > @@ -560,6 +560,22 @@ config KEXEC_FILE
-> > > >  config ARCH_HAS_KEXEC_PURGATORY
-> > > >         def_bool KEXEC_FILE
-> > > >  
-> > > > +config KEXEC_SIG
-> > > > +       bool "Verify kernel signature during kexec_file_load() syscall"
-> > > > +       depends on KEXEC_FILE && MODULE_SIG_FORMAT
-> > > > +       help
-> > > > +         This option makes kernel signature verification mandatory for
-> 
-> This is actually wrong. KEXEC_SIG makes it mandatory that any signature
-> that is appended is valid and made by a key that is part of the platform
-> keyiring (which is also wrong, built-in keys should be also accepted).
-> KEXEC_SIG_FORCE or an IMA policy makes it mandatory that the signature
-> is present.
+For availability and performance reasons master keys often need to be
+released outside of a Key Management Service (KMS) to clients. It
+would be beneficial to provide a mechanism where the
+wrapping/unwrapping of data encryption keys (DEKs) is not dependent
+on a remote call at runtime yet security is not (or only minimally)
+compromised. Master keys could be securely stored in the Kernel and
+be used to wrap/unwrap keys from Userspace.
 
-I'm aware of MODULE_SIG_FORCE, which isn't normally enabled by distros,
-but enabling MODULE_SIG allows MODULE_SIG_FORCE to be enabled on the
-boot command line.  In the IMA arch policies, if MODULE_SIG is enabled,
-it is then enforced, otherwise an IMA "appraise" policy rule is
-defined.  This rule would prevent the module_load syscall.
+The encrypted.c class supports instantiation of encrypted keys with
+either an already-encrypted key material, or by generating new key
+material based on random numbers. This patch defines a new datablob
+format: [<format>] <master-key name> <decrypted data length>
+<decrypted data> that allows to inject and encrypt user-provided
+decrypted data. The decrypted data must be hex-ascii encoded.
 
-I'm not aware of KEXEC_SIG_FORCE.  If there is such a Kconfig, then I
-assume it could work similarly.
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Yael Tzur <yaelt@google.com>
+---
 
-> 
-> > > > +         the kexec_file_load() syscall.
-> > > 
-> > > When KEXEC_SIG is enabled on other architectures, IMA does not define a
-> > > kexec 'appraise' policy rule.  Refer to the policy rules in
-> > > security/ima/ima_efi.c.  Similarly the kexec 'appraise' policy rule in
-> 
-> I suppose you mean security/integrity/ima/ima_efi.c
+Notes:
+    v -> v2: fixed compilation error.
+   =20
+    v2 -> v3: modified documentation.
+   =20
+    v3 -> v4: modified commit message.
+   =20
+    v4 -> v5: added config option to enable feature, and modified input val=
+idation.
 
-Yes
+ .../security/keys/trusted-encrypted.rst       | 25 +++++--
+ security/keys/Kconfig                         | 19 +++--
+ security/keys/encrypted-keys/encrypted.c      | 72 ++++++++++++++-----
+ 3 files changed, 87 insertions(+), 29 deletions(-)
 
-> 
-> I also think it's misguided because KEXEC_SIG in itself does not enforce
-> the signature. KEXEC_SIG_FORCE does.
-
-Right, which is why the IMA efi policy calls set_module_sig_enforced().
-
-> 
-> > > arch/powerpc/kernel/ima_policy.c should not be defined.
-> 
-> I suppose you mean arch/powerpc/kernel/ima_arch.c - see above.
-
-Sorry, yes.  
-
-> 
-> 
-> Thanks for taking the time to reseach and summarize the differences.
-> 
-> > The discussion shouldn't only be about IMA vs. KEXEC_SIG kernel image
-> > signature verification.  Let's try and reframe the problem a bit.
-> > 
-> > 1. Unify and simply the existing kexec signature verification so
-> > verifying the KEXEC kernel image signature works irrespective of
-> > signature type - PE, appended signature.
-> > 
-> > solution: enable KEXEC_SIG  (This patch set, with the above powerpc IMA
-> > policy changes.)
-> > 
-> > 2. Measure and include the kexec kernel image in a log for attestation,
-> > if desired.
-> > 
-> > solution: enable IMA_ARCH_POLICY 
-> > - Powerpc: requires trusted boot to be enabled.
-> > - EFI:   requires  secure boot to be enabled.  The IMA efi policy
-> > doesn't differentiate between secure and trusted boot.
-> > 
-> > 3. Carry the kexec kernel image measurement across kexec, if desired
-> > and supported on the architecture.
-> > 
-> > solution: enable IMA_KEXEC
-> > 
-> > Comparison: 
-> > - Are there any differences between IMA vs. KEXEC_SIG measuring the
-> > kexec kernel image?
-> > 
-> > One of the main differences is "what" is included in the measurement
-> > list differs.  In both cases, the 'd-ng' field of the IMA measurement
-> > list template (e.g. ima-ng, ima-sig, ima-modsig) is the full file hash
-> > including the appended signature.  With IMA and the 'ima-modsig'
-> > template, an additional hash without the appended signature is defined,
-> > as well as including the appended signature in the 'sig' field.
-> > 
-> > Including the file hash and appended signature in the measurement list
-> > allows an attestation server, for example, to verify the appended
-> > signature without having to know the file hash without the signature.
-> 
-> I don't understand this part. Isn't the hash *with* signature always
-> included, and the distinguishing part about IMA is the hash *without*
-> signature which is the same irrespective of signature type (PE, appended
-> xattr) and irrespective of the keyt used for signoing?
-
-Roberto Sassu added support for IMA templates.  These are the
-definitions of 'ima-sig' and 'ima-modsig'.
-
-{.name = "ima-sig", .fmt = "d-ng|n-ng|sig"},
-{.name = "ima-modsig", .fmt = "d-ng|n-ng|sig|d-modsig|modsig"}
-
-d-ng: is the file hash.  With the proposed IMA support for fs-verity
-digests, the 'd-ng' field may also include the fsverity digest, based
-on policy.
-
-n-ng: is the file pathname.
-sig: is the file signature stored as a 'security.ima' xattr (may be
-NULL).
-d-modsig: is the file hash without the appended signature (may be
-NULL).
-
-FYI, changing from "module signature" to "appended signature", might
-impact the template field and name.  :)
-
-modsig: is the appended signature (May be NULL).
-
-I really haven't looked at PE signatures, so I can't comment on them.
-
-> 
-> > Other differences are already included in the Kconfig KEXEC_SIG "Notes"
-> > section.
-> 
-> Which besides what is already described above would be blacklisting
-> specific binaries, which is much more effective if you have hashes of
-> binaries without signature.
-
-Thanks, Nayna will be happy to hear you approve.
-
-FYI, IMA calculates the file hash once, which is then added to the IMA
-measurement list, extended into the TPM (when available), used to
-verify signatures, and included in the audit log.
-
-With the KEXEC_SIG support, assuming the IMA arch policy is enabled,
-the file hash would be calculated twice - once for verifying the file
-signature and again for the measurement.
-
--- 
-thanks,
-
-Mimi
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentat=
+ion/security/keys/trusted-encrypted.rst
+index 80d5a5af62a1..f614dad7de12 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -107,12 +107,13 @@ Encrypted Keys
+ --------------
+=20
+ Encrypted keys do not depend on a trust source, and are faster, as they us=
+e AES
+-for encryption/decryption. New keys are created from kernel-generated rand=
+om
+-numbers, and are encrypted/decrypted using a specified =E2=80=98master=E2=
+=80=99 key. The
+-=E2=80=98master=E2=80=99 key can either be a trusted-key or user-key type.=
+ The main disadvantage
+-of encrypted keys is that if they are not rooted in a trusted key, they ar=
+e only
+-as secure as the user key encrypting them. The master user key should ther=
+efore
+-be loaded in as secure a way as possible, preferably early in boot.
++for encryption/decryption. New keys are created either from kernel-generat=
+ed
++random numbers or user-provided decrypted data, and are encrypted/decrypte=
+d
++using a specified =E2=80=98master=E2=80=99 key. The =E2=80=98master=E2=80=
+=99 key can either be a trusted-key or
++user-key type. The main disadvantage of encrypted keys is that if they are=
+ not
++rooted in a trusted key, they are only as secure as the user key encryptin=
+g
++them. The master user key should therefore be loaded in as secure a way as
++possible, preferably early in boot.
+=20
+=20
+ Usage
+@@ -199,6 +200,8 @@ Usage::
+=20
+     keyctl add encrypted name "new [format] key-type:master-key-name keyle=
+n"
+         ring
++    keyctl add encrypted name "new [format] key-type:master-key-name keyle=
+n
++        decrypted-data" ring
+     keyctl add encrypted name "load hex_blob" ring
+     keyctl update keyid "update key-type:master-key-name"
+=20
+@@ -303,6 +306,16 @@ Load an encrypted key "evm" from saved blob::
+     82dbbc55be2a44616e4959430436dc4f2a7a9659aa60bb4652aeb2120f149ed197c564=
+e0
+     24717c64 5972dcb82ab2dde83376d82b2e3c09ffc
+=20
++Instantiate an encrypted key "evm" using user-provided decrypted data::
++
++    $ keyctl add encrypted evm "new default user:kmk 32 `cat evm_decrypted=
+_data.blob`" @u
++    794890253
++
++    $ keyctl print 794890253
++    default user:kmk 32 2375725ad57798846a9bbd240de8906f006e66c03af53b1b38=
+2d
++    bbc55be2a44616e4959430436dc4f2a7a9659aa60bb4652aeb2120f149ed197c564e02=
+47
++    17c64 5972dcb82ab2dde83376d82b2e3c09ffc
++
+ Other uses for trusted and encrypted keys, such as for disk and file encry=
+ption
+ are anticipated.  In particular the new format 'ecryptfs' has been defined
+ in order to use encrypted keys to mount an eCryptfs filesystem.  More deta=
+ils
+diff --git a/security/keys/Kconfig b/security/keys/Kconfig
+index 969122c7b92f..0e30b361e1c1 100644
+--- a/security/keys/Kconfig
++++ b/security/keys/Kconfig
+@@ -98,10 +98,21 @@ config ENCRYPTED_KEYS
+ 	select CRYPTO_RNG
+ 	help
+ 	  This option provides support for create/encrypting/decrypting keys
+-	  in the kernel.  Encrypted keys are kernel generated random numbers,
+-	  which are encrypted/decrypted with a 'master' symmetric key. The
+-	  'master' key can be either a trusted-key or user-key type.
+-	  Userspace only ever sees/stores encrypted blobs.
++	  in the kernel.  Encrypted keys are instantiated using kernel
++	  generated random numbers or provided decrypted data, and are
++	  encrypted/decrypted with a 'master' symmetric key. The 'master'
++	  key can be either a trusted-key or user-key type. Only encrypted
++	  blobs are ever output to Userspace.
++
++	  If you are unsure as to whether this is required, answer N.
++
++config USER_DECRYPTED_DATA
++	bool "Allow encrypted keys with user decrypted data"
++	depends on ENCRYPTED_KEYS
++	help
++	  This option provides support for instantiating encrypted keys using
++	  user-provided decrypted data.  The decrypted data must be hex-ascii
++	  encoded.
+=20
+ 	  If you are unsure as to whether this is required, answer N.
+=20
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encry=
+pted-keys/encrypted.c
+index 87432b35d771..ebfb8129fb92 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -78,6 +78,11 @@ static const match_table_t key_tokens =3D {
+ 	{Opt_err, NULL}
+ };
+=20
++static bool user_decrypted_data =3D IS_ENABLED(CONFIG_USER_DECRYPTED_DATA)=
+;
++module_param(user_decrypted_data, bool, 0);
++MODULE_PARM_DESC(user_decrypted_data,
++	"Allow instantiation of encrypted keys using provided decrypted data");
++
+ static int aes_get_sizes(void)
+ {
+ 	struct crypto_skcipher *tfm;
+@@ -158,7 +163,7 @@ static int valid_master_desc(const char *new_desc, cons=
+t char *orig_desc)
+  * datablob_parse - parse the keyctl data
+  *
+  * datablob format:
+- * new [<format>] <master-key name> <decrypted data length>
++ * new [<format>] <master-key name> <decrypted data length> [<decrypted da=
+ta>]
+  * load [<format>] <master-key name> <decrypted data length>
+  *     <encrypted iv + data>
+  * update <new-master-key name>
+@@ -170,7 +175,7 @@ static int valid_master_desc(const char *new_desc, cons=
+t char *orig_desc)
+  */
+ static int datablob_parse(char *datablob, const char **format,
+ 			  char **master_desc, char **decrypted_datalen,
+-			  char **hex_encoded_iv)
++			  char **hex_encoded_iv, char **decrypted_data)
+ {
+ 	substring_t args[MAX_OPT_ARGS];
+ 	int ret =3D -EINVAL;
+@@ -231,6 +236,7 @@ static int datablob_parse(char *datablob, const char **=
+format,
+ 				"when called from .update method\n", keyword);
+ 			break;
+ 		}
++		*decrypted_data =3D strsep(&datablob, " \t");
+ 		ret =3D 0;
+ 		break;
+ 	case Opt_load:
+@@ -595,7 +601,8 @@ static int derived_key_decrypt(struct encrypted_key_pay=
+load *epayload,
+ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+ 							 const char *format,
+ 							 const char *master_desc,
+-							 const char *datalen)
++							 const char *datalen,
++							 const char *decrypted_data)
+ {
+ 	struct encrypted_key_payload *epayload =3D NULL;
+ 	unsigned short datablob_len;
+@@ -604,6 +611,7 @@ static struct encrypted_key_payload *encrypted_key_allo=
+c(struct key *key,
+ 	unsigned int encrypted_datalen;
+ 	unsigned int format_len;
+ 	long dlen;
++	int i;
+ 	int ret;
+=20
+ 	ret =3D kstrtol(datalen, 10, &dlen);
+@@ -613,6 +620,24 @@ static struct encrypted_key_payload *encrypted_key_all=
+oc(struct key *key,
+ 	format_len =3D (!format) ? strlen(key_format_default) : strlen(format);
+ 	decrypted_datalen =3D dlen;
+ 	payload_datalen =3D decrypted_datalen;
++
++	if (decrypted_data) {
++		if (!user_decrypted_data) {
++			pr_err("encrypted key: instantiation of keys using provided decrypted d=
+ata is disabled since CONFIG_USER_DECRYPTED_DATA is set to false\n");
++			return ERR_PTR(-EINVAL);
++		}
++		if (strlen(decrypted_data) !=3D decrypted_datalen) {
++			pr_err("encrypted key: decrypted data provided does not match decrypted=
+ data length provided\n");
++			return ERR_PTR(-EINVAL);
++		}
++		for (i =3D 0; i < strlen(decrypted_data); i++) {
++			if (!isxdigit(decrypted_data[i])) {
++				pr_err("encrypted key: decrypted data provided must contain only hexad=
+ecimal characters\n");
++				return ERR_PTR(-EINVAL);
++			}
++		}
++	}
++
+ 	if (format) {
+ 		if (!strcmp(format, key_format_ecryptfs)) {
+ 			if (dlen !=3D ECRYPTFS_MAX_KEY_BYTES) {
+@@ -740,13 +766,14 @@ static void __ekey_init(struct encrypted_key_payload =
+*epayload,
+ /*
+  * encrypted_init - initialize an encrypted key
+  *
+- * For a new key, use a random number for both the iv and data
+- * itself.  For an old key, decrypt the hex encoded data.
++ * For a new key, use either a random number or user-provided decrypted da=
+ta in
++ * case it is provided. A random number is used for the iv in both cases. =
+For
++ * an old key, decrypt the hex encoded data.
+  */
+ static int encrypted_init(struct encrypted_key_payload *epayload,
+ 			  const char *key_desc, const char *format,
+ 			  const char *master_desc, const char *datalen,
+-			  const char *hex_encoded_iv)
++			  const char *hex_encoded_iv, const char *decrypted_data)
+ {
+ 	int ret =3D 0;
+=20
+@@ -760,21 +787,26 @@ static int encrypted_init(struct encrypted_key_payloa=
+d *epayload,
+ 	}
+=20
+ 	__ekey_init(epayload, format, master_desc, datalen);
+-	if (!hex_encoded_iv) {
+-		get_random_bytes(epayload->iv, ivsize);
+-
+-		get_random_bytes(epayload->decrypted_data,
+-				 epayload->decrypted_datalen);
+-	} else
++	if (hex_encoded_iv) {
+ 		ret =3D encrypted_key_decrypt(epayload, format, hex_encoded_iv);
++	} else if (decrypted_data) {
++		get_random_bytes(epayload->iv, ivsize);
++		memcpy(epayload->decrypted_data, decrypted_data,
++				   epayload->decrypted_datalen);
++	} else {
++		get_random_bytes(epayload->iv, ivsize);
++		get_random_bytes(epayload->decrypted_data, epayload->decrypted_datalen);
++	}
+ 	return ret;
+ }
+=20
+ /*
+  * encrypted_instantiate - instantiate an encrypted key
+  *
+- * Decrypt an existing encrypted datablob or create a new encrypted key
+- * based on a kernel random number.
++ * Instantiates the key:
++ * - by decrypting an existing encrypted datablob, or
++ * - by creating a new encrypted key based on a kernel random number, or
++ * - using provided decrypted data.
+  *
+  * On success, return 0. Otherwise return errno.
+  */
+@@ -787,6 +819,7 @@ static int encrypted_instantiate(struct key *key,
+ 	char *master_desc =3D NULL;
+ 	char *decrypted_datalen =3D NULL;
+ 	char *hex_encoded_iv =3D NULL;
++	char *decrypted_data =3D NULL;
+ 	size_t datalen =3D prep->datalen;
+ 	int ret;
+=20
+@@ -799,18 +832,18 @@ static int encrypted_instantiate(struct key *key,
+ 	datablob[datalen] =3D 0;
+ 	memcpy(datablob, prep->data, datalen);
+ 	ret =3D datablob_parse(datablob, &format, &master_desc,
+-			     &decrypted_datalen, &hex_encoded_iv);
++			     &decrypted_datalen, &hex_encoded_iv, &decrypted_data);
+ 	if (ret < 0)
+ 		goto out;
+=20
+ 	epayload =3D encrypted_key_alloc(key, format, master_desc,
+-				       decrypted_datalen);
++				       decrypted_datalen, decrypted_data);
+ 	if (IS_ERR(epayload)) {
+ 		ret =3D PTR_ERR(epayload);
+ 		goto out;
+ 	}
+ 	ret =3D encrypted_init(epayload, key->description, format, master_desc,
+-			     decrypted_datalen, hex_encoded_iv);
++			     decrypted_datalen, hex_encoded_iv, decrypted_data);
+ 	if (ret < 0) {
+ 		kfree_sensitive(epayload);
+ 		goto out;
+@@ -860,7 +893,7 @@ static int encrypted_update(struct key *key, struct key=
+_preparsed_payload *prep)
+=20
+ 	buf[datalen] =3D 0;
+ 	memcpy(buf, prep->data, datalen);
+-	ret =3D datablob_parse(buf, &format, &new_master_desc, NULL, NULL);
++	ret =3D datablob_parse(buf, &format, &new_master_desc, NULL, NULL, NULL);
+ 	if (ret < 0)
+ 		goto out;
+=20
+@@ -869,7 +902,7 @@ static int encrypted_update(struct key *key, struct key=
+_preparsed_payload *prep)
+ 		goto out;
+=20
+ 	new_epayload =3D encrypted_key_alloc(key, epayload->format,
+-					   new_master_desc, epayload->datalen);
++					   new_master_desc, epayload->datalen, NULL);
+ 	if (IS_ERR(new_epayload)) {
+ 		ret =3D PTR_ERR(new_epayload);
+ 		goto out;
+--=20
+2.35.1.265.g69c8d7142f-goog
 
