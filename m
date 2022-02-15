@@ -2,411 +2,1281 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CF024B6EBB
-	for <lists+keyrings@lfdr.de>; Tue, 15 Feb 2022 15:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E381D4B753A
+	for <lists+keyrings@lfdr.de>; Tue, 15 Feb 2022 21:47:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238585AbiBOOUS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 15 Feb 2022 09:20:18 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48732 "EHLO
+        id S240560AbiBOTaP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Feb 2022 14:30:15 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238580AbiBOOUR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Feb 2022 09:20:17 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD31C7D4F
-        for <keyrings@vger.kernel.org>; Tue, 15 Feb 2022 06:20:06 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id j17-20020a25ec11000000b0061dabf74012so40920879ybh.15
-        for <keyrings@vger.kernel.org>; Tue, 15 Feb 2022 06:20:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=GUpyRZejn9Pwp27JxxD0pUffrRYlyMDKoKZilOQs1zg=;
-        b=ZT3OQfsZ54iVJEPKmgnr6hFCGXDZyAiFXDqjcgogSLta37V38o2S575RNzSUmFaYlQ
-         sBcNLxR0aousgBT7pc3TimkUjD7hG0UxRA+ol/5xFlFPc9A44J2+cwpB5isbrElaADWg
-         ByLLlcew3BUlw28GvalAoynFSY691tLCRPhJS44fdgw/GgNgksCzfvnRLd8hgCBNXyYj
-         QRziQIOlDb0mwfus4ltBYK1+uIRCUMDizFQqNkHeRs4I6MIkMvRGLgfai//StkfUZCGN
-         HrHjzFKmZFXD6mgE909pV+QiuO0WbjAuUvyoYKTF+F7vsye5L4YSOXSbWfYBWSQJcjbm
-         wHrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=GUpyRZejn9Pwp27JxxD0pUffrRYlyMDKoKZilOQs1zg=;
-        b=FSfGDiLsYRCXE6bFvtB18vmO9Y40gg7nAPj3Yl+sYKgLLPu2vBBoUrtboEiHqKJ2mk
-         PrTFs3Ly4ArsohxZk5LkXs8FLV94mOvSXVuZFWdebXgayWwxh30k5YVgIIoRrWVf8OVX
-         3uuP7MpXQlk0dI8qz8fKrK9YgyQrm0ZrxD2ahmhnAtLI+O0t/NkbRFFe3o003i8YmZzB
-         YKbMX+1UjgB17JYcaTIuGVIyk1fW3+dw0/nGmdq8pr9A7sCHfL7S/Ba0kgOVKBFh3bdM
-         S/LqM0outRN2K9SeS0TRjv/Vbut8nz2a+RDm3N/hqrnaeA/NpNqlDF3a1W4TMNIZ/3JM
-         qc5A==
-X-Gm-Message-State: AOAM532070HqWFtuwaUxwWxkRSc+7Ea4nTgt5PgQkE1CS3kIQn+qJcjW
-        a5uwlUuq1tQ//syvCichw0ZGCocr/Q==
-X-Google-Smtp-Source: ABdhPJzcCCkgAq2s1mmwNW6OZq/24SwP0p0I0cyzx87weaxppuFpiwOk92W7HltKnDkACdBa+pjsXQVyQQ==
-X-Received: from yaelt.nyc.corp.google.com ([2620:0:1003:415:4733:5913:aeb8:dca6])
- (user=yaelt job=sendgmr) by 2002:a81:4417:: with SMTP id r23mr3907750ywa.443.1644934805301;
- Tue, 15 Feb 2022 06:20:05 -0800 (PST)
-Date:   Tue, 15 Feb 2022 09:19:53 -0500
-Message-Id: <20220215141953.1557009-1-yaelt@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.35.1.265.g69c8d7142f-goog
-Subject: [PATCH v5] KEYS: encrypted: Instantiate key with user-provided
- decrypted data
-From:   Yael Tzur <yaelt@google.com>
-To:     linux-integrity@vger.kernel.org
-Cc:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
-        corbet@lwn.net, dhowells@redhat.com, jmorris@namei.org,
-        serge@hallyn.com, keyrings@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, Yael Tzur <yaelt@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S234679AbiBOTaO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Feb 2022 14:30:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72919AEF38;
+        Tue, 15 Feb 2022 11:30:02 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 44891B81C85;
+        Tue, 15 Feb 2022 19:30:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE068C340EB;
+        Tue, 15 Feb 2022 19:29:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644953398;
+        bh=pHQQb31/JnBKNZh6JaRmNCQtN3w1U2I8qfqXaqhPcQY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=S3l+LeNswJjKcjEPiI3oxj/EB9DwjkIggnUJBub1eocP5VGWeB4spdmAvXWRHm3Q2
+         W92Mpoo1hfKMjJIU+CuDIypP1vH/HJUKbmRA2fP9wwut6sPeJ/3XxZEa9MpOGM3A6X
+         zG7ZHOSjHRquduiaParDuk0dyzEjXKlhmt9Fk2ZNozfUqOXhBy7o+0bLtc8rYR3Dtr
+         XeH0GNFypl6Wo751CGucYO4GkkDIUlSW8DB3sQLYxaDyTLkgJA36C4fef8pGVA8KOw
+         T9B0QUFWd3XwVmtoZ5mbpvmXKt8jDSBNW2CxjQOMkrJ20PRUYmGSxP11BB0ug87Hmy
+         UFdlbP/VR8LRQ==
+Date:   Tue, 15 Feb 2022 20:30:31 +0100
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Denis Kenzior <denkenz@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        Marcel Holtmann <marcel@holtmann.org>
+Subject: Re: [PATCH] KEYS: remove support for asym_tpm keys
+Message-ID: <Ygv/V4e1JHyTNEsT@iki.fi>
+References: <20220128195655.45342-1-ebiggers@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220128195655.45342-1-ebiggers@kernel.org>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-For availability and performance reasons master keys often need to be
-released outside of a Key Management Service (KMS) to clients. It
-would be beneficial to provide a mechanism where the
-wrapping/unwrapping of data encryption keys (DEKs) is not dependent
-on a remote call at runtime yet security is not (or only minimally)
-compromised. Master keys could be securely stored in the Kernel and
-be used to wrap/unwrap keys from Userspace.
+On Fri, Jan 28, 2022 at 11:56:55AM -0800, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
+> 
+> asym_tpm keys are tied to TPM v1.2, which uses outdated crypto and has
+> been deprecated in favor of TPM v2.0 for over 7 years.  A very quick
+> look at this code also immediately found some memory safety bugs
+> (https://lore.kernel.org/r/20220113235440.90439-2-ebiggers@kernel.org).
+> Note that this code is reachable by unprivileged users.
+> 
+> According to Jarkko (one of the keyrings subsystem maintainers), this
+> code has no practical use cases, and he isn't willing to maintain it
+> (https://lore.kernel.org/r/YfFZPbKkgYJGWu1Q@iki.fi).
+> 
+> Therefore, let's remove it.
+> 
+> Note that this feature didn't have any documentation or tests, so we
+> don't need to worry about removing those.
+> 
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Denis Kenzior <denkenz@gmail.com>
+> Cc: James Morris <jmorris@namei.org>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Cc: Marcel Holtmann <marcel@holtmann.org>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  crypto/asymmetric_keys/Kconfig      |  21 -
+>  crypto/asymmetric_keys/Makefile     |  12 -
+>  crypto/asymmetric_keys/asym_tpm.c   | 957 ----------------------------
+>  crypto/asymmetric_keys/tpm.asn1     |   5 -
+>  crypto/asymmetric_keys/tpm_parser.c | 102 ---
+>  include/crypto/asym_tpm_subtype.h   |  19 -
+>  6 files changed, 1116 deletions(-)
+>  delete mode 100644 crypto/asymmetric_keys/asym_tpm.c
+>  delete mode 100644 crypto/asymmetric_keys/tpm.asn1
+>  delete mode 100644 crypto/asymmetric_keys/tpm_parser.c
+>  delete mode 100644 include/crypto/asym_tpm_subtype.h
+> 
+> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+> index 1f1f004dc7577..460bc5d0a828c 100644
+> --- a/crypto/asymmetric_keys/Kconfig
+> +++ b/crypto/asymmetric_keys/Kconfig
+> @@ -22,18 +22,6 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+>  	  appropriate hash algorithms (such as SHA-1) must be available.
+>  	  ENOPKG will be reported if the requisite algorithm is unavailable.
+>  
+> -config ASYMMETRIC_TPM_KEY_SUBTYPE
+> -	tristate "Asymmetric TPM backed private key subtype"
+> -	depends on TCG_TPM
+> -	depends on TRUSTED_KEYS
+> -	select CRYPTO_HMAC
+> -	select CRYPTO_SHA1
+> -	select CRYPTO_HASH_INFO
+> -	help
+> -	  This option provides support for TPM backed private key type handling.
+> -	  Operations such as sign, verify, encrypt, decrypt are performed by
+> -	  the TPM after the private key is loaded.
+> -
+>  config X509_CERTIFICATE_PARSER
+>  	tristate "X.509 certificate parser"
+>  	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+> @@ -54,15 +42,6 @@ config PKCS8_PRIVATE_KEY_PARSER
+>  	  private key data and provides the ability to instantiate a crypto key
+>  	  from that data.
+>  
+> -config TPM_KEY_PARSER
+> -	tristate "TPM private key parser"
+> -	depends on ASYMMETRIC_TPM_KEY_SUBTYPE
+> -	select ASN1
+> -	help
+> -	  This option provides support for parsing TPM format blobs for
+> -	  private key data and provides the ability to instantiate a crypto key
+> -	  from that data.
+> -
+>  config PKCS7_MESSAGE_PARSER
+>  	tristate "PKCS#7 message parser"
+>  	depends on X509_CERTIFICATE_PARSER
+> diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makefile
+> index 28b91adba2aed..c38424f55b08d 100644
+> --- a/crypto/asymmetric_keys/Makefile
+> +++ b/crypto/asymmetric_keys/Makefile
+> @@ -11,7 +11,6 @@ asymmetric_keys-y := \
+>  	signature.o
+>  
+>  obj-$(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE) += public_key.o
+> -obj-$(CONFIG_ASYMMETRIC_TPM_KEY_SUBTYPE) += asym_tpm.o
+>  
+>  #
+>  # X.509 Certificate handling
+> @@ -75,14 +74,3 @@ verify_signed_pefile-y := \
+>  
+>  $(obj)/mscode_parser.o: $(obj)/mscode.asn1.h $(obj)/mscode.asn1.h
+>  $(obj)/mscode.asn1.o: $(obj)/mscode.asn1.c $(obj)/mscode.asn1.h
+> -
+> -#
+> -# TPM private key parsing
+> -#
+> -obj-$(CONFIG_TPM_KEY_PARSER) += tpm_key_parser.o
+> -tpm_key_parser-y := \
+> -	tpm.asn1.o \
+> -	tpm_parser.o
+> -
+> -$(obj)/tpm_parser.o: $(obj)/tpm.asn1.h
+> -$(obj)/tpm.asn1.o: $(obj)/tpm.asn1.c $(obj)/tpm.asn1.h
+> diff --git a/crypto/asymmetric_keys/asym_tpm.c b/crypto/asymmetric_keys/asym_tpm.c
+> deleted file mode 100644
+> index 0959613560b9e..0000000000000
+> --- a/crypto/asymmetric_keys/asym_tpm.c
+> +++ /dev/null
+> @@ -1,957 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#define pr_fmt(fmt) "ASYM-TPM: "fmt
+> -#include <linux/slab.h>
+> -#include <linux/module.h>
+> -#include <linux/export.h>
+> -#include <linux/kernel.h>
+> -#include <linux/seq_file.h>
+> -#include <linux/scatterlist.h>
+> -#include <linux/tpm.h>
+> -#include <linux/tpm_command.h>
+> -#include <crypto/akcipher.h>
+> -#include <crypto/hash.h>
+> -#include <crypto/sha1.h>
+> -#include <asm/unaligned.h>
+> -#include <keys/asymmetric-subtype.h>
+> -#include <keys/trusted_tpm.h>
+> -#include <crypto/asym_tpm_subtype.h>
+> -#include <crypto/public_key.h>
+> -
+> -#define TPM_ORD_FLUSHSPECIFIC	186
+> -#define TPM_ORD_LOADKEY2	65
+> -#define TPM_ORD_UNBIND		30
+> -#define TPM_ORD_SIGN		60
+> -
+> -#define TPM_RT_KEY                      0x00000001
+> -
+> -/*
+> - * Load a TPM key from the blob provided by userspace
+> - */
+> -static int tpm_loadkey2(struct tpm_buf *tb,
+> -			uint32_t keyhandle, unsigned char *keyauth,
+> -			const unsigned char *keyblob, int keybloblen,
+> -			uint32_t *newhandle)
+> -{
+> -	unsigned char nonceodd[TPM_NONCE_SIZE];
+> -	unsigned char enonce[TPM_NONCE_SIZE];
+> -	unsigned char authdata[SHA1_DIGEST_SIZE];
+> -	uint32_t authhandle = 0;
+> -	unsigned char cont = 0;
+> -	uint32_t ordinal;
+> -	int ret;
+> -
+> -	ordinal = htonl(TPM_ORD_LOADKEY2);
+> -
+> -	/* session for loading the key */
+> -	ret = oiap(tb, &authhandle, enonce);
+> -	if (ret < 0) {
+> -		pr_info("oiap failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	/* generate odd nonce */
+> -	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
+> -	if (ret < 0) {
+> -		pr_info("tpm_get_random failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	/* calculate authorization HMAC value */
+> -	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
+> -			   nonceodd, cont, sizeof(uint32_t), &ordinal,
+> -			   keybloblen, keyblob, 0, 0);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	/* build the request buffer */
+> -	tpm_buf_reset(tb, TPM_TAG_RQU_AUTH1_COMMAND, TPM_ORD_LOADKEY2);
+> -	tpm_buf_append_u32(tb, keyhandle);
+> -	tpm_buf_append(tb, keyblob, keybloblen);
+> -	tpm_buf_append_u32(tb, authhandle);
+> -	tpm_buf_append(tb, nonceodd, TPM_NONCE_SIZE);
+> -	tpm_buf_append_u8(tb, cont);
+> -	tpm_buf_append(tb, authdata, SHA1_DIGEST_SIZE);
+> -
+> -	ret = trusted_tpm_send(tb->data, MAX_BUF_SIZE);
+> -	if (ret < 0) {
+> -		pr_info("authhmac failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	ret = TSS_checkhmac1(tb->data, ordinal, nonceodd, keyauth,
+> -			     SHA1_DIGEST_SIZE, 0, 0);
+> -	if (ret < 0) {
+> -		pr_info("TSS_checkhmac1 failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	*newhandle = LOAD32(tb->data, TPM_DATA_OFFSET);
+> -	return 0;
+> -}
+> -
+> -/*
+> - * Execute the FlushSpecific TPM command
+> - */
+> -static int tpm_flushspecific(struct tpm_buf *tb, uint32_t handle)
+> -{
+> -	tpm_buf_reset(tb, TPM_TAG_RQU_COMMAND, TPM_ORD_FLUSHSPECIFIC);
+> -	tpm_buf_append_u32(tb, handle);
+> -	tpm_buf_append_u32(tb, TPM_RT_KEY);
+> -
+> -	return trusted_tpm_send(tb->data, MAX_BUF_SIZE);
+> -}
+> -
+> -/*
+> - * Decrypt a blob provided by userspace using a specific key handle.
+> - * The handle is a well known handle or previously loaded by e.g. LoadKey2
+> - */
+> -static int tpm_unbind(struct tpm_buf *tb,
+> -			uint32_t keyhandle, unsigned char *keyauth,
+> -			const unsigned char *blob, uint32_t bloblen,
+> -			void *out, uint32_t outlen)
+> -{
+> -	unsigned char nonceodd[TPM_NONCE_SIZE];
+> -	unsigned char enonce[TPM_NONCE_SIZE];
+> -	unsigned char authdata[SHA1_DIGEST_SIZE];
+> -	uint32_t authhandle = 0;
+> -	unsigned char cont = 0;
+> -	uint32_t ordinal;
+> -	uint32_t datalen;
+> -	int ret;
+> -
+> -	ordinal = htonl(TPM_ORD_UNBIND);
+> -	datalen = htonl(bloblen);
+> -
+> -	/* session for loading the key */
+> -	ret = oiap(tb, &authhandle, enonce);
+> -	if (ret < 0) {
+> -		pr_info("oiap failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	/* generate odd nonce */
+> -	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
+> -	if (ret < 0) {
+> -		pr_info("tpm_get_random failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	/* calculate authorization HMAC value */
+> -	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
+> -			   nonceodd, cont, sizeof(uint32_t), &ordinal,
+> -			   sizeof(uint32_t), &datalen,
+> -			   bloblen, blob, 0, 0);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	/* build the request buffer */
+> -	tpm_buf_reset(tb, TPM_TAG_RQU_AUTH1_COMMAND, TPM_ORD_UNBIND);
+> -	tpm_buf_append_u32(tb, keyhandle);
+> -	tpm_buf_append_u32(tb, bloblen);
+> -	tpm_buf_append(tb, blob, bloblen);
+> -	tpm_buf_append_u32(tb, authhandle);
+> -	tpm_buf_append(tb, nonceodd, TPM_NONCE_SIZE);
+> -	tpm_buf_append_u8(tb, cont);
+> -	tpm_buf_append(tb, authdata, SHA1_DIGEST_SIZE);
+> -
+> -	ret = trusted_tpm_send(tb->data, MAX_BUF_SIZE);
+> -	if (ret < 0) {
+> -		pr_info("authhmac failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	datalen = LOAD32(tb->data, TPM_DATA_OFFSET);
+> -
+> -	ret = TSS_checkhmac1(tb->data, ordinal, nonceodd,
+> -			     keyauth, SHA1_DIGEST_SIZE,
+> -			     sizeof(uint32_t), TPM_DATA_OFFSET,
+> -			     datalen, TPM_DATA_OFFSET + sizeof(uint32_t),
+> -			     0, 0);
+> -	if (ret < 0) {
+> -		pr_info("TSS_checkhmac1 failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	memcpy(out, tb->data + TPM_DATA_OFFSET + sizeof(uint32_t),
+> -	       min(outlen, datalen));
+> -
+> -	return datalen;
+> -}
+> -
+> -/*
+> - * Sign a blob provided by userspace (that has had the hash function applied)
+> - * using a specific key handle.  The handle is assumed to have been previously
+> - * loaded by e.g. LoadKey2.
+> - *
+> - * Note that the key signature scheme of the used key should be set to
+> - * TPM_SS_RSASSAPKCS1v15_DER.  This allows the hashed input to be of any size
+> - * up to key_length_in_bytes - 11 and not be limited to size 20 like the
+> - * TPM_SS_RSASSAPKCS1v15_SHA1 signature scheme.
+> - */
+> -static int tpm_sign(struct tpm_buf *tb,
+> -		    uint32_t keyhandle, unsigned char *keyauth,
+> -		    const unsigned char *blob, uint32_t bloblen,
+> -		    void *out, uint32_t outlen)
+> -{
+> -	unsigned char nonceodd[TPM_NONCE_SIZE];
+> -	unsigned char enonce[TPM_NONCE_SIZE];
+> -	unsigned char authdata[SHA1_DIGEST_SIZE];
+> -	uint32_t authhandle = 0;
+> -	unsigned char cont = 0;
+> -	uint32_t ordinal;
+> -	uint32_t datalen;
+> -	int ret;
+> -
+> -	ordinal = htonl(TPM_ORD_SIGN);
+> -	datalen = htonl(bloblen);
+> -
+> -	/* session for loading the key */
+> -	ret = oiap(tb, &authhandle, enonce);
+> -	if (ret < 0) {
+> -		pr_info("oiap failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	/* generate odd nonce */
+> -	ret = tpm_get_random(NULL, nonceodd, TPM_NONCE_SIZE);
+> -	if (ret < 0) {
+> -		pr_info("tpm_get_random failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	/* calculate authorization HMAC value */
+> -	ret = TSS_authhmac(authdata, keyauth, SHA1_DIGEST_SIZE, enonce,
+> -			   nonceodd, cont, sizeof(uint32_t), &ordinal,
+> -			   sizeof(uint32_t), &datalen,
+> -			   bloblen, blob, 0, 0);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	/* build the request buffer */
+> -	tpm_buf_reset(tb, TPM_TAG_RQU_AUTH1_COMMAND, TPM_ORD_SIGN);
+> -	tpm_buf_append_u32(tb, keyhandle);
+> -	tpm_buf_append_u32(tb, bloblen);
+> -	tpm_buf_append(tb, blob, bloblen);
+> -	tpm_buf_append_u32(tb, authhandle);
+> -	tpm_buf_append(tb, nonceodd, TPM_NONCE_SIZE);
+> -	tpm_buf_append_u8(tb, cont);
+> -	tpm_buf_append(tb, authdata, SHA1_DIGEST_SIZE);
+> -
+> -	ret = trusted_tpm_send(tb->data, MAX_BUF_SIZE);
+> -	if (ret < 0) {
+> -		pr_info("authhmac failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	datalen = LOAD32(tb->data, TPM_DATA_OFFSET);
+> -
+> -	ret = TSS_checkhmac1(tb->data, ordinal, nonceodd,
+> -			     keyauth, SHA1_DIGEST_SIZE,
+> -			     sizeof(uint32_t), TPM_DATA_OFFSET,
+> -			     datalen, TPM_DATA_OFFSET + sizeof(uint32_t),
+> -			     0, 0);
+> -	if (ret < 0) {
+> -		pr_info("TSS_checkhmac1 failed (%d)\n", ret);
+> -		return ret;
+> -	}
+> -
+> -	memcpy(out, tb->data + TPM_DATA_OFFSET + sizeof(uint32_t),
+> -	       min(datalen, outlen));
+> -
+> -	return datalen;
+> -}
+> -
+> -/* Room to fit two u32 zeros for algo id and parameters length. */
+> -#define SETKEY_PARAMS_SIZE (sizeof(u32) * 2)
+> -
+> -/*
+> - * Maximum buffer size for the BER/DER encoded public key.  The public key
+> - * is of the form SEQUENCE { INTEGER n, INTEGER e } where n is a maximum 2048
+> - * bit key and e is usually 65537
+> - * The encoding overhead is:
+> - * - max 4 bytes for SEQUENCE
+> - *   - max 4 bytes for INTEGER n type/length
+> - *     - 257 bytes of n
+> - *   - max 2 bytes for INTEGER e type/length
+> - *     - 3 bytes of e
+> - * - 4+4 of zeros for set_pub_key parameters (SETKEY_PARAMS_SIZE)
+> - */
+> -#define PUB_KEY_BUF_SIZE (4 + 4 + 257 + 2 + 3 + SETKEY_PARAMS_SIZE)
+> -
+> -/*
+> - * Provide a part of a description of the key for /proc/keys.
+> - */
+> -static void asym_tpm_describe(const struct key *asymmetric_key,
+> -			      struct seq_file *m)
+> -{
+> -	struct tpm_key *tk = asymmetric_key->payload.data[asym_crypto];
+> -
+> -	if (!tk)
+> -		return;
+> -
+> -	seq_printf(m, "TPM1.2/Blob");
+> -}
+> -
+> -static void asym_tpm_destroy(void *payload0, void *payload3)
+> -{
+> -	struct tpm_key *tk = payload0;
+> -
+> -	if (!tk)
+> -		return;
+> -
+> -	kfree(tk->blob);
+> -	tk->blob_len = 0;
+> -
+> -	kfree(tk);
+> -}
+> -
+> -/* How many bytes will it take to encode the length */
+> -static inline uint32_t definite_length(uint32_t len)
+> -{
+> -	if (len <= 127)
+> -		return 1;
+> -	if (len <= 255)
+> -		return 2;
+> -	return 3;
+> -}
+> -
+> -static inline uint8_t *encode_tag_length(uint8_t *buf, uint8_t tag,
+> -					 uint32_t len)
+> -{
+> -	*buf++ = tag;
+> -
+> -	if (len <= 127) {
+> -		buf[0] = len;
+> -		return buf + 1;
+> -	}
+> -
+> -	if (len <= 255) {
+> -		buf[0] = 0x81;
+> -		buf[1] = len;
+> -		return buf + 2;
+> -	}
+> -
+> -	buf[0] = 0x82;
+> -	put_unaligned_be16(len, buf + 1);
+> -	return buf + 3;
+> -}
+> -
+> -static uint32_t derive_pub_key(const void *pub_key, uint32_t len, uint8_t *buf)
+> -{
+> -	uint8_t *cur = buf;
+> -	uint32_t n_len = definite_length(len) + 1 + len + 1;
+> -	uint32_t e_len = definite_length(3) + 1 + 3;
+> -	uint8_t e[3] = { 0x01, 0x00, 0x01 };
+> -
+> -	/* SEQUENCE */
+> -	cur = encode_tag_length(cur, 0x30, n_len + e_len);
+> -	/* INTEGER n */
+> -	cur = encode_tag_length(cur, 0x02, len + 1);
+> -	cur[0] = 0x00;
+> -	memcpy(cur + 1, pub_key, len);
+> -	cur += len + 1;
+> -	cur = encode_tag_length(cur, 0x02, sizeof(e));
+> -	memcpy(cur, e, sizeof(e));
+> -	cur += sizeof(e);
+> -	/* Zero parameters to satisfy set_pub_key ABI. */
+> -	memzero_explicit(cur, SETKEY_PARAMS_SIZE);
+> -
+> -	return cur - buf;
+> -}
+> -
+> -/*
+> - * Determine the crypto algorithm name.
+> - */
+> -static int determine_akcipher(const char *encoding, const char *hash_algo,
+> -			      char alg_name[CRYPTO_MAX_ALG_NAME])
+> -{
+> -	if (strcmp(encoding, "pkcs1") == 0) {
+> -		if (!hash_algo) {
+> -			strcpy(alg_name, "pkcs1pad(rsa)");
+> -			return 0;
+> -		}
+> -
+> -		if (snprintf(alg_name, CRYPTO_MAX_ALG_NAME, "pkcs1pad(rsa,%s)",
+> -			     hash_algo) >= CRYPTO_MAX_ALG_NAME)
+> -			return -EINVAL;
+> -
+> -		return 0;
+> -	}
+> -
+> -	if (strcmp(encoding, "raw") == 0) {
+> -		strcpy(alg_name, "rsa");
+> -		return 0;
+> -	}
+> -
+> -	return -ENOPKG;
+> -}
+> -
+> -/*
+> - * Query information about a key.
+> - */
+> -static int tpm_key_query(const struct kernel_pkey_params *params,
+> -			 struct kernel_pkey_query *info)
+> -{
+> -	struct tpm_key *tk = params->key->payload.data[asym_crypto];
+> -	int ret;
+> -	char alg_name[CRYPTO_MAX_ALG_NAME];
+> -	struct crypto_akcipher *tfm;
+> -	uint8_t der_pub_key[PUB_KEY_BUF_SIZE];
+> -	uint32_t der_pub_key_len;
+> -	int len;
+> -
+> -	/* TPM only works on private keys, public keys still done in software */
+> -	ret = determine_akcipher(params->encoding, params->hash_algo, alg_name);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+> -	if (IS_ERR(tfm))
+> -		return PTR_ERR(tfm);
+> -
+> -	der_pub_key_len = derive_pub_key(tk->pub_key, tk->pub_key_len,
+> -					 der_pub_key);
+> -
+> -	ret = crypto_akcipher_set_pub_key(tfm, der_pub_key, der_pub_key_len);
+> -	if (ret < 0)
+> -		goto error_free_tfm;
+> -
+> -	len = crypto_akcipher_maxsize(tfm);
+> -
+> -	info->key_size = tk->key_len;
+> -	info->max_data_size = tk->key_len / 8;
+> -	info->max_sig_size = len;
+> -	info->max_enc_size = len;
+> -	info->max_dec_size = tk->key_len / 8;
+> -
+> -	info->supported_ops = KEYCTL_SUPPORTS_ENCRYPT |
+> -			      KEYCTL_SUPPORTS_DECRYPT |
+> -			      KEYCTL_SUPPORTS_VERIFY |
+> -			      KEYCTL_SUPPORTS_SIGN;
+> -
+> -	ret = 0;
+> -error_free_tfm:
+> -	crypto_free_akcipher(tfm);
+> -	pr_devel("<==%s() = %d\n", __func__, ret);
+> -	return ret;
+> -}
+> -
+> -/*
+> - * Encryption operation is performed with the public key.  Hence it is done
+> - * in software
+> - */
+> -static int tpm_key_encrypt(struct tpm_key *tk,
+> -			   struct kernel_pkey_params *params,
+> -			   const void *in, void *out)
+> -{
+> -	char alg_name[CRYPTO_MAX_ALG_NAME];
+> -	struct crypto_akcipher *tfm;
+> -	struct akcipher_request *req;
+> -	struct crypto_wait cwait;
+> -	struct scatterlist in_sg, out_sg;
+> -	uint8_t der_pub_key[PUB_KEY_BUF_SIZE];
+> -	uint32_t der_pub_key_len;
+> -	int ret;
+> -
+> -	pr_devel("==>%s()\n", __func__);
+> -
+> -	ret = determine_akcipher(params->encoding, params->hash_algo, alg_name);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+> -	if (IS_ERR(tfm))
+> -		return PTR_ERR(tfm);
+> -
+> -	der_pub_key_len = derive_pub_key(tk->pub_key, tk->pub_key_len,
+> -					 der_pub_key);
+> -
+> -	ret = crypto_akcipher_set_pub_key(tfm, der_pub_key, der_pub_key_len);
+> -	if (ret < 0)
+> -		goto error_free_tfm;
+> -
+> -	ret = -ENOMEM;
+> -	req = akcipher_request_alloc(tfm, GFP_KERNEL);
+> -	if (!req)
+> -		goto error_free_tfm;
+> -
+> -	sg_init_one(&in_sg, in, params->in_len);
+> -	sg_init_one(&out_sg, out, params->out_len);
+> -	akcipher_request_set_crypt(req, &in_sg, &out_sg, params->in_len,
+> -				   params->out_len);
+> -	crypto_init_wait(&cwait);
+> -	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+> -				      CRYPTO_TFM_REQ_MAY_SLEEP,
+> -				      crypto_req_done, &cwait);
+> -
+> -	ret = crypto_akcipher_encrypt(req);
+> -	ret = crypto_wait_req(ret, &cwait);
+> -
+> -	if (ret == 0)
+> -		ret = req->dst_len;
+> -
+> -	akcipher_request_free(req);
+> -error_free_tfm:
+> -	crypto_free_akcipher(tfm);
+> -	pr_devel("<==%s() = %d\n", __func__, ret);
+> -	return ret;
+> -}
+> -
+> -/*
+> - * Decryption operation is performed with the private key in the TPM.
+> - */
+> -static int tpm_key_decrypt(struct tpm_key *tk,
+> -			   struct kernel_pkey_params *params,
+> -			   const void *in, void *out)
+> -{
+> -	struct tpm_buf tb;
+> -	uint32_t keyhandle;
+> -	uint8_t srkauth[SHA1_DIGEST_SIZE];
+> -	uint8_t keyauth[SHA1_DIGEST_SIZE];
+> -	int r;
+> -
+> -	pr_devel("==>%s()\n", __func__);
+> -
+> -	if (params->hash_algo)
+> -		return -ENOPKG;
+> -
+> -	if (strcmp(params->encoding, "pkcs1"))
+> -		return -ENOPKG;
+> -
+> -	r = tpm_buf_init(&tb, 0, 0);
+> -	if (r)
+> -		return r;
+> -
+> -	/* TODO: Handle a non-all zero SRK authorization */
+> -	memset(srkauth, 0, sizeof(srkauth));
+> -
+> -	r = tpm_loadkey2(&tb, SRKHANDLE, srkauth,
+> -				tk->blob, tk->blob_len, &keyhandle);
+> -	if (r < 0) {
+> -		pr_devel("loadkey2 failed (%d)\n", r);
+> -		goto error;
+> -	}
+> -
+> -	/* TODO: Handle a non-all zero key authorization */
+> -	memset(keyauth, 0, sizeof(keyauth));
+> -
+> -	r = tpm_unbind(&tb, keyhandle, keyauth,
+> -		       in, params->in_len, out, params->out_len);
+> -	if (r < 0)
+> -		pr_devel("tpm_unbind failed (%d)\n", r);
+> -
+> -	if (tpm_flushspecific(&tb, keyhandle) < 0)
+> -		pr_devel("flushspecific failed (%d)\n", r);
+> -
+> -error:
+> -	tpm_buf_destroy(&tb);
+> -	pr_devel("<==%s() = %d\n", __func__, r);
+> -	return r;
+> -}
+> -
+> -/*
+> - * Hash algorithm OIDs plus ASN.1 DER wrappings [RFC4880 sec 5.2.2].
+> - */
+> -static const u8 digest_info_md5[] = {
+> -	0x30, 0x20, 0x30, 0x0c, 0x06, 0x08,
+> -	0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x05, /* OID */
+> -	0x05, 0x00, 0x04, 0x10
+> -};
+> -
+> -static const u8 digest_info_sha1[] = {
+> -	0x30, 0x21, 0x30, 0x09, 0x06, 0x05,
+> -	0x2b, 0x0e, 0x03, 0x02, 0x1a,
+> -	0x05, 0x00, 0x04, 0x14
+> -};
+> -
+> -static const u8 digest_info_rmd160[] = {
+> -	0x30, 0x21, 0x30, 0x09, 0x06, 0x05,
+> -	0x2b, 0x24, 0x03, 0x02, 0x01,
+> -	0x05, 0x00, 0x04, 0x14
+> -};
+> -
+> -static const u8 digest_info_sha224[] = {
+> -	0x30, 0x2d, 0x30, 0x0d, 0x06, 0x09,
+> -	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x04,
+> -	0x05, 0x00, 0x04, 0x1c
+> -};
+> -
+> -static const u8 digest_info_sha256[] = {
+> -	0x30, 0x31, 0x30, 0x0d, 0x06, 0x09,
+> -	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01,
+> -	0x05, 0x00, 0x04, 0x20
+> -};
+> -
+> -static const u8 digest_info_sha384[] = {
+> -	0x30, 0x41, 0x30, 0x0d, 0x06, 0x09,
+> -	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02,
+> -	0x05, 0x00, 0x04, 0x30
+> -};
+> -
+> -static const u8 digest_info_sha512[] = {
+> -	0x30, 0x51, 0x30, 0x0d, 0x06, 0x09,
+> -	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03,
+> -	0x05, 0x00, 0x04, 0x40
+> -};
+> -
+> -static const struct asn1_template {
+> -	const char	*name;
+> -	const u8	*data;
+> -	size_t		size;
+> -} asn1_templates[] = {
+> -#define _(X) { #X, digest_info_##X, sizeof(digest_info_##X) }
+> -	_(md5),
+> -	_(sha1),
+> -	_(rmd160),
+> -	_(sha256),
+> -	_(sha384),
+> -	_(sha512),
+> -	_(sha224),
+> -	{ NULL }
+> -#undef _
+> -};
+> -
+> -static const struct asn1_template *lookup_asn1(const char *name)
+> -{
+> -	const struct asn1_template *p;
+> -
+> -	for (p = asn1_templates; p->name; p++)
+> -		if (strcmp(name, p->name) == 0)
+> -			return p;
+> -	return NULL;
+> -}
+> -
+> -/*
+> - * Sign operation is performed with the private key in the TPM.
+> - */
+> -static int tpm_key_sign(struct tpm_key *tk,
+> -			struct kernel_pkey_params *params,
+> -			const void *in, void *out)
+> -{
+> -	struct tpm_buf tb;
+> -	uint32_t keyhandle;
+> -	uint8_t srkauth[SHA1_DIGEST_SIZE];
+> -	uint8_t keyauth[SHA1_DIGEST_SIZE];
+> -	void *asn1_wrapped = NULL;
+> -	uint32_t in_len = params->in_len;
+> -	int r;
+> -
+> -	pr_devel("==>%s()\n", __func__);
+> -
+> -	if (strcmp(params->encoding, "pkcs1"))
+> -		return -ENOPKG;
+> -
+> -	if (params->hash_algo) {
+> -		const struct asn1_template *asn1 =
+> -						lookup_asn1(params->hash_algo);
+> -
+> -		if (!asn1)
+> -			return -ENOPKG;
+> -
+> -		/* request enough space for the ASN.1 template + input hash */
+> -		asn1_wrapped = kzalloc(in_len + asn1->size, GFP_KERNEL);
+> -		if (!asn1_wrapped)
+> -			return -ENOMEM;
+> -
+> -		/* Copy ASN.1 template, then the input */
+> -		memcpy(asn1_wrapped, asn1->data, asn1->size);
+> -		memcpy(asn1_wrapped + asn1->size, in, in_len);
+> -
+> -		in = asn1_wrapped;
+> -		in_len += asn1->size;
+> -	}
+> -
+> -	if (in_len > tk->key_len / 8 - 11) {
+> -		r = -EOVERFLOW;
+> -		goto error_free_asn1_wrapped;
+> -	}
+> -
+> -	r = tpm_buf_init(&tb, 0, 0);
+> -	if (r)
+> -		goto error_free_asn1_wrapped;
+> -
+> -	/* TODO: Handle a non-all zero SRK authorization */
+> -	memset(srkauth, 0, sizeof(srkauth));
+> -
+> -	r = tpm_loadkey2(&tb, SRKHANDLE, srkauth,
+> -			 tk->blob, tk->blob_len, &keyhandle);
+> -	if (r < 0) {
+> -		pr_devel("loadkey2 failed (%d)\n", r);
+> -		goto error_free_tb;
+> -	}
+> -
+> -	/* TODO: Handle a non-all zero key authorization */
+> -	memset(keyauth, 0, sizeof(keyauth));
+> -
+> -	r = tpm_sign(&tb, keyhandle, keyauth, in, in_len, out, params->out_len);
+> -	if (r < 0)
+> -		pr_devel("tpm_sign failed (%d)\n", r);
+> -
+> -	if (tpm_flushspecific(&tb, keyhandle) < 0)
+> -		pr_devel("flushspecific failed (%d)\n", r);
+> -
+> -error_free_tb:
+> -	tpm_buf_destroy(&tb);
+> -error_free_asn1_wrapped:
+> -	kfree(asn1_wrapped);
+> -	pr_devel("<==%s() = %d\n", __func__, r);
+> -	return r;
+> -}
+> -
+> -/*
+> - * Do encryption, decryption and signing ops.
+> - */
+> -static int tpm_key_eds_op(struct kernel_pkey_params *params,
+> -			  const void *in, void *out)
+> -{
+> -	struct tpm_key *tk = params->key->payload.data[asym_crypto];
+> -	int ret = -EOPNOTSUPP;
+> -
+> -	/* Perform the encryption calculation. */
+> -	switch (params->op) {
+> -	case kernel_pkey_encrypt:
+> -		ret = tpm_key_encrypt(tk, params, in, out);
+> -		break;
+> -	case kernel_pkey_decrypt:
+> -		ret = tpm_key_decrypt(tk, params, in, out);
+> -		break;
+> -	case kernel_pkey_sign:
+> -		ret = tpm_key_sign(tk, params, in, out);
+> -		break;
+> -	default:
+> -		BUG();
+> -	}
+> -
+> -	return ret;
+> -}
+> -
+> -/*
+> - * Verify a signature using a public key.
+> - */
+> -static int tpm_key_verify_signature(const struct key *key,
+> -				    const struct public_key_signature *sig)
+> -{
+> -	const struct tpm_key *tk = key->payload.data[asym_crypto];
+> -	struct crypto_wait cwait;
+> -	struct crypto_akcipher *tfm;
+> -	struct akcipher_request *req;
+> -	struct scatterlist src_sg[2];
+> -	char alg_name[CRYPTO_MAX_ALG_NAME];
+> -	uint8_t der_pub_key[PUB_KEY_BUF_SIZE];
+> -	uint32_t der_pub_key_len;
+> -	int ret;
+> -
+> -	pr_devel("==>%s()\n", __func__);
+> -
+> -	BUG_ON(!tk);
+> -	BUG_ON(!sig);
+> -	BUG_ON(!sig->s);
+> -
+> -	if (!sig->digest)
+> -		return -ENOPKG;
+> -
+> -	ret = determine_akcipher(sig->encoding, sig->hash_algo, alg_name);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+> -	if (IS_ERR(tfm))
+> -		return PTR_ERR(tfm);
+> -
+> -	der_pub_key_len = derive_pub_key(tk->pub_key, tk->pub_key_len,
+> -					 der_pub_key);
+> -
+> -	ret = crypto_akcipher_set_pub_key(tfm, der_pub_key, der_pub_key_len);
+> -	if (ret < 0)
+> -		goto error_free_tfm;
+> -
+> -	ret = -ENOMEM;
+> -	req = akcipher_request_alloc(tfm, GFP_KERNEL);
+> -	if (!req)
+> -		goto error_free_tfm;
+> -
+> -	sg_init_table(src_sg, 2);
+> -	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+> -	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+> -	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
+> -				   sig->digest_size);
+> -	crypto_init_wait(&cwait);
+> -	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+> -				      CRYPTO_TFM_REQ_MAY_SLEEP,
+> -				      crypto_req_done, &cwait);
+> -	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+> -
+> -	akcipher_request_free(req);
+> -error_free_tfm:
+> -	crypto_free_akcipher(tfm);
+> -	pr_devel("<==%s() = %d\n", __func__, ret);
+> -	if (WARN_ON_ONCE(ret > 0))
+> -		ret = -EINVAL;
+> -	return ret;
+> -}
+> -
+> -/*
+> - * Parse enough information out of TPM_KEY structure:
+> - * TPM_STRUCT_VER -> 4 bytes
+> - * TPM_KEY_USAGE -> 2 bytes
+> - * TPM_KEY_FLAGS -> 4 bytes
+> - * TPM_AUTH_DATA_USAGE -> 1 byte
+> - * TPM_KEY_PARMS -> variable
+> - * UINT32 PCRInfoSize -> 4 bytes
+> - * BYTE* -> PCRInfoSize bytes
+> - * TPM_STORE_PUBKEY
+> - * UINT32 encDataSize;
+> - * BYTE* -> encDataSize;
+> - *
+> - * TPM_KEY_PARMS:
+> - * TPM_ALGORITHM_ID -> 4 bytes
+> - * TPM_ENC_SCHEME -> 2 bytes
+> - * TPM_SIG_SCHEME -> 2 bytes
+> - * UINT32 parmSize -> 4 bytes
+> - * BYTE* -> variable
+> - */
+> -static int extract_key_parameters(struct tpm_key *tk)
+> -{
+> -	const void *cur = tk->blob;
+> -	uint32_t len = tk->blob_len;
+> -	const void *pub_key;
+> -	uint32_t sz;
+> -	uint32_t key_len;
+> -
+> -	if (len < 11)
+> -		return -EBADMSG;
+> -
+> -	/* Ensure this is a legacy key */
+> -	if (get_unaligned_be16(cur + 4) != 0x0015)
+> -		return -EBADMSG;
+> -
+> -	/* Skip to TPM_KEY_PARMS */
+> -	cur += 11;
+> -	len -= 11;
+> -
+> -	if (len < 12)
+> -		return -EBADMSG;
+> -
+> -	/* Make sure this is an RSA key */
+> -	if (get_unaligned_be32(cur) != 0x00000001)
+> -		return -EBADMSG;
+> -
+> -	/* Make sure this is TPM_ES_RSAESPKCSv15 encoding scheme */
+> -	if (get_unaligned_be16(cur + 4) != 0x0002)
+> -		return -EBADMSG;
+> -
+> -	/* Make sure this is TPM_SS_RSASSAPKCS1v15_DER signature scheme */
+> -	if (get_unaligned_be16(cur + 6) != 0x0003)
+> -		return -EBADMSG;
+> -
+> -	sz = get_unaligned_be32(cur + 8);
+> -	if (len < sz + 12)
+> -		return -EBADMSG;
+> -
+> -	/* Move to TPM_RSA_KEY_PARMS */
+> -	len -= 12;
+> -	cur += 12;
+> -
+> -	/* Grab the RSA key length */
+> -	key_len = get_unaligned_be32(cur);
+> -
+> -	switch (key_len) {
+> -	case 512:
+> -	case 1024:
+> -	case 1536:
+> -	case 2048:
+> -		break;
+> -	default:
+> -		return -EINVAL;
+> -	}
+> -
+> -	/* Move just past TPM_KEY_PARMS */
+> -	cur += sz;
+> -	len -= sz;
+> -
+> -	if (len < 4)
+> -		return -EBADMSG;
+> -
+> -	sz = get_unaligned_be32(cur);
+> -	if (len < 4 + sz)
+> -		return -EBADMSG;
+> -
+> -	/* Move to TPM_STORE_PUBKEY */
+> -	cur += 4 + sz;
+> -	len -= 4 + sz;
+> -
+> -	/* Grab the size of the public key, it should jive with the key size */
+> -	sz = get_unaligned_be32(cur);
+> -	if (sz > 256)
+> -		return -EINVAL;
+> -
+> -	pub_key = cur + 4;
+> -
+> -	tk->key_len = key_len;
+> -	tk->pub_key = pub_key;
+> -	tk->pub_key_len = sz;
+> -
+> -	return 0;
+> -}
+> -
+> -/* Given the blob, parse it and load it into the TPM */
+> -struct tpm_key *tpm_key_create(const void *blob, uint32_t blob_len)
+> -{
+> -	int r;
+> -	struct tpm_key *tk;
+> -
+> -	r = tpm_is_tpm2(NULL);
+> -	if (r < 0)
+> -		goto error;
+> -
+> -	/* We don't support TPM2 yet */
+> -	if (r > 0) {
+> -		r = -ENODEV;
+> -		goto error;
+> -	}
+> -
+> -	r = -ENOMEM;
+> -	tk = kzalloc(sizeof(struct tpm_key), GFP_KERNEL);
+> -	if (!tk)
+> -		goto error;
+> -
+> -	tk->blob = kmemdup(blob, blob_len, GFP_KERNEL);
+> -	if (!tk->blob)
+> -		goto error_memdup;
+> -
+> -	tk->blob_len = blob_len;
+> -
+> -	r = extract_key_parameters(tk);
+> -	if (r < 0)
+> -		goto error_extract;
+> -
+> -	return tk;
+> -
+> -error_extract:
+> -	kfree(tk->blob);
+> -	tk->blob_len = 0;
+> -error_memdup:
+> -	kfree(tk);
+> -error:
+> -	return ERR_PTR(r);
+> -}
+> -EXPORT_SYMBOL_GPL(tpm_key_create);
+> -
+> -/*
+> - * TPM-based asymmetric key subtype
+> - */
+> -struct asymmetric_key_subtype asym_tpm_subtype = {
+> -	.owner			= THIS_MODULE,
+> -	.name			= "asym_tpm",
+> -	.name_len		= sizeof("asym_tpm") - 1,
+> -	.describe		= asym_tpm_describe,
+> -	.destroy		= asym_tpm_destroy,
+> -	.query			= tpm_key_query,
+> -	.eds_op			= tpm_key_eds_op,
+> -	.verify_signature	= tpm_key_verify_signature,
+> -};
+> -EXPORT_SYMBOL_GPL(asym_tpm_subtype);
+> -
+> -MODULE_DESCRIPTION("TPM based asymmetric key subtype");
+> -MODULE_AUTHOR("Intel Corporation");
+> -MODULE_LICENSE("GPL v2");
+> diff --git a/crypto/asymmetric_keys/tpm.asn1 b/crypto/asymmetric_keys/tpm.asn1
+> deleted file mode 100644
+> index d7f194232f30a..0000000000000
+> --- a/crypto/asymmetric_keys/tpm.asn1
+> +++ /dev/null
+> @@ -1,5 +0,0 @@
+> ---
+> --- Unencryted TPM Blob.  For details of the format, see:
+> --- http://david.woodhou.se/draft-woodhouse-cert-best-practice.html#I-D.mavrogiannopoulos-tpmuri
+> ---
+> -PrivateKeyInfo ::= OCTET STRING ({ tpm_note_key })
+> diff --git a/crypto/asymmetric_keys/tpm_parser.c b/crypto/asymmetric_keys/tpm_parser.c
+> deleted file mode 100644
+> index 96405d8dcd98d..0000000000000
+> --- a/crypto/asymmetric_keys/tpm_parser.c
+> +++ /dev/null
+> @@ -1,102 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#define pr_fmt(fmt) "TPM-PARSER: "fmt
+> -#include <linux/module.h>
+> -#include <linux/kernel.h>
+> -#include <linux/export.h>
+> -#include <linux/slab.h>
+> -#include <linux/err.h>
+> -#include <keys/asymmetric-subtype.h>
+> -#include <keys/asymmetric-parser.h>
+> -#include <crypto/asym_tpm_subtype.h>
+> -#include "tpm.asn1.h"
+> -
+> -struct tpm_parse_context {
+> -	const void	*blob;
+> -	u32		blob_len;
+> -};
+> -
+> -/*
+> - * Note the key data of the ASN.1 blob.
+> - */
+> -int tpm_note_key(void *context, size_t hdrlen,
+> -		   unsigned char tag,
+> -		   const void *value, size_t vlen)
+> -{
+> -	struct tpm_parse_context *ctx = context;
+> -
+> -	ctx->blob = value;
+> -	ctx->blob_len = vlen;
+> -
+> -	return 0;
+> -}
+> -
+> -/*
+> - * Parse a TPM-encrypted private key blob.
+> - */
+> -static struct tpm_key *tpm_parse(const void *data, size_t datalen)
+> -{
+> -	struct tpm_parse_context ctx;
+> -	long ret;
+> -
+> -	memset(&ctx, 0, sizeof(ctx));
+> -
+> -	/* Attempt to decode the private key */
+> -	ret = asn1_ber_decoder(&tpm_decoder, &ctx, data, datalen);
+> -	if (ret < 0)
+> -		goto error;
+> -
+> -	return tpm_key_create(ctx.blob, ctx.blob_len);
+> -
+> -error:
+> -	return ERR_PTR(ret);
+> -}
+> -/*
+> - * Attempt to parse a data blob for a key as a TPM private key blob.
+> - */
+> -static int tpm_key_preparse(struct key_preparsed_payload *prep)
+> -{
+> -	struct tpm_key *tk;
+> -
+> -	/*
+> -	 * TPM 1.2 keys are max 2048 bits long, so assume the blob is no
+> -	 * more than 4x that
+> -	 */
+> -	if (prep->datalen > 256 * 4)
+> -		return -EMSGSIZE;
+> -
+> -	tk = tpm_parse(prep->data, prep->datalen);
+> -
+> -	if (IS_ERR(tk))
+> -		return PTR_ERR(tk);
+> -
+> -	/* We're pinning the module by being linked against it */
+> -	__module_get(asym_tpm_subtype.owner);
+> -	prep->payload.data[asym_subtype] = &asym_tpm_subtype;
+> -	prep->payload.data[asym_key_ids] = NULL;
+> -	prep->payload.data[asym_crypto] = tk;
+> -	prep->payload.data[asym_auth] = NULL;
+> -	prep->quotalen = 100;
+> -	return 0;
+> -}
+> -
+> -static struct asymmetric_key_parser tpm_key_parser = {
+> -	.owner	= THIS_MODULE,
+> -	.name	= "tpm_parser",
+> -	.parse	= tpm_key_preparse,
+> -};
+> -
+> -static int __init tpm_key_init(void)
+> -{
+> -	return register_asymmetric_key_parser(&tpm_key_parser);
+> -}
+> -
+> -static void __exit tpm_key_exit(void)
+> -{
+> -	unregister_asymmetric_key_parser(&tpm_key_parser);
+> -}
+> -
+> -module_init(tpm_key_init);
+> -module_exit(tpm_key_exit);
+> -
+> -MODULE_DESCRIPTION("TPM private key-blob parser");
+> -MODULE_LICENSE("GPL v2");
+> diff --git a/include/crypto/asym_tpm_subtype.h b/include/crypto/asym_tpm_subtype.h
+> deleted file mode 100644
+> index 48198c36d6b9b..0000000000000
+> --- a/include/crypto/asym_tpm_subtype.h
+> +++ /dev/null
+> @@ -1,19 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#ifndef _LINUX_ASYM_TPM_SUBTYPE_H
+> -#define _LINUX_ASYM_TPM_SUBTYPE_H
+> -
+> -#include <linux/keyctl.h>
+> -
+> -struct tpm_key {
+> -	void *blob;
+> -	u32 blob_len;
+> -	uint16_t key_len; /* Size in bits of the key */
+> -	const void *pub_key; /* pointer inside blob to the public key bytes */
+> -	uint16_t pub_key_len; /* length of the public key */
+> -};
+> -
+> -struct tpm_key *tpm_key_create(const void *blob, uint32_t blob_len);
+> -
+> -extern struct asymmetric_key_subtype asym_tpm_subtype;
+> -
+> -#endif /* _LINUX_ASYM_TPM_SUBTYPE_H */
+> -- 
+> 2.35.0
+> 
 
-The encrypted.c class supports instantiation of encrypted keys with
-either an already-encrypted key material, or by generating new key
-material based on random numbers. This patch defines a new datablob
-format: [<format>] <master-key name> <decrypted data length>
-<decrypted data> that allows to inject and encrypt user-provided
-decrypted data. The decrypted data must be hex-ascii encoded.
+I'm now getting back to track with kernel. Job transition is the reason for
+this misserable latency.
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Yael Tzur <yaelt@google.com>
----
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Notes:
-    v -> v2: fixed compilation error.
-   =20
-    v2 -> v3: modified documentation.
-   =20
-    v3 -> v4: modified commit message.
-   =20
-    v4 -> v5: added config option to enable feature, and modified input val=
-idation.
+This needs some acks from other people before I can apply the patch but I
+strongly support it.
 
- .../security/keys/trusted-encrypted.rst       | 25 +++++--
- security/keys/Kconfig                         | 19 +++--
- security/keys/encrypted-keys/encrypted.c      | 72 ++++++++++++++-----
- 3 files changed, 87 insertions(+), 29 deletions(-)
-
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentat=
-ion/security/keys/trusted-encrypted.rst
-index 80d5a5af62a1..f614dad7de12 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -107,12 +107,13 @@ Encrypted Keys
- --------------
-=20
- Encrypted keys do not depend on a trust source, and are faster, as they us=
-e AES
--for encryption/decryption. New keys are created from kernel-generated rand=
-om
--numbers, and are encrypted/decrypted using a specified =E2=80=98master=E2=
-=80=99 key. The
--=E2=80=98master=E2=80=99 key can either be a trusted-key or user-key type.=
- The main disadvantage
--of encrypted keys is that if they are not rooted in a trusted key, they ar=
-e only
--as secure as the user key encrypting them. The master user key should ther=
-efore
--be loaded in as secure a way as possible, preferably early in boot.
-+for encryption/decryption. New keys are created either from kernel-generat=
-ed
-+random numbers or user-provided decrypted data, and are encrypted/decrypte=
-d
-+using a specified =E2=80=98master=E2=80=99 key. The =E2=80=98master=E2=80=
-=99 key can either be a trusted-key or
-+user-key type. The main disadvantage of encrypted keys is that if they are=
- not
-+rooted in a trusted key, they are only as secure as the user key encryptin=
-g
-+them. The master user key should therefore be loaded in as secure a way as
-+possible, preferably early in boot.
-=20
-=20
- Usage
-@@ -199,6 +200,8 @@ Usage::
-=20
-     keyctl add encrypted name "new [format] key-type:master-key-name keyle=
-n"
-         ring
-+    keyctl add encrypted name "new [format] key-type:master-key-name keyle=
-n
-+        decrypted-data" ring
-     keyctl add encrypted name "load hex_blob" ring
-     keyctl update keyid "update key-type:master-key-name"
-=20
-@@ -303,6 +306,16 @@ Load an encrypted key "evm" from saved blob::
-     82dbbc55be2a44616e4959430436dc4f2a7a9659aa60bb4652aeb2120f149ed197c564=
-e0
-     24717c64 5972dcb82ab2dde83376d82b2e3c09ffc
-=20
-+Instantiate an encrypted key "evm" using user-provided decrypted data::
-+
-+    $ keyctl add encrypted evm "new default user:kmk 32 `cat evm_decrypted=
-_data.blob`" @u
-+    794890253
-+
-+    $ keyctl print 794890253
-+    default user:kmk 32 2375725ad57798846a9bbd240de8906f006e66c03af53b1b38=
-2d
-+    bbc55be2a44616e4959430436dc4f2a7a9659aa60bb4652aeb2120f149ed197c564e02=
-47
-+    17c64 5972dcb82ab2dde83376d82b2e3c09ffc
-+
- Other uses for trusted and encrypted keys, such as for disk and file encry=
-ption
- are anticipated.  In particular the new format 'ecryptfs' has been defined
- in order to use encrypted keys to mount an eCryptfs filesystem.  More deta=
-ils
-diff --git a/security/keys/Kconfig b/security/keys/Kconfig
-index 969122c7b92f..0e30b361e1c1 100644
---- a/security/keys/Kconfig
-+++ b/security/keys/Kconfig
-@@ -98,10 +98,21 @@ config ENCRYPTED_KEYS
- 	select CRYPTO_RNG
- 	help
- 	  This option provides support for create/encrypting/decrypting keys
--	  in the kernel.  Encrypted keys are kernel generated random numbers,
--	  which are encrypted/decrypted with a 'master' symmetric key. The
--	  'master' key can be either a trusted-key or user-key type.
--	  Userspace only ever sees/stores encrypted blobs.
-+	  in the kernel.  Encrypted keys are instantiated using kernel
-+	  generated random numbers or provided decrypted data, and are
-+	  encrypted/decrypted with a 'master' symmetric key. The 'master'
-+	  key can be either a trusted-key or user-key type. Only encrypted
-+	  blobs are ever output to Userspace.
-+
-+	  If you are unsure as to whether this is required, answer N.
-+
-+config USER_DECRYPTED_DATA
-+	bool "Allow encrypted keys with user decrypted data"
-+	depends on ENCRYPTED_KEYS
-+	help
-+	  This option provides support for instantiating encrypted keys using
-+	  user-provided decrypted data.  The decrypted data must be hex-ascii
-+	  encoded.
-=20
- 	  If you are unsure as to whether this is required, answer N.
-=20
-diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encry=
-pted-keys/encrypted.c
-index 87432b35d771..ebfb8129fb92 100644
---- a/security/keys/encrypted-keys/encrypted.c
-+++ b/security/keys/encrypted-keys/encrypted.c
-@@ -78,6 +78,11 @@ static const match_table_t key_tokens =3D {
- 	{Opt_err, NULL}
- };
-=20
-+static bool user_decrypted_data =3D IS_ENABLED(CONFIG_USER_DECRYPTED_DATA)=
-;
-+module_param(user_decrypted_data, bool, 0);
-+MODULE_PARM_DESC(user_decrypted_data,
-+	"Allow instantiation of encrypted keys using provided decrypted data");
-+
- static int aes_get_sizes(void)
- {
- 	struct crypto_skcipher *tfm;
-@@ -158,7 +163,7 @@ static int valid_master_desc(const char *new_desc, cons=
-t char *orig_desc)
-  * datablob_parse - parse the keyctl data
-  *
-  * datablob format:
-- * new [<format>] <master-key name> <decrypted data length>
-+ * new [<format>] <master-key name> <decrypted data length> [<decrypted da=
-ta>]
-  * load [<format>] <master-key name> <decrypted data length>
-  *     <encrypted iv + data>
-  * update <new-master-key name>
-@@ -170,7 +175,7 @@ static int valid_master_desc(const char *new_desc, cons=
-t char *orig_desc)
-  */
- static int datablob_parse(char *datablob, const char **format,
- 			  char **master_desc, char **decrypted_datalen,
--			  char **hex_encoded_iv)
-+			  char **hex_encoded_iv, char **decrypted_data)
- {
- 	substring_t args[MAX_OPT_ARGS];
- 	int ret =3D -EINVAL;
-@@ -231,6 +236,7 @@ static int datablob_parse(char *datablob, const char **=
-format,
- 				"when called from .update method\n", keyword);
- 			break;
- 		}
-+		*decrypted_data =3D strsep(&datablob, " \t");
- 		ret =3D 0;
- 		break;
- 	case Opt_load:
-@@ -595,7 +601,8 @@ static int derived_key_decrypt(struct encrypted_key_pay=
-load *epayload,
- static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
- 							 const char *format,
- 							 const char *master_desc,
--							 const char *datalen)
-+							 const char *datalen,
-+							 const char *decrypted_data)
- {
- 	struct encrypted_key_payload *epayload =3D NULL;
- 	unsigned short datablob_len;
-@@ -604,6 +611,7 @@ static struct encrypted_key_payload *encrypted_key_allo=
-c(struct key *key,
- 	unsigned int encrypted_datalen;
- 	unsigned int format_len;
- 	long dlen;
-+	int i;
- 	int ret;
-=20
- 	ret =3D kstrtol(datalen, 10, &dlen);
-@@ -613,6 +620,24 @@ static struct encrypted_key_payload *encrypted_key_all=
-oc(struct key *key,
- 	format_len =3D (!format) ? strlen(key_format_default) : strlen(format);
- 	decrypted_datalen =3D dlen;
- 	payload_datalen =3D decrypted_datalen;
-+
-+	if (decrypted_data) {
-+		if (!user_decrypted_data) {
-+			pr_err("encrypted key: instantiation of keys using provided decrypted d=
-ata is disabled since CONFIG_USER_DECRYPTED_DATA is set to false\n");
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (strlen(decrypted_data) !=3D decrypted_datalen) {
-+			pr_err("encrypted key: decrypted data provided does not match decrypted=
- data length provided\n");
-+			return ERR_PTR(-EINVAL);
-+		}
-+		for (i =3D 0; i < strlen(decrypted_data); i++) {
-+			if (!isxdigit(decrypted_data[i])) {
-+				pr_err("encrypted key: decrypted data provided must contain only hexad=
-ecimal characters\n");
-+				return ERR_PTR(-EINVAL);
-+			}
-+		}
-+	}
-+
- 	if (format) {
- 		if (!strcmp(format, key_format_ecryptfs)) {
- 			if (dlen !=3D ECRYPTFS_MAX_KEY_BYTES) {
-@@ -740,13 +766,14 @@ static void __ekey_init(struct encrypted_key_payload =
-*epayload,
- /*
-  * encrypted_init - initialize an encrypted key
-  *
-- * For a new key, use a random number for both the iv and data
-- * itself.  For an old key, decrypt the hex encoded data.
-+ * For a new key, use either a random number or user-provided decrypted da=
-ta in
-+ * case it is provided. A random number is used for the iv in both cases. =
-For
-+ * an old key, decrypt the hex encoded data.
-  */
- static int encrypted_init(struct encrypted_key_payload *epayload,
- 			  const char *key_desc, const char *format,
- 			  const char *master_desc, const char *datalen,
--			  const char *hex_encoded_iv)
-+			  const char *hex_encoded_iv, const char *decrypted_data)
- {
- 	int ret =3D 0;
-=20
-@@ -760,21 +787,26 @@ static int encrypted_init(struct encrypted_key_payloa=
-d *epayload,
- 	}
-=20
- 	__ekey_init(epayload, format, master_desc, datalen);
--	if (!hex_encoded_iv) {
--		get_random_bytes(epayload->iv, ivsize);
--
--		get_random_bytes(epayload->decrypted_data,
--				 epayload->decrypted_datalen);
--	} else
-+	if (hex_encoded_iv) {
- 		ret =3D encrypted_key_decrypt(epayload, format, hex_encoded_iv);
-+	} else if (decrypted_data) {
-+		get_random_bytes(epayload->iv, ivsize);
-+		memcpy(epayload->decrypted_data, decrypted_data,
-+				   epayload->decrypted_datalen);
-+	} else {
-+		get_random_bytes(epayload->iv, ivsize);
-+		get_random_bytes(epayload->decrypted_data, epayload->decrypted_datalen);
-+	}
- 	return ret;
- }
-=20
- /*
-  * encrypted_instantiate - instantiate an encrypted key
-  *
-- * Decrypt an existing encrypted datablob or create a new encrypted key
-- * based on a kernel random number.
-+ * Instantiates the key:
-+ * - by decrypting an existing encrypted datablob, or
-+ * - by creating a new encrypted key based on a kernel random number, or
-+ * - using provided decrypted data.
-  *
-  * On success, return 0. Otherwise return errno.
-  */
-@@ -787,6 +819,7 @@ static int encrypted_instantiate(struct key *key,
- 	char *master_desc =3D NULL;
- 	char *decrypted_datalen =3D NULL;
- 	char *hex_encoded_iv =3D NULL;
-+	char *decrypted_data =3D NULL;
- 	size_t datalen =3D prep->datalen;
- 	int ret;
-=20
-@@ -799,18 +832,18 @@ static int encrypted_instantiate(struct key *key,
- 	datablob[datalen] =3D 0;
- 	memcpy(datablob, prep->data, datalen);
- 	ret =3D datablob_parse(datablob, &format, &master_desc,
--			     &decrypted_datalen, &hex_encoded_iv);
-+			     &decrypted_datalen, &hex_encoded_iv, &decrypted_data);
- 	if (ret < 0)
- 		goto out;
-=20
- 	epayload =3D encrypted_key_alloc(key, format, master_desc,
--				       decrypted_datalen);
-+				       decrypted_datalen, decrypted_data);
- 	if (IS_ERR(epayload)) {
- 		ret =3D PTR_ERR(epayload);
- 		goto out;
- 	}
- 	ret =3D encrypted_init(epayload, key->description, format, master_desc,
--			     decrypted_datalen, hex_encoded_iv);
-+			     decrypted_datalen, hex_encoded_iv, decrypted_data);
- 	if (ret < 0) {
- 		kfree_sensitive(epayload);
- 		goto out;
-@@ -860,7 +893,7 @@ static int encrypted_update(struct key *key, struct key=
-_preparsed_payload *prep)
-=20
- 	buf[datalen] =3D 0;
- 	memcpy(buf, prep->data, datalen);
--	ret =3D datablob_parse(buf, &format, &new_master_desc, NULL, NULL);
-+	ret =3D datablob_parse(buf, &format, &new_master_desc, NULL, NULL, NULL);
- 	if (ret < 0)
- 		goto out;
-=20
-@@ -869,7 +902,7 @@ static int encrypted_update(struct key *key, struct key=
-_preparsed_payload *prep)
- 		goto out;
-=20
- 	new_epayload =3D encrypted_key_alloc(key, epayload->format,
--					   new_master_desc, epayload->datalen);
-+					   new_master_desc, epayload->datalen, NULL);
- 	if (IS_ERR(new_epayload)) {
- 		ret =3D PTR_ERR(new_epayload);
- 		goto out;
---=20
-2.35.1.265.g69c8d7142f-goog
-
+/Jarkko
