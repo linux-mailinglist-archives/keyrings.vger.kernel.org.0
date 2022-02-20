@@ -2,56 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6455A4BD0C7
-	for <lists+keyrings@lfdr.de>; Sun, 20 Feb 2022 20:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA494BD291
+	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 00:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244215AbiBTTAX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 20 Feb 2022 14:00:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50754 "EHLO
+        id S231292AbiBTXCR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 20 Feb 2022 18:02:17 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237468AbiBTTAX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 20 Feb 2022 14:00:23 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70BC4C797;
-        Sun, 20 Feb 2022 11:00:01 -0800 (PST)
+        with ESMTP id S229794AbiBTXCQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 20 Feb 2022 18:02:16 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6105744778;
+        Sun, 20 Feb 2022 15:01:52 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71EDC60EBD;
-        Sun, 20 Feb 2022 19:00:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64140C340E8;
-        Sun, 20 Feb 2022 19:00:00 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3625FB80D9C;
+        Sun, 20 Feb 2022 23:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6335EC340E8;
+        Sun, 20 Feb 2022 23:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645383600;
-        bh=hLGifkqFozZGhUf8MjlDCOo+prHzRXakxzvfzWvrn4Q=;
+        s=k20201202; t=1645398110;
+        bh=5OmhqiX81KNtJ2T9a1Vvx/TvbU7V6OHOgTfNkZczbi8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DP/88MqofASXWs0Y+BU+/Lcgls+cRDsofuRs/jYeoX5djirvCV2YVEsFTcgtuTXGC
-         HeNmJrBkpP+LZhsPuBb+jmo5hu0t4J7QH/V49lmpnd8P0NMq2C4PyRBM4OfTFCulFd
-         AV0+pPW9Iul6HTzZB9Rf/ml64Ym4zAdHtZXs0XpGq3YjbWDeuT7QMXyYK0Cfz2e92x
-         1C2puHEDUNPg4kB9caiNtmQzvqhatOGffMI0fS4ugKR8nwY8dP73va8NXTsUJPvM88
-         kjI8nEfSX4nnQcJmL2kF4W7tEPgcmVS0lfXxbOxv3lcgesaRf83jI+0/BOZtaq5Md4
-         ZWcVGXwBnribQ==
-Date:   Sun, 20 Feb 2022 20:00:39 +0100
+        b=TaUqLKpvotaUtMI8vne0jeoBkaeQq1P8eGmdDbHTHAsS/UaxXKDnlcXh6aOf1aUZr
+         luLTFDhhsokTV6aiWcF94lLz8zLgJcrRrkRi+2X2aKcTc+JdwLGSCdbtVoa16CThNL
+         5HuBuqD2B4wGo15xM+5zebx7Qk9yeNyMzg9lVeAsidOrgnAyJp4Lzpgr+0iYfbA/lq
+         lZXe1j9Z9EcnyOcdkWtQH/a8PzuCHtVPyeyHgzgEmNZ8c6XuUVEN1wWswYEGwpboU9
+         BpXkmlht1y9yoc0crbgjKG5A8RfkHC4BCi4tumSzb4gr5d1T0GlBBvlhbIgCkRetaG
+         TuYfhAGXfsbNA==
+Date:   Mon, 21 Feb 2022 00:02:28 +0100
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
-        dwmw2@infradead.org, ardb@kernel.org, jmorris@namei.org,
-        serge@hallyn.com, nayna@linux.ibm.com, keescook@chromium.org,
-        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
-        konrad.wilk@oracle.com
-Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
-Message-ID: <YhKP12KEmyqyS8rj@iki.fi>
-References: <20220126025834.255493-1-eric.snowberg@oracle.com>
- <YfFP6OHqBVNWKL2C@iki.fi>
- <YfFTf6vIpNMIrwH0@iki.fi>
- <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+To:     Nayna Jain <nayna@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        dhowells@redhat.com, zohar@linux.ibm.com,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
+        seth@forshee.me
+Subject: Re: [PATCH v8 0/3] integrity: support including firmware ".platform"
+ keys at build time
+Message-ID: <YhLIhJF0aWZt+8op@iki.fi>
+References: <20220111183647.977037-1-nayna@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+In-Reply-To: <20220111183647.977037-1-nayna@linux.ibm.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,56 +57,76 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 05:06:09PM -0500, Mimi Zohar wrote:
-> Hi Jarkko,
+On Tue, Jan 11, 2022 at 01:36:44PM -0500, Nayna Jain wrote:
+> Some firmware support secure boot by embedding static keys to verify the
+> Linux kernel during boot. However, these firmware do not expose an
+> interface for the kernel to load firmware keys onto the ".platform"
+> keyring, preventing the kernel from verifying the kexec kernel image
+> signature.
 > 
-> > > Thank you. I'll pick these soon. Is there any objections?
+> This patchset exports load_certificate_list() and defines a new function
+> load_builtin_platform_cert() to load compiled in certificates onto the
+> ".platform" keyring.
 > 
-> No objections.
-> > 
-> > Mimi brought up that we need a MAINTAINERS update for this and also
-> > .platform.
-> > 
-> > We have these:
-> > 
-> > - KEYS/KEYRINGS
-> > - CERTIFICATE HANDLING
-> > 
-> > I would put them under KEYRINGS for now and would not consider further
-> > subdivision for the moment.
+> Changelog:
 > 
-> IMA has dependencies on the platform_certs/ and now on the new .machine
-> keyring.  Just adding "F: security/integrity/platform_certs/" to the
-> KEYS/KEYRINGS record, ignores that dependency.  The discussion wouldn't
-> even be on the linux-integrity mailing list.
+> v8:
+> * Includes Jarkko's feedback on patch description and removed Reported-by
+> for Patch 1.
 > 
-> Existing requirement:
-> - The keys on the .platform keyring are limited to verifying the kexec
-> image.
+> v7:
+> * Incldues Jarkko's feedback on patch description for Patch 1 and 3.
 > 
-> New requirements based on Eric Snowbergs' patch set:
-> - When IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY is enabled,
-> the MOK keys will not be loaded directly onto the .machine keyring or
-> indirectly onto the .secondary_trusted_keys keyring.
+> v6:
+> * Includes Jarkko's feedback:
+>  * Split Patch 2 into two.
+>  * Update Patch description.
 > 
-> - Only when a new IMA Kconfig explicitly allows the keys on the
-> .machine keyrings, will the CA keys stored in MOK be loaded onto the
-> .machine keyring.
+> v5:
+> * Renamed load_builtin_platform_cert() to load_platform_certificate_list()
+> and config INTEGRITY_PLATFORM_BUILTIN_KEYS to INTEGRITY_PLATFORM_KEYS, as
+> suggested by Mimi Zohar.
 > 
-> Unfortunately I don't think there is any choice, but to define a new
-> MAINTAINERS entry.  Perhaps something along the lines of:
+> v4:
+> * Split into two patches as per Mimi Zohar and Dimitri John Ledkov
+> recommendation.
 > 
-> KEYS/KEYRINGS_INTEGRITY
-> M:     Jarkko Sakkinen <jarkko@kernel.org>
-> M:     Mimi Zohar <zohar@linux.ibm.com>
-> L:      keyrings@vger.kernel.org
-> L:      linux-integrity@vger.kernel.org
-> F:      security/integrity/platform_certs
+> v3:
+> * Included Jarkko's feedback
+>  ** updated patch description to include approach.
+>  ** removed extern for function declaration in the .h file.
+> * Included load_certificate_list() within #ifdef CONFIG_KEYS condition.
 > 
-> thanks,
+> v2:
+> * Fixed the error reported by kernel test robot
+> * Updated patch description based on Jarkko's feedback.
 > 
-> Mimi
+> Nayna Jain (3):
+>   certs: export load_certificate_list() to be used outside certs/
+>   integrity: make integrity_keyring_from_id() non-static
+>   integrity: support including firmware ".platform" keys at build time
+> 
+>  certs/Makefile                                |  5 ++--
+>  certs/blacklist.c                             |  1 -
+>  certs/common.c                                |  2 +-
+>  certs/common.h                                |  9 -------
+>  certs/system_keyring.c                        |  1 -
+>  include/keys/system_keyring.h                 |  6 +++++
+>  security/integrity/Kconfig                    | 10 +++++++
+>  security/integrity/Makefile                   | 17 +++++++++++-
+>  security/integrity/digsig.c                   |  2 +-
+>  security/integrity/integrity.h                |  6 +++++
+>  .../integrity/platform_certs/platform_cert.S  | 23 ++++++++++++++++
+>  .../platform_certs/platform_keyring.c         | 26 +++++++++++++++++++
+>  12 files changed, 92 insertions(+), 16 deletions(-)
+>  delete mode 100644 certs/common.h
+>  create mode 100644 security/integrity/platform_certs/platform_cert.S
+> 
+> -- 
+> 2.27.0
 
-This would work for me.
+To sort out tree conflicts: what if I pick these patches? They look fine
+to me now. I can try to fix the possible merge conflicts and you can check
+them before I make a PR.
 
-BR, Jarkko
+/Jarkko
