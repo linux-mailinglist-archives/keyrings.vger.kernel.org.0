@@ -2,126 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CAD84BDD10
-	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 18:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60EB94BE1E7
+	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 18:53:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358839AbiBUNTD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Feb 2022 08:19:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53314 "EHLO
+        id S1358992AbiBUNWe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Feb 2022 08:22:34 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358840AbiBUNTB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 08:19:01 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8071B1EEDA;
-        Mon, 21 Feb 2022 05:18:38 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 3EA76210F0;
-        Mon, 21 Feb 2022 13:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1645449517; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qx0Q18ljVcrXhWvAQ6cUSrAVYJIdsXr8hIUlUK/8QpM=;
-        b=Cqj3DkYxCZV9tKvMhc20KpHen50b9YvAxjUyjNAy5j3Xvz2X6M0bSDZR+S3amBXFlcd7E4
-        GyiTc/uusdBsKhLqAoKvJRO3wfHJj0bubdlDIchD/mMCW6ZPJMlJ/ltShHLGbV4Wa1/4JU
-        n5b02J35yPJl5V5IYGUmr/t7NQ9B6+A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1645449517;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qx0Q18ljVcrXhWvAQ6cUSrAVYJIdsXr8hIUlUK/8QpM=;
-        b=LofZw7M41jMg5B5ffe5yCkle/xS/uTOv0SumivGAz0qPUIAYkZOprL+M7W3Dd6TBDjORLq
-        bvgQ+L7Wq+Q15pAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0F39B13AF2;
-        Mon, 21 Feb 2022 13:18:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id sKQ3Ai2RE2K2fwAAMHmgww
-        (envelope-from <hare@suse.de>); Mon, 21 Feb 2022 13:18:37 +0000
-Message-ID: <9bfe807a-d14e-feea-6fcd-b1526da16ff5@suse.de>
-Date:   Mon, 21 Feb 2022 14:18:36 +0100
+        with ESMTP id S1358970AbiBUNWc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 08:22:32 -0500
+Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F4E02180C
+        for <keyrings@vger.kernel.org>; Mon, 21 Feb 2022 05:22:07 -0800 (PST)
+Received: by mail-vk1-xa30.google.com with SMTP id l10so8617882vki.9
+        for <keyrings@vger.kernel.org>; Mon, 21 Feb 2022 05:22:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=94r73LrRNpO7YYFshzYM25uztFOXVTrm/QHuYFLiQ7w=;
+        b=mADrFrQ+ZaM0TTq14DVXo+gL51+p2NcBjrN5ntCAKNfmsIAoFYM5Vg05TATz1Ho3Mp
+         QntpqOZN3naiWGycPE6mYfwtwAPtneL7Rw/9nMeZB7wOOnN7+w2ZC1J+VfjucP6dvjgH
+         lTknf1/DqWRCd1lnEY8XJSo0sGGNKAN/Q2AhiiVd+kM3VozUxI+7uzBPycoXp1Vaqj8M
+         p4xbfkLFbWc6MBQeg7cIzVnUHjQm0cWUH2jqTe7+s4ph8qXwOHR43B1LSf5Ms39DYX6u
+         tw+yyEkJLsVPXxfaTvunyjyvU9BKx7n8SvP6JAiSZnaM93bNVM1/BrqWWs2xeZURVai0
+         iuLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=94r73LrRNpO7YYFshzYM25uztFOXVTrm/QHuYFLiQ7w=;
+        b=7SqByHrZEqugLIW+xPCzIKAZr7bvlqOCFSEn3kw1P6/Rlt2hnGBpADMS1b232cJLuY
+         ZK06E/ZPt0lGrxndOTg/e7piwWnvpHqnxZNIXTlUFIOkimAEQ6Z+5ZeVOtPs1KAcVJBS
+         z46gq14tTGfSXhgSwkDqg9VvE7YVekXhsmp/BhxqVPQinBuuR3n7lNdKXj3CoRVGoeZ4
+         lyh1xZeW2sM7kF4/2+ap7Wx2pV/4pRynWVgkhT2uDvIskCZUAfzNnKPx1w+NTldZ5XMy
+         LzGtic6EvQImmCXOewYYDxgUKPP3RtenTF6SaJlooMzD7CRq6RM8MuidhLk/+itIywXI
+         iB1A==
+X-Gm-Message-State: AOAM533jQJNUNcx62Byfj+d/erFNl2Rt0jrTqXRxdqteRH6LTZrx4rmr
+        1WUXAwbnBrtLIksqLVm5e2KyHUOBnz4cimzXl/I=
+X-Google-Smtp-Source: ABdhPJzY3uRVFinJaUL83lROLKmjYUZ+TZRkDI5fVeFEVDRnDD4++VfHZ1wYicaoN9REPkmsXvaggGijHkcU6zzfCJU=
+X-Received: by 2002:a05:6122:c9f:b0:330:e2ed:4786 with SMTP id
+ ba31-20020a0561220c9f00b00330e2ed4786mr7735605vkb.29.1645449726641; Mon, 21
+ Feb 2022 05:22:06 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v4 01/15] crypto: kpp - provide support for KPP template
- instances
-Content-Language: en-US
-To:     Nicolai Stange <nstange@suse.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
-        Torsten Duwe <duwe@suse.de>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-References: <20220221121101.1615-1-nstange@suse.de>
- <20220221121101.1615-2-nstange@suse.de>
-From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20220221121101.1615-2-nstange@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a59:d8cd:0:b0:28c:6bb4:8918 with HTTP; Mon, 21 Feb 2022
+ 05:22:06 -0800 (PST)
+From:   Anders Pedersen <ousmanebarkissou@gmail.com>
+Date:   Mon, 21 Feb 2022 13:22:06 +0000
+Message-ID: <CAE0fZ3d1A2trQ_6K_TKOtuh1imki0Bk2BNv+2OWiPjRVVrO41A@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2/21/22 13:10, Nicolai Stange wrote:
-> The upcoming support for the RFC 7919 ffdhe group parameters will be
-> made available in the form of templates like "ffdhe2048(dh)",
-> "ffdhe3072(dh)" and so on. Template instantiations thereof would wrap the
-> inner "dh" kpp_alg and also provide kpp_alg services to the outside again.
-> Furthermore, it might be perhaps be desirable to provide KDF templates in
-> the future, which would similarly wrap an inner kpp_alg and present
-> themselves to the outside as another kpp_alg, transforming the shared
-> secret on its way out.
-> 
-> Introduce the bits needed for supporting KPP template instances. Everything
-> related to inner kpp_alg spawns potentially being held by such template
-> instances will be deferred to a subsequent patch in order to facilitate
-> review.
-> 
-> Define struct struct kpp_instance in close analogy to the already existing
-> skcipher_instance, shash_instance and alike, but wrapping a struct kpp_alg.
-> Implement the new kpp_register_instance() template instance registration
-> primitive. Provide some helper functions for
-> - going back and forth between a generic struct crypto_instance and the new
->    struct kpp_instance,
-> - obtaining the instantiating kpp_instance from a crypto_kpp transform and
-> - for accessing a given kpp_instance's implementation specific context
->    data.
-> 
-> Annotate everything with proper kernel-doc comments, even though
-> include/crypto/internal/kpp.h is not considered for the generated docs.
-> 
-> Signed-off-by: Nicolai Stange <nstange@suse.de>
-> ---
->   crypto/kpp.c                  | 20 +++++++++
->   include/crypto/internal/kpp.h | 83 +++++++++++++++++++++++++++++++++++
->   2 files changed, 103 insertions(+)
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke		           Kernel Storage Architect
-hare@suse.de			                  +49 911 74053 688
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), GF: Felix Imendörffer
+Greeting, I'm Anders Pedersen, from Norway. I want to know if this
+email is valid? Thanks.
