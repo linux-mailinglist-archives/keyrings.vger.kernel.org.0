@@ -2,59 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CE364BDB88
-	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 18:40:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A97734BE5FC
+	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 19:01:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377473AbiBUOQn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Feb 2022 09:16:43 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51522 "EHLO
+        id S1377554AbiBUOSV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Feb 2022 09:18:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377480AbiBUOQm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 09:16:42 -0500
+        with ESMTP id S1377561AbiBUOSM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 09:18:12 -0500
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A3B1EACF;
-        Mon, 21 Feb 2022 06:16:19 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EC31EC49;
+        Mon, 21 Feb 2022 06:17:49 -0800 (PST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 8E6801F38E;
-        Mon, 21 Feb 2022 14:16:18 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id F226C1F38E;
+        Mon, 21 Feb 2022 14:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1645452978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1645453067; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mPTCpil1Xfewi9hc/9wbClZOT5+wqwBi6ip5bNMm1LU=;
-        b=bJAL3wv6AlwrsGWj8iy/HRJxm1B2talmVuRmMmMnQRrK8neMV9wz6E/ugtNaxqrJxS4oSE
-        AQSZNsJulpvr0grIXQs4CrZdFjDp2BiZByYkM+WFExBTq84L6vhrEHvAYgcnRsf2o3kjub
-        UzcjkMHuOe+2pW2ne1khaUiuJy1dq0Y=
+        bh=h4YgPMB9NeywRhtm0UZX07u6pHaxZIzV2bUydzsgb44=;
+        b=gswwhnBXHiRa/iGCN7bvNy2a170al8dZyj4OIRF7PF+NrMcQD+Ujs8r8ZLSwNqEdr3xRox
+        +g2bnjlPfhx5Al0RMqsokSgJ2mj7lUv/2cr4Gq4y4OjhIqmZgRMX00PtV5tHg/x/0T+o2U
+        NF8ikIkhHP344Q7lP05H+uS2CAzGoSw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1645452978;
+        s=susede2_ed25519; t=1645453067;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mPTCpil1Xfewi9hc/9wbClZOT5+wqwBi6ip5bNMm1LU=;
-        b=54ldWsPwPjV1CceJ8NT334S8dS1AZvP2mnT8W+iRdGulTOlBSbNVNv3dXKeW9cGEdgrjYF
-        V1zUXgWV94mey/Bw==
+        bh=h4YgPMB9NeywRhtm0UZX07u6pHaxZIzV2bUydzsgb44=;
+        b=cqgmW/eLrNQx1UvrPhg8LO6r7xcHu58BIOdP8m/x5RPDCvMbQX7wkkmJMbEybgaJICotFm
+        Uysoa5eIoQQC28Ag==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5B1DE13B21;
-        Mon, 21 Feb 2022 14:16:18 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DED6113B2F;
+        Mon, 21 Feb 2022 14:17:47 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id yEanE7KeE2IzIQAAMHmgww
-        (envelope-from <hare@suse.de>); Mon, 21 Feb 2022 14:16:18 +0000
-Message-ID: <a2326220-e39e-cde7-e695-17e9441c2e66@suse.de>
-Date:   Mon, 21 Feb 2022 15:16:17 +0100
+        id kN1yNQufE2L6IQAAMHmgww
+        (envelope-from <hare@suse.de>); Mon, 21 Feb 2022 14:17:47 +0000
+Message-ID: <16d9e3a3-f463-35e9-ddc7-632bfb278eda@suse.de>
+Date:   Mon, 21 Feb 2022 15:17:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH v4 08/15] crypto: testmgr - add known answer tests for
- ffdheXYZ(dh) templates
+Subject: Re: [PATCH v4 09/15] crypto: dh - implement private key generation
+ primitive for ffdheXYZ(dh)
 Content-Language: en-US
 To:     Nicolai Stange <nstange@suse.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
@@ -66,9 +66,9 @@ Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         keyrings@vger.kernel.org
 References: <20220221121101.1615-1-nstange@suse.de>
- <20220221121101.1615-9-nstange@suse.de>
+ <20220221121101.1615-10-nstange@suse.de>
 From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20220221121101.1615-9-nstange@suse.de>
+In-Reply-To: <20220221121101.1615-10-nstange@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -82,15 +82,44 @@ List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 On 2/21/22 13:10, Nicolai Stange wrote:
-> Add known answer tests for the ffdhe2048(dh), ffdhe3072(dh), ffdhe4096(dh),
-> ffdhe6144(dh) and ffdhe8192(dh) templates introduced with the previous
-> patch to the testmgr. All TVs have been generated with OpenSSL.
+> The support for NVME in-band authentication currently in the works ([1])
+> needs to generate ephemeral DH keys for use with the RFC 7919 safe-prime
+> FFDHE groups.
+> 
+> In analogy to ECDH and its ecc_gen_privkey(), implement a
+> dh_safe_prime_gen_privkey() and invoke it from the ffdheXYZ(dh) templates'
+> common ->set_secret(), i.e. dh_safe_prime_set_secret(), in case the input
+> ->key_size is zero.
+> 
+> As the RFC 7919 FFDHE groups are classified as approved safe-prime groups
+> by SP800-56Arev3, it's worthwhile to make the new
+> dh_safe_prime_gen_privkey() to follow the approach specified in
+> SP800-56Arev3, sec. 5.6.1.1.3 ("Key-Pair Generation Using Extra Random
+> Bits") in order to achieve conformance.
+> 
+> SP800-56Arev3 specifies a lower as well as an upper bound on the generated
+> key's length:
+> - it must be >= two times the maximum supported security strength of
+>    the group in question and
+> - it must be <= the length of the domain parameter Q.
+> 
+> For any safe-prime group Q = (P - 1)/2 by definition and the individual
+> maximum supported security strengths as specified by SP800-56Arev3 have
+> been made available as part of the FFDHE dh_safe_prime definitions
+> introduced with a previous patch. Make dh_safe_prime_gen_privkey() pick
+> twice the maximum supported strength rounded up to the next power of two
+> for the output key size. This choice respects both, the lower and upper
+> bounds given by SP800-90Arev3 for any of the approved safe-prime groups and
+> is also in line with the NVME base spec 2.0, which requires the key size to
+> be >= 256bits.
+> 
+> [1] https://lore.kernel.org/r/20211202152358.60116-1-hare@suse.de
 > 
 > Signed-off-by: Nicolai Stange <nstange@suse.de>
 > ---
->   crypto/testmgr.c |  37 ++
->   crypto/testmgr.h | 871 +++++++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 908 insertions(+)
+>   crypto/Kconfig |   1 +
+>   crypto/dh.c    | 140 +++++++++++++++++++++++++++++++++++++++++++++++--
+>   2 files changed, 138 insertions(+), 3 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
