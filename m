@@ -2,59 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB884BE41F
-	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 18:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CEEC4BDBE9
+	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 18:41:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377571AbiBUOUP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Feb 2022 09:20:15 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57526 "EHLO
+        id S1377587AbiBUOUu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Feb 2022 09:20:50 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357379AbiBUOUO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 09:20:14 -0500
+        with ESMTP id S1377609AbiBUOUr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 09:20:47 -0500
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A28BA12AF2;
-        Mon, 21 Feb 2022 06:19:51 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE171EAF5;
+        Mon, 21 Feb 2022 06:20:22 -0800 (PST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 608B02111A;
-        Mon, 21 Feb 2022 14:19:50 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 12968210F2;
+        Mon, 21 Feb 2022 14:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1645453190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1645453221; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xpvzMC8Ckl84xZPjUXNnHSVeQU6Bt4IElqUIe5yAtWA=;
-        b=VmZaOh95QLUlV9MWk1nhRkoRJ7Z3cyoXt547oBP4p6Xvha723dErQFriFXjdy7eMkDDWZP
-        7C/YYhPKHRv7lqgPROkdPmUlZV5ZGdRxJyXak4eNmrxuWw7LIX/HQ40fEtbbViCe+niHp5
-        orNFlflBjdQ6te4aoxqODY1SvEgkj9w=
+        bh=mUeasKiHlfbKHvG/J699dYPKNoljX3bWoZBNodhvzEI=;
+        b=NQbCIGYv59dfkH+pT0NgMcN/EPTxawiwxRNMpouhrEuIu5NiEPpMS7f8sAzTCOPOl2w3rI
+        DtZ9QiDfg7if6q9RaxwWd2RoKW9NpxoPhDF3hPUAzXnXuIBiepPcdypiJVxBH54noMwQom
+        Up0A+tXP46NnHnWKFgmVnXWoAA/hHhU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1645453190;
+        s=susede2_ed25519; t=1645453221;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xpvzMC8Ckl84xZPjUXNnHSVeQU6Bt4IElqUIe5yAtWA=;
-        b=0wrntaKV9mIr7Mj6qfD458ZIAbj45zfLV4x0qYiA6RaUX0LGTpgCsAMuNqTeJrknHknG/g
-        02KICil27wl9g2Bg==
+        bh=mUeasKiHlfbKHvG/J699dYPKNoljX3bWoZBNodhvzEI=;
+        b=ONdrG1w8iCyqsCv+mVdLjJWQXlHkXB3JjA6hVFLGJRXoGZVJn9O0vmrmrYLiC3Ahcn4qqw
+        VQFhciN8w5uwbtAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 407EE13B2F;
-        Mon, 21 Feb 2022 14:19:50 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D972B13B2F;
+        Mon, 21 Feb 2022 14:20:20 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id IisJDoafE2IjIwAAMHmgww
-        (envelope-from <hare@suse.de>); Mon, 21 Feb 2022 14:19:50 +0000
-Message-ID: <23740a5b-5c3b-d685-c1fa-99f97d5211ea@suse.de>
-Date:   Mon, 21 Feb 2022 15:19:49 +0100
+        id CY7hM6SfE2KrIwAAMHmgww
+        (envelope-from <hare@suse.de>); Mon, 21 Feb 2022 14:20:20 +0000
+Message-ID: <8576d112-c898-410c-6444-56c14bd8607c@suse.de>
+Date:   Mon, 21 Feb 2022 15:20:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH v4 13/15] crypto: dh - disallow plain "dh" usage in FIPS
- mode
+Subject: Re: [PATCH v4 15/15] crypto: dh - calculate Q from P for the full
+ public key verification
 Content-Language: en-US
 To:     Nicolai Stange <nstange@suse.de>,
         Herbert Xu <herbert@gondor.apana.org.au>,
@@ -66,9 +66,9 @@ Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         keyrings@vger.kernel.org
 References: <20220221121101.1615-1-nstange@suse.de>
- <20220221121101.1615-14-nstange@suse.de>
+ <20220221121101.1615-16-nstange@suse.de>
 From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20220221121101.1615-14-nstange@suse.de>
+In-Reply-To: <20220221121101.1615-16-nstange@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -81,36 +81,24 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2/21/22 13:10, Nicolai Stange wrote:
-> SP800-56Arev3, sec. 5.5.2 ("Assurance of Domain-Parameter Validity")
-> asserts that an implementation needs to verify domain paramtere validity,
-> which boils down to either
-> - the domain parameters corresponding to some known safe-prime group
->    explicitly listed to be approved in the document or
-> - for parameters conforming to a "FIPS 186-type parameter-size set",
->    that the implementation needs to perform an explicit domain parameter
->    verification, which would require access to the "seed" and "counter"
->    values used in their generation.
+On 2/21/22 13:11, Nicolai Stange wrote:
+> As the ->q in struct dh_ctx gets never set anywhere, the code in
+> dh_is_pubkey_valid() for doing the full public key validation in accordance
+> to SP800-56Arev3 is effectively dead.
 > 
-> The latter is not easily feasible and moreover, SP800-56Arev3 states that
-> safe-prime groups are preferred and that FIPS 186-type parameter sets
-> should only be supported for backward compatibility, if it all.
+> However, for safe-prime groups Q = (P - 1)/2 by definition and
+> as the safe-prime groups are the only possible groups in FIPS mode (via
+> those ffdheXYZ() templates), this enables dh_is_pubkey_valid() to calculate
+> Q on the fly for these.
+> Implement this.
 > 
-> Mark "dh" as not fips_allowed in testmgr. Note that the safe-prime
-> ffdheXYZ(dh) wrappers are not affected by this change: as these enforce
-> some approved safe-prime group each, their usage is still allowed in FIPS
-> mode.
-> 
-> This change will effectively render the keyctl(KEYCTL_DH_COMPUTE) syscall
-> unusable in FIPS mode, but it has been brought up that this might even be
-> a good thing ([1]).
-> 
-> [1] https://lore.kernel.org/r/20211217055227.GA20698@gondor.apana.org.au
+> With this change, the last code accessing struct dh_ctx's ->q is now gone.
+> Remove this member from struct dh_ctx.
 > 
 > Signed-off-by: Nicolai Stange <nstange@suse.de>
 > ---
->   crypto/testmgr.c | 1 -
->   1 file changed, 1 deletion(-)
+>   crypto/dh.c | 40 +++++++++++++++++++++++++++++-----------
+>   1 file changed, 29 insertions(+), 11 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
