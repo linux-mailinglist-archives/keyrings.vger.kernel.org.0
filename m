@@ -2,180 +2,126 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 371D54BE584
-	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 19:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CAD84BDD10
+	for <lists+keyrings@lfdr.de>; Mon, 21 Feb 2022 18:43:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357789AbiBUMRW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Feb 2022 07:17:22 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51370 "EHLO
+        id S1358839AbiBUNTD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Feb 2022 08:19:03 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357793AbiBUMPm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 07:15:42 -0500
+        with ESMTP id S1358840AbiBUNTB (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Feb 2022 08:19:01 -0500
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE9CA1A6;
-        Mon, 21 Feb 2022 04:11:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8071B1EEDA;
+        Mon, 21 Feb 2022 05:18:38 -0800 (PST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 4F435212B5;
-        Mon, 21 Feb 2022 12:11:33 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 3EA76210F0;
+        Mon, 21 Feb 2022 13:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1645445493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
+        t=1645449517; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7fRmZgfFkiOaDa4k3ibkSicu/KXGwgSgkAzVxp+EwIE=;
-        b=IG1Rgc9urv07aOzKrbxBPLxjRz7YXbKOtoDmN4zTsAi0c9cOdlCMM/5IYZi4mGjhUclRcw
-        IygrRIkA2nYqYxIQCqA7Q+ruf+HuDG7DvT00fE38kq60jfdygeLWYX12EtEqrlMVCgWACu
-        HgzwNUl5fA1WQff3glF3ii5SVXK2zvw=
+        bh=qx0Q18ljVcrXhWvAQ6cUSrAVYJIdsXr8hIUlUK/8QpM=;
+        b=Cqj3DkYxCZV9tKvMhc20KpHen50b9YvAxjUyjNAy5j3Xvz2X6M0bSDZR+S3amBXFlcd7E4
+        GyiTc/uusdBsKhLqAoKvJRO3wfHJj0bubdlDIchD/mMCW6ZPJMlJ/ltShHLGbV4Wa1/4JU
+        n5b02J35yPJl5V5IYGUmr/t7NQ9B6+A=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1645445493;
+        s=susede2_ed25519; t=1645449517;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
+         mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7fRmZgfFkiOaDa4k3ibkSicu/KXGwgSgkAzVxp+EwIE=;
-        b=v9+J2t9ihFQj5D5m6odupJ554YQjRQ3O7kislfiDbiF2NYe2AYIh/L49u7qBT8m/MLxBHn
-        0315EAY5aRxvgCCw==
+        bh=qx0Q18ljVcrXhWvAQ6cUSrAVYJIdsXr8hIUlUK/8QpM=;
+        b=LofZw7M41jMg5B5ffe5yCkle/xS/uTOv0SumivGAz0qPUIAYkZOprL+M7W3Dd6TBDjORLq
+        bvgQ+L7Wq+Q15pAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 37B1013A94;
-        Mon, 21 Feb 2022 12:11:33 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0F39B13AF2;
+        Mon, 21 Feb 2022 13:18:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id xTarC3WBE2KvWwAAMHmgww
-        (envelope-from <nstange@suse.de>); Mon, 21 Feb 2022 12:11:33 +0000
-From:   Nicolai Stange <nstange@suse.de>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        id sKQ3Ai2RE2K2fwAAMHmgww
+        (envelope-from <hare@suse.de>); Mon, 21 Feb 2022 13:18:37 +0000
+Message-ID: <9bfe807a-d14e-feea-6fcd-b1526da16ff5@suse.de>
+Date:   Mon, 21 Feb 2022 14:18:36 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v4 01/15] crypto: kpp - provide support for KPP template
+ instances
+Content-Language: en-US
+To:     Nicolai Stange <nstange@suse.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>
-Cc:     =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
-        Hannes Reinecke <hare@suse.de>, Torsten Duwe <duwe@suse.de>,
+Cc:     =?UTF-8?Q?Stephan_M=c3=bcller?= <smueller@chronox.de>,
+        Torsten Duwe <duwe@suse.de>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Nicolai Stange <nstange@suse.de>
-Subject: [PATCH v4 15/15] crypto: dh - calculate Q from P for the full public key verification
-Date:   Mon, 21 Feb 2022 13:11:01 +0100
-Message-Id: <20220221121101.1615-16-nstange@suse.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20220221121101.1615-1-nstange@suse.de>
+        keyrings@vger.kernel.org
 References: <20220221121101.1615-1-nstange@suse.de>
-MIME-Version: 1.0
+ <20220221121101.1615-2-nstange@suse.de>
+From:   Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20220221121101.1615-2-nstange@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-As the ->q in struct dh_ctx gets never set anywhere, the code in
-dh_is_pubkey_valid() for doing the full public key validation in accordance
-to SP800-56Arev3 is effectively dead.
+On 2/21/22 13:10, Nicolai Stange wrote:
+> The upcoming support for the RFC 7919 ffdhe group parameters will be
+> made available in the form of templates like "ffdhe2048(dh)",
+> "ffdhe3072(dh)" and so on. Template instantiations thereof would wrap the
+> inner "dh" kpp_alg and also provide kpp_alg services to the outside again.
+> Furthermore, it might be perhaps be desirable to provide KDF templates in
+> the future, which would similarly wrap an inner kpp_alg and present
+> themselves to the outside as another kpp_alg, transforming the shared
+> secret on its way out.
+> 
+> Introduce the bits needed for supporting KPP template instances. Everything
+> related to inner kpp_alg spawns potentially being held by such template
+> instances will be deferred to a subsequent patch in order to facilitate
+> review.
+> 
+> Define struct struct kpp_instance in close analogy to the already existing
+> skcipher_instance, shash_instance and alike, but wrapping a struct kpp_alg.
+> Implement the new kpp_register_instance() template instance registration
+> primitive. Provide some helper functions for
+> - going back and forth between a generic struct crypto_instance and the new
+>    struct kpp_instance,
+> - obtaining the instantiating kpp_instance from a crypto_kpp transform and
+> - for accessing a given kpp_instance's implementation specific context
+>    data.
+> 
+> Annotate everything with proper kernel-doc comments, even though
+> include/crypto/internal/kpp.h is not considered for the generated docs.
+> 
+> Signed-off-by: Nicolai Stange <nstange@suse.de>
+> ---
+>   crypto/kpp.c                  | 20 +++++++++
+>   include/crypto/internal/kpp.h | 83 +++++++++++++++++++++++++++++++++++
+>   2 files changed, 103 insertions(+)
+> 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-However, for safe-prime groups Q = (P - 1)/2 by definition and
-as the safe-prime groups are the only possible groups in FIPS mode (via
-those ffdheXYZ() templates), this enables dh_is_pubkey_valid() to calculate
-Q on the fly for these.
-Implement this.
+Cheers,
 
-With this change, the last code accessing struct dh_ctx's ->q is now gone.
-Remove this member from struct dh_ctx.
-
-Signed-off-by: Nicolai Stange <nstange@suse.de>
----
- crypto/dh.c | 40 +++++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 11 deletions(-)
-
-diff --git a/crypto/dh.c b/crypto/dh.c
-index d0d24f615b2d..cca289477485 100644
---- a/crypto/dh.c
-+++ b/crypto/dh.c
-@@ -15,7 +15,6 @@
- 
- struct dh_ctx {
- 	MPI p;	/* Value is guaranteed to be set. */
--	MPI q;	/* Value is optional. */
- 	MPI g;	/* Value is guaranteed to be set. */
- 	MPI xa;	/* Value is guaranteed to be set. */
- };
-@@ -23,7 +22,6 @@ struct dh_ctx {
- static void dh_clear_ctx(struct dh_ctx *ctx)
- {
- 	mpi_free(ctx->p);
--	mpi_free(ctx->q);
- 	mpi_free(ctx->g);
- 	mpi_free(ctx->xa);
- 	memset(ctx, 0, sizeof(*ctx));
-@@ -99,11 +97,12 @@ static int dh_set_secret(struct crypto_kpp *tfm, const void *buf,
- /*
-  * SP800-56A public key verification:
-  *
-- * * If Q is provided as part of the domain paramenters, a full validation
-- *   according to SP800-56A section 5.6.2.3.1 is performed.
-+ * * For the safe-prime groups in FIPS mode, Q can be computed
-+ *   trivially from P and a full validation according to SP800-56A
-+ *   section 5.6.2.3.1 is performed.
-  *
-- * * If Q is not provided, a partial validation according to SP800-56A section
-- *   5.6.2.3.2 is performed.
-+ * * For all other sets of group parameters, only a partial validation
-+ *   according to SP800-56A section 5.6.2.3.2 is performed.
-  */
- static int dh_is_pubkey_valid(struct dh_ctx *ctx, MPI y)
- {
-@@ -114,21 +113,40 @@ static int dh_is_pubkey_valid(struct dh_ctx *ctx, MPI y)
- 	 * Step 1: Verify that 2 <= y <= p - 2.
- 	 *
- 	 * The upper limit check is actually y < p instead of y < p - 1
--	 * as the mpi_sub_ui function is yet missing.
-+	 * in order to save one mpi_sub_ui() invocation here. Note that
-+	 * p - 1 is the non-trivial element of the subgroup of order 2 and
-+	 * thus, the check on y^q below would fail if y == p - 1.
- 	 */
- 	if (mpi_cmp_ui(y, 1) < 1 || mpi_cmp(y, ctx->p) >= 0)
- 		return -EINVAL;
- 
--	/* Step 2: Verify that 1 = y^q mod p */
--	if (ctx->q) {
--		MPI val = mpi_alloc(0);
-+	/*
-+	 * Step 2: Verify that 1 = y^q mod p
-+	 *
-+	 * For the safe-prime groups q = (p - 1)/2.
-+	 */
-+	if (fips_enabled) {
-+		MPI val, q;
- 		int ret;
- 
-+		val = mpi_alloc(0);
- 		if (!val)
- 			return -ENOMEM;
- 
--		ret = mpi_powm(val, y, ctx->q, ctx->p);
-+		q = mpi_alloc(mpi_get_nlimbs(ctx->p));
-+		if (!q) {
-+			mpi_free(val);
-+			return -ENOMEM;
-+		}
-+
-+		/*
-+		 * ->p is odd, so no need to explicitly subtract one
-+		 * from it before shifting to the right.
-+		 */
-+		mpi_rshift(q, ctx->p, 1);
- 
-+		ret = mpi_powm(val, y, q, ctx->p);
-+		mpi_free(q);
- 		if (ret) {
- 			mpi_free(val);
- 			return ret;
+Hannes
 -- 
-2.26.2
-
+Dr. Hannes Reinecke		           Kernel Storage Architect
+hare@suse.de			                  +49 911 74053 688
+SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), GF: Felix Imendörffer
