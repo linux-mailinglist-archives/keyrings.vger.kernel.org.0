@@ -2,121 +2,151 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A652D4BF737
-	for <lists+keyrings@lfdr.de>; Tue, 22 Feb 2022 12:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 665404BF78B
+	for <lists+keyrings@lfdr.de>; Tue, 22 Feb 2022 13:00:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbiBVLZO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Feb 2022 06:25:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50760 "EHLO
+        id S231924AbiBVMBC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Feb 2022 07:01:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbiBVLZO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Feb 2022 06:25:14 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0156E130185
-        for <keyrings@vger.kernel.org>; Tue, 22 Feb 2022 03:24:48 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1nMTHb-0000ST-9t; Tue, 22 Feb 2022 12:24:39 +0100
-Message-ID: <db76da34-a40d-4746-5810-316b052acf16@pengutronix.de>
-Date:   Tue, 22 Feb 2022 12:24:33 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [EXT] Re: [PATCH v4 5/5] KEYS: trusted: Introduce support for NXP
- CAAM-based trusted keys
-To:     Pankaj Gupta <pankaj.gupta@nxp.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Cc:     David Gstir <david@sigma-star.at>,
-        Aymen Sghaier <aymen.sghaier@nxp.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Jan Luebbe <j.luebbe@pengutronix.de>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        Udit Agarwal <udit.agarwal@nxp.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Horia Geanta <horia.geanta@nxp.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Richard Weinberger <richard@nod.at>,
-        James Morris <jmorris@namei.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "tharvey@gateworks.com" <tharvey@gateworks.com>,
-        Franck Lenormand <franck.lenormand@nxp.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        David Howells <dhowells@redhat.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <cover.8f40b6d1b93adc80aed2cac29a134f7a7fb5ee98.1633946449.git-series.a.fatoum@pengutronix.de>
- <a0f1d14af8ac8bae16dd29ad1073f7143ba28f26.1633946449.git-series.a.fatoum@pengutronix.de>
- <b9283c8a4b3b04c7ee9f525208cbb32d798d4439.camel@ew.tq-group.com>
- <59f1f3e6-fcf1-794d-610c-674b826822bf@pengutronix.de>
- <4decdfb7d4395e967e1bf6c65212616400c8064a.camel@ew.tq-group.com>
- <DU2PR04MB8630EA7DB3AAD9F582EDB75C953B9@DU2PR04MB8630.eurprd04.prod.outlook.com>
-Content-Language: en-US
-In-Reply-To: <DU2PR04MB8630EA7DB3AAD9F582EDB75C953B9@DU2PR04MB8630.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S231890AbiBVMA6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Feb 2022 07:00:58 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1D0156C6D;
+        Tue, 22 Feb 2022 04:00:13 -0800 (PST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21MAaL07003288;
+        Tue, 22 Feb 2022 11:59:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=SiYwENJC/gIJ7Y94osoR/8mrrQzBm6PzKC5luPMTQtU=;
+ b=sbLPJFNUP11Po5l+lDjRWeueOwaPj5XXk0zmu+1RVXwEx+fNDRhNZ/4h99j/4ExjceA7
+ mxdZJY8Q6h4HBQJ6WTJPKgDVEXsgwFUMtNCRp7jqUBHlXz8wMJnlldzi1/4obJWz14Yr
+ uim5DjEnNzu5BFC0lZzUDV2qBp+L2mtxO4sFisYD6i7Sx6SQG4/JIlK5CJKZLmsj9+e4
+ b6cjcZ5YPv5jblAniFYrUhwvfEYvYRy0c1/nIIDnUmxgZ8QifT9t3Z3TepFgrijq5OwP
+ BrW8TiK1vFmFOKEGoiMyRGnjujNo8LxbW1SLt9s9Uc2Nxi4i0qnWd17ltph1dqaG9X1T Og== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ecup9whh8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 22 Feb 2022 11:59:33 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21MBvg1N026580;
+        Tue, 22 Feb 2022 11:59:33 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ecup9whgb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 22 Feb 2022 11:59:32 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21MBvNYx020871;
+        Tue, 22 Feb 2022 11:59:30 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma06ams.nl.ibm.com with ESMTP id 3eaqtj2ecr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 22 Feb 2022 11:59:30 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 21MBxRg346268898
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 22 Feb 2022 11:59:28 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DAD9352057;
+        Tue, 22 Feb 2022 11:59:27 +0000 (GMT)
+Received: from sig-9-65-81-84.ibm.com (unknown [9.65.81.84])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E16DA52050;
+        Tue, 22 Feb 2022 11:59:25 +0000 (GMT)
+Message-ID: <8e9e4bc3bbd831a606f264ec3f4dfcafdeebece6.camel@linux.ibm.com>
+Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
+        dwmw2@infradead.org, ardb@kernel.org, jmorris@namei.org,
+        serge@hallyn.com, nayna@linux.ibm.com, keescook@chromium.org,
+        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Tue, 22 Feb 2022 06:59:25 -0500
+In-Reply-To: <YhKP12KEmyqyS8rj@iki.fi>
+References: <20220126025834.255493-1-eric.snowberg@oracle.com>
+         <YfFP6OHqBVNWKL2C@iki.fi> <YfFTf6vIpNMIrwH0@iki.fi>
+         <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+         <YhKP12KEmyqyS8rj@iki.fi>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dhqBLlaAdn5juSbAq-4pp0ftpGNi1tNp
+X-Proofpoint-ORIG-GUID: pR5XcqCgSAzEp3fIyEqgY2CFfGEAR1Fc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-22_02,2022-02-21_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 clxscore=1011
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202220067
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Pankaj,
+On Sun, 2022-02-20 at 20:00 +0100, Jarkko Sakkinen wrote:
+> On Wed, Jan 26, 2022 at 05:06:09PM -0500, Mimi Zohar wrote:
 
-On 22.02.22 05:30, Pankaj Gupta wrote:
-> Hi Ahmad,
+> > > 
+> > > Mimi brought up that we need a MAINTAINERS update for this and also
+> > > .platform.
+> > > 
+> > > We have these:
+> > > 
+> > > - KEYS/KEYRINGS
+> > > - CERTIFICATE HANDLING
+> > > 
+> > > I would put them under KEYRINGS for now and would not consider further
+> > > subdivision for the moment.
+> > 
+> > IMA has dependencies on the platform_certs/ and now on the new .machine
+> > keyring.  Just adding "F: security/integrity/platform_certs/" to the
+> > KEYS/KEYRINGS record, ignores that dependency.  The discussion wouldn't
+> > even be on the linux-integrity mailing list.
+> > 
+> > Existing requirement:
+> > - The keys on the .platform keyring are limited to verifying the kexec
+> > image.
+> > 
+> > New requirements based on Eric Snowbergs' patch set:
+> > - When IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY is enabled,
+> > the MOK keys will not be loaded directly onto the .machine keyring or
+> > indirectly onto the .secondary_trusted_keys keyring.
+> > 
+> > - Only when a new IMA Kconfig explicitly allows the keys on the
+> > .machine keyrings, will the CA keys stored in MOK be loaded onto the
+> > .machine keyring.
+> > 
+> > Unfortunately I don't think there is any choice, but to define a new
+> > MAINTAINERS entry.  Perhaps something along the lines of:
+> > 
+> > KEYS/KEYRINGS_INTEGRITY
+> > M:     Jarkko Sakkinen <jarkko@kernel.org>
+> > M:     Mimi Zohar <zohar@linux.ibm.com>
+> > L:      keyrings@vger.kernel.org
+> > L:      linux-integrity@vger.kernel.org
+> > F:      security/integrity/platform_certs
+> > 
 > 
-> 
->> -----Original Message-----
->> From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
->> Sent: Monday, December 13, 2021 7:11 PM
->> To: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>
->>> For now, this is pointed out in the documentation. If you have a
->>> suggestion on a specific condition we should check and issue a
->>> diagnostic on, I can incorporate it. An exhaustive if
->>> WARN_ON(!secure()) is impossible, but having some warning for
->>> unsuspecting users would indeed be nice.
->>
->> I don't know of any condition that doesn't involve looking at SoC- specific OTP
->> registers - that's what U-Boot does to determine whether HAB is enabled...
->>
-> 
-> Check the value fetched from the SEC Status Register (SSTA) (Offset 0xFD4h, bit 8,9 => 00b - Non-Secure, 01b - Secure, 10b - Trusted, 11b - Fail), for MOO (Mode of Operation).
-> And the warning can be issued accordingly.
-> 
-> It is to be noted that this register is part of CAAM page0, which might not be accessible to Linux, for all the iMX SoC(s).
-> 
-> For other SoC(s), this can be added.
+> This would work for me.
 
-Thanks for the pointer. I am only testing this with i.MX, so I'd prefer this
-be left as a future exercise for a Layerscape user.
+Thanks, Jarkko.  Are you planning on upstreaming this change, as you
+previously said, or would you prefer I do it?
 
-Thanks for your reviews. I collected them on Patches 2/5 and 4/5 for v5.
+thanks,
 
-Cheers,
-Ahmad
+Mimi
 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
