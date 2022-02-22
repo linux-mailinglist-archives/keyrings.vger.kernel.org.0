@@ -2,133 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EAA74BF363
-	for <lists+keyrings@lfdr.de>; Tue, 22 Feb 2022 09:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A652D4BF737
+	for <lists+keyrings@lfdr.de>; Tue, 22 Feb 2022 12:24:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbiBVIU3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Feb 2022 03:20:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43472 "EHLO
+        id S231163AbiBVLZO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Feb 2022 06:25:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiBVIU3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Feb 2022 03:20:29 -0500
-X-Greylist: delayed 444 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Feb 2022 00:20:03 PST
-Received: from mail.avm.de (mail.avm.de [IPv6:2001:bf0:244:244::120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941CE154D35;
-        Tue, 22 Feb 2022 00:20:03 -0800 (PST)
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-        by mail.avm.de (Postfix) with ESMTPS;
-        Tue, 22 Feb 2022 09:12:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-        t=1645517554; bh=KEa0HEq9elkheo1S0XRmlXqPLxqZBVn71+sq+tx/6i8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DGmzZT9iqagkTOPUypiFfi15ZqAp9bYEBZij8jLMfhmg6tiiCU0BwZUCKQcki5DJN
-         2iB6113ZsYrFj4in4EBwsS+xGQGdVInTbEsWMkh60rIhnDEUCLCLpG7S0bZ1/DJrd5
-         If32mPKQGoK17+Q8sQ5AKIFVX2VBqH1s8NJUW05Y=
-Received: from buildd.core.avm.de (buildd-sv-01.avm.de [172.16.0.225])
-        by mail-auth.avm.de (Postfix) with ESMTPSA id 99984804A2;
-        Tue, 22 Feb 2022 09:12:34 +0100 (CET)
-Date:   Tue, 22 Feb 2022 09:12:33 +0100
-From:   Nicolas Schier <n.schier@avm.de>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] certs: simplify empty certs creation in
- certs/Makefile
-Message-ID: <YhSa8bOW7sOd1cp0@buildd.core.avm.de>
-References: <20220218044634.169520-1-masahiroy@kernel.org>
- <20220218044634.169520-2-masahiroy@kernel.org>
+        with ESMTP id S230268AbiBVLZO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Feb 2022 06:25:14 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0156E130185
+        for <keyrings@vger.kernel.org>; Tue, 22 Feb 2022 03:24:48 -0800 (PST)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1nMTHb-0000ST-9t; Tue, 22 Feb 2022 12:24:39 +0100
+Message-ID: <db76da34-a40d-4746-5810-316b052acf16@pengutronix.de>
+Date:   Tue, 22 Feb 2022 12:24:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220218044634.169520-2-masahiroy@kernel.org>
-X-purgate-ID: 149429::1645517554-00000620-B1D4181E/0/0
-X-purgate-type: clean
-X-purgate-size: 2668
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [EXT] Re: [PATCH v4 5/5] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+To:     Pankaj Gupta <pankaj.gupta@nxp.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc:     David Gstir <david@sigma-star.at>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        Udit Agarwal <udit.agarwal@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Horia Geanta <horia.geanta@nxp.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Richard Weinberger <richard@nod.at>,
+        James Morris <jmorris@namei.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "tharvey@gateworks.com" <tharvey@gateworks.com>,
+        Franck Lenormand <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        David Howells <dhowells@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+References: <cover.8f40b6d1b93adc80aed2cac29a134f7a7fb5ee98.1633946449.git-series.a.fatoum@pengutronix.de>
+ <a0f1d14af8ac8bae16dd29ad1073f7143ba28f26.1633946449.git-series.a.fatoum@pengutronix.de>
+ <b9283c8a4b3b04c7ee9f525208cbb32d798d4439.camel@ew.tq-group.com>
+ <59f1f3e6-fcf1-794d-610c-674b826822bf@pengutronix.de>
+ <4decdfb7d4395e967e1bf6c65212616400c8064a.camel@ew.tq-group.com>
+ <DU2PR04MB8630EA7DB3AAD9F582EDB75C953B9@DU2PR04MB8630.eurprd04.prod.outlook.com>
+Content-Language: en-US
+In-Reply-To: <DU2PR04MB8630EA7DB3AAD9F582EDB75C953B9@DU2PR04MB8630.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 01:46:34PM +0900, Masahiro Yamada wrote:
-> To create an empty cert file, we need to pass "" to the extract-cert
-> tool, which is common for all the three call-sites of cmd_exract_certs.
+Hello Pankaj,
 
-Missing a 't' in 'cmd_exract_certs'.
+On 22.02.22 05:30, Pankaj Gupta wrote:
+> Hi Ahmad,
+> 
+> 
+>> -----Original Message-----
+>> From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+>> Sent: Monday, December 13, 2021 7:11 PM
+>> To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>
+>>> For now, this is pointed out in the documentation. If you have a
+>>> suggestion on a specific condition we should check and issue a
+>>> diagnostic on, I can incorporate it. An exhaustive if
+>>> WARN_ON(!secure()) is impossible, but having some warning for
+>>> unsuspecting users would indeed be nice.
+>>
+>> I don't know of any condition that doesn't involve looking at SoC- specific OTP
+>> registers - that's what U-Boot does to determine whether HAB is enabled...
+>>
+> 
+> Check the value fetched from the SEC Status Register (SSTA) (Offset 0xFD4h, bit 8,9 => 00b - Non-Secure, 01b - Secure, 10b - Trusted, 11b - Fail), for MOO (Mode of Operation).
+> And the warning can be issued accordingly.
+> 
+> It is to be noted that this register is part of CAAM page0, which might not be accessible to Linux, for all the iMX SoC(s).
+> 
+> For other SoC(s), this can be added.
 
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
+Thanks for the pointer. I am only testing this with i.MX, so I'd prefer this
+be left as a future exercise for a Layerscape user.
 
-> 
-> Factor out the logic into extract-cert-in.
-> 
-> One exceptional case is PKCS#11 case, where we override extract-cert-in
-> with the URI.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
->  certs/Makefile | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
-> 
-> diff --git a/certs/Makefile b/certs/Makefile
-> index 68c1d7b9a388..d8443cfb1c40 100644
-> --- a/certs/Makefile
-> +++ b/certs/Makefile
-> @@ -13,12 +13,13 @@ obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_nohashes.o
->  endif
->  
->  quiet_cmd_extract_certs  = CERT    $@
-> -      cmd_extract_certs  = $(obj)/extract-cert $(2) $@
-> +      cmd_extract_certs  = $(obj)/extract-cert $(extract-cert-in) $@
-> +extract-cert-in = $(or $(filter-out $(obj)/extract-cert, $(real-prereqs)),"")
->  
->  $(obj)/system_certificates.o: $(obj)/x509_certificate_list
->  
->  $(obj)/x509_certificate_list: $(CONFIG_SYSTEM_TRUSTED_KEYS) $(obj)/extract-cert FORCE
-> -	$(call if_changed,extract_certs,$(if $(CONFIG_SYSTEM_TRUSTED_KEYS),$<,""))
-> +	$(call if_changed,extract_certs)
->  
->  targets += x509_certificate_list
->  
-> @@ -52,22 +53,22 @@ $(obj)/x509.genkey:
->  
->  endif # CONFIG_MODULE_SIG_KEY
->  
-> -# If CONFIG_MODULE_SIG_KEY isn't a PKCS#11 URI, depend on it
-> -ifneq ($(filter-out pkcs11:%, $(CONFIG_MODULE_SIG_KEY)),)
-> -X509_DEP := $(CONFIG_MODULE_SIG_KEY)
-> -endif
-> -
->  $(obj)/system_certificates.o: $(obj)/signing_key.x509
->  
-> -$(obj)/signing_key.x509: $(X509_DEP) $(obj)/extract-cert FORCE
-> -	$(call if_changed,extract_certs,$(if $(CONFIG_MODULE_SIG_KEY),$(if $(X509_DEP),$<,$(CONFIG_MODULE_SIG_KEY)),""))
-> +PKCS11_URI := $(filter pkcs11:%, $(CONFIG_MODULE_SIG_KEY))
-> +ifdef PKCS11_URI
-> +$(obj)/signing_key.x509: extract-cert-in := $(PKCS11_URI)
-> +endif
-> +
-> +$(obj)/signing_key.x509: $(filter-out $(PKCS11_URI),$(CONFIG_MODULE_SIG_KEY)) $(obj)/extract-cert FORCE
-> +	$(call if_changed,extract_certs)
->  
->  targets += signing_key.x509
->  
->  $(obj)/revocation_certificates.o: $(obj)/x509_revocation_list
->  
->  $(obj)/x509_revocation_list: $(CONFIG_SYSTEM_REVOCATION_KEYS) $(obj)/extract-cert FORCE
-> -	$(call if_changed,extract_certs,$(if $(CONFIG_SYSTEM_REVOCATION_KEYS),$<,""))
-> +	$(call if_changed,extract_certs)
->  
->  targets += x509_revocation_list
->  
-> -- 
-> 2.32.0
-> 
+Thanks for your reviews. I collected them on Patches 2/5 and 4/5 for v5.
+
+Cheers,
+Ahmad
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
