@@ -2,95 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E74B34C09E5
-	for <lists+keyrings@lfdr.de>; Wed, 23 Feb 2022 04:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 417ED4C0F34
+	for <lists+keyrings@lfdr.de>; Wed, 23 Feb 2022 10:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237811AbiBWDFR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Tue, 22 Feb 2022 22:05:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
+        id S235331AbiBWJ2D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 23 Feb 2022 04:28:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234749AbiBWDFP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Feb 2022 22:05:15 -0500
-X-Greylist: delayed 319 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Feb 2022 19:04:46 PST
-Received: from cloud-lucky.263xmail.com (cloud-lucky.263xmail.com [119.61.0.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8103556C19
-        for <keyrings@vger.kernel.org>; Tue, 22 Feb 2022 19:04:46 -0800 (PST)
-Received: from contact?hengqin.gov.cn (unknown [192.168.165.100])
-        by cloud-lucky.263xmail.com (Postfix) with ESMTP id E7B0B33BC21
-        for <keyrings@vger.kernel.org>; Wed, 23 Feb 2022 10:59:14 +0800 (CST)
-X-263anti-spam: KSV:0;BIG:0;
-X-KSVirus-check: 0
-X-ABS-CHECKED: 0
-X-SKE-CHECKED: 0
-X-ANTISPAM-LEVEL: 2
-Received: from com (localhost [127.0.0.1])
-        by proxysmtp.263.net (Postfix) with ESMTP id 4DD1937222
-        for <keyrings@vger.kernel.org>; Wed, 23 Feb 2022 10:59:09 +0800 (CST)
-X-RL-SENDER: contact@hengqin.gov.cn
-X-FST-TO: keyrings@vger.kernel.org
-X-SENDER-IP: 218.104.194.131
-X-LOGIN-NAME: 
-X-UNIQUE-TAG: <3cbf6f57af23c53543876044a922f872>
-X-SENDER: contact@hengqin.gov.cn
-X-DNS-TYPE: 0
-Received: from com (unknown [218.104.194.131])
-        by proxysmtp.263.net (Postfix) whith ESMTP id 31838UNCM5C;
-        Wed, 23 Feb 2022 10:59:09 +0800 (CST)
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG: 00000000
-Received: from info.rzwrcuo3dg3etndmcja2yrx4sh.nx.internal.cloudapp.net (unknown[20.206.114.120])
-        by rmsmtp-host001-12001 (RichMail) with SMTP id 2ee162154bda850-92a4f;
-        Wed, 23 Feb 2022 10:29:29 +0800 (CST)
-X-RM-TRANSID: 2ee162154bda850-92a4f
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S238268AbiBWJ2C (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 23 Feb 2022 04:28:02 -0500
+X-Greylist: delayed 480 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 23 Feb 2022 01:27:35 PST
+Received: from mail.onlinesuccesses.pl (mail.onlinesuccesses.pl [198.244.150.235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3866725EAA
+        for <keyrings@vger.kernel.org>; Wed, 23 Feb 2022 01:27:34 -0800 (PST)
+Received: by mail.onlinesuccesses.pl (Postfix, from userid 1002)
+        id CDE26A416A; Wed, 23 Feb 2022 09:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onlinesuccesses.pl;
+        s=mail; t=1645607881;
+        bh=nE8HqilgMh4dy7+Z8ksfg7Bc9rmPeQtYFq3/3YR2ODU=;
+        h=Date:From:To:Subject:From;
+        b=mrDpeAjA5fIYswEXgplb0sVxKdbcWX2/vBw9mpQBAgjmRjHtujtRw3th1+4B7Y4Ba
+         8Z4wQy5GFxLAJJd1mSMw6Fnkidpxo11cl/POsowvfVYdcP4hKC9PW1yKaMwFjtlPIe
+         JvurPv6QUheYqRQuQnaxl5PGa73yl5tQDyai/csc4jvmtUCx//uxYQyXX+JcYeZ3SR
+         eWyDOzxFRhjbZ1JLLZqyhKkzM8vXU02OJ5y6Q8SOnWZ5xtf2CMnyU1YJ0d5pXqtufu
+         7LFFA+8fU4g20WoebCsSIcpMetaG7/PKye9X9q3VrOP9PJ6OHk9e1Kl+c3CTIxpSNj
+         vzl/ikMxRwUxg==
+Received: by mail.onlinesuccesses.pl for <keyrings@vger.kernel.org>; Wed, 23 Feb 2022 09:16:13 GMT
+Message-ID: <20220223074502-0.1.2q.he0q.0.60eqdajiqp@onlinesuccesses.pl>
+Date:   Wed, 23 Feb 2022 09:16:13 GMT
+From:   "Wiktor Zielonko" <wiktor.zielonko@onlinesuccesses.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: Ruch z pierwszej pozycji w Google
+X-Mailer: mail.onlinesuccesses.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Investment
-To:     Recipients <contact@hengqin.gov.cn>
-From:   "Ms. Reem A.. " <contact@hengqin.gov.cn>
-Date:   Wed, 23 Feb 2022 02:29:08 +0000
-Reply-To: reem.alhashimi@yandex.com
-Message-Id: <20220223025909.4DD1937222@proxysmtp.263.net>
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [119.61.0.162 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [119.61.0.162 listed in bl.score.senderscore.com]
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [119.61.0.162 listed in wl.mailspike.net]
-        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+Dzie=C5=84 dobry,=20
 
-My name is Ms. Reem bint Ebrahim Al Hashimy. Cabinet Member and Minister of State for International Cooperation, UAE.
-I am also the Director General and board representative on the higher committee of the EXPO 2020/2021 in Dubai.
+jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
+j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
+e Google.=20
 
-I would start by tendering my unreserved apologies for barging into your privacy. I have a financial investment proposition
-that might interest you. Please reply for more details if you are interested. Reply only to my private
-Email: reem2018@daum.net
+Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
+=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
+w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
+owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
+dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
 
-Best Regards,
-Ms. Reem Al-Hashimi
+Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
+edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
+edstawi=C4=87 ofert=C4=99?=20
 
 
+Pozdrawiam serdecznie,
+Wiktor Zielonko
