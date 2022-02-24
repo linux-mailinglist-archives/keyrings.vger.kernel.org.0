@@ -2,62 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 248DE4C2595
-	for <lists+keyrings@lfdr.de>; Thu, 24 Feb 2022 09:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F534C357E
+	for <lists+keyrings@lfdr.de>; Thu, 24 Feb 2022 20:15:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231653AbiBXINh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 24 Feb 2022 03:13:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37546 "EHLO
+        id S233384AbiBXTPa convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Thu, 24 Feb 2022 14:15:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231992AbiBXINI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Feb 2022 03:13:08 -0500
-X-Greylist: delayed 473 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Feb 2022 00:12:35 PST
-Received: from mail.powerknight.com.pl (unknown [185.212.225.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6224A32EC9
-        for <keyrings@vger.kernel.org>; Thu, 24 Feb 2022 00:12:35 -0800 (PST)
-Received: by mail.powerknight.com.pl (Postfix, from userid 1001)
-        id 0C2596C665; Thu, 24 Feb 2022 09:04:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=powerknight.com.pl;
-        s=mail; t=1645689881;
-        bh=DOvn/9rDwQau5mzJFa5D5EjsnCORPgAuVOSsn5ToHWE=;
-        h=Date:From:To:Subject:From;
-        b=mohF3KAZAV6sPYnDv+qfFsmNbsbrx7LGEpN4z5K+P8D9gGmzqOYoOKpT0Bzinb7yY
-         XRjfuf+nGw/OVrKZRQPRhrG66+k0e++IvptmyKT6OigJQocmQGR7ZXiEH69qogb4sZ
-         A8VJh/zDIfFzwNiwPCiwwWxNpsSh/fYMcYv4axy80fSR4nVv6+6X7RkNxHAuqtPAYV
-         BxAGPRf2APIYpG6Kfjl4RnLd7CGK62mbR0cahd49nY/Rc1t7VXWZMpuQLmrlEhdQbY
-         sh4mYGpINDe5BGNktU2ORqG/hUhsbl+TLzdEoeHRwqMvuRqV0QM0EC2lcjKx5tkr9W
-         zqLxMF5ZtBXqA==
-Received: by mail.powerknight.com.pl for <keyrings@vger.kernel.org>; Thu, 24 Feb 2022 08:03:59 GMT
-Message-ID: <20220224074501-0.1.t.mbi.0.kse2je30g7@powerknight.com.pl>
-Date:   Thu, 24 Feb 2022 08:03:59 GMT
-From:   "Marek Dranski" <marek.dranski@powerknight.com.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.powerknight.com.pl
+        with ESMTP id S232615AbiBXTP3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Feb 2022 14:15:29 -0500
+X-Greylist: delayed 344 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Feb 2022 11:14:59 PST
+Received: from mxout03.lancloud.ru (mxout03.lancloud.ru [45.84.86.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CF422BE82;
+        Thu, 24 Feb 2022 11:14:59 -0800 (PST)
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout03.lancloud.ru 5AD592061832
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Denis Glazkov <d.glazkov@omp.ru>
+CC:     Denis Glazkov <d.glazkov@omp.ru>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] PKCS#7: fix a possible memory leak when calculating the
+ digest
+Thread-Topic: [PATCH] PKCS#7: fix a possible memory leak when calculating the
+ digest
+Thread-Index: AQHYKbICJzAkgBxFjE+vdE8nJ6DgIg==
+Date:   Thu, 24 Feb 2022 19:09:12 +0000
+Message-ID: <20220224190838.144388-1-d.glazkov@omp.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.11.137]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MISSING_HEADERS,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,
+In function `pkcs7_digest`, if there is an error allocating memory
+for the `shash_desc` structure, the public key signature digest
+remains unfreed.
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
+---
+ crypto/asymmetric_keys/pkcs7_verify.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
-
-
-Pozdrawiam,
-Marek Dranski
+diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
+index 0b4d07aa8811..e6f648dcc02a 100644
+--- a/crypto/asymmetric_keys/pkcs7_verify.c
++++ b/crypto/asymmetric_keys/pkcs7_verify.c
+@@ -50,7 +50,7 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
+ 	ret = -ENOMEM;
+ 	sig->digest = kmalloc(sig->digest_size, GFP_KERNEL);
+ 	if (!sig->digest)
+-		goto error_no_desc;
++		goto error_no_digest;
+ 
+ 	desc = kzalloc(desc_size, GFP_KERNEL);
+ 	if (!desc)
+@@ -117,6 +117,8 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
+ error:
+ 	kfree(desc);
+ error_no_desc:
++	kfree(sig->digest);
++error_no_digest:
+ 	crypto_free_shash(tfm);
+ 	kleave(" = %d", ret);
+ 	return ret;
+-- 
+2.25.1
