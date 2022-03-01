@@ -2,60 +2,144 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 958744C88AA
-	for <lists+keyrings@lfdr.de>; Tue,  1 Mar 2022 10:59:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD9B4C91DE
+	for <lists+keyrings@lfdr.de>; Tue,  1 Mar 2022 18:39:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234076AbiCAKA0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 1 Mar 2022 05:00:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33514 "EHLO
+        id S235234AbiCARkZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 1 Mar 2022 12:40:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233169AbiCAKAY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 1 Mar 2022 05:00:24 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603AD57155;
-        Tue,  1 Mar 2022 01:59:42 -0800 (PST)
-Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K7CPJ0B08z67xTb;
-        Tue,  1 Mar 2022 17:58:28 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 1 Mar 2022 10:59:39 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 1 Mar
- 2022 09:59:38 +0000
-Date:   Tue, 1 Mar 2022 09:59:37 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Box, David E" <david.e.box@intel.com>
-CC:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        "'david.e.box@linux.intel.com'" <david.e.box@linux.intel.com>
-Subject: Re: [RFC PATCH 2/4] spdm: Introduce a library for DMTF SPDM
-Message-ID: <20220301095937.00002c5e@Huawei.com>
-In-Reply-To: <MW3PR11MB452200EBA0E813A1A4E8D8C4A1019@MW3PR11MB4522.namprd11.prod.outlook.com>
-References: <20210804161839.3492053-1-Jonathan.Cameron@huawei.com>
-        <20210804161839.3492053-3-Jonathan.Cameron@huawei.com>
-        <CAPcyv4iiZMd6GmyRG+SMcYF_5JEqj8zrti_gjffTvOE27srbUw@mail.gmail.com>
-        <MW3PR11MB452200EBA0E813A1A4E8D8C4A1019@MW3PR11MB4522.namprd11.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S232659AbiCARkY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 1 Mar 2022 12:40:24 -0500
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2CDA2C667;
+        Tue,  1 Mar 2022 09:39:42 -0800 (PST)
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 221GWQaM030543;
+        Tue, 1 Mar 2022 17:39:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2021-07-09;
+ bh=lVphAfAGNSx6WqOrRVbBUPCmy70SqB2EwHHA61Z5dwY=;
+ b=eGrXWS4gG/rrG0WlNsqThaOnCLK3R5Q1WmRmNBBCCb8B3RzZ9MpnAdNEAQpnSF9SxgHP
+ qiCgK/WWLJDmea0WRXBgaUNgW7Dk/pEM5oU2rl7twveKs248cdw26RcSwIQh1u1Yyy6L
+ h9yKpy1AHKYGum/eeIZ4Jo2W+WqJ/8SOVVrVo1JG5PRi9NKjunvAP5S0FgnHHbxCGAMh
+ HgEFAPrwlfHMrsFThgYQG+fAWHz8uP4tfQrwQz1QlajnyKewRro6Z5zBgPxZ2PQd2xrN
+ nUzVRZsu+5iQmsEApag4U58+a+mom5/6zOUG234jq4BGYmZ6xoZnkPjdm4BhPuxn+nwN 5g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3eh1k43hvj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Mar 2022 17:39:06 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 221Hb72p059897;
+        Tue, 1 Mar 2022 17:39:05 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2108.outbound.protection.outlook.com [104.47.70.108])
+        by aserp3020.oracle.com with ESMTP id 3efc14xcvg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Mar 2022 17:39:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AThiphVVH1ROYkDbKHM83ITXWMPCmVoJH1YYivwb9BBDm8IjcN5ibb/ry30xHtXDLhCUJQ5NuZEhBX8gixQvk5aaBOUd6tUMEWkFdGqDQPLM6xCcRCh3MgUTy9ZrhM+cEHKQCq9wpUL6B+Ro0iDIShKpukIMq89P90aE/bV5MYbpylzRnMygHwF6Jlx+lYkg40Kwz0NS7DMrLW1c/o8PiB+J1iCiwJOz9kbdD18xtLV/EiXVo/K54FM8RbCls1Re7BHMU8CPrwa+h30DBW+8qqk7RLtRb9JIM2OhgPlIJYJ0rvTNUv1QTSPNSeR6cSPXrljV9Mt1PLvdl+oV4n75cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lVphAfAGNSx6WqOrRVbBUPCmy70SqB2EwHHA61Z5dwY=;
+ b=D105cL1Mapv78Xs2Gp4yLF4n31ceUXY+8lYLxjKIYZ6JldEoLl1p8d+mel3qOuTAXX3DS+UNlonbs6Jh7wsjPlK9B5UiIlr2qcVMwKnLKrN+pDLymZoxT+WGIwf+E/bLZQEzE0Ps5eQyAW2evjs9McWfIVoSbtoed6QcVMvahl26nN5pFX2RPtfM04kN3ikPz6LF6wVzzi6qpfw/8FIVaXEP6aLWFO27Ae5ygJNSI+KybrKGqxPtVTKO4xCuJWdra1Z4rEP7dNgf7jKaLukN6VNUU0bOPyBKKeHAvsUyiOrLeP5b3QQJHSnbFW00kixStMKGsxNTmvXJ1hlsu15WNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lVphAfAGNSx6WqOrRVbBUPCmy70SqB2EwHHA61Z5dwY=;
+ b=OTNFI1uhdCCw8T/pWZPEVjDdvhf4gehYItcbCjN+qCy1nt4Qf/r8rCHxAg4A2Nq+4wqGDPSpwpydySbOlu6TAiTlwLa3Nt8u0xfWOI3VnuWV8rsLsZ1RijbmZhQrRTT8Yx2/bcC+Tfl68xUh6kgKSbOh4NLlF85nuVVFC0WPwts=
+Received: from CH2PR10MB4150.namprd10.prod.outlook.com (2603:10b6:610:ac::13)
+ by DM6PR10MB2795.namprd10.prod.outlook.com (2603:10b6:5:70::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.24; Tue, 1 Mar
+ 2022 17:39:01 +0000
+Received: from CH2PR10MB4150.namprd10.prod.outlook.com
+ ([fe80::49ae:9ccb:2e59:8150]) by CH2PR10MB4150.namprd10.prod.outlook.com
+ ([fe80::49ae:9ccb:2e59:8150%4]) with mapi id 15.20.5017.027; Tue, 1 Mar 2022
+ 17:39:01 +0000
+From:   Eric Snowberg <eric.snowberg@oracle.com>
+To:     zohar@linux.ibm.com, jarkko@kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org
+Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        jmorris@namei.org, serge@hallyn.com, eric.snowberg@oracle.com,
+        stefanb@linux.ibm.com, nayna@linux.ibm.com,
+        mic@linux.microsoft.com, konrad.wilk@oracle.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: [PATCH 0/4] Add CA enforcement in the machine keyring 
+Date:   Tue,  1 Mar 2022 12:36:47 -0500
+Message-Id: <20220301173651.3435350-1-eric.snowberg@oracle.com>
+X-Mailer: git-send-email 2.27.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SA0PR11CA0194.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::19) To CH2PR10MB4150.namprd10.prod.outlook.com
+ (2603:10b6:610:ac::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml711-chm.china.huawei.com (10.201.108.62) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ea4f40d1-bd1f-4996-48c4-08d9fbaa5f10
+X-MS-TrafficTypeDiagnostic: DM6PR10MB2795:EE_
+X-Microsoft-Antispam-PRVS: <DM6PR10MB279555A2606F69ADF4A353C887029@DM6PR10MB2795.namprd10.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hmVg1C/t5sdpvT46+vPXap3PbHM75rAUv2Qjz3P6LJrzBoi9QhgS6COju9wuKgX+LaPcXAsOnC6aYuKGLBF0euIghgYsoLtLiT7e89GSZm3nJcFSeHDDJa5/p5jesTGyw88LVp47DYHXHjCJfIMDJrWT0LcTacEeiiQW35f5+RvWYHuB9BsNHKL4RBcmSCb/xEFsrs930x1B4ryxSdMrHtpFLF9K6A+EPRphtCk41z9AtnNHk5U0tpMYP4m31Vzn2Egkjf9wzFqT9P+M7Krz4oJLMXSGyIvQbJRSpYArluCiZK/FyNJNVKoKJESYIpsfaK+M1axWuR8qFvoCSr4RVwtzfCKGk0iIddz9SjbSeGUCQS5TWHfSQgLxrIZjT3H4XIQFG6XIddguWwHrvAu6S0jssYHW71qZUl8k5GqdZskbsyzZhyje6unpZL+IDUC5ULjsTp77ndLT6g1V0O0BgTSWAoKvKw1L6apIXkuvuTXSJHNyKbng1UySJabBE4ePaTZGnPqMGnY7VkmjQtowpWxCFQDtRMHogCKEjEpZd5ZC/0qrDQ1nmfEmifGOG9XzY4IXYLEjVq6wjqARLljWLECbcb33qFVVKgxhZnOMi3VPzz8DTTmuiNlIk0dkt2Q8H5ztnM152qJzye+oy4oG6zI9SaVc0QLQFowxIxliVG3P/J+Mx5ob/xlNJFj0vSJU0ifJxW3L+6BCDNAYvX+xPw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4150.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(1076003)(6512007)(6666004)(6506007)(52116002)(508600001)(2616005)(36756003)(86362001)(316002)(4743002)(26005)(66946007)(4326008)(66476007)(66556008)(8676002)(186003)(44832011)(8936002)(6486002)(5660300002)(38350700002)(38100700002)(2906002)(7416002)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?L2/q2rx5Y6OZurhpZu7FrAmfvyU1fi80JfACffOJmQep3VljLWNOSyROaE9F?=
+ =?us-ascii?Q?e9NjjaKPlGzQ9UQbBiFoZ1GTYLTyGjCZWZD1MPIo2fLsKfCvtl8VsZRhbOe9?=
+ =?us-ascii?Q?PYwSjnNtOt1OKyAV3GWRz2edZGSE0Zbfij3IYKf97jTsDh8Vg/DbdCDvq+UY?=
+ =?us-ascii?Q?andFP/evaNvU5KYrbc71MUj74evsgiwvPq+g+2H6Z7CtjEyXmxUXcjsBU9PU?=
+ =?us-ascii?Q?IM08mOjeGrKjYvFW80WXGGU0BpPoM7IoB9cKdhDd8Z2syWygZ5vkdRB04VYg?=
+ =?us-ascii?Q?Zkg437jPqXcG4Ot1y7HICZQYmH2aqHKuuVheG14aEnOv8j+9Z+m5PMziHOli?=
+ =?us-ascii?Q?uhPe5d/26VKQ6vj3lPMeSSk0uK3AqiMWMn81euPAdjPmiW/1YRe6gX2+LuzS?=
+ =?us-ascii?Q?HnUMrUU/Cf1JK9qXb5gVgxH+4zJbmVPCvMsNCvS8P8zqc31vYsnRnXvMaGLi?=
+ =?us-ascii?Q?dfFNMN87ghhmQIMgNSFOzA7RBNhG5ZvL9U+pa4sLRIJyvTtazmyV3gfTuvch?=
+ =?us-ascii?Q?/YD9sKh5h36OWYLkLIAsIndeUDBqWUADcU1ZPJcVyRui2Dckygaq55DnRw5j?=
+ =?us-ascii?Q?B5T7T48IcZ3KmPPClkIhyHsEt60KEMivYbnLD5UGi8vf9U+0jj9erGgq3GSN?=
+ =?us-ascii?Q?r+J9O/p1Nt94YpNh1I1Yi+ERfprPDfIN9TilNfh5IO5TWOOI6hl+QYAvgAqS?=
+ =?us-ascii?Q?Lt8h18kGJuWbBpByk4NA7tadv6V3HErpqsRWhZHlqDu5ZqzLRrFUXyVWUD6y?=
+ =?us-ascii?Q?xY7q9OTWQd9lAZvUzV9FZyHxS4WrUdY9Xm6acu9lHdx/oZ0xB39ugUjEWB5D?=
+ =?us-ascii?Q?lKbtBtR/S5Tfi0kEs19e3L4SIhzRZDcyzahSsaU+bbejj9KQMPgojMTPjYJ9?=
+ =?us-ascii?Q?dA1evE9VyGJZIPkmZ1a9e4XpT81YxR5BvT1sRoCfKMD6Y+8K8KxveJQUeaMC?=
+ =?us-ascii?Q?m1E1EGIKXh3f3cDfP1cJaba3REr/VtEumCbPg5tzWXeTz/iflbaOtYLxRZsl?=
+ =?us-ascii?Q?aR6ayix44OkX0Q00dM/7qlT31n3zJxgwOxrBWJD6N/7ApLjrc8skR9/15PjX?=
+ =?us-ascii?Q?ks2WqipzOC9xyfl9ghNU6sFNpEQlXFcLc4eBo1hQQGv1pUcN95DQnYo1uZYp?=
+ =?us-ascii?Q?bs1hDmt2AYch/YXyBt3f1O/tF3r4wsRhzoaANvekSny887Ct1HUAvCpYyg+4?=
+ =?us-ascii?Q?omafyqX6J6e9dfXt85iHXksOoOihf7q2gfzxuE38o+GVUUgDh8kI3vQiWnmg?=
+ =?us-ascii?Q?P5SzMNdBULT+shRK2mtYmAqX0HGis31vs7cxcWdDy6MpTvlVuPZyLQjsH5i6?=
+ =?us-ascii?Q?PLMn2wUxzs69i8IsbFKOJt2QbrSAXCPGLL76roKJzNe5ZyiNzna8YjpX5VjA?=
+ =?us-ascii?Q?ui09DPSgGmzCV5DXFl1Pql/Rd43Op6aVQzRUHrz24tfjIBhZE+7a6ovaNlDS?=
+ =?us-ascii?Q?Tq9NexLEB+JPfZQ09YvBRRlY//zAPTyDUBgtLrfRN6Wv5TQIfrr53DOvRhQq?=
+ =?us-ascii?Q?oWPb1xJQCaY74RRe0if+6GO35DjWm18+SHoL7/nYlDciemUZBrtRy4m0k6Gq?=
+ =?us-ascii?Q?lXoEVV1w+CLU/EUVXapOSjuRN/o8riFHQRbOFAoHuHBQGLd932zYmxliLPKb?=
+ =?us-ascii?Q?fkdj6MM7BW+4SbmEy2BPnOZ1TPHTUmRKF+SpFNvf041PHCE5KoDEMGYTLCSK?=
+ =?us-ascii?Q?wi8EaQ=3D=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea4f40d1-bd1f-4996-48c4-08d9fbaa5f10
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4150.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2022 17:39:01.0987
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +FYeT5uXPczwMMgCCAUYlfsUHG7wg1QkSUTwOb7HkojkwSsz65lTrDmDAiMxxD6mFgCotphyuNhkOv7pftSn/9kVvnM6TAI35BtFalH7Ha0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB2795
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10273 signatures=685966
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
+ bulkscore=0 adultscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2203010091
+X-Proofpoint-ORIG-GUID: tllySOMCSmvuZsykntHe2uz4FGtT6hSg
+X-Proofpoint-GUID: tllySOMCSmvuZsykntHe2uz4FGtT6hSg
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,175 +147,43 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 28 Feb 2022 18:13:27 +0000
-"Box, David E" <david.e.box@intel.com> wrote:
+A key added to the IMA keyring must be signed by a key contained in either the
+built-in trusted or secondary trusted keyring. IMA also requires these keys 
+to be a CA. The only option for an end-user to add their own CA is to compile
+it into the kernel themselves or to use the insert-sys-cert.  Many end-users 
+do not want to compile their own kernels.  With the insert-sys-cert option, 
+there are missing upstream changes. 
 
-> Hi Jonathan,
-> 
-> I'd like to test this patch with a custom transport but there's a reference to spdm.h that isn't here. Also, have you looked at measurement support yet? Thanks.
-> 
+Currently, all Machine Owner Keys (MOK) load into the machine keyring.  Add 
+a new Kconfig option to only allow CA keys into the machine keyring.  When 
+compiled with the new INTEGRITY_MACHINE_KEYRING_CA_ENFORCED Kconfig, non CA 
+keys will load into the platform keyring instead. This will allow the end-
+user to enroll their own CA key into the machine keyring for use with IMA.
 
-Hi David,
-
-I messed this up.
-
-Some discussion of this took place on the linaro open discussions list
-and I posted a version there to enable some testing which has the missing file.
-Note I only did minimal testing against that tree and have had one verbal report
-of a minor bug (without details...)
-
-https://op-lists.linaro.org/archives/list/linaro-open-discussions@op-lists.linaro.org/thread/5QU65B6Q74B3B4ESR7W5HER5HQ6WF4EQ/
-
-It's rather dated now so I'll do a rebase and post this hopefully later
-this week given you are interested.
-
-Note I haven't done any work on this for some time...
-
-Curious though - what transport are people looking at?
-I was planning to do MCTP over VDM at somepoint, but are we talking
-something truely custom?  If so any plans to upstream as
-I'd love a second transport to prove out the layering?
-
-Thanks,
-
-Jonathan
+These patches are based on Jarkko's linux-tpmdd tree.
+git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
 
 
+Eric Snowberg (4):
+  KEYS: Create static version of public_key_verify_signature
+  X.509: Parse Basic Constraints for CA
+  KEYS: CA link restriction
+  integrity: restrict INTEGRITY_KEYRING_MACHINE to restrict_link_by_ca
 
-> David
-> 
-> 
-> > -----Original Message-----
-> > From: Dan Williams <dan.j.williams@intel.com>
-> > Sent: Friday, February 18, 2022 2:06 PM
-> > To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: linux-cxl@vger.kernel.org; Linux PCI <linux-pci@vger.kernel.org>;
-> > open list:KEYS-TRUSTED <keyrings@vger.kernel.org>; Chris Browy
-> > <cbrowy@avery-design.com>; Linuxarm <linuxarm@huawei.com>; Lorenzo
-> > Pieralisi <lorenzo.pieralisi@arm.com>; Bjorn Helgaas
-> > <bjorn@helgaas.com>; Jeremy Kerr <jk@codeconstruct.com.au>; Box, David
-> > E <david.e.box@intel.com>
-> > Subject: Re: [RFC PATCH 2/4] spdm: Introduce a library for DMTF SPDM
-> > 
-> > On Wed, Aug 4, 2021 at 9:23 AM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:  
-> > >
-> > > The Security Protocol and Data Model (SPDM) defines messages, data
-> > > objects and sequences for performing message exchanges between  
-> > devices  
-> > > over various transports and physical media.
-> > >
-> > > As the kernel supports several possible transports (mctp, PCI DOE)
-> > > introduce a library than can in turn be used with all those  
-> > transports.  
-> > >
-> > > There are a large number of open questions around how we do this that
-> > > need to be resolved. These include:
-> > > *  Key chain management
-> > >    - Current approach is to use a keychain provide as part of per  
-> > transport  
-> > >      initialization for the root certificates which are assumed to be
-> > >      loaded into that keychain, perhaps in an initrd script.
-> > >    - Each SPDM instance then has its own keychain to manage its
-> > >      certificates. It may make sense to drop this, but that looks  
-> > like it  
-> > >      will make a lot of the standard infrastructure harder to use.
-> > >  *  ECC algorithms needing ASN1 encoded signatures.  I'm struggling  
-> > to find  
-> > >     any specification that actual 'requires' that choice vs raw data,  
-> > so my  
-> > >     guess is that this is a question of existing usecases (x509 certs  
-> > seem  
-> > >     to use this form, but CHALLENGE_AUTH SPDM seems to use raw data).
-> > >     I'm not sure whether we are better off just encoding the  
-> > signature in  
-> > >     ASN1 as currently done in this series, or if it is worth a  
-> > tweaking  
-> > >     things in the crypto layers.
-> > >  *  Lots of options in actual implementation to look at.
-> > >
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > ---
-> > >  lib/Kconfig  |    3 +
-> > >  lib/Makefile |    2 +
-> > >  lib/spdm.c   | 1196  
-> > ++++++++++++++++++++++++++++++++++++++++++++++++++  
-> > >  3 files changed, 1201 insertions(+)
-> > >
-> > > diff --git a/lib/Kconfig b/lib/Kconfig index
-> > > ac3b30697b2b..0aa2fef6a592 100644
-> > > --- a/lib/Kconfig
-> > > +++ b/lib/Kconfig
-> > > @@ -704,3 +704,6 @@ config PLDMFW
-> > >
-> > >  config ASN1_ENCODER
-> > >         tristate
-> > > +
-> > > +config SPDM
-> > > +       tristate
-> > > diff --git a/lib/Makefile b/lib/Makefile index
-> > > 2cc359ec1fdd..566166d6936e 100644
-> > > --- a/lib/Makefile
-> > > +++ b/lib/Makefile
-> > > @@ -282,6 +282,8 @@ obj-$(CONFIG_PERCPU_TEST) += percpu_test.o
-> > >  obj-$(CONFIG_ASN1) += asn1_decoder.o
-> > >  obj-$(CONFIG_ASN1_ENCODER) += asn1_encoder.o
-> > >
-> > > +obj-$(CONFIG_SPDM) += spdm.o
-> > > +
-> > >  obj-$(CONFIG_FONT_SUPPORT) += fonts/
-> > >
-> > >  hostprogs      := gen_crc32table
-> > > diff --git a/lib/spdm.c b/lib/spdm.c
-> > > new file mode 100644
-> > > index 000000000000..3ce2341647f8
-> > > --- /dev/null
-> > > +++ b/lib/spdm.c
-> > > @@ -0,0 +1,1196 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * DMTF Security Protocol and Data Model
-> > > + *
-> > > + * Copyright (C) 2021 Huawei
-> > > + *     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > + */
-> > > +
-> > > +#include <linux/asn1_encoder.h>
-> > > +#include <linux/asn1_ber_bytecode.h>
-> > > +#include <linux/bitfield.h>
-> > > +#include <linux/cred.h>
-> > > +#include <linux/dev_printk.h>
-> > > +#include <linux/digsig.h>
-> > > +#include <linux/idr.h>
-> > > +#include <linux/key.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/random.h>
-> > > +#include <linux/spdm.h>
-> > > +
-> > > +#include <crypto/akcipher.h>
-> > > +#include <crypto/hash.h>
-> > > +#include <crypto/public_key.h>
-> > > +#include <keys/asymmetric-type.h>
-> > > +#include <keys/user-type.h>
-> > > +#include <asm/unaligned.h>
-> > > +
-> > > +/*
-> > > + * Todo
-> > > + * - Secure channel setup.
-> > > + * - Multiple slot support.
-> > > + * - Measurement support (over secure channel or within  
-> > CHALLENGE_AUTH.  
-> > > + * - Support more core algorithms (not CMA does not require them,  
-> > but may use  
-> > > + *   them if present.
-> > > + * - Extended algorithm, support.
-> > > + */
-> > > +/*
-> > > + * Discussions points
-> > > + * 1. Worth adding an SPDM layer around a transport layer?  
-> > 
-> > I came here to say yes to this question. I am seeing interest in SPDM
-> > outside of a DOE transport.
-> > 
-> > Hope to find my way back to testing these bits out soon...  
+ certs/system_keyring.c                        |  9 ++--
+ crypto/asymmetric_keys/restrict.c             | 43 +++++++++++++++++++
+ crypto/asymmetric_keys/x509_cert_parser.c     |  9 ++++
+ include/crypto/public_key.h                   | 25 +++++++++++
+ include/keys/system_keyring.h                 |  3 +-
+ security/integrity/Kconfig                    | 21 +++++++++
+ security/integrity/Makefile                   |  1 +
+ security/integrity/digsig.c                   | 14 ++++--
+ security/integrity/integrity.h                |  3 +-
+ .../platform_certs/keyring_handler.c          |  4 +-
+ 10 files changed, 123 insertions(+), 9 deletions(-)
+
+
+base-commit: c9e54f38976a1c0ec69c0a6208b3fd55fceb01d1
+-- 
+2.27.0
 
