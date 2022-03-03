@@ -2,80 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5718F4CB360
-	for <lists+keyrings@lfdr.de>; Thu,  3 Mar 2022 01:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93F2D4CB885
+	for <lists+keyrings@lfdr.de>; Thu,  3 Mar 2022 09:15:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbiCCADY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 2 Mar 2022 19:03:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59504 "EHLO
+        id S231159AbiCCIQS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Thu, 3 Mar 2022 03:16:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbiCCADV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Mar 2022 19:03:21 -0500
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com [210.131.2.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707EE13F92;
-        Wed,  2 Mar 2022 16:02:33 -0800 (PST)
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id 22302EVL025068;
-        Thu, 3 Mar 2022 09:02:15 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 22302EVL025068
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1646265735;
-        bh=q2ESIbL2ur/uVgrpoH1ou7aTk6vOKFdeTWoLHrqeazk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=JMlB+b4GTPhYQHieWq1Zxsvae0M4wM63UN3NMxZ89BpjwrCb8dVJcupcNB7oNdsAd
-         RJ0bO0KpSh+EPbLVEwGHua9flll4n9q+a6cPfX3N6B55WyPJ0PVE5jsdsyF8W+mDFM
-         X8DOgQJSuMfhj0ppmN7InVdUqRPjQPYvOIS6hPZnLeSESIIakgO6u9A64pAW5y8d1a
-         QFpARLS6/xGq6btWNlevlSku8xBv5gDPRCCiztlf+GKwiIGMcuFcvGAQbys41/TnLw
-         Qtui/SlPKatuOAs5v0XOWuqN41BcEJkk+GgEq9FLT2Zg9Lzr+Pw9P2oa9AzgvnWoCW
-         5c+eqi5ChCWuA==
-X-Nifty-SrcIP: [209.85.216.53]
-Received: by mail-pj1-f53.google.com with SMTP id z12-20020a17090ad78c00b001bf022b69d6so2179067pju.2;
-        Wed, 02 Mar 2022 16:02:15 -0800 (PST)
-X-Gm-Message-State: AOAM531Md+mzWXEXbtJLaLGBDw8KksXpCo+QMZ8Ab3xtG/vqaW0j6Dhm
-        vdQuaW2EtKZ9bPiUOSJl4l3AROakNuAJH0XYJHI=
-X-Google-Smtp-Source: ABdhPJyQAiBdGbAwXYuJr3tY3nnQBtL+cC/OwcCMGdHg6dkzHq1D+LHcd7w6NBc6K2ZNpe8EqbM7lcxaXCzB5ct6SK8=
-X-Received: by 2002:a17:902:9887:b0:151:6e1c:7082 with SMTP id
- s7-20020a170902988700b001516e1c7082mr15817258plp.162.1646265734496; Wed, 02
- Mar 2022 16:02:14 -0800 (PST)
-MIME-Version: 1.0
-References: <20220218044634.169520-1-masahiroy@kernel.org> <20220218044634.169520-2-masahiroy@kernel.org>
- <YhSa8bOW7sOd1cp0@buildd.core.avm.de>
-In-Reply-To: <YhSa8bOW7sOd1cp0@buildd.core.avm.de>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Thu, 3 Mar 2022 09:01:32 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAREW5Wm=LuJZvMzUvAczuSG4UaXyDZvew2xc44ydUZVjA@mail.gmail.com>
-Message-ID: <CAK7LNAREW5Wm=LuJZvMzUvAczuSG4UaXyDZvew2xc44ydUZVjA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] certs: simplify empty certs creation in certs/Makefile
-To:     Nicolas Schier <n.schier@avm.de>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        with ESMTP id S229662AbiCCIQR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Mar 2022 03:16:17 -0500
+Received: from mxout01.lancloud.ru (mxout01.lancloud.ru [45.84.86.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC6A171292;
+        Thu,  3 Mar 2022 00:15:30 -0800 (PST)
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 3106A20D5C35
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Denis Glazkov <d.glazkov@omp.ru>
+CC:     Denis Glazkov <d.glazkov@omp.ru>,
         David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.vnet.ibm.com>,
+        "Mehmet Kayaalp" <mkayaalp@linux.vnet.ibm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: [PATCH] KEYS: fix memory leak when reading certificate fails
+Thread-Topic: [PATCH] KEYS: fix memory leak when reading certificate fails
+Thread-Index: AQHYLtbXK3D575r57ECuz2QMV/HRKg==
+Date:   Thu, 3 Mar 2022 08:15:28 +0000
+Message-ID: <20220303081428.12979-1-d.glazkov@omp.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.11.133]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MISSING_HEADERS,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Feb 22, 2022 at 5:12 PM Nicolas Schier <n.schier@avm.de> wrote:
->
-> On Fri, Feb 18, 2022 at 01:46:34PM +0900, Masahiro Yamada wrote:
-> > To create an empty cert file, we need to pass "" to the extract-cert
-> > tool, which is common for all the three call-sites of cmd_exract_certs.
->
-> Missing a 't' in 'cmd_exract_certs'.
->
-> Reviewed-by: Nicolas Schier <n.schier@avm.de>
->
+In the `read_file` function of `insert-sys-cert.c` script, if
+the data is read incorrectly, the memory allocated for the `buf`
+array is not freed.
 
-Thanks. Fixed the typo, and applied to linux-kbuild.
+Fixes: c4c361059585 ("KEYS: Reserve an extra certificate symbol for inserting without recompiling")
+Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
+---
+ scripts/insert-sys-cert.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
---
-Best Regards
-Masahiro Yamada
+diff --git a/scripts/insert-sys-cert.c b/scripts/insert-sys-cert.c
+index 8902836c2342..b98a0b12f16f 100644
+--- a/scripts/insert-sys-cert.c
++++ b/scripts/insert-sys-cert.c
+@@ -251,6 +251,7 @@ static char *read_file(char *file_name, int *size)
+ 	if (read(fd, buf, *size) != *size) {
+ 		perror("File read failed");
+ 		close(fd);
++		free(buf);
+ 		return NULL;
+ 	}
+ 	close(fd);
+-- 
+2.25.1
