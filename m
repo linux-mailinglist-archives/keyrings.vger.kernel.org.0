@@ -2,80 +2,137 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93F2D4CB885
-	for <lists+keyrings@lfdr.de>; Thu,  3 Mar 2022 09:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E344CBA29
+	for <lists+keyrings@lfdr.de>; Thu,  3 Mar 2022 10:26:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231159AbiCCIQS convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 3 Mar 2022 03:16:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
+        id S231529AbiCCJ1H (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 3 Mar 2022 04:27:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbiCCIQR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Mar 2022 03:16:17 -0500
-Received: from mxout01.lancloud.ru (mxout01.lancloud.ru [45.84.86.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC6A171292;
-        Thu,  3 Mar 2022 00:15:30 -0800 (PST)
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 3106A20D5C35
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-From:   Denis Glazkov <d.glazkov@omp.ru>
-CC:     Denis Glazkov <d.glazkov@omp.ru>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Mimi Zohar <zohar@linux.vnet.ibm.com>,
-        "Mehmet Kayaalp" <mkayaalp@linux.vnet.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: [PATCH] KEYS: fix memory leak when reading certificate fails
-Thread-Topic: [PATCH] KEYS: fix memory leak when reading certificate fails
-Thread-Index: AQHYLtbXK3D575r57ECuz2QMV/HRKg==
-Date:   Thu, 3 Mar 2022 08:15:28 +0000
-Message-ID: <20220303081428.12979-1-d.glazkov@omp.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.11.133]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S231949AbiCCJ1G (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Mar 2022 04:27:06 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC20177D02
+        for <keyrings@vger.kernel.org>; Thu,  3 Mar 2022 01:26:21 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id r10so6811549wrp.3
+        for <keyrings@vger.kernel.org>; Thu, 03 Mar 2022 01:26:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=XD9Qk7wqWwcBBnal1woY2MwuyfH3dPMdc0t0VTETirY=;
+        b=jj835WVBPjikzv763/1NtVdeljcgnFRm5FOwaGSZc6GCkiLqdopn4eNxVgc0lM88CU
+         6wYGrTNCaGl7gJc+aeSw4kw1Wt1lfjEC6zfZWwuT1qnqx3iuDHgQOVCwGXnozOiTemUP
+         U1XyxFLEiGZbhqne/cs6zBCu4YpWUw9YNFKMtGY5a0Bqq+ctm5Sqn9311q1sw3vzvRmZ
+         VFOgmiayzChAbr1GZojk3MdIBFv5ZAKhplEI2KoFgkWCJk8qAS2FMF+Exyp5ks+7nDC3
+         FHu0wJsNgF9H5ddJrHozE/Sm5zs0B7klNLEpCuXp2RRkfiRqNQisi4mBWZodsJ0kvVAQ
+         F6jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=XD9Qk7wqWwcBBnal1woY2MwuyfH3dPMdc0t0VTETirY=;
+        b=x7/i5N89ZqPVebSFuZcXFk5+oylPcf6DHrkrIj7kEAxKVmLqWKsdROi7k5xfCZJnNW
+         ePy0nZWX8x5QhLQdwrBCPy6A6vGQ4z0NGmke4UG3xC/IK80KFRzffmSTguQlqsDqM8gg
+         WoozHj755HI0eREGkLEpgHz8ViEwnR9vQDsuWEnQ21VzciAUY9SjNRpt+lbu86EB0apO
+         UiHLxW6gi3m3/PfLgHPP0lG/GWLZLR1RltvpLndftCCqsgEv7HJBpJkqDY4xh59EtuXT
+         FclxjpCcPnrLPuDKSHL+huhckB1tvq/1yqTWgDIt+f/nE0m3KYpIIpieT9abh8Tsm6yT
+         dI3w==
+X-Gm-Message-State: AOAM532iCxNQ1jEaXuGPGdAEJHT9gL7h/S5M/qp1HrYpfgD2zn3fQsmi
+        LertWbHCwUGw88IuUS1yrg3X2A==
+X-Google-Smtp-Source: ABdhPJx2HXvmM5stsWnyAmNP0pTWtWtHiqNK9H8dv04kF9EeQSaBSSpSVjPr2ARfe8ppmjkrCK04dA==
+X-Received: by 2002:adf:c3cc:0:b0:1ed:b641:6ee2 with SMTP id d12-20020adfc3cc000000b001edb6416ee2mr25715767wrg.529.1646299579701;
+        Thu, 03 Mar 2022 01:26:19 -0800 (PST)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id p5-20020a05600c358500b0038167e239a2sm1739485wmq.19.2022.03.03.01.26.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Mar 2022 01:26:19 -0800 (PST)
+Date:   Thu, 3 Mar 2022 09:26:16 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Eric Biggers <ebiggers@kernel.org>, Adam Langley <agl@google.com>,
+        linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: Re: [PATCH 1/1] sign-file: Use OpenSSL provided define to compile
+ out deprecated APIs
+Message-ID: <YiCJuPTfea5nf1G+@google.com>
+References: <20211005161833.1522737-1-lee.jones@linaro.org>
+ <YVyE3Ax1PRtiBwf+@gmail.com>
+ <CAL9PXLws4DjvPB=1KNpom3W52pXNauXQ4V==MprDx73YQ1-sgg@mail.gmail.com>
+ <YVyKc51r2tfMmQuO@gmail.com>
+ <YVyVNkijABL7CxnM@google.com>
+ <202203021251.1DB0383C@keescook>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MISSING_HEADERS,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <202203021251.1DB0383C@keescook>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-In the `read_file` function of `insert-sys-cert.c` script, if
-the data is read incorrectly, the memory allocated for the `buf`
-array is not freed.
+On Wed, 02 Mar 2022, Kees Cook wrote:
 
-Fixes: c4c361059585 ("KEYS: Reserve an extra certificate symbol for inserting without recompiling")
-Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
----
- scripts/insert-sys-cert.c | 1 +
- 1 file changed, 1 insertion(+)
+> On Tue, Oct 05, 2021 at 07:11:02PM +0100, Lee Jones wrote:
+> > On Tue, 05 Oct 2021, Eric Biggers wrote:
+> > 
+> > > On Tue, Oct 05, 2021 at 10:14:58AM -0700, Adam Langley wrote:
+> > > > On Tue, Oct 5, 2021 at 10:01 AM Eric Biggers <ebiggers@kernel.org> wrote:
+> > > > > I ran into these same -Wdeprecated-declarations compiler warnings on another
+> > > > > project that uses the ENGINE API to access OpenSSL's support for PKCS#11 tokens.
+> > > > > The conclusion was that in OpenSSL 3.0, the new API for PKCS#11 support isn't
+> > > > > actually ready yet, so we had to keep using the ENGINE API and just add
+> > > > > -Wno-deprecated-declarations to the compiler flags.
+> > > > >
+> > > > > Your patch just removes support for PKCS#11 in that case, which seems
+> > > > > undesirable.  (Unless no one is actually using it?)
+> > > > 
+> > > > The patch removes support when OPENSSL_NO_ENGINE is defined, but
+> > > > that's not defined by default in OpenSSL 3.0. (Unless something
+> > > > changed recently.)
+> > > > 
+> > > > When OPENSSL_NO_ENGINE is defined, ENGINE support is not compiled into
+> > > > OpenSSL and the headers don't include the functions:
+> > > > https://github.com/openssl/openssl/blob/master/include/openssl/engine.h
+> > > > .
+> > > 
+> > > Okay so this patch is actually a build fix for when OpenSSL doesn't include
+> > > ENGINE support?
+> > 
+> > Correct.
+> > 
+> > > Currently this patch claims that it's removing the use of a
+> > > "deprecated" API, which is something entirely different.
+> > 
+> > I see your point.
+> > 
+> > Happy to rejig the commit message if that would help.
+> 
+> *thread necromancy*
+> 
+> Hi,
+> 
+> These warnings are quite noisy on Fedora rawhide and other distros that
+> have moved to OpenSSL 3.0. It's not clear to me from this thread if this
+> patch is actually the correct fix?
 
-diff --git a/scripts/insert-sys-cert.c b/scripts/insert-sys-cert.c
-index 8902836c2342..b98a0b12f16f 100644
---- a/scripts/insert-sys-cert.c
-+++ b/scripts/insert-sys-cert.c
-@@ -251,6 +251,7 @@ static char *read_file(char *file_name, int *size)
- 	if (read(fd, buf, *size) != *size) {
- 		perror("File read failed");
- 		close(fd);
-+		free(buf);
- 		return NULL;
- 	}
- 	close(fd);
+I believe it is the correct fix.
+
+However the commit message seemed to cause Eric some confusion.
+
+Would you like me to resubmit?
+
+It would be nice to get some input from the maintainers at one point.
+
 -- 
-2.25.1
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
