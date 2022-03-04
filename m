@@ -2,67 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09D674CD757
-	for <lists+keyrings@lfdr.de>; Fri,  4 Mar 2022 16:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 515B74CD7C0
+	for <lists+keyrings@lfdr.de>; Fri,  4 Mar 2022 16:28:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbiCDPLn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Mar 2022 10:11:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37336 "EHLO
+        id S240150AbiCDP3T (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Mar 2022 10:29:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230207AbiCDPLm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Mar 2022 10:11:42 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF621C2332;
-        Fri,  4 Mar 2022 07:10:54 -0800 (PST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 224DB0Yc014910;
-        Fri, 4 Mar 2022 15:10:22 GMT
+        with ESMTP id S240103AbiCDP3R (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Mar 2022 10:29:17 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6FFE1B7609;
+        Fri,  4 Mar 2022 07:28:29 -0800 (PST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 224ErmgO012060;
+        Fri, 4 Mar 2022 15:28:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=ciIHhFJaJb75Cjc8NGM6MB6m0nC4s4N+phinFfx7gNs=;
- b=Y4GJXTOEJbiMndgkGKppBHTJsKK6kNydc/YWhoePimLI64mHX01DQe62DUDOgOR3HNwm
- q+UTro61PJ+jzpgPJ7VXYFVlmoWsY9rrf8fvdJZOtc4YYyAdix8BUijQ1OYjxUBPrPyU
- 3gLCsRtCzJouLWyftqwFVHtiW+4nya2ZvZiljvNp69HpdAIRC5D71uAaardgLtM3UdLc
- 3WTkAWVoh+HBOxwF5JP7MM6NRQYSoIDl14O2b+ermDKaRwCxEaD5lTBwDjxDls0Pisqz
- HEzVmvefs2bVd5Sf/vY6nxQXX3g5E0N8coBUGgZPdgOhpj/H68z5ZvpTTZ1yq7TJ2BuK 0A== 
+ bh=v5Se0jKm4CMv9uIVa6be0qCve1fQPCIql88P/RlscIA=;
+ b=TRvzmKdRhjqQG5owYoA3iDZXDs8fOo4vA5+NtcI+bfol5C0RNiqHlufIkai16ejsDRPy
+ 0zQ18peXmYR8jxR1c0sK8nBzRImmgWdaQBS9BZHNuhFh5qjhW9C50VKk6ZvAdMAenBIA
+ 1WCHhsva/oe2qOqq4jzjV+PmBZhKjn43GrFuS/zEtLQzPvVxJdhaJMCWgfJNQ7SoLNOH
+ bTikiOj6QK7wZJdd/hJxujVeil9aO385m7T/zlRPomqgs3fGKefUjWWcqbV1curyALyL
+ 9bHN0bRp9XeWSMZG+vxR97NF/4PdHu3jXYAZPSzP1yHYzNtjGY/82EOXQd8x6/590SeW ow== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3ekdcq9cxv-1
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3ekmxe0r2g-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 15:10:22 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 224EIUkY013229;
-        Fri, 4 Mar 2022 15:10:21 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3ekdcq9cxj-1
+        Fri, 04 Mar 2022 15:28:15 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 224FMRHb004683;
+        Fri, 4 Mar 2022 15:28:14 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3ekmxe0r28-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 15:10:21 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 224F3L9e022567;
-        Fri, 4 Mar 2022 15:10:21 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma05wdc.us.ibm.com with ESMTP id 3ek4k9ngwa-1
+        Fri, 04 Mar 2022 15:28:14 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 224F3Vla026833;
+        Fri, 4 Mar 2022 15:28:13 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+        by ppma04wdc.us.ibm.com with ESMTP id 3ek4kbdk9t-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Mar 2022 15:10:21 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 224FAIHo12911226
+        Fri, 04 Mar 2022 15:28:13 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 224FSCrJ32309540
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 4 Mar 2022 15:10:18 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 67BD8112061;
-        Fri,  4 Mar 2022 15:10:18 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 43B19112065;
-        Fri,  4 Mar 2022 15:10:18 +0000 (GMT)
+        Fri, 4 Mar 2022 15:28:12 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2730228064;
+        Fri,  4 Mar 2022 15:28:12 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DC07328059;
+        Fri,  4 Mar 2022 15:28:11 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Fri,  4 Mar 2022 15:10:18 +0000 (GMT)
-Message-ID: <b6e9eb1e-846c-c98e-ad16-c651b5e1dad7@linux.ibm.com>
-Date:   Fri, 4 Mar 2022 10:10:17 -0500
+        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+        Fri,  4 Mar 2022 15:28:11 +0000 (GMT)
+Message-ID: <47f3654e-892d-a35a-e77c-70ada1ebcf43@linux.ibm.com>
+Date:   Fri, 4 Mar 2022 10:28:11 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 2/4] X.509: Parse Basic Constraints for CA
+Subject: Re: [PATCH 3/4] KEYS: CA link restriction
 Content-Language: en-US
 To:     Eric Snowberg <eric.snowberg@oracle.com>, zohar@linux.ibm.com,
         jarkko@kernel.org, dhowells@redhat.com, dwmw2@infradead.org
@@ -72,21 +72,21 @@ Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
 References: <20220301173651.3435350-1-eric.snowberg@oracle.com>
- <20220301173651.3435350-3-eric.snowberg@oracle.com>
+ <20220301173651.3435350-4-eric.snowberg@oracle.com>
 From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20220301173651.3435350-3-eric.snowberg@oracle.com>
+In-Reply-To: <20220301173651.3435350-4-eric.snowberg@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -IV59bcrT_bnon1M2ufEuXGdsyL4J80o
-X-Proofpoint-GUID: jIXztiokg71__8i1rfcjmST00a2jpD05
+X-Proofpoint-ORIG-GUID: RuNIIzeS8WIQ_TOMFwmjOBKOWyyIVYyO
+X-Proofpoint-GUID: h-ySz9CxSLuwNKm-arhd5Et2R_ciAJ8n
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-03-04_06,2022-03-04_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ suspectscore=0 impostorscore=0 bulkscore=0 mlxscore=0 adultscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2203040081
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
@@ -100,66 +100,102 @@ X-Mailing-List: keyrings@vger.kernel.org
 
 
 On 3/1/22 12:36, Eric Snowberg wrote:
-> Parse the X.509 Basic Constraints.  The basic constraints extension
-> identifies whether the subject of the certificate is a CA.
->
-> BasicConstraints ::= SEQUENCE {
->          cA                      BOOLEAN DEFAULT FALSE,
->          pathLenConstraint       INTEGER (0..MAX) OPTIONAL }
->
-> If the CA is true, store it in a new public_key field call key_is_ca.
-> This will be used in a follow on patch that requires knowing if the
-> public key is a CA.
+> Add a new link restriction.  Restrict the addition of keys in a keyring
+> based on the key to be added being a CA.
 >
 > Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
 > ---
->   crypto/asymmetric_keys/x509_cert_parser.c | 9 +++++++++
->   include/crypto/public_key.h               | 1 +
->   2 files changed, 10 insertions(+)
+>   crypto/asymmetric_keys/restrict.c | 43 +++++++++++++++++++++++++++++++
+>   include/crypto/public_key.h       | 15 +++++++++++
+>   2 files changed, 58 insertions(+)
 >
-> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-> index 2899ed80bb18..38c907f4ce27 100644
-> --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> @@ -583,6 +583,15 @@ int x509_process_extension(void *context, size_t hdrlen,
->   		return 0;
->   	}
->   
-> +	if (ctx->last_oid == OID_basicConstraints) {
-
-Don't you have to check whether you can access v[0] and v[1]?
-
-if (vlen < 3)
-
-     return -EBADMSG;
-
-or should it even be
-
-if (vlen != 3)
-
-      return -EBADMSG;
-
-
-> +		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
-> +			return -EBADMSG;
-> +		if (v[1] != vlen - 2)
-> +			return -EBADMSG;
-> +		if (v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1)
-> +			ctx->cert->pub->key_is_ca = true;
-> +	}
-> +
->   	return 0;
+> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
+> index 6b1ac5f5896a..49bb2ea7f609 100644
+> --- a/crypto/asymmetric_keys/restrict.c
+> +++ b/crypto/asymmetric_keys/restrict.c
+> @@ -108,6 +108,49 @@ int restrict_link_by_signature(struct key *dest_keyring,
+>   	return ret;
 >   }
 >   
+> +/**
+> + * restrict_link_by_ca - Restrict additions to a ring of CA keys
+> + * @dest_keyring: Keyring being linked to.
+> + * @type: The type of key being added.
+> + * @payload: The payload of the new key.
+> + * @trust_keyring: Unused.
+> + *
+> + * Check if the new certificate is a CA. If it is a CA, then mark the new
+> + * certificate as being ok to link.
+
+CA = root CA here, right?
+
+
+> + *
+> + * Returns 0 if the new certificate was accepted, -ENOKEY if the
+> + * certificate is not a CA. -ENOPKG if the signature uses unsupported
+> + * crypto, or some other error if there is a matching certificate but
+> + * the signature check cannot be performed.
+> + */
+> +int restrict_link_by_ca(struct key *dest_keyring,
+> +			const struct key_type *type,
+> +			const union key_payload *payload,
+> +			struct key *trust_keyring)
+This function needs to correspond to the key_restrict_link_func_t and 
+therefore has 4 parameter. Call the unused 'trust_keyring' 'unused' instead?
+> +{
+> +	const struct public_key_signature *sig;
+> +	const struct public_key *pkey;
+> +
+> +	if (type != &key_type_asymmetric)
+> +		return -EOPNOTSUPP;
+> +
+> +	sig = payload->data[asym_auth];
+> +	if (!sig)
+> +		return -ENOPKG;
+> +
+> +	if (!sig->auth_ids[0] && !sig->auth_ids[1])
+> +		return -ENOKEY;
+> +
+> +	pkey = payload->data[asym_crypto];
+> +	if (!pkey)
+> +		return -ENOPKG;
+> +
+> +	if (!pkey->key_is_ca)
+> +		return -ENOKEY;
+> +
+> +	return public_key_verify_signature(pkey, sig);
+> +}
+> +
+
+Comparing this to 'restrict_link_by_signature'... looks good.
+
+
+>   static bool match_either_id(const struct asymmetric_key_id **pair,
+>   			    const struct asymmetric_key_id *single)
+>   {
 > diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-> index 6d61695e1cde..0521241764b7 100644
+> index 0521241764b7..5eadb182a400 100644
 > --- a/include/crypto/public_key.h
 > +++ b/include/crypto/public_key.h
-> @@ -26,6 +26,7 @@ struct public_key {
->   	void *params;
->   	u32 paramlen;
->   	bool key_is_private;
-> +	bool key_is_ca;
->   	const char *id_type;
->   	const char *pkey_algo;
->   };
+> @@ -72,6 +72,21 @@ extern int restrict_link_by_key_or_keyring_chain(struct key *trust_keyring,
+>   						 const union key_payload *payload,
+>   						 struct key *trusted);
+>   
+> +#if IS_REACHABLE(CONFIG_ASYMMETRIC_KEY_TYPE)
+> +extern int restrict_link_by_ca(struct key *dest_keyring,
+> +			       const struct key_type *type,
+> +			       const union key_payload *payload,
+> +			       struct key *trust_keyring);
+> +#else
+> +static inline int restrict_link_by_ca(struct key *dest_keyring,
+> +				      const struct key_type *type,
+> +				      const union key_payload *payload,
+> +				      struct key *trust_keyring)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>   extern int query_asymmetric_key(const struct kernel_pkey_params *,
+>   				struct kernel_pkey_query *);
+>   
