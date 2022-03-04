@@ -2,68 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 097A84CCC9A
-	for <lists+keyrings@lfdr.de>; Fri,  4 Mar 2022 05:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D674CD757
+	for <lists+keyrings@lfdr.de>; Fri,  4 Mar 2022 16:10:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237920AbiCDEhi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Mar 2022 23:37:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
+        id S229799AbiCDPLn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Mar 2022 10:11:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232431AbiCDEhg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Mar 2022 23:37:36 -0500
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BDE0180D11
-        for <keyrings@vger.kernel.org>; Thu,  3 Mar 2022 20:36:49 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id d188-20020a2568c5000000b00628bf187056so4005495ybc.15
-        for <keyrings@vger.kernel.org>; Thu, 03 Mar 2022 20:36:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=hVhp0B9PQwo3QVpUi+NI1HAAHxq+/43f5jq0h0ON3rc=;
-        b=FExUDM+QtGlrpOx9rGz2Fa+bDQpFmka6zCE/rTKzwCcAWIfnoZcXeXrKFxNhFsnE2C
-         E6l8TXSOLYl+5HB7NA1NFgtEFjaxCkwRJ42gOFxorun060VHOvwG4dO7+/BFj6P1XBBp
-         nnNqyUkTruTkTLp+7GFYOf9jPip2hwzfByNoweGhp1Yt6rqDAcdoNKtbx1MoMT0ytTV3
-         w53+7zlLjb5noE0qE49+yuSbpUgIu5MIBlWjYMHaKBHDBc9rcCbm9jI50ZVw73N5mmlk
-         Kmfnx62thJdUrj68w3MZObD0sXEixf/K7lcKb3+iemG1wJPFZsf1Mm5aoSazkRYutnH7
-         jn2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=hVhp0B9PQwo3QVpUi+NI1HAAHxq+/43f5jq0h0ON3rc=;
-        b=B5YNDSj86rPDkQCMNcLqqx78YpUI5KfdjTDPf79dHmSpg1i2fiZf6Wvnaq4T0ACJvA
-         rBOvxINJGQQAVHGQA8WT23pvJr+w35M/w30oSLogcEB4a1nc5Ld/HigsuTs/ToQ3mrzx
-         eBqBzkLJark2PjzjQooemVyPeKvNAC6O5DvkJAptYo+gVWWG+8s11QM4Yym22kDJde+M
-         DmW7P6hrqvtoKJgmMjph3Tkf9UI0i0wQBAZRtTE38TJpEAhA3TCwRpVq4MdsPmt8IazY
-         NrMaYMzZf0XddZiwMuuukp/z9TB4/LLH6WWLK8UuzgdiSTWq+b9NiSn2LuDUJt7S5RvT
-         ghrw==
-X-Gm-Message-State: AOAM5324bu7byCYE0282andi3HRFgCEDU/R3WaNY8TT6KrchTqY/2S1Q
-        YlJ5jf+ipF0WhEHaaM2tJeQUrft8lzE=
-X-Google-Smtp-Source: ABdhPJxVVZFZHqAwY1fPRX9HI0yIhKH2iiN9GsYqQS6rzxP15cyYglv/sh4CkSy/3rdozBTmFM9ySxJLa2U=
-X-Received: from colette.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:306])
- (user=ctshao job=sendgmr) by 2002:a25:3252:0:b0:628:a874:e41e with SMTP id
- y79-20020a253252000000b00628a874e41emr9969830yby.484.1646368608392; Thu, 03
- Mar 2022 20:36:48 -0800 (PST)
-Date:   Fri,  4 Mar 2022 04:14:51 +0000
-Message-Id: <20220304041449.939308-1-ctshao@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.35.1.616.g0bdcbb4464-goog
-Subject: [PATCH v3] config: Allow kernel installation packaging to override pkg-config
-From:   Chun-Tse Shao <ctshao@google.com>
-To:     rostedt@goodmis.org, ndesaulniers@google.com
-Cc:     ctshao@google.com, Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-10.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        with ESMTP id S230207AbiCDPLm (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Mar 2022 10:11:42 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF621C2332;
+        Fri,  4 Mar 2022 07:10:54 -0800 (PST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 224DB0Yc014910;
+        Fri, 4 Mar 2022 15:10:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ciIHhFJaJb75Cjc8NGM6MB6m0nC4s4N+phinFfx7gNs=;
+ b=Y4GJXTOEJbiMndgkGKppBHTJsKK6kNydc/YWhoePimLI64mHX01DQe62DUDOgOR3HNwm
+ q+UTro61PJ+jzpgPJ7VXYFVlmoWsY9rrf8fvdJZOtc4YYyAdix8BUijQ1OYjxUBPrPyU
+ 3gLCsRtCzJouLWyftqwFVHtiW+4nya2ZvZiljvNp69HpdAIRC5D71uAaardgLtM3UdLc
+ 3WTkAWVoh+HBOxwF5JP7MM6NRQYSoIDl14O2b+ermDKaRwCxEaD5lTBwDjxDls0Pisqz
+ HEzVmvefs2bVd5Sf/vY6nxQXX3g5E0N8coBUGgZPdgOhpj/H68z5ZvpTTZ1yq7TJ2BuK 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ekdcq9cxv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 15:10:22 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 224EIUkY013229;
+        Fri, 4 Mar 2022 15:10:21 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ekdcq9cxj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 15:10:21 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 224F3L9e022567;
+        Fri, 4 Mar 2022 15:10:21 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+        by ppma05wdc.us.ibm.com with ESMTP id 3ek4k9ngwa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Mar 2022 15:10:21 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 224FAIHo12911226
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 4 Mar 2022 15:10:18 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 67BD8112061;
+        Fri,  4 Mar 2022 15:10:18 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 43B19112065;
+        Fri,  4 Mar 2022 15:10:18 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Fri,  4 Mar 2022 15:10:18 +0000 (GMT)
+Message-ID: <b6e9eb1e-846c-c98e-ad16-c651b5e1dad7@linux.ibm.com>
+Date:   Fri, 4 Mar 2022 10:10:17 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 2/4] X.509: Parse Basic Constraints for CA
+Content-Language: en-US
+To:     Eric Snowberg <eric.snowberg@oracle.com>, zohar@linux.ibm.com,
+        jarkko@kernel.org, dhowells@redhat.com, dwmw2@infradead.org
+Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        mic@linux.microsoft.com, konrad.wilk@oracle.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+References: <20220301173651.3435350-1-eric.snowberg@oracle.com>
+ <20220301173651.3435350-3-eric.snowberg@oracle.com>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20220301173651.3435350-3-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -IV59bcrT_bnon1M2ufEuXGdsyL4J80o
+X-Proofpoint-GUID: jIXztiokg71__8i1rfcjmST00a2jpD05
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-04_06,2022-03-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203040081
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,247 +98,68 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-[ Resending as a separate thread ]
 
-Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
-what pkg-config and parameters are used.
+On 3/1/22 12:36, Eric Snowberg wrote:
+> Parse the X.509 Basic Constraints.  The basic constraints extension
+> identifies whether the subject of the certificate is a CA.
+>
+> BasicConstraints ::= SEQUENCE {
+>          cA                      BOOLEAN DEFAULT FALSE,
+>          pathLenConstraint       INTEGER (0..MAX) OPTIONAL }
+>
+> If the CA is true, store it in a new public_key field call key_is_ca.
+> This will be used in a follow on patch that requires knowing if the
+> public key is a CA.
+>
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> ---
+>   crypto/asymmetric_keys/x509_cert_parser.c | 9 +++++++++
+>   include/crypto/public_key.h               | 1 +
+>   2 files changed, 10 insertions(+)
+>
+> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+> index 2899ed80bb18..38c907f4ce27 100644
+> --- a/crypto/asymmetric_keys/x509_cert_parser.c
+> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> @@ -583,6 +583,15 @@ int x509_process_extension(void *context, size_t hdrlen,
+>   		return 0;
+>   	}
+>   
+> +	if (ctx->last_oid == OID_basicConstraints) {
 
-Signed-off-by: Chun-Tse Shao <ctshao@google.com>
----
-Changes from v2: https://lore.kernel.org/all/20220302193638.11034-1-ctshao@google.com/
-  - Fix more open coded instance of pkg-config in scripts and certs
-  - Tested with make allmodconfig
+Don't you have to check whether you can access v[0] and v[1]?
 
-Changes from v1: https://lore.kernel.org/all/20220301230629.1892828-1-ctshao@google.com/
-  - Make the commit message more clearer.
----
+if (vlen < 3)
 
- Makefile                     |  3 ++-
- certs/Makefile               |  4 ++--
- scripts/Makefile             |  4 ++--
- scripts/dtc/Makefile         |  6 +++---
- scripts/kconfig/gconf-cfg.sh | 10 +++++-----
- scripts/kconfig/mconf-cfg.sh | 14 +++++++-------
- scripts/kconfig/nconf-cfg.sh | 14 +++++++-------
- scripts/kconfig/qconf-cfg.sh | 14 +++++++-------
- tools/objtool/Makefile       |  4 ++--
- 9 files changed, 37 insertions(+), 36 deletions(-)
+     return -EBADMSG;
 
-diff --git a/Makefile b/Makefile
-index daeb5c88b50b..f6c5bef7e141 100644
---- a/Makefile
-+++ b/Makefile
-@@ -430,6 +430,7 @@ else
- HOSTCC	= gcc
- HOSTCXX	= g++
- endif
-+HOSTPKG_CONFIG	= pkg-config
+or should it even be
 
- export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
- 			      -O2 -fomit-frame-pointer -std=gnu89
-@@ -525,7 +526,7 @@ KBUILD_LDFLAGS_MODULE :=
- KBUILD_LDFLAGS :=
- CLANG_FLAGS :=
+if (vlen != 3)
 
--export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
-+export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
- export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
- export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
- export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
-diff --git a/certs/Makefile b/certs/Makefile
-index 3ea7fe60823f..fa540d14ef2d 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -89,5 +89,5 @@ targets += x509_revocation_list
+      return -EBADMSG;
 
- hostprogs := extract-cert
 
--HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
--HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
-+HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
-+HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
-diff --git a/scripts/Makefile b/scripts/Makefile
-index ce5aa9030b74..f084f08ed176 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -14,8 +14,8 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
- HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
- HOSTLDLIBS_sorttable = -lpthread
- HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
--HOSTCFLAGS_sign-file.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
--HOSTLDLIBS_sign-file = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
-+HOSTCFLAGS_sign-file.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
-+HOSTLDLIBS_sign-file = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
-
- ifdef CONFIG_UNWINDER_ORC
- ifeq ($(ARCH),x86_64)
-diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
-index 95aaf7431bff..743fc08827ea 100644
---- a/scripts/dtc/Makefile
-+++ b/scripts/dtc/Makefile
-@@ -18,7 +18,7 @@ fdtoverlay-objs	:= $(libfdt) fdtoverlay.o util.o
- # Source files need to get at the userspace version of libfdt_env.h to compile
- HOST_EXTRACFLAGS += -I $(srctree)/$(src)/libfdt
-
--ifeq ($(shell pkg-config --exists yaml-0.1 2>/dev/null && echo yes),)
-+ifeq ($(shell $(HOSTPKG_CONFIG) --exists yaml-0.1 2>/dev/null && echo yes),)
- ifneq ($(CHECK_DT_BINDING)$(CHECK_DTBS),)
- $(error dtc needs libyaml for DT schema validation support. \
- 	Install the necessary libyaml development package.)
-@@ -27,9 +27,9 @@ HOST_EXTRACFLAGS += -DNO_YAML
- else
- dtc-objs	+= yamltree.o
- # To include <yaml.h> installed in a non-default path
--HOSTCFLAGS_yamltree.o := $(shell pkg-config --cflags yaml-0.1)
-+HOSTCFLAGS_yamltree.o := $(shell $(HOSTPKG_CONFIG) --cflags yaml-0.1)
- # To link libyaml installed in a non-default path
--HOSTLDLIBS_dtc	:= $(shell pkg-config yaml-0.1 --libs)
-+HOSTLDLIBS_dtc	:= $(shell $(HOSTPKG_CONFIG) yaml-0.1 --libs)
- endif
-
- # Generated files need one more search path to include headers in source tree
-diff --git a/scripts/kconfig/gconf-cfg.sh b/scripts/kconfig/gconf-cfg.sh
-index 480ecd8b9f41..267ef6012203 100755
---- a/scripts/kconfig/gconf-cfg.sh
-+++ b/scripts/kconfig/gconf-cfg.sh
-@@ -3,14 +3,14 @@
-
- PKG="gtk+-2.0 gmodule-2.0 libglade-2.0"
-
--if [ -z "$(command -v pkg-config)" ]; then
-+if [ -z "$(command -v $(HOSTPKG_CONFIG))" ]; then
- 	echo >&2 "*"
- 	echo >&2 "* 'make gconfig' requires 'pkg-config'. Please install it."
- 	echo >&2 "*"
- 	exit 1
- fi
-
--if ! pkg-config --exists $PKG; then
-+if ! $(HOSTPKG_CONFIG) --exists $PKG; then
- 	echo >&2 "*"
- 	echo >&2 "* Unable to find the GTK+ installation. Please make sure that"
- 	echo >&2 "* the GTK+ 2.0 development package is correctly installed."
-@@ -19,12 +19,12 @@ if ! pkg-config --exists $PKG; then
- 	exit 1
- fi
-
--if ! pkg-config --atleast-version=2.0.0 gtk+-2.0; then
-+if ! $(HOSTPKG_CONFIG) --atleast-version=2.0.0 gtk+-2.0; then
- 	echo >&2 "*"
- 	echo >&2 "* GTK+ is present but version >= 2.0.0 is required."
- 	echo >&2 "*"
- 	exit 1
- fi
-
--echo cflags=\"$(pkg-config --cflags $PKG)\"
--echo libs=\"$(pkg-config --libs $PKG)\"
-+echo cflags=\"$($(HOSTPKG_CONFIG) --cflags $PKG)\"
-+echo libs=\"$($(HOSTPKG_CONFIG) --libs $PKG)\"
-diff --git a/scripts/kconfig/mconf-cfg.sh b/scripts/kconfig/mconf-cfg.sh
-index b520e407a8eb..21e40e9a7cd6 100755
---- a/scripts/kconfig/mconf-cfg.sh
-+++ b/scripts/kconfig/mconf-cfg.sh
-@@ -4,16 +4,16 @@
- PKG="ncursesw"
- PKG2="ncurses"
-
--if [ -n "$(command -v pkg-config)" ]; then
--	if pkg-config --exists $PKG; then
--		echo cflags=\"$(pkg-config --cflags $PKG)\"
--		echo libs=\"$(pkg-config --libs $PKG)\"
-+if [ -n "$(command -v $(HOSTPKG_CONFIG))" ]; then
-+	if $(HOSTPKG_CONFIG) --exists $PKG; then
-+		echo cflags=\"$($(HOSTPKG_CONFIG) --cflags $PKG)\"
-+		echo libs=\"$($(HOSTPKG_CONFIG) --libs $PKG)\"
- 		exit 0
- 	fi
-
--	if pkg-config --exists $PKG2; then
--		echo cflags=\"$(pkg-config --cflags $PKG2)\"
--		echo libs=\"$(pkg-config --libs $PKG2)\"
-+	if $(HOSTPKG_CONFIG) --exists $PKG2; then
-+		echo cflags=\"$($(HOSTPKG_CONFIG) --cflags $PKG2)\"
-+		echo libs=\"$($(HOSTPKG_CONFIG) --libs $PKG2)\"
- 		exit 0
- 	fi
- fi
-diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
-index c212255070c0..eec46e627e5c 100755
---- a/scripts/kconfig/nconf-cfg.sh
-+++ b/scripts/kconfig/nconf-cfg.sh
-@@ -4,16 +4,16 @@
- PKG="ncursesw menuw panelw"
- PKG2="ncurses menu panel"
-
--if [ -n "$(command -v pkg-config)" ]; then
--	if pkg-config --exists $PKG; then
--		echo cflags=\"$(pkg-config --cflags $PKG)\"
--		echo libs=\"$(pkg-config --libs $PKG)\"
-+if [ -n "$(command -v $(HOSTPKG_CONFIG))" ]; then
-+	if $(HOSTPKG_CONFIG) --exists $PKG; then
-+		echo cflags=\"$($(HOSTPKG_CONFIG) --cflags $PKG)\"
-+		echo libs=\"$($(HOSTPKG_CONFIG) --libs $PKG)\"
- 		exit 0
- 	fi
-
--	if pkg-config --exists $PKG2; then
--		echo cflags=\"$(pkg-config --cflags $PKG2)\"
--		echo libs=\"$(pkg-config --libs $PKG2)\"
-+	if $(HOSTPKG_CONFIG) --exists $PKG2; then
-+		echo cflags=\"$($(HOSTPKG_CONFIG) --cflags $PKG2)\"
-+		echo libs=\"$($(HOSTPKG_CONFIG) --libs $PKG2)\"
- 		exit 0
- 	fi
- fi
-diff --git a/scripts/kconfig/qconf-cfg.sh b/scripts/kconfig/qconf-cfg.sh
-index fa564cd795b7..839b45b5746e 100755
---- a/scripts/kconfig/qconf-cfg.sh
-+++ b/scripts/kconfig/qconf-cfg.sh
-@@ -3,22 +3,22 @@
-
- PKG="Qt5Core Qt5Gui Qt5Widgets"
-
--if [ -z "$(command -v pkg-config)" ]; then
-+if [ -z "$(command -v $(HOSTPKG_CONFIG))" ]; then
- 	echo >&2 "*"
--	echo >&2 "* 'make xconfig' requires 'pkg-config'. Please install it."
-+	echo >&2 "* 'make xconfig' requires '$(HOSTPKG_CONFIG)'. Please install it."
- 	echo >&2 "*"
- 	exit 1
- fi
-
--if pkg-config --exists $PKG; then
--	echo cflags=\"-std=c++11 -fPIC $(pkg-config --cflags $PKG)\"
--	echo libs=\"$(pkg-config --libs $PKG)\"
--	echo moc=\"$(pkg-config --variable=host_bins Qt5Core)/moc\"
-+if $(HOSTPKG_CONFIG) --exists $PKG; then
-+	echo cflags=\"-std=c++11 -fPIC $($(HOSTPKG_CONFIG) --cflags $PKG)\"
-+	echo libs=\"$($(HOSTPKG_CONFIG) --libs $PKG)\"
-+	echo moc=\"$($(HOSTPKG_CONFIG) --variable=host_bins Qt5Core)/moc\"
- 	exit 0
- fi
-
- echo >&2 "*"
--echo >&2 "* Could not find Qt5 via pkg-config."
-+echo >&2 "* Could not find Qt5 via $(HOSTPKG_CONFIG)."
- echo >&2 "* Please install Qt5 and make sure it's in PKG_CONFIG_PATH"
- echo >&2 "*"
- exit 1
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 92ce4fce7bc7..549acc5859e9 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -19,8 +19,8 @@ LIBSUBCMD		= $(LIBSUBCMD_OUTPUT)libsubcmd.a
- OBJTOOL    := $(OUTPUT)objtool
- OBJTOOL_IN := $(OBJTOOL)-in.o
-
--LIBELF_FLAGS := $(shell pkg-config libelf --cflags 2>/dev/null)
--LIBELF_LIBS  := $(shell pkg-config libelf --libs 2>/dev/null || echo -lelf)
-+LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2>/dev/null)
-+LIBELF_LIBS  := $(shell $(HOSTPKG_CONFIG) libelf --libs 2>/dev/null || echo -lelf)
-
- all: $(OBJTOOL)
-
---
-2.35.1.616.g0bdcbb4464-goog
-
+> +		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
+> +			return -EBADMSG;
+> +		if (v[1] != vlen - 2)
+> +			return -EBADMSG;
+> +		if (v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1)
+> +			ctx->cert->pub->key_is_ca = true;
+> +	}
+> +
+>   	return 0;
+>   }
+>   
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index 6d61695e1cde..0521241764b7 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -26,6 +26,7 @@ struct public_key {
+>   	void *params;
+>   	u32 paramlen;
+>   	bool key_is_private;
+> +	bool key_is_ca;
+>   	const char *id_type;
+>   	const char *pkey_algo;
+>   };
