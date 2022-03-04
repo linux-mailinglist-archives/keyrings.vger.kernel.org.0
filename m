@@ -2,54 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E21544CCA48
-	for <lists+keyrings@lfdr.de>; Fri,  4 Mar 2022 00:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 097A84CCC9A
+	for <lists+keyrings@lfdr.de>; Fri,  4 Mar 2022 05:37:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237320AbiCCXvh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 3 Mar 2022 18:51:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43042 "EHLO
+        id S237920AbiCDEhi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 3 Mar 2022 23:37:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237306AbiCCXvh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Mar 2022 18:51:37 -0500
+        with ESMTP id S232431AbiCDEhg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 3 Mar 2022 23:37:36 -0500
 Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646E9166A50
-        for <keyrings@vger.kernel.org>; Thu,  3 Mar 2022 15:50:49 -0800 (PST)
-Received: by mail-yb1-xb49.google.com with SMTP id x11-20020a5b0f0b000000b0062277953037so5790388ybr.21
-        for <keyrings@vger.kernel.org>; Thu, 03 Mar 2022 15:50:49 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BDE0180D11
+        for <keyrings@vger.kernel.org>; Thu,  3 Mar 2022 20:36:49 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id d188-20020a2568c5000000b00628bf187056so4005495ybc.15
+        for <keyrings@vger.kernel.org>; Thu, 03 Mar 2022 20:36:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=RzXfRdPwODy02923U5nFm/TySh/3wRc/Ufwipi409kA=;
-        b=Y4umStgGOU3qKFXtdHIb2UiD44nyyNUF7PUQzjSQR56em3DzsMLfvBaPMg9fhTVsPx
-         12YWCtUkBlvjJyQkypEFc3Xw5TH3iMUREU//EpJFSdkCejYOwv2+CMKKXS6fL8WTGw5D
-         uJvO0bofMwzEmzrX7a8Uw6cpfc4zCm1OwDVXcdxrro71bznkX2r4zViJCfDOsL+okjxn
-         K6G0sySSjOOorkaRi5KEG4Vo2diLRUEdfRejbSHxgJkfMpUktIY0cKrfqwfdN50PxvAQ
-         kxkeMdTH2qSO+oorsH6FJC6nvxPp8BoiNtClReHAzotJJrB4LmOB8eFB6yTyv9itOQue
-         tDpA==
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=hVhp0B9PQwo3QVpUi+NI1HAAHxq+/43f5jq0h0ON3rc=;
+        b=FExUDM+QtGlrpOx9rGz2Fa+bDQpFmka6zCE/rTKzwCcAWIfnoZcXeXrKFxNhFsnE2C
+         E6l8TXSOLYl+5HB7NA1NFgtEFjaxCkwRJ42gOFxorun060VHOvwG4dO7+/BFj6P1XBBp
+         nnNqyUkTruTkTLp+7GFYOf9jPip2hwzfByNoweGhp1Yt6rqDAcdoNKtbx1MoMT0ytTV3
+         w53+7zlLjb5noE0qE49+yuSbpUgIu5MIBlWjYMHaKBHDBc9rcCbm9jI50ZVw73N5mmlk
+         Kmfnx62thJdUrj68w3MZObD0sXEixf/K7lcKb3+iemG1wJPFZsf1Mm5aoSazkRYutnH7
+         jn2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=RzXfRdPwODy02923U5nFm/TySh/3wRc/Ufwipi409kA=;
-        b=tTrXi76IwA03XnTdBb5s1wEDu6QZiqV8Xypfb623NblImVZA9siGMwFNPe75a0i3f0
-         W4HX9j1gvs6xpjTUHnAYdh3nNA07dF5F3CPmCew0iLJ3MZarGkOWt2IBNGZhS6zH6VMP
-         CvAf5+AxI7ktDigpQID2RJ85Ldfp3kPIXf0fAfgFgDoBxMjtuxTZUomLMuREWyHFvOvg
-         4mDUOd6mNoOEEfUbKLPk5OoKSusZiRz9M0HF0fKpsqjigv6thfKOi6QiEg/9Iw4915GJ
-         Y5mWs7n15p8W/kPE1qwz/H40rGy0I11mZCVXBca0sxnbv1JGj7NBkG38VutP0/HPwMg0
-         4swA==
-X-Gm-Message-State: AOAM532QNGz+GxY8Vywayf1WVJNK0/mV9DvsMbxe9eFjobObn9yT9Ase
-        8/V9I6hhDVu8v/3OltWA8WbfmwJG31k=
-X-Google-Smtp-Source: ABdhPJy7eFpXwwLbDzEG0CCWjK3DKcdr/vPHtKl58N7/d+zbGtc8yJm/vTntmqSvsDGmV46h1hQBiaPb7Uc=
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=hVhp0B9PQwo3QVpUi+NI1HAAHxq+/43f5jq0h0ON3rc=;
+        b=B5YNDSj86rPDkQCMNcLqqx78YpUI5KfdjTDPf79dHmSpg1i2fiZf6Wvnaq4T0ACJvA
+         rBOvxINJGQQAVHGQA8WT23pvJr+w35M/w30oSLogcEB4a1nc5Ld/HigsuTs/ToQ3mrzx
+         eBqBzkLJark2PjzjQooemVyPeKvNAC6O5DvkJAptYo+gVWWG+8s11QM4Yym22kDJde+M
+         DmW7P6hrqvtoKJgmMjph3Tkf9UI0i0wQBAZRtTE38TJpEAhA3TCwRpVq4MdsPmt8IazY
+         NrMaYMzZf0XddZiwMuuukp/z9TB4/LLH6WWLK8UuzgdiSTWq+b9NiSn2LuDUJt7S5RvT
+         ghrw==
+X-Gm-Message-State: AOAM5324bu7byCYE0282andi3HRFgCEDU/R3WaNY8TT6KrchTqY/2S1Q
+        YlJ5jf+ipF0WhEHaaM2tJeQUrft8lzE=
+X-Google-Smtp-Source: ABdhPJxVVZFZHqAwY1fPRX9HI0yIhKH2iiN9GsYqQS6rzxP15cyYglv/sh4CkSy/3rdozBTmFM9ySxJLa2U=
 X-Received: from colette.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:306])
- (user=ctshao job=sendgmr) by 2002:a25:f301:0:b0:628:ba6a:6447 with SMTP id
- c1-20020a25f301000000b00628ba6a6447mr7052562ybs.217.1646351448611; Thu, 03
- Mar 2022 15:50:48 -0800 (PST)
-Date:   Thu,  3 Mar 2022 23:50:27 +0000
-In-Reply-To: <CAKwvOdnHioO_tjBbA0Dzghr-kcXywp-OEROkoCYTcq8STonFVA@mail.gmail.com>
-Message-Id: <20220303235028.913923-1-ctshao@google.com>
+ (user=ctshao job=sendgmr) by 2002:a25:3252:0:b0:628:a874:e41e with SMTP id
+ y79-20020a253252000000b00628a874e41emr9969830yby.484.1646368608392; Thu, 03
+ Mar 2022 20:36:48 -0800 (PST)
+Date:   Fri,  4 Mar 2022 04:14:51 +0000
+Message-Id: <20220304041449.939308-1-ctshao@google.com>
 Mime-Version: 1.0
-References: <CAKwvOdnHioO_tjBbA0Dzghr-kcXywp-OEROkoCYTcq8STonFVA@mail.gmail.com>
 X-Mailer: git-send-email 2.35.1.616.g0bdcbb4464-goog
 Subject: [PATCH v3] config: Allow kernel installation packaging to override pkg-config
 From:   Chun-Tse Shao <ctshao@google.com>
@@ -68,23 +64,25 @@ Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-10.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+[ Resending as a separate thread ]
+
 Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
 what pkg-config and parameters are used.
 
 Signed-off-by: Chun-Tse Shao <ctshao@google.com>
 ---
-Changes in v3:
+Changes from v2: https://lore.kernel.org/all/20220302193638.11034-1-ctshao@google.com/
   - Fix more open coded instance of pkg-config in scripts and certs
   - Tested with make allmodconfig
 
-Changes in v2:
+Changes from v1: https://lore.kernel.org/all/20220301230629.1892828-1-ctshao@google.com/
   - Make the commit message more clearer.
 ---
 
