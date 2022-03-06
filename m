@@ -2,75 +2,166 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0A24CE96E
-	for <lists+keyrings@lfdr.de>; Sun,  6 Mar 2022 07:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51ECA4CEDCB
+	for <lists+keyrings@lfdr.de>; Sun,  6 Mar 2022 21:51:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232624AbiCFGKy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 6 Mar 2022 01:10:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
+        id S230486AbiCFUwL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 6 Mar 2022 15:52:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiCFGKy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 6 Mar 2022 01:10:54 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C184755F
-        for <keyrings@vger.kernel.org>; Sat,  5 Mar 2022 22:10:01 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id z30so12163279ybi.2
-        for <keyrings@vger.kernel.org>; Sat, 05 Mar 2022 22:10:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=VgcxH2ijFK0vuPYbaWoDcSNiriV7uSEDn3HZMJwmwzByekgrEN8z88NoEZxDD7WEG4
-         VmKVbbtMaDnwmEbY0hQjC3DBdqzyN+qKC8FVJvSG6H0A+N0HOAAxfF9bvHiaYnqYaAX5
-         ZcXmlowyih5ab3Tub+QhvleBqgpPqEden7EXDk/5JkJhvYzYCcD47I3qsfhIO+EI11BU
-         lhYltkJXavm+7UyN+G4+9HXF8+WCA9AoIXb81SBPojt+1b0puQ958FPRUdrKzaiYrTVT
-         zgy15WNwqBx5SY1RM/D4unZM/apJWG3UcHYEicAqAlnZdHnmLonsmgJxAyJ56v5I010G
-         Fp8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=3DngvvPQdJWp5P6g273lBM4gNiqOmDzHgLZg4Kt0iPFsdJu5Nv6IeOBIIYJ1ZMuqBu
-         u1AFd4lvcnxEfiJlf4tB8q13KdGfXfnDV61kYKOfr/DEI05vjSfc9qKGNpnaqAy26KUI
-         uS/c+iIK2qvvWg6r0ac5srZHr3EFB8wQoAl4HlxtGy8zxCbTA7Ke9xdSDrLeIv1bRzSO
-         JcgdscfpMW4l7aI/LlLmbGs0HH20BhS51vZXAI7pFR9GKZQwCom4VJU0/Q9o379Ka1Sz
-         LCLpiFI+KZq4oU6NgZT15iuxr/1GNS0zdTwxpHnAwY/3rM0ZH9koF0CzVEFSwwFc7Dyw
-         Uw5A==
-X-Gm-Message-State: AOAM533BpK/dh/EOr0Jz+xjPEaT8Fe3iJMojOu26EOAJYlPSDPtQxDLU
-        2H8SW/bH2l1Unhzc7X4RjVHkAhhPhBz0X4tT7AE=
-X-Google-Smtp-Source: ABdhPJz5h/4Cc2icpGrZc0vdLRgFNi1luqJOSpdI/iBGIXasYdMCWcJOj50Qcdnv0sfWC1ACVgi2MZwrjje9kqlBURc=
-X-Received: by 2002:a5b:7cf:0:b0:623:df1c:b83d with SMTP id
- t15-20020a5b07cf000000b00623df1cb83dmr4297744ybq.75.1646547000687; Sat, 05
- Mar 2022 22:10:00 -0800 (PST)
+        with ESMTP id S230145AbiCFUwL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 6 Mar 2022 15:52:11 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DB91FA41;
+        Sun,  6 Mar 2022 12:51:18 -0800 (PST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 226GKDpW018727;
+        Sun, 6 Mar 2022 20:51:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=kA114Qk/KFG1ESmDdeVocI3m7q4zE5+k1hNnVUg6sxU=;
+ b=snYaA+RqTou47nwUNhMz1RZaa35MbyLacvW2kpbB6vcpQPBsZmBACp791QQQNK5bTIPb
+ iqwumFnAeByOthKOtxmukpRTgm/YA3NBXQ/OmwH2yIZhcR6I3vbP+DcfTemJ5MKnCtF4
+ cB96x9FYtgjZQA1Jm/bZAQHQ8k+SiA6uEEtDJSYaz5eUEMZcU784blyu3cnjIeyyWS54
+ 8/0jEyZ3tZRca2HVBL/U9Sbq6wMS/1HaKMwqLes6iviIZWX6rXhMt0GA0zjAlmADZKXX
+ 3NFp2ZOxgtmzn6+TwhalSTi1MRwobIs6dqtZ4r+lLqGudl2eBI87D+n8z2Ga/jT2aAnd WA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3emtmw6gmn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 06 Mar 2022 20:51:13 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 226KpCOJ001160;
+        Sun, 6 Mar 2022 20:51:12 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3emtmw6gmd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 06 Mar 2022 20:51:12 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 226KhgEj000631;
+        Sun, 6 Mar 2022 20:51:10 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma06fra.de.ibm.com with ESMTP id 3eky4j2njb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 06 Mar 2022 20:51:10 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 226Kp7Kw23593338
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 6 Mar 2022 20:51:07 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 45E4811C054;
+        Sun,  6 Mar 2022 20:51:07 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E710411C04C;
+        Sun,  6 Mar 2022 20:51:04 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.113.126])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sun,  6 Mar 2022 20:51:04 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, zohar@linux.ibm.com, jarkko@kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
+        seth@forshee.me, rnsastry@linux.ibm.com,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: [PATCH v10 0/3] integrity: support including firmware ".platform" keys at build time 
+Date:   Sun,  6 Mar 2022 15:50:57 -0500
+Message-Id: <20220306205100.651878-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FGfm_l4yQIhY2NP4VovyYVj_xlZ-s6Q-
+X-Proofpoint-ORIG-GUID: 4OL7R87XGttIP4hr4-2qdvdr-bXdcoxr
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Sender: madamarawaaa@gmail.com
-Received: by 2002:a05:7010:7044:b0:211:4c69:46e6 with HTTP; Sat, 5 Mar 2022
- 22:10:00 -0800 (PST)
-From:   Ssan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
-Date:   Sun, 6 Mar 2022 06:10:00 +0000
-X-Google-Sender-Auth: Gxd-Ue-gidiwRglX1QiUyybsNNQ
-Message-ID: <CAJRRPJ8THTpreebkxs_bDOetrGE=k48qjzb9PFtM5HYG6tCX=Q@mail.gmail.com>
-Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-06_08,2022-03-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ impostorscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999 bulkscore=0
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203060140
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-GOD BLESS YOU AS YOU REPLY URGENTLY
+Some firmware support secure boot by embedding static keys to verify the
+Linux kernel during boot. However, these firmware do not expose an
+interface for the kernel to load firmware keys onto the ".platform"
+keyring, preventing the kernel from verifying the kexec kernel image
+signature.
 
- Hello Dear,
-Greetings, I am contacting you regarding an important information i
-have for you please reply to confirm your email address and for more
-details Thanks
-Regards
-Mrs Susan Elwood Hara.
+This patchset exports load_certificate_list() and defines a new function
+load_builtin_platform_cert() to load compiled in certificates onto the
+".platform" keyring.
+
+Changelog:
+v10:
+* Fixed the externs warning for Patch 3.
+
+v9:
+* Rebased on Jarkko's repo - 
+git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
+
+v8:
+* Includes Jarkko's feedback on patch description and removed Reported-by
+for Patch 1.
+
+v7:
+* Incldues Jarkko's feedback on patch description for Patch 1 and 3.
+
+v6:
+* Includes Jarkko's feedback:
+ * Split Patch 2 into two.
+ * Update Patch description.
+
+v5:
+* Renamed load_builtin_platform_cert() to load_platform_certificate_list()
+and config INTEGRITY_PLATFORM_BUILTIN_KEYS to INTEGRITY_PLATFORM_KEYS, as
+suggested by Mimi Zohar.
+
+v4:
+* Split into two patches as per Mimi Zohar and Dimitri John Ledkov
+recommendation.
+
+v3:
+* Included Jarkko's feedback
+ ** updated patch description to include approach.
+ ** removed extern for function declaration in the .h file.
+* Included load_certificate_list() within #ifdef CONFIG_KEYS condition.
+
+v2:
+* Fixed the error reported by kernel test robot
+* Updated patch description based on Jarkko's feedback.
+
+Nayna Jain (3):
+  certs: export load_certificate_list() to be used outside certs/
+  integrity: make integrity_keyring_from_id() non-static
+  integrity: support including firmware ".platform" keys at build time
+
+ certs/Makefile                                |  5 ++--
+ certs/blacklist.c                             |  1 -
+ certs/common.c                                |  2 +-
+ certs/common.h                                |  9 --------
+ certs/system_keyring.c                        |  1 -
+ include/keys/system_keyring.h                 |  6 +++++
+ security/integrity/Kconfig                    | 10 ++++++++
+ security/integrity/Makefile                   | 15 +++++++++++-
+ security/integrity/digsig.c                   |  2 +-
+ security/integrity/integrity.h                |  9 ++++++++
+ .../integrity/platform_certs/platform_cert.S  | 23 +++++++++++++++++++
+ .../platform_certs/platform_keyring.c         | 23 +++++++++++++++++++
+ 12 files changed, 90 insertions(+), 16 deletions(-)
+ delete mode 100644 certs/common.h
+ create mode 100644 security/integrity/platform_certs/platform_cert.S
+
+
+base-commit: c9e54f38976a1c0ec69c0a6208b3fd55fceb01d1
+-- 
+2.27.0
