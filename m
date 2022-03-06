@@ -2,212 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F11F04CEE42
-	for <lists+keyrings@lfdr.de>; Sun,  6 Mar 2022 23:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C424CEE8A
+	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 00:33:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232688AbiCFWvP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 6 Mar 2022 17:51:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46984 "EHLO
+        id S234428AbiCFXev (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 6 Mar 2022 18:34:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230224AbiCFWvP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 6 Mar 2022 17:51:15 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DCE54FA7
-        for <keyrings@vger.kernel.org>; Sun,  6 Mar 2022 14:50:21 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id m11-20020a17090a7f8b00b001beef6143a8so12527357pjl.4
-        for <keyrings@vger.kernel.org>; Sun, 06 Mar 2022 14:50:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=I0+aB5+iWTlcM+YdHU/av3SeWoXDvBLYyb7Gk7+TnDY=;
-        b=EAvajnNnAUTetZ3AX6do1P54c3fdWapxxfXbUi+zNuGqMoAKXJzZ+cBDgtSlOPUvd0
-         v5iAi+oSxu+ZnI2b5EGL40epO0bA0/7ovi+10inkI1YnbSFjIYhRFT0Htso/9wybGMi5
-         lLosT5Rlcs+8n40tvfkljOZ94xeTZES4xipDN/7X2IgegzzNXWyTTfupaha8Q1Z2qUF0
-         lEWwPido8n2B+3ggyVssVYJfSACLBD3zrbmzDx6QoPG79ThMDaNb74uFzCcahUPo0oFa
-         DWXAZzsbf9yL96W8SvhnIMn5EYo9yBfYaCO8Z8RnrWsw2ivOsPMNmT3lLGtgy6ZSnO56
-         Crmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=I0+aB5+iWTlcM+YdHU/av3SeWoXDvBLYyb7Gk7+TnDY=;
-        b=5sGP7or1aunN7V0ZEttEWQxdVNXkITsv+Eip5o4/6s3r4siZt8EMfz23hMvc34qCpu
-         Bu7n0yCOGv8KOH8CMznZD1LsASqQGvo+Uw1LIRDzTv1rQ1nYcwDlScpdaQ8T20mk+dwh
-         wgW1vNc2Ur4RbD60GQ4lk4T7j113K6d2qly+4sJuZmPWBzz1vshPMdHra7oyBMD0BbAm
-         0tJ9zobx1AVEUGxcSEiJv0lwFtQNG6p6cAQWPJMM6dnfHFoAwU0LUVLx6TvFYWMq8CA9
-         N1L4ElXCrw4Noe3zKE1PFbEXTULHVK5icJLGUI/kCGTriMlcO7UVUxlCJ2VVMm74fnhc
-         qVWg==
-X-Gm-Message-State: AOAM532iNaRUGKJ/hKQnA+tjSd/DTdi9oruJliFQsAor7UHha8GVw8UP
-        rBtuHti7Zb43XQpo16xcNebApQ==
-X-Google-Smtp-Source: ABdhPJw9PioSsePdhp91Ue54wpRHN5AOtdnsfTdre7EJlnCRMXW777L0rZmTL86yhueDsuRTmW2kPQ==
-X-Received: by 2002:a17:902:8bc2:b0:149:1ce6:c28c with SMTP id r2-20020a1709028bc200b001491ce6c28cmr9430521plo.164.1646607020763;
-        Sun, 06 Mar 2022 14:50:20 -0800 (PST)
-Received: from google.com (223.103.125.34.bc.googleusercontent.com. [34.125.103.223])
-        by smtp.gmail.com with ESMTPSA id o125-20020a625a83000000b004f6d32cd541sm6384833pfb.152.2022.03.06.14.50.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Mar 2022 14:50:20 -0800 (PST)
-Date:   Sun, 6 Mar 2022 22:50:16 +0000
-From:   Chun-Tse Shao <ctshao@google.com>
-To:     Nicolas Schier <nicolas@fjasle.eu>
-Cc:     rostedt@goodmis.org, ndesaulniers@google.com,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3] config: Allow kernel installation packaging to
- override pkg-config
-Message-ID: <YiU6qJ9EIspJfnto@google.com>
-References: <20220304041449.939308-1-ctshao@google.com>
- <YiPUp2KDmlnzv0MR@fjasle.eu>
+        with ESMTP id S230331AbiCFXeu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 6 Mar 2022 18:34:50 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80CF8FD18;
+        Sun,  6 Mar 2022 15:33:57 -0800 (PST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 226G4dur022349;
+        Sun, 6 Mar 2022 23:33:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=fKulzWWjHvUbeYLR9eSpvMZAeO82VKShWTWsomr3sfg=;
+ b=ebsXwR3b58UiZAxw8REQOMLBQqZj02pTH8M0DAPKQL225nodGQbdQMTjMIK+pR0OTx6G
+ zQbx9nQNAbeEV+LYo9HxJVmQO9F8KcsOeccTljmEuSegIhP6gY/USQ1Bm1n+O7PoI84k
+ XPHK9y3a7v3U7pB9enLYdhlojJ3+stW0XeVQ/g7962SfDDbDlMmVJ5PQk6ngditZyfHx
+ A92wXzoA68DuCgaRGfkT2TG4WxZ7/72J3bT5J8ddBrdP5vzTI4maqko/o4llX7nL7j8L
+ KSiJcC6m6ZwdLSs48ubUxb81SdupcTqBWvucGuo6hqaYa9yK2rEaKChiKdIAMke+XYue /Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3emsaus2kr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 06 Mar 2022 23:33:32 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 226NXWwS031333;
+        Sun, 6 Mar 2022 23:33:32 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3emsaus2k7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 06 Mar 2022 23:33:32 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 226NWNed015352;
+        Sun, 6 Mar 2022 23:33:29 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma02fra.de.ibm.com with ESMTP id 3ekyg8trjq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 06 Mar 2022 23:33:29 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 226NXQHL45875516
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 6 Mar 2022 23:33:26 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 32D5DAE051;
+        Sun,  6 Mar 2022 23:33:26 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EC116AE04D;
+        Sun,  6 Mar 2022 23:33:23 +0000 (GMT)
+Received: from sig-9-65-93-47.ibm.com (unknown [9.65.93.47])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sun,  6 Mar 2022 23:33:23 +0000 (GMT)
+Message-ID: <4235e559d00cd90701e05befe87b06e904f008b2.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/4] Add CA enforcement in the machine keyring
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, jarkko@kernel.org,
+        dhowells@redhat.com, dwmw2@infradead.org
+Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        jmorris@namei.org, serge@hallyn.com, stefanb@linux.ibm.com,
+        nayna@linux.ibm.com, mic@linux.microsoft.com,
+        konrad.wilk@oracle.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Date:   Sun, 06 Mar 2022 18:33:23 -0500
+In-Reply-To: <20220301173651.3435350-1-eric.snowberg@oracle.com>
+References: <20220301173651.3435350-1-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pM_pyezh0DokqU0Xk2f6iZDAW4RdtVqL
+X-Proofpoint-ORIG-GUID: buRmEs8Kdvb52E57UDfmkaTE-dKDpi9u
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YiPUp2KDmlnzv0MR@fjasle.eu>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-06_09,2022-03-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203060158
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, Mar 05, 2022 at 10:22:47PM +0100, Nicolas Schier wrote:
-> On Fri, Mar 04, 2022 at 04:14:51AM +0000 Chun-Tse Shao wrote:
-> > [ Resending as a separate thread ]
-> >
-> > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
-> > what pkg-config and parameters are used.
-> >
-> > Signed-off-by: Chun-Tse Shao <ctshao@google.com>
-> > ---
-> > Changes from v2: https://lore.kernel.org/all/20220302193638.11034-1-ctshao@google.com/
-> >   - Fix more open coded instance of pkg-config in scripts and certs
-> >   - Tested with make allmodconfig
-> >
-> > Changes from v1: https://lore.kernel.org/all/20220301230629.1892828-1-ctshao@google.com/
-> >   - Make the commit message more clearer.
-> > ---
-> >
-> >  Makefile                     |  3 ++-
-> >  certs/Makefile               |  4 ++--
-> >  scripts/Makefile             |  4 ++--
-> >  scripts/dtc/Makefile         |  6 +++---
-> >  scripts/kconfig/gconf-cfg.sh | 10 +++++-----
-> >  scripts/kconfig/mconf-cfg.sh | 14 +++++++-------
-> >  scripts/kconfig/nconf-cfg.sh | 14 +++++++-------
-> >  scripts/kconfig/qconf-cfg.sh | 14 +++++++-------
-> >  tools/objtool/Makefile       |  4 ++--
-> >  9 files changed, 37 insertions(+), 36 deletions(-)
-> >
-> > diff --git a/Makefile b/Makefile
-> > index daeb5c88b50b..f6c5bef7e141 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -430,6 +430,7 @@ else
-> >  HOSTCC	= gcc
-> >  HOSTCXX	= g++
-> >  endif
-> > +HOSTPKG_CONFIG	= pkg-config
-> >
-> >  export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
-> >  			      -O2 -fomit-frame-pointer -std=gnu89
-> > @@ -525,7 +526,7 @@ KBUILD_LDFLAGS_MODULE :=
-> >  KBUILD_LDFLAGS :=
-> >  CLANG_FLAGS :=
-> >
-> > -export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
-> > +export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
-> >  export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
-> >  export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
-> >  export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
-> > diff --git a/certs/Makefile b/certs/Makefile
-> > index 3ea7fe60823f..fa540d14ef2d 100644
-> > --- a/certs/Makefile
-> > +++ b/certs/Makefile
-> > @@ -89,5 +89,5 @@ targets += x509_revocation_list
-> >
-> >  hostprogs := extract-cert
-> >
-> > -HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
-> > -HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
-> > +HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
-> > +HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
-> > diff --git a/scripts/Makefile b/scripts/Makefile
-> > index ce5aa9030b74..f084f08ed176 100644
-> > --- a/scripts/Makefile
-> > +++ b/scripts/Makefile
-> > @@ -14,8 +14,8 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
-> >  HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
-> >  HOSTLDLIBS_sorttable = -lpthread
-> >  HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
-> > -HOSTCFLAGS_sign-file.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
-> > -HOSTLDLIBS_sign-file = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
-> > +HOSTCFLAGS_sign-file.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
-> > +HOSTLDLIBS_sign-file = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
-> >
-> >  ifdef CONFIG_UNWINDER_ORC
-> >  ifeq ($(ARCH),x86_64)
-> > diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
-> > index 95aaf7431bff..743fc08827ea 100644
-> > --- a/scripts/dtc/Makefile
-> > +++ b/scripts/dtc/Makefile
-> > @@ -18,7 +18,7 @@ fdtoverlay-objs	:= $(libfdt) fdtoverlay.o util.o
-> >  # Source files need to get at the userspace version of libfdt_env.h to compile
-> >  HOST_EXTRACFLAGS += -I $(srctree)/$(src)/libfdt
-> >
-> > -ifeq ($(shell pkg-config --exists yaml-0.1 2>/dev/null && echo yes),)
-> > +ifeq ($(shell $(HOSTPKG_CONFIG) --exists yaml-0.1 2>/dev/null && echo yes),)
-> >  ifneq ($(CHECK_DT_BINDING)$(CHECK_DTBS),)
-> >  $(error dtc needs libyaml for DT schema validation support. \
-> >  	Install the necessary libyaml development package.)
-> > @@ -27,9 +27,9 @@ HOST_EXTRACFLAGS += -DNO_YAML
-> >  else
-> >  dtc-objs	+= yamltree.o
-> >  # To include <yaml.h> installed in a non-default path
-> > -HOSTCFLAGS_yamltree.o := $(shell pkg-config --cflags yaml-0.1)
-> > +HOSTCFLAGS_yamltree.o := $(shell $(HOSTPKG_CONFIG) --cflags yaml-0.1)
-> >  # To link libyaml installed in a non-default path
-> > -HOSTLDLIBS_dtc	:= $(shell pkg-config yaml-0.1 --libs)
-> > +HOSTLDLIBS_dtc	:= $(shell $(HOSTPKG_CONFIG) yaml-0.1 --libs)
-> >  endif
-> >
-> >  # Generated files need one more search path to include headers in source tree
-> > diff --git a/scripts/kconfig/gconf-cfg.sh b/scripts/kconfig/gconf-cfg.sh
-> > index 480ecd8b9f41..267ef6012203 100755
-> > --- a/scripts/kconfig/gconf-cfg.sh
-> > +++ b/scripts/kconfig/gconf-cfg.sh
-> > @@ -3,14 +3,14 @@
-> >
-> >  PKG="gtk+-2.0 gmodule-2.0 libglade-2.0"
-> >
-> > -if [ -z "$(command -v pkg-config)" ]; then
-> > +if [ -z "$(command -v $(HOSTPKG_CONFIG))" ]; then
->
-> Dereferencing variables in shell scripts has to be done by using "${var}" or
-> "$var".  "$(var)" starts a sub-shell and executes "var", which is not your
-> intention.  Thus, better try something like:
->
->     if [ -z "$(command -v "${HOSTPKG_CONFIG}")" ]; then
->
-> (and all other shell script replacements in need to be revised, too.)
->
-> Kind regards,
-> Nicolas
+Hi Eric,
 
-Thanks Nicolas! I submitted another patch with your suggestions:
-https://lore.kernel.org/all/20220306223016.2239094-1-ctshao@google.com/
+On Tue, 2022-03-01 at 12:36 -0500, Eric Snowberg wrote:
+> A key added to the IMA keyring must be signed by a key contained in either the
+> built-in trusted or secondary trusted keyring. IMA also requires these keys 
+> to be a CA. The only option for an end-user to add their own CA is to compile
+> it into the kernel themselves or to use the insert-sys-cert.  Many end-users 
+> do not want to compile their own kernels.  With the insert-sys-cert option, 
+> there are missing upstream changes. 
+> 
+> Currently, all Machine Owner Keys (MOK) load into the machine keyring.  Add 
+> a new Kconfig option to only allow CA keys into the machine keyring.  When 
+> compiled with the new INTEGRITY_MACHINE_KEYRING_CA_ENFORCED Kconfig, non CA 
+> keys will load into the platform keyring instead. This will allow the end-
+> user to enroll their own CA key into the machine keyring for use with IMA.
 
-A question: Would it be good if I also add {} for other variables (for exmaple: $PKG
-and $PKG2) in these scripts along with my change?
+In addition to only loading the MOK CA keys onto the .machine keyring,
+the keyUsage should be required and limited to keyCertSign.   Certs
+with keyUsage of keyCertSign should not be allowed on the IMA keyring.
 
--CT
+thanks,
+
+Mimi
+
+> 
+> These patches are based on Jarkko's linux-tpmdd tree.
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
+> 
+
