@@ -2,194 +2,218 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7220D4D0703
-	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 19:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A5A4D0875
+	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 21:38:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244888AbiCGS4f (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 7 Mar 2022 13:56:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
+        id S232758AbiCGUjg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Mar 2022 15:39:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244887AbiCGS4e (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 13:56:34 -0500
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 618D292840;
-        Mon,  7 Mar 2022 10:55:40 -0800 (PST)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 227ISenJ028197;
-        Mon, 7 Mar 2022 18:55:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=corp-2021-07-09;
- bh=CPARXGQJZTtX0P3gqxxWbfPKuOxoNj6SCY2gUJaR2gY=;
- b=mfbR6o2PjnZPxVMJ614mU97Og6Ihdk4cLS9ZXHZoNTupRz4p/Lo/42ktoO+sBeX/HeEq
- gx91tS9ug7L5QNtbaQ/BTstl/W2VU+8RGLruZJbAoP+T+F1v7lX/VTBoCjbATBmhILaw
- HuvjW1GGPT4hcLATKIjb8/CjGEOR8TzWz0ex58Gy37WT7e7RAExJlKiMdiXaEdc05Lqk
- vaCwnmz47njg4IofFahwfkft5wBTpR+dYJexjz53eOcGXDkp0UkGS7NIgiYdQLKy+wyS
- RNxLEbqsJfglq6BMUupRtYxpZKfCVcs9wsTF2EpbwCZmfEJdTlCsr4imhbRBB8NOOqKl jA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3ekxn2cukv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Mar 2022 18:55:22 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 227If8Di065704;
-        Mon, 7 Mar 2022 18:55:22 GMT
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam07lp2046.outbound.protection.outlook.com [104.47.51.46])
-        by aserp3020.oracle.com with ESMTP id 3ekyp1d4w1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Mar 2022 18:55:22 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L+Xs8ni7q7NLYyVaJu87cIv+RWAwG/PeYfnXUR8McJ0vNJ0jK+bOPw2b5QIhAbUxaDCWdhynDzuI68lHbBRCm7fZTy4BQf62WI+PjyniodKSgg9thgY2YOEH+dBeKM/YdIemf4Hk4MU33K9cL6UDN8d8eXrLwfCYh6RbiioksRrKl3tt2JZjMSA5dlZXU6HT4u3IqV3KoHCK/GSSu5Ihsn1ZOXDeiETdeQPAYVGmmjXNdnC7/M+grMLxZahZCtsgJf9ooHKaNp9Gw/xZw8C3VJNSnGCd+B7izdaF3NAKN2qjRd3Mpv/SJlD1pq8fUXzuPDwcrgRhN/vkSgHQMbmyAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CPARXGQJZTtX0P3gqxxWbfPKuOxoNj6SCY2gUJaR2gY=;
- b=n9sAYG5HD6nL0a4NtLNpDEE7QyZ8Kw8mfnp/C7+0VJNBIxtCVdB2ti8FsjL9YaMWeMqj01LkN3vWjfKw4fz3GCLtHpugmW8UfaY+t4QFQsMptA0H4nqgtrO1XAUSb84z3QndgDOzuY7YqGvTtd3rUW/3PCk8LhwJArScFFtja+wuzlD1RaQWkTzlE6HL/KFeDL3PPX12fTsBtei4DqyT1XpLB8VwhEm2rKClzoSU3PyhsltVV7iBVLvTS1SBBsLeyEMJJiDUmh/9TB2rijXN5K58+ga5VC3wU3nOJU3UotCvVQxQQVUtVJOrasP3fQIN7eJPyrrM/D72f3fmJ9Ca1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CPARXGQJZTtX0P3gqxxWbfPKuOxoNj6SCY2gUJaR2gY=;
- b=BJRLJ3sgZgtaOxM42RRZL00OVrf0YA6nhy/IHQXvvUdzwr8JZWXqgHwgCS8GDNXkTZO6qEoZ3VcFnZfErq/DZQrN+hnFilqmUtuf3KugSi/0D0G/cHl04ux1eHuXIGey5PyxHhcZVrBfO5u8f0TEXYqZ44MrdeX3YY8SlWsYx1k=
-Received: from CH2PR10MB4150.namprd10.prod.outlook.com (2603:10b6:610:ac::13)
- by PH7PR10MB5879.namprd10.prod.outlook.com (2603:10b6:510:126::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
- 2022 18:55:19 +0000
-Received: from CH2PR10MB4150.namprd10.prod.outlook.com
- ([fe80::a8c4:c418:5d49:fe1a]) by CH2PR10MB4150.namprd10.prod.outlook.com
- ([fe80::a8c4:c418:5d49:fe1a%7]) with mapi id 15.20.5038.027; Mon, 7 Mar 2022
- 18:55:19 +0000
-From:   Eric Snowberg <eric.snowberg@oracle.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-CC:     Jarkko Sakkinen <jarkko@kernel.org>,
+        with ESMTP id S229552AbiCGUjf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 15:39:35 -0500
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7987030F58;
+        Mon,  7 Mar 2022 12:38:34 -0800 (PST)
+Received: from leknes.fjasle.eu ([46.142.48.249]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MwQw1-1oHMkY04NZ-00sNLz; Mon, 07 Mar 2022 21:28:03 +0100
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+        id D43483C092; Mon,  7 Mar 2022 21:28:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+        t=1646684881; bh=2GqYEnWAhlFGnBFmpTswah2anL2T7B/Q0ZAYyhsx6A0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M44MLFcMyfLv78bMq4nudo3eEgAHXmp5wy+ssAkT/XW68kLUgEu8qjEw4O0aV9UBI
+         nCLbPj9osDifGrA5tU3kT+C5M1I1X+EDAcshJHsyyvtUMnAYJYd7ygIw36FfZcPIDA
+         5tXanKwkwxANTQi7l7YioRIXDnRIoiuO1LzBPK+o=
+Date:   Mon, 7 Mar 2022 21:28:00 +0100
+From:   Nicolas Schier <nicolas@fjasle.eu>
+To:     Chun-Tse Shao <ctshao@google.com>
+Cc:     rostedt@goodmis.org, ndesaulniers@google.com,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
         David Howells <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "mic@linux.microsoft.com" <mic@linux.microsoft.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH 0/4] Add CA enforcement in the machine keyring 
-Thread-Topic: [PATCH 0/4] Add CA enforcement in the machine keyring 
-Thread-Index: AQHYLZM8jxuG29fUVEecQcvisOPy/ayzCf2AgAFEowA=
-Date:   Mon, 7 Mar 2022 18:55:19 +0000
-Message-ID: <29935472-CA86-4B5F-A1B5-1B12FC563748@oracle.com>
-References: <20220301173651.3435350-1-eric.snowberg@oracle.com>
- <4235e559d00cd90701e05befe87b06e904f008b2.camel@linux.ibm.com>
-In-Reply-To: <4235e559d00cd90701e05befe87b06e904f008b2.camel@linux.ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3608.120.23.2.7)
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2b56f6bd-bd57-4c85-24ed-08da006c06e6
-x-ms-traffictypediagnostic: PH7PR10MB5879:EE_
-x-microsoft-antispam-prvs: <PH7PR10MB58797B3C475858FCC971859787089@PH7PR10MB5879.namprd10.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ITVbFicxd7oiky7fkAYC6WBzWH6agDvA5mplMTorX0xtFoMuleEaoFgdJ+m+C31twd8D69gbjFRPu891oeuSm/kDOBncHGuOrKMM/cRplRVfNUZUWZmwrhXC3JFJxEgFVJpvRFRuhDl10BJXq3EViTOrWcP9rLj1rFeNKRxipFDOIdRGEnHINCD8g2QXppfPuH7OSHeYrMeg5NZG9hLPZjqykWL1N4+NSpGknfsKdOh7yK+EgeCaoSGE1O0T2yg+aiku/ZDu1hG5WO/QkEmHyq2eHAdrnFWb1SuECgsAO7qcHzdS2xfxZhE9oLV7OjcVsrLrbaSf3qGSL3Jz4wRf+rQhbt/wRVAz6xYz6nTF00x+/ociHnffkCjBt7LOhoPiBI2UV1bd/bm8LDZlfFaG5R0MG4oVrSAsiVuRjCxoWM1693snLZUHNGNqTNW+6LQj5thmuWtgOQEqX43dAjBsDA/BxS6efWPW/zkJQ0heOc9rhz3xgua11kO89hUdluUubPbeqdQtIBVUumeSos3PqELnbdNCVgMdgvJ+fFuDMw9RC0fOlvxqU2gkhx3q7LlFxgVx0LQmCE1KkNTIfKXLh7Mow2aPQI3jLSCget+iDCg8yBCpZFYpLT/aCixPG2Jctb0F9CDKZq8Qa6s1IzC3Ur2VDrs63TCN19pzvVpQPaEOtlZyur2hCvU0GFKWLE4AiqxoSDPSdphUh6fjk1++i6YdcR8ZzOPN71um6De7Eao=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4150.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(4743002)(6512007)(44832011)(33656002)(5660300002)(7416002)(66476007)(8676002)(66946007)(6486002)(66446008)(4326008)(71200400001)(6506007)(38100700002)(53546011)(91956017)(122000001)(8936002)(76116006)(64756008)(54906003)(6916009)(66556008)(83380400001)(38070700005)(2616005)(26005)(86362001)(186003)(36756003)(508600001)(2906002)(316002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YmhPZFB3VkRHUmFnbzRRVWU3MnAwV2Z5cE1ub2ltZVpjRGJqeS82anAxZGZ1?=
- =?utf-8?B?QkYxUk5rUStraXJrV1NDZ1N2elJXczQ5UWIzNGZUN0o2MjBjN21aOUxGRGVI?=
- =?utf-8?B?Ky9ZQnJId1ZOZDI3VXlJSjk4UW9FbC9uQ2Y4cjBVV0xNNE5yK3B3cDlwY04z?=
- =?utf-8?B?U0svczdaS0hYZVoyakJYdGdxTkNrUk1remZUUVQwTTkxVUMyZVJUQTExd2JL?=
- =?utf-8?B?VUh2Z0lJTEE0Z25nanhUQWxKMGlTeE90WFhMU29MYUFDTUp4WEdvTWttTVhz?=
- =?utf-8?B?cWNuNWlQK1BML3hHQUR1VWkzWkticXBKcy9YWTIxTDhNb0NlNGhMRzlPb29F?=
- =?utf-8?B?ekxJY0tzamoxc25zd21YdFRWK2hlWnpkcWVKMk9ZTjVYRzBqTFd5V2VnNFgx?=
- =?utf-8?B?SW9wcVBCUHlwT3QrbGs4M29WL2E4cVJVaXJ4TWxsVHVKVW1SZHptQzRyMnFV?=
- =?utf-8?B?RjkxNTVCQitENG8rRDgrdDQrY0pTeHMwMS9TU3BWOHc3S24rR3ZqdDN2RGpX?=
- =?utf-8?B?VTU4STFYZ1JZamZoMTkvdERYK1lUaThFN3B3S21SYXlxY1lITjN0UE5LcVYr?=
- =?utf-8?B?TStuUFpQVHNwZDQ5VjFBdkE5Y0FlcGxIQVRBVURwRU1kZE90ZVRYSEJTMEpX?=
- =?utf-8?B?UGthcitUNUI1WktkUFFJdFNZdG95TVVGWGhCa3NpbmUxZ0owcW0zcWpSazBm?=
- =?utf-8?B?WVk1SDIrSjJFUmdIRjFVamFCTzNzQkVESnl3akdVY0xMZDhhQ01KY2N0N3dE?=
- =?utf-8?B?bmxZY2NRU0ltSVArNmtpa2VuRndZbDNBbnRVV1lwdHBvTEs1MmJhL1lQekt4?=
- =?utf-8?B?aDRuakl0dW1nTmZGNWdUTUpldFlBTHo2L3huMmRCODVHZnpnaitSdkJycVN0?=
- =?utf-8?B?TmpsREhQVmRjdWJyeTkwQlN0eFJSc0Jma3N6M2Z3elhUdCtSR293cGZJSFhp?=
- =?utf-8?B?eWhwZitsdUNCR01XN3ZkYW91NlJKZmRlZk1TS0dEZGZ4dDlSUnh1ZHVCRE1u?=
- =?utf-8?B?YVlIWit0R0lNcjlDYng3ZHRUU1dadUxlRjJOMUM4K2tBRkk0eUQ4MmJGWnVB?=
- =?utf-8?B?UU5TaHc0emhycmk4YTRnR2dJRUNwYVVib3JVa3dlS1Jtdzl0T2sxc0FONGRz?=
- =?utf-8?B?eFlqRjNKVWhZL1F2Q29saTRiV2FwQnBxb24vckNaeldWT21WalpLUE9mSW55?=
- =?utf-8?B?VGMzVkNQeTJHRC9mMDk1cExLTHNGeXRyOU94MURGZ0Q0YWtHRFhiZzl2RGs1?=
- =?utf-8?B?OW5keWM2a0VPblRhcFNFR3RFMitYK2Zma2lUVkQ0MVV6QnFCeGRrbUg1NkdG?=
- =?utf-8?B?T0ZFZ2pTOEk2bEtmRXBKT1M4bHBJQ3hVRVY3aWRkSmtSb0ZUYkc3Q2pyL3lY?=
- =?utf-8?B?cTA2VWJycGdadk85NGxBeXB2aUhYNThhb2ZSd09LNENYZm9WdmNRdEUrSi95?=
- =?utf-8?B?ekZwS1QyOWhRWlpYaWRzSXNhUVNQRjFUVlhrYXBWclE4U25wY1hMY1pMU2Nz?=
- =?utf-8?B?dEtFTk8xVG9oN0E0S3V0bExJM3Y2enlGWnFKT1FRd1B4OEQ3ZTJsMHlYOTRa?=
- =?utf-8?B?RHJiTHhyTlZVYXQzM1FSc0lIZlFuVTF5aU1tMzJjUUFCT3Z3c3ZaYUROT3U4?=
- =?utf-8?B?c2NyZzR5bVIxOUpheGRVa3NzQzdrZXhBZlJqeXpuc29LaG8xWUNHc1BVdmdD?=
- =?utf-8?B?UkNjQXo0QVRVS0ZQMm41ZlZvNVlVaVIvYXlBUmVQbDl0N0kyY3dWSjNXNnYr?=
- =?utf-8?B?S3FTc0ZsR05nWDEybC9QNjBQWnRNYS9yTUdDY3hMc1dGSTZLYWxlZ3ZQaEhq?=
- =?utf-8?B?L05NcFUwRWJ4aFJJUCtsbXQzWG1iMnp4QTZNMUFoOG9OU3Bqc05EV09Ub0Nu?=
- =?utf-8?B?ZjQ0blpNb293R1NmSTdyaEJZNjJwc25MNStGaFM4Q0NPNFdjSXQwUUwxTWVp?=
- =?utf-8?B?dExHNDcwSkVEeXFKUFZGK0xlc3JQRG9MYk9EbFhWOC9XWGdKZER1cTNXc2pN?=
- =?utf-8?B?L2tRMG5Dc2czOXlDbGJsQkU4T0tTZjA5OEpQc05rM2xiYVA3T0ErVExzd01N?=
- =?utf-8?B?K0NsN0lUT1NLK25hajFOYllVMkd3REQ5bmVsR2V2WElJODJJU1dCR1dtQXFh?=
- =?utf-8?B?Y0o5cmVMUWlVUEpTN1M3MUhXaklsd2RRd1JGaWpvQXduaUdIR2ZuNTNHYkxK?=
- =?utf-8?B?TmRRV2U0YjFzSFdaUmRWV0lCbDlIT0RNTnhST1N0a2V5MjlTVjcyZzFwbFFl?=
- =?utf-8?Q?RpgYS6Hk0afyQA5BOvzx90MBxngNNiIwWWv/TvnX3Y=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AAAAC74A721A7B4B9D2102CC96C5C258@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        David Woodhouse <dwmw2@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3] config: Allow kernel installation packaging to
+ override pkg-config
+Message-ID: <YiZq0CMK2GUCkt4e@fjasle.eu>
+References: <20220304041449.939308-1-ctshao@google.com>
+ <YiPUp2KDmlnzv0MR@fjasle.eu>
+ <YiU6qJ9EIspJfnto@google.com>
 MIME-Version: 1.0
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4150.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b56f6bd-bd57-4c85-24ed-08da006c06e6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2022 18:55:19.8091
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eOdbLFXMMkCgcO/lCC6ydYUkToq4+ntT1s7DLz3Je8SyPBM3XGg8e8gAS0eS9YGLli7fJ1zM13TTYjS+gb8M5IGPYCf0ev2luxxeRxIida0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB5879
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10279 signatures=690470
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 mlxscore=0
- bulkscore=0 mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203070105
-X-Proofpoint-ORIG-GUID: PmU1FG2M0lqZpCH6tDUo3gBVq9pfdaBN
-X-Proofpoint-GUID: PmU1FG2M0lqZpCH6tDUo3gBVq9pfdaBN
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YiU6qJ9EIspJfnto@google.com>
+X-Provags-ID: V03:K1:3P2vwG85fiWojFSYQ4ges4jlIKLOGEqkmB6t6R+hyAzfDnD7eqj
+ xW9DiFnTQlAXfjVPCNtHuLm774iyTBXfyBiHeUyKuR+2hTYDdJ/vy3IHXWXtDizQcYamEIq
+ KNemQV9Ln7FUF6rWFiwBuRE+eqmGHTAE9SqRFdtAM0EDCB+RU2z/eRL/StKaSq4h74IoqX+
+ 7pkL1ByS/o2fkaXTUqIaw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:njr1r6Q0gGA=:hg5n+YfZ2L31jNbqTHtHE0
+ ekugX357pkk1rznbCdjG8+eJN1N7cqBpnZWxJmjtM5FQDzcesz4BBmhZqpQxcUBs9SwUP0Gjs
+ gtTABpF2rQb4ivFILpXPkNeO8+AoYpRb3HbMBxKpT4goY3xMQ0nmjONSe2r6ZlQthc9AdvFvV
+ iVbL3+PRKrHZnIF0O4MP9kgKRchVgh2qAZX0HM7in9UCiiKNiOyYZ5+BJDdjfw/tC/eJLy/zY
+ sFSo3lC+EDAd96Mxf9zdGG0kmFEsrYP4Bjhs7MamLvqaBqj9X6Z4TFRKLk2k9qxPAukg1V3Sb
+ vlKTDaIYdNQERQ4y8hD23Nunl1k1Ad8y/c/Sks/fVqdzRS6ReXNfPYcfIOPyTTKxkVCHg/1KT
+ A4+p0nDDUvQsSedhmDy2qog4CoCo+lWqXm66phaN7PmZ2rXkxSo0LrFH+TeAGCHStfYL2V4d/
+ i67FZunMF5hj4iiwGoSeI5Wjf4ZEZ1W1JW5FmuSiC+roywOMrP59UaHNfr15mTZ+ui91dNfTl
+ NdDC93H5Q1bslN08lRJ9Et1fVEuz2gJu3pxReK1Ur8r22seedhMj7n76qBFdncrOV5xZdvP+l
+ mCFOOkjxwAe9/IrLvRgOOB52P8Fn4ILnNU210hRyWvdqgFTnVU39jF9l4Q1vCp0ngVDDbHIw0
+ lJJETUTGex4iC2WopZBtTibnxV1VouA6yzRQ0WjESqcbFHIq+D7oCBdPuHqir0RXY3R4=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-DQoNCj4gT24gTWFyIDYsIDIwMjIsIGF0IDQ6MzMgUE0sIE1pbWkgWm9oYXIgPHpvaGFyQGxpbnV4
-LmlibS5jb20+IHdyb3RlOg0KPiANCj4gSGkgRXJpYywNCj4gDQo+IE9uIFR1ZSwgMjAyMi0wMy0w
-MSBhdCAxMjozNiAtMDUwMCwgRXJpYyBTbm93YmVyZyB3cm90ZToNCj4+IEEga2V5IGFkZGVkIHRv
-IHRoZSBJTUEga2V5cmluZyBtdXN0IGJlIHNpZ25lZCBieSBhIGtleSBjb250YWluZWQgaW4gZWl0
-aGVyIHRoZQ0KPj4gYnVpbHQtaW4gdHJ1c3RlZCBvciBzZWNvbmRhcnkgdHJ1c3RlZCBrZXlyaW5n
-LiBJTUEgYWxzbyByZXF1aXJlcyB0aGVzZSBrZXlzIA0KPj4gdG8gYmUgYSBDQS4gVGhlIG9ubHkg
-b3B0aW9uIGZvciBhbiBlbmQtdXNlciB0byBhZGQgdGhlaXIgb3duIENBIGlzIHRvIGNvbXBpbGUN
-Cj4+IGl0IGludG8gdGhlIGtlcm5lbCB0aGVtc2VsdmVzIG9yIHRvIHVzZSB0aGUgaW5zZXJ0LXN5
-cy1jZXJ0LiAgTWFueSBlbmQtdXNlcnMgDQo+PiBkbyBub3Qgd2FudCB0byBjb21waWxlIHRoZWly
-IG93biBrZXJuZWxzLiAgV2l0aCB0aGUgaW5zZXJ0LXN5cy1jZXJ0IG9wdGlvbiwgDQo+PiB0aGVy
-ZSBhcmUgbWlzc2luZyB1cHN0cmVhbSBjaGFuZ2VzLiANCj4+IA0KPj4gQ3VycmVudGx5LCBhbGwg
-TWFjaGluZSBPd25lciBLZXlzIChNT0spIGxvYWQgaW50byB0aGUgbWFjaGluZSBrZXlyaW5nLiAg
-QWRkIA0KPj4gYSBuZXcgS2NvbmZpZyBvcHRpb24gdG8gb25seSBhbGxvdyBDQSBrZXlzIGludG8g
-dGhlIG1hY2hpbmUga2V5cmluZy4gIFdoZW4gDQo+PiBjb21waWxlZCB3aXRoIHRoZSBuZXcgSU5U
-RUdSSVRZX01BQ0hJTkVfS0VZUklOR19DQV9FTkZPUkNFRCBLY29uZmlnLCBub24gQ0EgDQo+PiBr
-ZXlzIHdpbGwgbG9hZCBpbnRvIHRoZSBwbGF0Zm9ybSBrZXlyaW5nIGluc3RlYWQuIFRoaXMgd2ls
-bCBhbGxvdyB0aGUgZW5kLQ0KPj4gdXNlciB0byBlbnJvbGwgdGhlaXIgb3duIENBIGtleSBpbnRv
-IHRoZSBtYWNoaW5lIGtleXJpbmcgZm9yIHVzZSB3aXRoIElNQS4NCj4gDQo+IEluIGFkZGl0aW9u
-IHRvIG9ubHkgbG9hZGluZyB0aGUgTU9LIENBIGtleXMgb250byB0aGUgLm1hY2hpbmUga2V5cmlu
-ZywNCj4gdGhlIGtleVVzYWdlIHNob3VsZCBiZSByZXF1aXJlZCBhbmQgbGltaXRlZCB0byBrZXlD
-ZXJ0U2lnbi4NCg0KT2ssIEnigJlsbCBhZGQgdGhpcyBpbiB0aGUgbmV4dCByb3VuZC4NCg0K
+On Sun, Mar 06, 2022 at 10:50:16PM +0000 Chun-Tse Shao wrote:
+> On Sat, Mar 05, 2022 at 10:22:47PM +0100, Nicolas Schier wrote:
+> > On Fri, Mar 04, 2022 at 04:14:51AM +0000 Chun-Tse Shao wrote:
+> > > [ Resending as a separate thread ]
+> > >
+> > > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
+> > > what pkg-config and parameters are used.
+> > >
+> > > Signed-off-by: Chun-Tse Shao <ctshao@google.com>
+> > > ---
+> > > Changes from v2: https://lore.kernel.org/all/20220302193638.11034-1-ctshao@google.com/
+> > >   - Fix more open coded instance of pkg-config in scripts and certs
+> > >   - Tested with make allmodconfig
+> > >
+> > > Changes from v1: https://lore.kernel.org/all/20220301230629.1892828-1-ctshao@google.com/
+> > >   - Make the commit message more clearer.
+> > > ---
+> > >
+> > >  Makefile                     |  3 ++-
+> > >  certs/Makefile               |  4 ++--
+> > >  scripts/Makefile             |  4 ++--
+> > >  scripts/dtc/Makefile         |  6 +++---
+> > >  scripts/kconfig/gconf-cfg.sh | 10 +++++-----
+> > >  scripts/kconfig/mconf-cfg.sh | 14 +++++++-------
+> > >  scripts/kconfig/nconf-cfg.sh | 14 +++++++-------
+> > >  scripts/kconfig/qconf-cfg.sh | 14 +++++++-------
+> > >  tools/objtool/Makefile       |  4 ++--
+> > >  9 files changed, 37 insertions(+), 36 deletions(-)
+> > >
+> > > diff --git a/Makefile b/Makefile
+> > > index daeb5c88b50b..f6c5bef7e141 100644
+> > > --- a/Makefile
+> > > +++ b/Makefile
+> > > @@ -430,6 +430,7 @@ else
+> > >  HOSTCC	= gcc
+> > >  HOSTCXX	= g++
+> > >  endif
+> > > +HOSTPKG_CONFIG	= pkg-config
+> > >
+> > >  export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
+> > >  			      -O2 -fomit-frame-pointer -std=gnu89
+> > > @@ -525,7 +526,7 @@ KBUILD_LDFLAGS_MODULE :=
+> > >  KBUILD_LDFLAGS :=
+> > >  CLANG_FLAGS :=
+> > >
+> > > -export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
+> > > +export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
+> > >  export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+> > >  export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
+> > >  export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
+> > > diff --git a/certs/Makefile b/certs/Makefile
+> > > index 3ea7fe60823f..fa540d14ef2d 100644
+> > > --- a/certs/Makefile
+> > > +++ b/certs/Makefile
+> > > @@ -89,5 +89,5 @@ targets += x509_revocation_list
+> > >
+> > >  hostprogs := extract-cert
+> > >
+> > > -HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+> > > -HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > > +HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
+> > > +HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > > diff --git a/scripts/Makefile b/scripts/Makefile
+> > > index ce5aa9030b74..f084f08ed176 100644
+> > > --- a/scripts/Makefile
+> > > +++ b/scripts/Makefile
+> > > @@ -14,8 +14,8 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
+> > >  HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
+> > >  HOSTLDLIBS_sorttable = -lpthread
+> > >  HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
+> > > -HOSTCFLAGS_sign-file.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+> > > -HOSTLDLIBS_sign-file = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > > +HOSTCFLAGS_sign-file.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
+> > > +HOSTLDLIBS_sign-file = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > >
+> > >  ifdef CONFIG_UNWINDER_ORC
+> > >  ifeq ($(ARCH),x86_64)
+> > > diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
+> > > index 95aaf7431bff..743fc08827ea 100644
+> > > --- a/scripts/dtc/Makefile
+> > > +++ b/scripts/dtc/Makefile
+> > > @@ -18,7 +18,7 @@ fdtoverlay-objs	:= $(libfdt) fdtoverlay.o util.o
+> > >  # Source files need to get at the userspace version of libfdt_env.h to compile
+> > >  HOST_EXTRACFLAGS += -I $(srctree)/$(src)/libfdt
+> > >
+> > > -ifeq ($(shell pkg-config --exists yaml-0.1 2>/dev/null && echo yes),)
+> > > +ifeq ($(shell $(HOSTPKG_CONFIG) --exists yaml-0.1 2>/dev/null && echo yes),)
+> > >  ifneq ($(CHECK_DT_BINDING)$(CHECK_DTBS),)
+> > >  $(error dtc needs libyaml for DT schema validation support. \
+> > >  	Install the necessary libyaml development package.)
+> > > @@ -27,9 +27,9 @@ HOST_EXTRACFLAGS += -DNO_YAML
+> > >  else
+> > >  dtc-objs	+= yamltree.o
+> > >  # To include <yaml.h> installed in a non-default path
+> > > -HOSTCFLAGS_yamltree.o := $(shell pkg-config --cflags yaml-0.1)
+> > > +HOSTCFLAGS_yamltree.o := $(shell $(HOSTPKG_CONFIG) --cflags yaml-0.1)
+> > >  # To link libyaml installed in a non-default path
+> > > -HOSTLDLIBS_dtc	:= $(shell pkg-config yaml-0.1 --libs)
+> > > +HOSTLDLIBS_dtc	:= $(shell $(HOSTPKG_CONFIG) yaml-0.1 --libs)
+> > >  endif
+> > >
+> > >  # Generated files need one more search path to include headers in source tree
+> > > diff --git a/scripts/kconfig/gconf-cfg.sh b/scripts/kconfig/gconf-cfg.sh
+> > > index 480ecd8b9f41..267ef6012203 100755
+> > > --- a/scripts/kconfig/gconf-cfg.sh
+> > > +++ b/scripts/kconfig/gconf-cfg.sh
+> > > @@ -3,14 +3,14 @@
+> > >
+> > >  PKG="gtk+-2.0 gmodule-2.0 libglade-2.0"
+> > >
+> > > -if [ -z "$(command -v pkg-config)" ]; then
+> > > +if [ -z "$(command -v $(HOSTPKG_CONFIG))" ]; then
+> >
+> > Dereferencing variables in shell scripts has to be done by using "${var}" or
+> > "$var".  "$(var)" starts a sub-shell and executes "var", which is not your
+> > intention.  Thus, better try something like:
+> >
+> >     if [ -z "$(command -v "${HOSTPKG_CONFIG}")" ]; then
+> >
+> > (and all other shell script replacements in need to be revised, too.)
+> >
+> > Kind regards,
+> > Nicolas
+> 
+> Thanks Nicolas! I submitted another patch with your suggestions:
+> https://lore.kernel.org/all/20220306223016.2239094-1-ctshao@google.com/
+> 
+> A question: Would it be good if I also add {} for other variables (for exmaple: $PKG
+> and $PKG2) in these scripts along with my change?
+> 
+> -CT
+
+No, I would not recommend restyling the shell scripts within your patch.
+
+Using braces for variable dereferencing helps the shell to determine the end of
+the variable name, if it is followed by some non-control character; thus, such
+a change alone will not make the changed shell scripts more robust.  Putting
+dereferences inside of double qoutes helps to handle variables containing
+multiple words.  But I think. this is a topic for a different patch set.
+
+Kind regards,
+Nicolas
