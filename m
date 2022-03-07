@@ -2,153 +2,55 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A9D54CF0BC
-	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 05:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 827AB4CFF20
+	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 13:49:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235210AbiCGEtP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 6 Mar 2022 23:49:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40492 "EHLO
+        id S242636AbiCGMuo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Mar 2022 07:50:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235208AbiCGEtO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 6 Mar 2022 23:49:14 -0500
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com (mail-eopbgr40046.outbound.protection.outlook.com [40.107.4.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F05A26109;
-        Sun,  6 Mar 2022 20:48:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d74K/m0yndp6Z6X3n1KHG9hbFg9e0g7mLra9a4jk+fLddyHRelatBsE7aPxkT4Xlk0cjruon/DoEl05nvcCC/adl6rvxrI72U2+zkqiyQelSwxp+Rt+/ETQSTc0T0NNQuSW6QeORoqIFWqTiM0Bz/zyhUrFkQyYkui9Lqo44izZi69m9wRu5TK5kqAdZrbIS1CGUhvMAhfX+GB3zFoybQ2r49I4NNa8ItahSzkCiKIVkEH23TWzDNdM+JUlZ1RYkCe36++MZlR4sqJ2Ov1y0dCEIqLXS0Kf7UNHdWyaBQ26kxjlP4JowueQscevtvMz3QsgpvFrCpH03VE3NClYtXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JrE61nRbpEpIX5mNERWY99I9U2fIj60kzJwGoGPBJkY=;
- b=byaeiBmopEkgkB6l0e4s/aS2W3FHukcCrtFEnA6Qi6BLUnRADaQpIZGYRSZlVqvVv87oy/dVs7otdFylOo6/qxe6qGFXNaToz/ozFTcaY41ovoyQCGQgg4TmodIUfdslMCzcF5YsLb/cqLTf7uZNtl+SXOZbgDtlNB6F0YcQ1TsH2leU+Paiu+GqdFpQ04AQ9F4jpJQugzBUlQvuLtAwLy3GhCqMw1nbwwqWf8Cp3uyEd8sFeF4uY4R8Xlzt/b1whMDmqAakUTBU3CMKBKw2McYxodrSp4UXz+M7L/wgkzfOpNRAFCgiC9XDUxJVGWjxP+qE+mDRzSm0aoVTrmZpbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JrE61nRbpEpIX5mNERWY99I9U2fIj60kzJwGoGPBJkY=;
- b=Z0v+FZpwasJZZYqoq+rdjrZ5t1A5wI7qsSCyxUBk7ZVpwOuoOqgFAc70ypev9bW9eQReBFsmsodNT+ho5zjn909CELX+0dqnmD+XFAMZs4nqWjxyuB1FZU+1OMlcLaSdfDf/ZJbcpS/8TNG9VH1E0p5pv2SxN5ttqV7Jedagx3c=
-Received: from DU2PR04MB8630.eurprd04.prod.outlook.com (2603:10a6:10:2dd::15)
- by AS8PR04MB9208.eurprd04.prod.outlook.com (2603:10a6:20b:44f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.17; Mon, 7 Mar
- 2022 04:48:15 +0000
-Received: from DU2PR04MB8630.eurprd04.prod.outlook.com
- ([fe80::f92e:7648:49d2:d017]) by DU2PR04MB8630.eurprd04.prod.outlook.com
- ([fe80::f92e:7648:49d2:d017%5]) with mapi id 15.20.5038.026; Mon, 7 Mar 2022
- 04:48:15 +0000
-From:   Pankaj Gupta <pankaj.gupta@nxp.com>
-To:     Pankaj Gupta <pankaj.gupta@nxp.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-CC:     "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        David Gstir <david@sigma-star.at>,
-        "tharvey@gateworks.com" <tharvey@gateworks.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Horia Geanta <horia.geanta@nxp.com>,
-        Aymen Sghaier <aymen.sghaier@nxp.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Jan Luebbe <j.luebbe@pengutronix.de>,
-        Richard Weinberger <richard@nod.at>,
-        Franck Lenormand <franck.lenormand@nxp.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: [EXT] [PATCH v5 5/5] KEYS: trusted: Introduce support for NXP
- CAAM-based trusted keys
-Thread-Topic: [EXT] [PATCH v5 5/5] KEYS: trusted: Introduce support for NXP
- CAAM-based trusted keys
-Thread-Index: AQHYKCatrr/gyjsXVk+FLAE2AMGQvKyrjNwwgAfeDXA=
-Date:   Mon, 7 Mar 2022 04:48:15 +0000
-Message-ID: <DU2PR04MB8630D83FE9BBC0D782C4FAF595089@DU2PR04MB8630.eurprd04.prod.outlook.com>
-References: <20220222195819.2313913-1-a.fatoum@pengutronix.de>
- <20220222195819.2313913-6-a.fatoum@pengutronix.de>
- <DU2PR04MB8630CB9CD8968FB1FC57235E95039@DU2PR04MB8630.eurprd04.prod.outlook.com>
-In-Reply-To: <DU2PR04MB8630CB9CD8968FB1FC57235E95039@DU2PR04MB8630.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: efea97ef-3cab-425c-c4f7-08d9fff5b130
-x-ms-traffictypediagnostic: AS8PR04MB9208:EE_
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-microsoft-antispam-prvs: <AS8PR04MB9208153FE96B7556FEA015F595089@AS8PR04MB9208.eurprd04.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: A9mZQPnGW0XrPp/tj+Nycr/kE+2qEJelof6FDGlq5DJTHoY+VP8U0mm1igaqaPELVV52QEbhCGfOWBclD7QxND77BedacAdUPi94cqTuoWfBnbbrcyaSP4l/C63Mjl99HGE04P86k1w5nAWu0chlkgmsBUvXKciI6/CZx3ctrR5q5e77QQXRveBia5RruD3p89Bu4FfsAt2iNHPsJeymQAqv3ZPh0ofmjB+iqX0dNAu5gYdMAMHnO6E43auYBr7uzlf78Hdog3sC6dwIka0F94EENfPkRUlnGyx0yX9msPVcHwhRuHmQ/yZGtNXmZeMJTAMZdb3ovgYdZZnT9VXS8Y0zMzmW3CK6jv2vjjI4gj8UlI8cg9+BiMW//PtyFS50NC0x+6p9gLesveHiwWVmNNz2z7W0oUwiH5Ki5eOHpwi0Q0u1pz7jDhJ6CkTZwU2us/4E1vCMWJFpjQFE6zNL3O/ryqauv8QCLZXGM0qYYP9WJSOqln7iQwgTL4f2M2wua6/scCdkZScNVVccRt7PcpUS1KQoHpbrCzbdcXflt51Go9PEl5n1DG0ztwUbrF4P1tvP/rVx6vCj5D2CJJplKKmwb8504SuVapSYycnWJ66FW2IR1yjbXldVKqDF8jSkIu3dtH6Oo6ROgRRGDqMCdGHL+CT5pUFOmEe6+1sHeZZwnI84CQCKAffx06BUAp+yU4koIDrf9AiSJSBUdNuv3A==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(38070700005)(71200400001)(55016003)(86362001)(2906002)(5660300002)(122000001)(44832011)(8676002)(7416002)(498600001)(66446008)(64756008)(6506007)(76116006)(66476007)(66556008)(8936002)(4326008)(7696005)(30864003)(66946007)(83380400001)(9686003)(53546011)(33656002)(55236004)(54906003)(186003)(26005)(110136005)(52536014)(38100700002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cU52UFNZcC93RUF3SmMybnhVWWQ5ZjZPVUtKMGVSODU5RVp4NzZMRFBuMXVW?=
- =?utf-8?B?cnpRT0I2cGRWbjQ1YjF2OHB2MUpWaStPSmp1bVhzcEZnQXZRNmtKbVQvdnhl?=
- =?utf-8?B?cXM0bnB2Y2lBdW9Nd0lXK3FZcm5VTnYwUEZ0MThaMFpNYk9kMitzRW9WVHRD?=
- =?utf-8?B?RUlNY0FCZEVWSngzaEpMaEU3VG1kUVN3am42NUU1MFRiS1YzanpZNlpSVTg5?=
- =?utf-8?B?NWw3eGRVcVM2aVlqc0x4Q2pqR2dmelFlbGMxazdGMU44RkZ6Nm5nK1lOb3Fn?=
- =?utf-8?B?Si9KVEhMRGJBcG5RWTg3NDlTTHB4VWZTRWZycTZZWThvQzZFRVUwb2p5RHc0?=
- =?utf-8?B?ZWRQTGgxa0d2MkRxU3ZqT2p5cFJmeE5td2NZODJsRE1zc0NuenBINjYwNFMr?=
- =?utf-8?B?ZUZxR2QyQy9ZN0cyb2NKWWhQVzN5YmVRK21vczI1Y3dHZ1lManFkRm1ETFBN?=
- =?utf-8?B?djNpR2NkdFFTb0QxbWFXRGU2czJacFViWW4wMUxmWWtkQk1HZmFvczFtczM2?=
- =?utf-8?B?aTArRFhKcHFpNWpoNzlZR1R4bVhETTVPZkxwekZIbnN3cG1KM0h4N1JoS2M4?=
- =?utf-8?B?dUZPa3BKRHpQd2JkSlBKcDJJdGswZmJnY21VZElzVDVTKzV6NEd0L0U5SVdZ?=
- =?utf-8?B?QnpTWlo4a1N4OEFQSXJaanhTUXd5ajNUTmluU2Rzb050MEtWM1E0V3hVRzF2?=
- =?utf-8?B?bElWSHJ1UlR3c3RLdWJFeUhHKzNBZEFHQzB2VGttSTNHMGQ0M3NsVkJ5NnRl?=
- =?utf-8?B?eFh3T0c4emVwTkdxTElBRm9kSXEzRWEyMjdPSlBMVnAwYnhpNWVkelM5bEhT?=
- =?utf-8?B?Um5yM05NRnVzL01KTWxkbU1wV2FSVkxGSHpmY3ZCMUZsR2h1R0djdTBoc1hV?=
- =?utf-8?B?cjFmMTZiTVJDM0QyYThVVDltRFFBUUViMmFRQXc0UFUraVN1aVJwU2twb1Yr?=
- =?utf-8?B?WDZ5U2J2S3VYUlpBaWR5ZFdZUlBTWUpTaXZkYk9yMDhORzczb3F2UXkxV1Nn?=
- =?utf-8?B?M1Z1YXZGMmw4UnhFcVpBYmRWdGY3S0t3UFZocjRDV2xRcDRPUnRSaDVRSFVH?=
- =?utf-8?B?TG9PMjR1cnNxY2cvbDFHNXJ3VmJ2dXVjZm1Id3hjMC92ZFlWK3Z4THRyYlEv?=
- =?utf-8?B?eWx6b1YyUzBqQXFpQlU3ZmhnekdlTFJaM1J2OGhYUFp6NlJZUi9ONFJnZFZO?=
- =?utf-8?B?dnE4RUh6SHhhdmNUanRkb0lzQTNvblpjY094NWdBUXZ1S2paZDRFeFFuVjg2?=
- =?utf-8?B?OXFrcnVEYnBnN0VLNXI1dUJtRTFDa2s4MVhoZ1J3MGVZa2c0V2padnFCRWd6?=
- =?utf-8?B?a296Vjg0ZS9JZmdBdndESlhiaDhtTTB0OGZPQzE1Z1RXYjBPK04xTGhMTlhp?=
- =?utf-8?B?M0RvQmttVVZJcDIveGhrRlFrYXRCWlZTOHozN0xRcU9HSlp3RXgzd3VTVUQv?=
- =?utf-8?B?YklWTDFoR0Z3c3NJQitJR0FNdmExdGRTY0x2Y3ZOOWFKM0s2QlorVjBhbGpI?=
- =?utf-8?B?dzZCNWQrQjdITE54V0JrSnJJY2NNMXkwbjd5VGpwR1lhdS9UQjhOOWMxQjFG?=
- =?utf-8?B?K0ZoTGU3Sjc4SHNHWTVaVk4vaGFnTVEwcmxZTFpQdnBWSnIwY2lVV2hROFha?=
- =?utf-8?B?OVRDUzhNYkp4eGpOWGZlV1RTbU4yMzBzMFovVkhVNDlMR1pxUnc4SWRmdUtt?=
- =?utf-8?B?VFg5SjJjOEN5aWRQVlN3d2RtSDhQd0kyMm41R2UzTm9HQVZmK3M0bzBMZmoy?=
- =?utf-8?B?SVRvTnNzajBNaVlFNmEySmN6QTJ5LzJUQ3hweW1qb2NMN1ZqMENHNGh3OW9P?=
- =?utf-8?B?Z0F0ZmpjVmhlM2xzU2Q5UENVTTgzS1VDRGMrc2N2b3B4aHNNZ2cvdG1QdE9y?=
- =?utf-8?B?eEtsWGx0YzRhaktJbTJEUUZrUkJqaUVla3BMYkt1NHZ4SitPYkRZeXF1SnRl?=
- =?utf-8?B?Y2U5WURwd3BMTjFISWFlZEcya2g4c09Na0UwYjBkdk9DbS9SZENSYS9Ycm9v?=
- =?utf-8?B?ZXZWd0xVNzZBeVpHdWJBbWIwL1hCMGdxTEMvNDE2eHFkNmRwc2hvcUYveFRT?=
- =?utf-8?B?NFBFWHl4M2FqaGJ5eWNLYXA5ditYQTY5RG5KYk1mRzNSWnJZb1ErOG5lQnYv?=
- =?utf-8?B?L1d6UXBnQkZJdTh0bG8vUHhaaytxc2FzMGhUSzY4alZSRHAybXJHRUNWT3VY?=
- =?utf-8?B?OVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S242562AbiCGMum (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 07:50:42 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04324ECD6;
+        Mon,  7 Mar 2022 04:49:34 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A8256117C;
+        Mon,  7 Mar 2022 12:49:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01400C340F4;
+        Mon,  7 Mar 2022 12:49:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646657373;
+        bh=jUH+W8pZttHZOftdRFM8+zXNsWQZoGih51SFy7/2QEA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=m42WCb1yhPJuRJDcrJEIPCxCUTGxgCnzrnMWZ+Ev4domYdU1IF6TGH4i2c+fJXqV/
+         2Wah0jJQ1yHGYWZtVBDOzW14qIcL/fXLb/SAc2e3Qox5m0anFLm+ABKoNiRXUYgzkK
+         62/C1wEgjW1XfQUeQgxGDGh0eJKf869UZwUrEPMl2i1PHeSWImR9MBZRjtUgoFcb7U
+         ZZOSoMU3H5wgQMtl6Tj9mV3ltOVIQiA2MQLdX6e4EBOTo92z8oIOOK6V9JXE/RH9kX
+         LjRavtjz0hKNqBOpfIR072yo36fQ9kB1Ik6GL7RhrmnSlMz2JeVGlR8jQPJlZ6uvfK
+         n1MuX6AODkx6A==
+Date:   Mon, 7 Mar 2022 14:48:52 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Nayna Jain <nayna@linux.ibm.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        dhowells@redhat.com, zohar@linux.ibm.com,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
+        seth@forshee.me, rnsastry@linux.ibm.com
+Subject: Re: [PATCH v10 3/3] integrity: support including firmware
+ ".platform" keys at build time
+Message-ID: <YiX/NHETfqLT8ZAz@iki.fi>
+References: <20220306205100.651878-1-nayna@linux.ibm.com>
+ <20220306205100.651878-4-nayna@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8630.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: efea97ef-3cab-425c-c4f7-08d9fff5b130
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2022 04:48:15.2251
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XB0+xz1b9BxQOxh6OwS+wBpY2aPiMUidJoFifDVgcwKONZJLtgy6O5grvBuykVszYcJ6LWDNGbsDktCx2SCOMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9208
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: multipart/mixed; boundary="naGHcUinVPCFpm6c"
+Content-Disposition: inline
+In-Reply-To: <20220306205100.651878-4-nayna@linux.ibm.com>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -156,302 +58,1670 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-VGVzdGVkLWJ5OiBQYW5rYWogR3VwdGEgPHBhbmthai5ndXB0YUBueHAuY29tPg0KDQoNClRlc3Rp
-bmcgRGV0YWlscyB3aXRoIGlNWDggcGxhdGZvcm06DQoNCi0gVXNpbmcgY29tbWFuZCAia2V5Y3Rs
-Iiwgc3VjY2Vzc2Z1bGx5IGFibGUgdG8gY3JlYXRlL2xvYWQga2V5IGZyb20gdGhlIEBzIGtleXJp
-bmcuDQotIEFibGUgdG8gdXNlIHRoZSBrZXkgd2l0aCBETS1DcnlwdCB1dGlsaXR5Lg0KLSBBY3Jv
-c3MgcG93ZXIgY3ljbGUsIFZhbGlkYXRlZCB0aGUgZGVjcnlwdGVkIGNvbnRlbnQgd2l0aCBjb3Jy
-ZWN0IGtleTsgYXMgd2VsbCBhcyB0aGUgaW5jb3JyZWN0IGtleS4NCg0KUmVnYXJkcw0KUGFua2Fq
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUGFua2FqIEd1cHRhIDxw
-YW5rYWouZ3VwdGFAbnhwLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBNYXJjaCAyLCAyMDIyIDEw
-OjA4IEFNDQo+IFRvOiBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPjsgSm9u
-YXRoYW4gQ29yYmV0DQo+IDxjb3JiZXRAbHduLm5ldD47IERhdmlkIEhvd2VsbHMgPGRob3dlbGxz
-QHJlZGhhdC5jb20+OyBKYXJra28gU2Fra2luZW4NCj4gPGphcmtrb0BrZXJuZWwub3JnPjsgSmFt
-ZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LmlibS5jb20+OyBNaW1pIFpvaGFyDQo+IDx6b2hhckBs
-aW51eC5pYm0uY29tPg0KPiBDYzoga2VybmVsQHBlbmd1dHJvbml4LmRlOyBEYXZpZCBHc3RpciA8
-ZGF2aWRAc2lnbWEtc3Rhci5hdD47DQo+IHRoYXJ2ZXlAZ2F0ZXdvcmtzLmNvbTsgTWF0dGhpYXMg
-U2NoaWZmZXIgPG1hdHRoaWFzLnNjaGlmZmVyQGV3LnRxLQ0KPiBncm91cC5jb20+OyBKYW1lcyBN
-b3JyaXMgPGptb3JyaXNAbmFtZWkub3JnPjsgU2VyZ2UgRS4gSGFsbHluDQo+IDxzZXJnZUBoYWxs
-eW4uY29tPjsgSG9yaWEgR2VhbnRhIDxob3JpYS5nZWFudGFAbnhwLmNvbT47IEF5bWVuDQo+IFNn
-aGFpZXIgPGF5bWVuLnNnaGFpZXJAbnhwLmNvbT47IEhlcmJlcnQgWHUNCj4gPGhlcmJlcnRAZ29u
-ZG9yLmFwYW5hLm9yZy5hdT47IERhdmlkIFMuIE1pbGxlciA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47
-DQo+IEVyaWMgQmlnZ2VycyA8ZWJpZ2dlcnNAa2VybmVsLm9yZz47IEphbiBMdWViYmUgPGoubHVl
-YmJlQHBlbmd1dHJvbml4LmRlPjsNCj4gUmljaGFyZCBXZWluYmVyZ2VyIDxyaWNoYXJkQG5vZC5h
-dD47IEZyYW5jayBMZW5vcm1hbmQNCj4gPGZyYW5jay5sZW5vcm1hbmRAbnhwLmNvbT47IFN1bWl0
-IEdhcmcgPHN1bWl0LmdhcmdAbGluYXJvLm9yZz47DQo+IGtleXJpbmdzQHZnZXIua2VybmVsLm9y
-ZzsgbGludXgtY3J5cHRvQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+IGRvY0B2Z2VyLmtlcm5l
-bC5vcmc7IGxpbnV4LWludGVncml0eUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBrZXJuZWxA
-dmdlci5rZXJuZWwub3JnOyBsaW51eC1zZWN1cml0eS1tb2R1bGVAdmdlci5rZXJuZWwub3JnDQo+
-IFN1YmplY3Q6IFJFOiBbRVhUXSBbUEFUQ0ggdjUgNS81XSBLRVlTOiB0cnVzdGVkOiBJbnRyb2R1
-Y2Ugc3VwcG9ydCBmb3IgTlhQDQo+IENBQU0tYmFzZWQgdHJ1c3RlZCBrZXlzDQo+IA0KPiBDYXV0
-aW9uOiBFWFQgRW1haWwNCj4gDQo+IFJldmlld2VkLWJ5OiBQYW5rYWogR3VwdGEgPHBhbmthai5n
-dXB0YUBueHAuY29tPg0KPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZy
-b206IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+DQo+ID4gU2VudDogV2Vk
-bmVzZGF5LCBGZWJydWFyeSAyMywgMjAyMiAxOjI4IEFNDQo+ID4gVG86IEpvbmF0aGFuIENvcmJl
-dCA8Y29yYmV0QGx3bi5uZXQ+OyBEYXZpZCBIb3dlbGxzDQo+ID4gPGRob3dlbGxzQHJlZGhhdC5j
-b20+OyBKYXJra28gU2Fra2luZW4gPGphcmtrb0BrZXJuZWwub3JnPjsgSmFtZXMNCj4gPiBCb3R0
-b21sZXkgPGplamJAbGludXguaWJtLmNvbT47IE1pbWkgWm9oYXIgPHpvaGFyQGxpbnV4LmlibS5j
-b20+DQo+ID4gQ2M6IGtlcm5lbEBwZW5ndXRyb25peC5kZTsgRGF2aWQgR3N0aXIgPGRhdmlkQHNp
-Z21hLXN0YXIuYXQ+Ow0KPiA+IHRoYXJ2ZXlAZ2F0ZXdvcmtzLmNvbTsgTWF0dGhpYXMgU2NoaWZm
-ZXIgPG1hdHRoaWFzLnNjaGlmZmVyQGV3LnRxLQ0KPiA+IGdyb3VwLmNvbT47IEFobWFkIEZhdG91
-bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+OyBKYW1lcyBNb3JyaXMNCj4gPiA8am1vcnJpc0Bu
-YW1laS5vcmc+OyBTZXJnZSBFLiBIYWxseW4gPHNlcmdlQGhhbGx5bi5jb20+OyBIb3JpYSBHZWFu
-dGENCj4gPiA8aG9yaWEuZ2VhbnRhQG54cC5jb20+OyBBeW1lbiBTZ2hhaWVyIDxheW1lbi5zZ2hh
-aWVyQG54cC5jb20+Ow0KPiBIZXJiZXJ0DQo+ID4gWHUgPGhlcmJlcnRAZ29uZG9yLmFwYW5hLm9y
-Zy5hdT47IERhdmlkIFMuIE1pbGxlcg0KPiA+IDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgRXJpYyBC
-aWdnZXJzIDxlYmlnZ2Vyc0BrZXJuZWwub3JnPjsgSmFuIEx1ZWJiZQ0KPiA+IDxqLmx1ZWJiZUBw
-ZW5ndXRyb25peC5kZT47IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2QuYXQ+Ow0KPiBG
-cmFuY2sNCj4gPiBMZW5vcm1hbmQgPGZyYW5jay5sZW5vcm1hbmRAbnhwLmNvbT47IFN1bWl0IEdh
-cmcNCj4gPiA8c3VtaXQuZ2FyZ0BsaW5hcm8ub3JnPjsgUGFua2FqIEd1cHRhIDxwYW5rYWouZ3Vw
-dGFAbnhwLmNvbT47DQo+ID4ga2V5cmluZ3NAdmdlci5rZXJuZWwub3JnOyBsaW51eC1jcnlwdG9A
-dmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4gPiBkb2NAdmdlci5rZXJuZWwub3JnOyBsaW51eC1p
-bnRlZ3JpdHlAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4gPiBrZXJuZWxAdmdlci5rZXJuZWwu
-b3JnOyBsaW51eC1zZWN1cml0eS1tb2R1bGVAdmdlci5rZXJuZWwub3JnDQo+ID4gU3ViamVjdDog
-W0VYVF0gW1BBVENIIHY1IDUvNV0gS0VZUzogdHJ1c3RlZDogSW50cm9kdWNlIHN1cHBvcnQgZm9y
-IE5YUA0KPiA+IENBQU0tYmFzZWQgdHJ1c3RlZCBrZXlzDQo+ID4NCj4gPiBDYXV0aW9uOiBFWFQg
-RW1haWwNCj4gPg0KPiA+IFRoZSBDcnlwdG9ncmFwaGljIEFjY2VsZXJhdGlvbiBhbmQgQXNzdXJh
-bmNlIE1vZHVsZSAoQ0FBTSkgaXMgYW4gSVANCj4gPiBjb3JlIGJ1aWx0IGludG8gbWFueSBuZXdl
-ciBpLk1YIGFuZCBRb3JJUSBTb0NzIGJ5IE5YUC4NCj4gPg0KPiA+IFRoZSBDQUFNIGRvZXMgY3J5
-cHRvIGFjY2VsZXJhdGlvbiwgaGFyZHdhcmUgbnVtYmVyIGdlbmVyYXRpb24gYW5kIGhhcw0KPiA+
-IGEgYmxvYiBtZWNoYW5pc20gZm9yIGVuY2Fwc3VsYXRpb24vZGVjYXBzdWxhdGlvbiBvZiBzZW5z
-aXRpdmUgbWF0ZXJpYWwuDQo+ID4NCj4gPiBUaGlzIGJsb2IgbWVjaGFuaXNtIGRlcGVuZHMgb24g
-YSBkZXZpY2Ugc3BlY2lmaWMgcmFuZG9tIDI1Ni1iaXQgT25lDQo+ID4gVGltZSBQcm9ncmFtbWFi
-bGUgTWFzdGVyIEtleSB0aGF0IGlzIGZ1c2VkIGluIGVhY2ggU29DIGF0IG1hbnVmYWN0dXJpbmcN
-Cj4gdGltZS4NCj4gPiBUaGlzIGtleSBpcyB1bnJlYWRhYmxlIGFuZCBjYW4gb25seSBiZSB1c2Vk
-IGJ5IHRoZSBDQUFNIGZvciBBRVMNCj4gPiBlbmNyeXB0aW9uL2RlY3J5cHRpb24gb2YgdXNlciBk
-YXRhLg0KPiA+DQo+ID4gVGhpcyBtYWtlcyBpdCBhIHN1aXRhYmxlIGJhY2tlbmQgKHNvdXJjZSkg
-Zm9yIGtlcm5lbCB0cnVzdGVkIGtleXMuDQo+ID4NCj4gPiBQcmV2aW91cyBjb21taXRzIGdlbmVy
-YWxpemVkIHRydXN0ZWQga2V5cyB0byBzdXBwb3J0IG11bHRpcGxlIGJhY2tlbmRzDQo+ID4gYW5k
-IGFkZGVkIGFuIEFQSSB0byBhY2Nlc3MgdGhlIENBQU0gYmxvYiBtZWNoYW5pc20uIEJhc2VkIG9u
-IHRoZXNlLA0KPiA+IHByb3ZpZGUgdGhlIG5lY2Vzc2FyeSBnbHVlIHRvIHVzZSB0aGUgQ0FBTSBm
-b3IgdHJ1c3RlZCBrZXlzLg0KPiA+DQo+ID4gUmV2aWV3ZWQtYnk6IERhdmlkIEdzdGlyIDxkYXZp
-ZEBzaWdtYS1zdGFyLmF0Pg0KPiA+IFRlc3RlZC1CeTogVGltIEhhcnZleSA8dGhhcnZleUBnYXRl
-d29ya3MuY29tPg0KPiA+IFRlc3RlZC1ieTogTWF0dGhpYXMgU2NoaWZmZXIgPG1hdHRoaWFzLnNj
-aGlmZmVyQGV3LnRxLWdyb3VwLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0g
-PGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPg0KPiA+IC0tLQ0KPiA+IFRvOiBKb25hdGhhbiBDb3Ji
-ZXQgPGNvcmJldEBsd24ubmV0Pg0KPiA+IFRvOiBEYXZpZCBIb3dlbGxzIDxkaG93ZWxsc0ByZWRo
-YXQuY29tPg0KPiA+IFRvOiBKYXJra28gU2Fra2luZW4gPGphcmtrb0BrZXJuZWwub3JnPg0KPiA+
-IFRvOiBKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT4NCj4gPiBUbzogTWltaSBa
-b2hhciA8em9oYXJAbGludXguaWJtLmNvbT4NCj4gPiBDYzogSmFtZXMgTW9ycmlzIDxqbW9ycmlz
-QG5hbWVpLm9yZz4NCj4gPiBDYzogIlNlcmdlIEUuIEhhbGx5biIgPHNlcmdlQGhhbGx5bi5jb20+
-DQo+ID4gQ2M6ICJIb3JpYSBHZWFudMSDIiA8aG9yaWEuZ2VhbnRhQG54cC5jb20+DQo+ID4gQ2M6
-IEF5bWVuIFNnaGFpZXIgPGF5bWVuLnNnaGFpZXJAbnhwLmNvbT4NCj4gPiBDYzogSGVyYmVydCBY
-dSA8aGVyYmVydEBnb25kb3IuYXBhbmEub3JnLmF1Pg0KPiA+IENjOiAiRGF2aWQgUy4gTWlsbGVy
-IiA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD4NCj4gPiBDYzogRXJpYyBCaWdnZXJzIDxlYmlnZ2Vyc0Br
-ZXJuZWwub3JnPg0KPiA+IENjOiBKYW4gTHVlYmJlIDxqLmx1ZWJiZUBwZW5ndXRyb25peC5kZT4N
-Cj4gPiBDYzogRGF2aWQgR3N0aXIgPGRhdmlkQHNpZ21hLXN0YXIuYXQ+DQo+ID4gQ2M6IFJpY2hh
-cmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2QuYXQ+DQo+ID4gQ2M6IEZyYW5jayBMRU5PUk1BTkQg
-PGZyYW5jay5sZW5vcm1hbmRAbnhwLmNvbT4NCj4gPiBDYzogU3VtaXQgR2FyZyA8c3VtaXQuZ2Fy
-Z0BsaW5hcm8ub3JnPg0KPiA+IENjOiBUaW0gSGFydmV5IDx0aGFydmV5QGdhdGV3b3Jrcy5jb20+
-DQo+ID4gQ2M6IE1hdHRoaWFzIFNjaGlmZmVyIDxtYXR0aGlhcy5zY2hpZmZlckBldy50cS1ncm91
-cC5jb20+DQo+ID4gQ2M6IFBhbmthaiBHdXB0YSA8cGFua2FqLmd1cHRhQG54cC5jb20+DQo+ID4g
-Q2M6IGtleXJpbmdzQHZnZXIua2VybmVsLm9yZw0KPiA+IENjOiBsaW51eC1jcnlwdG9Admdlci5r
-ZXJuZWwub3JnDQo+ID4gQ2M6IGxpbnV4LWRvY0B2Z2VyLmtlcm5lbC5vcmcNCj4gPiBDYzogbGlu
-dXgtaW50ZWdyaXR5QHZnZXIua2VybmVsLm9yZw0KPiA+IENjOiBsaW51eC1rZXJuZWxAdmdlci5r
-ZXJuZWwub3JnDQo+ID4gQ2M6IGxpbnV4LXNlY3VyaXR5LW1vZHVsZUB2Z2VyLmtlcm5lbC5vcmcN
-Cj4gPiAtLS0NCj4gPiAgLi4uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dCAgICAg
-ICAgIHwgIDEgKw0KPiA+ICAuLi4vc2VjdXJpdHkva2V5cy90cnVzdGVkLWVuY3J5cHRlZC5yc3Qg
-ICAgICAgfCA0MCArKysrKysrKystDQo+ID4gIE1BSU5UQUlORVJTICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICA5ICsrKw0KPiA+ICBpbmNsdWRlL2tleXMvdHJ1c3RlZF9jYWFt
-LmggICAgICAgICAgICAgICAgICAgfCAxMSArKysNCj4gPiAgc2VjdXJpdHkva2V5cy90cnVzdGVk
-LWtleXMvS2NvbmZpZyAgICAgICAgICAgIHwgMTEgKystDQo+ID4gIHNlY3VyaXR5L2tleXMvdHJ1
-c3RlZC1rZXlzL01ha2VmaWxlICAgICAgICAgICB8ICAyICsNCj4gPiAgc2VjdXJpdHkva2V5cy90
-cnVzdGVkLWtleXMvdHJ1c3RlZF9jYWFtLmMgICAgIHwgNzQNCj4gKysrKysrKysrKysrKysrKysr
-Kw0KPiA+ICBzZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5cy90cnVzdGVkX2NvcmUuYyAgICAgfCAg
-NiArLQ0KPiA+ICA4IGZpbGVzIGNoYW5nZWQsIDE1MSBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9u
-cygtKSAgY3JlYXRlIG1vZGUNCj4gPiAxMDA2NDQgaW5jbHVkZS9rZXlzL3RydXN0ZWRfY2FhbS5o
-ICBjcmVhdGUgbW9kZSAxMDA2NDQNCj4gPiBzZWN1cml0eS9rZXlzL3RydXN0ZWQtIGtleXMvdHJ1
-c3RlZF9jYWFtLmMNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2FkbWluLWd1
-aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dA0KPiA+IGIvRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlk
-ZS9rZXJuZWwtcGFyYW1ldGVycy50eHQNCj4gPiBpbmRleCA4NDRjODgzY2E5ZDguLjllN2VmNGM2
-NTg1ZCAxMDA2NDQNCj4gPiAtLS0gYS9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1w
-YXJhbWV0ZXJzLnR4dA0KPiA+ICsrKyBiL0RvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVs
-LXBhcmFtZXRlcnMudHh0DQo+ID4gQEAgLTU4NzUsNiArNTg3NSw3IEBADQo+ID4gICAgICAgICAg
-ICAgICAgICAgICAgICAgc291cmNlczoNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAtICJ0
-cG0iDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgLSAidGVlIg0KPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICAgIC0gImNhYW0iDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgSWYgbm90
-IHNwZWNpZmllZCB0aGVuIGl0IGRlZmF1bHRzIHRvIGl0ZXJhdGluZyB0aHJvdWdoDQo+ID4gICAg
-ICAgICAgICAgICAgICAgICAgICAgdGhlIHRydXN0IHNvdXJjZSBsaXN0IHN0YXJ0aW5nIHdpdGgg
-VFBNIGFuZCBhc3NpZ25zIHRoZQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIGZpcnN0IHRy
-dXN0IHNvdXJjZSBhcyBhIGJhY2tlbmQgd2hpY2ggaXMNCj4gPiBpbml0aWFsaXplZCBkaWZmIC0t
-Z2l0DQo+ID4gYS9Eb2N1bWVudGF0aW9uL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1lbmNyeXB0ZWQu
-cnN0DQo+ID4gYi9Eb2N1bWVudGF0aW9uL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1lbmNyeXB0ZWQu
-cnN0DQo+ID4gaW5kZXggOTljZjM0ZDdjMDI1Li5lZDYwYzQ4Y2I2OTIgMTAwNjQ0DQo+ID4gLS0t
-IGEvRG9jdW1lbnRhdGlvbi9zZWN1cml0eS9rZXlzL3RydXN0ZWQtZW5jcnlwdGVkLnJzdA0KPiA+
-ICsrKyBiL0RvY3VtZW50YXRpb24vc2VjdXJpdHkva2V5cy90cnVzdGVkLWVuY3J5cHRlZC5yc3QN
-Cj4gPiBAQCAtMzUsNiArMzUsMTMgQEAgc2FmZS4NCj4gPiAgICAgICAgICAgUm9vdGVkIHRvIEhh
-cmR3YXJlIFVuaXF1ZSBLZXkgKEhVSykgd2hpY2ggaXMgZ2VuZXJhbGx5IGJ1cm50DQo+ID4gaW4g
-b24tIGNoaXANCj4gPiAgICAgICAgICAgZnVzZXMgYW5kIGlzIGFjY2Vzc2libGUgdG8gVEVFIG9u
-bHkuDQo+ID4NCj4gPiArICAgICAoMykgQ0FBTSAoQ3J5cHRvZ3JhcGhpYyBBY2NlbGVyYXRpb24g
-YW5kIEFzc3VyYW5jZSBNb2R1bGU6IElQIG9uDQo+ID4gKyBOWFAgU29DcykNCj4gPiArDQo+ID4g
-KyAgICAgICAgIFdoZW4gSGlnaCBBc3N1cmFuY2UgQm9vdCAoSEFCKSBpcyBlbmFibGVkIGFuZCB0
-aGUgQ0FBTSBpcyBpbg0KPiBzZWN1cmUNCj4gPiArICAgICAgICAgbW9kZSwgdHJ1c3QgaXMgcm9v
-dGVkIHRvIHRoZSBPVFBNSywgYSBuZXZlci1kaXNjbG9zZWQgMjU2LWJpdCBrZXkNCj4gPiArICAg
-ICAgICAgcmFuZG9tbHkgZ2VuZXJhdGVkIGFuZCBmdXNlZCBpbnRvIGVhY2ggU29DIGF0IG1hbnVm
-YWN0dXJpbmcgdGltZS4NCj4gPiArICAgICAgICAgT3RoZXJ3aXNlLCBhIGNvbW1vbiBmaXhlZCB0
-ZXN0IGtleSBpcyB1c2VkIGluc3RlYWQuDQo+ID4gKw0KPiA+ICAgICogIEV4ZWN1dGlvbiBpc29s
-YXRpb24NCj4gPg0KPiA+ICAgICAgICgxKSBUUE0NCj4gPiBAQCAtNDYsNiArNTMsMTAgQEAgc2Fm
-ZS4NCj4gPiAgICAgICAgICAgQ3VzdG9taXphYmxlIHNldCBvZiBvcGVyYXRpb25zIHJ1bm5pbmcg
-aW4gaXNvbGF0ZWQgZXhlY3V0aW9uDQo+ID4gICAgICAgICAgIGVudmlyb25tZW50IHZlcmlmaWVk
-IHZpYSBTZWN1cmUvVHJ1c3RlZCBib290IHByb2Nlc3MuDQo+ID4NCj4gPiArICAgICAoMykgQ0FB
-TQ0KPiA+ICsNCj4gPiArICAgICAgICAgRml4ZWQgc2V0IG9mIG9wZXJhdGlvbnMgcnVubmluZyBp
-biBpc29sYXRlZCBleGVjdXRpb24gZW52aXJvbm1lbnQuDQo+ID4gKw0KPiA+ICAgICogT3B0aW9u
-YWwgYmluZGluZyB0byBwbGF0Zm9ybSBpbnRlZ3JpdHkgc3RhdGUNCj4gPg0KPiA+ICAgICAgICgx
-KSBUUE0NCj4gPiBAQCAtNjMsNiArNzQsMTEgQEAgc2FmZS4NCj4gPiAgICAgICAgICAgUmVsaWVz
-IG9uIFNlY3VyZS9UcnVzdGVkIGJvb3QgcHJvY2VzcyBmb3IgcGxhdGZvcm0gaW50ZWdyaXR5LiBJ
-dCBjYW4NCj4gPiAgICAgICAgICAgYmUgZXh0ZW5kZWQgd2l0aCBURUUgYmFzZWQgbWVhc3VyZWQg
-Ym9vdCBwcm9jZXNzLg0KPiA+DQo+ID4gKyAgICAgKDMpIENBQU0NCj4gPiArDQo+ID4gKyAgICAg
-ICAgIFJlbGllcyBvbiB0aGUgSGlnaCBBc3N1cmFuY2UgQm9vdCAoSEFCKSBtZWNoYW5pc20gb2Yg
-TlhQIFNvQ3MNCj4gPiArICAgICAgICAgZm9yIHBsYXRmb3JtIGludGVncml0eS4NCj4gPiArDQo+
-ID4gICAgKiAgSW50ZXJmYWNlcyBhbmQgQVBJcw0KPiA+DQo+ID4gICAgICAgKDEpIFRQTQ0KPiA+
-IEBAIC03NCwxMCArOTAsMTMgQEAgc2FmZS4NCj4gPiAgICAgICAgICAgVEVFcyBoYXZlIHdlbGwt
-ZG9jdW1lbnRlZCwgc3RhbmRhcmRpemVkIGNsaWVudCBpbnRlcmZhY2UgYW5kIEFQSXMuDQo+IEZv
-cg0KPiA+ICAgICAgICAgICBtb3JlIGRldGFpbHMgcmVmZXIgdG8gYGBEb2N1bWVudGF0aW9uL3N0
-YWdpbmcvdGVlLnJzdGBgLg0KPiA+DQo+ID4gKyAgICAgKDMpIENBQU0NCj4gPiArDQo+ID4gKyAg
-ICAgICAgIEludGVyZmFjZSBpcyBzcGVjaWZpYyB0byBzaWxpY29uIHZlbmRvci4NCj4gPg0KPiA+
-ICAgICogIFRocmVhdCBtb2RlbA0KPiA+DQo+ID4gLSAgICAgVGhlIHN0cmVuZ3RoIGFuZCBhcHBy
-b3ByaWF0ZW5lc3Mgb2YgYSBwYXJ0aWN1bGFyIFRQTSBvciBURUUgZm9yIGEgZ2l2ZW4NCj4gPiAr
-ICAgICBUaGUgc3RyZW5ndGggYW5kIGFwcHJvcHJpYXRlbmVzcyBvZiBhIHBhcnRpY3VsYXIgdHJ1
-c3Qgc291cmNlDQo+ID4gKyBmb3IgYSBnaXZlbg0KPiA+ICAgICAgIHB1cnBvc2UgbXVzdCBiZSBh
-c3Nlc3NlZCB3aGVuIHVzaW5nIHRoZW0gdG8gcHJvdGVjdA0KPiA+IHNlY3VyaXR5LXJlbGV2YW50
-IGRhdGEuDQo+ID4NCj4gPg0KPiA+IEBAIC0xMDQsNiArMTIzLDEyIEBAIHNlbGVjdGVkIHRydXN0
-IHNvdXJjZToNCj4gPiAgICAgICBmcm9tIHBsYXRmb3JtIHNwZWNpZmljIGhhcmR3YXJlIFJORyBv
-ciBhIHNvZnR3YXJlIGJhc2VkIEZvcnR1bmENCj4gPiBDU1BSTkcNCj4gPiAgICAgICB3aGljaCBj
-YW4gYmUgc2VlZGVkIHZpYSBtdWx0aXBsZSBlbnRyb3B5IHNvdXJjZXMuDQo+ID4NCj4gPiArICAq
-ICBDQUFNOiBLZXJuZWwgUk5HDQo+ID4gKw0KPiA+ICsgICAgIFRoZSBub3JtYWwga2VybmVsIHJh
-bmRvbSBudW1iZXIgZ2VuZXJhdG9yIGlzIHVzZWQuIFRvIHNlZWQgaXQgZnJvbQ0KPiB0aGUNCj4g
-PiArICAgICBDQUFNIEhXUk5HLCBlbmFibGUgQ1JZUFRPX0RFVl9GU0xfQ0FBTV9STkdfQVBJIGFu
-ZA0KPiBlbnN1cmUNCj4gPiB0aGUgZGV2aWNlDQo+ID4gKyAgICAgaXMgcHJvYmVkLg0KPiA+ICsN
-Cj4gPiAgVXNlcnMgbWF5IG92ZXJyaWRlIHRoaXMgYnkgc3BlY2lmeWluZyBgYHRydXN0ZWQucm5n
-PWtlcm5lbGBgIG9uIHRoZQ0KPiA+IGtlcm5lbCBjb21tYW5kLWxpbmUgdG8gb3ZlcnJpZGUgdGhl
-IHVzZWQgUk5HIHdpdGggdGhlIGtlcm5lbCdzIHJhbmRvbQ0KPiA+IG51bWJlciBwb29sLg0KPiA+
-DQo+ID4gQEAgLTE5Miw2ICsyMTcsMTkgQEAgVXNhZ2U6Og0KPiA+ICBzcGVjaWZpYyB0byBURUUg
-ZGV2aWNlIGltcGxlbWVudGF0aW9uLiAgVGhlIGtleSBsZW5ndGggZm9yIG5ldyBrZXlzDQo+ID4g
-aXMgYWx3YXlzIGluIGJ5dGVzLiBUcnVzdGVkIEtleXMgY2FuIGJlIDMyIC0gMTI4IGJ5dGVzICgy
-NTYgLSAxMDI0IGJpdHMpLg0KPiA+DQo+ID4gK1RydXN0ZWQgS2V5cyB1c2FnZTogQ0FBTQ0KPiA+
-ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiArDQo+ID4gK1VzYWdlOjoNCj4gPiArDQo+
-ID4gKyAgICBrZXljdGwgYWRkIHRydXN0ZWQgbmFtZSAibmV3IGtleWxlbiIgcmluZw0KPiA+ICsg
-ICAga2V5Y3RsIGFkZCB0cnVzdGVkIG5hbWUgImxvYWQgaGV4X2Jsb2IiIHJpbmcNCj4gPiArICAg
-IGtleWN0bCBwcmludCBrZXlpZA0KPiA+ICsNCj4gPiArImtleWN0bCBwcmludCIgcmV0dXJucyBh
-biBBU0NJSSBoZXggY29weSBvZiB0aGUgc2VhbGVkIGtleSwgd2hpY2ggaXMNCj4gPiAraW4gZm9y
-bWF0IHNwZWNpZmljIHRvIENBQU0gZGV2aWNlIGltcGxlbWVudGF0aW9uLiAgVGhlIGtleSBsZW5n
-dGggZm9yDQo+ID4gK25ldyBrZXlzIGlzIGFsd2F5cyBpbiBieXRlcy4gVHJ1c3RlZCBLZXlzIGNh
-biBiZSAzMiAtIDEyOCBieXRlcyAoMjU2IC0gMTAyNA0KPiBiaXRzKS4NCj4gPiArDQo+ID4gIEVu
-Y3J5cHRlZCBLZXlzIHVzYWdlDQo+ID4gIC0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4NCj4gPiBk
-aWZmIC0tZ2l0IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVSUyBpbmRleA0KPiA+IGY2NzAwMDIx
-MzRlMC4uNmVjYTQ0NzZiYjc2IDEwMDY0NA0KPiA+IC0tLSBhL01BSU5UQUlORVJTDQo+ID4gKysr
-IGIvTUFJTlRBSU5FUlMNCj4gPiBAQCAtMTA2NTUsNiArMTA2NTUsMTUgQEAgUzogICAgIFN1cHBv
-cnRlZA0KPiA+ICBGOiAgICAgaW5jbHVkZS9rZXlzL3RydXN0ZWRfdGVlLmgNCj4gPiAgRjogICAg
-IHNlY3VyaXR5L2tleXMvdHJ1c3RlZC1rZXlzL3RydXN0ZWRfdGVlLmMNCj4gPg0KPiA+ICtLRVlT
-LVRSVVNURUQtQ0FBTQ0KPiA+ICtNOiAgICAgQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRy
-b25peC5kZT4NCj4gPiArUjogICAgIFBlbmd1dHJvbml4IEtlcm5lbCBUZWFtIDxrZXJuZWxAcGVu
-Z3V0cm9uaXguZGU+DQo+ID4gK0w6ICAgICBsaW51eC1pbnRlZ3JpdHlAdmdlci5rZXJuZWwub3Jn
-DQo+ID4gK0w6ICAgICBrZXlyaW5nc0B2Z2VyLmtlcm5lbC5vcmcNCj4gPiArUzogICAgIE1haW50
-YWluZWQNCj4gPiArRjogICAgIGluY2x1ZGUva2V5cy90cnVzdGVkX2NhYW0uaA0KPiA+ICtGOiAg
-ICAgc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMvdHJ1c3RlZF9jYWFtLmMNCj4gPiArDQo+ID4g
-IEtFWVMvS0VZUklOR1MNCj4gPiAgTTogICAgIERhdmlkIEhvd2VsbHMgPGRob3dlbGxzQHJlZGhh
-dC5jb20+DQo+ID4gIE06ICAgICBKYXJra28gU2Fra2luZW4gPGphcmtrb0BrZXJuZWwub3JnPg0K
-PiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2tleXMvdHJ1c3RlZF9jYWFtLmggYi9pbmNsdWRlL2tl
-eXMvdHJ1c3RlZF9jYWFtLmgNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NCBpbmRleCAwMDAwMDAw
-MDAwMDAuLjJmYmEwOTk2YjBiMA0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiArKysgYi9pbmNsdWRl
-L2tleXMvdHJ1c3RlZF9jYWFtLmgNCj4gPiBAQCAtMCwwICsxLDExIEBADQo+ID4gKy8qIFNQRFgt
-TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkgKi8NCj4gPiArLyoNCj4gPiArICogQ29w
-eXJpZ2h0IChDKSAyMDIxIFBlbmd1dHJvbml4LCBBaG1hZCBGYXRvdW0NCj4gPiArPGtlcm5lbEBw
-ZW5ndXRyb25peC5kZT4gKi8NCj4gPiArDQo+ID4gKyNpZm5kZWYgX19DQUFNX1RSVVNURURfS0VZ
-X0gNCj4gPiArI2RlZmluZSBfX0NBQU1fVFJVU1RFRF9LRVlfSA0KPiA+ICsNCj4gPiArZXh0ZXJu
-IHN0cnVjdCB0cnVzdGVkX2tleV9vcHMgY2FhbV90cnVzdGVkX2tleV9vcHM7DQo+ID4gKw0KPiA+
-ICsjZW5kaWYNCj4gPiBkaWZmIC0tZ2l0IGEvc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMvS2Nv
-bmZpZw0KPiA+IGIvc2VjdXJpdHkva2V5cy90cnVzdGVkLSBrZXlzL0tjb25maWcgaW5kZXggZmM0
-YWJkNTgxYWJiLi5kYmZkZDg1MzY0NjgNCj4gPiAxMDA2NDQNCj4gPiAtLS0gYS9zZWN1cml0eS9r
-ZXlzL3RydXN0ZWQta2V5cy9LY29uZmlnDQo+ID4gKysrIGIvc2VjdXJpdHkva2V5cy90cnVzdGVk
-LWtleXMvS2NvbmZpZw0KPiA+IEBAIC0yNCw2ICsyNCwxNSBAQCBjb25maWcgVFJVU1RFRF9LRVlT
-X1RFRQ0KPiA+ICAgICAgICAgICBFbmFibGUgdXNlIG9mIHRoZSBUcnVzdGVkIEV4ZWN1dGlvbiBF
-bnZpcm9ubWVudCAoVEVFKSBhcyB0cnVzdGVkDQo+ID4gICAgICAgICAgIGtleSBiYWNrZW5kLg0K
-PiA+DQo+ID4gLWlmICFUUlVTVEVEX0tFWVNfVFBNICYmICFUUlVTVEVEX0tFWVNfVEVFDQo+ID4g
-K2NvbmZpZyBUUlVTVEVEX0tFWVNfQ0FBTQ0KPiA+ICsgICAgICAgYm9vbCAiQ0FBTS1iYXNlZCB0
-cnVzdGVkIGtleXMiDQo+ID4gKyAgICAgICBkZXBlbmRzIG9uIENSWVBUT19ERVZfRlNMX0NBQU1f
-SlIgPj0gVFJVU1RFRF9LRVlTDQo+ID4gKyAgICAgICBzZWxlY3QgQ1JZUFRPX0RFVl9GU0xfQ0FB
-TV9CTE9CX0dFTg0KPiA+ICsgICAgICAgZGVmYXVsdCB5DQo+ID4gKyAgICAgICBoZWxwDQo+ID4g
-KyAgICAgICAgIEVuYWJsZSB1c2Ugb2YgTlhQJ3MgQ3J5cHRvZ3JhcGhpYyBBY2NlbGVyYXRvciBh
-bmQgQXNzdXJhbmNlIE1vZHVsZQ0KPiA+ICsgICAgICAgICAoQ0FBTSkgYXMgdHJ1c3RlZCBrZXkg
-YmFja2VuZC4NCj4gPiArDQo+ID4gK2lmICFUUlVTVEVEX0tFWVNfVFBNICYmICFUUlVTVEVEX0tF
-WVNfVEVFDQo+ID4gJiYgIVRSVVNURURfS0VZU19DQUFNDQo+ID4gIGNvbW1lbnQgIk5vIHRydXN0
-IHNvdXJjZSBzZWxlY3RlZCEiDQo+ID4gIGVuZGlmDQo+ID4gZGlmZiAtLWdpdCBhL3NlY3VyaXR5
-L2tleXMvdHJ1c3RlZC1rZXlzL01ha2VmaWxlDQo+ID4gYi9zZWN1cml0eS9rZXlzL3RydXN0ZWQt
-IGtleXMvTWFrZWZpbGUgaW5kZXgNCj4gPiAyZTIzNzFlYWU0ZDUuLjczNWFhMGJjMDhlZiAxMDA2
-NDQNCj4gPiAtLS0gYS9zZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5cy9NYWtlZmlsZQ0KPiA+ICsr
-KyBiL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1rZXlzL01ha2VmaWxlDQo+ID4gQEAgLTEyLDMgKzEy
-LDUgQEAgdHJ1c3RlZC0kKENPTkZJR19UUlVTVEVEX0tFWVNfVFBNKSArPQ0KPiB0cnVzdGVkX3Rw
-bTIubw0KPiA+ICB0cnVzdGVkLSQoQ09ORklHX1RSVVNURURfS0VZU19UUE0pICs9IHRwbTJrZXku
-YXNuMS5vDQo+ID4NCj4gPiAgdHJ1c3RlZC0kKENPTkZJR19UUlVTVEVEX0tFWVNfVEVFKSArPSB0
-cnVzdGVkX3RlZS5vDQo+ID4gKw0KPiA+ICt0cnVzdGVkLSQoQ09ORklHX1RSVVNURURfS0VZU19D
-QUFNKSArPSB0cnVzdGVkX2NhYW0ubw0KPiA+IGRpZmYgLS1naXQgYS9zZWN1cml0eS9rZXlzL3Ry
-dXN0ZWQta2V5cy90cnVzdGVkX2NhYW0uYw0KPiA+IGIvc2VjdXJpdHkva2V5cy90cnVzdGVkLWtl
-eXMvdHJ1c3RlZF9jYWFtLmMNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAw
-MDAwMDAwMDAwMC4uMDY2ZjA4ZDZlYjJjDQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL3Nl
-Y3VyaXR5L2tleXMvdHJ1c3RlZC1rZXlzL3RydXN0ZWRfY2FhbS5jDQo+ID4gQEAgLTAsMCArMSw3
-NCBAQA0KPiA+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5DQo+ID4g
-Ky8qDQo+ID4gKyAqIENvcHlyaWdodCAoQykgMjAyMSBQZW5ndXRyb25peCwgQWhtYWQgRmF0b3Vt
-DQo+ID4gKzxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+ICovDQo+ID4gKw0KPiA+ICsjaW5jbHVkZSA8
-a2V5cy90cnVzdGVkX2NhYW0uaD4NCj4gPiArI2luY2x1ZGUgPGtleXMvdHJ1c3RlZC10eXBlLmg+
-DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9idWlsZF9idWcuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4
-L2tleS10eXBlLmg+DQo+ID4gKyNpbmNsdWRlIDxzb2MvZnNsL2NhYW0tYmxvYi5oPg0KPiA+ICsN
-Cj4gPiArc3RhdGljIHN0cnVjdCBjYWFtX2Jsb2JfcHJpdiAqYmxvYmlmaWVyOw0KPiA+ICsNCj4g
-PiArI2RlZmluZSBLRVlNT0QgIlNFQ1VSRV9LRVkiDQo+ID4gKw0KPiA+ICtzdGF0aWNfYXNzZXJ0
-KE1BWF9LRVlfU0laRSArIENBQU1fQkxPQl9PVkVSSEVBRCA8PQ0KPiA+IENBQU1fQkxPQl9NQVhf
-TEVOKTsNCj4gPiArc3RhdGljX2Fzc2VydChNQVhfQkxPQl9TSVpFIDw9IENBQU1fQkxPQl9NQVhf
-TEVOKTsNCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgdHJ1c3RlZF9jYWFtX3NlYWwoc3RydWN0IHRy
-dXN0ZWRfa2V5X3BheWxvYWQgKnAsIGNoYXINCj4gPiArKmRhdGFibG9iKSB7DQo+ID4gKyAgICAg
-ICBpbnQgbGVuZ3RoID0gcC0+a2V5X2xlbiArIENBQU1fQkxPQl9PVkVSSEVBRDsNCj4gPiArICAg
-ICAgIGludCByZXQ7DQo+ID4gKw0KPiA+ICsgICAgICAgcmV0ID0gY2FhbV9lbmNhcF9ibG9iKGJs
-b2JpZmllciwgS0VZTU9ELCBwLT5rZXksIHAtPmJsb2IsIGxlbmd0aCk7DQo+ID4gKyAgICAgICBp
-ZiAocmV0KQ0KPiA+ICsgICAgICAgICAgICAgICByZXR1cm4gcmV0Ow0KPiA+ICsNCj4gPiArICAg
-ICAgIHAtPmJsb2JfbGVuID0gbGVuZ3RoOw0KPiA+ICsgICAgICAgcmV0dXJuIDA7DQo+ID4gK30N
-Cj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgdHJ1c3RlZF9jYWFtX3Vuc2VhbChzdHJ1Y3QgdHJ1c3Rl
-ZF9rZXlfcGF5bG9hZCAqcCwgY2hhcg0KPiA+ICsqZGF0YWJsb2IpIHsNCj4gPiArICAgICAgIGlu
-dCBsZW5ndGggPSBwLT5ibG9iX2xlbjsNCj4gPiArICAgICAgIGludCByZXQ7DQo+ID4gKw0KPiA+
-ICsgICAgICAgcmV0ID0gY2FhbV9kZWNhcF9ibG9iKGJsb2JpZmllciwgS0VZTU9ELCBwLT5ibG9i
-LCBwLT5rZXksIGxlbmd0aCk7DQo+ID4gKyAgICAgICBpZiAocmV0KQ0KPiA+ICsgICAgICAgICAg
-ICAgICByZXR1cm4gcmV0Ow0KPiA+ICsNCj4gPiArICAgICAgIHAtPmtleV9sZW4gPSBsZW5ndGgg
-LSBDQUFNX0JMT0JfT1ZFUkhFQUQ7DQo+ID4gKyAgICAgICByZXR1cm4gMDsNCj4gPiArfQ0KPiA+
-ICsNCj4gPiArc3RhdGljIGludCB0cnVzdGVkX2NhYW1faW5pdCh2b2lkKQ0KPiA+ICt7DQo+ID4g
-KyAgICAgICBpbnQgcmV0Ow0KPiA+ICsNCj4gPiArICAgICAgIGJsb2JpZmllciA9IGNhYW1fYmxv
-Yl9nZW5faW5pdCgpOw0KPiA+ICsgICAgICAgaWYgKElTX0VSUihibG9iaWZpZXIpKSB7DQo+ID4g
-KyAgICAgICAgICAgICAgIHByX2VycigiSm9iIFJpbmcgRGV2aWNlIGFsbG9jYXRpb24gZm9yIHRy
-YW5zZm9ybSBmYWlsZWRcbiIpOw0KPiA+ICsgICAgICAgICAgICAgICByZXR1cm4gUFRSX0VSUihi
-bG9iaWZpZXIpOw0KPiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHJldCA9IHJlZ2lz
-dGVyX2tleV90eXBlKCZrZXlfdHlwZV90cnVzdGVkKTsNCj4gPiArICAgICAgIGlmIChyZXQpDQo+
-ID4gKyAgICAgICAgICAgICAgIGNhYW1fYmxvYl9nZW5fZXhpdChibG9iaWZpZXIpOw0KPiA+ICsN
-Cj4gPiArICAgICAgIHJldHVybiByZXQ7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lk
-IHRydXN0ZWRfY2FhbV9leGl0KHZvaWQpDQo+ID4gK3sNCj4gPiArICAgICAgIHVucmVnaXN0ZXJf
-a2V5X3R5cGUoJmtleV90eXBlX3RydXN0ZWQpOw0KPiA+ICsgICAgICAgY2FhbV9ibG9iX2dlbl9l
-eGl0KGJsb2JpZmllcik7IH0NCj4gPiArDQo+ID4gK3N0cnVjdCB0cnVzdGVkX2tleV9vcHMgY2Fh
-bV90cnVzdGVkX2tleV9vcHMgPSB7DQo+ID4gKyAgICAgICAubWlncmF0YWJsZSA9IDAsIC8qIG5v
-bi1taWdyYXRhYmxlICovDQo+ID4gKyAgICAgICAuaW5pdCA9IHRydXN0ZWRfY2FhbV9pbml0LA0K
-PiA+ICsgICAgICAgLnNlYWwgPSB0cnVzdGVkX2NhYW1fc2VhbCwNCj4gPiArICAgICAgIC51bnNl
-YWwgPSB0cnVzdGVkX2NhYW1fdW5zZWFsLA0KPiA+ICsgICAgICAgLmV4aXQgPSB0cnVzdGVkX2Nh
-YW1fZXhpdCwNCj4gPiArfTsNCj4gPiBkaWZmIC0tZ2l0IGEvc2VjdXJpdHkva2V5cy90cnVzdGVk
-LWtleXMvdHJ1c3RlZF9jb3JlLmMNCj4gPiBiL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1rZXlzL3Ry
-dXN0ZWRfY29yZS5jDQo+ID4gaW5kZXggOTIzNWZiN2QwZWM5Li42NDA0MzRjZDQzN2EgMTAwNjQ0
-DQo+ID4gLS0tIGEvc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMvdHJ1c3RlZF9jb3JlLmMNCj4g
-PiArKysgYi9zZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5cy90cnVzdGVkX2NvcmUuYw0KPiA+IEBA
-IC05LDYgKzksNyBAQA0KPiA+ICAjaW5jbHVkZSA8a2V5cy91c2VyLXR5cGUuaD4NCj4gPiAgI2lu
-Y2x1ZGUgPGtleXMvdHJ1c3RlZC10eXBlLmg+DQo+ID4gICNpbmNsdWRlIDxrZXlzL3RydXN0ZWRf
-dGVlLmg+DQo+ID4gKyNpbmNsdWRlIDxrZXlzL3RydXN0ZWRfY2FhbS5oPg0KPiA+ICAjaW5jbHVk
-ZSA8a2V5cy90cnVzdGVkX3RwbS5oPg0KPiA+ICAjaW5jbHVkZSA8bGludXgvY2FwYWJpbGl0eS5o
-Pg0KPiA+ICAjaW5jbHVkZSA8bGludXgvZXJyLmg+DQo+ID4gQEAgLTI5LDcgKzMwLDcgQEAgTU9E
-VUxFX1BBUk1fREVTQyhybmcsICJTZWxlY3QgdHJ1c3RlZCBrZXkgUk5HIik7DQo+ID4NCj4gPiAg
-c3RhdGljIGNoYXIgKnRydXN0ZWRfa2V5X3NvdXJjZTsNCj4gPiAgbW9kdWxlX3BhcmFtX25hbWVk
-KHNvdXJjZSwgdHJ1c3RlZF9rZXlfc291cmNlLCBjaGFycCwgMCk7IC0NCj4gPiBNT0RVTEVfUEFS
-TV9ERVNDKHNvdXJjZSwgIlNlbGVjdCB0cnVzdGVkIGtleXMgc291cmNlICh0cG0gb3IgdGVlKSIp
-Ow0KPiA+ICtNT0RVTEVfUEFSTV9ERVNDKHNvdXJjZSwgIlNlbGVjdCB0cnVzdGVkIGtleXMgc291
-cmNlICh0cG0sIHRlZSBvcg0KPiA+ICtjYWFtKSIpOw0KPiA+DQo+ID4gIHN0YXRpYyBjb25zdCBz
-dHJ1Y3QgdHJ1c3RlZF9rZXlfc291cmNlIHRydXN0ZWRfa2V5X3NvdXJjZXNbXSA9IHsgICNpZg0K
-PiA+IGRlZmluZWQoQ09ORklHX1RSVVNURURfS0VZU19UUE0pIEBAIC0zOCw2ICszOSw5IEBAIHN0
-YXRpYyBjb25zdA0KPiBzdHJ1Y3QNCj4gPiB0cnVzdGVkX2tleV9zb3VyY2UgdHJ1c3RlZF9rZXlf
-c291cmNlc1tdID0geyAgI2lmDQo+ID4gZGVmaW5lZChDT05GSUdfVFJVU1RFRF9LRVlTX1RFRSkN
-Cj4gPiAgICAgICAgIHsgInRlZSIsICZ0cnVzdGVkX2tleV90ZWVfb3BzIH0sICAjZW5kaWYNCj4g
-PiArI2lmIGRlZmluZWQoQ09ORklHX1RSVVNURURfS0VZU19DQUFNKQ0KPiA+ICsgICAgICAgeyAi
-Y2FhbSIsICZjYWFtX3RydXN0ZWRfa2V5X29wcyB9LCAjZW5kaWYNCj4gPiAgfTsNCj4gPg0KPiA+
-ICBERUZJTkVfU1RBVElDX0NBTExfTlVMTCh0cnVzdGVkX2tleV9pbml0LA0KPiA+ICp0cnVzdGVk
-X2tleV9zb3VyY2VzWzBdLm9wcy0+aW5pdCk7DQo+ID4gLS0NCj4gPiAyLjMwLjINCg0K
+
+--naGHcUinVPCFpm6c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Sun, Mar 06, 2022 at 03:51:00PM -0500, Nayna Jain wrote:
+> Allow firmware keys to be embedded in the Linux kernel and loaded onto
+> the ".platform" keyring on boot.
+> 
+> The firmware keys can be specified in a file as a list of PEM encoded
+> certificates using new config INTEGRITY_PLATFORM_KEYS. The certificates
+> are embedded in the image by converting the PEM-formatted certificates
+> into DER(binary) and generating
+> security/integrity/platform_certs/platform_certificate_list file at
+> build time. On boot, the embedded certs from the image are loaded onto
+> the ".platform" keyring at late_initcall(), ensuring the platform keyring
+> exists before loading the keys.
+> 
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  security/integrity/Kconfig                    | 10 ++++++++
+>  security/integrity/Makefile                   | 15 +++++++++++-
+>  security/integrity/integrity.h                |  3 +++
+>  .../integrity/platform_certs/platform_cert.S  | 23 +++++++++++++++++++
+>  .../platform_certs/platform_keyring.c         | 23 +++++++++++++++++++
+>  5 files changed, 73 insertions(+), 1 deletion(-)
+>  create mode 100644 security/integrity/platform_certs/platform_cert.S
+> 
+> diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+> index 599429f99f99..77b2c22c0e1b 100644
+> --- a/security/integrity/Kconfig
+> +++ b/security/integrity/Kconfig
+> @@ -62,6 +62,16 @@ config INTEGRITY_PLATFORM_KEYRING
+>           provided by the platform for verifying the kexec'ed kerned image
+>           and, possibly, the initramfs signature.
+>  
+> +config INTEGRITY_PLATFORM_KEYS
+> +        string "Builtin X.509 keys for .platform keyring"
+> +        depends on KEYS
+> +        depends on ASYMMETRIC_KEY_TYPE
+> +        depends on INTEGRITY_PLATFORM_KEYRING
+> +        help
+> +          If set, this option should be the filename of a PEM-formatted file
+> +          containing X.509 certificates to be loaded onto the ".platform"
+> +          keyring.
+> +
+>  config INTEGRITY_MACHINE_KEYRING
+>  	bool "Provide a keyring to which Machine Owner Keys may be added"
+>  	depends on SECONDARY_TRUSTED_KEYRING
+> diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+> index d0ffe37dc1d6..65bd93301a3a 100644
+> --- a/security/integrity/Makefile
+> +++ b/security/integrity/Makefile
+> @@ -3,13 +3,17 @@
+>  # Makefile for caching inode integrity data (iint)
+>  #
+>  
+> +quiet_cmd_extract_certs  = CERT  $@
+> +      cmd_extract_certs  = certs/extract-cert $(2) $@
+> +
+>  obj-$(CONFIG_INTEGRITY) += integrity.o
+>  
+>  integrity-y := iint.o
+>  integrity-$(CONFIG_INTEGRITY_AUDIT) += integrity_audit.o
+>  integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
+>  integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
+> -integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o
+> +integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o \
+> +						  platform_certs/platform_cert.o
+>  integrity-$(CONFIG_INTEGRITY_MACHINE_KEYRING) += platform_certs/machine_keyring.o
+>  integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
+>  				      platform_certs/load_uefi.o \
+> @@ -20,3 +24,12 @@ integrity-$(CONFIG_LOAD_PPC_KEYS) += platform_certs/efi_parser.o \
+>                                       platform_certs/keyring_handler.o
+>  obj-$(CONFIG_IMA)			+= ima/
+>  obj-$(CONFIG_EVM)			+= evm/
+> +
+> +$(obj)/platform_certs/platform_cert.o: $(obj)/platform_certs/platform_certificate_list
+> +
+> +targets += platform_certificate_list
+> +
+> +$(obj)/platform_certs/platform_certificate_list: $(CONFIG_INTEGRITY_PLATFORM_KEYS) certs/extract-cert FORCE
+> +	$(call if_changed,extract_certs,$(if $(CONFIG_INTEGRITY_PLATFORM_KEYS),$<,""))
+> +
+> +clean-files := platform_certs/platform_certificate_list
+> diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
+> index 76e9a9515f99..219da29fecf7 100644
+> --- a/security/integrity/integrity.h
+> +++ b/security/integrity/integrity.h
+> @@ -282,6 +282,9 @@ integrity_audit_log_start(struct audit_context *ctx, gfp_t gfp_mask, int type)
+>  #endif
+>  
+>  #ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
+> +extern __initconst const u8 platform_certificate_list[];
+> +extern __initconst const unsigned long platform_certificate_list_size;
+> +
+>  void __init add_to_platform_keyring(const char *source, const void *data,
+>  				    size_t len);
+>  #else
+> diff --git a/security/integrity/platform_certs/platform_cert.S b/security/integrity/platform_certs/platform_cert.S
+> new file mode 100644
+> index 000000000000..20bccce5dc5a
+> --- /dev/null
+> +++ b/security/integrity/platform_certs/platform_cert.S
+> @@ -0,0 +1,23 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#include <linux/export.h>
+> +#include <linux/init.h>
+> +
+> +	__INITRODATA
+> +
+> +	.align 8
+> +#ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
+> +	.globl platform_certificate_list
+> +platform_certificate_list:
+> +__cert_list_start:
+> +	.incbin "security/integrity/platform_certs/platform_certificate_list"
+> +__cert_list_end:
+> +#endif
+> +
+> +	.align 8
+> +	.globl platform_certificate_list_size
+> +platform_certificate_list_size:
+> +#ifdef CONFIG_64BIT
+> +	.quad __cert_list_end - __cert_list_start
+> +#else
+> +	.long __cert_list_end - __cert_list_start
+> +#endif
+> diff --git a/security/integrity/platform_certs/platform_keyring.c b/security/integrity/platform_certs/platform_keyring.c
+> index bcafd7387729..c2368912fd1b 100644
+> --- a/security/integrity/platform_certs/platform_keyring.c
+> +++ b/security/integrity/platform_certs/platform_keyring.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/cred.h>
+>  #include <linux/err.h>
+>  #include <linux/slab.h>
+> +#include <keys/system_keyring.h>
+>  #include "../integrity.h"
+>  
+>  /**
+> @@ -37,6 +38,28 @@ void __init add_to_platform_keyring(const char *source, const void *data,
+>  		pr_info("Error adding keys to platform keyring %s\n", source);
+>  }
+>  
+> +static __init int load_platform_certificate_list(void)
+> +{
+> +	const u8 *p;
+> +	unsigned long size;
+> +	int rc;
+> +	struct key *keyring;
+> +
+> +	p = platform_certificate_list;
+> +	size = platform_certificate_list_size;
+> +
+> +	keyring = integrity_keyring_from_id(INTEGRITY_KEYRING_PLATFORM);
+> +	if (IS_ERR(keyring))
+> +		return PTR_ERR(keyring);
+> +
+> +	rc = load_certificate_list(p, size, keyring);
+> +	if (rc)
+> +		pr_info("Error adding keys to platform keyring %d\n", rc);
+> +
+> +	return rc;
+> +}
+> +late_initcall(load_platform_certificate_list);
+> +
+>  /*
+>   * Create the trusted keyrings.
+>   */
+> -- 
+> 2.27.0
+> 
+
+There's zero tested-by's for this, i.e. cannot be applied before someone
+has tested this. Mimi, do not mean to be rude, but I don't frankly
+understand why you ask to pick a patch set that is *untested*.
+
+So I generated a self-signed certificate:
+
+openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+
+(by courtesy of letsencrypt: https://letsencrypt.org/docs/certificates-for-localhost/)
+
+openssl x509 -in localhost.crt -out localhost.pem -outform PEM
+
+And starting with tinyconfig I added minimal options to enable this
+feature. The config is attached.
+
+The end result is:
+
+make[2]: *** No rule to make target 'certs/extract-cert', needed by 'security/integrity/platform_certs/platform_certificate_list'.  Stop.
+make[1]: *** [scripts/Makefile.build:550: security/integrity] Error 2
+make: *** [Makefile:1831: security] Error 2
+
+BR, Jarkko
+
+--naGHcUinVPCFpm6c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=".config"
+
+#
+# Automatically generated file; DO NOT EDIT.
+# Linux/x86 5.17.0-rc5 Kernel Configuration
+#
+CONFIG_CC_VERSION_TEXT="gcc (GCC) 11.2.0"
+CONFIG_CC_IS_GCC=y
+CONFIG_GCC_VERSION=110200
+CONFIG_CLANG_VERSION=0
+CONFIG_AS_IS_GNU=y
+CONFIG_AS_VERSION=23800
+CONFIG_LD_IS_BFD=y
+CONFIG_LD_VERSION=23800
+CONFIG_LLD_VERSION=0
+CONFIG_CC_CAN_LINK=y
+CONFIG_CC_CAN_LINK_STATIC=y
+CONFIG_CC_HAS_ASM_GOTO=y
+CONFIG_CC_HAS_ASM_GOTO_OUTPUT=y
+CONFIG_CC_HAS_ASM_INLINE=y
+CONFIG_CC_HAS_NO_PROFILE_FN_ATTR=y
+CONFIG_IRQ_WORK=y
+CONFIG_BUILDTIME_TABLE_SORT=y
+CONFIG_THREAD_INFO_IN_TASK=y
+
+#
+# General setup
+#
+CONFIG_BROKEN_ON_SMP=y
+CONFIG_INIT_ENV_ARG_LIMIT=32
+# CONFIG_COMPILE_TEST is not set
+# CONFIG_WERROR is not set
+CONFIG_LOCALVERSION=""
+# CONFIG_LOCALVERSION_AUTO is not set
+CONFIG_BUILD_SALT=""
+CONFIG_HAVE_KERNEL_GZIP=y
+CONFIG_HAVE_KERNEL_BZIP2=y
+CONFIG_HAVE_KERNEL_LZMA=y
+CONFIG_HAVE_KERNEL_XZ=y
+CONFIG_HAVE_KERNEL_LZO=y
+CONFIG_HAVE_KERNEL_LZ4=y
+CONFIG_HAVE_KERNEL_ZSTD=y
+# CONFIG_KERNEL_GZIP is not set
+# CONFIG_KERNEL_BZIP2 is not set
+# CONFIG_KERNEL_LZMA is not set
+CONFIG_KERNEL_XZ=y
+# CONFIG_KERNEL_LZO is not set
+# CONFIG_KERNEL_LZ4 is not set
+# CONFIG_KERNEL_ZSTD is not set
+CONFIG_DEFAULT_INIT=""
+CONFIG_DEFAULT_HOSTNAME="(none)"
+# CONFIG_SYSVIPC is not set
+# CONFIG_WATCH_QUEUE is not set
+# CONFIG_CROSS_MEMORY_ATTACH is not set
+# CONFIG_USELIB is not set
+CONFIG_HAVE_ARCH_AUDITSYSCALL=y
+
+#
+# IRQ subsystem
+#
+CONFIG_GENERIC_IRQ_PROBE=y
+CONFIG_GENERIC_IRQ_SHOW=y
+CONFIG_HARDIRQS_SW_RESEND=y
+CONFIG_IRQ_DOMAIN=y
+CONFIG_IRQ_DOMAIN_HIERARCHY=y
+CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR=y
+CONFIG_GENERIC_IRQ_RESERVATION_MODE=y
+CONFIG_IRQ_FORCED_THREADING=y
+CONFIG_SPARSE_IRQ=y
+# end of IRQ subsystem
+
+CONFIG_CLOCKSOURCE_WATCHDOG=y
+CONFIG_ARCH_CLOCKSOURCE_INIT=y
+CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE=y
+CONFIG_GENERIC_TIME_VSYSCALL=y
+CONFIG_GENERIC_CLOCKEVENTS=y
+CONFIG_GENERIC_CLOCKEVENTS_BROADCAST=y
+CONFIG_GENERIC_CLOCKEVENTS_MIN_ADJUST=y
+CONFIG_GENERIC_CMOS_UPDATE=y
+CONFIG_HAVE_POSIX_CPU_TIMERS_TASK_WORK=y
+
+#
+# Timers subsystem
+#
+CONFIG_HZ_PERIODIC=y
+# CONFIG_NO_HZ_IDLE is not set
+# CONFIG_NO_HZ is not set
+# CONFIG_HIGH_RES_TIMERS is not set
+# end of Timers subsystem
+
+CONFIG_HAVE_EBPF_JIT=y
+CONFIG_ARCH_WANT_DEFAULT_BPF_JIT=y
+
+#
+# BPF subsystem
+#
+# CONFIG_BPF_SYSCALL is not set
+# end of BPF subsystem
+
+CONFIG_PREEMPT_NONE_BUILD=y
+CONFIG_PREEMPT_NONE=y
+# CONFIG_PREEMPT_VOLUNTARY is not set
+# CONFIG_PREEMPT is not set
+# CONFIG_PREEMPT_DYNAMIC is not set
+
+#
+# CPU/Task time and stats accounting
+#
+CONFIG_TICK_CPU_ACCOUNTING=y
+# CONFIG_VIRT_CPU_ACCOUNTING_GEN is not set
+# CONFIG_IRQ_TIME_ACCOUNTING is not set
+# CONFIG_BSD_PROCESS_ACCT is not set
+# CONFIG_PSI is not set
+# end of CPU/Task time and stats accounting
+
+#
+# RCU Subsystem
+#
+CONFIG_TINY_RCU=y
+# CONFIG_RCU_EXPERT is not set
+CONFIG_SRCU=y
+CONFIG_TINY_SRCU=y
+# end of RCU Subsystem
+
+# CONFIG_IKCONFIG is not set
+# CONFIG_IKHEADERS is not set
+CONFIG_HAVE_UNSTABLE_SCHED_CLOCK=y
+
+#
+# Scheduler features
+#
+# end of Scheduler features
+
+CONFIG_ARCH_SUPPORTS_NUMA_BALANCING=y
+CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH=y
+CONFIG_CC_HAS_INT128=y
+CONFIG_CC_IMPLICIT_FALLTHROUGH="-Wimplicit-fallthrough=5"
+CONFIG_ARCH_SUPPORTS_INT128=y
+# CONFIG_CGROUPS is not set
+# CONFIG_NAMESPACES is not set
+# CONFIG_CHECKPOINT_RESTORE is not set
+# CONFIG_SCHED_AUTOGROUP is not set
+# CONFIG_SYSFS_DEPRECATED is not set
+# CONFIG_RELAY is not set
+# CONFIG_BLK_DEV_INITRD is not set
+# CONFIG_BOOT_CONFIG is not set
+# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+CONFIG_LD_ORPHAN_WARN=y
+CONFIG_SYSCTL_EXCEPTION_TRACE=y
+CONFIG_HAVE_PCSPKR_PLATFORM=y
+CONFIG_EXPERT=y
+CONFIG_MULTIUSER=y
+# CONFIG_SGETMASK_SYSCALL is not set
+# CONFIG_SYSFS_SYSCALL is not set
+# CONFIG_FHANDLE is not set
+# CONFIG_POSIX_TIMERS is not set
+# CONFIG_PRINTK is not set
+# CONFIG_BUG is not set
+# CONFIG_PCSPKR_PLATFORM is not set
+# CONFIG_BASE_FULL is not set
+# CONFIG_FUTEX is not set
+# CONFIG_EPOLL is not set
+# CONFIG_SIGNALFD is not set
+# CONFIG_TIMERFD is not set
+# CONFIG_EVENTFD is not set
+# CONFIG_SHMEM is not set
+# CONFIG_AIO is not set
+# CONFIG_IO_URING is not set
+# CONFIG_ADVISE_SYSCALLS is not set
+# CONFIG_MEMBARRIER is not set
+# CONFIG_KALLSYMS is not set
+# CONFIG_USERFAULTFD is not set
+CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE=y
+# CONFIG_KCMP is not set
+# CONFIG_RSEQ is not set
+CONFIG_EMBEDDED=y
+CONFIG_HAVE_PERF_EVENTS=y
+# CONFIG_PC104 is not set
+
+#
+# Kernel Performance Events And Counters
+#
+CONFIG_PERF_EVENTS=y
+# CONFIG_DEBUG_PERF_USE_VMALLOC is not set
+# end of Kernel Performance Events And Counters
+
+# CONFIG_VM_EVENT_COUNTERS is not set
+# CONFIG_COMPAT_BRK is not set
+# CONFIG_SLAB is not set
+# CONFIG_SLUB is not set
+CONFIG_SLOB=y
+# CONFIG_SHUFFLE_PAGE_ALLOCATOR is not set
+# CONFIG_PROFILING is not set
+# end of General setup
+
+CONFIG_64BIT=y
+CONFIG_X86_64=y
+CONFIG_X86=y
+CONFIG_INSTRUCTION_DECODER=y
+CONFIG_OUTPUT_FORMAT="elf64-x86-64"
+CONFIG_LOCKDEP_SUPPORT=y
+CONFIG_STACKTRACE_SUPPORT=y
+CONFIG_MMU=y
+CONFIG_ARCH_MMAP_RND_BITS_MIN=28
+CONFIG_ARCH_MMAP_RND_BITS_MAX=32
+CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MIN=8
+CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MAX=16
+CONFIG_GENERIC_ISA_DMA=y
+CONFIG_ARCH_MAY_HAVE_PC_FDC=y
+CONFIG_GENERIC_CALIBRATE_DELAY=y
+CONFIG_ARCH_HAS_CPU_RELAX=y
+CONFIG_ARCH_HAS_FILTER_PGPROT=y
+CONFIG_ARCH_HIBERNATION_POSSIBLE=y
+CONFIG_ARCH_NR_GPIO=1024
+CONFIG_ARCH_SUSPEND_POSSIBLE=y
+CONFIG_ARCH_WANT_GENERAL_HUGETLB=y
+CONFIG_AUDIT_ARCH=y
+CONFIG_ARCH_SUPPORTS_UPROBES=y
+CONFIG_FIX_EARLYCON_MEM=y
+CONFIG_PGTABLE_LEVELS=5
+CONFIG_CC_HAS_SANE_STACKPROTECTOR=y
+
+#
+# Processor type and features
+#
+# CONFIG_SMP is not set
+# CONFIG_X86_FEATURE_NAMES is not set
+CONFIG_X86_MPPARSE=y
+# CONFIG_GOLDFISH is not set
+# CONFIG_RETPOLINE is not set
+# CONFIG_X86_CPU_RESCTRL is not set
+# CONFIG_X86_EXTENDED_PLATFORM is not set
+# CONFIG_SCHED_OMIT_FRAME_POINTER is not set
+# CONFIG_HYPERVISOR_GUEST is not set
+# CONFIG_MK8 is not set
+# CONFIG_MPSC is not set
+# CONFIG_MCORE2 is not set
+# CONFIG_MATOM is not set
+CONFIG_GENERIC_CPU=y
+CONFIG_X86_INTERNODE_CACHE_SHIFT=6
+CONFIG_X86_L1_CACHE_SHIFT=6
+CONFIG_X86_TSC=y
+CONFIG_X86_CMPXCHG64=y
+CONFIG_X86_CMOV=y
+CONFIG_X86_MINIMUM_CPU_FAMILY=64
+CONFIG_X86_DEBUGCTLMSR=y
+CONFIG_IA32_FEAT_CTL=y
+# CONFIG_PROCESSOR_SELECT is not set
+CONFIG_CPU_SUP_INTEL=y
+CONFIG_CPU_SUP_AMD=y
+CONFIG_CPU_SUP_HYGON=y
+CONFIG_CPU_SUP_CENTAUR=y
+CONFIG_CPU_SUP_ZHAOXIN=y
+CONFIG_HPET_TIMER=y
+# CONFIG_DMI is not set
+CONFIG_NR_CPUS_RANGE_BEGIN=1
+CONFIG_NR_CPUS_RANGE_END=1
+CONFIG_NR_CPUS_DEFAULT=1
+CONFIG_NR_CPUS=1
+CONFIG_UP_LATE_INIT=y
+CONFIG_X86_LOCAL_APIC=y
+CONFIG_X86_IO_APIC=y
+# CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS is not set
+# CONFIG_X86_MCE is not set
+
+#
+# Performance monitoring
+#
+# CONFIG_PERF_EVENTS_AMD_POWER is not set
+# CONFIG_PERF_EVENTS_AMD_UNCORE is not set
+# end of Performance monitoring
+
+CONFIG_X86_VSYSCALL_EMULATION=y
+# CONFIG_X86_IOPL_IOPERM is not set
+# CONFIG_MICROCODE is not set
+# CONFIG_X86_MSR is not set
+# CONFIG_X86_CPUID is not set
+CONFIG_X86_5LEVEL=y
+CONFIG_X86_DIRECT_GBPAGES=y
+# CONFIG_AMD_MEM_ENCRYPT is not set
+CONFIG_ARCH_SPARSEMEM_ENABLE=y
+CONFIG_ARCH_SPARSEMEM_DEFAULT=y
+CONFIG_ARCH_SELECT_MEMORY_MODEL=y
+CONFIG_ILLEGAL_POINTER_VALUE=0xdead000000000000
+# CONFIG_X86_CHECK_BIOS_CORRUPTION is not set
+# CONFIG_MTRR is not set
+# CONFIG_ARCH_RANDOM is not set
+# CONFIG_X86_SMAP is not set
+# CONFIG_X86_UMIP is not set
+CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS=y
+CONFIG_X86_INTEL_TSX_MODE_OFF=y
+# CONFIG_X86_INTEL_TSX_MODE_ON is not set
+# CONFIG_X86_INTEL_TSX_MODE_AUTO is not set
+# CONFIG_HZ_100 is not set
+CONFIG_HZ_250=y
+# CONFIG_HZ_300 is not set
+# CONFIG_HZ_1000 is not set
+CONFIG_HZ=250
+# CONFIG_KEXEC is not set
+# CONFIG_CRASH_DUMP is not set
+CONFIG_PHYSICAL_START=0x1000000
+# CONFIG_RELOCATABLE is not set
+CONFIG_PHYSICAL_ALIGN=0x200000
+CONFIG_DYNAMIC_MEMORY_LAYOUT=y
+# CONFIG_LEGACY_VSYSCALL_EMULATE is not set
+CONFIG_LEGACY_VSYSCALL_XONLY=y
+# CONFIG_LEGACY_VSYSCALL_NONE is not set
+# CONFIG_CMDLINE_BOOL is not set
+# CONFIG_MODIFY_LDT_SYSCALL is not set
+# CONFIG_STRICT_SIGALTSTACK_SIZE is not set
+CONFIG_HAVE_LIVEPATCH=y
+# end of Processor type and features
+
+CONFIG_ARCH_HAS_ADD_PAGES=y
+CONFIG_ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE=y
+
+#
+# Power management and ACPI options
+#
+# CONFIG_SUSPEND is not set
+# CONFIG_PM is not set
+CONFIG_ARCH_SUPPORTS_ACPI=y
+# CONFIG_ACPI is not set
+
+#
+# CPU Frequency scaling
+#
+# CONFIG_CPU_FREQ is not set
+# end of CPU Frequency scaling
+
+#
+# CPU Idle
+#
+# CONFIG_CPU_IDLE is not set
+# end of CPU Idle
+# end of Power management and ACPI options
+
+#
+# Bus options (PCI etc.)
+#
+# CONFIG_ISA_BUS is not set
+CONFIG_ISA_DMA_API=y
+# end of Bus options (PCI etc.)
+
+#
+# Binary Emulations
+#
+# CONFIG_IA32_EMULATION is not set
+# CONFIG_X86_X32 is not set
+# end of Binary Emulations
+
+CONFIG_HAVE_KVM=y
+# CONFIG_VIRTUALIZATION is not set
+CONFIG_AS_AVX512=y
+CONFIG_AS_SHA1_NI=y
+CONFIG_AS_SHA256_NI=y
+CONFIG_AS_TPAUSE=y
+
+#
+# General architecture-dependent options
+#
+CONFIG_GENERIC_ENTRY=y
+# CONFIG_JUMP_LABEL is not set
+# CONFIG_STATIC_CALL_SELFTEST is not set
+CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS=y
+CONFIG_ARCH_USE_BUILTIN_BSWAP=y
+CONFIG_HAVE_IOREMAP_PROT=y
+CONFIG_HAVE_KPROBES=y
+CONFIG_HAVE_KRETPROBES=y
+CONFIG_HAVE_OPTPROBES=y
+CONFIG_HAVE_KPROBES_ON_FTRACE=y
+CONFIG_ARCH_CORRECT_STACKTRACE_ON_KRETPROBE=y
+CONFIG_HAVE_FUNCTION_ERROR_INJECTION=y
+CONFIG_HAVE_NMI=y
+CONFIG_TRACE_IRQFLAGS_SUPPORT=y
+CONFIG_HAVE_ARCH_TRACEHOOK=y
+CONFIG_HAVE_DMA_CONTIGUOUS=y
+CONFIG_GENERIC_SMP_IDLE_THREAD=y
+CONFIG_ARCH_HAS_FORTIFY_SOURCE=y
+CONFIG_ARCH_HAS_SET_MEMORY=y
+CONFIG_ARCH_HAS_SET_DIRECT_MAP=y
+CONFIG_HAVE_ARCH_THREAD_STRUCT_WHITELIST=y
+CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT=y
+CONFIG_ARCH_WANTS_NO_INSTR=y
+CONFIG_HAVE_ASM_MODVERSIONS=y
+CONFIG_HAVE_REGS_AND_STACK_ACCESS_API=y
+CONFIG_HAVE_RSEQ=y
+CONFIG_HAVE_FUNCTION_ARG_ACCESS_API=y
+CONFIG_HAVE_HW_BREAKPOINT=y
+CONFIG_HAVE_MIXED_BREAKPOINTS_REGS=y
+CONFIG_HAVE_USER_RETURN_NOTIFIER=y
+CONFIG_HAVE_PERF_EVENTS_NMI=y
+CONFIG_HAVE_HARDLOCKUP_DETECTOR_PERF=y
+CONFIG_HAVE_PERF_REGS=y
+CONFIG_HAVE_PERF_USER_STACK_DUMP=y
+CONFIG_HAVE_ARCH_JUMP_LABEL=y
+CONFIG_HAVE_ARCH_JUMP_LABEL_RELATIVE=y
+CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
+CONFIG_HAVE_CMPXCHG_LOCAL=y
+CONFIG_HAVE_CMPXCHG_DOUBLE=y
+CONFIG_HAVE_ARCH_SECCOMP=y
+CONFIG_HAVE_ARCH_SECCOMP_FILTER=y
+# CONFIG_SECCOMP is not set
+CONFIG_HAVE_ARCH_STACKLEAK=y
+CONFIG_HAVE_STACKPROTECTOR=y
+# CONFIG_STACKPROTECTOR is not set
+CONFIG_ARCH_SUPPORTS_LTO_CLANG=y
+CONFIG_ARCH_SUPPORTS_LTO_CLANG_THIN=y
+CONFIG_LTO_NONE=y
+CONFIG_HAVE_ARCH_WITHIN_STACK_FRAMES=y
+CONFIG_HAVE_CONTEXT_TRACKING=y
+CONFIG_HAVE_CONTEXT_TRACKING_OFFSTACK=y
+CONFIG_HAVE_VIRT_CPU_ACCOUNTING_GEN=y
+CONFIG_HAVE_IRQ_TIME_ACCOUNTING=y
+CONFIG_HAVE_MOVE_PUD=y
+CONFIG_HAVE_MOVE_PMD=y
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE=y
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD=y
+CONFIG_HAVE_ARCH_HUGE_VMAP=y
+CONFIG_ARCH_WANT_HUGE_PMD_SHARE=y
+CONFIG_HAVE_ARCH_SOFT_DIRTY=y
+CONFIG_HAVE_MOD_ARCH_SPECIFIC=y
+CONFIG_MODULES_USE_ELF_RELA=y
+CONFIG_HAVE_IRQ_EXIT_ON_IRQ_STACK=y
+CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK=y
+CONFIG_ARCH_HAS_ELF_RANDOMIZE=y
+CONFIG_HAVE_ARCH_MMAP_RND_BITS=y
+CONFIG_HAVE_EXIT_THREAD=y
+CONFIG_ARCH_MMAP_RND_BITS=28
+CONFIG_PAGE_SIZE_LESS_THAN_64KB=y
+CONFIG_PAGE_SIZE_LESS_THAN_256KB=y
+CONFIG_HAVE_STACK_VALIDATION=y
+# CONFIG_COMPAT_32BIT_TIME is not set
+CONFIG_HAVE_ARCH_VMAP_STACK=y
+CONFIG_VMAP_STACK=y
+CONFIG_HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET=y
+# CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT is not set
+CONFIG_ARCH_HAS_STRICT_KERNEL_RWX=y
+CONFIG_STRICT_KERNEL_RWX=y
+CONFIG_ARCH_HAS_STRICT_MODULE_RWX=y
+CONFIG_HAVE_ARCH_PREL32_RELOCATIONS=y
+CONFIG_ARCH_HAS_MEM_ENCRYPT=y
+CONFIG_HAVE_STATIC_CALL=y
+CONFIG_HAVE_STATIC_CALL_INLINE=y
+CONFIG_HAVE_PREEMPT_DYNAMIC=y
+CONFIG_ARCH_WANT_LD_ORPHAN_WARN=y
+CONFIG_ARCH_SUPPORTS_DEBUG_PAGEALLOC=y
+CONFIG_ARCH_SUPPORTS_PAGE_TABLE_CHECK=y
+CONFIG_ARCH_HAS_ELFCORE_COMPAT=y
+CONFIG_ARCH_HAS_PARANOID_L1D_FLUSH=y
+CONFIG_DYNAMIC_SIGFRAME=y
+
+#
+# GCOV-based kernel profiling
+#
+CONFIG_ARCH_HAS_GCOV_PROFILE_ALL=y
+# end of GCOV-based kernel profiling
+
+CONFIG_HAVE_GCC_PLUGINS=y
+# CONFIG_GCC_PLUGINS is not set
+# end of General architecture-dependent options
+
+CONFIG_BASE_SMALL=1
+# CONFIG_MODULES is not set
+CONFIG_MODULES_TREE_LOOKUP=y
+# CONFIG_BLOCK is not set
+CONFIG_ASN1=y
+CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
+CONFIG_INLINE_READ_UNLOCK=y
+CONFIG_INLINE_READ_UNLOCK_IRQ=y
+CONFIG_INLINE_WRITE_UNLOCK=y
+CONFIG_INLINE_WRITE_UNLOCK_IRQ=y
+CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=y
+CONFIG_ARCH_USE_QUEUED_SPINLOCKS=y
+CONFIG_ARCH_USE_QUEUED_RWLOCKS=y
+CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE=y
+CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE=y
+CONFIG_ARCH_HAS_SYSCALL_WRAPPER=y
+
+#
+# Executable file formats
+#
+# CONFIG_BINFMT_ELF is not set
+# CONFIG_BINFMT_SCRIPT is not set
+# CONFIG_BINFMT_MISC is not set
+# CONFIG_COREDUMP is not set
+# end of Executable file formats
+
+#
+# Memory Management options
+#
+CONFIG_SELECT_MEMORY_MODEL=y
+CONFIG_SPARSEMEM_MANUAL=y
+CONFIG_SPARSEMEM=y
+CONFIG_SPARSEMEM_EXTREME=y
+CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
+CONFIG_SPARSEMEM_VMEMMAP=y
+CONFIG_HAVE_FAST_GUP=y
+CONFIG_EXCLUSIVE_SYSTEM_RAM=y
+CONFIG_ARCH_ENABLE_MEMORY_HOTPLUG=y
+# CONFIG_MEMORY_HOTPLUG is not set
+CONFIG_SPLIT_PTLOCK_CPUS=4
+CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK=y
+# CONFIG_COMPACTION is not set
+# CONFIG_PAGE_REPORTING is not set
+CONFIG_PHYS_ADDR_T_64BIT=y
+CONFIG_VIRT_TO_BUS=y
+# CONFIG_KSM is not set
+CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
+# CONFIG_TRANSPARENT_HUGEPAGE is not set
+CONFIG_ARCH_WANTS_THP_SWAP=y
+CONFIG_NEED_PER_CPU_KM=y
+CONFIG_NEED_PER_CPU_EMBED_FIRST_CHUNK=y
+CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK=y
+CONFIG_HAVE_SETUP_PER_CPU_AREA=y
+# CONFIG_CMA is not set
+# CONFIG_ZPOOL is not set
+# CONFIG_ZSMALLOC is not set
+CONFIG_GENERIC_EARLY_IOREMAP=y
+# CONFIG_IDLE_PAGE_TRACKING is not set
+CONFIG_ARCH_HAS_CACHE_LINE_SIZE=y
+CONFIG_ARCH_HAS_PTE_DEVMAP=y
+CONFIG_ARCH_HAS_ZONE_DMA_SET=y
+# CONFIG_ZONE_DMA is not set
+CONFIG_ZONE_DMA32=y
+CONFIG_ARCH_USES_HIGH_VMA_FLAGS=y
+CONFIG_ARCH_HAS_PKEYS=y
+# CONFIG_PERCPU_STATS is not set
+
+#
+# GUP_TEST needs to have DEBUG_FS enabled
+#
+CONFIG_ARCH_HAS_PTE_SPECIAL=y
+
+#
+# Data Access Monitoring
+#
+# CONFIG_DAMON is not set
+# end of Data Access Monitoring
+# end of Memory Management options
+
+# CONFIG_NET is not set
+
+#
+# Device Drivers
+#
+CONFIG_HAVE_EISA=y
+# CONFIG_EISA is not set
+CONFIG_HAVE_PCI=y
+# CONFIG_PCI is not set
+# CONFIG_PCCARD is not set
+
+#
+# Generic Driver Options
+#
+# CONFIG_UEVENT_HELPER is not set
+# CONFIG_DEVTMPFS is not set
+# CONFIG_STANDALONE is not set
+# CONFIG_PREVENT_FIRMWARE_BUILD is not set
+
+#
+# Firmware loader
+#
+# CONFIG_FW_LOADER is not set
+# end of Firmware loader
+
+# CONFIG_ALLOW_DEV_COREDUMP is not set
+# CONFIG_DEBUG_DRIVER is not set
+# CONFIG_DEBUG_DEVRES is not set
+# CONFIG_DEBUG_TEST_DRIVER_REMOVE is not set
+CONFIG_GENERIC_CPU_AUTOPROBE=y
+CONFIG_GENERIC_CPU_VULNERABILITIES=y
+# end of Generic Driver Options
+
+#
+# Bus devices
+#
+# CONFIG_MHI_BUS is not set
+# end of Bus devices
+
+#
+# Firmware Drivers
+#
+
+#
+# ARM System Control and Management Interface Protocol
+#
+# end of ARM System Control and Management Interface Protocol
+
+# CONFIG_EDD is not set
+# CONFIG_FIRMWARE_MEMMAP is not set
+# CONFIG_FW_CFG_SYSFS is not set
+CONFIG_SYSFB=y
+# CONFIG_SYSFB_SIMPLEFB is not set
+# CONFIG_GOOGLE_FIRMWARE is not set
+
+#
+# Tegra firmware driver
+#
+# end of Tegra firmware driver
+# end of Firmware Drivers
+
+# CONFIG_GNSS is not set
+# CONFIG_MTD is not set
+# CONFIG_OF is not set
+CONFIG_ARCH_MIGHT_HAVE_PC_PARPORT=y
+# CONFIG_PARPORT is not set
+
+#
+# NVME Support
+#
+# end of NVME Support
+
+#
+# Misc devices
+#
+# CONFIG_DUMMY_IRQ is not set
+# CONFIG_ENCLOSURE_SERVICES is not set
+# CONFIG_SRAM is not set
+# CONFIG_XILINX_SDFEC is not set
+# CONFIG_C2PORT is not set
+
+#
+# EEPROM support
+#
+# CONFIG_EEPROM_93CX6 is not set
+# end of EEPROM support
+
+#
+# Texas Instruments shared transport line discipline
+#
+# end of Texas Instruments shared transport line discipline
+
+#
+# Altera FPGA firmware download module (requires I2C)
+#
+# CONFIG_ECHO is not set
+# CONFIG_PVPANIC is not set
+# end of Misc devices
+
+#
+# SCSI device support
+#
+CONFIG_SCSI_MOD=y
+# end of SCSI device support
+
+# CONFIG_MACINTOSH_DRIVERS is not set
+
+#
+# Input device support
+#
+# CONFIG_INPUT is not set
+
+#
+# Hardware I/O ports
+#
+# CONFIG_SERIO is not set
+CONFIG_ARCH_MIGHT_HAVE_PC_SERIO=y
+# CONFIG_GAMEPORT is not set
+# end of Hardware I/O ports
+# end of Input device support
+
+#
+# Character devices
+#
+# CONFIG_TTY is not set
+# CONFIG_SERIAL_DEV_BUS is not set
+# CONFIG_IPMI_HANDLER is not set
+# CONFIG_HW_RANDOM is not set
+# CONFIG_DEVMEM is not set
+# CONFIG_NVRAM is not set
+# CONFIG_HANGCHECK_TIMER is not set
+# CONFIG_TCG_TPM is not set
+# CONFIG_TELCLOCK is not set
+# CONFIG_RANDOM_TRUST_BOOTLOADER is not set
+# end of Character devices
+
+#
+# I2C support
+#
+# CONFIG_I2C is not set
+# end of I2C support
+
+# CONFIG_I3C is not set
+# CONFIG_SPI is not set
+# CONFIG_SPMI is not set
+# CONFIG_HSI is not set
+# CONFIG_PPS is not set
+
+#
+# PTP clock support
+#
+CONFIG_PTP_1588_CLOCK_OPTIONAL=y
+
+#
+# Enable PHYLIB and NETWORK_PHY_TIMESTAMPING to see the additional clocks.
+#
+# end of PTP clock support
+
+# CONFIG_PINCTRL is not set
+# CONFIG_GPIOLIB is not set
+# CONFIG_W1 is not set
+# CONFIG_POWER_RESET is not set
+# CONFIG_POWER_SUPPLY is not set
+# CONFIG_HWMON is not set
+# CONFIG_THERMAL is not set
+# CONFIG_WATCHDOG is not set
+CONFIG_SSB_POSSIBLE=y
+# CONFIG_SSB is not set
+CONFIG_BCMA_POSSIBLE=y
+# CONFIG_BCMA is not set
+
+#
+# Multifunction device drivers
+#
+# CONFIG_MFD_MADERA is not set
+# CONFIG_HTC_PASIC3 is not set
+# CONFIG_MFD_KEMPLD is not set
+# CONFIG_MFD_MT6397 is not set
+# CONFIG_MFD_SM501 is not set
+# CONFIG_MFD_SYSCON is not set
+# CONFIG_MFD_TI_AM335X_TSCADC is not set
+# CONFIG_MFD_TQMX86 is not set
+# end of Multifunction device drivers
+
+# CONFIG_REGULATOR is not set
+
+#
+# CEC support
+#
+# CONFIG_MEDIA_CEC_SUPPORT is not set
+# end of CEC support
+
+# CONFIG_MEDIA_SUPPORT is not set
+
+#
+# Graphics support
+#
+# CONFIG_DRM is not set
+# CONFIG_DRM_DEBUG_MODESET_LOCK is not set
+
+#
+# ARM devices
+#
+# end of ARM devices
+
+#
+# Frame buffer Devices
+#
+# CONFIG_FB is not set
+# end of Frame buffer Devices
+
+#
+# Backlight & LCD device support
+#
+# CONFIG_LCD_CLASS_DEVICE is not set
+# CONFIG_BACKLIGHT_CLASS_DEVICE is not set
+# end of Backlight & LCD device support
+# end of Graphics support
+
+# CONFIG_SOUND is not set
+CONFIG_USB_OHCI_LITTLE_ENDIAN=y
+# CONFIG_USB_SUPPORT is not set
+# CONFIG_MMC is not set
+# CONFIG_MEMSTICK is not set
+# CONFIG_NEW_LEDS is not set
+# CONFIG_ACCESSIBILITY is not set
+CONFIG_EDAC_ATOMIC_SCRUB=y
+CONFIG_EDAC_SUPPORT=y
+CONFIG_RTC_LIB=y
+CONFIG_RTC_MC146818_LIB=y
+# CONFIG_RTC_CLASS is not set
+# CONFIG_DMADEVICES is not set
+
+#
+# DMABUF options
+#
+# CONFIG_SYNC_FILE is not set
+# CONFIG_DMABUF_HEAPS is not set
+# end of DMABUF options
+
+# CONFIG_AUXDISPLAY is not set
+# CONFIG_UIO is not set
+# CONFIG_VFIO is not set
+# CONFIG_VIRT_DRIVERS is not set
+# CONFIG_VIRTIO_MENU is not set
+# CONFIG_VHOST_MENU is not set
+
+#
+# Microsoft Hyper-V guest support
+#
+# end of Microsoft Hyper-V guest support
+
+# CONFIG_GREYBUS is not set
+# CONFIG_COMEDI is not set
+# CONFIG_STAGING is not set
+# CONFIG_X86_PLATFORM_DEVICES is not set
+# CONFIG_CHROME_PLATFORMS is not set
+# CONFIG_MELLANOX_PLATFORM is not set
+# CONFIG_SURFACE_PLATFORMS is not set
+# CONFIG_COMMON_CLK is not set
+# CONFIG_HWSPINLOCK is not set
+
+#
+# Clock Source drivers
+#
+CONFIG_CLKEVT_I8253=y
+CONFIG_CLKBLD_I8253=y
+# end of Clock Source drivers
+
+# CONFIG_MAILBOX is not set
+# CONFIG_IOMMU_SUPPORT is not set
+
+#
+# Remoteproc drivers
+#
+# CONFIG_REMOTEPROC is not set
+# end of Remoteproc drivers
+
+#
+# Rpmsg drivers
+#
+# CONFIG_RPMSG_VIRTIO is not set
+# end of Rpmsg drivers
+
+#
+# SOC (System On Chip) specific Drivers
+#
+
+#
+# Amlogic SoC drivers
+#
+# end of Amlogic SoC drivers
+
+#
+# Broadcom SoC drivers
+#
+# end of Broadcom SoC drivers
+
+#
+# NXP/Freescale QorIQ SoC drivers
+#
+# end of NXP/Freescale QorIQ SoC drivers
+
+#
+# i.MX SoC drivers
+#
+# end of i.MX SoC drivers
+
+#
+# Enable LiteX SoC Builder specific drivers
+#
+# end of Enable LiteX SoC Builder specific drivers
+
+#
+# Qualcomm SoC drivers
+#
+# end of Qualcomm SoC drivers
+
+# CONFIG_SOC_TI is not set
+
+#
+# Xilinx SoC drivers
+#
+# end of Xilinx SoC drivers
+# end of SOC (System On Chip) specific Drivers
+
+# CONFIG_PM_DEVFREQ is not set
+# CONFIG_EXTCON is not set
+# CONFIG_MEMORY is not set
+# CONFIG_IIO is not set
+# CONFIG_PWM is not set
+
+#
+# IRQ chip support
+#
+# end of IRQ chip support
+
+# CONFIG_IPACK_BUS is not set
+# CONFIG_RESET_CONTROLLER is not set
+
+#
+# PHY Subsystem
+#
+# CONFIG_GENERIC_PHY is not set
+# CONFIG_PHY_CAN_TRANSCEIVER is not set
+
+#
+# PHY drivers for Broadcom platforms
+#
+# CONFIG_BCM_KONA_USB2_PHY is not set
+# end of PHY drivers for Broadcom platforms
+
+# CONFIG_PHY_PXA_28NM_HSIC is not set
+# CONFIG_PHY_PXA_28NM_USB2 is not set
+# CONFIG_PHY_INTEL_LGM_EMMC is not set
+# end of PHY Subsystem
+
+# CONFIG_POWERCAP is not set
+# CONFIG_MCB is not set
+
+#
+# Performance monitor support
+#
+# end of Performance monitor support
+
+# CONFIG_RAS is not set
+
+#
+# Android
+#
+# CONFIG_ANDROID is not set
+# end of Android
+
+# CONFIG_DAX is not set
+# CONFIG_NVMEM is not set
+
+#
+# HW tracing support
+#
+# CONFIG_STM is not set
+# CONFIG_INTEL_TH is not set
+# end of HW tracing support
+
+# CONFIG_FPGA is not set
+# CONFIG_TEE is not set
+# CONFIG_SIOX is not set
+# CONFIG_SLIMBUS is not set
+# CONFIG_INTERCONNECT is not set
+# CONFIG_COUNTER is not set
+# end of Device Drivers
+
+#
+# File systems
+#
+CONFIG_DCACHE_WORD_ACCESS=y
+# CONFIG_VALIDATE_FS_PARSER is not set
+# CONFIG_FS_DAX is not set
+# CONFIG_EXPORTFS_BLOCK_OPS is not set
+# CONFIG_FILE_LOCKING is not set
+# CONFIG_FS_ENCRYPTION is not set
+# CONFIG_FS_VERITY is not set
+# CONFIG_DNOTIFY is not set
+# CONFIG_INOTIFY_USER is not set
+# CONFIG_FANOTIFY is not set
+# CONFIG_QUOTA is not set
+# CONFIG_AUTOFS4_FS is not set
+# CONFIG_AUTOFS_FS is not set
+# CONFIG_FUSE_FS is not set
+# CONFIG_OVERLAY_FS is not set
+
+#
+# Caches
+#
+# CONFIG_FSCACHE is not set
+# end of Caches
+
+#
+# Pseudo filesystems
+#
+# CONFIG_PROC_FS is not set
+# CONFIG_PROC_CHILDREN is not set
+CONFIG_KERNFS=y
+CONFIG_SYSFS=y
+# CONFIG_HUGETLBFS is not set
+CONFIG_ARCH_HAS_GIGANTIC_PAGE=y
+# CONFIG_CONFIGFS_FS is not set
+# end of Pseudo filesystems
+
+# CONFIG_MISC_FILESYSTEMS is not set
+# CONFIG_NLS is not set
+# CONFIG_UNICODE is not set
+# end of File systems
+
+#
+# Security options
+#
+CONFIG_KEYS=y
+# CONFIG_KEYS_REQUEST_CACHE is not set
+# CONFIG_PERSISTENT_KEYRINGS is not set
+# CONFIG_ENCRYPTED_KEYS is not set
+# CONFIG_KEY_DH_OPERATIONS is not set
+# CONFIG_SECURITY_DMESG_RESTRICT is not set
+CONFIG_SECURITY=y
+# CONFIG_SECURITYFS is not set
+# CONFIG_SECURITY_NETWORK is not set
+CONFIG_PAGE_TABLE_ISOLATION=y
+# CONFIG_SECURITY_PATH is not set
+# CONFIG_FORTIFY_SOURCE is not set
+# CONFIG_STATIC_USERMODEHELPER is not set
+# CONFIG_SECURITY_YAMA is not set
+# CONFIG_SECURITY_SAFESETID is not set
+# CONFIG_SECURITY_LOCKDOWN_LSM is not set
+# CONFIG_SECURITY_LANDLOCK is not set
+CONFIG_INTEGRITY=y
+CONFIG_INTEGRITY_SIGNATURE=y
+CONFIG_INTEGRITY_ASYMMETRIC_KEYS=y
+CONFIG_INTEGRITY_PLATFORM_KEYRING=y
+CONFIG_INTEGRITY_PLATFORM_KEYS="localhost.pem"
+# CONFIG_IMA is not set
+# CONFIG_EVM is not set
+CONFIG_DEFAULT_SECURITY_DAC=y
+CONFIG_LSM="landlock,lockdown,yama,loadpin,safesetid,integrity,bpf"
+
+#
+# Kernel hardening options
+#
+
+#
+# Memory initialization
+#
+CONFIG_INIT_STACK_NONE=y
+# CONFIG_INIT_ON_ALLOC_DEFAULT_ON is not set
+# CONFIG_INIT_ON_FREE_DEFAULT_ON is not set
+CONFIG_CC_HAS_ZERO_CALL_USED_REGS=y
+# CONFIG_ZERO_CALL_USED_REGS is not set
+# end of Memory initialization
+# end of Kernel hardening options
+# end of Security options
+
+CONFIG_CRYPTO=y
+
+#
+# Crypto core or helper
+#
+CONFIG_CRYPTO_ALGAPI=y
+CONFIG_CRYPTO_ALGAPI2=y
+CONFIG_CRYPTO_AEAD2=y
+CONFIG_CRYPTO_SKCIPHER2=y
+CONFIG_CRYPTO_HASH=y
+CONFIG_CRYPTO_HASH2=y
+CONFIG_CRYPTO_RNG2=y
+CONFIG_CRYPTO_AKCIPHER2=y
+CONFIG_CRYPTO_AKCIPHER=y
+CONFIG_CRYPTO_KPP2=y
+CONFIG_CRYPTO_ACOMP2=y
+CONFIG_CRYPTO_MANAGER=y
+CONFIG_CRYPTO_MANAGER2=y
+CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
+# CONFIG_CRYPTO_NULL is not set
+CONFIG_CRYPTO_NULL2=y
+# CONFIG_CRYPTO_CRYPTD is not set
+# CONFIG_CRYPTO_AUTHENC is not set
+# CONFIG_CRYPTO_TEST is not set
+
+#
+# Public-key cryptography
+#
+CONFIG_CRYPTO_RSA=y
+# CONFIG_CRYPTO_DH is not set
+# CONFIG_CRYPTO_ECDH is not set
+# CONFIG_CRYPTO_ECDSA is not set
+# CONFIG_CRYPTO_ECRDSA is not set
+# CONFIG_CRYPTO_SM2 is not set
+# CONFIG_CRYPTO_CURVE25519 is not set
+# CONFIG_CRYPTO_CURVE25519_X86 is not set
+
+#
+# Authenticated Encryption with Associated Data
+#
+# CONFIG_CRYPTO_CCM is not set
+# CONFIG_CRYPTO_GCM is not set
+# CONFIG_CRYPTO_CHACHA20POLY1305 is not set
+# CONFIG_CRYPTO_AEGIS128 is not set
+# CONFIG_CRYPTO_AEGIS128_AESNI_SSE2 is not set
+# CONFIG_CRYPTO_SEQIV is not set
+# CONFIG_CRYPTO_ECHAINIV is not set
+
+#
+# Block modes
+#
+# CONFIG_CRYPTO_CBC is not set
+# CONFIG_CRYPTO_CFB is not set
+# CONFIG_CRYPTO_CTR is not set
+# CONFIG_CRYPTO_CTS is not set
+# CONFIG_CRYPTO_ECB is not set
+# CONFIG_CRYPTO_LRW is not set
+# CONFIG_CRYPTO_OFB is not set
+# CONFIG_CRYPTO_PCBC is not set
+# CONFIG_CRYPTO_XTS is not set
+# CONFIG_CRYPTO_KEYWRAP is not set
+# CONFIG_CRYPTO_NHPOLY1305_SSE2 is not set
+# CONFIG_CRYPTO_NHPOLY1305_AVX2 is not set
+# CONFIG_CRYPTO_ADIANTUM is not set
+# CONFIG_CRYPTO_ESSIV is not set
+
+#
+# Hash modes
+#
+# CONFIG_CRYPTO_CMAC is not set
+# CONFIG_CRYPTO_HMAC is not set
+# CONFIG_CRYPTO_XCBC is not set
+# CONFIG_CRYPTO_VMAC is not set
+
+#
+# Digest
+#
+# CONFIG_CRYPTO_CRC32C is not set
+# CONFIG_CRYPTO_CRC32C_INTEL is not set
+# CONFIG_CRYPTO_CRC32 is not set
+# CONFIG_CRYPTO_CRC32_PCLMUL is not set
+# CONFIG_CRYPTO_XXHASH is not set
+# CONFIG_CRYPTO_BLAKE2B is not set
+# CONFIG_CRYPTO_BLAKE2S is not set
+# CONFIG_CRYPTO_BLAKE2S_X86 is not set
+# CONFIG_CRYPTO_CRCT10DIF is not set
+# CONFIG_CRYPTO_GHASH is not set
+# CONFIG_CRYPTO_POLY1305 is not set
+# CONFIG_CRYPTO_POLY1305_X86_64 is not set
+# CONFIG_CRYPTO_MD4 is not set
+# CONFIG_CRYPTO_MD5 is not set
+# CONFIG_CRYPTO_MICHAEL_MIC is not set
+# CONFIG_CRYPTO_RMD160 is not set
+CONFIG_CRYPTO_SHA1=y
+# CONFIG_CRYPTO_SHA1_SSSE3 is not set
+# CONFIG_CRYPTO_SHA256_SSSE3 is not set
+# CONFIG_CRYPTO_SHA512_SSSE3 is not set
+# CONFIG_CRYPTO_SHA256 is not set
+# CONFIG_CRYPTO_SHA512 is not set
+# CONFIG_CRYPTO_SHA3 is not set
+# CONFIG_CRYPTO_SM3 is not set
+# CONFIG_CRYPTO_STREEBOG is not set
+# CONFIG_CRYPTO_WP512 is not set
+# CONFIG_CRYPTO_GHASH_CLMUL_NI_INTEL is not set
+
+#
+# Ciphers
+#
+# CONFIG_CRYPTO_AES is not set
+# CONFIG_CRYPTO_AES_TI is not set
+# CONFIG_CRYPTO_AES_NI_INTEL is not set
+# CONFIG_CRYPTO_BLOWFISH is not set
+# CONFIG_CRYPTO_BLOWFISH_X86_64 is not set
+# CONFIG_CRYPTO_CAMELLIA is not set
+# CONFIG_CRYPTO_CAMELLIA_X86_64 is not set
+# CONFIG_CRYPTO_CAMELLIA_AESNI_AVX_X86_64 is not set
+# CONFIG_CRYPTO_CAMELLIA_AESNI_AVX2_X86_64 is not set
+# CONFIG_CRYPTO_CAST5 is not set
+# CONFIG_CRYPTO_CAST5_AVX_X86_64 is not set
+# CONFIG_CRYPTO_CAST6 is not set
+# CONFIG_CRYPTO_CAST6_AVX_X86_64 is not set
+# CONFIG_CRYPTO_DES is not set
+# CONFIG_CRYPTO_DES3_EDE_X86_64 is not set
+# CONFIG_CRYPTO_FCRYPT is not set
+# CONFIG_CRYPTO_CHACHA20 is not set
+# CONFIG_CRYPTO_CHACHA20_X86_64 is not set
+# CONFIG_CRYPTO_SERPENT is not set
+# CONFIG_CRYPTO_SERPENT_SSE2_X86_64 is not set
+# CONFIG_CRYPTO_SERPENT_AVX_X86_64 is not set
+# CONFIG_CRYPTO_SERPENT_AVX2_X86_64 is not set
+# CONFIG_CRYPTO_SM4 is not set
+# CONFIG_CRYPTO_SM4_AESNI_AVX_X86_64 is not set
+# CONFIG_CRYPTO_SM4_AESNI_AVX2_X86_64 is not set
+# CONFIG_CRYPTO_TWOFISH is not set
+# CONFIG_CRYPTO_TWOFISH_X86_64 is not set
+# CONFIG_CRYPTO_TWOFISH_X86_64_3WAY is not set
+# CONFIG_CRYPTO_TWOFISH_AVX_X86_64 is not set
+
+#
+# Compression
+#
+# CONFIG_CRYPTO_DEFLATE is not set
+# CONFIG_CRYPTO_LZO is not set
+# CONFIG_CRYPTO_842 is not set
+# CONFIG_CRYPTO_LZ4 is not set
+# CONFIG_CRYPTO_LZ4HC is not set
+# CONFIG_CRYPTO_ZSTD is not set
+
+#
+# Random Number Generation
+#
+# CONFIG_CRYPTO_ANSI_CPRNG is not set
+# CONFIG_CRYPTO_DRBG_MENU is not set
+# CONFIG_CRYPTO_JITTERENTROPY is not set
+CONFIG_CRYPTO_HASH_INFO=y
+CONFIG_CRYPTO_HW=y
+# CONFIG_CRYPTO_DEV_PADLOCK is not set
+# CONFIG_CRYPTO_DEV_AMLOGIC_GXL is not set
+CONFIG_ASYMMETRIC_KEY_TYPE=y
+CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
+CONFIG_X509_CERTIFICATE_PARSER=y
+# CONFIG_PKCS8_PRIVATE_KEY_PARSER is not set
+# CONFIG_PKCS7_MESSAGE_PARSER is not set
+
+#
+# Certificates for signature checking
+#
+# CONFIG_SYSTEM_TRUSTED_KEYRING is not set
+CONFIG_SYSTEM_BLACKLIST_KEYRING=y
+CONFIG_SYSTEM_BLACKLIST_HASH_LIST=""
+# end of Certificates for signature checking
+
+#
+# Library routines
+#
+# CONFIG_PACKING is not set
+CONFIG_GENERIC_STRNCPY_FROM_USER=y
+CONFIG_GENERIC_STRNLEN_USER=y
+# CONFIG_CORDIC is not set
+# CONFIG_PRIME_NUMBERS is not set
+CONFIG_GENERIC_PCI_IOMAP=y
+CONFIG_GENERIC_IOMAP=y
+CONFIG_ARCH_USE_CMPXCHG_LOCKREF=y
+CONFIG_ARCH_HAS_FAST_MULTIPLIER=y
+CONFIG_ARCH_USE_SYM_ANNOTATIONS=y
+
+#
+# Crypto library routines
+#
+CONFIG_CRYPTO_LIB_BLAKE2S_GENERIC=y
+# CONFIG_CRYPTO_LIB_CHACHA is not set
+# CONFIG_CRYPTO_LIB_CURVE25519 is not set
+CONFIG_CRYPTO_LIB_POLY1305_RSIZE=11
+# CONFIG_CRYPTO_LIB_POLY1305 is not set
+# CONFIG_CRYPTO_LIB_CHACHA20POLY1305 is not set
+# end of Crypto library routines
+
+# CONFIG_CRC_CCITT is not set
+# CONFIG_CRC16 is not set
+# CONFIG_CRC_T10DIF is not set
+# CONFIG_CRC_ITU_T is not set
+# CONFIG_CRC32 is not set
+# CONFIG_CRC64 is not set
+# CONFIG_CRC4 is not set
+# CONFIG_CRC7 is not set
+# CONFIG_LIBCRC32C is not set
+# CONFIG_CRC8 is not set
+# CONFIG_RANDOM32_SELFTEST is not set
+# CONFIG_XZ_DEC is not set
+CONFIG_ASSOCIATIVE_ARRAY=y
+CONFIG_HAS_IOMEM=y
+CONFIG_HAS_IOPORT_MAP=y
+CONFIG_HAS_DMA=y
+CONFIG_NEED_SG_DMA_LENGTH=y
+CONFIG_NEED_DMA_MAP_STATE=y
+CONFIG_ARCH_DMA_ADDR_T_64BIT=y
+CONFIG_SWIOTLB=y
+# CONFIG_DMA_API_DEBUG is not set
+CONFIG_SGL_ALLOC=y
+CONFIG_CLZ_TAB=y
+# CONFIG_IRQ_POLL is not set
+CONFIG_MPILIB=y
+CONFIG_SIGNATURE=y
+CONFIG_OID_REGISTRY=y
+CONFIG_HAVE_GENERIC_VDSO=y
+CONFIG_GENERIC_GETTIMEOFDAY=y
+CONFIG_GENERIC_VDSO_TIME_NS=y
+CONFIG_ARCH_HAS_PMEM_API=y
+CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE=y
+CONFIG_ARCH_HAS_COPY_MC=y
+CONFIG_ARCH_STACKWALK=y
+# end of Library routines
+
+#
+# Kernel hacking
+#
+
+#
+# printk and dmesg options
+#
+CONFIG_CONSOLE_LOGLEVEL_DEFAULT=7
+CONFIG_CONSOLE_LOGLEVEL_QUIET=4
+CONFIG_MESSAGE_LOGLEVEL_DEFAULT=4
+# CONFIG_SYMBOLIC_ERRNAME is not set
+# end of printk and dmesg options
+
+#
+# Compile-time checks and compiler options
+#
+# CONFIG_DEBUG_INFO is not set
+CONFIG_FRAME_WARN=1024
+# CONFIG_STRIP_ASM_SYMS is not set
+# CONFIG_READABLE_ASM is not set
+# CONFIG_HEADERS_INSTALL is not set
+# CONFIG_DEBUG_SECTION_MISMATCH is not set
+# CONFIG_SECTION_MISMATCH_WARN_ONLY is not set
+# CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B is not set
+CONFIG_STACK_VALIDATION=y
+# CONFIG_VMLINUX_MAP is not set
+# CONFIG_DEBUG_FORCE_WEAK_PER_CPU is not set
+# end of Compile-time checks and compiler options
+
+#
+# Generic Kernel Debugging Instruments
+#
+# CONFIG_MAGIC_SYSRQ is not set
+# CONFIG_DEBUG_FS is not set
+CONFIG_HAVE_ARCH_KGDB=y
+# CONFIG_KGDB is not set
+CONFIG_ARCH_HAS_UBSAN_SANITIZE_ALL=y
+# CONFIG_UBSAN is not set
+CONFIG_HAVE_ARCH_KCSAN=y
+CONFIG_HAVE_KCSAN_COMPILER=y
+# CONFIG_KCSAN is not set
+# end of Generic Kernel Debugging Instruments
+
+CONFIG_DEBUG_KERNEL=y
+# CONFIG_DEBUG_MISC is not set
+
+#
+# Networking Debugging
+#
+# CONFIG_NET_DEV_REFCNT_TRACKER is not set
+# CONFIG_NET_NS_REFCNT_TRACKER is not set
+# end of Networking Debugging
+
+#
+# Memory Debugging
+#
+# CONFIG_PAGE_EXTENSION is not set
+# CONFIG_DEBUG_PAGEALLOC is not set
+# CONFIG_PAGE_OWNER is not set
+# CONFIG_PAGE_TABLE_CHECK is not set
+# CONFIG_PAGE_POISONING is not set
+# CONFIG_DEBUG_RODATA_TEST is not set
+CONFIG_ARCH_HAS_DEBUG_WX=y
+# CONFIG_DEBUG_WX is not set
+CONFIG_GENERIC_PTDUMP=y
+# CONFIG_DEBUG_OBJECTS is not set
+CONFIG_HAVE_DEBUG_KMEMLEAK=y
+# CONFIG_DEBUG_KMEMLEAK is not set
+# CONFIG_DEBUG_STACK_USAGE is not set
+# CONFIG_SCHED_STACK_END_CHECK is not set
+CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE=y
+# CONFIG_DEBUG_VM is not set
+# CONFIG_DEBUG_VM_PGTABLE is not set
+CONFIG_ARCH_HAS_DEBUG_VIRTUAL=y
+# CONFIG_DEBUG_VIRTUAL is not set
+# CONFIG_DEBUG_MEMORY_INIT is not set
+CONFIG_ARCH_SUPPORTS_KMAP_LOCAL_FORCE_MAP=y
+# CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP is not set
+CONFIG_HAVE_ARCH_KASAN=y
+CONFIG_HAVE_ARCH_KASAN_VMALLOC=y
+CONFIG_CC_HAS_KASAN_GENERIC=y
+CONFIG_CC_HAS_WORKING_NOSANITIZE_ADDRESS=y
+CONFIG_HAVE_ARCH_KFENCE=y
+# end of Memory Debugging
+
+# CONFIG_DEBUG_SHIRQ is not set
+
+#
+# Debug Oops, Lockups and Hangs
+#
+# CONFIG_PANIC_ON_OOPS is not set
+CONFIG_PANIC_ON_OOPS_VALUE=0
+CONFIG_PANIC_TIMEOUT=0
+# CONFIG_SOFTLOCKUP_DETECTOR is not set
+CONFIG_HARDLOCKUP_CHECK_TIMESTAMP=y
+# CONFIG_HARDLOCKUP_DETECTOR is not set
+# CONFIG_DETECT_HUNG_TASK is not set
+# CONFIG_WQ_WATCHDOG is not set
+# end of Debug Oops, Lockups and Hangs
+
+#
+# Scheduler Debugging
+#
+# end of Scheduler Debugging
+
+# CONFIG_DEBUG_TIMEKEEPING is not set
+
+#
+# Lock Debugging (spinlocks, mutexes, etc...)
+#
+CONFIG_LOCK_DEBUGGING_SUPPORT=y
+# CONFIG_PROVE_LOCKING is not set
+# CONFIG_LOCK_STAT is not set
+# CONFIG_DEBUG_SPINLOCK is not set
+# CONFIG_DEBUG_MUTEXES is not set
+# CONFIG_DEBUG_WW_MUTEX_SLOWPATH is not set
+# CONFIG_DEBUG_RWSEMS is not set
+# CONFIG_DEBUG_LOCK_ALLOC is not set
+# CONFIG_DEBUG_ATOMIC_SLEEP is not set
+# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
+# CONFIG_LOCK_TORTURE_TEST is not set
+# CONFIG_WW_MUTEX_SELFTEST is not set
+# CONFIG_SCF_TORTURE_TEST is not set
+# CONFIG_CSD_LOCK_WAIT_DEBUG is not set
+# end of Lock Debugging (spinlocks, mutexes, etc...)
+
+# CONFIG_DEBUG_IRQFLAGS is not set
+# CONFIG_STACKTRACE is not set
+# CONFIG_WARN_ALL_UNSEEDED_RANDOM is not set
+# CONFIG_DEBUG_KOBJECT is not set
+
+#
+# Debug kernel data structures
+#
+# CONFIG_DEBUG_LIST is not set
+# CONFIG_DEBUG_PLIST is not set
+# CONFIG_DEBUG_SG is not set
+# CONFIG_DEBUG_NOTIFIERS is not set
+# CONFIG_BUG_ON_DATA_CORRUPTION is not set
+# end of Debug kernel data structures
+
+# CONFIG_DEBUG_CREDENTIALS is not set
+
+#
+# RCU Debugging
+#
+# CONFIG_RCU_SCALE_TEST is not set
+# CONFIG_RCU_TORTURE_TEST is not set
+# CONFIG_RCU_REF_SCALE_TEST is not set
+# CONFIG_RCU_TRACE is not set
+# CONFIG_RCU_EQS_DEBUG is not set
+# end of RCU Debugging
+
+# CONFIG_DEBUG_WQ_FORCE_RR_CPU is not set
+CONFIG_USER_STACKTRACE_SUPPORT=y
+CONFIG_HAVE_FUNCTION_TRACER=y
+CONFIG_HAVE_DYNAMIC_FTRACE=y
+CONFIG_HAVE_DYNAMIC_FTRACE_WITH_REGS=y
+CONFIG_HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS=y
+CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS=y
+CONFIG_HAVE_FTRACE_MCOUNT_RECORD=y
+CONFIG_HAVE_SYSCALL_TRACEPOINTS=y
+CONFIG_HAVE_FENTRY=y
+CONFIG_HAVE_OBJTOOL_MCOUNT=y
+CONFIG_HAVE_C_RECORDMCOUNT=y
+CONFIG_HAVE_BUILDTIME_MCOUNT_SORT=y
+CONFIG_TRACING_SUPPORT=y
+# CONFIG_FTRACE is not set
+# CONFIG_SAMPLES is not set
+CONFIG_HAVE_SAMPLE_FTRACE_DIRECT=y
+CONFIG_HAVE_SAMPLE_FTRACE_DIRECT_MULTI=y
+CONFIG_ARCH_HAS_DEVMEM_IS_ALLOWED=y
+
+#
+# x86 Debugging
+#
+CONFIG_TRACE_IRQFLAGS_NMI_SUPPORT=y
+# CONFIG_X86_VERBOSE_BOOTUP is not set
+# CONFIG_EARLY_PRINTK is not set
+# CONFIG_DEBUG_TLBFLUSH is not set
+CONFIG_HAVE_MMIOTRACE_SUPPORT=y
+# CONFIG_X86_DECODER_SELFTEST is not set
+CONFIG_IO_DELAY_0X80=y
+# CONFIG_IO_DELAY_0XED is not set
+# CONFIG_IO_DELAY_UDELAY is not set
+# CONFIG_IO_DELAY_NONE is not set
+# CONFIG_CPA_DEBUG is not set
+# CONFIG_DEBUG_ENTRY is not set
+# CONFIG_DEBUG_NMI_SELFTEST is not set
+# CONFIG_X86_DEBUG_FPU is not set
+# CONFIG_UNWINDER_ORC is not set
+# CONFIG_UNWINDER_FRAME_POINTER is not set
+CONFIG_UNWINDER_GUESS=y
+# end of x86 Debugging
+
+#
+# Kernel Testing and Coverage
+#
+# CONFIG_KUNIT is not set
+# CONFIG_NOTIFIER_ERROR_INJECTION is not set
+# CONFIG_FAULT_INJECTION is not set
+CONFIG_ARCH_HAS_KCOV=y
+CONFIG_CC_HAS_SANCOV_TRACE_PC=y
+# CONFIG_KCOV is not set
+# CONFIG_RUNTIME_TESTING_MENU is not set
+CONFIG_ARCH_USE_MEMTEST=y
+# CONFIG_MEMTEST is not set
+# end of Kernel Testing and Coverage
+# end of Kernel hacking
+
+--naGHcUinVPCFpm6c--
