@@ -2,308 +2,352 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3D24D0A70
-	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 23:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 636714D0B76
+	for <lists+keyrings@lfdr.de>; Mon,  7 Mar 2022 23:50:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233516AbiCGWEV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 7 Mar 2022 17:04:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53742 "EHLO
+        id S1343819AbiCGWvQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Mar 2022 17:51:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231446AbiCGWEU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 17:04:20 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 452F72A26E;
-        Mon,  7 Mar 2022 14:03:24 -0800 (PST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 227LC0eu036096;
-        Mon, 7 Mar 2022 22:03:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=iSdDxu0rIrQZqrEb7igOW8YGAEjyGBdzN9TORebHOxY=;
- b=KykxXpoS157tYvAGIkXjAtGiiHdJaKQepHUjfLEDrm0syS9nJtr6TpijqjjMLZ1ES2p/
- 39z0Q5UVQd2xLkVfsFQ7AVOKR0e2ZTESU5zTwE1Qxbj6Mkl7fy0V/8n+jCrT9J1x14Cx
- sQRopMmJDDnve6tlpTHNOB9TUIa8xYxLgE01E3ovBKWIEbWiPw9ts/r6bzMKyDO1lfjC
- j1h+uTRK0rCFPfQgUvKzdytUM8Ebhmbh7dzVfPw8TLFYbhu9hVJbc+S+9enbV8NwDiwF
- /cdz+xcgoRLpV0h0iTUuNJzDcJOgi/hX/vNNnxqpqxRP0GwSAkri1KkZxz9Vj9rAHz9j wg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3ensrj0r6v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Mar 2022 22:03:18 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 227M1Cvq025476;
-        Mon, 7 Mar 2022 22:03:17 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3ensrj0r6a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Mar 2022 22:03:17 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-        by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 227LwVjo015161;
-        Mon, 7 Mar 2022 22:03:15 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma01fra.de.ibm.com with ESMTP id 3ekyg8cv5x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Mar 2022 22:03:15 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 227M3Ckw56426836
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 7 Mar 2022 22:03:12 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EBD82A4051;
-        Mon,  7 Mar 2022 22:03:11 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7493BA4059;
-        Mon,  7 Mar 2022 22:03:10 +0000 (GMT)
-Received: from sig-9-65-67-225.ibm.com (unknown [9.65.67.225])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Mon,  7 Mar 2022 22:03:10 +0000 (GMT)
-Message-ID: <42243a19b5882ddff9d20b37d1566553b745a717.camel@linux.ibm.com>
-Subject: Re: [PATCH v10 3/3] integrity: support including firmware
- ".platform" keys at build time
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Nayna Jain <nayna@linux.ibm.com>
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        dhowells@redhat.com, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
-        seth@forshee.me, rnsastry@linux.ibm.com,
-        Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 07 Mar 2022 17:03:09 -0500
-In-Reply-To: <YiX/NHETfqLT8ZAz@iki.fi>
-References: <20220306205100.651878-1-nayna@linux.ibm.com>
-         <20220306205100.651878-4-nayna@linux.ibm.com> <YiX/NHETfqLT8ZAz@iki.fi>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: K9jvcnVzT7s9EW-sYNxd3RW10skz4y-_
-X-Proofpoint-ORIG-GUID: UbFojMx8fY8CJXLvdAmj3leWRUCTKFct
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S240408AbiCGWvP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 17:51:15 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA0F6FA35
+        for <keyrings@vger.kernel.org>; Mon,  7 Mar 2022 14:50:18 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id z15so15712506pfe.7
+        for <keyrings@vger.kernel.org>; Mon, 07 Mar 2022 14:50:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=x8qeC2zI78QkV0iOc0kFVEM5kYnlER6W3oUFiIDGDEs=;
+        b=i/TXCb+l8ln3qHT5i3SwHu9AX0kYz4HXLGYil7g4xo5apIXwSl1RCcdu8RFLgs50CS
+         WrA/YN4kQrjL6ZD7eQ0mlFUb9CBvJA1k1CCaKHSHB/nQoxtglkcp2ZTf5xKj5w6rzJK1
+         Zn1f1kSK3K+Qnuwj4DEqFmXiRr3mAiZGPh805CUon5fhh2BR+ebGa2QlZ1DzlWZFlLGd
+         smskrm9GJu68f6IDlMCXUtiKDv2OUWDKKc5onWRb0dYlqCrx6XN/sQ0nj/YruO6Aaz3K
+         jx0EoROxB8SzdxIdbJbs6ufhWZokrMRDYFz1vA2MTbxNmuEzNATQltUS3wc3bOEGEmuU
+         LUyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=x8qeC2zI78QkV0iOc0kFVEM5kYnlER6W3oUFiIDGDEs=;
+        b=s68Kmk9fhkTj/Ie4Fo6/9g6V5stVsHfoB5jpuG4vhrHsAdgo2D5L/EfpOQxd2OybDD
+         m1swamQTx4Q+3LNcdTwCrogNugEuVTDwzbhVgbzfUe4i+AKK+jnxwVkKCmuKSg5GeRn9
+         f4JrloyS4v3DinmHYB+SdjgcLvioW2g+BerXLJqEfRJXuAw5pQqCcfJgDr1MYhv+rPQP
+         utJQF0AVHSd/2h1QhfMWREelg/PacwNaypZmYUpT5Mqgg6j8LEHgnRvrVXu+mrPGBj2U
+         DJTXenxcja06Zfgk69vCKNYk4El2URF33orY0KGs2ycipb+gn6+21WeTQRqOrXFEWBnT
+         HW2Q==
+X-Gm-Message-State: AOAM533SEopq08zQ4xyJKolLN7hAr9ex40CwJWbPsz+49LtWprVEK4qC
+        YF5UsbZUeq43Pnrz1x2aN+HzHQ==
+X-Google-Smtp-Source: ABdhPJxMPWfLDRnDPpYHtkaWDUFwTjnzSm5l6I/7NlFTw+Jp8nXDbk7jK33/9GYdl/WAqL3un2CBvA==
+X-Received: by 2002:a65:6741:0:b0:380:5b69:cbc5 with SMTP id c1-20020a656741000000b003805b69cbc5mr5094086pgu.89.1646693417769;
+        Mon, 07 Mar 2022 14:50:17 -0800 (PST)
+Received: from google.com (223.103.125.34.bc.googleusercontent.com. [34.125.103.223])
+        by smtp.gmail.com with ESMTPSA id oj2-20020a17090b4d8200b001bef79ea006sm375344pjb.29.2022.03.07.14.50.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Mar 2022 14:50:17 -0800 (PST)
+Date:   Mon, 7 Mar 2022 22:50:12 +0000
+From:   Chun-Tse Shao <ctshao@google.com>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>, rostedt@goodmis.org,
+        nicolas@fjasle.eu, robh+dt@kernel.org,
+        Michal Marek <michal.lkml@markovi.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4] config: Allow kernel installation packaging to
+ override pkg-config
+Message-ID: <YiaMJCHOOuujHwiK@google.com>
+References: <20220306223016.2239094-1-ctshao@google.com>
+ <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-07_12,2022-03-04_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 bulkscore=0 adultscore=0 clxscore=1011 impostorscore=0
- spamscore=0 mlxlogscore=999 suspectscore=0 mlxscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203070114
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-[Cc'ing  Masahiro Yamada]
+On Mon, Mar 07, 2022 at 10:17:17AM -0800, Nick Desaulniers wrote:
+> On Sun, Mar 6, 2022 at 2:39 PM Chun-Tse Shao <ctshao@google.com> wrote:
+> >
+> > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
+> > what pkg-config and parameters are used.
+>
+> Sorry, kind a late thought here for v4, but we don't seem to prefix
+> many other host side tools with HOST_, i.e. LEX, YACC, AWK, PERL,
+> PYTHON3, etc.  Maybe just having the variable identifier be simply
+> PKGCONFIG rather than HOSTPKG_CONFIG then put it at the end of the
+> list in the top level Makefile after ZSTD (i.e. the list of host
+> tools)?  There's HOST_ prefixes when there's more than one tool
+> involved (i.e. host compiler vs target compiler), but I suspect
+> there's no such distinction for the existing uses of pkg-config?
+>
+Thanks for your suggestion, Nick! Yes I think it makes sense with PKGCONFIG
+instead of HOSTPKG_CONFIG since there is only one tool involved. I will
+work on it and submit a new patch.
 
-On Mon, 2022-03-07 at 14:48 +0200, Jarkko Sakkinen wrote:
-> On Sun, Mar 06, 2022 at 03:51:00PM -0500, Nayna Jain wrote:
-> > Allow firmware keys to be embedded in the Linux kernel and loaded onto
-> > the ".platform" keyring on boot.
-> > 
-> > The firmware keys can be specified in a file as a list of PEM encoded
-> > certificates using new config INTEGRITY_PLATFORM_KEYS. The certificates
-> > are embedded in the image by converting the PEM-formatted certificates
-> > into DER(binary) and generating
-> > security/integrity/platform_certs/platform_certificate_list file at
-> > build time. On boot, the embedded certs from the image are loaded onto
-> > the ".platform" keyring at late_initcall(), ensuring the platform keyring
-> > exists before loading the keys.
-> > 
-> > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+-CT
+> Otherwise, sorry for opening a bikeshed so late; this patch still LGTM.
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+>
+> >
+> > Signed-off-by: Chun-Tse Shao <ctshao@google.com>
 > > ---
-> >  security/integrity/Kconfig                    | 10 ++++++++
-> >  security/integrity/Makefile                   | 15 +++++++++++-
-> >  security/integrity/integrity.h                |  3 +++
-> >  .../integrity/platform_certs/platform_cert.S  | 23 +++++++++++++++++++
-> >  .../platform_certs/platform_keyring.c         | 23 +++++++++++++++++++
-> >  5 files changed, 73 insertions(+), 1 deletion(-)
-> >  create mode 100644 security/integrity/platform_certs/platform_cert.S
-> > 
-> > diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
-> > index 599429f99f99..77b2c22c0e1b 100644
-> > --- a/security/integrity/Kconfig
-> > +++ b/security/integrity/Kconfig
-> > @@ -62,6 +62,16 @@ config INTEGRITY_PLATFORM_KEYRING
-> >           provided by the platform for verifying the kexec'ed kerned image
-> >           and, possibly, the initramfs signature.
-> >  
-> > +config INTEGRITY_PLATFORM_KEYS
-> > +        string "Builtin X.509 keys for .platform keyring"
-> > +        depends on KEYS
-> > +        depends on ASYMMETRIC_KEY_TYPE
-> > +        depends on INTEGRITY_PLATFORM_KEYRING
-> > +        help
-> > +          If set, this option should be the filename of a PEM-formatted file
-> > +          containing X.509 certificates to be loaded onto the ".platform"
-> > +          keyring.
-> > +
-> >  config INTEGRITY_MACHINE_KEYRING
-> >  	bool "Provide a keyring to which Machine Owner Keys may be added"
-> >  	depends on SECONDARY_TRUSTED_KEYRING
-> > diff --git a/security/integrity/Makefile b/security/integrity/Makefile
-> > index d0ffe37dc1d6..65bd93301a3a 100644
-> > --- a/security/integrity/Makefile
-> > +++ b/security/integrity/Makefile
-> > @@ -3,13 +3,17 @@
-> >  # Makefile for caching inode integrity data (iint)
-> >  #
-> >  
-> > +quiet_cmd_extract_certs  = CERT  $@
-> > +      cmd_extract_certs  = certs/extract-cert $(2) $@
-> > +
-> >  obj-$(CONFIG_INTEGRITY) += integrity.o
-> >  
-> >  integrity-y := iint.o
-> >  integrity-$(CONFIG_INTEGRITY_AUDIT) += integrity_audit.o
-> >  integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
-> >  integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
-> > -integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o
-> > +integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o \
-> > +						  platform_certs/platform_cert.o
-> >  integrity-$(CONFIG_INTEGRITY_MACHINE_KEYRING) += platform_certs/machine_keyring.o
-> >  integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
-> >  				      platform_certs/load_uefi.o \
-> > @@ -20,3 +24,12 @@ integrity-$(CONFIG_LOAD_PPC_KEYS) += platform_certs/efi_parser.o \
-> >                                       platform_certs/keyring_handler.o
-> >  obj-$(CONFIG_IMA)			+= ima/
-> >  obj-$(CONFIG_EVM)			+= evm/
-> > +
-> > +$(obj)/platform_certs/platform_cert.o: $(obj)/platform_certs/platform_certificate_list
-> > +
-> > +targets += platform_certificate_list
-> > +
-> > +$(obj)/platform_certs/platform_certificate_list: $(CONFIG_INTEGRITY_PLATFORM_KEYS) certs/extract-cert FORCE
-> > +	$(call if_changed,extract_certs,$(if $(CONFIG_INTEGRITY_PLATFORM_KEYS),$<,""))
-> > +
-> > +clean-files := platform_certs/platform_certificate_list
-> > diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-> > index 76e9a9515f99..219da29fecf7 100644
-> > --- a/security/integrity/integrity.h
-> > +++ b/security/integrity/integrity.h
-> > @@ -282,6 +282,9 @@ integrity_audit_log_start(struct audit_context *ctx, gfp_t gfp_mask, int type)
-> >  #endif
-> >  
-> >  #ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
-> > +extern __initconst const u8 platform_certificate_list[];
-> > +extern __initconst const unsigned long platform_certificate_list_size;
-> > +
-> >  void __init add_to_platform_keyring(const char *source, const void *data,
-> >  				    size_t len);
-> >  #else
-> > diff --git a/security/integrity/platform_certs/platform_cert.S b/security/integrity/platform_certs/platform_cert.S
-> > new file mode 100644
-> > index 000000000000..20bccce5dc5a
-> > --- /dev/null
-> > +++ b/security/integrity/platform_certs/platform_cert.S
-> > @@ -0,0 +1,23 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#include <linux/export.h>
-> > +#include <linux/init.h>
-> > +
-> > +	__INITRODATA
-> > +
-> > +	.align 8
-> > +#ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
-> > +	.globl platform_certificate_list
-> > +platform_certificate_list:
-> > +__cert_list_start:
-> > +	.incbin "security/integrity/platform_certs/platform_certificate_list"
-> > +__cert_list_end:
-> > +#endif
-> > +
-> > +	.align 8
-> > +	.globl platform_certificate_list_size
-> > +platform_certificate_list_size:
-> > +#ifdef CONFIG_64BIT
-> > +	.quad __cert_list_end - __cert_list_start
-> > +#else
-> > +	.long __cert_list_end - __cert_list_start
-> > +#endif
-> > diff --git a/security/integrity/platform_certs/platform_keyring.c b/security/integrity/platform_certs/platform_keyring.c
-> > index bcafd7387729..c2368912fd1b 100644
-> > --- a/security/integrity/platform_certs/platform_keyring.c
-> > +++ b/security/integrity/platform_certs/platform_keyring.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/cred.h>
-> >  #include <linux/err.h>
-> >  #include <linux/slab.h>
-> > +#include <keys/system_keyring.h>
-> >  #include "../integrity.h"
-> >  
-> >  /**
-> > @@ -37,6 +38,28 @@ void __init add_to_platform_keyring(const char *source, const void *data,
-> >  		pr_info("Error adding keys to platform keyring %s\n", source);
-> >  }
-> >  
-> > +static __init int load_platform_certificate_list(void)
-> > +{
-> > +	const u8 *p;
-> > +	unsigned long size;
-> > +	int rc;
-> > +	struct key *keyring;
-> > +
-> > +	p = platform_certificate_list;
-> > +	size = platform_certificate_list_size;
-> > +
-> > +	keyring = integrity_keyring_from_id(INTEGRITY_KEYRING_PLATFORM);
-> > +	if (IS_ERR(keyring))
-> > +		return PTR_ERR(keyring);
-> > +
-> > +	rc = load_certificate_list(p, size, keyring);
-> > +	if (rc)
-> > +		pr_info("Error adding keys to platform keyring %d\n", rc);
-> > +
-> > +	return rc;
-> > +}
-> > +late_initcall(load_platform_certificate_list);
-> > +
-> >  /*
-> >   * Create the trusted keyrings.
-> >   */
-> > -- 
-> > 2.27.0
-> > 
-> 
-> There's zero tested-by's for this, i.e. cannot be applied before someone
-> has tested this. Mimi, do not mean to be rude, but I don't frankly
-> understand why you ask to pick a patch set that is *untested*.
-> So I generated a self-signed certificate:
-> 
-> openssl req -x509 -out localhost.crt -keyout localhost.key \
->   -newkey rsa:2048 -nodes -sha256 \
->   -subj '/CN=localhost' -extensions EXT -config <( \
->    printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
-> 
-> (by courtesy of letsencrypt: https://letsencrypt.org/docs/certificates-for-localhost/)
-> 
-> openssl x509 -in localhost.crt -out localhost.pem -outform PEM
-> 
-> And starting with tinyconfig I added minimal options to enable this
-> feature. The config is attached.
-> 
-> The end result is:
-> 
-> make[2]: *** No rule to make target 'certs/extract-cert', needed by 'security/integrity/platform_certs/platform_certificate_list'.  Stop.
-> make[1]: *** [scripts/Makefile.build:550: security/integrity] Error 2
-> make: *** [Makefile:1831: security] Error 2
-
-I've reviewed and tested this patch set each time it was posted last
-fall/winter.  Recent changes were limited to the cover letter and patch
-description.  Only recently was "extract_cert" moved to the certs/
-directory and not built automatically.  The commit message says the
-move was because it wasn't being used outside the certs directory. 
-Refer to commit 340a02535ee7 ("certs: move scripts/extract-cert to
-certs/").
-
-Masahiro Yamada would you be ok with reverting the move?
-
-thanks,
-
-Mimi
-
+> > Changes from v3: https://lore.kernel.org/all/20220304041449.939308-1-ctshao@google.com
+> >   - Dereference variables using {} instead of () in shell scripts
+> >   - Tested with make allmodconfig
+> >
+> > Changes from v2: https://lore.kernel.org/all/20220302193638.11034-1-ctshao@google.com/
+> >   - Fix more open coded instance of pkg-config in scripts and certs
+> >   - Tested with make allmodconfig
+> >
+> > Changes from v1: https://lore.kernel.org/all/20220301230629.1892828-1-ctshao@google.com/
+> >   - Make the commit message more clearer.
+> > ---
+> >  Makefile                     |  3 ++-
+> >  certs/Makefile               |  4 ++--
+> >  scripts/Makefile             |  4 ++--
+> >  scripts/dtc/Makefile         |  6 +++---
+> >  scripts/kconfig/gconf-cfg.sh | 10 +++++-----
+> >  scripts/kconfig/mconf-cfg.sh | 14 +++++++-------
+> >  scripts/kconfig/nconf-cfg.sh | 14 +++++++-------
+> >  scripts/kconfig/qconf-cfg.sh | 14 +++++++-------
+> >  tools/objtool/Makefile       |  4 ++--
+> >  9 files changed, 37 insertions(+), 36 deletions(-)
+> >
+> > diff --git a/Makefile b/Makefile
+> > index daeb5c88b50b..f6c5bef7e141 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -430,6 +430,7 @@ else
+> >  HOSTCC = gcc
+> >  HOSTCXX        = g++
+> >  endif
+> > +HOSTPKG_CONFIG = pkg-config
+> >
+> >  export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
+> >                               -O2 -fomit-frame-pointer -std=gnu89
+> > @@ -525,7 +526,7 @@ KBUILD_LDFLAGS_MODULE :=
+> >  KBUILD_LDFLAGS :=
+> >  CLANG_FLAGS :=
+> >
+> > -export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
+> > +export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
+> >  export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+> >  export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
+> >  export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
+> > diff --git a/certs/Makefile b/certs/Makefile
+> > index 3ea7fe60823f..fa540d14ef2d 100644
+> > --- a/certs/Makefile
+> > +++ b/certs/Makefile
+> > @@ -89,5 +89,5 @@ targets += x509_revocation_list
+> >
+> >  hostprogs := extract-cert
+> >
+> > -HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+> > -HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > +HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
+> > +HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > diff --git a/scripts/Makefile b/scripts/Makefile
+> > index ce5aa9030b74..f084f08ed176 100644
+> > --- a/scripts/Makefile
+> > +++ b/scripts/Makefile
+> > @@ -14,8 +14,8 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)   += insert-sys-cert
+> >  HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
+> >  HOSTLDLIBS_sorttable = -lpthread
+> >  HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
+> > -HOSTCFLAGS_sign-file.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+> > -HOSTLDLIBS_sign-file = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
+> > +HOSTCFLAGS_sign-file.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
+> > +HOSTLDLIBS_sign-file = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+> >
+> >  ifdef CONFIG_UNWINDER_ORC
+> >  ifeq ($(ARCH),x86_64)
+> > diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
+> > index 95aaf7431bff..743fc08827ea 100644
+> > --- a/scripts/dtc/Makefile
+> > +++ b/scripts/dtc/Makefile
+> > @@ -18,7 +18,7 @@ fdtoverlay-objs       := $(libfdt) fdtoverlay.o util.o
+> >  # Source files need to get at the userspace version of libfdt_env.h to compile
+> >  HOST_EXTRACFLAGS += -I $(srctree)/$(src)/libfdt
+> >
+> > -ifeq ($(shell pkg-config --exists yaml-0.1 2>/dev/null && echo yes),)
+> > +ifeq ($(shell $(HOSTPKG_CONFIG) --exists yaml-0.1 2>/dev/null && echo yes),)
+> >  ifneq ($(CHECK_DT_BINDING)$(CHECK_DTBS),)
+> >  $(error dtc needs libyaml for DT schema validation support. \
+> >         Install the necessary libyaml development package.)
+> > @@ -27,9 +27,9 @@ HOST_EXTRACFLAGS += -DNO_YAML
+> >  else
+> >  dtc-objs       += yamltree.o
+> >  # To include <yaml.h> installed in a non-default path
+> > -HOSTCFLAGS_yamltree.o := $(shell pkg-config --cflags yaml-0.1)
+> > +HOSTCFLAGS_yamltree.o := $(shell $(HOSTPKG_CONFIG) --cflags yaml-0.1)
+> >  # To link libyaml installed in a non-default path
+> > -HOSTLDLIBS_dtc := $(shell pkg-config yaml-0.1 --libs)
+> > +HOSTLDLIBS_dtc := $(shell $(HOSTPKG_CONFIG) yaml-0.1 --libs)
+> >  endif
+> >
+> >  # Generated files need one more search path to include headers in source tree
+> > diff --git a/scripts/kconfig/gconf-cfg.sh b/scripts/kconfig/gconf-cfg.sh
+> > index 480ecd8b9f41..4da4e39dcb53 100755
+> > --- a/scripts/kconfig/gconf-cfg.sh
+> > +++ b/scripts/kconfig/gconf-cfg.sh
+> > @@ -3,14 +3,14 @@
+> >
+> >  PKG="gtk+-2.0 gmodule-2.0 libglade-2.0"
+> >
+> > -if [ -z "$(command -v pkg-config)" ]; then
+> > +if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
+> >         echo >&2 "*"
+> >         echo >&2 "* 'make gconfig' requires 'pkg-config'. Please install it."
+> >         echo >&2 "*"
+> >         exit 1
+> >  fi
+> >
+> > -if ! pkg-config --exists $PKG; then
+> > +if ! ${HOSTPKG_CONFIG} --exists $PKG; then
+> >         echo >&2 "*"
+> >         echo >&2 "* Unable to find the GTK+ installation. Please make sure that"
+> >         echo >&2 "* the GTK+ 2.0 development package is correctly installed."
+> > @@ -19,12 +19,12 @@ if ! pkg-config --exists $PKG; then
+> >         exit 1
+> >  fi
+> >
+> > -if ! pkg-config --atleast-version=2.0.0 gtk+-2.0; then
+> > +if ! ${HOSTPKG_CONFIG} --atleast-version=2.0.0 gtk+-2.0; then
+> >         echo >&2 "*"
+> >         echo >&2 "* GTK+ is present but version >= 2.0.0 is required."
+> >         echo >&2 "*"
+> >         exit 1
+> >  fi
+> >
+> > -echo cflags=\"$(pkg-config --cflags $PKG)\"
+> > -echo libs=\"$(pkg-config --libs $PKG)\"
+> > +echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
+> > +echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+> > diff --git a/scripts/kconfig/mconf-cfg.sh b/scripts/kconfig/mconf-cfg.sh
+> > index b520e407a8eb..05837ed07fbd 100755
+> > --- a/scripts/kconfig/mconf-cfg.sh
+> > +++ b/scripts/kconfig/mconf-cfg.sh
+> > @@ -4,16 +4,16 @@
+> >  PKG="ncursesw"
+> >  PKG2="ncurses"
+> >
+> > -if [ -n "$(command -v pkg-config)" ]; then
+> > -       if pkg-config --exists $PKG; then
+> > -               echo cflags=\"$(pkg-config --cflags $PKG)\"
+> > -               echo libs=\"$(pkg-config --libs $PKG)\"
+> > +if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
+> > +       if ${HOSTPKG_CONFIG} --exists $PKG; then
+> > +               echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
+> > +               echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+> >                 exit 0
+> >         fi
+> >
+> > -       if pkg-config --exists $PKG2; then
+> > -               echo cflags=\"$(pkg-config --cflags $PKG2)\"
+> > -               echo libs=\"$(pkg-config --libs $PKG2)\"
+> > +       if ${HOSTPKG_CONFIG} --exists $PKG2; then
+> > +               echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG2)\"
+> > +               echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG2)\"
+> >                 exit 0
+> >         fi
+> >  fi
+> > diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
+> > index c212255070c0..e8d8f12d93ac 100755
+> > --- a/scripts/kconfig/nconf-cfg.sh
+> > +++ b/scripts/kconfig/nconf-cfg.sh
+> > @@ -4,16 +4,16 @@
+> >  PKG="ncursesw menuw panelw"
+> >  PKG2="ncurses menu panel"
+> >
+> > -if [ -n "$(command -v pkg-config)" ]; then
+> > -       if pkg-config --exists $PKG; then
+> > -               echo cflags=\"$(pkg-config --cflags $PKG)\"
+> > -               echo libs=\"$(pkg-config --libs $PKG)\"
+> > +if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
+> > +       if ${HOSTPKG_CONFIG} --exists $PKG; then
+> > +               echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
+> > +               echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+> >                 exit 0
+> >         fi
+> >
+> > -       if pkg-config --exists $PKG2; then
+> > -               echo cflags=\"$(pkg-config --cflags $PKG2)\"
+> > -               echo libs=\"$(pkg-config --libs $PKG2)\"
+> > +       if ${HOSTPKG_CONFIG} --exists $PKG2; then
+> > +               echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG2)\"
+> > +               echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG2)\"
+> >                 exit 0
+> >         fi
+> >  fi
+> > diff --git a/scripts/kconfig/qconf-cfg.sh b/scripts/kconfig/qconf-cfg.sh
+> > index fa564cd795b7..9b695e5cd9b3 100755
+> > --- a/scripts/kconfig/qconf-cfg.sh
+> > +++ b/scripts/kconfig/qconf-cfg.sh
+> > @@ -3,22 +3,22 @@
+> >
+> >  PKG="Qt5Core Qt5Gui Qt5Widgets"
+> >
+> > -if [ -z "$(command -v pkg-config)" ]; then
+> > +if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
+> >         echo >&2 "*"
+> > -       echo >&2 "* 'make xconfig' requires 'pkg-config'. Please install it."
+> > +       echo >&2 "* 'make xconfig' requires '${HOSTPKG_CONFIG}'. Please install it."
+> >         echo >&2 "*"
+> >         exit 1
+> >  fi
+> >
+> > -if pkg-config --exists $PKG; then
+> > -       echo cflags=\"-std=c++11 -fPIC $(pkg-config --cflags $PKG)\"
+> > -       echo libs=\"$(pkg-config --libs $PKG)\"
+> > -       echo moc=\"$(pkg-config --variable=host_bins Qt5Core)/moc\"
+> > +if ${HOSTPKG_CONFIG} --exists $PKG; then
+> > +       echo cflags=\"-std=c++11 -fPIC $(${HOSTPKG_CONFIG} --cflags $PKG)\"
+> > +       echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+> > +       echo moc=\"$(${HOSTPKG_CONFIG} --variable=host_bins Qt5Core)/moc\"
+> >         exit 0
+> >  fi
+> >
+> >  echo >&2 "*"
+> > -echo >&2 "* Could not find Qt5 via pkg-config."
+> > +echo >&2 "* Could not find Qt5 via ${HOSTPKG_CONFIG}."
+> >  echo >&2 "* Please install Qt5 and make sure it's in PKG_CONFIG_PATH"
+> >  echo >&2 "*"
+> >  exit 1
+> > diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+> > index 92ce4fce7bc7..549acc5859e9 100644
+> > --- a/tools/objtool/Makefile
+> > +++ b/tools/objtool/Makefile
+> > @@ -19,8 +19,8 @@ LIBSUBCMD             = $(LIBSUBCMD_OUTPUT)libsubcmd.a
+> >  OBJTOOL    := $(OUTPUT)objtool
+> >  OBJTOOL_IN := $(OBJTOOL)-in.o
+> >
+> > -LIBELF_FLAGS := $(shell pkg-config libelf --cflags 2>/dev/null)
+> > -LIBELF_LIBS  := $(shell pkg-config libelf --libs 2>/dev/null || echo -lelf)
+> > +LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2>/dev/null)
+> > +LIBELF_LIBS  := $(shell $(HOSTPKG_CONFIG) libelf --libs 2>/dev/null || echo -lelf)
+> >
+> >  all: $(OBJTOOL)
+> >
+> > --
+> > 2.35.1.616.g0bdcbb4464-goog
+> >
+>
+>
+> --
+> Thanks,
+> ~Nick Desaulniers
