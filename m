@@ -2,104 +2,49 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D2BD4D1829
-	for <lists+keyrings@lfdr.de>; Tue,  8 Mar 2022 13:45:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 074844D1888
+	for <lists+keyrings@lfdr.de>; Tue,  8 Mar 2022 13:59:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230497AbiCHMql (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 8 Mar 2022 07:46:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50082 "EHLO
+        id S232636AbiCHNAp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 8 Mar 2022 08:00:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230080AbiCHMqj (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Mar 2022 07:46:39 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDBA73A5FD;
-        Tue,  8 Mar 2022 04:45:42 -0800 (PST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2289dBf7013864;
-        Tue, 8 Mar 2022 12:45:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=sz/3PD2prJ9VfKtA9ntYFayzp2x088MjfJvxpS7+9Tc=;
- b=XZFETExXbErQzGq1Wk79xppM0HdoSd2MKJDA5BBIS8oCvn0EGAYhh44MpE3MM5d4/VR2
- 6Vgi6Rf1+ElzaxNibtDemGnRaTJeacc79CMJe1r5AjUDl/vII+eyTi9AG8GPDJ3JjT2E
- BPi91Iu3XZvHrk4axAPwtK/7d6h4WGboBre6JfWbgvKyymM/045TSYycamyi/CxgZFel
- RXB61/knJMk1Ci1esdFx7hrS8WMPYaLst4nDLRAl3Zb24r6+1BM8dRpgFX029JaJp7t5
- 4ZTvpHPI0/yaN7RBaPTJevQPscYx6WeGl+SO8wvnYa/LfwsFwtiUOkvSuYBmKFkED8l4 sQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3enxs02bbd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Mar 2022 12:45:13 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 228ChLkQ014960;
-        Tue, 8 Mar 2022 12:45:13 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3enxs02bag-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Mar 2022 12:45:13 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 228Cc162027409;
-        Tue, 8 Mar 2022 12:45:10 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-        by ppma03ams.nl.ibm.com with ESMTP id 3ekyg8yetr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Mar 2022 12:45:09 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 228CXvfe49086938
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 8 Mar 2022 12:33:57 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C83AA52051;
-        Tue,  8 Mar 2022 12:45:06 +0000 (GMT)
-Received: from sig-9-65-67-225.ibm.com (unknown [9.65.67.225])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4B65352052;
-        Tue,  8 Mar 2022 12:45:04 +0000 (GMT)
-Message-ID: <e10f2161aaa69a9d301b3a16a37cbab266318aee.camel@linux.ibm.com>
-Subject: Re: [PATCH 3/4] KEYS: CA link restriction
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Stefan Berger <stefanb@linux.ibm.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        with ESMTP id S241948AbiCHNAn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Mar 2022 08:00:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 002DC48337;
+        Tue,  8 Mar 2022 04:59:30 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8472B60B34;
+        Tue,  8 Mar 2022 12:59:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94115C340EB;
+        Tue,  8 Mar 2022 12:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646744369;
+        bh=8twpn2VXInIujbQlnoWElUcXznlL0Cva5mySXPEUnek=;
+        h=Date:From:To:Cc:Subject:From;
+        b=n5ixWXCb/B2lIvUNSHVn6z4R3azJZMdUR/rV0MRUR4Dwrz0AEntP38eOa2LFjUZb3
+         +2/cVUvW+MOxRVxTIBbr6ZBepo11A+sC8UKpHXwi0V0Iqck9jPewHBcENEaKtAZ5El
+         lO28qP/FPvIzgwd6etZXCVHwviXHaC+Ja/gmiMmG9qdeuClg5CpYZFmsVGS+YPwomH
+         Sl8TFDSCrbPDdY+Q07V4/D4lJWZ+b/7EWUUl/y8aD795eox/7UMb81VDpYPpjxjEqn
+         yRtFhoDc8F36/iPqpzdOoywUKQePlA/744TsyLrIURohfK7dJLFQJaHmwooqMJieGr
+         3kou1ghiUjYZA==
+Date:   Tue, 8 Mar 2022 14:58:49 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org, James Morris <jmorris@namei.org>,
         David Howells <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "mic@linux.microsoft.com" <mic@linux.microsoft.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Date:   Tue, 08 Mar 2022 07:45:03 -0500
-In-Reply-To: <22860730-d615-5683-6af0-05b6f4f3e71d@linux.ibm.com>
-References: <20220301173651.3435350-1-eric.snowberg@oracle.com>
-         <20220301173651.3435350-4-eric.snowberg@oracle.com>
-         <47f3654e-892d-a35a-e77c-70ada1ebcf43@linux.ibm.com>
-         <2415444C-AD8F-4F03-8B1C-C0770F83ADAE@oracle.com>
-         <e2dd58cd6074ae692256333b43b5ecde70bcdbdd.camel@linux.ibm.com>
-         <67456A73-8B72-4DB6-8E23-7C603661A0A4@oracle.com>
-         <22860730-d615-5683-6af0-05b6f4f3e71d@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NLzGotlm2HPoT9_7IcXq-KR9yeq45avh
-X-Proofpoint-ORIG-GUID: kWQFY81U4qGmQUAGNqHjWhXskBXhkVtk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-08_03,2022-03-04_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- bulkscore=0 mlxlogscore=999 clxscore=1015 adultscore=0 spamscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203080065
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [GIT PULL] TPM DEVICE DRIVER updates for v5.18
+Message-ID: <YidTCX0NOgDfHCp9@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -108,59 +53,126 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2022-03-07 at 21:31 -0500, Stefan Berger wrote:
-> 
-> On 3/7/22 18:38, Eric Snowberg wrote:
-> > 
-> > 
-> >> On Mar 7, 2022, at 4:01 PM, Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >>
-> >> On Mon, 2022-03-07 at 18:06 +0000, Eric Snowberg wrote:
-> >>>
-> >>>>> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-> >>>>> index 6b1ac5f5896a..49bb2ea7f609 100644
-> >>>>> --- a/crypto/asymmetric_keys/restrict.c
-> >>>>> +++ b/crypto/asymmetric_keys/restrict.c
-> >>>>> @@ -108,6 +108,49 @@ int restrict_link_by_signature(struct key *dest_keyring,
-> >>>>> 	return ret;
-> >>>>> }
-> >>>>> +/**
-> >>>>> + * restrict_link_by_ca - Restrict additions to a ring of CA keys
-> >>>>> + * @dest_keyring: Keyring being linked to.
-> >>>>> + * @type: The type of key being added.
-> >>>>> + * @payload: The payload of the new key.
-> >>>>> + * @trust_keyring: Unused.
-> >>>>> + *
-> >>>>> + * Check if the new certificate is a CA. If it is a CA, then mark the new
-> >>>>> + * certificate as being ok to link.
-> >>>>
-> >>>> CA = root CA here, right?
-> >>>
-> >>> Yes, I’ll update the comment
-> >>
-> >> Updating the comment is not enough.  There's an existing function named
-> >> "x509_check_for_self_signed()" which determines whether the certificate
-> >> is self-signed.
-> > 
-> > Originally I tried using that function.  However when the restrict link code is called,
-> > all the necessary x509 information is no longer available.   The code in
-> > restrict_link_by_ca is basically doing the equivalent to x509_check_for_self_signed.
-> > After verifying the cert has the CA flag set, the call to public_key_verify_signature
-> > validates the cert is self signed.
-> > 
-> Isn't x509_cert_parse() being called as part of parsing the certificate? 
-> If so, it seems to check for a self-signed certificate every time. You 
-> could add something like the following to x509_check_for_self_signed(cert):
-> pub->x509_self_signed = cert->self_signed = true;
-> 
-> This could then reduce the function in 3/4 to something like:
-> 
-> return payload->data[asym_crypto]->x509_self_signed;
+Hi,
 
-Agreed, as long as the other two criteria are also met: CA and keyUsage
-should be required and limited to keyCertSign.
+In order to split the work a bit we've aligned with David Howells more or
+less that I take more hardware/firmware aligned keyring patches, and he
+takes care more of the framework aligned patches.
 
-thanks,
+For TPM the patches worth of highlighting are the fixes for refcounting
+provided by Lino Sanfilippo and James Bottomley.
 
-Mimi
+Eric B. has done a bunch obvious (but important) fixes but there's one a
+bit controversial: removal of asym_tpm. It was added in 2018 when TPM1
+was already declared as insecure and world had moved on to TPM2. I don't
+know how this has passed all the filters but I did not have a chance to
+see the patches when they were out. I simply cannot commit on
+maintaining this because it was from all angles just wrong to take it in
+the first place to the mainline kernel. Nobody should use this module
+really for anything.
 
+Finally, there is a new keyring ".machine" to hold MOK keys. In the mok
+side MokListTrustedRT UEFI variable can be set, from which kernel knows
+that MOK keys are kernel trusted keys and they are populated to the machine
+keyring. This keyring linked to the secondary trusted keyring, which means
+that can be used like any kernel trusted keys. This keyring of course can
+be used to hold other MOK'ish keys in other platforms in future.
+
+BR, Jarkko
+
+The following changes since commit ea4424be16887a37735d6550cfd0611528dbe5d9:
+
+  Merge tag 'mtd/fixes-for-5.17-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux (2022-03-07 11:43:22 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-v5.18
+
+for you to fetch changes up to f4fe76112c8fbe0a2d2e3ebd94ff2cfe22977e39:
+
+  tpm: use try_get_ops() in tpm-space.c (2022-03-08 14:29:25 +0200)
+
+----------------------------------------------------------------
+tpmdd updates for Linux v5.18
+
+----------------------------------------------------------------
+Andreas Rammhold (1):
+      KEYS: trusted: Fix trusted key backends when building as module
+
+Dave Kleikamp (1):
+      KEYS: trusted: Avoid calling null function trusted_key_exit
+
+Eric Biggers (8):
+      KEYS: fix length validation in keyctl_pkey_params_get_2()
+      KEYS: x509: clearly distinguish between key and signature algorithms
+      KEYS: x509: remove unused fields
+      KEYS: x509: remove never-set ->unsupported_key flag
+      KEYS: x509: remove dead code that set ->unsupported_sig
+      KEYS: remove support for asym_tpm keys
+      KEYS: asymmetric: enforce that sig algo matches key algo
+      KEYS: asymmetric: properly validate hash_algo and encoding
+
+Eric Snowberg (8):
+      integrity: Fix warning about missing prototypes
+      integrity: Introduce a Linux keyring called machine
+      integrity: add new keyring handler for mok keys
+      KEYS: store reference to machine keyring
+      KEYS: Introduce link restriction for machine keys
+      efi/mokvar: move up init order
+      integrity: Trust MOK keys if MokListTrustedRT found
+      integrity: Only use machine keyring when uefi_check_trust_mok_keys is true
+
+Gustavo A. R. Silva (1):
+      tpm: xen-tpmfront: Use struct_size() helper
+
+James Bottomley (1):
+      tpm: use try_get_ops() in tpm-space.c
+
+Lino Sanfilippo (1):
+      tpm: fix reference counting for struct tpm_chip
+
+Stefan Berger (1):
+      selftests: tpm2: Determine available PCR bank
+
+Tadeusz Struk (2):
+      tpm: Fix error handling in async work
+      selftests: tpm: add async space test with noneexisting handle
+
+ certs/system_keyring.c                             |  44 +-
+ crypto/asymmetric_keys/Kconfig                     |  21 -
+ crypto/asymmetric_keys/Makefile                    |  12 -
+ crypto/asymmetric_keys/asym_tpm.c                  | 957 ---------------------
+ crypto/asymmetric_keys/pkcs7_verify.c              |  13 +-
+ crypto/asymmetric_keys/public_key.c                | 126 ++-
+ crypto/asymmetric_keys/tpm.asn1                    |   5 -
+ crypto/asymmetric_keys/tpm_parser.c                | 102 ---
+ crypto/asymmetric_keys/x509.asn1                   |   2 +-
+ crypto/asymmetric_keys/x509_cert_parser.c          |  34 +-
+ crypto/asymmetric_keys/x509_parser.h               |   1 -
+ crypto/asymmetric_keys/x509_public_key.c           |  24 -
+ drivers/char/tpm/tpm-chip.c                        |  46 +-
+ drivers/char/tpm/tpm-dev-common.c                  |   8 +-
+ drivers/char/tpm/tpm.h                             |   2 +
+ drivers/char/tpm/tpm2-space.c                      |  73 +-
+ drivers/char/tpm/xen-tpmfront.c                    |   8 +-
+ drivers/firmware/efi/mokvar-table.c                |   2 +-
+ include/crypto/asym_tpm_subtype.h                  |  19 -
+ include/keys/system_keyring.h                      |  14 +
+ security/integrity/Kconfig                         |  13 +
+ security/integrity/Makefile                        |   1 +
+ security/integrity/digsig.c                        |  15 +-
+ security/integrity/integrity.h                     |  17 +-
+ .../integrity/platform_certs/keyring_handler.c     |  18 +-
+ .../integrity/platform_certs/keyring_handler.h     |   5 +
+ security/integrity/platform_certs/load_uefi.c      |   4 +-
+ .../integrity/platform_certs/machine_keyring.c     |  77 ++
+ security/keys/keyctl_pkey.c                        |  14 +-
+ security/keys/trusted-keys/trusted_core.c          |   6 +-
+ tools/testing/selftests/tpm2/tpm2.py               |  31 +
+ tools/testing/selftests/tpm2/tpm2_tests.py         |  45 +-
+ 32 files changed, 486 insertions(+), 1273 deletions(-)
+ delete mode 100644 crypto/asymmetric_keys/asym_tpm.c
+ delete mode 100644 crypto/asymmetric_keys/tpm.asn1
+ delete mode 100644 crypto/asymmetric_keys/tpm_parser.c
+ delete mode 100644 include/crypto/asym_tpm_subtype.h
+ create mode 100644 security/integrity/platform_certs/machine_keyring.c
