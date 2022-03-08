@@ -2,82 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 236304D0F2A
-	for <lists+keyrings@lfdr.de>; Tue,  8 Mar 2022 06:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F5D4D124F
+	for <lists+keyrings@lfdr.de>; Tue,  8 Mar 2022 09:34:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241803AbiCHF2B (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 8 Mar 2022 00:28:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48262 "EHLO
+        id S240566AbiCHIfA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 8 Mar 2022 03:35:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237226AbiCHF2A (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Mar 2022 00:28:00 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 516983BA43
-        for <keyrings@vger.kernel.org>; Mon,  7 Mar 2022 21:27:05 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id t5so16405965pfg.4
-        for <keyrings@vger.kernel.org>; Mon, 07 Mar 2022 21:27:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=oPr7jbEQjZcFbPcnfK3KFYS7eLKVUp4KxioDBpQLsHE=;
-        b=KFudWe1Vy5F9opv/soKhgh7FbpSJlX8UMUatuMgFRoPStXK8BeJYII3IzceeF4CUsE
-         tbZtmjAemFX5zvbE6wUAsuHZbZjxHyMXZWeEZcotbpQPuVRvG0M7k6VpuXKY6pkei48H
-         zXfV9NCW2jKEE17DZ9Ra4LgaKKzI3Af1gO2wcA7ElXQGZWb4NCyLsLzkpbYM8UT9vsEO
-         pUu9p56Gp1SA3gnsGePgMqiQbP60EhVUK9DOvNBmk8vIgN7nMuOBxQ+IB8iUaUiYu2Qb
-         2Pna2NPt9syIKgvHRHKvIJRPlI6Fu620/j9bCtoglu3IB7vYM/lS7I1CEm9Rb4f9/4gY
-         lvcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=oPr7jbEQjZcFbPcnfK3KFYS7eLKVUp4KxioDBpQLsHE=;
-        b=yfgmfbBqfajA9yvs3A5J2rRhOD1GAtuEMTPxaHe23Xx1oq+E7dgLTuAn1GxYAtA5D3
-         z8An6sLlWkfN87gzqWjRqap+38urQ1I2wNSbPBmpb+2BJteUmdKI7Z/yGe3Vpf37yuvv
-         wO+/tWcJiaUrtv9dCuKBLd9/oc0UPIhoPgbPJKFq7N50nvth0Fi4jCuaRKtrFMaJDOvP
-         OgDhk+0GzBXrNSkpGZ9OJLoQQ2SL6TPKoC1NWYb5sK3M41RKdECCkYMuCGQ3PujO5UZ/
-         0usbIpeHoCr5mp+oDIkzIJxbd2R3zwOjkvI2t16um9e4iZt0dt+hlW1P8vL3TiluBUHO
-         c0VQ==
-X-Gm-Message-State: AOAM532V8hQ3mpSwzloUDpV5h31F59SK2JZlFqzMCrwHzT4NC4yS9U46
-        lJedSgE8twr4wxEtvxJjmiXyhw==
-X-Google-Smtp-Source: ABdhPJyH9JQVBjUGI9YE7QPYpbcBryWFyGEZ7zSUSAdXkhoivPgJwH+prK8BW8Uov0OvBfEDSxptFQ==
-X-Received: by 2002:a63:d018:0:b0:374:a3c1:dfed with SMTP id z24-20020a63d018000000b00374a3c1dfedmr12888737pgf.155.1646717224619;
-        Mon, 07 Mar 2022 21:27:04 -0800 (PST)
-Received: from google.com (223.103.125.34.bc.googleusercontent.com. [34.125.103.223])
-        by smtp.gmail.com with ESMTPSA id b2-20020a056a000a8200b004e1414f0bb1sm18580376pfl.135.2022.03.07.21.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 21:27:04 -0800 (PST)
-Date:   Tue, 8 Mar 2022 05:26:59 +0000
-From:   Chun-Tse Shao <ctshao@google.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        keyrings@vger.kernel.org, DTML <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4] config: Allow kernel installation packaging to
- override pkg-config
-Message-ID: <YibpI1MkqVUvEl9h@google.com>
-References: <20220306223016.2239094-1-ctshao@google.com>
- <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
- <YiaMJCHOOuujHwiK@google.com>
- <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
+        with ESMTP id S241170AbiCHIe6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Mar 2022 03:34:58 -0500
+Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D975B2899D
+        for <keyrings@vger.kernel.org>; Tue,  8 Mar 2022 00:34:01 -0800 (PST)
+Received: by mail.olerise.pl (Postfix, from userid 1001)
+        id 9F291427AC; Tue,  8 Mar 2022 09:31:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
+        t=1646728439; bh=ZNYiuZLXlxCdAPtstEG/gwJieB5RBwA/cHj1SZ3Mpl0=;
+        h=Date:From:To:Subject:From;
+        b=xMsAnoDb3zYo0i3yrLgGcGeL67EAMZP4zFxrMkT4sYFXi+uSFo+ZjuNJucjhyIB/E
+         O77o3olB4k0waHbTBzEDugqTT8oe1yJNsyAIV+Ph6tT2KvakDVmyhXd+RjkF6zaoaa
+         l6eUdYYpgXTANB162ML6AHN9xIXrg+v6wo7bV5LbUHkVcXYbXWypdsXhfDFwHHnkFq
+         hMR3/koBFc7eLxvtUPYO8ulrX1W3WEWJE+LFzo9JodCkLV+cs7qnDTo2tfW9OsuhBn
+         V6Plv8ZPCVbyWcGJPSaAeCJfWpK7TCcpEI9lN0zOk71tOoMfnaUE9vTTzP+fF5i462
+         ArMkOYdp11mzA==
+Received: by mail.olerise.pl for <keyrings@vger.kernel.org>; Tue,  8 Mar 2022 08:30:52 GMT
+Message-ID: <20220308084500-0.1.26.mjn9.0.pcri5qirce@olerise.pl>
+Date:   Tue,  8 Mar 2022 08:30:52 GMT
+From:   =?UTF-8?Q? "Miko=C5=82aj_Rudzik" ?= <mikolaj.rudzik@olerise.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.olerise.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_BL,
+        RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,64 +45,18 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 08, 2022 at 01:01:45PM +0900, Masahiro Yamada wrote:
-> On Tue, Mar 8, 2022 at 7:50 AM Chun-Tse Shao <ctshao@google.com> wrote:
-> >
-> > On Mon, Mar 07, 2022 at 10:17:17AM -0800, Nick Desaulniers wrote:
-> > > On Sun, Mar 6, 2022 at 2:39 PM Chun-Tse Shao <ctshao@google.com> wrote:
-> > > >
-> > > > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
-> > > > what pkg-config and parameters are used.
-> > >
-> > > Sorry, kind a late thought here for v4, but we don't seem to prefix
-> > > many other host side tools with HOST_, i.e. LEX, YACC, AWK, PERL,
-> > > PYTHON3, etc.  Maybe just having the variable identifier be simply
-> > > PKGCONFIG rather than HOSTPKG_CONFIG then put it at the end of the
-> > > list in the top level Makefile after ZSTD (i.e. the list of host
-> > > tools)?  There's HOST_ prefixes when there's more than one tool
-> > > involved (i.e. host compiler vs target compiler), but I suspect
-> > > there's no such distinction for the existing uses of pkg-config?
-> > >
-> > Thanks for your suggestion, Nick! Yes I think it makes sense with PKGCONFIG
-> > instead of HOSTPKG_CONFIG since there is only one tool involved. I will
-> > work on it and submit a new patch.
-> >
->
-> Please hold on.
->
-> I was also wondering what to do with the "HOST" prefix.
->
-> Libraries are usually arch-dependent.
-> (in other words, pkg-config should return different library paths
-> for $(CC) and $(HOSTCC) )
->
-> You already understood this, so you added "HOST" prefix.
->
->
-> Please let me take time for further discussion.
-> I will come back to this when I get some time.
->
->
-> In the meantime,
->   a8a5cd8b472ca20e5b8fa649c43b3756867322f8
-> as reference info if you have not seen it.
->
->
-> How many distros support something like
-> "aarch64-linux-gnu-pkg-config"  ?
->
-> Ubuntu 18.04 and 20.04 seem to support it.
-> I do not know for others.
->
->
->
->
->
-> --
-> Best Regards
->
-> Masahiro Yamada
+Dzie=C5=84 dobry,
 
-Thanks Masahiro! Will wait for your suggestion.
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
--CT
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
+
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+
+
+Pozdrawiam
+Miko=C5=82aj Rudzik
