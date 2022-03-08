@@ -2,164 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DF974D0E0A
-	for <lists+keyrings@lfdr.de>; Tue,  8 Mar 2022 03:31:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB964D0E85
+	for <lists+keyrings@lfdr.de>; Tue,  8 Mar 2022 05:02:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239229AbiCHCck (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 7 Mar 2022 21:32:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60756 "EHLO
+        id S235259AbiCHEDu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Mar 2022 23:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233411AbiCHCcj (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 21:32:39 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6618F35DE9;
-        Mon,  7 Mar 2022 18:31:44 -0800 (PST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2281NISf012621;
-        Tue, 8 Mar 2022 02:31:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=pem2LRWua62Gj1EwQLYWIUQJFcSzowZruXSnDTsOI/M=;
- b=N5PAUuplRwFJjlGbOQiPmCgYX1zKpPPsIFGSJbVsgpZBxWr9Ev7raMO2QLlDcxu2voFn
- HghmurKP3vK2mu1YkYcRfSPnIUnupClhdhW0i5PGjdVGufmV88hbTtV6iODr8H8vQl0T
- a9z4fkNZ4kUxHeYnNFX2GSAVM97pi98iZPnQYu9ls/dx5w3hFGjN2hQXzHFassA/fqAD
- KE+zYJQMgCKaihVv0pWC/rtWaT8qds+FvswlutJIJToYKyU9Xvovw1JO2N+U4IdiaPgK
- aWaAeJpWcbg/6qLPMnDtfFs4RbYVlk64fZAmOQv4GP6a/rG5iaUUQzkeJBhQYx4NWoBb OA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3enwegrx5a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Mar 2022 02:31:27 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2282QXLa014207;
-        Tue, 8 Mar 2022 02:31:26 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3enwegrx57-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Mar 2022 02:31:26 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-        by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2282HpDB024805;
-        Tue, 8 Mar 2022 02:31:26 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by ppma01wdc.us.ibm.com with ESMTP id 3ekyg921pp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Mar 2022 02:31:26 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2282VO4l17302104
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 8 Mar 2022 02:31:24 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D28626A047;
-        Tue,  8 Mar 2022 02:31:24 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3EAA66A04F;
-        Tue,  8 Mar 2022 02:31:22 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Tue,  8 Mar 2022 02:31:21 +0000 (GMT)
-Message-ID: <22860730-d615-5683-6af0-05b6f4f3e71d@linux.ibm.com>
-Date:   Mon, 7 Mar 2022 21:31:21 -0500
+        with ESMTP id S235094AbiCHEDt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Mar 2022 23:03:49 -0500
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com [210.131.2.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686D027FC5;
+        Mon,  7 Mar 2022 20:02:50 -0800 (PST)
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id 22842Rds024398;
+        Tue, 8 Mar 2022 13:02:28 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 22842Rds024398
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1646712148;
+        bh=uBfYQrw/aKlUHSJekd9nzEyMA5sjTFPIWvon8fzfgpk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ohmFDh8uj4UCr9MeXOi/FzG5ezygIwWd1JY3tHOsySvUk2iMyynmjA4bTuEr4wPNL
+         BQKqUCjyFEvRjreHFeIgHTjrz5V0nSWSlgKQDTtcM9lww5m+OY/2WOhY7Pkrv+mH/r
+         iubT2gZa7yKRGtDX3k81OD8cMgakna/t/OIxLi56EHJfBF26ap0QXtB0SY6RYpaJ0w
+         Ry0dVcv3NyYgTlcgLo7LQ5Vi4AMgsv1lzNTWzm3xEJjqbpB3ypCr39Hqvpuy9tKTbH
+         WkCNAK1hsEsfIHNdn9Rh0MODVa5XG6l5d9QPHmIXdAYyyIbkeOq0hAlX1jOTvOE68I
+         V5UN4N21wXgXg==
+X-Nifty-SrcIP: [209.85.214.173]
+Received: by mail-pl1-f173.google.com with SMTP id e2so15924518pls.10;
+        Mon, 07 Mar 2022 20:02:27 -0800 (PST)
+X-Gm-Message-State: AOAM533YodHMDykUJKTXr0pZ0LBhVbLG/Lo7lOsrwY/DDxGdKKHdDput
+        9tXU3kkoAhhFF9jjlmwzf1qsbFqYgXj9JVbhkps=
+X-Google-Smtp-Source: ABdhPJxzVN2Su0RqJQcS7ZnoB3cYr/+k5uAZTqDNUvBHp6k9gsvzGxk2MXuefHuaR9L7IRwDUfiRndk0XeRRvHgurPo=
+X-Received: by 2002:a17:90a:ab17:b0:1b9:b61a:aadb with SMTP id
+ m23-20020a17090aab1700b001b9b61aaadbmr2555486pjq.77.1646712147134; Mon, 07
+ Mar 2022 20:02:27 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 3/4] KEYS: CA link restriction
-Content-Language: en-US
-To:     Eric Snowberg <eric.snowberg@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+References: <20220306223016.2239094-1-ctshao@google.com> <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
+ <YiaMJCHOOuujHwiK@google.com>
+In-Reply-To: <YiaMJCHOOuujHwiK@google.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 8 Mar 2022 13:01:45 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
+Message-ID: <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
+Subject: Re: [PATCH v4] config: Allow kernel installation packaging to
+ override pkg-config
+To:     Chun-Tse Shao <ctshao@google.com>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Rob Herring <robh+dt@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
         David Howells <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "mic@linux.microsoft.com" <mic@linux.microsoft.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-References: <20220301173651.3435350-1-eric.snowberg@oracle.com>
- <20220301173651.3435350-4-eric.snowberg@oracle.com>
- <47f3654e-892d-a35a-e77c-70ada1ebcf43@linux.ibm.com>
- <2415444C-AD8F-4F03-8B1C-C0770F83ADAE@oracle.com>
- <e2dd58cd6074ae692256333b43b5ecde70bcdbdd.camel@linux.ibm.com>
- <67456A73-8B72-4DB6-8E23-7C603661A0A4@oracle.com>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <67456A73-8B72-4DB6-8E23-7C603661A0A4@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: niRBz8tVgOm5ryOaD3F9qE65KNsF8t0m
-X-Proofpoint-ORIG-GUID: FHLxAsBlhdbLXzyX9mGYubIMSOQXBE-9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-07_12,2022-03-04_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
- spamscore=0 mlxscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 priorityscore=1501 suspectscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203080000
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        David Woodhouse <dwmw2@infradead.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        keyrings@vger.kernel.org, DTML <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, Mar 8, 2022 at 7:50 AM Chun-Tse Shao <ctshao@google.com> wrote:
+>
+> On Mon, Mar 07, 2022 at 10:17:17AM -0800, Nick Desaulniers wrote:
+> > On Sun, Mar 6, 2022 at 2:39 PM Chun-Tse Shao <ctshao@google.com> wrote:
+> > >
+> > > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
+> > > what pkg-config and parameters are used.
+> >
+> > Sorry, kind a late thought here for v4, but we don't seem to prefix
+> > many other host side tools with HOST_, i.e. LEX, YACC, AWK, PERL,
+> > PYTHON3, etc.  Maybe just having the variable identifier be simply
+> > PKGCONFIG rather than HOSTPKG_CONFIG then put it at the end of the
+> > list in the top level Makefile after ZSTD (i.e. the list of host
+> > tools)?  There's HOST_ prefixes when there's more than one tool
+> > involved (i.e. host compiler vs target compiler), but I suspect
+> > there's no such distinction for the existing uses of pkg-config?
+> >
+> Thanks for your suggestion, Nick! Yes I think it makes sense with PKGCONFIG
+> instead of HOSTPKG_CONFIG since there is only one tool involved. I will
+> work on it and submit a new patch.
+>
+
+Please hold on.
+
+I was also wondering what to do with the "HOST" prefix.
+
+Libraries are usually arch-dependent.
+(in other words, pkg-config should return different library paths
+for $(CC) and $(HOSTCC) )
+
+You already understood this, so you added "HOST" prefix.
 
 
-On 3/7/22 18:38, Eric Snowberg wrote:
-> 
-> 
->> On Mar 7, 2022, at 4:01 PM, Mimi Zohar <zohar@linux.ibm.com> wrote:
->>
->> On Mon, 2022-03-07 at 18:06 +0000, Eric Snowberg wrote:
->>>
->>>>> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
->>>>> index 6b1ac5f5896a..49bb2ea7f609 100644
->>>>> --- a/crypto/asymmetric_keys/restrict.c
->>>>> +++ b/crypto/asymmetric_keys/restrict.c
->>>>> @@ -108,6 +108,49 @@ int restrict_link_by_signature(struct key *dest_keyring,
->>>>> 	return ret;
->>>>> }
->>>>> +/**
->>>>> + * restrict_link_by_ca - Restrict additions to a ring of CA keys
->>>>> + * @dest_keyring: Keyring being linked to.
->>>>> + * @type: The type of key being added.
->>>>> + * @payload: The payload of the new key.
->>>>> + * @trust_keyring: Unused.
->>>>> + *
->>>>> + * Check if the new certificate is a CA. If it is a CA, then mark the new
->>>>> + * certificate as being ok to link.
->>>>
->>>> CA = root CA here, right?
->>>
->>> Yes, I’ll update the comment
->>
->> Updating the comment is not enough.  There's an existing function named
->> "x509_check_for_self_signed()" which determines whether the certificate
->> is self-signed.
-> 
-> Originally I tried using that function.  However when the restrict link code is called,
-> all the necessary x509 information is no longer available.   The code in
-> restrict_link_by_ca is basically doing the equivalent to x509_check_for_self_signed.
-> After verifying the cert has the CA flag set, the call to public_key_verify_signature
-> validates the cert is self signed.
-> 
-Isn't x509_cert_parse() being called as part of parsing the certificate? 
-If so, it seems to check for a self-signed certificate every time. You 
-could add something like the following to x509_check_for_self_signed(cert):
-pub->x509_self_signed = cert->self_signed = true;
-
-This could then reduce the function in 3/4 to something like:
-
-return payload->data[asym_crypto]->x509_self_signed;
+Please let me take time for further discussion.
+I will come back to this when I get some time.
 
 
-    Stefan
+In the meantime,
+  a8a5cd8b472ca20e5b8fa649c43b3756867322f8
+as reference info if you have not seen it.
+
+
+How many distros support something like
+"aarch64-linux-gnu-pkg-config"  ?
+
+Ubuntu 18.04 and 20.04 seem to support it.
+I do not know for others.
+
+
+
+
+
+--
+Best Regards
+
+Masahiro Yamada
