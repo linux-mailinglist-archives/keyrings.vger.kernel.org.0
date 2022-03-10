@@ -2,55 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A57104D4041
-	for <lists+keyrings@lfdr.de>; Thu, 10 Mar 2022 05:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 063534D4FBF
+	for <lists+keyrings@lfdr.de>; Thu, 10 Mar 2022 17:52:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233820AbiCJEWB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 9 Mar 2022 23:22:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42872 "EHLO
+        id S244176AbiCJQxF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 10 Mar 2022 11:53:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235566AbiCJEWA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 9 Mar 2022 23:22:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2753312CC38;
-        Wed,  9 Mar 2022 20:21:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E1B0EB824AB;
-        Thu, 10 Mar 2022 04:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFC0C340E8;
-        Thu, 10 Mar 2022 04:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646886057;
-        bh=C6YzQXJ4A8f7EpImKUHh1ypfIfiOwjesz0ZXkF9WljM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ctXacqoP2eLru8nzvqT1Glp5o155hlw5401WQ72RTYnPI0GNph0gSVhjBMBiiXuSY
-         EiV6HyAMhs52vewTGuy7PC9pBiU3VcC16119q2GPZu0/cxARiizQa9ghdNdtiZreKt
-         c/ZerLPYH3cSg8EPEE8yZFpuHw/usQrU0yW4WQGqEQy/TH0TlUaBLxLazpj+esxPSu
-         WBli+prOvmsKCzLImOpfeUX3QUbrfL8vQL85VliJBBF4qy/u++j2JUykI6oT8xxiIg
-         gO4G/86I0aLqs+Y6dSIdKKkUz4A7mYZPi+IMKNPbQdoXHt1t25RcwyqA5VroHAQQRp
-         6m8VVHniwwnKA==
-Date:   Wed, 9 Mar 2022 20:20:55 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, James Morris <jmorris@namei.org>,
-        David Howells <dhowells@redhat.com>,
-        Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER updates for v5.18
-Message-ID: <Yil8p6OVFzXH1pzM@sol.localdomain>
-References: <YidTCX0NOgDfHCp9@kernel.org>
- <YiecF6W2XAcpC7dF@sol.localdomain>
- <YieldvygMyiqmZbT@iki.fi>
- <Yik9VIcfuhW5Kd73@kernel.org>
+        with ESMTP id S244312AbiCJQxA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 10 Mar 2022 11:53:00 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7733198D1E
+        for <keyrings@vger.kernel.org>; Thu, 10 Mar 2022 08:51:57 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id mv5-20020a17090b198500b001bf2a039831so8723041pjb.5
+        for <keyrings@vger.kernel.org>; Thu, 10 Mar 2022 08:51:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=y6eO8XbobmJwk07KyUQcG8ew/bFwEAqu4InZOavV7ZM=;
+        b=YTkLBhADqm9amv8PHrviGDK7uKbDAZgW7pTRiKrarMaKDkgVtNpIIN+9hNVp4Ef3qI
+         3w8N8HgC43l507NznwsW5B3iVpzhTE+71LKzCdVPMk0OUcTgdrWfYg31w9PWfxTgc3Vv
+         QDGxj6g6cf9/tGJQbvLczxTLlCPUEuuKI8PxM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=y6eO8XbobmJwk07KyUQcG8ew/bFwEAqu4InZOavV7ZM=;
+        b=5Dc0TCipekAUOam0WeHzJsVY+ik1ts9Tq3wGwf8lBmpbH7mNCri3Yogm5l1CH0hhmC
+         fSlBeAh0On40npUdqScasjo9ATw5xzcZq2MlcNsKRC7IB3+U0tgn8dTI7EgQGvOPIg96
+         09u5rYyx+qVC851ZFt87PMvYDA/av7rQ5+ZHQvLOqPszk84witjdOXxJnTW7Cz/1Ymf/
+         HX7YFI4EifmrqzD+O0OV2hYMzlC/tXMST2BkdLYmYpeQKq8nlGNoMSHt2yZ6blz1P0Z2
+         MZzYpxWqMa3TDLzSe9Y2M2yH3jlvpeJ16j3HDWp1dJuKNw101Ew3T6yCytGWOUpxthKf
+         Fwtg==
+X-Gm-Message-State: AOAM532qgANQEnbRhzDKJus9BPiT9SGVLogGcITZ6cZJ/aYbumR/5xoi
+        IchgWn4U4fq9JRaHYjMftcl16E7WASIO+A==
+X-Google-Smtp-Source: ABdhPJwbpPcd4SwVPizlO9aynJTzqL0J0dIIdt2zDjb56noFAp2YlrMV9nMDaEqeoxUa/R1A7MI0gA==
+X-Received: by 2002:a17:902:7e4d:b0:14f:e295:5a41 with SMTP id a13-20020a1709027e4d00b0014fe2955a41mr5872399pln.27.1646931117342;
+        Thu, 10 Mar 2022 08:51:57 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id lb4-20020a17090b4a4400b001b9b20eabc4sm7078816pjb.5.2022.03.10.08.51.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Mar 2022 08:51:56 -0800 (PST)
+Date:   Thu, 10 Mar 2022 08:51:56 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, Adam Langley <agl@google.com>,
+        linux-kernel@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>
+Subject: Re: [PATCH v2 1/1] sign-file: Do not attempt to use the ENGINE_* API
+ if it's not available
+Message-ID: <202203100851.C00D9AB73@keescook>
+References: <20211005161833.1522737-1-lee.jones@linaro.org>
+ <Yicwb+Ceiu8JjVIS@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Yik9VIcfuhW5Kd73@kernel.org>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <Yicwb+Ceiu8JjVIS@google.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,31 +70,88 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Mar 10, 2022 at 01:50:44AM +0200, Jarkko Sakkinen wrote:
-> On Tue, Mar 08, 2022 at 08:50:30PM +0200, Jarkko Sakkinen wrote:
-> > On Tue, Mar 08, 2022 at 10:10:31AM -0800, Eric Biggers wrote:
-> > > On Tue, Mar 08, 2022 at 02:58:49PM +0200, Jarkko Sakkinen wrote:
-> > > >       KEYS: asymmetric: enforce that sig algo matches key algo
-> > > 
-> > > It looks like you applied v1 of this patch
-> > > (https://lore.kernel.org/r/20220201003414.55380-2-ebiggers@kernel.org) rather
-> > > than v2 (https://lore.kernel.org/r/20220208052448.409152-2-ebiggers@kernel.org).
-> > > I think that v2 is necessary because some callers of
-> > > public_key_verify_signature() leave pkey_algo as NULL.
-> > > 
-> > > Sorry for not spotting that you applied v1 earlier.
-> > > 
-> > > - Eric
-> > 
-> > I can do another pull request.
-> 
-> Eric, does 'next' branch in
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git 
-> 
-> look good to you now?
-> 
+On Tue, Mar 08, 2022 at 10:31:11AM +0000, Lee Jones wrote:
+> OpenSSL's ENGINE API is deprecated in OpenSSL v3.0.
+>
+> Use OPENSSL_NO_ENGINE to ensure the ENGINE API is only used if it is
+> present.  This will safeguard against compile errors when using SSL
+> implementations which lack support for this deprecated API.
 
-Yes, that looks good, thanks.
+On Fedora rawhide, I'm still seeing a bunch of warnings:
 
-- Eric
+scripts/sign-file.c: In function 'display_openssl_errors':
+scripts/sign-file.c:89:9: warning: 'ERR_get_error_line' is deprecated: Since OpenSSL 3.0 [-Wdeprecat
+ed-declarations]
+   89 |         while ((e = ERR_get_error_line(&file, &line))) {
+      |         ^~~~~
+In file included from scripts/sign-file.c:29:
+/usr/include/openssl/err.h:411:15: note: declared here
+  411 | unsigned long ERR_get_error_line(const char **file, int *line);
+      |               ^~~~~~~~~~~~~~~~~~
+scripts/sign-file.c: In function 'drain_openssl_errors':
+scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is deprecated: Since OpenSSL 3.0 [-Wdepreca
+ted-declarations]
+  102 |         while (ERR_get_error_line(&file, &line)) {}
+      |         ^~~~~
+/usr/include/openssl/err.h:411:15: note: declared here
+  411 | unsigned long ERR_get_error_line(const char **file, int *line);
+      |               ^~~~~~~~~~~~~~~~~~
+...
+
+
+>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: David Woodhouse <dwmw2@infradead.org>
+> Cc: Eric Biggers <ebiggers@kernel.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: keyrings@vger.kernel.org
+> Co-developed-by: Adam Langley <agl@google.com>
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> ---
+> v2: Clear up subject and patch description to avoid confusion
+>
+> scripts/sign-file.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+>
+> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+> index fbd34b8e8f578..fa3fa59db6669 100644
+> --- a/scripts/sign-file.c
+> +++ b/scripts/sign-file.c
+> @@ -135,7 +135,9 @@ static int pem_pw_cb(char *buf, int len, int w, void *v)
+>  static EVP_PKEY *read_private_key(const char *private_key_name)
+>  {
+>  	EVP_PKEY *private_key;
+> +	BIO *b;
+>
+> +#ifndef OPENSSL_NO_ENGINE
+>  	if (!strncmp(private_key_name, "pkcs11:", 7)) {
+>  		ENGINE *e;
+>
+> @@ -153,17 +155,16 @@ static EVP_PKEY *read_private_key(const char *private_key_name)
+>  		private_key = ENGINE_load_private_key(e, private_key_name,
+>  						      NULL, NULL);
+>  		ERR(!private_key, "%s", private_key_name);
+> -	} else {
+> -		BIO *b;
+> -
+> -		b = BIO_new_file(private_key_name, "rb");
+> -		ERR(!b, "%s", private_key_name);
+> -		private_key = PEM_read_bio_PrivateKey(b, NULL, pem_pw_cb,
+> -						      NULL);
+> -		ERR(!private_key, "%s", private_key_name);
+> -		BIO_free(b);
+> +		return private_key;
+>  	}
+> +#endif
+>
+> +	b = BIO_new_file(private_key_name, "rb");
+> +	ERR(!b, "%s", private_key_name);
+> +	private_key = PEM_read_bio_PrivateKey(b, NULL, pem_pw_cb,
+> +					      NULL);
+> +	ERR(!private_key, "%s", private_key_name);
+> +	BIO_free(b);
+>  	return private_key;
+>  }
+
+--
+Kees Cook
