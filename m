@@ -2,24 +2,24 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4921D4D67FE
-	for <lists+keyrings@lfdr.de>; Fri, 11 Mar 2022 18:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFB064D6801
+	for <lists+keyrings@lfdr.de>; Fri, 11 Mar 2022 18:47:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238918AbiCKRss (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 11 Mar 2022 12:48:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59738 "EHLO
+        id S1346741AbiCKRst (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 11 Mar 2022 12:48:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234563AbiCKRsr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 11 Mar 2022 12:48:47 -0500
-Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [IPv6:2001:1600:3:17::bc0f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B76D42EED
-        for <keyrings@vger.kernel.org>; Fri, 11 Mar 2022 09:47:36 -0800 (PST)
+        with ESMTP id S234563AbiCKRst (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 11 Mar 2022 12:48:49 -0500
+Received: from smtp-42ad.mail.infomaniak.ch (smtp-42ad.mail.infomaniak.ch [IPv6:2001:1600:3:17::42ad])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FBAB4754E;
+        Fri, 11 Mar 2022 09:47:37 -0800 (PST)
 Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
-        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4KFYKy5vmNzMppQX;
-        Fri, 11 Mar 2022 18:47:34 +0100 (CET)
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4KFYKz2khTzMqKrZ;
+        Fri, 11 Mar 2022 18:47:35 +0100 (CET)
 Received: from localhost (unknown [23.97.221.149])
-        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4KFYKy1GL6zlj4cF;
-        Fri, 11 Mar 2022 18:47:34 +0100 (CET)
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4KFYKz1CGvzlhRVr;
+        Fri, 11 Mar 2022 18:47:35 +0100 (CET)
 From:   =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
 To:     David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
@@ -30,15 +30,17 @@ Cc:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
         =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@linux.microsoft.com>,
         Paul Moore <paul@paul-moore.com>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 0/2] Remove panic() from keyring init calls
-Date:   Fri, 11 Mar 2022 18:47:39 +0100
-Message-Id: <20220311174741.250424-1-mic@digikod.net>
+Subject: [PATCH v1 1/2] certs: Remove panic() calls from blacklist_init()
+Date:   Fri, 11 Mar 2022 18:47:40 +0100
+Message-Id: <20220311174741.250424-2-mic@digikod.net>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220311174741.250424-1-mic@digikod.net>
+References: <20220311174741.250424-1-mic@digikod.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,28 +48,71 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-As suggested by Jarkko [1], let's remove the panic() calls from the
-keyring initializations.  This series applies on top of commit
-c9e54f38976a ("integrity: Only use machine keyring when
-uefi_check_trust_mok_keys is true"), which also includes 50c486fe3108
-("certs: Allow root user to append signed hashes to the blacklist
-keyring").
+From: Mickaël Salaün <mic@linux.microsoft.com>
 
-[1] https://lore.kernel.org/r/Yik0C2t7G272YZ73@iki.fi
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/commit/?id=c9e54f38976a1c0ec69c0a6208b3fd55fceb01d1
+Replace panic() calls from device_initcall(blacklist_init) with proper
+error handling using -ENODEV.
 
-Regards,
+Suggested-by: Jarkko Sakkinen <jarkko@kernel.org> [1]
+Link: https://lore.kernel.org/r/Yik0C2t7G272YZ73@iki.fi [1]
+Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20220311174741.250424-2-mic@digikod.net
+---
+ certs/blacklist.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-Mickaël Salaün (2):
-  certs: Remove panic() calls from blacklist_init()
-  certs: Remove panic() calls from system_trusted_keyring_init()
-
- certs/blacklist.c      | 27 +++++++++++++++++++++------
- certs/system_keyring.c | 26 ++++++++++++++++++++------
- 2 files changed, 41 insertions(+), 12 deletions(-)
-
-
-base-commit: c9e54f38976a1c0ec69c0a6208b3fd55fceb01d1
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index 486ce0dd8e9c..ea7a77f156da 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -313,12 +313,16 @@ static int __init blacklist_init(void)
+ 	const char *const *bl;
+ 	struct key_restriction *restriction;
+ 
+-	if (register_key_type(&key_type_blacklist) < 0)
+-		panic("Can't allocate system blacklist key type\n");
++	if (register_key_type(&key_type_blacklist) < 0) {
++		pr_err("Can't allocate system blacklist key type\n");
++		return -ENODEV;
++	}
+ 
+ 	restriction = kzalloc(sizeof(*restriction), GFP_KERNEL);
+-	if (!restriction)
+-		panic("Can't allocate blacklist keyring restriction\n");
++	if (!restriction) {
++		pr_err("Can't allocate blacklist keyring restriction\n");
++		goto err_restriction;
++	}
+ 	restriction->check = restrict_link_for_blacklist;
+ 
+ 	blacklist_keyring =
+@@ -333,13 +337,24 @@ static int __init blacklist_init(void)
+ 			      , KEY_ALLOC_NOT_IN_QUOTA |
+ 			      KEY_ALLOC_SET_KEEP,
+ 			      restriction, NULL);
+-	if (IS_ERR(blacklist_keyring))
+-		panic("Can't allocate system blacklist keyring\n");
++	if (IS_ERR(blacklist_keyring)) {
++		pr_err("Can't allocate system blacklist keyring\n");
++		goto err_keyring;
++	}
+ 
+ 	for (bl = blacklist_hashes; *bl; bl++)
+ 		if (mark_raw_hash_blacklisted(*bl) < 0)
+ 			pr_err("- blacklisting failed\n");
+ 	return 0;
++
++
++err_keyring:
++	kfree(restriction);
++
++err_restriction:
++	unregister_key_type(&key_type_blacklist);
++
++	return -ENODEV;
+ }
+ 
+ /*
 -- 
 2.35.1
 
