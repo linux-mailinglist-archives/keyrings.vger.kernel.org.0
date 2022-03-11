@@ -2,274 +2,158 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED1F4D6A44
-	for <lists+keyrings@lfdr.de>; Sat, 12 Mar 2022 00:26:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1414D6A86
+	for <lists+keyrings@lfdr.de>; Sat, 12 Mar 2022 00:26:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbiCKWxr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 11 Mar 2022 17:53:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40310 "EHLO
+        id S229685AbiCKWuF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 11 Mar 2022 17:50:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbiCKWxa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 11 Mar 2022 17:53:30 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5936F2E4087;
-        Fri, 11 Mar 2022 14:29:25 -0800 (PST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22BKcAX9022137;
-        Fri, 11 Mar 2022 21:04:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=YkYGmfeYZMf+8hugmF5odKW/SoWqd7Itn5m4OyORHmQ=;
- b=USY9GIwIkSfgzDBx94LZkA9T9R5K1U0OeEejoPYdxbJA7nvRv/4RWpdP2wU9MmmOYYoX
- KvLmbqRbz0X1XUbOeTMJY2zJPQxHgzOlxo8yI/AQWQsVttTqut1O/4u/Bva2GDtTnxud
- uMQ9LfR3RDJ4grpJY3OjQlBu0SvfgddHWQw/5HO4UqcNX/hZeWGtVaLmToBipAH/yIXk
- fi01sC+LvETBLSjyZLQQbdWC7ozcEgXVIfZpTvPlcIRno46x7ENQGCjXwC2YrxM8vzCg
- zq2GcyeDHotl9kBTXYNPQqZLNmicEqn3vldFlKWl2/zGfAuf6NsYeHZHQwgy/6oVcK3e 8g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3eqm1bdkdt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Mar 2022 21:04:14 +0000
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22BL0puh027697;
-        Fri, 11 Mar 2022 21:04:13 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3eqm1bdkdd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Mar 2022 21:04:13 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22BL3qcs003063;
-        Fri, 11 Mar 2022 21:04:11 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-        by ppma03ams.nl.ibm.com with ESMTP id 3ekyg97smh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Mar 2022 21:04:11 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22BKqpaN45482458
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Mar 2022 20:52:51 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 58B954C040;
-        Fri, 11 Mar 2022 21:04:08 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 06D0B4C044;
-        Fri, 11 Mar 2022 21:04:05 +0000 (GMT)
-Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.110.168])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 11 Mar 2022 21:04:04 +0000 (GMT)
-From:   Nayna Jain <nayna@linux.ibm.com>
-To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
-Cc:     dhowells@redhat.com, zohar@linux.ibm.com, jarkko@kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
-        seth@forshee.me, rnsastry@linux.ibm.com, masahiroy@kernel.org,
-        Nayna Jain <nayna@linux.ibm.com>
-Subject: [PATCH v12 4/4] integrity: support including firmware ".platform" keys at build time
-Date:   Fri, 11 Mar 2022 16:03:44 -0500
-Message-Id: <20220311210344.102396-5-nayna@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220311210344.102396-1-nayna@linux.ibm.com>
-References: <20220311210344.102396-1-nayna@linux.ibm.com>
+        with ESMTP id S229821AbiCKWtv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 11 Mar 2022 17:49:51 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BFB2A557C
+        for <keyrings@vger.kernel.org>; Fri, 11 Mar 2022 14:34:09 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id l20so17444902lfg.12
+        for <keyrings@vger.kernel.org>; Fri, 11 Mar 2022 14:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=oImblYsWVMGS5zQ1ePppQmmiYR91J0cAmcAcM48NpcI=;
+        b=BaIqFmBKr8M3m70S+XXZ+EK/lp61e4SxKkFzvYgGOAMCqZ62uQhxJc0a0eJRAcsRDZ
+         6XgQyQti/ldlLBGCz5rTVteS7sXgX8UEe7vq0E+ofzVKR85UMClwc+Kd6rwHVGWxzJkQ
+         UPyR/daTal0IWwV/faCbCO/cI9R+ef3bLTOOwYmU57JORRTmFNIb97c/9ewKfmDrcrjS
+         wBR9Ia5Op6N4lfye4lLq4ziPdfZWHDVoJHK+0zm2Tl3Jy6FqW+ifaxp52Zo7BMJuXlZM
+         5TrqFdjBivg9HPYoH6WzzwonQl7aroWvbKBIY3v08ODzxt4RqqDDmNsXjdTQ4WYvrZUA
+         TLSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=oImblYsWVMGS5zQ1ePppQmmiYR91J0cAmcAcM48NpcI=;
+        b=JQQC8sxcxmlNlusAejO6+s32MVbcKwzAV1StBbM0ZO95xEdsOr6IZS/OuMXi4yX6OV
+         l5jZW3lv+S3tN66wP9VH7rE/zpB2cX1YMj0J3WGs7zIkww3hV/0pygWBxc7jCM/TiO8P
+         H9DdAqyIt0yI4+DhzGYONsIVekLg67MgeAuWqXJ28IN6vnrcHZtIxSWLpZpqnZ1i9xum
+         qWOnfUL4Sue7vquzdBGqcxN33XLk8hnV65LzRn6CMyBqXgk5pXF8xaUkO808N14ctCpN
+         ApKxeQDn4/V9Vx461nMNtOWMpeX6pIFFL6+GVhWqVQVTmJAhOEr1s5A80haHIFXVzgBw
+         /VYA==
+X-Gm-Message-State: AOAM533HXcnG2dCZ9FSfuSRGIYvOHg2cZzh3cI13qdwuHsRYPr52VWwz
+        YmvKimSw6JJEDWrzpYzc8yEvi8gAj/F96aCdBIFawYQuBA==
+X-Google-Smtp-Source: ABdhPJyWZ5aNzu/C+Tv46rBVFwOppvij1Tsq5Wb6owJWam9upz7UNT/kuEZFR5xQPSh3XaZxX4DQpJCXtDxrawj2CPQ=
+X-Received: by 2002:a17:907:1b09:b0:6d8:faa8:4a06 with SMTP id
+ mp9-20020a1709071b0900b006d8faa84a06mr10170156ejc.701.1647036043563; Fri, 11
+ Mar 2022 14:00:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nLVnCLBubX1QQ1byyP1hD16iL_mMTain
-X-Proofpoint-GUID: DO8PiVkQRPNpIlXFc3t7ctO_2pSvozgp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-11_09,2022-03-11_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 suspectscore=0 impostorscore=0 priorityscore=1501
- adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2202240000 definitions=main-2203110103
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220311174741.250424-1-mic@digikod.net> <20220311174741.250424-2-mic@digikod.net>
+In-Reply-To: <20220311174741.250424-2-mic@digikod.net>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 11 Mar 2022 17:00:32 -0500
+Message-ID: <CAHC9VhThwFbO83D8u09XmRRvQxft7fHZ+KPciGfmrBJNZA1wGQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] certs: Remove panic() calls from blacklist_init()
+To:     =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@linux.microsoft.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Allow firmware keys to be embedded in the Linux kernel and loaded onto
-the ".platform" keyring on boot.
+On Fri, Mar 11, 2022 at 12:47 PM Micka=C3=ABl Sala=C3=BCn <mic@digikod.net>=
+ wrote:
+> From: Micka=C3=ABl Sala=C3=BCn <mic@linux.microsoft.com>
+>
+> Replace panic() calls from device_initcall(blacklist_init) with proper
+> error handling using -ENODEV.
+>
+> Suggested-by: Jarkko Sakkinen <jarkko@kernel.org> [1]
+> Link: https://lore.kernel.org/r/Yik0C2t7G272YZ73@iki.fi [1]
+> Signed-off-by: Micka=C3=ABl Sala=C3=BCn <mic@linux.microsoft.com>
+> Link: https://lore.kernel.org/r/20220311174741.250424-2-mic@digikod.net
+> ---
+>  certs/blacklist.c | 27 +++++++++++++++++++++------
+>  1 file changed, 21 insertions(+), 6 deletions(-)
 
-The firmware keys can be specified in a file as a list of PEM encoded
-certificates using new config INTEGRITY_PLATFORM_KEYS. The certificates
-are embedded in the image by converting the PEM-formatted certificates
-into DER(binary) and generating
-security/integrity/platform_certs/platform_certificate_list file at
-build time. On boot, the embedded certs from the image are loaded onto
-the ".platform" keyring at late_initcall(), ensuring the platform keyring
-exists before loading the keys.
+I'm not sure we can safely rely on a non-zero error code saving us in
+the care of failure, can we?
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
----
- scripts/Makefile                              |  1 +
- security/integrity/Kconfig                    | 10 ++++++++
- security/integrity/Makefile                   | 15 +++++++++++-
- security/integrity/integrity.h                |  3 +++
- .../integrity/platform_certs/platform_cert.S  | 23 +++++++++++++++++++
- .../platform_certs/platform_keyring.c         | 23 +++++++++++++++++++
- 6 files changed, 74 insertions(+), 1 deletion(-)
- create mode 100644 security/integrity/platform_certs/platform_cert.S
+The blacklist_init() function is registered as an initcall via
+device_initcall() which I believe is either executed via
+do_init_module() in the case of a dynamic module load, or via
+do_initcalls() if built into the kernel.  In either case the result is
+that the module/functionality doesn't load and the kernel continues on
+executing.  While this could be acceptable for some non-critical
+modules, if this particular module fails to load it defeats the
+certificate/key based deny list for signed modules, yes?
 
-diff --git a/scripts/Makefile b/scripts/Makefile
-index cedc1f0e21d8..c569594af4a6 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -15,6 +15,7 @@ hostprogs-always-$(CONFIG_MODULE_SIG_FORMAT)		+= sign-file
- hostprogs-always-$(CONFIG_SYSTEM_TRUSTED_KEYRING)	+= extract-cert
- hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
- hostprogs-always-$(CONFIG_SYSTEM_REVOCATION_LIST)	+= extract-cert
-+hostprogs-always-$(CONFIG_INTEGRITY_PLATFORM_KEYRING)	+= extract-cert
- 
- HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
- HOSTLDLIBS_sorttable = -lpthread
-diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
-index 599429f99f99..77b2c22c0e1b 100644
---- a/security/integrity/Kconfig
-+++ b/security/integrity/Kconfig
-@@ -62,6 +62,16 @@ config INTEGRITY_PLATFORM_KEYRING
-          provided by the platform for verifying the kexec'ed kerned image
-          and, possibly, the initramfs signature.
- 
-+config INTEGRITY_PLATFORM_KEYS
-+        string "Builtin X.509 keys for .platform keyring"
-+        depends on KEYS
-+        depends on ASYMMETRIC_KEY_TYPE
-+        depends on INTEGRITY_PLATFORM_KEYRING
-+        help
-+          If set, this option should be the filename of a PEM-formatted file
-+          containing X.509 certificates to be loaded onto the ".platform"
-+          keyring.
-+
- config INTEGRITY_MACHINE_KEYRING
- 	bool "Provide a keyring to which Machine Owner Keys may be added"
- 	depends on SECONDARY_TRUSTED_KEYRING
-diff --git a/security/integrity/Makefile b/security/integrity/Makefile
-index d0ffe37dc1d6..4154bf4996a9 100644
---- a/security/integrity/Makefile
-+++ b/security/integrity/Makefile
-@@ -3,13 +3,17 @@
- # Makefile for caching inode integrity data (iint)
- #
- 
-+quiet_cmd_extract_certs  = CERT  $@
-+      cmd_extract_certs  = scripts/extract-cert $(2) $@
-+
- obj-$(CONFIG_INTEGRITY) += integrity.o
- 
- integrity-y := iint.o
- integrity-$(CONFIG_INTEGRITY_AUDIT) += integrity_audit.o
- integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
- integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
--integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o
-+integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o \
-+						  platform_certs/platform_cert.o
- integrity-$(CONFIG_INTEGRITY_MACHINE_KEYRING) += platform_certs/machine_keyring.o
- integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
- 				      platform_certs/load_uefi.o \
-@@ -20,3 +24,12 @@ integrity-$(CONFIG_LOAD_PPC_KEYS) += platform_certs/efi_parser.o \
-                                      platform_certs/keyring_handler.o
- obj-$(CONFIG_IMA)			+= ima/
- obj-$(CONFIG_EVM)			+= evm/
-+
-+$(obj)/platform_certs/platform_cert.o: $(obj)/platform_certs/platform_certificate_list
-+
-+targets += platform_certificate_list
-+
-+$(obj)/platform_certs/platform_certificate_list: $(CONFIG_INTEGRITY_PLATFORM_KEYS) scripts/extract-cert FORCE
-+	$(call if_changed,extract_certs,$(if $(CONFIG_INTEGRITY_PLATFORM_KEYS),$<,""))
-+
-+clean-files := platform_certs/platform_certificate_list
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index 76e9a9515f99..219da29fecf7 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -282,6 +282,9 @@ integrity_audit_log_start(struct audit_context *ctx, gfp_t gfp_mask, int type)
- #endif
- 
- #ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
-+extern __initconst const u8 platform_certificate_list[];
-+extern __initconst const unsigned long platform_certificate_list_size;
-+
- void __init add_to_platform_keyring(const char *source, const void *data,
- 				    size_t len);
- #else
-diff --git a/security/integrity/platform_certs/platform_cert.S b/security/integrity/platform_certs/platform_cert.S
-new file mode 100644
-index 000000000000..20bccce5dc5a
---- /dev/null
-+++ b/security/integrity/platform_certs/platform_cert.S
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <linux/export.h>
-+#include <linux/init.h>
-+
-+	__INITRODATA
-+
-+	.align 8
-+#ifdef CONFIG_INTEGRITY_PLATFORM_KEYRING
-+	.globl platform_certificate_list
-+platform_certificate_list:
-+__cert_list_start:
-+	.incbin "security/integrity/platform_certs/platform_certificate_list"
-+__cert_list_end:
-+#endif
-+
-+	.align 8
-+	.globl platform_certificate_list_size
-+platform_certificate_list_size:
-+#ifdef CONFIG_64BIT
-+	.quad __cert_list_end - __cert_list_start
-+#else
-+	.long __cert_list_end - __cert_list_start
-+#endif
-diff --git a/security/integrity/platform_certs/platform_keyring.c b/security/integrity/platform_certs/platform_keyring.c
-index bcafd7387729..c2368912fd1b 100644
---- a/security/integrity/platform_certs/platform_keyring.c
-+++ b/security/integrity/platform_certs/platform_keyring.c
-@@ -12,6 +12,7 @@
- #include <linux/cred.h>
- #include <linux/err.h>
- #include <linux/slab.h>
-+#include <keys/system_keyring.h>
- #include "../integrity.h"
- 
- /**
-@@ -37,6 +38,28 @@ void __init add_to_platform_keyring(const char *source, const void *data,
- 		pr_info("Error adding keys to platform keyring %s\n", source);
- }
- 
-+static __init int load_platform_certificate_list(void)
-+{
-+	const u8 *p;
-+	unsigned long size;
-+	int rc;
-+	struct key *keyring;
-+
-+	p = platform_certificate_list;
-+	size = platform_certificate_list_size;
-+
-+	keyring = integrity_keyring_from_id(INTEGRITY_KEYRING_PLATFORM);
-+	if (IS_ERR(keyring))
-+		return PTR_ERR(keyring);
-+
-+	rc = load_certificate_list(p, size, keyring);
-+	if (rc)
-+		pr_info("Error adding keys to platform keyring %d\n", rc);
-+
-+	return rc;
-+}
-+late_initcall(load_platform_certificate_list);
-+
- /*
-  * Create the trusted keyrings.
-  */
--- 
-2.34.1
+I completely understand the strong desire to purge the kernel of
+panic()s, BUG()s, and the like, but if a critical piece of security
+functionality that users expect to be present fails to initialize,
+panic()ing is likely the right thing to do.
 
+> diff --git a/certs/blacklist.c b/certs/blacklist.c
+> index 486ce0dd8e9c..ea7a77f156da 100644
+> --- a/certs/blacklist.c
+> +++ b/certs/blacklist.c
+> @@ -313,12 +313,16 @@ static int __init blacklist_init(void)
+>         const char *const *bl;
+>         struct key_restriction *restriction;
+>
+> -       if (register_key_type(&key_type_blacklist) < 0)
+> -               panic("Can't allocate system blacklist key type\n");
+> +       if (register_key_type(&key_type_blacklist) < 0) {
+> +               pr_err("Can't allocate system blacklist key type\n");
+> +               return -ENODEV;
+> +       }
+>
+>         restriction =3D kzalloc(sizeof(*restriction), GFP_KERNEL);
+> -       if (!restriction)
+> -               panic("Can't allocate blacklist keyring restriction\n");
+> +       if (!restriction) {
+> +               pr_err("Can't allocate blacklist keyring restriction\n");
+> +               goto err_restriction;
+> +       }
+>         restriction->check =3D restrict_link_for_blacklist;
+>
+>         blacklist_keyring =3D
+> @@ -333,13 +337,24 @@ static int __init blacklist_init(void)
+>                               , KEY_ALLOC_NOT_IN_QUOTA |
+>                               KEY_ALLOC_SET_KEEP,
+>                               restriction, NULL);
+> -       if (IS_ERR(blacklist_keyring))
+> -               panic("Can't allocate system blacklist keyring\n");
+> +       if (IS_ERR(blacklist_keyring)) {
+> +               pr_err("Can't allocate system blacklist keyring\n");
+> +               goto err_keyring;
+> +       }
+>
+>         for (bl =3D blacklist_hashes; *bl; bl++)
+>                 if (mark_raw_hash_blacklisted(*bl) < 0)
+>                         pr_err("- blacklisting failed\n");
+>         return 0;
+> +
+> +
+> +err_keyring:
+> +       kfree(restriction);
+> +
+> +err_restriction:
+> +       unregister_key_type(&key_type_blacklist);
+> +
+> +       return -ENODEV;
+>  }
+
+--=20
+paul-moore.com
