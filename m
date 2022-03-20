@@ -2,62 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 675564E1DFC
-	for <lists+keyrings@lfdr.de>; Sun, 20 Mar 2022 22:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D9E4E1E45
+	for <lists+keyrings@lfdr.de>; Mon, 21 Mar 2022 00:34:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343738AbiCTVbp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 20 Mar 2022 17:31:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57194 "EHLO
+        id S1343811AbiCTXfi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 20 Mar 2022 19:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236574AbiCTVbp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 20 Mar 2022 17:31:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B233819D;
-        Sun, 20 Mar 2022 14:30:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CEF69B80EFA;
-        Sun, 20 Mar 2022 21:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996A3C340E9;
-        Sun, 20 Mar 2022 21:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647811818;
-        bh=tTXsRvXcOgBE9bkryBEz2qKjZqFOG8apagVn9U/uti0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=p3XF6opLAITbuzC6qPWYfipEKm/uQr/7rBFwWLFBwnrqPVlc4t1suLbbQU3nDKoQz
-         Vt/UhFCvJs8KCgIq+j9X68rMLv48PO5LS8XUDHxEPCRFoK/q3pqFpKnCmRdzv1TwSY
-         rgFf3mCujGbriNThhNRY/4yE8Obdxg4MBzEEQHbzFJ366yxzohQnnQqbhFzxziYfFN
-         5jle4eIxmZtag+2HXRCLHQ7D/4b9u1p8Jck87YEYb+cunlYAn1R2HCKkCUN/ftVyLL
-         k/gAnAma91++7ccEszyF0PvfCuinT1joWPi7wpyoJf+7xQHOUWeBucleeQyAfhlW7F
-         W178jPJ4zAWRg==
-Date:   Sun, 20 Mar 2022 23:31:19 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Nayna <nayna@linux.vnet.ibm.com>
-Cc:     Nageswara Sastry <rnsastry@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        dhowells@redhat.com, zohar@linux.ibm.com,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dimitri.ledkov@canonical.com,
-        seth@forshee.me, Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v11 0/4] integrity: support including firmware
- ".platform" keys at build time
-Message-ID: <YjedJxNNv8KifAKd@kernel.org>
-References: <20220310214450.676505-1-nayna@linux.ibm.com>
- <4afae87c-2986-6b0e-07be-954dd4937afd@linux.ibm.com>
- <f78d11fefd13bd17748e36621acee9c2f27a77f6.camel@kernel.org>
- <f92ec4d8-47c0-ece5-3c52-caeb8265881c@linux.vnet.ibm.com>
- <YjLlYTs+2ep80zoK@iki.fi>
- <57d7034a-fb5c-444e-a709-4f993459688e@linux.vnet.ibm.com>
+        with ESMTP id S1343795AbiCTXfh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 20 Mar 2022 19:35:37 -0400
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E258D6AA
+        for <keyrings@vger.kernel.org>; Sun, 20 Mar 2022 16:34:13 -0700 (PDT)
+Received: by mail-io1-f70.google.com with SMTP id f7-20020a056602088700b00645ebbe277cso9527267ioz.22
+        for <keyrings@vger.kernel.org>; Sun, 20 Mar 2022 16:34:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=qN8EZrK1zqj9TBgeCNo+T4ll4VaGvoLHaMPomao8fYo=;
+        b=j/axRriYLpOAtl+A1IwiW8qtrzLUWJguLVzo5XRhcolmzgN4s1HRVsiMGFnZ9V6FJY
+         KTRTtyiY74GHDcqlYzZvX62vwN/z0xwPR058OLvRO+yTZBfk2CX3HRB2ofI5DZR8aoC7
+         SdMSIrgYLLMw7oFcrROfNhf2GVm8VryqsKgWCDLJ0VR4BS5KLs+dS2xd27gF6cj0Fih9
+         o56pTMX9farwVTCZD7GrfsDacazquiZCxU9gWK68Nd3lIJRcLq5WmSYmw/3FVT4Mgj9i
+         6Ldro+J2OICFM++fTCoVVjObzuvCHQ4Q2rF6srk2FBRT3tI0JeqQ3DtVqpBUXFPVQDhD
+         Ty0Q==
+X-Gm-Message-State: AOAM533ce6U8UhX6VIlEnO2ELxHdSLOPei3qnay5PIFs3Q4V6hc9Rj+Q
+        Kmm6F3Dyoe3YiW/DAArCgQg+2w+IvstCCW6vxuqtgflln9/F
+X-Google-Smtp-Source: ABdhPJx6dWZ0E2X4HAuXYLHIG295UGzXoP0sdKG/sso8cNgW2fDjJaSS+TE1T4Mvo6HYe+Xx+ND/ZNlvmt65aXRB8gm1s2+RBzx6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <57d7034a-fb5c-444e-a709-4f993459688e@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Received: by 2002:a05:6e02:1be4:b0:2c7:898a:3b93 with SMTP id
+ y4-20020a056e021be400b002c7898a3b93mr8498537ilv.24.1647819253103; Sun, 20 Mar
+ 2022 16:34:13 -0700 (PDT)
+Date:   Sun, 20 Mar 2022 16:34:13 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000003c424505daaed1b7@google.com>
+Subject: [syzbot] memory leak in keyctl_watch_key
+From:   syzbot <syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com>
+To:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, serge@hallyn.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,51 +54,48 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Mar 18, 2022 at 05:25:07PM -0400, Nayna wrote:
-> 
-> On 3/17/22 03:38, Jarkko Sakkinen wrote:
-> > On Fri, Mar 11, 2022 at 04:03:12PM -0500, Nayna wrote:
-> > > On 3/11/22 11:42, Jarkko Sakkinen wrote:
-> > > > ".platform" keyring.
-> > > > > > Changelog:
-> > > > > > v11:
-> > > > > > * Added a new patch to conditionally build extract-cert if
-> > > > > > PLATFORM_KEYRING is enabled.
-> > > > > > 
-> > > > > Tested the following four patches with and with out setting
-> > > > > CONFIG_INTEGRITY_PLATFORM_KEYS
-> > > > > 
-> > > > > Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-> > > > OK, I added it:
-> > > > 
-> > > > git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
-> > > Thanks Jarkko. Masahiro Yamada would prefer to revert the original commit
-> > > 340a02535ee785c64c62a9c45706597a0139e972 i.e. move extract-cert back to the
-> > > scripts/ directory.
-> > > 
-> > > I am just posting v12 which includes Masahiro feedback. Nageswara has
-> > > already tested v12 version as well.
-> > > 
-> > > I am fine either way 1.) Adding v11 and then separately handling of
-> > > reverting of the commit or 2.) Adding v12 version which includes the revert.
-> > > I leave the decision on you as to which one to upstream.
-> > > 
-> > > Thanks & Regards,
-> > > 
-> > >      - Nayna
-> > > 
-> > I already sent PR for v5.18. Too many late changes to include this, which
-> > means that v12 is the way to go.
-> 
-> Assuming v12 looks good, could you please queue it now ?
-> 
-> Thanks & Regards,
-> 
->     - Nayna
-> 
+Hello,
 
-Unfortunately, I've already sent my v5.18 PR over a week ago. I can put it
-to my queue but I think it is lacking some of the tested by tags, doesn't
-it?
+syzbot found the following issue on:
 
-BR, Jarkko
+HEAD commit:    56e337f2cf13 Revert "gpio: Revert regression in sysfs-gpio..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16b65f8d700000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6c80259f3b3fdf91
+dashboard link: https://syzkaller.appspot.com/bug?extid=6e2de48f06cdb2884bfc
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1786c3b5700000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=171ca6b1700000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com
+
+Warning: Permanently added '10.128.10.13' (ECDSA) to the list of known hosts.
+executing program
+executing program
+BUG: memory leak
+unreferenced object 0xffff88810ce4a200 (size 96):
+  comm "syz-executor352", pid 3605, jiffies 4294947473 (age 13.720s)
+  hex dump (first 32 bytes):
+    e0 82 48 0d 81 88 ff ff 00 00 00 00 00 00 00 00  ..H.............
+    80 a2 e4 0c 81 88 ff ff 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff8214e6cc>] kmalloc include/linux/slab.h:581 [inline]
+    [<ffffffff8214e6cc>] kzalloc include/linux/slab.h:714 [inline]
+    [<ffffffff8214e6cc>] keyctl_watch_key+0xec/0x2e0 security/keys/keyctl.c:1800
+    [<ffffffff8214ec84>] __do_sys_keyctl+0x3c4/0x490 security/keys/keyctl.c:2016
+    [<ffffffff84493a25>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84493a25>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84600068>] entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
