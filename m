@@ -2,73 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8E834E2577
-	for <lists+keyrings@lfdr.de>; Mon, 21 Mar 2022 12:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0624D4E271B
+	for <lists+keyrings@lfdr.de>; Mon, 21 Mar 2022 14:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346888AbiCULwm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Mar 2022 07:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
+        id S1347680AbiCUNCS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Mar 2022 09:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346870AbiCULwk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Mar 2022 07:52:40 -0400
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FB2156C40
-        for <keyrings@vger.kernel.org>; Mon, 21 Mar 2022 04:51:10 -0700 (PDT)
-Received: by mail-il1-f197.google.com with SMTP id m3-20020a056e02158300b002b6e3d1f97cso7214097ilu.19
-        for <keyrings@vger.kernel.org>; Mon, 21 Mar 2022 04:51:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=83x05As+hpEzsvG90JcF+MmesN/BPt2Ioqkif/dNrHk=;
-        b=1wev8L7wdUpj4CGE8PTDrn0sQYXehlYmi20RP4BHGY+mRFDYaow5YmgqGfCJHtGIFR
-         X4vKxZpGoUsJNVAlnyjMFoyzsTJX1Ih1+0Cvl+kfS/jISpxjzGvDJwTZxGoNCKyjeR3R
-         Otbsl7/sxZZOjZXB81yYw1qYGFgzzYSUK025U3OjORnsf8cgZVn4HKNnnlTjbVwKz8I8
-         /a/88EKQlualXfQViMi16tPDMchuhQM77pya3Ws43ZtYGuKN/Sbe0YuoLmmm1VtUSsJj
-         kpuxmRyLyuFTYlXotCizPexDjL6xW1Zf9koXN3X67RZUTqL25UMbhdldSDTLPLgvukvL
-         GE7g==
-X-Gm-Message-State: AOAM530sZzSLY297KOS3zhgmivCHSi14H1OwtCEgbItVaBC6xYDinkXA
-        7XBwiyi8GhQeotH8wse5xc65Y+3UhguA6/Uc3mwkV4WICGH/
-X-Google-Smtp-Source: ABdhPJx14oK7C0sSXYkXvGjnk1LhI7Nd7dI8dHsjz4cUx21fQNuejsWZo8ywfyvHHwBn1WhJ1G6ZfQQvui4PEZ82btWAzDlAb8dg
+        with ESMTP id S1347670AbiCUNCR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Mar 2022 09:02:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4A8E0554B1
+        for <keyrings@vger.kernel.org>; Mon, 21 Mar 2022 06:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647867649;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=+eufLnpVokFrbEaIu897l2dh/pat5lF2bZZu9LjdBSY=;
+        b=Ku283/ZJl6giaIrGi+3/xO7gvJZLWp+v0Qnusjf7h9+xMTHDEHbBU5eYja9sYDeaqkmQpN
+        Mm/6Mzeg2gsp0/3mIHs9WG92cQBe1PqNl5M7hphW1z9by7O4CGLRa+Qahvt6Pz0HQ+8CtR
+        UlWTFmocYFPu9AV9GzhyVOzQaSBIysU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-548-FmWPyz3sPZW_t3aw1n64vQ-1; Mon, 21 Mar 2022 09:00:48 -0400
+X-MC-Unique: FmWPyz3sPZW_t3aw1n64vQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D21CC811E76;
+        Mon, 21 Mar 2022 13:00:47 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 09BB7440EE0;
+        Mon, 21 Mar 2022 13:00:46 +0000 (UTC)
+Subject: [PATCH 0/2] watch_queue: A couple more fixes
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+Cc:     dhowells@redhat.com, fmdefrancesco@gmail.com, jannh@google.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 21 Mar 2022 13:00:46 +0000
+Message-ID: <164786764630.1025645.12332376420230352947.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/1.4
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:3816:b0:31a:60:22c9 with SMTP id
- i22-20020a056638381600b0031a006022c9mr9837348jav.146.1647863469476; Mon, 21
- Mar 2022 04:51:09 -0700 (PDT)
-Date:   Mon, 21 Mar 2022 04:51:09 -0700
-In-Reply-To: <1019067.1647862887@warthog.procyon.org.uk>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000bc8eaf05dab91c63@google.com>
-Subject: Re: [syzbot] memory leak in keyctl_watch_key
-From:   syzbot <syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com>
-To:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, serge@hallyn.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.9
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Hi Linus,
 
-Reported-and-tested-by: syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com
+Here are fixes for a couple more watch_queue bugs, both found by syzbot:
 
-Tested on:
+ (1) Fix error cleanup in watch_queue_set_size() where it tries to clean up
+     all the pointers in the page list, even if they've not been allocated
+     yet[1].  Unfortunately, __free_page() doesn't treat a NULL pointer as
+     being "do nothing".
 
-commit:         c82efd1d watch_queue: Actually free the watch
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7683c993c23430bc
-dashboard link: https://syzkaller.appspot.com/bug?extid=6e2de48f06cdb2884bfc
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+     A second report[2] looks like it's probably the same bug, but on arm64
+     rather than x86_64, but there's no reproducer.
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+ (2) Fix a missing kfree in free_watch() to actually free the watch[3].
+
+Both have syzbot reproducers.
+
+The fixes are also available through git:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-fixes
+
+David
+
+Link: https://lore.kernel.org/r/000000000000b1807c05daad8f98@google.com/ [1]
+Link: https://lore.kernel.org/r/000000000000035b9c05daae8a5e@google.com/ [2]
+Link: https://lore.kernel.org/r/000000000000bc8eaf05dab91c63@google.com/ [3]
+---
+David Howells (2):
+      watch_queue: Fix NULL dereference in error cleanup
+      watch_queue: Actually free the watch
+
+
+ kernel/watch_queue.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+
