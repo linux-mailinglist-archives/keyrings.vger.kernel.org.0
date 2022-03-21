@@ -2,74 +2,73 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1864E2560
-	for <lists+keyrings@lfdr.de>; Mon, 21 Mar 2022 12:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E834E2577
+	for <lists+keyrings@lfdr.de>; Mon, 21 Mar 2022 12:51:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346825AbiCULnC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Mar 2022 07:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42594 "EHLO
+        id S1346888AbiCULwm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Mar 2022 07:52:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346820AbiCULm7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Mar 2022 07:42:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 21799DAFE9
-        for <keyrings@vger.kernel.org>; Mon, 21 Mar 2022 04:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1647862893;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5IFZqINZubaQIrhPbpcFTVJX7mnUBlxWKhJ9rwfoSHA=;
-        b=T2K+CsA5vVaZB3Z3N5QsvMaXEtOaZset7GLV1d6K5Lzm9U5glGysE6wMFTYH0JKx3yZTxS
-        tQcstE6q4QQG+vYzIimYHxq5XDAsdv4UpGZW+aPKgYNkzKYm+21D5iDKwzz3VjbCmQ58sw
-        04ZZYt1f07FjPPuhdqeSmmxi/gbxvBU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-589-exaZVa4bOLCgv7JyROiQHQ-1; Mon, 21 Mar 2022 07:41:30 -0400
-X-MC-Unique: exaZVa4bOLCgv7JyROiQHQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 847DD802809;
-        Mon, 21 Mar 2022 11:41:29 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5028B40C1247;
-        Mon, 21 Mar 2022 11:41:28 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <0000000000003c424505daaed1b7@google.com>
-References: <0000000000003c424505daaed1b7@google.com>
-To:     syzbot <syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com>
-Cc:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
+        with ESMTP id S1346870AbiCULwk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Mar 2022 07:52:40 -0400
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FB2156C40
+        for <keyrings@vger.kernel.org>; Mon, 21 Mar 2022 04:51:10 -0700 (PDT)
+Received: by mail-il1-f197.google.com with SMTP id m3-20020a056e02158300b002b6e3d1f97cso7214097ilu.19
+        for <keyrings@vger.kernel.org>; Mon, 21 Mar 2022 04:51:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=83x05As+hpEzsvG90JcF+MmesN/BPt2Ioqkif/dNrHk=;
+        b=1wev8L7wdUpj4CGE8PTDrn0sQYXehlYmi20RP4BHGY+mRFDYaow5YmgqGfCJHtGIFR
+         X4vKxZpGoUsJNVAlnyjMFoyzsTJX1Ih1+0Cvl+kfS/jISpxjzGvDJwTZxGoNCKyjeR3R
+         Otbsl7/sxZZOjZXB81yYw1qYGFgzzYSUK025U3OjORnsf8cgZVn4HKNnnlTjbVwKz8I8
+         /a/88EKQlualXfQViMi16tPDMchuhQM77pya3Ws43ZtYGuKN/Sbe0YuoLmmm1VtUSsJj
+         kpuxmRyLyuFTYlXotCizPexDjL6xW1Zf9koXN3X67RZUTqL25UMbhdldSDTLPLgvukvL
+         GE7g==
+X-Gm-Message-State: AOAM530sZzSLY297KOS3zhgmivCHSi14H1OwtCEgbItVaBC6xYDinkXA
+        7XBwiyi8GhQeotH8wse5xc65Y+3UhguA6/Uc3mwkV4WICGH/
+X-Google-Smtp-Source: ABdhPJx14oK7C0sSXYkXvGjnk1LhI7Nd7dI8dHsjz4cUx21fQNuejsWZo8ywfyvHHwBn1WhJ1G6ZfQQvui4PEZ82btWAzDlAb8dg
+MIME-Version: 1.0
+X-Received: by 2002:a05:6638:3816:b0:31a:60:22c9 with SMTP id
+ i22-20020a056638381600b0031a006022c9mr9837348jav.146.1647863469476; Mon, 21
+ Mar 2022 04:51:09 -0700 (PDT)
+Date:   Mon, 21 Mar 2022 04:51:09 -0700
+In-Reply-To: <1019067.1647862887@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000bc8eaf05dab91c63@google.com>
+Subject: Re: [syzbot] memory leak in keyctl_watch_key
+From:   syzbot <syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com>
+To:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-security-module@vger.kernel.org, serge@hallyn.com,
         syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] memory leak in keyctl_watch_key
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1019066.1647862887.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Mon, 21 Mar 2022 11:41:27 +0000
-Message-ID: <1019067.1647862887@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-free_watch() is missing a kfree() to actually free the watch.
+Hello,
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git c82efd1dfb229d6aa7e08d57d1c41f034d97b1eb
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
+Reported-and-tested-by: syzbot+6e2de48f06cdb2884bfc@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         c82efd1d watch_queue: Actually free the watch
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7683c993c23430bc
+dashboard link: https://syzkaller.appspot.com/bug?extid=6e2de48f06cdb2884bfc
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
