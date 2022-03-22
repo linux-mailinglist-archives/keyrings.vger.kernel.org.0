@@ -2,540 +2,258 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7794A4E431F
-	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 16:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5EDD4E44E7
+	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 18:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238645AbiCVPhT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Mar 2022 11:37:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57604 "EHLO
+        id S239507AbiCVRU7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Mar 2022 13:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238624AbiCVPhF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 11:37:05 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B95BEB7EC
-        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 08:35:32 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id r23so22189368edb.0
-        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 08:35:32 -0700 (PDT)
+        with ESMTP id S237978AbiCVRU7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 13:20:59 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553D7275FA
+        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 10:19:29 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id c15so24868072ljr.9
+        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 10:19:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=1iSiwW/U+DweOlsvahyNIrQHjcrb1kkSroEQxDJW2/M=;
-        b=hQQEYfVUnY/Dpp6X5unwmO+zpJj06sYmQi0pQmGFsCuVX21DGipWNkP8hCku8xKK/J
-         0xAoN4O05/RDleqpXrshI617LYtJ1J++mHdYcoyPl1Wl10nz1H5ss67bty4LoYdymmId
-         tLKIXDa5ADTY7gCOKMAxTHw1KgQw3fnyQtr+AGHm57hKk/E1BMiIx+DjBMehuTYb46DP
-         UxfJhpHbBgopFq5DdRLtP44iFteI6hf9cffvzUe2Fwtk5xZzGakEK/gRZWocRxylDmOO
-         Nh1mZwcvxvobL9wjiMGUyZ/PS9h41Xg5HNcC0b+yaME/ACAV3P5kfITr3+u+/MUrz3Qa
-         w4Iw==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TWrLQlhghP36NrYUE7OTdGLeaRuvPVmKunaV7kLXB3s=;
+        b=MN2jSxUkfZLt3GwoOVdJh1xPPczQv9dff/HXY1Wq5fEvIMQFlYYew86a2dkRe6IQA3
+         owW//XHUSRjcI1EK+no8l0jJYcI/glDOmAXxjWUJ9y1GOj6zX4lzUNQbs+tZmRnyhlze
+         t4LBHWbEgZxBsj5SRxtgaZDZ6yHxiRQqcuNQn/1tWHI1AHJiy4Erz7tfgTdS2rrPwnqM
+         gdDP7xwzRD1un+RWQ3EQr3P9oFlPug5yWZ2LzZhut3/5X2uwP4H89i6Fsd6lxtmlviNt
+         P8aZ2nDSMZ+cS0n00uZCKYzcCU0RsT6/xIpzFP3Qwl6H++xC4mUgJ70xvMD4FtBmh2Sq
+         wUUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=1iSiwW/U+DweOlsvahyNIrQHjcrb1kkSroEQxDJW2/M=;
-        b=TNBZ2Jr3lXi6HGZ7H4lGMnwBnrJOAWpyfoZHW/HtXCWB33x8CvHlMbenUfbrOl8Bkb
-         afB/VCTDvxByJh/7T/XL601ndN9C34zsoggNaohbjKvZbQ62ljOZLENM6je0K/cT+xwX
-         HYdYTgtug7fhzwPlCqkWYy+xS7lUEZ9BnIGWdWLB5+CIlTu66h/fGEo6mA8wXPek1KCU
-         mkGGm0wVsYNKzNnyoZu9HeHTvd3Vt3MHwD3n4eSUuGuDH/U4G0S6I3s3WYqxObILasXz
-         UHWYs+IKUzj15oTRxBo/DXNWhr41k8QfbQRMFdTgrLA9eWZVOSeS80+RCKri1CdnOpzp
-         w1qg==
-X-Gm-Message-State: AOAM5327Pkajoqilg5rWGIiYfxUUbQeV7jKMkTUM2CLOB/SMwQghFmh4
-        8gUeDFV1yuIIaQ1EKUxoBC3ovsV1fFCwN//cymk=
-X-Google-Smtp-Source: ABdhPJzmpFGC4btTzix/OIqzZ+QN4+ZetwAddHho6/uOfHsss0zqotCIyMFiwxU7n+mRtKBrBqxPsxKWG0oq8gwG4II=
-X-Received: by 2002:a05:6402:8d7:b0:419:1162:a507 with SMTP id
- d23-20020a05640208d700b004191162a507mr21614603edz.157.1647963330960; Tue, 22
- Mar 2022 08:35:30 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TWrLQlhghP36NrYUE7OTdGLeaRuvPVmKunaV7kLXB3s=;
+        b=Dk0mjICGHBA3FGTZapZT+hG44gW2BAtrQs8wsuIGv117kiRckU/6nDcYjyaww0zBfm
+         MxEcIGEMzphaP6WgoiHHnD5LKCLEXH3s0AMHMcsZMPDTOW9Q5ykdtdnUPaI8gpOVA6Dy
+         dKvj8rk7AhIhQAIvN8EN8z9qDFOKRRknYiGaV2qQddBvddSk6j5dlH6cFxrwYgAgmdhk
+         rpCMaNn9GgVae75MnCWUiIXHE7RmJ2q2NEgjsTC8CESXkONdIFacJx41AhS1U4lZrXWX
+         RpvabSqsXP72N1pnUrewfFr6punqewWt33XEDOwiqbI2umnMxw45yp8FfgeQgEHcgYNu
+         zTEg==
+X-Gm-Message-State: AOAM532j8Nx4G7XpCxuNNKCTytGEC+1ghrArqDTkgLYZxPcEGvFd68OZ
+        NQ3bBzfXl6giZJ0Yrt8C34IX+4u1xyb8vu8xzsXTLQ==
+X-Google-Smtp-Source: ABdhPJwS/1ZVBJTdMLl/Hk7nhVyvCHZ01feHNTbqxvng49pwR5uWfzheYUYjpb0MlPYi7TlPLUgs9mjiozk6/4FuC4E=
+X-Received: by 2002:a2e:611a:0:b0:249:83e5:9f9b with SMTP id
+ v26-20020a2e611a000000b0024983e59f9bmr8629823ljb.165.1647969566185; Tue, 22
+ Mar 2022 10:19:26 -0700 (PDT)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 22 Mar 2022 15:35:21 +0000
-Message-ID: <CAHpNFcNdWdcrkHCWLAFRYbhr_g49msMaS5cChczOjjk2UFxdHQ@mail.gmail.com>
-Subject: Haptic & 3D Audio : Kernel Core Security & Privacy 'Cache Ripper
- Memory Sniffers & Privacy Baiters ALL GONE' Cash_Bo_Montin Selector RS for
- Cache & System Operations Optimisation & Compute CBoMontin Processor
- Scheduler - Good for consoles & RT Kernels & Firmware (For HTTP+JS HyperThreading)
-To:     torvalds@linux-foundation.org
+References: <20220306223016.2239094-1-ctshao@google.com> <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
+ <YiaMJCHOOuujHwiK@google.com> <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
+ <YjFQvhv7I6w8xjbK@google.com> <CAK7LNATmPXs6f-Oe4XmfcZSRPsCsuexSebA=4-jyNsMYHu9cag@mail.gmail.com>
+In-Reply-To: <CAK7LNATmPXs6f-Oe4XmfcZSRPsCsuexSebA=4-jyNsMYHu9cag@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 22 Mar 2022 10:19:14 -0700
+Message-ID: <CAKwvOd=D22k53yXFC=E=VkJotn6q-AYCu5QsaFPmH_v+fWGVwA@mail.gmail.com>
+Subject: Re: [PATCH v4] config: Allow kernel installation packaging to
+ override pkg-config
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Chun-Tse Shao <ctshao@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Rob Herring <robh+dt@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        keyrings@vger.kernel.org, DTML <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Haptic & 3D Audio : Kernel Core Security & Privacy 'Cache Ripper
-Memory Sniffers & Privacy Baiters ALL GONE' Cash_Bo_Montin Selector RS
-for Cache & System Operations Optimisation & Compute CBoMontin
-Processor Scheduler - Good for consoles & RT Kernels & Firmware (For
-HTTP+JS HyperThreading)
-
-Primary Reference:
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-Cash_Bo_Montin Selector (c)Rupert S for Cache & System Operations
-Optimisation & Compute
-CBoMontin Processor Scheduler - Good for consoles & RT Kernels (For
-HTTP+JS HyperThreading)
-
-*
-Monticarlo Workload Selector
-
-CPU, GPU, APU, SPU, ROM, Kernel & Operating system :
-
-CPU/GPU/Chip/Kernel Cache & Thread Work Operations management
-
-In/out Memory operations & CU feature selection are ordered into
-groups based on:
-
-CU Selection is preferred by Chip features used by code & Cache
-in-lining in the same group.
-
-Global Use (In application or common DLL) Group Core CU
-Localised Thread group, Sub prioritised to Sub CU in location of work use
-Prioritised to local CU with Chip feature available & with lower
-utilisation (lowers latency)
-
-{ Monticarlos In/Out }
-System input load Predictable Statistic analysis }
-Monticarlo Assumed averages per task }
-System: IO, IRQ, DMA, Data Motion }
-
-{ Process by Advantage }
-{ Process By Task FeatureSet }
-{ Process by time & Tick & Clock Cycle: Estimates }
-{ Monticarlos Out/In }
-
-Random task & workload optimiser ,
-Task & Workload Assignment Requestor,
-Pointer Allocator,
-Cache RAM Allocation System.
-
-Multithreaded pointer Cache Object tasks & management.
-
-{SEV_TDL_TDX Kernel Interaction mount point: Input & Output by SSL Code Class}:
-{Code Runtime Classification & Arch:Feature & Location Store: Kernel
-System Interaction Cache Flow Buffer}
-HT-ReadLinkAtTopForReference/SEV_SSLSecureCore
-HT-ReadLinkAtTopForReference/SSL_DRM_CleanKernel
-*
-
-Based upon the fact that you can input Monti Carlos Semi Random
-Ordered work loads into the core process:
-
-*Core Process Instruction*
-
-CPU, Cache, Light memory load job selector
-Resident in Cache L3 for 256KB+- Cache list + Code 4Kb L2 with list access to L3
-
-L2:L3 <> L1 Data + Instruction
-
-*formula*
-
-(c)RS 12:00 to 14:00 Haptic & 3D Audio : Group Cluster Thread SPU:GPU CU
-
-Merge = "GPU+CPU SiMD" 3D Wave (Audio 93% * Haptic 7%)
-
-Grouping selector
-3D Wave selector
-
-Group Property value A = Audio S=Sound G=Geometry V=Video H=Haptic
-B=Both BH=BothHaptic
-
-CPU Int : ID+ (group of)"ASGVH"
-
-Float ops FPU Light localised positioning 8 thread
-
-Shader ID + Group 16 Blocks
-SiMD/AVX Big Group 2 Cycle
-GPU CU / Audio CU (Localised grouping MultiThreads)
-
-https://www.youtube.com/watch?v=cJkx-OLgLzo
-
-*
-
-Task & Workload Assignment Requestor : Memory & Power
-
-We have to bear in mind power requirements & task persistence in the
-:Task & Workload Assignment Requestor
-
-knowledge of the operating systems requirements:
-Latency list in groups { high processor load requirements > Low
-processor load requirements } : { latency Estimates }
-Ram load , Store & clear {high burst : 2ns < 15ns } GB/s Ordered
-Ram load , Store & clear {high burst : 5ns < 20ns } MB/s Disordered
-
-GPU Ram load , Store & clear {high burst : 2ns < 15ns } GB/s Ordered
-AUDIO Ram load , Store & clear {high burst : 1ns < 15ns } MB/s Disordered
-
-AUDIO Ram load , Store & clear {high burst : 1ns < 15ns } MB/s Ordered
-AUDIO Ram load , Store & clear {high burst : 1ns < 15ns } KB/s Disordered
-
-Network load , Send & Receive {Medium burst : 2ns < 15ns } GB/s Ordered
-Network load , Send & Receive {high burst : 1ns < 20ns } MB/s Disordered
-Hard drive management & storage {medium : 15ns SSD < 40ns HDD}
-
-*
-
-Also Good for disassociated Asymmetric cores; Since these pose a
-significant challenge to most software,
-However categorising by Processor function yields remarkable
-classification abilities:
-
-Processor Advanced Instruction set
-Core speed
-Importance
-
-Location in association with a group of baton passing & inter-thread
-messaging & cache,
-Symmetry classed processes & threads.
-
-*
-
-Bo-Montin Workload Compute :&: Hardware Accelerated Audio : 3D Audio
-Dolby NR & DTS
-
-Hardware Accelerated Audio : 3D Audio Dolby NR & DTS : Project
-Acoustics : Strangely enough ....
-Be more positive about Audio Block : Dolby & DTS will use it & thereby in games!
-
-Workload Compute : Where you optimise workload lists though SiMD Maths
-to HASH subtasks into new GPU workloads,
-
-Simply utilize Direct ML to anticipate future motion vectors (As with video)
-
-OpenCL & Direct Compute : Lists & Compute RAM Loads and Shaders to load...
-
-DMA & Reversed DMA (From GPU to & from RAM)
-ReBAR to vector compressed textures without intervention of one
-processor or another...
-
-Compression Block :
-KRAKEN & BC Compression & Decompression
-&
-SiMD Direct Compressed Load using the Cache Block per SiMD Work Group.
-
-Shaders Optimised & compiled in FPU & SiMD Code form for GPU: Compiling Methods:
-
-In advance load & compile : BRT : Before Runtime Time : task load
-optimised & ordered Task Executor : Bo-Montin Scheduler
-
-GPU SiMD & FPU (micro 128KB Block encoder : decoder : compiler)
-CPU SiMD & FPU (micro 128KB Block encoder : decoder : compiler)
-
-JIT : Just in Time task load optimised & ordered Task Executor :
-Bo-Montin Scheduler
-
-load & compile :
-
-GPU SiMD & FPU (micro 128KB Block encoder : decoder : compiler)
-CPU SiMD & FPU (micro 128KB Block encoder : decoder : compiler)
-
-(c)Rupert S https://science.n-helix.com
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-*
-
-EMS Leaf Allocations & Why we find them useful:  (c)RS
-https://science.n-helix.com
-
-Memory clear though page Voltage removal..
-
-Systematic Cache randomisation flipping (On RAM Cache Directs
-syncobable (RAND Static, Lower quality RAND)(Why not DEV Write 8 x
-16KB (Aligned Streams (2x) L2 CACHE Reasons)
-
-Anyway in order to do this we Allocate Leaf Pages or Large Pages...
-De Allocation invokes scrubbing or VOID Call in the case of a VM.
-
-So in our case VT86 Instructions are quite useful in a Hypervisor;
-&So Hypervisor from kernel = WIN!
-
-(c)Rupert Summerskill
-
-Reference T Clear
-https://www.phoronix.com/scan.php?page=news_item&px=Linux-MGLRU-v9-Promising
-
-*
-
-If you could "Decode" Win DLL & particularly the Compiler code, plug
-in! you could use these on console :
-
-https://bit.ly/DJ_EQ
-https://bit.ly/VESA_BT
-
-https://www.youtube.com/watch?v=cJkx-OLgLzo
-
-High performance firmware:
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2021/11/parallel-execution.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-HT-ReadLinkAtTopForReference/SEV_SSLSecureCore
-HT-ReadLinkAtTopForReference/SSL_DRM_CleanKernel
-
-HT-ReadLinkAtTopForReference/workcacheserver
-
-HT-ReadLinkAtTopForReference/HPCLinux
-
-*
-More on HRTF 3D Audio
-
-TERMINATOR Interview #Feeling
-https://www.youtube.com/watch?v=srksXVEkfAs & Yes you want that Conan
-to sound right in 3D HTRF
-
-Cyberpunk 2077 HDR : THX, DTS, Dolby : Haptic response so clear you
-can feel the 3D SOUND
-https://www.youtube.com/watch?v=0t34NQ7Yrwo
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
-
-HT-ReadLinkAtTopForReference/Quality3DAudioTest
-
-https://bit.ly/VESA_BT
-*
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-*
-
-(Spectra & Repoline Ablation) PreFETCH Statistical Load Adaptive CPU
-Optimising Task Manager ML(c)RS 2022
-
-Come to think of it, Light encryption 'In State' may be possible in
-the Cache L3 (the main problem with repoline) & L2 (secondary) : How?
-
-PFIO_Pol & GPIO Combined with PSLAC TaskManager (CBo_Montin)
-Processor, Kernel, UserSpace.
-
-Byte Swapping for example or 16b instruction, If a lightly used
-instruction is used
-(one that is under utilized)
-Other XOR SiMD instructions can potentially be used to pre load L2 &
-L1 Instruction & Data.
-
-Spectra & Repoline 1% CPU Hit : 75% improved Security : ALL CPU v& GPU
-Processor Type Compatible.
-
-In Terms of passwords & SSL Certificate loads only, The Coding would
-take 20Minutes & consume only 0.1% of total CPU Time.
-
-Also Good for disassociated Asymmetric cores; Since these pose a
-significant challenge to most software,
-However categorising by Processor function yields remarkable
-classification abilities:
-
-Processor Advanced Instruction set
-Core speed
-Importance
-
-Location in association with a group of baton passing & inter-thread
-messaging & cache,
-Symmetry classed processes & threads.
-
-HASH Example
-https://lkml.org/lkml/2022/3/17/120
-https://lkml.org/lkml/2022/3/17/119
-https://lkml.org/lkml/2022/3/17/116
-https://lkml.org/lkml/2022/3/17/115
-https://lkml.org/lkml/2022/3/17/118
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-In reference to :
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-CPU Statistical load debug 128 Thread :
-https://lkml.org/lkml/2022/3/17/243
-
-PFIO_Pol Generic Processor Function IO & Feature Statistics polling +
-CPUFunctionClass.h + VCache Memory Table Secure HASH
-
-GPIO: Simple logic analyzer using polling : Prefer = Precise Core
-VClock + GPIO + Processor Function IO & Feature Statistics polling
-
-https://lkml.org/lkml/2022/3/17/216
-https://lkml.org/lkml/2022/3/17/215
-*******
-
-Security bug; Solutions & explanation's :RS
-
-https://science.n-helix.com/2020/06/cryptoseed.html
-https://science.n-helix.com/2019/05/zombie-load.html
-https://science.n-helix.com/2018/01/microprocessor-bug-meltdown.html
-
-https://www.phoronix.com/scan.php?page=article&item=spectre-bhi-retpoline&num=1
-
-https://lore.kernel.org/lkml/?t=20211204091833
-
-The core scheduler is not the task prioritiser, This deals with Secure
-CPU & Processor Transactions.
-
-Good for consoles & RT Kernels (For HTTP+JS HyperThreading)
-
-Rupert S
-
-*Kernel Runtime Strict KeyLock Secure Chaos Scheduler: CTimeTree*
-
-[PATCH 0/5] Make Cluster Scheduling Configurable
- 2021-12-04  9:14 UTC  (4+ messages)
-` [PATCH 4/5] scheduler: Add boot time enabling/disabling of cluster scheduling
-
-[mark:arm64/preempt-dynamic-static-key 6/6]
-kernel/locking/locktorture.c:122:3: error: implicit declaration of
-function 'preempt_schedule'
- 2021-12-03 23:39 UTC
-
-[PATCH] preempt/dynamic: Fix setup_preempt_mode() return value
- 2021-12-03 23:32 UTC
-
-[PATCH v11 0/4] Introduce Platform Firmware Runtime Update and Telemetry drivers
- 2021-12-04  8:07 UTC  (4+ messages)
-` [PATCH v11 2/4] drivers/acpi: Introduce Platform Firmware Runtime
-Update device driver
-
-*CPU Core Logic*
-
-[RFC 0/6] Sparse HART id support
- 2021-12-04  0:40 UTC  (7+ messages)
-` [RFC 1/6] RISC-V: Avoid using per cpu array for ordered booting
-` [RFC 2/6] RISC-V: Do not print the SBI version during HSM extension boot print
-` [RFC 3/6] RISC-V: Use __cpu_up_stack/task_pointer only for spinwait method
-` [RFC 5/6] RISC-V: Move spinwait booting method to its own config
-` [RFC 6/6] RISC-V: Do not use cpumask data structure for hartid bitmap
-
-AES RAND*****
-
-If we had a front door & a back door & we said that, "That door is
-only available exclusively to us "Someone would still want to use our
-code!
-AES is good for one thing! Stopping Cyber Crime!
-hod Save us from total anarchistic cynicism
-
-Rupert S
-
-/*
-  * This function will use the architecture-specific hardware random
-- * number generator if it is available.  The arch-specific hw RNG will
-- * almost certainly be faster than what we can do in software, but it
-- * is impossible to verify that it is implemented securely (as
-- * opposed, to, say, the AES encryption of a sequence number using a
-- * key known by the NSA).  So it's useful if we need the speed, but
-- * only if we're willing to trust the hardware manufacturer not to
-- * have put in a back door.
-- *
-- * Return number of bytes filled in.
-+ * number generator if it is available. It is not recommended for
-+ * use. Use get_random_bytes() instead. It returns the number of
-+ * bytes filled in.
-  */
-
-https://lore.kernel.org/lkml/20220209135211.557032-1-Jason@zx2c4.com/t/
-
-RAND : Callback & spinlock
-
-Callback & spinlock are not just linux : Best we hash &or Encrypt
-several sources (if we have them)
-If we have a pure source of Random.. we like the purity! but 90% of
-the time we like to hash them all together & keep the quality & source
-integrally variable to improve complexity.
-Rupert S
-https://www.spinics.net/lists/linux-crypto/msg61312.html
-
-'function gets random data from the best available sourceThe current
-code has a sequence in several places that calls one or more of
-arch_get_random_long() or related functions, checks the return
-value(s) and on failure falls back to random_get_entropy().get_source
-long() is intended to replace all such sequences.This is better in
-several ways. In the fallback case it gives much more random output
-than random_get_entropy(). It never wasted effort by calling
-arch_get_random_long() et al. when the relevant config variables are
-not set. When it does usearch_get_random_long(), it does not deliver
-raw output from that function but masks it by mixing with stored
-random data.'
-
-https://science.n-helix.com/2022/02/rdseed.html
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-RAND : Callback & spinlock : Code Method
-
-Spinlock IRQ Interrupted upon RAND Pool Transfer > Why not Use DMA
-Transfer & Memory Buffer Merge with SiMD : AVX Byte Swapping & Merge
-into present RAM Buffer or Future location with Memory location Fast
-Table.
-
-Part of Bo-Montin Selector Code:
-
-(CPU & Thread Synced & on same CPU)
-
-(Thread 1 : cpu:1:2:3:4)
-(RAND)
-(Buffer 1) > SiMD cache & Function :
-
-(Thread 2 : cpu:1:2:3:4)
-(Memory Location Table : EMS:XMS:32Bit:64Bit)
-(Selection Buffer & Transfer)
-
-(Buffer 1) (Buffer 2) (Buffer 3)
-(Entropy Sample : DieHARD : Small)
-
-Rupert S
-
-https://lore.kernel.org/all/20220211011446.392673-1-Jason@zx2c4.com/
-
-Random Initiator : Linus' 50ee7529ec45
-
-Linus' 50ee7529ec45 ("random: try to actively add entropy
-rather than passively wait for it"), the RNG does a haveged-style jitter
-dance around the scheduler, in order to produce entropy
-
-The key is to initialize with a SEED key; To avoid the seed needing to
-be replaced too often we Encipher it in a set order with an additive
-key..
-
-to create the perfect circumstances we utilize 2 seeds:
-AES/SHA2/PolyCHA
-
-Initiator math key CH1:8Bit to 32Bit High quality HASH Cryptic
-& Key 2 CrH
-
-8Bit to 256Bit : Stored HASH Cryptic
-
-We operate maths on the differential and Crypro the HASH :
-AES/SHA2/PolyCHA
-CrH 'Math' CH1(1,2,3>)
-
-AES/SHA2/PolyCHA > Save to /dev/random & use
-
-We may also use the code directly to do unique HASH RAND & therefore
-keep crucial details personal or per application & MultiThreads &or
-CPU & GPU & Task.
-
-Rupert S
-
-TRNG Samples & Method
-
-https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
-https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
-https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
-https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
+On Tue, Mar 22, 2022 at 12:44 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> On Wed, Mar 16, 2022 at 11:51 AM Chun-Tse Shao <ctshao@google.com> wrote:
+> >
+> > Tue, Mar 08, 2022 at 01:01:45PM +0900, Masahiro Yamada wrote:
+> > > On Tue, Mar 8, 2022 at 7:50 AM Chun-Tse Shao <ctshao@google.com> wrote:
+> > > >
+> > > > On Mon, Mar 07, 2022 at 10:17:17AM -0800, Nick Desaulniers wrote:
+> > > > > On Sun, Mar 6, 2022 at 2:39 PM Chun-Tse Shao <ctshao@google.com> wrote:
+> > > > > >
+> > > > > > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
+> > > > > > what pkg-config and parameters are used.
+> > > > >
+> > > > > Sorry, kind a late thought here for v4, but we don't seem to prefix
+> > > > > many other host side tools with HOST_, i.e. LEX, YACC, AWK, PERL,
+> > > > > PYTHON3, etc.  Maybe just having the variable identifier be simply
+> > > > > PKGCONFIG rather than HOSTPKG_CONFIG then put it at the end of the
+> > > > > list in the top level Makefile after ZSTD (i.e. the list of host
+> > > > > tools)?  There's HOST_ prefixes when there's more than one tool
+> > > > > involved (i.e. host compiler vs target compiler), but I suspect
+> > > > > there's no such distinction for the existing uses of pkg-config?
+> > > > >
+> > > > Thanks for your suggestion, Nick! Yes I think it makes sense with PKGCONFIG
+> > > > instead of HOSTPKG_CONFIG since there is only one tool involved. I will
+> > > > work on it and submit a new patch.
+> > > >
+> > >
+> > > Please hold on.
+> > >
+> > > I was also wondering what to do with the "HOST" prefix.
+> > >
+> > > Libraries are usually arch-dependent.
+> > > (in other words, pkg-config should return different library paths
+> > > for $(CC) and $(HOSTCC) )
+> > >
+> > > You already understood this, so you added "HOST" prefix.
+> > >
+> > >
+> > > Please let me take time for further discussion.
+> > > I will come back to this when I get some time.
+> > >
+> > >
+> >
+> > Hi Mashiro,
+> >
+> > I was wondering if you were able to look more into this.
+> >
+> > Thank you!
+> >
+> > -CT
+> >
+> > > In the meantime,
+> > >   a8a5cd8b472ca20e5b8fa649c43b3756867322f8
+> > > as reference info if you have not seen it.
+> > >
+> > >
+> > > How many distros support something like
+> > > "aarch64-linux-gnu-pkg-config"  ?
+> > >
+> > > Ubuntu 18.04 and 20.04 seem to support it.
+> > > I do not know for others.
+> > >
+> > >
+> > >
+> > >
+>
+>
+>
+> Sorry for the delay.
+> I am OK with the idea of allowing users to override the pkg-config command,
+> but I tend to take time before making a decision.
+>
+>
+>
+>
+> Does anybody have any insight / thoughts about the following points?
+>
+>
+>
+>
+>
+>
+> [Q1]   with/without "HOST" prefix
+>
+>
+> Apparently, "pkg-config" should return different libs/cflags
+> for $(CC) and $(HOSTCC).
+>
+> I think the non-prefixed macro name "PKG_CONFIG" should be
+> reserved for $(CC)  (building for the target system).
+
+Ok. I retract my comment on v4 about removing the HOST prefix then.
+
+>
+> "HOSTPKG_CONFIG" looks unbalanced
+> due to the underscore.
+>
+> Perhaps, "HOST_PKG_CONFIG" might be better?
+
+I'm fine with HOSTPKG_CONFIG (what's in v4); follows the style of
+HOSTCC and HOSTCXX.
+
+>
+>
+>
+>
+> [Q2]    "pkg-config" vs "pkgconf"
+>
+> The traditional pkg-config implementation [1] is not actively
+> maintained these days.
+> The last commit was more than one year ago.
+>
+> The alternative one 'pkgconf' [2] is more active.
+>
+> In fact, Fedora already switched to 'pkgconf' [3].
+> Now 'pkg-config' is just a wrapper of 'pkgconf'.
+> Many distributions already support pkgconf.
+>
+>
+> I considered the shorter macro name "HOSTPKGCONF" and
+>
+>    HOSTPKGCONF  = pkgconf
+>
+> but I am not sure if this is the right decision.
+> Maybe we should stick to "PKG_CONFIG" / "HOST_PKG_CONFIG"
+> for the macro names.
+>
+>
+>   [1]  https://gitlab.freedesktop.org/pkg-config/pkg-config.git
+>   [2]  https://github.com/pkgconf/pkgconf.git
+>   [3]  https://fedoraproject.org/wiki/Changes/pkgconf_as_system_pkg-config_implementation
+
+If the folks sending this are working on CrOS, better find what's in
+their build system. Chun-Tse?
+
+(I feel like I'm behind the times again, like when `apt-get install`
+became old news in favor of `apt install`...)
+
+>
+>
+>
+>
+>
+> [Q3] What is the trend of handling cross-compile by pkg-config (or pkgconf).
+>
+>
+> By default, pkg-config returns the libs/cflags for native builds.
+>
+> For cross builds, the search paths for the *.pc files must be changed
+> via the "PKG_CONFIG_LIBDIR" environment variable.
+>
+> To ease this, some distributions provide  <triplet>-pkg-config
+> (for example,   aarch64-linux-gnu-pkg-config).
+> This became the nationale for tools/build/feature/Makefile defining:
+>
+>    PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
+>
+> But, this wrapper shell script is not always available.
+> I do not know how to do it with the LLVM tool suite.
+> I am not quite sure if this is the global solution.
+>
+>
+> These days, pkgconf supports another way, .personality file [4]
+> to specify the .pc search paths for cross builds.
+>
+> Is it reasonable to use an option to distinguish native / cross builds
+> and use the same macro   "PKG_CONFIG = pkg-config" everywhere ?
+>
+>
+> [4] http://manpages.ubuntu.com/manpages/focal/en/man5/pkgconf-personality.5.html
+
+I'm not sure, but do we need to cross that bridge for this patch if
+it's just adding support for the HOST? No cross pkg-config necessary,
+yet. (Famous last words).
+-- 
+Thanks,
+~Nick Desaulniers
