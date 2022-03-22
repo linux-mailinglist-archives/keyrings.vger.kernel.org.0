@@ -2,78 +2,104 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 821DD4E3C08
-	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 10:56:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE0694E3D0E
+	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 12:00:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232234AbiCVJ5X (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Mar 2022 05:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40588 "EHLO
+        id S232124AbiCVLBJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Mar 2022 07:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232695AbiCVJ5X (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 05:57:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3422C6B0BA
-        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 02:55:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1647942955;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=zhhcRMYX9LNUM6aAbzK3lgaYIv8U2mz0HswiTC5WP/k=;
-        b=AJ3D1zjDzk9Vz15cT7LB22Rn5ztfJM5eAwdFxiqAKbSOSzMubjhxt++BNOp9pqn2YvHgws
-        KQ0pq1JJoaB1AEYoS7O3ie05ZPYj2zRH4mNMFC+2zurV224qod2fRN++a8Nzw4kj+FPQ21
-        LHOwE4T6av5j9WZf8woS/ekhRaKYg+k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-636-2ObtgOlOM1O76mmhlRNukQ-1; Tue, 22 Mar 2022 05:55:50 -0400
-X-MC-Unique: 2ObtgOlOM1O76mmhlRNukQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 997F5811E78;
-        Tue, 22 Mar 2022 09:55:49 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C56A04B8D43;
-        Tue, 22 Mar 2022 09:55:48 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAHk-=wipjbxwH+w-w8QMjPY7f0UFskLOb4smmDRe_7HtyxoHEw@mail.gmail.com>
-References: <CAHk-=wipjbxwH+w-w8QMjPY7f0UFskLOb4smmDRe_7HtyxoHEw@mail.gmail.com> <164786764630.1025645.12332376420230352947.stgit@warthog.procyon.org.uk>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     dhowells@redhat.com,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Jann Horn <jannh@google.com>, keyrings@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/2] watch_queue: A couple more fixes
+        with ESMTP id S233816AbiCVLBJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 07:01:09 -0400
+Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [IPv6:2001:1600:4:17::8fa8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43DB55A08E
+        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 03:59:41 -0700 (PDT)
+Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4KN7bP2J8JzMpxpl;
+        Tue, 22 Mar 2022 11:52:01 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4KN7bN0m1lzljnTl;
+        Tue, 22 Mar 2022 11:52:00 +0100 (CET)
+Message-ID: <6c14d652-edb2-da32-4025-de1a234c828f@digikod.net>
+Date:   Tue, 22 Mar 2022 11:53:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1201123.1647942948.1@warthog.procyon.org.uk>
-Date:   Tue, 22 Mar 2022 09:55:48 +0000
-Message-ID: <1201124.1647942948@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: 
+Subject: Re: [PATCH v1 1/1] certs: Explain the rational to call panic()
+Content-Language: en-US
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@linux.microsoft.com>
+References: <20220321174548.510516-1-mic@digikod.net>
+ <20220321174548.510516-2-mic@digikod.net>
+ <CAHC9VhR+Ss5VAUHLutTvyS8g+agZy7d0YGcu_9dV1LBx_8ifNQ@mail.gmail.com>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <CAHC9VhR+Ss5VAUHLutTvyS8g+agZy7d0YGcu_9dV1LBx_8ifNQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-> You have the dubious distinction of being the second pull today that
-> didn't use a signed tag.
+On 21/03/2022 19:23, Paul Moore wrote:
+> On Mon, Mar 21, 2022 at 1:45 PM Mickaël Salaün <mic@digikod.net> wrote:
+>>
+>> From: Mickaël Salaün <mic@linux.microsoft.com>
+>>
+>> The blacklist_init() function calls panic() for memory allocation
+>> errors.  This change documents the reason why we don't return -ENODEV.
+>>
+>> Suggested-by: Paul Moore <paul@paul-moore.com> [1]
+>> Requested-by: Jarkko Sakkinen <jarkko@kernel.org> [1]
+>> Link: https://lore.kernel.org/r/YjeW2r6Wv55Du0bJ@iki.fi [1]
+>> Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+>> Link: https://lore.kernel.org/r/20220321174548.510516-2-mic@digikod.net
+>> ---
+>>   certs/blacklist.c | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+> 
+> I would suggest changing the second sentence as shown below, but
+> otherwise it looks good to me.
+> 
+> Reviewed-by: Paul Moore <paul@paul-moore.com>
+> 
+>> diff --git a/certs/blacklist.c b/certs/blacklist.c
+>> index 486ce0dd8e9c..ac26bcf9b9a5 100644
+>> --- a/certs/blacklist.c
+>> +++ b/certs/blacklist.c
+>> @@ -307,6 +307,14 @@ static int restrict_link_for_blacklist(struct key *dest_keyring,
+>>
+>>   /*
+>>    * Initialise the blacklist
+>> + *
+>> + * The blacklist_init() function is registered as an initcall via
+>> + * device_initcall().  As a result the functionality doesn't load and the
+> 
+> "As a result if the blacklist_init() function fails for any reason the
+> kernel continues to execute."
 
-It wasn't my intention to ask you to pull it at this time, but rather put it
-up for review.  With hindsight, I should probably have stuck an "RFC" flag on
-the cover.
+Thanks, I'll fix that.
 
-David
-
+> 
+>> + * kernel continues on executing.  While cleanly returning -ENODEV could be
+>> + * acceptable for some non-critical kernel parts, if the blacklist keyring
+>> + * fails to load it defeats the certificate/key based deny list for signed
+>> + * modules.  If a critical piece of security functionality that users expect to
+>> + * be present fails to initialize, panic()ing is likely the right thing to do.
+>>    */
+>>   static int __init blacklist_init(void)
+>>   {
+> 
+> --
+> paul-moore.com
