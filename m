@@ -2,33 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE0694E3D0E
-	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 12:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CA164E3CFD
+	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 11:54:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232124AbiCVLBJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Mar 2022 07:01:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S233659AbiCVKzZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Mar 2022 06:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233816AbiCVLBJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 07:01:09 -0400
-Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [IPv6:2001:1600:4:17::8fa8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43DB55A08E
-        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 03:59:41 -0700 (PDT)
-Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4KN7bP2J8JzMpxpl;
-        Tue, 22 Mar 2022 11:52:01 +0100 (CET)
+        with ESMTP id S232082AbiCVKzY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 06:55:24 -0400
+Received: from smtp-42ab.mail.infomaniak.ch (smtp-42ab.mail.infomaniak.ch [IPv6:2001:1600:3:17::42ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5421B6540
+        for <keyrings@vger.kernel.org>; Tue, 22 Mar 2022 03:53:57 -0700 (PDT)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4KN7dY5r4xzMqKr0;
+        Tue, 22 Mar 2022 11:53:53 +0100 (CET)
 Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4KN7bN0m1lzljnTl;
-        Tue, 22 Mar 2022 11:52:00 +0100 (CET)
-Message-ID: <6c14d652-edb2-da32-4025-de1a234c828f@digikod.net>
-Date:   Tue, 22 Mar 2022 11:53:07 +0100
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4KN7dY0vhzzlj4cP;
+        Tue, 22 Mar 2022 11:53:53 +0100 (CET)
+Message-ID: <fa6dd51c-52c3-f7d1-b845-ec7266494410@digikod.net>
+Date:   Tue, 22 Mar 2022 11:54:59 +0100
 MIME-Version: 1.0
 User-Agent: 
-Subject: Re: [PATCH v1 1/1] certs: Explain the rational to call panic()
 Content-Language: en-US
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>,
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Paul Moore <paul@paul-moore.com>
+Cc:     David Howells <dhowells@redhat.com>,
         "David S . Miller" <davem@davemloft.net>,
         David Woodhouse <dwmw2@infradead.org>,
         Eric Snowberg <eric.snowberg@oracle.com>,
@@ -38,11 +37,13 @@ Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
 References: <20220321174548.510516-1-mic@digikod.net>
  <20220321174548.510516-2-mic@digikod.net>
  <CAHC9VhR+Ss5VAUHLutTvyS8g+agZy7d0YGcu_9dV1LBx_8ifNQ@mail.gmail.com>
+ <YjkP5d6e6SU8BPtO@iki.fi>
 From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <CAHC9VhR+Ss5VAUHLutTvyS8g+agZy7d0YGcu_9dV1LBx_8ifNQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] certs: Explain the rational to call panic()
+In-Reply-To: <YjkP5d6e6SU8BPtO@iki.fi>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,54 +53,40 @@ List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
 
-On 21/03/2022 19:23, Paul Moore wrote:
-> On Mon, Mar 21, 2022 at 1:45 PM Mickaël Salaün <mic@digikod.net> wrote:
+On 22/03/2022 00:53, Jarkko Sakkinen wrote:
+> On Mon, Mar 21, 2022 at 02:23:54PM -0400, Paul Moore wrote:
+>> On Mon, Mar 21, 2022 at 1:45 PM Mickaël Salaün <mic@digikod.net> wrote:
+>>>
+>>> From: Mickaël Salaün <mic@linux.microsoft.com>
+>>>
+>>> The blacklist_init() function calls panic() for memory allocation
+>>> errors.  This change documents the reason why we don't return -ENODEV.
+>>>
+>>> Suggested-by: Paul Moore <paul@paul-moore.com> [1]
+>>> Requested-by: Jarkko Sakkinen <jarkko@kernel.org> [1]
+>>> Link: https://lore.kernel.org/r/YjeW2r6Wv55Du0bJ@iki.fi [1]
+>>> Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
+>>> Link: https://lore.kernel.org/r/20220321174548.510516-2-mic@digikod.net
+>>> ---
+>>>   certs/blacklist.c | 8 ++++++++
+>>>   1 file changed, 8 insertions(+)
 >>
->> From: Mickaël Salaün <mic@linux.microsoft.com>
+>> I would suggest changing the second sentence as shown below, but
+>> otherwise it looks good to me.
 >>
->> The blacklist_init() function calls panic() for memory allocation
->> errors.  This change documents the reason why we don't return -ENODEV.
->>
->> Suggested-by: Paul Moore <paul@paul-moore.com> [1]
->> Requested-by: Jarkko Sakkinen <jarkko@kernel.org> [1]
->> Link: https://lore.kernel.org/r/YjeW2r6Wv55Du0bJ@iki.fi [1]
->> Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
->> Link: https://lore.kernel.org/r/20220321174548.510516-2-mic@digikod.net
->> ---
->>   certs/blacklist.c | 8 ++++++++
->>   1 file changed, 8 insertions(+)
+>> Reviewed-by: Paul Moore <paul@paul-moore.com>
 > 
-> I would suggest changing the second sentence as shown below, but
-> otherwise it looks good to me.
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 > 
-> Reviewed-by: Paul Moore <paul@paul-moore.com>
+> Mickaël, I think since your patch set was not huge in the first place, I'm
+> considering making it part of rc2 pull request while I normally try to
+> avoid any features after rc1. It's anyway throughly tested, and generally
+> has been around for a *long time*. I've even tested it myself a few times.
 > 
->> diff --git a/certs/blacklist.c b/certs/blacklist.c
->> index 486ce0dd8e9c..ac26bcf9b9a5 100644
->> --- a/certs/blacklist.c
->> +++ b/certs/blacklist.c
->> @@ -307,6 +307,14 @@ static int restrict_link_for_blacklist(struct key *dest_keyring,
->>
->>   /*
->>    * Initialise the blacklist
->> + *
->> + * The blacklist_init() function is registered as an initcall via
->> + * device_initcall().  As a result the functionality doesn't load and the
+> Just trying to be responsible as a maintainer and if something does not
+> feel right, I don't  try to pretend that "I get it", if you know what
+> I mean. This fully clarifies "not getting it" part :-)
 > 
-> "As a result if the blacklist_init() function fails for any reason the
-> kernel continues to execute."
+> Thanks!
 
-Thanks, I'll fix that.
-
-> 
->> + * kernel continues on executing.  While cleanly returning -ENODEV could be
->> + * acceptable for some non-critical kernel parts, if the blacklist keyring
->> + * fails to load it defeats the certificate/key based deny list for signed
->> + * modules.  If a critical piece of security functionality that users expect to
->> + * be present fails to initialize, panic()ing is likely the right thing to do.
->>    */
->>   static int __init blacklist_init(void)
->>   {
-> 
-> --
-> paul-moore.com
+Thanks Jarkko, I get it. ;)
