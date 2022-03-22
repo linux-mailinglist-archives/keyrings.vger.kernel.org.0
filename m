@@ -2,228 +2,135 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E8F4E39D5
-	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 08:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA7E4E3A57
+	for <lists+keyrings@lfdr.de>; Tue, 22 Mar 2022 09:16:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbiCVHrR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Mar 2022 03:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49600 "EHLO
+        id S230081AbiCVISF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Mar 2022 04:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiCVHrG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 03:47:06 -0400
-Received: from conssluserg-02.nifty.com (conssluserg-02.nifty.com [210.131.2.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C44248E62;
-        Tue, 22 Mar 2022 00:44:05 -0700 (PDT)
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173]) (authenticated)
-        by conssluserg-02.nifty.com with ESMTP id 22M7hfwg024030;
-        Tue, 22 Mar 2022 16:43:42 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 22M7hfwg024030
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1647935022;
-        bh=SxNJQMCFxMMS774Ea8L8kiMXQtPQJv6QAVqqcm0uVn4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=UEItilZiP+cUTpZNRVTdbVAD52FXU6NkWMlptDK9pT8xt9P+qfQ7KN4hA9mzTXhtA
-         FKnDsCOillbU43IR2Zwy0g+mxMhlN9o14FXoGF4N4BYMCKsMoOBgHmHC18wPKdh0X2
-         gfczEITCmPS841iU9jMaQ0TcAVb2Z3629S2/4r6i6aIGInwa5sQupbDld7X2TQXpzO
-         EHDVGvC5lR+A5OBbgzDPy3zfDYVmM+ixdxi91DxU0m0i0CCyX8/zHnRELUQhubZF3S
-         /YvIozqJlo3IOtbX8EjKcuMDtgColCffLWW7oOdADqDYo1+HIc5ZNjY3bDDeqIavil
-         6SuY60ias7rIQ==
-X-Nifty-SrcIP: [209.85.210.173]
-Received: by mail-pf1-f173.google.com with SMTP id t5so17519056pfg.4;
-        Tue, 22 Mar 2022 00:43:42 -0700 (PDT)
-X-Gm-Message-State: AOAM5319+bJihV1JYYGaK2qs1oy5+PgsgmqW/GJQ8v8FhbTIh/SHmYug
-        e3R/+cP9WNjKJvOYXIyGRxgcLD5eGrcBsFsiUhM=
-X-Google-Smtp-Source: ABdhPJxZ9zN4TLQP11Pq9u2qB1LjyeqixgQ28H3ffG4zL3mh7x0Vg0EhRvibe59lLMa6kYIH0QuRXzZSUyA15djKsoA=
-X-Received: by 2002:a63:ec47:0:b0:382:692a:dc04 with SMTP id
- r7-20020a63ec47000000b00382692adc04mr9278053pgj.352.1647935021432; Tue, 22
- Mar 2022 00:43:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220306223016.2239094-1-ctshao@google.com> <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
- <YiaMJCHOOuujHwiK@google.com> <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
- <YjFQvhv7I6w8xjbK@google.com>
-In-Reply-To: <YjFQvhv7I6w8xjbK@google.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 22 Mar 2022 16:42:57 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATmPXs6f-Oe4XmfcZSRPsCsuexSebA=4-jyNsMYHu9cag@mail.gmail.com>
-Message-ID: <CAK7LNATmPXs6f-Oe4XmfcZSRPsCsuexSebA=4-jyNsMYHu9cag@mail.gmail.com>
-Subject: Re: [PATCH v4] config: Allow kernel installation packaging to
- override pkg-config
-To:     Chun-Tse Shao <ctshao@google.com>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
+        with ESMTP id S230415AbiCVISC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Mar 2022 04:18:02 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5620D517CA;
+        Tue, 22 Mar 2022 01:16:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 4D719CE1D27;
+        Tue, 22 Mar 2022 08:16:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969DBC340EC;
+        Tue, 22 Mar 2022 08:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647936991;
+        bh=wViT03VO9WUj9KY0s8wKyKJNf+YcAvGEWXKoZ9AleN8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=W9Ue5cxIv8a2d8N6iYN533cFeIPEjXCJoeK1SMOj1yKL9jlMLWv2hpUePy4W2OOeI
+         2/GfhIzr7iKeyu13vGPOdlUE4Z88QOXfK1iofqjHcHKQUqJbLDOFDEoWrSR0Vccevd
+         E7UD3u4Bv81VODfXeTDk0Ds+1OhZhuStj8PSh5pKPwxW4FsS3KVOi587EFHNq0BCZl
+         B+9VLpFoX5r9+g54AGfK7b4fAKZWMTh61sVM1H9x+u2Q8NTHuf98ZioWtJZcyNudLN
+         qdYgiuy5fyanXQWqbfWw5tp05xwrO+/jqwNZ9dwMqIWlFOZo8oukfq1L3pqLSkNTdn
+         JSOt8GXcFgUzA==
+Date:   Tue, 22 Mar 2022 10:17:33 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        keyrings@vger.kernel.org, DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, kernel@pengutronix.de,
+        David Gstir <david@sigma-star.at>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        Aymen Sghaier <aymen.sghaier@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v6 4/4] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+Message-ID: <YjmGHRK5TzteGwNu@iki.fi>
+References: <20220316164335.1720255-1-a.fatoum@pengutronix.de>
+ <20220316164335.1720255-5-a.fatoum@pengutronix.de>
+ <YjeWSx84ev7u/YAi@iki.fi>
+ <c946cce8-674a-43d2-1000-b57eba4bc45c@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c946cce8-674a-43d2-1000-b57eba4bc45c@pengutronix.de>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Mar 16, 2022 at 11:51 AM Chun-Tse Shao <ctshao@google.com> wrote:
->
-> Tue, Mar 08, 2022 at 01:01:45PM +0900, Masahiro Yamada wrote:
-> > On Tue, Mar 8, 2022 at 7:50 AM Chun-Tse Shao <ctshao@google.com> wrote:
-> > >
-> > > On Mon, Mar 07, 2022 at 10:17:17AM -0800, Nick Desaulniers wrote:
-> > > > On Sun, Mar 6, 2022 at 2:39 PM Chun-Tse Shao <ctshao@google.com> wrote:
-> > > > >
-> > > > > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
-> > > > > what pkg-config and parameters are used.
-> > > >
-> > > > Sorry, kind a late thought here for v4, but we don't seem to prefix
-> > > > many other host side tools with HOST_, i.e. LEX, YACC, AWK, PERL,
-> > > > PYTHON3, etc.  Maybe just having the variable identifier be simply
-> > > > PKGCONFIG rather than HOSTPKG_CONFIG then put it at the end of the
-> > > > list in the top level Makefile after ZSTD (i.e. the list of host
-> > > > tools)?  There's HOST_ prefixes when there's more than one tool
-> > > > involved (i.e. host compiler vs target compiler), but I suspect
-> > > > there's no such distinction for the existing uses of pkg-config?
-> > > >
-> > > Thanks for your suggestion, Nick! Yes I think it makes sense with PKGCONFIG
-> > > instead of HOSTPKG_CONFIG since there is only one tool involved. I will
-> > > work on it and submit a new patch.
-> > >
-> >
-> > Please hold on.
-> >
-> > I was also wondering what to do with the "HOST" prefix.
-> >
-> > Libraries are usually arch-dependent.
-> > (in other words, pkg-config should return different library paths
-> > for $(CC) and $(HOSTCC) )
-> >
-> > You already understood this, so you added "HOST" prefix.
-> >
-> >
-> > Please let me take time for further discussion.
-> > I will come back to this when I get some time.
-> >
-> >
->
-> Hi Mashiro,
->
-> I was wondering if you were able to look more into this.
->
-> Thank you!
->
-> -CT
->
-> > In the meantime,
-> >   a8a5cd8b472ca20e5b8fa649c43b3756867322f8
-> > as reference info if you have not seen it.
-> >
-> >
-> > How many distros support something like
-> > "aarch64-linux-gnu-pkg-config"  ?
-> >
-> > Ubuntu 18.04 and 20.04 seem to support it.
-> > I do not know for others.
-> >
-> >
-> >
-> >
+On Tue, Mar 22, 2022 at 08:33:34AM +0100, Ahmad Fatoum wrote:
+> Hello Jarkko,
+> 
+> On 20.03.22 22:02, Jarkko Sakkinen wrote:
+> > On Wed, Mar 16, 2022 at 05:43:35PM +0100, Ahmad Fatoum wrote:
+> >> @@ -192,6 +217,19 @@ Usage::
+> >>  specific to TEE device implementation.  The key length for new keys is always
+> >>  in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+> >>  
+> >> +Trusted Keys usage: CAAM
+> >> +------------------------
+> >> +
+> >> +Usage::
+> >> +
+> >> +    keyctl add trusted name "new keylen" ring
+> >> +    keyctl add trusted name "load hex_blob" ring
+> >> +    keyctl print keyid
+> >> +
+> >> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
+> >> +specific to CAAM device implementation.  The key length for new keys is always
+> >> +in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+> >> +
+> >>  Encrypted Keys usage
+> >>  --------------------
+> >>  
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index 05fd080b82f3..f13382a14967 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -10647,6 +10647,15 @@ S:	Supported
+> >>  F:	include/keys/trusted_tee.h
+> >>  F:	security/keys/trusted-keys/trusted_tee.c
+> >>  
+> >> +KEYS-TRUSTED-CAAM
+> >> +M:	Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> +R:	Pengutronix Kernel Team <kernel@pengutronix.de>
+> >> +L:	linux-integrity@vger.kernel.org
+> >> +L:	keyrings@vger.kernel.org
+> >> +S:	Maintained
+> >> +F:	include/keys/trusted_caam.h
+> >> +F:	security/keys/trusted-keys/trusted_caam.c
+> >> +
+> >>  KEYS/KEYRINGS
+> >>  M:	David Howells <dhowells@redhat.com>
+> >>  M:	Jarkko Sakkinen <jarkko@kernel.org>
+> > 
+> > Documentation and MAINTAINERS updates must be separate patches.
+> 
+> I will do so for v7. Does this patch look otherwise ok to you?
+> 
+> Thanks,
+> Ahmad
 
+I don't give heads ups. It's improperly constructed patch, i.e. I won't
+review it in this from.
 
-
-Sorry for the delay.
-I am OK with the idea of allowing users to override the pkg-config command,
-but I tend to take time before making a decision.
-
-
-
-
-Does anybody have any insight / thoughts about the following points?
-
-
-
-
-
-
-[Q1]   with/without "HOST" prefix
-
-
-Apparently, "pkg-config" should return different libs/cflags
-for $(CC) and $(HOSTCC).
-
-I think the non-prefixed macro name "PKG_CONFIG" should be
-reserved for $(CC)  (building for the target system).
-
-"HOSTPKG_CONFIG" looks unbalanced
-due to the underscore.
-
-Perhaps, "HOST_PKG_CONFIG" might be better?
-
-
-
-
-[Q2]    "pkg-config" vs "pkgconf"
-
-The traditional pkg-config implementation [1] is not actively
-maintained these days.
-The last commit was more than one year ago.
-
-The alternative one 'pkgconf' [2] is more active.
-
-In fact, Fedora already switched to 'pkgconf' [3].
-Now 'pkg-config' is just a wrapper of 'pkgconf'.
-Many distributions already support pkgconf.
-
-
-I considered the shorter macro name "HOSTPKGCONF" and
-
-   HOSTPKGCONF  = pkgconf
-
-but I am not sure if this is the right decision.
-Maybe we should stick to "PKG_CONFIG" / "HOST_PKG_CONFIG"
-for the macro names.
-
-
-  [1]  https://gitlab.freedesktop.org/pkg-config/pkg-config.git
-  [2]  https://github.com/pkgconf/pkgconf.git
-  [3]  https://fedoraproject.org/wiki/Changes/pkgconf_as_system_pkg-config_implementation
-
-
-
-
-
-[Q3] What is the trend of handling cross-compile by pkg-config (or pkgconf).
-
-
-By default, pkg-config returns the libs/cflags for native builds.
-
-For cross builds, the search paths for the *.pc files must be changed
-via the "PKG_CONFIG_LIBDIR" environment variable.
-
-To ease this, some distributions provide  <triplet>-pkg-config
-(for example,   aarch64-linux-gnu-pkg-config).
-This became the nationale for tools/build/feature/Makefile defining:
-
-   PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
-
-But, this wrapper shell script is not always available.
-I do not know how to do it with the LLVM tool suite.
-I am not quite sure if this is the global solution.
-
-
-These days, pkgconf supports another way, .personality file [4]
-to specify the .pc search paths for cross builds.
-
-Is it reasonable to use an option to distinguish native / cross builds
-and use the same macro   "PKG_CONFIG = pkg-config" everywhere ?
-
-
-[4] http://manpages.ubuntu.com/manpages/focal/en/man5/pkgconf-personality.5.html
+BR, Jarkko
