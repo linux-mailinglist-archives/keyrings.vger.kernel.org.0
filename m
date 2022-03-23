@@ -2,52 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E310C4E5335
-	for <lists+keyrings@lfdr.de>; Wed, 23 Mar 2022 14:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 573554E5ABE
+	for <lists+keyrings@lfdr.de>; Wed, 23 Mar 2022 22:36:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244329AbiCWNiF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 23 Mar 2022 09:38:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39372 "EHLO
+        id S1344963AbiCWVht (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 23 Mar 2022 17:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244311AbiCWNiD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 23 Mar 2022 09:38:03 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B7F75E70
-        for <keyrings@vger.kernel.org>; Wed, 23 Mar 2022 06:36:31 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id a17so1846847edm.9
-        for <keyrings@vger.kernel.org>; Wed, 23 Mar 2022 06:36:31 -0700 (PDT)
+        with ESMTP id S241171AbiCWVht (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 23 Mar 2022 17:37:49 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D6B684EFF
+        for <keyrings@vger.kernel.org>; Wed, 23 Mar 2022 14:36:16 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id dr20so5480289ejc.6
+        for <keyrings@vger.kernel.org>; Wed, 23 Mar 2022 14:36:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=eoJL8/ssTz//H6D1ky8wIdZCZtyYwQOapMLC4rpTJK4=;
-        b=bNAXkMThypJ8Fp6kfoI5Ak+DXC/qipME9qq62aGmE5rQINI4bXll1STdm+yJBTY1XJ
-         MAB6Colidi9wkqYkm7XWQwOKwYmnk4N/8QwaoLXdCBDgbO31bDjqhqNM7981z02PuoO3
-         M5L7fKggjZfAXBPxbyqoGJX8NduefdgX+vtezqdHOYoYD18Z5xNXH5mk1vIXUsDfCfO/
-         dURe8v8nEofP406hTLidblrYU8cfLUmEEdN7mt1/VBpZE2j2IUxhkmXtSwrxT0EowZJY
-         MteICWcMF6ES9/2/i6lSw8Gu7YZwdZjcjbUzz6HU0lS5Vrt7EMjMCphuPwK0KJ+6ciVZ
-         NmNA==
+        bh=2RHrOWoISIZGm/DvPY0LuaxD7QmbEyuYj5ghZWW+2nE=;
+        b=FDmYihKKzIc4yCb6yyRWzeIYyumvZwecwAAWPpH8gf+7y31BKaU6zi3RuFOXkagZRu
+         D3SE9gVMpCx+cvRSK4ySRgAhi655hjl/JMewgCdT8V5guWxa87/RvrjSVNcrQcF3aAe3
+         ZfxJi9DrcnAKWnHrYIaNU/qNPuOrtBcsgsvGZrdoGj+IiSX+68tGmwlV3zQ1YymCDT4y
+         S9TI4go0g+aq1TFkXcXxBGcvg1JTJDJuPSLS36OnGIEnhM/2uIFeTQ0AUpRVQEaHvL4s
+         XU4MD6uzD5Qi1vH6j7JUEIHFjU/7g8mIbHXq2Ze+smBrhZQrbaEDNeW5T6Q5nqNNYUfv
+         Gjsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=eoJL8/ssTz//H6D1ky8wIdZCZtyYwQOapMLC4rpTJK4=;
-        b=TfVeb/7jIn+8iOUWJg/XhLpaFyMfiUo2MPVkdrkWB/gihv9sKj81AZRMNuvtby4ThL
-         CbwnFzQXPbQP9VLcBd+tbFjY7E1eoQB7q8yKV/dtiKrW+rquwezps2OyjE0jzA+XeXjf
-         gxruPUzmDrwaxpZ3A5tW+uDq/brW6aTBde1Pwde3ygSNEg8CIW7cD6n8AkMPRDYxNLH1
-         kYeOf3VdiRjehzQAjROW6Iov0ULn3LJYA3GDaYmGuJo/xmp/Bj9q2p7i4U9ha1WBvzeI
-         I0L5IlScCY99OmYQ0QzkyeApNTAqSEnqVeUKuyvEq/2ZYD7s8ha4Xbdr3Tk4Eg2MQ+VR
-         U8LA==
-X-Gm-Message-State: AOAM532YxPkozRa12RptMT/vWw55cVkUEUAy2m+lG/YQuEbAVnEbU8WK
-        rYmp0Qg71O6iBJSBta1xw5t4sG9oc/pIoF1xFYQ=
-X-Google-Smtp-Source: ABdhPJwFcJm7rfKsAySs+0vGMiLsgkerhO1IJaAaoI5nIsMNewFDbxma8gXpcBnrN9wIhl6vxQwOyxG97McgmzXPrzY=
-X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
- n13-20020a5099cd000000b00418d6c22405mr67804edb.342.1648042590389; Wed, 23 Mar
- 2022 06:36:30 -0700 (PDT)
+        bh=2RHrOWoISIZGm/DvPY0LuaxD7QmbEyuYj5ghZWW+2nE=;
+        b=tFGCnpCqCyDK8+CYQubTR9Z+y0iRbDiUI5n5YxOgi3tWzM/jBRiosliMOJQIsHWAK/
+         2cBG5vrWpYEDtZzsAvKXjHIra/Bnte+daBwCwOzx8BLoyYkqbY9I48GIOPlik+nUhn8M
+         RYqfk9NxPKmeT30jF5igi7E9Bqv6YKkT0vlfuRL5NwcZari0NieQu//A187e0WtF9lfA
+         ooq0Uw2EcSE79aSQzORm3bd4BA0+PgWEY1kH/8RWpe5vd1iYiXzt2wnyGvOnrSmMkjDL
+         KzvKS4u6CgUQjKcBzyEEobYQJ8FLOAy7nBJoakmb4XyUMkEDCrJ7ehrRvA9IyTcVlpyy
+         Oc5w==
+X-Gm-Message-State: AOAM530PQOWuXSj2iU6ij78AzspH9NoZ9FVSIrXL/X1fB8+E/OrT38IO
+        BNz9DHqp0RRdLr+BB6gjEC25jwjcPk6HSrFszJI=
+X-Google-Smtp-Source: ABdhPJwwRgKueE5YMcjujXfBvSQ4CanyXkLJdj0YeSDjc8PVBYDzXkRdxqDc5TPQYNpYAExnuscG3Aot+Yj5Lyt5j70=
+X-Received: by 2002:a17:906:743:b0:6d0:7f19:d737 with SMTP id
+ z3-20020a170906074300b006d07f19d737mr2328129ejb.11.1648071375043; Wed, 23 Mar
+ 2022 14:36:15 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Wed, 23 Mar 2022 13:36:22 +0000
-Message-ID: <CAHpNFcM8p5hZ=wC5s+5JOw03yJbC-ZqApX0Cqpa48p=QdszTeg@mail.gmail.com>
-Subject: Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you
- trade markerz ***** Dukes Of THRUST ******
+Date:   Wed, 23 Mar 2022 21:36:08 +0000
+Message-ID: <CAHpNFcOi=PouCaLfpcLriTDwij+2KbzLA+MhjsdC9WnbPjpwoQ@mail.gmail.com>
+Subject: Presenting : IiCE-SSRTP for digital channel infrastructure & cables
+ <Yes Even The Internet &+ Ethernet 5 Band> RS
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -60,6 +60,50 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+*
+
 ***** Dukes Of THRUST ******
 
 Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
@@ -67,7 +111,7 @@ Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
 Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
 Interleaved channel BAND.
 
-Microchip clock abd 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
 Coprocessor digital channel selector &
 
 channel Key selection based on unique..
