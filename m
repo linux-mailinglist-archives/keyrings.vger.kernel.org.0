@@ -2,59 +2,56 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64CE04E6432
-	for <lists+keyrings@lfdr.de>; Thu, 24 Mar 2022 14:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6613A4E6D13
+	for <lists+keyrings@lfdr.de>; Fri, 25 Mar 2022 05:16:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350490AbiCXNiA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 24 Mar 2022 09:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59304 "EHLO
+        id S1355753AbiCYESS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 25 Mar 2022 00:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350523AbiCXNhv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 24 Mar 2022 09:37:51 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514A5A94CC
-        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 06:36:17 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id y10so5644488edv.7
-        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 06:36:17 -0700 (PDT)
+        with ESMTP id S1355095AbiCYESS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Mar 2022 00:18:18 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C647C626C
+        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 21:16:42 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id y10so7859445edv.7
+        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 21:16:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=0Nq8S1Rhf/Bs+KrV0IuyNlsRmenRT8p+AwSfsyHSu+o=;
-        b=jZFYqnFhND4asoRNoXpf7ae5C+8ZDunUdn1h1lOYIjmHoZ0PrekSDA3VeN9/NfLgr/
-         noYumHiOerDmThWrSJGrc3/eGxu+Dtt5KGMHeRFs4WQbX0mXY7qMKlEvLT+V4aIpaI1y
-         KPqKmnwwBuptyQwRJngVAsUsNeTEfHIvtXSLt3qyYjDdE1x/t0a0R9OynP6PCEOo9+VX
-         7oUYLVO0QG3iL9nyDZipjKKGC22X2y6hM+EVDLJfwepxWocMdtzBKnLWJEuhKiTnYMGZ
-         U/8PJjynB/xasYq4JWw+25WDhgeG3XW6dsS6kUYEaUBelul88MLbm9GWPO43LiyezjR8
-         FjkQ==
+        bh=Fypq8UI8Uq+1c6C+7GLCH+JdxdzGFINCTqOtzB7kQlY=;
+        b=CUYZl47cdoRfsNF1XnoO2hDciCcnfc+A0tt1IHJnrYRy+loI/m5Y7l9waIvvciRy5/
+         lvaxVcWr0C1iiITjuTqhdUN0s16a2//fmR4fRg1qTl9zQr+EPCmBL+Q8erZIMaq7T0lw
+         wCXHnotFdDVLv+FED+Po4kGVEBYKPz1C9q3MJYjYgQ5eM2qeZxdiOtUu7QpOcVCe+J3I
+         MPJRuLyDaWKKpdrT0qvMl2DACRu1LqjIl9hWUem8bY9ROb7uen+KI1tte5zqX20XW1WD
+         wEVx1lTZSyUIVa/7k8C0hCgjlgN8YC7CcIWwfAW65jo6LApm0Z+SLwBhwXhDMo2PGPdg
+         XG2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=0Nq8S1Rhf/Bs+KrV0IuyNlsRmenRT8p+AwSfsyHSu+o=;
-        b=aTVj0mPDb3DmdKhspZ1lECgCW3Rqn3nZ53xIpvZ8xYFBv5DL7J6XtcRzbD8LEZBYQ4
-         mhu4Vw8hSh+xV24vYtUCFaz26IqwI/GFubwBlhN37VQDwVA2QwtcyFxjPMhjZ7j11pW5
-         Duvvvb9Q1Ofgq8Y30LwCzcOe4HzFIrJ6N7mc/+/YwWUeJ+58DvFcehp0mPkg3hfCLJkB
-         uTVLI5pvi3iRMRYi9C2FmL/KnEl0nyLnHfqa4tqWDuFDbVQc42F6Zhir+midCqJ5oFmt
-         lJsOvRAHJjhefbtlus8CQZXIzHUU0V2PxgkMHHgOLTRpMuueXQF/Jx+bK/jUeEW1lMc0
-         ipwA==
-X-Gm-Message-State: AOAM533wrQmRcU0OWSpAtoUWYNOhdehVIk0C6HDl5RnORvfFFgp4rLPb
-        ftlx4G0+VXa2h2C4ICPhqKNGOPJsrkw8mw4LIxY=
-X-Google-Smtp-Source: ABdhPJymUHtVuy8vl5PusINjiLTObNcciMnFncsv6OqOS+KLKID9Yy5PWr5zx/+NfIFoGP1Ww2MMQWBwolQkZHcHiNA=
-X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
- n13-20020a5099cd000000b00418d6c22405mr6725695edb.342.1648128975441; Thu, 24
- Mar 2022 06:36:15 -0700 (PDT)
+        bh=Fypq8UI8Uq+1c6C+7GLCH+JdxdzGFINCTqOtzB7kQlY=;
+        b=utddccapm+4T2DaPFY7+AoMLHk+FbuwF6qLdpWU+Vc60/nqiD3vBtV6HahYlD+jPdu
+         I3pHQ73rcweGHWRcWqFRBa+7AV4Fes2ajssQtnpN0uAYJN4yiV1pwkimC4Upc9SrT20D
+         FDQJyx8RHOKzcWDvZ/t7nNhEPtrgajhY7WHbRKWFj1AmFBfBBr+3iUZX1J+fwmMw63h3
+         Dt9E9OKUQvK/tw+PFxKzLCBVeqxIe7LrqN773d1dwNB8wlkhK34dTxD6/2yO3EBchGT4
+         KCO3Ky0cmtNpd+b4YKNJeTGwiUUNx+WqdwRsCAf9NDuz+L6INVv4gpwWvkfiS0KO+/or
+         c64A==
+X-Gm-Message-State: AOAM530YrrmF7gtlm5lyYG3nzxDQb/eb2ogefkslZprd2XouqX6lEYf3
+        vx/9uk8rC9sOYL6nnqJlTX7wcUi6lWvGER+VEdc=
+X-Google-Smtp-Source: ABdhPJygCjRGrDlAz1wxtAX0x7vU9eDcSJVgkhHMVWJiF+tX9Yh5WnmQM/8/hAHYiWt/FcBqsviUgT8fSSnIGLSjUOI=
+X-Received: by 2002:a50:ab16:0:b0:414:39b0:7fc1 with SMTP id
+ s22-20020a50ab16000000b0041439b07fc1mr10680711edc.214.1648181800859; Thu, 24
+ Mar 2022 21:16:40 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Thu, 24 Mar 2022 13:36:10 +0000
-Message-ID: <CAHpNFcPG==qZbLKJqfOzw=Q7yFF-TCJW3hrctoK1EwC5S1sjHg@mail.gmail.com>
-Subject: (my version) Time clock jitter especially with a TMP but it is enough
- for a math like Elliptic curve as most of it is SERVER anyway! However i do
- promise you that My Jitter Crystal Dynamic is enough along with Var Statement
- simulation of statistical uniqueness within the total dynamic of a system ARM
- Or RISC, However 3 runtimes with variables are required minimum to BOAST
- about it (signed Duke The Thrust of it) IS Enough! I have a Vision & it IS enough
-To:     torvalds@linux-foundation.org, do-webmaster@nist.gov
+Date:   Fri, 25 Mar 2022 04:16:29 +0000
+Message-ID: <CAHpNFcO+AcQpQOTZAE9N6Q3CDinoV4n1-sSvnd2Hg0FB7jko2Q@mail.gmail.com>
+Subject: Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+ implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2
+ Implementations we will improve with our /Dev/Random
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -67,43 +64,111 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-(my version) Time clock jitter especially with a TMP but it is enough
-for a math like Elliptic curve as most of it is SERVER anyway! However
-i do promise you that My Jitter Crystal Dynamic is enough along with
-Var Statement simulation of statistical uniqueness within the total
-dynamic of a system ARM Or RISC, However 3 runtimes with variables are
-required minimum to BOAST about it (signed Duke The Thrust of it) IS
-Enough! I have a Vision & it IS enough
+Dev/Random : Importance
 
-"Linux 5.18 Crypto Has Arm Optimizations, AVX For SM3, Xilinx SHA3 Driver
-Written by Michael Larabel in Linux Kernel on 24 March 2022 at 05:02
-AM EDT. Add A Comment
-LINUX KERNEL -- The crypto subsystem updates have landed in the Linux
-5.18 kernel.
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
 
-On the Arm side there are a number of improvements this cycle
-including Arm NEON AES optimizations and accelerated crc32_be for
-AArch4. The continued expansion of NEON usage within the kernel is
-great to see for Arm users.
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
 
-On the x86/x86_64 side, the Linux 5.18 crypto subsystem updates bring
-AVX-accelerated SM3 hashing. SM3 is one of the hashing algorithms
-backed by China with the Chinese Commercial Cryptography Suite. This
-AVX-optimized version is showing to performance substantially faster
-than the generic code path for in-kernel SM3 hashing.
+Code can and will be improved, Proposals include:
 
-Also notable with the Linux 5.18 crypto updates is the introduction of
-a Xilinx SHA3 driver. This Xilinx SHA3 driver supports their ZynqMP
-SoC and allows using that SoC's engine for secure hash calculations.
-See this pull for the full list of crypto feature updates this cycle.
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
 
-While not directly connected to the crypto pull, the Linux 5.18 kernel
-also pulled in the many random number generator (RNG) updates.
-However, the change around unifying /dev/random and /dev/urandom has
-been backed out due to some CPU architectures not having enough source
-of randomness at boot and no jitter entropy."
+Elliptic Encipher
+AES
+Poly ChaCha
 
-***** Providence *****
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=
+=3Ddrive_web
+
+
+https://github.com/P1sec/gea-implementation
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+"A stream cipher, such as the well-known RC4 or GEA-1, usually works
+through using the Xor operation against a plaintext. The Xor operation
+being symmetrical, this means that encrypting should be considered the
+same operation as decrypting: GEA-1 and GEA-2 are basically
+pseudo-random data generators, taking a seed (the key, IV and
+direction bit of the GPRS data, which are concatenated), and the
+generated random data (the keystream) is xored with the clear-text
+data (the plaintext) for encrypting. Then, later, the keystream is
+xored with the encrypted data (the ciphertext) for decrypting. That is
+why the functions called in the target library for decrypting and
+encrypting are the same.
+
+GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
+because their algorithms generate only one bit of pseudo-random data
+at once (derived from their internal state), while algorithms like RC4
+generate no less than one byte at once (in RC4's case, derived from
+permutation done in its internal state). Even though the keystream
+bits are put together by the current encryption / decryption C and
+Rust libraries into bytes in order to generate usable keystream,
+obviously.
+
+Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
+Linear Feedback Shift Register-oriented ciphers, because their
+internal state is stored into fixed-size registers. This includes the
+S and W registers which serve for initialization / key scheduling
+purposes and are respectively 64 and 97-bit wide registers, and the A,
+B, C (and for GEA-2 only D) registers which serve for the purpose of
+keystream generation, which are respectively 31, 32, 33 and 29-bit
+wide registers.
+
+On each iteration of the keystream generation, each register is
+bit-wise rotated by one position, while the bit being rotated from the
+left towards the right side (or conversely depending on in which bit
+order you internally represent your registers) is fed back to the
+algorithm and mutated depending on given conditions. Hence, the
+shifted-out bit is derived from other processing, and reinserted,
+while being for this reason possibly flipped depending on conditions
+depending on bits present at the other side of the given register.
+This is the explanation for the name of linear feedback shift register
+(shift because of the shift operation required for the rotation, and
+linear feedback because of the constant-time transform operation
+involved).
+
+The rest of the register may also be mutated at each iteration steps,
+as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
+differ for each register) may be applied depending on whether the
+rotated bit is a 0 or a 1.
+
+Note that a step where the register iterates is called clocking (the
+register is clocked), and that the fixed points where the register may
+be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
+function which may transmute the rotated bit at the clocking step
+(taking several bits of the original register as an input) is called
+the F function.
+
+Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
+GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
+hardware implementations in the late 80's and early 90's."
+
+*****
 
 NT Interrupt counter Entropy : A counter theory : RS
 
@@ -195,6 +260,7 @@ ECC Temporal
 
 Centric Entropy HASH: Butterfly Effects
 
+Blake2
 ChaCha
 SM4
 SHA2
