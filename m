@@ -2,57 +2,56 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0DAB4E6F60
-	for <lists+keyrings@lfdr.de>; Fri, 25 Mar 2022 09:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6A44E6F77
+	for <lists+keyrings@lfdr.de>; Fri, 25 Mar 2022 09:32:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354527AbiCYI1A (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Mar 2022 04:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53380 "EHLO
+        id S1355076AbiCYIdv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 25 Mar 2022 04:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354313AbiCYI07 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Mar 2022 04:26:59 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066FBCC531
-        for <keyrings@vger.kernel.org>; Fri, 25 Mar 2022 01:25:25 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id pv16so13931690ejb.0
-        for <keyrings@vger.kernel.org>; Fri, 25 Mar 2022 01:25:24 -0700 (PDT)
+        with ESMTP id S1351814AbiCYIdq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Mar 2022 04:33:46 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B82B3CA4C
+        for <keyrings@vger.kernel.org>; Fri, 25 Mar 2022 01:32:10 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id r13so13882432ejd.5
+        for <keyrings@vger.kernel.org>; Fri, 25 Mar 2022 01:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=vxuEjt+x3FHatgD8gb0ERxw6gFeQLnKCXkVjQiYkkvo=;
-        b=UoZ7RxzG3BkXZSKrkriILIdVE3pUvEj2qzCzOPDl5a7OjO8B4QBLOTr6a3LDfWxcAm
-         HLvWWiWzJP2yK4lSo2Nr3/fKeiLGM5jcNpnHGCSPt2hsSw7eFeM5u7WuwkhBMOtpMije
-         ttOV8ssNwBAN5AXWqO0t98vth1/VT16efjk5s9j5eb5XaFPD/THCYV3NvMXPiCYhEPKp
-         t8eXs3j3DbpLU7+GFvK6AXM4Hx3rPhWnklIcrGVYvwURMU+oWMUhulTfK5KZI1SkbSWW
-         +N3awaot63tAIIefDdYlQobQKENCvtv+0gbS0kwTdLMa51E64dB/kVnk7J/VOeVo/rQc
-         asGA==
+        bh=SqHqQX9sgIhnYUekBYC5UZ5cF2gUbDG9nIqEMk7SQQM=;
+        b=NfLzMuNAJUBKIanhm6HrSnbo2k8udZZWptHOEK8iPUmraI21tcYMtDDUrhNx2T9TgN
+         Qyyw+q0pfN9jT9xIr4ojnyhD9KDGCivtkBiJdEOhsh1zh7cRUpsNIa33v4tWAU+F6XUA
+         Pqdwzbhdjffx94bwlCw8smwKi6pe7gPLLv4a4Fyv92pTxezTwOwj4HqNQkfIInV+Lbgt
+         CNPiRgLv6CuNIzeop4Nq6Wgp6U5hCQ6diXyz8PoCgYFFStSpNoSqcLsniHsQgyO2sKXZ
+         0CPhlt3mdvWJA1OxoWnIMBiroy2DtMw6haSLCRpkPAYunp6TxTAlxBZ3qxTbky4lfGcu
+         +7YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=vxuEjt+x3FHatgD8gb0ERxw6gFeQLnKCXkVjQiYkkvo=;
-        b=4psCCuliFk3Vot5YCOzeIEWFalamtvZ34my61hHXRe47uNJRRpQ3w5R94q+6tOzTCq
-         BwZfzIFqox1mGA8u44ocJ0Tns8107KNGzwJtwm3RbUgIcLYlmSDNKLylYLrwdwT502Vm
-         81eJjYo6GnsShpm0/rsXIsVbJAKKo5XQtn36iSYzx76nuqyHjacSSdran82u8YAAgJ0F
-         wZQElpmQMxb5PvLvf8PSDblWfKMJlC1nI9AMvp2V9zdibhDiLlt801vw8uYq+m+Ono3S
-         vNci0caz7DgWfxUDF/izPKwMJFpuOrA4itCARsrLwhSYStguT31S4Q6Wj/3zfjq0GUir
-         ncXQ==
-X-Gm-Message-State: AOAM5329ye8+eE8dsaaMIKDjkOMWOSHN3AEAOChv1rIR5ACwu10PavQW
-        C/a4hKCW6Zi/ybZsercGs0n95hcxZUU/RtN4oLM=
-X-Google-Smtp-Source: ABdhPJyvDxlfqslKHwgFMqg391XIWsdAF/iAkQ7dANXTahtI83BnSK2dyFuHwuGlhCq0vIRqDPn4eFdMZ/8lu8oGMVI=
-X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
- cr21-20020a170906d55500b006db148e05ccmr10001431ejc.63.1648196722540; Fri, 25
- Mar 2022 01:25:22 -0700 (PDT)
+        bh=SqHqQX9sgIhnYUekBYC5UZ5cF2gUbDG9nIqEMk7SQQM=;
+        b=duOChViP+wIeeRuydtq2Zaph9YzpvRpAuWNLUWSGG2yfRccT900WAJW/+GXXPZzpk1
+         zfsA1/yhrCXkxmKucXqqmAg5w1ziIvwoKMiK5rv0pAX3Yp6NlJlvhUJFJzPKPZcTp6Ci
+         ZkmEt62cW6a9IogcRzoC3KgoBqdVADOLorsl2I44WQoSP8kybDDyfEiknPurbXGOU6qs
+         gpTDoMEJEvxouqjuZFNX46yIGTMYuzgj1aFHkB324poAY6UtzkGqgi0zf4jCOk+QDR1g
+         YEqx25B7u3xNnYDTPpTkx+zJModHA2dMNKd/Z6XiSwzjHFOwvj+K69rAWj0ObWZryAQ3
+         J/Gg==
+X-Gm-Message-State: AOAM533BVfnhNxA7ycwq/nJ64VKt4MTOhqq/W8GByGwkP8OBOV3M9TJp
+        7bOOZAs7RvmQwhZDj7C2mHmaU9uZnWJA3ebfDm0=
+X-Google-Smtp-Source: ABdhPJwP9DVVAFtlfPpT5O2PNwapt/1WW9DVPnWgjf91ZtmWF3B9oMLKj4RhYcEu2NRQGkmLdeueNMjvVROEBeYwLjY=
+X-Received: by 2002:a17:906:7d52:b0:6df:a6c7:2c5 with SMTP id
+ l18-20020a1709067d5200b006dfa6c702c5mr10611625ejp.540.1648197128918; Fri, 25
+ Mar 2022 01:32:08 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 25 Mar 2022 08:25:10 +0000
-Message-ID: <CAHpNFcPpO+hi3v4hpjqQyt0sfHVkOk=pcYwP9QmzWDv+=crGRA@mail.gmail.com>
-Subject: You both know console controllers need a lot more than basic
- bluetooth or simply the security this code offers? offer more but implement
- this! RS
-To:     mobile@cloudflare.com
+Date:   Fri, 25 Mar 2022 08:31:53 +0000
+Message-ID: <CAHpNFcNdiDL=ij7cJbGJDbQq0WOFvJFR5ka-CCwUmoxUQMHGNQ@mail.gmail.com>
+Subject: Audio, Visual & Bluetooth & Headset & mobile developments only go so
+ far: https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PLING_QUERY,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,20 +59,6 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
-
-You both know console controllers need a lot more than basic bluetooth
-or simply the security this code offers? offer more but implement
-this! RS
-
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
 
 ICE-SSRTP GEA Replacement 2022 + (c)RS
 
@@ -160,9 +145,16 @@ https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
 
 https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
 
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
 https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
 
 https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
 
 Integral to Telecoms Security TRNG
 
