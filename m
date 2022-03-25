@@ -2,51 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A2174E6D79
-	for <lists+keyrings@lfdr.de>; Fri, 25 Mar 2022 05:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1474E6DEF
+	for <lists+keyrings@lfdr.de>; Fri, 25 Mar 2022 06:56:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241526AbiCYEtZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Mar 2022 00:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48748 "EHLO
+        id S1354274AbiCYF6V (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 25 Mar 2022 01:58:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345905AbiCYEtZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Mar 2022 00:49:25 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64898C6EDC
-        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 21:47:50 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id g20so7917030edw.6
-        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 21:47:50 -0700 (PDT)
+        with ESMTP id S1358393AbiCYF6T (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Mar 2022 01:58:19 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68A6C681D
+        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 22:56:41 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id bg10so13323178ejb.4
+        for <keyrings@vger.kernel.org>; Thu, 24 Mar 2022 22:56:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
         bh=00jzhQ/dm8OoWIsxpxpfQ9KmK+AHhnesfJOmQ5Fhuhg=;
-        b=Zsa9lDunYvgzYqdjsfHog1YwIH//5FotveIdu7R9YYUHQMil0jJbakiaY9yy1Xz1gy
-         txvh0Rl0/boyXCJZn6j84JxQA6VZDfFFhVVdr5lrIispfcNJwQ1JO4XpH32kzsKLSNUm
-         RNE7oOFAzYx5iOzIP6+V3QW/WSFPQJWl6eixaDNZ0rRs+uAiCV+nHtERdh6QuZP2Ttds
-         Y1yT4EQCA3AFE3VyN1FnRm7+U41+YEjiM5x/clrTDQwAaDh/7Ufv1CcLtNIZ/3d5ZzIh
-         7cobzHrsS43VXQdFYbbWjz6K8A5PbQkUs8JP6H7ojpo1ekdSxR6npt83epQiBGTEkjUY
-         s4gw==
+        b=JiKLFOGXsnBR5pGOTNDszUZ3rZ3+74PnGq8PmrEN03G4HPPRFhxxwj7IboR1xW4OmP
+         cozA1L4yuSv5hmqLfkgQoQLVfTVEQyP9U1BLZIvmxoSLJzMZtF8YdDoXfs4GShQf7GGv
+         EDPaBnTNcJJSfXPKQSIUW1JEjMlNi+JuJkAfkerZiiqgnNC8FdS0BUDFivbhxHBOtXyG
+         Zm8jNsLemVSLhnjv8huJMXka0Luju6W6vI+LXyavl9Zm41Gqh4UJdoj+A1ZoZ34C/+je
+         jJbxb91VzSkT09XH0m6FT3norGaweceCr0HOgT39Stpq5MSreIVuLfkefJPNQ+ayd0DF
+         BA2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
         bh=00jzhQ/dm8OoWIsxpxpfQ9KmK+AHhnesfJOmQ5Fhuhg=;
-        b=n8DocTyv+TqH+LHMrLwwlBo2gRP8oU2hRMcOCR3WDfquPUvpqlcVCY8sADegyDo2V3
-         WfUsdIWKqFlXRZ/siOJ+muPRqTz6wDKZqiDNjIqWuGkSAei3LNCVyzNj3B6fyiZzM8a3
-         PWkP5fRQ1HELDQSq/HSGicMsNzrzwpDwcF/zf+JWQwHdXyTWMpOVyB5TpaxjxQ4/UmLQ
-         zdr2HbROEIC/QPPEDtCmRTmw9snLD9KiBQDZAHh/o7XSZdj86qzWahyFmYncbpj5LxPq
-         jPTOMkHvEz6Z4JvVmyaekve6g7bd+6DEVNvfrvsbf7n5hrtLOg+AGm18JD/oEg95I4+m
-         jsTw==
-X-Gm-Message-State: AOAM532HW/Vdy6BYIOLia6MiLkfcGtImi+Dng5erg9PQKNgR4eSMXibR
-        zjdceXwO6MJjK83H79GHlZHBRppBAbhNIt8B1dE=
-X-Google-Smtp-Source: ABdhPJyzhC9de39mz/yg0+m00uY4XYPuvMdXaWoyYZauADKRT5G4RKkOIGfqGOnR3X0hFoEw3grjR0KqtkiT4EeSomQ=
-X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
- n13-20020a5099cd000000b00418d6c22405mr10726277edb.342.1648183668753; Thu, 24
- Mar 2022 21:47:48 -0700 (PDT)
+        b=i8D8tvvoAYP5WSG/gjXVYiJ55XQCRXCYrLh+kz2EbComSSL/H6eqtsteUx34fahhW8
+         P+tn58kT9fKZKmd6eScbBGkqmPZrRuyJuHHt86KalBTRLPg0aGFQBy8a5UYmYgr44/+c
+         BYWJ6UhIu2REMW25r2FmiePCU3tyuvyb9RXiyaucgkzM1NZeWQs1m/IzxvnNduAwjHZ5
+         3rv5rf8OwonVGWR/8ZqryYncWOaCcPuEVTo3Er9rxemJM5Pm1d24Aoh8nKTHTqZwwNvs
+         INIsIDbc/p3WBs7sY+9vfcRygfxXCrr6dhyF8tvEDNTd0VLehFF54cTHQxMhkTEO9GI0
+         NMGQ==
+X-Gm-Message-State: AOAM531XZ9FKEohzH/KsD75b7d22qyfWWzfLpuv5myA5yPW/CAwVEMZF
+        O09v2+KUYi2ly1WTVFSwy7tZ4GbI+ysZCTPdhjo=
+X-Google-Smtp-Source: ABdhPJyhdqkKjOrPvHRwnOrIP93xSoDBqanQXn2RcU0xxmwpOrdEfwIaYoc7su1E7s1ZLUIidJvkKP1W5VnosW+ayCI=
+X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
+ ji13-20020a170907980d00b006d6f910513amr9210130ejc.643.1648187799830; Thu, 24
+ Mar 2022 22:56:39 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 25 Mar 2022 04:47:37 +0000
-Message-ID: <CAHpNFcPn_PVcZAiro5yJPUtGp=7jWYh=0rgjkObg8Une1=aR7g@mail.gmail.com>
-Subject: ICE-SSRTP GEA Replacement 2022 + RS https://science.n-helix.com/2022/03/ice-ssrtp.html
+Date:   Fri, 25 Mar 2022 05:56:28 +0000
+Message-ID: <CAHpNFcP4jWM7X5-X9_xKXxLDQt+dop_--=HDr-k3=Qx6s8tWjg@mail.gmail.com>
+Subject: Encryption GEA-1 and GEA-2 Open Source 'Ideal for USB Dongle & Radio'
+ in Rust RS ' Ideal for Quality TPM Implementation' https://github.com/P1sec/gea-implementation
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
