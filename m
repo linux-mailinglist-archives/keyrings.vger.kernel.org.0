@@ -2,232 +2,377 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4384E7DDE
-	for <lists+keyrings@lfdr.de>; Sat, 26 Mar 2022 01:23:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE82C4E8551
+	for <lists+keyrings@lfdr.de>; Sun, 27 Mar 2022 05:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231599AbiCYTt1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Fri, 25 Mar 2022 15:49:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35432 "EHLO
+        id S233861AbiC0Dzm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 26 Mar 2022 23:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231657AbiCYTtK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Mar 2022 15:49:10 -0400
-Received: from mxout03.lancloud.ru (mxout03.lancloud.ru [45.84.86.113])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33E92296DA;
-        Fri, 25 Mar 2022 12:33:01 -0700 (PDT)
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout03.lancloud.ru 3F1DA20A097D
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-From:   Denis Glazkov <d.glazkov@omp.ru>
-CC:     Denis Glazkov <d.glazkov@omp.ru>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: [PATCH v2] KEYS: Improve error handling in the script
-Thread-Topic: [PATCH v2] KEYS: Improve error handling in the script
-Thread-Index: AQHYQHRhOXnmlwunc06tlBqeYDNOag==
-Date:   Fri, 25 Mar 2022 18:16:01 +0000
-Message-ID: <20220325181550.278067-1-d.glazkov@omp.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.11.212]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S233914AbiC0Dzj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 26 Mar 2022 23:55:39 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E6D13E00
+        for <keyrings@vger.kernel.org>; Sat, 26 Mar 2022 20:53:57 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id h1so13444382edj.1
+        for <keyrings@vger.kernel.org>; Sat, 26 Mar 2022 20:53:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=uXaRvLUj+1B5FMxtaQVDP6hPG33CuATLlxKJ63s1fLU=;
+        b=WHbYB3D/saNPToEkj0WBAa6nXvL0HqfyU+Y5hpaCgsZHyQXCuaSeRuenQPGDxRBqMG
+         UyzlGbn3CCnOsy+T29J1n/Ld8koFyyfXtS+nBvXASsct4dvFn9CXwkNCJoWK3vzn4pI+
+         8aOjLzCUBC5MtfXmPdaXpVWaBCcNeELP+IpTc4EYHOCf9zYkZv/mX9DIeboIUOcBWdb2
+         1CXdUy3wyYocilgEY3l2a0JX2G0Awwjp6eqAFl5AonsT2Ntdll4p+K9ZMH6+tScCs29o
+         arF7GSfy4Hw1iTLsjoJf5JZsA/FlydB32Ii8bfHAo1IZJO6yfLV94YxeP1orA4QxKF7n
+         9DXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=uXaRvLUj+1B5FMxtaQVDP6hPG33CuATLlxKJ63s1fLU=;
+        b=DTH96EjbDUK8/+RDLkaeUTGGZRXusu78d3lTyfDx/diAbz7lMJriY9coco+x4eePfr
+         ZR7bMqbCtftDWizNms4C4qfaQAYSQ6a9RQ2/1e7eqU1gcv2hUmRtNzrZdJytzWpxSpmY
+         TkNCPz5czggADQyJyv6+FQoxZXSfqAW8wDvxmS2v/kr82ZD29RzJST1U7vjLzWiCHxzl
+         0JRNqg/Ikn3fv4G17EnW9U5/qNS2QOuf7mDyz82j2/TBW0ZKIDtK6bkklIgevNvISFJG
+         g6VL/YsxozpmUx1OdLP+3xCU+cQ3z4prbzMphBiBRzaF4+inMLqFFOpvGdjKeVVQiHza
+         Os3Q==
+X-Gm-Message-State: AOAM530rVwWx3GhNlnClM/SBUf5S4eYjs0QAiGQ8e6APJ+/KKT/IRD2U
+        /+sJP8ExuQfXkFCtdiOTG+LpxrEi7V9fsVWqsbc=
+X-Google-Smtp-Source: ABdhPJzZD8Z2yWonCFr6uw6HTW3jwHIxz8mSt1fdP844JxY8by8YlapVE2a4JgJWnjZlUWC1MJLGeCDgSiCh9jr8jcY=
+X-Received: by 2002:a05:6402:8d7:b0:419:1162:a507 with SMTP id
+ d23-20020a05640208d700b004191162a507mr8313467edz.157.1648353235326; Sat, 26
+ Mar 2022 20:53:55 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MISSING_HEADERS,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Sun, 27 Mar 2022 04:53:45 +0100
+Message-ID: <CAHpNFcNX7G+exq5KiyHS=EC5Ptuu8to+gn5v3tP4RCyX2cg+OA@mail.gmail.com>
+Subject: GPRS New Solutions ViaSystems 2022 : For VIA 2G> 5G Security IS THE
+ LAW We Will Progress GPRS Will Survive as a manageable system in Africa &
+ south america "We The People Are Hungry" Leaf Random & GPRS Security :
+ Operating Systems will manage, But how long will we survive with No KLOGS :
+ progress in linux ? https://lkml.org/lkml/2022/3/25/991
+To:     info@vialicensing.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Using the `exit` function for error handling entails
-a number of problems:
+Jitter RAND Support Data Set + GPRS Dongle usage Technology : Alarming
+as the GPRS 20% of key '20% of the key discovered Full Potential Hack'
+is With Real /Dev/random #NoHack
 
-- not a closed file;
-- unreleased memory allocated for the certificate;
-- non-deleted mapping to vmlinux file.
+Real hardened Rust Implementation & code for use:
+https://github.com/P1sec/gea-implementation
 
-This patch fixes the listed issues.
+Weekly Seed source : https://pollinate.n-helix.com/
 
-Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
+*****
 
----
-Changes in version 2:
-- refactored error handling, instead of fixing a single `read_file` function;
-- changed the patch subject.
+ICE-SSRTP GEA Replacement 2022 + (c)RS
 
-Version 1 was there:
-- https://lore.kernel.org/all/20220303081428.12979-1-d.glazkov@omp.ru/
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
 
- scripts/insert-sys-cert.c | 51 +++++++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 18 deletions(-)
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
 
-diff --git a/scripts/insert-sys-cert.c b/scripts/insert-sys-cert.c
-index 8902836c2342..8046682188f3 100644
---- a/scripts/insert-sys-cert.c
-+++ b/scripts/insert-sys-cert.c
-@@ -101,7 +101,7 @@ static void get_symbol_from_map(Elf_Ehdr *hdr, FILE *f, char *name,
- 	s->offset = 0;
- 	if (fseek(f, 0, SEEK_SET) != 0) {
- 		perror("File seek failed");
--		exit(EXIT_FAILURE);
-+		return;
- 	}
- 	while (fgets(l, LINE_SIZE, f)) {
- 		p = strchr(l, '\n');
-@@ -251,6 +251,7 @@ static char *read_file(char *file_name, int *size)
- 	if (read(fd, buf, *size) != *size) {
- 		perror("File read failed");
- 		close(fd);
-+		free(buf);
- 		return NULL;
- 	}
- 	close(fd);
-@@ -277,14 +278,15 @@ int main(int argc, char **argv)
- 	char *cert_file = NULL;
- 	int vmlinux_size;
- 	int cert_size;
--	Elf_Ehdr *hdr;
--	char *cert;
--	FILE *system_map;
-+	Elf_Ehdr *hdr = NULL;
-+	char *cert = NULL;
-+	FILE *system_map = NULL;
- 	unsigned long *lsize;
- 	int *used;
- 	int opt;
- 	Elf_Shdr *symtab = NULL;
- 	struct sym cert_sym, lsize_sym, used_sym;
-+	int ret = EXIT_FAILURE;
- 
- 	while ((opt = getopt(argc, argv, "b:c:s:")) != -1) {
- 		switch (opt) {
-@@ -304,20 +306,20 @@ int main(int argc, char **argv)
- 
- 	if (!vmlinux_file || !cert_file) {
- 		print_usage(argv[0]);
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
- 	cert = read_file(cert_file, &cert_size);
- 	if (!cert)
--		exit(EXIT_FAILURE);
-+		goto finish;
- 
- 	hdr = map_file(vmlinux_file, &vmlinux_size);
- 	if (!hdr)
--		exit(EXIT_FAILURE);
-+		goto finish;
- 
- 	if (vmlinux_size < sizeof(*hdr)) {
- 		err("Invalid ELF file.\n");
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
- 	if ((hdr->e_ident[EI_MAG0] != ELFMAG0) ||
-@@ -325,22 +327,22 @@ int main(int argc, char **argv)
- 	    (hdr->e_ident[EI_MAG2] != ELFMAG2) ||
- 	    (hdr->e_ident[EI_MAG3] != ELFMAG3)) {
- 		err("Invalid ELF magic.\n");
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
- 	if (hdr->e_ident[EI_CLASS] != CURRENT_ELFCLASS) {
- 		err("ELF class mismatch.\n");
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
- 	if (hdr->e_ident[EI_DATA] != endianness()) {
- 		err("ELF endian mismatch.\n");
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
- 	if (hdr->e_shoff > vmlinux_size) {
- 		err("Could not find section header.\n");
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
- 	symtab = get_symbol_table(hdr);
-@@ -349,13 +351,13 @@ int main(int argc, char **argv)
- 		if (!system_map_file) {
- 			err("Please provide a System.map file.\n");
- 			print_usage(argv[0]);
--			exit(EXIT_FAILURE);
-+			goto finish;
- 		}
- 
- 		system_map = fopen(system_map_file, "r");
- 		if (!system_map) {
- 			perror(system_map_file);
--			exit(EXIT_FAILURE);
-+			goto finish;
- 		}
- 		get_symbol_from_map(hdr, system_map, CERT_SYM, &cert_sym);
- 		get_symbol_from_map(hdr, system_map, USED_SYM, &used_sym);
-@@ -371,7 +373,7 @@ int main(int argc, char **argv)
- 	}
- 
- 	if (!cert_sym.offset || !lsize_sym.offset || !used_sym.offset)
--		exit(EXIT_FAILURE);
-+		goto finish;
- 
- 	print_sym(hdr, &cert_sym);
- 	print_sym(hdr, &used_sym);
-@@ -382,14 +384,16 @@ int main(int argc, char **argv)
- 
- 	if (cert_sym.size < cert_size) {
- 		err("Certificate is larger than the reserved area!\n");
--		exit(EXIT_FAILURE);
-+		goto finish;
- 	}
- 
-+	ret = EXIT_SUCCESS;
-+
- 	/* If the existing cert is the same, don't overwrite */
- 	if (cert_size == *used &&
- 	    strncmp(cert_sym.content, cert, cert_size) == 0) {
- 		warn("Certificate was already inserted.\n");
--		exit(EXIT_SUCCESS);
-+		goto finish;
- 	}
- 
- 	if (*used > 0)
-@@ -406,5 +410,16 @@ int main(int argc, char **argv)
- 						cert_sym.address);
- 	info("Used %d bytes out of %d bytes reserved.\n", *used,
- 						 cert_sym.size);
--	exit(EXIT_SUCCESS);
-+
-+finish:
-+	if (cert != NULL)
-+		free(cert);
-+
-+	if (hdr != NULL)
-+		munmap(hdr, vmlinux_size);
-+
-+	if (system_map != NULL)
-+		fclose(system_map);
-+
-+	return ret;
- }
--- 
-2.25.1
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+*
+
+***** Dukes Of THRUST ******
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
+
+https://github.com/P1sec/gea-implementation
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+"A stream cipher, such as the well-known RC4 or GEA-1, usually works
+through using the Xor operation against a plaintext. The Xor operation
+being symmetrical, this means that encrypting should be considered the
+same operation as decrypting: GEA-1 and GEA-2 are basically
+pseudo-random data generators, taking a seed (the key, IV and
+direction bit of the GPRS data, which are concatenated),
+
+The generated random data (the keystream) is xored with the clear-text
+data (the plaintext) for encrypting. Then, later, the keystream is
+xored with the encrypted data (the ciphertext) for decrypting. That is
+why the functions called in the target library for decrypting and
+encrypting are the same.
+
+GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
+because their algorithms generate only one bit of pseudo-random data
+at once (derived from their internal state), while algorithms like RC4
+generate no less than one byte at once (in RC4's case, derived from
+
+permutation done in its internal state). Even though the keystream
+bits are put together by the current encryption / decryption C and
+Rust libraries into bytes in order to generate usable keystream,
+obviously.
+
+Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
+Linear Feedback Shift Register-oriented ciphers, because their
+internal state is stored into fixed-size registers. This includes the
+S and W registers which serve for initialization / key scheduling
+purposes and are respectively 64 and 97-bit wide registers, and the A,
+B, C (and for GEA-2 only D) registers which serve for the purpose of
+keystream generation, which are respectively 31, 32, 33 and 29-bit
+wide registers.
+
+On each iteration of the keystream generation, each register is
+bit-wise rotated by one position, while the bit being rotated from the
+left towards the right side (or conversely depending on in which bit
+order you internally represent your registers) is fed back to the
+algorithm and mutated depending on given conditions. Hence, the
+
+shifted-out bit is derived from other processing, and reinserted,
+while being for this reason possibly flipped depending on conditions
+depending on bits present at the other side of the given register.
+
+This is the explanation for the name of linear feedback shift register
+(shift because of the shift operation required for the rotation, and
+linear feedback because of the constant-time transform operation
+involved).
+
+The rest of the register may also be mutated at each iteration steps,
+as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
+differ for each register) may be applied depending on whether the
+rotated bit is a 0 or a 1.
+
+Note that a step where the register iterates is called clocking (the
+register is clocked), and that the fixed points where the register may
+be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
+function which may transmute the rotated bit at the clocking step
+(taking several bits of the original register as an input) is called
+the F function.
+
+Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
+GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
+hardware implementations in the late 80's and early 90's."
+
+*****
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+
+***** Dukes Of THRUST ******
+
+Autism, Deafness & the hard of hearing : In need of ANC & Active audio
+clarification or correction 2022-01
+
+Sony & a few others make noise cancelling headphones that are suitable
+for people with Acute disfunction to brain function for ear drums ...
+Attention deficit or Autism,
+The newer Sony headsets are theoretically enablers of a clear
+confusion free world for Autistic people..
+Reaching out to a larger audience of people simply annoyed by a
+confusing world; While they listen to music..
+Can and does protect a small percentage of people who are confused &
+harassed by major discord located in all jurisdictions of life...
+
+Crazy noise levels, Or simply drowned in HISSING Static:
+
+Search for active voice enhanced noise cancellation today.
+
+Rupert S https://science.n-helix.com
+
+
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+
+https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
+
+
+https://www.orosound.com/
+
+https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/
