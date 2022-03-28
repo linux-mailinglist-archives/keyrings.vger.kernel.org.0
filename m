@@ -2,390 +2,249 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFBE34E8957
-	for <lists+keyrings@lfdr.de>; Sun, 27 Mar 2022 20:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64B424E914B
+	for <lists+keyrings@lfdr.de>; Mon, 28 Mar 2022 11:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236318AbiC0Sil (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 27 Mar 2022 14:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36352 "EHLO
+        id S238057AbiC1JbG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 28 Mar 2022 05:31:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236290AbiC0Sik (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 27 Mar 2022 14:38:40 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F346340922
-        for <keyrings@vger.kernel.org>; Sun, 27 Mar 2022 11:36:59 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id bq8so10516927ejb.10
-        for <keyrings@vger.kernel.org>; Sun, 27 Mar 2022 11:36:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=vPkWPK9fcrenNX3+70MAXLkgTo7ZH+XGzuJnlJpQ+tY=;
-        b=K0FOnBwPoH0sISCMEALWpe2aHrvlhzM6ps+MqZ7dum3H1lrvM3N8BGs5NpZPrmLgRG
-         +SQhcFojpo6YZNqBPG5ROAgrp4wfk2/vqvAMlog0HEot6OtbZ8kXtgmlaHG+CbnPFaWq
-         dSzz8HbD9VvgHsDxkcbGPnmeXTk1clpoSTAg4qmlPZAF11MNWBd0IPFZX9incy5adj8O
-         ClbE4TQ8wKsPcUhpqJVoUdJsz0Z81hYukaT1GYK7JJWAgoXhn2HxzQJjgydG0nk0+h/K
-         +ebttYTJCTa6636N9oVdASUHb2bztz676S9JmoEL8FwiG/mDT1rZSbjfoAGL8fVwSbdE
-         1EGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=vPkWPK9fcrenNX3+70MAXLkgTo7ZH+XGzuJnlJpQ+tY=;
-        b=3lCkwulSIb215Ql44RXsv/QHysxlKx5nE4ODf2Aw0Ihn/vZDnnCPBw05IN8fdaqVuj
-         iFocT5w9i/KvjzVbsGMd//qYJG6ymi+wKQGyDJyTFzVjEIqzGH836rnyJDMK3sHm92ej
-         9EP8hJYWtxmVa0h2D88m0B4efTUZ6EWesA4huMzP/hGn6l4B89BLL4c9c2M4WiVcNf8r
-         OtCXHITKN1fI924bslyyViZXVxm1tjAu+f2aQWByCY9caXLv3fNDU7IFAWFikbdQfPDJ
-         3l1j4PFTlRtxsgX+s2hGEZ9MiY73XmnGA7RrPvy8ZRpB/SJzNzQy51qmFmRyUWR0f5Zb
-         t/Vg==
-X-Gm-Message-State: AOAM530tz3OgmavflQ4ipzPFRtr3fk+iU2Ui/c6xz/EOlR5LsOIBKSWG
-        7ffOTs8qM8aK29cZImYVVcoWbqZMho3m6uh9UzE=
-X-Google-Smtp-Source: ABdhPJwLGrFHvKqbadJlybD5vZR20nmJ1xLDZFySDZ5iPxe3wgxVdyGbVwAuQ8+Awfi9M6uo6g59KnVrCUqV8QyLfe0=
-X-Received: by 2002:a17:906:1e94:b0:6cc:4382:f12e with SMTP id
- e20-20020a1709061e9400b006cc4382f12emr22844093ejj.482.1648406217735; Sun, 27
- Mar 2022 11:36:57 -0700 (PDT)
+        with ESMTP id S239811AbiC1JbE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 28 Mar 2022 05:31:04 -0400
+Received: from EUR02-HE1-obe.outbound.protection.outlook.com (mail-eopbgr10080.outbound.protection.outlook.com [40.107.1.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543E13CA5D;
+        Mon, 28 Mar 2022 02:29:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HU9j/BE11W/QOJl/YqF+Kkklh0L8UAnraGcc24Ky1IeOL86mPSacBu0JS1IGMrv2o7t2SZ1vgnCPQlo3xNPT/TZY7eCu8J9msZnep+hqq9okZUMfkynRESPWsO+nYg3sESQCMCpDS44gAGIaLIuISVouxQ6L5uJNo+CJv0iyYnsv8gGHLd1rjEsLXlkv6wnyXb29XYyLHosu2SZg9dBS/nQjiaoTOXXKXObItzlMUtJmNXSiN/pN3Qvd72wU1Plm/lrRFGQLA+2K4k6T1LDsPpNUZZvYdMIKpMWnOja2Tsxu+WmC5le571I3s4Je15uzu4BePZZFHpQKovCydXk++g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RmHuvG4R1k/1tI6uEuof648WQUCUdIpwuGB/OyyIPuo=;
+ b=Zt3NvPOuQv+ALjXjOMUT9pjU4h8ZZwy8MysS1763+w7Ul8hEkQ4G8mjeDoPmlKRJZd3KxFADTtFscqlRA8nloLiBznP8eGpdV00lDlYmmtVrpIqqZSiWKvivFNr7igTTH/7u/+0xmd8Nl6u4RaPcoov6rOtRZUxb5m2lwhNZPtGWZmMgHnIfag8eZIpB1a/9PnSqu+M6vfZMXuH8gADFNgLx4zqn6/y3IcyVIoUgy9j7upSi5db+W7xAH+MYvAmKCqewKvNCS59AInep9KPFkUOxtOuvLqGdeCtSwa4U808pyxQ/gZRlnyTq/Qy2l8U/xvTUCfH9jfQxZ/9I+ozMfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RmHuvG4R1k/1tI6uEuof648WQUCUdIpwuGB/OyyIPuo=;
+ b=Nr9Xm+p1rFLhSHGLBtB9zGtbWM87j71JZg6Dhg6peiTbZ9EKL204/sGCd0NmmhTA7ihk5urUxAsFSgFDN96gtP6rq86T8NnD0Rg2ut8Ec8RPByA2NJ/jzoFz+36wInHEGSb1gx7YZi86x5bwwGVvDp9YGbvPE3uLNqCP202wLYY=
+Received: from DU2PR04MB8630.eurprd04.prod.outlook.com (2603:10a6:10:2dd::15)
+ by AM9PR04MB8164.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5102.22; Mon, 28 Mar
+ 2022 09:29:12 +0000
+Received: from DU2PR04MB8630.eurprd04.prod.outlook.com
+ ([fe80::143:fed1:d645:f60b]) by DU2PR04MB8630.eurprd04.prod.outlook.com
+ ([fe80::143:fed1:d645:f60b%7]) with mapi id 15.20.5102.022; Mon, 28 Mar 2022
+ 09:29:12 +0000
+From:   Pankaj Gupta <pankaj.gupta@nxp.com>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Horia Geanta <horia.geanta@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        David Gstir <david@sigma-star.at>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        Richard Weinberger <richard@nod.at>,
+        "tharvey@gateworks.com" <tharvey@gateworks.com>,
+        Franck Lenormand <franck.lenormand@nxp.com>,
+        James Morris <jmorris@namei.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Subject: RE: [EXT] [PATCH v6 3/4] crypto: caam - add in-kernel interface for
+ blob generator
+Thread-Topic: [EXT] [PATCH v6 3/4] crypto: caam - add in-kernel interface for
+ blob generator
+Thread-Index: AQHYOVUNOyYgdbVIskOFW8XkCJYEX6zOQs5wgAAZNICABjWmsA==
+Date:   Mon, 28 Mar 2022 09:29:12 +0000
+Message-ID: <DU2PR04MB86306DE99EA993BF596BA729951D9@DU2PR04MB8630.eurprd04.prod.outlook.com>
+References: <20220316164335.1720255-1-a.fatoum@pengutronix.de>
+ <20220316164335.1720255-4-a.fatoum@pengutronix.de>
+ <DU2PR04MB8630BDFC29AA31074C623A7B95199@DU2PR04MB8630.eurprd04.prod.outlook.com>
+ <ae941471-43c0-1aea-2567-89eed98a61a6@pengutronix.de>
+In-Reply-To: <ae941471-43c0-1aea-2567-89eed98a61a6@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a26d9f2b-826c-49de-e131-08da109d6b6f
+x-ms-traffictypediagnostic: AM9PR04MB8164:EE_
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-microsoft-antispam-prvs: <AM9PR04MB8164FB43AEE08B8F175E57C9951D9@AM9PR04MB8164.eurprd04.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: qwS3ich4rLt201Z4rUEdCfv+YiBbi6bCQIUYvpIXtxKQSLdabgG0r8L2kjgyx2/2Lb38GGgIsWJU9BAAJOZ6UfdMZB2GmZuqKFGIph7KT4z0hw7F5nDDwUvHA38BUNqueoYqpS+zo/ByFeygHSr3erESOHloZSQJeVxEZAHmalumtH3u8rQauZyPurcHi6rbGyubUlHdnjz/esWid0tJ6Va4vSm3ESPk/cDKO5h+poj2FrfhsZNlvXf2MOA2yllGzadii07M0LEcyipboHBGd3hDAB0LF/VZQn08BKdQDDccdr+121+kvIXQ1EGfpqemUDrTjg/eHW/l/cNjddPBAFXPAvL6pGbRlmh+QotK54z7LcqFfdR0+QiIRIQeX9cvNxJcv0JX9TBontsxnsW5TLLxFu08+4PN+y6gK3qFsK5eqhLlTaihEu2Z9Azaawm0NEoPeNYBxBBU6P3qEXUtp18x2md1dv5pjK+1jQuusZYHMe4ofzdvSdfg8ttoi21/E5C5gA9ZMGyj81ZKIlF1t+sOcnJ0lJFxPJjkHyss54/1ZUccirYgQ1GgqDfPrJJnPyp7/eR4EJb27Q3dJIo7uhYednyWExtCSOmsPRWb5popqdrGodlecA5yyk49kSuGQiO6vzoaFfhedhRwXEhtaqKRMHVmrP74mWrZZ+E9QHUzT9poynIoZAItH01lPrhh/T7dnBXGZjxET9dO5IcbvgDB4nnmLidUI5FCA4z7JQjdtE+ZxmmBjoouGt0NdiiGlHmTrfD+NegHPpocW6K8M/b98SRx8uHRQ4lkHIPERiw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(8676002)(38100700002)(6506007)(55016003)(122000001)(52536014)(2906002)(186003)(9686003)(71200400001)(86362001)(7696005)(4326008)(966005)(53546011)(55236004)(26005)(54906003)(110136005)(45080400002)(508600001)(38070700005)(316002)(5660300002)(33656002)(76116006)(66946007)(66476007)(44832011)(8936002)(66556008)(64756008)(7416002)(83380400001)(66446008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?S9mosKYL1vczp2lcM46ejTjHeVyjlTRzGR5Yydt7OLLz6RyerZilxElHwX0j?=
+ =?us-ascii?Q?Tt2RTI5W/rdJy1JopGqN3KS+sjXjurPavbi51KNoW6hO7IlzpnEL8E21plpQ?=
+ =?us-ascii?Q?yQ6q+njokcZjPy9r3im8uEc/1NvGUWBuKqrbtDZQUqDpkdn5nLBAiH0lk5Po?=
+ =?us-ascii?Q?K+ZiGZq9M/UfB2RX6aZslytwgEunBYS4XBOExaPYjCyqM03DMIpWlM0vNWRH?=
+ =?us-ascii?Q?LPlOSz1ruglCvC2xTBK8LX6iRbA9Przow7RoA2qZcCwGo1ehavDThzt7os8K?=
+ =?us-ascii?Q?ghy+MMhYHTY8hMt6mcJd/+kyyFFmR6/0Bh70XIbcAkEdZEVRFl8/TV3yRhpP?=
+ =?us-ascii?Q?GQnMKmx2pQz+5ry/DtDxCm1Mwe9YTZHTqFIJekZG7KEGxcEKFeiZwDiN4iMM?=
+ =?us-ascii?Q?xuOxwDNQOtvdwNtJ9qDIPHjfKOjL5CY/6YqmpsAea1MYM1yPc0KloH0HCgGE?=
+ =?us-ascii?Q?QfLDvSfxmVNYmlZqkVtnezRNVgHc9HkZU2Qa2xvTwRORpkqS0d1BJlMS5M1h?=
+ =?us-ascii?Q?NPogzfZzxIEcTxtli2dywLsqxXYXgSdprz7BD7pW8BD6U3WuQXJDHKXz6Bms?=
+ =?us-ascii?Q?vuqW5vIRE9Xi5wfiGAxfvYVY5HvkkMAnXfhWHeWkFG9XKwaLqfQLgth7hbKS?=
+ =?us-ascii?Q?PQ94ANPlz5sCRw3b4jhqCvmLnWtW2jaR6r3JF/RZF2ndtcmVc1EmkjGPRh8l?=
+ =?us-ascii?Q?Ggo187RgICINvrkEdRj6qwBvkKKIrb1J4Oz0Ci2XrIaIgYOkWWXoZtoKbBiY?=
+ =?us-ascii?Q?7cv2Nk29qQUQhXLD0lE4672FLxccErorl6qFJRk1DGq3n276ladX0kpRZaOu?=
+ =?us-ascii?Q?S1SCZbPp5yj2dhO3wIwjcomX1BOz8ZS+8za8Nvop4KU1daKgEGy4+GiOlVFi?=
+ =?us-ascii?Q?s8FaH50xa0bVlGTN5PF1i4fPkESXrSfCXEQ8CEMYoSVu7Xjrg9/RpB44VNFK?=
+ =?us-ascii?Q?0+hItGnpqQx7WBN2lQ2UXYkJPO0hdprHBITmBLQ88mi4Zra6sUVovTJliacr?=
+ =?us-ascii?Q?7BkSNbwE9yvZihDvTIeftZnt33qKu2b7FPpYDs1m5IAg9b+y1iF/WF4lCgAM?=
+ =?us-ascii?Q?PuHwzOjM8YzNE36UiNfZRbZP52NcHtMN0yV194v/pZuhYvbD3bJupZ6d3V+/?=
+ =?us-ascii?Q?1cCqOfq7HJcH/CoMO3nOzArYk5y37jJdb1vxcsaZhTafr1YXvTXwN8henzrT?=
+ =?us-ascii?Q?CROmFz2uncbKxmxkt1EhKvDKpVsc5AEhDh85umr81/K+UUGwOK8DOEmXb68L?=
+ =?us-ascii?Q?9TpkIioZojpghbsKI5dM1lNeq9IOVgMktu1d9KHiS4X+emD9mZmqgcHbgBPs?=
+ =?us-ascii?Q?ru/4HltiUtWfgklYDrjFrg1mXpljYZ4e5zkqASIe2Tp2AgEdKRAxEnFQGrnt?=
+ =?us-ascii?Q?FO0YJ5HoOXmGzjqlNzm4xL1aWjveMKHt0nT1lGitI0pzASbKtsDjQ5AnbyuO?=
+ =?us-ascii?Q?NmTScMRIYR7b/hgykF2Qy6G6D0Ka41qfptUZcNYX7o/l8LSPPJKCGuecAl6Q?=
+ =?us-ascii?Q?vqaV3assGtJIaNEU5Iz3tcJ/Y9NhxeP3lH+TCSyKIWuK3gTL19a/OJc/0JFF?=
+ =?us-ascii?Q?sfO6SUoz1wouBda7bZnVenujLoJCo9+AdnU8Pl6OM1J63H5mRZMmyZS7L2Ts?=
+ =?us-ascii?Q?MSCuiGklDJmaofT36RTGwlAgWHnFx4SHe7jQA2iNikfVBeF+8I3c9aXa9bVP?=
+ =?us-ascii?Q?KHXVfl9TBDk+rCZB9aV+TNFRMmju6EfuDqmw+fuzi9dGcapx6WJF4ZKYIull?=
+ =?us-ascii?Q?P90gBoMT0Q=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 27 Mar 2022 19:36:20 +0100
-Message-ID: <CAHpNFcMpMEkmWPjSNnoYuAY=9H-1Sqx-WtKqZ-SW=ipeN5BhwQ@mail.gmail.com>
-Subject: (Refinement) Presenting GPRS VT2 from ViaLicensing today world wide
- RS : for ViaLicencing GPRS is quite a package, New from RS @ Via 2022
-To:     press@vialicensing.com
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8630.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a26d9f2b-826c-49de-e131-08da109d6b6f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Mar 2022 09:29:12.3032
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +2DPEmggRBCPClQAQE1RjDLCaJcy2DuDfysYBZm89qjSj2yC2yber2AYEbsRFt+9mp8KE36uJ0WQ94LXdHrEIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8164
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-ICE-SSRTP GEA Replacement 2022 + (c)RS
-
-IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
-
-Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
-
-ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
-'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
-Implementation'
-
-"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
-of GEA-1 with a higher amount of processing, and apparently not
-weakened) are bit-oriented stream ciphers."
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-*
-
-Time differentiated : Interleave, Inversion & differentiating Elliptic curve.
-
-We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
-
-We know of a cypher but : (Principle RS)
-
-We blend the cypher..
-Interleaved pages of a cypher obfuscate : PAL CScam does this
-
-Timed : Theoretically unique to you in principle for imprecision, But
-we cannot really have imprecise in Crypto!
-
-But we can have a set time & in effect Elliptic curve a transient variable T,
-With this, Interleave the resulting pages (RAM Buffer Concept)
-
-Invert them over Time Var = T
-
-We can do all & principally this is relatively simple.
-
-(c)RS
-
-*
-
-Example of use:
-
-Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
-
-Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
-Interleaved channel BAND.
-
-Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
-Coprocessor digital channel selector &
-
-channel Key selection based on unique..
-
-Crystal time Quartz with Synced Tick (Regulated & modular)
-
-All digital interface and resistor ring channel & sync selector with
-micro band tuning firmware.
-
-(c)Rupert S
-
-*
-
-Good for cables ? and noise ?
-
-Presenting :  IiCE-SSR for digital channel infrastructure & cables
-<Yes Even The Internet &+ Ethernet 5 Band>
-
-So the question of interleaved Bands & or signal inversion is a simple
-question but we have,
-
-SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
-
-In Audio inversion would be a strange way to hear! but the inversion
-does help alleviate ...
-
-Transistor emission fatigue...
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting : IiCE for digital channel infrastructure & cables <Yes
-Even The Internet &+ Ethernet 5 Band>
-
-(c) Rupert S
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
-
-
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/11/ihmtes.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
-
-Integral to Telecoms Security TRNG
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-*
-
-***** Dukes Of THRUST ******
-
-Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
-
-Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
-Interleaved channel BAND.
-
-Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
-Coprocessor digital channel selector &
-
-channel Key selection based on unique..
-
-Crystal time Quartz with Synced Tick (Regulated & modular)
-
-All digital interface and resistor ring channel & sync selector with
-micro band tuning firmware.
-
-(c)Rupert S
-
-Dev/Random : Importance
-
-Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
-implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
-GEA-2 Implementations we will improve with our /Dev/Random
-
-Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
-(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
-will improve with our /Dev/Random
-
-We can improve GPRS 2G to 5G networks still need to save power, GPRS
-Doubles a phones capacity to run all day,
-
-Code can and will be improved, Proposals include:
-
-Blake2
-ChaCha
-SM4
-SHA2
-SHA3
-
-Elliptic Encipher
-AES
-Poly ChaCha
-
-Firstly we need a good solid & stable /dev/random
-
-So we can examine the issue with a true SEED!
-
-Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-TRNG Samples & Method DRAND Proud!
-
-https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
-https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
-https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
-https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
-
-https://github.com/P1sec/gea-implementation
-
-"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
-of GEA-1 with a higher amount of processing, and apparently not
-weakened) are bit-oriented stream ciphers."
-
-"A stream cipher, such as the well-known RC4 or GEA-1, usually works
-through using the Xor operation against a plaintext. The Xor operation
-being symmetrical, this means that encrypting should be considered the
-same operation as decrypting: GEA-1 and GEA-2 are basically
-pseudo-random data generators, taking a seed (the key, IV and
-direction bit of the GPRS data, which are concatenated),
-
-The generated random data (the keystream) is xored with the clear-text
-data (the plaintext) for encrypting. Then, later, the keystream is
-xored with the encrypted data (the ciphertext) for decrypting. That is
-why the functions called in the target library for decrypting and
-encrypting are the same.
-
-GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
-because their algorithms generate only one bit of pseudo-random data
-at once (derived from their internal state), while algorithms like RC4
-generate no less than one byte at once (in RC4's case, derived from
-
-permutation done in its internal state). Even though the keystream
-bits are put together by the current encryption / decryption C and
-Rust libraries into bytes in order to generate usable keystream,
-obviously.
-
-Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
-Linear Feedback Shift Register-oriented ciphers, because their
-internal state is stored into fixed-size registers. This includes the
-S and W registers which serve for initialization / key scheduling
-purposes and are respectively 64 and 97-bit wide registers, and the A,
-B, C (and for GEA-2 only D) registers which serve for the purpose of
-keystream generation, which are respectively 31, 32, 33 and 29-bit
-wide registers.
-
-On each iteration of the keystream generation, each register is
-bit-wise rotated by one position, while the bit being rotated from the
-left towards the right side (or conversely depending on in which bit
-order you internally represent your registers) is fed back to the
-algorithm and mutated depending on given conditions. Hence, the
-
-shifted-out bit is derived from other processing, and reinserted,
-while being for this reason possibly flipped depending on conditions
-depending on bits present at the other side of the given register.
-
-This is the explanation for the name of linear feedback shift register
-(shift because of the shift operation required for the rotation, and
-linear feedback because of the constant-time transform operation
-involved).
-
-The rest of the register may also be mutated at each iteration steps,
-as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
-differ for each register) may be applied depending on whether the
-rotated bit is a 0 or a 1.
-
-Note that a step where the register iterates is called clocking (the
-register is clocked), and that the fixed points where the register may
-be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
-function which may transmute the rotated bit at the clocking step
-(taking several bits of the original register as an input) is called
-the F function.
-
-Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
-GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
-hardware implementations in the late 80's and early 90's."
-
-*****
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting :  IiCE-SSR for digital channel infrastructure & cables
-<Yes Even The Internet &+ Ethernet 5 Band>
-
-So the question of interleaved Bands & or signal inversion is a simple
-question but we have,
-
-SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
-
-In Audio inversion would be a strange way to hear! but the inversion
-does help alleviate ...
-
-Transistor emission fatigue...
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting : IiCE for digital channel infrastructure & cables <Yes
-Even The Internet &+ Ethernet 5 Band>
-
-(c) Rupert S
-
-
-***** Dukes Of THRUST ******
-
-Autism, Deafness & the hard of hearing : In need of ANC & Active audio
-clarification or correction 2022-01
-
-Sony & a few others make noise cancelling headphones that are suitable
-for people with Acute disfunction to brain function for ear drums ...
-Attention deficit or Autism,
-The newer Sony headsets are theoretically enablers of a clear
-confusion free world for Autistic people..
-Reaching out to a larger audience of people simply annoyed by a
-confusing world; While they listen to music..
-Can and does protect a small percentage of people who are confused &
-harassed by major discord located in all jurisdictions of life...
-
-Crazy noise levels, Or simply drowned in HISSING Static:
-
-Search for active voice enhanced noise cancellation today.
-
-Rupert S https://science.n-helix.com
-
-
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-
-https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
-
-
-https://www.orosound.com/
-
-https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/
+Hi Ahmad,
+
+Please find the comments in-line.
+
+Regards
+Pankaj
+
+> -----Original Message-----
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Sent: Thursday, March 24, 2022 3:40 PM
+> To: Pankaj Gupta <pankaj.gupta@nxp.com>; Horia Geanta
+> <horia.geanta@nxp.com>; Herbert Xu <herbert@gondor.apana.org.au>;
+> David S. Miller <davem@davemloft.net>
+> Cc: linux-security-module@vger.kernel.org; Eric Biggers
+> <ebiggers@kernel.org>; David Gstir <david@sigma-star.at>; Matthias
+> Schiffer <matthias.schiffer@ew.tq-group.com>; Sumit Garg
+> <sumit.garg@linaro.org>; Jan Luebbe <j.luebbe@pengutronix.de>; Richard
+> Weinberger <richard@nod.at>; tharvey@gateworks.com; Franck Lenormand
+> <franck.lenormand@nxp.com>; James Morris <jmorris@namei.org>; Mimi
+> Zohar <zohar@linux.ibm.com>; linux-kernel@vger.kernel.org; David Howells
+> <dhowells@redhat.com>; Jarkko Sakkinen <jarkko@kernel.org>;
+> keyrings@vger.kernel.org; linux-crypto@vger.kernel.org;
+> kernel@pengutronix.de; linux-integrity@vger.kernel.org; James Bottomley
+> <jejb@linux.ibm.com>; Serge E. Hallyn <serge@hallyn.com>
+> Subject: Re: [EXT] [PATCH v6 3/4] crypto: caam - add in-kernel interface =
+for
+> blob generator
+>=20
+> Caution: EXT Email
+>=20
+> Hello Pankaj,
+>=20
+> On 24.03.22 10:55, Pankaj Gupta wrote:
+> > Hi Ahmad,
+> >
+> > Please find the comments in-line.
+>=20
+> Thanks for you review.
+>=20
+> > Suggest to continue to use two separate descriptor-creation-function fo=
+r
+> 'encap' and 'decap'.
+> > This will help these API(s) to be maintained easily going forward.
+>=20
+> We can still split them up in future once there is a real need.
+> But currently they are exactly the same, except for input/output length, =
+so I
+> think it's correct to not introduce duplication unless needed.
+>=20
+> >>   - use append_seq_(in|out)_ptr_intlen for both encap/decap as a
+> >> result
+>=20
+> Case in point. The intlen omission was because the two functions are larg=
+ely
+> identical and I only fixed up one of them. This is prone to repeat when w=
+e go
+> back to have identical code with minor differences.
+>=20
+> > In continuation to the previous comment, there is another suggestion:
+> >
+> > Either:
+> > struct keyblob_info {
+> >         void *key;
+> >         size_t key_len;
+> >
+> >         void *blob;
+> >         size_t blob_len;
+> >
+> >         size_t key_mod_len;
+> >         const void *key_mod;
+> > };
+>=20
+> I can do that.
+>=20
+
+Please do. Thanks.
+Patch 4/4, needs to be re-worked to.
+
+> Whats your opinion on the desc size computation? Comment the macro or
+> add the static inline helper?
+>=20
+
+Comment the macro is fine.
+
+> Cheers,
+> Ahmad
+>=20
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       |
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fwww.
+> pengutronix.de%2F&amp;data=3D04%7C01%7Cpankaj.gupta%40nxp.com%7C4
+> d60f0d524a04b7cbd7b08da0d7e7d21%7C686ea1d3bc2b4c6fa92cd99c5c30163
+> 5%7C0%7C0%7C637837134158793951%7CUnknown%7CTWFpbGZsb3d8eyJWI
+> joiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3
+> 000&amp;sdata=3DPetvZm8teusBwQ4BeZ1VLEOvBlCrZ2k2bNG3SJBEXPw%3D&
+> amp;reserved=3D0  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
