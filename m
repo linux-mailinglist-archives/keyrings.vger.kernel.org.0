@@ -2,89 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B920E4E9C3E
-	for <lists+keyrings@lfdr.de>; Mon, 28 Mar 2022 18:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E80A4E9D0A
+	for <lists+keyrings@lfdr.de>; Mon, 28 Mar 2022 19:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237696AbiC1Qap (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 28 Mar 2022 12:30:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
+        id S244298AbiC1RIz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 28 Mar 2022 13:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235425AbiC1Qap (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 28 Mar 2022 12:30:45 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F882C649;
-        Mon, 28 Mar 2022 09:29:04 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id C4AA0210DD;
-        Mon, 28 Mar 2022 16:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1648484942; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=S32zs0pa2gEQEVNruGhWyIWEZSFgiNpA/SIR+p8B8Io=;
-        b=T7JP2LZxKvC6S64IAXjGt/3rro2IKKDx5Wwwk+5LDKln1XPFyTO9piyvZvPCoOdzIsESP5
-        tRzkCVOh1rdNSdartBydlZX3FeFTbK6c4ZPtVwpDEfVRrBcQkSU0Qt4gTWAHskJkBGWd1N
-        Jhyrh9fK6tLPCbpDovciiEEeN17G6y8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1648484942;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=S32zs0pa2gEQEVNruGhWyIWEZSFgiNpA/SIR+p8B8Io=;
-        b=/9UV5RKOAnikidCt+0qBaYGt+ZUtALDd6HKE5cJm/x6k0se36icsNFK8f1zod5h/Z0tphR
-        8NGwZj6tqW5X+iBQ==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S233834AbiC1RIy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 28 Mar 2022 13:08:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0B99E62BFE
+        for <keyrings@vger.kernel.org>; Mon, 28 Mar 2022 10:07:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1648487232;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=IeYACTmmO7H2Tu8Q856CNWAzkMVAmNYvrP7zKnjNYOw=;
+        b=WuE1ACj62QwT7F8AVO03dDZcJxjSG/a//6O5hAVUVxC9Feyk1mUR8zHV1LWLPNprPYL4Si
+        V9NQ3ShEnSMTla+oIJuH+iXt+BPnNkg541zPRmIHJN+xu5GZVkOyPNR2dEvWtcoXYIRNLQ
+        MtTXtdW1KU09eJKX8A6S7EJSMGaO8uI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-665-t-R9vqa-Md-_MAgN78NIyA-1; Mon, 28 Mar 2022 13:07:06 -0400
+X-MC-Unique: t-R9vqa-Md-_MAgN78NIyA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 5CCA3A3B89;
-        Mon, 28 Mar 2022 16:29:02 +0000 (UTC)
-Date:   Mon, 28 Mar 2022 18:29:01 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     joeyli <jlee@suse.com>, Mimi Zohar <zohar@linux.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Philipp Rudo <prudo@redhat.com>, Baoquan He <bhe@redhat.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        James Morse <james.morse@arm.com>,
-        Dave Young <dyoung@redhat.com>,
-        Kairui Song <kasong@redhat.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "stable@kernel.org" <stable@kernel.org>
-Subject: Re: [PATCH 4/4] module, KEYS: Make use of platform keyring for
- signature verification
-Message-ID: <20220328162901.GC163591@kunlun.suse.cz>
-References: <cover.1644953683.git.msuchanek@suse.de>
- <840433bc93a58d6dfc4d96c34c0c3b158a0e669d.1644953683.git.msuchanek@suse.de>
- <3e39412657a4b0839bcf38544d591959e89877b8.camel@linux.ibm.com>
- <20220215204730.GQ3113@kunlun.suse.cz>
- <20220328101557.GA11641@linux-l9pv.suse>
- <6A29007F-F1B7-4CDE-B3ED-7BF700B5ED2B@oracle.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03C0C3803902;
+        Mon, 28 Mar 2022 17:07:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0E9C1441E2D;
+        Mon, 28 Mar 2022 17:07:04 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH] watch_queue: Free the page array when watch_queue is
+ dismantled
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+Cc:     syzbot+25ea042ae28f3888727a@syzkaller.appspotmail.com,
+        Eric Dumazet <edumazet@google.com>,
+        Jann Horn <jannh@google.com>, dhowells@redhat.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 28 Mar 2022 18:07:04 +0100
+Message-ID: <164848722432.2645691.7772718304671310430.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/1.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6A29007F-F1B7-4CDE-B3ED-7BF700B5ED2B@oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.9
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -92,84 +66,53 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+From: Eric Dumazet <edumazet@google.com>
 
-On Mon, Mar 28, 2022 at 02:44:30PM +0000, Eric Snowberg wrote:
-> 
-> 
-> > On Mar 28, 2022, at 4:15 AM, joeyli <jlee@suse.com> wrote:
-> > 
-> > Hi Mimi,
-> > 
-> > Sorry for bother you for this old topic.
-> > 
-> > On Tue, Feb 15, 2022 at 09:47:30PM +0100, Michal Suchánek wrote:
-> >> Hello,
-> >> 
-> >> On Tue, Feb 15, 2022 at 03:08:18PM -0500, Mimi Zohar wrote:
-> >>> [Cc'ing Eric Snowberg]
-> >>> 
-> >>> Hi Michal,
-> >>> 
-> >>> On Tue, 2022-02-15 at 20:39 +0100, Michal Suchanek wrote:
-> >>>> Commit 278311e417be ("kexec, KEYS: Make use of platform keyring for signature verify")
-> >>>> adds support for use of platform keyring in kexec verification but
-> >>>> support for modules is missing.
-> >>>> 
-> >>>> Add support for verification of modules with keys from platform keyring
-> >>>> as well.
-> >>> 
-> >>> Permission for loading the pre-OS keys onto the "platform" keyring and
-> >>> using them is limited to verifying the kexec kernel image, nothing
-> >>> else.
-> >> 
-> >> Why is the platform keyring limited to kexec, and nothing else?
-> >> 
-> >> It should either be used for everything or for nothing. You have the
-> >> option to compile it in and then it should be used, and the option to
-> >> not compile it in and then it cannot be used.
-> >> 
-> >> There are two basic use cases:
-> >> 
-> >> (1) there is a vendor key which is very hard to use so you sign
-> >> something small and simple like shim with the vendor key, and sign your
-> >> kernel and modules with your own key that's typically enrolled with shim
-> >> MOK, and built into the kernel.
-> >> 
-> >> (2) you import your key into the firmware, and possibly disable the
-> >> vendor key. You can load the kernel directly without shim, and then your
-> >> signing key is typically in the platform keyring and built into the
-> >> kernel.
-> >> 
-> > 
-> > In the second use case, if user can enroll their own key to db either before
-> > or after hardware shipping. And they don't need shim because they removed
-> > Microsoft or OEM/ODM keys.  Why kernel can not provide a Kconfig option to
-> > them for trusting db keys for verifying kernel module, or for IMA (using CA
-> > in db)?
-> > 
-> > In the above use case for distro, partner doesn't need to re-compiler distro
-> > kernel. They just need to re-sign distro kernel and modules. Which means
-> > that the partner trusted distro. Then the partner's key in db can be used to
-> > verify kernel image and also kernel module without shim involve.
-> 
-> If shim is used, the new machine keyring can be used to solve this problem. 
-> This pull request [1] allows additional certificates to be loaded into the MOKList 
-> without going through MokManager.  Have the end-user/partner create a 
-> shim_certificate.efi containing their key. Then sign it with their DB key.  When 
-> shim boots, it will validate shim_certificate.efi against the DB key and load the 
-> key contained within it into the MOKList.  Now both module and kernel validation 
-> can be performed with this key, since it is contained within the machine keyring.
+Commit 7ea1a0124b6d ("watch_queue: Free the alloc bitmap
+when the watch_queue is torn down") took care of the bitmap,
+but not the page array.
 
-And why would you go through that when your platform keyring already has
-the key and you don't need shim for anything? This sounds a lot like "I
-have a hammer and all these look like nails" thinking.
+BUG: memory leak
+unreferenced object 0xffff88810d9bc140 (size 32):
+  comm "syz-executor335", pid 3603, jiffies 4294946994 (age 12.840s)
+  hex dump (first 32 bytes):
+    40 a7 40 04 00 ea ff ff 00 00 00 00 00 00 00 00  @.@.............
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81459bff>] kmalloc_array include/linux/slab.h:621 [inline]
+    [<ffffffff81459bff>] kcalloc include/linux/slab.h:652 [inline]
+    [<ffffffff81459bff>] watch_queue_set_size+0x12f/0x2e0 kernel/watch_queue.c:251
+    [<ffffffff8159fcf2>] pipe_ioctl+0x82/0x140 fs/pipe.c:632
+    [<ffffffff815b601c>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff815b601c>] __do_sys_ioctl fs/ioctl.c:874 [inline]
+    [<ffffffff815b601c>] __se_sys_ioctl fs/ioctl.c:860 [inline]
+    [<ffffffff815b601c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:860
+    [<ffffffff84493a05>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84493a05>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84600068>] entry_SYSCALL_64_after_hwframe+0x44/0xae
 
-Sure, there is use for the machine keyring in the case you need it and
-have it regardless of the kernel making any use of it for anything.
-Artifically adding it because the kernel fails to work with the platform
-keyring sounds backwards, though.
+Reported-by: syzbot+25ea042ae28f3888727a@syzkaller.appspotmail.com
+Fixes: c73be61cede5 ("pipe: Add general notification queue support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20220322004654.618274-1-eric.dumazet@gmail.com/
+---
 
-Thanks
+ kernel/watch_queue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-Michal
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index 3990e4df3d7b..230038d4f908 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -370,6 +370,7 @@ static void __put_watch_queue(struct kref *kref)
+ 
+ 	for (i = 0; i < wqueue->nr_pages; i++)
+ 		__free_page(wqueue->notes[i]);
++	kfree(wqueue->notes);
+ 	bitmap_free(wqueue->notes_bitmap);
+ 
+ 	wfilter = rcu_access_pointer(wqueue->filter);
+
+
