@@ -2,71 +2,75 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E81E4EC4F8
-	for <lists+keyrings@lfdr.de>; Wed, 30 Mar 2022 14:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 480F04EC5E2
+	for <lists+keyrings@lfdr.de>; Wed, 30 Mar 2022 15:44:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344709AbiC3MzV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 30 Mar 2022 08:55:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
+        id S1346276AbiC3Nq0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 30 Mar 2022 09:46:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345255AbiC3MzT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Mar 2022 08:55:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A2E388BE2E
-        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 05:53:34 -0700 (PDT)
+        with ESMTP id S240274AbiC3NqY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Mar 2022 09:46:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A4DA976E10
+        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 06:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1648644813;
+        s=mimecast20190719; t=1648647878;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UxAUy7q/bwbjnZH+uuAP6NaBEIgbf127Gn+Ruta26qg=;
-        b=iU9cChoGDs+2fKO+EjjaYges9BCXC/IbZ99SMXOSZ/rF6iBDys3aZSK0KrBxtDYGx2TYT6
-        4jaj4/1fXoLSmUaeHHpCOSrIpMlNcxvoaEzzmEpcOhgckCPZ9hCAdXY1nKi05tgwVDAVD2
-        yWL+6yUaeU4HFHIVJK4fF7kh5rSH+Lc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=F8QQxxoffEN8D0iWzQeDRqRj76sBJ6MkIp9Ef6hGM1Y=;
+        b=AdxVdNdux+2TsPf7/oz57BcIiE94QaUT4xbX4NzhuZecNVC3Ra4e2mqwx5o0YJXgssuk+6
+        t4lkidobqXD9etpxHbEIlE5jSOkHH0rtC98lETMlPRx5fv28KdF+hc7qr7cZuJgueN5fIV
+        0xUuy7emuuFmrAHnlTIDllVe+K+nCLE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-399-6MnJVqZzM5iPCIFFO_AhoQ-1; Wed, 30 Mar 2022 08:53:29 -0400
-X-MC-Unique: 6MnJVqZzM5iPCIFFO_AhoQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+ us-mta-390-NtZGEiU0PnqW3s2Gsn_boQ-1; Wed, 30 Mar 2022 09:44:31 -0400
+X-MC-Unique: NtZGEiU0PnqW3s2Gsn_boQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DA7172800F6E;
-        Wed, 30 Mar 2022 12:53:28 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA68B899ED9;
+        Wed, 30 Mar 2022 13:44:16 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4341EC202C6;
-        Wed, 30 Mar 2022 12:53:27 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EF7B0400E545;
+        Wed, 30 Mar 2022 13:44:00 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
         Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
         Kingdom.
         Registered in England and Wales under Company Registration No. 3798903
 From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20220322111323.542184-2-mic@digikod.net>
-References: <20220322111323.542184-2-mic@digikod.net> <20220322111323.542184-1-mic@digikod.net>
-To:     =?us-ascii?Q?=3D=3FUTF-8=3Fq=3FMicka=3DC3=3DABl=3D20Sala=3DC3=3DBCn=3F?=
-         =?us-ascii?Q?=3D?= <mic@digikod.net>
-Cc:     dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
+In-Reply-To: <YidDznCPSmFmfNwE@iki.fi>
+References: <YidDznCPSmFmfNwE@iki.fi> <20210712170313.884724-1-mic@digikod.net> <20210712170313.884724-6-mic@digikod.net>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     dhowells@redhat.com,
+        =?us-ascii?Q?=3D=3Fiso-8859-1=3FQ=3FMicka=3DEBl?=
+         =?us-ascii?Q?=5FSala=3DFCn=3F=3D?= <mic@digikod.net>,
         David Woodhouse <dwmw2@infradead.org>,
+        "David S . Miller" <davem@davemloft.net>,
         Eric Snowberg <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?us-ascii?Q?=3D=3Fiso-8859-1=3FQ=3FMicka=3DEBl?=
+         =?us-ascii?Q?=5FSala=3DFCn=3F=3D?= <mic@linux.microsoft.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
         Tyler Hicks <tyhicks@linux.microsoft.com>,
         keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?us-ascii?Q?=3D=3FUTF-8=3Fq=3FMicka=3DC3=3DABl?=
-         =?us-ascii?Q?=3D20Sala=3DC3=3DBCn=3F=3D?= 
-        <mic@linux.microsoft.com>
-Subject: Re: [PATCH v2 1/1] certs: Explain the rationale to call panic()
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v8 5/5] certs: Allow root user to append signed hashes to the blacklist keyring
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date:   Wed, 30 Mar 2022 13:53:26 +0100
-Message-ID: <2933967.1648644806@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
+Date:   Wed, 30 Mar 2022 14:44:00 +0100
+Message-ID: <2937432.1648647840@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,15 +79,53 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Micka=C3=ABl Sala=C3=BCn <mic@digikod.net> wrote:
+Jarkko Sakkinen <jarkko@kernel.org> wrote:
 
-> The blacklist_init() function calls panic() for memory allocation
-> errors.  This change documents the reason why we don't return -ENODEV.
+> >  /*
+> >   * Initialise the blacklist
+> >   */
+> >  static int __init blacklist_init(void)
+> >  {
+> >  	const char *const *bl;
+> > +	struct key_restriction *restriction;
+> >=20=20
+> >  	if (register_key_type(&key_type_blacklist) < 0)
+> >  		panic("Can't allocate system blacklist key type\n");
+> >=20=20
+> > +	restriction =3D kzalloc(sizeof(*restriction), GFP_KERNEL);
+> > +	if (!restriction)
+> > +		panic("Can't allocate blacklist keyring restriction\n");
+>=20
+>=20
+> This prevents me from taking this to my pull request. In moderns standard=
+s,
+> no new BUG_ON(), panic() etc. should never added to the kernel.
 
-Why, though?
+I would argue that in this case, though, it is reasonable.  This should only
+be called during kernel initialisation and, as Micka=C3=ABl points out, if =
+you
+can't allocate that small amount of memory, the kernel isn't going to boot
+much further.
 
-This is only called whilst the kernel is booting.  If you hit ENOMEM, you
-aren't likely to get much further with the boot process.
+> I missed this in my review.
+>=20
+> This should rather be e.g.
+>=20
+>         restriction =3D kzalloc(sizeof(*restriction), GFP_KERNEL);
+> 	if (!restriction) {
+> 		pr_err("Can't allocate blacklist keyring restriction\n");
+>                 return 0;
+>         }
+
+You can't just return 0.  That indicates success - but if by some miracle, =
+the
+kernel actually gets to a point where userspace can happen, it could mean t=
+hat
+we're missing the security restrictions of the blacklist.
+
+Now, we could defer the panic to add_key_to_revocation_list(), but if you
+can't set in place the required security restrictions, I think it's arguable
+that the kernel either needs to panic or it needs to blacklist everything.
 
 David
 
