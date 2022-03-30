@@ -2,130 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 480F04EC5E2
-	for <lists+keyrings@lfdr.de>; Wed, 30 Mar 2022 15:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BCA84EC857
+	for <lists+keyrings@lfdr.de>; Wed, 30 Mar 2022 17:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346276AbiC3Nq0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 30 Mar 2022 09:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36608 "EHLO
+        id S1348242AbiC3PfD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 30 Mar 2022 11:35:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240274AbiC3NqY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Mar 2022 09:46:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A4DA976E10
-        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 06:44:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1648647878;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F8QQxxoffEN8D0iWzQeDRqRj76sBJ6MkIp9Ef6hGM1Y=;
-        b=AdxVdNdux+2TsPf7/oz57BcIiE94QaUT4xbX4NzhuZecNVC3Ra4e2mqwx5o0YJXgssuk+6
-        t4lkidobqXD9etpxHbEIlE5jSOkHH0rtC98lETMlPRx5fv28KdF+hc7qr7cZuJgueN5fIV
-        0xUuy7emuuFmrAHnlTIDllVe+K+nCLE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-390-NtZGEiU0PnqW3s2Gsn_boQ-1; Wed, 30 Mar 2022 09:44:31 -0400
-X-MC-Unique: NtZGEiU0PnqW3s2Gsn_boQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA68B899ED9;
-        Wed, 30 Mar 2022 13:44:16 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EF7B0400E545;
-        Wed, 30 Mar 2022 13:44:00 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <YidDznCPSmFmfNwE@iki.fi>
-References: <YidDznCPSmFmfNwE@iki.fi> <20210712170313.884724-1-mic@digikod.net> <20210712170313.884724-6-mic@digikod.net>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     dhowells@redhat.com,
-        =?us-ascii?Q?=3D=3Fiso-8859-1=3FQ=3FMicka=3DEBl?=
-         =?us-ascii?Q?=5FSala=3DFCn=3F=3D?= <mic@digikod.net>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        James Morris <jmorris@namei.org>,
-        =?us-ascii?Q?=3D=3Fiso-8859-1=3FQ=3FMicka=3DEBl?=
-         =?us-ascii?Q?=5FSala=3DFCn=3F=3D?= <mic@linux.microsoft.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Tyler Hicks <tyhicks@linux.microsoft.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v8 5/5] certs: Allow root user to append signed hashes to the blacklist keyring
+        with ESMTP id S1348261AbiC3PfC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 30 Mar 2022 11:35:02 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6461F3337E
+        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 08:33:15 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id j15so42250822eje.9
+        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 08:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=k4tOjXwVcjRbwIqO75tPZMywji6NA5bvyUrV2lo9zfU=;
+        b=ZvpGgO0rTRy4BxXcRwzsHHFuZRo4g3CARr5qe1cMD3fSVYBkhDQT6I2pcj7Wkus4vD
+         L/pV4kO5BVuN7x61TI7A+uMRtm6324yVDgXfaYOq8q+KMQ4/V+pPoRb3AiLc/FKSr3if
+         J+GN3sLdj4bXGUUPsxuj3SC4VikYaGpYroHXs5RMwPBZOrA1zUbc8rzoSnbIoyzl5VYP
+         89L+v9l7lH3QmK4n4TBz8AELmkTFCPVCwiqHn4OIwiNAuuOatlSMaRsSEJOknqnFEvhk
+         bDxbb6BqZPGpGeIOCUn9EPudkbn9Vuherq8IXnE6nukxV9ijFCla9WR35o8ITBwkLi59
+         jHgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=k4tOjXwVcjRbwIqO75tPZMywji6NA5bvyUrV2lo9zfU=;
+        b=c5M5A6zijTmdUm5m28T0pV9G+PCFSNcpLMxNTzLmG0sGFvjDYpQIOA1OAEmqx9I37/
+         FlA/6+vX6tLR+QHZw3EW60QPWXsNqdGouzdwrOODhiRx1HjBgeKelLaZkg6fs4bMf6v0
+         Z5vK9ErxKVAB7kRpdV6fw3QW4+LnHv1vzNh3as7ahvPTmpEfTi+nxdWyTjFZxB0z81F8
+         Vo/p856E/E5Bf9vvo5lTySkYjRIPKqizJ6tj1zoPtBNrz3ga3woZOCYAasc96XAbk2V/
+         ss8bXmKvgE4oAPuOBT/enhIX3E2OyiGc81DHuinNV5BxYA179Q3jEzH+xcrL0JF17YBx
+         IMuw==
+X-Gm-Message-State: AOAM530TyC306RWTvPi9C0q4Q8zXC/Pm1fBF7tHQk5osaTLGtzvF1WgY
+        grb8LmMJjVk8BCvta6SKWB4IHjoFKSLapfkF7p4=
+X-Google-Smtp-Source: ABdhPJwqVo/RXrPoFsKPyisy5cThCgK4HiCNge6BTqyGlCrCBOuLxp78snnPGrCVRBmrldImsNzhfzIlFfVZyJBHyi0=
+X-Received: by 2002:a17:907:a42a:b0:6e4:973b:9d34 with SMTP id
+ sg42-20020a170907a42a00b006e4973b9d34mr102917ejc.24.1648654393947; Wed, 30
+ Mar 2022 08:33:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date:   Wed, 30 Mar 2022 14:44:00 +0100
-Message-ID: <2937432.1648647840@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Wed, 30 Mar 2022 16:33:09 +0100
+Message-ID: <CAHpNFcPYBVg53gm_P7yh29n6ZyT=C=MsLXB5p9KyNMfZMjjMKQ@mail.gmail.com>
+Subject: On the subject of PSP processors : Arm features include NEON2! Why
+ not use this to our advantage? if safely potentiated! Every SiMD matters
+ after all! RS
+To:     submissions@vialicensing.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PLING_QUERY,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> wrote:
+On the subject of PSP processors : Arm features include NEON2!
+Why not use this to our advantage? if safely potentiated! Every SiMD
+matters after all,
 
-> >  /*
-> >   * Initialise the blacklist
-> >   */
-> >  static int __init blacklist_init(void)
-> >  {
-> >  	const char *const *bl;
-> > +	struct key_restriction *restriction;
-> >=20=20
-> >  	if (register_key_type(&key_type_blacklist) < 0)
-> >  		panic("Can't allocate system blacklist key type\n");
-> >=20=20
-> > +	restriction =3D kzalloc(sizeof(*restriction), GFP_KERNEL);
-> > +	if (!restriction)
-> > +		panic("Can't allocate blacklist keyring restriction\n");
->=20
->=20
-> This prevents me from taking this to my pull request. In moderns standard=
-s,
-> no new BUG_ON(), panic() etc. should never added to the kernel.
+Particularly preparing for the GPU & Audio output!
+As a driver specific the advantages are around 13% improved
+performance & 20% improved code flexibility on SiMD compatibility.
 
-I would argue that in this case, though, it is reasonable.  This should only
-be called during kernel initialisation and, as Micka=C3=ABl points out, if =
-you
-can't allocate that small amount of memory, the kernel isn't going to boot
-much further.
+We can also directly utilize for Automated Direct Reactive Secure DMA or ADRSDMA
 
-> I missed this in my review.
->=20
-> This should rather be e.g.
->=20
->         restriction =3D kzalloc(sizeof(*restriction), GFP_KERNEL);
-> 	if (!restriction) {
-> 		pr_err("Can't allocate blacklist keyring restriction\n");
->                 return 0;
->         }
+(signed RS)
 
-You can't just return 0.  That indicates success - but if by some miracle, =
-the
-kernel actually gets to a point where userspace can happen, it could mean t=
-hat
-we're missing the security restrictions of the blacklist.
+ARM Patches 3 arte enabled! https://lkml.org/lkml/2022/3/30/977
 
-Now, we could defer the panic to add_key_to_revocation_list(), but if you
-can't set in place the required security restrictions, I think it's arguable
-that the kernel either needs to panic or it needs to blacklist everything.
+*
 
-David
+GPRS for immediate use in all SFR SIM's & SFR Firmware & routers &
+boxes including ADSL & Fibre
 
+Cloudflare Kernels & VM linux, I pretty obviously would like to be
+able to utilise cloudflare Kernel & Linux & cloudflare is very special
+to me
+
+Submissions for review
+
+RS
+
+https://drive.google.com/drive/folders/1X5fUvsXkvBU6td78uq3EdEUJ_S6iUplA?usp=sharing
+
+https://lore.kernel.org/lkml/20220329164117.1449-1-mario.limonciello@amd.com/
