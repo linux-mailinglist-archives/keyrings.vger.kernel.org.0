@@ -2,166 +2,86 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2D224ED24F
-	for <lists+keyrings@lfdr.de>; Thu, 31 Mar 2022 06:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDB4A4ED9F0
+	for <lists+keyrings@lfdr.de>; Thu, 31 Mar 2022 14:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbiCaEIZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 31 Mar 2022 00:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50780 "EHLO
+        id S236384AbiCaM6G (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 31 Mar 2022 08:58:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbiCaEIU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Mar 2022 00:08:20 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C38A52414D7
-        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 20:57:11 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id bq8so31466767ejb.10
-        for <keyrings@vger.kernel.org>; Wed, 30 Mar 2022 20:57:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=DQEdIqJQMT2DTXxNnryD3JrAvawMTCRUVp7h3+Y4I58=;
-        b=cc2rALVw1jxOK2Gb8L0J6Mph69Y5VA57JZQiuXcdW5z3m5d/DZa8hjTvhe9AMJD+oR
-         sZWBxGtudQhCDz36qcCCNXc3ZsuQhTI5QG975d+QEmIL1cXJrOcVg13mjtJE8BHQS/S4
-         iIpcrSGJc0jxFV9wD+VDOhUyo6n2rNmRzTngyO4v1oH9t0lTZGBvhB7L8IY+4CzZD6+5
-         M4FqiJvek0gzYy5Td1KrRIVZHZrS0to+wXWFHnEmd210xrZ0KyIsMVxwUnRTdhYssOXv
-         tEb6TOB/UOHofzCf3ePHP/RV74cESHbxnUZZk4LeNqIi36k63llzvcvq1RWBRsRe+fH3
-         8SsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=DQEdIqJQMT2DTXxNnryD3JrAvawMTCRUVp7h3+Y4I58=;
-        b=fa+O9Gbh9pLI78o6Qt7D5jKdvMjqjtuF/ljcN1NMqlIIn51sY5Q2+tVtyGjwtFIqfq
-         QEsA2TdoZY3RgFcFJVfbIDHwWopslcDnMYDAcPpHGWCgc3WeQlSEWu4qWNHOh4kHHk6i
-         RdHRsEGr861CC+66OsmbcRbBoRwpP333uso/vTzNf7rwFlSt68XpV8Wcq4RXhcC5fNXK
-         suzn/SvM++j8AKI1t24RymHrG54BUNJgD5SnuJdYZJloUItz06sAkTScr0MrxVb5VfHl
-         4HLQkpNyjoET+Cqm2fcm0jcR5vOAK26/ATg/E6xM3yMb9NqCypl2cs+mLT0asnDb45al
-         jZTQ==
-X-Gm-Message-State: AOAM531yakmrOFWIaKx6z+VLeH3+AQIrO+QV1/IDI4bW3urah8r6YApR
-        XQZTuMuV0cxUoZwE7l6rNHvtixJMFYsL+Mj3ypA=
-X-Google-Smtp-Source: ABdhPJy14q49ndRpft22Zxx3hmPk1d7rlxFG+MTHM3G13eqOKVC53V7KmYGrVmRIuAapJFVzhRur/hctam12CatbZ+4=
-X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
- ji13-20020a170907980d00b006d6f910513amr2951893ejc.643.1648699030251; Wed, 30
- Mar 2022 20:57:10 -0700 (PDT)
+        with ESMTP id S236479AbiCaM6C (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 31 Mar 2022 08:58:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F020D2128DF
+        for <keyrings@vger.kernel.org>; Thu, 31 Mar 2022 05:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1648731372;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=v5Mnqs3Bznl24t2qlJcxuDZWOB6J1u0XCG3i9ntUXvk=;
+        b=eKQKaLf5LWgJ24tyI6lQe9ZrcxA07bCEtNgKr9+kODDPnQ7z2AUdo0KfW0z5SgsMmFuhUm
+        spACpeWq9GypEU/KUdx4xfHxFMzFrf9n+N1GJVp1ANPDgRbtgOa+t19xt5e/Dqno9xhQuv
+        NMq0iVRKcC2WiqT+OetFdLrepQ0LQzU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-632-uknW2jpbOmGLSUJ6dizTRg-1; Thu, 31 Mar 2022 08:56:08 -0400
+X-MC-Unique: uknW2jpbOmGLSUJ6dizTRg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE54880346F;
+        Thu, 31 Mar 2022 12:56:07 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1623DC15D42;
+        Thu, 31 Mar 2022 12:56:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20220317021249.31655-1-yang.lee@linux.alibaba.com>
+References: <20220317021249.31655-1-yang.lee@linux.alibaba.com>
+To:     Yang Li <yang.lee@linux.alibaba.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH -next] certs: Fix some kernel-doc comments
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Thu, 31 Mar 2022 04:57:06 +0100
-Message-ID: <CAHpNFcPLqwMyzHt9F5WTGSHr8goaFcczEHS5YL7uajnhe3EwZw@mail.gmail.com>
-Subject: Fast AMD, MIPS & RISC Instruction guidance in reference to https://lkml.org/lkml/2022/3/30/1565
-To:     support.android@sfr.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3118063.1648731366.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Date:   Thu, 31 Mar 2022 13:56:06 +0100
+Message-ID: <3118064.1648731366@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-RISC Instructions : What do they all mean ? Todays manuel BLTU
+Yang Li <yang.lee@linux.alibaba.com> wrote:
 
-signed magnitude (BLT/BGE) or unsigned magnitude (BLTU/ BGEU) =E2=80=A2 12-=
-bit
-immediate encodes branch target address as a signed o=EF=AC=80set from PC, =
-in
-units of 16-bits (i.e., shiR leR by 1 then add to
+>  /**
+> - * Allocate a struct key_restriction for the "builtin and secondary tru=
+st"
+> - * keyring. Only for use in system_trusted_keyring_init().
+> + * get_builtin_and_secondary_restriction - Allocate a struct key_restri=
+ction
+> + * for the "builtin and secondary trust" keyring. Only for use in
+> + * system_trusted_keyring_init().
+>   */
+>  static __init struct key_restriction *get_builtin_and_secondary_restric=
+tion(void)
 
-https://passlab.github.io/CSE564/notes/lecture08_RISCV_Impl.pdf
+Better to just turn the "/**" into "/*" for this one.  It's not a function
+that should necessarily appear in API docs.
 
-#CryptoFASTintFL Polynomial ROOFLINING : In terms of Entropy pool Int
-& Timer collections Polynomial is a Cryptologic_Functiontion & should
-be A : Rooflined B : Streamlined & C : In Crypto_hash_function.h
-https://lkml.org/lkml/2022/3/30/1313
+David
 
-https://lkml.org/lkml/2022/3/30/1565
-
-Coding folder:
-https://bit.ly/VESA_BT
-
-Rupert S
-*****
-
-Polynomial ROOFLINING : #CryptoFASTintFL
-
-In terms of Entropy pool Int & Timer collections Polynomial is a
-Cryptologic_Functiontion & should be A : Rooflined B : Streamlined & C
-: In Crypto_hash_function.h
-
-https://lkml.org/lkml/2022/3/30/1313
-
-**Reference**
-
-Multi Bit load operations for bitmap,Texture & Other tasks +ON+HighLowOP (c=
-)RS
-May take higher or lower bit depth & precisions: Rupert S 2021
-
-MultiBit Serial & Parallel execution conversion inline of N*Bit -+
-
-2 16 Bit loads is 32Bit but takes 2 cycles...
-
-16 Bit loads with 32 Bit Stores & Math unit:
-
-Operation 1
-
-16Bit , 16Bit , 16Bit , 16Bit Operation
-    \         /    \         /
-           Inline Store
-     32Bit Store 32Bit Store
-           64Bit Store
-       \     /
-32Bit ADD/DIV x 2 or 64Bit ADD/DIV x1
-
-Operation 2
-
-32Bit ADD/DIV x 2 or 64Bit ADD/DIV x1
-          \            /
-          4x 16Bit Store
-
-4 x 16Bit Operation
-
-MultiBit Serial & Parallel execution conversion inline of N*Bit -+
-
-In the case of ADD -+ Signed for example:(c)RS
-Plus & - Lines ADD or Subtract (Signed, Bit Depth Irrelevant)
-
-Multiples of 16Bit works in place of 32Bit or 64Bit
-
-V1: 16Bit Values composing a total 128Bit number
-V2: 16Bit Values composing a total 128Bit number - (Value less than V1)
-V3: Result
-NBit: Bit Depth
-
-4x16Bit operations in the same cycle >
-If Value =3D 16Bit =3D Store
-If Value =3D V3=3DBit =3D Store * NBit
-
-Stored 128Bit RAM or if remainder =3D less > 4x16Bit -1-1-1 ; 16Bit Value S=
-tore
-
-*
-
-*RAND OP Ubuntu
-
-https://pollinate.n-helix.com/
-
-(Rn1 *<>/ Rn2 *<>/ Rn3)
-
--+
-VAR(+-) Var =3D Rn1 +- Rn8
-
-(Rn5 *<>/ Rn6 *<>/ Rn7)
-
-4 Samples over N * Sample 1 to 4
-
-Input into pool 1 Low half -+
-Input into pool 1 High half -+
-
-*RAND OP Recycle It
-
-*
-
-(c)RS https://bit.ly/DJ_EQ
