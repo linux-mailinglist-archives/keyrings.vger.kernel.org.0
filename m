@@ -2,58 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1690C4EE83E
-	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 08:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B49A64EE94F
+	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 09:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245428AbiDAGgW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Apr 2022 02:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34536 "EHLO
+        id S1344026AbiDAHxf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Apr 2022 03:53:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245414AbiDAGgV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 02:36:21 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F4C1544B1
-        for <keyrings@vger.kernel.org>; Thu, 31 Mar 2022 23:34:31 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id c62so1785971edf.5
-        for <keyrings@vger.kernel.org>; Thu, 31 Mar 2022 23:34:31 -0700 (PDT)
+        with ESMTP id S1344009AbiDAHxZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 03:53:25 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B2F726240F
+        for <keyrings@vger.kernel.org>; Fri,  1 Apr 2022 00:51:33 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id bq8so4057513ejb.10
+        for <keyrings@vger.kernel.org>; Fri, 01 Apr 2022 00:51:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=VQ9dInbN1MIbDpNZ3yhXf78kn1bDUy2UR64X9mj+xE8=;
-        b=KjvLVqIt1cJBJcaGY0wPZRu5D/ym4w/vcqDpPPQ1QuGVqxsjNExImrzLzTKOgbF3nT
-         GLxfzNhoAlQAAU920jo/RtVCvPrF3eiHVgWkqAsI4zVu2ZwgjN74/+plZGQ8DIVoZoXH
-         eRJ/pVXsupKEZB+nsA7YqjO1w+W1NYA9Teq1tNfODfOFwd03Zp/RU2cbKB8zwC7jJ5/F
-         TOMdOdOdCVDPC3vBudLhq/ok/sHmNbJW+RyUeUU+HQkZfsbL3Sg0F556O3PxZISBTzwx
-         kPM0T4HGeoKTuMgulqt9z4zvl8urEnBQHgsOxpENCKYL7euXEtPfKdPpwCR40Rq36et2
-         HJqA==
+        bh=nXjAzXLpXSZdHQ34t/UZmSG0B+pcFpFO0TzLkKO37nA=;
+        b=R5qxyMq0KSgMLORzVFr6f8JZchVpBqg3vw6QZkgQMBmMpmrWvKJXEkPbDrZs+NDRNX
+         Q03+2GBXLOuu+WGHr2ImgjCSP8i5ANZM6zdGZHPChpz6m1xhNKPBNPmzSPCmhFczeIiG
+         zBBE5QrYUxqLcx7KAqLrrRxVbscoBuS+Nz0+d/T4WtF+Fz7Cyc0JvzCcF5/+dviBqJWY
+         GhXtl/dXbzv1w9GW18RawAEXaU70jdKR1CPuevT7lUMwFRzc8G1G+ukqTCVltycG1Dwb
+         4kf+VTT2GgdcwdOYxr1ksgSfhfhDaqD3WpPlg0ZS9r0RijRNPPQu60iG14SENDohcZyP
+         MHIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=VQ9dInbN1MIbDpNZ3yhXf78kn1bDUy2UR64X9mj+xE8=;
-        b=jdA7/UHKVfSI1Uv2Eykn7k3AJu0lJCuE0vzMPxAepYvto6oSUfmIpozTYJ+3aRUuVF
-         OS3Kz1aDe2DYE7k5xNdHeEBUZgLwUViGEuswNiVyjmVUmiA+V5/5KCpn61Z3h7+IEx5R
-         3bxH0N1WgJlHDbLAUXuhZPUJFcdKqfaYNPRYgAReKagVQbzOhF6ccbZhOuq+p1jdXO7U
-         1atJzLH+MBfsAsW11AqvN6VZM1PI8oUciyC3U2txd0VKLYCS+iLHomYJLhjsOOHPgSYY
-         uGbFXZsxpJplnxAGLXhUIsZlhxuS1KpxyfoeU35BnuXm+5aB/6MT7PEIN3Scrt5SH/Ky
-         gYyA==
-X-Gm-Message-State: AOAM530/zKMIsIhdZSw64oYErfei/3ygyYzppE5c7ITcvLApSLIvq/wK
-        cYwrznhEoD/ADD++jMh1iWVsS+LzeaoU9oqMpdY=
-X-Google-Smtp-Source: ABdhPJxe/nXEOdSnbLjj9SQqwGpdB7DLMEPTtY1e/RCzyO7/w2isO7hubMGdTWKrBPttE9SLQOvzU8uZChoZBxKeCdE=
-X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
- n13-20020a5099cd000000b00418d6c22405mr19764333edb.342.1648794869607; Thu, 31
- Mar 2022 23:34:29 -0700 (PDT)
+        bh=nXjAzXLpXSZdHQ34t/UZmSG0B+pcFpFO0TzLkKO37nA=;
+        b=zZjZPt1EUweTHlbv6VZst6RJ4TFSOVs+QyYgK0Aob1Ye7QMwL89HYZYyrHoxsWj4tU
+         p/ELWMBuiGCFm4k7uX8yIMBI10E1lns2kNQ10HLtaA4PL0Exsckj3FTe+r5IDahyYj6D
+         l6tCcOlHkQMpK6iCfGSDO+kZS7gQNQeofEPfYFzjimORSMhBs4HaVgj+N/Zrlnoi/M4D
+         dMxTR4YKVFtA7RJ6EWKZoWLp2pIBK1T9ZPBCXTBtqfAm+2+nDV4eHu+EcYvu/P+BpsMi
+         l6yV0VFq4ni5ZXmKInKkcmvfw3rYucAtXs6pdr2rQ31o8dCYVXUB6qdjL7ybynt86euX
+         v6SQ==
+X-Gm-Message-State: AOAM530ewiBKjCB/VD7zaza5pCPP6l7WUrD6ifzRqudnxfhRDPZWgTi0
+        Wvl5z2uIoIYXblFqhwhsmxxGkfAMlSAO5omN98U=
+X-Google-Smtp-Source: ABdhPJy15tXaBUCoFtBaiXbg+DtyxG4m2FK0tsoBWDirs3TPeDTGqKEPNXZ3qdpz2WbQOSw71PF4td1cPe7M8XL04po=
+X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
+ ji13-20020a170907980d00b006d6f910513amr7769180ejc.643.1648799491620; Fri, 01
+ Apr 2022 00:51:31 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 1 Apr 2022 07:34:28 +0100
-Message-ID: <CAHpNFcOJJPTSnhKCyAk-B8hSvoe4hPoC2rz0cTDqNXMKPh1L0g@mail.gmail.com>
-Subject: VecSR - Vector Standard Render VESA Standards : Vector Graphics,
- Boxes, Ellipses, Curves & Fonts : Consolas & other brilliant fonts
-To:     torvalds@linux-foundation.org
+Date:   Fri, 1 Apr 2022 08:51:30 +0100
+Message-ID: <CAHpNFcPUVeOhEnL_10u9Omb+LDpYXjTPkYzteduPYWFiLe90bw@mail.gmail.com>
+Subject: Though the VESA & HDMI & DisplayPort standards Facilitates direct low
+ bandwidth transport of and transformation of 3D & 2D graphics & fonts into
+ directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+To:     moderator@vesa.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -86,6 +87,30 @@ High precision for AVX 32Bit to 256Bit width precision.
 Vectoring with SiMD allows traditional CPU mastered VESA Emulation
 desktops & safe mode to be super fast & displays to conform to VESA
 render standards with little effort & a 1MB Table ROM.
+
+Though the VESA & HDMI & DisplayPort standards Facilitates direct low
+bandwidth transport of and transformation of 3D & 2D graphics & fonts
+into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+
+Display Standards Vector Render : DSVR-SiMD Can and will be directly
+rendered to a Surface for visual element : SfVE-Vec
+
+As such transport of Vectors & transformation onto display (Monitor,
+3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
+
+Directly resolve The total graphics pipeline into high quality output
+or input & allow communication of almost infinite Floating point
+values for all rendered 3D & 2D Elements on a given surface (RAM
+Render Page or Surface)
+
+In high precision that is almost unbeatable & yet consumes many levels
+less RAM & Transport Protocol bandwidth,
+
+Further more can also render Vector 3D & 2D Audio & other elements
+though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
+Harmonic reproduction units for example Yamaha and Casio keyboards.
+
+(c)Rupert S
 
 https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
 
