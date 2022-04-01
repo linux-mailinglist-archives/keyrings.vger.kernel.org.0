@@ -2,159 +2,149 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41ED54EEAD3
-	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 11:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF7584EED8F
+	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 14:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344837AbiDAJ7g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Apr 2022 05:59:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
+        id S243238AbiDAM64 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Apr 2022 08:58:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344821AbiDAJ7f (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 05:59:35 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBF626C56A
-        for <keyrings@vger.kernel.org>; Fri,  1 Apr 2022 02:57:45 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id dr20so4716045ejc.6
-        for <keyrings@vger.kernel.org>; Fri, 01 Apr 2022 02:57:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=ME1P1OVaPsxsLJKBK1FIyPVS66/NXOmvGf0UviNhLbo=;
-        b=cZtR0y8jMeMXwv5FoLYkHYt58MPIIrlf6/UGFp/l98ZgRdNjtji5SBaNs+fpKo39k1
-         nyqzkGOcThBJGJwCSNKd/3NAOb/h4Cp0m0hxewBCuCN9cYvfJksAWnQoqKAhgtJkbwAX
-         8efBlin0lI6meOfWc6AdaekWj2iiTwYOaRz0Kgz0nfsoRYcIR6qPLFgsQ/yM4qIoS0QQ
-         YuB2NE7RLxTHbV1Bc/tkip+G7U3hU+EDdqRLUbSNKAjuB/Jv4JxRqUM4tk0UcJkNtpYv
-         eJVf6eUcWTCiEM8BYe7bRfImPgZ08kFvKqHFHsS/1mNOxv5+Av+mCv8bKASzf6VPYhRx
-         OwmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=ME1P1OVaPsxsLJKBK1FIyPVS66/NXOmvGf0UviNhLbo=;
-        b=44ZdcFf0ybITvK76cMZM9/J3hS96SGO389k5YsVaOuZC+xsD2/Tn1TyVexyCjDQIaX
-         HBkF7Wtgk2B8XBV70C8S+fcDH/FYrysztTYz/PHBJajdr4pOulgOg38aDaOa8zu1cOpx
-         AeFwDqWM0VzUcGutnP5FUfa69As+axm/OZGBy3A8cEftgwP8Kjys1Z0XoUVoCg+Wb1kH
-         y9YvL1AFIT0Dywo9R9G2m8xfyYLg59GZLdus849gmTeKvWFfIUsI3vrcZLVEgBly7o3h
-         mVYQKA8QUnlCY1U7mYyaNpGyaWzaYNnNL7xwnLwcRdMVbrYxQ7bCjHHmrHzOIOhba0Pj
-         UsdA==
-X-Gm-Message-State: AOAM531cGJ8iMHJxA8M10+UlwBcvyYuBtOM2Xr5MGVMfkiGw37Rw8CCD
-        uQ7uYqLd4TQ41WDjU0nAiCn8ViB0Sb2EXs1RYBY=
-X-Google-Smtp-Source: ABdhPJwFSBf8pUatqD1Z+LtgdQEYw0B3SGfVWaBOFbuaVP42+s4nweKhdbd7IA9cIoJ9FAcgNuFoaupigz6lppEb+vc=
-X-Received: by 2002:a17:907:1b10:b0:6e4:bac5:f080 with SMTP id
- mp16-20020a1709071b1000b006e4bac5f080mr4426872ejc.24.1648807063596; Fri, 01
- Apr 2022 02:57:43 -0700 (PDT)
+        with ESMTP id S237846AbiDAM6z (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 08:58:55 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2080.outbound.protection.outlook.com [40.107.220.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1307627680D;
+        Fri,  1 Apr 2022 05:57:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WauzdSEYunVkg7WKvuYfi/gZ1qE42kuS8/wAdSvfu+G6OeXBCQWc1ocJFy6euztl/dUjZYfEFHwiqv2d5NWeEZ6bA6WnB3BVL5KV4kp7WDXt7veyi00Fqpg+LsOOfoqOVy23PDLHq5FzkKA8QJuLA2pHvQf0mgO9F3fnDVInWTps7xBAn7oqQAkOQuS6JryqMNuG/fbbEHOGPw1rOM6EF8KU4PJtNirAVkgRtZ8JnXk+PdwPWI0pVn0SDuBMxQvQfi2UIHBI8BbQJcRZBupDRzmZhw9fVB+PqCaw7fkfJoKcy/LOxOukOxGd5Wwx1nFjKftsiLULj7r2lO5f2XPWHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XIl/l+pCDm37kyPGkK+osXC9OCTBfKcMxCRu2wtkNuQ=;
+ b=Oln4ScyMlXKO6ihfW4TeVXTFjFDqShyJeLBm3Xkv6uMYZtTZVtoydSSo/pjnm4M+trYWwQVsIqSh5vvV6K7c8koqPpAZbGhD4jHIFUeUZOHC8nnhew4n547VTFpQnNTV7nujv8kNnYYPLmPprwN/Kb5NTv2pYQ1zFgv+x9eXIirsPG65sPpzAseDIRvKtTdBaFAkSvxXONhDAoX161xspRJ+AcLCX/rurtyKXWc0zrTKw3NU7Rh6H0d8yuL3A+k8/9Akf9p2cQ/pfWhZ36j6e8o6U121GxXkiIOpbtsZ44ijtxHy9CFO2zJHOTK32tz+OKhYfaS8OtYEIWT5WXEyoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ddn.com; dmarc=pass action=none header.from=ddn.com; dkim=pass
+ header.d=ddn.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XIl/l+pCDm37kyPGkK+osXC9OCTBfKcMxCRu2wtkNuQ=;
+ b=jnNqISWhSHR5q81VvkNTtFS4xojoG+6/G/ZmurJPt7gwgRtjbpdiHIfLHrAAJL7m6bhSkM/soaRX4A8xiQ7cp2z4KFPCE428uPKNLdFXUmvJCZVAJZUgI3yD7W0l0vFMbON33uWHHVEpi5MO13Al+4BeznbnUg2AgC3GJEW5y7c=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ddn.com;
+Received: from DM5PR1901MB2037.namprd19.prod.outlook.com (2603:10b6:4:aa::29)
+ by MW4PR19MB5630.namprd19.prod.outlook.com (2603:10b6:303:189::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.25; Fri, 1 Apr
+ 2022 12:57:04 +0000
+Received: from DM5PR1901MB2037.namprd19.prod.outlook.com
+ ([fe80::7c8f:fda5:16fa:a104]) by DM5PR1901MB2037.namprd19.prod.outlook.com
+ ([fe80::7c8f:fda5:16fa:a104%4]) with mapi id 15.20.5123.021; Fri, 1 Apr 2022
+ 12:57:04 +0000
+Message-ID: <484841f1-85fa-06b8-5697-ade829e3fff3@ddn.com>
+Date:   Fri, 1 Apr 2022 14:56:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] fix certs compilation / export is_key_on_revocation_list
+Content-Language: en-US
+From:   Bernd Schubert <bschubert@ddn.com>
+To:     David Howells <dhowells@redhat.com>,
+        "\"David Woodhouse" <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+References: <ce5bc8c0-2c6d-2a22-1ad3-357254686366@ddn.com>
+ <e92ef2ea-bb1c-8a8d-2e25-c784a784b995@ddn.com>
+ <ca485dfa-58e7-6a09-97b0-dbf7cde7a7e2@ddn.com>
+In-Reply-To: <ca485dfa-58e7-6a09-97b0-dbf7cde7a7e2@ddn.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
+ (2603:10a6:102:b7::23) To DM5PR1901MB2037.namprd19.prod.outlook.com
+ (2603:10b6:4:aa::29)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 1 Apr 2022 10:57:42 +0100
-Message-ID: <CAHpNFcPmGicZpXCboh0PWfTsZRqxc-W-qA_cx2+vA+OWb0_A6w@mail.gmail.com>
-Subject: VecSR Firmware update 2022 For immediate implementation in all
- operating systems, monitors, TV's & equipment such as Mouses, Audio Systems & Webcams
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4cc1075a-47b8-432a-fb37-08da13df1ec2
+X-MS-TrafficTypeDiagnostic: MW4PR19MB5630:EE_
+X-Microsoft-Antispam-PRVS: <MW4PR19MB56300B889A6F4A996FA03F95B5E09@MW4PR19MB5630.namprd19.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: MfzZflh5RPIuPgWoeWjJPMjvGaZOCT48jF/pEqCkv968vQa8lyKT13GTyXAfRxgbidboRx4jKNLruU2oGOj5Vid8eCHNgJX/6rvcMSpasrlNcvv9gnWtXvYeTt9CwztpXOhASJdfSC54JFWQkF+nDUB3Lz/YiGIGY2qk4FgEP0peM5mzqe8JHkrPD/m/lDjxTGZ8T3EF8WWETXgXhdX69u9MCAIdkhXrNybhF6fNAk3ZdsX0OcVorXk2uiD+plS7NG1vnPoGUXZtwsoTqpelK9MB9PhtShgZFhZmg5xX68uSFHGIC+qvWNbq+R2M4f643YazOcN+32McY1H7RlSSGMRoyWjXVmxrudn28jFAT9df9UXkLRXYSPzaLmcRAjiSVgCD96L62ZwQtZ6UOWL9kZaEmBWAUqzdchFPPxAWVauywupjuOLO4IfoDcftT1Cs8/gfXCpgyCYrVL41k3ljBsnZmMcoUEVkYI3LrLozBVvx1XGclwog3xzi/RTzkjnlkLjYpgxeFLEvjqpas+qDA/Mqzhv486i53Q86CeNWix//vAVFagHzgl91VSkmFkfXYtz8UKwjFy6DR8430YMxSwXkowD5vYBupsA23k2F+uf78ze++MIM8bpSezx01OZqZbxXz14008Ndw/n+Dn6jU/bpJjcIFgRQDknVw7/D8D4Yo79mLH7nUj/oTf63Un4XogIvrhI7lyckK9KIm89VKQOKSjR2n22P33nVKYHaDTs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR1901MB2037.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(508600001)(8936002)(86362001)(38100700002)(31696002)(6486002)(316002)(110136005)(6666004)(6506007)(8676002)(5660300002)(6512007)(66556008)(66476007)(66946007)(53546011)(2906002)(36756003)(2616005)(4744005)(31686004)(186003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q0lMWDJ5bUsvTGVxbi9FRDc3WkVSMW0rMTVKZktzSHJ1YUU5NlFrM3BNMVhz?=
+ =?utf-8?B?UW1ZalVES09XcGp3T3BPU2hXcjF6ME4ycUk0SzlyaGticnp5KzhhSkVOeTVw?=
+ =?utf-8?B?UkdFWUdXOVNFalFNQlJZN2JSRk9wVXpFSjFrT1dEQkdhNUlkRFI3eFNQZ3Qw?=
+ =?utf-8?B?SzRjV1FpYjJkOUJQV2U3WndiVmI2ZzBIN3YzRVd1SFV5dTA1eW9KUDFGUFdt?=
+ =?utf-8?B?OXZkZWtSZkloa0k4a1pLQTlSVkVVbG9ZbVVJc01BTm1nclhQZTRNU0ptSzRy?=
+ =?utf-8?B?alJLd3g5ZExLazdFdVgrTjRoN0xKL01icU43R0JHa3BNMFNaVkhJVmM5Ky9E?=
+ =?utf-8?B?MWFmN2dzZFhKb1h0VTZkZXNQSW5aYXQ4cmltREFyUktPQW1tOTd0ckpXNzBV?=
+ =?utf-8?B?QzRwTXMyUnNrR1NNcmNTd3BGbjVEdG83OGoyR1lNVEdkYS93MVY0L3M5L2VM?=
+ =?utf-8?B?bmJuWnBSeDI0QUViVHVYTU5HOGNrTUU0SXJtMFZEMFkrSW9kT2tseTRtWnhj?=
+ =?utf-8?B?ckk2dFFqSFJzaG52WjcyOFJlaEJuOWZpd1p2dm9mdGxSV1hGMnlseURobGd0?=
+ =?utf-8?B?ckFGM0RIdzM2dG1yY2QwR3BjV2x2OFhSWWxUVHkrWi9oWFFmTmt3NU5Xb1VO?=
+ =?utf-8?B?Wjd6ejZMTUJMK0JadlVyZm9aN1QwcUdySm9MdUJ2eTJ3Z1hEZFJJT3Z0L0Yr?=
+ =?utf-8?B?ZFJrTnY0bkR3c21LSUtQNVErWkVuamNCbU1tbWVaMURVYTJNMnZvcEVRUGFp?=
+ =?utf-8?B?Z05XOFhQQjcvYnlia21hTnBtNEdxQklja0J3YmtvMUlwM0hJOVY2N090dHU1?=
+ =?utf-8?B?UGwvbWkrK1FPZTlldFBNY2gvUE83S3NrWHJpWldyZkZSQ2tmbjFqZUhWYmJo?=
+ =?utf-8?B?dDdIUTN4WCtEa2d0azc4bnhLRktzcy9mL3piSGRZQXZBUC96d1dyY2ZoTUg2?=
+ =?utf-8?B?UEg2NmxKOWZobzI5UTNMY3o0RHEvbGJxOGgxbHVKWnI5Zzh0a28yWkxVU3VU?=
+ =?utf-8?B?Z0tCTVJkL1p5SHphZXBsQURCdjQ3NGVnWmI2TWhQdmZ5MDlBVEhPY3RteHZi?=
+ =?utf-8?B?V3N6ZHVhbkx5VHN2TDF3S1h1YWdJLzUxcXZlaW8vKy9tcG9hVXc4eDVZWXd5?=
+ =?utf-8?B?aCtNdGNNTFdNVVBWTkN6d2M2RlBWZTNWT3NkS3FkSjhSVHgwM1BOeWFqajhB?=
+ =?utf-8?B?dlEwb3dWQWQrQlB4TGJkc2FrSlorYjJMVFZpNUdIRG4xYWhwZDRHTC9iVThB?=
+ =?utf-8?B?dURBTm8rQVN5cEE1dGRScmV3WXVnTGh4SzhvcnFycnJJMitEN01JT0JFeU5a?=
+ =?utf-8?B?Y0JTMVNrd3dBMEYyOXVWWWlsZkdsZmpqQXliWTN1d0xpWmwxT2FsZVZTNnVX?=
+ =?utf-8?B?N0M5NEt0OHY1azU1SDVwY0FNZHl1dlpWd3UvczNHSkxSYnBJcEYxRHVKZXFa?=
+ =?utf-8?B?dGF3Wk01N2RWamhUd1ZGLzYvN3FER01sZGQ1aHlmQTZRdEdCYVhITVpyeFlL?=
+ =?utf-8?B?a0dBQWRjZ0RTd2dia0hEbC82UEFqcTZxbHRqdVp1VlM5c09Rd3JZQ3QxVGc4?=
+ =?utf-8?B?K3QyTW1zeHdiRW9LMVNpRDNLWDJGV24zeldxMVcyT2wwWG4zUENVQXhBOTh5?=
+ =?utf-8?B?RFVpbzQ2SHcrcTlNYU53eUJycEFjTFRsNHlOU3dGTmpxTGxWUXoyY2VDRFNw?=
+ =?utf-8?B?Vi9zQXBWYW1FU214MDltd29WOE5Ra3ZZcHpsVE5SM2hkMG83cmpGcWxDaDNN?=
+ =?utf-8?B?RG9ZNFFZNWdNSVRseTdJSGphM3N0VllNb2JqNXNzOE9RVHB3eHhZSlNaYkor?=
+ =?utf-8?B?b29BQklyOFIzN3JWcVB0NlhKNUwzc2tEWUh3b3E2WFRDdG5BMEQ0NFFXYmUy?=
+ =?utf-8?B?UG9JbDl2RFBSeU1penQzK1N6T0xHU3l6Z3J0d2tZb2hTUThKVlFJdVBRN1p4?=
+ =?utf-8?B?N2V5R1pjS1p1aFpqTmpKeFIxRmJqYUFiaE55OW15QlVoQlpmREhoZUo0NStz?=
+ =?utf-8?B?dEhGbDZwbHhYYXdRTUMvSndlZU9QczNqWno4ckFISFlkZFFOMndqN0hqM0Vq?=
+ =?utf-8?B?dEhzVHRuQnpxY1c0YnlEb1phZ3h5OHY4UXdSMm0xNlVRRy9HQ2Jnalo2MjFN?=
+ =?utf-8?B?TzhiSjZSWlI5WHFVRGNkRW1oRE9KWGhaV0ZwdXpScHpzQVptQkYyQm5SR3Rn?=
+ =?utf-8?B?ZG5kN1ZUM3BlVHJaUElsLzgvajhHeVR2WjhlRitKRzIyK2FWWSs3NDFyN0Q5?=
+ =?utf-8?B?OW1JR21WYjVvcnlEeFVGTEoyejhlRTMrYUZBSXNBQjRHelppOGtBdnhRcE9C?=
+ =?utf-8?B?RHJTUmpwY0dZWGc2dVhBOTcwMlBDaFRoMERlcitNRFVPTlNKNGg1SUhuQ0Y5?=
+ =?utf-8?Q?648XzxtRcq4xJuoyRcR2a+fTS8mFuC58PESB7KjGTWRg6?=
+X-MS-Exchange-AntiSpam-MessageData-1: vIL7cMyUJwDHZg==
+X-OriginatorOrg: ddn.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cc1075a-47b8-432a-fb37-08da13df1ec2
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR1901MB2037.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2022 12:57:04.6700
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RXuOHxBjQp+tU4B91Ptb2P9FvC/DnRp0JxLHlAm4EejO91i8iF7W7vuFoynAu75cYFFSx3MJn+3sdBdVQyZ2lQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR19MB5630
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Date: Fri, Apr 1, 2022 at 9:48 AM
 
-VecSR - Vector Standard Render
 
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
+On 3/29/22 12:09, Bernd Schubert wrote:
+> ping
+> 
+> On 3/2/22 21:19, Bernd Schubert wrote:
+>> Sorry for the spam, besides that pasting the patch somehow did not 
+>> work (I cannot apply it myself), I had also a typo in David W.'s mail. 
+>> I hope that attaching the patch is fine.
 
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+Actually not needed anymore with released v5.17. Looks like there was 
+another fix for it.
 
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
 
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-(c)Rupert S
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.html
-
-https://bit.ly/VESA_BT
-
-*
-
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
-
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
-
-3rd dimensional access with vector fonts by a simple method:
-
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
-
-Bitmap/Texture,
-
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
-
-Can be higher resolution & we can sub sample with closer view priority...
-
-We then rotate the texture on our output polygon & factor size differential.
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
-
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
-
-https://science.n-helix.com/2022/04/vecsr.html
+Thanks,
+Bernd
