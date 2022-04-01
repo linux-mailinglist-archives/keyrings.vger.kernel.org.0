@@ -2,314 +2,342 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9BF34EF72A
-	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 18:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C8C4EFD15
+	for <lists+keyrings@lfdr.de>; Sat,  2 Apr 2022 01:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243066AbiDAPyg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Apr 2022 11:54:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54614 "EHLO
+        id S1349335AbiDAXeT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Apr 2022 19:34:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351526AbiDAPCo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 11:02:44 -0400
-X-Greylist: delayed 213 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 01 Apr 2022 07:49:48 PDT
-Received: from condef-08.nifty.com (condef-08.nifty.com [202.248.20.73])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A907D1890CB;
-        Fri,  1 Apr 2022 07:49:48 -0700 (PDT)
-Received: from conssluserg-05.nifty.com ([10.126.8.84])by condef-08.nifty.com with ESMTP id 231EhIC2011450;
-        Fri, 1 Apr 2022 23:43:18 +0900
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id 231Eh0GW032000;
-        Fri, 1 Apr 2022 23:43:01 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 231Eh0GW032000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1648824181;
-        bh=pPkpLJjqF9Yl8JZ9lb7atfYgopqKf4JA2yqLOKb+X7g=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=StqsOj0XruXNEcabrRU/zt44ETt3d9h8XBTiihw4ozExeOhP1ckh/m/BQLuhEtWsH
-         zYl6H2LT+r+u2H96XrSI6SPpvdWtLIW65J/0dfA85uQX22OI730J1yRJhcpH01bWET
-         RaHKY65tFcfK4aOpvBnuwgJvjiNyRcJcv4iC/cDR6kP7xd7+cyLWRmAyDuYKryzwwF
-         0NXTNrFGctmUwHieSissXNyg+NcLUZQDZu6iK8Rp9ORXZ7jOEQjuag8ULiOjKq7WO6
-         86wQstAF2rAseksvRPagTSPJEN9VSOcIZbeGCo+DXpoFzRF8PMVASIUwsmaEcy/T4/
-         VRpwg92b+FlEw==
-X-Nifty-SrcIP: [209.85.216.45]
-Received: by mail-pj1-f45.google.com with SMTP id g9-20020a17090ace8900b001c7cce3c0aeso5523149pju.2;
-        Fri, 01 Apr 2022 07:43:01 -0700 (PDT)
-X-Gm-Message-State: AOAM533G1AnuXRUX43hGEWRQ09oXxLXAFPRHhVDbPiwzssngdjwmKDMy
-        3D43vhOx+M8GW8A9f9fS5hv8vos2xb0hw0C7YP8=
-X-Google-Smtp-Source: ABdhPJwm3WDvn+qqoBl9vEAKSvltgWEllK6Juf8EcRNrgCxMJlVkmDr8cKr3y/KPXf1kcKW48bhtB9B5cRIrRVdWt+M=
-X-Received: by 2002:a17:902:b68c:b0:153:bd06:85ad with SMTP id
- c12-20020a170902b68c00b00153bd0685admr10793374pls.99.1648824180114; Fri, 01
- Apr 2022 07:43:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220306223016.2239094-1-ctshao@google.com> <CAKwvOdnmtRYnSx3VvG=PEnzpzWa8f=0bn1xDymjER5EShS2tmw@mail.gmail.com>
- <YiaMJCHOOuujHwiK@google.com> <CAK7LNAS-=Fne6fyiqzQ6DwNLOdF-HAY9Libn10uyV9GmQQMUKQ@mail.gmail.com>
- <YjFQvhv7I6w8xjbK@google.com> <CAK7LNATmPXs6f-Oe4XmfcZSRPsCsuexSebA=4-jyNsMYHu9cag@mail.gmail.com>
- <CAKwvOd=D22k53yXFC=E=VkJotn6q-AYCu5QsaFPmH_v+fWGVwA@mail.gmail.com>
- <YjovutS5McV8A8z4@google.com> <CAJpZYjXxFBz-d5qCbHLcdbPsqMJ569_91NDcsuRZ02g9QpiQBw@mail.gmail.com>
-In-Reply-To: <CAJpZYjXxFBz-d5qCbHLcdbPsqMJ569_91NDcsuRZ02g9QpiQBw@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Fri, 1 Apr 2022 23:42:13 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASdXJNX1HAhsmOS5NCrgb71Sj_GNKeaZjhk0bmm1bHODg@mail.gmail.com>
-Message-ID: <CAK7LNASdXJNX1HAhsmOS5NCrgb71Sj_GNKeaZjhk0bmm1bHODg@mail.gmail.com>
-Subject: Re: [PATCH v4] config: Allow kernel installation packaging to
- override pkg-config
-To:     Chun-Tse Shao <ctshao@google.com>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S235849AbiDAXeT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 19:34:19 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 399081B2544
+        for <keyrings@vger.kernel.org>; Fri,  1 Apr 2022 16:32:28 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-2e644c76556so38440457b3.15
+        for <keyrings@vger.kernel.org>; Fri, 01 Apr 2022 16:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=3d8E+128X5z9f8vosnxqGnnLqitNYbPU/IjBxJaAUPo=;
+        b=axxG6PFb+ncrzI1pH35fvlZh1dJt8COpPy/XEVmElL2XH0nAzfZhjVSbx+UprCKYmW
+         vWj+i7LOKlty3eU1H+bVFkFMjJbVickxMXU/PbdOVNgf2CLv3msCr+nt6xwi/RdsTYHU
+         mSVSzrg0916FpXbXhA4R2tFYLUSOkHM0Lu3fHbCAc0uFTD7ybn9ShKJwOg4g187WGJf2
+         gzpPXsg6p+0n5gxmkoKBWUfkDpXyqxNiQagcgPhEeEDAaShOVt2erDLQuH9ziuDvyKb3
+         fj9Akw4dFBNKbmsWMBdYG0lZzFQzxUgE9ZHmBxyaR7wovbcOzIuOVtV/pSSLUcU/Dbdn
+         t0vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=3d8E+128X5z9f8vosnxqGnnLqitNYbPU/IjBxJaAUPo=;
+        b=eI0CbBLqRKcSTWRk5PmCXzEr/ciUV5LRR5C7br2lUibkxTwfsxSNv7qNUrrubKz29J
+         z244VF3qR1YonHM2qw/fzjOZ2VfTxSKVO8VGE3RJsHhqDINvuoedXvPsSNUQuocyg0Me
+         Xzgu8HDYzPsBDFdzbKySrNRadk4U88XfrPyx93a33v6tAeQoIgEcX7zIHGk16hddRK0e
+         FkUjrXlQ+7fVSPwNyjIPCU5edFYNS7tDOxB3tTR0uNfOYqBIR2b8ZlnQxZ6l6O9Lbf0n
+         WIPvAbMVzZ/s7+MB70O1g2vyRo7b18T0acmcrMMU6s/TnQdPJN9VTpJoTnHp3wYK56AJ
+         e7/g==
+X-Gm-Message-State: AOAM532ygCy5KLCaIcrtTcbYbDY5x10dxGntDw7YWiz5P/S+JQ9evNzy
+        K2nIbLXDyFYEliODmFiO4n65+ew7y/Q=
+X-Google-Smtp-Source: ABdhPJyucWdSj8v646mxln4ccteXQxyi+TELetCdgJBsA/6IPAPxC1oalXeW/IyRfs6Tj9miGTOaCo/4Jsw=
+X-Received: from colette.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:306])
+ (user=ctshao job=sendgmr) by 2002:a81:15ce:0:b0:2e5:e189:7366 with SMTP id
+ 197-20020a8115ce000000b002e5e1897366mr13146999ywv.188.1648855947323; Fri, 01
+ Apr 2022 16:32:27 -0700 (PDT)
+Date:   Fri,  1 Apr 2022 23:18:02 +0000
+Message-Id: <20220401231801.1532486-1-ctshao@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.35.1.1094.g7c7d902a7c-goog
+Subject: [PATCH v5] kbuild: Allow kernel installation packaging to override pkg-config
+From:   Chun-Tse Shao <ctshao@google.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Chun-Tse Shao <ctshao@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        keyrings@vger.kernel.org, DTML <devicetree@vger.kernel.org>
+        linux-kbuild@vger.kernel.org, keyrings@vger.kernel.org,
+        devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Apr 1, 2022 at 6:58 AM Chun-Tse Shao <ctshao@google.com> wrote:
->
-> On Tue, Mar 22, 2022 at 1:21 PM Chun-Tse Shao <ctshao@google.com> wrote:
-> >
-> > On Tue, Mar 22, 2022 at 10:19:14AM -0700, Nick Desaulniers wrote:
-> > > On Tue, Mar 22, 2022 at 12:44 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> > > >
-> > > > On Wed, Mar 16, 2022 at 11:51 AM Chun-Tse Shao <ctshao@google.com> wrote:
-> > > > >
-> > > > > Tue, Mar 08, 2022 at 01:01:45PM +0900, Masahiro Yamada wrote:
-> > > > > > On Tue, Mar 8, 2022 at 7:50 AM Chun-Tse Shao <ctshao@google.com> wrote:
-> > > > > > >
-> > > > > > > On Mon, Mar 07, 2022 at 10:17:17AM -0800, Nick Desaulniers wrote:
-> > > > > > > > On Sun, Mar 6, 2022 at 2:39 PM Chun-Tse Shao <ctshao@google.com> wrote:
-> > > > > > > > >
-> > > > > > > > > Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
-> > > > > > > > > what pkg-config and parameters are used.
-> > > > > > > >
-> > > > > > > > Sorry, kind a late thought here for v4, but we don't seem to prefix
-> > > > > > > > many other host side tools with HOST_, i.e. LEX, YACC, AWK, PERL,
-> > > > > > > > PYTHON3, etc.  Maybe just having the variable identifier be simply
-> > > > > > > > PKGCONFIG rather than HOSTPKG_CONFIG then put it at the end of the
-> > > > > > > > list in the top level Makefile after ZSTD (i.e. the list of host
-> > > > > > > > tools)?  There's HOST_ prefixes when there's more than one tool
-> > > > > > > > involved (i.e. host compiler vs target compiler), but I suspect
-> > > > > > > > there's no such distinction for the existing uses of pkg-config?
-> > > > > > > >
-> > > > > > > Thanks for your suggestion, Nick! Yes I think it makes sense with PKGCONFIG
-> > > > > > > instead of HOSTPKG_CONFIG since there is only one tool involved. I will
-> > > > > > > work on it and submit a new patch.
-> > > > > > >
-> > > > > >
-> > > > > > Please hold on.
-> > > > > >
-> > > > > > I was also wondering what to do with the "HOST" prefix.
-> > > > > >
-> > > > > > Libraries are usually arch-dependent.
-> > > > > > (in other words, pkg-config should return different library paths
-> > > > > > for $(CC) and $(HOSTCC) )
-> > > > > >
-> > > > > > You already understood this, so you added "HOST" prefix.
-> > > > > >
-> > > > > >
-> > > > > > Please let me take time for further discussion.
-> > > > > > I will come back to this when I get some time.
-> > > > > >
-> > > > > >
-> > > > >
-> > > > > Hi Mashiro,
-> > > > >
-> > > > > I was wondering if you were able to look more into this.
-> > > > >
-> > > > > Thank you!
-> > > > >
-> > > > > -CT
-> > > > >
-> > > > > > In the meantime,
-> > > > > >   a8a5cd8b472ca20e5b8fa649c43b3756867322f8
-> > > > > > as reference info if you have not seen it.
-> > > > > >
-> > > > > >
-> > > > > > How many distros support something like
-> > > > > > "aarch64-linux-gnu-pkg-config"  ?
-> > > > > >
-> > > > > > Ubuntu 18.04 and 20.04 seem to support it.
-> > > > > > I do not know for others.
-> > > > > >
-> > > > > >
-> > > > > >
-> > > > > >
-> > > >
-> > > >
-> > > >
-> > > > Sorry for the delay.
-> > > > I am OK with the idea of allowing users to override the pkg-config command,
-> > > > but I tend to take time before making a decision.
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > Does anybody have any insight / thoughts about the following points?
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > [Q1]   with/without "HOST" prefix
-> > > >
-> > > >
-> > > > Apparently, "pkg-config" should return different libs/cflags
-> > > > for $(CC) and $(HOSTCC).
-> > > >
-> > > > I think the non-prefixed macro name "PKG_CONFIG" should be
-> > > > reserved for $(CC)  (building for the target system).
-> > >
-> > > Ok. I retract my comment on v4 about removing the HOST prefix then.
-> > >
-> > > >
-> > > > "HOSTPKG_CONFIG" looks unbalanced
-> > > > due to the underscore.
-> > > >
-> > > > Perhaps, "HOST_PKG_CONFIG" might be better?
-> > >
-> > > I'm fine with HOSTPKG_CONFIG (what's in v4); follows the style of
-> > > HOSTCC and HOSTCXX.
-> > >
-> >
-> > Agree, it should follow the style of HOSTCC/HOSTCXX.
-> >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > [Q2]    "pkg-config" vs "pkgconf"
-> > > >
-> > > > The traditional pkg-config implementation [1] is not actively
-> > > > maintained these days.
-> > > > The last commit was more than one year ago.
-> > > >
-> > > > The alternative one 'pkgconf' [2] is more active.
-> > > >
-> > > > In fact, Fedora already switched to 'pkgconf' [3].
-> > > > Now 'pkg-config' is just a wrapper of 'pkgconf'.
-> > > > Many distributions already support pkgconf.
-> > > >
-> > > >
-> > > > I considered the shorter macro name "HOSTPKGCONF" and
-> > > >
-> > > >    HOSTPKGCONF  = pkgconf
-> > > >
-> > > > but I am not sure if this is the right decision.
-> > > > Maybe we should stick to "PKG_CONFIG" / "HOST_PKG_CONFIG"
-> > > > for the macro names.
-> > > >
-> > > >
-> > > >   [1]  https://gitlab.freedesktop.org/pkg-config/pkg-config.git
-> > > >   [2]  https://github.com/pkgconf/pkgconf.git
-> > > >   [3]  https://fedoraproject.org/wiki/Changes/pkgconf_as_system_pkg-config_implementation
-> > >
-> > > If the folks sending this are working on CrOS, better find what's in
-> > > their build system. Chun-Tse?
-> > >
-> > > (I feel like I'm behind the times again, like when `apt-get install`
-> > > became old news in favor of `apt install`...)
-> > >
-> >
-> > In Cros we only support pkg-config, and that is the reason we would like
-> > to make this change in upstream.
-> >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > [Q3] What is the trend of handling cross-compile by pkg-config (or pkgconf).
-> > > >
-> > > >
-> > > > By default, pkg-config returns the libs/cflags for native builds.
-> > > >
-> > > > For cross builds, the search paths for the *.pc files must be changed
-> > > > via the "PKG_CONFIG_LIBDIR" environment variable.
-> > > >
-> > > > To ease this, some distributions provide  <triplet>-pkg-config
-> > > > (for example,   aarch64-linux-gnu-pkg-config).
-> > > > This became the nationale for tools/build/feature/Makefile defining:
-> > > >
-> > > >    PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
-> > > >
-> > > > But, this wrapper shell script is not always available.
-> > > > I do not know how to do it with the LLVM tool suite.
-> > > > I am not quite sure if this is the global solution.
-> > > >
-> > > >
-> > > > These days, pkgconf supports another way, .personality file [4]
-> > > > to specify the .pc search paths for cross builds.
-> > > >
-> > > > Is it reasonable to use an option to distinguish native / cross builds
-> > > > and use the same macro   "PKG_CONFIG = pkg-config" everywhere ?
-> > > >
-> > > >
-> > > > [4] http://manpages.ubuntu.com/manpages/focal/en/man5/pkgconf-personality.5.html
-> > >
-> > > I'm not sure, but do we need to cross that bridge for this patch if
-> > > it's just adding support for the HOST? No cross pkg-config necessary,
-> > > yet. (Famous last words).
-> >
-> > Agree with Nick.
-> >
-> > Thanks,
-> > CT
-> > > --
-> > > Thanks,
-> > > ~Nick Desaulniers
->
-> Hi Masahiro,
->
-> I was wondering if you have any suggestions and thoughts.
->
-> Thank you!
->
-> -CT
+Add HOSTPKG_CONFIG to allow tooling that builds the kernel to override
+what pkg-config and parameters are used.
 
+Signed-off-by: Chun-Tse Shao <ctshao@google.com>
+---
+Changes from v4: https://lore.kernel.org/all/20220306223016.2239094-1-ctshao@google.com/
+  - Fix inconsistent pkg-config in kconfig shell scripts
+  - Tested with make allmodconfig
 
-Nobody was opposed to the macro name HOST_KG_CONFIG,
-so I am fine.
+Changes from v3: https://lore.kernel.org/all/20220304041449.939308-1-ctshao@google.com
+  - Dereference variables using {} instead of () in shell scripts
+  - Tested with make allmodconfig
 
+Changes from v2: https://lore.kernel.org/all/20220302193638.11034-1-ctshao@google.com/
+  - Fix more open coded instance of pkg-config in scripts and certs
+  - Tested with make allmodconfig
 
+Changes from v1: https://lore.kernel.org/all/20220301230629.1892828-1-ctshao@google.com/
+  - Make the commit message more clearer.
+---
+ Makefile                     |  3 ++-
+ certs/Makefile               |  4 ++--
+ scripts/Makefile             |  4 ++--
+ scripts/dtc/Makefile         |  6 +++---
+ scripts/kconfig/gconf-cfg.sh | 12 ++++++------
+ scripts/kconfig/mconf-cfg.sh | 16 ++++++++--------
+ scripts/kconfig/nconf-cfg.sh | 16 ++++++++--------
+ scripts/kconfig/qconf-cfg.sh | 14 +++++++-------
+ tools/objtool/Makefile       |  4 ++--
+ 9 files changed, 40 insertions(+), 39 deletions(-)
 
-I still see inconsistency in your patch, though.
+diff --git a/Makefile b/Makefile
+index daeb5c88b50b..f6c5bef7e141 100644
+--- a/Makefile
++++ b/Makefile
+@@ -430,6 +430,7 @@ else
+ HOSTCC	= gcc
+ HOSTCXX	= g++
+ endif
++HOSTPKG_CONFIG	= pkg-config
 
+ export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
+ 			      -O2 -fomit-frame-pointer -std=gnu89
+@@ -525,7 +526,7 @@ KBUILD_LDFLAGS_MODULE :=
+ KBUILD_LDFLAGS :=
+ CLANG_FLAGS :=
 
-For example, you did
+-export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
++export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
+ export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+ export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
+ export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
+diff --git a/certs/Makefile b/certs/Makefile
+index 3ea7fe60823f..fa540d14ef2d 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -89,5 +89,5 @@ targets += x509_revocation_list
 
-       echo >&2 "* 'make xconfig' requires '${HOSTPKG_CONFIG}'. Please
-install it."
+ hostprogs := extract-cert
 
-in scripts/kconfig/qconf-cfg.sh
+-HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+-HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
++HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
++HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+diff --git a/scripts/Makefile b/scripts/Makefile
+index ce5aa9030b74..f084f08ed176 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -14,8 +14,8 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
+ HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
+ HOSTLDLIBS_sorttable = -lpthread
+ HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
+-HOSTCFLAGS_sign-file.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+-HOSTLDLIBS_sign-file = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
++HOSTCFLAGS_sign-file.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
++HOSTLDLIBS_sign-file = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
 
+ ifdef CONFIG_UNWINDER_ORC
+ ifeq ($(ARCH),x86_64)
+diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
+index 95aaf7431bff..743fc08827ea 100644
+--- a/scripts/dtc/Makefile
++++ b/scripts/dtc/Makefile
+@@ -18,7 +18,7 @@ fdtoverlay-objs	:= $(libfdt) fdtoverlay.o util.o
+ # Source files need to get at the userspace version of libfdt_env.h to compile
+ HOST_EXTRACFLAGS += -I $(srctree)/$(src)/libfdt
 
-but, you kept
+-ifeq ($(shell pkg-config --exists yaml-0.1 2>/dev/null && echo yes),)
++ifeq ($(shell $(HOSTPKG_CONFIG) --exists yaml-0.1 2>/dev/null && echo yes),)
+ ifneq ($(CHECK_DT_BINDING)$(CHECK_DTBS),)
+ $(error dtc needs libyaml for DT schema validation support. \
+ 	Install the necessary libyaml development package.)
+@@ -27,9 +27,9 @@ HOST_EXTRACFLAGS += -DNO_YAML
+ else
+ dtc-objs	+= yamltree.o
+ # To include <yaml.h> installed in a non-default path
+-HOSTCFLAGS_yamltree.o := $(shell pkg-config --cflags yaml-0.1)
++HOSTCFLAGS_yamltree.o := $(shell $(HOSTPKG_CONFIG) --cflags yaml-0.1)
+ # To link libyaml installed in a non-default path
+-HOSTLDLIBS_dtc	:= $(shell pkg-config yaml-0.1 --libs)
++HOSTLDLIBS_dtc	:= $(shell $(HOSTPKG_CONFIG) yaml-0.1 --libs)
+ endif
 
-       echo >&2 "* 'make gconfig' requires 'pkg-config'. Please install it."
+ # Generated files need one more search path to include headers in source tree
+diff --git a/scripts/kconfig/gconf-cfg.sh b/scripts/kconfig/gconf-cfg.sh
+index 480ecd8b9f41..cbd90c28c05f 100755
+--- a/scripts/kconfig/gconf-cfg.sh
++++ b/scripts/kconfig/gconf-cfg.sh
+@@ -3,14 +3,14 @@
 
-in scripts/kconfig/gconf-cfg.sh
+ PKG="gtk+-2.0 gmodule-2.0 libglade-2.0"
 
+-if [ -z "$(command -v pkg-config)" ]; then
++if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
+ 	echo >&2 "*"
+-	echo >&2 "* 'make gconfig' requires 'pkg-config'. Please install it."
++	echo >&2 "* 'make gconfig' requires '${HOSTPKG_CONFIG}'. Please install it."
+ 	echo >&2 "*"
+ 	exit 1
+ fi
 
+-if ! pkg-config --exists $PKG; then
++if ! ${HOSTPKG_CONFIG} --exists $PKG; then
+ 	echo >&2 "*"
+ 	echo >&2 "* Unable to find the GTK+ installation. Please make sure that"
+ 	echo >&2 "* the GTK+ 2.0 development package is correctly installed."
+@@ -19,12 +19,12 @@ if ! pkg-config --exists $PKG; then
+ 	exit 1
+ fi
 
+-if ! pkg-config --atleast-version=2.0.0 gtk+-2.0; then
++if ! ${HOSTPKG_CONFIG} --atleast-version=2.0.0 gtk+-2.0; then
+ 	echo >&2 "*"
+ 	echo >&2 "* GTK+ is present but version >= 2.0.0 is required."
+ 	echo >&2 "*"
+ 	exit 1
+ fi
 
-Also, I prefer "kbuild:" to "config:"
-for the patch subject.
+-echo cflags=\"$(pkg-config --cflags $PKG)\"
+-echo libs=\"$(pkg-config --libs $PKG)\"
++echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
++echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+diff --git a/scripts/kconfig/mconf-cfg.sh b/scripts/kconfig/mconf-cfg.sh
+index b520e407a8eb..025b565e0b7c 100755
+--- a/scripts/kconfig/mconf-cfg.sh
++++ b/scripts/kconfig/mconf-cfg.sh
+@@ -4,16 +4,16 @@
+ PKG="ncursesw"
+ PKG2="ncurses"
 
+-if [ -n "$(command -v pkg-config)" ]; then
+-	if pkg-config --exists $PKG; then
+-		echo cflags=\"$(pkg-config --cflags $PKG)\"
+-		echo libs=\"$(pkg-config --libs $PKG)\"
++if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
++	if ${HOSTPKG_CONFIG} --exists $PKG; then
++		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
++		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+ 		exit 0
+ 	fi
 
--- 
-Best Regards
-Masahiro Yamada
+-	if pkg-config --exists $PKG2; then
+-		echo cflags=\"$(pkg-config --cflags $PKG2)\"
+-		echo libs=\"$(pkg-config --libs $PKG2)\"
++	if ${HOSTPKG_CONFIG} --exists $PKG2; then
++		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG2)\"
++		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG2)\"
+ 		exit 0
+ 	fi
+ fi
+@@ -46,7 +46,7 @@ echo >&2 "* Unable to find the ncurses package."
+ echo >&2 "* Install ncurses (ncurses-devel or libncurses-dev"
+ echo >&2 "* depending on your distribution)."
+ echo >&2 "*"
+-echo >&2 "* You may also need to install pkg-config to find the"
++echo >&2 "* You may also need to install ${HOSTPKG_CONFIG} to find the"
+ echo >&2 "* ncurses installed in a non-default location."
+ echo >&2 "*"
+ exit 1
+diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
+index c212255070c0..3a10bac2adb3 100755
+--- a/scripts/kconfig/nconf-cfg.sh
++++ b/scripts/kconfig/nconf-cfg.sh
+@@ -4,16 +4,16 @@
+ PKG="ncursesw menuw panelw"
+ PKG2="ncurses menu panel"
+
+-if [ -n "$(command -v pkg-config)" ]; then
+-	if pkg-config --exists $PKG; then
+-		echo cflags=\"$(pkg-config --cflags $PKG)\"
+-		echo libs=\"$(pkg-config --libs $PKG)\"
++if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
++	if ${HOSTPKG_CONFIG} --exists $PKG; then
++		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
++		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
+ 		exit 0
+ 	fi
+
+-	if pkg-config --exists $PKG2; then
+-		echo cflags=\"$(pkg-config --cflags $PKG2)\"
+-		echo libs=\"$(pkg-config --libs $PKG2)\"
++	if ${HOSTPKG_CONFIG} --exists $PKG2; then
++		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG2)\"
++		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG2)\"
+ 		exit 0
+ 	fi
+ fi
+@@ -44,7 +44,7 @@ echo >&2 "* Unable to find the ncurses package."
+ echo >&2 "* Install ncurses (ncurses-devel or libncurses-dev"
+ echo >&2 "* depending on your distribution)."
+ echo >&2 "*"
+-echo >&2 "* You may also need to install pkg-config to find the"
++echo >&2 "* You may also need to install ${HOSTPKG_CONFIG} to find the"
+ echo >&2 "* ncurses installed in a non-default location."
+ echo >&2 "*"
+ exit 1
+diff --git a/scripts/kconfig/qconf-cfg.sh b/scripts/kconfig/qconf-cfg.sh
+index fa564cd795b7..9b695e5cd9b3 100755
+--- a/scripts/kconfig/qconf-cfg.sh
++++ b/scripts/kconfig/qconf-cfg.sh
+@@ -3,22 +3,22 @@
+
+ PKG="Qt5Core Qt5Gui Qt5Widgets"
+
+-if [ -z "$(command -v pkg-config)" ]; then
++if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
+ 	echo >&2 "*"
+-	echo >&2 "* 'make xconfig' requires 'pkg-config'. Please install it."
++	echo >&2 "* 'make xconfig' requires '${HOSTPKG_CONFIG}'. Please install it."
+ 	echo >&2 "*"
+ 	exit 1
+ fi
+
+-if pkg-config --exists $PKG; then
+-	echo cflags=\"-std=c++11 -fPIC $(pkg-config --cflags $PKG)\"
+-	echo libs=\"$(pkg-config --libs $PKG)\"
+-	echo moc=\"$(pkg-config --variable=host_bins Qt5Core)/moc\"
++if ${HOSTPKG_CONFIG} --exists $PKG; then
++	echo cflags=\"-std=c++11 -fPIC $(${HOSTPKG_CONFIG} --cflags $PKG)\"
++	echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
++	echo moc=\"$(${HOSTPKG_CONFIG} --variable=host_bins Qt5Core)/moc\"
+ 	exit 0
+ fi
+
+ echo >&2 "*"
+-echo >&2 "* Could not find Qt5 via pkg-config."
++echo >&2 "* Could not find Qt5 via ${HOSTPKG_CONFIG}."
+ echo >&2 "* Please install Qt5 and make sure it's in PKG_CONFIG_PATH"
+ echo >&2 "*"
+ exit 1
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 92ce4fce7bc7..549acc5859e9 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -19,8 +19,8 @@ LIBSUBCMD		= $(LIBSUBCMD_OUTPUT)libsubcmd.a
+ OBJTOOL    := $(OUTPUT)objtool
+ OBJTOOL_IN := $(OBJTOOL)-in.o
+
+-LIBELF_FLAGS := $(shell pkg-config libelf --cflags 2>/dev/null)
+-LIBELF_LIBS  := $(shell pkg-config libelf --libs 2>/dev/null || echo -lelf)
++LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2>/dev/null)
++LIBELF_LIBS  := $(shell $(HOSTPKG_CONFIG) libelf --libs 2>/dev/null || echo -lelf)
+
+ all: $(OBJTOOL)
+
+--
+2.35.1.1094.g7c7d902a7c-goog
+
