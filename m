@@ -2,54 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B49A64EE94F
-	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 09:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41ED54EEAD3
+	for <lists+keyrings@lfdr.de>; Fri,  1 Apr 2022 11:57:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344026AbiDAHxf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 1 Apr 2022 03:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39680 "EHLO
+        id S1344837AbiDAJ7g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 1 Apr 2022 05:59:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344009AbiDAHxZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 03:53:25 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B2F726240F
-        for <keyrings@vger.kernel.org>; Fri,  1 Apr 2022 00:51:33 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id bq8so4057513ejb.10
-        for <keyrings@vger.kernel.org>; Fri, 01 Apr 2022 00:51:33 -0700 (PDT)
+        with ESMTP id S1344821AbiDAJ7f (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 1 Apr 2022 05:59:35 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBF626C56A
+        for <keyrings@vger.kernel.org>; Fri,  1 Apr 2022 02:57:45 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id dr20so4716045ejc.6
+        for <keyrings@vger.kernel.org>; Fri, 01 Apr 2022 02:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=nXjAzXLpXSZdHQ34t/UZmSG0B+pcFpFO0TzLkKO37nA=;
-        b=R5qxyMq0KSgMLORzVFr6f8JZchVpBqg3vw6QZkgQMBmMpmrWvKJXEkPbDrZs+NDRNX
-         Q03+2GBXLOuu+WGHr2ImgjCSP8i5ANZM6zdGZHPChpz6m1xhNKPBNPmzSPCmhFczeIiG
-         zBBE5QrYUxqLcx7KAqLrrRxVbscoBuS+Nz0+d/T4WtF+Fz7Cyc0JvzCcF5/+dviBqJWY
-         GhXtl/dXbzv1w9GW18RawAEXaU70jdKR1CPuevT7lUMwFRzc8G1G+ukqTCVltycG1Dwb
-         4kf+VTT2GgdcwdOYxr1ksgSfhfhDaqD3WpPlg0ZS9r0RijRNPPQu60iG14SENDohcZyP
-         MHIQ==
+        bh=ME1P1OVaPsxsLJKBK1FIyPVS66/NXOmvGf0UviNhLbo=;
+        b=cZtR0y8jMeMXwv5FoLYkHYt58MPIIrlf6/UGFp/l98ZgRdNjtji5SBaNs+fpKo39k1
+         nyqzkGOcThBJGJwCSNKd/3NAOb/h4Cp0m0hxewBCuCN9cYvfJksAWnQoqKAhgtJkbwAX
+         8efBlin0lI6meOfWc6AdaekWj2iiTwYOaRz0Kgz0nfsoRYcIR6qPLFgsQ/yM4qIoS0QQ
+         YuB2NE7RLxTHbV1Bc/tkip+G7U3hU+EDdqRLUbSNKAjuB/Jv4JxRqUM4tk0UcJkNtpYv
+         eJVf6eUcWTCiEM8BYe7bRfImPgZ08kFvKqHFHsS/1mNOxv5+Av+mCv8bKASzf6VPYhRx
+         OwmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=nXjAzXLpXSZdHQ34t/UZmSG0B+pcFpFO0TzLkKO37nA=;
-        b=zZjZPt1EUweTHlbv6VZst6RJ4TFSOVs+QyYgK0Aob1Ye7QMwL89HYZYyrHoxsWj4tU
-         p/ELWMBuiGCFm4k7uX8yIMBI10E1lns2kNQ10HLtaA4PL0Exsckj3FTe+r5IDahyYj6D
-         l6tCcOlHkQMpK6iCfGSDO+kZS7gQNQeofEPfYFzjimORSMhBs4HaVgj+N/Zrlnoi/M4D
-         dMxTR4YKVFtA7RJ6EWKZoWLp2pIBK1T9ZPBCXTBtqfAm+2+nDV4eHu+EcYvu/P+BpsMi
-         l6yV0VFq4ni5ZXmKInKkcmvfw3rYucAtXs6pdr2rQ31o8dCYVXUB6qdjL7ybynt86euX
-         v6SQ==
-X-Gm-Message-State: AOAM530ewiBKjCB/VD7zaza5pCPP6l7WUrD6ifzRqudnxfhRDPZWgTi0
-        Wvl5z2uIoIYXblFqhwhsmxxGkfAMlSAO5omN98U=
-X-Google-Smtp-Source: ABdhPJy15tXaBUCoFtBaiXbg+DtyxG4m2FK0tsoBWDirs3TPeDTGqKEPNXZ3qdpz2WbQOSw71PF4td1cPe7M8XL04po=
-X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
- ji13-20020a170907980d00b006d6f910513amr7769180ejc.643.1648799491620; Fri, 01
- Apr 2022 00:51:31 -0700 (PDT)
+        bh=ME1P1OVaPsxsLJKBK1FIyPVS66/NXOmvGf0UviNhLbo=;
+        b=44ZdcFf0ybITvK76cMZM9/J3hS96SGO389k5YsVaOuZC+xsD2/Tn1TyVexyCjDQIaX
+         HBkF7Wtgk2B8XBV70C8S+fcDH/FYrysztTYz/PHBJajdr4pOulgOg38aDaOa8zu1cOpx
+         AeFwDqWM0VzUcGutnP5FUfa69As+axm/OZGBy3A8cEftgwP8Kjys1Z0XoUVoCg+Wb1kH
+         y9YvL1AFIT0Dywo9R9G2m8xfyYLg59GZLdus849gmTeKvWFfIUsI3vrcZLVEgBly7o3h
+         mVYQKA8QUnlCY1U7mYyaNpGyaWzaYNnNL7xwnLwcRdMVbrYxQ7bCjHHmrHzOIOhba0Pj
+         UsdA==
+X-Gm-Message-State: AOAM531cGJ8iMHJxA8M10+UlwBcvyYuBtOM2Xr5MGVMfkiGw37Rw8CCD
+        uQ7uYqLd4TQ41WDjU0nAiCn8ViB0Sb2EXs1RYBY=
+X-Google-Smtp-Source: ABdhPJwFSBf8pUatqD1Z+LtgdQEYw0B3SGfVWaBOFbuaVP42+s4nweKhdbd7IA9cIoJ9FAcgNuFoaupigz6lppEb+vc=
+X-Received: by 2002:a17:907:1b10:b0:6e4:bac5:f080 with SMTP id
+ mp16-20020a1709071b1000b006e4bac5f080mr4426872ejc.24.1648807063596; Fri, 01
+ Apr 2022 02:57:43 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 1 Apr 2022 08:51:30 +0100
-Message-ID: <CAHpNFcPUVeOhEnL_10u9Omb+LDpYXjTPkYzteduPYWFiLe90bw@mail.gmail.com>
-Subject: Though the VESA & HDMI & DisplayPort standards Facilitates direct low
- bandwidth transport of and transformation of 3D & 2D graphics & fonts into
- directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-To:     moderator@vesa.org
+Date:   Fri, 1 Apr 2022 10:57:42 +0100
+Message-ID: <CAHpNFcPmGicZpXCboh0PWfTsZRqxc-W-qA_cx2+vA+OWb0_A6w@mail.gmail.com>
+Subject: VecSR Firmware update 2022 For immediate implementation in all
+ operating systems, monitors, TV's & equipment such as Mouses, Audio Systems & Webcams
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -60,6 +59,8 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
+
+Date: Fri, Apr 1, 2022 at 9:48 AM
 
 VecSR - Vector Standard Render
 
