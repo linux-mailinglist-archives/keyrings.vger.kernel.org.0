@@ -2,74 +2,85 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 650694F08D3
-	for <lists+keyrings@lfdr.de>; Sun,  3 Apr 2022 12:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD584F0948
+	for <lists+keyrings@lfdr.de>; Sun,  3 Apr 2022 14:13:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234661AbiDCLBa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 Apr 2022 07:01:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S1357485AbiDCMOy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 3 Apr 2022 08:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232902AbiDCLB2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Apr 2022 07:01:28 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E221DA56
-        for <keyrings@vger.kernel.org>; Sun,  3 Apr 2022 03:59:33 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id n6so411970ejc.13
-        for <keyrings@vger.kernel.org>; Sun, 03 Apr 2022 03:59:33 -0700 (PDT)
+        with ESMTP id S1357390AbiDCMOv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Apr 2022 08:14:51 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3A03150B
+        for <keyrings@vger.kernel.org>; Sun,  3 Apr 2022 05:12:55 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id p23so416120edi.8
+        for <keyrings@vger.kernel.org>; Sun, 03 Apr 2022 05:12:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=nyBvcJp6mRrQPKBpyIR21awT1EYL+eciU9AOxh5ALmI=;
-        b=XMqnegJZvpjidT9zZmfBPzcB2shOPPCd4Cd6jwxu2XG/ax2iNOGP0fVwFiO2ZJAfN9
-         JleQZq/BZ2tE8/x81yQgHE+gGkFeBp44Nkq1/0Px81xyJfUxnJ+l5PwSZQTBTEazWRJG
-         fUAbTlGgbBMlClQjHT5rktSE1GrAKKMdVyHI3VaLxFJWwAz8SPkt4v739JBab/3fXzU6
-         1QuqlsYLrn3GU8NAGwMymaNOy3PKFczaUA38OQaYz2DBl4UtGdAJSM2tXZ3jgwyButhK
-         8SzXw1IbFmGWHMid13cyiPxPf8F75nwBrjn0e55VKxhtIMp4xykrFSsxlKIA6gh/FyYq
-         kEzg==
+        bh=NQyHn+U8eVPdUIPvGzN3lKmJI7IauuBDznn8eNpqpKU=;
+        b=KGcQD8Mn0/jy05r0IiH697GNb2wCmzwZbm1upjSDYVA4CrGiZICd/wJ16EB3hFD6k+
+         ePwbGKjhG8cTaEhTK0KPo6YdDaJFO2ADS3aAZjoAusxrXZcKmUb+0y3njw9AHnLWj/oB
+         AVu2tjwTyTtn0TZNJ0WsNIa33TNyjwHK66UlU57sqJBAiXaCDCA7FWkvGhZVuGAYuZSy
+         6T97y0Ksn0gr0IBCy/89ZGuntkoyAqFrKrbji61sttvF1xH1sbVVcDw9BOm3B/N6CeVh
+         somEY6uunZWTeubgTPXFpG18Tt1drLl6CDfTuWETGPkylpADgARxwClkTUVateepNHAk
+         QMXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=nyBvcJp6mRrQPKBpyIR21awT1EYL+eciU9AOxh5ALmI=;
-        b=agnozZQJN7eG6fhJ28/umnkTOUQQNmnwHLZalKuNnoyLZpMwkhrmKf+afkLvPuYU6s
-         AHV63g0q5fj12qID1y9uNWbF/qyivPKD2mraf3GFKF66xa9QGiAFT0TiQGA7bttazDJB
-         fjcwnaO4zyO5MAJaTuXEqK/poMQ25YqQnBxw46vitG8AqOF0Ym2r7Urdvg5FN53udcZG
-         EpT8yRDPCAulPQXfpG8pWNY9zJoWqkU+xp0k5Ni8FNjiWirZN2Sh5UsWHfSEhzzfqCdV
-         027GAirMjzwMJVkptqCkjWUlv8C+cVvBmYcrcXa9tWUpg+4bgQhiqEJhU26/+FsI8DMK
-         iJ2A==
-X-Gm-Message-State: AOAM531KhPk0/rg57KxaLilM3IVNQVA4udbpE+PEJHK8fc/XlWMtYk0T
-        GXj29TActNctRGLHKlmM7hDum1taqi3IHhUDJgU=
-X-Google-Smtp-Source: ABdhPJxrQ4ZFXtrWbvV/UGCkUjXweXwdns9MUwQAhu+ypbjxtHI+VApvXkjUN+XSEPm99DIF6vreW+ycwLrfY7BhTNc=
-X-Received: by 2002:a17:907:d13:b0:6e0:b799:8fcc with SMTP id
- gn19-20020a1709070d1300b006e0b7998fccmr6820829ejc.11.1648983571537; Sun, 03
- Apr 2022 03:59:31 -0700 (PDT)
+        bh=NQyHn+U8eVPdUIPvGzN3lKmJI7IauuBDznn8eNpqpKU=;
+        b=koohlho+AwPjHTg4RcTVUKfjggGyI9noOymFEh4IOmojkoZHNPSKE3Bz72l65Aj69l
+         ABtnxLKmg+iIDamuADDb2DB3L86jye9eHg2OY/b3j557sGP9wbu7gJ9vVPM7/OP5u1qF
+         qjk1Gx2WylANFwbEV73bcSlK7sehdLsPxlTeGOZwI/5yIWelJENkBYPWBx/HjACL0zp6
+         d9SeUa+RELLq2c9tLNAaBX72kBeH233oYPFp0VIXpHBcvBQgdwx/ugYIUnnejAmu94ei
+         8k/lgfDd4JEyeUaYtWn7Tt1VYebdkU61DXzAAVLdZ7NTkqSDJIdBM9tX3uZGy5C8pinp
+         AP9w==
+X-Gm-Message-State: AOAM533+Z6R4pfk/qI19y5LBBW1Xpy5dvdLL4BrlCWw/DQ3OXADuvzr6
+        o0QZn3mFSDQ7sO2OlzuxdCXw5rqS6zNwC8aauCw=
+X-Google-Smtp-Source: ABdhPJyee7Uspz+HoclvXe8kI62vrNVU1vInYowNLQoL1xZMYCxmrtlG9iHpvglxvFXB7O9vIzLApbU6+78IPl+19sA=
+X-Received: by 2002:a50:ce03:0:b0:41c:c36b:c75 with SMTP id
+ y3-20020a50ce03000000b0041cc36b0c75mr1687142edi.195.1648987973246; Sun, 03
+ Apr 2022 05:12:53 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 3 Apr 2022 11:59:35 +0100
-Message-ID: <CAHpNFcOTZQJYoWyVdbMvnYzFL1iFMdjE2GaOgFBnjKukL=iPEQ@mail.gmail.com>
-Subject: GPRS Expansion & Development - Basic comparison of Modes for
- Authenticated-Encryption -IAPM, XCBC, OCB, CCM, EAX, CWC, GCM, PCFB, CS
+Date:   Sun, 3 Apr 2022 13:12:57 +0100
+Message-ID: <CAHpNFcMwsTH6cCHms0MwckbSZqy8RoSu=Bcs_dfx9uE5sdDr4g@mail.gmail.com>
+Subject: Modulus Dual Encrypt & Decrypt package : Processor feature RS AES-CCM
+ & AES-GCM & Other Cypher Modulus
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-GPRS Expansion & Development
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
 
 Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
 OCB, CCM, EAX, CWC, GCM, PCFB, CS
-
 https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
 
-VecSR Compression (HDMI  & DP) & X-OR DSC1.2C & Along with our
-brilliant security features in NTP Folder (Security bat & WebHSM) &
-Default JS https://bit.ly/VESA_BT sure to please all on their servers
 
 *****
 
@@ -132,6 +143,30 @@ Invert them over Time Var = T
 We can do all & principally this is relatively simple.
 
 (c)RS
+
+*
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
 
 *
 
@@ -198,10 +233,6 @@ https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
 
 https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
 
-Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
-OCB, CCM, EAX, CWC, GCM, PCFB, CS
-
-https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
 
 Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
 
