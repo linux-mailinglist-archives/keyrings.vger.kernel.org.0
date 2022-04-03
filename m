@@ -2,227 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A07A14F081A
-	for <lists+keyrings@lfdr.de>; Sun,  3 Apr 2022 08:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 866B84F0861
+	for <lists+keyrings@lfdr.de>; Sun,  3 Apr 2022 10:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352433AbiDCGpd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 Apr 2022 02:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51290 "EHLO
+        id S240712AbiDCIHi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 3 Apr 2022 04:07:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240600AbiDCGpc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Apr 2022 02:45:32 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480A111146
-        for <keyrings@vger.kernel.org>; Sat,  2 Apr 2022 23:43:35 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id dr20so13851071ejc.6
-        for <keyrings@vger.kernel.org>; Sat, 02 Apr 2022 23:43:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3Xx2ErVMBxvM/FsKeVuUk3St6Mlwp0omh3F7AKnqaSI=;
-        b=i9rDzybQOX37P+qV8TaQQg/OWkO8nhv8kgK42pzWL139Z8Xu9iSCKQwDblvXomhQdz
-         erv8P/h9REJoC4eMGW651lYjvDDBy3NA7QOPQL8DfMmtPpvkbCZ6n7//UrRniEAi29yw
-         4tSlQ1bvLmKZJeBSJwKQV45geF/xfvB/Lm3lHTu/WbIlhhLZQ8DqrR+FpcUJpM2zaJZm
-         LRVQ0cFP1rJPYw3si2S3se7+ZTQmjcFLpmEc4dDx+6seXPz/iiZziII8dEb84JGicwcN
-         IuS8ILoduby5VIzBgGJF+E7viQ/8AwAUImqesCBKIfbnxqlXVNc4drxfJZAMlQi7wTS2
-         SACQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3Xx2ErVMBxvM/FsKeVuUk3St6Mlwp0omh3F7AKnqaSI=;
-        b=4F0eX+mQI64YDJ/cj4Uisbe50/QSAUHUFWqoVzLIfNPxBm5L6fpWbfGKmxB5S11BhL
-         S2zCJiRsI4L8AH6+lAf+S1ORjaifeTTBcT31In6r/l2rCwexZytoiUdDJaQKQLDT/tOG
-         O/kidFCHKA/G2id3a7xJLAoREXb395jatgFQIR1NFjUNvZOQAQ7NklB50hNothWhuiSr
-         Arpv35VdzKvrO6wAfvJ2LJNY/FtVZDnzRnVQqkjGYFjdhMX8Uwm6QSohSY5aDW0AiRNj
-         CEfKl/AD6Ku/vtSGaSmxmrzbDJbS5YfbEWihhJI8AcCWbvk7oxhv1Lepa5rJiVeQB+bR
-         C9Dg==
-X-Gm-Message-State: AOAM532+yKSBGIieCzoxJs1DHRaiLu0p6eXfeVtwC+xbkXLlQpfCZjaU
-        Axn7SwwXQkeWpmmXcVnFtzF5MZuQiGV/YdLKNJQ=
-X-Google-Smtp-Source: ABdhPJx/3YPNiIHFwcdTaaNlKfTfaMhjgdlgvxJs/3tX27AB4qh3X5TrQZv3Z73xqSyo00fOZ3JUVsT4gKwvPn2U1js=
-X-Received: by 2002:a17:907:6e06:b0:6e4:dae7:9574 with SMTP id
- sd6-20020a1709076e0600b006e4dae79574mr6451508ejc.540.1648968213486; Sat, 02
- Apr 2022 23:43:33 -0700 (PDT)
+        with ESMTP id S235720AbiDCIHh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Apr 2022 04:07:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1700637AB5;
+        Sun,  3 Apr 2022 01:05:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B3636B80AC3;
+        Sun,  3 Apr 2022 08:05:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D52C340F3;
+        Sun,  3 Apr 2022 08:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648973141;
+        bh=opLcU29acddtyzVufVbpjteyPfDjI2D8KSG2MV5cu5E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=itvPRJ+VsbzbyFqRiaYrWg4A/np9jYWjHGsUZkd7IZ1bFsDvbIaqgV/6ZYJh09DHr
+         RKIIdttb6Zs3cS9BHYUy2REpwnJlaOxpK+QtNLTA7zgivUGx3B+tqpoBJHhyFBR/Bs
+         7AeWRX4HyXdLXoKhupHVFPTC+hwE0dX5ZSkslS2cMcgNjGhEdLBkFeEE98JxkNItIl
+         K/nDVyxJgiHVXljkdpOIvNi4OMcEbNiDOANdRcSRJmyzox/OKLDI+qHYvlDevKIaMc
+         PBU7FhdbZU6j7cONoag7C9SHZxjzY5A2G1bcvjSRTGanHnQsCFQtEoeSwtijirtzWK
+         ni6ogFRjzI0og==
+Date:   Sun, 3 Apr 2022 11:06:51 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Michal Orzel <michalorzel.eng@gmail.com>,
+        David Howells <dhowells@redhat.com>
+Cc:     James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 3/5] keys: Remove redundant assignments
+Message-ID: <YklVm5HRM789++rp@kernel.org>
+References: <20220331173358.40939-1-michalorzel.eng@gmail.com>
+ <20220331173358.40939-3-michalorzel.eng@gmail.com>
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 3 Apr 2022 07:43:37 +0100
-Message-ID: <CAHpNFcNqkhWQ3xpSw1+MowYrVWii8FMjVOzv_DViCPSBMAHz0g@mail.gmail.com>
-Subject: VecSR Compression (HDMI & DP) & X-OR DSC1.2C & Along with our
- brilliant security features in NTP Folder (Security bat & WebHSM) & Default
- JS VESA_BT sure to please all on their servers
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220331173358.40939-3-michalorzel.eng@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-VecSR Compression (HDMI  & DP) & X-OR DSC1.2C & Along with our
-brilliant security features in NTP Folder (Security bat & WebHSM) &
-Default JS https://bit.ly/VESA_BT sure to please all on their servers
+On Thu, Mar 31, 2022 at 07:33:56PM +0200, Michal Orzel wrote:
+> Get rid of redundant assignments which end up in values not being
+> read either because they are overwritten or the function ends.
+> 
+> Reported by clang-tidy [deadcode.DeadStores]
+> 
+> Signed-off-by: Michal Orzel <michalorzel.eng@gmail.com>
+> ---
+>  security/keys/process_keys.c | 1 -
+>  security/keys/request_key.c  | 6 ++----
+>  2 files changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
+> index b5d5333ab330..8bdd6410f79a 100644
+> --- a/security/keys/process_keys.c
+> +++ b/security/keys/process_keys.c
+> @@ -92,7 +92,6 @@ int look_up_user_keyrings(struct key **_user_keyring,
+>  		return PTR_ERR(reg_keyring);
+>  
+>  	down_write(&user_ns->keyring_sem);
+> -	ret = 0;
+>  
+>  	/* Get the user keyring.  Note that there may be one in existence
+>  	 * already as it may have been pinned by a session, but the user_struct
+> diff --git a/security/keys/request_key.c b/security/keys/request_key.c
+> index 2da4404276f0..ad29023c9518 100644
+> --- a/security/keys/request_key.c
+> +++ b/security/keys/request_key.c
+> @@ -116,7 +116,7 @@ static int call_sbin_request_key(struct key *authkey, void *aux)
+>  {
+>  	static char const request_key[] = "/sbin/request-key";
+>  	struct request_key_auth *rka = get_request_key_auth(authkey);
+> -	const struct cred *cred = current_cred();
+> +	const struct cred *cred;
+>  	key_serial_t prkey, sskey;
+>  	struct key *key = rka->target_key, *keyring, *session, *user_session;
+>  	char *argv[9], *envp[3], uid_str[12], gid_str[12];
+> @@ -506,9 +506,7 @@ static struct key *construct_key_and_link(struct keyring_search_context *ctx,
+>  			kdebug("cons failed");
+>  			goto construction_failed;
+>  		}
+> -	} else if (ret == -EINPROGRESS) {
+> -		ret = 0;
+> -	} else {
+> +	} else if (ret != -EINPROGRESS) {
+>  		goto error_put_dest_keyring;
+>  	}
+>  
+> -- 
+> 2.25.1
+> 
 
-is QFT a Zero compression or low level compression version of DSC
-1.2b? Maybe X-OR X=3D1 New Data & X=3D0 being not sent ? Therefore Masking
-The Frame Buffer!
 
-If not i dually submit it for inclusion in the standard along with
-Vector Compression VESA Standard Display protocol 3
-https://lkml.org/lkml/2022/4/2/328
-https://lkml.org/lkml/2022/4/2/295
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Include vector today *important* RS
-https://vesa.org/vesa-display-compression-codecs/
+David: can you pick this?
 
-"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
-latency=E2=80=9D, which is the amount of time between a frame being ready f=
-or
-transport in the GPU and that frame being completely displayed. This
-latency is the sum of the transport time through the source=E2=80=99s outpu=
-t
-circuits, the transport time across the interface, the processing of
-the video data in the display, and the painting of the screen with the
-new data. This overall latency affects the responsiveness of games:
-how long it appears between a button is pressed to the time at which
-the resultant action is observed on the screen.
-
-While there are a lot of variables in this equation, not many are
-adjustable from an HDMI specification perspective. QFT operates on the
-transport portion of this equation by reducing the time it takes to
-send only the active video across the cable. This results in reduced
-display latency and increased responsiveness."
-
-*****
-
-VecSR - Vector Standard Render
-
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
-
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
-
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
-
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-(c)Rupert S
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
-ml
-
-https://bit.ly/VESA_BT
-
-*
-
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
-
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
-
-3rd dimensional access with vector fonts by a simple method:
-
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
-
-Bitmap/Texture,
-
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
-
-Can be higher resolution & we can sub sample with closer view priority...
-
-We then rotate the texture on our output polygon & factor size differential=
-.
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
-
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
-
-*
-
-VecSR is really good for secondary loading of sprites & text; In these
-terms very good for pre loading on for example the X86, RISC, AMIGA &
-Famicon type devices,
-With appropriate loading into Sprite buffers or Emulated Secondaries
-(Special Animations) or Font Buffers.
-
-Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
-with Integer & Emulated Float (Library); Traditional BitMap fonts work
-well in a Set Size & can resize well if cached!
-
-The full process leads upto the terminal & how to optimise CON,
-We can & will need to exceed capacities of any system & To improve them!
-
-presenting: Dev-Con-VectorE=C2=B2
-Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
-Class VESA Console +
-
-With Console in VecSR you can 3DText & Audio,
-
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems & ROM's
-
-Potential is fast & useful.
-
-*
-
-https://science.n-helix.com/2022/04/vecsr.html
+BR, Jarkko
