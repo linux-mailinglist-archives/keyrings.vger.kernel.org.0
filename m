@@ -2,64 +2,81 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B8D4F20A9
-	for <lists+keyrings@lfdr.de>; Tue,  5 Apr 2022 04:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2084F21AD
+	for <lists+keyrings@lfdr.de>; Tue,  5 Apr 2022 06:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229460AbiDEBYI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 4 Apr 2022 21:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57502 "EHLO
+        id S230310AbiDEEIq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 5 Apr 2022 00:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiDEBYI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 4 Apr 2022 21:24:08 -0400
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1182B26F232
-        for <keyrings@vger.kernel.org>; Mon,  4 Apr 2022 17:37:01 -0700 (PDT)
-Received: by mail-ej1-f41.google.com with SMTP id dr20so23247794ejc.6
-        for <keyrings@vger.kernel.org>; Mon, 04 Apr 2022 17:37:00 -0700 (PDT)
+        with ESMTP id S230322AbiDEEIn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Apr 2022 00:08:43 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F061AA
+        for <keyrings@vger.kernel.org>; Mon,  4 Apr 2022 21:06:44 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id b24so13379343edu.10
+        for <keyrings@vger.kernel.org>; Mon, 04 Apr 2022 21:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=P/touLBFbje11XznNDWx7VX2zR8LaBFmb8S0S5DQre4=;
-        b=SO13OPc0fPsKwO0ZIKHYM7Zm+tOstO2QdOw8WwSV99O/VyDJffuH15n/sDLG1WoUci
-         3ifOsWLOPxUqsVfoFOtP1XWi4AsMdG0JxsH0amuTz73yv4PczOCwtyr6ybuB704AiUZJ
-         Z+OvAjnb4XWveU4z38EC4syaBLjm6L4Fw9ffZNmmDTZ0WVhiHEY277E83ywMOMVtkEcX
-         gJtxgH5AU9obOg35AZ20Jy2jQKcFMQ6kk8VwqMH/Gb3XUmSzLWGXb30OMHCAmu5FoChl
-         K2eKbrufwGdUaMBCmT0rsrCUgAT2LrbgAeO04J7bFBwXIEX6MLLqPhCQJpPL0i+6ON3A
-         glsQ==
+        bh=k33GZGWU+w9uUOgE7RI/0gXQX1NT8yDgH8ann6GGs8w=;
+        b=bxGBiyEIZStrtD3+4iQ1HCM1sWxhlXV10+iqEn/qlNsNX+5jYs2oeIrAi38GhH3C/S
+         c4jmU83itAIPmrqzQsT48+z9H0vZrIhLoIvwKeWHiAcWWZh6Rg0n8hISzOGzlrM8qjss
+         GUH0oG8ecLJJgWZesSFb6l0iqdc7YCTiHwoTZ+UwPKDeDaddbqwYkO+PhnucQWqqOI5z
+         aXQuqLdPO5kq9uzkL7RUjUz6OOsmFI8eWqAFhel/n5OnlxRJSpL34TAzn+pq0PyA+dVp
+         SntH10wmVLUg7gRuVFaDTOSkTQXEU5W3v4ZPNRSzW+wAc7bhj7EjZGWtG2NJu4+Z+vzc
+         Xt1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=P/touLBFbje11XznNDWx7VX2zR8LaBFmb8S0S5DQre4=;
-        b=gkgOomQuVH9hMbHTiq89W8qbLrkBeWye/+8kYZA3gYAlRd6e1ADMjoIjfR28ZZUeKE
-         flH/TJM9I6NubAJgeB/4NUhFsWiIEht1wroWJ2dK6PMkzXHLz4sKD+WhCA9J1RlAwkbz
-         2Sr1eTpVHe0Kgkwmv2+1l97YNOJSuSP/L6HMiYRyAPmpIsnLsPAddg7E8BM+yBIK1Ye5
-         wmMnVyyqdWYQXIDtQ6BsEK5zLq/7c5Y+mXa1IdfAvGVp3q2rG1rSK+/gKI38pwOnqnKB
-         JLudi40UJFB/ZzhEkIIhG0tg9ORvakxVklygxTO/9a5DQ5aXXKmvSqSR26iYEJ29YpcC
-         ykSQ==
-X-Gm-Message-State: AOAM530niLo0xrBjn7ddxLygacWJlgq8lnJYTs3auzq6/qsQJeYp1YIz
-        wkCFo2t4wn8BOp0o0/NGnYk4hEsBBRLdGjU+OIOesGEFudthcIg7
-X-Google-Smtp-Source: ABdhPJyjYND/2D4yJzqnD940Ja4ubNvUJ6/2cjcU9bQAbsFCYlo25MJ6zs6/GD+P6HCN9vpRwG+yIDiH5/y4ih1Yef0=
-X-Received: by 2002:a05:6402:1e8b:b0:41c:59f6:2c26 with SMTP id
- f11-20020a0564021e8b00b0041c59f62c26mr797219edf.156.1649118049885; Mon, 04
- Apr 2022 17:20:49 -0700 (PDT)
+        bh=k33GZGWU+w9uUOgE7RI/0gXQX1NT8yDgH8ann6GGs8w=;
+        b=wuhOepi68gWOXU43BE0a3bNtUc8lsEFs7BGeZzy+k68SQwi6XV/f/HpIBEGw6c0u+I
+         Hj/nZN62TrscFMeDov+TJY1uqJpdk0CCxGQo6yj0G9//8jIIYxyeQ5BGlr392ABzBUoJ
+         VgzWvWYdRQIgu76YZrovedvupmiM9qAfU5LLaU9itusW8zL7TpSIGhEklGUMHOY6VPNp
+         HwH3Fju+q623qTmSt7gmCAyAtWveu5kEILeyQRYx1RtR86pkCJF9VdGsvTyeY1OXs6EV
+         DG5bMqt6u5mc7zsbFWCD7dl+4cNAep1rHXwP5mGpf1r4IAANe3976ouAEHoSC02OJGew
+         s6cw==
+X-Gm-Message-State: AOAM532wT2E1dT8mRnI5cXQHmNrik7hjN0ddnrp5Yz8YfJ2qjbCp17nx
+        zBNVMZqAAJtwuL3xzlJfxGBr/tL0/9LUR9/d5Ao=
+X-Google-Smtp-Source: ABdhPJzIwxH2Bdxpe3kP5X875Mjtstqa6tDNBqcHYydSExz556mCkxa77yqXPypcDIe5L5yfy2+OGnvw8Xqzcr2Wdek=
+X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
+ el4-20020a056402360400b0041cc4e62988mr1477962edb.157.1649131602779; Mon, 04
+ Apr 2022 21:06:42 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 01:20:36 +0100
-Message-ID: <CAHpNFcPeL6=b3+npcgQKJQ0xei6rZhQrbS1x0FMiBa1M_S6fCQ@mail.gmail.com>
-Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators (indirect) -
- Plan & method RS
+Date:   Tue, 5 Apr 2022 05:06:31 +0100
+Message-ID: <CAHpNFcMO+-rxX=T4GPX9C8hb81AfMP8KhEaxiozFx3URRcf89Q@mail.gmail.com>
+Subject: Device Cache Align 'code align also speeds up prefetch' RS 128Bit
+ Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit Align Quads & Float Quads -
+ HDD,SSD & Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
+
+DMAC yep Security Align 128Bits to Cache Array
+Align that 128Bit Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit
+Align Quads & Float Quads -
+HDD,SDD normally have the EIDD DDI Equivalent
+Device Cache Align 'code align also speeds up prefetch' Radio AKA Wifi
+is also aligned & Internet protocols
+
+RS
+
+https://lkml.org/lkml/2022/4/4/1254
+https://lore.kernel.org/all/20220404194510.9206-2-mario.limonciello@amd.com/
+
+Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators
+
+
+(indirect) - Plan & method RS
 
 Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
 
