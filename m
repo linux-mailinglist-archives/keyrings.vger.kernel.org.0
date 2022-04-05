@@ -2,60 +2,56 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E9CD4F5347
-	for <lists+keyrings@lfdr.de>; Wed,  6 Apr 2022 06:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC9CE4F53E3
+	for <lists+keyrings@lfdr.de>; Wed,  6 Apr 2022 06:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234879AbiDFDsD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 5 Apr 2022 23:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
+        id S239369AbiDFDrn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 5 Apr 2022 23:47:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1573078AbiDERxO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Apr 2022 13:53:14 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430FEDE0A7
-        for <keyrings@vger.kernel.org>; Tue,  5 Apr 2022 10:51:12 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id n6so14241883ejc.13
-        for <keyrings@vger.kernel.org>; Tue, 05 Apr 2022 10:51:12 -0700 (PDT)
+        with ESMTP id S1576524AbiDEXKp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Apr 2022 19:10:45 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358CC4C411
+        for <keyrings@vger.kernel.org>; Tue,  5 Apr 2022 14:41:47 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id n6so352480ejc.13
+        for <keyrings@vger.kernel.org>; Tue, 05 Apr 2022 14:41:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
-        b=TWaP8JwC5o8iBLTw9CODzM5aRo0JC/FLK+j+aWugaAWMVUqJa3ytY5ypTcq7HlgQNT
-         vMyudlVc3uFiCg5wlfZj4es1DKKUsZnsAyrNmPleekmNiHH9X9kiAmw58x1QBUZWhouA
-         B+CnACM2mjA30xil9LgJNEfH6/6FvEm8WD1XknfPOg8PvZHpLsab+uDwrMIdxv5fAS5j
-         EsvmxXh5sSXIC7rgcUH/OWYBBSTDctz0P10laxSUMfNxjiY8HMxlHuxOPFFipbGLUvMd
-         vUWuD62m0P7jQdxjKrM2L6XSW6AODE7UiBDuqkn95bfFdlKqE7aP/foEJfxLyJ8/fBTw
-         yxUw==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=ao66c39lDXSZDrmfpWAolMn1IGH5i64J+LVad5/f4UM=;
+        b=bo1JItiWD8iFpzoCKD8TgTyvXPkdFhsK50XGs87qiMpJcDml4olxlivsBLszqrfcz0
+         +Kj6qbT2HyBDCbzeDho4WHl44Ymd0vj23aKHRtTgJCmlGE8nR3hPurNWByY9cAVNVKec
+         WVhgIdYWbJCK5nj9ccJPGFYsdMfAqsRRADEpDNWhdXuxFo9LCKXy5gTpnvnSkM0hWZpF
+         PNV3Oi8VHQLcqKgbdm6u1geV74Ma7Dtj9FZ+9mwECWwUmANV3wqCEheMDxtnTI/l2vpk
+         PptATUWdgSmEW57gscbmHdSZAew8olunCN1mQE2ENlPhbrGEI0bHuTC0iv6MIznmc1of
+         8HNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
-        b=zN/3LiIf0YNYn8ijUvkWkMXHw1SP/WtAaO3p11j4eWUvST9jmTEebIPzjIkJpZjBzs
-         hyI8DE6XUOBkEhonehfNhBqAx31sGp+MOu6fHLF2FnSO1aIAB/LuaejebbuOjrIp2W1E
-         DiRkh8i4O43XBiLhQydOFfcw6hjTGlANz79nwMNbvjrJE2xCi9XE5mOG9CO7KdPRRudS
-         taTQibS9fDUpX1a2blorw6FAIBzHeSiyH+cs9bx4Fhnn6v4GZ+4hayRSPJ8DnyeYs1Jz
-         3OPPnN/0B5Lpw2BQb41Dz0yVI8nySmLQMmpB00A9lxvOl///lHKWRb8vcsonDiCKT6tz
-         TD/w==
-X-Gm-Message-State: AOAM532mR671kiiSMdFHKWufR8z4G1owDF8G6vOAiYaG1ThHZZiL2lFq
-        dF+bkCytaqqdZAUq0XP9yUV+YVByPaAaGFGafIA=
-X-Google-Smtp-Source: ABdhPJy3WqnbFWhFyzR2jjv9wo3teILmv3rquwAOArhBIyRmnyDnYZLaGkiIJ7sloKGihwZJppz+pMAkxRt4WJz8Q/4=
-X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
- cr21-20020a170906d55500b006db148e05ccmr4559155ejc.63.1649181069336; Tue, 05
- Apr 2022 10:51:09 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=ao66c39lDXSZDrmfpWAolMn1IGH5i64J+LVad5/f4UM=;
+        b=psOciM8NwsnzUiIv1ZEuY6dBvoR0MxESGew5zbvxpNTphT7tgbuhDaJ1a17pR5XN1c
+         jV6ng+1TFJTg5sj6QznnUHDHrGjOqTfGguGhJvAHFyg8H/lknCWMvtmB3HRtZ+vBgcO6
+         dWaVegbn0UWFWTB2DKFfRq5Qs1RiCCz6SmNgTLADtTRlO7loCGKFk43wKpvETziByors
+         0u7esQVrJ0SG/asxcVbhqt0HLKDnVW0OvfwbRN0OReFrqJ3YOZKCKpM5RPTY3dM5lzjX
+         MRoqS1YUEmTvTlKYCKOTO2rAejLQbTRErFU2JkEeQyBGSI2Ie5pFnUoVHMxrMQfz6Stq
+         NX1w==
+X-Gm-Message-State: AOAM530jJcLjM0ZWaKIhomUzuYippdY1svKQbZE8yvrknkjeAYkXPvDL
+        aQjfbo/LPxmMgLAZd4Pay45MLmMtp9/TwNutavQ=
+X-Google-Smtp-Source: ABdhPJyFDE/16osppxD7V/k1b0k3Gd311E4D8jEx0fbUCJZHbHSbpptOjBnmaMe5MNBFwIJscOCJA1gIieSPdSqCa4Y=
+X-Received: by 2002:a17:907:1b10:b0:6e4:bac5:f080 with SMTP id
+ mp16-20020a1709071b1000b006e4bac5f080mr5466982ejc.24.1649194899933; Tue, 05
+ Apr 2022 14:41:39 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 18:50:57 +0100
-Message-ID: <CAHpNFcPDv_NYw-h50YgH5qmQmFmpWVL6DCf4jvjg-KE0iSN2OQ@mail.gmail.com>
-Subject: USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
- need a /dev/random Seed Saved for their Cryptological security for both the
- device & the USB Dongle>
+Date:   Tue, 5 Apr 2022 22:41:28 +0100
+Message-ID: <CAHpNFcNYoz_VY0JBDw75ditAKXs5ghujShjBdYjM_nnFSTzcGg@mail.gmail.com>
+Subject: LiberKHAOS - "So my 2k buffer is fine then." & We Wanted FINE ?
+ #DEV-RAND #Chromium gcc-plugins: latent_entropy: use /dev/urandom
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,59 +60,241 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
-need a /dev/random Seed Saved for their Cryptological security for
-both the device & the USB Dongle>
+LiberKHAOS - "So my 2k buffer is fine then." & We Wanted FINE ?
+#DEV-RAND #Chromium gcc-plugins: latent_entropy: use /dev/urandom
 
-Instructions  *RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+https://lkml.org/lkml/2022/4/5/2829
 
-https://pollinate.n-helix.com
+DMAC yep Security Align 128Bits to Cache Array
+Align that 128Bit Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit
+Align Quads & Float Quads -
+HDD,SDD normally have the EIDD DDI Equivalent
+Device Cache Align 'code align also speeds up prefetch' Radio AKA Wifi
+is also aligned & Internet protocols
+
+RS
+
+https://lkml.org/lkml/2022/4/4/1254
+https://lore.kernel.org/all/20220404194510.9206-2-mario.limonciello@amd.com/
+
+Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators
+
+
+(indirect) - Plan & method RS
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+Parallax Cryptographic Processing Unit: RS
+
+The capacity To Multiply decryption on specific hardware in situations
+such as lower Bit precision is to be implemented as follows:
+
+On AES-NI & ARM Cryptographic processors; In particular PPS(ARM+) & SiMD ..
+
+The capacity to exploit the fact that the nonce is 16Bit to 64Bit &
+full float upto 128Bit for legal decryption (client) means there is a
+simple method to use:
+
+In situations that a AES-NI & ARM Cryptographic unit can process 2
+threads on a 256Bit Function we can do both the main 128Bit/192Bit &
+the nonce 16Bit to 64Bit & Enable a single instruction Roll to
+Synchronise both The main HASH & Nonce.
+
+AES & Crypto hardware can utilise the CPU/GPU/Processor FPU & SiMD to
+decrypt the nonce (smaller so fast) & in the same 8bto to 64Bits of
+code; Inline & parallax the cryptographic function.
+
+With a 256Bit AES-NI & Cryptographic unit : Parallel Decryption &
+Return Encryption by using 2x 128Bit & a Processor Enciphered Nonce.
+
+(c)Rupert S
+
+*reference* https://bit.ly/VESA_BT
+
+Dual Encrypt & Decrypt : Hardware Accelerators (indirect)
+https://lkml.org/lkml/2022/4/4/1153
+https://lore.kernel.org/linux-crypto/20220223080400.139367-1-gilad@benyossef.com/T/#u,
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
 
 *****
 
-NT Interrupt counter Entropy : A counter theory : RS
+ICE-SSRTP GEA Replacement 2022 + (c)RS
 
-"more importantly, our
-distribution is not 2-monotone like NT's, because in addition to the
-cycle counter, we also include in those 4 words a register value, a
-return address, and an inverted jiffies. (Whether capturing anything
-beyond the cycle counter in the interrupt handler is even adding much of
-value is a question for a different time.)"
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
 
-NT Interrupt counter Entropy : A counter theory : RS
+GEA-2 > GEA-3 is therefor 64Bit Safe (Mobile calls) & 128Bit Safe
+(Reasonable security)
+SHA2, SHA3therefor 128Bit Safe (Reasonable security Mobile) ++
+AES & PolyChaCha both provide a premise of 128Bit++
 
-To be clear interrupts are old fashioned (NT & Bios) : Points
+So by reason alone GEA has a place in our hearts.
 
-Network cards have offloading? Yes & why cannot we?
+*
 
-Offloaded does not mean that a time differential matrix HASH AES of 32Bit w=
-ords,
-Cross pollinated though MMX, AVX , SiMD is plausible!
+ICE-SSRTP GEA Replacement 2022 + (c)RS
 
-Combined with even network latency timing & interrupt latency...
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
 
-Various system differentials can alternate line in our table per clock sync=
-!
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
 
-In this reference Quartz clock instability is not only counter acted by NTP=
-...
-But also utilized as a variable co-modifier.
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
 
-So why not also advantage ourselves of the clock frequency scaling
-effect to confuse odds again for Entropy (Random, Not Entropy)
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
 
-SSD does also have a write counter & a cleared state, not so boring as
-one thinks if per 32KB segment is hashed in 4Bit, 8,Bit 32Bit float!
-(remember we have DOT3 DOT 4 & INT8 in ML)
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
 
-We can utilize write cycle statistics & all hardware; Interrupts by
-themselves are rather Boring!
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
 
-Computed timings on processes multiplexed over 3 Threads per group in
-competition is also a potential complexifier of Random
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
 
-Rupert S
+Interleaved, Inverted & Compressed & a simple encryption?
+
+*
+
+Time differentiated : Interleave, Inversion & differentiating Elliptic curve.
+
+We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
+
+We know of a cypher but : (Principle RS)
+
+We blend the cypher..
+Interleaved pages of a cypher obfuscate : PAL CScam does this
+
+Timed : Theoretically unique to you in principle for imprecision, But
+we cannot really have imprecise in Crypto!
+
+But we can have a set time & in effect Elliptic curve a transient variable T,
+With this, Interleave the resulting pages (RAM Buffer Concept)
+
+Invert them over Time Var = T
+
+We can do all & principally this is relatively simple.
+
+(c)RS
+
+*
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+Parallax Cryptographic Processing Unit: RS
+
+The capacity To Multiply decryption on specific hardware in situations
+such as lower Bit precision is to be implemented as follows:
+
+On AES-NI & ARM Cryptographic processors; In particular PSP+PPS(ARM+) & SiMD ..
+
+The capacity to exploit the fact that the nonce is 16Bit to 64Bit &
+full float upto 128Bit for legal decryption (client) means there is a
+simple method to use:
+
+In situations that a AES-NI & ARM Cryptographic unit can process 2
+threads on a 256Bit Function we can do both the main 128Bit/192Bit &
+the nonce 16Bit to 64Bit & Enable a single instruction Roll to
+Synchronise both The main HASH & Nonce.
+
+AES & Crypto hardware can utilise the CPU/GPU/Processor FPU & SiMD to
+decrypt the nonce (smaller so fast) & in the same 8bto to 64Bits of
+code; Inline & parallax the cryptographic function.
+
+With a 256Bit AES-NI & Cryptographic unit : Parallel Decryption &
+Return Encryption by using 2x 128Bit & a Processor Enciphered Nonce.
+
+(c)Rupert S
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+
+*
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
 
 https://science.n-helix.com/2018/12/rng.html
 
@@ -128,42 +306,63 @@ https://science.n-helix.com/2022/02/interrupt-entropy.html
 
 https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
 
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
-tml
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
 
 https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
 
-****
+https://science.n-helix.com/2022/03/ice-ssrtp.html
 
-PreSEED Poly Elliptic SiMD RAND : RS
+https://science.n-helix.com/2021/11/ihmtes.html
 
-Preseed ; 3 Seeds with AES or Poly ChaCha or even 1 : 2 would be
-rather fast Init
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
 
-Blending them would make a rather paranoid Kernel developer feel safe! :D
+Integral to Telecoms Security TRNG
 
-Like so List:
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
 
-3 seeds 32Bit or 64Bit :
-Examples :
-
-1 Seed : Pre seeded from CPU IRQ & Net 16Bit values each & merged
-2 & 3 from server https://pollinate.n-helix.com &or System TRNG
-
-4 Seed mix 128Bit Value
-
-Advantages :
-
-AVX & SiMD Mixxer is fast 'Byte Swap & Maths etcetera" & MultiThreaded
-AES Support is common :
+https://pollinate.n-helix.com
 
 *
-HASH : RSA Source Cert C/TRNG : (c)RS
 
-Elliptic RSA : Cert Mixer : RSA 4096/2048/1024Temporal : 384/256/192
-ECC Temporal
+***** Dukes Of THRUST ******
 
-Centric Entropy HASH: Butterfly Effects
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
 
 Blake2
 ChaCha
@@ -175,205 +374,17 @@ Elliptic Encipher
 AES
 Poly ChaCha
 
-Elliptic : Time Variance : Tick Count Variance : On & Off Variance : IRQ
+Firstly we need a good solid & stable /dev/random
 
-*
-Time & Crystal : Quartz as a diffraction point fractal differentiator : RS
+So we can examine the issue with a true SEED!
 
-RDTSC Variable bit differentiation & deviation of the quartz sub .0001
-Value combined with complexity of unique interplay with Alternative
-clocks such as Network cards, Audio cards & USB Sticks & Bluetooth
-radio clocks & Ultimately the NTP Pools themselves when required.
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
 
-(TIME Differential Float maths) TSC : RDTSC : RDTSCP : TCE supports
-single and half precision floating-point calculations
+TRNG Samples & Method DRAND Proud!
 
-Processor features: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr
-pge mca cmov pat pse36 clflush mmx fxsr sse sse2 htt pni ssse3 fma
-cx16 sse4_1 sse4_2 popcnt aes f16c syscall nx lm avx svm sse4a osvw
-ibs xop skinit wdt lwp fma4 tce tbm topx page1gb rdtscp bmi1
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
 
-*
-For RDTSCP =3D TValue TV1=3D16.0685 TV2=3D16.1432 TV3=3D15.1871
-When Processor Mzh =3D PV1 PV2 PV3
-RAND Source =3D Es1 Es2 Es3
-
-If Xt =3D 1.9 < then roll right
-
-((TV1 - TV2) * (PV1 - PV2)) / ((TV1 - TV3) * (PV1 - PV3)) =3D FractorXt(Xt)
-
-Es1 * Xt =3D Differential
-
-Es2 Es3
-
-(c) Rupert S
-
-Quartz as a diffraction point fractal differentiator : RS
-
-https://tches.iacr.org/index.php/TCHES/article/download/7274/6452
-https://perso.univ-rennes1.fr/david.lubicz/articles/gda.pdf
-https://patents.google.com/patent/US9335971
-*
-
-"Taking spinlocks from IRQ context is problematic for PREEMPT_RT. That
-is, in part, why we take trylocks instead. But apparently this still
-trips up various lock dependency analysers. That seems like a bug in the
-analyser's that should be fixed, rather than having to change things
-here.
-
-But maybe there's another reason to change things up: by deferring the
-crng pre-init loading to the worker, we can use the cryptographic hash
-function rather than xor, which is perhaps a meaningful difference when
-considering this data has only been through the relatively weak
-fast_mix() function.
-
-The biggest downside of this approach is that the pre-init loading is
-now deferred until later, which means things that need random numbers
-after interrupts are enabled, but before work-queues are running -- or
-before this particular worker manages to run -- are going to get into
-trouble. Hopefully in the real world, this window is rather small,
-especially since this code won't run until 64 interrupts have occurred."
-
-https://lore.kernel.org/lkml/Yhc4LwK3biZFIqwQ@owl.dominikbrodowski.net/T/
-
-Rupert S
-
-*****
-Serve C-TRNG QT Fractional Differentiator(c)RS
-
-Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
-32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
-differentiator.
-
-SipHash: a fast short-input PRF
-
-Rotation Alignment : "The advantage of choosing such =E2=80=9Caligned=E2=80=
-=9D
-rotation counts is that aligned rotation counts are much faster than
-unaligned rotation counts on many non-64-bit architectures."
-
-http://cr.yp.to/siphash/siphash-20120918.pdf
-
-https://www.aumasson.jp/siphash/siphash.pdf
-
-"Choice of rotation counts. Finding really bad rotation counts for ARX
-algorithms turns out to be difficult. For example, randomly setting
-all rotations in
-BLAKE-512 or Skein to a value in {8, 16, 24, . . . , 56} may allow known at=
-tacks
-to reach slightly more rounds, but no dramatic improvement is expected.
-The advantage of choosing such =E2=80=9Caligned=E2=80=9D rotation counts is=
- that
-aligned rotation counts are much faster than unaligned rotation counts
-on many non-64-bit
-architectures. Many 8-bit microcontrollers have only 1-bit shifts of bytes,=
- so
-rotation by (e.g.) 3 bits is particularly expensive; implementing a rotatio=
-n by
-a mere permutation of bytes greatly speeds up ARX algorithms. Even 64-bit
-systems can benefit from alignment, when a sequence of shift-shift-xor can =
-be
-replaced by SSSE3=E2=80=99s pshufb byte-shuffling instruction. For comparis=
-on,
-implementing BLAKE-256=E2=80=99s 16- and 8-bit rotations with pshufb led to=
- a
-20% speedup
-on Intel=E2=80=99s Nehalem microarchitecture."
-
-https://www.kernel.org/doc/html/latest/security/siphash.html
-
-https://en.wikipedia.org/wiki/SipHash
-
-Code SIP-HASH
-https://github.com/veorq/SipHash
-
-Serve C-TRNG QT Fractional Differentiator(c)RS
-
-Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
-32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
-differentiator.
-
-As we see rotation may benefact from the addition of Quartz crystal
-alignment sync data from 4 cycles & aligning data blocks,
-
-Obviously we can pre share 4 64Bit blocks use use a pre seed AES/ChaCha Qua=
-d!
-Indeed we can have 16 64Bit pre Seeds & chose them by time sync for kernel
-
-Security bug; Solutions & explanation's (contains additional RANDOM
-Security Methods) :RS
-
-https://science.n-helix.com/2020/06/cryptoseed.html
-https://science.n-helix.com/2019/05/zombie-load.html
-https://science.n-helix.com/2018/01/microprocessor-bug-meltdown.html
-
-Rupert S https://science.n-helix.com
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://aka.ms/win10rng
-*
-
-Encryption Methods:
-https://tools.ietf.org/id/?doc=3Dhash
-
-https://tools.ietf.org/id/?doc=3Dencrypt
-
-HASH :
-
-https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-algs
-
-https://tools.ietf.org/id/draft-ribose-cfrg-sm4-10.html
-
-https://tools.ietf.org/id/?doc=3Dsha
-
-https://tools.ietf.org/id/?doc=3Drsa
-
-Encryption Common Support:
-
-https://tools.ietf.org/id/?doc=3Dchacha
-
-https://tools.ietf.org/id/?doc=3Daes
-
-SM4e does seem a good possibility for C/T/RNG CORE HASH Functions!
-
-ARM Crypto Extensions Code (Maybe AES Extensions would work here)
-https://lkml.org/lkml/2022/3/15/324
-
-ARM Neon / SiMD / AVX Compatible (GPU is possible)
-https://lkml.org/lkml/2022/3/15/323
-
-*
-
-197 FIPS NIST Standards Specification C/T/RNG
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-Only a Neanderthal would approve a non additive source combination
-that is injected into the HASH & Re-HASHED ,
-
-One does not Procreate inadequate RANDOM from a simple bias KERNEL,
-Hardware RNG's added together may add around 450% Complexity!
-
-Hardware RNG devices MUST be able to Re-HASH to their 197 NIST
-Standards Specification, That is FINAL 2022 DT
-
-KEYS: trusted: allow use of kernel RNG for key material
-
-https://lkml.org/lkml/2022/3/16/598
-
-CAAM PRNG Reference : https://lkml.org/lkml/2022/3/16/649
+https://github.com/P1sec/gea-implementation
