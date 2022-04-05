@@ -2,107 +2,378 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 115514F35CF
-	for <lists+keyrings@lfdr.de>; Tue,  5 Apr 2022 15:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9CD4F5347
+	for <lists+keyrings@lfdr.de>; Wed,  6 Apr 2022 06:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240437AbiDEKzL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 5 Apr 2022 06:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
+        id S234879AbiDFDsD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 5 Apr 2022 23:48:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345619AbiDEJnk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Apr 2022 05:43:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD555C3365;
-        Tue,  5 Apr 2022 02:28:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF140616B9;
-        Tue,  5 Apr 2022 09:28:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D660FC385A0;
-        Tue,  5 Apr 2022 09:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1649150938;
-        bh=YQar6ezHZkPY8X6SYpKiX/qtDQj2Nb/lf+/JJVypKo8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Obr6utQNimflQ/xQmTIfihHkZ9GODdaxQzh1JbGeawFs+dXftLVfNtsUoeCcwmEsw
-         PyPhbU5V2x/0dRubiUIqNVE+Np8kQZOLyEbFTpnlmu0/p0iNbbxD0aUuXEA+mnYmaa
-         Aol4qf+/0Znqxi2Qc5D1rHjmpCneluIBAsDLWokM=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 235/913] KEYS: trusted: Avoid calling null function trusted_key_exit
-Date:   Tue,  5 Apr 2022 09:21:37 +0200
-Message-Id: <20220405070346.899679243@linuxfoundation.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220405070339.801210740@linuxfoundation.org>
-References: <20220405070339.801210740@linuxfoundation.org>
-User-Agent: quilt/0.66
+        with ESMTP id S1573078AbiDERxO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Apr 2022 13:53:14 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430FEDE0A7
+        for <keyrings@vger.kernel.org>; Tue,  5 Apr 2022 10:51:12 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id n6so14241883ejc.13
+        for <keyrings@vger.kernel.org>; Tue, 05 Apr 2022 10:51:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
+        b=TWaP8JwC5o8iBLTw9CODzM5aRo0JC/FLK+j+aWugaAWMVUqJa3ytY5ypTcq7HlgQNT
+         vMyudlVc3uFiCg5wlfZj4es1DKKUsZnsAyrNmPleekmNiHH9X9kiAmw58x1QBUZWhouA
+         B+CnACM2mjA30xil9LgJNEfH6/6FvEm8WD1XknfPOg8PvZHpLsab+uDwrMIdxv5fAS5j
+         EsvmxXh5sSXIC7rgcUH/OWYBBSTDctz0P10laxSUMfNxjiY8HMxlHuxOPFFipbGLUvMd
+         vUWuD62m0P7jQdxjKrM2L6XSW6AODE7UiBDuqkn95bfFdlKqE7aP/foEJfxLyJ8/fBTw
+         yxUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
+        b=zN/3LiIf0YNYn8ijUvkWkMXHw1SP/WtAaO3p11j4eWUvST9jmTEebIPzjIkJpZjBzs
+         hyI8DE6XUOBkEhonehfNhBqAx31sGp+MOu6fHLF2FnSO1aIAB/LuaejebbuOjrIp2W1E
+         DiRkh8i4O43XBiLhQydOFfcw6hjTGlANz79nwMNbvjrJE2xCi9XE5mOG9CO7KdPRRudS
+         taTQibS9fDUpX1a2blorw6FAIBzHeSiyH+cs9bx4Fhnn6v4GZ+4hayRSPJ8DnyeYs1Jz
+         3OPPnN/0B5Lpw2BQb41Dz0yVI8nySmLQMmpB00A9lxvOl///lHKWRb8vcsonDiCKT6tz
+         TD/w==
+X-Gm-Message-State: AOAM532mR671kiiSMdFHKWufR8z4G1owDF8G6vOAiYaG1ThHZZiL2lFq
+        dF+bkCytaqqdZAUq0XP9yUV+YVByPaAaGFGafIA=
+X-Google-Smtp-Source: ABdhPJy3WqnbFWhFyzR2jjv9wo3teILmv3rquwAOArhBIyRmnyDnYZLaGkiIJ7sloKGihwZJppz+pMAkxRt4WJz8Q/4=
+X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
+ cr21-20020a170906d55500b006db148e05ccmr4559155ejc.63.1649181069336; Tue, 05
+ Apr 2022 10:51:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Tue, 5 Apr 2022 18:50:57 +0100
+Message-ID: <CAHpNFcPDv_NYw-h50YgH5qmQmFmpWVL6DCf4jvjg-KE0iSN2OQ@mail.gmail.com>
+Subject: USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
+ need a /dev/random Seed Saved for their Cryptological security for both the
+ device & the USB Dongle>
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
+need a /dev/random Seed Saved for their Cryptological security for
+both the device & the USB Dongle>
 
-[ Upstream commit c5d1ed846e15090bc90dfdaafc07eac066e070bb ]
+Instructions  *RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
 
-If one loads and unloads the trusted module, trusted_key_exit can be
-NULL. Call it through static_call_cond() to avoid a kernel trap.
+https://pollinate.n-helix.com
 
-Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Cc: Sumit Garg <sumit.garg@linaro.org>
-Cc: James Bottomley <jejb@linux.ibm.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- security/keys/trusted-keys/trusted_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+*****
 
-diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-index 5b35f1b87644..9b9d3ef79cbe 100644
---- a/security/keys/trusted-keys/trusted_core.c
-+++ b/security/keys/trusted-keys/trusted_core.c
-@@ -351,7 +351,7 @@ static int __init init_trusted(void)
- 
- static void __exit cleanup_trusted(void)
- {
--	static_call(trusted_key_exit)();
-+	static_call_cond(trusted_key_exit)();
- }
- 
- late_initcall(init_trusted);
--- 
-2.34.1
+NT Interrupt counter Entropy : A counter theory : RS
 
+"more importantly, our
+distribution is not 2-monotone like NT's, because in addition to the
+cycle counter, we also include in those 4 words a register value, a
+return address, and an inverted jiffies. (Whether capturing anything
+beyond the cycle counter in the interrupt handler is even adding much of
+value is a question for a different time.)"
 
+NT Interrupt counter Entropy : A counter theory : RS
 
+To be clear interrupts are old fashioned (NT & Bios) : Points
+
+Network cards have offloading? Yes & why cannot we?
+
+Offloaded does not mean that a time differential matrix HASH AES of 32Bit w=
+ords,
+Cross pollinated though MMX, AVX , SiMD is plausible!
+
+Combined with even network latency timing & interrupt latency...
+
+Various system differentials can alternate line in our table per clock sync=
+!
+
+In this reference Quartz clock instability is not only counter acted by NTP=
+...
+But also utilized as a variable co-modifier.
+
+So why not also advantage ourselves of the clock frequency scaling
+effect to confuse odds again for Entropy (Random, Not Entropy)
+
+SSD does also have a write counter & a cleared state, not so boring as
+one thinks if per 32KB segment is hashed in 4Bit, 8,Bit 32Bit float!
+(remember we have DOT3 DOT 4 & INT8 in ML)
+
+We can utilize write cycle statistics & all hardware; Interrupts by
+themselves are rather Boring!
+
+Computed timings on processes multiplexed over 3 Threads per group in
+competition is also a potential complexifier of Random
+
+Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
+tml
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+****
+
+PreSEED Poly Elliptic SiMD RAND : RS
+
+Preseed ; 3 Seeds with AES or Poly ChaCha or even 1 : 2 would be
+rather fast Init
+
+Blending them would make a rather paranoid Kernel developer feel safe! :D
+
+Like so List:
+
+3 seeds 32Bit or 64Bit :
+Examples :
+
+1 Seed : Pre seeded from CPU IRQ & Net 16Bit values each & merged
+2 & 3 from server https://pollinate.n-helix.com &or System TRNG
+
+4 Seed mix 128Bit Value
+
+Advantages :
+
+AVX & SiMD Mixxer is fast 'Byte Swap & Maths etcetera" & MultiThreaded
+AES Support is common :
+
+*
+HASH : RSA Source Cert C/TRNG : (c)RS
+
+Elliptic RSA : Cert Mixer : RSA 4096/2048/1024Temporal : 384/256/192
+ECC Temporal
+
+Centric Entropy HASH: Butterfly Effects
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Elliptic : Time Variance : Tick Count Variance : On & Off Variance : IRQ
+
+*
+Time & Crystal : Quartz as a diffraction point fractal differentiator : RS
+
+RDTSC Variable bit differentiation & deviation of the quartz sub .0001
+Value combined with complexity of unique interplay with Alternative
+clocks such as Network cards, Audio cards & USB Sticks & Bluetooth
+radio clocks & Ultimately the NTP Pools themselves when required.
+
+(TIME Differential Float maths) TSC : RDTSC : RDTSCP : TCE supports
+single and half precision floating-point calculations
+
+Processor features: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr
+pge mca cmov pat pse36 clflush mmx fxsr sse sse2 htt pni ssse3 fma
+cx16 sse4_1 sse4_2 popcnt aes f16c syscall nx lm avx svm sse4a osvw
+ibs xop skinit wdt lwp fma4 tce tbm topx page1gb rdtscp bmi1
+
+*
+For RDTSCP =3D TValue TV1=3D16.0685 TV2=3D16.1432 TV3=3D15.1871
+When Processor Mzh =3D PV1 PV2 PV3
+RAND Source =3D Es1 Es2 Es3
+
+If Xt =3D 1.9 < then roll right
+
+((TV1 - TV2) * (PV1 - PV2)) / ((TV1 - TV3) * (PV1 - PV3)) =3D FractorXt(Xt)
+
+Es1 * Xt =3D Differential
+
+Es2 Es3
+
+(c) Rupert S
+
+Quartz as a diffraction point fractal differentiator : RS
+
+https://tches.iacr.org/index.php/TCHES/article/download/7274/6452
+https://perso.univ-rennes1.fr/david.lubicz/articles/gda.pdf
+https://patents.google.com/patent/US9335971
+*
+
+"Taking spinlocks from IRQ context is problematic for PREEMPT_RT. That
+is, in part, why we take trylocks instead. But apparently this still
+trips up various lock dependency analysers. That seems like a bug in the
+analyser's that should be fixed, rather than having to change things
+here.
+
+But maybe there's another reason to change things up: by deferring the
+crng pre-init loading to the worker, we can use the cryptographic hash
+function rather than xor, which is perhaps a meaningful difference when
+considering this data has only been through the relatively weak
+fast_mix() function.
+
+The biggest downside of this approach is that the pre-init loading is
+now deferred until later, which means things that need random numbers
+after interrupts are enabled, but before work-queues are running -- or
+before this particular worker manages to run -- are going to get into
+trouble. Hopefully in the real world, this window is rather small,
+especially since this code won't run until 64 interrupts have occurred."
+
+https://lore.kernel.org/lkml/Yhc4LwK3biZFIqwQ@owl.dominikbrodowski.net/T/
+
+Rupert S
+
+*****
+Serve C-TRNG QT Fractional Differentiator(c)RS
+
+Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
+32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
+differentiator.
+
+SipHash: a fast short-input PRF
+
+Rotation Alignment : "The advantage of choosing such =E2=80=9Caligned=E2=80=
+=9D
+rotation counts is that aligned rotation counts are much faster than
+unaligned rotation counts on many non-64-bit architectures."
+
+http://cr.yp.to/siphash/siphash-20120918.pdf
+
+https://www.aumasson.jp/siphash/siphash.pdf
+
+"Choice of rotation counts. Finding really bad rotation counts for ARX
+algorithms turns out to be difficult. For example, randomly setting
+all rotations in
+BLAKE-512 or Skein to a value in {8, 16, 24, . . . , 56} may allow known at=
+tacks
+to reach slightly more rounds, but no dramatic improvement is expected.
+The advantage of choosing such =E2=80=9Caligned=E2=80=9D rotation counts is=
+ that
+aligned rotation counts are much faster than unaligned rotation counts
+on many non-64-bit
+architectures. Many 8-bit microcontrollers have only 1-bit shifts of bytes,=
+ so
+rotation by (e.g.) 3 bits is particularly expensive; implementing a rotatio=
+n by
+a mere permutation of bytes greatly speeds up ARX algorithms. Even 64-bit
+systems can benefit from alignment, when a sequence of shift-shift-xor can =
+be
+replaced by SSSE3=E2=80=99s pshufb byte-shuffling instruction. For comparis=
+on,
+implementing BLAKE-256=E2=80=99s 16- and 8-bit rotations with pshufb led to=
+ a
+20% speedup
+on Intel=E2=80=99s Nehalem microarchitecture."
+
+https://www.kernel.org/doc/html/latest/security/siphash.html
+
+https://en.wikipedia.org/wiki/SipHash
+
+Code SIP-HASH
+https://github.com/veorq/SipHash
+
+Serve C-TRNG QT Fractional Differentiator(c)RS
+
+Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
+32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
+differentiator.
+
+As we see rotation may benefact from the addition of Quartz crystal
+alignment sync data from 4 cycles & aligning data blocks,
+
+Obviously we can pre share 4 64Bit blocks use use a pre seed AES/ChaCha Qua=
+d!
+Indeed we can have 16 64Bit pre Seeds & chose them by time sync for kernel
+
+Security bug; Solutions & explanation's (contains additional RANDOM
+Security Methods) :RS
+
+https://science.n-helix.com/2020/06/cryptoseed.html
+https://science.n-helix.com/2019/05/zombie-load.html
+https://science.n-helix.com/2018/01/microprocessor-bug-meltdown.html
+
+Rupert S https://science.n-helix.com
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://aka.ms/win10rng
+*
+
+Encryption Methods:
+https://tools.ietf.org/id/?doc=3Dhash
+
+https://tools.ietf.org/id/?doc=3Dencrypt
+
+HASH :
+
+https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-algs
+
+https://tools.ietf.org/id/draft-ribose-cfrg-sm4-10.html
+
+https://tools.ietf.org/id/?doc=3Dsha
+
+https://tools.ietf.org/id/?doc=3Drsa
+
+Encryption Common Support:
+
+https://tools.ietf.org/id/?doc=3Dchacha
+
+https://tools.ietf.org/id/?doc=3Daes
+
+SM4e does seem a good possibility for C/T/RNG CORE HASH Functions!
+
+ARM Crypto Extensions Code (Maybe AES Extensions would work here)
+https://lkml.org/lkml/2022/3/15/324
+
+ARM Neon / SiMD / AVX Compatible (GPU is possible)
+https://lkml.org/lkml/2022/3/15/323
+
+*
+
+197 FIPS NIST Standards Specification C/T/RNG
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+Only a Neanderthal would approve a non additive source combination
+that is injected into the HASH & Re-HASHED ,
+
+One does not Procreate inadequate RANDOM from a simple bias KERNEL,
+Hardware RNG's added together may add around 450% Complexity!
+
+Hardware RNG devices MUST be able to Re-HASH to their 197 NIST
+Standards Specification, That is FINAL 2022 DT
+
+KEYS: trusted: allow use of kernel RNG for key material
+
+https://lkml.org/lkml/2022/3/16/598
+
+CAAM PRNG Reference : https://lkml.org/lkml/2022/3/16/649
