@@ -2,55 +2,55 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFF5C4F6738
-	for <lists+keyrings@lfdr.de>; Wed,  6 Apr 2022 19:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C82BB4F678B
+	for <lists+keyrings@lfdr.de>; Wed,  6 Apr 2022 19:39:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239174AbiDFRi0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 6 Apr 2022 13:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55546 "EHLO
+        id S238127AbiDFRii (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 6 Apr 2022 13:38:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239476AbiDFRhk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Apr 2022 13:37:40 -0400
-Received: from de-smtp-delivery-102.mimecast.com (de-smtp-delivery-102.mimecast.com [194.104.111.102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC4A1E5321
-        for <keyrings@vger.kernel.org>; Wed,  6 Apr 2022 08:45:53 -0700 (PDT)
+        with ESMTP id S240154AbiDFRiU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Apr 2022 13:38:20 -0400
+Received: from de-smtp-delivery-102.mimecast.com (de-smtp-delivery-102.mimecast.com [194.104.109.102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269B934AEB7
+        for <keyrings@vger.kernel.org>; Wed,  6 Apr 2022 08:47:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
-        t=1649259951;
+        t=1649260020;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=vXGvgDFjDX/smLB1vEYOvAh6Bs7vrWBkVp/32iEFEuk=;
-        b=gWrXX/nVSPrbwDEhMHiUc2jP/D2VMLVulHeYd6Zm+Dmt6Sr9rm63KY1mCmJfpxP3iFVQxq
-        KG4Bdy7rtTCrCZJRP/jyrZ1kb9/d/U1tByC5IbfL4fIOctaq5EqBgKfQDWEMiIrwtVB5B4
-        uYf201OckKS1l4WMEGMwhcHTurQ4znk=
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com
- (mail-am6eur05lp2107.outbound.protection.outlook.com [104.47.18.107]) by
+        bh=Kc8CRbZjWWFNq3yUrHt8iTG6oax4BgdV/OMmdCABUtw=;
+        b=N3ZryaTrnrrHGUWxB9rouoHHdYDFAfEIzQTPE+SUI81mUMl07rVjPSW4BkRv7b62zheMl/
+        5ewvzaeP2XwEccHmhMUpUNr0slVWi7tbIfGPljE1KuhKAQBeIUsezQPOV58SL1EQtUBDDN
+        lU+NtxzdWCIlVOQxiyW1PO6yenorQ8w=
+Received: from EUR02-HE1-obe.outbound.protection.outlook.com
+ (mail-he1eur02lp2052.outbound.protection.outlook.com [104.47.5.52]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- de-mta-26-uvIfD3jyO42kGG51YL4-0Q-1; Wed, 06 Apr 2022 17:45:49 +0200
-X-MC-Unique: uvIfD3jyO42kGG51YL4-0Q-1
+ de-mta-31-dD9XrEghMiKpNWbNYZ2PLA-1; Wed, 06 Apr 2022 17:46:57 +0200
+X-MC-Unique: dD9XrEghMiKpNWbNYZ2PLA-1
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L+hKoTVeWGeXCsk4BZCJCFxetakixQfB5Bcp+UviwFUDg06AL9z+2VjA7M34o05JxERJHKsR1aMqUtLKmRyXG9vJFZabEEIhOhBcnck1BYJt9lor/U9YTrhjr7jqgAillXAb4bWka5+68Ho/BSFuqQeWhilDOHs+e5oYWoPGm+aRLWI5H9I5DenY6SI3bR5X2kZIV0Mkrxb1eYTkcVLSqS7Tew+qpGVZ741gIJtN3KtWhUxuz5AOozvX+k/itpe8UcZSgM6+IJQGXaCHsIye6MGeZru7t3j84xWMVie8R2tuLU4IEQ1xM5S12OayYUgo89lKMmMyS9+8XKp+XNjg4Q==
+ b=QPh55zBV0oFyL5pfau4fhHAcnoVi4lqmUDVSWUVnrqQaWFKWISYOXpSHUXBzB4jOFIeLCcjy1bc/rVIbb13XXdxDv2HhqRBDTMdMy6GZjBX5BxJj4qsYnyfUuPjvhCtUm5v37D791dVyDcBtXZElNrdSsUiDR2/YjJV9iajb3Ot5kvZIIiwT9paaApkhluIhIYqXMmdMqR7Dyd0bPdtbDrcFMZyn7Tk6BYtFN6sRvCmoCrIG5Isjxq26kXfe6tLUkJgjfpQKMIF5K71bRcmZfIJ0urFb/VDxYISFAx/sbfkyoAF7GrSokJziaxRFnLR1PZ9Fkuui70rOxTK9pMb82Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vXGvgDFjDX/smLB1vEYOvAh6Bs7vrWBkVp/32iEFEuk=;
- b=iPNRitiXyi8LOkDIvzV+2jBEyYGBxM4VREyhJWNJVfHodFBfQNrRURBJA7FphUtgYXJyQPdMTm1wezQGsiufchlgQTdPfgHWQbOc3F13zcdZ3BN3X9W3cLi/w5JY1amet6t6Vn7ztn1npcRVXJw6qvXOZl8f3AQ7cTR5mq8/WPAFxIe/y9CmoCp0DzJVZ45m/llRn8o53qA9udRO7jncQUDDUa22dsH1vabQRKHRGl3K45yb2hu9cC8KsfAy7v3cNiYRRuuuA9vidU01ZafDb1cOX5hi86iUVGGoAczx3UisCE8Jr6JCr7udR7LqpPB8d30S9ygOEnJSm4YdO+3p/A==
+ bh=Kc8CRbZjWWFNq3yUrHt8iTG6oax4BgdV/OMmdCABUtw=;
+ b=A2l7Gy5I8uioAE9wPCxs8axaNmmHTcSPxM+PTQFudvG7QzpanP1zN94WTPAE/raM7BXQJt2f5o8a6iJr8kev6Czg0uUnZGshJsHRIGROVLoZEEBGlz/C0GXo73LjbMC50jPYa5bn2TrfwXbp2bzn7feTAe1zlJyg25X5+5ewfljRwE4uxnMx1Mrhloulj2s4petSsQ6KP1c4DRmT77KvJiiQHmDRHEKfV6Od5L01TR4UTi8F+X1WfWM+Bk0oPk2wKnm2KeXNlr3YLcZi0XN02BYgWwYhzR+Q47reB8KynsRlEBnqomuwvPpLojVBZ08v/yhGZaH0XULdhq3IXMKGPg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
  dkim=pass header.d=suse.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=suse.com;
 Received: from DB8PR04MB7097.eurprd04.prod.outlook.com (2603:10a6:10:12a::11)
- by VE1PR04MB6445.eurprd04.prod.outlook.com (2603:10a6:803:11c::22) with
+ by AM6PR04MB4070.eurprd04.prod.outlook.com (2603:10a6:209:44::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.31; Wed, 6 Apr
- 2022 15:45:47 +0000
+ 2022 15:46:55 +0000
 Received: from DB8PR04MB7097.eurprd04.prod.outlook.com
  ([fe80::8d7a:5d52:e592:9227]) by DB8PR04MB7097.eurprd04.prod.outlook.com
  ([fe80::8d7a:5d52:e592:9227%9]) with mapi id 15.20.5123.031; Wed, 6 Apr 2022
- 15:45:47 +0000
-Date:   Wed, 6 Apr 2022 23:45:33 +0800
+ 15:46:54 +0000
+Date:   Wed, 6 Apr 2022 23:46:38 +0800
 From:   joeyli <jlee@suse.com>
 To:     Michal Suchanek <msuchanek@suse.de>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
@@ -69,73 +69,73 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Kairui Song <kasong@redhat.com>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, kexec@lists.infradead.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        stable@kernel.org
-Subject: Re: [PATCH 2/4] kexec, KEYS, arm64: Make use of platform keyring for
- signature verification
-Message-ID: <20220406154533.GM11641@linux-l9pv.suse>
+        linux-s390@vger.kernel.org, Philipp Rudo <prudo@linux.ibm.com>,
+        kexec@lists.infradead.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, stable@kernel.org
+Subject: Re: [PATCH 3/4] kexec, KEYS, s390: Make use of built-in and
+ secondary keyring for signature verification
+Message-ID: <20220406154623.GN11641@linux-l9pv.suse>
 References: <cover.1644953683.git.msuchanek@suse.de>
- <7581dcfe676024aa438beddecbf162e4ec81ccfc.1644953683.git.msuchanek@suse.de>
+ <9f8b71f368843568d7dd6764f8c8a68b1f3a9bbc.1644953683.git.msuchanek@suse.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7581dcfe676024aa438beddecbf162e4ec81ccfc.1644953683.git.msuchanek@suse.de>
+In-Reply-To: <9f8b71f368843568d7dd6764f8c8a68b1f3a9bbc.1644953683.git.msuchanek@suse.de>
 User-Agent: Mutt/1.11.4 (2019-03-13)
-X-ClientProxiedBy: HK2PR04CA0048.apcprd04.prod.outlook.com
- (2603:1096:202:14::16) To DB8PR04MB7097.eurprd04.prod.outlook.com
+X-ClientProxiedBy: HK2PR0302CA0021.apcprd03.prod.outlook.com
+ (2603:1096:202::31) To DB8PR04MB7097.eurprd04.prod.outlook.com
  (2603:10a6:10:12a::11)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1d7b6e3a-e13a-4bee-15da-08da17e48482
-X-MS-TrafficTypeDiagnostic: VE1PR04MB6445:EE_
-X-Microsoft-Antispam-PRVS: <VE1PR04MB6445CD622E7CAE23D5FCF09EA3E79@VE1PR04MB6445.eurprd04.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: d418655b-d94b-40da-3613-08da17e4acd6
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4070:EE_
+X-Microsoft-Antispam-PRVS: <AM6PR04MB4070D47A2310D3DCE87BDDACA3E79@AM6PR04MB4070.eurprd04.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /xnb45HKxLWDwj0r2PFndQf+Zhe5Bonae/PKyZ9m0k175gEyxRH0Jm2prz+Pm+huydRFar80lZvprRAyVreZbZtct/T3JwTDrKKgzGbqqVO4ZJHhoQHcy8lYy9+ftAoFzZlpc2hf1h3d+37NxKrTxq2tusRJOV/mc+/Nk8y8yUcmR9UHciU8qBQRO18QEYNzF3bVEc62rZY4toh1XIrx1ZGdrGZ4WNMRleu8hAyg4q2xdImY9hPulHnvNrNFZPrsHlQf+TUsovXmu83qHMX++UIGPus3j+WbSVDWfSoTCfOvQPZq4NUr56M8rH8Bf0Rpy9DfLWUr+Hahef0tlRXeujszg2i1EkhQbIDew+otyU6Lwtsb9sFBH/nNUbVRi2rlpRJ6cMcsStAxAzOYA9ixwIe02q8xCwPPNy48hIx1LhTgG3tpkLswgUjTaQa27qvMmx0s8TRuun5g+NC0yMZNyTvJ2w5tDaL/sIkipGLTnmeuEPx8cc/a7wgiJ1CR0LT2zR5ElIkPVxQmwBpmqMb1xvpiBAfxTHn+jXordDtzcctesa5salwEPGG/o9/HwGrE90KMO1FXC6pR9isKJwrgK9J5kgFe+J4NS0JWeIVXXMuV8hf+GcHUahras9Rvjh6WiEu6LcHbKZdDa6Va5FE9c9CPjB0w/2bl8qY7WitUZhQWuUVP2ACh7ma/3K+BCWfUzemP5MOrhGo63YnOCUexvA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7097.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(6486002)(1076003)(186003)(9686003)(6666004)(6512007)(508600001)(26005)(6506007)(83380400001)(54906003)(7416002)(316002)(36756003)(2906002)(15650500001)(66946007)(6916009)(8936002)(4326008)(8676002)(66556008)(38100700002)(5660300002)(86362001)(33656002)(66476007)(43062005);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 3oE5NtWLJA5d7LHL69odBtux0PpOeNK7KBNPmFqDLYk8U8vg57/CPANNDcc0KaOhi1dWPyqb1ZFpfp5E0VVYVs2joZlMSv/RPpnf3EVeNhD7JyXKlheQldVyBsUBOhGKuoY9Xnixbd2CYpPvfifCeq/BGPqrs1I252nvKzSkMvkky/m1Mkv52amy0lNviMrurDSEzfqym/99an2t1nJ5123uq6nyhKXUwXftriul3+wQkWmyzXiRjgvNxuAcNySm1ZI3HpZzNV+vDUnz5B4QXUitHQUwaF1Tm+BzbhaoH5Irocd4zLOl/1r/iT+K8NPsPox9aCV8dbbaSGfBAyObzSfv45tLAkkqwa9aMLMSFkMm6uzI229uSTU8yt0SErU23LO408qHhqvRHYD96lTEP+owQtWN/5KdW0e+x39htL4gNmz8K3TwDisvyod9hGTMTPLoGWe7pawyptQe5HkT8iGdKnYPH72R6DG/xf+56KjtcnLEFpR/Aod1aZiylYiw37JkGLScYVnPpuS+I4oeOWJmLmFwn2fOUP2TAf9Is5iOcdVIJgk1GILF82dZdjU5zhv5asRoKleLbPCKQ3JZ0JzaJQZtyf6y8J3plp3H5ZM/5zz8AUikteIj9lQkAq1HCXx1u2dJ6Qe4PaNOrNaPjttH9TQRsJA714rApZGSxhXbuP3FgAdvd0+oRAwWDP7m1I2EwvSU/og4NTKb59cEDg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7097.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(26005)(36756003)(83380400001)(33656002)(1076003)(2906002)(186003)(15650500001)(66476007)(7416002)(508600001)(6666004)(5660300002)(8936002)(6916009)(6486002)(6512007)(54906003)(9686003)(4326008)(316002)(86362001)(6506007)(66556008)(8676002)(38100700002)(66946007)(43062005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yKVSGF0wMWKxQD2OWnPoeDR5FDbZzUcUFRnPg5Mmm5/SMqEOjMsUp2L5kQqf?=
- =?us-ascii?Q?5y25mNTB6Vo3UeRzU35rtwZc+y68hphs2tMOXQ5EL81gJ5BjNr9IIHK96YNG?=
- =?us-ascii?Q?38Dm/DKkCgI/XktHmFZ9aUikE8unQlexLVJsEGzjpCWSQ9SdOh9jij7RqjJA?=
- =?us-ascii?Q?HuZQGaBwk9p4c2WOwQhE4owRDQLxcmxIo995921ctR6nGWfKrjs2jQnXUQZD?=
- =?us-ascii?Q?aGM6Al/Z3aNHkCUEb/NFBMdPfh8WJvcW3Abzby0U3YMzMLOziXmz8t0t2K6D?=
- =?us-ascii?Q?lgPSE9crKNuZKp82jHmEbM1YNG+dGBGk5cEhuI3IadTF8kWNank0ljtpzdc7?=
- =?us-ascii?Q?LLQ4pFnAkhaTqtbF1d8A0jxT9FPsNesm6XOAa+tla0l4v0urFP0eet5deT0Q?=
- =?us-ascii?Q?MjW5iec+13ZsYp7UeZVqaip276AgJ3JGvvOvaUPFpn4eRcZw9R6jQajIWiKU?=
- =?us-ascii?Q?dFlbtd2dfKdM6/v7rWoSo6anlQHZfLpEMJk8bn+yFK1mrmD/rJRX1Nvc8iis?=
- =?us-ascii?Q?2p/pXu3Lg1cy3zgBO/H/bBLZ9ZhiMK+sMmIMme6l5lo24KIZuGvkC7aB0HCP?=
- =?us-ascii?Q?0sy1eStrdWVlqdfjVgOx3znpeE94uXI82ZRA92a+sjD2+VJ/thQJpuopsY54?=
- =?us-ascii?Q?krpbmIoWXQ+83Sy4UmqIdBo2MqE6zz+PoOVSqz+2Mk41WyfqzQMIppVB7Ik0?=
- =?us-ascii?Q?z6aEGPV3kbUXe0iM9Wz6w0vRCpn23t1n0hxy4ZTCMMdypy9Ckki3iNDa/QG5?=
- =?us-ascii?Q?uaJRDAyb6PapPvm5cThfqvB6/978bPFtpGp5cwZQrj3I2Fr7AyRYHgGMRFLK?=
- =?us-ascii?Q?jvRhluJFZRm8+usXgzR3+iZmEY4ASz7UUZH5KVdLkhk4uP5HCVAxTqcXz+4+?=
- =?us-ascii?Q?0UdHglQMnvCGwTmsNPIDb/Is/IsSotAhG+S2x+kjXRuTpSVPziaI4Xd08PXu?=
- =?us-ascii?Q?+bqKGokxQd5gTdEHZGmD5qj5qo3JgFZrKtloUl2MXDfo9u4BUROy7WFAyzBD?=
- =?us-ascii?Q?3GFpAVJWYSCQxewkqrnCIMogpm1JQ12ve33PbIv3BY6qF4DoMpdVyc11na2Q?=
- =?us-ascii?Q?Qx4GgWNYwnjWo9yczkgDGqMidPZvYUy5qagh6hYKrYFDl28L/x+bnslpx+ia?=
- =?us-ascii?Q?N1nvqP6/jN0Il2c1y8k/aoZm7GwuGv3GBDSL9flBep/z3h7c//7w/nvcDYgY?=
- =?us-ascii?Q?phPrSEwO2taTHYsswCqruTwkS0b77K82gah7xZ5/7ZmC2RO2BdYDSZwR+XIU?=
- =?us-ascii?Q?plR7NXRj4UgGc9yzlz/+SaA0d8Tx2AC+YdgXnPxgIyBWS0WJdAqwo7vgRb8V?=
- =?us-ascii?Q?6Yn3SAgwJNyqUEneeNt3Wwn0l6LJdxjukJirAaE0I4465+X2unu0rGEcEM/H?=
- =?us-ascii?Q?J0yxd5gDfZb7nRHYqA4j7y5Sr+4PiiVC7zQvRmq5g03yYMWu2Qx2YpJxYb+G?=
- =?us-ascii?Q?n8tacTp6uTN+i9dGxKCxZrb4EIRUf9G3VIzQy71EUMS0wPpD37J9jjhkA1WO?=
- =?us-ascii?Q?0lgVwqZ2IxIL80fFGd088zMT5/EGcmWmz1kA6BBcldrGHX6qXmXjL6ejqaql?=
- =?us-ascii?Q?sWKhEJtVhYnU8LyIsVeHnZUdDCsFOq+9TYoZAyOZcCVRLluoVMcVFKAz88QN?=
- =?us-ascii?Q?BDusdirtXpxcUJ6jw03xdDyXtcCt0LxbEFYlw6BgspWwp1u1o7/VduEzDqxo?=
- =?us-ascii?Q?MWM6YOazbntlCIi3lsBMfp4u710mrz+JrDu1A+pscrktZg17/smXAAqMH4cr?=
- =?us-ascii?Q?EdiPaSsEQw=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?molW7i6Yc2b/xuiNoCt/+4aXhvGAjEAM6PlvFs/9uIMZKoGKYRc9t2GrjY/J?=
+ =?us-ascii?Q?Os1OvpGc3RCHyxBeGkJf0EAa8gcEhZcTUZ2x83Ao5pgFMp9pJgYAUQXGFnaj?=
+ =?us-ascii?Q?oTXjtoUgfDISuBi3BiAAO5f1LbeZOQ+k7C8N0ln7JY2uLgK8taynFvqTqmc5?=
+ =?us-ascii?Q?glK5fFbvu/p/XF7/0RDatNRIDrLYhzt2AucOmfH4aQdu3yE6FTZtb1uVJm41?=
+ =?us-ascii?Q?j7jhIHiH6qIOdAi+hQ2XCDE9pKjOwuaFYfyB6mAVxuDsinXDxqMzMytsNKV2?=
+ =?us-ascii?Q?+V/7HvrAIiOW/cDe56Mu+hxceyBXaP8a8p2hTpLD2359ekeaFoIe8jAja6iU?=
+ =?us-ascii?Q?KrX+Jund1iTDThWt2mgV2OHa7KZvPoZJz8ulVid+vzwFgQhj65l0O1flO/jr?=
+ =?us-ascii?Q?Iz5YSmnmhBkdfDMDNciCmChg9yMMDuKL/3u9vM6ZCxfTA7ql+5MvasvVdRhN?=
+ =?us-ascii?Q?jgWFNCj1w5OIWfHKCAphiU3fDYgDN4/wFr15qCTCfeS8MSzDn4TXrP9zGlUH?=
+ =?us-ascii?Q?hrgi3nyWm+4ItD6swtdHpLy1s9kFix9bCpebL6hLYqWFcaFqxh+blwom5h1G?=
+ =?us-ascii?Q?bj3b1rf98OyzkEQmQdBEwvdYKJG/SI0F35TPsocCtIfg8TIdu8ilGmeLSCKs?=
+ =?us-ascii?Q?x+sY35ELqZDsIdH8ewnmvsHrjeP5jVzqZjgavuvk0G/fQ8o9FJhlsOAgr5kE?=
+ =?us-ascii?Q?B/VJphYyWDs/0dS5SWqqDpwGLSeil/FntSUacL0iUtGJ5HdnCSn8toVkOFSC?=
+ =?us-ascii?Q?vlXjac1NTgitPy+v5NPlEgCuDWWyVjjvXiJPPDsdeVwqc5/ITlkPJDKCeXlc?=
+ =?us-ascii?Q?TATSYfOsJP2npFWcHBwP2pSJNwEj1hXeLxYfahYps6PfGG5cB3Wkmjz3IPsE?=
+ =?us-ascii?Q?o/3LvfIhBfXXpTNEndxWG8DqgoUTt1gBswHwWKMwn1pV65IXaYlZ6UO+YN+2?=
+ =?us-ascii?Q?wIYnEkcTyvqrZ7QVZ7X20LsWQVZ58CPbbWQiEFi4IRxQ8MeMvgciWMEi4cDR?=
+ =?us-ascii?Q?Bz+o2pvU9wUFROvLUM7k5M6EH4+VDyn4FO2jahNl/pGqaOOKWLaA31mLDXdJ?=
+ =?us-ascii?Q?skRB+qH+9YQpwEt6dJbwk7IHT1mNuQf5/AD6JWYI3fJDKjOVtvQuvrjtQ5Tw?=
+ =?us-ascii?Q?pT0+lFvoZ6CYXtwTOxSn17+zursritgq2CKkjqEBEBDsq33iwaCyhF2prf9v?=
+ =?us-ascii?Q?FDsYHEiesEz9a1RhWXdVKn8VMR5GzHnT/4bG0AEcWkvleqrLni/JrfEHPdna?=
+ =?us-ascii?Q?4yfyK4sGJZcI7Dudn0m1zWZ1tJAQIbpQUbI4X/vvFbx4Srr+XyrcGvS8flSO?=
+ =?us-ascii?Q?2+E6OIHVN0maUuMpaLaOUF0K4xl54RzJqk4qb1MVyoTxRiO2RUhI1ROyzrm1?=
+ =?us-ascii?Q?ktYZ3E6alPX0mltRetUn177UCUcDt3YvOerNKVXlH99B2W5W2FWFT2v7jzEm?=
+ =?us-ascii?Q?t2Jd7aRaFZhmOBRfo7uggNWJHGrlY4hjpvbZT1cmIS8jzBmoX61JsIxtlain?=
+ =?us-ascii?Q?IFZe9PyCKi7ezxuC11Oz9HEIFdassb0oOdhWQUQtVf2gz0VC7SBuxNfgO7W3?=
+ =?us-ascii?Q?KxTWtvbHYQXt9lqIS45hgsUzX9/4ieu8MyhbQ+CYEZSghxpipFqFDEHPdPNq?=
+ =?us-ascii?Q?220UQixBjZQ2dteaep/R537xDS+1UlMxYlpMK7GQUPHHleOjinHuF8peFLG7?=
+ =?us-ascii?Q?ohPdnMcnfFBFOY1SbS9ZhsNmdND8O8NoSD+82uMcY8ihPxIfIc2buYF8XD56?=
+ =?us-ascii?Q?sz+dtDCbPw=3D=3D?=
 X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d7b6e3a-e13a-4bee-15da-08da17e48482
+X-MS-Exchange-CrossTenant-Network-Message-Id: d418655b-d94b-40da-3613-08da17e4acd6
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB7097.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2022 15:45:47.2258
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2022 15:46:54.8548
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gCcM561pyQ2vjCPVKMV0aafQfITGDNEO0tVrCcNX03g1baNga7Pjca/A0P03EX+K
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6445
+X-MS-Exchange-CrossTenant-UserPrincipalName: eJ3baT0gVQR7UQUTVkMOB4IF2SJERARr/3wgeeelnU056DyPCMAi8xaMjUhetMiw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB4070
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
@@ -147,13 +147,15 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 08:39:39PM +0100, Michal Suchanek wrote:
-> commit 278311e417be ("kexec, KEYS: Make use of platform keyring for signature verify")
-> adds platform keyring support on x86 kexec but not arm64.
+On Tue, Feb 15, 2022 at 08:39:40PM +0100, Michal Suchanek wrote:
+> commit e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
+> adds support for KEXEC_SIG verification with keys from platform keyring
+> but the built-in keys and secondary keyring are not used.
 > 
-> Add platform keyring support on arm64 as well.
+> Add support for the built-in keys and secondary keyring as x86 does.
 > 
-> Fixes: 278311e417be ("kexec, KEYS: Make use of platform keyring for signature verify")
+> Fixes: e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
+> Cc: Philipp Rudo <prudo@linux.ibm.com>
 > Cc: kexec@lists.infradead.org
 > Cc: keyrings@vger.kernel.org
 > Cc: linux-security-module@vger.kernel.org
@@ -163,33 +165,44 @@ On Tue, Feb 15, 2022 at 08:39:39PM +0100, Michal Suchanek wrote:
 Reviewed-by: "Lee, Chun-Yi" <jlee@suse.com>
 
 > ---
->  arch/arm64/kernel/kexec_image.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
+>  arch/s390/kernel/machine_kexec_file.c | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
-> index 1fbf2ee7c005..3dee7b2d8336 100644
-> --- a/arch/arm64/kernel/kexec_image.c
-> +++ b/arch/arm64/kernel/kexec_image.c
-> @@ -133,9 +133,17 @@ static void *image_load(struct kimage *image,
->  #ifdef CONFIG_KEXEC_IMAGE_VERIFY_SIG
->  static int image_verify_sig(const char *kernel, unsigned long kernel_len)
->  {
-> -	return verify_pefile_signature(kernel, kernel_len,
-> -				       VERIFY_USE_SECONDARY_KEYRING,
-> -				       VERIFYING_KEXEC_PE_SIGNATURE);
+> diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+> index 8f43575a4dd3..fc6d5f58debe 100644
+> --- a/arch/s390/kernel/machine_kexec_file.c
+> +++ b/arch/s390/kernel/machine_kexec_file.c
+> @@ -31,6 +31,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+>  	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+>  	struct module_signature *ms;
+>  	unsigned long sig_len;
 > +	int ret;
-> +
-> +	ret = verify_pefile_signature(kernel, kernel_len,
-> +				      VERIFY_USE_SECONDARY_KEYRING,
-> +				      VERIFYING_KEXEC_PE_SIGNATURE);
-> +	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING)) {
-> +		ret = verify_pefile_signature(kernel, kernel_len,
-> +					      VERIFY_USE_PLATFORM_KEYRING,
-> +					      VERIFYING_KEXEC_PE_SIGNATURE);
-> +	}
+>  
+>  	/* Skip signature verification when not secure IPLed. */
+>  	if (!ipl_secure_flag)
+> @@ -65,11 +66,18 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+>  		return -EBADMSG;
+>  	}
+>  
+> -	return verify_pkcs7_signature(kernel, kernel_len,
+> -				      kernel + kernel_len, sig_len,
+> -				      VERIFY_USE_PLATFORM_KEYRING,
+> -				      VERIFYING_MODULE_SIGNATURE,
+> -				      NULL, NULL);
+> +	ret = verify_pkcs7_signature(kernel, kernel_len,
+> +				     kernel + kernel_len, sig_len,
+> +				     VERIFY_USE_SECONDARY_KEYRING,
+> +				     VERIFYING_MODULE_SIGNATURE,
+> +				     NULL, NULL);
+> +	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
+> +		ret = verify_pkcs7_signature(kernel, kernel_len,
+> +					     kernel + kernel_len, sig_len,
+> +					     VERIFY_USE_PLATFORM_KEYRING,
+> +					     VERIFYING_MODULE_SIGNATURE,
+> +					     NULL, NULL);
 > +	return ret;
 >  }
->  #endif
+>  #endif /* CONFIG_KEXEC_SIG */
 >  
 > -- 
 > 2.31.1
