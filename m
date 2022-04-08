@@ -2,252 +2,139 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 510D84F7EEF
-	for <lists+keyrings@lfdr.de>; Thu,  7 Apr 2022 14:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E804F8F41
+	for <lists+keyrings@lfdr.de>; Fri,  8 Apr 2022 09:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245116AbiDGM3r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 7 Apr 2022 08:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52102 "EHLO
+        id S229437AbiDHHN1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 8 Apr 2022 03:13:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242226AbiDGM3l (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 7 Apr 2022 08:29:41 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDE77244F
-        for <keyrings@vger.kernel.org>; Thu,  7 Apr 2022 05:27:38 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id g20so6213716edw.6
-        for <keyrings@vger.kernel.org>; Thu, 07 Apr 2022 05:27:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=VRuoAIQ8VM7Z7lkjnKl30FJLKecdPI+AAj9EpsNSn2k=;
-        b=pjuzAXsmGUfimoqYqkuIDhQezqaFwxIutqB489Dv2Wm6p+bqikvsuLx0pRh5WRfKF0
-         xzqz+Rxa2d6UoA9YV2hYUMqzJ3rJ3BwpR5d10EhpJI7rMd0X3yRCj9H/XCPV26VohZyT
-         gXLwdemo1hExYlfRek+blr/0B9Sg02n87v+A/EtvANbahRzFqYdBVw3WLOFmLpMSh9ku
-         xczB7aP7A4m4WsvgbrY8y3z7yNpHX0ZNy4F/g5zZDmop9kvZF3DJkWtf8MLEFSzyLeWt
-         eKDpMnjYliQRoEEeNy0Xqzuv3TEAiYUXm3wORsCQynvBP1duaALpucL9HXfP7CSTIXLH
-         tFvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=VRuoAIQ8VM7Z7lkjnKl30FJLKecdPI+AAj9EpsNSn2k=;
-        b=DE/b37DelskO+pa5QAtIwXo1cGRalB4uJL/36B0DEj292aaYZc16j1O4XuViAS8J+o
-         6BzSHYDm8kFBImJc73VvWHnzW8Hc1LgMocgI4jyoJQz5eYl8/aR34HsCaB3IV3oyVxgd
-         ugJmdAd+sRuHojWBP+1G2mqvHFRYpKF5U06zGI8lGuk0x0ofbwQpP98TwzhzrZpwwAAw
-         tUlF+Q1EsVGUQpbBSojUzgUSsJl5pjIZDacsItA9vdXtUCpa3x3/X1OiiuCxuumA0BTe
-         J0+OALbjwqD82GgBK6JVf54oGyuL4L/v4NsLpm2hONS55cglWhAV1NFCCLbCXVg/pb6M
-         z4ag==
-X-Gm-Message-State: AOAM5332xDW5MxrHHTB05kCoLHmIh1jJx14JAylRMbolSL/X/mhM2jfM
-        74NFZPJsEByFjQkNMWTz9gWAyzMZvjK0wh89Fes=
-X-Google-Smtp-Source: ABdhPJw0Jqrrh7/d2QZPdCy+X/ZgkW51U3q/hqh4YEClrBeDkimwT6OirRgRyVtwDUG2wV87fTl/0HtTj+00K+kH6d4=
-X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
- el4-20020a056402360400b0041cc4e62988mr13852621edb.157.1649334457045; Thu, 07
- Apr 2022 05:27:37 -0700 (PDT)
+        with ESMTP id S229446AbiDHHN0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 8 Apr 2022 03:13:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BBC3A208C35
+        for <keyrings@vger.kernel.org>; Fri,  8 Apr 2022 00:11:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1649401881;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=EIdT20lZyuxUif4lmdeJV2YtVVAT8aoGpkU+KSrIRGM=;
+        b=aDxf4f0l4kagvWAtoOvj6R5Pwu21cI2UVD/PGyX6UPhfOAPcZ2vA7eyQocMK2fM6rhF6ph
+        p5+ZgxJaKu2VdrayS+eYNbCl6GXvwlZfNuoGmxuLpigKII09PgcMe1PJfQJBI0ZoOzkQi8
+        9UIxVwCgY0BpkMiGSidgzaOWK7K/5Y0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-571-3p8lm4GcNhaDsIB05JZDhg-1; Fri, 08 Apr 2022 03:11:18 -0400
+X-MC-Unique: 3p8lm4GcNhaDsIB05JZDhg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44251805F68;
+        Fri,  8 Apr 2022 07:11:17 +0000 (UTC)
+Received: from localhost (ovpn-12-202.pek2.redhat.com [10.72.12.202])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 00E57403179;
+        Fri,  8 Apr 2022 07:11:16 +0000 (UTC)
+Date:   Fri, 8 Apr 2022 15:11:08 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Michal Suchanek <msuchanek@suse.de>, Coiby Xu <coxu@redhat.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Alexander Egorenkov <egorenar@linux.ibm.com>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        James Morse <james.morse@arm.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, kexec@lists.infradead.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        stable@kernel.org
+Subject: Re: [PATCH 1/4] Fix arm64 kexec forbidding kernels signed with keys
+ in the secondary keyring to boot
+Message-ID: <Yk/eFBCqBTu4eZf2@MiWiFi-R3L-srv>
+References: <cover.1644953683.git.msuchanek@suse.de>
+ <83b3583f35c50c609739a8d857d14e8410293373.1644953683.git.msuchanek@suse.de>
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Thu, 7 Apr 2022 13:27:25 +0100
-Message-ID: <CAHpNFcM-uqvy7kTzdNjt9ipt4XVGKC4xyWbvxqGDYsxKORSsDQ@mail.gmail.com>
-Subject: Frame Buffer - Personally QFT  is a much more pleasurable experience
- than VRR at 2xFPS+ Stable FPS & X-OR Partial Frame Retention saving on compression.
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <83b3583f35c50c609739a8d857d14e8410293373.1644953683.git.msuchanek@suse.de>
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-VecSR - Vector Standard Render
+Hi,
 
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
+On 02/15/22 at 08:39pm, Michal Suchanek wrote:
+> commit d3bfe84129f6 ("certs: Add a secondary system keyring that can be added to dynamically")
+> split of .system_keyring into .builtin_trusted_keys and
+> .secondary_trusted_keys broke kexec, thereby preventing kernels signed by
+> keys which are now in the secondary keyring from being kexec'd.
+> 
+> Fix this by passing VERIFY_USE_SECONDARY_KEYRING to
+> verify_pefile_signature().
+> 
+> Cherry-picked from
+> commit ea93102f3224 ("Fix kexec forbidding kernels signed with keys in the secondary keyring to boot")
 
-Vector Compression VESA Standard Display protocol 3 : RS
+This line may need a line feed?
 
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+The patch 1~3 looks good to me. Coiby encountered the same issue
+on arm64, and has posted a patch series to fix that and there's clean up
+and code adjustment.
 
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
+https://lore.kernel.org/all/20220401013118.348084-1-coxu@redhat.com/T/#u
 
-Improve Console & TV & BIOS & General Animated Render
+Hi Coiby,
 
-*
-Vector Compression VESA Standard Display protocol 3 +
-DSC : Zero compression or low level compression version of DSC
-1.2bc
+Maybe you can check this patchset, and consider how to integrate your
+patches based on this patch 1~/3?
 
-Frame by Frame compression with vector prediction.
+For this patch itself, ack.
 
-Personally QFT  is a much more pleasurable experience than VRR at 2xFPS+
-Stable FPS & X-OR Partial Frame Retention saving on compression.
+Acked-by: Baoquan He <bhe@redhat.com>
 
-X-OR Frame Buffer Compression & Blank Space Compression:
+> 
+> Fixes: 732b7b93d849 ("arm64: kexec_file: add kernel signature verification support")
+> Cc: kexec@lists.infradead.org
+> Cc: keyrings@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> Cc: stable@kernel.org
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>  arch/arm64/kernel/kexec_image.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
+> index 9ec34690e255..1fbf2ee7c005 100644
+> --- a/arch/arm64/kernel/kexec_image.c
+> +++ b/arch/arm64/kernel/kexec_image.c
+> @@ -133,7 +133,8 @@ static void *image_load(struct kimage *image,
+>  #ifdef CONFIG_KEXEC_IMAGE_VERIFY_SIG
+>  static int image_verify_sig(const char *kernel, unsigned long kernel_len)
+>  {
+> -	return verify_pefile_signature(kernel, kernel_len, NULL,
+> +	return verify_pefile_signature(kernel, kernel_len,
+> +				       VERIFY_USE_SECONDARY_KEYRING,
+>  				       VERIFYING_KEXEC_PE_SIGNATURE);
+>  }
+>  #endif
+> -- 
+> 2.31.1
+> 
 
-X-OR X=3D1 New Data & X=3D0 being not sent,
-Therefore Masking the frame buffer,
-
-A Frame buffer needs a cleared aria; A curve or ellipsoid for example,
-Draw the ellipsoid; This is the mask & can be in 3 levels:
-
-X-OR : Draw or not Draw Aria : Blitter XOR
-AND : Draw 1 Value & The other : Blitter Additive
-Variable Value Resistor : Draw 1 Value +- The other : Blitter + or - Modifi=
-er
-*
-
-Vector Compression VESA Standard Display protocol 3 : RS
-
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-Personally QFT  is a much more pleasurable experience than VRR at 2xFPS+
-Stable FPS & X-OR Partial Frame Retention saving on compression.
-
-"QFT a Zero compression or low level compression version of DSC
-1.2bc
-
-X-OR Frame Buffer Compression & Blank Space Compression:
-Vector Compression VESA Standard Display protocol 3"
-
-"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
-latency=E2=80=9D, which is the amount of time between a frame being ready f=
-or
-transport in the GPU and that frame being completely displayed. This
-latency is the sum of the transport time through the source=E2=80=99s outpu=
-t
-circuits, the transport time across the interface, the processing of
-the video data in the display, and the painting of the screen with the
-new data. This overall latency affects the responsiveness of games:
-how long it appears between a button is pressed to the time at which
-the resultant action is observed on the screen.
-
-
-While there are a lot of variables in this equation, not many are
-adjustable from an HDMI specification perspective. QFT operates on the
-transport portion of this equation by reducing the time it takes to
-send only the active video across the cable. This results in reduced
-display latency and increased responsiveness."
-*
-
-(c)Rupert S
-
-Include vector today *important* RS
-https://vesa.org/vesa-display-compression-codecs/
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
-ml
-
-https://bit.ly/VESA_BT
-*
-
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
-
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
-
-3rd dimensional access with vector fonts by a simple method:
-
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
-
-Bitmap/Texture,
-
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
-
-Can be higher resolution & we can sub sample with closer view priority...
-
-We then rotate the texture on our output polygon & factor size differential=
-.
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
-
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
-
-*
-
-VecSR is really good for secondary loading of sprites & text; In these
-terms very good for pre loading on for example the X86, RISC, AMIGA &
-Famicon type devices,
-With appropriate loading into Sprite buffers or Emulated Secondaries
-(Special Animations) or Font Buffers.
-
-Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
-with Integer & Emulated Float (Library); Traditional BitMap fonts work
-well in a Set Size & can resize well if cached!
-
-The full process leads upto the terminal & how to optimise CON,
-We can & will need to exceed capacities of any system & To improve them!
-
-presenting: Dev-Con-VectorE=C2=B2
-Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
-Class VESA Console +
-
-With Console in VecSR you can 3DText & Audio,
-
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems & ROM's
-
-Potential is fast & useful.
-
-*
-
-https://science.n-helix.com/2022/04/vecsr.html
