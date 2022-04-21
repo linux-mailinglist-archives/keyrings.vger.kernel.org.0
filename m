@@ -2,85 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5CE50864B
-	for <lists+keyrings@lfdr.de>; Wed, 20 Apr 2022 12:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4033C50A3C7
+	for <lists+keyrings@lfdr.de>; Thu, 21 Apr 2022 17:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377743AbiDTKuw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 20 Apr 2022 06:50:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50426 "EHLO
+        id S1382697AbiDUPRD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 21 Apr 2022 11:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377780AbiDTKuv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 20 Apr 2022 06:50:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0CCF718381
-        for <keyrings@vger.kernel.org>; Wed, 20 Apr 2022 03:48:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1650451685;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YeuUl3FgKBq3ulAiRQVIkPodY1d8UaUkeElFnx59KAU=;
-        b=AphyZjlCPNuHQAQQILPtCqX47KWvIlMZLkLCXQT0iJEuqN1/cQpozGfg2kMl8BzFskz3CV
-        yOKzw/CSsEep0CTfpY/DrBx6WrYPD3Lq1RzZLjnfGzOx68ek/9tTnsNmx5/eL69NEA9Uqg
-        hx3BLFHdvr/S96LuMQRmMgPUuldExgA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-110-CZ15ePgHOjCgsVQ2kn_MbA-1; Wed, 20 Apr 2022 06:48:01 -0400
-X-MC-Unique: CZ15ePgHOjCgsVQ2kn_MbA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S1355292AbiDUPRC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 21 Apr 2022 11:17:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05921433AA;
+        Thu, 21 Apr 2022 08:14:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 731AD80346F;
-        Wed, 20 Apr 2022 10:48:00 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.13])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 24E4C403D19A;
-        Wed, 20 Apr 2022 10:47:59 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <Yl95wykQMHc/tIq8@kernel.org>
-References: <Yl95wykQMHc/tIq8@kernel.org>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     dhowells@redhat.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, James Morris <jmorris@namei.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?us-ascii?Q?=3D=3Fiso-8859-1=3FQ=3FMicka=3DEBl?=
-         =?us-ascii?Q?=5FSala=3DFCn=3F=3D?= <mic@linux.microsoft.com>
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER updates for tpmdd-next-v5.18-rc4
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9506661AC3;
+        Thu, 21 Apr 2022 15:14:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99E1C385A5;
+        Thu, 21 Apr 2022 15:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650554052;
+        bh=I0zUItcOxFNNsLtXno+sh+nNc68LyirhSdAYTIDEIE4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dtfFZhaT2VSG7B3vpDVhu7DPaIcToxTO1AtvXVDAGmpgAmGXqG9futEtSoU1F0n6K
+         G/BN+b9TTS/Ei9x6W3lEDVMn5SKQTkrDyDapLXHGsTlaBxcLBROJTp0knNpj+KjeB6
+         LSqyFbhB4mNlZ3vLZCM8Re2ziShdCIQJmNJBV+/ajSjXCAnHAYyQCIupScTK9hGwBg
+         nE3qt0w/WH/64L0SHsy2jfnoQ7wS6TjwBj3BDBaMpI/KK8gvV5spcs7y1FPO5cfrnh
+         9ePR+JUJosdgR3tNrQwaIGUX/tpr6Mtd9ABj7ktTp1WPI7VVYXR2AKHQNf2Hby2qaJ
+         8cqWqzvjJTP3Q==
+Date:   Thu, 21 Apr 2022 18:12:56 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     =?us-ascii?B?PT9VVEYtOD9xP01pY2thPUMzPUFCbD0yMFNhbGE9QzM9QkNuPz0=?= 
+        <mic@digikod.net>, David Woodhouse <dwmw2@infradead.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        James Morris <jmorris@namei.org>,
+        =?us-ascii?B?PT9VVEYtOD9xP01pY2thPUMzPUFCbD0yMFNhbGE9QzM9QkNuPz0=?= 
+        <mic@linux.microsoft.com>, Mimi Zohar <zohar@linux.ibm.com>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v7 3/5] certs: Make blacklist_vet_description() more
+ strict
+Message-ID: <YmF0eAh7dYmtLDVx@kernel.org>
+References: <20210312171232.2681989-4-mic@digikod.net>
+ <20210312171232.2681989-1-mic@digikod.net>
+ <648218.1650450548@warthog.procyon.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date:   Wed, 20 Apr 2022 11:47:58 +0100
-Message-ID: <649342.1650451678@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <648218.1650450548@warthog.procyon.org.uk>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> wrote:
+On Wed, Apr 20, 2022 at 11:29:08AM +0100, David Howells wrote:
+> Mickaël Salaün <mic@digikod.net> wrote:
+> 
+> > +	/* The following algorithm only works if prefix lengths match. */
+> > +	BUILD_BUG_ON(sizeof(tbs_prefix) != sizeof(bin_prefix));
+> > +	prefix_len = sizeof(tbs_prefix) - 1;
+> > +	for (i = 0; *desc; desc++, i++) {
+> > +		if (*desc == ':') {
+> > +			if (tbs_step == prefix_len)
+> > +				goto found_colon;
+> > +			if (bin_step == prefix_len)
+> > +				goto found_colon;
+> > +			return -EINVAL;
+> > +		}
+> > +		if (i >= prefix_len)
+> > +			return -EINVAL;
+> > +		if (*desc == tbs_prefix[i])
+> > +			tbs_step++;
+> > +		if (*desc == bin_prefix[i])
+> > +			bin_step++;
+> > +	}
+> 
+> I wonder if:
+> 
+> 	static const char tbs_prefix[] = "tbs:";
+> 	static const char bin_prefix[] = "bin:";
+> 
+> 	if (strncmp(desc, tbs_prefix, sizeof(tbs_prefix) - 1) == 0 ||
+> 	    strncmp(desc, bin_prefix, sizeof(bin_prefix) - 1) == 0)
+> 		goto found_colon;
+> 
+> might be better.
+> 
+> David
 
-> Micka=C3=ABl's patches to add signed hash to the blacklist keyring that w=
-ere
-> left out from the original v5.18 PR. They should be safe to include to
-> rc4 as they've been in circulation for ages, and have been tested
-> throughly.
+I think it'd be. 
 
-Barring a bit in patch 3 where I think strncmp() would be better employed f=
-or
-checking prefixes (and can be fixed up later):
-
-Reviewed-by: David Howells <dhowells@redhat.com>
-
+BR, Jarkko
