@@ -2,50 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8B6A51860D
-	for <lists+keyrings@lfdr.de>; Tue,  3 May 2022 16:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C71C0518C4A
+	for <lists+keyrings@lfdr.de>; Tue,  3 May 2022 20:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236650AbiECOIV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Tue, 3 May 2022 10:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
+        id S241296AbiECS2m (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 May 2022 14:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236631AbiECOIU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 3 May 2022 10:08:20 -0400
-X-Greylist: delayed 469 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 03 May 2022 07:04:47 PDT
-Received: from mail.megasoftsol.com (mail.megasoftsol.com [43.231.250.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B023B21274
-        for <keyrings@vger.kernel.org>; Tue,  3 May 2022 07:04:47 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.megasoftsol.com (Postfix) with ESMTP id 3055790C44D
-        for <keyrings@vger.kernel.org>; Tue,  3 May 2022 19:23:14 +0530 (IST)
-Received: from mail.megasoftsol.com ([127.0.0.1])
-        by localhost (mail.megasoftsol.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id R1x7-hZUCt5Z for <keyrings@vger.kernel.org>;
-        Tue,  3 May 2022 19:23:13 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.megasoftsol.com (Postfix) with ESMTP id 7183A90C44C
-        for <keyrings@vger.kernel.org>; Tue,  3 May 2022 19:23:13 +0530 (IST)
-X-Virus-Scanned: amavisd-new at megasoftsol.com
-Received: from mail.megasoftsol.com ([127.0.0.1])
-        by localhost (mail.megasoftsol.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id lb2ZmjoJvETQ for <keyrings@vger.kernel.org>;
-        Tue,  3 May 2022 19:23:13 +0530 (IST)
-Received: from asda.co.uk (unknown [20.97.211.134])
-        (Authenticated sender: admin)
-        by mail.megasoftsol.com (Postfix) with ESMTPSA id 9AC5590C448
-        for <keyrings@vger.kernel.org>; Tue,  3 May 2022 19:23:12 +0530 (IST)
-Reply-To: sales@asdaa.uk
-From:   ASDA Stores Limited <Hanes.Thomas23877@asda.co.uk>
-To:     keyrings@vger.kernel.org
-Subject: 2nd Quater puchase request
-Date:   03 May 2022 13:55:40 +0000
-Message-ID: <20220503092156.BA4A1D3A761900C5@asda.co.uk>
+        with ESMTP id S235501AbiECS2l (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 3 May 2022 14:28:41 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEC13F309;
+        Tue,  3 May 2022 11:25:08 -0700 (PDT)
+Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 5287822248;
+        Tue,  3 May 2022 20:25:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1651602306;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9iC4cXPg9k+4gpVj29AuB8WPa1LP5MNPiMZNf/cbI60=;
+        b=RkDedRUtGXV+rYDTtGD6Re5PzUJOBv4t7jgDYB3cDSNZ0v6oz4lwCp7IpoCeuwt+18s9MY
+        PbLjrkr/lyl3evJtuCAESVCKxhGl+o8DYxappQloW/rX9+eHSPUo4f4RxMt8f654gPLeY4
+        cWqIHbGZ4YO/qwb3alIBVDznZsUDoxo=
+From:   Michael Walle <michael@walle.cc>
+To:     a.fatoum@pengutronix.de
+Cc:     davem@davemloft.net, david@sigma-star.at, dhowells@redhat.com,
+        ebiggers@kernel.org, franck.lenormand@nxp.com,
+        herbert@gondor.apana.org.au, horia.geanta@nxp.com,
+        j.luebbe@pengutronix.de, jarkko@kernel.org, jejb@linux.ibm.com,
+        jmorris@namei.org, kernel@pengutronix.de, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        matthias.schiffer@ew.tq-group.com, pankaj.gupta@nxp.com,
+        richard@nod.at, serge@hallyn.com, sumit.garg@linaro.org,
+        tharvey@gateworks.com, zohar@linux.ibm.com,
+        Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH v8 3/6] crypto: caam - add in-kernel interface for blob generator
+Date:   Tue,  3 May 2022 20:24:54 +0200
+Message-Id: <20220503182454.2749454-1-michael@walle.cc>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220428140145.870527-4-a.fatoum@pengutronix.de>
+References: <20220428140145.870527-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,28 +62,50 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear keyrings
+Hi,
 
-We are interested in having some of your hot selling product in 
-our stores and outlets spread all over United Kingdom, Northern 
-Island and Africa. ASDA Stores Limited is one of the highest-
-ranking Wholesale & Retail outlets in the United Kingdom. 
-  
-We shall furnish our detailed company profile in our next 
-correspondent. However, it would be appreciated if you can send 
-us your catalog through email to learn more about your company's 
-products and wholesale quote. It is hopeful that we can start a 
-viable long-lasting business relationship (partnership) with you.  
-  
-  
-Your prompt response would be delightfully appreciated. 
-  
-Best Wishes 
-  
-  
-Hanes S. Thomas 
-Procurement Office. 
-ASDA Stores Limited 
-Tel:  + 44 - 7451271650 
-WhatsApp: + 44 – 7441440360 
-Website: www.asda.co.uk
+> The NXP Cryptographic Acceleration and Assurance Module (CAAM)
+> can be used to protect user-defined data across system reboot:
+> 
+>   - When the system is fused and boots into secure state, the master
+>     key is a unique never-disclosed device-specific key
+>   - random key is encrypted by key derived from master key
+>   - data is encrypted using the random key
+>   - encrypted data and its encrypted random key are stored alongside
+>   - This blob can now be safely stored in non-volatile memory
+> 
+> On next power-on:
+>   - blob is loaded into CAAM
+>   - CAAM writes decrypted data either into memory or key register
+> 
+> Add functions to realize encrypting and decrypting into memory alongside
+> the CAAM driver.
+> 
+> They will be used in a later commit as a source for the trusted key
+> seal/unseal mechanism.
+
+Thanks for the work on this and I'm excited to try this. I'm currently
+playing with this and one thing I've noticed is that an export restricted
+CAAM isn't handled properly.
+
+That is, there are CAAM's which aren't fully featured. Normally, the
+caam driver will take care of it. For example, see commit f20311cc9c58
+("crypto: caam - disable pkc for non-E SoCs"). For the trusted keys case,
+it would be nice if the kernel will not even probe (or similar).
+
+Right now, everything seems to work fine, but once I try to add a new key,
+I'll get the following errros:
+
+# keyctl add trusted mykey "new 32" @u
+add_key: Invalid argument
+[   23.138714] caam_jr 8020000.jr: 20000b0f: CCB: desc idx 11: : Invalid CHA selected.
+[   23.138740] trusted_key: key_seal failed (-22)
+
+Again this is expected, because I run it on a non-E version. IMHO, it
+should be that the trusted keys shouldn't be enabled at all. Like it is
+for example if an unknown rng is given:
+
+  trusted_key: Unsupported RNG. Supported: kernel, default
+
+Thanks,
+-michael
