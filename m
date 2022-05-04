@@ -2,196 +2,227 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 340765196F7
-	for <lists+keyrings@lfdr.de>; Wed,  4 May 2022 07:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B74AA519776
+	for <lists+keyrings@lfdr.de>; Wed,  4 May 2022 08:39:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231478AbiEDFqw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 May 2022 01:46:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54278 "EHLO
+        id S1344570AbiEDGnT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 May 2022 02:43:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230474AbiEDFqv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 4 May 2022 01:46:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545CD2610B;
-        Tue,  3 May 2022 22:43:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7F9360B6B;
-        Wed,  4 May 2022 05:43:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EF2C385A5;
-        Wed,  4 May 2022 05:42:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651642995;
-        bh=JrTxy6eXsiDtGM/F/9OTUVdSC11/W1yM6qcTiJhEEWY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ptNmZdYs+o6KHSEb902G1QgyncrLgIYxwRjyZ9+W9VTxnFGJHKAdTcbe0JtEXzd4l
-         aYwCxztA+GFA6BxNwpRJ+fwdrhYF+K4ZZZLdzPKi8lBBWFO/VNZwdIAlyDMFIxmOWz
-         hAmvQ+5DrbHNQghYSGB1afStWvfnMlPcYreVpeGPzS9YPA/9Y4p/yFDlQcLqjzbi/7
-         oTPIz0yt7M1rWvdVDxqtNaenj2/snIMXH2fVjjBqgI4xeMRFMaS+uomXQ38nO6fIxg
-         l9QT60aMp2PNBolRmvUG9+MmaPk4GD+QjG/dwTaQmabfDmxvYb7M7hfSFb2fcWpc9I
-         jV5YMv8gNlmpA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        alsa-devel@alsa-project.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Gabbasov <andrew_gabbasov@mentor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Andy Lavr <andy.lavr@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Baowen Zheng <baowen.zheng@corigine.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bradley Grove <linuxdrivers@attotech.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Christian Brauner <brauner@kernel.org>,
-        Christian =?utf-8?Q?G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Chris Zankel <chris@zankel.net>,
-        Cong Wang <cong.wang@bytedance.com>,
-        Daniel Axtens <dja@axtens.net>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Gow <davidgow@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        devicetree@vger.kernel.org, Dexuan Cui <decui@microsoft.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eli Cohen <elic@nvidia.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Francis Laniel <laniel_francis@privacyrequired.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Hulk Robot <hulkci@huawei.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Keeping <john@metanate.com>,
-        Juergen Gross <jgross@suse.com>,
-        Keith Packard <keithp@keithp.com>, keyrings@vger.kernel.org,
-        kunit-dev@googlegroups.com,
-        Kuniyuki Iwashima <kuniyu@amazon.co.jp>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        llvm@lists.linux.dev, Louis Peens <louis.peens@corigine.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nuno =?utf-8?Q?S=C3=A1?= <nuno.sa@analog.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Rich Felker <dalias@aerifal.cx>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>, selinux@vger.kernel.org,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Simon Horman <simon.horman@corigine.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Tadeusz Struk <tadeusz.struk@linaro.org>,
-        Takashi Iwai <tiwai@suse.com>, Tom Rix <trix@redhat.com>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Wei Liu <wei.liu@kernel.org>, xen-devel@lists.xenproject.org,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        Yang Yingliang <yangyingliang@huawei.com>
-Subject: Re: [PATCH 10/32] wcn36xx: Use mem_to_flex_dup() with struct wcn36xx_hal_ind_msg
-References: <20220504014440.3697851-1-keescook@chromium.org>
-        <20220504014440.3697851-11-keescook@chromium.org>
-Date:   Wed, 04 May 2022 08:42:46 +0300
-In-Reply-To: <20220504014440.3697851-11-keescook@chromium.org> (Kees Cook's
-        message of "Tue, 3 May 2022 18:44:19 -0700")
-Message-ID: <8735hpc0q1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        with ESMTP id S238363AbiEDGnS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 May 2022 02:43:18 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2644A13FBD
+        for <keyrings@vger.kernel.org>; Tue,  3 May 2022 23:39:43 -0700 (PDT)
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1nm8fZ-0007wQ-Ke; Wed, 04 May 2022 08:39:29 +0200
+Message-ID: <ac014f19-0c08-c6cf-d639-f55268ba11c2@pengutronix.de>
+Date:   Wed, 4 May 2022 08:39:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v8 3/6] crypto: caam - add in-kernel interface for blob
+ generator
+To:     Michael Walle <michael@walle.cc>
+Cc:     davem@davemloft.net, david@sigma-star.at, dhowells@redhat.com,
+        ebiggers@kernel.org, franck.lenormand@nxp.com,
+        herbert@gondor.apana.org.au, horia.geanta@nxp.com,
+        j.luebbe@pengutronix.de, jarkko@kernel.org, jejb@linux.ibm.com,
+        jmorris@namei.org, kernel@pengutronix.de, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        matthias.schiffer@ew.tq-group.com, pankaj.gupta@nxp.com,
+        richard@nod.at, serge@hallyn.com, sumit.garg@linaro.org,
+        tharvey@gateworks.com, zohar@linux.ibm.com
+References: <20220428140145.870527-4-a.fatoum@pengutronix.de>
+ <20220503182454.2749454-1-michael@walle.cc>
+Content-Language: en-US
+In-Reply-To: <20220503182454.2749454-1-michael@walle.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
+Hello Michael,
 
-> As part of the work to perform bounds checking on all memcpy() uses,
-> replace the open-coded a deserialization of bytes out of memory into a
-> trailing flexible array by using a flex_array.h helper to perform the
-> allocation, bounds checking, and copying.
+On 03.05.22 20:24, Michael Walle wrote:
+>> Add functions to realize encrypting and decrypting into memory alongside
+>> the CAAM driver.
+>>
+>> They will be used in a later commit as a source for the trusted key
+>> seal/unseal mechanism.
+> 
+> Thanks for the work on this and I'm excited to try this. I'm currently
+> playing with this and one thing I've noticed is that an export restricted
+> CAAM isn't handled properly.
+
+I didn't know there are still crypto export restrictions in place ;o
+
+> That is, there are CAAM's which aren't fully featured. Normally, the
+> caam driver will take care of it. For example, see commit f20311cc9c58
+> ("crypto: caam - disable pkc for non-E SoCs"). For the trusted keys case,
+> it would be nice if the kernel will not even probe (or similar).
 >
-> Cc: Loic Poulain <loic.poulain@linaro.org>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: wcn36xx@lists.infradead.org
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Right now, everything seems to work fine, but once I try to add a new key,
+> I'll get the following errros:
+> 
+> # keyctl add trusted mykey "new 32" @u
+> add_key: Invalid argument
+> [   23.138714] caam_jr 8020000.jr: 20000b0f: CCB: desc idx 11: : Invalid CHA selected.
+> [   23.138740] trusted_key: key_seal failed (-22)
 
-[...]
+Trusted key core will attempt TPM and TEE if enabled before trying CAAM unless
+CAAM was explicitly requested. Silently failing in this case would not be
+helpful to users. I think an info message (not error, as it'd be annoying to
+see it every time booting a restricted SoC) is a good idea.
+Thanks for the feedback.
 
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.h
-> @@ -46,8 +46,8 @@ struct wcn36xx_fw_msg_status_rsp {
->  
->  struct wcn36xx_hal_ind_msg {
->  	struct list_head list;
-> -	size_t msg_len;
-> -	u8 msg[];
-> +	DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(size_t, msg_len);
-> +	DECLARE_FLEX_ARRAY_ELEMENTS(u8, msg);
+> Again this is expected, because I run it on a non-E version. IMHO, it
+> should be that the trusted keys shouldn't be enabled at all. Like it is
+> for example if an unknown rng is given:
+> 
+>   trusted_key: Unsupported RNG. Supported: kernel, default
 
-This affects readability quite a lot and tbh I don't like it. Isn't
-there any simpler way to solve this?
+Other backends return -ENODEV and Trusted key core will ignore and try next
+in list. Please give below patch a try. I tested it on normal unrestricted
+i.MX6. If that's what you had in mind, I can incorporate it into v9.
+If you have any Tested-by's or the like you want me to add, please tell. :)
 
+Cheers,
+Ahmad
+
+------------------------------ 8< ------------------------------
+
+diff --git a/drivers/crypto/caam/blob_gen.c b/drivers/crypto/caam/blob_gen.c
+index d0b1a0015308..1d07e056a5dd 100644
+--- a/drivers/crypto/caam/blob_gen.c
++++ b/drivers/crypto/caam/blob_gen.c
+@@ -4,6 +4,8 @@
+  * Copyright (C) 2021 Pengutronix, Ahmad Fatoum <kernel@pengutronix.de>
+  */
+ 
++#define pr_fmt(fmt) "caam blob_gen: " fmt
++
+ #include <linux/device.h>
+ #include <soc/fsl/caam-blob.h>
+ 
+@@ -147,11 +149,27 @@ EXPORT_SYMBOL(caam_process_blob);
+ 
+ struct caam_blob_priv *caam_blob_gen_init(void)
+ {
++	struct caam_drv_private *ctrlpriv;
+ 	struct device *jrdev;
+ 
++	/*
++	 * caam_blob_gen_init() may expectedly fail with -ENODEV, e.g. when
++	 * CAAM driver didn't probe or when SoC lacks BLOB support. An
++	 * error would be harsh in this case, so we stick to info level.
++	 */
++
+ 	jrdev = caam_jr_alloc();
+-	if (IS_ERR(jrdev))
+-		return ERR_CAST(jrdev);
++	if (IS_ERR(jrdev)) {
++		pr_info("no job ring available\n");
++		return ERR_PTR(-ENODEV);
++	}
++
++	ctrlpriv = dev_get_drvdata(jrdev->parent);
++	if (!ctrlpriv->blob_present) {
++		dev_info(jrdev, "no hardware blob generation support\n");
++		caam_jr_free(jrdev);
++		return ERR_PTR(-ENODEV);
++	}
+ 
+ 	return container_of(jrdev, struct caam_blob_priv, jrdev);
+ }
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index ca0361b2dbb0..a0a622ca5dd4 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -660,6 +660,10 @@ static int caam_probe(struct platform_device *pdev)
+ 
+ 	caam_little_end = !(bool)(rd_reg32(&ctrl->perfmon.status) &
+ 				  (CSTA_PLEND | CSTA_ALT_PLEND));
++
++	comp_params = rd_reg32(&ctrl->perfmon.comp_parms_ls);
++	ctrlpriv->blob_present = !!(comp_params & CTPR_LS_BLOB);
++
+ 	comp_params = rd_reg32(&ctrl->perfmon.comp_parms_ms);
+ 	if (comp_params & CTPR_MS_PS && rd_reg32(&ctrl->mcr) & MCFGR_LONG_PTR)
+ 		caam_ptr_sz = sizeof(u64);
+diff --git a/drivers/crypto/caam/intern.h b/drivers/crypto/caam/intern.h
+index 7d45b21bd55a..e92210e2ab76 100644
+--- a/drivers/crypto/caam/intern.h
++++ b/drivers/crypto/caam/intern.h
+@@ -92,6 +92,7 @@ struct caam_drv_private {
+ 	 */
+ 	u8 total_jobrs;		/* Total Job Rings in device */
+ 	u8 qi_present;		/* Nonzero if QI present in device */
++	u8 blob_present;	/* Nonzero if BLOB support present in device */
+ 	u8 mc_en;		/* Nonzero if MC f/w is active */
+ 	int secvio_irq;		/* Security violation interrupt number */
+ 	int virt_en;		/* Virtualization enabled in CAAM */
+diff --git a/drivers/crypto/caam/regs.h b/drivers/crypto/caam/regs.h
+index 3738625c0250..b829066f5063 100644
+--- a/drivers/crypto/caam/regs.h
++++ b/drivers/crypto/caam/regs.h
+@@ -414,6 +414,7 @@ struct caam_perfmon {
+ #define CTPR_MS_PG_SZ_MASK	0x10
+ #define CTPR_MS_PG_SZ_SHIFT	4
+ 	u32 comp_parms_ms;	/* CTPR - Compile Parameters Register	*/
++#define CTPR_LS_BLOB           BIT(1)
+ 	u32 comp_parms_ls;	/* CTPR - Compile Parameters Register	*/
+ 	u64 rsvd1[2];
+ 
+diff --git a/include/soc/fsl/caam-blob.h b/include/soc/fsl/caam-blob.h
+index ec57eec4f2d2..8e821bd56e54 100644
+--- a/include/soc/fsl/caam-blob.h
++++ b/include/soc/fsl/caam-blob.h
+@@ -38,8 +38,9 @@ struct caam_blob_info {
+ 
+ /**
+  * caam_blob_gen_init - initialize blob generation
+- * Return: pointer to new caam_blob_priv instance on success
+- * and error pointer otherwise
++ * Return: pointer to new &struct caam_blob_priv instance on success
++ * and ``ERR_PTR(-ENODEV)`` if CAAM has no hardware blobbing support
++ * or no job ring could be allocated.
+  */
+ struct caam_blob_priv *caam_blob_gen_init(void);
+ 
+diff --git a/security/keys/trusted-keys/trusted_caam.c b/security/keys/trusted-keys/trusted_caam.c
+index 46cb2484ec36..e3415c520c0a 100644
+--- a/security/keys/trusted-keys/trusted_caam.c
++++ b/security/keys/trusted-keys/trusted_caam.c
+@@ -55,10 +55,8 @@ static int trusted_caam_init(void)
+ 	int ret;
+ 
+ 	blobifier = caam_blob_gen_init();
+-	if (IS_ERR(blobifier)) {
+-		pr_err("Job Ring Device allocation for transform failed\n");
++	if (IS_ERR(blobifier))
+ 		return PTR_ERR(blobifier);
+-	}
+ 
+ 	ret = register_key_type(&key_type_trusted);
+ 	if (ret)
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
