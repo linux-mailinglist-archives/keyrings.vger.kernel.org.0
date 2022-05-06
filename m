@@ -2,159 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E40AE51CEAD
-	for <lists+keyrings@lfdr.de>; Fri,  6 May 2022 04:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F6251D14B
+	for <lists+keyrings@lfdr.de>; Fri,  6 May 2022 08:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383414AbiEFBDJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 May 2022 21:03:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59656 "EHLO
+        id S242847AbiEFGal (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 6 May 2022 02:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232783AbiEFBDH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 May 2022 21:03:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 818AC5EDF8;
-        Thu,  5 May 2022 17:59:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1BB04B82C77;
-        Fri,  6 May 2022 00:59:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63365C385A4;
-        Fri,  6 May 2022 00:59:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651798762;
-        bh=QHLpCYQAf4+qvwVPngV5l8IrNs1LORlQXrnupp83GZw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=a5h2RHlNwK/5saAV7Ze/fjqvxdNmdEP8Axbp3ZZz7Hb5HDtHWJBCICfECaYxNkXEK
-         ANaNwCofZgiA1UzwJUSX+qaaSp0LS6eClnugCA0zNkRsSnX38kOKxMuzQLu9h9Aru9
-         61ul4/dcC/OBr5AmN74lb9td0B+IF4J82IuVNIPK2nsKrAPfVCrr4z9QwhtHrtczp2
-         tU8no/CqNF5wz/W4zNS+sWsHYpLVGoMGocTLtu6Tpa/HKE7L4BgiDVJ4hOXO4evxSg
-         lfdeEuJUJMH7Tm4XyyRc7XgDnv8GxTr/iVsNxRCeJxXLe6iCxRyC+SfurDpCblt3Iv
-         VNSJYc2ryzMfw==
-Date:   Thu, 5 May 2022 20:08:22 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        with ESMTP id S234702AbiEFGaa (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 6 May 2022 02:30:30 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BDF66212
+        for <keyrings@vger.kernel.org>; Thu,  5 May 2022 23:26:46 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <afa@pengutronix.de>)
+        id 1nmrPo-0005o8-N8; Fri, 06 May 2022 08:26:12 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <afa@pengutronix.de>)
+        id 1nmrPh-000edS-Ol; Fri, 06 May 2022 08:26:04 +0200
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <afa@pengutronix.de>)
+        id 1nmrPf-004Tva-Eg; Fri, 06 May 2022 08:26:03 +0200
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        Christian =?iso-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>,
-        netdev@vger.kernel.org, selinux@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        alsa-devel@alsa-project.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Gabbasov <andrew_gabbasov@mentor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Andy Lavr <andy.lavr@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Baowen Zheng <baowen.zheng@corigine.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bradley Grove <linuxdrivers@attotech.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Christian Brauner <brauner@kernel.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Chris Zankel <chris@zankel.net>,
-        Cong Wang <cong.wang@bytedance.com>,
-        Daniel Axtens <dja@axtens.net>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Gow <davidgow@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        devicetree@vger.kernel.org, Dexuan Cui <decui@microsoft.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eli Cohen <elic@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Francis Laniel <laniel_francis@privacyrequired.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Hulk Robot <hulkci@huawei.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>
+Cc:     kernel@pengutronix.de, David Howells <dhowells@redhat.com>,
         James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Keeping <john@metanate.com>,
-        Juergen Gross <jgross@suse.com>, Kalle Valo <kvalo@kernel.org>,
-        Keith Packard <keithp@keithp.com>, keyrings@vger.kernel.org,
-        kunit-dev@googlegroups.com,
-        Kuniyuki Iwashima <kuniyu@amazon.co.jp>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, llvm@lists.linux.dev,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Louis Peens <louis.peens@corigine.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rich Felker <dalias@aerifal.cx>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
         "Serge E. Hallyn" <serge@hallyn.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Simon Horman <simon.horman@corigine.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Tadeusz Struk <tadeusz.struk@linaro.org>,
-        Takashi Iwai <tiwai@suse.com>, Tom Rix <trix@redhat.com>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        wcn36xx@lists.infradead.org, Wei Liu <wei.liu@kernel.org>,
-        xen-devel@lists.xenproject.org,
-        Yang Yingliang <yangyingliang@huawei.com>
-Subject: Re: [PATCH 28/32] selinux: Use mem_to_flex_dup() with xfrm and sidtab
-Message-ID: <20220506010822.GA18891@embeddedor>
-References: <20220504014440.3697851-1-keescook@chromium.org>
- <20220504014440.3697851-29-keescook@chromium.org>
- <CAHC9VhT5Y=ENiSyb=S-NVbGX63sLOv4nVuR_GS-yww6tiz0wYA@mail.gmail.com>
- <20220504234324.GA12556@embeddedor>
- <CAHC9VhRJC4AxeDsGpdphfJD4WzgaeBsdONHnixBzft5u_cE-Dw@mail.gmail.com>
- <202205051124.6D80ABAE32@keescook>
- <CAHC9VhT3EDCZEP1og3H_PGFETE6403HUHw7aQb_wDMwJnWeb3Q@mail.gmail.com>
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        David Gstir <david@sigma-star.at>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Andreas Rammhold <andreas@rammhold.de>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Michael Walle <michael@walle.cc>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH v9 0/7] KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
+Date:   Fri,  6 May 2022 08:25:46 +0200
+Message-Id: <20220506062553.1068296-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHC9VhT3EDCZEP1og3H_PGFETE6403HUHw7aQb_wDMwJnWeb3Q@mail.gmail.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: afa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -162,99 +71,141 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, May 05, 2022 at 07:16:18PM -0400, Paul Moore wrote:
-> On Thu, May 5, 2022 at 2:39 PM Kees Cook <keescook@chromium.org> wrote:
-> > On Wed, May 04, 2022 at 11:14:42PM -0400, Paul Moore wrote:
-> > > On Wed, May 4, 2022 at 7:34 PM Gustavo A. R. Silva
-> > > <gustavoars@kernel.org> wrote:
-> > > >
-> > > > Hi Paul,
-> > > >
-> > > > On Wed, May 04, 2022 at 06:57:28PM -0400, Paul Moore wrote:
-> > > > > On Tue, May 3, 2022 at 9:57 PM Kees Cook <keescook@chromium.org> wrote:
-> > > >
-> > > > [..]
-> > > >
-> > > > > > +++ b/include/uapi/linux/xfrm.h
-> > > > > > @@ -31,9 +31,9 @@ struct xfrm_id {
-> > > > > >  struct xfrm_sec_ctx {
-> > > > > >         __u8    ctx_doi;
-> > > > > >         __u8    ctx_alg;
-> > > > > > -       __u16   ctx_len;
-> > > > > > +       __DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(__u16, ctx_len);
-> > > > > >         __u32   ctx_sid;
-> > > > > > -       char    ctx_str[0];
-> > > > > > +       __DECLARE_FLEX_ARRAY_ELEMENTS(char, ctx_str);
-> > > > > >  };
-> > > > >
-> > > > > While I like the idea of this in principle, I'd like to hear about the
-> > > > > testing you've done on these patches.  A previous flex array
-> > > > > conversion in the audit uapi headers ended up causing a problem with
-> > > >
-> > > > I'm curious about which commit caused those problems...?
-> > >
-> > > Commit ed98ea2128b6 ("audit: replace zero-length array with
-> > > flexible-array member"), however, as I said earlier, the problem was
-> > > actually with SWIG, it just happened to be triggered by the kernel
-> > > commit.  There was a brief fedora-devel mail thread about the problem,
-> > > see the link below:
-> > >
-> > > * https://www.spinics.net/lists/fedora-devel/msg297991.html
-> >
-> > Wow, that's pretty weird -- it looks like SWIG was scraping the headers
-> > to build its conversions? I assume SWIG has been fixed now?
-> 
-> I honestly don't know, the audit userspace was hacking around it with
-> some header file duplication/munging last I heard, but I try to avoid
-> having to touch Steve's audit userspace code.
-> 
-> > > To reiterate, I'm supportive of changes like this, but I would like to
-> > > hear how it was tested to ensure there are no unexpected problems with
-> > > userspace.  If there are userspace problems it doesn't mean we can't
-> > > make changes like this, it just means we need to ensure that the
-> > > userspace issues are resolved first.
-> >
-> > Well, as this is the first and only report of any problems with [0] -> []
-> > conversions (in UAPI or anywhere) that I remember seeing, and they've
-> > been underway since at least v5.9, I hadn't been doing any new testing.
-> 
-> ... and for whatever it is worth, I wasn't expecting it to be a
-> problem either.  Surprise :)
-> 
-> > So, for this case, I guess I should ask what tests you think would be
-> > meaningful here? Anything using #include should be fine:
-> > https://codesearch.debian.net/search?q=linux%2Fxfrm.h&literal=1&perpkg=1
-> > Which leaves just this, which may be doing something weird:
-> >
-> > libabigail_2.0-1/tests/data/test-diff-filter/test-PR27569-v0.abi
-> >         </data-member>
-> >         <data-member access="public" layout-offset-in-bits="128">
-> >           <var-decl name="seq_hi" type-id="3f1a6b60" visibility="default" filepath="include/uapi/linux/xfrm.h" line="97" column="1"/>
-> >         </data-member>
-> >         <data-member access="public" layout-offset-in-bits="160">
-> >
-> > But I see that SWIG doesn't show up in a search for linux/audit.h:
-> > https://codesearch.debian.net/search?q=linux%2Faudit.h&literal=1&perpkg=1
-> >
-> > So this may not be a sufficient analysis...
-> 
-> I think from a practical perspective ensuring that the major IPsec/IKE
-> tools, e.g. the various *SWANs, that know about labeled IPSec still
-> build and can set/get the SA/SPD labels correctly would be sufficient.
-> I seriously doubt there would be any problems, but who knows.
+Series applies on top of v5.18-rc5. Would be great if this could make it
+into v5.19.
 
-There are certainly some cases in which the transformation of
-zero-length arrays into flexible-array members can bring some issues
-to the surface[1][2]. This is the first time that we know of one of
-them in user-space. However, we haven't transformed the arrays in
-UAPI yet (with the exception of a couple of cases[3][4]). But that
-is something that we are planning to try soon[5].
+v8 was here:
+https://lore.kernel.org/linux-integrity/09e2552c-7392-e1da-926b-53c7db0b118d@pengutronix.de
 
---
-Gustavo
+Changelog is beneath each individual patch. Compared to v8, only code
+change is checking whether CAAM can support blobbing at init-time as
+apparently some Layerscape SoCs are available in a non-E(ncryption)
+variant that doesn't do AES. Previously, adding trusted keys on such
+SoCs would return an error with a cryptic error message.
 
-[1] https://github.com/KSPP/linux/issues?q=invalid+use+of+flexible+array
-[2] https://github.com/KSPP/linux/issues?q=invalid+application+of+%E2%80%98sizeof%E2%80%99+to+incomplete+type
-[3] https://git.kernel.org/linus/db243b796439c0caba47865564d8acd18a301d18
-[4] https://git.kernel.org/linus/d6cdad870358128c1e753e6258e295ab8a5a2429
-[5] https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/commit/?h=for-next/kspp-fam0-uapi
+
+The Cryptographic Acceleration and Assurance Module (CAAM) is an IP core
+built into many newer i.MX and QorIQ SoCs by NXP.
+
+Its blob mechanism can AES encrypt/decrypt user data using a unique
+never-disclosed device-specific key.
+
+There has been multiple discussions on how to represent this within the kernel:
+
+The Cryptographic Acceleration and Assurance Module (CAAM) is an IP core
+built into many newer i.MX and QorIQ SoCs by NXP.
+
+Its blob mechanism can AES encrypt/decrypt user data using a unique
+never-disclosed device-specific key. There has been multiple
+discussions on how to represent this within the kernel:
+
+ - [RFC] crypto: caam - add red blobifier
+   Steffen implemented[1] a PoC sysfs driver to start a discussion on how to
+   best integrate the blob mechanism.
+   Mimi suggested that it could be used to implement trusted keys.
+   Trusted keys back then were a TPM-only feature.
+
+ - security/keys/secure_key: Adds the secure key support based on CAAM.
+   Udit Agarwal added[2] a new "secure" key type with the CAAM as backend.
+   The key material stays within the kernel only.
+   Mimi and James agreed that this needs a generic interface, not specific
+   to CAAM. Mimi suggested trusted keys. Jan noted that this could serve as
+   basis for TEE-backed keys.
+
+ - [RFC] drivers: crypto: caam: key: Add caam_tk key type
+   Franck added[3] a new "caam_tk" key type based on Udit's work. This time
+   it uses CAAM "black blobs" instead of "red blobs", so key material stays
+   within the CAAM and isn't exposed to kernel in plaintext.
+   James voiced the opinion that there should be just one user-facing generic
+   wrap/unwrap key type with multiple possible handlers.
+   David suggested trusted keys.
+
+ - Introduce TEE based Trusted Keys support
+   Sumit reworked[4] trusted keys to support multiple possible backends with
+   one chosen at boot time and added a new TEE backend along with TPM.
+   This now sits in Jarkko's master branch to be sent out for v5.13
+
+This patch series builds on top of Sumit's rework to have the CAAM as yet another
+trusted key backend.
+
+The CAAM bits are based on Steffen's initial patch from 2015. His work had been
+used in the field for some years now, so I preferred not to deviate too much from it.
+
+This series has been tested with dmcrypt[5] on an i.MX6Q/DL and an i.MX8M[6].
+
+Looking forward to your feedback.
+
+Cheers,
+Ahmad
+
+ [1]: https://lore.kernel.org/linux-crypto/1447082306-19946-2-git-send-email-s.trumtrar@pengutronix.de/
+ [2]: https://lore.kernel.org/linux-integrity/20180723111432.26830-1-udit.agarwal@nxp.com/
+ [3]: https://lore.kernel.org/lkml/1551456599-10603-2-git-send-email-franck.lenormand@nxp.com/
+ [4]: https://lore.kernel.org/lkml/1604419306-26105-1-git-send-email-sumit.garg@linaro.org/
+ [5]: https://lore.kernel.org/linux-integrity/20210122084321.24012-2-a.fatoum@pengutronix.de/
+ [6]: https://lore.kernel.org/linux-integrity/DU2PR04MB8630D83FE9BBC0D782C4FAF595089@DU2PR04MB8630.eurprd04.prod.outlook.com/
+
+---
+To: Jarkko Sakkinen <jarkko@kernel.org>
+To: "Horia Geantă" <horia.geanta@nxp.com>
+To: Mimi Zohar <zohar@linux.ibm.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+To: "David S. Miller" <davem@davemloft.net>
+To: James Bottomley <jejb@linux.ibm.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Jan Luebbe <j.luebbe@pengutronix.de>
+Cc: David Gstir <david@sigma-star.at>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Franck LENORMAND <franck.lenormand@nxp.com>
+Cc: Sumit Garg <sumit.garg@linaro.org>
+Cc: Andreas Rammhold <andreas@rammhold.de>
+Cc: Tim Harvey <tharvey@gateworks.com>
+Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc: Michael Walle <michael@walle.cc>
+Cc: linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+
+Ahmad Fatoum (7):
+  KEYS: trusted: allow use of TEE as backend without TCG_TPM support
+  KEYS: trusted: allow use of kernel RNG for key material
+  crypto: caam - determine whether CAAM supports blob encap/decap
+  crypto: caam - add in-kernel interface for blob generator
+  KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
+  doc: trusted-encrypted: describe new CAAM trust source
+  MAINTAINERS: add KEYS-TRUSTED-CAAM
+
+ .../admin-guide/kernel-parameters.txt         |  11 ++
+ .../security/keys/trusted-encrypted.rst       |  60 +++++-
+ MAINTAINERS                                   |   9 +
+ drivers/crypto/caam/Kconfig                   |   3 +
+ drivers/crypto/caam/Makefile                  |   1 +
+ drivers/crypto/caam/blob_gen.c                | 182 ++++++++++++++++++
+ drivers/crypto/caam/ctrl.c                    |  10 +-
+ drivers/crypto/caam/intern.h                  |   1 +
+ drivers/crypto/caam/regs.h                    |   4 +-
+ include/keys/trusted-type.h                   |   2 +-
+ include/keys/trusted_caam.h                   |  11 ++
+ include/soc/fsl/caam-blob.h                   | 103 ++++++++++
+ security/keys/Kconfig                         |  18 +-
+ security/keys/trusted-keys/Kconfig            |  38 ++++
+ security/keys/trusted-keys/Makefile           |  10 +-
+ security/keys/trusted-keys/trusted_caam.c     |  80 ++++++++
+ security/keys/trusted-keys/trusted_core.c     |  45 ++++-
+ 17 files changed, 556 insertions(+), 32 deletions(-)
+ create mode 100644 drivers/crypto/caam/blob_gen.c
+ create mode 100644 include/keys/trusted_caam.h
+ create mode 100644 include/soc/fsl/caam-blob.h
+ create mode 100644 security/keys/trusted-keys/Kconfig
+ create mode 100644 security/keys/trusted-keys/trusted_caam.c
+
+-- 
+2.30.2
+
