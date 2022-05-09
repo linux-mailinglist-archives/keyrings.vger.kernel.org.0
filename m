@@ -2,137 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B8552042F
-	for <lists+keyrings@lfdr.de>; Mon,  9 May 2022 20:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9454852083D
+	for <lists+keyrings@lfdr.de>; Tue, 10 May 2022 01:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239975AbiEISLW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 May 2022 14:11:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34664 "EHLO
+        id S232305AbiEIXRu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 May 2022 19:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240034AbiEISLR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 May 2022 14:11:17 -0400
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF63FBF40;
-        Mon,  9 May 2022 11:07:21 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 72A45300002AC;
-        Mon,  9 May 2022 20:07:17 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 623D8B1FD3; Mon,  9 May 2022 20:07:17 +0200 (CEST)
-Date:   Mon, 9 May 2022 20:07:17 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        linuxarm@huawei.com, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        keyrings@vger.kernel.org, Bjorn Helgaas <bjorn@helgaas.com>,
-        "David E . Box" <david.e.box@linux.intel.com>,
-        dan.j.williams@intel.com
-Subject: Re: [RFC PATCH v2 12/14] spdm: Introduce a library for DMTF SPDM
-Message-ID: <20220509180717.GA7015@wunner.de>
-References: <20220303135905.10420-1-Jonathan.Cameron@huawei.com>
- <20220303135905.10420-13-Jonathan.Cameron@huawei.com>
+        with ESMTP id S232301AbiEIXRr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 9 May 2022 19:17:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D7C2A4705;
+        Mon,  9 May 2022 16:13:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66ACD61205;
+        Mon,  9 May 2022 23:13:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824D8C385B3;
+        Mon,  9 May 2022 23:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652138030;
+        bh=4dK3VfombzihJEhoOsxtQumd0/18NJxcFNS6Q1FILXU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=s68VrmMb9I42RgQylAe6I2UHS7PbVefvxqYqUkTdxAbwRmUBGYlm88kQbjP4p5B93
+         bu840ucdXrrL/UB/LypRKnlEd1pSUCiJMw9a7nrt+ewBckJGkg6yR+GUntXl3SEs9E
+         GzbxrEg6cgx+pZVVelj4mLIbvyNxtYO4hO7u106EojHs9TMtnJs4N4flPCGgEC72VR
+         HCkj0dYSvb0rhS3L/OwOKJ+6r5QirqzJnp7fDgGwV+U6tb0cmBFBhtOwQHQokgU3rW
+         G9azWrWdfiVno9MlDqELZGU1cURr1KbN8tYcGDWuK5kUdd6jL0tRT3aGdUKiLe+/Sc
+         d9AvZWFfXbj6g==
+Date:   Mon, 9 May 2022 16:13:48 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-hardening@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] big_keys: Use struct for internal payload
+Message-ID: <YnmgLLcJfPRKEYuk@sol.localdomain>
+References: <20220508175732.2693426-1-keescook@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220303135905.10420-13-Jonathan.Cameron@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220508175732.2693426-1-keescook@chromium.org>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 01:59:03PM +0000, Jonathan Cameron wrote:
-> --- /dev/null
-> +++ b/include/linux/spdm.h
-> @@ -0,0 +1,104 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * DMTF Security Protocol and Data Model
-> + *
+On Sun, May 08, 2022 at 10:57:31AM -0700, Kees Cook wrote:
+> The randstruct GCC plugin gets upset when it sees struct path (which is
+> randomized) being assigned from a "void *" (which it cannot type-check).
+> 
+> There's no need for these casts, as the entire internal payload use is
+> following a normal struct layout. Convert the enum-based void * offset
+> dereferencing to the new big_key_payload struct. No meaningful machine
+> code changes result after this change, and source readability is improved.
+> 
+> Drop the randstruct exception now that there is no "confusing" cross-type
+> assignment.
+> 
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Cc: James Morris <jmorris@namei.org>
+> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> Cc: linux-hardening@vger.kernel.org
+> Cc: keyrings@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  scripts/gcc-plugins/randomize_layout_plugin.c |  2 -
+>  security/keys/big_key.c                       | 64 ++++++++++---------
+>  2 files changed, 34 insertions(+), 32 deletions(-)
 
-Please amend this comment at the top of both spdm.h and spdm.c
-with a link to https://www.dmtf.org/dsp/DSP0274
-so the casual reader knows the document number and
-knows where to find the spec.
+This looks fine to me, although the way that an array of void pointers is cast
+to/from another struct is still weird.  I'd prefer if the payload was just
+changed into a separate allocation.
 
+A couple nits below if you stay with your proposed solution:
 
-> +struct spdm_header {
-> +	u8 version;
-> +	u8 code;  /* requestresponsecode */
-> +	u8 param1;
-> +	u8 param2;
-> +};
-
-I think you need to add __packed to all of the message structs
-to ensure the compiler doesn't add padding anywhere.
-
-
-> +struct spdm_exchange {
-> +	struct spdm_header *request_pl;
-> +	size_t request_pl_sz;
-> +	struct spdm_header *response_pl;
-> +	size_t response_pl_sz;
-
-I assume "pl" means payload.  This isn't accurate as the spec defines
-payload as the message body only (i.e. sans header).
-I'd just omit the "_pl" suffix.
-
-
-> +int spdm_measurements_get(struct spdm_state *spdm_state);
-
-That function is declared in spdm.h but there's no implementation
-provided in this patch.  Probably a leftover from an older iteration?
-
-
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -289,6 +289,8 @@ obj-$(CONFIG_PERCPU_TEST) += percpu_test.o
->  obj-$(CONFIG_ASN1) += asn1_decoder.o
->  obj-$(CONFIG_ASN1_ENCODER) += asn1_encoder.o
+>  void big_key_free_preparse(struct key_preparsed_payload *prep)
+>  {
+> +	struct big_key_payload *payload = to_big_key_payload(prep->payload);
+> +
+>  	if (prep->datalen > BIG_KEY_FILE_THRESHOLD) {
+> -		struct path *path = (struct path *)&prep->payload.data[big_key_path];
+> +		struct path *path = &payload->path;
 >  
-> +obj-$(CONFIG_SPDM) += spdm.o
+>  		path_put(path);
+>  	}
 
-It certainly seems wise to put this in lib/ so that it can be used by
-other buses as well once they add encryption/authentication.
-It's clearly not a PCIe-only feature.
+This could just do:
 
-I'm thinking of USB specifically since the USB Authentication Spec
-seems to have served as a blueprint for SPDM.
+	if (prep->datalen > BIG_KEY_FILE_THRESHOLD)
+		path_put(&payload->path);
 
-I'd suggest to only include a forward declaration of struct spdm_state
-in spdm.h to avoid exposing internals.  I'd further suggest to expose
-one function to allocate & initialize an spdm_state.  By initialize I mean
-that a transport function pointer is passed in which is stored in
-struct spdm_state.  The transport function performs one request/response
-transaction.  I think you should not mark the dev pointer in struct
-spdm_state as "For error reporting only", rather that's the device with
-which an SPDM exchange is performed.  The transport function should use
-that dev pointer instead of duplicating the pointer in transport_priv.
+>  void big_key_destroy(struct key *key)
+>  {
+> -	size_t datalen = (size_t)key->payload.data[big_key_len];
+> +	struct big_key_payload *payload = to_big_key_payload(key->payload);
+>  
+> -	if (datalen > BIG_KEY_FILE_THRESHOLD) {
+> -		struct path *path = (struct path *)&key->payload.data[big_key_path];
+> +	if (payload->length > BIG_KEY_FILE_THRESHOLD) {
+> +		struct path *path = &payload->path;
+>  
+>  		path_put(path);
+>  		path->mnt = NULL;
+>  		path->dentry = NULL;
+>  	}
 
-Authenticating a device would thus encompass two function calls,
-one to allocate & initialize spdm_state, another one to perform
-SPDM session setup (which does authentication).
+And similarly:
 
-Encryption would encompass a third function call to set up IDE.
+	if (payload->length > BIG_KEY_FILE_THRESHOLD) {
+		path_put(&payload->path);
+		payload->path.mnt = NULL;
+		payload->path.dentry = NULL;
+	}
 
-
-> +	spdm_state->measurement_hash_alg = __ffs(le16_to_cpu(rsp->measurement_hash_algo));
-> +	spdm_state->base_asym_alg = __ffs(le16_to_cpu(rsp->base_asym_sel));
-> +	spdm_state->base_hash_alg = __ffs(le16_to_cpu(rsp->base_hash_sel));
-
-The weaker algorithms are represented by lower bits, so this selects
-the weakest supported algorithm.  Wouldn't we want the opposite?
-I guess that's a policy decision that user space should decide...
-
-Thanks,
-
-Lukas
+- Eric
