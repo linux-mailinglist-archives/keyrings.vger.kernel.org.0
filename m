@@ -2,54 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9454852083D
-	for <lists+keyrings@lfdr.de>; Tue, 10 May 2022 01:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42D3A521319
+	for <lists+keyrings@lfdr.de>; Tue, 10 May 2022 13:05:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232305AbiEIXRu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 May 2022 19:17:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54928 "EHLO
+        id S233891AbiEJLJB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 May 2022 07:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232301AbiEIXRr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 May 2022 19:17:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D7C2A4705;
-        Mon,  9 May 2022 16:13:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S233823AbiEJLJA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 May 2022 07:09:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E7873298382
+        for <keyrings@vger.kernel.org>; Tue, 10 May 2022 04:05:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1652180702;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=iOkpzVwdzc0gzt+27fkc92K59poCEndTKCiLu+Tbxmc=;
+        b=M77pVbH3p1NFg6ivS/mcTn4/7TslNteVPX0WAbv84fTXynbdCOwgAG5OWiItDfTgZUYeTx
+        V8FlS5tquR3IfzRs9jP1Y7bYKmz7eDSiM+30nP0EzABzGoJPwtcGXjfXBNWlNGKFJotDWl
+        gkCa4XkHpPYfqqsEUdXystQ2hBvTrY8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-461-g5J18bbINFGgM_I_PdahVA-1; Tue, 10 May 2022 07:05:01 -0400
+X-MC-Unique: g5J18bbINFGgM_I_PdahVA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66ACD61205;
-        Mon,  9 May 2022 23:13:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824D8C385B3;
-        Mon,  9 May 2022 23:13:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652138030;
-        bh=4dK3VfombzihJEhoOsxtQumd0/18NJxcFNS6Q1FILXU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=s68VrmMb9I42RgQylAe6I2UHS7PbVefvxqYqUkTdxAbwRmUBGYlm88kQbjP4p5B93
-         bu840ucdXrrL/UB/LypRKnlEd1pSUCiJMw9a7nrt+ewBckJGkg6yR+GUntXl3SEs9E
-         GzbxrEg6cgx+pZVVelj4mLIbvyNxtYO4hO7u106EojHs9TMtnJs4N4flPCGgEC72VR
-         HCkj0dYSvb0rhS3L/OwOKJ+6r5QirqzJnp7fDgGwV+U6tb0cmBFBhtOwQHQokgU3rW
-         G9azWrWdfiVno9MlDqELZGU1cURr1KbN8tYcGDWuK5kUdd6jL0tRT3aGdUKiLe+/Sc
-         d9AvZWFfXbj6g==
-Date:   Mon, 9 May 2022 16:13:48 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-hardening@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] big_keys: Use struct for internal payload
-Message-ID: <YnmgLLcJfPRKEYuk@sol.localdomain>
-References: <20220508175732.2693426-1-keescook@chromium.org>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3907185A7A4
+        for <keyrings@vger.kernel.org>; Tue, 10 May 2022 11:05:00 +0000 (UTC)
+Received: from rules.brq.redhat.com (unknown [10.43.17.131])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 51C0814A59A1;
+        Tue, 10 May 2022 11:05:00 +0000 (UTC)
+From:   Vladis Dronov <vdronov@redhat.com>
+To:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Cc:     vdronov@redhat.com
+Subject: [PATCH] man: fix a formatting on the keyctl.1 man page
+Date:   Tue, 10 May 2022 13:04:44 +0200
+Message-Id: <20220510110444.14192-1-vdronov@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220508175732.2693426-1-keescook@chromium.org>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,74 +56,56 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, May 08, 2022 at 10:57:31AM -0700, Kees Cook wrote:
-> The randstruct GCC plugin gets upset when it sees struct path (which is
-> randomized) being assigned from a "void *" (which it cannot type-check).
-> 
-> There's no need for these casts, as the entire internal payload use is
-> following a normal struct layout. Convert the enum-based void * offset
-> dereferencing to the new big_key_payload struct. No meaningful machine
-> code changes result after this change, and source readability is improved.
-> 
-> Drop the randstruct exception now that there is no "confusing" cross-type
-> assignment.
-> 
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: James Morris <jmorris@namei.org>
-> Cc: "Serge E. Hallyn" <serge@hallyn.com>
-> Cc: linux-hardening@vger.kernel.org
-> Cc: keyrings@vger.kernel.org
-> Cc: linux-security-module@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  scripts/gcc-plugins/randomize_layout_plugin.c |  2 -
->  security/keys/big_key.c                       | 64 ++++++++++---------
->  2 files changed, 34 insertions(+), 32 deletions(-)
+Fix a formatting and a command output on
+the keyctl.1 man page in a couple of places.
 
-This looks fine to me, although the way that an array of void pointers is cast
-to/from another struct is still weird.  I'd prefer if the payload was just
-changed into a separate allocation.
+Signed-off-by: Vladis Dronov <vdronov@redhat.com>
+---
 
-A couple nits below if you stay with your proposed solution:
+Hi,
 
->  void big_key_free_preparse(struct key_preparsed_payload *prep)
->  {
-> +	struct big_key_payload *payload = to_big_key_payload(prep->payload);
-> +
->  	if (prep->datalen > BIG_KEY_FILE_THRESHOLD) {
-> -		struct path *path = (struct path *)&prep->payload.data[big_key_path];
-> +		struct path *path = &payload->path;
->  
->  		path_put(path);
->  	}
+This is a fix to userspace keyutils utilities, not to a kernel
+security/keys/ code:
 
-This could just do:
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/
 
-	if (prep->datalen > BIG_KEY_FILE_THRESHOLD)
-		path_put(&payload->path);
+Best regards,
+Vladis
 
->  void big_key_destroy(struct key *key)
->  {
-> -	size_t datalen = (size_t)key->payload.data[big_key_len];
-> +	struct big_key_payload *payload = to_big_key_payload(key->payload);
->  
-> -	if (datalen > BIG_KEY_FILE_THRESHOLD) {
-> -		struct path *path = (struct path *)&key->payload.data[big_key_path];
-> +	if (payload->length > BIG_KEY_FILE_THRESHOLD) {
-> +		struct path *path = &payload->path;
->  
->  		path_put(path);
->  		path->mnt = NULL;
->  		path->dentry = NULL;
->  	}
+---
+ man/keyctl.1 | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-And similarly:
+diff --git a/man/keyctl.1 b/man/keyctl.1
+index 2343762..c1d067f 100644
+--- a/man/keyctl.1
++++ b/man/keyctl.1
+@@ -302,7 +302,7 @@ The \fBpadd\fR variant of the command reads the data from stdin rather than
+ taking it from the command line:
+ 
+ .RS
+-.fi
++.nf
+ $ echo \-n stuff | keyctl padd user mykey @u
+ 26
+ .fi
+@@ -499,6 +499,7 @@ reject all links.
+ .RS
+ .nf
+ $ keyctl restrict_keyring $1 asymmetric builtin_trusted
++.fi
+ .RE
+ .SS Read a key
+ \fBkeyctl read\fR <key>
+@@ -522,7 +523,7 @@ $ keyctl read 26
+ $ keyctl print 26
+ b
+ $ keyctl pipe 26
+-$
++b$
+ .fi
+ .RE
+ .SS List a keyring
+-- 
+2.35.1
 
-	if (payload->length > BIG_KEY_FILE_THRESHOLD) {
-		path_put(&payload->path);
-		payload->path.mnt = NULL;
-		payload->path.dentry = NULL;
-	}
-
-- Eric
