@@ -2,106 +2,177 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 695A55230FA
-	for <lists+keyrings@lfdr.de>; Wed, 11 May 2022 12:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4B735231A8
+	for <lists+keyrings@lfdr.de>; Wed, 11 May 2022 13:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235451AbiEKKtK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 11 May 2022 06:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44128 "EHLO
+        id S232375AbiEKL3g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 11 May 2022 07:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229714AbiEKKtJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 11 May 2022 06:49:09 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A449D56C21
-        for <keyrings@vger.kernel.org>; Wed, 11 May 2022 03:49:08 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1nojtn-0005qR-7n; Wed, 11 May 2022 12:48:55 +0200
-Message-ID: <e49920e6-0852-ad3d-5758-604655591671@pengutronix.de>
-Date:   Wed, 11 May 2022 12:48:53 +0200
+        with ESMTP id S231186AbiEKL3f (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 11 May 2022 07:29:35 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15CCA1CFC8;
+        Wed, 11 May 2022 04:29:33 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id A983D22205;
+        Wed, 11 May 2022 13:29:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1652268571;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BkNNwCEY07bXhaxvT88gmFnBsLwGa+MxAaNVTYayNy8=;
+        b=GMfr3nznop6C1C9VfDvxzSNy3e1tI0j7PTD1n6cB1FFsXC+8eXKmCyaaeADN9vBge4RKHC
+        26Q5lIhCf6T/PSBRfJNC13/iFo5tbuhGvBJDvpTFdc1HHHR21Y3N/okug4NZTGL/+MWX8B
+        lM9xB+MPHyMZpD3kU1mMtzHKLPFuy5g=
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v9 7/7] MAINTAINERS: add KEYS-TRUSTED-CAAM
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     James Bottomley <jejb@linux.ibm.com>,
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Wed, 11 May 2022 13:29:30 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        =?UTF-8?Q?Horia_Geant=C4=83?= <horia.geanta@nxp.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>, kernel@pengutronix.de,
         Pankaj Gupta <pankaj.gupta@nxp.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
-        Eric Biggers <ebiggers@kernel.org>,
+        James Bottomley <jejb@linux.ibm.com>, kernel@pengutronix.de,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
         Jan Luebbe <j.luebbe@pengutronix.de>,
         David Gstir <david@sigma-star.at>,
+        Eric Biggers <ebiggers@kernel.org>,
         Richard Weinberger <richard@nod.at>,
         Franck LENORMAND <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Andreas Rammhold <andreas@rammhold.de>,
+        Tim Harvey <tharvey@gateworks.com>,
         Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Michael Walle <michael@walle.cc>,
-        Sumit Garg <sumit.garg@linaro.org>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v9 0/7] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+In-Reply-To: <3a8c493b-b19c-4490-85b4-22d240bfd06e@pengutronix.de>
 References: <20220506062553.1068296-1-a.fatoum@pengutronix.de>
- <20220506062553.1068296-8-a.fatoum@pengutronix.de> <YnbH2Fgn/JFOU3Rf@iki.fi>
- <YnbIiJynQq/tcFa2@iki.fi>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <YnbIiJynQq/tcFa2@iki.fi>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+ <49e1738c55c73819ee0e2cac0be74d81@walle.cc>
+ <3a8c493b-b19c-4490-85b4-22d240bfd06e@pengutronix.de>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <b7efa4578d7eeacf6e1696208c250bc8@walle.cc>
+X-Sender: michael@walle.cc
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 07.05.22 21:29, Jarkko Sakkinen wrote:
->>> +KEYS-TRUSTED-CAAM
->>> +M:	Ahmad Fatoum <a.fatoum@pengutronix.de>
->>> +R:	Pengutronix Kernel Team <kernel@pengutronix.de>
->>> +L:	linux-integrity@vger.kernel.org
->>> +L:	keyrings@vger.kernel.org
->>> +S:	Maintained
->>> +F:	include/keys/trusted_caam.h
->>> +F:	security/keys/trusted-keys/trusted_caam.c
->>> +
->>>  KEYS/KEYRINGS
->>>  M:	David Howells <dhowells@redhat.com>
->>>  M:	Jarkko Sakkinen <jarkko@kernel.org>
->>> -- 
->>> 2.30.2
->>>
->>
->> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Hi,
+
+Am 2022-05-11 12:47, schrieb Ahmad Fatoum:
+> On 06.05.22 12:52, Michael Walle wrote:
+>> Am 2022-05-06 08:25, schrieb Ahmad Fatoum:
+>>> Series applies on top of v5.18-rc5. Would be great if this could make 
+>>> it
+>>> into v5.19.
+>>> 
+>>> v8 was here:
+>>> https://lore.kernel.org/linux-integrity/09e2552c-7392-e1da-926b-53c7db0b118d@pengutronix.de
+>>> 
+>>> Changelog is beneath each individual patch. Compared to v8, only code
+>>> change is checking whether CAAM can support blobbing at init-time as
+>>> apparently some Layerscape SoCs are available in a non-E(ncryption)
+>>> variant that doesn't do AES. Previously, adding trusted keys on such
+>>> SoCs would return an error with a cryptic error message.
+>>> 
+>>> 
+>>> The Cryptographic Acceleration and Assurance Module (CAAM) is an IP 
+>>> core
+>>> built into many newer i.MX and QorIQ SoCs by NXP.
+>>> 
+>>> Its blob mechanism can AES encrypt/decrypt user data using a unique
+>>> never-disclosed device-specific key.
+>>> 
+>>> There has been multiple discussions on how to represent this within 
+>>> the kernel:
+>>> 
+>>> The Cryptographic Acceleration and Assurance Module (CAAM) is an IP 
+>>> core
+>>> built into many newer i.MX and QorIQ SoCs by NXP.
+>>> 
+>>> Its blob mechanism can AES encrypt/decrypt user data using a unique
+>>> never-disclosed device-specific key. There has been multiple
+>>> discussions on how to represent this within the kernel:
+>>> 
+>>>  - [RFC] crypto: caam - add red blobifier
+>>>    Steffen implemented[1] a PoC sysfs driver to start a discussion on 
+>>> how to
+>>>    best integrate the blob mechanism.
+>>>    Mimi suggested that it could be used to implement trusted keys.
+>>>    Trusted keys back then were a TPM-only feature.
+>>> 
+>>>  - security/keys/secure_key: Adds the secure key support based on 
+>>> CAAM.
+>>>    Udit Agarwal added[2] a new "secure" key type with the CAAM as 
+>>> backend.
+>>>    The key material stays within the kernel only.
+>>>    Mimi and James agreed that this needs a generic interface, not 
+>>> specific
+>>>    to CAAM. Mimi suggested trusted keys. Jan noted that this could 
+>>> serve as
+>>>    basis for TEE-backed keys.
+>>> 
+>>>  - [RFC] drivers: crypto: caam: key: Add caam_tk key type
+>>>    Franck added[3] a new "caam_tk" key type based on Udit's work. 
+>>> This time
+>>>    it uses CAAM "black blobs" instead of "red blobs", so key material 
+>>> stays
+>>>    within the CAAM and isn't exposed to kernel in plaintext.
+>>>    James voiced the opinion that there should be just one user-facing 
+>>> generic
+>>>    wrap/unwrap key type with multiple possible handlers.
+>>>    David suggested trusted keys.
+>>> 
+>>>  - Introduce TEE based Trusted Keys support
+>>>    Sumit reworked[4] trusted keys to support multiple possible 
+>>> backends with
+>>>    one chosen at boot time and added a new TEE backend along with 
+>>> TPM.
+>>>    This now sits in Jarkko's master branch to be sent out for v5.13
+>>> 
+>>> This patch series builds on top of Sumit's rework to have the CAAM as
+>>> yet another
+>>> trusted key backend.
+>>> 
+>>> The CAAM bits are based on Steffen's initial patch from 2015. His 
+>>> work had been
+>>> used in the field for some years now, so I preferred not to deviate
+>>> too much from it.
+>>> 
+>>> This series has been tested with dmcrypt[5] on an i.MX6Q/DL and an 
+>>> i.MX8M[6].
+>>> 
+>>> Looking forward to your feedback.
+>> 
+>> For the whole series:
+>> 
+>> Tested-by: Michael Walle <michael@walle.cc> # on ls1028a (non-E and E)
 > 
-> 3/7 would probably need tested-by. Other than that this starts to look
-> good...
+> Thanks! Did you test checkpatch.pl and make htmldocs/pdfdocs too
+> or should I add the Tested-by just for the first 5 patches?
 
-It has been tested by me on an i.MX6 (era < 10 with blobbing support)
-and by Michael on a LS1028A (era >= 10, both with and without blobbing
-support).
+I just tested the series on the mentioned hardware. So no htmldocs
+or checkpatch.pl.
 
-Cheers,
-Ahmad
-
-> 
-> BR, Jarkko
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-michael
