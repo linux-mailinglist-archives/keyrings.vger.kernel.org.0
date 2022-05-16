@@ -2,134 +2,225 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18BD52890A
-	for <lists+keyrings@lfdr.de>; Mon, 16 May 2022 17:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F474528D37
+	for <lists+keyrings@lfdr.de>; Mon, 16 May 2022 20:38:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245416AbiEPPjM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 16 May 2022 11:39:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43868 "EHLO
+        id S1345003AbiEPSi3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 16 May 2022 14:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245334AbiEPPjL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 16 May 2022 11:39:11 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39CCC3C72A
-        for <keyrings@vger.kernel.org>; Mon, 16 May 2022 08:39:09 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id z15-20020a9d65cf000000b00605f064482cso10293073oth.6
-        for <keyrings@vger.kernel.org>; Mon, 16 May 2022 08:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=KvJtfzxWZsNiNR7EF144SM6SIftj1CmtnD8p12jdtQk=;
-        b=Q868IUzJ6Thv/YSXCG69E42/kNk75UsDN3kgljwgJX+lfkMRHX7a6ja7KYAsTSJEJQ
-         n48WeJYNQExb3z2R3T2ZHjBobxZIEo8oztoHXWrg54pdSWqN/W9w6gZ0k4Cn8AtolwV6
-         mgG7IJ1NYZTIm5VKW4k7GHLcWfTRG66IZXEzw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=KvJtfzxWZsNiNR7EF144SM6SIftj1CmtnD8p12jdtQk=;
-        b=2YTCFsmwo3Asqoud4z58KYi43fQx4zdsTqXwZoa/jCwZNzqHxlMHaSxSSjy2mxgtSP
-         7R8p7DA/i6oS0AK28+HdOZS/wmjxWswpj3LNXJW0JU2QvH/1wrcdmChOKWaZHVaV/OFi
-         rQFad9osg1qBw8qSLg6YerRyvtdlB9x6k/QZJRFJ7ULB7lqcfYTvC8kWumTqRKbRgjM1
-         fceNBtMgXRHBZb946C73MloDbZmgWqtgeBKsiwMz/Ql7qoHfiS5T248nWXiR8NDm2TF5
-         IiWMVSYbkSIncaZkzoe+34EkEoG0hUWvo71CN/54TgWPoCSTtGrS0ugddsnR9NC0AjhL
-         aVhA==
-X-Gm-Message-State: AOAM532geo73dFrS4qVUNlBNRmQkNAJ2XOVCrB12QxeqF/oob+gDE6Jo
-        GzXL2FoDHzD/cJoCIapSwZZo2w==
-X-Google-Smtp-Source: ABdhPJyiT60xfgWiumqIr8pk98YB/qUqT7UnyA1whM1ug0bSh+dTiIBzUraZ2dkbEh/rn9GfknjLaA==
-X-Received: by 2002:a05:6830:151a:b0:606:765d:c6da with SMTP id k26-20020a056830151a00b00606765dc6damr6166236otp.227.1652715548497;
-        Mon, 16 May 2022 08:39:08 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id a14-20020a05680804ce00b00325cda1ffbasm3870233oie.57.2022.05.16.08.39.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 May 2022 08:39:08 -0700 (PDT)
-Subject: Re: [PATCH v2 1/1] sign-file: Do not attempt to use the ENGINE_* API
- if it's not available
-To:     Lee Jones <lee.jones@linaro.org>,
-        Salvatore Bonaccorso <carnil@debian.org>
-Cc:     Kees Cook <keescook@chromium.org>,
+        with ESMTP id S1345002AbiEPSi2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 16 May 2022 14:38:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511723E5E9;
+        Mon, 16 May 2022 11:38:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0DF63B815B4;
+        Mon, 16 May 2022 18:38:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C94C385AA;
+        Mon, 16 May 2022 18:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652726303;
+        bh=0QvHgpJb4KFdSPQhvpkbywnyC2wGLiX11TmowfYp2s0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iF8HVDkBiP42BWNMLdac03I5u5aAhpR+vhIMwoa1mpYAaeYITtvbtHdkiVBaFM65S
+         kNFEIyXvMAgnIU/eU4Uq1bQ34AV2coojUp23sJhrEQcmDO7s8O+cDWA9rgtdm+v45d
+         MeQpFXSpV6GLLbFtK4a9TDdVHeJCbXjNz5xEHMv0sj4VuaCGZoapoXf7TFScaVAAcf
+         UBAgyQC1Iga4ix6xqfX1RsHzYCqIN2AXwApLthNoENTq030XBy4B6qmqfhhbz5aCHA
+         AGCf6Z8xnfs0RE3ctYQViFD3MbP2MHvEMCQDZMFjGCipUhJboRCZKJPzRsNBRmDaPO
+         h0Ql4Y/5m2G/g==
+Date:   Mon, 16 May 2022 21:36:48 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        James Bottomley <jejb@linux.ibm.com>, kernel@pengutronix.de,
         David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, Adam Langley <agl@google.com>,
-        linux-kernel@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20211005161833.1522737-1-lee.jones@linaro.org>
- <Yicwb+Ceiu8JjVIS@google.com> <202203100851.C00D9AB73@keescook>
- <YoCoySEUSzu9zthg@eldamar.lan> <YoDKiAfcFiyFRyQT@google.com>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <f3ca4041-df33-493e-96a9-4bf40498ebff@linuxfoundation.org>
-Date:   Mon, 16 May 2022 09:39:07 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        David Gstir <david@sigma-star.at>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Andreas Rammhold <andreas@rammhold.de>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Michael Walle <michael@walle.cc>,
+        John Ernberg <john.ernberg@actia.se>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v10 0/7] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+Message-ID: <YoKZwFkfcl7ixTF4@kernel.org>
+References: <20220513145705.2080323-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <YoDKiAfcFiyFRyQT@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220513145705.2080323-1-a.fatoum@pengutronix.de>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 5/15/22 3:40 AM, Lee Jones wrote:
-> On Sun, 15 May 2022, Salvatore Bonaccorso wrote:
+On Fri, May 13, 2022 at 04:56:58PM +0200, Ahmad Fatoum wrote:
+> Series applies on top of v5.18-rc6. Would be great if this could make it
+> into v5.19.
 > 
->> Hi,
->>
->> On Thu, Mar 10, 2022 at 08:51:56AM -0800, Kees Cook wrote:
->>> On Tue, Mar 08, 2022 at 10:31:11AM +0000, Lee Jones wrote:
->>>> OpenSSL's ENGINE API is deprecated in OpenSSL v3.0.
->>>>
->>>> Use OPENSSL_NO_ENGINE to ensure the ENGINE API is only used if it is
->>>> present.  This will safeguard against compile errors when using SSL
->>>> implementations which lack support for this deprecated API.
->>>
->>> On Fedora rawhide, I'm still seeing a bunch of warnings:
->>>
->>> scripts/sign-file.c: In function 'display_openssl_errors':
->>> scripts/sign-file.c:89:9: warning: 'ERR_get_error_line' is deprecated: Since OpenSSL 3.0 [-Wdeprecat
->>> ed-declarations]
->>>     89 |         while ((e = ERR_get_error_line(&file, &line))) {
->>>        |         ^~~~~
->>> In file included from scripts/sign-file.c:29:
->>> /usr/include/openssl/err.h:411:15: note: declared here
->>>    411 | unsigned long ERR_get_error_line(const char **file, int *line);
->>>        |               ^~~~~~~~~~~~~~~~~~
->>> scripts/sign-file.c: In function 'drain_openssl_errors':
->>> scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is deprecated: Since OpenSSL 3.0 [-Wdepreca
->>> ted-declarations]
->>>    102 |         while (ERR_get_error_line(&file, &line)) {}
->>>        |         ^~~~~
->>> /usr/include/openssl/err.h:411:15: note: declared here
->>>    411 | unsigned long ERR_get_error_line(const char **file, int *line);
->>>        |               ^~~~~~~~~~~~~~~~~~
->>
->> FWIW, we are seeing the same now on Debian as Debian unstable is
->> moving to OpenSSL 3.0.
->>
->> https://lists.debian.org/debian-release/2022/05/msg00070.html
+> v9 was here:
+> https://lore.kernel.org/linux-integrity/20220506062553.1068296-1-a.fatoum@pengutronix.de
 > 
-> Did this patch help?
+> Changelog is beneath each individual patch. Compared to v9, only code
+> change is checking whether CAAM can support blobbing at init-time for
+> CAAM revisions < 10 (such as LS1046A) to avoid a cryptic error message
+> at first use.
 > 
-> We've had a few confirmed reports now.
 > 
-> My guess is the maintainers are not currently monitoring.
+> The Cryptographic Acceleration and Assurance Module (CAAM) is an IP core
+> built into many newer i.MX and QorIQ SoCs by NXP.
 > 
-> With some more {Reviewed,Tested}-bys I'd be prepared to submit this
-> via other means.  Either via my own repository or via Greg's.
+> Its blob mechanism can AES encrypt/decrypt user data using a unique
+> never-disclosed device-specific key.
 > 
-  
-I am seeing the same issue on my test system after upgrading to
-Ubuntu 22.04 LTS. This patch didn't fix the problem.
+> There has been multiple discussions on how to represent this within the kernel:
+> 
+> The Cryptographic Acceleration and Assurance Module (CAAM) is an IP core
+> built into many newer i.MX and QorIQ SoCs by NXP.
+> 
+> Its blob mechanism can AES encrypt/decrypt user data using a unique
+> never-disclosed device-specific key. There has been multiple
+> discussions on how to represent this within the kernel:
+> 
+>  - [RFC] crypto: caam - add red blobifier
+>    Steffen implemented[1] a PoC sysfs driver to start a discussion on how to
+>    best integrate the blob mechanism.
+>    Mimi suggested that it could be used to implement trusted keys.
+>    Trusted keys back then were a TPM-only feature.
+> 
+>  - security/keys/secure_key: Adds the secure key support based on CAAM.
+>    Udit Agarwal added[2] a new "secure" key type with the CAAM as backend.
+>    The key material stays within the kernel only.
+>    Mimi and James agreed that this needs a generic interface, not specific
+>    to CAAM. Mimi suggested trusted keys. Jan noted that this could serve as
+>    basis for TEE-backed keys.
+> 
+>  - [RFC] drivers: crypto: caam: key: Add caam_tk key type
+>    Franck added[3] a new "caam_tk" key type based on Udit's work. This time
+>    it uses CAAM "black blobs" instead of "red blobs", so key material stays
+>    within the CAAM and isn't exposed to kernel in plaintext.
+>    James voiced the opinion that there should be just one user-facing generic
+>    wrap/unwrap key type with multiple possible handlers.
+>    David suggested trusted keys.
+> 
+>  - Introduce TEE based Trusted Keys support
+>    Sumit reworked[4] trusted keys to support multiple possible backends with
+>    one chosen at boot time and added a new TEE backend along with TPM.
+>    This now sits in Jarkko's master branch to be sent out for v5.13
+> 
+> This patch series builds on top of Sumit's rework to have the CAAM as yet another
+> trusted key backend.
+> 
+> The CAAM bits are based on Steffen's initial patch from 2015. His work had been
+> used in the field for some years now, so I preferred not to deviate too much from it.
+> 
+> This series has been tested with dmcrypt[5] on an i.MX6Q/DL, i.MX8M[6]
+> and LS1028[7].
+> 
+> Looking forward to your feedback.
+> 
+> Cheers,
+> Ahmad
+> 
+>  [1]: https://lore.kernel.org/linux-crypto/1447082306-19946-2-git-send-email-s.trumtrar@pengutronix.de/
+>  [2]: https://lore.kernel.org/linux-integrity/20180723111432.26830-1-udit.agarwal@nxp.com/
+>  [3]: https://lore.kernel.org/lkml/1551456599-10603-2-git-send-email-franck.lenormand@nxp.com/
+>  [4]: https://lore.kernel.org/lkml/1604419306-26105-1-git-send-email-sumit.garg@linaro.org/
+>  [5]: https://lore.kernel.org/linux-integrity/20210122084321.24012-2-a.fatoum@pengutronix.de/
+>  [6]: https://lore.kernel.org/linux-integrity/DU2PR04MB8630D83FE9BBC0D782C4FAF595089@DU2PR04MB8630.eurprd04.prod.outlook.com/
+>  [7]: https://lore.kernel.org/linux-integrity/49e1738c55c73819ee0e2cac0be74d81@walle.cc/
+> 
+> ---
+> To: Jarkko Sakkinen <jarkko@kernel.org>
+> To: "Horia Geantă" <horia.geanta@nxp.com>
+> To: Mimi Zohar <zohar@linux.ibm.com>
+> To: Pankaj Gupta <pankaj.gupta@nxp.com>
+> To: Herbert Xu <herbert@gondor.apana.org.au>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: James Bottomley <jejb@linux.ibm.com>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: James Morris <jmorris@namei.org>
+> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Cc: Jan Luebbe <j.luebbe@pengutronix.de>
+> Cc: David Gstir <david@sigma-star.at>
+> Cc: Eric Biggers <ebiggers@kernel.org>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: Franck LENORMAND <franck.lenormand@nxp.com>
+> Cc: Sumit Garg <sumit.garg@linaro.org>
+> Cc: Andreas Rammhold <andreas@rammhold.de>
+> Cc: Tim Harvey <tharvey@gateworks.com>
+> Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> Cc: Michael Walle <michael@walle.cc>
+> Cc: John Ernberg <john.ernberg@actia.se>
+> Cc: linux-integrity@vger.kernel.org
+> Cc: keyrings@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> 
+> 
+> 
+> Ahmad Fatoum (7):
+>   KEYS: trusted: allow use of TEE as backend without TCG_TPM support
+>   KEYS: trusted: allow use of kernel RNG for key material
+>   crypto: caam - determine whether CAAM supports blob encap/decap
+>   crypto: caam - add in-kernel interface for blob generator
+>   KEYS: trusted: Introduce support for NXP CAAM-based trusted keys
+>   doc: trusted-encrypted: describe new CAAM trust source
+>   MAINTAINERS: add KEYS-TRUSTED-CAAM
+> 
+>  .../admin-guide/kernel-parameters.txt         |  11 ++
+>  .../security/keys/trusted-encrypted.rst       |  60 +++++-
+>  MAINTAINERS                                   |   9 +
+>  drivers/crypto/caam/Kconfig                   |   3 +
+>  drivers/crypto/caam/Makefile                  |   1 +
+>  drivers/crypto/caam/blob_gen.c                | 182 ++++++++++++++++++
+>  drivers/crypto/caam/ctrl.c                    |  17 +-
+>  drivers/crypto/caam/intern.h                  |   1 +
+>  drivers/crypto/caam/regs.h                    |   4 +-
+>  include/keys/trusted-type.h                   |   2 +-
+>  include/keys/trusted_caam.h                   |  11 ++
+>  include/soc/fsl/caam-blob.h                   | 103 ++++++++++
+>  security/keys/Kconfig                         |  18 +-
+>  security/keys/trusted-keys/Kconfig            |  38 ++++
+>  security/keys/trusted-keys/Makefile           |  10 +-
+>  security/keys/trusted-keys/trusted_caam.c     |  80 ++++++++
+>  security/keys/trusted-keys/trusted_core.c     |  45 ++++-
+>  17 files changed, 563 insertions(+), 32 deletions(-)
+>  create mode 100644 drivers/crypto/caam/blob_gen.c
+>  create mode 100644 include/keys/trusted_caam.h
+>  create mode 100644 include/soc/fsl/caam-blob.h
+>  create mode 100644 security/keys/trusted-keys/Kconfig
+>  create mode 100644 security/keys/trusted-keys/trusted_caam.c
+> 
+> -- 
+> 2.30.2
+> 
 
-Please cc me on your future patches and I can test them.
+I can probably pick these unless objections?
 
-thanks,
--- Shuah
+BR, Jarkko
