@@ -2,189 +2,134 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE0052778B
-	for <lists+keyrings@lfdr.de>; Sun, 15 May 2022 14:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D18BD52890A
+	for <lists+keyrings@lfdr.de>; Mon, 16 May 2022 17:39:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236754AbiEOMnC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 15 May 2022 08:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
+        id S245416AbiEPPjM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 16 May 2022 11:39:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236773AbiEOMml (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 15 May 2022 08:42:41 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B497D17A9C;
-        Sun, 15 May 2022 05:42:39 -0700 (PDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24F64tN2018967;
-        Sun, 15 May 2022 12:42:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=1l2WtRMp20/zQ/ARHctl2Xng4JO8XSuqPYRhaDk3aLw=;
- b=dZMuiPoMk+WxPCjwNoZsekgcEowc7lrwMfmxvnU2IjKVfAJV/io+ABy04qhfwzLhZYrw
- 8BchtP3QhnvBBLAxnFLdXUnEA8VRxsZfTcpJiUZaIau+pxO20J2i2iE9IYY/t/0ZX8A7
- lA2H8tbK+DXtzsgMigKOCclwALVh7xStuQAAi3o2nV8Z07jk9QrO2/XvE+St/4/kuhxt
- 2uyrWr+RVrdpS+/nSeu4cohuFXCGAMc3kllhzQEppeteR/85wkiZezmO9pLlxGp71LSL
- ixnjBh5E9w2z6QzeYn8p90mDEgwi/X6iNRLxiNp1Glb+xYjBKb7Do8zMadwAHTjLm4Kk VQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g2e07x6nb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 15 May 2022 12:42:08 +0000
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24FCg7u7016544;
-        Sun, 15 May 2022 12:42:07 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g2e07x6ms-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 15 May 2022 12:42:07 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24FCdeI1022804;
-        Sun, 15 May 2022 12:42:05 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by ppma03fra.de.ibm.com with ESMTP id 3g2428s208-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 15 May 2022 12:42:05 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24FCg3bI22020378
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 15 May 2022 12:42:03 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E94B811C058;
-        Sun, 15 May 2022 12:42:02 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 53EFB11C04A;
-        Sun, 15 May 2022 12:42:00 +0000 (GMT)
-Received: from sig-9-65-80-60.ibm.com (unknown [9.65.80.60])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Sun, 15 May 2022 12:42:00 +0000 (GMT)
-Message-ID: <5d5e459069bef1c9c7eddec973987a08c4b16d30.camel@linux.ibm.com>
-Subject: Re: [PATCH v7] efi: Do not import certificates from UEFI Secure
- Boot for T2 Macs
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Aditya Garg <gargaditya08@live.com>
-Cc:     "jarkko@kernel.org" <jarkko@kernel.org>,
-        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "andrii@kernel.org" <andrii@kernel.org>,
-        "kafai@fb.com" <kafai@fb.com>,
-        "songliubraving@fb.com" <songliubraving@fb.com>,
-        "yhs@fb.com" <yhs@fb.com>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "kpsingh@kernel.org" <kpsingh@kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        Orlando Chamberlain <redecorating@protonmail.com>,
-        "admin@kodeit.net" <admin@kodeit.net>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date:   Sun, 15 May 2022 08:41:59 -0400
-In-Reply-To: <D6CDA21E-CC8F-4DA1-A5A4-8B706CA79182@live.com>
-References: <652C3E9E-CB97-4C70-A961-74AF8AEF9E39@live.com>
-         <94DD0D83-8FDE-4A61-AAF0-09A0175A0D0D@live.com>
-         <590ED76A-EE91-4ED1-B524-BC23419C051E@live.com>
-         <E9C28706-2546-40BF-B32C-66A047BE9EFB@live.com>
-         <02125722-91FC-43D3-B63C-1B789C2DA8C3@live.com>
-         <958B8D22-F11E-4B5D-9F44-6F0626DBCB63@live.com>
-         <06062b288d675dc060f33041e9b2009c151698e6.camel@linux.ibm.com>
-         <D6CDA21E-CC8F-4DA1-A5A4-8B706CA79182@live.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: saHdDgJSxeCMDniNSm7mqvPsBH743un7
-X-Proofpoint-GUID: 2Fr8-VO3Z_jmN7W97rGgdr-O6jwKDpMn
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S245334AbiEPPjL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 16 May 2022 11:39:11 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39CCC3C72A
+        for <keyrings@vger.kernel.org>; Mon, 16 May 2022 08:39:09 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id z15-20020a9d65cf000000b00605f064482cso10293073oth.6
+        for <keyrings@vger.kernel.org>; Mon, 16 May 2022 08:39:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=KvJtfzxWZsNiNR7EF144SM6SIftj1CmtnD8p12jdtQk=;
+        b=Q868IUzJ6Thv/YSXCG69E42/kNk75UsDN3kgljwgJX+lfkMRHX7a6ja7KYAsTSJEJQ
+         n48WeJYNQExb3z2R3T2ZHjBobxZIEo8oztoHXWrg54pdSWqN/W9w6gZ0k4Cn8AtolwV6
+         mgG7IJ1NYZTIm5VKW4k7GHLcWfTRG66IZXEzw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=KvJtfzxWZsNiNR7EF144SM6SIftj1CmtnD8p12jdtQk=;
+        b=2YTCFsmwo3Asqoud4z58KYi43fQx4zdsTqXwZoa/jCwZNzqHxlMHaSxSSjy2mxgtSP
+         7R8p7DA/i6oS0AK28+HdOZS/wmjxWswpj3LNXJW0JU2QvH/1wrcdmChOKWaZHVaV/OFi
+         rQFad9osg1qBw8qSLg6YerRyvtdlB9x6k/QZJRFJ7ULB7lqcfYTvC8kWumTqRKbRgjM1
+         fceNBtMgXRHBZb946C73MloDbZmgWqtgeBKsiwMz/Ql7qoHfiS5T248nWXiR8NDm2TF5
+         IiWMVSYbkSIncaZkzoe+34EkEoG0hUWvo71CN/54TgWPoCSTtGrS0ugddsnR9NC0AjhL
+         aVhA==
+X-Gm-Message-State: AOAM532geo73dFrS4qVUNlBNRmQkNAJ2XOVCrB12QxeqF/oob+gDE6Jo
+        GzXL2FoDHzD/cJoCIapSwZZo2w==
+X-Google-Smtp-Source: ABdhPJyiT60xfgWiumqIr8pk98YB/qUqT7UnyA1whM1ug0bSh+dTiIBzUraZ2dkbEh/rn9GfknjLaA==
+X-Received: by 2002:a05:6830:151a:b0:606:765d:c6da with SMTP id k26-20020a056830151a00b00606765dc6damr6166236otp.227.1652715548497;
+        Mon, 16 May 2022 08:39:08 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id a14-20020a05680804ce00b00325cda1ffbasm3870233oie.57.2022.05.16.08.39.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 May 2022 08:39:08 -0700 (PDT)
+Subject: Re: [PATCH v2 1/1] sign-file: Do not attempt to use the ENGINE_* API
+ if it's not available
+To:     Lee Jones <lee.jones@linaro.org>,
+        Salvatore Bonaccorso <carnil@debian.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, Adam Langley <agl@google.com>,
+        linux-kernel@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20211005161833.1522737-1-lee.jones@linaro.org>
+ <Yicwb+Ceiu8JjVIS@google.com> <202203100851.C00D9AB73@keescook>
+ <YoCoySEUSzu9zthg@eldamar.lan> <YoDKiAfcFiyFRyQT@google.com>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <f3ca4041-df33-493e-96a9-4bf40498ebff@linuxfoundation.org>
+Date:   Mon, 16 May 2022 09:39:07 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-15_06,2022-05-13_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- bulkscore=0 impostorscore=0 spamscore=0 malwarescore=0 mlxscore=0
- adultscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205150065
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <YoDKiAfcFiyFRyQT@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2022-05-13 at 18:31 +0000, Aditya Garg wrote:
-> > Are there directions for installing Linux on a Mac with Apple firmware
-> > code?  
+On 5/15/22 3:40 AM, Lee Jones wrote:
+> On Sun, 15 May 2022, Salvatore Bonaccorso wrote:
 > 
-> Well, directions of installing Linux on an Intel based Mac, which
-> includes the T2 Macs is the same as on a normal PC.
+>> Hi,
+>>
+>> On Thu, Mar 10, 2022 at 08:51:56AM -0800, Kees Cook wrote:
+>>> On Tue, Mar 08, 2022 at 10:31:11AM +0000, Lee Jones wrote:
+>>>> OpenSSL's ENGINE API is deprecated in OpenSSL v3.0.
+>>>>
+>>>> Use OPENSSL_NO_ENGINE to ensure the ENGINE API is only used if it is
+>>>> present.  This will safeguard against compile errors when using SSL
+>>>> implementations which lack support for this deprecated API.
+>>>
+>>> On Fedora rawhide, I'm still seeing a bunch of warnings:
+>>>
+>>> scripts/sign-file.c: In function 'display_openssl_errors':
+>>> scripts/sign-file.c:89:9: warning: 'ERR_get_error_line' is deprecated: Since OpenSSL 3.0 [-Wdeprecat
+>>> ed-declarations]
+>>>     89 |         while ((e = ERR_get_error_line(&file, &line))) {
+>>>        |         ^~~~~
+>>> In file included from scripts/sign-file.c:29:
+>>> /usr/include/openssl/err.h:411:15: note: declared here
+>>>    411 | unsigned long ERR_get_error_line(const char **file, int *line);
+>>>        |               ^~~~~~~~~~~~~~~~~~
+>>> scripts/sign-file.c: In function 'drain_openssl_errors':
+>>> scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is deprecated: Since OpenSSL 3.0 [-Wdepreca
+>>> ted-declarations]
+>>>    102 |         while (ERR_get_error_line(&file, &line)) {}
+>>>        |         ^~~~~
+>>> /usr/include/openssl/err.h:411:15: note: declared here
+>>>    411 | unsigned long ERR_get_error_line(const char **file, int *line);
+>>>        |               ^~~~~~~~~~~~~~~~~~
+>>
+>> FWIW, we are seeing the same now on Debian as Debian unstable is
+>> moving to OpenSSL 3.0.
+>>
+>> https://lists.debian.org/debian-release/2022/05/msg00070.html
 > 
-> Though, in case of T2 Macs, we for now need to use customised ISOs,
-> since some drivers and patches to support T2 Macs are yet to be
-> upstreamed.
+> Did this patch help?
 > 
-> An example of installing Ubuntu can be read here on 
-> https://wiki.t2linux.org/distributions/ubuntu/installation/
+> We've had a few confirmed reports now.
 > 
-> Talking about the official ISOs, for many distros, since
-> CONFIG_LOAD_UEFI_KEYS is not enabled in their kernel config, we can
-> install Linux using them, but they still lack many drivers required,
-> since they are yet to be upstreamed. So the installation doesn’t work
-> efficiently and we have to manually install custom kernels having
-> those patches.
+> My guess is the maintainers are not currently monitoring.
 > 
-> In some distros like Ubuntu, they have CONFIG_LOAD_UEFI_KEYS enabled
-> in their kernel config. In this case the crash as mentioned in the
-> patch description occurs and EFI Runtime Services get disabled. Since
-> installing GRUB requires access to NVRAM, the installation fails with
-> official ISOs in this case. Thus, a custom ISO, with this patch
-> incorporated in being used for now for users interested in Ubuntu on
-> T2 Macs.
+> With some more {Reviewed,Tested}-bys I'd be prepared to submit this
+> via other means.  Either via my own repository or via Greg's.
 > 
-> > Are you dual booting Linux and Mac, or just Linux?
-> 
-> I don’t think it actually matters, though in most of the cases, we
-> dual boot macOS and Linux, but I do have seen cases who wipe out
-> their macOS completely. But this doesn't affect the Secure Boot
-> policy of these machines.
-> 
-> >  While in
-> > secure boot mode, without being able to read the keys to verify the
-> > kernel image signature, the signature verification should fail.
-> 
-> If I enable secure boot in the BIOS settings (macOS Recovery),
-> Apple’s firmware won't allow even the boot loader like GRUB, rEFInd
-> to boot. It shall only allow Windows and macOS to Boot. You could see
-> https://support.apple.com/en-in/HT208198 for more details.
-> 
-> > 
-> > Has anyone else tested this patch?
-> 
-> I work as a maintainer for Ubuntu for T2 Linux community and I have
-> this patch incorporated in the kernels used for Ubuntu ISOs
-> customised for T2 Macs, and thus have many users who have used the
-> ISO and have a successful installation. Thus, there are many users
-> who have tested this patch and are actually using it right now.
-> We also need the have the NVRAM writes enabled so as to unlock the
-> iGPU in Macs with both Intel and AMD GPU, and with this patch, we
-> have been successfully able to unlock it,
-> 
-> I hope I could answer your questions
+  
+I am seeing the same issue on my test system after upgrading to
+Ubuntu 22.04 LTS. This patch didn't fix the problem.
 
-Yes, thank you.   Based on the link above and 
-https://wiki.t2linux.org/guides/kernel/, I was able boot a kernel
-with/without this patch.
-
-The patch is now queued in the next-integrity-testing branch.
+Please cc me on your future patches and I can test them.
 
 thanks,
-
-Mimi
-
+-- Shuah
