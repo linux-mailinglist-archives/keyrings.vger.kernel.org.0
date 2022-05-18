@@ -2,112 +2,112 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8423352AF8C
-	for <lists+keyrings@lfdr.de>; Wed, 18 May 2022 03:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47DCC52AF9F
+	for <lists+keyrings@lfdr.de>; Wed, 18 May 2022 03:09:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230477AbiERBBN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 17 May 2022 21:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46136 "EHLO
+        id S233201AbiERBJ5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 May 2022 21:09:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233125AbiERBBF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 17 May 2022 21:01:05 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485093465B;
-        Tue, 17 May 2022 18:01:02 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L2vmT1ljWzhZ8Z;
-        Wed, 18 May 2022 09:00:25 +0800 (CST)
-Received: from [10.67.110.173] (10.67.110.173) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 18 May 2022 09:01:00 +0800
-Message-ID: <33dbb913-821c-e5a3-a7db-ac055baa69f8@huawei.com>
-Date:   Wed, 18 May 2022 09:01:00 +0800
+        with ESMTP id S230428AbiERBJ4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 May 2022 21:09:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CACA736E16;
+        Tue, 17 May 2022 18:09:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7751AB81BEA;
+        Wed, 18 May 2022 01:09:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC81AC385B8;
+        Wed, 18 May 2022 01:09:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652836191;
+        bh=fXm/jNWiR+uB6y2skR3sOXI5YjTEgz3MjlGfetpWRgc=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=SyUEAn+gBKLP4/y7Dp2x8gWSW1lqeyqAXiL2vBFEZeB2RkB5kpLoHp6ZrlZ8QfQ+v
+         CJiDHmKolgvDy3q0WmtL/Fr4i/y1mA+txWjVxbXEPA2LASDGCfeihKmNBcJIKZlODp
+         yctJBSwOgWdGhXJS4xHrCWRbCe6soNnAOJjOEe1KGpFwQatT201u0KiW6A8msecgLb
+         UP3yu7Hl05XwGV7BFMKjs1U0Dr8VO2eIf5Y1I2quQOw/uJNgGivzuP+cknMFzbkQVn
+         WaswSxl512pCH+OJw40YH93JG3CE5Zvt6DbCKBydO1c9zaoLwCzSeoxMZaOeISSshJ
+         qIh02HXYMpZgQ==
+Message-ID: <c511995075cafb35bfefcbfe6fa6e84aa31c536f.camel@kernel.org>
+Subject: Re: [PATCH v10 0/7] KEYS: trusted: Introduce support for NXP
+ CAAM-based trusted keys
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Horia =?UTF-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        James Bottomley <jejb@linux.ibm.com>, kernel@pengutronix.de,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        David Gstir <david@sigma-star.at>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Andreas Rammhold <andreas@rammhold.de>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Michael Walle <michael@walle.cc>,
+        John Ernberg <john.ernberg@actia.se>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Date:   Wed, 18 May 2022 04:08:15 +0300
+In-Reply-To: <4d4ecd4b-9683-08a0-7a5f-11a7ff86ea6d@pengutronix.de>
+References: <20220513145705.2080323-1-a.fatoum@pengutronix.de>
+         <YoKZwFkfcl7ixTF4@kernel.org>
+         <4d4ecd4b-9683-08a0-7a5f-11a7ff86ea6d@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH] crypto: Use struct_size() helper in kmalloc()
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>
-CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <davem@davemloft.net>, <dhowells@redhat.com>,
-        <herbert@gondor.apana.org.au>, <gustavoars@kernel.org>,
-        <linux-hardening@vger.kernel.org>
-References: <20220517080532.31015-1-guozihua@huawei.com>
- <202205171424.CF36CE58@keescook>
-From:   "Guozihua (Scott)" <guozihua@huawei.com>
-In-Reply-To: <202205171424.CF36CE58@keescook>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.110.173]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500024.china.huawei.com (7.185.36.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2022/5/18 5:26, Kees Cook wrote:
-> On Tue, May 17, 2022 at 04:05:32PM +0800, GUO Zihua wrote:
->> Make use of struct_size() heler for structures containing flexible array
->> member instead of sizeof() which prevents potential issues as well as
->> addressing the following sparse warning:
->>
->> crypto/asymmetric_keys/asymmetric_type.c:155:23: warning: using sizeof
->> on a flexible structure
->> crypto/asymmetric_keys/asymmetric_type.c:247:28: warning: using sizeof
->> on a flexible structure
->>
->> Reference: https://github.com/KSPP/linux/issues/174
->>
->> Signed-off-by: GUO Zihua <guozihua@huawei.com>
->> ---
->>   crypto/asymmetric_keys/asymmetric_type.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
->> index 41a2f0eb4ce4..96a99a91bf17 100644
->> --- a/crypto/asymmetric_keys/asymmetric_type.c
->> +++ b/crypto/asymmetric_keys/asymmetric_type.c
->> @@ -152,7 +152,7 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
->>   {
->>   	struct asymmetric_key_id *kid;
->>   
->> -	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
->> +	kid = kmalloc(struct_size(kid, data, len_1 + len_2),
-> 
-> Please use the size_add() helper for this open-coded add here.
-> 
->>   		      GFP_KERNEL);
->>   	if (!kid)
->>   		return ERR_PTR(-ENOMEM);
->> @@ -244,7 +244,7 @@ struct asymmetric_key_id *asymmetric_key_hex_to_key_id(const char *id)
->>   	if (asciihexlen & 1)
->>   		return ERR_PTR(-EINVAL);
->>   
->> -	match_id = kmalloc(sizeof(struct asymmetric_key_id) + asciihexlen / 2,
->> +	match_id = kmalloc(struct_size(match_id, data, asciihexlen / 2),
-> 
-> There is no size_div(), but that's ok here because the denominator is an
-> constant expression.
-> 
->>   			   GFP_KERNEL);
->>   	if (!match_id)
->>   		return ERR_PTR(-ENOMEM);
->> -- 
->> 2.36.0
->>
-> 
+On Tue, 2022-05-17 at 14:44 +0200, Ahmad Fatoum wrote:
+> Hello Herbert,
+>=20
+> On 16.05.22 20:36, Jarkko Sakkinen wrote:
+> > On Fri, May 13, 2022 at 04:56:58PM +0200, Ahmad Fatoum wrote:
+> > I can probably pick these unless objections?
+>=20
+> Pankaj has given his Reviewed-by for the CAAM parts he co-maintains,
+> is it ok for this to go in via Jarkko's tree?
+>=20
+> Note that applying this series on top of jarkko/linux-tpmdd.git has a
+> trivial conflict when merged with herbert/cryptodev-2.6.git:
+> Two independently added Kconfig options need to coexist in
+> drivers/crypto/caam/Kconfig.
+>=20
+> I can resend my series rebased if needed.
+>=20
+> Cheers,
+> Ahmad
+>=20
+> >=20
+> > BR, Jarkko
+> >=20
+>=20
+>=20
 
-Thanks Kees,
+This came up:
 
-A v2 patch has been submitted.
+https://lore.kernel.org/keyrings/0e8da958a222e5c1dccaaf1600b08bdb8705b48e.c=
+amel@kernel.org/
 
--- 
-Best
-GUO Zihua
+BR, Jarkko
