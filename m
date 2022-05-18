@@ -2,51 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92CE52AFCE
-	for <lists+keyrings@lfdr.de>; Wed, 18 May 2022 03:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 478C652B182
+	for <lists+keyrings@lfdr.de>; Wed, 18 May 2022 06:32:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233454AbiERBSg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 17 May 2022 21:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55078 "EHLO
+        id S229885AbiEREcI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 May 2022 00:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbiERBSf (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 17 May 2022 21:18:35 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32536424B7;
-        Tue, 17 May 2022 18:18:34 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L2w8j1MqrzhZ4J;
-        Wed, 18 May 2022 09:17:57 +0800 (CST)
-Received: from dggpemm500016.china.huawei.com (7.185.36.25) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 18 May 2022 09:18:32 +0800
-Received: from huawei.com (10.67.174.33) by dggpemm500016.china.huawei.com
- (7.185.36.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 18 May
- 2022 09:18:32 +0800
-From:   "GONG, Ruiqi" <gongruiqi1@huawei.com>
-To:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        "Kees Cook" <keescook@chromium.org>
-CC:     <keyrings@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Wang Weiyang <wangweiyang2@huawei.com>,
-        "Xiu Jianfeng" <xiujianfeng@huawei.com>, <gongruiqi1@huawei.com>
-Subject: [PATCH] security: keys: add __randomize_layout to keyring_search_context
-Date:   Wed, 18 May 2022 09:18:41 +0000
-Message-ID: <20220518091841.141441-1-gongruiqi1@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S229844AbiEREcG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 May 2022 00:32:06 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 262FADB9
+        for <keyrings@vger.kernel.org>; Tue, 17 May 2022 21:32:05 -0700 (PDT)
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1nrBLb-0008QJ-Dh; Wed, 18 May 2022 06:31:43 +0200
+Message-ID: <4e0e8f5b-f5c9-003b-6aac-cea7c49b3f96@pengutronix.de>
+Date:   Wed, 18 May 2022 06:31:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.33]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500016.china.huawei.com (7.185.36.25)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v10 2/7] KEYS: trusted: allow use of kernel RNG for key
+ material
+Content-Language: en-US
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>, kernel@pengutronix.de,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>,
+        David Gstir <david@sigma-star.at>,
+        Michael Walle <michael@walle.cc>,
+        John Ernberg <john.ernberg@actia.se>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jan Luebbe <j.luebbe@pengutronix.de>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Franck LENORMAND <franck.lenormand@nxp.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Pascal Van Leeuwen <pvanleeuwen@verimatrix.com>
+References: <20220513145705.2080323-1-a.fatoum@pengutronix.de>
+ <20220513145705.2080323-3-a.fatoum@pengutronix.de>
+ <1c6a5ce2564c29a06eca255072a379351a5fc026.camel@linux.ibm.com>
+ <YoPdfjswwA2wKinr@zx2c4.com>
+ <4fe5564e860eb3093a88528ba1d30364d57723e0.camel@linux.ibm.com>
+ <YoPpyDjn61AFqcZp@zx2c4.com>
+ <dd488736ab86c0e0b2809b4ce30f1827563b52b2.camel@linux.ibm.com>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <dd488736ab86c0e0b2809b4ce30f1827563b52b2.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,31 +74,49 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Struct keyring_search_context contains a pointer to `struct cred`, which
-is a security-critical structure and whose layout is randomized already.
-Apply __randomize_layout to struct keyring_search_context as well, as
-suggested in [1].
+Hello Mimi,
 
-[1]: https://github.com/KSPP/linux/issues/188
+On 17.05.22 21:49, Mimi Zohar wrote:
+> On Tue, 2022-05-17 at 20:30 +0200, Jason A. Donenfeld wrote:
+>> Hi Mimi,
+>>
+>> On Tue, May 17, 2022 at 02:21:08PM -0400, Mimi Zohar wrote:
+>>> On Tue, 2022-05-17 at 19:38 +0200, Jason A. Donenfeld wrote:
+>> Apologies in advance if I've missed the mark here; I'm not very familiar
+>> with this thread or what it's driving at. If the simple question was
+>> just "is get_random_bytes_wait() good to use?" the answer is just "yes"
+>> and I can disappear and stop confusing things. :)
+> 
+> My apologies for your having been brought into this discussion without
+> having properly reviewed and summarized the previous thread.   As you
+> saw there is a long history.
+> 
+> Jarrko, Ahmad,  "Trusted" keys, by definition, are based on the TPM
+> RNG.  If CAAM trusted key support wants to use kernel RNG by default,
+> that's fine.  However defining and allowing a boot command line option
+> to use kernel RNG instead of the TPM RNG, needs to be configurable.
 
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
----
- security/keys/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The use of kernel RNG for TPM Trusted Keys is already opt-in. The default
+is trusted.rng=default, which maintains existing behavior. Users who want
+to use kernel RNG instead need to explicitly specify trusted.rng=kernel.
 
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 9b9cf3b6fcbb..3e3def5fbaa4 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -136,7 +136,7 @@ struct keyring_search_context {
- 	bool			possessed;
- 	key_ref_t		result;
- 	time64_t		now;
--};
-+} __randomize_layout;
- 
- extern bool key_default_cmp(const struct key *key,
- 			    const struct key_match_data *match_data);
+What more is needed?
+
+Cheers,
+Ahmad
+
+
+
+> 
+> thanks,
+> 
+> Mimi
+> 
+> 
+
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
