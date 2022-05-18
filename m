@@ -2,77 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149A652BE96
-	for <lists+keyrings@lfdr.de>; Wed, 18 May 2022 17:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D58CB52C459
+	for <lists+keyrings@lfdr.de>; Wed, 18 May 2022 22:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239088AbiERO4l (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 May 2022 10:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55046 "EHLO
+        id S242562AbiERUZb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 May 2022 16:25:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239093AbiERO4d (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 May 2022 10:56:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF5319FF45;
-        Wed, 18 May 2022 07:56:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B3758B82124;
-        Wed, 18 May 2022 14:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616F0C385A5;
-        Wed, 18 May 2022 14:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652885788;
-        bh=JoHYiEVfVna108Cm8DYUO6EeVHUhH/jsA2hx84cxhc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YXloz30g2ROWJVE5AwCu6ZoycqVAtob21szWjAezE1juW3k44jgPVBlzoPpNtuRvo
-         FulCY7iLDeRngt1eLgkyV+EK2jWMlRvaC7TZrnBeRQGco3i5PE9l1IZn0smZdfHEpD
-         UNC5/YDJLLD4NcdQ9Bc+UwKTFXLZu/tJWPTS9WBLpP99RQVsnF3GP3ExVMeVW0MCB9
-         VUgQCtT2t8iN16fDAGHBL96TyetYvqsbhoPgrIuYXtk7GKSpv9m7WEboi56ITE+XQi
-         VoAcy6cVoubz5/pS3D+7QJ50FkmTSgFeda7uGNQRpBgZVUCvwgqyzmmHcVgZHsZn+O
-         qfumUFmSmYViA==
-Date:   Wed, 18 May 2022 17:58:09 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-        Pankaj Gupta <pankaj.gupta@nxp.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Bottomley <jejb@linux.ibm.com>, kernel@pengutronix.de,
-        David Howells <dhowells@redhat.com>,
+        with ESMTP id S242524AbiERUZb (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 May 2022 16:25:31 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC6E92D16
+        for <keyrings@vger.kernel.org>; Wed, 18 May 2022 13:25:30 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id p12so3210484pfn.0
+        for <keyrings@vger.kernel.org>; Wed, 18 May 2022 13:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=T0RUFEAAb0EUvAvgjmVhvNXqgIl2634hQPp6NyaB/BE=;
+        b=L6sJM823YSYGCEu5Vx6kyBcGRMkDtvbRk1g3zMveNTQGmV1rJUbhpDm7tL9Sx53GdH
+         9BrG2SjuHMe2C+hS937ohWm4LWCp73Kyg7h/TnDUfPe5ubtQDzsM0mbu8ovx+iAubhfz
+         4oTampAzdwVEv+3BeGvkjx4CzH4EErl0TPsPw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=T0RUFEAAb0EUvAvgjmVhvNXqgIl2634hQPp6NyaB/BE=;
+        b=6wTYIBDYDhpJkJIwswQ3oq8LL3dK+KbCzXNlIDFANR4jOXyGRIZlBGSlz+I70txlA8
+         vTp1hVfyuRM50u4p3BppjJhVWk74zi3VAXoGNeficDHPW0F4UvBOZJVOFvXQ3jx1IH2I
+         SgmWbzfsIKqtQbLStizpYZipd/UHKX3JyN+GN+3Lgs0rJqv+xnX/vLk4u+htbiREZX+q
+         kNhw7CRP+Ctv5Z5ZMS/nEFrIHuNun2o/4gPTFqnRLbjd9XlavBELaba5r/f3LaGVhN+F
+         TfN9co24WG+RPZL/fMqofVxl6JbmsHV3IQi+VeOkwi3bbi6jokLwA+3xdCbFoIuyBupR
+         1MlA==
+X-Gm-Message-State: AOAM5338/If33nvQlM9MOTPzDd0eAXy5di1eDpnLjLdGXyOLf5thalCM
+        gsVjevk06Lkph96meXYJfrr8/A==
+X-Google-Smtp-Source: ABdhPJwFG8w1ZTkhJXaj8JxUZLxZnFHlyBsxl5a7UPCmYkYRpDDj0B2yfmzhsYf7Q7TqK6uD1CEWqw==
+X-Received: by 2002:a63:e40c:0:b0:3f2:5729:eace with SMTP id a12-20020a63e40c000000b003f25729eacemr998455pgi.384.1652905530072;
+        Wed, 18 May 2022 13:25:30 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id ji15-20020a170903324f00b001616e13fccdsm2114121plb.221.2022.05.18.13.25.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 May 2022 13:25:29 -0700 (PDT)
+Date:   Wed, 18 May 2022 13:25:28 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "GONG, Ruiqi" <gongruiqi1@huawei.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-        Jan Luebbe <j.luebbe@pengutronix.de>,
-        David Gstir <david@sigma-star.at>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Franck LENORMAND <franck.lenormand@nxp.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Andreas Rammhold <andreas@rammhold.de>,
-        Tim Harvey <tharvey@gateworks.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Michael Walle <michael@walle.cc>,
-        John Ernberg <john.ernberg@actia.se>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Serge E . Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v10 0/7] KEYS: trusted: Introduce support for NXP
- CAAM-based trusted keys
-Message-ID: <YoUJgUbSRVnTfTj/@iki.fi>
-References: <20220513145705.2080323-1-a.fatoum@pengutronix.de>
- <YoKZwFkfcl7ixTF4@kernel.org>
- <4d4ecd4b-9683-08a0-7a5f-11a7ff86ea6d@pengutronix.de>
- <c511995075cafb35bfefcbfe6fa6e84aa31c536f.camel@kernel.org>
- <6f6a5524-9661-9a9f-a674-915efa33f6f6@pengutronix.de>
+        linux-kernel@vger.kernel.org,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>
+Subject: Re: [PATCH] security: keys: add __randomize_layout to
+ keyring_search_context
+Message-ID: <202205181325.0D772A54@keescook>
+References: <20220518091841.141441-1-gongruiqi1@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6f6a5524-9661-9a9f-a674-915efa33f6f6@pengutronix.de>
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20220518091841.141441-1-gongruiqi1@huawei.com>
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,46 +73,40 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 18, 2022 at 06:36:18AM +0200, Ahmad Fatoum wrote:
-> On 18.05.22 03:08, Jarkko Sakkinen wrote:
-> > On Tue, 2022-05-17 at 14:44 +0200, Ahmad Fatoum wrote:
-> >> Hello Herbert,
-> >>
-> >> On 16.05.22 20:36, Jarkko Sakkinen wrote:
-> >>> On Fri, May 13, 2022 at 04:56:58PM +0200, Ahmad Fatoum wrote:
-> >>> I can probably pick these unless objections?
-> >>
-> >> Pankaj has given his Reviewed-by for the CAAM parts he co-maintains,
-> >> is it ok for this to go in via Jarkko's tree?
-> >>
-> >> Note that applying this series on top of jarkko/linux-tpmdd.git has a
-> >> trivial conflict when merged with herbert/cryptodev-2.6.git:
-> >> Two independently added Kconfig options need to coexist in
-> >> drivers/crypto/caam/Kconfig.
-> >>
-> >> I can resend my series rebased if needed.
-> >>
-> >> Cheers,
-> >> Ahmad
-> >>
-> >>>
-> >>> BR, Jarkko
-> >>>
-> >>
-> >>
-> > 
-> > This came up:
-> > 
-> > https://lore.kernel.org/keyrings/0e8da958a222e5c1dccaaf1600b08bdb8705b48e.camel@kernel.org/
+On Wed, May 18, 2022 at 09:18:41AM +0000, GONG, Ruiqi wrote:
+> Struct keyring_search_context contains a pointer to `struct cred`, which
+> is a security-critical structure and whose layout is randomized already.
+> Apply __randomize_layout to struct keyring_search_context as well, as
+> suggested in [1].
 > 
-> And it turned out to be a misunderstanding. Or do you think there is still anything
-> to do there?
+> [1]: https://github.com/KSPP/linux/issues/188
 > 
-> Thanks,
-> Ahmad
+> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
 
-Oops, you're right, sorry.
+Seems reasonable to me; it's an entirely internal structure.
 
-Yeah, I guess I can pick these patches now.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-BR, Jarkko
+> ---
+>  security/keys/internal.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/security/keys/internal.h b/security/keys/internal.h
+> index 9b9cf3b6fcbb..3e3def5fbaa4 100644
+> --- a/security/keys/internal.h
+> +++ b/security/keys/internal.h
+> @@ -136,7 +136,7 @@ struct keyring_search_context {
+>  	bool			possessed;
+>  	key_ref_t		result;
+>  	time64_t		now;
+> -};
+> +} __randomize_layout;
+>  
+>  extern bool key_default_cmp(const struct key *key,
+>  			    const struct key_match_data *match_data);
+> -- 
+> 2.17.1
+> 
+
+-- 
+Kees Cook
