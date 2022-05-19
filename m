@@ -2,227 +2,249 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1568552CEA6
-	for <lists+keyrings@lfdr.de>; Thu, 19 May 2022 10:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF6252D00B
+	for <lists+keyrings@lfdr.de>; Thu, 19 May 2022 12:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229604AbiESIuj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 19 May 2022 04:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50740 "EHLO
+        id S236418AbiESKCg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 19 May 2022 06:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbiESIui (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 19 May 2022 04:50:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3D3309C2E7
-        for <keyrings@vger.kernel.org>; Thu, 19 May 2022 01:50:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652950236;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=p92fXrJQ4gGF6gXdL4rpxaBMAzMtQCdZw00jmCIxVH0=;
-        b=THTr6EX57hx93c4MHMVAMDvyj74GjXiP83nSkU86AaIMBRI3C0ku2SnluH4htFQxF+x/WI
-        wR5oULoItW8toXGiNZYBSRidHeWBdHs+BQjfXhsQrJ7lsAuIePprRHjDsjIgh4oPe6oLdV
-        AfjSjcbgldJU0p2Rb5RH+1YUL1E0SMg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-AYYgi-E3OmePuQW2dI8JAw-1; Thu, 19 May 2022 04:50:33 -0400
-X-MC-Unique: AYYgi-E3OmePuQW2dI8JAw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD516802803;
-        Thu, 19 May 2022 08:50:32 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.8])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 95948400E114;
-        Thu, 19 May 2022 08:50:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH] assoc_array: Fix BUG_ON during garbage collect
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-Cc:     stable@vger.kernel.org,
-        Stephen Brennan <stephen.s.brennan@oracle.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        keyrings@vger.kernel.org, dhowells@redhat.com,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 19 May 2022 09:50:30 +0100
-Message-ID: <165295023086.3361286.8662079860706628540.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/1.4
+        with ESMTP id S235431AbiESKCf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 19 May 2022 06:02:35 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFEB9155E;
+        Thu, 19 May 2022 03:02:34 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id p74so1592071iod.8;
+        Thu, 19 May 2022 03:02:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=4V3FHl6Sp2rspEutBjNH83AvfS51jkWxQNxW2j1ppMU=;
+        b=ebAe34nxtjgbtT9SueCzVUEURo1uYyacCjduzPaw8pjq+GBiBj/gz5dBhXwCHfF08J
+         zSLzDaqN3iTAXRHnGaAoSmOk6xYzLm7lVcID2LiFZHo8aiYMBKHwWvC1FfvppqoQFHfN
+         u381P7T7w6OUe4CsJmhVfAM/bjZVl1+2IV8HlKc6H77p29TjWAn1n7IapkdDkVUT9Fwi
+         oK83FFISwtP6Y/9vxND1TjMD1I1JqwtM8BcGnVewx7QVdwTuvDAVMe4vT3ykc1Ka2i0I
+         aqE0sGrzkMjDfVNUjjwXQlOA+RYjmew9xOc/zWm88U1mASieWFn8vCWMZFS1UdMtwIbA
+         ubRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=4V3FHl6Sp2rspEutBjNH83AvfS51jkWxQNxW2j1ppMU=;
+        b=jH6riIa/tiP17o4FzLYTO+wM3ks0bF1TRrCKKSlXlJzMOE+aDF5oRTkYy+EBoc0Ob8
+         UZSc0blmEPKd3Lk2geD+oE5EJ9Y2sAE8Mo7SUjYkRy1ZkVp5QVQINItVjGcUZuzfW12l
+         lPEdtzjb13QuAaKfcKH6wmfGGR0FE8NooXyYkNp3B2H0/UU1bxSLEKbNgAmNUaEljYsK
+         bkfCFnKwJz14B8rMNHtvJgyQnK0gOVWQTQDgYO2vedUD1a2lZ/vZ6h3gGe1Vl3gBlYdC
+         62Xamu3i6VJX0WbSVhbub0VjEstomf2YscqwvxOCpDE0JtfiGcP3zHy3C+5JfZUwp2dl
+         IZAA==
+X-Gm-Message-State: AOAM533RAruYKOHOr57K/uap2/GRuxxiDuMjjAwwbRDW7r5Gbvc+YFX8
+        BF34Y0IhHw8+4bXCW3VrLnXBbgUpLDDxAijCGTk=
+X-Google-Smtp-Source: ABdhPJxMClNI3VhTzTuPg/LP/Sxa1eKhxOPBlicSYij2hBbdlTx4PNMn/auuO9yLdfrB+T0XTbYYDJmKzwhWUS8fecs=
+X-Received: by 2002:a05:6638:1308:b0:32b:d5f7:62e6 with SMTP id
+ r8-20020a056638130800b0032bd5f762e6mr2231414jad.52.1652954552359; Thu, 19 May
+ 2022 03:02:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <CA+icZUUFdsEyNybVORm4x7_bAyoc0zTnudtNdgnTqjvbYXJRYA@mail.gmail.com>
+In-Reply-To: <CA+icZUUFdsEyNybVORm4x7_bAyoc0zTnudtNdgnTqjvbYXJRYA@mail.gmail.com>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Thu, 19 May 2022 12:01:56 +0200
+Message-ID: <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
+Subject: Re: [Linux v5.17.9] -Wdeprecated-declarations warnings with LLVM-14
+ and OpenSSL v3.0.x
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        Salvatore Bonaccorso <carnil@debian.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+[ CC Kees and Salvatore ]
 
-A rare BUG_ON triggered in assoc_array_gc:
+The Debian kernel-team ships a fix (4 hours young):
 
-    [3430308.818153] kernel BUG at lib/assoc_array.c:1609!
+commit: 13e234d459c11946efba647c3daf15e03abb0d99
+"sign-file: Convert API usage to support OpenSSL v3"
 
-Which corresponded to the statement currently at line 1593 upstream:
+*untested*
+Regards,
+-Sedat-
 
-    BUG_ON(assoc_array_ptr_is_meta(p));
+[1] https://salsa.debian.org/kernel-team/linux/-/commit/13e234d459c11946efba647c3daf15e03abb0d99
 
-Using the data from the core dump, I was able to generate a userspace
-reproducer[1] and determine the cause of the bug.
-
-[1]: https://github.com/brenns10/kernel_stuff/tree/master/assoc_array_gc
-
-After running the iterator on the entire branch, an internal tree node
-looked like the following:
-
-    NODE (nr_leaves_on_branch: 3)
-      SLOT [0] NODE (2 leaves)
-      SLOT [1] NODE (1 leaf)
-      SLOT [2..f] NODE (empty)
-
-In the userspace reproducer, the pr_devel output when compressing this
-node was:
-
-    -- compress node 0x5607cc089380 --
-    free=0, leaves=0
-    [0] retain node 2/1 [nx 0]
-    [1] fold node 1/1 [nx 0]
-    [2] fold node 0/1 [nx 2]
-    [3] fold node 0/2 [nx 2]
-    [4] fold node 0/3 [nx 2]
-    [5] fold node 0/4 [nx 2]
-    [6] fold node 0/5 [nx 2]
-    [7] fold node 0/6 [nx 2]
-    [8] fold node 0/7 [nx 2]
-    [9] fold node 0/8 [nx 2]
-    [10] fold node 0/9 [nx 2]
-    [11] fold node 0/10 [nx 2]
-    [12] fold node 0/11 [nx 2]
-    [13] fold node 0/12 [nx 2]
-    [14] fold node 0/13 [nx 2]
-    [15] fold node 0/14 [nx 2]
-    after: 3
-
-At slot 0, an internal node with 2 leaves could not be folded into the
-node, because there was only one available slot (slot 0). Thus, the
-internal node was retained. At slot 1, the node had one leaf, and was
-able to be folded in successfully. The remaining nodes had no leaves,
-and so were removed. By the end of the compression stage, there were 14
-free slots, and only 3 leaf nodes. The tree was ascended and then its
-parent node was compressed. When this node was seen, it could not be
-folded, due to the internal node it contained.
-
-The invariant for compression in this function is: whenever
-nr_leaves_on_branch < ASSOC_ARRAY_FAN_OUT, the node should contain all
-leaf nodes. The compression step currently cannot guarantee this, given
-the corner case shown above.
-
-To fix this issue, retry compression whenever we have retained a node,
-and yet nr_leaves_on_branch < ASSOC_ARRAY_FAN_OUT. This second
-compression will then allow the node in slot 1 to be folded in,
-satisfying the invariant. Below is the output of the reproducer once the
-fix is applied:
-
-    -- compress node 0x560e9c562380 --
-    free=0, leaves=0
-    [0] retain node 2/1 [nx 0]
-    [1] fold node 1/1 [nx 0]
-    [2] fold node 0/1 [nx 2]
-    [3] fold node 0/2 [nx 2]
-    [4] fold node 0/3 [nx 2]
-    [5] fold node 0/4 [nx 2]
-    [6] fold node 0/5 [nx 2]
-    [7] fold node 0/6 [nx 2]
-    [8] fold node 0/7 [nx 2]
-    [9] fold node 0/8 [nx 2]
-    [10] fold node 0/9 [nx 2]
-    [11] fold node 0/10 [nx 2]
-    [12] fold node 0/11 [nx 2]
-    [13] fold node 0/12 [nx 2]
-    [14] fold node 0/13 [nx 2]
-    [15] fold node 0/14 [nx 2]
-    internal nodes remain despite enough space, retrying
-    -- compress node 0x560e9c562380 --
-    free=14, leaves=1
-    [0] fold node 2/15 [nx 0]
-    after: 3
-
-Changes
-=======
-DH:
- - Use false instead of 0.
- - Reorder the inserted lines in a couple of places to put retained before
-   next_slot.
-
-ver #2)
- - Fix typo in pr_devel, correct comparison to "<="
-
-
-Fixes: 3cb989501c26 ("Add a generic associative array implementation.")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
-cc: Andrew Morton <akpm@linux-foundation.org>
-cc: keyrings@vger.kernel.org
-Link: https://lore.kernel.org/r/20220511225517.407935-1-stephen.s.brennan@oracle.com/ # v1
-Link: https://lore.kernel.org/r/20220512215045.489140-1-stephen.s.brennan@oracle.com/ # v2
----
-
- lib/assoc_array.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/lib/assoc_array.c b/lib/assoc_array.c
-index 079c72e26493..ca0b4f360c1a 100644
---- a/lib/assoc_array.c
-+++ b/lib/assoc_array.c
-@@ -1461,6 +1461,7 @@ int assoc_array_gc(struct assoc_array *array,
- 	struct assoc_array_ptr *cursor, *ptr;
- 	struct assoc_array_ptr *new_root, *new_parent, **new_ptr_pp;
- 	unsigned long nr_leaves_on_tree;
-+	bool retained;
- 	int keylen, slot, nr_free, next_slot, i;
- 
- 	pr_devel("-->%s()\n", __func__);
-@@ -1536,6 +1537,7 @@ int assoc_array_gc(struct assoc_array *array,
- 		goto descend;
- 	}
- 
-+retry_compress:
- 	pr_devel("-- compress node %p --\n", new_n);
- 
- 	/* Count up the number of empty slots in this node and work out the
-@@ -1553,6 +1555,7 @@ int assoc_array_gc(struct assoc_array *array,
- 	pr_devel("free=%d, leaves=%lu\n", nr_free, new_n->nr_leaves_on_branch);
- 
- 	/* See what we can fold in */
-+	retained = false;
- 	next_slot = 0;
- 	for (slot = 0; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
- 		struct assoc_array_shortcut *s;
-@@ -1602,9 +1605,14 @@ int assoc_array_gc(struct assoc_array *array,
- 			pr_devel("[%d] retain node %lu/%d [nx %d]\n",
- 				 slot, child->nr_leaves_on_branch, nr_free + 1,
- 				 next_slot);
-+			retained = true;
- 		}
- 	}
- 
-+	if (retained && new_n->nr_leaves_on_branch <= ASSOC_ARRAY_FAN_OUT) {
-+		pr_devel("internal nodes remain despite enough space, retrying\n");
-+		goto retry_compress;
-+	}
- 	pr_devel("after: %lu\n", new_n->nr_leaves_on_branch);
- 
- 	nr_leaves_on_tree = new_n->nr_leaves_on_branch;
-
-
+On Thu, May 19, 2022 at 11:55 AM Sedat Dilek <sedat.dilek@gmail.com> wrote:
+>
+> Hi,
+>
+> here, I am on Debian/unstable AMD64.
+>
+> Recently (or still) there is/was a transition to OpenSSL see below link.
+>
+> The warnings look like:
+>
+> 189:scripts/sign-file.c:89:14: warning: 'ERR_get_error_line' is
+> deprecated [-Wdeprecated-declarations]
+> 201:scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is
+> deprecated [-Wdeprecated-declarations]
+> 213:scripts/sign-file.c:142:3: warning: 'ENGINE_load_builtin_engines'
+> is deprecated [-Wdeprecated-declarations]
+> 225:scripts/sign-file.c:144:7: warning: 'ENGINE_by_id' is deprecated
+> [-Wdeprecated-declarations]
+> 238:146:7: warning: 'ENGINE_init' is deprecated [-Wdeprecated-declarations]
+> 250:scripts/sign-file.c:151:9: warning: 'ENGINE_ctrl_cmd_string' is
+> deprecated [-Wdeprecated-declarations]
+> 262:scripts/sign-file.c:153:17: warning: 'ENGINE_load_private_key' is
+> deprecated [-Wdeprecated-declarations]
+> 395:certs/extract-cert.c:46:14: warning: 'ERR_get_error_line' is
+> deprecated [-Wdeprecated-declarations]
+> 407:certs/extract-cert.c:59:9: warning: 'ERR_get_error_line' is
+> deprecated [-Wdeprecated-declarations]
+> 420:certs/extract-cert.c:124:3: warning: 'ENGINE_load_builtin_engines'
+> is deprecated [-Wdeprecated-declarations]
+> 432:certs/extract-cert.c:126:7: warning: 'ENGINE_by_id' is deprecated
+> [-Wdeprecated-declarations]
+> 444:certs/extract-cert.c:128:7: warning: 'ENGINE_init' is deprecated
+> [-Wdeprecated-declarations]
+> 456:certs/extract-cert.c:133:9: warning: 'ENGINE_ctrl_cmd_string' is
+> deprecated [-Wdeprecated-declarations]
+> 468:certs/extract-cert.c:134:3: warning: 'ENGINE_ctrl_cmd' is
+> deprecated [-Wdeprecated-declarations]
+>
+> More detailed output:
+>
+> 189:scripts/sign-file.c:89:14: warning: 'ERR_get_error_line' is
+> deprecated [-Wdeprecated-declarations]
+> 190-        while ((e = ERR_get_error_line(&file, &line))) {
+> 191-                    ^
+> 192-/usr/include/openssl/err.h:410:1: note: 'ERR_get_error_line' has
+> been explicitly marked deprecated here
+> 193-OSSL_DEPRECATEDIN_3_0
+> 194-^
+> 195-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 196-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 197-                                                ^
+> 198-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 199-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 200-                                                   ^
+> 201:scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is
+> deprecated [-Wdeprecated-declarations]
+> 202-        while (ERR_get_error_line(&file, &line)) {}
+> 203-               ^
+> 204-/usr/include/openssl/err.h:410:1: note: 'ERR_get_error_line' has
+> been explicitly marked deprecated here
+> 205-OSSL_DEPRECATEDIN_3_0
+> 206-^
+> 207-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 208-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 209-                                                ^
+> 210-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 211-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 212-                                                   ^
+> 213:scripts/sign-file.c:142:3: warning: 'ENGINE_load_builtin_engines'
+> is deprecated [-Wdeprecated-declarations]
+> 214-                ENGINE_load_builtin_engines();
+> 215-                ^
+> 216-/usr/include/openssl/engine.h:358:1: note:
+> 'ENGINE_load_builtin_engines' has been explicitly marked deprecated
+> here
+> 217-OSSL_DEPRECATEDIN_3_0 void ENGINE_load_builtin_engines(void);
+> 218-^
+> 219-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 220-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 221-                                                ^
+> 222-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 223-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 224-                                                   ^
+> 225:scripts/sign-file.c:144:7: warning: 'ENGINE_by_id' is deprecated
+> [-Wdeprecated-declarations]
+> 226-                e = ENGINE_by_id("pkcs11");
+> 227-                    ^
+> 228-/usr/include/openssl/engine.h:336:1: note: 'ENGINE_by_id' has been
+> explicitly marked deprecated here
+> 229-OSSL_DEPRECATEDIN_3_0 ENGINE *ENGINE_by_id(const char *id);
+> 230-^
+> 231-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 232-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 233-                                                ^
+> 234-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 235-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 236-                                                   ^
+> 237-scripts/sign-file.c:   ld.lld -r -o
+> /home/dileks/src/linux-kernel/git/tools/objtool/arch/x86/objtool-in.o
+> /home/dileks/src/linux-kernel/git/tools/objtool/arch/x86
+> /special.o /home/dileks/src/linux-kernel/git/tools/objtool/arch/x86/decode.o
+> 238:146:7: warning: 'ENGINE_init' is deprecated [-Wdeprecated-declarations]
+> 239-                if (ENGINE_init(e))
+> 240-                    ^
+> 241-/usr/include/openssl/engine.h:620:1: note: 'ENGINE_init' has been
+> explicitly marked deprecated here
+> 242-OSSL_DEPRECATEDIN_3_0 int ENGINE_init(ENGINE *e);
+> 243-^
+> 244-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 245-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 246-                                                ^
+> 247-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 248-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 249-                                                   ^
+> 250:scripts/sign-file.c:151:9: warning: 'ENGINE_ctrl_cmd_string' is
+> deprecated [-Wdeprecated-declarations]
+> 251-                        ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
+> 252-                             ^
+> 253-/usr/include/openssl/engine.h:478:1: note:
+> 'ENGINE_ctrl_cmd_string' has been explicitly marked deprecated here
+> 254-OSSL_DEPRECATEDIN_3_0
+> 255-^
+> 256-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 257-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 258-                                                ^
+> 259-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 260-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 261-                                                   ^
+> 262:scripts/sign-file.c:153:17: warning: 'ENGINE_load_private_key' is
+> deprecated [-Wdeprecated-declarations]
+> 263-                private_key = ENGINE_load_private_key(e, private_key_name,
+> 264-                              ^
+> 265-/usr/include/openssl/engine.h:637:1: note:
+> 'ENGINE_load_private_key' has been explicitly marked deprecated here
+> 266-OSSL_DEPRECATEDIN_3_0
+> 267-^
+> 268-/usr/include/openssl/macros.h:182:49: note: expanded from macro
+> 'OSSL_DEPRECATEDIN_3_0'
+> 269-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
+> 270-                                                ^
+> 271-/usr/include/openssl/macros.h:62:52: note: expanded from macro
+> 'OSSL_DEPRECATED'
+> 272-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
+> 273-
+>
+> Relevant OpenSSL v3.0.3 header files are attached.
+> My kernel-config, too.
+>
+> If you need further information, please let me know.
+>
+> Regards,
+> -Sedat-
+>
+> [1] https://release.debian.org/transitions/html/auto-openssl.html
