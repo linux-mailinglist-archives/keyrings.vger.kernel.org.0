@@ -2,43 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DEC1530B63
-	for <lists+keyrings@lfdr.de>; Mon, 23 May 2022 11:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B830530FBB
+	for <lists+keyrings@lfdr.de>; Mon, 23 May 2022 15:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231476AbiEWICr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 23 May 2022 04:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44620 "EHLO
+        id S235134AbiEWLyV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 23 May 2022 07:54:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231576AbiEWICh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 23 May 2022 04:02:37 -0400
-X-Greylist: delayed 703 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 May 2022 01:02:33 PDT
-Received: from mail.tireplot.pl (mail.tireplot.pl [46.183.184.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B1A167E1
-        for <keyrings@vger.kernel.org>; Mon, 23 May 2022 01:02:32 -0700 (PDT)
-Received: by mail.tireplot.pl (Postfix, from userid 1001)
-        id A5BC043B0F; Mon, 23 May 2022 09:46:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tireplot.pl; s=mail;
-        t=1653292014; bh=Rfzvu4C+yJ1wyuJ4V+t/udh6cgYEQVnY6S5ltO4wdNg=;
-        h=Date:From:To:Subject:From;
-        b=ap/hNoI6cXySS6ioA4MfkUVPPLBB4yzQ/KBK/yjQC9SS9/xZhT9dTgBAy3YEtZHtO
-         NCLMmh7AgVHFfXLhI7PrfDhsOJdnshXhPGvkvGMCYlCXJjzSKd9CEZd3XDKGJ/RBUz
-         94Ojc62pp33wX7MTcrg0FI7Zo20smrM37yKFQdnqcCpm5gsoAt/goTrotzvCrzTX8l
-         NM1U/I+REzhIYpj9+sbaOTak72+f0xqEfeWKF8Sja2ZlFMIm3Vbp1xcXkG8gBUuD9e
-         BImsGSeZS7Rc3PxQmzeIOlu3AZVt476zNqeYrxlcULX3ZoCC7WywJyaynSM54BByxd
-         Hqvp3qq5EQGVw==
-Received: by mail.tireplot.pl for <keyrings@vger.kernel.org>; Mon, 23 May 2022 07:45:18 GMT
-Message-ID: <20220523084501-0.1.2k.fjhm.0.20k5sp1k64@tireplot.pl>
-Date:   Mon, 23 May 2022 07:45:18 GMT
-From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
-        <arkadiusz.sokolowski@tireplot.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Koszty instalacji fotowoltaicznej
-X-Mailer: mail.tireplot.pl
+        with ESMTP id S235122AbiEWLyU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 23 May 2022 07:54:20 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEAF51587;
+        Mon, 23 May 2022 04:54:19 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24NBhnkE001648;
+        Mon, 23 May 2022 11:54:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : to : from : cc : subject : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=m2M041NPkinmobUzSjYQMqGg1ZNgckVlTpZZMS9CAfk=;
+ b=cDksBTLxb0VNOyHXwoEwAeDjY8BPMakKa+ERnd/3xfCv0Qv7LaNwZ+aeZskd6BBYhz4f
+ SUJIgkLmP97lm9mBOLxQ+XtJ3sosKmoAQQQBc3DZ0aLTKR5ICIHT+gaIb4tj2qu+obPb
+ lsLjECJHeNeh7zIwkAfDhl3MsQjc/f8D9EdbXtJZGuJj4SP5xlRddi5AxUyfPoN5J+ys
+ kYhg/mLScDYKV+Z5DsnKgIS1KxG14Sv6B7HkiqZQi6uNwenUQvEXqGOpVBpM13fVTKgh
+ WwsOmXqwMxOGNFPscVseldoZ2tvAQCzmN78mY4tNo9OYDffSSsFoz1TWLGsuU6Mj7S+p Iw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g89n485s8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 23 May 2022 11:54:07 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24NBnUG1020797;
+        Mon, 23 May 2022 11:54:07 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g89n485rr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 23 May 2022 11:54:06 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24NBAC7I025664;
+        Mon, 23 May 2022 11:54:05 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+        by ppma01dal.us.ibm.com with ESMTP id 3g6qqabnpy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 23 May 2022 11:54:05 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24NBs4WW63177170
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 May 2022 11:54:04 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C40ECB2065;
+        Mon, 23 May 2022 11:54:04 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8652AB205F;
+        Mon, 23 May 2022 11:54:00 +0000 (GMT)
+Received: from [9.43.92.112] (unknown [9.43.92.112])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon, 23 May 2022 11:54:00 +0000 (GMT)
+Message-ID: <a1a2eaea-4483-68b0-352f-f7d357a4d14b@linux.vnet.ibm.com>
+Date:   Mon, 23 May 2022 17:23:26 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Content-Language: en-US
+To:     linux-kernel@vger.kernel.org
+From:   Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
+Cc:     keyrings@vger.kernel.org, Adam Langley <agl@google.com>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        abdhalee@linux.vnet.ibm.com, sachinp@linux.vnet.com,
+        mputtash@linux.vnet.com
+Subject: OpenSSL's ENGINE API is deprecated in OpenSSL v3.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: MtgIgFkQajuNsL1yPYvgq0uRGt9yelAs
+X-Proofpoint-GUID: GCgM9psdrN3pqKogPfwdqVCHEdeLHjhe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-23_04,2022-05-23_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ clxscore=1011 mlxscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 phishscore=0
+ mlxlogscore=526 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205230063
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,21 +95,137 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Greetings,
 
-stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
- obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
+OpenSSL's ENGINE API is deprecated in OpenSSL v3.0
 
-Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
-acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
-ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
+Console logs :
 
-Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
-=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
-=2E
+[console-expect]#make -j 17 -s && make modules && make modules_install 
+&& make install
+make -j 17 -s && make modules && make modules_install && make install
+scripts/sign-file.c: In function 'display_openssl_errors':
+scripts/sign-file.c:89:2: warning: 'ERR_get_error_line' is deprecated: 
+Since OpenSSL 3.0 [-Wdeprecated-declarations]
+   while ((e = ERR_get_error_line(&file, &line))) {
+   ^~~~~
+In file included from scripts/sign-file.c:29:0:
+/usr/include/openssl/err.h:411:15: note: declared here
+  unsigned long ERR_get_error_line(const char **file, int *line);
+                ^~~~~~~~~~~~~~~~~~
+scripts/sign-file.c: In function 'drain_openssl_errors':
+scripts/sign-file.c:102:2: warning: 'ERR_get_error_line' is deprecated: 
+Since OpenSSL 3.0 [-Wdeprecated-declarations]
+   while (ERR_get_error_line(&file, &line)) {}
+   ^~~~~
+In file included from scripts/sign-file.c:29:0:
+/usr/include/openssl/err.h:411:15: note: declared here
+  unsigned long ERR_get_error_line(const char **file, int *line);
+                ^~~~~~~~~~~~~~~~~~
+scripts/sign-file.c: In function 'read_private_key':
+scripts/sign-file.c:142:3: warning: 'ENGINE_load_builtin_engines' is 
+deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+    ENGINE_load_builtin_engines();
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from scripts/sign-file.c:30:0:
+/usr/include/openssl/engine.h:358:28: note: declared here
+  OSSL_DEPRECATEDIN_3_0 void ENGINE_load_builtin_engines(void);
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+scripts/sign-file.c:144:3: warning: 'ENGINE_by_id' is deprecated: Since 
+OpenSSL 3.0 [-Wdeprecated-declarations]
+    e = ENGINE_by_id("pkcs11");
+    ^
+In file included from scripts/sign-file.c:30:0:
+/usr/include/openssl/engine.h:336:31: note: declared here
+  OSSL_DEPRECATEDIN_3_0 ENGINE *ENGINE_by_id(const char *id);
+                                ^~~~~~~~~~~~
+scripts/sign-file.c:146:3: warning: 'ENGINE_init' is deprecated: Since 
+OpenSSL 3.0 [-Wdeprecated-declarations]
+    if (ENGINE_init(e))
+    ^~
+In file included from scripts/sign-file.c:30:0:
+/usr/include/openssl/engine.h:620:27: note: declared here
+  OSSL_DEPRECATEDIN_3_0 int ENGINE_init(ENGINE *e);
+                            ^~~~~~~~~~~
+scripts/sign-file.c:151:4: warning: 'ENGINE_ctrl_cmd_string' is 
+deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+     ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
+     ^~~
+In file included from scripts/sign-file.c:30:0:
+/usr/include/openssl/engine.h:479:5: note: declared here
+  int ENGINE_ctrl_cmd_string(ENGINE *e, const char *cmd_name, const char 
+*arg,
+      ^~~~~~~~~~~~~~~~~~~~~~
+scripts/sign-file.c:153:3: warning: 'ENGINE_load_private_key' is 
+deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+    private_key = ENGINE_load_private_key(e, private_key_name,
+    ^~~~~~~~~~~
+In file included from scripts/sign-file.c:30:0:
+/usr/include/openssl/engine.h:638:11: note: declared here
+  EVP_PKEY *ENGINE_load_private_key(ENGINE *e, const char *key_id,
+            ^~~~~~~~~~~~~~~~~~~~~~~
+certs/extract-cert.c: In function 'display_openssl_errors':
+certs/extract-cert.c:46:2: warning: 'ERR_get_error_line' is deprecated: 
+Since OpenSSL 3.0 [-Wdeprecated-declarations]
+   while ((e = ERR_get_error_line(&file, &line))) {
+   ^~~~~
+In file included from certs/extract-cert.c:23:0:
+/usr/include/openssl/err.h:411:15: note: declared here
+  unsigned long ERR_get_error_line(const char **file, int *line);
+                ^~~~~~~~~~~~~~~~~~
+certs/extract-cert.c: In function 'drain_openssl_errors':
+certs/extract-cert.c:59:2: warning: 'ERR_get_error_line' is deprecated: 
+Since OpenSSL 3.0 [-Wdeprecated-declarations]
+   while (ERR_get_error_line(&file, &line)) {}
+   ^~~~~
+In file included from certs/extract-cert.c:23:0:
+/usr/include/openssl/err.h:411:15: note: declared here
+  unsigned long ERR_get_error_line(const char **file, int *line);
+                ^~~~~~~~~~~~~~~~~~
+certs/extract-cert.c: In function 'main':
+certs/extract-cert.c:124:3: warning: 'ENGINE_load_builtin_engines' is 
+deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+    ENGINE_load_builtin_engines();
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from certs/extract-cert.c:24:0:
+/usr/include/openssl/engine.h:358:28: note: declared here
+  OSSL_DEPRECATEDIN_3_0 void ENGINE_load_builtin_engines(void);
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+certs/extract-cert.c:126:3: warning: 'ENGINE_by_id' is deprecated: Since 
+OpenSSL 3.0 [-Wdeprecated-declarations]
+    e = ENGINE_by_id("pkcs11");
+    ^
+In file included from certs/extract-cert.c:24:0:
+/usr/include/openssl/engine.h:336:31: note: declared here
+  OSSL_DEPRECATEDIN_3_0 ENGINE *ENGINE_by_id(const char *id);
+                                ^~~~~~~~~~~~
+certs/extract-cert.c:128:3: warning: 'ENGINE_init' is deprecated: Since 
+OpenSSL 3.0 [-Wdeprecated-declarations]
+    if (ENGINE_init(e))
+    ^~
+In file included from certs/extract-cert.c:24:0:
+/usr/include/openssl/engine.h:620:27: note: declared here
+  OSSL_DEPRECATEDIN_3_0 int ENGINE_init(ENGINE *e);
+                            ^~~~~~~~~~~
+certs/extract-cert.c:133:4: warning: 'ENGINE_ctrl_cmd_string' is 
+deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+     ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
+     ^~~
+In file included from certs/extract-cert.c:24:0:
+/usr/include/openssl/engine.h:479:5: note: declared here
+  int ENGINE_ctrl_cmd_string(ENGINE *e, const char *cmd_name, const char 
+*arg,
+      ^~~~~~~~~~~~~~~~~~~~~~
+certs/extract-cert.c:134:3: warning: 'ENGINE_ctrl_cmd' is deprecated: 
+Since OpenSSL 3.0 [-Wdeprecated-declarations]
+    ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
+    ^~~~~~~~~~~~~~~
+In file included from certs/extract-cert.c:24:0:
+/usr/include/openssl/engine.h:450:27: note: declared here
+  OSSL_DEPRECATEDIN_3_0 int ENGINE_ctrl_cmd(ENGINE *e, const char *cmd_name,
+                            ^~~~~~~~~~~~~~~
 
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
-
-Pozdrawiam
-Arkadiusz Soko=C5=82owski
+-- 
+Regards,
+Tasmiya Nalatwad
+IBM Linux Technology Center
