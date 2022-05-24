@@ -2,256 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 393E85331A1
-	for <lists+keyrings@lfdr.de>; Tue, 24 May 2022 21:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70B2F53326A
+	for <lists+keyrings@lfdr.de>; Tue, 24 May 2022 22:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235174AbiEXTOF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 24 May 2022 15:14:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59852 "EHLO
+        id S241487AbiEXU07 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 24 May 2022 16:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240554AbiEXTOF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 24 May 2022 15:14:05 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF8D5EBEC;
-        Tue, 24 May 2022 12:14:03 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id 2so9488754iou.5;
-        Tue, 24 May 2022 12:14:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=Q4PbAGgy/EEp8A8G2Df0NnYKeJLXOrfA0y/iY8AyNZ8=;
-        b=H1lcHbCjc53VxXFo4/gneCT+dqmMMJadq8sH448Ze+pPwqj8Hb6MVj8Q6t21mp6X+3
-         AgIhlrWU4PxM8HQUFN2Nx+y505jB/FpvO+86ZHXqz9NgcY2kZ7Bwk6QIqmgDiI929a7k
-         gQPEKLNLPFkMqulxGKR2Rd3F0mP0QN6wxhANxxhvjY1NQ09PuMTELsrRFLtVqFVK49RM
-         TldlOI50L1APzrIFq6Su69wsQ4ILD3ExZnykHgF1uKw6uKwP5aeHsaPjJ6AT76t5Of1L
-         4XBCKZ8JNx8X6trT5yCQ0caZhVo4nY2GVrHf0n3C9t+gNoI8N4iX3YvI15RWjwLiv4pP
-         Ecyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=Q4PbAGgy/EEp8A8G2Df0NnYKeJLXOrfA0y/iY8AyNZ8=;
-        b=OiPhdVDkoo94Q8HlcgAg+k0w9mDto2HghsimaIvRVUrJk4ih5ByyIIyX5wBueUML4i
-         TwQnFoShS8fv2yj5m8DOaHtIum6T1DHgScPA1Iai5DLOVpxHpFsQJ2T2/CE1NBTtQzAN
-         aCwSdk+TFB+gfONgLbrlgcxE/XLCNQAzglAB4TdGniHreP4rqMhhxFLBMEDEDfHCA9wT
-         Xev6tmUJPEk1lFXJ9Xk/g6bcU+iGsdZChBuufA8vZBT/L9KhGXalInYzoqLvQMSHr5Ly
-         Zqp2kIZ4oMY4BxCseKApCao4HPJygrn2Ur2jF0vmCL9XdyVySH919qoo6ES6wzEezbgS
-         Vdtw==
-X-Gm-Message-State: AOAM5321SDA1x9EienbGJGMORh5l0fUb4ORZ+itCSJORd1JfRynLvkSc
-        a63t7MMt90qAKI3Sj3SSIR7Cdy3HwVfB+rqmU5c8gxDxyF4W9g==
-X-Google-Smtp-Source: ABdhPJx4eaPDpI48UhW0021618hMu9tKyVzxbrsQTAGSLCXvILv/xcYzByMcJ1zJqEmOov6+JkgpkQH8uymupY6tvcU=
-X-Received: by 2002:a05:6638:25d3:b0:32e:e5ee:496c with SMTP id
- u19-20020a05663825d300b0032ee5ee496cmr2525941jat.52.1653419642892; Tue, 24
- May 2022 12:14:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <CA+icZUUFdsEyNybVORm4x7_bAyoc0zTnudtNdgnTqjvbYXJRYA@mail.gmail.com>
- <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
-In-Reply-To: <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Tue, 24 May 2022 21:13:26 +0200
-Message-ID: <CA+icZUW7y3JxQ3dCB8Wy83EjEyYj7z55nFUw-kZ+V4We22HZZg@mail.gmail.com>
-Subject: Re: [Linux v5.17.9] -Wdeprecated-declarations warnings with LLVM-14
- and OpenSSL v3.0.x
-To:     Kees Cook <keescook@chromium.org>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S241609AbiEXU04 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 24 May 2022 16:26:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC544757F;
+        Tue, 24 May 2022 13:26:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3225A6172A;
+        Tue, 24 May 2022 20:26:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 88799C34100;
+        Tue, 24 May 2022 20:26:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653424013;
+        bh=gN5l1x7bWCl0UkzKZKYrU0r6q+aOwjcdiBgrAyoiubc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=lI/9NgvAF5+A8BrAMUGQb3jOcqctyNr115u1I32grgc4qYNuSVQSbkepXYWPbQh5F
+         zS/4oLuUMoGjETge3EyYkHLDDGSZygCO7RYIbotHPdDk1qKKSndueyLGgXsdcJCCNW
+         lGuYlNtKVp/3WKUEjmefhe/8ZiZQ8wsGJmmHATtIUPUlxhtrT4ZB8IlXBh3aX81BdS
+         fCvm36rBY1BcGuIHNLNQuR5aF5pTW+T3kNmEcFGTam+gKjEltIk2ewW4UsAUArhyx2
+         ebM27YAqhZA2pNeiNOJYh67WdtFVjHA683To4tjP+5yNxfL6xTLPcdymrL0droyuIh
+         98w+AVJux4fOQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7540EF03938;
+        Tue, 24 May 2022 20:26:53 +0000 (UTC)
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER updates for v5.19-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20220523165744.48234-1-jarkko@kernel.org>
+References: <20220523165744.48234-1-jarkko@kernel.org>
+X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20220523165744.48234-1-jarkko@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-v5.19-rc1
+X-PR-Tracked-Commit-Id: 7f3113e3b9f7207f0bd57b5fdae1a1b9c8215e08
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7cf6a8a17f5b134b7e783c2d45c53298faef82a7
+Message-Id: <165342401347.5255.8345246571594961908.pr-tracker-bot@kernel.org>
+Date:   Tue, 24 May 2022 20:26:53 +0000
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, May 19, 2022 at 12:01 PM Sedat Dilek <sedat.dilek@gmail.com> wrote:
->
-> [ CC Kees and Salvatore ]
->
-> The Debian kernel-team ships a fix (4 hours young):
->
-> commit: 13e234d459c11946efba647c3daf15e03abb0d99
-> "sign-file: Convert API usage to support OpenSSL v3"
->
-> *untested*
+The pull request you sent on Mon, 23 May 2022 19:57:44 +0300:
 
-@Kees:
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-v5.19-rc1
 
-Any updates on the part of certs/extract-cert.c?
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7cf6a8a17f5b134b7e783c2d45c53298faef82a7
 
--Sedat-
+Thank you!
 
-> [1] https://salsa.debian.org/kernel-team/linux/-/commit/13e234d459c11946efba647c3daf15e03abb0d99
->
-> On Thu, May 19, 2022 at 11:55 AM Sedat Dilek <sedat.dilek@gmail.com> wrote:
-> >
-> > Hi,
-> >
-> > here, I am on Debian/unstable AMD64.
-> >
-> > Recently (or still) there is/was a transition to OpenSSL see below link.
-> >
-> > The warnings look like:
-> >
-> > 189:scripts/sign-file.c:89:14: warning: 'ERR_get_error_line' is
-> > deprecated [-Wdeprecated-declarations]
-> > 201:scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is
-> > deprecated [-Wdeprecated-declarations]
-> > 213:scripts/sign-file.c:142:3: warning: 'ENGINE_load_builtin_engines'
-> > is deprecated [-Wdeprecated-declarations]
-> > 225:scripts/sign-file.c:144:7: warning: 'ENGINE_by_id' is deprecated
-> > [-Wdeprecated-declarations]
-> > 238:146:7: warning: 'ENGINE_init' is deprecated [-Wdeprecated-declarations]
-> > 250:scripts/sign-file.c:151:9: warning: 'ENGINE_ctrl_cmd_string' is
-> > deprecated [-Wdeprecated-declarations]
-> > 262:scripts/sign-file.c:153:17: warning: 'ENGINE_load_private_key' is
-> > deprecated [-Wdeprecated-declarations]
-> > 395:certs/extract-cert.c:46:14: warning: 'ERR_get_error_line' is
-> > deprecated [-Wdeprecated-declarations]
-> > 407:certs/extract-cert.c:59:9: warning: 'ERR_get_error_line' is
-> > deprecated [-Wdeprecated-declarations]
-> > 420:certs/extract-cert.c:124:3: warning: 'ENGINE_load_builtin_engines'
-> > is deprecated [-Wdeprecated-declarations]
-> > 432:certs/extract-cert.c:126:7: warning: 'ENGINE_by_id' is deprecated
-> > [-Wdeprecated-declarations]
-> > 444:certs/extract-cert.c:128:7: warning: 'ENGINE_init' is deprecated
-> > [-Wdeprecated-declarations]
-> > 456:certs/extract-cert.c:133:9: warning: 'ENGINE_ctrl_cmd_string' is
-> > deprecated [-Wdeprecated-declarations]
-> > 468:certs/extract-cert.c:134:3: warning: 'ENGINE_ctrl_cmd' is
-> > deprecated [-Wdeprecated-declarations]
-> >
-> > More detailed output:
-> >
-> > 189:scripts/sign-file.c:89:14: warning: 'ERR_get_error_line' is
-> > deprecated [-Wdeprecated-declarations]
-> > 190-        while ((e = ERR_get_error_line(&file, &line))) {
-> > 191-                    ^
-> > 192-/usr/include/openssl/err.h:410:1: note: 'ERR_get_error_line' has
-> > been explicitly marked deprecated here
-> > 193-OSSL_DEPRECATEDIN_3_0
-> > 194-^
-> > 195-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 196-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 197-                                                ^
-> > 198-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 199-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 200-                                                   ^
-> > 201:scripts/sign-file.c:102:9: warning: 'ERR_get_error_line' is
-> > deprecated [-Wdeprecated-declarations]
-> > 202-        while (ERR_get_error_line(&file, &line)) {}
-> > 203-               ^
-> > 204-/usr/include/openssl/err.h:410:1: note: 'ERR_get_error_line' has
-> > been explicitly marked deprecated here
-> > 205-OSSL_DEPRECATEDIN_3_0
-> > 206-^
-> > 207-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 208-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 209-                                                ^
-> > 210-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 211-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 212-                                                   ^
-> > 213:scripts/sign-file.c:142:3: warning: 'ENGINE_load_builtin_engines'
-> > is deprecated [-Wdeprecated-declarations]
-> > 214-                ENGINE_load_builtin_engines();
-> > 215-                ^
-> > 216-/usr/include/openssl/engine.h:358:1: note:
-> > 'ENGINE_load_builtin_engines' has been explicitly marked deprecated
-> > here
-> > 217-OSSL_DEPRECATEDIN_3_0 void ENGINE_load_builtin_engines(void);
-> > 218-^
-> > 219-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 220-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 221-                                                ^
-> > 222-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 223-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 224-                                                   ^
-> > 225:scripts/sign-file.c:144:7: warning: 'ENGINE_by_id' is deprecated
-> > [-Wdeprecated-declarations]
-> > 226-                e = ENGINE_by_id("pkcs11");
-> > 227-                    ^
-> > 228-/usr/include/openssl/engine.h:336:1: note: 'ENGINE_by_id' has been
-> > explicitly marked deprecated here
-> > 229-OSSL_DEPRECATEDIN_3_0 ENGINE *ENGINE_by_id(const char *id);
-> > 230-^
-> > 231-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 232-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 233-                                                ^
-> > 234-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 235-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 236-                                                   ^
-> > 237-scripts/sign-file.c:   ld.lld -r -o
-> > /home/dileks/src/linux-kernel/git/tools/objtool/arch/x86/objtool-in.o
-> > /home/dileks/src/linux-kernel/git/tools/objtool/arch/x86
-> > /special.o /home/dileks/src/linux-kernel/git/tools/objtool/arch/x86/decode.o
-> > 238:146:7: warning: 'ENGINE_init' is deprecated [-Wdeprecated-declarations]
-> > 239-                if (ENGINE_init(e))
-> > 240-                    ^
-> > 241-/usr/include/openssl/engine.h:620:1: note: 'ENGINE_init' has been
-> > explicitly marked deprecated here
-> > 242-OSSL_DEPRECATEDIN_3_0 int ENGINE_init(ENGINE *e);
-> > 243-^
-> > 244-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 245-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 246-                                                ^
-> > 247-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 248-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 249-                                                   ^
-> > 250:scripts/sign-file.c:151:9: warning: 'ENGINE_ctrl_cmd_string' is
-> > deprecated [-Wdeprecated-declarations]
-> > 251-                        ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
-> > 252-                             ^
-> > 253-/usr/include/openssl/engine.h:478:1: note:
-> > 'ENGINE_ctrl_cmd_string' has been explicitly marked deprecated here
-> > 254-OSSL_DEPRECATEDIN_3_0
-> > 255-^
-> > 256-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 257-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 258-                                                ^
-> > 259-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 260-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 261-                                                   ^
-> > 262:scripts/sign-file.c:153:17: warning: 'ENGINE_load_private_key' is
-> > deprecated [-Wdeprecated-declarations]
-> > 263-                private_key = ENGINE_load_private_key(e, private_key_name,
-> > 264-                              ^
-> > 265-/usr/include/openssl/engine.h:637:1: note:
-> > 'ENGINE_load_private_key' has been explicitly marked deprecated here
-> > 266-OSSL_DEPRECATEDIN_3_0
-> > 267-^
-> > 268-/usr/include/openssl/macros.h:182:49: note: expanded from macro
-> > 'OSSL_DEPRECATEDIN_3_0'
-> > 269-#   define OSSL_DEPRECATEDIN_3_0                OSSL_DEPRECATED(3.0)
-> > 270-                                                ^
-> > 271-/usr/include/openssl/macros.h:62:52: note: expanded from macro
-> > 'OSSL_DEPRECATED'
-> > 272-#     define OSSL_DEPRECATED(since) __attribute__((deprecated))
-> > 273-
-> >
-> > Relevant OpenSSL v3.0.3 header files are attached.
-> > My kernel-config, too.
-> >
-> > If you need further information, please let me know.
-> >
-> > Regards,
-> > -Sedat-
-> >
-> > [1] https://release.debian.org/transitions/html/auto-openssl.html
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
