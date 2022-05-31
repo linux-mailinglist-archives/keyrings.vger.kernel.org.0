@@ -2,65 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C68538C53
-	for <lists+keyrings@lfdr.de>; Tue, 31 May 2022 09:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 654C35398ED
+	for <lists+keyrings@lfdr.de>; Tue, 31 May 2022 23:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244668AbiEaH4r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 31 May 2022 03:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42578 "EHLO
+        id S1348085AbiEaVmh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 31 May 2022 17:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243133AbiEaH4q (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 31 May 2022 03:56:46 -0400
-Received: from mail.onlinesuccesses.pl (mail.onlinesuccesses.pl [198.244.150.235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A751B625D
-        for <keyrings@vger.kernel.org>; Tue, 31 May 2022 00:56:44 -0700 (PDT)
-Received: by mail.onlinesuccesses.pl (Postfix, from userid 1002)
-        id 5C893AC465; Tue, 31 May 2022 07:51:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onlinesuccesses.pl;
-        s=mail; t=1653983590;
-        bh=nE8HqilgMh4dy7+Z8ksfg7Bc9rmPeQtYFq3/3YR2ODU=;
-        h=Date:From:To:Subject:From;
-        b=AODPIkuC7XOJYCMUzib/ITP0Q6YHaXb5N9L4PO9G2xhcui4lBkDic8gRZ7Z1ajhka
-         gazNBusuRDoo5xbvybTkWKdP1ZyoUq2I7zP4R/xQgifCXqm4FKDq12gS2QcIjrmxKJ
-         pReKvW+yrSFM9AP4+fZd7WjpDOHIM+Z+yUSSl9KrBnh3YQ5O+SXWbJCwgwupnjVRKN
-         hTQlOsr1U9tNOigoB+wi1294BrMPxIuGqa+5h7YV97R9725W+0RmqRlOPgbi/VN0d4
-         X/0GQzcD5BM4iQNOYilbdZoEw0yVwXs5N/79/WcC140L5c3uJjoMdOU2z+uidN6yfU
-         6U+Xw/zsqD3mQ==
-Received: by mail.onlinesuccesses.pl for <keyrings@vger.kernel.org>; Tue, 31 May 2022 07:50:15 GMT
-Message-ID: <20220531064501-0.1.4l.1cxuk.0.jeooforap0@onlinesuccesses.pl>
-Date:   Tue, 31 May 2022 07:50:15 GMT
-From:   "Wiktor Zielonko" <wiktor.zielonko@onlinesuccesses.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Ruch z pierwszej pozycji w Google
-X-Mailer: mail.onlinesuccesses.pl
+        with ESMTP id S236826AbiEaVmg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 31 May 2022 17:42:36 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB412632
+        for <keyrings@vger.kernel.org>; Tue, 31 May 2022 14:42:36 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id cx11so145868pjb.1
+        for <keyrings@vger.kernel.org>; Tue, 31 May 2022 14:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=kdTSJmnbBK4N/virhew8A7fzQDKu0iWJnLEnGHSX4Dw=;
+        b=W9LG+IrPePRSKsl4XJfcZJb8rbNJscurgNdEuj2rHeFpqPwcJJeDpRPEj43mgl6u5C
+         aPpbLi0m6nT4qgWb/jk4eGQtZ/7ikLjJlugMPbIgCN1Fde1JFNVTNBXeZ1Y6/HZySfRD
+         K2uN2jdjpJoXS7HQtRbA2LA/7SXH3KSgEaNWPF4EUeJhyNzHy1oRa8lgtcUeCuy0bMNS
+         QfwmgExURaT2ARHcxBAoAI5eVgMbKsBT5K/Cjfu7v0VH4vH0m8uY4ZLeFO8fOz2b/4+Z
+         uPeEuFtrKRUadXRAi6/r+Oq2K3DS1Skt/vCS4QBh2DsK0I/CcOruSr+boBwbBOwklrxf
+         8Ydg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=kdTSJmnbBK4N/virhew8A7fzQDKu0iWJnLEnGHSX4Dw=;
+        b=caduOePyQbNfnj2vZIhxd2/gvBGWDmt/KWcpCf6gIMmysdupgq5IOjn4WcC8U1ne49
+         eSZnBIXwrI4bMzjiL1K19dRmt7q56M94ofrdUt0oKpu4E0WyCyIC936R3gebHf05UOVB
+         ++jV2RnyZfS8bRdKn0CA52ohr0B8QSkUdC+S+AGWzhP5BQ1jSELABg+zDyBqIX2sdXTP
+         R4ZpZC/O0ReUyUQk25Uz6Ai7zH1E82s6oSd/q/sQ8oiJAROA1Kl9HyA/Yv33i32XobB8
+         QrlUs5ohVpiJfgUyC+ry0OjggTD2/ipvYZ2P3xRVKL7K8D48NZTv6zCB5JeZjAf9QaF5
+         xvUA==
+X-Gm-Message-State: AOAM532V+H7/7PSrVD2911BYQE0FDB3x5nHacw+7Zdo4H/36L5yimSTl
+        jSkuKzLTWai3+MDdUg9v/vf5PWJhRM/CBu6/b98=
+X-Google-Smtp-Source: ABdhPJxebVXW16yjBDQDP1FSC37uauLl8hY+jyG6mrQxwZ7J7opdaDWo+Pwe0U/TWZYENfFadP7yFJwVBG0WqAdUDeU=
+X-Received: by 2002:a17:90a:9505:b0:1df:2162:2bb5 with SMTP id
+ t5-20020a17090a950500b001df21622bb5mr30721887pjo.73.1654033355504; Tue, 31
+ May 2022 14:42:35 -0700 (PDT)
 MIME-Version: 1.0
+Sender: msjulietkipkalyakone@gmail.com
+Received: by 2002:a05:6a10:af88:b0:299:25c0:e424 with HTTP; Tue, 31 May 2022
+ 14:42:34 -0700 (PDT)
+From:   Lisa Williams <lw4666555@gmail.com>
+Date:   Tue, 31 May 2022 22:42:34 +0100
+X-Google-Sender-Auth: dGHoiU-A2d-8cJN8dTTH7K3O_8Q
+Message-ID: <CALXZWUrfo5BqaAJqpdixNiZq7_=1dHNUJFH=opUWMqLjgTKdzQ@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+-- 
+Hi Dear
 
-jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
-j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
-e Google.=20
+My name is Lisa Williams, I am from United States of America, Its my
+pleasure to contact you for new and special friendship, I will be glad to
+see your reply for us to know each other better
 
-Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
-=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
-w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
-owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
-dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
-
-Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
-edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
-edstawi=C4=87 ofert=C4=99?=20
-
-
-Pozdrawiam serdecznie,
-Wiktor Zielonko
+Yours
+Lisa
