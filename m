@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 610FE53CF58
-	for <lists+keyrings@lfdr.de>; Fri,  3 Jun 2022 19:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D9A53CF50
+	for <lists+keyrings@lfdr.de>; Fri,  3 Jun 2022 19:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345367AbiFCRyT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 3 Jun 2022 13:54:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45970 "EHLO
+        id S231229AbiFCRy1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 3 Jun 2022 13:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345728AbiFCRuW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 3 Jun 2022 13:50:22 -0400
+        with ESMTP id S1345583AbiFCRxU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 3 Jun 2022 13:53:20 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11AEF58E78;
-        Fri,  3 Jun 2022 10:46:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816C2220C4;
+        Fri,  3 Jun 2022 10:52:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 679A7B82433;
-        Fri,  3 Jun 2022 17:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA768C385B8;
-        Fri,  3 Jun 2022 17:46:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2C52CB82419;
+        Fri,  3 Jun 2022 17:52:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCC5C341C4;
+        Fri,  3 Jun 2022 17:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1654278374;
-        bh=ZCDvb/lEcXJjYOpYuWAGBXcbz47R0k27Spe8HvZyXr4=;
+        s=korg; t=1654278747;
+        bh=YWUFwpqGOmVXmiw7aGglaLnf0+DjQhPIXhsvaJzq574=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I1CyQyPpD0Guxj2HYmrKJPGb8btQJV/pgg+ZOjg0iDOeL9fjWQwFkBg4gAY8WpWxp
-         y+g+sJycy7THEjUx1vD9cMQTCrq8HEQV39ATzWDbpt34c+XXRtVmJh0HLUW5UC8uPo
-         Fyjnm/XLarHFZ97JuAnRewIQxjWdY6aB8ydxnh5k=
+        b=gXY6wCJhuB84P4NH+pD+QHMPs+ul5nU0b2+oysNUIt2wsSDRt33uY+F5fSAD+vXog
+         TR2K/48gQEpsqiqHEGxvbIvsV1V6FZkXUawfyGrqmISyqHISvVHoxFNsuPGRsrw1V9
+         YP4eRBIGvT14MdfyTeSU2J1GNolD7hqxH7rfcyd0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 12/53] assoc_array: Fix BUG_ON during garbage collect
-Date:   Fri,  3 Jun 2022 19:42:57 +0200
-Message-Id: <20220603173819.078577350@linuxfoundation.org>
+Subject: [PATCH 5.17 14/75] assoc_array: Fix BUG_ON during garbage collect
+Date:   Fri,  3 Jun 2022 19:42:58 +0200
+Message-Id: <20220603173822.153897173@linuxfoundation.org>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220603173818.716010877@linuxfoundation.org>
-References: <20220603173818.716010877@linuxfoundation.org>
+In-Reply-To: <20220603173821.749019262@linuxfoundation.org>
+References: <20220603173821.749019262@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -176,7 +176,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/lib/assoc_array.c
 +++ b/lib/assoc_array.c
-@@ -1462,6 +1462,7 @@ int assoc_array_gc(struct assoc_array *a
+@@ -1461,6 +1461,7 @@ int assoc_array_gc(struct assoc_array *a
  	struct assoc_array_ptr *cursor, *ptr;
  	struct assoc_array_ptr *new_root, *new_parent, **new_ptr_pp;
  	unsigned long nr_leaves_on_tree;
@@ -184,7 +184,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	int keylen, slot, nr_free, next_slot, i;
  
  	pr_devel("-->%s()\n", __func__);
-@@ -1538,6 +1539,7 @@ continue_node:
+@@ -1536,6 +1537,7 @@ continue_node:
  		goto descend;
  	}
  
@@ -192,7 +192,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	pr_devel("-- compress node %p --\n", new_n);
  
  	/* Count up the number of empty slots in this node and work out the
-@@ -1555,6 +1557,7 @@ continue_node:
+@@ -1553,6 +1555,7 @@ continue_node:
  	pr_devel("free=%d, leaves=%lu\n", nr_free, new_n->nr_leaves_on_branch);
  
  	/* See what we can fold in */
@@ -200,7 +200,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	next_slot = 0;
  	for (slot = 0; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
  		struct assoc_array_shortcut *s;
-@@ -1604,9 +1607,14 @@ continue_node:
+@@ -1602,9 +1605,14 @@ continue_node:
  			pr_devel("[%d] retain node %lu/%d [nx %d]\n",
  				 slot, child->nr_leaves_on_branch, nr_free + 1,
  				 next_slot);
