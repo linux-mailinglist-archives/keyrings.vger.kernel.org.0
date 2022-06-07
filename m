@@ -2,105 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38CB05400E1
-	for <lists+keyrings@lfdr.de>; Tue,  7 Jun 2022 16:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB205540592
+	for <lists+keyrings@lfdr.de>; Tue,  7 Jun 2022 19:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245176AbiFGOLr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Jun 2022 10:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59176 "EHLO
+        id S1346166AbiFGR07 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Jun 2022 13:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245197AbiFGOLq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jun 2022 10:11:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F18DA501E;
-        Tue,  7 Jun 2022 07:11:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E81C26157B;
-        Tue,  7 Jun 2022 14:11:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A53C385A5;
-        Tue,  7 Jun 2022 14:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654611104;
-        bh=letTzTlIdmYyCQr3t4i/4sQ++BrVupVi397GE8M9uvI=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=ZmrXJqh5VhK6LBrkWuZLcZPb6LB/aKqB7VgbxKHQ5EKdRZGn1B/UtUl37J/VZlncM
-         XaKVqUs9/CrLhurHZmfQE4ZHromAzF5QHFhfcePHGAZt6gJN4oXn1Jgu9OhytNBGsZ
-         Dpp8c39jiY4Y6vji5iZNzY0BkjvDT9oCjsHIgHSItTWWl1ZaFW8x1MWtKzh54+Jsmx
-         MgLY2ScRWCz28NxqLMnfdu2v0uWPvoMrX/y8LVhRzTo8e9BmO+8kP0GacNDIRYfLCx
-         +YjXzNg0JjEvKZfsqCZP5oIjyElXDN9wiUZpKQTLYg3m4X5qyHVoxoSHYehWp506BX
-         a+HtETwbE/zkg==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-doc@vger.kernel.org, corbet@lwn.net, mchehab@kernel.org
-Cc:     linux@roeck-us.net, linux-cachefs@redhat.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dave.hansen@linux.intel.com, linux-samsung-soc@vger.kernel.org,
-        geert@linux-m68k.org, ulf.hansson@linaro.org, hpa@zytor.com,
-        alsa-devel@alsa-project.org, linux-m68k@lists.linux-m68k.org,
-        krzysztof.kozlowski+dt@linaro.org,
-        bcm-kernel-feedback-list@broadcom.com, kvm@vger.kernel.org,
-        mingo@redhat.com, mchehab+huawei@kernel.org, jdelvare@suse.com,
-        robh+dt@kernel.org, linux-gpio@vger.kernel.org, rafael@kernel.org,
-        linux-mmc@vger.kernel.org, federico.vaga@vaga.pv.it, bp@alien8.de,
-        linux-phy@lists.infradead.org, mmayer@broadcom.com,
-        keyrings@vger.kernel.org, x86@kernel.org,
-        linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        alim.akhtar@samsung.com, Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-pm@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        jarkko@kernel.org, tglx@linutronix.de, linus.walleij@linaro.org
-In-Reply-To: <cover.1654529011.git.mchehab@kernel.org>
-References: <cover.1654529011.git.mchehab@kernel.org>
-Subject: Re: (subset) [PATCH 00/23] Update Documentation/ cross-references
-Message-Id: <165461109692.1597191.11390741473240531333.b4-ty@kernel.org>
-Date:   Tue, 07 Jun 2022 15:11:36 +0100
+        with ESMTP id S1346369AbiFGRYP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jun 2022 13:24:15 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EFF850453
+        for <keyrings@vger.kernel.org>; Tue,  7 Jun 2022 10:22:28 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id s1so1991917wra.9
+        for <keyrings@vger.kernel.org>; Tue, 07 Jun 2022 10:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=FiBrJHe4O7a1jVjDC6KDblj58lHTisWp/3XyOE41fEU=;
+        b=SrGjiHQ6f/pkBH+Yfs+22DUIjmhIZu8YMGeBt67PgB5Lo6JrSr5DBCe57QTyur33wu
+         ro6OU1HojlivE421PX9JwMlTfa2WWkmQLA83Ttbat52NdHMjt4iciQQnxJnl5ZmfW2X+
+         7tN48nwQasXBPM/QnOVkn2qHncQDwD4HxVwrnUVRokCRUpqeHF1S1NQKXJ74fmbHwqVN
+         FT+CSI9xSVN6o2NzLAHCHFG0pSSyedXqKr4mIJhxN6ORzOB5XrtW+xEcUOhI600KD7b+
+         0HWqvB1IPcY2PYY9Kg48hg0mbQSXChob/oO85q5QCbLpJSlIhlPodBP9Cz/8BUBzyIes
+         vJFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=FiBrJHe4O7a1jVjDC6KDblj58lHTisWp/3XyOE41fEU=;
+        b=yuBuC1lMq0JyY6D0sx+Jo5aqypRsw8cGcE5Zl3CSipjLbJGKqCRF5P+muwezwepBqD
+         MIjDWEai+2dN0OuNyNM5bKz9p37E7+Aj1rJtEBLk+5Wxz9ijIdjQTId6RD5zCsWJm2Qk
+         eWGxBngknUfOyvagX1uJ1AQIus62YIfeivd+9KTfI6fV0z8vfeC9vOcePh190GkpiGow
+         g4rkF5MUYdA108jdSIb/WUQPA2m7IIqg/IaVLjevva5JxRGDYH31n0XUOz+yxhiwFaHZ
+         1XjOVEq/abZxB3YKk5tUY9s43r+CK3CMQ+OIWdX14zIjjrlbYUy42AVEb0RJ+kkPiRVb
+         yTxg==
+X-Gm-Message-State: AOAM531ht9YZErlga05jRqC055VKRahzTLD9AB/TISu72GPXiE+F+jSl
+        IS+dXfB5mobnyvhzRFR9fAZmCcbjX5alUA4vBYE=
+X-Google-Smtp-Source: ABdhPJw57Fscsj9/suWvaOEyPBPRH4D9140/WhEYGPIKLeW2LnQDFs31kXKvq5KuZ+912V0GCYpHemx8o2rcoqHg2Wg=
+X-Received: by 2002:a05:6000:1f86:b0:210:20ed:e2c4 with SMTP id
+ bw6-20020a0560001f8600b0021020ede2c4mr29126057wrb.200.1654622547004; Tue, 07
+ Jun 2022 10:22:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a7b:c44c:0:0:0:0:0 with HTTP; Tue, 7 Jun 2022 10:22:26 -0700 (PDT)
+Reply-To: u022957@gmail.com
+From:   Janeth Utuah <seynaboudiouf755@gmail.com>
+Date:   Tue, 7 Jun 2022 18:22:26 +0100
+Message-ID: <CAJLqW3MT4Ux36H+EAGeaXvUy95xLWwoVJ5x5BD14d7-1D64WtQ@mail.gmail.com>
+Subject: Greetings from Janeth !!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 6 Jun 2022 16:25:22 +0100, Mauro Carvalho Chehab wrote:
-> There were a number of DT binding conversions and other docs change that
-> were not updated. Address them, in order to keep the cross-references on
-> a sane state.
-> 
-> Patch series is against v5.19-rc1 (and applies cleanly on the top of
-> today's -next).
-> 
-> [...]
+Greetings!!
 
-Applied to
+I am Janeth Utuah.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+I need your support to relocate and invest in your country.
+I ask for your help because I don't have knowledge about business and
+the rules that guide your country for a safe investment.
 
-Thanks!
+Will you promise to be sincere with me?
 
-[22/23] ASoC: wm8731: update wlf,wm8731.yaml reference
-        commit: 69c8027c5ff43d68449fda4510a8cce70e8578b0
+Please contact me for more details!
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Kind regards,
+Janeth
