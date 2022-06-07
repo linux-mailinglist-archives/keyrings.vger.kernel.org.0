@@ -2,125 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8015D53F842
-	for <lists+keyrings@lfdr.de>; Tue,  7 Jun 2022 10:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9108B53FAC1
+	for <lists+keyrings@lfdr.de>; Tue,  7 Jun 2022 12:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231573AbiFGIfi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Jun 2022 04:35:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55806 "EHLO
+        id S240584AbiFGKDp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Jun 2022 06:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232793AbiFGIfH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jun 2022 04:35:07 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA003C9676
-        for <keyrings@vger.kernel.org>; Tue,  7 Jun 2022 01:35:05 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1nyUfm-0006dl-1V; Tue, 07 Jun 2022 10:34:46 +0200
-Message-ID: <3d42d774-5e12-f983-d6a1-7f644285b509@pengutronix.de>
-Date:   Tue, 7 Jun 2022 10:34:38 +0200
+        with ESMTP id S239176AbiFGKDn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Jun 2022 06:03:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4762DC0E09;
+        Tue,  7 Jun 2022 03:03:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D03C561373;
+        Tue,  7 Jun 2022 10:03:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF87BC34119;
+        Tue,  7 Jun 2022 10:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654596219;
+        bh=u1B8uxzMCkFey7cgXnz/vr+zToHpWFs1K5+BWxxYloU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K26BYJKPorCQqVcj8VFZH7g9DPuMkA/G8siXvq9Rkg3Q2HYIh8PuG+u/cFCKsjBYY
+         gNaYErecq/8WR+Oi6yHa8vmhhQmSAFgAcgTiFGlp934idTcwd6gg83YBH6bfwFRfuk
+         /XqYUH88dY44xe56sijpmV9e06rHlp0vC0PannW61RJZ9Y9WjTGsNwkMIU09Lv29jj
+         wJ/C0UDg/U+Rq1OZ+mgy46Gd/DD4W5RK/aPXs6RXjcqg6ltHNpux6aH8qsYY1snSHx
+         HOLGQj6AEsxuCU29cx+NfqEuqGNQnVtmCB10ZSDNeaYVtmu4vAuXqpDsv8jua93gV5
+         CoLlhPJTAwRag==
+Date:   Tue, 7 Jun 2022 13:01:44 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     David Howells <dhowells@redhat.com>
+Cc:     torvalds@linux-foundation.org,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>,
+        keyrings@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] certs: Convert spaces in certs/Makefile to a tab
+Message-ID: <Yp8iCErgXDFBvhzJ@iki.fi>
+References: <165451871967.1941436.17828809503267245815.stgit@warthog.procyon.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] security:trusted_tpm2: Fix memory leak in
- tpm2_key_encode()
-Content-Language: en-US
-To:     Jianglei Nie <niejianglei2021@163.com>, jejb@linux.ibm.com,
-        jarkko@kernel.org, zohar@linux.ibm.com, dhowells@redhat.com,
-        jmorris@namei.org, serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220607074650.432834-1-niejianglei2021@163.com>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20220607074650.432834-1-niejianglei2021@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: keyrings@vger.kernel.org
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <165451871967.1941436.17828809503267245815.stgit@warthog.procyon.org.uk>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Jianglei,
-
-On 07.06.22 09:46, Jianglei Nie wrote:
-> The function allocates a memory chunk for scratch by kmalloc(), but
-> it is never freed through the function, which leads to a memory leak.
-> Handle those cases with kfree().
-
-Thanks for your patch.
-
-Shouldn't you free scratch before successful return too?
-
-I haven't looked too deeply, but it looks like scratch is indeed
-scratch space and data written to it are memcpy'd elsewhere before
-the function returns and no pointer derived from it survives after
-function return.
-
-If this is indeed the case, consider also to switch this to a goto out.
-
-Cheers,
-Ahmad
-  
-
+On Mon, Jun 06, 2022 at 01:31:59PM +0100, David Howells wrote:
+> There's a rule in certs/Makefile for which the command begins with eight
+> spaces.  This results in:
 > 
-> Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+> 	../certs/Makefile:21: FORCE prerequisite is missing
+> 	../certs/Makefile:21: *** missing separator.  Stop.
+> 
+> Fix this by turning the spaces into a tab.
+> 
+> Fixes: addf466389d9 ("certs: Check that builtin blacklist hashes are valid")
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Mickaël Salaün <mic@linux.microsoft.com>
+> cc: Jarkko Sakkinen <jarkko@kernel.org>
+> cc: keyrings@vger.kernel.org
 > ---
->  security/keys/trusted-keys/trusted_tpm2.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-> index 0165da386289..dc9efd6c8b14 100644
-> --- a/security/keys/trusted-keys/trusted_tpm2.c
-> +++ b/security/keys/trusted-keys/trusted_tpm2.c
-> @@ -57,8 +57,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
->  		unsigned char bool[3], *w = bool;
->  		/* tag 0 is emptyAuth */
->  		w = asn1_encode_boolean(w, w + sizeof(bool), true);
-> -		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
-> +		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
-> +			kfree(scratch);
->  			return PTR_ERR(w);
-> +		}
->  		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
->  	}
+>  certs/Makefile |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/certs/Makefile b/certs/Makefile
+> index bb904f90f139..cb1a9da3fc58 100644
+> --- a/certs/Makefile
+> +++ b/certs/Makefile
+> @@ -18,7 +18,7 @@ CFLAGS_blacklist_hashes.o += -I$(srctree)
 >  
-> @@ -69,8 +71,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
->  	 * trigger, so if it does there's something nefarious going on
->  	 */
->  	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
-> -		 "BUG: scratch buffer is too small"))
-> +		 "BUG: scratch buffer is too small")) {
-> +		kfree(scratch);
->  		return -EINVAL;
-> +	}
->  
->  	work = asn1_encode_integer(work, end_work, options->keyhandle);
->  	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
-> @@ -79,8 +83,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
->  	work1 = payload->blob;
->  	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
->  				     scratch, work - scratch);
-> -	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
-> +	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
-> +		kfree(scratch);
->  		return PTR_ERR(work1);
-> +	}
->  
->  	return work1 - payload->blob;
->  }
+>  targets += blacklist_hashes_checked
+>  $(obj)/blacklist_hashes_checked: $(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(SYSTEM_BLACKLIST_HASH_LIST_FILENAME) scripts/check-blacklist-hashes.awk FORCE
+> -       $(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
+> +	$(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
+>  obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_hashes.o
+>  else
+>  obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_nohashes.o
+> 
+> 
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+BR, Jarkko
