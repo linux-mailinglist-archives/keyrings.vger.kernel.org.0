@@ -2,80 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B024542EF8
-	for <lists+keyrings@lfdr.de>; Wed,  8 Jun 2022 13:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7850543131
+	for <lists+keyrings@lfdr.de>; Wed,  8 Jun 2022 15:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233907AbiFHLQY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 8 Jun 2022 07:16:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
+        id S240051AbiFHNSe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 8 Jun 2022 09:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237682AbiFHLQX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Jun 2022 07:16:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C54D5362EE0;
-        Wed,  8 Jun 2022 04:16:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D4A3616C3;
-        Wed,  8 Jun 2022 11:16:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEB9C34116;
-        Wed,  8 Jun 2022 11:16:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654686981;
-        bh=plP+v2AIp7gGdkcdfZoN3vVzn7iA8FHDwNj6OCWSdQQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=V2A56f9GNMGDd69nDbWZPaewMHXDrGVKgM9Ccxjo2bBSh6WO1bB6P2cCRPsTMMfS4
-         z9xxdEO2KTJnZfG2o3EmU/4nkPSwQ2EKapGIwsGkK8Q2wtK591R115wOMl1VIRM49V
-         JCleIgQWnjxx4tZG2ltG6S8XSw02BthCd2wp495TCjvM658doBDhV2ukf5NFMPOY1j
-         1ZfjqUhieTT7VXlWFigFT6LTym3TDhMUjG9pQogYx7PeiLf0JFAxFVsjudD+hGelFN
-         V6TnM69RqM8xh+OWEyUtEg+UG9NJCi64/7oVZNZOUpHTLtDNF7dYFoN2AYIJmymuFr
-         J83J6vHwzuBrA==
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [GIT PULL] tpmdd updates for v5.19-rc2-v2
-Date:   Wed,  8 Jun 2022 14:14:17 +0300
-Message-Id: <20220608111418.3081578-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S239852AbiFHNSd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 8 Jun 2022 09:18:33 -0400
+Received: from mail-m972.mail.163.com (mail-m972.mail.163.com [123.126.97.2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2C76213E9D;
+        Wed,  8 Jun 2022 06:18:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Uc2eR
+        OBipVEKbx7H4/9ChTYVlx7gRDpLoRebVKl96J4=; b=fPZORH0u10U+rE1+rBTzr
+        Ku1TFiwVPZuuwE+i7jh1ZDQzq7J6UGjYrDmz73nCxOEc4FO+EmzRI1zFH7Cr0ZTP
+        1bveFXdzbK7GP15/jclcOXIvdEDbcwBkqHhdXJdyFttWfY1KSt8q3lO6o3EToV44
+        408vuDKvgBjKBgu+Z4qlUQ=
+Received: from localhost.localdomain (unknown [123.112.69.106])
+        by smtp2 (Coremail) with SMTP id GtxpCgCHlQFwoaBiouWXHg--.33435S4;
+        Wed, 08 Jun 2022 21:17:50 +0800 (CST)
+From:   Jianglei Nie <niejianglei2021@163.com>
+To:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
+        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jianglei Nie <niejianglei2021@163.com>
+Subject: [PATCH v2] KEYS: trusted: Fix memory leak in tpm2_key_encode()
+Date:   Wed,  8 Jun 2022 21:17:32 +0800
+Message-Id: <20220608131732.550234-1-niejianglei2021@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-CM-TRANSID: GtxpCgCHlQFwoaBiouWXHg--.33435S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7urWxGF17Wr1rCF1UKrWrGrg_yoW8KrWDpF
+        ZxKF13XrWavry3Ary3JF4SvaySkw1rGF42gws2g397GasxJFsrKFy2yr4Ygr13AFWFqw15
+        ZFWDZFWUuFWqqr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRID7fUUUUU=
+X-Originating-IP: [123.112.69.106]
+X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbiQxAajFc7Z8QdDwAAsY
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The following changes since commit 9886142c7a2226439c1e3f7d9b69f9c7094c3ef6:
+tpm2_key_encode() allocates a memory chunk from scratch with kmalloc(),
+but it is never freed, which leads to a memory leak. Free the memory
+chunk with kfree() in the return path.
 
-  Merge tag 'input-for-v5.19-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input (2022-06-07 15:00:29 -0700)
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+---
+ security/keys/trusted-keys/trusted_tpm2.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-are available in the Git repository at:
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 0165da386289..8b7ab22950d1 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -32,6 +32,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 			   struct trusted_key_options *options,
+ 			   u8 *src, u32 len)
+ {
++	int err;
+ 	const int SCRATCH_SIZE = PAGE_SIZE;
+ 	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
+ 	u8 *work = scratch, *work1;
+@@ -57,8 +58,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 		unsigned char bool[3], *w = bool;
+ 		/* tag 0 is emptyAuth */
+ 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
+-		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+-			return PTR_ERR(w);
++		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
++			err = PTR_ERR(w);
++			goto out;
++		}
+ 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
+ 	}
+ 
+@@ -69,8 +72,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	 * trigger, so if it does there's something nefarious going on
+ 	 */
+ 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+-		 "BUG: scratch buffer is too small"))
+-		return -EINVAL;
++		 "BUG: scratch buffer is too small")) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	work = asn1_encode_integer(work, end_work, options->keyhandle);
+ 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
+@@ -79,10 +84,16 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+-		return PTR_ERR(work1);
++	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
++		err = -EINVAL;
++		goto out;
++	}
++	kfree(scratch);
+ 
+ 	return work1 - payload->blob;
++
++out:
++	return err;
+ }
+ 
+ struct tpm2_key_context {
+-- 
+2.25.1
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-v5.19-rc2-v2
-
-for you to fetch changes up to dda5384313a40ecbaafd8a9a80f47483255e4c4d:
-
-  KEYS: trusted: tpm2: Fix migratable logic (2022-06-08 14:12:13 +0300)
-
-----------------------------------------------------------------
-A bug fix for migratable (whether or not a key is tied to the TPM chip
-soldered to the machine) handling for TPM2 trusted keys.
-
-----------------------------------------------------------------
-David Safford (1):
-      KEYS: trusted: tpm2: Fix migratable logic
-
- security/keys/trusted-keys/trusted_tpm2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
