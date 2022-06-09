@@ -2,140 +2,168 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1350545851
-	for <lists+keyrings@lfdr.de>; Fri, 10 Jun 2022 01:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE80545877
+	for <lists+keyrings@lfdr.de>; Fri, 10 Jun 2022 01:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239446AbiFIXP5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Jun 2022 19:15:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
+        id S1346148AbiFIXS5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Jun 2022 19:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236603AbiFIXP4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Jun 2022 19:15:56 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB2F165379;
-        Thu,  9 Jun 2022 16:15:51 -0700 (PDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 259N9lNa030155;
-        Thu, 9 Jun 2022 23:15:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=6rV25bVukC0FzXp8C+eOvheKB/Ow7ad3IEMVII0+WpA=;
- b=RHOtXYOZ9bsKZLp7BpFsh8xAA1w+ADlN0/KyiaOLAfMUmEKpvIjNaVHmuM1ixTKXz3u3
- 8rdap9v1Q7WMGgOkjy64pZ9O5wfQQ8c1XhuMnzbzTiQhPKj29mhNrTf9+wJ/p52qpHmb
- pjZxUs48VW1ROKzR6CVJRGFMjYGXI6eKG7a46MN/FlE2B5fRj2odL0WLZNqUGrI0Ht54
- XHIU52qptcQW51LeTjIuao6Wo0lnRXj++JfG6rO2y66mItDojOgbHHNnaPLOqYra9/zI
- 9rSPPP9+QStbwwfbnHyJGHAnENcJzUhuZnhPQYAg4V67J1yclMLjXx6cTR+BVAmR9J1P vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gks69gysn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Jun 2022 23:15:36 +0000
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 259NAuRn009191;
-        Thu, 9 Jun 2022 23:15:35 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gks69gys6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Jun 2022 23:15:35 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 259N5ubN001267;
-        Thu, 9 Jun 2022 23:15:32 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by ppma03ams.nl.ibm.com with ESMTP id 3gfy19fft3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Jun 2022 23:15:32 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 259NFUKJ21496240
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 Jun 2022 23:15:30 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2DE6D11C04C;
-        Thu,  9 Jun 2022 23:15:30 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1AF8011C04A;
-        Thu,  9 Jun 2022 23:15:28 +0000 (GMT)
-Received: from sig-9-65-64-6.ibm.com (unknown [9.65.64.6])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  9 Jun 2022 23:15:27 +0000 (GMT)
-Message-ID: <e44bb6b11573838417b5d561173c27a1571c94b6.camel@linux.ibm.com>
-Subject: Re: [PATCH v8 3/4] arm64: kexec_file: use more system keyrings to
- verify kernel image signature
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Coiby Xu <coxu@redhat.com>, kexec@lists.infradead.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Michal Suchanek <msuchanek@suse.de>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Chun-Yi Lee <jlee@suse.com>, stable@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        James Morse <james.morse@arm.com>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        open list <linux-kernel@vger.kernel.org>
-Date:   Thu, 09 Jun 2022 19:15:27 -0400
-In-Reply-To: <20220512070123.29486-4-coxu@redhat.com>
-References: <20220512070123.29486-1-coxu@redhat.com>
-         <20220512070123.29486-4-coxu@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AZVfSAyGR6zReIne5Uk26XJVLhnwfpqj
-X-Proofpoint-ORIG-GUID: mzxr_bl7MDVagn9LqpV5ZEpivnd1vDN9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-09_15,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999 clxscore=1011
- malwarescore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2206090085
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1345664AbiFIXSz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Jun 2022 19:18:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE5E202D09;
+        Thu,  9 Jun 2022 16:18:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 29401B82D85;
+        Thu,  9 Jun 2022 23:18:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580E0C34114;
+        Thu,  9 Jun 2022 23:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654816723;
+        bh=jV7HoOubF6PTB2ncQUr11grjqLBwpz0PFhGJjzU5azE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GFF+OvYad586MW1XA098aEQbKkZR/csWDoiuq1bsWvvpmFu96w9PTb+Q1L3yeRM1m
+         VAQ+RTjn4X2LdsCEMPHLp+CNprlppcO5JeRczRLxBIU1dqd7wuwnMztQ1p3TivfCv7
+         QeuvQoxzm+hJduo9ugf698Ws4UIxvWCW5t02Dp5WudTA0MgpCC3Xr4bMlV1XSyXC+w
+         82JghlyQfOk4n9LKvTCSGs7c1YyjvAUNaU6cQwM0Eam2KZQWOo9xuw5GAsvw09pIWK
+         aSXRHVRr6b1g0LBCSakH0Z+xC/42BzxxKYxyGQqii4lUPxH4F4ECgdxEZl6EY1sRJW
+         ilwdH5o4JlgeA==
+Date:   Thu, 9 Jun 2022 16:18:41 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Frederick Lawler <fred@cloudflare.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-mm@kvack.org,
+        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+        keyrings@vger.kernel.org, selinux@vger.kernel.org,
+        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com,
+        Jeff Moyer <jmoyer@redhat.com>,
+        Paul Moore <paul@paul-moore.com>
+Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
+Message-ID: <YqJ/0W3wxPThWqgC@sol.localdomain>
+References: <20220608150942.776446-1-fred@cloudflare.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220608150942.776446-1-fred@cloudflare.com>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2022-05-12 at 15:01 +0800, Coiby Xu wrote:
-> Currently, a problem faced by arm64 is if a kernel image is signed by a
-> MOK key, loading it via the kexec_file_load() system call would be
-> rejected with the error "Lockdown: kexec: kexec of unsigned images is
-> restricted; see man kernel_lockdown.7".
-> 
-> This happens because image_verify_sig uses only the primary keyring that
-> contains only kernel built-in keys to verify the kexec image.
+On Wed, Jun 08, 2022 at 10:09:42AM -0500, Frederick Lawler wrote:
+> diff --git a/fs/aio.c b/fs/aio.c
+> index 3c249b938632..5abbe88c3ca7 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -1620,6 +1620,8 @@ static void aio_fsync_work(struct work_struct *work)
+>  static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
+>  		     bool datasync)
+>  {
+> +	int err;
+> +
+>  	if (unlikely(iocb->aio_buf || iocb->aio_offset || iocb->aio_nbytes ||
+>  			iocb->aio_rw_flags))
+>  		return -EINVAL;
+> @@ -1628,8 +1630,11 @@ static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
+>  		return -EINVAL;
+>  
+>  	req->creds = prepare_creds();
+> -	if (!req->creds)
+> -		return -ENOMEM;
+> +	if (IS_ERR(req->creds)) {
+> +		err = PTR_ERR(req->creds);
+> +		req->creds = NULL;
+> +		return err;
+> +	}
 
-From the git history it's clear that .platform keyring was upstreamed
-during the same open window as commit 732b7b93d849 ("arm64: kexec_file:
-add kernel signature verification support").   Loading the MOK keys
-onto the .platform keyring was upstreamed much later.  For this reason,
-commit 732b7b93d849 only used keys on the  .builtin_trusted_keys
-keyring.   This patch is now addressing it and the newly upstreamed
-.machine keyring.
+This part is a little ugly.  How about doing:
 
-Only using the .builtin_trusted_keys is the problem statement, which
-should be one of the first lines of the patch description, if not the
-first line.
+	creds = prepare_creds();
+	if (IS_ERR(creds))
+		return PTR_ERR(creds);
+	req->creds = creds;
 
-> 
-> This patch allows to verify arm64 kernel image signature using not only
-> .builtin_trusted_keys but also .platform and .secondary_trusted_keys
-> keyring.
+> diff --git a/fs/exec.c b/fs/exec.c
+> index 0989fb8472a1..02624783e40e 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -1468,15 +1468,19 @@ EXPORT_SYMBOL(finalize_exec);
+>   */
+>  static int prepare_bprm_creds(struct linux_binprm *bprm)
+>  {
+> +	int err = -ERESTARTNOINTR;
+>  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+> -		return -ERESTARTNOINTR;
+> +		return err;
+>  
+>  	bprm->cred = prepare_exec_creds();
+> -	if (likely(bprm->cred))
+> -		return 0;
+> +	if (IS_ERR(bprm->cred)) {
+> +		err = PTR_ERR(bprm->cred);
+> +		bprm->cred = NULL;
+> +		mutex_unlock(&current->signal->cred_guard_mutex);
+> +		return err;
+> +	}
+>  
+> -	mutex_unlock(&current->signal->cred_guard_mutex);
+> -	return -ENOMEM;
+> +	return 0;
+>  }
 
-Please remember to update this to include the .machine keyring.
+Similarly:
 
-> 
-> Fixes: 732b7b93d849 ("arm64: kexec_file: add kernel signature verification support")
+static int prepare_bprm_creds(struct linux_binprm *bprm)
+{
+	struct cred *cred;
 
-Since the MOK keys weren't loaded onto the .platform keyring until much
-later, I would not classify this as a fix.
+	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+		return -ERESTARTNOINTR;
 
-thanks,
+	cred = prepare_exec_creds();
+	if (IS_ERR(cred)) {
+		mutex_unlock(&current->signal->cred_guard_mutex);
+		return PTR_ERR(cred);
+	}
+	bprm->cred = cred;
+	return 0;
+}
 
-Mimi
+> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+> index eec72ca962e2..6cf75aa83b6c 100644
+> --- a/kernel/nsproxy.c
+> +++ b/kernel/nsproxy.c
+> @@ -311,6 +311,7 @@ static void put_nsset(struct nsset *nsset)
+>  
+>  static int prepare_nsset(unsigned flags, struct nsset *nsset)
+>  {
+> +	int err = -ENOMEM;
+>  	struct task_struct *me = current;
+>  
+>  	nsset->nsproxy = create_new_namespaces(0, me, current_user_ns(), me->fs);
+> @@ -324,6 +325,12 @@ static int prepare_nsset(unsigned flags, struct nsset *nsset)
+>  	if (!nsset->cred)
+>  		goto out;
+>  
+> +	if (IS_ERR(nsset->cred)) {
+> +		err = PTR_ERR(nsset->cred);
+> +		nsset->cred = NULL;
+> +		goto out;
+> +	}
 
+Why is the NULL check above being kept?
+
+Also, drivers/crypto/ccp/sev-dev.c needs to be updated.
+
+- Eric
