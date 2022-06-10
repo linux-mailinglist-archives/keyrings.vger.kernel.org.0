@@ -2,58 +2,62 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BE80545877
-	for <lists+keyrings@lfdr.de>; Fri, 10 Jun 2022 01:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 657C6546C88
+	for <lists+keyrings@lfdr.de>; Fri, 10 Jun 2022 20:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346148AbiFIXS5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Jun 2022 19:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S1350469AbiFJSgt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 10 Jun 2022 14:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345664AbiFIXSz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Jun 2022 19:18:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE5E202D09;
-        Thu,  9 Jun 2022 16:18:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S1350387AbiFJSgR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Jun 2022 14:36:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D3D5F403DA
+        for <keyrings@vger.kernel.org>; Fri, 10 Jun 2022 11:36:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1654886160;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=1vmTWMZvDmE1FO6rs2zTYe37OspeJHlTiBA08DM86zY=;
+        b=G2+AuxqKTy57hjDCg9sP2KLjVb2QBktASVcge/Vmcp+PYO4y0jOrsLgkxWy9l9M0UOKRcu
+        TQmMq68ZQLDEBWL/PJxMovf+pEO8fbJd+vvBrGIfrCWc3N3LruHKqydPto1nce5jcHcufm
+        9jNQ9/rT+1JRy7HFZMl1utueaXX19aE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-27-wA5lDc8MNm2qOJza1114VQ-1; Fri, 10 Jun 2022 14:35:57 -0400
+X-MC-Unique: wA5lDc8MNm2qOJza1114VQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 29401B82D85;
-        Thu,  9 Jun 2022 23:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580E0C34114;
-        Thu,  9 Jun 2022 23:18:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654816723;
-        bh=jV7HoOubF6PTB2ncQUr11grjqLBwpz0PFhGJjzU5azE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GFF+OvYad586MW1XA098aEQbKkZR/csWDoiuq1bsWvvpmFu96w9PTb+Q1L3yeRM1m
-         VAQ+RTjn4X2LdsCEMPHLp+CNprlppcO5JeRczRLxBIU1dqd7wuwnMztQ1p3TivfCv7
-         QeuvQoxzm+hJduo9ugf698Ws4UIxvWCW5t02Dp5WudTA0MgpCC3Xr4bMlV1XSyXC+w
-         82JghlyQfOk4n9LKvTCSGs7c1YyjvAUNaU6cQwM0Eam2KZQWOo9xuw5GAsvw09pIWK
-         aSXRHVRr6b1g0LBCSakH0Z+xC/42BzxxKYxyGQqii4lUPxH4F4ECgdxEZl6EY1sRJW
-         ilwdH5o4JlgeA==
-Date:   Thu, 9 Jun 2022 16:18:41 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Frederick Lawler <fred@cloudflare.com>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, selinux@vger.kernel.org,
-        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
-Message-ID: <YqJ/0W3wxPThWqgC@sol.localdomain>
-References: <20220608150942.776446-1-fred@cloudflare.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1780218A0711;
+        Fri, 10 Jun 2022 18:35:57 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 073A61121314;
+        Fri, 10 Jun 2022 18:35:55 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+cc:     dhowells@redhat.com,
+        =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@linux.microsoft.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        keyrings@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] certs: Convert spaces in certs/Makefile to a tab
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220608150942.776446-1-fred@cloudflare.com>
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date:   Fri, 10 Jun 2022 19:35:55 +0100
+Message-ID: <662080.1654886155@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,109 +65,51 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 10:09:42AM -0500, Frederick Lawler wrote:
-> diff --git a/fs/aio.c b/fs/aio.c
-> index 3c249b938632..5abbe88c3ca7 100644
-> --- a/fs/aio.c
-> +++ b/fs/aio.c
-> @@ -1620,6 +1620,8 @@ static void aio_fsync_work(struct work_struct *work)
->  static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
->  		     bool datasync)
->  {
-> +	int err;
-> +
->  	if (unlikely(iocb->aio_buf || iocb->aio_offset || iocb->aio_nbytes ||
->  			iocb->aio_rw_flags))
->  		return -EINVAL;
-> @@ -1628,8 +1630,11 @@ static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
->  		return -EINVAL;
->  
->  	req->creds = prepare_creds();
-> -	if (!req->creds)
-> -		return -ENOMEM;
-> +	if (IS_ERR(req->creds)) {
-> +		err = PTR_ERR(req->creds);
-> +		req->creds = NULL;
-> +		return err;
-> +	}
 
-This part is a little ugly.  How about doing:
+Hi Linus,
 
-	creds = prepare_creds();
-	if (IS_ERR(creds))
-		return PTR_ERR(creds);
-	req->creds = creds;
+Can you apply this please?  It fixes a build error that can crop up
+occasionally due to a Makefile error.
 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 0989fb8472a1..02624783e40e 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1468,15 +1468,19 @@ EXPORT_SYMBOL(finalize_exec);
->   */
->  static int prepare_bprm_creds(struct linux_binprm *bprm)
->  {
-> +	int err = -ERESTARTNOINTR;
->  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-> -		return -ERESTARTNOINTR;
-> +		return err;
->  
->  	bprm->cred = prepare_exec_creds();
-> -	if (likely(bprm->cred))
-> -		return 0;
-> +	if (IS_ERR(bprm->cred)) {
-> +		err = PTR_ERR(bprm->cred);
-> +		bprm->cred = NULL;
-> +		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		return err;
-> +	}
->  
-> -	mutex_unlock(&current->signal->cred_guard_mutex);
-> -	return -ENOMEM;
-> +	return 0;
->  }
+Thanks,
+David
+---
+certs: Convert spaces in certs/Makefile to a tab
 
-Similarly:
+There's a rule in certs/Makefile for which the command begins with eight
+spaces.  This results in:
 
-static int prepare_bprm_creds(struct linux_binprm *bprm)
-{
-	struct cred *cred;
+        ../certs/Makefile:21: FORCE prerequisite is missing
+        ../certs/Makefile:21: *** missing separator.  Stop.
 
-	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-		return -ERESTARTNOINTR;
+Fix this by turning the spaces into a tab.
 
-	cred = prepare_exec_creds();
-	if (IS_ERR(cred)) {
-		mutex_unlock(&current->signal->cred_guard_mutex);
-		return PTR_ERR(cred);
-	}
-	bprm->cred = cred;
-	return 0;
-}
+Fixes: addf466389d9 ("certs: Check that builtin blacklist hashes are valid")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Micka=C3=ABl Sala=C3=BCn <mic@linux.microsoft.com>
+cc: keyrings@vger.kernel.org
+Link: https://lore.kernel.org/r/486b1b80-9932-aab6-138d-434c541c934a@digiko=
+d.net/ # v1
+---
+ certs/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
-> index eec72ca962e2..6cf75aa83b6c 100644
-> --- a/kernel/nsproxy.c
-> +++ b/kernel/nsproxy.c
-> @@ -311,6 +311,7 @@ static void put_nsset(struct nsset *nsset)
->  
->  static int prepare_nsset(unsigned flags, struct nsset *nsset)
->  {
-> +	int err = -ENOMEM;
->  	struct task_struct *me = current;
->  
->  	nsset->nsproxy = create_new_namespaces(0, me, current_user_ns(), me->fs);
-> @@ -324,6 +325,12 @@ static int prepare_nsset(unsigned flags, struct nsset *nsset)
->  	if (!nsset->cred)
->  		goto out;
->  
-> +	if (IS_ERR(nsset->cred)) {
-> +		err = PTR_ERR(nsset->cred);
-> +		nsset->cred = NULL;
-> +		goto out;
-> +	}
+diff --git a/certs/Makefile b/certs/Makefile
+index bb904f90f139..cb1a9da3fc58 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -18,7 +18,7 @@ CFLAGS_blacklist_hashes.o +=3D -I$(srctree)
+=20
+ targets +=3D blacklist_hashes_checked
+ $(obj)/blacklist_hashes_checked: $(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(=
+SYSTEM_BLACKLIST_HASH_LIST_FILENAME) scripts/check-blacklist-hashes.awk FOR=
+CE
+-       $(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_LI=
+ST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
++	$(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_LIST_SRC=
+PREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
+ obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist_hashes.o
+ else
+ obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist_nohashes.o
 
-Why is the NULL check above being kept?
-
-Also, drivers/crypto/ccp/sev-dev.c needs to be updated.
-
-- Eric
