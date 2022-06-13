@@ -2,60 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A96FB547ECA
-	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 06:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D1E54869F
+	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 17:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231840AbiFMEwZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 13 Jun 2022 00:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44600 "EHLO
+        id S238425AbiFMPSk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 13 Jun 2022 11:18:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbiFMEwA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 00:52:00 -0400
-X-Greylist: delayed 43361 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 12 Jun 2022 21:51:10 PDT
-Received: from yodobashi.com (unknown [106.75.240.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 270511B79E
-        for <keyrings@vger.kernel.org>; Sun, 12 Jun 2022 21:51:09 -0700 (PDT)
-Sender: info@yodobashi.com
-Date:   Mon, 13 Jun 2022 12:51:05 +0800
-From:   "yodobashi" <admin@yodobashi.com>
-To:     <keyrings@vger.kernel.org>
-Subject: =?gb2312?B?peilyaXQpbelyaXDpcils6Xgo7qhuKSqv82YlMfpiPOhuaXRpbml7w==?=
-        =?gb2312?B?qWClyYnkuPykzt9CvWo=?=
-Message-ID: <20220613125110803261@yodobashi.com>
-X-mailer: Foxmail 6, 13, 102, 15 [cn]
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="gb2312"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,MAY_BE_FORGED,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_VALIDITY_RPBL,SPF_FAIL,SPF_HELO_FAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+        with ESMTP id S243999AbiFMPR5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 11:17:57 -0400
+X-Greylist: delayed 968 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Jun 2022 05:36:16 PDT
+Received: from smtp-42ae.mail.infomaniak.ch (smtp-42ae.mail.infomaniak.ch [IPv6:2001:1600:4:17::42ae])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297021269B4
+        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 05:36:15 -0700 (PDT)
+Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4LM9zK4sW9zMpyPc;
+        Mon, 13 Jun 2022 14:36:13 +0200 (CEST)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4LM9zK0CnPzlqK2h;
+        Mon, 13 Jun 2022 14:36:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+        s=20191114; t=1655123773;
+        bh=y8WeNC3r3J7KNO7FidESYUF65oAKkpk01OypWCpEEpI=;
+        h=Date:To:Cc:References:From:Subject:In-Reply-To:From;
+        b=0jqca2CqbhDm2H3L9tH3sKXia+64mN5xDGlKUNW9yCxFJv0zD0a0dE5UldOGfNPUx
+         X8eLqADKLAK47fE8LhhB7re3x5PwlFGYOZ47hNEBNuPTUvSQJUMZbToTUcdAHgA3k+
+         q4aeIrZvnB9nWaIWm73+N4UrUjWtcvj4H+WHnfN4=
+Message-ID: <e7850717-dad6-daef-c96c-2a74248e98f6@digikod.net>
+Date:   Mon, 13 Jun 2022 14:36:12 +0200
+MIME-Version: 1.0
+User-Agent: 
+Content-Language: en-US
+To:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>
+References: <20220611172233.1494073-1-masahiroy@kernel.org>
+ <20220611172233.1494073-3-masahiroy@kernel.org>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+Subject: Re: [PATCH 3/4] certs: move scripts/check-blacklist-hashes.awk to
+ certs/
+In-Reply-To: <20220611172233.1494073-3-masahiroy@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-ofah9qH2obikqr/NmJTH6Yjzobml0aW5pe+pYKXJieS4/KTO30K9aqH2ofah9g0Ko6iks6TOpeGp
-YKXrpM+hosXk0MWMn9PDpM6loqXJpeyluaTHxeTQxaS1pOykxqSkpN6kuaOpDQoNCqSqv82YlKTO
-pKq/zZiUx+mI84nkuPzK1r5BpK2k8qSqpLOkyqSkpN6kt6S/oaMNCsTayN2kzqS0tF/VSqTypKru
-iqSkpKSkv6S3pN6kuaGjDQqjqKXRpbml76lgpcmkz6Gise3KvqS3pMakqqTqpN6ku6Tzo6kNCg0K
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0NCqG+ieS4/Iydz/OkzrvhhlSl0aW5pe+pYKXJob8NCrvhhlRJRKGhOqGha2V5cmluZ3NAdmdl
-ci5rZXJuZWwub3JnDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQ0KDQqh8YnkuPyktaTspL+kqr/NmJTH6YjzIA0KLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCuuK1JK3rLrF
-DQrI1dbQpM6ktN9CvWrPyOuK1JK3rLrFDQoNCqS0tcflaMfpiPOkz6Giz8LTm6G4pKq/zZiUjJ/T
-w6XaqWCluKG5pKuk6aS0tF/VSqSvpMCktaSkoaMNCg0KqIukqr/NmJSMn9PDpdqpYKW4DQpodHRw
-czovL3d3dy15b2RvYmFzaC1jb20ubGluZ2VydDUudGVjaA0KDQotLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0Kofmks6TOpeGpYKXrxNrI
-3aTL0MSkoqS/pOqkzqTKpKSI9rrPpM+hoqSqytbK/aTHpLmkrKGipeilyaXQpbc/pcmlw6XIP6Wz
-peCkqoaWpKS6z6TvpLu3mb/apNjWwbyxpLTfQr1qpPKkqu6KpKSkpKS/pLek3qS5oaMNCg0KpLOk
-zqXhqWCl66TPoaLF5NDFjJ/Tw6TOpaKlyaXspbmkx8Xk0MWktaTspMakpKTepLmhow0KpKrK1sr9
-pPKkqpLspLGkpKS/pLek3qS5pKyhoqSzpM6l4algpeukzsTayN2ky6TEpKSkxqTOpKqGlqSkus+k
-76S7pM/PwtObpM7fQr1qz8ik3qTHpKruiqSkpKSkv6S3pN6kuaGjDQoNCqXopcml0KW3pcmlw6XI
-pbOl4CCkqoaWpKS6z6TvpLu3mb/aDQpFbWFpbDogaW5mb0B5b2RvYmFzaGkuY29tDQoNCg0KQ29w
-eXJpZ2h0MjAyMiBZb2RvYmFzaGkgQ2FtZXJhIENvLixMdGQuDQo=
 
 
+On 11/06/2022 19:22, Masahiro Yamada wrote:
+> This script is only used in certs/Makefile, so certs/ is a better
+> home for it.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>   MAINTAINERS                                   | 1 -
+>   certs/Makefile                                | 2 +-
+>   {scripts => certs}/check-blacklist-hashes.awk | 0
+>   3 files changed, 1 insertion(+), 2 deletions(-)
+>   rename {scripts => certs}/check-blacklist-hashes.awk (100%)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 1fc9ead83d2a..7c2a7c304824 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4627,7 +4627,6 @@ L:	keyrings@vger.kernel.org
+>   S:	Maintained
+>   F:	Documentation/admin-guide/module-signing.rst
+>   F:	certs/
+> -F:	scripts/check-blacklist-hashes.awk >   F:	scripts/sign-file.c
+>   F:	tools/certs/
+>   
+> diff --git a/certs/Makefile b/certs/Makefile
+> index a8d628fd5f7b..df7aaeafd19c 100644
+> --- a/certs/Makefile
+> +++ b/certs/Makefile
+> @@ -13,7 +13,7 @@ CFLAGS_blacklist_hashes.o := -I $(obj)
+>   
+>   quiet_cmd_check_and_copy_blacklist_hash_list = GEN     $@
+>         cmd_check_and_copy_blacklist_hash_list = \
+> -	$(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) >&2; \
+> +	$(AWK) -f $(srctree)/$(src)/check-blacklist-hashes.awk $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) >&2; \
+>   	cat $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) > $@
+>   
+>   $(obj)/blacklist_hash_list: $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) FORCE
+> diff --git a/scripts/check-blacklist-hashes.awk b/certs/check-blacklist-hashes.awk
+> similarity index 100%
+> rename from scripts/check-blacklist-hashes.awk
+> rename to certs/check-blacklist-hashes.awk
+
+It looks more appropriate and consistent to me to keep it in scripts/, 
+close to other cert scripts. Is there some precedent to move such script?
