@@ -2,207 +2,202 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47334549908
-	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 18:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C122549BA6
+	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 20:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243310AbiFMP4i (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 13 Jun 2022 11:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
+        id S245082AbiFMShH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 13 Jun 2022 14:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243325AbiFMP4M (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 11:56:12 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CA4193223
-        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 06:46:52 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id q11so7749159oih.10
-        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 06:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=F8034aqgQYOIDnTJYbKnqdxe/P3NxT2RcNrYib0/ruQ=;
-        b=R4MMR5hyemRuM3l2mh4JZIS+Ysd67mGMs9w57QzxuAYNivT2oR2uA0ccLItOXx/Nff
-         HI6/bkCTWcHzuf8uaxK0aZVKIRxAzJmo3pQ4NckjHUXisjQlQKqlTIlGGFMleFZ26TS5
-         XrbPJQzMEXp3LBINHndQ9fwG3XW2+NnK70OZQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=F8034aqgQYOIDnTJYbKnqdxe/P3NxT2RcNrYib0/ruQ=;
-        b=RbIAnUaVUgA731ehRnPSqURUkFrCzTBGUZQ1xMfTd66hYfJ/0fP0KTG9065AqC0/Xq
-         Itdg8u0Ca8gNBDYVhkyNm0qOzZzW4Pu97jfp6bB+pQ544OeYERTd0T/ezCOevhLmV44a
-         tWYeGuJKrqJ/yPIxjZorF+dEPLnAtajx6BhkyVPIzR5ZE84xWekjk/c0lIRxQC0IDLDO
-         EhIk3CmFw+Rto3f4Xc+jYnr6WJBLwLhsAYREpnudoBXHcctJ+HN5AYIzXDbOSZewIRrF
-         S94LKnHTPwONgQ+PKX/baOcKIV5dZR7Mfm/mquil1yD48+tN8kZGGIOJ9WyJncnQmFKK
-         N9hQ==
-X-Gm-Message-State: AOAM533mtmlUmcQbrT3KcKJ4Qto3dRDX/z3jm98xbY+FgcGODpn3rRTn
-        kHdZrq0fJgstu8RFTVi3BS+bYg==
-X-Google-Smtp-Source: ABdhPJxMf2Qm5H8GA35Xq5n+x+nRvAKUAEETko5C92sldqd/ieCBtB6EHAADbYtdN68bTfZpGjw0Ow==
-X-Received: by 2002:aca:b744:0:b0:32f:4c19:cec1 with SMTP id h65-20020acab744000000b0032f4c19cec1mr1696209oif.43.1655128012170;
-        Mon, 13 Jun 2022 06:46:52 -0700 (PDT)
-Received: from [192.168.0.41] ([184.4.90.121])
-        by smtp.gmail.com with ESMTPSA id o20-20020a4ad494000000b0035eb4e5a6b5sm3699171oos.11.2022.06.13.06.46.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jun 2022 06:46:51 -0700 (PDT)
-Message-ID: <b4113083-73de-3ab6-e23f-32c6627d177e@cloudflare.com>
-Date:   Mon, 13 Jun 2022 08:46:49 -0500
+        with ESMTP id S243819AbiFMSgt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 14:36:49 -0400
+Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com [210.131.2.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB78D0283;
+        Mon, 13 Jun 2022 07:56:26 -0700 (PDT)
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id 25DEtxY8031566;
+        Mon, 13 Jun 2022 23:56:00 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 25DEtxY8031566
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1655132161;
+        bh=F7E1ooLwJvZaNNuNVEpt9SOkSdikaNq0G7A5Jym3rdc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=zeCOZCT/q0yOoPvEZy8qLM7OV0T7nV5M5lYdJLOiX4EML5vhpT0svT0LD802O95t3
+         bc5dHdE5CYW7yhR2NemElaneklJO73cqdJsKMwzInQwB6qu/uWHKgxwzQ4rtk1Dcs3
+         AmVkXWF97r3EHuVULO+CvFXZF4NIKaDQsDjJND9xH6FK/TREz5UBnXXLwPoysvQXu5
+         4M10a3Wx+zjZ9WpH8vG0YVGuRZ56V3UyiKhEISS5PU9fwgdZ8Vhf2X4spYTl8CGq9F
+         7Zxnb6MqlttgnI8MRR4ZDAzvXfQjClAcaJuP/PIHlWaL/l5UkpxTHeBtyGPBQN+a4Y
+         k9wlr1AF7Epsg==
+X-Nifty-SrcIP: [209.85.221.53]
+Received: by mail-wr1-f53.google.com with SMTP id h5so7525875wrb.0;
+        Mon, 13 Jun 2022 07:56:00 -0700 (PDT)
+X-Gm-Message-State: AJIora+8gym9FjzINGMO5O32V0dRlpk1HzsyUSvFtYLPoMaQhl21BJ8a
+        32JRd0nNvOwQ+2T5xv1C/wqLJOfL1DPhN8CJb6U=
+X-Google-Smtp-Source: AGRyM1uKAoKm86msS5f400EfHj3dFPo7TEojMgXqKbyoFmcd8UWeSFj46lIvK+Cgb4yr0bBkZxCSwsIpT9yxvEVeuC8=
+X-Received: by 2002:a05:6000:1f09:b0:21a:5f3:316a with SMTP id
+ bv9-20020a0560001f0900b0021a05f3316amr255199wrb.682.1655132158937; Mon, 13
+ Jun 2022 07:55:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
-Content-Language: en-US
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, selinux@vger.kernel.org,
-        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Paul Moore <paul@paul-moore.com>
-References: <20220608150942.776446-1-fred@cloudflare.com>
- <YqJ/0W3wxPThWqgC@sol.localdomain>
-From:   Frederick Lawler <fred@cloudflare.com>
-In-Reply-To: <YqJ/0W3wxPThWqgC@sol.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20220611172233.1494073-1-masahiroy@kernel.org>
+ <20220611172233.1494073-2-masahiroy@kernel.org> <58a20890-557e-f31c-ed59-7e256445a26c@digikod.net>
+In-Reply-To: <58a20890-557e-f31c-ed59-7e256445a26c@digikod.net>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 13 Jun 2022 23:55:21 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQ3p2XiLO7tJSJ9JWnqRomCwjYeQy-Z3j0m904Yn6Av_g@mail.gmail.com>
+Message-ID: <CAK7LNAQ3p2XiLO7tJSJ9JWnqRomCwjYeQy-Z3j0m904Yn6Av_g@mail.gmail.com>
+Subject: Re: [PATCH 2/4] certs: fix and refactor CONFIG_SYSTEM_BLACKLIST_HASH_LIST
+ build
+To:     =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Eric,
+On Mon, Jun 13, 2022 at 9:34 PM Micka=C3=ABl Sala=C3=BCn <mic@digikod.net> =
+wrote:
+>
+>
+>
+> On 11/06/2022 19:22, Masahiro Yamada wrote:
+> > Commit addf466389d9 ("certs: Check that builtin blacklist hashes are
+> > valid") was applied 8 months after the submission.
+> >
+> > In the meantime, the base code had been removed by commit b8c96a6b466c
+> > ("certs: simplify $(srctree)/ handling and remove config_filename
+> > macro").
+> >
+> > Fix the Makefile.
+> >
+> > Create a local copy of $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST). It is
+> > included from certs/blacklist_hashes.c and also works as a timestamp.
+> >
+> > Send error messages from check-blacklist-hashes.awk to stderr instead
+> > of stdout.
+> >
+> > Fixes: addf466389d9 ("certs: Check that builtin blacklist hashes are va=
+lid")
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+>
+> Reviewed-by: Micka=C3=ABl Sala=C3=BCn <mic@linux.microsoft.com>
+>
+> As a side note, it may let an orphan certs/blacklist_hashes_checked file
+> but we can't really do something about that and it's OK.
 
-On 6/9/22 6:18 PM, Eric Biggers wrote:
-> On Wed, Jun 08, 2022 at 10:09:42AM -0500, Frederick Lawler wrote:
->> diff --git a/fs/aio.c b/fs/aio.c
->> index 3c249b938632..5abbe88c3ca7 100644
->> --- a/fs/aio.c
->> +++ b/fs/aio.c
->> @@ -1620,6 +1620,8 @@ static void aio_fsync_work(struct work_struct *work)
->>   static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
->>   		     bool datasync)
->>   {
->> +	int err;
->> +
->>   	if (unlikely(iocb->aio_buf || iocb->aio_offset || iocb->aio_nbytes ||
->>   			iocb->aio_rw_flags))
->>   		return -EINVAL;
->> @@ -1628,8 +1630,11 @@ static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
->>   		return -EINVAL;
->>   
->>   	req->creds = prepare_creds();
->> -	if (!req->creds)
->> -		return -ENOMEM;
->> +	if (IS_ERR(req->creds)) {
->> +		err = PTR_ERR(req->creds);
->> +		req->creds = NULL;
->> +		return err;
->> +	}
-> 
-> This part is a little ugly.  How about doing:
-> 
-> 	creds = prepare_creds();
-> 	if (IS_ERR(creds))
-> 		return PTR_ERR(creds);
-> 	req->creds = creds;
-> 
 
-I can do that, and same for below.
+GNU Make uses timestamps of files for dependency tracking,
+so Kbuild keeps all intermediate files.
 
->> diff --git a/fs/exec.c b/fs/exec.c
->> index 0989fb8472a1..02624783e40e 100644
->> --- a/fs/exec.c
->> +++ b/fs/exec.c
->> @@ -1468,15 +1468,19 @@ EXPORT_SYMBOL(finalize_exec);
->>    */
->>   static int prepare_bprm_creds(struct linux_binprm *bprm)
->>   {
->> +	int err = -ERESTARTNOINTR;
->>   	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
->> -		return -ERESTARTNOINTR;
->> +		return err;
->>   
->>   	bprm->cred = prepare_exec_creds();
->> -	if (likely(bprm->cred))
->> -		return 0;
->> +	if (IS_ERR(bprm->cred)) {
->> +		err = PTR_ERR(bprm->cred);
->> +		bprm->cred = NULL;
->> +		mutex_unlock(&current->signal->cred_guard_mutex);
->> +		return err;
->> +	}
->>   
->> -	mutex_unlock(&current->signal->cred_guard_mutex);
->> -	return -ENOMEM;
->> +	return 0;
->>   }
-> 
-> Similarly:
-> 
-> static int prepare_bprm_creds(struct linux_binprm *bprm)
-> {
-> 	struct cred *cred;
-> 
-> 	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-> 		return -ERESTARTNOINTR;
-> 
-> 	cred = prepare_exec_creds();
-> 	if (IS_ERR(cred)) {
-> 		mutex_unlock(&current->signal->cred_guard_mutex);
-> 		return PTR_ERR(cred);
-> 	}
-> 	bprm->cred = cred;
-> 	return 0;
-> }
-> 
->> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
->> index eec72ca962e2..6cf75aa83b6c 100644
->> --- a/kernel/nsproxy.c
->> +++ b/kernel/nsproxy.c
->> @@ -311,6 +311,7 @@ static void put_nsset(struct nsset *nsset)
->>   
->>   static int prepare_nsset(unsigned flags, struct nsset *nsset)
->>   {
->> +	int err = -ENOMEM;
->>   	struct task_struct *me = current;
->>   
->>   	nsset->nsproxy = create_new_namespaces(0, me, current_user_ns(), me->fs);
->> @@ -324,6 +325,12 @@ static int prepare_nsset(unsigned flags, struct nsset *nsset)
->>   	if (!nsset->cred)
->>   		goto out;
->>   
->> +	if (IS_ERR(nsset->cred)) {
->> +		err = PTR_ERR(nsset->cred);
->> +		nsset->cred = NULL;
->> +		goto out;
->> +	}
-> 
-> Why is the NULL check above being kept?
-> 
+Keeping certs/blacklist_hashes_checked
+is the right thing to do.
 
-In the branch prior:
 
-	if (flags & CLONE_NEWUSER) {
-		nsset->cred = prepare_creds();
-	else
-		nsset->cred = current_cred();
 
-I don't see cases where others are checking for null after 
-current_cred(), therefore I can remove that check.
+> Thanks!
+>
+> > ---
+> >
+> >   certs/.gitignore         |  2 +-
+> >   certs/Makefile           | 20 ++++++++++----------
+> >   certs/blacklist_hashes.c |  2 +-
+> >   3 files changed, 12 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/certs/.gitignore b/certs/.gitignore
+> > index 56637aceaf81..cec5465f31c1 100644
+> > --- a/certs/.gitignore
+> > +++ b/certs/.gitignore
+> > @@ -1,5 +1,5 @@
+> >   # SPDX-License-Identifier: GPL-2.0-only
+> > -/blacklist_hashes_checked
+> > +/blacklist_hash_list
+> >   /extract-cert
+> >   /x509_certificate_list
+> >   /x509_revocation_list
+> > diff --git a/certs/Makefile b/certs/Makefile
+> > index cb1a9da3fc58..a8d628fd5f7b 100644
+> > --- a/certs/Makefile
+> > +++ b/certs/Makefile
+> > @@ -7,22 +7,22 @@ obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) +=3D system_keyr=
+ing.o system_certificates.o c
+> >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist.o common.o
+> >   obj-$(CONFIG_SYSTEM_REVOCATION_LIST) +=3D revocation_certificates.o
+> >   ifneq ($(CONFIG_SYSTEM_BLACKLIST_HASH_LIST),)
+> > -quiet_cmd_check_blacklist_hashes =3D CHECK   $(patsubst "%",%,$(2))
+> > -      cmd_check_blacklist_hashes =3D $(AWK) -f $(srctree)/scripts/chec=
+k-blacklist-hashes.awk $(2); touch $@
+> >
+> > -$(eval $(call config_filename,SYSTEM_BLACKLIST_HASH_LIST))
+> > +$(obj)/blacklist_hashes.o: $(obj)/blacklist_hash_list
+> > +CFLAGS_blacklist_hashes.o :=3D -I $(obj)
+> >
+> > -$(obj)/blacklist_hashes.o: $(obj)/blacklist_hashes_checked
+> > +quiet_cmd_check_and_copy_blacklist_hash_list =3D GEN     $@
+> > +      cmd_check_and_copy_blacklist_hash_list =3D \
+> > +     $(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(CONFIG_=
+SYSTEM_BLACKLIST_HASH_LIST) >&2; \
+> > +     cat $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) > $@
+> >
+> > -CFLAGS_blacklist_hashes.o +=3D -I$(srctree)
+> > -
+> > -targets +=3D blacklist_hashes_checked
+> > -$(obj)/blacklist_hashes_checked: $(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFI=
+X)$(SYSTEM_BLACKLIST_HASH_LIST_FILENAME) scripts/check-blacklist-hashes.awk=
+ FORCE
+> > -     $(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_=
+LIST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
+> > +$(obj)/blacklist_hash_list: $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) FORCE
+> > +     $(call if_changed,check_and_copy_blacklist_hash_list)
+> >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist_hashes.o
+> >   else
+> >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist_nohashes.o
+> >   endif
+> > +targets +=3D blacklist_hash_list
+> >
+> >   quiet_cmd_extract_certs  =3D CERT    $@
+> >         cmd_extract_certs  =3D $(obj)/extract-cert $(extract-cert-in) $=
+@
+> > @@ -33,7 +33,7 @@ $(obj)/system_certificates.o: $(obj)/x509_certificate=
+_list
+> >   $(obj)/x509_certificate_list: $(CONFIG_SYSTEM_TRUSTED_KEYS) $(obj)/ex=
+tract-cert FORCE
+> >       $(call if_changed,extract_certs)
+> >
+> > -targets +=3D x509_certificate_list blacklist_hashes_checked
+> > +targets +=3D x509_certificate_list
+> >
+> >   # If module signing is requested, say by allyesconfig, but a key has =
+not been
+> >   # supplied, then one will need to be generated to make sure the build=
+ does not
+> > diff --git a/certs/blacklist_hashes.c b/certs/blacklist_hashes.c
+> > index d5961aa3d338..86d66fe11348 100644
+> > --- a/certs/blacklist_hashes.c
+> > +++ b/certs/blacklist_hashes.c
+> > @@ -2,6 +2,6 @@
+> >   #include "blacklist.h"
+> >
+> >   const char __initconst *const blacklist_hashes[] =3D {
+> > -#include CONFIG_SYSTEM_BLACKLIST_HASH_LIST
+> > +#include "blacklist_hash_list"
+> >       , NULL
+> >   };
 
-> Also, drivers/crypto/ccp/sev-dev.c needs to be updated.
-> 
 
-Nice catch! I clearly missed addition after the merge window.
 
-> - Eric
-
+--
+Best Regards
+Masahiro Yamada
