@@ -2,128 +2,103 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA2C54A117
-	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 23:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F04454A1DB
+	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 23:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345301AbiFMVPQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 13 Jun 2022 17:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37134 "EHLO
+        id S1346136AbiFMV5F (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 13 Jun 2022 17:57:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351784AbiFMVNI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 17:13:08 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9535396AF
-        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 13:52:41 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id p8so4826532oip.8
-        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 13:52:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Ie2xrfdugqSnUY/lUmZJBYqEw/Jj5HQgDROYZDI7Ljg=;
-        b=q8Sos2zHH2cqeJpqAWGopwq4BFpy5d162ZHvWsGBGzD8dXmnX4TsH4oGd9xtjxFj3k
-         kkiT7ORHTaWO7TVdzrFrUtvSJwyodFHKf3kDLk5zfyB6+Q4t7bACoSZoThK4QulFXt66
-         4eu47sTHknmVkiiSbjTEY+HxauLbTxzPeZ3t8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Ie2xrfdugqSnUY/lUmZJBYqEw/Jj5HQgDROYZDI7Ljg=;
-        b=4xcygz2oHOfI86l0wWrt072X7a5t8lTJc3/BMymeSrpqqyzSfVz4IWcxFdlDSqtaNO
-         xamN+gFuGbYhb+3wsM/kFyaoEiuz4kHfiwkwEEgEFminHxqJK7qnib6uIrpBSapjPUx1
-         7KjVdBGJHExcCFbcnxFDwCV548gK0KaMctRB4RLZFOhJNHprzwywT6pVxBa4aL8D6Uy/
-         sHrEh2WAX9BZrphM+CqnW5Xi6yz/GT8rhQ4JCwhUEO9McLr7AtFp0Nlblgjn5B/pOjA8
-         bHFAGWMX0swljm3wX1BoSVx0S0N6psJnM2YFLF4MTF+zO/Y9wkUSurYCVPjPxxUtj+lA
-         klVw==
-X-Gm-Message-State: AOAM533KyICEjBDwGkTSDLJzt3jSP8C9unU2DsTnD8BrREcA9rpVQr7X
-        JqcU/6mLhWg0ffW9xCNCuGTJ9A==
-X-Google-Smtp-Source: ABdhPJxwqO943xteTGAgFieA/vZp5/Zn/6Qxyj5rF6Le0Sf8rKMQHGa/+OpWxWOapQGjDXa0MQVMLw==
-X-Received: by 2002:a05:6808:2394:b0:326:d5d6:a4ba with SMTP id bp20-20020a056808239400b00326d5d6a4bamr321996oib.67.1655153561069;
-        Mon, 13 Jun 2022 13:52:41 -0700 (PDT)
-Received: from [192.168.0.41] ([184.4.90.121])
-        by smtp.gmail.com with ESMTPSA id dv8-20020a056870d88800b000f5eb6b409bsm4444747oab.45.2022.06.13.13.52.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jun 2022 13:52:40 -0700 (PDT)
-Message-ID: <e1b62234-9b8a-e7c2-2946-5ef9f6f23a08@cloudflare.com>
-Date:   Mon, 13 Jun 2022 15:52:38 -0500
+        with ESMTP id S243282AbiFMV5B (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 17:57:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6A1D20F4E
+        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 14:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655157419;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=D83Efqbr8bQ/N2xRIQQiVrPpXT7X88uP5o56lC1QtDw=;
+        b=XM/aYKyWV+U+UDPXw/JuSUwfGehYm8MHWJo1a8R6AC04qeXXIwho4EcpsF9zTkYxBSHseR
+        FZ/yf7iHtPLOqDYR4Ui5HEdO/2MbDmY19iq2vp5Q7GrVnl/QKgYQSocROyHwwI9f9F2JIF
+        +M6dWFFWKOdO/ZmnounTOxNFN1H2TbU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-307-BtK2wMyjOzqX5WMSwVWj8w-1; Mon, 13 Jun 2022 17:56:56 -0400
+X-MC-Unique: BtK2wMyjOzqX5WMSwVWj8w-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 46AA485A581;
+        Mon, 13 Jun 2022 21:56:56 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 02D3A40D282F;
+        Mon, 13 Jun 2022 21:56:54 +0000 (UTC)
+Subject: [PATCH 0/2] certs: Add FIPS self-test for signature verification
+From:   David Howells <dhowells@redhat.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Simo Sorce <simo@redhat.com>, dhowells@redhat.com, simo@redhat.com,
+        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 13 Jun 2022 22:56:54 +0100
+Message-ID: <165515741424.1554877.9363755381201121213.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/1.4
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
-Content-Language: en-US
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, selinux@vger.kernel.org,
-        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Paul Moore <paul@paul-moore.com>
-References: <20220608150942.776446-1-fred@cloudflare.com>
- <87tu8oze94.fsf@email.froward.int.ebiederm.org>
-From:   Frederick Lawler <fred@cloudflare.com>
-In-Reply-To: <87tu8oze94.fsf@email.froward.int.ebiederm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Eric,
 
-On 6/13/22 12:04 PM, Eric W. Biederman wrote:
-> Frederick Lawler <fred@cloudflare.com> writes:
-> 
->> While experimenting with the security_prepare_creds() LSM hook, we
->> noticed that our EPERM error code was not propagated up the callstack.
->> Instead ENOMEM is always returned.  As a result, some tools may send a
->> confusing error message to the user:
->>
->> $ unshare -rU
->> unshare: unshare failed: Cannot allocate memory
->>
->> A user would think that the system didn't have enough memory, when
->> instead the action was denied.
->>
->> This problem occurs because prepare_creds() and prepare_kernel_cred()
->> return NULL when security_prepare_creds() returns an error code. Later,
->> functions calling prepare_creds() and prepare_kernel_cred() return
->> ENOMEM because they assume that a NULL meant there was no memory
->> allocated.
->>
->> Fix this by propagating an error code from security_prepare_creds() up
->> the callstack.
-> 
-> Why would it make sense for security_prepare_creds to return an error
-> code other than ENOMEM?
->  > That seems a bit of a violation of what that function is supposed to do
->
+Hi Herbert,
 
-The API allows LSM authors to decide what error code is returned from 
-the cred_prepare hook. security_task_alloc() is a similar hook, and has 
-its return code propagated.
+If you could look over this pair of patches?  The second patch adds a simple
+selftest to allow the signature verification code so that it can be FIPS
+compliant.  The first moves load_certificate_list() to the asymmetric key code
+to make this easier and renames it.
 
-I'm proposing we follow security_task_allocs() pattern, and add 
-visibility for failure cases in prepare_creds().
+I generated the test data myself, but I'm open to using some standard test
+data if you know of some; we don't want too much, however, as it's
+incompressible.  Also, it has avoid blacklist checks on the keys it is using,
+lest the UEFI blacklist cause the selftest to fail.
 
-> I have probably missed a very interesting discussion where that was
-> mentioned but I don't see link to the discussion or anything explaining
-> why we want to do that in this change.
-> 
+The patches can be found on the following branch:
 
-AFAIK, this is the start of the discussion.
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-fixes
 
-> Eric
-> 
+David
+---
+David Howells (2):
+      certs: Move load_certificate_list() to be with the asymmetric keys code
+      certs: Add FIPS selftests
+
+
+ certs/Makefile                           |   4 +-
+ certs/blacklist.c                        |   8 +-
+ certs/common.c                           |  57 ------
+ certs/common.h                           |   9 -
+ certs/system_keyring.c                   |   6 +-
+ crypto/asymmetric_keys/Kconfig           |  10 +
+ crypto/asymmetric_keys/Makefile          |   2 +
+ crypto/asymmetric_keys/selftest.c        | 224 +++++++++++++++++++++++
+ crypto/asymmetric_keys/x509_loader.c     |  57 ++++++
+ crypto/asymmetric_keys/x509_parser.h     |   9 +
+ crypto/asymmetric_keys/x509_public_key.c |   8 +-
+ include/keys/asymmetric-type.h           |   3 +
+ 12 files changed, 321 insertions(+), 76 deletions(-)
+ delete mode 100644 certs/common.c
+ delete mode 100644 certs/common.h
+ create mode 100644 crypto/asymmetric_keys/selftest.c
+ create mode 100644 crypto/asymmetric_keys/x509_loader.c
 
 
