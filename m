@@ -2,37 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6AD549EB9
-	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 22:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0AF549EE8
+	for <lists+keyrings@lfdr.de>; Mon, 13 Jun 2022 22:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235308AbiFMUQD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 13 Jun 2022 16:16:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52444 "EHLO
+        id S1351057AbiFMUT4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 13 Jun 2022 16:19:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347992AbiFMUPl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 16:15:41 -0400
-Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [IPv6:2001:1600:3:17::bc09])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC811674C5
-        for <keyrings@vger.kernel.org>; Mon, 13 Jun 2022 11:51:34 -0700 (PDT)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
-        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4LMLJP11JyzMqHNQ;
-        Mon, 13 Jun 2022 20:51:33 +0200 (CEST)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4LMLJN2Ghszlpb36;
-        Mon, 13 Jun 2022 20:51:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
-        s=20191114; t=1655146293;
-        bh=wBMZpf+0xP3n2uuaiisiDHxgL9FxcJ7+UVn4cHmWGUI=;
-        h=Date:To:Cc:References:From:Subject:In-Reply-To:From;
-        b=rpPYeY2uEwL2b/Kq8B7y41Xy48cThtF+LAYSo6v6TUrchKzFc4m+62Z2XxRbXEBKI
-         MAJ7NGRYrTqgeDRv7DHUgFSEWsXzoQrspz6agFZrgDqZRsqAeGOHuFKhsYHfslamfq
-         aY7ojd7wI0i94L6qClmOKsBYT+EAKCtzKVeo9JLM=
-Message-ID: <7560779e-a4a4-9092-7616-2a6bc4310cdd@digikod.net>
-Date:   Mon, 13 Jun 2022 20:51:31 +0200
+        with ESMTP id S1351062AbiFMUTi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Jun 2022 16:19:38 -0400
+Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com [210.131.2.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD796C9666;
+        Mon, 13 Jun 2022 11:58:03 -0700 (PDT)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id 25DIvX4l017197;
+        Tue, 14 Jun 2022 03:57:34 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 25DIvX4l017197
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1655146654;
+        bh=KR8rceanybxTk7+LdtKBIxFqm0gjPvri8QwONiUxCUI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=dZJDPS7U89vRf81QlroMlw0cJnmmeNfyyugJCw+3R9R8hf/YVoww1HeL7EEw8nVde
+         9g4Oat65wBCfTlMGdzit4WvFnk5HrT8fjRtEn4zhxOfjTZO4OcqvSX5fpd68TacVhY
+         O1ZHlxtp4qogMURz6oPvFiZ8YT1d/amodymmQ6+oRqvPCjpOUQ84Ctg2x4lq8PFBeb
+         TrXvI12l0xTQAt3XPWewbHPQSrf0f7+Pvs6RdVkDFMRWlkD7ZuNx4lEWSgt+cSbKfZ
+         VsPuRjIXvKL0Sfvpsnp8I4RPBTJbAykH1hqgDNVWDuKizBGXIqDS3kO3poxsZ7Zcuv
+         ZYh1WPp8V5a4A==
+X-Nifty-SrcIP: [209.85.221.47]
+Received: by mail-wr1-f47.google.com with SMTP id a15so8274777wrh.2;
+        Mon, 13 Jun 2022 11:57:34 -0700 (PDT)
+X-Gm-Message-State: AJIora+3P34vXFP2vK6aPIapItLo0LLEE4r9UZR4ww8LKF0MQEMFKSvr
+        1yJbWeryT5qFMteNvhDvT61Ja5kwQ8BBAxApw7s=
+X-Google-Smtp-Source: AGRyM1t6enc2nLTTCt2kayaK2+aM97UQczq6PTzHmwGjiCjz1JAwCG0KHDLkGg31ALp1VU56Waio4WShRS8Ars9KOWc=
+X-Received: by 2002:a5d:69ca:0:b0:21a:536:61ba with SMTP id
+ s10-20020a5d69ca000000b0021a053661bamr1146995wrw.235.1655146652598; Mon, 13
+ Jun 2022 11:57:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: 
-Content-Language: en-US
-To:     Masahiro Yamada <masahiroy@kernel.org>
+References: <20220611172233.1494073-1-masahiroy@kernel.org>
+ <20220611172233.1494073-2-masahiroy@kernel.org> <58a20890-557e-f31c-ed59-7e256445a26c@digikod.net>
+ <CAK7LNAQ3p2XiLO7tJSJ9JWnqRomCwjYeQy-Z3j0m904Yn6Av_g@mail.gmail.com> <f6fbf06a-6507-a908-33ed-1218713de09b@digikod.net>
+In-Reply-To: <f6fbf06a-6507-a908-33ed-1218713de09b@digikod.net>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 14 Jun 2022 03:56:56 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARKT=em99+BY79yWu-i+1O+uDt19pGpw3P=9=baS1AEYQ@mail.gmail.com>
+Message-ID: <CAK7LNARKT=em99+BY79yWu-i+1O+uDt19pGpw3P=9=baS1AEYQ@mail.gmail.com>
+Subject: Re: [PATCH 2/4] certs: fix and refactor CONFIG_SYSTEM_BLACKLIST_HASH_LIST
+ build
+To:     =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>
 Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
@@ -42,116 +58,86 @@ Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Eric Snowberg <eric.snowberg@oracle.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Tyler Hicks <tyhicks@linux.microsoft.com>
-References: <20220611172233.1494073-1-masahiroy@kernel.org>
- <20220611172233.1494073-3-masahiroy@kernel.org>
- <e7850717-dad6-daef-c96c-2a74248e98f6@digikod.net>
- <CAK7LNASR6Hwj-Q+z6GCGTOz0gXv5XXTV8phqe7duGm+uuo3eDQ@mail.gmail.com>
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-Subject: Re: [PATCH 3/4] certs: move scripts/check-blacklist-hashes.awk to
- certs/
-In-Reply-To: <CAK7LNASR6Hwj-Q+z6GCGTOz0gXv5XXTV8phqe7duGm+uuo3eDQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, Jun 14, 2022 at 3:06 AM Micka=C3=ABl Sala=C3=BCn <mic@digikod.net> =
+wrote:
+>
+>
+> On 13/06/2022 16:55, Masahiro Yamada wrote:
+> > On Mon, Jun 13, 2022 at 9:34 PM Micka=C3=ABl Sala=C3=BCn <mic@digikod.n=
+et> wrote:
+> >>
+> >>
+> >>
+> >> On 11/06/2022 19:22, Masahiro Yamada wrote:
+> >>> Commit addf466389d9 ("certs: Check that builtin blacklist hashes are
+> >>> valid") was applied 8 months after the submission.
+> >>>
+> >>> In the meantime, the base code had been removed by commit b8c96a6b466=
+c
+> >>> ("certs: simplify $(srctree)/ handling and remove config_filename
+> >>> macro").
+> >>>
+> >>> Fix the Makefile.
+> >>>
+> >>> Create a local copy of $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST). It is
+> >>> included from certs/blacklist_hashes.c and also works as a timestamp.
+> >>>
+> >>> Send error messages from check-blacklist-hashes.awk to stderr instead
+> >>> of stdout.
+> >>>
+> >>> Fixes: addf466389d9 ("certs: Check that builtin blacklist hashes are =
+valid")
+> >>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> >>
+> >> Reviewed-by: Micka=C3=ABl Sala=C3=BCn <mic@linux.microsoft.com>
+> >>
+> >> As a side note, it may let an orphan certs/blacklist_hashes_checked fi=
+le
+> >> but we can't really do something about that and it's OK.
+> >
+> >
+> > GNU Make uses timestamps of files for dependency tracking,
+> > so Kbuild keeps all intermediate files.
+> >
+> > Keeping certs/blacklist_hashes_checked
+> > is the right thing to do.
+>
+> blacklist_hashes_checked is the file you replaced with
+> blacklist_hash_list, and is then not used in any Makefile anymore. There
+> is then no timestamp issue. I just wanted to mention that it is normal
+> that a git status will show it on build directories also used as source
+> directories that were already using such feature.
 
-On 13/06/2022 17:28, Masahiro Yamada wrote:
-> On Mon, Jun 13, 2022 at 9:36 PM Mickaël Salaün <mic@digikod.net> wrote:
->>
->>
->>
->> On 11/06/2022 19:22, Masahiro Yamada wrote:
->>> This script is only used in certs/Makefile, so certs/ is a better
->>> home for it.
->>>
->>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->>> ---
->>>
->>>    MAINTAINERS                                   | 1 -
->>>    certs/Makefile                                | 2 +-
->>>    {scripts => certs}/check-blacklist-hashes.awk | 0
->>>    3 files changed, 1 insertion(+), 2 deletions(-)
->>>    rename {scripts => certs}/check-blacklist-hashes.awk (100%)
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 1fc9ead83d2a..7c2a7c304824 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -4627,7 +4627,6 @@ L:      keyrings@vger.kernel.org
->>>    S:  Maintained
->>>    F:  Documentation/admin-guide/module-signing.rst
->>>    F:  certs/
->>> -F:   scripts/check-blacklist-hashes.awk >   F:       scripts/sign-file.c
->>>    F:  tools/certs/
->>>
->>> diff --git a/certs/Makefile b/certs/Makefile
->>> index a8d628fd5f7b..df7aaeafd19c 100644
->>> --- a/certs/Makefile
->>> +++ b/certs/Makefile
->>> @@ -13,7 +13,7 @@ CFLAGS_blacklist_hashes.o := -I $(obj)
->>>
->>>    quiet_cmd_check_and_copy_blacklist_hash_list = GEN     $@
->>>          cmd_check_and_copy_blacklist_hash_list = \
->>> -     $(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) >&2; \
->>> +     $(AWK) -f $(srctree)/$(src)/check-blacklist-hashes.awk $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) >&2; \
->>>        cat $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) > $@
->>>
->>>    $(obj)/blacklist_hash_list: $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) FORCE
->>> diff --git a/scripts/check-blacklist-hashes.awk b/certs/check-blacklist-hashes.awk
->>> similarity index 100%
->>> rename from scripts/check-blacklist-hashes.awk
->>> rename to certs/check-blacklist-hashes.awk
->>
->> It looks more appropriate and consistent to me to keep it in scripts/,
->> close to other cert scripts. Is there some precedent to move such script?
-> 
-> 
-> I always did that.   For example,
-> 
->    f6f57a46435d7253a52a1a07a58183678ad266a0
->    78a20a012ecea857e438b1f9e8091acb290bd0f5
->    28ba53c07638f31b153e3a32672a6124d0ff2a97
->    4484aa800ac588a1fe2175cd53076c21067f44b4
->    340a02535ee785c64c62a9c45706597a0139e972
-> 
-> 
-> Tools can stay in scripts/ if and only if:
-> 
->    - it is used globally during kernel builds
-> 
->    - it is still needed after the kernel builds.
->       "make clean" removes most of the build artifacts
->        but keeps ones under scripts/.
-> 
 
-OK, it would be nice to have these rules in the documentation (didn't 
-find them).
+Ah, sorry, I misunderstood your feedback.
 
-Reviewed-by: Mickaël Salaün <mic@linux.microsoft.com>
+If 'git status' is your concern,
+we can add certs/blacklist_hashes_checked
+to scripts/remove-stale-files.
 
-> 
-> 
-> scripts/insert-sys-cert is apparently unneeded for building the kernel.
-> If the intended use is to manipulate vmlinux later,
-> that is the legitimate reason to stay in scripts/.
-> (but even better place might be tools/)
-> 
-> 
-> certs/signing_key.pem is needed even after kernel builds.
-> So, it should have been kept under scripts/ instead of certs/.
-> 
-> 
-> 
-> 
-> 
-> --
-> Best Regards
-> Masahiro Yamada
+addf466389d9d78f255e8b15ac44ab4791029852
+was merged into mainline just recently, and
+not contained in any release.
+
+But, if the orphan timestamp matters, I will do it.
+It is just a one-liner addition.
+
+
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
