@@ -2,65 +2,161 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A2254C34B
-	for <lists+keyrings@lfdr.de>; Wed, 15 Jun 2022 10:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C1354C635
+	for <lists+keyrings@lfdr.de>; Wed, 15 Jun 2022 12:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344081AbiFOIOT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Jun 2022 04:14:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50268 "EHLO
+        id S1347641AbiFOKbP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Jun 2022 06:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241113AbiFOIOS (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jun 2022 04:14:18 -0400
-Received: from mail.forindustry.pl (mail.forindustry.pl [37.187.225.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C97E328E38
-        for <keyrings@vger.kernel.org>; Wed, 15 Jun 2022 01:14:17 -0700 (PDT)
-Received: by mail.forindustry.pl (Postfix, from userid 1002)
-        id 08660A6878; Wed, 15 Jun 2022 08:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=forindustry.pl;
-        s=mail; t=1655280474;
-        bh=Vw5jk5D1DE7WK/GNf/MxRQNyAyPYcC0rMJLibxKTj58=;
-        h=Date:From:To:Subject:From;
-        b=hwhCwfRHbph/BdkDKZlUiN96LfbISWJ0zKFadXUgD9JQyWDLd99QzZ16nxXMunj2g
-         x9wPv/YHATM2ezpYfEOYXYCWTTG5s4eHKPAqH8Ef23egN0GEhpTZctrDM59K+9E8iO
-         W5E0f4NgHn+RUnsmonaaSeLGVX/yPSFyuvuZz+0ayclgtu7dHJqSHJwcRZqmhjzd+8
-         Bor/mrazBxiw4l2gfsrpLexm6tsGjdD2fpvTgukHj6NC+O3VkKD+F1c7lhECCdbQID
-         RTG10dnoAfb45Y8vyuTRZxwWsDSiNA96ajkpjjsn2VTLovbmdYkC//Jng+ujDoGkbq
-         hgAqkeStX4/Zw==
-Received: by mail.forindustry.pl for <keyrings@vger.kernel.org>; Wed, 15 Jun 2022 08:05:58 GMT
-Message-ID: <20220615064500-0.1.3u.tnts.0.b1t0mjkiyg@forindustry.pl>
-Date:   Wed, 15 Jun 2022 08:05:58 GMT
-From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
-        <arkadiusz.sokolowski@forindustry.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Koszty instalacji fotowoltaicznej
-X-Mailer: mail.forindustry.pl
+        with ESMTP id S1348390AbiFOKbH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jun 2022 06:31:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CF3522C1;
+        Wed, 15 Jun 2022 03:30:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C2386124F;
+        Wed, 15 Jun 2022 10:30:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573BAC34115;
+        Wed, 15 Jun 2022 10:30:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655289040;
+        bh=YafxQjI7ufgKbi/etVjbtyfiMqolpy9uY6amJmgj0/U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LJ8R0L3Z4Jmi1KlcuklT1wWOVBxnXRyLMSAm0VAIF4BW7eGhh8KQQBVeovw7amJcV
+         VTY91dFe4RUXbAByaUghGetxipTYk7lXMAaZNn9r5zpUEiaffGRHXtHTcDT0ewykbm
+         lp7wcl8Nh9YzrKgMga8EuiiA9tNraPvKFrsi2wd/4Zj2n9vUv3m1a02J2pEfWq5oR6
+         OmspHS3307xy9oukdHKKAWkTuxsr5Jh4ZzKMrjUwwfJblDjFQU9dlYJDPWL/5hb1NJ
+         fbm3aZNkiQe4NGdOl/RRiPPNcwSDPXPC8hGOS7T5zPjIa7Ot4UK1c9K5SjhClCe0m4
+         Fm2YpZs6kb3aQ==
+Date:   Wed, 15 Jun 2022 12:30:31 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Frederick Lawler <fred@cloudflare.com>
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-mm@kvack.org,
+        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+        keyrings@vger.kernel.org, selinux@vger.kernel.org,
+        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com,
+        Jeff Moyer <jmoyer@redhat.com>,
+        Paul Moore <paul@paul-moore.com>
+Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
+Message-ID: <20220615103031.qkzae4xr34wysj4b@wittgenstein>
+References: <20220608150942.776446-1-fred@cloudflare.com>
+ <87tu8oze94.fsf@email.froward.int.ebiederm.org>
+ <e1b62234-9b8a-e7c2-2946-5ef9f6f23a08@cloudflare.com>
+ <87y1xzyhub.fsf@email.froward.int.ebiederm.org>
+ <859cb593-9e96-5846-2191-6613677b07c5@cloudflare.com>
+ <87o7yvxl4x.fsf@email.froward.int.ebiederm.org>
+ <9ed91f15-420c-3db6-8b3b-85438b02bf97@cloudflare.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9ed91f15-420c-3db6-8b3b-85438b02bf97@cloudflare.com>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Tue, Jun 14, 2022 at 01:59:08PM -0500, Frederick Lawler wrote:
+> On 6/14/22 11:30 AM, Eric W. Biederman wrote:
+> > Frederick Lawler <fred@cloudflare.com> writes:
+> > 
+> > > On 6/13/22 11:44 PM, Eric W. Biederman wrote:
+> > > > Frederick Lawler <fred@cloudflare.com> writes:
+> > > > 
+> > > > > Hi Eric,
+> > > > > 
+> > > > > On 6/13/22 12:04 PM, Eric W. Biederman wrote:
+> > > > > > Frederick Lawler <fred@cloudflare.com> writes:
+> > > > > > 
+> > > > > > > While experimenting with the security_prepare_creds() LSM hook, we
+> > > > > > > noticed that our EPERM error code was not propagated up the callstack.
+> > > > > > > Instead ENOMEM is always returned.  As a result, some tools may send a
+> > > > > > > confusing error message to the user:
+> > > > > > > 
+> > > > > > > $ unshare -rU
+> > > > > > > unshare: unshare failed: Cannot allocate memory
+> > > > > > > 
+> > > > > > > A user would think that the system didn't have enough memory, when
+> > > > > > > instead the action was denied.
+> > > > > > > 
+> > > > > > > This problem occurs because prepare_creds() and prepare_kernel_cred()
+> > > > > > > return NULL when security_prepare_creds() returns an error code. Later,
+> > > > > > > functions calling prepare_creds() and prepare_kernel_cred() return
+> > > > > > > ENOMEM because they assume that a NULL meant there was no memory
+> > > > > > > allocated.
+> > > > > > > 
+> > > > > > > Fix this by propagating an error code from security_prepare_creds() up
+> > > > > > > the callstack.
+> > > > > > Why would it make sense for security_prepare_creds to return an error
+> > > > > > code other than ENOMEM?
+> > > > > >    > That seems a bit of a violation of what that function is supposed to do
+> > > > > > 
+> > > > > 
+> > > > > The API allows LSM authors to decide what error code is returned from the
+> > > > > cred_prepare hook. security_task_alloc() is a similar hook, and has its return
+> > > > > code propagated.
+> > > > It is not an api.  It is an implementation detail of the linux kernel.
+> > > > It is a set of convenient functions that do a job.
+> > > > The general rule is we don't support cases without an in-tree user.  I
+> > > > don't see an in-tree user.
+> > > > 
+> > > > > I'm proposing we follow security_task_allocs() pattern, and add visibility for
+> > > > > failure cases in prepare_creds().
+> > > > I am asking why we would want to.  Especially as it is not an API, and I
+> > > > don't see any good reason for anything but an -ENOMEM failure to be
+> > > > supported.
+> > > > 
+> > > We're writing a LSM BPF policy, and not a new LSM. Our policy aims to solve
+> > > unprivileged unshare, similar to Debian's patch [1]. We're in a position such
+> > > that we can't use that patch because we can't block _all_ of our applications
+> > > from performing an unshare. We prefer a granular approach. LSM BPF seems like a
+> > > good choice.
+> > 
+> > I am quite puzzled why doesn't /proc/sys/user/max_user_namespaces work
+> > for you?
+> > 
+> 
+> We have the following requirements:
+> 
+> 1. Allow list criteria
+> 2. root user must be able to create namespaces whenever
+> 3. Everything else not in 1 & 2 must be denied
+> 
+> We use per task attributes to determine whether or not we allow/deny the
+> current call to unshare().
+> 
+> /proc/sys/user/max_user_namespaces limits are a bit broad for this level of
+> detail.
+> 
+> > > Because LSM BPF exposes these hooks, we should probably treat them as an
+> > > API. From that perspective, userspace expects unshare to return a EPERM
+> > > when the call is denied permissions.
+> > 
+> > The BPF code gets to be treated as a out of tree kernel module.
+> > 
+> > > > Without an in-tree user that cares it is probably better to go the
+> > > > opposite direction and remove the possibility of return anything but
+> > > > memory allocation failure.  That will make it clearer to implementors
+> > > > that a general error code is not supported and this is not a location
+> > > > to implement policy, this is only a hook to allocate state for the LSM.
+> > > > 
+> > > 
+> > > That's a good point, and it's possible we're using the wrong hook for the
+> > > policy. Do you know of other hooks we can look into?
 
-stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
- obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99.
-
-Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
-acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
-ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
-
-Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
-=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
-=2E
-
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
-
-Pozdrawiam,
-Arkadiusz Soko=C5=82owski
+Fwiw, from this commit it wasn't very clear what you wanted to achieve
+with this. It might be worth considering adding a new security hook for
+this. Within msft it recently came up SELinux might have an interest in
+something like this as well.
