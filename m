@@ -2,56 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14E454D12D
-	for <lists+keyrings@lfdr.de>; Wed, 15 Jun 2022 20:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE8254D148
+	for <lists+keyrings@lfdr.de>; Wed, 15 Jun 2022 21:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350035AbiFOSvF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Jun 2022 14:51:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58414 "EHLO
+        id S1343598AbiFOTB3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Jun 2022 15:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345773AbiFOSvF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jun 2022 14:51:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B9E4B41B;
-        Wed, 15 Jun 2022 11:51:04 -0700 (PDT)
+        with ESMTP id S239945AbiFOTB2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jun 2022 15:01:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E2A5003C;
+        Wed, 15 Jun 2022 12:01:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D750461C18;
-        Wed, 15 Jun 2022 18:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80696C34115;
-        Wed, 15 Jun 2022 18:50:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 719D4B81D81;
+        Wed, 15 Jun 2022 19:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD46C34115;
+        Wed, 15 Jun 2022 19:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655319063;
-        bh=GnZfgvOrH9mrrcvvYQgPANHs5nDHlMsLFHFAYJcrIC0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=memS1VJJiclI8dsM+WxYbHq2xPW3MTby9Gf6CQVDi2okhI52Ly9A3MqBXoNIVsw3v
-         wSpwd6C41jKMUfFEq9ROkjNjB9xpHk5ywPJJyLcLV1fl+7FN/KN0rye6Vg99E4Hby6
-         8kIi89VLR0uhac/XUlK9Gqduk+Lx32gXt/5L5cc99VHUIo35iM3B51LnZKxrUuGMI0
-         X55JfneWAIWuADLBl7QjAXgSUl0uBxCsGuFKmbH2wsSpseFsjTyKMafmLKmSzLCM4q
-         2Ecdv4eFnZiWCoZ86I0/1TvcA8Rw5WgPQ7YShJxAlbVKUnWE/qY+rsyYsTOD2H0iGk
-         pN1ujoG9RyyPw==
-Date:   Wed, 15 Jun 2022 21:48:41 +0300
+        s=k20201202; t=1655319685;
+        bh=Qy3C78QNyFeJXZqCKviEM5fZjl3ArDFvWJxIFv9WMmc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=p93f1K/23X5iAmwtne1iGvfX+uBZTya3MQCvxjhSUx4Mkv9s1RO0h23hv8ky52TMP
+         nYw8uPPZ9m1E7C8P9Jju3eUcALOL9OBbmVR7LzdFk+mYb062/vTiSoGLPp87tP6MH0
+         7/IC70HJX5GNLc/+TZzBhSjEogUyFdlrSTvfFlRM1122VgNeftbEc152Buo86BrvBM
+         4W4R+rvD41wjQf25Smm8MQTP+7N1GuoT6ShttHTq4ciMvnsC2/COijRUs/NqN37ocN
+         TBSftnGvXsR2+Y8liZHcVAdpH4LxSf9Rb1jFDERxGigJq1ZYcqcIrxtEf6zQy4XDuo
+         OUMofXLpgEevA==
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Tyler Hicks <tyhicks@linux.microsoft.com>
-Subject: Re: [PATCH 2/4] certs: fix and refactor
- CONFIG_SYSTEM_BLACKLIST_HASH_LIST build
-Message-ID: <YqopiZgC8vNSKYPt@iki.fi>
-References: <20220611172233.1494073-1-masahiroy@kernel.org>
- <20220611172233.1494073-2-masahiroy@kernel.org>
- <58a20890-557e-f31c-ed59-7e256445a26c@digikod.net>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: [GIT PULL] tpmdd updates for v5.19-rc3
+Date:   Wed, 15 Jun 2022 21:59:12 +0300
+Message-Id: <20220615185912.40987-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <58a20890-557e-f31c-ed59-7e256445a26c@digikod.net>
 X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,104 +57,31 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jun 13, 2022 at 02:34:36PM +0200, Mickaël Salaün wrote:
-> 
-> 
-> On 11/06/2022 19:22, Masahiro Yamada wrote:
-> > Commit addf466389d9 ("certs: Check that builtin blacklist hashes are
-> > valid") was applied 8 months after the submission.
-> > 
-> > In the meantime, the base code had been removed by commit b8c96a6b466c
-> > ("certs: simplify $(srctree)/ handling and remove config_filename
-> > macro").
-> > 
-> > Fix the Makefile.
-> > 
-> > Create a local copy of $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST). It is
-> > included from certs/blacklist_hashes.c and also works as a timestamp.
-> > 
-> > Send error messages from check-blacklist-hashes.awk to stderr instead
-> > of stdout.
-> > 
-> > Fixes: addf466389d9 ("certs: Check that builtin blacklist hashes are valid")
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> 
-> Reviewed-by: Mickaël Salaün <mic@linux.microsoft.com>
-> 
-> As a side note, it may let an orphan certs/blacklist_hashes_checked file but
-> we can't really do something about that and it's OK.
-> 
-> Thanks!
-> 
-> > ---
-> > 
-> >   certs/.gitignore         |  2 +-
-> >   certs/Makefile           | 20 ++++++++++----------
-> >   certs/blacklist_hashes.c |  2 +-
-> >   3 files changed, 12 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/certs/.gitignore b/certs/.gitignore
-> > index 56637aceaf81..cec5465f31c1 100644
-> > --- a/certs/.gitignore
-> > +++ b/certs/.gitignore
-> > @@ -1,5 +1,5 @@
-> >   # SPDX-License-Identifier: GPL-2.0-only
-> > -/blacklist_hashes_checked
-> > +/blacklist_hash_list
-> >   /extract-cert
-> >   /x509_certificate_list
-> >   /x509_revocation_list
-> > diff --git a/certs/Makefile b/certs/Makefile
-> > index cb1a9da3fc58..a8d628fd5f7b 100644
-> > --- a/certs/Makefile
-> > +++ b/certs/Makefile
-> > @@ -7,22 +7,22 @@ obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += system_keyring.o system_certificates.o c
-> >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist.o common.o
-> >   obj-$(CONFIG_SYSTEM_REVOCATION_LIST) += revocation_certificates.o
-> >   ifneq ($(CONFIG_SYSTEM_BLACKLIST_HASH_LIST),)
-> > -quiet_cmd_check_blacklist_hashes = CHECK   $(patsubst "%",%,$(2))
-> > -      cmd_check_blacklist_hashes = $(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(2); touch $@
-> > -$(eval $(call config_filename,SYSTEM_BLACKLIST_HASH_LIST))
-> > +$(obj)/blacklist_hashes.o: $(obj)/blacklist_hash_list
-> > +CFLAGS_blacklist_hashes.o := -I $(obj)
-> > -$(obj)/blacklist_hashes.o: $(obj)/blacklist_hashes_checked
-> > +quiet_cmd_check_and_copy_blacklist_hash_list = GEN     $@
-> > +      cmd_check_and_copy_blacklist_hash_list = \
-> > +	$(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) >&2; \
-> > +	cat $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) > $@
-> > -CFLAGS_blacklist_hashes.o += -I$(srctree)
-> > -
-> > -targets += blacklist_hashes_checked
-> > -$(obj)/blacklist_hashes_checked: $(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(SYSTEM_BLACKLIST_HASH_LIST_FILENAME) scripts/check-blacklist-hashes.awk FORCE
-> > -	$(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_LIST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
-> > +$(obj)/blacklist_hash_list: $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) FORCE
-> > +	$(call if_changed,check_and_copy_blacklist_hash_list)
-> >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_hashes.o
-> >   else
-> >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist_nohashes.o
-> >   endif
-> > +targets += blacklist_hash_list
-> >   quiet_cmd_extract_certs  = CERT    $@
-> >         cmd_extract_certs  = $(obj)/extract-cert $(extract-cert-in) $@
-> > @@ -33,7 +33,7 @@ $(obj)/system_certificates.o: $(obj)/x509_certificate_list
-> >   $(obj)/x509_certificate_list: $(CONFIG_SYSTEM_TRUSTED_KEYS) $(obj)/extract-cert FORCE
-> >   	$(call if_changed,extract_certs)
-> > -targets += x509_certificate_list blacklist_hashes_checked
-> > +targets += x509_certificate_list
-> >   # If module signing is requested, say by allyesconfig, but a key has not been
-> >   # supplied, then one will need to be generated to make sure the build does not
-> > diff --git a/certs/blacklist_hashes.c b/certs/blacklist_hashes.c
-> > index d5961aa3d338..86d66fe11348 100644
-> > --- a/certs/blacklist_hashes.c
-> > +++ b/certs/blacklist_hashes.c
-> > @@ -2,6 +2,6 @@
-> >   #include "blacklist.h"
-> >   const char __initconst *const blacklist_hashes[] = {
-> > -#include CONFIG_SYSTEM_BLACKLIST_HASH_LIST
-> > +#include "blacklist_hash_list"
-> >   	, NULL
-> >   };
+The following changes since commit 979086f5e0066b4eff66e1eee123da228489985c:
 
-I'll make a PR for 1/4 and 2/4 so that they get into 5.19.
+  Merge tag 'fs.fixes.v5.19-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux (2022-06-15 09:04:55 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v5.19-rc3
+
+for you to fetch changes up to 27b5b22d252c6d71a2a37a4bdf18d0be6d25ee5a:
+
+  certs: fix and refactor CONFIG_SYSTEM_BLACKLIST_HASH_LIST build (2022-06-15 21:52:32 +0300)
+
+----------------------------------------------------------------
+Hi,
+
+Two fixes for rc1 PR.
 
 BR, Jarkko
+
+----------------------------------------------------------------
+Masahiro Yamada (2):
+      certs/blacklist_hashes.c: fix const confusion in certs blacklist
+      certs: fix and refactor CONFIG_SYSTEM_BLACKLIST_HASH_LIST build
+
+ certs/.gitignore         |  2 +-
+ certs/Makefile           | 20 ++++++++++----------
+ certs/blacklist_hashes.c |  4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
