@@ -2,64 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F99054D1C2
-	for <lists+keyrings@lfdr.de>; Wed, 15 Jun 2022 21:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 824A754D49E
+	for <lists+keyrings@lfdr.de>; Thu, 16 Jun 2022 00:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233117AbiFOTlJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Jun 2022 15:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42598 "EHLO
+        id S1349932AbiFOWe3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Jun 2022 18:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232127AbiFOTlI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jun 2022 15:41:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BE22E0B5;
-        Wed, 15 Jun 2022 12:41:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S1350128AbiFOWe1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Jun 2022 18:34:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9D49D55374
+        for <keyrings@vger.kernel.org>; Wed, 15 Jun 2022 15:34:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655332464;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=3n2HbXmLj/4iA1gztBdMVQdKSzJcFH9E6p9we0kk/8k=;
+        b=BOhXgaBq3d8f0OidQN65MEvCNb6sGQciZsdDtivvWbGsUTeAmQ0FLMVvUvH6CClr28A5XC
+        mvCy6tuq8A5MQUU93jNARWjpxGTuX3vU8oTrpYZcdHWybobgM41inzXQWehOzSADrgjieF
+        AsocoRRQnGB9rM3vQOJGbu4aegt/OZE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-160-6dykG-VpPDu_2Dzp8y3jmA-1; Wed, 15 Jun 2022 18:34:20 -0400
+X-MC-Unique: 6dykG-VpPDu_2Dzp8y3jmA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D93E60EB1;
-        Wed, 15 Jun 2022 19:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 016E2C34115;
-        Wed, 15 Jun 2022 19:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655322063;
-        bh=RzP3qZTZJINHqTKFXOClmmCHrILPHRVdARLSckRDLu4=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=sPr3tIrT00EMIjz/ONdLIRYJ+CB3UQOmsXySLdFOSmMVE2PIqmKgbXhYyH32JQZOj
-         f6o4nwcpo1SxAbGU4TcsxsaJ6rLXGSSmag8Q+kJlSv2x/nHwW+EXm33zaZiLMoVba/
-         XyUP4fWev//LsLGc6CqxUc/QPEU6VyFffwW010XBEEVSHnQG74LfDlu6/TyNaBRe/d
-         wL6xNNbxbp38Yf2kJrfPjTVJVyseia0LPYGREuqKzE/gtOt0X+Q0ErfsJ8F+n6qSfn
-         ZpyGr0xWlE/fK5Fwg/q4GZf76t52zYvIz156FNbzmt1ErWyOQlrDVbqYz25AxHW0Hq
-         Vzs4DM4Pq/Urg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E0890E73856;
-        Wed, 15 Jun 2022 19:41:02 +0000 (UTC)
-Subject: Re: [GIT PULL] tpmdd updates for v5.19-rc3
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20220615185912.40987-1-jarkko@kernel.org>
-References: <20220615185912.40987-1-jarkko@kernel.org>
-X-PR-Tracked-List-Id: <linux-security-module.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20220615185912.40987-1-jarkko@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v5.19-rc3
-X-PR-Tracked-Commit-Id: 27b5b22d252c6d71a2a37a4bdf18d0be6d25ee5a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: afe9eb14ea1cbac5d91ca04eb64810d2d9fa22b0
-Message-Id: <165532206290.28565.8327730742132157264.pr-tracker-bot@kernel.org>
-Date:   Wed, 15 Jun 2022 19:41:02 +0000
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F5A53802B94;
+        Wed, 15 Jun 2022 22:34:20 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1A67540C141F;
+        Wed, 15 Jun 2022 22:34:18 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <YqleGzRD4ax4msjL@gondor.apana.org.au>
+References: <YqleGzRD4ax4msjL@gondor.apana.org.au> <165515741424.1554877.9363755381201121213.stgit@warthog.procyon.org.uk>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     dhowells@redhat.com, Simo Sorce <simo@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] certs: Add FIPS self-test for signature verification
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2689860.1655332458.1@warthog.procyon.org.uk>
+Date:   Wed, 15 Jun 2022 23:34:18 +0100
+Message-ID: <2689861.1655332458@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,15 +64,12 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The pull request you sent on Wed, 15 Jun 2022 21:59:12 +0300:
+Herbert Xu <herbert@gondor.apana.org.au> wrote:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v5.19-rc3
+> It looks OK to me.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/afe9eb14ea1cbac5d91ca04eb64810d2d9fa22b0
+Can I put that down as a Reviewed-by?
 
-Thank you!
+Thanks,
+David
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
