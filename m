@@ -2,119 +2,204 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D096854FBDF
-	for <lists+keyrings@lfdr.de>; Fri, 17 Jun 2022 19:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A415855073C
+	for <lists+keyrings@lfdr.de>; Sun, 19 Jun 2022 00:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382738AbiFQRHG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 17 Jun 2022 13:07:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46022 "EHLO
+        id S231599AbiFRWNl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 18 Jun 2022 18:13:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382891AbiFQRHE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Jun 2022 13:07:04 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DFA24BFF;
-        Fri, 17 Jun 2022 10:07:03 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id u12so9907088eja.8;
-        Fri, 17 Jun 2022 10:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Kzy5eGCbr6f18ypDB7MvrF9DPS0nn/SHTUhj0XAiEdI=;
-        b=LSa+fMtdQerlOGeqtUY3stk0s2SQSieL6Szi8MmoJdPq13rupg8ol8Cba7pLgldSxp
-         tae4DBuz9BsuR9agzR0JIewsq+x9udV/JlzCZf80eZgJCj8uViDYNdrtwoR1xYkyBznO
-         p5qsXER5s0XMtBv52ZlD4gzmv7DXDifUBswmiPYNKSadIVZNbsyxhRUBU6VTJlk8fht5
-         NrPCL4Gobfx6lm7rlQTbK0U93jA4XqfEn31N+ueP05Ajm6NvFD5n8mW23bvdGy3mm6hl
-         BnaTcMZUusUa7osm21PAamjUY4EKj+YGbkGe/rMxVD7U1V6yPZDayx3fpbbNVkcMezf9
-         1l+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Kzy5eGCbr6f18ypDB7MvrF9DPS0nn/SHTUhj0XAiEdI=;
-        b=UYsD2CqUvTzYW8HCn0LBAlCX0qlTXOloniy3aGtS2o7tqrbRsJYmjo6J9CzrHQqMgZ
-         66wdAZq3I2KjOPTN12RWKETlASAdn6AbjAiiWbnBxjBMYX3dcJyz3yuv+O/MFnAOBNDO
-         6kAZ0lQJ/cfq9JmB9gThrMewh0YSvd9L0vajof3DxYVujqxkV5+yeNdtuSH5sriZIF+A
-         T8yYbYEgt9wrpZgqjrzpo+20Mk7CY5oNuYUK2ac8n33lPZOEo+guflDeUQ9pQWB+8nL0
-         9KwmPD7nyHguLX6Ly3iRs3fynAvAtyR25mbkZjbsTHWDtPHD8cLNiC1m9LVdCDOR90+q
-         8gfg==
-X-Gm-Message-State: AJIora9Es2bF8UrMnv0+dP/x1jm+yDsrXqnWoB/rSUPqc8YfB95tvSWK
-        V6geVPZBR5weam4/jp2B3tBGtxAOvz9U2rPMFvY=
-X-Google-Smtp-Source: AGRyM1sr0V5BczPcq0Mm9GUKXXFAWmbSI5HBGzSLNTHSR9s3tMADbaw5NkB97OiUiay/4nTE4h0NG4rIRVOKD6pNBdw=
-X-Received: by 2002:a17:906:449:b0:711:c975:cfb8 with SMTP id
- e9-20020a170906044900b00711c975cfb8mr10460835eja.58.1655485621509; Fri, 17
- Jun 2022 10:07:01 -0700 (PDT)
+        with ESMTP id S231506AbiFRWNd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 18 Jun 2022 18:13:33 -0400
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com [210.131.2.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA083265E;
+        Sat, 18 Jun 2022 15:13:30 -0700 (PDT)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id 25IMD8iG007387;
+        Sun, 19 Jun 2022 07:13:09 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 25IMD8iG007387
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1655590389;
+        bh=7jwbvyrhQLV+4aegmk22DRd9SYJoD6/Ana8x4b/1QLk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=HMFT5yD4HPzN0/ok5qxydwtXHQ/zhALcx64F9y1ip3MY6bbwMhcN7cQZ7CNF9HYQp
+         od4k1EOCwEwtaYVr8vDt/jOKNXuujz4L2xAIz7rI8Cu+fHoC/86KZCa0YgO3F4iHWu
+         gt88uw2M1ibhIDrgPZlwHHNrx7BG6/iLMDcfhB13MjRX+t7Nq+WyHFL4TpnoYhvqKN
+         zLanyNywu11ddt+7IAuOb3DlNOi1E35e58XzTFcjzGek1DxCWghlBRruFIMtBS5rsm
+         b7139uVNXxh9zUjilp1WZAbXrwyCx3lb10aGD8HYcQMlp+MNQAExP0lmIpWhtSN7up
+         yy3tnTkOPmK5A==
+X-Nifty-SrcIP: [209.85.221.50]
+Received: by mail-wr1-f50.google.com with SMTP id g4so9839701wrh.11;
+        Sat, 18 Jun 2022 15:13:09 -0700 (PDT)
+X-Gm-Message-State: AJIora/S/9tmwtuJxPrjPXuWdl+K0GETTbwicPs3OWPAuFgvA6818z91
+        qa0mQ57gX3XHgFZVgVtHKWPSnoxVAI0lB/gQReQ=
+X-Google-Smtp-Source: AGRyM1sML4k/551cdhdkCWZlW1l3J3kC8wOqKO/VYoNqgy7eljBeD2d9mRgOZD6mP5Qa9NRBtiZhiYtiGyCKEx6860c=
+X-Received: by 2002:a5d:5e92:0:b0:21a:278c:b901 with SMTP id
+ ck18-20020a5d5e92000000b0021a278cb901mr15492125wrb.461.1655590387823; Sat, 18
+ Jun 2022 15:13:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220614130621.1976089-1-roberto.sassu@huawei.com>
- <20220614130621.1976089-3-roberto.sassu@huawei.com> <20220617034617.db23phfavuhqx4vi@MacBook-Pro-3.local>
- <b146ee9242cb4c128e56bc9cb3b20b26@huawei.com>
-In-Reply-To: <b146ee9242cb4c128e56bc9cb3b20b26@huawei.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Fri, 17 Jun 2022 10:06:49 -0700
-Message-ID: <CAADnVQL+hBsWaKJAVYT0OX4SZtVDO+rRZ-0OLq+3SaPQsGqLBg@mail.gmail.com>
-Subject: Re: [RESEND][PATCH v4 2/4] bpf: Add bpf_request_key_by_id() helper
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "andrii@kernel.org" <andrii@kernel.org>,
-        "kpsingh@kernel.org" <kpsingh@kernel.org>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "songliubraving@fb.com" <songliubraving@fb.com>,
-        "kafai@fb.com" <kafai@fb.com>, "yhs@fb.com" <yhs@fb.com>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "dhowells@redhat.com" <dhowells@redhat.com>
+References: <20220611172233.1494073-1-masahiroy@kernel.org>
+ <20220611172233.1494073-2-masahiroy@kernel.org> <58a20890-557e-f31c-ed59-7e256445a26c@digikod.net>
+ <YqopiZgC8vNSKYPt@iki.fi>
+In-Reply-To: <YqopiZgC8vNSKYPt@iki.fi>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 19 Jun 2022 07:12:31 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARSYSupt1nL_JS2prLunRpOhMRG_pPhHfto7+K+QDVp2Q@mail.gmail.com>
+Message-ID: <CAK7LNARSYSupt1nL_JS2prLunRpOhMRG_pPhHfto7+K+QDVp2Q@mail.gmail.com>
+Subject: Re: [PATCH 2/4] certs: fix and refactor CONFIG_SYSTEM_BLACKLIST_HASH_LIST
+ build
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jun 17, 2022 at 2:11 AM Roberto Sassu <roberto.sassu@huawei.com> wrote:
+On Thu, Jun 16, 2022 at 3:51 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
 >
-> > From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-> > Sent: Friday, June 17, 2022 5:46 AM
+> On Mon, Jun 13, 2022 at 02:34:36PM +0200, Micka=C3=ABl Sala=C3=BCn wrote:
+> >
+> >
+> > On 11/06/2022 19:22, Masahiro Yamada wrote:
+> > > Commit addf466389d9 ("certs: Check that builtin blacklist hashes are
+> > > valid") was applied 8 months after the submission.
+> > >
+> > > In the meantime, the base code had been removed by commit b8c96a6b466=
+c
+> > > ("certs: simplify $(srctree)/ handling and remove config_filename
+> > > macro").
+> > >
+> > > Fix the Makefile.
+> > >
+> > > Create a local copy of $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST). It is
+> > > included from certs/blacklist_hashes.c and also works as a timestamp.
+> > >
+> > > Send error messages from check-blacklist-hashes.awk to stderr instead
+> > > of stdout.
+> > >
+> > > Fixes: addf466389d9 ("certs: Check that builtin blacklist hashes are =
+valid")
+> > > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> >
+> > Reviewed-by: Micka=C3=ABl Sala=C3=BCn <mic@linux.microsoft.com>
+> >
+> > As a side note, it may let an orphan certs/blacklist_hashes_checked fil=
+e but
+> > we can't really do something about that and it's OK.
+> >
+> > Thanks!
+> >
+> > > ---
+> > >
+> > >   certs/.gitignore         |  2 +-
+> > >   certs/Makefile           | 20 ++++++++++----------
+> > >   certs/blacklist_hashes.c |  2 +-
+> > >   3 files changed, 12 insertions(+), 12 deletions(-)
+> > >
+> > > diff --git a/certs/.gitignore b/certs/.gitignore
+> > > index 56637aceaf81..cec5465f31c1 100644
+> > > --- a/certs/.gitignore
+> > > +++ b/certs/.gitignore
+> > > @@ -1,5 +1,5 @@
+> > >   # SPDX-License-Identifier: GPL-2.0-only
+> > > -/blacklist_hashes_checked
+> > > +/blacklist_hash_list
+> > >   /extract-cert
+> > >   /x509_certificate_list
+> > >   /x509_revocation_list
+> > > diff --git a/certs/Makefile b/certs/Makefile
+> > > index cb1a9da3fc58..a8d628fd5f7b 100644
+> > > --- a/certs/Makefile
+> > > +++ b/certs/Makefile
+> > > @@ -7,22 +7,22 @@ obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) +=3D system_ke=
+yring.o system_certificates.o c
+> > >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist.o common.o
+> > >   obj-$(CONFIG_SYSTEM_REVOCATION_LIST) +=3D revocation_certificates.o
+> > >   ifneq ($(CONFIG_SYSTEM_BLACKLIST_HASH_LIST),)
+> > > -quiet_cmd_check_blacklist_hashes =3D CHECK   $(patsubst "%",%,$(2))
+> > > -      cmd_check_blacklist_hashes =3D $(AWK) -f $(srctree)/scripts/ch=
+eck-blacklist-hashes.awk $(2); touch $@
+> > > -$(eval $(call config_filename,SYSTEM_BLACKLIST_HASH_LIST))
+> > > +$(obj)/blacklist_hashes.o: $(obj)/blacklist_hash_list
+> > > +CFLAGS_blacklist_hashes.o :=3D -I $(obj)
+> > > -$(obj)/blacklist_hashes.o: $(obj)/blacklist_hashes_checked
+> > > +quiet_cmd_check_and_copy_blacklist_hash_list =3D GEN     $@
+> > > +      cmd_check_and_copy_blacklist_hash_list =3D \
+> > > +   $(AWK) -f $(srctree)/scripts/check-blacklist-hashes.awk $(CONFIG_=
+SYSTEM_BLACKLIST_HASH_LIST) >&2; \
+> > > +   cat $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) > $@
+> > > -CFLAGS_blacklist_hashes.o +=3D -I$(srctree)
+> > > -
+> > > -targets +=3D blacklist_hashes_checked
+> > > -$(obj)/blacklist_hashes_checked: $(SYSTEM_BLACKLIST_HASH_LIST_SRCPRE=
+FIX)$(SYSTEM_BLACKLIST_HASH_LIST_FILENAME) scripts/check-blacklist-hashes.a=
+wk FORCE
+> > > -   $(call if_changed,check_blacklist_hashes,$(SYSTEM_BLACKLIST_HASH_=
+LIST_SRCPREFIX)$(CONFIG_SYSTEM_BLACKLIST_HASH_LIST))
+> > > +$(obj)/blacklist_hash_list: $(CONFIG_SYSTEM_BLACKLIST_HASH_LIST) FOR=
+CE
+> > > +   $(call if_changed,check_and_copy_blacklist_hash_list)
+> > >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist_hashes.o
+> > >   else
+> > >   obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) +=3D blacklist_nohashes.o
+> > >   endif
+> > > +targets +=3D blacklist_hash_list
+> > >   quiet_cmd_extract_certs  =3D CERT    $@
+> > >         cmd_extract_certs  =3D $(obj)/extract-cert $(extract-cert-in)=
+ $@
+> > > @@ -33,7 +33,7 @@ $(obj)/system_certificates.o: $(obj)/x509_certifica=
+te_list
+> > >   $(obj)/x509_certificate_list: $(CONFIG_SYSTEM_TRUSTED_KEYS) $(obj)/=
+extract-cert FORCE
+> > >     $(call if_changed,extract_certs)
+> > > -targets +=3D x509_certificate_list blacklist_hashes_checked
+> > > +targets +=3D x509_certificate_list
+> > >   # If module signing is requested, say by allyesconfig, but a key ha=
+s not been
+> > >   # supplied, then one will need to be generated to make sure the bui=
+ld does not
+> > > diff --git a/certs/blacklist_hashes.c b/certs/blacklist_hashes.c
+> > > index d5961aa3d338..86d66fe11348 100644
+> > > --- a/certs/blacklist_hashes.c
+> > > +++ b/certs/blacklist_hashes.c
+> > > @@ -2,6 +2,6 @@
+> > >   #include "blacklist.h"
+> > >   const char __initconst *const blacklist_hashes[] =3D {
+> > > -#include CONFIG_SYSTEM_BLACKLIST_HASH_LIST
+> > > +#include "blacklist_hash_list"
+> > >     , NULL
+> > >   };
 >
-> Adding in CC the keyring mailing list and David.
+> I'll make a PR for 1/4 and 2/4 so that they get into 5.19.
 >
-> Sort summary: we are adding an eBPF helper, to let eBPF programs
-> verify PKCS#7 signatures. The helper simply calls verify_pkcs7_signature().
->
-> The problem is how to pass the key for verification.
->
-> For hardcoded keyring IDs, it is easy, pass 0, 1 or 2 for respectively
-> the built-in, secondary and platform keyring.
->
-> If you want to pass another keyring, you need to do a lookup,
-> which returns a key with reference count increased.
->
-> While in the kernel you can call key_put() to decrease the
-> reference count, that is not guaranteed with an eBPF program,
-> if the developer forgets about it. What probably is necessary,
-> is to add the capability to the verifier to check whether the
-> reference count is decreased, or adding a callback mechanism
-> to call automatically key_put() when the eBPF program is
-> terminated.
+> BR, Jarkko
 
-Nothing special here.
-See acquire/release logic in the verifier and relevant helpers.
-Like bpf_sk_lookup_tcp and others.
 
-> Is there an alternative solution?
->
-> Thanks
->
-> Roberto
->
-> HUAWEI TECHNOLOGIES Duesseldorf GmbH,
-> HRB 56063 Managing Director: Li Peng, Yang Xi, Li He
+Thank you!
 
-Please remove this footer from your emails.
+What shall we do for 3/4 and 4/4?
+
+Do you have a plan to queue them up for the next MW?
+
+Or, shall I apply them to my kbuild tree with your reivewed-by?
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
