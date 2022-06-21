@@ -2,107 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BE52552EA3
-	for <lists+keyrings@lfdr.de>; Tue, 21 Jun 2022 11:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B605535CD
+	for <lists+keyrings@lfdr.de>; Tue, 21 Jun 2022 17:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349204AbiFUJj2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 Jun 2022 05:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51188 "EHLO
+        id S1352632AbiFUPU3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Jun 2022 11:20:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349202AbiFUJjY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Jun 2022 05:39:24 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E136C2717A
-        for <keyrings@vger.kernel.org>; Tue, 21 Jun 2022 02:39:23 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id i7so5831585ybe.11
-        for <keyrings@vger.kernel.org>; Tue, 21 Jun 2022 02:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=h/jNG5hg7pw3qbZJsJ7/O7yTdyMF9oaAqqeSAK5vwrGEejYUjatvjXYi9CfRCdUN7+
-         KjP/WCFvT8I92O2z5wgpsaQ0jcsEwpBxXigAJAQS5SK+C8ThiuMQNrPDzM35CCqMOJ+w
-         GBkxduRioS7i6nHcyXthl3mZqwQerBFDpOn3TG72mc+LF3FY1dZ9YhOl0p4qsvUFchha
-         x6XZLIZ+Gczns9m2WYpDTzlG+cUGlJgXbqpd7Xq15GQCjfbyAKkYsmppFgoRrbgJW3EH
-         rErljVN0YQSRCbbwSNvPtoEWqk2L3NjeKPO58uL1LcwSvdWcUGuEt0lB/g4kmrSwWafe
-         yIfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=nnLMgR6RdCPGQbI5B/6sI5CFb6yfnPog8eUEcNkVKzFibg/oJldBk7IKE8Y43ElNyF
-         PRbPqevs8Ywuqw2UwYPrSt7TWN7G3zdR3CpLzsZgDDCSeqbyy1yWkp0i5carGXnAWMfI
-         tcMmjSzK52BIDXGbEYeNT+TyIgzk7IsW0MOxpI9mAd2mY9Nqw6hu4NNCNUAj3o3c5/Jc
-         6gDeP/0N09uzGicI87hi2kIotMNIV9eg9e0af5APrSbM+UhNWBfBP8UwsPMflkLkYVjE
-         ceIue8kepTlzQfFBkYli71HT4woUHtE/6kWM2BR651X4hzDqoRWLZpCeNzo3y2ojfhCU
-         4Y7g==
-X-Gm-Message-State: AJIora/8LD1ndAoU6JXKKXsQTN/k2+qQ7TD2qFIiqGv2eb8O2eYwNUXn
-        B2J6sqTvlhufGqEbV63uLqFlio/oLsnyd66NLio=
-X-Google-Smtp-Source: AGRyM1sanxJnrjzNvMQMrOlD8K2c656wwbNTXk8tdAjEGDFs09CqIR+mQnkI3ogcblPWOzX1AqvlQqvw7FWP0msTnxw=
-X-Received: by 2002:a05:6902:1205:b0:669:22dc:e8ad with SMTP id
- s5-20020a056902120500b0066922dce8admr8595434ybu.371.1655804362970; Tue, 21
- Jun 2022 02:39:22 -0700 (PDT)
+        with ESMTP id S1352653AbiFUPUW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Jun 2022 11:20:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 528C520198
+        for <keyrings@vger.kernel.org>; Tue, 21 Jun 2022 08:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655824817;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=m/qf6ov0omQZSA34pET1sX3jxVcqup+wfHTRPaQS72Q=;
+        b=AxEbiWMzJwT5HusztAkdT3IGQ6SF1LRkaQQ4q8OlqQzBwPrV6NDH/kbbBgR13npAIduP+e
+        ePXOW9t9s32Zdv40kxAveLiYbZ4Gh77rs7CZK95Dxd4Pe9ojtMjc+NYO2z/TUWbOHPqS/w
+        MXd34Eh3GhVkBJs8EizMli8QZQz9gOY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-551-cVIuGa09MXOM8jx5kmBEiA-1; Tue, 21 Jun 2022 11:20:12 -0400
+X-MC-Unique: cVIuGa09MXOM8jx5kmBEiA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B196C101E9B0;
+        Tue, 21 Jun 2022 15:20:11 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9C833492C3B;
+        Tue, 21 Jun 2022 15:20:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+To:     torvalds@linux-foundation.org
+cc:     dhowells@redhat.com, simo@redhat.com,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] certs: Make signature verification FIPS compliant
 MIME-Version: 1.0
-Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
- 02:39:22 -0700 (PDT)
-Reply-To: dimitryedik@gmail.com
-From:   Dimitry Edik <lsbthdwrds@gmail.com>
-Date:   Tue, 21 Jun 2022 02:39:22 -0700
-Message-ID: <CAGrL05YaSev49ZJ7fa3MrewJ+V8jgEUTAvWTZ-J7LGC2S9d28w@mail.gmail.com>
-Subject: Dear Partner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b32 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lsbthdwrds[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1276150.1655824809.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Tue, 21 Jun 2022 16:20:09 +0100
+Message-ID: <1276151.1655824809@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.9
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Dear,
+Hi Linus,
 
-My Name is Dimitry Edik from Russia A special assistance to my Russia
-boss who deals in oil import and export He was killed by the Ukraine
-soldiers at the border side. He supplied
-oil to the Philippines company and he was paid over 90 per cent of the
-transaction and the remaining $18.6 Million dollars have been paid into a
-Taiwan bank in the Philippines..i want a partner that will assist me
-with the claims. Is a (DEAL ) 40% for you and 60% for me
-I have all information for the claims.
-Kindly read and reply to me back is 100 per cent risk-free
+Can you pull this please?  The signature checking code, as used by module
+signing, kexec, etc., is non-FIPS compliant as there is no selftest.  For =
+a
+kernel to be FIPS-compliant, signature checking would have to be tested
+before being used, and the box would need to panic if it's not available
+(probably reasonable as simply disabling signature checking would prevent
+you from loading any driver modules).
 
-Yours Sincerely
-Dimitry Edik
+Deal with this by adding a minimal test.
+
+This is split into two patches: the first moves load_certificate_list() to
+the same place as the X.509 code to make it more accessible internally; th=
+e
+second adds a selftest.
+
+David
+
+Link: https://lore.kernel.org/r/165515741424.1554877.9363755381201121213.s=
+tgit@warthog.procyon.org.uk/
+---
+The following changes since commit b13baccc3850ca8b8cccbf8ed9912dbaa0fdf7f=
+3:
+
+  Linux 5.19-rc2 (2022-06-12 16:11:37 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags=
+/certs-20220621
+
+for you to fetch changes up to 3cde3174eb910513d32a9ec8a9b95ea59be833df:
+
+  certs: Add FIPS selftests (2022-06-21 16:05:12 +0100)
+
+----------------------------------------------------------------
+Certs changes
+
+----------------------------------------------------------------
+David Howells (2):
+      certs: Move load_certificate_list() to be with the asymmetric keys c=
+ode
+      certs: Add FIPS selftests
+
+ certs/Makefile                                     |   4 +-
+ certs/blacklist.c                                  |   8 +-
+ certs/common.h                                     |   9 -
+ certs/system_keyring.c                             |   6 +-
+ crypto/asymmetric_keys/Kconfig                     |  10 +
+ crypto/asymmetric_keys/Makefile                    |   2 +
+ crypto/asymmetric_keys/selftest.c                  | 224 ++++++++++++++++=
++++++
+ .../asymmetric_keys/x509_loader.c                  |   8 +-
+ crypto/asymmetric_keys/x509_parser.h               |   9 +
+ crypto/asymmetric_keys/x509_public_key.c           |   8 +-
+ include/keys/asymmetric-type.h                     |   3 +
+ 11 files changed, 268 insertions(+), 23 deletions(-)
+ delete mode 100644 certs/common.h
+ create mode 100644 crypto/asymmetric_keys/selftest.c
+ rename certs/common.c =3D> crypto/asymmetric_keys/x509_loader.c (87%)
+
