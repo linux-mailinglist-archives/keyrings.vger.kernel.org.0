@@ -2,117 +2,165 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50D2C55531B
-	for <lists+keyrings@lfdr.de>; Wed, 22 Jun 2022 20:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50EB3555359
+	for <lists+keyrings@lfdr.de>; Wed, 22 Jun 2022 20:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377506AbiFVSQs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 22 Jun 2022 14:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43258 "EHLO
+        id S1358953AbiFVShx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 22 Jun 2022 14:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359064AbiFVSQr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jun 2022 14:16:47 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2BB3D1DE;
-        Wed, 22 Jun 2022 11:16:46 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id g26so14615921ejb.5;
-        Wed, 22 Jun 2022 11:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jL28EuTE/B/IiDSFOCkATLCzsdUidgMrBdVWQUFs7cc=;
-        b=LO1pKYM/vuhd0Wi83BGq4mfQH8lRhD+ISzAR2tgKxQJ+kxQb6pjkhbr3A/qmFvVWnu
-         0r6Oo9NFm22z16iwHGOw7u05VmdQ+S6lAYhBGsD19N9ERNFJqa26wX41UTMFl+iDiLbW
-         FJWQHOvWHWH+NE9BvDGOmXlrDrMR0Sj1sisqBAEjicoQvmf/NpXH3hotAsnWYpteM54w
-         vR9YYH4h5ROLR+CZbcYrUYpGyI90zCwFZHg2PLLizGh6p6WSwrcm/iLnO03Aikfq29Bn
-         PUyghERuf/1VxsLw2S4PJwZCM6mcXot8RHrO5eCTgJ9BpuJPpzXsrs9TcoXMhu3UDTpJ
-         GGfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jL28EuTE/B/IiDSFOCkATLCzsdUidgMrBdVWQUFs7cc=;
-        b=MUf27+kynOHU/8MU3kueQE7iJbSzNuLpkzRZZ8ZdEKH4mSPGS4BBW/m5n02qm5YsE+
-         LWgJKKo9Eh+gbv0mBK8EM8fkzgCh3L3+XV2bmhOCAvzPlGsFVzb7pi5dtcFCKpQXj9xB
-         0bhR4p98vwrrcn1DgJI80HlupHCHMkD5SaMjtn9Nm9kxzsMkWd+ITLrNwvJ91iOxrmrH
-         3UPplPTlu3ZVnryTAr4eVhim/w/pfg5qJK8tPXCRuCNc0YV6qmQN2DVpkbZSXIAzj2UC
-         DgabaTwRS37Ofw6jYrfUHGTGFJv1/6tRlLWwl8k8NXQ9oyQ25+WJ2a0654dHIpZ8el6b
-         4SUA==
-X-Gm-Message-State: AJIora+fRxvTd22ysaJTfkA3iocA4bFeR6DsG3i2T5BrDZrGaeO/CA1V
-        KV1ULuZNUnPmZF0TZJd8uktpakiaUBEeZPaToD4=
-X-Google-Smtp-Source: AGRyM1s2NQm5CtCjmV7w3PBB0JZBDufY6KUaCPSrMmnyss4GCO9gDFw/1aEM8lRPQyVLq8qHdlkDsM822R3dbfMN4eA=
-X-Received: by 2002:a17:906:5189:b0:722:dc81:222a with SMTP id
- y9-20020a170906518900b00722dc81222amr4375356ejk.502.1655921805322; Wed, 22
- Jun 2022 11:16:45 -0700 (PDT)
+        with ESMTP id S235461AbiFVShx (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jun 2022 14:37:53 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C406285;
+        Wed, 22 Jun 2022 11:37:52 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id 983B13200A9A;
+        Wed, 22 Jun 2022 14:37:50 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 22 Jun 2022 14:37:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+        cc:cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1655923070; x=
+        1656009470; bh=G//CkjAGkuIcoptemdXndQWn8Sa4+wndH+LOM6l7TvA=; b=n
+        PEcyOHEtW0K+ETUp+g66Lc6Z88MJBFha1ofsD1XFG5htaV716jQGQM9EzbfCJPjZ
+        UIB1yXaT3jkg2UFZxFEE3gZVmDyB0oEkt5Ypew+rPh/yCWyZV6IUJ2uv8rhbp9M0
+        r1IvSUrHV/RvGxwh9Fhk16qTZdjRa1Rap3m/08VQ7h/tuVhmYzas19B/fzXKuJ0B
+        j1K3IVi0yr28zH89jdHmUDuLrevS1zZqw0Sgr1O6kJyy5QmtUGlRm/j4rHuUJxzT
+        cSHgJwtwerKdB/0JySWG3WmAP4uyRlvbYDMZ/sUwM4hrXBI9pYyzwTLG0S8dUQA0
+        bgs5YDTgv2QCSUoLAmmUg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1655923070; x=
+        1656009470; bh=G//CkjAGkuIcoptemdXndQWn8Sa4+wndH+LOM6l7TvA=; b=u
+        uWOx219fW6zjPxYL2C13oMAgtA+1eYJoFyp8onqHqKU4w8gVOkEYoCPpNf6FUp/N
+        ROCcDFMNLyKmRq5JA7pBdEyZPk3ZuxlTCDpzdyShZYv0LmqEZkJOTIQOqwcoySkw
+        0PZlneck89KLIL12LviSYPMB+xoViW94xmfjR74IkllzBRnLUg1whkCkLgQ6Wq8L
+        vdFLTML6bfd8IhwpJYDtyyqynxNUouIYISv1h9O5B60LKIrsH8ESOIhUt6FF0Aip
+        Juu8DXuqWsgYBLQcjFskqHv8jRLE2HSfYaTJ7BoEbXGcif9g8OAVL3zXzsb7ecuZ
+        ob1u8pDRI8SJBXIV9/jvw==
+X-ME-Sender: <xms:fWGzYg4qY9npe2RMrMAVV8QFd_P8wxcoW0Z0lNaCR_uKRQAsLVYs4g>
+    <xme:fWGzYh6Y39eHy69A1SuP7YAOOtPNgOfcYUAKCAxFDaI29MMpK-N0WZb5Remn1WDPC
+    7WZpYwS-a32799yzg>
+X-ME-Received: <xmr:fWGzYvcQ5wMnVXW16iYHNQ6CFHruoOBIeeAKt1EbOB_FtKfz0lLReOHRN39UqQ-r4_pDKHhAv8NxdpPSvZ03pWvPWE4D8qGVC2SB7gNbvC9WYV3k-aVrpT8x1kYu>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrudefhedguddvlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomheptehn
+    ughrvghsucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecugg
+    ftrfgrthhtvghrnhephfeitefgleevtedtffejvedujeekjedugfdtveffjeelvddtfeek
+    gefgjefhgfegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homheprghnughrvghssegrnhgrrhgriigvlhdruggv
+X-ME-Proxy: <xmx:fWGzYlKPN11Lt1H9dFsxEar1lwO3k_hhezikt1A88iw1SNIuFEbyQw>
+    <xmx:fWGzYkJ2RxNxp6JH6kH7tmiYv76cl5X0V14Hacul6GtCxXA5JAdgsg>
+    <xmx:fWGzYmxCaysowl7Y6m5_2CO6ejbAS656_cpuvK4I_SJU6nU1vMjtdw>
+    <xmx:fmGzYizIRrTjSmNiUjRHfC814ZqPh7PsNdnJKxfp5En40magH5qBQg>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Jun 2022 14:37:49 -0400 (EDT)
+Date:   Wed, 22 Jun 2022 11:37:47 -0700
+From:   Andres Freund <andres@anarazel.de>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Willy Tarreau <w@1wt.eu>, Kees Cook <keescook@chromium.org>,
+        keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Salvatore Bonaccorso <carnil@debian.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Stephane Eranian <eranian@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: Re: [Linux v5.17.9] -Wdeprecated-declarations warnings with LLVM-14
+ and OpenSSL v3.0.x
+Message-ID: <20220622183747.mhhlfr6aufbkyhag@alap3.anarazel.de>
+References: <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
+ <CA+icZUW7y3JxQ3dCB8Wy83EjEyYj7z55nFUw-kZ+V4We22HZZg@mail.gmail.com>
+ <CA+icZUVyp2CdX7m72GY-=DtK9J+64uHeWPr5-cvo8haQm_4hUw@mail.gmail.com>
+ <CA+icZUWiYYQbAav7VxVsT0ikqCeLckym08Au8oSeyYjvJHcNbg@mail.gmail.com>
+ <CA+icZUUOQcc4uiVbv+tJzPr_ED7e4tD0u9tC8mcn2BRe3sdPAg@mail.gmail.com>
+ <CAHk-=wiOrXUr0wqHL+hfkzGg_+b7UvtLeB=59KsX8W939bTY-A@mail.gmail.com>
+ <CA+icZUUma1B8KFWF-ed9sjXH4QpCRZ+B2pON3uAFkTUs77tMzw@mail.gmail.com>
+ <20220609192308.GB10732@1wt.eu>
+ <CAHk-=wimC_B+nCJrXwuvWULz6ycFFmRMT1Uc+PeM5wJdma_VFw@mail.gmail.com>
+ <CA+icZUUCOoE8x3Js=DYEjgyV_rz-T-M7gPZdFQu7tsKcUoA0hg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20220621163757.760304-1-roberto.sassu@huawei.com>
- <20220621163757.760304-6-roberto.sassu@huawei.com> <20220621223135.puwe3m55yznaevm5@macbook-pro-3.dhcp.thefacebook.com>
- <76c319d5ad1e4ac69ae5d3f71e9d62f7@huawei.com>
-In-Reply-To: <76c319d5ad1e4ac69ae5d3f71e9d62f7@huawei.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Wed, 22 Jun 2022 11:16:33 -0700
-Message-ID: <CAADnVQLLMOfXOchNqcTOR9_-ReXrTmNjMf40HD_ZtN+BO3J3fw@mail.gmail.com>
-Subject: Re: [PATCH v5 5/5] selftests/bpf: Add test for bpf_verify_pkcs7_signature()
- helper
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "andrii@kernel.org" <andrii@kernel.org>,
-        "kpsingh@kernel.org" <kpsingh@kernel.org>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "songliubraving@fb.com" <songliubraving@fb.com>,
-        "kafai@fb.com" <kafai@fb.com>, "yhs@fb.com" <yhs@fb.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+icZUUCOoE8x3Js=DYEjgyV_rz-T-M7gPZdFQu7tsKcUoA0hg@mail.gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jun 22, 2022 at 12:06 AM Roberto Sassu <roberto.sassu@huawei.com> wrote:
->
-> > From: Alexei Starovoitov [mailto:alexei.starovoitov@gmail.com]
-> > Sent: Wednesday, June 22, 2022 12:32 AM
-> > On Tue, Jun 21, 2022 at 06:37:57PM +0200, Roberto Sassu wrote:
-> > > +   if (child_pid == 0) {
-> > > +           snprintf(path, sizeof(path), "%s/signing_key.pem", tmp_dir);
-> > > +
-> > > +           return execlp("./sign-file", "./sign-file", "-d", "sha256",
-> > > +                         path, path, data_template, NULL);
+Hi,
+
+On 2022-06-09 21:31:44 +0200, Sedat Dilek wrote:
+> On Thu, Jun 9, 2022 at 9:25 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
 > >
-> > Did you miss my earlier reply requesting not to do this module_signature append
-> > and use signature directly?
->
-> I didn't miss. sign-file is producing the raw PKCS#7 signature here (-d).
->
-> I'm doing something slightly different, to test the keyring ID part.
-> I'm retrieving an existing kernel module (actually this does not work
-> in the CI), parsing it to extract the raw signature, and passing it to the
-> eBPF program for verification.
+> > On Thu, Jun 9, 2022 at 12:23 PM Willy Tarreau <w@1wt.eu> wrote:
+> > >
+> > > IIRC you can also disable the deprecation warnings by defining the
+> > > OPENSSL_SUPPRESS_DEPRECATED macro. It doesn't require to change the
+> > > compiler's options and allows us to put our head in the sand.
+> >
+> > That one had the downside that you have to know what you're doing to
+> > make such a change ;)
+> >
+> > I just wanted to be able to start doing pulls again after mistakenly
+> > thinking that an upgrade would be pain-free.
+> >
+> 
+> My first approach in making this work....
+> 
+> From 3b019a241a72742c7f239965ed92385e9ffd9ed3 Mon Sep 17 00:00:00 2001
+> From: Sedat Dilek <sedat.dilek@gmail.com>
+> Date: Fri, 27 May 2022 09:25:45 +0200
+> Subject: [PATCH] extract-cert: Suppress warnings with OpenSSL v3 API
+> 
+> Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
+> ---
+> certs/Makefile | 1 +
+> 1 file changed, 1 insertion(+)
+> 
+> diff --git a/certs/Makefile b/certs/Makefile
+> index d8443cfb1c40..52f71f0925e2 100644
+> --- a/certs/Makefile
+> +++ b/certs/Makefile
+> @@ -75,4 +75,5 @@ targets += x509_revocation_list
+> hostprogs := extract-cert
+> 
+> HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+> +HOSTCFLAGS_extract-cert.o += -Wno-deprecated-declarations
+> HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2>
+> /dev/null || echo -lcrypto)
+> --
 
-We don't have signed modules in CI.
-When you make changes like this you have to explain that in the commit log.
+FWIW, these deprecation warnings also cause perf to fail to detect libcrypto:
 
-> Since the kernel module is signed with a key in the built-in keyring,
-> passing 1 or 0 as ID should work.
->
-> Roberto
->
-> (sorry, I have to keep the email signature by German law)
+test-libcrypto.c: In function ‘main’:
+test-libcrypto.c:11:9: error: ‘MD5_Init’ is deprecated: Since OpenSSL 3.0 [-Werror=deprecated-declarations]
+   11 |         MD5_Init(&context);
+      |         ^~~~~~~~
+In file included from test-libcrypto.c:3:
+...
+cc1: all warnings being treated as errors
 
-I don't believe that's the case since plenty of people
-work from Germany and regularly contribute patches without
-such banners.
 
-> HUAWEI TECHNOLOGIES Duesseldorf GmbH, HRB 56063
-> Managing Director: Li Peng, Yang Xi, Li He
+Perhaps it's worth applying this fix a bit more broadly?
+
+Greetings,
+
+Andres Freund
