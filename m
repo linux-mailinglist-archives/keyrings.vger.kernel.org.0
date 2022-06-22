@@ -2,81 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0434755448A
-	for <lists+keyrings@lfdr.de>; Wed, 22 Jun 2022 10:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E99D055480A
+	for <lists+keyrings@lfdr.de>; Wed, 22 Jun 2022 14:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352513AbiFVHOW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 22 Jun 2022 03:14:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50610 "EHLO
+        id S239159AbiFVIO1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 22 Jun 2022 04:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352488AbiFVHOU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jun 2022 03:14:20 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B30369DE;
-        Wed, 22 Jun 2022 00:14:20 -0700 (PDT)
-Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LSZPF2MvCz67YZ9;
-        Wed, 22 Jun 2022 15:13:53 +0800 (CST)
-Received: from fraeml714-chm.china.huawei.com (10.206.15.33) by
- fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 22 Jun 2022 09:14:18 +0200
-Received: from fraeml714-chm.china.huawei.com ([10.206.15.33]) by
- fraeml714-chm.china.huawei.com ([10.206.15.33]) with mapi id 15.01.2375.024;
- Wed, 22 Jun 2022 09:14:18 +0200
-From:   Roberto Sassu <roberto.sassu@huawei.com>
-To:     John Fastabend <john.fastabend@gmail.com>,
-        "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "andrii@kernel.org" <andrii@kernel.org>,
-        "kpsingh@kernel.org" <kpsingh@kernel.org>,
-        "songliubraving@fb.com" <songliubraving@fb.com>,
-        "kafai@fb.com" <kafai@fb.com>, "yhs@fb.com" <yhs@fb.com>
-CC:     "dhowells@redhat.com" <dhowells@redhat.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v5 4/5] selftests/bpf: Add test for unreleased key
- references
-Thread-Topic: [PATCH v5 4/5] selftests/bpf: Add test for unreleased key
- references
-Thread-Index: AQHYhY1lWBqFnG8Z5ki4oxpvmYhP1q1aUdKAgACyOvA=
-Date:   Wed, 22 Jun 2022 07:14:18 +0000
-Message-ID: <b93622dffbfa41f99a18d8883a890879@huawei.com>
-References: <20220621163757.760304-1-roberto.sassu@huawei.com>
- <20220621163757.760304-5-roberto.sassu@huawei.com>
- <62b247b975506_162742082f@john.notmuch>
-In-Reply-To: <62b247b975506_162742082f@john.notmuch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.221.98.153]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S236923AbiFVIO0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jun 2022 04:14:26 -0400
+Received: from mail.forindustry.pl (mail.forindustry.pl [37.187.225.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F240F37AAF
+        for <keyrings@vger.kernel.org>; Wed, 22 Jun 2022 01:14:25 -0700 (PDT)
+Received: by mail.forindustry.pl (Postfix, from userid 1002)
+        id 2FED7A777E; Wed, 22 Jun 2022 08:06:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=forindustry.pl;
+        s=mail; t=1655885182;
+        bh=Vw5jk5D1DE7WK/GNf/MxRQNyAyPYcC0rMJLibxKTj58=;
+        h=Date:From:To:Subject:From;
+        b=qL+x+vmmz8mXPWPfhR4xmMEbcN05mguHS99RCgbtrFPQa/UxpukHbO8t0u9y7Z2lZ
+         X4a4FICPtuT2zYEt8zafxykZA7k5R7PU6EFlEaGYY+l4ai0Q0wd8Kwpe698qVGNtzs
+         yL5OcEKS8+zEQDN6/77ssPADCEWSkMd5fvOAagAzkIyP1iqSh0g5lZex7rHFD8dByV
+         fGo7ljhC6N1SxSE0/BHpr2NhKKXlaKd9ZIghK8/7SuIqTcV+lm1T2/dgkleJop8kQr
+         MSLbSzDNOqgaKtw8XcbvMOhiONxzeJJT9Jzt9W8E6JNTaCcCJG1Zc0o/P0Z2OReJXV
+         pQ6JoFjp2bd5Q==
+Received: by mail.forindustry.pl for <keyrings@vger.kernel.org>; Wed, 22 Jun 2022 08:05:55 GMT
+Message-ID: <20220622064501-0.1.3y.tnts.0.ez4obca3dh@forindustry.pl>
+Date:   Wed, 22 Jun 2022 08:05:55 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@forindustry.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.forindustry.pl
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-PiBGcm9tOiBKb2huIEZhc3RhYmVuZCBbbWFpbHRvOmpvaG4uZmFzdGFiZW5kQGdtYWlsLmNvbV0N
-Cj4gU2VudDogV2VkbmVzZGF5LCBKdW5lIDIyLCAyMDIyIDEyOjM2IEFNDQo+IFJvYmVydG8gU2Fz
-c3Ugd3JvdGU6DQo+ID4gRW5zdXJlIHRoYXQgdGhlIHZlcmlmaWVyIGRldGVjdHMgdGhlIGF0dGVt
-cHQgb2YgYWNxdWlyaW5nIGEgcmVmZXJlbmNlIG9mIGENCj4gPiBrZXkgdGhyb3VnaCB0aGUgaGVs
-cGVyIGJwZl9sb29rdXBfdXNlcl9rZXkoKSwgd2l0aG91dCByZWxlYXNpbmcgdGhhdA0KPiA+IHJl
-ZmVyZW5jZSB3aXRoIGJwZl9rZXlfcHV0KCksIGFuZCByZWZ1c2VzIHRvIGxvYWQgdGhlIHByb2dy
-YW0uDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBSb2JlcnRvIFNhc3N1IDxyb2JlcnRvLnNhc3N1
-QGh1YXdlaS5jb20+DQo+ID4gLS0tDQo+IA0KPiBBbnkgcmVhc29uIG5vdCB0byBhZGQgdGhlc2Ug
-dG8gLi92ZXJpZmllci9yZWZfdHJhY2tpbmcuYyB0ZXN0cz8gU2VlbXMgaXQNCj4gbWlnaHQgYmUg
-ZWFzaWVyIHRvIGZvbGxvdyB0aGVyZSBhbmQgdGVzdCBib3RoIGdvb2QvYmFkIGNhc2VzLg0KDQpP
-aCwgSSBkaWRuJ3Qga25vdyBhYm91dCBpdC4gV2lsbCBtb3ZlIHRoZSB0ZXN0Lg0KDQpUaGFua3MN
-Cg0KUm9iZXJ0bw0KDQpIVUFXRUkgVEVDSE5PTE9HSUVTIER1ZXNzZWxkb3JmIEdtYkgsIEhSQiA1
-NjA2Mw0KTWFuYWdpbmcgRGlyZWN0b3I6IExpIFBlbmcsIFlhbmcgWGksIExpIEhlDQo=
+Dzie=C5=84 dobry,
+
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99.
+
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
+
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
+
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
+
+Pozdrawiam,
+Arkadiusz Soko=C5=82owski
