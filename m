@@ -2,165 +2,152 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EB3555359
-	for <lists+keyrings@lfdr.de>; Wed, 22 Jun 2022 20:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6CF556FD6
+	for <lists+keyrings@lfdr.de>; Thu, 23 Jun 2022 03:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358953AbiFVShx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 22 Jun 2022 14:37:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
+        id S236528AbiFWB1r (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 22 Jun 2022 21:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235461AbiFVShx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jun 2022 14:37:53 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C406285;
-        Wed, 22 Jun 2022 11:37:52 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 983B13200A9A;
-        Wed, 22 Jun 2022 14:37:50 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 22 Jun 2022 14:37:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-        cc:cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1655923070; x=
-        1656009470; bh=G//CkjAGkuIcoptemdXndQWn8Sa4+wndH+LOM6l7TvA=; b=n
-        PEcyOHEtW0K+ETUp+g66Lc6Z88MJBFha1ofsD1XFG5htaV716jQGQM9EzbfCJPjZ
-        UIB1yXaT3jkg2UFZxFEE3gZVmDyB0oEkt5Ypew+rPh/yCWyZV6IUJ2uv8rhbp9M0
-        r1IvSUrHV/RvGxwh9Fhk16qTZdjRa1Rap3m/08VQ7h/tuVhmYzas19B/fzXKuJ0B
-        j1K3IVi0yr28zH89jdHmUDuLrevS1zZqw0Sgr1O6kJyy5QmtUGlRm/j4rHuUJxzT
-        cSHgJwtwerKdB/0JySWG3WmAP4uyRlvbYDMZ/sUwM4hrXBI9pYyzwTLG0S8dUQA0
-        bgs5YDTgv2QCSUoLAmmUg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1655923070; x=
-        1656009470; bh=G//CkjAGkuIcoptemdXndQWn8Sa4+wndH+LOM6l7TvA=; b=u
-        uWOx219fW6zjPxYL2C13oMAgtA+1eYJoFyp8onqHqKU4w8gVOkEYoCPpNf6FUp/N
-        ROCcDFMNLyKmRq5JA7pBdEyZPk3ZuxlTCDpzdyShZYv0LmqEZkJOTIQOqwcoySkw
-        0PZlneck89KLIL12LviSYPMB+xoViW94xmfjR74IkllzBRnLUg1whkCkLgQ6Wq8L
-        vdFLTML6bfd8IhwpJYDtyyqynxNUouIYISv1h9O5B60LKIrsH8ESOIhUt6FF0Aip
-        Juu8DXuqWsgYBLQcjFskqHv8jRLE2HSfYaTJ7BoEbXGcif9g8OAVL3zXzsb7ecuZ
-        ob1u8pDRI8SJBXIV9/jvw==
-X-ME-Sender: <xms:fWGzYg4qY9npe2RMrMAVV8QFd_P8wxcoW0Z0lNaCR_uKRQAsLVYs4g>
-    <xme:fWGzYh6Y39eHy69A1SuP7YAOOtPNgOfcYUAKCAxFDaI29MMpK-N0WZb5Remn1WDPC
-    7WZpYwS-a32799yzg>
-X-ME-Received: <xmr:fWGzYvcQ5wMnVXW16iYHNQ6CFHruoOBIeeAKt1EbOB_FtKfz0lLReOHRN39UqQ-r4_pDKHhAv8NxdpPSvZ03pWvPWE4D8qGVC2SB7gNbvC9WYV3k-aVrpT8x1kYu>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrudefhedguddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomheptehn
-    ughrvghsucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecugg
-    ftrfgrthhtvghrnhephfeitefgleevtedtffejvedujeekjedugfdtveffjeelvddtfeek
-    gefgjefhgfegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homheprghnughrvghssegrnhgrrhgriigvlhdruggv
-X-ME-Proxy: <xmx:fWGzYlKPN11Lt1H9dFsxEar1lwO3k_hhezikt1A88iw1SNIuFEbyQw>
-    <xmx:fWGzYkJ2RxNxp6JH6kH7tmiYv76cl5X0V14Hacul6GtCxXA5JAdgsg>
-    <xmx:fWGzYmxCaysowl7Y6m5_2CO6ejbAS656_cpuvK4I_SJU6nU1vMjtdw>
-    <xmx:fmGzYizIRrTjSmNiUjRHfC814ZqPh7PsNdnJKxfp5En40magH5qBQg>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jun 2022 14:37:49 -0400 (EDT)
-Date:   Wed, 22 Jun 2022 11:37:47 -0700
-From:   Andres Freund <andres@anarazel.de>
-To:     Sedat Dilek <sedat.dilek@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Willy Tarreau <w@1wt.eu>, Kees Cook <keescook@chromium.org>,
-        keyrings@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [Linux v5.17.9] -Wdeprecated-declarations warnings with LLVM-14
- and OpenSSL v3.0.x
-Message-ID: <20220622183747.mhhlfr6aufbkyhag@alap3.anarazel.de>
-References: <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
- <CA+icZUW7y3JxQ3dCB8Wy83EjEyYj7z55nFUw-kZ+V4We22HZZg@mail.gmail.com>
- <CA+icZUVyp2CdX7m72GY-=DtK9J+64uHeWPr5-cvo8haQm_4hUw@mail.gmail.com>
- <CA+icZUWiYYQbAav7VxVsT0ikqCeLckym08Au8oSeyYjvJHcNbg@mail.gmail.com>
- <CA+icZUUOQcc4uiVbv+tJzPr_ED7e4tD0u9tC8mcn2BRe3sdPAg@mail.gmail.com>
- <CAHk-=wiOrXUr0wqHL+hfkzGg_+b7UvtLeB=59KsX8W939bTY-A@mail.gmail.com>
- <CA+icZUUma1B8KFWF-ed9sjXH4QpCRZ+B2pON3uAFkTUs77tMzw@mail.gmail.com>
- <20220609192308.GB10732@1wt.eu>
- <CAHk-=wimC_B+nCJrXwuvWULz6ycFFmRMT1Uc+PeM5wJdma_VFw@mail.gmail.com>
- <CA+icZUUCOoE8x3Js=DYEjgyV_rz-T-M7gPZdFQu7tsKcUoA0hg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+icZUUCOoE8x3Js=DYEjgyV_rz-T-M7gPZdFQu7tsKcUoA0hg@mail.gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S235768AbiFWB1q (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 22 Jun 2022 21:27:46 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40673DA73;
+        Wed, 22 Jun 2022 18:27:45 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id cv13so14736492pjb.4;
+        Wed, 22 Jun 2022 18:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:message-id:in-reply-to:references:subject
+         :mime-version:content-transfer-encoding;
+        bh=8VtBJj3dwIr7vdto3kime56JLy8UxuXRGHD/jLDfBZ8=;
+        b=ACUnfB7TcKfLAfJBfhcaPF+f78pJ9pZvYRIBSMYZXztjinI+e3PAkxTmUkZA6BMhVy
+         lgzJny9JTEHKSWk9DfJ+HdJje00DhI4FEKsaNqxPSuxpF+kh5PkylT0FN9Hi5gJT5sgY
+         A2ehlFQ3qbGmHAGSgTffQCBlBHRL4om5Hz6C+GGXlC2FijwZFpjzOECseQ5john2M5Ke
+         Hi3bgDVyFhf0FFqdw/ZmZ+UileflvIkPlLgCs4a+hv6I8k1CYjYUE8BCgCE9EgqWiYu1
+         Z39sWXepIbSjvYkySf1VSYp7yPJfUtiwtIREkR41TXjgkjuPafjv5BItyAT8At0mkmEX
+         +fRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:message-id:in-reply-to
+         :references:subject:mime-version:content-transfer-encoding;
+        bh=8VtBJj3dwIr7vdto3kime56JLy8UxuXRGHD/jLDfBZ8=;
+        b=i2AMGT1IVUFvkmOC4f7xvnG4eMdIp0hGjA7H/YbiQr9JgsTRHWrLgNyHOUn+K8f0Tb
+         c7xaHOI/KRQ+Rk1H8M5ZATIZ6sS6gFksbla/kWlKVtxG2WmP//UQKuLhCAZXDwaZ7i9C
+         pWQvgTTU3ygw0I8iaQhirS/TKCIw1SFI1llqoxIhb5yXF3tMQ4cL9r6D0ZLNdXqH3CFW
+         KFSpKSWXyo+78vJbnWGS2cWOP0q+k0hzyiecZamj8pdb5+vdvVOrF5boXNjqQsnvG4Sy
+         uis9tpCloG7GBm+FLC/jmNcRjZK+Mg/jb1GPO2kPX8MtWeQXSJsbjUnF7Oan0Bg1e0LS
+         Ro/Q==
+X-Gm-Message-State: AJIora8918jxl0Q2GOOl8jkXlHbPWwEAEIKIXmgdWTpMWQzXYLehCqXS
+        +yuZmrIhO/eO84MGT1wWmNw=
+X-Google-Smtp-Source: AGRyM1tTibF5bOTcCSW3Nh3zCY7nikJHhxnA1qVR2f6DefieHghgXDPNZl7ycJ1Ll00eb0KgjuQ9rg==
+X-Received: by 2002:a17:902:ca83:b0:16a:3317:b5c1 with SMTP id v3-20020a170902ca8300b0016a3317b5c1mr13019955pld.34.1655947665102;
+        Wed, 22 Jun 2022 18:27:45 -0700 (PDT)
+Received: from localhost ([98.97.116.244])
+        by smtp.gmail.com with ESMTPSA id a13-20020a1709027e4d00b0015e8d4eb26csm13522728pln.182.2022.06.22.18.27.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jun 2022 18:27:44 -0700 (PDT)
+Date:   Wed, 22 Jun 2022 18:27:38 -0700
+From:   John Fastabend <john.fastabend@gmail.com>
+To:     Roberto Sassu <roberto.sassu@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        "ast@kernel.org" <ast@kernel.org>,
+        "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "andrii@kernel.org" <andrii@kernel.org>,
+        "kpsingh@kernel.org" <kpsingh@kernel.org>,
+        "songliubraving@fb.com" <songliubraving@fb.com>,
+        "kafai@fb.com" <kafai@fb.com>, "yhs@fb.com" <yhs@fb.com>
+Cc:     "dhowells@redhat.com" <dhowells@redhat.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>
+Message-ID: <62b3c18ab4dda_6a3b220812@john.notmuch>
+In-Reply-To: <03b67c7a6161428c9ff8a5dde0450402@huawei.com>
+References: <20220621163757.760304-1-roberto.sassu@huawei.com>
+ <20220621163757.760304-4-roberto.sassu@huawei.com>
+ <62b245e22effa_1627420871@john.notmuch>
+ <03b67c7a6161428c9ff8a5dde0450402@huawei.com>
+Subject: RE: [PATCH v5 3/5] bpf: Add bpf_verify_pkcs7_signature() helper
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
-
-On 2022-06-09 21:31:44 +0200, Sedat Dilek wrote:
-> On Thu, Jun 9, 2022 at 9:25 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Thu, Jun 9, 2022 at 12:23 PM Willy Tarreau <w@1wt.eu> wrote:
+Roberto Sassu wrote:
+> > From: John Fastabend [mailto:john.fastabend@gmail.com]
+> > Sent: Wednesday, June 22, 2022 12:28 AM
+> > Roberto Sassu wrote:
+> > > Add the bpf_verify_pkcs7_signature() helper, to give eBPF security modules
+> > > the ability to check the validity of a signature against supplied data, by
+> > > using user-provided or system-provided keys as trust anchor.
 > > >
-> > > IIRC you can also disable the deprecation warnings by defining the
-> > > OPENSSL_SUPPRESS_DEPRECATED macro. It doesn't require to change the
-> > > compiler's options and allows us to put our head in the sand.
-> >
-> > That one had the downside that you have to know what you're doing to
-> > make such a change ;)
-> >
-> > I just wanted to be able to start doing pulls again after mistakenly
-> > thinking that an upgrade would be pain-free.
-> >
+> > > The new helper makes it possible to enforce mandatory policies, as eBPF
+> > > programs might be allowed to make security decisions only based on data
+> > > sources the system administrator approves.
+> > >
+> > > The caller should provide both the data to be verified and the signature as
+> > > eBPF dynamic pointers (to minimize the number of parameters).
+> > >
+> > > The caller should also provide a keyring pointer obtained with
+> > > bpf_lookup_user_key() or, alternatively, a keyring ID with values defined
+> > > in verification.h. While the first choice gives users more flexibility, the
+> > > second offers better security guarantees, as the keyring selection will not
+> > > depend on possibly untrusted user space but on the kernel itself.
+> > >
+> > > Defined keyring IDs are: 0 for the primary keyring (immutable keyring of
+> > > system keys); 1 for both the primary and secondary keyring (where keys can
+> > > be added only if they are vouched for by existing keys in those keyrings);
+> > > 2 for the platform keyring (primarily used by the integrity subsystem to
+> > > verify a kexec'ed kerned image and, possibly, the initramfs signature).
+> > >
+> > > Note: since the keyring ID assignment is understood only by
+> > > verify_pkcs7_signature(), it must be passed directly to the corresponding
+> > > helper, rather than to a separate new helper returning a struct key pointer
+> > > with the keyring ID as a pointer value. If such pointer is passed to any
+> > > other helper which does not check its validity, an illegal memory access
+> > > could occur.
+> > >
+> > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > > Reported-by: kernel test robot <lkp@intel.com> (cast warning)
+> > > ---
+> > >  include/uapi/linux/bpf.h       | 17 +++++++++++++++
+> > >  kernel/bpf/bpf_lsm.c           | 39 ++++++++++++++++++++++++++++++++++
+> > >  tools/include/uapi/linux/bpf.h | 17 +++++++++++++++
+> > >  3 files changed, 73 insertions(+)
+> > >
+> > > diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+> > > index 7bbcf2cd105d..524bed4d7170 100644
+> > > --- a/include/uapi/linux/bpf.h
+> > > +++ b/include/uapi/linux/bpf.h
+> > > @@ -5339,6 +5339,22 @@ union bpf_attr {
+> > >   *		bpf_lookup_user_key() helper.
+> > >   *	Return
+> > >   *		0
+> > > + *
+> > > + * long bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr, struct
+> > bpf_dynptr *sig_ptr, struct key *trusted_keys, unsigned long keyring_id)
+> > > + *	Description
+> > > + *		Verify the PKCS#7 signature *sig* against the supplied *data*
+> > > + *		with keys in *trusted_keys* or in a keyring with ID
+> > > + *		*keyring_id*.
+> > 
+> > Would be nice to give precedence here so that its obvious order between
+> > trusted_keys and keyring_id.
 > 
-> My first approach in making this work....
+> Did you mean to add at the end of the sentence:
 > 
-> From 3b019a241a72742c7f239965ed92385e9ffd9ed3 Mon Sep 17 00:00:00 2001
-> From: Sedat Dilek <sedat.dilek@gmail.com>
-> Date: Fri, 27 May 2022 09:25:45 +0200
-> Subject: [PATCH] extract-cert: Suppress warnings with OpenSSL v3 API
-> 
-> Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
-> ---
-> certs/Makefile | 1 +
-> 1 file changed, 1 insertion(+)
-> 
-> diff --git a/certs/Makefile b/certs/Makefile
-> index d8443cfb1c40..52f71f0925e2 100644
-> --- a/certs/Makefile
-> +++ b/certs/Makefile
-> @@ -75,4 +75,5 @@ targets += x509_revocation_list
-> hostprogs := extract-cert
-> 
-> HOSTCFLAGS_extract-cert.o = $(shell pkg-config --cflags libcrypto 2> /dev/null)
-> +HOSTCFLAGS_extract-cert.o += -Wno-deprecated-declarations
-> HOSTLDLIBS_extract-cert = $(shell pkg-config --libs libcrypto 2>
-> /dev/null || echo -lcrypto)
-> --
+> or in a keyring with ID *keyring_id*, if *trusted_keys* is NULL.
 
-FWIW, these deprecation warnings also cause perf to fail to detect libcrypto:
-
-test-libcrypto.c: In function ‘main’:
-test-libcrypto.c:11:9: error: ‘MD5_Init’ is deprecated: Since OpenSSL 3.0 [-Werror=deprecated-declarations]
-   11 |         MD5_Init(&context);
-      |         ^~~~~~~~
-In file included from test-libcrypto.c:3:
-...
-cc1: all warnings being treated as errors
-
-
-Perhaps it's worth applying this fix a bit more broadly?
-
-Greetings,
-
-Andres Freund
+Yes something like this.
