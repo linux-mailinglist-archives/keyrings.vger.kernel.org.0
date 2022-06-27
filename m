@@ -2,94 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55AC255B586
-	for <lists+keyrings@lfdr.de>; Mon, 27 Jun 2022 05:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBBA155D5F8
+	for <lists+keyrings@lfdr.de>; Tue, 28 Jun 2022 15:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231998AbiF0DTa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 26 Jun 2022 23:19:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51190 "EHLO
+        id S232565AbiF0HRQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 27 Jun 2022 03:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231975AbiF0DT2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 26 Jun 2022 23:19:28 -0400
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D02E64;
-        Sun, 26 Jun 2022 20:19:26 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0VHRTHrs_1656299959;
-Received: from 30.240.101.24(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0VHRTHrs_1656299959)
-          by smtp.aliyun-inc.com;
-          Mon, 27 Jun 2022 11:19:21 +0800
-Message-ID: <58792bb9-c25c-d457-a57c-b82a4d42533f@linux.alibaba.com>
-Date:   Mon, 27 Jun 2022 11:19:18 +0800
+        with ESMTP id S232558AbiF0HRP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Jun 2022 03:17:15 -0400
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB8E5FE6;
+        Mon, 27 Jun 2022 00:17:13 -0700 (PDT)
+Received: by mail-qv1-f47.google.com with SMTP id y14so13529784qvs.10;
+        Mon, 27 Jun 2022 00:17:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=e/zqkQPFTUj9N5yUlKAt6CBYdzhsrN+6ZcFTDaIiaZY=;
+        b=yKlbCeeWoczArlS08sJa8qkBDxpUuSNgLCYucSj9Pj0yIPSMsOtt+GcBFXvt//HGsU
+         WrN6KtzGDIVMEN3DmgsReyaQow5y6V1oVGLlnwzasW6BaZr47A4iR8AB/A0i/HYoWouv
+         GkBwJEb/XZbeIIckKDx7tCicFpkkqWhSIXdd9DDcwfoXPp3qqlrnZUUrJwhpoFhE0EzY
+         h3CldsH3cCCkT37cZ2mGKFPO8XQG4hvUhZcNJwSZ2QjnNqwbdOA2LO4pPwBDEeX5Mq/3
+         /PQUmml6QF0UKvu4MhffwfSc7jKpZE20hBdDiOaGXSSCfSatByzuT0FRaqh9JFMFmC+k
+         FGRQ==
+X-Gm-Message-State: AJIora+YHohVoY5h9kfjHt8qw8u1NfEiVGih3fLIe0c1XX/VlW/10QIe
+        Uw3z7n9LASoE7aanlcHkCdRZfG3SVecI5g==
+X-Google-Smtp-Source: AGRyM1t6D0kJxzhDzKgLa9OikDBLTIlLI87jQEeKacvqoyjuqewB8LkiTwHryMozHnbbl4pg23hEcw==
+X-Received: by 2002:ac8:5749:0:b0:305:1ea5:4a7 with SMTP id 9-20020ac85749000000b003051ea504a7mr7816225qtx.291.1656314232362;
+        Mon, 27 Jun 2022 00:17:12 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id w20-20020a05620a445400b006af37b005bdsm664399qkp.128.2022.06.27.00.17.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jun 2022 00:17:11 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id o19so8675891ybg.2;
+        Mon, 27 Jun 2022 00:17:11 -0700 (PDT)
+X-Received: by 2002:a05:6902:120e:b0:634:6f29:6b84 with SMTP id
+ s14-20020a056902120e00b006346f296b84mr12087179ybu.604.1656314231501; Mon, 27
+ Jun 2022 00:17:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.9.1
-Subject: Re: [PATCH v4 0/2] pkcs7: support SM2/SM3 and EC-RDSA/streebog
- algorithms
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Elvira Khabirova <e.khabirova@omp.ru>,
-        Vitaly Chikunov <vt@altlinux.org>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        Pascal van Leeuwen <pvanleeuwen@rambus.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210918080737.17252-1-tianjia.zhang@linux.alibaba.com>
- <ea7d5934-01f4-bd2e-09d5-0916eb72e8d8@linux.alibaba.com>
- <Yrf5QWnKL2ocoEq6@kernel.org>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-In-Reply-To: <Yrf5QWnKL2ocoEq6@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <165515741424.1554877.9363755381201121213.stgit@warthog.procyon.org.uk>
+ <165515742832.1554877.2073456606206090838.stgit@warthog.procyon.org.uk>
+In-Reply-To: <165515742832.1554877.2073456606206090838.stgit@warthog.procyon.org.uk>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 27 Jun 2022 09:16:59 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWWtdoAwWo_qitV+s-3amxKzbVSDJ3f51E9fKT3MQwLAw@mail.gmail.com>
+Message-ID: <CAMuHMdWWtdoAwWo_qitV+s-3amxKzbVSDJ3f51E9fKT3MQwLAw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] certs: Add FIPS selftests
+To:     David Howells <dhowells@redhat.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Simo Sorce <simo@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+Hi David,
 
-On 6/26/22 2:14 PM, Jarkko Sakkinen wrote:
-> On Fri, Jun 17, 2022 at 05:19:03PM +0800, Tianjia Zhang wrote:
->> Hi Jarkko,
->>
->> On 9/18/21 4:07 PM, Tianjia Zhang wrote:
->>> This series of patches integrates the two patches sended separately,
->>> resolves the conflict, and rebases on the latest code.
->>>
->>> The two patches respectively support the SM2/SM3 and EC-RDSA/streebog
->>> algorithm combinations for the pkcs7 parser.
->>>
->>> Elvira Khabirova (1):
->>>     pkcs7: support EC-RDSA/streebog in SignerInfo
->>>
->>> Tianjia Zhang (1):
->>>     pkcs7: parser support SM2 and SM3 algorithms combination
->>>
->>>    crypto/asymmetric_keys/pkcs7_parser.c | 18 ++++++++++++++++++
->>>    1 file changed, 18 insertions(+)
->>>
->>
->> No response from David, can you pick this?
->>
->> Best regards,
->> Tianjia
-> 
-> You should CC me the series then.
-> 
-> BR, Jarkko
+On Tue, Jun 14, 2022 at 12:29 AM David Howells <dhowells@redhat.com> wrote:
+> Add some selftests for signature checking when FIPS mode is enabled.  These
+> need to be done before we start actually using the signature checking for
+> things and must panic the kernel upon failure.
+>
+> Note that the tests must not check the blacklist lest this provide a way to
+> prevent a kernel from booting by installing a hash of a test key in the
+> appropriate UEFI table.
+>
+> Reported-by: Simo Sorce <simo@redhat.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-Thanks, I will resend these series.
+Thanks for your patch, which is now commit 3cde3174eb910513 ("certs:
+Add FIPS selftests") in v5.19-rc4.
 
-Best regards,
-Tianjia
+> --- a/crypto/asymmetric_keys/Kconfig
+> +++ b/crypto/asymmetric_keys/Kconfig
+> @@ -75,4 +75,14 @@ config SIGNED_PE_FILE_VERIFICATION
+>           This option provides support for verifying the signature(s) on a
+>           signed PE binary.
+>
+> +config FIPS_SIGNATURE_SELFTEST
+> +       bool "Run FIPS selftests on the X.509+PKCS7 signature verification"
+
+Is there any reason this cannot be tristate, so I can always enable
+this as a module, and run the test by loading the module whenever
+I want?
+
+> +       help
+> +         This option causes some selftests to be run on the signature
+> +         verification code, using some built in data.  This is required
+> +         for FIPS.
+> +       depends on KEYS
+> +       depends on ASYMMETRIC_KEY_TYPE
+> +       depends on PKCS7_MESSAGE_PARSER
+> +
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
