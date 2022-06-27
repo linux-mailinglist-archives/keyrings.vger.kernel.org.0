@@ -2,49 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C0755DC89
-	for <lists+keyrings@lfdr.de>; Tue, 28 Jun 2022 15:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3535C55C4CF
+	for <lists+keyrings@lfdr.de>; Tue, 28 Jun 2022 14:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237633AbiF0XLE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 27 Jun 2022 19:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47408 "EHLO
+        id S238200AbiF0XOr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 27 Jun 2022 19:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238302AbiF0XLD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Jun 2022 19:11:03 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73AFB205C5;
-        Mon, 27 Jun 2022 16:11:02 -0700 (PDT)
+        with ESMTP id S237641AbiF0XOr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Jun 2022 19:14:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 848E623140;
+        Mon, 27 Jun 2022 16:14:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 2B49CCE1DF8;
-        Mon, 27 Jun 2022 23:11:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D33C34115;
-        Mon, 27 Jun 2022 23:10:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10C656155C;
+        Mon, 27 Jun 2022 23:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C99BC341C8;
+        Mon, 27 Jun 2022 23:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656371458;
-        bh=A+8dqd+AYtgSfVTCQHJYjy06M4VETooFTm66t1vpOwc=;
+        s=k20201202; t=1656371685;
+        bh=h4FR0qftIvkH2uTSynr4CWcZ4lbRTfiY9kRTXC9vhC0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k1Hip1o7gkv8fv4LES1pswBpFQ7RHJK+da2DXyPCYbJx7cifcAANHhZTobUcBH10C
-         7FNKbDaWe0owUaomv5xx4OvQEBZHzAGzMihvvNYtfutcY/jYK0l21HHgP0rfl1H7+w
-         NQImFAWgs3U6Najjm8mDGvaDTMJolXy9i0fE5OmJP1JIurmpBlEdfCYAemIfAz4ByH
-         AxxB9wqjmVxOntaW4rDStD+WqeSNH4GABfO4fdIz39hZnbSFv/rElggariIVYoO7x9
-         /7L+qel8OK+odjSsJgml4v3vWycZNYGAK3AeWX+ZMWxHe5j/eXd2QISfBgPfb+WGQK
-         hoAOM8fYJz/jg==
-Date:   Tue, 28 Jun 2022 02:10:54 +0300
+        b=pVumDj2bJvP3+KrO/DN9mUcf4t+RsXVIMpp/dDhtG24b3DoZqbMhF1Y0p4FNqIY5+
+         m+GZjCtQzd+mmgOhqsfrrph8ROF9fIUiJYfwHg5uPSfErIvUBv8NcFeS+w+NnrO/Db
+         ms4S+uoY70BrYvOdLhVZ9YQLn8elgC3OG5cM/cUuz7ZZh+jDVSNBZFU6Zz9vLQo7fc
+         o2/6CRy7mwpJTsjz3r013qEeFBsXYa3FiTRF1uuodjuoLy8qHxTT1Qn0j24uVZqyc2
+         y4dfsB+u8civcJn6Ur0g3rW40NiuYMyD+6ixn2LstAep8DOWmByGR9ojvRyNZqUMe9
+         6oFZ2w//886pw==
+Date:   Tue, 28 Jun 2022 02:14:41 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
 To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 Cc:     David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] X.509: Support parsing certificate using SM2 algorithm
-Message-ID: <Yro4/nbOGOWRUgWS@kernel.org>
-References: <20220627091958.20751-1-tianjia.zhang@linux.alibaba.com>
+        "David S. Miller" <davem@davemloft.net>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Eric Biggers <ebiggers@google.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 RESEND] KEYS: asymmetric: enforce SM2 signature use
+ pkey algo
+Message-ID: <Yro54bzvRZqbmCxb@kernel.org>
+References: <20220627092027.20858-1-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220627091958.20751-1-tianjia.zhang@linux.alibaba.com>
+In-Reply-To: <20220627092027.20858-1-tianjia.zhang@linux.alibaba.com>
 X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,35 +58,63 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jun 27, 2022 at 05:19:58PM +0800, Tianjia Zhang wrote:
-> The SM2-with-SM3 certificate generated by latest openssl no longer
-> reuses the OID_id_ecPublicKey, but directly uses OID_sm2. This patch
-> supports this type of x509 certificate parsing.
+On Mon, Jun 27, 2022 at 05:20:27PM +0800, Tianjia Zhang wrote:
+> The signature verification of SM2 needs to add the Za value and
+> recalculate sig->digest, which requires the detection of the pkey_algo
+> in public_key_verify_signature(). As Eric Biggers said, the pkey_algo
+> field in sig is attacker-controlled and should be use pkey->pkey_algo
+> instead of sig->pkey_algo, and secondly, if sig->pkey_algo is NULL, it
+> will also cause signature verification failure.
 > 
+> The software_key_determine_akcipher() already forces the algorithms
+> are matched, so the SM3 algorithm is enforced in the SM2 signature,
+> although this has been checked, we still avoid using any algorithm
+> information in the signature as input.
+> 
+> Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verification")
+> Reported-by: Eric Biggers <ebiggers@google.com>
+> Cc: stable@vger.kernel.org # v5.10+
 > Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 > ---
->  crypto/asymmetric_keys/x509_cert_parser.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  crypto/asymmetric_keys/public_key.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-> index 2899ed80bb18..7a9b084e2043 100644
-> --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> @@ -508,6 +508,9 @@ int x509_extract_key_data(void *context, size_t hdrlen,
->  	case OID_gost2012PKey512:
->  		ctx->cert->pub->pkey_algo = "ecrdsa";
->  		break;
-> +	case OID_sm2:
-> +		ctx->cert->pub->pkey_algo = "sm2";
-> +		break;
->  	case OID_id_ecPublicKey:
->  		if (parse_OID(ctx->params, ctx->params_size, &oid) != 0)
->  			return -EBADMSG;
+> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+> index 7c9e6be35c30..3f17ee860f89 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -309,7 +309,8 @@ static int cert_sig_digest_update(const struct public_key_signature *sig,
+>  	if (ret)
+>  		return ret;
+>  
+> -	tfm = crypto_alloc_shash(sig->hash_algo, 0, 0);
+> +	/* SM2 signatures always use the SM3 hash algorithm */
+> +	tfm = crypto_alloc_shash("sm3", 0, 0);
+
+So, why this should not validate sig->hash_alog *to be* "sm3"?
+
+I.e. add instead guard before crypto_alloc_hash:
+
+        if (strncmp(sig->hash_algo, "sm3") != 0) {
+                /* error */
+        }
+        /* continue */
+
+>  	if (IS_ERR(tfm))
+>  		return PTR_ERR(tfm);
+>  
+> @@ -414,8 +415,7 @@ int public_key_verify_signature(const struct public_key *pkey,
+>  	if (ret)
+>  		goto error_free_key;
+>  
+> -	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") == 0 &&
+> -	    sig->data_size) {
+> +	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
+>  		ret = cert_sig_digest_update(sig, tfm);
+>  		if (ret)
+>  			goto error_free_key;
 > -- 
 > 2.24.3 (Apple Git-128)
 > 
-
-Thanks, I can pick this.
 
 BR, Jarkko
