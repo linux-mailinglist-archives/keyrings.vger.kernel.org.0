@@ -2,92 +2,64 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C125D55E018
-	for <lists+keyrings@lfdr.de>; Tue, 28 Jun 2022 15:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4595155CAC9
+	for <lists+keyrings@lfdr.de>; Tue, 28 Jun 2022 14:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236930AbiF1Dhm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 27 Jun 2022 23:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55666 "EHLO
+        id S1343822AbiF1GyP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 Jun 2022 02:54:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243355AbiF1Dh1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Jun 2022 23:37:27 -0400
-Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0510924F12;
-        Mon, 27 Jun 2022 20:37:24 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0VHfBdgf_1656387440;
-Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0VHfBdgf_1656387440)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Jun 2022 11:37:21 +0800
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Gilad Ben-Yossef <gilad@benyossef.com>,
-        Eric Biggers <ebiggers@google.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Subject: [PATCH v3] KEYS: asymmetric: enforce SM2 signature use pkey algo
-Date:   Tue, 28 Jun 2022 11:37:20 +0800
-Message-Id: <20220628033720.43847-1-tianjia.zhang@linux.alibaba.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+        with ESMTP id S1343828AbiF1GyL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Jun 2022 02:54:11 -0400
+X-Greylist: delayed 515 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Jun 2022 23:54:10 PDT
+Received: from mail.privatemain.com (mail.privatemain.com [45.86.209.156])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A042715A
+        for <keyrings@vger.kernel.org>; Mon, 27 Jun 2022 23:54:10 -0700 (PDT)
+Received: by mail.privatemain.com (Postfix, from userid 1001)
+        id BCC2482B0D; Tue, 28 Jun 2022 02:45:19 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=privatemain.com;
+        s=mail; t=1656398733;
+        bh=ydItAdwWOyX5wABuTqD9n+VESLmlWw/YxTJchbbqnDQ=;
+        h=Date:From:To:Subject:From;
+        b=fzNfWPWy/wbEFQZqzcdLqnaAZrMCrADT2RiIa2zCUPyqBBJL8bgGNSfszthadS4va
+         PmwYNqp+u77o0EipgVind865it+nTD4+9EGvIA5wKo6d0VtyWBOT4sOBg+AlE6BJbL
+         Ix7M/vj9mod4hFibJr2E+ptxytues6SUyfT95YuJHlau6C3wG96XBfRLfM/kE8Qunv
+         cJB6guu4KYylEx8yBDs5YikE50JuxJhhmLNF+PnD6Sb7LPUYytmCy5BiyN/pCfmMA/
+         rB8w1Amv3uvu0Dt/TRiHo0kQTDWQHI/ydQNcC9SQ42+yRexhtGABoA6JYdDTWDpfvE
+         LsgjgLC8Cn2XA==
+Received: by mail.privatemain.com for <keyrings@vger.kernel.org>; Tue, 28 Jun 2022 06:45:16 GMT
+Message-ID: <20220628024500-0.1.26.1do0.0.z0ig7ve2k3@privatemain.com>
+Date:   Tue, 28 Jun 2022 06:45:16 GMT
+From:   "Maciej Kielar" <maciej.kielar@privatemain.com>
+To:     <keyrings@vger.kernel.org>
+Subject: Prawne zabezpieczenie firmy
+X-Mailer: mail.privatemain.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The signature verification of SM2 needs to add the Za value and
-recalculate sig->digest, which requires the detection of the pkey_algo
-in public_key_verify_signature(). As Eric Biggers said, the pkey_algo
-field in sig is attacker-controlled and should be use pkey->pkey_algo
-instead of sig->pkey_algo, and secondly, if sig->pkey_algo is NULL, it
-will also cause signature verification failure.
+Dzie=C5=84 dobry,
 
-The software_key_determine_akcipher() already forces the algorithms
-are matched, so the SM3 algorithm is enforced in the SM2 signature,
-although this has been checked, we still avoid using any algorithm
-information in the signature as input.
+czy s=C4=85 Pa=C5=84stwo otwarci na rozmowe o wsp=C3=B3=C5=82pracy z nasz=
+a Kancelari=C4=85?
 
-Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verification")
-Reported-by: Eric Biggers <ebiggers@google.com>
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
----
- crypto/asymmetric_keys/public_key.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Obs=C5=82ugujemy firmy z wojew=C3=B3dztwa pomorskiego w zakresie kompleks=
+owego wsparcia prawnego w rozszerzonym zakresie.=20
 
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index 7c9e6be35c30..2f8352e88860 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -304,6 +304,10 @@ static int cert_sig_digest_update(const struct public_key_signature *sig,
- 
- 	BUG_ON(!sig->data);
- 
-+	/* SM2 signatures always use the SM3 hash algorithm */
-+	if (!sig->hash_algo || strcmp(sig->hash_algo, "sm3") != 0)
-+		return -EINVAL;
-+
- 	ret = sm2_compute_z_digest(tfm_pkey, SM2_DEFAULT_USERID,
- 					SM2_DEFAULT_USERID_LEN, dgst);
- 	if (ret)
-@@ -414,8 +418,7 @@ int public_key_verify_signature(const struct public_key *pkey,
- 	if (ret)
- 		goto error_free_key;
- 
--	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") == 0 &&
--	    sig->data_size) {
-+	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
- 		ret = cert_sig_digest_update(sig, tfm);
- 		if (ret)
- 			goto error_free_key;
--- 
-2.24.3 (Apple Git-128)
+Dzi=C4=99ki wieloletniej praktyce i wsp=C3=B3=C5=82pracy z dzia=C5=82alno=
+=C5=9Bciami Pa=C5=84stwa formatu jestem w stanie wypracowa=C4=87 korzystn=
+e rozwi=C4=85zania pod wzgl=C4=99dem podatkowym i organizacyjnym.
 
+Mo=C5=BCemy si=C4=99 spotka=C4=87 b=C4=85d=C5=BA porozmawia=C4=87 telefon=
+icznie?
+
+Pozdrawiam,
+Mec. Maciej Kielar
