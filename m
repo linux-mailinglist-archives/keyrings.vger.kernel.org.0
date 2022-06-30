@@ -2,66 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3161A56012B
-	for <lists+keyrings@lfdr.de>; Wed, 29 Jun 2022 15:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 774395626E7
+	for <lists+keyrings@lfdr.de>; Fri,  1 Jul 2022 01:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbiF2NUV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 29 Jun 2022 09:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
+        id S229689AbiF3XON (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 Jun 2022 19:14:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230192AbiF2NUT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 29 Jun 2022 09:20:19 -0400
-Received: from www2055.sakura.ne.jp (www2055.sakura.ne.jp [59.106.171.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D047E33A35;
-        Wed, 29 Jun 2022 06:20:17 -0700 (PDT)
-Received: from fsav412.sakura.ne.jp (fsav412.sakura.ne.jp [133.242.250.111])
-        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25TDD7rj066634;
-        Wed, 29 Jun 2022 22:13:07 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Received: from www2055.sakura.ne.jp (59.106.171.65)
- by fsav412.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav412.sakura.ne.jp);
- Wed, 29 Jun 2022 22:13:07 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav412.sakura.ne.jp)
-Received: from www2055.sakura.ne.jp (localhost [127.0.0.1])
-        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25TDD5Nl066609;
-        Wed, 29 Jun 2022 22:13:07 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Received: (from kkden@localhost)
-        by www2055.sakura.ne.jp (8.15.2/8.15.2/Submit) id 25TDD5BD066608;
-        Wed, 29 Jun 2022 22:13:05 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Message-Id: <202206291313.25TDD5BD066608@www2055.sakura.ne.jp>
-X-Authentication-Warning: www2055.sakura.ne.jp: kkden set sender to 1955@kkden.co.jp using -f
-Subject: THIS IS VERY CONFIDENTIAL
-From:   Steve Dibenedetto <1955@kkden.co.jp>
-To:     stevedibenedetto177@gmail.com
+        with ESMTP id S230336AbiF3XOM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 30 Jun 2022 19:14:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CE91261E;
+        Thu, 30 Jun 2022 16:13:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D4D20B82CBF;
+        Thu, 30 Jun 2022 23:13:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12682C34115;
+        Thu, 30 Jun 2022 23:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656630832;
+        bh=LcRXKeZ1Ow0hvntfZpb4qJkONjz8OExyuqW5J+4q7Kg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FoSvl9eDCCmacnmlLHiNo082z31H5MLSLoQ4Rdb92iRFEj7W4BoIru4nAE6JjuU8D
+         2+1dtFYxJfywoXYmRKF4HJItWscz/jzUIt8OhtKbXHVI+GTCx9Nsg5h9Wp1DG9GKQJ
+         nInVCBkU4Kly6kpTv1PN9Qa8P0783hHkdoQlt9aKVxEYmSSjU9SxTnel9MfSrSAkoQ
+         LFvw8oParpJnSER0mLFm+GbhzshGUOC9SNYDFAJauaElbH6cbqI44tGMN1qi/1+k45
+         y7tmy007zcRUtTtW0chZMyS100zB2ESC5s7Z0TzT+0FyZKpM4LM+Mi1pcveONf5foC
+         j67ADcgHIidkg==
+Date:   Fri, 1 Jul 2022 02:13:48 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        Eric Biggers <ebiggers@google.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: asymmetric: enforce SM2 signature use pkey algo
+Message-ID: <Yr4uLEmN0Jeh3dGC@kernel.org>
+References: <20220628033720.43847-1-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
-Date:   Wed, 29 Jun 2022 22:13:05 +0900
-Content-Type: text/plain; charset="ISO-2022-JP"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
-        SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220628033720.43847-1-tianjia.zhang@linux.alibaba.com>
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+On Tue, Jun 28, 2022 at 11:37:20AM +0800, Tianjia Zhang wrote:
+> The signature verification of SM2 needs to add the Za value and
+> recalculate sig->digest, which requires the detection of the pkey_algo
+> in public_key_verify_signature(). As Eric Biggers said, the pkey_algo
+> field in sig is attacker-controlled and should be use pkey->pkey_algo
+> instead of sig->pkey_algo, and secondly, if sig->pkey_algo is NULL, it
+> will also cause signature verification failure.
+> 
+> The software_key_determine_akcipher() already forces the algorithms
+> are matched, so the SM3 algorithm is enforced in the SM2 signature,
+> although this has been checked, we still avoid using any algorithm
+> information in the signature as input.
+> 
+> Fixes: 215525639631 ("X.509: support OSCCA SM2-with-SM3 certificate verification")
+> Reported-by: Eric Biggers <ebiggers@google.com>
+> Cc: stable@vger.kernel.org # v5.10+
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> ---
+>  crypto/asymmetric_keys/public_key.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+> index 7c9e6be35c30..2f8352e88860 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -304,6 +304,10 @@ static int cert_sig_digest_update(const struct public_key_signature *sig,
+>  
+>  	BUG_ON(!sig->data);
+>  
+> +	/* SM2 signatures always use the SM3 hash algorithm */
+> +	if (!sig->hash_algo || strcmp(sig->hash_algo, "sm3") != 0)
+> +		return -EINVAL;
+> +
+>  	ret = sm2_compute_z_digest(tfm_pkey, SM2_DEFAULT_USERID,
+>  					SM2_DEFAULT_USERID_LEN, dgst);
+>  	if (ret)
+> @@ -414,8 +418,7 @@ int public_key_verify_signature(const struct public_key *pkey,
+>  	if (ret)
+>  		goto error_free_key;
+>  
+> -	if (sig->pkey_algo && strcmp(sig->pkey_algo, "sm2") == 0 &&
+> -	    sig->data_size) {
+> +	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
+>  		ret = cert_sig_digest_update(sig, tfm);
+>  		if (ret)
+>  			goto error_free_key;
+> -- 
+> 2.24.3 (Apple Git-128)
+> 
 
-Hello,
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-My name is Steve Dibenedetto.
-I apologize to have contacted you this way without a direct relationship. There is an opportunity to collaborate with me in the sourcing of some materials needed by our company for production of the different medicines we are researching.
-
-I'm aware that this might be totally outside your professional specialization, but it will be a great source for generating extra revenue. I  discovered a manufacturer who can supply us at a lower rate than our company's previous purchases.
-I will give you more specific details when/if I receive feedback from you showing interest.
-
-Warm Regards  
-Steve Dibenedetto
-Production & Control Manager,
-Green Field Laboratories
-Gothic House, Barker Gate,
-Nottingham, NG1 1JU,
-United Kingdom.
+BR, Jarkko
