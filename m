@@ -2,88 +2,41 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9776564B5E
-	for <lists+keyrings@lfdr.de>; Mon,  4 Jul 2022 03:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59439564BE5
+	for <lists+keyrings@lfdr.de>; Mon,  4 Jul 2022 04:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233204AbiGDBxP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 Jul 2022 21:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
+        id S229871AbiGDCxL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 3 Jul 2022 22:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233173AbiGDBxD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Jul 2022 21:53:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1298864F8
-        for <keyrings@vger.kernel.org>; Sun,  3 Jul 2022 18:52:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1656899576;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Sd8cjBSOdeaVjyH4f3lxl+0xYw15nzSjwpJw6bzSgLk=;
-        b=MXHOLjF+x/NNTpRql0vA4aCZLVnQEjTWA1vDnXHgxVGdQj+5try1+GCKBkm/9DX9JLT9yd
-        fz7Q0VhOcFe/UvgPMvL1zyp+nVuTUlcCsNXKT+8CQTp/Ok84J4lYoeeol8ZNh2fIxK3y16
-        wR4vJ2ABQsIieYH8Hfvssr+Y7rZFCc4=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-n6AZ86CrN6GXkP3mxpaDkw-1; Sun, 03 Jul 2022 21:52:55 -0400
-X-MC-Unique: n6AZ86CrN6GXkP3mxpaDkw-1
-Received: by mail-pj1-f70.google.com with SMTP id u19-20020a17090a891300b001ed01af4131so3732139pjn.1
-        for <keyrings@vger.kernel.org>; Sun, 03 Jul 2022 18:52:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Sd8cjBSOdeaVjyH4f3lxl+0xYw15nzSjwpJw6bzSgLk=;
-        b=dzyH+w9SLMC9Upq18UIsgsLEcDL3whhuodK4crYk0BqcIEDA8U0k/401Yz76Lvtsnf
-         dw2qvz0lmNCb8gsZl+arlxO3c4eJ5fxdB4v87Iht3kxHS0pAoUzo3Y39DLgfWce0brOF
-         /Vd3sZ0FidyD2oCDEQm7YhafGpt1Ey5f6xYNyPXhewxTuuFBxwzCGmV0fEhcyQfLGwfv
-         i2C8I6o/dsaDEBsnl3lvc9cW2Ayp5bvuOScBD4atL5o5cTrIuQ8TSl2NSmQeP2xxGMQr
-         iXUNBFTFCWhXNpJ8EbXkP95S3GgUbSEi8dB9TVTABa9ZbQsrZano6CQKe86NHewf2J2o
-         Bygg==
-X-Gm-Message-State: AJIora8zDzb/nFmMHLGH+q8Vde5hEtOk+M2PPi+NH/tZMsrdgpEx8SaW
-        Dmxyde2ptyzq65kX/hB1rmhzs5GU+IuqYtkMAojm0WT39DvYCDKpOuIpd4XsWcJYseBDvNghtHX
-        rJqckZLlpfH+dRAHL0+8=
-X-Received: by 2002:a17:90a:1485:b0:1ec:788e:a053 with SMTP id k5-20020a17090a148500b001ec788ea053mr31016137pja.16.1656899573985;
-        Sun, 03 Jul 2022 18:52:53 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1u8Sm73HYl29mcEbEmk3Z6a37A8y2OdP5f3idLICxDPGrBoxyTSHxhDRsHAFrxMwDkh5wCuzQ==
-X-Received: by 2002:a17:90a:1485:b0:1ec:788e:a053 with SMTP id k5-20020a17090a148500b001ec788ea053mr31016116pja.16.1656899573776;
-        Sun, 03 Jul 2022 18:52:53 -0700 (PDT)
-Received: from localhost ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id p2-20020a1709027ec200b00168f08d0d12sm16841927plb.89.2022.07.03.18.52.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Jul 2022 18:52:53 -0700 (PDT)
-From:   Coiby Xu <coxu@redhat.com>
-To:     kexec@lists.infradead.org, linux-integrity@vger.kernel.org
-Cc:     Mimi Zohar <zohar@linux.ibm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Michal Suchanek <msuchanek@suse.de>,
-        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Chun-Yi Lee <jlee@suse.com>, stable@vger.kernel.org,
-        Philipp Rudo <prudo@linux.ibm.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linux-s390@vger.kernel.org (open list:S390),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v9 4/4] kexec, KEYS, s390: Make use of built-in and secondary keyring for signature verification
-Date:   Mon,  4 Jul 2022 09:52:01 +0800
-Message-Id: <20220704015201.59744-5-coxu@redhat.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20220704015201.59744-1-coxu@redhat.com>
-References: <20220704015201.59744-1-coxu@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        with ESMTP id S229473AbiGDCxK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Jul 2022 22:53:10 -0400
+Received: from mail.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 11F9E2ADA;
+        Sun,  3 Jul 2022 19:53:09 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mail.nfschina.com (Postfix) with ESMTP id 60E2F1E80CCF;
+        Mon,  4 Jul 2022 10:51:15 +0800 (CST)
+X-Virus-Scanned: amavisd-new at test.com
+Received: from mail.nfschina.com ([127.0.0.1])
+        by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id k-tZ0YIiSzKU; Mon,  4 Jul 2022 10:51:12 +0800 (CST)
+Received: from node1.localdomain (unknown [219.141.250.2])
+        (Authenticated sender: zeming@nfschina.com)
+        by mail.nfschina.com (Postfix) with ESMTPA id 8A1391E80C90;
+        Mon,  4 Jul 2022 10:51:12 +0800 (CST)
+From:   Li zeming <zeming@nfschina.com>
+To:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
+        serge@hallyn.com
+Cc:     keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@nfschina.com,
+        Li zeming <zeming@nfschina.com>
+Subject: [PATCH] keys/keyctl: Fix typo in string
+Date:   Mon,  4 Jul 2022 10:52:48 +0800
+Message-Id: <20220704025248.3695-1-zeming@nfschina.com>
+X-Mailer: git-send-email 2.18.2
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -91,64 +44,26 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Michal Suchanek <msuchanek@suse.de>
+Remove the repeated ',' from string
 
-commit e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
-adds support for KEXEC_SIG verification with keys from platform keyring
-but the built-in keys and secondary keyring are not used.
-
-Add support for the built-in keys and secondary keyring as x86 does.
-
-Fixes: e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
-Cc: stable@vger.kernel.org
-Cc: Philipp Rudo <prudo@linux.ibm.com>
-Cc: kexec@lists.infradead.org
-Cc: keyrings@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-Reviewed-by: "Lee, Chun-Yi" <jlee@suse.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Signed-off-by: Coiby Xu <coxu@redhat.com>
+Signed-off-by: Li zeming <zeming@nfschina.com>
 ---
- arch/s390/kernel/machine_kexec_file.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ security/keys/keyctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
-index 8f43575a4dd3..fc6d5f58debe 100644
---- a/arch/s390/kernel/machine_kexec_file.c
-+++ b/arch/s390/kernel/machine_kexec_file.c
-@@ -31,6 +31,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
- 	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
- 	struct module_signature *ms;
- 	unsigned long sig_len;
-+	int ret;
+diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+index 96a92a645216..2be09642dd13 100644
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1175,7 +1175,7 @@ static long keyctl_instantiate_key_common(key_serial_t id,
+ 	void *payload;
+ 	long ret;
  
- 	/* Skip signature verification when not secure IPLed. */
- 	if (!ipl_secure_flag)
-@@ -65,11 +66,18 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
- 		return -EBADMSG;
- 	}
+-	kenter("%d,,%zu,%d", id, plen, ringid);
++	kenter("%d,%zu,%d", id, plen, ringid);
  
--	return verify_pkcs7_signature(kernel, kernel_len,
--				      kernel + kernel_len, sig_len,
--				      VERIFY_USE_PLATFORM_KEYRING,
--				      VERIFYING_MODULE_SIGNATURE,
--				      NULL, NULL);
-+	ret = verify_pkcs7_signature(kernel, kernel_len,
-+				     kernel + kernel_len, sig_len,
-+				     VERIFY_USE_SECONDARY_KEYRING,
-+				     VERIFYING_MODULE_SIGNATURE,
-+				     NULL, NULL);
-+	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
-+		ret = verify_pkcs7_signature(kernel, kernel_len,
-+					     kernel + kernel_len, sig_len,
-+					     VERIFY_USE_PLATFORM_KEYRING,
-+					     VERIFYING_MODULE_SIGNATURE,
-+					     NULL, NULL);
-+	return ret;
- }
- #endif /* CONFIG_KEXEC_SIG */
- 
+ 	if (!plen)
+ 		from = NULL;
 -- 
-2.35.3
+2.18.2
 
