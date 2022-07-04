@@ -2,41 +2,46 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22EE8564BED
-	for <lists+keyrings@lfdr.de>; Mon,  4 Jul 2022 04:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05CF7565330
+	for <lists+keyrings@lfdr.de>; Mon,  4 Jul 2022 13:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbiGDC40 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 Jul 2022 22:56:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39968 "EHLO
+        id S231193AbiGDLW1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 4 Jul 2022 07:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbiGDC4Z (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Jul 2022 22:56:25 -0400
-Received: from mail.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2B22A2C3;
-        Sun,  3 Jul 2022 19:56:25 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mail.nfschina.com (Postfix) with ESMTP id 754061E80CCF;
-        Mon,  4 Jul 2022 10:54:31 +0800 (CST)
-X-Virus-Scanned: amavisd-new at test.com
-Received: from mail.nfschina.com ([127.0.0.1])
-        by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zgr4wSerIevz; Mon,  4 Jul 2022 10:54:28 +0800 (CST)
-Received: from node1.localdomain (unknown [219.141.250.2])
-        (Authenticated sender: zeming@nfschina.com)
-        by mail.nfschina.com (Postfix) with ESMTPA id C33531E80C90;
-        Mon,  4 Jul 2022 10:54:28 +0800 (CST)
-From:   Li zeming <zeming@nfschina.com>
-To:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
-        serge@hallyn.com
-Cc:     keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@nfschina.com,
-        Li zeming <zeming@nfschina.com>
-Subject: [PATCH] keys/keyring: Fix typo in string
-Date:   Mon,  4 Jul 2022 10:56:10 +0800
-Message-Id: <20220704025610.3834-1-zeming@nfschina.com>
-X-Mailer: git-send-email 2.18.2
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        with ESMTP id S232842AbiGDLW0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 4 Jul 2022 07:22:26 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5865ABF6C;
+        Mon,  4 Jul 2022 04:22:22 -0700 (PDT)
+Received: from dggpeml500024.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Lc3J424hfzkWjX;
+        Mon,  4 Jul 2022 19:20:20 +0800 (CST)
+Received: from dggpeml500008.china.huawei.com (7.185.36.147) by
+ dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 4 Jul 2022 19:22:19 +0800
+Received: from huawei.com (10.67.175.34) by dggpeml500008.china.huawei.com
+ (7.185.36.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 4 Jul
+ 2022 19:22:18 +0800
+From:   Ren Zhijie <renzhijie2@huawei.com>
+To:     <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <davem@davemloft.net>, <simo@redhat.com>
+CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Ren Zhijie <renzhijie2@huawei.com>
+Subject: [PATCH -next] certs: Fix Kconfig dependency
+Date:   Mon, 4 Jul 2022 19:20:28 +0800
+Message-ID: <20220704112028.183193-1-renzhijie2@huawei.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.34]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500008.china.huawei.com (7.185.36.147)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,35 +49,38 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Remove the repeated ',' from string
+If CONFIG_PKCS7_MESSAGE_PARSER=m and CONFIG_FIPS_SIGNATURE_SELFTEST=y,
+make ARCH=x86_64 CROSS_COMPILE=x86_64-linux-gnu-, will be failed, like this:
 
-Signed-off-by: Li zeming <zeming@nfschina.com>
+crypto/asymmetric_keys/selftest.o: In function `fips_signature_selftest':
+selftest.c:(.init.text+0xc3): undefined reference to `pkcs7_parse_message'
+selftest.c:(.init.text+0x101): undefined reference to `pkcs7_supply_detached_data'
+selftest.c:(.init.text+0x112): undefined reference to `pkcs7_verify'
+selftest.c:(.init.text+0x13f): undefined reference to `pkcs7_validate_trust'
+selftest.c:(.init.text+0x169): undefined reference to `pkcs7_free_message'
+make: *** [vmlinux] Error 1
+
+To fix this error, add depends on PKCS7_MESSAGE_PARSER=y to FIPS_SIGNATURE_SELFTEST
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
+Signed-off-by: Ren Zhijie <renzhijie2@huawei.com>
 ---
- security/keys/keyring.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/asymmetric_keys/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 5e6a90760753..c6c47ca9b57d 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -460,7 +460,7 @@ static int keyring_read_iterator(const void *object, void *data)
- 	struct keyring_read_iterator_context *ctx = data;
- 	const struct key *key = keyring_ptr_to_key(object);
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 3df3fe4ed95f..fe007db96c69 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -83,6 +83,6 @@ config FIPS_SIGNATURE_SELFTEST
+ 	  for FIPS.
+ 	depends on KEYS
+ 	depends on ASYMMETRIC_KEY_TYPE
+-	depends on PKCS7_MESSAGE_PARSER
++	depends on PKCS7_MESSAGE_PARSER=y
  
--	kenter("{%s,%d},,{%zu/%zu}",
-+	kenter("{%s,%d},{%zu/%zu}",
- 	       key->type->name, key->serial, ctx->count, ctx->buflen);
- 
- 	if (ctx->count >= ctx->buflen)
-@@ -484,7 +484,7 @@ static long keyring_read(const struct key *keyring,
- 	struct keyring_read_iterator_context ctx;
- 	long ret;
- 
--	kenter("{%d},,%zu", key_serial(keyring), buflen);
-+	kenter("{%d},%zu", key_serial(keyring), buflen);
- 
- 	if (buflen & (sizeof(key_serial_t) - 1))
- 		return -EINVAL;
+ endif # ASYMMETRIC_KEY_TYPE
 -- 
-2.18.2
+2.17.1
 
