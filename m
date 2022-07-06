@@ -2,81 +2,139 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7FF567001
-	for <lists+keyrings@lfdr.de>; Tue,  5 Jul 2022 15:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7EC567C0B
+	for <lists+keyrings@lfdr.de>; Wed,  6 Jul 2022 04:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231770AbiGENyv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 5 Jul 2022 09:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46926 "EHLO
+        id S231326AbiGFCj4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 5 Jul 2022 22:39:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbiGENyX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Jul 2022 09:54:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 982F2B3D
-        for <keyrings@vger.kernel.org>; Tue,  5 Jul 2022 06:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657027941;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=VnUeyAuXTRR13vDRjc/+AnsnriTCOJeZopadyOQXHsI=;
-        b=ZaCmOqOgh4nQbql4GC+hZMyuPv1taVOxb3tlwHACLQPZ1xDE8zkEqkmc3630BJRaEDYw3H
-        G0zeL275cvjTL8s0nNtMsaJ5llWImTPeszCT8hVRdbxdJVGZtYsAzE7QEnQN+R/DuVxWPo
-        4PXGMBsTxNQODJpK+z1UWCnINjRWn0U=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-gcAlfXMAPEiIz2jHO1zvjA-1; Tue, 05 Jul 2022 09:32:17 -0400
-X-MC-Unique: gcAlfXMAPEiIz2jHO1zvjA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57C01294EDCC;
-        Tue,  5 Jul 2022 13:32:17 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.37.50])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2B5022166B26;
-        Tue,  5 Jul 2022 13:32:16 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20220704025610.3834-1-zeming@nfschina.com>
-References: <20220704025610.3834-1-zeming@nfschina.com>
-To:     Li zeming <zeming@nfschina.com>
-Cc:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
-        serge@hallyn.com, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@nfschina.com
-Subject: Re: [PATCH] keys/keyring: Fix typo in string
+        with ESMTP id S231317AbiGFCjz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 5 Jul 2022 22:39:55 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52AA1A052;
+        Tue,  5 Jul 2022 19:39:54 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2661jmMP016625;
+        Wed, 6 Jul 2022 02:39:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=1EZwPBRHZPAcnjmWs1UFbWv6tFf0FTt8oOk/6AZ/wOA=;
+ b=DxOtwggB6E3FMmq4vnTWDMkvnT6FXf6eKPmYYzL1kYD9YCBwiMpJcWkKLpZ9RMPpwYhI
+ rJttM56SUFs8HWT/Cxfntxapcxy69sP2oU5PK/6JH1/+WmXVr/h8ZQRJLK7o0+qKc2xV
+ 6V4LDAP+yR8Zid7wuuRan2ITltWUTEauxcYVfGZcH59Vnol/AEYYyhU0gJSXZBHRBOLv
+ XHF97QjFJWbMa6O+zZmozwtYtmjC+nBiEVt7XPq54748RVignwBT4QgFcHgBPJkoUku1
+ 0pJ2jron6I/LBcW6MTF5oCbXwzslfdPap6M9SXUTh3xg77jmJowrqnmFx4Gw1MSvXe2S ZA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h5111gvsd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Jul 2022 02:39:40 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2662coTr009912;
+        Wed, 6 Jul 2022 02:39:40 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h5111gvs1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Jul 2022 02:39:40 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2662aVJ4016513;
+        Wed, 6 Jul 2022 02:39:38 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+        by ppma03wdc.us.ibm.com with ESMTP id 3h4ucnhudf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Jul 2022 02:39:38 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2662dcmh32309650
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 6 Jul 2022 02:39:38 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5A2A3AE060;
+        Wed,  6 Jul 2022 02:39:38 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BD27AAE062;
+        Wed,  6 Jul 2022 02:39:37 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.160.24.101])
+        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed,  6 Jul 2022 02:39:37 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     keyrings@vger.kernel.org
+Cc:     gjoyce@ibm.com, dhowells@redhat.com, jarkko@kernel.org,
+        andrzej.jakowski@intel.com, jonathan.derrick@linux.dev,
+        drmiller.lnx@gmail.com, linux-block@vger.kernel.org,
+        greg@gilhooley.com
+Subject: [PATCH 0/4] sed-opal: keyrings, discovery, revert and key store 
+Date:   Tue,  5 Jul 2022 21:39:31 -0500
+Message-Id: <20220706023935.875994-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2217585.1657027935.1@warthog.procyon.org.uk>
-Date:   Tue, 05 Jul 2022 14:32:15 +0100
-Message-ID: <2217586.1657027935@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 78-GaPJ0fDTQ4aVsHRdK4V1skzMl-IYJ
+X-Proofpoint-GUID: vEWfU8oP0rnmEhLFLapqcBKsx7g1FGug
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-06_02,2022-06-28_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ mlxlogscore=999 clxscore=1011 priorityscore=1501 bulkscore=0
+ malwarescore=0 suspectscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207060008
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Li zeming <zeming@nfschina.com> wrote:
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-> -	kenter("{%s,%d},,{%zu/%zu}",
-> +	kenter("{%s,%d},{%zu/%zu}",
->  	       key->type->name, key->serial, ctx->count, ctx->buflen);
+The current TCG SED Opal implementation in the block
+driver requires that authentication keys be provided
+in an ioctl so that they can be presented to the
+underlying SED Opal capable drive. Currently, the key
+is typically entered by a user with an application
+like sedutil or sedcli. While this process works, it
+does not lend itself to automation like unlock by a udev
+rule.
 
-This changed, so yes, it can be fixed.
+Extend the SED block driver so it can alternatively
+obtain a key from a sed-opal kernel keyring. The SED
+ioctls will indicate the source of the key, either
+directly in the ioctl data or from the keyring.
 
-> -	kenter("{%d},,%zu", key_serial(keyring), buflen);
-> +	kenter("{%d},%zu", key_serial(keyring), buflen);
+Two new SED ioctls have also been added. These are:
+  1) IOC_OPAL_REVERT_LSP to revert LSP state
+  2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
 
-This one's not a typo.
+Also, for platforms that have a permanent key store, the
+platform may provide unique platform dependent functions
+to read/write variables. The SED block driver has been
+modified to attempt to read a key from the platform key
+store. If successful, the key value is saved in the kernel
+sed-opal keyring. If the platform does not support a
+permanent key store, the read will fail and a key will
+not be added to the keyring.
 
-David
+
+Greg Joyce (4):
+  block: sed-opal: Implement IOC_OPAL_DISCOVERY
+  block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+  block: sed-opal: keyring support for SED Opal keys.
+  arch_vars: create arch specific permanent store
+
+ block/opal_proto.h            |   4 +
+ block/sed-opal.c              | 274 +++++++++++++++++++++++++++++++++-
+ include/linux/arch_vars.h     |  23 +++
+ include/linux/sed-opal.h      |   5 +
+ include/uapi/linux/sed-opal.h |  24 ++-
+ lib/Makefile                  |   2 +-
+ lib/arch_vars.c               |  25 ++++
+ 7 files changed, 350 insertions(+), 7 deletions(-)
+ create mode 100644 include/linux/arch_vars.h
+ create mode 100644 lib/arch_vars.c
+
+-- 
+gjoyce@linux.vnet.ibm.com
 
