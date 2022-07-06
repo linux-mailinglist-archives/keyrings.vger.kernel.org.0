@@ -2,62 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E3A569057
-	for <lists+keyrings@lfdr.de>; Wed,  6 Jul 2022 19:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA30D56968D
+	for <lists+keyrings@lfdr.de>; Thu,  7 Jul 2022 01:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232351AbiGFRLV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 6 Jul 2022 13:11:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34814 "EHLO
+        id S234577AbiGFXtr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 6 Jul 2022 19:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbiGFRLU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Jul 2022 13:11:20 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF941EC65;
-        Wed,  6 Jul 2022 10:11:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657127478; x=1688663478;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GZ21WeUn2BvY+TriUS2rQPak4SchM30SywlYdffG4P0=;
-  b=CrBZjo7r+HdVGMmTEsl84VhKztqZRnMDweEPz6kfKB+Yb4wwhNnH3umT
-   y0ohvnN49UNUU9fimq2kQOFMQ6sywTE8qY+ods2oX1g1IFpvE0trKx8N3
-   HneJ8Mm1MQ/JFs/czVZhtWVPSD8w8ToEk/MHjyjjPJ8H6Vj8Ghu4y7Vy1
-   AG/CT7raJbJCkEpxN5Miyqdsb86RKyHvrscJh4Kr3OEZmTjK3zYDwu2nw
-   26TbfrKO5fzjbj1ROwm+XaopqLMXBqk/YkDql7r7yvdZ30dANtny9zcmy
-   jVSM8WU/Dq20u9//YIWXLVdpyuPcrmtgyUMpFZN5hXbyezQzV3dTERu4R
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10400"; a="281364065"
-X-IronPort-AV: E=Sophos;i="5.92,250,1650956400"; 
-   d="scan'208";a="281364065"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2022 10:11:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,250,1650956400"; 
-   d="scan'208";a="625981050"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 06 Jul 2022 10:11:14 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o98YU-000KpD-0G;
-        Wed, 06 Jul 2022 17:11:14 +0000
-Date:   Thu, 7 Jul 2022 01:10:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     gjoyce@linux.vnet.ibm.com, keyrings@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, gjoyce@ibm.com, dhowells@redhat.com,
-        jarkko@kernel.org, andrzej.jakowski@intel.com,
-        jonathan.derrick@linux.dev, drmiller.lnx@gmail.com,
-        linux-block@vger.kernel.org, greg@gilhooley.com
-Subject: Re: [PATCH 4/4] arch_vars: create arch specific permanent store
-Message-ID: <202207070041.gf2Xgary-lkp@intel.com>
-References: <20220706023935.875994-5-gjoyce@linux.vnet.ibm.com>
+        with ESMTP id S233939AbiGFXtn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Jul 2022 19:49:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5328D2D1C3
+        for <keyrings@vger.kernel.org>; Wed,  6 Jul 2022 16:49:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 01D11B81E4D
+        for <keyrings@vger.kernel.org>; Wed,  6 Jul 2022 23:49:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F70C341D0
+        for <keyrings@vger.kernel.org>; Wed,  6 Jul 2022 23:49:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657151379;
+        bh=fQu2htsFT44q478MOdi5pVGALEfmok32wUDouba7C8E=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=nkDjswnwK+ss4/QExIKXU5HhnNG/+9N0dGaZVJytJSUxtxFm0h98mcQd/dvsU1V7G
+         bnJHSfuH1dbVWBTh/g9g20Xo7ME5vQW2FmYal448H1eNXRxehbglDY6/+v5cLBJlQc
+         z47zzkOpvkZydwSSYT1hvzwosQ4zi4lyn9fmwdrOPT9yr/UKeNmpwXk2yo4ZHcVnS7
+         jhdWpMQyfKG1w9G+vcBzd624sgDYWjlUcCSGLgllWyAK55wBUKF1AUfVv4OvZeSDMX
+         CL/3i5H2wyq/W5v/V5e+0AqRPnlSY3mgAiohANfO7YJfumWagmu1wKWyLZnrDaOcEO
+         K+qc2OxqTTy7g==
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-31bf3656517so154763437b3.12
+        for <keyrings@vger.kernel.org>; Wed, 06 Jul 2022 16:49:39 -0700 (PDT)
+X-Gm-Message-State: AJIora8YSDB4Slrb75VrwHW2xUzFqVSP85gqsisybpDtyslbm82hBeHM
+        2u2oKbPqIO8HEqR2xnt31odPhigJh4w0uWwHzeLphw==
+X-Google-Smtp-Source: AGRyM1scb85wOqxPw547s6M27o6xFWA7hxGa2bjDyeXOU2HGlYReTCcDvnEf221P4RtTBZHZo6v/XPG0yBTjNLiffAE=
+X-Received: by 2002:a81:3d1:0:b0:31c:9b70:ba8a with SMTP id
+ 200-20020a8103d1000000b0031c9b70ba8amr20225796ywd.204.1657151378426; Wed, 06
+ Jul 2022 16:49:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220706023935.875994-5-gjoyce@linux.vnet.ibm.com>
+References: <20220628122750.1895107-1-roberto.sassu@huawei.com>
+ <20220628122750.1895107-5-roberto.sassu@huawei.com> <903b1b6c-b0fd-d624-a24b-5983d8d661b7@iogearbox.net>
+In-Reply-To: <903b1b6c-b0fd-d624-a24b-5983d8d661b7@iogearbox.net>
+From:   KP Singh <kpsingh@kernel.org>
+Date:   Thu, 7 Jul 2022 01:49:27 +0200
+X-Gmail-Original-Message-ID: <CACYkzJ4iR=FurW2UZdgycTdu54kNoFrw4uvmDrpTd3xuvpvVTw@mail.gmail.com>
+Message-ID: <CACYkzJ4iR=FurW2UZdgycTdu54kNoFrw4uvmDrpTd3xuvpvVTw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/5] bpf: Add bpf_verify_pkcs7_signature() helper
+To:     Daniel Borkmann <daniel@iogearbox.net>
+Cc:     Roberto Sassu <roberto.sassu@huawei.com>, ast@kernel.org,
+        andrii@kernel.org, john.fastabend@gmail.com, songliubraving@fb.com,
+        kafai@fb.com, yhs@fb.com, dhowells@redhat.com,
+        keyrings@vger.kernel.org, bpf@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,210 +66,197 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+On Wed, Jul 6, 2022 at 6:04 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
+>
+> On 6/28/22 2:27 PM, Roberto Sassu wrote:
+> > Add the bpf_verify_pkcs7_signature() helper, to give eBPF security modules
+> > the ability to check the validity of a signature against supplied data, by
+> > using user-provided or system-provided keys as trust anchor.
+> >
+> > The new helper makes it possible to enforce mandatory policies, as eBPF
+> > programs might be allowed to make security decisions only based on data
+> > sources the system administrator approves.
+> >
+> > The caller should provide both the data to be verified and the signature as
+> > eBPF dynamic pointers (to minimize the number of parameters).
+> >
+> > The caller should also provide a trusted keyring serial, together with key
+> > lookup-specific flags, to determine which keys can be used for signature
+> > verification. Alternatively, the caller could specify zero as serial value
+> > (not valid, serials must be positive), and provide instead a special
+> > keyring ID.
+> >
+> > Key lookup flags are defined in include/linux/key.h and can be: 1, to
+> > request that special keyrings be created if referred to directly; 2 to
+> > permit partially constructed keys to be found.
+> >
+> > Special IDs are defined in include/linux/verification.h and can be: 0 for
+> > the primary keyring (immutable keyring of system keys); 1 for both the
+> > primary and secondary keyring (where keys can be added only if they are
+> > vouched for by existing keys in those keyrings); 2 for the platform keyring
+> > (primarily used by the integrity subsystem to verify a kexec'ed kerned
+> > image and, possibly, the initramfs signature).
+> >
+> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > Reported-by: kernel test robot <lkp@intel.com> (cast warning)
+>
+> nit: Given this a new feature not a fix to existing code, there is no need to
+>       add the above reported-by from kbuild bot.
+>
+> > ---
+> >   include/uapi/linux/bpf.h       | 24 +++++++++++++
+> >   kernel/bpf/bpf_lsm.c           | 63 ++++++++++++++++++++++++++++++++++
+> >   tools/include/uapi/linux/bpf.h | 24 +++++++++++++
+> >   3 files changed, 111 insertions(+)
+> >
+> > diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+> > index e81362891596..b4f5ad863281 100644
+> > --- a/include/uapi/linux/bpf.h
+> > +++ b/include/uapi/linux/bpf.h
+> > @@ -5325,6 +5325,29 @@ union bpf_attr {
+> >    *          **-EACCES** if the SYN cookie is not valid.
+> >    *
+> >    *          **-EPROTONOSUPPORT** if CONFIG_IPV6 is not builtin.
+> > + *
+> > + * long bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr, struct bpf_dynptr *sig_ptr, u32 trusted_keyring_serial, unsigned long lookup_flags, unsigned long trusted_keyring_id)
+>
+> nit: for the args instead of ulong, just do u64
+>
+> > + *   Description
+> > + *           Verify the PKCS#7 signature *sig_ptr* against the supplied
+> > + *           *data_ptr* with keys in a keyring with serial
+> > + *           *trusted_keyring_serial*, searched with *lookup_flags*, if the
+> > + *           parameter value is positive, or alternatively in a keyring with
+> > + *           special ID *trusted_keyring_id* if *trusted_keyring_serial* is
+> > + *           zero.
+> > + *
+> > + *           *lookup_flags* are defined in include/linux/key.h and can be: 1,
+> > + *           to request that special keyrings be created if referred to
+> > + *           directly; 2 to permit partially constructed keys to be found.
+> > + *
+> > + *           Special IDs are defined in include/linux/verification.h and can
+> > + *           be: 0 for the primary keyring (immutable keyring of system
+> > + *           keys); 1 for both the primary and secondary keyring (where keys
+> > + *           can be added only if they are vouched for by existing keys in
+> > + *           those keyrings); 2 for the platform keyring (primarily used by
+> > + *           the integrity subsystem to verify a kexec'ed kerned image and,
+> > + *           possibly, the initramfs signature).
+> > + *   Return
+> > + *           0 on success, a negative value on error.
+> >    */
+> >   #define __BPF_FUNC_MAPPER(FN)               \
+> >       FN(unspec),                     \
+> > @@ -5535,6 +5558,7 @@ union bpf_attr {
+> >       FN(tcp_raw_gen_syncookie_ipv6), \
+> >       FN(tcp_raw_check_syncookie_ipv4),       \
+> >       FN(tcp_raw_check_syncookie_ipv6),       \
+> > +     FN(verify_pkcs7_signature),     \
+>
+> (Needs rebase)
+>
+> >       /* */
+> >
+> >   /* integer value in 'imm' field of BPF_CALL instruction selects which helper
+> > diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
+> > index c1351df9f7ee..401bda01ad84 100644
+> > --- a/kernel/bpf/bpf_lsm.c
+> > +++ b/kernel/bpf/bpf_lsm.c
+> > @@ -16,6 +16,8 @@
+> >   #include <linux/bpf_local_storage.h>
+> >   #include <linux/btf_ids.h>
+> >   #include <linux/ima.h>
+> > +#include <linux/verification.h>
+> > +#include <linux/key.h>
+> >
+> >   /* For every LSM hook that allows attachment of BPF programs, declare a nop
+> >    * function where a BPF program can be attached.
+> > @@ -132,6 +134,62 @@ static const struct bpf_func_proto bpf_get_attach_cookie_proto = {
+> >       .arg1_type      = ARG_PTR_TO_CTX,
+> >   };
+> >
+> > +#ifdef CONFIG_SYSTEM_DATA_VERIFICATION
+> > +BPF_CALL_5(bpf_verify_pkcs7_signature, struct bpf_dynptr_kern *, data_ptr,
+> > +        struct bpf_dynptr_kern *, sig_ptr, u32, trusted_keyring_serial,
+> > +        unsigned long, lookup_flags, unsigned long, trusted_keyring_id)
+> > +{
+> > +     key_ref_t trusted_keyring_ref;
+> > +     struct key *trusted_keyring;
+> > +     int ret;
+> > +
+> > +     /* Keep in sync with defs in include/linux/key.h. */
+> > +     if (lookup_flags > KEY_LOOKUP_PARTIAL)
+> > +             return -EINVAL;
+>
+> iiuc, the KEY_LOOKUP_* is a mask, so you could also combine the two, e.g.
+> KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL. I haven't seen you mentioning anything
+> specific on why it is not allowed. What's the rationale, if it's intentional
+> if should probably be documented?
 
-Thank you for the patch! Yet something to improve:
+I think this was a part of the digilim threat model (only allow
+limited lookup operations),
+but this seems to be conflating the policy into the implementation of
+the helper.
 
-[auto build test ERROR on axboe-block/for-next]
-[also build test ERROR on linus/master v5.19-rc5 next-20220706]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Roberto, can this not be implemented in digilim as a BPF LSM check
+that attaches to the key_permission LSM hook?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/gjoyce-linux-vnet-ibm-com/sed-opal-keyrings-discovery-revert-and-key-store/20220706-104204
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git for-next
-config: sparc64-randconfig-r002-20220703 (https://download.01.org/0day-ci/archive/20220707/202207070041.gf2Xgary-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/b984dda112cdbda6b41045bf63f790a3c2903c7a
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review gjoyce-linux-vnet-ibm-com/sed-opal-keyrings-discovery-revert-and-key-store/20220706-104204
-        git checkout b984dda112cdbda6b41045bf63f790a3c2903c7a
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=sparc64 SHELL=/bin/bash
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/lsm_hooks.h#n1158
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+>
+> At minimum I also think the helper description needs to be improved for people
+> to understand enough w/o reading through the kernel source, e.g. wrt lookup_flags
+> since I haven't seen it in your selftests either ... when does a user need to
+> use the given flags.
+>
+> nit: when both trusted_keyring_serial and trusted_keyring_id are passed to the
+> helper, then this should be rejected as invalid argument? (Kind of feels a bit
+> like we're cramming two things in one helper.. KP, thoughts? :))
 
-All error/warnings (new ones prefixed by >>):
+EINVAL when both are passed seems reasonable. The signature (pun?) of the
+does seem to get bloated, but I am not sure if it's worth adding two
+helpers here.
 
-   block/sed-opal.c: In function 'update_sed_opal_key':
->> block/sed-opal.c:286:15: error: implicit declaration of function 'key_alloc'; did you mean 'bdev_alloc'? [-Werror=implicit-function-declaration]
-     286 |         key = key_alloc(&key_type_user, desc, GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
-         |               ^~~~~~~~~
-         |               bdev_alloc
->> block/sed-opal.c:286:26: error: 'key_type_user' undeclared (first use in this function)
-     286 |         key = key_alloc(&key_type_user, desc, GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
-         |                          ^~~~~~~~~~~~~
-   block/sed-opal.c:286:26: note: each undeclared identifier is reported only once for each function it appears in
->> block/sed-opal.c:288:33: error: 'KEY_USR_VIEW' undeclared (first use in this function)
-     288 |                                 KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-         |                                 ^~~~~~~~~~~~
->> block/sed-opal.c:288:48: error: 'KEY_USR_SEARCH' undeclared (first use in this function)
-     288 |                                 KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-         |                                                ^~~~~~~~~~~~~~
->> block/sed-opal.c:288:65: error: 'KEY_USR_WRITE' undeclared (first use in this function)
-     288 |                                 KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-         |                                                                 ^~~~~~~~~~~~~
->> block/sed-opal.c:294:15: error: implicit declaration of function 'key_instantiate_and_link'; did you mean 'd_instantiate_anon'? [-Werror=implicit-function-declaration]
-     294 |         ret = key_instantiate_and_link(key, key_data, keylen,
-         |               ^~~~~~~~~~~~~~~~~~~~~~~~
-         |               d_instantiate_anon
-   block/sed-opal.c: In function 'read_sed_opal_key':
->> block/sed-opal.c:307:9: error: unknown type name 'key_ref_t'; did you mean 'key_ref_put'?
-     307 |         key_ref_t kref;
-         |         ^~~~~~~~~
-         |         key_ref_put
->> block/sed-opal.c:313:16: error: implicit declaration of function 'keyring_search' [-Werror=implicit-function-declaration]
-     313 |         kref = keyring_search(make_key_ref(sed_opal_keyring, true),
-         |                ^~~~~~~~~~~~~~
-   block/sed-opal.c:314:18: error: 'key_type_user' undeclared (first use in this function)
-     314 |                 &key_type_user,
-         |                  ^~~~~~~~~~~~~
->> block/sed-opal.c:318:20: warning: passing argument 1 of 'IS_ERR' makes pointer from integer without a cast [-Wint-conversion]
-     318 |         if (IS_ERR(kref)) {
-         |                    ^~~~
-         |                    |
-         |                    int
-   In file included from include/linux/container_of.h:6,
-                    from include/linux/list.h:5,
-                    from include/linux/rculist.h:10,
-                    from include/linux/pid.h:5,
-                    from include/linux/sched.h:14,
-                    from include/linux/delay.h:23,
-                    from block/sed-opal.c:12:
-   include/linux/err.h:34:60: note: expected 'const void *' but argument is of type 'int'
-      34 | static inline bool __must_check IS_ERR(__force const void *ptr)
-         |                                                ~~~~~~~~~~~~^~~
->> block/sed-opal.c:319:31: warning: passing argument 1 of 'PTR_ERR' makes pointer from integer without a cast [-Wint-conversion]
-     319 |                 ret = PTR_ERR(kref);
-         |                               ^~~~
-         |                               |
-         |                               int
-   In file included from include/linux/container_of.h:6,
-                    from include/linux/list.h:5,
-                    from include/linux/rculist.h:10,
-                    from include/linux/pid.h:5,
-                    from include/linux/sched.h:14,
-                    from include/linux/delay.h:23,
-                    from block/sed-opal.c:12:
-   include/linux/err.h:29:61: note: expected 'const void *' but argument is of type 'int'
-      29 | static inline long __must_check PTR_ERR(__force const void *ptr)
-         |                                                 ~~~~~~~~~~~~^~~
->> block/sed-opal.c:322:31: error: invalid use of undefined type 'struct key'
-     322 |                 down_read(&key->sem);
-         |                               ^~
-   block/sed-opal.c:325:41: error: invalid use of undefined type 'struct key'
-     325 |                         if (buflen > key->datalen)
-         |                                         ^~
-   block/sed-opal.c:326:45: error: invalid use of undefined type 'struct key'
-     326 |                                 buflen = key->datalen;
-         |                                             ^~
-   block/sed-opal.c:328:34: error: invalid use of undefined type 'struct key'
-     328 |                         ret = key->type->read(key, (char *)buffer, buflen);
-         |                                  ^~
-   block/sed-opal.c:330:29: error: invalid use of undefined type 'struct key'
-     330 |                 up_read(&key->sem);
-         |                             ^~
-   block/sed-opal.c: In function 'sed_opal_init':
->> block/sed-opal.c:2938:14: error: implicit declaration of function 'keyring_alloc'; did you mean 'warn_alloc'? [-Werror=implicit-function-declaration]
-    2938 |         kr = keyring_alloc(".sed_opal",
-         |              ^~~~~~~~~~~~~
-         |              warn_alloc
->> block/sed-opal.c:2940:18: error: 'KEY_POS_ALL' undeclared (first use in this function)
-    2940 |                 (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW |
-         |                  ^~~~~~~~~~~
->> block/sed-opal.c:2940:33: error: 'KEY_POS_SETATTR' undeclared (first use in this function)
-    2940 |                 (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW |
-         |                                 ^~~~~~~~~~~~~~~
-   block/sed-opal.c:2940:52: error: 'KEY_USR_VIEW' undeclared (first use in this function)
-    2940 |                 (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW |
-         |                                                    ^~~~~~~~~~~~
->> block/sed-opal.c:2941:17: error: 'KEY_USR_READ' undeclared (first use in this function)
-    2941 |                 KEY_USR_READ | KEY_USR_SEARCH | KEY_USR_WRITE,
-         |                 ^~~~~~~~~~~~
-   block/sed-opal.c:2941:32: error: 'KEY_USR_SEARCH' undeclared (first use in this function)
-    2941 |                 KEY_USR_READ | KEY_USR_SEARCH | KEY_USR_WRITE,
-         |                                ^~~~~~~~~~~~~~
-   block/sed-opal.c:2941:49: error: 'KEY_USR_WRITE' undeclared (first use in this function)
-    2941 |                 KEY_USR_READ | KEY_USR_SEARCH | KEY_USR_WRITE,
-         |                                                 ^~~~~~~~~~~~~
->> block/sed-opal.c:2942:17: error: 'KEY_ALLOC_NOT_IN_QUOTA' undeclared (first use in this function)
-    2942 |                 KEY_ALLOC_NOT_IN_QUOTA,
-         |                 ^~~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +286 block/sed-opal.c
-
-455a7b238cd6bc Scott Bauer 2017-02-03  274  
-8a2b115580e8f7 Greg Joyce  2022-07-05  275  /*
-8a2b115580e8f7 Greg Joyce  2022-07-05  276   * Allocate/update a SED Opal key and add it to the SED Opal keyring.
-8a2b115580e8f7 Greg Joyce  2022-07-05  277   */
-8a2b115580e8f7 Greg Joyce  2022-07-05  278  static int update_sed_opal_key(const char *desc, u_char *key_data, int keylen)
-8a2b115580e8f7 Greg Joyce  2022-07-05  279  {
-8a2b115580e8f7 Greg Joyce  2022-07-05  280  	int ret;
-8a2b115580e8f7 Greg Joyce  2022-07-05  281  	struct key *key;
-8a2b115580e8f7 Greg Joyce  2022-07-05  282  
-8a2b115580e8f7 Greg Joyce  2022-07-05  283  	if (!sed_opal_keyring)
-8a2b115580e8f7 Greg Joyce  2022-07-05  284  		return -ENOKEY;
-8a2b115580e8f7 Greg Joyce  2022-07-05  285  
-8a2b115580e8f7 Greg Joyce  2022-07-05 @286  	key = key_alloc(&key_type_user, desc, GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
-8a2b115580e8f7 Greg Joyce  2022-07-05  287  				current_cred(),
-8a2b115580e8f7 Greg Joyce  2022-07-05 @288  				KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-8a2b115580e8f7 Greg Joyce  2022-07-05  289  				0,
-8a2b115580e8f7 Greg Joyce  2022-07-05  290  				NULL);
-8a2b115580e8f7 Greg Joyce  2022-07-05  291  	if (IS_ERR(key))
-8a2b115580e8f7 Greg Joyce  2022-07-05  292  		return PTR_ERR(key);
-8a2b115580e8f7 Greg Joyce  2022-07-05  293  
-8a2b115580e8f7 Greg Joyce  2022-07-05 @294  	ret = key_instantiate_and_link(key, key_data, keylen,
-8a2b115580e8f7 Greg Joyce  2022-07-05  295  			sed_opal_keyring, NULL);
-8a2b115580e8f7 Greg Joyce  2022-07-05  296  	key_put(key);
-8a2b115580e8f7 Greg Joyce  2022-07-05  297  
-8a2b115580e8f7 Greg Joyce  2022-07-05  298  	return ret;
-8a2b115580e8f7 Greg Joyce  2022-07-05  299  }
-8a2b115580e8f7 Greg Joyce  2022-07-05  300  
-8a2b115580e8f7 Greg Joyce  2022-07-05  301  /*
-8a2b115580e8f7 Greg Joyce  2022-07-05  302   * Read a SED Opal key from the SED Opal keyring.
-8a2b115580e8f7 Greg Joyce  2022-07-05  303   */
-8a2b115580e8f7 Greg Joyce  2022-07-05  304  static int read_sed_opal_key(const char *key_name, u_char *buffer, int buflen)
-8a2b115580e8f7 Greg Joyce  2022-07-05  305  {
-8a2b115580e8f7 Greg Joyce  2022-07-05  306  	int ret;
-8a2b115580e8f7 Greg Joyce  2022-07-05 @307  	key_ref_t kref;
-8a2b115580e8f7 Greg Joyce  2022-07-05  308  	struct key *key;
-8a2b115580e8f7 Greg Joyce  2022-07-05  309  
-8a2b115580e8f7 Greg Joyce  2022-07-05  310  	if (!sed_opal_keyring)
-8a2b115580e8f7 Greg Joyce  2022-07-05  311  		return -ENOKEY;
-8a2b115580e8f7 Greg Joyce  2022-07-05  312  
-8a2b115580e8f7 Greg Joyce  2022-07-05 @313  	kref = keyring_search(make_key_ref(sed_opal_keyring, true),
-8a2b115580e8f7 Greg Joyce  2022-07-05  314  		&key_type_user,
-8a2b115580e8f7 Greg Joyce  2022-07-05  315  		key_name,
-8a2b115580e8f7 Greg Joyce  2022-07-05  316  		true);
-8a2b115580e8f7 Greg Joyce  2022-07-05  317  
-8a2b115580e8f7 Greg Joyce  2022-07-05 @318  	if (IS_ERR(kref)) {
-8a2b115580e8f7 Greg Joyce  2022-07-05 @319  		ret = PTR_ERR(kref);
-8a2b115580e8f7 Greg Joyce  2022-07-05  320  	} else {
-8a2b115580e8f7 Greg Joyce  2022-07-05  321  		key = key_ref_to_ptr(kref);
-8a2b115580e8f7 Greg Joyce  2022-07-05 @322  		down_read(&key->sem);
-8a2b115580e8f7 Greg Joyce  2022-07-05  323  		ret = key_validate(key);
-8a2b115580e8f7 Greg Joyce  2022-07-05  324  		if (ret == 0) {
-8a2b115580e8f7 Greg Joyce  2022-07-05  325  			if (buflen > key->datalen)
-8a2b115580e8f7 Greg Joyce  2022-07-05  326  				buflen = key->datalen;
-8a2b115580e8f7 Greg Joyce  2022-07-05  327  
-8a2b115580e8f7 Greg Joyce  2022-07-05  328  			ret = key->type->read(key, (char *)buffer, buflen);
-8a2b115580e8f7 Greg Joyce  2022-07-05  329  		}
-8a2b115580e8f7 Greg Joyce  2022-07-05  330  		up_read(&key->sem);
-8a2b115580e8f7 Greg Joyce  2022-07-05  331  
-8a2b115580e8f7 Greg Joyce  2022-07-05  332  		key_ref_put(kref);
-8a2b115580e8f7 Greg Joyce  2022-07-05  333  	}
-8a2b115580e8f7 Greg Joyce  2022-07-05  334  
-8a2b115580e8f7 Greg Joyce  2022-07-05  335  	return ret;
-8a2b115580e8f7 Greg Joyce  2022-07-05  336  }
-8a2b115580e8f7 Greg Joyce  2022-07-05  337  
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>
+> > +     /* Keep in sync with defs in include/linux/verification.h. */
+> > +     if (trusted_keyring_id > (unsigned long)VERIFY_USE_PLATFORM_KEYRING)
+> > +             return -EINVAL;
+> > +
+> > +     if (trusted_keyring_serial) {
+> > +             trusted_keyring_ref = lookup_user_key(trusted_keyring_serial,
+> > +                                                   lookup_flags,
+> > +                                                   KEY_NEED_SEARCH);
+> > +             if (IS_ERR(trusted_keyring_ref))
+> > +                     return PTR_ERR(trusted_keyring_ref);
+> > +
+> > +             trusted_keyring = key_ref_to_ptr(trusted_keyring_ref);
+> > +             goto verify;
+> > +     }
+> > +
+> > +     trusted_keyring = (struct key *)trusted_keyring_id;
+> > +verify:
+> > +     ret = verify_pkcs7_signature(data_ptr->data,
+> > +                                  bpf_dynptr_get_size(data_ptr),
+> > +                                  sig_ptr->data,
+> > +                                  bpf_dynptr_get_size(sig_ptr),
+> > +                                  trusted_keyring,
+> > +                                  VERIFYING_UNSPECIFIED_SIGNATURE, NULL,
+> > +                                  NULL);
+> > +     if (trusted_keyring_serial)
+> > +             key_put(trusted_keyring);
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +static const struct bpf_func_proto bpf_verify_pkcs7_signature_proto = {
+> > +     .func           = bpf_verify_pkcs7_signature,
+> > +     .gpl_only       = false,
+> > +     .ret_type       = RET_INTEGER,
+> > +     .arg1_type      = ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL,
+> > +     .arg2_type      = ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL,
+> > +     .arg3_type      = ARG_ANYTHING,
+> > +     .arg4_type      = ARG_ANYTHING,
+> > +     .arg5_type      = ARG_ANYTHING,
+> > +     .allowed        = bpf_ima_inode_hash_allowed,
+> > +};
+> > +#endif /* CONFIG_SYSTEM_DATA_VERIFICATION */
+> > +
