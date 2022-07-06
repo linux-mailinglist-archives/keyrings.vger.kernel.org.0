@@ -2,49 +2,39 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8515680D8
-	for <lists+keyrings@lfdr.de>; Wed,  6 Jul 2022 10:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16181568652
+	for <lists+keyrings@lfdr.de>; Wed,  6 Jul 2022 13:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbiGFILH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 6 Jul 2022 04:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
+        id S230070AbiGFLDk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 6 Jul 2022 07:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbiGFILG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Jul 2022 04:11:06 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD2A22BCA;
-        Wed,  6 Jul 2022 01:11:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Ueo9aHss8pxOEcowsjGEpgCpwjFxectcGQkPUxmju0k=; b=l1IX8KfjemuImRmcMd9phEAysP
-        9fwh7OYl1GcmwCCM2h9/jzNh7pWWSfxyzzaeaQVUq24Pfcsf8IUA8e9SqCcIlnt4Kv9pGI5iOl4jO
-        7hwIb0AyDu2guJKXqUP43gY8UAiUlgSrTkRwaI9Gr9DMQ/L5k4WN7eq5bW2UVYvTXjFkXF0SPxf8W
-        fkLT59sFyGVQA3mp3PGzs2L1Mbe2DX5koR5yTZZ8jie+17aM9nBQGxz2gfzVHrOh6DH4/vEDSWFAZ
-        yX/d6ApSZ29k0UsZh0+Z2n5nZ5FPng81YF0goFfYf7AOEnz3W1QbNZ4XUo/KAXBWSAuhckR82VX7u
-        lbX7VV2g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1o907k-007IRA-Rr; Wed, 06 Jul 2022 08:11:04 +0000
-Date:   Wed, 6 Jul 2022 01:11:04 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     gjoyce@linux.vnet.ibm.com
-Cc:     keyrings@vger.kernel.org, gjoyce@ibm.com, dhowells@redhat.com,
-        jarkko@kernel.org, andrzej.jakowski@intel.com,
-        jonathan.derrick@linux.dev, drmiller.lnx@gmail.com,
-        linux-block@vger.kernel.org, greg@gilhooley.com
-Subject: Re: [PATCH 4/4] arch_vars: create arch specific permanent store
-Message-ID: <YsVDmPyjHLIZm+Qn@infradead.org>
-References: <20220706023935.875994-1-gjoyce@linux.vnet.ibm.com>
- <20220706023935.875994-5-gjoyce@linux.vnet.ibm.com>
+        with ESMTP id S229531AbiGFLDj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Jul 2022 07:03:39 -0400
+X-Greylist: delayed 551 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Jul 2022 04:03:36 PDT
+Received: from tsukuyomi.43-1.org (tsukuyomi.43-1.org [IPv6:2a01:4f8:c2c:1632::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE7BC15FE8
+        for <keyrings@vger.kernel.org>; Wed,  6 Jul 2022 04:03:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=43-1.org;
+ i=@43-1.org; q=dns/txt; s=2019; t=1657104862; h=message-id : subject :
+ from : to : date : content-type : mime-version : from;
+ bh=oIy6sS6nItLbpO3naTuuy+GY+U/DRr+6SIE9qZOmPAI=;
+ b=VI4+ke7zjq6bkxERseGesj+X8yOnThgByexHrm86JFk6mvB92P7qA8+uP/f8QcWmfc4sc
+ 06DWDpgqFqHjEdC2SC9K3bzYmexgxeO3ggASml3mgxd0w48Xtu8F3Pad5FN72OjmWF6Lx77
+ wG/k1KAa67XH5HGoPsPblzjLnGfEnGtiRHhnbOyqVrSD0+yUpmpUsHeYxgoa21Jrzx9UVOH
+ Ew99V13kv7hs6L7n7opb1UmZHaCGmJ/JOzt8VtLojRBCxoa67LV2uocNNv1iTo2fUYVU5Hn
+ 9tHo58XHJ753kFbP1rLwtOxaaUUQUjBMsxBN8AfVhQbNI/tjg/GaSMQessAw==
+Message-ID: <699243abf0153ccea5476fa51a3681f6028f06aa.camel@43-1.org>
+Subject: scripts/sign-file.c: correct error handling
+From:   Ansgar Burchardt <ansgar@43-1.org>
+To:     keyrings@vger.kernel.org
+Date:   Wed, 06 Jul 2022 12:54:21 +0200
+Content-Type: multipart/mixed; boundary="=-xHtKphtXbq3LS4SjJ3kP"
+User-Agent: Evolution 3.44.2-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220706023935.875994-5-gjoyce@linux.vnet.ibm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,13 +42,92 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jul 05, 2022 at 09:39:35PM -0500, gjoyce@linux.vnet.ibm.com wrote:
-> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> 
-> Platforms that have a permanent key store may provide unique
-> platform dependent functions to read/write variables. The
-> default (weak) functions return -EOPNOTSUPP unless overridden
-> by architecture/platform versions.
+--=-xHtKphtXbq3LS4SjJ3kP
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Which is none as of this patch set, as is the number of of users of
-this API.  Did this slip in by accident?
+Hi,
+
+The functions CMS_final, i2d_CMS_bio_stream, i2d_PKCS7_bio and
+BIO_free all return 1 for success or 0 for failure. The old check
+for a value less than 0 would never catch an error.
+
+I tried signing a kernel module with the patched sign-file and that
+still worked.
+
+Ansgar
+
+PS: Please CC me on replies.
+
+
+--=-xHtKphtXbq3LS4SjJ3kP
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Disposition: attachment; filename="0001-sign-file-correct-error-handling.patch"
+Content-Transfer-Encoding: 7bit
+
+From d11fb170c3ec172ce6707baab03b1499f14e0f20 Mon Sep 17 00:00:00 2001
+From: Ansgar Burchardt <ansgar@43-1.org>
+Date: Sun, 3 Jul 2022 11:17:50 +0200
+Subject: [PATCH] sign-file: correct error handling
+
+The functions CMS_final, i2d_CMS_bio_stream, i2d_PKCS7_bio and
+BIO_free all return 1 for success or 0 for failure.
+
+Signed-off-by: Ansgar Burchardt <ansgar@43-1.org>
+---
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 7434e9ea926e..4889f919ff8a 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(!CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY),
+ 		    "CMS_final");
+ 
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(!i2d_CMS_bio_stream(b, cms, NULL, 0),
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(!i2d_PKCS7_bio(b, pkcs7),
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
+ 
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(!i2d_CMS_bio_stream(bd, cms, NULL, 0), "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(!i2d_PKCS7_bio(bd, pkcs7), "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
+ 
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(!BIO_free(bd), "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
+-- 
+2.35.1
+
+
+--=-xHtKphtXbq3LS4SjJ3kP--
