@@ -2,76 +2,85 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D7B56C847
-	for <lists+keyrings@lfdr.de>; Sat,  9 Jul 2022 11:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D72BD56D219
+	for <lists+keyrings@lfdr.de>; Mon, 11 Jul 2022 02:10:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbiGIJU3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 9 Jul 2022 05:20:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33020 "EHLO
+        id S229495AbiGKAKL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 10 Jul 2022 20:10:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbiGIJU2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 9 Jul 2022 05:20:28 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564A366AC7
-        for <keyrings@vger.kernel.org>; Sat,  9 Jul 2022 02:20:23 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id os14so1346826ejb.4
-        for <keyrings@vger.kernel.org>; Sat, 09 Jul 2022 02:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=TKvyPiNZ+anjmYa10tWJwFVa+LgbgMa6tcU0LfkkBNI=;
-        b=Rw4EfubfZ/faCl4SO4kGUHTsF29gYmjUZN5r9EX2QvJZu1MCNedG9zlXeV2AhFrD+e
-         SXaisYWxi2fUxcpk19A/i7AtZbMpv3lr7KUgXbxpkLIIUEJyCshVIYNhva/EaDsmb0pp
-         34YplPkczi2T6yFHhiVl87ULuueLNlq21qgKhbgzefk/zgF3MSAJ/EB94FuyhPSFpwaS
-         LQjwd8/JA89CMxd1TzBKztR50rgjHQG/1pn1q4sYpKoJjmXYoL3DuCwTrbCj9+TXy7u2
-         AhJgLh9STUmqhDuCm1GQgtrOxx/JMJRJrDLbc1QMj3bXzNJMrA0fbQKeShJ/tnNmoYAB
-         5OTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=TKvyPiNZ+anjmYa10tWJwFVa+LgbgMa6tcU0LfkkBNI=;
-        b=bHMnL6J8gvLFFK+CbOznGhMY99GjQouXdLnwhJuX+47wP2h674xN/V/XbDGsHYlIuN
-         0AU7Oya2ksNADaYYQ5BqLNpomxdaeNpJiCERBn6c7SHXJfUSMVW5R1TRa9nokLt/eON/
-         GJhjEOkZm6EK7n5ElT51PVddMagA/jiBarz5e2XVGBSYwH/Z5CSApqjv+CGxRMvJeYP8
-         kgRn62oOm3BClBOiAuYsCuzodJf3BnStGf5J3PQMu2M2wHsGBYZJtDwG7U8mxEPRxyzc
-         9XyGRBl13JUg5cmzkIGZng10r3klFiHuZejPhGKGZjuryfglHbxVjXfOEOZaGST1ReUd
-         C76A==
-X-Gm-Message-State: AJIora+O1bBpGPmodQgXZ/QN+O7XQehDKmghamK2uUZqOsxEcg3G8THH
-        SZbVe4MRmzP9sQh3Em1pEI9onwRl6iI2t2uBI/w=
-X-Google-Smtp-Source: AGRyM1u+lkUomLC9sj7m2S98v3aFMbUcPQRo+XYLcmPa7mGw7szcEoVya6ud7PjqcZccMjpswFD4wRZfo1uSn8ZwKfk=
-X-Received: by 2002:a17:907:1c8f:b0:6e8:f898:63bb with SMTP id
- nb15-20020a1709071c8f00b006e8f89863bbmr8101819ejc.721.1657358421741; Sat, 09
- Jul 2022 02:20:21 -0700 (PDT)
+        with ESMTP id S229476AbiGKAKL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 10 Jul 2022 20:10:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EEB15714;
+        Sun, 10 Jul 2022 17:10:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45AB260FCB;
+        Mon, 11 Jul 2022 00:10:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A55C3411E;
+        Mon, 11 Jul 2022 00:10:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657498209;
+        bh=+F9YL090Ob/Y03kL/DzycGK6iSAWPTVALwZmsSBa0S4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BwliBKCdFJSZZPg3Lct3qOjaBKwqkHQXx7OhyJFcUK9T+61zNjEHmh++cDUWXK+0Y
+         Ua5i5K6N13sG5ErdRIe0oZkYD6H8WHQzWtmgMkhqPxxITt067a3MlD7WkSjQjxcLNN
+         vKerkDmaRAt9GNyDn2eBdiCAaSYsnr5AK9WV1BBkn7Mkm3f6RLvITjlbTFy7IMltPo
+         PTM/Qu6oAVKiSSlsN672iEQ0L1zXlnTaXe0Aa6Ubrw851uNFG9sNPB72ztTo7dvncb
+         5xpoSl7BDerFeOesEPMP/OA7W37G811KTnvHzm/nYKVyPlLBuRCdXXBqSkql7fRdFL
+         1a/IdDu52mDFw==
+Date:   Mon, 11 Jul 2022 03:10:04 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Li zeming <zeming@nfschina.com>
+Cc:     dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@nfschina.com
+Subject: Re: [PATCH] keys/keyctl: Fix typo in string
+Message-ID: <YstqXEPmPV2YUfWN@kernel.org>
+References: <20220704025248.3695-1-zeming@nfschina.com>
 MIME-Version: 1.0
-Received: by 2002:a17:907:a40c:0:0:0:0 with HTTP; Sat, 9 Jul 2022 02:20:21
- -0700 (PDT)
-From:   John Jacob <jjacobvsusa@gmail.com>
-Date:   Sat, 9 Jul 2022 12:20:21 +0300
-Message-ID: <CAKZDKkCKN5p+6LNhGP=88n5ZYzzERAMdH-XX-DunqQw+dsw0iQ@mail.gmail.com>
-Subject: Confirm Receipt
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220704025248.3695-1-zeming@nfschina.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello Dear,
+On Mon, Jul 04, 2022 at 10:52:48AM +0800, Li zeming wrote:
+> Remove the repeated ',' from string
+> 
+> Signed-off-by: Li zeming <zeming@nfschina.com>
+> ---
+>  security/keys/keyctl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+> index 96a92a645216..2be09642dd13 100644
+> --- a/security/keys/keyctl.c
+> +++ b/security/keys/keyctl.c
+> @@ -1175,7 +1175,7 @@ static long keyctl_instantiate_key_common(key_serial_t id,
+>  	void *payload;
+>  	long ret;
+>  
+> -	kenter("%d,,%zu,%d", id, plen, ringid);
+> +	kenter("%d,%zu,%d", id, plen, ringid);
+>  
+>  	if (!plen)
+>  		from = NULL;
+> -- 
+> 2.18.2
+> 
 
-I am Daniel Affum a retired civil servant i have a  business to
-discuss with you from the Eastern part of Africa aimed at agreed
-percentage upon your acceptance of my hand in business and friendship.
-Kindly respond to me if you are interested to partner with me for an
-update.Very important.
+Please, add
 
-Yours Sincerely,
-Jacob John.
-For,
-Daniel Affum.
-Reply to: danielaffum005@yahoo.com
+Fixes: d84f4f992cbd ("CRED: Inaugurate COW credentials")
+
+BR, Jarkko
