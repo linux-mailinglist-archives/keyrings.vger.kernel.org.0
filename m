@@ -2,95 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 704B857844C
-	for <lists+keyrings@lfdr.de>; Mon, 18 Jul 2022 15:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E815789DD
+	for <lists+keyrings@lfdr.de>; Mon, 18 Jul 2022 20:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235040AbiGRNvW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 Jul 2022 09:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49024 "EHLO
+        id S231264AbiGRSzX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 Jul 2022 14:55:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235502AbiGRNvV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Jul 2022 09:51:21 -0400
-Received: from tartarus.angband.pl (tartarus.angband.pl [51.83.246.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C4EF27CF7;
-        Mon, 18 Jul 2022 06:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=angband.pl;
-        s=tartarus; h=Subject:Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=JQ1BcUfxouI3x7W07R3yoAXKkCpX5WF1RnB+IIAlqOI=; b=QEQNwVnN6b3cocQ06CpKPUlH95
-        vFMAB+v67cxzpssjvl0cMtgr+twBTvZdvGahsgZXZwte/XbpcZLpiuefeKHBc+rN3TS+hsL8OZ2SM
-        qVyXRR8lBwNCpH+qyBHZzySYPvdtR24kW3ByfjVQor6CCScELpeouy9RwQGnbLNWrbNw=;
-Received: from 89-73-149-240.dynamic.chello.pl ([89.73.149.240] helo=barad-dur.angband.pl)
-        by tartarus.angband.pl with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1oDR8z-002sTq-VC; Mon, 18 Jul 2022 15:50:47 +0200
-Received: from [2a02:a31c:8144:c400::4] (helo=valinor.angband.pl)
-        by barad-dur.angband.pl with esmtp (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1oDR8y-0000N1-Cn; Mon, 18 Jul 2022 15:50:40 +0200
-Received: from kilobyte by valinor.angband.pl with local (Exim 4.96)
-        (envelope-from <kilobyte@valinor.angband.pl>)
-        id 1oDR8v-0009D8-0z;
-        Mon, 18 Jul 2022 15:50:37 +0200
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Adam Borowski <kilobyte@angband.pl>,
-        kernel test robot <lkp@intel.com>
-Date:   Mon, 18 Jul 2022 15:50:34 +0200
-Message-Id: <20220718135034.51457-1-kilobyte@angband.pl>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <0f226def-baf9-d6b2-2ee3-f6fae7d675f1@leemhuis.info>
-References: <0f226def-baf9-d6b2-2ee3-f6fae7d675f1@leemhuis.info>
+        with ESMTP id S229647AbiGRSzW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Jul 2022 14:55:22 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5CE2F03B
+        for <keyrings@vger.kernel.org>; Mon, 18 Jul 2022 11:55:21 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-f2a4c51c45so26199606fac.9
+        for <keyrings@vger.kernel.org>; Mon, 18 Jul 2022 11:55:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=IL64lE4LbLc5WMmEb2219Dk5UN9+kZ5RfONWGMCNDMYaTm94xYuckMTyTFIM0HYHyP
+         4qhj339VQ9uez57VkZKlt2rvjRtxFNddUD3E679hCtf62yuRqoBn+ZmRLgBhVM1Yvr/+
+         gUsyiTt14MBYr0s/N2HAOJBWQU1i6FqUKaFnhyu8ki0tA4hp0g+XTQG3BDCCM/f/ynya
+         88kEddf+Y5lgg65gKpQy3BczirGB94KObyov09bQWMw8+O0wNrOGRMmqWiusvTxk66Ft
+         JParw5gfqoJ6wjQn/Z9yCs0g9sROaGwLXYgcyEzBGqsSUZVI5iN3tJpiswP7JwrrGZep
+         Q6VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=61wtJ8O9eMuzPuAoOcBkHWJj7chkNgrwUi3/ToddPcgFqbdFcobh/NHsFu68qVoLKn
+         Y/Wtp5L3dNFaEfn/JqjhS2mbL8owxRlKIFPzvaO8L/IKPsnPZxToxRFVqxfL14oFwl0E
+         36+PoaEWsrZI/iCfM+H0fAPNufxwC3GpaH3qIvemIP6gAypAmMNL2fwzavgWUN5SsTEm
+         7NFTWaNFyCz8vHILSL6qwdvj1VzcxI0PLz38wEPPY2AsLo2LZfYkeC1BlvnMOpOX3K59
+         wY1c7SWiU/shrmZcb5+KQjwuqJQoaJ1aIe9ofpiqsGFlfZggEnq4c4G13ouL62uZI1h2
+         SM5A==
+X-Gm-Message-State: AJIora+Wck4q4ogO9KX9XJqwx0mbz5aWGvhutPHSDBmjkU7w3NaC94wT
+        qt+RJ7GnXU+1wSOG/c+S814Pr1t9txPHNDplMcI=
+X-Google-Smtp-Source: AGRyM1tSCQ3IP5ciy+/5qB6v/ciSGXhmjmCVTSzURwl4kA4zy27uXHAF2N8GDxkhWx5gthIx35w7cORKQpyOjDA9nCM=
+X-Received: by 2002:a05:6870:b292:b0:10c:8b96:ed3d with SMTP id
+ c18-20020a056870b29200b0010c8b96ed3dmr15982664oao.171.1658170520758; Mon, 18
+ Jul 2022 11:55:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 89.73.149.240
-X-SA-Exim-Mail-From: kilobyte@angband.pl
+Received: by 2002:a05:6850:b093:b0:314:5f48:8afc with HTTP; Mon, 18 Jul 2022
+ 11:55:20 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <gonwse11@gmail.com>
+Date:   Mon, 18 Jul 2022 10:55:20 -0800
+Message-ID: <CALtkzuuhF82=n4RPBUUepj4zsw0yxzV6hH3HYPKiO=LE4QYwJg@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:2d listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [lilywilliam989[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [gonwse11[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [gonwse11[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH] certs: make system keyring depend on x509 parser
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This code requires x509_load_certificate_list() to be built-in.
+Hi Dear,
 
-Fixes: 60050ffe3d77 ("certs: Move load_certificate_list() to be with the
-asymmetric keys code")
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/all/202206221515.DqpUuvbQ-lkp@intel.com/
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Link: https://lore.kernel.org/all/20220712104554.408dbf42@gandalf.local.home/
-Signed-off-by: Adam Borowski <kilobyte@angband.pl>
----
- certs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 476755703cf8..bf9b511573d7 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -43,6 +43,7 @@ config SYSTEM_TRUSTED_KEYRING
- 	bool "Provide system-wide ring of trusted keys"
- 	depends on KEYS
- 	depends on ASYMMETRIC_KEY_TYPE
-+	depends on X509_CERTIFICATE_PARSER
- 	help
- 	  Provide a system keyring to which trusted keys can be added.  Keys in
- 	  the keyring are considered to be trusted.  Keys may be added at will
--- 
-2.36.1
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
+Thanks
+
+With love
+Lily
