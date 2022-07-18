@@ -2,88 +2,84 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B605778D3
-	for <lists+keyrings@lfdr.de>; Mon, 18 Jul 2022 01:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53C0B577BF2
+	for <lists+keyrings@lfdr.de>; Mon, 18 Jul 2022 08:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231346AbiGQXdv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 17 Jul 2022 19:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41352 "EHLO
+        id S233580AbiGRGzk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 Jul 2022 02:55:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbiGQXdt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 17 Jul 2022 19:33:49 -0400
-X-Greylist: delayed 1327 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 17 Jul 2022 16:33:48 PDT
-Received: from tartarus.angband.pl (tartarus.angband.pl [51.83.246.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F69A100A;
-        Sun, 17 Jul 2022 16:33:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=angband.pl;
-        s=tartarus; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=g9c6Fw5wegV7nRqLgN+7yazf4jmfsQdfONU8hlkeEdI=; b=X3mu+6Pz5w36at7DZfspAK8G7v
-        XcvdCLxE18vzw/UEz46gBPs8kOxSDI/1rXQiV13AEtMjF2fWyYsGLhgKiHEzRr8u11fNncPlB+cuS
-        ge/+r4IOSwEmOmYZUl6YUnJBFLT3TJBO8TCbkPZbriJ/ES7MVpBv9Lwk05qVQM8ujids=;
-Received: from 89-73-149-240.dynamic.chello.pl ([89.73.149.240] helo=barad-dur.angband.pl)
-        by tartarus.angband.pl with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1oDDPw-002l3o-RJ; Mon, 18 Jul 2022 01:11:20 +0200
-Received: from [2a02:a31c:8144:c400::4] (helo=valinor.angband.pl)
-        by barad-dur.angband.pl with esmtp (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1oDDPu-0007TW-WF; Mon, 18 Jul 2022 01:11:15 +0200
-Received: from kilobyte by valinor.angband.pl with local (Exim 4.96)
-        (envelope-from <kilobyte@valinor.angband.pl>)
-        id 1oDDPr-0008aZ-0d;
-        Mon, 18 Jul 2022 01:11:11 +0200
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     David Howells <dhowells@redhat.com>,
+        with ESMTP id S233301AbiGRGzk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Jul 2022 02:55:40 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4989313E09;
+        Sun, 17 Jul 2022 23:55:39 -0700 (PDT)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1oDKfH-0005xs-S1; Mon, 18 Jul 2022 08:55:35 +0200
+Message-ID: <0f226def-baf9-d6b2-2ee3-f6fae7d675f1@leemhuis.info>
+Date:   Mon, 18 Jul 2022 08:55:35 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] certs: make system keyring depend on x509 parser
+Content-Language: en-US
+To:     Adam Borowski <kilobyte@angband.pl>,
+        David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Adam Borowski <kilobyte@angband.pl>
-Date:   Mon, 18 Jul 2022 01:11:05 +0200
-Message-Id: <20220717231105.33005-1-kilobyte@angband.pl>
-X-Mailer: git-send-email 2.36.1
-MIME-Version: 1.0
+References: <20220717231105.33005-1-kilobyte@angband.pl>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Steven Rostedt <rostedt@goodmis.org>
+In-Reply-To: <20220717231105.33005-1-kilobyte@angband.pl>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 89.73.149.240
-X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1658127339;eec334ab;
+X-HE-SMSGID: 1oDKfH-0005xs-S1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH] certs: make system keyring depend on x509 parser
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-This code requires x509_load_certificate_list() to be built-in.
+Hi, this is your Linux kernel regression tracker.
 
-Fixes: 60050ffe3d770dd1df5b641aa48f49d07a54bd84
-Signed-off-by: Adam Borowski <kilobyte@angband.pl>
----
-Otherwise, we get a build failure.
+Thx for looking into this.
 
- certs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+On 18.07.22 01:11, Adam Borowski wrote:
+> This code requires x509_load_certificate_list() to be built-in.
+> 
+> Fixes: 60050ffe3d770dd1df5b641aa48f49d07a54bd84
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 476755703cf8..bf9b511573d7 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -43,6 +43,7 @@ config SYSTEM_TRUSTED_KEYRING
- 	bool "Provide system-wide ring of trusted keys"
- 	depends on KEYS
- 	depends on ASYMMETRIC_KEY_TYPE
-+	depends on X509_CERTIFICATE_PARSER
- 	help
- 	  Provide a system keyring to which trusted keys can be added.  Keys in
- 	  the keyring are considered to be trusted.  Keys may be added at will
--- 
-2.36.1
+Just BTW: per docs.kernel.org/process/submitting-patches.html this
+should be
 
+Fixes: 60050ffe3d77 ("certs: Move load_certificate_list() to be with the
+asymmetric keys code")
+
+But I write for a different reason: Could you also please add "Link:"
+and "Reported-by:" tags for earlier reports about this issue please:
+
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202206221515.DqpUuvbQ-lkp@intel.com/
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Link:
+https://lore.kernel.org/all/20220712104554.408dbf42@gandalf.local.home/
+
+tia
+
+> […]
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I deal with a lot of
+reports and sometimes miss something important when writing mails like
+this. If that's the case here, don't hesitate to tell me in a public
+reply, it's in everyone's interest to set the public record straight.
+
+P.P.S.: Let me tell regzbot to monitor this thread:
+
+#regzbot ^backmonitor:
+https://lore.kernel.org/all/20220712104554.408dbf42@gandalf.local.home/
