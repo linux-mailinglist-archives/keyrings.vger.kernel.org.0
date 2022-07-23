@@ -2,103 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 303CD57EFD1
-	for <lists+keyrings@lfdr.de>; Sat, 23 Jul 2022 16:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C81C257F016
+	for <lists+keyrings@lfdr.de>; Sat, 23 Jul 2022 17:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233203AbiGWOu4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 23 Jul 2022 10:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47498 "EHLO
+        id S230469AbiGWP2z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 23 Jul 2022 11:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232670AbiGWOu4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 23 Jul 2022 10:50:56 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C5CE111B;
-        Sat, 23 Jul 2022 07:50:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1658587851;
-        bh=rdXu9LN/zAdNX0uOk+wFkFqFAj3SIkSwTTiQs3IjqvQ=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=VffJB7MlpUC4ZDSW4HI075M4hgSq6XZbAusnUaKXWfrVDZ2tXtxmJgwqfYWTzzOjc
-         iM5qmHBmLY6uWrhswXWgyDoYowFmMJHYZPQymLJgwJDrClidXLbz7HNv7rPjf4QhRq
-         IauO8NssFtEJlgzKkvXAbR78fRoQwvlaQUPI5pUI=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 90EA91281845;
-        Sat, 23 Jul 2022 10:50:51 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JVY4S5aeAk8F; Sat, 23 Jul 2022 10:50:51 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1658587851;
-        bh=rdXu9LN/zAdNX0uOk+wFkFqFAj3SIkSwTTiQs3IjqvQ=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=VffJB7MlpUC4ZDSW4HI075M4hgSq6XZbAusnUaKXWfrVDZ2tXtxmJgwqfYWTzzOjc
-         iM5qmHBmLY6uWrhswXWgyDoYowFmMJHYZPQymLJgwJDrClidXLbz7HNv7rPjf4QhRq
-         IauO8NssFtEJlgzKkvXAbR78fRoQwvlaQUPI5pUI=
-Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 85F79128182C;
-        Sat, 23 Jul 2022 10:50:50 -0400 (EDT)
-Message-ID: <f58c2c8a157714e1860caee9bb005ec469ddb72e.camel@HansenPartnership.com>
-Subject: Re: [PATCH] keys/keyctl: Use kfree_rcu instead of kfree
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Siddh Raman Pant <code@siddh.me>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
+        with ESMTP id S229555AbiGWP2y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 23 Jul 2022 11:28:54 -0400
+Received: from sender-of-o53.zoho.in (sender-of-o53.zoho.in [103.117.158.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD3CE6463;
+        Sat, 23 Jul 2022 08:28:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1658590104; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=SfXn29km/qJz/tyr1mEVbXFLg9lP11bJxbf9W4N664oeLlxSJXky7g+FNxTWxKTRXBnDKR5ip/ZuLKVkL1VQIKNNxkYuOzwrL0h6EPjABeKK6TpjaxaEgk9TJdZGerKYJYvuFYQRuCJqLBi7wBWX1uFR+FDG2Zj6ZZUMtUQkiDY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1658590104; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=c1lQAq9l2Vi8XJIR9+FZPadcoaYjnJn9vuGp/Q5uuoE=; 
+        b=a9OW8xI5fv1pW1A++gMs6sE9pCgr33942KvaplJ/Mu/4WGKFchUg3nwSmmfGw7lbXurGZZl5ZbOmq+5GbFcFWDenuxf4v93fIfIPtZv2E217/bxQ1TsCfjp0UWPbbBCuyFxGWSnbapDiCeHnUDlea0TS3kp+0pwiBPEJB5pWjVc=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1658590104;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+        bh=c1lQAq9l2Vi8XJIR9+FZPadcoaYjnJn9vuGp/Q5uuoE=;
+        b=lwAEDaBcqbpoTMrbx8xU+XgUjI5zEmh8ONCKOEoT+C37vmL0x1s1g+b0XpP6ZKON
+        HYRGQOIj0oxNDYVUyds4QpDjYj6nJJbXnOYBnN6qXe5rsEWchmmtcbx8c15nrSOODxJ
+        0Y/pjeP6CJJ+5mNFcMbvSL4PDN/fWLPmqN7pEsy8=
+Received: from mail.zoho.in by mx.zoho.in
+        with SMTP id 1658590092355322.4350711864895; Sat, 23 Jul 2022 20:58:12 +0530 (IST)
+Date:   Sat, 23 Jul 2022 20:58:12 +0530
+From:   Siddh Raman Pant <code@siddh.me>
+To:     "Greg KH" <gregkh@linuxfoundation.org>
+Cc:     "David Howells" <dhowells@redhat.com>,
+        "Jarkko Sakkinen" <jarkko@kernel.org>,
+        "James Morris" <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-security-modules <linux-security-module@vger.kernel.org>,
-        keyrings <keyrings@vger.kernel.org>,
-        linux-kernel-mentees 
+        "linux-security-modules" <linux-security-module@vger.kernel.org>,
+        "keyrings" <keyrings@vger.kernel.org>,
+        "linux-kernel-mentees" 
         <linux-kernel-mentees@lists.linuxfoundation.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Date:   Sat, 23 Jul 2022 10:50:49 -0400
-In-Reply-To: <1822b7c129a.14411444236159.6380883938307880248@siddh.me>
+        "linux-kernel" <linux-kernel@vger.kernel.org>
+Message-ID: <1822bac5c28.17c2e13a236951.2030393349322231875@siddh.me>
+In-Reply-To: <YtwI/3/Qp3lSKuls@kroah.com>
 References: <20220723135035.199188-1-code@siddh.me>
-         <YtwAHGISvlgXgXZM@kroah.com>
-         <1822b7c129a.14411444236159.6380883938307880248@siddh.me>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+ <YtwAHGISvlgXgXZM@kroah.com>
+ <1822b7c129a.14411444236159.6380883938307880248@siddh.me> <YtwI/3/Qp3lSKuls@kroah.com>
+Subject: Re: [PATCH] keys/keyctl: Use kfree_rcu instead of kfree
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_RED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, 2022-07-23 at 20:05 +0530, Siddh Raman Pant wrote:
-> On Sat, 23 Jul 2022 19:35:16 +0530  Greg KH <
-> gregkh@linuxfoundation.org> wrote:
-> > That does not explain why this change is needed.  What problem does
-> > this solve?  Why use RCU if you don't have to?  What functionality
-> > did you just change in this commit and why?
+On Sat, 23 Jul 2022 20:13:11 +0530  Greg KH <gregkh@linuxfoundation.org> wrote:
+> You need to explain all of this in a changelog text.  Don't say what you
+> do, but say why you are doing it.
+
+Okay, I will keep this in mind next time.
+
+> > > And how was this tested?
+> > 
+> > It compiles locally for me, and I used syzbot on this along with testing the
+> > other `watch_queue_clear` patch, which generated no errors.
 > 
-> We can avoid a race condition wherein some process tries to access
-> them while they are being freed. For instance, the comment on
-> `watch_queue_clear()` also states that:
->         /*
->          * Remove all the watches that are contributory to a
-> queue.  This has the
->          * potential to race with removal of the watches by the
-> destruction of the
->          * objects being watched or with the distribution of
-> notifications.
->          */
-> And an RCU read critical section is initiated in that function, so we
-> should use kfree_rcu() to not unintentionally free it while it is in
-> the critical section.
+> How does the watch queue stuff relate to this keyctl logic?
+> 
+> Again, be specific as to why you are doing things.
 
-That doesn't apply in this case, does it?  watch and wlist are locally
-allocated and neither has been made externally visible if the error leg
-is taken, so they should just be locally freed, which is what the code
-was doing before this proposed patch.
+It doesn't relate, I just wanted to say that syzbot didn't crash too (I had
+this change in the same branch as that patch for testing, and syzbot compiled
+it successfully).
 
-James
+Sorry for the confusion.
 
+Though now as James has pointed out, this patch isn't needed.
 
+Apologies,
+Siddh
