@@ -2,52 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 250D057DC43
-	for <lists+keyrings@lfdr.de>; Fri, 22 Jul 2022 10:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B85CE57EF61
+	for <lists+keyrings@lfdr.de>; Sat, 23 Jul 2022 16:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234947AbiGVIWZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 22 Jul 2022 04:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49030 "EHLO
+        id S233797AbiGWOHI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 23 Jul 2022 10:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234956AbiGVIWW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 22 Jul 2022 04:22:22 -0400
-Received: from mail-m973.mail.163.com (mail-m973.mail.163.com [123.126.97.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A30749E2A8;
-        Fri, 22 Jul 2022 01:22:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=jT8xe
-        TD2gI4EzRHhvnNsYVU4bZ3vev/hiB/gq6Vqy48=; b=drJmURO5QCePd0ZjqcF3V
-        BbMNClINUkt5AQLtJPIhlN+GbTphU0hBTVEXEeiklCQqQX4Kl0+fpqoTHmW+wvcL
-        T+jWpHDsQuOxpTWfONUUZZzqkBjFuRNy25JKPPoyVRRSJXRAkI3P1J736AbTfXOR
-        22SHlPJXmXiBUd/55CTXso=
-Received: from localhost.localdomain (unknown [123.112.69.106])
-        by smtp3 (Coremail) with SMTP id G9xpCgDnRmMHXtpiTpGIQg--.59076S4;
-        Fri, 22 Jul 2022 16:21:44 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     jejb@linux.ibm.com, jarkko@kernel.org, zohar@linux.ibm.com,
-        dhowells@redhat.com, jmorris@namei.org, serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jianglei Nie <niejianglei2021@163.com>
-Subject: [PATCH v3] KEYS: trusted: Fix memory leak in tpm2_key_encode()
-Date:   Fri, 22 Jul 2022 16:21:25 +0800
-Message-Id: <20220722082125.2526529-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <YqGE/v0Zgi+g4gY6@iki.fi>
-References: <YqGE/v0Zgi+g4gY6@iki.fi>
+        with ESMTP id S232496AbiGWOHI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 23 Jul 2022 10:07:08 -0400
+X-Greylist: delayed 913 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 23 Jul 2022 07:07:07 PDT
+Received: from sender-of-o53.zoho.in (sender-of-o53.zoho.in [103.117.158.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507E6B1F1
+        for <keyrings@vger.kernel.org>; Sat, 23 Jul 2022 07:07:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1658584264; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=XYU1zZnXuqFX5/HEudi9MdMxktvd9itAU+I2kePgDtCgp6Li1x8deFEeTSo4eTQS1AbaC/ivef2pbxmOYDcr2MTZ3t4RpyknGzLsXwEhNuVnyM40iFlvYFHv1s6A4JVc97EEyhqomPGugRHf6mFMnY8vj2Z+pRvpg+t8RZgiH00=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1658584264; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=kk/+ZMIM3QEokLR9dNDr3dm8l5WXXAEPykmzd3WKeh8=; 
+        b=bBmfhYES5zT2HidO8HpjBfslnBmO60DtgLqOtOH5Sz+OLgjxOhtn2KH1Uz8/eFMCpaI5O6vHw+spAgfOU1gCxzta9YMbvk6j9CBjTZqDm1BkKRuOV9X+zPxixdBv4ljsbHaOpjPz5HMLN2uqV6ievgrMCFjHYvCafKDwNv099Dg=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1658584264;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+        bh=kk/+ZMIM3QEokLR9dNDr3dm8l5WXXAEPykmzd3WKeh8=;
+        b=C5Kc0g6QcesPZacQeSWUfVye11w85Epm+2OhT0JWxQuKAC0qiYGDe5rM2GegGr6F
+        0GncE33rxOJHfMEfbX9lJ/wGrkzBNGaBREdPQmq4uoF7icdrgn8A0XmbYG4yKWadTN6
+        O7VluijrgjArt2qZmswtFWS1t01hw+BtIxp4wY6s=
+Received: from localhost.localdomain (43.250.158.127 [43.250.158.127]) by mx.zoho.in
+        with SMTPS id 1658584262744848.2252468169082; Sat, 23 Jul 2022 19:21:02 +0530 (IST)
+From:   Siddh Raman Pant <code@siddh.me>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     keyrings <keyrings@vger.kernel.org>,
+        linux-security-modules <linux-security-module@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-kernel-mentees 
+        <linux-kernel-mentees@lists.linuxfoundation.org>
+Message-ID: <20220723135035.199188-1-code@siddh.me>
+Subject: [PATCH] keys/keyctl: Use kfree_rcu instead of kfree
+Date:   Sat, 23 Jul 2022 19:20:35 +0530
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: G9xpCgDnRmMHXtpiTpGIQg--.59076S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZr4UGF4DAw43Zr17Zr4DXFb_yoW5Ww1fpF
-        W3KF1jqrWavry7AryxAF4Sv3WSkw1rtFW7KwsFq397GasxJFsxtFy7Ar4Ygr17AFWSqw15
-        ZFWqvFWUuFZFqrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR4SoAUUUUU=
-X-Originating-IP: [123.112.69.106]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbiWxlGjGI0VjNM6gAAsd
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_RED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,91 +63,32 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-tpm2_key_encode() allocates a memory chunk from scratch with kmalloc(),
-but it is never freed, which leads to a memory leak. Free the memory
-chunk with kfree() in the return path.
+In keyctl_watch_key, use kfree_rcu() for freeing watch and wlist
+as they support RCU and have an rcu_head in the struct definition.
 
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
 ---
- security/keys/trusted-keys/trusted_tpm2.c | 33 ++++++++++++++++-------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ security/keys/keyctl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 2b2c8eb258d5..eb25c784b5c3 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -32,8 +32,13 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 			   struct trusted_key_options *options,
- 			   u8 *src, u32 len)
- {
-+	int ret;
- 	const int SCRATCH_SIZE = PAGE_SIZE;
--	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
-+	u8 *scratch;
-+
-+	scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
-+	if (!scratch)
-+		return -ENOMEM;
- 	u8 *work = scratch, *work1;
- 	u8 *end_work = scratch + SCRATCH_SIZE;
- 	u8 *priv, *pub;
-@@ -47,9 +52,6 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	pub_len = get_unaligned_be16(src) + 2;
- 	pub = src;
- 
--	if (!scratch)
--		return -ENOMEM;
--
- 	work = asn1_encode_oid(work, end_work, tpm2key_oid,
- 			       asn1_oid_len(tpm2key_oid));
- 
-@@ -57,8 +59,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 		unsigned char bool[3], *w = bool;
- 		/* tag 0 is emptyAuth */
- 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
--		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
--			return PTR_ERR(w);
-+		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
-+			ret = PTR_ERR(w);
-+			goto err;
-+		}
- 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
- 	}
- 
-@@ -69,8 +73,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	 * trigger, so if it does there's something nefarious going on
- 	 */
- 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
--		 "BUG: scratch buffer is too small"))
--		return -EINVAL;
-+		 "BUG: scratch buffer is too small")) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	work = asn1_encode_integer(work, end_work, options->keyhandle);
- 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
-@@ -79,10 +85,17 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
--	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
--		return PTR_ERR(work1);
-+	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
-+		ret = PTR_ERR(work1);
-+		goto err;
-+	}
- 
-+	kfree(scratch);
- 	return work1 - payload->blob;
-+
-+err:
-+	kfree(scratch);
-+	return ret;
- }
- 
- struct tpm2_key_context {
--- 
-2.25.1
+diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+index 96a92a645216..087fbc141cfd 100644
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1832,9 +1832,9 @@ long keyctl_watch_key(key_serial_t id, int watch_queu=
+e_fd, int watch_id)
+ =09}
+=20
+ err_watch:
+-=09kfree(watch);
++=09kfree_rcu(watch, rcu);
+ err_wlist:
+-=09kfree(wlist);
++=09kfree_rcu(wlist, rcu);
+ err_wqueue:
+ =09put_watch_queue(wqueue);
+ err_key:
+--=20
+2.35.1
+
 
