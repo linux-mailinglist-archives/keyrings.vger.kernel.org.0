@@ -2,82 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 129B157F01B
-	for <lists+keyrings@lfdr.de>; Sat, 23 Jul 2022 17:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D47B457F951
+	for <lists+keyrings@lfdr.de>; Mon, 25 Jul 2022 08:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbiGWP3A (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 23 Jul 2022 11:29:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41456 "EHLO
+        id S229793AbiGYGTe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 25 Jul 2022 02:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237315AbiGWP27 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 23 Jul 2022 11:28:59 -0400
-Received: from sender-of-o53.zoho.in (sender-of-o53.zoho.in [103.117.158.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2532A1572F;
-        Sat, 23 Jul 2022 08:28:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1658590106; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=Lyjuq3kiDlanKDvP/FngdV62QpvsxmDaU5Bf+c3GbUalfmW6ZEWpY05vprmkOb4UKS1qt9ui3VWDaJHnbOE5c/Ws2a8QSNyl0bCZvnL7e0A3xHSK3iCcY/I81QtLtdZNctgc6wJI/7yZsTiROcQxouOXIsTPTQJvxzSTT+dpVbM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1658590106; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=QUHKy4OgEaxbVLogauALC7ife9v5t5FcKwUzAh8eIRk=; 
-        b=d8O36cgk9f1UBst/XKKzVWaBE4ME9VwSVq+41afy41XVED9ZLZrF9mRmn80zvSHR3nK32RNEoDz6j4UPV0Kb3K7Cy0g6aQlmJgKl9zLhl8HGccPL9G27/yLAnMH6ZNgCHtZXgZOtZHG7rIrNuNZs+uPhCO4HQ00IzVifsYwENcI=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1658590106;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=QUHKy4OgEaxbVLogauALC7ife9v5t5FcKwUzAh8eIRk=;
-        b=AX7PeCKipWcL4pk8J9TO01kdzl+FTf3hwvGlt+7TUbONwtwX2oQ4FVcUxIkFRrnp
-        95+19S3rjYI8FzxWHoruMEhjExplwoKmgzCItwqK8hXj2lryYStue6oE1zPGifkDdXB
-        Nmece5GqZ/d/8lyQkNlSscw9ZzenEB8oS+K38+bk=
-Received: from mail.zoho.in by mx.zoho.in
-        with SMTP id 1658590095403354.57172593740086; Sat, 23 Jul 2022 20:58:15 +0530 (IST)
-Date:   Sat, 23 Jul 2022 20:58:15 +0530
-From:   Siddh Raman Pant <code@siddh.me>
-To:     "James Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc:     "Greg KH" <gregkh@linuxfoundation.org>,
-        "David Howells" <dhowells@redhat.com>,
-        "Jarkko Sakkinen" <jarkko@kernel.org>,
-        "James Morris" <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "linux-security-modules" <linux-security-module@vger.kernel.org>,
-        "keyrings" <keyrings@vger.kernel.org>,
-        "linux-kernel-mentees" 
-        <linux-kernel-mentees@lists.linuxfoundation.org>,
-        "linux-kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <1822bac680f.53b862f8236953.7679004564726067655@siddh.me>
-In-Reply-To: <f58c2c8a157714e1860caee9bb005ec469ddb72e.camel@HansenPartnership.com>
-References: <20220723135035.199188-1-code@siddh.me>
-         <YtwAHGISvlgXgXZM@kroah.com>
-         <1822b7c129a.14411444236159.6380883938307880248@siddh.me> <f58c2c8a157714e1860caee9bb005ec469ddb72e.camel@HansenPartnership.com>
-Subject: Re: [PATCH] keys/keyctl: Use kfree_rcu instead of kfree
+        with ESMTP id S229436AbiGYGTe (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Jul 2022 02:19:34 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F536DFEC;
+        Sun, 24 Jul 2022 23:19:30 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LrqXm0bT5z925M;
+        Mon, 25 Jul 2022 14:15:36 +0800 (CST)
+Received: from dggpeml500008.china.huawei.com (7.185.36.147) by
+ dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 25 Jul 2022 14:19:22 +0800
+Received: from [127.0.0.1] (10.67.111.83) by dggpeml500008.china.huawei.com
+ (7.185.36.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 25 Jul
+ 2022 14:19:22 +0800
+Message-ID: <bc13f52c-7728-f20b-e62e-dec96c16d651@huawei.com>
+Date:   Mon, 25 Jul 2022 14:19:21 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_RED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH -next] certs: Fix Kconfig dependency
+To:     <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <davem@davemloft.net>, <simo@redhat.com>
+CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20220704112028.183193-1-renzhijie2@huawei.com>
+From:   Ren Zhijie <renzhijie2@huawei.com>
+In-Reply-To: <20220704112028.183193-1-renzhijie2@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.111.83]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500008.china.huawei.com (7.185.36.147)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, 23 Jul 2022 20:20:49 +0530  James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
-> That doesn't apply in this case, does it?  watch and wlist are locally
-> allocated and neither has been made externally visible if the error leg
-> is taken, so they should just be locally freed, which is what the code
-> was doing before this proposed patch.
+Hi,
 
-You are correct.
+Just a friendly ping...
 
-Sorry for this, I should have looked at it for a tad bit more.
+在 2022/7/4 19:20, Ren Zhijie 写道:
+> If CONFIG_PKCS7_MESSAGE_PARSER=m and CONFIG_FIPS_SIGNATURE_SELFTEST=y,
+> make ARCH=x86_64 CROSS_COMPILE=x86_64-linux-gnu-, will be failed, like this:
+>
+> crypto/asymmetric_keys/selftest.o: In function `fips_signature_selftest':
+> selftest.c:(.init.text+0xc3): undefined reference to `pkcs7_parse_message'
+> selftest.c:(.init.text+0x101): undefined reference to `pkcs7_supply_detached_data'
+> selftest.c:(.init.text+0x112): undefined reference to `pkcs7_verify'
+> selftest.c:(.init.text+0x13f): undefined reference to `pkcs7_validate_trust'
+> selftest.c:(.init.text+0x169): undefined reference to `pkcs7_free_message'
+> make: *** [vmlinux] Error 1
+>
+> To fix this error, add depends on PKCS7_MESSAGE_PARSER=y to FIPS_SIGNATURE_SELFTEST
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
+> Signed-off-by: Ren Zhijie <renzhijie2@huawei.com>
+> ---
+>   crypto/asymmetric_keys/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+> index 3df3fe4ed95f..fe007db96c69 100644
+> --- a/crypto/asymmetric_keys/Kconfig
+> +++ b/crypto/asymmetric_keys/Kconfig
+> @@ -83,6 +83,6 @@ config FIPS_SIGNATURE_SELFTEST
+>   	  for FIPS.
+>   	depends on KEYS
+>   	depends on ASYMMETRIC_KEY_TYPE
+> -	depends on PKCS7_MESSAGE_PARSER
+> +	depends on PKCS7_MESSAGE_PARSER=y
+>   
+>   endif # ASYMMETRIC_KEY_TYPE
 
-Thanks,
-Siddh
