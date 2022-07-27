@@ -2,89 +2,82 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B40D8581A05
-	for <lists+keyrings@lfdr.de>; Tue, 26 Jul 2022 20:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A388E58329F
+	for <lists+keyrings@lfdr.de>; Wed, 27 Jul 2022 21:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbiGZSyJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 26 Jul 2022 14:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36318 "EHLO
+        id S230172AbiG0TCG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 27 Jul 2022 15:02:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239729AbiGZSyG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Jul 2022 14:54:06 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B913206D;
-        Tue, 26 Jul 2022 11:54:05 -0700 (PDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26QIjTjF000395;
-        Tue, 26 Jul 2022 18:53:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=jK2gCVPTH8hIAwxMHJ3UR7BzxHKJx/kZjhc0g9iMAc8=;
- b=Ip5RZR2I9HcjtFdReySSCf9QYscbte49210i+C7jw+DeddsjsXSFk2Mc0zWucqNV70GT
- UZ9OiNVG81PgE85+5gKNODbpoeL71Ie+E2EVLNqAjlP97RH1BA4DPd6vxyDrvyUav/lH
- rNswQJfJv81VmcxzRUfi9FicnycvGwxp+J/tbnJxwxbFsM7ApAhAqGqnp+XddubbZ6Kd
- OzwXUFkDeRyugNCJQ1/Vy74daJYcStiNTYUX5ChUF8+a340YF8zi7id5nc1dJMRSAj4A
- MM4Jj4ereWbyzS8FOVWSmgRAJnVKDCyZ/hqxYY83hqe7kCKeNlOXMifgcco1aOWPfBag Wg== 
+        with ESMTP id S231666AbiG0TBt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Jul 2022 15:01:49 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40FD3B4;
+        Wed, 27 Jul 2022 11:14:32 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26RI0mnf017174;
+        Wed, 27 Jul 2022 18:14:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=mX9UjlQhgON6JzhcyOXEP4/7UWi/azjDmN7basxV9w4=;
+ b=eb4QHb0yOZ5Aab85KBu/TUXHxEwa0VYTMVzhsngE2H4Y2Ou3M0EM2nUTtOED8Q7J5ld6
+ OORpmB9dixRB8NXlbwiWcrmxBQryXDCu10KIHA7WEgM0XP2y/1CFFPmRd8WYZCZnvk/X
+ 9fz5a92FeFQtCIg42VlMoFw8UTg0STDNcwPcUG16P3YlgWxrFwX41J+5r7KtFGJ2GMuv
+ MvbdeMrF5LpBspKsLsCKKau2B0ZyadjGomGBJ5S08RlSu/GvX1NXI0faGCXfAfaAWrvE
+ tkTSrP0nM7D2DBzTKRRCrC427ur7ctc/TUhznZM04FotlDD8mXKVMutAxeXNDqdJT8JO RQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hjntr06u7-1
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hka8tgdcx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Jul 2022 18:53:49 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26QIjd3k001219;
-        Tue, 26 Jul 2022 18:53:49 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hjntr06ts-1
+        Wed, 27 Jul 2022 18:14:27 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26RI14Kd017856;
+        Wed, 27 Jul 2022 18:14:27 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hka8tgdbt-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Jul 2022 18:53:49 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26QIp81O008780;
-        Tue, 26 Jul 2022 18:53:48 GMT
+        Wed, 27 Jul 2022 18:14:27 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26RI7vJO004915;
+        Wed, 27 Jul 2022 18:14:26 GMT
 Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by ppma01dal.us.ibm.com with ESMTP id 3hg98s1gvj-1
+        by ppma03wdc.us.ibm.com with ESMTP id 3hg97s2rmn-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Jul 2022 18:53:48 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26QIrl1t11010800
+        Wed, 27 Jul 2022 18:14:26 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26RIEPSC57147686
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Jul 2022 18:53:47 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5AE3A112062;
-        Tue, 26 Jul 2022 18:53:47 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BDCDD112061;
-        Tue, 26 Jul 2022 18:53:46 +0000 (GMT)
-Received: from sig-9-77-138-167.ibm.com (unknown [9.77.138.167])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 26 Jul 2022 18:53:46 +0000 (GMT)
-Message-ID: <58654fc70b38694df98e51e8e310ce34cec01816.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH 4/4] arch_vars: create arch specific permanent store
-From:   Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reply-To: gjoyce@linux.vnet.ibm.com
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        dhowells@redhat.com, jarkko@kernel.org, jonathan.derrick@linux.dev,
-        brking@linux.vnet.ibm.com, greg@gilhooley.com, gjoyce@ibm.com
-Date:   Tue, 26 Jul 2022 13:53:46 -0500
-In-Reply-To: <YtezuVYVQnqX2IsY@infradead.org>
-References: <20220718210156.1535955-1-gjoyce@linux.vnet.ibm.com>
-         <20220718210156.1535955-5-gjoyce@linux.vnet.ibm.com>
-         <YtezuVYVQnqX2IsY@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Wed, 27 Jul 2022 18:14:25 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 64E33124055;
+        Wed, 27 Jul 2022 18:14:25 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D3EB7124053;
+        Wed, 27 Jul 2022 18:14:24 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.77.138.167])
+        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed, 27 Jul 2022 18:14:24 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     linux-block@vger.kernel.org
+Cc:     keyrings@vger.kernel.org, dhowells@redhat.com, jarkko@kernel.org,
+        jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com,
+        gjoyce@ibm.com, nayna@linux.ibm.com
+Subject: [PATCH 0/3] sed-opal: keyrings, discovery, revert and key store
+Date:   Wed, 27 Jul 2022 13:14:19 -0500
+Message-Id: <20220727181422.3504563-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hTi9DWJG_tf8497GjjoGIVFymTJZFO3R
-X-Proofpoint-GUID: x9NT1qgxzXc5J_0hLeFcHduzw3YZeFet
+X-Proofpoint-ORIG-GUID: pKTIM34pTdDRo0d_8pFL7ucruvS1N2S0
+X-Proofpoint-GUID: ADRxlWOyMgT7n4RtQcQkWsQiDQ1U6s8s
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-26_05,2022-07-26_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 mlxlogscore=999 impostorscore=0 phishscore=0 suspectscore=0
- mlxscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207260071
+ definitions=2022-07-27_07,2022-07-27_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501
+ mlxscore=0 phishscore=0 bulkscore=0 impostorscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207270077
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
@@ -94,28 +87,60 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2022-07-20 at 00:50 -0700, Christoph Hellwig wrote:
-> On Mon, Jul 18, 2022 at 04:01:56PM -0500, gjoyce@linux.vnet.ibm.com
-> wrote:
-> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > 
-> > Platforms that have a permanent key store may provide unique
-> > platform dependent functions to read/write variables. The
-> > default (weak) functions return -EOPNOTSUPP unless overridden
-> > by architecture/platform versions.
-> 
-> This is still lacking any useful implementation.  It also seems to be
-> used in patch 3 before it actually is used.
-> 
-> As the functionality seems optional I'd suggest to drop this patch
-> for
-> now and not call it from patch 3, and do a separate series later that
-> adds the infrastructure, at leat one useful backend and the caller.
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-It's kind of a chicken and egg thing. I'd hoped to add the
-infrastructure and follow it up with another pseries specific patchset
-that provided platform specific implementations of those functions.
+The current TCG SED Opal implementation in the block
+driver requires that authentication keys be provided
+in an ioctl so that they can be presented to the
+underlying SED Opal capable drive. Currently, the key
+is typically entered by a user with an application
+like sedutil or sedcli. While this process works, it
+does not lend itself to automation like unlock by a udev
+rule.
 
-But I can break it up as you suggest. I'll include your other comments
-as well as the keyring suggestion from Hannes.
+Extend the SED block driver so it can alternatively
+obtain a key from a sed-opal kernel keyring. The SED
+ioctls will indicate the source of the key, either
+directly in the ioctl data or from the keyring.
+
+Two new SED ioctls have also been added. These are:
+  1) IOC_OPAL_REVERT_LSP to revert LSP state
+  2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+
+Also, for platforms that have a permanent key store, the
+platform may provide unique platform dependent functions
+to read/write variables. The SED block driver has been
+modified to attempt to read a key from the platform key
+store. If successful, the key value is saved in the kernel
+sed-opal keyring. If the platform does not support a
+permanent key store, the read will fail and a key will
+not be added to the keyring. This patchset does not include
+any providers of the variable read/write functions.
+
+Updates:
+	- removed platform functions for persistent variable storage
+	- replaced key update logic with key_create_or_update()
+	- minor bracing and padding changes
+	- add error returns
+	- opal_key structure is application provided but kernel
+	  verified
+
+Greg Joyce (3):
+  block: sed-opal: Implement IOC_OPAL_DISCOVERY
+  block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+  block: sed-opal: keyring support for SED Opal keys
+
+ block/Kconfig                 |   1 +
+ block/opal_proto.h            |   4 +
+ block/sed-opal.c              | 252 +++++++++++++++++++++++++++++++++-
+ include/linux/sed-opal.h      |   5 +
+ include/uapi/linux/sed-opal.h |  25 +++-
+ 5 files changed, 281 insertions(+), 6 deletions(-)
+
+
+Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Reported-by: kernel test robot <lkp@intel.com>
+base-commit: ff6992735ade75aae3e35d16b17da1008d753d28
+-- 
+2.27.0
 
