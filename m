@@ -2,49 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA0B5839A8
-	for <lists+keyrings@lfdr.de>; Thu, 28 Jul 2022 09:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A94D8583A06
+	for <lists+keyrings@lfdr.de>; Thu, 28 Jul 2022 10:07:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234639AbiG1HnF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 28 Jul 2022 03:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34716 "EHLO
+        id S234853AbiG1IHZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 28 Jul 2022 04:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234230AbiG1HnF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 28 Jul 2022 03:43:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B52606A7;
-        Thu, 28 Jul 2022 00:43:04 -0700 (PDT)
+        with ESMTP id S234838AbiG1IHY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 28 Jul 2022 04:07:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE3184BD07;
+        Thu, 28 Jul 2022 01:07:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E51C761B56;
-        Thu, 28 Jul 2022 07:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CE2C433C1;
-        Thu, 28 Jul 2022 07:43:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C13761B89;
+        Thu, 28 Jul 2022 08:07:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A82AC433C1;
+        Thu, 28 Jul 2022 08:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658994183;
-        bh=m0HESBKbynkNYYBve6dme8G5ASks6lkE+n50neeL6jU=;
+        s=k20201202; t=1658995642;
+        bh=+HJ6jlAD0ouWT2q+KDfgQAcYPW1ZDvP8eATEJFjyLNQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e8ztnv1o7tks0f1TboIv17UnRg8VLTa6h4UAtPYjdOkAgiyMg8jH6Q8w+KyXTfoK3
-         R8+78rhcHIvIw+e5uhIjxardDQnA1y4hoLFfFmj7ZU9ZrtzqOhjReB0p3NjSeJ7NGw
-         /8azQD5k6cB/huS2tSIcZV2OF6jB9uswq1Xb52OQ+3GjFT5qK7VDJ5GGbBDsVfVTzk
-         qu982jQUjuK1XfEINjdFYWAZmlBnqbd/edjeYy1TP9y9Mhb96F2r2Co4axYpxZ47GK
-         CBAgm8fICqcXRYT8ltFI5lkMeMhvLrq33coQl7/3V2F7jNSp+hwJjqEcv3qKRBBjPk
-         RXYGcH2tF7rpw==
-Date:   Thu, 28 Jul 2022 10:43:00 +0300
+        b=EORXPtO2GMMtPF95tHjY1C1ceuBdtFgTuIPtUvaOWzpXvtlMFJ8iZyndsUvS1/tvO
+         rFi4/wltv4mJyt52zll5VvTVNLeNaiJdqMqNR/HLzPIxyu2vkOjRa/hIJU6AgYtxMw
+         884HHcxbC81jJiv/+JHVNR/esc/6ABm2JN53uxxhQzZNnU/kLPtJik+I+nQvX/Navj
+         GOXFZeUqYFjLvSBs4w/uZ8cW3nVGI2Hi0Nn+eC29FTWXMbCJf3i0/ns+oUbrThhtGA
+         nVVDwWQVLemryqS+lf+pkB/ocYg2h1g0yTMw8zV0E2+W30UY9maC35xirn0IWoNoIB
+         FJVq5w5pWGHig==
+Date:   Thu, 28 Jul 2022 11:07:19 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     gjoyce@linux.vnet.ibm.com
-Cc:     linux-block@vger.kernel.org, keyrings@vger.kernel.org,
-        dhowells@redhat.com, jonathan.derrick@linux.dev,
-        brking@linux.vnet.ibm.com, greg@gilhooley.com, gjoyce@ibm.com
-Subject: Re: [PATCH 0/4] sed-opal: keyrings, discovery, revert and key store
-Message-ID: <YuI+BKAlSfMTR8lB@kernel.org>
-References: <20220718210156.1535955-1-gjoyce@linux.vnet.ibm.com>
+To:     Jianglei Nie <niejianglei2021@163.com>
+Cc:     jejb@linux.ibm.com, zohar@linux.ibm.com, dhowells@redhat.com,
+        jmorris@namei.org, serge@hallyn.com,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: trusted: Fix memory leak in tpm2_key_encode()
+Message-ID: <YuJDt6T6tUv76bIT@kernel.org>
+References: <YqGE/v0Zgi+g4gY6@iki.fi>
+ <20220722082125.2526529-1-niejianglei2021@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220718210156.1535955-1-gjoyce@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20220722082125.2526529-1-niejianglei2021@163.com>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,66 +55,97 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 04:01:52PM -0500, gjoyce@linux.vnet.ibm.com wrote:
-> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+On Fri, Jul 22, 2022 at 04:21:25PM +0800, Jianglei Nie wrote:
+> tpm2_key_encode() allocates a memory chunk from scratch with kmalloc(),
+> but it is never freed, which leads to a memory leak. Free the memory
+> chunk with kfree() in the return path.
 > 
-> The current TCG SED Opal implementation in the block
-> driver requires that authentication keys be provided
-> in an ioctl so that they can be presented to the
-> underlying SED Opal capable drive. Currently, the key
-> is typically entered by a user with an application
-> like sedutil or sedcli. While this process works, it
-> does not lend itself to automation like unlock by a udev
-> rule.
+> Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+> Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+> ---
 
+The change log is missing. I have no idea what happened in v2 and v3.
 
-Please explain also what SED Opal is.
-
+>  security/keys/trusted-keys/trusted_tpm2.c | 33 ++++++++++++++++-------
+>  1 file changed, 23 insertions(+), 10 deletions(-)
 > 
-> Extend the SED block driver so it can alternatively
-> obtain a key from a sed-opal kernel keyring. The SED
-> ioctls will indicate the source of the key, either
-> directly in the ioctl data or from the keyring.
-> 
-> Two new SED ioctls have also been added. These are:
->   1) IOC_OPAL_REVERT_LSP to revert LSP state
->   2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
-> 
-> Also, for platforms that have a permanent key store, the
-> platform may provide unique platform dependent functions
-> to read/write variables. The SED block driver has been
-> modified to attempt to read a key from the platform key
-> store. If successful, the key value is saved in the kernel
-> sed-opal keyring. If the platform does not support a
-> permanent key store, the read will fail and a key will
-> not be added to the keyring. This patchset does not include
-> any providers of the variable read/write functions.
-> 
-> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> base-commit: ff6992735ade75aae3e35d16b17da1008d753d28
-> 
-> Greg Joyce (4):
->   block: sed-opal: Implement IOC_OPAL_DISCOVERY
->   block: sed-opal: Implement IOC_OPAL_REVERT_LSP
->   block: sed-opal: keyring support for SED Opal keys
->   arch_vars: create arch specific permanent store
-> 
->  block/Kconfig                 |   1 +
->  block/opal_proto.h            |   4 +
->  block/sed-opal.c              | 274 +++++++++++++++++++++++++++++++++-
->  include/linux/arch_vars.h     |  23 +++
->  include/linux/sed-opal.h      |   5 +
->  include/uapi/linux/sed-opal.h |  24 ++-
->  lib/Makefile                  |   2 +-
->  lib/arch_vars.c               |  25 ++++
->  8 files changed, 351 insertions(+), 7 deletions(-)
->  create mode 100644 include/linux/arch_vars.h
->  create mode 100644 lib/arch_vars.c
-> 
-> 
+> diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+> index 2b2c8eb258d5..eb25c784b5c3 100644
+> --- a/security/keys/trusted-keys/trusted_tpm2.c
+> +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> @@ -32,8 +32,13 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  			   struct trusted_key_options *options,
+>  			   u8 *src, u32 len)
+>  {
+> +	int ret;
+>  	const int SCRATCH_SIZE = PAGE_SIZE;
+> -	u8 *scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
+> +	u8 *scratch;
+> +
+> +	scratch = kmalloc(SCRATCH_SIZE, GFP_KERNEL);
+> +	if (!scratch)
+> +		return -ENOMEM;
+>  	u8 *work = scratch, *work1;
+>  	u8 *end_work = scratch + SCRATCH_SIZE;
+>  	u8 *priv, *pub;
+> @@ -47,9 +52,6 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  	pub_len = get_unaligned_be16(src) + 2;
+>  	pub = src;
+>  
+> -	if (!scratch)
+> -		return -ENOMEM;
+> -
+>  	work = asn1_encode_oid(work, end_work, tpm2key_oid,
+>  			       asn1_oid_len(tpm2key_oid));
+>  
+> @@ -57,8 +59,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  		unsigned char bool[3], *w = bool;
+>  		/* tag 0 is emptyAuth */
+>  		w = asn1_encode_boolean(w, w + sizeof(bool), true);
+> -		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+> -			return PTR_ERR(w);
+> +		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
+> +			ret = PTR_ERR(w);
+> +			goto err;
+> +		}
+>  		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
+>  	}
+>  
+> @@ -69,8 +73,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  	 * trigger, so if it does there's something nefarious going on
+>  	 */
+>  	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+> -		 "BUG: scratch buffer is too small"))
+> -		return -EINVAL;
+> +		 "BUG: scratch buffer is too small")) {
+> +		ret = -EINVAL;
+> +		goto err;
+> +	}
+>  
+>  	work = asn1_encode_integer(work, end_work, options->keyhandle);
+>  	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
+> @@ -79,10 +85,17 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  	work1 = payload->blob;
+>  	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+>  				     scratch, work - scratch);
+> -	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+> -		return PTR_ERR(work1);
+> +	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
+> +		ret = PTR_ERR(work1);
+> +		goto err;
+> +	}
+>  
+> +	kfree(scratch);
+>  	return work1 - payload->blob;
+> +
+> +err:
+> +	kfree(scratch);
+> +	return ret;
+>  }
+>  
+>  struct tpm2_key_context {
 > -- 
-> 2.27.0
+> 2.25.1
 > 
 
 BR, Jarkko
