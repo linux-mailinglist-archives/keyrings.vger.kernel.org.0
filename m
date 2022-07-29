@@ -2,76 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 046C8583BDF
-	for <lists+keyrings@lfdr.de>; Thu, 28 Jul 2022 12:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44AC6584D25
+	for <lists+keyrings@lfdr.de>; Fri, 29 Jul 2022 10:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235788AbiG1KOD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 28 Jul 2022 06:14:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44412 "EHLO
+        id S230171AbiG2IHR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 29 Jul 2022 04:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235813AbiG1KOB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 28 Jul 2022 06:14:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F9AD6558F
-        for <keyrings@vger.kernel.org>; Thu, 28 Jul 2022 03:14:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1659003239;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cRquouMZ72XSevzpz4XHT0m3YbEnzXxom7ZqAfoxxsU=;
-        b=IeI9w2oEDrk16NuuzajHr2F7A6MlhTfbe8JuSi7qD/5CokLJ8XqwlGep+y33uNuVAvd4iY
-        2nFtZ5HS6jMIrMn2yVLyb99A3/kur01dHcN/Va0dPJBwc1O3rFC0d1hAwAZicwh8E0VfDY
-        vImhzywWJ9FjzHiqboSB9rZcJL4Mt28=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-144-21pW1NJ5Poe1rZSJWc6qmg-1; Thu, 28 Jul 2022 06:13:54 -0400
-X-MC-Unique: 21pW1NJ5Poe1rZSJWc6qmg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FCA8811E75;
-        Thu, 28 Jul 2022 10:13:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.10])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E76262166B26;
-        Thu, 28 Jul 2022 10:13:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <YstqXEPmPV2YUfWN@kernel.org>
-References: <YstqXEPmPV2YUfWN@kernel.org> <20220704025248.3695-1-zeming@nfschina.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     dhowells@redhat.com, Li zeming <zeming@nfschina.com>,
-        jmorris@namei.org, serge@hallyn.com, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@nfschina.com
-Subject: Re: [PATCH] keys/keyctl: Fix typo in string
+        with ESMTP id S235311AbiG2IHO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 29 Jul 2022 04:07:14 -0400
+X-Greylist: delayed 545 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 29 Jul 2022 01:07:13 PDT
+Received: from mail.fadrush.pl (mail.fadrush.pl [54.37.225.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B11413D5A
+        for <keyrings@vger.kernel.org>; Fri, 29 Jul 2022 01:07:13 -0700 (PDT)
+Received: by mail.fadrush.pl (Postfix, from userid 1002)
+        id E24A424BA4; Fri, 29 Jul 2022 07:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fadrush.pl; s=mail;
+        t=1659081395; bh=bD6j9gIFU6CLTaCGl0Ow9oeIxtirvTfMeNZSfLEZQ+I=;
+        h=Date:From:To:Subject:From;
+        b=fiAwQ5ZH9gcBclZFpRqXsI6AXn2paA+bbw3U/i2wnOF8go12w26qjZpUsQUIFjS5f
+         196QKo6TbEjCB4xiutP6oYSoZ5Vy1q4NuszmFMIDPXAdYA9EGGN28vsV9M6aKkLft7
+         fOwPuUApkgwhvmHZTi2j39oJTavfhpdOnm59TzgUfze9nIdO205O21S389+4/LItWI
+         dkHjIgHXe7Il9RvBq1FPnfswLrnCWjoDqG0ZsdKzu0huArLCAlD2bg+Jhofr2A7Mev
+         qBn3Er57mWlnLWvlVUsbpk7SXgSBF/YPc+PekFHrhIFEfYj9Lai7KAoWOzCrznfjQz
+         Y05AbexUJFSfA==
+Received: by mail.fadrush.pl for <keyrings@vger.kernel.org>; Fri, 29 Jul 2022 07:55:43 GMT
+Message-ID: <20220729064500-0.1.q.4tet.0.gimabsj22b@fadrush.pl>
+Date:   Fri, 29 Jul 2022 07:55:43 GMT
+From:   "Jakub Olejniczak" <jakub.olejniczak@fadrush.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: =?UTF-8?Q?Zwi=C4=99kszenie_p=C5=82ynno=C5=9Bci_finansowej?=
+X-Mailer: mail.fadrush.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2687695.1659003230.1@warthog.procyon.org.uk>
-Date:   Thu, 28 Jul 2022 11:13:50 +0100
-Message-ID: <2687696.1659003230@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> wrote:
+Dzie=C5=84 dobry,
 
-> Please, add
-> 
-> Fixes: d84f4f992cbd ("CRED: Inaugurate COW credentials")
+kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, poniewa=C5=BC chcia=C5=82bym za=
+proponowa=C4=87 wygodne rozwi=C4=85zanie, kt=C3=B3re umo=C5=BCliwi Pa=C5=84=
+stwa firmie stabilny rozw=C3=B3j.=20
 
-Since it's not a bugfix, I wouldn't put that in.  It doesn't need backporting.
+Konkurencyjne otoczenie wymaga ci=C4=85g=C5=82ego ulepszania i poszerzeni=
+a oferty, co z kolei wi=C4=85=C5=BCe si=C4=99 z konieczno=C5=9Bci=C4=85 i=
+nwestowania. Brak odpowiedniego kapita=C5=82u powa=C5=BCnie ogranicza tem=
+po rozwoju firmy.
 
-David
+Od wielu lat z powodzeniem pomagam firmom w uzyskaniu najlepszej formy fi=
+nansowania z banku oraz UE. Mam sta=C5=82ych Klient=C3=B3w, kt=C3=B3rzy n=
+adal ch=C4=99tnie korzystaj=C4=85 z moich us=C5=82ug, a tak=C5=BCe poleca=
+j=C4=85 je innym.
 
+Czy chcieliby Pa=C5=84stwo skorzysta=C4=87 z pomocy wykwalifikowanego i d=
+o=C5=9Bwiadczonego doradcy finansowego?
+
+
+Pozdrawiam
+Jakub Olejniczak
