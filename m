@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2878B5868F2
-	for <lists+keyrings@lfdr.de>; Mon,  1 Aug 2022 13:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 292C4586A00
+	for <lists+keyrings@lfdr.de>; Mon,  1 Aug 2022 14:10:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232071AbiHALzF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 1 Aug 2022 07:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49098 "EHLO
+        id S233724AbiHAMKT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 1 Aug 2022 08:10:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232348AbiHALyf (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Aug 2022 07:54:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA0D3D59A;
-        Mon,  1 Aug 2022 04:50:47 -0700 (PDT)
+        with ESMTP id S233631AbiHAMJh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 1 Aug 2022 08:09:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5036F6610D;
+        Mon,  1 Aug 2022 04:56:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03BF9612C6;
-        Mon,  1 Aug 2022 11:50:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12911C433C1;
-        Mon,  1 Aug 2022 11:50:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BCE4CB81171;
+        Mon,  1 Aug 2022 11:56:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5F2C433D6;
+        Mon,  1 Aug 2022 11:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1659354646;
-        bh=BpAflb7GzevfsToXqLm9RcWX5VEy/6pjtieqjNxcy8c=;
+        s=korg; t=1659354978;
+        bh=5hFJJ5gAtqb4rt193r1r4mkbDulYR0rJCVrXO3f4blY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C64+yzTezovEJ754bzdt7w7DvFWyxmObCkHDmbhk+7mmMhYaqxfDKMnkhEw4kXYNv
-         Cx5goDtm8DdAZ0wltAymIxrN0g+mD6Xe/9L5o8NbJHF4egorgk73e5szExYkEYLzlj
-         O9FseLKl+otEagRA8WTpljKCX9/o6g6yWTB62xB8=
+        b=dxRzUA/bXlIhHaw2cvz3oPTAPI/LYrdtybBh6rxFwbE6tL+/yvqngOWmBV7qZPCEu
+         b2i2EXV4jNVmJHf54q2PiWD4jYtmGS9zOfq1QD8k6Z6OwB23NQXw6WiUSD45dzhjPv
+         VY3PxljB4CChHMXBxkiyhgU27HXBhfr/U5lgaPjs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,12 +35,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         syzbot+03d7b43290037d1f87ca@syzkaller.appspotmail.com,
         David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 07/65] watch_queue: Fix missing locking in add_watch_to_object()
-Date:   Mon,  1 Aug 2022 13:46:24 +0200
-Message-Id: <20220801114133.974957264@linuxfoundation.org>
+Subject: [PATCH 5.18 19/88] watch_queue: Fix missing locking in add_watch_to_object()
+Date:   Mon,  1 Aug 2022 13:46:33 +0200
+Message-Id: <20220801114138.914986548@linuxfoundation.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220801114133.641770326@linuxfoundation.org>
-References: <20220801114133.641770326@linuxfoundation.org>
+In-Reply-To: <20220801114138.041018499@linuxfoundation.org>
+References: <20220801114138.041018499@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/watch_queue.c
 +++ b/kernel/watch_queue.c
-@@ -457,6 +457,33 @@ void init_watch(struct watch *watch, str
+@@ -454,6 +454,33 @@ void init_watch(struct watch *watch, str
  	rcu_assign_pointer(watch->queue, wqueue);
  }
  
@@ -120,7 +120,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  /**
   * add_watch_to_object - Add a watch on an object to a watch list
   * @watch: The watch to add
-@@ -471,34 +498,21 @@ void init_watch(struct watch *watch, str
+@@ -468,34 +495,21 @@ void init_watch(struct watch *watch, str
   */
  int add_watch_to_object(struct watch *watch, struct watch_list *wlist)
  {
