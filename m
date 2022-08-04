@@ -2,103 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DFC85897CC
-	for <lists+keyrings@lfdr.de>; Thu,  4 Aug 2022 08:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4B5589965
+	for <lists+keyrings@lfdr.de>; Thu,  4 Aug 2022 10:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233913AbiHDGgF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 4 Aug 2022 02:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46066 "EHLO
+        id S239301AbiHDIlK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 4 Aug 2022 04:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiHDGgE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Aug 2022 02:36:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9E33AB31;
-        Wed,  3 Aug 2022 23:36:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B26B460EF5;
-        Thu,  4 Aug 2022 06:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8464C433C1;
-        Thu,  4 Aug 2022 06:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659594960;
-        bh=XWdk58I8HuYnLJ5GXb3J4tqaVKN0JX8nir8rtpOl2Fo=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=CEhJyC6z6ebWqBBC413s3sNPrZsBsb37Oys6ZXEAHfJd9TB2CiwSGDuxGEvUzTIV3
-         AfvDu6tNH/+f5qoikGDlpGkzuyJdz06dkd/ewDvVZ0hDf4xmXhhQ67qjJa2b+PUo9n
-         rlXch47Y9YndESG7X6Y0/NexXldDq0rltxhHQTr/puO9Iewf5GhEUvh/Fgcp4OUT2S
-         /sn/xzKJ67oyI8KMEm6p5rA3O6/op3KsxByUSI8aUqZar318uSpZvfRqmRSsmXCZ/d
-         HgG6+H/RBtqRZpPveTlf12AZVEZQ+R8GRBWx62FtolwovDmVUaK5NcHM77NNspqKHG
-         9pKZP1OIcxqxQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [GIT PULL] tpmdd updates for v5.20
-In-Reply-To: <20220803210228.158993-1-jarkko@kernel.org> (Jarkko Sakkinen's
-        message of "Thu, 4 Aug 2022 00:02:28 +0300")
-References: <20220803210228.158993-1-jarkko@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Thu, 04 Aug 2022 09:35:51 +0300
-Message-ID: <87pmhgikhk.fsf@kernel.org>
+        with ESMTP id S239210AbiHDIkw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 4 Aug 2022 04:40:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 06BBE5FAE8
+        for <keyrings@vger.kernel.org>; Thu,  4 Aug 2022 01:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1659602449;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=W3oflKZ7g4iM+N4+kxgav6X7gDZ8PgCWL94kRakC7bM=;
+        b=TgTn6oyH1Xea+9shmTeKwd7MYspWJTazf52Acj/XKfd2sns1CeYsErpCszwlwLhSaWACxO
+        6RxO9/Fn/H+w/FUdN8vepPWJTw/P+rljU/ACEjsqFZLXr4B3+le+UjKDp+xVCVo9uIJXpR
+        NSfi8MsYMFCDsDcsBmtlKyucjArLiAY=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-593-fv9GVdLrOsmdq-Ham2l8NA-1; Thu, 04 Aug 2022 04:40:47 -0400
+X-MC-Unique: fv9GVdLrOsmdq-Ham2l8NA-1
+Received: by mail-yb1-f199.google.com with SMTP id s14-20020a5b044e000000b00672caf96368so15406248ybp.21
+        for <keyrings@vger.kernel.org>; Thu, 04 Aug 2022 01:40:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc;
+        bh=W3oflKZ7g4iM+N4+kxgav6X7gDZ8PgCWL94kRakC7bM=;
+        b=MsBc0/K+oZwCkQdpdq4xVGT1cKK2LUBtUQvuM1hr2qLmV+7SCpZCLfyabRbrcVLV5d
+         soOq7tkZUlWkKfJ23ROn7ZGeNApwJvuKdUm6zPOx9XGVYSf04ZncHTcYfTWgWt+AnkZO
+         ok9fZ9xTgL5h03NafAjomS7aNshiDnlwySareWgYOBz0FP0kGOSzTVqKdfJLV4M9JSGk
+         yJ43pHo8D4B9urFAVK44ErkwZ6OqmuOuCtpqWmThDO/mrjZxm30bdwc6teLGsd5vKRBp
+         MDpKGmGkbKJ/kOZtXXb4QQzsGo50evAbgOqf5qkoMqZsWDn+ItQC6l/p4cYaNgfsJWT7
+         PXmA==
+X-Gm-Message-State: ACgBeo2sg5g9y7/KteHg6fYF+PenBRcI1DFnXlj3puAwM/pw/SIbq6um
+        LJ6BlAwuPbxWOR8fdcK7nCTG0PdpiHj09XkkKh0ZvlWRMr7iwzfqlchxEnbyFzrct/w/S1go47L
+        FG0mIfWO7ClVGNuCtZSy4cQfQxpxx3pm5drA=
+X-Received: by 2002:a81:7c03:0:b0:328:25ee:40d with SMTP id x3-20020a817c03000000b0032825ee040dmr772944ywc.12.1659602446568;
+        Thu, 04 Aug 2022 01:40:46 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR7fJPHYOm6mQ0iaP+t9lkWuo9d4kCbFvcMsT6xSOPGMlLHLE0dIlFmyYiKvxL5Yjqv125SXMhI0twSJXUsquEU=
+X-Received: by 2002:a81:7c03:0:b0:328:25ee:40d with SMTP id
+ x3-20020a817c03000000b0032825ee040dmr772931ywc.12.1659602446379; Thu, 04 Aug
+ 2022 01:40:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Thu, 4 Aug 2022 10:40:35 +0200
+Message-ID: <CAFqZXNtBouZcXOpfs7agZU8xsW4VcEoHqdTAX9No0uCWrU613g@mail.gmail.com>
+Subject: [BUG] watch_queue resource accounting seems broken
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org,
+        Linux Security Module list 
+        <linux-security-module@vger.kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="0000000000004938b705e5664e03"
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> writes:
+--0000000000004938b705e5664e03
+Content-Type: text/plain; charset="UTF-8"
 
-> Contains mostly TPM and also few keyring fixes.
->
-> BR, Jarkko
->
-> The following changes since commit 200e340f2196d7fd427a5810d06e893b932f145a:
->
->   Merge tag 'pull-work.dcache' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs (2022-08-03 11:43:12 -0700)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-v5.20
->
-> for you to fetch changes up to 863ed94c589fcd1984f4e3080f069d30508044bb:
->
->   tpm: Add check for Failure mode for TPM2 modules (2022-08-03 23:56:20 +0300)
->
-> ----------------------------------------------------------------
-> tpmdd updates for Linux v5.20
->
-> ----------------------------------------------------------------
-> Alexander Steffen (3):
->       dt-bindings: trivial-devices: Add Infineon SLB9673 TPM
->       tpm: Add tpm_tis_verify_crc to the tpm_tis_phy_ops protocol layer
->       tpm: Add tpm_tis_i2c backend for tpm_tis_core
->
-> Elvira Khabirova (1):
->       pkcs7: support EC-RDSA/streebog in SignerInfo
->
-> Huacai Chen (1):
->       tpm: eventlog: Fix section mismatch for DEBUG_SECTION_MISMATCH
->
-> M...rten Lindahl (1):
->       tpm: Add check for Failure mode for TPM2 modules
+Hi,
 
-Some encoding problems in the name? At least my Gnus didn't show them correctly.
+It seems there is something wrong with resource accounting for
+watch_queues. When a watch_queue is created, its size is set, and then
+both ends are closed, it seems the resource usage increment is not
+released as it should be and repeated creations of watch_queues
+eventually (and quite fast!) exhaust the per-user pipe limit. I tested
+this only on kernels 5.19 and 5.17.5, but I suspect the bug has been
+there since the watch_queue introduction.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The issue can be reproduced by the attached C program. When it is run
+by an unprivileged user (or by root with cap_sys_admin and
+cap_sys_resource dropped), the pipe allocation/size setting starts to
+fail after a few iterations.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I found this bug thanks to selinux-testuite's [1] watchkey test, which
+started repeatably failing after I ran it a couple times in a row.
+
+I'm not very familiar with this code area, so I'm hoping that someone
+who understands the inner workings of watch_queue will be able and
+willing to look into it and fix it.
+
+Thanks,
+
+[1] https://github.com/SELinuxProject/selinux-testsuite/
+
+--
+Ondrej Mosnacek
+Senior Software Engineer, Linux Security - SELinux kernel
+Red Hat, Inc.
+
+--0000000000004938b705e5664e03
+Content-Type: text/x-c-code; charset="US-ASCII"; name="watch_queue_bug.c"
+Content-Disposition: attachment; filename="watch_queue_bug.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_l6dplwvp0>
+X-Attachment-Id: f_l6dplwvp0
+
+I2RlZmluZSBfR05VX1NPVVJDRQojaW5jbHVkZSA8c3RkbGliLmg+CiNpbmNsdWRlIDxzdGRpby5o
+PgojaW5jbHVkZSA8c3RyaW5nLmg+CiNpbmNsdWRlIDx1bmlzdGQuaD4KI2luY2x1ZGUgPGVycm5v
+Lmg+CiNpbmNsdWRlIDxzeXMvaW9jdGwuaD4KI2luY2x1ZGUgPGxpbnV4L3dhdGNoX3F1ZXVlLmg+
+CgojZGVmaW5lIEJVRl9TSVpFIDI1NgoKaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQp7
+CiAgICBpbnQgaSwgcGlwZWZkWzJdLCByZXN1bHQ7CgogICAgZm9yIChpID0gMDsgaSA8IDEwMDA7
+IGkrKykgewogICAgICAgIGZwcmludGYoc3RkZXJyLCAiJWRcbiIsIGkpOwogICAgICAgIHJlc3Vs
+dCA9IHBpcGUyKHBpcGVmZCwgT19OT1RJRklDQVRJT05fUElQRSk7CiAgICAgICAgaWYgKHJlc3Vs
+dCA8IDApIHsKICAgICAgICAgICAgZnByaW50ZihzdGRlcnIsICJGYWlsZWQgdG8gY3JlYXRlIHBp
+cGUyKDIpOiAlc1xuIiwKICAgICAgICAgICAgICAgICAgICBzdHJlcnJvcihlcnJubykpOwogICAg
+ICAgICAgICByZXR1cm4gZXJybm87CiAgICAgICAgfQoKICAgICAgICByZXN1bHQgPSBpb2N0bChw
+aXBlZmRbMF0sIElPQ19XQVRDSF9RVUVVRV9TRVRfU0laRSwgQlVGX1NJWkUpOwogICAgICAgIGlm
+IChyZXN1bHQgPCAwKSB7CiAgICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAiRmFpbGVkIHRvIHNl
+dCB3YXRjaF9xdWV1ZSBzaXplOiAlc1xuIiwKICAgICAgICAgICAgICAgICAgICBzdHJlcnJvcihl
+cnJubykpOwogICAgICAgICAgICByZXR1cm4gZXJybm87CiAgICAgICAgfQoKICAgICAgICBjbG9z
+ZShwaXBlZmRbMF0pOwogICAgICAgIGNsb3NlKHBpcGVmZFsxXSk7CiAgICB9CiAgICByZXR1cm4g
+MDsKfQo=
+--0000000000004938b705e5664e03--
+
