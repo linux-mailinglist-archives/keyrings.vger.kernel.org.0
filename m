@@ -2,97 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B87B258A5B2
-	for <lists+keyrings@lfdr.de>; Fri,  5 Aug 2022 07:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A68B458B445
+	for <lists+keyrings@lfdr.de>; Sat,  6 Aug 2022 09:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234600AbiHEFnp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 Aug 2022 01:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51870 "EHLO
+        id S232933AbiHFHnA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 6 Aug 2022 03:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231574AbiHEFno (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 Aug 2022 01:43:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F6E21F2FE;
-        Thu,  4 Aug 2022 22:43:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A08E2B82415;
-        Fri,  5 Aug 2022 05:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE069C433D6;
-        Fri,  5 Aug 2022 05:43:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659678218;
-        bh=1HJkSxaQIfror+WhaJCtN4BMtV9g8NfPqEcBfmtC67c=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=fhJWX3yWoFEY7nZzseb1CMVnAGJ7khb0OCTEuMfAdRosCE0Q/cVulAlC7b5lBGuS6
-         t/K2NPVnEKZGFg+ogHETceyuFafOdcTIn2KR/g7qIl2GhHDoLmXaoDOHCpn+1x7uW5
-         2EmpRAVHMT1bxF2HB9mfl7yvlE7JdW5L14KzE5QAzCA13YiNLFBS0kFtm2A3Yb9uGE
-         wyYASRwu0UBgr/OkBp1qvRy8PVOEEmR4jMcDKEbvovI1hv/8Fg9BPfgkxRNMopkMlU
-         KDV2XL4Hml34lPAApL/3HNNF1hDlaF8FU5DgdTh7v6uSkyOgNET3HVk+mqEjXTV+4r
-         NkxJl8PLM2XWQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [GIT PULL] tpmdd updates for v5.20
-References: <20220803210228.158993-1-jarkko@kernel.org>
-        <87pmhgikhk.fsf@kernel.org>
-        <5653318a776a8044f413ed1a4b6e3965fac2297e.camel@HansenPartnership.com>
-Date:   Fri, 05 Aug 2022 08:43:30 +0300
-In-Reply-To: <5653318a776a8044f413ed1a4b6e3965fac2297e.camel@HansenPartnership.com>
-        (James Bottomley's message of "Thu, 04 Aug 2022 08:01:53 -0400")
-Message-ID: <87czdfi6t9.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        with ESMTP id S230465AbiHFHm7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 6 Aug 2022 03:42:59 -0400
+Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F45E11C2F;
+        Sat,  6 Aug 2022 00:42:58 -0700 (PDT)
+Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-f2a4c51c45so5174081fac.9;
+        Sat, 06 Aug 2022 00:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc;
+        bh=gm6PmfQDJQW4sYrDMxD1XhD+bbbCc7CPLvJKQ3d/YUA=;
+        b=nFm1VC3KyZqoM35PVnjJC5DxKdZC/EAxOULMCkmgYku12hNJHse9r+tilI7arpzEI4
+         XW97kv8vll6g9DavYdBDgqRnNBRDL5yoybYUkKV3EHcWgQuIPYAB/oloj/iQ0zi7yb3Y
+         WMMQouJ1RhfTC7fIVyC62peTSHMRy2+kCc8LwI3VcFZXNTrzzOzfzTYM+ey6LorLSthb
+         IUQyUyJckZLyM7pLYM6HIey4/wiUGMNNMDObIG368NpCK+JKxCcJ8GaJz+DGN9gmmQj2
+         OPJmjl6rYMFFrwu7kmHHhIeYtk9PrTAlgYnzyfSrHH9nZPab8827rKeJuGC7LxAHrCdi
+         cfeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc;
+        bh=gm6PmfQDJQW4sYrDMxD1XhD+bbbCc7CPLvJKQ3d/YUA=;
+        b=e1Fs6S7TW/Wz116a/IeOmyqcJ7BQWS+1zvIfkXn/UH8Km94V9EinW+Yu9NLbiFiL5c
+         zKvg8MRNH+eYhserSWjVg6l2VXkrAe7u28awrz5lSdR4T7AouxBbZwDqEqQn3Z8tkcjO
+         2+Z8d88V02LKhuSS2MbiJUWCNbb98JGot6Hfevw871pxN4cJKvCtI6nsFB6xvA8H58t0
+         /nzdPqK5hYqJBNRI4U1/ctGqC73671qcjTQ4ACVHYB5NBYi0QOSN9yCYs/wTx5QZtL9W
+         D/nfI7lvDYbQyEDtMeQl4SGUUDFerYm/ggCRr0x2G65ObjVbujCaSTKrQkDzJ7koBMso
+         nHow==
+X-Gm-Message-State: ACgBeo3QKWmX/QLFSTIvSPnNUdzWpi1kAyW0ri4ZTW3UKkTUuVr26xcm
+        7VYCqYTDQ3KJkMs8vYAxJcdijOcMmE4mmry+T8s=
+X-Google-Smtp-Source: AA6agR4Fo8ujc5fByWI5kgVAIAetbTwWMAh1ItZ7I2D+tLRyfv7bllpf/VDAeBxjnxalm+DuFixLfNMQF1TzufN+u/k=
+X-Received: by 2002:a05:6870:c0d3:b0:10e:cb75:2e62 with SMTP id
+ e19-20020a056870c0d300b0010ecb752e62mr8180863oad.128.1659771777435; Sat, 06
+ Aug 2022 00:42:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
+ <CA+icZUW7y3JxQ3dCB8Wy83EjEyYj7z55nFUw-kZ+V4We22HZZg@mail.gmail.com>
+ <CA+icZUVyp2CdX7m72GY-=DtK9J+64uHeWPr5-cvo8haQm_4hUw@mail.gmail.com>
+ <CA+icZUWiYYQbAav7VxVsT0ikqCeLckym08Au8oSeyYjvJHcNbg@mail.gmail.com>
+ <CA+icZUUOQcc4uiVbv+tJzPr_ED7e4tD0u9tC8mcn2BRe3sdPAg@mail.gmail.com>
+ <CAHk-=wiOrXUr0wqHL+hfkzGg_+b7UvtLeB=59KsX8W939bTY-A@mail.gmail.com>
+ <CA+icZUUma1B8KFWF-ed9sjXH4QpCRZ+B2pON3uAFkTUs77tMzw@mail.gmail.com>
+ <20220609192308.GB10732@1wt.eu> <CAHk-=wimC_B+nCJrXwuvWULz6ycFFmRMT1Uc+PeM5wJdma_VFw@mail.gmail.com>
+ <CA+icZUUCOoE8x3Js=DYEjgyV_rz-T-M7gPZdFQu7tsKcUoA0hg@mail.gmail.com> <20220622183747.mhhlfr6aufbkyhag@alap3.anarazel.de>
+In-Reply-To: <20220622183747.mhhlfr6aufbkyhag@alap3.anarazel.de>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Sat, 6 Aug 2022 09:42:21 +0200
+Message-ID: <CA+icZUWjnaHKmofKdGgSo3b6wuNOR_Oj=C+gU3GW9fHViYwVpQ@mail.gmail.com>
+Subject: Re: [Linux v5.17.9] -Wdeprecated-declarations warnings with LLVM-14
+ and OpenSSL v3.0.x
+To:     Andres Freund <andres@anarazel.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Willy Tarreau <w@1wt.eu>, Kees Cook <keescook@chromium.org>,
+        keyrings@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Salvatore Bonaccorso <carnil@debian.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Stephane Eranian <eranian@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-James Bottomley <James.Bottomley@HansenPartnership.com> writes:
-
-> On Thu, 2022-08-04 at 09:35 +0300, Kalle Valo wrote:
->> Jarkko Sakkinen <jarkko@kernel.org> writes:
-> [...]
->> > M...rten Lindahl (1):
->> >       tpm: Add check for Failure mode for TPM2 modules
->>=20
->> Some encoding problems in the name? At least my Gnus didn't show them
->> correctly.
+> FWIW, these deprecation warnings also cause perf to fail to detect libcry=
+pto:
 >
-> My mail tool correctly renders the '=C3=A5' character, and lore has it to=
-o:
+> test-libcrypto.c: In function =E2=80=98main=E2=80=99:
+> test-libcrypto.c:11:9: error: =E2=80=98MD5_Init=E2=80=99 is deprecated: S=
+ince OpenSSL 3.0 [-Werror=3Ddeprecated-declarations]
+>    11 |         MD5_Init(&context);
+>       |         ^~~~~~~~
+> In file included from test-libcrypto.c:3:
+> ...
+> cc1: all warnings being treated as errors
 >
-> https://lore.kernel.org/all/20220803210228.158993-1-jarkko@kernel.org/
 >
-> So I think you have a local UTF-8 translation problem.
+> Perhaps it's worth applying this fix a bit more broadly?
+>
 
-Odd, I haven't noticed any UTF-8 problems in my setup but Gnus/Emacs is
-known to be picky. After some more investigation I noticed this in
-Jarkko's email:
+Just FYI:
 
-Content-Type: text/plain; charset=3Dy
+"perf build: Suppress openssl v3 deprecation warnings in libcrypto feature =
+test"
 
-I admit I'm not up to par with the latest cool stuff but that charset
-can't be valid, right? :)
+Included in git-pull request (pending) in [2].
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+-Sedat-
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/commit/?=
+h=3Dperf-tools-for-v6.0-2022-08-04&id=3D10fef869a58e37ec649b61eddab545f2da5=
+7a79b
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/tag/?h=
+=3Dperf-tools-for-v6.0-2022-08-04
