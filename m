@@ -2,117 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68B458B445
-	for <lists+keyrings@lfdr.de>; Sat,  6 Aug 2022 09:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 570C158B534
+	for <lists+keyrings@lfdr.de>; Sat,  6 Aug 2022 13:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232933AbiHFHnA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 6 Aug 2022 03:43:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42042 "EHLO
+        id S241735AbiHFLVJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 6 Aug 2022 07:21:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230465AbiHFHm7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 6 Aug 2022 03:42:59 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F45E11C2F;
-        Sat,  6 Aug 2022 00:42:58 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-f2a4c51c45so5174081fac.9;
-        Sat, 06 Aug 2022 00:42:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc;
-        bh=gm6PmfQDJQW4sYrDMxD1XhD+bbbCc7CPLvJKQ3d/YUA=;
-        b=nFm1VC3KyZqoM35PVnjJC5DxKdZC/EAxOULMCkmgYku12hNJHse9r+tilI7arpzEI4
-         XW97kv8vll6g9DavYdBDgqRnNBRDL5yoybYUkKV3EHcWgQuIPYAB/oloj/iQ0zi7yb3Y
-         WMMQouJ1RhfTC7fIVyC62peTSHMRy2+kCc8LwI3VcFZXNTrzzOzfzTYM+ey6LorLSthb
-         IUQyUyJckZLyM7pLYM6HIey4/wiUGMNNMDObIG368NpCK+JKxCcJ8GaJz+DGN9gmmQj2
-         OPJmjl6rYMFFrwu7kmHHhIeYtk9PrTAlgYnzyfSrHH9nZPab8827rKeJuGC7LxAHrCdi
-         cfeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc;
-        bh=gm6PmfQDJQW4sYrDMxD1XhD+bbbCc7CPLvJKQ3d/YUA=;
-        b=e1Fs6S7TW/Wz116a/IeOmyqcJ7BQWS+1zvIfkXn/UH8Km94V9EinW+Yu9NLbiFiL5c
-         zKvg8MRNH+eYhserSWjVg6l2VXkrAe7u28awrz5lSdR4T7AouxBbZwDqEqQn3Z8tkcjO
-         2+Z8d88V02LKhuSS2MbiJUWCNbb98JGot6Hfevw871pxN4cJKvCtI6nsFB6xvA8H58t0
-         /nzdPqK5hYqJBNRI4U1/ctGqC73671qcjTQ4ACVHYB5NBYi0QOSN9yCYs/wTx5QZtL9W
-         D/nfI7lvDYbQyEDtMeQl4SGUUDFerYm/ggCRr0x2G65ObjVbujCaSTKrQkDzJ7koBMso
-         nHow==
-X-Gm-Message-State: ACgBeo3QKWmX/QLFSTIvSPnNUdzWpi1kAyW0ri4ZTW3UKkTUuVr26xcm
-        7VYCqYTDQ3KJkMs8vYAxJcdijOcMmE4mmry+T8s=
-X-Google-Smtp-Source: AA6agR4Fo8ujc5fByWI5kgVAIAetbTwWMAh1ItZ7I2D+tLRyfv7bllpf/VDAeBxjnxalm+DuFixLfNMQF1TzufN+u/k=
-X-Received: by 2002:a05:6870:c0d3:b0:10e:cb75:2e62 with SMTP id
- e19-20020a056870c0d300b0010ecb752e62mr8180863oad.128.1659771777435; Sat, 06
- Aug 2022 00:42:57 -0700 (PDT)
+        with ESMTP id S238569AbiHFLVI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 6 Aug 2022 07:21:08 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E87E38B8;
+        Sat,  6 Aug 2022 04:21:07 -0700 (PDT)
+Date:   Sat, 06 Aug 2022 11:20:56 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1659784862; x=1660044062;
+        bh=DDaQcBxHbVdvNZavclAGBdmxiITV+EWaWcRqMUPt5p8=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:Feedback-ID:From:To:
+         Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID;
+        b=BGrH2+qcjrK0MP5HogcDJv73gftDl1EkjqxRPM6kXvzN86aRgi9OleJXcj4jqVAyr
+         uQnODZHK6+WsXnBihCaLaMjAukgk06TdXzmxnnAbikVrljJdn1Ys9hht2RfaynCO82
+         eCRwVJHXTcCIcnPMi8uYPefUssQVA5LBfcE1BwRrV9gYP+P5HkktBeAah/mvcDct1h
+         Hc0A9uzrYMVNQEJssCRIW1EbwtmSxMlw5P1nzlcXhWFiCkDjs/N3MTHoieC+k4tPym
+         3b3uUGo7xG51axne0JPaBceJdFfZys44URGC3X/xCV9Q6wSj/UfTPfK8FtxRp/9Fzb
+         KTMA7+kwv51uw==
+To:     linux-kernel@vger.kernel.org
+From:   Orlando Chamberlain <redecorating@protonmail.com>
+Cc:     jarkko@kernel.org, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        gargaditya08@live.com, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Orlando Chamberlain <redecorating@protonmail.com>,
+        stable@vger.kernel.org, Samuel Jiang <chyishian.jiang@gmail.com>
+Reply-To: Orlando Chamberlain <redecorating@protonmail.com>
+Subject: [PATCH 1/1] efi: Correct Macmini capitalisation in uefi cert quirk
+Message-ID: <20220806111940.6950-1-redecorating@protonmail.com>
+Feedback-ID: 28131841:user:proton
 MIME-Version: 1.0
-References: <CA+icZUWxyNeZnEBDpDWxGc-qJ-jHwR0rJMBhk1a8StPHRgC6qA@mail.gmail.com>
- <CA+icZUW7y3JxQ3dCB8Wy83EjEyYj7z55nFUw-kZ+V4We22HZZg@mail.gmail.com>
- <CA+icZUVyp2CdX7m72GY-=DtK9J+64uHeWPr5-cvo8haQm_4hUw@mail.gmail.com>
- <CA+icZUWiYYQbAav7VxVsT0ikqCeLckym08Au8oSeyYjvJHcNbg@mail.gmail.com>
- <CA+icZUUOQcc4uiVbv+tJzPr_ED7e4tD0u9tC8mcn2BRe3sdPAg@mail.gmail.com>
- <CAHk-=wiOrXUr0wqHL+hfkzGg_+b7UvtLeB=59KsX8W939bTY-A@mail.gmail.com>
- <CA+icZUUma1B8KFWF-ed9sjXH4QpCRZ+B2pON3uAFkTUs77tMzw@mail.gmail.com>
- <20220609192308.GB10732@1wt.eu> <CAHk-=wimC_B+nCJrXwuvWULz6ycFFmRMT1Uc+PeM5wJdma_VFw@mail.gmail.com>
- <CA+icZUUCOoE8x3Js=DYEjgyV_rz-T-M7gPZdFQu7tsKcUoA0hg@mail.gmail.com> <20220622183747.mhhlfr6aufbkyhag@alap3.anarazel.de>
-In-Reply-To: <20220622183747.mhhlfr6aufbkyhag@alap3.anarazel.de>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Sat, 6 Aug 2022 09:42:21 +0200
-Message-ID: <CA+icZUWjnaHKmofKdGgSo3b6wuNOR_Oj=C+gU3GW9fHViYwVpQ@mail.gmail.com>
-Subject: Re: [Linux v5.17.9] -Wdeprecated-declarations warnings with LLVM-14
- and OpenSSL v3.0.x
-To:     Andres Freund <andres@anarazel.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Willy Tarreau <w@1wt.eu>, Kees Cook <keescook@chromium.org>,
-        keyrings@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-> FWIW, these deprecation warnings also cause perf to fail to detect libcry=
-pto:
->
-> test-libcrypto.c: In function =E2=80=98main=E2=80=99:
-> test-libcrypto.c:11:9: error: =E2=80=98MD5_Init=E2=80=99 is deprecated: S=
-ince OpenSSL 3.0 [-Werror=3Ddeprecated-declarations]
->    11 |         MD5_Init(&context);
->       |         ^~~~~~~~
-> In file included from test-libcrypto.c:3:
-> ...
-> cc1: all warnings being treated as errors
->
->
-> Perhaps it's worth applying this fix a bit more broadly?
->
+It turns out Apple doesn't capitalise the "mini" in "Macmini", which is
+inconsistent with other model line names.
 
-Just FYI:
+Correct the capitalisation of Macmini in the quirk for skipping loading
+platform certs on T2 Macs.
 
-"perf build: Suppress openssl v3 deprecation warnings in libcrypto feature =
-test"
+Currently users get:
 
-Included in git-pull request (pending) in [2].
+------------[ cut here ]------------
+[Firmware Bug]: Page fault caused by firmware at PA: 0xffffa30640054000
+WARNING: CPU: 1 PID: 8 at arch/x86/platform/efi/quirks.c:735 efi_crash_grac=
+efully_on_page_fault+0x55/0xe0
+Modules linked in:
+CPU: 1 PID: 8 Comm: kworker/u12:0 Not tainted 5.18.14-arch1-2-t2 #1 4535eb3=
+fc40fd08edab32a509fbf4c9bc52d111e
+Hardware name: Apple Inc. Macmini8,1/Mac-7BA5B2DFE22DDD8C, BIOS 1731.120.10=
+.0.0 (iBridge: 19.16.15071.0.0,0) 04/24/2022
+Workqueue: efi_rts_wq efi_call_rts
+...
+---[ end trace 0000000000000000 ]---
+efi: Froze efi_rts_wq and disabled EFI Runtime Services
+integrity: Couldn't get size: 0x8000000000000015
+integrity: MODSIGN: Couldn't get UEFI db list
+efi: EFI Runtime Services are disabled!
+integrity: Couldn't get size: 0x8000000000000015
+integrity: Couldn't get UEFI dbx list
 
--Sedat-
+Fixes: 155ca952c7ca ("efi: Do not import certificates from UEFI Secure Boot=
+ for T2 Macs")
+Cc: stable@vger.kernel.org
+Cc: Aditya Garg <gargaditya08@live.com>
+Tested-by: Samuel Jiang <chyishian.jiang@gmail.com>
+Signed-off-by: Orlando Chamberlain <redecorating@protonmail.com>
+---
+ security/integrity/platform_certs/load_uefi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/commit/?=
-h=3Dperf-tools-for-v6.0-2022-08-04&id=3D10fef869a58e37ec649b61eddab545f2da5=
-7a79b
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/tag/?h=
-=3Dperf-tools-for-v6.0-2022-08-04
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integ=
+rity/platform_certs/load_uefi.c
+index 093894a640dc..b78753d27d8e 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -31,7 +31,7 @@ static const struct dmi_system_id uefi_skip_cert[] =3D {
+ =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir8,1") },
+ =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir8,2") },
+ =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir9,1") },
+-=09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacMini8,1") },
++=09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "Macmini8,1") },
+ =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacPro7,1") },
+ =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,1") },
+ =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,2") },
+--=20
+2.37.1
+
+
