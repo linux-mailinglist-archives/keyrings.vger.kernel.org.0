@@ -2,91 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91DB658C9B5
-	for <lists+keyrings@lfdr.de>; Mon,  8 Aug 2022 15:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400EA58CB6C
+	for <lists+keyrings@lfdr.de>; Mon,  8 Aug 2022 17:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243169AbiHHNpX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 8 Aug 2022 09:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
+        id S239759AbiHHPoI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 8 Aug 2022 11:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243134AbiHHNpW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 8 Aug 2022 09:45:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5F73893;
-        Mon,  8 Aug 2022 06:45:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B55D3B80EA1;
-        Mon,  8 Aug 2022 13:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A234BC433C1;
-        Mon,  8 Aug 2022 13:45:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659966317;
-        bh=a8EU6eGbgWuI9B2ElfWOtvEkJxdtJvEBO0Sx4mMYwzQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WUDcfYUE+/C4GY6bP96exqGCPwib378v8h7/9uULoLgZoE79oHM1LRomIjlcgYXyF
-         K0X2cIl9VnrgViNfDMgNoxN27Wm6QAnfdMhjI5k7lmaLdcKGQ5beT8NzRrKzwKQ+dA
-         z59FI6SO+Ebrjqq8alLtSjRYBWScRi5ERU5oaTzdqNmxflnBu1d7Bl+KX/XR75ZfKT
-         qLCKHvvG/wLoug+BtNFCclMWF158zRgKBGXrwiiDj3erDjvrUlWrUHlQN2LvH6meT3
-         +QlLqcKys0DjKDv2jO+6Tzo7zlgEWgdm28QAf3gwBxBoG92YA1TSU87I3VILlpixVX
-         LVvYNJ2q4tjPA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [GIT PULL] tpmdd updates for v5.20
-References: <20220803210228.158993-1-jarkko@kernel.org>
-        <87pmhgikhk.fsf@kernel.org>
-        <5653318a776a8044f413ed1a4b6e3965fac2297e.camel@HansenPartnership.com>
-        <87czdfi6t9.fsf@kernel.org> <Yu6qQHMoBzC4zprg@kernel.org>
-Date:   Mon, 08 Aug 2022 16:45:12 +0300
-In-Reply-To: <Yu6qQHMoBzC4zprg@kernel.org> (Jarkko Sakkinen's message of "Sat,
-        6 Aug 2022 20:52:00 +0300")
-Message-ID: <87o7wun91z.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        with ESMTP id S235606AbiHHPoH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 8 Aug 2022 11:44:07 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A121E1E8;
+        Mon,  8 Aug 2022 08:44:06 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 278EQG4m023357;
+        Mon, 8 Aug 2022 15:43:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=TJRNHRKMYb+wVCTUJoKgdADLtCM9GmrKnPjThoWBHlM=;
+ b=tI16lyH+taLovUzzgjkd7N6g+v6kBA7yOnia5elj8PpZApKFe7fzhz6vecoEAfgdB3BN
+ lUVx2TGNiJ+zXSexObttnbtj/O4NVDf6vHnDVR7zFA6QMtjTGXOkVvYkCHL2+i/aJVn3
+ hO9tg89MAHGOwFsuWdfJ0Vlsets9c/DVCjhdGVs8vVmBAUwbnufL5To1Sd57xnJEfi6U
+ x6sf96NhBYBjTwx9rQImXnSNLiVjFR8E3uMHHp7IwhMRvppLGmXDdXGrRXnixMGtDkNF
+ 7Px4PT385HBA/usNL7iHr2K5ubHP6qGIZk7NBzM6IJ865F8lQWu/BTR4PVJRDrEpmcjE mg== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hu48fawdc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 08 Aug 2022 15:43:50 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 278FaInk001436;
+        Mon, 8 Aug 2022 15:43:49 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+        by ppma02dal.us.ibm.com with ESMTP id 3hsfx98m4m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 08 Aug 2022 15:43:49 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 278FhmFT18809532
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 8 Aug 2022 15:43:48 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B4BA17805F;
+        Mon,  8 Aug 2022 15:43:48 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 856E478066;
+        Mon,  8 Aug 2022 15:43:47 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.160.34.213])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Mon,  8 Aug 2022 15:43:47 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
+        gjoyce@linux.vnet.ibm.com, linux-efi@vger.kernel.org,
+        keyrings@vger.kernel.org
+Subject: [PATCH v3a 0/2] generic and PowerPC accessor functions for arch keystore
+Date:   Mon,  8 Aug 2022 10:43:43 -0500
+Message-Id: <20220808154345.11240-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xQ0zENTjHMPLyJS0S3NO8-iy9hc8sWi0
+X-Proofpoint-ORIG-GUID: xQ0zENTjHMPLyJS0S3NO8-iy9hc8sWi0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-08_10,2022-08-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxlogscore=843 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208080075
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> writes:
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
->> Odd, I haven't noticed any UTF-8 problems in my setup but Gnus/Emacs is
->> known to be picky. After some more investigation I noticed this in
->> Jarkko's email:
->> 
->> Content-Type: text/plain; charset=y
->> 
->> I admit I'm not up to par with the latest cool stuff but that charset
->> can't be valid, right? :)
->
-> I must have pressed 'y' and enter, instead of enter,
-> when git send-email asked whether to use UTF-8 or
-> something like that.
->
-> Sorry about that :-) I don't recall doing that but
-> that is what it looks like for me.
+Changelog v3a:
+        - No code changes, but per reviewer requests, adding additional
+          mailing lists(keyring, EFI) for wider review.
 
-Hehe, that indeed sounds likely. Thanks, I was curious where that 'y'
-came from :)
+Architectural neutral functions have been defined for accessing
+architecture specific variable store. The neutral functions are
+defined as weak so that they may be superseded by platform
+specific versions. The functions have been desigined so that 
+they can support a large range of platforms/architectures.
 
+PowerPC/pseries versions of these functions provide read/write access
+to the non-volatile PLPKS data store.
+
+This functionality allows kernel code such as the block SED opal
+driver to store authentication keys in a secure permanent store.
+
+Greg Joyce (2):
+  lib: define generic accessor functions for arch specific keystore
+  powerpc/pseries: Override lib/arch_vars.c functions
+
+ arch/powerpc/platforms/pseries/Makefile       |   1 +
+ .../platforms/pseries/plpks_arch_ops.c        | 167 ++++++++++++++++++
+ include/linux/arch_vars.h                     |  23 +++
+ lib/Makefile                                  |   2 +-
+ lib/arch_vars.c                               |  25 +++
+ 5 files changed, 217 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/platforms/pseries/plpks_arch_ops.c
+ create mode 100644 include/linux/arch_vars.h
+ create mode 100644 lib/arch_vars.c
+
+
+Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+base-commit: ff6992735ade75aae3e35d16b17da1008d753d28
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.27.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
