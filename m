@@ -2,73 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CCF58B7A6
-	for <lists+keyrings@lfdr.de>; Sat,  6 Aug 2022 20:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DB658C9B5
+	for <lists+keyrings@lfdr.de>; Mon,  8 Aug 2022 15:45:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232768AbiHFSVz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 6 Aug 2022 14:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50006 "EHLO
+        id S243169AbiHHNpX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 8 Aug 2022 09:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241657AbiHFSVk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 6 Aug 2022 14:21:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A74D1E25;
-        Sat,  6 Aug 2022 11:21:05 -0700 (PDT)
+        with ESMTP id S243134AbiHHNpW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 8 Aug 2022 09:45:22 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5F73893;
+        Mon,  8 Aug 2022 06:45:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42BC461221;
-        Sat,  6 Aug 2022 18:21:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271BAC433C1;
-        Sat,  6 Aug 2022 18:21:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B55D3B80EA1;
+        Mon,  8 Aug 2022 13:45:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A234BC433C1;
+        Mon,  8 Aug 2022 13:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659810064;
-        bh=orcjVHFk4lFBov1ujUSmqLHsLoO2iIvfGgGHJHlIh7A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FWMhuXFJSleNWQKkiPFl4VU6fLgJgg6NLKSQrAlEY/EFTQ9ut+LINlEq4+P8A76ir
-         IvyBzut+gNS7PLgDqedD3Lom2EzymAV2djRK1XpPyawrVNmOacohakfCykPAhI8xbb
-         Y8SnjOMZWNinwDaIqEUVGkxQlmlIciOCeYQ/r4VeVn/N/FXRdtUd3W1fJGX7qUfjvG
-         eSMWVoal7Q1bqcQbqRZCy3pbAPd90fAtGG81LEqp8ofNdOI3Y9onRrpPZEvacpHvDJ
-         Hl38QHCxXBh3JLj/eY20OJYs7ADgNsiFMtAyfyJW2Ne2V3Pii9H1HZAHJJLRXJACXZ
-         dDFGHS6h1Yfdw==
-Date:   Sat, 6 Aug 2022 21:21:01 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Evan Green <evgreen@chromium.org>
-Cc:     Matthew Garrett <mgarrett@aurora.tech>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniil Lunev <dlunev@google.com>, zohar@linux.ibm.com,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        linux-integrity@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Hao Wu <hao.wu@rubrik.com>, James Morris <jmorris@namei.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Len Brown <len.brown@intel.com>,
+        s=k20201202; t=1659966317;
+        bh=a8EU6eGbgWuI9B2ElfWOtvEkJxdtJvEBO0Sx4mMYwzQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=WUDcfYUE+/C4GY6bP96exqGCPwib378v8h7/9uULoLgZoE79oHM1LRomIjlcgYXyF
+         K0X2cIl9VnrgViNfDMgNoxN27Wm6QAnfdMhjI5k7lmaLdcKGQ5beT8NzRrKzwKQ+dA
+         z59FI6SO+Ebrjqq8alLtSjRYBWScRi5ERU5oaTzdqNmxflnBu1d7Bl+KX/XR75ZfKT
+         qLCKHvvG/wLoug+BtNFCclMWF158zRgKBGXrwiiDj3erDjvrUlWrUHlQN2LvH6meT3
+         +QlLqcKys0DjKDv2jO+6Tzo7zlgEWgdm28QAf3gwBxBoG92YA1TSU87I3VILlpixVX
+         LVvYNJ2q4tjPA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Huewe <peterhuewe@gmx.de>,
-        "Serge E. Hallyn" <serge@hallyn.com>, axelj <axelj@axis.com>,
-        keyrings@vger.kernel.org,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 00/10] Encrypted Hibernation
-Message-ID: <Yu6xDf9ejxHbLyJ6@kernel.org>
-References: <20220504232102.469959-1-evgreen@chromium.org>
- <20220506160807.GA1060@bug>
- <CAE=gft6m75T0UC2DBhfFhuSMW6TK7aatD_04sQ18WosgGVsATw@mail.gmail.com>
- <CAJZ5v0gxq=EA_WWUiCR_w8o87iTHDR7OC5wi=GRBaAQS2ofd5w@mail.gmail.com>
- <CAE=gft6V6RLc-d4AOuRUVU2u1jMGghDRSrFqiCqMCLxemui8Pw@mail.gmail.com>
- <CAE=gft5OYAgosqmwNkk=Cwoooeg93Njmnzfz=gwCaLB0Ts+=sw@mail.gmail.com>
- <CAE=gft6sPkhNcz7+fJuDzQo2f8fM_0Wv_OWC9W2LyvXd6M6zeQ@mail.gmail.com>
- <CAHSSk05JEcZfS2tc22F+m76T3vZt-mZ7zUQaGRgSanKaFc5xBg@mail.gmail.com>
- <YusZ8gD/LjiAXadR@kernel.org>
- <CAE=gft6LaNZLTK72n_Z7an0VA1FxxFFgGk6rmUF_Jvf=JinG3A@mail.gmail.com>
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [GIT PULL] tpmdd updates for v5.20
+References: <20220803210228.158993-1-jarkko@kernel.org>
+        <87pmhgikhk.fsf@kernel.org>
+        <5653318a776a8044f413ed1a4b6e3965fac2297e.camel@HansenPartnership.com>
+        <87czdfi6t9.fsf@kernel.org> <Yu6qQHMoBzC4zprg@kernel.org>
+Date:   Mon, 08 Aug 2022 16:45:12 +0300
+In-Reply-To: <Yu6qQHMoBzC4zprg@kernel.org> (Jarkko Sakkinen's message of "Sat,
+        6 Aug 2022 20:52:00 +0300")
+Message-ID: <87o7wun91z.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAE=gft6LaNZLTK72n_Z7an0VA1FxxFFgGk6rmUF_Jvf=JinG3A@mail.gmail.com>
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -79,39 +65,28 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 04, 2022 at 02:55:35PM -0700, Evan Green wrote:
-> On Wed, Aug 3, 2022 at 5:59 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Tue, Aug 02, 2022 at 11:36:43AM -0700, Matthew Garrett wrote:
-> > > On Mon, Aug 1, 2022 at 3:33 PM Evan Green <evgreen@chromium.org> wrote:
-> > >
-> > > > One more bump here, as we'd really love to get encrypted hibernation
-> > > > to a form upstream would accept if at all possible. We were
-> > > > considering landing this in our Chrome OS tree for now, then coming
-> > > > back in a couple months with a "we've been baking this ourselves and
-> > > > it's going so great, oooh yeah". I'm not sure if upstream would find
-> > > > that compelling or not. But in any case, some guidance towards making
-> > > > this more upstream friendly would be well appreciated.
-> > > >
-> > > > One thing I realized in attempting to pick this myself is that the
-> > > > trusted key blob format has moved to ASN.1. So I should really move
-> > > > the creation ticket to the new ASN.1 format (if I can figure out the
-> > > > right OID for that piece), which would allow me to drop a lot of the
-> > > > ugly stuff in tpm2_unpack_blob(). Maybe if I get no other comments
-> > > > I'll work on that and resend.
-> > >
-> > > I've been revamping my TPM-backed verified hibernation implementation
-> > > based on this work, so I'd definitely be enthusiastic about it being
-> > > mergeable.
-> >
-> > BTW, is it tested with QEMU + swtpm?
-> 
-> For myself, so far I've been testing on a recent Intel Chromebook. The
-> H1 (aka cr50) security chip on modern chromebooks implements a subset
-> [1] of TPM2.0, and is exposed through the standard TPM APIs in the
-> kernel. I can make sure to test on Qemu as well, is there anything in
-> particular I should look out for?
+Jarkko Sakkinen <jarkko@kernel.org> writes:
 
-I was just thinking what I could use for testing
+>> Odd, I haven't noticed any UTF-8 problems in my setup but Gnus/Emacs is
+>> known to be picky. After some more investigation I noticed this in
+>> Jarkko's email:
+>> 
+>> Content-Type: text/plain; charset=y
+>> 
+>> I admit I'm not up to par with the latest cool stuff but that charset
+>> can't be valid, right? :)
+>
+> I must have pressed 'y' and enter, instead of enter,
+> when git send-email asked whether to use UTF-8 or
+> something like that.
+>
+> Sorry about that :-) I don't recall doing that but
+> that is what it looks like for me.
 
-BR, Jarkko
+Hehe, that indeed sounds likely. Thanks, I was curious where that 'y'
+came from :)
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
