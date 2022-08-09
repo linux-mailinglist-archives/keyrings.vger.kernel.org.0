@@ -2,93 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9238E58DC96
-	for <lists+keyrings@lfdr.de>; Tue,  9 Aug 2022 18:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D60258E231
+	for <lists+keyrings@lfdr.de>; Tue,  9 Aug 2022 23:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245180AbiHIQ5j (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 9 Aug 2022 12:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38216 "EHLO
+        id S229879AbiHIVyR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 9 Aug 2022 17:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244966AbiHIQ5i (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Aug 2022 12:57:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0784C219C;
-        Tue,  9 Aug 2022 09:57:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97E2260E06;
-        Tue,  9 Aug 2022 16:57:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A798AC433D7;
-        Tue,  9 Aug 2022 16:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660064257;
-        bh=WAASOV4CwOcN1cCgsBmLQSOIEbY6fPAxVQ3aBPMZSjI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nqn/o6ze2W0Ul8vxCqBwsXAzm/gQNYQyTssUpsiCxLZcphwO5hP8Nc9kHCJJnwZz0
-         HyohtgLGko93UrJfbfNy1WEvbIQyEUUof6QlovbYeQ+VUkuPyw8C2rOZZfBgtGWLAI
-         ATGo0fb5Rhpo8+/mWiEV8NJiue3G7YRbm8uL96kyAcBtOw8Cr0v0IpcIMxMPPB/fa8
-         ryF8OBPKSTc1y/3UkVc/7GNupz6+6Q2VrqLrgkd3GRdf09LtDv9igBA0vzn+UUag3u
-         VaA4trBiNXFdPPSGkLpugAWfcfF0SVbjfVyDC61AZMlQFn8OGgFatWUk7War+MzCds
-         94OHjupe9KP8A==
-Date:   Tue, 9 Aug 2022 19:57:33 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [GIT PULL] tpmdd updates for v5.20
-Message-ID: <YvKR/a0BeD+QB4XF@kernel.org>
-References: <20220803210228.158993-1-jarkko@kernel.org>
- <87pmhgikhk.fsf@kernel.org>
- <5653318a776a8044f413ed1a4b6e3965fac2297e.camel@HansenPartnership.com>
- <87czdfi6t9.fsf@kernel.org>
- <Yu6qQHMoBzC4zprg@kernel.org>
- <87o7wun91z.fsf@kernel.org>
+        with ESMTP id S229448AbiHIVyM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 9 Aug 2022 17:54:12 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112406BD63;
+        Tue,  9 Aug 2022 14:54:11 -0700 (PDT)
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1oLXAc-000Gax-BP; Tue, 09 Aug 2022 23:53:50 +0200
+Received: from [85.1.206.226] (helo=linux.home)
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1oLXAb-000HwI-MK; Tue, 09 Aug 2022 23:53:49 +0200
+Subject: Re: [PATCH v9 02/10] bpf: Allow kfuncs to be used in LSM programs
+To:     Roberto Sassu <roberto.sassu@huawei.com>, ast@kernel.org,
+        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
+        corbet@lwn.net, dhowells@redhat.com, jarkko@kernel.org,
+        rostedt@goodmis.org, mingo@redhat.com, paul@paul-moore.com,
+        jmorris@namei.org, serge@hallyn.com, shuah@kernel.org
+Cc:     bpf@vger.kernel.org, linux-doc@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220809134603.1769279-1-roberto.sassu@huawei.com>
+ <20220809134603.1769279-3-roberto.sassu@huawei.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <bf912249-a91e-77a5-0cc7-de5f85c6a6cd@iogearbox.net>
+Date:   Tue, 9 Aug 2022 23:53:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o7wun91z.fsf@kernel.org>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220809134603.1769279-3-roberto.sassu@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.6/26622/Tue Aug  9 09:53:52 2022)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Aug 08, 2022 at 04:45:12PM +0300, Kalle Valo wrote:
-> Jarkko Sakkinen <jarkko@kernel.org> writes:
+On 8/9/22 3:45 PM, Roberto Sassu wrote:
+> From: KP Singh <kpsingh@kernel.org>
 > 
-> >> Odd, I haven't noticed any UTF-8 problems in my setup but Gnus/Emacs is
-> >> known to be picky. After some more investigation I noticed this in
-> >> Jarkko's email:
-> >> 
-> >> Content-Type: text/plain; charset=y
-> >> 
-> >> I admit I'm not up to par with the latest cool stuff but that charset
-> >> can't be valid, right? :)
-> >
-> > I must have pressed 'y' and enter, instead of enter,
-> > when git send-email asked whether to use UTF-8 or
-> > something like that.
-> >
-> > Sorry about that :-) I don't recall doing that but
-> > that is what it looks like for me.
+> In preparation for the addition of bpf_getxattr kfunc.
+
+Given this is taken out of context and the series is not about bpf_getxattr,
+this patch should have a better commit description.
+
+> Signed-off-by: KP Singh <kpsingh@kernel.org>
+
+Please also append your SoB then [0].
+
+   [0] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
+
+> ---
+>   kernel/bpf/btf.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> Hehe, that indeed sounds likely. Thanks, I was curious where that 'y'
-> came from :)
+> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+> index d3e4c86b8fcd..67dfc728fbf8 100644
+> --- a/kernel/bpf/btf.c
+> +++ b/kernel/bpf/btf.c
+> @@ -7244,6 +7244,7 @@ static int bpf_prog_type_to_kfunc_hook(enum bpf_prog_type prog_type)
+>   	case BPF_PROG_TYPE_STRUCT_OPS:
+>   		return BTF_KFUNC_HOOK_STRUCT_OPS;
+>   	case BPF_PROG_TYPE_TRACING:
+> +	case BPF_PROG_TYPE_LSM:
+>   		return BTF_KFUNC_HOOK_TRACING;
+>   	case BPF_PROG_TYPE_SYSCALL:
+>   		return BTF_KFUNC_HOOK_SYSCALL;
+> 
 
-Thanks for reporting this :-) Always good to sanity check, when
-there is a visible inconsistency.
-
-BR, Jarkko
