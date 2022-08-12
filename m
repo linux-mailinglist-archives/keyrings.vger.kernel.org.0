@@ -2,93 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 157865909AD
-	for <lists+keyrings@lfdr.de>; Fri, 12 Aug 2022 02:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36962590D35
+	for <lists+keyrings@lfdr.de>; Fri, 12 Aug 2022 10:11:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235753AbiHLAyq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 Aug 2022 20:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42356 "EHLO
+        id S236378AbiHLILE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 12 Aug 2022 04:11:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229833AbiHLAyp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 Aug 2022 20:54:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7C8BA1D7F
-        for <keyrings@vger.kernel.org>; Thu, 11 Aug 2022 17:54:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62E9461517
-        for <keyrings@vger.kernel.org>; Fri, 12 Aug 2022 00:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA2EC433D7
-        for <keyrings@vger.kernel.org>; Fri, 12 Aug 2022 00:54:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660265683;
-        bh=ko4LsCzf56xt2ligcUqqBjSthEnXoJd5Td0ClHErlH0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=oAR26MJNnSfoUozY1EEMzpLLBEWphku2dRq7PjCLW9SAroz2JocVpwvH4UaEQB7ZW
-         aPDnQXr3xrRNgBfgoLDLNVxYWa7qwi7bPrg6AW5NqSjAJHX+XnNy+isMsISdhiD0D1
-         9asy995BAXALl75xSbQYhy9+rn2EbE9AELblFCnNqNr+0CNLWM20qI/gJytvrO3VEn
-         7jUKidSnOBnRzEUhsaCLLRmz2eTjtLEfNiGT5XMpo07gZneCsfh2pF851lF9IlUrVk
-         G+nIP7midkkMqsitmSHixZIayL+q9Pt8dssxsZziD/pxNaoTnnJPj9ZOrqWA0W+QHp
-         IGG2X/HBR30dw==
-Received: by mail-ot1-f54.google.com with SMTP id q6-20020a05683033c600b0061d2f64df5dso13788445ott.13
-        for <keyrings@vger.kernel.org>; Thu, 11 Aug 2022 17:54:43 -0700 (PDT)
-X-Gm-Message-State: ACgBeo1XeXqs3NMyRH9AiWV2k+pBoKT4TvwQg4E7M0bxqmoGvrVv9Z7S
-        wmS1H9YSv+odpJQDuGNCoiamOK9JbdExxPdLLqJnmg==
-X-Google-Smtp-Source: AA6agR7MkYt6y5J9PCZiVOwauRd/hdvFE5aDqGKBjAEfRLqRib+sSpPOU1Cb2FNHuGCtCTe6wX55IJCt1sl1YbwMk1w=
-X-Received: by 2002:a25:bfca:0:b0:676:a583:e215 with SMTP id
- q10-20020a25bfca000000b00676a583e215mr1824268ybm.131.1660265671902; Thu, 11
- Aug 2022 17:54:31 -0700 (PDT)
+        with ESMTP id S230328AbiHLILE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 12 Aug 2022 04:11:04 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882FE8285B;
+        Fri, 12 Aug 2022 01:11:02 -0700 (PDT)
+Received: from fraeml715-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M3xBL4ZtPz682wj;
+        Fri, 12 Aug 2022 16:08:10 +0800 (CST)
+Received: from fraeml714-chm.china.huawei.com (10.206.15.33) by
+ fraeml715-chm.china.huawei.com (10.206.15.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 12 Aug 2022 10:11:00 +0200
+Received: from fraeml714-chm.china.huawei.com ([10.206.15.33]) by
+ fraeml714-chm.china.huawei.com ([10.206.15.33]) with mapi id 15.01.2375.024;
+ Fri, 12 Aug 2022 10:11:00 +0200
+From:   Roberto Sassu <roberto.sassu@huawei.com>
+To:     =?iso-8859-1?Q?Daniel_M=FCller?= <deso@posteo.net>
+CC:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        "ast@kernel.org" <ast@kernel.org>,
+        "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "andrii@kernel.org" <andrii@kernel.org>,
+        "martin.lau@linux.dev" <martin.lau@linux.dev>,
+        "song@kernel.org" <song@kernel.org>, "yhs@fb.com" <yhs@fb.com>,
+        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+        "kpsingh@kernel.org" <kpsingh@kernel.org>,
+        "sdf@google.com" <sdf@google.com>,
+        "haoluo@google.com" <haoluo@google.com>,
+        "jolsa@kernel.org" <jolsa@kernel.org>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v10 5/9] bpf: Add bpf_lookup_*_key() and bpf_key_put()
+ kfuncs
+Thread-Topic: [PATCH v10 5/9] bpf: Add bpf_lookup_*_key() and bpf_key_put()
+ kfuncs
+Thread-Index: AQHYrNrI3xbltKneMkianwQkzvowha2ohoeAgADLvDCAAEKEEIAAqsgAgACsYtA=
+Date:   Fri, 12 Aug 2022 08:11:00 +0000
+Message-ID: <bff9efc2121046d78e50f0a270d13dc3@huawei.com>
+References: <20220810165932.2143413-1-roberto.sassu@huawei.com>
+ <20220810165932.2143413-6-roberto.sassu@huawei.com>
+ <20220810213351.wm5utltm67q4i6lu@MacBook-Pro-3.local.dhcp.thefacebook.com>
+ <2415f4931a364541b2e6d14a8185ffbb@huawei.com>
+ <f7d401d6ec6c47cbb358046a2d3ca5e8@huawei.com>
+ <20220811235222.inghj73tf6vudoyw@vaio>
+In-Reply-To: <20220811235222.inghj73tf6vudoyw@vaio>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.81.202.96]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20220810165932.2143413-1-roberto.sassu@huawei.com> <20220810165932.2143413-7-roberto.sassu@huawei.com>
-In-Reply-To: <20220810165932.2143413-7-roberto.sassu@huawei.com>
-From:   KP Singh <kpsingh@kernel.org>
-Date:   Fri, 12 Aug 2022 02:54:21 +0200
-X-Gmail-Original-Message-ID: <CACYkzJ5ZCtgdCz=kBdUAkhD6UyzspqMsNyC32_VR0aLt=a3Okg@mail.gmail.com>
-Message-ID: <CACYkzJ5ZCtgdCz=kBdUAkhD6UyzspqMsNyC32_VR0aLt=a3Okg@mail.gmail.com>
-Subject: Re: [PATCH v10 6/9] bpf: Add bpf_verify_pkcs7_signature() kfunc
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, sdf@google.com, haoluo@google.com,
-        jolsa@kernel.org, corbet@lwn.net, dhowells@redhat.com,
-        jarkko@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        shuah@kernel.org, bpf@vger.kernel.org, linux-doc@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Aug 10, 2022 at 7:01 PM Roberto Sassu <roberto.sassu@huawei.com> wrote:
->
-> Add the bpf_verify_pkcs7_signature() kfunc, to give eBPF security modules
-> the ability to check the validity of a signature against supplied data, by
-> using user-provided or system-provided keys as trust anchor.
->
-> The new kfunc makes it possible to enforce mandatory policies, as eBPF
-> programs might be allowed to make security decisions only based on data
-> sources the system administrator approves.
->
-> The caller should provide the data to be verified and the signature as eBPF
-> dynamic pointers (to minimize the number of parameters) and a bpf_key
-> structure containing a reference to the keyring with keys trusted for
-> signature verification, obtained from bpf_lookup_user_key() or
-> bpf_lookup_system_key().
->
-> For bpf_key structures obtained from the former lookup function,
-> bpf_verify_pkcs7_signature() completes the permission check deferred by
-> that function by calling key_validate(). key_task_permission() is already
-> called by the PKCS#7 code.
->
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> From: Daniel Müller [mailto:deso@posteo.net]
+> Sent: Friday, August 12, 2022 1:52 AM
+> On Thu, Aug 11, 2022 at 12:02:57PM +0000, Roberto Sassu wrote:
+> > > From: Roberto Sassu [mailto:roberto.sassu@huawei.com]
+> > > Sent: Thursday, August 11, 2022 9:47 AM
+> > > > From: Alexei Starovoitov [mailto:alexei.starovoitov@gmail.com]
+> > > > Sent: Wednesday, August 10, 2022 11:34 PM
+> > > > On Wed, Aug 10, 2022 at 06:59:28PM +0200, Roberto Sassu wrote:
+> > > > > +
+> > > > > +static int __init bpf_key_sig_kfuncs_init(void)
+> > > > > +{
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING,
+> > > > > +					&bpf_key_sig_kfunc_set);
+> > > > > +	if (!ret)
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	return register_btf_kfunc_id_set(BPF_PROG_TYPE_LSM,
+> > > > > +					 &bpf_key_sig_kfunc_set);
+> > > >
+> > > > Isn't this a watery water ?
+> > > > Don't you have a patch 1 ?
+> > > > What am I missing ?
+> > >
+> > > Uhm, yes. I had doubts too. That was what also KP did.
+> > >
+> > > It makes sense to register once, since we mapped LSM to
+> > > TRACING.
+> > >
+> > > Will resend only this patch. And I will figure out why CI failed.
+> >
+> > Adding in CC Daniel Müller, which worked on this.
+> >
+> > I think the issue is that some kernel options are set to =m.
+> > This causes the CI to miss all kernel modules, since they are
+> > not copied to the virtual machine that executes the tests.
+> >
+> > I'm testing this patch:
+> >
+> > https://github.com/robertosassu/libbpf-
+> ci/commit/b665e001b58c4ddb792a2a68098ea5dc6936b15c
+> 
+> I commented on the pull request. Would it make sense to adjust the
+> kernel configuration in this repository instead? I am worried that
+> otherwise everybody may need a similar work around, depending on how
+> selftests are ultimately run.
 
-Acked-by: KP Singh <kpsingh@kernel.org>
+The issue seems specific of the eBPF CI. Others might be able to use
+kernel modules.
+
+Either choice is fine for me.
+
+Roberto
