@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A55A2593C2C
-	for <lists+keyrings@lfdr.de>; Mon, 15 Aug 2022 22:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91B0A59485A
+	for <lists+keyrings@lfdr.de>; Tue, 16 Aug 2022 02:08:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345464AbiHOTx2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Aug 2022 15:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43150 "EHLO
+        id S230336AbiHOXRF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Aug 2022 19:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345314AbiHOTwO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Aug 2022 15:52:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8572A42AFA;
-        Mon, 15 Aug 2022 11:50:46 -0700 (PDT)
+        with ESMTP id S1353125AbiHOXP5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Aug 2022 19:15:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C344146CED;
+        Mon, 15 Aug 2022 13:02:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E9D0AB810A4;
-        Mon, 15 Aug 2022 18:50:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA69C433C1;
-        Mon, 15 Aug 2022 18:50:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1449F612E4;
+        Mon, 15 Aug 2022 20:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0708C433C1;
+        Mon, 15 Aug 2022 20:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1660589443;
-        bh=i3e/A4Zn400OOB+vPxUgs7Ypq6tOijgt4jkqF0Vp0po=;
+        s=korg; t=1660593775;
+        bh=VHaLffJQoHaI+IOtGGNDfDZgg2sKNs5qPuw8gRU1Og8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CHaNkVhg7GK3j8VoPJlTa1gGkscOjJfHuM4n3giZj1Xtcs6FsSQ73o1VqQLTn3e0H
-         KxZ4IRY5hcEyYxKLciaOLkVxwCGw4oWuS2nBUjpmp35LbxtSiAJeKHtCYvR3tfMvgQ
-         mL4qsXb45LiabAngYZFjCSqQbKGrZKT1Qyx4L1tE=
+        b=J1JwuGdCa+ibvAmw02UbD58s1FCY22nDrZzh7I5wQi8wFYXc1m5JFaRz9oPXnZyEX
+         TVKTKq1lgQpUlspYS/D73eAzzPQam7Qo2hcW0BQHJvZ3q1wAFCeHqbol0O7h+aW24/
+         T/Qn3S8puWLcB4x+nGA4jCW1vx+SD4jeGMUpcDkM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,12 +39,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Coiby Xu <coxu@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
         Mimi Zohar <zohar@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 719/779] kexec, KEYS, s390: Make use of built-in and secondary keyring for signature verification
-Date:   Mon, 15 Aug 2022 20:06:03 +0200
-Message-Id: <20220815180408.186099124@linuxfoundation.org>
+Subject: [PATCH 5.18 1004/1095] kexec, KEYS, s390: Make use of built-in and secondary keyring for signature verification
+Date:   Mon, 15 Aug 2022 20:06:43 +0200
+Message-Id: <20220815180510.636878336@linuxfoundation.org>
 X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220815180337.130757997@linuxfoundation.org>
-References: <20220815180337.130757997@linuxfoundation.org>
+In-Reply-To: <20220815180429.240518113@linuxfoundation.org>
+References: <20220815180429.240518113@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
-index a81d6c43b9b6..3459362c54ac 100644
+index 8f43575a4dd3..fc6d5f58debe 100644
 --- a/arch/s390/kernel/machine_kexec_file.c
 +++ b/arch/s390/kernel/machine_kexec_file.c
-@@ -29,6 +29,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+@@ -31,6 +31,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
  	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
  	struct module_signature *ms;
  	unsigned long sig_len;
@@ -98,7 +98,7 @@ index a81d6c43b9b6..3459362c54ac 100644
  
  	/* Skip signature verification when not secure IPLed. */
  	if (!ipl_secure_flag)
-@@ -63,11 +64,18 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+@@ -65,11 +66,18 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
  		return -EBADMSG;
  	}
  
