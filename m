@@ -2,147 +2,108 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6469A593317
-	for <lists+keyrings@lfdr.de>; Mon, 15 Aug 2022 18:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3047A593370
+	for <lists+keyrings@lfdr.de>; Mon, 15 Aug 2022 18:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233010AbiHOQZG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Aug 2022 12:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39480 "EHLO
+        id S231893AbiHOQqw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Aug 2022 12:46:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233013AbiHOQYx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Aug 2022 12:24:53 -0400
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8F123179
-        for <keyrings@vger.kernel.org>; Mon, 15 Aug 2022 09:22:44 -0700 (PDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-        by mout01.posteo.de (Postfix) with ESMTPS id 57C78240029
-        for <keyrings@vger.kernel.org>; Mon, 15 Aug 2022 18:22:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-        t=1660580562; bh=8cGb0tGMTUr7aYZYRErGqjYF93EXWmZWACaf8PVKdlk=;
-        h=Date:From:To:Cc:Subject:From;
-        b=Vw+w5Bf0GCOe6almLc4jUmkz5H6QtQprOieEFee5V7NDSGA18FKjJ0FNQ48kR9U2o
-         3MFAjJkXds7I5vSnFz8eKCcyYUa/mbpl2gL9c0g3Lz0lBAKAH/f162w9O2/CTXeD+n
-         1aVKlm5N4xId/MFsp60uOyC8pOuEwAEdyIQILwTO1wfj3SeMoCrEySp5iHgdMTn8EP
-         z7BG7ZT2ly+J2eG5JGPuLKfvOYn+qvJLq/3seXhDtoCjwdE0WoLrLv8Sug3YFfnTd2
-         pwauHHXwgmtJ/LxaJ3024b9ytUPQDEtKJ28WhddppNo7PaKC2cQTNS3tbHTRRH5Wey
-         KVHOZLaO9IvSQ==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4M601L6wxkz6tn9;
-        Mon, 15 Aug 2022 18:22:30 +0200 (CEST)
-Date:   Mon, 15 Aug 2022 16:22:27 +0000
-From:   Daniel =?utf-8?Q?M=C3=BCller?= <deso@posteo.net>
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "andrii@kernel.org" <andrii@kernel.org>,
-        "martin.lau@linux.dev" <martin.lau@linux.dev>,
-        "song@kernel.org" <song@kernel.org>, "yhs@fb.com" <yhs@fb.com>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "kpsingh@kernel.org" <kpsingh@kernel.org>,
-        "sdf@google.com" <sdf@google.com>,
-        "haoluo@google.com" <haoluo@google.com>,
-        "jolsa@kernel.org" <jolsa@kernel.org>,
-        "corbet@lwn.net" <corbet@lwn.net>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "paul@paul-moore.com" <paul@paul-moore.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "shuah@kernel.org" <shuah@kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v10 5/9] bpf: Add bpf_lookup_*_key() and bpf_key_put()
- kfuncs
-Message-ID: <20220815162227.clqx44cwka7yt2u3@muellerd-fedora-PC2BDTX9>
-References: <20220810165932.2143413-1-roberto.sassu@huawei.com>
- <20220810165932.2143413-6-roberto.sassu@huawei.com>
- <20220810213351.wm5utltm67q4i6lu@MacBook-Pro-3.local.dhcp.thefacebook.com>
- <2415f4931a364541b2e6d14a8185ffbb@huawei.com>
- <f7d401d6ec6c47cbb358046a2d3ca5e8@huawei.com>
- <20220811235222.inghj73tf6vudoyw@vaio>
- <bff9efc2121046d78e50f0a270d13dc3@huawei.com>
+        with ESMTP id S229456AbiHOQqY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Aug 2022 12:46:24 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9347DF78;
+        Mon, 15 Aug 2022 09:46:21 -0700 (PDT)
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1oNdE1-0003Ln-I4; Mon, 15 Aug 2022 18:46:01 +0200
+Received: from [85.1.206.226] (helo=linux-4.home)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1oNdE0-000T0a-SI; Mon, 15 Aug 2022 18:46:00 +0200
+Subject: Re: [PATCH v11 2/9] btf: Handle dynamic pointer parameter in kfuncs
+To:     Roberto Sassu <roberto.sassu@huawei.com>, ast@kernel.org,
+        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
+        mykolal@fb.com, corbet@lwn.net, dhowells@redhat.com,
+        jarkko@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        shuah@kernel.org
+Cc:     bpf@vger.kernel.org, linux-doc@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Joanne Koong <joannelkoong@gmail.com>
+References: <20220812101902.2846182-1-roberto.sassu@huawei.com>
+ <20220812101902.2846182-3-roberto.sassu@huawei.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <43277fc1-f03e-38a0-0d07-64892a67ac1d@iogearbox.net>
+Date:   Mon, 15 Aug 2022 18:45:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bff9efc2121046d78e50f0a270d13dc3@huawei.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20220812101902.2846182-3-roberto.sassu@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.6/26628/Mon Aug 15 09:51:41 2022)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Aug 12, 2022 at 08:11:00AM +0000, Roberto Sassu wrote:
-> > From: Daniel Müller [mailto:deso@posteo.net]
-> > Sent: Friday, August 12, 2022 1:52 AM
-> > On Thu, Aug 11, 2022 at 12:02:57PM +0000, Roberto Sassu wrote:
-> > > > From: Roberto Sassu [mailto:roberto.sassu@huawei.com]
-> > > > Sent: Thursday, August 11, 2022 9:47 AM
-> > > > > From: Alexei Starovoitov [mailto:alexei.starovoitov@gmail.com]
-> > > > > Sent: Wednesday, August 10, 2022 11:34 PM
-> > > > > On Wed, Aug 10, 2022 at 06:59:28PM +0200, Roberto Sassu wrote:
-> > > > > > +
-> > > > > > +static int __init bpf_key_sig_kfuncs_init(void)
-> > > > > > +{
-> > > > > > +	int ret;
-> > > > > > +
-> > > > > > +	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING,
-> > > > > > +					&bpf_key_sig_kfunc_set);
-> > > > > > +	if (!ret)
-> > > > > > +		return 0;
-> > > > > > +
-> > > > > > +	return register_btf_kfunc_id_set(BPF_PROG_TYPE_LSM,
-> > > > > > +					 &bpf_key_sig_kfunc_set);
-> > > > >
-> > > > > Isn't this a watery water ?
-> > > > > Don't you have a patch 1 ?
-> > > > > What am I missing ?
-> > > >
-> > > > Uhm, yes. I had doubts too. That was what also KP did.
-> > > >
-> > > > It makes sense to register once, since we mapped LSM to
-> > > > TRACING.
-> > > >
-> > > > Will resend only this patch. And I will figure out why CI failed.
-> > >
-> > > Adding in CC Daniel Müller, which worked on this.
-> > >
-> > > I think the issue is that some kernel options are set to =m.
-> > > This causes the CI to miss all kernel modules, since they are
-> > > not copied to the virtual machine that executes the tests.
-> > >
-> > > I'm testing this patch:
-> > >
-> > > https://github.com/robertosassu/libbpf-
-> > ci/commit/b665e001b58c4ddb792a2a68098ea5dc6936b15c
-> > 
-> > I commented on the pull request. Would it make sense to adjust the
-> > kernel configuration in this repository instead? I am worried that
-> > otherwise everybody may need a similar work around, depending on how
-> > selftests are ultimately run.
+On 8/12/22 12:18 PM, Roberto Sassu wrote:
+> Allow the bpf_dynptr_kern parameter to be specified in kfuncs. Also, ensure
+> that the dynamic pointer is valid and initialized.
 > 
-> The issue seems specific of the eBPF CI. Others might be able to use
-> kernel modules.
+> Cc: Joanne Koong <joannelkoong@gmail.com>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
+>   include/linux/bpf_verifier.h |  3 +++
+>   kernel/bpf/btf.c             | 22 ++++++++++++++++++++++
+>   kernel/bpf/verifier.c        |  4 ++--
+>   3 files changed, 27 insertions(+), 2 deletions(-)
 > 
-> Either choice is fine for me.
+> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+> index 2e3bad8640dc..55876fbdbae2 100644
+> --- a/include/linux/bpf_verifier.h
+> +++ b/include/linux/bpf_verifier.h
+> @@ -560,6 +560,9 @@ int check_kfunc_mem_size_reg(struct bpf_verifier_env *env, struct bpf_reg_state
+>   			     u32 regno);
+>   int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+>   		   u32 regno, u32 mem_size);
+> +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env,
+> +			      struct bpf_reg_state *reg,
+> +			      enum bpf_arg_type arg_type);
+>   
+>   /* this lives here instead of in bpf.h because it needs to dereference tgt_prog */
+>   static inline u64 bpf_trampoline_compute_key(const struct bpf_prog *tgt_prog,
+> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+> index e49b3b6d48ad..86e63f2ee5da 100644
+> --- a/kernel/bpf/btf.c
+> +++ b/kernel/bpf/btf.c
+> @@ -195,6 +195,10 @@
+>   	     i < btf_type_vlen(struct_type);					\
+>   	     i++, member++)
+>   
+> +#define stringify_struct(x)			\
+> +	({ BUILD_BUG_ON(sizeof(struct x) < 0);	\
+> +	   __stringify(x); })
+> +
 
-I understand that depending on how tests are run, kernel modules may be
-available to be loaded. My point is that I am not aware of anything that we
-would loose by having the functionality built-in to begin with (others can
-correct me). So it seems as if that's an easy way to sidestep any issues of that
-sort from the start and, hence, would be my preference.
+I'd say lets move this to include/linux/btf.h with a comment explaining the BUILD_BUG_ON()
+which ensures the struct actually exits.
 
-Thanks,
-Daniel
+If there's ever use outside of BTF, it could be relocated to include/linux/stringify.h.
+
+>   DEFINE_IDR(btf_idr);
+>   DEFINE_SPINLOCK(btf_idr_lock);
+>   
