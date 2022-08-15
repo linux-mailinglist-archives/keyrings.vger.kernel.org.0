@@ -2,108 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3047A593370
-	for <lists+keyrings@lfdr.de>; Mon, 15 Aug 2022 18:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A55A2593C2C
+	for <lists+keyrings@lfdr.de>; Mon, 15 Aug 2022 22:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231893AbiHOQqw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 15 Aug 2022 12:46:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36602 "EHLO
+        id S1345464AbiHOTx2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 15 Aug 2022 15:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbiHOQqY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Aug 2022 12:46:24 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9347DF78;
-        Mon, 15 Aug 2022 09:46:21 -0700 (PDT)
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1oNdE1-0003Ln-I4; Mon, 15 Aug 2022 18:46:01 +0200
-Received: from [85.1.206.226] (helo=linux-4.home)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1oNdE0-000T0a-SI; Mon, 15 Aug 2022 18:46:00 +0200
-Subject: Re: [PATCH v11 2/9] btf: Handle dynamic pointer parameter in kfuncs
-To:     Roberto Sassu <roberto.sassu@huawei.com>, ast@kernel.org,
-        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
-        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
-        mykolal@fb.com, corbet@lwn.net, dhowells@redhat.com,
-        jarkko@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        shuah@kernel.org
-Cc:     bpf@vger.kernel.org, linux-doc@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Joanne Koong <joannelkoong@gmail.com>
-References: <20220812101902.2846182-1-roberto.sassu@huawei.com>
- <20220812101902.2846182-3-roberto.sassu@huawei.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <43277fc1-f03e-38a0-0d07-64892a67ac1d@iogearbox.net>
-Date:   Mon, 15 Aug 2022 18:45:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        with ESMTP id S1345314AbiHOTwO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 15 Aug 2022 15:52:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8572A42AFA;
+        Mon, 15 Aug 2022 11:50:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E9D0AB810A4;
+        Mon, 15 Aug 2022 18:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA69C433C1;
+        Mon, 15 Aug 2022 18:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1660589443;
+        bh=i3e/A4Zn400OOB+vPxUgs7Ypq6tOijgt4jkqF0Vp0po=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CHaNkVhg7GK3j8VoPJlTa1gGkscOjJfHuM4n3giZj1Xtcs6FsSQ73o1VqQLTn3e0H
+         KxZ4IRY5hcEyYxKLciaOLkVxwCGw4oWuS2nBUjpmp35LbxtSiAJeKHtCYvR3tfMvgQ
+         mL4qsXb45LiabAngYZFjCSqQbKGrZKT1Qyx4L1tE=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Philipp Rudo <prudo@linux.ibm.com>,
+        kexec@lists.infradead.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Michal Suchanek <msuchanek@suse.de>,
+        "Lee, Chun-Yi" <jlee@suse.com>, Baoquan He <bhe@redhat.com>,
+        Coiby Xu <coxu@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 719/779] kexec, KEYS, s390: Make use of built-in and secondary keyring for signature verification
+Date:   Mon, 15 Aug 2022 20:06:03 +0200
+Message-Id: <20220815180408.186099124@linuxfoundation.org>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220815180337.130757997@linuxfoundation.org>
+References: <20220815180337.130757997@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-In-Reply-To: <20220812101902.2846182-3-roberto.sassu@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.6/26628/Mon Aug 15 09:51:41 2022)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 8/12/22 12:18 PM, Roberto Sassu wrote:
-> Allow the bpf_dynptr_kern parameter to be specified in kfuncs. Also, ensure
-> that the dynamic pointer is valid and initialized.
-> 
-> Cc: Joanne Koong <joannelkoong@gmail.com>
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> ---
->   include/linux/bpf_verifier.h |  3 +++
->   kernel/bpf/btf.c             | 22 ++++++++++++++++++++++
->   kernel/bpf/verifier.c        |  4 ++--
->   3 files changed, 27 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-> index 2e3bad8640dc..55876fbdbae2 100644
-> --- a/include/linux/bpf_verifier.h
-> +++ b/include/linux/bpf_verifier.h
-> @@ -560,6 +560,9 @@ int check_kfunc_mem_size_reg(struct bpf_verifier_env *env, struct bpf_reg_state
->   			     u32 regno);
->   int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
->   		   u32 regno, u32 mem_size);
-> +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env,
-> +			      struct bpf_reg_state *reg,
-> +			      enum bpf_arg_type arg_type);
->   
->   /* this lives here instead of in bpf.h because it needs to dereference tgt_prog */
->   static inline u64 bpf_trampoline_compute_key(const struct bpf_prog *tgt_prog,
-> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> index e49b3b6d48ad..86e63f2ee5da 100644
-> --- a/kernel/bpf/btf.c
-> +++ b/kernel/bpf/btf.c
-> @@ -195,6 +195,10 @@
->   	     i < btf_type_vlen(struct_type);					\
->   	     i++, member++)
->   
-> +#define stringify_struct(x)			\
-> +	({ BUILD_BUG_ON(sizeof(struct x) < 0);	\
-> +	   __stringify(x); })
-> +
+From: Michal Suchanek <msuchanek@suse.de>
 
-I'd say lets move this to include/linux/btf.h with a comment explaining the BUILD_BUG_ON()
-which ensures the struct actually exits.
+[ Upstream commit 0828c4a39be57768b8788e8cbd0d84683ea757e5 ]
 
-If there's ever use outside of BTF, it could be relocated to include/linux/stringify.h.
+commit e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
+adds support for KEXEC_SIG verification with keys from platform keyring
+but the built-in keys and secondary keyring are not used.
 
->   DEFINE_IDR(btf_idr);
->   DEFINE_SPINLOCK(btf_idr_lock);
->   
+Add support for the built-in keys and secondary keyring as x86 does.
+
+Fixes: e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
+Cc: stable@vger.kernel.org
+Cc: Philipp Rudo <prudo@linux.ibm.com>
+Cc: kexec@lists.infradead.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: "Lee, Chun-Yi" <jlee@suse.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/s390/kernel/machine_kexec_file.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+index a81d6c43b9b6..3459362c54ac 100644
+--- a/arch/s390/kernel/machine_kexec_file.c
++++ b/arch/s390/kernel/machine_kexec_file.c
+@@ -29,6 +29,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+ 	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+ 	struct module_signature *ms;
+ 	unsigned long sig_len;
++	int ret;
+ 
+ 	/* Skip signature verification when not secure IPLed. */
+ 	if (!ipl_secure_flag)
+@@ -63,11 +64,18 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+ 		return -EBADMSG;
+ 	}
+ 
+-	return verify_pkcs7_signature(kernel, kernel_len,
+-				      kernel + kernel_len, sig_len,
+-				      VERIFY_USE_PLATFORM_KEYRING,
+-				      VERIFYING_MODULE_SIGNATURE,
+-				      NULL, NULL);
++	ret = verify_pkcs7_signature(kernel, kernel_len,
++				     kernel + kernel_len, sig_len,
++				     VERIFY_USE_SECONDARY_KEYRING,
++				     VERIFYING_MODULE_SIGNATURE,
++				     NULL, NULL);
++	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
++		ret = verify_pkcs7_signature(kernel, kernel_len,
++					     kernel + kernel_len, sig_len,
++					     VERIFY_USE_PLATFORM_KEYRING,
++					     VERIFYING_MODULE_SIGNATURE,
++					     NULL, NULL);
++	return ret;
+ }
+ #endif /* CONFIG_KEXEC_SIG */
+ 
+-- 
+2.35.1
+
+
+
