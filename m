@@ -2,98 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F9C3596072
-	for <lists+keyrings@lfdr.de>; Tue, 16 Aug 2022 18:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D924D5961C0
+	for <lists+keyrings@lfdr.de>; Tue, 16 Aug 2022 20:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236556AbiHPQjo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 16 Aug 2022 12:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43252 "EHLO
+        id S235770AbiHPSBs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 16 Aug 2022 14:01:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235798AbiHPQjn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 16 Aug 2022 12:39:43 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C18527D1DD;
-        Tue, 16 Aug 2022 09:39:41 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id i14so19928517ejg.6;
-        Tue, 16 Aug 2022 09:39:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=iaPjCYZgo5E7q90joQujnSp+771XiMnhGhIUF8A0osw=;
-        b=FPh1mYpWX1kXNGRpv2OtRUKw0nrwqX4WOSfq2AvHSc4EDDOa9vuSlGBBhQw5VGxVZo
-         me2KEsOIj/b2nCeEWXyrnZ9xo45gYizz+p0O55vh1TuXke4Chc0BwzB2hQvW9dqBCqwi
-         +voyJye42aXpa9PSp4LARDR5OVlMAT1GywsdrnEuIhoApQ0+XBmPOQd2nWxKRhtE0sK/
-         UURQd0bRVHSeV4sw7a9ETtKp6KJ9GvXZprN7U7F2f8Djivcrr8j+tAeW3Zw0UQM+8WtR
-         GgYFiLmIM3OPA3IHoFfgfmt0z+EAVrPCM62ARF9TZCtysY29D3VVWwX9SNHkd44mDknB
-         s59g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=iaPjCYZgo5E7q90joQujnSp+771XiMnhGhIUF8A0osw=;
-        b=lp2eszvrQHFW34IdE3Gx4onJzrW2KdSWfU4MOIDb9Jr4AF0rBEvrFR6pCir0r4Q5Eb
-         IGYqIqDvi902kd1yMvoGa3+KjXZkm7Lhqxplg++VIujUTeIH99JYzNXK+7WWuOA/b1rJ
-         Oh4fO3SWCFsez9yACyZybTTDNAY3+YSpXlferuFJwnCy2jZ+96n2iT9O5ta6NmQ2e2hr
-         7l80fa+ntS9EEBuuKftOfoQ3CTNaBP6CMJVty7t4irzk4M+Hzt4guh4oCfJ/uQHzJXAP
-         n3V7B8jm57b9ClxTHurhIEjOaTK9d0k6FDsPKSJ04Sp6iblRS+Ry19qm2qPDHFRUne4S
-         YhDQ==
-X-Gm-Message-State: ACgBeo2CANEImU6BTEHmOCG8xmzKv/Z27rESnkVDU4biGP6OL7jsFb4k
-        aqaHmKsY1o6NRSWYvYa/RbrJXXlbojXPx1Ota28=
-X-Google-Smtp-Source: AA6agR6CVIWn3ph0TlBX1tyLLXQZhWJUJdPVsI1GiXe2PFPhFhhuvFgawG9EUtU9XUnOOWSp83GxQqb13jXb+Z/LAsw=
-X-Received: by 2002:a17:907:2896:b0:730:983c:4621 with SMTP id
- em22-20020a170907289600b00730983c4621mr14063824ejc.502.1660667980256; Tue, 16
- Aug 2022 09:39:40 -0700 (PDT)
+        with ESMTP id S236280AbiHPSBs (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 16 Aug 2022 14:01:48 -0400
+Received: from bg5.exmail.qq.com (bg4.exmail.qq.com [43.154.54.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9189A832F2;
+        Tue, 16 Aug 2022 11:01:45 -0700 (PDT)
+X-QQ-mid: bizesmtp88t1660672884t597l1k2
+Received: from harry-jrlc.. ( [182.148.12.144])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Wed, 17 Aug 2022 02:01:12 +0800 (CST)
+X-QQ-SSF: 0100000000000060D000B00A0000020
+X-QQ-FEAT: 7L1V3dHhUFMh2NTXhq053RQm9at6l8q/2ycR4yxNdMJftm3mj9Jly9K7yivRd
+        iLJ4k/eq41tID1yIYaDqUkPq1CF+Jdj8bKua422fur/yXFDPRcPFn3BX5HXdetF7Rma2hUH
+        wgG9yN84vniTqaiyoHkztEuwaB87xgazBbdNzykhv2hzo2QX6Verh5mJc5S2mCePHGyH9w6
+        mp+8KwZYolp2BLbJ/y2X0W8VCAFar+mw1eaME5OThSckJTAFmFM39aNTcEb/oTuRSVA47R3
+        VEukSayidimeSO1eRDE9aDPzwb5ckR4DTAxUi/PMEvUKJwVwaeJN0ZUKUzbgdW3/3p1ltsU
+        Ygvo6aCHr3WtgK/DNgfUM1ae+F1qg6r67hqDCRYuMB6t6nq/L4QJ/5tEd1qag==
+X-QQ-GoodBg: 0
+From:   Xin Gao <gaoxin@cdjrlc.com>
+To:     dhowells@redhat.com, jarkko@kernel.org
+Cc:     jmorris@namei.org, serge@hallyn.com, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Xin Gao <gaoxin@cdjrlc.com>
+Subject: [PATCH] KEYS: Variable type completion
+Date:   Wed, 17 Aug 2022 02:01:10 +0800
+Message-Id: <20220816180110.8625-1-gaoxin@cdjrlc.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220812101902.2846182-1-roberto.sassu@huawei.com>
- <14032690-e7a9-9d14-1ec1-14dd3503037c@iogearbox.net> <b61eb3b95843409eb6ab03aea4a0ca30@huawei.com>
- <be1fdbba-73ba-3106-622e-57ef5f471a26@iogearbox.net> <f54e27659dce49ee93d5feafa46f5477@huawei.com>
-In-Reply-To: <f54e27659dce49ee93d5feafa46f5477@huawei.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Tue, 16 Aug 2022 09:39:28 -0700
-Message-ID: <CAADnVQJT_X-oX4czQ2dT1qFKwf4N5wRaSCTV-KzH5-p-1b4yfQ@mail.gmail.com>
-Subject: Re: [PATCH v11 0/9] bpf: Add kfuncs for PKCS#7 signature verification
-To:     Roberto Sassu <roberto.sassu@huawei.com>
-Cc:     Daniel Borkmann <daniel@iogearbox.net>,
-        "ast@kernel.org" <ast@kernel.org>,
-        "andrii@kernel.org" <andrii@kernel.org>,
-        "martin.lau@linux.dev" <martin.lau@linux.dev>,
-        "song@kernel.org" <song@kernel.org>, "yhs@fb.com" <yhs@fb.com>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "kpsingh@kernel.org" <kpsingh@kernel.org>,
-        "sdf@google.com" <sdf@google.com>,
-        "haoluo@google.com" <haoluo@google.com>,
-        "jolsa@kernel.org" <jolsa@kernel.org>,
-        "mykolal@fb.com" <mykolal@fb.com>,
-        "corbet@lwn.net" <corbet@lwn.net>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "paul@paul-moore.com" <paul@paul-moore.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "shuah@kernel.org" <shuah@kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Roberto,
+'unsigned int' is better than 'unsigned'.
 
-please use a different email provider,
-since gmail classifies all of your emails as spam.
-I've seen other huawei folks use huaweicloud.com.
+Signed-off-by: Xin Gao <gaoxin@cdjrlc.com>
+---
+ security/keys/keyctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+index 96a92a645216..4564505e7594 100644
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -44,7 +44,7 @@ static const unsigned char keyrings_capabilities[2] = {
+ 
+ static int key_get_type_from_user(char *type,
+ 				  const char __user *_type,
+-				  unsigned len)
++				  unsigned int len)
+ {
+ 	int ret;
+ 
+-- 
+2.30.2
+
