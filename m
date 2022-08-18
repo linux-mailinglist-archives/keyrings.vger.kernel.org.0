@@ -2,67 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1A159884A
-	for <lists+keyrings@lfdr.de>; Thu, 18 Aug 2022 18:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B67F7598A8A
+	for <lists+keyrings@lfdr.de>; Thu, 18 Aug 2022 19:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245254AbiHRQGT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 18 Aug 2022 12:06:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47790 "EHLO
+        id S1345066AbiHRRgA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 Aug 2022 13:36:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239750AbiHRQGS (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Aug 2022 12:06:18 -0400
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B4DBC801;
-        Thu, 18 Aug 2022 09:06:16 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4M7pcP6cZ2z9v7YZ;
-        Thu, 18 Aug 2022 23:25:41 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwAX5hHpWv5iycQwAA--.23244S4;
-        Thu, 18 Aug 2022 16:30:26 +0100 (CET)
-From:   roberto.sassu@huaweicloud.com
-To:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        with ESMTP id S1343583AbiHRRgA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Aug 2022 13:36:00 -0400
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBBFC59DD
+        for <keyrings@vger.kernel.org>; Thu, 18 Aug 2022 10:35:57 -0700 (PDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+        by mout02.posteo.de (Postfix) with ESMTPS id CAA38240104
+        for <keyrings@vger.kernel.org>; Thu, 18 Aug 2022 19:35:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+        t=1660844155; bh=qnhd6HdPquVSm0kh0TC8MijB3p2ZP/IpLjvgG/ZYqJQ=;
+        h=Date:From:To:Cc:Subject:From;
+        b=iwGsXNcg519jBoFq8qXIbpeagtK6pWC2ePR9B0Fyea0BF9+YXq7x/Ac3hWaQaSTG1
+         0t8cdaI/rw8dXJaeh1D1GeyPKLdREjsF3sobEr8yCvTfYgbFwnVpdBhXjfJ9HwqsSE
+         uqqNwXafjKYZX+fBgZxpo7vcbXP2BvKaib2WzwU6aD3jQjZO99anO1X+8tlI/ybHez
+         4T2aHw2CyxDD7a4hITme6LloaitAqZLsni2TPU4C9dEGfJgBw18K2NpubsH4qVPIJa
+         mEiz8NTfxDUnBDTF3WLOtRBxlu8GgZ2AZhxpf/jkMH+04XZb4/ScCtuKKvITGiX4TJ
+         D5ojkZJYssXuw==
+Received: from customer (localhost [127.0.0.1])
+        by submission (posteo.de) with ESMTPSA id 4M7sVR5G6Yz9rxW;
+        Thu, 18 Aug 2022 19:35:42 +0200 (CEST)
+Date:   Thu, 18 Aug 2022 17:35:39 +0000
+From:   Daniel =?utf-8?Q?M=C3=BCller?= <deso@posteo.net>
+To:     roberto.sassu@huaweicloud.com
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
         martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
         john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
         haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
         corbet@lwn.net, dhowells@redhat.com, jarkko@kernel.org,
         rostedt@goodmis.org, mingo@redhat.com, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, shuah@kernel.org
-Cc:     bpf@vger.kernel.org, linux-doc@vger.kernel.org,
+        jmorris@namei.org, serge@hallyn.com, shuah@kernel.org,
+        bpf@vger.kernel.org, linux-doc@vger.kernel.org,
         keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
         linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>,
-        Joanne Koong <joannelkoong@gmail.com>
-Subject: [PATCH v12 02/10] btf: Handle dynamic pointer parameter in kfuncs
-Date:   Thu, 18 Aug 2022 17:29:21 +0200
-Message-Id: <20220818152929.402605-3-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: Re: [PATCH v12 07/10] selftests/bpf: Compile kernel with everything
+ as built-in
+Message-ID: <20220818173539.q47uycc2oy5kkezl@muellerd-fedora-PC2BDTX9>
 References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
+ <20220818152929.402605-8-roberto.sassu@huaweicloud.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: LxC2BwAX5hHpWv5iycQwAA--.23244S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxWryfCFW5Kr48Wr17Jw4fXwb_yoWrCFWxpF
-        n3Cas7Zr4vyr4xuw17AF4UArW5K3W0qw12kFWrC34FkF17Xr1DXF1DKryrA3sYkrWkCw1x
-        Ar1jgrW5ua48CrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1j6r18M7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXw
-        A2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-        w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-        WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-        Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ew
-        Av7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY
-        6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7M4kE6xkIj40Ew7
-        xC0wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
-        6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2
-        Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-        Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJw
-        CI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU85ku7UU
-        UUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBF1jj34W2AAJsG
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+In-Reply-To: <20220818152929.402605-8-roberto.sassu@huaweicloud.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UPPERCASE_50_75,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,120 +64,100 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+On Thu, Aug 18, 2022 at 05:29:26PM +0200, roberto.sassu@huaweicloud.com wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> Since the eBPF CI does not support kernel modules, change the kernel config
+> to compile everything as built-in.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
+>  tools/testing/selftests/bpf/config        | 26 +++++++++++------------
+>  tools/testing/selftests/bpf/config.x86_64 |  2 +-
+>  2 files changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
+> index 3fc46f9cfb22..0fdd11e6b742 100644
+> --- a/tools/testing/selftests/bpf/config
+> +++ b/tools/testing/selftests/bpf/config
+> @@ -7,9 +7,9 @@ CONFIG_BPF_LSM=y
+>  CONFIG_BPF_STREAM_PARSER=y
+>  CONFIG_BPF_SYSCALL=y
+>  CONFIG_CGROUP_BPF=y
+> -CONFIG_CRYPTO_HMAC=m
+> -CONFIG_CRYPTO_SHA256=m
+> -CONFIG_CRYPTO_USER_API_HASH=m
+> +CONFIG_CRYPTO_HMAC=y
+> +CONFIG_CRYPTO_SHA256=y
+> +CONFIG_CRYPTO_USER_API_HASH=y
+>  CONFIG_DYNAMIC_FTRACE=y
+>  CONFIG_FPROBE=y
+>  CONFIG_FTRACE_SYSCALLS=y
+> @@ -24,30 +24,30 @@ CONFIG_IP_NF_FILTER=y
+>  CONFIG_IP_NF_RAW=y
+>  CONFIG_IP_NF_TARGET_SYNPROXY=y
+>  CONFIG_IPV6=y
+> -CONFIG_IPV6_FOU=m
+> -CONFIG_IPV6_FOU_TUNNEL=m
+> +CONFIG_IPV6_FOU=y
+> +CONFIG_IPV6_FOU_TUNNEL=y
+>  CONFIG_IPV6_GRE=y
+>  CONFIG_IPV6_SEG6_BPF=y
+> -CONFIG_IPV6_SIT=m
+> +CONFIG_IPV6_SIT=y
+>  CONFIG_IPV6_TUNNEL=y
+>  CONFIG_LIRC=y
+>  CONFIG_LWTUNNEL=y
+>  CONFIG_MPLS=y
+> -CONFIG_MPLS_IPTUNNEL=m
+> -CONFIG_MPLS_ROUTING=m
+> +CONFIG_MPLS_IPTUNNEL=y
+> +CONFIG_MPLS_ROUTING=y
+>  CONFIG_MPTCP=y
+>  CONFIG_NET_CLS_ACT=y
+>  CONFIG_NET_CLS_BPF=y
+> -CONFIG_NET_CLS_FLOWER=m
+> -CONFIG_NET_FOU=m
+> +CONFIG_NET_CLS_FLOWER=y
+> +CONFIG_NET_FOU=y
+>  CONFIG_NET_FOU_IP_TUNNELS=y
+>  CONFIG_NET_IPGRE=y
+>  CONFIG_NET_IPGRE_DEMUX=y
+>  CONFIG_NET_IPIP=y
+> -CONFIG_NET_MPLS_GSO=m
+> +CONFIG_NET_MPLS_GSO=y
+>  CONFIG_NET_SCH_INGRESS=y
+>  CONFIG_NET_SCHED=y
+> -CONFIG_NETDEVSIM=m
+> +CONFIG_NETDEVSIM=y
+>  CONFIG_NETFILTER=y
+>  CONFIG_NETFILTER_SYNPROXY=y
+>  CONFIG_NETFILTER_XT_CONNMARK=y
+> @@ -60,7 +60,7 @@ CONFIG_NF_DEFRAG_IPV6=y
+>  CONFIG_RC_CORE=y
+>  CONFIG_SECURITY=y
+>  CONFIG_SECURITYFS=y
+> -CONFIG_TEST_BPF=m
+> +CONFIG_TEST_BPF=y
+>  CONFIG_USERFAULTFD=y
+>  CONFIG_VXLAN=y
+>  CONFIG_XDP_SOCKETS=y
+> diff --git a/tools/testing/selftests/bpf/config.x86_64 b/tools/testing/selftests/bpf/config.x86_64
+> index f0859a1d37ab..ce70c9509204 100644
+> --- a/tools/testing/selftests/bpf/config.x86_64
+> +++ b/tools/testing/selftests/bpf/config.x86_64
+> @@ -47,7 +47,7 @@ CONFIG_CPU_IDLE_GOV_LADDER=y
+>  CONFIG_CPUSETS=y
+>  CONFIG_CRC_T10DIF=y
+>  CONFIG_CRYPTO_BLAKE2B=y
+> -CONFIG_CRYPTO_DEV_VIRTIO=m
+> +CONFIG_CRYPTO_DEV_VIRTIO=y
+>  CONFIG_CRYPTO_SEQIV=y
+>  CONFIG_CRYPTO_XXHASH=y
+>  CONFIG_DCB=y
+> -- 
+> 2.25.1
 
-Allow the bpf_dynptr_kern parameter to be specified in kfuncs. Also, ensure
-that the dynamic pointer is valid and initialized.
+The change looks good to me. Thanks for making it.
 
-To properly detect whether a parameter is of the desired type, introduce
-the stringify_struct() macro to compare the returned structure name with
-the desired name. In addition, protect against structure renames, by
-halting the build with BUILD_BUG_ON(), so that developers have to revisit
-the code.
-
-Cc: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- include/linux/bpf_verifier.h |  3 +++
- include/linux/btf.h          |  9 +++++++++
- kernel/bpf/btf.c             | 18 ++++++++++++++++++
- kernel/bpf/verifier.c        |  4 ++--
- 4 files changed, 32 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 2e3bad8640dc..55876fbdbae2 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -560,6 +560,9 @@ int check_kfunc_mem_size_reg(struct bpf_verifier_env *env, struct bpf_reg_state
- 			     u32 regno);
- int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
- 		   u32 regno, u32 mem_size);
-+bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env,
-+			      struct bpf_reg_state *reg,
-+			      enum bpf_arg_type arg_type);
- 
- /* this lives here instead of in bpf.h because it needs to dereference tgt_prog */
- static inline u64 bpf_trampoline_compute_key(const struct bpf_prog *tgt_prog,
-diff --git a/include/linux/btf.h b/include/linux/btf.h
-index ad93c2d9cc1c..f546d368ac5d 100644
---- a/include/linux/btf.h
-+++ b/include/linux/btf.h
-@@ -52,6 +52,15 @@
- #define KF_SLEEPABLE    (1 << 5) /* kfunc may sleep */
- #define KF_DESTRUCTIVE  (1 << 6) /* kfunc performs destructive actions */
- 
-+/*
-+ * Return the name of the passed struct, if exists, or halt the build if for
-+ * example the structure gets renamed. In this way, developers have to revisit
-+ * the code using that structure name, and update it accordingly.
-+ */
-+#define stringify_struct(x)			\
-+	({ BUILD_BUG_ON(sizeof(struct x) < 0);	\
-+	   __stringify(x); })
-+
- struct btf;
- struct btf_member;
- struct btf_type;
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index e49b3b6d48ad..26cb548420af 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6362,15 +6362,20 @@ static int btf_check_func_arg_match(struct bpf_verifier_env *env,
- 
- 			if (is_kfunc) {
- 				bool arg_mem_size = i + 1 < nargs && is_kfunc_arg_mem_size(btf, &args[i + 1], &regs[regno + 1]);
-+				bool arg_dynptr = btf_type_is_struct(ref_t) &&
-+						  !strcmp(ref_tname,
-+							  stringify_struct(bpf_dynptr_kern));
- 
- 				/* Permit pointer to mem, but only when argument
- 				 * type is pointer to scalar, or struct composed
- 				 * (recursively) of scalars.
- 				 * When arg_mem_size is true, the pointer can be
- 				 * void *.
-+				 * Also permit initialized dynamic pointers.
- 				 */
- 				if (!btf_type_is_scalar(ref_t) &&
- 				    !__btf_type_is_scalar_struct(log, btf, ref_t, 0) &&
-+				    !arg_dynptr &&
- 				    (arg_mem_size ? !btf_type_is_void(ref_t) : 1)) {
- 					bpf_log(log,
- 						"arg#%d pointer type %s %s must point to %sscalar, or struct with scalar\n",
-@@ -6378,6 +6383,19 @@ static int btf_check_func_arg_match(struct bpf_verifier_env *env,
- 					return -EINVAL;
- 				}
- 
-+				if (arg_dynptr) {
-+					if (!is_dynptr_reg_valid_init(env, reg,
-+							ARG_PTR_TO_DYNPTR)) {
-+						bpf_log(log,
-+							"arg#%d pointer type %s %s must be initialized\n",
-+							i, btf_type_str(ref_t),
-+							ref_tname);
-+						return -EINVAL;
-+					}
-+
-+					continue;
-+				}
-+
- 				/* Check for mem, len pair */
- 				if (arg_mem_size) {
- 					if (check_kfunc_mem_size_reg(env, &regs[regno + 1], regno + 1)) {
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 2c1f8069f7b7..aa834e7bb296 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -779,8 +779,8 @@ static bool is_dynptr_reg_valid_uninit(struct bpf_verifier_env *env, struct bpf_
- 	return true;
- }
- 
--static bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
--				     enum bpf_arg_type arg_type)
-+bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
-+			      enum bpf_arg_type arg_type)
- {
- 	struct bpf_func_state *state = func(env, reg);
- 	int spi = get_spi(reg->off);
--- 
-2.25.1
-
+Acked-by: Daniel Müller <deso@posteo.net>
