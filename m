@@ -2,77 +2,173 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4643F598F39
-	for <lists+keyrings@lfdr.de>; Thu, 18 Aug 2022 23:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0267D599EB5
+	for <lists+keyrings@lfdr.de>; Fri, 19 Aug 2022 17:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346736AbiHRVL1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 18 Aug 2022 17:11:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35062 "EHLO
+        id S1349873AbiHSPj7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 19 Aug 2022 11:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346906AbiHRVKr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 18 Aug 2022 17:10:47 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC19D9D54
-        for <keyrings@vger.kernel.org>; Thu, 18 Aug 2022 14:05:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=8PwryersYJtX3ONY3Vr0vWODiKm
-        t4mzdZHbchoWK6Ws=; b=CQXDHCDmcJGpFvbldxvm/6QuKx3jZyapMCbAIhKQOq6
-        udp6ftUT5Nv+n7O7jboyhiguzYpWO5ZVYmRBzjMrxlFt7+DOWR7IHsP5kAU2EOOJ
-        P7sala8Jg2aRPsMMcPJ5A0Cybn5p37pKqhoFCZej9V6oldgSfHvdujckScso5qdc
-        =
-Received: (qmail 3963416 invoked from network); 18 Aug 2022 23:02:32 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:02:32 +0200
-X-UD-Smtp-Session: l3s3148p1@1LrRTIrmmJoucref
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+        with ESMTP id S1349506AbiHSPjv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 19 Aug 2022 11:39:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C398565E5;
+        Fri, 19 Aug 2022 08:39:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7189FB8280F;
+        Fri, 19 Aug 2022 15:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD584C4314B;
+        Fri, 19 Aug 2022 15:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1660923588;
+        bh=ADw06pRCuPZeTUd/Uq+mdKxMJyGKpyXRKWJnc9JYbVQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=GObXdGItgM49Vv4iy/DHgcbZGw0WwMWQdLdayWxyiCuT+akEZOMkmlnab6U4FUD3X
+         qakePs4Bcn4dsM3GualuVlIHuFHskTCXt1NxRIobF1kwJ2pIrdQd5s1ZqxQiy9wY7c
+         CcM6nBx/bpFz0WiMRfqGhRbgippJfbOBWsalV79o=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH] security: move from strlcpy with unused retval to strscpy
-Date:   Thu, 18 Aug 2022 23:02:31 +0200
-Message-Id: <20220818210232.8707-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.35.1
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, kexec@lists.infradead.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Michal Suchanek <msuchanek@suse.de>,
+        Coiby Xu <coxu@redhat.com>, Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 5.19 6/7] kexec, KEYS: make the code in bzImage64_verify_sig generic
+Date:   Fri, 19 Aug 2022 17:39:22 +0200
+Message-Id: <20220819153711.785888674@linuxfoundation.org>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220819153711.552247994@linuxfoundation.org>
+References: <20220819153711.552247994@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+From: Coiby Xu <coxu@redhat.com>
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+commit c903dae8941deb55043ee46ded29e84e97cd84bb upstream.
+
+commit 278311e417be ("kexec, KEYS: Make use of platform keyring for
+signature verify") adds platform keyring support on x86 kexec but not
+arm64.
+
+The code in bzImage64_verify_sig uses the keys on the
+.builtin_trusted_keys, .machine, if configured and enabled,
+.secondary_trusted_keys, also if configured, and .platform keyrings
+to verify the signed kernel image as PE file.
+
+Cc: kexec@lists.infradead.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Reviewed-by: Michal Suchanek <msuchanek@suse.de>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/request_key_auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/kexec-bzimage64.c |   20 +-------------------
+ include/linux/kexec.h             |    7 +++++++
+ kernel/kexec_file.c               |   17 +++++++++++++++++
+ 3 files changed, 25 insertions(+), 19 deletions(-)
 
-diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
-index 41e9735006d0..8f33cd170e42 100644
---- a/security/keys/request_key_auth.c
-+++ b/security/keys/request_key_auth.c
-@@ -178,7 +178,7 @@ struct key *request_key_auth_new(struct key *target, const char *op,
- 	if (!rka->callout_info)
- 		goto error_free_rka;
- 	rka->callout_len = callout_len;
--	strlcpy(rka->op, op, sizeof(rka->op));
-+	strscpy(rka->op, op, sizeof(rka->op));
+--- a/arch/x86/kernel/kexec-bzimage64.c
++++ b/arch/x86/kernel/kexec-bzimage64.c
+@@ -17,7 +17,6 @@
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/efi.h>
+-#include <linux/verification.h>
  
- 	/* see if the calling process is already servicing the key request of
- 	 * another process */
--- 
-2.35.1
+ #include <asm/bootparam.h>
+ #include <asm/setup.h>
+@@ -528,28 +527,11 @@ static int bzImage64_cleanup(void *loade
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_KEXEC_BZIMAGE_VERIFY_SIG
+-static int bzImage64_verify_sig(const char *kernel, unsigned long kernel_len)
+-{
+-	int ret;
+-
+-	ret = verify_pefile_signature(kernel, kernel_len,
+-				      VERIFY_USE_SECONDARY_KEYRING,
+-				      VERIFYING_KEXEC_PE_SIGNATURE);
+-	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING)) {
+-		ret = verify_pefile_signature(kernel, kernel_len,
+-					      VERIFY_USE_PLATFORM_KEYRING,
+-					      VERIFYING_KEXEC_PE_SIGNATURE);
+-	}
+-	return ret;
+-}
+-#endif
+-
+ const struct kexec_file_ops kexec_bzImage64_ops = {
+ 	.probe = bzImage64_probe,
+ 	.load = bzImage64_load,
+ 	.cleanup = bzImage64_cleanup,
+ #ifdef CONFIG_KEXEC_BZIMAGE_VERIFY_SIG
+-	.verify_sig = bzImage64_verify_sig,
++	.verify_sig = kexec_kernel_verify_pe_sig,
+ #endif
+ };
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -19,6 +19,7 @@
+ #include <asm/io.h>
+ 
+ #include <uapi/linux/kexec.h>
++#include <linux/verification.h>
+ 
+ /* Location of a reserved region to hold the crash kernel.
+  */
+@@ -212,6 +213,12 @@ static inline void *arch_kexec_kernel_im
+ }
+ #endif
+ 
++#ifdef CONFIG_KEXEC_SIG
++#ifdef CONFIG_SIGNED_PE_FILE_VERIFICATION
++int kexec_kernel_verify_pe_sig(const char *kernel, unsigned long kernel_len);
++#endif
++#endif
++
+ extern int kexec_add_buffer(struct kexec_buf *kbuf);
+ int kexec_locate_mem_hole(struct kexec_buf *kbuf);
+ 
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -123,6 +123,23 @@ void kimage_file_post_load_cleanup(struc
+ }
+ 
+ #ifdef CONFIG_KEXEC_SIG
++#ifdef CONFIG_SIGNED_PE_FILE_VERIFICATION
++int kexec_kernel_verify_pe_sig(const char *kernel, unsigned long kernel_len)
++{
++	int ret;
++
++	ret = verify_pefile_signature(kernel, kernel_len,
++				      VERIFY_USE_SECONDARY_KEYRING,
++				      VERIFYING_KEXEC_PE_SIGNATURE);
++	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING)) {
++		ret = verify_pefile_signature(kernel, kernel_len,
++					      VERIFY_USE_PLATFORM_KEYRING,
++					      VERIFYING_KEXEC_PE_SIGNATURE);
++	}
++	return ret;
++}
++#endif
++
+ static int kexec_image_verify_sig(struct kimage *image, void *buf,
+ 				  unsigned long buf_len)
+ {
+
 
