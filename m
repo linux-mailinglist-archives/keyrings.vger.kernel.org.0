@@ -2,74 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8627259DCF2
-	for <lists+keyrings@lfdr.de>; Tue, 23 Aug 2022 14:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7F659E080
+	for <lists+keyrings@lfdr.de>; Tue, 23 Aug 2022 14:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354479AbiHWKc5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 23 Aug 2022 06:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56928 "EHLO
+        id S242128AbiHWLmT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 23 Aug 2022 07:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354495AbiHWK3m (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Aug 2022 06:29:42 -0400
-Received: from out-format-cash.julielouviere.biz (unknown [185.27.96.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58055A50CE
-        for <keyrings@vger.kernel.org>; Tue, 23 Aug 2022 02:06:23 -0700 (PDT)
-Received: from emporiosbay by 185-27-96-16.cprapid.com with local (Exim 4.95)
-        (envelope-from <emporiosbay@185-27-96-16.cprapid.com>)
-        id 1oQOIb-0017wq-1h
-        for keyrings@vger.kernel.org;
-        Tue, 23 Aug 2022 09:26:09 +0200
-To:     keyrings@vger.kernel.org
-Subject: =?us-ascii?Q?SpringBook_"The_Telegraph:_Jeden_Tag_erscheinen?=
- =?us-ascii?Q?_in_Europa_uber_900_neue_Millionare"?=
-X-PHP-Script: emporiosbay.com/index.php for 191.101.31.39
- X-PHP-Originating-Script: 1361:PHPMailer.php
-Date:   Tue, 23 Aug 2022 07:26:09 +0000
-From:   Springbook Contact Form <info@emporiosbay.com>
-Reply-To: contact@cththemes.net
-Message-ID: <nRAzKWs136hxjDFOXUBzprqN6xPZXPdzaEsvyPJDoMU@emporiosbay.com>
-X-Mailer: PHPMailer 6.5.3 (https://github.com/PHPMailer/PHPMailer)
+        with ESMTP id S1357806AbiHWLi5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 23 Aug 2022 07:38:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4073911818;
+        Tue, 23 Aug 2022 02:28:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D57196135D;
+        Tue, 23 Aug 2022 09:28:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE792C433C1;
+        Tue, 23 Aug 2022 09:28:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1661246896;
+        bh=QdEMINy4DpflPJbO9OpDwJFttTM7M9zPcsVxmvhY6PU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NsIBZnRv52wiDsJ0+Elba6BTP6RyWoGLIraj348FHlb57TvvEL7ahMuR3Nu22wkhA
+         YqpV1c7nCO02SirpHbNV4RgquTEuXkZZdglp6iWvY0fpzTP4P9orSG9A9VbIh/25Z5
+         gf6jvoMa72Dn6caMfj7DFhpfBbQE1TqPUhhaGqFU=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Philipp Rudo <prudo@linux.ibm.com>,
+        kexec@lists.infradead.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Michal Suchanek <msuchanek@suse.de>,
+        "Lee, Chun-Yi" <jlee@suse.com>, Baoquan He <bhe@redhat.com>,
+        Coiby Xu <coxu@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 5.4 254/389] kexec, KEYS, s390: Make use of built-in and secondary keyring for signature verification
+Date:   Tue, 23 Aug 2022 10:25:32 +0200
+Message-Id: <20220823080126.207983967@linuxfoundation.org>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220823080115.331990024@linuxfoundation.org>
+References: <20220823080115.331990024@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - 185-27-96-16.cprapid.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [1361 994] / [47 12]
-X-AntiAbuse: Sender Address Domain - 185-27-96-16.cprapid.com
-X-Get-Message-Sender-Via: 185-27-96-16.cprapid.com: authenticated_id: emporiosbay/from_h
-X-Authenticated-Sender: 185-27-96-16.cprapid.com: info@emporiosbay.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: Yes, score=7.3 required=5.0 tests=BAYES_50,
-        HEADER_FROM_DIFFERENT_DOMAINS,MAY_BE_FORGED,RCVD_IN_SBL_CSS,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_PH_SURBL autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [185.27.96.16 listed in zen.spamhaus.org]
-        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
-        *      mail domains are different
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [185.27.96.16 listed in bl.score.senderscore.com]
-        *  0.6 URIBL_PH_SURBL Contains an URL listed in the PH SURBL blocklist
-        *      [URIs: cougarbearbobcat.com]
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.0 MAY_BE_FORGED Relay IP's reverse DNS does not resolve to IP
-X-Spam-Level: *******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Springbook Contact Form <contact@cththemes.net>
-Subject: The Telegraph: Jeden Tag erscheinen in Europa uber 900 neue Millionare
+From: Michal Suchanek <msuchanek@suse.de>
 
-Message Body:
-Sie konnten der nachste Millionar sein. Beeil dich http://news-break.cougarbearbobcat.com/DW-6158
+commit 0828c4a39be57768b8788e8cbd0d84683ea757e5 upstream.
+
+commit e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
+adds support for KEXEC_SIG verification with keys from platform keyring
+but the built-in keys and secondary keyring are not used.
+
+Add support for the built-in keys and secondary keyring as x86 does.
+
+Fixes: e23a8020ce4e ("s390/kexec_file: Signature verification prototype")
+Cc: stable@vger.kernel.org
+Cc: Philipp Rudo <prudo@linux.ibm.com>
+Cc: kexec@lists.infradead.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: "Lee, Chun-Yi" <jlee@suse.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/s390/kernel/machine_kexec_file.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+--- a/arch/s390/kernel/machine_kexec_file.c
++++ b/arch/s390/kernel/machine_kexec_file.c
+@@ -29,6 +29,7 @@ int s390_verify_sig(const char *kernel,
+ 	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+ 	struct module_signature *ms;
+ 	unsigned long sig_len;
++	int ret;
+ 
+ 	/* Skip signature verification when not secure IPLed. */
+ 	if (!ipl_secure_flag)
+@@ -63,11 +64,18 @@ int s390_verify_sig(const char *kernel,
+ 		return -EBADMSG;
+ 	}
+ 
+-	return verify_pkcs7_signature(kernel, kernel_len,
+-				      kernel + kernel_len, sig_len,
+-				      VERIFY_USE_PLATFORM_KEYRING,
+-				      VERIFYING_MODULE_SIGNATURE,
+-				      NULL, NULL);
++	ret = verify_pkcs7_signature(kernel, kernel_len,
++				     kernel + kernel_len, sig_len,
++				     VERIFY_USE_SECONDARY_KEYRING,
++				     VERIFYING_MODULE_SIGNATURE,
++				     NULL, NULL);
++	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
++		ret = verify_pkcs7_signature(kernel, kernel_len,
++					     kernel + kernel_len, sig_len,
++					     VERIFY_USE_PLATFORM_KEYRING,
++					     VERIFYING_MODULE_SIGNATURE,
++					     NULL, NULL);
++	return ret;
+ }
+ #endif /* CONFIG_KEXEC_SIG */
+ 
+
 
