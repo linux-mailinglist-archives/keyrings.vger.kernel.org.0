@@ -2,126 +2,120 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4955A0079
-	for <lists+keyrings@lfdr.de>; Wed, 24 Aug 2022 19:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A48085A01CC
+	for <lists+keyrings@lfdr.de>; Wed, 24 Aug 2022 21:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240076AbiHXRfB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 24 Aug 2022 13:35:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42872 "EHLO
+        id S231866AbiHXTLf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 24 Aug 2022 15:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240190AbiHXRfA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 24 Aug 2022 13:35:00 -0400
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 454A25E57A
-        for <keyrings@vger.kernel.org>; Wed, 24 Aug 2022 10:34:59 -0700 (PDT)
-Received: by mail-ot1-x332.google.com with SMTP id a14-20020a0568300b8e00b0061c4e3eb52aso12282754otv.3
-        for <keyrings@vger.kernel.org>; Wed, 24 Aug 2022 10:34:59 -0700 (PDT)
+        with ESMTP id S236283AbiHXTLe (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 24 Aug 2022 15:11:34 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 650846171E;
+        Wed, 24 Aug 2022 12:11:32 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id r10so14685727oie.1;
+        Wed, 24 Aug 2022 12:11:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=iUc7iTn6xTAH7nh/o6yxXHdfKGNX4Z/5Jv6PbbsrmvE=;
-        b=RlaeiBa5eL8zu0NgF7ARiV93OK31F7GkkyowxpdoTtVaIt6Yd6AwdmZeT4UhqxTOir
-         TaQbTq0RY8Y6y+tGLDAhuRgnPvpdkEIOG/XPkwF4v5NCae8dReQI9E0ZTHaROIT2w45q
-         f9sqGu0D99xgh/NvOUXrlPA/eOIMcCfk0srM0=
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=IBiQsl90pDHRBwqe3+axgNXRFkm79+olwXba0W7edLk=;
+        b=LwVjVKEmD+5b78/bhquOFWgs5s6bgTgvTlxBNV7+f/UFG+zUl6YKTZtAPGIX1NQHtI
+         PqATEHDZjE+xeDBPRGHzuS9cfhC732dq3zHXVmBtlQgdZrU2K0+ylp8vqguwYTmeRJLO
+         3EcQTqsUP50v7BO9sV1P8OmqJXCA/q61fm5uXgWAWYZiu6v5yMvtEXwIqStQrTL5417Z
+         vvaUHtVUoO1xYfWJObeAD3E8CImrroBSqvxDKIef8HIHWsAW9JJosGdIlyPtCqzASDTA
+         neOUqwb9trliwKvKUwya+J5aC7517Kcw2B1TWKBIedWROue9Kx7DJUpx/A0ImoAIGu69
+         Pt0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=iUc7iTn6xTAH7nh/o6yxXHdfKGNX4Z/5Jv6PbbsrmvE=;
-        b=5igMg1QNjwOri4t+M7eHrl2QAwzKloWr5c9CUFWlr3ZyfKmmQxa4+4t8mWWMFtthiw
-         xuLOqLvpclbzPWcqszGzlActN7TQuieY+DH+K6VRoTasHjdR3PXjrlVFIrafJM2J/uDv
-         erBy8ylhF9vPSpe/cnkyegl+Hazl0fS9DrQqiTRZcYslDmo+vi9Ql57fyArkzyIdOb7L
-         Uh0gIcywzFEyU9rxucUNgc3FZL6aqUCm9ITG7CO+RU6vMgC5ZUMFZaIsBTlGAKbG5JR9
-         WBMlmmHurkbHx8SIrECH9+0JDh2EnKRGIDaro/5T59IaElr4wsQkc1A97uH3Lgxwldc6
-         +XSQ==
-X-Gm-Message-State: ACgBeo1I6jkhgrcOpOzl4sfJgnEBc2hdTwrdCs8CRGMOJklha8ZhdENP
-        RxEpLpWAdhM4ycYnjsh3KMF9cQWrfs3OkQ==
-X-Google-Smtp-Source: AA6agR7Ofk4zB5jPNWxrUc3+JqCZMMDcxIVNR/JbiGWubsNYhr52TD0XUMYZE+mvw2h+/liYemEDpQ==
-X-Received: by 2002:a05:6830:1f24:b0:637:112:26ca with SMTP id e4-20020a0568301f2400b00637011226camr11422398oth.197.1661362498511;
-        Wed, 24 Aug 2022 10:34:58 -0700 (PDT)
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com. [209.85.160.48])
-        by smtp.gmail.com with ESMTPSA id c23-20020a4a2857000000b00444e4ef2279sm3982906oof.41.2022.08.24.10.34.57
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Aug 2022 10:34:58 -0700 (PDT)
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-11c59785966so21705691fac.11
-        for <keyrings@vger.kernel.org>; Wed, 24 Aug 2022 10:34:57 -0700 (PDT)
-X-Received: by 2002:a05:6808:3096:b0:342:ff93:4672 with SMTP id
- bl22-20020a056808309600b00342ff934672mr120785oib.174.1661362486729; Wed, 24
- Aug 2022 10:34:46 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=IBiQsl90pDHRBwqe3+axgNXRFkm79+olwXba0W7edLk=;
+        b=grxGRGAYo5E02Lez/dMSO3kg8s1Ih53TDpiOM5+OpHQbjFjCsChgYIGBywARu3i4Lz
+         /gTP8vDQ1PFG4PV30s26AOhd4JjdBbgMx3rT9hp/qCUQiS2Px2tBSuulQWg9jsyar/9f
+         fchHpgN2qYhYKZMOWcN2gZxsx7fZBaec0Z4WJBm7t2ytDB0cDn5wX5b5B3jvUcw3OGW4
+         zQHDtpUuCsYtf4hCBw7lJ/JKcT7DdpKP7PluREJeYOeI1DO/DL2G8x2y9fUgxnruIGir
+         8UXrhrbfiV7+Xr+gGLQl7CR2cT2Q6MTVxJ1mnng9NcamrdQyhP46osu4HPrhClnAMEev
+         gZNw==
+X-Gm-Message-State: ACgBeo3NoUyxyEwelGUd0XAQRJoqA5FoW1rN463SRmSKqgEWNx7b19/C
+        7spACsV0YooZZGFEscfMAkriK0b0Bic=
+X-Google-Smtp-Source: AA6agR4XoWfrSzx3hPN24v77RjyPRhd6uA4mVtiyDrrjcGFdzGVyGhRxmedlNYqTdvfO/FhJ4fdSBw==
+X-Received: by 2002:a05:6808:10d4:b0:344:f380:cf8c with SMTP id s20-20020a05680810d400b00344f380cf8cmr264079ois.27.1661368291712;
+        Wed, 24 Aug 2022 12:11:31 -0700 (PDT)
+Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.gmail.com with ESMTPSA id q44-20020a05687082ac00b0011ded9c762fsm405342oae.38.2022.08.24.12.11.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Aug 2022 12:11:31 -0700 (PDT)
+From:   Denis Kenzior <denkenz@gmail.com>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Cc:     Denis Kenzior <denkenz@gmail.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH] KEYS: asymmetric: Fix ECDSA use via keyctl uapi
+Date:   Wed, 24 Aug 2022 14:04:09 -0500
+Message-Id: <20220824190409.4286-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <20220823222526.1524851-1-evgreen@chromium.org>
- <20220823152108.v2.4.I32591db064b6cdc91850d777f363c9d05c985b39@changeid> <YwYR/rzvrkvgZzBm@farprobe>
-In-Reply-To: <YwYR/rzvrkvgZzBm@farprobe>
-From:   Evan Green <evgreen@chromium.org>
-Date:   Wed, 24 Aug 2022 10:34:10 -0700
-X-Gmail-Original-Message-ID: <CAE=gft48Tg6NnEUqfM-n1eOT3qa35dtowQGYCL3sbYBmr_Wm_w@mail.gmail.com>
-Message-ID: <CAE=gft48Tg6NnEUqfM-n1eOT3qa35dtowQGYCL3sbYBmr_Wm_w@mail.gmail.com>
-Subject: Re: [PATCH v2 04/10] security: keys: trusted: Allow storage of PCR
- values in creation data
-To:     list.lkml.keyrings@me.benboeckel.net
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Matthew Garrett <mgarrett@aurora.tech>,
-        Jarkko Sakkinen <jarkko@kernel.org>, zohar@linux.ibm.com,
-        linux-integrity@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
-        apronin@chromium.org, Daniil Lunev <dlunev@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Matthew Garrett <mjg59@google.com>,
-        David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        Paul Moore <paul@paul-moore.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Aug 24, 2022 at 4:56 AM Ben Boeckel <me@benboeckel.net> wrote:
->
-> On Tue, Aug 23, 2022 at 15:25:20 -0700, Evan Green wrote:
-> > diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-> > index 0bfb4c33974890..dc9e11bb4824da 100644
-> > --- a/Documentation/security/keys/trusted-encrypted.rst
-> > +++ b/Documentation/security/keys/trusted-encrypted.rst
-> > @@ -199,6 +199,10 @@ Usage::
-> >         policyhandle= handle to an authorization policy session that defines the
-> >                       same policy and with the same hash algorithm as was used to
-> >                       seal the key.
-> > +       creationpcrs= hex integer representing the set of PCR values to be
-> > +                     included in the PCR creation data. The bit corresponding
-> > +                  to each PCR should be 1 to be included, 0 to be ignored.
-> > +                  TPM2 only.
->
-> There's inconsistent whitespace here. Given the context, I suspect the
-> tabs should be expanded to spaces.
->
-> As for the docs themselves, this might preferrably mention how large
-> this is supposed to be. It seems to be limited to 32bits by the code.
-> What happens if fewer are provided? More? Will there always be at most
-> 32 PCR values? Also, how are the bits interpreted? I presume bit 0 is
-> for PCR value 0?
+When support for ECDSA keys was added, constraints for data & signature
+sizes were never updated.  This makes it impossible to use such keys via
+keyctl API from userspace; fix that.
 
-Makes sense, I'll pin down the specification a bit better here and fix
-up the spacing.
+Fixes: 299f561a6693 ("x509: Add support for parsing x509 certs with ECDSA keys")
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+---
+ crypto/asymmetric_keys/public_key.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
->
-> Thanks for including docs.
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 2f8352e88860..eca5671ad3f2 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -186,8 +186,28 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 
+ 	len = crypto_akcipher_maxsize(tfm);
+ 	info->key_size = len * 8;
+-	info->max_data_size = len;
+-	info->max_sig_size = len;
++
++	if (strncmp(pkey->pkey_algo, "ecdsa", 5) == 0) {
++		/*
++		 * ECDSA key sizes are much smaller than RSA, and thus could
++		 * operate on (hashed) inputs that are larger than key size.
++		 * For example SHA384-hashed input used with secp256r1
++		 * based keys.  Set max_data_size to be at least as large as
++		 * the largest supported hash size (SHA512)
++		 */
++		info->max_data_size = 64;
++
++		/*
++		 * Verify takes ECDSA-Sig (described in RFC 5480) as input,
++		 * which is actually 2 'key_size'-bit integers encoded in
++		 * ASN.1.  Account for the ASN.1 encoding overhead here.
++		 */
++		info->max_sig_size = 2 * (len + 3) + 2;
++	} else {
++		info->max_data_size = len;
++		info->max_sig_size = len;
++	}
++
+ 	info->max_enc_size = len;
+ 	info->max_dec_size = len;
+ 	info->supported_ops = (KEYCTL_SUPPORTS_ENCRYPT |
+-- 
+2.35.1
 
-Thanks for looking at them!
-
--Evan
