@@ -2,89 +2,141 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC445A0C67
-	for <lists+keyrings@lfdr.de>; Thu, 25 Aug 2022 11:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D56775A136C
+	for <lists+keyrings@lfdr.de>; Thu, 25 Aug 2022 16:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239154AbiHYJUN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 25 Aug 2022 05:20:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51684 "EHLO
+        id S239717AbiHYOXo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 25 Aug 2022 10:23:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238498AbiHYJUI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 25 Aug 2022 05:20:08 -0400
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5599D1EEF5;
-        Thu, 25 Aug 2022 02:20:01 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4MCy341C90z9xtnC;
-        Thu, 25 Aug 2022 17:14:40 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwCXZhKWPgdjPLJKAA--.36169S2;
-        Thu, 25 Aug 2022 10:19:31 +0100 (CET)
-Message-ID: <1b8fbdb220d1806e622c56e65bd283a5c3212fab.camel@huaweicloud.com>
-Subject: Re: [PATCH v13 00/10] bpf: Add kfuncs for PKCS#7 signature
- verification
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        corbet@lwn.net, dhowells@redhat.com, jarkko@kernel.org,
-        rostedt@goodmis.org, mingo@redhat.com, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, shuah@kernel.org
-Cc:     bpf@vger.kernel.org, linux-doc@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Thu, 25 Aug 2022 11:19:14 +0200
-In-Reply-To: <20220823150035.711534-1-roberto.sassu@huaweicloud.com>
-References: <20220823150035.711534-1-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwCXZhKWPgdjPLJKAA--.36169S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYU7kC6x804xWl14x267AKxVWrJVCq3wAF
-        c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
-        0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xv
-        wVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjc
-        xK6I8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-        FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-        0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY
-        04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-        0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y
-        0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-        W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8
-        JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFYFCUU
-        UUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAPBF1jj35I-gAAsw
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S239861AbiHYOXV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 25 Aug 2022 10:23:21 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FBFB6D53;
+        Thu, 25 Aug 2022 07:23:20 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id bh13so18043671pgb.4;
+        Thu, 25 Aug 2022 07:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc;
+        bh=D0mrlc97WLTC35mVQPNg2FDISePVldO90IQe9NCWQAo=;
+        b=HLBl7S8q8NwrAcQ9VPbejtuopoG8i/TtPLwz02DZ43pOxKfgV0EutKf40+D6vO+S5b
+         rplcv/dbPSjgMCZaAlelyBx7dEGYqeUdM7SCp0iu4I9QoXNC+iwdOKvJ+uH2GIJ6Dm/J
+         8L1qDmrkQpUg7ElVg9qjUgdTUeB63vy+hF7l7rLUYdv6lPnPGn5NRXxs259gZLjmjic6
+         IHBu5QPc8s9Tzi+mX8aE+dcceOpqpdxAXNjMggtYY7F/1vIdMK8HGvM47KO9DCwErXGI
+         Pq/pZjths4oiiNTrGtaytzC7EF1LBbi0jcCsP+0osq25Qpl40hYUZsqC9CqY31J3uRF4
+         saSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=D0mrlc97WLTC35mVQPNg2FDISePVldO90IQe9NCWQAo=;
+        b=ED/PVj/rRrpJ4qPxjH6YsQO3SB/IJC+8ITMp/JSjGXd9TWA7hQz9jDleM+0wPn3a6F
+         9S80Haw7NsUPSCC+eca3JIk5FQdtiXgt+Ld1LRrwpMzOjwoxZc6THqHXjiEWAopIa9FW
+         7uM9pCYz+FZmaSi+R4QdYhbD+frGXQK8jkYV/CpqXy0zsRqgOSlImHTvMxH0IJjAQKUy
+         K26xJ2Xj8/Hr6DKI+t0fzFCPUuOIPFAri27VuGP5Yxa5FQRkrRNfXkuo7rMlETPcpDeJ
+         lkPTSeKhzQZQblqQC9Gf/CBZq6pk9haPyUaXhI91qqhumtSmOVuiV/SUy0hqeeH/W7pj
+         82Lg==
+X-Gm-Message-State: ACgBeo34n3AsKjZAszpawGEJE4YtRevjtJJ+GuSQve0ydokIW0HPos+t
+        w47UOY//3hMMGCNWLHEk9u4=
+X-Google-Smtp-Source: AA6agR7MaGcfnVqu4aDU82IRrDujHR/3z40BAVIlPTysjlaUdaV/93KWgr5+3XPcPdkh1hkjs5K64g==
+X-Received: by 2002:a63:4e25:0:b0:41c:62a2:ecc3 with SMTP id c37-20020a634e25000000b0041c62a2ecc3mr3546634pgb.596.1661437399656;
+        Thu, 25 Aug 2022 07:23:19 -0700 (PDT)
+Received: from linux-l9pv.suse (123-194-152-128.dynamic.kbronet.com.tw. [123.194.152.128])
+        by smtp.gmail.com with ESMTPSA id l15-20020a170903120f00b0016bb24f5d19sm14962803plh.209.2022.08.25.07.23.16
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Aug 2022 07:23:19 -0700 (PDT)
+From:   "Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+X-Google-Original-From: "Lee, Chun-Yi" <jlee@suse.com>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Boeckel <me@benboeckel.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Malte Gell <malte.gell@gmx.de>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Subject: [PATCH v9 0/4] Check codeSigning extended key usage extension
+Date:   Thu, 25 Aug 2022 22:23:10 +0800
+Message-Id: <20220825142314.8406-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2022-08-23 at 17:00 +0200, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> One of the desirable features in security is the ability to restrict
-> import
-> of data to a given system based on data authenticity. If data import
-> can be
-> restricted, it would be possible to enforce a system-wide policy
-> based on
-> the signing keys the system owner trusts.
+NIAP PP_OS certification requests that OS need to validate the
+CodeSigning extended key usage extension field for integrity
+verifiction of exectable code:
 
-Hi
+    https://www.niap-ccevs.org/MMO/PP/-442-/
+        FIA_X509_EXT.1.1
 
-is there anything else I need to do, other than rebasing the patches to
-the latest eBPF code?
+This patchset adds the logic for parsing the codeSigning EKU extension
+field in X.509. And checking the CodeSigning EKU when verifying
+signature of kernel module or kexec PE binary in PKCS#7.
 
-Thanks
+v9:
+- Rename the eku element in public_key structure to ext_key_usage.
+- Fix selftest.c
 
-Roberto
+v8:
+- Fixed the bug of is_key_on_revocation_list() when
+  CONFIG_SYSTEM_REVOCATION_LIST is not set.
+
+v7:
+- Fixed the broken function call in is_key_on_revocation_list().
+  (be found by kernel test robot)
+- Use a general name check_eku_by_usage() instead of check_codesign_eku().
+
+v6:
+- Add more length checking when parsing extKeyUsage and EKU's OID blob.
+- Add 'usage' parameter to the comment of pkcs7_validate_trust function.
+
+v5:
+Fixed the wording in module-signing.rst.
+
+v4:
+Fixed the wording in patch description.
+
+v3:
+- Add codeSigning EKU to x509.genkey key generation config.
+- Add openssl command option example for generating CodeSign EKU to
+  module-signing.rst document.
+
+v2:
+Changed the help wording in the Kconfig.
+
+Lee, Chun-Yi (4):
+  X.509: Add CodeSigning extended key usage parsing
+  PKCS#7: Check codeSigning EKU for kernel module and kexec pe
+    verification
+  modsign: Add codeSigning EKU when generating X.509 key generation
+    config
+  Documentation/admin-guide/module-signing.rst: add openssl command
+    option example for CodeSign EKU
+
+ Documentation/admin-guide/module-signing.rst |  6 +++
+ certs/blacklist.c                            |  5 ++-
+ certs/default_x509.genkey                    |  1 +
+ certs/system_keyring.c                       |  4 +-
+ crypto/asymmetric_keys/Kconfig               |  9 ++++
+ crypto/asymmetric_keys/pkcs7_trust.c         | 43 ++++++++++++++++++--
+ crypto/asymmetric_keys/selftest.c            |  2 +-
+ crypto/asymmetric_keys/x509_cert_parser.c    | 25 ++++++++++++
+ include/crypto/pkcs7.h                       |  4 +-
+ include/crypto/public_key.h                  |  1 +
+ include/keys/system_keyring.h                |  7 +++-
+ include/linux/oid_registry.h                 |  5 +++
+ 12 files changed, 101 insertions(+), 11 deletions(-)
+
+-- 
+2.26.2
 
