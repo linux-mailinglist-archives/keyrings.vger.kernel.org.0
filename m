@@ -2,121 +2,130 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BD05A29F7
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 16:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5BE5A2A3F
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 17:02:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344606AbiHZOrR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 10:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60776 "EHLO
+        id S241806AbiHZPCW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 11:02:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344591AbiHZOrD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 10:47:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049E9D8B25;
-        Fri, 26 Aug 2022 07:46:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5297A61E6F;
-        Fri, 26 Aug 2022 14:46:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F761C433D6;
-        Fri, 26 Aug 2022 14:46:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661525218;
-        bh=lSndhZ2rdlYCYSF4fsTiUalCAvFT7xxht3MoYvAbmAw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XTy9Za+0gzR2PhxXOWTrsWMpqQzJfDzqOBQRhpkdKcMhol7PjnAUVgfDXR3ZtPve7
-         vNhI9pi5HDLLwq+/NhZnNkKXyLEPqSwiYCc1Cf1WLXglToMXjzk2vHvR/bczAey18g
-         j38me5SPTTpnVH4Hw3T02ymOapK2MBOwifELna+W+EsNKazytkdQpzek3Oq4h9+NRA
-         sPeSsG3R/1cca24czOCNfOSRx6rS4tix+xbMRzfN1ps2SL/ZY18alJ60wX+YmHtKkM
-         axCSiMuzeGJmO0YAUnzKiNk1pIq6Pryd+ZAYLydds2jvnfosyGhF/6XF1TTwNmSpw+
-         aIqupDvKMSSWA==
-Date:   Fri, 26 Aug 2022 17:46:51 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc:     roberto.sassu@huaweicloud.com, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        David Howells <dhowells@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Shuah Khan <shuah@kernel.org>, bpf <bpf@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        keyrings@vger.kernel.org,
-        LSM List <linux-security-module@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel =?iso-8859-1?Q?M=FCller?= <deso@posteo.net>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Joanne Koong <joannelkoong@gmail.com>
-Subject: Re: [PATCH v12 02/10] btf: Handle dynamic pointer parameter in kfuncs
-Message-ID: <Ywjc29EcrpbMObcd@kernel.org>
-References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
- <20220818152929.402605-3-roberto.sassu@huaweicloud.com>
- <YwhSCE0H+JfUe4Ew@kernel.org>
- <CAADnVQJbTzfe28ife1+vg+ByLfyLBTCoEZW_eg8TEw838JGaog@mail.gmail.com>
- <YwheJqUDLOxL3iTi@kernel.org>
- <YwjcItv0q8GdzPbb@kernel.org>
+        with ESMTP id S237834AbiHZPCT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 11:02:19 -0400
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35C2CD86CB;
+        Fri, 26 Aug 2022 08:02:17 -0700 (PDT)
+Received: by mail-ot1-x32c.google.com with SMTP id z22-20020a056830129600b0063711f456ceso1174518otp.7;
+        Fri, 26 Aug 2022 08:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=SlWypEhuzKh6o8JnTAr50IRQsWnoVrK87srIp4fAsvQ=;
+        b=nOUu1td7NBo1uww0Jn+6NSAs/i0wIeXIOkzhAPow7DPsLGwrJVmdu9OPb3y412ujfu
+         rZVmVnzKNLyHv+75TWvkPnckxKa+UQYNnH4V3dcRiFYWmjuM9SeC03aDsIahS1epeevC
+         hurI0oTsMXe/Emi4YoPCCWMD8rCzR5za0WzEMpvCyCo8sYHYOWCdsN4kapaaZul4ElVw
+         3e+7lBGatFdWH1cWC95B8A1IoJBH8IpAuSWEDHNJebakDF0WXAbOw6amlDF+r++Go6Q7
+         +uOYHA+McaR5yg8E5pHECHgLB6QsusJrknfejd/YFL9uXibxylyA4nSk1nrAsxGp4s5Y
+         N3NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=SlWypEhuzKh6o8JnTAr50IRQsWnoVrK87srIp4fAsvQ=;
+        b=0DjKUBhdm+3Twm+NYjgBhfC1c/Kd8gtTC0u4fNZYdxsIyU5WKsfaL34j/M9hLZ6Of5
+         IU2gkWvohEXM0zVq2cPTAYdimPtPiE+i/nU93PyXvAPOhwjUpuh9C4aPV/+PT44D0x32
+         09fIF2Z+YrIW6L8sTOHPr7jUJFA8qsA9Ca1v7QH5QBF9Gv+OfrvDNgsh0g2noI26Blm4
+         SymRaIXq9tJEScWzb+uZmscHoJsy6+qYN1vmtWmtlETVZQp0XDGHRWhICSg70ILNKJzU
+         QH2a5YN0zTeddbuIeF97fS7SUhg/Bz9cIbWU/OqcmlvIBn1EhUKF7XLtaTnP7ynCBIEc
+         7odQ==
+X-Gm-Message-State: ACgBeo2LxnVdgh7S9etntRmcdCCKUBLyAFHtmPVPVIZw6J9RKY48elZh
+        Y5g4pmz2yu7JtnI4pu+zjeM=
+X-Google-Smtp-Source: AA6agR7H+LosV0wJVvvgdazIKiERc6cOY1dmpJHDOv+F/DCJ2wRGO3kK06cjOsP1yQPGvkBNmVUz1Q==
+X-Received: by 2002:a05:6830:3150:b0:638:afc3:8639 with SMTP id c16-20020a056830315000b00638afc38639mr1541966ots.53.1661526136536;
+        Fri, 26 Aug 2022 08:02:16 -0700 (PDT)
+Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.gmail.com with ESMTPSA id j26-20020a4adf5a000000b00441b98453d8sm1190015oou.8.2022.08.26.08.02.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Aug 2022 08:02:16 -0700 (PDT)
+From:   Denis Kenzior <denkenz@gmail.com>
+To:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Cc:     Denis Kenzior <denkenz@gmail.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] KEYS: asymmetric: Fix ECDSA use via keyctl uapi
+Date:   Fri, 26 Aug 2022 09:51:19 -0500
+Message-Id: <20220826145119.9375-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YwjcItv0q8GdzPbb@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Aug 26, 2022 at 05:43:50PM +0300, Jarkko Sakkinen wrote:
-> On Fri, Aug 26, 2022 at 08:46:14AM +0300, Jarkko Sakkinen wrote:
-> > On Thu, Aug 25, 2022 at 10:16:14PM -0700, Alexei Starovoitov wrote:
-> > > On Thu, Aug 25, 2022 at 9:54 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > > > >
-> > > > > -static bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
-> > > > > -                                  enum bpf_arg_type arg_type)
-> > > > > +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
-> > > > > +                           enum bpf_arg_type arg_type)
-> > > > >  {
-> > > > >       struct bpf_func_state *state = func(env, reg);
-> > > > >       int spi = get_spi(reg->off);
-> > > > > --
-> > > > > 2.25.1
-> > > > >
-> > > >
-> > > > Might be niticking but generally I'd consider splitting
-> > > > exports as commits of their own.
-> > > 
-> > > -static bool
-> > > +bool
-> > > 
-> > > into a separate commit?
-> > > 
-> > > I guess it makes sense for people whose salary depends on
-> > > number of commits.
-> > > We don't play these games.
-> > 
-> > What kind of argument is that anyway.
-> 
-> "Separate each *logical change* into a separate patch." [*]
-> 
-> To add, generally any user space visible space should be an
-                                           ~~~~~
-                                           change
+When support for ECDSA keys was added, constraints for data & signature
+sizes were never updated.  This makes it impossible to use such keys via
+keyctl API from userspace.
 
-BR, Jarkko
+Update constraint on max_data_size to 64 bytes in order to support
+SHA512-based signatures. Also update the signature length constraints
+per ECDSA signature encoding described in RFC 5480.
+
+Fixes: 299f561a6693 ("x509: Add support for parsing x509 certs with ECDSA keys")
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+---
+
+Version History:
+
+  v2: Update patch description according to Jarkko's comments.  No
+  functional code changes.
+
+ crypto/asymmetric_keys/public_key.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
+
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 2f8352e88860..eca5671ad3f2 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -186,8 +186,28 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 
+ 	len = crypto_akcipher_maxsize(tfm);
+ 	info->key_size = len * 8;
+-	info->max_data_size = len;
+-	info->max_sig_size = len;
++
++	if (strncmp(pkey->pkey_algo, "ecdsa", 5) == 0) {
++		/*
++		 * ECDSA key sizes are much smaller than RSA, and thus could
++		 * operate on (hashed) inputs that are larger than key size.
++		 * For example SHA384-hashed input used with secp256r1
++		 * based keys.  Set max_data_size to be at least as large as
++		 * the largest supported hash size (SHA512)
++		 */
++		info->max_data_size = 64;
++
++		/*
++		 * Verify takes ECDSA-Sig (described in RFC 5480) as input,
++		 * which is actually 2 'key_size'-bit integers encoded in
++		 * ASN.1.  Account for the ASN.1 encoding overhead here.
++		 */
++		info->max_sig_size = 2 * (len + 3) + 2;
++	} else {
++		info->max_data_size = len;
++		info->max_sig_size = len;
++	}
++
+ 	info->max_enc_size = len;
+ 	info->max_dec_size = len;
+ 	info->supported_ops = (KEYCTL_SUPPORTS_ENCRYPT |
+-- 
+2.35.1
+
