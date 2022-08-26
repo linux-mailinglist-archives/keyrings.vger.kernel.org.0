@@ -2,76 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA5B35A208E
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 07:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70C15A20B8
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 08:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236072AbiHZF5C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 01:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35090 "EHLO
+        id S235938AbiHZGQ1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 02:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230054AbiHZF5B (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 01:57:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B230C5789;
-        Thu, 25 Aug 2022 22:56:59 -0700 (PDT)
+        with ESMTP id S230517AbiHZGQ0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 02:16:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015985A831;
+        Thu, 25 Aug 2022 23:16:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7F5A6B82F5C;
-        Fri, 26 Aug 2022 05:56:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43271C4314A;
-        Fri, 26 Aug 2022 05:56:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0748561B1D;
+        Fri, 26 Aug 2022 06:16:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DADC433C1;
+        Fri, 26 Aug 2022 06:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661493417;
-        bh=/FvktWWHz025DxZFW/BBwLRligmr0a9pBYK2MH9aV5Q=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=uCgUQCc/Qlk7Pi7/drdrT0yEzgE2IinbxX+THqgq2Tq5u0b5Kb6RL++DEn7XlDWwg
-         pYwPj+IIOFPS9bL8SODw+FRZcnizjhFomi548R9lX+YLXdbaY748aaWkVEYjme6hG7
-         kV5JeqS6f+G69EWtgP68/6H/Ms6Afj/30OGf33XPFhiV2cmSBuhN1aEjSHsCpT0drP
-         A4TKWrBDUKKkmluFZHkgYrgNYwkRrR5UNov35B1g5xgEiQfZL3lzJpBdRBuTNvHqiy
-         sSDyAl6KZkWo2fKpZ5mGp01B0TUS7PiXF0UcFhNmpv9xdEClFTjZzxL33z+aBOsBrF
-         B3BComuHnQQ1A==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-324ec5a9e97so11435067b3.7;
-        Thu, 25 Aug 2022 22:56:57 -0700 (PDT)
-X-Gm-Message-State: ACgBeo2JzkJT2fwEKc8wnwNdSGmoyvYPTovwp5l7/ioZTM8r830icmMW
-        6wecUxg4jG/aJUqOolAfMhrP5TCQtqfLYbsFJg4=
-X-Google-Smtp-Source: AA6agR5vlJNlo+eJot0Uf/IDkuELdfK6w7/mY1PtEAOjZwbYPWIA9NBIT4itd5TdjUSZY6bc90hWaEd9s8Kvg6BA5WU=
-X-Received: by 2002:a81:7489:0:b0:33e:dca7:9750 with SMTP id
- p131-20020a817489000000b0033edca79750mr489448ywc.73.1661493416193; Thu, 25
- Aug 2022 22:56:56 -0700 (PDT)
+        s=k20201202; t=1661494583;
+        bh=12HUni1vNh+fFGIt+vHYF+GjFpAxFGKd2sLTQRVhsoI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hR9oroQ9BbyEEMYAHm7W/hXPZNAz/6VL0hrkDZmXJ4PYQNGPzNLiCdwVoBHYnEtz0
+         gPBDrXtoj+brM4l4i7hNhhsyMIYEs/c5nksEwelUk3V0aN4FdC9Nq1Nx7hWzFv4S1I
+         Exbr3Y+ljCvM0/5Ri/4lT/W/U5IIt4BOnz/rgxQoOw4VAVI4Rd/q6M7r5jBQQr5m4o
+         jCedCbW8tQeCprgoJ853+fmdAs71OOAdZsSs9g0z4tjOfJL13iIlUj/8FF18FKQfTk
+         9UBwp7RvZ4yAMm0cnVZdqpCuIQpgSW1BuGZhPoA6Aly0XWibc+oM7Owuzjv3iner0q
+         YcUtmWiqEmBOw==
+Date:   Fri, 26 Aug 2022 09:16:16 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH] security: move from strlcpy with unused retval to strscpy
+Message-ID: <YwhlMEYlNdevCPQU@kernel.org>
+References: <20220818210232.8707-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-References: <20220823150035.711534-1-roberto.sassu@huaweicloud.com> <20220823150035.711534-6-roberto.sassu@huaweicloud.com>
-In-Reply-To: <20220823150035.711534-6-roberto.sassu@huaweicloud.com>
-From:   Song Liu <song@kernel.org>
-Date:   Thu, 25 Aug 2022 22:56:45 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW5iVRSCQsMRC7bGHw=ZHW1Y7y0SccQG-i-7=umHF2yJEQ@mail.gmail.com>
-Message-ID: <CAPhsuW5iVRSCQsMRC7bGHw=ZHW1Y7y0SccQG-i-7=umHF2yJEQ@mail.gmail.com>
-Subject: Re: [PATCH v13 05/10] bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, Shuah Khan <shuah@kernel.org>,
-        bpf <bpf@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Daniel_M=C3=BCller?= <deso@posteo.net>,
-        Roberto Sassu <roberto.sassu@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220818210232.8707-1-wsa+renesas@sang-engineering.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -82,42 +56,35 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 23, 2022 at 8:02 AM Roberto Sassu
-<roberto.sassu@huaweicloud.com> wrote:
->
-> From: Roberto Sassu <roberto.sassu@huawei.com>
->
-> Add the bpf_lookup_user_key(), bpf_lookup_system_key() and bpf_key_put()
-> kfuncs, to respectively search a key with a given key handle serial number
-> and flags, obtain a key from a pre-determined ID defined in
-> include/linux/verification.h, and cleanup.
->
-> Introduce system_keyring_id_check() to validate the keyring ID parameter of
-> bpf_lookup_system_key().
->
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+On Thu, Aug 18, 2022 at 11:02:31PM +0200, Wolfram Sang wrote:
+> Follow the advice of the below link and prefer 'strscpy' in this
+> subsystem. Conversion is 1:1 because the return value is not used.
+> Generated by a coccinelle script.
+> 
+> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 > ---
->  include/linux/bpf.h          |   6 ++
->  include/linux/verification.h |   8 +++
->  kernel/trace/bpf_trace.c     | 135 +++++++++++++++++++++++++++++++++++
->  3 files changed, 149 insertions(+)
->
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index 6041304b402e..991da09a5858 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -2586,4 +2586,10 @@ static inline void bpf_cgroup_atype_get(u32 attach_btf_id, int cgroup_atype) {}
->  static inline void bpf_cgroup_atype_put(int cgroup_atype) {}
->  #endif /* CONFIG_BPF_LSM */
->
-> +#ifdef CONFIG_KEYS
+>  security/keys/request_key_auth.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
+> index 41e9735006d0..8f33cd170e42 100644
+> --- a/security/keys/request_key_auth.c
+> +++ b/security/keys/request_key_auth.c
+> @@ -178,7 +178,7 @@ struct key *request_key_auth_new(struct key *target, const char *op,
+>  	if (!rka->callout_info)
+>  		goto error_free_rka;
+>  	rka->callout_len = callout_len;
+> -	strlcpy(rka->op, op, sizeof(rka->op));
+> +	strscpy(rka->op, op, sizeof(rka->op));
+>  
+>  	/* see if the calling process is already servicing the key request of
+>  	 * another process */
+> -- 
+> 2.35.1
+> 
 
-Do we need to declare struct key here?
 
-> +struct bpf_key {
-> +       struct key *key;
-> +       bool has_ref;
-> +};
-> +#endif /* CONFIG_KEYS */
->  #endif /* _LINUX_BPF_H */
->
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+BR, Jarkko
