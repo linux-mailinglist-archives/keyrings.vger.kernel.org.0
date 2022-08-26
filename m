@@ -2,89 +2,150 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E70C15A20B8
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 08:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A54255A2185
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 09:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235938AbiHZGQ1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 02:16:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36022 "EHLO
+        id S244907AbiHZHPF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 03:15:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230517AbiHZGQ0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 02:16:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015985A831;
-        Thu, 25 Aug 2022 23:16:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0748561B1D;
-        Fri, 26 Aug 2022 06:16:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DADC433C1;
-        Fri, 26 Aug 2022 06:16:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661494583;
-        bh=12HUni1vNh+fFGIt+vHYF+GjFpAxFGKd2sLTQRVhsoI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hR9oroQ9BbyEEMYAHm7W/hXPZNAz/6VL0hrkDZmXJ4PYQNGPzNLiCdwVoBHYnEtz0
-         gPBDrXtoj+brM4l4i7hNhhsyMIYEs/c5nksEwelUk3V0aN4FdC9Nq1Nx7hWzFv4S1I
-         Exbr3Y+ljCvM0/5Ri/4lT/W/U5IIt4BOnz/rgxQoOw4VAVI4Rd/q6M7r5jBQQr5m4o
-         jCedCbW8tQeCprgoJ853+fmdAs71OOAdZsSs9g0z4tjOfJL13iIlUj/8FF18FKQfTk
-         9UBwp7RvZ4yAMm0cnVZdqpCuIQpgSW1BuGZhPoA6Aly0XWibc+oM7Owuzjv3iner0q
-         YcUtmWiqEmBOw==
-Date:   Fri, 26 Aug 2022 09:16:16 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH] security: move from strlcpy with unused retval to strscpy
-Message-ID: <YwhlMEYlNdevCPQU@kernel.org>
-References: <20220818210232.8707-1-wsa+renesas@sang-engineering.com>
+        with ESMTP id S233000AbiHZHPE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 03:15:04 -0400
+Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A59963B2;
+        Fri, 26 Aug 2022 00:14:55 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4MDWDD2JYwz9v7Gl;
+        Fri, 26 Aug 2022 15:09:32 +0800 (CST)
+Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwCXUhrFcghjHMlQAA--.57474S2;
+        Fri, 26 Aug 2022 08:14:27 +0100 (CET)
+Message-ID: <acae432697e854748d9a44c732ec8cab807d9d46.camel@huaweicloud.com>
+Subject: Re: [PATCH v12 04/10] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
+        corbet@lwn.net, dhowells@redhat.com, rostedt@goodmis.org,
+        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, shuah@kernel.org, bpf@vger.kernel.org,
+        linux-doc@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Fri, 26 Aug 2022 09:14:09 +0200
+In-Reply-To: <YwhTiGOhzvv+CYYq@kernel.org>
+References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
+         <20220818152929.402605-5-roberto.sassu@huaweicloud.com>
+         <YwhTiGOhzvv+CYYq@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220818210232.8707-1-wsa+renesas@sang-engineering.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: GxC2BwCXUhrFcghjHMlQAA--.57474S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF15tryxWrWrCrWkXr15CFg_yoW8ur1DpF
+        W8G3Wj9F18Cry7A3s3JwnFyw1agrs7Gr17Xr9xWwn5ZanIqrn2qrn2gF15uFy5CrW09w1I
+        qFWjga17ur1UA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+        xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
+        c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAQBF1jj35RKQAAsh
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 11:02:31PM +0200, Wolfram Sang wrote:
-> Follow the advice of the below link and prefer 'strscpy' in this
-> subsystem. Conversion is 1:1 because the return value is not used.
-> Generated by a coccinelle script.
+On Fri, 2022-08-26 at 08:42 +0300, Jarkko Sakkinen wrote:
+> On Thu, Aug 18, 2022 at 05:29:23PM +0200, 
+> roberto.sassu@huaweicloud.com wrote:
+> > From: Roberto Sassu <roberto.sassu@huawei.com>
+> > 
+> > In preparation for the patch that introduces the
+> > bpf_lookup_user_key() eBPF
+> > kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be
+> > able to
+> > validate the kfunc parameters.
+> > 
+> > Also, introduce key_lookup_flags_check() directly in
+> > include/linux/key.h,
+> > to reduce the risk that the check is not in sync with currently
+> > defined
+> > flags.
 > 
-> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->  security/keys/request_key_auth.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Missing the description what the heck this function even is.
 > 
-> diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
-> index 41e9735006d0..8f33cd170e42 100644
-> --- a/security/keys/request_key_auth.c
-> +++ b/security/keys/request_key_auth.c
-> @@ -178,7 +178,7 @@ struct key *request_key_auth_new(struct key *target, const char *op,
->  	if (!rka->callout_info)
->  		goto error_free_rka;
->  	rka->callout_len = callout_len;
-> -	strlcpy(rka->op, op, sizeof(rka->op));
-> +	strscpy(rka->op, op, sizeof(rka->op));
->  
->  	/* see if the calling process is already servicing the key request of
->  	 * another process */
-> -- 
-> 2.35.1
+> Please, explain that.
+
+Hi Jarkko
+
+sorry, forgot to update the commit description. Will do it.
+
+> Also, the short subject is misleading because this *just*
+> does not move flags.
+> 
+> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > Reviewed-by: KP Singh <kpsingh@kernel.org>
+> > ---
+> >  include/linux/key.h      | 11 +++++++++++
+> >  security/keys/internal.h |  2 --
+> >  2 files changed, 11 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/include/linux/key.h b/include/linux/key.h
+> > index 7febc4881363..b5bbae77a9e7 100644
+> > --- a/include/linux/key.h
+> > +++ b/include/linux/key.h
+> > @@ -88,6 +88,17 @@ enum key_need_perm {
+> >  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is
+> > deferred */
+> >  };
+> >  
+> > +#define KEY_LOOKUP_CREATE	0x01
+> > +#define KEY_LOOKUP_PARTIAL	0x02
+> > +
+> 
+> /*
+>  * Explain what the heck this function is.
+>  */
+> > +static inline int key_lookup_flags_check(u64 flags)
+> > +{
+> > +	if (flags & ~(KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL))
+> > +		return -EINVAL;
+> > +
+> > +	return 0;
+> > +}
+> 
+> This is essentially a boolean function, right?
+> 
+> I.e. the implementation can be just:
+> 
+> !!(flags & ~(KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL))
+
+Absolutely fine with that, if you prefer.
+
+> Not even sure if this is needed in the first place, or
+> would it be better just to open code it. How many call
+> sites does it have anyway?
 > 
 
+Daniel preferred to have this check here.
 
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Thanks
 
-BR, Jarkko
+Roberto
+
