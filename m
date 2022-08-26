@@ -2,36 +2,36 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CB0E5A2C54
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 18:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC4F5A2C80
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 18:42:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230408AbiHZQdH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 12:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43076 "EHLO
+        id S241806AbiHZQmJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 12:42:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbiHZQdG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 12:33:06 -0400
+        with ESMTP id S1343791AbiHZQl7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 12:41:59 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B84D759A;
-        Fri, 26 Aug 2022 09:33:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7990C3AB01;
+        Fri, 26 Aug 2022 09:41:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9E236B8319C;
-        Fri, 26 Aug 2022 16:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A48C433C1;
-        Fri, 26 Aug 2022 16:32:58 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 302A4B831D7;
+        Fri, 26 Aug 2022 16:41:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548EEC43141;
+        Fri, 26 Aug 2022 16:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661531579;
-        bh=dddAmdfWjVtoO1zNo5UFNAU20s8CfLCokEstVAbikEI=;
+        s=k20201202; t=1661532112;
+        bh=XeDtcz1Gd48tZyQA1aYnSkeMEWO+Xd1Bf+UvW5Grxqk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uc453d6xrPO4sqirlR3Ea7botJQ14akx7wxI4nPJML+FKVFzSjHGdYhlpQMvjli+k
-         mvdUbRjN/hizqNn+U0Ry37bYsjrOHblkP4YlVzZSffOt1Cw/KDqbh0Kk1yq0rgmsWm
-         X5SedSOZTeS6ZL4nQf2M9BvLjwM2Se0R2gtBy3yxcVwiGVqsjpYkWrQH1treGXtfpv
-         IgSOqICc92TmABZ0wDZnsFzBtU0Snly/E8a0nVgrdPc9Uo7UAvXcEfPqFVS3HxnNtu
-         K9KU4kff5B9qMWIfir2e1QxPNKPNiTln0xnK5ciQuVad8bJ9E3urGaYhEWMQWQ904u
-         3Janfpy2A5DvQ==
-Date:   Fri, 26 Aug 2022 19:32:51 +0300
+        b=PvRKmfKFGihJsHTX6bGgDE8r/+C9WObW+Q2c8U7mDZ5zT/VHDBQN4CCtyymREWkve
+         wsP+ilQ0QfksG81m+A1t/cH0/B3xRU414ceOGxSLJgla5dF5Ae1UhC3iijxIk1uCkx
+         hjqkiVhSFt7IfVwqszEYGkYqvbFI28fujs1qXv2hMVpDO+ooSM+CDr3Nclx0HjVsgZ
+         J79Tl2mH3595+9dyrfzAguoKXxlLauzaMw/yVB4Lf6K/zEvw24v0EvGiUfUf1B2Qxk
+         K67dUMWdkyPDTOG264CgGX4rS+4CsFG34E3EtTpEwieJx6Q1oc/t/vwPAqcuVkb3mW
+         n7XhNOqyT8xhw==
+Date:   Fri, 26 Aug 2022 19:41:45 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
 To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
 Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
@@ -63,7 +63,7 @@ Cc:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
         Roberto Sassu <roberto.sassu@huawei.com>,
         Joanne Koong <joannelkoong@gmail.com>
 Subject: Re: [PATCH v12 02/10] btf: Handle dynamic pointer parameter in kfuncs
-Message-ID: <Ywj1s6d7XowV82PZ@kernel.org>
+Message-ID: <Ywj3pOahYdxA8Dza@kernel.org>
 References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
  <20220818152929.402605-3-roberto.sassu@huaweicloud.com>
  <YwhSCE0H+JfUe4Ew@kernel.org>
@@ -71,10 +71,11 @@ References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
  <YwheJqUDLOxL3iTi@kernel.org>
  <YwjcItv0q8GdzPbb@kernel.org>
  <bb4bdd90017d5772bdc31dfac93f2e86c6c61b82.camel@huaweicloud.com>
+ <Ywj1s6d7XowV82PZ@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bb4bdd90017d5772bdc31dfac93f2e86c6c61b82.camel@huaweicloud.com>
+In-Reply-To: <Ywj1s6d7XowV82PZ@kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -85,73 +86,81 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Aug 26, 2022 at 05:34:57PM +0200, Roberto Sassu wrote:
-> On Fri, 2022-08-26 at 17:43 +0300, Jarkko Sakkinen wrote:
-> > On Fri, Aug 26, 2022 at 08:46:14AM +0300, Jarkko Sakkinen wrote:
-> > > On Thu, Aug 25, 2022 at 10:16:14PM -0700, Alexei Starovoitov wrote:
-> > > > On Thu, Aug 25, 2022 at 9:54 PM Jarkko Sakkinen <
-> > > > jarkko@kernel.org> wrote:
-> > > > > > -static bool is_dynptr_reg_valid_init(struct bpf_verifier_env
-> > > > > > *env, struct bpf_reg_state *reg,
-> > > > > > -                                  enum bpf_arg_type
-> > > > > > arg_type)
-> > > > > > +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env,
-> > > > > > struct bpf_reg_state *reg,
-> > > > > > +                           enum bpf_arg_type arg_type)
-> > > > > >  {
-> > > > > >       struct bpf_func_state *state = func(env, reg);
-> > > > > >       int spi = get_spi(reg->off);
-> > > > > > --
-> > > > > > 2.25.1
+On Fri, Aug 26, 2022 at 07:32:54PM +0300, Jarkko Sakkinen wrote:
+> On Fri, Aug 26, 2022 at 05:34:57PM +0200, Roberto Sassu wrote:
+> > On Fri, 2022-08-26 at 17:43 +0300, Jarkko Sakkinen wrote:
+> > > On Fri, Aug 26, 2022 at 08:46:14AM +0300, Jarkko Sakkinen wrote:
+> > > > On Thu, Aug 25, 2022 at 10:16:14PM -0700, Alexei Starovoitov wrote:
+> > > > > On Thu, Aug 25, 2022 at 9:54 PM Jarkko Sakkinen <
+> > > > > jarkko@kernel.org> wrote:
+> > > > > > > -static bool is_dynptr_reg_valid_init(struct bpf_verifier_env
+> > > > > > > *env, struct bpf_reg_state *reg,
+> > > > > > > -                                  enum bpf_arg_type
+> > > > > > > arg_type)
+> > > > > > > +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env,
+> > > > > > > struct bpf_reg_state *reg,
+> > > > > > > +                           enum bpf_arg_type arg_type)
+> > > > > > >  {
+> > > > > > >       struct bpf_func_state *state = func(env, reg);
+> > > > > > >       int spi = get_spi(reg->off);
+> > > > > > > --
+> > > > > > > 2.25.1
+> > > > > > > 
 > > > > > > 
+> > > > > > Might be niticking but generally I'd consider splitting
+> > > > > > exports as commits of their own.
 > > > > > 
-> > > > > Might be niticking but generally I'd consider splitting
-> > > > > exports as commits of their own.
+> > > > > -static bool
+> > > > > +bool
+> > > > > 
+> > > > > into a separate commit?
+> > > > > 
+> > > > > I guess it makes sense for people whose salary depends on
+> > > > > number of commits.
+> > > > > We don't play these games.
 > > > > 
-> > > > -static bool
-> > > > +bool
-> > > > 
-> > > > into a separate commit?
-> > > > 
-> > > > I guess it makes sense for people whose salary depends on
-> > > > number of commits.
-> > > > We don't play these games.
+> > > > What kind of argument is that anyway.
 > > > 
-> > > What kind of argument is that anyway.
+> > > "Separate each *logical change* into a separate patch." [*]
 > > 
-> > "Separate each *logical change* into a separate patch." [*]
-> 
-> The logical change, as per the patch subject, is allowing the
-> possibility of including eBPF dynamic pointers in a kfunc definition.
-> It requires to call an existing function that was already defined
-> elsewhere.
-> 
-> Maybe I'm wrong, but I don't see only exporting a function definition
-> to an include file as a logical change. To me, the changes in this
-> patch are clearly connected. Or even better, they tell why the function
-> definition has been exported, that would not appear if moving the
-> function definition is a standalone patch.
-> 
+> > The logical change, as per the patch subject, is allowing the
+> > possibility of including eBPF dynamic pointers in a kfunc definition.
+> > It requires to call an existing function that was already defined
+> > elsewhere.
 > > 
-> > To add, generally any user space visible space should be an
-> > isolated patch.
+> > Maybe I'm wrong, but I don't see only exporting a function definition
+> > to an include file as a logical change. To me, the changes in this
+> > patch are clearly connected. Or even better, they tell why the function
+> > definition has been exported, that would not appear if moving the
+> > function definition is a standalone patch.
+> > 
+> > > 
+> > > To add, generally any user space visible space should be an
+> > > isolated patch.
+> > 
+> > As far as I understood, definitions visible to user space should be in
+> > include/uapi.
 > 
-> As far as I understood, definitions visible to user space should be in
-> include/uapi.
-
-It does change e.g. the output of kallsyms.
-
-It's not ABI but it's still user space visble.
-
+> It does change e.g. the output of kallsyms.
+> 
+> It's not ABI but it's still user space visble.
 > 
 > > 
-> > Please, stop posting nonsense.
+> > > 
+> > > Please, stop posting nonsense.
+> > 
+> > If I may, saying this does not encourage people to try to submit their
+> > code. I feel it is a bit strong, and I kindly ask you to express your
+> > opinion in a more gentle way.
 > 
-> If I may, saying this does not encourage people to try to submit their
-> code. I feel it is a bit strong, and I kindly ask you to express your
-> opinion in a more gentle way.
+> I agree. That's why I was wondering what is this nonsense
+> about salary and games.
 
-I agree. That's why I was wondering what is this nonsense
-about salary and games.
+Please denote that I started my review with "Might be nitpicking...".
+
+It's neither particularly disencouraging nor enforcing for anyone.
+
+The blast that came after that, on the other hand, IMHO meets
+exactly those standards.
 
 BR, Jarkko
