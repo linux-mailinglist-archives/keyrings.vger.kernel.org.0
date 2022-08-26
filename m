@@ -2,148 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF9555A2431
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 11:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1295C5A29D7
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 16:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343608AbiHZJXo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 05:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54304 "EHLO
+        id S1343514AbiHZOoC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 10:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245405AbiHZJXo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 05:23:44 -0400
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8719DF8C;
-        Fri, 26 Aug 2022 02:23:42 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4MDZ4n5G6Hz9v7Gy;
-        Fri, 26 Aug 2022 17:18:17 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwCHVxPykAhjEntOAA--.37856S2;
-        Fri, 26 Aug 2022 10:23:12 +0100 (CET)
-Message-ID: <6d85d7b1f0c2341698e88bad025bd6e0b34c7666.camel@huaweicloud.com>
-Subject: Re: [PATCH v14 04/10] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
- and add flags check function
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        corbet@lwn.net, dhowells@redhat.com, jarkko@kernel.org,
-        rostedt@goodmis.org, mingo@redhat.com, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, shuah@kernel.org
-Cc:     bpf@vger.kernel.org, linux-doc@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Fri, 26 Aug 2022 11:22:54 +0200
-In-Reply-To: <20220826091228.1701185-1-roberto.sassu@huaweicloud.com>
-References: <acae432697e854748d9a44c732ec8cab807d9d46.camel@huaweicloud.com>
-         <20220826091228.1701185-1-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S243916AbiHZOn5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 10:43:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B421DD399F;
+        Fri, 26 Aug 2022 07:43:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7111AB83128;
+        Fri, 26 Aug 2022 14:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8578C433D6;
+        Fri, 26 Aug 2022 14:43:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661525034;
+        bh=JPZJww0LdQuFZEeGZp8ZP+3D6d0plXd37LSA7I8HWfA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=m9yTFBdzL1nv1ZlimA3HujtdlB051fDo7InetsnuqnrliWH6mwg4dS47izNjwTw7N
+         egKRpflIzkOkwJyh6Qn9blT+Wd6Dc47JWmKjnljpy+/Abr3LU9bTEehzI5IJ3F65cF
+         kZ5xLMXxrTFebR3sGJJCKpptQdhNB3ro5tnQQ1yqEWviCQYSgneCc6qnp9zAt+2Qy7
+         wHaXG5w7uz/q3/2XNR6F5MPjk0rjmJ7lRS10GhsHqzjirU0tN8xSAR0noFsOgcaH0J
+         uCUklpshhvkSnKWvALTuvSoFbuSE6kgt3BmuNZIduiOW/bGrznKCX1YOnECB/YPaUM
+         aHcW3qo6FShgA==
+Date:   Fri, 26 Aug 2022 17:43:46 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc:     roberto.sassu@huaweicloud.com, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        David Howells <dhowells@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Shuah Khan <shuah@kernel.org>, bpf <bpf@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Daniel =?iso-8859-1?Q?M=FCller?= <deso@posteo.net>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Joanne Koong <joannelkoong@gmail.com>
+Subject: Re: [PATCH v12 02/10] btf: Handle dynamic pointer parameter in kfuncs
+Message-ID: <YwjcItv0q8GdzPbb@kernel.org>
+References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
+ <20220818152929.402605-3-roberto.sassu@huaweicloud.com>
+ <YwhSCE0H+JfUe4Ew@kernel.org>
+ <CAADnVQJbTzfe28ife1+vg+ByLfyLBTCoEZW_eg8TEw838JGaog@mail.gmail.com>
+ <YwheJqUDLOxL3iTi@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwCHVxPykAhjEntOAA--.37856S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF1DurWrJFWxtFWxJF4kXrb_yoW8Kr13pF
-        yDCFyFkryUCFy7W3s3GanIya1Sg3yrGr17Cr9xWwn09Fsag3y8tr1kGF15WF15CrWUuw1j
-        qr42ga15ur1DA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkIb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-        rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-        IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY
-        0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
-        0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAI
-        cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
-        87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU1ebytUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAQBF1jj35StQAAs+
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YwheJqUDLOxL3iTi@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2022-08-26 at 11:12 +0200, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
+On Fri, Aug 26, 2022 at 08:46:14AM +0300, Jarkko Sakkinen wrote:
+> On Thu, Aug 25, 2022 at 10:16:14PM -0700, Alexei Starovoitov wrote:
+> > On Thu, Aug 25, 2022 at 9:54 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > >
+> > > > -static bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+> > > > -                                  enum bpf_arg_type arg_type)
+> > > > +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+> > > > +                           enum bpf_arg_type arg_type)
+> > > >  {
+> > > >       struct bpf_func_state *state = func(env, reg);
+> > > >       int spi = get_spi(reg->off);
+> > > > --
+> > > > 2.25.1
+> > > >
+> > >
+> > > Might be niticking but generally I'd consider splitting
+> > > exports as commits of their own.
+> > 
+> > -static bool
+> > +bool
+> > 
+> > into a separate commit?
+> > 
+> > I guess it makes sense for people whose salary depends on
+> > number of commits.
+> > We don't play these games.
 > 
-> In preparation for the patch that introduces the
-> bpf_lookup_user_key() eBPF
-> kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be
-> able to
-> validate the kfunc parameters.
-> 
-> Also, introduce key_lookup_flags_valid() to check if the caller set
-> in the
-> argument only defined flags. Introduce it directly in
-> include/linux/key.h,
-> to reduce the risk that the check is not in sync with currently
-> defined
-> flags.
-> 
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> Reviewed-by: KP Singh <kpsingh@kernel.org>
+> What kind of argument is that anyway.
 
-Jarkko, could you please ack it if it is fine?
+"Separate each *logical change* into a separate patch." [*]
 
-Thanks
+To add, generally any user space visible space should be an
+isolated patch.
 
-Roberto
+Please, stop posting nonsense.
 
-> ---
->  include/linux/key.h      | 16 ++++++++++++++++
->  security/keys/internal.h |  2 --
->  2 files changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/key.h b/include/linux/key.h
-> index 7febc4881363..e679dbf0c940 100644
-> --- a/include/linux/key.h
-> +++ b/include/linux/key.h
-> @@ -88,6 +88,22 @@ enum key_need_perm {
->  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is
-> deferred */
->  };
->  
-> +#define KEY_LOOKUP_CREATE	0x01
-> +#define KEY_LOOKUP_PARTIAL	0x02
-> +
-> +/**
-> + * key_lookup_flags_valid - detect if provided key lookup flags are
-> valid
-> + * @flags: key lookup flags.
-> + *
-> + * Verify whether or not the caller set in the argument only defined
-> flags.
-> + *
-> + * Return: true if flags are valid, false if not.
-> + */
-> +static inline bool key_lookup_flags_valid(u64 flags)
-> +{
-> +	return !(flags & ~(KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL));
-> +}
-> +
->  struct seq_file;
->  struct user_struct;
->  struct signal_struct;
-> diff --git a/security/keys/internal.h b/security/keys/internal.h
-> index 9b9cf3b6fcbb..3c1e7122076b 100644
-> --- a/security/keys/internal.h
-> +++ b/security/keys/internal.h
-> @@ -165,8 +165,6 @@ extern struct key *request_key_and_link(struct
-> key_type *type,
->  
->  extern bool lookup_user_key_possessed(const struct key *key,
->  				      const struct key_match_data
-> *match_data);
-> -#define KEY_LOOKUP_CREATE	0x01
-> -#define KEY_LOOKUP_PARTIAL	0x02
->  
->  extern long join_session_keyring(const char *name);
->  extern void key_change_session_keyring(struct callback_head *twork);
+[*] https://www.kernel.org/doc/html/v5.19/process/submitting-patches.html#separate-your-changes
 
+BR, Jarkko
