@@ -2,57 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6FE5A2061
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 07:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC575A206A
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 07:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242671AbiHZFma (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 01:42:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43564 "EHLO
+        id S244877AbiHZFpZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 01:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230517AbiHZFm3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 01:42:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF04FD0201;
-        Thu, 25 Aug 2022 22:42:28 -0700 (PDT)
+        with ESMTP id S244907AbiHZFpY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 01:45:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB93AA8962;
+        Thu, 25 Aug 2022 22:45:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FEB2619FD;
-        Fri, 26 Aug 2022 05:42:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046B6C433C1;
-        Fri, 26 Aug 2022 05:42:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26BA16195D;
+        Fri, 26 Aug 2022 05:45:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E1BC433C1;
+        Fri, 26 Aug 2022 05:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661492547;
-        bh=+/7bgcM7XCyWZRFiTszQQDAjii7dFnz03LdfZR+j2a8=;
+        s=k20201202; t=1661492720;
+        bh=dvHGkLB4gEgzNYqdU8M9Nt8MYSoE1f2P6IGT8HDsfvo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kEDrPfXuEWYVmP7eEh+msDb+GYa8Idz9/kaI3MfF1Q3RfI1sAXJhMvI85+nzf4r5C
-         Uge3vmZWoOOw3xTMv9RuRaIejaUZuTF8FEx3AFnAU6PLlKdpF/9qZu2LPc94EBHaea
-         cnk43VRd1w0vkqykz4L413jU4pYS28Z16HyKXmoGBtiJvBNkX4L5BwnHUOscmXl3mK
-         ZnsQ9JRgyKfE4HHpHjMevW/IkfLBi77MgRPLKy+2NSs1U7hK9cfXwy4TuDmm5EVR9f
-         dAZHGqx14AymofhqDu29EHJ2yia6JgZ3rJjowwMwySNWrEMoRbmp3pGbOLjpJCXyfk
-         J+DvtrRVaU/EQ==
-Date:   Fri, 26 Aug 2022 08:42:20 +0300
+        b=OirB0Hf/pTYt+3QpWhoFleQ5R4EpQF2vuyC0ioyqByhMgAmF5ffJRfxQf6HRPMwYs
+         7Kir4WgSw++gRV/kd3zECCly0eivyiTIfhea08N3QnahGLMrHoMB12IrHvxyTUh6fG
+         +Rb7sU74/4R30+HbrhbJSbieTOlL5aFgfJmEznp+lL9VNtBrJAcswuQY5p2anGtkpa
+         T4q3PNG3SMCqRgWbufGT/++XlzbM2g/NRMskm/nc0ZDD3fG6H2WNNFFFzt3vNOG4RH
+         N5xhqsA1393sMjh9OqvjQZfEdQ7rr6hzBPVQfD+IinkpUpPKh8gwzdJUjI96/qMymz
+         +MKpNqHbqsQmA==
+Date:   Fri, 26 Aug 2022 08:45:13 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     roberto.sassu@huaweicloud.com
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        corbet@lwn.net, dhowells@redhat.com, rostedt@goodmis.org,
-        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, shuah@kernel.org, bpf@vger.kernel.org,
-        linux-doc@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>
-Subject: Re: [PATCH v12 04/10] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
-Message-ID: <YwhTiGOhzvv+CYYq@kernel.org>
-References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
- <20220818152929.402605-5-roberto.sassu@huaweicloud.com>
+To:     Denis Kenzior <denkenz@gmail.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH] KEYS: asymmetric: Fix ECDSA use via keyctl uapi
+Message-ID: <Ywhd6emoKvWgeB9O@kernel.org>
+References: <20220824190409.4286-1-denkenz@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220818152929.402605-5-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20220824190409.4286-1-denkenz@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -63,63 +57,58 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 05:29:23PM +0200, roberto.sassu@huaweicloud.com wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> In preparation for the patch that introduces the bpf_lookup_user_key() eBPF
-> kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be able to
-> validate the kfunc parameters.
-> 
-> Also, introduce key_lookup_flags_check() directly in include/linux/key.h,
-> to reduce the risk that the check is not in sync with currently defined
-> flags.
+On Wed, Aug 24, 2022 at 02:04:09PM -0500, Denis Kenzior wrote:
+> When support for ECDSA keys was added, constraints for data & signature
+> sizes were never updated.  This makes it impossible to use such keys via
+> keyctl API from userspace; fix that.
 
-Missing the description what the heck this function even is.
+Instead of "fix that" just describe the change.
 
-Please, explain that.
-
-Also, the short subject is misleading because this *just*
-does not move flags.
-
-> 
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> Reviewed-by: KP Singh <kpsingh@kernel.org>
+> Fixes: 299f561a6693 ("x509: Add support for parsing x509 certs with ECDSA keys")
+> Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 > ---
->  include/linux/key.h      | 11 +++++++++++
->  security/keys/internal.h |  2 --
->  2 files changed, 11 insertions(+), 2 deletions(-)
+>  crypto/asymmetric_keys/public_key.c | 24 ++++++++++++++++++++++--
+>  1 file changed, 22 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/key.h b/include/linux/key.h
-> index 7febc4881363..b5bbae77a9e7 100644
-> --- a/include/linux/key.h
-> +++ b/include/linux/key.h
-> @@ -88,6 +88,17 @@ enum key_need_perm {
->  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is deferred */
->  };
+> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+> index 2f8352e88860..eca5671ad3f2 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -186,8 +186,28 @@ static int software_key_query(const struct kernel_pkey_params *params,
 >  
-> +#define KEY_LOOKUP_CREATE	0x01
-> +#define KEY_LOOKUP_PARTIAL	0x02
+>  	len = crypto_akcipher_maxsize(tfm);
+>  	info->key_size = len * 8;
+> -	info->max_data_size = len;
+> -	info->max_sig_size = len;
 > +
-
-/*
- * Explain what the heck this function is.
- */
-> +static inline int key_lookup_flags_check(u64 flags)
-> +{
-> +	if (flags & ~(KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL))
-> +		return -EINVAL;
+> +	if (strncmp(pkey->pkey_algo, "ecdsa", 5) == 0) {
+> +		/*
+> +		 * ECDSA key sizes are much smaller than RSA, and thus could
+> +		 * operate on (hashed) inputs that are larger than key size.
+> +		 * For example SHA384-hashed input used with secp256r1
+> +		 * based keys.  Set max_data_size to be at least as large as
+> +		 * the largest supported hash size (SHA512)
+> +		 */
+> +		info->max_data_size = 64;
 > +
-> +	return 0;
-> +}
+> +		/*
+> +		 * Verify takes ECDSA-Sig (described in RFC 5480) as input,
+> +		 * which is actually 2 'key_size'-bit integers encoded in
+> +		 * ASN.1.  Account for the ASN.1 encoding overhead here.
+> +		 */
+> +		info->max_sig_size = 2 * (len + 3) + 2;
+> +	} else {
+> +		info->max_data_size = len;
+> +		info->max_sig_size = len;
+> +	}
+> +
+>  	info->max_enc_size = len;
+>  	info->max_dec_size = len;
+>  	info->supported_ops = (KEYCTL_SUPPORTS_ENCRYPT |
+> -- 
+> 2.35.1
+> 
 
-This is essentially a boolean function, right?
-
-I.e. the implementation can be just:
-
-!!(flags & ~(KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL))
-
-Not even sure if this is needed in the first place, or
-would it be better just to open code it. How many call
-sites does it have anyway?
+The code change lgtm.
 
 BR, Jarkko
