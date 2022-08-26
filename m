@@ -2,188 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 169FE5A2014
-	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 06:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465885A2039
+	for <lists+keyrings@lfdr.de>; Fri, 26 Aug 2022 07:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234316AbiHZEyp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 Aug 2022 00:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37746 "EHLO
+        id S231942AbiHZFQa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 26 Aug 2022 01:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbiHZEyo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 00:54:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C215FCE469;
-        Thu, 25 Aug 2022 21:54:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7182CB82F72;
-        Fri, 26 Aug 2022 04:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F82C433C1;
-        Fri, 26 Aug 2022 04:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661489680;
-        bh=idc5YK1jlEolWA/qY99HMYvkp3aVHFDcLFOg74vVVrw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SkEn5kNLMNfBdbTHtCCAQaN54nmtTmCnJB/wyOS+bxJgWnPIqaJ1png/uRIJyLzj2
-         rDJMzBTqCJq9hpF2B+qL9Ipyus+ct7dSd26CbGbvE1UZyrnsVZD9VbBwvWikWuaiMW
-         uKBXYXwGw7y1nVlmwheIcN2maMxd1bd+7/gKRGipsDdUuJ+zrdJdoQS2Pe+ymn4yy4
-         tC0a82BjrlgGORBxRCIrFbsvbMIrh/IikyuEFzx6cv1dsdnOeEYELneVqXTv0jTasB
-         B6r8D1NzZfBhu70ajF1kVM6vrV/l8RVm+YQ2jHhIeatZtI4xc9wThbOmcy8IXlH9c/
-         sSno1X/t0tF2A==
-Date:   Fri, 26 Aug 2022 07:54:32 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     roberto.sassu@huaweicloud.com
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        corbet@lwn.net, dhowells@redhat.com, rostedt@goodmis.org,
-        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, shuah@kernel.org, bpf@vger.kernel.org,
-        linux-doc@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>,
-        Joanne Koong <joannelkoong@gmail.com>
-Subject: Re: [PATCH v12 02/10] btf: Handle dynamic pointer parameter in kfuncs
-Message-ID: <YwhSCE0H+JfUe4Ew@kernel.org>
-References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
- <20220818152929.402605-3-roberto.sassu@huaweicloud.com>
+        with ESMTP id S229662AbiHZFQ3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 26 Aug 2022 01:16:29 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63C76A4B4;
+        Thu, 25 Aug 2022 22:16:27 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id w19so1082512ejc.7;
+        Thu, 25 Aug 2022 22:16:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=lK9A6HApSBZz4Q8ytvV3N4o8vcU6tZHo4HuclO+ZHvs=;
+        b=L0/cvHT0Ml5scIBeMcDx9EkRPSLMkAQcp1Vo3CWs/Ru1P55rSqeddvraugU4IWQ3TY
+         Ot/C98VePC/bofOrq9SE6zqxw8fHEWvbcpGD3mIts5vrkqH2muvr6JdpSWK7ei3mKjaR
+         W2/XpsCmZ4pqTtSF9KYdOHuj6OgUlx2aAAPpDNszBRlcoIOOlFw9QcCLT7XnRB7RRZ3b
+         rIV9a0H+K0QT5WyeeCivIz+DZSXOyIr+V7DSIPiqb9k9BopCZyC37QPyesNTCit0PL3X
+         kfL81CLlSr5VmLQ2PJ9lwjzNVHkn6bLIEBZS4hEcnEAJAZ36Dik5WUhc/vdXxLzfQuBH
+         i2MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=lK9A6HApSBZz4Q8ytvV3N4o8vcU6tZHo4HuclO+ZHvs=;
+        b=kVvlc89MSBUs/hj8ayfgOQC0yUOroi3TDs+6nj8+Mn/Vppnl4KxtBHAmIq5a0JXM6C
+         8CrruD+IGBYhtliHP9Ve5L3aCZAVLA/1xFA8l97c7PvogtKv08o4pHfTVQTLIRwyJGTz
+         eRCfz8SGmvY0jxAj21XByFKxF4wiW7kYbCSJhwuNnPeFihkE3NYhcdXR85u5Gt5EvF0x
+         IvKPf0+d1f5rkkHnkwQ+sdDaR0/06421mrN/fcejBjYYq90KdfW/QWOCzSqCLv4/q85V
+         EMSSgWxO5mRQPr7P9vnBD/6m4ETu7LtKZEX8KnjzIDKqXYbcYxDsk+wJPEiAC0yxLEBi
+         WkDA==
+X-Gm-Message-State: ACgBeo0KgyM3/fafRGyx0Nz33jkQSqm48hF+0CDysOjwb7FszdZ59cZz
+        EyHe8DuvRu/DDYClREyxcd68SrNwSSm/6gmISwg=
+X-Google-Smtp-Source: AA6agR7glaQ8aAClz71uXqYoxJoS3u5VVPWthMELBdpN4xlGkOx6c6XDVcwzkRfCixx9/UBtx2rpsPL5pQzztn3jk+M=
+X-Received: by 2002:a17:906:ef90:b0:730:9cd8:56d7 with SMTP id
+ ze16-20020a170906ef9000b007309cd856d7mr4157955ejb.94.1661490986121; Thu, 25
+ Aug 2022 22:16:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220818152929.402605-3-roberto.sassu@huaweicloud.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220818152929.402605-1-roberto.sassu@huaweicloud.com>
+ <20220818152929.402605-3-roberto.sassu@huaweicloud.com> <YwhSCE0H+JfUe4Ew@kernel.org>
+In-Reply-To: <YwhSCE0H+JfUe4Ew@kernel.org>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Thu, 25 Aug 2022 22:16:14 -0700
+Message-ID: <CAADnVQJbTzfe28ife1+vg+ByLfyLBTCoEZW_eg8TEw838JGaog@mail.gmail.com>
+Subject: Re: [PATCH v12 02/10] btf: Handle dynamic pointer parameter in kfuncs
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     roberto.sassu@huaweicloud.com, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        David Howells <dhowells@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Shuah Khan <shuah@kernel.org>, bpf <bpf@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Daniel_M=C3=BCller?= <deso@posteo.net>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Joanne Koong <joannelkoong@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 05:29:21PM +0200, roberto.sassu@huaweicloud.com wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> Allow the bpf_dynptr_kern parameter to be specified in kfuncs. Also, ensure
-> that the dynamic pointer is valid and initialized.
-> 
-> To properly detect whether a parameter is of the desired type, introduce
-> the stringify_struct() macro to compare the returned structure name with
-> the desired name. In addition, protect against structure renames, by
-> halting the build with BUILD_BUG_ON(), so that developers have to revisit
-> the code.
-> 
-> Cc: Joanne Koong <joannelkoong@gmail.com>
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> ---
->  include/linux/bpf_verifier.h |  3 +++
->  include/linux/btf.h          |  9 +++++++++
->  kernel/bpf/btf.c             | 18 ++++++++++++++++++
->  kernel/bpf/verifier.c        |  4 ++--
->  4 files changed, 32 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-> index 2e3bad8640dc..55876fbdbae2 100644
-> --- a/include/linux/bpf_verifier.h
-> +++ b/include/linux/bpf_verifier.h
-> @@ -560,6 +560,9 @@ int check_kfunc_mem_size_reg(struct bpf_verifier_env *env, struct bpf_reg_state
->  			     u32 regno);
->  int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
->  		   u32 regno, u32 mem_size);
-> +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env,
-> +			      struct bpf_reg_state *reg,
-> +			      enum bpf_arg_type arg_type);
->  
->  /* this lives here instead of in bpf.h because it needs to dereference tgt_prog */
->  static inline u64 bpf_trampoline_compute_key(const struct bpf_prog *tgt_prog,
-> diff --git a/include/linux/btf.h b/include/linux/btf.h
-> index ad93c2d9cc1c..f546d368ac5d 100644
-> --- a/include/linux/btf.h
-> +++ b/include/linux/btf.h
-> @@ -52,6 +52,15 @@
->  #define KF_SLEEPABLE    (1 << 5) /* kfunc may sleep */
->  #define KF_DESTRUCTIVE  (1 << 6) /* kfunc performs destructive actions */
->  
-> +/*
-> + * Return the name of the passed struct, if exists, or halt the build if for
-> + * example the structure gets renamed. In this way, developers have to revisit
-> + * the code using that structure name, and update it accordingly.
-> + */
-> +#define stringify_struct(x)			\
-> +	({ BUILD_BUG_ON(sizeof(struct x) < 0);	\
-> +	   __stringify(x); })
-> +
->  struct btf;
->  struct btf_member;
->  struct btf_type;
-> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> index e49b3b6d48ad..26cb548420af 100644
-> --- a/kernel/bpf/btf.c
-> +++ b/kernel/bpf/btf.c
-> @@ -6362,15 +6362,20 @@ static int btf_check_func_arg_match(struct bpf_verifier_env *env,
->  
->  			if (is_kfunc) {
->  				bool arg_mem_size = i + 1 < nargs && is_kfunc_arg_mem_size(btf, &args[i + 1], &regs[regno + 1]);
-> +				bool arg_dynptr = btf_type_is_struct(ref_t) &&
-> +						  !strcmp(ref_tname,
-> +							  stringify_struct(bpf_dynptr_kern));
->  
->  				/* Permit pointer to mem, but only when argument
->  				 * type is pointer to scalar, or struct composed
->  				 * (recursively) of scalars.
->  				 * When arg_mem_size is true, the pointer can be
->  				 * void *.
-> +				 * Also permit initialized dynamic pointers.
->  				 */
->  				if (!btf_type_is_scalar(ref_t) &&
->  				    !__btf_type_is_scalar_struct(log, btf, ref_t, 0) &&
-> +				    !arg_dynptr &&
->  				    (arg_mem_size ? !btf_type_is_void(ref_t) : 1)) {
->  					bpf_log(log,
->  						"arg#%d pointer type %s %s must point to %sscalar, or struct with scalar\n",
-> @@ -6378,6 +6383,19 @@ static int btf_check_func_arg_match(struct bpf_verifier_env *env,
->  					return -EINVAL;
->  				}
->  
-> +				if (arg_dynptr) {
-> +					if (!is_dynptr_reg_valid_init(env, reg,
-> +							ARG_PTR_TO_DYNPTR)) {
-> +						bpf_log(log,
-> +							"arg#%d pointer type %s %s must be initialized\n",
-> +							i, btf_type_str(ref_t),
-> +							ref_tname);
-> +						return -EINVAL;
-> +					}
-> +
-> +					continue;
-> +				}
-> +
->  				/* Check for mem, len pair */
->  				if (arg_mem_size) {
->  					if (check_kfunc_mem_size_reg(env, &regs[regno + 1], regno + 1)) {
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 2c1f8069f7b7..aa834e7bb296 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -779,8 +779,8 @@ static bool is_dynptr_reg_valid_uninit(struct bpf_verifier_env *env, struct bpf_
->  	return true;
->  }
->  
-> -static bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
-> -				     enum bpf_arg_type arg_type)
-> +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
-> +			      enum bpf_arg_type arg_type)
->  {
->  	struct bpf_func_state *state = func(env, reg);
->  	int spi = get_spi(reg->off);
-> -- 
-> 2.25.1
-> 
+On Thu, Aug 25, 2022 at 9:54 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > -static bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+> > -                                  enum bpf_arg_type arg_type)
+> > +bool is_dynptr_reg_valid_init(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+> > +                           enum bpf_arg_type arg_type)
+> >  {
+> >       struct bpf_func_state *state = func(env, reg);
+> >       int spi = get_spi(reg->off);
+> > --
+> > 2.25.1
+> >
+>
+> Might be niticking but generally I'd consider splitting
+> exports as commits of their own.
 
-Might be niticking but generally I'd consider splitting
-exports as commits of their own.
+-static bool
++bool
 
-BR, Jarko
+into a separate commit?
+
+I guess it makes sense for people whose salary depends on
+number of commits.
+We don't play these games.
