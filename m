@@ -2,81 +2,120 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8595A6D01
-	for <lists+keyrings@lfdr.de>; Tue, 30 Aug 2022 21:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E165A7426
+	for <lists+keyrings@lfdr.de>; Wed, 31 Aug 2022 04:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231407AbiH3TT6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 Aug 2022 15:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
+        id S232043AbiHaCxh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 Aug 2022 22:53:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbiH3TT4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Aug 2022 15:19:56 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B49E76;
-        Tue, 30 Aug 2022 12:19:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=CHzCA7GPiORmBHidTJtpvbQeys/yG/nFcsS5vBNnrck=; b=G2Bn4P6vc9unPtOZ3olpVw4eoD
-        qdpXnrfgEG0VlxM+3aOGWOzvYg2SPz7py+JAP+8GDWOvLaXDzT+DFy/SbYAFY9c2zQs7VJDBTtDpw
-        w67Inc/aUIf78Ut9Zmh1ONKCzg5SteV9tkJaZdUdGEOkfHlqbRNVjlxNtuIbRuOxJlgy2PyaL4QoX
-        N+aZ4k/+rpKAdxDs4VLgJJ4GYQ/gSSXENbPBrjD7BIE97rwGhRHu0uwHm69nxJ/ddrrLREYOky9Cy
-        UoDOPU1x66dajZlV7ti10PYQCK7NM320h0POB6MRCK3YIYfI3W7Zh5AywcJFEVtnhU2M1DV6jT5Wl
-        gsZ0n4Xw==;
-Received: from [2601:1c0:6280:3f0::a6b3] (helo=casper.infradead.org)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oT6m2-004M4w-Pq; Tue, 30 Aug 2022 19:19:47 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org
-Subject: [PATCH v3] keys: remove __user annotation from function prototype
-Date:   Tue, 30 Aug 2022 12:19:40 -0700
-Message-Id: <20220830191940.1498-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S232024AbiHaCxf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 30 Aug 2022 22:53:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB32FB530D;
+        Tue, 30 Aug 2022 19:53:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 83E31B81E3D;
+        Wed, 31 Aug 2022 02:53:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F7FC433C1;
+        Wed, 31 Aug 2022 02:53:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661914412;
+        bh=LkRLEF8OBNLXUqwC/tgny7T8EZJ+8dFOYdrlED2oNmk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e9JMAM9M6pDXmIrlzWP3yUwWAa9zGZNJhRQ6/u6nv/liC61MlCinLTa4ZVbrv3jrM
+         RbXLm1xv53fQ0MAg2ibazpEAfsjBZfBwXcXuBG5y8FX3cVcF8jQQBCjTvnedwzJJ/e
+         hCu5uv63m0gd3IrGKxS6i9C9YfCoKbMQwvsygptGk8wqQUwCVcyve5IAwx2vjjCn7/
+         Hkxx/f2cevpHDKs2OQiCP+NffW6KFlzAy2DKE65GEwNK6xMxxVAKawGz4DF0qPeYJ+
+         aUv6NIGeGXNW1+svRKm5Tg3VkOADbqTaa2VR9Sh/5IQfT4dwlJVCufx11ZhbnV1+h3
+         w38Gdc8xFTPEQ==
+Date:   Wed, 31 Aug 2022 05:53:28 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
+        dhowells@redhat.com, rostedt@goodmis.org, mingo@redhat.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        shuah@kernel.org, bpf@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        deso@posteo.net, memxor@gmail.com,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: Re: [PATCH v14 05/12] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
+ and set KEY_LOOKUP_FLAGS_ALL
+Message-ID: <Yw7NKJfhyJqIWUcx@kernel.org>
+References: <20220830161716.754078-1-roberto.sassu@huaweicloud.com>
+ <20220830161716.754078-6-roberto.sassu@huaweicloud.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220830161716.754078-6-roberto.sassu@huaweicloud.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Remove a missed __user annotation from the prototype for
-keyring_read(). This cures a sparse warning when it complains about
-the difference in the prototype and the function definition.
+On Tue, Aug 30, 2022 at 06:17:09PM +0200, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> In preparation for the patch that introduces the bpf_lookup_user_key() eBPF
+> kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be able to
+> validate the kfunc parameters.
+> 
+> Also, define the new constant KEY_LOOKUP_FLAGS_ALL, to facilitate checking
+> whether a variable contains only defined flags.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: KP Singh <kpsingh@kernel.org>
+> ---
+>  include/linux/key.h      | 4 ++++
+>  security/keys/internal.h | 2 --
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/key.h b/include/linux/key.h
+> index 7febc4881363..e2a70e0fa89f 100644
+> --- a/include/linux/key.h
+> +++ b/include/linux/key.h
+> @@ -88,6 +88,10 @@ enum key_need_perm {
+>  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is deferred */
+>  };
+>  
+> +#define KEY_LOOKUP_CREATE	0x01
+> +#define KEY_LOOKUP_PARTIAL	0x02
+> +#define KEY_LOOKUP_FLAGS_ALL	(KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL)
 
-security/keys/keyring.c:481:13: sparse:    long static [signed] [toplevel] keyring_read( ... )
-security/keys/keyring.c:81:13: sparse:    long static [addressable] [signed] [toplevel] keyring_read( ... )
+IMHO this could be just KEY_LOOKUP_ALL.
 
-Fixes: 796e46f9e2cb ("keys: Remove outdated __user annotations").
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: keyrings@vger.kernel.org
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v2: rebase/resend; no changes
-v3: add Rev-by from Jarkko; resend
+> +
+>  struct seq_file;
+>  struct user_struct;
+>  struct signal_struct;
+> diff --git a/security/keys/internal.h b/security/keys/internal.h
+> index 9b9cf3b6fcbb..3c1e7122076b 100644
+> --- a/security/keys/internal.h
+> +++ b/security/keys/internal.h
+> @@ -165,8 +165,6 @@ extern struct key *request_key_and_link(struct key_type *type,
+>  
+>  extern bool lookup_user_key_possessed(const struct key *key,
+>  				      const struct key_match_data *match_data);
+> -#define KEY_LOOKUP_CREATE	0x01
+> -#define KEY_LOOKUP_PARTIAL	0x02
+>  
+>  extern long join_session_keyring(const char *name);
+>  extern void key_change_session_keyring(struct callback_head *twork);
+> -- 
+> 2.25.1
+> 
 
- security/keys/keyring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Other than that wfm.
 
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -79,7 +79,7 @@ static void keyring_revoke(struct key *k
- static void keyring_destroy(struct key *keyring);
- static void keyring_describe(const struct key *keyring, struct seq_file *m);
- static long keyring_read(const struct key *keyring,
--			 char __user *buffer, size_t buflen);
-+			 char *buffer, size_t buflen);
- 
- struct key_type key_type_keyring = {
- 	.name		= "keyring",
+BR, Jarkko
