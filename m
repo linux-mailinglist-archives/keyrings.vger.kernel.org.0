@@ -2,147 +2,108 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E380D5A7A1D
-	for <lists+keyrings@lfdr.de>; Wed, 31 Aug 2022 11:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F695A814C
+	for <lists+keyrings@lfdr.de>; Wed, 31 Aug 2022 17:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231436AbiHaJYP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Aug 2022 05:24:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42894 "EHLO
+        id S231779AbiHaPdx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Aug 2022 11:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231604AbiHaJYL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Aug 2022 05:24:11 -0400
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BB057231;
-        Wed, 31 Aug 2022 02:24:08 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4MHdrw2BnPz9v7Ts;
-        Wed, 31 Aug 2022 17:18:40 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwA34JOPKA9jgTwQAA--.40239S2;
-        Wed, 31 Aug 2022 10:23:40 +0100 (CET)
-Message-ID: <cad9a20cadc074cf15dcd0d8eb63b43c98a2f13d.camel@huaweicloud.com>
+        with ESMTP id S231320AbiHaPdw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Aug 2022 11:33:52 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4032FD75B0;
+        Wed, 31 Aug 2022 08:33:51 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id kk26so29110557ejc.11;
+        Wed, 31 Aug 2022 08:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=ySlGrlk1/qae8TbwPoGGtLZ4RY6cb/qJdCyFNUKnw4k=;
+        b=O5aHbfC4ftLEYuWR2lKoTnlB+EEHkTYbNxiLgifnfeWI3p77cSrJHGA0CATa5yilgV
+         MoODiwPODnMk7W5nC5YKiPm9IKa67WmAIPQBYtOgmiwUORrlaHXmUwPhA+o/6aYGaoiv
+         hb8C3UcA5vpHaVrM3hLYSoAyEjeplyRY9wURdBjfmTEEyVKB9DjLf5RyVLE5ynZd3DYv
+         r20zrd/PQrYhHknPCtvb+CIeOS9s7Udu5VkwECjus+J7gC9ym1OzZqO5FB4WaVFxArmd
+         K++h6IlBnmPe6qFAT8o1EJKD2fR/jCXnADy6rV8/jgU93M+HYz8AzW9NGzK4JbeCiTO3
+         pi5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=ySlGrlk1/qae8TbwPoGGtLZ4RY6cb/qJdCyFNUKnw4k=;
+        b=emcqlF+tS5pxtez3dDFkVsQvIFnNDREX8SWVaZLYfI++ggw2CUXrf24lgVdLefe/Vi
+         ULyJEakeB3DJ46IEfcSkWSnWW9mgkDTRlsNhV6DOsGPd5Zl3FgczOlTAlH2hMIQ0rLJJ
+         qvffWGSzzRcSuIm3AnICrYCrJ7jE0otBfOnTyCFsWhQRbSwZm+0+67fV54hhs6Lggviz
+         FK8I+fMDTs0QeEhcEXmvhe49fO9B3wS5Sr2JpFw6UZ7yqIC2v/j3c/pmu1o6kBbyZz4V
+         HaTOj9iCeR56TlKiNKPsodzPmWK7soyEmde+If1RK57hnyYvosHWSKxhNkFV+k3aO2/z
+         Az6w==
+X-Gm-Message-State: ACgBeo0lKieegsLDtpqj2oTni1IGC97WRKSX8PLe+nA1WWKITZb1kbNy
+        kkjdX1qO7RjI4lXgbcyMkHwRG+gaJNgRHhkjk00=
+X-Google-Smtp-Source: AA6agR6zLzQyHzCh0SYGCtJ2iVRCCcor95L8jxGfZu91b7yD5fNTVfUcKhZC1aLkvbiIxkBeOxSeLLv1K5tiwN/gUzY=
+X-Received: by 2002:a17:907:7b94:b0:731:1b11:c241 with SMTP id
+ ne20-20020a1709077b9400b007311b11c241mr21418881ejc.676.1661960029590; Wed, 31
+ Aug 2022 08:33:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220830161716.754078-1-roberto.sassu@huaweicloud.com>
+ <20220830161716.754078-6-roberto.sassu@huaweicloud.com> <Yw7NKJfhyJqIWUcx@kernel.org>
+ <Yw7o43Ivfo3jRwQg@kernel.org> <cad9a20cadc074cf15dcd0d8eb63b43c98a2f13d.camel@huaweicloud.com>
+In-Reply-To: <cad9a20cadc074cf15dcd0d8eb63b43c98a2f13d.camel@huaweicloud.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Wed, 31 Aug 2022 08:33:38 -0700
+Message-ID: <CAADnVQLCyts0JZ7_=rTp8vP67ET4PjVsZ0Cis0XKUpeCdC13LA@mail.gmail.com>
 Subject: Re: [PATCH v14 05/12] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
  and set KEY_LOOKUP_FLAGS_ALL
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        dhowells@redhat.com, rostedt@goodmis.org, mingo@redhat.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        shuah@kernel.org, bpf@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, memxor@gmail.com,
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>,
+        David Howells <dhowells@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Shuah Khan <shuah@kernel.org>, bpf <bpf@vger.kernel.org>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Daniel_M=C3=BCller?= <deso@posteo.net>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
         Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Wed, 31 Aug 2022 11:23:25 +0200
-In-Reply-To: <Yw7o43Ivfo3jRwQg@kernel.org>
-References: <20220830161716.754078-1-roberto.sassu@huaweicloud.com>
-         <20220830161716.754078-6-roberto.sassu@huaweicloud.com>
-         <Yw7NKJfhyJqIWUcx@kernel.org> <Yw7o43Ivfo3jRwQg@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwA34JOPKA9jgTwQAA--.40239S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF4xGF1kWrWrAFWDZFy3XFb_yoW8Kr4DpF
-        yDGF1jkr1Utry3WwnFganIy3WxK39xtr12gr90gwnYqFsaqryxKr12gF15uF1F9rW7uw4I
-        vr42ganxuryDA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-        6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-        Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcV
-        CF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
-        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUOlksDUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQABBF1jj4J04wAAsg
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2022-08-31 at 07:51 +0300, Jarkko Sakkinen wrote:
-> On Wed, Aug 31, 2022 at 05:53:28AM +0300, Jarkko Sakkinen wrote:
-> > On Tue, Aug 30, 2022 at 06:17:09PM +0200, Roberto Sassu wrote:
-> > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > > 
-> > > In preparation for the patch that introduces the
-> > > bpf_lookup_user_key() eBPF
-> > > kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be
-> > > able to
-> > > validate the kfunc parameters.
-> > > 
-> > > Also, define the new constant KEY_LOOKUP_FLAGS_ALL, to facilitate
-> > > checking
-> > > whether a variable contains only defined flags.
-> > > 
-> > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > Reviewed-by: KP Singh <kpsingh@kernel.org>
-> > > ---
-> > >  include/linux/key.h      | 4 ++++
-> > >  security/keys/internal.h | 2 --
-> > >  2 files changed, 4 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/include/linux/key.h b/include/linux/key.h
-> > > index 7febc4881363..e2a70e0fa89f 100644
-> > > --- a/include/linux/key.h
-> > > +++ b/include/linux/key.h
-> > > @@ -88,6 +88,10 @@ enum key_need_perm {
-> > >  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is deferred
-> > > */
-> > >  };
-> > >  
-> > > +#define KEY_LOOKUP_CREATE	0x01
-> > > +#define KEY_LOOKUP_PARTIAL	0x02
-> > > +#define KEY_LOOKUP_FLAGS_ALL	(KEY_LOOKUP_CREATE |
-> > > KEY_LOOKUP_PARTIAL)
-> > 
-> > IMHO this could be just KEY_LOOKUP_ALL.
-> > 
-> > > +
-> > >  struct seq_file;
-> > >  struct user_struct;
-> > >  struct signal_struct;
-> > > diff --git a/security/keys/internal.h b/security/keys/internal.h
-> > > index 9b9cf3b6fcbb..3c1e7122076b 100644
-> > > --- a/security/keys/internal.h
-> > > +++ b/security/keys/internal.h
-> > > @@ -165,8 +165,6 @@ extern struct key
-> > > *request_key_and_link(struct key_type *type,
-> > >  
-> > >  extern bool lookup_user_key_possessed(const struct key *key,
-> > >  				      const struct key_match_data
-> > > *match_data);
-> > > -#define KEY_LOOKUP_CREATE	0x01
-> > > -#define KEY_LOOKUP_PARTIAL	0x02
-> > >  
-> > >  extern long join_session_keyring(const char *name);
-> > >  extern void key_change_session_keyring(struct callback_head
-> > > *twork);
-> > > -- 
-> > > 2.25.1
-> > > 
-> > 
-> > Other than that wfm.
-> 
-> Roberto, with the change done above, just add my ack
-> to the next version:
-> 
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-> 
+On Wed, Aug 31, 2022 at 2:24 AM Roberto Sassu
+<roberto.sassu@huaweicloud.com> wrote:
+> > > >
+> > > > +#define KEY_LOOKUP_CREATE        0x01
+> > > > +#define KEY_LOOKUP_PARTIAL       0x02
+> > > > +#define KEY_LOOKUP_FLAGS_ALL     (KEY_LOOKUP_CREATE |
+> > > > KEY_LOOKUP_PARTIAL)
+> > >
+> > > IMHO this could be just KEY_LOOKUP_ALL.
 
-Perfect, thanks.
-
-Roberto
-
+Since this is supposed to be kernel internal flags
+please make them enum, so that bpf progs can auto-adjust
+(with the help of CORE) to changes in this enum.
+With #define there is no way for bpf prog to know
+when #define changed in the future kernels.
