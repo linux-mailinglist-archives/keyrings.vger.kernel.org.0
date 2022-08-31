@@ -2,44 +2,44 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 292DA5A7817
-	for <lists+keyrings@lfdr.de>; Wed, 31 Aug 2022 09:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD295A782F
+	for <lists+keyrings@lfdr.de>; Wed, 31 Aug 2022 09:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbiHaHtx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Aug 2022 03:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59744 "EHLO
+        id S229742AbiHaHyy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 Aug 2022 03:54:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231345AbiHaHtE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Aug 2022 03:49:04 -0400
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60077.outbound.protection.outlook.com [40.107.6.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77D6A2D9A;
-        Wed, 31 Aug 2022 00:48:54 -0700 (PDT)
+        with ESMTP id S229954AbiHaHyw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Aug 2022 03:54:52 -0400
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80088.outbound.protection.outlook.com [40.107.8.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F0825F6;
+        Wed, 31 Aug 2022 00:54:49 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SLlRBBBIXmkwc/1N6VO6csXeZ4JwznIZfNgJ6doY9XNOBguMYdV0wWglBF1hXzZ1a1PTVCj0iNrandJDiEKAQX8ktge5ier6gJg58679yMw5DrRyUWR+wpDncPnez/rX5/Be6Es4R9hBMfCqzf04KAa6rQ0pOv9Y6Rpiqj+ZtYvWXXdZpiOwu/ItvJpQ9cNRrWTnJfPNDqWPVmOJ62gDkSW8vqfx5HzZ9FNhzb06jrgNzLjYmsY8rdM3bY3CGx0zB5YsrxKDGdAM8JHgTsD+6nDxmnaxMKGjNYvsIy/4bK95Hfb0fN5jGg1HfXKcYaYhn3WA+l11Q58Z6mVLaPgx2Q==
+ b=CoR/EAqsTn0qvXeV8H6NI5/AgKjosDxs/WG1aGXCRGxQrviLxNe+Lm5ZqVBTXSZpYg9J5QcNxHwwc7rz30D973pa1ZLhZ9Xz0eWOajqR3lnn2MyyHzYp7iXpoigL9PW5pGe0P4BHAhNbreRAC98djtSiS39kxxaqf5HiDDplIAwH9HIj701gDUKOx20M85i42W8fk91d9/11sGaBx+sNRRICKYfhG4yvRFc9JJioPY5s+6itvFgDosqTeAM0zj4elKsyrLD3psvB33/I2UyzVFhRPI75fajwEfNB2dEFlodWUnqujlVpDdSA1E1glx4EC/S7+NrbsmaPAeJJyX9tWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jG5ZqnreZgIQNmb1THnMzkOgJR8HDHQ3vCPIXFOntAQ=;
- b=T1Gkg9rPTV1mUtMkhuXZp8IzwwUNTe17d8BV3QceEQIEKp0qxdpeiJvAyDSLb2JQXTEMvPXecJFwcOUHwpB0/JJXzLtjiFDoNs5Hy9GX2cstFZQx1mp7OkDTC68jee9IWoq7fwvC5WQ2EWGLYEK/C39jiv7smTJcVzudG4FSmGSxpiHoHwX/PilQIZtEkpb4MusYEVw6MJlAZN7vkWeZso38xgH5Vr+mhPawbLPrbLJ01+jz1dIQwVJ/B2b/N7ZjBvxOH/BJylNtobwuZn9arpJKEzgLogmoQ2eNnm78ET2sZepR+UOGSY8Ss61A5VLSJg4UX4yO6PKhlgqgDa2jxA==
+ bh=vMSlmfRdfD+C9sjZ8f1RIK883IbEWUIZ1h05RnXbP/A=;
+ b=iuAcsEaTmNhABeSvUbbpcAYjwAMlMC7mhYCCKbCcnujYQMf80/fUAbGCS1kl4O9t6QQLL8WfFMnzjmq9puBPm7Pz9oaUKXOXL4LIzcwYbYiRBCqctSZbLwTgPLX91pJ6pdxUbJswL9ItVe4yboBkSJdwYSH1J7BgiNpmiGItgcTsfOZqiaPpxQgyoMCBGDm/Nh0r5mZU+Jdh1OH9G/mB/zGcjdtuPMPRfI+93qB7ypu4VoDHdCkGfwE2BtSG6o9sNONHnWrJ3SqezrksNPlpV4GQdLIXD+9pYFYEY96IPZgIxRgHAB3GmoVKONH4PmmQzmZqXLd6hFLDuIrX9VCyVA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
  dkim=pass header.d=suse.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jG5ZqnreZgIQNmb1THnMzkOgJR8HDHQ3vCPIXFOntAQ=;
- b=VKL6N+ikRtB9YWEmkvsPb3cWhc4DeNgH5NQuTdcgGyWT+HCFU/JIOI/5bWUh65t6prOh3qWikakHQmweqXdMgsoy13ubZ9sWt5NborMjYHY2zcrt+J2hWxEwLlOKQRykwUm5Ypn6kG5cEVJysi3Z3pXQQtIu7ftD0NqEUOpTntGTCAWNtYlCfAbRxhBl4cnFSiK2S5iZKvSaNVsZ7lgU+uCw24jqPc+/DsaJkbksj+9qsrYRcG8ef1fMJ2cYH2rsDCf+bzwJIuGiyJ4gbZVrqCePGuJ2qZdKqw5CRFb7RBWNL35tTwHuPBO71ihAZafqGdiWOkpqmdbsedugWmlqKQ==
+ bh=vMSlmfRdfD+C9sjZ8f1RIK883IbEWUIZ1h05RnXbP/A=;
+ b=KEWnvhX89G6Ch9sP10X7ASBUtcS410AUXZDtB2B9G/ttdOhLyjBxf+AD0vKdkwn9adjwEWsz1JLy6OCyGoonjhKrS+SMtLzw2GdKljGzFYMneFUEpoBZwkBpQVz2SLGnQJO9dSIY8JxhlPpT/raPk10x4Ermg35+CTqMjcn4pBiWzfcGZ4uqT8MdryyJ+sZ06j1X1jS9+KkPXO3Xx5A0kijVtXGQNCr3LKKfarMfTGeqscdrGprn+btLDGrnoNxlph0vIMP7Gey+0QesdDcEgUcdX+1r2wlCSGBrtLCbWvKpGy8OvMhu9IW215gZGZbuj0tINompV59yoonW7ZBaiA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=suse.com;
 Received: from DB8PR04MB7164.eurprd04.prod.outlook.com (2603:10a6:10:129::23)
- by AS8PR04MB7590.eurprd04.prod.outlook.com (2603:10a6:20b:23d::24) with
+ by DB6PR0401MB2486.eurprd04.prod.outlook.com (2603:10a6:4:37::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.10; Wed, 31 Aug
- 2022 07:48:43 +0000
+ 2022 07:54:45 +0000
 Received: from DB8PR04MB7164.eurprd04.prod.outlook.com
  ([fe80::c1b3:1b0c:46fc:4b2b]) by DB8PR04MB7164.eurprd04.prod.outlook.com
  ([fe80::c1b3:1b0c:46fc:4b2b%3]) with mapi id 15.20.5566.019; Wed, 31 Aug 2022
- 07:48:43 +0000
-Date:   Wed, 31 Aug 2022 15:48:30 +0800
+ 07:54:44 +0000
+Date:   Wed, 31 Aug 2022 15:54:32 +0800
 From:   joeyli <jlee@suse.com>
 To:     Jarkko Sakkinen <jarkko@kernel.org>
 Cc:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
@@ -52,67 +52,67 @@ Cc:     "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
         Varad Gautam <varad.gautam@suse.com>,
         Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9,2/4] PKCS#7: Check codeSigning EKU for kernel module
- and kexec pe verification
-Message-ID: <20220831074830.GU5247@linux-l9pv.suse>
+Subject: Re: [PATCH v9,4/4] Documentation/admin-guide/module-signing.rst: add
+ openssl command option example for CodeSign EKU
+Message-ID: <20220831075432.GV5247@linux-l9pv.suse>
 References: <20220825142314.8406-1-jlee@suse.com>
- <20220825142314.8406-3-jlee@suse.com>
- <YwriQqVVs6PLQk3M@kernel.org>
+ <20220825142314.8406-5-jlee@suse.com>
+ <YwrifCrlJceNG5He@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YwriQqVVs6PLQk3M@kernel.org>
+In-Reply-To: <YwrifCrlJceNG5He@kernel.org>
 User-Agent: Mutt/1.11.4 (2019-03-13)
-X-ClientProxiedBy: TYCPR01CA0190.jpnprd01.prod.outlook.com
- (2603:1096:400:2b0::7) To DB8PR04MB7164.eurprd04.prod.outlook.com
+X-ClientProxiedBy: TYAPR01CA0035.jpnprd01.prod.outlook.com
+ (2603:1096:404:28::23) To DB8PR04MB7164.eurprd04.prod.outlook.com
  (2603:10a6:10:129::23)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e4c7acac-7cc8-4f49-d03b-08da8b253a25
-X-MS-TrafficTypeDiagnostic: AS8PR04MB7590:EE_
+X-MS-Office365-Filtering-Correlation-Id: fbf7b388-47ff-43ba-61f8-08da8b261193
+X-MS-TrafficTypeDiagnostic: DB6PR0401MB2486:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: CjpZaBcqzkJyssZyreXe4cH4xC8NPsIEeS+oQBqdMpWaiHFYDDIwqCMDTi6/WTr5cslcgyd2doF8uw7li4VmJZy6p03wsRVb+NRl7T+FcuqhTZyiB9vECuq9eGuXG3cTryjO0+sVHMjVvBDpIlha8Vs1gbRNyznU+V8ot4nbXwxgZ4IN6dw8gtcWGWXprO5cYeaKcgb9GBprq2B7Z8cfagpgrnJwykzQiyF8w/Zy/IAXli0p+CZxGYUykr7HOolWTk9R3BbRdvIRdBw211wFc2+FioLvm9PX284yX8g47yId/CrLaKhaEdQtZI5OqZvDdd/0hU7DOGkrjj0AbIeKiN8ZjulKlU195WT3nzt9qXw+25/trP3emRqnZeGYDYH4GwxtxKFe1Urpb5nbj1QcGqW9towUf4X18R4LiAHuQJX3DgI24Z2XYhKDuEBszGJ8wc/39zq3mVrYlx7Lwkbr/SmgPNKIqIkv75sah0Srtu05qgGp/5RxqxP7sl3/DJLdCu1io/3Z/S1ByjCtIoaorw5zpEHhU6eIuGMN8RkvVcFUroEQdfy/QqFirfcG3vXOcecT/e17ucSwdPdmaAPeLDpnKJB2c6Gyv/v+BlK8kwIM2jtKDYFXX3XSFa8XQ+yEMFc3QcXC/fuFIWQAYZEzDL2WvXeC0D3jiOlG2oEy/2qu3D1w+cNxZmQOX93GmiiX8mFg4bqFHapDonIc8/VEsOCNQgNc2nxYbqIE/8IZX0NxHFZcZdqjKuc8wDtRi6oC66SbLSJwEWfXG/XJDWwusw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7164.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(396003)(376002)(39860400002)(366004)(136003)(346002)(186003)(1076003)(478600001)(66946007)(66476007)(4326008)(8676002)(66556008)(5660300002)(33656002)(6506007)(6486002)(6666004)(41300700001)(36756003)(6512007)(9686003)(26005)(83380400001)(86362001)(316002)(54906003)(2906002)(8936002)(7416002)(15650500001)(38100700002)(6916009)(43062005);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: YRbzu0Nosd4CXRDmaRWazoRTed2n+ptxYZlVy0JFkRljG2O0fCx9qFIyg2L7fiNSia4RDbPT0EksHTxY9WzCvH3NqhGziH1pAwy8USFfALzbFqcwfG8Hm5Kp2TJ7mEXvPSJZv1fX7eRCVfEaWijLOV4WIxNhFMZauzs3gZRrzF8mQAGDFZMQi8jfcR3hhDeTNXJD8svgY8HdIkauEBdJrQY14kg+fS/t16uc8LpsG8uCqaCl6qhWEDSnsthx0OT//SqmP6mv0GtvS+yeRoqaPytWaKTkE6MlC//PlLKDkrbnMZqfB1qXlYRCCUBJYerY6+Sl/9YCJAU+q6O8tU+K+1n9zTISlMrXuzNygr+CSIAiinxlQb7iUG1iZsMfY5xQVKVVmvPn9hxEOfzHF5G8mQ+LIPxXAPfjZdqPSHgxys+PivgRM2L3eHXr8yQOcuUJ79/FT7DxGV/nPaaaivPPvSkRJmmCymeNqOYyfbJm4R0FWPtbEKr0Cw3P8v22bvL9Dw61j7caN9JSvC9nPv6dp0seXB6omoLFXGqrx0VypAr+kbH9ruKhdLC8LzbmWjxD5qu/MvVQGmwu6yQf2jNowtgy+QMxnGeI3BxfHEzCgjTgmhofZ+Cz2pZQEjQMelsjTuq12bdktkTzuDSGr2JUbujNKD33fi0EuXmVAk52PB12PmGBAe6D3btGTmAsr0EHXp58SK5Uj70CxMqo33cVJOPxfTf5n46QNmvYnRuqi+XdKHt7uAhlCeP53aYSenAi
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7164.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(376002)(39860400002)(366004)(396003)(136003)(346002)(7416002)(5660300002)(478600001)(6666004)(33656002)(8936002)(36756003)(83380400001)(26005)(6486002)(316002)(6512007)(9686003)(66946007)(6506007)(66556008)(38100700002)(2906002)(4326008)(8676002)(1076003)(186003)(86362001)(6916009)(66476007)(54906003)(41300700001)(43062005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tmdIjEbyvQHvISvWXShIKmOhXgFIr/ZeRKwWyi4UnxGYpGwCNqsJnq9U2JuX?=
- =?us-ascii?Q?osamuJGlJHs9RTDXVnlxhNyJuci6m8xiQ1RyMUu0WmNt8bC33q7roy3/4xDg?=
- =?us-ascii?Q?l+wjjCjqnDNiMGOH1z4QzjAbWu/sO2PFPN7Po2z/pnTMBub2h669CClL+9hv?=
- =?us-ascii?Q?FDW5jD12KD859e7q7Dxtd+4XS2EbZW+4Io2cri6ZRsn4RQcUtQrr5jjc7HqW?=
- =?us-ascii?Q?Ivv8xb/ccdTTFCFEtIzIUDR7OLu9AZyCjZyD78vVV6lFhZNKzrsfvMrHYaUz?=
- =?us-ascii?Q?1UBmV1AtsE9A+XrHKHzPRfTB++romjS1nhWEgL68JyAdu0VNYH1ccNrL93NF?=
- =?us-ascii?Q?KVvKBeNV0we2gSNjcBU4G4Bs7ZebE97FFNNIDdA/JASdVIj5f4KoVZNDGtQ7?=
- =?us-ascii?Q?C48kAQd61wAKDICE4HfV9ajwcgqODOP8bkR3v9IfDqVuyNMOqs83GwoGfKHl?=
- =?us-ascii?Q?2EfvLWsqXG4jIbikUbwGBzkGmRpPX80Q8DCdIGGg8eiuptkgNapNtl7XWg5m?=
- =?us-ascii?Q?TUY1ZneVVvY7BSo6TluNRpS34mVEgtMs2+9FqbvGw80oC8lv0cvQY/NcCJ4P?=
- =?us-ascii?Q?EtoCXZRIpiY2wBXRNZDze31H88fo1ASwBnsLDck9qeOhG/r2vJ7f/rNPLExx?=
- =?us-ascii?Q?Uyz9tBGnZviJ+dWQoa4FoiC6lP8M0vca1X+3BA3xVD4E1SsZEIWSYs/ey0go?=
- =?us-ascii?Q?sb0QETsAZJ3gwIZn1cyKJY4rDUXND4t8ybRJOBZzlwGv6QBYWTOZGefvmOSk?=
- =?us-ascii?Q?Mt5hNa4TefRJWUf50DaPrLGZgIv2HtIpntlcxO/1illeN3YPm/kphWQ1fHas?=
- =?us-ascii?Q?vx/dYCvJelMHZSfvdCfNYrNgIoigbH1sLSkEJ5fbEUbw8tbL9dkQ4kdrn8Zm?=
- =?us-ascii?Q?QDlPKIYZqCg68u72zha+ZeEBU8OK+1yRNVKE7GqZK594dhFVb/Rn6LicUVWz?=
- =?us-ascii?Q?CGSzab2czaiL2UYzvrSBHOORmxxCgxIXVrdwSIf6fDRGWwYbj++xWOe2ONLz?=
- =?us-ascii?Q?We2vudddZSG6Kjz7MPGerheNrXTA5kbsPS3CVgIVyucbetgsdDrrNg8YnICW?=
- =?us-ascii?Q?8UXMzqONh+tbW2g81AYrM1Co5WSdTFmTdZ9HcfBNkPSHBDCjsrRZiPzHQQAL?=
- =?us-ascii?Q?Uj0kSAbM55ERY9EmypXl03Rb5eEpwenYlln3RAXlLv6yo6TMx/c+r05M2uQm?=
- =?us-ascii?Q?cccCnFOma3ZsoDZI33EhI6kguv+Ol/v0vzp49jmAn4vGJQieRPJI9DLmRlWi?=
- =?us-ascii?Q?j9pbcNKNxzLWWTza9h79pBYe24+yR7Qk0k6lHvFdMcvNsaju/K9zK29vmQnt?=
- =?us-ascii?Q?Jziz5UhclRI6GcIvEfhacANa7CHoutK56bucxhKNNBK6OCMTbw7Xfb2k2ajX?=
- =?us-ascii?Q?0GWTsfwDeB8KKJOIxf+1MgvcjybAnUGaPFBIXh0N79fdX+dVCGSh4r3gqr1b?=
- =?us-ascii?Q?xri3vrPoFqo9urWL3bZraX/SXoBKm7dtst2Scj/rvMkVlUfwlqsMjIxHfV7F?=
- =?us-ascii?Q?M89bzU3A0FH3CdNIUaOMrsTPGPI+iqhHcsNa7VXlgo+5WjnulNdPGuj2SimR?=
- =?us-ascii?Q?pyiKrk1pRswAZyERriB7CJ5RefJXNlqAUIan8owI?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lfOz3T2MM6s/Eq7tKtalwNZpBgIs2cL0tr1vO2BZBvg3BIKM+p6tFLrLDj93?=
+ =?us-ascii?Q?rzMxBd5KQn+5VFc26pIqRUgr+kQEWLrMGIQDFq4vu0DkuGSqD8NR28RXQ39h?=
+ =?us-ascii?Q?hy0OgPqCsX6ENNNO37Tbke43HKndzkZ7PBxRij1fMtKs6KnGVRQ8n0FWmHu+?=
+ =?us-ascii?Q?fcOLz2BoxwtFhKK2bb9NbVINtZ+ZBpe/NQoEZGuLkkUOTLTFukw4c+PIsoso?=
+ =?us-ascii?Q?9gAYEwsJmZM2qFCeSXq+7AV5zRd1YF93vJ58mdE99adfYPDNfs/Ri1sd203j?=
+ =?us-ascii?Q?VU1IL43bnNFDAycmP+pOh54vQJJN0PliZy2kRwU89A2N37mEofsO2IADycfm?=
+ =?us-ascii?Q?le3d3X8csCedlnnIzhlLXYaRhktjV+8TMM9l4Fh18YDtf3z8s1JMhVQxlKMC?=
+ =?us-ascii?Q?KtsHiJhysJwTcIW5pIEFl1SsWmNUTNBje5JS17a98NFUWXA92FFytgi/sL/A?=
+ =?us-ascii?Q?C/efRNy6SoUyKa+84aMaNYty+D/hDLn5d6QNLv8iHqfynHtWWV7eo9qj/X86?=
+ =?us-ascii?Q?RjoWYUgeewTzwstva6L+tROXHdmwGIx65nVKr+ElGKgPOmhWMwbirkR/SUPb?=
+ =?us-ascii?Q?6HuV4dRMoO5pYkNo48F/MyMskIqz4fwgaQN5qe1w+h7qojKIYu/0W5SKttzv?=
+ =?us-ascii?Q?Pb5UlNQJv4ztW+lDgEFvohF/5aD2c6Z14GNlPxnFjXAWvdZ/abRjMbUJH9dr?=
+ =?us-ascii?Q?I3XkS4FUg8UA5xHbc+3HKHPUrCik6rAPhX2qAa/uM1dPGOHj1HJAqcpDFYS3?=
+ =?us-ascii?Q?a/I2msMNIGBsvvavqFWOh7VHuyevigK5qDDa23+7hwyW6bIqMAumG9NHnsdO?=
+ =?us-ascii?Q?QbhP3VXJsjtbXIgyAZWjLiI9ROcHb/9oUM3xplVh7WFORMWtybGCdQlLbHsj?=
+ =?us-ascii?Q?dXJBq7IhEU7HfQA6q/SP0N0bGn3FFAs1jqJy279sKBpoq+74PPoaeDzQxqEE?=
+ =?us-ascii?Q?L1fxLCSlr54o/57ca4km5ryCC96yu/9m9SxCjgirstAfDe4tbtMq+bkthd5u?=
+ =?us-ascii?Q?GyPgliDTAfFNyayeqIjTF9NwuCk6mmxLmqkHNlAx4jDEGIamUhZt5/nDWxkg?=
+ =?us-ascii?Q?xNI6VuYS/y6goou+6P/zUf+Y75N9aDjAE54k3IY0j/iXfnsWkMfwJeh/EU9m?=
+ =?us-ascii?Q?BGM7h4UJxWts5Bmemohkw/IU8kf96tZGYLEqSMUfqSMryUZE1605V8VnN6Gt?=
+ =?us-ascii?Q?BiIxfzURvx5c3bbpp+ojVFkEQoUHpCdqN0njPp+NgtKlXuUVARyhNTj/CsRh?=
+ =?us-ascii?Q?Cb8WkGZHoPOwHwTcHbogto0uPSMA9gaOlXivwH9Z956ju0XiNJKfDmB67ItH?=
+ =?us-ascii?Q?s+hysmTrU4dNwFjV60/cYoEMXUkLYlm7LTqlBYJGKaDe+hSJWqGl1q57uqNu?=
+ =?us-ascii?Q?qwaHZnXePe1KdUIx5b60f/gICyAalec5FQ8Yt4Q/zik8mMImWTR5fqbpJDwW?=
+ =?us-ascii?Q?jdcna1cgHWGBNV3Mia7FA5rdDVp39McpyIAuHKL1Hc84EGJJuky7i153fg5q?=
+ =?us-ascii?Q?C+MghcEipwSnALoHis4r/bRbIam8UO5ef371z2Zg7A5XFJO8kImDq2dypltB?=
+ =?us-ascii?Q?dX1YRogqmd2TmcwCuxA=3D?=
 X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4c7acac-7cc8-4f49-d03b-08da8b253a25
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbf7b388-47ff-43ba-61f8-08da8b261193
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB7164.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2022 07:48:43.3828
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2022 07:54:44.8267
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bJy7Y4rr+A9nfiv4H3Q7cujOMw1MuhNkUUe8wjh+D5HdpbhUO8qRd6xUw93KFmSU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7590
+X-MS-Exchange-CrossTenant-UserPrincipalName: nbQEyK/txoh2TpH7aQTGlRSzBtMwTYISglwXEPiFnF6FFQpyATfLu4Iy8a/cA0MW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0401MB2486
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -123,242 +123,49 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
-
-On Sun, Aug 28, 2022 at 06:34:26AM +0300, Jarkko Sakkinen wrote:
-> On Thu, Aug 25, 2022 at 10:23:12PM +0800, Lee, Chun-Yi wrote:
-> > This patch adds the logic for checking the CodeSigning extended
-> > key usage when verifying signature of kernel module or
-> > kexec PE binary in PKCS#7.
-> 
-> Pretty much the same feedback as for 1/4.
->
-
-I will also change this description.
-
-Thanks
-Joey Lee
- 
+On Sun, Aug 28, 2022 at 06:35:24AM +0300, Jarkko Sakkinen wrote:
+> On Thu, Aug 25, 2022 at 10:23:14PM +0800, Lee, Chun-Yi wrote:
+> > Add an openssl command option example for generating CodeSign extended
+> > key usage in X.509 when CONFIG_CHECK_CODESIGN_EKU is enabled.
 > > 
 > > Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
 > > ---
-> >  certs/blacklist.c                    |  5 ++--
-> >  certs/system_keyring.c               |  4 +--
-> >  crypto/asymmetric_keys/Kconfig       |  9 ++++++
-> >  crypto/asymmetric_keys/pkcs7_trust.c | 43 ++++++++++++++++++++++++++--
-> >  crypto/asymmetric_keys/selftest.c    |  2 +-
-> >  include/crypto/pkcs7.h               |  4 ++-
-> >  include/keys/system_keyring.h        |  7 +++--
-> >  7 files changed, 63 insertions(+), 11 deletions(-)
+> >  Documentation/admin-guide/module-signing.rst | 6 ++++++
+> >  1 file changed, 6 insertions(+)
 > > 
-> > diff --git a/certs/blacklist.c b/certs/blacklist.c
-> > index 41f10601cc72..fa41454055be 100644
-> > --- a/certs/blacklist.c
-> > +++ b/certs/blacklist.c
-> > @@ -282,11 +282,12 @@ int add_key_to_revocation_list(const char *data, size_t size)
-> >   * is_key_on_revocation_list - Determine if the key for a PKCS#7 message is revoked
-> >   * @pkcs7: The PKCS#7 message to check
-> >   */
-> > -int is_key_on_revocation_list(struct pkcs7_message *pkcs7)
-> > +int is_key_on_revocation_list(struct pkcs7_message *pkcs7,
-> > +			      enum key_being_used_for usage)
-> >  {
-> >  	int ret;
+> > diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
+> > index 7d7c7c8a545c..ca3b8f19466c 100644
+> > --- a/Documentation/admin-guide/module-signing.rst
+> > +++ b/Documentation/admin-guide/module-signing.rst
+> > @@ -170,6 +170,12 @@ generate the public/private key files::
+> >  	   -config x509.genkey -outform PEM -out kernel_key.pem \
+> >  	   -keyout kernel_key.pem
 > >  
-> > -	ret = pkcs7_validate_trust(pkcs7, blacklist_keyring);
-> > +	ret = pkcs7_validate_trust(pkcs7, blacklist_keyring, usage, false);
-> >  
-> >  	if (ret == 0)
-> >  		return -EKEYREJECTED;
-> > diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> > index 5042cc54fa5e..66737bfb26de 100644
-> > --- a/certs/system_keyring.c
-> > +++ b/certs/system_keyring.c
-> > @@ -263,13 +263,13 @@ int verify_pkcs7_message_sig(const void *data, size_t len,
-> >  			goto error;
-> >  		}
-> >  
-> > -		ret = is_key_on_revocation_list(pkcs7);
-> > +		ret = is_key_on_revocation_list(pkcs7, usage);
-> >  		if (ret != -ENOKEY) {
-> >  			pr_devel("PKCS#7 platform key is on revocation list\n");
-> >  			goto error;
-> >  		}
-> >  	}
-> > -	ret = pkcs7_validate_trust(pkcs7, trusted_keys);
-> > +	ret = pkcs7_validate_trust(pkcs7, trusted_keys, usage, true);
-> >  	if (ret < 0) {
-> >  		if (ret == -ENOKEY)
-> >  			pr_devel("PKCS#7 signature not signed with a trusted key\n");
-> > diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-> > index 3df3fe4ed95f..189536bd0f9a 100644
-> > --- a/crypto/asymmetric_keys/Kconfig
-> > +++ b/crypto/asymmetric_keys/Kconfig
-> > @@ -85,4 +85,13 @@ config FIPS_SIGNATURE_SELFTEST
-> >  	depends on ASYMMETRIC_KEY_TYPE
-> >  	depends on PKCS7_MESSAGE_PARSER
-> >  
-> > +config CHECK_CODESIGN_EKU
-> > +	bool "Check codeSigning extended key usage"
-> > +	depends on PKCS7_MESSAGE_PARSER=y
-> > +	depends on SYSTEM_DATA_VERIFICATION
-> > +	help
-> > +	  This option provides support for checking the codeSigning extended
-> > +	  key usage when verifying the signature in PKCS#7. It affects kernel
-> > +	  module verification and kexec PE binary verification.
-> > +
-> >  endif # ASYMMETRIC_KEY_TYPE
-> > diff --git a/crypto/asymmetric_keys/pkcs7_trust.c b/crypto/asymmetric_keys/pkcs7_trust.c
-> > index 9a87c34ed173..087d3761d9a8 100644
-> > --- a/crypto/asymmetric_keys/pkcs7_trust.c
-> > +++ b/crypto/asymmetric_keys/pkcs7_trust.c
-> > @@ -16,12 +16,40 @@
-> >  #include <crypto/public_key.h>
-> >  #include "pkcs7_parser.h"
-> >  
-> > +#ifdef CONFIG_CHECK_CODESIGN_EKU
-> > +static bool check_eku_by_usage(struct key *key, enum key_being_used_for usage)
-> > +{
-> > +	struct public_key *public_key = key->payload.data[asym_crypto];
-> > +	bool ret = true;
-> > +
-> > +	switch (usage) {
-> > +	case VERIFYING_MODULE_SIGNATURE:
-> > +	case VERIFYING_KEXEC_PE_SIGNATURE:
-> > +		ret = !!(public_key->ext_key_usage & EKU_codeSigning);
-> > +		if (!ret)
-> > +			pr_warn("The signer '%s' key is not CodeSigning\n",
-> > +				key->description);
-> > +		break;
-> > +	default:
-> > +		break;
-> > +	}
-> > +	return ret;
-> > +}
-> > +#else
-> > +static bool check_eku_by_usage(struct key *key, enum key_being_used_for usage)
-> > +{
-> > +	return true;
-> > +}
-> > +#endif
-> > +
-> >  /*
-> >   * Check the trust on one PKCS#7 SignedInfo block.
-> >   */
-> >  static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
-> >  				    struct pkcs7_signed_info *sinfo,
-> > -				    struct key *trust_keyring)
-> > +				    struct key *trust_keyring,
-> > +				    enum key_being_used_for usage,
-> > +				    bool check_eku)
-> >  {
-> >  	struct public_key_signature *sig = sinfo->sig;
-> >  	struct x509_certificate *x509, *last = NULL, *p;
-> > @@ -112,6 +140,10 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
-> >  	return -ENOKEY;
-> >  
-> >  matched:
-> > +	if (check_eku && !check_eku_by_usage(key, usage)) {
-> > +		key_put(key);
-> > +		return -ENOKEY;
-> > +	}
+> > +When ``CONFIG_CHECK_CODESIGN_EKU`` option is enabled, the following openssl
+> > +command option should be added where for generating CodeSign extended key usage
 > 
-> Why you don't just open code this to those rare call
-> sites where it is needed?
+> You have:
 > 
-> I counted that there is exactly one call site.
+> 1. codeSign
+> 2. CodeSign
+> 3. CodeSigning
 > 
-> >  	ret = verify_signature(key, sig);
-> >  	key_put(key);
-> >  	if (ret < 0) {
-> > @@ -135,6 +167,8 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
-> >   * pkcs7_validate_trust - Validate PKCS#7 trust chain
-> >   * @pkcs7: The PKCS#7 certificate to validate
-> >   * @trust_keyring: Signing certificates to use as starting points
-> > + * @usage: The use to which the key is being put.
-> > + * @check_eku: Check EKU (Extended Key Usage)
-> >   *
-> >   * Validate that the certificate chain inside the PKCS#7 message intersects
-> >   * keys we already know and trust.
-> > @@ -156,7 +190,9 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
-> >   * May also return -ENOMEM.
-> >   */
-> >  int pkcs7_validate_trust(struct pkcs7_message *pkcs7,
-> > -			 struct key *trust_keyring)
-> > +			 struct key *trust_keyring,
-> > +			 enum key_being_used_for usage,
-> > +			 bool check_eku)
-> >  {
-> >  	struct pkcs7_signed_info *sinfo;
-> >  	struct x509_certificate *p;
-> > @@ -167,7 +203,8 @@ int pkcs7_validate_trust(struct pkcs7_message *pkcs7,
-> >  		p->seen = false;
-> >  
-> >  	for (sinfo = pkcs7->signed_infos; sinfo; sinfo = sinfo->next) {
-> > -		ret = pkcs7_validate_trust_one(pkcs7, sinfo, trust_keyring);
-> > +		ret = pkcs7_validate_trust_one(pkcs7, sinfo, trust_keyring,
-> > +					       usage, check_eku);
-> >  		switch (ret) {
-> >  		case -ENOKEY:
-> >  			continue;
-> > diff --git a/crypto/asymmetric_keys/selftest.c b/crypto/asymmetric_keys/selftest.c
-> > index fa0bf7f24284..756e9f224d8a 100644
-> > --- a/crypto/asymmetric_keys/selftest.c
-> > +++ b/crypto/asymmetric_keys/selftest.c
-> > @@ -212,7 +212,7 @@ int __init fips_signature_selftest(void)
-> >  		if (ret < 0)
-> >  			panic("Certs selftest %d: pkcs7_verify() = %d\n", i, ret);
-> >  
-> > -		ret = pkcs7_validate_trust(pkcs7, keyring);
-> > +		ret = pkcs7_validate_trust(pkcs7, keyring, VERIFYING_MODULE_SIGNATURE, false);
-> >  		if (ret < 0)
-> >  			panic("Certs selftest %d: pkcs7_validate_trust() = %d\n", i, ret);
-> >  
-> > diff --git a/include/crypto/pkcs7.h b/include/crypto/pkcs7.h
-> > index 38ec7f5f9041..5d87b8a02f79 100644
-> > --- a/include/crypto/pkcs7.h
-> > +++ b/include/crypto/pkcs7.h
-> > @@ -30,7 +30,9 @@ extern int pkcs7_get_content_data(const struct pkcs7_message *pkcs7,
-> >   * pkcs7_trust.c
-> >   */
-> >  extern int pkcs7_validate_trust(struct pkcs7_message *pkcs7,
-> > -				struct key *trust_keyring);
-> > +				struct key *trust_keyring,
-> > +				enum key_being_used_for usage,
-> > +				bool check_eku);
-> >  
-> >  /*
-> >   * pkcs7_verify.c
-> > diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.h
-> > index 91e080efb918..bb33b527240e 100644
-> > --- a/include/keys/system_keyring.h
-> > +++ b/include/keys/system_keyring.h
-> > @@ -9,6 +9,7 @@
-> >  #define _KEYS_SYSTEM_KEYRING_H
-> >  
-> >  #include <linux/key.h>
-> > +#include <keys/asymmetric-type.h>
-> >  
-> >  enum blacklist_hash_type {
-> >  	/* TBSCertificate hash */
-> > @@ -81,13 +82,15 @@ static inline int is_binary_blacklisted(const u8 *hash, size_t hash_len)
-> >  
-> >  #ifdef CONFIG_SYSTEM_REVOCATION_LIST
-> >  extern int add_key_to_revocation_list(const char *data, size_t size);
-> > -extern int is_key_on_revocation_list(struct pkcs7_message *pkcs7);
-> > +extern int is_key_on_revocation_list(struct pkcs7_message *pkcs7,
-> > +				     enum key_being_used_for usage);
-> >  #else
-> >  static inline int add_key_to_revocation_list(const char *data, size_t size)
-> >  {
-> >  	return 0;
-> >  }
-> > -static inline int is_key_on_revocation_list(struct pkcs7_message *pkcs7)
-> > +static inline int is_key_on_revocation_list(struct pkcs7_message *pkcs7,
-> > +					    enum key_being_used_for usage)
-> >  {
-> >  	return -ENOKEY;
-> >  }
+> Why this ambiguity?
+>
+
+Sorry for the ambiguity. I will use codeSigning in document and patch
+description to sync with RFC2459 and openssl.
+
+Thanks a lot!
+Joey Lee
+ 
+> > +in X.509::
+> > +
+> > +        -addext "extendedKeyUsage=codeSigning"
+> > +
+> >  The full pathname for the resulting kernel_key.pem file can then be specified
+> >  in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key therein will
+> >  be used instead of an autogenerated keypair.
 > > -- 
 > > 2.26.2
 > > 
