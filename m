@@ -2,280 +2,294 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C35515A85CE
-	for <lists+keyrings@lfdr.de>; Wed, 31 Aug 2022 20:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 763805A8EEB
+	for <lists+keyrings@lfdr.de>; Thu,  1 Sep 2022 08:58:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233007AbiHaSiT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 31 Aug 2022 14:38:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58836 "EHLO
+        id S233270AbiIAG6X (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Sep 2022 02:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232885AbiHaSh4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 31 Aug 2022 14:37:56 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2088.outbound.protection.outlook.com [40.107.223.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFC3EBF79;
-        Wed, 31 Aug 2022 11:34:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Zrbivl8Ph/CJBxHgxpLUkwlzv1zV7vP1HKqRPa2fJzamgY70eWeQulJnfw2RdNY0xQFa3r/2K7WU6rKLoRHYJriT7FmD5xqQhZcbJae7yFg8t5GbqkSXuKrgu0lOWuOeWznpkyN3xkfG4fIg8xYoNhhwoZp4Gd8PZfN6nrJ83vnODCzBxZGFh+5yKwtNv7yep07YAxHxZSUxjmsA2Yj3NpTvAnyVr28GRema7TGRyztNVWcZ1j58IuN4Jm+FtJuqzQk41ZDlmMZZrJmCh57AyfwKNMIKfYp6B4SCo/TYqczeZBwFB8euQ+X1I8Kp4chysEQK6VXxqIyf1po2jqM0DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pJSYGo1I0/k1oyjPAXi32o8gHEfwKVXFAzLwgtl9NjY=;
- b=DZMO0J9ECAlvyfOizgjSmDtWlHPfuYVbmyIDzE3H+X/LO1te+FMkAsyCQclZBYtNhnHt5SM4zr6vHUKIl7vm/GFm5m4REZ11cmcp+1ZBj4QY9MmFS6qWwYgd5eDqGBZ1r9YST2HxT2SFIp3NrL8v1OxaU8YdL6qWpbf3yroxMK7ZajXsoXEqulX95tKrVEW6qCNpK90bz5Kpu4WchuT0DWLt22iTySC/T3we8T5SlRGnQATHAlz8yH+cvlh7WH8zd5vqXpisDOxxsxYfu7CkiQYGwcH32LS+eIXalZeje93h8uipWOvzlt3GStrrEBV6qudqyC3OeeGAAZWDYyL0wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pJSYGo1I0/k1oyjPAXi32o8gHEfwKVXFAzLwgtl9NjY=;
- b=EIp6cx6KmQFZziP0OzTjcIVSFLAZR5PzlfRSrUE79XGKRrAO9d03hxkKsmWJNFv22WXzt6EOr9T0nTY0JbV5Of9zE/eqWXVfNkDAb3VGrVwsjVZ4e3m8NZ6c3PF9kBi5dpQc++bknq0XBAIGkSyreYFrRXygLcKH1e70q8AvlM4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MW4PR12MB7384.namprd12.prod.outlook.com (2603:10b6:303:22b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Wed, 31 Aug
- 2022 18:34:54 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::e00a:1f8c:dcd1:afc3]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::e00a:1f8c:dcd1:afc3%6]) with mapi id 15.20.5566.021; Wed, 31 Aug 2022
- 18:34:54 +0000
-Message-ID: <e74a2c48-fd30-aa4c-9ab6-eafe652f7878@amd.com>
-Date:   Wed, 31 Aug 2022 13:34:50 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v2 00/10] Encrypted Hibernation
-Content-Language: en-US
-To:     Evan Green <evgreen@chromium.org>, linux-kernel@vger.kernel.org
-Cc:     gwendal@chromium.org, Eric Biggers <ebiggers@kernel.org>,
-        Matthew Garrett <mgarrett@aurora.tech>, jarkko@kernel.org,
-        zohar@linux.ibm.com, linux-integrity@vger.kernel.org,
-        Pavel Machek <pavel@ucw.cz>, apronin@chromium.org,
-        dlunev@google.com, rjw@rjwysocki.net, linux-pm@vger.kernel.org,
-        corbet@lwn.net, jejb@linux.ibm.com,
-        David Howells <dhowells@redhat.com>,
-        Hao Wu <hao.wu@rubrik.com>, James Morris <jmorris@namei.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Len Brown <len.brown@intel.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, axelj <axelj@axis.com>,
-        keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-References: <20220823222526.1524851-1-evgreen@chromium.org>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <20220823222526.1524851-1-evgreen@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0362.namprd03.prod.outlook.com
- (2603:10b6:610:119::9) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S233038AbiIAG6V (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Sep 2022 02:58:21 -0400
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC7AD11E5;
+        Wed, 31 Aug 2022 23:58:18 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4MJBZ93wPyz9v7Hg;
+        Thu,  1 Sep 2022 14:52:49 +0800 (CST)
+Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwA3s13fVxBjZcATAA--.7637S2;
+        Thu, 01 Sep 2022 07:57:48 +0100 (CET)
+Message-ID: <2b2242f8d09378fbec49d4f7e29960d5e50d0a68.camel@huaweicloud.com>
+Subject: Re: [PATCH v15 12/12] selftests/bpf: Add tests for dynamic pointers
+ parameters in kfuncs
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
+        dhowells@redhat.com, jarkko@kernel.org, rostedt@goodmis.org,
+        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, shuah@kernel.org
+Cc:     bpf@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        deso@posteo.net, memxor@gmail.com,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Thu, 01 Sep 2022 08:57:30 +0200
+In-Reply-To: <20220831165445.1071641-13-roberto.sassu@huaweicloud.com>
+References: <20220831165445.1071641-1-roberto.sassu@huaweicloud.com>
+         <20220831165445.1071641-13-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b0bfd3ab-8380-4573-8335-08da8b7f7f53
-X-MS-TrafficTypeDiagnostic: MW4PR12MB7384:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: B9rYLmwpBBLVxipSQeOlLctu0IyhE3/kvJKYTp1ZE6aXFJe1HSd2BUHJL4sT3CglParp+GMatpfHcHWIztbkEVfEDuip3UDJg71b7aN+xCP3o5URf2r4ADkMyG+q+Y1e8Wu9VPyBRHUIDDJuZZ24cHiO3NtpUcAz+FfcK7lzciV4/aCfp88oFewDpey408oqn5C0D8m9bj+p0UZserKadVo+NTRFmPdANxOdLmOJVTC1xxFkp7hM6TXBz4W2EVUyYgsxsM0tFh9pdiXgLM3ELHvYfiHQxt3+SqU3gd/k63Sl5gnQezhrsnuxDVOqf87gBIBTAxkg/rlASqO/yi/KfDJU3iWSEbRu2DgG7byLSI8X+0be/BD8ZQS8xWnczI04FbqOos+I2sVEWaEWZe3k5cCmS0ZTyBzbONe7gwfZGO9G5Q0QsR/IVPQPphQOLIKK/fxvF+bhVDqgml4J2B5QlQ8T2y3G4QELHDHzqhLl89y6/TptNXcZCLnGi7qeKsaTs1bZg0SM9P0M68gH9mT1Fy5x9r5n68IZMT1tmMEFqieJB9uswGln1Y223lmJp0B8nTTCcPiiaG6TZjNGygPk3HwGHAJ45Sjbk1zxeUbogoGYtYz4pT1H/1vWNVM27lABSGJBf4RZoL8AfgWMj4A7fAjpJHffDmjfJKvesdm4+ZO85zJxBXHxoTtcRGPl0LUlGGeKBtTaylIZULBprDBvTks11uUTZO8Bjv6EQd+ApxpF+5ngggPosJEBM5qAOm+kf88glPTBCjiznN9PhryUwn7zic7iVcD6aoQ15QMlVdOt/sOxe3UDlvor8koOP3e7
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(376002)(39860400002)(396003)(366004)(346002)(6506007)(6512007)(26005)(2906002)(83380400001)(53546011)(6486002)(316002)(54906003)(38100700002)(36756003)(8676002)(66556008)(4326008)(41300700001)(66476007)(86362001)(31686004)(66946007)(6666004)(8936002)(5660300002)(31696002)(186003)(7416002)(478600001)(2616005)(966005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z3MzQVBqVzF5WStBT0tNSjlKUDIyOWFQaHRDS3dvS3dEcldyUzVUK3luUHJO?=
- =?utf-8?B?M2VybmN4MGVNdDlNZEZzdkVMRGxGc2JTbDlRTml5UTkzcVMwdTEvM2tlZUNM?=
- =?utf-8?B?Zm16c0NSa2U0bUp0bkN1QWVuTWxVakd2SEtIN0FuM1FQTnFHZFc5OVJpd1pC?=
- =?utf-8?B?bmZMb2VSbDhmK01rM0NZR3BUd3p3M1JpbHVtdzJjNjNHLzdSZytRSGJUT0ZO?=
- =?utf-8?B?TmtyK1FJUG1MNGN1Y24weWxwMmFoWTNOYkMzcDhyTlgzTEk5YXVVcFZZU0g0?=
- =?utf-8?B?ODBLdnh3Y3R1WkRmSEEveVRxcWMyV285djR3NUNlMzFoY2FEek4wT1NhbVA0?=
- =?utf-8?B?VEVPZkhqZjRsZE04ek52a2RsUHkxOHI4OHVWT2NycjJDaWRSSGZCWkhmallV?=
- =?utf-8?B?dUdnUDNRV2g2eWVPbUxweThGNnBrWnJ3S1VEdi9odGNndXdCeUZzNUlnRGdX?=
- =?utf-8?B?cG9sdkh1NjhrYi84NG1XdFl4UDJBcmVYN3Mzem9MWnJzOUpxUG9MQXFtTmwz?=
- =?utf-8?B?V2xLUGZ6bjZvVzZGTytkUm9kMmd6ODBNMUNReWRQMjhWTHBPZ29JUU9kdFhn?=
- =?utf-8?B?b0o2bUN1MUpBN0RubjdoSk9lMmJIU3UxZnZONkVoR1lXRVY1ai9QdGwrN3JW?=
- =?utf-8?B?dkVtdktoM1dMbnpxREJRdlNPaU91YmRxcGIzQ25FLzBwWmdiZFhCNmtYN0tm?=
- =?utf-8?B?L1hrQkIwSExmQUd0SU5MN1E4M3hud04zaVBuU1pXSVdrUUxiMXl1cDZ6NHFQ?=
- =?utf-8?B?YStjdzhTTFFjK1B6TFg3ZTF4WVZDak5hY0RyK2NnSmxOaDdLYyt6UFl3ZzY0?=
- =?utf-8?B?cmZOb0pDWlJ4UVBVNkh0bDMrZ1dPNlNGM3BCL3M2ZDJPck9iZVNnRnhyNlRJ?=
- =?utf-8?B?R1hHWWlFbWFMWEg3T0dKdXpaSVZYUWVDY0xoUFVXc3JnYWZVQXEyUjJJcXZL?=
- =?utf-8?B?UTU4QmdFN1h4TnowcW44SUtFeVRmTGdTdGRUazl3bnpiMjBqM3g0ZytWYmY4?=
- =?utf-8?B?VjVzaC9QbG5Vc2FRYjhDT0czZ0pqWHRKRUcxQUdGVDExekE1ZUVFZGJCMXdJ?=
- =?utf-8?B?clpmUnFMait0R2hMM2xpZ2ZrckhaRmJjeVJkeU9PU3F6T1lnWjBJN285T2Uz?=
- =?utf-8?B?UXBvRDI5NnZOcCtVdGpQNGFTZE5jSkxjaE80TDVsOGNRUWlBeXpkQm9FZllL?=
- =?utf-8?B?czRWZy9HTDZoejVyRW5OdHRLeHc4THpIb0xRMG1VYldSQ3VGVHoyWXk4aU5K?=
- =?utf-8?B?eDJtNll2T2h3R3p1eGRaNFEwMkZkMnhBYWh5T1crMlFPN1dYQ0hGamV6dnpB?=
- =?utf-8?B?ZDdxT2pxOUlaY1B4SFdxdUJ6WUVqNSt0Uk9wSDM1NC8vVTNMVldaTy9zYnJz?=
- =?utf-8?B?MS94TUYvMGtzU0JFV2NPbWJZeGN2TlRnMlg2dG5PcHl6VXYxbzZrTVpReHY4?=
- =?utf-8?B?M3RoZUtzOEgzdzN6U2VnZmlHb0pMSTBhakszcVFBTUlGYklJLzNycXgyMGsx?=
- =?utf-8?B?aENPdjJpZWpiMXpTZkZ6UW5Vc0xTamZwWmxwYjl6WlVOTFE2ckZHZHZLQzln?=
- =?utf-8?B?cFJRcFBDbW1rRjFLNGUxQloyeUtuaHcwUFhrNEJrTGJQVkNITnc5bG5UbDFJ?=
- =?utf-8?B?M2FoSldTcTlTczRvTXBVTEs4STJmYTRZZjd4QTZtaU9WVkdhcDc2Z2RIS2RF?=
- =?utf-8?B?NU5SNXRXVFVHYnJEbFpsZHk1Ly85SVgwMWtQQ2JZMFFRUmVNcURwdjJiU1pp?=
- =?utf-8?B?R3VlWUF1dmUyQlQrclBxVWQvVnk4bTMzMjJwZ21RZXJtcUpGRlZQMmZ6c0t2?=
- =?utf-8?B?NXhUT0l4NE0xdWh2eUFQd2FSVXdLRUlWUlNCV0V1aFMrVjNUVzU3RGI0VUd6?=
- =?utf-8?B?NjJHNEFhZzVVdXVwYWhUb3JPUE9JOGUzYTdlN0JFUFh5RGVYVENKZGJ4dDh2?=
- =?utf-8?B?clJCOHVFZTBzK1FyMVZ5NDR6YkJWRXN2WE11Yzd5MUpsMzBlTTREYUM4MHd5?=
- =?utf-8?B?bjJCRjhQdGpOL0xUejV3YjYzVjZ4TkdjV2k0aWFqNVdmb1VKc29RaThLT3V0?=
- =?utf-8?B?cHVrNmo3WXcvSlZRcWo5K0hCSitzVWxVVTBoVE1QdzNPbUczbU1hZElBOGRy?=
- =?utf-8?Q?7muGg2gemYp7Vfs9nijsKSZE5?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0bfd3ab-8380-4573-8335-08da8b7f7f53
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2022 18:34:54.2314
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jb5la09YpnyqxQ+MCQuVymErwR/3KlATGVMRfDi2+20GPsU1lZ1SoHtITDqs/qvMl2LYWS9hjsJbdmaJDk8Hng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7384
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: GxC2BwA3s13fVxBjZcATAA--.7637S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3AF4kCF18Zr4UJrWUKr1kAFb_yoWxGF13pa
+        yrGFy29rWIq3W7Wr13XF4IvF4fKr48Zr1akrZFq34xAr1DXryxWF48Kr45Jwn5K395Xw45
+        Zw1Sgr4rCr4Uta7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+        xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
+        c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgACBF1jj3589gAEsF
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 8/23/2022 17:25, Evan Green wrote:
-> We are exploring enabling hibernation in some new scenarios. However,
-> our security team has a few requirements, listed below:
-> 1. The hibernate image must be encrypted with protection derived from
->     both the platform (eg TPM) and user authentication data (eg
->     password).
-> 2. Hibernation must not be a vector by which a malicious userspace can
->     escalate to the kernel.
+On Wed, 2022-08-31 at 18:54 +0200, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
 > 
-> Requirement #1 can be achieved solely with uswsusp, however requirement
-> 2 necessitates mechanisms in the kernel to guarantee integrity of the
-> hibernate image. The kernel needs a way to authenticate that it generated
-> the hibernate image being loaded, and that the image has not been tampered
-> with. Adding support for in-kernel AEAD encryption with a TPM-sealed key
-> allows us to achieve both requirements with a single computation pass.
-> 
-> Matthew Garrett published a series [1] that aligns closely with this
-> goal. His series utilized the fact that PCR23 is a resettable PCR that
-> can be blocked from access by usermode. The TPM can create a sealed key
-> tied to PCR23 in two ways. First, the TPM can attest to the value of
-> PCR23 when the key was created, which the kernel can use on resume to
-> verify that the kernel must have created the key (since it is the only
-> one capable of modifying PCR23). It can also create a policy that enforces
-> PCR23 be set to a specific value as a condition of unsealing the key,
-> preventing usermode from unsealing the key by talking directly to the
-> TPM.
-> 
-> This series adopts that primitive as a foundation, tweaking and building
-> on it a bit. Where Matthew's series used the TPM-backed key to encrypt a
-> hash of the image, this series uses the key directly as a gcm(aes)
-> encryption key, which the kernel uses to encrypt and decrypt the
-> hibernate image in chunks of 16 pages. This provides both encryption and
-> integrity, which turns out to be a noticeable performance improvement over
-> separate passes for encryption and hashing.
-> 
-> The series also introduces the concept of mixing user key material into
-> the encryption key. This allows usermode to introduce key material
-> based on unspecified external authentication data (in our case derived
-> from something like the user password or PIN), without requiring
-> usermode to do a separate encryption pass.
-> 
-> Matthew also documented issues his series had [2] related to generating
-> fake images by booting alternate kernels without the PCR23 limiting.
-> With access to PCR23 on the same machine, usermode can create fake
-> hibernate images that are indistinguishable to the new kernel from
-> genuine ones. His post outlines a solution that involves adding more
-> PCRs into the creation data and policy, with some gyrations to make this
-> work well on a standard PC.
-> 
-> Our approach would be similar: on our machines PCR 0 indicates whether
-> the system is booted in secure/verified mode or developer mode. By
-> adding PCR0 to the policy, we can reject hibernate images made in
-> developer mode while in verified mode (or vice versa).
-> 
-> Additionally, mixing in the user authentication data limits both
-> data exfiltration attacks (eg a stolen laptop) and forged hibernation
-> image attacks to attackers that already know the authentication data (eg
-> user's password). This, combined with our relatively sealed userspace
-> (dm-verity on the rootfs), and some judicious clearing of the hibernate
-> image (such as across an OS update) further reduce the risk of an online
-> attack. The remaining attack space of a forgery from someone with
-> physical access to the device and knowledge of the authentication data
-> is out of scope for us, given that flipping to developer mode or
-> reflashing RO firmware trivially achieves the same thing.
-> 
-> A couple of patches still need to be written on top of this series. The
-> generalized functionality to OR in additional PCRs via Kconfig (like PCR
-> 0 or 5) still needs to be added. We'll also need a patch that disallows
-> unencrypted forms of resume from hibernation, to fully close the door
-> to malicious userspace. However, I wanted to get this series out first
-> and get reactions from upstream before continuing to add to it.
+> Add tests to ensure that only supported dynamic pointer types are
+> accepted,
+> that the passed argument is actually a dynamic pointer, and that the
+> passed
+> argument is a pointer to the stack.
 
-Something else to think about in this series is what happens with 
-`hibernation_available` in kernel/power/hibernate.c.  Currently if the 
-system is locked down hibernate is disabled, but I would think that
-with a setup like that described here that should no longer be necessary.
+Sorry, forgot to add this test to the deny list of s390.
 
+I also rebased to the latest commit.
+
+Let me know if I should resend.
+
+Thanks
+
+Roberto
+
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
+>  .../bpf/prog_tests/kfunc_dynptr_param.c       | 102
+> ++++++++++++++++++
+>  .../bpf/progs/test_kfunc_dynptr_param.c       |  57 ++++++++++
+>  2 files changed, 159 insertions(+)
+>  create mode 100644
+> tools/testing/selftests/bpf/prog_tests/kfunc_dynptr_param.c
+>  create mode 100644
+> tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
 > 
-> [1] https://patchwork.kernel.org/project/linux-pm/cover/20210220013255.1083202-1-matthewgarrett@google.com/
-> [2] https://mjg59.dreamwidth.org/58077.html
-> 
-> Changes in v2:
->   - Fixed sparse warnings
->   - Adjust hash len by 2 due to new ASN.1 storage, and add underflow
->     check.
->   - Rework load/create_kernel_key() to eliminate a label (Andrey)
->   - Call put_device() needed from calling tpm_default_chip().
->   - Add missing static on snapshot_encrypted_byte_count()
->   - Fold in only the used kernel key bytes to the user key.
->   - Make the user key length 32 (Eric)
->   - Use CRYPTO_LIB_SHA256 for less boilerplate (Eric)
->   - Fixed some sparse warnings
->   - Use CRYPTO_LIB_SHA256 to get rid of sha256_data() (Eric)
->   - Adjusted offsets due to new ASN.1 format, and added a creation data
->     length check.
->   - Fix sparse warnings
->   - Fix session type comment (Andrey)
->   - Eliminate extra label in get/create_kernel_key() (Andrey)
->   - Call tpm_try_get_ops() before calling tpm2_flush_context().
-> 
-> Evan Green (7):
->    security: keys: trusted: Include TPM2 creation data
->    security: keys: trusted: Verify creation data
->    PM: hibernate: Add kernel-based encryption
->    PM: hibernate: Use TPM-backed keys to encrypt image
->    PM: hibernate: Mix user key in encrypted hibernate
->    PM: hibernate: Verify the digest encryption key
->    PM: hibernate: seal the encryption key with a PCR policy
-> 
-> Matthew Garrett (3):
->    tpm: Add support for in-kernel resetting of PCRs
->    tpm: Allow PCR 23 to be restricted to kernel-only use
->    security: keys: trusted: Allow storage of PCR values in creation data
-> 
->   Documentation/power/userland-swsusp.rst       |    8 +
->   .../security/keys/trusted-encrypted.rst       |    4 +
->   drivers/char/tpm/Kconfig                      |   10 +
->   drivers/char/tpm/tpm-dev-common.c             |    8 +
->   drivers/char/tpm/tpm-interface.c              |   28 +
->   drivers/char/tpm/tpm.h                        |   23 +
->   drivers/char/tpm/tpm1-cmd.c                   |   69 ++
->   drivers/char/tpm/tpm2-cmd.c                   |   58 +
->   drivers/char/tpm/tpm2-space.c                 |    2 +-
->   include/keys/trusted-type.h                   |    9 +
->   include/linux/tpm.h                           |   12 +
->   include/uapi/linux/suspend_ioctls.h           |   28 +-
->   kernel/power/Kconfig                          |   16 +
->   kernel/power/Makefile                         |    1 +
->   kernel/power/power.h                          |    1 +
->   kernel/power/snapenc.c                        | 1037 +++++++++++++++++
->   kernel/power/snapshot.c                       |    5 +
->   kernel/power/user.c                           |   44 +-
->   kernel/power/user.h                           |  114 ++
->   security/keys/trusted-keys/tpm2key.asn1       |    5 +-
->   security/keys/trusted-keys/trusted_tpm1.c     |    9 +
->   security/keys/trusted-keys/trusted_tpm2.c     |  304 ++++-
->   22 files changed, 1754 insertions(+), 41 deletions(-)
->   create mode 100644 kernel/power/snapenc.c
->   create mode 100644 kernel/power/user.h
-> 
+> diff --git
+> a/tools/testing/selftests/bpf/prog_tests/kfunc_dynptr_param.c
+> b/tools/testing/selftests/bpf/prog_tests/kfunc_dynptr_param.c
+> new file mode 100644
+> index 000000000000..732897faf36b
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/kfunc_dynptr_param.c
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2022 Facebook
+> + * Copyright (C) 2022 Huawei Technologies Duesseldorf GmbH
+> + *
+> + * Author: Roberto Sassu <roberto.sassu@huawei.com>
+> + */
+> +
+> +#include <test_progs.h>
+> +#include "test_kfunc_dynptr_param.skel.h"
+> +
+> +static size_t log_buf_sz = 1048576; /* 1 MB */
+> +static char obj_log_buf[1048576];
+> +
+> +static struct {
+> +	const char *prog_name;
+> +	const char *expected_err_msg;
+> +} kfunc_dynptr_tests[] = {
+> +	{"dynptr_type_not_supp",
+> +	 "arg#0 pointer type STRUCT bpf_dynptr_kern points to
+> unsupported dynamic pointer type"},
+> +	{"not_valid_dynptr",
+> +	 "arg#0 pointer type STRUCT bpf_dynptr_kern must be valid and
+> initialized"},
+> +	{"not_ptr_to_stack", "arg#0 pointer type STRUCT bpf_dynptr_kern
+> not to stack"},
+> +};
+> +
+> +static bool kfunc_not_supported;
+> +
+> +static int libbpf_print_cb(enum libbpf_print_level level, const char
+> *fmt,
+> +			   va_list args)
+> +{
+> +	if (strcmp(fmt, "libbpf: extern (func ksym) '%s': not found in
+> kernel or module BTFs\n"))
+> +		return 0;
+> +
+> +	if (strcmp(va_arg(args, char *), "bpf_verify_pkcs7_signature"))
+> +		return 0;
+> +
+> +	kfunc_not_supported = true;
+> +	return 0;
+> +}
+> +
+> +static void verify_fail(const char *prog_name, const char
+> *expected_err_msg)
+> +{
+> +	struct test_kfunc_dynptr_param *skel;
+> +	LIBBPF_OPTS(bpf_object_open_opts, opts);
+> +	libbpf_print_fn_t old_print_cb;
+> +	struct bpf_program *prog;
+> +	int err;
+> +
+> +	opts.kernel_log_buf = obj_log_buf;
+> +	opts.kernel_log_size = log_buf_sz;
+> +	opts.kernel_log_level = 1;
+> +
+> +	skel = test_kfunc_dynptr_param__open_opts(&opts);
+> +	if (!ASSERT_OK_PTR(skel, "test_kfunc_dynptr_param__open_opts"))
+> +		goto cleanup;
+> +
+> +	prog = bpf_object__find_program_by_name(skel->obj, prog_name);
+> +	if (!ASSERT_OK_PTR(prog, "bpf_object__find_program_by_name"))
+> +		goto cleanup;
+> +
+> +	bpf_program__set_autoload(prog, true);
+> +
+> +	bpf_map__set_max_entries(skel->maps.ringbuf, getpagesize());
+> +
+> +	kfunc_not_supported = false;
+> +
+> +	old_print_cb = libbpf_set_print(libbpf_print_cb);
+> +	err = test_kfunc_dynptr_param__load(skel);
+> +	libbpf_set_print(old_print_cb);
+> +
+> +	if (err < 0 && kfunc_not_supported) {
+> +		fprintf(stderr,
+> +		  "%s:SKIP:bpf_verify_pkcs7_signature() kfunc not
+> supported\n",
+> +		  __func__);
+> +		test__skip();
+> +		goto cleanup;
+> +	}
+> +
+> +	if (!ASSERT_ERR(err, "unexpected load success"))
+> +		goto cleanup;
+> +
+> +	if (!ASSERT_OK_PTR(strstr(obj_log_buf, expected_err_msg),
+> "expected_err_msg")) {
+> +		fprintf(stderr, "Expected err_msg: %s\n",
+> expected_err_msg);
+> +		fprintf(stderr, "Verifier output: %s\n", obj_log_buf);
+> +	}
+> +
+> +cleanup:
+> +	test_kfunc_dynptr_param__destroy(skel);
+> +}
+> +
+> +void test_kfunc_dynptr_param(void)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(kfunc_dynptr_tests); i++) {
+> +		if
+> (!test__start_subtest(kfunc_dynptr_tests[i].prog_name))
+> +			continue;
+> +
+> +		verify_fail(kfunc_dynptr_tests[i].prog_name,
+> +			    kfunc_dynptr_tests[i].expected_err_msg);
+> +	}
+> +}
+> diff --git
+> a/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
+> b/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
+> new file mode 100644
+> index 000000000000..2f09f91a1576
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
+> @@ -0,0 +1,57 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2022 Huawei Technologies Duesseldorf GmbH
+> + *
+> + * Author: Roberto Sassu <roberto.sassu@huawei.com>
+> + */
+> +
+> +#include "vmlinux.h"
+> +#include <errno.h>
+> +#include <bpf/bpf_helpers.h>
+> +#include <bpf/bpf_tracing.h>
+> +
+> +struct bpf_dynptr {
+> +	__u64 :64;
+> +	__u64 :64;
+> +} __attribute__((aligned(8)));
+> +
+> +extern int bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr,
+> +				      struct bpf_dynptr *sig_ptr,
+> +				      struct bpf_key *trusted_keyring)
+> __ksym;
+> +
+> +struct {
+> +	__uint(type, BPF_MAP_TYPE_RINGBUF);
+> +} ringbuf SEC(".maps");
+> +
+> +char _license[] SEC("license") = "GPL";
+> +
+> +SEC("?lsm.s/bpf")
+> +int BPF_PROG(dynptr_type_not_supp, int cmd, union bpf_attr *attr,
+> +	     unsigned int size)
+> +{
+> +	char write_data[64] = "hello there, world!!";
+> +	struct bpf_dynptr ptr;
+> +
+> +	bpf_ringbuf_reserve_dynptr(&ringbuf, sizeof(write_data), 0,
+> &ptr);
+> +
+> +	return bpf_verify_pkcs7_signature(&ptr, &ptr, NULL);
+> +}
+> +
+> +SEC("?lsm.s/bpf")
+> +int BPF_PROG(not_valid_dynptr, int cmd, union bpf_attr *attr,
+> unsigned int size)
+> +{
+> +	unsigned long val;
+> +
+> +	return bpf_verify_pkcs7_signature((struct bpf_dynptr *)&val,
+> +					  (struct bpf_dynptr *)&val,
+> NULL);
+> +}
+> +
+> +SEC("?lsm.s/bpf")
+> +int BPF_PROG(not_ptr_to_stack, int cmd, union bpf_attr *attr,
+> unsigned int size)
+> +{
+> +	unsigned long val;
+> +
+> +	return bpf_verify_pkcs7_signature((struct bpf_dynptr *)val,
+> +					  (struct bpf_dynptr *)val,
+> NULL);
+> +}
 
