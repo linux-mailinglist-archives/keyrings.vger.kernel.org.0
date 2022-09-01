@@ -2,144 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1298E5A8F09
-	for <lists+keyrings@lfdr.de>; Thu,  1 Sep 2022 09:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8F065A9221
+	for <lists+keyrings@lfdr.de>; Thu,  1 Sep 2022 10:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbiIAHCB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Sep 2022 03:02:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47324 "EHLO
+        id S233109AbiIAIeC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Sep 2022 04:34:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232891AbiIAHBA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Sep 2022 03:01:00 -0400
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237221928D;
-        Thu,  1 Sep 2022 00:00:45 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4MJBcz4dNGz9v7HB;
-        Thu,  1 Sep 2022 14:55:15 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwD3n5N0WBBjL7ITAA--.38593S2;
-        Thu, 01 Sep 2022 08:00:16 +0100 (CET)
-Message-ID: <af509503e534dfbb5b4943d97fbdb27f3e8914fc.camel@huaweicloud.com>
-Subject: Re: [PATCH v15 05/12] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
- and define KEY_LOOKUP_ALL
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        dhowells@redhat.com, jarkko@kernel.org, rostedt@goodmis.org,
-        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, shuah@kernel.org
-Cc:     bpf@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, memxor@gmail.com,
-        Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Thu, 01 Sep 2022 09:00:00 +0200
-In-Reply-To: <20220831165445.1071641-6-roberto.sassu@huaweicloud.com>
-References: <20220831165445.1071641-1-roberto.sassu@huaweicloud.com>
-         <20220831165445.1071641-6-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S232974AbiIAIeA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Sep 2022 04:34:00 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26360128568
+        for <keyrings@vger.kernel.org>; Thu,  1 Sep 2022 01:34:00 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id 76so16842822pfy.3
+        for <keyrings@vger.kernel.org>; Thu, 01 Sep 2022 01:34:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=FcyQcUXi9xALQQ6Lm7VNXiWYStBjH/LCUTADg6v4m+k=;
+        b=GEkmI4ZvKZl82sHggCnjGq/UdNYxYpp0H0F3YlvJt5g0tq5AsAmX8KgOfa3uELbKGS
+         nKBqInCsgzIQA7NMVpChoGef27EUPtdZViwr34ncBj9aR44dU+RLkJg0i+IQrZCeTPVu
+         xZGj+oWa57jM94m9UoLNa7hoUu+56+dB1cVGnwV4j9pSiELqMAiiAd336QBf0hBGRW7J
+         YrcYgqPEdb7wQj4PvrdmlJIsTDNx1HlhSsoDcC1ogJBVHB8ZYQ5xWqVFWqzgtthC9MaO
+         nO6PhWVRJFW4ZVqAGk6V0WlxU/tWtHXcKGSBm+PDGpUd0LFMot7SFWjdtYhaCDLZQEvG
+         3R4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=FcyQcUXi9xALQQ6Lm7VNXiWYStBjH/LCUTADg6v4m+k=;
+        b=ZDX74eH22tzltkplDpInvPK9fXcTgzJFFjfsr7L9HnbHkQjL4+7Mnb0GWG4/kbvzjF
+         3UJ3d00MjG+anhLkvBMyOj53bXFfTzXuD82HX6WgB9t7qv8/GNtq1FHiuO8IGQ2huHnv
+         KQOhQOTgi1+oDfre8ETxaRC1FL8LkvnNX4VTge1svUOJCyCYFlQTSqoXbpUHwSsrKVUb
+         iLR20SV/LaPLc64LNO2XLxhENOQEPFJFIR2slIalXBSCju6niFXUOoUjA8bH1jNP/l+A
+         nd4aUVb5EGzLanBMK6mb851WzSeG+7AXZXyr7TKhW1c8vMIHh4fZZoOk6tn1Q4zFhOfW
+         QK5w==
+X-Gm-Message-State: ACgBeo3d5cLLkfHcCTit4OhXtu1uWiDFW+SkjlG+mJhV5mzyQB1rnA/G
+        aWUTbSRDzhtYd45znA744Vw9TO9GAUTm1tvnNXUZqFBh
+X-Google-Smtp-Source: AA6agR5mSEDsKJDtA8brPfXhHgEbYwryKybf7X5y7yZtIQuKsH+YJvMVpuVqrDrHVnvPIRPpWzKbeu85LPdyswypbnc=
+X-Received: by 2002:a05:6a00:cc5:b0:537:1c47:8b0 with SMTP id
+ b5-20020a056a000cc500b005371c4708b0mr29880207pfv.25.1662021239609; Thu, 01
+ Sep 2022 01:33:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwD3n5N0WBBjL7ITAA--.38593S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF1DurW8Zr4DXrW5KrWkCrg_yoW8KryrpF
-        WDC3WFkryjyry293s7GanFya1Fk398Gr12kF9Fgwn0vFsag34xtr1xKF4ruF1FyrW7ur12
-        grsF9ayUuw4DA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-        6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-        Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcV
-        CF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
-        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUOlksDUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQACBF1jj4J80AAAsY
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:a05:6a10:168f:b0:2d7:8c1f:4922 with HTTP; Thu, 1 Sep 2022
+ 01:33:59 -0700 (PDT)
+Reply-To: maryalbert00045@gmail.com
+From:   Mary Albert <tinaeevan@gmail.com>
+Date:   Thu, 1 Sep 2022 09:33:59 +0100
+Message-ID: <CADEuEs9sT2cy4brnHxahg55Y57LEi02BXGJ5WTBQeQZ8qHKBgA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:444 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [tinaeevan[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [maryalbert00045[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2022-08-31 at 18:54 +0200, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> In preparation for the patch that introduces the
-> bpf_lookup_user_key() eBPF
-> kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be
-> able to
-> validate the kfunc parameters. Add them to enum key_lookup_flag, so
-> that
-> all the current ones and the ones defined in the future are
-> automatically
-> exported through BTF and available to eBPF programs.
-> 
-> Also, add KEY_LOOKUP_ALL to the enum, to facilitate checking whether
-> a
-> variable contains only defined flags.
-> 
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> Reviewed-by: KP Singh <kpsingh@kernel.org>
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-Jarkko, I kept your ack although the code slightly changed to use the
-enum instead of #define.
-
-If you have more comments/suggestions, please let me know.
-
-Thanks
-
-Roberto
-
-> ---
->  include/linux/key.h      | 6 ++++++
->  security/keys/internal.h | 2 --
->  2 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/key.h b/include/linux/key.h
-> index 7febc4881363..d84171f90cbd 100644
-> --- a/include/linux/key.h
-> +++ b/include/linux/key.h
-> @@ -88,6 +88,12 @@ enum key_need_perm {
->  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is
-> deferred */
->  };
->  
-> +enum key_lookup_flag {
-> +	KEY_LOOKUP_CREATE = 0x01,	/* Create special keyrings if they
-> don't exist */
-> +	KEY_LOOKUP_PARTIAL = 0x02,	/* Permit partially
-> constructed keys to be found */
-> +	KEY_LOOKUP_ALL = (KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL), /*
-> OR of previous flags */
-> +};
-> +
->  struct seq_file;
->  struct user_struct;
->  struct signal_struct;
-> diff --git a/security/keys/internal.h b/security/keys/internal.h
-> index 9b9cf3b6fcbb..3c1e7122076b 100644
-> --- a/security/keys/internal.h
-> +++ b/security/keys/internal.h
-> @@ -165,8 +165,6 @@ extern struct key *request_key_and_link(struct
-> key_type *type,
->  
->  extern bool lookup_user_key_possessed(const struct key *key,
->  				      const struct key_match_data
-> *match_data);
-> -#define KEY_LOOKUP_CREATE	0x01
-> -#define KEY_LOOKUP_PARTIAL	0x02
->  
->  extern long join_session_keyring(const char *name);
->  extern void key_change_session_keyring(struct callback_head *twork);
-
+-- 
+Hello,
+how are you?
