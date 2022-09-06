@@ -2,148 +2,219 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8E725AE82D
-	for <lists+keyrings@lfdr.de>; Tue,  6 Sep 2022 14:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B938B5AE8F4
+	for <lists+keyrings@lfdr.de>; Tue,  6 Sep 2022 15:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbiIFMcE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Sep 2022 08:32:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34460 "EHLO
+        id S239157AbiIFNBu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Sep 2022 09:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240224AbiIFMbb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Sep 2022 08:31:31 -0400
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD27AF2E;
-        Tue,  6 Sep 2022 05:29:41 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4MMPh837Wmz9v7Nk;
-        Tue,  6 Sep 2022 20:24:08 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwA3ZV8KPRdjOwYoAA--.51363S2;
-        Tue, 06 Sep 2022 13:29:12 +0100 (CET)
-Message-ID: <455d80a39b2bf87c58dae9b6035f8cabb4455639.camel@huaweicloud.com>
-Subject: Re: [PATCH v17 05/12] KEYS: Move KEY_LOOKUP_ to include/linux/key.h
- and define KEY_LOOKUP_ALL
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     kpsingh@kernel.org
-Cc:     andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org,
-        daniel@iogearbox.net, deso@posteo.net, dhowells@redhat.com,
-        haoluo@google.com, jmorris@namei.org, john.fastabend@gmail.com,
-        jolsa@kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-security-module@vger.kernel.org, martin.lau@linux.dev,
-        memxor@gmail.com, mingo@redhat.com, mykolal@fb.com,
-        paul@paul-moore.com, roberto.sassu@huawei.com, rostedt@goodmis.org,
-        sdf@google.com, serge@hallyn.com, shuah@kernel.org,
-        song@kernel.org, yhs@fb.com, Jarkko Sakkinen <jarkko@kernel.org>
-Date:   Tue, 06 Sep 2022 14:28:55 +0200
-In-Reply-To: <Yxc8fwOgZ+UY0jiX@kernel.org>
-References: <YxcyeZBHGPNQB+qJ@kernel.org>
-         <20220906121506.165001-1-roberto.sassu@huaweicloud.com>
-         <Yxc8fwOgZ+UY0jiX@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S234031AbiIFNBt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Sep 2022 09:01:49 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAD9E3DF27;
+        Tue,  6 Sep 2022 06:01:47 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 5580C5C00FE;
+        Tue,  6 Sep 2022 09:01:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Tue, 06 Sep 2022 09:01:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=cc:cc:content-transfer-encoding:content-type:date:date:from
+        :from:in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm1; t=1662469307; x=
+        1662555707; bh=+bq++KlIipu0cdQS5ncn1+iq48chMWWv5/BsxA4EuyY=; b=e
+        ZHBaXvwrU7Qb+wVVz6h82IsGpPuMjGK4oVRZkbqDrqRH5Xqu8Z94xtqRzGrQzalu
+        lgRlIWfR5F7bXvhU7fKGZzbS7G/ULfzIizpxfaED/cXFfMNTCIg+DO5U8MCcVUZ3
+        4nr0jwCc8wBX/NnZgxczbLmbhkguw+xGcpU0a8o16bjfABiedK2zxwExvyY6G9+o
+        lzi6Ar8UcB9OhVs8queeR34E68sS+xxB3AH2miJ8Fhn/NKEBj9fpA8jWEqSQO1YP
+        jsqkBpRdSCVOWL0/70lbebo4jl1Deogssz+BxBmX+3DDWlXh9hGZv7sGfDpEjf85
+        iaRHm0gCQ3HNQ1N8Kecww==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1662469307; x=
+        1662555707; bh=+bq++KlIipu0cdQS5ncn1+iq48chMWWv5/BsxA4EuyY=; b=H
+        fDdED3Fd7nmtuxNbPXWYEj78M14rnfF1byIh3oLg1m5SOo7s6AUFWXVgesB3hWbi
+        9zuishL8C6r5C5vvi5if3T5Y2OALzqwR4j8f8lf2+VuPtvbpETTQHj4kfWk796jY
+        jPaLLh+uL5EXksGyVYUw3f1KFaMtTlR+1bXE34w+jI6B/XKNyOyWznccRgcLLm6G
+        rnO6EH8U7sL6E9LQV7uuIw2J9k1zeQO87VU4dOrIg1xxyATRYqNsJNPj74ATGqtG
+        kwHB9HA9C9ZJs+djfqLQB0EQRYeuUZYYZfsA5Q4IKkTtpmk/OqJkd0+B/2TvPNkN
+        9DRcuXrt1MhbzCDAQoxIg==
+X-ME-Sender: <xms:sUQXY1lQ63HIxSNKaZXoyf9m4KiL2lv4P3H7Q16NmUWBCf13cqGe1A>
+    <xme:sUQXYw1IY3NZ7ZUO8ywLnAPBcsBa8FUTm15-d7DgOkSI7YQ78YUv0nZgjxDOo-T95
+    uluvWTZE4YrNizwSXI>
+X-ME-Received: <xmr:sUQXY7qzXf1exLjIPgtgBzznsLaklPZWzGz7AphzdFwS_czOGYdjRaDwpxbt_a1L8A5LRt-dhiBNdUh7Cc-tJCrYSGsgEalkHESi>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdelkedgheekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjfgesthekredttderjeenucfhrhhomhepuegv
+    nhcuuehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrg
+    htthgvrhhnpedukedvjeetueduffevfffhleefgfejhefffefhhfegieeiudevheefjeff
+    teevfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hmvgessggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:skQXY1kOulCrP5euAZWM95oTktHEffuVwXKAlb8n_74f_pCI0797yw>
+    <xmx:skQXYz3WayxQmyeFVdEhcfad7bCsH6cbOjQiWecwPUxNvC8f6sqiPw>
+    <xmx:skQXY0uih7NVUd2gf_J96ffdgqVekqTvQ0AumhNJgeabj1lZets_jQ>
+    <xmx:u0QXY8e0pOe-C4-2jM3u81zHM8FtvCvASE8PAF425uR_XU3GvFp32Q>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Sep 2022 09:01:37 -0400 (EDT)
+Date:   Tue, 6 Sep 2022 09:01:36 -0400
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc:     jarkko@kernel.org, a.fatoum@pengutronix.de, Jason@zx2c4.com,
+        jejb@linux.ibm.com, zohar@linux.ibm.com, dhowells@redhat.com,
+        sumit.garg@linaro.org, david@sigma-star.at, michael@walle.cc,
+        john.ernberg@actia.se, jmorris@namei.org, serge@hallyn.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        j.luebbe@pengutronix.de, ebiggers@kernel.org, richard@nod.at,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, sahil.malhotra@nxp.com,
+        kshitiz.varshney@nxp.com, horia.geanta@nxp.com, V.Sethi@nxp.com
+Subject: Re: [RFC PATCH HBK: 1/8] keys-trusted: new cmd line option added
+Message-ID: <YxdEsCmQIwi7VSuv@farprobe>
+References: <20220906065157.10662-1-pankaj.gupta@nxp.com>
+ <20220906065157.10662-2-pankaj.gupta@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: GxC2BwA3ZV8KPRdjOwYoAA--.51363S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1ftr15Xw4UZF1fZFyfXrb_yoW8tFy8pF
-        WDG3W8KryUtry2gw1DJwsFyw1Sk3y3Kr17WrnrKwn8Zana9r97tr1xtF13ur1FyrWUuw12
-        qr4293WDur4DA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkIb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-        rVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-        IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY
-        0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
-        0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAI
-        cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
-        87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IUbHa0PUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAHBF1jj36rwAABsk
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220906065157.10662-2-pankaj.gupta@nxp.com>
+User-Agent: Mutt/2.2.6 (2022-06-05)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2022-09-06 at 15:26 +0300, Jarkko Sakkinen wrote:
-> On Tue, Sep 06, 2022 at 02:15:06PM +0200, Roberto Sassu wrote:
-> > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > 
-> > In preparation for the patch that introduces the
-> > bpf_lookup_user_key() eBPF
-> > kfunc, move KEY_LOOKUP_ definitions to include/linux/key.h, to be
-> > able to
-> > validate the kfunc parameters. Add them to enum key_lookup_flag, so
-> > that
-> > all the current ones and the ones defined in the future are
-> > automatically
-> > exported through BTF and available to eBPF programs.
-> > 
-> > Also, add KEY_LOOKUP_ALL to the enum, with the logical OR of
-> > currently
-> > defined flags as value, to facilitate checking whether a variable
-> > contains
-> > only those flags.
-> > 
-> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > ---
-> >  include/linux/key.h      | 6 ++++++
-> >  security/keys/internal.h | 2 --
-> >  2 files changed, 6 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/include/linux/key.h b/include/linux/key.h
-> > index 7febc4881363..d27477faf00d 100644
-> > --- a/include/linux/key.h
-> > +++ b/include/linux/key.h
-> > @@ -88,6 +88,12 @@ enum key_need_perm {
-> >  	KEY_DEFER_PERM_CHECK,	/* Special: permission check is
-> > deferred */
-> >  };
-> >  
-> > +enum key_lookup_flag {
-> > +	KEY_LOOKUP_CREATE = 0x01,
-> > +	KEY_LOOKUP_PARTIAL = 0x02,
-> > +	KEY_LOOKUP_ALL = (KEY_LOOKUP_CREATE | KEY_LOOKUP_PARTIAL),
-> > +};
-> > +
-> >  struct seq_file;
-> >  struct user_struct;
-> >  struct signal_struct;
-> > diff --git a/security/keys/internal.h b/security/keys/internal.h
-> > index 9b9cf3b6fcbb..3c1e7122076b 100644
-> > --- a/security/keys/internal.h
-> > +++ b/security/keys/internal.h
-> > @@ -165,8 +165,6 @@ extern struct key *request_key_and_link(struct
-> > key_type *type,
-> >  
-> >  extern bool lookup_user_key_possessed(const struct key *key,
-> >  				      const struct key_match_data
-> > *match_data);
-> > -#define KEY_LOOKUP_CREATE	0x01
-> > -#define KEY_LOOKUP_PARTIAL	0x02
-> >  
-> >  extern long join_session_keyring(const char *name);
-> >  extern void key_change_session_keyring(struct callback_head
-> > *twork);
-> > -- 
-> > 2.25.1
-> > 
+On Tue, Sep 06, 2022 at 12:21:50 +0530, Pankaj Gupta wrote:
+> Two changes are done:
+> - new cmd line option "hw" needs to be suffix, to generate the
+>   hw bound key.
+>   for ex:
+>    $:> keyctl add trusted <KEYNAME> 'new 32 hw' @s
+>    $:> keyctl add trusted <KEYNAME> 'load $(cat <KEY_BLOB_FILE_NAME>) hw' @s
 > 
-> Thanks,
+> - For "new", generating the hw bounded trusted key, updating the input key
+>   length as part of seal operation as well.
 > 
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> ---
+>  include/keys/trusted-type.h               |  2 ++
+>  security/keys/trusted-keys/trusted_caam.c |  6 ++++++
+>  security/keys/trusted-keys/trusted_core.c | 14 ++++++++++++++
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
+> index 4eb64548a74f..064266b936c7 100644
+> --- a/include/keys/trusted-type.h
+> +++ b/include/keys/trusted-type.h
+> @@ -22,6 +22,7 @@
+>  #define MAX_BLOB_SIZE			512
+>  #define MAX_PCRINFO_SIZE		64
+>  #define MAX_DIGEST_SIZE			64
+> +#define HW_BOUND_KEY                    1
+>  
+>  struct trusted_key_payload {
+>  	struct rcu_head rcu;
+> @@ -29,6 +30,7 @@ struct trusted_key_payload {
+>  	unsigned int blob_len;
+>  	unsigned char migratable;
+>  	unsigned char old_format;
+> +	unsigned char is_hw_bound;
+>  	unsigned char key[MAX_KEY_SIZE + 1];
+>  	unsigned char blob[MAX_BLOB_SIZE];
+>  };
+> diff --git a/security/keys/trusted-keys/trusted_caam.c b/security/keys/trusted-keys/trusted_caam.c
+> index e3415c520c0a..fceb9a271c4d 100644
+> --- a/security/keys/trusted-keys/trusted_caam.c
+> +++ b/security/keys/trusted-keys/trusted_caam.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+>   * Copyright (C) 2021 Pengutronix, Ahmad Fatoum <kernel@pengutronix.de>
+> + * Copyright 2022 NXP, Pankaj Gupta <pankaj.gupta@nxp.com>
+>   */
+>  
+>  #include <keys/trusted_caam.h>
+> @@ -23,6 +24,7 @@ static int trusted_caam_seal(struct trusted_key_payload *p, char *datablob)
+>  		.input  = p->key,  .input_len   = p->key_len,
+>  		.output = p->blob, .output_len  = MAX_BLOB_SIZE,
+>  		.key_mod = KEYMOD, .key_mod_len = sizeof(KEYMOD) - 1,
+> +		.is_hw_bound = p->is_hw_bound,
+>  	};
+>  
+>  	ret = caam_encap_blob(blobifier, &info);
+> @@ -30,6 +32,9 @@ static int trusted_caam_seal(struct trusted_key_payload *p, char *datablob)
+>  		return ret;
+>  
+>  	p->blob_len = info.output_len;
+> +	if (p->is_hw_bound)
+> +		p->key_len = info.input_len;
+> +
+>  	return 0;
+>  }
+>  
+> @@ -40,6 +45,7 @@ static int trusted_caam_unseal(struct trusted_key_payload *p, char *datablob)
+>  		.input   = p->blob,  .input_len  = p->blob_len,
+>  		.output  = p->key,   .output_len = MAX_KEY_SIZE,
+>  		.key_mod = KEYMOD,  .key_mod_len = sizeof(KEYMOD) - 1,
+> +		.is_hw_bound = p->is_hw_bound,
+>  	};
+>  
+>  	ret = caam_decap_blob(blobifier, &info);
+> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+> index c6fc50d67214..7f7cc2551b92 100644
+> --- a/security/keys/trusted-keys/trusted_core.c
+> +++ b/security/keys/trusted-keys/trusted_core.c
+> @@ -79,6 +79,8 @@ static int datablob_parse(char **datablob, struct trusted_key_payload *p)
+>  	int key_cmd;
+>  	char *c;
+>  
+> +	p->is_hw_bound = !HW_BOUND_KEY;
 
-Thanks Jarkko.
+This seems…backwards to me.
 
-KP, ok also for you?
+> @@ -94,6 +96,12 @@ static int datablob_parse(char **datablob, struct trusted_key_payload *p)
+>  		if (ret < 0 || keylen < MIN_KEY_SIZE || keylen > MAX_KEY_SIZE)
+>  			return -EINVAL;
+>  		p->key_len = keylen;
+> +		/* second argument is to determine if tied to HW */
+> +		c = strsep(datablob, " \t");
+> +		if (c) {
+> +			if (strcmp(c, "hw") == 0)
+> +				p->is_hw_bound = HW_BOUND_KEY;
+> +		}
 
-Thanks
+Userspace documentation is missing for this new field. Must it always be
+second or is it "any following argument"? For example, let's say we have
+another flag like this for "FIPS" (or whatever). It'd be nice if these
+all worked:
 
-Roberto
+    'new 32 fips hw'
+    'new 32 fips'
+    'new 32 hw fips'
+    'new 32 hw'
 
+> @@ -107,6 +115,12 @@ static int datablob_parse(char **datablob, struct trusted_key_payload *p)
+>  		ret = hex2bin(p->blob, c, p->blob_len);
+>  		if (ret < 0)
+>  			return -EINVAL;
+> +		/* second argument is to determine if tied to HW */
+> +		c = strsep(datablob, " \t");
+> +		if (c) {
+> +			if (strcmp(c, "hw") == 0)
+> +				p->is_hw_bound = HW_BOUND_KEY;
+> +		}
+
+Same here.
+
+--Ben
