@@ -2,111 +2,131 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5094C5AE8FE
-	for <lists+keyrings@lfdr.de>; Tue,  6 Sep 2022 15:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A8855AF3E0
+	for <lists+keyrings@lfdr.de>; Tue,  6 Sep 2022 20:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239813AbiIFNDy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Sep 2022 09:03:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60968 "EHLO
+        id S229560AbiIFSpn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Sep 2022 14:45:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232995AbiIFNDx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Sep 2022 09:03:53 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EC8402F9;
-        Tue,  6 Sep 2022 06:03:53 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 66B4E5C015C;
-        Tue,  6 Sep 2022 09:03:52 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 06 Sep 2022 09:03:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=cc:cc:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1662469432; x=1662555832; bh=Lz
-        rKfTcjNa2gAYtG7mObzCcMkmt+e+ZeVr16IOXkI9Q=; b=FB8R49WvUzxUAY/QLO
-        0B9zWhxqPOcOOARwGkDoP+AV2rxDIvbksXX2HQ1MxlhDGOhAux7gNLeO3trSzct9
-        5eKepMsdR9areu1huPQnDzP+NlU3kSYTffVIjle2HNL7UFe3KGxtCwcwDGYWYpKu
-        UA7DHyfluQWS0ZWm7oyFKt3Em9cOegvepxi5D5Omw9qxMHKQPcGeRxe/Cs5KMnXp
-        xmA3xAz3SgmA9hlfxp5ALpUFmqkTYkyarKaJREMxAaJjEBvL1QSbRBdDVOguRwiI
-        FwF8Gu0uK5BfwHx0M+01quZZV2IHxNO/m3jh7BUqbounFvtRvlZNg/dqm4E0zRuW
-        alnQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1662469432; x=1662555832; bh=LzrKfTcjNa2gAYtG7mObzCcMkmt+
-        e+ZeVr16IOXkI9Q=; b=DkC18CJJBQMHbol50NFvQme1LFVGP4hVY/zkbPRqkZBs
-        vDfLjOs/da6LoN/vFc0ZIxSjLidBprjIRhy9u//YxpAMAg2asob+CfpnPLeF+72f
-        5cRguktNnuRsDKqlBA8EL4UVofEboXA8Ekbnen02OEUsJI4r7mDgOXPaVpnk30lg
-        HyCxNJBxwTKmYvwjVHkHzJmhSinzLF+XJrDIaeuz4m3VIeYsZbUU/sI56ckoyNJZ
-        TsROQy5GU/41Jh4q8p4tOcI35jHWq12giheZa+V+zK85pxCEXDGTIhXNyv5TZsBL
-        TGqJelhOm9207irqMoyJxKrBJ5JRMCOvNS0mj95euQ==
-X-ME-Sender: <xms:NkUXYyAp1P7aigflXTgkJmCI6fhYOtu_uK8ueNr9a0GmtdLn1kLZjA>
-    <xme:NkUXY8hevg6TLba2niZSV4APsBU0KlcVK3lRsUh505kEjtiHE98kK4joVgmeJ3FOi
-    NKqOIMwKTN1cHuyyGI>
-X-ME-Received: <xmr:NkUXY1lj9heGLCHl3_QB1xuVBmqB2tEYLORXu-XJkzrv45_ebAotMoBAnt2etD8uRQdXCxBgAKfmJlwZwlZr4Oy2tET8l5GHMq5H>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdelkedgieduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
-    uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
-    htvghrnhepffelgeffveelkeffkeehiefgtdeluedvtdfghfdtvdefgfejheffudeuveek
-    vddvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmh
-    gvsegsvghnsghovggtkhgvlhdrnhgvth
-X-ME-Proxy: <xmx:NkUXYwyvGZrad7T064RRoQ1OLHM5awoNeUvRS4HgNBUPN68MoT5RFQ>
-    <xmx:NkUXY3QUiLPv4Y0m-uWgx8S_KBnq6chwfoU_TmTU5NjEls7o6JXxyA>
-    <xmx:NkUXY7aJJ6e1n25wwg3yB9KwZKABSwsKKBcz63Pz-c9kK55rRKGzxw>
-    <xmx:OEUXY_qqGV1JoBS2ZntZv3x-SeYrR6BEioLbT5zviEaPBp9kjzWf1Q>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Sep 2022 09:03:50 -0400 (EDT)
-Date:   Tue, 6 Sep 2022 09:03:48 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc:     jarkko@kernel.org, a.fatoum@pengutronix.de, Jason@zx2c4.com,
-        jejb@linux.ibm.com, zohar@linux.ibm.com, dhowells@redhat.com,
-        sumit.garg@linaro.org, david@sigma-star.at, michael@walle.cc,
-        john.ernberg@actia.se, jmorris@namei.org, serge@hallyn.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        j.luebbe@pengutronix.de, ebiggers@kernel.org, richard@nod.at,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, sahil.malhotra@nxp.com,
-        kshitiz.varshney@nxp.com, horia.geanta@nxp.com, V.Sethi@nxp.com
-Subject: Re: [RFC PATCH HBK: 6/8] KEYS: trusted: caam based black key
-Message-ID: <YxdFNIYcD1QO7mtC@farprobe>
-References: <20220906065157.10662-1-pankaj.gupta@nxp.com>
- <20220906065157.10662-7-pankaj.gupta@nxp.com>
+        with ESMTP id S229459AbiIFSpl (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Sep 2022 14:45:41 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDC872873;
+        Tue,  6 Sep 2022 11:45:40 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id l14so1840520eja.7;
+        Tue, 06 Sep 2022 11:45:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=HXIZTxgstp/ZG/oRasmhftNTYtNhQYTVNhwATRK01KA=;
+        b=hso5o++/iG3WRGqeXqsqlTQG4ASV62xJHp+fXx6Mo5Dj1U7EnT5tcbEfg9QrccgK/R
+         tnQv5lph3g5cU66MBB5hqlTwvZMB2d6SR9PZhlHnJuaCVyHDbfh+kPRp1piNBszvmaH+
+         iodyQdSbiPG6Yh2sL/zLpLHSrCoKfahUPUddoiAFnt2Wx5Eg27ht6xTB1sM8zgTv2Ns4
+         vmxmJAMVSkB/Xv788V6U5A4Q0mJhGVb6z09wE126tOirCZGg0U+LCSiMaM5rcTkGh0KM
+         JLCss/3rpU5dxEq5E1FltyKECYuiiVuFr2smlNleBgB0soZUBy/qKRfbrmN2dXoDaWHE
+         kwRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=HXIZTxgstp/ZG/oRasmhftNTYtNhQYTVNhwATRK01KA=;
+        b=rf28j5elNEJUPYnvqg6HiiUbC2ThlwHRORJ57TJoE1IAyy8eBZWK6Fzuh5OijS9dIT
+         PO3XcFQT4IPujM6GdWLbRWYMWCAlbbONq1aaRn1RljSunZVS80AeV1g0yu8L0memVEPs
+         R7AfqNdWgzDw4uNbcSWe0wdPKAr0NeopM1HtFjm39WA620rXJOHFh/P0+og/DqK41Qgq
+         r3P9DPBjaEDZ9hw+xQI4IiNqwKzEpj6pu67hG9Y/q5x1GvMSuVoSo6dmVs/q1SHMRGXG
+         /5YwKz6eJbvn7d0gVaVsvE9R+7ndMo10IGIENKjK0AmNowSc1Y9oJaZKW5nLsjyx16ZS
+         vsFQ==
+X-Gm-Message-State: ACgBeo08XGmeOj2gO45/O+aaoktbrUhhiNt5Voizw70uc92rLehW/WHl
+        htov2qFhPoj9i6JGN1T8e1KzY0ieGmfUAA+/rWc=
+X-Google-Smtp-Source: AA6agR4F+9Ti9v8fFFnmPvQrhjZYULAf1awN9JWkYZiJxqfPg4ByBnj54CpE5wTOzCEUch0G8xs2kRSTxhaKwuoYWS4=
+X-Received: by 2002:a17:906:58d1:b0:76d:af13:5ae3 with SMTP id
+ e17-20020a17090658d100b0076daf135ae3mr6734331ejs.708.1662489938725; Tue, 06
+ Sep 2022 11:45:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220906065157.10662-7-pankaj.gupta@nxp.com>
-User-Agent: Mutt/2.2.6 (2022-06-05)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220905143318.1592015-1-roberto.sassu@huaweicloud.com>
+ <20220905143318.1592015-7-roberto.sassu@huaweicloud.com> <CAP01T74HKXuf9Aig4v3zsL1rwQAGRpUtTiaN2djWsMiJmaqF_A@mail.gmail.com>
+ <663480e6bdfd9809c9e367bfc8df95d7a1323723.camel@huaweicloud.com>
+In-Reply-To: <663480e6bdfd9809c9e367bfc8df95d7a1323723.camel@huaweicloud.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Tue, 6 Sep 2022 11:45:27 -0700
+Message-ID: <CAADnVQLT9nSEqprcX_hmTeAYGVA9cWupVEfvhnyPuzWwrGKHcQ@mail.gmail.com>
+Subject: Re: [PATCH v16 06/12] bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc:     Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>,
+        Shuah Khan <shuah@kernel.org>, bpf <bpf@vger.kernel.org>,
+        keyrings@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Daniel_M=C3=BCller?= <deso@posteo.net>,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Sep 06, 2022 at 12:21:55 +0530, Pankaj Gupta wrote:
-> - CAAM supports two types of black keys:
+On Tue, Sep 6, 2022 at 1:01 AM Roberto Sassu
+<roberto.sassu@huaweicloud.com> wrote:
+>
+> > > +struct bpf_key *bpf_lookup_user_key(u32 serial, u64 flags)
+> > > +{
+> > > +       key_ref_t key_ref;
+> > > +       struct bpf_key *bkey;
+> > > +
+> > > +       if (flags & ~KEY_LOOKUP_ALL)
+> > > +               return NULL;
+> > > +
+> > > +       /*
+> > > +        * Permission check is deferred until the key is used, as
+> > > the
+> > > +        * intent of the caller is unknown here.
+> > > +        */
+> > > +       key_ref = lookup_user_key(serial, flags,
+> > > KEY_DEFER_PERM_CHECK);
+> > > +       if (IS_ERR(key_ref))
+> > > +               return NULL;
+> > > +
+> > > +       bkey = kmalloc(sizeof(*bkey), GFP_ATOMIC);
+> >
+> > Since this function (due to lookup_user_key) is sleepable, do we
+> > really need GFP_ATOMIC here?
+>
+> Daniel suggested it for bpf_lookup_system_key(), so that the kfunc does
+> not have to be sleepable.
 
-What is a "black key"?
+Hold on. It has to be sleepable. Just take a look
+at what lookup_user_key is doing inside.
 
->   -- Plain key encrypted with ECB
->   -- Plain key encrypted with CCM
->   Note: Due to robustness, default encytption used for black key is CCM.
-                                     ^^^^^^^^^^
-
-"encryption"
-
-> - A black key blob is generated, and added to trusted key payload.
-
-Missing "the" before "trusted".
-
---Ben
+> For symmetry, I did the same to
+> bpf_lookup_user_key(). Will switch back to GFP_KERNEL.
+>
+> Thanks
+>
+> Roberto
+>
