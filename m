@@ -2,63 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B7BD5AE0DE
-	for <lists+keyrings@lfdr.de>; Tue,  6 Sep 2022 09:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E58A5AE135
+	for <lists+keyrings@lfdr.de>; Tue,  6 Sep 2022 09:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238893AbiIFHU4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Sep 2022 03:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38730 "EHLO
+        id S238932AbiIFHgm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Sep 2022 03:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238880AbiIFHUy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Sep 2022 03:20:54 -0400
-X-Greylist: delayed 493 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 06 Sep 2022 00:20:52 PDT
-Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB826567E;
-        Tue,  6 Sep 2022 00:20:52 -0700 (PDT)
-Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.3ffe.de (Postfix) with ESMTPSA id EBDF820E7;
-        Tue,  6 Sep 2022 09:12:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
-        t=1662448354;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=myPv8B55ZEW05OB+S9pWiPrxR+s0aF+7aFKm/XD78HY=;
-        b=h7cs+Br+GYOgEzdUyybaY6Litl/DVXOqlyaCC3x+VljpHK2U+n5HWxh9W+DjpzwfEyOQ1w
-        wK6epONrj1e71rI1GKxBbvpi1G0xKi0jaEJAw8nCLpTqgB5sGjYZJtLDA4H4K6XQrk7B62
-        M+o9vZ7xwYQ7tt9O8PScxqHiEIt71/mBRahS0uQ1dkzry5ykx6Dv38eo7kYoudflXbUr9p
-        GIUY/pW4HmfLdLrMwmEMaKSim1sZYuqwcR4l5Y26xgeOti7tDLbeLOyufl3nxVf4L95LbH
-        XGpQp0o9H9YALg+3bYjQSjKapyqC3nEpudOGQXC65xwynwAp8vU17wovHEzDkg==
+        with ESMTP id S238921AbiIFHgl (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Sep 2022 03:36:41 -0400
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF0AA54659;
+        Tue,  6 Sep 2022 00:36:38 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4MMHCf3DkZz9v7cH;
+        Tue,  6 Sep 2022 15:32:30 +0800 (CST)
+Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwB3pF5Y+BZjCS8nAA--.46254S2;
+        Tue, 06 Sep 2022 08:36:08 +0100 (CET)
+Message-ID: <b846cedb14235db6950a55e7eec2eff9e9ab56ec.camel@huaweicloud.com>
+Subject: Re: [PATCH v16 00/12] bpf: Add kfuncs for PKCS#7 signature
+ verification
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
+        dhowells@redhat.com, jarkko@kernel.org, rostedt@goodmis.org,
+        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, shuah@kernel.org, bpf@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Tue, 06 Sep 2022 09:35:49 +0200
+In-Reply-To: <CAP01T77aq-UP02JYp1Vu-LE--K1ieCyfKfyZPw-a7DDKQ7_F+g@mail.gmail.com>
+References: <20220905143318.1592015-1-roberto.sassu@huaweicloud.com>
+         <CAP01T77aq-UP02JYp1Vu-LE--K1ieCyfKfyZPw-a7DDKQ7_F+g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Date:   Tue, 06 Sep 2022 09:12:33 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc:     jarkko@kernel.org, a.fatoum@pengutronix.de, Jason@zx2c4.com,
-        jejb@linux.ibm.com, zohar@linux.ibm.com, dhowells@redhat.com,
-        sumit.garg@linaro.org, david@sigma-star.at, john.ernberg@actia.se,
-        jmorris@namei.org, serge@hallyn.com, herbert@gondor.apana.org.au,
-        davem@davemloft.net, j.luebbe@pengutronix.de, ebiggers@kernel.org,
-        richard@nod.at, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, sahil.malhotra@nxp.com,
-        kshitiz.varshney@nxp.com, horia.geanta@nxp.com, V.Sethi@nxp.com
-Subject: Re: [RFC PATCH HBK: 0/8] HW BOUND KEY as TRUSTED KEY
-In-Reply-To: <20220906065157.10662-1-pankaj.gupta@nxp.com>
-References: <20220906065157.10662-1-pankaj.gupta@nxp.com>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <047746e1134d5bdce699d8c021f849b6@walle.cc>
-X-Sender: michael@walle.cc
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+X-CM-TRANSID: GxC2BwB3pF5Y+BZjCS8nAA--.46254S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFykXF18ZrykKw1UWw4xCrg_yoW8Ar4fpF
+        W0yFy5KFWDtF17C3yfK3yfGFW5t395G3W2gwnYy34YvFn0gr1SkrWxtr43WFWj9rykCrya
+        v39xKFy7ArWDAa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+        xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFYFCUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAHBF1jj4KmIwAAs0
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,45 +70,51 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+On Mon, 2022-09-05 at 21:26 +0200, Kumar Kartikeya Dwivedi wrote:
+> On Mon, 5 Sept 2022 at 16:34, Roberto Sassu
+> <roberto.sassu@huaweicloud.com> wrote:
+> > From: Roberto Sassu <roberto.sassu@huawei.com>
+> > 
+> > One of the desirable features in security is the ability to
+> > restrict import
+> > of data to a given system based on data authenticity. If data
+> > import can be
+> > restricted, it would be possible to enforce a system-wide policy
+> > based on
+> > the signing keys the system owner trusts.
+> > 
+> > This feature is widely used in the kernel. For example, if the
+> > restriction
+> > is enabled, kernel modules can be plugged in only if they are
+> > signed with a
+> > key whose public part is in the primary or secondary keyring.
+> > 
+> > For eBPF, it can be useful as well. For example, it might be useful
+> > to
+> > authenticate data an eBPF program makes security decisions on.
+> > 
+> > [...]
+> 
+> CI is crashing with NULL deref for test_progs-no_alu32 with llvm-16,
+> but I don't think the problem is in this series. This is most likely
+> unrelated to BPF, as the crash happens inside
+> kernel/time/tick-sched.c:tick_nohz_restart_sched_tick.
+> 
+> This was the same case in
+> https://lore.kernel.org/bpf/CAP01T74steDfP6O8QOshoto3e3RnHhKtAeTbnrPBZS3YJXjvbA@mail.gmail.com.
+> 
+> So, 
+> https://github.com/kernel-patches/bpf/runs/8194263557?check_suite_focus=true
+> and 
+> https://github.com/kernel-patches/bpf/runs/7982907380?check_suite_focus=true
+> 
+> look similar to me, and may not be related to BPF. They only trigger
+> during runs compiled using LLVM 16, so maybe some compiler
+> transformation is surfacing the problem?
 
-Am 2022-09-06 08:51, schrieb Pankaj Gupta:
-> Hardware Bound key(HBK), is never acessible as plain key outside of the
-> hardware boundary. Thus, it is un-usable, even if somehow fetched
-> from kernel memory. It ensures run-time security.
-> 
-> This patchset adds generic support for classing the Hardware Bound Key,
-> based on:
-> 
-> - Newly added flag-'is_hbk', added to the tfm.
-> 
->   Consumer of the kernel crypto api, after allocating
->   the transformation, sets this flag based on the basis
->   of the type of key consumer has.
-> 
-> - This helps to influence the core processing logic
->   for the encapsulated algorithm.
-> 
-> - This flag is set by the consumer after allocating
->   the tfm and before calling the function crypto_xxx_setkey().
-> 
-> First implementation is based on CAAM.
-> 
-> NXP built CAAM IP is the Cryptographic Acceleration and Assurance 
-> Module.
-> This is contain by the i.MX and QorIQ SoCs by NXP.
-> 
-> CAAM is a suitable backend (source) for kernel trusted keys.
-> This backend source can be used for run-time security as well
-> by generating the hardware bound key.
-> 
-> Along with plain key, the CAAM generates black key. A black key is an
-> encrypted key, which can only be decrypted inside CAAM. Hence, CAAM's
-> black key can only be used by CAAM. Thus it is declared as a hardware 
-> bound key.
+Yes, I saw that too. Not sure what the cause could be.
 
-What is the difference to the current trusted keys with CAAM?
-When I tested the patch series back then, I wasn't able to import
-a sealed key on another board with the same SoC.
+Thanks
 
--michael
+Roberto
+
