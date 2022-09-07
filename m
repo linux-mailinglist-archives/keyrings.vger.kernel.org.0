@@ -2,97 +2,178 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CCEE5B09A2
-	for <lists+keyrings@lfdr.de>; Wed,  7 Sep 2022 18:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 210915B0AFA
+	for <lists+keyrings@lfdr.de>; Wed,  7 Sep 2022 19:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbiIGQFY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 7 Sep 2022 12:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36900 "EHLO
+        id S230125AbiIGREr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 7 Sep 2022 13:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbiIGQFE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Sep 2022 12:05:04 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DDDBCCF6;
-        Wed,  7 Sep 2022 09:03:28 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id l6so7793906ilk.13;
-        Wed, 07 Sep 2022 09:03:28 -0700 (PDT)
+        with ESMTP id S230090AbiIGREp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Sep 2022 13:04:45 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B83DB9
+        for <keyrings@vger.kernel.org>; Wed,  7 Sep 2022 10:04:41 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-127d10b4f19so11828293fac.9
+        for <keyrings@vger.kernel.org>; Wed, 07 Sep 2022 10:04:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=lt1bpJM6pHMY/em4ZNsqZVuYS7ky1YDSS0Zv0T/sQCI=;
-        b=jFrMQnAJyokhbea+zJXMZUcpgYdRpW6ftt5X8yDsUmyx2A4f77acUmlMItitO1FogO
-         p0bEzPpuqSiuwlKsN8tybJJDylxM59F++Xmxy4P5f+e6/5m4LATaktIUyoghbJvS/faC
-         CDzGmAW/QicbE8j6KYbsmSE/J19AMses1La/f2fg44SktusCjr2xneuPqsjpMAfBYCHn
-         UPS3zWSx7vbgypW+5wJGwA5biGU+ZHb3LlbUMkkmWNyZuckczS+nu1IFmU/tfN0xIuBc
-         7vbypb3c16FPIyTdjo2byYrd5Ce7ap9CY+J4YhWRm52GoiEDxedVnkj+Cfx53cDUSmrj
-         CPoA==
+        bh=Ro6O+2s9xjG7/14chisnyJusofpe1P/Z+6Ni1HfLglw=;
+        b=SFFia7VrpSfHHqK4+wrGcNeHGpCjolBliKK6r1h6XIGRo5GSXMMhxGqrAZd7h/1Z8I
+         fZPHWdG3DVGVcrZh+RMzotY75nbYwZF3yvul2CYa8AlFvlyUYoinzuFbkei+E22aaGaF
+         hAcyyxG/Z+aKkT3k0U/r3XrRUCZZbGhXiEzNA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=lt1bpJM6pHMY/em4ZNsqZVuYS7ky1YDSS0Zv0T/sQCI=;
-        b=ze3Uc7zSJMaPjpVWvF1ztWN3mPjlJO61CQcR8BRJFtNNlhnAQtmIwo0phdrZCDxVtn
-         LiS4aTiGt9tyM7YL8gVaKhD8QP8IdK1EYdh5WtkWaZh3v3EcS1tnMNCWCZmUN8gJXu5C
-         Wn25edvZdPa6QkErAB3ctgO8KskxcYsWH8tamQl7BOUF32xXuYKzpiGCVbh9w8lz16fy
-         B1aQfQITjb4S9VKOXhlvTmumfsLao4vk+rfFm+7jnT+qvE4wNb5z8jCU3LfMeBFoXIza
-         jBxeJ2VH/00qa7nkCy2YbKwayzB+4F7vdzIQKj69R8d2o76BS5r2YjsQRwf7AdNfZXnZ
-         b2Dg==
-X-Gm-Message-State: ACgBeo1Z2lQomAOkdqp/Uqxp8PGSCWRDaMtjOLtJVj6OZ1xJk815Ycd0
-        OLWteix1QeUpVx3OdqUJ73FGvlqouVHQNc42U0Q=
-X-Google-Smtp-Source: AA6agR5D0yaJMaMJfVkyP7yo0j3n7J4Q2NxUTHD4GglycqC1kGl3Kap+m8RkpO7wuD2gzZZFsAnPWsgP2IfD+vK5xbs=
-X-Received: by 2002:a05:6e02:1489:b0:2f1:a985:853 with SMTP id
- n9-20020a056e02148900b002f1a9850853mr2320169ilk.68.1662566607972; Wed, 07 Sep
- 2022 09:03:27 -0700 (PDT)
+        bh=Ro6O+2s9xjG7/14chisnyJusofpe1P/Z+6Ni1HfLglw=;
+        b=oTW9D/9BMxnMW08kM/3wD3imV1CHTOn9/xdt9hHPEntXU9PcTJ2sMDLB3Y5dsbLWGd
+         4Abz42f6JwY1Aw63BD+DNbXVpkAmtH1oH2wrl5ICwoHYCoBiHJFXoY1JTApWBBtqa9Gh
+         rT3m4ScKSvNj2iH/BkhVsMDmS6v7TD+DuXYO2XotNRp4rTBp1JXJPQoPWVcy2XorNFMH
+         ZMxs4dJJhU/MWM0pMeOMVB6xhgkhhLINEvGVsucVKobdxpP9YSMrITIj8rhxprLU9+Y+
+         LYunjWNkJrbA7OiZIO4Qo8fGo8YbqEihooHOwGwWYAObpaZw5RTV0nZ8oGhUj2Z/WBgd
+         qXqg==
+X-Gm-Message-State: ACgBeo0Dofe14cb1pKdzXtLF1h4EuxPpyn1V9Hb7maXfZnOsdFG1Hku9
+        nveljiyGCDZv/A6aHgTux9+Z3slfYu+LQA==
+X-Google-Smtp-Source: AA6agR74wcM0wcYrCqTpl7thgufJSUGdisZj2K3/+2uoPPR7gcMvzGA6n3akTyF6WIocxMXIvrSZeQ==
+X-Received: by 2002:a05:6808:11cd:b0:345:a74e:c12f with SMTP id p13-20020a05680811cd00b00345a74ec12fmr12002791oiv.132.1662570280936;
+        Wed, 07 Sep 2022 10:04:40 -0700 (PDT)
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com. [209.85.160.54])
+        by smtp.gmail.com with ESMTPSA id m10-20020a056870a40a00b0012763819bcasm4499353oal.50.2022.09.07.10.04.40
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Sep 2022 10:04:40 -0700 (PDT)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-1278a61bd57so19052981fac.7
+        for <keyrings@vger.kernel.org>; Wed, 07 Sep 2022 10:04:40 -0700 (PDT)
+X-Received: by 2002:a05:6870:b28c:b0:127:ad43:573e with SMTP id
+ c12-20020a056870b28c00b00127ad43573emr2505114oao.174.1662570269627; Wed, 07
+ Sep 2022 10:04:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAP01T74L7C+F7oiBx3fL9SahdvU-9rHpQ=GaLTj0XAfeOKaXrA@mail.gmail.com>
- <20220907145939.489784-1-roberto.sassu@huaweicloud.com>
-In-Reply-To: <20220907145939.489784-1-roberto.sassu@huaweicloud.com>
-From:   Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date:   Wed, 7 Sep 2022 18:02:51 +0200
-Message-ID: <CAP01T77rgLz-ApBoXfegLCmensukK59-9=jh2CmuWsC0VVMzWw@mail.gmail.com>
-Subject: Re: [PATCH v17 12/12] selftests/bpf: Add tests for dynamic pointers
- parameters in kfuncs
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org,
-        daniel@iogearbox.net, deso@posteo.net, dhowells@redhat.com,
-        haoluo@google.com, jarkko@kernel.org, jmorris@namei.org,
-        john.fastabend@gmail.com, jolsa@kernel.org,
-        keyrings@vger.kernel.org, kpsingh@kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-security-module@vger.kernel.org, martin.lau@linux.dev,
-        mingo@redhat.com, mykolal@fb.com, paul@paul-moore.com,
-        roberto.sassu@huawei.com, rostedt@goodmis.org, sdf@google.com,
-        serge@hallyn.com, shuah@kernel.org, song@kernel.org, yhs@fb.com
+References: <20220823222526.1524851-1-evgreen@chromium.org> <e74a2c48-fd30-aa4c-9ab6-eafe652f7878@amd.com>
+In-Reply-To: <e74a2c48-fd30-aa4c-9ab6-eafe652f7878@amd.com>
+From:   Evan Green <evgreen@chromium.org>
+Date:   Wed, 7 Sep 2022 10:03:53 -0700
+X-Gmail-Original-Message-ID: <CAE=gft6gjqhviovxQDY=qrBiKQH1RBkCd_f+pnNw4Tz=M0ewBg@mail.gmail.com>
+Message-ID: <CAE=gft6gjqhviovxQDY=qrBiKQH1RBkCd_f+pnNw4Tz=M0ewBg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] Encrypted Hibernation
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Matthew Garrett <mgarrett@aurora.tech>,
+        Jarkko Sakkinen <jarkko@kernel.org>, zohar@linux.ibm.com,
+        linux-integrity@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        apronin@chromium.org, Daniil Lunev <dlunev@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Hao Wu <hao.wu@rubrik.com>, James Morris <jmorris@namei.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Len Brown <len.brown@intel.com>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, axelj <axelj@axis.com>,
+        keyrings@vger.kernel.org,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-security-module@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 7 Sept 2022 at 17:00, Roberto Sassu
-<roberto.sassu@huaweicloud.com> wrote:
+On Wed, Aug 31, 2022 at 11:35 AM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
 >
-> From: Roberto Sassu <roberto.sassu@huawei.com>
+> On 8/23/2022 17:25, Evan Green wrote:
+> > We are exploring enabling hibernation in some new scenarios. However,
+> > our security team has a few requirements, listed below:
+> > 1. The hibernate image must be encrypted with protection derived from
+> >     both the platform (eg TPM) and user authentication data (eg
+> >     password).
+> > 2. Hibernation must not be a vector by which a malicious userspace can
+> >     escalate to the kernel.
+> >
+> > Requirement #1 can be achieved solely with uswsusp, however requirement
+> > 2 necessitates mechanisms in the kernel to guarantee integrity of the
+> > hibernate image. The kernel needs a way to authenticate that it generated
+> > the hibernate image being loaded, and that the image has not been tampered
+> > with. Adding support for in-kernel AEAD encryption with a TPM-sealed key
+> > allows us to achieve both requirements with a single computation pass.
+> >
+> > Matthew Garrett published a series [1] that aligns closely with this
+> > goal. His series utilized the fact that PCR23 is a resettable PCR that
+> > can be blocked from access by usermode. The TPM can create a sealed key
+> > tied to PCR23 in two ways. First, the TPM can attest to the value of
+> > PCR23 when the key was created, which the kernel can use on resume to
+> > verify that the kernel must have created the key (since it is the only
+> > one capable of modifying PCR23). It can also create a policy that enforces
+> > PCR23 be set to a specific value as a condition of unsealing the key,
+> > preventing usermode from unsealing the key by talking directly to the
+> > TPM.
+> >
+> > This series adopts that primitive as a foundation, tweaking and building
+> > on it a bit. Where Matthew's series used the TPM-backed key to encrypt a
+> > hash of the image, this series uses the key directly as a gcm(aes)
+> > encryption key, which the kernel uses to encrypt and decrypt the
+> > hibernate image in chunks of 16 pages. This provides both encryption and
+> > integrity, which turns out to be a noticeable performance improvement over
+> > separate passes for encryption and hashing.
+> >
+> > The series also introduces the concept of mixing user key material into
+> > the encryption key. This allows usermode to introduce key material
+> > based on unspecified external authentication data (in our case derived
+> > from something like the user password or PIN), without requiring
+> > usermode to do a separate encryption pass.
+> >
+> > Matthew also documented issues his series had [2] related to generating
+> > fake images by booting alternate kernels without the PCR23 limiting.
+> > With access to PCR23 on the same machine, usermode can create fake
+> > hibernate images that are indistinguishable to the new kernel from
+> > genuine ones. His post outlines a solution that involves adding more
+> > PCRs into the creation data and policy, with some gyrations to make this
+> > work well on a standard PC.
+> >
+> > Our approach would be similar: on our machines PCR 0 indicates whether
+> > the system is booted in secure/verified mode or developer mode. By
+> > adding PCR0 to the policy, we can reject hibernate images made in
+> > developer mode while in verified mode (or vice versa).
+> >
+> > Additionally, mixing in the user authentication data limits both
+> > data exfiltration attacks (eg a stolen laptop) and forged hibernation
+> > image attacks to attackers that already know the authentication data (eg
+> > user's password). This, combined with our relatively sealed userspace
+> > (dm-verity on the rootfs), and some judicious clearing of the hibernate
+> > image (such as across an OS update) further reduce the risk of an online
+> > attack. The remaining attack space of a forgery from someone with
+> > physical access to the device and knowledge of the authentication data
+> > is out of scope for us, given that flipping to developer mode or
+> > reflashing RO firmware trivially achieves the same thing.
+> >
+> > A couple of patches still need to be written on top of this series. The
+> > generalized functionality to OR in additional PCRs via Kconfig (like PCR
+> > 0 or 5) still needs to be added. We'll also need a patch that disallows
+> > unencrypted forms of resume from hibernation, to fully close the door
+> > to malicious userspace. However, I wanted to get this series out first
+> > and get reactions from upstream before continuing to add to it.
 >
-> Add tests to ensure that only supported dynamic pointer types are accepted,
-> that the passed argument is actually a dynamic pointer, that the passed
-> argument is a pointer to the stack, and that bpf_verify_pkcs7_signature()
-> correctly handles dynamic pointers with data set to NULL.
+> Something else to think about in this series is what happens with
+> `hibernation_available` in kernel/power/hibernate.c.  Currently if the
+> system is locked down hibernate is disabled, but I would think that
+> with a setup like that described here that should no longer be necessary.
 >
-> The tests are currently in the deny list for s390x (JIT does not support
-> calling kernel function).
->
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> ---
 
-Just a minor nit: you could probably use invalid flags value other
-than 1, since most likely the next valid flag value will be 1, which
-will require changing this again. LGTM otherwise.
+Correct, I think that would be a reasonable followup to this series.
 
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+-Evan
