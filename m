@@ -2,149 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFA555B0816
-	for <lists+keyrings@lfdr.de>; Wed,  7 Sep 2022 17:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CCEE5B09A2
+	for <lists+keyrings@lfdr.de>; Wed,  7 Sep 2022 18:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbiIGPKU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 7 Sep 2022 11:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
+        id S230379AbiIGQFY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 7 Sep 2022 12:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbiIGPKT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Sep 2022 11:10:19 -0400
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF67B30F7D;
-        Wed,  7 Sep 2022 08:10:14 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4MN5Bs5Dljz9xHvx;
-        Wed,  7 Sep 2022 23:04:37 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwBHw10qtBhjIYssAA--.26582S2;
-        Wed, 07 Sep 2022 16:09:42 +0100 (CET)
-Message-ID: <d447540b5adce25efaa29ef1bce001f2bc0a2d12.camel@huaweicloud.com>
-Subject: Re: [PATCH v16 00/12] bpf: Add kfuncs for PKCS#7 signature
- verification
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        dhowells@redhat.com, jarkko@kernel.org, rostedt@goodmis.org,
-        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, shuah@kernel.org, bpf@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Wed, 07 Sep 2022 17:09:29 +0200
-In-Reply-To: <CAP01T764z59qczE37=jf-zPkS2zPuzDyCjdngBDnG-GOovG-rQ@mail.gmail.com>
-References: <20220905143318.1592015-1-roberto.sassu@huaweicloud.com>
-         <CAP01T77aq-UP02JYp1Vu-LE--K1ieCyfKfyZPw-a7DDKQ7_F+g@mail.gmail.com>
-         <b846cedb14235db6950a55e7eec2eff9e9ab56ec.camel@huaweicloud.com>
-         <57cedc7a3008248b5147d03e2f4bd0b33ad9a146.camel@huaweicloud.com>
-         <CAP01T764z59qczE37=jf-zPkS2zPuzDyCjdngBDnG-GOovG-rQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S229604AbiIGQFE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Sep 2022 12:05:04 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DDDBCCF6;
+        Wed,  7 Sep 2022 09:03:28 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id l6so7793906ilk.13;
+        Wed, 07 Sep 2022 09:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=lt1bpJM6pHMY/em4ZNsqZVuYS7ky1YDSS0Zv0T/sQCI=;
+        b=jFrMQnAJyokhbea+zJXMZUcpgYdRpW6ftt5X8yDsUmyx2A4f77acUmlMItitO1FogO
+         p0bEzPpuqSiuwlKsN8tybJJDylxM59F++Xmxy4P5f+e6/5m4LATaktIUyoghbJvS/faC
+         CDzGmAW/QicbE8j6KYbsmSE/J19AMses1La/f2fg44SktusCjr2xneuPqsjpMAfBYCHn
+         UPS3zWSx7vbgypW+5wJGwA5biGU+ZHb3LlbUMkkmWNyZuckczS+nu1IFmU/tfN0xIuBc
+         7vbypb3c16FPIyTdjo2byYrd5Ce7ap9CY+J4YhWRm52GoiEDxedVnkj+Cfx53cDUSmrj
+         CPoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=lt1bpJM6pHMY/em4ZNsqZVuYS7ky1YDSS0Zv0T/sQCI=;
+        b=ze3Uc7zSJMaPjpVWvF1ztWN3mPjlJO61CQcR8BRJFtNNlhnAQtmIwo0phdrZCDxVtn
+         LiS4aTiGt9tyM7YL8gVaKhD8QP8IdK1EYdh5WtkWaZh3v3EcS1tnMNCWCZmUN8gJXu5C
+         Wn25edvZdPa6QkErAB3ctgO8KskxcYsWH8tamQl7BOUF32xXuYKzpiGCVbh9w8lz16fy
+         B1aQfQITjb4S9VKOXhlvTmumfsLao4vk+rfFm+7jnT+qvE4wNb5z8jCU3LfMeBFoXIza
+         jBxeJ2VH/00qa7nkCy2YbKwayzB+4F7vdzIQKj69R8d2o76BS5r2YjsQRwf7AdNfZXnZ
+         b2Dg==
+X-Gm-Message-State: ACgBeo1Z2lQomAOkdqp/Uqxp8PGSCWRDaMtjOLtJVj6OZ1xJk815Ycd0
+        OLWteix1QeUpVx3OdqUJ73FGvlqouVHQNc42U0Q=
+X-Google-Smtp-Source: AA6agR5D0yaJMaMJfVkyP7yo0j3n7J4Q2NxUTHD4GglycqC1kGl3Kap+m8RkpO7wuD2gzZZFsAnPWsgP2IfD+vK5xbs=
+X-Received: by 2002:a05:6e02:1489:b0:2f1:a985:853 with SMTP id
+ n9-20020a056e02148900b002f1a9850853mr2320169ilk.68.1662566607972; Wed, 07 Sep
+ 2022 09:03:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: GxC2BwBHw10qtBhjIYssAA--.26582S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZw1fGryUJrWxGF1kuw1xZrb_yoW5Xr1UpF
-        W8AFy5KF4ktryUCw4xKry5uFy8t3y7JF12qrn8t34UZas0vr1FkFWIyr43uFWq9r1kCw1a
-        v39IqFy7Xr1DAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkIb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-        rVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-        IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY
-        0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
-        0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAI
-        cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
-        87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IUbHa0PUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBF1jj365RQAAs9
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <CAP01T74L7C+F7oiBx3fL9SahdvU-9rHpQ=GaLTj0XAfeOKaXrA@mail.gmail.com>
+ <20220907145939.489784-1-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20220907145939.489784-1-roberto.sassu@huaweicloud.com>
+From:   Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Date:   Wed, 7 Sep 2022 18:02:51 +0200
+Message-ID: <CAP01T77rgLz-ApBoXfegLCmensukK59-9=jh2CmuWsC0VVMzWw@mail.gmail.com>
+Subject: Re: [PATCH v17 12/12] selftests/bpf: Add tests for dynamic pointers
+ parameters in kfuncs
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc:     andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org,
+        daniel@iogearbox.net, deso@posteo.net, dhowells@redhat.com,
+        haoluo@google.com, jarkko@kernel.org, jmorris@namei.org,
+        john.fastabend@gmail.com, jolsa@kernel.org,
+        keyrings@vger.kernel.org, kpsingh@kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-security-module@vger.kernel.org, martin.lau@linux.dev,
+        mingo@redhat.com, mykolal@fb.com, paul@paul-moore.com,
+        roberto.sassu@huawei.com, rostedt@goodmis.org, sdf@google.com,
+        serge@hallyn.com, shuah@kernel.org, song@kernel.org, yhs@fb.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2022-09-07 at 16:57 +0200, Kumar Kartikeya Dwivedi wrote:
-> On Wed, 7 Sept 2022 at 16:49, Roberto Sassu
-> <roberto.sassu@huaweicloud.com> wrote:
-> > On Tue, 2022-09-06 at 09:35 +0200, Roberto Sassu wrote:
-> > > On Mon, 2022-09-05 at 21:26 +0200, Kumar Kartikeya Dwivedi wrote:
-> > > > On Mon, 5 Sept 2022 at 16:34, Roberto Sassu
-> > > > <roberto.sassu@huaweicloud.com> wrote:
-> > > > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > > > > 
-> > > > > One of the desirable features in security is the ability to
-> > > > > restrict import
-> > > > > of data to a given system based on data authenticity. If data
-> > > > > import can be
-> > > > > restricted, it would be possible to enforce a system-wide
-> > > > > policy
-> > > > > based on
-> > > > > the signing keys the system owner trusts.
-> > > > > 
-> > > > > This feature is widely used in the kernel. For example, if
-> > > > > the
-> > > > > restriction
-> > > > > is enabled, kernel modules can be plugged in only if they are
-> > > > > signed with a
-> > > > > key whose public part is in the primary or secondary keyring.
-> > > > > 
-> > > > > For eBPF, it can be useful as well. For example, it might be
-> > > > > useful
-> > > > > to
-> > > > > authenticate data an eBPF program makes security decisions
-> > > > > on.
-> > > > > 
-> > > > > [...]
-> > > > 
-> > > > CI is crashing with NULL deref for test_progs-no_alu32 with
-> > > > llvm-
-> > > > 16,
-> > > > but I don't think the problem is in this series. This is most
-> > > > likely
-> > > > unrelated to BPF, as the crash happens inside
-> > > > kernel/time/tick-sched.c:tick_nohz_restart_sched_tick.
-> > > > 
-> > > > This was the same case in
-> > > > https://lore.kernel.org/bpf/CAP01T74steDfP6O8QOshoto3e3RnHhKtAeTbnrPBZS3YJXjvbA@mail.gmail.com.
-> > > > 
-> > > > So,
-> > > > https://github.com/kernel-patches/bpf/runs/8194263557?check_suite_focus=true
-> > > > and
-> > > > https://github.com/kernel-patches/bpf/runs/7982907380?check_suite_focus=true
-> > > > 
-> > > > look similar to me, and may not be related to BPF. They only
-> > > > trigger
-> > > > during runs compiled using LLVM 16, so maybe some compiler
-> > > > transformation is surfacing the problem?
-> > > 
-> > > Yes, I saw that too. Not sure what the cause could be.
-> > > 
-> > 
-> > Another occurrence, this time with gcc:
-> > 
-> > https://github.com/robertosassu/vmtest/runs/8230071814?check_suite_focus=true
-> > 
-> 
-> ... and it seems like this run does not even have your patches,
-> right?
-> 
+On Wed, 7 Sept 2022 at 17:00, Roberto Sassu
+<roberto.sassu@huaweicloud.com> wrote:
+>
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+>
+> Add tests to ensure that only supported dynamic pointer types are accepted,
+> that the passed argument is actually a dynamic pointer, that the passed
+> argument is a pointer to the stack, and that bpf_verify_pkcs7_signature()
+> correctly handles dynamic pointers with data set to NULL.
+>
+> The tests are currently in the deny list for s390x (JIT does not support
+> calling kernel function).
+>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
 
-Uhm, the kernel patches are there. The tests except the verifier ones
-weren't successfuly applied, probably due to the deny list.
+Just a minor nit: you could probably use invalid flags value other
+than 1, since most likely the next valid flag value will be 1, which
+will require changing this again. LGTM otherwise.
 
-One thing in common with the failures seems when the panic happens,
-when test_progs reaches verif_twfw. I will try to execute this and
-earlier tests to reproduce the panic locally.
-
-Roberto
-
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
