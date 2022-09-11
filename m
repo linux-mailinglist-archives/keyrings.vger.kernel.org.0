@@ -2,78 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08DD95B3CA2
-	for <lists+keyrings@lfdr.de>; Fri,  9 Sep 2022 18:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C53CB5B4E83
+	for <lists+keyrings@lfdr.de>; Sun, 11 Sep 2022 13:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231479AbiIIQGb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 9 Sep 2022 12:06:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37402 "EHLO
+        id S230376AbiIKLlG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 11 Sep 2022 07:41:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230510AbiIIQGa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 9 Sep 2022 12:06:30 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A99EB1282D5;
-        Fri,  9 Sep 2022 09:06:29 -0700 (PDT)
+        with ESMTP id S230379AbiIKLlF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 11 Sep 2022 07:41:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9742B399CF
+        for <keyrings@vger.kernel.org>; Sun, 11 Sep 2022 04:41:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4F4C5B82584;
-        Fri,  9 Sep 2022 16:06:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAB3C4347C;
-        Fri,  9 Sep 2022 16:06:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 279A8B80B32
+        for <keyrings@vger.kernel.org>; Sun, 11 Sep 2022 11:41:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80D4C43140
+        for <keyrings@vger.kernel.org>; Sun, 11 Sep 2022 11:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662739587;
-        bh=axWEZR2AGhaBfThvLrSFA+NxQSVcKpOAZwv+H9dW4Nk=;
+        s=k20201202; t=1662896460;
+        bh=mfC/DzcLdVbiyBOdkdFzHVkQuK8qpwvJhFQkQNsjoBc=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=iibSQJJ4qO0hADleXEMz2q8bsHl4E5kuxqbEW814lAtB6rTghQGxlaWLayEs9BxL6
-         qWsyybTYDgORZqa6SMD8HdP43rhj1S8YjCOGM9LPqk1nIDUVt5ZuMgXhANuH88DKOX
-         95BFN5MFwjwD9ElXZwnG8HK/hMlNHfBMh1T8AIl9UALOKwpDACprIwB3Q/uJMOMGK9
-         sLu1xcTQkm+vu/dcD4ppCL5/l1YYFiqRqH8Y9AVLUdEQsy+oN4tgJUEMP1ZH820Oi4
-         mIWgpb9JtuezcGS477Kc9vOF3tkLh6WKLFdEXRqhZCKemRhAoj+tFJ1fRKxhMvAKDS
-         51qBZeIRP1V5g==
-Received: by mail-ot1-f48.google.com with SMTP id 6-20020a9d0106000000b0063963134d04so1356595otu.3;
-        Fri, 09 Sep 2022 09:06:26 -0700 (PDT)
-X-Gm-Message-State: ACgBeo26VrXaTyec/izQJuIUnPTImjFNVOv1eFUaqESyTBoEi6C6AFcW
-        0WgF/GpLpCB37EyxNemsswUpO/bndaY6iHRZCkY=
-X-Google-Smtp-Source: AA6agR7gNcjRD/fchDqW/acEVY47PneSmF9ZfU3M+Ex1YMk2RVvQ+AETSXZH7W4vEnLR3dT4sV0ywAUAaVtWdc9Vjok=
-X-Received: by 2002:a9d:7c94:0:b0:636:f74b:2364 with SMTP id
- q20-20020a9d7c94000000b00636f74b2364mr5594298otn.165.1662739586134; Fri, 09
- Sep 2022 09:06:26 -0700 (PDT)
+        b=dO9a1bCjZWZa+j3+YvkaHc7afn0eZ9xJRUUkbpjJwNa/BYKyox7+5L8Yifx9OJPm9
+         xMLqBGhuNZ+T31UE2LZrDlYWarc+dQCNZSHWZad6WxBTvSBYyYtZ0RK3f7KOeCDUSW
+         dlg5T4Shm1GiDFVY9tJY12iLzzPf/o0ThJBjK5PE7R2kMOvLxGDCHCs9IXsF5pjzNQ
+         P/R2OdrYWxNWCDC/URJu5xhtP/D2zLgnoV4xggnx8yVQeLADKs052ntgWzXyw6BZag
+         g+I0CSxGWEleFvbhU93i0yzauY4cAUAveQQI95Y0peM1f0q0ClLTAFlZ+YDCD5WhLk
+         PbF8/UPo+gLQQ==
+Received: by mail-lf1-f53.google.com with SMTP id f14so9465856lfg.5
+        for <keyrings@vger.kernel.org>; Sun, 11 Sep 2022 04:41:00 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3Ud8OHi634YH+3dBCUp72AUTbO+/Oxhc9l/V7xZnNBLDQWkpqL
+        tZ9PJ7Ait35XuQs08EaAlnTHzetc3GnteztwCkWDGA==
+X-Google-Smtp-Source: AA6agR7gs0xxqnhzhdmlHMESnGLHahKK3mbikc37UgqaUcsvF6ftFAuRZVzQ4u53rO5Up2H7UPABpxSJ5Mh/VrkiE8c=
+X-Received: by 2002:aa7:cd14:0:b0:44e:2335:fb90 with SMTP id
+ b20-20020aa7cd14000000b0044e2335fb90mr18029880edw.152.1662896448217; Sun, 11
+ Sep 2022 04:40:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220909120736.1027040-1-roberto.sassu@huaweicloud.com> <20220909120736.1027040-8-roberto.sassu@huaweicloud.com>
 In-Reply-To: <20220909120736.1027040-8-roberto.sassu@huaweicloud.com>
-From:   Song Liu <song@kernel.org>
-Date:   Fri, 9 Sep 2022 17:06:15 +0100
-X-Gmail-Original-Message-ID: <CAPhsuW6zhrUJBfht7RCiUGWWCaWwpcjzAq-R4W-YmpU+YZyMXg@mail.gmail.com>
-Message-ID: <CAPhsuW6zhrUJBfht7RCiUGWWCaWwpcjzAq-R4W-YmpU+YZyMXg@mail.gmail.com>
+From:   KP Singh <kpsingh@kernel.org>
+Date:   Sun, 11 Sep 2022 13:40:37 +0200
+X-Gmail-Original-Message-ID: <CACYkzJ6xSk_DHO+3JoCYpGrXjFkk9v-LOSWW0=0KLwAj1Gc0SA@mail.gmail.com>
+Message-ID: <CACYkzJ6xSk_DHO+3JoCYpGrXjFkk9v-LOSWW0=0KLwAj1Gc0SA@mail.gmail.com>
 Subject: Re: [PATCH v17 07/12] bpf: Add bpf_verify_pkcs7_signature() kfunc
 To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, Shuah Khan <shuah@kernel.org>,
-        bpf <bpf@vger.kernel.org>, keyrings@vger.kernel.org,
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, sdf@google.com, haoluo@google.com,
+        jolsa@kernel.org, mykolal@fb.com, dhowells@redhat.com,
+        jarkko@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        shuah@kernel.org, bpf@vger.kernel.org, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Daniel_M=C3=BCller?= <deso@posteo.net>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        deso@posteo.net, memxor@gmail.com,
         Roberto Sassu <roberto.sassu@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,7 +70,7 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Sep 9, 2022 at 1:09 PM Roberto Sassu
+On Fri, Sep 9, 2022 at 2:09 PM Roberto Sassu
 <roberto.sassu@huaweicloud.com> wrote:
 >
 > From: Roberto Sassu <roberto.sassu@huawei.com>
@@ -107,7 +96,103 @@ On Fri, Sep 9, 2022 at 1:09 PM Roberto Sassu
 >
 > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 > Acked-by: KP Singh <kpsingh@kernel.org>
+> ---
+>  kernel/trace/bpf_trace.c | 45 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>
+> diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> index ab183dbaa8d1..9df53c40cffd 100644
+> --- a/kernel/trace/bpf_trace.c
+> +++ b/kernel/trace/bpf_trace.c
+> @@ -1294,12 +1294,57 @@ void bpf_key_put(struct bpf_key *bkey)
+>         kfree(bkey);
+>  }
+>
+> +#ifdef CONFIG_SYSTEM_DATA_VERIFICATION
+> +/**
+> + * bpf_verify_pkcs7_signature - verify a PKCS#7 signature
+> + * @data_ptr: data to verify
+> + * @sig_ptr: signature of the data
+> + * @trusted_keyring: keyring with keys trusted for signature verification
+> + *
+> + * Verify the PKCS#7 signature *sig_ptr* against the supplied *data_ptr*
+> + * with keys in a keyring referenced by *trusted_keyring*.
+> + *
+> + * Return: 0 on success, a negative value on error.
+> + */
+> +int bpf_verify_pkcs7_signature(struct bpf_dynptr_kern *data_ptr,
+> +                              struct bpf_dynptr_kern *sig_ptr,
+> +                              struct bpf_key *trusted_keyring)
+> +{
+> +       int ret;
+> +
+> +       if (trusted_keyring->has_ref) {
+> +               /*
+> +                * Do the permission check deferred in bpf_lookup_user_key().
+> +                * See bpf_lookup_user_key() for more details.
+> +                *
+> +                * A call to key_task_permission() here would be redundant, as
+> +                * it is already done by keyring_search() called by
+> +                * find_asymmetric_key().
+> +                */
+> +               ret = key_validate(trusted_keyring->key);
+> +               if (ret < 0)
+> +                       return ret;
+> +       }
+> +
+> +       return verify_pkcs7_signature(data_ptr->data,
+> +                                     bpf_dynptr_get_size(data_ptr),
+> +                                     sig_ptr->data,
+> +                                     bpf_dynptr_get_size(sig_ptr),
+> +                                     trusted_keyring->key,
+> +                                     VERIFYING_UNSPECIFIED_SIGNATURE, NULL,
+> +                                     NULL);
+> +}
 
-Acked-by: Song Liu <song@kernel.org>
+This seems to work if the data that needs to be verified
+and the signature is allocated onto the map.
 
-[...]
+For BPF program signing, the signature will be void * pointer (and length)
+in a struct in the kernel
+
++++ b/include/uapi/linux/bpf.h
+@@ -1383,6 +1383,8 @@ union bpf_attr {
+                __aligned_u64   fd_array;       /* array of FDs */
+                __aligned_u64   core_relos;
+                __u32           core_relo_rec_size; /* sizeof(struct
+bpf_core_relo) */
++               __aligned_u64   signature;
++               __u32           signature_size;
+        };
+
+Something like this in the bpf_prog_aux struct which is passed to
+security_bpf_prog_alloc.
+
+Now creating a dynptr to use with this kfunc does not work:
+
+   bpf_dynptr_from_mem(aux->signature, aux->signature_size, 0, &sig_ptr);
+
+So one has to copy kernel data into a map and then create dynptrs.
+Would you be able to update
+the dynptr logic to handle this case too? (follow up is okay too).
+
+- KP
+
+
+> +#endif /* CONFIG_SYSTEM_DATA_VERIFICATION */
+> +
+>  __diag_pop();
+>
+>  BTF_SET8_START(key_sig_kfunc_set)
+>  BTF_ID_FLAGS(func, bpf_lookup_user_key, KF_ACQUIRE | KF_RET_NULL | KF_SLEEPABLE)
+>  BTF_ID_FLAGS(func, bpf_lookup_system_key, KF_ACQUIRE | KF_RET_NULL)
+>  BTF_ID_FLAGS(func, bpf_key_put, KF_RELEASE)
+> +#ifdef CONFIG_SYSTEM_DATA_VERIFICATION
+> +BTF_ID_FLAGS(func, bpf_verify_pkcs7_signature, KF_SLEEPABLE)
+> +#endif
+>  BTF_SET8_END(key_sig_kfunc_set)
+>
+>  static const struct btf_kfunc_id_set bpf_key_sig_kfunc_set = {
+> --
+> 2.25.1
+>
