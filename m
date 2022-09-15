@@ -2,70 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE6D5B6BA2
-	for <lists+keyrings@lfdr.de>; Tue, 13 Sep 2022 12:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC3D5B9F6E
+	for <lists+keyrings@lfdr.de>; Thu, 15 Sep 2022 18:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbiIMK3b (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Sep 2022 06:29:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57714 "EHLO
+        id S229908AbiIOQMI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Sep 2022 12:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230494AbiIMK33 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Sep 2022 06:29:29 -0400
-Received: from fornost.hmeau.com (helcar.hmeau.com [216.24.177.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A7525C960;
-        Tue, 13 Sep 2022 03:29:25 -0700 (PDT)
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
-        by fornost.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1oY39f-004Bph-Lc; Tue, 13 Sep 2022 20:28:36 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Tue, 13 Sep 2022 18:28:35 +0800
-Date:   Tue, 13 Sep 2022 18:28:35 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Varun Sethi <V.Sethi@nxp.com>
-Cc:     Pankaj Gupta <pankaj.gupta@nxp.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
-        "Jason@zx2c4.com" <Jason@zx2c4.com>,
-        "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "sumit.garg@linaro.org" <sumit.garg@linaro.org>,
-        "david@sigma-star.at" <david@sigma-star.at>,
-        "michael@walle.cc" <michael@walle.cc>,
-        "john.ernberg@actia.se" <john.ernberg@actia.se>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "j.luebbe@pengutronix.de" <j.luebbe@pengutronix.de>,
-        "ebiggers@kernel.org" <ebiggers@kernel.org>,
-        "richard@nod.at" <richard@nod.at>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        Sahil Malhotra <sahil.malhotra@nxp.com>,
-        Kshitiz Varshney <kshitiz.varshney@nxp.com>,
-        Horia Geanta <horia.geanta@nxp.com>
-Subject: Re: [EXT] Re: [RFC PATCH HBK: 2/8] hw-bound-key: flag-is_hbk added
- to the tfm
-Message-ID: <YyBbU9sNC88EXFJs@gondor.apana.org.au>
-References: <20220906065157.10662-1-pankaj.gupta@nxp.com>
- <20220906065157.10662-3-pankaj.gupta@nxp.com>
- <YxbsBiCrIQT/0xz6@gondor.apana.org.au>
- <DU2PR04MB86308036FB517BF8CAD3D32795419@DU2PR04MB8630.eurprd04.prod.outlook.com>
- <YxhHkz+UlE9XAG/Z@gondor.apana.org.au>
- <DU2PR04MB86308DB7CFBC7A31CEB612D295419@DU2PR04MB8630.eurprd04.prod.outlook.com>
- <YxhuC3QlurfSgdXG@gondor.apana.org.au>
- <AM9PR04MB8211C7D59379D4C9F877D20EE8449@AM9PR04MB8211.eurprd04.prod.outlook.com>
- <Yx/lc1YjWm9+df1r@gondor.apana.org.au>
- <AM9PR04MB82112828E21FDA2043073216E8479@AM9PR04MB8211.eurprd04.prod.outlook.com>
+        with ESMTP id S229872AbiIOQMH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Sep 2022 12:12:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB1E915D8
+        for <keyrings@vger.kernel.org>; Thu, 15 Sep 2022 09:12:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7662AB82152
+        for <keyrings@vger.kernel.org>; Thu, 15 Sep 2022 16:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6F4C433C1
+        for <keyrings@vger.kernel.org>; Thu, 15 Sep 2022 16:12:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663258323;
+        bh=biii+7n43gDq9XV3lLWEwCgiBUcjGdS9pCCJ+UVSt80=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=XD60SOBgjmqG2oE/hYFdoVR/0o9EqUozlXe2HtAuCRzaStarFf8z/YDdABs3Q1Utf
+         8jfXldXFUyy6syrxYUcjYHYL1mZXQsrS3GRRcCNsWeBwQ5jsVG3gX0iZBzWRo7whTy
+         Slcc+9a3Y/Q5kRflAZB23mYWDRktGAiKJxRxVihqcJEyjjo6H2l9i/H5PCbec12NSt
+         Er+zMu9vwqZAwy5AfnXQNEDcFtfzOovBS6tAehYkYNiBMi05FZv5RpUMykkRoMAS4B
+         V1jvalmzh0SH9DwhfQyWUv2dqbg3YB8Wp6Iz0y476MmivxD2t9cDcDjgpOgQIPjFEH
+         tbpNB1W2HLICA==
+Received: by mail-lf1-f44.google.com with SMTP id j16so4107909lfg.1
+        for <keyrings@vger.kernel.org>; Thu, 15 Sep 2022 09:12:03 -0700 (PDT)
+X-Gm-Message-State: ACrzQf01eH9JhWsBuBm7rHLhleorRnvRGSIBPEvZbjTby+bOqKmXD83N
+        NfS/xGoXTmQpaMDMFOotEMlZDSrFR0oci3tqMmXAIw==
+X-Google-Smtp-Source: AMsMyM6A+1amQaBgdn6PNz6+7XLx4sQcOmwWWgNA8pV7010ZefQzIPoOFXBCHMTh3iKNuMgzYaiNCa6qWPB+3IVAEF8=
+X-Received: by 2002:a17:906:9bd3:b0:778:c8e0:fcee with SMTP id
+ de19-20020a1709069bd300b00778c8e0fceemr471268ejc.275.1663258310370; Thu, 15
+ Sep 2022 09:11:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM9PR04MB82112828E21FDA2043073216E8479@AM9PR04MB8211.eurprd04.prod.outlook.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+References: <20220909120736.1027040-1-roberto.sassu@huaweicloud.com> <20220909120736.1027040-12-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20220909120736.1027040-12-roberto.sassu@huaweicloud.com>
+From:   KP Singh <kpsingh@kernel.org>
+Date:   Thu, 15 Sep 2022 17:11:39 +0100
+X-Gmail-Original-Message-ID: <CACYkzJ7uraUdmGV9gMmTZs1OMb_3Q2DttoaxU-irmrXFudOweQ@mail.gmail.com>
+Message-ID: <CACYkzJ7uraUdmGV9gMmTZs1OMb_3Q2DttoaxU-irmrXFudOweQ@mail.gmail.com>
+Subject: Re: [PATCH v17 11/12] selftests/bpf: Add test for bpf_verify_pkcs7_signature()
+ kfunc
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, sdf@google.com, haoluo@google.com,
+        jolsa@kernel.org, mykolal@fb.com, dhowells@redhat.com,
+        jarkko@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        shuah@kernel.org, bpf@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        deso@posteo.net, memxor@gmail.com,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Joanne Koong <joannelkoong@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,19 +72,116 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 10:01:13AM +0000, Varun Sethi wrote:
+On Fri, Sep 9, 2022 at 1:10 PM Roberto Sassu
+<roberto.sassu@huaweicloud.com> wrote:
 >
-> [Varun] The proposed patchset makes things more scalable. With the hardware backed key flag, there's no need for the security co-processor driver to register separate set of algorithms. This makes things simpler and more scalable for the consumers (OpenSSL, AF_ALG, KTLS etc), as they can continue to use standard set of algorithms and leave the key specific complexity to the driver.
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+>
 
-Users already need to specify which driver they are going to use in
-order to actually access the hardware keys instead of getting a software
-implementation of the same algorithm.
+[...]
 
-So I don't see what extra burdens are placed on them by the current
-regime.
+> +}
+> diff --git a/tools/testing/selftests/bpf/progs/test_verify_pkcs7_sig.c b/tools/testing/selftests/bpf/progs/test_verify_pkcs7_sig.c
+> new file mode 100644
+> index 000000000000..4ceab545d99a
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/progs/test_verify_pkcs7_sig.c
+> @@ -0,0 +1,100 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2022 Huawei Technologies Duesseldorf GmbH
+> + *
+> + * Author: Roberto Sassu <roberto.sassu@huawei.com>
+> + */
+> +
+> +#include "vmlinux.h"
+> +#include <errno.h>
+> +#include <bpf/bpf_helpers.h>
+> +#include <bpf/bpf_tracing.h>
+> +
+> +#define MAX_DATA_SIZE (1024 * 1024)
+> +#define MAX_SIG_SIZE 1024
+> +
+> +typedef __u8 u8;
+> +typedef __u16 u16;
+> +typedef __u32 u32;
+> +typedef __u64 u64;
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I think you can avoid this and just use u32 and u64 directly.
+
+> +
+> +struct bpf_dynptr {
+> +       __u64 :64;
+> +       __u64 :64;
+> +} __attribute__((aligned(8)));
+> +
+
+I think you are doing this because including the uapi headers causes
+type conflicts.
+This does happen quite often. What do other folks think about doing
+something like
+
+#define DYNPTR(x) ((void *)x)
+
+It seems like this will be an issue anytime we use the helpers with
+vmlinux.h and users
+will always have to define this type in their tests.
+
+- KP
+
+> +extern struct bpf_key *bpf_lookup_user_key(__u32 serial, __u64 flags) __ksym;
+> +extern struct bpf_key *bpf_lookup_system_key(__u64 id) __ksym;
+> +extern void bpf_key_put(struct bpf_key *key) __ksym;
+> +extern int bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr,
+> +                                     struct bpf_dynptr *sig_ptr,
+> +                                     struct bpf_key *trusted_keyring) __ksym;
+> +
+> +u32 monitored_pid;
+> +u32 user_keyring_serial;
+> +u64 system_keyring_id;
+> +
+> +struct data {
+> +       u8 data[MAX_DATA_SIZE];
+> +       u32 data_len;
+> +       u8 sig[MAX_SIG_SIZE];
+> +       u32 sig_len;
+> +};
+> +
+> +struct {
+> +       __uint(type, BPF_MAP_TYPE_ARRAY);
+> +       __uint(max_entries, 1);
+> +       __type(key, __u32);
+> +       __type(value, struct data);
+> +} data_input SEC(".maps");
+> +
+> +char _license[] SEC("license") = "GPL";
+> +
+> +SEC("lsm.s/bpf")
+> +int BPF_PROG(bpf, int cmd, union bpf_attr *attr, unsigned int size)
+> +{
+> +       struct bpf_dynptr data_ptr, sig_ptr;
+> +       struct data *data_val;
+> +       struct bpf_key *trusted_keyring;
+> +       u32 pid;
+> +       u64 value;
+> +       int ret, zero = 0;
+> +
+> +       pid = bpf_get_current_pid_tgid() >> 32;
+> +       if (pid != monitored_pid)
+> +               return 0;
+> +
+> +       data_val = bpf_map_lookup_elem(&data_input, &zero);
+> +       if (!data_val)
+> +               return 0;
+> +
+> +       bpf_probe_read(&value, sizeof(value), &attr->value);
+> +
+> +       bpf_copy_from_user(data_val, sizeof(struct data),
+>
+
+[...]
+
+> --
+> 2.25.1
+>
