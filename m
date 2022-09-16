@@ -2,106 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 872D75BB778
-	for <lists+keyrings@lfdr.de>; Sat, 17 Sep 2022 11:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E41205BC37E
+	for <lists+keyrings@lfdr.de>; Mon, 19 Sep 2022 09:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbiIQJQk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 17 Sep 2022 05:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35576 "EHLO
+        id S229606AbiISHa2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 19 Sep 2022 03:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbiIQJQj (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 17 Sep 2022 05:16:39 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3740645F64;
-        Sat, 17 Sep 2022 02:16:37 -0700 (PDT)
-Date:   Sat, 17 Sep 2022 09:16:20 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1663406192; x=1663665392;
-        bh=WtH1XiJMuAo2t7Ag08kalVAzbnlWzm46SLxhU7NTyU4=;
-        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID;
-        b=wrMZSanWm0KJNnm3ykOCdOL3myVpKchYhLarOh+NsiXJB3cNn0XiZL2PXDM6LtgBL
-         3apqAbQLnHqEh+eoVn63MLzOc906v+d+cUbfJ7xjwtZPIpLDp0VA5MAShrxzjReeR5
-         M7EvduAsjV/qy4vIacG6Y4U/isHOKKOzBg/bah+2GmOqPNKtrznVv1st9g2xOZEqkV
-         XUeyh6D0dktGbx7x+5AFx72NVxUZP4NlfAo2XDtrCaycemsJPpqV6rVhIEdjUd7wzp
-         0MAp+ypX4PO1Rlcbi6BYF02vair4YktlZi5QGPL6Pye/WVA25lTRB3xEw+Nwd0/b0a
-         sZMpKhkpZNHrw==
-To:     linux-kernel@vger.kernel.org
-From:   Orlando Chamberlain <redecorating@protonmail.com>
-Cc:     jarkko@kernel.org, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        gargaditya08@live.com, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Orlando Chamberlain <redecorating@protonmail.com>,
-        stable@vger.kernel.org, Samuel Jiang <chyishian.jiang@gmail.com>
-Subject: [PATCHv2 1/1] efi: Correct Macmini DMI match in uefi cert quirk
-Message-ID: <20220917091532.3607-1-redecorating@protonmail.com>
-Feedback-ID: 28131841:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229578AbiISHa1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 19 Sep 2022 03:30:27 -0400
+X-Greylist: delayed 420 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 19 Sep 2022 00:30:24 PDT
+Received: from mail.steuer-voss.de (mail.steuer-voss.de [85.183.69.95])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898531A052;
+        Mon, 19 Sep 2022 00:30:24 -0700 (PDT)
+X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
+Received: by mail.steuer-voss.de (Postfix, from userid 1000)
+        id E41421357; Mon, 19 Sep 2022 09:23:17 +0200 (CEST)
+From:   Nikolaus Voss <nv@vosn.de>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Fri, 16 Sep 2022 07:45:29 +0200
+Subject: [PATCH] KEYS: encrypted: fix key instantiation with user-provided
+ data
+Message-Id: <20220919072317.E41421357@mail.steuer-voss.de>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-It turns out Apple doesn't capitalise the "mini" in "Macmini" in DMI, which
-is inconsistent with other model line names.
+Commit cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided
+decrypted data") added key instantiation with user provided decrypted data.
+The user data is hex-ascii-encoded but was just memcpy'ed to the binary buffer.
+Fix this to use hex2bin instead.
 
-Correct the capitalisation of Macmini in the quirk for skipping loading
-platform certs on T2 Macs.
-
-Currently users get:
-
-------------[ cut here ]------------
-[Firmware Bug]: Page fault caused by firmware at PA: 0xffffa30640054000
-WARNING: CPU: 1 PID: 8 at arch/x86/platform/efi/quirks.c:735 efi_crash_grac=
-efully_on_page_fault+0x55/0xe0
-Modules linked in:
-CPU: 1 PID: 8 Comm: kworker/u12:0 Not tainted 5.18.14-arch1-2-t2 #1 4535eb3=
-fc40fd08edab32a509fbf4c9bc52d111e
-Hardware name: Apple Inc. Macmini8,1/Mac-7BA5B2DFE22DDD8C, BIOS 1731.120.10=
-.0.0 (iBridge: 19.16.15071.0.0,0) 04/24/2022
-Workqueue: efi_rts_wq efi_call_rts
-...
----[ end trace 0000000000000000 ]---
-efi: Froze efi_rts_wq and disabled EFI Runtime Services
-integrity: Couldn't get size: 0x8000000000000015
-integrity: MODSIGN: Couldn't get UEFI db list
-efi: EFI Runtime Services are disabled!
-integrity: Couldn't get size: 0x8000000000000015
-integrity: Couldn't get UEFI dbx list
-
-Fixes: 155ca952c7ca ("efi: Do not import certificates from UEFI Secure Boot=
- for T2 Macs")
-Cc: stable@vger.kernel.org
-Cc: Aditya Garg <gargaditya08@live.com>
-Tested-by: Samuel Jiang <chyishian.jiang@gmail.com>
-Signed-off-by: Orlando Chamberlain <redecorating@protonmail.com>
+Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nikolaus Voss <nikolaus.voss@haag-streit.com>
 ---
-v1->v2: Clarified in commit message that this is for a dmi match string
- security/integrity/platform_certs/load_uefi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/encrypted-keys/encrypted.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integ=
-rity/platform_certs/load_uefi.c
-index 093894a640dc..b78753d27d8e 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -31,7 +31,7 @@ static const struct dmi_system_id uefi_skip_cert[] =3D {
- =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir8,1") },
- =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir8,2") },
- =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir9,1") },
--=09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacMini8,1") },
-+=09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "Macmini8,1") },
- =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacPro7,1") },
- =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,1") },
- =09{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,2") },
---=20
-2.37.1
-
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index e05cfc2e49ae..1e313982af02 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -627,7 +627,7 @@ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+ 			pr_err("encrypted key: instantiation of keys using provided decrypted data is disabled since CONFIG_USER_DECRYPTED_DATA is set to false\n");
+ 			return ERR_PTR(-EINVAL);
+ 		}
+-		if (strlen(decrypted_data) != decrypted_datalen) {
++		if (strlen(decrypted_data) != decrypted_datalen * 2) {
+ 			pr_err("encrypted key: decrypted data provided does not match decrypted data length provided\n");
+ 			return ERR_PTR(-EINVAL);
+ 		}
+@@ -791,8 +791,8 @@ static int encrypted_init(struct encrypted_key_payload *epayload,
+ 		ret = encrypted_key_decrypt(epayload, format, hex_encoded_iv);
+ 	} else if (decrypted_data) {
+ 		get_random_bytes(epayload->iv, ivsize);
+-		memcpy(epayload->decrypted_data, decrypted_data,
+-				   epayload->decrypted_datalen);
++		ret = hex2bin(epayload->decrypted_data, decrypted_data,
++			      epayload->decrypted_datalen);
+ 	} else {
+ 		get_random_bytes(epayload->iv, ivsize);
+ 		get_random_bytes(epayload->decrypted_data, epayload->decrypted_datalen);
+-- 
+2.34.1
 
