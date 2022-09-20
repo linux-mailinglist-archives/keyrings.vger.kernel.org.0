@@ -2,49 +2,52 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A719C5BDBC6
-	for <lists+keyrings@lfdr.de>; Tue, 20 Sep 2022 06:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAB715BDC06
+	for <lists+keyrings@lfdr.de>; Tue, 20 Sep 2022 07:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbiITEtM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 20 Sep 2022 00:49:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58464 "EHLO
+        id S230072AbiITFGZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Sep 2022 01:06:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbiITEtK (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Sep 2022 00:49:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D52018B2E;
-        Mon, 19 Sep 2022 21:49:09 -0700 (PDT)
+        with ESMTP id S230038AbiITFGX (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Sep 2022 01:06:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4835D46D81;
+        Mon, 19 Sep 2022 22:06:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 260206209B;
-        Tue, 20 Sep 2022 04:49:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0112C433C1;
-        Tue, 20 Sep 2022 04:49:07 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BE216B82453;
+        Tue, 20 Sep 2022 05:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDE9C433D7;
+        Tue, 20 Sep 2022 05:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663649348;
-        bh=Q1Tosbt3DwUqSNELfPNSjCC17XnqpU33VctSbmh/zGA=;
+        s=k20201202; t=1663650379;
+        bh=QrqoAWdyoKqvuCY0mh/a0HFmsrJsaS+3N7uYNdSkTVw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=m7FS5qm6Cz5w8lVDnqE98rfrO/3tFM97R6EZalVRGqmdKJlUtRRuTCnvvv1HYB69U
-         xW0McPfeWuQ1zUyBEr6WkNiSftZjsInwAjmWZV+N+ACUVhilbhhO4TvUlFh8xqLPYc
-         JAsyvQGGo5YLpDjOFLKGc72Xc/RIzwVNDHUquX570pGyWjstC94JJZ5Cv3b4jMtgc2
-         739EYJE6ry22CuLLHgo+vDz74N9HNyhYrzOLDee7B3ct7UFGiOpMNltWFRoR489/M1
-         Iz14mOCqpXaUgtmhh4wWbuaMGllKBRQoWzDZGkRFxiGslFmB7tfuAmqRcI/lxeVCvb
-         TpUNkvtcDmDBA==
-Date:   Tue, 20 Sep 2022 07:49:04 +0300
+        b=Yj6TGRtyES2UyENyN5roAwj1JkSEk0NFq8/NCDsU83JW02MuftEVkWO1JLu2UN6aK
+         NHCRlRpkQJBWQYW2K6UnyMmvkgmEfSgwpjt/7M8Rx57KEb2Y3bYGQmIayfoEyTokp8
+         5PGKUFdB0P0fSoNMlSTGtMK8VQq4ei32xTHagXkAGlpA7o7kvDkRAdxQphjJE+nb3n
+         FE4fgYFtC9GWCrArwlzQJPr13SA392QI97T9RbbQI0OW1FxHVYfPg/g823dWuZw5+/
+         Crbns8zhP/PAKbVA19Tz3NewBT5EQNnZ+hBzRFXONNBxQpVz87GK4FN0NFtIuFo7Fp
+         ybP6de0uVsC2A==
+Date:   Tue, 20 Sep 2022 08:06:15 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Gaosheng Cui <cuigaosheng1@huawei.com>
-Cc:     dhowells@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, akpm@linux-foundation.org, alan@redhat.com,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2] KEYS: Remove orphan declarations from
- security/keys/internal.h
-Message-ID: <YylGQAOtxolniRS0@kernel.org>
-References: <20220913014613.524253-1-cuigaosheng1@huawei.com>
+To:     Nikolaus Voss <nv@vosn.de>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KEYS: encrypted: fix key instantiation with
+ user-provided data
+Message-ID: <YylKR1UQZGhN0+UW@kernel.org>
+References: <20220919072317.E41421357@mail.steuer-voss.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220913014613.524253-1-cuigaosheng1@huawei.com>
+In-Reply-To: <20220919072317.E41421357@mail.steuer-voss.de>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,52 +57,59 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 09:46:13AM +0800, Gaosheng Cui wrote:
-> Remove the following orphan declarations from security/keys/internal.h:
-> 1. request_key_conswq has been removed since
-> commit 76181c134f87 ("KEYS: Make request_key() and co fundamentally
-> asynchronous").
+On Fri, Sep 16, 2022 at 07:45:29AM +0200, Nikolaus Voss wrote:
+> Commit cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided
+> decrypted data") added key instantiation with user provided decrypted data.
+> The user data is hex-ascii-encoded but was just memcpy'ed to the binary buffer.
+> Fix this to use hex2bin instead.
 > 
-> 2. keyring_search_instkey() has been removed since
-> commit b5f545c880a2 ("[PATCH] keys: Permit running process to
-> instantiate keys").
-> 
-> Fixes: 76181c134f87 ("KEYS: Make request_key() and co fundamentally asynchronous").
-> Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys").
-> Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+> Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
+> Cc: stable <stable@kernel.org>
+> Signed-off-by: Nikolaus Voss <nikolaus.voss@haag-streit.com>
 > ---
-> v2:
-> - Format the commit messages for the patchk, thanks!
->  security/keys/internal.h | 4 ----
->  1 file changed, 4 deletions(-)
+>  security/keys/encrypted-keys/encrypted.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/security/keys/internal.h b/security/keys/internal.h
-> index 9b9cf3b6fcbb..6a2fb45c22f8 100644
-> --- a/security/keys/internal.h
-> +++ b/security/keys/internal.h
-> @@ -86,7 +86,6 @@ extern struct kmem_cache *key_jar;
->  extern struct rb_root key_serial_tree;
->  extern spinlock_t key_serial_lock;
->  extern struct mutex key_construction_mutex;
-> -extern wait_queue_head_t request_key_conswq;
->  
->  extern void key_set_index_key(struct keyring_index_key *index_key);
->  extern struct key_type *key_type_lookup(const char *type);
-> @@ -109,9 +108,6 @@ extern void __key_link_end(struct key *keyring,
->  extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
->  				    const struct keyring_index_key *index_key);
->  
-> -extern struct key *keyring_search_instkey(struct key *keyring,
-> -					  key_serial_t target_id);
-> -
->  extern int iterate_over_keyring(const struct key *keyring,
->  				int (*func)(const struct key *key, void *data),
->  				void *data);
+> diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+> index e05cfc2e49ae..1e313982af02 100644
+> --- a/security/keys/encrypted-keys/encrypted.c
+> +++ b/security/keys/encrypted-keys/encrypted.c
+> @@ -627,7 +627,7 @@ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+>  			pr_err("encrypted key: instantiation of keys using provided decrypted data is disabled since CONFIG_USER_DECRYPTED_DATA is set to false\n");
+>  			return ERR_PTR(-EINVAL);
+>  		}
+> -		if (strlen(decrypted_data) != decrypted_datalen) {
+> +		if (strlen(decrypted_data) != decrypted_datalen * 2) {
+
+This looks wrong. What does cap decrypted_data, and why strnlen()
+is not used?
+
+>  			pr_err("encrypted key: decrypted data provided does not match decrypted data length provided\n");
+
+Using pr_err() is probably wrong here and has different prefix
+than elsewhere in the file (also most of other uses of pr_err()
+are wrong apparently). Nothing bad is really happening.
+
+And who does make any sense of that error message anyway?
+
+For one, I don't understand it.
+
+>  			return ERR_PTR(-EINVAL);
+>  		}
+> @@ -791,8 +791,8 @@ static int encrypted_init(struct encrypted_key_payload *epayload,
+>  		ret = encrypted_key_decrypt(epayload, format, hex_encoded_iv);
+>  	} else if (decrypted_data) {
+>  		get_random_bytes(epayload->iv, ivsize);
+> -		memcpy(epayload->decrypted_data, decrypted_data,
+> -				   epayload->decrypted_datalen);
+> +		ret = hex2bin(epayload->decrypted_data, decrypted_data,
+> +			      epayload->decrypted_datalen);
+>  	} else {
+>  		get_random_bytes(epayload->iv, ivsize);
+>  		get_random_bytes(epayload->decrypted_data, epayload->decrypted_datalen);
 > -- 
-> 2.25.1
+> 2.34.1
 > 
 
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
