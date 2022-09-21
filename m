@@ -2,160 +2,231 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80E6A5BFAF3
-	for <lists+keyrings@lfdr.de>; Wed, 21 Sep 2022 11:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03F2B5BFCBB
+	for <lists+keyrings@lfdr.de>; Wed, 21 Sep 2022 13:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231629AbiIUJ3N (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Sep 2022 05:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49260 "EHLO
+        id S229632AbiIULHN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Sep 2022 07:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231561AbiIUJ3K (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Sep 2022 05:29:10 -0400
-Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29AA090812;
-        Wed, 21 Sep 2022 02:29:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1663752500; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=EPpE5etSbCWRHx7VL58v3RguS9JcjYax953uaqhCOGM3TmFqZZNRlbV1KzvMN9eLEHOuzkeEFjNMKEZZoDcIdM1CiNGmyWNv3kXuwJmTZXMDgmM5TeVl9NVSkPGEzQSsVGNUXezte/uJgp/7m6oBjdzgNsGadjCG2AZnWyaxCck=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1663752500; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=CciC0JA+1Sl6P741HLOLO7oPE18KzPzTWUnJ9g4NcCY=; 
-        b=H7j3yCSbSttrHfHz4KQAH461cXec2S+c/VhWxChElq3GVeuCnE/oORqnGs6neGXS3nTZHVci2shHYNHcdegiuQ1U2VhIGg+wzG4jaTSUy1S+ok4VD+2LDLBakBmfAnl1dugvRa/xckoqnYLihqVFnO73d7kWr0ZHjt1g1WMri3s=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1663752500;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=CciC0JA+1Sl6P741HLOLO7oPE18KzPzTWUnJ9g4NcCY=;
-        b=khov1wpZorLIEV38rMkMhDZwXiuc1sdZwnAvShUzkRz0gIpQeAU8Y6nqQFkr35In
-        Ufz0TfxAPVM+dpRCq+7du2j6jHLrPgyZd805lfSHaORk4mw2inJMfBUrTuex1Aok6Ih
-        izU+ZYPCNwRvrp1PjU4WDoU+JlwoTZwspRLJg8u4=
-Received: from localhost.localdomain (103.240.204.191 [103.240.204.191]) by mx.zoho.in
-        with SMTPS id 1663752499206919.1466534874487; Wed, 21 Sep 2022 14:58:19 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Eric Biggers <ebiggers@kernel.org>
-Cc:     keyrings <keyrings@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-kernel-mentees 
-        <linux-kernel-mentees@lists.linuxfoundation.org>
-Message-ID: <21ea7a96018db8f140d7c68ca75665064361ad1b.1663750794.git.code@siddh.me>
-Subject: [RESEND PATCH v2 2/2] kernel/watch_queue: NULL the dangling *pipe, and use it for clear check
-Date:   Wed, 21 Sep 2022 14:57:46 +0530
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <cover.1663750794.git.code@siddh.me>
-References: <cover.1663750794.git.code@siddh.me>
-MIME-Version: 1.0
+        with ESMTP id S229572AbiIULHM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Sep 2022 07:07:12 -0400
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com (mail-eopbgr20089.outbound.protection.outlook.com [40.107.2.89])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A757F7FFAA;
+        Wed, 21 Sep 2022 04:07:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JyX1QHhNSBxBD4LZZrX7sPPXslep1rL+EFNfAETBFOaxvqMH0ZulUMp4eNXeGgD5eccy0E0UrnRXg4loLa+/sq00a2YFdbktZLB5IPVmcVCbs+QnLD5MQB6rAkjTIXGyNc8xRQL3z2/931usHlUlpUUpFE55a2+43D7sUCg/HTt/3GQc3lXZkycJeePu6LKbDg/zxbBTXsf2s5fXPkIjtRk4SBCfP3hUShGziKotsHwbdUa/m8uJ8jiAl7tmRX8JryqeapXe1jke9ATN/GKs7LbKuWRf8M0w7SGE03yyFS7N4wy22EghbKhceBVKYRG/irdq0rmEcHm1Q9ALAduSWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9NUVR/6NbQ9kyGAb+Tb+islu606FAKiPq1x6O/lrg3c=;
+ b=Xt1GfA5znu+e+OR5KUynPlIl94zyUhJTBJ4eeH9Z2GZMpwF8lINbl/wWXSd6QMqiKM4lVPcfFC4cYa+vflYT4evp3Tb+sfHOi+2h4RAheEyTpP1IKIeFTkR2sXsBtHvMEdJ+/OoAmzsFtOHcGygU91qk7kseAksTEtEWaI6lxHyjOZkn9XPaH9m/Pv19L+gC1P8G81mR6LNjtGVjvbULQIom3Ul/VZ2dQqaD6BZw/GxnM+763iL69Pazky1DBFXyoHaEf7vdXIpR4B3PS8vj5IOLbETra/9Dp8WLsm3GrryVyxCAH7xDreaaRLfIgqYPAbRmadP1p9Nb3w+61rRjAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9NUVR/6NbQ9kyGAb+Tb+islu606FAKiPq1x6O/lrg3c=;
+ b=Fx6kg1IdZyIiFihw9vz3s3ivUhqjREgAsV7326ui+oXukXI+gPxSWE2gR1apYTPon6Is9Cqplft1WkNCK+8nqlyi2/z/Ouse7ZZ2pgjbZoX5uvDGxQ5wTsX1gJJFgX07gc3K49riKO5vIbTaVOxJIoZHjktvvfyJ8w9MfFTKxqU=
+Received: from AM9PR04MB8211.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::17)
+ by DU2PR04MB8887.eurprd04.prod.outlook.com (2603:10a6:10:2e2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.21; Wed, 21 Sep
+ 2022 11:07:07 +0000
+Received: from AM9PR04MB8211.eurprd04.prod.outlook.com
+ ([fe80::dd7d:c23f:d6f:db70]) by AM9PR04MB8211.eurprd04.prod.outlook.com
+ ([fe80::dd7d:c23f:d6f:db70%7]) with mapi id 15.20.5654.016; Wed, 21 Sep 2022
+ 11:07:07 +0000
+From:   Varun Sethi <V.Sethi@nxp.com>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+CC:     Pankaj Gupta <pankaj.gupta@nxp.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
+        "Jason@zx2c4.com" <Jason@zx2c4.com>,
+        "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "sumit.garg@linaro.org" <sumit.garg@linaro.org>,
+        "david@sigma-star.at" <david@sigma-star.at>,
+        "michael@walle.cc" <michael@walle.cc>,
+        "john.ernberg@actia.se" <john.ernberg@actia.se>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "j.luebbe@pengutronix.de" <j.luebbe@pengutronix.de>,
+        "ebiggers@kernel.org" <ebiggers@kernel.org>,
+        "richard@nod.at" <richard@nod.at>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        Sahil Malhotra <sahil.malhotra@nxp.com>,
+        Kshitiz Varshney <kshitiz.varshney@nxp.com>,
+        Horia Geanta <horia.geanta@nxp.com>
+Subject: RE: [EXT] Re: [RFC PATCH HBK: 2/8] hw-bound-key: flag-is_hbk added to
+ the tfm
+Thread-Topic: [EXT] Re: [RFC PATCH HBK: 2/8] hw-bound-key: flag-is_hbk added
+ to the tfm
+Thread-Index: AQHYwbSVJxssHkcinkOJLgRDaMQm8K3R9HsAgAGdVwCAAAD6gIAAKqCAgAADO4CAAgk08IAG3V+AgABPatCAAD0bgIAMfEPw
+Date:   Wed, 21 Sep 2022 11:07:07 +0000
+Message-ID: <AM9PR04MB821120DC26BFDD907A1229B0E84F9@AM9PR04MB8211.eurprd04.prod.outlook.com>
+References: <20220906065157.10662-1-pankaj.gupta@nxp.com>
+ <20220906065157.10662-3-pankaj.gupta@nxp.com>
+ <YxbsBiCrIQT/0xz6@gondor.apana.org.au>
+ <DU2PR04MB86308036FB517BF8CAD3D32795419@DU2PR04MB8630.eurprd04.prod.outlook.com>
+ <YxhHkz+UlE9XAG/Z@gondor.apana.org.au>
+ <DU2PR04MB86308DB7CFBC7A31CEB612D295419@DU2PR04MB8630.eurprd04.prod.outlook.com>
+ <YxhuC3QlurfSgdXG@gondor.apana.org.au>
+ <AM9PR04MB8211C7D59379D4C9F877D20EE8449@AM9PR04MB8211.eurprd04.prod.outlook.com>
+ <Yx/lc1YjWm9+df1r@gondor.apana.org.au>
+ <AM9PR04MB82112828E21FDA2043073216E8479@AM9PR04MB8211.eurprd04.prod.outlook.com>
+ <YyBbU9sNC88EXFJs@gondor.apana.org.au>
+In-Reply-To: <YyBbU9sNC88EXFJs@gondor.apana.org.au>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8211:EE_|DU2PR04MB8887:EE_
+x-ms-office365-filtering-correlation-id: 40d6fbba-25a2-4062-a4a8-08da9bc16c5f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: IqU0Jks5ODKkmyJ0JLQvmy23HoRriC4LXM/C8ny7quSMSjqvw2GQf091n3nw0bDVHkkj1c1/GYLw6BrkbOg4lLo6615736OOvXpCyQNNvxOMjStN+TRX727Jzc1L0aetNtkHazS4vCUVujOLjLFEnSRQ1sAPIi+2Di5Yijox7B/48FT1r4E3C4g9B6QTpxP6wDRW0YAZIPQZtEYbkR1XatbIhGuxOm5u8cjXv+YifqdDBFHdkrzv3TBrgeYPDXOt0WX780V7MTzQ9ii8J+Um3ZDD1x0jTPyHSgCYmW96VfrsfMYzcgPk1fJoawS72gnJVuhD+nkmIWiWa7fGyN3/qU5W+4P6BxaFpw3xWrSOeUxE683wneyVege9oVAeR3FjNJHOWQ04YLIhd+GSX7rO6Ibe1dcOFv3meUbTWbJCHlpLfYY5HbBMDakyJYLbwtuYE7bnQ2wAcLrhxFfdKoMdbruCSR07r7Tp3L6olTo4E9eXvA7ZF3hwU0DydfYUpuIA/boclpgCjDvdtbSdqx2RtW80iTxOdkpMEsFwt4CRVS7i5Oc3EYO35zNG+aCRwa74StH/lhGM+5DvAVzuA5/Q1PVv94L4f/FbImRv4OcbChZP+RmCggYOJY/BQghO9UW+71uZ96nMWNmY3oqSmbgO1bjrNdpA7ZlXAeNUcYnFevaGktd42nNH5LX5OKaEYBP1MATZmep2Qxx38vmrh4xU0EFGoPg5ePisA9AVtZf5Owno/6Hp0bDQRFqfUAT4UE9Furpu6KfMbtj8BzW684o9xTjG1ZavNbsDvAorl/wWhRs=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8211.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(346002)(136003)(39860400002)(366004)(451199015)(55016003)(2906002)(64756008)(122000001)(4326008)(8676002)(66446008)(66476007)(66556008)(38100700002)(316002)(7416002)(45080400002)(8936002)(86362001)(52536014)(66946007)(6916009)(5660300002)(33656002)(54906003)(76116006)(186003)(38070700005)(9686003)(478600001)(7696005)(83380400001)(41300700001)(966005)(71200400001)(26005)(55236004)(53546011)(6506007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?pyDyl2JVBSCy2GydL8cyKB38JC82YO6zbhfa7pPi4qRRxlJ8dEi6s69ZEMJ/?=
+ =?us-ascii?Q?t3f1lnEo92JWOeIpUj8bFsbKn6tUI/k5js4tnWXwyhCAraSfZDxHG51QlUOi?=
+ =?us-ascii?Q?oIh/mbnTkTOxBtxRXGz/hmIWPWU4pzNG3jouuHYw8nzq85VuOvNflPTOetvX?=
+ =?us-ascii?Q?2kpM9a6l26MqgsPI2Oo4mIjztwRWRn6iTJ0gR2JJFmrKUBQIpcRqegprs3Vn?=
+ =?us-ascii?Q?4ibgpFq4p7C10km2kVor3gmGEc3npdRXFK+TCwSj7Ei1tb/vs/z9MfLvjRZk?=
+ =?us-ascii?Q?F+GK2WBkHNG04Z2Y/AFQ5zZF96xssPNsYaVdeuhefpXjs0eRAqt+/zpw8g5/?=
+ =?us-ascii?Q?Nvcbpg1BUQYViot/oK990MVW9pRsQXGXDpoQFnwzx3S4nueLX99boJlcmuI0?=
+ =?us-ascii?Q?uy0BgbLGgkbW1hEiW5ii2f2os/pEZtVGO3+Q+6r++p/lMdX5ED1DsXBFl0Lb?=
+ =?us-ascii?Q?jDVo5c3ZA7cyaZXRMTP6n5/6oGeo7c7sx+BLaQ1B2jXFy5kq7QW2Zv3rbmlI?=
+ =?us-ascii?Q?YKJRrkttx1RkDYbBRwagT9U+9BDeZkMXYsqZCG670VfJeyLhgacArdfA6pgE?=
+ =?us-ascii?Q?M+UHumKYJzmLFwZEGmOPOkI1qAaLRstAbPsgJNHG03wzvTeTdLDRl0dKIu8Y?=
+ =?us-ascii?Q?VCntvV1Z/4e+5X1hWKHMZILhi+KzaBO0C2kCK/vC0jXpTlpMzg1UJ/vcq7+j?=
+ =?us-ascii?Q?0FvWYzgUeSUv1RjAzZcHlFUgbjSGOVhiZBWlDRvHhyIDNZPXX3oDf4fLTAa7?=
+ =?us-ascii?Q?kAx6XgJFNTUk9XO1YssX1SVpOr+Bxd2baJI65g5Yrzqe8IYJdnH3OJxSpCYr?=
+ =?us-ascii?Q?N+y/FAxPtDkxEGjzf/PzoQZUF1e4MarqtYM66tN+6e0PCqmfUWcYvvcvotPN?=
+ =?us-ascii?Q?ZE8+czXlsW2VykDtloIkfWHJf1R2jj9v0DAE7XugZXECA13gwFSOcePZL8WO?=
+ =?us-ascii?Q?qyoTvHIfS94sSd8Gqzd3TVbprzGYOlRW92pDPhxdIsX2h7jKuNWtZ9BpOA4u?=
+ =?us-ascii?Q?m6oq5baKrQ9Mo3diq06LgX+NhoLJQY8BmGeSyMSFkhuHCM3Mlw9b86fdzkb8?=
+ =?us-ascii?Q?CIXIFRMTrS6z1zGJYSsCF668sczTczRpLfMqfyvFYRow6jEIW00ce5+/NWpf?=
+ =?us-ascii?Q?2KLEaa6dOH+G+FQp7n4sGwgragqYosQmJYpMtSC2SK3ZKqut7jIt0yHJcVqi?=
+ =?us-ascii?Q?23L4R1RFcbG02tIcsqMhFfsn/ewCWQQ43EqEZSSdTOGXfgYdHnY6tRgJQdJ9?=
+ =?us-ascii?Q?IPLdsqWPng/GK5V+3DP+hC6rQIVPAEKWuhuMdIP48SEUr7horUwXtwcIQJG3?=
+ =?us-ascii?Q?1UHmX681NJN23LOrWlfeRA0rj1BX8nbOEoBuuZaqiNPJFChowyva2D6FJn1Y?=
+ =?us-ascii?Q?T9M8booT4oj86Io91Z2JdEkf6c2BdcxIB/KZZHeEg9P3WM9QTPOMfB9naFTh?=
+ =?us-ascii?Q?CGFopAMYAjPQQHYLQ7cZt9RfBz5JRG9WmE8yR2HIqqP+BCz15iUrFVyj47x1?=
+ =?us-ascii?Q?0MWJiuHrcjRY48SC31p/Tl7zNQ/TcEpgzDvmMoZmqgwoUG54SEZY9JuZI6DR?=
+ =?us-ascii?Q?WKlZIuK2vP9Cd40iSk0=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8211.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40d6fbba-25a2-4062-a4a8-08da9bc16c5f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2022 11:07:07.4922
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CYvlWNSQZe7Px7BJ48n6PTgz5gO9Je4s3J1JJmvgFYGDQkOlAxw9IhGgSj3Trr9c
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8887
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-NULL the dangling pipe reference while clearing watch_queue.
-
-If not done, a reference to a freed pipe remains in the watch_queue,
-as this function is called before freeing a pipe in free_pipe_info()
-(see line 834 of fs/pipe.c).
-
-The sole use of wqueue->defunct is for checking if the watch queue has
-been cleared, but wqueue->pipe is also NULLed while clearing.
-
-Thus, wqueue->defunct is superfluous, as wqueue->pipe can be checked
-for NULL. Hence, the former can be removed.
-
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
----
- include/linux/watch_queue.h |  4 +---
- kernel/watch_queue.c        | 12 ++++++------
- 2 files changed, 7 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/watch_queue.h b/include/linux/watch_queue.h
-index 7f8b1f15634b..d72ad82a4435 100644
---- a/include/linux/watch_queue.h
-+++ b/include/linux/watch_queue.h
-@@ -55,7 +55,7 @@ struct watch_filter {
-  *
-  * @rcu: RCU head
-  * @filter: Filter to use on watches
-- * @pipe: The pipe we're using as a buffer
-+ * @pipe: The pipe we're using as a buffer, NULL when queue is cleared/clo=
-sed
-  * @watches: Contributory watches
-  * @notes: Preallocated notifications
-  * @notes_bitmap: Allocation bitmap for notes
-@@ -63,7 +63,6 @@ struct watch_filter {
-  * @lock: To serialize accesses and removes
-  * @nr_notes: Number of notes
-  * @nr_pages: Number of pages in notes[]
-- * @defunct: True when queues closed
-  */
- struct watch_queue {
- =09struct rcu_head=09=09rcu;
-@@ -76,7 +75,6 @@ struct watch_queue {
- =09spinlock_t=09=09lock;
- =09unsigned int=09=09nr_notes;
- =09unsigned int=09=09nr_pages;
--=09bool=09=09=09defunct;
- };
-=20
- /**
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index a6f9bdd956c3..a70ddfd622ee 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -43,7 +43,7 @@ MODULE_LICENSE("GPL");
- static inline bool lock_wqueue(struct watch_queue *wqueue)
- {
- =09spin_lock_bh(&wqueue->lock);
--=09if (unlikely(wqueue->defunct)) {
-+=09if (unlikely(!wqueue->pipe)) {
- =09=09spin_unlock_bh(&wqueue->lock);
- =09=09return false;
- =09}
-@@ -105,9 +105,6 @@ static bool post_one_notification(struct watch_queue *w=
-queue,
- =09unsigned int head, tail, mask, note, offset, len;
- =09bool done =3D false;
-=20
--=09if (!pipe)
--=09=09return false;
--
- =09spin_lock_irq(&pipe->rd_wait.lock);
-=20
- =09mask =3D pipe->ring_size - 1;
-@@ -603,8 +600,11 @@ void watch_queue_clear(struct watch_queue *wqueue)
- =09rcu_read_lock();
- =09spin_lock_bh(&wqueue->lock);
-=20
--=09/* Prevent new notifications from being stored. */
--=09wqueue->defunct =3D true;
-+=09/*
-+=09 * This pipe will get freed by the caller free_pipe_info().
-+=09 * Removing this reference also prevents new notifications.
-+=09 */
-+=09wqueue->pipe =3D NULL;
-=20
- =09while (!hlist_empty(&wqueue->watches)) {
- =09=09watch =3D hlist_entry(wqueue->watches.first, struct watch, queue_nod=
-e);
---=20
-2.35.1
+Hi Herbert,
+Please find comments inline.
 
 
+
+Regards
+Varun
+
+> -----Original Message-----
+> From: Herbert Xu <herbert@gondor.apana.org.au>
+> Sent: Tuesday, September 13, 2022 3:59 PM
+> To: Varun Sethi <V.Sethi@nxp.com>
+> Cc: Pankaj Gupta <pankaj.gupta@nxp.com>; jarkko@kernel.org;
+> a.fatoum@pengutronix.de; Jason@zx2c4.com; jejb@linux.ibm.com;
+> zohar@linux.ibm.com; dhowells@redhat.com; sumit.garg@linaro.org;
+> david@sigma-star.at; michael@walle.cc; john.ernberg@actia.se;
+> jmorris@namei.org; serge@hallyn.com; davem@davemloft.net;
+> j.luebbe@pengutronix.de; ebiggers@kernel.org; richard@nod.at;
+> keyrings@vger.kernel.org; linux-crypto@vger.kernel.org; linux-
+> integrity@vger.kernel.org; linux-kernel@vger.kernel.org; linux-security-
+> module@vger.kernel.org; Sahil Malhotra <sahil.malhotra@nxp.com>; Kshitiz
+> Varshney <kshitiz.varshney@nxp.com>; Horia Geanta <horia.geanta@nxp.com>
+> Subject: Re: [EXT] Re: [RFC PATCH HBK: 2/8] hw-bound-key: flag-is_hbk add=
+ed
+> to the tfm
+>=20
+> Caution: EXT Email
+>=20
+> On Tue, Sep 13, 2022 at 10:01:13AM +0000, Varun Sethi wrote:
+> >
+> > [Varun] The proposed patchset makes things more scalable. With the
+> hardware backed key flag, there's no need for the security co-processor d=
+river
+> to register separate set of algorithms. This makes things simpler and mor=
+e
+> scalable for the consumers (OpenSSL, AF_ALG, KTLS etc), as they can conti=
+nue to
+> use standard set of algorithms and leave the key specific complexity to t=
+he
+> driver.
+>=20
+> Users already need to specify which driver they are going to use in order=
+ to
+> actually access the hardware keys instead of getting a software implement=
+ation
+> of the same algorithm.
+>=20
+> So I don't see what extra burdens are placed on them by the current regim=
+e.
+[Varun] Problem with the current approach is that it's completely disconnec=
+ted from the kernel keyrings. We are using the trusted key rings for storin=
+g the hardware backed keys. Now, for the hardware backed keys we can still =
+continue to use the existing generic algorithms exposed by the crypto drive=
+rs. With our approach the driver can distinguish between a hardware backed =
+key and a plain key, thus perform the relevant operation.=20
+
+As a part of our patchset we are also proposing modifications to the truste=
+d keys, in order to store additional meta data associated with the key. =20
+
+>=20
+> Cheers,
+> --
+> Email: Herbert Xu <herbert@gondor.apana.org.au> Home Page:
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fgondor=
+.ap
+> ana.org.au%2F~herbert%2F&amp;data=3D05%7C01%7CV.Sethi%40nxp.com%7C9
+> df35ead51ad4143067e08da9572d5d5%7C686ea1d3bc2b4c6fa92cd99c5c301635
+> %7C0%7C0%7C637986617695149505%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
+> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000
+> %7C%7C%7C&amp;sdata=3Dt5RXelrFDZZ7GdMyZeLcSR2hRN6O0Hs8uI2MpIwhCms
+> %3D&amp;reserved=3D0
+> PGP Key:
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fgondor=
+.ap
+> ana.org.au%2F~herbert%2Fpubkey.txt&amp;data=3D05%7C01%7CV.Sethi%40nxp.
+> com%7C9df35ead51ad4143067e08da9572d5d5%7C686ea1d3bc2b4c6fa92cd99
+> c5c301635%7C0%7C0%7C637986617695149505%7CUnknown%7CTWFpbGZsb3
+> d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3
+> D%7C3000%7C%7C%7C&amp;sdata=3DV7NXYx5pYPjte6jlw1gpYCBPftJBZGpHBN44
+> e3pD0ps%3D&amp;reserved=3D0
