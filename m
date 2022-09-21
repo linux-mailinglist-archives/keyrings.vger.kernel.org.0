@@ -2,116 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49AAC5BFF17
-	for <lists+keyrings@lfdr.de>; Wed, 21 Sep 2022 15:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB1C5C0290
+	for <lists+keyrings@lfdr.de>; Wed, 21 Sep 2022 17:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbiIUNns (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Sep 2022 09:43:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35330 "EHLO
+        id S229571AbiIUPyP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Sep 2022 11:54:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229884AbiIUNnq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Sep 2022 09:43:46 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6260E6E89F
-        for <keyrings@vger.kernel.org>; Wed, 21 Sep 2022 06:43:41 -0700 (PDT)
+        with ESMTP id S231409AbiIUPxW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Sep 2022 11:53:22 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7ECB13F06;
+        Wed, 21 Sep 2022 08:49:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E96E0B82FC8
-        for <keyrings@vger.kernel.org>; Wed, 21 Sep 2022 13:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9398CC43143
-        for <keyrings@vger.kernel.org>; Wed, 21 Sep 2022 13:43:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663767818;
-        bh=Gmuw7RYv066IxRae4zmwgZqYaBan3eu2R7Ak+x42SkI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=epzRSJ0jyAlPZ16JH3+XPj16W+fgflBh69EoIUoCn+iYNALhGhq0EGN7hyvK6/xnz
-         tCrpO2MgL9f/JKcaFVIpdYkwWnKD81N8BqNwoKaIfVpULQLmOvz2ZVdroMjawrta0o
-         ltKZ/KorHpLGLupVh7L0N+yDipDQXa6ThxHz29DxoZb9DXxNv+/aKxvEEYH4WGYHYT
-         oaAootsA0LfuR1MUG3VujCM5P1GmGhokDptfnnqRKL295GKdkC9Z7vl9faJN982WEV
-         SSAWusvTxydhhjpXEPqqtH0teulP5+KXcoBUaMngLqObOmac7yPzK5i/UYTPtLUnEo
-         byWIA2B/BIBDA==
-Received: by mail-ed1-f45.google.com with SMTP id b35so8852839edf.0
-        for <keyrings@vger.kernel.org>; Wed, 21 Sep 2022 06:43:38 -0700 (PDT)
-X-Gm-Message-State: ACrzQf1gbSlxx9hdjfdZGP4XUq/T1XMQnSqDgDH+C1UfjtWkXlU4JIKb
-        AOg5WqD365dBsan/bW1hIEfiOdpF4LvzUUrREVQ8NA==
-X-Google-Smtp-Source: AMsMyM79gcUQDdS+aheFYCBSJgkOeTa2g6z7vtIVxydF5XAVlYV8l3YcMmi9Yn+KvZ/xQuuFPV3NVrj9PpUfx7TqFJ4=
-X-Received: by 2002:a2e:920a:0:b0:26c:f7b:95db with SMTP id
- k10-20020a2e920a000000b0026c0f7b95dbmr9324650ljg.156.1663767805783; Wed, 21
- Sep 2022 06:43:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220920075951.929132-1-roberto.sassu@huaweicloud.com> <20220920075951.929132-3-roberto.sassu@huaweicloud.com>
-In-Reply-To: <20220920075951.929132-3-roberto.sassu@huaweicloud.com>
-From:   KP Singh <kpsingh@kernel.org>
-Date:   Wed, 21 Sep 2022 15:43:14 +0200
-X-Gmail-Original-Message-ID: <CACYkzJ7or3+zwZShXC7TdzhSbN4O9wEk6KEkbRBFh85=HZ87PQ@mail.gmail.com>
-Message-ID: <CACYkzJ7or3+zwZShXC7TdzhSbN4O9wEk6KEkbRBFh85=HZ87PQ@mail.gmail.com>
-Subject: Re: [PATCH v18 02/13] btf: Export bpf_dynptr definition
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, sdf@google.com, haoluo@google.com,
-        jolsa@kernel.org, mykolal@fb.com, dhowells@redhat.com,
-        jarkko@kernel.org, rostedt@goodmis.org, mingo@redhat.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        shuah@kernel.org, bpf@vger.kernel.org, keyrings@vger.kernel.org,
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0F580B830AF;
+        Wed, 21 Sep 2022 15:49:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5F5C433D7;
+        Wed, 21 Sep 2022 15:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1663775338;
+        bh=Pty2kD4tYPOLUNGbx/iMh4Z5d8Q8KTKQnMyIeZHS3/s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=TGapixIlIpg92pJkAHDgRG1OOSlKFIP8WD85FPK9BTpYu9IogO9GhnzPFS5tH42my
+         pWlEgwd6M9bkFtndFklCTlS4vy+yOMNgfxLzVfVMDSWifF+60i9D/bFA52zsd7QJiF
+         BQjv7PzOU3S75TfVyk8o+Q6FGSr4wBTx0SKDefow=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Baoquan He <bhe@redhat.com>,
+        kexec@lists.infradead.org, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, memxor@gmail.com,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org, Joanne Koong <joannelkoong@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Michal Suchanek <msuchanek@suse.de>,
+        Will Deacon <will@kernel.org>, Coiby Xu <coxu@redhat.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 02/45] arm64: kexec_file: use more system keyrings to verify kernel image signature
+Date:   Wed, 21 Sep 2022 17:45:52 +0200
+Message-Id: <20220921153647.005448861@linuxfoundation.org>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20220921153646.931277075@linuxfoundation.org>
+References: <20220921153646.931277075@linuxfoundation.org>
+User-Agent: quilt/0.67
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Sep 20, 2022 at 10:01 AM Roberto Sassu
-<roberto.sassu@huaweicloud.com> wrote:
->
-> From: Roberto Sassu <roberto.sassu@huawei.com>
->
-> eBPF dynamic pointers is a new feature recently added to upstream. It binds
-> together a pointer to a memory area and its size. The internal kernel
-> structure bpf_dynptr_kern is not accessible by eBPF programs in user space.
-> They instead see bpf_dynptr, which is then translated to the internal
-> kernel structure by the eBPF verifier.
->
-> The problem is that it is not possible to include at the same time the uapi
-> include linux/bpf.h and the vmlinux BTF vmlinux.h, as they both contain the
-> definition of some structures/enums. The compiler complains saying that the
-> structures/enums are redefined.
->
-> As bpf_dynptr is defined in the uapi include linux/bpf.h, this makes it
-> impossible to include vmlinux.h. However, in some cases, e.g. when using
-> kfuncs, vmlinux.h has to be included. The only option until now was to
-> include vmlinux.h and add the definition of bpf_dynptr directly in the eBPF
-> program source code from linux/bpf.h.
->
-> Solve the problem by using the same approach as for bpf_timer (which also
-> follows the same scheme with the _kern suffix for the internal kernel
-> structure).
->
-> Add the following line in one of the dynamic pointer helpers,
-> bpf_dynptr_from_mem():
->
-> BTF_TYPE_EMIT(struct bpf_dynptr);
->
-> Cc: stable@vger.kernel.org
-> Cc: Joanne Koong <joannelkoong@gmail.com>
-> Fixes: 97e03f521050c ("bpf: Add verifier support for dynptrs")
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> Acked-by: Yonghong Song <yhs@fb.com>
+From: Coiby Xu <coxu@redhat.com>
 
-I tested this out and it works, however for the BPF signing use case
-where "bpf_dynptr_kern" is added to struct bpf_prog_aux one still
-ends up defining the __ksym extern with bpf_dynptr_kern.
+[ Upstream commit 0d519cadf75184a24313568e7f489a7fc9b1be3b ]
 
-But let's discuss that when the series is posted.
+Currently, when loading a kernel image via the kexec_file_load() system
+call, arm64 can only use the .builtin_trusted_keys keyring to verify
+a signature whereas x86 can use three more keyrings i.e.
+.secondary_trusted_keys, .machine and .platform keyrings. For example,
+one resulting problem is kexec'ing a kernel image  would be rejected
+with the error "Lockdown: kexec: kexec of unsigned images is restricted;
+see man kernel_lockdown.7".
 
-Tested-by: KP Singh <kpsingh@kernel.org>
+This patch set enables arm64 to make use of the same keyrings as x86 to
+verify the signature kexec'ed kernel image.
+
+Fixes: 732b7b93d849 ("arm64: kexec_file: add kernel signature verification support")
+Cc: stable@vger.kernel.org # 105e10e2cf1c: kexec_file: drop weak attribute from functions
+Cc: stable@vger.kernel.org # 34d5960af253: kexec: clean up arch_kexec_kernel_verify_sig
+Cc: stable@vger.kernel.org # 83b7bb2d49ae: kexec, KEYS: make the code in bzImage64_verify_sig generic
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: kexec@lists.infradead.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Co-developed-by: Michal Suchanek <msuchanek@suse.de>
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Acked-by: Will Deacon <will@kernel.org>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm64/kernel/kexec_image.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
+index 9ec34690e255..5ed6a585f21f 100644
+--- a/arch/arm64/kernel/kexec_image.c
++++ b/arch/arm64/kernel/kexec_image.c
+@@ -14,7 +14,6 @@
+ #include <linux/kexec.h>
+ #include <linux/pe.h>
+ #include <linux/string.h>
+-#include <linux/verification.h>
+ #include <asm/byteorder.h>
+ #include <asm/cpufeature.h>
+ #include <asm/image.h>
+@@ -130,18 +129,10 @@ static void *image_load(struct kimage *image,
+ 	return NULL;
+ }
+ 
+-#ifdef CONFIG_KEXEC_IMAGE_VERIFY_SIG
+-static int image_verify_sig(const char *kernel, unsigned long kernel_len)
+-{
+-	return verify_pefile_signature(kernel, kernel_len, NULL,
+-				       VERIFYING_KEXEC_PE_SIGNATURE);
+-}
+-#endif
+-
+ const struct kexec_file_ops kexec_image_ops = {
+ 	.probe = image_probe,
+ 	.load = image_load,
+ #ifdef CONFIG_KEXEC_IMAGE_VERIFY_SIG
+-	.verify_sig = image_verify_sig,
++	.verify_sig = kexec_kernel_verify_pe_sig,
+ #endif
+ };
+-- 
+2.35.1
+
+
+
