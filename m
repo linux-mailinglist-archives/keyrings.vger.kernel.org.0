@@ -2,60 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BFB15E57C5
-	for <lists+keyrings@lfdr.de>; Thu, 22 Sep 2022 03:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB85F5E5F31
+	for <lists+keyrings@lfdr.de>; Thu, 22 Sep 2022 12:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbiIVBKX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Sep 2022 21:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53294 "EHLO
+        id S231219AbiIVKBP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Sep 2022 06:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbiIVBKW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Sep 2022 21:10:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B0D8DFD0;
-        Wed, 21 Sep 2022 18:10:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE15B63343;
-        Thu, 22 Sep 2022 01:10:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 11191C433D7;
-        Thu, 22 Sep 2022 01:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663809020;
-        bh=JQYpUNVHmmWqqXAXWDbpfQz1G7DdV3xIEvXth+vs+eE=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=c0PJHJkL4zQlong+cLZwqtdSIVI1lzbtkLA2s3IdFJOKBUq2IL6fozJFi4bAp9yQI
-         2qBAluRvsHqdjKJOPdnM14aGcMdp+0EifvqIQ4bG4w/gHxuxmmmRiC8wR4TXn8qv12
-         BiXIYJ4+/47tqw0RsBTBktnTbDqtJdBS7A8ew/GDFOJwEhYkv2lmsgVVaPmqWrxUlE
-         KJoe/CFeVri62F4CZHA6ei5JhDZf35duMIEQgqi15k0ZATIf6VZZt+9x3q3+YpDcLE
-         MJzIo+cqgNfmTWz7+NAbjU1UlpnbLSIK1t0DD96PXhQf9IvYeAuwscpkkCHbFJe9JZ
-         nSSdkyw676YnA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E3658E21ECF;
-        Thu, 22 Sep 2022 01:10:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229649AbiIVKBI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Sep 2022 06:01:08 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF9FAB1A2
+        for <keyrings@vger.kernel.org>; Thu, 22 Sep 2022 03:01:04 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id z2so12836083edi.1
+        for <keyrings@vger.kernel.org>; Thu, 22 Sep 2022 03:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=J0qXhAwEzoWbz8NYi11IkHID2B4LQANK3dOrOzpzswM=;
+        b=EokOGSnIK46rPF0cq5JkkwoxMv8EWDs4JGCatOPqqwqHOk7VVx5cN8Z4pR+ia19ty1
+         VqbQSXqeshUYwMZ3zrCOl7xa1Ko5uzNEIMPgxPrjtsxjj41DS8jAO/bEcdDQ/as0CWRM
+         nREFoJ1c8pSocKsEIwnMPLVEKtIQBV6T9xxvX/IQK/epJuPQz9hPJgQlyp1q+cHNC5QN
+         SakGEbkKVrr2uXSo8Br/Q7V99tS7MtCVSQz/gAZPhJ52pPxBDEYWn3wo1+oSLvR6TtqG
+         YA0T0qlFkn9yuqpyfIA+LIgVX/Kdh0EUzhpm1c21Qq3a3jZDWMXd6Zt4P7uJEInaI5cg
+         TCQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=J0qXhAwEzoWbz8NYi11IkHID2B4LQANK3dOrOzpzswM=;
+        b=tPkselO1LP0hrNh/JViVqj41DzOa6hBRjigMrEWGCZ+rvnC3/Xb0FWlvBq9pN9/bY8
+         +jVg7BXcEDIuypU4012LjsmsO3e0wDGGvZ8eFihImF2LDaPYvvRYl15zZTuqfSqy6oIT
+         5sSyoWS/h0ErT12Nz4krhRlAfw9247gef6QqXOMbeBlQrFNVR/FkEqCcE2L/TtN50+6c
+         jXWkgjbB8n5QYD//Oz6g+OkNEojrTxpLkjBntFJ7E3Vn0uJM+RN0PtU32HW9QaO9Q4k/
+         G/KR6WxBy+UIoDAth3wbb65drA35Gv6StGE1myDojo4qDqOZABmoQ6qV6vkmb9/41zA/
+         Dgdw==
+X-Gm-Message-State: ACrzQf1gVouwBTx+rIo4RxvSJzPGEU83JgdrNlZENBrce6/3zmct3tqO
+        9i4nvC8iBh5sguFEp6NJ0VgkmocoEqY36JtOBGHFBA==
+X-Google-Smtp-Source: AMsMyM61YoKKgXD2TA5sZVWJ9BLcFHrwIAfLChpAAtUcovDLpwWQQCNKsZ+/eUBPUBz41TArDzkEfh374RGFsFLM0oI=
+X-Received: by 2002:aa7:cb87:0:b0:43b:e650:6036 with SMTP id
+ r7-20020aa7cb87000000b0043be6506036mr2455207edt.350.1663840862990; Thu, 22
+ Sep 2022 03:01:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v18 00/13] bpf: Add kfuncs for PKCS#7 signature verification
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <166380901992.22214.9738927038585872619.git-patchwork-notify@kernel.org>
-Date:   Thu, 22 Sep 2022 01:10:19 +0000
-References: <20220920075951.929132-1-roberto.sassu@huaweicloud.com>
-In-Reply-To: <20220920075951.929132-1-roberto.sassu@huaweicloud.com>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
-        dhowells@redhat.com, jarkko@kernel.org, rostedt@goodmis.org,
-        mingo@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, shuah@kernel.org, bpf@vger.kernel.org,
+References: <20220921153646.931277075@linuxfoundation.org>
+In-Reply-To: <20220921153646.931277075@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 22 Sep 2022 15:30:51 +0530
+Message-ID: <CA+G9fYs5BDHc2638p7br6-RzQzdJjxOOUvujyssy0bOWKOtLCg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/45] 5.15.70-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        slade@sladewatkins.com, Coiby Xu <coxu@redhat.com>,
+        Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org,
         keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deso@posteo.net, memxor@gmail.com, roberto.sassu@huawei.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        Michal Suchanek <msuchanek@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,52 +73,140 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello:
+On Wed, 21 Sept 2022 at 21:19, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.70 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 23 Sep 2022 15:36:33 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.70-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+Results from Linaro=E2=80=99s test farm.
+Regressions on arm64 allmodconfig builds failed.
 
-On Tue, 20 Sep 2022 09:59:38 +0200 you wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> One of the desirable features in security is the ability to restrict import
-> of data to a given system based on data authenticity. If data import can be
-> restricted, it would be possible to enforce a system-wide policy based on
-> the signing keys the system owner trusts.
-> 
-> [...]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Here is the summary with links:
-  - [v18,01/13] bpf: Allow kfuncs to be used in LSM programs
-    https://git.kernel.org/bpf/bpf-next/c/d15bf1501c75
-  - [v18,02/13] btf: Export bpf_dynptr definition
-    https://git.kernel.org/bpf/bpf-next/c/00f146413ccb
-  - [v18,03/13] bpf: Move dynptr type check to is_dynptr_type_expected()
-    https://git.kernel.org/bpf/bpf-next/c/e9e315b4a5de
-  - [v18,04/13] btf: Allow dynamic pointer parameters in kfuncs
-    https://git.kernel.org/bpf/bpf-next/c/b8d31762a0ae
-  - [v18,05/13] bpf: Export bpf_dynptr_get_size()
-    https://git.kernel.org/bpf/bpf-next/c/51df48657185
-  - [v18,06/13] KEYS: Move KEY_LOOKUP_ to include/linux/key.h and define KEY_LOOKUP_ALL
-    https://git.kernel.org/bpf/bpf-next/c/90fd8f26edd4
-  - [v18,07/13] bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs
-    https://git.kernel.org/bpf/bpf-next/c/f3cf4134c5c6
-  - [v18,08/13] bpf: Add bpf_verify_pkcs7_signature() kfunc
-    https://git.kernel.org/bpf/bpf-next/c/865b0566d8f1
-  - [v18,09/13] selftests/bpf: Compile kernel with everything as built-in
-    https://git.kernel.org/bpf/bpf-next/c/94fd7420faa0
-  - [v18,10/13] selftests/bpf: Add verifier tests for bpf_lookup_*_key() and bpf_key_put()
-    https://git.kernel.org/bpf/bpf-next/c/7c036ed9e006
-  - [v18,11/13] selftests/bpf: Add additional tests for bpf_lookup_*_key()
-    https://git.kernel.org/bpf/bpf-next/c/ecce368d6e6d
-  - [v18,12/13] selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc
-    https://git.kernel.org/bpf/bpf-next/c/fc97590668ae
-  - [v18,13/13] selftests/bpf: Add tests for dynamic pointers parameters in kfuncs
-    https://git.kernel.org/bpf/bpf-next/c/b94fa9f9dcf9
+* arm64, build failed.
+  - clang-12-allmodconfig
+  - clang-13-allmodconfig
+  - clang-14-allmodconfig
+  - clang-nightly-allmodconfig
+  - gcc-10-allmodconfig
+  - gcc-11-allmodconfig
+  - gcc-12-allmodconfig
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Coiby Xu <coxu@redhat.com>
+>     arm64: kexec_file: use more system keyrings to verify kernel image si=
+gnature
+
+Build errors:
+---------------
+arch/arm64/kernel/kexec_image.c:136:23: error:
+'kexec_kernel_verify_pe_sig' undeclared here (not in a function); did
+you mean 'arch_kexec_kernel_verify_sig'?
+  136 |         .verify_sig =3D kexec_kernel_verify_pe_sig,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                       arch_kexec_kernel_verify_sig
 
 
+## Build
+* kernel: 5.15.70-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 16d41e601858766935e69e3f9d62db810e5d277d
+* git describe: v5.15.69-46-g16d41e601858
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.69-46-g16d41e601858
+
+## Test Regressions (compared to v5.15.69)
+* arm64, build
+  - clang-12-allmodconfig
+  - clang-13-allmodconfig
+  - clang-14-allmodconfig
+  - clang-nightly-allmodconfig
+  - gcc-10-allmodconfig
+  - gcc-11-allmodconfig
+  - gcc-12-allmodconfig
+
+## No Metric Regressions (compared to v5.15.69)
+
+## No Test Fixes (compared to v5.15.69)
+
+## No Metric Fixes (compared to v5.15.69)
+
+## Test result summary
+total: 106713, pass: 94034, fail: 687, skip: 11680, xfail: 312
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 339 total, 336 passed, 3 failed
+* arm64: 72 total, 63 passed, 9 failed
+* i386: 61 total, 55 passed, 6 failed
+* mips: 62 total, 59 passed, 3 failed
+* parisc: 14 total, 14 passed, 0 failed
+* powerpc: 69 total, 66 passed, 3 failed
+* riscv: 27 total, 27 passed, 0 failed
+* s390: 30 total, 27 passed, 3 failed
+* sh: 26 total, 24 passed, 2 failed
+* sparc: 14 total, 14 passed, 0 failed
+* x86_64: 65 total, 63 passed, 2 failed
+
+## Test suites summary
+* fwts
+* igt-gpu-tools
+* kunit
+* kvm-unit-tests
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-open-posix-tests
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* packetdrill
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
