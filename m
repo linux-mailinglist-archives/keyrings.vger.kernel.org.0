@@ -2,77 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C45A5E8068
-	for <lists+keyrings@lfdr.de>; Fri, 23 Sep 2022 19:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0326D5E8078
+	for <lists+keyrings@lfdr.de>; Fri, 23 Sep 2022 19:11:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232316AbiIWRKt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 23 Sep 2022 13:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46446 "EHLO
+        id S231935AbiIWRLC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 23 Sep 2022 13:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232287AbiIWRKr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Sep 2022 13:10:47 -0400
+        with ESMTP id S232287AbiIWRKz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Sep 2022 13:10:55 -0400
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5B41162DB;
-        Fri, 23 Sep 2022 10:10:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBED147692;
+        Fri, 23 Sep 2022 10:10:53 -0700 (PDT)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 9C334219EC;
-        Fri, 23 Sep 2022 17:10:43 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTP id 4ACD221A39;
+        Fri, 23 Sep 2022 17:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1663953043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=ZSPBzEUu4HvvRKKrmrdU/FMS6Qx20fLyxT3yF1tghgc=;
-        b=uumJiLIU2hCeUjB//pYmunQ3XhUTmH5n97IVRpx0df4OZYv5fuXBQ0xekIy4XJccvKNdf+
-        ZZ2q/2pniI8zXucmq84IOe9+SqdEoZRhNamUxbx08sYZ/Rz9mhwPlaqhD1IuXjRA5vy2v5
-        Iqu37b4i4NZhqLy45/3MLfqEcVgd2Os=
+        t=1663953052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Rmyc7+NXxSKrvuh1Oxes12NMTBkZbYvg0p3QHUHFwAk=;
+        b=0okAljIZr+W1vgFvro+h1w1DeSfzGLvmWklZkBfsdvj9UzlpIN1exoRqL6t4SYtpO7Zy7M
+        GT4b51Wjs1iuS+A75vliMgkqEkea4NCiNvKHTw5JCCgI50weB8OTkbTqHh1N6QOljA8XQ3
+        TR7/ki4fwb1uHc2z227q7ITjzA9G9p0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1663953043;
+        s=susede2_ed25519; t=1663953052;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=ZSPBzEUu4HvvRKKrmrdU/FMS6Qx20fLyxT3yF1tghgc=;
-        b=Fngpn3ub5IEe7UJDgzoo8OBgYwiwTJAr8CYGfJ5/Ppmar1cb8XYsiESPKo8Bi3lpB3A8SE
-        scN82gpoaRkfC7CQ==
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Rmyc7+NXxSKrvuh1Oxes12NMTBkZbYvg0p3QHUHFwAk=;
+        b=symqT+AAemfpN0Bky/MVOHY5dYy0iRKssfzEGEcxb1JR2M6MH9k9AKE2/u91O0fNo5aHXz
+        CFf6Wvd+5VdRspAA==
 Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-        by relay2.suse.de (Postfix) with ESMTP id 44B9C2C15B;
-        Fri, 23 Sep 2022 17:10:41 +0000 (UTC)
+        by relay2.suse.de (Postfix) with ESMTP id 0AC0D2C171;
+        Fri, 23 Sep 2022 17:10:52 +0000 (UTC)
 From:   Michal Suchanek <msuchanek@suse.de>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Michal Suchanek <msuchanek@suse.de>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Philipp Rudo <prudo@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        linux-s390@vger.kernel.org (open list:S390),
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
         "H. Peter Anvin" <hpa@zytor.com>,
         Eric Biederman <ebiederm@xmission.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
-        (AARCH64 ARCHITECTURE)),
-        linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND
-        64-BIT)), kexec@lists.infradead.org (open list:KEXEC),
-        Coiby Xu <coxu@redhat.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James Morse <james.morse@arm.com>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>
-Subject: [PATCH 5.15 0/6] arm64: kexec_file: use more system keyrings to verify kernel image signature + dependencies
-Date:   Fri, 23 Sep 2022 19:10:28 +0200
-Message-Id: <cover.1663951201.git.msuchanek@suse.de>
+        Michal Suchanek <msuchanek@suse.de>,
+        Coiby Xu <coxu@redhat.com>, Mimi Zohar <zohar@linux.ibm.com>,
+        kexec@lists.infradead.org (open list:KEXEC),
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: [PATCH 5.15 5/6] kexec, KEYS: make the code in bzImage64_verify_sig generic
+Date:   Fri, 23 Sep 2022 19:10:33 +0200
+Message-Id: <7f9c49c652d30c1093aeb4bac42c27dd88610388.1663951201.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <cover.1663951201.git.msuchanek@suse.de>
+References: <cover.1663951201.git.msuchanek@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -84,46 +67,127 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hello,
+From: Coiby Xu <coxu@redhat.com>
 
-this is backport of commit 0d519cadf751
-("arm64: kexec_file: use more system keyrings to verify kernel image signature")
-to table 5.15 tree including the preparatory patches.
+commit c903dae8941deb55043ee46ded29e84e97cd84bb upstream.
 
-Some patches needed minor adjustment for context.
+commit 278311e417be ("kexec, KEYS: Make use of platform keyring for
+signature verify") adds platform keyring support on x86 kexec but not
+arm64.
 
-Thanks
+The code in bzImage64_verify_sig uses the keys on the
+.builtin_trusted_keys, .machine, if configured and enabled,
+.secondary_trusted_keys, also if configured, and .platform keyrings
+to verify the signed kernel image as PE file.
 
-Michal
+Cc: kexec@lists.infradead.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Reviewed-by: Michal Suchanek <msuchanek@suse.de>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ arch/x86/kernel/kexec-bzimage64.c | 20 +-------------------
+ include/linux/kexec.h             |  7 +++++++
+ kernel/kexec_file.c               | 17 +++++++++++++++++
+ 3 files changed, 25 insertions(+), 19 deletions(-)
 
-
-Coiby Xu (3):
-  kexec: clean up arch_kexec_kernel_verify_sig
-  kexec, KEYS: make the code in bzImage64_verify_sig generic
-  arm64: kexec_file: use more system keyrings to verify kernel image
-    signature
-
-Naveen N. Rao (2):
-  kexec_file: drop weak attribute from functions
-  kexec: drop weak attribute from functions
-
-Sven Schnelle (1):
-  s390/kexec_file: move kernel image size check
-
- arch/arm64/include/asm/kexec.h        | 20 ++++++-
- arch/arm64/kernel/kexec_image.c       | 11 +---
- arch/powerpc/include/asm/kexec.h      | 14 +++++
- arch/s390/boot/head.S                 |  2 -
- arch/s390/include/asm/kexec.h         | 14 +++++
- arch/s390/include/asm/setup.h         |  1 -
- arch/s390/kernel/machine_kexec_file.c | 17 +-----
- arch/x86/include/asm/kexec.h          | 12 ++++
- arch/x86/kernel/kexec-bzimage64.c     | 20 +------
- include/linux/kexec.h                 | 82 ++++++++++++++++++++++----
- kernel/kexec_core.c                   | 27 ---------
- kernel/kexec_file.c                   | 83 ++++++++++-----------------
- 12 files changed, 163 insertions(+), 140 deletions(-)
-
+diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
+index 170d0fd68b1f..f299b48f9c9f 100644
+--- a/arch/x86/kernel/kexec-bzimage64.c
++++ b/arch/x86/kernel/kexec-bzimage64.c
+@@ -17,7 +17,6 @@
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/efi.h>
+-#include <linux/verification.h>
+ 
+ #include <asm/bootparam.h>
+ #include <asm/setup.h>
+@@ -528,28 +527,11 @@ static int bzImage64_cleanup(void *loader_data)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_KEXEC_BZIMAGE_VERIFY_SIG
+-static int bzImage64_verify_sig(const char *kernel, unsigned long kernel_len)
+-{
+-	int ret;
+-
+-	ret = verify_pefile_signature(kernel, kernel_len,
+-				      VERIFY_USE_SECONDARY_KEYRING,
+-				      VERIFYING_KEXEC_PE_SIGNATURE);
+-	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING)) {
+-		ret = verify_pefile_signature(kernel, kernel_len,
+-					      VERIFY_USE_PLATFORM_KEYRING,
+-					      VERIFYING_KEXEC_PE_SIGNATURE);
+-	}
+-	return ret;
+-}
+-#endif
+-
+ const struct kexec_file_ops kexec_bzImage64_ops = {
+ 	.probe = bzImage64_probe,
+ 	.load = bzImage64_load,
+ 	.cleanup = bzImage64_cleanup,
+ #ifdef CONFIG_KEXEC_BZIMAGE_VERIFY_SIG
+-	.verify_sig = bzImage64_verify_sig,
++	.verify_sig = kexec_kernel_verify_pe_sig,
+ #endif
+ };
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 46f113961dbc..1dd7b679fcf9 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -19,6 +19,7 @@
+ #include <asm/io.h>
+ 
+ #include <uapi/linux/kexec.h>
++#include <linux/verification.h>
+ 
+ #ifdef CONFIG_KEXEC_CORE
+ #include <linux/list.h>
+@@ -206,6 +207,12 @@ static inline void *arch_kexec_kernel_image_load(struct kimage *image)
+ }
+ #endif
+ 
++#ifdef CONFIG_KEXEC_SIG
++#ifdef CONFIG_SIGNED_PE_FILE_VERIFICATION
++int kexec_kernel_verify_pe_sig(const char *kernel, unsigned long kernel_len);
++#endif
++#endif
++
+ extern int kexec_add_buffer(struct kexec_buf *kbuf);
+ int kexec_locate_mem_hole(struct kexec_buf *kbuf);
+ 
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 8d73d6d4f0a6..289bb20e6075 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -123,6 +123,23 @@ void kimage_file_post_load_cleanup(struct kimage *image)
+ }
+ 
+ #ifdef CONFIG_KEXEC_SIG
++#ifdef CONFIG_SIGNED_PE_FILE_VERIFICATION
++int kexec_kernel_verify_pe_sig(const char *kernel, unsigned long kernel_len)
++{
++	int ret;
++
++	ret = verify_pefile_signature(kernel, kernel_len,
++				      VERIFY_USE_SECONDARY_KEYRING,
++				      VERIFYING_KEXEC_PE_SIGNATURE);
++	if (ret == -ENOKEY && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING)) {
++		ret = verify_pefile_signature(kernel, kernel_len,
++					      VERIFY_USE_PLATFORM_KEYRING,
++					      VERIFYING_KEXEC_PE_SIGNATURE);
++	}
++	return ret;
++}
++#endif
++
+ static int kexec_image_verify_sig(struct kimage *image, void *buf,
+ 				  unsigned long buf_len)
+ {
 -- 
 2.35.3
 
