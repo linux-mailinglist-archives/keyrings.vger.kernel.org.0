@@ -2,70 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB85F5E5F31
-	for <lists+keyrings@lfdr.de>; Thu, 22 Sep 2022 12:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 094845E78C0
+	for <lists+keyrings@lfdr.de>; Fri, 23 Sep 2022 12:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbiIVKBP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Sep 2022 06:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
+        id S231955AbiIWKwu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 23 Sep 2022 06:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbiIVKBI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Sep 2022 06:01:08 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF9FAB1A2
-        for <keyrings@vger.kernel.org>; Thu, 22 Sep 2022 03:01:04 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id z2so12836083edi.1
-        for <keyrings@vger.kernel.org>; Thu, 22 Sep 2022 03:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=J0qXhAwEzoWbz8NYi11IkHID2B4LQANK3dOrOzpzswM=;
-        b=EokOGSnIK46rPF0cq5JkkwoxMv8EWDs4JGCatOPqqwqHOk7VVx5cN8Z4pR+ia19ty1
-         VqbQSXqeshUYwMZ3zrCOl7xa1Ko5uzNEIMPgxPrjtsxjj41DS8jAO/bEcdDQ/as0CWRM
-         nREFoJ1c8pSocKsEIwnMPLVEKtIQBV6T9xxvX/IQK/epJuPQz9hPJgQlyp1q+cHNC5QN
-         SakGEbkKVrr2uXSo8Br/Q7V99tS7MtCVSQz/gAZPhJ52pPxBDEYWn3wo1+oSLvR6TtqG
-         YA0T0qlFkn9yuqpyfIA+LIgVX/Kdh0EUzhpm1c21Qq3a3jZDWMXd6Zt4P7uJEInaI5cg
-         TCQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=J0qXhAwEzoWbz8NYi11IkHID2B4LQANK3dOrOzpzswM=;
-        b=tPkselO1LP0hrNh/JViVqj41DzOa6hBRjigMrEWGCZ+rvnC3/Xb0FWlvBq9pN9/bY8
-         +jVg7BXcEDIuypU4012LjsmsO3e0wDGGvZ8eFihImF2LDaPYvvRYl15zZTuqfSqy6oIT
-         5sSyoWS/h0ErT12Nz4krhRlAfw9247gef6QqXOMbeBlQrFNVR/FkEqCcE2L/TtN50+6c
-         jXWkgjbB8n5QYD//Oz6g+OkNEojrTxpLkjBntFJ7E3Vn0uJM+RN0PtU32HW9QaO9Q4k/
-         G/KR6WxBy+UIoDAth3wbb65drA35Gv6StGE1myDojo4qDqOZABmoQ6qV6vkmb9/41zA/
-         Dgdw==
-X-Gm-Message-State: ACrzQf1gVouwBTx+rIo4RxvSJzPGEU83JgdrNlZENBrce6/3zmct3tqO
-        9i4nvC8iBh5sguFEp6NJ0VgkmocoEqY36JtOBGHFBA==
-X-Google-Smtp-Source: AMsMyM61YoKKgXD2TA5sZVWJ9BLcFHrwIAfLChpAAtUcovDLpwWQQCNKsZ+/eUBPUBz41TArDzkEfh374RGFsFLM0oI=
-X-Received: by 2002:aa7:cb87:0:b0:43b:e650:6036 with SMTP id
- r7-20020aa7cb87000000b0043be6506036mr2455207edt.350.1663840862990; Thu, 22
- Sep 2022 03:01:02 -0700 (PDT)
+        with ESMTP id S231567AbiIWKwl (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Sep 2022 06:52:41 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F40A6C57;
+        Fri, 23 Sep 2022 03:52:39 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MYpnR2WhqzbncV;
+        Fri, 23 Sep 2022 18:49:47 +0800 (CST)
+Received: from huawei.com (10.175.103.91) by dggpemm500022.china.huawei.com
+ (7.185.36.162) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 23 Sep
+ 2022 18:52:37 +0800
+From:   Zeng Heng <zengheng4@huawei.com>
+To:     <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <davem@davemloft.net>
+CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <liwei391@huawei.com>, <zengheng4@huawei.com>
+Subject: [PATCH -next] crypto: KEYS: fix undefined reference errors in fips_signature_selftest
+Date:   Fri, 23 Sep 2022 18:59:32 +0800
+Message-ID: <20220923105932.3294400-1-zengheng4@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220921153646.931277075@linuxfoundation.org>
-In-Reply-To: <20220921153646.931277075@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 22 Sep 2022 15:30:51 +0530
-Message-ID: <CA+G9fYs5BDHc2638p7br6-RzQzdJjxOOUvujyssy0bOWKOtLCg@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/45] 5.15.70-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        slade@sladewatkins.com, Coiby Xu <coxu@redhat.com>,
-        Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Michal Suchanek <msuchanek@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500022.china.huawei.com (7.185.36.162)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,140 +45,40 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 21 Sept 2022 at 21:19, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.70 release.
-> There are 45 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 23 Sep 2022 15:36:33 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.70-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When the menuconfig set as below:
 
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm64 allmodconfig builds failed.
+CONFIG_FIPS_SIGNATURE_SELFTEST = y
+CONFIG_PKCS7_MESSAGE_PARSER = m
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+it would raise below compile errors:
+ld: crypto/asymmetric_keys/selftest.o: in function `fips_signature_selftest':
+.../crypto/asymmetric_keys/selftest.c:205: undefined reference to `pkcs7_parse_message'
+ld: .../crypto/asymmetric_keys/selftest.c:209: undefined reference to `pkcs7_supply_detached_data'
+ld: .../crypto/asymmetric_keys/selftest.c:211: undefined reference to `pkcs7_verify'
+ld: .../crypto/asymmetric_keys/selftest.c:215: undefined reference to `pkcs7_validate_trust'
+ld: .../crypto/asymmetric_keys/selftest.c:219: undefined reference to `pkcs7_free_message'
 
-* arm64, build failed.
-  - clang-12-allmodconfig
-  - clang-13-allmodconfig
-  - clang-14-allmodconfig
-  - clang-nightly-allmodconfig
-  - gcc-10-allmodconfig
-  - gcc-11-allmodconfig
-  - gcc-12-allmodconfig
+FIPS_SIGNATURE_SELFTEST needs pkcs7_parser.o compiled
+into kernel indeed, so select PKCS7_MESSAGE_PARSER
+when enable FIPS_SIGNATURE_SELFTEST.
 
-> Coiby Xu <coxu@redhat.com>
->     arm64: kexec_file: use more system keyrings to verify kernel image si=
-gnature
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+---
+ crypto/asymmetric_keys/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Build errors:
----------------
-arch/arm64/kernel/kexec_image.c:136:23: error:
-'kexec_kernel_verify_pe_sig' undeclared here (not in a function); did
-you mean 'arch_kexec_kernel_verify_sig'?
-  136 |         .verify_sig =3D kexec_kernel_verify_pe_sig,
-      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                       arch_kexec_kernel_verify_sig
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 3df3fe4ed95f..9d74bf5fbb63 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -83,6 +83,6 @@ config FIPS_SIGNATURE_SELFTEST
+ 	  for FIPS.
+ 	depends on KEYS
+ 	depends on ASYMMETRIC_KEY_TYPE
+-	depends on PKCS7_MESSAGE_PARSER
++	select PKCS7_MESSAGE_PARSER
+ 
+ endif # ASYMMETRIC_KEY_TYPE
+-- 
+2.25.1
 
-
-## Build
-* kernel: 5.15.70-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.15.y
-* git commit: 16d41e601858766935e69e3f9d62db810e5d277d
-* git describe: v5.15.69-46-g16d41e601858
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.69-46-g16d41e601858
-
-## Test Regressions (compared to v5.15.69)
-* arm64, build
-  - clang-12-allmodconfig
-  - clang-13-allmodconfig
-  - clang-14-allmodconfig
-  - clang-nightly-allmodconfig
-  - gcc-10-allmodconfig
-  - gcc-11-allmodconfig
-  - gcc-12-allmodconfig
-
-## No Metric Regressions (compared to v5.15.69)
-
-## No Test Fixes (compared to v5.15.69)
-
-## No Metric Fixes (compared to v5.15.69)
-
-## Test result summary
-total: 106713, pass: 94034, fail: 687, skip: 11680, xfail: 312
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 339 total, 336 passed, 3 failed
-* arm64: 72 total, 63 passed, 9 failed
-* i386: 61 total, 55 passed, 6 failed
-* mips: 62 total, 59 passed, 3 failed
-* parisc: 14 total, 14 passed, 0 failed
-* powerpc: 69 total, 66 passed, 3 failed
-* riscv: 27 total, 27 passed, 0 failed
-* s390: 30 total, 27 passed, 3 failed
-* sh: 26 total, 24 passed, 2 failed
-* sparc: 14 total, 14 passed, 0 failed
-* x86_64: 65 total, 63 passed, 2 failed
-
-## Test suites summary
-* fwts
-* igt-gpu-tools
-* kunit
-* kvm-unit-tests
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-open-posix-tests
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* packetdrill
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
