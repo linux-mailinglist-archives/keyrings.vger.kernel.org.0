@@ -2,92 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 863C45E8D6A
-	for <lists+keyrings@lfdr.de>; Sat, 24 Sep 2022 16:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7556D5E99CC
+	for <lists+keyrings@lfdr.de>; Mon, 26 Sep 2022 08:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232138AbiIXOoO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 24 Sep 2022 10:44:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54548 "EHLO
+        id S233676AbiIZGrh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 26 Sep 2022 02:47:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbiIXOoN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 24 Sep 2022 10:44:13 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8E3B31DFE;
-        Sat, 24 Sep 2022 07:44:08 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 854FE21880;
-        Sat, 24 Sep 2022 14:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1664030646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ldCH7q8JyvLEKaktegyDOVQARi1eF2vv5KGzrW1iCKE=;
-        b=ZYYExhvhe3hvVYy4oVk/eFH8gYNpGCko5Ihe7Zb9d4XHzj0gN+cbmJ5znD+HxwJBv4rbaf
-        xOAiTy+7OSutCerOOUzrNf7vSiurU7B6noAUxrtuNDY8e/xv8++TCq4sPot33lF0rn5bY3
-        j5D7iIgKtKQkzwHDFuKS1s7nX1iR+bg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1664030646;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ldCH7q8JyvLEKaktegyDOVQARi1eF2vv5KGzrW1iCKE=;
-        b=LwyQx+Mw9MIzMldTchSCV/M9BlwXBCMS+77FXL0rg1zfTVtmjUy+KUTCczSeB7Oi5a4eGF
-        DV0wxb7/VTheveCg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+        with ESMTP id S233274AbiIZGrg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 26 Sep 2022 02:47:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF6224BE0;
+        Sun, 25 Sep 2022 23:47:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 2218E2C172;
-        Sat, 24 Sep 2022 14:44:05 +0000 (UTC)
-Date:   Sat, 24 Sep 2022 16:44:03 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        "open list:S390" <linux-s390@vger.kernel.org>,
-        Coiby Xu <coxu@redhat.com>, Baoquan He <bhe@redhat.com>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FB5061503;
+        Mon, 26 Sep 2022 06:47:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D481C433D6;
+        Mon, 26 Sep 2022 06:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1664174854;
+        bh=Y2sNyycpz3WfUGxxxwkrxUxDfizPmjY1zyzAphv6PIM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=R01HPFGgQkDQRVV6X/B85xXIWfuTBp4FYgiRlfvicfMadW+sS9Aa4uveH3JqL9r23
+         Ff6Sw3/AUKjIe4eR/Md3V2qY3UjWduTwexkEjHI2Udigby3+gkYfFqPtAt3lvzZ5yX
+         uFPWzkAzYRCDL1i9yqqNN14LCX5p+qNGKO1nNU1M=
+Date:   Mon, 26 Sep 2022 08:47:32 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         Heiko Carstens <hca@linux.ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Sasha Levin <sashal@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Alexander Egorenkov <egorenar@linux.ibm.com>,
+        "open list:S390" <linux-s390@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" 
         <linux-arm-kernel@lists.infradead.org>,
-        Philipp Rudo <prudo@redhat.com>,
-        " open list:KEXEC" <kexec@lists.infradead.org>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        "open list:KEXEC" <kexec@lists.infradead.org>,
+        Coiby Xu <coxu@redhat.com>, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
         James Morse <james.morse@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
-        <linuxppc-dev@lists.ozlabs.org>
+        AKASHI Takahiro <takahiro.akashi@linaro.org>
 Subject: Re: [PATCH 5.15 0/6] arm64: kexec_file: use more system keyrings to
  verify kernel image signature + dependencies
-Message-ID: <20220924144403.GA28810@kitsune.suse.cz>
+Message-ID: <YzFLBJukjDy7uNVl@kroah.com>
 References: <cover.1663951201.git.msuchanek@suse.de>
- <67337b60a4d3cae00794d3cfd0e5add9899f18b7.camel@linux.ibm.com>
- <20220923191650.GX28810@kitsune.suse.cz>
+ <Yy7Ll1QJ+u+nkic9@kroah.com>
+ <20220924094521.GY28810@kitsune.suse.cz>
+ <Yy7YTnJKkv1UtvWF@kroah.com>
+ <20220924115523.GZ28810@kitsune.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220923191650.GX28810@kitsune.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+In-Reply-To: <20220924115523.GZ28810@kitsune.suse.cz>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,45 +86,53 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Sep 23, 2022 at 09:16:50PM +0200, Michal Suchánek wrote:
-> Hello,
-> 
-> On Fri, Sep 23, 2022 at 03:03:36PM -0400, Mimi Zohar wrote:
-> > On Fri, 2022-09-23 at 19:10 +0200, Michal Suchanek wrote:
-> > > Hello,
+On Sat, Sep 24, 2022 at 01:55:23PM +0200, Michal Suchánek wrote:
+> On Sat, Sep 24, 2022 at 12:13:34PM +0200, Greg Kroah-Hartman wrote:
+> > On Sat, Sep 24, 2022 at 11:45:21AM +0200, Michal Suchánek wrote:
+> > > On Sat, Sep 24, 2022 at 11:19:19AM +0200, Greg Kroah-Hartman wrote:
+> > > > On Fri, Sep 23, 2022 at 07:10:28PM +0200, Michal Suchanek wrote:
+> > > > > Hello,
+> > > > > 
+> > > > > this is backport of commit 0d519cadf751
+> > > > > ("arm64: kexec_file: use more system keyrings to verify kernel image signature")
+> > > > > to table 5.15 tree including the preparatory patches.
+> > > > 
+> > > > This feels to me like a new feature for arm64, one that has never worked
+> > > > before and you are just making it feature-parity with x86, right?
+> > > > 
+> > > > Or is this a regression fix somewhere?  Why is this needed in 5.15.y and
+> > > > why can't people who need this new feature just use a newer kernel
+> > > > version (5.19?)
 > > > 
-> > > this is backport of commit 0d519cadf751
-> > > ("arm64: kexec_file: use more system keyrings to verify kernel image signature")
-> > > to table 5.15 tree including the preparatory patches.
-> > > 
-> > > Some patches needed minor adjustment for context.
+> > > It's half-broken implementation of the kexec kernel verification. At the time
+> > > it was implemented for arm64 we had the platform and secondary keyrings
+> > > and x86 was using them but on arm64 the initial implementation ignores
+> > > them.
 > > 
-> > In general when backporting this patch set, there should be a
-> > dependency on backporting these commits as well.  In this instance for
-> > linux-5.15.y, they've already been backported.
-> > 
-> > 543ce63b664e ("lockdown: Fix kexec lockdown bypass with ima policy")
+> > Ok, so it's something that never worked.  Adding support to get it to
+> > work doesn't really fall into the stable kernel rules, right?
+> 
+> Not sure. It was defective, not using the facilities available at the
+> time correctly. Which translates to kernels that can be kexec'd on x86
+> failing to kexec on arm64 without any explanation (signed with same key,
+> built for the appropriate arch).
 
-AFAICT this is everywhere relevant, likely because it's considered a CVE
-fix.
+Feature parity across architectures is not a "regression", but rather a
+"this feature is not implemented for this architecture yet" type of
+thing.
 
-> > af16df54b89d ("ima: force signature verification when CONFIG_KEXEC_SIG is configured")
+> > Again, what's wrong with 5.19 for anyone who wants this?  Who does want
+> > this?
+> 
+> Not sure, really.
+> 
+> The final patch was repeatedly backported to stable and failed to build
+> because the prerequisites were missing.
 
-This is missing in 5.4, and 5.4 is missing this prerequisite:
-fd7af71be542 ("kexec: do not verify the signature without the lockdown or mandatory signature")
+That's because it was tagged, but now that you show the full set of
+requirements, it's pretty obvious to me that this is not relevant for
+going this far back.
 
-> 
-> Thanks for bringing these up. It might be in general useful to backport
-> these fixes as well.
-> 
-> However, this patchset does one very specific thing: it lifts the x86
-> kexec_file signature verification to arch-independent and uses it on
-> arm64 to unify all features (and any existing warts) between EFI
-> architectures.
-> 
-> So unless I am missing something the fixes you pointed out are
-> completely independent of this.
-> 
-> Thanks
-> 
-> Michal
+thanks,
+
+greg k-h
