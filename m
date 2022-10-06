@@ -2,105 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C785F522B
-	for <lists+keyrings@lfdr.de>; Wed,  5 Oct 2022 12:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 304D55F6628
+	for <lists+keyrings@lfdr.de>; Thu,  6 Oct 2022 14:36:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbiJEKEe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 5 Oct 2022 06:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56804 "EHLO
+        id S230515AbiJFMgW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 6 Oct 2022 08:36:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbiJEKEd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Oct 2022 06:04:33 -0400
-Received: from mail.steuer-voss.de (mail.steuer-voss.de [85.183.69.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193F05726D;
-        Wed,  5 Oct 2022 03:04:30 -0700 (PDT)
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 80BDB10D3; Wed,  5 Oct 2022 12:04:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 7DFAB10D2;
-        Wed,  5 Oct 2022 12:04:22 +0200 (CEST)
-Date:   Wed, 5 Oct 2022 12:04:22 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yael Tzur <yaelt@google.com>
-Subject: Re: [PATCH] KEYS: encrypted: fix key instantiation with user-provided
- data
-In-Reply-To: <42dbb8f6bc0a3e8339a5283bf26a50bd7bec3767.camel@linux.ibm.com>
-Message-ID: <aac62bfc-2425-ffeb-1c49-e0963bdbfa99@vosn.de>
-References: <20220919072317.E41421357@mail.steuer-voss.de>    <53730789a41358673b1715dd650706e9ffcb1199.camel@linux.ibm.com>    <35fd816-d755-967-5712-b5496875ac7a@vosn.de>   <2ee1e3e68d847001c4bf856d980a553e52de5023.camel@linux.ibm.com>  
- <439012d8-dd4-7fd2-3788-49cf72faa99@vosn.de>  <6b4229386dced275f745619f190f64a71b7c0aec.camel@linux.ibm.com>  <2fe0144d-ee19-ec17-9566-16bce6386925@vosn.de> <42dbb8f6bc0a3e8339a5283bf26a50bd7bec3767.camel@linux.ibm.com>
+        with ESMTP id S229796AbiJFMgU (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 6 Oct 2022 08:36:20 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4CF85A8E;
+        Thu,  6 Oct 2022 05:36:18 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id A3BA73200805;
+        Thu,  6 Oct 2022 08:36:13 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Thu, 06 Oct 2022 08:36:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=cc:cc:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to
+        :reply-to:sender:subject:subject:to:to; s=fm1; t=1665059773; x=
+        1665146173; bh=x/5eQeyF8wgxc3lBlMlLCE+D3SClhrVS+22aVr9TqjU=; b=q
+        +sgP3Tc/y297yW5XXTzhrO4+Qo6cxIjnmKI3zcvscNQwafBSie53iKn3KCSwJfSu
+        LC0WbgPyKW5Xc1UsQeJw3PwnECIjH8emzV0abYkXYxgCyh4Gif+antZgx7LNbqW/
+        9ddmEF/4b1GoW4FR/glvrutlElogDrL8gehTfKvuFoMmfdaH8IUKwgLo3V5fqDhp
+        32qlfia1GOqZZHrvoJbZln9rdSqlXgXoBI6QVb49px5nZOCs9Qkgp6CQQr3eLstx
+        5n9t028e3VkD6mHwgaCLAwsPE3fQyy2exQFRWiILShrXZJPMQ54fDVu5LnvuXa1o
+        tdXfQNwPw4cYE1X5fJARw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1665059773; x=1665146173; bh=x/5eQeyF8wgxc
+        3lBlMlLCE+D3SClhrVS+22aVr9TqjU=; b=raTmo2i386qfqhru2VjLPvoZMtJmv
+        nQQUiMPj6BWtWemO+UGjVXK8d9R+RQmHOFFWPV+rNcHEJY9k3pi2O7t4j3FPMCbE
+        +KOHy9DafDsRDnMY62SGvTRuRIi+orJuaksZxtHJfDQfx91niWX1tZ/Ol1RqVVB7
+        E9v9n7DveTFJTfHzGasj+FOQcQXoP+VhYB8lL95tZ1/DU3PWNghTYIxCUQSQYlAL
+        FUrSyHDLa+0TIMVMpvWm9DTnTn887/j+xiXEBrCRIeY3IX6vcD39kiT/i2bkYFdO
+        8SJYRtMINHRPKkewjt6UTPVgbti/V1PGgKReavF0D4ZQhQVulCmPhei3w==
+X-ME-Sender: <xms:uss-Y1vYy2Vqs8hF-ULSkI7VRJTg5ui-mHr7WbUC_8PfV6Q0F4lqlw>
+    <xme:uss-Y-f8BiJcJaRYQThmkup6rV_TuuP7O6V5dMhJpqiHDTSybh6J3nXc3I-bN9mPM
+    4OA5ryUbinLOfVRNws>
+X-ME-Received: <xmr:uss-Y4yQhTLgH2hwlyfhykGdjoe0LOt5x-YQ0KRx0v1n-odCTikP1z3yc3cK7_hZ1zRHEQXD_XIHNgX9J_GLvQeFXiSRLd3o903R>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeihedgheegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkrhhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegv
+    nhcuuehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrg
+    htthgvrhhnpeduteehgfefudfffeelfffhheejgfdvfffhledvueekudeuieegueejieff
+    vdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hmvgessggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:uss-Y8O_r3BBxeFMpfHX33weeXb5KKr6skLM9dBoKh0TLy3GXSsvRQ>
+    <xmx:uss-Y1-cJf9I8_HXk2-JQg_xeoQ4dFfS7l1r1V-Dl8O4Merzz4bJmA>
+    <xmx:uss-Y8WK-3erQvyA7yRtCKK6hrIVzT3Fo7WJjEmsrGHY3cMikx92rw>
+    <xmx:vcs-Y5Sbjc3jYNXO0uaAfqH0Nh35mLLSQDxdAnpMI3L5oTp3d7IyrQ>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Oct 2022 08:36:10 -0400 (EDT)
+Date:   Thu, 6 Oct 2022 08:37:00 -0400
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc:     jarkko@kernel.org, a.fatoum@pengutronix.de, gilad@benyossef.com,
+        Jason@zx2c4.com, jejb@linux.ibm.com, zohar@linux.ibm.com,
+        dhowells@redhat.com, sumit.garg@linaro.org, david@sigma-star.at,
+        michael@walle.cc, john.ernberg@actia.se, jmorris@namei.org,
+        serge@hallyn.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+        j.luebbe@pengutronix.de, ebiggers@kernel.org, richard@nod.at,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, sahil.malhotra@nxp.com,
+        kshitiz.varshney@nxp.com, horia.geanta@nxp.com, V.Sethi@nxp.com
+Subject: Re: [PATCH v0 2/8] keys-trusted: new cmd line option added
+Message-ID: <Yz7L7KZ4WVW6XBmx@megas.dev.benboeckel.internal>
+Reply-To: list.lkml.keyrings@me.benboeckel.net
+References: <20221006130837.17587-1-pankaj.gupta@nxp.com>
+ <20221006130837.17587-3-pankaj.gupta@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221006130837.17587-3-pankaj.gupta@nxp.com>
+User-Agent: Mutt/2.2.7 (2022-08-07)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 28 Sep 2022, Mimi Zohar wrote:
-> On Wed, 2022-09-28 at 14:08 +0200, Nikolaus Voss wrote:
->> On Wed, 21 Sep 2022, Mimi Zohar wrote:
->>> On Wed, 2022-09-21 at 09:24 +0200, Nikolaus Voss wrote:
->>>> On Tue, 20 Sep 2022, Mimi Zohar wrote:
->>>>> On Tue, 2022-09-20 at 18:23 +0200, Nikolaus Voss wrote:
->>>>>> On Tue, 20 Sep 2022, Mimi Zohar wrote:
->>>>>>> On Fri, 2022-09-16 at 07:45 +0200, Nikolaus Voss wrote:
->>>>>>>> Commit cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided
->>>>>>>> decrypted data") added key instantiation with user provided decrypted data.
->>>>>>>> The user data is hex-ascii-encoded but was just memcpy'ed to the binary buffer.
->>>>>>>> Fix this to use hex2bin instead.
->>>>>>>
->>>>>>> Thanks, Nikolaus.  We iterated a number of times over what would be the
->>>>>>> safest userspace input.  One of the last changes was that the key data
->>>>>>> should be hex-ascii-encoded.  Unfortunately, the LTP
->>>>>>> testcases/kernel/syscalls/keyctl09.c example isn't hex-ascii-encoded
->>>>>>> and the example in Documentation/security/keys/trusted-encrypted.rst
->>>>>>> just cat's a file.  Both expect the length to be the length of the
->>>>>>> userspace provided data.   With this patch, when hex2bin() fails, there
->>>>>>> is no explanation.
->>>>>>
->>>>>> That's true. But it's true for all occurrences of hex2bin() in this file.
->>>>>> I could pr_err() an explanation, improve the trusted-encrypted.rst example
->>>>>> and respin the patch. Should I, or do you have another suggestion?
->>>>>
->>>>>> I wasn't aware of keyctl09.c, but quickly looking into it, the user data
->>>>>> _is_ hex-ascii-encoded, only the length is "wrong": Imho, the specified
->>>>>> length should be the binary length as this is consistent with key-length
->>>>>> specs in other cases (e.g. when loading the key from a blob).
->>>>>> keyctl09.c could be easy to fix, if only the length is modified. Should
->>>>>> I propose a patch? What is the correct/appropriate workflow there?
->>>>>
->>>>> I'm concerned that this change breaks existing encrypted keys created
->>>>> with user-provided data.  Otherwise I'm fine with your suggestion.
->>>>
->>>> Ok, but this change does not touch the hex-ascii format of encrypted key
->>>> blobs?
->>>
->>> True, but any persistent data based on this key would be affected.
->>
->> Persistent data is stored encypted with e.g. the master key in hex-ascii
->> already and should not be affected. Only persistent data stored
->> unencrypted is affected, but the encrypted-keys stuff is just about
->> avoiding that. Or do I still misunderstand something?
->
-> Perhaps an existing encrypted key usage example would help clarify what
-> is meant by persistent data.  The two original encrypted key usages are
-> the EVM HMAC key and ecryptfs.  The EVM key is an encrypted key used to
-> calculate the EVM HMAC, which is stored in security.evm.  In that
-> scenario, the persistent data would be the data stored in security.evm.
->
-> Would this patch break existing kernel/application persistent data
-> based on encrypted keys created with user-provided data?
+On Thu, Oct 06, 2022 at 18:38:31 +0530, Pankaj Gupta wrote:
+> Changes done:
+> - new cmd line option "hw" needs to be suffix, to generate the
+>   hw bound key.
 
-As far as I can tell, it does not.
+`Documentation/` is silent on this. Can you please add this there?
 
-Niko
+Other than that, is `hw` really a good name for this? Are there virtual
+devices for these things that can make them not hardware in some way?
+Is there a better name in such a case? Maybe something "device"
+oriented?
+
+--Ben
