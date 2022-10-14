@@ -2,113 +2,148 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9015FED43
-	for <lists+keyrings@lfdr.de>; Fri, 14 Oct 2022 13:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A6A45FF405
+	for <lists+keyrings@lfdr.de>; Fri, 14 Oct 2022 21:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbiJNLjo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Oct 2022 07:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55676 "EHLO
+        id S231236AbiJNTTs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Oct 2022 15:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbiJNLjn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Oct 2022 07:39:43 -0400
-Received: from mail.steuer-voss.de (mail.steuer-voss.de [85.183.69.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CDE116F;
-        Fri, 14 Oct 2022 04:39:38 -0700 (PDT)
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id 831DD495; Fri, 14 Oct 2022 13:39:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id 815E831D;
-        Fri, 14 Oct 2022 13:39:34 +0200 (CEST)
-Date:   Fri, 14 Oct 2022 13:39:34 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Yael Tzur <yaelt@google.com>,
-        Cyril Hrubis <chrubis@suse.cz>, Petr Vorel <pvorel@suse.cz>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] KEYS: encrypted: fix key instantiation with user-provided
- data
-In-Reply-To: <16fe5265c49fcecdf613fe9dd660efe4ae8d452e.camel@linux.ibm.com>
-Message-ID: <1b621acf-a1f1-ec9b-21f6-d081d69ed74@vosn.de>
-References: <20221013064308.857011E25@mail.steuer-voss.de>  <924a29d81cc7e0d3e2f62f693a0d8fcef97b9779.camel@linux.ibm.com>  <c620d6ed-d97f-b0c3-574-7b3cd63a7799@vosn.de> <16fe5265c49fcecdf613fe9dd660efe4ae8d452e.camel@linux.ibm.com>
+        with ESMTP id S231160AbiJNTTr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Oct 2022 15:19:47 -0400
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677E818B20
+        for <keyrings@vger.kernel.org>; Fri, 14 Oct 2022 12:19:43 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id a5so3117735qkl.6
+        for <keyrings@vger.kernel.org>; Fri, 14 Oct 2022 12:19:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AoUaVX7WeSWMFX3nree3fUpxXXfgx6Q4WFZ3tSVkQHg=;
+        b=UiEjKjYPArwu+erj/QUVX0fUkhEFZapV4R65wkaTG4gFBsMcgJkyatk9panVMud2En
+         ULChv0jbZe6RCkW9Iub/eHAKRijGlZZLlyB/QtBtT8Jd2DMUP/dA/wbvumatgVajvxbP
+         G7SxU8S1iwmPUTUEjd4IaN98wy6rQ8LTLC+JOHaboTX6clRtjnZnCfMw6W74UA5pn3tr
+         f4O0lOsL1wNhPGua2PNkidmINtdhwvKbbfBBogrEW1mfetqWW+iVvZDMD0V2+7XBDAhI
+         qJKG3H0SORHdEHhf5ZgcnL9I0h1XitsYBQy83ToiZvytz5BMG8lso5aBrU5+WRL62ScD
+         yTsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AoUaVX7WeSWMFX3nree3fUpxXXfgx6Q4WFZ3tSVkQHg=;
+        b=M1fyNhwcpUCBtWMxIOlqq4vnHKnh51953dyt424hjxKz+QLVsiM+2r+1+sxlYwVaid
+         Y/8MsO06fR2y2+yKoJJLUw4BhtfI2NUHWZDBo0ONlGEk6ktcYSlG4QfagEmW0VRVvkm3
+         sjomAyNFcYPqGYhhxR7Yw7TK5mmJ/xLYqnw2IInPAQwyPwqSE85MA1JsTbndtJC5Li/x
+         jCaJ6FutLm9oMDTZxlfE8PgHto1Pvrmk2mQP4hpVWVnLLsBY4euTLAjncL0UGN2Z9Xv5
+         0/ijY3HYCDIKwRRSO3CLZzDGeYH/AUZEv+FkG9WFBUlKf2a2BR5mY4Bp5MZrQDskcdUa
+         uwaw==
+X-Gm-Message-State: ACrzQf2mYlwRVTibjAzUlUYoSvfUu6AFOx4bf4t8sTXDbO+4+QzNPY9f
+        OL3AA9OJkrAijtaUAdDuoJ9Icw==
+X-Google-Smtp-Source: AMsMyM5kq8HSA0NWVB8q1M2PQnkKFbfau0narXlYBV62ON1xN11WXriiPNcPad7RxtFAPMdU5bCjTw==
+X-Received: by 2002:a37:bd84:0:b0:6cf:6049:f12a with SMTP id n126-20020a37bd84000000b006cf6049f12amr4919050qkf.697.1665775183082;
+        Fri, 14 Oct 2022 12:19:43 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-122-23.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.122.23])
+        by smtp.gmail.com with ESMTPSA id x78-20020a376351000000b006ce3cffa2c8sm3020159qkb.43.2022.10.14.12.19.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Oct 2022 12:19:42 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1ojQDd-003BJU-IB;
+        Fri, 14 Oct 2022 16:19:41 -0300
+Date:   Fri, 14 Oct 2022 16:19:41 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Pankaj Gupta <pankaj.gupta@nxp.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
+        "gilad@benyossef.com" <gilad@benyossef.com>,
+        "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "sumit.garg@linaro.org" <sumit.garg@linaro.org>,
+        "david@sigma-star.at" <david@sigma-star.at>,
+        "michael@walle.cc" <michael@walle.cc>,
+        "john.ernberg@actia.se" <john.ernberg@actia.se>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "j.luebbe@pengutronix.de" <j.luebbe@pengutronix.de>,
+        "ebiggers@kernel.org" <ebiggers@kernel.org>,
+        "richard@nod.at" <richard@nod.at>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        Sahil Malhotra <sahil.malhotra@nxp.com>,
+        Kshitiz Varshney <kshitiz.varshney@nxp.com>,
+        Horia Geanta <horia.geanta@nxp.com>,
+        Varun Sethi <V.Sethi@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v0 3/8] crypto: hbk flags & info added to the
+ tfm
+Message-ID: <Y0m2TU5k78I1AR+p@ziepe.ca>
+References: <20221006130837.17587-1-pankaj.gupta@nxp.com>
+ <20221006130837.17587-4-pankaj.gupta@nxp.com>
+ <Yz/OEwDtyTm+VH0p@gondor.apana.org.au>
+ <DU2PR04MB8630CBBB8ABDC3768320C18195209@DU2PR04MB8630.eurprd04.prod.outlook.com>
+ <Y0Q3JKnWSNIC4Xlu@zx2c4.com>
+ <Y0UxY51KQoKCq59o@gondor.apana.org.au>
+ <Y0XLqd/+C1sxq2G0@zx2c4.com>
+ <Y0aDiLp7BztzwNez@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-2142412134-1665747574=:33507"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y0aDiLp7BztzwNez@gondor.apana.org.au>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Wed, Oct 12, 2022 at 05:06:16PM +0800, Herbert Xu wrote:
 
---8323329-2142412134-1665747574=:33507
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
+> > Rather, drivers that do AES should be called "aes". For this hardware
+> > key situation, I guess that means keys have a type (in-memory vs
+> > hardware-resident). Then, a crypto operation takes an "algorithm" and a
+> > "key", and the abstraction then picks the best implementation that's
+> > compatible with both the "algorithm" and the "key".
+> 
+> No the key is already in a specific hardware bound to some driver.
+> The user already knows where the key is and therefore they know
+> which driver it is.
 
-On Fri, 14 Oct 2022, Mimi Zohar wrote:
-> On Fri, 2022-10-14 at 08:40 +0200, Nikolaus Voss wrote:
->> On Thu, 13 Oct 2022, Mimi Zohar wrote:
->>> On Thu, 2022-10-13 at 08:39 +0200, Nikolaus Voss wrote:
->>>> Commit cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided
->>>> decrypted data") added key instantiation with user provided decrypted data.
->>>> The user data is hex-ascii-encoded but was just memcpy'ed to the binary buffer.
->>>> Fix this to use hex2bin instead.
->>>>
->>>> Old keys created from user provided decrypted data saved with "keyctl pipe"
->>>> are still valid, however if the key is recreated from decrypted data the
->>>> old key must be converted to the correct format. This can be done with a
->>>> small shell script, e.g.:
->>>>
->>>> BROKENKEY=abcdefABCDEF1234567890aaaaaaaaaa
->>>> NEWKEY=$(echo -ne $BROKENKEY | xxd -p -c32)
->>>> keyctl add user masterkey "$(cat masterkey.bin)" @u
->>>> keyctl add encrypted testkey "new user:masterkey 32 $NEWKEY" @u
->>>>
->>>> It is encouraged to switch to a new key because the effective key size
->>>> of the old keys is only half of the specified size.
->>>
->>> Both the old and new decrypted data size is 32 bytes.  Is the above
->>> statement necessary, especially since the Documentation example does
->>> the equivalent?
->>
->> The old key has the same byte size but all bytes must be within the
->> hex-ascíi range of characters, otherwise it is refused by the kernel.
->> So if you wanted a 32 bytes key you get 16 effective bytes for the key.
->> In the above example the string size of the $BROKENKEY is 32, while
->> the string size of the $NEWKEY is 64.
->>
->> If you do
->>
->> $ echo $NEWKEY
->> 6162636465664142434445463132333435363738393061616161616161616161
->>
->> for the example, the range problem is obvious, so $NEWKEY is still broken.
->> That's why it should only be used to recover data which should be
->> reencypted with a new key. If you count exactly, the effective key size is
->> _slightly_ longer than half of the specified size, but it is still a
->> severe security problem.
->
-> So the issue with NEWKEY isn't the "effective key size of the old keys
-> is only half of the specified size", but that the old key, itself, is
-> limited to the hex-ascii range of characters.
+Do they?
 
-The latter resulting in the former. If for BROKENKEY 32 bytes were 
-specified, a brute force attacker knowing the key properties would only 
-need to try at most 2^(16*8) keys, as if the key was only 16 bytes long. 
-This is what I mean with "effective size" in contrast to the key's byte 
-size which is 32 in my example.
+We have HW that can do HW resident keys as as well, in our case it is
+plugged into the storage system with fscrypt and all the crypto
+operations are being done "inline" as the data is DMA'd into/out of
+the storage. So, no crypto API here.
 
-The security issue is a result of the combination of limiting the input 
-range to hex-ascii and using memcpy() instead of hex2bin(). It could have 
-been fixed either by allowing binary input or using hex2bin() (and 
-doubling the ascii input key length). I chose the latter.
+I would say the user knows about the key and its binding in the sense
+they loaded a key into the storage device and mounted a fscrypt
+filesystem from that storage device - but the kernel may not know this
+explicitly.
 
-Niko
---8323329-2142412134-1665747574=:33507--
+> > If you don't want a proliferation of different ways of doing the same
+> > thing, maybe the requirement should be that the author of this series
+> > also converts the existing "paes" kludge to use the new thing he's
+> > proposing?
+> 
+> Yes that would definitely be a good idea.  We should also talk to the
+> people who added paes in the first place, i.e., s390.
+
+Yes, it would be nice to see a comprehensive understand on how HW
+resident keys can be modeled in the keyring. Almost every computer now
+has a TPM that is also quite capable of doing operations with these
+kinds of keys. Seeing the whole picture, including how we generate and
+load/save/provision these things seems important.
+
+Jason
