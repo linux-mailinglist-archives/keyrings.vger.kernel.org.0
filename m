@@ -2,117 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 210755FE900
-	for <lists+keyrings@lfdr.de>; Fri, 14 Oct 2022 08:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 111AB5FEC46
+	for <lists+keyrings@lfdr.de>; Fri, 14 Oct 2022 12:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbiJNGk2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Oct 2022 02:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34576 "EHLO
+        id S230072AbiJNKIA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Oct 2022 06:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbiJNGk1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Oct 2022 02:40:27 -0400
-Received: from mail.steuer-voss.de (mail.steuer-voss.de [85.183.69.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600F03CBC2;
-        Thu, 13 Oct 2022 23:40:16 -0700 (PDT)
-X-Virus-Scanned: Debian amavisd-new at mail.steuer-voss.de
-Received: by mail.steuer-voss.de (Postfix, from userid 1000)
-        id B6E851321; Fri, 14 Oct 2022 08:40:10 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.steuer-voss.de (Postfix) with ESMTP id B46441316;
-        Fri, 14 Oct 2022 08:40:10 +0200 (CEST)
-Date:   Fri, 14 Oct 2022 08:40:10 +0200 (CEST)
-From:   Nikolaus Voss <nv@vosn.de>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Yael Tzur <yaelt@google.com>,
-        Cyril Hrubis <chrubis@suse.cz>, Petr Vorel <pvorel@suse.cz>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] KEYS: encrypted: fix key instantiation with user-provided
- data
-In-Reply-To: <924a29d81cc7e0d3e2f62f693a0d8fcef97b9779.camel@linux.ibm.com>
-Message-ID: <c620d6ed-d97f-b0c3-574-7b3cd63a7799@vosn.de>
-References: <20221013064308.857011E25@mail.steuer-voss.de> <924a29d81cc7e0d3e2f62f693a0d8fcef97b9779.camel@linux.ibm.com>
+        with ESMTP id S229787AbiJNKHy (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Oct 2022 06:07:54 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AA1A14EC4A
+        for <keyrings@vger.kernel.org>; Fri, 14 Oct 2022 03:07:52 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id f11so6794301wrm.6
+        for <keyrings@vger.kernel.org>; Fri, 14 Oct 2022 03:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPSC14H4qvXkT9TYkAZgmifJI9m19ef7qgoJ4OsHyyg=;
+        b=vnlPWAmwmg0Zu0PEMDLBoa6dhUKeqWzyoHwUBGMfJ7nVwamcozMkMIhqh6E/zs7Y31
+         bPNQRhSvMPKWcsBOvMJKluiIsuLnfxFpqHpTXCZAONw2Ppgoq9JpNDaBcoXk9hmT63dH
+         sKKlPQlXA4+rChv4Xrri3HQgo+D86h/YVo40Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kPSC14H4qvXkT9TYkAZgmifJI9m19ef7qgoJ4OsHyyg=;
+        b=7uOKDXwEH2sAtWguQ97Rqb24oC/3wkEzvSkAyrrCky8uU4DHgV90ms2vagRLdhPcuN
+         D537zn/0wbFl6VZXp4z/kLDDG4Wg7VFHmpV2WB55mf/16QGGHoV5vuRn3fmFxk9MvXhz
+         NUDf937O22KbL263Niypg9oKDHyBdvTHfsiwBaHH4HWT2UZ0El9W3i38rpNBpHUxoDT4
+         QOEc5hX5+cP7OWZYIaMlOnJGEBYQIrerqsylQ/J3Gihm/PZMiZSdcjBJUgEE78dB+zB0
+         NHbShbYhay2a+x59R+ODWdboifaXHuGShEN4ovV8tBiAu1ocOnlKDPAWa4ldrqPCjvHS
+         7NWw==
+X-Gm-Message-State: ACrzQf09rH47QSr8PmSmUfY+Y64U+aXRhIwm6j5jMB/gmn+IGWv/owTF
+        SyXT6gs/YsjtPnx550fpII2rIg==
+X-Google-Smtp-Source: AMsMyM63n0BME1wzakGcd9fpHxmmjPaT7s3n01NO4QiDx0MC/YSVqw0PfekfOqiRcGaQE7RhMCABWg==
+X-Received: by 2002:adf:9dd0:0:b0:22c:d6cc:b387 with SMTP id q16-20020adf9dd0000000b0022cd6ccb387mr2922910wre.353.1665742071061;
+        Fri, 14 Oct 2022 03:07:51 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:c7c:5308:6600:49a0:d6bf:5c1a:f3da])
+        by smtp.gmail.com with ESMTPSA id c15-20020a5d414f000000b002285f73f11dsm1931008wrq.81.2022.10.14.03.07.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Oct 2022 03:07:50 -0700 (PDT)
+From:   Ignat Korchagin <ignat@cloudflare.com>
+To:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     kernel-team@cloudflare.com, lei he <helei.sig11@bytedance.com>,
+        Ignat Korchagin <ignat@cloudflare.com>
+Subject: [PATCH v2 0/4] crypto, keys: add ECDSA signature support to key retention service
+Date:   Fri, 14 Oct 2022 11:07:33 +0100
+Message-Id: <20221014100737.94742-1-ignat@cloudflare.com>
+X-Mailer: git-send-email 2.37.0 (Apple Git-136)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-448557197-1665729610=:29571"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Changes from v1:
+  * fixed code format
 
---8323329-448557197-1665729610=:29571
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
+Kernel Key Retention Service[1] is a useful building block to build secure
+production key management systems. One of its interesting features is
+support for asymmetric keys: we can allow a process to use a certain key
+(decrypt or sign data) without actually allowing the process to read the
+cryptographic key material. By doing so we protect our code from certain
+type of attacks, where a process memory memory leak actually leaks a
+potentially highly sensitive cryptographic material.
 
-On Thu, 13 Oct 2022, Mimi Zohar wrote:
-> On Thu, 2022-10-13 at 08:39 +0200, Nikolaus Voss wrote:
->> Commit cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided
->> decrypted data") added key instantiation with user provided decrypted data.
->> The user data is hex-ascii-encoded but was just memcpy'ed to the binary buffer.
->> Fix this to use hex2bin instead.
->>
->> Old keys created from user provided decrypted data saved with "keyctl pipe"
->> are still valid, however if the key is recreated from decrypted data the
->> old key must be converted to the correct format. This can be done with a
->> small shell script, e.g.:
->>
->> BROKENKEY=abcdefABCDEF1234567890aaaaaaaaaa
->> NEWKEY=$(echo -ne $BROKENKEY | xxd -p -c32)
->> keyctl add user masterkey "$(cat masterkey.bin)" @u
->> keyctl add encrypted testkey "new user:masterkey 32 $NEWKEY" @u
->>
->> It is encouraged to switch to a new key because the effective key size
->> of the old keys is only half of the specified size.
->
-> Both the old and new decrypted data size is 32 bytes.  Is the above
-> statement necessary, especially since the Documentation example does
-> the equivalent?
+But unfortunately only RSA algorithm was supported until now, because
+in-kernel ECDSA implementation supported signature verifications only.
 
-The old key has the same byte size but all bytes must be within the 
-hex-ascíi range of characters, otherwise it is refused by the kernel.
-So if you wanted a 32 bytes key you get 16 effective bytes for the key. 
-In the above example the string size of the $BROKENKEY is 32, while 
-the string size of the $NEWKEY is 64.
+This patchset implements in-kernel ECDSA signature generation and adds
+support for ECDSA signing in the key retention service. The key retention
+service support was taken out of a previous unmerged patchset from Lei He[2]
 
-If you do
+[1]: https://www.kernel.org/doc/html/latest/security/keys/core.html
+[2]: https://patchwork.kernel.org/project/linux-crypto/list/?series=653034&state=*
 
-$ echo $NEWKEY
-6162636465664142434445463132333435363738393061616161616161616161
+Ignat Korchagin (2):
+  crypto: add ECDSA signature generation support
+  crypto: add ECDSA test vectors from RFC 6979
 
-for the example, the range problem is obvious, so $NEWKEY is still broken. 
-That's why it should only be used to recover data which should be 
-reencypted with a new key. If you count exactly, the effective key size is 
-_slightly_ longer than half of the specified size, but it is still a 
-severe security problem.
+lei he (2):
+  crypto: pkcs8 parser support ECDSA private keys
+  crypto: remove unused field in pkcs8_parse_context
 
->
->> The corresponding test for the Linux Test Project ltp has also been
->> fixed (see link below).
->
-> The LTP patch still needs to be revised, but the "Link" is a reference
-> to the discussion.  Is the above statement necessary?
+ crypto/Kconfig                        |   3 +-
+ crypto/Makefile                       |   4 +-
+ crypto/asymmetric_keys/pkcs8.asn1     |   2 +-
+ crypto/asymmetric_keys/pkcs8_parser.c |  46 +++-
+ crypto/ecc.c                          |   9 +-
+ crypto/ecdsa.c                        | 373 +++++++++++++++++++++++++-
+ crypto/ecprivkey.asn1                 |   6 +
+ crypto/testmgr.c                      |  18 ++
+ crypto/testmgr.h                      | 333 +++++++++++++++++++++++
+ include/crypto/internal/ecc.h         |  10 +
+ 10 files changed, 787 insertions(+), 17 deletions(-)
+ create mode 100644 crypto/ecprivkey.asn1
 
-As long as the patch is not accepted the discussion is helpful. But feel 
-free to delete it upon integration ;-).
+-- 
+2.30.2
 
->
->>
->> Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
->> Cc: stable <stable@kernel.org>
->> Link: https://lore.kernel.org/ltp/20221006081709.92303897@mail.steuer-voss.de/
->> Signed-off-by: Nikolaus Voss <nikolaus.voss@haag-streit.com>
->
-> Otherwise,
->
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-
-Thanks Mimi!
---8323329-448557197-1665729610=:29571--
