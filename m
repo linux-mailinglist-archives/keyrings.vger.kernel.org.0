@@ -2,326 +2,168 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5339601799
-	for <lists+keyrings@lfdr.de>; Mon, 17 Oct 2022 21:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B39B6603744
+	for <lists+keyrings@lfdr.de>; Wed, 19 Oct 2022 02:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230477AbiJQT0u (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Oct 2022 15:26:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
+        id S229572AbiJSAyG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Oct 2022 20:54:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231211AbiJQT0Z (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Oct 2022 15:26:25 -0400
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA88213E94
-        for <keyrings@vger.kernel.org>; Mon, 17 Oct 2022 12:26:13 -0700 (PDT)
-Received: by mail-il1-x12c.google.com with SMTP id r20so6346051ilt.11
-        for <keyrings@vger.kernel.org>; Mon, 17 Oct 2022 12:26:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ywemWSzQEgLrmQuacaw5iRk/lkUQNsP9/rTACBO8Ro=;
-        b=tJuH9MREbL0WBc5Okym6gAwEHDfARdsJPRE76iRKgsdg9/Xhk0Zec2zv91T8M0zF+8
-         xY6XSWU2nYQRPJRiDEfIhxuJxpSMJkkYnI52PHLmlRwkbeGKzlxeVuuA4jTpQ91ZYQF+
-         YN2JcIpOtU+z+s6aFd3VzdNciwH0GXpvKP3JI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2ywemWSzQEgLrmQuacaw5iRk/lkUQNsP9/rTACBO8Ro=;
-        b=g67PUL8Ob6QkE+7kDDd5/Cs2yM1CDTcBLFZ+nspQwKNaHPU8d/ruCk+NiX9mR+3kNV
-         TpbMLUgO6y3Kj9B5il4PkB2feGToGJ9WYfNo2N/XyWsdR7/PTw3GgIFrQdZnphA0VeeP
-         WlnWmsuQMz56ZPWFs5FyjwVjMAWZuKlU4NIAtYNDMDD5alazFeJfyADmMMHwYprqhAnv
-         QjjOU5QYBfc82Un856Dn0tlshooMbm1INQprR8BbFkOeuY0MbkNOrSS7PfJKsM/450sZ
-         xHDVYoSLZQr+9nBeF+IHLE7/CrjZJ/n00aLjNiNnD0VfK9G9rmvj1tMyNL/5ILZAMJnM
-         6xng==
-X-Gm-Message-State: ACrzQf1aN/8Pmc3vnJ4NynY4fucfO1uNpETwmAbk3dOZ+ijiOrtH47J5
-        3CqGNHxnsV3dxu1aK+I55fQ2tg==
-X-Google-Smtp-Source: AMsMyM6gJM0Qi+feH4k+oirnrB1XyS1UdO50vly9sZo+MtUPRXPCsk91hkvQ0ulplQNHc129lTCrDw==
-X-Received: by 2002:a05:6e02:15c9:b0:2e1:a5b6:7e25 with SMTP id q9-20020a056e0215c900b002e1a5b67e25mr5268688ilu.185.1666034709141;
-        Mon, 17 Oct 2022 12:25:09 -0700 (PDT)
-Received: from localhost.localdomain ([172.58.84.146])
-        by smtp.gmail.com with ESMTPSA id c1-20020a92cf01000000b002fc681a6ad8sm195344ilo.78.2022.10.17.12.25.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Oct 2022 12:25:08 -0700 (PDT)
-From:   Frederick Lawler <fred@cloudflare.com>
-To:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        ebiggers@google.com, hch@lst.de, smueller@chronox.de
-Cc:     dhowells@redhat.com, omosnace@redhat.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        kernel-team@cloudflare.com, Frederick Lawler <fred@cloudflare.com>
-Subject: [PATCH 1/1] crypto: af_alg - Support symmetric encryption via keyring keys
-Date:   Mon, 17 Oct 2022 14:25:00 -0500
-Message-Id: <20221017192500.485962-1-fred@cloudflare.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
+        with ESMTP id S229515AbiJSAyF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Oct 2022 20:54:05 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6D0C787A;
+        Tue, 18 Oct 2022 17:54:04 -0700 (PDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29J0g8SH014256;
+        Wed, 19 Oct 2022 00:53:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=M4YM3Zp3y6UhKaOdP0cTdGdvvzaOvoeI6HEani4nNic=;
+ b=IypdOPluw+swsF5XQTVf6T7ppii4m+bM2FxQrAL0/5C3dA0SJ11+ZQWvGV04RhFCiiqu
+ MfK/ONh/5NL7bHpT9dyUXAcxibwEw8jebwohOtLPs7JSjN3vASLo/ATA05iuAFYfEsYB
+ AiaxhXRTgaKIh6nZ6VCMMs2n8LbiiXQlBeVmF7+NGRSD12Y//WFZnnX5J2V8q0VwsBDP
+ 7rBWP1TbHrG/rEgcwI0fAAWtvufEmolVJS41ujReN/BWNr4Ba0wXkD2Hpow542FqknSO
+ uK6h9N7z0p6gxlnPs3iWCOrS6GJILbUlGMOET6W5uNgDmBW/gSEOxThvjtduZmbCWHnr Qw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ka6x5r80s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 00:53:43 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29J0gwbM017117;
+        Wed, 19 Oct 2022 00:53:43 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ka6x5r806-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 00:53:42 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29J0bwgZ005153;
+        Wed, 19 Oct 2022 00:53:41 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+        by ppma03wdc.us.ibm.com with ESMTP id 3k7mg9j2w9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Oct 2022 00:53:41 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com ([9.208.128.116])
+        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29J0rerE5702374
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Oct 2022 00:53:41 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 579D258050;
+        Wed, 19 Oct 2022 00:53:40 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CD03F58058;
+        Wed, 19 Oct 2022 00:53:37 +0000 (GMT)
+Received: from sig-9-65-232-148.ibm.com (unknown [9.65.232.148])
+        by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Wed, 19 Oct 2022 00:53:37 +0000 (GMT)
+Message-ID: <3e2a42216662adb390831f98ea429a4245a4598a.camel@linux.ibm.com>
+Subject: Re: [PATCH v4] KEYS: encrypted: fix key instantiation with
+ user-provided data
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Nikolaus Voss <nv@vosn.de>
+Cc:     David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, Yael Tzur <yaelt@google.com>,
+        Cyril Hrubis <chrubis@suse.cz>, Petr Vorel <pvorel@suse.cz>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 18 Oct 2022 20:53:37 -0400
+In-Reply-To: <1b621acf-a1f1-ec9b-21f6-d081d69ed74@vosn.de>
+References: <20221013064308.857011E25@mail.steuer-voss.de>
+          <924a29d81cc7e0d3e2f62f693a0d8fcef97b9779.camel@linux.ibm.com>
+          <c620d6ed-d97f-b0c3-574-7b3cd63a7799@vosn.de>
+         <16fe5265c49fcecdf613fe9dd660efe4ae8d452e.camel@linux.ibm.com>
+         <1b621acf-a1f1-ec9b-21f6-d081d69ed74@vosn.de>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BS7bdyvuKodL2A6r7ZMgsg4VLNfM0MvT
+X-Proofpoint-ORIG-GUID: RRwvLxu41O_L1FDqIztkxmhZnCWXqIaA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-18_09,2022-10-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+ adultscore=0 clxscore=1015 suspectscore=0 impostorscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210190000
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-We want to leverage keyring to store sensitive keys, and then use those
-keys for symmetric encryption via the crypto API. Among the key types we
-wish to support are: user, logon, encrypted, and trusted.
+On Fri, 2022-10-14 at 13:39 +0200, Nikolaus Voss wrote:
+> On Fri, 14 Oct 2022, Mimi Zohar wrote:
+> > On Fri, 2022-10-14 at 08:40 +0200, Nikolaus Voss wrote:
+> >> On Thu, 13 Oct 2022, Mimi Zohar wrote:
+> >>> On Thu, 2022-10-13 at 08:39 +0200, Nikolaus Voss wrote:
+> >>>> Commit cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided
+> >>>> decrypted data") added key instantiation with user provided decrypted data.
+> >>>> The user data is hex-ascii-encoded but was just memcpy'ed to the binary buffer.
+> >>>> Fix this to use hex2bin instead.
+> >>>>
+> >>>> Old keys created from user provided decrypted data saved with "keyctl pipe"
+> >>>> are still valid, however if the key is recreated from decrypted data the
+> >>>> old key must be converted to the correct format. This can be done with a
+> >>>> small shell script, e.g.:
+> >>>>
+> >>>> BROKENKEY=abcdefABCDEF1234567890aaaaaaaaaa
+> >>>> NEWKEY=$(echo -ne $BROKENKEY | xxd -p -c32)
+> >>>> keyctl add user masterkey "$(cat masterkey.bin)" @u
+> >>>> keyctl add encrypted testkey "new user:masterkey 32 $NEWKEY" @u
+> >>>>
+> >>>> It is encouraged to switch to a new key because the effective key size
+> >>>> of the old keys is only half of the specified size.
+> >>>
+> >>> Both the old and new decrypted data size is 32 bytes.  Is the above
+> >>> statement necessary, especially since the Documentation example does
+> >>> the equivalent?
+> >>
+> >> The old key has the same byte size but all bytes must be within the
+> >> hex-ascíi range of characters, otherwise it is refused by the kernel.
+> >> So if you wanted a 32 bytes key you get 16 effective bytes for the key.
+> >> In the above example the string size of the $BROKENKEY is 32, while
+> >> the string size of the $NEWKEY is 64.
+> >>
+> >> If you do
+> >>
+> >> $ echo $NEWKEY
+> >> 6162636465664142434445463132333435363738393061616161616161616161
+> >>
+> >> for the example, the range problem is obvious, so $NEWKEY is still broken.
+> >> That's why it should only be used to recover data which should be
+> >> reencypted with a new key. If you count exactly, the effective key size is
+> >> _slightly_ longer than half of the specified size, but it is still a
+> >> severe security problem.
+> >
+> > So the issue with NEWKEY isn't the "effective key size of the old keys
+> > is only half of the specified size", but that the old key, itself, is
+> > limited to the hex-ascii range of characters.
+> 
+> The latter resulting in the former. If for BROKENKEY 32 bytes were 
+> specified, a brute force attacker knowing the key properties would only 
+> need to try at most 2^(16*8) keys, as if the key was only 16 bytes long. 
+> This is what I mean with "effective size" in contrast to the key's byte 
+> size which is 32 in my example.
+> 
+> The security issue is a result of the combination of limiting the input 
+> range to hex-ascii and using memcpy() instead of hex2bin(). It could have 
+> been fixed either by allowing binary input or using hex2bin() (and 
+> doubling the ascii input key length). I chose the latter.
 
-User key types are already able to have their data copied to user space,
-but logon does not support this. Further, trusted and encrypted keys will
-return their encrypted data back to user space on read, which does not
-make them ideal for symmetric encryption.
+Agreed the latter is better solution.  Please update/replace the
+sentence "It is encouraged to switch to a new key because ..." based on
+this more complete explanation.
 
-To support symmetric encryption for these key types, add a new
-ALG_SET_KEY_BY_KEY_SERIAL setsockopt() option to the crypto API. This
-allows users to pass a key_serial_t to the crypto API to perform
-symmetric encryption. The behavior is the same as ALG_SET_KEY, but
-the crypto key data is copied in kernel space from a keyring key,
-which allows for the support of logon, encrypted, and trusted key types.
+thanks,
 
-Keyring keys must have the KEY_(POS|USR|GRP|OTH)_SEARCH permission set
-to leverage this feature. This follows the asymmetric_key type where key
-lookup calls eventually lead to keyring_search_rcu() without the
-KEYRING_SEARCH_NO_CHECK_PERM flag set.
-
-Signed-off-by: Frederick Lawler <fred@cloudflare.com>
----
-RFC: https://lore.kernel.org/all/20221004212927.1539105-1-fred@cloudflare.com/
-
-We have an idea for handling the case of leaking key data with bad
-algorithms, but asymmetric keys currently have the same problem if any were
-added as a akcipher type. If KEY_*_SEARCH is not good enough, we thought
-of possibly implementing a KConfig such that we disable leaky algorithms
-when selected, or possibly the inverse where if a leaky algorithm is
-enabled, we don't allow to enable this. The problem there is now there's
-a list to maintain.
----
- Documentation/crypto/userspace-if.rst |  15 ++-
- crypto/af_alg.c                       | 135 +++++++++++++++++++++++++-
- include/uapi/linux/if_alg.h           |   1 +
- 3 files changed, 147 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/crypto/userspace-if.rst b/Documentation/crypto/userspace-if.rst
-index b45dabbf69d6..f80f243e227e 100644
---- a/Documentation/crypto/userspace-if.rst
-+++ b/Documentation/crypto/userspace-if.rst
-@@ -131,9 +131,9 @@ from the kernel crypto API. If the buffer is too small for the message
- digest, the flag MSG_TRUNC is set by the kernel.
- 
- In order to set a message digest key, the calling application must use
--the setsockopt() option of ALG_SET_KEY. If the key is not set the HMAC
--operation is performed without the initial HMAC state change caused by
--the key.
-+the setsockopt() option of ALG_SET_KEY or ALG_SET_KEY_BY_KEY_SERIAL. If the
-+key is not set the HMAC operation is performed without the initial HMAC state
-+change caused by the key.
- 
- Symmetric Cipher API
- --------------------
-@@ -382,6 +382,15 @@ mentioned optname:
- 
-    -  the RNG cipher type to provide the seed
- 
-+- ALG_SET_KEY_BY_KEY_SERIAL -- Setting the key via keyring key_serial_t.
-+   This operation behaves the same as ALG_SET_KEY. The decrypted
-+   data is copied from a keyring key, and uses that data as the
-+   key for symmetric encryption.
-+
-+   The passed in key_serial_t must have the KEY_(POS|USR|GRP|OTH)_SEARCH
-+   permission set, otherwise -EPERM is returned. Supports key types: user,
-+   logon, encrypted, and trusted.
-+
- -  ALG_SET_AEAD_AUTHSIZE -- Setting the authentication tag size for
-    AEAD ciphers. For a encryption operation, the authentication tag of
-    the given size will be generated. For a decryption operation, the
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index e893c0f6c879..0a4fa2a429e2 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -12,6 +12,8 @@
- #include <linux/crypto.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/key.h>
-+#include <linux/key-type.h>
- #include <linux/list.h>
- #include <linux/module.h>
- #include <linux/net.h>
-@@ -19,6 +21,10 @@
- #include <linux/sched.h>
- #include <linux/sched/signal.h>
- #include <linux/security.h>
-+#include <linux/string.h>
-+#include <keys/user-type.h>
-+#include <keys/trusted-type.h>
-+#include <keys/encrypted-type.h>
- 
- struct alg_type_list {
- 	const struct af_alg_type *type;
-@@ -222,6 +228,129 @@ static int alg_setkey(struct sock *sk, sockptr_t ukey, unsigned int keylen)
- 	return err;
- }
- 
-+#ifdef CONFIG_KEYS
-+
-+static const u8 *key_data_ptr_user(const struct key *key,
-+				   unsigned int *datalen)
-+{
-+	const struct user_key_payload *ukp;
-+
-+	ukp = user_key_payload_locked(key);
-+	if (IS_ERR_OR_NULL(ukp))
-+		return ERR_PTR(-EKEYREVOKED);
-+
-+	*datalen = key->datalen;
-+
-+	return ukp->data;
-+}
-+
-+static const u8 *key_data_ptr_encrypted(const struct key *key,
-+					unsigned int *datalen)
-+{
-+	const struct encrypted_key_payload *ekp;
-+
-+	ekp = dereference_key_locked(key);
-+	if (IS_ERR_OR_NULL(ekp))
-+		return ERR_PTR(-EKEYREVOKED);
-+
-+	*datalen = ekp->decrypted_datalen;
-+
-+	return ekp->decrypted_data;
-+}
-+
-+static const u8 *key_data_ptr_trusted(const struct key *key,
-+				      unsigned int *datalen)
-+{
-+	const struct trusted_key_payload *tkp;
-+
-+	tkp = dereference_key_locked(key);
-+	if (IS_ERR_OR_NULL(tkp))
-+		return ERR_PTR(-EKEYREVOKED);
-+
-+	*datalen = tkp->key_len;
-+
-+	return tkp->key;
-+}
-+
-+static struct key *lookup_key(key_serial_t serial)
-+{
-+	key_ref_t key_ref;
-+
-+	key_ref = lookup_user_key(serial, 0, KEY_NEED_SEARCH);
-+	if (IS_ERR(key_ref))
-+		return ERR_CAST(key_ref);
-+
-+	return key_ref_to_ptr(key_ref);
-+}
-+
-+static int alg_setkey_by_key_serial(struct alg_sock *ask, sockptr_t optval,
-+				    unsigned int optlen)
-+{
-+	const struct af_alg_type *type = ask->type;
-+	u8 *key_data = NULL;
-+	unsigned int key_datalen;
-+	key_serial_t serial;
-+	struct key *key;
-+	const u8 *ret;
-+	int err;
-+
-+	if (optlen != sizeof(serial))
-+		return -EINVAL;
-+
-+	if (copy_from_sockptr(&serial, optval, optlen))
-+		return -EFAULT;
-+
-+	key = lookup_key(serial);
-+	if (IS_ERR(key))
-+		return PTR_ERR(key);
-+
-+	down_read(&key->sem);
-+
-+	ret = ERR_PTR(-ENOPROTOOPT);
-+	if (!strcmp(key->type->name, "user") ||
-+	    !strcmp(key->type->name, "logon")) {
-+		ret = key_data_ptr_user(key, &key_datalen);
-+	} else if (IS_REACHABLE(CONFIG_ENCRYPTED_KEYS) &&
-+			   !strcmp(key->type->name, "encrypted")) {
-+		ret = key_data_ptr_encrypted(key, &key_datalen);
-+	} else if (IS_REACHABLE(CONFIG_TRUSTED_KEYS) &&
-+			   !strcmp(key->type->name, "trusted")) {
-+		ret = key_data_ptr_trusted(key, &key_datalen);
-+	}
-+
-+	if (IS_ERR(ret)) {
-+		up_read(&key->sem);
-+		return PTR_ERR(ret);
-+	}
-+
-+	key_data = sock_kmalloc(&ask->sk, key_datalen, GFP_KERNEL);
-+	if (!key_data) {
-+		up_read(&key->sem);
-+		return -ENOMEM;
-+	}
-+
-+	memcpy(key_data, ret, key_datalen);
-+
-+	up_read(&key->sem);
-+
-+	err = type->setkey(ask->private, key_data, key_datalen);
-+
-+	sock_kzfree_s(&ask->sk, key_data, key_datalen);
-+
-+	return err;
-+}
-+
-+#else
-+
-+static inline int alg_setkey_by_key_serial(struct alg_sock *ask,
-+					   sockptr_t optval,
-+					   unsigned int optlen)
-+{
-+	return -ENOPROTOOPT;
-+}
-+
-+#endif
-+
- static int alg_setsockopt(struct socket *sock, int level, int optname,
- 			  sockptr_t optval, unsigned int optlen)
- {
-@@ -242,12 +371,16 @@ static int alg_setsockopt(struct socket *sock, int level, int optname,
- 
- 	switch (optname) {
- 	case ALG_SET_KEY:
-+	case ALG_SET_KEY_BY_KEY_SERIAL:
- 		if (sock->state == SS_CONNECTED)
- 			goto unlock;
- 		if (!type->setkey)
- 			goto unlock;
- 
--		err = alg_setkey(sk, optval, optlen);
-+		if (optname == ALG_SET_KEY_BY_KEY_SERIAL)
-+			err = alg_setkey_by_key_serial(ask, optval, optlen);
-+		else
-+			err = alg_setkey(sk, optval, optlen);
- 		break;
- 	case ALG_SET_AEAD_AUTHSIZE:
- 		if (sock->state == SS_CONNECTED)
-diff --git a/include/uapi/linux/if_alg.h b/include/uapi/linux/if_alg.h
-index 578b18aab821..0824fbc026a1 100644
---- a/include/uapi/linux/if_alg.h
-+++ b/include/uapi/linux/if_alg.h
-@@ -52,6 +52,7 @@ struct af_alg_iv {
- #define ALG_SET_AEAD_ASSOCLEN		4
- #define ALG_SET_AEAD_AUTHSIZE		5
- #define ALG_SET_DRBG_ENTROPY		6
-+#define ALG_SET_KEY_BY_KEY_SERIAL	7
- 
- /* Operations */
- #define ALG_OP_DECRYPT			0
--- 
-2.30.2
+Mimi
 
