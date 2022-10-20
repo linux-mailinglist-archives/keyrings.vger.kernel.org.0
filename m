@@ -2,59 +2,38 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD8D6068CE
-	for <lists+keyrings@lfdr.de>; Thu, 20 Oct 2022 21:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1267B606A46
+	for <lists+keyrings@lfdr.de>; Thu, 20 Oct 2022 23:28:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229905AbiJTTYB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 20 Oct 2022 15:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49050 "EHLO
+        id S229753AbiJTV25 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 20 Oct 2022 17:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbiJTTX7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Oct 2022 15:23:59 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E6520FB07
-        for <keyrings@vger.kernel.org>; Thu, 20 Oct 2022 12:23:56 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id j21so597952qkk.9
-        for <keyrings@vger.kernel.org>; Thu, 20 Oct 2022 12:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UXYBorl1dI3AKqx3xQmawJPVUjsdLNNAJw91kOBPSIk=;
-        b=SQ8OK63PFQry61FWFejRq6pCAtpPieg4TVk5hrGs9yrj+h+2wqx1laUos+OOt2inze
-         DxH8KYz/cFMdCorv+jYplUO9OBUoad0QYHCrDukFBDYQPBbyRbh85/wjBDyceg5Qn/Mw
-         AY6c47hC4FlDCeYqXpsjlx5xcFXM2e8jCwRYjVjGrgARsDTjAxsyuPtQr8llfQEKnJg1
-         X17NSzzxO60lqAYhBWrsrzqfsyp3nIWpLFhXkfq1bXrVeNlc6rHwsCfM0+veR6Lf7Tii
-         ahBQKsXfUlV5kuc64s1qLlK24/w3Yz0Hj9ecP3Ukekz9WUV+Sr3+7HWIPNNvVSg5WPWS
-         H9ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UXYBorl1dI3AKqx3xQmawJPVUjsdLNNAJw91kOBPSIk=;
-        b=t9SiY41G75+t08/ndn7Zw4nDIujjJMfi/MTdhgehG12gsCtAxAgjrw6L5FH1p6077k
-         MjAvcHn9bzYZAGH1czE4ZExZ14UaJrnjdK5UWaR7/QEM1hTIZ9DOwdnsqMqUcOslE+eD
-         eFz3Fnoa5yABpiOSuQ6WLgom6g5y7bhlrwCfI2VvHTKPnItG2G2ZvwGiL9zYOyLL1iWF
-         FqAeK2OZsqOxrGLLJtM4baBF+47kkjDkl9jD7N6vOYM/SmLSnN4YDela1XslYsz+qlRe
-         6UnQrZOQqayoexHLZpYEvAU8vbBc+Jvlmy0ODMZJvTt/PK7xEOgS9taUiTZd9LJm/DWV
-         ZxiQ==
-X-Gm-Message-State: ACrzQf1B/OoFSw+Khpsr58unaDkA+7PZQRxG0VYYEeJzZl05v9OiVF1G
-        b1iWw2FO2Po1QqG2hOh22WTHcQ==
-X-Google-Smtp-Source: AMsMyM6/PxGqTil/yztlMG8oGxbBRTidnNsSg45nwoJJ8KtNHLjmGAlx/eEJkbzdVhzCbBBaGVTwmg==
-X-Received: by 2002:a05:620a:1512:b0:6ee:b258:51f1 with SMTP id i18-20020a05620a151200b006eeb25851f1mr10701716qkk.716.1666293835335;
-        Thu, 20 Oct 2022 12:23:55 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-122-23.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.122.23])
-        by smtp.gmail.com with ESMTPSA id ew5-20020a05622a514500b0039cc9d24843sm6594369qtb.66.2022.10.20.12.23.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 12:23:54 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1olb8z-00Ay3E-DR;
-        Thu, 20 Oct 2022 16:23:53 -0300
-Date:   Thu, 20 Oct 2022 16:23:53 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Eric Biggers <ebiggers@kernel.org>
+        with ESMTP id S229509AbiJTV24 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Oct 2022 17:28:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26E41D0D51;
+        Thu, 20 Oct 2022 14:28:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5CE85B8295E;
+        Thu, 20 Oct 2022 21:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF24C433C1;
+        Thu, 20 Oct 2022 21:28:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666301327;
+        bh=rWfQzP6/H9EAAjSIpr3p+kEno6vt0QBXq32WDxAfruU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ETkFoNIwV/rtQAkC6D0iTcGP48Lv+lCWAEfot85DN9OQs9Tnc4XCjUH5pFR4ztre3
+         nZG3MyrrlnpUwkuUnr8qqsNqMuBZLyf3vg2OnfSLc6jwAG2RU3bUAT3bCYrl0AB8hU
+         vQCBfUbT4Oumto+b5K8TtrWcQcS8zVuk03inW/pg54jeZ4LIRRbIFljLOIshOzyEkK
+         hwdxurKtatrsk+N9iliJjkw2fSpEIAyydd60T7KEQuXbYs69SJ++9ed0+eCzxZLbXt
+         7OpqMh3jh+wdkBlBIgy2DSpm9HBuBMrAarmBV2qy7MEl/1f/KGnvP/KZZvy58CION1
+         li7bd6SYatLqA==
+Date:   Thu, 20 Oct 2022 14:28:36 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
 Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Pankaj Gupta <pankaj.gupta@nxp.com>,
@@ -85,9 +64,8 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         Varun Sethi <V.Sethi@nxp.com>
 Subject: Re: [EXT] Re: [PATCH v0 3/8] crypto: hbk flags & info added to the
  tfm
-Message-ID: <Y1GgSX+ZmOsxhB2N@ziepe.ca>
-References: <20221006130837.17587-1-pankaj.gupta@nxp.com>
- <20221006130837.17587-4-pankaj.gupta@nxp.com>
+Message-ID: <Y1G9hKPT1MNQQxcG@sol.localdomain>
+References: <20221006130837.17587-4-pankaj.gupta@nxp.com>
  <Yz/OEwDtyTm+VH0p@gondor.apana.org.au>
  <DU2PR04MB8630CBBB8ABDC3768320C18195209@DU2PR04MB8630.eurprd04.prod.outlook.com>
  <Y0Q3JKnWSNIC4Xlu@zx2c4.com>
@@ -96,43 +74,60 @@ References: <20221006130837.17587-1-pankaj.gupta@nxp.com>
  <Y0aDiLp7BztzwNez@gondor.apana.org.au>
  <Y0m2TU5k78I1AR+p@ziepe.ca>
  <Y1DN3SqEyFZd9i37@sol.localdomain>
+ <Y1GgSX+ZmOsxhB2N@ziepe.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y1DN3SqEyFZd9i37@sol.localdomain>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Y1GgSX+ZmOsxhB2N@ziepe.ca>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 19, 2022 at 09:26:05PM -0700, Eric Biggers wrote:
-
-> Are you referring to the support for hardware-wrapped inline crypto keys?  It
-> isn't upstream yet, but my latest patchset is at
-> https://lore.kernel.org/linux-fscrypt/20220927014718.125308-2-ebiggers@kernel.org/T/#u.
-> There's also a version of it used by some Android devices already.  Out of
-> curiosity, are you using it in an Android device, or have you adopted it in some
-> other downstream?
-
-Unrelated to Android, similar functionality, but slightly different
-ultimate purpose. We are going to be sending a fscrypt patch series
-for mlx5 and nvme soonish.
-
-> > Yes, it would be nice to see a comprehensive understand on how HW
-> > resident keys can be modeled in the keyring.
+On Thu, Oct 20, 2022 at 04:23:53PM -0300, Jason Gunthorpe wrote:
+> On Wed, Oct 19, 2022 at 09:26:05PM -0700, Eric Biggers wrote:
 > 
-> Note that the keyrings subsystem is not as useful as it might seem.  It sounds
-> like something you want (you have keys, and there is a subsystem called
-> "keyrings", so it should be used, right?), but often it isn't.  fscrypt has
-> mostly moved away from using it, as it caused lots of problems.  I would caution
-> against assuming that it needs to be part of any solution.
+> > Are you referring to the support for hardware-wrapped inline crypto keys?  It
+> > isn't upstream yet, but my latest patchset is at
+> > https://lore.kernel.org/linux-fscrypt/20220927014718.125308-2-ebiggers@kernel.org/T/#u.
+> > There's also a version of it used by some Android devices already.  Out of
+> > curiosity, are you using it in an Android device, or have you adopted it in some
+> > other downstream?
+> 
+> Unrelated to Android, similar functionality, but slightly different
+> ultimate purpose. We are going to be sending a fscrypt patch series
+> for mlx5 and nvme soonish.
 
-That sounds disappointing that we are now having parallel ways for the
-admin to manipulate kernel owned keys.
+That's interesting, though also slightly scary in that it sounds like you've
+already shipped some major fscrypt changes without review!
 
-Jason
+> > > Yes, it would be nice to see a comprehensive understand on how HW
+> > > resident keys can be modeled in the keyring.
+> > 
+> > Note that the keyrings subsystem is not as useful as it might seem.  It sounds
+> > like something you want (you have keys, and there is a subsystem called
+> > "keyrings", so it should be used, right?), but often it isn't.  fscrypt has
+> > mostly moved away from using it, as it caused lots of problems.  I would caution
+> > against assuming that it needs to be part of any solution.
+> 
+> That sounds disappointing that we are now having parallel ways for the
+> admin to manipulate kernel owned keys.
+
+Well, the keyrings subsystem never worked properly for fscrypt anyway.  At most,
+it's only useful for providing the key to the filesystem initially (by passing a
+key ID to FS_IOC_ADD_ENCRYPTION_KEY, instead of the key bytes), similar to what
+dm-crypt allows.  After that, the keyrings subsystem plays no role.
+
+I'm open to making FS_IOC_ADD_ENCRYPTION_KEY accept other 'struct key' types,
+like "trusted" which has been discussed before and which dm-crypt supports.
+
+Just don't assume that just because you have a key, that you automatically
+*need* the keyrings subsystem.  Normally just passing the key bytes in the ioctl
+works just as well and is much simpler.  Same for dm-crypt, which normally takes
+the key bytes in the device-mapper table parameters...
+
+- Eric
