@@ -2,152 +2,150 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B73A606C21
-	for <lists+keyrings@lfdr.de>; Fri, 21 Oct 2022 01:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 522B1607044
+	for <lists+keyrings@lfdr.de>; Fri, 21 Oct 2022 08:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbiJTXnF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 20 Oct 2022 19:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49402 "EHLO
+        id S229606AbiJUGov (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 21 Oct 2022 02:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiJTXnD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Oct 2022 19:43:03 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DFD16DC09
-        for <keyrings@vger.kernel.org>; Thu, 20 Oct 2022 16:43:01 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id a5so1025593qkl.6
-        for <keyrings@vger.kernel.org>; Thu, 20 Oct 2022 16:43:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q3AP/tQZsCGWdqocUdGbR0U8FOgV3GYYbflK+bE4iCU=;
-        b=n3in2a6l84dZ4h43JiWPEaU07Ag4vYTbida9+trrLRkXvVMbPcyx6HxtX8lAajFZFC
-         DtoagUZ1PTH2sW0BvUiuWacOoD+b0oHxbdazrKo7R18xXMv8a3vvGZGyW62mYg4k6lkt
-         3/foqWE3SI3G+FIcfErHPBsohl89rS5d99nOCfhFM+R8EWwDBwnmrXXAOdtpDHqEUdZo
-         oMi4qWhGG7oSMxykmVnWYIwNz7FJ2k300VniYOJMoYM5/+paUqv5Ir8yBWQ898/Yzkzm
-         ihj9GA65p7uqsk6bsfytPAf9WygErO/AX5iGn+8DsaW97NMJqf1dnss8tzD88E+2Oquw
-         RSDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q3AP/tQZsCGWdqocUdGbR0U8FOgV3GYYbflK+bE4iCU=;
-        b=c6ImHRt4Pq+8yW0SkEu+CRkGrcb67ufcOfhydqvXnGJulZeXOV6ssru42/lTTZBJqN
-         0gLlJeNZRpTw94BsJQ0aTuuqkpz9ZfDgDYw34zIOVmdRI5iyW2lZ2j8uyZgRNrZrZg0V
-         2SVJ2aJ/k2H7pcgWIjd/Im6rCWlpwyPmOxfHJdlvkAi9urNmgOrjjexy/pQQS+BMLDCh
-         LTRkk2+0gr2YjJs4YSrXIrbzPcUYHSfAPPGBiUwWHmEhEk8hci0+UHA9HYxvXVG1Y2Vf
-         uwZaLgL2l3x/KRSerXuTauwkPss5TjbsiXouTWWHE+TY0v8O0R/eLY6ewawyYZwzA9JH
-         QhaA==
-X-Gm-Message-State: ACrzQf0mJs5VGNM5wZ2mb3yqo43S570w6U1QB+GAP7zVMh7S3F4GAhS2
-        0ehNPlNSsC92D+BSyOKJlFXBSw==
-X-Google-Smtp-Source: AMsMyM77ieCA9Ka3hBL0aoBJg1xvsJRStZW8qEvdIlyx1P3eg6ZqCcE+FSB11I0sMIsyLJKF0HZlSQ==
-X-Received: by 2002:a05:620a:13b6:b0:6ee:cf79:bfa1 with SMTP id m22-20020a05620a13b600b006eecf79bfa1mr11569554qki.15.1666309380684;
-        Thu, 20 Oct 2022 16:43:00 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-122-23.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.122.23])
-        by smtp.gmail.com with ESMTPSA id y13-20020a05620a25cd00b006bbf85cad0fsm8537748qko.20.2022.10.20.16.42.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 16:42:59 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1olfBj-00B3Bu-0U;
-        Thu, 20 Oct 2022 20:42:59 -0300
-Date:   Thu, 20 Oct 2022 20:42:58 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Pankaj Gupta <pankaj.gupta@nxp.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "a.fatoum@pengutronix.de" <a.fatoum@pengutronix.de>,
-        "gilad@benyossef.com" <gilad@benyossef.com>,
-        "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "sumit.garg@linaro.org" <sumit.garg@linaro.org>,
-        "david@sigma-star.at" <david@sigma-star.at>,
-        "michael@walle.cc" <michael@walle.cc>,
-        "john.ernberg@actia.se" <john.ernberg@actia.se>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "j.luebbe@pengutronix.de" <j.luebbe@pengutronix.de>,
-        "richard@nod.at" <richard@nod.at>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        Sahil Malhotra <sahil.malhotra@nxp.com>,
-        Kshitiz Varshney <kshitiz.varshney@nxp.com>,
-        Horia Geanta <horia.geanta@nxp.com>,
-        Varun Sethi <V.Sethi@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v0 3/8] crypto: hbk flags & info added to the
- tfm
-Message-ID: <Y1HdAmy6ZfN8f5hJ@ziepe.ca>
-References: <Yz/OEwDtyTm+VH0p@gondor.apana.org.au>
- <DU2PR04MB8630CBBB8ABDC3768320C18195209@DU2PR04MB8630.eurprd04.prod.outlook.com>
- <Y0Q3JKnWSNIC4Xlu@zx2c4.com>
- <Y0UxY51KQoKCq59o@gondor.apana.org.au>
- <Y0XLqd/+C1sxq2G0@zx2c4.com>
- <Y0aDiLp7BztzwNez@gondor.apana.org.au>
- <Y0m2TU5k78I1AR+p@ziepe.ca>
- <Y1DN3SqEyFZd9i37@sol.localdomain>
- <Y1GgSX+ZmOsxhB2N@ziepe.ca>
- <Y1G9hKPT1MNQQxcG@sol.localdomain>
+        with ESMTP id S229585AbiJUGou (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 21 Oct 2022 02:44:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A05AC357ED;
+        Thu, 20 Oct 2022 23:44:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C6E861B39;
+        Fri, 21 Oct 2022 06:44:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC4FC433D7;
+        Fri, 21 Oct 2022 06:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666334687;
+        bh=dg+igT/kH5vNLile/55ugMghQ6bHOl5tdBoCQSBXYac=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AGeMyJeg87UlxSe5k2XIw2g27XDq3ZEoGhJylOgn/Pc+deCE0ymZDPF3pyhTXbf62
+         BkfHG3/Jo3vHInZD0+8lFJ/J32KahCu6OAm/wJgPFxd9F/HemwazCjH13UA8hJ60mM
+         b7/YE//cHLp3hSWuNDGNIrsZr73GEPOrbsw5jMJf/PXtSzJrG6IggCpuVSgIjAuv7T
+         mkRnUX2cWBckGEDpW/KQuEh4jbsZI+7HVNHZJlkU6jCmsTyk4td814k6t0S+O3WWSh
+         8xaaW5CBclarLFx8oWJMBlgIHD63a03DVy9s1ojqs8YIrBNztmRJ02YHmW3QFs0F8Q
+         AkwK4fKzudFJw==
+Date:   Fri, 21 Oct 2022 08:44:44 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Adam Borowski <kilobyte@angband.pl>
+Cc:     linux-kernel@lists.debian.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jiaxin Yu <jiaxin.yu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-mediatek@lists.infradead.org, alsa-devel@alsa-project.org,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Dan Scally <djrscally@gmail.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, Khalil Blaiech <kblaiech@nvidia.com>,
+        Asmaa Mnebhi <asmaa@nvidia.com>, linux-i2c@vger.kernel.org,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Brent Lu <brent.lu@intel.com>
+Subject: Re: [PATCH 0/6] a pile of randconfig fixes
+Message-ID: <Y1I/3KPxSI1voRHh@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Adam Borowski <kilobyte@angband.pl>, linux-kernel@lists.debian.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Jiaxin Yu <jiaxin.yu@mediatek.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        linux-mediatek@lists.infradead.org, alsa-devel@alsa-project.org,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>, Dan Scally <djrscally@gmail.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, Khalil Blaiech <kblaiech@nvidia.com>,
+        Asmaa Mnebhi <asmaa@nvidia.com>, linux-i2c@vger.kernel.org,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Brent Lu <brent.lu@intel.com>
+References: <20221020221749.33746-1-kilobyte@angband.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ASNnxeSggHlth0r3"
 Content-Disposition: inline
-In-Reply-To: <Y1G9hKPT1MNQQxcG@sol.localdomain>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20221020221749.33746-1-kilobyte@angband.pl>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Oct 20, 2022 at 02:28:36PM -0700, Eric Biggers wrote:
-> On Thu, Oct 20, 2022 at 04:23:53PM -0300, Jason Gunthorpe wrote:
-> > On Wed, Oct 19, 2022 at 09:26:05PM -0700, Eric Biggers wrote:
-> > 
-> > > Are you referring to the support for hardware-wrapped inline crypto keys?  It
-> > > isn't upstream yet, but my latest patchset is at
-> > > https://lore.kernel.org/linux-fscrypt/20220927014718.125308-2-ebiggers@kernel.org/T/#u.
-> > > There's also a version of it used by some Android devices already.  Out of
-> > > curiosity, are you using it in an Android device, or have you adopted it in some
-> > > other downstream?
-> > 
-> > Unrelated to Android, similar functionality, but slightly different
-> > ultimate purpose. We are going to be sending a fscrypt patch series
-> > for mlx5 and nvme soonish.
-> 
-> That's interesting, though also slightly scary in that it sounds like you've
-> already shipped some major fscrypt changes without review!
 
-Heh, says the Android guy :)
+--ASNnxeSggHlth0r3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fortunately nothing major, we are enterprise focused, we need stuff in
-real distros - we know know how to do it.
 
-> > That sounds disappointing that we are now having parallel ways for the
-> > admin to manipulate kernel owned keys.
-> 
-> Well, the keyrings subsystem never worked properly for fscrypt anyway.  At most,
-> it's only useful for providing the key to the filesystem initially (by passing a
-> key ID to FS_IOC_ADD_ENCRYPTION_KEY, instead of the key bytes), similar to what
-> dm-crypt allows.  After that, the keyrings subsystem plays no role.
+> I've been doing randconfig build tests for quite a while, here's a pile of
+> fixes.  I'm not sure what's the best way to submit these: do you folks
+> prefer a series like this, or a number of individual submissions?
 
-Sure, but loading the key into the keyring should allow many different
-options, including things like TPM PCR secured keys (eg like
-bitlocker) - we shouldn't allow user space the ability to see the key
-data at all.
+You sent the one for i2c-mlxbf seperately, which I applied now.
 
-Duplicating this in every subsystem makes no sense, there is a
-reasonable role for the keyring to play in solving these kinds of
-problems for everything.
 
-Jason
+--ASNnxeSggHlth0r3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNSP9wACgkQFA3kzBSg
+KbbjSg//Qpjk7lLoKdOzvsdmL0Mq2o5hT22qP9eF8TiQ3pE1B3B9C9AsdWQ7FjOB
+ClXU5SlQmHPj//fgEfmr9Vj2bKBssiA4QkjiF/fcjthcBqG2j3tLeQPRmFr6qcd7
+a873ogKipCuWcb7wHngTM9a7820xTtzm6AUCGCfWQHKiXjdCWsSdBoSEyHDocLiz
+CVpTOsOeH+pC5Sa1WwXdONrrOMoA1Cttpxu8Y/ZCLzyqQ4M+WL5j17g/jMihywZ3
+hg4uduAbJ9Oq2gWXAi8JvnNLPYE5RdYjk3d0j4jFxyxSD8DeIOjp1tw/UT6VSoWK
+n+ygnkytK+33BTuEoIKKEfl3O5XTYtERfroHf3trO+xaIMKqa06p3+qPM5+2Rnqx
+cZ9cfqYqw+vCs/zkbtzWArA81N4O/QBDhNe4ktHyFkChCAN8dJSf0Yx5QM1oY50f
+Vkj0kWe6nA34LURe2MazhrLSQP7ht/8WkC1l1efH+2gHOdNBmxsr3fqOvYznCziB
+BWT40k8BRRdByRFICeSeS001FW+AUlbpE8q637iYCR8sGyqxJmCCb541W35o2gdT
+5ciiIlzkqA3NudtWem09SR8UuBv9wXaiLx8qQXd72b/Na86U8dT3Bc8DKthJFWn6
+59ubRiZuumctWs6sE7kZ9aPXpPpci4isfJAhNOCtgJ7+pC+g65E=
+=s3Uy
+-----END PGP SIGNATURE-----
+
+--ASNnxeSggHlth0r3--
