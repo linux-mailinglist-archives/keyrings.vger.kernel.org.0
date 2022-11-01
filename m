@@ -2,86 +2,140 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F459610971
-	for <lists+keyrings@lfdr.de>; Fri, 28 Oct 2022 07:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 642AD614A13
+	for <lists+keyrings@lfdr.de>; Tue,  1 Nov 2022 12:57:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbiJ1FCv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 28 Oct 2022 01:02:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
+        id S229868AbiKAL5t (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 1 Nov 2022 07:57:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbiJ1FCv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Oct 2022 01:02:51 -0400
-Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C78E1AFA92;
-        Thu, 27 Oct 2022 22:02:50 -0700 (PDT)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1ooHVI-007UvU-0h; Fri, 28 Oct 2022 13:02:37 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 28 Oct 2022 13:02:36 +0800
-Date:   Fri, 28 Oct 2022 13:02:36 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Frederick Lawler <fred@cloudflare.com>
-Cc:     davem@davemloft.net, ebiggers@google.com, hch@lst.de,
-        smueller@chronox.de, dhowells@redhat.com, omosnace@redhat.com,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: [PATCH 1/1] crypto: af_alg - Support symmetric encryption via
- keyring keys
-Message-ID: <Y1tibAzBGI3F+6xw@gondor.apana.org.au>
-References: <20221017192500.485962-1-fred@cloudflare.com>
+        with ESMTP id S230173AbiKAL5m (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 1 Nov 2022 07:57:42 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C7B632D;
+        Tue,  1 Nov 2022 04:57:40 -0700 (PDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A1BsVKN034449;
+        Tue, 1 Nov 2022 11:57:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=UU2OVLyRFQWblX6Bgns3JmLCMcn+pjyZngTrFCH7Oq4=;
+ b=PCobK7eqqySZBQm7BlisnYLug4EBnNcXM7oazZRKoQpFvk0dKjmPbT/5OH3q+NdB6gsZ
+ 6iTH6sstU4FdYD1iqyrxdzHFXFfNpiiF1Bkvfq6Ypbvc55VPMeK+44MaPFvZaI2NJ74F
+ hHvR2mWBNfa+UErxNmedwD3VyzMf8/y77rhmFJhZDIui2g4v6tdf1WDsmxquc5npfNnS
+ KKIxhwvzmE02fcPEwJzGNsFgBLr0XKv94I5kp2KJtLJLN1SZkz8e8YoWtkToMH0v4ee4
+ BKsNK1+rzRZPDjm/P1+QS1i7yYez4GGZWeglYfN9XRwTuI7aQYpr23sFJGLbl/lvV9+R kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kjw7tt8yq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Nov 2022 11:57:21 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A1BpZK7035036;
+        Tue, 1 Nov 2022 11:57:21 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kjw7tt8yc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Nov 2022 11:57:21 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A1BokD0010795;
+        Tue, 1 Nov 2022 11:57:20 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+        by ppma04dal.us.ibm.com with ESMTP id 3kguta0re6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Nov 2022 11:57:20 +0000
+Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
+        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A1BvKRn10224376
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 1 Nov 2022 11:57:20 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DB4E15803F;
+        Tue,  1 Nov 2022 11:57:18 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1680858061;
+        Tue,  1 Nov 2022 11:57:18 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.189.66])
+        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Tue,  1 Nov 2022 11:57:17 +0000 (GMT)
+Message-ID: <cee0b0176edc942ecc0ce6f4d585c239f9b7c425.camel@linux.ibm.com>
+Subject: Re: [PATCH] efi: Add iMac Pro 2017 to uefi skip cert quirk
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Aditya Garg <gargaditya08@live.com>,
+        "chyishian.jiang@gmail.com" <chyishian.jiang@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Orlando Chamberlain <redecorating@protonmail.com>
+Date:   Tue, 01 Nov 2022 07:57:17 -0400
+In-Reply-To: <8CB9E43B-AB65-4735-BB8D-A8A7A10F9E30@live.com>
+References: <8CB9E43B-AB65-4735-BB8D-A8A7A10F9E30@live.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Zge99lZrCYUCxOnvM_rD_JuFr53dJRrL
+X-Proofpoint-GUID: 8SUFS2ZDxrTrw_6zpKDYdKfWqqPFy30H
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221017192500.485962-1-fred@cloudflare.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-01_06,2022-11-01_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211010088
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Oct 17, 2022 at 02:25:00PM -0500, Frederick Lawler wrote:
-> We want to leverage keyring to store sensitive keys, and then use those
-> keys for symmetric encryption via the crypto API. Among the key types we
-> wish to support are: user, logon, encrypted, and trusted.
-> 
-> User key types are already able to have their data copied to user space,
-> but logon does not support this. Further, trusted and encrypted keys will
-> return their encrypted data back to user space on read, which does not
-> make them ideal for symmetric encryption.
-> 
-> To support symmetric encryption for these key types, add a new
-> ALG_SET_KEY_BY_KEY_SERIAL setsockopt() option to the crypto API. This
-> allows users to pass a key_serial_t to the crypto API to perform
-> symmetric encryption. The behavior is the same as ALG_SET_KEY, but
-> the crypto key data is copied in kernel space from a keyring key,
-> which allows for the support of logon, encrypted, and trusted key types.
-> 
-> Keyring keys must have the KEY_(POS|USR|GRP|OTH)_SEARCH permission set
-> to leverage this feature. This follows the asymmetric_key type where key
-> lookup calls eventually lead to keyring_search_rcu() without the
-> KEYRING_SEARCH_NO_CHECK_PERM flag set.
-> 
-> Signed-off-by: Frederick Lawler <fred@cloudflare.com>
-> ---
-> RFC: https://lore.kernel.org/all/20221004212927.1539105-1-fred@cloudflare.com/
-> 
-> We have an idea for handling the case of leaking key data with bad
-> algorithms, but asymmetric keys currently have the same problem if any were
-> added as a akcipher type. If KEY_*_SEARCH is not good enough, we thought
-> of possibly implementing a KConfig such that we disable leaky algorithms
-> when selected, or possibly the inverse where if a leaky algorithm is
-> enabled, we don't allow to enable this. The problem there is now there's
-> a list to maintain.
-> ---
->  Documentation/crypto/userspace-if.rst |  15 ++-
->  crypto/af_alg.c                       | 135 +++++++++++++++++++++++++-
->  include/uapi/linux/if_alg.h           |   1 +
->  3 files changed, 147 insertions(+), 4 deletions(-)
+Hi Aditya,
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+On Thu, 2022-10-27 at 10:01 +0000, Aditya Garg wrote:
+> From: Aditya Garg <gargaditya08@live.com>
+> 
+> The iMac Pro 2017 is also a T2 Mac. Thus add it to the list of uefi skip cert.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Aditya Garg <gargaditya08@live.com>
+
+I found this list of computers with the Apple T2 Security Chip - 
+https://support.apple.com/en-us/HT208862, but not a list that
+correlates them to the system ID.  With this update, is this the entire
+list?
+
+thanks,
+
+Mimi
+
+> ---
+>  security/integrity/platform_certs/load_uefi.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+> index b78753d27d8ea6..d1fdd113450a63 100644
+> --- a/security/integrity/platform_certs/load_uefi.c
+> +++ b/security/integrity/platform_certs/load_uefi.c
+> @@ -35,6 +35,7 @@ static const struct dmi_system_id uefi_skip_cert[] = {
+>  	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacPro7,1") },
+>  	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,1") },
+>  	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,2") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMacPro1,1") },
+>  	{ }
+>  };
+>  
+
+
