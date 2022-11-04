@@ -2,93 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DB1A619E34
-	for <lists+keyrings@lfdr.de>; Fri,  4 Nov 2022 18:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A4A61A006
+	for <lists+keyrings@lfdr.de>; Fri,  4 Nov 2022 19:34:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbiKDRMw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Nov 2022 13:12:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55830 "EHLO
+        id S232108AbiKDSeB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Nov 2022 14:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbiKDRMw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Nov 2022 13:12:52 -0400
-X-Greylist: delayed 530 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 04 Nov 2022 10:12:47 PDT
-Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [IPv6:2001:1600:4:17::8fa8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4FCE31F8F
-        for <keyrings@vger.kernel.org>; Fri,  4 Nov 2022 10:12:47 -0700 (PDT)
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4N3n5l3xVSzMqP72;
-        Fri,  4 Nov 2022 18:03:55 +0100 (CET)
-Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
-        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4N3n5k5nYNzMpprG;
-        Fri,  4 Nov 2022 18:03:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
-        s=20191114; t=1667581435;
-        bh=rDKlvs8YU46CKqX82hlxiACZy1AJYlqE6JjX6FipWvY=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=C4wdECx7thGygxi5nrmA3/kCeEewHDEX338TkrABm3eCBt+52aGJsEpDx39JZs54+
-         SbOE59h+HHFRl4V1yri2Lnl/43ykDhCcxJjBoQQNwn+1EulC3fTuJkL8lyJON/Xjlm
-         PGn8iDj4oEvB8LSEmCrtuBIobYASOQyNZNfqvoCA=
-Message-ID: <af0d6881-76c0-f570-0c5b-f664e261c4cf@digikod.net>
-Date:   Fri, 4 Nov 2022 18:03:53 +0100
-MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [BUG] blacklist: Problem blacklisting hash (-13) during boot
-Content-Language: en-US
-To:     =?UTF-8?Q?Thomas_Wei=c3=9fschuh?= <thomas@t-8ch.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        with ESMTP id S232140AbiKDSd6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Nov 2022 14:33:58 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8877F45EFA
+        for <keyrings@vger.kernel.org>; Fri,  4 Nov 2022 11:33:56 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id e129so5070089pgc.9
+        for <keyrings@vger.kernel.org>; Fri, 04 Nov 2022 11:33:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cHlujkwLHQA1OWRlitXKA2okTr4nOrBSjZdPzF8hE5c=;
+        b=fYGdM/Tg8Tza7nWYNx1gvE5AjwWtFIuP2aMr7NSPrgUEcKXetw2efj4K9ltVVjew/O
+         hfXJ6HTPJXObLs10g0NdIXaQf1I9XXduYXsuLGv+V9dxSo0TvDryLnn2dlG70bCeTkio
+         Mvw0wCqrgxfpNUxlYb3257rRnrsy7wsaQJrD0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cHlujkwLHQA1OWRlitXKA2okTr4nOrBSjZdPzF8hE5c=;
+        b=LVayhd3Fw7jHIVhvN67Ur7vgawbYJV2PIZUjBRrEVw+SbEnCBl8t+4a7aYAJYzQI1l
+         b5hedgtRs/Uy1e4tBKaRKukWbCL4g6My7XuB7MpkiAvtZMwbdFFutk4gM5k/BJ8oZUSL
+         l1FYNb4CK1mGw7ZgokFowsSzsF1rrrKoYahKM0iqXD+UPKqcF2dmNhSUN9hysWj9UNam
+         orEB6UtW26jZ593jLc9O1tWDTxFCgi69dXLyJYMcTrauKKVwpsGDIGewyZAr/1pHvQYh
+         yf4ulT7Z9+4lpoUnU1TmAEJp636deohW2sqGy13bogMYBIDIWPTie9OPEzXtf0NezUwp
+         5aDw==
+X-Gm-Message-State: ACrzQf36fcr6iSjgRQ9r7JpG34o4boOLV5HtaB9EvKecdp3hbG1wNHFK
+        0DhoxpYMEcvhUR0mpXDoEVfW0w==
+X-Google-Smtp-Source: AMsMyM6rQqEYsHld7hqlGdxSuOaXH5JXb85iYTOBX6NHfyLfqeh7au3t/GuMFJWcTQ45Yl98zYA5gw==
+X-Received: by 2002:a63:c65:0:b0:470:cb4:aca3 with SMTP id 37-20020a630c65000000b004700cb4aca3mr11424330pgm.389.1667586835979;
+        Fri, 04 Nov 2022 11:33:55 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id g8-20020a17090a640800b00205fafa6768sm1990807pjj.6.2022.11.04.11.33.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Nov 2022 11:33:55 -0700 (PDT)
+Date:   Fri, 4 Nov 2022 11:33:54 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Evan Green <evgreen@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, corbet@lwn.net,
+        linux-pm@vger.kernel.org, rjw@rjwysocki.net, gwendal@chromium.org,
+        apronin@chromium.org, Pavel Machek <pavel@ucw.cz>,
+        Matthew Garrett <mgarrett@aurora.tech>,
+        linux-integrity@vger.kernel.org, jejb@linux.ibm.com,
+        zohar@linux.ibm.com, dlunev@google.com,
+        Eric Biggers <ebiggers@kernel.org>,
+        Ben Boeckel <me@benboeckel.net>, jarkko@kernel.org,
         David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Mark Pearson <markpearson@lenovo.com>,
-        keyrings@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
-References: <c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de>
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        James Morris <jmorris@namei.org>,
+        Paul Moore <paul@paul-moore.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v4 04/11] security: keys: trusted: Include TPM2 creation
+ data
+Message-ID: <202211041132.E8CB636@keescook>
+References: <20221103180120.752659-1-evgreen@chromium.org>
+ <20221103105558.v4.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221103105558.v4.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
-
-Thanks for this report. These error messages seem correct but I don't 
-see any legitimate reason for the firmware to store duplicate 
-blacklisted hashes.
-
-According to the blacklist_init() function, the "blacklisting failed" 
-message could be improved to explain that only a set of hashes failed, 
-and why they failed. However, despite this message, this should work as 
-expected and should not generate any issue.
-
-Did you contact Lenovo to report this issue (i.e. duplicate hashes in 
-their firmware)?
-
-Could you please provide the list of duplicate hashes?
-
-Regards,
-  Mickaël
-
-
-On 15/10/2022 05:16, Thomas Weißschuh wrote:
-> Hi,
+On Thu, Nov 03, 2022 at 11:01:12AM -0700, Evan Green wrote:
+> In addition to the private key and public key, the TPM2_Create
+> command may also return creation data, a creation hash, and a creation
+> ticket. These fields allow the TPM to attest to the contents of a
+> specified set of PCRs at the time the trusted key was created. Encrypted
+> hibernation will use this to ensure that PCRs settable only by the
+> kernel were set properly at the time of creation, indicating this is an
+> authentic hibernate key.
 > 
-> Since 5.19 during boot I see lots of the following entries in dmesg:
+> Encode these additional parameters into the ASN.1 created to represent
+> the key blob. The new fields are made optional so that they don't bloat
+> key blobs which don't need them, and to ensure interoperability with
+> old blobs.
 > 
-> blacklist: Problem blacklisting hash (-13)
-> 
-> This happens because the firmware contains duplicate blacklist entries.
-> As commit 6364d106e041 [0] modified the "blacklist" keyring to reject updates
-> this now leads to the spurious error messages.
-> 
-> The machine is a Thinkpad X1 Cargon Gen9 with BIOS revision 1.56 and firmware
-> revision 1.33.
-> 
-> [0] 6364d106e041 ("certs: Allow root user to append signed hashes to the blacklist keyring")
+> Signed-off-by: Evan Green <evgreen@chromium.org>
+
+There's a lot of open-coded math for the bounds checking. I didn't
+immediately see any problems, but it'd be nice if there was a way to
+hook a fuzzer up to this, or at least write some KUnit tests to check
+boundary conditions explicitly.
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
