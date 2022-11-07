@@ -2,128 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11CD761F055
-	for <lists+keyrings@lfdr.de>; Mon,  7 Nov 2022 11:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2068D61F41F
+	for <lists+keyrings@lfdr.de>; Mon,  7 Nov 2022 14:18:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231657AbiKGKXy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 7 Nov 2022 05:23:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35058 "EHLO
+        id S232197AbiKGNSz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Nov 2022 08:18:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231381AbiKGKXx (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Nov 2022 05:23:53 -0500
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD42E165AA
-        for <keyrings@vger.kernel.org>; Mon,  7 Nov 2022 02:23:52 -0800 (PST)
-Received: by mail-pj1-x1041.google.com with SMTP id c15-20020a17090a1d0f00b0021365864446so9843053pjd.4
-        for <keyrings@vger.kernel.org>; Mon, 07 Nov 2022 02:23:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
-         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
-         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
-         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
-         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
-         SKzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=gj8Y6BgQzn/jq5eMLztDrtVrwTBmtWWYNGgMhoPx4w3T/874lt15PgUWJU2OBQ+K2e
-         STduaZBrI+fqupQVAw7F5C07u9ROuTS6dgumwiuKG9ehD7rU6fnG21Nq+VMbbB4G62/Z
-         BUY6LtpbmWO9ndGxH/VyxkIC34Z36DVeSw9itkxl1XjSNQl20de1L/tLRWNYWXhKAJy1
-         McbDhwBJApujrdMNcOgWMjjMz/4UTcIoW4RJEnmBKkuUos3GmThXQ0IS4zqtwH6jIauY
-         iILcWkiwnBIAQ3M12nAyShbA+lq8Vh9ioobZB5YZVtWyio8u08ET5f4pMbf9xr2FcnfD
-         WmUg==
-X-Gm-Message-State: ACrzQf2cE8XSgvZSCWhqZC3kxc+mUblGYeVuezKQf2tm7kVJML7vPgCx
-        4C8Wakj9Ywc9zUMeI3a/c+2G39ofpr26ftV0ruM=
-X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
-X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
- p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
- Nov 2022 02:23:52 -0800 (PST)
+        with ESMTP id S232310AbiKGNSw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Nov 2022 08:18:52 -0500
+X-Greylist: delayed 390 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Nov 2022 05:18:47 PST
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00651C41E
+        for <keyrings@vger.kernel.org>; Mon,  7 Nov 2022 05:18:47 -0800 (PST)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4N5Wq32j5GzMpqsG;
+        Mon,  7 Nov 2022 14:12:15 +0100 (CET)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4N5Wq22b21zy8;
+        Mon,  7 Nov 2022 14:12:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+        s=20191114; t=1667826735;
+        bh=ogv1+vns4rwJNA++R69lZzH0fX4ZziizzJbx9zelCzc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=VbS4/VdMRvoiR4R/DPzce5YO/bNFNZ2z4S3DvPuY3yq5aLOvKr4ga49L49OpXrxF8
+         SCh2qAdjw/LIP0uwiy26PdwUl/sse2AzMLyQZOdbuETSYDW4GWHDkrF4EBMrsE+Qth
+         SQLgClXpRnQoDDyf7XUwtW5GZWHwFPEfYAP63O/s=
+Message-ID: <3b997266-067c-975c-911a-da146fe9033a@digikod.net>
+Date:   Mon, 7 Nov 2022 14:12:13 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:23:51 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:23:51 +0100
-Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_40,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+User-Agent: 
+Subject: Re: [PATCH] certs: Prevent spurious errors on repeated blacklisting
+Content-Language: en-US
+To:     =?UTF-8?Q?Thomas_Wei=c3=9fschuh?= <linux@weissschuh.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Pearson <markpearson@lenovo.com>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+References: <20221104014704.3469-1-linux@weissschuh.net>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <20221104014704.3469-1-linux@weissschuh.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1041 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.2046]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+This is a follow-up of 
+https://lore.kernel.org/r/c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de
+
+Added Jarkko, Mark Pearson, Eric Snowberg and more ML in Cc.
+
+
+On 04/11/2022 02:47, Thomas Weißschuh wrote:
+> When the blacklist keyring was changed to allow updates from the root
+> user it gained an ->update() function that disallows all updates.
+> When the a hash is blacklisted multiple times from the builtin or
+> firmware-provided blacklist this spams prominent logs during boot:
+> 
+> [    0.890814] blacklist: Problem blacklisting hash (-13)
+> 
+> As all these repeated calls to mark_raw_hash_blacklisted() would create
+> the same keyring entry again anyways these errors can be safely ignored.
+
+These errors can indeed be safely ignored, however they highlight issues 
+with some firmware vendors not checking nor optimizing their blocked 
+hashes. This raises security concerns, and it should be fixed by 
+firmware vendors.
+
+> 
+> Fixes: 6364d106e041 ("certs: Allow root user to append signed hashes to the blacklist keyring")
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> ---
+>   certs/blacklist.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/certs/blacklist.c b/certs/blacklist.c
+> index 41f10601cc72..5f7f2882ced7 100644
+> --- a/certs/blacklist.c
+> +++ b/certs/blacklist.c
+> @@ -191,7 +191,9 @@ static int mark_raw_hash_blacklisted(const char *hash)
+>   				   BLACKLIST_KEY_PERM,
+>   				   KEY_ALLOC_NOT_IN_QUOTA |
+>   				   KEY_ALLOC_BUILT_IN);
+> -	if (IS_ERR(key)) {
+> +
+> +	/* Blacklisting the same hash twice fails but would be idempotent */
+> +	if (IS_ERR(key) && PTR_ERR(key) != -EACCES) {
+
+We should not hide EACCES errors. This logs issues, which is correct for 
+duplicate hashes, and can help firmware vendors to fix their database. 
+I'd really like to see a different log message instead: change the 
+duplicate entry error code from EACCES to EEXIST, and call pr_warn for 
+this specific case.
+
+
+>   		pr_err("Problem blacklisting hash (%ld)\n", PTR_ERR(key));
+>   		return PTR_ERR(key);
+>   	}
+> 
+> base-commit: ee6050c8af96bba2f81e8b0793a1fc2f998fcd20
