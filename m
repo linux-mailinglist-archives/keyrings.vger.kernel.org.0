@@ -2,124 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D82AB623CD8
-	for <lists+keyrings@lfdr.de>; Thu, 10 Nov 2022 08:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5D1F62411A
+	for <lists+keyrings@lfdr.de>; Thu, 10 Nov 2022 12:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232304AbiKJHm3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 10 Nov 2022 02:42:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54612 "EHLO
+        id S230450AbiKJLMI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 10 Nov 2022 06:12:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbiKJHm1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 10 Nov 2022 02:42:27 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CD4229;
-        Wed,  9 Nov 2022 23:42:23 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48B4D61DA2;
-        Thu, 10 Nov 2022 07:42:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF43C43147;
-        Thu, 10 Nov 2022 07:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668066142;
-        bh=vGnlMB/2HOSpO2YQlw0qSWBFXOh59PeBdgpXlTbb4xg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Wr/cwLZ629WQhtGweevX8mjPjjI9Ms1KRhD7KD6dGOgUE09XcA6SrLmP/uxmiIAwE
-         ilJsfBXIP8hBMD17pIz5/sCnYybiiXXfzXJ8ODxpkfJAn1YAhADHCfP2fzaSqUKzaL
-         iGJ+utbEFY6BMVlY85su+GoOSvlfZtcnZP9MZdmGMusLSPsIsoNZF5DtCVVZIwDA5w
-         DNqMzMPjOTcN9az0wJXuDswi1KOJOOUt6XecXcmdunrdZuPYhgtFEyCk1+1HX4uPaS
-         ZLOFWgPKeNh1v1jtyKdFVRW8u7dxesOip82rb4hB7HG7+WcLslYAvrwm2jvfqfViNH
-         52D49iYcOpT5A==
-Received: by mail-lj1-f172.google.com with SMTP id k19so582776lji.2;
-        Wed, 09 Nov 2022 23:42:22 -0800 (PST)
-X-Gm-Message-State: ACrzQf0m/n9bHRX3RaEx7kxoSXmOVYGuIXRs1rqoE8J9Iv9KGAlmfuMG
-        eN02ZLQDsVTvei4C5xQIUrjto5hCLFjFkxy2a+I=
-X-Google-Smtp-Source: AMsMyM5CTnFUd6qm6+4S2vOZEcs8fjls4hVzitvR3CFeGIaQs/QemaR60+RGraj6GpRs4rBOZZOZ7W/WL+ot9XbUZys=
-X-Received: by 2002:a05:651c:c6:b0:277:96a:5c32 with SMTP id
- 6-20020a05651c00c600b00277096a5c32mr8067111ljr.415.1668066140429; Wed, 09 Nov
- 2022 23:42:20 -0800 (PST)
+        with ESMTP id S230433AbiKJLME (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 10 Nov 2022 06:12:04 -0500
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D816DCFA
+        for <keyrings@vger.kernel.org>; Thu, 10 Nov 2022 03:12:03 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id y4so1166109plb.2
+        for <keyrings@vger.kernel.org>; Thu, 10 Nov 2022 03:12:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yaq+SFAP5kTf9oPrYPpMvzkjalgNUTHY8MYqzihNGbY=;
+        b=W1ZC/0/jOj62exU1NlwqP2F21YthQH/vEaLHLYXraLCvXwC+bo1E8ztCFTZSqVUMLi
+         teaoHcLCkiHS1We6wJTp7SRCvPogWQwMqUIdF/ea6ipIvDfWSIxPr19PSuVpammjU9D4
+         VKI0tHLgSTEZSP5uWlz3VHI0wyzs3Ax0wz38L0nGoJt/Ar2V2RXtM62VhHepMJ6iHIo1
+         cwPW383kcyvjkZUZrJ6GAd+oihi1xiGQLrL8LrgTxU2nS7Ty80AN5mm1xPbqO+8wZfxD
+         BW9v/m/wl5WwFeL4TAEiSuI9r3B37Sx9TR40gqlzSVIZfdAPdENEHC4IVmHdxPUD/YfM
+         M4qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yaq+SFAP5kTf9oPrYPpMvzkjalgNUTHY8MYqzihNGbY=;
+        b=WijantUA6hOBPpJPUZPL6bsGKaFj+RcvjMKRdZ0VCKFoXgclRBgL/TZyw3sRNHvQCW
+         LrTNZF/WVy2ljuRAtqSickLzYjzHRXTXvtBG68QrM8xbMktJAId0twIse2RYBc/VVBa7
+         5nQT3xJjFcFIqKJY0veG5gKb+O/lAfX1BZvjv57CqFvcUA76tudNkWEFHdHIywVHbg7e
+         t3EKc+yAFYQDgaNvgrMxoF0/Gbd0NIkJQ2MPCgWjHXdBYab4/+rBnICkrohAhXOS3Ojx
+         DhHf/2cd1ZiQ7bezrjNZtjBHNrwqRJaIECrvRX3rNPPNhmMSOBDbHrCX9q+D0it5TLQb
+         AOEQ==
+X-Gm-Message-State: ACrzQf0lrZsMKgTKcElrj5qhaElsNkOuKrcEDPS54JiH2G7tQC3gO5TG
+        o6/xLMkuPrnp/EQHXbCpQoMC/+F3S9jr5A==
+X-Google-Smtp-Source: AMsMyM4ofpvuMY+7nXoyvVA9/VE8N84lCP9lqiryxNbGE3ShZFhtkHDbxVs+jGAa+XPX1Osm81MDGQ==
+X-Received: by 2002:a17:90a:1097:b0:213:d7d3:ab8 with SMTP id c23-20020a17090a109700b00213d7d30ab8mr58405678pja.91.1668078722103;
+        Thu, 10 Nov 2022 03:12:02 -0800 (PST)
+Received: from sumit-X1.. ([223.178.212.236])
+        by smtp.gmail.com with ESMTPSA id 68-20020a621647000000b0056bd1bf4243sm9903435pfw.53.2022.11.10.03.11.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Nov 2022 03:12:01 -0800 (PST)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     keyrings@vger.kernel.org
+Cc:     jejb@linux.ibm.com, zohar@linux.ibm.com,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@linaro.org>,
+        Jerome Forissier <jerome.forissier@linaro.org>
+Subject: [PATCH] KEYS: trusted: tee: Make registered shm dependency explicit
+Date:   Thu, 10 Nov 2022 16:41:40 +0530
+Message-Id: <20221110111140.1999538-1-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20211124044124.998170-1-eric.snowberg@oracle.com>
- <20211124044124.998170-17-eric.snowberg@oracle.com> <20221110000129.kl6pjy5mafpuptbk@framework>
-In-Reply-To: <20221110000129.kl6pjy5mafpuptbk@framework>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 10 Nov 2022 08:42:08 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHcf_QptjHfFJxkUQrv=Lfg5=pkt2UTOZ5F-pffki-=-Q@mail.gmail.com>
-Message-ID: <CAMj1kXHcf_QptjHfFJxkUQrv=Lfg5=pkt2UTOZ5F-pffki-=-Q@mail.gmail.com>
-Subject: Re: [PATCH v8 16/17] integrity: Trust MOK keys if MokListTrustedRT found
-To:     Morten Linderud <morten@linderud.pw>
-Cc:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, zohar@linux.ibm.com,
-        dhowells@redhat.com, dwmw2@infradead.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        jarkko@kernel.org, jmorris@namei.org, serge@hallyn.com,
-        keescook@chromium.org, torvalds@linux-foundation.org,
-        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
-        nramas@linux.microsoft.com, lszubowi@redhat.com, jason@zx2c4.com,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
-        konrad.wilk@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 10 Nov 2022 at 01:01, Morten Linderud <morten@linderud.pw> wrote:
->
-> On Tue, Nov 23, 2021 at 11:41:23PM -0500, Eric Snowberg wrote:
-> > A new Machine Owner Key (MOK) variable called MokListTrustedRT has been
-> > introduced in shim. When this UEFI variable is set, it indicates the
-> > end-user has made the decision themselves that they wish to trust MOK keys
-> > within the Linux trust boundary.  It is not an error if this variable
-> > does not exist. If it does not exist, the MOK keys should not be trusted
-> > within the kernel.
->
-> Hi Eric,
->
-> I've been milling around on this patch-set for a while and I have a few issues
-> with the description of the commit and what the code actually does.
->
-> efi_mokvar_entry_find doesn't simply read an UEFI variable as the commit message
-> suggests, it will look for the MOK variable loaded into the EFI configuration
-> table. This implies we need this table setup in early boot to take usage of this
-> patch set.
->
-> The only bootloader that does setup this table, is the `shim` as described. But
-> no other bootloader implements support for the MOK EFI configuration table.
->
+TEE trusted keys support depends on registered shared memory support
+since the key buffers are needed to be registered with OP-TEE. So make
+that dependency explicit to not register trusted keys support if
+underlying implementation doesn't support registered shared memory.
 
-Does any other bootloader implement support for the (volatile)
-MokListTrustedRT variable?
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Tested-by: Jerome Forissier <jerome.forissier@linaro.org>
+---
+ security/keys/trusted-keys/trusted_tee.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Note that this variable is intentionally volatile, and should be
-rejected by the kernel if it is not. The point of these RT variables
-or the config tables is that they can only be set at boot if a signed
-and therefore trusted agent created them.
+diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
+index c8626686ee1b..ac3e270ade69 100644
+--- a/security/keys/trusted-keys/trusted_tee.c
++++ b/security/keys/trusted-keys/trusted_tee.c
+@@ -219,7 +219,8 @@ static int trusted_tee_get_random(unsigned char *key, size_t key_len)
+ 
+ static int optee_ctx_match(struct tee_ioctl_version_data *ver, const void *data)
+ {
+-	if (ver->impl_id == TEE_IMPL_ID_OPTEE)
++	if (ver->impl_id == TEE_IMPL_ID_OPTEE &&
++	    ver->gen_caps & TEE_GEN_CAP_REG_MEM)
+ 		return 1;
+ 	else
+ 		return 0;
+-- 
+2.34.1
 
-Permitting non-volatile variables here defeats the purpose of secure
-boot, which aims to prevent exploits from gaining persistence. It
-would be bad if you could corrupt the trusted boot chain forever by
-setting a variable once.
-
-> This effectively means that there is still no way for Machine Owners to load
-> keys into the keyring, for things like module signing, without the shim present
-> in the bootchain. I find this a bit weird.
->
-> Is this an intentional design decision, or could other ways be supported as
-> well?
->
-
-Yes.
-
-If we are looking for a way to use EFI variables to inject additional
-certificates into the keyring without the ability to authenticate
-them, we should I'd strongly recommend that we disable that by default
-and add a big fat warning that it is incompatible with the guarantees
-secure boot aims to provide.
