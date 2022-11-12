@@ -2,219 +2,101 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B089626569
-	for <lists+keyrings@lfdr.de>; Sat, 12 Nov 2022 00:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7644F6268F6
+	for <lists+keyrings@lfdr.de>; Sat, 12 Nov 2022 11:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234643AbiKKXUU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 11 Nov 2022 18:20:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47104 "EHLO
+        id S234854AbiKLKs5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 12 Nov 2022 05:48:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234479AbiKKXUL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 11 Nov 2022 18:20:11 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E23283387
-        for <keyrings@vger.kernel.org>; Fri, 11 Nov 2022 15:19:51 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id 4so5420655pli.0
-        for <keyrings@vger.kernel.org>; Fri, 11 Nov 2022 15:19:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lT6eX+hZD0ZTySUyAECYTCle2DEgzv1f+QjqPC3Dddk=;
-        b=U2W25pAvqdkdkWLcokZmO7l4t8Bw+tkvFOixYVuwcikCJOh84eIQEtmWeKRV3H67Cl
-         kkxJiMOaisdceUpyytoKvTfzcHeG1zNMnbI8yauLRuL0bHiOYiKgs6QRKMPhmj7br+cC
-         RfbQaXDPPOrgB0ad6d6z+NtpYbMorkvaHf22o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lT6eX+hZD0ZTySUyAECYTCle2DEgzv1f+QjqPC3Dddk=;
-        b=V6qPYe/FCsXwE5lkoajONlckNbuIbTpMCtc5AOoXokx6ovjc200pq4lx7PDLnuPtcJ
-         XtKD8W/0i1Y27M6Y0PHE7/F+vRKxvvjhEwJiZtUKEaDNGhDkGefHwhWbVGEWFVMIg6MH
-         Xt6DX08ZDdUrP4lqSFg5SGcHABl7zbVbnYA5lqCkBNu3E1yHh4WVFCV2Dy5rF1dhgJH1
-         XAQ3NxjQkb02dpV3QLV6ZyfxZk1Zue3nS3nJXmiFt1qvY+31t+X+zgHsHk2CAqLbCdCh
-         gCq2Z7VYi1p3pAc4Fkn/a3pA4ZtOSsDv72qShHei9zUGe5LXKBdcKcHeZPrLD8i7cPAI
-         2n9g==
-X-Gm-Message-State: ANoB5pm1AiqQd4ffLHHsU2efr2CBSWKxt3uffc6WmIwLu5ZDA7zRgYQf
-        Ai6AUHeoInygdKTS0rmAgEnh7g==
-X-Google-Smtp-Source: AA0mqf4p+IlUyIKh3j0vUMhqyQotcP0Ad7fK3S6VQzoCBIJimaKlPbs9tjtuMVYQHk1nqchFwy1AhQ==
-X-Received: by 2002:a17:902:9b97:b0:186:5f71:7939 with SMTP id y23-20020a1709029b9700b001865f717939mr4244136plp.162.1668208791108;
-        Fri, 11 Nov 2022 15:19:51 -0800 (PST)
-Received: from evgreen-glaptop.lan ([98.45.28.95])
-        by smtp.gmail.com with ESMTPSA id x128-20020a623186000000b0056da2ad6503sm2106900pfx.39.2022.11.11.15.19.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Nov 2022 15:19:50 -0800 (PST)
-From:   Evan Green <evgreen@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     corbet@lwn.net, linux-integrity@vger.kernel.org,
-        Eric Biggers <ebiggers@kernel.org>, gwendal@chromium.org,
-        dianders@chromium.org, apronin@chromium.org,
-        Pavel Machek <pavel@ucw.cz>, Ben Boeckel <me@benboeckel.net>,
-        rjw@rjwysocki.net, jejb@linux.ibm.com,
-        Kees Cook <keescook@chromium.org>, dlunev@google.com,
-        zohar@linux.ibm.com, Matthew Garrett <mgarrett@aurora.tech>,
-        jarkko@kernel.org, linux-pm@vger.kernel.org,
-        Evan Green <evgreen@chromium.org>,
-        Matthew Garrett <mjg59@google.com>,
+        with ESMTP id S234802AbiKLKsz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 12 Nov 2022 05:48:55 -0500
+X-Greylist: delayed 94 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 12 Nov 2022 02:48:53 PST
+Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA0E1704A;
+        Sat, 12 Nov 2022 02:48:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1668249051; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=LFqAfRynvUXCUpErtnOL6NDnj4CYj8iUanwK1DI2pR+ycJNXJzAwqaHIZmzZOgUIt02nNaJBMnJmhKGlIruks6xnjLYgWeI0U4bgegcQS0Or9DXN0OOsU+fJ6BR29aBMM7qz/NUICVDPdVbsW5J5hNoQ4dphep8ZwHCZ/uLWJIQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1668249051; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=BCGeylOFJYtUpHot+ky277Ye6xqHBGluvEQQ9Xbj6Mg=; 
+        b=KNmJaKaRXLHJy2ps9hY+5dEQrg7iBmOw45HEscaazRCJAfFomGO/z3zFitv7w/OjVJjJ+W051G3AAH3Lp+rabtrQ2INaCv0/gHYL6kWKDmHOsy0Ted8tGhIMGA7fplxTjmw4YnAdviF6+UyCjf4Aiavc6a7Nuk/esNNph2AO7Wc=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1668249051;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+        bh=BCGeylOFJYtUpHot+ky277Ye6xqHBGluvEQQ9Xbj6Mg=;
+        b=PozslzT7pVPO2qvIFATO1I96o2g8GSKMsxdghJMy8CfbfKGTpVvE6px9WGHEOunY
+        HVzWfULbawSa5IR8qvhULazw3+TmhelCBIQbApNmSWHqGS3X9VbMmUiD7zzA8gBozNo
+        3SaZNtO27VhwOcopImrs34fC1d/Kje44T4HTcxTE=
+Received: from kampyooter.. (110.226.30.173 [110.226.30.173]) by mx.zoho.in
+        with SMTPS id 166824904951082.6955736246938; Sat, 12 Nov 2022 16:00:49 +0530 (IST)
+From:   Siddh Raman Pant <code@siddh.me>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
         David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        Paul Moore <paul@paul-moore.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>, axelj <axelj@axis.com>,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH v5 06/11] security: keys: trusted: Verify creation data
-Date:   Fri, 11 Nov 2022 15:16:31 -0800
-Message-Id: <20221111151451.v5.6.I6cdb522cb5ea28fcd1e35b4cd92cbd067f99269a@changeid>
-X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-In-Reply-To: <20221111231636.3748636-1-evgreen@chromium.org>
-References: <20221111231636.3748636-1-evgreen@chromium.org>
+        Jonathan Corbet <corbet@lwn.net>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Eric Biggers <ebiggers@kernel.org>
+Cc:     keyrings <keyrings@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Message-ID: <cover.1668248462.git.code@siddh.me>
+Subject: [RESEND PATCH v2 0/2] watch_queue: Clean up some code
+Date:   Sat, 12 Nov 2022 16:00:39 +0530
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-If a loaded key contains creation data, ask the TPM to verify that
-creation data. This allows users like encrypted hibernate to know that
-the loaded and parsed creation data has not been tampered with.
+There is a dangling reference to pipe in a watch_queue after clearing it.
+Thus, NULL that pointer while clearing.
 
-Suggested-by: Matthew Garrett <mjg59@google.com>
-Signed-off-by: Evan Green <evgreen@chromium.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
+This change renders wqueue->defunct superfluous, as the latter is only used
+to check if watch_queue is cleared. With this change, the pipe is NULLed
+while clearing, so we can just check if the pipe is NULL.
 
----
-Source material for this change is at:
-https://patchwork.kernel.org/project/linux-pm/patch/20210220013255.1083202-9-matthewgarrett@google.com/
-
-(no changes since v3)
-
-Changes in v3:
- - Changed funky tag to suggested-by (Kees). Matthew, holler if you want
-   something different.
+Extending comment for watch_queue->pipe in the definition of watch_queue
+made the comment conventionally too long (it was already past 80 chars),
+so I have changed the struct annotations to be kerneldoc-styled, so that
+I can extend the comment mentioning that the pipe is NULL when watch_queue
+is cleared. In the process, I have also hopefully improved documentation
+by documenting things which weren't documented before.
 
 Changes in v2:
- - Adjust hash len by 2 due to new ASN.1 storage, and add underflow
-   check.
+- Merged the NULLing and removing defunct patches.
+- Removed READ_ONCE barrier in lock_wqueue().
+- Improved and fixed errors in struct docs.
+- Better commit messages.
 
- include/linux/tpm.h                       |  1 +
- security/keys/trusted-keys/trusted_tpm2.c | 77 ++++++++++++++++++++++-
- 2 files changed, 77 insertions(+), 1 deletion(-)
+Original date of posting patch: 6 Aug 2022
 
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 70134e6551745f..9c2ee3e30ffa5d 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -224,6 +224,7 @@ enum tpm2_command_codes {
- 	TPM2_CC_SELF_TEST	        = 0x0143,
- 	TPM2_CC_STARTUP		        = 0x0144,
- 	TPM2_CC_SHUTDOWN	        = 0x0145,
-+	TPM2_CC_CERTIFYCREATION	        = 0x014A,
- 	TPM2_CC_NV_READ                 = 0x014E,
- 	TPM2_CC_CREATE		        = 0x0153,
- 	TPM2_CC_LOAD		        = 0x0157,
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 3d84c3d41bdee1..402933f8c99ede 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -730,6 +730,74 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
- 	return rc;
- }
- 
-+/**
-+ * tpm2_certify_creation() - execute a TPM2_CertifyCreation command
-+ *
-+ * @chip: TPM chip to use
-+ * @payload: the key data in clear and encrypted form
-+ * @blob_handle: the loaded TPM handle of the key
-+ *
-+ * Return: 0 on success
-+ *         -EINVAL on tpm error status
-+ *         < 0 error from tpm_send or tpm_buf_init
-+ */
-+static int tpm2_certify_creation(struct tpm_chip *chip,
-+				 struct trusted_key_payload *payload,
-+				 u32 blob_handle)
-+{
-+	struct tpm_header *head;
-+	struct tpm_buf buf;
-+	int rc;
-+
-+	rc = tpm_buf_init(&buf, TPM2_ST_SESSIONS, TPM2_CC_CERTIFYCREATION);
-+	if (rc)
-+		return rc;
-+
-+	/* Use TPM_RH_NULL for signHandle */
-+	tpm_buf_append_u32(&buf, 0x40000007);
-+
-+	/* Object handle */
-+	tpm_buf_append_u32(&buf, blob_handle);
-+
-+	/* Auth */
-+	tpm_buf_append_u32(&buf, 9);
-+	tpm_buf_append_u32(&buf, TPM2_RS_PW);
-+	tpm_buf_append_u16(&buf, 0);
-+	tpm_buf_append_u8(&buf, 0);
-+	tpm_buf_append_u16(&buf, 0);
-+
-+	/* Qualifying data */
-+	tpm_buf_append_u16(&buf, 0);
-+
-+	/* Creation data hash */
-+	if (payload->creation_hash_len < 2) {
-+		rc = -EINVAL;
-+		goto out;
-+	}
-+
-+	tpm_buf_append_u16(&buf, payload->creation_hash_len - 2);
-+	tpm_buf_append(&buf, payload->creation_hash + 2,
-+		       payload->creation_hash_len - 2);
-+
-+	/* signature scheme */
-+	tpm_buf_append_u16(&buf, TPM_ALG_NULL);
-+
-+	/* creation ticket */
-+	tpm_buf_append(&buf, payload->tk, payload->tk_len);
-+
-+	rc = tpm_transmit_cmd(chip, &buf, 6, "certifying creation data");
-+	if (rc)
-+		goto out;
-+
-+	head = (struct tpm_header *)buf.data;
-+
-+	if (be32_to_cpu(head->return_code) != TPM2_RC_SUCCESS)
-+		rc = -EINVAL;
-+out:
-+	tpm_buf_destroy(&buf);
-+	return rc;
-+}
-+
- /**
-  * tpm2_unseal_trusted() - unseal the payload of a trusted key
-  *
-@@ -755,8 +823,15 @@ int tpm2_unseal_trusted(struct tpm_chip *chip,
- 		goto out;
- 
- 	rc = tpm2_unseal_cmd(chip, payload, options, blob_handle);
--	tpm2_flush_context(chip, blob_handle);
-+	if (rc)
-+		goto flush;
-+
-+	if (payload->creation_len)
-+		rc = tpm2_certify_creation(chip, payload, blob_handle);
- 
-+
-+flush:
-+	tpm2_flush_context(chip, blob_handle);
- out:
- 	tpm_put_ops(chip);
- 
--- 
-2.38.1.431.g37b22c650d-goog
+Siddh Raman Pant (2):
+  include/linux/watch_queue: Improve documentation
+  kernel/watch_queue: NULL the dangling *pipe, and use it for clear
+    check
+
+ include/linux/watch_queue.h | 100 ++++++++++++++++++++++++++----------
+ kernel/watch_queue.c        |  12 ++---
+ 2 files changed, 79 insertions(+), 33 deletions(-)
+
+--=20
+2.35.1
+
 
