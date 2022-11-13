@@ -2,63 +2,62 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CDB6268F2
-	for <lists+keyrings@lfdr.de>; Sat, 12 Nov 2022 11:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5C56272A9
+	for <lists+keyrings@lfdr.de>; Sun, 13 Nov 2022 22:20:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230383AbiKLKrY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 12 Nov 2022 05:47:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54330 "EHLO
+        id S235085AbiKMVUQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 13 Nov 2022 16:20:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234787AbiKLKrW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 12 Nov 2022 05:47:22 -0500
-Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5806167FC;
-        Sat, 12 Nov 2022 02:47:19 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1668249073; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=WvjIxDY9DG6YuzcAwCxhgC+1QeN+Or0Glx//RDKFYJtEKRoUf7s8ly6xpRvOkbm4JCKwyvfi36jQ9RxZGpsamB1ePt4gIVxsbGfTg3Yzoa9Vsl5IVaZjroRHh4b8gNZ6DiQDkakwI4asbsZtm2Tcgaf65o+nt1ADLspU7xnX8aQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1668249073; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=CciC0JA+1Sl6P741HLOLO7oPE18KzPzTWUnJ9g4NcCY=; 
-        b=degMBSnd9mGkKSPgdaapCdnzUPijGJ/a4MH85DcCllqX8o8cQ7EUSMFVg9m+rqFcL741P6czQkys9PXclLmJvjWnjpb4YTFGsJsBqMm3Cjy6FVgykzkQGl+i+APFF6LZHe8Frz9chLNlQlV4aSdB1t9LIhn4igYi90O7buSdj6s=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1668249073;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=CciC0JA+1Sl6P741HLOLO7oPE18KzPzTWUnJ9g4NcCY=;
-        b=KeYri2bDEYsjQ5ROrUNLIT/BtrfEBjYg5D/Aot2N09fxzzzUpkethOo9sk1RFEvl
-        y3KvB3tbeR+0Q8wdSe5EcX2+0D5TxFJX4wsOz0MK6aAPHU8MS/tJzI5zx9afafbQBfw
-        hI5vrRMIzBt/na673W7ByHSPaQoNAXhD6lCgS4hg=
-Received: from kampyooter.. (110.226.30.173 [110.226.30.173]) by mx.zoho.in
-        with SMTPS id 1668249072566411.90214034857365; Sat, 12 Nov 2022 16:01:12 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        with ESMTP id S234152AbiKMVUM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Nov 2022 16:20:12 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BF7FD1C;
+        Sun, 13 Nov 2022 13:20:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C17360C55;
+        Sun, 13 Nov 2022 21:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02104C433C1;
+        Sun, 13 Nov 2022 21:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668374408;
+        bh=e4x8dm158+t01HeZwuDAJkMqiJRA7iQ9G4cpg0AnyJY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bDN1NhCaF35rwiGhPls7DeRrVTe5FprK11yZl19ww0Qw5uVbl1tsPLzATms6kxcCD
+         IUrgSL8aw0iGLA8UBkkIuDPzJLz6/V6PwO/Q9zZNW59RzxTe3jizt9zU/1NyxA0Uig
+         HifF3t4PGRKvCNFxFs078dnuguUeQ9x/KPsfSAlz2cFYn6a/eJjmb0pA58MQzRxvdp
+         YpTPvv1K8zPIB4EFpFqO+Dzt5ycO40z6qpBokTstfa/7QEw2GwZ2RiacgaTj3bVeqK
+         3Z7z7fwz1Mzcn9ypcL2bJfVfb+9cHsWvi+z0tOEz2maE02kSAh+ngYlAxzCANCtCMd
+         /NADXDVw8ghow==
+Date:   Sun, 13 Nov 2022 13:20:06 -0800
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Evan Green <evgreen@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, corbet@lwn.net,
+        linux-integrity@vger.kernel.org, gwendal@chromium.org,
+        dianders@chromium.org, apronin@chromium.org,
+        Pavel Machek <pavel@ucw.cz>, Ben Boeckel <me@benboeckel.net>,
+        rjw@rjwysocki.net, jejb@linux.ibm.com,
+        Kees Cook <keescook@chromium.org>, dlunev@google.com,
+        zohar@linux.ibm.com, Matthew Garrett <mgarrett@aurora.tech>,
+        jarkko@kernel.org, linux-pm@vger.kernel.org,
         David Howells <dhowells@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Eric Biggers <ebiggers@kernel.org>
-Cc:     keyrings <keyrings@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Message-ID: <21ea7a96018db8f140d7c68ca75665064361ad1b.1668248462.git.code@siddh.me>
-Subject: [RESEND PATCH v2 2/2] kernel/watch_queue: NULL the dangling *pipe, and use it for clear check
-Date:   Sat, 12 Nov 2022 16:00:41 +0530
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <cover.1668248462.git.code@siddh.me>
-References: <cover.1668248462.git.code@siddh.me>
+        James Morris <jmorris@namei.org>,
+        Paul Moore <paul@paul-moore.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v5 04/11] security: keys: trusted: Include TPM2 creation
+ data
+Message-ID: <Y3FfhrgvBNey6T7V@sol.localdomain>
+References: <20221111231636.3748636-1-evgreen@chromium.org>
+ <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,94 +65,228 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-NULL the dangling pipe reference while clearing watch_queue.
+On Fri, Nov 11, 2022 at 03:16:29PM -0800, Evan Green wrote:
+> diff --git a/security/keys/trusted-keys/tpm2key.asn1 b/security/keys/trusted-keys/tpm2key.asn1
+> index f57f869ad60068..608f8d9ca95fa8 100644
+> --- a/security/keys/trusted-keys/tpm2key.asn1
+> +++ b/security/keys/trusted-keys/tpm2key.asn1
+> @@ -7,5 +7,18 @@ TPMKey ::= SEQUENCE {
+>  	emptyAuth	[0] EXPLICIT BOOLEAN OPTIONAL,
+>  	parent		INTEGER ({tpm2_key_parent}),
+>  	pubkey		OCTET STRING ({tpm2_key_pub}),
+> -	privkey		OCTET STRING ({tpm2_key_priv})
+> +	privkey		OCTET STRING ({tpm2_key_priv}),
+> +	---
+> +	--- A TPM2B_CREATION_DATA struct as returned from the TPM2_Create command.
+> +	---
+> +	creationData	[1] EXPLICIT OCTET STRING OPTIONAL ({tpm2_key_creation_data}),
+> +	---
+> +	--- A TPM2B_DIGEST of the creationHash as returned from the TPM2_Create
+> +	--- command.
+> +	---
+> +	creationHash	[2] EXPLICIT OCTET STRING OPTIONAL ({tpm2_key_creation_hash}),
+> +	---
+> +	--- A TPMT_TK_CREATION ticket as returned from the TPM2_Create command.
+> +	---
+> +	creationTk	[3] EXPLICIT OCTET STRING OPTIONAL ({tpm2_key_creation_tk})
+>  	}
 
-If not done, a reference to a freed pipe remains in the watch_queue,
-as this function is called before freeing a pipe in free_pipe_info()
-(see line 834 of fs/pipe.c).
+The commit that added this file claimed:
 
-The sole use of wqueue->defunct is for checking if the watch queue has
-been cleared, but wqueue->pipe is also NULLed while clearing.
+	"The benefit of the ASN.1 format is that it's a standard and thus the
+	exported key can be used by userspace tools (openssl_tpm2_engine,
+	openconnect and tpm2-tss-engine"
 
-Thus, wqueue->defunct is superfluous, as wqueue->pipe can be checked
-for NULL. Hence, the former can be removed.
+Are these new fields in compliance with whatever standard that was referring to?
 
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
----
- include/linux/watch_queue.h |  4 +---
- kernel/watch_queue.c        | 12 ++++++------
- 2 files changed, 7 insertions(+), 9 deletions(-)
+Or was that just referring to ASN.1 itself?
 
-diff --git a/include/linux/watch_queue.h b/include/linux/watch_queue.h
-index 7f8b1f15634b..d72ad82a4435 100644
---- a/include/linux/watch_queue.h
-+++ b/include/linux/watch_queue.h
-@@ -55,7 +55,7 @@ struct watch_filter {
-  *
-  * @rcu: RCU head
-  * @filter: Filter to use on watches
-- * @pipe: The pipe we're using as a buffer
-+ * @pipe: The pipe we're using as a buffer, NULL when queue is cleared/clo=
-sed
-  * @watches: Contributory watches
-  * @notes: Preallocated notifications
-  * @notes_bitmap: Allocation bitmap for notes
-@@ -63,7 +63,6 @@ struct watch_filter {
-  * @lock: To serialize accesses and removes
-  * @nr_notes: Number of notes
-  * @nr_pages: Number of pages in notes[]
-- * @defunct: True when queues closed
-  */
- struct watch_queue {
- =09struct rcu_head=09=09rcu;
-@@ -76,7 +75,6 @@ struct watch_queue {
- =09spinlock_t=09=09lock;
- =09unsigned int=09=09nr_notes;
- =09unsigned int=09=09nr_pages;
--=09bool=09=09=09defunct;
- };
-=20
- /**
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index a6f9bdd956c3..a70ddfd622ee 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -43,7 +43,7 @@ MODULE_LICENSE("GPL");
- static inline bool lock_wqueue(struct watch_queue *wqueue)
- {
- =09spin_lock_bh(&wqueue->lock);
--=09if (unlikely(wqueue->defunct)) {
-+=09if (unlikely(!wqueue->pipe)) {
- =09=09spin_unlock_bh(&wqueue->lock);
- =09=09return false;
- =09}
-@@ -105,9 +105,6 @@ static bool post_one_notification(struct watch_queue *w=
-queue,
- =09unsigned int head, tail, mask, note, offset, len;
- =09bool done =3D false;
-=20
--=09if (!pipe)
--=09=09return false;
--
- =09spin_lock_irq(&pipe->rd_wait.lock);
-=20
- =09mask =3D pipe->ring_size - 1;
-@@ -603,8 +600,11 @@ void watch_queue_clear(struct watch_queue *wqueue)
- =09rcu_read_lock();
- =09spin_lock_bh(&wqueue->lock);
-=20
--=09/* Prevent new notifications from being stored. */
--=09wqueue->defunct =3D true;
-+=09/*
-+=09 * This pipe will get freed by the caller free_pipe_info().
-+=09 * Removing this reference also prevents new notifications.
-+=09 */
-+=09wqueue->pipe =3D NULL;
-=20
- =09while (!hlist_empty(&wqueue->watches)) {
- =09=09watch =3D hlist_entry(wqueue->watches.first, struct watch, queue_nod=
-e);
---=20
-2.35.1
+> +/* Helper function to advance past a __be16 length + buffer safely */
+> +static const u8 *get_sized_section(const u8 *src, const u8 *end, u16 *len)
+> +{
+> +	u32 length;
+> +
+> +	if (src + sizeof(u16) > end)
+> +		return NULL;
 
+'end - src < sizeof(u16)', so the pointer isn't advanced past the end.
 
+> +
+> +	/* Include the size field in the returned section length. */
+> +	length = get_unaligned_be16(src) + sizeof(u16);
+> +	*len = length;
+> +	if (*len != length)
+> +		return NULL;
+> +
+> +	src += *len;
+> +	if (src > end)
+> +		return NULL;
+> +
+> +	return src;
+
+Similarly:
+
+	if (end - src < *len)
+		return NULL;
+
+	return src + *len;
+
+> +		/*
+> +		 * The creation ticket (TPMT_TK_CREATION) consists of a 2 byte
+> +		 * tag, 4 byte handle, and then a TPM2B_DIGEST, which is a 2
+> +		 * byte length followed by data.
+> +		 */
+> +		if (src + 8 > end)
+
+end - src < 8
+
+And actually it really should be 6 instead of 8, to match the code below.
+get_sized_section() already validates that there are at least 2 more bytes.
+
+> +			return -EINVAL;
+> +
+> +		creation_tk = src;
+> +		src = get_sized_section(src + 6, end, &creation_tk_len);
+> +		if (!src)
+> +			return -EINVAL;
+> +
+> +		creation_tk_len += 6;
+> +
+> +	} else {
+> +		creation_data_len = 0;
+> +		creation_data = NULL;
+> +	}
+>  
+>  	if (!scratch)
+>  		return -ENOMEM;
+> @@ -63,26 +125,81 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+>  	}
+>  
+>  	/*
+> -	 * Assume both octet strings will encode to a 2 byte definite length
+> +	 * Assume each octet string will encode to a 2 byte definite length.
+> +	 * Each optional octet string consumes one extra byte.
+>  	 *
+> -	 * Note: For a well behaved TPM, this warning should never
+> -	 * trigger, so if it does there's something nefarious going on
+> +	 * Note: For a well behaved TPM, this warning should never trigger, so
+> +	 * if it does there's something nefarious going on
+>  	 */
+> -	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+> -		 "BUG: scratch buffer is too small"))
+> -		return -EINVAL;
+> +	if (WARN(work - scratch + pub_len + priv_len + creation_data_len +
+> +		 creation_hash_len + creation_tk_len + (7 * 5) + 3 >
+> +		 SCRATCH_SIZE,
+> +		 "BUG: scratch buffer is too small")) {
+> +		rc = -EINVAL;
+> +		goto err;
+> +	}
+
+This appears to be fixing a memory leak in the error case.
+
+The same memory leak also still appears above in:
+
+	if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+		return PTR_ERR(w);
+
+Maybe both should be fixed in a separate patch.
+
+> +		work2 = asn1_encode_octet_string(scratch2,
+> +						 end_work2,
+> +						 creation_data,
+> +						 creation_data_len);
+> +
+> +		work = asn1_encode_tag(work,
+> +				       end_work,
+> +				       1,
+> +				       scratch2,
+> +				       work2 - scratch2);
+
+There's no helper function to do these two steps together?
+
+> +
+> -	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+> -		return PTR_ERR(work1);
+> +	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
+> +		rc = PTR_ERR(work1);
+> +		goto err;
+> +	}
+>  
+>  	return work1 - payload->blob;
+> +err:
+> +	kfree(scratch);
+> +	return rc;
+
+Is this another memory leak fix that is unrelated to the functionality added by
+this patch?
+
+Also, isn't 'scratch' still being leaked in the success case?
+
+>  static int tpm2_key_decode(struct trusted_key_payload *payload,
+> -			   struct trusted_key_options *options,
+> -			   u8 **buf)
+> +			   struct trusted_key_options *options)
+>  {
+> +	u64 data_len;
+>  	int ret;
+>  	struct tpm2_key_context ctx;
+> -	u8 *blob;
+> +	u8 *blob, *buf;
+>  
+>  	memset(&ctx, 0, sizeof(ctx));
+>  
+> @@ -108,21 +231,57 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	if (ctx.priv_len + ctx.pub_len > MAX_BLOB_SIZE)
+> +	data_len = ctx.priv_len + ctx.pub_len + ctx.creation_data_len +
+> +		   ctx.creation_hash_len + ctx.creation_tk_len;
+
+It's unclear why 'data_len' is a u64, given that the value assigned to it always
+fits in a u32.  Perhaps you intended to do the additions with 64-bit numbers so
+that they can't overflow.
+
+But shouldn't the lengths already be bounded by size of the ASN.1 blob before
+even reaching here, anyway?
+
+> +
+> +	if (data_len > MAX_BLOB_SIZE)
+>  		return -EINVAL;
+>  
+> -	blob = kmalloc(ctx.priv_len + ctx.pub_len + 4, GFP_KERNEL);
+> -	if (!blob)
+> +	buf = kmalloc(data_len + 4, GFP_KERNEL);
+> +	if (!buf)
+>  		return -ENOMEM;
+
+It's unclear what the '+ 4' is for.
+
+> @@ -229,6 +424,7 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+>  		      struct trusted_key_options *options)
+>  {
+>  	int blob_len = 0;
+> +	unsigned int offset;
+>  	struct tpm_buf buf;
+>  	u32 hash;
+>  	u32 flags;
+> @@ -317,13 +513,14 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+>  		rc = -E2BIG;
+>  		goto out;
+>  	}
+> -	if (tpm_buf_length(&buf) < TPM_HEADER_SIZE + 4 + blob_len) {
+> +	offset = TPM_HEADER_SIZE + 4;
+> +	if (tpm_buf_length(&buf) < offset + blob_len) {
+>  		rc = -EFAULT;
+>  		goto out;
+>  	}
+>  
+>  	blob_len = tpm2_key_encode(payload, options,
+> -				   &buf.data[TPM_HEADER_SIZE + 4],
+> +				   &buf.data[offset],
+>  				   blob_len);
+
+This hunk of the patch doesn't seem to serve any purpose.
+
+- Eric
