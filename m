@@ -2,67 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60AF8628642
-	for <lists+keyrings@lfdr.de>; Mon, 14 Nov 2022 17:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE9A628754
+	for <lists+keyrings@lfdr.de>; Mon, 14 Nov 2022 18:44:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237323AbiKNQ5e (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 14 Nov 2022 11:57:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36058 "EHLO
+        id S237414AbiKNRoA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 14 Nov 2022 12:44:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238241AbiKNQ5K (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 14 Nov 2022 11:57:10 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BCFDDF5A;
-        Mon, 14 Nov 2022 08:56:34 -0800 (PST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.5) with ESMTP id 2AEGsifX013866;
-        Mon, 14 Nov 2022 16:56:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=NRteUePLdSKj1gSrgcuVkmpBrK3sxPi3psmht/X7EaI=;
- b=JrSG5Kqa8pzOriD7989Zt+/AZhHI9NFTSrPEWM/EkHci55kPwq39f5WDPxB4pVaIXw6j
- MAiPonYJlQAPEwcBtnL/WyACfFqt4U/O2/Fh3eFJyhJpZSYw7PwE3i2BO1UhyDQWcOwK
- 3G+976aphlWvwPNJd8Ku56kFXEeFvF0MkFPJR8S9FsLUwWGsias3xDPRPKLVLAAdAk89
- yt3VPl5duKwPQNT6YgLWx78H8chClAaP7ChXf2bGBtC6cc6JbzUp7b81T9CjgUgWsE+Q
- FpTU4eQem1oFNJPKhF6PliIhAxtArKgrNGbe+RZHjuOKZOJ00eLrofrC4nljAdeVIivi DA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kusky0143-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Nov 2022 16:56:16 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AEGuFrH018568;
-        Mon, 14 Nov 2022 16:56:15 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kusky013n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Nov 2022 16:56:15 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AEGqndJ023000;
-        Mon, 14 Nov 2022 16:56:14 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-        by ppma04wdc.us.ibm.com with ESMTP id 3kt349ey55-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Nov 2022 16:56:14 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AEGuFSM38601386
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Nov 2022 16:56:15 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6804B7805E;
-        Mon, 14 Nov 2022 17:53:41 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 014E17805C;
-        Mon, 14 Nov 2022 17:53:37 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.83.197])
-        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Mon, 14 Nov 2022 17:53:37 +0000 (GMT)
-Message-ID: <c31d1a3af53515f2a9d3f53eb27ce698e796f9b9.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 04/11] security: keys: trusted: Include TPM2 creation
- data
-From:   James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To:     Evan Green <evgreen@chromium.org>
+        with ESMTP id S237423AbiKNRn5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 14 Nov 2022 12:43:57 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F4B10071
+        for <keyrings@vger.kernel.org>; Mon, 14 Nov 2022 09:43:52 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id l11so18431322edb.4
+        for <keyrings@vger.kernel.org>; Mon, 14 Nov 2022 09:43:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dFbOq8KvPfyqv8Tvmztn6miVwXV7s2YCAIN0rDZgKn8=;
+        b=kZAUj86IXe75dnl5U1/0XlxZ6WiVvz4JF/MFnWu5WfrqUcHIfpIwloMIqexqEiyr6V
+         K/9kWKkJfuHr15e10x1+ONoUzzBsMmZYVXI/2yoTq+2rhQtzN9nD2QPPLoO00VQgpHyF
+         NTtevwQQPEukJ10Av1iiOWVTKuNvLTl68r8Ks=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dFbOq8KvPfyqv8Tvmztn6miVwXV7s2YCAIN0rDZgKn8=;
+        b=FcHiMRipGRSYN3RDbMgGqA+Typ3SOBsFDAe0okGY69agmMG+8GzZfmAquD3topm0XE
+         LtR2vVAbzWylDMY2eeumeAqEX1UXdZNx8Pn7tDngw+LyCMmX4DBGPnrhk9KqMNlHlMSE
+         jW+whuG5AgW7XuhtLYIQRYKJk756HPm8sfqIhYrxlnbuh3Cn032pwz9zSiBJG7CeYvI8
+         eQHAl5Chf6kJCSwIg82dbWCLdF80KjKL27QX6uzhZPzBm+s3zNhtq16byhxqe8J9oaK0
+         i/4BIFc6unQAd4vTaVTJurodjyiwy/HJLlAsudSCOxlq982SnFTIW897Oz7HTkU9lJEB
+         EE1w==
+X-Gm-Message-State: ANoB5pnku9z8gpchHBFWUB+qAZ8fsyRYf/34IICZEr0z2c6ph5wVrBOv
+        OzauewrEeb4CP0Yo3G+PEj2Y1fep5YDdsw==
+X-Google-Smtp-Source: AA0mqf4ATn5vX89SQEMGeVH6rz+5E0DJBsI9XB4EK6Bc2jQBF6OIoMpGVA6cKLO8MkSMbH5CIiWBuQ==
+X-Received: by 2002:a05:6402:a57:b0:457:35d4:ac66 with SMTP id bt23-20020a0564020a5700b0045735d4ac66mr11884185edb.415.1668447830540;
+        Mon, 14 Nov 2022 09:43:50 -0800 (PST)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com. [209.85.221.50])
+        by smtp.gmail.com with ESMTPSA id de33-20020a1709069be100b007a9c3831409sm4451963ejc.137.2022.11.14.09.43.50
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Nov 2022 09:43:50 -0800 (PST)
+Received: by mail-wr1-f50.google.com with SMTP id cl5so19625749wrb.9
+        for <keyrings@vger.kernel.org>; Mon, 14 Nov 2022 09:43:50 -0800 (PST)
+X-Received: by 2002:adf:f10a:0:b0:236:863c:22d with SMTP id
+ r10-20020adff10a000000b00236863c022dmr8382325wro.590.1668447818962; Mon, 14
+ Nov 2022 09:43:38 -0800 (PST)
+MIME-Version: 1.0
+References: <20221111231636.3748636-1-evgreen@chromium.org>
+ <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
+ <Y3FfhrgvBNey6T7V@sol.localdomain> <ff23b4e24222037959c2a784496c7ee91024e6c5.camel@linux.ibm.com>
+ <CAE=gft63-jdKqKmepB+LXPm6WUWSnz+CMWcWWnyN1y-EnS4kVg@mail.gmail.com> <c31d1a3af53515f2a9d3f53eb27ce698e796f9b9.camel@linux.ibm.com>
+In-Reply-To: <c31d1a3af53515f2a9d3f53eb27ce698e796f9b9.camel@linux.ibm.com>
+From:   Evan Green <evgreen@chromium.org>
+Date:   Mon, 14 Nov 2022 09:43:02 -0800
+X-Gmail-Original-Message-ID: <CAE=gft6L6bMtzbqUfH_NAsFz2r0Nw7kkbCPXcr2nYj5n31FYQg@mail.gmail.com>
+Message-ID: <CAE=gft6L6bMtzbqUfH_NAsFz2r0Nw7kkbCPXcr2nYj5n31FYQg@mail.gmail.com>
+Subject: Re: [PATCH v5 04/11] security: keys: trusted: Include TPM2 creation data
+To:     jejb@linux.ibm.com
 Cc:     Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org,
         corbet@lwn.net, linux-integrity@vger.kernel.org,
         gwendal@chromium.org, dianders@chromium.org, apronin@chromium.org,
@@ -75,137 +75,120 @@ Cc:     Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org,
         Paul Moore <paul@paul-moore.com>,
         "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Date:   Mon, 14 Nov 2022 11:56:08 -0500
-In-Reply-To: <CAE=gft63-jdKqKmepB+LXPm6WUWSnz+CMWcWWnyN1y-EnS4kVg@mail.gmail.com>
-References: <20221111231636.3748636-1-evgreen@chromium.org>
-         <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
-         <Y3FfhrgvBNey6T7V@sol.localdomain>
-         <ff23b4e24222037959c2a784496c7ee91024e6c5.camel@linux.ibm.com>
-         <CAE=gft63-jdKqKmepB+LXPm6WUWSnz+CMWcWWnyN1y-EnS4kVg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: X0GI23TnC1DiaqQAWVSLVNgBi5h3MjkY
-X-Proofpoint-ORIG-GUID: KOrFV7fnSm6JwfKjNXfhBc32eNwkHs8o
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-14_12,2022-11-11_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 clxscore=1015
- mlxlogscore=999 malwarescore=0 suspectscore=0 mlxscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211140117
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2022-11-14 at 08:32 -0800, Evan Green wrote:
-> On Sun, Nov 13, 2022 at 7:32 PM James Bottomley <jejb@linux.ibm.com>
-> wrote:
-> > 
-> > On Sun, 2022-11-13 at 13:20 -0800, Eric Biggers wrote:
-> > > On Fri, Nov 11, 2022 at 03:16:29PM -0800, Evan Green wrote:
-> > > > diff --git a/security/keys/trusted-keys/tpm2key.asn1
-> > > > b/security/keys/trusted-keys/tpm2key.asn1
-> > > > index f57f869ad60068..608f8d9ca95fa8 100644
-> > > > --- a/security/keys/trusted-keys/tpm2key.asn1
-> > > > +++ b/security/keys/trusted-keys/tpm2key.asn1
-> > > > @@ -7,5 +7,18 @@ TPMKey ::= SEQUENCE {
-> > > >         emptyAuth       [0] EXPLICIT BOOLEAN OPTIONAL,
-> > > >         parent          INTEGER ({tpm2_key_parent}),
-> > > >         pubkey          OCTET STRING ({tpm2_key_pub}),
-> > > > -       privkey         OCTET STRING ({tpm2_key_priv})
-> > > > +       privkey         OCTET STRING ({tpm2_key_priv}),
-> > > > +       ---
-> > > > +       --- A TPM2B_CREATION_DATA struct as returned from the
-> > > > TPM2_Create command.
-> > > > +       ---
-> > > > +       creationData    [1] EXPLICIT OCTET STRING OPTIONAL
-> > > > ({tpm2_key_creation_data}),
-> > > > +       ---
-> > > > +       --- A TPM2B_DIGEST of the creationHash as returned from
-> > > > the
-> > > > TPM2_Create
-> > > > +       --- command.
-> > > > +       ---
-> > > > +       creationHash    [2] EXPLICIT OCTET STRING OPTIONAL
-> > > > ({tpm2_key_creation_hash}),
-> > > > +       ---
-> > > > +       --- A TPMT_TK_CREATION ticket as returned from the
-> > > > TPM2_Create command.
-> > > > +       ---
-> > > > +       creationTk      [3] EXPLICIT OCTET STRING OPTIONAL
-> > > > ({tpm2_key_creation_tk})
-> > > >         }
-> > > 
-> > > The commit that added this file claimed:
-> > > 
-> > >         "The benefit of the ASN.1 format is that it's a standard
-> > > and thus the
-> > >         exported key can be used by userspace tools
-> > > (openssl_tpm2_engine,
-> > >         openconnect and tpm2-tss-engine"
-> > > 
-> > > Are these new fields in compliance with whatever standard that
-> > > was referring to?
-> > 
-> > Not really, no.  The current use case (and draft standard) is
-> > already using [1] for policies and [2] for importable keys:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/tree/doc/draft-bottomley-tpm2-keys.xml
-> > 
-> > I'm actually planning to use [3] for signed policies.  There's no
-> > reason why you can't use [4] though.  Since the creation data, hash
-> > and ticket are likely used as a job lot, it strikes me they should
-> > be a single numbered optional sequence instead of individually
-> > numbered, since you're unlikely to have one without the others.
-> 
-> Thanks, I was hoping James might pipe up and tell me what to do.
-> Grouping them as a single numbered optional sequence sounds
-> reasonable to me. Is your draft too far along to squeeze this in?
+On Mon, Nov 14, 2022 at 8:56 AM James Bottomley <jejb@linux.ibm.com> wrote:
+>
+> On Mon, 2022-11-14 at 08:32 -0800, Evan Green wrote:
+> > On Sun, Nov 13, 2022 at 7:32 PM James Bottomley <jejb@linux.ibm.com>
+> > wrote:
+> > >
+> > > On Sun, 2022-11-13 at 13:20 -0800, Eric Biggers wrote:
+> > > > On Fri, Nov 11, 2022 at 03:16:29PM -0800, Evan Green wrote:
+> > > > > diff --git a/security/keys/trusted-keys/tpm2key.asn1
+> > > > > b/security/keys/trusted-keys/tpm2key.asn1
+> > > > > index f57f869ad60068..608f8d9ca95fa8 100644
+> > > > > --- a/security/keys/trusted-keys/tpm2key.asn1
+> > > > > +++ b/security/keys/trusted-keys/tpm2key.asn1
+> > > > > @@ -7,5 +7,18 @@ TPMKey ::= SEQUENCE {
+> > > > >         emptyAuth       [0] EXPLICIT BOOLEAN OPTIONAL,
+> > > > >         parent          INTEGER ({tpm2_key_parent}),
+> > > > >         pubkey          OCTET STRING ({tpm2_key_pub}),
+> > > > > -       privkey         OCTET STRING ({tpm2_key_priv})
+> > > > > +       privkey         OCTET STRING ({tpm2_key_priv}),
+> > > > > +       ---
+> > > > > +       --- A TPM2B_CREATION_DATA struct as returned from the
+> > > > > TPM2_Create command.
+> > > > > +       ---
+> > > > > +       creationData    [1] EXPLICIT OCTET STRING OPTIONAL
+> > > > > ({tpm2_key_creation_data}),
+> > > > > +       ---
+> > > > > +       --- A TPM2B_DIGEST of the creationHash as returned from
+> > > > > the
+> > > > > TPM2_Create
+> > > > > +       --- command.
+> > > > > +       ---
+> > > > > +       creationHash    [2] EXPLICIT OCTET STRING OPTIONAL
+> > > > > ({tpm2_key_creation_hash}),
+> > > > > +       ---
+> > > > > +       --- A TPMT_TK_CREATION ticket as returned from the
+> > > > > TPM2_Create command.
+> > > > > +       ---
+> > > > > +       creationTk      [3] EXPLICIT OCTET STRING OPTIONAL
+> > > > > ({tpm2_key_creation_tk})
+> > > > >         }
+> > > >
+> > > > The commit that added this file claimed:
+> > > >
+> > > >         "The benefit of the ASN.1 format is that it's a standard
+> > > > and thus the
+> > > >         exported key can be used by userspace tools
+> > > > (openssl_tpm2_engine,
+> > > >         openconnect and tpm2-tss-engine"
+> > > >
+> > > > Are these new fields in compliance with whatever standard that
+> > > > was referring to?
+> > >
+> > > Not really, no.  The current use case (and draft standard) is
+> > > already using [1] for policies and [2] for importable keys:
+> > >
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/jejb/openssl_tpm2_engine.git/tree/doc/draft-bottomley-tpm2-keys.xml
+> > >
+> > > I'm actually planning to use [3] for signed policies.  There's no
+> > > reason why you can't use [4] though.  Since the creation data, hash
+> > > and ticket are likely used as a job lot, it strikes me they should
+> > > be a single numbered optional sequence instead of individually
+> > > numbered, since you're unlikely to have one without the others.
+> >
+> > Thanks, I was hoping James might pipe up and tell me what to do.
+> > Grouping them as a single numbered optional sequence sounds
+> > reasonable to me. Is your draft too far along to squeeze this in?
+>
+> Not at all.  The draft only becomes frozen once I submit it to the IETF
+> which, so far thanks to lack of any reviewers I haven't done (That's
+> why I was also thinking of adding signed policies).
+>
+> >  If it is and I'm on my own to draft up and submit this, I would
+> > definitely appreciate any pointers on getting started you might have.
+> >
+> > I notice the draft and the code seem to be out of alignment.
+>
+> The kernel code is out of alignment just because development moves a
+> bit slowly.  Policy based keys were submitted a long time ago as part
+> of the original move to interoperable sealed keys based on ASN.1:
+>
+> https://lore.kernel.org/all/20200616160229.8018-7-James.Bottomley@HansenPartnership.com/
+>
+> But eventually the policy part was split out and forgotten about.  I
+> think the only complete implementation of the draft standard is the
+> openssl_tpm2_engine.
+>
+> >  I'm unfamiliar with this process, is the idea to get through all the
+> > iterations and land the standard, then fix up the code? What happens
+> > to existing data handed out in the old format?
+>
+> No, it doesn't matter at all.  That's the whole point of using ASN.1
+> explicit optionals: the ASN.1 is always backwards compatible.  If I
+> ever submit the draft, there'll have to be a new RFC to add new
+> explicit optionals, but keys conforming to the old RFC will still be
+> valid under the new one.
 
-Not at all.  The draft only becomes frozen once I submit it to the IETF
-which, so far thanks to lack of any reviewers I haven't done (That's
-why I was also thinking of adding signed policies).
+Ah I see, with the optionals in mind things do line up again.
 
->  If it is and I'm on my own to draft up and submit this, I would
-> definitely appreciate any pointers on getting started you might have.
-> 
-> I notice the draft and the code seem to be out of alignment.
+>
+> Of course, since openssl_tpm2_engine is the complete reference
+> implementation that means I'll have to add the creation PCRs
+> implementation to it ... unless you'd like to do it?
 
-The kernel code is out of alignment just because development moves a
-bit slowly.  Policy based keys were submitted a long time ago as part
-of the original move to interoperable sealed keys based on ASN.1:
-
-https://lore.kernel.org/all/20200616160229.8018-7-James.Bottomley@HansenPartnership.com/
-
-But eventually the policy part was split out and forgotten about.  I
-think the only complete implementation of the draft standard is the
-openssl_tpm2_engine.
-
->  I'm unfamiliar with this process, is the idea to get through all the
-> iterations and land the standard, then fix up the code? What happens
-> to existing data handed out in the old format?
-
-No, it doesn't matter at all.  That's the whole point of using ASN.1
-explicit optionals: the ASN.1 is always backwards compatible.  If I
-ever submit the draft, there'll have to be a new RFC to add new
-explicit optionals, but keys conforming to the old RFC will still be
-valid under the new one.
-
-Of course, since openssl_tpm2_engine is the complete reference
-implementation that means I'll have to add the creation PCRs
-implementation to it ... unless you'd like to do it?
-
-Regards,
-
-James
-
+I am willing to help as I'm the one making the mess. How does it
+sequence along with your draft submission (before, after,
+simultaneous)?
