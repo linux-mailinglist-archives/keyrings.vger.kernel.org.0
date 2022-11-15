@@ -2,42 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD691629470
-	for <lists+keyrings@lfdr.de>; Tue, 15 Nov 2022 10:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20A4962AFBB
+	for <lists+keyrings@lfdr.de>; Wed, 16 Nov 2022 00:54:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbiKOJg3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 15 Nov 2022 04:36:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59212 "EHLO
+        id S230404AbiKOXyy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Nov 2022 18:54:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbiKOJg2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Nov 2022 04:36:28 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186D313DCF;
-        Tue, 15 Nov 2022 01:36:28 -0800 (PST)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NBLdx3c0JzmVwj;
-        Tue, 15 Nov 2022 17:36:05 +0800 (CST)
-Received: from huawei.com (10.67.174.191) by canpemm500009.china.huawei.com
- (7.192.105.203) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 15 Nov
- 2022 17:36:26 +0800
-From:   Li Hua <hucool.lihua@huawei.com>
-To:     <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
-        <davem@davemloft.net>, <David.Woodhouse@intel.com>
-CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <weiyongjun1@huawei.com>,
-        <yusongping@huawei.com>, <hucool.lihua@huawei.com>
-Subject: [PATCH] KEYS: asymmetric: Fix build errors as symbol undefined
-Date:   Tue, 15 Nov 2022 18:05:12 +0800
-Message-ID: <20221115100512.20147-1-hucool.lihua@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S231183AbiKOXyv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Nov 2022 18:54:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2A21B9F5;
+        Tue, 15 Nov 2022 15:54:47 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5DF1FB81B7B;
+        Tue, 15 Nov 2022 23:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A17C433C1;
+        Tue, 15 Nov 2022 23:54:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668556485;
+        bh=mZzH0uh0acP4b2+hbljQK6iWDtVLN6kiCb6ZQr1iESo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=k/n7Yl0RuP4kgp6O9qWGJbXqV4EZlzrwcHYvNvs1WNlB6GXen7lUDCSS45K2RJcCt
+         6DwFc5zZ4ghxIK5QBezw2ErAj1C3EtNI/EaJdRJ0qMokBO3p5ICf8ReSe2pfxBRSWh
+         sGHh38CXwkDjP1KyUS+Y7pcLFJ6s9ja+JbpW+687uv7fzd8VhkUrv6Po1PAFF5KE+d
+         rOgU6AZlz5pmhxAGwwfpiHrBdqESRLSeb1wh8t5CzYQlSaIEuP1FQem5AS/qkHbF+t
+         AV0ChuM5CkUz2PgfeMT1BGBCXCC+SzbcPLIxg4a4nwopJMmFDxzH+Kl6Jo4yqAdq11
+         Y4tZITIki6E7g==
+Date:   Wed, 16 Nov 2022 01:54:41 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] certs: log more information on blacklist error
+Message-ID: <Y3QmwVIvwPoeVxVK@kernel.org>
+References: <20221109025019.1855-1-linux@weissschuh.net>
+ <20221109025019.1855-2-linux@weissschuh.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.191]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221109025019.1855-2-linux@weissschuh.net>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,24 +60,10 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-pkcs7_supply_detached_data is called by x509_key_parser module, but not exported:
-    ERROR: modpost: "pkcs7_supply_detached_data" [crypto/asymmetric_keys/x509_key_parser.ko] undefined!
+On Wed, Nov 09, 2022 at 03:50:17AM +0100, Thomas Weißschuh wrote:
+> Without this information these logs are not actionable.
 
-Fixes: cfc411e7fff3 ("Move certificate handling to its own directory")
-Signed-off-by: Li Hua <hucool.lihua@huawei.com>
----
- crypto/asymmetric_keys/pkcs7_verify.c | 1 +
- 1 file changed, 1 insertion(+)
+Neither "more information" nor "this information" describe
+"what information", right? :-)
 
-diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-index f6321c785714..4fa769c4bcdb 100644
---- a/crypto/asymmetric_keys/pkcs7_verify.c
-+++ b/crypto/asymmetric_keys/pkcs7_verify.c
-@@ -485,3 +485,4 @@ int pkcs7_supply_detached_data(struct pkcs7_message *pkcs7,
- 	pkcs7->data_len = datalen;
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(pkcs7_supply_detached_data);
--- 
-2.17.1
-
+BR, Jarkko
