@@ -2,148 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD7E62CEFE
-	for <lists+keyrings@lfdr.de>; Thu, 17 Nov 2022 00:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DD462ECB5
+	for <lists+keyrings@lfdr.de>; Fri, 18 Nov 2022 05:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbiKPXoo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 16 Nov 2022 18:44:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38620 "EHLO
+        id S240969AbiKREFk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 17 Nov 2022 23:05:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232117AbiKPXol (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 16 Nov 2022 18:44:41 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02162FB;
-        Wed, 16 Nov 2022 15:44:40 -0800 (PST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AGNgMTD018883;
-        Wed, 16 Nov 2022 23:44:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=J1gnzsf/D1YTJY8T2+5NQLgeCtaYrxMGyExgYqnS8Wg=;
- b=C41DMRDD5aHvopRQA7Xc7BtxHDLvZO/6OXZMKnUQ5KQi1Bzz/OKsMo2qrglSffZOVCVr
- ZZgnR5EtEg8Q4yzOjiCcGH+iLlmRokr1+rs0HhRkgPQaimZaEsW2Uy9YAGb9KnmBnveh
- BPYtqLX1Hh2V/z4itIqhMME3k7H02jUyR5rmaSIz+djK6WB/zXsM3NLUDtNvkYgtOrsw
- 3v3lxYlmZegfFX/39R+AVsGulYi0/VMSDQ1PF1/eJxzCenTEhKSoyHVf/pju6fdBJRkt
- rjPKTSHe90fhbVgNgV+qcpjCOvmEXVpFXHCZU+CGUKtMP+Pz7WfMZpU81xpPqhjOSTGe qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kw9s7010n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Nov 2022 23:44:23 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AGNgWF8019113;
-        Wed, 16 Nov 2022 23:44:22 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kw9s7010g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Nov 2022 23:44:22 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AGNZJHV020230;
-        Wed, 16 Nov 2022 23:44:22 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-        by ppma03dal.us.ibm.com with ESMTP id 3kt34a4ymw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Nov 2022 23:44:22 +0000
-Received: from smtpav02.dal12v.mail.ibm.com ([9.208.128.128])
-        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AGNiK7941681590
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Nov 2022 23:44:21 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A6EC95805A;
-        Wed, 16 Nov 2022 23:44:20 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5577858051;
-        Wed, 16 Nov 2022 23:44:19 +0000 (GMT)
-Received: from sig-9-65-207-159.ibm.com (unknown [9.65.207.159])
-        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Wed, 16 Nov 2022 23:44:19 +0000 (GMT)
-Message-ID: <c24c0f7c81ff24d791974ff7945e710b489b7e01.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 2/3] powerpc/pseries: PLPKS SED Opal keystore support
-From:   Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reply-To: gjoyce@linux.vnet.ibm.com
-To:     "Elliott, Robert (Servers)" <elliott@hpe.com>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
-Cc:     "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "jonathan.derrick@linux.dev" <jonathan.derrick@linux.dev>,
-        "brking@linux.vnet.ibm.com" <brking@linux.vnet.ibm.com>,
-        "msuchanek@suse.de" <msuchanek@suse.de>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "axboe@kernel.dk" <axboe@kernel.dk>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>
-Date:   Wed, 16 Nov 2022 17:44:18 -0600
-In-Reply-To: <MW5PR84MB1842689FD13382CAFCC260D8AB5F9@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20220819223138.1457091-1-gjoyce@linux.vnet.ibm.com>
-         <20220819223138.1457091-3-gjoyce@linux.vnet.ibm.com>
-         <MW5PR84MB1842689FD13382CAFCC260D8AB5F9@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JgbknSy7aXhV73SxJYXrtnAvcD7UjiHr
-X-Proofpoint-GUID: nGERouHv7XWg6rQBOqOkw7vipn-DPvyA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-16_03,2022-11-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- mlxlogscore=999 spamscore=0 suspectscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211160161
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S240965AbiKREEz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 17 Nov 2022 23:04:55 -0500
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D90F627F6;
+        Thu, 17 Nov 2022 20:04:39 -0800 (PST)
+From:   =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
+        s=mail; t=1668744275;
+        bh=fAGK24L9+iydhX7H00KM/0PHDgztpBEk6tzt350ufR8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EgvqcFByBaYQgQOf+1WfzijlC9DG05S7F8J3ZT/Edz7WiO1FqTSga1Tjz4wD8rRGn
+         RSX5plpFbjBhsplqVCY7DU/OgCRViSPnO+8/JRThIvpWhBIdpOHHePCiS2TzlIUPfY
+         epdVFSgZOqIhjXckrT7LAUDVEyviHdKa0Jhpi/kE=
+To:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH v3 0/3] certs: Prevent spurious errors on repeated blacklisting
+Date:   Fri, 18 Nov 2022 05:03:40 +0100
+Message-Id: <20221118040343.2958-1-linux@weissschuh.net>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1668744217; l=1889; i=linux@weissschuh.net; s=20211113; h=from:subject; bh=fAGK24L9+iydhX7H00KM/0PHDgztpBEk6tzt350ufR8=; b=3O0IBdZlVc6afEe2yx3amLABDPmdlKOQ0y6Q1NdHBkNU7gqi3rWClo0U7FTRwF/FLxB0ldCATBYB TuAwo1R4B98AXFpXj1OhL9UhDl1AFmBytmhkd6jvpCP119VmKIF+
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519; pk=9LP6KM4vD/8CwHW7nouRBhWLyQLcK1MkP6aTZbzUlj4=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2022-10-07 at 19:09 +0000, Elliott, Robert (Servers) wrote:
-> > -----Original Message-----
-> > From: gjoyce@linux.vnet.ibm.com <gjoyce@linux.vnet.ibm.com>
-> > Sent: Friday, August 19, 2022 5:32 PM
-> > To: linux-block@vger.kernel.org
-> > Cc: linuxppc-dev@lists.ozlabs.org; jonathan.derrick@linux.dev;
-> > brking@linux.vnet.ibm.com; msuchanek@suse.de; mpe@ellerman.id.au;
-> > nayna@linux.ibm.com; axboe@kernel.dk; akpm@linux-foundation.org;
-> > gjoyce@linux.vnet.ibm.com; linux-efi@vger.kernel.org;
-> > keyrings@vger.kernel.org; dhowells@redhat.com; jarkko@kernel.org
-> > Subject: [PATCH v4 2/3] powerpc/pseries: PLPKS SED Opal keystore
-> > support
-> > 
-> > +++ b/arch/powerpc/platforms/pseries/plpks_sed_ops.c
-> ...
-> > +struct plpks_sed_object_data {
-> > +	u_char version;
-> > +	u_char pad1[7];
-> > +	u_long authority;
-> > +	u_long range;
-> > +	u_int  key_len;
-> > +	u_char key[32];
-> > +};
-> ...
-> > +/*
-> > + * Read the SED Opal key from PLPKS given the label
-> > + */
-> > +int sed_read_key(char *keyname, char *key, u_int *keylen)
-> > +{
-> ...
-> > +	*keylen = be32_to_cpu(data->key_len);
-> > +
-> > +	if (var.data) {
-> > +		memcpy(key, var.data + offset, var.datalen - offset);
-> > +		key[*keylen] = '\0';
-> 
-> Is there a guarantee that key_len is always < sizeof key, or
-> does that need to be checked in more places?
+When the blacklist keyring was changed to allow updates from the root
+user it gained an ->update() function that disallows all updates.
+When the a hash is blacklisted multiple times from the builtin or
+firmware-provided blacklist this spams prominent logs during boot:
 
-Changed keylen paramter to be the maximum size that it copied. This 
-will help avoid buffer overwrite.
+[    0.890814] blacklist: Problem blacklisting hash (-13)
 
+This affects the firmware of various vendors. Reported have been at least:
+* Samsung: https://askubuntu.com/questions/1436856/
+* Acer: https://ubuntuforums.org/showthread.php?t=2478840
+* MSI: https://forum.archlabslinux.com/t/blacklist-problem-blacklisting-hash-13-errors-on-boot/6674/7
+* Micro-Star: https://bbs.archlinux.org/viewtopic.php?id=278860
+* Lenovo: https://lore.kernel.org/lkml/c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de/
+
+Changelog:
+
+v1: https://lore.kernel.org/all/20221104014704.3469-1-linux@weissschuh.net/
+v1 -> v2:
+ * Improve logging message to include the failed hash
+ * Add key_create() function without update semantics
+ * Use key_create() from mark_raw_hash_blacklisted() and log specific message
+   on -EEXIST
+
+v2: https://lore.kernel.org/lkml/20221109025019.1855-1-linux@weissschuh.net/
+v2 -> v3:
+ * Clarify commit titles and messages
+ * Drop the change to BLACKLIST_KEY_PERM from patch 3, as it was an artifact
+   of some obsolete version of the patch and not needed
+
+Only the first patch has been marked for stable as otherwise the whole of
+key_create() would need to be applied to stable.
+
+Thomas Weißschuh (3):
+  certs: log hash value on blacklist error
+  KEYS: Add key_create()
+  certs: don't try to update blacklist keys
+
+ certs/blacklist.c   |  21 ++++---
+ include/linux/key.h |   8 +++
+ security/keys/key.c | 149 +++++++++++++++++++++++++++++++++-----------
+ 3 files changed, 132 insertions(+), 46 deletions(-)
+
+
+base-commit: 84368d882b9688bfac77ce48d33b1e20a4e4a787
+-- 
+2.38.1
 
