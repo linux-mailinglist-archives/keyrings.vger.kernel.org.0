@@ -2,103 +2,73 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 971BF62ECAC
-	for <lists+keyrings@lfdr.de>; Fri, 18 Nov 2022 05:05:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12154630C12
+	for <lists+keyrings@lfdr.de>; Sat, 19 Nov 2022 06:20:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241100AbiKREFM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 17 Nov 2022 23:05:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
+        id S231664AbiKSFU1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 19 Nov 2022 00:20:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240875AbiKREEW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 17 Nov 2022 23:04:22 -0500
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C3E963EF;
-        Thu, 17 Nov 2022 20:04:15 -0800 (PST)
-From:   =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
-        s=mail; t=1668744245;
-        bh=Ra7zlnQZv+5EzK/Di0o9djZFSiuiekY1TijxrLS1Kd0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Svfd8uOkMbffoYX8Te7hh+Xoiiy90lNcCSkrL2osEx5X9YIAi/ydZ/tAYH20IL1uS
-         jHYUEAlOSSeJM9J97nyuEaCdA5zlZiwDPMUUmuX2O8INJZUqUqqEFmkNb3KSdf3QUl
-         GtX5XaEU5d9aw6IdSEDICm1ohum0fZdkoU5X9oPE=
-To:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Pearson <markpearson@lenovo.com>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH v3 3/3] certs: don't try to update blacklist keys
-Date:   Fri, 18 Nov 2022 05:03:43 +0100
-Message-Id: <20221118040343.2958-4-linux@weissschuh.net>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221118040343.2958-1-linux@weissschuh.net>
-References: <20221118040343.2958-1-linux@weissschuh.net>
+        with ESMTP id S229592AbiKSFUZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 19 Nov 2022 00:20:25 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C11C8DA78;
+        Fri, 18 Nov 2022 21:20:25 -0800 (PST)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NDhjM6ZM4zFqPy;
+        Sat, 19 Nov 2022 13:17:11 +0800 (CST)
+Received: from [10.67.109.51] (10.67.109.51) by canpemm500009.china.huawei.com
+ (7.192.105.203) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 19 Nov
+ 2022 13:20:23 +0800
+Message-ID: <225f716c-83af-2534-0c58-20b6d28acdc1@huawei.com>
+Date:   Sat, 19 Nov 2022 13:20:23 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1668744218; l=1646; i=linux@weissschuh.net; s=20211113; h=from:subject; bh=Ra7zlnQZv+5EzK/Di0o9djZFSiuiekY1TijxrLS1Kd0=; b=euq+Tl37jfAGfQqWEwou2v6H2ZJ/i3UBFQTNVxYuhrCTL+aTWP8IJh6g2+DHhxHMnGpq6zbHgDRr y0u+dCx7BwHjtmfv1ae2GaImiBQH0JxTi21872zx2ey96SFH67Eh
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519; pk=9LP6KM4vD/8CwHW7nouRBhWLyQLcK1MkP6aTZbzUlj4=
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH] KEYS: asymmetric: Fix build errors as symbol undefined
+To:     <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <davem@davemloft.net>, <David.Woodhouse@intel.com>
+CC:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <weiyongjun1@huawei.com>,
+        <yusongping@huawei.com>
+References: <20221115100512.20147-1-hucool.lihua@huawei.com>
+From:   "Lihua (lihua, ran)" <hucool.lihua@huawei.com>
+In-Reply-To: <20221115100512.20147-1-hucool.lihua@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Originating-IP: [10.67.109.51]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When the same key is blacklisted repeatedly logging at pr_err() level is
-excessive as no functionality is impaired.
-When these duplicates are provided by buggy firmware there is nothing
-the enduser can do to fix the situation.
-Instead of spamming the bootlog with errors we use a warning that can
-still be seen by OEMs when testing their firmware.
+ping
 
-Link: https://lore.kernel.org/all/c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de/
-Link: https://lore.kernel.org/all/20221104014704.3469-1-linux@weissschuh.net/
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- certs/blacklist.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
-
-diff --git a/certs/blacklist.c b/certs/blacklist.c
-index 6e260c4b6a19..675dd7a8f07a 100644
---- a/certs/blacklist.c
-+++ b/certs/blacklist.c
-@@ -183,16 +183,19 @@ static int mark_raw_hash_blacklisted(const char *hash)
- {
- 	key_ref_t key;
- 
--	key = key_create_or_update(make_key_ref(blacklist_keyring, true),
--				   "blacklist",
--				   hash,
--				   NULL,
--				   0,
--				   BLACKLIST_KEY_PERM,
--				   KEY_ALLOC_NOT_IN_QUOTA |
--				   KEY_ALLOC_BUILT_IN);
-+	key = key_create(make_key_ref(blacklist_keyring, true),
-+			 "blacklist",
-+			 hash,
-+			 NULL,
-+			 0,
-+			 BLACKLIST_KEY_PERM,
-+			 KEY_ALLOC_NOT_IN_QUOTA |
-+			 KEY_ALLOC_BUILT_IN);
- 	if (IS_ERR(key)) {
--		pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
-+		if (PTR_ERR(key) == -EEXIST)
-+			pr_warn("Duplicate blacklisted hash %s\n", hash);
-+		else
-+			pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
- 		return PTR_ERR(key);
- 	}
- 	return 0;
--- 
-2.38.1
-
+在 2022/11/15 18:05, Li Hua 写道:
+> pkcs7_supply_detached_data is called by x509_key_parser module, but not exported:
+>      ERROR: modpost: "pkcs7_supply_detached_data" [crypto/asymmetric_keys/x509_key_parser.ko] undefined!
+> 
+> Fixes: cfc411e7fff3 ("Move certificate handling to its own directory")
+> Signed-off-by: Li Hua <hucool.lihua@huawei.com>
+> ---
+>   crypto/asymmetric_keys/pkcs7_verify.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
+> index f6321c785714..4fa769c4bcdb 100644
+> --- a/crypto/asymmetric_keys/pkcs7_verify.c
+> +++ b/crypto/asymmetric_keys/pkcs7_verify.c
+> @@ -485,3 +485,4 @@ int pkcs7_supply_detached_data(struct pkcs7_message *pkcs7,
+>   	pkcs7->data_len = datalen;
+>   	return 0;
+>   }
+> +EXPORT_SYMBOL_GPL(pkcs7_supply_detached_data);
+> 
