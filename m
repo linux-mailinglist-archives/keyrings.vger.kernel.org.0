@@ -2,129 +2,111 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65DD3639F21
-	for <lists+keyrings@lfdr.de>; Mon, 28 Nov 2022 02:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCAD363A63D
+	for <lists+keyrings@lfdr.de>; Mon, 28 Nov 2022 11:38:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbiK1B7b (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 27 Nov 2022 20:59:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56322 "EHLO
+        id S230330AbiK1KiY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 28 Nov 2022 05:38:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiK1B7a (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 27 Nov 2022 20:59:30 -0500
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625E6DFFF;
-        Sun, 27 Nov 2022 17:59:29 -0800 (PST)
-Date:   Mon, 28 Nov 2022 02:59:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
-        s=mail; t=1669600767;
-        bh=6bLjo6zSUiel5ocq0aZAs181VjD/dTQcfURr0PI89DI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oEgFqC5bZJylcOj3OUuUE57So9eNi4aGm4JR+yTVOjMtCr1+EimA4Lm4X5bGV3hkg
-         Bqf/KYPqlrYvrwi3JOOk3LBckYrlVnbn+gNrNrAbJoDIbwf0DAM3Jnc45a38n9yDKo
-         jOgUz3mxYrj41XnBxeAwr7su/LlFa2baKlQbmJtM=
-From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Pearson <markpearson@lenovo.com>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] certs: log hash value on blacklist error
-Message-ID: <8b9e9bf8-ae44-485a-9b30-85a71a236f06@t-8ch.de>
-References: <20221118040343.2958-1-linux@weissschuh.net>
- <20221118040343.2958-2-linux@weissschuh.net>
- <Y4QK2cmptp4vpRj/@kernel.org>
+        with ESMTP id S230479AbiK1KiD (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 28 Nov 2022 05:38:03 -0500
+Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B017313FA8;
+        Mon, 28 Nov 2022 02:37:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1669631807; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=f7Vkrq9jkn0HdgdrF+Wh4ncq+GGSsebcyRYBNsqcYTHRclUJfK6GZePbRmQDC0pmLvF4cIbYkjB0tjmOqAjT9DuNtyXkv/v0BL2whbqlr60zcCG6YUti8RD9JBSyPwKA7OrvVudPVnUUzC1+RRdVg3I7NG9b2jZll5jPewQ9nn4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1669631807; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=tnLz2qpKPI3vYwMGy9lOfRIw4je11ytpVT+lhHW/+Qg=; 
+        b=MVkIZcWesgBR1eRTLS74wg54CR+GOa4tXB5fkrfalio75ubmQPbOPgSq0R7/dtlLXFGMmkSamKwP/onRlzpthjsZsufD7VSDUI7lqlM70QQjLmw7DWXAHrQUJrF+QtKnyB0IHAKnVn3OS7RwWXRZ3VJb9dmEkVWyTb/SqdRdS+k=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1669631807;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+        bh=tnLz2qpKPI3vYwMGy9lOfRIw4je11ytpVT+lhHW/+Qg=;
+        b=tfokIDKX5BgrbyGBN6WgA9XNMY5994pwLNdGxOGtdG6KNNb8kRC1PN5mtsFbg+ep
+        nybrNGyYVe+LUU3ElQbK8TKlTx6LgXYMgz2E0ljqcqyTt/RPpizIfmXlWhJUseqV8Ng
+        eXUHnFJeGQ+6Jgmmla5h2oyEhsqCgTWrfczIBaTw=
+Received: from [192.168.1.9] (106.201.114.188 [106.201.114.188]) by mx.zoho.in
+        with SMTPS id 1669631805587181.18913226273196; Mon, 28 Nov 2022 16:06:45 +0530 (IST)
+Message-ID: <6a22e287-9d90-85a9-f5e6-49e600bf0d80@siddh.me>
+Date:   Mon, 28 Nov 2022 16:06:44 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y4QK2cmptp4vpRj/@kernel.org>
-Jabber-ID: thomas@t-8ch.de
-X-Accept: text/plain, text/html;q=0.2, text/*;q=0.1
-X-Accept-Language: en-us, en;q=0.8, de-de;q=0.7, de;q=0.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [RESEND PATCH v2 0/2] watch_queue: Clean up some code
+From:   Siddh Raman Pant <code@siddh.me>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Eric Biggers <ebiggers@kernel.org>
+Cc:     linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        keyrings <keyrings@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>
+References: <cover.1668248462.git.code@siddh.me>
+Content-Language: en-US, en-GB, hi-IN
+In-Reply-To: <cover.1668248462.git.code@siddh.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 2022-11-28 03:11+0200, Jarkko Sakkinen wrote:
-> "Make blacklisted hash available in klog"
+On Sat, 12 Nov 2022 16:00:39 +0530, Siddh Raman Pant wrote:
+> There is a dangling reference to pipe in a watch_queue after clearing it.
+> Thus, NULL that pointer while clearing.
 > 
-> On Fri, Nov 18, 2022 at 05:03:41AM +0100, Thomas Weißschuh wrote:
-> > Without this information these logs are not actionable.
+> This change renders wqueue->defunct superfluous, as the latter is only used
+> to check if watch_queue is cleared. With this change, the pipe is NULLed
+> while clearing, so we can just check if the pipe is NULL.
 > 
-> Without blacklisted hash?
+> Extending comment for watch_queue->pipe in the definition of watch_queue
+> made the comment conventionally too long (it was already past 80 chars),
+> so I have changed the struct annotations to be kerneldoc-styled, so that
+> I can extend the comment mentioning that the pipe is NULL when watch_queue
+> is cleared. In the process, I have also hopefully improved documentation
+> by documenting things which weren't documented before.
 > 
-> > For example on duplicate blacklisted hashes reported by the system
-> > firmware users should be able to report the erroneous hashes to their
-> > system vendors.
-> > 
-> > While we are at it use the dedicated format string for ERR_PTR.
+> Changes in v2:
+> - Merged the NULLing and removing defunct patches.
+> - Removed READ_ONCE barrier in lock_wqueue().
+> - Improved and fixed errors in struct docs.
+> - Better commit messages.
 > 
-> Lacks the beef so saying "while we are at it" makes no sense.
-
-What about this:
-
-  [PATCH] certs: make blacklisted hash available in klog
-
-  One common situation triggering this log statement are duplicate hashes
-  reported by the system firmware.
-
-  These duplicates should be removed from the firmware.
-
-  Without logging the blacklisted hash triggering the issue however the users
-  can not report it properly to the firmware vendors and the firmware vendors
-  can not easily see which specific hash is duplicated.
-
-  While changing the log message also use the dedicated ERR_PTR format
-  placeholder for the returned error value.
-
-> > Fixes: 6364d106e041 ("certs: Allow root user to append signed hashes to the blacklist keyring")
+> Original date of posting patch: 6 Aug 2022
 > 
-> Why does this count as a bug?
-
-These error logs are confusing to users, prompting them to waste time
-investigating them and even mess with their firmware settings.
-(As indicated in the threads linked from the cover letter)
-
-The most correct fix would be patches 2 and 3 from this series.
-
-I was not sure if patch 2 would be acceptable for stable as it introduces new
-infrastructure code.
-So patch 1 enables users to report the issue to their firmware vendors and get
-the spurious logs resolved that way.
-
-If these assumptions are incorrect I can fold patch 1 into patch 3.
-
-But are patch 2 and 3 material for stable?
-
-> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> > ---
-> >  certs/blacklist.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/certs/blacklist.c b/certs/blacklist.c
-> > index 41f10601cc72..6e260c4b6a19 100644
-> > --- a/certs/blacklist.c
-> > +++ b/certs/blacklist.c
-> > @@ -192,7 +192,7 @@ static int mark_raw_hash_blacklisted(const char *hash)
-> >  				   KEY_ALLOC_NOT_IN_QUOTA |
-> >  				   KEY_ALLOC_BUILT_IN);
-> >  	if (IS_ERR(key)) {
-> > -		pr_err("Problem blacklisting hash (%ld)\n", PTR_ERR(key));
-> > +		pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
-> >  		return PTR_ERR(key);
-> >  	}
-> >  	return 0;
-> > -- 
-> > 2.38.1
-> > 
+> Siddh Raman Pant (2):
+>   include/linux/watch_queue: Improve documentation
+>   kernel/watch_queue: NULL the dangling *pipe, and use it for clear
+>     check
 > 
-> BR, Jarkko
+>  include/linux/watch_queue.h | 100 ++++++++++++++++++++++++++----------
+>  kernel/watch_queue.c        |  12 ++---
+>  2 files changed, 79 insertions(+), 33 deletions(-)
+> 
+
+Hi,
+
+Please review the quoted patches, which can be found on:
+https://lore.kernel.org/all/cover.1668248462.git.code@siddh.me/
+
+Please let me know if any changes are required.
+
+Thanks,
+Siddh
