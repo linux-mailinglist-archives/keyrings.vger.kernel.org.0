@@ -2,111 +2,69 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCAD363A63D
-	for <lists+keyrings@lfdr.de>; Mon, 28 Nov 2022 11:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B560863C924
+	for <lists+keyrings@lfdr.de>; Tue, 29 Nov 2022 21:17:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbiK1KiY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 28 Nov 2022 05:38:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
+        id S236218AbiK2URm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 29 Nov 2022 15:17:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230479AbiK1KiD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 28 Nov 2022 05:38:03 -0500
-Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B017313FA8;
-        Mon, 28 Nov 2022 02:37:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1669631807; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=f7Vkrq9jkn0HdgdrF+Wh4ncq+GGSsebcyRYBNsqcYTHRclUJfK6GZePbRmQDC0pmLvF4cIbYkjB0tjmOqAjT9DuNtyXkv/v0BL2whbqlr60zcCG6YUti8RD9JBSyPwKA7OrvVudPVnUUzC1+RRdVg3I7NG9b2jZll5jPewQ9nn4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1669631807; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=tnLz2qpKPI3vYwMGy9lOfRIw4je11ytpVT+lhHW/+Qg=; 
-        b=MVkIZcWesgBR1eRTLS74wg54CR+GOa4tXB5fkrfalio75ubmQPbOPgSq0R7/dtlLXFGMmkSamKwP/onRlzpthjsZsufD7VSDUI7lqlM70QQjLmw7DWXAHrQUJrF+QtKnyB0IHAKnVn3OS7RwWXRZ3VJb9dmEkVWyTb/SqdRdS+k=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1669631807;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=tnLz2qpKPI3vYwMGy9lOfRIw4je11ytpVT+lhHW/+Qg=;
-        b=tfokIDKX5BgrbyGBN6WgA9XNMY5994pwLNdGxOGtdG6KNNb8kRC1PN5mtsFbg+ep
-        nybrNGyYVe+LUU3ElQbK8TKlTx6LgXYMgz2E0ljqcqyTt/RPpizIfmXlWhJUseqV8Ng
-        eXUHnFJeGQ+6Jgmmla5h2oyEhsqCgTWrfczIBaTw=
-Received: from [192.168.1.9] (106.201.114.188 [106.201.114.188]) by mx.zoho.in
-        with SMTPS id 1669631805587181.18913226273196; Mon, 28 Nov 2022 16:06:45 +0530 (IST)
-Message-ID: <6a22e287-9d90-85a9-f5e6-49e600bf0d80@siddh.me>
-Date:   Mon, 28 Nov 2022 16:06:44 +0530
+        with ESMTP id S237106AbiK2URa (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 29 Nov 2022 15:17:30 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845886E54A
+        for <keyrings@vger.kernel.org>; Tue, 29 Nov 2022 12:16:55 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id a7so18545915ljq.12
+        for <keyrings@vger.kernel.org>; Tue, 29 Nov 2022 12:16:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=RTPG0QP7LZ32cfCOAzofH8luZz3/nLG08vWek8mzscp0530F+mpXLsjo8AyYBl7WZ/
+         trvsIBBGpBC/0waQCRayrIpAjihCmK8DvtNYsGNLu23IOdgDog2+mW+2XU5vfrgjoggo
+         0UC9qZM53TJFAK4D9FVO1bsdWQ1S6/yJze86V5g8L/7MPIdOq27AISVKGmJEMzl6XovV
+         qwSS2sWaHXHelzDWozmz89Xawswa0PKnqhfR/hexK9NuRtVmOTtuRo/0G3hUxq3Ljt01
+         qrBRIKfkC+XjtqJlBXcPRreU8H6b40882alQXIuPb7sxZ3swdMecQcY9c1X5+JwXSXMA
+         GYqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=Ar5m5cDYCiclGEAOY5jVVjT2381jok3gaLAhdM0a/uE7Qc8TkYf8f0DV1V+38j5igT
+         0yM4YerM9iPnMYoCNj7ZLVZiGVEiHf+7xHfUQKXySVqwsq6I8fgEEogJQAAfN1nER9qH
+         WBlorQhbIshAeCMMR3LvmWcQFyxomek6WkYQGmCHcdXyHM8dA+EjwIGsIgFZ2jRVduXH
+         BNbIv/T+VyMtjw7WFiGJfrPxpMc3p3C8MevWmNqbvIVL3UpsKTm5+1x26wNy6zT1IyYM
+         h+pg+y4Ea99dyOYvZeYL5GaGo5KK0/OXIE77mFUAu+KPgCWRqyCPov9/EaOF4f7KBpGr
+         8u5g==
+X-Gm-Message-State: ANoB5pl+bkZ0C2vPk5TqUxj5mKOHxtdP1eBR3pHSjdHAhRm5Dow2rw2l
+        1twvGaVLLdypHfn+aX4P3TML2YaxkQps1OIDP6I=
+X-Google-Smtp-Source: AA0mqf7X10xZ2IKfzXS+xobLbfPRihwyjqP1Bjhi87KP9JDvAevgh3yTPH8Q3yt+uCQGQi0GCEqSbTam47nNan56pLw=
+X-Received: by 2002:a05:651c:50b:b0:26c:5db6:cd84 with SMTP id
+ o11-20020a05651c050b00b0026c5db6cd84mr13186663ljp.114.1669753013602; Tue, 29
+ Nov 2022 12:16:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [RESEND PATCH v2 0/2] watch_queue: Clean up some code
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Eric Biggers <ebiggers@kernel.org>
-Cc:     linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        keyrings <keyrings@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>
-References: <cover.1668248462.git.code@siddh.me>
-Content-Language: en-US, en-GB, hi-IN
-In-Reply-To: <cover.1668248462.git.code@siddh.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:651c:a0a:0:0:0:0 with HTTP; Tue, 29 Nov 2022 12:16:52
+ -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <chiogb00@gmail.com>
+Date:   Tue, 29 Nov 2022 20:16:52 +0000
+Message-ID: <CAAtWbkEAMQJDfs1SnRLup+F+=QL+vk1rnWR2uLOLtSa-JTS1nA@mail.gmail.com>
+Subject: hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, 12 Nov 2022 16:00:39 +0530, Siddh Raman Pant wrote:
-> There is a dangling reference to pipe in a watch_queue after clearing it.
-> Thus, NULL that pointer while clearing.
-> 
-> This change renders wqueue->defunct superfluous, as the latter is only used
-> to check if watch_queue is cleared. With this change, the pipe is NULLed
-> while clearing, so we can just check if the pipe is NULL.
-> 
-> Extending comment for watch_queue->pipe in the definition of watch_queue
-> made the comment conventionally too long (it was already past 80 chars),
-> so I have changed the struct annotations to be kerneldoc-styled, so that
-> I can extend the comment mentioning that the pipe is NULL when watch_queue
-> is cleared. In the process, I have also hopefully improved documentation
-> by documenting things which weren't documented before.
-> 
-> Changes in v2:
-> - Merged the NULLing and removing defunct patches.
-> - Removed READ_ONCE barrier in lock_wqueue().
-> - Improved and fixed errors in struct docs.
-> - Better commit messages.
-> 
-> Original date of posting patch: 6 Aug 2022
-> 
-> Siddh Raman Pant (2):
->   include/linux/watch_queue: Improve documentation
->   kernel/watch_queue: NULL the dangling *pipe, and use it for clear
->     check
-> 
->  include/linux/watch_queue.h | 100 ++++++++++++++++++++++++++----------
->  kernel/watch_queue.c        |  12 ++---
->  2 files changed, 79 insertions(+), 33 deletions(-)
-> 
-
-Hi,
-
-Please review the quoted patches, which can be found on:
-https://lore.kernel.org/all/cover.1668248462.git.code@siddh.me/
-
-Please let me know if any changes are required.
-
-Thanks,
-Siddh
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
