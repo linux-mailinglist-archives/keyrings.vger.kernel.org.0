@@ -2,69 +2,134 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B560863C924
-	for <lists+keyrings@lfdr.de>; Tue, 29 Nov 2022 21:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA96563CBBE
+	for <lists+keyrings@lfdr.de>; Wed, 30 Nov 2022 00:25:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236218AbiK2URm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 29 Nov 2022 15:17:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56832 "EHLO
+        id S229529AbiK2XZ1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 29 Nov 2022 18:25:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237106AbiK2URa (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 29 Nov 2022 15:17:30 -0500
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845886E54A
-        for <keyrings@vger.kernel.org>; Tue, 29 Nov 2022 12:16:55 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id a7so18545915ljq.12
-        for <keyrings@vger.kernel.org>; Tue, 29 Nov 2022 12:16:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=RTPG0QP7LZ32cfCOAzofH8luZz3/nLG08vWek8mzscp0530F+mpXLsjo8AyYBl7WZ/
-         trvsIBBGpBC/0waQCRayrIpAjihCmK8DvtNYsGNLu23IOdgDog2+mW+2XU5vfrgjoggo
-         0UC9qZM53TJFAK4D9FVO1bsdWQ1S6/yJze86V5g8L/7MPIdOq27AISVKGmJEMzl6XovV
-         qwSS2sWaHXHelzDWozmz89Xawswa0PKnqhfR/hexK9NuRtVmOTtuRo/0G3hUxq3Ljt01
-         qrBRIKfkC+XjtqJlBXcPRreU8H6b40882alQXIuPb7sxZ3swdMecQcY9c1X5+JwXSXMA
-         GYqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=Ar5m5cDYCiclGEAOY5jVVjT2381jok3gaLAhdM0a/uE7Qc8TkYf8f0DV1V+38j5igT
-         0yM4YerM9iPnMYoCNj7ZLVZiGVEiHf+7xHfUQKXySVqwsq6I8fgEEogJQAAfN1nER9qH
-         WBlorQhbIshAeCMMR3LvmWcQFyxomek6WkYQGmCHcdXyHM8dA+EjwIGsIgFZ2jRVduXH
-         BNbIv/T+VyMtjw7WFiGJfrPxpMc3p3C8MevWmNqbvIVL3UpsKTm5+1x26wNy6zT1IyYM
-         h+pg+y4Ea99dyOYvZeYL5GaGo5KK0/OXIE77mFUAu+KPgCWRqyCPov9/EaOF4f7KBpGr
-         8u5g==
-X-Gm-Message-State: ANoB5pl+bkZ0C2vPk5TqUxj5mKOHxtdP1eBR3pHSjdHAhRm5Dow2rw2l
-        1twvGaVLLdypHfn+aX4P3TML2YaxkQps1OIDP6I=
-X-Google-Smtp-Source: AA0mqf7X10xZ2IKfzXS+xobLbfPRihwyjqP1Bjhi87KP9JDvAevgh3yTPH8Q3yt+uCQGQi0GCEqSbTam47nNan56pLw=
-X-Received: by 2002:a05:651c:50b:b0:26c:5db6:cd84 with SMTP id
- o11-20020a05651c050b00b0026c5db6cd84mr13186663ljp.114.1669753013602; Tue, 29
- Nov 2022 12:16:53 -0800 (PST)
+        with ESMTP id S229449AbiK2XZ0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 29 Nov 2022 18:25:26 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53B876DFE9;
+        Tue, 29 Nov 2022 15:25:26 -0800 (PST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ATMDkts025447;
+        Tue, 29 Nov 2022 23:25:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=WboJhXA+3D0c9oX9kVjsq7SefegsZAj6UY8UwbC3AS8=;
+ b=sddN2ZVgoQDZcRKAqTochzc7gZDx0pH9rSsWgYey1Wp+Au390zXYqv6ggIGMhzrtfILj
+ HdmuFaxr6/InuhhaHjpgEmXrkx42q8I/3uPrCo4v5qwBFTnzsPRt7FpxZ8fNXs4eVRKN
+ TVWAFSw1M0QlumvaDUXzDl3Cl3VdwmUq3KgFYix3bc7xIF9oKnvUZbtoK0YVW48uz2y5
+ Y7rFeNub74u4IqO0oTvvZVJT5FRdn3s1NBodq1HD7cJWu22SndW9OjL82zkAIZWwqLcR
+ eipLoNShPg6O9taZQ8JfJjnFE0DBYlr7A2LNTXm0RK64JXl0Vwf6L3M5iGe7Wv7kLrKI 6Q== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5tpahgx0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Nov 2022 23:25:11 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ATNLQbx019689;
+        Tue, 29 Nov 2022 23:25:11 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+        by ppma03wdc.us.ibm.com with ESMTP id 3m3ae9g5b6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Nov 2022 23:25:11 +0000
+Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
+        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ATNPCaG45744742
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 29 Nov 2022 23:25:12 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D92355803F;
+        Tue, 29 Nov 2022 23:25:09 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BA33658060;
+        Tue, 29 Nov 2022 23:25:08 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.160.99.100])
+        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Tue, 29 Nov 2022 23:25:08 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
+        gjoyce@linux.vnet.ibm.com, keyrings@vger.kernel.org
+Subject: [PATCH v3 0/3] sed-opal: keyrings, discovery, revert, key store
+Date:   Tue, 29 Nov 2022 17:25:03 -0600
+Message-Id: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: by 2002:a05:651c:a0a:0:0:0:0 with HTTP; Tue, 29 Nov 2022 12:16:52
- -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <chiogb00@gmail.com>
-Date:   Tue, 29 Nov 2022 20:16:52 +0000
-Message-ID: <CAAtWbkEAMQJDfs1SnRLup+F+=QL+vk1rnWR2uLOLtSa-JTS1nA@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hpgfMOaHUaxc0efIFlizZvSnGXKQX7yq
+X-Proofpoint-ORIG-GUID: hpgfMOaHUaxc0efIFlizZvSnGXKQX7yq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-29_13,2022-11-29_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 lowpriorityscore=0
+ clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211290138
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+
+TCG SED Opal is a specification from The Trusted Computing Group
+that allows self encrypting storage devices (SED) to be locked at
+power on and require an authentication key to unlock the drive.
+
+The current SED Opal implementation in the block driver
+requires that authentication keys be provided in an ioctl
+so that they can be presented to the underlying SED
+capable drive. Currently, the key is typically entered by
+a user with an application like sedutil or sedcli. While
+this process works, it does not lend itself to automation
+like unlock by a udev rule.
+
+The SED block driver has been extended so it can alternatively
+obtain a key from a sed-opal kernel keyring. The SED ioctls
+will indicate the source of the key, either directly in the
+ioctl data or from the keyring.
+
+Two new SED ioctls have also been added. These are:
+  1) IOC_OPAL_REVERT_LSP to revert LSP state
+  2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+
+change log:
+	- rebase to 6.x
+	- added latest reviews
+        - removed platform functions for persistent key storage
+        - replaced key update logic with key_create_or_update()
+        - minor bracing and padding changes
+        - add error returns
+        - opal_key structure is application provided but kernel
+          verified
+        - added brief description of TCG SED Opal
+
+
+Greg Joyce (3):
+  block: sed-opal: Implement IOC_OPAL_DISCOVERY
+  block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+  block: sed-opal: keyring support for SED keys
+
+ block/Kconfig                 |   1 +
+ block/opal_proto.h            |   4 +
+ block/sed-opal.c              | 252 +++++++++++++++++++++++++++++++++-
+ include/linux/sed-opal.h      |   5 +
+ include/uapi/linux/sed-opal.h |  25 +++-
+ 5 files changed, 281 insertions(+), 6 deletions(-)
+
+Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+base-commit: 59d0d52c30d4991ac4b329f049cc37118e00f5b0
+-- 
+gjoyce@linux.vnet.ibm.com
+
