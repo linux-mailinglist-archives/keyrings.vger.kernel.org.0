@@ -2,128 +2,106 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1AC163F419
-	for <lists+keyrings@lfdr.de>; Thu,  1 Dec 2022 16:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 226D863F4F0
+	for <lists+keyrings@lfdr.de>; Thu,  1 Dec 2022 17:13:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231945AbiLAPgX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Dec 2022 10:36:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48096 "EHLO
+        id S232184AbiLAQNN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Dec 2022 11:13:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231933AbiLAPgQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Dec 2022 10:36:16 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D7B81839D;
-        Thu,  1 Dec 2022 07:36:14 -0800 (PST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B1FOf0M013550;
-        Thu, 1 Dec 2022 15:35:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=Xk/l0U+Cz7PYE5CVeOcthMKdyGJyTMeO5xaBAtu53ps=;
- b=G9bLF70KykG6TWmEzNzjyCBteyzp0RxfqDaqnZ6XSjHmqgQxXRg2DOwQjNcKtmxy2VMl
- iMjwSRJ1NVgnWCt4vLTrPOVLoITg2qWeqe3EjxD/R6vCXtYH0nrwEitQRu/gPq6kthfD
- LT3MymtQqzy+xnXtZB1fvAw1GcmImVtrRKbJ8mmfCycuuB06FkGvAsBhOQFiJQauOPZ8
- TX6OaflzchNzwQLdjlUvTavVI+wS7PgS2icIG70ws/i/Ke3Y9u2qTVKNEdnn6d81kVRj
- xHGjlSqFTIhLyyS/xtwUnCQYIBeVup+MbpRL+nuHHCwO1l9xU6/5NIZxCYICZdf+c5YL og== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m6xvs0bgs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 01 Dec 2022 15:35:55 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2B1FLlJ4018218;
-        Thu, 1 Dec 2022 15:30:54 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-        by ppma01dal.us.ibm.com with ESMTP id 3m3aeanw4x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 01 Dec 2022 15:30:54 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-        by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B1FTcEa18940552
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 1 Dec 2022 15:29:38 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4BDDB5805A;
-        Thu,  1 Dec 2022 15:29:38 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BFF7C5805D;
-        Thu,  1 Dec 2022 15:29:36 +0000 (GMT)
-Received: from rhel-laptop.ibm.com (unknown [9.160.99.100])
-        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Thu,  1 Dec 2022 15:29:36 +0000 (GMT)
-Message-ID: <044c90dc7feb3959b5740154addc230ba9a57216.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
-From:   Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reply-To: gjoyce@linux.vnet.ibm.com
-To:     Ben Boeckel <me@benboeckel.net>
+        with ESMTP id S232145AbiLAQNK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Dec 2022 11:13:10 -0500
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B362A17E27;
+        Thu,  1 Dec 2022 08:13:05 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 0DE55320092E;
+        Thu,  1 Dec 2022 11:13:01 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 01 Dec 2022 11:13:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=cc:cc:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1669911181; x=1669997581; bh=6v
+        WBmCicNUpqFiwGEvCj2T5kO+IGX5hkCfNsBIQgI/Y=; b=SQKOgA4jCw2br75keg
+        5nM25Ni3AazbVgIu9kO/GFjV1GB+mxDVtNS3EgRwHiLst+FuAgqrCvbPy1yXQ96J
+        MVqGkb0qOKo1WJU/Z28k/nemEolAPiD+Td3YlnzFINRxN6qB9X2KpF/L06Sm3B54
+        nfA8VPFb2iLVmKIDpvikU8yhdiwdAxhwW7eSJGCas6AG6DyN2iVCCKg2NVn78iGO
+        IqmbzbWTmbZP5Zv3MZ9h+ywzSS4Lde3rYMAs7MXemeAGh5gWvNsk0ufMEekaIDUU
+        xQ3ZukJoPzuPHzNRLRfV4k73IDp5i26gRy+8mosGx5qWK1JWb7oWP2sHWdAYVqkk
+        gSMg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; t=1669911181; x=1669997581; bh=6vWBmCicNUpqFiwGEvCj2T5kO+IG
+        X5hkCfNsBIQgI/Y=; b=tutfjdV228slV4DB1ouLQaOkA3QksQHTgae4JoI5dvzE
+        CyVOxLAmykS23EhjNR1AVUJH71dR2/5g+QhwCimj9h4a11u6zXeiEtoynHnly2zJ
+        PZirfTzThPfC+c7Rn6QYdzmuD9ScQH5ejHY/sFRNazIO/WlW0X3s3J1yyDhRHQsO
+        qkA/ZhRdQBqlBhm4H1HkEzk3XEHuwNxBerIBA0YC2AG90r579LIHUZ6TNzrMqY4g
+        DSimavHWsWQZyUMNuMHB+UJPpHW+hxPzE8lElUWT9awbfIMoAtRcQBaH7CwdSH/I
+        ulX2IlSjKvSKyKCLluHA+us7l74aBzgH29D2VTIp5g==
+X-ME-Sender: <xms:jNKIY5I9iz2oqKqTm3X5W1WY_FqxbtunWpiADiDbguKkw8Fp4lzNfQ>
+    <xme:jNKIY1J_KPTt6qlT9V9kdaop9OhZt0TyhVkfHKxlvnLFidLfq2jK3CS0wVARp7-Zc
+    CzmjA1hLllEcaUfT9w>
+X-ME-Received: <xmr:jNKIYxs6msp1s68Tv3I0KS5bPwB-ivPovyNxbVpXysy3dTwy0J52ZBW5gGrSkZjkjxp0OVOzuHqI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrtdehgdekiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
+    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeffleegffevleekffekheeigfdtleeuvddtgffhtddvfefgjeehffduueevkedv
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvg
+    essggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:jNKIY6ZrphNoxj4hpamPyt2_exnHKsKwRkkpJDHITR4zSfLAZMHNqw>
+    <xmx:jNKIYwa-3k_8Wnf-SWbMs-ck8qo5e8rs4AaHpaXQIbPChwhsbcwD4Q>
+    <xmx:jNKIY-Do_gLsXFcj61oqGTooGttW_RKd2q1TWMaGROr7G4XxQ7FzAA>
+    <xmx:jdKIY9TdKPCzY01US0fiMYnLLjNUcFIp8ljYbHhIePiqduNTw0RNlA>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Dec 2022 11:13:00 -0500 (EST)
+Date:   Thu, 1 Dec 2022 11:12:59 -0500
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Greg Joyce <gjoyce@linux.vnet.ibm.com>
 Cc:     Hannes Reinecke <hare@suse.de>, linux-block@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
         brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
         nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
         keyrings@vger.kernel.org
-Date:   Thu, 01 Dec 2022 09:29:36 -0600
-In-Reply-To: <Y4gjgf2xHOYTVnSc@farprobe>
+Subject: Re: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
+Message-ID: <Y4jSi+pd8D069w4D@megas.dev.benboeckel.internal>
 References: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
-         <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
-         <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
-         <2133c00e5e7c53c458dbb709204c955bac8bee88.camel@linux.vnet.ibm.com>
-         <Y4gjgf2xHOYTVnSc@farprobe>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RN6-zXpnA45xPOTAP4vXVTMBnrGVxftM
-X-Proofpoint-GUID: RN6-zXpnA45xPOTAP4vXVTMBnrGVxftM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-01_11,2022-12-01_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
- clxscore=1011 suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2212010113
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
+ <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
+ <2133c00e5e7c53c458dbb709204c955bac8bee88.camel@linux.vnet.ibm.com>
+ <Y4gjgf2xHOYTVnSc@farprobe>
+ <044c90dc7feb3959b5740154addc230ba9a57216.camel@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <044c90dc7feb3959b5740154addc230ba9a57216.camel@linux.vnet.ibm.com>
+User-Agent: Mutt/2.2.7 (2022-08-07)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2022-11-30 at 22:46 -0500, Ben Boeckel wrote:
-> On Wed, Nov 30, 2022 at 09:19:25 -0600, Greg Joyce wrote:
-> > On Wed, 2022-11-30 at 08:00 +0100, Hannes Reinecke wrote:
-> > > On 11/30/22 00:25, gjoyce@linux.vnet.ibm.com wrote:
-> > > > +	case OPAL_KEYRING:
-> > > > +		/* the key is in the keyring */
-> > > > +		ret = read_sed_opal_key(OPAL_AUTH_KEY, key-
-> > > > >key,
-> > > > OPAL_KEY_MAX);
-> > > > +		if (ret > 0) {
-> > > > +			if (ret > 255) {
-> > > 
-> > > Why is a key longer than 255 an error?
-> > > If this is a requirement, why not move the check into
-> > > read_sed_opal_key() such that one only has to check for
-> > > ret < 0 on errors?
-> > 
-> > The check is done here because the SED Opal spec stipulates 255 as
-> > the
-> > maximum key length. The key length (key->key_len) in the existing
-> > data
-> > structures is __u8, so a length greater than 255 can not be
-> > conveyed.
-> > For defensive purposes, I though it best to check here.
+On Thu, Dec 01, 2022 at 09:29:36 -0600, Greg Joyce wrote:
+> On Wed, 2022-11-30 at 22:46 -0500, Ben Boeckel wrote:
+> > Perhaps naming it `OPAL_MAX_KEY_LEN` would help clarify this?
 > 
-> Perhaps naming it `OPAL_MAX_KEY_LEN` would help clarify this?
-> 
-> --Ben
+> I'm not averse to changing it because it would be clearer. My concern
+> is that it's been OPAL_KEY_MAX for 5+ years (the original SED Opal
+> commit). Unless there is strong consensus to change it, I'm going to
+> leave it as the original name.
 
-I'm not averse to changing it because it would be clearer. My concern
-is that it's been OPAL_KEY_MAX for 5+ years (the original SED Opal
-commit). Unless there is strong consensus to change it, I'm going to
-leave it as the original name.
+I don't care about the name (very much in the peanut gallery), just it
+not being a magic number :) .
 
--Greg
-
+--Ben
