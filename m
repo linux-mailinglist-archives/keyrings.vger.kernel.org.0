@@ -2,63 +2,87 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1FF64010F
-	for <lists+keyrings@lfdr.de>; Fri,  2 Dec 2022 08:34:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 726BA64092C
+	for <lists+keyrings@lfdr.de>; Fri,  2 Dec 2022 16:19:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232366AbiLBHeT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Dec 2022 02:34:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43644 "EHLO
+        id S232265AbiLBPTU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Dec 2022 10:19:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232280AbiLBHeS (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Dec 2022 02:34:18 -0500
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5687DA68
-        for <keyrings@vger.kernel.org>; Thu,  1 Dec 2022 23:34:17 -0800 (PST)
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-        by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B27O7pc014483;
-        Fri, 2 Dec 2022 07:34:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=PPS06212021;
- bh=tgUgF5lPd56uBk7KX6AMEy7QkqlFqII7FeXMQNDpN1M=;
- b=D/psSlyiN6XuPO73JKSRzWmKTrRahx0m77ekFfTETzOpdfXxIc7eM3Y6kwSCJzSLOt+P
- jbRaTOALnMB7HZp0Zi9+gVKoljCH+DeNYCUEpoe5zfSu0RypMz7iSiyF8N0asNUf8REo
- UvuLU+kUtytMJw19Q4v609sBzCfMlJ5KaBwoqcxSV8OxafxhvXhlhTi1eAsjB6ddhmYo
- 5Aci2uGM19cCS7RYfvkf5bf8RITrzhwU4fYORH62m11sZ5qAngOU7zilW3LyIiS8+MxN
- WtQuFo+t5I6vgfvx6ZBGGq5S1R6kvKWl2tNk3QRj70yoK97UtkmidyBIgnonR8l7eVi3 KA== 
-Received: from ala-exchng01.corp.ad.wrs.com (unknown-82-252.windriver.com [147.11.82.252])
-        by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3m39sbw3pq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 02 Dec 2022 07:34:15 +0000
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Thu, 1 Dec 2022 23:34:14 -0800
-Received: from pek-lpg-core2.wrs.com (128.224.153.41) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2242.12 via Frontend Transport; Thu, 1 Dec 2022 23:34:13 -0800
-From:   <changqing.li@windriver.com>
-To:     <keyrings@vger.kernel.org>, <dhowells@redhat.com>
-CC:     <changqing.li@windriver.com>
-Subject: [PATCH] tests/toolbox.inc.sh: update regex for getting endian
-Date:   Fri, 2 Dec 2022 15:34:12 +0800
-Message-ID: <20221202073412.90239-1-changqing.li@windriver.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: D8IQdVb6uDd0UaneFNXQ5ZowK34pZ2AT
-X-Proofpoint-ORIG-GUID: D8IQdVb6uDd0UaneFNXQ5ZowK34pZ2AT
+        with ESMTP id S232114AbiLBPTT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Dec 2022 10:19:19 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772B4A958E;
+        Fri,  2 Dec 2022 07:19:18 -0800 (PST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B2FHN4g008585;
+        Fri, 2 Dec 2022 15:19:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=kk2DKWr3NuGpJ+Svcp+qRnmUBH5ye61AWs17cEkLK3k=;
+ b=eIZKp8jIvlNGrbtxhT7sBjf8ytCaNuRSPxG1OXnEURIA/3izVTUEdmA34hMqfmrDPOuS
+ XEG7huc2qcmbFaV50MRyWiZ6qXLgwCTT869vu14pf3uy+hGWKzcqq68Bfjk29/mRYzfq
+ CdthJW71V1Bi5G7B3ndeIxsuU+2KGKVy/JQGknCCNe71yEbF6CWElVHo8Sy14at/5l8d
+ pvgQtPbfQMbuyZFtGnTDIW+O+aXVdszLu09dChIWOAhijzoHU1qMO6EcovQ7FEewIy9i
+ s6JDbu1/VDnJevH/ezPMo+tbIfiP5r0SZll29mSuKZuWK3lZN6jn75agzhCyy1UYeGAw 2A== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m7kvd80wy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Dec 2022 15:19:03 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2B2F5dmj013584;
+        Fri, 2 Dec 2022 15:19:02 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+        by ppma01dal.us.ibm.com with ESMTP id 3m3aeb12x0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Dec 2022 15:19:02 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+        by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B2FJ05s3408442
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 2 Dec 2022 15:19:01 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D2E5B5804E;
+        Fri,  2 Dec 2022 15:19:00 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C480258052;
+        Fri,  2 Dec 2022 15:18:59 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.160.99.100])
+        by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Fri,  2 Dec 2022 15:18:59 +0000 (GMT)
+Message-ID: <e53f14006d4a26f9b8e14d30683e4006ed2fa35f.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
+From:   Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Reply-To: gjoyce@linux.vnet.ibm.com
+To:     Hannes Reinecke <hare@suse.de>, linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
+        keyrings@vger.kernel.org
+Date:   Fri, 02 Dec 2022 09:18:59 -0600
+In-Reply-To: <4a3b6a0f-be1b-e0b1-941b-6701a42e9a2c@suse.de>
+References: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+         <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
+         <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
+         <ed32cbc546383085bc8c00d913a53059831b2cfc.camel@linux.vnet.ibm.com>
+         <4a3b6a0f-be1b-e0b1-941b-6701a42e9a2c@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xZ5pZaCSkGial_cn81MpDjJboOX58ITK
+X-Proofpoint-GUID: xZ5pZaCSkGial_cn81MpDjJboOX58ITK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-02_04,2022-12-01_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- adultscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0 bulkscore=0
- malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=918 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2212020057
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+ definitions=2022-12-02_08,2022-12-01_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212020114
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,33 +90,76 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Changqing Li <changqing.li@windriver.com>
+On Fri, 2022-12-02 at 07:56 +0100, Hannes Reinecke wrote:
+> On 12/1/22 19:03, Greg Joyce wrote:
+> > On Wed, 2022-11-30 at 08:00 +0100, Hannes Reinecke wrote:
+> > > On 11/30/22 00:25, gjoyce@linux.vnet.ibm.com wrote:
+> > > > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > > > 
+> > > > Extend the SED block driver so it can alternatively
+> > > > obtain a key from a sed-opal kernel keyring. The SED
+> > > > ioctls will indicate the source of the key, either
+> > > > directly in the ioctl data or from the keyring.
+> > > > 
+> > > > This allows the use of SED commands in scripts such as
+> > > > udev scripts so that drives may be automatically unlocked
+> > > > as they become available.
+> > > > 
+> > > > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > > > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+> > > > ---
+> > > >    block/Kconfig                 |   1 +
+> > > >    block/sed-opal.c              | 174
+> > > > +++++++++++++++++++++++++++++++++-
+> > > >    include/linux/sed-opal.h      |   3 +
+> > > >    include/uapi/linux/sed-opal.h |   8 +-
+> > > >    4 files changed, 183 insertions(+), 3 deletions(-)
+> > > >   
+> > > > +	ret = opal_get_key(dev, &opal_lrs->session.opal_key);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > >    	mutex_lock(&dev->dev_lock);
+> > > >    	setup_opal_dev(dev);
+> > > >    	ret = execute_steps(dev, lr_steps,
+> > > > ARRAY_SIZE(lr_steps));
+> > > > @@ -2622,6 +2759,14 @@ static int opal_set_new_pw(struct
+> > > > opal_dev
+> > > > *dev, struct opal_new_pw *opal_pw)
+> > > >    	ret = execute_steps(dev, pw_steps,
+> > > > ARRAY_SIZE(pw_steps));
+> > > >    	mutex_unlock(&dev->dev_lock);
+> > > >    
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	/* update keyring with new password */
+> > > > +	ret = update_sed_opal_key(OPAL_AUTH_KEY,
+> > > > +				  opal_pw-
+> > > > >new_user_pw.opal_key.key,
+> > > > +				  opal_pw-
+> > > > > new_user_pw.opal_key.key_len);
+> > > > +
+> > > >    	return ret;
+> > > >    }
+> > > >    
+> > > What about key revocation?
+> > > You only allow to set a new key, but what happens with the old
+> > > ones?
+> > 
+> > My understanding was that key_create_or_update() would not allow
+> > duplicates so there shouldn't be old ones. Is that incorrect?
+> > 
+> Ah, right, you only have one key.
+> But still, you might want to revoke that one, too, no?
+> (Think of decommissioning old drives ...)
+> 
+> Cheers,
+>  
+> Hannes
 
-Update regex for get endian to following condition:
-/proc/777/exe: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2
+SED Opal allows for disabling locking on a SED drive. Both sedcli and
+sedutil have commands to support this. This is the method for drive
+decommisioning (un-provisioning). There is also a mechanism to
+cryptographically erase the data on the drive if that is desired.
 
-Signed-off-by: Changqing Li <changqing.li@windriver.com>
----
- tests/toolbox.inc.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/toolbox.inc.sh b/tests/toolbox.inc.sh
-index 609a6c7..b1943a1 100644
---- a/tests/toolbox.inc.sh
-+++ b/tests/toolbox.inc.sh
-@@ -13,10 +13,10 @@
- echo === $OUTPUTFILE ===
- 
- endian=`file -L /proc/$$/exe`
--if expr "$endian" : '.* MSB \+\(pie executable\|executable\|shared object\).*' >&/dev/null
-+if expr "$endian" : '.* MSB .*\(pie executable\|executable\|shared object\).*' >&/dev/null
- then
-     endian=BE
--elif expr "$endian" : '.* LSB \+\(pie executable\|executable\|shared object\).*' >&/dev/null
-+elif expr "$endian" : '.* LSB .*\(pie executable\|executable\|shared object\).*' >&/dev/null
- then
-     endian=LE
- else
--- 
-2.37.1
 
