@@ -2,156 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE6C640FBE
-	for <lists+keyrings@lfdr.de>; Fri,  2 Dec 2022 22:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4720641E0C
+	for <lists+keyrings@lfdr.de>; Sun,  4 Dec 2022 17:53:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234275AbiLBVDt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 2 Dec 2022 16:03:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
+        id S230115AbiLDQxK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 4 Dec 2022 11:53:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234190AbiLBVDs (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Dec 2022 16:03:48 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B519D80C7;
-        Fri,  2 Dec 2022 13:03:46 -0800 (PST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B2IWQgL019814;
-        Fri, 2 Dec 2022 21:03:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=l3YF7d7Osha4HUveR4HvX/7HD6zwUOSpMIQU9u+UtZc=;
- b=mKsYTYr37ehS3zXP91idG9z9wLRV2TKwsxw+gihdb1OPxKe+XPlnNw7v5XAfYEhooHRe
- GmhgyRbM/DI7FJ5hYIHntmf/w8yiQzYcDUu7HzmWjcc2raGT9TzSAWBakrXa8lEU6RVx
- rYah4wRfh5P3FDQMoflcMWA3djz0EtK5qg4SIdlr8i/yi6Iu1bFGQ0N5/ZUYM+bQ0uLE
- XEQ+UCVLwXkY99bsY2UeuX8Ei6VLHQrZfFmF84zs1t/u+5RSHYLKaK1Dkuy7+tFoNTlS
- ySF35F8ot6BOPyLY2dRHod/zByDtiOo6MNL1hpTD/PUqzy3l5PPAJD7Egs5wUxhSFsrW iw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m7pqwtuam-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Dec 2022 21:03:17 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2B2Krx5O004621;
-        Fri, 2 Dec 2022 21:03:16 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m7pqwtua6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Dec 2022 21:03:16 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2B2Kp5MW009983;
-        Fri, 2 Dec 2022 21:03:15 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
-        by ppma02wdc.us.ibm.com with ESMTP id 3m3aeam324-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Dec 2022 21:03:15 +0000
-Received: from b03ledav004.gho.boulder.ibm.com ([9.17.130.235])
-        by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B2L3EuJ34931234
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 2 Dec 2022 21:03:14 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8D5B67805E;
-        Fri,  2 Dec 2022 22:13:21 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 42E997805C;
-        Fri,  2 Dec 2022 22:13:18 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.83.181])
-        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Fri,  2 Dec 2022 22:13:17 +0000 (GMT)
-Message-ID: <6f66f174af92a9b23bddd72945e94e888b0c9420.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 04/11] security: keys: trusted: Include TPM2 creation
- data
-From:   James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To:     Evan Green <evgreen@chromium.org>
-Cc:     Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, linux-integrity@vger.kernel.org,
-        gwendal@chromium.org, dianders@chromium.org, apronin@chromium.org,
-        Pavel Machek <pavel@ucw.cz>, Ben Boeckel <me@benboeckel.net>,
-        rjw@rjwysocki.net, Kees Cook <keescook@chromium.org>,
-        dlunev@google.com, zohar@linux.ibm.com,
-        Matthew Garrett <mgarrett@aurora.tech>, jarkko@kernel.org,
-        linux-pm@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        Paul Moore <paul@paul-moore.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        with ESMTP id S229954AbiLDQxK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 4 Dec 2022 11:53:10 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9749FF3;
+        Sun,  4 Dec 2022 08:53:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9B992B80ACA;
+        Sun,  4 Dec 2022 16:53:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33C8C433D6;
+        Sun,  4 Dec 2022 16:53:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670172786;
+        bh=VrQ5fq3fx8KuNp5ylQozI8eq9+U1u9UGalGdEsSX4Uo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tPeu7ur/3uKq+L7UxoYaswwZ8SEoX8GJJ5s/Ph/GHWIwQXek8Aekie7sg35laiMm0
+         UZsBtQadTd75MJfzHeheSa1NMdjg7l4tKK2bmCdluvFzGcdKtXi67JYnwpqerbkHpK
+         b56htLXh6LRJfsIpNlwfqvWu9d8Wv2abETHGXWJljLrrDvuheQT2lgTDLGVvBgm0TH
+         mkIEgcDjiVomeQ3EvK7MtgKzt8pr5Ag2vkFDnfsUf3kbMbMIKR0kY1GHM+279yqB+F
+         XADDeyjKn6S95KWZzBg6yzwkqidBA065TbpLGthNz3hjhR29jzGnFtktY/oWUJiXWO
+         d/tNlllyfzbGA==
+Date:   Sun, 4 Dec 2022 16:53:01 +0000
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Pearson <markpearson@lenovo.com>,
+        linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Date:   Fri, 02 Dec 2022 16:03:09 -0500
-In-Reply-To: <95ffac38780bf0ec6084cb354bfcb3b7bee686b9.camel@linux.ibm.com>
-References: <20221111231636.3748636-1-evgreen@chromium.org>
-         <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
-         <Y3FfhrgvBNey6T7V@sol.localdomain>
-         <ff23b4e24222037959c2a784496c7ee91024e6c5.camel@linux.ibm.com>
-         <CAE=gft63-jdKqKmepB+LXPm6WUWSnz+CMWcWWnyN1y-EnS4kVg@mail.gmail.com>
-         <c31d1a3af53515f2a9d3f53eb27ce698e796f9b9.camel@linux.ibm.com>
-         <CAE=gft6L6bMtzbqUfH_NAsFz2r0Nw7kkbCPXcr2nYj5n31FYQg@mail.gmail.com>
-         <95ffac38780bf0ec6084cb354bfcb3b7bee686b9.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zHzyh_mb8TepzfPQ11qtRN52QY2r-J1v
-X-Proofpoint-ORIG-GUID: sPQup2CTJfvDp6URQ1pmFgRxtBqWs-WP
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Subject: Re: [PATCH v3 1/3] certs: log hash value on blacklist error
+Message-ID: <Y4zQbWJZpJV7KTTJ@kernel.org>
+References: <20221118040343.2958-1-linux@weissschuh.net>
+ <20221118040343.2958-2-linux@weissschuh.net>
+ <Y4QK2cmptp4vpRj/@kernel.org>
+ <8b9e9bf8-ae44-485a-9b30-85a71a236f06@t-8ch.de>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-02_12,2022-12-01_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- mlxlogscore=371 spamscore=0 phishscore=0 clxscore=1011 lowpriorityscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2212020169
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8b9e9bf8-ae44-485a-9b30-85a71a236f06@t-8ch.de>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2022-11-14 at 13:00 -0500, James Bottomley wrote:
-> On Mon, 2022-11-14 at 09:43 -0800, Evan Green wrote:
-> > On Mon, Nov 14, 2022 at 8:56 AM James Bottomley
-> > <jejb@linux.ibm.com>
-> > wrote:
-> [...]
-> > > Of course, since openssl_tpm2_engine is the complete reference
-> > > implementation that means I'll have to add the creation PCRs
-> > > implementation to it ... unless you'd like to do it?
+On Mon, Nov 28, 2022 at 02:59:20AM +0100, Thomas Weißschuh wrote:
+> On 2022-11-28 03:11+0200, Jarkko Sakkinen wrote:
+> > "Make blacklisted hash available in klog"
 > > 
-> > I am willing to help as I'm the one making the mess. How does it
-> > sequence along with your draft submission (before, after,
-> > simultaneous)?
+> > On Fri, Nov 18, 2022 at 05:03:41AM +0100, Thomas Weißschuh wrote:
+> > > Without this information these logs are not actionable.
+> > 
+> > Without blacklisted hash?
+> > 
+> > > For example on duplicate blacklisted hashes reported by the system
+> > > firmware users should be able to report the erroneous hashes to their
+> > > system vendors.
+> > > 
+> > > While we are at it use the dedicated format string for ERR_PTR.
+> > 
+> > Lacks the beef so saying "while we are at it" makes no sense.
 > 
-> At the moment, just send patches.Â  The openssl_tpm2_engine is
-> developed on a groups.io mailing list:
+> What about this:
 > 
-> https://groups.io/g/openssl-tpm2-engine/
+>   [PATCH] certs: make blacklisted hash available in klog
 > 
-> You need an IETF specific tool (xml2rfc) to build the rfc from the
-> xml, but it's available in most distros as python3-xml2rfc.Â  If you
-> don't want to learn the IETF XML I can help you code up the patch to
-> add that to the draft spec.
+>   One common situation triggering this log statement are duplicate hashes
+>   reported by the system firmware.
+> 
+>   These duplicates should be removed from the firmware.
+> 
+>   Without logging the blacklisted hash triggering the issue however the users
+>   can not report it properly to the firmware vendors and the firmware vendors
+>   can not easily see which specific hash is duplicated.
+> 
+>   While changing the log message also use the dedicated ERR_PTR format
+>   placeholder for the returned error value.
 
-Just as a heads up, the patch series implementing signed policy (and
-thus taking option [3]) is on the mailing list for review:
+Looks looks a lot better thank you!
 
-https://groups.io/g/openssl-tpm2-engine/message/296
+> > > Fixes: 6364d106e041 ("certs: Allow root user to append signed hashes to the blacklist keyring")
+> > 
+> > Why does this count as a bug?
+> 
+> These error logs are confusing to users, prompting them to waste time
+> investigating them and even mess with their firmware settings.
+> (As indicated in the threads linked from the cover letter)
+> 
+> The most correct fix would be patches 2 and 3 from this series.
+> 
+> I was not sure if patch 2 would be acceptable for stable as it introduces new
+> infrastructure code.
+> So patch 1 enables users to report the issue to their firmware vendors and get
+> the spurious logs resolved that way.
+> 
+> If these assumptions are incorrect I can fold patch 1 into patch 3.
+> 
+> But are patch 2 and 3 material for stable?
 
-With apologies for the awful lack of threading in the groups.io
-interface.
+I cannot say anything conclusive to this before seeing updated version of
+the patch set.
 
-So you don't have to build the RFC yourself, I published the proposed
-update on my website:
-
-https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.html
-https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.txt
-
-If you want to use option [4] for the creation data, it's available.
-
-Regards,
-
-James
-
-
+BR, Jarkko
