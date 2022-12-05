@@ -2,78 +2,134 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E6F642D3C
-	for <lists+keyrings@lfdr.de>; Mon,  5 Dec 2022 17:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29B946430B4
+	for <lists+keyrings@lfdr.de>; Mon,  5 Dec 2022 19:44:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232709AbiLEQkU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 5 Dec 2022 11:40:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35030 "EHLO
+        id S230293AbiLESoA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 5 Dec 2022 13:44:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232160AbiLEQj2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Dec 2022 11:39:28 -0500
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CCB6205DA
-        for <keyrings@vger.kernel.org>; Mon,  5 Dec 2022 08:38:14 -0800 (PST)
-Received: by mail-ed1-x541.google.com with SMTP id f7so16574112edc.6
-        for <keyrings@vger.kernel.org>; Mon, 05 Dec 2022 08:38:14 -0800 (PST)
+        with ESMTP id S232329AbiLESny (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Dec 2022 13:43:54 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1526119C06
+        for <keyrings@vger.kernel.org>; Mon,  5 Dec 2022 10:43:53 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id gh17so676040ejb.6
+        for <keyrings@vger.kernel.org>; Mon, 05 Dec 2022 10:43:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=UtqOR0TUTGkUbDGr8MGZcoRbeL9zx0cfVyHFZjKEugE8WOFFw6JAS5X6FEfDOg1IiE
-         wT8TCd+ZUazDUUTLyr9KxmICTmZes5eWEeh6ygEUrJfXY/Qu8VHCP0WdU4h/7zzYfyQl
-         91qAU7yNjWvvL7FJ3yatshBFxZWiRV6Gj+XHwjTDfnsSIDj464rGZr9+66S/CjEYisfX
-         xv+3yrZfjpeO/euAEP1mkfE28NFp0rDieI8OQi68tcOAZJxxQT8YqjNWf8kIGbIGATbB
-         Wq5VQQWRQePBOv3EnRUjtzI2EBC6eVy0h1gStPbhX/ZavVWyEFThLAdVF5j3hsF7abY6
-         fbZQ==
+        bh=wAi9wb/ccr1V0J6asFIl7Azn5bhshYuD4nE6CW5xW+g=;
+        b=OPVtqaGQfZNdZ4DF7z8NeObdT3sHluUFseqPw49KCbN+wqTHkRGDlCNAdrUqnU5qq6
+         M/dZcdpbg6LMDtINPMHagxvEiD/e+KnOjJz+nt7H4s3lp1pprnp3qe4GMLa/QhYvpUQp
+         yZVn5ofbBDCap0LFHONiDAaGYHExRbkxKOdis=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=fjGFroL1toqkAczPjHF+gO1jouZQIKQ0kRNoQqi8J3p/gb4rKTCtUY52S72YGFmgdN
-         uEI2GN3t+2zohIbXY1AdbHmbLwltsBSwIFb8HmKNi/RtAS4Vj4iAV1pf5hG/iL9CgcXt
-         goT/1rjiiOmCFkBA52R4ilbXxu6RD68Zjfr+gdpmQgQtIDVMnTm3taTmLrYy29nwzcPx
-         jcmU3DPwW0uSrMODZw1jI9/juorJtFK84kO8LJ0fUvT0VxPsPyLjKAaM6UnSwoPvVoVS
-         RhUwDYbCa3Eku6SjeT0+K8Y5RnEU1eGs93xRTZqQTlVxBi7+1VyHLpotyNJXrISaapby
-         ffFw==
-X-Gm-Message-State: ANoB5pkmoG6pgONRGMlDmYM9b+H/jQ24els/4KrWTDx5x/9zvGdRNhMe
-        QO4ri0jpbxj+DWnJl3xDZbm5PzXDwD/eAaQ3lT4=
-X-Google-Smtp-Source: AA0mqf64QyMe8fpf59aGbeHCR1q35cNfSuUf6BMdUngrsM/ayoA9RV606OgadYwLica4v+1WhenLeJNDfjKkv0tfV/0=
-X-Received: by 2002:a05:6402:1655:b0:46a:80cc:d5bd with SMTP id
- s21-20020a056402165500b0046a80ccd5bdmr47540855edx.210.1670258293183; Mon, 05
- Dec 2022 08:38:13 -0800 (PST)
+        bh=wAi9wb/ccr1V0J6asFIl7Azn5bhshYuD4nE6CW5xW+g=;
+        b=Dua7DNQraq1uX/bFiw8AYlolapmONw07PxxpvsyHirH3RGmNGuuSWb6uJlKO2wplZZ
+         eYtBstjddg+js8Plall0XCdHPUJXBiEp5CIwIdfADXblJQmrl7T7x4Rvof7vmRfhA1RL
+         DOSzAy4bMlcp+08VImb1C5b7OuOXI+Dso5HSRex6MPq9wuh8RbQyGayNbAo2EDcZfWUx
+         NLiaHoJngM+/ouDpgWOkNJeEASi1Cd0tcTO76kZ6PQ4Rn/9mHjuGL7tUOisT+B2nqnXu
+         kFSksWfNfFKLgOtS+dQA1hMFHYIYa7SnHVmAfryIaZFrwYBFA2a+QFKgpeG8CmnZuxXm
+         KZvg==
+X-Gm-Message-State: ANoB5plCMTSATReoMWHoKOk6hnFUBuY+/gXFi9s/eDtHZb/su4qldkVW
+        UfMIZdEiRU6NOSJg4vkZJ1GExUn7y0ccXhv3
+X-Google-Smtp-Source: AA0mqf4/L3Waah1xsYYjmoanDtkjM6LhVeeg8E4Wso9JEe9fwAGV11ntrOPFZJ3mZB0F+x4bwLg98Q==
+X-Received: by 2002:a17:906:6057:b0:7c0:a90b:be7e with SMTP id p23-20020a170906605700b007c0a90bbe7emr19846603ejj.202.1670265832453;
+        Mon, 05 Dec 2022 10:43:52 -0800 (PST)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com. [209.85.128.53])
+        by smtp.gmail.com with ESMTPSA id v16-20020a1709061dd000b007b47749838asm6465641ejh.45.2022.12.05.10.43.52
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Dec 2022 10:43:52 -0800 (PST)
+Received: by mail-wm1-f53.google.com with SMTP id l26so3225110wms.4
+        for <keyrings@vger.kernel.org>; Mon, 05 Dec 2022 10:43:52 -0800 (PST)
+X-Received: by 2002:a05:600c:4e4c:b0:3cf:87c6:890b with SMTP id
+ e12-20020a05600c4e4c00b003cf87c6890bmr62524251wmq.194.1670265821267; Mon, 05
+ Dec 2022 10:43:41 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6f02:3b6:b0:27:90e6:e1d1 with HTTP; Mon, 5 Dec 2022
- 08:38:12 -0800 (PST)
-Reply-To: plml47@hotmail.com
-From:   Philip Manul <alomassou1972@gmail.com>
-Date:   Mon, 5 Dec 2022 08:38:12 -0800
-Message-ID: <CA+_U6tgZ8DEVAUv=Xxa_wPqd0AjaBUYpHdjuWYu-vZsb=wyRVA@mail.gmail.com>
-Subject: REP:
-To:     in <in@proposal.net>
+References: <20221111231636.3748636-1-evgreen@chromium.org>
+ <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
+ <Y3FfhrgvBNey6T7V@sol.localdomain> <ff23b4e24222037959c2a784496c7ee91024e6c5.camel@linux.ibm.com>
+ <CAE=gft63-jdKqKmepB+LXPm6WUWSnz+CMWcWWnyN1y-EnS4kVg@mail.gmail.com>
+ <c31d1a3af53515f2a9d3f53eb27ce698e796f9b9.camel@linux.ibm.com>
+ <CAE=gft6L6bMtzbqUfH_NAsFz2r0Nw7kkbCPXcr2nYj5n31FYQg@mail.gmail.com>
+ <95ffac38780bf0ec6084cb354bfcb3b7bee686b9.camel@linux.ibm.com> <6f66f174af92a9b23bddd72945e94e888b0c9420.camel@linux.ibm.com>
+In-Reply-To: <6f66f174af92a9b23bddd72945e94e888b0c9420.camel@linux.ibm.com>
+From:   Evan Green <evgreen@chromium.org>
+Date:   Mon, 5 Dec 2022 10:43:05 -0800
+X-Gmail-Original-Message-ID: <CAE=gft4wvxOZ4CS2hJzYANRNbCtYUznmsEE-3n4=EDx-+L_f9Q@mail.gmail.com>
+Message-ID: <CAE=gft4wvxOZ4CS2hJzYANRNbCtYUznmsEE-3n4=EDx-+L_f9Q@mail.gmail.com>
+Subject: Re: [PATCH v5 04/11] security: keys: trusted: Include TPM2 creation data
+To:     jejb@linux.ibm.com
+Cc:     Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org,
+        corbet@lwn.net, linux-integrity@vger.kernel.org,
+        gwendal@chromium.org, dianders@chromium.org, apronin@chromium.org,
+        Pavel Machek <pavel@ucw.cz>, Ben Boeckel <me@benboeckel.net>,
+        rjw@rjwysocki.net, Kees Cook <keescook@chromium.org>,
+        dlunev@google.com, zohar@linux.ibm.com,
+        Matthew Garrett <mgarrett@aurora.tech>, jarkko@kernel.org,
+        linux-pm@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        Paul Moore <paul@paul-moore.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
---=20
-Guten tag,
-Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
-einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
-teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
-mein verstorbener Kunde, hat hier in meinem Land einen nicht
-beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
-Verfahren.
-Philip Manul.
+On Fri, Dec 2, 2022 at 1:03 PM James Bottomley <jejb@linux.ibm.com> wrote:
+>
+> On Mon, 2022-11-14 at 13:00 -0500, James Bottomley wrote:
+> > On Mon, 2022-11-14 at 09:43 -0800, Evan Green wrote:
+> > > On Mon, Nov 14, 2022 at 8:56 AM James Bottomley
+> > > <jejb@linux.ibm.com>
+> > > wrote:
+> > [...]
+> > > > Of course, since openssl_tpm2_engine is the complete reference
+> > > > implementation that means I'll have to add the creation PCRs
+> > > > implementation to it ... unless you'd like to do it?
+> > >
+> > > I am willing to help as I'm the one making the mess. How does it
+> > > sequence along with your draft submission (before, after,
+> > > simultaneous)?
+> >
+> > At the moment, just send patches.  The openssl_tpm2_engine is
+> > developed on a groups.io mailing list:
+> >
+> > https://groups.io/g/openssl-tpm2-engine/
+> >
+> > You need an IETF specific tool (xml2rfc) to build the rfc from the
+> > xml, but it's available in most distros as python3-xml2rfc.  If you
+> > don't want to learn the IETF XML I can help you code up the patch to
+> > add that to the draft spec.
+>
+> Just as a heads up, the patch series implementing signed policy (and
+> thus taking option [3]) is on the mailing list for review:
+>
+> https://groups.io/g/openssl-tpm2-engine/message/296
+>
+> With apologies for the awful lack of threading in the groups.io
+> interface.
+>
+> So you don't have to build the RFC yourself, I published the proposed
+> update on my website:
+>
+> https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.html
+> https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.txt
+>
+> If you want to use option [4] for the creation data, it's available.
+
+Perfect, thanks James!
+-Evan
