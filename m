@@ -2,134 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29B946430B4
-	for <lists+keyrings@lfdr.de>; Mon,  5 Dec 2022 19:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 259486458A9
+	for <lists+keyrings@lfdr.de>; Wed,  7 Dec 2022 12:12:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbiLESoA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 5 Dec 2022 13:44:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
+        id S229573AbiLGLMJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 7 Dec 2022 06:12:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232329AbiLESny (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Dec 2022 13:43:54 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1526119C06
-        for <keyrings@vger.kernel.org>; Mon,  5 Dec 2022 10:43:53 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id gh17so676040ejb.6
-        for <keyrings@vger.kernel.org>; Mon, 05 Dec 2022 10:43:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wAi9wb/ccr1V0J6asFIl7Azn5bhshYuD4nE6CW5xW+g=;
-        b=OPVtqaGQfZNdZ4DF7z8NeObdT3sHluUFseqPw49KCbN+wqTHkRGDlCNAdrUqnU5qq6
-         M/dZcdpbg6LMDtINPMHagxvEiD/e+KnOjJz+nt7H4s3lp1pprnp3qe4GMLa/QhYvpUQp
-         yZVn5ofbBDCap0LFHONiDAaGYHExRbkxKOdis=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wAi9wb/ccr1V0J6asFIl7Azn5bhshYuD4nE6CW5xW+g=;
-        b=Dua7DNQraq1uX/bFiw8AYlolapmONw07PxxpvsyHirH3RGmNGuuSWb6uJlKO2wplZZ
-         eYtBstjddg+js8Plall0XCdHPUJXBiEp5CIwIdfADXblJQmrl7T7x4Rvof7vmRfhA1RL
-         DOSzAy4bMlcp+08VImb1C5b7OuOXI+Dso5HSRex6MPq9wuh8RbQyGayNbAo2EDcZfWUx
-         NLiaHoJngM+/ouDpgWOkNJeEASi1Cd0tcTO76kZ6PQ4Rn/9mHjuGL7tUOisT+B2nqnXu
-         kFSksWfNfFKLgOtS+dQA1hMFHYIYa7SnHVmAfryIaZFrwYBFA2a+QFKgpeG8CmnZuxXm
-         KZvg==
-X-Gm-Message-State: ANoB5plCMTSATReoMWHoKOk6hnFUBuY+/gXFi9s/eDtHZb/su4qldkVW
-        UfMIZdEiRU6NOSJg4vkZJ1GExUn7y0ccXhv3
-X-Google-Smtp-Source: AA0mqf4/L3Waah1xsYYjmoanDtkjM6LhVeeg8E4Wso9JEe9fwAGV11ntrOPFZJ3mZB0F+x4bwLg98Q==
-X-Received: by 2002:a17:906:6057:b0:7c0:a90b:be7e with SMTP id p23-20020a170906605700b007c0a90bbe7emr19846603ejj.202.1670265832453;
-        Mon, 05 Dec 2022 10:43:52 -0800 (PST)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com. [209.85.128.53])
-        by smtp.gmail.com with ESMTPSA id v16-20020a1709061dd000b007b47749838asm6465641ejh.45.2022.12.05.10.43.52
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Dec 2022 10:43:52 -0800 (PST)
-Received: by mail-wm1-f53.google.com with SMTP id l26so3225110wms.4
-        for <keyrings@vger.kernel.org>; Mon, 05 Dec 2022 10:43:52 -0800 (PST)
-X-Received: by 2002:a05:600c:4e4c:b0:3cf:87c6:890b with SMTP id
- e12-20020a05600c4e4c00b003cf87c6890bmr62524251wmq.194.1670265821267; Mon, 05
- Dec 2022 10:43:41 -0800 (PST)
+        with ESMTP id S229778AbiLGLLZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Dec 2022 06:11:25 -0500
+X-Greylist: delayed 935 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Dec 2022 03:10:55 PST
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B3D22BE9;
+        Wed,  7 Dec 2022 03:10:54 -0800 (PST)
+Received: from mail02.huawei.com (unknown [172.18.147.229])
+        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4NRvBy3lkhz9yF8q;
+        Wed,  7 Dec 2022 18:48:10 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwAnDvrycJBjWe_HAA--.20736S2;
+        Wed, 07 Dec 2022 11:54:53 +0100 (CET)
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     dhowells@redhat.com, herbert@gondor.apana.org.au,
+        davem@davemloft.net
+Cc:     zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        ebiggers@kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH] public_key: Add a comment to public_key_signature struct definition
+Date:   Wed,  7 Dec 2022 11:54:30 +0100
+Message-Id: <20221207105430.248613-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20221111231636.3748636-1-evgreen@chromium.org>
- <20221111151451.v5.4.Ieb1215f598bc9df56b0e29e5977eae4fcca25e15@changeid>
- <Y3FfhrgvBNey6T7V@sol.localdomain> <ff23b4e24222037959c2a784496c7ee91024e6c5.camel@linux.ibm.com>
- <CAE=gft63-jdKqKmepB+LXPm6WUWSnz+CMWcWWnyN1y-EnS4kVg@mail.gmail.com>
- <c31d1a3af53515f2a9d3f53eb27ce698e796f9b9.camel@linux.ibm.com>
- <CAE=gft6L6bMtzbqUfH_NAsFz2r0Nw7kkbCPXcr2nYj5n31FYQg@mail.gmail.com>
- <95ffac38780bf0ec6084cb354bfcb3b7bee686b9.camel@linux.ibm.com> <6f66f174af92a9b23bddd72945e94e888b0c9420.camel@linux.ibm.com>
-In-Reply-To: <6f66f174af92a9b23bddd72945e94e888b0c9420.camel@linux.ibm.com>
-From:   Evan Green <evgreen@chromium.org>
-Date:   Mon, 5 Dec 2022 10:43:05 -0800
-X-Gmail-Original-Message-ID: <CAE=gft4wvxOZ4CS2hJzYANRNbCtYUznmsEE-3n4=EDx-+L_f9Q@mail.gmail.com>
-Message-ID: <CAE=gft4wvxOZ4CS2hJzYANRNbCtYUznmsEE-3n4=EDx-+L_f9Q@mail.gmail.com>
-Subject: Re: [PATCH v5 04/11] security: keys: trusted: Include TPM2 creation data
-To:     jejb@linux.ibm.com
-Cc:     Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, linux-integrity@vger.kernel.org,
-        gwendal@chromium.org, dianders@chromium.org, apronin@chromium.org,
-        Pavel Machek <pavel@ucw.cz>, Ben Boeckel <me@benboeckel.net>,
-        rjw@rjwysocki.net, Kees Cook <keescook@chromium.org>,
-        dlunev@google.com, zohar@linux.ibm.com,
-        Matthew Garrett <mgarrett@aurora.tech>, jarkko@kernel.org,
-        linux-pm@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        Paul Moore <paul@paul-moore.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: GxC2BwAnDvrycJBjWe_HAA--.20736S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw4xJw4DCw4rKr4rXF13urg_yoW8GF4UpF
+        s3Gr1rKryjgrn3AFs7C3WfC34rGa1UCr17Ww4DZ3y3uanxXw1kCw4Ika13W3Z5XrWkXay7
+        ArZFgw1Yvw15Z3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUk2b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IY
+        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
+        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF
+        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0x
+        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+        87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUOyCJDUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgATBF1jj4Jj+AACs-
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Dec 2, 2022 at 1:03 PM James Bottomley <jejb@linux.ibm.com> wrote:
->
-> On Mon, 2022-11-14 at 13:00 -0500, James Bottomley wrote:
-> > On Mon, 2022-11-14 at 09:43 -0800, Evan Green wrote:
-> > > On Mon, Nov 14, 2022 at 8:56 AM James Bottomley
-> > > <jejb@linux.ibm.com>
-> > > wrote:
-> > [...]
-> > > > Of course, since openssl_tpm2_engine is the complete reference
-> > > > implementation that means I'll have to add the creation PCRs
-> > > > implementation to it ... unless you'd like to do it?
-> > >
-> > > I am willing to help as I'm the one making the mess. How does it
-> > > sequence along with your draft submission (before, after,
-> > > simultaneous)?
-> >
-> > At the moment, just send patches.  The openssl_tpm2_engine is
-> > developed on a groups.io mailing list:
-> >
-> > https://groups.io/g/openssl-tpm2-engine/
-> >
-> > You need an IETF specific tool (xml2rfc) to build the rfc from the
-> > xml, but it's available in most distros as python3-xml2rfc.  If you
-> > don't want to learn the IETF XML I can help you code up the patch to
-> > add that to the draft spec.
->
-> Just as a heads up, the patch series implementing signed policy (and
-> thus taking option [3]) is on the mailing list for review:
->
-> https://groups.io/g/openssl-tpm2-engine/message/296
->
-> With apologies for the awful lack of threading in the groups.io
-> interface.
->
-> So you don't have to build the RFC yourself, I published the proposed
-> update on my website:
->
-> https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.html
-> https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.txt
->
-> If you want to use option [4] for the creation data, it's available.
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Perfect, thanks James!
--Evan
+public_key_verify_signature() calls sg_set_buf() to set the signature and
+digest for the signature verification.
+
+As sg_set_buf() requires the buffer to be in physically contiguous memory,
+see commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in
+linear mapping"), mention that in a comment for the signature and digest
+fields of the public_key_signature structure.
+
+Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+---
+ include/crypto/public_key.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 68f7aa2a7e55..6d623e063034 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -37,8 +37,8 @@ extern void public_key_free(struct public_key *key);
+  */
+ struct public_key_signature {
+ 	struct asymmetric_key_id *auth_ids[3];
+-	u8 *s;			/* Signature */
+-	u8 *digest;
++	u8 *s;			/* Signature (in physically contiguous mem) */
++	u8 *digest;		/* Digest (in physically contiguous mem) */
+ 	u32 s_size;		/* Number of bytes in signature */
+ 	u32 digest_size;	/* Number of bytes in digest */
+ 	const char *pkey_algo;
+-- 
+2.25.1
+
