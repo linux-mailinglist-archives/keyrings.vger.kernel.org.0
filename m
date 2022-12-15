@@ -2,64 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3278464D971
-	for <lists+keyrings@lfdr.de>; Thu, 15 Dec 2022 11:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC2E64DA0E
+	for <lists+keyrings@lfdr.de>; Thu, 15 Dec 2022 12:10:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbiLOKWC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 15 Dec 2022 05:22:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38762 "EHLO
+        id S229830AbiLOLKb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Dec 2022 06:10:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230273AbiLOKV4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Dec 2022 05:21:56 -0500
+        with ESMTP id S229603AbiLOLKa (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Dec 2022 06:10:30 -0500
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438241D66E;
-        Thu, 15 Dec 2022 02:21:55 -0800 (PST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BFABrlx031884;
-        Thu, 15 Dec 2022 10:21:23 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FD123E84;
+        Thu, 15 Dec 2022 03:10:29 -0800 (PST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BFB1E47008360;
+        Thu, 15 Dec 2022 11:10:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=25J3tmS0CQRm5M+aL1a3pu4Teu7wCVJydV//fYAkxg8=;
- b=rsOVNm/jSLiVMl3DP/ED0AGqsdgedbeFl+jDlhjn5V4wNDtCfpERDvE5yileznuC4e5F
- 9+/QEL0PmwJb4FA4iQTrFBisMAn9RIl3lXIIZWl7WTDD1717KkOJwAuhENmkVCIKIpcj
- 26kxXG0VPgOvd9YhxY8UEMX+E3Cn2BKFF/voXYpnSBScEdUxHjElPYdoxws2CKmLpyt7
- bEjpQzQDk5PQt8nbG6ptd2HLR/QWP7XmGiqhWZMCUeU/CK3BiPiGyy/o/sSr6qJgXYam
- 9vMKe0H/P+qssw7fkNsjVKRWrCIbtX4Zw4UONgDVRy3rx2UajpoHy3q2kNcBVQLiVTeA /Q== 
+ bh=rUYLvmFOgFDqDQdDN12wI1WE4ZOCsYwtI8WfEJp0Fvo=;
+ b=YEScXS8FUo6JWnAJrvXZcb2SHKVXpimUP6tpakgNBI6zeOXxC9widnbXE1LWmU2M3h8U
+ wJZkyp8zEA3nlrLlN9+v3D8DmTvZF/IzUiaHJzJF5wJMymqKov4TIH+sK2vujfbTVwZK
+ OYnxz4HTK6EoEXaU77UFpmmODpjraO7G0Tsk4yIW8zQJzPtTUBbOA14j/8ud/aQVIlAF
+ ADxqTtQ7ptVp+7Cb6einjqScSfX1pmLirDN/EJzOir8tEbQVPQWnR1A4aVRpgxRoP6Yb
+ 1zC+ux90a1duY5pIyjaVki1a2cznvlAJ9Hq0gG5jw0HrWi+9Dk6hnT8/em6fk/zrPkob 4w== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mg1m3g6sh-1
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mg2bcg7pc-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Dec 2022 10:21:23 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BFADSjI005138;
-        Thu, 15 Dec 2022 10:21:22 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mg1m3g6ru-1
+        Thu, 15 Dec 2022 11:10:11 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BFB2aOr018669;
+        Thu, 15 Dec 2022 11:10:10 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mg2bcg7n4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Dec 2022 10:21:22 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BF8E25e011769;
-        Thu, 15 Dec 2022 10:21:20 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-        by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3meyyhw129-1
+        Thu, 15 Dec 2022 11:10:10 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+        by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BF8kKHk019328;
+        Thu, 15 Dec 2022 11:10:09 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+        by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3mf03ad5ax-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Dec 2022 10:21:20 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-        by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BFALJVf5701934
+        Thu, 15 Dec 2022 11:10:09 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BFBA7WS38994298
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 15 Dec 2022 10:21:19 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 81FE15805F;
-        Thu, 15 Dec 2022 10:21:19 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 347D05805D;
-        Thu, 15 Dec 2022 10:21:18 +0000 (GMT)
+        Thu, 15 Dec 2022 11:10:08 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9AC2158064;
+        Thu, 15 Dec 2022 11:10:07 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 683415805E;
+        Thu, 15 Dec 2022 11:10:05 +0000 (GMT)
 Received: from sig-9-65-242-118.ibm.com (unknown [9.65.242.118])
-        by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 15 Dec 2022 10:21:18 +0000 (GMT)
-Message-ID: <7d61852678d1652030ce9c7c2f906217c5c4ce06.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 07/10] KEYS: X.509: Flag Intermediate CA certs as
- endorsed
+        by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 15 Dec 2022 11:10:05 +0000 (GMT)
+Message-ID: <b0f29738b919e2705d770017f2f1eb0542c2fad4.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 03/10] KEYS: X.509: Parse Basic Constraints for CA
 From:   Mimi Zohar <zohar@linux.ibm.com>
 To:     Eric Snowberg <eric.snowberg@oracle.com>, jarkko@kernel.org
 Cc:     dhowells@redhat.com, dwmw2@infradead.org,
@@ -71,25 +70,25 @@ Cc:     dhowells@redhat.com, dwmw2@infradead.org,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
         linux-security-module@vger.kernel.org
-Date:   Thu, 15 Dec 2022 05:21:17 -0500
-In-Reply-To: <20221214003401.4086781-8-eric.snowberg@oracle.com>
+Date:   Thu, 15 Dec 2022 06:10:04 -0500
+In-Reply-To: <20221214003401.4086781-4-eric.snowberg@oracle.com>
 References: <20221214003401.4086781-1-eric.snowberg@oracle.com>
-         <20221214003401.4086781-8-eric.snowberg@oracle.com>
+         <20221214003401.4086781-4-eric.snowberg@oracle.com>
 Content-Type: text/plain; charset="ISO-8859-15"
 X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: g3aTJeon1Lgo5P8BsoQre75BFY68m_fg
-X-Proofpoint-ORIG-GUID: NbJVGw742pMa7IzUmlMZz_8rmmLyZQ9G
+X-Proofpoint-GUID: 7hrEsgPkc-5WyJ_M4FHbjv-cUSKcs8f0
+X-Proofpoint-ORIG-GUID: 85H4ZOaWVoU9OVfFfNcY9xwzHIR2SHYr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-15_03,2022-12-14_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 adultscore=0 clxscore=1015 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212150080
+ definitions=2022-12-15_05,2022-12-14_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ adultscore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2212150086
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -99,18 +98,20 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Eric,
+> diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
+> index a299c9c56f40..7c5c0ad1c22e 100644
+> --- a/crypto/asymmetric_keys/x509_parser.h
+> +++ b/crypto/asymmetric_keys/x509_parser.h
+> @@ -38,6 +38,7 @@ struct x509_certificate {
+>  	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
+>  	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
+>  	bool		blacklisted;
+> +	bool		root_ca;		/* T if basic constraints CA is set */
+>  }; 
 
-On Tue, 2022-12-13 at 19:33 -0500, Eric Snowberg wrote:
-> Currently X.509 intermediate certs with the CA flag set to false do not
-> have the endorsed CA (KEY_FLAG_ECA) set. Allow these intermediate certs to
-> be added.  Requirements for an intermediate include: Usage extension
-> defined as keyCertSign, Basic Constrains for CA is false, and the
-> intermediate cert is signed by a current endorsed CA.
+The variable "root_ca" should probably be renamed to just "ca", right?
 
-Intermediary keys should have the CA flag enabled as well.   Why is
-this needed?    At least for the new Kconfig, please keep it simple as
-to which certificates may be added to the machine keyring.
+-- 
 
 thanks,
 
