@@ -2,103 +2,199 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7B464DF48
-	for <lists+keyrings@lfdr.de>; Thu, 15 Dec 2022 18:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D4C864E20A
+	for <lists+keyrings@lfdr.de>; Thu, 15 Dec 2022 20:59:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbiLORFQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 15 Dec 2022 12:05:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53420 "EHLO
+        id S230161AbiLOT7Q (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Dec 2022 14:59:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230510AbiLOREj (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Dec 2022 12:04:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD73947318;
-        Thu, 15 Dec 2022 09:03:23 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDF6061E60;
-        Thu, 15 Dec 2022 17:03:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ED6C433F0;
-        Thu, 15 Dec 2022 17:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671123784;
-        bh=+j5/PKCDX4da27Gaivbi0EyxiiyB/ME/Rriq9u2O0TY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Rdhphr6zRApiRnlYm2ku5gSx7V/yGOq92PaGnKYjhZPPUVQdH59PWSgjC0XCU6Q5N
-         YeHalqiRnE/nHreZTmbvVyhEnNzkyRuhPFhGuH3ZkzOGUHsfwRHyXoek+iMr070KGh
-         Ym9FLBs2zeY7chwGn6vkid5iuAu6MMiL7AfWiQKM1l/8Y0IWV+eYSkVVZz+2XIMPqN
-         pJj2gYM/PKhx8cYvWI1L7IxAo6Vr3itYmj9SGLgm8CUX9z59X2Ys3jRsDa6kcXw3xC
-         RILQmpNwwPj0FPZanru6qWAOG4BNYGLu3xUBOUEWVJ0Be1aT6nban6HUVz3GLK/WbJ
-         bIuoYHVAcItWg==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Eric Biggers <ebiggers@google.com>,
-        Vitaly Chikunov <vt@altlinux.org>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: certs: fix FIPS selftest depenency
-Date:   Thu, 15 Dec 2022 18:02:52 +0100
-Message-Id: <20221215170259.2553400-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.35.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230154AbiLOT7O (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Dec 2022 14:59:14 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D5B537D4;
+        Thu, 15 Dec 2022 11:59:12 -0800 (PST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BFJme90011349;
+        Thu, 15 Dec 2022 19:58:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=EdESrXaU0ECbNnOkHVR0YT/iFgICApvZ54u5zXnNNlQ=;
+ b=se1yqwcnl9T2XsrUIb2lAlKVRxqaroH59mzcLOBiBXUW6i6f7QspK8iMubPbMYP4P6XK
+ HtxmzW0IdKc1pDCtDyjPoVqY2r72yQ4fS1Z++2E1At3qMsrNifSgWMq/CvUiyqtBQ87n
+ Ynaqk0W/tqN1ccObDDNgHz2jrCa8mNIDpQxyhq7Wzba7mma9fvUvA54Nou/8qzhM4iKg
+ lMNkDpzmf4D3AOA7Vv17orvxJ2aeFyiepUrrwH6SNNnz3a2jRxe+Qihr0gKbR4kNXRIy
+ 3Bl7TQr1XI0q/P0tq07UIv5bd0RLvkQFXY114WUxm5k6v2OeXRoS0My0kLob4vc0fh1d YQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mga2n864d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 15 Dec 2022 19:58:42 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BFJnYRR013263;
+        Thu, 15 Dec 2022 19:58:41 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mga2n863s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 15 Dec 2022 19:58:41 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+        by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BFJvxMt006102;
+        Thu, 15 Dec 2022 19:58:40 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+        by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3meyfe0s06-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 15 Dec 2022 19:58:40 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+        by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BFJwc5G25952780
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 15 Dec 2022 19:58:38 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3A75F58056;
+        Thu, 15 Dec 2022 19:58:38 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EC0225803F;
+        Thu, 15 Dec 2022 19:58:36 +0000 (GMT)
+Received: from sig-9-65-242-118.ibm.com (unknown [9.65.242.118])
+        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 15 Dec 2022 19:58:36 +0000 (GMT)
+Message-ID: <1c51910a35a1d113256494827fd66ccc7473632e.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 00/10] Add CA enforcement keyring restrictions
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "pvorel@suse.cz" <pvorel@suse.cz>,
+        "noodles@fb.com" <noodles@fb.com>, "tiwai@suse.de" <tiwai@suse.de>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>,
+        Elaine Palmer <erpalmer@linux.vnet.ibm.com>,
+        Coiby Xu <coxu@redhat.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Date:   Thu, 15 Dec 2022 14:58:36 -0500
+In-Reply-To: <4CE6F17D-9D87-4024-9E1A-FDFE7C29D5FC@oracle.com>
+References: <20221214003401.4086781-1-eric.snowberg@oracle.com>
+         <b8e54d077da633132eb6da03ea536face095a425.camel@linux.ibm.com>
+         <4CE6F17D-9D87-4024-9E1A-FDFE7C29D5FC@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: KyyGrrQum1ld-4P0H3neHLwIl3229K-2
+X-Proofpoint-GUID: hxqPeCPseFoOqWAP9f0vmVRYTffNbSol
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-15_11,2022-12-15_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
+ mlxlogscore=999 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2212150164
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Thu, 2022-12-15 at 16:26 +0000, Eric Snowberg wrote:
+> 
+> > On Dec 15, 2022, at 3:21 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > 
+> > On Tue, 2022-12-13 at 19:33 -0500, Eric Snowberg wrote:
+> >> Prior to the introduction of the machine keyring, most distros simply 
+> >> allowed all keys contained within the platform keyring to be used
+> >> for both kernel and module verification.  This was done by an out of
+> >> tree patch.  Some distros took it even further and loaded all these keys
+> >> into the secondary trusted keyring.  This also allowed the system owner 
+> >> to add their own key for IMA usage.
+> >> 
+> >> Each distro contains similar documentation on how to sign kernel modules
+> >> and enroll the key into the MOK.  The process is fairly straightforward.
+> >> With the introduction of the machine keyring, the process remains
+> >> basically the same, without the need for any out of tree patches.
+> >> 
+> >> The machine keyring allowed distros to eliminate the out of tree patches
+> >> for kernel module signing.  However, it falls short in allowing the end 
+> >> user to add their own keys for IMA. Currently the machine keyring can not 
+> >> be used as another trust anchor for adding keys to the ima keyring, since 
+> >> CA enforcement does not currently exist.  This would expand the current 
+> >> integrity gap. The IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY 
+> >> Kconfig states that keys may be added to the ima keyrings if the key is 
+> >> validly signed by a CA cert in the system built-in or secondary trusted 
+> >> keyring.  Currently there is not code that enforces the contents of a
+> >> CA cert. Any key in the builtin or secondary keyring can be used. 
+> >> 
+> >> To allow IMA to be enabled with the machine keyring, this series introduces
+> >> enforcement of key usage in the certificate. This series also applies
+> >> this enforcement across all kernel keyrings.
+> >> 
+> >> The machine keyring shares  similarities with both the builtin and
+> >> secondary keyrings.  Similar to the builtin, no keys may be added to the
+> >> machine keyring following boot. The secondary keyring allows user
+> >> provided keys to be added following boot; however, a previously enrolled
+> >> kernel key must vouch for the key before it may be included. The system
+> >> owner may include their own keys into the machine keyring prior to boot.
+> >> If the end-user is not the system owner, they may not add their own keys
+> >> to the machine keyring.  
+> >> 
+> >> The machine keyring is only populated when Secure Boot is enabled.  A
+> >> system owner has the ability to control the entire Secure Boot keychain
+> >> (PK, KEK, DB, and DBX).  The system owner can also turn Secure Boot off.
+> >> With this control, they may use insert-sys-cert to include their own key 
+> >> and re-sign their kernel and have it boot.  The system owner also has 
+> >> control to include or exclude MOK keys. This series does not try to 
+> >> interpret how a system owner has configured their machine.  If the system 
+> >> owner has taken the steps to add their own MOK keys, they will be 
+> >> included in the machine keyring and used for verification, exactly 
+> >> the same way as keys contained in the builtin and secondary keyrings.
+> >> Since the system owner has the ability to add keys before booting to
+> >> either the machine or builtin keyrings, it is viewed as inconsequential 
+> >> if the key originated from one or the other.
+> >> 
+> >> This series introduces two different ways to configure the machine keyring.
+> >> By default, nothing changes and all MOK keys are loaded into it.  Whenever
+> >> a CA cert is found within the machine, builtin, or secondary, a flag 
+> >> indicating this is stored in the public key struct.  The other option is 
+> >> if the new Kconfig INTEGRITY_CA_MACHINE_KEYRING is enabled, only CA certs 
+> >> will be loaded into the machine keyring. All remaining MOK keys will be 
+> >> loaded into the platform keyring.
+> >> 
+> >> A CA cert shall be defined as any X509 certificate that contains the 
+> >> keyCertSign key usage and has the CA bit set to true.
+> > 
+> > Hi Eric,
+> > 
+> > Allowing CA certificates with the digitalSignature key usage flag
+> > enabled defeats the purpose of the new Kconfig.  Please update the
+> > above definition to exclude the digitalSignature key usage flag and
+> > modify the code accordingly.
+> 
+> Within v2, the request was made to allow Intermediate CA certificates to be 
+> loaded directly.  The Intermediate CA referenced was the one used by kernel.org.  
+> This Intermediate CA contains both digitalSignature and keyCertSign.  If the code 
+> is changed to exclude this certificate, now the root CA has to be loaded again.  Is that 
+> the intent?
 
-The selftest code is built into the x509_key_parser module, and depends
-on the pkcs7_message_parser module, which in turn has a dependency on
-the key parser, creating a dependency loop and a resulting link
-failure when the pkcs7 code is a loadable module:
+That definitely was not the intent.  Nor would it address the issue of
+a particular intermediate CA certificate having both keyCertSign and
+digitalSignature.
 
-ld: crypto/asymmetric_keys/selftest.o: in function `fips_signature_selftest':
-crypto/asymmetric_keys/selftest.c:205: undefined reference to `pkcs7_parse_message'
-ld: crypto/asymmetric_keys/selftest.c:209: undefined reference to `pkcs7_supply_detached_data'
-ld: crypto/asymmetric_keys/selftest.c:211: undefined reference to `pkcs7_verify'
-ld: crypto/asymmetric_keys/selftest.c:215: undefined reference to `pkcs7_validate_trust'
-ld: crypto/asymmetric_keys/selftest.c:219: undefined reference to `pkcs7_free_message'
+thanks,
 
-Avoid this by only allowing the selftest to be enabled when either
-both parts are loadable modules, or both are built-in.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- crypto/asymmetric_keys/Kconfig        | 2 +-
- crypto/asymmetric_keys/pkcs7_verify.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-index 3df3fe4ed95f..1ef3b46d6f6e 100644
---- a/crypto/asymmetric_keys/Kconfig
-+++ b/crypto/asymmetric_keys/Kconfig
-@@ -83,6 +83,6 @@ config FIPS_SIGNATURE_SELFTEST
- 	  for FIPS.
- 	depends on KEYS
- 	depends on ASYMMETRIC_KEY_TYPE
--	depends on PKCS7_MESSAGE_PARSER
-+	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
- 
- endif # ASYMMETRIC_KEY_TYPE
-diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-index f6321c785714..4fa769c4bcdb 100644
---- a/crypto/asymmetric_keys/pkcs7_verify.c
-+++ b/crypto/asymmetric_keys/pkcs7_verify.c
-@@ -485,3 +485,4 @@ int pkcs7_supply_detached_data(struct pkcs7_message *pkcs7,
- 	pkcs7->data_len = datalen;
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(pkcs7_supply_detached_data);
--- 
-2.35.1
+Mimi
 
