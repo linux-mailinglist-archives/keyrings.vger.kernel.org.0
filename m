@@ -2,29 +2,25 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8611F6508DA
-	for <lists+keyrings@lfdr.de>; Mon, 19 Dec 2022 09:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C665651B8B
+	for <lists+keyrings@lfdr.de>; Tue, 20 Dec 2022 08:25:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231748AbiLSIvG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 19 Dec 2022 03:51:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58474 "EHLO
+        id S233527AbiLTHZj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 20 Dec 2022 02:25:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231387AbiLSIub (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 19 Dec 2022 03:50:31 -0500
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5ECCCE02;
-        Mon, 19 Dec 2022 00:50:11 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4NbCs63L1Mz9ttD8;
-        Mon, 19 Dec 2022 16:43:06 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwBHywagJaBjl6AmAA--.3254S2;
-        Mon, 19 Dec 2022 09:49:46 +0100 (CET)
-Message-ID: <0f80852578436dbba7a0fce03d86c3fa2d38c571.camel@huaweicloud.com>
-Subject: Re: [PATCH v2] KEYS: asymmetric: Copy sig and digest in
- public_key_verify_signature()
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>
+        with ESMTP id S233557AbiLTHZT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 20 Dec 2022 02:25:19 -0500
+Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0755315F04;
+        Mon, 19 Dec 2022 23:25:12 -0800 (PST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1p7WzY-008mhE-TF; Tue, 20 Dec 2022 15:24:49 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 20 Dec 2022 15:24:48 +0800
+Date:   Tue, 20 Dec 2022 15:24:48 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
 Cc:     Eric Biggers <ebiggers@kernel.org>, dhowells@redhat.com,
         davem@davemloft.net, zohar@linux.ibm.com,
         dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
@@ -32,67 +28,67 @@ Cc:     Eric Biggers <ebiggers@kernel.org>, dhowells@redhat.com,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org
-Date:   Mon, 19 Dec 2022 09:49:29 +0100
-In-Reply-To: <Y5bxJ5UZNPzxwtoy@gondor.apana.org.au>
+        Tadeusz Struk <tadeusz.struk@intel.com>
+Subject: [PATCH] lib/mpi: Fix buffer overrun when SG is too long
+Message-ID: <Y6FjQPZiJYTEG1zI@gondor.apana.org.au>
 References: <20221209150633.1033556-1-roberto.sassu@huaweicloud.com>
-         <Y5OGr59A9wo86rYY@sol.localdomain>
-         <fa8a307541735ec9258353d8ccb75c20bb22aafe.camel@huaweicloud.com>
-         <Y5bxJ5UZNPzxwtoy@gondor.apana.org.au>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+ <Y5OGr59A9wo86rYY@sol.localdomain>
+ <fa8a307541735ec9258353d8ccb75c20bb22aafe.camel@huaweicloud.com>
+ <Y5bxJ5UZNPzxwtoy@gondor.apana.org.au>
+ <0f80852578436dbba7a0fce03d86c3fa2d38c571.camel@huaweicloud.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwBHywagJaBjl6AmAA--.3254S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF43Gr1UCw18Gr47ZFWUJwb_yoWfuwbEgF
-        y3CF4kX34Fvr17tF4rtr4qqrs3GrWkAry7Xr4Ig3sxJ3s5Jws7WrsYkrs3Wr1xXr4rJF9F
-        gryrZ347X3W29jkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb78YFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I6I8E6xAIw20E
-        Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-        A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-        67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267
-        AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
-        j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
-        kEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0E
-        wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
-        80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0
-        I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04
-        k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
-        1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU13rcDUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQALBF1jj4bHxwAAs5
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0f80852578436dbba7a0fce03d86c3fa2d38c571.camel@huaweicloud.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2022-12-12 at 17:15 +0800, Herbert Xu wrote:
-> On Mon, Dec 12, 2022 at 10:07:38AM +0100, Roberto Sassu wrote:
-> > The problem is a misalignment between req->src_len (set to sig->s_size
-> > by akcipher_request_set_crypt()) and the length of the scatterlist (if
-> > we set the latter to sig->s_size + sig->digest_size).
-> > 
-> > When rsa_enc() calls mpi_read_raw_from_sgl(), it passes req->src_len as
-> > argument, and the latter allocates the MPI according to that. However,
-> > it does parsing depending on the length of the scatterlist.
-> > 
-> > If there are two scatterlists, it is not a problem, there is no
-> > misalignment. mpi_read_raw_from_sgl() picks the first. If there is just
-> > one, mpi_read_raw_from_sgl() parses all data there.
-> 
-> Thanks for the explanation.  That's definitely a bug which should
-> be fixed either in the RSA code or in MPI.
-> 
-> I'll look into it.
+On Mon, Dec 19, 2022 at 09:49:29AM +0100, Roberto Sassu wrote:
+>
+> do you have any news on this bug?
 
-Hi Herbert
+Thanks for the reminder.  Could you please try this patch?
 
-do you have any news on this bug?
+---8<---
+The helper mpi_read_raw_from_sgl ignores the second parameter
+nbytes when reading the SG list and may overrun its own buffer
+because it only allocates enough memory according to nbytes.
 
-Thanks
+Fixes: 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers")
+Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-Roberto
-
+diff --git a/lib/mpi/mpicoder.c b/lib/mpi/mpicoder.c
+index 39c4c6731094..6bffc68c1a5a 100644
+--- a/lib/mpi/mpicoder.c
++++ b/lib/mpi/mpicoder.c
+@@ -494,17 +494,15 @@ MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int nbytes)
+ 	val->sign = 0;
+ 	val->nlimbs = nlimbs;
+ 
+-	if (nbytes == 0)
+-		return val;
+-
+ 	j = nlimbs - 1;
+ 	a = 0;
+ 	z = BYTES_PER_MPI_LIMB - nbytes % BYTES_PER_MPI_LIMB;
+ 	z %= BYTES_PER_MPI_LIMB;
+ 
+-	while (sg_miter_next(&miter)) {
++	while (nbytes && sg_miter_next(&miter)) {
+ 		buff = miter.addr;
+-		len = miter.length;
++		len = min_t(unsigned, miter.length, nbytes);
++		nbytes -= len;
+ 
+ 		for (x = 0; x < len; x++) {
+ 			a <<= 8;
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
