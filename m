@@ -2,175 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBDA0652FAA
-	for <lists+keyrings@lfdr.de>; Wed, 21 Dec 2022 11:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FB8653253
+	for <lists+keyrings@lfdr.de>; Wed, 21 Dec 2022 15:18:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234036AbiLUKiX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Dec 2022 05:38:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53818 "EHLO
+        id S229676AbiLUOSa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Dec 2022 09:18:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234536AbiLUKiI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Dec 2022 05:38:08 -0500
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD4A9BD5;
-        Wed, 21 Dec 2022 02:38:04 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4NcV8c2R6nz9xGYv;
-        Wed, 21 Dec 2022 18:30:56 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwDHAQ3k4aJj76UvAA--.42155S3;
-        Wed, 21 Dec 2022 11:37:40 +0100 (CET)
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     dhowells@redhat.com, herbert@gondor.apana.org.au,
-        davem@davemloft.net, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com
-Cc:     linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH v3 2/2] KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
-Date:   Wed, 21 Dec 2022 11:37:10 +0100
-Message-Id: <20221221103710.2540276-2-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221221103710.2540276-1-roberto.sassu@huaweicloud.com>
-References: <20221221103710.2540276-1-roberto.sassu@huaweicloud.com>
+        with ESMTP id S229472AbiLUOS3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Dec 2022 09:18:29 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 856281836D
+        for <keyrings@vger.kernel.org>; Wed, 21 Dec 2022 06:18:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1671632303;
+        bh=TYrBETpL7ggohHtWE+aT0xBW3t0+o/BGJryb9CFIk3k=;
+        h=Message-ID:Subject:From:To:Date:From;
+        b=C3FUU4CM5edc86Uo9iVcjvb4qSBohXfzlAk10EPnJH0aMDpOXGbeeQjULOts+I4Rf
+         lZb7ABc2EWd0y2nGytBuQdK78Uipbg0zfE0uy54M72ZOFDCw2vrWckfUEItkQIDFJH
+         iNWE1qziGOlXtNVWdyzxNpzsJZ/CTrqsR0ZqX0XU=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 908FD1282CF7;
+        Wed, 21 Dec 2022 09:18:23 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 7X4xhkQQTkyM; Wed, 21 Dec 2022 09:18:23 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1671632303;
+        bh=TYrBETpL7ggohHtWE+aT0xBW3t0+o/BGJryb9CFIk3k=;
+        h=Message-ID:Subject:From:To:Date:From;
+        b=C3FUU4CM5edc86Uo9iVcjvb4qSBohXfzlAk10EPnJH0aMDpOXGbeeQjULOts+I4Rf
+         lZb7ABc2EWd0y2nGytBuQdK78Uipbg0zfE0uy54M72ZOFDCw2vrWckfUEItkQIDFJH
+         iNWE1qziGOlXtNVWdyzxNpzsJZ/CTrqsR0ZqX0XU=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id F208D1280796;
+        Wed, 21 Dec 2022 09:18:22 -0500 (EST)
+Message-ID: <d73a29f9ab66daa9e4f3bbb385baab5cc6df34bb.camel@HansenPartnership.com>
+Subject: [PATCH] KEYS: trusted: return -EEXIST when refusing to update
+ existing key
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     keyrings@vger.kernel.org
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Date:   Wed, 21 Dec 2022 09:18:21 -0500
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: LxC2BwDHAQ3k4aJj76UvAA--.42155S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF4xCry8tF47try5uF1UAwb_yoWrWr15pF
-        s5WrWxtry5Gr1xCrZ5Cw40y345A3y8A3Wagw4fCw1fCrnxZrWkCryI9r43Wry7JrykXry8
-        tr4vgw4rWr1DXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUP2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUGw
-        A2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-        w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-        WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-        Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
-        Ij6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_
-        Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI
-        0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-        67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MI
-        IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-        14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
-        0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0GY
-        LDUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQANBF1jj4bhEgAEsI
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+All other key types return -EEXIST when refusing to update an existing
+key, but trusted keys return -EINVAL, which is confusing to users who
+can't figure out what the invalid argument is.  Fix by returning
+-EEXIST if the key exists and we can't update it.
 
-Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
-mapping") checks that both the signature and the digest reside in the
-linear mapping area.
-
-However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
-stack support"), made it possible to move the stack in the vmalloc area,
-which is not contiguous, and thus not suitable for sg_set_buf() which needs
-adjacent pages.
-
-Always make a copy of the signature and digest in the same buffer used to
-store the key and its parameters, and pass them to sg_set_buf(). Prefer it
-to conditionally doing the copy if necessary, to keep the code simple. The
-buffer allocated with kmalloc() is in the linear mapping area.
-
-Cc: stable@vger.kernel.org # 4.9.x
-Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
-Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Cc: stable@vger.kernel.org
 ---
- crypto/asymmetric_keys/public_key.c | 39 ++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+ security/keys/trusted-keys/trusted_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index 2f8352e88860..a479e32cb280 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -360,9 +360,10 @@ int public_key_verify_signature(const struct public_key *pkey,
- 	struct crypto_wait cwait;
- 	struct crypto_akcipher *tfm;
- 	struct akcipher_request *req;
--	struct scatterlist src_sg[2];
-+	struct scatterlist src_sg;
- 	char alg_name[CRYPTO_MAX_ALG_NAME];
--	char *key, *ptr;
-+	char *buf, *ptr;
-+	size_t buf_len;
- 	int ret;
- 
- 	pr_devel("==>%s()\n", __func__);
-@@ -400,34 +401,38 @@ int public_key_verify_signature(const struct public_key *pkey,
- 	if (!req)
- 		goto error_free_tfm;
- 
--	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
--		      GFP_KERNEL);
--	if (!key)
-+	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
-+			sig->s_size + sig->digest_size);
-+
-+	buf = kmalloc(buf_len, GFP_KERNEL);
-+	if (!buf)
- 		goto error_free_req;
- 
--	memcpy(key, pkey->key, pkey->keylen);
--	ptr = key + pkey->keylen;
-+	memcpy(buf, pkey->key, pkey->keylen);
-+	ptr = buf + pkey->keylen;
- 	ptr = pkey_pack_u32(ptr, pkey->algo);
- 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
- 	memcpy(ptr, pkey->params, pkey->paramlen);
- 
- 	if (pkey->key_is_private)
--		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
-+		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
- 	else
--		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
-+		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
- 	if (ret)
--		goto error_free_key;
-+		goto error_free_buf;
- 
- 	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
- 		ret = cert_sig_digest_update(sig, tfm);
- 		if (ret)
--			goto error_free_key;
-+			goto error_free_buf;
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index c6fc50d67214..8dcd84137035 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -254,7 +254,7 @@ static int trusted_update(struct key *key, struct key_preparsed_payload *prep)
+ 	datablob[datalen] = '\0';
+ 	ret = datablob_parse(&datablob, new_p);
+ 	if (ret != Opt_update) {
+-		ret = -EINVAL;
++		ret = -EEXIST;
+ 		kfree_sensitive(new_p);
+ 		goto out;
  	}
- 
--	sg_init_table(src_sg, 2);
--	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
--	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
--	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
-+	memcpy(buf, sig->s, sig->s_size);
-+	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
-+
-+	sg_init_table(&src_sg, 1);
-+	sg_set_buf(&src_sg, buf, sig->s_size + sig->digest_size);
-+	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
- 				   sig->digest_size);
- 	crypto_init_wait(&cwait);
- 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-@@ -435,8 +440,8 @@ int public_key_verify_signature(const struct public_key *pkey,
- 				      crypto_req_done, &cwait);
- 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
- 
--error_free_key:
--	kfree(key);
-+error_free_buf:
-+	kfree(buf);
- error_free_req:
- 	akcipher_request_free(req);
- error_free_tfm:
 -- 
-2.25.1
+2.35.3
+
 
