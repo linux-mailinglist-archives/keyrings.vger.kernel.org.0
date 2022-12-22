@@ -2,182 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F765654519
-	for <lists+keyrings@lfdr.de>; Thu, 22 Dec 2022 17:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E399A65485D
+	for <lists+keyrings@lfdr.de>; Thu, 22 Dec 2022 23:28:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235355AbiLVQZw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Dec 2022 11:25:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
+        id S229976AbiLVW2D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Dec 2022 17:28:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235285AbiLVQZt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Dec 2022 11:25:49 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0F3BE2A;
-        Thu, 22 Dec 2022 08:25:47 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 96262B803F2;
-        Thu, 22 Dec 2022 16:25:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61422C433EF;
-        Thu, 22 Dec 2022 16:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671726345;
-        bh=I1QQ3wj0EZ2LVmZ8RlrxP6BvTX3HOQCzJhPb1JK3S5Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aBvV5hjgmYtdnsRh/a6xDn8u4JdX5WJaAgikE/hwoGibLaiBICdjG89ctJI1/f8bi
-         ep42tSDdAVcnj6ahLM8Kpf9reEuhobVNB2PxBNIqGbrVZRa+GSAKcZOU4jygQL9m4x
-         XKaFPvG/r7anSl75C0i8wWTg6CvZSJyFfdK5AoTKDh70xsZjc2wh/ZvY30x2QxklEI
-         8bbmSrhXUa2KMOUDOdIKHPjxk4byrn1GiOx22dhx6kDKOxEl8q2jbpJHppy5VDYF4j
-         lCD/S2QHGr9+Ih7rzONuTUaGO7KYxYCWsd3TeJgcFaV2yJTK6wT62N8lpgH4JR5r/o
-         YclT7GIzx1o0g==
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Liam Howlett <liam.howlett@oracle.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Zeng Heng <zengheng4@huawei.com>, keyrings@vger.kernel.org,
-        linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/5] kbuild: do not print extra logs for V=2
-Date:   Fri, 23 Dec 2022 01:25:33 +0900
-Message-Id: <20221222162535.1578462-3-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221222162535.1578462-1-masahiroy@kernel.org>
-References: <20221222162535.1578462-1-masahiroy@kernel.org>
+        with ESMTP id S229843AbiLVW2C (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Dec 2022 17:28:02 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91D2413DC3
+        for <keyrings@vger.kernel.org>; Thu, 22 Dec 2022 14:28:01 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id o5so3040249wrm.1
+        for <keyrings@vger.kernel.org>; Thu, 22 Dec 2022 14:28:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q1rvneH2ay3MzDgRuf8vVMN8EmWy6DV7KmPo4nvLNXE=;
+        b=PArmJrrXAzc7JddnmonMhDpK+MLH3BP+WQfpEaqsU6RAzPZsgfAAYh2QFI01zXxfoZ
+         uo6s+5sYDvcoXOvMlXIKBl5R0Ikx76CRtXzlCpO2xopKaNqVEofSAVXRYrR0Fx6Y+opb
+         CEipR0M2wq9TWoekFfvtjv7FhVeh0TKzz4T9TZvaW5cmxFdE4/7fPqtFJK8gd1Q1X6dV
+         ZQ4h1jKILcfWTq8Emmpdz19bYNh+nPoOgc3lFOiWUi1oXj6X2tXmeNIJoSibdoLBc49W
+         /ZUmWb0ri3Fx36b48sgUxR6GHNBj1qWUBI70EoJBIXry22Hd2HK4GZ32xBUMwB3363Dq
+         7awA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q1rvneH2ay3MzDgRuf8vVMN8EmWy6DV7KmPo4nvLNXE=;
+        b=L2VLpawOU4EbIrm5LJ1ScKjuvDq20PW6GLB4/Oc/ID7BXEvoAYtz8RY8QF4D6hKNki
+         AOE6cqJtMiDbE2+zo9RVfTh/8DXnhLjwUi4hZAuX6njPql18Ufy0GzrRMuMCWhvt1i0F
+         xJ6i7dwE3WBW7KWZKnDjybk3MT/UDdbWoZvJPwGlT9OSU7kZXEABRaliYGpxPA1s2MrN
+         GWmogTKYWaAo5A+FNulnxrP6WL1TSJLUO+lfT9TXYwbgS+ixRSWDJG+p79NHCoklTYmK
+         GuEbSFXvElDZYu+b/3IPT7BAjeMPUyXPM9Y8IvPGlloZFgIEckILCTv3tud+8nHhCaLP
+         yADA==
+X-Gm-Message-State: AFqh2ko/rWHN8enrPtgMMWCTJsJPRfo9JVEIi7b22EgvxldxqeHtokmR
+        t3/R+10ps+qw/g62iu/gxGrYLKdDPq8yli95Gws=
+X-Google-Smtp-Source: AMrXdXsNBDKcjig84FPA11rQwba5mDDsqS9R6Hyu8orK8tAieGag9XN57U0f0E4E9pkyU9bBjJGgtehAC8l2vactUHE=
+X-Received: by 2002:a5d:590e:0:b0:242:1c5f:ee55 with SMTP id
+ v14-20020a5d590e000000b002421c5fee55mr291435wrd.712.1671748080026; Thu, 22
+ Dec 2022 14:28:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6000:15c4:b0:242:3ae8:f526 with HTTP; Thu, 22 Dec 2022
+ 14:27:59 -0800 (PST)
+From:   CITI BANK <bank90083@gmail.com>
+Date:   Thu, 22 Dec 2022 14:27:59 -0800
+Message-ID: <CAP4wrVbbrU3uUOJO_EB+_2jQ8pkZSHpVXjU5M0hV+AgFicZSAg@mail.gmail.com>
+Subject: PAYMENT NOTIFICATION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,HK_SCAM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,UNDISC_MONEY,UPPERCASE_75_100,URG_BIZ autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:435 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [bank90083[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [bank90083[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.6 URG_BIZ Contains urgent matter
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  2.0 HK_SCAM No description available.
+        *  2.4 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Some scripts increase the verbose level when V=1, but others when
-not V=0.
+Citibank, 1107 Broadway Branch
+Full Service Brick and Mortar Office
+1107 Broadway
+New York, NY 10010
 
-I think the former is correct because V=2 is not a log level but
-a switch to print the reason for rebuilding.
+SIR
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+THIS IS THE MANAGER CITIBANK INTERNATIONAL.WE ARE IN CHARGE AND
+ASSIGN PAYMENT BANK FOR CONTRACTORS PAYMENT.I HEREBY INFORM YOU ON THE
+NEW  DEVELOPMENT AND THE FILE BROUGHT BEFORE MY TABLE FOR REMMITANCE.
 
- Documentation/Makefile                 | 2 +-
- arch/powerpc/kernel/prom_init_check.sh | 9 ++++-----
- certs/extract-cert.c                   | 9 ++++++---
- scripts/asn1_compiler.c                | 4 ++--
- scripts/kernel-doc                     | 4 ++--
- 5 files changed, 15 insertions(+), 13 deletions(-)
+THERE IS ONE MR RANDALL BOCIAN FROM UNITED STATE OF AMERICA WITH THE
+FOLLOWING BANKING INFORMATION BELOW WHO CLAIM TO BE YOUR NEXT OF
+KIN,WHOM  INFORMED US THAT YOU DIED OF A THROAT CANCER AND HE IS TO
+RECEIVE YOUR  CONTRACT SUM.
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index bb73dcb5ed05..023fa658a0a8 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -28,7 +28,7 @@ BUILDDIR      = $(obj)/output
- PDFLATEX      = xelatex
- LATEXOPTS     = -interaction=batchmode -no-shell-escape
- 
--ifeq ($(KBUILD_VERBOSE),0)
-+ifeq ($(findstring 1, $(KBUILD_VERBOSE)),)
- SPHINXOPTS    += "-q"
- endif
- 
-diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
-index 311890d71c4c..5a319863f289 100644
---- a/arch/powerpc/kernel/prom_init_check.sh
-+++ b/arch/powerpc/kernel/prom_init_check.sh
-@@ -51,11 +51,10 @@ do
- 	# a leading . on the name, so strip it off here.
- 	UNDEF="${UNDEF#.}"
- 
--	if [ $KBUILD_VERBOSE ]; then
--		if [ $KBUILD_VERBOSE -ne 0 ]; then
--			echo "Checking prom_init.o symbol '$UNDEF'"
--		fi
--	fi
-+	case "$KBUILD_VERBOSE" in
-+	*1*)
-+		echo "Checking prom_init.o symbol '$UNDEF'" ;;
-+	esac
- 
- 	OK=0
- 	for WHITE in $WHITELIST
-diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-index 8c1fb9a70d66..d3a0ff2867c0 100644
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -78,7 +78,7 @@ static void drain_openssl_errors(void)
- static const char *key_pass;
- static BIO *wb;
- static char *cert_dst;
--static int kbuild_verbose;
-+static bool verbose;
- 
- static void write_cert(X509 *x509)
- {
-@@ -90,19 +90,22 @@ static void write_cert(X509 *x509)
- 	}
- 	X509_NAME_oneline(X509_get_subject_name(x509), buf, sizeof(buf));
- 	ERR(!i2d_X509_bio(wb, x509), "%s", cert_dst);
--	if (kbuild_verbose)
-+	if (verbose)
- 		fprintf(stderr, "Extracted cert: %s\n", buf);
- }
- 
- int main(int argc, char **argv)
- {
- 	char *cert_src;
-+	char *kbuild_verbose;
- 
- 	OpenSSL_add_all_algorithms();
- 	ERR_load_crypto_strings();
- 	ERR_clear_error();
- 
--	kbuild_verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");
-+	kbuild_verbose = getenv("KBUILD_VERBOSE");
-+	if (kbuild_verbose && strchr(kbuild_verbose, '1'))
-+		verbose = true;
- 
-         key_pass = getenv("KBUILD_SIGN_PIN");
- 
-diff --git a/scripts/asn1_compiler.c b/scripts/asn1_compiler.c
-index 71d4a7c87900..7b6756a8c15d 100644
---- a/scripts/asn1_compiler.c
-+++ b/scripts/asn1_compiler.c
-@@ -567,8 +567,8 @@ int main(int argc, char **argv)
- 	int fd;
- 
- 	kbuild_verbose = getenv("KBUILD_VERBOSE");
--	if (kbuild_verbose)
--		verbose_opt = atoi(kbuild_verbose);
-+	if (kbuild_verbose && strchr(kbuild_verbose, '1'))
-+		verbose_opt = true;
- 
- 	while (argc > 4) {
- 		if (strcmp(argv[1], "-v") == 0)
-diff --git a/scripts/kernel-doc b/scripts/kernel-doc
-index 54b0893cae66..8ad0a7d68d9a 100755
---- a/scripts/kernel-doc
-+++ b/scripts/kernel-doc
-@@ -175,8 +175,8 @@ my $declaration_start_line;
- my ($type, $declaration_name, $return_type);
- my ($newsection, $newcontents, $prototype, $brcount, %source_map);
- 
--if (defined($ENV{'KBUILD_VERBOSE'})) {
--	$verbose = "$ENV{'KBUILD_VERBOSE'}";
-+if (defined($ENV{'KBUILD_VERBOSE'}) && $ENV{'KBUILD_VERBOSE'} =~ '1') {
-+	$verbose = 1;
- }
- 
- if (defined($ENV{'KCFLAGS'})) {
--- 
-2.34.1
+HUNTINGTON NATIONAL BANK
+Bank Add:17 South High Street Columbus, OH 43216
+RANDALL BOCIAN
+ABA/RTN: 044000024
+Account No.: 02771751152
+SWIFT: HUNTUS33
 
+PLEASE I WANT YOU TO URGENTLY REPLY THIS MAIL IF IT IS NOT TRUE OR
+ONCE WE DID NOT HEAR FROM YOU WE WILL GO AHEAD AND MAKE THIS PAYMENT.
+
+
+Robert Baker
+
+Account Officer
