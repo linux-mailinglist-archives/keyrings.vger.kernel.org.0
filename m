@@ -2,286 +2,182 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7401065447B
-	for <lists+keyrings@lfdr.de>; Thu, 22 Dec 2022 16:43:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F765654519
+	for <lists+keyrings@lfdr.de>; Thu, 22 Dec 2022 17:26:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230384AbiLVPn0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Dec 2022 10:43:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48796 "EHLO
+        id S235355AbiLVQZw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Dec 2022 11:25:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235518AbiLVPnE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Dec 2022 10:43:04 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76ADF12624;
-        Thu, 22 Dec 2022 07:43:02 -0800 (PST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BMFEEei002301;
-        Thu, 22 Dec 2022 15:41:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=EBnSZrOSo+tT+1ZIG4K3aeRfeBl+36147lk/xuTt/Ic=;
- b=tPGCfTNrS2n/H1ivd7OTKJgF8xspji90DIc0jhHjqCRJiThMIGbBu3rv9vyVaP3nvQJY
- dzrE+Spwg34f1drmN0cOC1hhnRevtUE9mdoFwOGXqOy9ZU60nhJsnkgRDvmqPgdV7CsE
- ERdq0426JAGxILedB3WsqwNbJ6G7d/GxnYXw70MhD8e8aRuBIAd9F7EMf2KjHZqXmdU7
- kJ2q0tXmP8kJT9AnjzUfjDwhKsJ4vC/NhQG5q3JxeQcyGwgOHk13qXLfRrTuXj+V2Kco
- FCwG+yMQTB20o44CGBxYJMyJBfpdqOrg+MgX69XcnWqHQ27s3tJCsBZEoycCA22/3jd1 ww== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mmspqrs7j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 22 Dec 2022 15:41:32 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BMFc3cZ028287;
-        Thu, 22 Dec 2022 15:41:31 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mmspqrs51-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 22 Dec 2022 15:41:31 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-        by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BMCNxHZ010167;
-        Thu, 22 Dec 2022 15:41:29 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
-        by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3mh6yvabqv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 22 Dec 2022 15:41:29 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-        by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BMFfScK4063858
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 22 Dec 2022 15:41:28 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 167135805E;
-        Thu, 22 Dec 2022 15:41:28 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3C8B45805A;
-        Thu, 22 Dec 2022 15:41:26 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.69.65])
-        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 22 Dec 2022 15:41:26 +0000 (GMT)
-Message-ID: <4ac6b5bd1b57bfc0c548e5711e46b341fd5cfe39.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 00/10] Add CA enforcement keyring restrictions
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>, Coiby Xu <coxu@redhat.com>,
+        with ESMTP id S235285AbiLVQZt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Dec 2022 11:25:49 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0F3BE2A;
+        Thu, 22 Dec 2022 08:25:47 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 96262B803F2;
+        Thu, 22 Dec 2022 16:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61422C433EF;
+        Thu, 22 Dec 2022 16:25:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671726345;
+        bh=I1QQ3wj0EZ2LVmZ8RlrxP6BvTX3HOQCzJhPb1JK3S5Y=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=aBvV5hjgmYtdnsRh/a6xDn8u4JdX5WJaAgikE/hwoGibLaiBICdjG89ctJI1/f8bi
+         ep42tSDdAVcnj6ahLM8Kpf9reEuhobVNB2PxBNIqGbrVZRa+GSAKcZOU4jygQL9m4x
+         XKaFPvG/r7anSl75C0i8wWTg6CvZSJyFfdK5AoTKDh70xsZjc2wh/ZvY30x2QxklEI
+         8bbmSrhXUa2KMOUDOdIKHPjxk4byrn1GiOx22dhx6kDKOxEl8q2jbpJHppy5VDYF4j
+         lCD/S2QHGr9+Ih7rzONuTUaGO7KYxYCWsd3TeJgcFaV2yJTK6wT62N8lpgH4JR5r/o
+         YclT7GIzx1o0g==
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
-        "paul@paul-moore.com" <paul@paul-moore.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "pvorel@suse.cz" <pvorel@suse.cz>,
-        "noodles@fb.com" <noodles@fb.com>, "tiwai@suse.de" <tiwai@suse.de>,
-        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>,
-        Elaine Palmer <erpalmer@linux.vnet.ibm.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Date:   Thu, 22 Dec 2022 10:41:25 -0500
-In-Reply-To: <6AAEC343-E581-4355-ABD8-FE32A1BD16D8@oracle.com>
-References: <20221214003401.4086781-1-eric.snowberg@oracle.com>
-         <b8e54d077da633132eb6da03ea536face095a425.camel@linux.ibm.com>
-         <4CE6F17D-9D87-4024-9E1A-FDFE7C29D5FC@oracle.com>
-         <1c51910a35a1d113256494827fd66ccc7473632e.camel@linux.ibm.com>
-         <17855993-519C-4DAC-B62F-9DB473CF249B@oracle.com>
-         <7df94da37c100c160436892a6996ba30e3fd6dc8.camel@linux.ibm.com>
-         <21E52C3E-0778-4908-AF44-F65D57BEC4E0@oracle.com>
-         <20221216140648.h32gn5qf3igorpzi@Rk>
-         <2d75dfd105f8558ecd1074d64e4252ddd63b698b.camel@linux.ibm.com>
-         <0DAFCFC7-29EB-4481-8FF7-616336383378@oracle.com>
-         <0fb737ab42ef093f7031a80c8a73f582b1d5c1ae.camel@linux.ibm.com>
-         <6AAEC343-E581-4355-ABD8-FE32A1BD16D8@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: knf4chONk4DHreUVDbhFK2Cqm1YRg8aP
-X-Proofpoint-ORIG-GUID: DTrQzYCHcRGmloBIXzBXGJI9Xobthx70
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        Jonathan Corbet <corbet@lwn.net>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Zeng Heng <zengheng4@huawei.com>, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 3/5] kbuild: do not print extra logs for V=2
+Date:   Fri, 23 Dec 2022 01:25:33 +0900
+Message-Id: <20221222162535.1578462-3-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221222162535.1578462-1-masahiroy@kernel.org>
+References: <20221222162535.1578462-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-22_08,2022-12-22_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- malwarescore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 clxscore=1015 mlxscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212220135
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2022-12-22 at 15:15 +0000, Eric Snowberg wrote:
-> 
-> > On Dec 21, 2022, at 12:01 PM, Mimi Zohar <zohar@linux.ibm.com> wrote:
-> > 
-> > On Wed, 2022-12-21 at 18:27 +0000, Eric Snowberg wrote:
-> >> 
-> >>> On Dec 18, 2022, at 5:21 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >>> 
-> >>> On Fri, 2022-12-16 at 22:06 +0800, Coiby Xu wrote:
-> >>>> Hi Eric and Mimi,
-> >>>> 
-> >>>> On Thu, Dec 15, 2022 at 09:45:37PM +0000, Eric Snowberg wrote:
-> >>>>> 
-> >>>>> 
-> >>>>>>>>>>> A CA cert shall be defined as any X509 certificate that contains the
-> >>>>>>>>>>> keyCertSign key usage and has the CA bit set to true.
-> >>>>>>>>>> 
-> >>>>>>>>>> Hi Eric,
-> >>>>>>>>>> 
-> >>>>>>>>>> Allowing CA certificates with the digitalSignature key usage flag
-> >>>>>>>>>> enabled defeats the purpose of the new Kconfig.  Please update the
-> >>>>>>>>>> above definition to exclude the digitalSignature key usage flag and
-> >>>>>>>>>> modify the code accordingly.
-> >>>>>>>>> 
-> >>>>>>>>> Within v2, the request was made to allow Intermediate CA certificates to be
-> >>>>>>>>> loaded directly.  The Intermediate CA referenced was the one used by kernel.org.
-> >>>>>>>>> This Intermediate CA contains both digitalSignature and keyCertSign.  If the code
-> >>>>>>>>> is changed to exclude this certificate, now the root CA has to be loaded again.  Is that
-> >>>>>>>>> the intent?
-> >>>>>>>> 
-> >>>>>>>> That definitely was not the intent.  Nor would it address the issue of
-> >>>>>>>> a particular intermediate CA certificate having both keyCertSign and
-> >>>>>>>> digitalSignature.
-> >>>>>>> 
-> >>>>>>> Sorry, I’m not following.  Why is it an issue that an intermediate CA certificate contains
-> >>>>>>> both keyCertSign and digitalSignature? Why would we want to exclude an Intermediate
-> >>>>>>> CA cert like the one used on kernel.org?
-> >>>>>> 
-> >>>>>> I must be missing something.  Isn't the purpose of "keyUsage" to
-> >>>>>> minimize how a certificate may be used?   Why would we want the same
-> >>>>>> certificate to be used for both certificate signing and code signing?
-> >>>>> 
-> >>>>> Every 3rd party intermediate CA I have looked at so far contains both set. Most have CRLSign set.
-> >>>>> Typically the root CA contains keyCertSign and CRLSign, but some also have digitalSignature
-> >>>>> set.  Finding a 3rd party Intermediate CA without digitalSignature set is probably going to be
-> >>>>> challenging and will severely limit usage.
-> >>>> 
-> >>>> How about allowing both keyCertSign and digitalSignature asserted but
-> >>>> issuing a warning for this case?
-> >>>> 
-> >>>> Here's my rationale for this proposal.
-> >>>> 
-> >>>> I assume we should conform to some X.509 specifications. So I checked
-> >>>> "RFC 5280: Internet X.509 Public Key Infrastructure Certificate and
-> >>>> Certificate Revocation List (CRL) Profile" [1] and ITU-T X.509 (2012-10)
-> >>>> [2].
-> >>>> 
-> >>>> [1] states in 4.2.1.3. Key Usage,
-> >>>>   "If the keyUsage extension is present, then the subject public key
-> >>>>   MUST NOT be used to verify signatures on certificates or CRLs unless
-> >>>>   the corresponding keyCertSign or cRLSign bit is set.  If the subject
-> >>>>   public key is only to be used for verifying signatures on
-> >>>>   certificates and/or CRLs, then the digitalSignature and
-> >>>>   nonRepudiation bits SHOULD NOT be set.  However, the digitalSignature
-> >>>>   and/or nonRepudiation bits MAY be set in addition to the keyCertSign
-> >>>>   and/or cRLSign bits if the subject public key is to be used to verify
-> >>>>   signatures on certificates and/or CRLs as well as other objects."
-> >>>> 
-> >>>> and [2] states in 8.2.2.3 Key usage extension that,
-> >>>>  "More than one bit may be set in an instance of the keyUsage extension.
-> >>>>  The setting of multiple bits shall not change the meaning of each
-> >>>>  individual bit but shall indicate that the certificate may be used for
-> >>>>  all of the purposes indicated by the set bits. There may be risks
-> >>>>  incurred when setting multiple bits. A review of those risks is
-> >>>>  documented in Annex I."
-> >>>> 
-> >>>> I interpret the above texts as we should allow both keyCertSign and
-> >>>> digitalSignature. However [2] warns about the risks of setting multiple
-> >>>> bits. Quoting Annex I,
-> >>>> 
-> >>>>  "Combining the contentCommitment bit in the keyUsage certificate
-> >>>>  extension with other keyUsage bits may have security implications
-> >>>>  depending on the security environment in which the certificate is to be
-> >>>>  used. If the subject's environment can be fully controlled and trusted,
-> >>>>  then there are no specific security implications. For example, in cases
-> >>>>  where the subject is fully confident about exactly which data is signed
-> >>>>  or cases where the subject is fully confident about the security
-> >>>>  characteristics of the authentication protocol being used. If the
-> >>>>  subject's environment is not fully controlled or not fully trusted, then
-> >>>>  unintentional signing of commitments is possible. Examples include the
-> >>>>  use of badly formed authentication exchanges and the use of a rogue
-> >>>>  software component. If untrusted environments are used by a subject,
-> >>>>  these security implications can be limited through use of the following
-> >>>>  measures:   
-> >>>>   – to not combine the contentCommitment key usage setting in
-> >>>>     certificates with any other key usage setting and to use the
-> >>>>     corresponding private key only with this certificate;   
-> >>>> 
-> >>>>   – to limit the use of private keys associated with certificates that
-> >>>>     have the contentCommitment key usage bit set, to environments which
-> >>>>     are considered adequately controlled and trustworthy"
-> >>>> 
-> >>>> So maybe it's useful to add a warning if both keyCertSign and
-> >>>> digitalSignature are asserted.
-> >>> 
-> >>> Coiby, thank you for adding these details.  I was hoping others would
-> >>> chime in as well.  I agree at minimum there should be a warning.
-> >> 
-> >> A warning could be added.
-> >> 
-> >>> Perhaps instead of making INTEGRITY_CA_MACHINE_KEYRING dependent on
-> >>> INTEGRITY_MACHINE_KEYRING, make them a Kconfig "choice" to support the
-> >>> more restrictive certificate use case requirements:  all certificates,
-> >>> CA certificate signing and digital signature, only CA certificate
-> >>> signing.
-> >> 
-> >> As could support for additional restrictions.
-> >> 
-> >> Would these additions be required within this series? What is missing from this 
-> >> discussion is why would these additions be necessary?  Why should the kernel 
-> >> enforce a restriction that is beyond the scope of the X.509 spec?  If a warning was 
-> >> to be added, what would be the justification for adding this additional code?  From 
-> >> my research every single 3rd party code signing intermediate CA would be flagged 
-> >> with the warning.  Isn’t this just going to cause confusion?  Or is there a benefit that 
-> >> I am missing that needs to be stated?
-> > 
-> > You're focusing on third party kernel modules and forgetting about the
-> > simple use case of allowing an end user (or business) to sign their own
-> > code.  True they could use the less restrictive CA certificates, but it
-> > is unnecessary.
-> 
-> My focus is on signing user-space applications, as outlined in the cover letter.  This 
-> series has nothing to do with kernel modules.  Most end-users and businesses rely on 
-> a third party to deal with code signing.  All third party code signing services I have 
-> found use an intermediate CA containing more than just the keyCertSign usage set.  
-> It seems to be an industry accepted practice that does not violate the spec. Before writing
-> new code to either warn or exclude a third party intermediate CA,  I would like to understand 
-> the motivation behind this request.
+Some scripts increase the verbose level when V=1, but others when
+not V=0.
 
-In older discussions there are comments like, "Any CA certificate, no
-matter if it's a root or an intermediate, must have the keyCertSign
-extension. If you want to sign a revocation list (CRL) with the CA
-certificate as well (you usually do want that), than you have to add
-cRLSign as well. Any other keyUsages can and should be avoided for CA
-certificates."
+I think the former is correct because V=2 is not a log level but
+a switch to print the reason for rebuilding.
 
-The question as to "why" this changed to include "digitalSignature" was
-posed here [2] with the response being for "OCSP".   It also includes a
-link to Entrusts root and intermediate CAs with just keyCertSign and
-cRLSign keyUsages.
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-The matchine keyring is a means of establishing a new root of trust. 
-The motivation for further restricting CA certificates to just
-keyCertSign and cRLSign keyUsages is to limit how the CA certificates
-may be used.  They should not be used for code signing.
+ Documentation/Makefile                 | 2 +-
+ arch/powerpc/kernel/prom_init_check.sh | 9 ++++-----
+ certs/extract-cert.c                   | 9 ++++++---
+ scripts/asn1_compiler.c                | 4 ++--
+ scripts/kernel-doc                     | 4 ++--
+ 5 files changed, 15 insertions(+), 13 deletions(-)
 
-thanks,
-
-Mimi
-
-[1] https://superuser.com/questions/738612/openssl-ca-keyusage-extension
-[2] https://security.stackexchange.com/questions/231133/keyusage-extensions-on-a-certificate-authority
-
-
+diff --git a/Documentation/Makefile b/Documentation/Makefile
+index bb73dcb5ed05..023fa658a0a8 100644
+--- a/Documentation/Makefile
++++ b/Documentation/Makefile
+@@ -28,7 +28,7 @@ BUILDDIR      = $(obj)/output
+ PDFLATEX      = xelatex
+ LATEXOPTS     = -interaction=batchmode -no-shell-escape
+ 
+-ifeq ($(KBUILD_VERBOSE),0)
++ifeq ($(findstring 1, $(KBUILD_VERBOSE)),)
+ SPHINXOPTS    += "-q"
+ endif
+ 
+diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
+index 311890d71c4c..5a319863f289 100644
+--- a/arch/powerpc/kernel/prom_init_check.sh
++++ b/arch/powerpc/kernel/prom_init_check.sh
+@@ -51,11 +51,10 @@ do
+ 	# a leading . on the name, so strip it off here.
+ 	UNDEF="${UNDEF#.}"
+ 
+-	if [ $KBUILD_VERBOSE ]; then
+-		if [ $KBUILD_VERBOSE -ne 0 ]; then
+-			echo "Checking prom_init.o symbol '$UNDEF'"
+-		fi
+-	fi
++	case "$KBUILD_VERBOSE" in
++	*1*)
++		echo "Checking prom_init.o symbol '$UNDEF'" ;;
++	esac
+ 
+ 	OK=0
+ 	for WHITE in $WHITELIST
+diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+index 8c1fb9a70d66..d3a0ff2867c0 100644
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -78,7 +78,7 @@ static void drain_openssl_errors(void)
+ static const char *key_pass;
+ static BIO *wb;
+ static char *cert_dst;
+-static int kbuild_verbose;
++static bool verbose;
+ 
+ static void write_cert(X509 *x509)
+ {
+@@ -90,19 +90,22 @@ static void write_cert(X509 *x509)
+ 	}
+ 	X509_NAME_oneline(X509_get_subject_name(x509), buf, sizeof(buf));
+ 	ERR(!i2d_X509_bio(wb, x509), "%s", cert_dst);
+-	if (kbuild_verbose)
++	if (verbose)
+ 		fprintf(stderr, "Extracted cert: %s\n", buf);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+ 	char *cert_src;
++	char *kbuild_verbose;
+ 
+ 	OpenSSL_add_all_algorithms();
+ 	ERR_load_crypto_strings();
+ 	ERR_clear_error();
+ 
+-	kbuild_verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");
++	kbuild_verbose = getenv("KBUILD_VERBOSE");
++	if (kbuild_verbose && strchr(kbuild_verbose, '1'))
++		verbose = true;
+ 
+         key_pass = getenv("KBUILD_SIGN_PIN");
+ 
+diff --git a/scripts/asn1_compiler.c b/scripts/asn1_compiler.c
+index 71d4a7c87900..7b6756a8c15d 100644
+--- a/scripts/asn1_compiler.c
++++ b/scripts/asn1_compiler.c
+@@ -567,8 +567,8 @@ int main(int argc, char **argv)
+ 	int fd;
+ 
+ 	kbuild_verbose = getenv("KBUILD_VERBOSE");
+-	if (kbuild_verbose)
+-		verbose_opt = atoi(kbuild_verbose);
++	if (kbuild_verbose && strchr(kbuild_verbose, '1'))
++		verbose_opt = true;
+ 
+ 	while (argc > 4) {
+ 		if (strcmp(argv[1], "-v") == 0)
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index 54b0893cae66..8ad0a7d68d9a 100755
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -175,8 +175,8 @@ my $declaration_start_line;
+ my ($type, $declaration_name, $return_type);
+ my ($newsection, $newcontents, $prototype, $brcount, %source_map);
+ 
+-if (defined($ENV{'KBUILD_VERBOSE'})) {
+-	$verbose = "$ENV{'KBUILD_VERBOSE'}";
++if (defined($ENV{'KBUILD_VERBOSE'}) && $ENV{'KBUILD_VERBOSE'} =~ '1') {
++	$verbose = 1;
+ }
+ 
+ if (defined($ENV{'KCFLAGS'})) {
+-- 
+2.34.1
 
