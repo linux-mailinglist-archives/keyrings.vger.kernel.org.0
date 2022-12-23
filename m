@@ -2,71 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 871C4654C6E
-	for <lists+keyrings@lfdr.de>; Fri, 23 Dec 2022 07:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A10654FAC
+	for <lists+keyrings@lfdr.de>; Fri, 23 Dec 2022 12:27:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbiLWGZp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 23 Dec 2022 01:25:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42636 "EHLO
+        id S230349AbiLWL1b (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 23 Dec 2022 06:27:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbiLWGZo (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Dec 2022 01:25:44 -0500
-Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA04E5;
-        Thu, 22 Dec 2022 22:25:41 -0800 (PST)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1p8bUa-009jLe-9h; Fri, 23 Dec 2022 14:25:17 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 23 Dec 2022 14:25:16 +0800
-Date:   Fri, 23 Dec 2022 14:25:16 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>, dhowells@redhat.com,
-        davem@davemloft.net, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Tadeusz Struk <tadeusz.struk@intel.com>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [v2 PATCH] lib/mpi: Fix buffer overrun when SG is too long
-Message-ID: <Y6VJzBcN3LvY5j60@gondor.apana.org.au>
-References: <20221209150633.1033556-1-roberto.sassu@huaweicloud.com>
- <Y5OGr59A9wo86rYY@sol.localdomain>
- <fa8a307541735ec9258353d8ccb75c20bb22aafe.camel@huaweicloud.com>
- <Y5bxJ5UZNPzxwtoy@gondor.apana.org.au>
- <0f80852578436dbba7a0fce03d86c3fa2d38c571.camel@huaweicloud.com>
- <Y6FjQPZiJYTEG1zI@gondor.apana.org.au>
- <a04e6458-6814-97fc-f03a-617809e2e6ce@huaweicloud.com>
- <Y6IbWA5aZeBnn4n2@gmail.com>
- <Y6Kthn+rIUnCEJWz@gondor.apana.org.au>
- <Y6NySck5p/DXhSUJ@sol.localdomain>
+        with ESMTP id S230030AbiLWL1a (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Dec 2022 06:27:30 -0500
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580522BC7;
+        Fri, 23 Dec 2022 03:27:24 -0800 (PST)
+Received: from leknes.fjasle.eu ([46.142.99.43]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MFslN-1p5gp12y1X-00HSLg; Fri, 23 Dec 2022 12:24:04 +0100
+Received: from localhost.fjasle.eu (bergen.fjasle.eu [IPv6:fdda:8718:be81:0:6f0:21ff:fe91:394])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (Client did not present a certificate)
+        by leknes.fjasle.eu (Postfix) with ESMTPS id CF3693C1BD;
+        Fri, 23 Dec 2022 12:23:50 +0100 (CET)
+Authentication-Results: leknes.fjasle.eu; dkim=none; dkim-atps=neutral
+Received: by localhost.fjasle.eu (Postfix, from userid 1000)
+        id ADC623615; Fri, 23 Dec 2022 12:23:50 +0100 (CET)
+Date:   Fri, 23 Dec 2022 12:23:50 +0100
+From:   Nicolas Schier <nicolas@fjasle.eu>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Zeng Heng <zengheng4@huawei.com>, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 3/5] kbuild: do not print extra logs for V=2
+Message-ID: <Y6WPxmUSHAOcFiXc@bergen.fjasle.eu>
+References: <20221222162535.1578462-1-masahiroy@kernel.org>
+ <20221222162535.1578462-3-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="MOyNmKm5mYc+g3ky"
 Content-Disposition: inline
-In-Reply-To: <Y6NySck5p/DXhSUJ@sol.localdomain>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20221222162535.1578462-3-masahiroy@kernel.org>
+Jabber-ID: nicolas@fjasle.eu
+X-Operating-System: Debian GNU/Linux bookworm/sid
+X-Provags-ID: V03:K1:Gt71Tj7jfrMEnuIBlN1aGujpmmp/GpuSdUh5qo5mNnf3e++ISDT
+ AFT1CvhAB7vMd8Ig/nxGP9iMBXE073ttmIEJOIi8lc+KiCSG8bkCxAx3qRaeAJF5DdCqB2u
+ vOcvTCKYT3m50DiFCBBUoONVkAzi12EBPMCrKvEpWg6XRyL5/Y21+Pev6joZPgRLMHTDLsX
+ kVnnQBCDuR8CNBg+MtT3g==
+UI-OutboundReport: notjunk:1;M01:P0:5zm/Zx4fDmo=;Nu0choHMauIt57Ywudd+8GFQbgb
+ YhJlREhX4Kt1XJod43F6eqQgg0mjDTPLCnQwDRuYWEJbG7w+9Gs0xJyNDyRSq4UAKLGl2JTwg
+ 1I+Pi7yh/i/yy6LetKE52UB60wE3x5g1CWGU5LT2w5UtMGO2+kYT9Hekiqr93bsGAO+8YpBx9
+ d7knwh2i/FVkWVcKw1Gx9ywHyTfzuBKzwsPSVWK6TBnRzHfOw2+zm5NQMWdGi0OS1rfesOxxc
+ XKwZyhlmY2z7MgVVJhKne4r/fWfAIlbKpGy0gQW5a0Og8hgeo42RiFX1xwCnIEVz6KEsP1DMQ
+ fnuWOlZ5pj3fnXSBLEE8TOoukdEyCUGXC7elSoPA8Y7YxwYFhs3AeQ1/i/9VwrZoqIdyh9vNd
+ BF8Scd5NUV1UheHTapdk8DQyLtkzRKN1V80Bgf9b5vL2OlFm9Oe/lsS/QniNKkv8MJLLJaC32
+ dZw9wMP1yAmL3jiPMyN9RnzOxoIxNW0nAV1XOJ5dMmigL5ZyjNdm12NExS2+LiLQfJyFHBO9X
+ x2JNPiKq2RftzPMSSE23VSyRZIpVQR10QgWDQ3/KlDrzTvJ+2Wt8T2o93e1RyWQ3bfosM+R9C
+ TVwRDqysamQ7+DzEYZANvpdIb6U0hbldEfH5qZXUVrdzWDDevnBxcqvqQHEo8q62jWVblYr1B
+ 6n0y/na6usUqEoi3IRmjlp1JqN2zJd/fO/YJJiARbw==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Dec 21, 2022 at 12:53:29PM -0800, Eric Biggers wrote:
->
-> That's fine, I guess.  One quirk of the above approach is that if the last
-> needed element of the scatterlist has a lot of extra pages, this will iterate
-> through all those extra pages, processing 0 bytes from each.  It could just stop
-> when done.  I suppose it's not worth worrying about that case, though.
 
-Ideally this should be handled in the sg_miter interface, IOW,
-it should allow us to cap the SG list at a certain number of bytes
-as opposed to a certain number of entries.
+--MOyNmKm5mYc+g3ky
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+On Fri 23 Dec 2022 01:25:33 GMT, Masahiro Yamada wrote:
+> Some scripts increase the verbose level when V=3D1, but others when
+> not V=3D0.
+>=20
+> I think the former is correct because V=3D2 is not a log level but
+> a switch to print the reason for rebuilding.
+>=20
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>=20
+>  Documentation/Makefile                 | 2 +-
+>  arch/powerpc/kernel/prom_init_check.sh | 9 ++++-----
+>  certs/extract-cert.c                   | 9 ++++++---
+>  scripts/asn1_compiler.c                | 4 ++--
+>  scripts/kernel-doc                     | 4 ++--
+>  5 files changed, 15 insertions(+), 13 deletions(-)
+>=20
+
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+
+--MOyNmKm5mYc+g3ky
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEh0E3p4c3JKeBvsLGB1IKcBYmEmkFAmOlj8YACgkQB1IKcBYm
+EmkVNw/8CL/ubhKUFMOA9zeW/scQHRiMh6alvKn8TaMvoJ+htOm/riO0zQ7fzTkZ
+7JffTDASXN2SL0Pwll404qStccCWgdYRK1W39DJ4/7eRXdfWoiEVNuRb5L1R33CN
+N7qCeW+odreG1nikMMQe2mpJDoib7bgWRTGvC5iB1yqxVX7kGVE8fCx2OFjgqqwG
+dxQz4REyJl8Gjxe3WOPcZdsFtAwA2tczeTepngKiAZjciUMj6zBcIuooDzDUyTwN
+86GDkLq4CEOmmbYb1ASeASyHsrYEQax2sgAZbgUcR6uGlrAzAeJpmb/uDETFOTbn
+ixAay3fFdnzXRO9+o5JvCHFH1crlCgnpgNtimTiknxNyHq1WRjZ/4vsAF59IRT8W
+bcY3xokEhNMRpCselInHWeR7ZWaIOQv8+FC24fmqznyGeqeGrkW+NZ94QyNpuR7O
+gx1NG6jBrXBLP/QJz9vrLF/P4oAGpGN+hAqYvAnwn8FLHwFCNdCoyzuQU36t9EOp
+mMcFbY6o/eFEU7d9TYMrj236YCSeYDBMNQAb0il4Ow/JGubX5SoC565WBm/zJxao
+4xm0uve1jNz9i5CGsTljRbSPNLthHdoATqfGNvVjN4uVsE1FEcTXqH3ynQcFzFO5
+TBETLnZQM3HlHrpHS/ONO0dVyHcCdOVtsckOh4VwtD6AKtCHcTs=
+=iH0k
+-----END PGP SIGNATURE-----
+
+--MOyNmKm5mYc+g3ky--
