@@ -2,122 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E399A65485D
-	for <lists+keyrings@lfdr.de>; Thu, 22 Dec 2022 23:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 871C4654C6E
+	for <lists+keyrings@lfdr.de>; Fri, 23 Dec 2022 07:25:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbiLVW2D (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Dec 2022 17:28:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37478 "EHLO
+        id S229506AbiLWGZp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 23 Dec 2022 01:25:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbiLVW2C (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Dec 2022 17:28:02 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91D2413DC3
-        for <keyrings@vger.kernel.org>; Thu, 22 Dec 2022 14:28:01 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id o5so3040249wrm.1
-        for <keyrings@vger.kernel.org>; Thu, 22 Dec 2022 14:28:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Q1rvneH2ay3MzDgRuf8vVMN8EmWy6DV7KmPo4nvLNXE=;
-        b=PArmJrrXAzc7JddnmonMhDpK+MLH3BP+WQfpEaqsU6RAzPZsgfAAYh2QFI01zXxfoZ
-         uo6s+5sYDvcoXOvMlXIKBl5R0Ikx76CRtXzlCpO2xopKaNqVEofSAVXRYrR0Fx6Y+opb
-         CEipR0M2wq9TWoekFfvtjv7FhVeh0TKzz4T9TZvaW5cmxFdE4/7fPqtFJK8gd1Q1X6dV
-         ZQ4h1jKILcfWTq8Emmpdz19bYNh+nPoOgc3lFOiWUi1oXj6X2tXmeNIJoSibdoLBc49W
-         /ZUmWb0ri3Fx36b48sgUxR6GHNBj1qWUBI70EoJBIXry22Hd2HK4GZ32xBUMwB3363Dq
-         7awA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q1rvneH2ay3MzDgRuf8vVMN8EmWy6DV7KmPo4nvLNXE=;
-        b=L2VLpawOU4EbIrm5LJ1ScKjuvDq20PW6GLB4/Oc/ID7BXEvoAYtz8RY8QF4D6hKNki
-         AOE6cqJtMiDbE2+zo9RVfTh/8DXnhLjwUi4hZAuX6njPql18Ufy0GzrRMuMCWhvt1i0F
-         xJ6i7dwE3WBW7KWZKnDjybk3MT/UDdbWoZvJPwGlT9OSU7kZXEABRaliYGpxPA1s2MrN
-         GWmogTKYWaAo5A+FNulnxrP6WL1TSJLUO+lfT9TXYwbgS+ixRSWDJG+p79NHCoklTYmK
-         GuEbSFXvElDZYu+b/3IPT7BAjeMPUyXPM9Y8IvPGlloZFgIEckILCTv3tud+8nHhCaLP
-         yADA==
-X-Gm-Message-State: AFqh2ko/rWHN8enrPtgMMWCTJsJPRfo9JVEIi7b22EgvxldxqeHtokmR
-        t3/R+10ps+qw/g62iu/gxGrYLKdDPq8yli95Gws=
-X-Google-Smtp-Source: AMrXdXsNBDKcjig84FPA11rQwba5mDDsqS9R6Hyu8orK8tAieGag9XN57U0f0E4E9pkyU9bBjJGgtehAC8l2vactUHE=
-X-Received: by 2002:a5d:590e:0:b0:242:1c5f:ee55 with SMTP id
- v14-20020a5d590e000000b002421c5fee55mr291435wrd.712.1671748080026; Thu, 22
- Dec 2022 14:28:00 -0800 (PST)
+        with ESMTP id S229483AbiLWGZo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 23 Dec 2022 01:25:44 -0500
+Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA04E5;
+        Thu, 22 Dec 2022 22:25:41 -0800 (PST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1p8bUa-009jLe-9h; Fri, 23 Dec 2022 14:25:17 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 23 Dec 2022 14:25:16 +0800
+Date:   Fri, 23 Dec 2022 14:25:16 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>, dhowells@redhat.com,
+        davem@davemloft.net, zohar@linux.ibm.com,
+        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Tadeusz Struk <tadeusz.struk@intel.com>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [v2 PATCH] lib/mpi: Fix buffer overrun when SG is too long
+Message-ID: <Y6VJzBcN3LvY5j60@gondor.apana.org.au>
+References: <20221209150633.1033556-1-roberto.sassu@huaweicloud.com>
+ <Y5OGr59A9wo86rYY@sol.localdomain>
+ <fa8a307541735ec9258353d8ccb75c20bb22aafe.camel@huaweicloud.com>
+ <Y5bxJ5UZNPzxwtoy@gondor.apana.org.au>
+ <0f80852578436dbba7a0fce03d86c3fa2d38c571.camel@huaweicloud.com>
+ <Y6FjQPZiJYTEG1zI@gondor.apana.org.au>
+ <a04e6458-6814-97fc-f03a-617809e2e6ce@huaweicloud.com>
+ <Y6IbWA5aZeBnn4n2@gmail.com>
+ <Y6Kthn+rIUnCEJWz@gondor.apana.org.au>
+ <Y6NySck5p/DXhSUJ@sol.localdomain>
 MIME-Version: 1.0
-Received: by 2002:a05:6000:15c4:b0:242:3ae8:f526 with HTTP; Thu, 22 Dec 2022
- 14:27:59 -0800 (PST)
-From:   CITI BANK <bank90083@gmail.com>
-Date:   Thu, 22 Dec 2022 14:27:59 -0800
-Message-ID: <CAP4wrVbbrU3uUOJO_EB+_2jQ8pkZSHpVXjU5M0hV+AgFicZSAg@mail.gmail.com>
-Subject: PAYMENT NOTIFICATION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,HK_SCAM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,UNDISC_MONEY,UPPERCASE_75_100,URG_BIZ autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:435 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [bank90083[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [bank90083[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.6 URG_BIZ Contains urgent matter
-        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
-        *  2.0 HK_SCAM No description available.
-        *  2.4 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y6NySck5p/DXhSUJ@sol.localdomain>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Citibank, 1107 Broadway Branch
-Full Service Brick and Mortar Office
-1107 Broadway
-New York, NY 10010
+On Wed, Dec 21, 2022 at 12:53:29PM -0800, Eric Biggers wrote:
+>
+> That's fine, I guess.  One quirk of the above approach is that if the last
+> needed element of the scatterlist has a lot of extra pages, this will iterate
+> through all those extra pages, processing 0 bytes from each.  It could just stop
+> when done.  I suppose it's not worth worrying about that case, though.
 
-SIR
+Ideally this should be handled in the sg_miter interface, IOW,
+it should allow us to cap the SG list at a certain number of bytes
+as opposed to a certain number of entries.
 
-THIS IS THE MANAGER CITIBANK INTERNATIONAL.WE ARE IN CHARGE AND
-ASSIGN PAYMENT BANK FOR CONTRACTORS PAYMENT.I HEREBY INFORM YOU ON THE
-NEW  DEVELOPMENT AND THE FILE BROUGHT BEFORE MY TABLE FOR REMMITANCE.
-
-THERE IS ONE MR RANDALL BOCIAN FROM UNITED STATE OF AMERICA WITH THE
-FOLLOWING BANKING INFORMATION BELOW WHO CLAIM TO BE YOUR NEXT OF
-KIN,WHOM  INFORMED US THAT YOU DIED OF A THROAT CANCER AND HE IS TO
-RECEIVE YOUR  CONTRACT SUM.
-
-HUNTINGTON NATIONAL BANK
-Bank Add:17 South High Street Columbus, OH 43216
-RANDALL BOCIAN
-ABA/RTN: 044000024
-Account No.: 02771751152
-SWIFT: HUNTUS33
-
-PLEASE I WANT YOU TO URGENTLY REPLY THIS MAIL IF IT IS NOT TRUE OR
-ONCE WE DID NOT HEAR FROM YOU WE WILL GO AHEAD AND MAKE THIS PAYMENT.
-
-
-Robert Baker
-
-Account Officer
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
