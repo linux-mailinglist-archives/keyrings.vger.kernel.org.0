@@ -2,39 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3527E656E3C
-	for <lists+keyrings@lfdr.de>; Tue, 27 Dec 2022 20:23:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 668406576DE
+	for <lists+keyrings@lfdr.de>; Wed, 28 Dec 2022 14:19:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230243AbiL0TXB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 27 Dec 2022 14:23:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44378 "EHLO
+        id S230071AbiL1NTh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 28 Dec 2022 08:19:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbiL0TXA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 27 Dec 2022 14:23:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02AB2D4C;
-        Tue, 27 Dec 2022 11:22:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 968D9B80E8C;
-        Tue, 27 Dec 2022 19:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BFFC433EF;
-        Tue, 27 Dec 2022 19:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672168976;
-        bh=JZVucA8oHxLNl9U1Lb781S9ah8U4/JhduG51boVtfvw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uRBmMG5yRCzun79mh5c6fhtVgNPwQO7Vm3IBaHwZT5Kk49+ecVp4FMvGcHWFQOGTl
-         caYQd12doLUszoP0i14aqrgjbsm4oB9lZbVVXKI2V0gHItCEQXTarFBB18u9PXkDNT
-         ChmJNuWHnGIAATLRtuCsWVKRO0AYGZ65e5o9pXF78kFEefJZvzzmBZFJCDZsdWdunQ
-         RsTpBikc9CcuyPrVCQ1VzgIu4+4PcpTtP8UXqMUn1mLCMTWeCcb2ND46PqOH+zL+/S
-         CJudYAfqPXSeoWxfXue9W7mRYUmtaNLvRxl8gcu51WgG0fQoFwMhEAWjy66fg+/ybx
-         GeGfRX42jFhzQ==
-Date:   Tue, 27 Dec 2022 19:22:38 +0000
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>,
+        with ESMTP id S229587AbiL1NTf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Dec 2022 08:19:35 -0500
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A531F1173;
+        Wed, 28 Dec 2022 05:19:34 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id E26E85C0178;
+        Wed, 28 Dec 2022 08:19:33 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Wed, 28 Dec 2022 08:19:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=cc:cc:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1672233573; x=1672319973; bh=hr
+        lNtNYlQa9wbjhSeAQelcswFDbd9QN60Imd0IatPMM=; b=SvZtkcO9mh8st6EnHZ
+        I5FPADnH8quRAPVT0A+swJYJau3ILdjVv3X/zCGVkMl/oaI07sCdkXDehBY9BpIN
+        vLMeVNwCiE8AXF4JyslOKQolyIQiFRdkvwryPYZQCNqHq/cWjbiAV3fcM3NZx9MY
+        YB2QUl5bz5Xn4a2fQZfYMAPPVtzoeb9QuwiYEKas/nXaIcPc4qBPqaoLGy/DEZOI
+        Lk08PE1OF2ql7zBQvq+k/YEx2/7/i3UkghsgkSs/AbZ5M/VbJg7nBl+HEoa1p3PM
+        A9htLNTBcYevJR9S4n8gvr/KKO3yUuNOqaFi9BgH5acWleQUCpZrt+poICiYmkjh
+        +ZfQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1672233573; x=1672319973; bh=hrlNtNYlQa9wbjhSeAQelcswFDbd
+        9QN60Imd0IatPMM=; b=tj/rWfyjUkLK9U/aQ1AhrSgNzHgG0nKdJK0yukqe5FKL
+        0hFef2uWMyyG+C9JjkNcSERz9ydRxWsLSM4Tz+gUKtPy+wZyQ+rdHRhJBh3yuJfx
+        596Wz1/nhu7oQj7F0SPfiSQyF168ARz+W4oo0MkKpyaKlV3GZtflX+cinCWdT2qn
+        P5s3BOEphZKLzYGN9YY2IaLLfIlavNgEqzEJqVE3RLHVldpe9utomhkhtgnrRKT/
+        jwHuq7yHYmkTW884en6mpJJNTjoVJ4GibkzkT0UUVz3j57sERWpF92FEo3mxDTXJ
+        MIJZF56QP7+KcbfoqMVxk7wD3POH9/CwjIybmaMplw==
+X-ME-Sender: <xms:ZEKsY21oHIrxSKi_elKkITFbiuhL5nhFbUiL6hUBcfEuqrXg4_VuPQ>
+    <xme:ZEKsY5GAXGb8ya37X_9PHCEd9DosPN0uMHztqA3sO23xinQsU9omROyypuA3UWmEH
+    9lX5VHTR5fZtY17eyc>
+X-ME-Received: <xmr:ZEKsY-5b8euuirYICOp_iHMtX7mB2FMp00cT2J8iUe2R_K3EYWRs1BKpEwPgewAWHi-09rusJG5mCsNQjrOM_o306oZgEPsMfo9n>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedriedvgdehudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
+    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeffleegffevleekffekheeigfdtleeuvddtgffhtddvfefgjeehffduueevkedv
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvg
+    essggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:ZEKsY31kp7aclg1o7KewjwBmEiM18hBQaymKgUYwD2631-QwnSHSlA>
+    <xmx:ZEKsY5HbDW_takI1CH1RRLX3mwM5uZvVix2gZ3q6fUZkz6_XqI46kw>
+    <xmx:ZEKsYw9fvWQZ0rdd8WT2rWdnl8GiDZuEFULpHdcp9J4SeBxDmIbQtw>
+    <xmx:ZUKsYx90VrzrLXMfTQyC50Q3S7azp6piZMAilbQg4yR7lhzovOc7UA>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Dec 2022 08:19:32 -0500 (EST)
+Date:   Wed, 28 Dec 2022 08:19:30 -0500
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        David Howells <dhowells@redhat.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -43,70 +74,29 @@ Cc:     David Howells <dhowells@redhat.com>,
         Vitaly Chikunov <vt@altlinux.org>, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] crypto: certs: fix FIPS selftest depenency
-Message-ID: <Y6tF52G6/bnG+VfJ@kernel.org>
+Message-ID: <Y6xCYmZkggGzzzBM@farprobe>
 References: <20221215170259.2553400-1-arnd@kernel.org>
+ <Y6tF52G6/bnG+VfJ@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221215170259.2553400-1-arnd@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y6tF52G6/bnG+VfJ@kernel.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Dec 15, 2022 at 06:02:52PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The selftest code is built into the x509_key_parser module, and depends
-> on the pkcs7_message_parser module, which in turn has a dependency on
-> the key parser, creating a dependency loop and a resulting link
-> failure when the pkcs7 code is a loadable module:
-> 
-> ld: crypto/asymmetric_keys/selftest.o: in function `fips_signature_selftest':
-> crypto/asymmetric_keys/selftest.c:205: undefined reference to `pkcs7_parse_message'
-> ld: crypto/asymmetric_keys/selftest.c:209: undefined reference to `pkcs7_supply_detached_data'
-> ld: crypto/asymmetric_keys/selftest.c:211: undefined reference to `pkcs7_verify'
-> ld: crypto/asymmetric_keys/selftest.c:215: undefined reference to `pkcs7_validate_trust'
-> ld: crypto/asymmetric_keys/selftest.c:219: undefined reference to `pkcs7_free_message'
-> 
-> Avoid this by only allowing the selftest to be enabled when either
-> both parts are loadable modules, or both are built-in.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  crypto/asymmetric_keys/Kconfig        | 2 +-
->  crypto/asymmetric_keys/pkcs7_verify.c | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-> index 3df3fe4ed95f..1ef3b46d6f6e 100644
-> --- a/crypto/asymmetric_keys/Kconfig
-> +++ b/crypto/asymmetric_keys/Kconfig
-> @@ -83,6 +83,6 @@ config FIPS_SIGNATURE_SELFTEST
->  	  for FIPS.
->  	depends on KEYS
->  	depends on ASYMMETRIC_KEY_TYPE
-> -	depends on PKCS7_MESSAGE_PARSER
-> +	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
->  
->  endif # ASYMMETRIC_KEY_TYPE
-> diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-> index f6321c785714..4fa769c4bcdb 100644
-> --- a/crypto/asymmetric_keys/pkcs7_verify.c
-> +++ b/crypto/asymmetric_keys/pkcs7_verify.c
-> @@ -485,3 +485,4 @@ int pkcs7_supply_detached_data(struct pkcs7_message *pkcs7,
->  	pkcs7->data_len = datalen;
->  	return 0;
->  }
-> +EXPORT_SYMBOL_GPL(pkcs7_supply_detached_data);
-> -- 
-> 2.35.1
-> 
+On Tue, Dec 27, 2022 at 19:22:38 +0000, Jarkko Sakkinen wrote:
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Might want to fix this when picked:
 
-BR, Jarkko
+> Subject: Re: [PATCH] crypto: certs: fix FIPS selftest depenency
+                                             dependency ^^^^^^^^^
+
+--Ben
