@@ -2,89 +2,124 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F10C5659280
-	for <lists+keyrings@lfdr.de>; Thu, 29 Dec 2022 23:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 599A86598C4
+	for <lists+keyrings@lfdr.de>; Fri, 30 Dec 2022 14:35:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbiL2WjK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 29 Dec 2022 17:39:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56402 "EHLO
+        id S229759AbiL3NfR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 30 Dec 2022 08:35:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbiL2WjJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 29 Dec 2022 17:39:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7289B14024;
-        Thu, 29 Dec 2022 14:39:08 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 12944B819CD;
-        Thu, 29 Dec 2022 22:39:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AF5C433EF;
-        Thu, 29 Dec 2022 22:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672353545;
-        bh=Vl16ZrQ6FIVlc0MsbXC4FP4xe8sX0FhBJ0Zr7gy0p3k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RDiEvnsJ7m+xWx1JB3ZXOqwxK6gfQ7FhGem0LZdefcr//JxgTkvMhIyjggykSOjPg
-         G43lW/GXie2JOFvIxuNZlN+IYJJnFvjb3nI5NOuCMwUo/ED57wAR+Aa6lwrshtNexq
-         Kye9wmMjHimuhiRfKWJsta2EFquKEHR7lCLLZBPFY0vYzXVFyD/ZBN182WMYZA/6BX
-         51utRGlceQI7eHvg0dJV0lb03uVjcgOnI/9+udBgzRmAOfZOyzzmrnCWiCfJb6TwFM
-         m7jp72RYb6mVoOV4hM5DaWmX8O2ljVwfmbA8uuYoi7KSa3CLFlbzpyVsx0I1Wrz1wN
-         IFMjGZyxi8r1Q==
-Date:   Thu, 29 Dec 2022 14:39:03 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     dhowells@redhat.com, herbert@gondor.apana.org.au,
-        davem@davemloft.net, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Subject: Re: [PATCH v5 2/2] KEYS: asymmetric: Copy sig and digest in
- public_key_verify_signature()
-Message-ID: <Y64XB0yi24yjeBDw@sol.localdomain>
+        with ESMTP id S234930AbiL3NfQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 30 Dec 2022 08:35:16 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F151AA0A
+        for <keyrings@vger.kernel.org>; Fri, 30 Dec 2022 05:35:12 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-314-HWfElW15Mq-_iaahh_74GQ-1; Fri, 30 Dec 2022 13:35:09 +0000
+X-MC-Unique: HWfElW15Mq-_iaahh_74GQ-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Fri, 30 Dec
+ 2022 13:35:07 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Fri, 30 Dec 2022 13:35:07 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Roberto Sassu' <roberto.sassu@huaweicloud.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "ebiggers@kernel.org" <ebiggers@kernel.org>
+CC:     "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v5 1/2] lib/mpi: Fix buffer overrun when SG is too long
+Thread-Topic: [PATCH v5 1/2] lib/mpi: Fix buffer overrun when SG is too long
+Thread-Index: AQHZGf+Li10Ctze9/ky4tLizwqJmjK6Gb6hQ
+Date:   Fri, 30 Dec 2022 13:35:07 +0000
+Message-ID: <6949ced7c1014488b2d00ff26eba6b6b@AcuMS.aculab.com>
 References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
- <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
+ <20221227142740.2807136-2-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20221227142740.2807136-2-roberto.sassu@huaweicloud.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Dec 27, 2022 at 03:27:40PM +0100, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Roberto Sassu
+> Sent: 27 December 2022 14:28
 > 
-> Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
-> mapping") checks that both the signature and the digest reside in the
-> linear mapping area.
+> From: Herbert Xu <herbert@gondor.apana.org.au>
 > 
-> However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
-> stack support") made it possible to move the stack in the vmalloc area,
-> which is not contiguous, and thus not suitable for sg_set_buf() which needs
-> adjacent pages.
+> The helper mpi_read_raw_from_sgl sets the number of entries in
+> the SG list according to nbytes.  However, if the last entry
+> in the SG list contains more data than nbytes, then it may overrun
+> the buffer because it only allocates enough memory for nbytes.
 > 
-> Always make a copy of the signature and digest in the same buffer used to
-> store the key and its parameters, and pass them to sg_init_one(). Prefer it
-> to conditionally doing the copy if necessary, to keep the code simple. The
-> buffer allocated with kmalloc() is in the linear mapping area.
-> 
-> Cc: stable@vger.kernel.org # 4.9.x
-> Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
-> Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-> Suggested-by: Eric Biggers <ebiggers@kernel.org>
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Fixes: 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers")
+> Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 > ---
->  crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
->  1 file changed, 21 insertions(+), 17 deletions(-)
+>  lib/mpi/mpicoder.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/mpi/mpicoder.c b/lib/mpi/mpicoder.c
+> index 39c4c6731094..3cb6bd148fa9 100644
+> --- a/lib/mpi/mpicoder.c
+> +++ b/lib/mpi/mpicoder.c
+> @@ -504,7 +504,8 @@ MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int nbytes)
+> 
+>  	while (sg_miter_next(&miter)) {
+>  		buff = miter.addr;
+> -		len = miter.length;
+> +		len = min_t(unsigned, miter.length, nbytes);
 
-Reviewed-by: Eric Biggers <ebiggers@google.com>
+Technically that min_t() is incorrect.
+miter.length is size_t (unsigned long on 64bit) and nbytes unsigned int.
+Any cast needs to force the smaller type to the larger one.
+(Clearly here the domain of the values is probably than 4G - but that isn't
+the point. There must be some places where the sg length needs to
+be size_t because 32 bits isn't enough.)
 
-- Eric
+In reality min() is being completely over-zealous in its checking and
+should allow comparisons where the signed-ness of the two values matches.
+Search for the patch I posted before xmas.
+
+	David
+
+
+> +		nbytes -= len;
+> 
+>  		for (x = 0; x < len; x++) {
+>  			a <<= 8;
+> --
+> 2.25.1
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
