@@ -2,102 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C436865A49F
-	for <lists+keyrings@lfdr.de>; Sat, 31 Dec 2022 14:23:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3918765ADB2
+	for <lists+keyrings@lfdr.de>; Mon,  2 Jan 2023 08:23:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbiLaNXY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Sat, 31 Dec 2022 08:23:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50380 "EHLO
+        id S229666AbjABHXw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Jan 2023 02:23:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbiLaNXX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 31 Dec 2022 08:23:23 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8A3642A
-        for <keyrings@vger.kernel.org>; Sat, 31 Dec 2022 05:23:21 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-54-12njZMflPrOHOWWm3UOPXQ-1; Sat, 31 Dec 2022 13:23:15 +0000
-X-MC-Unique: 12njZMflPrOHOWWm3UOPXQ-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Sat, 31 Dec
- 2022 13:23:14 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Sat, 31 Dec 2022 13:23:14 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Herbert Xu' <herbert@gondor.apana.org.au>
-CC:     'Roberto Sassu' <roberto.sassu@huaweicloud.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
-        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
-        "paul@paul-moore.com" <paul@paul-moore.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "ebiggers@kernel.org" <ebiggers@kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v5 1/2] lib/mpi: Fix buffer overrun when SG is too long
-Thread-Topic: [PATCH v5 1/2] lib/mpi: Fix buffer overrun when SG is too long
-Thread-Index: AQHZGf+Li10Ctze9/ky4tLizwqJmjK6Gb6hQgAAmKQCAAWpJUA==
-Date:   Sat, 31 Dec 2022 13:23:14 +0000
-Message-ID: <0d5fda5b25b8467c860d625116dac1d2@AcuMS.aculab.com>
-References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
- <20221227142740.2807136-2-roberto.sassu@huaweicloud.com>
- <6949ced7c1014488b2d00ff26eba6b6b@AcuMS.aculab.com>
- <Y68GMsGKROsgDbcs@gondor.apana.org.au>
-In-Reply-To: <Y68GMsGKROsgDbcs@gondor.apana.org.au>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S229447AbjABHXv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Jan 2023 02:23:51 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E9AE4A;
+        Sun,  1 Jan 2023 23:23:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=uZkv46Z2Bqul59SdbhSz2/0kEiRL342ph/AKAU95GtQ=; b=ejVdKsdmRXa0S1PM+BSiBL1+G6
+        Byu9a2nWdrSFKmSUZy4zFSwoknPjjH9BEDLtNzXElNS/p69cB+wONw2m6SEhNp2wQo+LH5e/9tz0e
+        yJUJ38FVa3EdCupexLXILN1bQC49FVfP2nZ8RK6PGiNHwKUzTKL/eTamh8LNVIjnZ2xOobz2PaZJf
+        7dGpbjIweoqNur9njT8IH+FsX9cjqs1R9WgaTEeC6b8xlEe8OCWfViFa0xJu1YaOrjpjwfLNXXln/
+        wtDUpjGbEDHwZsyVn8L3M0aeuUUqWTHddO/nBhShSPuNV9wfAAymgACPzTzY5b2DUNfXgngkT82K9
+        ylzy6qdw==;
+Received: from [2601:1c2:d80:3110::a2e7] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pCFAj-009Cjs-4J; Mon, 02 Jan 2023 07:23:49 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: [PATCH] certs: system_keyring: fix kernel-doc warnings
+Date:   Sun,  1 Jan 2023 23:23:48 -0800
+Message-Id: <20230102072348.26425-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Herbert Xu
-> Sent: 30 December 2022 15:40
-> 
-> On Fri, Dec 30, 2022 at 01:35:07PM +0000, David Laight wrote:
-> >
-> > miter.length is size_t (unsigned long on 64bit) and nbytes unsigned int.
-> 
-> miter.length is bounded by sg->length which is unsigned int.
+Fix W=1 kernel-doc warnings:
 
-I did say 'technically' :-)
+certs/system_keyring.c:45: warning: expecting prototype for restrict_link_to_builtin_trusted(). Prototype was for restrict_link_by_builtin_trusted() instead
+certs/system_keyring.c:79: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ * Allocate a struct key_restriction for the "builtin and secondary trust"
 
-Should there be a sg_miter_stop() before the return at the bottom?
-Care seems to have been taken to add one before an earlier error return.
-(The logic in that function is very strange...)
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: keyrings@vger.kernel.org
+---
+ certs/system_keyring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Indeed other parts of the file are equally strange.
-The big multi-line if-else in twocompl() is just:
-	p[i] = (p[1] ^ 0xff) + 1;
-or even:
-	p[i] = -p[i];
-That function could also return the 'zero status' to correct
-for -0 (rather than the extra check earlier in the caller).
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+diff -- a/certs/system_keyring.c b/certs/system_keyring.c
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -33,7 +33,7 @@ extern __initconst const unsigned long s
+ extern __initconst const unsigned long module_cert_size;
+ 
+ /**
+- * restrict_link_to_builtin_trusted - Restrict keyring addition by built in CA
++ * restrict_link_by_builtin_trusted - Restrict keyring addition by built in CA
+  *
+  * Restrict the addition of keys into a keyring based on the key-to-be-added
+  * being vouched for by a key in the built in system keyring.
+@@ -75,7 +75,7 @@ int restrict_link_by_builtin_and_seconda
+ 					  secondary_trusted_keys);
+ }
+ 
+-/**
++/*
+  * Allocate a struct key_restriction for the "builtin and secondary trust"
+  * keyring. Only for use in system_trusted_keyring_init().
+  */
