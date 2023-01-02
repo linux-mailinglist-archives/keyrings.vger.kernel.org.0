@@ -2,39 +2,44 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3918765ADB2
-	for <lists+keyrings@lfdr.de>; Mon,  2 Jan 2023 08:23:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D011765B73E
+	for <lists+keyrings@lfdr.de>; Mon,  2 Jan 2023 21:45:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjABHXw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Jan 2023 02:23:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35380 "EHLO
+        id S233689AbjABUpl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Jan 2023 15:45:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjABHXv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Jan 2023 02:23:51 -0500
+        with ESMTP id S232696AbjABUpj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Jan 2023 15:45:39 -0500
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E9AE4A;
-        Sun,  1 Jan 2023 23:23:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 652166258;
+        Mon,  2 Jan 2023 12:45:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
         MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
         Content-ID:Content-Description:In-Reply-To:References;
-        bh=uZkv46Z2Bqul59SdbhSz2/0kEiRL342ph/AKAU95GtQ=; b=ejVdKsdmRXa0S1PM+BSiBL1+G6
-        Byu9a2nWdrSFKmSUZy4zFSwoknPjjH9BEDLtNzXElNS/p69cB+wONw2m6SEhNp2wQo+LH5e/9tz0e
-        yJUJ38FVa3EdCupexLXILN1bQC49FVfP2nZ8RK6PGiNHwKUzTKL/eTamh8LNVIjnZ2xOobz2PaZJf
-        7dGpbjIweoqNur9njT8IH+FsX9cjqs1R9WgaTEeC6b8xlEe8OCWfViFa0xJu1YaOrjpjwfLNXXln/
-        wtDUpjGbEDHwZsyVn8L3M0aeuUUqWTHddO/nBhShSPuNV9wfAAymgACPzTzY5b2DUNfXgngkT82K9
-        ylzy6qdw==;
+        bh=ejlIdJXYeoZP28gEN4XiJsWW1JI0RWVlmmFbAagiLr8=; b=Zh0O4kJThdX9L+WM8tXGxFJvyv
+        rOO87L+qdrBbBaMIs361h5ZVLITnJ+kf70XEMbkpKkumRSwNQKZHtaX2XgNzNxuTPlsTyLdAk3oI8
+        aF7KXbcW4Pa3VdNmi5zNqfmoBBmdF8aqvDqrOAFhISEft8jfW+uhyqBa6LmOeYIOoCGJ2g8IROm0g
+        JgiNpw3wloozWvIRXZ5FwU8Znq03PVFcisVmyXjYZ2DLyHDI/v4EqPDUsHN2b9OSHU6kaXEV7NONc
+        v4xsvPxM0gzj7XwDJ0zEu8MTzJKF7eGIlqKFxxaJGkkZFGw40nN4dV9byEaWX0ZyT9kVJv8tw0MET
+        e+gBVdUA==;
 Received: from [2601:1c2:d80:3110::a2e7] (helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pCFAj-009Cjs-4J; Mon, 02 Jan 2023 07:23:49 +0000
+        id 1pCRgg-00EFad-Hi; Mon, 02 Jan 2023 20:45:38 +0000
 From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
+To:     linux-security-module@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
-Subject: [PATCH] certs: system_keyring: fix kernel-doc warnings
-Date:   Sun,  1 Jan 2023 23:23:48 -0800
-Message-Id: <20230102072348.26425-1-rdunlap@infradead.org>
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Subject: [PATCH] KEYS: trusted: tpm2: use correct function name in kernel-doc
+Date:   Mon,  2 Jan 2023 12:45:37 -0800
+Message-Id: <20230102204537.4842-1-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -47,38 +52,33 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Fix W=1 kernel-doc warnings:
+Correct the function name in the kernel-doc notation to prevent
+a kernel-doc warning:
 
-certs/system_keyring.c:45: warning: expecting prototype for restrict_link_to_builtin_trusted(). Prototype was for restrict_link_by_builtin_trusted() instead
-certs/system_keyring.c:79: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Allocate a struct key_restriction for the "builtin and secondary trust"
+security/keys/trusted-keys/trusted_tpm2.c:203: warning: expecting prototype for tpm_buf_append_auth(). Prototype was for tpm2_buf_append_auth() instead
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org
 Cc: keyrings@vger.kernel.org
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
 ---
- certs/system_keyring.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/keys/trusted-keys/trusted_tpm2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff -- a/certs/system_keyring.c b/certs/system_keyring.c
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -33,7 +33,7 @@ extern __initconst const unsigned long s
- extern __initconst const unsigned long module_cert_size;
- 
- /**
-- * restrict_link_to_builtin_trusted - Restrict keyring addition by built in CA
-+ * restrict_link_by_builtin_trusted - Restrict keyring addition by built in CA
-  *
-  * Restrict the addition of keys into a keyring based on the key-to-be-added
-  * being vouched for by a key in the built in system keyring.
-@@ -75,7 +75,7 @@ int restrict_link_by_builtin_and_seconda
- 					  secondary_trusted_keys);
+diff -- a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -186,7 +186,7 @@ int tpm2_key_priv(void *context, size_t
  }
  
--/**
-+/*
-  * Allocate a struct key_restriction for the "builtin and secondary trust"
-  * keyring. Only for use in system_trusted_keyring_init().
-  */
+ /**
+- * tpm_buf_append_auth() - append TPMS_AUTH_COMMAND to the buffer.
++ * tpm2_buf_append_auth() - append TPMS_AUTH_COMMAND to the buffer.
+  *
+  * @buf: an allocated tpm_buf instance
+  * @session_handle: session handle
