@@ -2,119 +2,100 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE3AC65D2CA
-	for <lists+keyrings@lfdr.de>; Wed,  4 Jan 2023 13:35:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3051E65D302
+	for <lists+keyrings@lfdr.de>; Wed,  4 Jan 2023 13:49:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbjADMfQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 Jan 2023 07:35:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
+        id S229453AbjADMtf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Jan 2023 07:49:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239159AbjADMfM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Jan 2023 07:35:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9EF1ADBF;
-        Wed,  4 Jan 2023 04:35:11 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7D510B8162F;
-        Wed,  4 Jan 2023 12:35:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF41C433EF;
-        Wed,  4 Jan 2023 12:35:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672835709;
-        bh=j6ukuFCDMc/hoZSsjDxvJ0xbGxxQjsTmxFt/xDHTJvY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jdcUCQzsCsWNQG52YXqCwSsAQBQbKiBelpFdOLzso+REJ3Bti7ODvy79YwZw0RqN0
-         /4dUsFSSy0GVpjIorkAVjH9OBvkxzTmmtulrtD3IfMHkRFvE2lVsJDphlq18vIJwXf
-         pYJsCC0LMgC0iZ6jypMg2+SVDiIylv8hy0GEf1yHD0OXNkDzWNHvFVwum+v2NDAy+f
-         TqfHGlWOoIqa0nA7Qmb7aExe2cIGQN6avJSWQ0/hXdE7pTwHd11kveX+NcY5B0+JAX
-         +jOUgkgbAWOSm82EKYBUm8gX4wawBTk9f/IClGQ7ZyLoZQond+Yu2ATc4eFa7cvUlR
-         xsNJoDXEe1voQ==
-Date:   Wed, 4 Jan 2023 12:35:06 +0000
-From:   ", Jarkko Sakkinen" <jarkko@kernel.org>
-To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Mark Pearson <markpearson@lenovo.com>
-Subject: Re: [PATCH v4 3/3] certs: don't try to update blacklist keys
-Message-ID: <Y7Vyet6+pytBDOeR@kernel.org>
-References: <20221212-keys-blacklist-v4-0-00afeb3137fb@weissschuh.net>
- <20221212-keys-blacklist-v4-3-00afeb3137fb@weissschuh.net>
+        with ESMTP id S230095AbjADMte (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Jan 2023 07:49:34 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293231704B
+        for <keyrings@vger.kernel.org>; Wed,  4 Jan 2023 04:49:33 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id c17so48318444edj.13
+        for <keyrings@vger.kernel.org>; Wed, 04 Jan 2023 04:49:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=PpbUdbofVmBQQZZTp2RUm+CbaCmQdtyUzeVJiE+zR6LZbd09h1S9oit+7lCIpj+dpH
+         jhXtmnKrl42+WkYxEVhs7BR8aBz6cY48JO5FseRLbnHSnWy8NgRk/fzsRQzb3vaNqTA7
+         Xvar3iD5+rjWX7tW5Sp8GloNfrVt1fIpM4JFOw/PAMRhF2j6f4IiPq6iMkbjfooAwaFr
+         CV0x4KK4lhYD6vSr9JAz54QgLX10F8b0bIZtpCEaNx3riD0ZiAhFytugq255QEBxc+/d
+         dQ4c23NPooO4WT2AsHZYQQSObw9hYkmqSXoyt5sAthKj1gpqQGaRF6r2FeGDuDug5E8l
+         AdSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=GiNznYCpGGLalxN0XU8U3VSdMGf3RXwvs79kq8f5VNZJe0Qq1SwsxmXsGftFCZfCCJ
+         XsJoZ2tdLGQTEpih+PQDXcGmJvy4Y+OnIIgN7P3//iQ5JHct+OpLN7vRVUyO0hY4MXyA
+         I0Ln3CG/XJ2JhZF7SQwaPe3tWBJ3qN2QDepsfqAAe6zvMeUAe2BbKrbPLrLLG+kn7yXA
+         yNmXTWoFTeznxhfHUlm2opH9ZqJQZqxX5WKiKu6wkfwnMmcnG0G4yoB2eb430xHxlZ8A
+         xOpYQZNbsPP7YNBkoYAYCgwP2GMfTLG/VppvUdtseGeDtWWvibMpNyrp5NN32rHHF53J
+         loDA==
+X-Gm-Message-State: AFqh2kpKbVsMaR5q4dw64UYEvbVZgXaPFlnqhaS8LxlkUqY4mu3qe3T2
+        voZ7bq6oMmGCemqs2rS49AaivBZee5onneV5gGQ=
+X-Google-Smtp-Source: AMrXdXtZPhutZ2IIPTEZJ1H9aEU2iOidTGDIxTptzHabvnD16TXoM46QU1NxlOi+SoqRP1RsXy1tMps7RgKQYzTwAbs=
+X-Received: by 2002:aa7:d489:0:b0:46c:5109:66fa with SMTP id
+ b9-20020aa7d489000000b0046c510966famr5791792edr.309.1672836571446; Wed, 04
+ Jan 2023 04:49:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221212-keys-blacklist-v4-3-00afeb3137fb@weissschuh.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:907:1b0c:b0:7c0:fa7f:6f2f with HTTP; Wed, 4 Jan 2023
+ 04:49:29 -0800 (PST)
+Reply-To: Gregdenzell9@gmail.com
+From:   Greg Denzell <ffgrdenzl41@gmail.com>
+Date:   Wed, 4 Jan 2023 12:49:29 +0000
+Message-ID: <CANJpBKD0hkPOwcqPHd1McW1j3mAXdvvcmruRwR4J7r2HY738fQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:531 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5005]
+        *  1.0 HK_RANDOM_FROM From username looks random
+        *  0.0 HK_RANDOM_ENVFROM Envelope sender username looks random
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ffgrdenzl41[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [gregdenzell9[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ffgrdenzl41[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Dec 21, 2022 at 02:08:24AM +0000, Thomas Weiﬂschuh wrote:
-> When the same key is blacklisted repeatedly logging at pr_err() level is
-> excessive as no functionality is impaired.
-> When these duplicates are provided by buggy firmware there is nothing
-> the user can do to fix the situation.
-> Instead of spamming the bootlog with errors we use a warning that can
-> still be seen by OEMs when testing their firmware.
-> 
-> Link: https://lore.kernel.org/all/c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de/
-> Link: https://lore.kernel.org/all/20221104014704.3469-1-linux@weissschuh.net/
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
-> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> ---
->  certs/blacklist.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
-> 
-> diff --git a/certs/blacklist.c b/certs/blacklist.c
-> index 6e260c4b6a19..675dd7a8f07a 100644
-> --- a/certs/blacklist.c
-> +++ b/certs/blacklist.c
-> @@ -183,16 +183,19 @@ static int mark_raw_hash_blacklisted(const char *hash)
->  {
->  	key_ref_t key;
->  
-> -	key = key_create_or_update(make_key_ref(blacklist_keyring, true),
-> -				   "blacklist",
-> -				   hash,
-> -				   NULL,
-> -				   0,
-> -				   BLACKLIST_KEY_PERM,
-> -				   KEY_ALLOC_NOT_IN_QUOTA |
-> -				   KEY_ALLOC_BUILT_IN);
-> +	key = key_create(make_key_ref(blacklist_keyring, true),
-> +			 "blacklist",
-> +			 hash,
-> +			 NULL,
-> +			 0,
-> +			 BLACKLIST_KEY_PERM,
-> +			 KEY_ALLOC_NOT_IN_QUOTA |
-> +			 KEY_ALLOC_BUILT_IN);
->  	if (IS_ERR(key)) {
-> -		pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
-> +		if (PTR_ERR(key) == -EEXIST)
-> +			pr_warn("Duplicate blacklisted hash %s\n", hash);
-> +		else
-> +			pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
->  		return PTR_ERR(key);
->  	}
->  	return 0;
-> 
-> -- 
-> 2.39.0
+Seasons Greetings!
 
-Reviewed-by: Jarkko Sakkinen <jarko@kernel.org>
-
-BR, Jarkko
+This will remind you again that I have not yet received your reply to
+my last message to you.
