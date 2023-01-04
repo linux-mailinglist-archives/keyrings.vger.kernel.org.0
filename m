@@ -2,57 +2,57 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B439665D2A5
-	for <lists+keyrings@lfdr.de>; Wed,  4 Jan 2023 13:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FEA865D2B6
+	for <lists+keyrings@lfdr.de>; Wed,  4 Jan 2023 13:32:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234514AbjADM3J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 4 Jan 2023 07:29:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
+        id S234961AbjADMbs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 4 Jan 2023 07:31:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234206AbjADM3I (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Jan 2023 07:29:08 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE7AB1A224;
-        Wed,  4 Jan 2023 04:29:07 -0800 (PST)
+        with ESMTP id S230087AbjADMbQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 4 Jan 2023 07:31:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05E6DFCDC;
+        Wed,  4 Jan 2023 04:31:16 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 90D78B81628;
-        Wed,  4 Jan 2023 12:29:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AB6C433EF;
-        Wed,  4 Jan 2023 12:29:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97ED76141B;
+        Wed,  4 Jan 2023 12:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8437C433D2;
+        Wed,  4 Jan 2023 12:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672835345;
-        bh=VpZBnDQgpO+oMahbk71quy/7eaPxvqN/v3XHlU5yAs8=;
+        s=k20201202; t=1672835475;
+        bh=TS1eRADAwtsICh+WYhgcEE7ywnYS5xNwOmdPOvBMuuI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nvP6ASrZMvHhcAuGAOT+jzapK5d4RDlHuP7MNzgblqPmZshleLtD6q8jIngbDODgC
-         mS0B6DhdIeJcf+JIBlOej9FcVxj9GaXcQXO/O4XGk6/jskWiCAXqWHGpA95RZRSaMn
-         MedCrXfgpzFU2Gbj7mUD3MoP9XeW/jmuCNuGopv1K4JtY+347xB69jAcXQabIjzt59
-         5p24LKC132KD3ukQLYlqpnYjfR4WeJRrZTi1LIG1PMBenCr59P7LI1K22FG29+qAgh
-         GpFKfoL3w1AM37xqSxzvMQKhWP0QtmuqrLFOkhB7MkEE6PktRyg5dqLG3SedrMrgAT
-         Unx2kERSX0QAw==
-Date:   Wed, 4 Jan 2023 12:29:02 +0000
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
-        dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        pvorel@suse.cz, noodles@fb.com, tiwai@suse.de,
-        kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
-        erpalmer@linux.vnet.ibm.com, coxu@redhat.com,
+        b=ev46Sg1uRedN6plR7JXX+dH8bN38+vYwuymqfGXUcFSIjQbq2rGDiNqKSoiRaTKQ7
+         OB67NyWXK2MYJ73x2MaureToMeM/AQXoD2u4F+OLypuPDZtYW/w2E36HuqBgSBcNJM
+         RqbUJ40TD3h+rhHcnIuD3BhTtVWCrkNIxgQZvOAPHmunbk2AT9sDrSIXoiyVMvMDhl
+         Ne1wtTc8EI0nveYyEM3L+nycwBCkQel0y8TJzZAKnz8MUHLWT0LhEB6UvjM74CGbNc
+         oGWtLrAON4ymqruvUEEIhkGU7iI8Kla1eRzx6wc6OBgCm1g9YBS0I+ppBNwVGlA8+i
+         E2cwMkCUQxIfw==
+Date:   Wed, 4 Jan 2023 12:31:12 +0000
+From:   ", Jarkko Sakkinen" <jarkko@kernel.org>
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v3 03/10] KEYS: X.509: Parse Basic Constraints for CA
-Message-ID: <Y7VxDloaHyF8cX5j@kernel.org>
-References: <20221214003401.4086781-1-eric.snowberg@oracle.com>
- <20221214003401.4086781-4-eric.snowberg@oracle.com>
- <b0f29738b919e2705d770017f2f1eb0542c2fad4.camel@linux.ibm.com>
+        linux-security-module@vger.kernel.org,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        Mark Pearson <markpearson@lenovo.com>
+Subject: Re: [PATCH v4 1/3] certs: make blacklisted hash available in klog
+Message-ID: <Y7VxkG0ZsfJEyuFP@kernel.org>
+References: <20221212-keys-blacklist-v4-0-00afeb3137fb@weissschuh.net>
+ <20221212-keys-blacklist-v4-1-00afeb3137fb@weissschuh.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <b0f29738b919e2705d770017f2f1eb0542c2fad4.camel@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221212-keys-blacklist-v4-1-00afeb3137fb@weissschuh.net>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,20 +62,41 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Dec 15, 2022 at 06:10:04AM -0500, Mimi Zohar wrote:
-> > diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
-> > index a299c9c56f40..7c5c0ad1c22e 100644
-> > --- a/crypto/asymmetric_keys/x509_parser.h
-> > +++ b/crypto/asymmetric_keys/x509_parser.h
-> > @@ -38,6 +38,7 @@ struct x509_certificate {
-> >  	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
-> >  	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
-> >  	bool		blacklisted;
-> > +	bool		root_ca;		/* T if basic constraints CA is set */
-> >  }; 
+On Wed, Dec 21, 2022 at 02:08:22AM +0000, Thomas Weiﬂschuh wrote:
+> One common situation triggering this log statement are duplicate hashes
+> reported by the system firmware.
 > 
-> The variable "root_ca" should probably be renamed to just "ca", right?
+> These duplicates should be removed from the firmware.
+> 
+> Without logging the blacklisted hash triggering the issue however the users
+> can not report it properly to the firmware vendors and the firmware vendors
+> can not easily see which specific hash is duplicated.
+> 
+> While changing the log message also use the dedicated ERR_PTR format
+> placeholder for the returned error value.
+> 
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> ---
+>  certs/blacklist.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/certs/blacklist.c b/certs/blacklist.c
+> index 41f10601cc72..6e260c4b6a19 100644
+> --- a/certs/blacklist.c
+> +++ b/certs/blacklist.c
+> @@ -192,7 +192,7 @@ static int mark_raw_hash_blacklisted(const char *hash)
+>  				   KEY_ALLOC_NOT_IN_QUOTA |
+>  				   KEY_ALLOC_BUILT_IN);
+>  	if (IS_ERR(key)) {
+> -		pr_err("Problem blacklisting hash (%ld)\n", PTR_ERR(key));
+> +		pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
+>  		return PTR_ERR(key);
+>  	}
+>  	return 0;
+> 
+> -- 
+> 2.39.0
 
-Perhaps is_ca?
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
