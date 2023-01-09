@@ -2,64 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D1E6620E9
-	for <lists+keyrings@lfdr.de>; Mon,  9 Jan 2023 10:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C39A666219D
+	for <lists+keyrings@lfdr.de>; Mon,  9 Jan 2023 10:32:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233766AbjAIJFi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Jan 2023 04:05:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42252 "EHLO
+        id S233045AbjAIJcR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 9 Jan 2023 04:32:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236937AbjAIJEz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Jan 2023 04:04:55 -0500
-X-Greylist: delayed 372 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Jan 2023 00:57:51 PST
-Received: from mail.newpredict.pl (mail.newpredict.pl [51.89.166.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E737164B1
-        for <keyrings@vger.kernel.org>; Mon,  9 Jan 2023 00:57:50 -0800 (PST)
-Received: by mail.newpredict.pl (Postfix, from userid 1002)
-        id 84131A2312; Mon,  9 Jan 2023 08:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=newpredict.pl;
-        s=mail; t=1673254294;
-        bh=DQrvNxV4sbMtkGDNj/C7a2f11q8dNrBm5UPp1jE5GkY=;
-        h=Date:From:To:Subject:From;
-        b=iCOa+wmx3nS6yC4WZ2iXlrqs8ZRqPupmO3e9D7OEVpSbYHDJS8nDFb699oaImr6zq
-         qhOF7x1eZnZisbh+4mD8ALM8HfdEbYqf7w2SHsAe6EfTxD4+lLH81hjzmvJsxBKtGr
-         /BwZuRiiLeFaNoOHR9b0XvERRcqHvQyQDGMUKcLASTzcTYWQkk6Ya6ll9KtZhPLZjb
-         mpYjXSATa9tUUbIX7N1okwd3T126W2mNVmX9bKPE1RLAzRd7K48ao3nU6WCrfvyYtt
-         34G3wZK4EEB++Wteq9rfGgWAvnqaVY2ZITh4xZMkzje/yBbHZ0an/oGVoLzDZjOKtc
-         02uIA8BJemMag==
-Received: by mail.newpredict.pl for <keyrings@vger.kernel.org>; Mon,  9 Jan 2023 08:51:13 GMT
-Message-ID: <20230109074500-0.1.6p.gfec.0.u61plbb3xn@newpredict.pl>
-Date:   Mon,  9 Jan 2023 08:51:13 GMT
-From:   "Piotr Werner" <piotr.werner@newpredict.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Panele fotowaltaiczne
-X-Mailer: mail.newpredict.pl
+        with ESMTP id S233302AbjAIJcQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Jan 2023 04:32:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B359D1152
+        for <keyrings@vger.kernel.org>; Mon,  9 Jan 2023 01:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1673256678;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=BJS8ger7BTpdH0Zhir+ATtsgZEkWNY0AkL185k+a0FI=;
+        b=DJAZC3iJGc+j1I4WcLXIk0dw6OH+M9YeqMJ1uoOCw1wQiyAdtl6l6z0TRA1RmPmmq+YEds
+        7KZYN/V59Wt/+ozGMtm7ANYCrg6/66qfZIfIlBTHEDv3Wmu67fcMy1H0X7ExWBnS8qBJmf
+        vJKEGJTCgNpT+XVrfTKW2sCk8kvk5Fk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-625-RiSvjASXMw-KMNZD3ZDwmA-1; Mon, 09 Jan 2023 04:31:15 -0500
+X-MC-Unique: RiSvjASXMw-KMNZD3ZDwmA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B338101A52E;
+        Mon,  9 Jan 2023 09:31:14 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.87])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0753BC16026;
+        Mon,  9 Jan 2023 09:31:09 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20230108171241.GA20314@lst.de>
+References: <20230108171241.GA20314@lst.de> <20230105190741.2405013-1-kbusch@meta.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     dhowells@redhat.com, Keith Busch <kbusch@meta.com>,
+        linux-kernel@vger.kernel.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jens Axboe <axboe@kernel.dk>, linux-aio@kvack.org,
+        linux-fsdevel@vger.kernel.org, io-uring@vger.kernel.org,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>, davem@davemloft.net,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Paul Moore <paul@paul-moore.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        netdev@vger.kernel.org, Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCHv2 00/12] iov_iter: replace import_single_range with ubuf
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1880280.1673256668.1@warthog.procyon.org.uk>
+Date:   Mon, 09 Jan 2023 09:31:08 +0000
+Message-ID: <1880281.1673256668@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,
+lore.kernel.org doesn't seem to have the patches.
 
-Jeste=C5=9Bmy firm=C4=85 z wieloletnim do=C5=9Bwiadczeniem, kt=C3=B3ra sp=
-rawnie przygotuje dla Pa=C5=84stwa ofert=C4=99 i wszelkie formalno=C5=9Bc=
-i. Sam monta=C5=BC zaplanujemy na wiosn=C4=99.
+https://lore.kernel.org/lkml/20230105190741.2405013-1-kbusch@meta.com/
 
-O samych plusach fotowoltaiki czy pompach ciep=C5=82a na pewno ju=C5=BC P=
-a=C5=84stwo s=C5=82yszeli, dlatego teraz prosimy o zostawienie kontaktu, =
-aby nasz specjalista m=C3=B3g=C5=82 przedstawi=C4=87 ofert=C4=99 zgodn=C4=
-=85 z Waszymi potrzebami.
+David
 
-Kiedy mogliby=C5=9Bmy z Pa=C5=84stwem um=C3=B3wi=C4=87 si=C4=99 na rozmow=
-=C4=99 w celu zbadania potrzeb?
-
-
-Pozdrawiam,
-Piotr Werner
