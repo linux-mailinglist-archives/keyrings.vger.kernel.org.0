@@ -2,109 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 623346642E6
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jan 2023 15:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CE9664C11
+	for <lists+keyrings@lfdr.de>; Tue, 10 Jan 2023 20:12:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238584AbjAJOLh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 10 Jan 2023 09:11:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33724 "EHLO
+        id S233871AbjAJTMA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 Jan 2023 14:12:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjAJOLH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Jan 2023 09:11:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C81E8D3B1
-        for <keyrings@vger.kernel.org>; Tue, 10 Jan 2023 06:09:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1673359780;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=jW0MXg4kTHInb0VV64RAk02+ZJUEz3vvMCLSfMJ7bo0=;
-        b=eDaEeTNysIRqLlOnzSSgdtmaQagY1SqWYVOas915SAinouTf5QrEJZXyW7T4DaxpqAJEcM
-        5sxUj6VL0B9o2NY72hV/L8uWraLpOeosUD5jFam5NqYbrHmG5FIRq9AIhM2Yrwyythl9Ft
-        MTLg8oeJ4gqWhaVh+Kil+N6M3clmQm4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-665-240AZRvcP4uolfqJg_SXKg-1; Tue, 10 Jan 2023 09:09:35 -0500
-X-MC-Unique: 240AZRvcP4uolfqJg_SXKg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A1FE380664A;
-        Tue, 10 Jan 2023 14:09:34 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.87])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1A7A82166B26;
-        Tue, 10 Jan 2023 14:09:33 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me>
-References: <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me> <cover.1673173920.git.code@siddh.me>
-To:     Siddh Raman Pant <code@siddh.me>
-Cc:     dhowells@redhat.com, Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Eric Biggers <ebiggers@kernel.org>,
-        keyrings <keyrings@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+        with ESMTP id S239762AbjAJTLi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Jan 2023 14:11:38 -0500
+Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0596DFBB;
+        Tue, 10 Jan 2023 11:11:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1673377846; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=fgjNUnZKnlS2NO43QnBV8y7avtKZwWUTLL/kVFRJkZPOzStFvsy+AgJ+42e4C5gKAAoOOLDIlH6lio9MAeFXvI6lrewPC2gBNVckzs3iLqE8K++zC9mfQVz891uB+6WHYdLtOGMC4zra+YvjyEt/hKOQrUNAJyOb5i96nxvd3ZQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1673377846; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=94w/84cEKuVEFn2g20pluke79PDKWPNFSLBsY9v/ql8=; 
+        b=WRgOCrgiJHyBP8Je59WuVLMKYNSpD1l1zy0B1pLOt9dG5JlgkWJ1RLZ8BFnSrx9A6OtR/nGFmZcvuK0WE6jxZZCwb6y5rtyxeKepfIyBexUFI3GFXA2B22hnikIdkJCHZvi7VjsiRl944vCTLzoiIcj+krKDfm5Jslwra1DprXY=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1673377846;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+        bh=94w/84cEKuVEFn2g20pluke79PDKWPNFSLBsY9v/ql8=;
+        b=LsKe4OZPG0vKr3M78UgPtfxUXOmZn6E226af1nX/CH1sPXYNvt/dwivBe676PFIs
+        oY/i8i7Z390dKS9GBO5WpdB8AbUzqXBYV+ypC2ts9ziVu9cd6MX2XL5kNgdl6NSdohx
+        ndBuAxm0sEL6U0r7NSSgGLT0hkhfzRaVMmG8SzsA=
+Received: from mail.zoho.in by mx.zoho.in
+        with SMTP id 1673377834655807.4120717855777; Wed, 11 Jan 2023 00:40:34 +0530 (IST)
+Date:   Wed, 11 Jan 2023 00:40:34 +0530
+From:   Siddh Raman Pant <code@siddh.me>
+To:     "David Howells" <dhowells@redhat.com>
+Cc:     "mauro carvalho chehab" <mchehab@kernel.org>,
+        "randy dunlap" <rdunlap@infradead.org>,
+        "jonathan corbet" <corbet@lwn.net>,
+        "fabio m. de francesco" <fmdefrancesco@gmail.com>,
+        "eric dumazet" <edumazet@google.com>,
+        "christophe jaillet" <christophe.jaillet@wanadoo.fr>,
+        "eric biggers" <ebiggers@kernel.org>,
+        "keyrings" <keyrings@vger.kernel.org>,
+        "linux-security-module" <linux-security-module@vger.kernel.org>,
+        "linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
+        "linux-kernel" <linux-kernel@vger.kernel.org>
+Message-ID: <1859d17668d.7b9d5469421579.5464668634216421773@siddh.me>
+In-Reply-To: <2121105.1673359772@warthog.procyon.org.uk>
+References: <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me> <cover.1673173920.git.code@siddh.me> <2121105.1673359772@warthog.procyon.org.uk>
 Subject: Re: [PATCH v3 1/2] include/linux/watch_queue: Improve documentation
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2121104.1673359772.1@warthog.procyon.org.uk>
-Date:   Tue, 10 Jan 2023 14:09:32 +0000
-Message-ID: <2121105.1673359772@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Siddh Raman Pant <code@siddh.me> wrote:
+On Tue, 10 Jan 2023 19:39:32 +0530, David Howells wrote:
+> Please don't.
+> 
+> The structure is documented fully here:
+> 
+>       Documentation/core-api/watch_queue.rst
+> 
+> See:
+> 
+>       https://docs.kernel.org/core-api/watch_queue.html#event-filtering
+> 
+> The three column approach is much more readable in the code as it doesn't
+> separate the descriptions from the things described.  Putting things in
+> columns has been around for around 6000 years.
+> 
+> David
 
-> +/**
-> + * struct watch_type_filter - Filter on watch type
-> + *
-> + * @type: Type of watch_notification
-> + * @subtype_filter: Bitmask of subtypes to filter on
-> + * @info_filter: Filter on watch_notification::info
-> + * @info_mask: Mask of relevant bits in info_filter
-> + */
->  struct watch_type_filter {
->  	enum watch_notification_type type;
-> -	__u32		subtype_filter[1];	/* Bitmask of subtypes to filter on */
-> -	__u32		info_filter;		/* Filter on watch_notification::info */
-> -	__u32		info_mask;		/* Mask of relevant bits in info_filter */
-> +	__u32		subtype_filter[1];
-> +	__u32		info_filter;
-> +	__u32		info_mask;
->  };
+Okay. Apologies for that.
 
-Please don't.
+But what about the second patch? Should I send that without these doc
+changes?
 
-The structure is documented fully here:
-
-	Documentation/core-api/watch_queue.rst
-
-See:
-
-	https://docs.kernel.org/core-api/watch_queue.html#event-filtering
-
-The three column approach is much more readable in the code as it doesn't
-separate the descriptions from the things described.  Putting things in
-columns has been around for around 6000 years.
-
-David
-
+Thanks,
+Siddh
