@@ -2,113 +2,109 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 899BB6635EF
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jan 2023 01:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 623346642E6
+	for <lists+keyrings@lfdr.de>; Tue, 10 Jan 2023 15:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236183AbjAIX75 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 9 Jan 2023 18:59:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        id S238584AbjAJOLh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 Jan 2023 09:11:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234480AbjAIX75 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 9 Jan 2023 18:59:57 -0500
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB3A1D0FC;
-        Mon,  9 Jan 2023 15:59:55 -0800 (PST)
-From:   =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
-        s=mail; t=1673308792;
-        bh=XbsyBGwFNX/+AhMDtn4NosVJq1CKEYv0BSyy10RgWi8=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=JGTxi12A9Q1nheqVStkHBKWzMEVW5z1qpY2qLGO9WHdBjI1WjHsUXawmS/cqTUAJj
-         sVTTiEumgxwmWhWQIVdoGJxINu79EBLWDNLPiq/IH60IS/KvD65sb7andhXJkQJ7ti
-         SzJUtSQ5OZg4S7vRQ4RbExw+/jjLFYwA7qC/y6dg=
-Date:   Mon, 09 Jan 2023 23:59:43 +0000
-Subject: [PATCH RESEND v6 3/3] certs: don't try to update blacklist keys
+        with ESMTP id S231953AbjAJOLH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Jan 2023 09:11:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C81E8D3B1
+        for <keyrings@vger.kernel.org>; Tue, 10 Jan 2023 06:09:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1673359780;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jW0MXg4kTHInb0VV64RAk02+ZJUEz3vvMCLSfMJ7bo0=;
+        b=eDaEeTNysIRqLlOnzSSgdtmaQagY1SqWYVOas915SAinouTf5QrEJZXyW7T4DaxpqAJEcM
+        5sxUj6VL0B9o2NY72hV/L8uWraLpOeosUD5jFam5NqYbrHmG5FIRq9AIhM2Yrwyythl9Ft
+        MTLg8oeJ4gqWhaVh+Kil+N6M3clmQm4=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-665-240AZRvcP4uolfqJg_SXKg-1; Tue, 10 Jan 2023 09:09:35 -0500
+X-MC-Unique: 240AZRvcP4uolfqJg_SXKg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A1FE380664A;
+        Tue, 10 Jan 2023 14:09:34 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.87])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1A7A82166B26;
+        Tue, 10 Jan 2023 14:09:33 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me>
+References: <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me> <cover.1673173920.git.code@siddh.me>
+To:     Siddh Raman Pant <code@siddh.me>
+Cc:     dhowells@redhat.com, Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Eric Biggers <ebiggers@kernel.org>,
+        keyrings <keyrings@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] include/linux/watch_queue: Improve documentation
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Message-Id: <20221212-keys-blacklist-v6-3-933267a80582@weissschuh.net>
-References: <20221212-keys-blacklist-v6-0-933267a80582@weissschuh.net>
-In-Reply-To: <20221212-keys-blacklist-v6-0-933267a80582@weissschuh.net>
-To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Mark Pearson <markpearson@lenovo.com>,
-        =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.12-dev-3dd91
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1673308789; l=1743;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=XbsyBGwFNX/+AhMDtn4NosVJq1CKEYv0BSyy10RgWi8=;
- b=m22y9R8oSOW93S3ubz+AnnJoxZ9hUwAVd6c+F34GIiRUf5++/uFiiniR7WAkiS2gpmI1wx9XxO77
- HypSBqAlAj56LRUxNTvo5JiRklFZoOhzbOwoxmmJ3ckeThurk1TJ
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2121104.1673359772.1@warthog.procyon.org.uk>
+Date:   Tue, 10 Jan 2023 14:09:32 +0000
+Message-ID: <2121105.1673359772@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When the same key is blacklisted repeatedly logging at pr_err() level is
-excessive as no functionality is impaired.
-When these duplicates are provided by buggy firmware there is nothing
-the user can do to fix the situation.
-Instead of spamming the bootlog with errors we use a warning that can
-still be seen by OEMs when testing their firmware.
+Siddh Raman Pant <code@siddh.me> wrote:
 
-Link: https://lore.kernel.org/all/c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de/
-Link: https://lore.kernel.org/all/20221104014704.3469-1-linux@weissschuh.net/
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- certs/blacklist.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+> +/**
+> + * struct watch_type_filter - Filter on watch type
+> + *
+> + * @type: Type of watch_notification
+> + * @subtype_filter: Bitmask of subtypes to filter on
+> + * @info_filter: Filter on watch_notification::info
+> + * @info_mask: Mask of relevant bits in info_filter
+> + */
+>  struct watch_type_filter {
+>  	enum watch_notification_type type;
+> -	__u32		subtype_filter[1];	/* Bitmask of subtypes to filter on */
+> -	__u32		info_filter;		/* Filter on watch_notification::info */
+> -	__u32		info_mask;		/* Mask of relevant bits in info_filter */
+> +	__u32		subtype_filter[1];
+> +	__u32		info_filter;
+> +	__u32		info_mask;
+>  };
 
-diff --git a/certs/blacklist.c b/certs/blacklist.c
-index 6e260c4b6a19..675dd7a8f07a 100644
---- a/certs/blacklist.c
-+++ b/certs/blacklist.c
-@@ -183,16 +183,19 @@ static int mark_raw_hash_blacklisted(const char *hash)
- {
- 	key_ref_t key;
- 
--	key = key_create_or_update(make_key_ref(blacklist_keyring, true),
--				   "blacklist",
--				   hash,
--				   NULL,
--				   0,
--				   BLACKLIST_KEY_PERM,
--				   KEY_ALLOC_NOT_IN_QUOTA |
--				   KEY_ALLOC_BUILT_IN);
-+	key = key_create(make_key_ref(blacklist_keyring, true),
-+			 "blacklist",
-+			 hash,
-+			 NULL,
-+			 0,
-+			 BLACKLIST_KEY_PERM,
-+			 KEY_ALLOC_NOT_IN_QUOTA |
-+			 KEY_ALLOC_BUILT_IN);
- 	if (IS_ERR(key)) {
--		pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
-+		if (PTR_ERR(key) == -EEXIST)
-+			pr_warn("Duplicate blacklisted hash %s\n", hash);
-+		else
-+			pr_err("Problem blacklisting hash %s: %pe\n", hash, key);
- 		return PTR_ERR(key);
- 	}
- 	return 0;
+Please don't.
 
--- 
-2.39.0
+The structure is documented fully here:
+
+	Documentation/core-api/watch_queue.rst
+
+See:
+
+	https://docs.kernel.org/core-api/watch_queue.html#event-filtering
+
+The three column approach is much more readable in the code as it doesn't
+separate the descriptions from the things described.  Putting things in
+columns has been around for around 6000 years.
+
+David
 
