@@ -2,42 +2,49 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7CE9664C11
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jan 2023 20:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A70EE665FA8
+	for <lists+keyrings@lfdr.de>; Wed, 11 Jan 2023 16:50:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233871AbjAJTMA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 10 Jan 2023 14:12:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54076 "EHLO
+        id S239487AbjAKPuK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 11 Jan 2023 10:50:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239762AbjAJTLi (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Jan 2023 14:11:38 -0500
-Received: from sender-of-o50.zoho.in (sender-of-o50.zoho.in [103.117.158.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0596DFBB;
-        Tue, 10 Jan 2023 11:11:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1673377846; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=fgjNUnZKnlS2NO43QnBV8y7avtKZwWUTLL/kVFRJkZPOzStFvsy+AgJ+42e4C5gKAAoOOLDIlH6lio9MAeFXvI6lrewPC2gBNVckzs3iLqE8K++zC9mfQVz891uB+6WHYdLtOGMC4zra+YvjyEt/hKOQrUNAJyOb5i96nxvd3ZQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1673377846; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=94w/84cEKuVEFn2g20pluke79PDKWPNFSLBsY9v/ql8=; 
-        b=WRgOCrgiJHyBP8Je59WuVLMKYNSpD1l1zy0B1pLOt9dG5JlgkWJ1RLZ8BFnSrx9A6OtR/nGFmZcvuK0WE6jxZZCwb6y5rtyxeKepfIyBexUFI3GFXA2B22hnikIdkJCHZvi7VjsiRl944vCTLzoiIcj+krKDfm5Jslwra1DprXY=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1673377846;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=94w/84cEKuVEFn2g20pluke79PDKWPNFSLBsY9v/ql8=;
-        b=LsKe4OZPG0vKr3M78UgPtfxUXOmZn6E226af1nX/CH1sPXYNvt/dwivBe676PFIs
-        oY/i8i7Z390dKS9GBO5WpdB8AbUzqXBYV+ypC2ts9ziVu9cd6MX2XL5kNgdl6NSdohx
-        ndBuAxm0sEL6U0r7NSSgGLT0hkhfzRaVMmG8SzsA=
-Received: from mail.zoho.in by mx.zoho.in
-        with SMTP id 1673377834655807.4120717855777; Wed, 11 Jan 2023 00:40:34 +0530 (IST)
-Date:   Wed, 11 Jan 2023 00:40:34 +0530
-From:   Siddh Raman Pant <code@siddh.me>
-To:     "David Howells" <dhowells@redhat.com>
-Cc:     "mauro carvalho chehab" <mchehab@kernel.org>,
+        with ESMTP id S235106AbjAKPte (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 11 Jan 2023 10:49:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C3334D66
+        for <keyrings@vger.kernel.org>; Wed, 11 Jan 2023 07:48:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1673452092;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=mlR7fmjkyGH/tQKKBvJIkjgsqihiwiQFnkoLokXqB0M=;
+        b=XkIjYb43qtoakxhGWeNk9G5oy/kKJesUGoYuyNfm3JshjTJc7iyFbFO2D4qcQsZmid7s+N
+        YfXyPpUIkNPqSlIOJdmFSxGKMG2ZzuyR4W2Ov5sdp6lDgcZ8xdDLXs8X2M4QOS950Fxwds
+        SlWwUV0mJhuAVW/4IqFIIUPMS+AkVaU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-605-dHKN7Bk5MieQeWCzeEE6pQ-1; Wed, 11 Jan 2023 10:48:08 -0500
+X-MC-Unique: dHKN7Bk5MieQeWCzeEE6pQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0B9A802D1B;
+        Wed, 11 Jan 2023 15:48:07 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.87])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 408EC140EBF4;
+        Wed, 11 Jan 2023 15:48:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <1859d17668d.7b9d5469421579.5464668634216421773@siddh.me>
+References: <1859d17668d.7b9d5469421579.5464668634216421773@siddh.me> <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me> <cover.1673173920.git.code@siddh.me> <2121105.1673359772@warthog.procyon.org.uk>
+To:     Siddh Raman Pant <code@siddh.me>
+Cc:     dhowells@redhat.com, "mauro carvalho chehab" <mchehab@kernel.org>,
         "randy dunlap" <rdunlap@infradead.org>,
         "jonathan corbet" <corbet@lwn.net>,
         "fabio m. de francesco" <fmdefrancesco@gmail.com>,
@@ -48,46 +55,29 @@ Cc:     "mauro carvalho chehab" <mchehab@kernel.org>,
         "linux-security-module" <linux-security-module@vger.kernel.org>,
         "linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
         "linux-kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <1859d17668d.7b9d5469421579.5464668634216421773@siddh.me>
-In-Reply-To: <2121105.1673359772@warthog.procyon.org.uk>
-References: <97ce37e2fdcfbed29d9467057f0f870359d88b89.1673173920.git.code@siddh.me> <cover.1673173920.git.code@siddh.me> <2121105.1673359772@warthog.procyon.org.uk>
 Subject: Re: [PATCH v3 1/2] include/linux/watch_queue: Improve documentation
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2430912.1673452085.1@warthog.procyon.org.uk>
+Date:   Wed, 11 Jan 2023 15:48:05 +0000
+Message-ID: <2430913.1673452085@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 10 Jan 2023 19:39:32 +0530, David Howells wrote:
-> Please don't.
-> 
-> The structure is documented fully here:
-> 
->       Documentation/core-api/watch_queue.rst
-> 
-> See:
-> 
->       https://docs.kernel.org/core-api/watch_queue.html#event-filtering
-> 
-> The three column approach is much more readable in the code as it doesn't
-> separate the descriptions from the things described.  Putting things in
-> columns has been around for around 6000 years.
-> 
-> David
+Siddh Raman Pant <code@siddh.me> wrote:
 
-Okay. Apologies for that.
+> But what about the second patch? Should I send that without these doc
+> changes?
 
-But what about the second patch? Should I send that without these doc
-changes?
+Can you repost it without the first patch being present?
 
-Thanks,
-Siddh
+David
+
