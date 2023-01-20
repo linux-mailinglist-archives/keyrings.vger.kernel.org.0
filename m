@@ -2,143 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D05F9672674
-	for <lists+keyrings@lfdr.de>; Wed, 18 Jan 2023 19:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B61D6675251
+	for <lists+keyrings@lfdr.de>; Fri, 20 Jan 2023 11:24:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjARSOu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Jan 2023 13:14:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
+        id S229657AbjATKYP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Jan 2023 05:24:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230077AbjARSOs (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Jan 2023 13:14:48 -0500
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F6130E8E;
-        Wed, 18 Jan 2023 10:14:46 -0800 (PST)
-Date:   Wed, 18 Jan 2023 18:14:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1674065684; x=1674324884;
-        bh=6IvJXSVCAaTVN5zBpjbXw6aPUMZ1WI+M2fxhC/cShMU=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=ErPARWtsyqeFEFumrKFhwbJ2UTL4TfHQjSbb3XjydlL5sEIDnaNHhdneo258YApkJ
-         uDoFqZpIlX9m96lhsHagOT8WEiHfTN9Lguj025Nwv1YjX6y5p7biYI/r9ZBn/r7OND
-         ltZdeja0FF19kvnklrmiW61PXlTy5zEZ/X2eQhW3M9a+nVeBmG4gIuoelDZcIAyAw3
-         te/Pj5WXqp+Ye2LzdmlPwX96globyJ8+w1sW2uJoCBhPagBah3g2fwrYiXfs2x6EbE
-         3lhTqzxfOGfeEMdVHhiIRx3uf0RgL5xV/PkQY9sFDvhz8vTBlpH0dFlfU48rf2TjML
-         tnmIgYeBmx2aw==
-To:     Denis Kenzior <denkenz@gmail.com>
-From:   Michael Yartys <michael.yartys@protonmail.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] KEYS: asymmetric: Fix ECDSA use via keyctl uapi
-Message-ID: <-ZV1wRa2DQG_0s2MX9cYRQNRaxkwZkJAf5bqQQwjSy8pATVdr0oiYAwPGvKvdppGozE1qI2wiPNRbHMWEX8Xup2fzN3KULMvYXTASXSlfoI=@protonmail.com>
-In-Reply-To: <20220826145119.9375-1-denkenz@gmail.com>
-References: <20220826145119.9375-1-denkenz@gmail.com>
-Feedback-ID: 6588689:user:proton
+        with ESMTP id S229612AbjATKYP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Jan 2023 05:24:15 -0500
+Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E60DD8C91E;
+        Fri, 20 Jan 2023 02:24:13 -0800 (PST)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4NywPq1Kl2z9v7gS;
+        Fri, 20 Jan 2023 18:16:15 +0800 (CST)
+Received: from [10.206.134.65] (unknown [10.206.134.65])
+        by APP1 (Coremail) with SMTP id LxC2BwBn7gmva8pjQduwAA--.5258S2;
+        Fri, 20 Jan 2023 11:23:54 +0100 (CET)
+Message-ID: <5c65358c-4e77-901b-01bb-5df0d4c50949@huaweicloud.com>
+Date:   Fri, 20 Jan 2023 11:23:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v5 1/2] lib/mpi: Fix buffer overrun when SG is too long
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     dhowells@redhat.com, davem@davemloft.net, zohar@linux.ibm.com,
+        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, ebiggers@kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
+ <20221227142740.2807136-2-roberto.sassu@huaweicloud.com>
+ <Y7g7sp6UJJrYKihK@gondor.apana.org.au>
+ <755e1dc9c777fa657ccd948f65f5f33240226c43.camel@huaweicloud.com>
+ <Y8UTghm0Y8U4ndmH@gondor.apana.org.au>
+Content-Language: en-US
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+In-Reply-To: <Y8UTghm0Y8U4ndmH@gondor.apana.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: LxC2BwBn7gmva8pjQduwAA--.5258S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYx7kC6x804xWl14x267AKxVW8JVW5JwAF
+        c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
+        0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xv
+        wVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjc
+        xK6I8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+        FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+        0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+        04v7Mxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+        v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+        1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+        AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0D
+        MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+        VFxhVjvjDU0xZFpf9x07UWE__UUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBF1jj4fWbQACsJ
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi
+On 1/16/2023 10:06 AM, Herbert Xu wrote:
+> On Mon, Jan 16, 2023 at 09:57:57AM +0100, Roberto Sassu wrote:
+>>
+>> Hi Herbert
+>>
+>> will you take also the second patch?
+> 
+> That's part of David Howells' tree so hopefully he will pick
+> it up soon.
 
-What's the hold-up with this patch? I would really appreciate if someone co=
-uld take a look at it and move it along to finally enable iwd to connect to=
- networks using ECDSA certificates (my eduroam network for example).
+Hi David
 
-Michael
+could you please take the second patch?
 
+Thanks
 
-------- Original Message -------
-On Friday, August 26th, 2022 at 16:51, Denis Kenzior <denkenz@gmail.com> wr=
-ote:
+Roberto
 
-
->=20
->=20
-> When support for ECDSA keys was added, constraints for data & signature
-> sizes were never updated. This makes it impossible to use such keys via
-> keyctl API from userspace.
->=20
-> Update constraint on max_data_size to 64 bytes in order to support
-> SHA512-based signatures. Also update the signature length constraints
-> per ECDSA signature encoding described in RFC 5480.
->=20
-> Fixes: 299f561a6693 ("x509: Add support for parsing x509 certs with ECDSA=
- keys")
-> Signed-off-by: Denis Kenzior denkenz@gmail.com
->=20
-> ---
->=20
-> Version History:
->=20
-> v2: Update patch description according to Jarkko's comments. No
-> functional code changes.
->=20
-> crypto/asymmetric_keys/public_key.c | 24 ++++++++++++++++++++++--
-> 1 file changed, 22 insertions(+), 2 deletions(-)
->=20
-> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys=
-/public_key.c
-> index 2f8352e88860..eca5671ad3f2 100644
-> --- a/crypto/asymmetric_keys/public_key.c
-> +++ b/crypto/asymmetric_keys/public_key.c
-> @@ -186,8 +186,28 @@ static int software_key_query(const struct kernel_pk=
-ey_params *params,
->=20
-> len =3D crypto_akcipher_maxsize(tfm);
-> info->key_size =3D len * 8;
->=20
-> - info->max_data_size =3D len;
->=20
-> - info->max_sig_size =3D len;
->=20
-> +
-> + if (strncmp(pkey->pkey_algo, "ecdsa", 5) =3D=3D 0) {
->=20
-> + /*
-> + * ECDSA key sizes are much smaller than RSA, and thus could
-> + * operate on (hashed) inputs that are larger than key size.
-> + * For example SHA384-hashed input used with secp256r1
-> + * based keys. Set max_data_size to be at least as large as
-> + * the largest supported hash size (SHA512)
-> + */
-> + info->max_data_size =3D 64;
->=20
-> +
-> + /*
-> + * Verify takes ECDSA-Sig (described in RFC 5480) as input,
-> + * which is actually 2 'key_size'-bit integers encoded in
-> + * ASN.1. Account for the ASN.1 encoding overhead here.
-> + */
-> + info->max_sig_size =3D 2 * (len + 3) + 2;
->=20
-> + } else {
-> + info->max_data_size =3D len;
->=20
-> + info->max_sig_size =3D len;
->=20
-> + }
-> +
-> info->max_enc_size =3D len;
->=20
-> info->max_dec_size =3D len;
->=20
-> info->supported_ops =3D (KEYCTL_SUPPORTS_ENCRYPT |
->=20
-> --
-> 2.35.1
