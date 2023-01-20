@@ -2,88 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B61D6675251
-	for <lists+keyrings@lfdr.de>; Fri, 20 Jan 2023 11:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C145675DE1
+	for <lists+keyrings@lfdr.de>; Fri, 20 Jan 2023 20:21:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjATKYP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Jan 2023 05:24:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
+        id S230297AbjATTVS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Jan 2023 14:21:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbjATKYP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Jan 2023 05:24:15 -0500
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E60DD8C91E;
-        Fri, 20 Jan 2023 02:24:13 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4NywPq1Kl2z9v7gS;
-        Fri, 20 Jan 2023 18:16:15 +0800 (CST)
-Received: from [10.206.134.65] (unknown [10.206.134.65])
-        by APP1 (Coremail) with SMTP id LxC2BwBn7gmva8pjQduwAA--.5258S2;
-        Fri, 20 Jan 2023 11:23:54 +0100 (CET)
-Message-ID: <5c65358c-4e77-901b-01bb-5df0d4c50949@huaweicloud.com>
-Date:   Fri, 20 Jan 2023 11:23:40 +0100
+        with ESMTP id S230285AbjATTVR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Jan 2023 14:21:17 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71459C63AF
+        for <keyrings@vger.kernel.org>; Fri, 20 Jan 2023 11:21:16 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id y3-20020a17090a390300b00229add7bb36so5849153pjb.4
+        for <keyrings@vger.kernel.org>; Fri, 20 Jan 2023 11:21:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8SDRSdhk6EPykAw/g+Wl8hh3w6cuRY9QuwzZ8iaDbYE=;
+        b=erXn/iE6iiZjbHA68rk3r66LhlmEmI7xCR/nOyeiE8l5IpFc7vk/4JEYq/P4spmPox
+         uS4/kD5WPpbGZsniUvTUpGe9xZNDWMKs82nxqzsqaT1BqDz4RNqJQyJ42MfeAowuorwJ
+         RvwxYIKQj26CjI54rPaQDEtVyzvyDffjT/cf0vhwdY539e+SZ9xQNuBaUDwx19qMtZ3L
+         qX048waUOdaFW5AXRIgWF+NQDDYiU+TZVghGzHQGZ46YDO+rt6apX4QHcZJxSsjw7365
+         ZxJ0jurd8opU6xSw6LvaScv02k7JxgVPdVGmN3mSBu+vEsKFmFMNWDq5+sSEZn4W6oFq
+         QVOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8SDRSdhk6EPykAw/g+Wl8hh3w6cuRY9QuwzZ8iaDbYE=;
+        b=WcQCv/fALPmf0ZNEBnXmWUQY5kJhFrKGzCz9b89ddgvqaj9OJmXD7YgWHSBZgysTYf
+         FApB5IFe+ga7XVszFGl0ER6OGjsikgdhOEs7vnFyiwiEiJd08epbg+Zh7+4Th58lkbOS
+         rvJqCOL2BYgz/Ma2oksU4Z6oXTaPVD+PWgIYchjkFzl+0HTGBWa2FHiyM8IXg+tcn+6/
+         YRt7H2jHIlfu34jMNgk/IrKiTkqBa5BKnhkvqSiCbi9vVQG/s18n378FnUiUjQmHeEsd
+         8cnyuPh5E8OkZGOL5K0wtn+pVYqCf0sHdG99mYAaWkMno4w5qlgW/kNQyBDTG4SZnTAA
+         Dt/A==
+X-Gm-Message-State: AFqh2kqrW+WgXVIkYxsJoU/4gvCCHtM0jAMUMhHocm+bI0loPcmq9x2L
+        JuemX7+D5ECJRdPyUqWctxR9D6Z18HfGZV1+p0N/
+X-Google-Smtp-Source: AMrXdXuJbuMwEO0e7v3IjYffd4x3UmGyhnjQEzqwX4NQeML3LdO9TXhtdelhymz58k8pwIt5Px+CkOw7dym9Qnyw4lQ=
+X-Received: by 2002:a17:90a:17a1:b0:229:9ffe:135b with SMTP id
+ q30-20020a17090a17a100b002299ffe135bmr1700587pja.72.1674242475803; Fri, 20
+ Jan 2023 11:21:15 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v5 1/2] lib/mpi: Fix buffer overrun when SG is too long
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     dhowells@redhat.com, davem@davemloft.net, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, ebiggers@kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
- <20221227142740.2807136-2-roberto.sassu@huaweicloud.com>
- <Y7g7sp6UJJrYKihK@gondor.apana.org.au>
- <755e1dc9c777fa657ccd948f65f5f33240226c43.camel@huaweicloud.com>
- <Y8UTghm0Y8U4ndmH@gondor.apana.org.au>
-Content-Language: en-US
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-In-Reply-To: <Y8UTghm0Y8U4ndmH@gondor.apana.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwBn7gmva8pjQduwAA--.5258S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYx7kC6x804xWl14x267AKxVW8JVW5JwAF
-        c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
-        0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xv
-        wVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjc
-        xK6I8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-        FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-        0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY
-        04v7Mxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-        v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-        1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-        AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0D
-        MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-        VFxhVjvjDU0xZFpf9x07UWE__UUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBF1jj4fWbQACsJ
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20221207105430.248613-1-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20221207105430.248613-1-roberto.sassu@huaweicloud.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 20 Jan 2023 14:21:04 -0500
+Message-ID: <CAHC9VhRSLh9y7KBCOhpvK2cwPmhyMr2dudhjcsEZ-Qmovi86Nw@mail.gmail.com>
+Subject: Re: [PATCH] public_key: Add a comment to public_key_signature struct definition
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>, dhowells@redhat.com
+Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, jmorris@namei.org,
+        serge@hallyn.com, ebiggers@kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 1/16/2023 10:06 AM, Herbert Xu wrote:
-> On Mon, Jan 16, 2023 at 09:57:57AM +0100, Roberto Sassu wrote:
->>
->> Hi Herbert
->>
->> will you take also the second patch?
-> 
-> That's part of David Howells' tree so hopefully he will pick
-> it up soon.
+On Wed, Dec 7, 2022 at 5:55 AM Roberto Sassu
+<roberto.sassu@huaweicloud.com> wrote:
+>
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+>
+> public_key_verify_signature() calls sg_set_buf() to set the signature and
+> digest for the signature verification.
+>
+> As sg_set_buf() requires the buffer to be in physically contiguous memory,
+> see commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in
+> linear mapping"), mention that in a comment for the signature and digest
+> fields of the public_key_signature structure.
+>
+> Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+> Suggested-by: Eric Biggers <ebiggers@kernel.org>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
+>  include/crypto/public_key.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hi David
+This seems especially important considering the BUG_ON that could be triggered.
 
-could you please take the second patch?
+David, are you going to pick this up?
 
-Thanks
+Reviewed-by: Paul Moore <paul@paul-moore.com>
 
-Roberto
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index 68f7aa2a7e55..6d623e063034 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -37,8 +37,8 @@ extern void public_key_free(struct public_key *key);
+>   */
+>  struct public_key_signature {
+>         struct asymmetric_key_id *auth_ids[3];
+> -       u8 *s;                  /* Signature */
+> -       u8 *digest;
+> +       u8 *s;                  /* Signature (in physically contiguous mem) */
+> +       u8 *digest;             /* Digest (in physically contiguous mem) */
+>         u32 s_size;             /* Number of bytes in signature */
+>         u32 digest_size;        /* Number of bytes in digest */
+>         const char *pkey_algo;
+> --
+> 2.25.1
 
+-- 
+paul-moore.com
