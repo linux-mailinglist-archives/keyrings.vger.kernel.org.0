@@ -2,128 +2,160 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B3FF675ED0
-	for <lists+keyrings@lfdr.de>; Fri, 20 Jan 2023 21:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03EF0675F71
+	for <lists+keyrings@lfdr.de>; Fri, 20 Jan 2023 22:10:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230240AbjATUQn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Jan 2023 15:16:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33172 "EHLO
+        id S229813AbjATVK5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Jan 2023 16:10:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230255AbjATUQm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Jan 2023 15:16:42 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA6F711EB1
-        for <keyrings@vger.kernel.org>; Fri, 20 Jan 2023 12:16:40 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id z20so4323864plc.2
-        for <keyrings@vger.kernel.org>; Fri, 20 Jan 2023 12:16:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RFrFWK6Yuz4He+Q+Dd7A5b23oGgMXF7yIM0sMxwjnok=;
-        b=GEtp91po33uJf+p1P5Hc5s/2tlvFCr7HQo8fMdtWdFwOAKV/cTbo4kIAQnDjNlZDjU
-         14vOnNGtt87RBXe3J1jpz5oAeoA31b2snqnMZHdgwsEtFs1hzmAdRFMriSqk3OVzCQiN
-         nZQVn75hMHzF/9+WXFXvcDX9dIl3pVF/+sJQTfiM+xfVJLlR6LS2ggokyEeCGRBm6Igk
-         v1VzjEnio1hBX2if1z5QARkEPtO0eK7lA4d0OyvLyhSy8ifs6a+zrGeZeyB3ymBIZLTS
-         LAMgOey1bNWRBY9DgftgDtvvBLiUKR7p7PX7twdgkAsiumDnsGuMJIsaBH5JVIqEwTh6
-         12Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RFrFWK6Yuz4He+Q+Dd7A5b23oGgMXF7yIM0sMxwjnok=;
-        b=h77oD5oCtcBZXgwIMoKuirPcxXiTLoC7BJs+5KF9TTf/h2ytr4WdEFO96hnQrZbytc
-         9gu/LUIvIe+xw4N3AQex5aGMZt9iWfrdmK/E2u7JGGBevAxziWj75h4BNCO6xCVxY94G
-         YVL6z532i1EJUjXPAqc33UD7IRXH62/lu37XvGWh16cJWrwHCSardJv12TPTkj8Ojmt5
-         YQK3OhlRXrTcekWKK577XiMKRoyEUKbEVtswFXRdV4PXYkFWh7GU7pF7apR4EYwCOf4E
-         qh4FCmsmnoyk23+ekokVxfZWx/MK95uLUt20f8qOFrhWEnzCIVYNfrCFoTytOaGto2ZI
-         znxg==
-X-Gm-Message-State: AFqh2kqOi2cjatHA87Uo7T2K/NtlqcdhC8lZx7yKPIynlQf2BdUtJNcV
-        sZa5z3SHsmUkGYLpokSK20TzLtIKNm9u1YWRc0No
-X-Google-Smtp-Source: AMrXdXuIJAna3jkn3HiysLFrRqrv7OboK2tJCEm7+hxOFIuo7F9HcZsXCZ1R/smMHmOl8DKk/3Z2TPkdG70lEMoVXF4=
-X-Received: by 2002:a17:902:b496:b0:172:86a2:8e68 with SMTP id
- y22-20020a170902b49600b0017286a28e68mr1610008plr.27.1674245800136; Fri, 20
- Jan 2023 12:16:40 -0800 (PST)
-MIME-Version: 1.0
-References: <20221207105430.248613-1-roberto.sassu@huaweicloud.com>
- <CAHC9VhRSLh9y7KBCOhpvK2cwPmhyMr2dudhjcsEZ-Qmovi86Nw@mail.gmail.com> <Y8ru09KeMwwaU/IS@sol.localdomain>
-In-Reply-To: <Y8ru09KeMwwaU/IS@sol.localdomain>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 20 Jan 2023 15:16:28 -0500
-Message-ID: <CAHC9VhSfr2Re6ZV6_USdvw__c1ou87uM6K_MF1wm-ENdEY7X5Q@mail.gmail.com>
-Subject: Re: [PATCH] public_key: Add a comment to public_key_signature struct definition
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, jmorris@namei.org,
-        serge@hallyn.com, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        with ESMTP id S229710AbjATVK4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Jan 2023 16:10:56 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DB7CD23C;
+        Fri, 20 Jan 2023 13:10:39 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C89E8B82A64;
+        Fri, 20 Jan 2023 21:10:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227C8C433EF;
+        Fri, 20 Jan 2023 21:10:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674249036;
+        bh=wLkgPsR5vSZDOWEBXjVKqodCnOqgDMrn3SAnrDftXDY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uzq8gWdxYIpw3LE8DvysdyT0nQHUZZz7A2QpcyfzYVN0U3eV38JMo36fwQAb2Bg8F
+         JpOenqCQLJN/WQBm8EdPELmm5mdqigxH1ZtTVNgKpcwtTxFUm6C8PfFBNJUypMFRcK
+         Mxs14MQHT2tUGfmbXY6eHUJPm6HJlzz8AG2kwala+P0dXa0fpAycAYFmXJ2zUPWoxx
+         1AkF5ee0PtTVPct3l68ZyAlx2pWN2RjZ/ks3ftG6vptvjjmya1TGVv79C0PVpLURul
+         tr6kC70Pfozg/adVLK4ryPSoXAGSZ2rRLsR6WEb8a3fvxpiJXMV++31vjYgFCdJove
+         o6KWRFUwnzOEA==
+Date:   Fri, 20 Jan 2023 21:10:33 +0000
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        Mark Pearson <markpearson@lenovo.com>
+Subject: Re: [PATCH RESEND v6 0/3] certs: Prevent spurious errors on repeated
+ blacklisting
+Message-ID: <Y8sDSSbCcxydFDYx@kernel.org>
+References: <20221212-keys-blacklist-v6-0-933267a80582@weissschuh.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221212-keys-blacklist-v6-0-933267a80582@weissschuh.net>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Jan 20, 2023 at 2:43 PM Eric Biggers <ebiggers@kernel.org> wrote:
-> On Fri, Jan 20, 2023 at 02:21:04PM -0500, Paul Moore wrote:
-> > On Wed, Dec 7, 2022 at 5:55 AM Roberto Sassu
-> > <roberto.sassu@huaweicloud.com> wrote:
-> > >
-> > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > >
-> > > public_key_verify_signature() calls sg_set_buf() to set the signature and
-> > > digest for the signature verification.
-> > >
-> > > As sg_set_buf() requires the buffer to be in physically contiguous memory,
-> > > see commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in
-> > > linear mapping"), mention that in a comment for the signature and digest
-> > > fields of the public_key_signature structure.
-> > >
-> > > Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-> > > Suggested-by: Eric Biggers <ebiggers@kernel.org>
-> > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > ---
-> > >  include/crypto/public_key.h | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > This seems especially important considering the BUG_ON that could be triggered.
-> >
-> > David, are you going to pick this up?
-> >
-> > Reviewed-by: Paul Moore <paul@paul-moore.com>
-> >
-> > > diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-> > > index 68f7aa2a7e55..6d623e063034 100644
-> > > --- a/include/crypto/public_key.h
-> > > +++ b/include/crypto/public_key.h
-> > > @@ -37,8 +37,8 @@ extern void public_key_free(struct public_key *key);
-> > >   */
-> > >  struct public_key_signature {
-> > >         struct asymmetric_key_id *auth_ids[3];
-> > > -       u8 *s;                  /* Signature */
-> > > -       u8 *digest;
-> > > +       u8 *s;                  /* Signature (in physically contiguous mem) */
-> > > +       u8 *digest;             /* Digest (in physically contiguous mem) */
-> > >         u32 s_size;             /* Number of bytes in signature */
-> > >         u32 digest_size;        /* Number of bytes in digest */
-> > >         const char *pkey_algo;
-> > > --
-> > > 2.25.1
->
-> This patch has been superseded by
-> "KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()"
-> (https://lore.kernel.org/r/20221227142740.2807136-1-roberto.sassu@huaweicloud.com).
+On Mon, Jan 09, 2023 at 11:59:41PM +0000, Thomas Weißschuh wrote:
+> When the blacklist keyring was changed to allow updates from the root
+> user it gained an ->update() function that disallows all updates.
+> When the a hash is blacklisted multiple times from the builtin or
+> firmware-provided blacklist this spams prominent logs during boot:
+> 
+> [    0.890814] blacklist: Problem blacklisting hash (-13)
+> 
+> This affects the firmware of various vendors. Reported have been at least:
+> * Samsung: https://askubuntu.com/questions/1436856/
+> * Acer: https://ubuntuforums.org/showthread.php?t=2478840
+> * MSI: https://forum.archlabslinux.com/t/blacklist-problem-blacklisting-hash-13-errors-on-boot/6674/7
+> * Micro-Star: https://bbs.archlinux.org/viewtopic.php?id=278860
+> * Lenovo: https://lore.kernel.org/lkml/c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de/
+> 
+> Note: In the meantime I lost access to the machine exhibiting the
+> problematic behavior. If larger changes are required to this series
+> somebody else would have to validate them or take over the series.
+> 
+> Changelog:
+> 
+> v1: https://lore.kernel.org/all/20221104014704.3469-1-linux@weissschuh.net/
+> v1 -> v2:
+>  * Improve logging message to include the failed hash
+>  * Add key_create() function without update semantics
+>  * Use key_create() from mark_raw_hash_blacklisted() and log specific message
+>    on -EEXIST
+> 
+> v2: https://lore.kernel.org/lkml/20221109025019.1855-1-linux@weissschuh.net/
+> v2 -> v3:
+>  * Clarify commit titles and messages
+>  * Drop the change to BLACKLIST_KEY_PERM from patch 3, as it was an artifact
+>    of some obsolete version of the patch and not needed
+> 
+> v3: https://lore.kernel.org/lkml/20221118040343.2958-1-linux@weissschuh.net/
+> v3 -> v4:
+>  * Drop Fixes-tag from first patch
+>  * Flesh out commit descriptions and messages
+> 
+> v4: https://lore.kernel.org/r/20221212-keys-blacklist-v4-0-00afeb3137fb@weissschuh.net
+> v4 -> v5:
+>  * Reduce lines needed by function calls in key.c
+>  * Add Reviewed-by from Jarkko
+> 
+> v5: https://lore.kernel.org/r/20221212-keys-blacklist-v5-0-52e9eb5a8827@weissschuh.net
+> v5 -> v6:
+>  * Correct Jarkkos email in Reviewed-by tags
+>  * Resend to hopefully reach @kernel.org recipients
+> 
+> Thomas Weißschuh (3):
+>   certs: log hash value on blacklist error
+>   KEYS: Add key_create()
+>   certs: don't try to update blacklist keys
+> 
+>  certs/blacklist.c   |  21 ++++---
+>  include/linux/key.h |   8 +++
+>  security/keys/key.c | 149 +++++++++++++++++++++++++++++++++-----------
+>  3 files changed, 132 insertions(+), 46 deletions(-)
+> 
+> --
+> 2.38.1
+> 
+> To: David Howells <dhowells@redhat.com>
+> To: David Woodhouse <dwmw2@infradead.org>
+> To: Jarkko Sakkinen <jarkko@kernel.org>
+> To: Paul Moore <paul@paul-moore.com>
+> To: James Morris <jmorris@namei.org>
+> To: "Serge E. Hallyn" <serge@hallyn.com>
+> To: "Mickaël Salaün" <mic@digikod.net>
+> Cc: keyrings@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> Cc: Paul Menzel <pmenzel@molgen.mpg.de>
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> Cc: Mark Pearson <markpearson@lenovo.com>
+> 
+> ---
+> Thomas Weißschuh (3):
+>       certs: make blacklisted hash available in klog
+>       KEYS: Add new function key_create()
+>       certs: don't try to update blacklist keys
+> 
+>  certs/blacklist.c   |  21 ++++----
+>  include/linux/key.h |   8 +++
+>  security/keys/key.c | 137 ++++++++++++++++++++++++++++++++++++++--------------
+>  3 files changed, 120 insertions(+), 46 deletions(-)
+> ---
+> base-commit: 512dee0c00ad9e9c7ae9f11fc6743702ea40caff
+> change-id: 20221212-keys-blacklist-2c79a64667c9
+> 
+> Best regards,
+> -- 
+> Thomas Weißschuh <linux@weissschuh.net>
 
-Well nevermind then :)
+Hi, I'e applied and pushed this now. Thank you.
 
--- 
-paul-moore.com
+BR, Jarkko
