@@ -2,102 +2,137 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C99667AA29
-	for <lists+keyrings@lfdr.de>; Wed, 25 Jan 2023 07:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CF0867B2CE
+	for <lists+keyrings@lfdr.de>; Wed, 25 Jan 2023 13:59:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231563AbjAYGDs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Jan 2023 01:03:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
+        id S234742AbjAYM7X (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 25 Jan 2023 07:59:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjAYGDr (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Jan 2023 01:03:47 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982C21BCA;
-        Tue, 24 Jan 2023 22:03:46 -0800 (PST)
+        with ESMTP id S232999AbjAYM7W (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Jan 2023 07:59:22 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50B38360BC;
+        Wed, 25 Jan 2023 04:59:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674626626; x=1706162626;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=k/+PLowZYVwtAdQHjzair5kZNl5YiNS6TKYVrXA87d4=;
-  b=HHlj+agwj21y6ZLP3HyMT6nHWiCcM3UnJyGIFircK3MHF26NUp5IF0sq
-   LcCTtnfHb7rcoFNdX6L+bHWA8ft9CzOaD/NeOvNo566hwe2E5VgQd8srf
-   kXk/UCtaJpRKTZUVSKPAk5RMth0Y3yzEooddXZVxUriTrL5dW8ufdXCFw
-   m66dBkhbCteXbVbocPjaW5sm0P2klF0G/FTYG67YMUsjbcOT3G/tOUyJL
-   DgwMINIB1KHI51cnFUKeIIX/kMdRfUWkDPyuiokUVF0k87D5wVQwOYy+5
-   pl8+sQ23DE6rh84UlbjWOs0encF8nJcsDCm2AsBma8lica87g+bcE45q7
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="390994531"
-X-IronPort-AV: E=Sophos;i="5.97,244,1669104000"; 
-   d="scan'208";a="390994531"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 22:03:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="836250608"
-X-IronPort-AV: E=Sophos;i="5.97,244,1669104000"; 
-   d="scan'208";a="836250608"
-Received: from lkp-server01.sh.intel.com (HELO 5646d64e7320) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 24 Jan 2023 22:03:44 -0800
-Received: from kbuild by 5646d64e7320 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pKYsp-00075g-1S;
-        Wed, 25 Jan 2023 06:03:43 +0000
-Date:   Wed, 25 Jan 2023 14:03:26 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-integrity@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
-        keyrings@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+        d=hansenpartnership.com; s=20151216; t=1674651557;
+        bh=1h3KVU06lOoLOdYsLnIUqpA3XQTq9kVXFFNylvoJSj4=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=fLl7cZctumr8AVdN7FmYgB13dp34nE9HVcbzGxjc82nv4AaSZ9Mk/tuyz9rLFq2Ca
+         hgl4o4Pm61VsA8fF6CKqrQS+JgiWQ5cWZ3Whw53pw/lhE/qxlczQtpXwkSkhiyjE5F
+         1coOIgSs7XLle+cEOuDkhn/D2uCIbtnkFibEWASk=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id C4FF81285D02;
+        Wed, 25 Jan 2023 07:59:17 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id U2IzwpUjJlAo; Wed, 25 Jan 2023 07:59:17 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1674651556;
+        bh=1h3KVU06lOoLOdYsLnIUqpA3XQTq9kVXFFNylvoJSj4=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=KHrbss3JSFUfsu551V5G8E4NYE+iqjoAF+X6M/wwKXS5p99pQQ6ct8GC0ENn7tCVG
+         SOnz1dlwGMPXlYzoSo1DoH85M7FbgkU+y2ZxYq5to0O5mEwzj8e0TIrQoRXvyJFdY+
+         RSDI2z8Jky+cBYk7wbj53LHuKzukoP2j4Rjae954=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D87361281E04;
+        Wed, 25 Jan 2023 07:59:15 -0500 (EST)
+Message-ID: <a588a74bb930f38c9322dd51d21661398b5e2bb8.camel@HansenPartnership.com>
 Subject: Re: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session
  handling code
-Message-ID: <202301251326.r0t0nGZc-lkp@intel.com>
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     kernel test robot <lkp@intel.com>, linux-integrity@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
+        keyrings@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 25 Jan 2023 07:59:09 -0500
+In-Reply-To: <202301250706.deGvd0yq-lkp@intel.com>
 References: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
+         <202301250706.deGvd0yq-lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi James,
+On Wed, 2023-01-25 at 07:11 +0800, kernel test robot wrote:
+> Hi James,
+> 
+> I love your patch! Perhaps something to improve:
+> 
+> [auto build test WARNING on char-misc/char-misc-testing]
+> [also build test WARNING on char-misc/char-misc-next char-misc/char-
+> misc-linus zohar-integrity/next-integrity linus/master v6.2-rc5 next-
+> 20230124]
+> [If your patch is applied to the wrong git tree, kindly drop us a
+> note.
+> And when submitting patch, we suggest to use '--base' as documented
+> in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:   
+> https://github.com/intel-lab-lkp/linux/commits/James-Bottomley/tpm-move-buffer-handling-from-static-inlines-to-real-functions/20230125-020146
+> patch link:   
+> https://lore.kernel.org/r/20230124175516.5984-7-James.Bottomley%40HansenPartnership.com
+> patch subject: [PATCH v2 06/11] tpm: Add full HMAC and
+> encrypt/decrypt session handling code
+> config: arc-allyesconfig
+> (https://download.01.org/0day-ci/archive/20230125/202301250706.deGvd0
+> yq-lkp@intel.com/config)
+> compiler: arceb-elf-gcc (GCC) 12.1.0
+> reproduce (this is a W=1 build):
+>         wget
+> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
+>  -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         #
+> https://github.com/intel-lab-lkp/linux/commit/dc0fc74718b4a786aba4a954233e8ab3afdcc03c
+>         git remote add linux-review
+> https://github.com/intel-lab-lkp/linux
+>         git fetch --no-tags linux-review James-Bottomley/tpm-move-
+> buffer-handling-from-static-inlines-to-real-functions/20230125-020146
+>         git checkout dc0fc74718b4a786aba4a954233e8ab3afdcc03c
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
+> make.cross W=1 O=build_dir ARCH=arc olddefconfig
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
+> make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash drivers/char/tpm/
+> 
+> If you fix the issue, kindly add following tag where applicable
+> > Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    drivers/char/tpm/tpm2-sessions.c:1184:5: warning: no previous
+> prototype for 'tpm2_create_null_primary' [-Wmissing-prototypes]
+>     1184 | int tpm2_create_null_primary(struct tpm_chip *chip) {
+>          |     ^~~~~~~~~~~~~~~~~~~~~~~~
+>    drivers/char/tpm/tpm2-sessions.c: In function
+> 'tpm_buf_check_hmac_response':
+> > > drivers/char/tpm/tpm2-sessions.c:831:1: warning: the frame size
+> > > of 1132 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+>      831 | }
+>          | ^
+>    drivers/char/tpm/tpm2-sessions.c: In function
+> 'tpm_buf_fill_hmac_session':
+>    drivers/char/tpm/tpm2-sessions.c:579:1: warning: the frame size of
+> 1132 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+>      579 | }
+>          | ^
 
-I love your patch! Perhaps something to improve:
+Is this a test problem?  I can't see why the code would only blow the
+stack on the arc architecture and not on any other ... does it have
+something funny with on stack crypto structures?
 
-[auto build test WARNING on char-misc/char-misc-testing]
-[also build test WARNING on char-misc/char-misc-next char-misc/char-misc-linus zohar-integrity/next-integrity linus/master v6.2-rc5 next-20230124]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+James
 
-url:    https://github.com/intel-lab-lkp/linux/commits/James-Bottomley/tpm-move-buffer-handling-from-static-inlines-to-real-functions/20230125-020146
-patch link:    https://lore.kernel.org/r/20230124175516.5984-7-James.Bottomley%40HansenPartnership.com
-patch subject: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session handling code
-config: i386-randconfig-s002-20230123 (https://download.01.org/0day-ci/archive/20230125/202301251326.r0t0nGZc-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.4-39-gce1a6720-dirty
-        # https://github.com/intel-lab-lkp/linux/commit/dc0fc74718b4a786aba4a954233e8ab3afdcc03c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review James-Bottomley/tpm-move-buffer-handling-from-static-inlines-to-real-functions/20230125-020146
-        git checkout dc0fc74718b4a786aba4a954233e8ab3afdcc03c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 olddefconfig
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/char/tpm/tpm2-sessions.c:1184:5: sparse: sparse: symbol 'tpm2_create_null_primary' was not declared. Should it be static?
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
