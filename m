@@ -2,105 +2,164 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D76167DF19
-	for <lists+keyrings@lfdr.de>; Fri, 27 Jan 2023 09:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F46B67E2A3
+	for <lists+keyrings@lfdr.de>; Fri, 27 Jan 2023 12:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232346AbjA0I2p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 27 Jan 2023 03:28:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
+        id S232741AbjA0LHS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 27 Jan 2023 06:07:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbjA0I2o (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 27 Jan 2023 03:28:44 -0500
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860552D44;
-        Fri, 27 Jan 2023 00:28:42 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4P39WC0sLYz9xyNp;
-        Fri, 27 Jan 2023 16:20:39 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwD3xl0Ti9Nj7gjNAA--.18823S2;
-        Fri, 27 Jan 2023 09:28:15 +0100 (CET)
-Message-ID: <d2a54ddec403cad12c003132542070bf781d5e26.camel@huaweicloud.com>
-Subject: Re: [PATCH v5 2/2] KEYS: asymmetric: Copy sig and digest in
- public_key_verify_signature()
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     dhowells@redhat.com
-Cc:     Eric Biggers <ebiggers@kernel.org>, herbert@gondor.apana.org.au,
-        davem@davemloft.net, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Fri, 27 Jan 2023 09:27:58 +0100
-In-Reply-To: <Y64XB0yi24yjeBDw@sol.localdomain>
-References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
-         <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
-         <Y64XB0yi24yjeBDw@sol.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S229482AbjA0LHR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 27 Jan 2023 06:07:17 -0500
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778F0525E
+        for <keyrings@vger.kernel.org>; Fri, 27 Jan 2023 03:07:16 -0800 (PST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-501c3a414acso62268027b3.7
+        for <keyrings@vger.kernel.org>; Fri, 27 Jan 2023 03:07:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HxXF9KH8I0DINa+c/j6SSrxsO2OqIy6K56yAlZUfY/g=;
+        b=QYY+g+US2HrPtVFHC2UFNZvsboTcfG9Ppq9dCwsw+qOpKgaPrrHn/3/MLno82SpCFs
+         xexiZZtnYXiZTWQoFqdjbt/DDlhf33jNDp3+uNR01SUHLyk2OElXMxqRzd0IzZ5ELlK4
+         dh/aC+bnC+IPmPdnDt9ZzxUVk6Q56LzV5cq/ga4k6vB53+XW8QKycJiuuaP+gWkwu1mN
+         /6iz80KNz/XQb7g7xkdCi7rysjJcXJAn1aCBlbLeQV1kR1PnXLKI9QWrR33x1kzSlWT/
+         cPbTFlmwBXdjkSrfdilpO6rdQTAY7axSIlnlJWSXZQLFhq8lhTV573EbOoB0sxgJHHXs
+         xC9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HxXF9KH8I0DINa+c/j6SSrxsO2OqIy6K56yAlZUfY/g=;
+        b=mf+azjo9tEg2IK+M5VV/7WhK0+loq64l96JNKA1tVzkm6H4uP1ccdptyjiuB0IxBAQ
+         QZN5KeERbGpgPFMqzGfUSZv68/9Q88EuReRzZOprmPx0k19F0vihD7HL/tHOeR1xqt1X
+         AOR+0oW9phta+N98+QAox6qSpMKORz9nahJ6juUWJleYZYLLdcdoWgGqO+tcLZ3B2QsZ
+         AaidtLvDQXDEP5HvV0MwfEaYXdnrLHxawdEri8qZ2qhGOMX0F0TBuIjJXXLAW3Nu+p+G
+         DB9f/kRxT01795mH99iTJowhytbX+wo9mAIRTQqou3hTyUu/A6/WLFnwJ6vM8sEosJEX
+         NQ1Q==
+X-Gm-Message-State: AFqh2krMLABlrFTvQDIFivAfLqVOrSbtC2MOm66R9sh+ZXBYSlNk9yv9
+        T5VsbgrZsH09G4CBe7iK8TQlEFf5AcBAlIs0XVg=
+X-Google-Smtp-Source: AMrXdXtFecyKojN4a4htyP6bp4j0YQYy5WEsuHO9cLeQ516mG/Z4QX7Qm2ISfKq6pDKSm2ycV9M8wIyVNfmMpsPbBkA=
+X-Received: by 2002:a81:84c1:0:b0:502:684a:1178 with SMTP id
+ u184-20020a8184c1000000b00502684a1178mr3762405ywf.294.1674817635612; Fri, 27
+ Jan 2023 03:07:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: GxC2BwD3xl0Ti9Nj7gjNAA--.18823S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr15ur18uw4DGFyfGryfJFb_yoW8XFy5pF
-        W3G3W5GF1jqryxCFsIv3yFva4rG3ykJr13Xw43X3s5Zr18urs8Wr1IqF4fWFyDAry8KFWF
-        yFW5Xr1qgw1YkaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
-        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
-        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-        xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
-        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFDGOUUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAKBF1jj4goZAABs7
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAGypqWx7=ntjEjMJk=qHj+DVKogmOwLWTCgY+3Y4xP-f+KPP6g@mail.gmail.com>
+ <2144380.1674658644@warthog.procyon.org.uk>
+In-Reply-To: <2144380.1674658644@warthog.procyon.org.uk>
+From:   Bharath SM <bharathsm.hsk@gmail.com>
+Date:   Fri, 27 Jan 2023 16:37:04 +0530
+Message-ID: <CAGypqWx_GrpkS+2A84BG8Y9fSYo3a1cSy2NYWBqJud3uuvRPJA@mail.gmail.com>
+Subject: Re: dns_query from cifs returning EKEYEXPIRED during reconnect operations
+To:     David Howells <dhowells@redhat.com>
+Cc:     jarkko@kernel.org, keyrings@vger.kernel.org,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Steve French <smfrench@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2022-12-29 at 14:39 -0800, Eric Biggers wrote:
-> On Tue, Dec 27, 2022 at 03:27:40PM +0100, Roberto Sassu wrote:
-> > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > 
-> > Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
-> > mapping") checks that both the signature and the digest reside in the
-> > linear mapping area.
-> > 
-> > However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
-> > stack support") made it possible to move the stack in the vmalloc area,
-> > which is not contiguous, and thus not suitable for sg_set_buf() which needs
-> > adjacent pages.
-> > 
-> > Always make a copy of the signature and digest in the same buffer used to
-> > store the key and its parameters, and pass them to sg_init_one(). Prefer it
-> > to conditionally doing the copy if necessary, to keep the code simple. The
-> > buffer allocated with kmalloc() is in the linear mapping area.
-> > 
-> > Cc: stable@vger.kernel.org # 4.9.x
-> > Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
-> > Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-> > Suggested-by: Eric Biggers <ebiggers@kernel.org>
-> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > ---
-> >  crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
-> >  1 file changed, 21 insertions(+), 17 deletions(-)
-> 
-> Reviewed-by: Eric Biggers <ebiggers@google.com>
+Thanks David. Yes, Invalidating key by passing "true" for
+key_invalidate parameter in dns_query works and resolves the major
+issue of dns_query returning EKEYEXPIRED forever in some cases when
+key cached in task_struct.
 
-Hi David
 
-could you please take this patch in your repo, if it is ok?
+But I noticed other issue with above suggested changes. Where
+dns_query is returning "ENOKEY",  when the cifs module does multiple
+dns_query requests at the same time.
 
-Thanks
+I performed the following steps to reproduce the issue:
+(1) Mount two or more cifs/smb shares hosted on a same server with
+nosharesock mount option.
+(2) Kill multiple SMB connections using "ss -K dport 445" so that cifs
+performs the dns_query operation as a part of reconnect.
+(3) Observe the dns resolver logs, Only one dns_request got correct
+resolutions and others fails with "ENOKEY".
+(4) I didn=E2=80=99t observe this issue when cifs attempts one dns_query at=
+ a
+time. Simulated by killing one SMB connection at a time.
+(5) So far I have observed that, this issue happens only at the point
+when we simulate multiple disconnections at same time.
 
-Roberto
+dns_resolver module logs:
 
+[Fri Jan 27 09:59:40 2023] [cifsd ] =3D=3D>
+dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
+[Fri Jan 27 09:59:40 2023] [cifsd ] call
+request_key(,storagesouthcus1.file.core.windows.net,)
+[Fri Jan 27 09:59:40 2023] [cifsd ] =3D=3D>
+dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
+[Fri Jan 27 09:59:40 2023] [cifsd ] call
+request_key(,storagesouthcus1.file.core.windows.net,)
+[Fri Jan 27 09:59:40 2023] [cifsd ] =3D=3D>
+dns_resolver_cmp(storagesouthcus1.file.core.windows.net,storagesouthcus1.fi=
+le.core.windows.net)
+[Fri Jan 27 09:59:40 2023] [cifsd ] <=3D=3D dns_resolver_cmp() =3D 1
+[Fri Jan 27 09:59:40 2023] [key.dn] =3D=3D> dns_resolver_preparse('
+20.150.20.136',14)
+[Fri Jan 27 09:59:40 2023] [key.dn] no options
+[Fri Jan 27 09:59:40 2023] [key.dn] store result
+[Fri Jan 27 09:59:40 2023] [key.dn] <=3D=3D dns_resolver_preparse() =3D 0
+[Fri Jan 27 09:59:40 2023] [cifsd ] <=3D=3D dns_query() =3D 13
+[Fri Jan 27 09:59:40 2023] [cifsd ] <=3D=3D dns_query() =3D -126 =3D=3D=3D=
+=3D=3D=3D=3D> ENOKEY
+
+
+[Fri Jan 27 09:59:49 2023] [cifsd ] =3D=3D>
+dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
+[Fri Jan 27 09:59:49 2023] [cifsd ] call
+request_key(,storagesouthcus1.file.core.windows.net,)
+[Fri Jan 27 09:59:49 2023] [cifsd ] =3D=3D>
+dns_resolver_cmp(storagesouthcus1.file.core.windows.net,storagesouthcus1.fi=
+le.core.windows.net)
+[Fri Jan 27 09:59:49 2023] [cifsd ] <=3D=3D dns_resolver_cmp() =3D 1
+[Fri Jan 27 09:59:49 2023] [cifsd ] =3D=3D>
+dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
+[Fri Jan 27 09:59:49 2023] [cifsd ] call
+request_key(,storagesouthcus1.file.core.windows.net,)
+[Fri Jan 27 09:59:49 2023] [cifsd ] =3D=3D>
+dns_resolver_cmp(storagesouthcus1.file.core.windows.net,storagesouthcus1.fi=
+le.core.windows.net)
+[Fri Jan 27 09:59:49 2023] [cifsd ] <=3D=3D dns_resolver_cmp() =3D 1
+[Fri Jan 27 09:59:49 2023] [key.dn] =3D=3D> dns_resolver_preparse('
+20.150.20.136',14)
+[Fri Jan 27 09:59:49 2023] [key.dn] no options
+[Fri Jan 27 09:59:49 2023] [key.dn] store result
+[Fri Jan 27 09:59:49 2023] [key.dn] <=3D=3D dns_resolver_preparse() =3D 0
+[Fri Jan 27 09:59:49 2023] [cifsd ] <=3D=3D dns_query() =3D 13
+[Fri Jan 27 09:59:49 2023] [cifsd ] <=3D=3D dns_query() =3D -126
+
+
+On Wed, Jan 25, 2023 at 8:27 PM David Howells dhowells@redhat.com wrote:
+>
+> Does the attached fix your problem?
+>
+> David
+> ---
+> diff --git a/fs/cifs/dns_resolve.c b/fs/cifs/dns_resolve.c
+> index 8bf8978bc5d6..c77ac47fb08b 100644
+> --- a/fs/cifs/dns_resolve.c
+> +++ b/fs/cifs/dns_resolve.c
+> @@ -66,7 +66,7 @@ dns_resolve_server_name_to_ip(const char *unc, struct s=
+ockaddr *ip_addr, time64_
+>
+>         /* Perform the upcall */
+>         rc =3D dns_query(current->nsproxy->net_ns, NULL, hostname, len,
+> -                      NULL, &ip, expiry, false);
+> +                      NULL, &ip, expiry, true);
+>         if (rc < 0) {
+>                 cifs_dbg(FYI, "%s: unable to resolve: %*.*s\n",
+>                          __func__, len, len, hostname);
+>
