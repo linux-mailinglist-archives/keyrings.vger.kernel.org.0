@@ -2,102 +2,74 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7FE67FF4D
-	for <lists+keyrings@lfdr.de>; Sun, 29 Jan 2023 14:06:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43B2C6811C9
+	for <lists+keyrings@lfdr.de>; Mon, 30 Jan 2023 15:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbjA2NGg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 29 Jan 2023 08:06:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49730 "EHLO
+        id S237414AbjA3OQp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Jan 2023 09:16:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbjA2NGg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 29 Jan 2023 08:06:36 -0500
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8231821972;
-        Sun, 29 Jan 2023 05:06:24 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id B32E73200A1B;
-        Sun, 29 Jan 2023 08:06:21 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sun, 29 Jan 2023 08:06:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=cc:cc:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1674997581; x=1675083981; bh=WI
-        iGLgM5lUUCvnAd3EHS+Z21BQAFwL9/K1vm6nT+YhA=; b=PW8eXYcheY6Y9fo3Yu
-        mUYKMIxsk32kgz57TyqPAfKAdxjn+LjeM2VqQZo69N1PYrrHfrYB0Y4nnfUtG0/7
-        CHfajPws6cFE6pIsYh1ywmsiCxnNvF0cZTczSN7mitunjjqT0FjIPxFLQNCGUXx+
-        EvMKIS/fRBRqVoWfOE1YN6PH2g8Nfj0aPpSDu8r4+o3GhElOlmRgzTBlgV3mS8k3
-        UHaredj6sp00CFf4nQymEB5HpWs1IGWub1NGqewvRQLnscesf2h1Idon7kH3vOPh
-        yMPCQ5X3iGT561CJT5xyDJDodMmzxdubkWkqG403p7zapbmC8IwbV79F/RzY8fln
-        1joQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1674997581; x=1675083981; bh=WIiGLgM5lUUCvnAd3EHS+Z21BQAF
-        wL9/K1vm6nT+YhA=; b=Eno7DSIRShLpNPQ4vKqL1cLFsWPhgf16E7fdeSLbbYEL
-        CH3raKl7+0DxzOjudi2t3W8Th0KbYqgQOY0YpwIYIGvTkUPpq71c/Q1SBwbsuiMj
-        nyNVaWRMCC5kB7tKiaFg6N5Ij9jJdQ3UkAgZw7hEQ9v2CmUdiWvDpsilhOSMa4fW
-        0UneFY4GaYZVKQdwGfA7dmHSWKdaiBQmvJZb6uA5u7CxoivGGJEcyq7d5NMazuIN
-        WmOGj2dlL+gOPXq6VXFDM2cIbEWHiaVT3hAHUEXRaTungIlWiHTUEuAsmV8kIgxg
-        tmIiSbDt8YBoMkQA0joEqZGFN/JiM5mkcQyZKeX5hA==
-X-ME-Sender: <xms:TG_WY3Mdd7DJGS1v6XPW9TWsCrARL5n0xr5bL7aUIU7nBKBFzezTHw>
-    <xme:TG_WYx_4Jk-oo-dQVzDBJIfP0i47wRloYeId_5HnTlEV7EyT9WrnUP2Td1dqP2GSK
-    MCaz8hHyJQD_K0El4o>
-X-ME-Received: <xmr:TG_WY2TXd0wROLw3w98VQ-f97d-Bzo1EwI3D-Nf5zHih2-QiJ-vUMhagFrO4viKjOSvqjNVy36R1ozRn5WSAdrpSTxl5Zpo_3sv_>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudeftddggeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
-    uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
-    htvghrnhepffelgeffveelkeffkeehiefgtdeluedvtdfghfdtvdefgfejheffudeuveek
-    vddvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmh
-    gvsegsvghnsghovggtkhgvlhdrnhgvth
-X-ME-Proxy: <xmx:TG_WY7v5nceOQDLuJ0Y7k-9at4kINlkm2iT0nnRuH4U_3LMDn6eU0A>
-    <xmx:TG_WY_caSYviY8yajfVUUBRoblnsUzMWq-_eySNIbWcxOe-Qo_SChQ>
-    <xmx:TG_WY30B9Yq7Hu1f-5KrN2P3UqGEzVAFKLgZ68mMtEjL_3aGgoZBhA>
-    <xmx:TW_WY745O9WeSaElaNcnl48Fo8aLOu-z1FBD4BvGDT-2TEDHqyAbZQ>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 29 Jan 2023 08:06:20 -0500 (EST)
-Date:   Sun, 29 Jan 2023 08:06:19 -0500
-From:   Ben Boeckel <me@benboeckel.net>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     linux-integrity@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH v2 09/11] KEYS: trusted: Add session encryption
- protection to the seal/unseal path
-Message-ID: <Y9ZvS9PozyX5AxpZ@farprobe>
-References: <20230124175516.5984-1-James.Bottomley@HansenPartnership.com>
- <20230124175516.5984-10-James.Bottomley@HansenPartnership.com>
+        with ESMTP id S237394AbjA3OQi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Jan 2023 09:16:38 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282DD3C2AD
+        for <keyrings@vger.kernel.org>; Mon, 30 Jan 2023 06:16:34 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <jlu@pengutronix.de>)
+        id 1pMUxF-0004Dq-Nf; Mon, 30 Jan 2023 15:16:17 +0100
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <jlu@pengutronix.de>)
+        id 1pMUxF-001UGs-SI; Mon, 30 Jan 2023 15:16:16 +0100
+Received: from jlu by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <jlu@pengutronix.de>)
+        id 1pMUxD-00GEro-D4; Mon, 30 Jan 2023 15:16:15 +0100
+From:   Jan Luebbe <jlu@pengutronix.de>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Jan Luebbe <jlu@pengutronix.de>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH 0/2] Fix module signing with PKCS#11 URIs
+Date:   Mon, 30 Jan 2023 15:15:51 +0100
+Message-Id: <20230130141553.3825449-1-jlu@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230124175516.5984-10-James.Bottomley@HansenPartnership.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: jlu@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jan 24, 2023 at 12:55:14 -0500, James Bottomley wrote:
-> If some entity is snooping the TPM bus, the can see the data going in
-                                          ^^^ they
-> to be sealed and the data coming out as it is unsealed.  Add parameter
-> and response encryption to these cases to ensure that no secrets are
-> leaked even if the bus is snooped.
-> 
-> As part of doing this conversion it was discovered that policy
-> sessions can't work with HMAC protected authority because of missing
-> pieces (the tpm Nonce).  I've added code to work the same way as
-> before, which will result in potential authority exposure (while still
-> adding security for the command and the returned blob), and a fixme to
-> redo the API to get rid of this security hole.
+Hi,
 
---Ben
+here are two patches to fix kernel module signing when using a key via
+PKCS#11, including the case where the URI contains semicolons to
+separate components.
+
+Best regards,
+Jan
+
+
+Jan Luebbe (2):
+  certs: Fix build error when PKCS#11 URI contains semicolon
+  kbuild: modinst: Fix build error when CONFIG_MODULE_SIG_KEY is a
+    PKCS#11 URI
+
+ certs/Makefile           | 2 +-
+ scripts/Makefile.modinst | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+-- 
+2.30.2
+
