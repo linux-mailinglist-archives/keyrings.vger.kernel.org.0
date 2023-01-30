@@ -2,30 +2,30 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C77356811BF
-	for <lists+keyrings@lfdr.de>; Mon, 30 Jan 2023 15:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E29036811DC
+	for <lists+keyrings@lfdr.de>; Mon, 30 Jan 2023 15:17:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237391AbjA3OQd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 30 Jan 2023 09:16:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60534 "EHLO
+        id S237378AbjA3OQ7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 30 Jan 2023 09:16:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237378AbjA3OQb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Jan 2023 09:16:31 -0500
+        with ESMTP id S237420AbjA3OQp (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 30 Jan 2023 09:16:45 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7C73C2BA
-        for <keyrings@vger.kernel.org>; Mon, 30 Jan 2023 06:16:28 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40BA3CE29
+        for <keyrings@vger.kernel.org>; Mon, 30 Jan 2023 06:16:43 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <jlu@pengutronix.de>)
-        id 1pMUxI-0004FU-3D; Mon, 30 Jan 2023 15:16:20 +0100
+        id 1pMUxK-0004J8-RE; Mon, 30 Jan 2023 15:16:22 +0100
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <jlu@pengutronix.de>)
-        id 1pMUxI-001UGx-DS; Mon, 30 Jan 2023 15:16:19 +0100
+        id 1pMUxL-001UH2-3R; Mon, 30 Jan 2023 15:16:22 +0100
 Received: from jlu by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <jlu@pengutronix.de>)
-        id 1pMUxG-00GG5L-TK; Mon, 30 Jan 2023 15:16:18 +0100
+        id 1pMUxJ-00GHv4-Bp; Mon, 30 Jan 2023 15:16:21 +0100
 From:   Jan Luebbe <jlu@pengutronix.de>
 To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     Jan Luebbe <jlu@pengutronix.de>,
@@ -33,9 +33,9 @@ Cc:     Jan Luebbe <jlu@pengutronix.de>,
         David Woodhouse <dwmw2@infradead.org>,
         keyrings@vger.kernel.org, linux-kbuild@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 1/2] certs: Fix build error when PKCS#11 URI contains semicolon
-Date:   Mon, 30 Jan 2023 15:15:52 +0100
-Message-Id: <20230130141553.3825449-2-jlu@pengutronix.de>
+Subject: [PATCH 2/2] kbuild: modinst: Fix build error when CONFIG_MODULE_SIG_KEY is a PKCS#11 URI
+Date:   Mon, 30 Jan 2023 15:15:53 +0100
+Message-Id: <20230130141553.3825449-3-jlu@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230130141553.3825449-1-jlu@pengutronix.de>
 References: <20230130141553.3825449-1-jlu@pengutronix.de>
@@ -53,33 +53,45 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When CONFIG_MODULE_SIG_KEY is PKCS#11 URI (pkcs11:*) and contains a
-semicolon, signing_key.x509 fails to build:
+When CONFIG_MODULE_SIG_KEY is PKCS#11 URI (pkcs11:*), signing of modules
+fails:
 
-  certs/extract-cert pkcs11:token=foo;object=bar;pin-value=1111 certs/signing_key.x509
-  Usage: extract-cert <source> <dest>
+  scripts/sign-file sha256 /.../linux/pkcs11:token=foo;object=bar;pin-value=1111 certs/signing_key.x509 /.../kernel/crypto/tcrypt.ko
+  Usage: scripts/sign-file [-dp] <hash algo> <key> <x509> <module> [<dest>]
+         scripts/sign-file -s <raw sig> <hash algo> <x509> <module> [<dest>]
 
-Add quotes to the PKCS11_URI variable to avoid splitting by the shell.
+First, we need to avoid adding the $(srctree)/ prefix to the URL.
 
+Second, since the kconfig string values no longer include quotes, we need to add
+them again when passing a PKCS#11 URI to sign-file. This avoids
+splitting by the shell if the URI contains semicolons.
+
+Fixes: 4db9c2e3d055 ("kbuild: stop using config_filename in scripts/Makefile.modsign")
 Fixes: 129ab0d2d9f3 ("kbuild: do not quote string values in include/config/auto.conf")
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- certs/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Makefile.modinst | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/certs/Makefile b/certs/Makefile
-index 9486ed924731..cda21811ed88 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -67,7 +67,7 @@ $(obj)/system_certificates.o: $(obj)/signing_key.x509
- 
- PKCS11_URI := $(filter pkcs11:%, $(CONFIG_MODULE_SIG_KEY))
- ifdef PKCS11_URI
--$(obj)/signing_key.x509: extract-cert-in := $(PKCS11_URI)
-+$(obj)/signing_key.x509: extract-cert-in := "$(PKCS11_URI)"
- endif
- 
- $(obj)/signing_key.x509: $(filter-out $(PKCS11_URI),$(CONFIG_MODULE_SIG_KEY)) $(obj)/extract-cert FORCE
+diff --git a/scripts/Makefile.modinst b/scripts/Makefile.modinst
+index 836391e5d209..4815a8e32227 100644
+--- a/scripts/Makefile.modinst
++++ b/scripts/Makefile.modinst
+@@ -66,9 +66,13 @@ endif
+ # Don't stop modules_install even if we can't sign external modules.
+ #
+ ifeq ($(CONFIG_MODULE_SIG_ALL),y)
++ifeq ($(filter pkcs11:%, $(CONFIG_MODULE_SIG_KEY)),)
+ sig-key := $(if $(wildcard $(CONFIG_MODULE_SIG_KEY)),,$(srctree)/)$(CONFIG_MODULE_SIG_KEY)
++else
++sig-key := $(CONFIG_MODULE_SIG_KEY)
++endif
+ quiet_cmd_sign = SIGN    $@
+-      cmd_sign = scripts/sign-file $(CONFIG_MODULE_SIG_HASH) $(sig-key) certs/signing_key.x509 $@ \
++      cmd_sign = scripts/sign-file $(CONFIG_MODULE_SIG_HASH) "$(sig-key)" certs/signing_key.x509 $@ \
+                  $(if $(KBUILD_EXTMOD),|| true)
+ else
+ quiet_cmd_sign :=
 -- 
 2.30.2
 
