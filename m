@@ -2,42 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F40C368C4CD
-	for <lists+keyrings@lfdr.de>; Mon,  6 Feb 2023 18:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C5468C4D7
+	for <lists+keyrings@lfdr.de>; Mon,  6 Feb 2023 18:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbjBFRa0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 6 Feb 2023 12:30:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35766 "EHLO
+        id S230316AbjBFRay (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 6 Feb 2023 12:30:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230498AbjBFRaP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Feb 2023 12:30:15 -0500
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374922E0CE
-        for <keyrings@vger.kernel.org>; Mon,  6 Feb 2023 09:29:09 -0800 (PST)
-Received: by mail-qt1-f174.google.com with SMTP id f10so13685730qtv.1
-        for <keyrings@vger.kernel.org>; Mon, 06 Feb 2023 09:29:09 -0800 (PST)
+        with ESMTP id S230324AbjBFRaj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 6 Feb 2023 12:30:39 -0500
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF1BCDF6
+        for <keyrings@vger.kernel.org>; Mon,  6 Feb 2023 09:29:40 -0800 (PST)
+Received: by mail-qt1-f179.google.com with SMTP id g18so11346042qtb.6
+        for <keyrings@vger.kernel.org>; Mon, 06 Feb 2023 09:29:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/FrP9fMYR82jRAmAW0QmGxlvWeMEFDYdTqEQD3Ix7oU=;
-        b=lJ5fMbFCVvhBp0/QyvwxNzM0cai4cfTRomfeCJCPAzi0gG2s1enAncCgW2sVf3uAtW
-         lwAPW2Mf2duMCazsGeMpL05Yp1r8ERcIOx3xYAiBS1vsa9GPzDlGiGzi2gc+ELw3/Oy8
-         2bVz8H+9YnzWjh/o6UpZB6LGaGhS3ZkNDUYXzr7TgSZ4jS+onu/EyxRf1L2zPbfJPDGu
-         BM0Tr424gz7SkxiM+k/VGg6gpDvCXnI629B8lr7GmqSx9swcOTYpJMh0DvYi/G/R/w+Y
-         qS7x16r4XWXSeyMsZpvnFczVMH62n5JlTUnOOK8MM8eDqxrNqYuDZwlYCVLm9d/cakGu
-         lMXA==
-X-Gm-Message-State: AO0yUKVWPLXGU/vZiwWdW/EvZDRb06ZWCVG/7CgoUGZJEVHaOJuZgMBP
-        xsyivsfduQjR2NnegqjwGk7V
-X-Google-Smtp-Source: AK7set88PegyfxPSUhpDYL1wKeHEutu8R092IP6zZRvoiYjEuTLO6pmSpIUQElcD/sBIBkgW1V2HAg==
-X-Received: by 2002:ac8:5f95:0:b0:3ba:266f:103b with SMTP id j21-20020ac85f95000000b003ba266f103bmr38942qta.47.1675704548352;
-        Mon, 06 Feb 2023 09:29:08 -0800 (PST)
+        bh=w/LaKIf+3pRA4MyQMhbr3PlVOqptn/pf/udFxon0+9Y=;
+        b=kmdXXusCmfJd+CXMA9BsIYvyfcm1U2MTdpBiHge/vuKVuHt3nuD1Bfrh2RN0DTT2R7
+         R+3PIBLT4rKjJqUFAa8GbzCL9cZpWR5ReOo5LA2qBx8R49WVwzJEqp5InBAh6d0pUWSX
+         eHYt6nM4WL0QqZE+frfNzLai20s++J7eLx4ZyoPcJAE3P0i+reGglqfV0z7air1ZOPvi
+         8RR1Es203l1fVJHJB8nw61NUdAgnjr3C82+uX8Xc1ikMoGcrZ1bxDop8r3WnzHUvqKFf
+         /R2sXoHQQ+FRIOoRrMAg4+cTmoNqTVeWXY433CGZfUdFsCqQmBloKasiakEHFyRkB/Ia
+         sZlA==
+X-Gm-Message-State: AO0yUKXM9aSDnrh/YSzQZWSrcK1ZvNr0N+KX3OvuFzzvlI8A7NPxn5Fw
+        eXVrAVPCt1D2sEOoHW749L6S
+X-Google-Smtp-Source: AK7set/ae55jb9i/baaW/xLk4b7RJtQzOV+41D/ChSc6zOFdBQ9usaCQZSB0nyipHZthrt6kgVy39g==
+X-Received: by 2002:a05:622a:c7:b0:3ba:1398:c68d with SMTP id p7-20020a05622a00c700b003ba1398c68dmr150769qtw.16.1675704579799;
+        Mon, 06 Feb 2023 09:29:39 -0800 (PST)
 Received: from localhost (pool-68-160-166-30.bstnma.fios.verizon.net. [68.160.166.30])
-        by smtp.gmail.com with ESMTPSA id b5-20020a37b205000000b00719165e9e72sm7647589qkf.91.2023.02.06.09.29.07
+        by smtp.gmail.com with ESMTPSA id b13-20020ac844cd000000b003ba1ccba523sm3956815qto.93.2023.02.06.09.29.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Feb 2023 09:29:07 -0800 (PST)
-Date:   Mon, 6 Feb 2023 12:29:06 -0500
+        Mon, 06 Feb 2023 09:29:39 -0800 (PST)
+Date:   Mon, 6 Feb 2023 12:29:38 -0500
 From:   Mike Snitzer <snitzer@kernel.org>
 To:     Herbert Xu <herbert@gondor.apana.org.au>
 Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
@@ -58,15 +58,14 @@ Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         John Fastabend <john.fastabend@gmail.com>,
         David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH 1/17] dm: Add scaffolding to change completion function
- signature
-Message-ID: <Y+E44kb3bJViytuh@redhat.com>
+Subject: Re: [PATCH 11/17] dm: Remove completion function scaffolding
+Message-ID: <Y+E5AkiVTbjgXWjs@redhat.com>
 References: <Y+DUkqe1sagWaErA@gondor.apana.org.au>
- <E1pOydY-007zgU-U2@formenos.hmeau.com>
+ <E1pOydu-007zio-0W@formenos.hmeau.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1pOydY-007zgU-U2@formenos.hmeau.com>
+In-Reply-To: <E1pOydu-007zio-0W@formenos.hmeau.com>
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
         RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=no
@@ -80,9 +79,8 @@ X-Mailing-List: keyrings@vger.kernel.org
 On Mon, Feb 06 2023 at  5:22P -0500,
 Herbert Xu <herbert@gondor.apana.org.au> wrote:
 
-> This patch adds temporary scaffolding so that the Crypto API
-> completion function can take a void * instead of crypto_async_request.
-> Once affected users have been converted this can be removed.
+> This patch removes the temporary scaffolding now that the comletion
+> function signature has been converted.
 > 
 > Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
