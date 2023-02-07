@@ -2,88 +2,92 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A92B68E093
-	for <lists+keyrings@lfdr.de>; Tue,  7 Feb 2023 19:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF2468E3B8
+	for <lists+keyrings@lfdr.de>; Tue,  7 Feb 2023 23:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232467AbjBGSvv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Feb 2023 13:51:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44652 "EHLO
+        id S229953AbjBGW4B (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Feb 2023 17:56:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232361AbjBGSvu (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Feb 2023 13:51:50 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CE049EF0;
-        Tue,  7 Feb 2023 10:51:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9D586112F;
-        Tue,  7 Feb 2023 18:51:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34265C433EF;
-        Tue,  7 Feb 2023 18:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675795908;
-        bh=x0UI86gVTuknlQ58qUTLvMciZe/bE/6g39HHqZCq0K4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VSh5Dyt8xASnmvTydKvQbaFJHbGaq1MUZN0wdEy/DvbasC+0O95aScLPc+6Klyn2c
-         bLz6vOPlX5UKFjct+uvCLhp86OXHdlZPpVqQgrYkimu51YAHILD+cqxvyKhr7J3d/M
-         nqbxe3p3Vx5295uCHBjBlp47OW4aIwk5nY1ESc6NK2c2qx5wqo2p+2hcR65kVen1IY
-         FW6fJjvx/vzksgupXienOhJuoQYRPZRHbu4D0ZygWDJCwF1+YiHzvHIQiWy9Jq58LT
-         1CQcYb1TQMbYcUV0R2BSzEDllmjW91t3LetazrD8asBbWcH6yyxYmJFefmk99GRAGy
-         qJc4dDpNt9BjQ==
-Date:   Tue, 7 Feb 2023 10:51:46 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Tyler Hicks <code@tyhicks.com>, ecryptfs@vger.kernel.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Jon Maloy <jmaloy@redhat.com>,
-        Ying Xue <ying.xue@windriver.com>,
-        Boris Pismenny <borisp@nvidia.com>,
-        John Fastabend <john.fastabend@gmail.com>,
+        with ESMTP id S230020AbjBGW4B (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Feb 2023 17:56:01 -0500
+X-Greylist: delayed 2401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Feb 2023 14:55:44 PST
+Received: from 8.mo552.mail-out.ovh.net (8.mo552.mail-out.ovh.net [46.105.37.156])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F8623FF0D
+        for <keyrings@vger.kernel.org>; Tue,  7 Feb 2023 14:55:43 -0800 (PST)
+Received: from mxplan6.mail.ovh.net (unknown [10.109.143.167])
+        by mo552.mail-out.ovh.net (Postfix) with ESMTPS id CF16E2AD17;
+        Tue,  7 Feb 2023 21:40:08 +0000 (UTC)
+Received: from jwilk.net (37.59.142.98) by DAG4EX1.mxp6.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Tue, 7 Feb
+ 2023 22:40:07 +0100
+Authentication-Results: garm.ovh; auth=pass (GARM-98R0027e1dff29-49c4-4d74-ac55-70a6cb208233,
+                    4730C7FD3C8BF8B026F70320F7F88D0531F9AA9D) smtp.auth=jwilk@jwilk.net
+X-OVh-ClientIp: 5.172.255.80
+From:   Jakub Wilk <jwilk@jwilk.net>
+To:     Michael Kerrisk <mtk.manpages@gmail.com>,
+        Alejandro Colomar <alx.manpages@gmail.com>
+CC:     <linux-man@vger.kernel.org>, <keyrings@vger.kernel.org>,
         David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org
-Subject: Re: [PATCH 0/17] crypto: api - Change completion callback argument
- to void star
-Message-ID: <20230207105146.267fc5e8@kernel.org>
-In-Reply-To: <Y+IF6L4cb2Ijy0fN@gondor.apana.org.au>
-References: <Y+DUkqe1sagWaErA@gondor.apana.org.au>
-        <20230206231008.64c822c1@kernel.org>
-        <Y+IF6L4cb2Ijy0fN@gondor.apana.org.au>
+        Helge Kreutzmann <debian@helgefjell.de>
+Subject: [PATCH] persistent-keyring.7: wfix
+Date:   Tue, 7 Feb 2023 22:40:04 +0100
+Message-ID: <20230207214004.6013-1-jwilk@jwilk.net>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [37.59.142.98]
+X-ClientProxiedBy: DAG8EX2.mxp6.local (172.16.2.72) To DAG4EX1.mxp6.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 59318cd8-1317-487a-8ddd-7574c6e79045
+X-Ovh-Tracer-Id: 14211108627914348393
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudegkedgudegkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgtghisehtkeertdertddtnecuhfhrohhmpeflrghkuhgsucghihhlkhcuoehjfihilhhksehjfihilhhkrdhnvghtqeenucggtffrrghtthgvrhhnpeefhfetfffhffehtedufedvfeehfffgudeljeehieetiefhfeffjeevleejveehieenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeojhifihhlkhesjhifihhlkhdrnhgvtheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepmhhtkhdrmhgrnhhprghgvghssehgmhgrihhlrdgtohhmpdgrlhigrdhmrghnphgrghgvshesghhmrghilhdrtghomhdplhhinhhugidqmhgrnhesvhhgvghrrdhkvghrnhgvlhdrohhrghdpkhgvhihrihhnghhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdguhhhofigvlhhlshesrhgvughhrghtrdgtohhmpdguvggsihgrnheshhgvlhhgvghfjhgvlhhlrdguvgdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 7 Feb 2023 16:03:52 +0800 Herbert Xu wrote:
-> > Buggy means bug could be hit in real light or buggy == did not use 
-> > the API right?  
-> 
-> Yes this bug is real.  If you hit a driver/algorithm that returns
-> a different request object (of which there are many in the API) then
-> you will be dereferencing random pointers.
+Reported-by: Helge Kreutzmann <debian@helgefjell.de>
+Signed-off-by: Jakub Wilk <jwilk@jwilk.net>
+---
 
-Any aes-gcm or chacha-poly implementations which would do that come 
-to mind? I'm asking 'cause we probably want to do stable if we know
-of a combination which would be broken, or the chances of one existing
-are high.
+I have no idea what I'm doing, but the original text was confusing,
+and changing "key" to "keyring" seems consistent with other
+documentation (keyrings.7, keyctl_get_persistent.3).
 
-Otherwise no objections for the patches to go via the crypto tree,
-there should be no conflicts AFAIK. Feel free to add my ack on the
-networking changes if needed.
+ man7/persistent-keyring.7 | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/man7/persistent-keyring.7 b/man7/persistent-keyring.7
+index 2a7fe49c2..bf3e33ef5 100644
+--- a/man7/persistent-keyring.7
++++ b/man7/persistent-keyring.7
+@@ -33,7 +33,7 @@ operation, it will be automatically created.
+ Each time the
+ .BR keyctl_get_persistent (3)
+ operation is performed,
+-the persistent key's expiration timer is reset to the value in:
++the persistent keyring's expiration timer is reset to the value in:
+ .PP
+ .in +4n
+ .EX
+@@ -44,7 +44,7 @@ the persistent key's expiration timer is reset to the value in:
+ Should the timeout be reached,
+ the persistent keyring will be removed and
+ everything it pins can then be garbage collected.
+-The key will then be re-created on a subsequent call to
++The keyring will then be re-created on a subsequent call to
+ .BR keyctl_get_persistent (3).
+ .PP
+ The persistent keyring is not directly searched by
+-- 
+2.39.1
+
