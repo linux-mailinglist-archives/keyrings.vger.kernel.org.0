@@ -2,38 +2,25 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A360568D063
-	for <lists+keyrings@lfdr.de>; Tue,  7 Feb 2023 08:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0584A68D136
+	for <lists+keyrings@lfdr.de>; Tue,  7 Feb 2023 09:04:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbjBGHQe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 7 Feb 2023 02:16:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48140 "EHLO
+        id S229698AbjBGIEe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 7 Feb 2023 03:04:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjBGHQd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Feb 2023 02:16:33 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6C2AD12;
-        Mon,  6 Feb 2023 23:16:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2817E611EC;
-        Tue,  7 Feb 2023 07:16:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D323C433EF;
-        Tue,  7 Feb 2023 07:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675754191;
-        bh=7ZAG2Gv6Qe3yVJ4Mp1PlV55GuwUWAH8smj85Hoka1Zw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oJG3T6M/f5RFqJdMFSd7yp8Mbq6MHeoP69hGs2DbEFAwZquDEZfrgCQWQ1SaNsELQ
-         C+TpA4QqKaml/HhyFtiFFzsOz5M2Rt5gpJej8cl1YWCvNPL77ymgzgn77yxkKn3n29
-         Gr6u/QGoVqs/7yPmZS34tQw1rCMsX1rYd5fvp2K02WOLzw5lXwH0Z4jMMrjc65GjON
-         qch/tmkbSuIso0CpzSc9APTWE1aHk4VR+Rc4zRcNSPUvTf+mjc0F+wo07qZiRSzldz
-         BVf18qEyv3nMDtckx3dmS6cd1xpQNoGLNEuTMDn5Rug/JvcFnQ60sILSbuCdhDTMK8
-         KrYYxN40FgGBw==
-Date:   Mon, 6 Feb 2023 23:16:29 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Herbert Xu <herbert@gondor.apana.org.au>
+        with ESMTP id S230075AbjBGIEd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 7 Feb 2023 03:04:33 -0500
+Received: from formenos.hmeau.com (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079BD13508;
+        Tue,  7 Feb 2023 00:04:29 -0800 (PST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1pPIxE-008OMQ-SI; Tue, 07 Feb 2023 16:03:53 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 07 Feb 2023 16:03:52 +0800
+Date:   Tue, 7 Feb 2023 16:03:52 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         Alasdair Kergon <agk@redhat.com>,
         Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com,
@@ -54,24 +41,44 @@ Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org
 Subject: Re: [PATCH 0/17] crypto: api - Change completion callback argument
  to void star
-Message-ID: <20230206231629.03572f5a@kernel.org>
-In-Reply-To: <20230206231008.64c822c1@kernel.org>
+Message-ID: <Y+IF6L4cb2Ijy0fN@gondor.apana.org.au>
 References: <Y+DUkqe1sagWaErA@gondor.apana.org.au>
-        <20230206231008.64c822c1@kernel.org>
+ <20230206231008.64c822c1@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230206231008.64c822c1@kernel.org>
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,PDS_RDNS_DYNAMIC_FP,
+        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 6 Feb 2023 23:10:08 -0800 Jakub Kicinski wrote:
+On Mon, Feb 06, 2023 at 11:10:08PM -0800, Jakub Kicinski wrote:
+> On Mon, 6 Feb 2023 18:21:06 +0800 Herbert Xu wrote:
+> > The crypto completion function currently takes a pointer to a
+> > struct crypto_async_request object.  However, in reality the API
+> > does not allow the use of any part of the object apart from the
+> > data field.  For example, ahash/shash will create a fake object
+> > on the stack to pass along a different data field.
+> 
+> "different data field" == copy the value to a different structure?
+> A bit hard to parse TBH.
+
+The word data here refers to the data field in struct crypto_async_request.
+ 
 > Buggy means bug could be hit in real light or buggy == did not use 
 > the API right?
 
-"in real light"... time to sign off for the night. s/light/life/
+Yes this bug is real.  If you hit a driver/algorithm that returns
+a different request object (of which there are many in the API) then
+you will be dereferencing random pointers.
+
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
