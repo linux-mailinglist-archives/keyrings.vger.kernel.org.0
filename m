@@ -2,62 +2,54 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0626691757
-	for <lists+keyrings@lfdr.de>; Fri, 10 Feb 2023 04:52:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A86369175F
+	for <lists+keyrings@lfdr.de>; Fri, 10 Feb 2023 04:54:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230400AbjBJDwj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Feb 2023 22:52:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44232 "EHLO
+        id S230415AbjBJDyT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Feb 2023 22:54:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbjBJDwi (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Feb 2023 22:52:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D1A6E9A7;
-        Thu,  9 Feb 2023 19:52:37 -0800 (PST)
+        with ESMTP id S229917AbjBJDyT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Feb 2023 22:54:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9326E9A7;
+        Thu,  9 Feb 2023 19:54:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B7814B82318;
-        Fri, 10 Feb 2023 03:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024BFC433D2;
-        Fri, 10 Feb 2023 03:52:33 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A7C9AB82318;
+        Fri, 10 Feb 2023 03:54:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BDEC433EF;
+        Fri, 10 Feb 2023 03:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676001154;
-        bh=t4iAaUuM2HFmcmpr81sOs5C2TvOPLjpj1VR6jXx79v4=;
+        s=k20201202; t=1676001255;
+        bh=hTbI/uHdUcdMjp23oy6AQJPVhQQNne0zOy2ZW7ePXC8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ngQDjjOTzAyi2i3AAnauX3F1+16cUPucKqZDgOaj13GI9XU0h43ZY+yTAxjFOUsrk
-         dY/1uOO2BEjXCAalberobn1zSUE8IF4ua0YPZ4/XMoqMi+mAVS+7pvV4llvvFm0U95
-         cPgqS3kK28wVy6nn5Zz77zEocqB6oGxLEz1yVj0fJfa2UPbMV05NCihbMoqgAOEKHT
-         V1yEGAVP61Zq59PiWempsOawLvqNKgNQ6/S+Vt0mGM6KIxVP7um+bgSeGtiwVFcZog
-         WPk4eQ+fCdfLBV/8l8i1LjB4CVKANCNk30GUMO5wypjvEsU0Vuaq+slkL13Juv5H9x
-         /1907nXZvj6pg==
-Date:   Fri, 10 Feb 2023 05:52:31 +0200
+        b=pX3C3wFr+jOY0BBYQGlrqnFp6/IpoNQwniwWedKM/no6/Mp2ZPVEKd9vQU1m1L5tM
+         ycy2vKP53jUhV9VSdtNQjo+iaBCAIrjPuF6uJ5nwEoAGV3Jclu2FO3axtDmshFMzVr
+         7oHByO8K3cSbrGgR3g4IbgPt1wk54/oxexSexs8CUmp9YY4zJcmQiGakEu9wWd/Nqh
+         TdVWB/Pzwwo1etfdY2fewNZZvH30zfTnEOh0cxLjoN9uudfIkbWeHX381T+0OrxHnO
+         czzYY1KojObZ5P/BHFW670vXJJGbtzDcXHvM1/5QojRfu/H/9OmDZ6FE+8ZtRiCkk0
+         1Wu19Fq6hZy9w==
+Date:   Fri, 10 Feb 2023 05:54:12 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Subject: Re: [PATCH v5 2/2] KEYS: asymmetric: Copy sig and digest in
- public_key_verify_signature()
-Message-ID: <Y+W/fwRbzj5A5v44@kernel.org>
-References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
- <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
- <Y64XB0yi24yjeBDw@sol.localdomain>
- <d2a54ddec403cad12c003132542070bf781d5e26.camel@huaweicloud.com>
- <857eedc5ad18eddae7686dca63cf8c613a051be4.camel@huaweicloud.com>
- <Y+VBMQEwPTPGBIpP@gmail.com>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        keyrings@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-security-module@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 17/24] Documentation: security: correct spelling
+Message-ID: <Y+W/5OCP8eb7HdqZ@kernel.org>
+References: <20230209071400.31476-1-rdunlap@infradead.org>
+ <20230209071400.31476-18-rdunlap@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y+VBMQEwPTPGBIpP@gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230209071400.31476-18-rdunlap@infradead.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,52 +57,73 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Feb 09, 2023 at 06:53:37PM +0000, Eric Biggers wrote:
-> On Thu, Feb 09, 2023 at 11:49:19AM +0100, Roberto Sassu wrote:
-> > On Fri, 2023-01-27 at 09:27 +0100, Roberto Sassu wrote:
-> > > On Thu, 2022-12-29 at 14:39 -0800, Eric Biggers wrote:
-> > > > On Tue, Dec 27, 2022 at 03:27:40PM +0100, Roberto Sassu wrote:
-> > > > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > > > > 
-> > > > > Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
-> > > > > mapping") checks that both the signature and the digest reside in the
-> > > > > linear mapping area.
-> > > > > 
-> > > > > However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
-> > > > > stack support") made it possible to move the stack in the vmalloc area,
-> > > > > which is not contiguous, and thus not suitable for sg_set_buf() which needs
-> > > > > adjacent pages.
-> > > > > 
-> > > > > Always make a copy of the signature and digest in the same buffer used to
-> > > > > store the key and its parameters, and pass them to sg_init_one(). Prefer it
-> > > > > to conditionally doing the copy if necessary, to keep the code simple. The
-> > > > > buffer allocated with kmalloc() is in the linear mapping area.
-> > > > > 
-> > > > > Cc: stable@vger.kernel.org # 4.9.x
-> > > > > Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
-> > > > > Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-> > > > > Suggested-by: Eric Biggers <ebiggers@kernel.org>
-> > > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > > > ---
-> > > > >  crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
-> > > > >  1 file changed, 21 insertions(+), 17 deletions(-)
-> > > > 
-> > > > Reviewed-by: Eric Biggers <ebiggers@google.com>
-> > > 
-> > > Hi David
-> > > 
-> > > could you please take this patch in your repo, if it is ok?
-> > 
-> > Kindly ask your support here. Has this patch been queued somewhere?
-> > Wasn't able to find it, also it is not in linux-next.
-> > 
+On Wed, Feb 08, 2023 at 11:13:53PM -0800, Randy Dunlap wrote:
+> Correct spelling problems for Documentation/security/ as reported
+> by codespell.
 > 
-> The maintainer of asymmetric_keys (David Howells) is ignoring this patch, so
-> you'll need to find someone else to apply it.  Herbert Xu, the maintainer of the
-> crypto subsystem, might be willing to apply it.  Or maybe Jarkko Sakkinen, who
-> is a co-maintainer of the keyrings subsystem (but not asymmetric_keys, for some
-> reason; should that change?).
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Cc: keyrings@vger.kernel.org
+> Cc: Paul Moore <paul@paul-moore.com>
+> Cc: James Morris <jmorris@namei.org>
+> Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> Cc: linux-security-module@vger.kernel.org
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Reviewed-by: David Howells <dhowells@redhat.com>
+> ---
+>  Documentation/security/digsig.rst       |    4 ++--
+>  Documentation/security/keys/core.rst    |    2 +-
+>  Documentation/security/secrets/coco.rst |    2 +-
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff -- a/Documentation/security/digsig.rst b/Documentation/security/digsig.rst
+> --- a/Documentation/security/digsig.rst
+> +++ b/Documentation/security/digsig.rst
+> @@ -62,7 +62,7 @@ API currently includes only 1 function::
+>  	* digsig_verify() - digital signature verification with public key
+>  	* @keyring:	keyring to search key in
+>  	* @sig:	digital signature
+> -	* @sigen:	length of the signature
+> +	* @siglen:	length of the signature
+>  	* @data:	data
+>  	* @datalen:	length of the data
+>  	* @return:	0 on success, -EINVAL otherwise
+> @@ -82,7 +82,7 @@ The signing and key management utilities
+>  to generate signatures, to load keys into the kernel keyring.
+>  Keys can be in PEM or converted to the kernel format.
+>  When the key is added to the kernel keyring, the keyid defines the name
+> -of the key: 5D2B05FC633EE3E8 in the example bellow.
+> +of the key: 5D2B05FC633EE3E8 in the example below.
+>  
+>  Here is example output of the keyctl utility::
+>  
+> diff -- a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
+> --- a/Documentation/security/keys/core.rst
+> +++ b/Documentation/security/keys/core.rst
+> @@ -869,7 +869,7 @@ The keyctl syscall functions are:
+>  
+>  	 - ``char *hashname`` specifies the NUL terminated string identifying
+>  	   the hash used from the kernel crypto API and applied for the KDF
+> -	   operation. The KDF implemenation complies with SP800-56A as well
+> +	   operation. The KDF implementation complies with SP800-56A as well
+>  	   as with SP800-108 (the counter KDF).
+>  
+>  	 - ``char *otherinfo`` specifies the OtherInfo data as documented in
+> diff -- a/Documentation/security/secrets/coco.rst b/Documentation/security/secrets/coco.rst
+> --- a/Documentation/security/secrets/coco.rst
+> +++ b/Documentation/security/secrets/coco.rst
+> @@ -34,7 +34,7 @@ be use it for its own purposes.
+>  
+>  During the VM's launch, the virtual machine manager may inject a secret to that
+>  area.  In AMD SEV and SEV-ES this is performed using the
+> -``KVM_SEV_LAUNCH_SECRET`` command (see [sev]_).  The strucutre of the injected
+> +``KVM_SEV_LAUNCH_SECRET`` command (see [sev]_).  The structure of the injected
+>  Guest Owner secret data should be a GUIDed table of secret values; the binary
+>  format is described in ``drivers/virt/coco/efi_secret/efi_secret.c`` under
+>  "Structure of the EFI secret area".
 
-I can apply this if no objections?
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
