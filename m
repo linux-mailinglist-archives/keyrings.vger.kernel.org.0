@@ -2,95 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 228EA691F80
-	for <lists+keyrings@lfdr.de>; Fri, 10 Feb 2023 14:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2720692120
+	for <lists+keyrings@lfdr.de>; Fri, 10 Feb 2023 15:48:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232107AbjBJNG2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 10 Feb 2023 08:06:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S231987AbjBJOsZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 10 Feb 2023 09:48:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231685AbjBJNG1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Feb 2023 08:06:27 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223E47AE11;
-        Fri, 10 Feb 2023 05:06:11 -0800 (PST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31ACtYDD018947;
-        Fri, 10 Feb 2023 13:05:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=RMH9PfxrEZmXBs5HlCWUIj1nqHeW1n/Z8WQHJeUWOqg=;
- b=nMt2jStB/RyQux4u1Jx1XzrM4NLw3uCBkSDZCIp2aNgoNfJ4pGeT1Y/kk078Byp90BnV
- yUgF7S/5cMzap2aA0R9smC6uVk2S1F1jAjDTJxbDGTOK7GCOJvg2MeCm96kEFBsLtR5y
- t4y3BnORfZzeRx+t/1fqPI0ntbAF8ngd9nRPCAy3rbfIqbRAozNJZzP7YaCX+53QAb7D
- owd8RK9BPnecBwXbYsrmQdYh4qjvPyEU5dRyTu88TVP1z0N7gUlU+k597c43icFZdViX
- fY0ZvR26BmwTpvxds9r8vlapHfeIQp5EoyTfcxPV+q2fm0djdc7zOAdAhEPuzHKxadpU vA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnpc0ga0v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Feb 2023 13:05:28 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 31ACu6NA020617;
-        Fri, 10 Feb 2023 13:05:27 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nnpc0g9xx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Feb 2023 13:05:27 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 31ACCrSX001971;
-        Fri, 10 Feb 2023 13:05:25 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
-        by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3nhf07xsp3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Feb 2023 13:05:25 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-        by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 31AD5Ouf56754632
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Feb 2023 13:05:24 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3D1F95803F;
-        Fri, 10 Feb 2023 13:05:24 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BAA9D58060;
-        Fri, 10 Feb 2023 13:05:22 +0000 (GMT)
-Received: from sig-9-77-142-160.ibm.com (unknown [9.77.142.160])
-        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 10 Feb 2023 13:05:22 +0000 (GMT)
-Message-ID: <4bda209dfc891ac9044ce847785c383e89f14f97.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 6/6] integrity: machine keyring CA configuration
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>, jarkko@kernel.org,
-        dhowells@redhat.com, dwmw2@infradead.org
-Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, pvorel@suse.cz, tadeusz.struk@intel.com,
-        kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
-        erpalmer@linux.vnet.ibm.com, coxu@redhat.com,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Date:   Fri, 10 Feb 2023 08:05:22 -0500
-In-Reply-To: <20230207025958.974056-7-eric.snowberg@oracle.com>
-References: <20230207025958.974056-1-eric.snowberg@oracle.com>
-         <20230207025958.974056-7-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iRVp5qk64i13A31hNdiBJVZrE8vj_KXY
-X-Proofpoint-GUID: x5mR7gi2FFWd4BNQqSF3zFvhIVEUIIbL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-10_07,2023-02-09_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 clxscore=1015 phishscore=0
- mlxscore=0 impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302100108
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        with ESMTP id S231980AbjBJOsY (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 10 Feb 2023 09:48:24 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135AA17CE9;
+        Fri, 10 Feb 2023 06:48:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1676040501;
+        bh=A77B3s1s57hm488iE4tG38i+br5yKIVtB7DrfmZz48o=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=Mw/7h1OGDw7PgRqqQYvM7HXX4/eCQjSudYX0NzvLq7Bh7BPaNhb8SByg48h3hIJws
+         nTujJ3aI1GySKvt6FXs2DAJ86Y5CZIX0S2Do1SsbT428qnxVVXLJSaLl8Ll8eaBwXx
+         p4ZKv1LwsQy9rzXYlXUhGxq19kKdgdW6SnHVe7NA=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7F2941280DC4;
+        Fri, 10 Feb 2023 09:48:21 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ibrNE9Rqax4R; Fri, 10 Feb 2023 09:48:21 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1676040501;
+        bh=A77B3s1s57hm488iE4tG38i+br5yKIVtB7DrfmZz48o=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=Mw/7h1OGDw7PgRqqQYvM7HXX4/eCQjSudYX0NzvLq7Bh7BPaNhb8SByg48h3hIJws
+         nTujJ3aI1GySKvt6FXs2DAJ86Y5CZIX0S2Do1SsbT428qnxVVXLJSaLl8Ll8eaBwXx
+         p4ZKv1LwsQy9rzXYlXUhGxq19kKdgdW6SnHVe7NA=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits))
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id AA4C11285D21;
+        Fri, 10 Feb 2023 09:48:19 -0500 (EST)
+Message-ID: <3109ff421139af6b0d9e66a06d8399135e546fa7.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session
+ handling code
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Yujie Liu <yujie.liu@intel.com>
+Cc:     kernel test robot <lkp@intel.com>, linux-integrity@vger.kernel.org,
+        oe-kbuild-all@lists.linux.dev, keyrings@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 10 Feb 2023 09:48:15 -0500
+In-Reply-To: <Y+MNxmzlILarAlZA@kernel.org>
+References: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
+         <202301250706.deGvd0yq-lkp@intel.com>
+         <a588a74bb930f38c9322dd51d21661398b5e2bb8.camel@HansenPartnership.com>
+         <Y9ykeASyzhSKQCmx@yujie-X299> <Y+MNxmzlILarAlZA@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -98,139 +68,127 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Eric,
-
-On Mon, 2023-02-06 at 21:59 -0500, Eric Snowberg wrote:
-> Add a machine keyring CA restriction menu option to control the type of
-> keys that may be added to it. The options include none, min and max
-> restrictions.
+On Wed, 2023-02-08 at 04:49 +0200, Jarkko Sakkinen wrote:
+> On Fri, Feb 03, 2023 at 02:06:48PM +0800, Yujie Liu wrote:
+> > Hi James,
+> > 
+> > On Wed, Jan 25, 2023 at 07:59:09AM -0500, James Bottomley wrote:
+> > > On Wed, 2023-01-25 at 07:11 +0800, kernel test robot wrote:
+> > > > Hi James,
+> > > > 
+> > > > I love your patch! Perhaps something to improve:
+> > > > 
+> > > > [auto build test WARNING on char-misc/char-misc-testing]
+> > > > [also build test WARNING on char-misc/char-misc-next char-
+> > > > misc/char-
+> > > > misc-linus zohar-integrity/next-integrity linus/master v6.2-rc5
+> > > > next-
+> > > > 20230124]
+> > > > [If your patch is applied to the wrong git tree, kindly drop us
+> > > > a
+> > > > note.
+> > > > And when submitting patch, we suggest to use '--base' as
+> > > > documented
+> > > > in
+> > > > https://git-scm.com/docs/git-format-patch#_base_tree_information
+> > > > ]
+> > > > 
+> > > > url:   
+> > > > https://github.com/intel-lab-lkp/linux/commits/James-Bottomley/tpm-move-buffer-handling-from-static-inlines-to-real-functions/20230125-020146
+> > > > patch link:   
+> > > > https://lore.kernel.org/r/20230124175516.5984-7-James.Bottomley%40HansenPartnership.com
+> > > > patch subject: [PATCH v2 06/11] tpm: Add full HMAC and
+> > > > encrypt/decrypt session handling code
+> > > > config: arc-allyesconfig
+> > > > (
+> > > > https://download.01.org/0day-ci/archive/20230125/202301250706.de
+> > > > Gvd0
+> > > > yq-lkp@intel.com/config)
+> > > > compiler: arceb-elf-gcc (GCC) 12.1.0
+> > > > reproduce (this is a W=1 build):
+> > > >         wget
+> > > > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
+> > > >  -O ~/bin/make.cross
+> > > >         chmod +x ~/bin/make.cross
+> > > >         #
+> > > > https://github.com/intel-lab-lkp/linux/commit/dc0fc74718b4a786aba4a954233e8ab3afdcc03c
+> > > >         git remote add linux-review
+> > > > https://github.com/intel-lab-lkp/linux
+> > > >         git fetch --no-tags linux-review James-Bottomley/tpm-
+> > > > move-
+> > > > buffer-handling-from-static-inlines-to-real-functions/20230125-
+> > > > 020146
+> > > >         git checkout dc0fc74718b4a786aba4a954233e8ab3afdcc03c
+> > > >         # save the config file
+> > > >         mkdir build_dir && cp config build_dir/.config
+> > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
+> > > > make.cross W=1 O=build_dir ARCH=arc olddefconfig
+> > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
+> > > > make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
+> > > > drivers/char/tpm/
+> > > > 
+> > > > If you fix the issue, kindly add following tag where applicable
+> > > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > 
+> > > > All warnings (new ones prefixed by >>):
+> > > > 
+> > > >    drivers/char/tpm/tpm2-sessions.c:1184:5: warning: no
+> > > > previous
+> > > > prototype for 'tpm2_create_null_primary' [-Wmissing-prototypes]
+> > > >     1184 | int tpm2_create_null_primary(struct tpm_chip *chip)
+> > > > {
+> > > >          |     ^~~~~~~~~~~~~~~~~~~~~~~~
+> > > >    drivers/char/tpm/tpm2-sessions.c: In function
+> > > > 'tpm_buf_check_hmac_response':
+> > > > > > drivers/char/tpm/tpm2-sessions.c:831:1: warning: the frame
+> > > > > > size
+> > > > > > of 1132 bytes is larger than 1024 bytes [-Wframe-larger-
+> > > > > > than=]
+> > > >      831 | }
+> > > >          | ^
+> > > >    drivers/char/tpm/tpm2-sessions.c: In function
+> > > > 'tpm_buf_fill_hmac_session':
+> > > >    drivers/char/tpm/tpm2-sessions.c:579:1: warning: the frame
+> > > > size of
+> > > > 1132 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+> > > >      579 | }
+> > > >          | ^
+> > > 
+> > > Is this a test problem?  I can't see why the code would only blow
+> > > the
+> > > stack on the arc architecture and not on any other ... does it
+> > > have
+> > > something funny with on stack crypto structures?
+> > 
+> > This warning is controlled by the value of CONFIG_FRAME_WARN.
+> > 
+> > For "make ARCH=arc allyesconfig", the default value is 1024, so
+> > this frame warning shows up during the build.
+> > 
+> > For other arch such as "make ARCH=x86_64 allyesconfig", the default
+> > value would be 2048 and won't have this warning.
+> > 
+> > Not sure if this is a real problem that need to be fixed, here just
+> > providing above information for your reference.
+> > 
+> > --
+> > Best Regards,
+> > Yujie
 > 
-> When no restrictions are selected, all Machine Owner Keys (MOK) are added
-> to the machine keyring.  When CONFIG_INTEGRITY_CA_MACHINE_KEYRING_MIN is
-> selected, the CA bit must be true.  Also the key usage must contain
-> keyCertSign, any other usage field may be set as well.
+> *Must* be fixed given that it is how the default value is set now.
+> This is wrong place to reconsider.
+>
 > 
-> When CONFIG_INTEGRITY_CA_MACHINE_KEYRING_MAX is selected, the CA bit must
-> be true. Also the key usage must contain keyCertSign and the
-> digitialSignature usage may not be set.
+> And we do not want to add functions that bloat the stack this way.
 > 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> Shash just needs to be allocated from heap instead of stack.
 
-Missing from the patch description is the motivation for this change.  
-The choices none, min, max implies a progression, which is good, and
-the technical differences between the choices, but not the reason.
+On x86_64 the stack usage is measured at 984 bytes, so rather than
+jumping to conclusions let's root cause why this is a problem only on
+the arc architecture.  I suspect it's something to do with the
+alignment constraints of shash.  I've also noted it shouldn't actually
+warn on arc because the default stack warning size there should be 2048
+(like x86_64).
 
-The motivation, at least from my perspective, is separation of
-certificate signing from code signing keys, where "none" is no
-separation and "max" being total separation of keys based on usage.
-
-Subsequent work, as discussed in the cover letter thread, will limit
-certificates being loaded onto the IMA keyring to code signing keys
-used for signature verification.
-
-thanks,
-
-Mimi
-> ---
->  crypto/asymmetric_keys/restrict.c |  2 ++
->  security/integrity/Kconfig        | 39 ++++++++++++++++++++++++++++++-
->  security/integrity/digsig.c       |  8 +++++--
->  3 files changed, 46 insertions(+), 3 deletions(-)
-> 
-> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-> index 48457c6f33f9..633021ea7901 100644
-> --- a/crypto/asymmetric_keys/restrict.c
-> +++ b/crypto/asymmetric_keys/restrict.c
-> @@ -140,6 +140,8 @@ int restrict_link_by_ca(struct key *dest_keyring,
->  		return -ENOKEY;
->  	if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
->  		return -ENOKEY;
-> +	if (IS_ENABLED(CONFIG_INTEGRITY_CA_MACHINE_KEYRING_MIN))
-> +		return 0;
->  	if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
->  		return -ENOKEY;
->  
-> diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
-> index 599429f99f99..eba6fd59fd16 100644
-> --- a/security/integrity/Kconfig
-> +++ b/security/integrity/Kconfig
-> @@ -68,13 +68,50 @@ config INTEGRITY_MACHINE_KEYRING
->  	depends on INTEGRITY_ASYMMETRIC_KEYS
->  	depends on SYSTEM_BLACKLIST_KEYRING
->  	depends on LOAD_UEFI_KEYS
-> -	depends on !IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
->  	help
->  	 If set, provide a keyring to which Machine Owner Keys (MOK) may
->  	 be added. This keyring shall contain just MOK keys.  Unlike keys
->  	 in the platform keyring, keys contained in the .machine keyring will
->  	 be trusted within the kernel.
->  
-> +choice
-> +	prompt "Enforce Machine Keyring CA Restrictions"
-> +	default INTEGRITY_CA_MACHINE_KEYRING_NONE
-> +	depends on INTEGRITY_MACHINE_KEYRING
-> +	help
-> +	  The .machine keyring can be configured to enforce CA restriction
-> +	  on any key added to it. The options include none, min and max
-> +	  restrictions. By default no restrictions are in place and all
-> +	  Machine Owner Keys (MOK) are added to the machine keyring.
-> +
-> +config INTEGRITY_CA_MACHINE_KEYRING_NONE
-> +	bool "No restrictions"
-> +	help
-> +	  When no restrictions are selected, all Machine Owner Keys (MOK)
-> +	  are added to the machine keyring. MOK keys do not require the
-> +	  CA bit to be set. The key usage field is ignored. This is the
-> +	  default setting.
-> +
-> +config INTEGRITY_CA_MACHINE_KEYRING_MIN
-> +	bool "Only CA keys (with or without DigitialSignature usage set)"
-> +	help
-> +	  When min is selected, only load CA keys into the machine keyring.
-> +	  The CA bit must be set along with the keyCertSign Usage field.
-> +	  Keys containing the digitialSignature Usage field will also be
-> +	  loaded. The remaining MOK keys are loaded into the .platform
-> +	  keyring.
-> +
-> +config INTEGRITY_CA_MACHINE_KEYRING_MAX
-> +	bool "Only CA keys"
-> +	help
-> +	  When max is selected, only load CA keys into the machine keyring.
-> +	  The CA bit must be set along with the keyCertSign Usage field.
-> +	  Keys containing the digitialSignature Usage field will not be
-> +	  loaded. The remaining MOK keys are loaded into the .platform
-> +	  keyring.
-> +
-> +endchoice
-> +
->  config LOAD_UEFI_KEYS
->         depends on INTEGRITY_PLATFORM_KEYRING
->         depends on EFI
-> diff --git a/security/integrity/digsig.c b/security/integrity/digsig.c
-> index f2193c531f4a..3385f534f1da 100644
-> --- a/security/integrity/digsig.c
-> +++ b/security/integrity/digsig.c
-> @@ -132,7 +132,8 @@ int __init integrity_init_keyring(const unsigned int id)
->  		| KEY_USR_READ | KEY_USR_SEARCH;
->  
->  	if (id == INTEGRITY_KEYRING_PLATFORM ||
-> -	    id == INTEGRITY_KEYRING_MACHINE) {
-> +	    (id == INTEGRITY_KEYRING_MACHINE &&
-> +	    IS_ENABLED(CONFIG_INTEGRITY_CA_MACHINE_KEYRING_NONE))) {
->  		restriction = NULL;
->  		goto out;
->  	}
-> @@ -144,7 +145,10 @@ int __init integrity_init_keyring(const unsigned int id)
->  	if (!restriction)
->  		return -ENOMEM;
->  
-> -	restriction->check = restrict_link_to_ima;
-> +	if (id == INTEGRITY_KEYRING_MACHINE)
-> +		restriction->check = restrict_link_by_ca;
-> +	else
-> +		restriction->check = restrict_link_to_ima;
->  
->  	/*
->  	 * MOK keys can only be added through a read-only runtime services
-
+James
 
