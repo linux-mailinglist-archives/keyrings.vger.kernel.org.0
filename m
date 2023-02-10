@@ -2,67 +2,58 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 254406915F1
-	for <lists+keyrings@lfdr.de>; Fri, 10 Feb 2023 01:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4634691732
+	for <lists+keyrings@lfdr.de>; Fri, 10 Feb 2023 04:39:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231280AbjBJA6m (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 9 Feb 2023 19:58:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48974 "EHLO
+        id S230486AbjBJDjg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 9 Feb 2023 22:39:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjBJA6a (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Feb 2023 19:58:30 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366D26F21E;
-        Thu,  9 Feb 2023 16:56:39 -0800 (PST)
+        with ESMTP id S229825AbjBJDjf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 9 Feb 2023 22:39:35 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C01ECD50A;
+        Thu,  9 Feb 2023 19:39:34 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E0409B82396;
-        Fri, 10 Feb 2023 00:56:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C5DC433D2;
-        Fri, 10 Feb 2023 00:56:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 55A70B819FF;
+        Fri, 10 Feb 2023 03:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE552C433A0;
+        Fri, 10 Feb 2023 03:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675990596;
-        bh=UTrvq3REz/kAUwMAFaCstHYw0tMPg3KnvPd0o9YJkLA=;
+        s=k20201202; t=1676000372;
+        bh=xj47ybbF7LI1Wrz6w6+Q/zE1oBtiQ7WkVJ8gYj3Z8yc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HV8CEHr46UOCKci7nGYdKPM/QYm9v/XyrqpLW8/mHRwM9AEk7A3DKLCityqv3U3oF
-         T7F2DL12j2lN4buNSTjzMieLxmMx1wT3S+/4hV5m3pO2gw+peyj9mkpYnfEoJudvkm
-         nZIAs0ycm1EmVMdd/I7WZIhIX8TdjfycB3Iq8yeQIFbZAK97h3Z93DSHedZ6fYeATD
-         5w8CojJysiR0LaUjw8zPH4dj5Elyj9bRvYnxsOjBRa0FHN8Ow0mg1Mev144pGARBDl
-         z3g09QORCTaxPT82xqTNBPw5pYe3qq6352wXnK+JInqbg4D4R25CnHecGKr+dInt1V
-         QMJyeuh6dN5EA==
-Date:   Fri, 10 Feb 2023 02:56:34 +0200
+        b=ulPIXuoGBO891EXyVOKqbaLIDplW7SI8JhbdWl6lbINdlqR24Xa0JieSlZfQULpJl
+         LaBTjJ/fp1nDH0k33nEp8grRay2z1Q3mSd6P1HYxGCvHPW5+LVt9Qwm5iRV2X/lcVj
+         c+KnyPAF3wP5PL0aBu83IsuVS04KxANBqJXS8VGed++cBqTu1odY0P7Ss1GrPAFtD1
+         7LYUMbjh/J6wthNqNLHGTmszJMNh9dNCTTCPcB1OSvZ3H45M9+nosuDKiQ3U/J0WyI
+         +4tF5Zyd2jwVV24KR14KttgXAkhLr1qZr9E0EdBkftiChbzjwyTSBASCk0Jgm18V/w
+         wQ6O9gOyKpqWg==
+Date:   Fri, 10 Feb 2023 05:39:29 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Tyler Hicks <code@tyhicks.com>, ecryptfs@vger.kernel.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Jon Maloy <jmaloy@redhat.com>,
-        Ying Xue <ying.xue@windriver.com>,
-        Boris Pismenny <borisp@nvidia.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH 17/17] crypto: api - Remove completion function
- scaffolding
-Message-ID: <Y+WWQgP/qTmLN42m@kernel.org>
-References: <Y+DUkqe1sagWaErA@gondor.apana.org.au>
- <E1pOye6-007zks-J4@formenos.hmeau.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     zohar@linux.ibm.com, dhowells@redhat.com, dwmw2@infradead.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, pvorel@suse.cz, tadeusz.struk@intel.com,
+        kanth.ghatraju@oracle.com, konrad.wilk@oracle.com,
+        erpalmer@linux.vnet.ibm.com, coxu@redhat.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v4 1/6] KEYS: Create static version of
+ public_key_verify_signature
+Message-ID: <Y+W8VQnCw2RlwFnH@kernel.org>
+References: <20230207025958.974056-1-eric.snowberg@oracle.com>
+ <20230207025958.974056-2-eric.snowberg@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1pOye6-007zks-J4@formenos.hmeau.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230207025958.974056-2-eric.snowberg@oracle.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,46 +61,46 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Feb 06, 2023 at 06:22:46PM +0800, Herbert Xu wrote:
-> This patch removes the temporary scaffolding now that the comletion
-> function signature has been converted.
+On Mon, Feb 06, 2023 at 09:59:53PM -0500, Eric Snowberg wrote:
+> The kernel test robot reports undefined reference to
+> public_key_verify_signature when CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE is
+> not defined. Create a static version in this case and return -EINVAL.
 > 
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Fixes: db6c43bd2132 ("crypto: KEYS: convert public key and digsig asym to the akcipher api")
+> Reported-by: kernel test robot <lkp@intel.com>
 
-For the 1-17:
+What is this reported-by is good for?
 
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-(nit applies tho to all of them but use your own judgement i guess)
-
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Reviewed-by: Petr Vorel <pvorel@suse.cz>
 > ---
+>  include/crypto/public_key.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
->  include/linux/crypto.h |    6 ------
->  1 file changed, 6 deletions(-)
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index 68f7aa2a7e55..6d61695e1cde 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -80,7 +80,16 @@ extern int create_signature(struct kernel_pkey_params *, const void *, void *);
+>  extern int verify_signature(const struct key *,
+>  			    const struct public_key_signature *);
+>  
+> +#if IS_REACHABLE(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE)
+>  int public_key_verify_signature(const struct public_key *pkey,
+>  				const struct public_key_signature *sig);
+> +#else
+> +static inline
+> +int public_key_verify_signature(const struct public_key *pkey,
+> +				const struct public_key_signature *sig)
+> +{
+> +	return -EINVAL;
+> +}
+> +#endif
+>  
+>  #endif /* _LINUX_PUBLIC_KEY_H */
+> -- 
+> 2.27.0
 > 
-> diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-> index 80f6350fb588..bb1d9b0e1647 100644
-> --- a/include/linux/crypto.h
-> +++ b/include/linux/crypto.h
-> @@ -176,7 +176,6 @@ struct crypto_async_request;
->  struct crypto_tfm;
->  struct crypto_type;
->  
-> -typedef void crypto_completion_data_t;
->  typedef void (*crypto_completion_t)(void *req, int err);
->  
->  /**
-> @@ -596,11 +595,6 @@ struct crypto_wait {
->  /*
->   * Async ops completion helper functioons
->   */
-> -static inline void *crypto_get_completion_data(void *data)
-> -{
-> -	return data;
-> -}
-> -
->  void crypto_req_done(void *req, int err);
->  
->  static inline int crypto_wait_req(int err, struct crypto_wait *wait)
 
 BR, Jarkko
