@@ -2,67 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7CDA6997E5
-	for <lists+keyrings@lfdr.de>; Thu, 16 Feb 2023 15:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 446ED699D6F
+	for <lists+keyrings@lfdr.de>; Thu, 16 Feb 2023 21:14:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjBPOww (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 16 Feb 2023 09:52:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59330 "EHLO
+        id S229747AbjBPUOz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Feb 2023 15:14:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230049AbjBPOwv (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Feb 2023 09:52:51 -0500
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D734D616;
-        Thu, 16 Feb 2023 06:52:42 -0800 (PST)
+        with ESMTP id S229561AbjBPUOz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Feb 2023 15:14:55 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D624C6D7;
+        Thu, 16 Feb 2023 12:14:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1676559160;
-        bh=MaekqW8Y2lVTvmHenF8QlHyCe47i2wgNLvs0U8LNOZE=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=vNtOLBVTEWi5kcjQSMxinCmqkNyPJFrNV1KjuMy8SCQcVHIUQTjCDoEFCqulNkyy3
-         8r7tHiUHSbfExTmIelCG44dr70vU1NMhzHV4IgAGyvlZ++QHkknS/cVbDFImn0V3UG
-         MzTdOhHVdMApySQoReXiXDf/c2BAQm7Pfp6ESULA=
+        d=hansenpartnership.com; s=20151216; t=1676578492;
+        bh=+dnVPJOdvuGdwKj422DXgXTJQx+Ly0OViaaPctNmusw=;
+        h=From:To:Subject:Date:Message-Id:From;
+        b=JeABtkC0Q6Fuj2q8/rCrb+gKljaD4ok0JauLSODHa8xkUCeKc5WXd3LITdhAHS+xQ
+         SlAEmOmzeKKx9xFEBzh4HqOsudTMn9LO0xmBeQi/15XjxoDeObYYkSWAB5AZEARt/D
+         m0Mdt13mQZfEGMn/68XxxMRHU1GWhUp6GNl4H17o=
 Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 678A9128121D;
-        Thu, 16 Feb 2023 09:52:40 -0500 (EST)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 76C541286F45;
+        Thu, 16 Feb 2023 15:14:52 -0500 (EST)
 Received: from bedivere.hansenpartnership.com ([127.0.0.1])
         by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id SaJfseYx8dAH; Thu, 16 Feb 2023 09:52:40 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1676559160;
-        bh=MaekqW8Y2lVTvmHenF8QlHyCe47i2wgNLvs0U8LNOZE=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=vNtOLBVTEWi5kcjQSMxinCmqkNyPJFrNV1KjuMy8SCQcVHIUQTjCDoEFCqulNkyy3
-         8r7tHiUHSbfExTmIelCG44dr70vU1NMhzHV4IgAGyvlZ++QHkknS/cVbDFImn0V3UG
-         MzTdOhHVdMApySQoReXiXDf/c2BAQm7Pfp6ESULA=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 745201280E69;
-        Thu, 16 Feb 2023 09:52:39 -0500 (EST)
-Message-ID: <6caed4e0ae21528d3b6bb5bc5eefecf6df714d72.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session
- handling code
+        with ESMTP id mhF5QzzyLpSD; Thu, 16 Feb 2023 15:14:52 -0500 (EST)
+Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id CFD251286E47;
+        Thu, 16 Feb 2023 15:14:51 -0500 (EST)
 From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Yujie Liu <yujie.liu@intel.com>,
-        kernel test robot <lkp@intel.com>,
-        linux-integrity@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
-        keyrings@vger.kernel.org
-Date:   Thu, 16 Feb 2023 09:52:36 -0500
-In-Reply-To: <CAMj1kXHC+9urxeXCmHPj1Ecdb7aF+QDriGE1W4Azuw+_it6u2w@mail.gmail.com>
-References: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
-         <202301250706.deGvd0yq-lkp@intel.com>
-         <a588a74bb930f38c9322dd51d21661398b5e2bb8.camel@HansenPartnership.com>
-         <Y9ykeASyzhSKQCmx@yujie-X299> <Y+MNxmzlILarAlZA@kernel.org>
-         <3109ff421139af6b0d9e66a06d8399135e546fa7.camel@HansenPartnership.com>
-         <Y+nqpLm2YyYkcZ+H@kernel.org>
-         <CAMj1kXECgmUMjKZk41oeXWWQpX5wB22YtBt2CSAQzEq8SqbY_g@mail.gmail.com>
-         <a71b8b39505ce936c8bde0d61943c6cc0a9efb81.camel@HansenPartnership.com>
-         <CAMj1kXHC+9urxeXCmHPj1Ecdb7aF+QDriGE1W4Azuw+_it6u2w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+To:     linux-integrity@vger.kernel.org
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 00/12] add integrity and security to TPM2 transactions
+Date:   Thu, 16 Feb 2023 15:13:58 -0500
+Message-Id: <20230216201410.15010-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -74,75 +49,150 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2023-02-14 at 15:36 +0100, Ard Biesheuvel wrote:
-> On Tue, 14 Feb 2023 at 15:28, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> > On Tue, 2023-02-14 at 14:54 +0100, Ard Biesheuvel wrote:
-[...]
-> > > 
-> > > Can we avoid shashes and sync skciphers at all? We have sha256
-> > > and AES library routines these days, and AES in CFB mode seems
-> > > like a good candidate for a library implementation as well - it
-> > > uses AES encryption only, and is quite straight forward to
-> > > implement. [0]
-> > 
-> > Yes, sure.  I originally suggested something like this way back
-> > four years ago, but it got overruled on the grounds that if I
-> > didn't use shashes and skciphers some architectures would be unable
-> > to use crypto acceleration.  If that's no longer a consideration,
-> > I'm all for simplification of static cipher types.
-> > 
+The interest in securing the TPM against interposers, both active and
+passive has risen to fever pitch with the demonstration of key
+recovery against windows bitlocker:
 
-I now have this all implemented, and I looked over your code, so you
-can add my tested/reviewed-by to the aescfb implementation.  On the
-acceleration issue, I'm happy to ignore external accelerators because
-they're a huge pain for small fragments of encryption like the TPM, but
-it would be nice if we could integrate CPU instruction acceleration
-(like AES-NI on x86) into the library functions. 
+https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network
 
-I also got a test rig to investigate arc.  It seems there is a huge
-problem with the SKCIPHER stack structure on that platform.  For
-reasons I still can't fathom, the compiler thinks it needs at least
-0.5k of stack for this one structure.  I'm sure its something to do
-with an incorrect crypto alignment on arc, but I can't yet find the
-root cause.
+And subsequently the same attack being successful against all the
+Linux TPM based security solutions:
 
-> I don't know if that is a consideration or not. The AES library code
-> is generic C code that was written to be constant-time, rather than
-> fast. The fact that CFB only uses the encryption side of it is
-> fortunate, because decryption is even slower.
+https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-targets
 
-I think for the TPM, since the encryption isn't exactly bulk (it's
-really under 1k for command and response encryption) it doesn't matter
-... in fact setting up the accelerator is likely a bigger overhead.
+The attacks fall into two categories:
 
-> So the question is whether this will actually be a bottleneck in this
-> particular scenario. The synchronous accelerated AES implementations
-> are all SIMD based, which means there is some overhead, and some
-> degree of parallelism is also needed to take full advantage, and CFB
-> only allows this for decryption to begin with, as encryption uses
-> ciphertext block N-1 as AES input for encrypting block N.
-> 
-> So maybe this is terrible advice, but the code will look so much
-> better for it, and we can always add back the performance later if it
-> is really an impediment.
+1. Passive Interposers, which sit on the bus and merely observe
+2. Active Interposers, which try to manipulate TPM transactions on the
+   bus using man in the middle and packet stealing to create TPM state
+   the interposer owner desires.
 
-It's definitely smaller and neater, yes.  I'll post a v3 based on this,
-but when might it go upstream?  In my post I'll put your aescfb as
-patch 1 so the static checkers don't go haywire about missing function
-exports, and we can drop that patch when it is upstream.
+Our broadest interposer target is the use of TPM_RS_PW for password
+authorization which sends the actual password to the TPM without any
+obfuscation and effectively hands it to any interposer. The way to fix
+this is to use real sessions for HMAC capabilities to ensure integrity
+and to use parameter and response encryption to ensure confidentiality
+of the data flowing over the TPM bus.  HMAC sessions by agreeing a
+challenge with the TPM and then giving a response which is a HMAC of
+the password and the challenge, so the application proves knowledge of
+the password to the TPM without ever transmitting the password itself.
+Using HMAC sessions when sending commands to the TPM also provides
+some measure of protection against active interposers, since the
+interposer can't interfere with or delete a HMAC'd command (because
+they can't manufacture a response with the correct HMAC).
+
+To protect TPM transactions where there isn't a shared secret
+(i.e. the command is something like a PCR extension which doesn't
+involve a TPM object with a password) we have to do a bit more work to
+set up sessions with a passed in encrypted secret (called a salt) to
+act in place of the shared secret in the HMAC.  This secret salt is
+effectively a random number encrypted to a public key of the TPM.  The
+final piece of the puzzle is using parameter input and response return
+encryption, so any interposer can't see the data passing from the
+application to the TPM and vice versa.
+
+The most insidious interposer attack of all is a reset attack: since
+the interposer has access to the TPM bus, it can assert the TPM reset
+line any time it wants.  When a TPM resets it mostly comes back in the
+same state except that all the PCRs are reset to their initial values.
+Controlling the reset line allows the interposer to change the PCR
+state after the fact by resetting the TPM and then replaying PCR
+extends to get the PCRs into a valid state to release secrets, so even
+if an attack event was recorded, the record is erased.  This reset
+attack violates the fundamental princible of non-repudiability of TPM
+logs.  Defeating the reset attack involves tying all TPM operations
+within the kernel to a property which will change detectably if the
+TPM is reset.  For that reason, we tie all TPM sessions to the null
+hierarchy we obtain at start of day and whose seed changes on every
+reset.  If an active interposer asserts a TPM reset, the new null
+primary won't match the kernel's stored one and all TPM operations
+will start failing because of HMAC mismatches in the sessions.  So if
+the kernel TPM code keeps operating, it guarantees that a reset hasn't
+occurred.
+
+The final part of the puzzle is that the machine owner must have a
+fixed idea of the EK of their TPM and should have certified this with
+the TPM manufacturer.  On every boot, the certified EK public key
+should be used to do a make credential/activate credential attestation
+key insertion and then the null key certified with the attestation
+key.  We can follow a trust on first use model where an OS
+installation will extract and verify a public EK and save it to a read
+only file.
+
+This patch series adds a simple API which can ensure the above
+properties as a layered addition to the existing TPM handling code.
+This series now includes protections for PCR extend, getting random
+numbers from the TPM and data sealing and unsealing.  It therefore
+eliminates all uses of TPM2_RS_PW in the kernel and adds encryption
+protection to sensitive data flowing into and out of the TPM.  The
+first four patches add more sophisticated buffer handling to the TPM
+which is needed to build the more complex encryption and
+authentication based commands.  Patch 6 adds all the generic
+cryptography primitives and patches 7-9 use them in critical TPM
+operations where we want to avoid or detect interposers.  Patch 10
+exports the name of the null key we used for boot/run time
+verification and patch 11 documents the security guarantees and
+expectations.
+
+This was originally sent over four years ago, with the last iteration
+being:
+
+https://lore.kernel.org/linux-integrity/1568031515.6613.31.camel@HansenPartnership.com/
+
+I'm dusting it off now because various forces at Microsoft and Google
+via the Open Compute Platform are making a lot of noise about
+interposers and we in the linux kernel look critically lacking in that
+regard, particularly for TPM trusted keys.
+
+---
+v2 fixes the problems smatch reported and adds more explanation about
+the code motion in the first few patches
+v3 rebases the encryption to be against Ard's new library function, the
+aescfb addition of which appears as patch 1.
 
 James
 
-> 
-> 
-> > > The crypto API is far too clunky for synchronous operations of
-> > > algorithms that are known at compile time, and the requirement to
-> > > use scatterlists for skciphers is especially horrid.
-> > > 
-> > > [0]
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=crypto-aes-cfb-library
-> > 
-> > OK, let me have a go at respinning based on this.
+---
 
+Ard Biesheuvel (1):
+  crypto: lib - implement library version of AES in CFB mode
+
+James Bottomley (11):
+  tpm: move buffer handling from static inlines to real functions
+  tpm: add buffer handling for TPM2B types
+  tpm: add cursor based buffer functions for response parsing
+  tpm: add buffer function to point to returned parameters
+  tpm: export the context save and load commands
+  tpm: Add full HMAC and encrypt/decrypt session handling code
+  tpm: add hmac checks to tpm2_pcr_extend()
+  tpm: add session encryption protection to tpm2_get_random()
+  KEYS: trusted: Add session encryption protection to the seal/unseal
+    path
+  tpm: add the null key name as a sysfs export
+  Documentation: add tpm-security.rst
+
+ Documentation/security/tpm/tpm-security.rst |  216 ++++
+ drivers/char/tpm/Kconfig                    |   13 +
+ drivers/char/tpm/Makefile                   |    2 +
+ drivers/char/tpm/tpm-buf.c                  |  196 ++++
+ drivers/char/tpm/tpm-chip.c                 |    3 +
+ drivers/char/tpm/tpm-sysfs.c                |   18 +
+ drivers/char/tpm/tpm.h                      |   14 +
+ drivers/char/tpm/tpm2-cmd.c                 |   52 +-
+ drivers/char/tpm/tpm2-sessions.c            | 1160 +++++++++++++++++++
+ drivers/char/tpm/tpm2-space.c               |    8 +-
+ include/crypto/aes.h                        |    5 +
+ include/linux/tpm.h                         |  257 ++--
+ lib/crypto/Kconfig                          |    5 +
+ lib/crypto/Makefile                         |    3 +
+ lib/crypto/aescfb.c                         |   75 ++
+ security/keys/trusted-keys/trusted_tpm2.c   |   82 +-
+ 16 files changed, 1984 insertions(+), 125 deletions(-)
+ create mode 100644 Documentation/security/tpm/tpm-security.rst
+ create mode 100644 drivers/char/tpm/tpm-buf.c
+ create mode 100644 drivers/char/tpm/tpm2-sessions.c
+ create mode 100644 lib/crypto/aescfb.c
+
+-- 
+2.35.3
 
