@@ -2,112 +2,147 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92585697C5D
-	for <lists+keyrings@lfdr.de>; Wed, 15 Feb 2023 13:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7CDA6997E5
+	for <lists+keyrings@lfdr.de>; Thu, 16 Feb 2023 15:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233786AbjBOMxR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 15 Feb 2023 07:53:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40564 "EHLO
+        id S229797AbjBPOww (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 16 Feb 2023 09:52:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233813AbjBOMxQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Feb 2023 07:53:16 -0500
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01olkn2020.outbound.protection.outlook.com [40.92.64.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7137C36695
-        for <keyrings@vger.kernel.org>; Wed, 15 Feb 2023 04:53:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WMy7NjrM385yqtQrZ+FWzDxnlzH+Ar/7nS6KJ7BYk/3dlfVVY+8vkYXNo6gMLVNxOposRiG8hgHXM7IKYwXTNXX8CidDRBKYsuJJw9MfPBHNQT2YWFOIt4xiL98L5vykB7aIzGXzInZRlUVrEku9x0D8fgoxt5zbWBNB5TkILtWP99NA1W4Exs3wGnFUlIFoO7WgEspqNtnXS5ClivorAFjUettfneiccvvF/fhSXMKUrllRrsNXkZL0pjtXUUveSJ5f1Z6T9k2xQSlcPs9ivPpXU5xaQRaeeK6TbWm+ilUt2yEXgE2NL4WSTQ1Rr0i4WUr6dnaUxgKI/6bTWBnH7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7ZmwIctpL7n6M8E7N5Zw9znEqgGPgODCJk+YSPDDm+M=;
- b=L2DWIwRtsw/xRW/JBsFq9FMWkvAw1mIoP1lPpwwXyeqQQNUf5Wa6IrhfyyLyT9lGEsEaMXnipy6YvQOq6e5egYKcmd/v53bypzucxXw3DGt05PX5RVF0dT8v483RJ3sgLjfl8h9sE+4PrqG9ZssIqjqI6GLIWD8ulhc+aqGq5clYn8fW44WadkTnd2pnr0ntvgMAw1YZLfBxgWC3GU/Wodt8FcaVi1I1RfXioZaoqT2qQv6RXnVFkw2YN3+BN1wkMnNGKNuP+QL4dO21TRIbyfEeCLnAWU+x1inBrc1zfPriKDR1w/pAY/oPe0qaQgLsXDj12QCwsjQhVJhMLKj74Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7ZmwIctpL7n6M8E7N5Zw9znEqgGPgODCJk+YSPDDm+M=;
- b=Y/Ci6Mav5aMQdhiXOFJpsUTGi00m9n+gFIzOndKLOSnmx8I7BtcsfGDic7SyA1+UHFkeC9XQPwYN5EACBHvpPE+NXnBLOve4ubChZ0GDMQQ1n6aDMvEAKWC+joxmSaCe2zsJGNTpY3Ox5WW/g14iRJsTOMkrZKmz9DE9KM6kqhXBWjY2MX1PUFckdCLwMAJqYavskFsgsIJQfabKaBQtobAbY+MjNQj6jy7rX8VVzV02Lf12EdHiuViSOQEboC98g6he4UJsgFExIwhHW5rArXuYfDaLP1FHadAHqfk/wLtG2yUokaWPemTsuqAtjV16gnFU7XC8wMLV0xTFQmYYRA==
-Received: from PR3P191MB1406.EURP191.PROD.OUTLOOK.COM (2603:10a6:102:97::23)
- by DB8P191MB0572.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:139::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.26; Wed, 15 Feb
- 2023 12:53:09 +0000
-Received: from PR3P191MB1406.EURP191.PROD.OUTLOOK.COM
- ([fe80::da60:dce8:24a4:e6a0]) by PR3P191MB1406.EURP191.PROD.OUTLOOK.COM
- ([fe80::da60:dce8:24a4:e6a0%5]) with mapi id 15.20.6086.024; Wed, 15 Feb 2023
- 12:53:09 +0000
-From:   Salman AlHasan <kurt9000g@hotmail.com>
-Subject: Offer Last till 
-Thread-Topic: Offer Last till 
-Thread-Index: AQHZQTxhStRo7G+5v0enDybT2pWxTg==
-Date:   Wed, 15 Feb 2023 12:53:09 +0000
-Message-ID: <PR3P191MB1406BBD8CE6F46636765047EB9A39@PR3P191MB1406.EURP191.PROD.OUTLOOK.COM>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-tmn:  [cYu6L8nh4/RfqGGyIYVrx0H/XuzF78lj]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PR3P191MB1406:EE_|DB8P191MB0572:EE_
-x-ms-office365-filtering-correlation-id: 2ea4388a-e0fa-4cc2-dd85-08db0f53971a
-x-ms-exchange-slblob-mailprops: Y7iQSqlERdUGkLsvmQHC/x4RKAuVE2Ev2NluvJxk2dk/B8HrL8I/WAOcgKWdD/MQsF5r73mwVMGwvaaa3IKOL4CHsAXenyLMQC+9qUNEZSf/p58yxpTirDUZLzSAitHzVpSULrqafdguwQ5E0GLDSRuAxX1WaqM9+8/QgIlvOBat+vf0vk1SifdKInp/wwZLdMks8x5DiC14aYhkJhq8DpACiIp6PnILH51fZBX/jyrB0XnvwhT+G3DbWOB2ukKui1DkGpOyDHpQtE0/MBZlR9CvGDlw4rJG/T6S0T5iI05ThDoykl1upt+kZLjOqJMH+ED1xRVrtopVwz2JPq6RlKTwK/zjCxMuCDCYOUU51OSGuIr79IINyADHklNUEw8pocpmNksRjOXE7N39uP20wioIF1ifccoGFicRWQo7A5YAvyAAkt8C9t7NOtLHYE7Fg4zabyWABhvK48PZtUbSMYfKQv2ahACy5jwdfUtEDlOxr44WBPZcsc6aQ6Tngot1ZW+sV2Cl6fZbMw+opoTEJXastMP4DqiQc8oV9mRhGPb2fLjSbxXPTVS3sj6fJ1H4io6Q0I8bLr8g7BLkGSo5NkeMFem//ae+sy/gt/odCd7N7qBC4nrupOJZWREJzVP7letSUR56a0tKQEI3+02zeHZpB1DiTGiOTD7iV4lJjgU=
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: H7c9KPkqBqrXTBvK7tt2UR49H9vj60c7RiP8sFiAKq/K4lBr21bbRif1DuJrSgBV3mZdWG7l7qy1UF00DVEw3+3ihlqVDXD7OLNHn4eghKScWlvicYXWiR71acoJocX06WreGIf4slVqwMnuKhsixER0G30YS13kwACrb1JeoOIW8hrRQp2BRdZq8aOOx6zxNG1tNUtLhnR2TP+DlTHZKhME4gNmHojC/q1W4MqJeCoEIZQA6zxSgRTl5msol8OZR+IhDkvMnZWzCGe68rPhURJD5l5sJdgo/UdqOtgJc+BmVblSwHP+G+vrndTX7GGrN9lKdfTp9NBraB+tr01G9uormglBpGxzl5AZF5LmzPeWOo06o54YE0YvCZG0VvKFITbrHYXPYuzvA1XjeRgD16rDPy0N82bBYZlcd7ru9V3PibxBghY/XpxXVqFNru+dStQuLNQpKXqskiPimtR/7RVSfaa9J7zr/8zby1/2dwTeDcRs7jtke/XgrExo9MNsab+J59ZuGj+p3lNxlOzT6Q9kOHRGllKXEh9h2l4LH9WhkE+NX9G4N1KEIrf/RQM6Z4a3SZLqnS7uUHcGk8EVU08AkmOCfe+UEOYwDxyWukc=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Mez0IEoAj5papKlw5r/ilWNX6ILApXafddIN2NzdKjIYoI7h9fZSSdTgaf?=
- =?iso-8859-1?Q?XCthX6ntfcHWMI20qX7qgKPbCPdHADbyNRBpzEba3DUNayEVDPWNZJEbaA?=
- =?iso-8859-1?Q?Al2Stbf1K6yXulbyTxhWSBJC4Ue2IXwYpFNHLkjXST2dizLAXARy66kUQI?=
- =?iso-8859-1?Q?a23S0nhZf3tMhZzcsvo1TbHWimIgIHy8SxLTaepWCFzxqoowlbXEruNGOe?=
- =?iso-8859-1?Q?yaR18IlhL2BGo3jNRkusnxVNcBRGuLn3oAuOF5bSUQVa2Xh1pb4BKTZAWR?=
- =?iso-8859-1?Q?rrc4lG36Wc2DS014nXNaIXpztuKh9sZIz9WFOXt7Jeh7zRpAMN8mNI7oqj?=
- =?iso-8859-1?Q?9kNCYNDhENwsBh/kxYpJdObXY/QT+eTM20tyL/BLGcz3+1W+RIigSVKYtr?=
- =?iso-8859-1?Q?8H8JENPyVZpod/g/evkBH3fowuqwCiPvT3N6ocwoLDEyZiY9IzBLthgTgY?=
- =?iso-8859-1?Q?H/uRqW32yNDW74VW/ACvxLAEe3CXoom18oOwxXjhCs4F6hDm08hz0ZfGDf?=
- =?iso-8859-1?Q?txXukrrwcg3Y+WJfhYRX5a/kQADDRsE8zcqYrYxMTITD9HMmq/Z4Eqqk1s?=
- =?iso-8859-1?Q?wzdmi/haoUGLStxzY424tn4jLe2rFlLIHHFnwV+m4HchNiNUh+C827AnP1?=
- =?iso-8859-1?Q?yrJjV2hh0WCo1779kxixTpn9b4B1azUZaH5oIqxqxa2IqPOQ/b3C69JCKP?=
- =?iso-8859-1?Q?Zt2xLjmOv9H9y2HtU5I3c+6z95GtNY+ZiS2Q679WdJqpfGJsbpe4noCua1?=
- =?iso-8859-1?Q?DMj7nqhrN6hLOwH4sQ42fNiIuMflBa2uMk9k3rDf0trG14eHXrvGXizSXf?=
- =?iso-8859-1?Q?dzS7hLbC/iQEQrF3pjzSkwVKn0apDEJvxdJ//9o17wgDbtiin9Us//HTrY?=
- =?iso-8859-1?Q?Ot4VM4Uwv0KYe3L/cbZ3xYENyLfhPOCbpuNjQePCeE7UouwQBai8s1bvHP?=
- =?iso-8859-1?Q?p1+wPRg9cPuQ+TMI6LhHShBJhE9OhLcDvmp7ogZg+Ut8jwhWoI4Zccxthj?=
- =?iso-8859-1?Q?yvDdDrs+ptvWMz3X33G1HxJrrlgzI/XlEj64XdhuXYetf5Fk61eImhFM3O?=
- =?iso-8859-1?Q?GjRqfIXLTXF1lNgOv7fmCaV4cnwIf8ohvcfLMDTa/zk448YfWbhUa3RYk3?=
- =?iso-8859-1?Q?GChi8uCMbCIFdO0/jVqb9jDKOM9XKnypkQHR0pbx8EQVF6m4sOMT/nRWP7?=
- =?iso-8859-1?Q?FOEsQmkHsNpwjY35Blfocrhumiye8Cr/KFcTaL6w0jlUQhMGXXFNU7CXVf?=
- =?iso-8859-1?Q?Hg4rHBtliZYza88I6Db/yndA74Lg4Ra7xnv+PIUQS9449+f7C4kP7yoK/v?=
- =?iso-8859-1?Q?hIQP?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S230049AbjBPOwv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 16 Feb 2023 09:52:51 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D734D616;
+        Thu, 16 Feb 2023 06:52:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1676559160;
+        bh=MaekqW8Y2lVTvmHenF8QlHyCe47i2wgNLvs0U8LNOZE=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=vNtOLBVTEWi5kcjQSMxinCmqkNyPJFrNV1KjuMy8SCQcVHIUQTjCDoEFCqulNkyy3
+         8r7tHiUHSbfExTmIelCG44dr70vU1NMhzHV4IgAGyvlZ++QHkknS/cVbDFImn0V3UG
+         MzTdOhHVdMApySQoReXiXDf/c2BAQm7Pfp6ESULA=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 678A9128121D;
+        Thu, 16 Feb 2023 09:52:40 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id SaJfseYx8dAH; Thu, 16 Feb 2023 09:52:40 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1676559160;
+        bh=MaekqW8Y2lVTvmHenF8QlHyCe47i2wgNLvs0U8LNOZE=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=vNtOLBVTEWi5kcjQSMxinCmqkNyPJFrNV1KjuMy8SCQcVHIUQTjCDoEFCqulNkyy3
+         8r7tHiUHSbfExTmIelCG44dr70vU1NMhzHV4IgAGyvlZ++QHkknS/cVbDFImn0V3UG
+         MzTdOhHVdMApySQoReXiXDf/c2BAQm7Pfp6ESULA=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 745201280E69;
+        Thu, 16 Feb 2023 09:52:39 -0500 (EST)
+Message-ID: <6caed4e0ae21528d3b6bb5bc5eefecf6df714d72.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session
+ handling code
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Yujie Liu <yujie.liu@intel.com>,
+        kernel test robot <lkp@intel.com>,
+        linux-integrity@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
+        keyrings@vger.kernel.org
+Date:   Thu, 16 Feb 2023 09:52:36 -0500
+In-Reply-To: <CAMj1kXHC+9urxeXCmHPj1Ecdb7aF+QDriGE1W4Azuw+_it6u2w@mail.gmail.com>
+References: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
+         <202301250706.deGvd0yq-lkp@intel.com>
+         <a588a74bb930f38c9322dd51d21661398b5e2bb8.camel@HansenPartnership.com>
+         <Y9ykeASyzhSKQCmx@yujie-X299> <Y+MNxmzlILarAlZA@kernel.org>
+         <3109ff421139af6b0d9e66a06d8399135e546fa7.camel@HansenPartnership.com>
+         <Y+nqpLm2YyYkcZ+H@kernel.org>
+         <CAMj1kXECgmUMjKZk41oeXWWQpX5wB22YtBt2CSAQzEq8SqbY_g@mail.gmail.com>
+         <a71b8b39505ce936c8bde0d61943c6cc0a9efb81.camel@HansenPartnership.com>
+         <CAMj1kXHC+9urxeXCmHPj1Ecdb7aF+QDriGE1W4Azuw+_it6u2w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-50200.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PR3P191MB1406.EURP191.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ea4388a-e0fa-4cc2-dd85-08db0f53971a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2023 12:53:09.4410
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8P191MB0572
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        MALFORMED_FREEMAIL,MISSING_HEADERS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Good day Sir/Ma=0A=
-We offer Corporate/Personal Loan for as low as 3% Interest rate, through cu=
-tting-edge innovation and so much experience in the field.=0A=
-Contact us for more info.=0A=
-Salman AlHasan.=
+On Tue, 2023-02-14 at 15:36 +0100, Ard Biesheuvel wrote:
+> On Tue, 14 Feb 2023 at 15:28, James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
+> > On Tue, 2023-02-14 at 14:54 +0100, Ard Biesheuvel wrote:
+[...]
+> > > 
+> > > Can we avoid shashes and sync skciphers at all? We have sha256
+> > > and AES library routines these days, and AES in CFB mode seems
+> > > like a good candidate for a library implementation as well - it
+> > > uses AES encryption only, and is quite straight forward to
+> > > implement. [0]
+> > 
+> > Yes, sure.  I originally suggested something like this way back
+> > four years ago, but it got overruled on the grounds that if I
+> > didn't use shashes and skciphers some architectures would be unable
+> > to use crypto acceleration.  If that's no longer a consideration,
+> > I'm all for simplification of static cipher types.
+> > 
+
+I now have this all implemented, and I looked over your code, so you
+can add my tested/reviewed-by to the aescfb implementation.  On the
+acceleration issue, I'm happy to ignore external accelerators because
+they're a huge pain for small fragments of encryption like the TPM, but
+it would be nice if we could integrate CPU instruction acceleration
+(like AES-NI on x86) into the library functions. 
+
+I also got a test rig to investigate arc.  It seems there is a huge
+problem with the SKCIPHER stack structure on that platform.  For
+reasons I still can't fathom, the compiler thinks it needs at least
+0.5k of stack for this one structure.  I'm sure its something to do
+with an incorrect crypto alignment on arc, but I can't yet find the
+root cause.
+
+> I don't know if that is a consideration or not. The AES library code
+> is generic C code that was written to be constant-time, rather than
+> fast. The fact that CFB only uses the encryption side of it is
+> fortunate, because decryption is even slower.
+
+I think for the TPM, since the encryption isn't exactly bulk (it's
+really under 1k for command and response encryption) it doesn't matter
+... in fact setting up the accelerator is likely a bigger overhead.
+
+> So the question is whether this will actually be a bottleneck in this
+> particular scenario. The synchronous accelerated AES implementations
+> are all SIMD based, which means there is some overhead, and some
+> degree of parallelism is also needed to take full advantage, and CFB
+> only allows this for decryption to begin with, as encryption uses
+> ciphertext block N-1 as AES input for encrypting block N.
+> 
+> So maybe this is terrible advice, but the code will look so much
+> better for it, and we can always add back the performance later if it
+> is really an impediment.
+
+It's definitely smaller and neater, yes.  I'll post a v3 based on this,
+but when might it go upstream?  In my post I'll put your aescfb as
+patch 1 so the static checkers don't go haywire about missing function
+exports, and we can drop that patch when it is upstream.
+
+James
+
+> 
+> 
+> > > The crypto API is far too clunky for synchronous operations of
+> > > algorithms that are known at compile time, and the requirement to
+> > > use scatterlists for skciphers is especially horrid.
+> > > 
+> > > [0]
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=crypto-aes-cfb-library
+> > 
+> > OK, let me have a go at respinning based on this.
+
+
