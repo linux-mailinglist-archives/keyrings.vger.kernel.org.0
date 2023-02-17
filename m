@@ -2,49 +2,60 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 732F269B474
-	for <lists+keyrings@lfdr.de>; Fri, 17 Feb 2023 22:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D416469B51A
+	for <lists+keyrings@lfdr.de>; Fri, 17 Feb 2023 22:51:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229800AbjBQVOJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 17 Feb 2023 16:14:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58262 "EHLO
+        id S229723AbjBQVvQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 17 Feb 2023 16:51:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229796AbjBQVOI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Feb 2023 16:14:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F29765DE25
-        for <keyrings@vger.kernel.org>; Fri, 17 Feb 2023 13:14:06 -0800 (PST)
+        with ESMTP id S229601AbjBQVvO (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Feb 2023 16:51:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B184A1E5;
+        Fri, 17 Feb 2023 13:51:13 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 94B1A61FB9
-        for <keyrings@vger.kernel.org>; Fri, 17 Feb 2023 21:14:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DACC4339C;
-        Fri, 17 Feb 2023 21:14:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B4082B82E20;
+        Fri, 17 Feb 2023 21:51:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BABC433D2;
+        Fri, 17 Feb 2023 21:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676668445;
-        bh=2OEoRNH1AAAT3ukd6q5cI5CvqIa1U/Yn+M1RH0odgVc=;
+        s=k20201202; t=1676670670;
+        bh=Zdc2juHFxUSJ+qe/tfeNLynwKrd3JRGjk7XKv1VCm8s=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=t9wZY6nfs171FCZdhh0coMJ9tTIOD3nTGfJGHXJyXGtG5PtWXjgdcbIrnrn7J0GCL
-         Wc+stjnd0eC3Wx/2MbTvcL/25s0C/wakK4bP8NDV67mdSbJi23Qs6O/ltYKEwuKofg
-         Y5xDpRSGAFwilOTZJ2dSB2PQ07/Bs9rRE8eA7NhquYjN4pX2sPMPYdwjVJAsKL8Dx8
-         FgyZWzzRvXHiSF1xxldtnXIC/2SfqM5w+Du5C7S+Mi4lUMtzkClWhRga/6qa8GFkeJ
-         f8qy/2Zede/siiSrcHr23PH4glYdrx/nf7ikT2QvN6AicxoCWmzIODNYGXz27zKaa5
-         3IZbq/jJtOkqw==
-Date:   Fri, 17 Feb 2023 23:14:00 +0200
+        b=AqqlbZLuNM1RqNqZJptZeQW/rqaZrT5D8VSMq5ZSjTU/E5r1TQKRF7PkbIVLcUH/2
+         8cuRUeicsGNcl8XEw5qTuFKAYIKb504ce9jGALV1RS+4ve04PmknJvlZ5fUXEzr8h7
+         aqUEvF6eURlnfPKkGRoQn1sUCX6U6NJMiQnQPaZiA24sK7zKdtp9yGcb5xNpRaF4OW
+         TDNvXz2AsJ5E2vg5D1EDuiCqf1FB2wo6sF7fiI+ebz78n4/15uAI3hee6Oxm7YwEak
+         zpQOMPBNUqcJtQOH32Y66S0vhBxpXKlezsJob1oVeSMV6BodOu3aK3TvIwIBgHiEmQ
+         TwxcC0Nk94YGA==
+Date:   Fri, 17 Feb 2023 23:51:05 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Robbie Harwood <rharwood@redhat.com>
-Cc:     keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v1 2/2] asymmetric_keys: log on fatal failures in PE/pkcs7
-Message-ID: <Y+/uGG1rsvf9kt4d@kernel.org>
-References: <20230217201435.39784-1-rharwood@redhat.com>
- <20230217201435.39784-3-rharwood@redhat.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Yujie Liu <yujie.liu@intel.com>,
+        kernel test robot <lkp@intel.com>,
+        linux-integrity@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
+        keyrings@vger.kernel.org
+Subject: Re: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session
+ handling code
+Message-ID: <Y+/2yRBjOKAAjiF+@kernel.org>
+References: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
+ <202301250706.deGvd0yq-lkp@intel.com>
+ <a588a74bb930f38c9322dd51d21661398b5e2bb8.camel@HansenPartnership.com>
+ <Y9ykeASyzhSKQCmx@yujie-X299>
+ <Y+MNxmzlILarAlZA@kernel.org>
+ <3109ff421139af6b0d9e66a06d8399135e546fa7.camel@HansenPartnership.com>
+ <Y+nqpLm2YyYkcZ+H@kernel.org>
+ <CAMj1kXECgmUMjKZk41oeXWWQpX5wB22YtBt2CSAQzEq8SqbY_g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230217201435.39784-3-rharwood@redhat.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <CAMj1kXECgmUMjKZk41oeXWWQpX5wB22YtBt2CSAQzEq8SqbY_g@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,152 +63,145 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, Feb 17, 2023 at 03:14:35PM -0500, Robbie Harwood wrote:
-> These particular errors can be encountered while trying to kexec when
-> secureboot lockdown is in place.  Without this change, even with a
-> signed debug build, one still needs to reboot the machine to add the
-> appropriate dyndbg parameters (since lockdown blocks debugfs).
+On Tue, Feb 14, 2023 at 02:54:02PM +0100, Ard Biesheuvel wrote:
+> On Mon, 13 Feb 2023 at 08:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Fri, Feb 10, 2023 at 09:48:15AM -0500, James Bottomley wrote:
+> > > On Wed, 2023-02-08 at 04:49 +0200, Jarkko Sakkinen wrote:
+> > > > On Fri, Feb 03, 2023 at 02:06:48PM +0800, Yujie Liu wrote:
+> > > > > Hi James,
+> > > > >
+> > > > > On Wed, Jan 25, 2023 at 07:59:09AM -0500, James Bottomley wrote:
+> > > > > > On Wed, 2023-01-25 at 07:11 +0800, kernel test robot wrote:
+> > > > > > > Hi James,
+> > > > > > >
+> > > > > > > I love your patch! Perhaps something to improve:
+> > > > > > >
+> > > > > > > [auto build test WARNING on char-misc/char-misc-testing]
+> > > > > > > [also build test WARNING on char-misc/char-misc-next char-
+> > > > > > > misc/char-
+> > > > > > > misc-linus zohar-integrity/next-integrity linus/master v6.2-rc5
+> > > > > > > next-
+> > > > > > > 20230124]
+> > > > > > > [If your patch is applied to the wrong git tree, kindly drop us
+> > > > > > > a
+> > > > > > > note.
+> > > > > > > And when submitting patch, we suggest to use '--base' as
+> > > > > > > documented
+> > > > > > > in
+> > > > > > > https://git-scm.com/docs/git-format-patch#_base_tree_information
+> > > > > > > ]
+> > > > > > >
+> > > > > > > url:
+> > > > > > > https://github.com/intel-lab-lkp/linux/commits/James-Bottomley/tpm-move-buffer-handling-from-static-inlines-to-real-functions/20230125-020146
+> > > > > > > patch link:
+> > > > > > > https://lore.kernel.org/r/20230124175516.5984-7-James.Bottomley%40HansenPartnership.com
+> > > > > > > patch subject: [PATCH v2 06/11] tpm: Add full HMAC and
+> > > > > > > encrypt/decrypt session handling code
+> > > > > > > config: arc-allyesconfig
+> > > > > > > (
+> > > > > > > https://download.01.org/0day-ci/archive/20230125/202301250706.de
+> > > > > > > Gvd0
+> > > > > > > yq-lkp@intel.com/config)
+> > > > > > > compiler: arceb-elf-gcc (GCC) 12.1.0
+> > > > > > > reproduce (this is a W=1 build):
+> > > > > > >         wget
+> > > > > > > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
+> > > > > > >  -O ~/bin/make.cross
+> > > > > > >         chmod +x ~/bin/make.cross
+> > > > > > >         #
+> > > > > > > https://github.com/intel-lab-lkp/linux/commit/dc0fc74718b4a786aba4a954233e8ab3afdcc03c
+> > > > > > >         git remote add linux-review
+> > > > > > > https://github.com/intel-lab-lkp/linux
+> > > > > > >         git fetch --no-tags linux-review James-Bottomley/tpm-
+> > > > > > > move-
+> > > > > > > buffer-handling-from-static-inlines-to-real-functions/20230125-
+> > > > > > > 020146
+> > > > > > >         git checkout dc0fc74718b4a786aba4a954233e8ab3afdcc03c
+> > > > > > >         # save the config file
+> > > > > > >         mkdir build_dir && cp config build_dir/.config
+> > > > > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
+> > > > > > > make.cross W=1 O=build_dir ARCH=arc olddefconfig
+> > > > > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
+> > > > > > > make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
+> > > > > > > drivers/char/tpm/
+> > > > > > >
+> > > > > > > If you fix the issue, kindly add following tag where applicable
+> > > > > > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > > > >
+> > > > > > > All warnings (new ones prefixed by >>):
+> > > > > > >
+> > > > > > >    drivers/char/tpm/tpm2-sessions.c:1184:5: warning: no
+> > > > > > > previous
+> > > > > > > prototype for 'tpm2_create_null_primary' [-Wmissing-prototypes]
+> > > > > > >     1184 | int tpm2_create_null_primary(struct tpm_chip *chip)
+> > > > > > > {
+> > > > > > >          |     ^~~~~~~~~~~~~~~~~~~~~~~~
+> > > > > > >    drivers/char/tpm/tpm2-sessions.c: In function
+> > > > > > > 'tpm_buf_check_hmac_response':
+> > > > > > > > > drivers/char/tpm/tpm2-sessions.c:831:1: warning: the frame
+> > > > > > > > > size
+> > > > > > > > > of 1132 bytes is larger than 1024 bytes [-Wframe-larger-
+> > > > > > > > > than=]
+> > > > > > >      831 | }
+> > > > > > >          | ^
+> > > > > > >    drivers/char/tpm/tpm2-sessions.c: In function
+> > > > > > > 'tpm_buf_fill_hmac_session':
+> > > > > > >    drivers/char/tpm/tpm2-sessions.c:579:1: warning: the frame
+> > > > > > > size of
+> > > > > > > 1132 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+> > > > > > >      579 | }
+> > > > > > >          | ^
+> > > > > >
+> > > > > > Is this a test problem?  I can't see why the code would only blow
+> > > > > > the
+> > > > > > stack on the arc architecture and not on any other ... does it
+> > > > > > have
+> > > > > > something funny with on stack crypto structures?
+> > > > >
+> > > > > This warning is controlled by the value of CONFIG_FRAME_WARN.
+> > > > >
+> > > > > For "make ARCH=arc allyesconfig", the default value is 1024, so
+> > > > > this frame warning shows up during the build.
+> > > > >
+> > > > > For other arch such as "make ARCH=x86_64 allyesconfig", the default
+> > > > > value would be 2048 and won't have this warning.
+> > > > >
+> > > > > Not sure if this is a real problem that need to be fixed, here just
+> > > > > providing above information for your reference.
+> > > > >
+> > > > > --
+> > > > > Best Regards,
+> > > > > Yujie
+> > > >
+> > > > *Must* be fixed given that it is how the default value is set now.
+> > > > This is wrong place to reconsider.
+> > > >
+> > > >
+> > > > And we do not want to add functions that bloat the stack this way.
+> > > >
+> > > > Shash just needs to be allocated from heap instead of stack.
+> > >
+> > > On x86_64 the stack usage is measured at 984 bytes, so rather than
+> > > jumping to conclusions let's root cause why this is a problem only on
+> > > the arc architecture.  I suspect it's something to do with the
+> > > alignment constraints of shash.  I've also noted it shouldn't actually
+> > > warn on arc because the default stack warning size there should be 2048
+> > > (like x86_64).
+> >
+> > Would it such a big deal to allocate shash from heap? That would
+> > be IMHO more robust in the end.
+> >
 > 
-> Accordingly, upgrade all pr_debug() before fatal error into pr_info().
+> Can we avoid shashes and sync skciphers at all? We have sha256 and AES
+> library routines these days, and AES in CFB mode seems like a good
+> candidate for a library implementation as well - it uses AES
+> encryption only, and is quite straight forward to implement. [0]
 > 
-> Signed-off-by: Robbie Harwood <rharwood@redhat.com>
+> The crypto API is far too clunky for synchronous operations of
+> algorithms that are known at compile time, and the requirement to use
+> scatterlists for skciphers is especially horrid.
 
-Eessentially this changes configuration to hard coded implementation.
-
-No gain IMHO. If you are ready to patch the kernel you could live with
-boot time dyndbg parameters.
-
-> ---
->  crypto/asymmetric_keys/pkcs7_verify.c  | 10 +++++-----
->  crypto/asymmetric_keys/verify_pefile.c | 24 ++++++++++++------------
->  2 files changed, 17 insertions(+), 17 deletions(-)
-> 
-> diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-> index f6321c785714..da425d142720 100644
-> --- a/crypto/asymmetric_keys/pkcs7_verify.c
-> +++ b/crypto/asymmetric_keys/pkcs7_verify.c
-> @@ -79,16 +79,16 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  		}
->  
->  		if (sinfo->msgdigest_len != sig->digest_size) {
-> -			pr_debug("Sig %u: Invalid digest size (%u)\n",
-> -				 sinfo->index, sinfo->msgdigest_len);
-> +			pr_info("Sig %u: Invalid digest size (%u)\n",
-> +				sinfo->index, sinfo->msgdigest_len);
->  			ret = -EBADMSG;
->  			goto error;
->  		}
->  
->  		if (memcmp(sig->digest, sinfo->msgdigest,
->  			   sinfo->msgdigest_len) != 0) {
-> -			pr_debug("Sig %u: Message digest doesn't match\n",
-> -				 sinfo->index);
-> +			pr_info("Sig %u: Message digest doesn't match\n",
-> +				sinfo->index);
->  			ret = -EKEYREJECTED;
->  			goto error;
->  		}
-> @@ -478,7 +478,7 @@ int pkcs7_supply_detached_data(struct pkcs7_message *pkcs7,
->  			       const void *data, size_t datalen)
->  {
->  	if (pkcs7->data) {
-> -		pr_debug("Data already supplied\n");
-> +		pr_info("Data already supplied\n");
->  		return -EINVAL;
->  	}
->  	pkcs7->data = data;
-> diff --git a/crypto/asymmetric_keys/verify_pefile.c b/crypto/asymmetric_keys/verify_pefile.c
-> index fe1bb374239d..c30e6610db26 100644
-> --- a/crypto/asymmetric_keys/verify_pefile.c
-> +++ b/crypto/asymmetric_keys/verify_pefile.c
-> @@ -74,7 +74,7 @@ static int pefile_parse_binary(const void *pebuf, unsigned int pelen,
->  		break;
->  
->  	default:
-> -		pr_debug("Unknown PEOPT magic = %04hx\n", pe32->magic);
-> +		pr_info("Unknown PEOPT magic = %04hx\n", pe32->magic);
->  		return -ELIBBAD;
->  	}
->  
-> @@ -95,7 +95,7 @@ static int pefile_parse_binary(const void *pebuf, unsigned int pelen,
->  	ctx->certs_size = ddir->certs.size;
->  
->  	if (!ddir->certs.virtual_address || !ddir->certs.size) {
-> -		pr_debug("Unsigned PE binary\n");
-> +		pr_info("Unsigned PE binary\n");
->  		return -ENODATA;
->  	}
->  
-> @@ -127,7 +127,7 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
->  	unsigned len;
->  
->  	if (ctx->sig_len < sizeof(wrapper)) {
-> -		pr_debug("Signature wrapper too short\n");
-> +		pr_info("Signature wrapper too short\n");
->  		return -ELIBBAD;
->  	}
->  
-> @@ -142,16 +142,16 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
->  	 * rounded up since 0.110.
->  	 */
->  	if (wrapper.length > ctx->sig_len) {
-> -		pr_debug("Signature wrapper bigger than sig len (%x > %x)\n",
-> -			 ctx->sig_len, wrapper.length);
-> +		pr_info("Signature wrapper bigger than sig len (%x > %x)\n",
-> +			ctx->sig_len, wrapper.length);
->  		return -ELIBBAD;
->  	}
->  	if (wrapper.revision != WIN_CERT_REVISION_2_0) {
-> -		pr_debug("Signature is not revision 2.0\n");
-> +		pr_info("Signature is not revision 2.0\n");
->  		return -ENOTSUPP;
->  	}
->  	if (wrapper.cert_type != WIN_CERT_TYPE_PKCS_SIGNED_DATA) {
-> -		pr_debug("Signature certificate type is not PKCS\n");
-> +		pr_info("Signature certificate type is not PKCS\n");
->  		return -ENOTSUPP;
->  	}
->  
-> @@ -164,7 +164,7 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
->  	ctx->sig_offset += sizeof(wrapper);
->  	ctx->sig_len -= sizeof(wrapper);
->  	if (ctx->sig_len < 4) {
-> -		pr_debug("Signature data missing\n");
-> +		pr_info("Signature data missing\n");
->  		return -EKEYREJECTED;
->  	}
->  
-> @@ -198,7 +198,7 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
->  		return 0;
->  	}
->  not_pkcs7:
-> -	pr_debug("Signature data not PKCS#7\n");
-> +	pr_info("Signature data not PKCS#7\n");
->  	return -ELIBBAD;
->  }
->  
-> @@ -341,8 +341,8 @@ static int pefile_digest_pe(const void *pebuf, unsigned int pelen,
->  	digest_size = crypto_shash_digestsize(tfm);
->  
->  	if (digest_size != ctx->digest_len) {
-> -		pr_debug("Digest size mismatch (%zx != %x)\n",
-> -			 digest_size, ctx->digest_len);
-> +		pr_info("Digest size mismatch (%zx != %x)\n",
-> +			digest_size, ctx->digest_len);
->  		ret = -EBADMSG;
->  		goto error_no_desc;
->  	}
-> @@ -373,7 +373,7 @@ static int pefile_digest_pe(const void *pebuf, unsigned int pelen,
->  	 * PKCS#7 certificate.
->  	 */
->  	if (memcmp(digest, ctx->digest, ctx->digest_len) != 0) {
-> -		pr_debug("Digest mismatch\n");
-> +		pr_info("Digest mismatch\n");
->  		ret = -EKEYREJECTED;
->  	} else {
->  		pr_debug("The digests match!\n");
-> -- 
-> 2.39.1
-> 
+I'm cool with any solution not polluting the stack to its limits...
 
 BR, Jarkko
