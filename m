@@ -2,60 +2,49 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D416469B51A
-	for <lists+keyrings@lfdr.de>; Fri, 17 Feb 2023 22:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BFC669B5A4
+	for <lists+keyrings@lfdr.de>; Fri, 17 Feb 2023 23:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbjBQVvQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 17 Feb 2023 16:51:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58416 "EHLO
+        id S229558AbjBQWnf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 17 Feb 2023 17:43:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbjBQVvO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Feb 2023 16:51:14 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B184A1E5;
-        Fri, 17 Feb 2023 13:51:13 -0800 (PST)
+        with ESMTP id S229477AbjBQWnf (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 17 Feb 2023 17:43:35 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8C0C2CFD1;
+        Fri, 17 Feb 2023 14:43:33 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B4082B82E20;
-        Fri, 17 Feb 2023 21:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BABC433D2;
-        Fri, 17 Feb 2023 21:51:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A9A961F16;
+        Fri, 17 Feb 2023 22:43:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A003C433D2;
+        Fri, 17 Feb 2023 22:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676670670;
-        bh=Zdc2juHFxUSJ+qe/tfeNLynwKrd3JRGjk7XKv1VCm8s=;
+        s=k20201202; t=1676673812;
+        bh=dF1vxGSluDkKDQYylwR/rJKbtEexcLDdZz5BYUDeH64=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AqqlbZLuNM1RqNqZJptZeQW/rqaZrT5D8VSMq5ZSjTU/E5r1TQKRF7PkbIVLcUH/2
-         8cuRUeicsGNcl8XEw5qTuFKAYIKb504ce9jGALV1RS+4ve04PmknJvlZ5fUXEzr8h7
-         aqUEvF6eURlnfPKkGRoQn1sUCX6U6NJMiQnQPaZiA24sK7zKdtp9yGcb5xNpRaF4OW
-         TDNvXz2AsJ5E2vg5D1EDuiCqf1FB2wo6sF7fiI+ebz78n4/15uAI3hee6Oxm7YwEak
-         zpQOMPBNUqcJtQOH32Y66S0vhBxpXKlezsJob1oVeSMV6BodOu3aK3TvIwIBgHiEmQ
-         TwxcC0Nk94YGA==
-Date:   Fri, 17 Feb 2023 23:51:05 +0200
+        b=Jffx0r86ibAosLYpHZs9n88wFORDbjeBVTESglQTJZp8uWrFLK47mMRPnma6CGHUa
+         HBoyn8mREdgcF/T0cJvxxpL80MjPfsuM+AKiQuiUl/p2XC/kZIJsfA+uYLT6juwOaK
+         SMiiht89zYh01dJiQlNG5hQLn+kO/QIRi6GhM8xEwPn2HiFLlSLtja2r0QjzZPeKlS
+         WZEo78KQjcH0eIrQOpFeLG8W23Fds8nKk3fZaeVcWFV/E/8BjjEE85fSjjTmlGLyjb
+         MCIixd57OAACO+C8T+iHFyO1z7YP9wWSNuN55pUYnBmRNqJcJE805JW6jwXEjLooHR
+         zoAvkb2r1BSog==
+Date:   Sat, 18 Feb 2023 00:43:28 +0200
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Yujie Liu <yujie.liu@intel.com>,
-        kernel test robot <lkp@intel.com>,
-        linux-integrity@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
-        keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 06/11] tpm: Add full HMAC and encrypt/decrypt session
- handling code
-Message-ID: <Y+/2yRBjOKAAjiF+@kernel.org>
-References: <20230124175516.5984-7-James.Bottomley@HansenPartnership.com>
- <202301250706.deGvd0yq-lkp@intel.com>
- <a588a74bb930f38c9322dd51d21661398b5e2bb8.camel@HansenPartnership.com>
- <Y9ykeASyzhSKQCmx@yujie-X299>
- <Y+MNxmzlILarAlZA@kernel.org>
- <3109ff421139af6b0d9e66a06d8399135e546fa7.camel@HansenPartnership.com>
- <Y+nqpLm2YyYkcZ+H@kernel.org>
- <CAMj1kXECgmUMjKZk41oeXWWQpX5wB22YtBt2CSAQzEq8SqbY_g@mail.gmail.com>
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH 00/12] add integrity and security to TPM2 transactions
+Message-ID: <Y/ADEB6OXtK2lS83@kernel.org>
+References: <20230216201410.15010-1-James.Bottomley@HansenPartnership.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXECgmUMjKZk41oeXWWQpX5wB22YtBt2CSAQzEq8SqbY_g@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230216201410.15010-1-James.Bottomley@HansenPartnership.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,145 +52,162 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Feb 14, 2023 at 02:54:02PM +0100, Ard Biesheuvel wrote:
-> On Mon, 13 Feb 2023 at 08:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Fri, Feb 10, 2023 at 09:48:15AM -0500, James Bottomley wrote:
-> > > On Wed, 2023-02-08 at 04:49 +0200, Jarkko Sakkinen wrote:
-> > > > On Fri, Feb 03, 2023 at 02:06:48PM +0800, Yujie Liu wrote:
-> > > > > Hi James,
-> > > > >
-> > > > > On Wed, Jan 25, 2023 at 07:59:09AM -0500, James Bottomley wrote:
-> > > > > > On Wed, 2023-01-25 at 07:11 +0800, kernel test robot wrote:
-> > > > > > > Hi James,
-> > > > > > >
-> > > > > > > I love your patch! Perhaps something to improve:
-> > > > > > >
-> > > > > > > [auto build test WARNING on char-misc/char-misc-testing]
-> > > > > > > [also build test WARNING on char-misc/char-misc-next char-
-> > > > > > > misc/char-
-> > > > > > > misc-linus zohar-integrity/next-integrity linus/master v6.2-rc5
-> > > > > > > next-
-> > > > > > > 20230124]
-> > > > > > > [If your patch is applied to the wrong git tree, kindly drop us
-> > > > > > > a
-> > > > > > > note.
-> > > > > > > And when submitting patch, we suggest to use '--base' as
-> > > > > > > documented
-> > > > > > > in
-> > > > > > > https://git-scm.com/docs/git-format-patch#_base_tree_information
-> > > > > > > ]
-> > > > > > >
-> > > > > > > url:
-> > > > > > > https://github.com/intel-lab-lkp/linux/commits/James-Bottomley/tpm-move-buffer-handling-from-static-inlines-to-real-functions/20230125-020146
-> > > > > > > patch link:
-> > > > > > > https://lore.kernel.org/r/20230124175516.5984-7-James.Bottomley%40HansenPartnership.com
-> > > > > > > patch subject: [PATCH v2 06/11] tpm: Add full HMAC and
-> > > > > > > encrypt/decrypt session handling code
-> > > > > > > config: arc-allyesconfig
-> > > > > > > (
-> > > > > > > https://download.01.org/0day-ci/archive/20230125/202301250706.de
-> > > > > > > Gvd0
-> > > > > > > yq-lkp@intel.com/config)
-> > > > > > > compiler: arceb-elf-gcc (GCC) 12.1.0
-> > > > > > > reproduce (this is a W=1 build):
-> > > > > > >         wget
-> > > > > > > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
-> > > > > > >  -O ~/bin/make.cross
-> > > > > > >         chmod +x ~/bin/make.cross
-> > > > > > >         #
-> > > > > > > https://github.com/intel-lab-lkp/linux/commit/dc0fc74718b4a786aba4a954233e8ab3afdcc03c
-> > > > > > >         git remote add linux-review
-> > > > > > > https://github.com/intel-lab-lkp/linux
-> > > > > > >         git fetch --no-tags linux-review James-Bottomley/tpm-
-> > > > > > > move-
-> > > > > > > buffer-handling-from-static-inlines-to-real-functions/20230125-
-> > > > > > > 020146
-> > > > > > >         git checkout dc0fc74718b4a786aba4a954233e8ab3afdcc03c
-> > > > > > >         # save the config file
-> > > > > > >         mkdir build_dir && cp config build_dir/.config
-> > > > > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
-> > > > > > > make.cross W=1 O=build_dir ARCH=arc olddefconfig
-> > > > > > >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0
-> > > > > > > make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
-> > > > > > > drivers/char/tpm/
-> > > > > > >
-> > > > > > > If you fix the issue, kindly add following tag where applicable
-> > > > > > > > Reported-by: kernel test robot <lkp@intel.com>
-> > > > > > >
-> > > > > > > All warnings (new ones prefixed by >>):
-> > > > > > >
-> > > > > > >    drivers/char/tpm/tpm2-sessions.c:1184:5: warning: no
-> > > > > > > previous
-> > > > > > > prototype for 'tpm2_create_null_primary' [-Wmissing-prototypes]
-> > > > > > >     1184 | int tpm2_create_null_primary(struct tpm_chip *chip)
-> > > > > > > {
-> > > > > > >          |     ^~~~~~~~~~~~~~~~~~~~~~~~
-> > > > > > >    drivers/char/tpm/tpm2-sessions.c: In function
-> > > > > > > 'tpm_buf_check_hmac_response':
-> > > > > > > > > drivers/char/tpm/tpm2-sessions.c:831:1: warning: the frame
-> > > > > > > > > size
-> > > > > > > > > of 1132 bytes is larger than 1024 bytes [-Wframe-larger-
-> > > > > > > > > than=]
-> > > > > > >      831 | }
-> > > > > > >          | ^
-> > > > > > >    drivers/char/tpm/tpm2-sessions.c: In function
-> > > > > > > 'tpm_buf_fill_hmac_session':
-> > > > > > >    drivers/char/tpm/tpm2-sessions.c:579:1: warning: the frame
-> > > > > > > size of
-> > > > > > > 1132 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-> > > > > > >      579 | }
-> > > > > > >          | ^
-> > > > > >
-> > > > > > Is this a test problem?  I can't see why the code would only blow
-> > > > > > the
-> > > > > > stack on the arc architecture and not on any other ... does it
-> > > > > > have
-> > > > > > something funny with on stack crypto structures?
-> > > > >
-> > > > > This warning is controlled by the value of CONFIG_FRAME_WARN.
-> > > > >
-> > > > > For "make ARCH=arc allyesconfig", the default value is 1024, so
-> > > > > this frame warning shows up during the build.
-> > > > >
-> > > > > For other arch such as "make ARCH=x86_64 allyesconfig", the default
-> > > > > value would be 2048 and won't have this warning.
-> > > > >
-> > > > > Not sure if this is a real problem that need to be fixed, here just
-> > > > > providing above information for your reference.
-> > > > >
-> > > > > --
-> > > > > Best Regards,
-> > > > > Yujie
-> > > >
-> > > > *Must* be fixed given that it is how the default value is set now.
-> > > > This is wrong place to reconsider.
-> > > >
-> > > >
-> > > > And we do not want to add functions that bloat the stack this way.
-> > > >
-> > > > Shash just needs to be allocated from heap instead of stack.
-> > >
-> > > On x86_64 the stack usage is measured at 984 bytes, so rather than
-> > > jumping to conclusions let's root cause why this is a problem only on
-> > > the arc architecture.  I suspect it's something to do with the
-> > > alignment constraints of shash.  I've also noted it shouldn't actually
-> > > warn on arc because the default stack warning size there should be 2048
-> > > (like x86_64).
-> >
-> > Would it such a big deal to allocate shash from heap? That would
-> > be IMHO more robust in the end.
-> >
+On Thu, Feb 16, 2023 at 03:13:58PM -0500, James Bottomley wrote:
+> The interest in securing the TPM against interposers, both active and
+> passive has risen to fever pitch with the demonstration of key
+> recovery against windows bitlocker:
 > 
-> Can we avoid shashes and sync skciphers at all? We have sha256 and AES
-> library routines these days, and AES in CFB mode seems like a good
-> candidate for a library implementation as well - it uses AES
-> encryption only, and is quite straight forward to implement. [0]
+> https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network
 > 
-> The crypto API is far too clunky for synchronous operations of
-> algorithms that are known at compile time, and the requirement to use
-> scatterlists for skciphers is especially horrid.
+> And subsequently the same attack being successful against all the
+> Linux TPM based security solutions:
+> 
+> https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-targets
+> 
+> The attacks fall into two categories:
+> 
+> 1. Passive Interposers, which sit on the bus and merely observe
+> 2. Active Interposers, which try to manipulate TPM transactions on the
+>    bus using man in the middle and packet stealing to create TPM state
+>    the interposer owner desires.
+> 
+> Our broadest interposer target is the use of TPM_RS_PW for password
+> authorization which sends the actual password to the TPM without any
+> obfuscation and effectively hands it to any interposer. The way to fix
+> this is to use real sessions for HMAC capabilities to ensure integrity
+> and to use parameter and response encryption to ensure confidentiality
+> of the data flowing over the TPM bus.  HMAC sessions by agreeing a
+> challenge with the TPM and then giving a response which is a HMAC of
+> the password and the challenge, so the application proves knowledge of
+> the password to the TPM without ever transmitting the password itself.
+> Using HMAC sessions when sending commands to the TPM also provides
+> some measure of protection against active interposers, since the
+> interposer can't interfere with or delete a HMAC'd command (because
+> they can't manufacture a response with the correct HMAC).
+> 
+> To protect TPM transactions where there isn't a shared secret
+> (i.e. the command is something like a PCR extension which doesn't
+> involve a TPM object with a password) we have to do a bit more work to
+> set up sessions with a passed in encrypted secret (called a salt) to
+> act in place of the shared secret in the HMAC.  This secret salt is
+> effectively a random number encrypted to a public key of the TPM.  The
+> final piece of the puzzle is using parameter input and response return
+> encryption, so any interposer can't see the data passing from the
+> application to the TPM and vice versa.
+> 
+> The most insidious interposer attack of all is a reset attack: since
+> the interposer has access to the TPM bus, it can assert the TPM reset
+> line any time it wants.  When a TPM resets it mostly comes back in the
+> same state except that all the PCRs are reset to their initial values.
+> Controlling the reset line allows the interposer to change the PCR
+> state after the fact by resetting the TPM and then replaying PCR
+> extends to get the PCRs into a valid state to release secrets, so even
+> if an attack event was recorded, the record is erased.  This reset
+> attack violates the fundamental princible of non-repudiability of TPM
+> logs.  Defeating the reset attack involves tying all TPM operations
+> within the kernel to a property which will change detectably if the
+> TPM is reset.  For that reason, we tie all TPM sessions to the null
+> hierarchy we obtain at start of day and whose seed changes on every
+> reset.  If an active interposer asserts a TPM reset, the new null
+> primary won't match the kernel's stored one and all TPM operations
+> will start failing because of HMAC mismatches in the sessions.  So if
+> the kernel TPM code keeps operating, it guarantees that a reset hasn't
+> occurred.
+> 
+> The final part of the puzzle is that the machine owner must have a
+> fixed idea of the EK of their TPM and should have certified this with
+> the TPM manufacturer.  On every boot, the certified EK public key
+> should be used to do a make credential/activate credential attestation
+> key insertion and then the null key certified with the attestation
+> key.  We can follow a trust on first use model where an OS
+> installation will extract and verify a public EK and save it to a read
+> only file.
+> 
+> This patch series adds a simple API which can ensure the above
+> properties as a layered addition to the existing TPM handling code.
+> This series now includes protections for PCR extend, getting random
+> numbers from the TPM and data sealing and unsealing.  It therefore
+> eliminates all uses of TPM2_RS_PW in the kernel and adds encryption
+> protection to sensitive data flowing into and out of the TPM.  The
+> first four patches add more sophisticated buffer handling to the TPM
+> which is needed to build the more complex encryption and
+> authentication based commands.  Patch 6 adds all the generic
+> cryptography primitives and patches 7-9 use them in critical TPM
+> operations where we want to avoid or detect interposers.  Patch 10
+> exports the name of the null key we used for boot/run time
+> verification and patch 11 documents the security guarantees and
+> expectations.
+> 
+> This was originally sent over four years ago, with the last iteration
+> being:
+> 
+> https://lore.kernel.org/linux-integrity/1568031515.6613.31.camel@HansenPartnership.com/
+> 
+> I'm dusting it off now because various forces at Microsoft and Google
+> via the Open Compute Platform are making a lot of noise about
+> interposers and we in the linux kernel look critically lacking in that
+> regard, particularly for TPM trusted keys.
+> 
+> ---
+> v2 fixes the problems smatch reported and adds more explanation about
+> the code motion in the first few patches
+> v3 rebases the encryption to be against Ard's new library function, the
+> aescfb addition of which appears as patch 1.
+> 
+> James
+> 
+> ---
+> 
+> Ard Biesheuvel (1):
+>   crypto: lib - implement library version of AES in CFB mode
+> 
+> James Bottomley (11):
+>   tpm: move buffer handling from static inlines to real functions
+>   tpm: add buffer handling for TPM2B types
+>   tpm: add cursor based buffer functions for response parsing
+>   tpm: add buffer function to point to returned parameters
+>   tpm: export the context save and load commands
+>   tpm: Add full HMAC and encrypt/decrypt session handling code
+>   tpm: add hmac checks to tpm2_pcr_extend()
+>   tpm: add session encryption protection to tpm2_get_random()
+>   KEYS: trusted: Add session encryption protection to the seal/unseal
+>     path
+>   tpm: add the null key name as a sysfs export
+>   Documentation: add tpm-security.rst
+> 
+>  Documentation/security/tpm/tpm-security.rst |  216 ++++
+>  drivers/char/tpm/Kconfig                    |   13 +
+>  drivers/char/tpm/Makefile                   |    2 +
+>  drivers/char/tpm/tpm-buf.c                  |  196 ++++
+>  drivers/char/tpm/tpm-chip.c                 |    3 +
+>  drivers/char/tpm/tpm-sysfs.c                |   18 +
+>  drivers/char/tpm/tpm.h                      |   14 +
+>  drivers/char/tpm/tpm2-cmd.c                 |   52 +-
+>  drivers/char/tpm/tpm2-sessions.c            | 1160 +++++++++++++++++++
+>  drivers/char/tpm/tpm2-space.c               |    8 +-
+>  include/crypto/aes.h                        |    5 +
+>  include/linux/tpm.h                         |  257 ++--
+>  lib/crypto/Kconfig                          |    5 +
+>  lib/crypto/Makefile                         |    3 +
+>  lib/crypto/aescfb.c                         |   75 ++
+>  security/keys/trusted-keys/trusted_tpm2.c   |   82 +-
+>  16 files changed, 1984 insertions(+), 125 deletions(-)
+>  create mode 100644 Documentation/security/tpm/tpm-security.rst
+>  create mode 100644 drivers/char/tpm/tpm-buf.c
+>  create mode 100644 drivers/char/tpm/tpm2-sessions.c
+>  create mode 100644 lib/crypto/aescfb.c
+> 
+> -- 
+> 2.35.3
+> 
 
-I'm cool with any solution not polluting the stack to its limits...
+Overally looks much better than earlier version! I'll aim to 
+test this next week [*].
+
+[*] The startup I was in went out of business, meaning that I'm
+ATM independent contributor doing this on my free time until I
+find a new job. That said, I spend 4 hours a day with kernel every
+working day so should not affect much as far reviewing and
+testing goes.
 
 BR, Jarkko
