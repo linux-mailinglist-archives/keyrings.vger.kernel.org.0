@@ -2,65 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2F769DC2C
-	for <lists+keyrings@lfdr.de>; Tue, 21 Feb 2023 09:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68C1969E836
+	for <lists+keyrings@lfdr.de>; Tue, 21 Feb 2023 20:26:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233498AbjBUIhi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 Feb 2023 03:37:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54394 "EHLO
+        id S229552AbjBUT0Y (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Feb 2023 14:26:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233777AbjBUIhc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Feb 2023 03:37:32 -0500
-Received: from mail.workercentrum.pl (mail.workercentrum.pl [51.89.166.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE65241F6
-        for <keyrings@vger.kernel.org>; Tue, 21 Feb 2023 00:37:10 -0800 (PST)
-Received: by mail.workercentrum.pl (Postfix, from userid 1002)
-        id 969D6A2557; Tue, 21 Feb 2023 08:36:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=workercentrum.pl;
-        s=mail; t=1676968607;
-        bh=DQrvNxV4sbMtkGDNj/C7a2f11q8dNrBm5UPp1jE5GkY=;
-        h=Date:From:To:Subject:From;
-        b=F//e8wp00XIXOE3WwFtz2dHfqF+6C6zEZJabq2U9n1UO7RK/rcjLBA/oTgv3z9QPK
-         KfnyJQ0OF7BmEvayyygDG2ez821P76Y6XTkjyLt8xy3TiehP9XXEUYJ3DUV+HMYWXk
-         b3eztG3hwvjDTX7H77bOdcxiHFa17ghFw6vXEQMX1avzagKNdK//Ehe+T9WgOmkq1+
-         rHCiypBoL7xTvWvHBeCdx0W/D/uHIc2V0BgZAdIZVeBqB2EtEiaosf0SVYGhPxBrBx
-         mC0saMT8ED2fWx3KNNW9cmX5YX+OJTUoFHoCWCQyHbVtnodrKYJkZpV8MgX7IYM29S
-         Xy1TjUMk/LOGw==
-Received: by mail.workercentrum.pl for <keyrings@vger.kernel.org>; Tue, 21 Feb 2023 08:35:59 GMT
-Message-ID: <20230221074500-0.1.7k.ncg3.0.fseyeine6e@workercentrum.pl>
-Date:   Tue, 21 Feb 2023 08:35:59 GMT
-From:   "Piotr Werner" <piotr.werner@workercentrum.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Panele fotowaltaiczne
-X-Mailer: mail.workercentrum.pl
+        with ESMTP id S229639AbjBUT0X (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Feb 2023 14:26:23 -0500
+X-Greylist: delayed 1800 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 21 Feb 2023 11:26:21 PST
+Received: from tartarus.angband.pl (tartarus.angband.pl [51.83.246.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E63F30299;
+        Tue, 21 Feb 2023 11:26:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=angband.pl;
+        s=tartarus; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=i9+A1nQzdmuXy3hp3w92VyMJn5gV+HrIvYVOE27Ezgk=; b=v9OvMN6EYOa84tupTkGKC8LNTb
+        O8cZA9v/aEP93UpM2cWoSAA0oX8pLL7SVJPPEydvivoImtvY1ht5xDHZCSeIMOGJeXvKA8AXpiTEu
+        8vqp+xGMu/nT/RipU/HLa8FZwk/UB7Mhv51wQB76DCj/7SByWuUOUz1Rp2zW7f2UyC3g=;
+Received: from localhost ([127.0.0.1] helo=valinor.angband.pl)
+        by tartarus.angband.pl with smtp (Exim 4.96)
+        (envelope-from <kilobyte@valinor.angband.pl>)
+        id 1pUWIa-001Rcn-2z;
+        Tue, 21 Feb 2023 18:19:28 +0100
+Received: (nullmailer pid 55815 invoked by uid 1000);
+        Tue, 21 Feb 2023 17:19:28 -0000
+From:   Adam Borowski <kilobyte@angband.pl>
+To:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Adam Borowski <kilobyte@angband.pl>
+Subject: [PATCH v2] certs: fips test: fix build failure with PKCS7_MESSAGE_PARSER=m
+Date:   Tue, 21 Feb 2023 18:19:19 +0100
+Message-Id: <20230221171919.55714-1-kilobyte@angband.pl>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 127.0.0.1
+X-SA-Exim-Mail-From: kilobyte@valinor.angband.pl
+X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,
+ld: crypto/asymmetric_keys/selftest.o: in function `fips_signature_selftest':
+selftest.c:(.init.text+0xcd): undefined reference to `pkcs7_parse_message'
+ld: selftest.c:(.init.text+0x103): undefined reference to `pkcs7_supply_detached_data'
+ld: selftest.c:(.init.text+0x10d): undefined reference to `pkcs7_verify'
+ld: selftest.c:(.init.text+0x135): undefined reference to `pkcs7_validate_trust'
+ld: selftest.c:(.init.text+0x157): undefined reference to `pkcs7_free_message'
 
-Jeste=C5=9Bmy firm=C4=85 z wieloletnim do=C5=9Bwiadczeniem, kt=C3=B3ra sp=
-rawnie przygotuje dla Pa=C5=84stwa ofert=C4=99 i wszelkie formalno=C5=9Bc=
-i. Sam monta=C5=BC zaplanujemy na wiosn=C4=99.
+Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
+---
+This fail still happens on randconfig runs.
 
-O samych plusach fotowoltaiki czy pompach ciep=C5=82a na pewno ju=C5=BC P=
-a=C5=84stwo s=C5=82yszeli, dlatego teraz prosimy o zostawienie kontaktu, =
-aby nasz specjalista m=C3=B3g=C5=82 przedstawi=C4=87 ofert=C4=99 zgodn=C4=
-=85 z Waszymi potrzebami.
+v2: expanded the Fixes tag to include that commit's subject
 
-Kiedy mogliby=C5=9Bmy z Pa=C5=84stwem um=C3=B3wi=C4=87 si=C4=99 na rozmow=
-=C4=99 w celu zbadania potrzeb?
+ crypto/asymmetric_keys/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 3df3fe4ed95f..fe007db96c69 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -83,6 +83,6 @@ config FIPS_SIGNATURE_SELFTEST
+ 	  for FIPS.
+ 	depends on KEYS
+ 	depends on ASYMMETRIC_KEY_TYPE
+-	depends on PKCS7_MESSAGE_PARSER
++	depends on PKCS7_MESSAGE_PARSER=y
+ 
+ endif # ASYMMETRIC_KEY_TYPE
+-- 
+2.39.2
 
-Pozdrawiam,
-Piotr Werner
