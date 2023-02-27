@@ -2,84 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 747596A4498
-	for <lists+keyrings@lfdr.de>; Mon, 27 Feb 2023 15:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 558596A4C40
+	for <lists+keyrings@lfdr.de>; Mon, 27 Feb 2023 21:33:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjB0Ogi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 27 Feb 2023 09:36:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46874 "EHLO
+        id S229755AbjB0UdI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 27 Feb 2023 15:33:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjB0Ogh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Feb 2023 09:36:37 -0500
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9194520062;
-        Mon, 27 Feb 2023 06:36:35 -0800 (PST)
-Received: from pecola.lan (unknown [159.196.93.152])
-        by mail.codeconstruct.com.au (Postfix) with ESMTPSA id B6BC42022A;
-        Mon, 27 Feb 2023 22:36:29 +0800 (AWST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=codeconstruct.com.au; s=2022a; t=1677508591;
-        bh=Dq2wTOEVHR/EtxLny++w+r/h2DyPA2HYeK440pfq4dY=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=Om9XQoDl4gpBz57iortqzD0YVwqkBCAYstx2EkAzAonoFovrXSG9y8yTLvpPbgC/E
-         O6q8MvF9fngviij+ZJZoGnpRHFuCFYKON8nVcy+ZsGoGusW5oqFUkv5mTQHPSJwxQa
-         7zcxuluO8LQQxZCqksBzvX/4cdrWTJVjTeGmJ/KOCSvTRAWyVjSqAzuKgxM81FARgZ
-         WS1WKFJ76Tu2WC0W+qWS/fkbuWILOqFni1NOqaNQD/zKNTRl48/PcPaIabvMcVod1S
-         W1FMLaOrMgyHUGQ3skq1s1Ss/uRHMUWshOUP4RdCx5pkqv8PHF3b+Mr1ZNrCfdYtmz
-         5PDSF/Pknpw1A==
-Message-ID: <c5d674bd67735de460b19fd955f718bf8b604c1d.camel@codeconstruct.com.au>
-Subject: Re: [External] Re: [BUG] blacklist: Problem blacklisting hash (-13)
- during boot
-From:   Jeremy Kerr <jk@codeconstruct.com.au>
-To:     Mark Pearson <markpearson@lenovo.com>,
-        Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>,
-        =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
+        with ESMTP id S229501AbjB0UdH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Feb 2023 15:33:07 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD59BB8C;
+        Mon, 27 Feb 2023 12:33:06 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1677529984;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=aSq3U8vm3tPDYRLicDf/4tQ5XJoyg12J2HKCMxx/oIM=;
+        b=UFgsDsc3BVDY0ST5cC8kRV6aW75Q8+Uw9k/qYdlIf7ai3haStL/5lo/odeUf9gCw40SHJq
+        6bPqNPHdJIts50Shf5ToscR1yMe2XaXaYygeTY+11/8snbPkldMCBaXV70C3u4bxT9lUuE
+        vFstBx2f1xYwlYmn2Azc6DsKNkZVMJIDkjNPTErYUUyGQidArBglOuOCsDwTOoB8FCkj49
+        xC3+srFIBwVJ1actrV0d8wwyh/jaBAQuFt0sd5QDDKAbx+6tvRa6lD8+nR0kuNAsQ+c5ud
+        za9ElFnVHThDhyj6lvOvvBL6FmIIbssdljrbef6L183i3iiJcmX/EllGu4gxMw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1677529984;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=aSq3U8vm3tPDYRLicDf/4tQ5XJoyg12J2HKCMxx/oIM=;
+        b=WVcrt4Uz9bCFKMvLHR9CMqyT+IYdO23FfU0dOGi+I/89mxZG6bulg2jos4Ed66M4fzR1oI
+        /WjIby+pfyEDQTBw==
+To:     syzbot <syzbot+5093ba19745994288b53@syzkaller.appspotmail.com>,
+        dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
         keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
-Date:   Mon, 27 Feb 2023 22:36:29 +0800
-In-Reply-To: <2a215e4d-bf55-b063-3f1f-a63f51cbdbfb@lenovo.com>
-References: <c8c65713-5cda-43ad-8018-20f2e32e4432@t-8ch.de>
-         <af0d6881-76c0-f570-0c5b-f664e261c4cf@digikod.net>
-         <632d2180-02f8-4a5f-803a-57a6443a60f4@t-8ch.de>
-         <12ceffb8-4e90-4eb5-2110-a0e69b412cea@lenovo.com>
-         <fec5e8eb3803068a11267f386ddda389a1211736.camel@codeconstruct.com.au>
-         <2a215e4d-bf55-b063-3f1f-a63f51cbdbfb@lenovo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3-1 
+        linux-security-module@vger.kernel.org, paul@paul-moore.com,
+        serge@hallyn.com, syzkaller-bugs@googlegroups.com,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [syzbot] [keyrings?] [lsm?] WARNING in __mod_timer
+In-Reply-To: <000000000000af8f7c05f5a673bb@google.com>
+References: <000000000000af8f7c05f5a673bb@google.com>
+Date:   Mon, 27 Feb 2023 21:33:03 +0100
+Message-ID: <87ttz6n91c.ffs@tglx>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Mark,
+On Sun, Feb 26 2023 at 19:55, syzbot wrote:
+> ODEBUG: assert_init not available (active state 0) object: ffffffff8d4fcbc0 object type: timer_list hint: key_gc_timer_func+0x0/0x80 security/keys/gc.c:117
 
+>  WARNING: CPU: 1 PID: 10646 at lib/debugobjects.c:512 debug_object_assert_init+0x1f2/0x240 lib/debugobjects.c:899
+>  debug_assert_init kernel/time/timer.c:837 [inline]
+>  __mod_timer+0x10d/0xf40 kernel/time/timer.c:1020
+>  key_reject_and_link+0x3f5/0x6e0 security/keys/key.c:610
+>  key_negate_and_link include/linux/key-type.h:187 [inline]
+>  complete_request_key security/keys/request_key.c:64 [inline]
+>  call_sbin_request_key+0xa7b/0xcd0 security/keys/request_key.c:213
+>  construct_key security/keys/request_key.c:244 [inline]
+>  construct_key_and_link security/keys/request_key.c:503 [inline]
+>  request_key_and_link+0x11e3/0x18e0 security/keys/request_key.c:637
+>  __do_sys_request_key security/keys/keyctl.c:222 [inline]
+>  __se_sys_request_key+0x271/0x3b0 security/keys/keyctl.c:167
 
-> I've been looking at this and the FW team are claiming that it's not=20
-> caused by duplicate entries in the dbx table, which is honestly a bit
-> confusing.
->=20
-> We've been doing some more digging - but is there a possibility this
-> is caused by something else?
+This is odd. The timer object is statically allocated via
+DEFINE_TIMER(). That macro sets
 
-I can't quite trace where the EACCES is coming from, I can't see any
-obvious causes there - the blacklist key type doesn't have an ->update
-operation, and the assoc_array insert doesn't look like it would fail.
+       timer.entry.next = TIMER_ENTRY_STATIC
 
-However: if I delete one of the duplicate keys using the bios UI, then
-the number of errors logged decreases by one.
+which is used to detect statically allocated timer objects via
+timer_is_static_object() and that checks for:
 
-Cheers,
+     timer.entry.pprev == NULL && timer.entry.next == TIMER_ENTRY_STATIC
 
+The only function which touches key_gc_timer is
 
-Jeremy
+    key_reject_and_link()
+      mod_timer()
+        __mod_timer()
+          debug_assert_init()
+            debug_timer_assert_init()
+              debug_object_assert_init()
+                if (!lookup_object()) {
+                   if (!check_for_static_object()) <- Invokes timer_is_static_object()
+                      WARN()
 
+If this is the first invocation of mod_timer(&key_gc_timer,...) then
+key_gc_timer is corrupted.
+
+If this is not the first invocation of mod_timer(&key_gc_timer,...) then
+the debugobjects hash is corrupted.
+
+Either way neither the timer code nor debugobjects have been changed
+since the 6.2 release and certainly are innocent here.
+
+That smells like a nasty memory corruption issue and the two other
+syzbot reports which arrived in my filtered inbox:
+
+ https://lore.kernel.org/all/000000000000d7894b05f5924787@google.com
+ https://lore.kernel.org/all/000000000000840dae05f5a7fb53@google.com
+
+point to memory corruption as well.
+
+The first one has a C reproducer. Can that be used for bisection?
+
+Thanks,
+
+        tglx
