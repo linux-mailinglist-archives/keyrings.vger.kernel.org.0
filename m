@@ -2,117 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 558596A4C40
-	for <lists+keyrings@lfdr.de>; Mon, 27 Feb 2023 21:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 832C56A6D48
+	for <lists+keyrings@lfdr.de>; Wed,  1 Mar 2023 14:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjB0UdI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 27 Feb 2023 15:33:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48106 "EHLO
+        id S229537AbjCANnQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 1 Mar 2023 08:43:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjB0UdH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Feb 2023 15:33:07 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD59BB8C;
-        Mon, 27 Feb 2023 12:33:06 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1677529984;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aSq3U8vm3tPDYRLicDf/4tQ5XJoyg12J2HKCMxx/oIM=;
-        b=UFgsDsc3BVDY0ST5cC8kRV6aW75Q8+Uw9k/qYdlIf7ai3haStL/5lo/odeUf9gCw40SHJq
-        6bPqNPHdJIts50Shf5ToscR1yMe2XaXaYygeTY+11/8snbPkldMCBaXV70C3u4bxT9lUuE
-        vFstBx2f1xYwlYmn2Azc6DsKNkZVMJIDkjNPTErYUUyGQidArBglOuOCsDwTOoB8FCkj49
-        xC3+srFIBwVJ1actrV0d8wwyh/jaBAQuFt0sd5QDDKAbx+6tvRa6lD8+nR0kuNAsQ+c5ud
-        za9ElFnVHThDhyj6lvOvvBL6FmIIbssdljrbef6L183i3iiJcmX/EllGu4gxMw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1677529984;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aSq3U8vm3tPDYRLicDf/4tQ5XJoyg12J2HKCMxx/oIM=;
-        b=WVcrt4Uz9bCFKMvLHR9CMqyT+IYdO23FfU0dOGi+I/89mxZG6bulg2jos4Ed66M4fzR1oI
-        /WjIby+pfyEDQTBw==
-To:     syzbot <syzbot+5093ba19745994288b53@syzkaller.appspotmail.com>,
-        dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, paul@paul-moore.com,
-        serge@hallyn.com, syzkaller-bugs@googlegroups.com,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [syzbot] [keyrings?] [lsm?] WARNING in __mod_timer
-In-Reply-To: <000000000000af8f7c05f5a673bb@google.com>
-References: <000000000000af8f7c05f5a673bb@google.com>
-Date:   Mon, 27 Feb 2023 21:33:03 +0100
-Message-ID: <87ttz6n91c.ffs@tglx>
+        with ESMTP id S229496AbjCANnP (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 1 Mar 2023 08:43:15 -0500
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC2D526B
+        for <keyrings@vger.kernel.org>; Wed,  1 Mar 2023 05:43:11 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id D7DC55C011B;
+        Wed,  1 Mar 2023 08:43:08 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Wed, 01 Mar 2023 08:43:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+        :cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm3; t=1677678188; x=1677764588; bh=2hzABonYKQR+ZnsUWc7y7/c4P
+        wLvo2v5ZBZrVgZfBzk=; b=gzW6BWgINVTY66PRzNdJVTX6jAeiLV+YCJSR1e9gY
+        miqKU7BzYVKiXlO1fqwfYdzLWj8EeyMsW55bLsp+n3I69IWhmxNigMCLX7082VPx
+        4pOXW5TJjexlfdHpq6mHoRBp4qbDwK48ghnmpMmqBB67rYRY/ytliNAuT8fZLp7A
+        cEXqbqufb67/1RugeSkhwMATCu3nJlzpKThEigdaUOhhU4h1HD1lrrifvmb3Iu1n
+        SaOxsI7pnJEejs9rnlmMz1wjpjS9PvB/QMOLhPB/oOROWNK+x0DB4KTRuUlrkVVI
+        q6Rudlrz2sSYXZmseZ3jyXw2s6HLgqIVsWnHBJYNurQ9g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1677678188; x=1677764588; bh=2hzABonYKQR+ZnsUWc7y7/c4PwLvo2v5ZBZ
+        rVgZfBzk=; b=r3p+bFSHlKP6CmBEGfU37HUTftl0kRRJGESCX9PYI9s6hjAOJfE
+        lx0S5OU10IBHX67DAyUkser6tjghPbH7+uIfAEXD2w9Jwr8Yyvb+2BMHYI4suhyv
+        0JvyVGzxJ26wyOFGbWjX2KvQx2x16Odd6HgucYCQhy3N431/1nJ57lD0F6gpM+kt
+        cHTXYAfTv3GKH6MHRjxfCidMnprKm838u40SyjbStYoaM4bnXXUGA7tudgBfOYKk
+        JLAL0RyNx7jn6HXxHRCs0U2tw3e8lnSAoZHfrlTT471lPdm8TZMvy1kleiif4tif
+        /IPkjmOS1WCjw6LFx+H7LbpkRIqz57cF+iw==
+X-ME-Sender: <xms:bFb_Y1-PeilOgzQUunRlGD7IlHWeKZh-K1XhH6IPg9Q78fElV6lh_g>
+    <xme:bFb_Y5uBiJvOTPHxd8JYQVTQZr0OsqKNoJ-sTvdfigXKSiUlwcCYvXMgs3S5l7HcF
+    NvawarmgjquWG_8Yw>
+X-ME-Received: <xmr:bFb_YzDJ1LlIOmSqVGE3aX95DIZxWuGuzS5PtU4AQE2YrbNSJg4gV68fXOfir0ZeSj28cgi2ZBEEzyI9UIuFo3dr5V2lve331A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudelhedggeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheptehlhihsshgr
+    ucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepheekgf
+    dtveettdekuddugeeugfdujeehuefgleegtedthfffudfhheduhfduuefhnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhephhhisegrlhihshhsrg
+    drihhs
+X-ME-Proxy: <xmx:bFb_Y5c1fql-O5-yCHzm_k8j1IDy2R1K9AKsx1HL69Jz4oTJqVKFdw>
+    <xmx:bFb_Y6M_WiSV2s6JNZ9F1oPGXKh6d9FqpEgorTmYVYKeBwORNj5GNQ>
+    <xmx:bFb_Y7kmxBQRPpxoj1SO5qOneyA4eRJ5-zax-7ZfL_23SDZmPWGj2A>
+    <xmx:bFb_Y0XcnymyCUng5V-_qgkFUxIABk-LXGwbqF35FjhriNQTn2vOlQ>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Mar 2023 08:43:07 -0500 (EST)
+Received: by x220.qyliss.net (Postfix, from userid 1000)
+        id 002757B0; Wed,  1 Mar 2023 13:43:02 +0000 (UTC)
+From:   Alyssa Ross <hi@alyssa.is>
+To:     David Howells <dhowells@redhat.com>
+Cc:     keyrings@vger.kernel.org, Alyssa Ross <hi@alyssa.is>
+Subject: [PATCH keyutils] Fix format specifier for pointer subtraction
+Date:   Wed,  1 Mar 2023 13:42:50 +0000
+Message-Id: <20230301134250.301819-1-hi@alyssa.is>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, Feb 26 2023 at 19:55, syzbot wrote:
-> ODEBUG: assert_init not available (active state 0) object: ffffffff8d4fcbc0 object type: timer_list hint: key_gc_timer_func+0x0/0x80 security/keys/gc.c:117
+Resolves the following compiler error:
 
->  WARNING: CPU: 1 PID: 10646 at lib/debugobjects.c:512 debug_object_assert_init+0x1f2/0x240 lib/debugobjects.c:899
->  debug_assert_init kernel/time/timer.c:837 [inline]
->  __mod_timer+0x10d/0xf40 kernel/time/timer.c:1020
->  key_reject_and_link+0x3f5/0x6e0 security/keys/key.c:610
->  key_negate_and_link include/linux/key-type.h:187 [inline]
->  complete_request_key security/keys/request_key.c:64 [inline]
->  call_sbin_request_key+0xa7b/0xcd0 security/keys/request_key.c:213
->  construct_key security/keys/request_key.c:244 [inline]
->  construct_key_and_link security/keys/request_key.c:503 [inline]
->  request_key_and_link+0x11e3/0x18e0 security/keys/request_key.c:637
->  __do_sys_request_key security/keys/keyctl.c:222 [inline]
->  __se_sys_request_key+0x271/0x3b0 security/keys/keyctl.c:167
+keyctl_watch.c: In function 'consumer':
+keyctl_watch.c:177:61: error: format '%zx' expects argument of type 'size_t', but argument 3 has type 'int' [-Werror=format=]
+  177 |                                 fprintf(stderr, "NOTIFY[%03zx]: ty=%06x sy=%02x i=%08x\n",
+      |                                                         ~~~~^
+      |                                                             |
+      |                                                             long unsigned int
+      |                                                         %03x
+  178 |                                         p - buffer, n.n.type, n.n.subtype, n.n.info);
+      |                                         ~~~~~~~~~~
+      |                                           |
+      |                                           int
 
-This is odd. The timer object is statically allocated via
-DEFINE_TIMER(). That macro sets
+Signed-off-by: Alyssa Ross <hi@alyssa.is>
+---
+ keyctl_watch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-       timer.entry.next = TIMER_ENTRY_STATIC
+diff --git a/keyctl_watch.c b/keyctl_watch.c
+index a70a19a..1436c08 100644
+--- a/keyctl_watch.c
++++ b/keyctl_watch.c
+@@ -179,7 +179,7 @@ int consumer(FILE *log, FILE *gc, int fd)
+ 			memcpy(&n, p, largest);
+ 
+ 			if (debug)
+-				fprintf(stderr, "NOTIFY[%03zx]: ty=%06x sy=%02x i=%08x\n",
++				fprintf(stderr, "NOTIFY[%03tx]: ty=%06x sy=%02x i=%08x\n",
+ 					p - buffer, n.n.type, n.n.subtype, n.n.info);
+ 
+ 			len = n.n.info & WATCH_INFO_LENGTH;
+-- 
+2.37.1
 
-which is used to detect statically allocated timer objects via
-timer_is_static_object() and that checks for:
-
-     timer.entry.pprev == NULL && timer.entry.next == TIMER_ENTRY_STATIC
-
-The only function which touches key_gc_timer is
-
-    key_reject_and_link()
-      mod_timer()
-        __mod_timer()
-          debug_assert_init()
-            debug_timer_assert_init()
-              debug_object_assert_init()
-                if (!lookup_object()) {
-                   if (!check_for_static_object()) <- Invokes timer_is_static_object()
-                      WARN()
-
-If this is the first invocation of mod_timer(&key_gc_timer,...) then
-key_gc_timer is corrupted.
-
-If this is not the first invocation of mod_timer(&key_gc_timer,...) then
-the debugobjects hash is corrupted.
-
-Either way neither the timer code nor debugobjects have been changed
-since the 6.2 release and certainly are innocent here.
-
-That smells like a nasty memory corruption issue and the two other
-syzbot reports which arrived in my filtered inbox:
-
- https://lore.kernel.org/all/000000000000d7894b05f5924787@google.com
- https://lore.kernel.org/all/000000000000840dae05f5a7fb53@google.com
-
-point to memory corruption as well.
-
-The first one has a C reproducer. Can that be used for bisection?
-
-Thanks,
-
-        tglx
