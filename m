@@ -2,183 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A585B6B6EE8
-	for <lists+keyrings@lfdr.de>; Mon, 13 Mar 2023 06:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D000F6B7A62
+	for <lists+keyrings@lfdr.de>; Mon, 13 Mar 2023 15:33:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbjCMFSn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 13 Mar 2023 01:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
+        id S231463AbjCMOdL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 13 Mar 2023 10:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjCMFSn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Mar 2023 01:18:43 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06E5222E3
-        for <keyrings@vger.kernel.org>; Sun, 12 Mar 2023 22:18:41 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id h97so3508328ybi.5
-        for <keyrings@vger.kernel.org>; Sun, 12 Mar 2023 22:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678684721;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZM18ENogSOwMdx1F1lL3fZikDmEYfvMKb3WTrh6+SWg=;
-        b=DULxdsaTERuPS8g+/IGA5gk5vY3Ycnfq5hv8ECRl3li3Xobo4GrQhNK/oXN+Qxz/JA
-         fCDtYzwFPAWhq9YhG5Z9KasVBpKnmQQOfdAvP0BCiMlnvf7Da0pXw8GQgeigqvd+6kL/
-         wlqbbc+ALSG5LZIOQsrwVOwD+z66g5dUCbiBAIvOMLVt1UDjJXnPosZ2MVfQSI9/zzaz
-         /Ynxo/xw4pRRTvPJePpi+2sxM71VRfqMV3moKe7FpXXbLoQWAOMx1CR6f5ctorwkLoJy
-         j52kWd5/xaPjhwMiRFLiQ4/u/raV6d+9HDz+BYwvtnoHLEgc3wqYV5arNmxJ8qSNtnCe
-         xyhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678684721;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZM18ENogSOwMdx1F1lL3fZikDmEYfvMKb3WTrh6+SWg=;
-        b=Ywx/HcmfuD2dLCdD4VLx3I2HEfY7vT/zGrntu8GNTeGoviqJ/CIT7JzNdbHVB4CwZc
-         DgkNFmawjoa7Gr/wK4EjnJyjE750f5cEKcQ39gUnyOjKckDkk45jQT2cp/pE2wQLsDWZ
-         BIzf6j1lDFdVSe/9LNo+HAmMqbypX7BmU72/vMdSI3DdSdYqtezfmUML0H9CGE5F+Ulk
-         TR1FKQCUKi1EbiIEuoI4HDw760sfBAiPnLzlSeFSxbfRat8MvRjI4ffzaT7wyaCw9eNv
-         1X7/3oiEhAHTFkfs9cm3XAzCAJDlEI8uiGArGV/drrIQkUPkJPmbxMnDUahaPIqV6jq6
-         1SSQ==
-X-Gm-Message-State: AO0yUKVRph1Yk57szEzMGIRIRywa7RobjArmA2OFmxWUzbbmNYcM9ByA
-        LpZqQHbs4MgeAG9EtcnnKi94CKIhjhnvWEsu4as=
-X-Google-Smtp-Source: AK7set9lqkcRndCFpw55U9WSyvqfYsxwR4J+YoukkDcUjY//3X8x9KkOnoOFlyJvEah0QL01qzr8eCrpVE4dRSGU8hA=
-X-Received: by 2002:a25:fe04:0:b0:b1a:64ba:9c9b with SMTP id
- k4-20020a25fe04000000b00b1a64ba9c9bmr9815612ybe.1.1678684720814; Sun, 12 Mar
- 2023 22:18:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAGypqWw951d=zYRbdgNR4snUDvJhWL=q3=WOyh7HhSJupjz2vA@mail.gmail.com>
- <c0530ea97166463bd2129da160c3ef0e6c72a8fb.camel@kernel.org>
-In-Reply-To: <c0530ea97166463bd2129da160c3ef0e6c72a8fb.camel@kernel.org>
-From:   Bharath SM <bharathsm.hsk@gmail.com>
-Date:   Mon, 13 Mar 2023 10:48:29 +0530
-Message-ID: <CAGypqWwhTDX2F5m4o-og40j5ddJrM2MWiheDMjbB07Qqb3NuEw@mail.gmail.com>
-Subject: Re: [PATCH] KEYS: Do not cache key in task struct if key is requested
- from kernel thread
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        Bharath S M <bharathsm@microsoft.com>,
-        Shyam Prasad N <nspmangalore@gmail.com>,
-        Steve French <smfrench@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231466AbjCMOdG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 13 Mar 2023 10:33:06 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30201BBB7;
+        Mon, 13 Mar 2023 07:33:02 -0700 (PDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32DDw8fL020315;
+        Mon, 13 Mar 2023 14:27:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=EB0cwcFCZq1QLZZYrEEn68+CuFIz0tlLaFF5ULkdTrk=;
+ b=f21UmAlv7MrKkKkvYFQWyRSm+St/EO8iiq0Sv7VRtq5QYNWajhG1TENN2hPgxZR64Hfv
+ rQ4pCLqiiOapWqbo4GkUxKlp2Spkz9CU2KyjLHiUsOqaOb1j++jEvqc+a52V/AALd60a
+ 9GIbberPbVQklB6jvPQtReFHHzowO0pd3naWhp/4jLJO4NHGLS4KmStwvypfnzJ63anr
+ CbZZ9vqWP2mceT0f8RJjrn01xGng0SOysxSLU9ubaM4YM/ElViacKZM3Ul9e3eq+Hla1
+ 7+W5F5liGaCuviypPNac/vjP+vGfPCs6wjthgmvfYz0wo4qMpuwmSzCJKWfGc00zA/LA SQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pa3sbupxs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Mar 2023 14:27:03 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32DCMJdB020816;
+        Mon, 13 Mar 2023 14:27:02 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pa3sbupx8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Mar 2023 14:27:02 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32DDwa9Z008599;
+        Mon, 13 Mar 2023 14:27:01 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+        by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3p8h96x5d0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Mar 2023 14:27:01 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32DER01f37355910
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Mar 2023 14:27:00 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 84B9C5805C;
+        Mon, 13 Mar 2023 14:27:00 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1A26A5805A;
+        Mon, 13 Mar 2023 14:26:59 +0000 (GMT)
+Received: from sig-9-77-159-147.ibm.com (unknown [9.77.159.147])
+        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Mon, 13 Mar 2023 14:26:59 +0000 (GMT)
+Message-ID: <32ec16c9c3caa731c3de69371de6318da7f7ea91.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 6/6] integrity: machine keyring CA configuration
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, jarkko@kernel.org,
+        dhowells@redhat.com, dwmw2@infradead.org
+Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
+        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, pvorel@suse.cz, kanth.ghatraju@oracle.com,
+        konrad.wilk@oracle.com, erpalmer@linux.vnet.ibm.com,
+        coxu@redhat.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Date:   Mon, 13 Mar 2023 10:26:47 -0400
+In-Reply-To: <20230302164652.83571-7-eric.snowberg@oracle.com>
+References: <20230302164652.83571-1-eric.snowberg@oracle.com>
+         <20230302164652.83571-7-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AVn6e_N1RxRLy5krPqhqwYoTOHO05acB
+X-Proofpoint-GUID: Ns97NCTx73M2atYukwJYoFiNIAEjPIeb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-13_06,2023-03-13_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303130112
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Linux kernel cifs module uses dns_resolver for dns resolution and
-dns_resolver will use kernel keys infrastructure for key management.
-Cifs module calls dns_query during reconnect for dns resolution, we noticed
-an issue with dns resolution requests during reconnect operations from cifs=
-.
-Where the dns_query was failing by returning EKEYEXPIRED to cifs. And
-this issue was
-happening only when CONFIG_KEYS_REQUEST_CACHE was enabled.
-Further debugging the keys subsystem and discussing with david howells reve=
-aled
-this issue in keys subsystem.
+On Thu, 2023-03-02 at 11:46 -0500, Eric Snowberg wrote:
+> Add machine keyring CA restriction options to control the type of
+> keys that may be added to it. The motivation is separation of
+> certificate signing from code signing keys. Subsquent work will
+> limit certificates being loaded into the IMA keyring to code
+> signing keys used for signature verification.
+> 
+> When no restrictions are selected, all Machine Owner Keys (MOK) are added
+> to the machine keyring.  When CONFIG_INTEGRITY_CA_MACHINE_KEYRING is
+> selected, the CA bit must be true.  Also the key usage must contain
+> keyCertSign, any other usage field may be set as well.
+> 
+> When CONFIG_INTEGRITY_CA_MACHINE_KEYRING_MAX is selected, the CA bit must
+> be true. Also the key usage must contain keyCertSign and the
+> digitialSignature usage may not be set.
+> 
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
 
-To reproduce the issue mount a few SMB shares on device with
-nosharesock mount option and try disconnecting connections a few times
-using "ss -K src dport 445".
+Thanks, Eric.
 
-Logs from dns_resolver:
-Notice that 2nd time, we can see dns_query returning -127(EKEYEXPIRED)
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 
-Disconnected first time and got right response for dns_query:
-
-[Mon Mar 13 05:05:23 2023] [cifsd ] =3D=3D>
-dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
-[Mon Mar 13 05:05:23 2023] [cifsd ] call
-request_key(,storagesouthcus1.file.core.windows.net,)
-[Mon Mar 13 05:05:23 2023] [cifsd ] =3D=3D>
-dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
-[Mon Mar 13 05:05:23 2023] [cifsd ] call
-request_key(,storagesouthcus1.file.core.windows.net,)
-[Mon Mar 13 05:05:23 2023] [cifsd ] =3D=3D>
-dns_resolver_cmp(storagesouthcus1.file.core.windows.net,storagesouthcus1.fi=
-le.core.windows.net)
-[Mon Mar 13 05:05:23 2023] [cifsd ] <=3D=3D dns_resolver_cmp() =3D 1
-[Mon Mar 13 05:05:23 2023] [key.dn] =3D=3D> dns_resolver_preparse('
-20.150.20.136',14)
-[Mon Mar 13 05:05:23 2023] [key.dn] no options
-[Mon Mar 13 05:05:23 2023] [key.dn] store result
-[Mon Mar 13 05:05:23 2023] [key.dn] <=3D=3D dns_resolver_preparse() =3D 0
-[Mon Mar 13 05:05:23 2023] [cifsd ] <=3D=3D dns_query() =3D 13
-[Mon Mar 13 05:05:23 2023] [cifsd ] <=3D=3D dns_query() =3D 13
-
-Disconnected second time, but this time we can see one of the
-dns_query request is failing with -127
-
-[Mon Mar 13 05:05:30 2023] [cifsd ] =3D=3D>
-dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
-[Mon Mar 13 05:05:30 2023] [cifsd ] call
-request_key(,storagesouthcus1.file.core.windows.net,)
-[Mon Mar 13 05:05:30 2023] [cifsd ] =3D=3D>
-dns_query((null),storagesouthcus1.file.core.windows.net,38,(null))
-[Mon Mar 13 05:05:30 2023] [cifsd ] call
-request_key(,storagesouthcus1.file.core.windows.net,)
-[Mon Mar 13 05:05:30 2023] [cifsd ] =3D=3D>
-dns_resolver_cmp(storagesouthcus1.file.core.windows.net,storagesouthcus1.fi=
-le.core.windows.net)
-[Mon Mar 13 05:05:30 2023] [cifsd ] <=3D=3D dns_resolver_cmp() =3D 1
-[Mon Mar 13 05:05:30 2023] [cifsd ] <=3D=3D dns_query() =3D -127
-[Mon Mar 13 05:05:30 2023] [key.dn] =3D=3D> dns_resolver_preparse('
-20.150.20.136',14)
-[Mon Mar 13 05:05:30 2023] [key.dn] no options
-[Mon Mar 13 05:05:30 2023] [key.dn] store result
-[Mon Mar 13 05:05:30 2023] [key.dn] <=3D=3D dns_resolver_preparse() =3D 0
-[Mon Mar 13 05:05:30 2023] [cifsd ] <=3D=3D dns_query() =3D 13
-
-On Mon, Mar 13, 2023 at 3:07=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
->
-> On Mon, 2023-03-13 at 00:23 +0530, Bharath SM wrote:
-> > The key which gets cached in task structure from a kernel thread does n=
-ot
-> > get invalidated even after expiry. Due to which, a new key request from
-> > kernel thread will be served with the cached key if it's present in tas=
-k
-> > struct irrespective of the key validity.
-> > The change is to not cache key in task_struct when key requested from k=
-ernel
-> > thread so that kernel thread gets a valid key on every key request.
-> >
-> > Signed-off-by: Bharath SM <bharathsm@microsoft.com>
->
-> What is the context where you bumped into this?
->
-> > ---
-> >  security/keys/request_key.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-> > index 2da4404276f0..07a0ef2baacd 100644
-> > --- a/security/keys/request_key.c
-> > +++ b/security/keys/request_key.c
-> > @@ -38,9 +38,12 @@ static void cache_requested_key(struct key *key)
-> >  #ifdef CONFIG_KEYS_REQUEST_CACHE
-> >         struct task_struct *t =3D current;
-> >
-> > -       key_put(t->cached_requested_key);
-> > -       t->cached_requested_key =3D key_get(key);
-> > -       set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
-> > +       /* Do not cache key if it is a kernel thread */
-> > +       if (!(t->flags & PF_KTHREAD)) {
-> > +               key_put(t->cached_requested_key);
-> > +               t->cached_requested_key =3D key_get(key);
-> > +               set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
-> > +       }
-> >  #endif
-> >  }
-> >
-> > --
-> > 2.25.1
->
-> BR, Jarkko
