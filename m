@@ -2,117 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 087786B9913
-	for <lists+keyrings@lfdr.de>; Tue, 14 Mar 2023 16:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0CF66BAB9E
+	for <lists+keyrings@lfdr.de>; Wed, 15 Mar 2023 10:07:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbjCNP26 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 14 Mar 2023 11:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56128 "EHLO
+        id S231954AbjCOJHX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 15 Mar 2023 05:07:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231300AbjCNP2x (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 14 Mar 2023 11:28:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2DA618F
-        for <keyrings@vger.kernel.org>; Tue, 14 Mar 2023 08:28:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678807691;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tFZcXuDyeJBIxrVmYzzLtkzEjwn3oIsWa8FwG7Q8XSc=;
-        b=PvygWPKiuiaYdV8Hos8DacreQ5ysCL/cKX5CmoRtVdo3Yu257IHWWe2lb0jZy3u/Wi3btB
-        bOHtLQHPcKbB6eFR+ejekH6vPtK0LJqKM5ivBknvz2vozqWwnAyfo7bo3/wToEpMAdT9Co
-        iwcphv8CwqYzIpi8bm7RnAm0kK7oDTo=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-520-7oRTjnlfMn-E7l0Udje91w-1; Tue, 14 Mar 2023 11:27:34 -0400
-X-MC-Unique: 7oRTjnlfMn-E7l0Udje91w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F1C228043C3;
-        Tue, 14 Mar 2023 15:27:33 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CA4544042AC5;
-        Tue, 14 Mar 2023 15:27:32 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <ZBBVYX7O7QV8TFL7@kernel.org>
-References: <ZBBVYX7O7QV8TFL7@kernel.org> <CAGypqWw951d=zYRbdgNR4snUDvJhWL=q3=WOyh7HhSJupjz2vA@mail.gmail.com> <c0530ea97166463bd2129da160c3ef0e6c72a8fb.camel@kernel.org> <CAGypqWwhTDX2F5m4o-og40j5ddJrM2MWiheDMjbB07Qqb3NuEw@mail.gmail.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     dhowells@redhat.com, Bharath SM <bharathsm.hsk@gmail.com>,
-        keyrings@vger.kernel.org, Bharath S M <bharathsm@microsoft.com>,
-        Shyam Prasad N <nspmangalore@gmail.com>,
-        Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH] KEYS: Do not cache key in task struct if key is requested from kernel thread
+        with ESMTP id S231955AbjCOJGz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 15 Mar 2023 05:06:55 -0400
+Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FBC27DD0A
+        for <keyrings@vger.kernel.org>; Wed, 15 Mar 2023 02:06:17 -0700 (PDT)
+Received: by mail.ettrick.pl (Postfix, from userid 1002)
+        id A16C8A9086; Wed, 15 Mar 2023 09:02:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
+        t=1678871030; bh=KHux3km3Civcx5ChslOYQZwQRBjoJa4kWJfGcMIuN6w=;
+        h=Date:From:To:Subject:From;
+        b=fyHVoRxXhe/ElOhHSmTw3qX0ii1on6O9wV0aKVyaEqTwcYzcbskR8qjTRWSgVUbW7
+         /cQVcixCrYVWOZeNBNfEgkWhq8w/HkMG9sMCaqtQaOZ0r++afKG6D4r6X7rrEhRRWz
+         YierYRQySyEGz9mUTQDpQnhmprcSho/RUWUX4wSNvYvynZYeu6P7ZLYXSiaw3szqbA
+         zXglmuCxflde9lyzQhWe+EBAhI+EwKrr1birL3+jEY+TmOi5H/c9MJRX0eAX7mQukq
+         cYBKhGcLP9vzb8UdZayQBIaYhkf8aEv7rd6aOLGjSaXHgm51BYULXzfLznbX1qqOnv
+         uqXQ2017XFMyg==
+Received: by mail.ettrick.pl for <keyrings@vger.kernel.org>; Wed, 15 Mar 2023 09:01:07 GMT
+Message-ID: <20230315074500-0.1.9e.3crfr.0.se32p69mei@ettrick.pl>
+Date:   Wed, 15 Mar 2023 09:01:07 GMT
+From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: Fotowoltaika - nowe warunki
+X-Mailer: mail.ettrick.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3711675.1678807652.1@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date:   Tue, 14 Mar 2023 15:27:32 +0000
-Message-ID: <3711676.1678807652@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,URIBL_ABUSE_SURBL,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.21.111 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: ettrick.pl]
+        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Jarkko Sakkinen <jarkko@kernel.org> wrote:
+Dzie=C5=84 dobry,
 
-> Please summarize this to the commit message it is useful stuff. With
-> this report included the patch could should also have a fixes tag.
+chcia=C5=82bym poinformowa=C4=87, i=C5=BC mog=C4=85 Pa=C5=84stwo uzyska=C4=
+=87 dofinansowanie na systemy fotowoltaiczne w ramach nowej edycji progra=
+mu M=C3=B3j Pr=C4=85d.
 
-I've expanded the commit message to:
+Program zapewnia 6000 z=C5=82 dofinansowania na instalacj=C4=99 paneli i =
+16 000 z=C5=82 na magazyn energii, ni=C5=BCsze cen pr=C4=85du i mo=C5=BCl=
+iwo=C5=9B=C4=87 odliczenia koszt=C3=B3w zwi=C4=85zanych z instalacj=C4=85=
+ fotowoltaiki w ramach rozliczenia PIT (tzw. ulga termomodernizacyjna).
 
-    keys: Do not cache key in task struct if key is requested from kernel =
-thread
-    =
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
-    The key which gets cached in task structure from a kernel thread does =
-not
-    get invalidated even after expiry.  Due to which, a new key request fr=
-om
-    kernel thread will be served with the cached key if it's present in ta=
-sk
-    struct irrespective of the key validity.  The change is to not cache k=
-ey in
-    task_struct when key requested from kernel thread so that kernel threa=
-d
-    gets a valid key on every key request.
-    =
 
-    The problem has been seen with the cifs module doing DNS lookups from =
-a
-    kernel thread and the results getting pinned by being attached to that
-    kernel thread's cache - and thus not something that can be easily got =
-rid
-    of.  The cache would ordinarily be cleared by notify-resume, but kerne=
-l
-    threads don't do that.
-    =
-
-    This isn't seen with AFS because AFS is doing request_key() within the
-    kernel half of a user thread - which will do notify-resume.
-    =
-
-    Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Jarkko Sakkinen <jarkko@kernel.org>
-    cc: Shyam Prasad N <nspmangalore@gmail.com>
-    cc: Steve French <smfrench@gmail.com>
-    cc: keyrings@vger.kernel.org
-    cc: linux-cifs@vger.kernel.org
-    cc: linux-fsdevel@vger.kernel.org
-
-David
-
+Pozdrawiam,
+Norbert Karecki
