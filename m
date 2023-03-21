@@ -2,54 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E6C66C3A06
-	for <lists+keyrings@lfdr.de>; Tue, 21 Mar 2023 20:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E8F6C3A3A
+	for <lists+keyrings@lfdr.de>; Tue, 21 Mar 2023 20:17:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbjCUTMr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 Mar 2023 15:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44700 "EHLO
+        id S230090AbjCUTRJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Mar 2023 15:17:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229934AbjCUTMp (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Mar 2023 15:12:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20912570B3;
-        Tue, 21 Mar 2023 12:12:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B517FB8197B;
-        Tue, 21 Mar 2023 19:12:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 73704C433A0;
-        Tue, 21 Mar 2023 19:12:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679425926;
-        bh=3oQnKbOQRcz+1a1mG3KN8MbM5OfK9jqbMpXvELJ/eWE=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=D35ZgZ9+4kB2KhmgVMOC/L0qeExzqOyJ7gXm8aGbgBPDa5VA+rQ7+oW7XBrzpTpQQ
-         3otgRIE183mYD2ly4pEihSIA2gMfSQ/StXLKQAC6kLPOkNp4koMoA0uH3sUf/O2ZFE
-         whz+oiACRxJskrkvmtw65FxBxaQw/oZ65u9dZZQJMsy6dGWHHfmEHCZRcxrn+goYay
-         7knCJTILIJQJFWTND+hNqUGhBfp2v5fUikGWY3lQH0MRDAvvZaWqdgjO3JPXzOq9kT
-         Kvfral3XDQ0ADsTCyvR1Co+qVRw8lW2MZgb9T9HkLT/kT6e1YPZRbCtZoxE/FMXECp
-         +Oe6ieVw4fyKg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 60B89E4F0DA;
-        Tue, 21 Mar 2023 19:12:06 +0000 (UTC)
+        with ESMTP id S229995AbjCUTRB (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Mar 2023 15:17:01 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966504C6CC
+        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:16:33 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id m22so7432339ioy.4
+        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1679426171;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=68/H4+xam4m5wiaqKB4DLi8WxDgUwxT+IYkB5YBtOss=;
+        b=Ch1bBNzmPQDbcLE1jy3YVa3GAf/t+fX97A2iSqvCLkaA7DQ1JECTOviq+QK2Zdpmxm
+         97Utmb+f1Hb4NYius8BS1RYAYgMs2/4lHJ0/Yl7mTSaCJFNIFSaLgUiF6KxW8vAev61A
+         MQfXTYGvQQ9b8gksZsjgy4w3Td4EcJlZsChRFgcf6K+QzlXkjlMFDY0Jbu9T28kh2weH
+         +D41OHGXmcRcY92LAbzAn/T2qhxWyP+St10u+wBB17QWAdp5cdRHDAqssvtsGVlzAfJr
+         2KJ1N8C4rCLx3pgXw6RteEqmXV7iDytshITlAZ6eKb0KuCInFjbC7Rto3Gx7mY+jq5rD
+         HyaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679426171;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=68/H4+xam4m5wiaqKB4DLi8WxDgUwxT+IYkB5YBtOss=;
+        b=H+UZEQaZ+i9MzBMhMF+T/4cGLtCXPzS9YVzfIJ7PyCi30c4ySXwSxZmB+cywZ2aevg
+         qoIlSAv53RrhIgIAoZrHfCRzUYzZSPwUEeT2fN76BPuMKaS0Br8qLmLjNrUMFXZDYJ5Z
+         qlXVsWifZYNymiH0qwEAig5jPZHkzsdqKBNFsKpPiMHF04vCrE46dJQ50NAoQQTO6x/P
+         QxXGIxyX4fqUJv/4e+DkqkV1gI17qW1EcPIDUeIdiPKJxwzyOW5BPPhEDSk9KWyIvOil
+         3QHMPryv/OmVQAFHFIYNCbuWtLBYUUbvXbr56ELjXK41WDffUKCIVOjsqJl7+W5dYqs4
+         74UA==
+X-Gm-Message-State: AO0yUKXxxnyF732QajpS2Log5LU7LBh1jFuJ8ZUfQrJuHEfcybJ8PwT4
+        v338rri/Dlps2tUVD3IaEIJy0A==
+X-Google-Smtp-Source: AK7set+VXE0JqlJu/khih18+jA1dIbHsYYvLTbg2wtKzlalWn4L4Eqgy+q/HxDA9auS9TdmUks2B5w==
+X-Received: by 2002:a6b:2ac2:0:b0:740:7d21:d96f with SMTP id q185-20020a6b2ac2000000b007407d21d96fmr2122857ioq.1.1679426171077;
+        Tue, 21 Mar 2023 12:16:11 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id s10-20020a6bdc0a000000b0074e7960e70dsm45058ioc.51.2023.03.21.12.16.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Mar 2023 12:16:10 -0700 (PDT)
+Message-ID: <8d532de2-bf3a-dee4-1cad-e11714e914d0@kernel.dk>
+Date:   Tue, 21 Mar 2023 13:16:08 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
 Subject: Re: [GIT PULL] keys: Miscellaneous fixes/changes
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <2851036.1679417029@warthog.procyon.org.uk>
-References: <2851036.1679417029@warthog.procyon.org.uk>
-X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
-X-PR-Tracked-Message-Id: <2851036.1679417029@warthog.procyon.org.uk>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/keys-fixes-20230321
-X-PR-Tracked-Commit-Id: 3584c1dbfffdabf8e3dc1dd25748bb38dd01cd43
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 2faac9a98f010cf5b342fa89ac489c4586364e6e
-Message-Id: <167942592638.7771.15271996800197050832.pr-tracker-bot@kernel.org>
-Date:   Tue, 21 Mar 2023 19:12:06 +0000
-To:     David Howells <dhowells@redhat.com>
-Cc:     torvalds@linux-foundation.org, dhowells@redhat.com,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
         Bharath SM <bharathsm@microsoft.com>,
         Shyam Prasad N <nspmangalore@gmail.com>,
         Steve French <smfrench@gmail.com>,
@@ -59,24 +68,52 @@ Cc:     torvalds@linux-foundation.org, dhowells@redhat.com,
         keyrings@vger.kernel.org, linux-cifs@vger.kernel.org,
         linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <2851036.1679417029@warthog.procyon.org.uk>
+ <CAHk-=wh1b0r+5SnwWedx=J4aZhRif1HLN_moxEG9Jzy23S6QUA@mail.gmail.com>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <CAHk-=wh1b0r+5SnwWedx=J4aZhRif1HLN_moxEG9Jzy23S6QUA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The pull request you sent on Tue, 21 Mar 2023 16:43:49 +0000:
+On 3/21/23 12:48?PM, Linus Torvalds wrote:
+> On Tue, Mar 21, 2023 at 9:43?AM David Howells <dhowells@redhat.com> wrote:
+>>
+>>  (1) Fix request_key() so that it doesn't cache a looked up key on the
+>>      current thread if that thread is a kernel thread.  The cache is
+>>      cleared during notify_resume - but that doesn't happen in kernel
+>>      threads.  This is causing cifs DNS keys to be un-invalidateable.
+> 
+> I've pulled this, but I'd like people to look a bit more at this.
+> 
+> The issue with TIF_NOTIFY_RESUME is that it is only done on return to
+> user space.
+> 
+> And these days, PF_KTHREAD isn't the only case that never returns to
+> user space. PF_IO_WORKER has the exact same behaviour.
+> 
+> Now, to counteract this, as of this merge window (and marked for
+> stable) IO threads do a fake "return to user mode" handling in
+> io_run_task_work(), and so I think we're all good, but I'd like people
+> to at least think about this.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/keys-fixes-20230321
+I haven't seen the patch yet as it hasn't been pushed, but can imagine
+what it looks like. It may make sense to add some debug check for
+PF_KTHREAD having TIF_NOTIFY_RESUME set, or task_work pending for that
+matter, as that is generally not workable without doing something to
+handle it explicitly.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/2faac9a98f010cf5b342fa89ac489c4586364e6e
-
-Thank you!
+For PF_IO_WORKER, with the commit you mentioned, those threads should
+deal with TIF_NOTIFY_RESUME just fine. Until something else gets added
+that is also run from exit_to_user_mode...
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Jens Axboe
+
