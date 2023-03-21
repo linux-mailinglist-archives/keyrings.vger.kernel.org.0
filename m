@@ -2,66 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABE4F6C3A51
-	for <lists+keyrings@lfdr.de>; Tue, 21 Mar 2023 20:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6961E6C3A92
+	for <lists+keyrings@lfdr.de>; Tue, 21 Mar 2023 20:33:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjCUTWU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 Mar 2023 15:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59352 "EHLO
+        id S229784AbjCUTdT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Mar 2023 15:33:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230184AbjCUTWQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Mar 2023 15:22:16 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B81DA5EC
-        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:22:14 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id o12so63904809edb.9
-        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:22:14 -0700 (PDT)
+        with ESMTP id S229670AbjCUTdR (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Mar 2023 15:33:17 -0400
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2010567B2
+        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:32:19 -0700 (PDT)
+Received: by mail-io1-xd35.google.com with SMTP id o12so7447832iow.6
+        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1679426532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AHtgR0XvPydSJ2xRHzSM20hkxNSVo2TSBRlBp9YTFyU=;
-        b=KmDXelWzwks1nQPoqr13pMfnkAeJPlI5I87zd6sk3jWexgoUltTzps7nAnLUWDBxrt
-         RcJTL9schkxn8BPHGqO+k2sSwBNFSyewigW2qtZ2GTbMK34tDm7z9BbVnBckaR8Sk0xQ
-         7DS3Ne4gSlU+Nye5NqrnhBdAHKIwj3vmt4JOg=
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1679427138;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7CeJzgGGkpz4OJNP+n2r4VhZEuuVOgz0h28luVhwWvM=;
+        b=onBLdjuFW4OF9Ht5Rs2OEMX4aFQHB3mb67rib8Ag91iE4T2V0mEOeVtnbO60FtKxJi
+         L1ZVDAdXzIBGc8uzGY9zUbtJqMNQ/JEzGufLkjl4q2W4gCNgOaaDnO/8rDzVvhIyKBt8
+         zfAWpBfk9kKdRInXFn5Ve4KJNMfcDDXrl+//pEDel/TULKnCiMCBbg4jQY6Sg4G9Z2JT
+         ctXDOrQLsenp00LY2dxVE1Z7BeOlwMY7psuC5OpAf1FTAsRMlhzt3MGbKFWtgA/OolIb
+         ajafD0Eh3TgzjUbHPvPmc2uSjgk8UiukZdu23QCWLJP9yhMVywGUtmMI/zSwHNtcm6zu
+         gDMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679426532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AHtgR0XvPydSJ2xRHzSM20hkxNSVo2TSBRlBp9YTFyU=;
-        b=ZFkD/pOO1JN03ufewqVgSQ4Say9hx78JzMnSimODcaVeLyw4N0LhDI91ifB6FDTZz/
-         vvgqRuR0/A1UMYI1+N650w6Hqo9rax3s4Cq8wNTlUdMAQ8+inIOWWELY1IGKqp8I7lta
-         c8ksaSaZQIe351Vfo6HJs5jQAb+K+bF3T9LwN8Cq4Ew4jx8RP/TT1EpM8zzBA9Ve3iv4
-         QUuq5B9VS3jG9/10fXuUbXTywihI8o+xLztZ/QBPmgq7Ic2Yn7tYb0YZWqKHEM3reXbj
-         5je/It+aAAWaGuLuJ6mjUuhEW4eW9MEJtv36sX7I/a7YLqmHGygXAU8OyAUDFLmKa5XA
-         Ey7g==
-X-Gm-Message-State: AO0yUKWU9DrnFLazYXc2z7R1xDqysLv40W3Lf6pWxkV1wQi9I3TPhLof
-        76KYS0UqkMP9+k2yUIrwG0suKVXt071owBiJilpWDbdr
-X-Google-Smtp-Source: AK7set9u7TnwdsZbi0xc981ZO1nFvPVYsLIZdwNThdoasVuAzRipp9EVewS5njpXMbNiV7FR3VEgWg==
-X-Received: by 2002:a17:906:150c:b0:931:df8d:113 with SMTP id b12-20020a170906150c00b00931df8d0113mr5164229ejd.26.1679426532534;
-        Tue, 21 Mar 2023 12:22:12 -0700 (PDT)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id 12-20020a170906310c00b00926d614b890sm6079191ejx.204.2023.03.21.12.22.11
-        for <keyrings@vger.kernel.org>
+        d=1e100.net; s=20210112; t=1679427138;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7CeJzgGGkpz4OJNP+n2r4VhZEuuVOgz0h28luVhwWvM=;
+        b=gmHlNp6ZQh0OmFzYmCE5IOY62hJI6FmBAEh41nvws/jenzAJkEGyu2rHQWKQL+9j38
+         8HmT2VD5dsbM9ATMIc43U8rrEIiGOY3cWpfWKRaTevxJe/qFhqKG2liwb+O0mKBK8ZFN
+         ic1T4clINouVZL6Nkyz3XtzcsNNCxczgRstuUYBGiWYoH8I8FBt539dUfmMexhq8rGuJ
+         +Q4idS7EmgpsLGBs0kBY4OwjlxEsbUPaYNj+M7qjFluewTJoTZ7T06sTKp9T1TQL68hw
+         4Nw6AYEpv2MmIKf7jjz79j8Du2vIL41J4f+JjZLItUCVfkn9LG+hdXr/w3lBAZyc92CW
+         1MyQ==
+X-Gm-Message-State: AO0yUKXYXYI2JMNQOKuj2LvS69VlMTRkXy3tPjgPD+AFcB8WGGQP1sWC
+        oA1MEdgDDIaO8MPKxys6ymfdaA==
+X-Google-Smtp-Source: AK7set+phMYJWl6sgVT+AVfG9ZZk7GsfTnjNYpV3+LVic3XR8FeoqngvOFzznh2XdWllptC2fYtjOQ==
+X-Received: by 2002:a6b:5802:0:b0:758:5653:353a with SMTP id m2-20020a6b5802000000b007585653353amr1487525iob.0.1679427137979;
+        Tue, 21 Mar 2023 12:32:17 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id j189-20020a0263c6000000b0039deb26853csm4495686jac.10.2023.03.21.12.32.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Mar 2023 12:22:11 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id r11so63948623edd.5
-        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:22:11 -0700 (PDT)
-X-Received: by 2002:a50:9e6f:0:b0:4fb:482b:f93d with SMTP id
- z102-20020a509e6f000000b004fb482bf93dmr2321260ede.2.1679426530851; Tue, 21
- Mar 2023 12:22:10 -0700 (PDT)
+        Tue, 21 Mar 2023 12:32:17 -0700 (PDT)
+Message-ID: <3fcad89a-77ad-3369-cd8c-88a223758173@kernel.dk>
+Date:   Tue, 21 Mar 2023 13:32:16 -0600
 MIME-Version: 1.0
-References: <2851036.1679417029@warthog.procyon.org.uk> <CAHk-=wh1b0r+5SnwWedx=J4aZhRif1HLN_moxEG9Jzy23S6QUA@mail.gmail.com>
- <8d532de2-bf3a-dee4-1cad-e11714e914d0@kernel.dk>
-In-Reply-To: <8d532de2-bf3a-dee4-1cad-e11714e914d0@kernel.dk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 21 Mar 2023 12:21:54 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wi2yeuwCxvB18=AWG+YKnMgd28WGkHFMqTyMA=59cw3rg@mail.gmail.com>
-Message-ID: <CAHk-=wi2yeuwCxvB18=AWG+YKnMgd28WGkHFMqTyMA=59cw3rg@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
 Subject: Re: [GIT PULL] keys: Miscellaneous fixes/changes
-To:     Jens Axboe <axboe@kernel.dk>
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     David Howells <dhowells@redhat.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Bharath SM <bharathsm@microsoft.com>,
@@ -73,31 +68,52 @@ Cc:     David Howells <dhowells@redhat.com>,
         keyrings@vger.kernel.org, linux-cifs@vger.kernel.org,
         linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+References: <2851036.1679417029@warthog.procyon.org.uk>
+ <CAHk-=wh1b0r+5SnwWedx=J4aZhRif1HLN_moxEG9Jzy23S6QUA@mail.gmail.com>
+ <8d532de2-bf3a-dee4-1cad-e11714e914d0@kernel.dk>
+ <CAHk-=wi2yeuwCxvB18=AWG+YKnMgd28WGkHFMqTyMA=59cw3rg@mail.gmail.com>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <CAHk-=wi2yeuwCxvB18=AWG+YKnMgd28WGkHFMqTyMA=59cw3rg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Mar 21, 2023 at 12:16=E2=80=AFPM Jens Axboe <axboe@kernel.dk> wrote=
-:
->
-> I haven't seen the patch yet as it hasn't been pushed,
+On 3/21/23 1:21?PM, Linus Torvalds wrote:
+> On Tue, Mar 21, 2023 at 12:16?PM Jens Axboe <axboe@kernel.dk> wrote:
+>>
+>> I haven't seen the patch yet as it hasn't been pushed,
+> 
+> Well, it went out a couple of minutes before your email, so it's out now.
 
-Well, it went out a couple of minutes before your email, so it's out now.
+Yep I see it now, looks as expected.
 
-> It may make sense to add some debug check for
-> PF_KTHREAD having TIF_NOTIFY_RESUME set, or task_work pending for that
-> matter, as that is generally not workable without doing something to
-> handle it explicitly.
+>> It may make sense to add some debug check for
+>> PF_KTHREAD having TIF_NOTIFY_RESUME set, or task_work pending for that
+>> matter, as that is generally not workable without doing something to
+>> handle it explicitly.
+> 
+> Yeah, I guess we could have some generic check for that. I'm not sure
+> where it would be. Scheduler?
 
-Yeah, I guess we could have some generic check for that. I'm not sure
-where it would be. Scheduler?
+Off the top of my head, two options, both in kernel/sched/core.c:
 
-               Linus
+1) Add it to schedule_debug()
+
+2) Add it to sched_submit_work(), adding PF_KTHREAD to the flags checked
+   for PF_IO_WORKER | PF_WQ_WORKER to avoid adding any extra fast-path
+   overhead.
+
+Alternatively, I guess it could go in kthread_exit() as well. But for
+workloads with a persistent kthread that doesn't really go away, that
+won't catch it.
+
+-- 
+Jens Axboe
+
