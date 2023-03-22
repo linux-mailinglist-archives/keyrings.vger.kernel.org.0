@@ -2,118 +2,73 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6961E6C3A92
-	for <lists+keyrings@lfdr.de>; Tue, 21 Mar 2023 20:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 478C96C3FEF
+	for <lists+keyrings@lfdr.de>; Wed, 22 Mar 2023 02:42:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjCUTdT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 21 Mar 2023 15:33:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48164 "EHLO
+        id S229912AbjCVBms (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 21 Mar 2023 21:42:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjCUTdR (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Mar 2023 15:33:17 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2010567B2
-        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:32:19 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id o12so7447832iow.6
-        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 12:32:19 -0700 (PDT)
+        with ESMTP id S229512AbjCVBmr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 21 Mar 2023 21:42:47 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E70C584A2
+        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 18:42:46 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id p34so5589248wms.3
+        for <keyrings@vger.kernel.org>; Tue, 21 Mar 2023 18:42:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112; t=1679427138;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7CeJzgGGkpz4OJNP+n2r4VhZEuuVOgz0h28luVhwWvM=;
-        b=onBLdjuFW4OF9Ht5Rs2OEMX4aFQHB3mb67rib8Ag91iE4T2V0mEOeVtnbO60FtKxJi
-         L1ZVDAdXzIBGc8uzGY9zUbtJqMNQ/JEzGufLkjl4q2W4gCNgOaaDnO/8rDzVvhIyKBt8
-         zfAWpBfk9kKdRInXFn5Ve4KJNMfcDDXrl+//pEDel/TULKnCiMCBbg4jQY6Sg4G9Z2JT
-         ctXDOrQLsenp00LY2dxVE1Z7BeOlwMY7psuC5OpAf1FTAsRMlhzt3MGbKFWtgA/OolIb
-         ajafD0Eh3TgzjUbHPvPmc2uSjgk8UiukZdu23QCWLJP9yhMVywGUtmMI/zSwHNtcm6zu
-         gDMA==
+        d=gmail.com; s=20210112; t=1679449365;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G7upYASidmeqEEydII3qqc7RD6bnaXjO6ELYE2uwAgE=;
+        b=BAEsHPlIGftzvPC50mZoDp4x9cRphp0xuQTWSEjOfBQQ+b/A5f/E/FoKC2JPsVMvsL
+         iZbfg23pqC7W+Gc4JDs/0hflwdk9n6nKEREBHy7pge6LuXsP/X51ODbpwh53p7uTsnZ4
+         k7960eGD1SQw/Zbty1zcqL/1D4ccQ/x7fQQ3t229HTNJKgleIy2wUdYpN+4+VYlOJx/Y
+         tz//SV8yUKPXWNdmIFA0eHiCNZ+eU3q6y8qSrhEfRsfpgqmZhG1LNdw4T8lWt8CfoM7V
+         VtuiIuAO11RpMRcf5ZgqrMD25CYRUYFgCGTv+mwEvs9oL2/6KsFVRAuP+opYAxSQuOlu
+         Hhug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679427138;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1679449365;
+        h=to:subject:message-id:date:from:reply-to:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7CeJzgGGkpz4OJNP+n2r4VhZEuuVOgz0h28luVhwWvM=;
-        b=gmHlNp6ZQh0OmFzYmCE5IOY62hJI6FmBAEh41nvws/jenzAJkEGyu2rHQWKQL+9j38
-         8HmT2VD5dsbM9ATMIc43U8rrEIiGOY3cWpfWKRaTevxJe/qFhqKG2liwb+O0mKBK8ZFN
-         ic1T4clINouVZL6Nkyz3XtzcsNNCxczgRstuUYBGiWYoH8I8FBt539dUfmMexhq8rGuJ
-         +Q4idS7EmgpsLGBs0kBY4OwjlxEsbUPaYNj+M7qjFluewTJoTZ7T06sTKp9T1TQL68hw
-         4Nw6AYEpv2MmIKf7jjz79j8Du2vIL41J4f+JjZLItUCVfkn9LG+hdXr/w3lBAZyc92CW
-         1MyQ==
-X-Gm-Message-State: AO0yUKXYXYI2JMNQOKuj2LvS69VlMTRkXy3tPjgPD+AFcB8WGGQP1sWC
-        oA1MEdgDDIaO8MPKxys6ymfdaA==
-X-Google-Smtp-Source: AK7set+phMYJWl6sgVT+AVfG9ZZk7GsfTnjNYpV3+LVic3XR8FeoqngvOFzznh2XdWllptC2fYtjOQ==
-X-Received: by 2002:a6b:5802:0:b0:758:5653:353a with SMTP id m2-20020a6b5802000000b007585653353amr1487525iob.0.1679427137979;
-        Tue, 21 Mar 2023 12:32:17 -0700 (PDT)
-Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id j189-20020a0263c6000000b0039deb26853csm4495686jac.10.2023.03.21.12.32.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Mar 2023 12:32:17 -0700 (PDT)
-Message-ID: <3fcad89a-77ad-3369-cd8c-88a223758173@kernel.dk>
-Date:   Tue, 21 Mar 2023 13:32:16 -0600
+        bh=G7upYASidmeqEEydII3qqc7RD6bnaXjO6ELYE2uwAgE=;
+        b=i/f62NFvAHH5lx7yujohZCpngOdd+QmguC5p3g+ruwwuPLJSmGeeakeFicHtKefybk
+         afFQzWfTYNHwMVJhJFsp4i3jFo3vTtmGOPePXi2XkOawSQtZcBmy7wRSK3vkLRMiEVoU
+         xeTZu4L8zbiwdGMHfLMb1y/wIKEiuVACYXrpuXzvZAiaAEBfQLlKoW4tPu608SnBi7r0
+         Dcggiq34i3Yebr2id/xaaJz2IUOdz+AkGt+jqHgXfXPg9JqJFmVOlPQkFj483blw0oLv
+         oGCEKiU0NGxMqVV8ELDtvbfESSQh1Motjsfjyu+CYHJxICE4X4V4iYmoYLaCSGVbB2p+
+         mdSA==
+X-Gm-Message-State: AO0yUKV9yGUAfFJzVid4vZyzR6yvZb/yrCyc7XjWjEm55RCaEy27N4D+
+        x3nb0aNQ7HtjWgfvRmfaE3FFAbbRQghIhUn79ng=
+X-Google-Smtp-Source: AK7set+agYM+W7iFM+5cega7HaW1OTCSowxCh0xJNf1qIuwnarHdgQbvaCXidrB5Kefap0o1hmwlEGkQlV/ngGB75DI=
+X-Received: by 2002:a7b:cc9a:0:b0:3ed:f966:b278 with SMTP id
+ p26-20020a7bcc9a000000b003edf966b278mr123006wma.0.1679449364967; Tue, 21 Mar
+ 2023 18:42:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [GIT PULL] keys: Miscellaneous fixes/changes
-Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <nspmangalore@gmail.com>,
-        Steve French <smfrench@gmail.com>,
-        Robbie Harwood <rharwood@redhat.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        keyrings@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <2851036.1679417029@warthog.procyon.org.uk>
- <CAHk-=wh1b0r+5SnwWedx=J4aZhRif1HLN_moxEG9Jzy23S6QUA@mail.gmail.com>
- <8d532de2-bf3a-dee4-1cad-e11714e914d0@kernel.dk>
- <CAHk-=wi2yeuwCxvB18=AWG+YKnMgd28WGkHFMqTyMA=59cw3rg@mail.gmail.com>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAHk-=wi2yeuwCxvB18=AWG+YKnMgd28WGkHFMqTyMA=59cw3rg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a5d:5229:0:b0:2bf:cbee:1860 with HTTP; Tue, 21 Mar 2023
+ 18:42:44 -0700 (PDT)
+Reply-To: mariamkouame.info@myself.com
+From:   Mariam Kouame <contact.mariamkouame4@gmail.com>
+Date:   Tue, 21 Mar 2023 18:42:44 -0700
+Message-ID: <CAHkNMZymf19_FRngUbyRqkOTGV3zqJZPWCBs8EYyTxCPiWkqUg@mail.gmail.com>
+Subject: from mariam kouame
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 3/21/23 1:21?PM, Linus Torvalds wrote:
-> On Tue, Mar 21, 2023 at 12:16?PM Jens Axboe <axboe@kernel.dk> wrote:
->>
->> I haven't seen the patch yet as it hasn't been pushed,
-> 
-> Well, it went out a couple of minutes before your email, so it's out now.
+Dear,
 
-Yep I see it now, looks as expected.
+Please grant me permission to share a very crucial discussion with
+you.I am looking forward to hearing from you at your earliest
+convenience.
 
->> It may make sense to add some debug check for
->> PF_KTHREAD having TIF_NOTIFY_RESUME set, or task_work pending for that
->> matter, as that is generally not workable without doing something to
->> handle it explicitly.
-> 
-> Yeah, I guess we could have some generic check for that. I'm not sure
-> where it would be. Scheduler?
-
-Off the top of my head, two options, both in kernel/sched/core.c:
-
-1) Add it to schedule_debug()
-
-2) Add it to sched_submit_work(), adding PF_KTHREAD to the flags checked
-   for PF_IO_WORKER | PF_WQ_WORKER to avoid adding any extra fast-path
-   overhead.
-
-Alternatively, I guess it could go in kthread_exit() as well. But for
-workloads with a persistent kthread that doesn't really go away, that
-won't catch it.
-
--- 
-Jens Axboe
-
+Mrs. Mariam Kouame
