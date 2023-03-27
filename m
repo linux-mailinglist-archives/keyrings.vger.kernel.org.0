@@ -2,53 +2,41 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759B86C6910
-	for <lists+keyrings@lfdr.de>; Thu, 23 Mar 2023 14:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 870796C9C12
+	for <lists+keyrings@lfdr.de>; Mon, 27 Mar 2023 09:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231308AbjCWNEf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 23 Mar 2023 09:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53266 "EHLO
+        id S232435AbjC0Hd1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 27 Mar 2023 03:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230059AbjCWNEc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 23 Mar 2023 09:04:32 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F2B71DBA2;
-        Thu, 23 Mar 2023 06:04:26 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id A783B1FDD4;
-        Thu, 23 Mar 2023 13:04:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1679576665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=4w/uym1UjHPw2V6NrSEuzlrM6thISw+AgzpQZUHtyJo=;
-        b=f9Z3Na+Qg8O5LuK7qysZrlDjoB23gWQ3FRMaLGnF0UYJI+QeSFbfygArABAKtK0vJ4KWrR
-        yPit4CDE/L5dZquSGyZOL9HBsGWj1ugntc02s+tjws4TnUueiosaNazWP/grI/O3rmRx0w
-        Xb9SbP+yqe/R5WzYy6nO6vOORwt6wrE=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 84FC013596;
-        Thu, 23 Mar 2023 13:04:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id d3F3H1lOHGRpSwAAMHmgww
-        (envelope-from <petr.pavlu@suse.com>); Thu, 23 Mar 2023 13:04:25 +0000
-From:   Petr Pavlu <petr.pavlu@suse.com>
-To:     dhowells@redhat.com, jarkko@kernel.org
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Petr Pavlu <petr.pavlu@suse.com>
-Subject: [PATCH] keys: Fix linking a duplicate key to a keyring's assoc_array
-Date:   Thu, 23 Mar 2023 14:04:12 +0100
-Message-Id: <20230323130412.32097-1-petr.pavlu@suse.com>
-X-Mailer: git-send-email 2.35.3
+        with ESMTP id S229651AbjC0Hd0 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Mar 2023 03:33:26 -0400
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E07DD
+        for <keyrings@vger.kernel.org>; Mon, 27 Mar 2023 00:33:24 -0700 (PDT)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id 77274831E8; Mon, 27 Mar 2023 08:32:04 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1679902402; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=f/7YnZg/GbQZm7CjpGvbEdyjWOXs2h7AtcLn1nu5XGHEq3zNbY4H2g3qnmz+ENINR
+         JDa48XwZnUrO/+G8Brpr9HtV6xXLlLGOV0UheICiEZozhVsxPdip+WpoGPwsryHZQv
+         spdUJVWCZPBk+Mir2qirjnQ8PdBOuEqUuZHh/iG/4zcTX+bkg3cetzvKCj+su66nmr
+         7d4KmG8LeJ7/f1F6m+eoyW0uXAAuVav29aVJNRKcp9Ebhhh0owPKZEaHpaoxCE96qD
+         Suy9Y+knnuFqShZ6fzl6BMWpYFBL9YTIvbBbwi/nvesVuh3VUYymwFuKelZKwHlv9R
+         DFU3CsT5eCgjw==
+Received: by mail.lokoho.com for <keyrings@vger.kernel.org>; Mon, 27 Mar 2023 07:31:04 GMT
+Message-ID: <20230327074501-0.1.4w.1m6fz.0.lz1pb1kd83@lokoho.com>
+Date:   Mon, 27 Mar 2023 07:31:04 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <keyrings@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,169 +44,19 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-When making a DNS query inside the kernel using dns_query(), the request
-code can in rare cases end up creating a duplicate index key in the
-assoc_array of the destination keyring. It is eventually found by
-a BUG_ON() check in the assoc_array implementation and results in
-a crash.
+Dzie=C5=84 dobry,
 
-Example report:
-[2158499.700025] kernel BUG at ../lib/assoc_array.c:652!
-[2158499.700039] invalid opcode: 0000 [#1] SMP PTI
-[2158499.700065] CPU: 3 PID: 31985 Comm: kworker/3:1 Kdump: loaded Not tainted 5.3.18-150300.59.90-default #1 SLE15-SP3
-[2158499.700096] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-[2158499.700351] Workqueue: cifsiod cifs_resolve_server [cifs]
-[2158499.700380] RIP: 0010:assoc_array_insert+0x85f/0xa40
-[2158499.700401] Code: ff 74 2b 48 8b 3b 49 8b 45 18 4c 89 e6 48 83 e7 fe e8 95 ec 74 00 3b 45 88 7d db 85 c0 79 d4 0f 0b 0f 0b 0f 0b e8 41 f2 be ff <0f> 0b 0f 0b 81 7d 88 ff ff ff 7f 4c 89 eb 4c 8b ad 58 ff ff ff 0f
-[2158499.700448] RSP: 0018:ffffc0bd6187faf0 EFLAGS: 00010282
-[2158499.700470] RAX: ffff9f1ea7da2fe8 RBX: ffff9f1ea7da2fc1 RCX: 0000000000000005
-[2158499.700492] RDX: 0000000000000000 RSI: 0000000000000005 RDI: 0000000000000000
-[2158499.700515] RBP: ffffc0bd6187fbb0 R08: ffff9f185faf1100 R09: 0000000000000000
-[2158499.700538] R10: ffff9f1ea7da2cc0 R11: 000000005ed8cec8 R12: ffffc0bd6187fc28
-[2158499.700561] R13: ffff9f15feb8d000 R14: ffff9f1ea7da2fc0 R15: ffff9f168dc0d740
-[2158499.700585] FS:  0000000000000000(0000) GS:ffff9f185fac0000(0000) knlGS:0000000000000000
-[2158499.700610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2158499.700630] CR2: 00007fdd94fca238 CR3: 0000000809d8c006 CR4: 00000000003706e0
-[2158499.700702] Call Trace:
-[2158499.700741]  ? key_alloc+0x447/0x4b0
-[2158499.700768]  ? __key_link_begin+0x43/0xa0
-[2158499.700790]  __key_link_begin+0x43/0xa0
-[2158499.700814]  request_key_and_link+0x2c7/0x730
-[2158499.700847]  ? dns_resolver_read+0x20/0x20 [dns_resolver]
-[2158499.700873]  ? key_default_cmp+0x20/0x20
-[2158499.700898]  request_key_tag+0x43/0xa0
-[2158499.700926]  dns_query+0x114/0x2ca [dns_resolver]
-[2158499.701127]  dns_resolve_server_name_to_ip+0x194/0x310 [cifs]
-[2158499.701164]  ? scnprintf+0x49/0x90
-[2158499.701190]  ? __switch_to_asm+0x40/0x70
-[2158499.701211]  ? __switch_to_asm+0x34/0x70
-[2158499.701405]  reconn_set_ipaddr_from_hostname+0x81/0x2a0 [cifs]
-[2158499.701603]  cifs_resolve_server+0x4b/0xd0 [cifs]
-[2158499.701632]  process_one_work+0x1f8/0x3e0
-[2158499.701658]  worker_thread+0x2d/0x3f0
-[2158499.701682]  ? process_one_work+0x3e0/0x3e0
-[2158499.701703]  kthread+0x10d/0x130
-[2158499.701723]  ? kthread_park+0xb0/0xb0
-[2158499.701746]  ret_from_fork+0x1f/0x40
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-The situation occurs as follows:
-* Some kernel facility invokes dns_query() to resolve a hostname, for
-  example, "abcdef". The function registers its global DNS resolver
-  cache as current->cred.thread_keyring and passes the query to
-  request_key_net() -> request_key_tag() -> request_key_and_link().
-* Function request_key_and_link() creates a keyring_search_context
-  object. Its match_data.cmp method gets set via a call to
-  type->match_preparse() (resolves to dns_resolver_match_preparse()) to
-  dns_resolver_cmp().
-* Function request_key_and_link() continues and invokes
-  search_process_keyrings_rcu() which returns that a given key was not
-  found. The control is then passed to request_key_and_link() ->
-  construct_alloc_key().
-* Concurrently to that, a second task similarly makes a DNS query for
-  "abcdef." and its result gets inserted into the DNS resolver cache.
-* Back on the first task, function construct_alloc_key() first runs
-  __key_link_begin() to determine an assoc_array_edit operation to
-  insert a new key. Index keys in the array are compared exactly as-is,
-  using keyring_compare_object(). The operation finds that "abcdef" is
-  not yet present in the destination keyring.
-* Function construct_alloc_key() continues and checks if a given key is
-  already present on some keyring by again calling
-  search_process_keyrings_rcu(). This search is done using
-  dns_resolver_cmp() and "abcdef" gets matched with now present key
-  "abcdef.".
-* The found key is linked on the destination keyring by calling
-  __key_link() and using the previously calculated assoc_array_edit
-  operation. This inserts the "abcdef." key in the array but creates
-  a duplicity because the same index key is already present.
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Fix the problem by postponing __key_link_begin() in
-construct_alloc_key() until an actual key which should be linked into
-the destination keyring is determined.
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
----
- security/keys/request_key.c | 35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 2da4404276f0..04eb7e4cedad 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -398,17 +398,21 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	set_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags);
- 
- 	if (dest_keyring) {
--		ret = __key_link_lock(dest_keyring, &ctx->index_key);
-+		ret = __key_link_lock(dest_keyring, &key->index_key);
- 		if (ret < 0)
- 			goto link_lock_failed;
--		ret = __key_link_begin(dest_keyring, &ctx->index_key, &edit);
--		if (ret < 0)
--			goto link_prealloc_failed;
- 	}
- 
--	/* attach the key to the destination keyring under lock, but we do need
-+	/*
-+	 * Attach the key to the destination keyring under lock, but we do need
- 	 * to do another check just in case someone beat us to it whilst we
--	 * waited for locks */
-+	 * waited for locks.
-+	 *
-+	 * The caller might specify a comparison function which looks for keys
-+	 * that do not exactly match but are still equivalent from the caller's
-+	 * perspective. The __key_link_begin() operation must be done only after
-+	 * an actual key is determined.
-+	 */
- 	mutex_lock(&key_construction_mutex);
- 
- 	rcu_read_lock();
-@@ -417,12 +421,16 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	if (!IS_ERR(key_ref))
- 		goto key_already_present;
- 
--	if (dest_keyring)
-+	if (dest_keyring) {
-+		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-+		if (ret < 0)
-+			goto link_alloc_failed;
- 		__key_link(dest_keyring, key, &edit);
-+	}
- 
- 	mutex_unlock(&key_construction_mutex);
- 	if (dest_keyring)
--		__key_link_end(dest_keyring, &ctx->index_key, edit);
-+		__key_link_end(dest_keyring, &key->index_key, edit);
- 	mutex_unlock(&user->cons_lock);
- 	*_key = key;
- 	kleave(" = 0 [%d]", key_serial(key));
-@@ -435,10 +443,13 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	mutex_unlock(&key_construction_mutex);
- 	key = key_ref_to_ptr(key_ref);
- 	if (dest_keyring) {
-+		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-+		if (ret < 0)
-+			goto link_alloc_failed_unlocked;
- 		ret = __key_link_check_live_key(dest_keyring, key);
- 		if (ret == 0)
- 			__key_link(dest_keyring, key, &edit);
--		__key_link_end(dest_keyring, &ctx->index_key, edit);
-+		__key_link_end(dest_keyring, &key->index_key, edit);
- 		if (ret < 0)
- 			goto link_check_failed;
- 	}
-@@ -453,8 +464,10 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
- 	kleave(" = %d [linkcheck]", ret);
- 	return ret;
- 
--link_prealloc_failed:
--	__key_link_end(dest_keyring, &ctx->index_key, edit);
-+link_alloc_failed:
-+	mutex_unlock(&key_construction_mutex);
-+link_alloc_failed_unlocked:
-+	__key_link_end(dest_keyring, &key->index_key, edit);
- link_lock_failed:
- 	mutex_unlock(&user->cons_lock);
- 	key_put(key);
--- 
-2.35.3
-
+Pozdrawiam
+Adam Charachuta
