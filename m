@@ -2,118 +2,201 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7660C6CC4C5
-	for <lists+keyrings@lfdr.de>; Tue, 28 Mar 2023 17:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 207F16CCAD7
+	for <lists+keyrings@lfdr.de>; Tue, 28 Mar 2023 21:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbjC1PIl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 28 Mar 2023 11:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48232 "EHLO
+        id S229477AbjC1TmR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 Mar 2023 15:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230514AbjC1PIk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Mar 2023 11:08:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00868EB4A;
-        Tue, 28 Mar 2023 08:07:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 918A26177C;
-        Tue, 28 Mar 2023 15:07:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8FBC433EF;
-        Tue, 28 Mar 2023 15:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1680016036;
-        bh=4Y8/xJhwU7aJXJUzYvMwx8jzSFFEXA9tPwndwM5aX+Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r5Y+TpE6hjj3sm4q2AuPOiJE/7kSEZiwBm+APHLfU8F4CxTIjRpKxxBbU4aKzjS16
-         EENvVB/U9Wnv7e0kaLUV9hi9EmKtQU0zcLFzbCIHx2UIJCMyt2Y8WhwEiQkShosaS6
-         ukqsDiEb01MK5JCATzAiUZkhLG0qKbrlMDm+NCFw=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Shyam Prasad N <nspmangalore@gmail.com>,
-        Steve French <smfrench@gmail.com>, keyrings@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/146] keys: Do not cache key in task struct if key is requested from kernel thread
-Date:   Tue, 28 Mar 2023 16:42:11 +0200
-Message-Id: <20230328142604.463872344@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230328142602.660084725@linuxfoundation.org>
-References: <20230328142602.660084725@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S229436AbjC1TmQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Mar 2023 15:42:16 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 653539F;
+        Tue, 28 Mar 2023 12:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1680032532;
+        bh=EnCIZR9L3TlBlrVGMnuA5qvZ9gv41Av4SPp4vWEd8Zw=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=CGDvjj2hkMeFEVn2JyDmbuRZktoKUo6bBE48kp2fncOJceVjg7bJbYfvDyYWhpEKP
+         oqIcHgIaA/kjXyeCJ+EEdCJzfDCwmuSm5Z2ME0jZXpuPISt6NDtc64EiT9EB2e+C5A
+         /fKQI279uzVCyopu4wbpH3cZmj7Cgaawu0c7v+7c=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id B238E12807C5;
+        Tue, 28 Mar 2023 15:42:12 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id Hn-nqg_EzYuD; Tue, 28 Mar 2023 15:42:12 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1680032532;
+        bh=EnCIZR9L3TlBlrVGMnuA5qvZ9gv41Av4SPp4vWEd8Zw=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=CGDvjj2hkMeFEVn2JyDmbuRZktoKUo6bBE48kp2fncOJceVjg7bJbYfvDyYWhpEKP
+         oqIcHgIaA/kjXyeCJ+EEdCJzfDCwmuSm5Z2ME0jZXpuPISt6NDtc64EiT9EB2e+C5A
+         /fKQI279uzVCyopu4wbpH3cZmj7Cgaawu0c7v+7c=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 0ABE012806FC;
+        Tue, 28 Mar 2023 15:42:11 -0400 (EDT)
+Message-ID: <981c339a6f09cd16a1d677e0fc2df1bdf1a5baec.camel@HansenPartnership.com>
+Subject: Re: [PATCH 03/12] tpm: add buffer handling for TPM2B types
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 28 Mar 2023 15:42:09 -0400
+In-Reply-To: <Y/xqbCwh+VBmJ1ZL@kernel.org>
+References: <20230216201410.15010-1-James.Bottomley@HansenPartnership.com>
+         <20230216201410.15010-4-James.Bottomley@HansenPartnership.com>
+         <Y/xqbCwh+VBmJ1ZL@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+On Mon, 2023-02-27 at 10:31 +0200, Jarkko Sakkinen wrote:
+> On Thu, Feb 16, 2023 at 03:14:01PM -0500, James Bottomley wrote:
+> > Most complex TPM commands require appending TPM2B buffers to the
+> > command body.  Since TPM2B types are essentially variable size
+> > arrays, it makes it impossible to represent these complex command
+> > arguments as structures and we simply have to build them up using
+> > append primitives like these.
+> > 
+> > Signed-off-by: James Bottomley
+> > <James.Bottomley@HansenPartnership.com>
+> > ---
+> >  drivers/char/tpm/tpm-buf.c | 71
+> > +++++++++++++++++++++++++++++++++++---
+> >  include/linux/tpm.h        |  3 ++
+> >  2 files changed, 69 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-
+> > buf.c
+> > index ca59b92e0f95..292c6f14f72c 100644
+> > --- a/drivers/char/tpm/tpm-buf.c
+> > +++ b/drivers/char/tpm/tpm-buf.c
+> > @@ -7,17 +7,16 @@
+> >  #include <linux/module.h>
+> >  #include <linux/tpm.h>
+> >  
+> > -int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
+> > +static int __tpm_buf_init(struct tpm_buf *buf)
+> >  {
+> >         buf->data = (u8 *)__get_free_page(GFP_KERNEL);
+> >         if (!buf->data)
+> >                 return -ENOMEM;
+> >  
+> >         buf->flags = 0;
+> > -       tpm_buf_reset(buf, tag, ordinal);
+> > +
+> >         return 0;
+> >  }
+> > -EXPORT_SYMBOL_GPL(tpm_buf_init);
+> >  
+> >  void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal)
+> >  {
+> > @@ -29,17 +28,60 @@ void tpm_buf_reset(struct tpm_buf *buf, u16
+> > tag, u32 ordinal)
+> >  }
+> >  EXPORT_SYMBOL_GPL(tpm_buf_reset);
+> >  
+> > +int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
+> > +{
+> > +       int rc;
+> > +
+> > +       rc = __tpm_buf_init(buf);
+> > +       if (rc)
+> > +               return rc;
+> > +
+> > +       tpm_buf_reset(buf, tag, ordinal);
+> > +
+> > +       return 0;
+> > +}
+> > +EXPORT_SYMBOL_GPL(tpm_buf_init);
+> > +
+> > +int tpm_buf_init_2b(struct tpm_buf *buf)
+> 
+> kdoc
 
-[ Upstream commit 47f9e4c924025c5be87959d3335e66fcbb7f6b5c ]
+I'm currently working on adding kdoc to everything.  However:
 
-The key which gets cached in task structure from a kernel thread does not
-get invalidated even after expiry.  Due to which, a new key request from
-kernel thread will be served with the cached key if it's present in task
-struct irrespective of the key validity.  The change is to not cache key in
-task_struct when key requested from kernel thread so that kernel thread
-gets a valid key on every key request.
+> > +{
+> > +       struct tpm_header *head;
+> > +       int rc;
+> > +
+> > +       rc = __tpm_buf_init(buf);
+> > +       if (rc)
+> > +               return rc;
+> > +
+> > +       head = (struct tpm_header *) buf->data;
+> > +
+> > +       head->length = cpu_to_be32(sizeof(*head));
+> > +
+> > +       buf->flags = TPM_BUF_2B;
+> 
+> Please make tpm_buf_init() and tpm_buf_reset() to work for both
+> cases.
 
-The problem has been seen with the cifs module doing DNS lookups from a
-kernel thread and the results getting pinned by being attached to that
-kernel thread's cache - and thus not something that can be easily got rid
-of.  The cache would ordinarily be cleared by notify-resume, but kernel
-threads don't do that.
+That's not a good idea: tpm_buf_init() and tpm_buf_reset() are used to
+initialize *command* buffers.  tpm_buf_init_2b() is used for parameters
+within commands and can't encompass whole commands, so the arguments
+are different (that's why tpm_buf_init_2b() has no tag or ordinal).
 
-This isn't seen with AFS because AFS is doing request_key() within the
-kernel half of a user thread - which will do notify-resume.
+> This explodes the whole thing into an unmaintainable mess. It is
+> better to have a type as a parameter for tpm_buf_init() and have only
+> single flow instead of open coded and patched variation.
+> 
+> I'd simply just put it as:
+> 
+> struct tpm_buf *tpm_buf_init(u16 tag, u32 ordinal, bool tpm2b)
 
-Fixes: 7743c48e54ee ("keys: Cache result of request_key*() temporarily in task_struct")
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Steve French <smfrench@gmail.com>
-cc: keyrings@vger.kernel.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/CAGypqWw951d=zYRbdgNR4snUDvJhWL=q3=WOyh7HhSJupjz2vA@mail.gmail.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- security/keys/request_key.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+The convention in Linux is that it's better to have named initializers
+if we can rather than use less obvious booleans or flags ... think the
+conversion from printk(KERN_ERR, ...) to pr_err(...)
 
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 2da4404276f0f..07a0ef2baacd8 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -38,9 +38,12 @@ static void cache_requested_key(struct key *key)
- #ifdef CONFIG_KEYS_REQUEST_CACHE
- 	struct task_struct *t = current;
- 
--	key_put(t->cached_requested_key);
--	t->cached_requested_key = key_get(key);
--	set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
-+	/* Do not cache key if it is a kernel thread */
-+	if (!(t->flags & PF_KTHREAD)) {
-+		key_put(t->cached_requested_key);
-+		t->cached_requested_key = key_get(key);
-+		set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
-+	}
- #endif
- }
- 
--- 
-2.39.2
+Additionally tag and ordinal have no meaning for a tpm2b, so you're
+really gluing two incompatible initializations into one which is bound
+to cause confusion.
 
+I've no objection in principle to doing a reset of a tpm2b (except,
+again, it has no use for tag or ordinal) but I've just not got any code
+that would use it, so I was leaving it out until someone had an actual
+use case.
 
+[...]
+> > index 150b39b6190e..f2d4dab6d832 100644
+> > --- a/include/linux/tpm.h
+> > +++ b/include/linux/tpm.h
+> > @@ -300,6 +300,7 @@ struct tpm_header {
+> >  
+> >  enum tpm_buf_flags {
+> >         TPM_BUF_OVERFLOW        = BIT(0),
+> > +       TPM_BUF_2B              = BIT(1),
+> >  };
+> 
+> 
+> This is IMHO unnecessary complex.
+> 
+> I think we could just have two bools:
+> 
+>         bool overflow;
+>         bool tpm2b;
+
+The advice (in the coding-style.rst bool section) is not to do this but
+go the other way (so use flags instead of a string of bools).  The
+reason is that even though bool represents a true/false value, it
+usually takes one machine word (32 bits or sometimes more) to do it, so
+bools tend to bloat structures over single bit fields.
+
+James
 
