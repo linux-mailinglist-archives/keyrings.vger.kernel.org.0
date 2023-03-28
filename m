@@ -2,125 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 203386C9ECF
-	for <lists+keyrings@lfdr.de>; Mon, 27 Mar 2023 11:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4C96CC2D7
+	for <lists+keyrings@lfdr.de>; Tue, 28 Mar 2023 16:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233028AbjC0JED (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 27 Mar 2023 05:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42318 "EHLO
+        id S233406AbjC1OtJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 28 Mar 2023 10:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233068AbjC0JDU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 27 Mar 2023 05:03:20 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAC1640FB
-        for <keyrings@vger.kernel.org>; Mon, 27 Mar 2023 02:01:21 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id ek18so32876562edb.6
-        for <keyrings@vger.kernel.org>; Mon, 27 Mar 2023 02:01:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679907680;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IE0Q22t9nDUcBAUVsmYKmeg+5EtHh5OHc8AXl8b80GM=;
-        b=OihXmwio4mwjtZG1PYu/XEem/kfRZO2okf/Rb2HuUyAHQLo8ebw/PVWxDt1Sp22FQ1
-         5jdBArl3/NfJWtOiK47wXO0Szl8S0M/BoBnnJJ80NK74LdOsEkjIP9LSNvfucuC15g4d
-         Ho2QscItdPbLDsOEkoxohEQBNrWmECQIK1FykiyzYRe2lEyDWa/e7AkP98Z30cAFCZi0
-         njyKdW0Xq+90aOx2/4FPva+VcSSIYsokX97zlYAHh/oFUv2HrCxoxpdE60OKPXwy5jEl
-         pnkVGflez1zDahMOcgmyxrHUqBeynf+1rayXuryoGvQewi20Rc2qaIkU1Ex4SJv4nodU
-         mljA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679907680;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IE0Q22t9nDUcBAUVsmYKmeg+5EtHh5OHc8AXl8b80GM=;
-        b=NjjMvCOQMJQchn6UKobKdF0Zen86qyI+ff49+/OumdOI4oeIzx/bEZedRJwFN4Jtzs
-         Oq3bEMCOrvM7ZM7f3WP0ZYObuqC8/x2xExmR95SwdKDSx759b7vOfp3C0xUonyqKq5BG
-         6HJp2t1kQi9/Al1YuNfVsC8wjmY21fP0pHiTCYoJ3rtj7t7cQTFqtRzmJ4ivndYKIM5m
-         OlB6YJXTOof9rSDbumEiPDt4Mi6zk0DTjpcJgvzUufu/e5KAKUS6jrmNPf9U0esAZdZf
-         6WmJIZ0Q1IPxVtZV8dcJ0RoX7yAiOcblIGvG1COZe7d/IQmeDWSrhJNKKnpCAK+9yyyY
-         jiaQ==
-X-Gm-Message-State: AAQBX9dDP9SGaF+HvxQXWHe40T1p/xofZOxUhbupFoU5DMSn9kaSpL6B
-        Sgayaz63d6GHVG0mruyrevgI/0pPBug2IMBjxfU=
-X-Google-Smtp-Source: AKy350Yrj9keRQQqJeSgurNYpnVSnbTsyBdDwQHBTd59FFBFrfZ3h9/OlpuA3UbEiGyWr2+R9s+qn/PxzxwrSHiOdYI=
-X-Received: by 2002:a50:c343:0:b0:4fa:cef4:a27f with SMTP id
- q3-20020a50c343000000b004facef4a27fmr5624736edb.2.1679907680199; Mon, 27 Mar
- 2023 02:01:20 -0700 (PDT)
+        with ESMTP id S233363AbjC1Osq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 28 Mar 2023 10:48:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DD75C155;
+        Tue, 28 Mar 2023 07:48:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C473F61826;
+        Tue, 28 Mar 2023 14:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6054C433EF;
+        Tue, 28 Mar 2023 14:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1680014903;
+        bh=4Y8/xJhwU7aJXJUzYvMwx8jzSFFEXA9tPwndwM5aX+Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=fqIVVzpUm8m4ymi6Elj0QtIKmvFzparOAcowwKp9uAsfxPw8hFuwVrNgPucmCEJHK
+         veXDll+HlwuntJktcxeR/MLXTzNqcjf7G+gftu4bQdMftEmxcLh78IrDY7XmX+RvF3
+         g+3O4nO1kkbtbyFm9EurTHWsWw++W7EAj6seKUzI=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Steve French <smfrench@gmail.com>, keyrings@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 067/240] keys: Do not cache key in task struct if key is requested from kernel thread
+Date:   Tue, 28 Mar 2023 16:40:30 +0200
+Message-Id: <20230328142622.530564908@linuxfoundation.org>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230328142619.643313678@linuxfoundation.org>
+References: <20230328142619.643313678@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Received: by 2002:a17:906:a397:b0:88b:66b4:3e87 with HTTP; Mon, 27 Mar 2023
- 02:01:19 -0700 (PDT)
-Reply-To: annamalgorzata587@gmail.com
-From:   "Leszczynska Anna Malgorzata." <va3315021@gmail.com>
-Date:   Mon, 27 Mar 2023 02:01:19 -0700
-Message-ID: <CAJAAtyyZbXVhdNjpMFocsJBsk_ytzt1gwb7VEjqigV775gnJkQ@mail.gmail.com>
-Subject: Mrs. Leszczynska Anna Malgorzata.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=ADVANCE_FEE_5_NEW,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:52b listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [va3315021[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [va3315021[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [annamalgorzata587[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.8 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+From: David Howells <dhowells@redhat.com>
+
+[ Upstream commit 47f9e4c924025c5be87959d3335e66fcbb7f6b5c ]
+
+The key which gets cached in task structure from a kernel thread does not
+get invalidated even after expiry.  Due to which, a new key request from
+kernel thread will be served with the cached key if it's present in task
+struct irrespective of the key validity.  The change is to not cache key in
+task_struct when key requested from kernel thread so that kernel thread
+gets a valid key on every key request.
+
+The problem has been seen with the cifs module doing DNS lookups from a
+kernel thread and the results getting pinned by being attached to that
+kernel thread's cache - and thus not something that can be easily got rid
+of.  The cache would ordinarily be cleared by notify-resume, but kernel
+threads don't do that.
+
+This isn't seen with AFS because AFS is doing request_key() within the
+kernel half of a user thread - which will do notify-resume.
+
+Fixes: 7743c48e54ee ("keys: Cache result of request_key*() temporarily in task_struct")
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Steve French <smfrench@gmail.com>
+cc: keyrings@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/CAGypqWw951d=zYRbdgNR4snUDvJhWL=q3=WOyh7HhSJupjz2vA@mail.gmail.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ security/keys/request_key.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/security/keys/request_key.c b/security/keys/request_key.c
+index 2da4404276f0f..07a0ef2baacd8 100644
+--- a/security/keys/request_key.c
++++ b/security/keys/request_key.c
+@@ -38,9 +38,12 @@ static void cache_requested_key(struct key *key)
+ #ifdef CONFIG_KEYS_REQUEST_CACHE
+ 	struct task_struct *t = current;
+ 
+-	key_put(t->cached_requested_key);
+-	t->cached_requested_key = key_get(key);
+-	set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
++	/* Do not cache key if it is a kernel thread */
++	if (!(t->flags & PF_KTHREAD)) {
++		key_put(t->cached_requested_key);
++		t->cached_requested_key = key_get(key);
++		set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
++	}
+ #endif
+ }
+ 
 -- 
-I am Mrs. Leszczynska Anna Malgorzatafrom  from Germany Presently
-admitted  in one of the hospitals here in Ivory Coast.
+2.39.2
 
-I and my late husband do not have any child that is why I am donating
-this money to you having known my condition that I will join my late
-husband soonest.
 
-I wish to donate towards education and the less privileged I ask for
-your assistance. I am suffering from colon cancer I have some few
-weeks to live according to my doctor.
 
-The money should be used for this purpose.
-Motherless babies
-Children orphaned by aids.
-Destitute children
-Widows and Widowers.
-Children who cannot afford education.
-
-My husband stressed the importance of education and the less
-privileged I feel that this is what he would have wanted me to do with
-the money that he left for charity.
-
-These services bring so much joy to the kids. Together we are
-transforming lives and building brighter futures - but without you, it
-just would not be possible.
-
-Sincerely,
-
-Mrs. Leszczynska Anna Malgorzata.
