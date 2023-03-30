@@ -2,227 +2,201 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC7E96CF819
-	for <lists+keyrings@lfdr.de>; Thu, 30 Mar 2023 02:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E762D6CFB2A
+	for <lists+keyrings@lfdr.de>; Thu, 30 Mar 2023 08:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbjC3AOK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 29 Mar 2023 20:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
+        id S230001AbjC3GCp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 30 Mar 2023 02:02:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229756AbjC3AOJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 29 Mar 2023 20:14:09 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0151C423A;
-        Wed, 29 Mar 2023 17:14:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9B2D5B82100;
-        Thu, 30 Mar 2023 00:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C48C433EF;
-        Thu, 30 Mar 2023 00:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680135238;
-        bh=tYHCEIojzv25PjRE2jg0W657UEBIQswj9r2DHDHUvvg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=acUaVla6O3YM6bwhRd8HTvmbv28UHoAb9mSKQ9Bi0BoXQGSmtgYIwkhFn1EJi7Y05
-         DIWWb6XNuHgf71tPlz44+HOSuRSNj6sj181IkYwGoVw1gHYrDpbY4866b9e4oDMpkq
-         0EgOpQL4JkTm7jsYnCQzRNF6FaxAun1PBaKyhQlQleIU3bLBdSx1twGX5i/43f4TE2
-         3RRXNOdxvqe92WwgZ+KFDUofIFCtsdc5JDXENZM16RD/ii0EiMq46MbK5YPS07ZgPo
-         nMk/nTpjmif9rJEAThOhRp9scbLonR5SAE4w6l0DEOCGuT+9Da8XrIyfkJMjiyuW2Y
-         finpuO0rXUyoQ==
-Date:   Thu, 30 Mar 2023 03:13:55 +0300
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Petr Pavlu <petr.pavlu@suse.com>
-Cc:     dhowells@redhat.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] keys: Fix linking a duplicate key to a keyring's
- assoc_array
-Message-ID: <20230330001355.dyazfwx4tyiyvux2@kernel.org>
-References: <20230323130412.32097-1-petr.pavlu@suse.com>
+        with ESMTP id S229717AbjC3GCo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 30 Mar 2023 02:02:44 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0E761B5;
+        Wed, 29 Mar 2023 23:02:30 -0700 (PDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32U5cVhZ015618;
+        Thu, 30 Mar 2023 06:02:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=D8BLJKqTKr4rrKXsGkt3MWAUhN1P3ddzzG00QTMTrcA=;
+ b=CIgbVvP8nY4lSzLuwgFNXcbkpi0+yT2OAzGlRC+5Xf1sH7i6BE+m1AZPjX0MYkzPllSt
+ iNNjguigA39uPBENAZfX1cB+KjR28PFsjmCGwPLFGJr49g9+YGRqtNtv96m0zXmA2p4d
+ UfEKZUxd5z5TVgV4ugp9aELRGs0Xpk/1fJNSBTUXQyp4TrDXBDpSw+gW8CsoGig1rPO1
+ mRNiPHxZw7YXc8+AY1VbYpXdoCETJtfUyM1n24NZ/dq9O7G2hjSXiOPCcyc+vyAkox/t
+ bA17STqHKwXVy9rH7r+tte/exp1PVFL9ImCHQP5hWw5D4uXi3zzD/ZgQI6UxmPCMGWck rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmph951bn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 30 Mar 2023 06:02:01 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32U5qwwR026070;
+        Thu, 30 Mar 2023 06:02:01 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pmph951au-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 30 Mar 2023 06:02:00 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32U2JgfY002608;
+        Thu, 30 Mar 2023 06:01:59 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+        by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3phrk7jc4t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 30 Mar 2023 06:01:59 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32U61wF239322280
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 30 Mar 2023 06:01:58 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8AFCF580FF;
+        Thu, 30 Mar 2023 06:01:58 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DE5DF580F9;
+        Thu, 30 Mar 2023 06:01:53 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.174.114])
+        by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 30 Mar 2023 06:01:53 +0000 (GMT)
+Message-ID: <55b5c21ee1cf47aff0b2e5a94ec65fe326c8d6ba.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 5/6] KEYS: CA link restriction
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "pvorel@suse.cz" <pvorel@suse.cz>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>,
+        "erpalmer@linux.vnet.ibm.com" <erpalmer@linux.vnet.ibm.com>,
+        "coxu@redhat.com" <coxu@redhat.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Date:   Thu, 30 Mar 2023 02:01:52 -0400
+In-Reply-To: <20230329232735.dvmxvwis2psbvyw5@kernel.org>
+References: <20230302164652.83571-1-eric.snowberg@oracle.com>
+         <20230302164652.83571-6-eric.snowberg@oracle.com>
+         <ZAz8QlynTSMD7kuE@kernel.org>
+         <07FFED83-501D-418C-A4BB-862A547DD7B0@oracle.com>
+         <20230320182822.6xyh6ibatrz5yrhb@kernel.org>
+         <84d46fb108f6ce2a322b6486529fc6dd0f8deea5.camel@linux.ibm.com>
+         <20230329232735.dvmxvwis2psbvyw5@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -AYgNS0hJQzkaFq2dbj8oeeSCLCBxsU7
+X-Proofpoint-ORIG-GUID: dV2z4ZQOEAl_wn7WkpC7Te5PoSYskE6S
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230323130412.32097-1-petr.pavlu@suse.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-30_02,2023-03-30_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
+ impostorscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303300047
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 02:04:12PM +0100, Petr Pavlu wrote:
-> When making a DNS query inside the kernel using dns_query(), the request
-> code can in rare cases end up creating a duplicate index key in the
-> assoc_array of the destination keyring. It is eventually found by
-> a BUG_ON() check in the assoc_array implementation and results in
-> a crash.
+On Thu, 2023-03-30 at 02:27 +0300, Jarkko Sakkinen wrote:
+> On Mon, Mar 20, 2023 at 04:35:33PM -0400, Mimi Zohar wrote:
+> > On Mon, 2023-03-20 at 20:28 +0200, Jarkko Sakkinen wrote:
+> > > On Mon, Mar 20, 2023 at 05:35:05PM +0000, Eric Snowberg wrote:
+> > > > 
+> > > > 
+> > > > > On Mar 11, 2023, at 3:10 PM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > > 
+> > > > > On Thu, Mar 02, 2023 at 11:46:51AM -0500, Eric Snowberg wrote:
+> > > > >> Add a new link restriction.  Restrict the addition of keys in a keyring
+> > > > >> based on the key to be added being a CA.
+> > > > >> 
+> > > > >> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> > > > >> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > > > >> ---
+> > > > >> crypto/asymmetric_keys/restrict.c | 38 +++++++++++++++++++++++++++++++
+> > > > >> include/crypto/public_key.h       | 15 ++++++++++++
+> > > > >> 2 files changed, 53 insertions(+)
+> > > > >> 
+> > > > >> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
+> > > > >> index 6b1ac5f5896a..48457c6f33f9 100644
+> > > > >> --- a/crypto/asymmetric_keys/restrict.c
+> > > > >> +++ b/crypto/asymmetric_keys/restrict.c
+> > > > >> @@ -108,6 +108,44 @@ int restrict_link_by_signature(struct key *dest_keyring,
+> > > > >> 	return ret;
+> > > > >> }
+> > > > >> 
+> > > > >> +/**
+> > > > >> + * restrict_link_by_ca - Restrict additions to a ring of CA keys
+> > > > >> + * @dest_keyring: Keyring being linked to.
+> > > > >> + * @type: The type of key being added.
+> > > > >> + * @payload: The payload of the new key.
+> > > > >> + * @trust_keyring: Unused.
+> > > > >> + *
+> > > > >> + * Check if the new certificate is a CA. If it is a CA, then mark the new
+> > > > >> + * certificate as being ok to link.
+> > > > >> + *
+> > > > >> + * Returns 0 if the new certificate was accepted, -ENOKEY if the
+> > > > >> + * certificate is not a CA. -ENOPKG if the signature uses unsupported
+> > > > >> + * crypto, or some other error if there is a matching certificate but
+> > > > >> + * the signature check cannot be performed.
+> > > > >> + */
+> > > > >> +int restrict_link_by_ca(struct key *dest_keyring,
+> > > > >> +			const struct key_type *type,
+> > > > >> +			const union key_payload *payload,
+> > > > >> +			struct key *trust_keyring)
+> > > > >> +{
+> > > > >> +	const struct public_key *pkey;
+> > > > >> +
+> > > > >> +	if (type != &key_type_asymmetric)
+> > > > >> +		return -EOPNOTSUPP;
+> > > > >> +
+> > > > >> +	pkey = payload->data[asym_crypto];
+> > > > >> +	if (!pkey)
+> > > > >> +		return -ENOPKG;
+> > > > >> +	if (!test_bit(KEY_EFLAG_CA, &pkey->key_eflags))
+> > > > >> +		return -ENOKEY;
+> > > > >> +	if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
+> > > > >> +		return -ENOKEY;
+> > > > >> +	if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
+> > > > >> +		return -ENOKEY;
+> > > > > 
+> > > > > nit: would be more readable, if conditions were separated by
+> > > > > empty lines.
+> > > > 
+> > > > Ok, I will make this change in the next round.  Thanks.
+> > > 
+> > > Cool! Mimi have you tested these patches with IMA applied?
+> > 
+> > Yes, it's working as expected.
 > 
-> Example report:
-> [2158499.700025] kernel BUG at ../lib/assoc_array.c:652!
-> [2158499.700039] invalid opcode: 0000 [#1] SMP PTI
-> [2158499.700065] CPU: 3 PID: 31985 Comm: kworker/3:1 Kdump: loaded Not tainted 5.3.18-150300.59.90-default #1 SLE15-SP3
-> [2158499.700096] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-> [2158499.700351] Workqueue: cifsiod cifs_resolve_server [cifs]
-> [2158499.700380] RIP: 0010:assoc_array_insert+0x85f/0xa40
-> [2158499.700401] Code: ff 74 2b 48 8b 3b 49 8b 45 18 4c 89 e6 48 83 e7 fe e8 95 ec 74 00 3b 45 88 7d db 85 c0 79 d4 0f 0b 0f 0b 0f 0b e8 41 f2 be ff <0f> 0b 0f 0b 81 7d 88 ff ff ff 7f 4c 89 eb 4c 8b ad 58 ff ff ff 0f
-> [2158499.700448] RSP: 0018:ffffc0bd6187faf0 EFLAGS: 00010282
-> [2158499.700470] RAX: ffff9f1ea7da2fe8 RBX: ffff9f1ea7da2fc1 RCX: 0000000000000005
-> [2158499.700492] RDX: 0000000000000000 RSI: 0000000000000005 RDI: 0000000000000000
-> [2158499.700515] RBP: ffffc0bd6187fbb0 R08: ffff9f185faf1100 R09: 0000000000000000
-> [2158499.700538] R10: ffff9f1ea7da2cc0 R11: 000000005ed8cec8 R12: ffffc0bd6187fc28
-> [2158499.700561] R13: ffff9f15feb8d000 R14: ffff9f1ea7da2fc0 R15: ffff9f168dc0d740
-> [2158499.700585] FS:  0000000000000000(0000) GS:ffff9f185fac0000(0000) knlGS:0000000000000000
-> [2158499.700610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [2158499.700630] CR2: 00007fdd94fca238 CR3: 0000000809d8c006 CR4: 00000000003706e0
-> [2158499.700702] Call Trace:
-> [2158499.700741]  ? key_alloc+0x447/0x4b0
-> [2158499.700768]  ? __key_link_begin+0x43/0xa0
-> [2158499.700790]  __key_link_begin+0x43/0xa0
-> [2158499.700814]  request_key_and_link+0x2c7/0x730
-> [2158499.700847]  ? dns_resolver_read+0x20/0x20 [dns_resolver]
-> [2158499.700873]  ? key_default_cmp+0x20/0x20
-> [2158499.700898]  request_key_tag+0x43/0xa0
-> [2158499.700926]  dns_query+0x114/0x2ca [dns_resolver]
-> [2158499.701127]  dns_resolve_server_name_to_ip+0x194/0x310 [cifs]
-> [2158499.701164]  ? scnprintf+0x49/0x90
-> [2158499.701190]  ? __switch_to_asm+0x40/0x70
-> [2158499.701211]  ? __switch_to_asm+0x34/0x70
-> [2158499.701405]  reconn_set_ipaddr_from_hostname+0x81/0x2a0 [cifs]
-> [2158499.701603]  cifs_resolve_server+0x4b/0xd0 [cifs]
-> [2158499.701632]  process_one_work+0x1f8/0x3e0
-> [2158499.701658]  worker_thread+0x2d/0x3f0
-> [2158499.701682]  ? process_one_work+0x3e0/0x3e0
-> [2158499.701703]  kthread+0x10d/0x130
-> [2158499.701723]  ? kthread_park+0xb0/0xb0
-> [2158499.701746]  ret_from_fork+0x1f/0x40
+> Thank you. Please check that I filled additional tags correctly:
 > 
-> The situation occurs as follows:
-> * Some kernel facility invokes dns_query() to resolve a hostname, for
->   example, "abcdef". The function registers its global DNS resolver
->   cache as current->cred.thread_keyring and passes the query to
->   request_key_net() -> request_key_tag() -> request_key_and_link().
-> * Function request_key_and_link() creates a keyring_search_context
->   object. Its match_data.cmp method gets set via a call to
->   type->match_preparse() (resolves to dns_resolver_match_preparse()) to
->   dns_resolver_cmp().
-> * Function request_key_and_link() continues and invokes
->   search_process_keyrings_rcu() which returns that a given key was not
->   found. The control is then passed to request_key_and_link() ->
->   construct_alloc_key().
-> * Concurrently to that, a second task similarly makes a DNS query for
->   "abcdef." and its result gets inserted into the DNS resolver cache.
-> * Back on the first task, function construct_alloc_key() first runs
->   __key_link_begin() to determine an assoc_array_edit operation to
->   insert a new key. Index keys in the array are compared exactly as-is,
->   using keyring_compare_object(). The operation finds that "abcdef" is
->   not yet present in the destination keyring.
-> * Function construct_alloc_key() continues and checks if a given key is
->   already present on some keyring by again calling
->   search_process_keyrings_rcu(). This search is done using
->   dns_resolver_cmp() and "abcdef" gets matched with now present key
->   "abcdef.".
-> * The found key is linked on the destination keyring by calling
->   __key_link() and using the previously calculated assoc_array_edit
->   operation. This inserts the "abcdef." key in the array but creates
->   a duplicity because the same index key is already present.
+> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/
 > 
-> Fix the problem by postponing __key_link_begin() in
-> construct_alloc_key() until an actual key which should be linked into
-> the destination keyring is determined.
-> 
-> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-> ---
->  security/keys/request_key.c | 35 ++++++++++++++++++++++++-----------
->  1 file changed, 24 insertions(+), 11 deletions(-)
-> 
-> diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-> index 2da4404276f0..04eb7e4cedad 100644
-> --- a/security/keys/request_key.c
-> +++ b/security/keys/request_key.c
-> @@ -398,17 +398,21 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
->  	set_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags);
->  
->  	if (dest_keyring) {
-> -		ret = __key_link_lock(dest_keyring, &ctx->index_key);
-> +		ret = __key_link_lock(dest_keyring, &key->index_key);
->  		if (ret < 0)
->  			goto link_lock_failed;
-> -		ret = __key_link_begin(dest_keyring, &ctx->index_key, &edit);
-> -		if (ret < 0)
-> -			goto link_prealloc_failed;
->  	}
->  
-> -	/* attach the key to the destination keyring under lock, but we do need
-> +	/*
-> +	 * Attach the key to the destination keyring under lock, but we do need
->  	 * to do another check just in case someone beat us to it whilst we
-> -	 * waited for locks */
-> +	 * waited for locks.
-> +	 *
-> +	 * The caller might specify a comparison function which looks for keys
-> +	 * that do not exactly match but are still equivalent from the caller's
-> +	 * perspective. The __key_link_begin() operation must be done only after
-> +	 * an actual key is determined.
-> +	 */
->  	mutex_lock(&key_construction_mutex);
->  
->  	rcu_read_lock();
-> @@ -417,12 +421,16 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
->  	if (!IS_ERR(key_ref))
->  		goto key_already_present;
->  
-> -	if (dest_keyring)
-> +	if (dest_keyring) {
-> +		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-> +		if (ret < 0)
-> +			goto link_alloc_failed;
->  		__key_link(dest_keyring, key, &edit);
-> +	}
->  
->  	mutex_unlock(&key_construction_mutex);
->  	if (dest_keyring)
-> -		__key_link_end(dest_keyring, &ctx->index_key, edit);
-> +		__key_link_end(dest_keyring, &key->index_key, edit);
->  	mutex_unlock(&user->cons_lock);
->  	*_key = key;
->  	kleave(" = 0 [%d]", key_serial(key));
-> @@ -435,10 +443,13 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
->  	mutex_unlock(&key_construction_mutex);
->  	key = key_ref_to_ptr(key_ref);
->  	if (dest_keyring) {
-> +		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
-> +		if (ret < 0)
-> +			goto link_alloc_failed_unlocked;
->  		ret = __key_link_check_live_key(dest_keyring, key);
->  		if (ret == 0)
->  			__key_link(dest_keyring, key, &edit);
-> -		__key_link_end(dest_keyring, &ctx->index_key, edit);
-> +		__key_link_end(dest_keyring, &key->index_key, edit);
->  		if (ret < 0)
->  			goto link_check_failed;
->  	}
-> @@ -453,8 +464,10 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
->  	kleave(" = %d [linkcheck]", ret);
->  	return ret;
->  
-> -link_prealloc_failed:
-> -	__key_link_end(dest_keyring, &ctx->index_key, edit);
-> +link_alloc_failed:
-> +	mutex_unlock(&key_construction_mutex);
-> +link_alloc_failed_unlocked:
-> +	__key_link_end(dest_keyring, &key->index_key, edit);
->  link_lock_failed:
->  	mutex_unlock(&user->cons_lock);
->  	key_put(key);
-> -- 
-> 2.35.3
-> 
+> I will then put these also to my 'next' branch and they will get mirrored
+> to linux-next.
 
-A good catch, thanks.
+Thanks, Jarkko.  The tags look good.
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+-- 
+thanks,
 
-BR, Jarkko
+Mimi
+
