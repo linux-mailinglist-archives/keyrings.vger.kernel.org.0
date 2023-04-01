@@ -2,35 +2,35 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00FD76D2D63
-	for <lists+keyrings@lfdr.de>; Sat,  1 Apr 2023 03:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7296D2D5B
+	for <lists+keyrings@lfdr.de>; Sat,  1 Apr 2023 03:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233929AbjDABuT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        id S233605AbjDABuT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
         Fri, 31 Mar 2023 21:50:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35330 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233592AbjDABt0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 31 Mar 2023 21:49:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A07524AC7;
-        Fri, 31 Mar 2023 18:46:22 -0700 (PDT)
+        with ESMTP id S234097AbjDABt4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 31 Mar 2023 21:49:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F84125459;
+        Fri, 31 Mar 2023 18:46:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1AC07B83312;
-        Sat,  1 Apr 2023 01:44:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2BDC433A7;
-        Sat,  1 Apr 2023 01:44:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0492162D18;
+        Sat,  1 Apr 2023 01:45:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F34CC433A0;
+        Sat,  1 Apr 2023 01:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680313493;
+        s=k20201202; t=1680313501;
         bh=COtBPWd792pj4wDo6QCmYmv27EpEeD8uoH4fJakfhLM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DjENa+A4TY2SY+Bt/t+iRbxo3eTK+/j16K+YntqVPInRDRI+hSf1hUtfkWRrq0liT
-         R5le7hMhIIIUQMxKhscZ6UiGdEz1daHtMwJFiX5fr3eheHJWxbELf8W/qCBq9k7hvS
-         twlNR0DUp7qthgC7b+HIRyBHh3PHo3/I5sAWOMghjkPulyBT4SDvrvbiJnV2ZMLqGX
-         c23iItNDedYB0npbIxB7i6h+GHcHhiLwOKDMH5YEff7gnm9Qlq80podA8WAFftj32W
-         MkJ2KrKCRYuxvS3ZmjxErJsjgjWg4E3drL3/3NcxwGmQUk3a1NF71EjCwzT7u8Fngg
-         rmv1Es0WkLfcg==
+        b=roQzn49CfHGCeK35ch7COHPv7ggSSxsyfIqxPTAUojksAZRCOTM0KvfXX5MCaMUlY
+         ZhO7CWMdffAPqwV3lwzidmUa2EAvQGw+A1Yt8pMDxqCzNOYltHcLtq+4tqa5OP7ADe
+         pug/FkDGrLCO8kZiaqD1WdiRgFRJuATJjLgDOYhP3iVK7p43o8PcgROq0lOZOB1TFd
+         0r7uQGbfMr7bhV+ir4FN+03t3F2p8eTxzj7jm5eib6OYMlPIRqylCQCXiIjIwBtyn/
+         WRI8mkm+IBtqQXVooBgeBFytb9fi6C4HUYUH7nnX4oP7xK09cPdClOqpIvoCTgErye
+         IW8lAI/wGaUfA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Robbie Harwood <rharwood@redhat.com>,
@@ -41,18 +41,18 @@ Cc:     Robbie Harwood <rharwood@redhat.com>,
         keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         kexec@lists.infradead.org, Sasha Levin <sashal@kernel.org>,
         davem@davemloft.net
-Subject: [PATCH AUTOSEL 4.19 4/4] verify_pefile: relax wrapper length check
-Date:   Fri, 31 Mar 2023 21:44:44 -0400
-Message-Id: <20230401014444.3357427-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 3/3] verify_pefile: relax wrapper length check
+Date:   Fri, 31 Mar 2023 21:44:54 -0400
+Message-Id: <20230401014454.3357487-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230401014444.3357427-1-sashal@kernel.org>
-References: <20230401014444.3357427-1-sashal@kernel.org>
+In-Reply-To: <20230401014454.3357487-1-sashal@kernel.org>
+References: <20230401014454.3357487-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
