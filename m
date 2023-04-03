@@ -2,89 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 064A66D3EB6
-	for <lists+keyrings@lfdr.de>; Mon,  3 Apr 2023 10:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 287246D47F6
+	for <lists+keyrings@lfdr.de>; Mon,  3 Apr 2023 16:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231848AbjDCINo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 3 Apr 2023 04:13:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36108 "EHLO
+        id S233225AbjDCOY4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 3 Apr 2023 10:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231555AbjDCINm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Apr 2023 04:13:42 -0400
-X-Greylist: delayed 412 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 03 Apr 2023 01:13:40 PDT
-Received: from mail.loanfly.pl (mail.loanfly.pl [141.94.250.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D798D49F3
-        for <keyrings@vger.kernel.org>; Mon,  3 Apr 2023 01:13:40 -0700 (PDT)
-Received: by mail.loanfly.pl (Postfix, from userid 1002)
-        id 7FAD4A4D49; Mon,  3 Apr 2023 08:05:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=loanfly.pl; s=mail;
-        t=1680509158; bh=flSgn4+IJB03yMaHNopPnR0v50wun3P5Hd/CkHJx2Bc=;
-        h=Date:From:To:Subject:From;
-        b=p3aLorkQcvMFGSdJBA0hNGUSITla7ecfP7o/Y9kweuG/r8eXX2a6BxYXY4LcofbEs
-         YVKCJBTN9D9fWRpYZgq7wCRg+m3qGaq/COO78rWQQ7A6FDUTESZKvVn5bzc7ikFkv+
-         ffYNZzpiDugAMdNQXwdTCyiBgUR2wfFv89wKlvAVoRmqzCoKe2m9ngEcMFejrSbar9
-         D8pS2whhzjLi166TReBqbXlfofAl0L1LIEQdw84LVzaL5vUE8FAGDb4TVpSSYho3Q4
-         kn8ewz1XqUwsux/Mmf1Pjf4y8DxwavE/uSdo/mckj7aEYGVPdN8l0GcPQG/PERL4q2
-         Fx61iI7tDYpQA==
-Received: by mail.loanfly.pl for <keyrings@vger.kernel.org>; Mon,  3 Apr 2023 08:05:09 GMT
-Message-ID: <20230403064500-0.1.9c.10yks.0.ii32n8ro1d@loanfly.pl>
-Date:   Mon,  3 Apr 2023 08:05:09 GMT
-From:   "Damian Cichocki" <damian.cichocki@loanfly.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Prezentacja
-X-Mailer: mail.loanfly.pl
+        with ESMTP id S233254AbjDCOYs (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Apr 2023 10:24:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D022CAC0;
+        Mon,  3 Apr 2023 07:24:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EF281B81BE9;
+        Mon,  3 Apr 2023 14:24:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A138C4339E;
+        Mon,  3 Apr 2023 14:24:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1680531878;
+        bh=4Y8/xJhwU7aJXJUzYvMwx8jzSFFEXA9tPwndwM5aX+Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=KWbO8cTRdTL1cuoQD+uO583ek8vpfgsMhapjFsXBe1qtu7tTWu/GAEck+CK2fgCO9
+         lNhxG0naigLaOD7hV69J3dtSyKeI998q9fWxLn9wNqv8Av9TnNwA96IKvfUysUtios
+         xTZDPzaUAnAappaJvW+H0iCymYE3fhLPGVxtCOdw=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Steve French <smfrench@gmail.com>, keyrings@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 041/173] keys: Do not cache key in task struct if key is requested from kernel thread
+Date:   Mon,  3 Apr 2023 16:07:36 +0200
+Message-Id: <20230403140415.734756121@linuxfoundation.org>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230403140414.174516815@linuxfoundation.org>
+References: <20230403140414.174516815@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_ABUSE_SURBL,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.9 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
-        *      blocklist
-        *      [URIs: loanfly.pl]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: loanfly.pl]
-        *  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [141.94.250.68 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: loanfly.pl]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-X-Spam-Level: *******
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry!
+From: David Howells <dhowells@redhat.com>
 
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
-=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
-zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+[ Upstream commit 47f9e4c924025c5be87959d3335e66fcbb7f6b5c ]
 
-Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
-=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
-dostaw.
+The key which gets cached in task structure from a kernel thread does not
+get invalidated even after expiry.  Due to which, a new key request from
+kernel thread will be served with the cached key if it's present in task
+struct irrespective of the key validity.  The change is to not cache key in
+task_struct when key requested from kernel thread so that kernel thread
+gets a valid key on every key request.
 
-Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
-nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
- co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+The problem has been seen with the cifs module doing DNS lookups from a
+kernel thread and the results getting pinned by being attached to that
+kernel thread's cache - and thus not something that can be easily got rid
+of.  The cache would ordinarily be cleared by notify-resume, but kernel
+threads don't do that.
 
-Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
-=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
-zania w Pa=C5=84stwa firmie.
+This isn't seen with AFS because AFS is doing request_key() within the
+kernel half of a user thread - which will do notify-resume.
+
+Fixes: 7743c48e54ee ("keys: Cache result of request_key*() temporarily in task_struct")
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Steve French <smfrench@gmail.com>
+cc: keyrings@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/CAGypqWw951d=zYRbdgNR4snUDvJhWL=q3=WOyh7HhSJupjz2vA@mail.gmail.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ security/keys/request_key.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/security/keys/request_key.c b/security/keys/request_key.c
+index 2da4404276f0f..07a0ef2baacd8 100644
+--- a/security/keys/request_key.c
++++ b/security/keys/request_key.c
+@@ -38,9 +38,12 @@ static void cache_requested_key(struct key *key)
+ #ifdef CONFIG_KEYS_REQUEST_CACHE
+ 	struct task_struct *t = current;
+ 
+-	key_put(t->cached_requested_key);
+-	t->cached_requested_key = key_get(key);
+-	set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
++	/* Do not cache key if it is a kernel thread */
++	if (!(t->flags & PF_KTHREAD)) {
++		key_put(t->cached_requested_key);
++		t->cached_requested_key = key_get(key);
++		set_tsk_thread_flag(t, TIF_NOTIFY_RESUME);
++	}
+ #endif
+ }
+ 
+-- 
+2.39.2
 
 
-Pozdrawiam,
-Damian Cichocki
+
