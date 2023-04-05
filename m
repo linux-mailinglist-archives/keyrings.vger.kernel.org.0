@@ -2,61 +2,56 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B57E36D6F32
-	for <lists+keyrings@lfdr.de>; Tue,  4 Apr 2023 23:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513886D8626
+	for <lists+keyrings@lfdr.de>; Wed,  5 Apr 2023 20:39:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236520AbjDDVoo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 4 Apr 2023 17:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51448 "EHLO
+        id S234331AbjDESj5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 5 Apr 2023 14:39:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236450AbjDDVon (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Apr 2023 17:44:43 -0400
+        with ESMTP id S234328AbjDESjz (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 5 Apr 2023 14:39:55 -0400
 Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC0510D2;
-        Tue,  4 Apr 2023 14:44:42 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id df34so29731598vsb.8;
-        Tue, 04 Apr 2023 14:44:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817F219BD;
+        Wed,  5 Apr 2023 11:39:53 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id dg15so20692520vsb.13;
+        Wed, 05 Apr 2023 11:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680644681;
+        d=gmail.com; s=20210112; t=1680719992;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rzm7dSvf3pj94c64Y8ldWoEoQKQWGolJek7/mCokcLo=;
-        b=HMWTeliJm1sVeu0vjl35/Qt8rCKS/ODnlCRmcV37LyyuXfvZSj+ervV5UpwlppZHb0
-         RHmjQeSQF5AKmU0LbIbPDV1KG8ixGLDVowmttxcg55jeQJFyQ1BBLiIfE1Lia8El/I42
-         WinHMyGdjASJTewukWTm0TXLTux4hP/4B02qGbcmsarUEmrAXk9PoJwRhzenlB8GibU6
-         f57a5+Tm9KfNrQ01APrcGQrrldqMPjOrgnO+KwS8FSBQHICrsCmjfLcCgnmXMyEM3WDq
-         mrmDXss+6BFJxGGSY0xsLfyJpMm1pmUDCDSWeWc+Y8J57ei8TDC76JXZaYysDlh8h2nU
-         o7VQ==
+        bh=0JOts4sMZ6PyjxaDUE2eL65/Kgph+wVhuYSFnmG+awo=;
+        b=lrFBc+T0MtS1qdh2M9V9/0Q1i+2RxwVttXKdxRlF+t8nCy33XpaSBHc80XWxhaUV6m
+         iioFFWoAPcLX1Z2h4DloCb1Wpg6VPhp3qlsALai89GUkxhLX9Z/bPTN2U/gFdpJCGBjF
+         z5uK+ooiqk26vysbUWdyHL2MJUzsxY3JdrCRpJZ/bCsbmIziWmSjB+IyasMmrRIvvKfo
+         fafY7KZH7l+MYI3ip+EYtTVVA+hJDy8rdJ3QAApJ09KifrBhBWVNMLo+Drlsgu2LsHno
+         bwwUS2GZtA9ZM9WwruY8arAbDhmxBWesArqNcmDqAz2cDqsN2hqnOrhjMWA/D8pIywgI
+         1kaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680644681;
+        d=1e100.net; s=20210112; t=1680719992;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rzm7dSvf3pj94c64Y8ldWoEoQKQWGolJek7/mCokcLo=;
-        b=5+e1lmPNLGipDunDUrRti4S9TbcljXVlWjtXGw3eVzrW41Q0wEhlcpmSjjdwQqmZNI
-         mV/7KuW2Z4zAvmNTd8Xam++smFWyFgdWezM6o7LyLcjpj14GYEJOUqyko+HVGpn3tk4O
-         NgKR8iLZzS7R84Atitq63FQG0cFCX560EKNKM2yoKx0wAEa5sxpao2/t+sQ7sc39HQ+q
-         gcbnxns6gaZzXA37aW8yPiXMVvPYwgGIkQZMG8tBkO1mPFvfGxfVmz99BgGa3LWCsHn9
-         KVH403nVf9p+/V4On7OEHM9LB5DgRVCym8U1Y9eriGclCkSUHZC+iiVtFQCp7yd5oBhF
-         upDA==
-X-Gm-Message-State: AAQBX9fvDpjt9tfhHQfAq9f6P0hYOPJDOZKioXwXx4/E0zdrK2KuJTke
-        Ww2wYIGNImCCwAUHvFWZ8X8r81Q69m93Y8Cb2+N31qFs
-X-Google-Smtp-Source: AKy350Zgf3/qMqYPrSsAXGvz3kke9W8qtq4NcKt2ShCQld/anDCOZdk91ER+umKE0swSCf/7Uat2sSrE2QIuqfRSX1Q=
-X-Received: by 2002:a67:ca87:0:b0:411:b4c2:c6c0 with SMTP id
- a7-20020a67ca87000000b00411b4c2c6c0mr3394038vsl.0.1680644681412; Tue, 04 Apr
- 2023 14:44:41 -0700 (PDT)
+        bh=0JOts4sMZ6PyjxaDUE2eL65/Kgph+wVhuYSFnmG+awo=;
+        b=tR/9OUy7WjvoMPKzifxzqSlpbFnYfWBjW0Fd5VBV80+OstD7G1qEZMbVxOdxFpTFBK
+         l0DG5dZPHSmy3ZkUhy9yDqjz54P0GmidNz8+9tDqaRbb54dSXaxiGFTVUZNlF8ihWvrm
+         k55x4qptmFyjQKL0zKFP3Zhlti9VQ4/tzZRkxdkAGlTeqReKNgpv/h2fMzdAxn4kvtMN
+         3e2V3PrVlX8mF9ti39OVsPCOUYmmXQrJDkxK5FxKqnvBko1r9VYU1rh8lxk98vgVduqz
+         0OLziK6oido/Ra6hbDtkqfMEkv2wa3R3HMAkCg6tnbmnTLEuZnpmH5BlhYckntMIjWgE
+         WsuQ==
+X-Gm-Message-State: AAQBX9enXGIDzORkmpEx7AuetGLmRQ50PMlOWyHgOJ9sZCMQVacFX9d0
+        wh7h5SoPiminiG0urTHQ/IyHXNTfWKOLsNM3kjqHGLOw
+X-Google-Smtp-Source: AKy350YAkfSOMjegW4N5EDJbdwETIpFJuAKi1rKTeS7rRTfdd9qdOkyGXSxND0fmZTB2HGH0mNl3f4SW6G3GiEsLhhs=
+X-Received: by 2002:a67:d29a:0:b0:426:7730:1b89 with SMTP id
+ z26-20020a67d29a000000b0042677301b89mr5758427vsi.0.1680719992398; Wed, 05 Apr
+ 2023 11:39:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230403214003.32093-1-James.Bottomley@HansenPartnership.com>
- <CAFftDdpTWjtNEf=E5V0X1c5ZrG=LQKo1WH6n0Ok2DE7jsh6yqg@mail.gmail.com>
- <414fd2f5e49f9772dd1de4bd281a63e27e60e934.camel@HansenPartnership.com>
- <CAFftDdqeaRWvfvZfGwdXYaFcGBNirDV75JsuRR88FSdCrYmKpg@mail.gmail.com>
- <c025ff772580552ced343d88c608b41cd3e11889.camel@HansenPartnership.com>
- <CAFftDdp84qYaL+VuUXNiMbgPadOzZF1aS07ewW_jTJfM=0yDjA@mail.gmail.com> <294ff9aa398234d5e0a1aba20c406daf7b2f57ab.camel@HansenPartnership.com>
-In-Reply-To: <294ff9aa398234d5e0a1aba20c406daf7b2f57ab.camel@HansenPartnership.com>
+In-Reply-To: <20230403214003.32093-1-James.Bottomley@HansenPartnership.com>
 From:   William Roberts <bill.c.roberts@gmail.com>
-Date:   Tue, 4 Apr 2023 16:44:30 -0500
-Message-ID: <CAFftDdq7dwKB-xRdfopiLL5catews=0s1==6DaKWqzNK9srSMw@mail.gmail.com>
+Date:   Wed, 5 Apr 2023 13:39:41 -0500
+Message-ID: <CAFftDdpbJ1Y7tupzPicXbX352Xk0zE-gSShg1WXGyTFJ22mdbA@mail.gmail.com>
 Subject: Re: [PATCH v4 00/13] add integrity and security to TPM2 transactions
 To:     James Bottomley <James.Bottomley@hansenpartnership.com>
 Cc:     linux-integrity@vger.kernel.org,
@@ -74,116 +69,173 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Apr 4, 2023 at 4:33=E2=80=AFPM James Bottomley
+On Mon, Apr 3, 2023 at 4:44=E2=80=AFPM James Bottomley
 <James.Bottomley@hansenpartnership.com> wrote:
 >
-> On Tue, 2023-04-04 at 16:10 -0500, William Roberts wrote:
-> > On Tue, Apr 4, 2023 at 3:19=E2=80=AFPM James Bottomley
-> > <James.Bottomley@hansenpartnership.com> wrote:
-> > >
-> > > On Tue, 2023-04-04 at 14:42 -0500, William Roberts wrote:
-> > > > On Tue, Apr 4, 2023 at 2:18=E2=80=AFPM James Bottomley
-> > > > <James.Bottomley@hansenpartnership.com> wrote:
-> > > > >
-> > > > > On Tue, 2023-04-04 at 13:43 -0500, William Roberts wrote:
-> > > > > [...]
-> > > > > > > The final part of the puzzle is that the machine owner must
-> > > > > > > have a fixed idea of the EK of their TPM and should have
-> > > > > > > certified this with the TPM manufacturer.  On every boot,
-> > > > > > > the certified EK public key should be used to do a make
-> > > > > > > credential/activate credential attestation key insertion
-> > > > > > > and then the null key certified with the attestation key.
-> > > > > > > We can follow a trust on first use model where an OS
-> > > > > > > installation will extract and verify a public EK and save
-> > > > > > > it to a read only file.
-> > > > > >
-> > > > > > Ahh I was wondering how you were going to bootstrap trust
-> > > > > > using the NULL hierarchy.
-> > > > >
-> > > > > Well, actually, I changed my mind on the details of this one:
-> > > > > the make credential/activate credential round trip is a huge
-> > > > > faff given that there's no privacy issue.  I think what we
-> > > > > should do is simply store the name of a known signing EK on
-> > > > > first install (using the standard P-256 derivation of the EK
-> > > > > template but with TPMA_OBJECT_SIGN additionally set).  Then you
-> > > > > can use the signing EK to certify the NULL key directly and
-> > > > > merely check the signing EK name against the stored value to
-> > > > > prove everything is correct.
-> > > > >
-> > > >
-> > > > Yeah that model is much simpler. My guess is that on install it
-> > > > would persist this "Signing EK" to a specific address that is
-> > > > different from the typical EK Address?
-> > >
-> > > Actually, since this is used to prove trust in the TPM, we can't
-> > > have the TPM store it;
-> >
-> > Hmm, I think we miscommunicated here. At some point you need to call
-> > TPM2_CreatePrimary with the "Signing EK" template which would require
-> > Endorsement Hierarchy (EH) Auth.
+> The interest in securing the TPM against interposers, both active and
+> passive has risen to fever pitch with the demonstration of key
+> recovery against windows bitlocker:
 >
-> That's right.  Then you hash what you get back and check it against the
-> name file.
+> https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-comp=
+any-network
 >
-> >  So I would imagine this key would be persistend to avoid needing it
-> > all the time?
+> And subsequently the same attack being successful against all the
+> Linux TPM based security solutions:
 >
-> You could, but the benefit is marginal given how fast the Elliptic
-> Curve calculation can be done.  Remember the key is only needed for a
-> quote or a certification, so that's once per boot to certify the NULL
-> seed and possibly a handful of other uses.
+> https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-ta=
+rgets
 >
-> > Then the use of TPM2_Certify using the "EK Signing" key would also
-> > need EH Auth since AuthPolicy is coupled to EH Auth via PolicySecret.
-> > I'm just thinking every time these commands are invoked, especially
-> > if this is used during boot, where EH Auth would be coming from or am
-> > I missing something?
+> The attacks fall into two categories:
 >
-> No, but then TPM2_CreatePrimary needs the hierarchy authorizations.
-> The standard assumption I tend to make is that they're empty for both
-> the endorsement and owner.
+> 1. Passive Interposers, which sit on the bus and merely observe
+> 2. Active Interposers, which try to manipulate TPM transactions on the
+>    bus using man in the middle and packet stealing to create TPM state
+>    the interposer owner desires.
 >
+> Our broadest interposer target is the use of TPM_RS_PW for password
+> authorization which sends the actual password to the TPM without any
+> obfuscation and effectively hands it to any interposer. The way to fix
+> this is to use real sessions for HMAC capabilities to ensure integrity
+> and to use parameter and response encryption to ensure confidentiality
+> of the data flowing over the TPM bus.  HMAC sessions by agreeing a
+> challenge with the TPM and then giving a response which is a HMAC of
+> the password and the challenge, so the application proves knowledge of
+> the password to the TPM without ever transmitting the password itself.
+> Using HMAC sessions when sending commands to the TPM also provides
+> some measure of protection against active interposers, since the
+> interposer can't interfere with or delete a HMAC'd command (because
+> they can't manufacture a response with the correct HMAC).
+>
+> To protect TPM transactions where there isn't a shared secret
+> (i.e. the command is something like a PCR extension which doesn't
+> involve a TPM object with a password) we have to do a bit more work to
+> set up sessions with a passed in encrypted secret (called a salt) to
+> act in place of the shared secret in the HMAC.  This secret salt is
+> effectively a random number encrypted to a public key of the TPM.  The
+> final piece of the puzzle is using parameter input and response return
+> encryption, so any interposer can't see the data passing from the
+> application to the TPM and vice versa.
+>
+> The most insidious interposer attack of all is a reset attack: since
+> the interposer has access to the TPM bus, it can assert the TPM reset
+> line any time it wants.  When a TPM resets it mostly comes back in the
+> same state except that all the PCRs are reset to their initial values.
+> Controlling the reset line allows the interposer to change the PCR
+> state after the fact by resetting the TPM and then replaying PCR
+> extends to get the PCRs into a valid state to release secrets, so even
+> if an attack event was recorded, the record is erased.  This reset
+> attack violates the fundamental princible of non-repudiability of TPM
+> logs.  Defeating the reset attack involves tying all TPM operations
+> within the kernel to a property which will change detectably if the
+> TPM is reset.  For that reason, we tie all TPM sessions to the null
+> hierarchy we obtain at start of day and whose seed changes on every
+> reset.
 
-That's been proven not to be a good assertion. Just look at the bugs on sys=
-temd
-about not working if Owner Auth is set. I think it's important to look at m=
-odels
-that support auth being set for the hierarchy and minimizing the need on it=
-.
-Hierarchy Auth could even be a policy, thankfully I haven't bumped into tha=
-t
-yet.
+Rather than doing this, wouldn't the session be flushed from the TPM on
+reset and thus subsequent commands using the session and session key
+fail?
 
-If this "EK Signing" key is persisted and the AuthPolicy of the key
-cleared we would only
-need EH Auth one time versus assuming it's always empty. This would
-essentially be
-an SRK for the EH but includes sign attribute (ERK :-p).
+If that's true, couldn't we just pin the trust to an existing trusted
+key that we have the
+name of and move on? The kernel would know that something happened when
+session protections started failing without the complexity and time of
+generating
+a key in the NULL hierarchy and certifying it.
 
-But if we're shoving stuff into a read only config, these options
-could be set in the config file
-(ie use a persistent handle at location XXX, no auth, etc). But *not*
-hardcoding EH auth into
-the config file.
-
-I would hate to see requirements requiring that hierarchy auth remains empt=
-y.
-
-> Although if there's a use case that actually wants them set for some
-> reason, then I think there might be a case for removing the policy from
-> the EK template, but if not, it's easier just to follow what the TCG
-> says with the addition of the signing permission.
+If an active interposer asserts a TPM reset, the new null
+> primary won't match the kernel's stored one and all TPM operations
+> will start failing because of HMAC mismatches in the sessions.  So if
+> the kernel TPM code keeps operating, it guarantees that a reset hasn't
+> occurred.
 >
-> > > it's going to have to be somewhere in the root
-> > > filesystem, like /etc.  Ideally it would be in the immutable part
-> > > of /etc so it is write once on install.
-> > >
-> >
-> > I'm assuming this would be the template or name of the "Signing EK"?
+> The final part of the puzzle is that the machine owner must have a
+> fixed idea of the EK of their TPM and should have certified this with
+> the TPM manufacturer.  On every boot, the certified EK public key
+> should be used to do a make credential/activate credential attestation
+> key insertion and then the null key certified with the attestation
+> key.  We can follow a trust on first use model where an OS
+> installation will extract and verify a public EK and save it to a read
+> only file.
 >
-> Just the name, I think, assuming everyone agrees on the template.  If
-> there's going to be a question about which template then we'd need
-> both.
+> This patch series adds a simple API which can ensure the above
+> properties as a layered addition to the existing TPM handling code.
+> This series now includes protections for PCR extend, getting random
+> numbers from the TPM and data sealing and unsealing.  It therefore
+> eliminates all uses of TPM2_RS_PW in the kernel and adds encryption
+> protection to sensitive data flowing into and out of the TPM.  The
+> first four patches add more sophisticated buffer handling to the TPM
+> which is needed to build the more complex encryption and
+> authentication based commands.  Patch 6 adds all the generic
+> cryptography primitives and patches 7-9 use them in critical TPM
+> operations where we want to avoid or detect interposers.  Patch 10
+> exports the name of the null key we used for boot/run time
+> verification and patch 11 documents the security guarantees and
+> expectations.
+>
+> This was originally sent over four years ago, with the last iteration
+> being:
+>
+> https://lore.kernel.org/linux-integrity/1568031515.6613.31.camel@HansenPa=
+rtnership.com/
+>
+> I'm dusting it off now because various forces at Microsoft and Google
+> via the Open Compute Platform are making a lot of noise about
+> interposers and we in the linux kernel look critically lacking in that
+> regard, particularly for TPM trusted keys.
+>
+> ---
+> v2 fixes the problems smatch reported and adds more explanation about
+> the code motion in the first few patches
+> v3 rebases the encryption to be against Ard's new library function, the
+> aescfb addition of which appears as patch 1.
+> v4 refreshes Ard's patch, adds kernel doc (including a new patch to
+> add it to the moved tpm-buf functions) updates and rewords some commit
+> logs
 >
 > James
+>
+> ---
+>
+> Ard Biesheuvel (1):
+>   crypto: lib - implement library version of AES in CFB mode
+>
+> James Bottomley (12):
+>   tpm: move buffer handling from static inlines to real functions
+>   tpm: add kernel doc to buffer handling functions
+>   tpm: add buffer handling for TPM2B types
+>   tpm: add cursor based buffer functions for response parsing
+>   tpm: add buffer function to point to returned parameters
+>   tpm: export the context save and load commands
+>   tpm: Add full HMAC and encrypt/decrypt session handling code
+>   tpm: add hmac checks to tpm2_pcr_extend()
+>   tpm: add session encryption protection to tpm2_get_random()
+>   KEYS: trusted: Add session encryption protection to the seal/unseal
+>     path
+>   tpm: add the null key name as a sysfs export
+>   Documentation: add tpm-security.rst
+>
+>  Documentation/security/tpm/tpm-security.rst |  216 ++++
+>  drivers/char/tpm/Kconfig                    |   13 +
+>  drivers/char/tpm/Makefile                   |    2 +
+>  drivers/char/tpm/tpm-buf.c                  |  307 +++++
+>  drivers/char/tpm/tpm-chip.c                 |    3 +
+>  drivers/char/tpm/tpm-sysfs.c                |   18 +
+>  drivers/char/tpm/tpm.h                      |   14 +
+>  drivers/char/tpm/tpm2-cmd.c                 |   52 +-
+>  drivers/char/tpm/tpm2-sessions.c            | 1158 +++++++++++++++++++
+>  drivers/char/tpm/tpm2-space.c               |    8 +-
+>  include/crypto/aes.h                        |    5 +
+>  include/linux/tpm.h                         |  257 ++--
+>  lib/crypto/Kconfig                          |    5 +
+>  lib/crypto/Makefile                         |    3 +
+>  lib/crypto/aescfb.c                         |  257 ++++
+>  security/keys/trusted-keys/trusted_tpm2.c   |   82 +-
+>  16 files changed, 2275 insertions(+), 125 deletions(-)
+>  create mode 100644 Documentation/security/tpm/tpm-security.rst
+>  create mode 100644 drivers/char/tpm/tpm-buf.c
+>  create mode 100644 drivers/char/tpm/tpm2-sessions.c
+>  create mode 100644 lib/crypto/aescfb.c
+>
+> --
+> 2.35.3
 >
