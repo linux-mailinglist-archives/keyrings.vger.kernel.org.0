@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 489B36E61DA
-	for <lists+keyrings@lfdr.de>; Tue, 18 Apr 2023 14:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F7C06E636F
+	for <lists+keyrings@lfdr.de>; Tue, 18 Apr 2023 14:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231394AbjDRM2S (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Apr 2023 08:28:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38442 "EHLO
+        id S231426AbjDRMkh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Apr 2023 08:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbjDRM2S (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Apr 2023 08:28:18 -0400
+        with ESMTP id S231794AbjDRMkh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Apr 2023 08:40:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0255A244;
-        Tue, 18 Apr 2023 05:27:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3E0713C15;
+        Tue, 18 Apr 2023 05:40:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9D4F63160;
-        Tue, 18 Apr 2023 12:27:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F5AC433D2;
-        Tue, 18 Apr 2023 12:27:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F65963307;
+        Tue, 18 Apr 2023 12:40:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F811C433EF;
+        Tue, 18 Apr 2023 12:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1681820823;
-        bh=COtBPWd792pj4wDo6QCmYmv27EpEeD8uoH4fJakfhLM=;
+        s=korg; t=1681821634;
+        bh=VCwMMj2q4qUoHuODRqKDgoLte/T7yupow6Vv8LVr/gY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PbotKGOYKw7sNKZeahCZW0LgeRiiixVX5nW0ybMeamx+GHro366gUxPkL92TQUQbi
-         mbk/YHgKhDWKduXodEmnSVH1+JJOhKA4Q1uurAamQiZMB9x7VZcESXUnPu63IrpChT
-         K6B9ZY75h9yfbqnXIkXrIyMjcBYto+L1fLPIDgkQ=
+        b=l4xh4h+eCEXXX9Ut5/f/cU8rxt/OtwjyHQ3nlpmLoC9P8b6BZ3lBDHL5QWU+gGJQX
+         Mbo54vDNHCjUkL7y819xbfFN3VyQcKbqgSaBTTiou+f4x97NCz608EZTbcAoh0l5qU
+         mQNzZPT3VsW8HcYnR1kxQgKaxT1OSQ74TE7F6tuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         kexec@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 45/57] verify_pefile: relax wrapper length check
-Date:   Tue, 18 Apr 2023 14:21:45 +0200
-Message-Id: <20230418120300.309593262@linuxfoundation.org>
+Subject: [PATCH 5.15 45/91] verify_pefile: relax wrapper length check
+Date:   Tue, 18 Apr 2023 14:21:49 +0200
+Message-Id: <20230418120307.142778932@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230418120258.713853188@linuxfoundation.org>
-References: <20230418120258.713853188@linuxfoundation.org>
+In-Reply-To: <20230418120305.520719816@linuxfoundation.org>
+References: <20230418120305.520719816@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/crypto/asymmetric_keys/verify_pefile.c b/crypto/asymmetric_keys/verify_pefile.c
-index d178650fd524c..411977947adbe 100644
+index 7553ab18db898..fe1bb374239d7 100644
 --- a/crypto/asymmetric_keys/verify_pefile.c
 +++ b/crypto/asymmetric_keys/verify_pefile.c
-@@ -139,11 +139,15 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
+@@ -135,11 +135,15 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
  	pr_debug("sig wrapper = { %x, %x, %x }\n",
  		 wrapper.length, wrapper.revision, wrapper.cert_type);
  
