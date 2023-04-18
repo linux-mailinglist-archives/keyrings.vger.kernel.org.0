@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A008B6E616E
-	for <lists+keyrings@lfdr.de>; Tue, 18 Apr 2023 14:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602496E6267
+	for <lists+keyrings@lfdr.de>; Tue, 18 Apr 2023 14:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231345AbjDRMZK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 18 Apr 2023 08:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33590 "EHLO
+        id S231310AbjDRMcZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Apr 2023 08:32:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231182AbjDRMZJ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Apr 2023 08:25:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFD9E7A81;
-        Tue, 18 Apr 2023 05:24:46 -0700 (PDT)
+        with ESMTP id S231466AbjDRMcX (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Apr 2023 08:32:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B0DBBB9;
+        Tue, 18 Apr 2023 05:31:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41EC763108;
-        Tue, 18 Apr 2023 12:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB08C433D2;
-        Tue, 18 Apr 2023 12:24:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A03F6321D;
+        Tue, 18 Apr 2023 12:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FCCC4339C;
+        Tue, 18 Apr 2023 12:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1681820685;
-        bh=COtBPWd792pj4wDo6QCmYmv27EpEeD8uoH4fJakfhLM=;
+        s=korg; t=1681821108;
+        bh=bLUCoqyy4oAJvRQcFVc1K6a1zMsgEFgCKpZ3NUVxUDo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PDnXTZoIfZDWsn1a4ZXCGbl704I9f90/EgCmUmRWSAnloQZn5ogYlpybVhKuze3hX
-         6vuAn/WbtaoZTuD9b1gapSXZebyH3N4dP+ckhqLujll4hENYBHkkbZxKg+jAHfDNXt
-         jv66q/Q6DRTrJ9nWZLXinlnNEPsfRTgPkUU8zlrc=
+        b=sGewCKrQklAdq+0v0KMo4EHSeYWjAk3M4nesK95InfTQV7O29NISZHeegO0HhHuNt
+         96K68D0/7EG+U3E2SNwBEvt1Lx+bBrAKzw86pSRUnGBD9fD77EihK6z7ppr1ygM6Mr
+         bwWNyCzLmL3cBlRN+/wMHg2w6gP2lckD/Jd0t16U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,18 +38,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         kexec@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 30/37] verify_pefile: relax wrapper length check
-Date:   Tue, 18 Apr 2023 14:21:40 +0200
-Message-Id: <20230418120255.753919976@linuxfoundation.org>
+Subject: [PATCH 5.4 68/92] verify_pefile: relax wrapper length check
+Date:   Tue, 18 Apr 2023 14:21:43 +0200
+Message-Id: <20230418120307.194877077@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230418120254.687480980@linuxfoundation.org>
-References: <20230418120254.687480980@linuxfoundation.org>
+In-Reply-To: <20230418120304.658273364@linuxfoundation.org>
+References: <20230418120304.658273364@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/crypto/asymmetric_keys/verify_pefile.c b/crypto/asymmetric_keys/verify_pefile.c
-index d178650fd524c..411977947adbe 100644
+index cc9dbcecaacaa..c43b077ba37db 100644
 --- a/crypto/asymmetric_keys/verify_pefile.c
 +++ b/crypto/asymmetric_keys/verify_pefile.c
-@@ -139,11 +139,15 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
+@@ -135,11 +135,15 @@ static int pefile_strip_sig_wrapper(const void *pebuf,
  	pr_debug("sig wrapper = { %x, %x, %x }\n",
  		 wrapper.length, wrapper.revision, wrapper.cert_type);
  
