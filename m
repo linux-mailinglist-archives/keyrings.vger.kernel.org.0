@@ -2,17 +2,17 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 522A06E9D02
-	for <lists+keyrings@lfdr.de>; Thu, 20 Apr 2023 22:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD43A6E9D06
+	for <lists+keyrings@lfdr.de>; Thu, 20 Apr 2023 22:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230357AbjDTUVq (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 20 Apr 2023 16:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42050 "EHLO
+        id S232312AbjDTUVt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 20 Apr 2023 16:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232302AbjDTUVk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Apr 2023 16:21:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FC53A8B
+        with ESMTP id S232321AbjDTUVl (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 20 Apr 2023 16:21:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E2E46B1
         for <keyrings@vger.kernel.org>; Thu, 20 Apr 2023 13:20:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
         s=mimecast20190719; t=1682022008;
@@ -20,35 +20,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
          to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sbzfUE8fYwbKvInbkIXAGWwcJgA5j8cy5aE4T5fjle8=;
-        b=iQ/RRYLp1jEosB3bVmTOyB4BlY4SVd7zK9sNQDliU60qFOgN0/BqCPw2rthlEb7AL6r6vO
-        OPPGZgOz/0WoG8QWR66QZhHwAuB6oHm4rfsyx3y4r4BZzf9AIshPLuAv62osFM0WH3BQFY
-        NVTG+Xuksok2Qn81gIw2zWszkdv2BC8=
+        bh=qyFPVwt4CpZKgdznFtXhQ6xNm/sItUwbxA9SIwDjbtc=;
+        b=CNFTts5WtraTuXqsi0r8ROlEBFRwD5UpsnES5qW3GEaXrBCwxPekfN25wGxWX4Q9Gom3Jb
+        sn4qr+APjAltAsRP539tuE6zhNICNECMbApeJWhOfWVkYr+WheEmabdxELmVHrqVRxzzOA
+        07i/Sl/1T5yhKDV2u4bu9BDH3U3aNdU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-269-H3X0Z3c8Ne6z5jUkdfeHrw-1; Thu, 20 Apr 2023 16:20:05 -0400
-X-MC-Unique: H3X0Z3c8Ne6z5jUkdfeHrw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+ us-mta-628-d4UN-0suNROhkQ-f4gKgAg-1; Thu, 20 Apr 2023 16:20:05 -0400
+X-MC-Unique: d4UN-0suNROhkQ-f4gKgAg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08E19811E7B;
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FCB9800B35;
         Thu, 20 Apr 2023 20:20:05 +0000 (UTC)
 Received: from aion.usersys.redhat.com (unknown [10.22.16.241])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id F118B63A5D;
-        Thu, 20 Apr 2023 20:20:04 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0365D1121315;
+        Thu, 20 Apr 2023 20:20:05 +0000 (UTC)
 Received: by aion.usersys.redhat.com (Postfix, from userid 1000)
-        id 9A6291A27F3; Thu, 20 Apr 2023 16:20:04 -0400 (EDT)
+        id 9DC671A27F7; Thu, 20 Apr 2023 16:20:04 -0400 (EDT)
 From:   Scott Mayhew <smayhew@redhat.com>
 To:     linux-nfs@vger.kernel.org, keyrings@vger.kernel.org
-Subject: [RFC PATCH 1/5] keys: export keyring_ptr_to_key()
-Date:   Thu, 20 Apr 2023 16:20:00 -0400
-Message-Id: <20230420202004.239116-2-smayhew@redhat.com>
+Subject: [RFC PATCH 2/5] keys: add keyring_gc_custom()
+Date:   Thu, 20 Apr 2023 16:20:01 -0400
+Message-Id: <20230420202004.239116-3-smayhew@redhat.com>
 In-Reply-To: <20230420202004.239116-1-smayhew@redhat.com>
 References: <20230420202004.239116-1-smayhew@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
@@ -59,48 +59,51 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-We want to be able to garbage collect keyrings using a custom select
-iterator, which will need to use keyring_ptr_to_key().
+Allow a keyring to be garbage collected using a custom select iterator.
+
+This will be used to destroy all the GSS creds for a particular RPC
+client when that RPC client is shut down.
 
 Signed-off-by: Scott Mayhew <smayhew@redhat.com>
 ---
- include/linux/key.h     | 2 ++
- security/keys/keyring.c | 5 ++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/linux/key.h     |  4 ++++
+ security/keys/keyring.c | 11 +++++++++++
+ 2 files changed, 15 insertions(+)
 
 diff --git a/include/linux/key.h b/include/linux/key.h
-index 8dc7f7c3088b..3f4c6d6df921 100644
+index 3f4c6d6df921..6cfc60aca505 100644
 --- a/include/linux/key.h
 +++ b/include/linux/key.h
-@@ -417,6 +417,8 @@ extern int key_move(struct key *key,
- extern int key_unlink(struct key *keyring,
- 		      struct key *key);
+@@ -433,6 +433,10 @@ extern int restrict_link_reject(struct key *keyring,
  
-+extern inline struct key *keyring_ptr_to_key(const struct assoc_array_ptr *x);
+ extern int keyring_clear(struct key *keyring);
+ 
++extern void keyring_gc_custom(struct key *keyring,
++			      bool (*iterator)(void *object, void *iterator_data),
++			      void *iterator_data);
 +
- extern struct key *keyring_alloc(const char *description, kuid_t uid, kgid_t gid,
- 				 const struct cred *cred,
- 				 key_perm_t perm,
+ extern key_ref_t keyring_search(key_ref_t keyring,
+ 				struct key_type *type,
+ 				const char *description,
 diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 4448758f643a..c57f3cef32fa 100644
+index c57f3cef32fa..8e93f1bbd7f1 100644
 --- a/security/keys/keyring.c
 +++ b/security/keys/keyring.c
-@@ -37,11 +37,14 @@ static inline bool keyring_ptr_is_keyring(const struct assoc_array_ptr *x)
- {
- 	return (unsigned long)x & KEYRING_PTR_SUBTYPE;
+@@ -1795,3 +1795,14 @@ void keyring_restriction_gc(struct key *keyring, struct key_type *dead_type)
+ 
+ 	kleave(" [restriction gc]");
  }
--static inline struct key *keyring_ptr_to_key(const struct assoc_array_ptr *x)
 +
-+inline struct key *keyring_ptr_to_key(const struct assoc_array_ptr *x)
- {
- 	void *object = assoc_array_ptr_to_leaf(x);
- 	return (struct key *)((unsigned long)object & ~KEYRING_PTR_SUBTYPE);
- }
-+EXPORT_SYMBOL_GPL(keyring_ptr_to_key);
-+
- static inline void *keyring_key_to_ptr(struct key *key)
- {
- 	if (key->type == &key_type_keyring)
++void keyring_gc_custom(struct key *keyring,
++		       bool (*iterator)(void *object, void *iterator_data),
++		       void *iterator_data)
++{
++	down_write(&keyring->sem);
++	assoc_array_gc(&keyring->keys, &keyring_assoc_array_ops,
++		       iterator, iterator_data);
++	up_write(&keyring->sem);
++}
++EXPORT_SYMBOL_GPL(keyring_gc_custom);
 -- 
 2.39.2
 
