@@ -2,108 +2,165 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6836EAD0C
-	for <lists+keyrings@lfdr.de>; Fri, 21 Apr 2023 16:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 835A26EB365
+	for <lists+keyrings@lfdr.de>; Fri, 21 Apr 2023 23:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232705AbjDUOgc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 21 Apr 2023 10:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43718 "EHLO
+        id S232999AbjDUVMH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 21 Apr 2023 17:12:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232248AbjDUOga (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 21 Apr 2023 10:36:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F0D10DD
-        for <keyrings@vger.kernel.org>; Fri, 21 Apr 2023 07:35:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682087744;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=UCQL2D9su8wjwOrs6IuTNGHSeQSL9lst6CDlj1GlHvQ=;
-        b=PKZudY8O6yePEMi7xcs26xcIEvvBWW62N64xsnRuX67eF0RvSam4qgi6X/C9zJ3561pWUv
-        kIsUwIO3E7oiEsRTWCS5X2/ouCiWMcTiO0y/sFbU+Ys2AxD6CocPOArrkHid3wAqXfkkgb
-        RJC+q3sVYwEOLQ9cdh398OrkrOhSmKc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-380-HjtImQA4Nzy9mg_o0W6siw-1; Fri, 21 Apr 2023 10:35:41 -0400
-X-MC-Unique: HjtImQA4Nzy9mg_o0W6siw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S233046AbjDUVMF (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 21 Apr 2023 17:12:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1405B3;
+        Fri, 21 Apr 2023 14:12:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 084BC101A54F;
-        Fri, 21 Apr 2023 14:35:41 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.158])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0ACFC1121318;
-        Fri, 21 Apr 2023 14:35:39 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-To:     torvalds@linux-foundation.org
-cc:     dhowells@redhat.com, Ekaterina Orlova <vorobushek.ok@gmail.com>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D590C652FA;
+        Fri, 21 Apr 2023 21:12:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEB5C433EF;
+        Fri, 21 Apr 2023 21:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682111523;
+        bh=PAOoIU6HaP+dNtnNsbCXQ8sw9/H/z7hjv1lJ3ORbvxc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jePOQTa0sfmvjhSWAEmpkRnbTF/ETBNc1qzMc+qjIB9xW/vx/o0xRkyg1ajg54vOS
+         HMJ5R1PWc1GnC1SvDrVNBjfHJ+KnYkPDK4KAoTyqGzCZWlON59OUAFgEUFUsapUE0l
+         QTYacVcekJ8VQlT5fjFTligNTnILJo8EDfztXiktOfOug+mut4f48NpG5HAWZJBYXk
+         Ewjt5EpATs5Tzf3yXz9JJOhpoKytKUuSgJpU8JZZZQ0V69ZmScwbHff/s6onQstssJ
+         1ff4rTxsp2rnujUvPt+kVI/Ju/XhBhZQPxds5orhDguE5OBhauRfkgfjyLkOyqKIle
+         0c3vTkrfOp+nA==
+Date:   Sat, 22 Apr 2023 00:12:00 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
+        David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: 
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "pvorel@suse.cz" <pvorel@suse.cz>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>,
+        "erpalmer@linux.vnet.ibm.com" <erpalmer@linux.vnet.ibm.com>,
+        "coxu@redhat.com" <coxu@redhat.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v5 5/6] KEYS: CA link restriction
+Message-ID: <ZEL8IKYhMdOvpWa1@kernel.org>
+References: <20230302164652.83571-1-eric.snowberg@oracle.com>
+ <20230302164652.83571-6-eric.snowberg@oracle.com>
+ <ZAz8QlynTSMD7kuE@kernel.org>
+ <07FFED83-501D-418C-A4BB-862A547DD7B0@oracle.com>
+ <20230320182822.6xyh6ibatrz5yrhb@kernel.org>
+ <84d46fb108f6ce2a322b6486529fc6dd0f8deea5.camel@linux.ibm.com>
+ <20230329232735.dvmxvwis2psbvyw5@kernel.org>
+ <55b5c21ee1cf47aff0b2e5a94ec65fe326c8d6ba.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <158286.1682087739.1@warthog.procyon.org.uk>
-Date:   Fri, 21 Apr 2023 15:35:39 +0100
-Message-ID: <158287.1682087739@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <55b5c21ee1cf47aff0b2e5a94ec65fe326c8d6ba.camel@linux.ibm.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Linus,
+On Thu, Mar 30, 2023 at 02:01:52AM -0400, Mimi Zohar wrote:
+> On Thu, 2023-03-30 at 02:27 +0300, Jarkko Sakkinen wrote:
+> > On Mon, Mar 20, 2023 at 04:35:33PM -0400, Mimi Zohar wrote:
+> > > On Mon, 2023-03-20 at 20:28 +0200, Jarkko Sakkinen wrote:
+> > > > On Mon, Mar 20, 2023 at 05:35:05PM +0000, Eric Snowberg wrote:
+> > > > > 
+> > > > > 
+> > > > > > On Mar 11, 2023, at 3:10 PM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > > > 
+> > > > > > On Thu, Mar 02, 2023 at 11:46:51AM -0500, Eric Snowberg wrote:
+> > > > > >> Add a new link restriction.  Restrict the addition of keys in a keyring
+> > > > > >> based on the key to be added being a CA.
+> > > > > >> 
+> > > > > >> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> > > > > >> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > > > > >> ---
+> > > > > >> crypto/asymmetric_keys/restrict.c | 38 +++++++++++++++++++++++++++++++
+> > > > > >> include/crypto/public_key.h       | 15 ++++++++++++
+> > > > > >> 2 files changed, 53 insertions(+)
+> > > > > >> 
+> > > > > >> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
+> > > > > >> index 6b1ac5f5896a..48457c6f33f9 100644
+> > > > > >> --- a/crypto/asymmetric_keys/restrict.c
+> > > > > >> +++ b/crypto/asymmetric_keys/restrict.c
+> > > > > >> @@ -108,6 +108,44 @@ int restrict_link_by_signature(struct key *dest_keyring,
+> > > > > >> 	return ret;
+> > > > > >> }
+> > > > > >> 
+> > > > > >> +/**
+> > > > > >> + * restrict_link_by_ca - Restrict additions to a ring of CA keys
+> > > > > >> + * @dest_keyring: Keyring being linked to.
+> > > > > >> + * @type: The type of key being added.
+> > > > > >> + * @payload: The payload of the new key.
+> > > > > >> + * @trust_keyring: Unused.
+> > > > > >> + *
+> > > > > >> + * Check if the new certificate is a CA. If it is a CA, then mark the new
+> > > > > >> + * certificate as being ok to link.
+> > > > > >> + *
+> > > > > >> + * Returns 0 if the new certificate was accepted, -ENOKEY if the
+> > > > > >> + * certificate is not a CA. -ENOPKG if the signature uses unsupported
+> > > > > >> + * crypto, or some other error if there is a matching certificate but
+> > > > > >> + * the signature check cannot be performed.
+> > > > > >> + */
+> > > > > >> +int restrict_link_by_ca(struct key *dest_keyring,
+> > > > > >> +			const struct key_type *type,
+> > > > > >> +			const union key_payload *payload,
+> > > > > >> +			struct key *trust_keyring)
+> > > > > >> +{
+> > > > > >> +	const struct public_key *pkey;
+> > > > > >> +
+> > > > > >> +	if (type != &key_type_asymmetric)
+> > > > > >> +		return -EOPNOTSUPP;
+> > > > > >> +
+> > > > > >> +	pkey = payload->data[asym_crypto];
+> > > > > >> +	if (!pkey)
+> > > > > >> +		return -ENOPKG;
+> > > > > >> +	if (!test_bit(KEY_EFLAG_CA, &pkey->key_eflags))
+> > > > > >> +		return -ENOKEY;
+> > > > > >> +	if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
+> > > > > >> +		return -ENOKEY;
+> > > > > >> +	if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
+> > > > > >> +		return -ENOKEY;
+> > > > > > 
+> > > > > > nit: would be more readable, if conditions were separated by
+> > > > > > empty lines.
+> > > > > 
+> > > > > Ok, I will make this change in the next round.  Thanks.
+> > > > 
+> > > > Cool! Mimi have you tested these patches with IMA applied?
+> > > 
+> > > Yes, it's working as expected.
+> > 
+> > Thank you. Please check that I filled additional tags correctly:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/
+> > 
+> > I will then put these also to my 'next' branch and they will get mirrored
+> > to linux-next.
+> 
+> Thanks, Jarkko.  The tags look good.
 
-Can you apply this, please?  It can probably wait for the merge window if you
-don't want to apply it now as it only affects building the kernel.
+Hi, sorry for radio silence. I've been transitioning to a new job.
 
-Thanks,
-David
----
-From: Ekaterina Orlova <vorobushek.ok@gmail.com>
+Commits are in my next branch, and I will include them to my PR.
 
-ASN.1: Fix check for strdup() success
-
-It seems there is a misprint in the check of strdup() return code
-that can lead to NULL pointer dereference.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 4520c6a49af8 ("X.509: Add simple ASN.1 grammar compiler")
-Signed-off-by: Ekaterina Orlova <vorobushek.ok@gmail.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: David Woodhouse <dwmw2@infradead.org>
-cc: James Bottomley <jejb@linux.ibm.com>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
-cc: keyrings@vger.kernel.org
-cc: linux-kbuild@vger.kernel.org
-Link: https://lore.kernel.org/r/20230315172130.140-1-vorobushek.ok@gmail.com/
----
- scripts/asn1_compiler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/asn1_compiler.c b/scripts/asn1_compiler.c
-index 7b6756a8c15d..4c3f645065a4 100644
---- a/scripts/asn1_compiler.c
-+++ b/scripts/asn1_compiler.c
-@@ -625,7 +625,7 @@ int main(int argc, char **argv)
- 	p = strrchr(argv[1], '/');
- 	p = p ? p + 1 : argv[1];
- 	grammar_name = strdup(p);
--	if (!p) {
-+	if (!grammar_name) {
- 		perror(NULL);
- 		exit(1);
- 	}
-
+BR, Jarkko
