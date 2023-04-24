@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24BE76ECEF8
-	for <lists+keyrings@lfdr.de>; Mon, 24 Apr 2023 15:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0D3A6ECF17
+	for <lists+keyrings@lfdr.de>; Mon, 24 Apr 2023 15:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232715AbjDXNhH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 24 Apr 2023 09:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
+        id S232509AbjDXNiF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 24 Apr 2023 09:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232667AbjDXNg1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 24 Apr 2023 09:36:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A71F93FD;
-        Mon, 24 Apr 2023 06:36:08 -0700 (PDT)
+        with ESMTP id S232684AbjDXNh5 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 24 Apr 2023 09:37:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497CA83EE;
+        Mon, 24 Apr 2023 06:37:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 670DB623DB;
-        Mon, 24 Apr 2023 13:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79827C433D2;
-        Mon, 24 Apr 2023 13:36:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 260836242A;
+        Mon, 24 Apr 2023 13:37:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EA8C433D2;
+        Mon, 24 Apr 2023 13:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682343367;
-        bh=tCCynyrnIJfQB2Eg5feIoBHwGYY3Vk1ymQA+xiDetCg=;
+        s=korg; t=1682343447;
+        bh=VcLv8JN1TgLe7NYl2Ie7loJzukPT4oWuE1B8SrIq7+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XVcpNLG5yS2oQEaV/W2q7ljR8zbvpUV+p26ccKk9rucPRL9zaiaBLG6BSQG21wxvM
-         LLKCUwX8Wuk9vOrU3wyZYo8FdB+PpBXurXkyXw2tmMpGXvj6MysojuBjHwl85bFgfm
-         itneY8zF5Q0U4TdpxBEnXSh3g/m5v82t3V+tp1ok=
+        b=wT1ipmYbnObn5CoYoihjbF27Iy67AiMewJ31dNdWdrSrjyTQQfVufQ+43HzOtO1fD
+         fQ/fDxgMs2oKw864htobw5XSHziUAtix8pDxhRwONk4hCh71jnsUnH7LMBoaOFc23b
+         P1SBD6EM3fKjBnziqqbkBAen4vo+7KcFWPzkH++c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,18 +38,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
         linux-kbuild@vger.kernel.org, David Howells <dhowells@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 68/68] ASN.1: Fix check for strdup() success
-Date:   Mon, 24 Apr 2023 15:18:39 +0200
-Message-Id: <20230424131130.224441967@linuxfoundation.org>
+Subject: [PATCH 4.14 28/28] ASN.1: Fix check for strdup() success
+Date:   Mon, 24 Apr 2023 15:18:49 +0200
+Message-Id: <20230424131122.275020530@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230424131127.653885914@linuxfoundation.org>
-References: <20230424131127.653885914@linuxfoundation.org>
+In-Reply-To: <20230424131121.331252806@linuxfoundation.org>
+References: <20230424131121.331252806@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -84,7 +84,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/scripts/asn1_compiler.c
 +++ b/scripts/asn1_compiler.c
-@@ -625,7 +625,7 @@ int main(int argc, char **argv)
+@@ -629,7 +629,7 @@ int main(int argc, char **argv)
  	p = strrchr(argv[1], '/');
  	p = p ? p + 1 : argv[1];
  	grammar_name = strdup(p);
