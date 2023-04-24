@@ -2,32 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3394F6ECE97
-	for <lists+keyrings@lfdr.de>; Mon, 24 Apr 2023 15:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24BE76ECEF8
+	for <lists+keyrings@lfdr.de>; Mon, 24 Apr 2023 15:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjDXNdr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 24 Apr 2023 09:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34416 "EHLO
+        id S232715AbjDXNhH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 24 Apr 2023 09:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjDXNd2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 24 Apr 2023 09:33:28 -0400
+        with ESMTP id S232667AbjDXNg1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 24 Apr 2023 09:36:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0987D94;
-        Mon, 24 Apr 2023 06:33:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A71F93FD;
+        Mon, 24 Apr 2023 06:36:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F95B61E09;
-        Mon, 24 Apr 2023 13:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320AAC433D2;
-        Mon, 24 Apr 2023 13:33:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 670DB623DB;
+        Mon, 24 Apr 2023 13:36:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79827C433D2;
+        Mon, 24 Apr 2023 13:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682343185;
+        s=korg; t=1682343367;
         bh=tCCynyrnIJfQB2Eg5feIoBHwGYY3Vk1ymQA+xiDetCg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wro4PM+mq33362miHaQfyADzoNh5aVlmTOTnrzhH8d9SzarwTvFh6lARauiTgYh1U
-         NA6E1jHSWKHxdnDXwnejEVLBPPm9bT8CZIj3Nz3SoVxyw5wgVUfKpNxGjULRNIEeWH
-         NTAmEFgBzSLNLc6zFuxFmfpRQMtGvWofc8A9ey88=
+        b=XVcpNLG5yS2oQEaV/W2q7ljR8zbvpUV+p26ccKk9rucPRL9zaiaBLG6BSQG21wxvM
+         LLKCUwX8Wuk9vOrU3wyZYo8FdB+PpBXurXkyXw2tmMpGXvj6MysojuBjHwl85bFgfm
+         itneY8zF5Q0U4TdpxBEnXSh3g/m5v82t3V+tp1ok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
         linux-kbuild@vger.kernel.org, David Howells <dhowells@redhat.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.2 110/110] ASN.1: Fix check for strdup() success
-Date:   Mon, 24 Apr 2023 15:18:12 +0200
-Message-Id: <20230424131140.757356526@linuxfoundation.org>
+Subject: [PATCH 5.10 68/68] ASN.1: Fix check for strdup() success
+Date:   Mon, 24 Apr 2023 15:18:39 +0200
+Message-Id: <20230424131130.224441967@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230424131136.142490414@linuxfoundation.org>
-References: <20230424131136.142490414@linuxfoundation.org>
+In-Reply-To: <20230424131127.653885914@linuxfoundation.org>
+References: <20230424131127.653885914@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
