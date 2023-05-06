@@ -2,93 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0256F8E5B
-	for <lists+keyrings@lfdr.de>; Sat,  6 May 2023 05:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17B336F9052
+	for <lists+keyrings@lfdr.de>; Sat,  6 May 2023 09:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbjEFDkA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 5 May 2023 23:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41826 "EHLO
+        id S231443AbjEFHph (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 6 May 2023 03:45:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229698AbjEFDj7 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 5 May 2023 23:39:59 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E6315BA1;
-        Fri,  5 May 2023 20:39:58 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-3ef33f12995so13987021cf.3;
-        Fri, 05 May 2023 20:39:58 -0700 (PDT)
+        with ESMTP id S231419AbjEFHp2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 6 May 2023 03:45:28 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 216803AAE;
+        Sat,  6 May 2023 00:45:22 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-52c759b7d45so2328047a12.3;
+        Sat, 06 May 2023 00:45:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683344397; x=1685936397;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BpswY9m2+akMpZjU1Lghg3scLIT0ByR97P+sSuwJhQw=;
-        b=oD7j9RV4M2MhuS3xLZsb2d8VXEoZ3l2IrCNV/UmdUhaBgoea0qw5wl71yXLeZv/dFC
-         3XMx5kR1dmneTT2XWgi3MurMBqv/xp4dJ+DnKujmIor7o3i+lB2Pb1W58mQ9nrpJ/Zhr
-         2cUtBaiYk7M3xLq09gLYENEJTju+yu/uMFHTKF1pJFAEl/HH4MMkSIKJy0BXt7s6e/W+
-         TcI61liQTLtZvtICA5sUO1k8+SQZS2vp1IwkMqf6rnBhuDgWDlPapsIABwtA/l+Dybbp
-         tcjphRxGFdsruwZssgksOZsTOrUM2NnUmeqKxyRXPFl3EUaehJ5Z4oh/hNv1JgJcMrKu
-         Zdbg==
+        d=gmail.com; s=20221208; t=1683359121; x=1685951121;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cR4QBIzm9ikJ2rDEayugYqmQh2EvvMkSbIdL6X+oqsg=;
+        b=NDFMhb8dgFmBZE3tzcTfHyrvdARzyBDs68HVUrFHKNB1OjppTHcturM01pjQGR1lwf
+         /Yyj38mcOgdR7rJvMgtexY8VUeSE9mCjrLHOXK9r+ljtXsToQ1AuwIIohZc/qYXw5lQX
+         AuWzIqHmM99Ek3TBL43g3uK5sVlNrLjjSuGi6E5Av3n/YiQvm1NafwCsxs/Tttjc3MNf
+         kndOlzMpilSI8aWvGjWtCBkxkt2m+9a+4r74hawaf/fn1Q17c3W3ID1fguszSj+BLcZf
+         Ln3qJl6tIKqhxkPKKjAgr2BjL3Jybxttwo/q/4nXrE/J34Rpq9nbqwmZ/QJSIgGx2Ywn
+         LNAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683344397; x=1685936397;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BpswY9m2+akMpZjU1Lghg3scLIT0ByR97P+sSuwJhQw=;
-        b=eF186aPVlNgnBgbZxEpczHKjGiG/kDKGMrhA4dPhE6FnWo6x3No7j268T9ynnqqzZ0
-         TvqGcItjFmAvHiuWw4co5FzAxR0XGnWBSKyecxb+shD0HxahEXqhJa9yCG5hPgqmDZJ/
-         sMEdgpnlfA/cU3WBUMrjdhxwkMn9N80kUwAZHN3eYqWWBXv2/Xl+D/xQ2oAcVr6c/C2T
-         RfBwfjq87hZtlwtluPdpbQQuBtuwer70B5FA4f7dlCbSM6zOc+Z7H85Gx+GKRkUGna/b
-         ttAvS1eM7Q2m11IjPxgb5uIhpq0l4NluvUBrzpTxNNIgLOxE6mv0h5Ke8M6S+5w4hacr
-         ZRVg==
-X-Gm-Message-State: AC+VfDwrhGidD9/3XvOqccx/emyCFBZkUI+bvZq/koKtXerkK1Cs5Xq2
-        Lo4AwAZs4nYSuWHrpCieflk=
-X-Google-Smtp-Source: ACHHUZ7bnLO45tsKPI+UOJ46pyLBSkekEW2ehWqDecsRxiwLn6lF+27PKDLiSVZcbZg7I7nwR6dfQw==
-X-Received: by 2002:a05:622a:1393:b0:3d5:500a:4819 with SMTP id o19-20020a05622a139300b003d5500a4819mr5635171qtk.23.1683344397617;
-        Fri, 05 May 2023 20:39:57 -0700 (PDT)
-Received: from localhost.localdomain ([191.96.227.112])
-        by smtp.gmail.com with ESMTPSA id h7-20020a37de07000000b0074e13ed6ee9sm1013605qkj.132.2023.05.05.20.39.53
+        d=1e100.net; s=20221208; t=1683359121; x=1685951121;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cR4QBIzm9ikJ2rDEayugYqmQh2EvvMkSbIdL6X+oqsg=;
+        b=UMeQdd2RlXa69OYerW1xJbZhX7BD4XTGO0FQSCaorB0zHJeDz5HzNETm7XIJsS9JDq
+         HLt3UkxdK4si3MR0HwzXzutdFCORSi+001lf9pVo+CD2dy575D2X7xmQ9R5tcilOz0Q2
+         MF2oSH/JRNpVASKeDj43kAe42RcG1Rkt+qiZlW9qn87chU9UT+vFOs0XEjbZ6UzHN/YW
+         CJRScsHl7+UmGkoQPnROVTFuYtaPbiq878ejA2tjjUPBTVxMo2evEGStTgL4Bb4Hqpl/
+         vcKQPFiWJyzoDCSC0+F6kkFJwYzRCx7WdgnBeg+j/AqeLUBu0oIehI5ktF/z7HWX8+Ks
+         b/Tw==
+X-Gm-Message-State: AC+VfDzGqc71a+3uqXx4fxDzQOA4c7CHbdIDGyBBDL96IyeFGkaG/4/q
+        NKcO1RMNL/nD7echYHQZgPc=
+X-Google-Smtp-Source: ACHHUZ42rj/cGI3yidLvMVSMoh1eSdorzn60Wv53lamvefOOxDdlc+3RCuNWWWGYKa/CqamDoXSI6Q==
+X-Received: by 2002:a17:902:e881:b0:1a6:b140:9d2 with SMTP id w1-20020a170902e88100b001a6b14009d2mr4758930plg.61.1683359121362;
+        Sat, 06 May 2023 00:45:21 -0700 (PDT)
+Received: from debian.me (subs03-180-214-233-66.three.co.id. [180.214.233.66])
+        by smtp.gmail.com with ESMTPSA id j17-20020a170902759100b001ab0672fc1fsm2955359pll.105.2023.05.06.00.45.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 20:39:57 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     dhowells@redhat.com, jarkko@kernel.org, corbet@lwn.net,
-        keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH]Documentation: Security: Consistent block output by removing a misfit line
-Date:   Sat,  6 May 2023 09:07:38 +0530
-Message-Id: <20230506033738.16908-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.39.3
+        Sat, 06 May 2023 00:45:19 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id C0A98106286; Sat,  6 May 2023 14:45:15 +0700 (WIB)
+Date:   Sat, 6 May 2023 14:45:15 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>, dhowells@redhat.com,
+        jarkko@kernel.org, corbet@lwn.net, keyrings@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH]Documentation: Security: Consistent block output by
+ removing a misfit line
+Message-ID: <ZFYFi+eS3efdx0jS@debian.me>
+References: <20230506033738.16908-1-unixbhaskar@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rGslkIUOaY9i4+kT"
+Content-Disposition: inline
+In-Reply-To: <20230506033738.16908-1-unixbhaskar@gmail.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-A simple removal of an unwanted line from the block output to make the output
-of this block look like others on the page.
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- Documentation/security/keys/core.rst | 1 -
- 1 file changed, 1 deletion(-)
+--rGslkIUOaY9i4+kT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/security/keys/core.rst b/Documentation/security/keys/core.rst
-index 811b905b56bf..0ca5bc591d95 100644
---- a/Documentation/security/keys/core.rst
-+++ b/Documentation/security/keys/core.rst
-@@ -314,7 +314,6 @@ about the status of the key service:
-      This file lists the tracking data for each user that has at least one key
-      on the system.  Such data includes quota information and statistics::
+On Sat, May 06, 2023 at 09:07:38AM +0530, Bhaskar Chowdhury wrote:
+> -	[root@andromeda root]# cat /proc/key-users
 
--	[root@andromeda root]# cat /proc/key-users
- 	0:     46 45/45 1/100 13/10000
- 	29:     2 2/2 2/100 40/10000
- 	32:     2 2/2 2/100 40/10000
---
-2.39.3
+You remove the command line, right? The preceding sentence should be
+adjusted too, e.g. "This file lists the tracking data (including
+quota information and statistics) ... . Example file contents::".
 
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--rGslkIUOaY9i4+kT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZFYFhAAKCRD2uYlJVVFO
+owlmAQChZDiqGOaRj7Jhi2fE/wNTF/sPW4oXVkaredS4EqlrkAD/aO2lQsDZtyUC
+VzZRSAXUIAnpIg6TLHX6uae7UadMMAg=
+=VC5A
+-----END PGP SIGNATURE-----
+
+--rGslkIUOaY9i4+kT--
