@@ -2,129 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 532DA6F90BF
-	for <lists+keyrings@lfdr.de>; Sat,  6 May 2023 11:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA1F6FA278
+	for <lists+keyrings@lfdr.de>; Mon,  8 May 2023 10:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232072AbjEFJBt (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 6 May 2023 05:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44392 "EHLO
+        id S232478AbjEHIk3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 8 May 2023 04:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231705AbjEFJBq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 6 May 2023 05:01:46 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81B2CA5F1;
-        Sat,  6 May 2023 02:01:33 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-3ef302a642eso13844511cf.1;
-        Sat, 06 May 2023 02:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683363692; x=1685955692;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hZ/5LqweTtZrPkjTKwCpHOg2/Sdaepy5dm+TbvvEjYs=;
-        b=dNrMv2iIFYICQFrW5CIPsF24kFW6ylwSmaK+s6ndfG79f7FUOl6n/9ejqCLLunmQev
-         gzDMpDlTxd7GOv7veA63i9xXPJ4s6LzswOKOrVRRaADXGgA1fBY/v8kc/w9EbCEu4KRs
-         ZEtGVVVu5DmGWAJrQXCJe+NZUrBBY6fIDUC52BSy9gQSW7NijeG7RBQRDEEXPEmZaQ7j
-         dUAC8e6w0bDk4lxdnJaMsr2PblaTth07JaYlhW5ei9mdhegJKtKOsFJBnUiUpLdFSuOH
-         3cWaeF7l7/hZ/y252hs6wgC8KR95ahrwqZm6Hy/2zmXDuwDstY8qBR91EsIbaHwWFL6t
-         u5Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683363692; x=1685955692;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hZ/5LqweTtZrPkjTKwCpHOg2/Sdaepy5dm+TbvvEjYs=;
-        b=jP4afuJXPLzK7XNjlUGjoaTrRMOeG1+URWbOrx0ezQELblZXjtBE+ZY70aJBUPKbn4
-         WSNkBxPf0C3kUflz+oJrLSAFY1+hEXixNa/fMrEQgUsV6tDLHW2C9QbMOZUDo+MYZpwR
-         OWcLPqWNt8vQX92Mi8NhfSqhYZZ86eKMV7CG3H7AN0qS4lBbTEiECNewqIJbF014pGCT
-         g3sYXbcYqylm6Y9z0Uknv3fIxpWCkQ7hA9N+77l3R0NJd0MTJePRCjWVcPpMqOLyWwYQ
-         5Bl6bKEnQQ2y0gjKct3i1LzZJ468DPNkybpKZadNYpc+Ca8FPjtYT9lVv51kXzHbIn/w
-         fpBg==
-X-Gm-Message-State: AC+VfDyPegbhO5R3zPehscKV4/Uf1ne0RTlx+ZCLX1OuhFSfmzK+UaLD
-        +R6UODmyynkSDImRZTq3ATL2vPLX3ddOEDN5
-X-Google-Smtp-Source: ACHHUZ5AB0u7MAH7jMRAkwYQ5CVq8beLin+sFaIK1Eh1YcYLJMkrkxKfob07B2nTjp3TMKMXU8AW5Q==
-X-Received: by 2002:ad4:5de2:0:b0:5e0:5935:d80e with SMTP id jn2-20020ad45de2000000b005e05935d80emr5338425qvb.45.1683363692294;
-        Sat, 06 May 2023 02:01:32 -0700 (PDT)
-Received: from Gentoo ([191.96.227.112])
-        by smtp.gmail.com with ESMTPSA id f8-20020a0cf3c8000000b005ef6128255bsm1220357qvm.92.2023.05.06.02.01.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 May 2023 02:01:31 -0700 (PDT)
-Date:   Sat, 6 May 2023 14:31:20 +0530
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     dhowells@redhat.com, jarkko@kernel.org, corbet@lwn.net,
-        keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH]Documentation: Security: Consistent block output by
- removing a misfit line
-Message-ID: <ZFYXYPivioHcQ866@Gentoo>
-Mail-Followup-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>, dhowells@redhat.com,
-        jarkko@kernel.org, corbet@lwn.net, keyrings@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230506033738.16908-1-unixbhaskar@gmail.com>
- <ZFYFi+eS3efdx0jS@debian.me>
+        with ESMTP id S232241AbjEHIk1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 8 May 2023 04:40:27 -0400
+Received: from mail.camacfoy.pl (mail.camacfoy.pl [195.231.80.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949E019931
+        for <keyrings@vger.kernel.org>; Mon,  8 May 2023 01:40:23 -0700 (PDT)
+Received: by mail.camacfoy.pl (Postfix, from userid 1001)
+        id F3FA7A5527; Mon,  8 May 2023 09:10:45 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=camacfoy.pl; s=mail;
+        t=1683533457; bh=0DnDcjJl846YrSvLcp0W7cMkWp4Lfhp/OZAq4oBoaY8=;
+        h=Date:From:To:Subject:From;
+        b=Z6DcJTMjN3F1hHsSOvxDf3C4i3AOJXq8o2uA/SdieRTCJA2pKHmTC7C6US1BaMP4F
+         Wd6wpZlFaAqxr/Usp/cHInGU5idA/TytV90oM3mk3UPYA3i+03/Ffc+ez09hofaY1b
+         2WcONv5iKQSu7PgPa2dLh2cc9KttZMv7n7YNUxeDw5pt3Jm28CfXzVjWrsg+0jEzVD
+         WOppgqET0qu3fAZMGATdtEf76teFBDGi3FL7dA/Ku2VGoYcFMqNNnnXgA1M/fUAD++
+         x4e1aLXOk85JxpZFdQfqVpMtbI6lWlJRIGOgtw9f2hcVAUKWOoIGYzUe0IQRfep0Wd
+         agXxUU7aTJbUw==
+Received: by mail.camacfoy.pl for <keyrings@vger.kernel.org>; Mon,  8 May 2023 08:10:39 GMT
+Message-ID: <20230508074503-0.1.8b.et3p.0.oe9d4k1dyb@camacfoy.pl>
+Date:   Mon,  8 May 2023 08:10:39 GMT
+From:   "Krzysztof Maj" <krzysztof.maj@camacfoy.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: biznesowy angielski 
+X-Mailer: mail.camacfoy.pl
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="1yHWxPoUvlWEjiHs"
-Content-Disposition: inline
-In-Reply-To: <ZFYFi+eS3efdx0jS@debian.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
+Dzie=C5=84 dobry,=20
 
---1yHWxPoUvlWEjiHs
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
+swoich pracownik=C3=B3w?
 
-On 14:45 Sat 06 May 2023, Bagas Sanjaya wrote:
->On Sat, May 06, 2023 at 09:07:38AM +0530, Bhaskar Chowdhury wrote:
->> -	[root@andromeda root]# cat /proc/key-users
->
->You remove the command line, right? The preceding sentence should be
->adjusted too, e.g. "This file lists the tracking data (including
->quota information and statistics) ... . Example file contents::".
->
-I don't think that is needed. Plus look just below that outputted block, the
-explanation to the columns are given...isn't it?? That is good enough for the
-user to gather.
+Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
+w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
+ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
+=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
 
-That command line was unnecessarily present there,so the removal.
+Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
+=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
+re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
+o=C5=BCliwo=C5=9Bci biznesowe.=20
 
->Thanks.
->
->--
->An old man doll... just what I always wanted! - Clara
+Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
+ kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
+za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
+=2E
 
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
+w i opowiedzie=C4=87 jak dzia=C5=82amy?
 
 
---
-Thanks,
-Bhaskar
-
-"Here's looking at you kid"-- Casablanca
-https://about.me/unixbhaskar
-
---1yHWxPoUvlWEjiHs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAmRWF2AACgkQsjqdtxFL
-KRUV+AgA1KEc8TAbc+AMKK5iH77eJhrWOZfog0+mvb3jM8WxHXZiKwQbkuyN8RtK
-7oi9nWHvT4rv9Xk+VxL8Vp+9E2ndbQEqxTkwpHBKt5Cut7riGCHaPP7lxBbJkf9y
-57ThzQTIxdYBnioek5YH9Frip3AxRMm61cigW7mxJ+a/okPkLy5NOEqJgzTckfTL
-eOT3RvqE7tpSKvIsJeHPLdS7HDfSjWpO5xVX93XmdRBTxnIB4xMEiLoBLpfZh7El
-kh8HADEl/B/mkICIv7BtN1IP4tj/KmYBgSDvaHk5vbjAVORbQnSWz1//LXymKSZH
-bRAnNjjYzzzNJSX7tDjuESUIIbip0g==
-=26sT
------END PGP SIGNATURE-----
-
---1yHWxPoUvlWEjiHs--
+Pozdrawiam
+Krzysztof Maj
