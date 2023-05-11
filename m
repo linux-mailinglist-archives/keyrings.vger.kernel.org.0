@@ -2,161 +2,125 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C69646FEACA
-	for <lists+keyrings@lfdr.de>; Thu, 11 May 2023 06:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E59D6FF195
+	for <lists+keyrings@lfdr.de>; Thu, 11 May 2023 14:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236614AbjEKEjE (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 11 May 2023 00:39:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56376 "EHLO
+        id S237402AbjEKMdc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 11 May 2023 08:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236620AbjEKEjD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 11 May 2023 00:39:03 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFF94C3E;
-        Wed, 10 May 2023 21:39:00 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6439d505274so4797565b3a.0;
-        Wed, 10 May 2023 21:39:00 -0700 (PDT)
+        with ESMTP id S237570AbjEKMda (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 11 May 2023 08:33:30 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7737293F4;
+        Thu, 11 May 2023 05:33:04 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-50bc040c7b8so13019291a12.2;
+        Thu, 11 May 2023 05:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683779940; x=1686371940;
+        d=googlemail.com; s=20221208; t=1683808382; x=1686400382;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NfPVn5olpqaJ9gF1uVFBdyzllvA5roFYhnWM8hmvvQs=;
-        b=CM2a/lbq36x13q65iqDwkGGnCpC6151bIAR/XQPvlA8z+Y6wKEd+Nha4w5xrFs44c1
-         H3TY0uUqVGkNT5yVmPS25lxl0Ta9fTqjSwH+v6Anb+zWV3xkwqA0cT1fGAZdxKPX70oP
-         4P79mAd17GqG/uU2P4h8nS47QRJK0omdBXdfRZ2WcCuFKBvC8ZCenZa/Zj2x6h9gQuyK
-         8hZ1kwDHppvJ6rKpsYi7uB20mAyMvlm539JG9spgQZLJjP0lkGsrtV0L1UVqAoPhPCRi
-         kLVkXxtEfOFsSbZFceOA+USKon1SCIEghEDU3aBULWHRHWX61zVmQui0mRm/2Gek26AT
-         QA0g==
+        bh=B1HnU7hHqbTpTiFx0D4GmXFi6g1csMfXh2pFRmqf63Q=;
+        b=cZOkZddVd06q0IYtPQjNvERik5w+80yb6gfW6TPrOrwznxgHEEZgC4SocVmagWAdxb
+         eZdcQwGi4lch1wKUmPdKMv4tAbDXvPO1fFAXO1Xqh2lO3AIUUpUPC70b/eFZQ4vjXC/k
+         Z/h1oA/vdZvVYjPlNWRZ7ThNRzdyuqmpPRIr8YmojTn4Qh25tGvkFvrIlhn70W4FoMvW
+         KuVuAtDuAKnEltwY4GQ4kbrXIyhHnbybA1iYLv8qsr1dSELGyWWcDauyJOhyD8nKTvE7
+         4zzEx2aM53p+TyrAv+9gF6Map+JhEgh55wsTYriqMLmLe20hfp2bG3E3Z06xlrBmwEEr
+         j5Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683779940; x=1686371940;
+        d=1e100.net; s=20221208; t=1683808382; x=1686400382;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NfPVn5olpqaJ9gF1uVFBdyzllvA5roFYhnWM8hmvvQs=;
-        b=ZnCPgmKEfRtB6KUIL2OdfpkIGrTl6wI8TSTp1KOyQpN3GvXUODwIRepY42ZEh9D2I6
-         3Y5bb5bRVAu1LXoiIoSTU3mRLbgmu7NKwb0MF+n5WnVUx5KHTUQ77XT3mv7+3db0KzEz
-         q+Tqiptq9B8zr+pmYSRyw/pAZ5Q0PHxXxvRcsfE3zjd6jrrD+xGL1WC5Vq72dhHZeer2
-         M4E8uDgPG7jTq9z+UiLw4wadUxg256rEGkIj6E5ARhbQ4LuPsP5y7hPLjv4nVUWqvuMs
-         AKKMmYpqQk6wu7SMjQF5WmA1DN8JUqjKZPZTOzZVj7W858i/0WoHh9hfPS+gWLz5e/d/
-         94ww==
-X-Gm-Message-State: AC+VfDzDol05Umo/2AG/3vgjMQZ4dyDBheNN9oVo0UuH9wadBhpGuM5U
-        MEydZmnXUA4NoUiL7tEa+bE=
-X-Google-Smtp-Source: ACHHUZ5sRVAXm3qGSvE+1Rday563eVVSMrEr5tsVUTa4o9ro6yWRvwUwJUnRr1BQi0R40oBd8GQIOg==
-X-Received: by 2002:a05:6a20:7d8d:b0:101:166:863f with SMTP id v13-20020a056a207d8d00b001010166863fmr13020204pzj.23.1683779939585;
-        Wed, 10 May 2023 21:38:59 -0700 (PDT)
-Received: from debian.me (subs09a-223-255-225-70.three.co.id. [223.255.225.70])
-        by smtp.gmail.com with ESMTPSA id h5-20020a62b405000000b0063932e36437sm4319779pfn.134.2023.05.10.21.38.58
+        bh=B1HnU7hHqbTpTiFx0D4GmXFi6g1csMfXh2pFRmqf63Q=;
+        b=dYf9cQDLjswyRAhn7zD0Qu/SQqHDd6f4/1qE4Lz9PALPZSwnnybROeLCV9JJPJMCcd
+         Jf09qHGT/qtFqlV1XFvdoMdZ9dyI2XRwNAAko33a/+o/IlU1lGq9j51CX+FPpCFP6oYA
+         /nxLoMIhJR1sW39hB7NX+TAw9nw0H32/Jo1ANu58S/3sqxS6IBZZAbLl+irUrPEUs4cI
+         JftQ55deW6sOCnaYh9qi0y4HWp3f8r5Otc1TuEVVEAuYlD6PzPRzKXjnNW0b98CVOPp5
+         1i/7wKiVw9K3qrw8nUzD4nKK+KPzdOyV1CAF6jY2Vsl7BGav34VfIPYtKCAebfSbE1Xt
+         ZI0w==
+X-Gm-Message-State: AC+VfDwOZdXGAJ6xHHRV4NVTK/SEvC1T4R1LJs7blxMoFB5/CFenGMis
+        5u1Sd29x0tGCKl5uvuXjuRKmhEyw6VUetw==
+X-Google-Smtp-Source: ACHHUZ4RhLm/85qEFAJSfeTkxZQiCvA9R35mMVU82bid3wS2Hw3iIXntAX9PvWGjM5zEmZdBdUqfnA==
+X-Received: by 2002:a17:907:1b17:b0:965:6075:d0e1 with SMTP id mp23-20020a1709071b1700b009656075d0e1mr16727032ejc.72.1683808382331;
+        Thu, 11 May 2023 05:33:02 -0700 (PDT)
+Received: from debianHome.localdomain (dynamic-077-008-180-228.77.8.pool.telefonica.de. [77.8.180.228])
+        by smtp.gmail.com with ESMTPSA id mz11-20020a1709071b8b00b009603d34cfecsm3908638ejc.164.2023.05.11.05.33.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 May 2023 21:38:59 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 852CF106772; Thu, 11 May 2023 11:38:55 +0700 (WIB)
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Linux Keyrings <keyrings@vger.kernel.org>,
-        Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
-        Linux Documentation <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Thu, 11 May 2023 05:33:02 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
 Cc:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH] Documentation: module-signing: Mention default_x509.genkey template
-Date:   Thu, 11 May 2023 11:38:52 +0700
-Message-Id: <20230511043852.25803-1-bagasdotme@gmail.com>
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] security: keys: perform capable check only on privileged operations
+Date:   Thu, 11 May 2023 14:32:52 +0200
+Message-Id: <20230511123252.723185-1-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3450; i=bagasdotme@gmail.com; h=from:subject; bh=KYJZUTwEc47lOKWrdoWj83OI1aAJrI5PpPp4KRuKUhk=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDCkxhaGrj8yYspKtJX1CWdIUEetLucbtZXt6eTLdr7HES +7adFm0o5SFQYyLQVZMkWVSIl/T6V1GIhfa1zrCzGFlAhnCwMUpABNx2M7I0N/T/uBeTb02h/0B udttJ9kfN3zfqZY6mUlK04/lfrDTeob/MT9z2xM/nS3QbfLYp3zgzsJn9cwyj55te7D+ew7/mY1 3WQA=
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Commit f3a2ba44e93e2c ("certs: check-in the default x509 config file")
-adds default x509 keypair config file template, but forgets to mention
-it in kernel module signing documentation. Update the doc accordingly.
+If the current task fails the check for the queried capability via
+`capable(CAP_SYS_ADMIN)` LSMs like SELinux generate a denial message.
+Issuing such denial messages unnecessarily can lead to a policy author
+granting more privileges to a subject than needed to silence them.
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Reorder CAP_SYS_ADMIN checks after the check whether the operation is
+actually privileged.
+
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- Documentation/admin-guide/module-signing.rst | 41 ++++++++------------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ security/keys/keyctl.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
-index 7d7c7c8a545ca6..365d60a6245f17 100644
---- a/Documentation/admin-guide/module-signing.rst
-+++ b/Documentation/admin-guide/module-signing.rst
-@@ -133,46 +133,39 @@ kernel so that it can be used to check the signatures as the modules are
- loaded.
+diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
+index d54f73c558f7..19be69fa4d05 100644
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -980,14 +980,19 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
+ 	ret = -EACCES;
+ 	down_write(&key->sem);
  
- Under normal conditions, when ``CONFIG_MODULE_SIG_KEY`` is unchanged from its
--default, the kernel build will automatically generate a new keypair using
--openssl if one does not exist in the file::
--
--	certs/signing_key.pem
--
-+default, the kernel build will automatically generate a new keypair in
-+``certs/signing_key.pem`` using openssl if it doesn't exist,
- during the building of vmlinux (the public part of the key needs to be built
--into vmlinux) using parameters in the::
--
--	certs/x509.genkey
--
-+into vmlinux) using parameters in the ``certs/x509.genkey`` configuration
- file (which is also generated if it does not already exist).
- 
--It is strongly recommended that you provide your own x509.genkey file.
--
--Most notably, in the x509.genkey file, the req_distinguished_name section
--should be altered from the default::
-+If you'd like to provide alternative configuration, copy
-+``certs/default_x509.genkey`` to ``certs/x509.genkey`` and edit the copy
-+instead. Most likely, you will want to edit the ``req_distinguished_name``
-+section, which identifies the resulting keypair. For example::
- 
- 	[ req_distinguished_name ]
--	#O = Unspecified company
--	CN = Build time autogenerated kernel key
--	#emailAddress = unspecified.user@unspecified.company
-+	O = Example company
-+	CN = Example kernel build
-+	emailAddress = user@example.com
- 
- The generated RSA key size can also be set with::
- 
- 	[ req ]
- 	default_bits = 4096
- 
--
--It is also possible to manually generate the key private/public files using the
--x509.genkey key generation configuration file in the root node of the Linux
--kernel sources tree and the openssl command.  The following is an example to
--generate the public/private key files::
-+Optionally, you can also manually generate the keypair so that the same
-+keypair can be used in multiple builds. To generate it::
- 
- 	openssl req -new -nodes -utf8 -sha256 -days 36500 -batch -x509 \
- 	   -config x509.genkey -outform PEM -out kernel_key.pem \
- 	   -keyout kernel_key.pem
- 
--The full pathname for the resulting kernel_key.pem file can then be specified
--in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key therein will
--be used instead of an autogenerated keypair.
-+See :manpage:`openssl-req(1)` for the explanation.
+-	if (!capable(CAP_SYS_ADMIN)) {
++	{
++		bool is_privileged_op = false;
 +
-+The full pathname for the resulting ``kernel_key.pem`` file can then be
-+specified in the ``CONFIG_MODULE_SIG_KEY`` option, and the certificate and key
-+therein will be used instead of an autogenerated keypair.
+ 		/* only the sysadmin can chown a key to some other UID */
+ 		if (user != (uid_t) -1 && !uid_eq(key->uid, uid))
+-			goto error_put;
++			is_privileged_op = true;
  
+ 		/* only the sysadmin can set the key's GID to a group other
+ 		 * than one of those that the current process subscribes to */
+ 		if (group != (gid_t) -1 && !gid_eq(gid, key->gid) && !in_group_p(gid))
++			is_privileged_op = true;
++
++		if (is_privileged_op && !capable(CAP_SYS_ADMIN))
+ 			goto error_put;
+ 	}
  
- =========================
-
-base-commit: ac9a78681b921877518763ba0e89202254349d1b
+@@ -1088,7 +1093,7 @@ long keyctl_setperm_key(key_serial_t id, key_perm_t perm)
+ 	down_write(&key->sem);
+ 
+ 	/* if we're not the sysadmin, we can only change a key that we own */
+-	if (capable(CAP_SYS_ADMIN) || uid_eq(key->uid, current_fsuid())) {
++	if (uid_eq(key->uid, current_fsuid()) || capable(CAP_SYS_ADMIN)) {
+ 		key->perm = perm;
+ 		notify_key(key, NOTIFY_KEY_SETATTR, 0);
+ 		ret = 0;
 -- 
-An old man doll... just what I always wanted! - Clara
+2.40.1
 
