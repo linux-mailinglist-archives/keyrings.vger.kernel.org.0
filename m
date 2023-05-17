@@ -2,107 +2,129 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CAC3705C47
-	for <lists+keyrings@lfdr.de>; Wed, 17 May 2023 03:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7368F706E07
+	for <lists+keyrings@lfdr.de>; Wed, 17 May 2023 18:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231527AbjEQBTQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 16 May 2023 21:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
+        id S229624AbjEQQXe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 17 May 2023 12:23:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231530AbjEQBTL (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 16 May 2023 21:19:11 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CED3946B8;
-        Tue, 16 May 2023 18:18:57 -0700 (PDT)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34H1Brql017084;
-        Wed, 17 May 2023 01:18:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=vIE2W4w77++8cdSRWw17/uGI+S/ioy1NWgJSZqgWq0k=;
- b=Say9xVllENx5owHUYNktS930wTKTj8lYf4apWDiNJdmpkFN1fzA4xTIhwLDuA4L5zsrJ
- 34n+lbO/P2Lmr4FjE3CSCZdrofFeXXRTgioGz0U31BpRh4j7QfSA6HxxtJHPjE0h1Sz6
- diqtBA7PNZlLOjYUt07LJF6fcl3T1cJj4Hzxusz8QC2ccj1toR2v+26xc2GOHeaFRcM5
- sC0o7moIQWWxPEHc04l39r7n/5Zqwdc8+LYNW5gtJkkzkJ7LSeG5dsV5Kz7lwoSYhjsz
- NmyMY+IZJtnGzfD6VzClwT0I/cRc4J/Kd0Y9GDj1Ql99a2GJ1rRRFPeylz+stamOoldo zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qmn22r4hu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 17 May 2023 01:18:36 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34H1EoQV024877;
-        Wed, 17 May 2023 01:18:35 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qmn22r4h6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 17 May 2023 01:18:35 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34H0JDLU025221;
-        Wed, 17 May 2023 01:18:34 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
-        by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3qj265yy73-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 17 May 2023 01:18:34 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-        by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34H1IXeB31392250
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 17 May 2023 01:18:33 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EE9915805D;
-        Wed, 17 May 2023 01:18:32 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C63755805C;
-        Wed, 17 May 2023 01:18:30 +0000 (GMT)
-Received: from sig-9-77-133-203.ibm.com (unknown [9.77.133.203])
-        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Wed, 17 May 2023 01:18:30 +0000 (GMT)
-Message-ID: <e8c470bcf50282680300cd04a6aba0d0dbdef035.camel@linux.ibm.com>
-Subject: Re: [PATCH 3/3] integrity: Remove EXPERIMENTAL from Kconfig
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
-        dwmw2@infradead.org
-Cc:     herbert@gondor.apana.org.au, davem@davemloft.net,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, jlee@suse.com, kanth.ghatraju@oracle.com,
-        konrad.wilk@oracle.com, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Date:   Tue, 16 May 2023 21:18:30 -0400
-In-Reply-To: <20230508220708.2888510-4-eric.snowberg@oracle.com>
-References: <20230508220708.2888510-1-eric.snowberg@oracle.com>
-         <20230508220708.2888510-4-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+        with ESMTP id S229574AbjEQQX1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 17 May 2023 12:23:27 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FECE2709
+        for <keyrings@vger.kernel.org>; Wed, 17 May 2023 09:23:26 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-561c11762b7so13727267b3.3
+        for <keyrings@vger.kernel.org>; Wed, 17 May 2023 09:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684340606; x=1686932606;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vaL/27odEK7tkDU5POuT7lbmrJSszQaButEBuwvYdNs=;
+        b=YM35Pq5w3m4rYqdaMXFs+/GWwuhGPQWA0RSX3P0xUHWar2Y1X5aegbFNXZl8TnbZBJ
+         O3r7m4e6nmTsVmFnXtMlgtmBZmSnDe+SrFw0gH42IliVQGc1bzvNuSJjsewHu8pmqZk0
+         2rCAY+wniFVG81jcwnkAdiPrEkyYTexQIagI8GmwqlMJjr1TrKNjXB3urpH+a5SQm79d
+         X/yrrNBhifYtNzj7G+e8VkC7h6+Y8EBXg7YX6yizfQi8eTLJ77nph+a2x0PvLgfN1Omx
+         ht+eb9QdBjRIEmQIcPRRhBlkS8Qc77k/TkwPMUn30EZrwaf9E56mpl7XIkDLUfuHLfuU
+         57BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684340606; x=1686932606;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vaL/27odEK7tkDU5POuT7lbmrJSszQaButEBuwvYdNs=;
+        b=L4lhtKMZnUw9OyjGek99GeG/zm+lCTeeLvp86NZ2W2nXpCRpjZK1iIElzAtoBprFFP
+         T4n0LutazzWXUg6PuThJgL6GqJKkutBZpl5lgjyXK8lasfvlTB9r5tvQKg2UXBEnT+Bf
+         hbQ0X/QAvYEFMSu54s6WJOFCPl5+6bmyWqZ8ogX3pbM35HeleCq2v3VbFtcBInHiNhJq
+         Wku1Z2617u7VcYb4jKVDNPkPxSQmBM5j+4p2nznX01Z7C0z5qRRFgf3wvSPVjn1353bN
+         NgY3/7RXNq3K1N1AK+t9t2HFA96VQfC6nZ95TANVYGfqTrgc/87EDE9/cFw2Bq0ip6n+
+         23sg==
+X-Gm-Message-State: AC+VfDw6kOkmwWVsH7FV2g+jFCrcvddYJMVedY85z7L7T7wIS/q5pt2G
+        Tz7j67J5oBRAAVsnswi+gKoFwGaHaWt8nEqRJzc=
+X-Google-Smtp-Source: ACHHUZ6NdaI40kXvf1BU50rHPPWhX+ejuYobBk9x0TQGd0uQUROoFot1PPQi07jDl5Fp80ZnPz9vZb46mziw//SlL5k=
+X-Received: from ndesaulniers-desktop.svl.corp.google.com ([2620:15c:2d1:203:a482:1a11:bbfc:3af4])
+ (user=ndesaulniers job=sendgmr) by 2002:a81:b209:0:b0:55d:955b:360 with SMTP
+ id q9-20020a81b209000000b0055d955b0360mr23798404ywh.5.1684340605834; Wed, 17
+ May 2023 09:23:25 -0700 (PDT)
+Date:   Wed, 17 May 2023 09:23:16 -0700
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LwaftEa0i45zaMhbeCaoP0_meuq_ur0_
-X-Proofpoint-GUID: YOAFi2lIcuThCqoQJupaJ-ottlMst4CO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-16_14,2023-05-16_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
- malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2305170006
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-B4-Tracking: v=1; b=H4sIAHP/ZGQC/x2NQQqDQBAEvyJzdkFXFyVfCR5G7egQ3IQZkQTx7
+ 65eGoouqJ0MKjB6ZDspNjH5xARlntEwc5zgZExMvvBVEcrGTYhv/J2vua1CaHxaSnLPBtcrx2G +9IVthV7HV/GS3114dsdxAk+dXSFxAAAA
+X-Developer-Key: i=ndesaulniers@google.com; a=ed25519; pk=UIrHvErwpgNbhCkRZAYSX0CFd/XFEwqX3D0xqtqjNug=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1684340604; l=1972;
+ i=ndesaulniers@google.com; s=20220923; h=from:subject:message-id;
+ bh=GW4jP2PSBzeFIDkH2ffkq3N72XBOV9s7pvdD5DDFav0=; b=4ERTA9BOjWmg7kfBlrlzuCmDZ2oGmuve0kGlIsiPU0frgrM3CjT9M6wcIAbzRnlnOsb1pwWeGgyl
+ jkdRWtRpCWcPNFZf/RiChBLgEmMNk4LO2yHj7LaVPOO08TFdAch/
+X-Mailer: b4 0.12.2
+Message-ID: <20230517-genkey-v1-1-b887424da4a8@google.com>
+Subject: [PATCH] certs: buffer stderr from openssl unless error
+From:   ndesaulniers@google.com
+To:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2023-05-08 at 18:07 -0400, Eric Snowberg wrote:
-> Remove the EXPERIMENTAL from the
-> IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY Kconfig
-> now that digitalSignature usage enforcement is set.
-> 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+Running `openssl req` prints a progress meter consisting of `.`, `*`,
+and `+` characters to stderr which we redirect to stdout. During a build
+with `make -j`, the output from this command becomes interspersed
+throughout the rest of the quiet_cmd_* output, messing up the
+indentation.
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Suppress the output from this command unless the return code is
+non-zero. If `openssl req` prints additional information to stderr
+without setting a non-zero return code, it will be missed.
+
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+ certs/Makefile   | 4 +---
+ certs/gen_key.sh | 7 +++++++
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/certs/Makefile b/certs/Makefile
+index 799ad7b9e68a..9b4fee56780d 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -45,9 +45,7 @@ ifeq ($(CONFIG_MODULE_SIG_KEY),certs/signing_key.pem)
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ECDSA) := -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
+ 
+ quiet_cmd_gen_key = GENKEY  $@
+-      cmd_gen_key = openssl req -new -nodes -utf8 -$(CONFIG_MODULE_SIG_HASH) -days 36500 \
+-		-batch -x509 -config $< \
+-		-outform PEM -out $@ -keyout $@ $(keytype-y) 2>&1
++      cmd_gen_key = $(srctree)/$(src)/gen_key.sh $(CONFIG_MODULE_SIG_HASH) $< $@ $(keytype-y)
+ 
+ $(obj)/signing_key.pem: $(obj)/x509.genkey FORCE
+ 	$(call if_changed,gen_key)
+diff --git a/certs/gen_key.sh b/certs/gen_key.sh
+new file mode 100755
+index 000000000000..1de1f22be484
+--- /dev/null
++++ b/certs/gen_key.sh
+@@ -0,0 +1,7 @@
++#!/usr/bin/env bash
++# SPDX-License-Identifier: GPL-2.0
++OUT=$(openssl req -new -nodes -utf8 -"$1" -days 36500 -batch -x509 \
++	-config "$2" -outform PEM -out "$3" -keyout "$3" $4 2>&1)
++if [[ $? -ne 0 ]]; then
++	echo "$OUT"
++fi
+
+---
+base-commit: f1fcbaa18b28dec10281551dfe6ed3a3ed80e3d6
+change-id: 20230517-genkey-24a835572835
+
+Best regards,
+-- 
+Nick Desaulniers <ndesaulniers@google.com>
 
