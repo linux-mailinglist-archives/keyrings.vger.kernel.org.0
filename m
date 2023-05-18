@@ -2,129 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7368F706E07
-	for <lists+keyrings@lfdr.de>; Wed, 17 May 2023 18:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3947078D5
+	for <lists+keyrings@lfdr.de>; Thu, 18 May 2023 06:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbjEQQXe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 17 May 2023 12:23:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51684 "EHLO
+        id S229814AbjEREP1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 May 2023 00:15:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbjEQQX1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 17 May 2023 12:23:27 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FECE2709
-        for <keyrings@vger.kernel.org>; Wed, 17 May 2023 09:23:26 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-561c11762b7so13727267b3.3
-        for <keyrings@vger.kernel.org>; Wed, 17 May 2023 09:23:26 -0700 (PDT)
+        with ESMTP id S229719AbjEREPZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 May 2023 00:15:25 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D51CC35B6;
+        Wed, 17 May 2023 21:15:23 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-76c5c806fc5so40733839f.1;
+        Wed, 17 May 2023 21:15:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684340606; x=1686932606;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vaL/27odEK7tkDU5POuT7lbmrJSszQaButEBuwvYdNs=;
-        b=YM35Pq5w3m4rYqdaMXFs+/GWwuhGPQWA0RSX3P0xUHWar2Y1X5aegbFNXZl8TnbZBJ
-         O3r7m4e6nmTsVmFnXtMlgtmBZmSnDe+SrFw0gH42IliVQGc1bzvNuSJjsewHu8pmqZk0
-         2rCAY+wniFVG81jcwnkAdiPrEkyYTexQIagI8GmwqlMJjr1TrKNjXB3urpH+a5SQm79d
-         X/yrrNBhifYtNzj7G+e8VkC7h6+Y8EBXg7YX6yizfQi8eTLJ77nph+a2x0PvLgfN1Omx
-         ht+eb9QdBjRIEmQIcPRRhBlkS8Qc77k/TkwPMUn30EZrwaf9E56mpl7XIkDLUfuHLfuU
-         57BA==
+        d=gmail.com; s=20221208; t=1684383323; x=1686975323;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=spLvCUUdmWNpc0v6hAWkoP4Hs9NQAnjDoSHRo34PPBc=;
+        b=M+fgGI1KsN4uxP7OFN5eldgj9qwPE5yLctGM212bnqZJ66tHDWbnX0VABmANJefd7r
+         jWXEPdNsBtufCxE7OGcj7xNl+cG3qvHM1E5dVYx+jiX0Fgsp8npUOd0YXNeE2cLm4XG2
+         XglIIIA8l7GJuIrrU3pAsQVl9CAJxSrVlogZSQxABj39yx3syuUPlw+Q6A3TomcU1Bzc
+         o24ZOhvNIIEp+oZ/qqK1SKcy6Ip+BTgN55FXWXOrPIOUK0M4T8WF2UxsCHaq5Ns/+DST
+         EOsVNb1kuq4FFmj+JWhXZILXkLcyFHhPJuyRldk9yEPMWd9gM4szHuxWuddeXhStcjDO
+         /CPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684340606; x=1686932606;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vaL/27odEK7tkDU5POuT7lbmrJSszQaButEBuwvYdNs=;
-        b=L4lhtKMZnUw9OyjGek99GeG/zm+lCTeeLvp86NZ2W2nXpCRpjZK1iIElzAtoBprFFP
-         T4n0LutazzWXUg6PuThJgL6GqJKkutBZpl5lgjyXK8lasfvlTB9r5tvQKg2UXBEnT+Bf
-         hbQ0X/QAvYEFMSu54s6WJOFCPl5+6bmyWqZ8ogX3pbM35HeleCq2v3VbFtcBInHiNhJq
-         Wku1Z2617u7VcYb4jKVDNPkPxSQmBM5j+4p2nznX01Z7C0z5qRRFgf3wvSPVjn1353bN
-         NgY3/7RXNq3K1N1AK+t9t2HFA96VQfC6nZ95TANVYGfqTrgc/87EDE9/cFw2Bq0ip6n+
-         23sg==
-X-Gm-Message-State: AC+VfDw6kOkmwWVsH7FV2g+jFCrcvddYJMVedY85z7L7T7wIS/q5pt2G
-        Tz7j67J5oBRAAVsnswi+gKoFwGaHaWt8nEqRJzc=
-X-Google-Smtp-Source: ACHHUZ6NdaI40kXvf1BU50rHPPWhX+ejuYobBk9x0TQGd0uQUROoFot1PPQi07jDl5Fp80ZnPz9vZb46mziw//SlL5k=
-X-Received: from ndesaulniers-desktop.svl.corp.google.com ([2620:15c:2d1:203:a482:1a11:bbfc:3af4])
- (user=ndesaulniers job=sendgmr) by 2002:a81:b209:0:b0:55d:955b:360 with SMTP
- id q9-20020a81b209000000b0055d955b0360mr23798404ywh.5.1684340605834; Wed, 17
- May 2023 09:23:25 -0700 (PDT)
-Date:   Wed, 17 May 2023 09:23:16 -0700
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAHP/ZGQC/x2NQQqDQBAEvyJzdkFXFyVfCR5G7egQ3IQZkQTx7
- 65eGoouqJ0MKjB6ZDspNjH5xARlntEwc5zgZExMvvBVEcrGTYhv/J2vua1CaHxaSnLPBtcrx2G +9IVthV7HV/GS3114dsdxAk+dXSFxAAAA
-X-Developer-Key: i=ndesaulniers@google.com; a=ed25519; pk=UIrHvErwpgNbhCkRZAYSX0CFd/XFEwqX3D0xqtqjNug=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1684340604; l=1972;
- i=ndesaulniers@google.com; s=20220923; h=from:subject:message-id;
- bh=GW4jP2PSBzeFIDkH2ffkq3N72XBOV9s7pvdD5DDFav0=; b=4ERTA9BOjWmg7kfBlrlzuCmDZ2oGmuve0kGlIsiPU0frgrM3CjT9M6wcIAbzRnlnOsb1pwWeGgyl
- jkdRWtRpCWcPNFZf/RiChBLgEmMNk4LO2yHj7LaVPOO08TFdAch/
-X-Mailer: b4 0.12.2
-Message-ID: <20230517-genkey-v1-1-b887424da4a8@google.com>
-Subject: [PATCH] certs: buffer stderr from openssl unless error
-From:   ndesaulniers@google.com
+        d=1e100.net; s=20221208; t=1684383323; x=1686975323;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=spLvCUUdmWNpc0v6hAWkoP4Hs9NQAnjDoSHRo34PPBc=;
+        b=leTxfcdL0RWxxgaqSb9OaD5AIEPKxmISfFUSTv1cOiIYb2MroDEQSP+k1NHb3ORPpl
+         KjeLYh/NI17Ff5/FbhGRXlxRW98/JHd1pSYcZ1kSOivOKScWKMku86XKL/21WWBTWEvc
+         I7b6V04++kuKB3q0h8R6oHBga2mZUwGltPgSDPYCUNJc3vLln5YRZQ4wPYvlQYjDB41u
+         snSZtUsVJrxb0bDAMhJDTZE2IpNrlmZsAnCaqblPs2r+tbAkGPR4IGgxyj61uwnjAGWL
+         dnGw/feOQqGns08fceObK94cf5q0iAJZf4NFUL4UNoCInvooG2JM+CeFfuRfM/DrmHpj
+         3JeA==
+X-Gm-Message-State: AC+VfDxrVQxRuULO7AyyP7km+mRHlGwF9WBztZX445upsknqoUTmJyrz
+        P5SnNt805jlCUI3OXABGI8M2Hl3+sFsywQ==
+X-Google-Smtp-Source: ACHHUZ683AatBk2T4OWvGqlk312/OLg7GFAvJQQB5cy7mmf4aNJgDdnr+/se0OezGfs/M1idcGe3Fg==
+X-Received: by 2002:a05:6602:cb:b0:760:b591:e651 with SMTP id z11-20020a05660200cb00b00760b591e651mr5738160ioe.13.1684383322979;
+        Wed, 17 May 2023 21:15:22 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id o9-20020a5eda49000000b0076350d7c4b6sm158948iop.36.2023.05.17.21.15.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 May 2023 21:15:22 -0700 (PDT)
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
 To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH] KEYS: Replace all non-returning strlcpy with strscpy
+Date:   Thu, 18 May 2023 04:15:13 +0000
+Message-ID: <20230518041513.1669386-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Running `openssl req` prints a progress meter consisting of `.`, `*`,
-and `+` characters to stderr which we redirect to stdout. During a build
-with `make -j`, the output from this command becomes interspersed
-throughout the rest of the quiet_cmd_* output, messing up the
-indentation.
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
+No return values were used, so direct replacement is safe.
 
-Suppress the output from this command unless the return code is
-non-zero. If `openssl req` prints additional information to stderr
-without setting a non-zero return code, it will be missed.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
 ---
- certs/Makefile   | 4 +---
- certs/gen_key.sh | 7 +++++++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ security/keys/request_key_auth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/certs/Makefile b/certs/Makefile
-index 799ad7b9e68a..9b4fee56780d 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -45,9 +45,7 @@ ifeq ($(CONFIG_MODULE_SIG_KEY),certs/signing_key.pem)
- keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ECDSA) := -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
+diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
+index 41e9735006d0..8f33cd170e42 100644
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -178,7 +178,7 @@ struct key *request_key_auth_new(struct key *target, const char *op,
+ 	if (!rka->callout_info)
+ 		goto error_free_rka;
+ 	rka->callout_len = callout_len;
+-	strlcpy(rka->op, op, sizeof(rka->op));
++	strscpy(rka->op, op, sizeof(rka->op));
  
- quiet_cmd_gen_key = GENKEY  $@
--      cmd_gen_key = openssl req -new -nodes -utf8 -$(CONFIG_MODULE_SIG_HASH) -days 36500 \
--		-batch -x509 -config $< \
--		-outform PEM -out $@ -keyout $@ $(keytype-y) 2>&1
-+      cmd_gen_key = $(srctree)/$(src)/gen_key.sh $(CONFIG_MODULE_SIG_HASH) $< $@ $(keytype-y)
- 
- $(obj)/signing_key.pem: $(obj)/x509.genkey FORCE
- 	$(call if_changed,gen_key)
-diff --git a/certs/gen_key.sh b/certs/gen_key.sh
-new file mode 100755
-index 000000000000..1de1f22be484
---- /dev/null
-+++ b/certs/gen_key.sh
-@@ -0,0 +1,7 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: GPL-2.0
-+OUT=$(openssl req -new -nodes -utf8 -"$1" -days 36500 -batch -x509 \
-+	-config "$2" -outform PEM -out "$3" -keyout "$3" $4 2>&1)
-+if [[ $? -ne 0 ]]; then
-+	echo "$OUT"
-+fi
-
----
-base-commit: f1fcbaa18b28dec10281551dfe6ed3a3ed80e3d6
-change-id: 20230517-genkey-24a835572835
-
-Best regards,
--- 
-Nick Desaulniers <ndesaulniers@google.com>
+ 	/* see if the calling process is already servicing the key request of
+ 	 * another process */
 
