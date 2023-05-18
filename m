@@ -2,105 +2,77 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B3947078D5
-	for <lists+keyrings@lfdr.de>; Thu, 18 May 2023 06:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD6C707C2D
+	for <lists+keyrings@lfdr.de>; Thu, 18 May 2023 10:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjEREP1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 18 May 2023 00:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35154 "EHLO
+        id S230117AbjERIi1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 18 May 2023 04:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229719AbjEREPZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 18 May 2023 00:15:25 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D51CC35B6;
-        Wed, 17 May 2023 21:15:23 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-76c5c806fc5so40733839f.1;
-        Wed, 17 May 2023 21:15:23 -0700 (PDT)
+        with ESMTP id S230208AbjERIiZ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 18 May 2023 04:38:25 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955CE19B1
+        for <keyrings@vger.kernel.org>; Thu, 18 May 2023 01:38:20 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-561b50c1856so21729807b3.0
+        for <keyrings@vger.kernel.org>; Thu, 18 May 2023 01:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684383323; x=1686975323;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=spLvCUUdmWNpc0v6hAWkoP4Hs9NQAnjDoSHRo34PPBc=;
-        b=M+fgGI1KsN4uxP7OFN5eldgj9qwPE5yLctGM212bnqZJ66tHDWbnX0VABmANJefd7r
-         jWXEPdNsBtufCxE7OGcj7xNl+cG3qvHM1E5dVYx+jiX0Fgsp8npUOd0YXNeE2cLm4XG2
-         XglIIIA8l7GJuIrrU3pAsQVl9CAJxSrVlogZSQxABj39yx3syuUPlw+Q6A3TomcU1Bzc
-         o24ZOhvNIIEp+oZ/qqK1SKcy6Ip+BTgN55FXWXOrPIOUK0M4T8WF2UxsCHaq5Ns/+DST
-         EOsVNb1kuq4FFmj+JWhXZILXkLcyFHhPJuyRldk9yEPMWd9gM4szHuxWuddeXhStcjDO
-         /CPw==
+        d=gmail.com; s=20221208; t=1684399100; x=1686991100;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=mzU1LdlLacObCo/T6RWj+dw5Z5tnU+bWw8yHeFWUbXs0cdXjLFaCidHfDhpKnwK0gi
+         VuLNzPC2/awUnTJs46798CRSM4C3H2evFvd+h40jPw0wI9mfOd8psZju8dVX8On4H54P
+         Z5nhi9OoVPC95gZQT9Mv5LrRT3gtvgk5psAD3XALS1X/djdF2wX4lc2vFhp1ZG8159Qz
+         CWa8sKl18f4TTgCPOTLQRu5KvXc5qGAVOfTV88t8gD8zjWeDhrgvrA31nsTeS/Kw2KdT
+         3wgJzKF+IY2Y8NNjZ/O0FerfmsmTj826UjnwbAQhTTjjrn745uvPu20IVL/7WMLg7t1j
+         x5Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684383323; x=1686975323;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=spLvCUUdmWNpc0v6hAWkoP4Hs9NQAnjDoSHRo34PPBc=;
-        b=leTxfcdL0RWxxgaqSb9OaD5AIEPKxmISfFUSTv1cOiIYb2MroDEQSP+k1NHb3ORPpl
-         KjeLYh/NI17Ff5/FbhGRXlxRW98/JHd1pSYcZ1kSOivOKScWKMku86XKL/21WWBTWEvc
-         I7b6V04++kuKB3q0h8R6oHBga2mZUwGltPgSDPYCUNJc3vLln5YRZQ4wPYvlQYjDB41u
-         snSZtUsVJrxb0bDAMhJDTZE2IpNrlmZsAnCaqblPs2r+tbAkGPR4IGgxyj61uwnjAGWL
-         dnGw/feOQqGns08fceObK94cf5q0iAJZf4NFUL4UNoCInvooG2JM+CeFfuRfM/DrmHpj
-         3JeA==
-X-Gm-Message-State: AC+VfDxrVQxRuULO7AyyP7km+mRHlGwF9WBztZX445upsknqoUTmJyrz
-        P5SnNt805jlCUI3OXABGI8M2Hl3+sFsywQ==
-X-Google-Smtp-Source: ACHHUZ683AatBk2T4OWvGqlk312/OLg7GFAvJQQB5cy7mmf4aNJgDdnr+/se0OezGfs/M1idcGe3Fg==
-X-Received: by 2002:a05:6602:cb:b0:760:b591:e651 with SMTP id z11-20020a05660200cb00b00760b591e651mr5738160ioe.13.1684383322979;
-        Wed, 17 May 2023 21:15:22 -0700 (PDT)
-Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
-        by smtp.gmail.com with ESMTPSA id o9-20020a5eda49000000b0076350d7c4b6sm158948iop.36.2023.05.17.21.15.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 21:15:22 -0700 (PDT)
-From:   Azeem Shaikh <azeemshaikh38@gmail.com>
-To:     David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     linux-hardening@vger.kernel.org,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH] KEYS: Replace all non-returning strlcpy with strscpy
-Date:   Thu, 18 May 2023 04:15:13 +0000
-Message-ID: <20230518041513.1669386-1-azeemshaikh38@gmail.com>
-X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
+        d=1e100.net; s=20221208; t=1684399100; x=1686991100;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=eD4eQFWJOHPzgvnIhaae4v5B2y61TwxbHLCRHIe8ymXr8jPT+zOPqNX3Bk3B0pJKG6
+         Vz/bBDBPmmrxQ3Me6McqOLdpaZID6NL78xJSxwWiQX/mgx2Ix8+ng/h5EiyZvgX+Vwj1
+         lsCNBArQCOQl8PoPHFYILeCJ6cvn7HzJPC+xal5mszLZB4OFPWThYAp5A1XxyX/UN/As
+         lF0TZk1ZaHBhq40AYN9RSHSmwNiqTvMxwc4iANsmaESajngG6SlTbsFCvOHqcIRsVdqv
+         e/IUDLHEl30VGiNu+M8VJdNEANISDzQ+bXTLKC3449GMGV/hafk3IbNaChZj8bPBxa/x
+         dY7w==
+X-Gm-Message-State: AC+VfDy8H2ONFc1ydCLl2jn8hBjINnFUqOCqpaJ1n1WohVn9bSjDr5mT
+        GIgnek0sxazOl6hdiNZjYJS/dFXuCaXnBhgIwvY=
+X-Google-Smtp-Source: ACHHUZ6QuN9X5wjkirF+7HXD4DxZhkw6EOWdkxu/TEBirnj8Rz6U5fhfxUk7hswdsDZTFoWhycgpUa2jjDwN1OZOERk=
+X-Received: by 2002:a81:7309:0:b0:561:7cb7:6fb4 with SMTP id
+ o9-20020a817309000000b005617cb76fb4mr935934ywc.7.1684399099757; Thu, 18 May
+ 2023 01:38:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Received: by 2002:a05:7108:3acc:b0:2fb:68dc:b886 with HTTP; Thu, 18 May 2023
+ 01:38:19 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <ninacoulibaly332@gmail.com>
+Date:   Thu, 18 May 2023 01:38:19 -0700
+Message-ID: <CAGYF=X46sPVA3+tV4eMvpdtrnfEno01M-aeidePihqE_es-NYQ@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-strlcpy() reads the entire source buffer first.
-This read may exceed the destination size limit.
-This is both inefficient and can lead to linear read
-overflows if a source string is not NUL-terminated [1].
-In an effort to remove strlcpy() completely [2], replace
-strlcpy() here with strscpy().
-No return values were used, so direct replacement is safe.
+Dear,
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-[2] https://github.com/KSPP/linux/issues/89
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
 
-Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
----
- security/keys/request_key_auth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Best Regards.
 
-diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
-index 41e9735006d0..8f33cd170e42 100644
---- a/security/keys/request_key_auth.c
-+++ b/security/keys/request_key_auth.c
-@@ -178,7 +178,7 @@ struct key *request_key_auth_new(struct key *target, const char *op,
- 	if (!rka->callout_info)
- 		goto error_free_rka;
- 	rka->callout_len = callout_len;
--	strlcpy(rka->op, op, sizeof(rka->op));
-+	strscpy(rka->op, op, sizeof(rka->op));
- 
- 	/* see if the calling process is already servicing the key request of
- 	 * another process */
-
+Mrs Nina Coulibaly
