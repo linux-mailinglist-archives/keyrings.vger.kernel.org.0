@@ -2,56 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4782370EB85
-	for <lists+keyrings@lfdr.de>; Wed, 24 May 2023 04:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B34B770F15B
+	for <lists+keyrings@lfdr.de>; Wed, 24 May 2023 10:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238442AbjEXCtV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 23 May 2023 22:49:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35300 "EHLO
+        id S240196AbjEXIsX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 24 May 2023 04:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234537AbjEXCtU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 23 May 2023 22:49:20 -0400
+        with ESMTP id S239229AbjEXIsX (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 24 May 2023 04:48:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA43139;
-        Tue, 23 May 2023 19:49:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EB9918D;
+        Wed, 24 May 2023 01:48:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D2B36380F;
-        Wed, 24 May 2023 02:49:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DADC433EF;
-        Wed, 24 May 2023 02:49:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8719663B0D;
+        Wed, 24 May 2023 08:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE400C433EF;
+        Wed, 24 May 2023 08:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684896558;
-        bh=kSGZ55rsr5dJiLWkpkFLBLP8jA/WSpaddfGvMXXt2cw=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=oKCBjoYByiTTnC+hvePx7mbaMWltTpxzyziUztwHJ1UJsCTiSCnHkdqU/rEz+Y3BC
-         c5Q7W7i6rLHlYZ0gyYgBVGsMHm++u5iIK+qnm5oG5/vM9UILu3kb+Jw02U+slBqpVg
-         jzfrfXunTDDnkOcolYha/kXab3DB2vL2KUehKX5PizLM6J1aNNIJc5A3k37BVDg1hD
-         RKCbKDPnrSGUE8fMG1mwyR9yeZDKijLOy0jI8wubrpSxUeq1ALEUW7pY2+shTe2s5/
-         BrdRTlJioSbsr3blvg1tB7n62nTRS5EbYwKN37H1j6cNrBvzs/OrF31dPj6xlCdUk9
-         vEQxe/4HD9zVQ==
-Mime-Version: 1.0
+        s=k20201202; t=1684918100;
+        bh=KpjFPbvFSlimb9DAWRgMaEI2jvOp9NyA89GNu7e4BY0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=es/VwHVqsLur6WIp9leg0DG2PHZH82FJQLXe4vwZjMOwFkc4J4WljkFO1rk0ubqui
+         U2hskEoeGmhEmKnUV4wOsJuJZWTJzyN5fm6rPkktSGC1QHabMlAw3D32kCJlaEn0Sa
+         +5RxlOZRzyJvU8hugMxyI9Opi7c0RoPb+8gSoTVG6vEII12Z2f/ApSSlTcQc1EWUz5
+         8lFf/jbMnpfDuJVHWDWosMna5JC0nVYO65PK3XxtdoB4079MespPQNmj9gcaMDHoNg
+         Sr0eaLG7YbatumBu9CyCSNNpsftZ7wFEx1JkjtfnIc6bqfJMUMfTGnFJXi15T5BP51
+         +m/Bbvn61UwqQ==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5523bd97c64so3646863eaf.0;
+        Wed, 24 May 2023 01:48:19 -0700 (PDT)
+X-Gm-Message-State: AC+VfDyApT2wUWhyAA4LcIt8tlxMVNVPaFBhTXr6awI5LHmzA+0p1KO2
+        P1qmgHHOZy3lsX5crun1Q5K3UERrr8fTQUPqLU4=
+X-Google-Smtp-Source: ACHHUZ4ZU7eeRyrC+6EILQ9/5BEfv306QfM/OBd/JWy60IPMJtRWvVOjhiiwd3pOr7t3XzKsWVm6EELrEZPuCunjp34=
+X-Received: by 2002:a4a:d24d:0:b0:541:87fe:5b75 with SMTP id
+ e13-20020a4ad24d000000b0054187fe5b75mr8497737oos.1.1684918099244; Wed, 24 May
+ 2023 01:48:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230511043852.25803-1-bagasdotme@gmail.com> <CAK7LNATY7EEWy6krs+J-XzXDzmuKQ4Ae4RrxEH6mX=SmcWCiPA@mail.gmail.com>
+ <1955521c-b3eb-d084-71c8-31db72753932@gmail.com>
+In-Reply-To: <1955521c-b3eb-d084-71c8-31db72753932@gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 24 May 2023 17:47:42 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATG=XFvUh-gLNpYyncU47-7mRahze3LBLzQKk=2zSZ02A@mail.gmail.com>
+Message-ID: <CAK7LNATG=XFvUh-gLNpYyncU47-7mRahze3LBLzQKk=2zSZ02A@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: module-signing: Mention
+ default_x509.genkey template
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Linux Keyrings <keyrings@vger.kernel.org>,
+        Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
+        Linux Documentation <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 24 May 2023 05:49:14 +0300
-Message-Id: <CSU5ZBMDTF20.1SZ9MIKVP9L45@suppilovahvero>
-Cc:     "Azeem Shaikh" <azeemshaikh38@gmail.com>,
-        "David Howells" <dhowells@redhat.com>,
-        <linux-hardening@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, "James Morris" <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH] KEYS: Replace all non-returning strlcpy with strscpy
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Jarkko Sakkinen" <jarkko@kernel.org>,
-        "Paul Moore" <paul@paul-moore.com>
-X-Mailer: aerc 0.14.0
-References: <20230518041513.1669386-1-azeemshaikh38@gmail.com>
- <CSPLMMXED66E.AMJRQGTPHKIS@suppilovahvero>
- <CAHC9VhT6qfX9B=nhZNeyOsiaA-vg4bBm=rx8BGiVPCTK1g-L7g@mail.gmail.com>
- <CSU5WB51YOBW.3IYPGJ2QG8GLK@suppilovahvero>
-In-Reply-To: <CSU5WB51YOBW.3IYPGJ2QG8GLK@suppilovahvero>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,53 +69,40 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed May 24, 2023 at 5:45 AM EEST, Jarkko Sakkinen wrote:
-> On Sat May 20, 2023 at 12:11 AM EEST, Paul Moore wrote:
-> > On Thu, May 18, 2023 at 2:01=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.=
-org> wrote:
-> > > On Thu May 18, 2023 at 7:15 AM EEST, Azeem Shaikh wrote:
-> > > > strlcpy() reads the entire source buffer first.
-> > > > This read may exceed the destination size limit.
-> > > > This is both inefficient and can lead to linear read
-> > > > overflows if a source string is not NUL-terminated [1].
-> > > > In an effort to remove strlcpy() completely [2], replace
-> > > > strlcpy() here with strscpy().
-> > > > No return values were used, so direct replacement is safe.
-> > > >
-> > > > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#=
-strlcpy
-> > > > [2] https://github.com/KSPP/linux/issues/89
-> > > >
-> > > > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-> > > > ---
-> > > >  security/keys/request_key_auth.c |    2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/security/keys/request_key_auth.c b/security/keys/reque=
-st_key_auth.c
-> > > > index 41e9735006d0..8f33cd170e42 100644
-> > > > --- a/security/keys/request_key_auth.c
-> > > > +++ b/security/keys/request_key_auth.c
-> > > > @@ -178,7 +178,7 @@ struct key *request_key_auth_new(struct key *ta=
-rget, const char *op,
-> > > >       if (!rka->callout_info)
-> > > >               goto error_free_rka;
-> > > >       rka->callout_len =3D callout_len;
-> > > > -     strlcpy(rka->op, op, sizeof(rka->op));
-> > > > +     strscpy(rka->op, op, sizeof(rka->op));
-> > > >
-> > > >       /* see if the calling process is already servicing the key re=
-quest of
-> > > >        * another process */
-> > >
-> > >
-> > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >
-> > Since you maintain this code Jarkko, are you planning to merge this
-> > into your tree or would you prefer the KSPP folks merge it?
+On Wed, May 24, 2023 at 11:40=E2=80=AFAM Bagas Sanjaya <bagasdotme@gmail.co=
+m> wrote:
 >
-> I can pick it.
+> On 5/11/23 23:55, Masahiro Yamada wrote:
+> > On Thu, May 11, 2023 at 1:39=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail=
+.com> wrote:
+> >>
+> >> Commit f3a2ba44e93e2c ("certs: check-in the default x509 config file")
+> >> adds default x509 keypair config file template, but forgets to mention
+> >> it in kernel module signing documentation.
+> >
+> > What did it forget?
+> >
+>
+> I mean not mentioning the template.
 
-Applied.
 
-BR, Jarkko
+f3a2ba44e93e2c192a872f2705fe66dbf39708d6
+is equivalent to what Makefile previously did.
+
+
+You could manually copy certs/default_x509.genkey
+if you like, but you do not need to.
+
+
+
+
+
+>
+> --
+> An old man doll... just what I always wanted! - Clara
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
