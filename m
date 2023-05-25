@@ -2,107 +2,75 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B34B770F15B
-	for <lists+keyrings@lfdr.de>; Wed, 24 May 2023 10:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7C97107CD
+	for <lists+keyrings@lfdr.de>; Thu, 25 May 2023 10:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240196AbjEXIsX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 24 May 2023 04:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55958 "EHLO
+        id S240300AbjEYInf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 25 May 2023 04:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239229AbjEXIsX (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 24 May 2023 04:48:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EB9918D;
-        Wed, 24 May 2023 01:48:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8719663B0D;
-        Wed, 24 May 2023 08:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE400C433EF;
-        Wed, 24 May 2023 08:48:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684918100;
-        bh=KpjFPbvFSlimb9DAWRgMaEI2jvOp9NyA89GNu7e4BY0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=es/VwHVqsLur6WIp9leg0DG2PHZH82FJQLXe4vwZjMOwFkc4J4WljkFO1rk0ubqui
-         U2hskEoeGmhEmKnUV4wOsJuJZWTJzyN5fm6rPkktSGC1QHabMlAw3D32kCJlaEn0Sa
-         +5RxlOZRzyJvU8hugMxyI9Opi7c0RoPb+8gSoTVG6vEII12Z2f/ApSSlTcQc1EWUz5
-         8lFf/jbMnpfDuJVHWDWosMna5JC0nVYO65PK3XxtdoB4079MespPQNmj9gcaMDHoNg
-         Sr0eaLG7YbatumBu9CyCSNNpsftZ7wFEx1JkjtfnIc6bqfJMUMfTGnFJXi15T5BP51
-         +m/Bbvn61UwqQ==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5523bd97c64so3646863eaf.0;
-        Wed, 24 May 2023 01:48:19 -0700 (PDT)
-X-Gm-Message-State: AC+VfDyApT2wUWhyAA4LcIt8tlxMVNVPaFBhTXr6awI5LHmzA+0p1KO2
-        P1qmgHHOZy3lsX5crun1Q5K3UERrr8fTQUPqLU4=
-X-Google-Smtp-Source: ACHHUZ4ZU7eeRyrC+6EILQ9/5BEfv306QfM/OBd/JWy60IPMJtRWvVOjhiiwd3pOr7t3XzKsWVm6EELrEZPuCunjp34=
-X-Received: by 2002:a4a:d24d:0:b0:541:87fe:5b75 with SMTP id
- e13-20020a4ad24d000000b0054187fe5b75mr8497737oos.1.1684918099244; Wed, 24 May
- 2023 01:48:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230511043852.25803-1-bagasdotme@gmail.com> <CAK7LNATY7EEWy6krs+J-XzXDzmuKQ4Ae4RrxEH6mX=SmcWCiPA@mail.gmail.com>
- <1955521c-b3eb-d084-71c8-31db72753932@gmail.com>
-In-Reply-To: <1955521c-b3eb-d084-71c8-31db72753932@gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Wed, 24 May 2023 17:47:42 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATG=XFvUh-gLNpYyncU47-7mRahze3LBLzQKk=2zSZ02A@mail.gmail.com>
-Message-ID: <CAK7LNATG=XFvUh-gLNpYyncU47-7mRahze3LBLzQKk=2zSZ02A@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: module-signing: Mention
- default_x509.genkey template
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Linux Keyrings <keyrings@vger.kernel.org>,
-        Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
-        Linux Documentation <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        with ESMTP id S240238AbjEYIne (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 25 May 2023 04:43:34 -0400
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7DEE98;
+        Thu, 25 May 2023 01:43:31 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VjRZfMJ_1685004207;
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0VjRZfMJ_1685004207)
+          by smtp.aliyun-inc.com;
+          Thu, 25 May 2023 16:43:28 +0800
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH] sign-file: fix memory leak
+Date:   Thu, 25 May 2023 16:43:24 +0800
+Message-Id: <20230525084324.56718-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, May 24, 2023 at 11:40=E2=80=AFAM Bagas Sanjaya <bagasdotme@gmail.co=
-m> wrote:
->
-> On 5/11/23 23:55, Masahiro Yamada wrote:
-> > On Thu, May 11, 2023 at 1:39=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail=
-.com> wrote:
-> >>
-> >> Commit f3a2ba44e93e2c ("certs: check-in the default x509 config file")
-> >> adds default x509 keypair config file template, but forgets to mention
-> >> it in kernel module signing documentation.
-> >
-> > What did it forget?
-> >
->
-> I mean not mentioning the template.
+The buffer allocated by asprintf() must be freeed.
 
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+---
+ scripts/sign-file.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-f3a2ba44e93e2c192a872f2705fe66dbf39708d6
-is equivalent to what Makefile previously did.
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index b90fc9f7437f..94267cf72197 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -369,6 +369,7 @@ int main(int argc, char **argv)
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
++			free(sig_file_name);
+ 		}
+ 
+ 		if (sign_only) {
+@@ -420,8 +421,10 @@ int main(int argc, char **argv)
+ 	ERR(BIO_free(bd) < 0, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+-	if (replace_orig)
++	if (replace_orig) {
+ 		ERR(rename(dest_name, module_name) < 0, "%s", dest_name);
++		free(dest_name);
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.24.3 (Apple Git-128)
 
-
-You could manually copy certs/default_x509.genkey
-if you like, but you do not need to.
-
-
-
-
-
->
-> --
-> An old man doll... just what I always wanted! - Clara
->
-
-
---=20
-Best Regards
-Masahiro Yamada
