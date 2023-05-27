@@ -2,132 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B08C71213E
-	for <lists+keyrings@lfdr.de>; Fri, 26 May 2023 09:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E54E713378
+	for <lists+keyrings@lfdr.de>; Sat, 27 May 2023 10:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242344AbjEZHhn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 26 May 2023 03:37:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
+        id S229861AbjE0IsF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 27 May 2023 04:48:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241569AbjEZHhl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 26 May 2023 03:37:41 -0400
-Received: from frasgout11.his.huawei.com (unknown [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF6E170E;
-        Fri, 26 May 2023 00:36:59 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4QSGgW1kg8z9xFQf;
-        Fri, 26 May 2023 15:26:15 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwAHwUdYYXBkVgbbAg--.2318S2;
-        Fri, 26 May 2023 08:36:05 +0100 (CET)
-Message-ID: <a4cefa07e717bd99fa0ae8e5f18950d69145bd24.camel@huaweicloud.com>
-Subject: Re: [PATCH v5 2/2] KEYS: asymmetric: Copy sig and digest in
- public_key_verify_signature()
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Eric Biggers <ebiggers@kernel.org>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Fri, 26 May 2023 09:35:47 +0200
-In-Reply-To: <Y+W/fwRbzj5A5v44@kernel.org>
-References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
-         <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
-         <Y64XB0yi24yjeBDw@sol.localdomain>
-         <d2a54ddec403cad12c003132542070bf781d5e26.camel@huaweicloud.com>
-         <857eedc5ad18eddae7686dca63cf8c613a051be4.camel@huaweicloud.com>
-         <Y+VBMQEwPTPGBIpP@gmail.com> <Y+W/fwRbzj5A5v44@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S229649AbjE0IsE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 27 May 2023 04:48:04 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0262CEA
+        for <keyrings@vger.kernel.org>; Sat, 27 May 2023 01:48:03 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id 5b1f17b1804b1-3f6e68cc738so10421605e9.1
+        for <keyrings@vger.kernel.org>; Sat, 27 May 2023 01:48:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685177281; x=1687769281;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KBYjhjPWDIeW/liWUe+wiuocZI9Tazf3Ctcc4Qyz83o=;
+        b=gP9nVg3o/7q7THeGgiiS0QZEEdpF9YVqIIh+w8KAjq8mpeVXJRSdMPsF6sjitxQ6QQ
+         GlGmNoWpxQg3MPX5g3i57mPIs7CMg1f8Sm+lHCHlKxpWSIkpLMOWeL+aHQKUrLMMUInr
+         CUL97dIaK2yCL1UHgRDNhFHdkHXqbZzPzVwMWXmSLMTBZdsZqSm2NlgxkL9n6Ueru9TJ
+         zKaVdWRyepifHZYlAThQVz91MTuqynttzTjVc+URSxrM7zSfoR4qqwWIiVZJgHnWoa+Y
+         5gpcJkJkZ9CcZMGa8L+66bUmaAyDu90VwDRIpOmW/gcxgf+W9SuuHp4mNF2yDVMLow2x
+         uCpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685177281; x=1687769281;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KBYjhjPWDIeW/liWUe+wiuocZI9Tazf3Ctcc4Qyz83o=;
+        b=LXcS5ArFqwi6I8r4UR4njHA1G/5E5GAHKTv/hoJkfK0OuhUWs1zSdW1fuCIn5u8AI8
+         vxhan8uypWK9LAohzdCF+AJXS55l80Ae8XGAWhOXCTT580Wras/n7z6gCFeoYhj0wDLS
+         +CUSFHRFGlJGo/CJ9TNgY4xqsY0DPENlanw70ZFvJc3nhZkUBi0bXl4Y1YbJgCDoaC41
+         cMEKu18kfbcySNs8kBNplK7pKiAKPrAs6Mbfp3jZF0wFOapkweBX2vby355Azcjhf2za
+         zfmZnIjGBJj6w/cmg8hv0kw2pv0FcTw9WDX83yBfIaRXLUro121iRWdi2e2ARDZBj0mJ
+         aTgw==
+X-Gm-Message-State: AC+VfDyCmHm/mFVt8XB9akerqwjszvSbWmqzPKOze7t8FkPmYlYL40C/
+        MhXRlBeiPSFq9veuvm0ZwPbf4vWdQi+W0FKIucw=
+X-Google-Smtp-Source: ACHHUZ7Qfv15iqsQhaolmChTo3aH7gpG/24bjv+2NhQpZbw63bZA31kL1AT2+Xopqp0XCPC1Z9IkXaRCx47IxiQciyQ=
+X-Received: by 2002:a05:600c:21cf:b0:3f1:bb10:c865 with SMTP id
+ x15-20020a05600c21cf00b003f1bb10c865mr3657284wmj.38.1685177281230; Sat, 27
+ May 2023 01:48:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: GxC2BwAHwUdYYXBkVgbbAg--.2318S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFWfZw48Xr15AF18uryDJrb_yoW5Gr1fpF
-        W3G3W5JF4jqryfCrsIv34F9F1rt3y8Jr15Xw1rZ34UZryv9rn8ur4IgF1fWFyDAr10kFW5
-        JF45Xr9ruw1jyaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
-        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
-        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-        xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-        c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UZ18PUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAJBF1jj4m+WgAAsT
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+Received: by 2002:a5d:67cb:0:b0:30a:d9a0:8ebe with HTTP; Sat, 27 May 2023
+ 01:48:00 -0700 (PDT)
+Reply-To: cafod@mail.com
+From:   "Chine McDonald." <johnmorgan2053@gmail.com>
+Date:   Sat, 27 May 2023 08:48:00 +0000
+Message-ID: <CAAfNtrzsT7YsknGLC7bCB7h0ca4gv7bAE+77BtpKOUiuj1YXGQ@mail.gmail.com>
+Subject: CAFOD
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri, 2023-02-10 at 05:52 +0200, Jarkko Sakkinen wrote:
-> On Thu, Feb 09, 2023 at 06:53:37PM +0000, Eric Biggers wrote:
-> > On Thu, Feb 09, 2023 at 11:49:19AM +0100, Roberto Sassu wrote:
-> > > On Fri, 2023-01-27 at 09:27 +0100, Roberto Sassu wrote:
-> > > > On Thu, 2022-12-29 at 14:39 -0800, Eric Biggers wrote:
-> > > > > On Tue, Dec 27, 2022 at 03:27:40PM +0100, Roberto Sassu wrote:
-> > > > > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > > > > > 
-> > > > > > Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
-> > > > > > mapping") checks that both the signature and the digest reside in the
-> > > > > > linear mapping area.
-> > > > > > 
-> > > > > > However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
-> > > > > > stack support") made it possible to move the stack in the vmalloc area,
-> > > > > > which is not contiguous, and thus not suitable for sg_set_buf() which needs
-> > > > > > adjacent pages.
-> > > > > > 
-> > > > > > Always make a copy of the signature and digest in the same buffer used to
-> > > > > > store the key and its parameters, and pass them to sg_init_one(). Prefer it
-> > > > > > to conditionally doing the copy if necessary, to keep the code simple. The
-> > > > > > buffer allocated with kmalloc() is in the linear mapping area.
-> > > > > > 
-> > > > > > Cc: stable@vger.kernel.org # 4.9.x
-> > > > > > Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
-> > > > > > Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-> > > > > > Suggested-by: Eric Biggers <ebiggers@kernel.org>
-> > > > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > > > > ---
-> > > > > >  crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
-> > > > > >  1 file changed, 21 insertions(+), 17 deletions(-)
-> > > > > 
-> > > > > Reviewed-by: Eric Biggers <ebiggers@google.com>
-> > > > 
-> > > > Hi David
-> > > > 
-> > > > could you please take this patch in your repo, if it is ok?
-> > > 
-> > > Kindly ask your support here. Has this patch been queued somewhere?
-> > > Wasn't able to find it, also it is not in linux-next.
-> > > 
-> > 
-> > The maintainer of asymmetric_keys (David Howells) is ignoring this patch, so
-> > you'll need to find someone else to apply it.  Herbert Xu, the maintainer of the
-> > crypto subsystem, might be willing to apply it.  Or maybe Jarkko Sakkinen, who
-> > is a co-maintainer of the keyrings subsystem (but not asymmetric_keys, for some
-> > reason; should that change?).
-> 
-> I can apply this if no objections?
+CAFOD Christian Aid London
+35 Lower Marsh
+Waterloo
+London
+SE1 7RL
+United Kingdom
 
-Hi Jarkko
 
-I wasn't able to reach David about this patch. Could you please apply
-it?
+The Christian Aid London is on annual forum program of selecting
+individuals, groups and organizations in coordinating to reach the aim
+of assisting the Less Provided, Widows, HIV Patients and Orphanages.
 
-Thanks
+We have this ban to select irrespective of faith, as we work through
+people of all faith and none. You are been chosen as one of our
+coordinator in your area to reach the aforementioned under privileged
+ones.
 
-Roberto
+We have mapped out sum fund for this program which is to be giving to
+you for the assistance of the people around you. We trust God that you
+will work with us accordingly. Reply for your interest.
 
+Thanks and God bless you.
+
+Ms. Chine McDonald.
