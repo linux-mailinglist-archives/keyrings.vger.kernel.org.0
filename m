@@ -2,91 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C726713440
-	for <lists+keyrings@lfdr.de>; Sat, 27 May 2023 13:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3215717137
+	for <lists+keyrings@lfdr.de>; Wed, 31 May 2023 01:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbjE0LVU (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 27 May 2023 07:21:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55836 "EHLO
+        id S233587AbjE3XEs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 May 2023 19:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbjE0LVU (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 27 May 2023 07:21:20 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57743EB
-        for <keyrings@vger.kernel.org>; Sat, 27 May 2023 04:21:19 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id 5614622812f47-394c7ba4cb5so549451b6e.1
-        for <keyrings@vger.kernel.org>; Sat, 27 May 2023 04:21:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685186478; x=1687778478;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KBYjhjPWDIeW/liWUe+wiuocZI9Tazf3Ctcc4Qyz83o=;
-        b=XP/1w0B2Ts0bmALYrzJHgvK+hyDoRS64Zjcpqt/X11KFHGGTYQY+N/RoYxB8nrrJ8j
-         bOG9ooauNdJYBloRvogUQuGdr+T6zSE1MM/y7h8pLhP66TPp4vtFw1G3Mc4K0mEVWHVH
-         N8zKbK2z0+1ixGJdcstyR819bACBnb9uKYzsHR0HTU/X2befTV9VbXjPAqbmSV4IaBOV
-         cGdVRLpmfLzbgmPPO+KV/wDkjEiwOrlyMqRIvhGULYOB5hzSA3SBap0Vmx+NmTnyiAuS
-         8VlhAgr2ExJiXizdcd3HIBC69XrXYvVkOXK2X3lwj91rsNoOmyMiTQc7EZaC9hYyNKir
-         uYTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685186478; x=1687778478;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KBYjhjPWDIeW/liWUe+wiuocZI9Tazf3Ctcc4Qyz83o=;
-        b=QO/bqsIERVn0euEKq3q487z9Ygo9qReTuOOtBcOao9CPMtfaa4S/C6m81FHnzkPiqs
-         Q6rIKZ/jLpzaRdsjjcdajK9lTlVvxtgwsDlHvKSO9+sYtrAdT/KzrV9Vq1Y7cL/hKgRw
-         GWjbC5zTIr8QXcG+vzs6kM0fFFhH0CR+ohcj50Ch03Am2LyofV5Hltf40Ji0un45BQGa
-         TGyx8ghK2lN9J9PXxtrAHB3fz8s/iy6TXT1KQ+oniHk38seG6vcKkaSrLkdJHQ7JGHIS
-         z9z5BQOqVH8EbJ58jEpkyh/CHh4cCe+UG2QmyKTqQSN6URf3h7sWM87VpPrIybTEJSwc
-         DrLw==
-X-Gm-Message-State: AC+VfDwyse1PFnB3I9zwq7J0ZClWEqaWD9R4ae5jJ6rZZG3E1r6gXP6N
-        ep9+zceKH0TUWf0I55bUvF4kySTCKiLFrhcFEBr1MHxvCL4fKbfAPko=
-X-Google-Smtp-Source: ACHHUZ6FwOH4GQnDOl0Y0X3YO4lJ3ydqbnU+48NCvdQNkAGOudejNkPD+IGxakyJKcWzn5xx5pv/iSPrd++tEhHJBJw=
-X-Received: by 2002:a54:4013:0:b0:398:4336:433b with SMTP id
- x19-20020a544013000000b003984336433bmr2474094oie.25.1685186478682; Sat, 27
- May 2023 04:21:18 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a8a:1112:0:b0:4d0:2fb8:5434 with HTTP; Sat, 27 May 2023
- 04:21:17 -0700 (PDT)
-Reply-To: cafod@mail.com
-From:   CAFOD <johnmorgan2055@gmail.com>
-Date:   Sat, 27 May 2023 11:21:17 +0000
-Message-ID: <CAGuTkBhfrevH=JyOOEnTrdMSA+ZH_6zHciCQ1nOw5GEbWR+HwQ@mail.gmail.com>
-Subject: CAFOD
-To:     undisclosed-recipients:;
+        with ESMTP id S233468AbjE3XEk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 30 May 2023 19:04:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50C4EC;
+        Tue, 30 May 2023 16:04:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 79C076181B;
+        Tue, 30 May 2023 23:04:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8EFC433D2;
+        Tue, 30 May 2023 23:04:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685487878;
+        bh=nmCxxkdcGAW8i+jZq5LyWD2wJfMQHxP2xZqU+KCy38k=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=aZMNEE+LqE57xeVo9wB3CivHR/y/CXj93mgpisrKTuoUs/JouoCFFFAl0+wWHPufv
+         LhZqLhYmQFbYbN5M8AQ134Vqox+12eGT4d8uH/PIw54StrE2/bam4g2aTPDq8sjlaq
+         yPm8zBzcibR5jpdvZ9ZMv25GOUcJgmzRMzeULmDgLSj9JXKRBoxP+G1f99QUzcnicb
+         b0UGYas11v/AaEjGZ+8hLmLvLv2YZsV5lqgKCDcx+pp+Qyttn0ruZtyyeqHn3q1+XY
+         gZWUxc4mvFThSHR8P4Ga4c9RDKZZ7IqA8neKVxyhIeZ1r57z+zF6ezAJXVSgyqpqp0
+         MDmj5ia17/7cQ==
+Message-ID: <fb2f0b6a4202d08857bc08a5507a62d7d9adaf78.camel@kernel.org>
+Subject: Re: [PATCH] security: keys: perform capable check only on
+ privileged operations
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Paul Moore <paul@paul-moore.com>,
+        Christian =?ISO-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>
+Cc:     selinux@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 31 May 2023 02:04:35 +0300
+In-Reply-To: <CAHC9VhSbZ5YheAVec5a=Xht85mNu6wRjeYaoqPGSiHjFP2NN6Q@mail.gmail.com>
+References: <20230511123252.723185-1-cgzones@googlemail.com>
+         <CAHC9VhTcso+RTEOkGOCDxyMscznEXrUhp+quDWvATUhEzEOhRQ@mail.gmail.com>
+         <CAJ2a_DfRGq+Cg_U7+Rsie9Bywxquu9CuMwYUGNv3+Sg9=wt9Og@mail.gmail.com>
+         <CAHC9VhSbZ5YheAVec5a=Xht85mNu6wRjeYaoqPGSiHjFP2NN6Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-CAFOD Christian Aid London
-35 Lower Marsh
-Waterloo
-London
-SE1 7RL
-United Kingdom
+On Thu, 2023-05-25 at 17:25 -0400, Paul Moore wrote:
+> > A minor inconvenience is the number of needed arguments (and the
+> > actual code after inlining should be the same to the inner scope in
+> > the end).
+>=20
+> Well, lucky for you, Jarkko and David maintain the keys code, not me,
+> and Jarkko seems to like your patch just fine :)
+>=20
+> Jarkko, I assume you'll be taking this via the keys tree?
 
+I just picked it and mirrored to linux-next.
 
-The Christian Aid London is on annual forum program of selecting
-individuals, groups and organizations in coordinating to reach the aim
-of assisting the Less Provided, Widows, HIV Patients and Orphanages.
+I think it is super important change because it tones down the human
+error (a little bit at least). You could say improves user experience
+kind of I guess :-)
 
-We have this ban to select irrespective of faith, as we work through
-people of all faith and none. You are been chosen as one of our
-coordinator in your area to reach the aforementioned under privileged
-ones.
+BR, Jarkko
 
-We have mapped out sum fund for this program which is to be giving to
-you for the assistance of the people around you. We trust God that you
-will work with us accordingly. Reply for your interest.
-
-Thanks and God bless you.
-
-Ms. Chine McDonald.
