@@ -2,80 +2,80 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3215717137
-	for <lists+keyrings@lfdr.de>; Wed, 31 May 2023 01:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D716D7171B3
+	for <lists+keyrings@lfdr.de>; Wed, 31 May 2023 01:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233587AbjE3XEs (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 May 2023 19:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
+        id S233933AbjE3X3h (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 30 May 2023 19:29:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233468AbjE3XEk (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 May 2023 19:04:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50C4EC;
-        Tue, 30 May 2023 16:04:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 79C076181B;
-        Tue, 30 May 2023 23:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8EFC433D2;
-        Tue, 30 May 2023 23:04:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685487878;
-        bh=nmCxxkdcGAW8i+jZq5LyWD2wJfMQHxP2xZqU+KCy38k=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=aZMNEE+LqE57xeVo9wB3CivHR/y/CXj93mgpisrKTuoUs/JouoCFFFAl0+wWHPufv
-         LhZqLhYmQFbYbN5M8AQ134Vqox+12eGT4d8uH/PIw54StrE2/bam4g2aTPDq8sjlaq
-         yPm8zBzcibR5jpdvZ9ZMv25GOUcJgmzRMzeULmDgLSj9JXKRBoxP+G1f99QUzcnicb
-         b0UGYas11v/AaEjGZ+8hLmLvLv2YZsV5lqgKCDcx+pp+Qyttn0ruZtyyeqHn3q1+XY
-         gZWUxc4mvFThSHR8P4Ga4c9RDKZZ7IqA8neKVxyhIeZ1r57z+zF6ezAJXVSgyqpqp0
-         MDmj5ia17/7cQ==
-Message-ID: <fb2f0b6a4202d08857bc08a5507a62d7d9adaf78.camel@kernel.org>
-Subject: Re: [PATCH] security: keys: perform capable check only on
- privileged operations
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Paul Moore <paul@paul-moore.com>,
-        Christian =?ISO-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>
-Cc:     selinux@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 31 May 2023 02:04:35 +0300
-In-Reply-To: <CAHC9VhSbZ5YheAVec5a=Xht85mNu6wRjeYaoqPGSiHjFP2NN6Q@mail.gmail.com>
-References: <20230511123252.723185-1-cgzones@googlemail.com>
-         <CAHC9VhTcso+RTEOkGOCDxyMscznEXrUhp+quDWvATUhEzEOhRQ@mail.gmail.com>
-         <CAJ2a_DfRGq+Cg_U7+Rsie9Bywxquu9CuMwYUGNv3+Sg9=wt9Og@mail.gmail.com>
-         <CAHC9VhSbZ5YheAVec5a=Xht85mNu6wRjeYaoqPGSiHjFP2NN6Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+        with ESMTP id S233856AbjE3X3e (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 30 May 2023 19:29:34 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A94AA;
+        Tue, 30 May 2023 16:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=8kZDmW7u1BAwE+M5sWH6dCUNdnC2eoBRZLZS/mk42z4=; b=FpoywbOee5kJx6j7BsroAWkapc
+        C8vpYY7F0mBdwtR9djLjY1oi4UXRWCW8OjSs0qYtgy3atfS47cAhj6mhbBP+9J4UMCCCGohcAunY4
+        x3yRDL/6/zJZPiqVxcqZt/lvFNyWOiruXvpDHPp3OcRvHq3KYyfv5qPULQO4qZ7x0XtVxU+9f4g/t
+        3j4PhZWEuZaJzfz0C30Kmwbs2XobhTuO+/Z1F8dhsUUi2XKs3AaiVYC6l+ZhXWSX3GqWCJ+tJE6ll
+        2dKpTX0UglWP6jBS25td4J+tS0IIfCWgk1/GgBEhZpcqMyjkHGv2nMMFvPJemJEF0NtJfV3in9ZiO
+        uLb6Nv2Q==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1q48mB-00FTri-0j;
+        Tue, 30 May 2023 23:29:15 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     keescook@chromium.org, yzaikin@google.com, dhowells@redhat.com,
+        jarkko@kernel.org, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, j.granados@samsung.com, brauner@kernel.org
+Cc:     ebiederm@xmission.com, patches@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 0/2] sysctl: move umh and keys sysctls
+Date:   Tue, 30 May 2023 16:29:12 -0700
+Message-Id: <20230530232914.3689712-1-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2023-05-25 at 17:25 -0400, Paul Moore wrote:
-> > A minor inconvenience is the number of needed arguments (and the
-> > actual code after inlining should be the same to the inner scope in
-> > the end).
->=20
-> Well, lucky for you, Jarkko and David maintain the keys code, not me,
-> and Jarkko seems to like your patch just fine :)
->=20
-> Jarkko, I assume you'll be taking this via the keys tree?
+If you look at kernel/sysctl.c there are two sysctl arrays which
+are declared in header files but registered with no good reason now
+on kernel/sysctl.c instead of the place they belong. So just do
+the registration where it belongs.
 
-I just picked it and mirrored to linux-next.
+The penalty of this is just 66 bytes for moving both registrations
+to its own file, but soon we'll be removing all sysctl empty entries
+at each array, and we've already done tons of cleanup on fs/proc/proc_sysctl.c
+which saved us hundreds of bytes so we have few karma points.
 
-I think it is super important change because it tones down the human
-error (a little bit at least). You could say improves user experience
-kind of I guess :-)
+With this, we no now only have two sysctl arrays left to start clearing
+up the kernel one and the vm one.
 
-BR, Jarkko
+Luis Chamberlain (2):
+  sysctl: move umh sysctl registration to its own file
+  sysctl: move security keys sysctl registration to its own file
+
+ include/linux/key.h    |  3 ---
+ include/linux/umh.h    |  2 --
+ kernel/sysctl.c        |  5 -----
+ kernel/umh.c           | 11 ++++++++++-
+ security/keys/sysctl.c |  7 +++++++
+ 5 files changed, 17 insertions(+), 11 deletions(-)
+
+-- 
+2.39.2
 
