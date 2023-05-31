@@ -2,128 +2,97 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C17CF7171AC
-	for <lists+keyrings@lfdr.de>; Wed, 31 May 2023 01:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695747179C0
+	for <lists+keyrings@lfdr.de>; Wed, 31 May 2023 10:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233637AbjE3X3g (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 30 May 2023 19:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54928 "EHLO
+        id S234708AbjEaIQM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 31 May 2023 04:16:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233753AbjE3X3e (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 30 May 2023 19:29:34 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16D3B2;
-        Tue, 30 May 2023 16:29:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=2DkCxac7yJ7TTpJrbvC4aJ9GEUlIf19GJMG2RCNYbhA=; b=jeHbujSluGut688450mAUhQVVb
-        tyqrByE3iKY/irqUq/PHyN/8gduxh2e1lxNVGDev/KOiX/FxEsmiwhsiXnU9Tln7zxOdOQSt6Aeup
-        DRltTHZbg0wtsi6wwis/abNrnQPjSPNqg/jyYXnAE25Nyt4LzdQQqTFQSg7E4OD+JZuorF/xQIQIF
-        z9NToC59ws913amKocI0bm7nXxKh2UA6Fn296mrCrKj0UcORwXFDgJrxNDXQq6YXephZX7qbke12C
-        s+UqI+nv7LhTxOVvSA8tB1MMjyq4FafNY6DmeR4bA/LIr4lQ770MRMwanHUkoC+k+cYesjVIsDWrU
-        wF3kb9oA==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1q48mB-00FTrm-0z;
-        Tue, 30 May 2023 23:29:15 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     keescook@chromium.org, yzaikin@google.com, dhowells@redhat.com,
-        jarkko@kernel.org, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, j.granados@samsung.com, brauner@kernel.org
-Cc:     ebiederm@xmission.com, patches@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 2/2] sysctl: move security keys sysctl registration to its own file
-Date:   Tue, 30 May 2023 16:29:14 -0700
-Message-Id: <20230530232914.3689712-3-mcgrof@kernel.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230530232914.3689712-1-mcgrof@kernel.org>
-References: <20230530232914.3689712-1-mcgrof@kernel.org>
+        with ESMTP id S235143AbjEaIQL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 31 May 2023 04:16:11 -0400
+X-Greylist: delayed 922 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 01:16:09 PDT
+Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886C093
+        for <keyrings@vger.kernel.org>; Wed, 31 May 2023 01:16:09 -0700 (PDT)
+Received: by mail.ettrick.pl (Postfix, from userid 1002)
+        id 75A9AA9CE6; Wed, 31 May 2023 07:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
+        t=1685519826; bh=ZOVeXw1jXE9TbyZP9aLdRwM96AORcRfum8b+rry5JMw=;
+        h=Date:From:To:Subject:From;
+        b=e5SI3XqEeSLP8FeW5ULbOOem4tk9ECFonHYFPiHWeS7gK3S9XVgMw506s3msw7LsR
+         2K0y4oi8EUT66UOOU+37gHgDb98siYIVITz6YOmInZIGGtmjukXJFewi3p1zcdIOJO
+         fNA4RFkHWrTpxEJzBTbCCiAMX1qhDOzjbkAVIho6ejjRv43Df2MVf8oTbA6PO/T/SZ
+         qnSl/RkEBsyIooK64TK9+58gBQ7Gw+1EJr6izuAsoCizwag8Im70F5b59jjbYBs2Us
+         V90BTKpTXumkyIlhgKNoEOM6cEf63tWDyk1B6ZJiK8q5tR8RKktD3RETei+N9NEs6r
+         Ts3V00gsdT1rQ==
+Received: by mail.ettrick.pl for <keyrings@vger.kernel.org>; Wed, 31 May 2023 07:55:38 GMT
+Message-ID: <20230531064500-0.1.ax.4bc33.0.w4um9mev24@ettrick.pl>
+Date:   Wed, 31 May 2023 07:55:38 GMT
+From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: Fotowoltaika- propozycja instalacji
+X-Mailer: mail.ettrick.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL,URIBL_BLOCKED,
+        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: ettrick.pl]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.21.111 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The security keys sysctls are already declared on its own file,
-just move the sysctl registration to its own file to help avoid
-merge conflicts on sysctls.c, and help with clearing up sysctl.c
-further.
+Dzie=C5=84 dobry,
+=20
+Czy rozwa=C5=BCali Pa=C5=84stwo monta=C5=BC systemu fotowoltaicznego?
+=20
+Instalacja fotowoltaiczna jest najlepszym sposobem na obni=C5=BCenie wyso=
+ko=C5=9Bci rachunk=C3=B3w za pr=C4=85d (pozostaj=C4=85 tylko op=C5=82aty =
+sta=C5=82e) i zabezpieczenie si=C4=99 przed rosn=C4=85cymi cenami energii=
+ elektrycznej. Jest to w pe=C5=82ni odnawialne i bezemisyjne =C5=BAr=C3=B3=
+d=C5=82o energii, dzi=C4=99ki czemu przyczyniamy si=C4=99 do ochrony =C5=9B=
+rodowiska naturalnego.
+=20
+Dzia=C5=82amy od wielu lat na rynku energetycznym. Przygotujemy projekt, =
+wycen=C4=99 oraz kompleksowo wykonamy i zg=C5=82osimy realizacj=C4=99 do =
+zak=C5=82adu energetycznego.=20
+=20
+Czy chc=C4=85 Pa=C5=84stwo pozna=C4=87 nasz=C4=85 propozycj=C4=99? =20
 
-This creates a small penalty of 23 bytes:
 
-./scripts/bloat-o-meter vmlinux.1 vmlinux.2
-add/remove: 2/0 grow/shrink: 0/1 up/down: 49/-26 (23)
-Function                                     old     new   delta
-init_security_keys_sysctls                     -      33     +33
-__pfx_init_security_keys_sysctls               -      16     +16
-sysctl_init_bases                             85      59     -26
-Total: Before=21256937, After=21256960, chg +0.00%
-
-But soon we'll be saving tons of bytes anyway, as we modify the
-sysctl registrations to use ARRAY_SIZE and so we get rid of all the
-empty array elements so let's just clean this up now.
-
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
----
- include/linux/key.h    | 3 ---
- kernel/sysctl.c        | 4 ----
- security/keys/sysctl.c | 7 +++++++
- 3 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/key.h b/include/linux/key.h
-index 8dc7f7c3088b..938d7ecfb495 100644
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -490,9 +490,6 @@ do {									\
- 	rcu_assign_pointer((KEY)->payload.rcu_data0, (PAYLOAD));	\
- } while (0)
- 
--#ifdef CONFIG_SYSCTL
--extern struct ctl_table key_sysctls[];
--#endif
- /*
-  * the userspace interface
-  */
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index caf4a91522a1..48046932d573 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -2322,10 +2322,6 @@ static struct ctl_table vm_table[] = {
- int __init sysctl_init_bases(void)
- {
- 	register_sysctl_init("kernel", kern_table);
--#ifdef CONFIG_KEYS
--	register_sysctl_init("kernel/keys", key_sysctls);
--#endif
--
- 	register_sysctl_init("vm", vm_table);
- 
- 	return 0;
-diff --git a/security/keys/sysctl.c b/security/keys/sysctl.c
-index b46b651b3c4c..b72b82bb20c6 100644
---- a/security/keys/sysctl.c
-+++ b/security/keys/sysctl.c
-@@ -68,3 +68,10 @@ struct ctl_table key_sysctls[] = {
- #endif
- 	{ }
- };
-+
-+static int __init init_security_keys_sysctls(void)
-+{
-+	register_sysctl_init("kernel/keys", key_sysctls);
-+	return 0;
-+}
-+early_initcall(init_security_keys_sysctls);
--- 
-2.39.2
-
+Pozdrawiam,
+Norbert Karecki
